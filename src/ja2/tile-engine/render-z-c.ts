@@ -35,10 +35,10 @@ const ObjectZLevel = (TileElem, pNode, sMapX, sMapY) => {
 const StructZLevel = (sMapX, sMapY) => {
   GetMapXYWorldY(sMapX, sMapY, sWorldY);
   if ((uiLevelNodeFlags & LEVELNODE_ROTTINGCORPSE)) {
-    if (pCorpse->def.usFlags & ROTTING_CORPSE_VEHICLE) {
-      if (pNode->pStructureData != NULL) {
-        sZOffsetX = pNode->pStructureData->pDBStructureRef->pDBStructure->bZTileOffsetX;
-        sZOffsetY = pNode->pStructureData->pDBStructureRef->pDBStructure->bZTileOffsetY;
+    if (pCorpse.value.def.usFlags & ROTTING_CORPSE_VEHICLE) {
+      if (pNode.value.pStructureData != NULL) {
+        sZOffsetX = pNode.value.pStructureData.value.pDBStructureRef.value.pDBStructure.value.bZTileOffsetX;
+        sZOffsetY = pNode.value.pStructureData.value.pDBStructureRef.value.pDBStructure.value.bZTileOffsetY;
       }
       GetMapXYWorldY((sMapX + sZOffsetX), (sMapY + sZOffsetY), sWorldY);
       GetMapXYWorldY((sMapX + sZOffsetX), (sMapY + sZOffsetY), sWorldY);
@@ -51,12 +51,12 @@ const StructZLevel = (sMapX, sMapY) => {
       sZLevel = ((sWorldY) * Z_SUBLAYERS) + LAND_Z_LEVEL;
     }
   } else if (uiLevelNodeFlags & LEVELNODE_PHYSICSOBJECT) {
-    sWorldY += pNode->sRelativeZ;
+    sWorldY += pNode.value.sRelativeZ;
     sZLevel = (sWorldY * Z_SUBLAYERS) + ONROOF_Z_LEVEL;
   } else if (uiLevelNodeFlags & LEVELNODE_ITEM) {
-    if (pNode->pItemPool->bRenderZHeightAboveLevel > 0) {
+    if (pNode.value.pItemPool.value.bRenderZHeightAboveLevel > 0) {
       sZLevel = (sWorldY * Z_SUBLAYERS) + STRUCT_Z_LEVEL;
-      sZLevel += (pNode->pItemPool->bRenderZHeightAboveLevel);
+      sZLevel += (pNode.value.pItemPool.value.bRenderZHeightAboveLevel);
     } else {
       sZLevel = (sWorldY * Z_SUBLAYERS) + OBJECT_Z_LEVEL;
     }
@@ -66,7 +66,7 @@ const StructZLevel = (sMapX, sMapY) => {
     if ((uiLevelNodeFlags & LEVELNODE_NOZBLITTER)) {
       sWorldY += 40;
     } else {
-      sWorldY += pNode->sRelativeZ;
+      sWorldY += pNode.value.sRelativeZ;
     }
     sZLevel = (sWorldY * Z_SUBLAYERS) + ONROOF_Z_LEVEL;
   } else {
@@ -104,30 +104,30 @@ const ShadowZLevel = (sMapX, sMapY) => {
 };
 
 const SoldierZLevel = (pSoldier, sMapX, sMapY) => {
-  if ((pSoldier->uiStatusFlags & SOLDIER_MULTITILE)) {
-    if (pNode->pStructureData != NULL) {
-      sZOffsetX = pNode->pStructureData->pDBStructureRef->pDBStructure->bZTileOffsetX;
-      sZOffsetY = pNode->pStructureData->pDBStructureRef->pDBStructure->bZTileOffsetY;
+  if ((pSoldier.value.uiStatusFlags & SOLDIER_MULTITILE)) {
+    if (pNode.value.pStructureData != NULL) {
+      sZOffsetX = pNode.value.pStructureData.value.pDBStructureRef.value.pDBStructure.value.bZTileOffsetX;
+      sZOffsetY = pNode.value.pStructureData.value.pDBStructureRef.value.pDBStructure.value.bZTileOffsetY;
     }
     GetMapXYWorldY((sMapX + sZOffsetX), (sMapY + sZOffsetY), sWorldY);
   } else {
     GetMapXYWorldY(sMapX, sMapY, sWorldY);
   }
-  if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
     sZLevel = (sWorldY * Z_SUBLAYERS) + STRUCT_Z_LEVEL;
   } else {
-    if (pSoldier->dHeightAdjustment > 0) {
+    if (pSoldier.value.dHeightAdjustment > 0) {
       sWorldY += (WALL_HEIGHT + 20);
       sZLevel = (sWorldY * Z_SUBLAYERS) + ONROOF_Z_LEVEL;
     } else {
-      if ((pSoldier->uiStatusFlags & SOLDIER_DEAD)) {
+      if ((pSoldier.value.uiStatusFlags & SOLDIER_DEAD)) {
         sZLevel = (sWorldY * Z_SUBLAYERS) + MERC_Z_LEVEL;
       } else {
         sZLevel = (sWorldY * Z_SUBLAYERS) + MERC_Z_LEVEL;
       }
     }
-    if (pSoldier->sZLevelOverride != -1) {
-      sZLevel = pSoldier->sZLevelOverride;
+    if (pSoldier.value.sZLevelOverride != -1) {
+      sZLevel = pSoldier.value.sZLevelOverride;
     }
     if (gsForceSoldierZLevel != 0) {
       sZLevel = gsForceSoldierZLevel;

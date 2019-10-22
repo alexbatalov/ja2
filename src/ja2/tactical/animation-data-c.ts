@@ -789,10 +789,10 @@ function InternalGetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: U
   // return STANDING struct for these - which start standing but end prone
   // CJC August 14 2002: added standing burst hit to this list
   if ((usAnimState == FALLFORWARD_FROMHIT_STAND || usAnimState == GENERIC_HIT_STAND || usAnimState == FALLFORWARD_FROMHIT_CROUCH || usAnimState == STANDING_BURST_HIT) && !fUseAbsolute) {
-    return gAnimStructureDatabase[MercPtrs[usSoldierID]->ubBodyType][S_STRUCT].pStructureFileRef;
+    return gAnimStructureDatabase[MercPtrs[usSoldierID].value.ubBodyType][S_STRUCT].pStructureFileRef;
   }
 
-  return gAnimStructureDatabase[MercPtrs[usSoldierID]->ubBodyType][bStructDataType].pStructureFileRef;
+  return gAnimStructureDatabase[MercPtrs[usSoldierID].value.ubBodyType][bStructDataType].pStructureFileRef;
 }
 
 function GetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16): Pointer<STRUCTURE_FILE_REF> {
@@ -800,7 +800,7 @@ function GetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: UINT16, u
 }
 
 function GetDefaultStructureRef(usSoldierID: UINT16): Pointer<STRUCTURE_FILE_REF> {
-  return gAnimStructureDatabase[MercPtrs[usSoldierID]->ubBodyType][DEFAULT_STRUCT].pStructureFileRef;
+  return gAnimStructureDatabase[MercPtrs[usSoldierID].value.ubBodyType][DEFAULT_STRUCT].pStructureFileRef;
 }
 
 // Surface mamagement functions
@@ -848,11 +848,11 @@ function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAni
     }
 
     // Get aux data
-    if (hImage->uiAppDataSize == hVObject->usNumberOfObjects * sizeof(AuxObjectData)) {
+    if (hImage.value.uiAppDataSize == hVObject.value.usNumberOfObjects * sizeof(AuxObjectData)) {
       // Valid auxiliary data, so get # od frames from data
-      pAuxData = hImage->pAppData;
+      pAuxData = hImage.value.pAppData;
 
-      gAnimSurfaceDatabase[usSurfaceIndex].uiNumFramesPerDir = pAuxData->ubNumberOfFrames;
+      gAnimSurfaceDatabase[usSurfaceIndex].uiNumFramesPerDir = pAuxData.value.ubNumberOfFrames;
     } else {
       // Report error
       SET_ERROR("Invalid # of animations given");
@@ -887,7 +887,7 @@ function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAni
     gAnimSurfaceDatabase[usSurfaceIndex].hVideoObject = hVObject;
 
     // Determine if we have a problem with #frames + directions ( ie mismatch )
-    if ((gAnimSurfaceDatabase[usSurfaceIndex].uiNumDirections * gAnimSurfaceDatabase[usSurfaceIndex].uiNumFramesPerDir) != gAnimSurfaceDatabase[usSurfaceIndex].hVideoObject->usNumberOfObjects) {
+    if ((gAnimSurfaceDatabase[usSurfaceIndex].uiNumDirections * gAnimSurfaceDatabase[usSurfaceIndex].uiNumFramesPerDir) != gAnimSurfaceDatabase[usSurfaceIndex].hVideoObject.value.usNumberOfObjects) {
       AnimDebugMsg(String("Surface Database: WARNING!!! Surface %d has #frames mismatch.", usSurfaceIndex));
     }
   }
@@ -984,27 +984,27 @@ function LoadAnimationProfiles(): BOOLEAN {
 
       // Read # tiles
       //			if ( fread( &pProfileDirs->ubNumTiles, sizeof( UINT8 ), 1, pInput ) != 1 )
-      if (FileRead(pInput, &pProfileDirs->ubNumTiles, sizeof(UINT8), &uiBytesRead) != 1) {
+      if (FileRead(pInput, &pProfileDirs.value.ubNumTiles, sizeof(UINT8), &uiBytesRead) != 1) {
         return FALSE;
       }
 
       // Malloc space for tiles!
-      pProfileDirs->pTiles = MemAlloc(sizeof(ANIM_PROF_TILE) * pProfileDirs->ubNumTiles);
+      pProfileDirs.value.pTiles = MemAlloc(sizeof(ANIM_PROF_TILE) * pProfileDirs.value.ubNumTiles);
 
       // Loop tiles
-      for (iTileCount = 0; iTileCount < pProfileDirs->ubNumTiles; iTileCount++) {
+      for (iTileCount = 0; iTileCount < pProfileDirs.value.ubNumTiles; iTileCount++) {
         //				if ( fread( &pProfileDirs->pTiles[ iTileCount ].usTileFlags, sizeof( UINT16 ), 1, pInput ) != 1 )
-        if (FileRead(pInput, &pProfileDirs->pTiles[iTileCount].usTileFlags, sizeof(UINT16), &uiBytesRead) != 1) {
+        if (FileRead(pInput, &pProfileDirs.value.pTiles[iTileCount].usTileFlags, sizeof(UINT16), &uiBytesRead) != 1) {
           return FALSE;
         }
 
         //				if ( fread( &pProfileDirs->pTiles[ iTileCount ].bTileX, sizeof( INT8 ), 1, pInput ) != 1 )
-        if (FileRead(pInput, &pProfileDirs->pTiles[iTileCount].bTileX, sizeof(INT8), &uiBytesRead) != 1) {
+        if (FileRead(pInput, &pProfileDirs.value.pTiles[iTileCount].bTileX, sizeof(INT8), &uiBytesRead) != 1) {
           return FALSE;
         }
 
         //				if ( fread( &pProfileDirs->pTiles[ iTileCount ].bTileY, sizeof( INT8 ), 1, pInput ) != 1 )
-        if (FileRead(pInput, &pProfileDirs->pTiles[iTileCount].bTileY, sizeof(INT8), &uiBytesRead) != 1) {
+        if (FileRead(pInput, &pProfileDirs.value.pTiles[iTileCount].bTileY, sizeof(INT8), &uiBytesRead) != 1) {
           return FALSE;
         }
       }
@@ -1034,7 +1034,7 @@ function DeleteAnimationProfiles(): void {
       pProfileDir = &(gpAnimProfiles[iProfileCount].Dirs[iDirectionCount]);
 
       // Free tile
-      MemFree(pProfileDir->pTiles);
+      MemFree(pProfileDir.value.pTiles);
     }
   }
 

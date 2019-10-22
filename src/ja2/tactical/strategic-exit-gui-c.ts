@@ -136,7 +136,7 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
     gExitDialog.fGotoSector = TRUE;
   }
 
-  gExitDialog.ubNumPeopleOnSquad = NumberOfPlayerControllableMercsInSquad(MercPtrs[gusSelectedSoldier]->bAssignment);
+  gExitDialog.ubNumPeopleOnSquad = NumberOfPlayerControllableMercsInSquad(MercPtrs[gusSelectedSoldier].value.bAssignment);
 
   // Determine
   for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
@@ -144,7 +144,7 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
     if (i == gusSelectedSoldier) {
       continue;
     }
-    if (!pSoldier->fBetweenSectors && pSoldier->sSectorX == gWorldSectorX && pSoldier->sSectorY == gWorldSectorY && pSoldier->bSectorZ == gbWorldSectorZ && pSoldier->bLife >= OKLIFE && pSoldier->bAssignment != MercPtrs[gusSelectedSoldier]->bAssignment && pSoldier->bAssignment != ASSIGNMENT_POW && pSoldier->bAssignment != IN_TRANSIT && pSoldier->bAssignment != ASSIGNMENT_DEAD) {
+    if (!pSoldier.value.fBetweenSectors && pSoldier.value.sSectorX == gWorldSectorX && pSoldier.value.sSectorY == gWorldSectorY && pSoldier.value.bSectorZ == gbWorldSectorZ && pSoldier.value.bLife >= OKLIFE && pSoldier.value.bAssignment != MercPtrs[gusSelectedSoldier].value.bAssignment && pSoldier.value.bAssignment != ASSIGNMENT_POW && pSoldier.value.bAssignment != IN_TRANSIT && pSoldier.value.bAssignment != ASSIGNMENT_DEAD) {
       // KM:  We need to determine if there are more than one squad (meaning other concious mercs in a different squad or assignment)
       //		 These conditions were done to the best of my knowledge, so if there are other situations that require modification,
       //		 then feel free to do so.
@@ -173,7 +173,7 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
       if (i == gusSelectedSoldier) {
         continue;
       }
-      if (MercPtrs[i]->bAssignment == MercPtrs[gusSelectedSoldier]->bAssignment) {
+      if (MercPtrs[i].value.bAssignment == MercPtrs[gusSelectedSoldier].value.bAssignment) {
         if (AM_AN_EPC(MercPtrs[i])) {
           ubNumEPCs++;
           // record the slot of the epc.  If there are more than one EPCs, then
@@ -282,20 +282,20 @@ function DoneFadeOutWarpCallback(): void {
   // look for all mercs on the same team,
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
     // Are we in this sector, On the current squad?
-    if (pSoldier->bActive && pSoldier->bLife >= OKLIFE && pSoldier->bInSector) {
+    if (pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE && pSoldier.value.bInSector) {
       gfTacticalTraversal = TRUE;
-      SetGroupSectorValue(gsWarpWorldX, gsWarpWorldY, gbWarpWorldZ, pSoldier->ubGroupID);
+      SetGroupSectorValue(gsWarpWorldX, gsWarpWorldY, gbWarpWorldZ, pSoldier.value.ubGroupID);
 
       // Set next sectore
-      pSoldier->sSectorX = gsWarpWorldX;
-      pSoldier->sSectorY = gsWarpWorldY;
-      pSoldier->bSectorZ = gbWarpWorldZ;
+      pSoldier.value.sSectorX = gsWarpWorldX;
+      pSoldier.value.sSectorY = gsWarpWorldY;
+      pSoldier.value.bSectorZ = gbWarpWorldZ;
 
       // Set gridno
-      pSoldier->ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
-      pSoldier->usStrategicInsertionData = gsWarpGridNo;
+      pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+      pSoldier.value.usStrategicInsertionData = gsWarpGridNo;
       // Set direction to face....
-      pSoldier->ubInsertionDirection = 100 + NORTHWEST;
+      pSoldier.value.ubInsertionDirection = 100 + NORTHWEST;
     }
   }
 
@@ -340,21 +340,21 @@ function InitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): BOOLEAN
 
 function UpdateSectorExitMenu(): void {
   if (gExitDialog.fGotoSector) {
-    ButtonList[gExitDialog.uiLoadCheckButton]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[gExitDialog.uiLoadCheckButton].value.uiFlags |= BUTTON_CLICKED_ON;
   } else {
-    ButtonList[gExitDialog.uiLoadCheckButton]->uiFlags &= (~BUTTON_CLICKED_ON);
+    ButtonList[gExitDialog.uiLoadCheckButton].value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 
   if (gExitDialog.fSingleMove) {
-    ButtonList[gExitDialog.uiSingleMoveButton]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[gExitDialog.uiSingleMoveButton].value.uiFlags |= BUTTON_CLICKED_ON;
   } else {
-    ButtonList[gExitDialog.uiSingleMoveButton]->uiFlags &= (~BUTTON_CLICKED_ON);
+    ButtonList[gExitDialog.uiSingleMoveButton].value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 
   if (gExitDialog.fAllMove) {
-    ButtonList[gExitDialog.uiAllMoveButton]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[gExitDialog.uiAllMoveButton].value.uiFlags |= BUTTON_CLICKED_ON;
   } else {
-    ButtonList[gExitDialog.uiAllMoveButton]->uiFlags &= (~BUTTON_CLICKED_ON);
+    ButtonList[gExitDialog.uiAllMoveButton].value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 
   if (gExitDialog.fGotoSectorDisabled) {
@@ -393,7 +393,7 @@ function UpdateSectorExitMenu(): void {
     if (gExitDialog.fSelectedMercIsEPC) {
       // EPCs cannot leave the sector alone and must be escorted
       let str: UINT16[] /* [256] */;
-      swprintf(str, pExitingSectorHelpText[EXIT_GUI_ESCORTED_CHARACTERS_MUST_BE_ESCORTED_HELPTEXT], MercPtrs[gusSelectedSoldier]->name);
+      swprintf(str, pExitingSectorHelpText[EXIT_GUI_ESCORTED_CHARACTERS_MUST_BE_ESCORTED_HELPTEXT], MercPtrs[gusSelectedSoldier].value.name);
       SetButtonFastHelpText(gExitDialog.uiSingleMoveButton, str);
       SetRegionFastHelpText(&gExitDialog.SingleRegion, str);
     } else if (gExitDialog.bSingleMoveWillIsolateEPC != -1) {
@@ -402,20 +402,20 @@ function UpdateSectorExitMenu(): void {
       // as he would isolate the EPC.
       let str: UINT16[] /* [256] */;
       if (!gExitDialog.fSquadHasMultipleEPCs) {
-        if (gMercProfiles[MercPtrs[gusSelectedSoldier]->ubProfile].bSex == MALE) {
+        if (gMercProfiles[MercPtrs[gusSelectedSoldier].value.ubProfile].bSex == MALE) {
           // male singular
-          swprintf(str, pExitingSectorHelpText[EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_MALE_SINGULAR], MercPtrs[gusSelectedSoldier]->name, MercPtrs[gExitDialog.bSingleMoveWillIsolateEPC]->name);
+          swprintf(str, pExitingSectorHelpText[EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_MALE_SINGULAR], MercPtrs[gusSelectedSoldier].value.name, MercPtrs[gExitDialog.bSingleMoveWillIsolateEPC].value.name);
         } else {
           // female singular
-          swprintf(str, pExitingSectorHelpText[EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_FEMALE_SINGULAR], MercPtrs[gusSelectedSoldier]->name, MercPtrs[gExitDialog.bSingleMoveWillIsolateEPC]->name);
+          swprintf(str, pExitingSectorHelpText[EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_FEMALE_SINGULAR], MercPtrs[gusSelectedSoldier].value.name, MercPtrs[gExitDialog.bSingleMoveWillIsolateEPC].value.name);
         }
       } else {
-        if (gMercProfiles[MercPtrs[gusSelectedSoldier]->ubProfile].bSex == MALE) {
+        if (gMercProfiles[MercPtrs[gusSelectedSoldier].value.ubProfile].bSex == MALE) {
           // male plural
-          swprintf(str, pExitingSectorHelpText[EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_MALE_PLURAL], MercPtrs[gusSelectedSoldier]->name);
+          swprintf(str, pExitingSectorHelpText[EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_MALE_PLURAL], MercPtrs[gusSelectedSoldier].value.name);
         } else {
           // female plural
-          swprintf(str, pExitingSectorHelpText[EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_FEMALE_PLURAL], MercPtrs[gusSelectedSoldier]->name);
+          swprintf(str, pExitingSectorHelpText[EXIT_GUI_MERC_CANT_ISOLATE_EPC_HELPTEXT_FEMALE_PLURAL], MercPtrs[gusSelectedSoldier].value.name);
         }
       }
       SetButtonFastHelpText(gExitDialog.uiSingleMoveButton, str);
@@ -425,7 +425,7 @@ function UpdateSectorExitMenu(): void {
     let str: UINT16[] /* [256] */;
     EnableButton(gExitDialog.uiSingleMoveButton);
     MSYS_EnableRegion(&(gExitDialog.SingleRegion));
-    swprintf(str, pExitingSectorHelpText[EXIT_GUI_SINGLE_TRAVERSAL_WILL_SEPARATE_SQUADS_HELPTEXT], MercPtrs[gusSelectedSoldier]->name);
+    swprintf(str, pExitingSectorHelpText[EXIT_GUI_SINGLE_TRAVERSAL_WILL_SEPARATE_SQUADS_HELPTEXT], MercPtrs[gusSelectedSoldier].value.name);
     SetButtonFastHelpText(gExitDialog.uiSingleMoveButton, str);
     SetRegionFastHelpText(&gExitDialog.SingleRegion, str);
   }
@@ -563,7 +563,7 @@ function RemoveSectorExitMenu(fOk: BOOLEAN): void {
     if (fOk && AM_AN_EPC(MercPtrs[gusSelectedSoldier])) {
       // Check if there are more than one in this squad
       if (gExitDialog.ubNumPeopleOnSquad == 0) {
-        swprintf(Str, pMessageStrings[MSG_EPC_CANT_TRAVERSE], MercPtrs[gusSelectedSoldier]->name);
+        swprintf(Str, pMessageStrings[MSG_EPC_CANT_TRAVERSE], MercPtrs[gusSelectedSoldier].value.name);
 
         DoMessageBox(MSG_BOX_BASIC_STYLE, Str, GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
         return;
@@ -666,9 +666,9 @@ function AllMoveCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function OKCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     RemoveSectorExitMenu(TRUE);
@@ -677,9 +677,9 @@ function OKCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function CancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     RemoveSectorExitMenu(FALSE);

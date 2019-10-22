@@ -1023,11 +1023,11 @@ function BobbyRayItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): i
   let ubItem1Quality: UINT8;
   let ubItem2Quality: UINT8;
 
-  usItem1Index = (pArg1)->usItemIndex;
-  usItem2Index = (pArg2)->usItemIndex;
+  usItem1Index = (pArg1).value.usItemIndex;
+  usItem2Index = (pArg2).value.usItemIndex;
 
-  ubItem1Quality = (pArg1)->ubItemQuality;
-  ubItem2Quality = (pArg2)->ubItemQuality;
+  ubItem1Quality = (pArg1).value.ubItemQuality;
+  ubItem2Quality = (pArg2).value.ubItemQuality;
 
   return CompareItemsForSorting(usItem1Index, usItem2Index, ubItem1Quality, ubItem2Quality);
 }
@@ -1038,11 +1038,11 @@ function ArmsDealerItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>):
   let ubItem1Quality: UINT8;
   let ubItem2Quality: UINT8;
 
-  usItem1Index = (pArg1)->sItemIndex;
-  usItem2Index = (pArg2)->sItemIndex;
+  usItem1Index = (pArg1).value.sItemIndex;
+  usItem2Index = (pArg2).value.sItemIndex;
 
-  ubItem1Quality = (pArg1)->ItemObject.bStatus[0];
-  ubItem2Quality = (pArg2)->ItemObject.bStatus[0];
+  ubItem1Quality = (pArg1).value.ItemObject.bStatus[0];
+  ubItem2Quality = (pArg2).value.ItemObject.bStatus[0];
 
   return CompareItemsForSorting(usItem1Index, usItem2Index, ubItem1Quality, ubItem2Quality);
 }
@@ -1056,11 +1056,11 @@ function RepairmanItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): 
   pInvSlot1 = pArg1;
   pInvSlot2 = pArg2;
 
-  Assert(pInvSlot1->sSpecialItemElement != -1);
-  Assert(pInvSlot2->sSpecialItemElement != -1);
+  Assert(pInvSlot1.value.sSpecialItemElement != -1);
+  Assert(pInvSlot2.value.sSpecialItemElement != -1);
 
-  uiRepairTime1 = gArmsDealersInventory[gbSelectedArmsDealerID][pInvSlot1->sItemIndex].SpecialItem[pInvSlot1->sSpecialItemElement].uiRepairDoneTime;
-  uiRepairTime2 = gArmsDealersInventory[gbSelectedArmsDealerID][pInvSlot2->sItemIndex].SpecialItem[pInvSlot2->sSpecialItemElement].uiRepairDoneTime;
+  uiRepairTime1 = gArmsDealersInventory[gbSelectedArmsDealerID][pInvSlot1.value.sItemIndex].SpecialItem[pInvSlot1.value.sSpecialItemElement].uiRepairDoneTime;
+  uiRepairTime2 = gArmsDealersInventory[gbSelectedArmsDealerID][pInvSlot2.value.sItemIndex].SpecialItem[pInvSlot2.value.sSpecialItemElement].uiRepairDoneTime;
 
   // lower reapir time first
   if (uiRepairTime1 < uiRepairTime2) {

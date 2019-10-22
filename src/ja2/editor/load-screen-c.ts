@@ -126,7 +126,7 @@ function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
       let x: INT32;
       curr = FileList;
       for (x = 0; x < iCurrFileShown && x < iTotalFiles && curr; x++) {
-        curr = curr->pNext;
+        curr = curr.value.pNext;
       }
       if (curr) {
         if (gfReadOnly) {
@@ -137,13 +137,13 @@ function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
 
         // File is deleted so redo the text fields so they show the
         // next file in the list.
-        temp = curr->pNext;
+        temp = curr.value.pNext;
         if (!temp)
-          temp = curr->pPrev;
+          temp = curr.value.pPrev;
         if (!temp)
           wcscpy(gzFilename, "");
         else
-          swprintf(gzFilename, "%S", temp->FileInfo.zFileName);
+          swprintf(gzFilename, "%S", temp.value.FileInfo.zFileName);
         if (ValidFilename()) {
           SetInputFieldStringWith16BitString(0, gzFilename);
         } else {
@@ -232,7 +232,7 @@ function LoadSaveScreenHandle(): UINT32 {
   // Skip to first filename to show
   FListNode = FileList;
   for (x = 0; x < iTopFileShown && x < iTotalFiles && FListNode != NULL; x++) {
-    FListNode = FListNode->pNext;
+    FListNode = FListNode.value.pNext;
   }
 
   // Show up to 8 filenames in the window
@@ -250,8 +250,8 @@ function LoadSaveScreenHandle(): UINT32 {
         SetFontForeground(FONT_BLACK);
         SetFontBackground(142);
       }
-      mprintf(186, (73 + (x - iTopFileShown) * 15), "%S", FListNode->FileInfo.zFileName);
-      FListNode = FListNode->pNext;
+      mprintf(186, (73 + (x - iTopFileShown) * 15), "%S", FListNode.value.FileInfo.zFileName);
+      FListNode = FListNode.value.pNext;
     }
 
   RenderAllTextFields();
@@ -353,7 +353,7 @@ function CreateFileDialog(zTitle: Pointer<UINT16>): void {
     // The update world info checkbox
     iFileDlgButtons[6] = CreateCheckBoxButton(183, 229, "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, UpdateWorldInfoCallback);
     if (gfUpdateSummaryInfo)
-      ButtonList[iFileDlgButtons[6]]->uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[iFileDlgButtons[6]].value.uiFlags |= BUTTON_CLICKED_ON;
   }
 
   // Add the text input fields
@@ -366,7 +366,7 @@ function CreateFileDialog(zTitle: Pointer<UINT16>): void {
 
 function UpdateWorldInfoCallback(b: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
-    gfUpdateSummaryInfo = b->uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
+    gfUpdateSummaryInfo = b.value.uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
 }
 
 // This is a hook into the text input code.  This callback is called whenever the user is currently
@@ -379,16 +379,16 @@ function FileDialogModeCallback(ubID: UINT8, fEntering: BOOLEAN): void {
     // Skip to first filename
     FListNode = FileList;
     for (x = 0; x < iTopFileShown && x < iTotalFiles && FListNode != NULL; x++) {
-      FListNode = FListNode->pNext;
+      FListNode = FListNode.value.pNext;
     }
     // Find the already selected filename
     for (x = iTopFileShown; x < iTopFileShown + 8 && x < iTotalFiles && FListNode != NULL; x++) {
       if (iCurrFileShown == (x - iTopFileShown)) {
-        FListNode->FileInfo.zFileName[30] = 0;
-        SetInputFieldStringWith8BitString(0, FListNode->FileInfo.zFileName);
+        FListNode.value.FileInfo.zFileName[30] = 0;
+        SetInputFieldStringWith8BitString(0, FListNode.value.FileInfo.zFileName);
         return;
       }
-      FListNode = FListNode->pNext;
+      FListNode = FListNode.value.pNext;
     }
   }
 }
@@ -457,15 +457,15 @@ function SelectFileDialogYPos(usRelativeYPos: UINT16): void {
   // Skip to first filename
   FListNode = FileList;
   for (x = 0; x < iTopFileShown && x < iTotalFiles && FListNode != NULL; x++) {
-    FListNode = FListNode->pNext;
+    FListNode = FListNode.value.pNext;
   }
 
   for (x = iTopFileShown; x < (iTopFileShown + 8) && x < iTotalFiles && FListNode != NULL; x++) {
     if (sSelName == (x - iTopFileShown)) {
       let iCurrClickTime: INT32;
       iCurrFileShown = x;
-      FListNode->FileInfo.zFileName[30] = 0;
-      swprintf(gzFilename, "%S", FListNode->FileInfo.zFileName);
+      FListNode.value.FileInfo.zFileName[30] = 0;
+      swprintf(gzFilename, "%S", FListNode.value.FileInfo.zFileName);
       if (ValidFilename()) {
         SetInputFieldStringWith16BitString(0, gzFilename);
       } else {
@@ -485,7 +485,7 @@ function SelectFileDialogYPos(usRelativeYPos: UINT16): void {
       iLastClickTime = iCurrClickTime;
       iLastFileClicked = x;
     }
-    FListNode = FListNode->pNext;
+    FListNode = FListNode.value.pNext;
   }
 }
 
@@ -495,23 +495,23 @@ function AddToFDlgList(pList: Pointer<FDLG_LIST>, pInfo: Pointer<GETFILESTRUCT>)
   // Add to start of list
   if (pList == NULL) {
     pNode = MemAlloc(sizeof(FDLG_LIST));
-    pNode->FileInfo = *pInfo;
-    pNode->pPrev = pNode->pNext = NULL;
+    pNode.value.FileInfo = *pInfo;
+    pNode.value.pPrev = pNode.value.pNext = NULL;
     return pNode;
   }
 
   // Add and sort alphabetically without regard to case -- function limited to 10 chars comparison
-  if (stricmp(pList->FileInfo.zFileName, pInfo->zFileName) > 0) {
+  if (stricmp(pList.value.FileInfo.zFileName, pInfo.value.zFileName) > 0) {
     // pInfo is smaller than pList (i.e. Insert before)
     pNode = MemAlloc(sizeof(FDLG_LIST));
-    pNode->FileInfo = *pInfo;
-    pNode->pNext = pList;
-    pNode->pPrev = pList->pPrev;
-    pList->pPrev = pNode;
+    pNode.value.FileInfo = *pInfo;
+    pNode.value.pNext = pList;
+    pNode.value.pPrev = pList.value.pPrev;
+    pList.value.pPrev = pNode;
     return pNode;
   } else {
-    pList->pNext = AddToFDlgList(pList->pNext, pInfo);
-    pList->pNext->pPrev = pList;
+    pList.value.pNext = AddToFDlgList(pList.value.pNext, pInfo);
+    pList.value.pNext.value.pPrev = pList;
   }
   return pList;
 }
@@ -522,16 +522,16 @@ function RemoveFromFDlgList(head: Pointer<Pointer<FDLG_LIST>>, node: Pointer<FDL
   while (curr) {
     if (curr == node) {
       if (*head == node)
-        *head = (*head)->pNext;
-      if (curr->pPrev)
-        curr->pPrev->pNext = curr->pNext;
-      if (curr->pNext)
-        curr->pNext->pPrev = curr->pPrev;
+        *head = (*head).value.pNext;
+      if (curr.value.pPrev)
+        curr.value.pPrev.value.pNext = curr.value.pNext;
+      if (curr.value.pNext)
+        curr.value.pNext.value.pPrev = curr.value.pPrev;
       MemFree(node);
       node = NULL;
       return TRUE;
     }
-    curr = curr->pNext;
+    curr = curr.value.pNext;
   }
   return FALSE; // wasn't deleted
 }
@@ -541,7 +541,7 @@ function TrashFDlgList(pList: Pointer<FDLG_LIST>): void {
 
   while (pList != NULL) {
     pNode = pList;
-    pList = pList->pNext;
+    pList = pList.value.pNext;
     MemFree(pNode);
   }
 }
@@ -556,13 +556,13 @@ function SetTopFileToLetter(usLetter: UINT16): void {
   x = 0;
   curr = prev = FileList;
   while (curr) {
-    usNodeLetter = curr->FileInfo.zFileName[0]; // first letter of filename.
+    usNodeLetter = curr.value.FileInfo.zFileName[0]; // first letter of filename.
     if (usNodeLetter < 'a')
       usNodeLetter += 32; // convert uppercase to lower case A=65, a=97
     if (usLetter <= usNodeLetter)
       break;
     prev = curr;
-    curr = curr->pNext;
+    curr = curr.value.pNext;
     x++;
   }
   if (FileList) {
@@ -570,16 +570,16 @@ function SetTopFileToLetter(usLetter: UINT16): void {
     iTopFileShown = x;
     if (iTopFileShown > iTotalFiles - 7)
       iTopFileShown = iTotalFiles - 7;
-    SetInputFieldStringWith8BitString(0, prev->FileInfo.zFileName);
+    SetInputFieldStringWith8BitString(0, prev.value.FileInfo.zFileName);
   }
 }
 
 function HandleMainKeyEvents(pEvent: Pointer<InputAtom>): void {
   let iPrevFileShown: INT32 = iCurrFileShown;
   // Replace Alt-x press with ESC.
-  if (pEvent->usKeyState & ALT_DOWN && pEvent->usParam == 'x')
-    pEvent->usParam = ESC;
-  switch (pEvent->usParam) {
+  if (pEvent.value.usKeyState & ALT_DOWN && pEvent.value.usParam == 'x')
+    pEvent.value.usParam = ESC;
+  switch (pEvent.value.usParam) {
     case ENTER:
       if (gfNoFiles && iCurrentAction == ACTION_LOAD_MAP)
         break;
@@ -635,10 +635,10 @@ function HandleMainKeyEvents(pEvent: Pointer<InputAtom>): void {
       break;
     default:
       // This case handles jumping the file list to display the file with the letter pressed.
-      if (pEvent->usParam >= 'a' && pEvent->usParam <= 'z' || pEvent->usParam >= 'A' && pEvent->usParam <= 'Z') {
-        if (pEvent->usParam >= 'A' && pEvent->usParam <= 'Z') // convert upper case to lower case
-          pEvent->usParam += 32; // A = 65, a = 97 (difference of 32)
-        SetTopFileToLetter(pEvent->usParam);
+      if (pEvent.value.usParam >= 'a' && pEvent.value.usParam <= 'z' || pEvent.value.usParam >= 'A' && pEvent.value.usParam <= 'Z') {
+        if (pEvent.value.usParam >= 'A' && pEvent.value.usParam <= 'Z') // convert upper case to lower case
+          pEvent.value.usParam += 32; // A = 65, a = 97 (difference of 32)
+        SetTopFileToLetter(pEvent.value.usParam);
       }
       break;
   }
@@ -649,12 +649,12 @@ function HandleMainKeyEvents(pEvent: Pointer<InputAtom>): void {
     x = 0;
     curr = FileList;
     while (curr && x != iCurrFileShown) {
-      curr = curr->pNext;
+      curr = curr.value.pNext;
       x++;
     }
     if (curr) {
-      SetInputFieldStringWith8BitString(0, curr->FileInfo.zFileName);
-      swprintf(gzFilename, "%S", curr->FileInfo.zFileName);
+      SetInputFieldStringWith8BitString(0, curr.value.FileInfo.zFileName);
+      swprintf(gzFilename, "%S", curr.value.FileInfo.zFileName);
     }
   }
 }
@@ -841,7 +841,7 @@ function ProcessFileIO(): UINT32 {
 // LOADSCREEN
 function FDlgNamesCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
-    SelectFileDialogYPos(butn->Area.RelativeYPos);
+    SelectFileDialogYPos(butn.value.Area.RelativeYPos);
   }
 }
 

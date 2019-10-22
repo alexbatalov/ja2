@@ -48,8 +48,8 @@ function HandleRPCDescription(): void {
     for (pTeamSoldier = MercPtrs[cnt2]; cnt2 <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt2++, pTeamSoldier++) {
       // Add guy if he's a candidate...
       if (RPC_RECRUITED(pTeamSoldier)) {
-        if (pTeamSoldier->bLife >= OKLIFE && pTeamSoldier->bActive && pTeamSoldier->sSectorX == gTacticalStatus.bGuideDescriptionSectorX && pTeamSoldier->sSectorY == gTacticalStatus.bGuideDescriptionSectorY && pTeamSoldier->bSectorZ == gbWorldSectorZ && !pTeamSoldier->fBetweenSectors) {
-          if (pTeamSoldier->ubProfile == IRA || pTeamSoldier->ubProfile == MIGUEL || pTeamSoldier->ubProfile == CARLOS || pTeamSoldier->ubProfile == DIMITRI) {
+        if (pTeamSoldier.value.bLife >= OKLIFE && pTeamSoldier.value.bActive && pTeamSoldier.value.sSectorX == gTacticalStatus.bGuideDescriptionSectorX && pTeamSoldier.value.sSectorY == gTacticalStatus.bGuideDescriptionSectorY && pTeamSoldier.value.bSectorZ == gbWorldSectorZ && !pTeamSoldier.value.fBetweenSectors) {
+          if (pTeamSoldier.value.ubProfile == IRA || pTeamSoldier.value.ubProfile == MIGUEL || pTeamSoldier.value.ubProfile == CARLOS || pTeamSoldier.value.ubProfile == DIMITRI) {
             ubMercsInSector[ubNumMercs] = cnt2;
             ubNumMercs++;
           }
@@ -136,7 +136,7 @@ function HandleTacticalEndTurn(): void {
 
     cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
     for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
-      if (pSoldier->bActive && pSoldier->bLife > 0 && !(pSoldier->uiStatusFlags & SOLDIER_VEHICLE) && !(AM_A_ROBOT(pSoldier))) {
+      if (pSoldier.value.bActive && pSoldier.value.bLife > 0 && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !(AM_A_ROBOT(pSoldier))) {
         // Handle everything from getting breath back, to bleeding, etc
         EVENT_BeginMercTurn(pSoldier, TRUE, 0);
 
@@ -144,7 +144,7 @@ function HandleTacticalEndTurn(): void {
         HandlePlayerServices(pSoldier);
 
         // if time is up, turn off xray
-        if (pSoldier->uiXRayActivatedTime && uiTime > pSoldier->uiXRayActivatedTime + XRAY_TIME) {
+        if (pSoldier.value.uiXRayActivatedTime && uiTime > pSoldier.value.uiXRayActivatedTime + XRAY_TIME) {
           TurnOffXRayEffects(pSoldier);
         }
 
@@ -165,7 +165,7 @@ function HandleTacticalEndTurn(): void {
       pSoldier = MercSlots[cnt];
 
       if (pSoldier != NULL) {
-        if (pSoldier->bTeam != gbPlayerNum) {
+        if (pSoldier.value.bTeam != gbPlayerNum) {
           // Handle everything from getting breath back, to bleeding, etc
           EVENT_BeginMercTurn(pSoldier, TRUE, 0);
 

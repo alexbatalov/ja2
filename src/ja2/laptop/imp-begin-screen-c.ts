@@ -226,14 +226,14 @@ function BtnIMPBeginScreenDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   let fEggOnYouFace: BOOLEAN = FALSE;
 
   // btn callback for IMP Begin Screen done button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       if (fFinishedCharGeneration) {
         // simply reviewing name and gender, exit to finish page

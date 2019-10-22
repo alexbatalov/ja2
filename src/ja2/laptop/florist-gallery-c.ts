@@ -126,37 +126,37 @@ function RenderFloristGallery(): void {
 
 function BtnFloralGalleryNextButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
       if ((gubCurFlowerIndex + 3) <= FLOR_GALLERY_NUMBER_FLORAL_IMAGES)
         gubCurFlowerIndex += 3;
 
       ChangingFloristGallerySubPage(gubCurFlowerIndex);
 
-      InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
 
       gfRedrawFloristGallery = TRUE;
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
 function BtnFloralGalleryBackButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
       if (gubCurFlowerIndex != 0) {
         if (gubCurFlowerIndex >= 3)
@@ -171,35 +171,35 @@ function BtnFloralGalleryBackButtonCallback(btn: Pointer<GUI_BUTTON>, reason: IN
 
       gfRedrawFloristGallery = TRUE;
 
-      InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
 function BtnGalleryFlowerButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
       guiCurrentlySelectedFlower = MSYS_GetBtnUserData(btn, 0);
       guiCurrentLaptopMode = LAPTOP_MODE_FLORIST_ORDERFORM;
 
       gfShowBookmarks = FALSE;
 
-      InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 

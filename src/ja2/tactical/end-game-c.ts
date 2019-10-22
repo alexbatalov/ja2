@@ -110,7 +110,7 @@ function HandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
 
   if (pKillerSoldier) {
     TacticalCharacterDialogue(pKillerSoldier, QUOTE_KILLING_DEIDRANNA);
-    ubKillerSoldierID = pKillerSoldier->ubID;
+    ubKillerSoldierID = pKillerSoldier.value.ubID;
   }
 
   // STEP 1 ) START ALL QUOTES GOING!
@@ -120,8 +120,8 @@ function HandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
   // run through list
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier++) {
     if (cnt != ubKillerSoldierID) {
-      if (OK_INSECTOR_MERC(pTeamSoldier) && !(pTeamSoldier->uiStatusFlags & SOLDIER_GASSED) && !AM_AN_EPC(pTeamSoldier)) {
-        if (QuoteExp_WitnessDeidrannaDeath[pTeamSoldier->ubProfile]) {
+      if (OK_INSECTOR_MERC(pTeamSoldier) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_GASSED) && !AM_AN_EPC(pTeamSoldier)) {
+        if (QuoteExp_WitnessDeidrannaDeath[pTeamSoldier.value.ubProfile]) {
           // Can we see location?
           sDistVisible = DistanceVisible(pTeamSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, bLevel);
 
@@ -155,7 +155,7 @@ function DoneFadeInKilledQueen(): void {
 
   // Converse!
   // InitiateConversation( pNPCSoldier, pSoldier, 0, 1 );
-  TriggerNPCRecordImmediately(pNPCSoldier->ubProfile, 6);
+  TriggerNPCRecordImmediately(pNPCSoldier.value.ubProfile, 6);
 }
 
 function DoneFadeOutKilledQueen(): void {
@@ -169,20 +169,20 @@ function DoneFadeOutKilledQueen(): void {
   // look for all mercs on the same team,
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
     // Are we in this sector, On the current squad?
-    if (pSoldier->bActive && pSoldier->bLife >= OKLIFE && pSoldier->bInSector && pSoldier->bAssignment == CurrentSquad()) {
+    if (pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE && pSoldier.value.bInSector && pSoldier.value.bAssignment == CurrentSquad()) {
       gfTacticalTraversal = TRUE;
-      SetGroupSectorValue(3, MAP_ROW_P, 0, pSoldier->ubGroupID);
+      SetGroupSectorValue(3, MAP_ROW_P, 0, pSoldier.value.ubGroupID);
 
       // Set next sectore
-      pSoldier->sSectorX = 3;
-      pSoldier->sSectorY = MAP_ROW_P;
-      pSoldier->bSectorZ = 0;
+      pSoldier.value.sSectorX = 3;
+      pSoldier.value.sSectorY = MAP_ROW_P;
+      pSoldier.value.bSectorZ = 0;
 
       // Set gridno
-      pSoldier->ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
-      pSoldier->usStrategicInsertionData = 5687;
+      pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+      pSoldier.value.usStrategicInsertionData = 5687;
       // Set direction to face....
-      pSoldier->ubInsertionDirection = 100 + NORTHWEST;
+      pSoldier.value.ubInsertionDirection = 100 + NORTHWEST;
     }
   }
 
@@ -192,11 +192,11 @@ function DoneFadeOutKilledQueen(): void {
   // look for all mercs on the same team,
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[ENEMY_TEAM].bLastID; cnt++, pTeamSoldier++) {
     // Are we active and in sector.....
-    if (pTeamSoldier->bActive) {
+    if (pTeamSoldier.value.bActive) {
       // For sure for flag thet they are dead is not set
       // Check for any more badguys
       // ON THE STRAGETY LAYER KILL BAD GUYS!
-      if (!pTeamSoldier->bNeutral && (pTeamSoldier->bSide != gbPlayerNum)) {
+      if (!pTeamSoldier.value.bNeutral && (pTeamSoldier.value.bSide != gbPlayerNum)) {
         ProcessQueenCmdImplicationsOfDeath(pSoldier);
       }
     }
@@ -267,7 +267,7 @@ function EndQueenDeathEndgameBeginEndCimenatic(): void {
   // look for all mercs on the same team,
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
     // Are we in this sector, On the current squad?
-    if (pSoldier->bActive && pSoldier->bLife >= OKLIFE && !AM_AN_EPC(pSoldier)) {
+    if (pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE && !AM_AN_EPC(pSoldier)) {
       TacticalCharacterDialogue(pSoldier, QUOTE_END_GAME_COMMENT);
     }
   }
@@ -335,7 +335,7 @@ function BeginHandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridN
   // look for all mercs on the same team,
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[CREATURE_TEAM].bLastID; cnt++, pTeamSoldier++) {
     // Are we active and ALIVE and in sector.....
-    if (pTeamSoldier->bActive && pTeamSoldier->bLife > 0) {
+    if (pTeamSoldier.value.bActive && pTeamSoldier.value.bLife > 0) {
       // For sure for flag thet they are dead is not set
       // Check for any more badguys
       // ON THE STRAGETY LAYER KILL BAD GUYS!
@@ -344,7 +344,7 @@ function BeginHandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridN
       // if ( !pTeamSoldier->bNeutral && (pTeamSoldier->bSide != gbPlayerNum ) )
       {
         gTacticalStatus.ubAttackBusyCount++;
-        EVENT_SoldierGotHit(pTeamSoldier, 0, 10000, 0, pTeamSoldier->bDirection, 320, NOBODY, FIRE_WEAPON_NO_SPECIAL, pTeamSoldier->bAimShotLocation, 0, NOWHERE);
+        EVENT_SoldierGotHit(pTeamSoldier, 0, 10000, 0, pTeamSoldier.value.bDirection, 320, NOBODY, FIRE_WEAPON_NO_SPECIAL, pTeamSoldier.value.bAimShotLocation, 0, NOWHERE);
       }
     }
   }
@@ -361,7 +361,7 @@ function HandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
 
   if (pKillerSoldier) {
     TacticalCharacterDialogue(pKillerSoldier, QUOTE_KILLING_QUEEN);
-    ubKillerSoldierID = pKillerSoldier->ubID;
+    ubKillerSoldierID = pKillerSoldier.value.ubID;
   }
 
   // STEP 1 ) START ALL QUOTES GOING!
@@ -371,8 +371,8 @@ function HandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
   // run through list
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier++) {
     if (cnt != ubKillerSoldierID) {
-      if (OK_INSECTOR_MERC(pTeamSoldier) && !(pTeamSoldier->uiStatusFlags & SOLDIER_GASSED) && !AM_AN_EPC(pTeamSoldier)) {
-        if (QuoteExp_WitnessQueenBugDeath[pTeamSoldier->ubProfile]) {
+      if (OK_INSECTOR_MERC(pTeamSoldier) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_GASSED) && !AM_AN_EPC(pTeamSoldier)) {
+        if (QuoteExp_WitnessQueenBugDeath[pTeamSoldier.value.ubProfile]) {
           // Can we see location?
           sDistVisible = DistanceVisible(pTeamSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, bLevel);
 

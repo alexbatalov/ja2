@@ -194,7 +194,7 @@ function SearchForOtherMembersWithinPitRadiusAndMakeThemFall(sGridNo: INT16, sRa
           // Set data to look for exit grid....
           pSoldier = MercPtrs[ubID];
 
-          pSoldier->uiPendingActionData4 = sNewGridNo;
+          pSoldier.value.uiPendingActionData4 = sNewGridNo;
 
           EVENT_InitNewSoldierAnim(pSoldier, FALL_INTO_PIT, 0, FALSE);
         }
@@ -208,17 +208,17 @@ function HandleFallIntoPitFromAnimation(ubID: UINT8): void {
   let sPitGridNo: INT16;
   // OK, get exit grid...
 
-  sPitGridNo = pSoldier->uiPendingActionData4;
+  sPitGridNo = pSoldier.value.uiPendingActionData4;
 
   GetExitGrid(sPitGridNo, &ExitGrid);
 
   // Given exit grid, make buddy move to next sector....
-  pSoldier->ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
-  pSoldier->usStrategicInsertionData = ExitGrid.usGridNo;
+  pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+  pSoldier.value.usStrategicInsertionData = ExitGrid.usGridNo;
 
-  pSoldier->sSectorX = ExitGrid.ubGotoSectorX;
-  pSoldier->sSectorY = ExitGrid.ubGotoSectorY;
-  pSoldier->bSectorZ = ExitGrid.ubGotoSectorZ;
+  pSoldier.value.sSectorX = ExitGrid.ubGotoSectorX;
+  pSoldier.value.sSectorY = ExitGrid.ubGotoSectorY;
+  pSoldier.value.bSectorZ = ExitGrid.ubGotoSectorZ;
 
   // Remove from world......
   RemoveSoldierFromTacticalSector(pSoldier, TRUE);

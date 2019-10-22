@@ -238,11 +238,11 @@ function HideExitGrids(): void {
     if (GetExitGridLevelNode(i, &pLevelNode)) {
       pLevelNode = gpWorldLevelData[i].pTopmostHead;
       while (pLevelNode) {
-        if (pLevelNode->usIndex == FIRSTPOINTERS8) {
-          RemoveTopmost(i, pLevelNode->usIndex);
+        if (pLevelNode.value.usIndex == FIRSTPOINTERS8) {
+          RemoveTopmost(i, pLevelNode.value.usIndex);
           break;
         }
-        pLevelNode = pLevelNode->pNext;
+        pLevelNode = pLevelNode.value.pNext;
       }
     }
   }

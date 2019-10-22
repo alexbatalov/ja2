@@ -486,7 +486,7 @@ function RenderMercs(): void {
   // If the Specks popup dioalogue box is active, display it.
   if (iMercPopUpBox != -1) {
     DrawButton(guiAccountBoxButton);
-    ButtonList[guiAccountBoxButton]->uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[guiAccountBoxButton].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
 
     RenderMercPopUpBoxFromIndex(iMercPopUpBox, gusSpeckDialogueX, MERC_TEXT_BOX_POS_Y, FRAME_BUFFER);
   }
@@ -497,7 +497,7 @@ function RenderMercs(): void {
   // if the page is redrawn, and we are in video conferencing, redraw the VC backgrund graphic
   gfMercSiteScreenIsReDrawn = TRUE;
 
-  ButtonList[guiAccountBoxButton]->uiFlags &= ~BUTTON_FORCE_UNDIRTY;
+  ButtonList[guiAccountBoxButton].value.uiFlags &= ~BUTTON_FORCE_UNDIRTY;
 
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
@@ -526,12 +526,12 @@ function RemoveMercBackGround(): BOOLEAN {
 
 function BtnAccountBoxButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
       if (LaptopSaveInfo.gubPlayersMercAccountStatus == MERC_NO_ACCOUNT)
         guiCurrentLaptopMode = LAPTOP_MODE_MERC_NO_ACCOUNT;
@@ -539,37 +539,37 @@ function BtnAccountBoxButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
         guiCurrentLaptopMode = LAPTOP_MODE_MERC_ACCOUNT;
 
       if (iMercPopUpBox != -1) {
-        ButtonList[guiAccountBoxButton]->uiFlags |= BUTTON_FORCE_UNDIRTY;
+        ButtonList[guiAccountBoxButton].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
 
         RenderMercPopUpBoxFromIndex(iMercPopUpBox, gusSpeckDialogueX, MERC_TEXT_BOX_POS_Y, FRAME_BUFFER);
       }
 
-      InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
 function BtnFileBoxButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
       guiCurrentLaptopMode = LAPTOP_MODE_MERC_FILES;
 
-      InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
@@ -599,14 +599,14 @@ function DailyUpdateOfMercSite(usDate: UINT16): void {
       pSoldier = MercPtrs[sSoldierID];
 
       // if the merc is dead, dont advance the contract length
-      if (!IsMercDead(pSoldier->ubProfile)) {
-        gMercProfiles[pSoldier->ubProfile].iMercMercContractLength += 1;
+      if (!IsMercDead(pSoldier.value.ubProfile)) {
+        gMercProfiles[pSoldier.value.ubProfile].iMercMercContractLength += 1;
         //				pSoldier->iTotalContractLength++;
       }
 
       // Get the longest time
-      if (gMercProfiles[pSoldier->ubProfile].iMercMercContractLength > iNumDays)
-        iNumDays = gMercProfiles[pSoldier->ubProfile].iMercMercContractLength;
+      if (gMercProfiles[pSoldier.value.ubProfile].iMercMercContractLength > iNumDays)
+        iNumDays = gMercProfiles[pSoldier.value.ubProfile].iMercMercContractLength;
     }
   }
 
@@ -1131,12 +1131,12 @@ function InitDestroyXToCloseVideoWindow(fCreate: BOOLEAN): BOOLEAN {
 
 function BtnXToCloseMercVideoButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
       // Stop speck from talking
       //			ShutupaYoFace( giVideoSpeckFaceIndex );
@@ -1150,12 +1150,12 @@ function BtnXToCloseMercVideoButtonCallback(btn: Pointer<GUI_BUTTON>, reason: IN
 
       gusMercVideoSpeckSpeech = MERC_VIDEO_SPECK_SPEECH_NOT_TALKING;
 
-      InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
@@ -1237,7 +1237,7 @@ function HandleTalkingSpeck(): void {
 
           if (iMercPopUpBox != -1) {
             DrawButton(guiAccountBoxButton);
-            ButtonList[guiAccountBoxButton]->uiFlags |= BUTTON_FORCE_UNDIRTY;
+            ButtonList[guiAccountBoxButton].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
 
             RenderMercPopUpBoxFromIndex(iMercPopUpBox, gusSpeckDialogueX, MERC_TEXT_BOX_POS_Y, FRAME_BUFFER);
           }
@@ -1919,7 +1919,7 @@ function DrawMercVideoBackGround(): void {
 
 function DisableMercSiteButton(): void {
   if (iMercPopUpBox != -1) {
-    ButtonList[guiAccountBoxButton]->uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[guiAccountBoxButton].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
   }
 }
 

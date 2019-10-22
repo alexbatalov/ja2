@@ -5,18 +5,18 @@ function CaveAtGridNo(iMapIndex: INT32): BOOLEAN {
     return TRUE;
   pStruct = gpWorldLevelData[iMapIndex].pStructureHead;
   while (pStruct) {
-    if (pStruct->fFlags & STRUCTURE_CAVEWALL) {
+    if (pStruct.value.fFlags & STRUCTURE_CAVEWALL) {
       return TRUE;
     }
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
   // may not have structure information, so check if there is a levelnode flag.
   pLevel = gpWorldLevelData[iMapIndex].pStructHead;
   while (pLevel) {
-    if (pLevel->uiFlags & LEVELNODE_CAVE) {
+    if (pLevel.value.uiFlags & LEVELNODE_CAVE) {
       return TRUE;
     }
-    pLevel = pLevel->pNext;
+    pLevel = pLevel.value.pNext;
   }
   return FALSE;
 }
@@ -433,7 +433,7 @@ function AddCave(iMapIndex: INT32, usIndex: UINT16): void {
   // Set the cave flag
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
   Assert(pStruct);
-  pStruct->uiFlags |= LEVELNODE_CAVE;
+  pStruct.value.uiFlags |= LEVELNODE_CAVE;
 }
 
 // These walls have shadows associated with them, and are draw when the wall is drawn.
@@ -601,7 +601,7 @@ function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType: UINT1
         sIndex = PickAWallPiece(EXTERIOR_BOTTOMEND);
         AddToUndoList(iMapIndex);
         GetTileIndexFromTypeSubIndex(usWallType, sIndex, &usTileIndex);
-        ReplaceStructIndex(iMapIndex, pStruct->usIndex, usTileIndex);
+        ReplaceStructIndex(iMapIndex, pStruct.value.usIndex, usTileIndex);
       }
       ubWallClass = EXTERIOR_L;
       if (!gfBasement) {
@@ -616,7 +616,7 @@ function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType: UINT1
         sIndex = PickAWallPiece(INTERIOR_EXTENDED);
         AddToUndoList(iMapIndex + WORLD_COLS - 1);
         GetTileIndexFromTypeSubIndex(usWallType, sIndex, &usTileIndex);
-        ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct->usIndex, usTileIndex);
+        ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct.value.usIndex, usTileIndex);
       }
       break;
     case EXTERIOR_LEFT:
@@ -651,14 +651,14 @@ function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType: UINT1
         sIndex = PickAWallPiece(INTERIOR_EXTENDED);
         AddToUndoList(iMapIndex + WORLD_COLS - 1);
         GetTileIndexFromTypeSubIndex(usWallType, sIndex, &usTileIndex);
-        ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct->usIndex, usTileIndex);
+        ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct.value.usIndex, usTileIndex);
         // NOTE:  Not yet checking for interior extended bottomend!
       }
       if (pStruct = GetVerticalWall(iMapIndex)) {
         sIndex = PickAWallPiece(INTERIOR_BOTTOMEND);
         AddToUndoList(iMapIndex);
         GetTileIndexFromTypeSubIndex(usWallType, sIndex, &usTileIndex);
-        ReplaceStructIndex(iMapIndex, pStruct->usIndex, usTileIndex);
+        ReplaceStructIndex(iMapIndex, pStruct.value.usIndex, usTileIndex);
       }
       break;
     case INTERIOR_BOTTOM:
@@ -670,13 +670,13 @@ function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType: UINT1
         sIndex = PickAWallPiece(EXTERIOR_BOTTOMEND);
         AddToUndoList(iMapIndex);
         GetTileIndexFromTypeSubIndex(usWallType, sIndex, &usTileIndex);
-        ReplaceStructIndex(iMapIndex, pStruct->usIndex, usTileIndex);
+        ReplaceStructIndex(iMapIndex, pStruct.value.usIndex, usTileIndex);
       }
       if ((pStruct = GetVerticalWall(iMapIndex + WORLD_COLS - 1)) && !GetVerticalWall(iMapIndex - 1)) {
         sIndex = PickAWallPiece(EXTERIOR_EXTENDED);
         AddToUndoList(iMapIndex + WORLD_COLS - 1);
         GetTileIndexFromTypeSubIndex(usWallType, sIndex, &usTileIndex);
-        ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct->usIndex, usTileIndex);
+        ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct.value.usIndex, usTileIndex);
       }
       if (!gfBasement) {
         // All exterior_l walls have shadows.
@@ -882,36 +882,36 @@ function EraseFloorOwnedBuildingPieces(iMapIndex: UINT32): void {
   // FIRST, SEARCH AND DESTROY FOR A LEFT NEIGHBORING TILE WITH A TOP_RIGHT ORIENTED WALL
   pStruct = gpWorldLevelData[iMapIndex - 1].pStructHead;
   while (pStruct != NULL) {
-    if (pStruct->usIndex != NO_TILE) {
-      GetTileType(pStruct->usIndex, &uiTileType);
+    if (pStruct.value.usIndex != NO_TILE) {
+      GetTileType(pStruct.value.usIndex, &uiTileType);
       if (uiTileType >= FIRSTWALL && uiTileType <= LASTWALL || uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
-        GetWallOrientation(pStruct->usIndex, &usWallOrientation);
+        GetWallOrientation(pStruct.value.usIndex, &usWallOrientation);
         if (usWallOrientation == INSIDE_TOP_RIGHT || usWallOrientation == OUTSIDE_TOP_RIGHT) {
           AddToUndoList(iMapIndex - 1);
-          RemoveStruct(iMapIndex - 1, pStruct->usIndex);
+          RemoveStruct(iMapIndex - 1, pStruct.value.usIndex);
           RemoveAllShadowsOfTypeRange(iMapIndex - 1, FIRSTWALL, LASTWALL);
           break; // otherwise, it'll crash because pStruct is toast.
         }
       }
     }
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
   // FINALLY, SEARCH AND DESTROY FOR A TOP NEIGHBORING TILE WITH A TOP_LEFT ORIENTED WALL
   pStruct = gpWorldLevelData[iMapIndex - WORLD_COLS].pStructHead;
   while (pStruct != NULL) {
-    if (pStruct->usIndex != NO_TILE) {
-      GetTileType(pStruct->usIndex, &uiTileType);
+    if (pStruct.value.usIndex != NO_TILE) {
+      GetTileType(pStruct.value.usIndex, &uiTileType);
       if (uiTileType >= FIRSTWALL && uiTileType <= LASTWALL || uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
-        GetWallOrientation(pStruct->usIndex, &usWallOrientation);
+        GetWallOrientation(pStruct.value.usIndex, &usWallOrientation);
         if (usWallOrientation == INSIDE_TOP_LEFT || usWallOrientation == OUTSIDE_TOP_LEFT) {
           AddToUndoList(iMapIndex - WORLD_COLS);
-          RemoveStruct(iMapIndex - WORLD_COLS, pStruct->usIndex);
+          RemoveStruct(iMapIndex - WORLD_COLS, pStruct.value.usIndex);
           RemoveAllShadowsOfTypeRange(iMapIndex - WORLD_COLS, FIRSTWALL, LASTWALL);
           break; // otherwise, it'll crash because pStruct is toast.
         }
       }
     }
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
 }
 
@@ -932,10 +932,10 @@ function RemoveCaveSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
   let iMapIndex: UINT32;
   let usIndex: UINT16;
   let ubPerimeterValue: UINT8;
-  top = pSelectRegion->iTop;
-  left = pSelectRegion->iLeft;
-  right = pSelectRegion->iRight;
-  bottom = pSelectRegion->iBottom;
+  top = pSelectRegion.value.iTop;
+  left = pSelectRegion.value.iLeft;
+  right = pSelectRegion.value.iRight;
+  bottom = pSelectRegion.value.iBottom;
   // Pass 1:  Remove all pieces in area
   for (y = top; y <= bottom; y++)
     for (x = left; x <= right; x++) {
@@ -971,10 +971,10 @@ function AddCaveSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
   let uiMapIndex: UINT32;
   let usIndex: UINT16;
   let ubPerimeterValue: UINT8;
-  top = pSelectRegion->iTop;
-  left = pSelectRegion->iLeft;
-  right = pSelectRegion->iRight;
-  bottom = pSelectRegion->iBottom;
+  top = pSelectRegion.value.iTop;
+  left = pSelectRegion.value.iLeft;
+  right = pSelectRegion.value.iRight;
+  bottom = pSelectRegion.value.iBottom;
   // Pass 1:  Add bogus piece to each gridno in region
   for (y = top; y <= bottom; y++)
     for (x = left; x <= right; x++) {
@@ -1028,10 +1028,10 @@ function RemoveBuildingSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
   let usFloorType: UINT16;
   let fFloor: BOOLEAN;
 
-  top = pSelectRegion->iTop;
-  left = pSelectRegion->iLeft;
-  right = pSelectRegion->iRight;
-  bottom = pSelectRegion->iBottom;
+  top = pSelectRegion.value.iTop;
+  left = pSelectRegion.value.iLeft;
+  right = pSelectRegion.value.iRight;
+  bottom = pSelectRegion.value.iBottom;
 
   // 1ST PASS:  Erase all building owned by the floor tile if there is one.
   for (y = top; y <= bottom; y++)
@@ -1104,10 +1104,10 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
   let fSlantRoof: BOOLEAN = FALSE;
   let fVertical: BOOLEAN;
   let fFloor: BOOLEAN;
-  top = pSelectRegion->iTop;
-  left = pSelectRegion->iLeft;
-  right = pSelectRegion->iRight;
-  bottom = pSelectRegion->iBottom;
+  top = pSelectRegion.value.iTop;
+  left = pSelectRegion.value.iLeft;
+  right = pSelectRegion.value.iRight;
+  bottom = pSelectRegion.value.iBottom;
 
   // Special case scenario:
   // If the user selects a floor without walls, then it is implied that the user wishes to
@@ -1143,7 +1143,7 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
         // Extract the floor type.  We already checked if there was a floor here, so it is assumed.
         pFloor = gpWorldLevelData[iMapIndex].pLandHead;
         while (pFloor) {
-          GetTileType(pFloor->usIndex, &uiTileType);
+          GetTileType(pFloor.value.usIndex, &uiTileType);
           if (uiTileType >= FIRSTFLOOR && uiTileType <= LASTFLOOR) {
             usFloorType = uiTileType;
             break;
@@ -1272,17 +1272,17 @@ function AnalyseCaveMapForStructureInfo(): void {
   for (iMapIndex = 0; iMapIndex < WORLD_MAX; iMapIndex++) {
     pStruct = gpWorldLevelData[iMapIndex].pStructHead;
     while (pStruct) {
-      if (pStruct->usIndex != NO_TILE) {
-        GetTileType(pStruct->usIndex, &uiTileType);
+      if (pStruct.value.usIndex != NO_TILE) {
+        GetTileType(pStruct.value.usIndex, &uiTileType);
         if (uiTileType == FIRSTWALL) {
           let usSubIndex: UINT16;
-          GetSubIndexFromTileIndex(pStruct->usIndex, &usSubIndex);
+          GetSubIndexFromTileIndex(pStruct.value.usIndex, &usSubIndex);
           if (usSubIndex >= 60 && usSubIndex <= 65) {
-            pStruct->uiFlags |= LEVELNODE_CAVE;
+            pStruct.value.uiFlags |= LEVELNODE_CAVE;
           }
         }
       }
-      pStruct = pStruct->pNext;
+      pStruct = pStruct.value.pNext;
     }
   }
 }

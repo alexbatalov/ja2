@@ -5,7 +5,7 @@ function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // AddCharacterToDeadList( pSoldier );
 
   // If in a vehicle, remove them!
-  if ((pSoldier->bAssignment == VEHICLE) && (pSoldier->iVehicleId != -1)) {
+  if ((pSoldier.value.bAssignment == VEHICLE) && (pSoldier.value.iVehicleId != -1)) {
     // remove from vehicle
     TakeSoldierOutOfVehicle(pSoldier);
   }
@@ -13,25 +13,25 @@ function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // if not in mapscreen
   if (!(guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
     // ATE; At least make them dead!
-    if ((pSoldier->bAssignment != ASSIGNMENT_DEAD)) {
+    if ((pSoldier.value.bAssignment != ASSIGNMENT_DEAD)) {
       SetTimeOfAssignmentChangeForMerc(pSoldier);
     }
 
     ChangeSoldiersAssignment(pSoldier, ASSIGNMENT_DEAD);
-  } else if ((pSoldier->bLife == 0) && (pSoldier->bAssignment != ASSIGNMENT_DEAD)) {
+  } else if ((pSoldier.value.bLife == 0) && (pSoldier.value.bAssignment != ASSIGNMENT_DEAD)) {
     // died in mapscreen
 
     fReDrawFace = TRUE;
 
     // dead
-    if ((pSoldier->bAssignment != ASSIGNMENT_DEAD)) {
+    if ((pSoldier.value.bAssignment != ASSIGNMENT_DEAD)) {
       SetTimeOfAssignmentChangeForMerc(pSoldier);
     }
 
     ChangeSoldiersAssignment(pSoldier, ASSIGNMENT_DEAD);
 
     // s et breath and breath max to 0
-    pSoldier->bBreath = pSoldier->bBreathMax = 0;
+    pSoldier.value.bBreath = pSoldier.value.bBreathMax = 0;
 
     // rebuild list
     ReBuildCharactersList();
@@ -46,7 +46,7 @@ function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     HandleSoldierDeadComments(pSoldier);
 
     // put the dead guys down
-    AddDeadSoldierToUnLoadedSector((pSoldier->sSectorX), (pSoldier->sSectorY), pSoldier->bSectorZ, pSoldier, RandomGridNo(), ADD_DEAD_SOLDIER_TO_SWEETSPOT);
+    AddDeadSoldierToUnLoadedSector((pSoldier.value.sSectorX), (pSoldier.value.sSectorY), pSoldier.value.bSectorZ, pSoldier, RandomGridNo(), ADD_DEAD_SOLDIER_TO_SWEETSPOT);
 
     fTeamPanelDirty = TRUE;
     fMapPanelDirty = TRUE;
@@ -64,12 +64,12 @@ function HandleSoldierDeadComments(pSoldier: Pointer<SOLDIERTYPE>): void {
   let bBuddyIndex: INT8;
 
   // IF IT'S THE SELECTED GUY, MAKE ANOTHER SELECTED!
-  cnt = gTacticalStatus.Team[pSoldier->bTeam].bFirstID;
+  cnt = gTacticalStatus.Team[pSoldier.value.bTeam].bFirstID;
 
   // see if this was the friend of a living merc
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier->bTeam].bLastID; cnt++, pTeamSoldier++) {
-    if (pTeamSoldier->bLife >= OKLIFE && pTeamSoldier->bActive) {
-      bBuddyIndex = WhichBuddy(pTeamSoldier->ubProfile, pSoldier->ubProfile);
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
+    if (pTeamSoldier.value.bLife >= OKLIFE && pTeamSoldier.value.bActive) {
+      bBuddyIndex = WhichBuddy(pTeamSoldier.value.ubProfile, pSoldier.value.ubProfile);
       switch (bBuddyIndex) {
         case 0:
           // buddy #1 died!

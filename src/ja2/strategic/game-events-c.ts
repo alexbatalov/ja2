@@ -11,7 +11,7 @@ let guiTimeStampOfCurrentlyExecutingEvent: UINT32 = 0;
 function GameEventsPending(uiAdjustment: UINT32): BOOLEAN {
   if (!gpEventList)
     return FALSE;
-  if (gpEventList->uiTimeStamp <= GetWorldTotalSeconds() + uiAdjustment)
+  if (gpEventList.value.uiTimeStamp <= GetWorldTotalSeconds() + uiAdjustment)
     return TRUE;
   return FALSE;
 }
@@ -27,22 +27,22 @@ function DeleteEventsWithDeletionPending(): BOOLEAN {
   prev = NULL;
   while (curr) {
     // ValidateGameEvents();
-    if (curr->ubFlags & SEF_DELETION_PENDING) {
+    if (curr.value.ubFlags & SEF_DELETION_PENDING) {
       if (prev) {
         // deleting node in middle
-        prev->next = curr->next;
+        prev.value.next = curr.value.next;
         temp = curr;
-        curr = curr->next;
+        curr = curr.value.next;
         MemFree(temp);
         fEventDeleted = TRUE;
         // ValidateGameEvents();
         continue;
       } else {
         // deleting head
-        gpEventList = gpEventList->next;
+        gpEventList = gpEventList.value.next;
         temp = curr;
         prev = NULL;
-        curr = curr->next;
+        curr = curr.value.next;
         MemFree(temp);
         fEventDeleted = TRUE;
         // ValidateGameEvents();
@@ -50,7 +50,7 @@ function DeleteEventsWithDeletionPending(): BOOLEAN {
       }
     }
     prev = curr;
-    curr = curr->next;
+    curr = curr.value.next;
   }
   gfEventDeletionPending = FALSE;
   return fEventDeleted;
@@ -59,7 +59,7 @@ function DeleteEventsWithDeletionPending(): BOOLEAN {
 function AdjustClockToEventStamp(pEvent: Pointer<STRATEGICEVENT>, puiAdjustment: Pointer<UINT32>): void {
   let uiDiff: UINT32;
 
-  uiDiff = pEvent->uiTimeStamp - guiGameClock;
+  uiDiff = pEvent.value.uiTimeStamp - guiGameClock;
   guiGameClock += uiDiff;
   *puiAdjustment -= uiDiff;
 
@@ -87,20 +87,20 @@ function ProcessPendingGameEvents(uiAdjustment: UINT32, ubWarpCode: UINT8): void
   // While we have events inside the time range to be updated, process them...
   curr = gpEventList;
   prev = NULL; // prev only used when warping time to target time.
-  while (!gfTimeInterrupt && curr && curr->uiTimeStamp <= guiGameClock + uiAdjustment) {
+  while (!gfTimeInterrupt && curr && curr.value.uiTimeStamp <= guiGameClock + uiAdjustment) {
     fDeleteEvent = FALSE;
     // Update the time by the difference, but ONLY if the event comes after the current time.
     // In the beginning of the game, series of events are created that are placed in the list
     // BEFORE the start time.  Those events will be processed without influencing the actual time.
-    if (curr->uiTimeStamp > guiGameClock && ubWarpCode != WARPTIME_PROCESS_TARGET_TIME_FIRST) {
+    if (curr.value.uiTimeStamp > guiGameClock && ubWarpCode != WARPTIME_PROCESS_TARGET_TIME_FIRST) {
       AdjustClockToEventStamp(curr, &uiAdjustment);
     }
     // Process the event
     if (ubWarpCode != WARPTIME_PROCESS_TARGET_TIME_FIRST) {
       fDeleteEvent = ExecuteStrategicEvent(curr);
-    } else if (curr->uiTimeStamp == guiGameClock + uiAdjustment) {
+    } else if (curr.value.uiTimeStamp == guiGameClock + uiAdjustment) {
       // if we are warping to the target time to process that event first,
-      if (!curr->next || curr->next->uiTimeStamp > guiGameClock + uiAdjustment) {
+      if (!curr.value.next || curr.value.next.value.uiTimeStamp > guiGameClock + uiAdjustment) {
         // make sure that we are processing the last event for that second
         AdjustClockToEventStamp(curr, &uiAdjustment);
 
@@ -108,53 +108,53 @@ function ProcessPendingGameEvents(uiAdjustment: UINT32, ubWarpCode: UINT8): void
 
         if (curr && prev && fDeleteQueuedEvent) {
           // The only case where we are deleting a node in the middle of the list
-          prev->next = curr->next;
+          prev.value.next = curr.value.next;
         }
       } else {
         // We are at the current target warp time however, there are still other events following in this time cycle.
         // We will only target the final event in this time.  NOTE:  Events are posted using a FIFO method
         prev = curr;
-        curr = curr->next;
+        curr = curr.value.next;
         continue;
       }
     } else {
       // We are warping time to the target time.  We haven't found the event yet,
       // so continuing will keep processing the list until we find it.  NOTE:  Events are posted using a FIFO method
       prev = curr;
-      curr = curr->next;
+      curr = curr.value.next;
       continue;
     }
     if (fDeleteEvent) {
       // Determine if event node is a special event requiring reposting
-      switch (curr->ubEventType) {
+      switch (curr.value.ubEventType) {
         case RANGED_EVENT:
-          AddAdvancedStrategicEvent(ENDRANGED_EVENT, curr->ubCallbackID, curr->uiTimeStamp + curr->uiTimeOffset, curr->uiParam);
+          AddAdvancedStrategicEvent(ENDRANGED_EVENT, curr.value.ubCallbackID, curr.value.uiTimeStamp + curr.value.uiTimeOffset, curr.value.uiParam);
           break;
         case PERIODIC_EVENT:
-          pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, curr->ubCallbackID, curr->uiTimeStamp + curr->uiTimeOffset, curr->uiParam);
+          pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, curr.value.ubCallbackID, curr.value.uiTimeStamp + curr.value.uiTimeOffset, curr.value.uiParam);
           if (pEvent)
-            pEvent->uiTimeOffset = curr->uiTimeOffset;
+            pEvent.value.uiTimeOffset = curr.value.uiTimeOffset;
           break;
         case EVERYDAY_EVENT:
-          AddAdvancedStrategicEvent(EVERYDAY_EVENT, curr->ubCallbackID, curr->uiTimeStamp + NUM_SEC_IN_DAY, curr->uiParam);
+          AddAdvancedStrategicEvent(EVERYDAY_EVENT, curr.value.ubCallbackID, curr.value.uiTimeStamp + NUM_SEC_IN_DAY, curr.value.uiParam);
           break;
       }
       if (curr == gpEventList) {
-        gpEventList = gpEventList->next;
+        gpEventList = gpEventList.value.next;
         MemFree(curr);
         curr = gpEventList;
         prev = NULL;
         // ValidateGameEvents();
       } else {
         temp = curr;
-        prev->next = curr->next;
-        curr = curr->next;
+        prev.value.next = curr.value.next;
+        curr = curr.value.next;
         MemFree(temp);
         // ValidateGameEvents();
       }
     } else {
       prev = curr;
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
 
@@ -202,11 +202,11 @@ function AddAdvancedStrategicEvent(ubEventType: UINT8, ubCallbackID: UINT8, uiTi
   pNewNode = MemAlloc(sizeof(STRATEGICEVENT));
   Assert(pNewNode);
   memset(pNewNode, 0, sizeof(STRATEGICEVENT));
-  pNewNode->ubCallbackID = ubCallbackID;
-  pNewNode->uiParam = uiParam;
-  pNewNode->ubEventType = ubEventType;
-  pNewNode->uiTimeStamp = uiTimeStamp;
-  pNewNode->uiTimeOffset = 0;
+  pNewNode.value.ubCallbackID = ubCallbackID;
+  pNewNode.value.uiParam = uiParam;
+  pNewNode.value.ubEventType = ubEventType;
+  pNewNode.value.uiTimeStamp = uiTimeStamp;
+  pNewNode.value.uiTimeOffset = 0;
 
   // Search list for a place to insert
   pNode = gpEventList;
@@ -214,30 +214,30 @@ function AddAdvancedStrategicEvent(ubEventType: UINT8, ubCallbackID: UINT8, uiTi
   // If it's the first head, do this!
   if (!pNode) {
     gpEventList = pNewNode;
-    pNewNode->next = NULL;
+    pNewNode.value.next = NULL;
   } else {
     pPrevNode = NULL;
     while (pNode) {
-      if (uiTimeStamp < pNode->uiTimeStamp) {
+      if (uiTimeStamp < pNode.value.uiTimeStamp) {
         break;
       }
       pPrevNode = pNode;
-      pNode = pNode->next;
+      pNode = pNode.value.next;
     }
 
     // If we are at the end, set at the end!
     if (!pNode) {
-      pPrevNode->next = pNewNode;
-      pNewNode->next = NULL;
+      pPrevNode.value.next = pNewNode;
+      pNewNode.value.next = NULL;
     } else {
       // We have a previous node here
       // Insert IN FRONT!
       if (pPrevNode) {
-        pNewNode->next = pPrevNode->next;
-        pPrevNode->next = pNewNode;
+        pNewNode.value.next = pPrevNode.value.next;
+        pPrevNode.value.next = pNewNode;
       } else {
         // It's the head
-        pNewNode->next = gpEventList;
+        pNewNode.value.next = gpEventList;
         gpEventList = pNewNode;
       }
     }
@@ -262,7 +262,7 @@ function AddRangedStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiLeng
   let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(RANGED_EVENT, ubCallbackID, uiStartMin * 60, uiParam);
   if (pEvent) {
-    pEvent->uiTimeOffset = uiLengthMin * 60;
+    pEvent.value.uiTimeOffset = uiLengthMin * 60;
     return TRUE;
   }
   return FALSE;
@@ -280,7 +280,7 @@ function AddRangedStrategicEventUsingSeconds(ubCallbackID: UINT8, uiStartSeconds
   let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(RANGED_EVENT, ubCallbackID, uiStartSeconds, uiParam);
   if (pEvent) {
-    pEvent->uiTimeOffset = uiLengthSeconds;
+    pEvent.value.uiTimeOffset = uiLengthSeconds;
     return TRUE;
   }
   return FALSE;
@@ -312,7 +312,7 @@ function AddPeriodStrategicEvent(ubCallbackID: UINT8, uiOnceEveryXMinutes: UINT3
   let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOnceEveryXMinutes * 60, uiParam);
   if (pEvent) {
-    pEvent->uiTimeOffset = uiOnceEveryXMinutes * 60;
+    pEvent.value.uiTimeOffset = uiOnceEveryXMinutes * 60;
     return TRUE;
   }
   return FALSE;
@@ -322,7 +322,7 @@ function AddPeriodStrategicEventUsingSeconds(ubCallbackID: UINT8, uiOnceEveryXSe
   let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOnceEveryXSeconds, uiParam);
   if (pEvent) {
-    pEvent->uiTimeOffset = uiOnceEveryXSeconds;
+    pEvent.value.uiTimeOffset = uiOnceEveryXSeconds;
     return TRUE;
   }
   return FALSE;
@@ -332,7 +332,7 @@ function AddPeriodStrategicEventWithOffset(ubCallbackID: UINT8, uiOnceEveryXMinu
   let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOffsetFromCurrent * 60, uiParam);
   if (pEvent) {
-    pEvent->uiTimeOffset = uiOnceEveryXMinutes * 60;
+    pEvent.value.uiTimeOffset = uiOnceEveryXMinutes * 60;
     return TRUE;
   }
   return FALSE;
@@ -342,7 +342,7 @@ function AddPeriodStrategicEventUsingSecondsWithOffset(ubCallbackID: UINT8, uiOn
   let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOffsetFromCurrent, uiParam);
   if (pEvent) {
-    pEvent->uiTimeOffset = uiOnceEveryXSeconds;
+    pEvent.value.uiTimeOffset = uiOnceEveryXSeconds;
     return TRUE;
   }
   return FALSE;
@@ -355,29 +355,29 @@ function DeleteAllStrategicEventsOfType(ubCallbackID: UINT8): void {
   prev = NULL;
   curr = gpEventList;
   while (curr) {
-    if (curr->ubCallbackID == ubCallbackID && !(curr->ubFlags & SEF_DELETION_PENDING)) {
+    if (curr.value.ubCallbackID == ubCallbackID && !(curr.value.ubFlags & SEF_DELETION_PENDING)) {
       if (gfPreventDeletionOfAnyEvent) {
-        curr->ubFlags |= SEF_DELETION_PENDING;
+        curr.value.ubFlags |= SEF_DELETION_PENDING;
         gfEventDeletionPending = TRUE;
         prev = curr;
-        curr = curr->next;
+        curr = curr.value.next;
         continue;
       }
       // Detach the node
       if (prev)
-        prev->next = curr->next;
+        prev.value.next = curr.value.next;
       else
-        gpEventList = curr->next;
+        gpEventList = curr.value.next;
 
       // isolate and remove curr
       temp = curr;
-      curr = curr->next;
+      curr = curr.value.next;
       MemFree(temp);
       // ValidateGameEvents();
     } else {
       // Advance all the nodes
       prev = curr;
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
 }
@@ -386,7 +386,7 @@ function DeleteAllStrategicEvents(): void {
   let temp: Pointer<STRATEGICEVENT>;
   while (gpEventList) {
     temp = gpEventList;
-    gpEventList = gpEventList->next;
+    gpEventList = gpEventList.value.next;
     MemFree(temp);
     // ValidateGameEvents();
     temp = NULL;
@@ -404,17 +404,17 @@ function DeleteStrategicEvent(ubCallbackID: UINT8, uiParam: UINT32): BOOLEAN {
   prev = NULL;
   while (curr) {
     // deleting middle
-    if (curr->ubCallbackID == ubCallbackID && curr->uiParam == uiParam) {
-      if (!(curr->ubFlags & SEF_DELETION_PENDING)) {
+    if (curr.value.ubCallbackID == ubCallbackID && curr.value.uiParam == uiParam) {
+      if (!(curr.value.ubFlags & SEF_DELETION_PENDING)) {
         if (gfPreventDeletionOfAnyEvent) {
-          curr->ubFlags |= SEF_DELETION_PENDING;
+          curr.value.ubFlags |= SEF_DELETION_PENDING;
           gfEventDeletionPending = TRUE;
           return FALSE;
         }
         if (prev) {
-          prev->next = curr->next;
+          prev.value.next = curr.value.next;
         } else {
-          gpEventList = gpEventList->next;
+          gpEventList = gpEventList.value.next;
         }
         MemFree(curr);
         // ValidateGameEvents();
@@ -422,7 +422,7 @@ function DeleteStrategicEvent(ubCallbackID: UINT8, uiParam: UINT32): BOOLEAN {
       }
     }
     prev = curr;
-    curr = curr->next;
+    curr = curr.value.next;
   }
   return FALSE;
 }
@@ -437,7 +437,7 @@ function SaveStrategicEventsToSavedGame(hFile: HWFILE): BOOLEAN {
 
   // Go through the list and determine the number of events
   while (pTempEvent) {
-    pTempEvent = pTempEvent->next;
+    pTempEvent = pTempEvent.value.next;
     uiNumGameEvents++;
   }
 
@@ -459,7 +459,7 @@ function SaveStrategicEventsToSavedGame(hFile: HWFILE): BOOLEAN {
       return FALSE;
     }
 
-    pTempEvent = pTempEvent->next;
+    pTempEvent = pTempEvent.value.next;
   }
 
   return TRUE;
@@ -511,32 +511,32 @@ function LoadStrategicEventsFromSavedGame(hFile: HWFILE): BOOLEAN {
       pTemp = gpEventList;
     } else {
       // add the new node to the next field of the current node
-      pTemp->next = pTempEvent;
+      pTemp.value.next = pTempEvent;
 
       // advance the current node to the next node
-      pTemp = pTemp->next;
+      pTemp = pTemp.value.next;
     }
 
     // NULL out the next field ( cause there is no next field yet )
-    pTempEvent->next = NULL;
+    pTempEvent.value.next = NULL;
   }
 
   return TRUE;
 }
 
 function LockStrategicEventFromDeletion(pEvent: Pointer<STRATEGICEVENT>): void {
-  pEvent->ubFlags |= SEF_PREVENT_DELETION;
+  pEvent.value.ubFlags |= SEF_PREVENT_DELETION;
 }
 
 function UnlockStrategicEventFromDeletion(pEvent: Pointer<STRATEGICEVENT>): void {
-  pEvent->ubFlags &= ~SEF_PREVENT_DELETION;
+  pEvent.value.ubFlags &= ~SEF_PREVENT_DELETION;
 }
 
 function ValidateGameEvents(): void {
   let curr: Pointer<STRATEGICEVENT>;
   curr = gpEventList;
   while (curr) {
-    curr = curr->next;
+    curr = curr.value.next;
     if (curr == 0xdddddddd) {
       return;
     }

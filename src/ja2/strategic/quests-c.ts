@@ -37,7 +37,7 @@ function CheckNPCWounded(ubProfileID: UINT8, fByPlayerOnly: BOOLEAN): BOOLEAN {
 
   // is the NPC is wounded at all?
   pSoldier = FindSoldierByProfileID(ubProfileID, FALSE);
-  if (pSoldier && pSoldier->bLife < pSoldier->bLifeMax) {
+  if (pSoldier && pSoldier.value.bLife < pSoldier.value.bLifeMax) {
     if (fByPlayerOnly) {
       if (gMercProfiles[ubProfileID].ubMiscFlags & PROFILE_MISC_FLAG_WOUNDEDBYPLAYER) {
         return TRUE;
@@ -57,7 +57,7 @@ function CheckNPCInOkayHealth(ubProfileID: UINT8): BOOLEAN {
 
   // is the NPC at better than half health?
   pSoldier = FindSoldierByProfileID(ubProfileID, FALSE);
-  if (pSoldier && pSoldier->bLife > (pSoldier->bLifeMax / 2) && pSoldier->bLife > 30) {
+  if (pSoldier && pSoldier.value.bLife > (pSoldier.value.bLifeMax / 2) && pSoldier.value.bLife > 30) {
     return TRUE;
   } else {
     return FALSE;
@@ -69,7 +69,7 @@ function CheckNPCBleeding(ubProfileID: UINT8): BOOLEAN {
 
   // the NPC is wounded...
   pSoldier = FindSoldierByProfileID(ubProfileID, FALSE);
-  if (pSoldier && pSoldier->bLife > 0 && pSoldier->bBleeding > 0) {
+  if (pSoldier && pSoldier.value.bLife > 0 && pSoldier.value.bBleeding > 0) {
     return TRUE;
   } else {
     return FALSE;
@@ -85,7 +85,7 @@ function CheckNPCWithin(ubFirstNPC: UINT8, ubSecondNPC: UINT8, ubMaxDistance: UI
   if (!pFirstNPC || !pSecondNPC) {
     return FALSE;
   }
-  return PythSpacesAway(pFirstNPC->sGridNo, pSecondNPC->sGridNo) <= ubMaxDistance;
+  return PythSpacesAway(pFirstNPC.value.sGridNo, pSecondNPC.value.sGridNo) <= ubMaxDistance;
 }
 
 function CheckGuyVisible(ubNPC: UINT8, ubGuy: UINT8): BOOLEAN {
@@ -98,7 +98,7 @@ function CheckGuyVisible(ubNPC: UINT8, ubGuy: UINT8): BOOLEAN {
   if (!pNPC || !pGuy) {
     return FALSE;
   }
-  if (pNPC->bOppList[pGuy->ubID] == SEEN_CURRENTLY) {
+  if (pNPC.value.bOppList[pGuy.value.ubID] == SEEN_CURRENTLY) {
     return TRUE;
   } else {
     return FALSE;
@@ -112,7 +112,7 @@ function CheckNPCAt(ubNPC: UINT8, sGridNo: INT16): BOOLEAN {
   if (!pNPC) {
     return FALSE;
   }
-  return pNPC->sGridNo == sGridNo;
+  return pNPC.value.sGridNo == sGridNo;
 }
 
 function CheckNPCIsEnemy(ubProfileID: UINT8): BOOLEAN {
@@ -122,10 +122,10 @@ function CheckNPCIsEnemy(ubProfileID: UINT8): BOOLEAN {
   if (!pNPC) {
     return FALSE;
   }
-  if (pNPC->bSide == gbPlayerNum || pNPC->bNeutral) {
-    if (pNPC->ubCivilianGroup != NON_CIV_GROUP) {
+  if (pNPC.value.bSide == gbPlayerNum || pNPC.value.bNeutral) {
+    if (pNPC.value.ubCivilianGroup != NON_CIV_GROUP) {
       // although the soldier is NOW the same side, this civ group could be set to "will become hostile"
-      return gTacticalStatus.fCivGroupHostile[pNPC->ubCivilianGroup] >= CIV_GROUP_WILL_BECOME_HOSTILE;
+      return gTacticalStatus.fCivGroupHostile[pNPC.value.ubCivilianGroup] >= CIV_GROUP_WILL_BECOME_HOSTILE;
     } else {
       return FALSE;
     }
@@ -147,10 +147,10 @@ function CheckIfMercIsNearNPC(pMerc: Pointer<SOLDIERTYPE>, ubProfileId: UINT8): 
   if (pNPC == NULL) {
     return FALSE;
   }
-  sGridNo = pNPC->sGridNo;
+  sGridNo = pNPC.value.sGridNo;
 
   // is the merc and NPC close enough?
-  if (PythSpacesAway(sGridNo, pMerc->sGridNo) <= 9) {
+  if (PythSpacesAway(sGridNo, pMerc.value.sGridNo) <= 9) {
     return TRUE;
   }
 
@@ -168,13 +168,13 @@ function NumWoundedMercsNearby(ubProfileID: UINT8): INT8 {
   if (!pNPC) {
     return FALSE;
   }
-  sGridNo = pNPC->sGridNo;
+  sGridNo = pNPC.value.sGridNo;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
 
-    if (pSoldier && pSoldier->bTeam == gbPlayerNum && pSoldier->bLife > 0 && pSoldier->bLife < pSoldier->bLifeMax && pSoldier->bAssignment != ASSIGNMENT_HOSPITAL) {
-      if (PythSpacesAway(sGridNo, pSoldier->sGridNo) <= HOSPITAL_PATIENT_DISTANCE) {
+    if (pSoldier && pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bLife > 0 && pSoldier.value.bLife < pSoldier.value.bLifeMax && pSoldier.value.bAssignment != ASSIGNMENT_HOSPITAL) {
+      if (PythSpacesAway(sGridNo, pSoldier.value.sGridNo) <= HOSPITAL_PATIENT_DISTANCE) {
         bNumber++;
       }
     }
@@ -194,13 +194,13 @@ function NumMercsNear(ubProfileID: UINT8, ubMaxDist: UINT8): INT8 {
   if (!pNPC) {
     return FALSE;
   }
-  sGridNo = pNPC->sGridNo;
+  sGridNo = pNPC.value.sGridNo;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
 
-    if (pSoldier && pSoldier->bTeam == gbPlayerNum && pSoldier->bLife >= OKLIFE) {
-      if (PythSpacesAway(sGridNo, pSoldier->sGridNo) <= ubMaxDist) {
+    if (pSoldier && pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bLife >= OKLIFE) {
+      if (PythSpacesAway(sGridNo, pSoldier.value.sGridNo) <= ubMaxDist) {
         bNumber++;
       }
     }
@@ -220,14 +220,14 @@ function CheckNPCIsEPC(ubProfileID: UINT8): BOOLEAN {
   if (!pNPC) {
     return FALSE;
   }
-  return pNPC->ubWhatKindOfMercAmI == MERC_TYPE__EPC;
+  return pNPC.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC;
 }
 
 function NPCInRoom(ubProfileID: UINT8, ubRoomID: UINT8): BOOLEAN {
   let pNPC: Pointer<SOLDIERTYPE>;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
-  if (!pNPC || (gubWorldRoomInfo[pNPC->sGridNo] != ubRoomID)) {
+  if (!pNPC || (gubWorldRoomInfo[pNPC.value.sGridNo] != ubRoomID)) {
     return FALSE;
   }
   return TRUE;
@@ -237,7 +237,7 @@ function NPCInRoomRange(ubProfileID: UINT8, ubRoomID1: UINT8, ubRoomID2: UINT8):
   let pNPC: Pointer<SOLDIERTYPE>;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
-  if (!pNPC || (gubWorldRoomInfo[pNPC->sGridNo] < ubRoomID1) || (gubWorldRoomInfo[pNPC->sGridNo] > ubRoomID2)) {
+  if (!pNPC || (gubWorldRoomInfo[pNPC.value.sGridNo] < ubRoomID1) || (gubWorldRoomInfo[pNPC.value.sGridNo] > ubRoomID2)) {
     return FALSE;
   }
   return TRUE;
@@ -253,12 +253,12 @@ function PCInSameRoom(ubProfileID: UINT8): BOOLEAN {
   if (!pNPC) {
     return FALSE;
   }
-  ubRoom = gubWorldRoomInfo[pNPC->sGridNo];
+  ubRoom = gubWorldRoomInfo[pNPC.value.sGridNo];
 
   for (bLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID; bLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; bLoop++) {
     pSoldier = MercPtrs[bLoop];
-    if (pSoldier && pSoldier->bActive && pSoldier->bInSector) {
-      if (gubWorldRoomInfo[pSoldier->sGridNo] == ubRoom) {
+    if (pSoldier && pSoldier.value.bActive && pSoldier.value.bInSector) {
+      if (gubWorldRoomInfo[pSoldier.value.sGridNo] == ubRoom) {
         return TRUE;
       }
     }
@@ -268,31 +268,31 @@ function PCInSameRoom(ubProfileID: UINT8): BOOLEAN {
 }
 
 function CheckTalkerStrong(): BOOLEAN {
-  if (gpSrcSoldier && gpSrcSoldier->bTeam == gbPlayerNum) {
-    return gpSrcSoldier->bStrength >= 84;
-  } else if (gpDestSoldier && gpDestSoldier->bTeam == gbPlayerNum) {
-    return gpDestSoldier->bStrength >= 84;
+  if (gpSrcSoldier && gpSrcSoldier.value.bTeam == gbPlayerNum) {
+    return gpSrcSoldier.value.bStrength >= 84;
+  } else if (gpDestSoldier && gpDestSoldier.value.bTeam == gbPlayerNum) {
+    return gpDestSoldier.value.bStrength >= 84;
   }
   return FALSE;
 }
 
 function CheckTalkerFemale(): BOOLEAN {
-  if (gpSrcSoldier && gpSrcSoldier->bTeam == gbPlayerNum && gpSrcSoldier->ubProfile != NO_PROFILE) {
-    return gMercProfiles[gpSrcSoldier->ubProfile].bSex == FEMALE;
-  } else if (gpDestSoldier && gpDestSoldier->bTeam == gbPlayerNum && gpDestSoldier->ubProfile != NO_PROFILE) {
-    return gMercProfiles[gpDestSoldier->ubProfile].bSex == FEMALE;
+  if (gpSrcSoldier && gpSrcSoldier.value.bTeam == gbPlayerNum && gpSrcSoldier.value.ubProfile != NO_PROFILE) {
+    return gMercProfiles[gpSrcSoldier.value.ubProfile].bSex == FEMALE;
+  } else if (gpDestSoldier && gpDestSoldier.value.bTeam == gbPlayerNum && gpDestSoldier.value.ubProfile != NO_PROFILE) {
+    return gMercProfiles[gpDestSoldier.value.ubProfile].bSex == FEMALE;
   }
   return FALSE;
 }
 
 function CheckTalkerUnpropositionedFemale(): BOOLEAN {
-  if (gpSrcSoldier && gpSrcSoldier->bTeam == gbPlayerNum && gpSrcSoldier->ubProfile != NO_PROFILE) {
-    if (!(gMercProfiles[gpSrcSoldier->ubProfile].ubMiscFlags2 & PROFILE_MISC_FLAG2_ASKED_BY_HICKS)) {
-      return gMercProfiles[gpSrcSoldier->ubProfile].bSex == FEMALE;
+  if (gpSrcSoldier && gpSrcSoldier.value.bTeam == gbPlayerNum && gpSrcSoldier.value.ubProfile != NO_PROFILE) {
+    if (!(gMercProfiles[gpSrcSoldier.value.ubProfile].ubMiscFlags2 & PROFILE_MISC_FLAG2_ASKED_BY_HICKS)) {
+      return gMercProfiles[gpSrcSoldier.value.ubProfile].bSex == FEMALE;
     }
-  } else if (gpDestSoldier && gpDestSoldier->bTeam == gbPlayerNum && gpDestSoldier->ubProfile != NO_PROFILE) {
-    if (!(gMercProfiles[gpDestSoldier->ubProfile].ubMiscFlags2 & PROFILE_MISC_FLAG2_ASKED_BY_HICKS)) {
-      return gMercProfiles[gpDestSoldier->ubProfile].bSex == FEMALE;
+  } else if (gpDestSoldier && gpDestSoldier.value.bTeam == gbPlayerNum && gpDestSoldier.value.ubProfile != NO_PROFILE) {
+    if (!(gMercProfiles[gpDestSoldier.value.ubProfile].ubMiscFlags2 & PROFILE_MISC_FLAG2_ASKED_BY_HICKS)) {
+      return gMercProfiles[gpDestSoldier.value.ubProfile].bSex == FEMALE;
     }
   }
   return FALSE;
@@ -309,14 +309,14 @@ function NumMalesPresent(ubProfileID: UINT8): INT8 {
   if (!pNPC) {
     return FALSE;
   }
-  sGridNo = pNPC->sGridNo;
+  sGridNo = pNPC.value.sGridNo;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
 
-    if (pSoldier && pSoldier->bTeam == gbPlayerNum && pSoldier->bLife >= OKLIFE) {
-      if (pSoldier->ubProfile != NO_PROFILE && gMercProfiles[pSoldier->ubProfile].bSex == MALE) {
-        if (PythSpacesAway(sGridNo, pSoldier->sGridNo) <= 8) {
+    if (pSoldier && pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bLife >= OKLIFE) {
+      if (pSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.value.ubProfile].bSex == MALE) {
+        if (PythSpacesAway(sGridNo, pSoldier.value.sGridNo) <= 8) {
           bNumber++;
         }
       }
@@ -336,14 +336,14 @@ function FemalePresent(ubProfileID: UINT8): BOOLEAN {
   if (!pNPC) {
     return FALSE;
   }
-  sGridNo = pNPC->sGridNo;
+  sGridNo = pNPC.value.sGridNo;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
 
-    if (pSoldier && pSoldier->bTeam == gbPlayerNum && pSoldier->bLife >= OKLIFE) {
-      if (pSoldier->ubProfile != NO_PROFILE && gMercProfiles[pSoldier->ubProfile].bSex == FEMALE) {
-        if (PythSpacesAway(sGridNo, pSoldier->sGridNo) <= 10) {
+    if (pSoldier && pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bLife >= OKLIFE) {
+      if (pSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.value.ubProfile].bSex == FEMALE) {
+        if (PythSpacesAway(sGridNo, pSoldier.value.sGridNo) <= 10) {
           return TRUE;
         }
       }
@@ -360,7 +360,7 @@ function CheckPlayerHasHead(): BOOLEAN {
   for (bLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID; bLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; bLoop++) {
     pSoldier = MercPtrs[bLoop];
 
-    if (pSoldier->bActive && pSoldier->bLife > 0) {
+    if (pSoldier.value.bActive && pSoldier.value.bLife > 0) {
       if (FindObjInObjRange(pSoldier, HEAD_2, HEAD_7) != NO_SLOT) {
         return TRUE;
       }
@@ -376,7 +376,7 @@ function CheckNPCSector(ubProfileID: UINT8, sSectorX: INT16, sSectorY: INT16, bS
   pSoldier = FindSoldierByProfileID(ubProfileID, TRUE);
 
   if (pSoldier) {
-    if (pSoldier->sSectorX == sSectorX && pSoldier->sSectorY == sSectorY && pSoldier->bSectorZ == bSectorZ) {
+    if (pSoldier.value.sSectorX == sSectorX && pSoldier.value.sSectorY == sSectorY && pSoldier.value.bSectorZ == bSectorZ) {
       return TRUE;
     }
   } else if (gMercProfiles[ubProfileID].sSectorX == sSectorX && gMercProfiles[ubProfileID].sSectorY == sSectorY && gMercProfiles[ubProfileID].bSectorZ == bSectorZ) {
@@ -393,8 +393,8 @@ function AIMMercWithin(sGridNo: INT16, sDistance: INT16): BOOLEAN {
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
 
-    if (pSoldier && (pSoldier->bTeam == gbPlayerNum) && (pSoldier->bLife >= OKLIFE) && (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC)) {
-      if (PythSpacesAway(sGridNo, pSoldier->sGridNo) <= sDistance) {
+    if (pSoldier && (pSoldier.value.bTeam == gbPlayerNum) && (pSoldier.value.bLife >= OKLIFE) && (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC)) {
+      if (PythSpacesAway(sGridNo, pSoldier.value.sGridNo) <= sDistance) {
         return TRUE;
       }
     }
@@ -410,7 +410,7 @@ function CheckNPCCowering(ubProfileID: UINT8): BOOLEAN {
   if (!pNPC) {
     return FALSE;
   }
-  return (pNPC->uiStatusFlags & SOLDIER_COWERING) != 0;
+  return (pNPC.value.uiStatusFlags & SOLDIER_COWERING) != 0;
 }
 
 function CountBartenders(): UINT8 {
@@ -432,7 +432,7 @@ function CheckNPCIsUnderFire(ubProfileID: UINT8): BOOLEAN {
   if (!pNPC) {
     return FALSE;
   }
-  return pNPC->bUnderFire != 0;
+  return pNPC.value.bUnderFire != 0;
 }
 
 function NPCHeardShot(ubProfileID: UINT8): BOOLEAN {
@@ -442,7 +442,7 @@ function NPCHeardShot(ubProfileID: UINT8): BOOLEAN {
   if (!pNPC) {
     return FALSE;
   }
-  return pNPC->ubMiscSoldierFlags & SOLDIER_MISC_HEARD_GUNSHOT;
+  return pNPC.value.ubMiscSoldierFlags & SOLDIER_MISC_HEARD_GUNSHOT;
 }
 
 function InTownSectorWithTrainingLoyalty(sSectorX: INT16, sSectorY: INT16): BOOLEAN {
@@ -646,7 +646,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       gubFact[usFact] = ((gMercProfiles[SLAY].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) && (gMercProfiles[SLAY].usTotalDaysServed > 1));
       break;
     case FACT_SHANK_IN_SQUAD_BUT_NOT_SPEAKING:
-      gubFact[usFact] = ((FindSoldierByProfileID(SHANK, TRUE) != NULL) && (gMercProfiles[SHANK].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) && (gpSrcSoldier == NULL || gpSrcSoldier->ubProfile != SHANK));
+      gubFact[usFact] = ((FindSoldierByProfileID(SHANK, TRUE) != NULL) && (gMercProfiles[SHANK].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) && (gpSrcSoldier == NULL || gpSrcSoldier.value.ubProfile != SHANK));
       break;
     case FACT_SHANK_NOT_IN_SECTOR:
       gubFact[usFact] = (FindSoldierByProfileID(SHANK, FALSE) == NULL);
@@ -679,7 +679,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       gubFact[usFact] = (gMercProfiles[DYNAMO].bMercStatus != MERC_IS_DEAD);
       break;
     case FACT_DYNAMO_SPEAKING_OR_NEARBY:
-      gubFact[usFact] = (gpSrcSoldier != NULL && (gpSrcSoldier->ubProfile == DYNAMO || (CheckNPCWithin(gpSrcSoldier->ubProfile, DYNAMO, 10) && CheckGuyVisible(gpSrcSoldier->ubProfile, DYNAMO))));
+      gubFact[usFact] = (gpSrcSoldier != NULL && (gpSrcSoldier.value.ubProfile == DYNAMO || (CheckNPCWithin(gpSrcSoldier.value.ubProfile, DYNAMO, 10) && CheckGuyVisible(gpSrcSoldier.value.ubProfile, DYNAMO))));
       break;
     case FACT_JOHN_EPC:
       gubFact[usFact] = CheckNPCIsEPC(JOHN);
@@ -718,7 +718,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       let pUnderGroundSector: Pointer<UNDERGROUND_SECTORINFO>;
 
       pUnderGroundSector = FindUnderGroundSector(4, MAP_ROW_K, 1);
-      gubFact[usFact] = pUnderGroundSector->fVisited;
+      gubFact[usFact] = pUnderGroundSector.value.fVisited;
     } break;
     case FACT_WARDEN_DEAD:
       gubFact[usFact] = (gMercProfiles[WARDEN].bMercStatus == MERC_IS_DEAD);
@@ -765,7 +765,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       break;
 
     case FACT_SPEAKER_AIM_OR_AIM_NEARBY:
-      gubFact[usFact] = gpDestSoldier && AIMMercWithin(gpDestSoldier->sGridNo, 10);
+      gubFact[usFact] = gpDestSoldier && AIMMercWithin(gpDestSoldier.value.sGridNo, 10);
       break;
 
     case FACT_MALE_SPEAKING_FEMALE_PRESENT:
@@ -858,7 +858,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       break;
 
     case FACT_PC_HAS_CONRADS_RECRUIT_OPINION:
-      gubFact[usFact] = (gpDestSoldier && (CalcDesireToTalk(gpDestSoldier->ubProfile, gubSrcSoldierProfile, APPROACH_RECRUIT) >= 50));
+      gubFact[usFact] = (gpDestSoldier && (CalcDesireToTalk(gpDestSoldier.value.ubProfile, gubSrcSoldierProfile, APPROACH_RECRUIT) >= 50));
       break;
 
     case FACT_NPC_HOSTILE_OR_PISSED_OFF:
@@ -870,7 +870,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       break;
 
     case FACT_SHANK_SPEAKING:
-      gubFact[usFact] = (gpSrcSoldier && gpSrcSoldier->ubProfile == SHANK);
+      gubFact[usFact] = (gpSrcSoldier && gpSrcSoldier.value.ubProfile == SHANK);
       break;
 
     case FACT_ROCKET_RIFLE_EXISTS:
@@ -987,7 +987,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       break;
 
     case FACT_DYNAMO_NOT_SPEAKER:
-      gubFact[usFact] = !(gpSrcSoldier != NULL && (gpSrcSoldier->ubProfile == DYNAMO));
+      gubFact[usFact] = !(gpSrcSoldier != NULL && (gpSrcSoldier.value.ubProfile == DYNAMO));
       break;
 
     case FACT_PABLO_BRIBED:

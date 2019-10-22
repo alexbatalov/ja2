@@ -206,7 +206,7 @@ function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderS
   }
 
   // Allocate enough memory for the library header
-  pLibHeader->pFileHeader = MemAlloc(sizeof(FileHeaderStruct) * usNumEntries);
+  pLibHeader.value.pFileHeader = MemAlloc(sizeof(FileHeaderStruct) * usNumEntries);
 
   // place the file pointer at the begining of the file headers ( they are at the end of the file )
   SetFilePointer(hFile, -(LibFileHeader.iEntries * sizeof(DIRENTRY)), NULL, FILE_END);
@@ -221,27 +221,27 @@ function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderS
     if (DirEntry.ubState == FILE_OK) {
       // Check to see if the file is not longer then it should be
       if ((strlen(DirEntry.sFileName) + 1) >= FILENAME_SIZE)
-        FastDebugMsg(String("\n*******InitializeLibrary():  Warning!:  '%s' from the library '%s' has name whose size (%d) is bigger then it should be (%s)", DirEntry.sFileName, pLibHeader->sLibraryPath, (strlen(DirEntry.sFileName) + 1), FILENAME_SIZE));
+        FastDebugMsg(String("\n*******InitializeLibrary():  Warning!:  '%s' from the library '%s' has name whose size (%d) is bigger then it should be (%s)", DirEntry.sFileName, pLibHeader.value.sLibraryPath, (strlen(DirEntry.sFileName) + 1), FILENAME_SIZE));
 
       // allocate memory for the files name
-      pLibHeader->pFileHeader[uiCount].pFileName = MemAlloc(strlen(DirEntry.sFileName) + 1);
+      pLibHeader.value.pFileHeader[uiCount].pFileName = MemAlloc(strlen(DirEntry.sFileName) + 1);
 
       // if we couldnt allocate memory
-      if (!pLibHeader->pFileHeader[uiCount].pFileName) {
+      if (!pLibHeader.value.pFileHeader[uiCount].pFileName) {
         // report an error
         return FALSE;
       }
 
       // copy the file name, offset and length into the header
-      strcpy(pLibHeader->pFileHeader[uiCount].pFileName, DirEntry.sFileName);
-      pLibHeader->pFileHeader[uiCount].uiFileOffset = DirEntry.uiOffset;
-      pLibHeader->pFileHeader[uiCount].uiFileLength = DirEntry.uiLength;
+      strcpy(pLibHeader.value.pFileHeader[uiCount].pFileName, DirEntry.sFileName);
+      pLibHeader.value.pFileHeader[uiCount].uiFileOffset = DirEntry.uiOffset;
+      pLibHeader.value.pFileHeader[uiCount].uiFileLength = DirEntry.uiLength;
 
       uiCount++;
     }
   }
 
-  pLibHeader->usNumberOfEntries = usNumEntries;
+  pLibHeader.value.usNumberOfEntries = usNumEntries;
 
   // allocate memory for the library path
   //	if( strlen( LibFileHeader.sPathToLibrary ) == 0 )
@@ -252,28 +252,28 @@ function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderS
 
   // if the library has a path
   if (strlen(LibFileHeader.sPathToLibrary) != 0) {
-    pLibHeader->sLibraryPath = MemAlloc(strlen(LibFileHeader.sPathToLibrary) + 1);
-    strcpy(pLibHeader->sLibraryPath, LibFileHeader.sPathToLibrary);
+    pLibHeader.value.sLibraryPath = MemAlloc(strlen(LibFileHeader.sPathToLibrary) + 1);
+    strcpy(pLibHeader.value.sLibraryPath, LibFileHeader.sPathToLibrary);
   } else {
     // else the library name does not contain a path ( most likely either an error or it is the default path )
-    pLibHeader->sLibraryPath = MemAlloc(1);
-    pLibHeader->sLibraryPath[0] = '\0';
+    pLibHeader.value.sLibraryPath = MemAlloc(1);
+    pLibHeader.value.sLibraryPath[0] = '\0';
   }
 
   // allocate space for the open files array
-  pLibHeader->pOpenFiles = MemAlloc(INITIAL_NUM_HANDLES * sizeof(FileOpenStruct));
-  if (!pLibHeader->pOpenFiles) {
+  pLibHeader.value.pOpenFiles = MemAlloc(INITIAL_NUM_HANDLES * sizeof(FileOpenStruct));
+  if (!pLibHeader.value.pOpenFiles) {
     // report an error
     return FALSE;
   }
 
-  memset(pLibHeader->pOpenFiles, 0, INITIAL_NUM_HANDLES * sizeof(FileOpenStruct));
+  memset(pLibHeader.value.pOpenFiles, 0, INITIAL_NUM_HANDLES * sizeof(FileOpenStruct));
 
-  pLibHeader->hLibraryHandle = hFile;
-  pLibHeader->usNumberOfEntries = usNumEntries;
-  pLibHeader->fLibraryOpen = TRUE;
-  pLibHeader->iNumFilesOpen = 0;
-  pLibHeader->iSizeOfOpenFileArray = INITIAL_NUM_HANDLES;
+  pLibHeader.value.hLibraryHandle = hFile;
+  pLibHeader.value.usNumberOfEntries = usNumEntries;
+  pLibHeader.value.fLibraryOpen = TRUE;
+  pLibHeader.value.iNumFilesOpen = 0;
+  pLibHeader.value.iSizeOfOpenFileArray = INITIAL_NUM_HANDLES;
 
   return TRUE;
 }
@@ -286,8 +286,8 @@ function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData: PTR, u
   let uiCurPos: UINT32;
 
   // get the offset into the library, the length and current position of the file pointer.
-  uiOffsetInLibrary = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader->uiFileOffset;
-  uiLength = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader->uiFileLength;
+  uiOffsetInLibrary = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.value.uiFileOffset;
+  uiLength = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.value.uiFileLength;
   hLibraryFile = gFileDataBase.pLibraries[sLibraryID].hLibraryHandle;
   uiCurPos = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiFilePosInFile;
 
@@ -430,7 +430,7 @@ function CompareFileNames(arg1: Pointer<CHAR8>[] /* [] */, arg2: Pointer<Pointer
 
   sprintf(sSearchKey, "%s", arg1);
 
-  sprintf(sFileNameWithPath, "%s%s", gFileDataBase.pLibraries[gsCurrentLibrary].sLibraryPath, TempFileHeader->pFileName);
+  sprintf(sFileNameWithPath, "%s%s", gFileDataBase.pLibraries[gsCurrentLibrary].sLibraryPath, TempFileHeader.value.pFileName);
 
   /* Compare all of both strings: */
   return _stricmp(sSearchKey, sFileNameWithPath);
@@ -540,7 +540,7 @@ function OpenFileFromLibrary(pName: STR): HWFILE {
       gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiActualPositionInLibrary = SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, 0, NULL, FILE_CURRENT);
 
       // Set the file position in the library to the begining of the 'file' in the library
-      uiNewFilePosition = SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader->uiFileOffset, NULL, FILE_BEGIN);
+      uiNewFilePosition = SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.value.uiFileOffset, NULL, FILE_BEGIN);
 
       uiNewFilePosition = GetFileSize(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, NULL);
     } else {
@@ -667,7 +667,7 @@ function LibraryFileSeek(sLibraryID: INT16, uiFileNum: UINT32, uiDistance: UINT3
     return FALSE;
 
   uiCurPos = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiFilePosInFile;
-  uiSize = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader->uiFileLength;
+  uiSize = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.value.uiFileLength;
 
   if (uiHowToSeek == FILE_SEEK_FROM_START)
     uiCurPos = uiDistance;
@@ -796,7 +796,7 @@ function CheckIfFileIsAlreadyOpen(pFileName: STR, sLibraryID: INT16): BOOLEAN {
     // check if the file is open
     if (gFileDataBase.pLibraries[sLibraryID].pOpenFiles[usLoop1].uiFileID != 0) {
       // Check if the file already exists
-      if (_stricmp(sTempName, gFileDataBase.pLibraries[sLibraryID].pOpenFiles[usLoop1].pFileHeader->pFileName) == 0)
+      if (_stricmp(sTempName, gFileDataBase.pLibraries[sLibraryID].pOpenFiles[usLoop1].pFileHeader.value.pFileName) == 0)
         return TRUE;
     }
   }
@@ -851,7 +851,7 @@ function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWriteTime
   }
 
   /* try to find the filename using a binary search algorithm: */
-  ppDirEntry = bsearch(gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader->pFileName, pAllEntries, LibFileHeader.iEntries, sizeof(DIRENTRY), CompareDirEntryFileNames);
+  ppDirEntry = bsearch(gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.value.pFileName, pAllEntries, LibFileHeader.iEntries, sizeof(DIRENTRY), CompareDirEntryFileNames);
 
   if (ppDirEntry)
     pDirEntry = ppDirEntry;
@@ -859,7 +859,7 @@ function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWriteTime
     return FALSE;
 
   // Copy the dir entry time over to the passed in time
-  memcpy(pLastWriteTime, &pDirEntry->sFileTime, sizeof(SGP_FILETIME));
+  memcpy(pLastWriteTime, &pDirEntry.value.sFileTime, sizeof(SGP_FILETIME));
 
   MemFree(pAllEntries);
   pAllEntries = NULL;
@@ -882,7 +882,7 @@ function CompareDirEntryFileNames(arg1: Pointer<CHAR8>[] /* [] */, arg2: Pointer
 
   sprintf(sSearchKey, "%s", arg1);
 
-  sprintf(sFileNameWithPath, "%s", TempDirEntry->sFileName);
+  sprintf(sFileNameWithPath, "%s", TempDirEntry.value.sFileName);
 
   /* Compare all of both strings: */
   return _stricmp(sSearchKey, sFileNameWithPath);

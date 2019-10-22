@@ -35,26 +35,26 @@ function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop: UINT16
   memset(pNew, 0, sizeof(PROGRESSBAR));
 
   pBar[ubProgressBarID] = pNew;
-  pNew->ubProgressBarID = ubProgressBarID;
+  pNew.value.ubProgressBarID = ubProgressBarID;
   // Assign coordinates
-  pNew->usBarLeft = usLeft;
-  pNew->usBarTop = usTop;
-  pNew->usBarRight = usRight;
-  pNew->usBarBottom = usBottom;
+  pNew.value.usBarLeft = usLeft;
+  pNew.value.usBarTop = usTop;
+  pNew.value.usBarRight = usRight;
+  pNew.value.usBarBottom = usBottom;
   // Init default data
-  pNew->fPanel = FALSE;
-  pNew->usMsgFont = FONT12POINT1;
-  pNew->ubMsgFontForeColor = FONT_BLACK;
-  pNew->ubMsgFontShadowColor = 0;
-  SetRelativeStartAndEndPercentage(pNew->ubProgressBarID, 0, 100, NULL);
-  pNew->swzTitle = NULL;
+  pNew.value.fPanel = FALSE;
+  pNew.value.usMsgFont = FONT12POINT1;
+  pNew.value.ubMsgFontForeColor = FONT_BLACK;
+  pNew.value.ubMsgFontShadowColor = 0;
+  SetRelativeStartAndEndPercentage(pNew.value.ubProgressBarID, 0, 100, NULL);
+  pNew.value.swzTitle = NULL;
 
   // Default the progress bar's color to be red
-  pNew->ubColorFillRed = 150;
-  pNew->ubColorFillGreen = 0;
-  pNew->ubColorFillBlue = 0;
+  pNew.value.ubColorFillRed = 150;
+  pNew.value.ubColorFillGreen = 0;
+  pNew.value.ubColorFillBlue = 0;
 
-  pNew->fDisplayText = FALSE;
+  pNew.value.fDisplayText = FALSE;
 
   return TRUE;
 }
@@ -68,15 +68,15 @@ function DefineProgressBarPanel(ubID: UINT32, r: UINT8, g: UINT8, b: UINT8, usLe
   if (!pCurr)
     return;
 
-  pCurr->fPanel = TRUE;
-  pCurr->usPanelLeft = usLeft;
-  pCurr->usPanelTop = usTop;
-  pCurr->usPanelRight = usRight;
-  pCurr->usPanelBottom = usBottom;
-  pCurr->usColor = Get16BPPColor(FROMRGB(r, g, b));
+  pCurr.value.fPanel = TRUE;
+  pCurr.value.usPanelLeft = usLeft;
+  pCurr.value.usPanelTop = usTop;
+  pCurr.value.usPanelRight = usRight;
+  pCurr.value.usPanelBottom = usBottom;
+  pCurr.value.usColor = Get16BPPColor(FROMRGB(r, g, b));
   // Calculate the slightly lighter and darker versions of the same rgb color
-  pCurr->usLtColor = Get16BPPColor(FROMRGB(min(255, (r * 1.33)), min(255, (g * 1.33)), min(255, (b * 1.33))));
-  pCurr->usDkColor = Get16BPPColor(FROMRGB((r * 0.75), (g * 0.75), (b * 0.75)));
+  pCurr.value.usLtColor = Get16BPPColor(FROMRGB(min(255, (r * 1.33)), min(255, (g * 1.33)), min(255, (b * 1.33))));
+  pCurr.value.usDkColor = Get16BPPColor(FROMRGB((r * 0.75), (g * 0.75), (b * 0.75)));
 }
 
 // Assigning a title for the panel will automatically position the text horizontally centered on the
@@ -87,17 +87,17 @@ function SetProgressBarTitle(ubID: UINT32, pString: Pointer<UINT16>, usFont: UIN
   pCurr = pBar[ubID];
   if (!pCurr)
     return;
-  if (pCurr->swzTitle) {
-    MemFree(pCurr->swzTitle);
-    pCurr->swzTitle = NULL;
+  if (pCurr.value.swzTitle) {
+    MemFree(pCurr.value.swzTitle);
+    pCurr.value.swzTitle = NULL;
   }
   if (pString && wcslen(pString)) {
-    pCurr->swzTitle = MemAlloc(sizeof(UINT16) * (wcslen(pString) + 1));
-    swprintf(pCurr->swzTitle, pString);
+    pCurr.value.swzTitle = MemAlloc(sizeof(UINT16) * (wcslen(pString) + 1));
+    swprintf(pCurr.value.swzTitle, pString);
   }
-  pCurr->usTitleFont = usFont;
-  pCurr->ubTitleFontForeColor = ubForeColor;
-  pCurr->ubTitleFontShadowColor = ubShadowColor;
+  pCurr.value.usTitleFont = usFont;
+  pCurr.value.ubTitleFontForeColor = ubForeColor;
+  pCurr.value.ubTitleFontShadowColor = ubShadowColor;
 }
 
 // Unless you set up the attributes, any text you pass to SetRelativeStartAndEndPercentage will
@@ -108,17 +108,17 @@ function SetProgressBarMsgAttributes(ubID: UINT32, usFont: UINT32, ubForeColor: 
   pCurr = pBar[ubID];
   if (!pCurr)
     return;
-  pCurr->usMsgFont = usFont;
-  pCurr->ubMsgFontForeColor = ubForeColor;
-  pCurr->ubMsgFontShadowColor = ubShadowColor;
+  pCurr.value.usMsgFont = usFont;
+  pCurr.value.ubMsgFontForeColor = ubForeColor;
+  pCurr.value.ubMsgFontShadowColor = ubShadowColor;
 }
 
 // When finished, the progress bar needs to be removed.
 function RemoveProgressBar(ubID: UINT8): void {
   Assert(ubID < MAX_PROGRESSBARS);
   if (pBar[ubID]) {
-    if (pBar[ubID]->swzTitle)
-      MemFree(pBar[ubID]->swzTitle);
+    if (pBar[ubID].value.swzTitle)
+      MemFree(pBar[ubID].value.swzTitle);
     MemFree(pBar[ubID]);
     pBar[ubID] = NULL;
     return;
@@ -142,45 +142,45 @@ function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UINT32, u
   if (!pCurr)
     return;
 
-  pCurr->rStart = uiRelStartPerc * 0.01;
-  pCurr->rEnd = uiRelEndPerc * 0.01;
+  pCurr.value.rStart = uiRelStartPerc * 0.01;
+  pCurr.value.rEnd = uiRelEndPerc * 0.01;
 
   // Render the entire panel now, as it doesn't need update during the normal rendering
-  if (pCurr->fPanel) {
+  if (pCurr.value.fPanel) {
     // Draw panel
-    ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr->usPanelLeft, pCurr->usPanelTop, pCurr->usPanelRight, pCurr->usPanelBottom, pCurr->usLtColor);
-    ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr->usPanelLeft + 1, pCurr->usPanelTop + 1, pCurr->usPanelRight, pCurr->usPanelBottom, pCurr->usDkColor);
-    ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr->usPanelLeft + 1, pCurr->usPanelTop + 1, pCurr->usPanelRight - 1, pCurr->usPanelBottom - 1, pCurr->usColor);
-    InvalidateRegion(pCurr->usPanelLeft, pCurr->usPanelTop, pCurr->usPanelRight, pCurr->usPanelBottom);
+    ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.value.usPanelLeft, pCurr.value.usPanelTop, pCurr.value.usPanelRight, pCurr.value.usPanelBottom, pCurr.value.usLtColor);
+    ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.value.usPanelLeft + 1, pCurr.value.usPanelTop + 1, pCurr.value.usPanelRight, pCurr.value.usPanelBottom, pCurr.value.usDkColor);
+    ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.value.usPanelLeft + 1, pCurr.value.usPanelTop + 1, pCurr.value.usPanelRight - 1, pCurr.value.usPanelBottom - 1, pCurr.value.usColor);
+    InvalidateRegion(pCurr.value.usPanelLeft, pCurr.value.usPanelTop, pCurr.value.usPanelRight, pCurr.value.usPanelBottom);
     // Draw title
 
-    if (pCurr->swzTitle) {
-      usStartX = pCurr->usPanelLeft + // left position
-                 (pCurr->usPanelRight - pCurr->usPanelLeft) / 2 - // + half width
-                 StringPixLength(pCurr->swzTitle, pCurr->usTitleFont) / 2; // - half string width
-      usStartY = pCurr->usPanelTop + 3;
-      SetFont(pCurr->usTitleFont);
-      SetFontForeground(pCurr->ubTitleFontForeColor);
-      SetFontShadow(pCurr->ubTitleFontShadowColor);
+    if (pCurr.value.swzTitle) {
+      usStartX = pCurr.value.usPanelLeft + // left position
+                 (pCurr.value.usPanelRight - pCurr.value.usPanelLeft) / 2 - // + half width
+                 StringPixLength(pCurr.value.swzTitle, pCurr.value.usTitleFont) / 2; // - half string width
+      usStartY = pCurr.value.usPanelTop + 3;
+      SetFont(pCurr.value.usTitleFont);
+      SetFontForeground(pCurr.value.ubTitleFontForeColor);
+      SetFontShadow(pCurr.value.ubTitleFontShadowColor);
       SetFontBackground(0);
-      mprintf(usStartX, usStartY, pCurr->swzTitle);
+      mprintf(usStartX, usStartY, pCurr.value.swzTitle);
     }
   }
 
-  if (pCurr->fDisplayText) {
+  if (pCurr.value.fDisplayText) {
     // Draw message
     if (str) {
-      if (pCurr->fUseSaveBuffer) {
-        let usFontHeight: UINT16 = GetFontHeight(pCurr->usMsgFont);
+      if (pCurr.value.fUseSaveBuffer) {
+        let usFontHeight: UINT16 = GetFontHeight(pCurr.value.usMsgFont);
 
-        RestoreExternBackgroundRect(pCurr->usBarLeft, pCurr->usBarBottom, (pCurr->usBarRight - pCurr->usBarLeft), (usFontHeight + 3));
+        RestoreExternBackgroundRect(pCurr.value.usBarLeft, pCurr.value.usBarBottom, (pCurr.value.usBarRight - pCurr.value.usBarLeft), (usFontHeight + 3));
       }
 
-      SetFont(pCurr->usMsgFont);
-      SetFontForeground(pCurr->ubMsgFontForeColor);
-      SetFontShadow(pCurr->ubMsgFontShadowColor);
+      SetFont(pCurr.value.usMsgFont);
+      SetFontForeground(pCurr.value.ubMsgFontForeColor);
+      SetFontShadow(pCurr.value.ubMsgFontShadowColor);
       SetFontBackground(0);
-      mprintf(pCurr->usBarLeft, pCurr->usBarBottom + 3, str);
+      mprintf(pCurr.value.usBarLeft, pCurr.value.usBarBottom + 3, str);
     }
   }
 }
@@ -203,20 +203,20 @@ function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
     return;
 
   if (pCurr) {
-    rActual = pCurr->rStart + (pCurr->rEnd - pCurr->rStart) * uiPercentage * 0.01;
+    rActual = pCurr.value.rStart + (pCurr.value.rEnd - pCurr.value.rStart) * uiPercentage * 0.01;
 
-    if (rActual - pCurr->rLastActual < 0.01) {
+    if (rActual - pCurr.value.rLastActual < 0.01) {
       return;
     }
 
-    pCurr->rLastActual = ((rActual * 100) * 0.01);
+    pCurr.value.rLastActual = ((rActual * 100) * 0.01);
 
-    end = (pCurr->usBarLeft + 2.0 + rActual * (pCurr->usBarRight - pCurr->usBarLeft - 4));
-    if (end < pCurr->usBarLeft + 2 || end > pCurr->usBarRight - 2) {
+    end = (pCurr.value.usBarLeft + 2.0 + rActual * (pCurr.value.usBarRight - pCurr.value.usBarLeft - 4));
+    if (end < pCurr.value.usBarLeft + 2 || end > pCurr.value.usBarRight - 2) {
       return;
     }
     if (gfUseLoadScreenProgressBar) {
-      ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr->usBarLeft, pCurr->usBarTop, end, pCurr->usBarBottom, Get16BPPColor(FROMRGB(pCurr->ubColorFillRed, pCurr->ubColorFillGreen, pCurr->ubColorFillBlue)));
+      ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.value.usBarLeft, pCurr.value.usBarTop, end, pCurr.value.usBarBottom, Get16BPPColor(FROMRGB(pCurr.value.ubColorFillRed, pCurr.value.ubColorFillGreen, pCurr.value.ubColorFillBlue)));
       // if( pCurr->usBarRight > gusLeftmostShaded )
       //{
       //	ShadowVideoSurfaceRect( FRAME_BUFFER, gusLeftmostShaded+1, pCurr->usBarTop, end, pCurr->usBarBottom );
@@ -224,12 +224,12 @@ function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
       //}
     } else {
       // Border edge of the progress bar itself in gray
-      ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr->usBarLeft, pCurr->usBarTop, pCurr->usBarRight, pCurr->usBarBottom, Get16BPPColor(FROMRGB(160, 160, 160)));
+      ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.value.usBarLeft, pCurr.value.usBarTop, pCurr.value.usBarRight, pCurr.value.usBarBottom, Get16BPPColor(FROMRGB(160, 160, 160)));
       // Interior of progress bar in black
-      ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr->usBarLeft + 2, pCurr->usBarTop + 2, pCurr->usBarRight - 2, pCurr->usBarBottom - 2, Get16BPPColor(FROMRGB(0, 0, 0)));
-      ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr->usBarLeft + 2, pCurr->usBarTop + 2, end, pCurr->usBarBottom - 2, Get16BPPColor(FROMRGB(72, 155, 24)));
+      ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.value.usBarLeft + 2, pCurr.value.usBarTop + 2, pCurr.value.usBarRight - 2, pCurr.value.usBarBottom - 2, Get16BPPColor(FROMRGB(0, 0, 0)));
+      ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.value.usBarLeft + 2, pCurr.value.usBarTop + 2, end, pCurr.value.usBarBottom - 2, Get16BPPColor(FROMRGB(72, 155, 24)));
     }
-    InvalidateRegion(pCurr->usBarLeft, pCurr->usBarTop, pCurr->usBarRight, pCurr->usBarBottom);
+    InvalidateRegion(pCurr.value.usBarLeft, pCurr.value.usBarTop, pCurr.value.usBarRight, pCurr.value.usBarBottom);
     ExecuteBaseDirtyRectQueue();
     EndFrameBufferRender();
     RefreshScreen(NULL);
@@ -251,9 +251,9 @@ function SetProgressBarColor(ubID: UINT8, ubColorFillRed: UINT8, ubColorFillGree
   if (pCurr == NULL)
     return;
 
-  pCurr->ubColorFillRed = ubColorFillRed;
-  pCurr->ubColorFillGreen = ubColorFillGreen;
-  pCurr->ubColorFillBlue = ubColorFillBlue;
+  pCurr.value.ubColorFillRed = ubColorFillRed;
+  pCurr.value.ubColorFillGreen = ubColorFillGreen;
+  pCurr.value.ubColorFillBlue = ubColorFillBlue;
 }
 
 function SetProgressBarTextDisplayFlag(ubID: UINT8, fDisplayText: BOOLEAN, fUseSaveBuffer: BOOLEAN, fSaveScreenToFrameBuffer: BOOLEAN): void {
@@ -265,15 +265,15 @@ function SetProgressBarTextDisplayFlag(ubID: UINT8, fDisplayText: BOOLEAN, fUseS
   if (pCurr == NULL)
     return;
 
-  pCurr->fDisplayText = fDisplayText;
+  pCurr.value.fDisplayText = fDisplayText;
 
-  pCurr->fUseSaveBuffer = fUseSaveBuffer;
+  pCurr.value.fUseSaveBuffer = fUseSaveBuffer;
 
   // if we are to use the save buffer, blit the portion of the screen to the save buffer
   if (fSaveScreenToFrameBuffer) {
-    let usFontHeight: UINT16 = GetFontHeight(pCurr->usMsgFont) + 3;
+    let usFontHeight: UINT16 = GetFontHeight(pCurr.value.usMsgFont) + 3;
 
     // blit everything to the save buffer ( cause the save buffer can bleed through )
-    BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, pCurr->usBarLeft, pCurr->usBarBottom, (pCurr->usBarRight - pCurr->usBarLeft), usFontHeight);
+    BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, pCurr.value.usBarLeft, pCurr.value.usBarBottom, (pCurr.value.usBarRight - pCurr.value.usBarLeft), usFontHeight);
   }
 }

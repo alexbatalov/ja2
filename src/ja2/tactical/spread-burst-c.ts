@@ -43,7 +43,7 @@ function PickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>): void {
   // OK, using the # of locations, spread them evenly between our current weapon shots per burst value
 
   // Get shots per burst
-  ubShotsPerBurst = Weapon[pSoldier->inv[HANDPOS].usItem].ubShotsPerBurst;
+  ubShotsPerBurst = Weapon[pSoldier.value.inv[HANDPOS].usItem].ubShotsPerBurst;
 
   // Use # gridnos accululated and # burst shots to determine accululator
   dStep = gbNumBurstLocations / ubShotsPerBurst;
@@ -54,7 +54,7 @@ function PickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>): void {
     ubLocationNum = (dAccululator);
 
     // Add to merc location
-    pSoldier->sSpreadLocations[cnt] = gsBurstLocations[ubLocationNum].sGridNo;
+    pSoldier.value.sSpreadLocations[cnt] = gsBurstLocations[ubLocationNum].sGridNo;
 
     // Acculuate index value
     dAccululator += dStep;
@@ -73,7 +73,7 @@ function AIPickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>, bTargets: INT8, pT
   // OK, using the # of locations, spread them evenly between our current weapon shots per burst value
 
   // Get shots per burst
-  ubShotsPerBurst = Weapon[pSoldier->inv[HANDPOS].usItem].ubShotsPerBurst;
+  ubShotsPerBurst = Weapon[pSoldier.value.inv[HANDPOS].usItem].ubShotsPerBurst;
 
   // Use # gridnos accululated and # burst shots to determine accululator
   // dStep = gbNumBurstLocations / (FLOAT)ubShotsPerBurst;
@@ -86,7 +86,7 @@ function AIPickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>, bTargets: INT8, pT
     ubLocationNum = (dAccululator);
 
     // Add to merc location
-    pSoldier->sSpreadLocations[cnt] = pTargets[ubLocationNum]->sGridNo;
+    pSoldier.value.sSpreadLocations[cnt] = pTargets[ubLocationNum].value.sGridNo;
 
     // Acculuate index value
     dAccululator += dStep;

@@ -52,9 +52,9 @@ function LoadTGAFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
 
   Assert(hImage != NULL);
 
-  CHECKF(FileExists(hImage->ImageFile));
+  CHECKF(FileExists(hImage.value.ImageFile));
 
-  hFile = FileOpen(hImage->ImageFile, FILE_ACCESS_READ, FALSE);
+  hFile = FileOpen(hImage.value.ImageFile, FILE_ACCESS_READ, FALSE);
   CHECKF(hFile);
 
   if (!FileRead(hFile, &uiImgID, sizeof(UINT8), &uiBytesRead))
@@ -171,9 +171,9 @@ function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
   }
 
   // Set some HIMAGE data values
-  hImage->usWidth = uiWidth;
-  hImage->usHeight = uiHeight;
-  hImage->ubBitDepth = uiImagePixelSize;
+  hImage.value.usWidth = uiWidth;
+  hImage.value.usHeight = uiHeight;
+  hImage.value.ubBitDepth = uiImagePixelSize;
 
   // Allocate memory based on bpp, height, width
 
@@ -182,13 +182,13 @@ function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
     if (uiImagePixelSize == 16) {
       iNumValues = uiWidth * uiHeight;
 
-      hImage->p16BPPData = MemAlloc(iNumValues * (uiImagePixelSize / 8));
+      hImage.value.p16BPPData = MemAlloc(iNumValues * (uiImagePixelSize / 8));
 
-      if (hImage->p16BPPData == NULL)
+      if (hImage.value.p16BPPData == NULL)
         goto end;
 
       // Get data pointer
-      pBMData = hImage->p8BPPData;
+      pBMData = hImage.value.p8BPPData;
 
       // Start at end
       pBMData += uiWidth * (uiHeight - 1) * (uiImagePixelSize / 8);
@@ -207,17 +207,17 @@ function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
       // Convert TGA 5,5,5 16 BPP data into current system 16 BPP Data
       // ConvertTGAToSystemBPPFormat( hImage );
 
-      hImage->fFlags |= IMAGE_BITMAPDATA;
+      hImage.value.fFlags |= IMAGE_BITMAPDATA;
     }
 
     if (uiImagePixelSize == 24) {
-      hImage->p8BPPData = MemAlloc(uiWidth * uiHeight * (uiImagePixelSize / 8));
+      hImage.value.p8BPPData = MemAlloc(uiWidth * uiHeight * (uiImagePixelSize / 8));
 
-      if (hImage->p8BPPData == NULL)
+      if (hImage.value.p8BPPData == NULL)
         goto end;
 
       // Get data pointer
-      pBMData = hImage->p8BPPData;
+      pBMData = hImage.value.p8BPPData;
 
       // Start at end
       pBMPtr = pBMData + uiWidth * (uiHeight - 1) * 3;
@@ -239,7 +239,7 @@ function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
         }
         pBMPtr -= uiWidth * 3;
       }
-      hImage->fFlags |= IMAGE_BITMAPDATA;
+      hImage.value.fFlags |= IMAGE_BITMAPDATA;
     }
   }
   return TRUE;

@@ -260,7 +260,7 @@ function LightReset(): BOOLEAN {
 
   // Loop through mercs and reset light value
   for (uiCount = 0; uiCount < MAX_NUM_SOLDIERS; uiCount++) {
-    MercPtrs[uiCount]->iLight = -1;
+    MercPtrs[uiCount].value.iLight = -1;
   }
 
   return TRUE;
@@ -281,20 +281,20 @@ function LightCreateTemplateNode(iLight: INT32, iX: INT16, iY: INT16, ubLight: U
     if ((pLightList[iLight] = MemAlloc(sizeof(LIGHT_NODE))) == NULL)
       return 65535;
 
-    pLightList[iLight]->iDX = iX;
-    pLightList[iLight]->iDY = iY;
-    pLightList[iLight]->ubLight = ubLight;
-    pLightList[iLight]->uiFlags = 0;
+    pLightList[iLight].value.iDX = iX;
+    pLightList[iLight].value.iDY = iY;
+    pLightList[iLight].value.ubLight = ubLight;
+    pLightList[iLight].value.uiFlags = 0;
 
     usTemplateSize[iLight] = 1;
     return 0;
   } else {
     usNumNodes = usTemplateSize[iLight];
     pLightList[iLight] = MemRealloc(pLightList[iLight], (usNumNodes + 1) * sizeof(LIGHT_NODE));
-    (pLightList[iLight] + usNumNodes)->iDX = iX;
-    (pLightList[iLight] + usNumNodes)->iDY = iY;
-    (pLightList[iLight] + usNumNodes)->ubLight = ubLight;
-    (pLightList[iLight] + usNumNodes)->uiFlags = 0;
+    (pLightList[iLight] + usNumNodes).value.iDX = iX;
+    (pLightList[iLight] + usNumNodes).value.iDY = iY;
+    (pLightList[iLight] + usNumNodes).value.ubLight = ubLight;
+    (pLightList[iLight] + usNumNodes).value.uiFlags = 0;
     usTemplateSize[iLight] = usNumNodes + 1;
     return usNumNodes;
   }
@@ -311,7 +311,7 @@ function LightAddTemplateNode(iLight: INT32, iX: INT16, iY: INT16, ubLight: UINT
   let usCount: UINT16;
 
   for (usCount = 0; usCount < usTemplateSize[iLight]; usCount++) {
-    if (((pLightList[iLight] + usCount)->iDX == iX) && ((pLightList[iLight] + usCount)->iDY == iY)) {
+    if (((pLightList[iLight] + usCount).value.iDX == iX) && ((pLightList[iLight] + usCount).value.iDY == iY)) {
       return usCount;
     }
   }
@@ -588,7 +588,7 @@ function LightTrueLevel(sGridNo: INT16, bLevel: INT8): UINT8 {
   if (pNode == NULL) {
     return ubAmbientLightLevel;
   } else {
-    iSum = pNode->ubNaturalShadeLevel - (pNode->ubSumLights - pNode->ubFakeShadeLevel);
+    iSum = pNode.value.ubNaturalShadeLevel - (pNode.value.ubSumLights - pNode.value.ubFakeShadeLevel);
 
     iSum = __min(SHADE_MIN, iSum);
     iSum = __max(SHADE_MAX, iSum);
@@ -605,20 +605,20 @@ function LightTrueLevel(sGridNo: INT16, bLevel: INT8): UINT8 {
 function LightAddTileNode(pNode: Pointer<LEVELNODE>, uiLightType: UINT32, ubShadeAdd: UINT8, fFake: BOOLEAN): void {
   let sSum: INT16;
 
-  pNode->ubSumLights += ubShadeAdd;
+  pNode.value.ubSumLights += ubShadeAdd;
   if (fFake) {
-    pNode->ubFakeShadeLevel += ubShadeAdd;
+    pNode.value.ubFakeShadeLevel += ubShadeAdd;
   }
 
   // Now set max
-  pNode->ubMaxLights = __max(pNode->ubMaxLights, ubShadeAdd);
+  pNode.value.ubMaxLights = __max(pNode.value.ubMaxLights, ubShadeAdd);
 
-  sSum = pNode->ubNaturalShadeLevel - pNode->ubMaxLights;
+  sSum = pNode.value.ubNaturalShadeLevel - pNode.value.ubMaxLights;
 
   sSum = __min(SHADE_MIN, sSum);
   sSum = __max(SHADE_MAX, sSum);
 
-  pNode->ubShadeLevel = sSum;
+  pNode.value.ubShadeLevel = sSum;
 }
 
 /****************************************************************************************
@@ -630,28 +630,28 @@ function LightAddTileNode(pNode: Pointer<LEVELNODE>, uiLightType: UINT32, ubShad
 function LightSubtractTileNode(pNode: Pointer<LEVELNODE>, uiLightType: UINT32, ubShadeSubtract: UINT8, fFake: BOOLEAN): void {
   let sSum: INT16;
 
-  if (ubShadeSubtract > pNode->ubSumLights) {
-    pNode->ubSumLights = 0;
+  if (ubShadeSubtract > pNode.value.ubSumLights) {
+    pNode.value.ubSumLights = 0;
   } else {
-    pNode->ubSumLights -= ubShadeSubtract;
+    pNode.value.ubSumLights -= ubShadeSubtract;
   }
   if (fFake) {
-    if (ubShadeSubtract > pNode->ubFakeShadeLevel) {
-      pNode->ubFakeShadeLevel = 0;
+    if (ubShadeSubtract > pNode.value.ubFakeShadeLevel) {
+      pNode.value.ubFakeShadeLevel = 0;
     } else {
-      pNode->ubFakeShadeLevel -= ubShadeSubtract;
+      pNode.value.ubFakeShadeLevel -= ubShadeSubtract;
     }
   }
 
   // Now set max
-  pNode->ubMaxLights = __min(pNode->ubMaxLights, pNode->ubSumLights);
+  pNode.value.ubMaxLights = __min(pNode.value.ubMaxLights, pNode.value.ubSumLights);
 
-  sSum = pNode->ubNaturalShadeLevel - pNode->ubMaxLights;
+  sSum = pNode.value.ubNaturalShadeLevel - pNode.value.ubMaxLights;
 
   sSum = __min(SHADE_MIN, sSum);
   sSum = __max(SHADE_MAX, sSum);
 
-  pNode->ubShadeLevel = sSum;
+  pNode.value.ubShadeLevel = sSum;
 }
 
 /****************************************************************************************
@@ -696,8 +696,8 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
   if (!(uiFlags & LIGHT_ROOF_ONLY) || (uiFlags & LIGHT_EVERYTHING)) {
     pStruct = gpWorldLevelData[uiTile].pStructHead;
     while (pStruct != NULL) {
-      if (pStruct->usIndex < NUMBEROFTILES) {
-        if ((gTileDatabase[pStruct->usIndex].fType != FIRSTCLIFFHANG) || (uiFlags & LIGHT_EVERYTHING)) {
+      if (pStruct.value.usIndex < NUMBEROFTILES) {
+        if ((gTileDatabase[pStruct.value.usIndex].fType != FIRSTCLIFFHANG) || (uiFlags & LIGHT_EVERYTHING)) {
           if ((uiFlags & LIGHT_IGNORE_WALLS) || gfCaves)
             LightAddTileNode(pStruct, uiLightType, ubShadeAdd, FALSE);
           else if (LightIlluminateWall(iSrcX, iSrcY, iX, iY, pStruct)) {
@@ -717,7 +717,7 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
       } else {
         LightAddTileNode(pStruct, uiLightType, ubShadeAdd, FALSE);
       }
-      pStruct = pStruct->pNext;
+      pStruct = pStruct.value.pNext;
     }
 
     ubShadeAdd = ubShade;
@@ -729,15 +729,15 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
         if (gfCaves || !fLitWall) {
           LightAddTileNode(pLand, uiLightType, ubShadeAdd, fFake);
         }
-        pLand = pLand->pNext;
+        pLand = pLand.value.pNext;
       }
 
       pObject = gpWorldLevelData[uiTile].pObjectHead;
       while (pObject != NULL) {
-        if (pObject->usIndex < NUMBEROFTILES) {
+        if (pObject.value.usIndex < NUMBEROFTILES) {
           LightAddTileNode(pObject, uiLightType, ubShadeAdd, FALSE);
         }
-        pObject = pObject->pNext;
+        pObject = pObject.value.pNext;
       }
 
       if (uiFlags & LIGHT_BACKLIGHT)
@@ -746,7 +746,7 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
       pMerc = gpWorldLevelData[uiTile].pMercHead;
       while (pMerc != NULL) {
         LightAddTileNode(pMerc, uiLightType, ubShadeAdd, FALSE);
-        pMerc = pMerc->pNext;
+        pMerc = pMerc.value.pNext;
       }
     }
   }
@@ -754,17 +754,17 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
   if ((uiFlags & LIGHT_ROOF_ONLY) || (uiFlags & LIGHT_EVERYTHING)) {
     pRoof = gpWorldLevelData[uiTile].pRoofHead;
     while (pRoof != NULL) {
-      if (pRoof->usIndex < NUMBEROFTILES) {
+      if (pRoof.value.usIndex < NUMBEROFTILES) {
         LightAddTileNode(pRoof, uiLightType, ubShadeAdd, fFake);
       }
-      pRoof = pRoof->pNext;
+      pRoof = pRoof.value.pNext;
     }
 
     pOnRoof = gpWorldLevelData[uiTile].pOnRoofHead;
     while (pOnRoof != NULL) {
       LightAddTileNode(pOnRoof, uiLightType, ubShadeAdd, FALSE);
 
-      pOnRoof = pOnRoof->pNext;
+      pOnRoof = pOnRoof.value.pNext;
     }
   }
   return TRUE;
@@ -812,8 +812,8 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
   if (!(uiFlags & LIGHT_ROOF_ONLY) || (uiFlags & LIGHT_EVERYTHING)) {
     pStruct = gpWorldLevelData[uiTile].pStructHead;
     while (pStruct != NULL) {
-      if (pStruct->usIndex < NUMBEROFTILES) {
-        if ((gTileDatabase[pStruct->usIndex].fType != FIRSTCLIFFHANG) || (uiFlags & LIGHT_EVERYTHING)) {
+      if (pStruct.value.usIndex < NUMBEROFTILES) {
+        if ((gTileDatabase[pStruct.value.usIndex].fType != FIRSTCLIFFHANG) || (uiFlags & LIGHT_EVERYTHING)) {
           if ((uiFlags & LIGHT_IGNORE_WALLS) || gfCaves)
             LightSubtractTileNode(pStruct, uiLightType, ubShadeSubtract, FALSE);
           else if (LightIlluminateWall(iSrcX, iSrcY, iX, iY, pStruct)) {
@@ -833,7 +833,7 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
       } else {
         LightSubtractTileNode(pStruct, uiLightType, ubShadeSubtract, FALSE);
       }
-      pStruct = pStruct->pNext;
+      pStruct = pStruct.value.pNext;
     }
 
     ubShadeSubtract = ubShade;
@@ -845,15 +845,15 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
         if (gfCaves || !fLitWall) {
           LightSubtractTileNode(pLand, uiLightType, ubShadeSubtract, fFake);
         }
-        pLand = pLand->pNext;
+        pLand = pLand.value.pNext;
       }
 
       pObject = gpWorldLevelData[uiTile].pObjectHead;
       while (pObject != NULL) {
-        if (pObject->usIndex < NUMBEROFTILES) {
+        if (pObject.value.usIndex < NUMBEROFTILES) {
           LightSubtractTileNode(pObject, uiLightType, ubShadeSubtract, FALSE);
         }
-        pObject = pObject->pNext;
+        pObject = pObject.value.pNext;
       }
 
       if (uiFlags & LIGHT_BACKLIGHT)
@@ -862,7 +862,7 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
       pMerc = gpWorldLevelData[uiTile].pMercHead;
       while (pMerc != NULL) {
         LightSubtractTileNode(pMerc, uiLightType, ubShadeSubtract, FALSE);
-        pMerc = pMerc->pNext;
+        pMerc = pMerc.value.pNext;
       }
     }
   }
@@ -870,18 +870,18 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
   if ((uiFlags & LIGHT_ROOF_ONLY) || (uiFlags & LIGHT_EVERYTHING)) {
     pRoof = gpWorldLevelData[uiTile].pRoofHead;
     while (pRoof != NULL) {
-      if (pRoof->usIndex < NUMBEROFTILES) {
+      if (pRoof.value.usIndex < NUMBEROFTILES) {
         LightSubtractTileNode(pRoof, uiLightType, ubShadeSubtract, fFake);
       }
-      pRoof = pRoof->pNext;
+      pRoof = pRoof.value.pNext;
     }
 
     pOnRoof = gpWorldLevelData[uiTile].pOnRoofHead;
     while (pOnRoof != NULL) {
-      if (pOnRoof->usIndex < NUMBEROFTILES) {
+      if (pOnRoof.value.usIndex < NUMBEROFTILES) {
         LightSubtractTileNode(pOnRoof, uiLightType, ubShadeSubtract, FALSE);
       }
-      pOnRoof = pOnRoof->pNext;
+      pOnRoof = pOnRoof.value.pNext;
     }
   }
 
@@ -897,10 +897,10 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
 function LightSetNaturalTileNode(pNode: Pointer<LEVELNODE>, ubShade: UINT8): void {
   Assert(pNode != NULL);
 
-  pNode->ubSumLights = 0;
-  pNode->ubMaxLights = 0;
-  pNode->ubNaturalShadeLevel = ubShade;
-  pNode->ubShadeLevel = ubShade;
+  pNode.value.ubSumLights = 0;
+  pNode.value.ubMaxLights = 0;
+  pNode.value.ubNaturalShadeLevel = ubShade;
+  pNode.value.ubShadeLevel = ubShade;
   // LightAddTileNode(pNode, 0, (INT16)(SHADE_MIN-ubShade));
 }
 
@@ -934,44 +934,44 @@ function LightSetNaturalTile(iX: INT16, iY: INT16, ubShade: UINT8): BOOLEAN {
 
   while (pLand != NULL) {
     LightSetNaturalTileNode(pLand, ubShade);
-    pLand = pLand->pNext;
+    pLand = pLand.value.pNext;
   }
 
   pStruct = gpWorldLevelData[uiIndex].pStructHead;
 
   while (pStruct != NULL) {
     LightSetNaturalTileNode(pStruct, ubShade);
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
 
   pObject = gpWorldLevelData[uiIndex].pObjectHead;
   while (pObject != NULL) {
     LightSetNaturalTileNode(pObject, ubShade);
-    pObject = pObject->pNext;
+    pObject = pObject.value.pNext;
   }
 
   pRoof = gpWorldLevelData[uiIndex].pRoofHead;
   while (pRoof != NULL) {
     LightSetNaturalTileNode(pRoof, ubShade);
-    pRoof = pRoof->pNext;
+    pRoof = pRoof.value.pNext;
   }
 
   pOnRoof = gpWorldLevelData[uiIndex].pOnRoofHead;
   while (pOnRoof != NULL) {
     LightSetNaturalTileNode(pOnRoof, ubShade);
-    pOnRoof = pOnRoof->pNext;
+    pOnRoof = pOnRoof.value.pNext;
   }
 
   pTopmost = gpWorldLevelData[uiIndex].pTopmostHead;
   while (pTopmost != NULL) {
     LightSetNaturalTileNode(pTopmost, ubShade);
-    pTopmost = pTopmost->pNext;
+    pTopmost = pTopmost.value.pNext;
   }
 
   pMerc = gpWorldLevelData[uiIndex].pMercHead;
   while (pMerc != NULL) {
     LightSetNaturalTileNode(pMerc, ubShade);
-    pMerc = pMerc->pNext;
+    pMerc = pMerc.value.pNext;
   }
   return TRUE;
 }
@@ -984,10 +984,10 @@ function LightSetNaturalTile(iX: INT16, iY: INT16, ubShade: UINT8): BOOLEAN {
 
 ***************************************************************************************/
 function LightResetTileNode(pNode: Pointer<LEVELNODE>): void {
-  pNode->ubSumLights = 0;
-  pNode->ubMaxLights = 0;
-  pNode->ubShadeLevel = pNode->ubNaturalShadeLevel;
-  pNode->ubFakeShadeLevel = 0;
+  pNode.value.ubSumLights = 0;
+  pNode.value.ubMaxLights = 0;
+  pNode.value.ubShadeLevel = pNode.value.ubNaturalShadeLevel;
+  pNode.value.ubFakeShadeLevel = 0;
 }
 
 /****************************************************************************************
@@ -1017,44 +1017,44 @@ function LightResetTile(iX: INT16, iY: INT16): BOOLEAN {
 
   while (pLand != NULL) {
     LightResetTileNode(pLand);
-    pLand = pLand->pNext;
+    pLand = pLand.value.pNext;
   }
 
   pStruct = gpWorldLevelData[uiTile].pStructHead;
 
   while (pStruct != NULL) {
     LightResetTileNode(pStruct);
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
 
   pObject = gpWorldLevelData[uiTile].pObjectHead;
   while (pObject != NULL) {
     LightResetTileNode(pObject);
-    pObject = pObject->pNext;
+    pObject = pObject.value.pNext;
   }
 
   pRoof = gpWorldLevelData[uiTile].pRoofHead;
   while (pRoof != NULL) {
     LightResetTileNode(pRoof);
-    pRoof = pRoof->pNext;
+    pRoof = pRoof.value.pNext;
   }
 
   pOnRoof = gpWorldLevelData[uiTile].pOnRoofHead;
   while (pOnRoof != NULL) {
     LightResetTileNode(pOnRoof);
-    pOnRoof = pOnRoof->pNext;
+    pOnRoof = pOnRoof.value.pNext;
   }
 
   pTopmost = gpWorldLevelData[uiTile].pTopmostHead;
   while (pTopmost != NULL) {
     LightResetTileNode(pTopmost);
-    pTopmost = pTopmost->pNext;
+    pTopmost = pTopmost.value.pNext;
   }
 
   pMerc = gpWorldLevelData[uiTile].pMercHead;
   while (pMerc != NULL) {
     LightResetTileNode(pMerc);
-    pMerc = pMerc->pNext;
+    pMerc = pMerc.value.pNext;
   }
 
   return TRUE;
@@ -1694,7 +1694,7 @@ function LightSetBaseLevel(iIntensity: UINT8): BOOLEAN {
       pSoldier = MercSlots[cnt];
 
       if (pSoldier != NULL) {
-        if (pSoldier->bTeam == gbPlayerNum) {
+        if (pSoldier.value.bTeam == gbPlayerNum) {
           // Re-create soldier lights
           ReCreateSoldierLight(pSoldier);
         }
@@ -1865,7 +1865,7 @@ function LightDraw(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiS
   // clear out all the flags
   for (uiCount = 0; uiCount < usTemplateSize[iLight]; uiCount++) {
     pLight = pLightList[iLight] + uiCount;
-    pLight->uiFlags &= (~LIGHT_NODE_DRAWN);
+    pLight.value.uiFlags &= (~LIGHT_NODE_DRAWN);
   }
 
   /*
@@ -1905,7 +1905,7 @@ function LightDraw(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiS
       pLight = pLightList[iLight] + (usNodeIndex & (~LIGHT_BACKLIGHT));
 
       if (!(LightSprites[uiSprite].uiFlags & LIGHT_SPR_ONROOF)) {
-        if (LightTileBlocked(iOldX, iOldY, (iX + pLight->iDX), (iY + pLight->iDY))) {
+        if (LightTileBlocked(iOldX, iOldY, (iX + pLight.value.iDX), (iY + pLight.value.iDY))) {
           uiCount = LightFindNextRay(iLight, uiCount);
 
           fOnlyWalls = TRUE;
@@ -1913,24 +1913,24 @@ function LightDraw(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiS
         }
       }
 
-      if (!(pLight->uiFlags & LIGHT_NODE_DRAWN) && (pLight->ubLight)) {
+      if (!(pLight.value.uiFlags & LIGHT_NODE_DRAWN) && (pLight.value.ubLight)) {
         uiFlags = (usNodeIndex & LIGHT_BACKLIGHT);
         if (LightSprites[uiSprite].uiFlags & MERC_LIGHT)
           uiFlags |= LIGHT_FAKE;
         if (LightSprites[uiSprite].uiFlags & LIGHT_SPR_ONROOF)
           uiFlags |= LIGHT_ROOF_ONLY;
 
-        LightAddTile(uiLightType, iOldX, iOldY, (iX + pLight->iDX), (iY + pLight->iDY), pLight->ubLight, uiFlags, fOnlyWalls);
+        LightAddTile(uiLightType, iOldX, iOldY, (iX + pLight.value.iDX), (iY + pLight.value.iDY), pLight.value.ubLight, uiFlags, fOnlyWalls);
 
-        pLight->uiFlags |= LIGHT_NODE_DRAWN;
+        pLight.value.uiFlags |= LIGHT_NODE_DRAWN;
       }
 
       if (fBlocked) {
         iOldX = iX;
         iOldY = iY;
       } else {
-        iOldX = iX + pLight->iDX;
-        iOldY = iY + pLight->iDY;
+        iOldX = iX + pLight.value.iDX;
+        iOldY = iY + pLight.value.iDY;
       }
     } else {
       iOldX = iX;
@@ -1967,8 +1967,8 @@ function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOL
 
   pStruct = gpWorldLevelData[uiTile].pStructHead;
   while (pStruct != NULL) {
-    TileElem = &(gTileDatabase[pStruct->usIndex]);
-    switch (TileElem->usWallOrientation) {
+    TileElem = &(gTileDatabase[pStruct.value.usIndex]);
+    switch (TileElem.value.usWallOrientation) {
       case INSIDE_TOP_RIGHT:
       case OUTSIDE_TOP_RIGHT:
         if (!fDoRightWalls)
@@ -1981,13 +1981,13 @@ function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOL
           fDoRightWalls = FALSE;
         break;
     }
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
 
   pStruct = gpWorldLevelData[uiTile].pStructHead;
   while (pStruct != NULL) {
-    TileElem = &(gTileDatabase[pStruct->usIndex]);
-    switch (TileElem->usWallOrientation) {
+    TileElem = &(gTileDatabase[pStruct.value.usIndex]);
+    switch (TileElem.value.usWallOrientation) {
       case NO_ORIENTATION:
         break;
 
@@ -1995,7 +1995,7 @@ function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOL
       case OUTSIDE_TOP_RIGHT:
         fHitWall = TRUE;
         if ((fDoRightWalls) && (sX >= sSrcX)) {
-          pStruct->uiFlags |= LEVELNODE_REVEAL;
+          pStruct.value.uiFlags |= LEVELNODE_REVEAL;
           fRerender = TRUE;
         }
         break;
@@ -2004,12 +2004,12 @@ function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOL
       case OUTSIDE_TOP_LEFT:
         fHitWall = TRUE;
         if ((fDoLeftWalls) && (sY >= sSrcY)) {
-          pStruct->uiFlags |= LEVELNODE_REVEAL;
+          pStruct.value.uiFlags |= LEVELNODE_REVEAL;
           fRerender = TRUE;
         }
         break;
     }
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
 
   if (fRerender)
@@ -2039,8 +2039,8 @@ function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEA
 
   pStruct = gpWorldLevelData[uiTile].pStructHead;
   while (pStruct != NULL) {
-    TileElem = &(gTileDatabase[pStruct->usIndex]);
-    switch (TileElem->usWallOrientation) {
+    TileElem = &(gTileDatabase[pStruct.value.usIndex]);
+    switch (TileElem.value.usWallOrientation) {
       case INSIDE_TOP_RIGHT:
       case OUTSIDE_TOP_RIGHT:
         if (!fDoRightWalls)
@@ -2053,13 +2053,13 @@ function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEA
           fDoRightWalls = FALSE;
         break;
     }
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
 
   pStruct = gpWorldLevelData[uiTile].pStructHead;
   while (pStruct != NULL) {
-    TileElem = &(gTileDatabase[pStruct->usIndex]);
-    switch (TileElem->usWallOrientation) {
+    TileElem = &(gTileDatabase[pStruct.value.usIndex]);
+    switch (TileElem.value.usWallOrientation) {
       case NO_ORIENTATION:
         break;
 
@@ -2067,7 +2067,7 @@ function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEA
       case OUTSIDE_TOP_RIGHT:
         fHitWall = TRUE;
         if ((fDoRightWalls) && (sX >= sSrcX)) {
-          pStruct->uiFlags &= (~LEVELNODE_REVEAL);
+          pStruct.value.uiFlags &= (~LEVELNODE_REVEAL);
           fRerender = TRUE;
         }
         break;
@@ -2076,12 +2076,12 @@ function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEA
       case OUTSIDE_TOP_LEFT:
         fHitWall = TRUE;
         if ((fDoLeftWalls) && (sY >= sSrcY)) {
-          pStruct->uiFlags &= (~LEVELNODE_REVEAL);
+          pStruct.value.uiFlags &= (~LEVELNODE_REVEAL);
           fRerender = TRUE;
         }
         break;
     }
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
 
   if (fRerender)
@@ -2109,7 +2109,7 @@ function CalcTranslucentWalls(iX: INT16, iY: INT16): BOOLEAN {
       pLight = pLightList[0] + (usNodeIndex & (~LIGHT_BACKLIGHT));
 
       // Kris:  added map boundary checking!!!
-      if (LightRevealWall(min(max((iX + pLight->iDX), 0), WORLD_COLS - 1), min(max((iY + pLight->iDY), 0), WORLD_ROWS - 1), min(max(iX, 0), WORLD_COLS - 1), min(max(iY, 0), WORLD_ROWS - 1))) {
+      if (LightRevealWall(min(max((iX + pLight.value.iDX), 0), WORLD_COLS - 1), min(max((iY + pLight.value.iDY), 0), WORLD_ROWS - 1), min(max(iX, 0), WORLD_COLS - 1), min(max(iY, 0), WORLD_ROWS - 1))) {
         uiCount = LightFindNextRay(0, uiCount);
         SetRenderFlags(RENDER_FLAG_FULL);
       }
@@ -2137,8 +2137,8 @@ function LightGreenTile(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
     fThroughWall = TRUE;
 
   while (pStruct != NULL) {
-    TileElem = &(gTileDatabase[pStruct->usIndex]);
-    switch (TileElem->usWallOrientation) {
+    TileElem = &(gTileDatabase[pStruct.value.usIndex]);
+    switch (TileElem.value.usWallOrientation) {
       case NO_ORIENTATION:
         break;
 
@@ -2146,7 +2146,7 @@ function LightGreenTile(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
       case OUTSIDE_TOP_RIGHT:
         fHitWall = TRUE;
         if (sX >= sSrcX) {
-          pStruct->uiFlags |= LEVELNODE_REVEAL;
+          pStruct.value.uiFlags |= LEVELNODE_REVEAL;
           fRerender = TRUE;
         }
         break;
@@ -2155,20 +2155,20 @@ function LightGreenTile(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
       case OUTSIDE_TOP_LEFT:
         fHitWall = TRUE;
         if (sY >= sSrcY) {
-          pStruct->uiFlags |= LEVELNODE_REVEAL;
+          pStruct.value.uiFlags |= LEVELNODE_REVEAL;
           fRerender = TRUE;
         }
         break;
     }
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
 
   // if(fRerender)
   //{
   pLand = gpWorldLevelData[uiTile].pLandHead;
   while (pLand != NULL) {
-    pLand->ubShadeLevel = 0;
-    pLand = pLand->pNext;
+    pLand.value.ubShadeLevel = 0;
+    pLand = pLand.value.pNext;
   }
 
   gpWorldLevelData[uiTile].uiFlags |= MAPELEMENT_REDRAW;
@@ -2202,7 +2202,7 @@ function LightShowRays(iX: INT16, iY: INT16, fReset: BOOLEAN): BOOLEAN {
     if (!(usNodeIndex & LIGHT_NEW_RAY)) {
       pLight = pLightList[0] + (usNodeIndex & (~LIGHT_BACKLIGHT));
 
-      if (LightGreenTile((iX + pLight->iDX), (iY + pLight->iDY), iX, iY)) {
+      if (LightGreenTile((iX + pLight.value.iDX), (iY + pLight.value.iDY), iX, iY)) {
         uiCount = LightFindNextRay(0, uiCount);
         SetRenderFlags(RENDER_FLAG_MARKED);
       }
@@ -2234,8 +2234,8 @@ function LightHideGreen(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
   pStruct = gpWorldLevelData[uiTile].pStructHead;
 
   while (pStruct != NULL) {
-    TileElem = &(gTileDatabase[pStruct->usIndex]);
-    switch (TileElem->usWallOrientation) {
+    TileElem = &(gTileDatabase[pStruct.value.usIndex]);
+    switch (TileElem.value.usWallOrientation) {
       case NO_ORIENTATION:
         break;
 
@@ -2243,7 +2243,7 @@ function LightHideGreen(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
       case OUTSIDE_TOP_RIGHT:
         fHitWall = TRUE;
         if (sX >= sSrcX) {
-          pStruct->uiFlags &= (~LEVELNODE_REVEAL);
+          pStruct.value.uiFlags &= (~LEVELNODE_REVEAL);
           fRerender = TRUE;
         }
         break;
@@ -2252,20 +2252,20 @@ function LightHideGreen(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
       case OUTSIDE_TOP_LEFT:
         fHitWall = TRUE;
         if (sY >= sSrcY) {
-          pStruct->uiFlags &= (~LEVELNODE_REVEAL);
+          pStruct.value.uiFlags &= (~LEVELNODE_REVEAL);
           fRerender = TRUE;
         }
         break;
     }
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
 
   // if(fRerender)
   //{
   pLand = gpWorldLevelData[uiTile].pLandHead;
   while (pLand != NULL) {
-    pLand->ubShadeLevel = pLand->ubNaturalShadeLevel;
-    pLand = pLand->pNext;
+    pLand.value.ubShadeLevel = pLand.value.ubNaturalShadeLevel;
+    pLand = pLand.value.pNext;
   }
 
   gpWorldLevelData[uiTile].uiFlags |= MAPELEMENT_REDRAW;
@@ -2295,7 +2295,7 @@ function LightHideRays(iX: INT16, iY: INT16): BOOLEAN {
     if (!(usNodeIndex & LIGHT_NEW_RAY)) {
       pLight = pLightList[0] + (usNodeIndex & (~LIGHT_BACKLIGHT));
 
-      if (LightHideWall((iX + pLight->iDX), (iY + pLight->iDY), iX, iY)) {
+      if (LightHideWall((iX + pLight.value.iDX), (iY + pLight.value.iDY), iX, iY)) {
         uiCount = LightFindNextRay(0, uiCount);
         SetRenderFlags(RENDER_FLAG_MARKED);
       }
@@ -2325,7 +2325,7 @@ function ApplyTranslucencyToWalls(iX: INT16, iY: INT16): BOOLEAN {
     if (!(usNodeIndex & LIGHT_NEW_RAY)) {
       pLight = pLightList[0] + (usNodeIndex & (~LIGHT_BACKLIGHT));
       // Kris:  added map boundary checking!!!
-      if (LightHideWall(min(max((iX + pLight->iDX), 0), WORLD_COLS - 1), min(max((iY + pLight->iDY), 0), WORLD_ROWS - 1), min(max(iX, 0), WORLD_COLS - 1), min(max(iY, 0), WORLD_ROWS - 1))) {
+      if (LightHideWall(min(max((iX + pLight.value.iDX), 0), WORLD_COLS - 1), min(max((iY + pLight.value.iDY), 0), WORLD_ROWS - 1), min(max(iX, 0), WORLD_COLS - 1), min(max(iY, 0), WORLD_ROWS - 1))) {
         uiCount = LightFindNextRay(0, uiCount);
         SetRenderFlags(RENDER_FLAG_FULL);
       }
@@ -2353,18 +2353,18 @@ function LightTranslucentTrees(iX: INT16, iY: INT16): BOOLEAN {
       uiTile = MAPROWCOLTOPOS(iCountY, iCountX);
       pNode = gpWorldLevelData[uiTile].pStructHead;
       while (pNode != NULL) {
-        GetTileFlags(pNode->usIndex, &fTileFlags);
+        GetTileFlags(pNode.value.usIndex, &fTileFlags);
 
         if (fTileFlags & FULL3D_TILE) {
-          if (!(pNode->uiFlags & LEVELNODE_REVEALTREES)) {
+          if (!(pNode.value.uiFlags & LEVELNODE_REVEALTREES)) {
             // pNode->uiFlags |= ( LEVELNODE_REVEALTREES | LEVELNODE_ERASEZ );
-            pNode->uiFlags |= (LEVELNODE_REVEALTREES);
+            pNode.value.uiFlags |= (LEVELNODE_REVEALTREES);
             gpWorldLevelData[uiTile].uiFlags |= MAPELEMENT_REDRAW;
           }
 
           fRerender = TRUE;
         }
-        pNode = pNode->pNext;
+        pNode = pNode.value.pNext;
       }
     }
 
@@ -2395,18 +2395,18 @@ function LightHideTrees(iX: INT16, iY: INT16): BOOLEAN {
       uiTile = MAPROWCOLTOPOS(iCountY, iCountX);
       pNode = gpWorldLevelData[uiTile].pStructHead;
       while (pNode != NULL) {
-        GetTileFlags(pNode->usIndex, &fTileFlags);
+        GetTileFlags(pNode.value.usIndex, &fTileFlags);
 
         if (fTileFlags & FULL3D_TILE) {
-          if ((pNode->uiFlags & LEVELNODE_REVEALTREES)) {
+          if ((pNode.value.uiFlags & LEVELNODE_REVEALTREES)) {
             // pNode->uiFlags  &=(~( LEVELNODE_REVEALTREES | LEVELNODE_ERASEZ ) );
-            pNode->uiFlags &= (~(LEVELNODE_REVEALTREES));
+            pNode.value.uiFlags &= (~(LEVELNODE_REVEALTREES));
             gpWorldLevelData[uiTile].uiFlags |= MAPELEMENT_REDRAW;
           }
 
           fRerender = TRUE;
         }
-        pNode = pNode->pNext;
+        pNode = pNode.value.pNext;
       }
     }
 
@@ -2440,7 +2440,7 @@ function LightErase(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, ui
   // clear out all the flags
   for (uiCount = 0; uiCount < usTemplateSize[iLight]; uiCount++) {
     pLight = pLightList[iLight] + uiCount;
-    pLight->uiFlags &= (~LIGHT_NODE_DRAWN);
+    pLight.value.uiFlags &= (~LIGHT_NODE_DRAWN);
   }
 
   iOldX = iX;
@@ -2455,7 +2455,7 @@ function LightErase(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, ui
       pLight = pLightList[iLight] + (usNodeIndex & (~LIGHT_BACKLIGHT));
 
       if (!(LightSprites[uiSprite].uiFlags & LIGHT_SPR_ONROOF)) {
-        if (LightTileBlocked(iOldX, iOldY, (iX + pLight->iDX), (iY + pLight->iDY))) {
+        if (LightTileBlocked(iOldX, iOldY, (iX + pLight.value.iDX), (iY + pLight.value.iDY))) {
           uiCount = LightFindNextRay(iLight, uiCount);
 
           fOnlyWalls = TRUE;
@@ -2463,23 +2463,23 @@ function LightErase(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, ui
         }
       }
 
-      if (!(pLight->uiFlags & LIGHT_NODE_DRAWN) && (pLight->ubLight)) {
+      if (!(pLight.value.uiFlags & LIGHT_NODE_DRAWN) && (pLight.value.ubLight)) {
         uiFlags = (usNodeIndex & LIGHT_BACKLIGHT);
         if (LightSprites[uiSprite].uiFlags & MERC_LIGHT)
           uiFlags |= LIGHT_FAKE;
         if (LightSprites[uiSprite].uiFlags & LIGHT_SPR_ONROOF)
           uiFlags |= LIGHT_ROOF_ONLY;
 
-        LightSubtractTile(uiLightType, iOldX, iOldY, (iX + pLight->iDX), (iY + pLight->iDY), pLight->ubLight, uiFlags, fOnlyWalls);
-        pLight->uiFlags |= LIGHT_NODE_DRAWN;
+        LightSubtractTile(uiLightType, iOldX, iOldY, (iX + pLight.value.iDX), (iY + pLight.value.iDY), pLight.value.ubLight, uiFlags, fOnlyWalls);
+        pLight.value.uiFlags |= LIGHT_NODE_DRAWN;
       }
 
       if (fBlocked) {
         iOldX = iX;
         iOldY = iY;
       } else {
-        iOldX = iX + pLight->iDX;
-        iOldY = iY + pLight->iDY;
+        iOldX = iX + pLight.value.iDX;
+        iOldY = iY + pLight.value.iDY;
       }
     } else {
       iOldX = iX;
@@ -2517,11 +2517,11 @@ function LightCalcRect(iLight: INT32): BOOLEAN {
 
   for (uiCount = 0; uiCount < usTemplateSize[iLight]; uiCount++) {
     pLight = pLightList[iLight] + uiCount;
-    if (pLight->ubLight) {
-      MaxRect.iLeft = __min(MaxRect.iLeft, pLight->iDX);
-      MaxRect.iRight = __max(MaxRect.iRight, pLight->iDX);
-      MaxRect.iTop = __min(MaxRect.iTop, pLight->iDY);
-      MaxRect.iBottom = __max(MaxRect.iBottom, pLight->iDY);
+    if (pLight.value.ubLight) {
+      MaxRect.iLeft = __min(MaxRect.iLeft, pLight.value.iDX);
+      MaxRect.iRight = __max(MaxRect.iRight, pLight.value.iDX);
+      MaxRect.iTop = __min(MaxRect.iTop, pLight.value.iDY);
+      MaxRect.iBottom = __max(MaxRect.iBottom, pLight.value.iDY);
     }
   }
 
@@ -3011,10 +3011,10 @@ function LightSpriteDirty(iSprite: INT32): BOOLEAN {
 function CreateObjectPalette(pObj: HVOBJECT, uiBase: UINT32, pShadePal: Pointer<SGPPaletteEntry>): BOOLEAN {
   let uiCount: UINT32;
 
-  pObj->pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], TRUE);
+  pObj.value.pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], TRUE);
 
   for (uiCount = 1; uiCount < 16; uiCount++) {
-    pObj->pShades[uiBase + uiCount] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[uiCount][0], gusShadeLevels[uiCount][1], gusShadeLevels[uiCount][2], FALSE);
+    pObj.value.pShades[uiBase + uiCount] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[uiCount][0], gusShadeLevels[uiCount][1], gusShadeLevels[uiCount][2], FALSE);
   }
 
   return TRUE;
@@ -3023,10 +3023,10 @@ function CreateObjectPalette(pObj: HVOBJECT, uiBase: UINT32, pShadePal: Pointer<
 function CreateSoldierShadedPalette(pSoldier: Pointer<SOLDIERTYPE>, uiBase: UINT32, pShadePal: Pointer<SGPPaletteEntry>): BOOLEAN {
   let uiCount: UINT32;
 
-  pSoldier->pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], TRUE);
+  pSoldier.value.pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], TRUE);
 
   for (uiCount = 1; uiCount < 16; uiCount++) {
-    pSoldier->pShades[uiBase + uiCount] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[uiCount][0], gusShadeLevels[uiCount][1], gusShadeLevels[uiCount][2], FALSE);
+    pSoldier.value.pShades[uiBase + uiCount] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[uiCount][0], gusShadeLevels[uiCount][1], gusShadeLevels[uiCount][2], FALSE);
   }
 
   return TRUE;
@@ -3063,9 +3063,9 @@ function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fForce: BO
     // This is expensive as hell to call!
     for (uiCount = 0; uiCount < 256; uiCount++) {
       // combine the rgb of the light color with the object's palette
-      LightPal[uiCount].peRed = (__min(pObj->pPaletteEntry[uiCount].peRed + gpLightColors[0].peRed, 255));
-      LightPal[uiCount].peGreen = (__min(pObj->pPaletteEntry[uiCount].peGreen + gpLightColors[0].peGreen, 255));
-      LightPal[uiCount].peBlue = (__min(pObj->pPaletteEntry[uiCount].peBlue + gpLightColors[0].peBlue, 255));
+      LightPal[uiCount].peRed = (__min(pObj.value.pPaletteEntry[uiCount].peRed + gpLightColors[0].peRed, 255));
+      LightPal[uiCount].peGreen = (__min(pObj.value.pPaletteEntry[uiCount].peGreen + gpLightColors[0].peGreen, 255));
+      LightPal[uiCount].peBlue = (__min(pObj.value.pPaletteEntry[uiCount].peBlue + gpLightColors[0].peBlue, 255));
     }
     // build the shade tables
     CreateObjectPalette(pObj, 0, LightPal);
@@ -3081,25 +3081,25 @@ function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fForce: BO
   if (gubNumLightColors == 2) {
     // build the second light's palette and table
     for (uiCount = 0; uiCount < 256; uiCount++) {
-      LightPal[uiCount].peRed = (__min(pObj->pPaletteEntry[uiCount].peRed + gpLightColors[1].peRed, 255));
-      LightPal[uiCount].peGreen = (__min(pObj->pPaletteEntry[uiCount].peGreen + gpLightColors[1].peGreen, 255));
-      LightPal[uiCount].peBlue = (__min(pObj->pPaletteEntry[uiCount].peBlue + gpLightColors[1].peBlue, 255));
+      LightPal[uiCount].peRed = (__min(pObj.value.pPaletteEntry[uiCount].peRed + gpLightColors[1].peRed, 255));
+      LightPal[uiCount].peGreen = (__min(pObj.value.pPaletteEntry[uiCount].peGreen + gpLightColors[1].peGreen, 255));
+      LightPal[uiCount].peBlue = (__min(pObj.value.pPaletteEntry[uiCount].peBlue + gpLightColors[1].peBlue, 255));
     }
     CreateObjectPalette(pObj, 16, LightPal);
 
     // build a table that is a mix of the first two
     for (uiCount = 0; uiCount < 256; uiCount++) {
-      LightPal[uiCount].peRed = (__min(pObj->pPaletteEntry[uiCount].peRed + gpLightColors[2].peRed, 255));
-      LightPal[uiCount].peGreen = (__min(pObj->pPaletteEntry[uiCount].peGreen + gpLightColors[2].peGreen, 255));
-      LightPal[uiCount].peBlue = (__min(pObj->pPaletteEntry[uiCount].peBlue + gpLightColors[2].peBlue, 255));
+      LightPal[uiCount].peRed = (__min(pObj.value.pPaletteEntry[uiCount].peRed + gpLightColors[2].peRed, 255));
+      LightPal[uiCount].peGreen = (__min(pObj.value.pPaletteEntry[uiCount].peGreen + gpLightColors[2].peGreen, 255));
+      LightPal[uiCount].peBlue = (__min(pObj.value.pPaletteEntry[uiCount].peBlue + gpLightColors[2].peBlue, 255));
     }
     CreateObjectPalette(pObj, 32, LightPal);
   }
 
   // build neutral palette as well!
   // Set current shade table to neutral color
-  pObj->pShadeCurrent = pObj->pShades[4];
-  pObj->pGlow = pObj->pShades[0];
+  pObj.value.pShadeCurrent = pObj.value.pShades[4];
+  pObj.value.pGlow = pObj.value.pShades[0];
 
   return TRUE;
 }
@@ -3111,9 +3111,9 @@ function CreateSoldierPaletteTables(pSoldier: Pointer<SOLDIERTYPE>, uiType: UINT
   // create the basic shade table
   for (uiCount = 0; uiCount < 256; uiCount++) {
     // combine the rgb of the light color with the object's palette
-    LightPal[uiCount].peRed = (__min(pSoldier->p8BPPPalette[uiCount].peRed + gpLightColors[0].peRed, 255));
-    LightPal[uiCount].peGreen = (__min(pSoldier->p8BPPPalette[uiCount].peGreen + gpLightColors[0].peGreen, 255));
-    LightPal[uiCount].peBlue = (__min(pSoldier->p8BPPPalette[uiCount].peBlue + gpLightColors[0].peBlue, 255));
+    LightPal[uiCount].peRed = (__min(pSoldier.value.p8BPPPalette[uiCount].peRed + gpLightColors[0].peRed, 255));
+    LightPal[uiCount].peGreen = (__min(pSoldier.value.p8BPPPalette[uiCount].peGreen + gpLightColors[0].peGreen, 255));
+    LightPal[uiCount].peBlue = (__min(pSoldier.value.p8BPPPalette[uiCount].peBlue + gpLightColors[0].peBlue, 255));
   }
   // build the shade tables
   CreateSoldierShadedPalette(pSoldier, 0, LightPal);
@@ -3122,24 +3122,24 @@ function CreateSoldierPaletteTables(pSoldier: Pointer<SOLDIERTYPE>, uiType: UINT
   if (gubNumLightColors == 2) {
     // build the second light's palette and table
     for (uiCount = 0; uiCount < 256; uiCount++) {
-      LightPal[uiCount].peRed = (__min(pSoldier->p8BPPPalette[uiCount].peRed + gpLightColors[1].peRed, 255));
-      LightPal[uiCount].peGreen = (__min(pSoldier->p8BPPPalette[uiCount].peGreen + gpLightColors[1].peGreen, 255));
-      LightPal[uiCount].peBlue = (__min(pSoldier->p8BPPPalette[uiCount].peBlue + gpLightColors[1].peBlue, 255));
+      LightPal[uiCount].peRed = (__min(pSoldier.value.p8BPPPalette[uiCount].peRed + gpLightColors[1].peRed, 255));
+      LightPal[uiCount].peGreen = (__min(pSoldier.value.p8BPPPalette[uiCount].peGreen + gpLightColors[1].peGreen, 255));
+      LightPal[uiCount].peBlue = (__min(pSoldier.value.p8BPPPalette[uiCount].peBlue + gpLightColors[1].peBlue, 255));
     }
     CreateSoldierShadedPalette(pSoldier, 16, LightPal);
 
     // build a table that is a mix of the first two
     for (uiCount = 0; uiCount < 256; uiCount++) {
-      LightPal[uiCount].peRed = (__min(pSoldier->p8BPPPalette[uiCount].peRed + gpLightColors[2].peRed, 255));
-      LightPal[uiCount].peGreen = (__min(pSoldier->p8BPPPalette[uiCount].peGreen + gpLightColors[2].peGreen, 255));
-      LightPal[uiCount].peBlue = (__min(pSoldier->p8BPPPalette[uiCount].peBlue + gpLightColors[2].peBlue, 255));
+      LightPal[uiCount].peRed = (__min(pSoldier.value.p8BPPPalette[uiCount].peRed + gpLightColors[2].peRed, 255));
+      LightPal[uiCount].peGreen = (__min(pSoldier.value.p8BPPPalette[uiCount].peGreen + gpLightColors[2].peGreen, 255));
+      LightPal[uiCount].peBlue = (__min(pSoldier.value.p8BPPPalette[uiCount].peBlue + gpLightColors[2].peBlue, 255));
     }
     CreateSoldierShadedPalette(pSoldier, 32, LightPal);
   }
 
   // build neutral palette as well!
   // Set current shade table to neutral color
-  pSoldier->pCurrentShade = pSoldier->pShades[4];
+  pSoldier.value.pCurrentShade = pSoldier.value.pShades[4];
   // pSoldier->pGlow=pSoldier->pShades[0];
 
   return TRUE;

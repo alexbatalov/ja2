@@ -307,10 +307,10 @@ function PalEditRenderHook(): void {
     // Set to current
     GetSoldier(&pSoldier, gusSelectedSoldier);
 
-    DisplayPaletteRep(pSoldier->HeadPal, 50, 10, FRAME_BUFFER);
-    DisplayPaletteRep(pSoldier->PantsPal, 50, 50, FRAME_BUFFER);
-    DisplayPaletteRep(pSoldier->VestPal, 50, 90, FRAME_BUFFER);
-    DisplayPaletteRep(pSoldier->SkinPal, 50, 130, FRAME_BUFFER);
+    DisplayPaletteRep(pSoldier.value.HeadPal, 50, 10, FRAME_BUFFER);
+    DisplayPaletteRep(pSoldier.value.PantsPal, 50, 50, FRAME_BUFFER);
+    DisplayPaletteRep(pSoldier.value.VestPal, 50, 90, FRAME_BUFFER);
+    DisplayPaletteRep(pSoldier.value.SkinPal, 50, 130, FRAME_BUFFER);
   }
 }
 
@@ -326,17 +326,17 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
     return FALSE;
   }
 
-  if ((pInputEvent->usEvent == KEY_DOWN) && (pInputEvent->usParam == ESC)) {
+  if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == ESC)) {
     gfExitPalEditScreen = TRUE;
     return TRUE;
   }
 
-  if ((pInputEvent->usEvent == KEY_DOWN) && (pInputEvent->usParam == 'h')) {
+  if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == 'h')) {
     // Get Soldier
     GetSoldier(&pSoldier, gusSelectedSoldier);
 
     // Get index of current
-    CHECKF(GetPaletteRepIndexFromID(pSoldier->HeadPal, &ubPaletteRep));
+    CHECKF(GetPaletteRepIndexFromID(pSoldier.value.HeadPal, &ubPaletteRep));
     ubType = gpPalRep[ubPaletteRep].ubType;
 
     ubPaletteRep++;
@@ -351,19 +351,19 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
     if (ubPaletteRep == ubEndRep) {
       ubPaletteRep = ubStartRep;
     }
-    SET_PALETTEREP_ID(pSoldier->HeadPal, gpPalRep[ubPaletteRep].ID);
+    SET_PALETTEREP_ID(pSoldier.value.HeadPal, gpPalRep[ubPaletteRep].ID);
 
     CreateSoldierPalettes(pSoldier);
 
     return TRUE;
   }
 
-  if ((pInputEvent->usEvent == KEY_DOWN) && (pInputEvent->usParam == 'v')) {
+  if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == 'v')) {
     // Get Soldier
     GetSoldier(&pSoldier, gusSelectedSoldier);
 
     // Get index of current
-    CHECKF(GetPaletteRepIndexFromID(pSoldier->VestPal, &ubPaletteRep));
+    CHECKF(GetPaletteRepIndexFromID(pSoldier.value.VestPal, &ubPaletteRep));
     ubType = gpPalRep[ubPaletteRep].ubType;
 
     ubPaletteRep++;
@@ -378,19 +378,19 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
     if (ubPaletteRep == ubEndRep) {
       ubPaletteRep = ubStartRep;
     }
-    SET_PALETTEREP_ID(pSoldier->VestPal, gpPalRep[ubPaletteRep].ID);
+    SET_PALETTEREP_ID(pSoldier.value.VestPal, gpPalRep[ubPaletteRep].ID);
 
     CreateSoldierPalettes(pSoldier);
 
     return TRUE;
   }
 
-  if ((pInputEvent->usEvent == KEY_DOWN) && (pInputEvent->usParam == 'p')) {
+  if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == 'p')) {
     // Get Soldier
     GetSoldier(&pSoldier, gusSelectedSoldier);
 
     // Get index of current
-    CHECKF(GetPaletteRepIndexFromID(pSoldier->PantsPal, &ubPaletteRep));
+    CHECKF(GetPaletteRepIndexFromID(pSoldier.value.PantsPal, &ubPaletteRep));
     ubType = gpPalRep[ubPaletteRep].ubType;
 
     ubPaletteRep++;
@@ -405,19 +405,19 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
     if (ubPaletteRep == ubEndRep) {
       ubPaletteRep = ubStartRep;
     }
-    SET_PALETTEREP_ID(pSoldier->PantsPal, gpPalRep[ubPaletteRep].ID);
+    SET_PALETTEREP_ID(pSoldier.value.PantsPal, gpPalRep[ubPaletteRep].ID);
 
     CreateSoldierPalettes(pSoldier);
 
     return TRUE;
   }
 
-  if ((pInputEvent->usEvent == KEY_DOWN) && (pInputEvent->usParam == 's')) {
+  if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == 's')) {
     // Get Soldier
     GetSoldier(&pSoldier, gusSelectedSoldier);
 
     // Get index of current
-    CHECKF(GetPaletteRepIndexFromID(pSoldier->SkinPal, &ubPaletteRep));
+    CHECKF(GetPaletteRepIndexFromID(pSoldier.value.SkinPal, &ubPaletteRep));
     ubType = gpPalRep[ubPaletteRep].ubType;
 
     ubPaletteRep++;
@@ -432,7 +432,7 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
     if (ubPaletteRep == ubEndRep) {
       ubPaletteRep = ubStartRep;
     }
-    SET_PALETTEREP_ID(pSoldier->SkinPal, gpPalRep[ubPaletteRep].ID);
+    SET_PALETTEREP_ID(pSoldier.value.SkinPal, gpPalRep[ubPaletteRep].ID);
 
     CreateSoldierPalettes(pSoldier);
 
@@ -500,12 +500,12 @@ function DebugRenderHook(): void {
 }
 
 function DebugKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
-  if ((pInputEvent->usEvent == KEY_UP) && (pInputEvent->usParam == 'q')) {
+  if ((pInputEvent.value.usEvent == KEY_UP) && (pInputEvent.value.usParam == 'q')) {
     gfExitDebugScreen = TRUE;
     return TRUE;
   }
 
-  if ((pInputEvent->usEvent == KEY_UP) && (pInputEvent->usParam == PGUP)) {
+  if ((pInputEvent.value.usEvent == KEY_UP) && (pInputEvent.value.usParam == PGUP)) {
     // Page down
     gCurDebugPage++;
 
@@ -517,7 +517,7 @@ function DebugKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
     gfInitRect = TRUE;
   }
 
-  if ((pInputEvent->usEvent == KEY_UP) && (pInputEvent->usParam == PGDN)) {
+  if ((pInputEvent.value.usEvent == KEY_UP) && (pInputEvent.value.usParam == PGDN)) {
     // Page down
     gCurDebugPage--;
 
@@ -637,10 +637,10 @@ function SexScreenHandle(): UINT32 {
 
   // Calculate smily face positions...
   GetVideoObject(&hVObject, guiSMILY);
-  pTrav = &(hVObject->pETRLEObject[0]);
+  pTrav = &(hVObject.value.pETRLEObject[0]);
 
-  sX = ((640 - pTrav->usWidth) / 2);
-  sY = ((480 - pTrav->usHeight) / 2);
+  sX = ((640 - pTrav.value.usWidth) / 2);
+  sY = ((480 - pTrav.value.usHeight) / 2);
 
   if (bCurFrame < 24) {
     BltVideoObjectFromIndex(FRAME_BUFFER, guiSMILY, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -648,7 +648,7 @@ function SexScreenHandle(): UINT32 {
     BltVideoObjectFromIndex(FRAME_BUFFER, guiSMILY, (bCurFrame % 8), sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
-  InvalidateRegion(sX, sY, (sX + pTrav->usWidth), (sY + pTrav->usHeight));
+  InvalidateRegion(sX, sY, (sX + pTrav.value.usWidth), (sY + pTrav.value.usHeight));
 
   return SEX_SCREEN;
 }

@@ -606,12 +606,12 @@ function AddInventoryButtonForMapPopUpBox(): void {
 
   // Calculate smily face positions...
   GetVideoObject(&hHandle, uiObject);
-  pTrav = &(hHandle->pETRLEObject[0]);
+  pTrav = &(hHandle.value.pETRLEObject[0]);
 
-  sWidthA = pTrav->usWidth;
+  sWidthA = pTrav.value.usWidth;
 
-  pTrav = &(hHandle->pETRLEObject[1]);
-  sWidthB = pTrav->usWidth;
+  pTrav = &(hHandle.value.pETRLEObject[1]);
+  sWidthB = pTrav.value.usWidth;
 
   sTotalBoxWidth = sTotalButtonWidth;
 
@@ -659,10 +659,10 @@ function RemoveInventoryButtonForMapPopUpBox(): void {
 
 function MapTownMineInventoryButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // done
       fShowMapInventoryPool = TRUE;
@@ -681,10 +681,10 @@ function MapTownMineInventoryButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: IN
 
 function MapTownMineExitButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // done
       fMapPanelDirty = TRUE;
@@ -710,12 +710,12 @@ function MinWidthOfTownMineInfoBox(): void {
 
   // Calculate smily face positions...
   GetVideoObject(&hHandle, uiObject);
-  pTrav = &(hHandle->pETRLEObject[0]);
+  pTrav = &(hHandle.value.pETRLEObject[0]);
 
-  sWidthA = pTrav->usWidth;
+  sWidthA = pTrav.value.usWidth;
 
-  pTrav = &(hHandle->pETRLEObject[1]);
-  sWidthB = pTrav->usWidth;
+  pTrav = &(hHandle.value.pETRLEObject[1]);
+  sWidthB = pTrav.value.usWidth;
 
   sTotalBoxWidth = sWidthA + sWidthB;
   sTotalButtonWidth = sTotalBoxWidth;

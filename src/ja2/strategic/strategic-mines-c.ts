@@ -83,18 +83,18 @@ function InitializeMines(): void {
 
     memset(pMineStatus, 0, sizeof(*pMineStatus));
 
-    pMineStatus->ubMineType = gubMineTypes[ubMineIndex];
-    pMineStatus->uiMaxRemovalRate = guiMinimumMineProduction[ubMineIndex];
-    pMineStatus->fEmpty = (pMineStatus->uiMaxRemovalRate == 0) ? TRUE : FALSE;
-    pMineStatus->fRunningOut = FALSE;
-    pMineStatus->fWarnedOfRunningOut = FALSE;
+    pMineStatus.value.ubMineType = gubMineTypes[ubMineIndex];
+    pMineStatus.value.uiMaxRemovalRate = guiMinimumMineProduction[ubMineIndex];
+    pMineStatus.value.fEmpty = (pMineStatus.value.uiMaxRemovalRate == 0) ? TRUE : FALSE;
+    pMineStatus.value.fRunningOut = FALSE;
+    pMineStatus.value.fWarnedOfRunningOut = FALSE;
     //		pMineStatus->bMonsters = MINES_NO_MONSTERS;
-    pMineStatus->fShutDown = FALSE;
-    pMineStatus->fPrevInvadedByMonsters = FALSE;
-    pMineStatus->fSpokeToHeadMiner = FALSE;
-    pMineStatus->fMineHasProducedForPlayer = FALSE;
-    pMineStatus->fQueenRetookProducingMine = FALSE;
-    gMineStatus->fShutDownIsPermanent = FALSE;
+    pMineStatus.value.fShutDown = FALSE;
+    pMineStatus.value.fPrevInvadedByMonsters = FALSE;
+    pMineStatus.value.fSpokeToHeadMiner = FALSE;
+    pMineStatus.value.fMineHasProducedForPlayer = FALSE;
+    pMineStatus.value.fQueenRetookProducingMine = FALSE;
+    gMineStatus.value.fShutDownIsPermanent = FALSE;
   }
 
   // randomize the exact size each mine.  The total production is always the same and depends on the game difficulty,
@@ -143,18 +143,18 @@ function InitializeMines(): void {
       }
 
       // the mine that runs out has only enough ore for this many days of full production
-      pMineStatus->uiRemainingOreSupply = ubMinDaysBeforeDepletion * (MINE_PRODUCTION_NUMBER_OF_PERIODS * pMineStatus->uiMaxRemovalRate);
+      pMineStatus.value.uiRemainingOreSupply = ubMinDaysBeforeDepletion * (MINE_PRODUCTION_NUMBER_OF_PERIODS * pMineStatus.value.uiMaxRemovalRate);
 
       // ore starts running out when reserves drop to less than 25% of the initial supply
-      pMineStatus->uiOreRunningOutPoint = pMineStatus->uiRemainingOreSupply / 4;
-    } else if (!pMineStatus->fEmpty) {
+      pMineStatus.value.uiOreRunningOutPoint = pMineStatus.value.uiRemainingOreSupply / 4;
+    } else if (!pMineStatus.value.fEmpty) {
       // never runs out...
-      pMineStatus->uiRemainingOreSupply = 999999999; // essentially unlimited
-      pMineStatus->uiOreRunningOutPoint = 0;
+      pMineStatus.value.uiRemainingOreSupply = 999999999; // essentially unlimited
+      pMineStatus.value.uiOreRunningOutPoint = 0;
     } else {
       // already empty
-      pMineStatus->uiRemainingOreSupply = 0;
-      pMineStatus->uiOreRunningOutPoint = 0;
+      pMineStatus.value.uiRemainingOreSupply = 0;
+      pMineStatus.value.uiOreRunningOutPoint = 0;
     }
   }
 }
@@ -168,7 +168,7 @@ function HourlyMinesUpdate(): void {
   for (ubMineIndex = 0; ubMineIndex < MAX_NUMBER_OF_MINES; ubMineIndex++) {
     pMineStatus = &(gMineStatus[ubMineIndex]);
 
-    if (pMineStatus->fEmpty) {
+    if (pMineStatus.value.fEmpty) {
       // nobody is working that mine, so who cares
       continue;
     }
@@ -176,7 +176,7 @@ function HourlyMinesUpdate(): void {
     // check if the mine has any monster creatures in it
     if (MineClearOfMonsters(ubMineIndex)) {
       // if it's shutdown, but not permanently
-      if (IsMineShutDown(ubMineIndex) && !pMineStatus->fShutDownIsPermanent) {
+      if (IsMineShutDown(ubMineIndex) && !pMineStatus.value.fShutDownIsPermanent) {
         // if we control production in it
         if (PlayerControlsMine(ubMineIndex)) {
           IssueHeadMinerQuote(ubMineIndex, HEAD_MINER_STRATEGIC_QUOTE_CREATURES_GONE);
@@ -200,11 +200,11 @@ function HourlyMinesUpdate(): void {
         // if we control production in it
         if (PlayerControlsMine(ubMineIndex)) {
           // 2 different quotes, depends whether or not it's the first time this has happened
-          if (pMineStatus->fPrevInvadedByMonsters) {
+          if (pMineStatus.value.fPrevInvadedByMonsters) {
             ubQuoteType = HEAD_MINER_STRATEGIC_QUOTE_CREATURES_AGAIN;
           } else {
             ubQuoteType = HEAD_MINER_STRATEGIC_QUOTE_CREATURES_ATTACK;
-            pMineStatus->fPrevInvadedByMonsters = TRUE;
+            pMineStatus.value.fPrevInvadedByMonsters = TRUE;
 
             if (gubQuest[QUEST_CREATURES] == QUESTNOTSTARTED) {
               // start it now!
@@ -1015,7 +1015,7 @@ function PlayerForgotToTakeOverMine(ubMineIndex: UINT8): BOOLEAN {
   // mine not empty
   // player hasn't spoken to the head miner, but hasn't attacked him either
   // miner is alive
-  if ((StrategicMap[(gMineLocation[ubMineIndex].sSectorX) + (MAP_WORLD_X * (gMineLocation[ubMineIndex].sSectorY))].fEnemyControlled == FALSE) && (!pMineStatus->fEmpty) && (!pMineStatus->fSpokeToHeadMiner) && (!pMineStatus->fAttackedHeadMiner) && (gMercProfiles[GetHeadMinerProfileIdForMine(ubMineIndex)].bLife > 0)) {
+  if ((StrategicMap[(gMineLocation[ubMineIndex].sSectorX) + (MAP_WORLD_X * (gMineLocation[ubMineIndex].sSectorY))].fEnemyControlled == FALSE) && (!pMineStatus.value.fEmpty) && (!pMineStatus.value.fSpokeToHeadMiner) && (!pMineStatus.value.fAttackedHeadMiner) && (gMercProfiles[GetHeadMinerProfileIdForMine(ubMineIndex)].bLife > 0)) {
     return TRUE;
   }
 
@@ -1033,7 +1033,7 @@ function AreThereMinersInsideThisMine(ubMineIndex: UINT8): BOOLEAN {
   // mine not empty
   // mine clear of any monsters
   // the "shutdown permanently" flag is only used for the player never receiving the income - miners will keep mining
-  if ((!pMineStatus->fEmpty) && MineClearOfMonsters(ubMineIndex)) {
+  if ((!pMineStatus.value.fEmpty) && MineClearOfMonsters(ubMineIndex)) {
     return TRUE;
   }
 

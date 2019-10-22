@@ -690,10 +690,10 @@ function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileE
   while (gReverseShadowBuddys[cnt] != -1) {
     // IF WE ARE A SHADOW TYPE
     if (usType == gReverseShadowBuddys[cnt]) {
-      TileElement->sBuddyNum = gReverseShadowBuddys[cnt + 2] + (uiDatabaseElem - gReverseShadowBuddys[cnt + 1]);
+      TileElement.value.sBuddyNum = gReverseShadowBuddys[cnt + 2] + (uiDatabaseElem - gReverseShadowBuddys[cnt + 1]);
 
       // Check flags and made the same, take from buddy's
-      TileElement->uiFlags |= gTileDatabase[TileElement->sBuddyNum].uiFlags;
+      TileElement.value.uiFlags |= gTileDatabase[TileElement.value.sBuddyNum].uiFlags;
     }
 
     cnt += 3;
@@ -704,9 +704,9 @@ function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileE
   while (gForwardShadowBuddys[cnt] != -1) {
     // IF WE ARE A SHADOW TYPE
     if (usType == gForwardShadowBuddys[cnt]) {
-      TileElement->sBuddyNum = gForwardShadowBuddys[cnt + 2] + (uiDatabaseElem - gForwardShadowBuddys[cnt + 1]);
+      TileElement.value.sBuddyNum = gForwardShadowBuddys[cnt + 2] + (uiDatabaseElem - gForwardShadowBuddys[cnt + 1]);
       // Set flag indicating such
-      TileElement->uiFlags |= HAS_SHADOW_BUDDY;
+      TileElement.value.uiFlags |= HAS_SHADOW_BUDDY;
     }
     cnt += 3;
   };
@@ -721,9 +721,9 @@ function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileE
         // Allocate Animated tile data
         AllocateAnimTileData(TileElement, 5);
 
-        TileElement->pAnimData->bCurrentFrame = 0;
-        for (ubLoop = 0; ubLoop < TileElement->pAnimData->ubNumFrames; ubLoop++) {
-          TileElement->pAnimData->pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
+        TileElement.value.pAnimData.value.bCurrentFrame = 0;
+        for (ubLoop = 0; ubLoop < TileElement.value.pAnimData.value.ubNumFrames; ubLoop++) {
+          TileElement.value.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
         }
       }
       cnt++;
@@ -736,9 +736,9 @@ function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileE
         // Allocate Animated tile data
         AllocateAnimTileData(TileElement, 5);
 
-        TileElement->pAnimData->bCurrentFrame = 0;
-        for (ubLoop = 0; ubLoop < TileElement->pAnimData->ubNumFrames; ubLoop++) {
-          TileElement->pAnimData->pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
+        TileElement.value.pAnimData.value.bCurrentFrame = 0;
+        for (ubLoop = 0; ubLoop < TileElement.value.pAnimData.value.ubNumFrames; ubLoop++) {
+          TileElement.value.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
         }
       }
       cnt++;
@@ -752,9 +752,9 @@ function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileE
         // Allocate Animated tile data
         AllocateAnimTileData(TileElement, 5);
 
-        TileElement->pAnimData->bCurrentFrame = 0;
-        for (ubLoop = 0; ubLoop < TileElement->pAnimData->ubNumFrames; ubLoop++) {
-          TileElement->pAnimData->pusFrames[ubLoop] = uiDatabaseElem - ubLoop;
+        TileElement.value.pAnimData.value.bCurrentFrame = 0;
+        for (ubLoop = 0; ubLoop < TileElement.value.pAnimData.value.ubNumFrames; ubLoop++) {
+          TileElement.value.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem - ubLoop;
         }
       }
       cnt++;
@@ -767,9 +767,9 @@ function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileE
         // Allocate Animated tile data
         AllocateAnimTileData(TileElement, 5);
 
-        TileElement->pAnimData->bCurrentFrame = 0;
-        for (ubLoop = 0; ubLoop < TileElement->pAnimData->ubNumFrames; ubLoop++) {
-          TileElement->pAnimData->pusFrames[ubLoop] = uiDatabaseElem - ubLoop;
+        TileElement.value.pAnimData.value.bCurrentFrame = 0;
+        for (ubLoop = 0; ubLoop < TileElement.value.pAnimData.value.ubNumFrames; ubLoop++) {
+          TileElement.value.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem - ubLoop;
         }
       }
       cnt++;
@@ -780,28 +780,28 @@ function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileE
     // Allocate Animated tile data
     AllocateAnimTileData(TileElement, 5);
 
-    TileElement->pAnimData->bCurrentFrame = 0;
-    for (ubLoop = 0; ubLoop < TileElement->pAnimData->ubNumFrames; ubLoop++) {
-      TileElement->pAnimData->pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
+    TileElement.value.pAnimData.value.bCurrentFrame = 0;
+    for (ubLoop = 0; ubLoop < TileElement.value.pAnimData.value.ubNumFrames; ubLoop++) {
+      TileElement.value.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
     }
   }
 
   if (uiDatabaseElem >= FIRSTMISS1 && uiDatabaseElem <= FIRSTMISS5) {
-    TileElement->uiFlags |= DYNAMIC_TILE;
+    TileElement.value.uiFlags |= DYNAMIC_TILE;
   }
 
   if (uiDatabaseElem == WINDOWSHATTER1 || uiDatabaseElem == WINDOWSHATTER6 || uiDatabaseElem == WINDOWSHATTER11 || uiDatabaseElem == WINDOWSHATTER16) {
     // Allocate Animated tile data
     AllocateAnimTileData(TileElement, 5);
 
-    TileElement->pAnimData->bCurrentFrame = 0;
-    for (ubLoop = 0; ubLoop < TileElement->pAnimData->ubNumFrames; ubLoop++) {
-      TileElement->pAnimData->pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
+    TileElement.value.pAnimData.value.bCurrentFrame = 0;
+    for (ubLoop = 0; ubLoop < TileElement.value.pAnimData.value.ubNumFrames; ubLoop++) {
+      TileElement.value.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
     }
   }
 
   if (uiDatabaseElem >= WINDOWSHATTER1 && uiDatabaseElem <= WINDOWSHATTER20) {
-    TileElement->uiFlags |= DYNAMIC_TILE;
+    TileElement.value.uiFlags |= DYNAMIC_TILE;
   }
 
   //	if ( usType == FIRSTEXPLOSION )
@@ -810,16 +810,16 @@ function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileE
   //	}
 
   if (usType == BODYEXPLOSION) {
-    TileElement->uiFlags |= DYNAMIC_TILE;
+    TileElement.value.uiFlags |= DYNAMIC_TILE;
   }
 
   if (usType == FIRSTROAD) {
-    TileElement->uiFlags |= ROAD_TILE;
+    TileElement.value.uiFlags |= ROAD_TILE;
   }
 
   // SET FLAGS FOR OBJECTS PEICES WHICH USE PROPER Z
   if (fUseRaisedObjectType) {
-    TileElement->uiFlags |= OBJECTLAYER_USEZHEIGHT;
+    TileElement.value.uiFlags |= OBJECTLAYER_USEZHEIGHT;
   }
 
   // OFFSET SLANTED ROOFS TO HEIGHT OF WALLS
@@ -834,25 +834,25 @@ function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileE
 
     // Every second set as dynamic
     if (((sIndexDiff) % 3) == 1) {
-      TileElement->uiFlags |= DYNAMIC_TILE;
+      TileElement.value.uiFlags |= DYNAMIC_TILE;
     }
 
     // Set every first as full tile
     if (((sIndexDiff) % 3) == 0) {
-      TileElement->uiFlags |= FULL3D_TILE;
+      TileElement.value.uiFlags |= FULL3D_TILE;
     }
   }
 
   // Ignore height for cliffs ie: if we rasie the land, do not offset the cliff
   if (uiDatabaseElem >= FIRSTCLIFFHANG1 && uiDatabaseElem <= FIRSTCLIFFSHADOW17) {
     if (usType == FIRSTCLIFFHANG) {
-      TileElement->uiFlags |= CLIFFHANG_TILE;
+      TileElement.value.uiFlags |= CLIFFHANG_TILE;
     }
-    TileElement->uiFlags |= IGNORE_WORLD_HEIGHT;
+    TileElement.value.uiFlags |= IGNORE_WORLD_HEIGHT;
   }
 
   if (uiDatabaseElem >= FIRSTWALL1 && uiDatabaseElem <= FOURTHWALL65) {
-    TileElement->uiFlags |= WALL_TILE;
+    TileElement.value.uiFlags |= WALL_TILE;
   }
 
   // Set a-frames heigher!
@@ -860,36 +860,36 @@ function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileE
     // Set these ones higher ( for roof pieces )
     if (uiDatabaseElem >= (gTileTypeStartIndex[usType] + WALL_AFRAME_START) && uiDatabaseElem <= (gTileTypeStartIndex[usType] + WALL_AFRAME_END)) {
       // TileElement->sOffsetHeight = WALL_HEIGHT;
-      TileElement->uiFlags |= AFRAME_TILE;
+      TileElement.value.uiFlags |= AFRAME_TILE;
     }
   }
 
   // Set UI Elements to be dynamic
   if (uiDatabaseElem >= FOOTPRINTS1 && uiDatabaseElem <= THIRDPOINTERS2) {
-    TileElement->uiFlags |= DYNAMIC_TILE;
-    TileElement->uiFlags |= OBJECTLAYER_USEZHEIGHT;
+    TileElement.value.uiFlags |= DYNAMIC_TILE;
+    TileElement.value.uiFlags |= OBJECTLAYER_USEZHEIGHT;
   }
 
   // Set UI Elements to use object z level
   if (usType >= FOOTPRINTS && usType <= LASTUIELEM) {
-    TileElement->uiFlags |= OBJECTLAYER_USEZHEIGHT;
+    TileElement.value.uiFlags |= OBJECTLAYER_USEZHEIGHT;
   }
 
   // Set UI Elements to use object z level
   if (usType >= HUMANBLOOD && usType <= CREATUREBLOOD) {
-    TileElement->uiFlags |= OBJECTLAYER_USEZHEIGHT;
+    TileElement.value.uiFlags |= OBJECTLAYER_USEZHEIGHT;
   }
 
   // Set UI Elements to use object z level
   if (usType >= GUNS && usType <= P2ITEMS) {
-    TileElement->uiFlags |= OBJECTLAYER_USEZHEIGHT;
+    TileElement.value.uiFlags |= OBJECTLAYER_USEZHEIGHT;
   }
   if (usType == P3ITEMS) {
-    TileElement->uiFlags |= OBJECTLAYER_USEZHEIGHT;
+    TileElement.value.uiFlags |= OBJECTLAYER_USEZHEIGHT;
   }
 
   if (usType >= FIRSTEXPLDEBRIS && usType <= SECONDEXPLDEBRIS) {
-    TileElement->uiFlags |= OBJECTLAYER_USEZHEIGHT;
+    TileElement.value.uiFlags |= OBJECTLAYER_USEZHEIGHT;
   }
 
   if (uiDatabaseElem >= FIRSTDOOR1 && uiDatabaseElem <= FOURTHDOORSH20) {
@@ -898,11 +898,11 @@ function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileE
 
   // Set UI Elements to be dynamic
   if (uiDatabaseElem == MOCKFLOOR1) {
-    TileElement->uiFlags |= DYNAMIC_TILE;
+    TileElement.value.uiFlags |= DYNAMIC_TILE;
   }
 
   if (usType == BULLETTILE) {
-    TileElement->uiFlags |= DYNAMIC_TILE;
+    TileElement.value.uiFlags |= DYNAMIC_TILE;
   }
 
   if (usType == WIREFRAMES) {
@@ -911,12 +911,12 @@ function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileE
 
   // Set full tile flag for floors
   if (uiDatabaseElem >= FIRSTFLOOR1 && uiDatabaseElem <= FOURTHFLOOR8) {
-    TileElement->ubFullTile = 1;
+    TileElement.value.ubFullTile = 1;
   }
 
   if (uiDatabaseElem >= FIRSTTEXTURE1 && uiDatabaseElem <= DEEPWATERTEXTURE10) {
     // Set tile 'fullness' attribute
-    TileElement->ubFullTile = gFullBaseTileValues[uiDatabaseElem];
+    TileElement.value.ubFullTile = gFullBaseTileValues[uiDatabaseElem];
   }
 
   if (usType >= FIRSTONROOF && usType <= SECONDONROOF) {
@@ -925,10 +925,10 @@ function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileE
   }
 
   if (uiDatabaseElem >= REGWATERTEXTURE18 && uiDatabaseElem <= REGWATERTEXTURE50 || uiDatabaseElem == REGWATERTEXTURE || uiDatabaseElem == REGWATERTEXTURE12 || uiDatabaseElem == REGWATERTEXTURE14 || uiDatabaseElem == REGWATERTEXTURE16) {
-    TileElement->ubTerrainID = FLAT_GROUND;
+    TileElement.value.ubTerrainID = FLAT_GROUND;
   }
 
   if ((usType >= FIRSTROOF && usType <= SECONDSLANTROOF) || usType == FIRSTHIGHROOF || usType == SECONDHIGHROOF) {
-    TileElement->uiFlags |= ROOF_TILE;
+    TileElement.value.uiFlags |= ROOF_TILE;
   }
 }

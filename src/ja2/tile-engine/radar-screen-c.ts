@@ -71,8 +71,8 @@ function LoadRadarScreenBitmap(aFilename: Pointer<CHAR8>): BOOLEAN {
 
     if (GetVideoObject(&hVObject, gusRadarImage)) {
       // ATE: Add a shade table!
-      hVObject->pShades[0] = Create16BPPPaletteShaded(hVObject->pPaletteEntry, 255, 255, 255, FALSE);
-      hVObject->pShades[1] = Create16BPPPaletteShaded(hVObject->pPaletteEntry, 100, 100, 100, FALSE);
+      hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, FALSE);
+      hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 100, 100, 100, FALSE);
     }
   }
 
@@ -125,10 +125,10 @@ function RadarRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   }
 
   if (iReason == MSYS_CALLBACK_REASON_MOVE) {
-    if (pRegion->ButtonState & MSYS_LEFT_BUTTON) {
+    if (pRegion.value.ButtonState & MSYS_LEFT_BUTTON) {
       // Use relative coordinates to set center of viewport
-      sRadarX = pRegion->RelativeXPos - (RADAR_WINDOW_WIDTH / 2);
-      sRadarY = pRegion->RelativeYPos - (RADAR_WINDOW_HEIGHT / 2);
+      sRadarX = pRegion.value.RelativeXPos - (RADAR_WINDOW_WIDTH / 2);
+      sRadarY = pRegion.value.RelativeYPos - (RADAR_WINDOW_HEIGHT / 2);
 
       AdjustWorldCenterFromRadarCoords(sRadarX, sRadarY);
 
@@ -149,8 +149,8 @@ function RadarRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (!InOverheadMap()) {
       // Use relative coordinates to set center of viewport
-      sRadarX = pRegion->RelativeXPos - (RADAR_WINDOW_WIDTH / 2);
-      sRadarY = pRegion->RelativeYPos - (RADAR_WINDOW_HEIGHT / 2);
+      sRadarX = pRegion.value.RelativeXPos - (RADAR_WINDOW_WIDTH / 2);
+      sRadarY = pRegion.value.RelativeYPos - (RADAR_WINDOW_HEIGHT / 2);
 
       AdjustWorldCenterFromRadarCoords(sRadarX, sRadarY);
     } else {
@@ -352,23 +352,23 @@ function RenderRadarScreen(): void {
 
       if (pSoldier != NULL) {
         // Don't place guys in radar until visible!
-        if (pSoldier->bVisible == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS) && !(pSoldier->ubMiscSoldierFlags & SOLDIER_MISC_XRAYED)) {
+        if (pSoldier.value.bVisible == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS) && !(pSoldier.value.ubMiscSoldierFlags & SOLDIER_MISC_XRAYED)) {
           continue;
         }
 
         // Don't render guys if they are dead!
-        if ((pSoldier->uiStatusFlags & SOLDIER_DEAD)) {
+        if ((pSoldier.value.uiStatusFlags & SOLDIER_DEAD)) {
           continue;
         }
 
         // Don't render crows
-        if (pSoldier->ubBodyType == CROW) {
+        if (pSoldier.value.ubBodyType == CROW) {
           continue;
         }
 
         // Get FULL screen coordinate for guy's position
         // Getxy from gridno
-        ConvertGridNoToXY(pSoldier->sGridNo, &sXSoldPos, &sYSoldPos);
+        ConvertGridNoToXY(pSoldier.value.sGridNo, &sXSoldPos, &sYSoldPos);
         GetWorldXYAbsoluteScreenXY(sXSoldPos, sYSoldPos, &sXSoldScreen, &sYSoldScreen);
 
         sXSoldRadar = (sXSoldScreen * gdScaleX);
@@ -386,32 +386,32 @@ function RenderRadarScreen(): void {
           // DB Need to add a radar color for 8-bit
 
           // Are we a selected guy?
-          if (pSoldier->ubID == gusSelectedSoldier) {
+          if (pSoldier.value.ubID == gusSelectedSoldier) {
             if (gfRadarCurrentGuyFlash) {
               usLineColor = 0;
             } else {
               // If on roof, make darker....
-              if (pSoldier->bLevel > 0) {
+              if (pSoldier.value.bLevel > 0) {
                 usLineColor = Get16BPPColor(FROMRGB(150, 150, 0));
               } else {
-                usLineColor = Get16BPPColor(gTacticalStatus.Team[pSoldier->bTeam].RadarColor);
+                usLineColor = Get16BPPColor(gTacticalStatus.Team[pSoldier.value.bTeam].RadarColor);
               }
             }
           } else {
-            usLineColor = Get16BPPColor(gTacticalStatus.Team[pSoldier->bTeam].RadarColor);
+            usLineColor = Get16BPPColor(gTacticalStatus.Team[pSoldier.value.bTeam].RadarColor);
 
             // Override civ team with red if hostile...
-            if (pSoldier->bTeam == CIV_TEAM && !pSoldier->bNeutral && (pSoldier->bSide != gbPlayerNum)) {
+            if (pSoldier.value.bTeam == CIV_TEAM && !pSoldier.value.bNeutral && (pSoldier.value.bSide != gbPlayerNum)) {
               usLineColor = Get16BPPColor(FROMRGB(255, 0, 0));
             }
 
             // Render different color if an enemy and he's unconscious
-            if (pSoldier->bTeam != gbPlayerNum && pSoldier->bLife < OKLIFE) {
+            if (pSoldier.value.bTeam != gbPlayerNum && pSoldier.value.bLife < OKLIFE) {
               usLineColor = Get16BPPColor(FROMRGB(128, 128, 128));
             }
 
             // If on roof, make darker....
-            if (pSoldier->bTeam == gbPlayerNum && pSoldier->bLevel > 0) {
+            if (pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bLevel > 0) {
               usLineColor = Get16BPPColor(FROMRGB(150, 150, 0));
             }
           }

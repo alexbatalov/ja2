@@ -46,7 +46,7 @@ function LoadTileSurface(cFilename: Pointer<char>): Pointer<TILE_IMAGERY> {
   strcat(cStructureFilename, STRUCTURE_FILE_EXTENSION);
   if (FileExists(cStructureFilename)) {
     pStructureFileRef = LoadStructureFile(cStructureFilename);
-    if (pStructureFileRef == NULL || hVObject->usNumberOfObjects != pStructureFileRef->usNumberOfStructures) {
+    if (pStructureFileRef == NULL || hVObject.value.usNumberOfObjects != pStructureFileRef.value.usNumberOfStructures) {
       DestroyImage(hImage);
       DeleteVideoObject(hVObject);
       SET_ERROR("Structure file error: %s", cStructureFilename);
@@ -71,23 +71,23 @@ function LoadTileSurface(cFilename: Pointer<char>): Pointer<TILE_IMAGERY> {
   // Set all values to zero
   memset(pTileSurf, 0, sizeof(TILE_IMAGERY));
 
-  pTileSurf->vo = hVObject;
-  pTileSurf->pStructureFileRef = pStructureFileRef;
+  pTileSurf.value.vo = hVObject;
+  pTileSurf.value.pStructureFileRef = pStructureFileRef;
 
-  if (pStructureFileRef && pStructureFileRef->pAuxData != NULL) {
-    pTileSurf->pAuxData = pStructureFileRef->pAuxData;
-    pTileSurf->pTileLocData = pStructureFileRef->pTileLocData;
-  } else if (hImage->uiAppDataSize == hVObject->usNumberOfObjects * sizeof(AuxObjectData)) {
+  if (pStructureFileRef && pStructureFileRef.value.pAuxData != NULL) {
+    pTileSurf.value.pAuxData = pStructureFileRef.value.pAuxData;
+    pTileSurf.value.pTileLocData = pStructureFileRef.value.pTileLocData;
+  } else if (hImage.value.uiAppDataSize == hVObject.value.usNumberOfObjects * sizeof(AuxObjectData)) {
     // Valid auxiliary data, so make a copy of it for TileSurf
-    pTileSurf->pAuxData = MemAlloc(hImage->uiAppDataSize);
-    if (pTileSurf->pAuxData == NULL) {
+    pTileSurf.value.pAuxData = MemAlloc(hImage.value.uiAppDataSize);
+    if (pTileSurf.value.pAuxData == NULL) {
       DestroyImage(hImage);
       DeleteVideoObject(hVObject);
       return NULL;
     }
-    memcpy(pTileSurf->pAuxData, hImage->pAppData, hImage->uiAppDataSize);
+    memcpy(pTileSurf.value.pAuxData, hImage.value.pAppData, hImage.value.uiAppDataSize);
   } else {
-    pTileSurf->pAuxData = NULL;
+    pTileSurf.value.pAuxData = NULL;
   }
   // the hImage is no longer needed
   DestroyImage(hImage);
@@ -96,18 +96,18 @@ function LoadTileSurface(cFilename: Pointer<char>): Pointer<TILE_IMAGERY> {
 }
 
 function DeleteTileSurface(pTileSurf: PTILE_IMAGERY): void {
-  if (pTileSurf->pStructureFileRef != NULL) {
-    FreeStructureFile(pTileSurf->pStructureFileRef);
+  if (pTileSurf.value.pStructureFileRef != NULL) {
+    FreeStructureFile(pTileSurf.value.pStructureFileRef);
   } else {
     // If a structure file exists, it will free the auxdata.
     // Since there is no structure file in this instance, we
     // free it ourselves.
-    if (pTileSurf->pAuxData != NULL) {
-      MemFree(pTileSurf->pAuxData);
+    if (pTileSurf.value.pAuxData != NULL) {
+      MemFree(pTileSurf.value.pAuxData);
     }
   }
 
-  DeleteVideoObject(pTileSurf->vo);
+  DeleteVideoObject(pTileSurf.value.vo);
   MemFree(pTileSurf);
 }
 
@@ -131,11 +131,11 @@ function SetRaisedObjectFlag(cFilename: Pointer<char>, pTileSurf: Pointer<TILE_I
 
   // Loop through array of RAISED objecttype imagery and
   // set global value...
-  if ((pTileSurf->fType >= DEBRISWOOD && pTileSurf->fType <= DEBRISWEEDS) || pTileSurf->fType == DEBRIS2MISC || pTileSurf->fType == ANOTHERDEBRIS) {
+  if ((pTileSurf.value.fType >= DEBRISWOOD && pTileSurf.value.fType <= DEBRISWEEDS) || pTileSurf.value.fType == DEBRIS2MISC || pTileSurf.value.fType == ANOTHERDEBRIS) {
     GetRootName(cRootFile, cFilename);
     while (ubRaisedObjectFiles[cnt][0] != '1') {
       if (stricmp(ubRaisedObjectFiles[cnt], cRootFile) == 0) {
-        pTileSurf->bRaisedObjectType = TRUE;
+        pTileSurf.value.bRaisedObjectType = TRUE;
       }
 
       cnt++;

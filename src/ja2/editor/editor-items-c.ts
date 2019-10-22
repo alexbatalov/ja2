@@ -25,13 +25,13 @@ function BuildItemPoolList(): void {
         Assert(pIPHead);
         tail = pIPHead;
       } else {
-        tail->next = MemAlloc(sizeof(IPListNode));
-        Assert(tail->next);
-        tail = tail->next;
+        tail.value.next = MemAlloc(sizeof(IPListNode));
+        Assert(tail.value.next);
+        tail = tail.value.next;
       }
       ShowItemCursor(i);
-      tail->sGridNo = i;
-      tail->next = NULL;
+      tail.value.sGridNo = i;
+      tail.value.next = NULL;
     }
   }
   gpCurrItemPoolNode = pIPHead;
@@ -42,8 +42,8 @@ function KillItemPoolList(): void {
   let pIPCurr: Pointer<IPListNode>;
   pIPCurr = pIPHead;
   while (pIPCurr) {
-    HideItemCursor(pIPCurr->sGridNo);
-    pIPHead = pIPHead->next;
+    HideItemCursor(pIPCurr.value.sGridNo);
+    pIPHead = pIPHead.value.next;
     MemFree(pIPCurr);
     pIPCurr = pIPHead;
   }
@@ -82,7 +82,7 @@ function EntryInitEditorItemsInfo(): void {
         continue;
       if (i == SWITCH || i == ACTION_ITEM) {
       } else
-        switch (item->usItemClass) {
+        switch (item.value.usItemClass) {
           case IC_GUN:
           case IC_BLADE:
           case IC_THROWN:
@@ -284,11 +284,11 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
       DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT, FONT_WHITE, pStr, FONT_BLACK, TRUE, CENTER_JUSTIFIED);
 
       // Calculate the center position of the graphic in a 60 pixel wide area.
-      sWidth = hVObject->pETRLEObject[item->ubGraphicNum].usWidth;
-      sOffset = hVObject->pETRLEObject[item->ubGraphicNum].sOffsetX;
+      sWidth = hVObject.value.pETRLEObject[item.value.ubGraphicNum].usWidth;
+      sOffset = hVObject.value.pETRLEObject[item.value.ubGraphicNum].sOffsetX;
       sStart = x + (60 - sWidth - sOffset * 2) / 2;
 
-      BltVideoObjectOutlineFromIndex(eInfo.uiBuffer, uiVideoObjectIndex, item->ubGraphicNum, sStart, y + 2, 0, FALSE);
+      BltVideoObjectOutlineFromIndex(eInfo.uiBuffer, uiVideoObjectIndex, item.value.ubGraphicNum, sStart, y + 2, 0, FALSE);
       // cycle through the various slot positions (0,0), (0,40), (60,0), (60,40), (120,0)...
       if (y == 0) {
         y = 40;
@@ -314,7 +314,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
           fTypeMatch = TRUE;
           item = &Item[usCounter];
         } else
-          switch (item->usItemClass) {
+          switch (item.value.usItemClass) {
             case IC_GUN:
             case IC_BLADE:
             case IC_LAUNCHER:
@@ -397,12 +397,12 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
           DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT, FONT_WHITE, pStr, FONT_BLACK, TRUE, CENTER_JUSTIFIED);
 
           // Calculate the center position of the graphic in a 60 pixel wide area.
-          sWidth = hVObject->pETRLEObject[item->ubGraphicNum].usWidth;
-          sOffset = hVObject->pETRLEObject[item->ubGraphicNum].sOffsetX;
+          sWidth = hVObject.value.pETRLEObject[item.value.ubGraphicNum].usWidth;
+          sOffset = hVObject.value.pETRLEObject[item.value.ubGraphicNum].sOffsetX;
           sStart = x + (60 - sWidth - sOffset * 2) / 2;
 
           if (sWidth) {
-            BltVideoObjectOutlineFromIndex(eInfo.uiBuffer, uiVideoObjectIndex, item->ubGraphicNum, sStart, y + 2, 0, FALSE);
+            BltVideoObjectOutlineFromIndex(eInfo.uiBuffer, uiVideoObjectIndex, item.value.ubGraphicNum, sStart, y + 2, 0, FALSE);
           }
           // cycle through the various slot positions (0,0), (0,40), (60,0), (60,40), (120,0)...
           if (y == 0) {
@@ -482,11 +482,11 @@ function RenderEditorItemsInfo(): void {
       GetVideoObject(&hVObject, uiVideoObjectIndex);
       x = (eInfo.sHilitedItemIndex / 2 - eInfo.sScrollIndex) * 60 + 110;
       y = 360 + (eInfo.sHilitedItemIndex % 2) * 40;
-      sWidth = hVObject->pETRLEObject[item->ubGraphicNum].usWidth;
-      sOffset = hVObject->pETRLEObject[item->ubGraphicNum].sOffsetX;
+      sWidth = hVObject.value.pETRLEObject[item.value.ubGraphicNum].usWidth;
+      sOffset = hVObject.value.pETRLEObject[item.value.ubGraphicNum].sOffsetX;
       sStart = x + (60 - sWidth - sOffset * 2) / 2;
       if (sWidth) {
-        BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, item->ubGraphicNum, sStart, y + 2, Get16BPPColor(FROMRGB(250, 250, 0)), TRUE);
+        BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, item.value.ubGraphicNum, sStart, y + 2, Get16BPPColor(FROMRGB(250, 250, 0)), TRUE);
       }
     }
   }
@@ -498,11 +498,11 @@ function RenderEditorItemsInfo(): void {
       GetVideoObject(&hVObject, uiVideoObjectIndex);
       x = (eInfo.sSelItemIndex / 2 - eInfo.sScrollIndex) * 60 + 110;
       y = 360 + (eInfo.sSelItemIndex % 2) * 40;
-      sWidth = hVObject->pETRLEObject[item->ubGraphicNum].usWidth;
-      sOffset = hVObject->pETRLEObject[item->ubGraphicNum].sOffsetX;
+      sWidth = hVObject.value.pETRLEObject[item.value.ubGraphicNum].usWidth;
+      sOffset = hVObject.value.pETRLEObject[item.value.ubGraphicNum].sOffsetX;
       sStart = x + (60 - sWidth - sOffset * 2) / 2;
       if (sWidth) {
-        BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, item->ubGraphicNum, sStart, y + 2, Get16BPPColor(FROMRGB(250, 0, 0)), TRUE);
+        BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, item.value.ubGraphicNum, sStart, y + 2, Get16BPPColor(FROMRGB(250, 0, 0)), TRUE);
       }
     }
   }
@@ -635,9 +635,9 @@ function ShowItemCursor(iMapIndex: INT32): void {
   let pNode: Pointer<LEVELNODE>;
   pNode = gpWorldLevelData[iMapIndex].pTopmostHead;
   while (pNode) {
-    if (pNode->usIndex == SELRING)
+    if (pNode.value.usIndex == SELRING)
       return;
-    pNode = pNode->pNext;
+    pNode = pNode.value.pNext;
   }
   AddTopmostToTail(iMapIndex, SELRING1);
 }
@@ -652,10 +652,10 @@ function TriggerAtGridNo(sGridNo: INT16): BOOLEAN {
     return FALSE;
   }
   while (pItemPool) {
-    if (gWorldItems[pItemPool->iItemIndex].o.usItem == SWITCH) {
+    if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == SWITCH) {
       return TRUE;
     }
-    pItemPool = pItemPool->pNext;
+    pItemPool = pItemPool.value.pNext;
   }
   return FALSE;
 }
@@ -752,33 +752,33 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
     gWorldItems[iItemIndex].ubNonExistChance = 0;
   }
 
-  pItem = &(Item[pObject->usItem]);
-  if (pItem->usItemClass == IC_AMMO) {
+  pItem = &(Item[pObject.value.usItem]);
+  if (pItem.value.usItemClass == IC_AMMO) {
     if (Random(2)) {
-      pObject->ubShotsLeft[0] = Magazine[pItem->ubClassIndex].ubMagSize;
+      pObject.value.ubShotsLeft[0] = Magazine[pItem.value.ubClassIndex].ubMagSize;
     } else {
-      pObject->ubShotsLeft[0] = Random(Magazine[pItem->ubClassIndex].ubMagSize);
+      pObject.value.ubShotsLeft[0] = Random(Magazine[pItem.value.ubClassIndex].ubMagSize);
     }
   } else {
-    pObject->bStatus[0] = (70 + Random(26));
+    pObject.value.bStatus[0] = (70 + Random(26));
   }
-  if (pItem->usItemClass & IC_GUN) {
-    if (pObject->usItem == ROCKET_LAUNCHER) {
-      pObject->ubGunShotsLeft = 1;
+  if (pItem.value.usItemClass & IC_GUN) {
+    if (pObject.value.usItem == ROCKET_LAUNCHER) {
+      pObject.value.ubGunShotsLeft = 1;
     } else {
-      pObject->ubGunShotsLeft = (Random(Weapon[pObject->usItem].ubMagSize));
+      pObject.value.ubGunShotsLeft = (Random(Weapon[pObject.value.usItem].ubMagSize));
     }
   }
 
   if (!GetItemPool(sGridNo, &pItemPool, 0))
     Assert(0);
   while (pItemPool) {
-    if (&(gWorldItems[pItemPool->iItemIndex].o) == pObject) {
+    if (&(gWorldItems[pItemPool.value.iItemIndex].o) == pObject) {
       fFound = TRUE;
       // ShowSelectedItem();
       break;
     }
-    pItemPool = pItemPool->pNext;
+    pItemPool = pItemPool.value.pNext;
   }
   Assert(fFound);
 
@@ -792,27 +792,27 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
   pIPPrev = NULL;
   while (pIPCurr) {
     pIPPrev = pIPCurr;
-    if (pIPCurr->sGridNo == sGridNo) {
+    if (pIPCurr.value.sGridNo == sGridNo) {
       // found one, so we don't need to add it
       gpCurrItemPoolNode = pIPCurr;
       return;
     }
-    pIPCurr = pIPCurr->next;
+    pIPCurr = pIPCurr.value.next;
   }
   // there isn't one, so we will add it now.
   ShowItemCursor(sGridNo);
   if (pIPPrev) {
-    pIPPrev->next = MemAlloc(sizeof(IPListNode));
-    Assert(pIPPrev->next);
-    pIPPrev = pIPPrev->next;
-    pIPPrev->next = NULL;
-    pIPPrev->sGridNo = sGridNo;
+    pIPPrev.value.next = MemAlloc(sizeof(IPListNode));
+    Assert(pIPPrev.value.next);
+    pIPPrev = pIPPrev.value.next;
+    pIPPrev.value.next = NULL;
+    pIPPrev.value.sGridNo = sGridNo;
     gpCurrItemPoolNode = pIPPrev;
   } else {
     pIPHead = MemAlloc(sizeof(IPListNode));
     Assert(pIPHead);
-    pIPHead->next = NULL;
-    pIPHead->sGridNo = sGridNo;
+    pIPHead.value.next = NULL;
+    pIPHead.value.sGridNo = sGridNo;
     gpCurrItemPoolNode = pIPHead;
   }
 }
@@ -824,7 +824,7 @@ function HandleRightClickOnItem(sGridNo: INT16): void {
   if (gsItemGridNo == sGridNo) {
     // Clicked on the same gridno as the selected item.  Automatically select the next
     // item in the same pool.
-    pItemPool = gpItemPool->pNext;
+    pItemPool = gpItemPool.value.pNext;
     if (!pItemPool) {
       // currently selected item was last node, so select the head node even if it is the same.
       GetItemPool(sGridNo, &pItemPool, 0);
@@ -840,14 +840,14 @@ function HandleRightClickOnItem(sGridNo: INT16): void {
   pIPCurr = pIPHead;
   gpCurrItemPoolNode = NULL;
   while (pIPCurr) {
-    if (pIPCurr->sGridNo == sGridNo) {
+    if (pIPCurr.value.sGridNo == sGridNo) {
       gpCurrItemPoolNode = pIPCurr;
       break;
     }
-    pIPCurr = pIPCurr->next;
+    pIPCurr = pIPCurr.value.next;
   }
   Assert(gpCurrItemPoolNode);
-  SpecifyItemToEdit(&gWorldItems[gpItemPool->iItemIndex].o, gpItemPool->sGridNo);
+  SpecifyItemToEdit(&gWorldItems[gpItemPool.value.iItemIndex].o, gpItemPool.value.sGridNo);
 }
 
 function DeleteSelectedItem(): void {
@@ -861,20 +861,20 @@ function DeleteSelectedItem(): void {
     // Okay, we have a selected item...
     let sGridNo: INT16;
     // save the mapindex
-    if (gpItemPool->pNext) {
-      SpecifyItemToEdit(&gWorldItems[gpItemPool->pNext->iItemIndex].o, gpItemPool->sGridNo);
+    if (gpItemPool.value.pNext) {
+      SpecifyItemToEdit(&gWorldItems[gpItemPool.value.pNext.value.iItemIndex].o, gpItemPool.value.sGridNo);
     }
-    sGridNo = gpItemPool->sGridNo;
+    sGridNo = gpItemPool.value.sGridNo;
     // remove the item
-    if (gWorldItems[gpItemPool->iItemIndex].o.usItem == ACTION_ITEM) {
-      if (gWorldItems[gpItemPool->iItemIndex].o.bActionValue == ACTION_ITEM_SMALL_PIT)
-        Remove3X3Pit(gWorldItems[gpItemPool->iItemIndex].sGridNo);
-      else if (gWorldItems[gpItemPool->iItemIndex].o.bActionValue == ACTION_ITEM_LARGE_PIT)
-        Remove5X5Pit(gWorldItems[gpItemPool->iItemIndex].sGridNo);
+    if (gWorldItems[gpItemPool.value.iItemIndex].o.usItem == ACTION_ITEM) {
+      if (gWorldItems[gpItemPool.value.iItemIndex].o.bActionValue == ACTION_ITEM_SMALL_PIT)
+        Remove3X3Pit(gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
+      else if (gWorldItems[gpItemPool.value.iItemIndex].o.bActionValue == ACTION_ITEM_LARGE_PIT)
+        Remove5X5Pit(gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
     }
     if (gpEditingItemPool == gpItemPool)
       gpEditingItemPool = NULL;
-    RemoveItemFromPool(sGridNo, gpItemPool->iItemIndex, 0);
+    RemoveItemFromPool(sGridNo, gpItemPool.value.iItemIndex, 0);
     gpItemPool = NULL;
     // determine if there are still any items at this location
     if (!GetItemPool(sGridNo, &gpItemPool, 0)) {
@@ -884,18 +884,18 @@ function DeleteSelectedItem(): void {
       pIPCurr = pIPHead;
       pIPPrev = NULL;
       while (pIPCurr) {
-        if (pIPCurr->sGridNo == sGridNo) {
+        if (pIPCurr.value.sGridNo == sGridNo) {
           if (pIPPrev) // middle of list
-            pIPPrev->next = pIPCurr->next;
+            pIPPrev.value.next = pIPCurr.value.next;
           else // head of list
-            pIPHead = pIPHead->next;
+            pIPHead = pIPHead.value.next;
           // move the curr item pool to the next one.
-          if (pIPCurr->next)
-            gpCurrItemPoolNode = pIPCurr->next;
+          if (pIPCurr.value.next)
+            gpCurrItemPoolNode = pIPCurr.value.next;
           else
             gpCurrItemPoolNode = pIPHead;
           if (gpCurrItemPoolNode) {
-            GetItemPool(gpCurrItemPoolNode->sGridNo, &gpItemPool, 0);
+            GetItemPool(gpCurrItemPoolNode.value.sGridNo, &gpItemPool, 0);
             Assert(gpItemPool);
           }
           // remove node
@@ -905,7 +905,7 @@ function DeleteSelectedItem(): void {
           return;
         }
         pIPPrev = pIPCurr;
-        pIPCurr = pIPCurr->next;
+        pIPCurr = pIPCurr.value.next;
       }
     }
   }
@@ -913,15 +913,15 @@ function DeleteSelectedItem(): void {
 
 function ShowSelectedItem(): void {
   if (gpItemPool) {
-    gpItemPool->bVisible = INVISIBLE;
-    gWorldItems[gpItemPool->iItemIndex].bVisible = INVISIBLE;
+    gpItemPool.value.bVisible = INVISIBLE;
+    gWorldItems[gpItemPool.value.iItemIndex].bVisible = INVISIBLE;
   }
 }
 
 function HideSelectedItem(): void {
   if (gpItemPool) {
-    gpItemPool->bVisible = HIDDEN_ITEM;
-    gWorldItems[gpItemPool->iItemIndex].bVisible = HIDDEN_ITEM;
+    gpItemPool.value.bVisible = HIDDEN_ITEM;
+    gWorldItems[gpItemPool.value.iItemIndex].bVisible = HIDDEN_ITEM;
   }
 }
 
@@ -930,18 +930,18 @@ function SelectNextItemPool(): void {
     return;
   // remove the current hilight.
   if (gpItemPool) {
-    MarkMapIndexDirty(gpItemPool->sGridNo);
+    MarkMapIndexDirty(gpItemPool.value.sGridNo);
   }
 
   // go to the next node.  If at end of list, choose pIPHead
-  if (gpCurrItemPoolNode->next)
-    gpCurrItemPoolNode = gpCurrItemPoolNode->next;
+  if (gpCurrItemPoolNode.value.next)
+    gpCurrItemPoolNode = gpCurrItemPoolNode.value.next;
   else
     gpCurrItemPoolNode = pIPHead;
   // get the item pool at this node's gridno.
-  GetItemPool(gpCurrItemPoolNode->sGridNo, &gpItemPool, 0);
-  MarkMapIndexDirty(gpItemPool->sGridNo);
-  SpecifyItemToEdit(&gWorldItems[gpItemPool->iItemIndex].o, gpItemPool->sGridNo);
+  GetItemPool(gpCurrItemPoolNode.value.sGridNo, &gpItemPool, 0);
+  MarkMapIndexDirty(gpItemPool.value.sGridNo);
+  SpecifyItemToEdit(&gWorldItems[gpItemPool.value.iItemIndex].o, gpItemPool.value.sGridNo);
   if (gsItemGridNo != -1) {
     CenterScreenAtMapIndex(gsItemGridNo);
   }
@@ -949,27 +949,27 @@ function SelectNextItemPool(): void {
 
 function SelectNextItemInPool(): void {
   if (gpItemPool) {
-    if (gpItemPool->pNext) {
-      gpItemPool = gpItemPool->pNext;
+    if (gpItemPool.value.pNext) {
+      gpItemPool = gpItemPool.value.pNext;
     } else {
-      GetItemPool(gpItemPool->sGridNo, &gpItemPool, 0);
+      GetItemPool(gpItemPool.value.sGridNo, &gpItemPool, 0);
     }
-    SpecifyItemToEdit(&gWorldItems[gpItemPool->iItemIndex].o, gpItemPool->sGridNo);
+    SpecifyItemToEdit(&gWorldItems[gpItemPool.value.iItemIndex].o, gpItemPool.value.sGridNo);
     MarkWorldDirty();
   }
 }
 
 function SelectPrevItemInPool(): void {
   if (gpItemPool) {
-    if (gpItemPool->pPrev) {
-      gpItemPool = gpItemPool->pPrev;
+    if (gpItemPool.value.pPrev) {
+      gpItemPool = gpItemPool.value.pPrev;
     } else {
-      GetItemPool(gpItemPool->sGridNo, &gpItemPool, 0);
-      while (gpItemPool->pNext) {
-        gpItemPool = gpItemPool->pNext;
+      GetItemPool(gpItemPool.value.sGridNo, &gpItemPool, 0);
+      while (gpItemPool.value.pNext) {
+        gpItemPool = gpItemPool.value.pNext;
       }
     }
-    SpecifyItemToEdit(&gWorldItems[gpItemPool->iItemIndex].o, gpItemPool->sGridNo);
+    SpecifyItemToEdit(&gWorldItems[gpItemPool.value.iItemIndex].o, gpItemPool.value.sGridNo);
     MarkWorldDirty();
   }
 }
@@ -1006,51 +1006,51 @@ function SelectNextItemOfType(usItem: UINT16): void {
     curr = pIPHead;
     while (curr) {
       // skip quickly to the same gridno as the item pool
-      if (curr->sGridNo == gWorldItems[gpItemPool->iItemIndex].sGridNo) {
-        gpItemPool = gpItemPool->pNext;
+      if (curr.value.sGridNo == gWorldItems[gpItemPool.value.iItemIndex].sGridNo) {
+        gpItemPool = gpItemPool.value.pNext;
         while (gpItemPool) {
-          pObject = &gWorldItems[gpItemPool->iItemIndex].o;
-          if (pObject->usItem == usItem) {
-            SpecifyItemToEdit(pObject, gWorldItems[gpItemPool->iItemIndex].sGridNo);
+          pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+          if (pObject.value.usItem == usItem) {
+            SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
             CenterScreenAtMapIndex(gsItemGridNo);
             return; // success! (another item in same itempool)
           }
-          gpItemPool = gpItemPool->pNext;
+          gpItemPool = gpItemPool.value.pNext;
         }
-        curr = curr->next;
+        curr = curr.value.next;
         break;
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
     while (curr) {
       // search to the end of the list
-      GetItemPool(curr->sGridNo, &gpItemPool, 0);
+      GetItemPool(curr.value.sGridNo, &gpItemPool, 0);
       while (gpItemPool) {
-        pObject = &gWorldItems[gpItemPool->iItemIndex].o;
-        if (pObject->usItem == usItem) {
-          SpecifyItemToEdit(pObject, gWorldItems[gpItemPool->iItemIndex].sGridNo);
+        pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+        if (pObject.value.usItem == usItem) {
+          SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
           CenterScreenAtMapIndex(gsItemGridNo);
           return; // success! (found another item before reaching the end of the list)
         }
-        gpItemPool = gpItemPool->pNext;
+        gpItemPool = gpItemPool.value.pNext;
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
   curr = pIPHead;
   while (curr) {
     // search to the end of the list
-    GetItemPool(curr->sGridNo, &gpItemPool, 0);
+    GetItemPool(curr.value.sGridNo, &gpItemPool, 0);
     while (gpItemPool) {
-      pObject = &gWorldItems[gpItemPool->iItemIndex].o;
-      if (pObject->usItem == usItem) {
-        SpecifyItemToEdit(pObject, gWorldItems[gpItemPool->iItemIndex].sGridNo);
+      pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+      if (pObject.value.usItem == usItem) {
+        SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
         CenterScreenAtMapIndex(gsItemGridNo);
         return; // success! (found first item in the list)
       }
-      gpItemPool = gpItemPool->pNext;
+      gpItemPool = gpItemPool.value.pNext;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -1061,51 +1061,51 @@ function SelectNextKeyOfType(ubKeyID: UINT8): void {
     curr = pIPHead;
     while (curr) {
       // skip quickly to the same gridno as the item pool
-      if (curr->sGridNo == gWorldItems[gpItemPool->iItemIndex].sGridNo) {
-        gpItemPool = gpItemPool->pNext;
+      if (curr.value.sGridNo == gWorldItems[gpItemPool.value.iItemIndex].sGridNo) {
+        gpItemPool = gpItemPool.value.pNext;
         while (gpItemPool) {
-          pObject = &gWorldItems[gpItemPool->iItemIndex].o;
-          if (Item[pObject->usItem].usItemClass == IC_KEY && pObject->ubKeyID == ubKeyID) {
-            SpecifyItemToEdit(pObject, gWorldItems[gpItemPool->iItemIndex].sGridNo);
+          pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+          if (Item[pObject.value.usItem].usItemClass == IC_KEY && pObject.value.ubKeyID == ubKeyID) {
+            SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
             CenterScreenAtMapIndex(gsItemGridNo);
             return; // success! (another item in same itempool)
           }
-          gpItemPool = gpItemPool->pNext;
+          gpItemPool = gpItemPool.value.pNext;
         }
-        curr = curr->next;
+        curr = curr.value.next;
         break;
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
     while (curr) {
       // search to the end of the list
-      GetItemPool(curr->sGridNo, &gpItemPool, 0);
+      GetItemPool(curr.value.sGridNo, &gpItemPool, 0);
       while (gpItemPool) {
-        pObject = &gWorldItems[gpItemPool->iItemIndex].o;
-        if (Item[pObject->usItem].usItemClass == IC_KEY && pObject->ubKeyID == ubKeyID) {
-          SpecifyItemToEdit(pObject, gWorldItems[gpItemPool->iItemIndex].sGridNo);
+        pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+        if (Item[pObject.value.usItem].usItemClass == IC_KEY && pObject.value.ubKeyID == ubKeyID) {
+          SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
           CenterScreenAtMapIndex(gsItemGridNo);
           return; // success! (found another item before reaching the end of the list)
         }
-        gpItemPool = gpItemPool->pNext;
+        gpItemPool = gpItemPool.value.pNext;
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
   curr = pIPHead;
   while (curr) {
     // search to the end of the list
-    GetItemPool(curr->sGridNo, &gpItemPool, 0);
+    GetItemPool(curr.value.sGridNo, &gpItemPool, 0);
     while (gpItemPool) {
-      pObject = &gWorldItems[gpItemPool->iItemIndex].o;
-      if (Item[pObject->usItem].usItemClass == IC_KEY && pObject->ubKeyID == ubKeyID) {
-        SpecifyItemToEdit(pObject, gWorldItems[gpItemPool->iItemIndex].sGridNo);
+      pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+      if (Item[pObject.value.usItem].usItemClass == IC_KEY && pObject.value.ubKeyID == ubKeyID) {
+        SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
         CenterScreenAtMapIndex(gsItemGridNo);
         return; // success! (found first item in the list)
       }
-      gpItemPool = gpItemPool->pNext;
+      gpItemPool = gpItemPool.value.pNext;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -1116,51 +1116,51 @@ function SelectNextTriggerWithFrequency(usItem: UINT16, bFrequency: INT8): void 
     curr = pIPHead;
     while (curr) {
       // skip quickly to the same gridno as the item pool
-      if (curr->sGridNo == gWorldItems[gpItemPool->iItemIndex].sGridNo) {
-        gpItemPool = gpItemPool->pNext;
+      if (curr.value.sGridNo == gWorldItems[gpItemPool.value.iItemIndex].sGridNo) {
+        gpItemPool = gpItemPool.value.pNext;
         while (gpItemPool) {
-          pObject = &gWorldItems[gpItemPool->iItemIndex].o;
-          if (pObject->usItem == usItem && pObject->bFrequency == bFrequency) {
-            SpecifyItemToEdit(pObject, gWorldItems[gpItemPool->iItemIndex].sGridNo);
+          pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+          if (pObject.value.usItem == usItem && pObject.value.bFrequency == bFrequency) {
+            SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
             CenterScreenAtMapIndex(gsItemGridNo);
             return; // success! (another item in same itempool)
           }
-          gpItemPool = gpItemPool->pNext;
+          gpItemPool = gpItemPool.value.pNext;
         }
-        curr = curr->next;
+        curr = curr.value.next;
         break;
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
     while (curr) {
       // search to the end of the list
-      GetItemPool(curr->sGridNo, &gpItemPool, 0);
+      GetItemPool(curr.value.sGridNo, &gpItemPool, 0);
       while (gpItemPool) {
-        pObject = &gWorldItems[gpItemPool->iItemIndex].o;
-        if (pObject->usItem == usItem && pObject->bFrequency == bFrequency) {
-          SpecifyItemToEdit(pObject, gWorldItems[gpItemPool->iItemIndex].sGridNo);
+        pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+        if (pObject.value.usItem == usItem && pObject.value.bFrequency == bFrequency) {
+          SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
           CenterScreenAtMapIndex(gsItemGridNo);
           return; // success! (found another item before reaching the end of the list)
         }
-        gpItemPool = gpItemPool->pNext;
+        gpItemPool = gpItemPool.value.pNext;
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
   curr = pIPHead;
   while (curr) {
     // search to the end of the list
-    GetItemPool(curr->sGridNo, &gpItemPool, 0);
+    GetItemPool(curr.value.sGridNo, &gpItemPool, 0);
     while (gpItemPool) {
-      pObject = &gWorldItems[gpItemPool->iItemIndex].o;
-      if (pObject->usItem == usItem && pObject->bFrequency == bFrequency) {
-        SpecifyItemToEdit(pObject, gWorldItems[gpItemPool->iItemIndex].sGridNo);
+      pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+      if (pObject.value.usItem == usItem && pObject.value.bFrequency == bFrequency) {
+        SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
         CenterScreenAtMapIndex(gsItemGridNo);
         return; // success! (found first item in the list)
       }
-      gpItemPool = gpItemPool->pNext;
+      gpItemPool = gpItemPool.value.pNext;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -1171,51 +1171,51 @@ function SelectNextPressureAction(): void {
     curr = pIPHead;
     while (curr) {
       // skip quickly to the same gridno as the item pool
-      if (curr->sGridNo == gWorldItems[gpItemPool->iItemIndex].sGridNo) {
-        gpItemPool = gpItemPool->pNext;
+      if (curr.value.sGridNo == gWorldItems[gpItemPool.value.iItemIndex].sGridNo) {
+        gpItemPool = gpItemPool.value.pNext;
         while (gpItemPool) {
-          pObject = &gWorldItems[gpItemPool->iItemIndex].o;
-          if (pObject->usItem == ACTION_ITEM && pObject->bDetonatorType == BOMB_PRESSURE) {
-            SpecifyItemToEdit(pObject, gWorldItems[gpItemPool->iItemIndex].sGridNo);
+          pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+          if (pObject.value.usItem == ACTION_ITEM && pObject.value.bDetonatorType == BOMB_PRESSURE) {
+            SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
             CenterScreenAtMapIndex(gsItemGridNo);
             return; // success! (another item in same itempool)
           }
-          gpItemPool = gpItemPool->pNext;
+          gpItemPool = gpItemPool.value.pNext;
         }
-        curr = curr->next;
+        curr = curr.value.next;
         break;
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
     while (curr) {
       // search to the end of the list
-      GetItemPool(curr->sGridNo, &gpItemPool, 0);
+      GetItemPool(curr.value.sGridNo, &gpItemPool, 0);
       while (gpItemPool) {
-        pObject = &gWorldItems[gpItemPool->iItemIndex].o;
-        if (pObject->usItem == ACTION_ITEM && pObject->bDetonatorType == BOMB_PRESSURE) {
-          SpecifyItemToEdit(pObject, gWorldItems[gpItemPool->iItemIndex].sGridNo);
+        pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+        if (pObject.value.usItem == ACTION_ITEM && pObject.value.bDetonatorType == BOMB_PRESSURE) {
+          SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
           CenterScreenAtMapIndex(gsItemGridNo);
           return; // success! (found another item before reaching the end of the list)
         }
-        gpItemPool = gpItemPool->pNext;
+        gpItemPool = gpItemPool.value.pNext;
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
   curr = pIPHead;
   while (curr) {
     // search to the end of the list
-    GetItemPool(curr->sGridNo, &gpItemPool, 0);
+    GetItemPool(curr.value.sGridNo, &gpItemPool, 0);
     while (gpItemPool) {
-      pObject = &gWorldItems[gpItemPool->iItemIndex].o;
-      if (pObject->usItem == ACTION_ITEM && pObject->bDetonatorType == BOMB_PRESSURE) {
-        SpecifyItemToEdit(pObject, gWorldItems[gpItemPool->iItemIndex].sGridNo);
+      pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+      if (pObject.value.usItem == ACTION_ITEM && pObject.value.bDetonatorType == BOMB_PRESSURE) {
+        SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
         CenterScreenAtMapIndex(gsItemGridNo);
         return; // success! (found first item in the list)
       }
-      gpItemPool = gpItemPool->pNext;
+      gpItemPool = gpItemPool.value.pNext;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -1226,15 +1226,15 @@ function CountNumberOfItemPlacementsInWorld(usItem: UINT16, pusQuantity: Pointer
   *pusQuantity = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
-    GetItemPool(pIPCurr->sGridNo, &pItemPool, 0);
+    GetItemPool(pIPCurr.value.sGridNo, &pItemPool, 0);
     while (pItemPool) {
-      if (gWorldItems[pItemPool->iItemIndex].o.usItem == usItem) {
+      if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == usItem) {
         num++;
-        *pusQuantity += gWorldItems[pItemPool->iItemIndex].o.ubNumberOfObjects;
+        *pusQuantity += gWorldItems[pItemPool.value.iItemIndex].o.ubNumberOfObjects;
       }
-      pItemPool = pItemPool->pNext;
+      pItemPool = pItemPool.value.pNext;
     }
-    pIPCurr = pIPCurr->next;
+    pIPCurr = pIPCurr.value.next;
   }
   return num;
 }
@@ -1245,14 +1245,14 @@ function CountNumberOfItemsWithFrequency(usItem: UINT16, bFrequency: INT8): UINT
   let num: UINT16 = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
-    GetItemPool(pIPCurr->sGridNo, &pItemPool, 0);
+    GetItemPool(pIPCurr.value.sGridNo, &pItemPool, 0);
     while (pItemPool) {
-      if (gWorldItems[pItemPool->iItemIndex].o.usItem == usItem && gWorldItems[pItemPool->iItemIndex].o.bFrequency == bFrequency) {
+      if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == usItem && gWorldItems[pItemPool.value.iItemIndex].o.bFrequency == bFrequency) {
         num++;
       }
-      pItemPool = pItemPool->pNext;
+      pItemPool = pItemPool.value.pNext;
     }
-    pIPCurr = pIPCurr->next;
+    pIPCurr = pIPCurr.value.next;
   }
   return num;
 }
@@ -1263,14 +1263,14 @@ function CountNumberOfPressureActionsInWorld(): UINT16 {
   let num: UINT16 = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
-    GetItemPool(pIPCurr->sGridNo, &pItemPool, 0);
+    GetItemPool(pIPCurr.value.sGridNo, &pItemPool, 0);
     while (pItemPool) {
-      if (gWorldItems[pItemPool->iItemIndex].o.usItem == ACTION_ITEM && gWorldItems[pItemPool->iItemIndex].o.bDetonatorType == BOMB_PRESSURE) {
+      if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == ACTION_ITEM && gWorldItems[pItemPool.value.iItemIndex].o.bDetonatorType == BOMB_PRESSURE) {
         num++;
       }
-      pItemPool = pItemPool->pNext;
+      pItemPool = pItemPool.value.pNext;
     }
-    pIPCurr = pIPCurr->next;
+    pIPCurr = pIPCurr.value.next;
   }
   return num;
 }
@@ -1310,16 +1310,16 @@ function CountNumberOfKeysOfTypeInWorld(ubKeyID: UINT8): UINT16 {
   let num: INT16 = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
-    GetItemPool(pIPCurr->sGridNo, &pItemPool, 0);
+    GetItemPool(pIPCurr.value.sGridNo, &pItemPool, 0);
     while (pItemPool) {
-      if (Item[gWorldItems[pItemPool->iItemIndex].o.usItem].usItemClass == IC_KEY) {
-        if (gWorldItems[pItemPool->iItemIndex].o.ubKeyID == ubKeyID) {
+      if (Item[gWorldItems[pItemPool.value.iItemIndex].o.usItem].usItemClass == IC_KEY) {
+        if (gWorldItems[pItemPool.value.iItemIndex].o.ubKeyID == ubKeyID) {
           num++;
         }
       }
-      pItemPool = pItemPool->pNext;
+      pItemPool = pItemPool.value.pNext;
     }
-    pIPCurr = pIPCurr->next;
+    pIPCurr = pIPCurr.value.next;
   }
   return num;
 }

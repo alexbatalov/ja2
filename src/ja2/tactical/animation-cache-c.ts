@@ -12,19 +12,19 @@ function InitAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSu
 
   // Allocate entries
   AnimDebugMsg(String("*** Initializing anim cache surface for soldier %d", usSoldierID));
-  pAnimCache->usCachedSurfaces = MemAlloc(sizeof(UINT16) * guiCacheSize);
-  CHECKF(pAnimCache->usCachedSurfaces != NULL);
+  pAnimCache.value.usCachedSurfaces = MemAlloc(sizeof(UINT16) * guiCacheSize);
+  CHECKF(pAnimCache.value.usCachedSurfaces != NULL);
 
   AnimDebugMsg(String("*** Initializing anim cache hit counter for soldier %d", usSoldierID));
-  pAnimCache->sCacheHits = MemAlloc(sizeof(UINT16) * guiCacheSize);
-  CHECKF(pAnimCache->sCacheHits != NULL);
+  pAnimCache.value.sCacheHits = MemAlloc(sizeof(UINT16) * guiCacheSize);
+  CHECKF(pAnimCache.value.sCacheHits != NULL);
 
   // Zero entries
   for (cnt = 0; cnt < guiCacheSize; cnt++) {
-    pAnimCache->usCachedSurfaces[cnt] = EMPTY_CACHE_ENTRY;
-    pAnimCache->sCacheHits[cnt] = 0;
+    pAnimCache.value.usCachedSurfaces[cnt] = EMPTY_CACHE_ENTRY;
+    pAnimCache.value.sCacheHits[cnt] = 0;
   }
-  pAnimCache->ubCacheSize = 0;
+  pAnimCache.value.ubCacheSize = 0;
 
   // Zero surface databse history for this soldeir
   ClearAnimationSurfacesUsageHistory(usSoldierID);
@@ -34,14 +34,14 @@ function InitAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSu
 
 function DeleteAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>): void {
   // Allocate entries
-  if (pAnimCache->usCachedSurfaces != NULL) {
+  if (pAnimCache.value.usCachedSurfaces != NULL) {
     AnimDebugMsg(String("*** Removing Anim Cache surface for soldier %d", usSoldierID));
-    MemFree(pAnimCache->usCachedSurfaces);
+    MemFree(pAnimCache.value.usCachedSurfaces);
   }
 
-  if (pAnimCache->sCacheHits != NULL) {
+  if (pAnimCache.value.sCacheHits != NULL) {
     AnimDebugMsg(String("*** Removing Anim Cache hit counter for soldier %d", usSoldierID));
-    MemFree(pAnimCache->sCacheHits);
+    MemFree(pAnimCache.value.sCacheHits);
   }
 }
 
@@ -52,17 +52,17 @@ function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Pointer<Anim
   let usCurrentAnimSurface: UINT16;
 
   // Check to see if surface exists already
-  for (cnt = 0; cnt < pAnimCache->ubCacheSize; cnt++) {
-    if (pAnimCache->usCachedSurfaces[cnt] == usSurfaceIndex) {
+  for (cnt = 0; cnt < pAnimCache.value.ubCacheSize; cnt++) {
+    if (pAnimCache.value.usCachedSurfaces[cnt] == usSurfaceIndex) {
       // Found surface, return
       AnimDebugMsg(String("Anim Cache: Hit %d ( Soldier %d )", usSurfaceIndex, usSoldierID));
-      pAnimCache->sCacheHits[cnt]++;
+      pAnimCache.value.sCacheHits[cnt]++;
       return TRUE;
     }
   }
 
   // Check if max size has been reached
-  if (pAnimCache->ubCacheSize == guiCacheSize) {
+  if (pAnimCache.value.ubCacheSize == guiCacheSize) {
     AnimDebugMsg(String("Anim Cache: Determining Bump Candidate ( Soldier %d )", usSoldierID));
 
     // Determine exisiting surface used by merc
@@ -71,14 +71,14 @@ function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Pointer<Anim
 
     // If we get here, we need to remove an animation, pick the best one
     // Loop through and pick one with lowest cache hits
-    for (cnt = 0; cnt < pAnimCache->ubCacheSize; cnt++) {
-      AnimDebugMsg(String("Anim Cache: Slot %d Hits %d ( Soldier %d )", cnt, pAnimCache->sCacheHits[cnt], usSoldierID));
+    for (cnt = 0; cnt < pAnimCache.value.ubCacheSize; cnt++) {
+      AnimDebugMsg(String("Anim Cache: Slot %d Hits %d ( Soldier %d )", cnt, pAnimCache.value.sCacheHits[cnt], usSoldierID));
 
-      if (pAnimCache->usCachedSurfaces[cnt] == usCurrentAnimSurface) {
+      if (pAnimCache.value.usCachedSurfaces[cnt] == usCurrentAnimSurface) {
         AnimDebugMsg(String("Anim Cache: REJECTING Slot %d EXISTING ANIM SURFACE ( Soldier %d )", cnt, usSoldierID));
       } else {
-        if (pAnimCache->sCacheHits[cnt] < sMostHits) {
-          sMostHits = pAnimCache->sCacheHits[cnt];
+        if (pAnimCache.value.sCacheHits[cnt] < sMostHits) {
+          sMostHits = pAnimCache.value.sCacheHits[cnt];
           ubLowestIndex = cnt;
         }
       }
@@ -86,25 +86,25 @@ function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Pointer<Anim
 
     // Bump off lowest index
     AnimDebugMsg(String("Anim Cache: Bumping %d ( Soldier %d )", ubLowestIndex, usSoldierID));
-    UnLoadAnimationSurface(usSoldierID, pAnimCache->usCachedSurfaces[ubLowestIndex]);
+    UnLoadAnimationSurface(usSoldierID, pAnimCache.value.usCachedSurfaces[ubLowestIndex]);
 
     // Decrement
-    pAnimCache->sCacheHits[ubLowestIndex] = 0;
-    pAnimCache->usCachedSurfaces[ubLowestIndex] = EMPTY_CACHE_ENTRY;
-    pAnimCache->ubCacheSize--;
+    pAnimCache.value.sCacheHits[ubLowestIndex] = 0;
+    pAnimCache.value.usCachedSurfaces[ubLowestIndex] = EMPTY_CACHE_ENTRY;
+    pAnimCache.value.ubCacheSize--;
   }
 
   // If here, Insert at an empty slot
   // Find an empty slot
   for (cnt = 0; cnt < guiCacheSize; cnt++) {
-    if (pAnimCache->usCachedSurfaces[cnt] == EMPTY_CACHE_ENTRY) {
+    if (pAnimCache.value.usCachedSurfaces[cnt] == EMPTY_CACHE_ENTRY) {
       AnimDebugMsg(String("Anim Cache: Loading Surface %d ( Soldier %d )", usSurfaceIndex, usSoldierID));
 
       // Insert here
       CHECKF(LoadAnimationSurface(usSoldierID, usSurfaceIndex, usCurrentAnimation) != FALSE);
-      pAnimCache->sCacheHits[cnt] = 0;
-      pAnimCache->usCachedSurfaces[cnt] = usSurfaceIndex;
-      pAnimCache->ubCacheSize++;
+      pAnimCache.value.sCacheHits[cnt] = 0;
+      pAnimCache.value.usCachedSurfaces[cnt] = usSurfaceIndex;
+      pAnimCache.value.ubCacheSize++;
 
       break;
     }
@@ -117,9 +117,9 @@ function UnLoadCachedAnimationSurfaces(usSoldierID: UINT16, pAnimCache: Pointer<
   let cnt: UINT8;
 
   // Check to see if surface exists already
-  for (cnt = 0; cnt < pAnimCache->ubCacheSize; cnt++) {
-    if (pAnimCache->usCachedSurfaces[cnt] != EMPTY_CACHE_ENTRY) {
-      UnLoadAnimationSurface(usSoldierID, pAnimCache->usCachedSurfaces[cnt]);
+  for (cnt = 0; cnt < pAnimCache.value.ubCacheSize; cnt++) {
+    if (pAnimCache.value.usCachedSurfaces[cnt] != EMPTY_CACHE_ENTRY) {
+      UnLoadAnimationSurface(usSoldierID, pAnimCache.value.usCachedSurfaces[cnt]);
     }
   }
 }

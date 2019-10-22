@@ -411,13 +411,13 @@ function HandleHeliDrop(): void {
       // Loop through all mercs not yet placed
       for (cnt = gbCurDrop; cnt < gbNumHeliSeatsOccupied; cnt++) {
         // Add merc to sector
-        MercPtrs[gusHeliSeats[cnt]]->ubStrategicInsertionCode = INSERTION_CODE_NORTH;
+        MercPtrs[gusHeliSeats[cnt]].value.ubStrategicInsertionCode = INSERTION_CODE_NORTH;
         UpdateMercInSector(MercPtrs[gusHeliSeats[cnt]], 9, 1, 0);
 
         // Check for merc arrives quotes...
         HandleMercArrivesQuotes(MercPtrs[gusHeliSeats[cnt]]);
 
-        ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, TacticalStr[MERC_HAS_ARRIVED_STR], MercPtrs[gusHeliSeats[cnt]]->name);
+        ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, TacticalStr[MERC_HAS_ARRIVED_STR], MercPtrs[gusHeliSeats[cnt]].value.name);
       }
 
       // Remove heli
@@ -526,7 +526,7 @@ function HandleHeliDrop(): void {
             EVENT_InitNewSoldierAnim(MercPtrs[gusHeliSeats[gbCurDrop]], HELIDROP, 0, FALSE);
 
             // Change insertion code
-            MercPtrs[gusHeliSeats[gbCurDrop]]->ubStrategicInsertionCode = INSERTION_CODE_NORTH;
+            MercPtrs[gusHeliSeats[gbCurDrop]].value.ubStrategicInsertionCode = INSERTION_CODE_NORTH;
 
             UpdateMercInSector(MercPtrs[gusHeliSeats[gbCurDrop]], 9, 1, 0);
             // EVENT_SetSoldierPosition( MercPtrs[ gusHeliSeats[ gbCurDrop ] ], sWorldX, sWorldY );
@@ -534,9 +534,9 @@ function HandleHeliDrop(): void {
             // IF the first guy down, set squad!
             if (gfFirstGuyDown) {
               gfFirstGuyDown = FALSE;
-              SetCurrentSquad(MercPtrs[gusHeliSeats[gbCurDrop]]->bAssignment, TRUE);
+              SetCurrentSquad(MercPtrs[gusHeliSeats[gbCurDrop]].value.bAssignment, TRUE);
             }
-            ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, TacticalStr[MERC_HAS_ARRIVED_STR], MercPtrs[gusHeliSeats[gbCurDrop]]->name);
+            ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, TacticalStr[MERC_HAS_ARRIVED_STR], MercPtrs[gusHeliSeats[gbCurDrop]].value.name);
 
             gbCurDrop++;
 
@@ -565,35 +565,35 @@ function HandleHeliDrop(): void {
         case HELI_MOVE_DOWN:
 
           gdHeliZPos -= 1;
-          gpHeli->pLevelNode->sRelativeZ = gdHeliZPos;
+          gpHeli.value.pLevelNode.value.sRelativeZ = gdHeliZPos;
           break;
 
         case HELI_MOVE_UP:
 
           gdHeliZPos += 1;
-          gpHeli->pLevelNode->sRelativeZ = gdHeliZPos;
+          gpHeli.value.pLevelNode.value.sRelativeZ = gdHeliZPos;
           break;
 
         case HELI_MOVESMALL_DOWN:
 
           gdHeliZPos -= 0.25;
-          gpHeli->pLevelNode->sRelativeZ = gdHeliZPos;
+          gpHeli.value.pLevelNode.value.sRelativeZ = gdHeliZPos;
           break;
 
         case HELI_MOVESMALL_UP:
 
           gdHeliZPos += 0.25;
-          gpHeli->pLevelNode->sRelativeZ = gdHeliZPos;
+          gpHeli.value.pLevelNode.value.sRelativeZ = gdHeliZPos;
           break;
 
         case HELI_MOVEY:
 
-          gpHeli->sRelativeY += 4;
+          gpHeli.value.sRelativeY += 4;
           break;
 
         case HELI_MOVELARGERY:
 
-          gpHeli->sRelativeY += 6;
+          gpHeli.value.sRelativeY += 6;
           break;
 
         case HELI_GOTO_BEGINDROP:
@@ -623,7 +623,7 @@ function HandleHeliDrop(): void {
 
           // Goto drop animation
           gdHeliZPos -= 0.25;
-          gpHeli->pLevelNode->sRelativeZ = gdHeliZPos;
+          gpHeli.value.pLevelNode.value.sRelativeZ = gdHeliZPos;
           gsHeliScript = -1;
           gubHeliState = HELI_DROP;
           break;
@@ -692,7 +692,7 @@ function HandleHeliDrop(): void {
 function BeginMercEntering(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
   ResetHeliSeats();
 
-  AddMercToHeli(pSoldier->ubID);
+  AddMercToHeli(pSoldier.value.ubID);
 
   StartHelicopterRun(sGridNo);
 

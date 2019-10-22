@@ -341,14 +341,14 @@ function ReplaceSoldierProfileInPlayerGroup(ubGroupID: UINT8, ubOldProfile: UINT
     return;
   }
 
-  curr = pGroup->pPlayerList;
+  curr = pGroup.value.pPlayerList;
 
   while (curr) {
-    if (curr->ubProfileID == ubOldProfile) {
+    if (curr.value.ubProfileID == ubOldProfile) {
       // replace and return!
-      curr->ubProfileID = ubNewProfile;
+      curr.value.ubProfileID = ubNewProfile;
       return;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }

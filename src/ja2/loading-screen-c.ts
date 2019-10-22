@@ -78,7 +78,7 @@ function GetLoadScreenID(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): UINT
           return LOADINGSCREEN_DAYMINE;
       }
       pSector = &SectorInfo[ubSectorID];
-      switch (pSector->ubTraversability[4]) {
+      switch (pSector.value.ubTraversability[4]) {
         case TOWN:
           if (fNight) {
             if (Random(2)) {

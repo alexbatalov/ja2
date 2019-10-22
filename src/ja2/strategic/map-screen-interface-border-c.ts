@@ -903,7 +903,7 @@ function BtnGenericMouseMoveButtonCallbackForMapBorder(btn: Pointer<GUI_BUTTON>,
 
   if (btn != gpAnchoredButton) {
     if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-      if (btn->Area.uiFlags & MSYS_FASTHELP) {
+      if (btn.value.Area.uiFlags & MSYS_FASTHELP) {
         // redraw area
         fMapPanelDirty = TRUE;
       }
@@ -913,11 +913,11 @@ function BtnGenericMouseMoveButtonCallbackForMapBorder(btn: Pointer<GUI_BUTTON>,
 
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     if (!gfAnchoredState)
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
@@ -1307,7 +1307,7 @@ function MapBorderButtonOff(ubBorderButtonIndex: UINT8): void {
 
   Assert(giMapBorderButtons[ubBorderButtonIndex] < MAX_BUTTONS);
 
-  ButtonList[giMapBorderButtons[ubBorderButtonIndex]]->uiFlags &= ~(BUTTON_CLICKED_ON);
+  ButtonList[giMapBorderButtons[ubBorderButtonIndex]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
 }
 
 function MapBorderButtonOn(ubBorderButtonIndex: UINT8): void {
@@ -1324,5 +1324,5 @@ function MapBorderButtonOn(ubBorderButtonIndex: UINT8): void {
 
   Assert(giMapBorderButtons[ubBorderButtonIndex] < MAX_BUTTONS);
 
-  ButtonList[giMapBorderButtons[ubBorderButtonIndex]]->uiFlags |= BUTTON_CLICKED_ON;
+  ButtonList[giMapBorderButtons[ubBorderButtonIndex]].value.uiFlags |= BUTTON_CLICKED_ON;
 }

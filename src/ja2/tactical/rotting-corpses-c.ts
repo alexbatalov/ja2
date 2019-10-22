@@ -314,7 +314,7 @@ function RecountRottingCorpses(): void {
 function GetCorpseStructIndex(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>, fForImage: BOOLEAN): UINT16 {
   let bDirection: INT8;
 
-  switch (pCorpseDef->ubType) {
+  switch (pCorpseDef.value.ubType) {
     case QUEEN_MONSTER_DEAD:
     case BURNT_DEAD:
     case EXPLODE_DEAD:
@@ -326,7 +326,7 @@ function GetCorpseStructIndex(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>, fF
     case HUMMER_DEAD:
 
       // OK , these have 2 directions....
-      bDirection = gb2DirectionsFrom8[pCorpseDef->bDirection];
+      bDirection = gb2DirectionsFrom8[pCorpseDef.value.bDirection];
       if (fForImage) {
         bDirection = gOneCDirection[bDirection];
       }
@@ -340,7 +340,7 @@ function GetCorpseStructIndex(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>, fF
     case FMERC_FALLF:
 
       // OK , these have 4 directions....
-      bDirection = gb4DirectionsFrom8[pCorpseDef->bDirection];
+      bDirection = gb4DirectionsFrom8[pCorpseDef.value.bDirection];
 
       if (fForImage) {
         bDirection = gOneCDirection[bDirection];
@@ -350,7 +350,7 @@ function GetCorpseStructIndex(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>, fF
     default:
 
       // Uses 8
-      bDirection = pCorpseDef->bDirection;
+      bDirection = pCorpseDef.value.bDirection;
 
       if (fForImage) {
         bDirection = gOneCDirection[bDirection];
@@ -375,11 +375,11 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
   let usStructIndex: UINT16;
   let uiDirectionUseFlag: UINT32;
 
-  if (pCorpseDef->sGridNo == NOWHERE) {
+  if (pCorpseDef.value.sGridNo == NOWHERE) {
     return -1;
   }
 
-  if (pCorpseDef->ubType == NO_CORPSE) {
+  if (pCorpseDef.value.ubType == NO_CORPSE) {
     return -1;
   }
 
@@ -394,7 +394,7 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
   uiDirectionUseFlag = ANITILE_USE_DIRECTION_FOR_START_FRAME;
 
   // If we are a soecial type...
-  switch (pCorpseDef->ubType) {
+  switch (pCorpseDef.value.ubType) {
     case SMERC_FALL:
     case SMERC_FALLF:
     case MMERC_FALL:
@@ -407,21 +407,21 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
 
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     // OK, AS WE ADD, CHECK FOR TOD AND DECAY APPROPRIATELY
-    if (((GetWorldTotalMin() - pCorpse->def.uiTimeOfDeath) > DELAY_UNTIL_ROTTING) && (pCorpse->def.ubType < ROTTING_STAGE2)) {
-      if (pCorpse->def.ubType <= FMERC_FALLF) {
+    if (((GetWorldTotalMin() - pCorpse.value.def.uiTimeOfDeath) > DELAY_UNTIL_ROTTING) && (pCorpse.value.def.ubType < ROTTING_STAGE2)) {
+      if (pCorpse.value.def.ubType <= FMERC_FALLF) {
         // Rott!
-        pCorpse->def.ubType = ROTTING_STAGE2;
+        pCorpse.value.def.ubType = ROTTING_STAGE2;
       }
     }
 
     // If time of death is a few days, now, don't add at all!
-    if (((GetWorldTotalMin() - pCorpse->def.uiTimeOfDeath) > DELAY_UNTIL_DONE_ROTTING)) {
+    if (((GetWorldTotalMin() - pCorpse.value.def.uiTimeOfDeath) > DELAY_UNTIL_DONE_ROTTING)) {
       return -1;
     }
   }
 
   // Check if on roof or not...
-  if (pCorpse->def.bLevel == 0) {
+  if (pCorpse.value.def.bLevel == 0) {
     // ubLevelID = ANI_OBJECT_LEVEL;
     ubLevelID = ANI_STRUCT_LEVEL;
   } else {
@@ -429,70 +429,70 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
   }
 
   memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
-  AniParams.sGridNo = pCorpse->def.sGridNo;
+  AniParams.sGridNo = pCorpse.value.def.sGridNo;
   AniParams.ubLevelID = ubLevelID;
   AniParams.sDelay = (150);
   AniParams.sStartFrame = 0;
   AniParams.uiFlags = ANITILE_CACHEDTILE | ANITILE_PAUSED | ANITILE_OPTIMIZEFORSLOWMOVING | ANITILE_ANIMATE_Z | ANITILE_ERASEITEMFROMSAVEBUFFFER | uiDirectionUseFlag;
-  AniParams.sX = CenterX(pCorpse->def.sGridNo);
-  AniParams.sY = CenterY(pCorpse->def.sGridNo);
-  AniParams.sZ = pCorpse->def.sHeightAdjustment;
-  AniParams.uiUserData3 = pCorpse->def.bDirection;
+  AniParams.sX = CenterX(pCorpse.value.def.sGridNo);
+  AniParams.sY = CenterY(pCorpse.value.def.sGridNo);
+  AniParams.sZ = pCorpse.value.def.sHeightAdjustment;
+  AniParams.uiUserData3 = pCorpse.value.def.bDirection;
 
   if (!gGameSettings.fOptions[TOPTION_BLOOD_N_GORE]) {
-    strcpy(AniParams.zCachedFile, zNoBloodCorpseFilenames[pCorpse->def.ubType]);
+    strcpy(AniParams.zCachedFile, zNoBloodCorpseFilenames[pCorpse.value.def.ubType]);
   } else {
-    strcpy(AniParams.zCachedFile, zCorpseFilenames[pCorpse->def.ubType]);
+    strcpy(AniParams.zCachedFile, zCorpseFilenames[pCorpse.value.def.ubType]);
   }
 
-  pCorpse->pAniTile = CreateAnimationTile(&AniParams);
+  pCorpse.value.pAniTile = CreateAnimationTile(&AniParams);
 
-  if (pCorpse->pAniTile == NULL) {
-    pCorpse->fActivated = FALSE;
+  if (pCorpse.value.pAniTile == NULL) {
+    pCorpse.value.fActivated = FALSE;
     return -1;
   }
 
   // Set flag and index values
-  pCorpse->pAniTile->pLevelNode->uiFlags |= (LEVELNODE_ROTTINGCORPSE);
+  pCorpse.value.pAniTile.value.pLevelNode.value.uiFlags |= (LEVELNODE_ROTTINGCORPSE);
 
-  pCorpse->pAniTile->pLevelNode->ubShadeLevel = gpWorldLevelData[pCorpse->def.sGridNo].pLandHead->ubShadeLevel;
-  pCorpse->pAniTile->pLevelNode->ubSumLights = gpWorldLevelData[pCorpse->def.sGridNo].pLandHead->ubSumLights;
-  pCorpse->pAniTile->pLevelNode->ubMaxLights = gpWorldLevelData[pCorpse->def.sGridNo].pLandHead->ubMaxLights;
-  pCorpse->pAniTile->pLevelNode->ubNaturalShadeLevel = gpWorldLevelData[pCorpse->def.sGridNo].pLandHead->ubNaturalShadeLevel;
+  pCorpse.value.pAniTile.value.pLevelNode.value.ubShadeLevel = gpWorldLevelData[pCorpse.value.def.sGridNo].pLandHead.value.ubShadeLevel;
+  pCorpse.value.pAniTile.value.pLevelNode.value.ubSumLights = gpWorldLevelData[pCorpse.value.def.sGridNo].pLandHead.value.ubSumLights;
+  pCorpse.value.pAniTile.value.pLevelNode.value.ubMaxLights = gpWorldLevelData[pCorpse.value.def.sGridNo].pLandHead.value.ubMaxLights;
+  pCorpse.value.pAniTile.value.pLevelNode.value.ubNaturalShadeLevel = gpWorldLevelData[pCorpse.value.def.sGridNo].pLandHead.value.ubNaturalShadeLevel;
 
-  pCorpse->pAniTile->uiUserData = iIndex;
-  pCorpse->iID = iIndex;
+  pCorpse.value.pAniTile.value.uiUserData = iIndex;
+  pCorpse.value.iID = iIndex;
 
-  pCorpse->fActivated = TRUE;
+  pCorpse.value.fActivated = TRUE;
 
   if (Random(100) > 50) {
-    pCorpse->fAttractCrowsOnlyWhenOnScreen = TRUE;
+    pCorpse.value.fAttractCrowsOnlyWhenOnScreen = TRUE;
   } else {
-    pCorpse->fAttractCrowsOnlyWhenOnScreen = FALSE;
+    pCorpse.value.fAttractCrowsOnlyWhenOnScreen = FALSE;
   }
 
-  pCorpse->iCachedTileID = pCorpse->pAniTile->sCachedTileID;
+  pCorpse.value.iCachedTileID = pCorpse.value.pAniTile.value.sCachedTileID;
 
-  if (pCorpse->iCachedTileID == -1) {
-    DeleteAniTile(pCorpse->pAniTile);
-    pCorpse->fActivated = FALSE;
+  if (pCorpse.value.iCachedTileID == -1) {
+    DeleteAniTile(pCorpse.value.pAniTile);
+    pCorpse.value.fActivated = FALSE;
     return -1;
   }
 
   // Get palette and create palettes and do substitutions
   if (!CreateCorpsePalette(pCorpse)) {
-    DeleteAniTile(pCorpse->pAniTile);
-    pCorpse->fActivated = FALSE;
+    DeleteAniTile(pCorpse.value.pAniTile);
+    pCorpse.value.fActivated = FALSE;
     return -1;
   }
 
   SetRenderFlags(RENDER_FLAG_FULL);
 
-  if (pCorpse->def.usFlags & ROTTING_CORPSE_VEHICLE) {
-    pCorpse->pAniTile->uiFlags |= (ANITILE_FORWARD | ANITILE_LOOPING);
+  if (pCorpse.value.def.usFlags & ROTTING_CORPSE_VEHICLE) {
+    pCorpse.value.pAniTile.value.uiFlags |= (ANITILE_FORWARD | ANITILE_LOOPING);
 
     // Turn off pause...
-    pCorpse->pAniTile->uiFlags &= (~ANITILE_PAUSED);
+    pCorpse.value.pAniTile.value.uiFlags &= (~ANITILE_PAUSED);
   }
 
   InvalidateWorldRedundency();
@@ -504,22 +504,22 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
   GetRootName(zFilename, AniParams.zCachedFile);
 
   // Add structure data.....
-  CheckForAndAddTileCacheStructInfo(pCorpse->pAniTile->pLevelNode, pCorpse->def.sGridNo, (pCorpse->iCachedTileID), GetCorpseStructIndex(pCorpseDef, TRUE));
+  CheckForAndAddTileCacheStructInfo(pCorpse.value.pAniTile.value.pLevelNode, pCorpse.value.def.sGridNo, (pCorpse.value.iCachedTileID), GetCorpseStructIndex(pCorpseDef, TRUE));
 
   pStructureFileRef = GetCachedTileStructureRefFromFilename(zFilename);
 
   if (pStructureFileRef != NULL) {
     usStructIndex = GetCorpseStructIndex(pCorpseDef, TRUE);
 
-    pDBStructureRef = &(pStructureFileRef->pDBStructureRef[usStructIndex]);
+    pDBStructureRef = &(pStructureFileRef.value.pDBStructureRef[usStructIndex]);
 
-    for (ubLoop = 0; ubLoop < pDBStructureRef->pDBStructure->ubNumberOfTiles; ubLoop++) {
-      ppTile = pDBStructureRef->ppTile;
+    for (ubLoop = 0; ubLoop < pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles; ubLoop++) {
+      ppTile = pDBStructureRef.value.ppTile;
 
-      sTileGridNo = pCorpseDef->sGridNo + ppTile[ubLoop]->sPosRelToBase;
+      sTileGridNo = pCorpseDef.value.sGridNo + ppTile[ubLoop].value.sPosRelToBase;
 
       // Remove blood
-      RemoveBlood(sTileGridNo, pCorpseDef->bLevel);
+      RemoveBlood(sTileGridNo, pCorpseDef.value.bLevel);
     }
   }
 
@@ -531,13 +531,13 @@ function FreeCorpsePalettes(pCorpse: Pointer<ROTTING_CORPSE>): void {
   let cnt: INT32;
 
   // Free palettes
-  MemFree(pCorpse->p8BPPPalette);
-  MemFree(pCorpse->p16BPPPalette);
+  MemFree(pCorpse.value.p8BPPPalette);
+  MemFree(pCorpse.value.p16BPPPalette);
 
   for (cnt = 0; cnt < NUM_CORPSE_SHADES; cnt++) {
-    if (pCorpse->pShades[cnt] != NULL) {
-      MemFree(pCorpse->pShades[cnt]);
-      pCorpse->pShades[cnt] = NULL;
+    if (pCorpse.value.pShades[cnt] != NULL) {
+      MemFree(pCorpse.value.pShades[cnt]);
+      pCorpse.value.pShades[cnt] = NULL;
     }
   }
 }
@@ -568,45 +568,45 @@ function CreateCorpsePalette(pCorpse: Pointer<ROTTING_CORPSE>): BOOLEAN {
   let bBodyTypePalette: INT8;
   let Temp8BPPPalette: SGPPaletteEntry[] /* [256] */;
 
-  pCorpse->p8BPPPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);
+  pCorpse.value.p8BPPPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);
 
-  CHECKF(pCorpse->p8BPPPalette != NULL);
+  CHECKF(pCorpse.value.p8BPPPalette != NULL);
 
-  bBodyTypePalette = GetBodyTypePaletteSubstitutionCode(NULL, pCorpse->def.ubBodyType, zColFilename);
+  bBodyTypePalette = GetBodyTypePaletteSubstitutionCode(NULL, pCorpse.value.def.ubBodyType, zColFilename);
 
   // If this corpse has cammo,
-  if (pCorpse->def.ubType == ROTTING_STAGE2) {
+  if (pCorpse.value.def.ubType == ROTTING_STAGE2) {
     bBodyTypePalette = 0;
-  } else if (pCorpse->def.usFlags & ROTTING_CORPSE_USE_CAMMO_PALETTE) {
+  } else if (pCorpse.value.def.usFlags & ROTTING_CORPSE_USE_CAMMO_PALETTE) {
     strcpy(zColFilename, "ANIMS\\camo.COL");
     bBodyTypePalette = 1;
   }
 
   if (bBodyTypePalette == -1) {
     // Use palette from HVOBJECT, then use substitution for pants, etc
-    memcpy(pCorpse->p8BPPPalette, gpTileCache[pCorpse->iCachedTileID].pImagery->vo->pPaletteEntry, sizeof(pCorpse->p8BPPPalette) * 256);
+    memcpy(pCorpse.value.p8BPPPalette, gpTileCache[pCorpse.value.iCachedTileID].pImagery.value.vo.value.pPaletteEntry, sizeof(pCorpse.value.p8BPPPalette) * 256);
 
     // Substitute based on head, etc
-    SetPaletteReplacement(pCorpse->p8BPPPalette, pCorpse->def.HeadPal);
-    SetPaletteReplacement(pCorpse->p8BPPPalette, pCorpse->def.VestPal);
-    SetPaletteReplacement(pCorpse->p8BPPPalette, pCorpse->def.PantsPal);
-    SetPaletteReplacement(pCorpse->p8BPPPalette, pCorpse->def.SkinPal);
+    SetPaletteReplacement(pCorpse.value.p8BPPPalette, pCorpse.value.def.HeadPal);
+    SetPaletteReplacement(pCorpse.value.p8BPPPalette, pCorpse.value.def.VestPal);
+    SetPaletteReplacement(pCorpse.value.p8BPPPalette, pCorpse.value.def.PantsPal);
+    SetPaletteReplacement(pCorpse.value.p8BPPPalette, pCorpse.value.def.SkinPal);
   } else if (bBodyTypePalette == 0) {
     // Use palette from hvobject
-    memcpy(pCorpse->p8BPPPalette, gpTileCache[pCorpse->iCachedTileID].pImagery->vo->pPaletteEntry, sizeof(pCorpse->p8BPPPalette) * 256);
+    memcpy(pCorpse.value.p8BPPPalette, gpTileCache[pCorpse.value.iCachedTileID].pImagery.value.vo.value.pPaletteEntry, sizeof(pCorpse.value.p8BPPPalette) * 256);
   } else {
     // Use col file
     if (CreateSGPPaletteFromCOLFile(Temp8BPPPalette, zColFilename)) {
       // Copy into palette
-      memcpy(pCorpse->p8BPPPalette, Temp8BPPPalette, sizeof(pCorpse->p8BPPPalette) * 256);
+      memcpy(pCorpse.value.p8BPPPalette, Temp8BPPPalette, sizeof(pCorpse.value.p8BPPPalette) * 256);
     } else {
       // Use palette from hvobject
-      memcpy(pCorpse->p8BPPPalette, gpTileCache[pCorpse->iCachedTileID].pImagery->vo->pPaletteEntry, sizeof(pCorpse->p8BPPPalette) * 256);
+      memcpy(pCorpse.value.p8BPPPalette, gpTileCache[pCorpse.value.iCachedTileID].pImagery.value.vo.value.pPaletteEntry, sizeof(pCorpse.value.p8BPPPalette) * 256);
     }
   }
 
   // -- BUILD 16BPP Palette from this
-  pCorpse->p16BPPPalette = Create16BPPPalette(pCorpse->p8BPPPalette);
+  pCorpse.value.p16BPPPalette = Create16BPPPalette(pCorpse.value.p8BPPPalette);
 
   CreateCorpsePaletteTables(pCorpse);
 
@@ -625,7 +625,7 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
   let sNewGridNo: INT16;
   let ItemObject: OBJECTTYPE;
 
-  if (pSoldier->sGridNo == NOWHERE) {
+  if (pSoldier.value.sGridNo == NOWHERE) {
     return FALSE;
   }
 
@@ -636,36 +636,36 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
 
   // Setup some values!
   memset(&Corpse, 0, sizeof(Corpse));
-  Corpse.ubBodyType = pSoldier->ubBodyType;
-  Corpse.sGridNo = pSoldier->sGridNo;
-  Corpse.dXPos = pSoldier->dXPos;
-  Corpse.dYPos = pSoldier->dYPos;
-  Corpse.bLevel = pSoldier->bLevel;
-  Corpse.ubProfile = pSoldier->ubProfile;
+  Corpse.ubBodyType = pSoldier.value.ubBodyType;
+  Corpse.sGridNo = pSoldier.value.sGridNo;
+  Corpse.dXPos = pSoldier.value.dXPos;
+  Corpse.dYPos = pSoldier.value.dYPos;
+  Corpse.bLevel = pSoldier.value.bLevel;
+  Corpse.ubProfile = pSoldier.value.ubProfile;
 
   if (Corpse.bLevel > 0) {
-    Corpse.sHeightAdjustment = (pSoldier->sHeightAdjustment - WALL_HEIGHT);
+    Corpse.sHeightAdjustment = (pSoldier.value.sHeightAdjustment - WALL_HEIGHT);
   }
 
-  SET_PALETTEREP_ID(Corpse.HeadPal, pSoldier->HeadPal);
-  SET_PALETTEREP_ID(Corpse.VestPal, pSoldier->VestPal);
-  SET_PALETTEREP_ID(Corpse.SkinPal, pSoldier->SkinPal);
-  SET_PALETTEREP_ID(Corpse.PantsPal, pSoldier->PantsPal);
+  SET_PALETTEREP_ID(Corpse.HeadPal, pSoldier.value.HeadPal);
+  SET_PALETTEREP_ID(Corpse.VestPal, pSoldier.value.VestPal);
+  SET_PALETTEREP_ID(Corpse.SkinPal, pSoldier.value.SkinPal);
+  SET_PALETTEREP_ID(Corpse.PantsPal, pSoldier.value.PantsPal);
 
-  if (pSoldier->bCamo != 0) {
+  if (pSoldier.value.bCamo != 0) {
     Corpse.usFlags |= ROTTING_CORPSE_USE_CAMMO_PALETTE;
   }
 
   // Determine corpse type!
-  ubType = gubAnimSurfaceCorpseID[pSoldier->ubBodyType][pSoldier->usAnimState];
+  ubType = gubAnimSurfaceCorpseID[pSoldier.value.ubBodyType][pSoldier.value.usAnimState];
 
-  Corpse.bDirection = pSoldier->bDirection;
+  Corpse.bDirection = pSoldier.value.bDirection;
 
   // If we are a vehicle.... only use 1 direction....
-  if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
     Corpse.usFlags |= ROTTING_CORPSE_VEHICLE;
 
-    if (pSoldier->ubBodyType != ICECREAMTRUCK && pSoldier->ubBodyType != HUMVEE) {
+    if (pSoldier.value.ubBodyType != ICECREAMTRUCK && pSoldier.value.ubBodyType != HUMVEE) {
       Corpse.bDirection = 7;
     } else {
       Corpse.bDirection = gb2DirectionsFrom8[Corpse.bDirection];
@@ -686,13 +686,13 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
   Corpse.uiTimeOfDeath = GetWorldTotalMin();
 
   // If corpse is not valid. make items visible
-  if (ubType == NO_CORPSE && pSoldier->bTeam != gbPlayerNum) {
+  if (ubType == NO_CORPSE && pSoldier.value.bTeam != gbPlayerNum) {
     usItemFlags &= (~WORLD_ITEM_DONTRENDER);
   }
 
   // ATE: If the queen is killed, she should
   // make items visible because it ruins end sequence....
-  if (pSoldier->ubProfile == QUEEN || pSoldier->bTeam == gbPlayerNum) {
+  if (pSoldier.value.ubProfile == QUEEN || pSoldier.value.bTeam == gbPlayerNum) {
     bVisible = 1;
   }
 
@@ -703,31 +703,31 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
 
     ubNumGoo = 6 - (gGameOptions.ubDifficultyLevel - DIF_LEVEL_EASY);
 
-    sNewGridNo = pSoldier->sGridNo + (WORLD_COLS * 2);
+    sNewGridNo = pSoldier.value.sGridNo + (WORLD_COLS * 2);
 
     for (cnt = 0; cnt < ubNumGoo; cnt++) {
       CreateItem(JAR_QUEEN_CREATURE_BLOOD, 100, &ItemObject);
 
-      AddItemToPool(sNewGridNo, &ItemObject, bVisible, pSoldier->bLevel, usItemFlags, -1);
+      AddItemToPool(sNewGridNo, &ItemObject, bVisible, pSoldier.value.bLevel, usItemFlags, -1);
     }
   } else {
     // OK, Place what objects this guy was carrying on the ground!
     for (cnt = 0; cnt < NUM_INV_SLOTS; cnt++) {
-      pObj = &(pSoldier->inv[cnt]);
+      pObj = &(pSoldier.value.inv[cnt]);
 
-      if (pObj->usItem != NOTHING) {
+      if (pObj.value.usItem != NOTHING) {
         // Check if it's supposed to be dropped
-        if (!(pObj->fFlags & OBJECT_UNDROPPABLE) || pSoldier->bTeam == gbPlayerNum) {
+        if (!(pObj.value.fFlags & OBJECT_UNDROPPABLE) || pSoldier.value.bTeam == gbPlayerNum) {
           // and make sure that it really is a droppable item type
-          if (!(Item[pObj->usItem].fFlags & ITEM_DEFAULT_UNDROPPABLE)) {
+          if (!(Item[pObj.value.usItem].fFlags & ITEM_DEFAULT_UNDROPPABLE)) {
             ReduceAmmoDroppedByNonPlayerSoldiers(pSoldier, cnt);
-            AddItemToPool(pSoldier->sGridNo, pObj, bVisible, pSoldier->bLevel, usItemFlags, -1);
+            AddItemToPool(pSoldier.value.sGridNo, pObj, bVisible, pSoldier.value.bLevel, usItemFlags, -1);
           }
         }
       }
     }
 
-    DropKeysInKeyRing(pSoldier, pSoldier->sGridNo, pSoldier->bLevel, bVisible, FALSE, 0, FALSE);
+    DropKeysInKeyRing(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bLevel, bVisible, FALSE, 0, FALSE);
   }
 
   // Make team look for items
@@ -737,10 +737,10 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
   if (fRemoveMerc) {
     // If not a player, you can completely remove soldiertype
     // otherwise, just remove their graphic
-    if (pSoldier->bTeam != gbPlayerNum) {
+    if (pSoldier.value.bTeam != gbPlayerNum) {
       // Remove merc!
       // ATE: Remove merc slot first - will disappear if no corpse data found!
-      TacticalRemoveSoldier(pSoldier->ubID);
+      TacticalRemoveSoldier(pSoldier.value.ubID);
     } else {
       RemoveSoldierFromGridNo(pSoldier);
     }
@@ -784,13 +784,13 @@ function FindNearestRottingCorpse(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   for (cnt = 0; cnt < giNumRottingCorpse; cnt++) {
     pCorpse = &(gRottingCorpse[cnt]);
 
-    if (pCorpse->fActivated) {
+    if (pCorpse.value.fActivated) {
       // Check rotting state
-      if (pCorpse->def.ubType == ROTTING_STAGE2) {
-        uiRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier->sGridNo, pCorpse->def.sGridNo);
+      if (pCorpse.value.def.ubType == ROTTING_STAGE2) {
+        uiRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, pCorpse.value.def.sGridNo);
 
         if (uiRange < uiLowestRange) {
-          sLowestGridNo = pCorpse->def.sGridNo;
+          sLowestGridNo = pCorpse.value.def.sGridNo;
           uiLowestRange = uiRange;
         }
       }
@@ -810,7 +810,7 @@ function AddCrowToCorpse(pCorpse: Pointer<ROTTING_CORPSE>): void {
   let ubRoomNum: UINT8;
 
   // No crows inside :(
-  if (InARoom(pCorpse->def.sGridNo, &ubRoomNum)) {
+  if (InARoom(pCorpse.value.def.sGridNo, &ubRoomNum)) {
     return;
   }
 
@@ -823,20 +823,20 @@ function AddCrowToCorpse(pCorpse: Pointer<ROTTING_CORPSE>): void {
   MercCreateStruct.bBodyType = bBodyType;
   MercCreateStruct.bDirection = SOUTH;
   MercCreateStruct.bTeam = CIV_TEAM;
-  MercCreateStruct.sInsertionGridNo = pCorpse->def.sGridNo;
+  MercCreateStruct.sInsertionGridNo = pCorpse.value.def.sGridNo;
   RandomizeNewSoldierStats(&MercCreateStruct);
 
   if (TacticalCreateSoldier(&MercCreateStruct, &iNewIndex) != NULL) {
     pSoldier = MercPtrs[iNewIndex];
 
-    sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pCorpse->def.sGridNo, 2, &ubDirection);
+    sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pCorpse.value.def.sGridNo, 2, &ubDirection);
 
     if (sGridNo != NOWHERE) {
-      pSoldier->ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
-      pSoldier->usStrategicInsertionData = sGridNo;
+      pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+      pSoldier.value.usStrategicInsertionData = sGridNo;
 
-      pSoldier->sInsertionGridNo = sGridNo;
-      pSoldier->sDesiredHeight = 0;
+      pSoldier.value.sInsertionGridNo = sGridNo;
+      pSoldier.value.sDesiredHeight = 0;
 
       // Add to sector
       AddSoldierToSector(iNewIndex);
@@ -847,10 +847,10 @@ function AddCrowToCorpse(pCorpse: Pointer<ROTTING_CORPSE>): void {
       // EVENT_GetNewSoldierPath( pSoldier, sGridNo, pSoldier->usUIMovementMode );
 
       // Setup action data to point back to corpse....
-      pSoldier->uiPendingActionData1 = pCorpse->iID;
-      pSoldier->sPendingActionData2 = pCorpse->def.sGridNo;
+      pSoldier.value.uiPendingActionData1 = pCorpse.value.iID;
+      pSoldier.value.sPendingActionData2 = pCorpse.value.def.sGridNo;
 
-      pCorpse->def.bNumServicingCrows++;
+      pCorpse.value.def.bNumServicingCrows++;
     }
   }
 }
@@ -859,16 +859,16 @@ function HandleCrowLeave(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pCorpse: Pointer<ROTTING_CORPSE>;
 
   // Check if this crow is still referencing the same corpse...
-  pCorpse = &(gRottingCorpse[pSoldier->uiPendingActionData1]);
+  pCorpse = &(gRottingCorpse[pSoldier.value.uiPendingActionData1]);
 
   // Double check grindo...
-  if (pSoldier->sPendingActionData2 == pCorpse->def.sGridNo) {
+  if (pSoldier.value.sPendingActionData2 == pCorpse.value.def.sGridNo) {
     // We have a match
     // Adjust crow servicing count...
-    pCorpse->def.bNumServicingCrows--;
+    pCorpse.value.def.bNumServicingCrows--;
 
-    if (pCorpse->def.bNumServicingCrows < 0) {
-      pCorpse->def.bNumServicingCrows = 0;
+    if (pCorpse.value.def.bNumServicingCrows < 0) {
+      pCorpse.value.def.bNumServicingCrows = 0;
     }
   }
 }
@@ -878,12 +878,12 @@ function HandleCrowFlyAway(pSoldier: Pointer<SOLDIERTYPE>): void {
   let sGridNo: INT16;
 
   // Set desired height
-  pSoldier->sDesiredHeight = 100;
+  pSoldier.value.sDesiredHeight = 100;
 
   // Change to fly animation
-  sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pSoldier->sGridNo, 5, &ubDirection);
-  pSoldier->usUIMovementMode = CROW_FLY;
-  SendGetNewSoldierPathEvent(pSoldier, sGridNo, pSoldier->usUIMovementMode);
+  sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pSoldier.value.sGridNo, 5, &ubDirection);
+  pSoldier.value.usUIMovementMode = CROW_FLY;
+  SendGetNewSoldierPathEvent(pSoldier, sGridNo, pSoldier.value.usUIMovementMode);
 }
 
 function HandleRottingCorpses(): void {
@@ -912,8 +912,8 @@ function HandleRottingCorpses(): void {
     let pSoldier: Pointer<SOLDIERTYPE>;
 
     for (bLoop = gTacticalStatus.Team[CIV_TEAM].bFirstID, pSoldier = MercPtrs[bLoop]; bLoop <= gTacticalStatus.Team[CIV_TEAM].bLastID; bLoop++, pSoldier++) {
-      if (pSoldier->bActive && pSoldier->bInSector && (pSoldier->bLife >= OKLIFE) && !(pSoldier->uiStatusFlags & SOLDIER_GASSED)) {
-        if (pSoldier->ubBodyType == CROW) {
+      if (pSoldier.value.bActive && pSoldier.value.bInSector && (pSoldier.value.bLife >= OKLIFE) && !(pSoldier.value.uiStatusFlags & SOLDIER_GASSED)) {
+        if (pSoldier.value.ubBodyType == CROW) {
           bNumCrows++;
         }
       }
@@ -945,10 +945,10 @@ function HandleRottingCorpses(): void {
 
     pCorpse = &(gRottingCorpse[uiChosenCorpseID]);
 
-    if (pCorpse->fActivated) {
-      if (!(pCorpse->def.usFlags & ROTTING_CORPSE_VEHICLE)) {
-        if (pCorpse->def.ubType == ROTTING_STAGE2) {
-          if (GridNoOnScreen(pCorpse->def.sGridNo)) {
+    if (pCorpse.value.fActivated) {
+      if (!(pCorpse.value.def.usFlags & ROTTING_CORPSE_VEHICLE)) {
+        if (pCorpse.value.def.ubType == ROTTING_STAGE2) {
+          if (GridNoOnScreen(pCorpse.value.def.sGridNo)) {
             return;
           }
 
@@ -961,7 +961,7 @@ function HandleRottingCorpses(): void {
 }
 
 function MakeCorpseVisible(pSoldier: Pointer<SOLDIERTYPE>, pCorpse: Pointer<ROTTING_CORPSE>): void {
-  pCorpse->def.bVisible = 1;
+  pCorpse.value.def.bVisible = 1;
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
@@ -972,30 +972,30 @@ function AllMercsOnTeamLookForCorpse(pCorpse: Pointer<ROTTING_CORPSE>, bTeam: IN
   let sGridNo: INT16;
 
   // If this cump is already visible, return
-  if (pCorpse->def.bVisible == 1) {
+  if (pCorpse.value.def.bVisible == 1) {
     return;
   }
 
-  if (!pCorpse->fActivated) {
+  if (!pCorpse.value.fActivated) {
     return;
   }
 
   // IF IT'S THE SELECTED GUY, MAKE ANOTHER SELECTED!
   cnt = gTacticalStatus.Team[bTeam].bFirstID;
 
-  sGridNo = pCorpse->def.sGridNo;
+  sGridNo = pCorpse.value.def.sGridNo;
 
   // look for all mercs on the same team,
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[bTeam].bLastID; cnt++, pSoldier++) {
     // ATE: Ok, lets check for some basic things here!
-    if (pSoldier->bLife >= OKLIFE && pSoldier->sGridNo != NOWHERE && pSoldier->bActive && pSoldier->bInSector) {
+    if (pSoldier.value.bLife >= OKLIFE && pSoldier.value.sGridNo != NOWHERE && pSoldier.value.bActive && pSoldier.value.bInSector) {
       // is he close enough to see that gridno if he turns his head?
-      sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, pCorpse->def.bLevel);
+      sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, pCorpse.value.def.bLevel);
 
-      if (PythSpacesAway(pSoldier->sGridNo, sGridNo) <= sDistVisible) {
+      if (PythSpacesAway(pSoldier.value.sGridNo, sGridNo) <= sDistVisible) {
         // and we can trace a line of sight to his x,y coordinates?
         // (taking into account we are definitely aware of this guy now)
-        if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, pCorpse->def.bLevel, 3, sDistVisible, TRUE)) {
+        if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, pCorpse.value.def.bLevel, 3, sDistVisible, TRUE)) {
           MakeCorpseVisible(pSoldier, pCorpse);
           return;
         }
@@ -1011,11 +1011,11 @@ function MercLooksForCorpses(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pCorpse: Pointer<ROTTING_CORPSE>;
 
   // Should we say disgust quote?
-  if ((pSoldier->usQuoteSaidFlags & SOLDIER_QUOTE_SAID_ROTTINGCORPSE)) {
+  if ((pSoldier.value.usQuoteSaidFlags & SOLDIER_QUOTE_SAID_ROTTINGCORPSE)) {
     return;
   }
 
-  if (pSoldier->ubProfile == NO_PROFILE) {
+  if (pSoldier.value.ubProfile == NO_PROFILE) {
     return;
   }
 
@@ -1023,7 +1023,7 @@ function MercLooksForCorpses(pSoldier: Pointer<SOLDIERTYPE>): void {
     return;
   }
 
-  if (QuoteExp_HeadShotOnly[pSoldier->ubProfile] == 1) {
+  if (QuoteExp_HeadShotOnly[pSoldier.value.ubProfile] == 1) {
     return;
   }
 
@@ -1033,26 +1033,26 @@ function MercLooksForCorpses(pSoldier: Pointer<SOLDIERTYPE>): void {
     for (cnt = 0; cnt < giNumRottingCorpse; cnt++) {
       pCorpse = &(gRottingCorpse[cnt]);
 
-      if (!pCorpse->fActivated) {
+      if (!pCorpse.value.fActivated) {
         continue;
       }
 
       // Has this corpse rotted enough?
-      if (pCorpse->def.ubType == ROTTING_STAGE2) {
-        sGridNo = pCorpse->def.sGridNo;
+      if (pCorpse.value.def.ubType == ROTTING_STAGE2) {
+        sGridNo = pCorpse.value.def.sGridNo;
 
         // is he close enough to see that gridno if he turns his head?
-        sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, pCorpse->def.bLevel);
+        sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, pCorpse.value.def.bLevel);
 
-        if (PythSpacesAway(pSoldier->sGridNo, sGridNo) <= sDistVisible) {
+        if (PythSpacesAway(pSoldier.value.sGridNo, sGridNo) <= sDistVisible) {
           // and we can trace a line of sight to his x,y coordinates?
           // (taking into account we are definitely aware of this guy now)
-          if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, pCorpse->def.bLevel, 3, sDistVisible, TRUE)) {
+          if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, pCorpse.value.def.bLevel, 3, sDistVisible, TRUE)) {
             TacticalCharacterDialogue(pSoldier, QUOTE_HEADSHOT);
 
-            pSoldier->usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_ROTTINGCORPSE;
+            pSoldier.value.usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_ROTTINGCORPSE;
 
-            BeginMultiPurposeLocator(sGridNo, pCorpse->def.bLevel, FALSE);
+            BeginMultiPurposeLocator(sGridNo, pCorpse.value.def.bLevel, FALSE);
 
             // Slide to...
             SlideToLocation(0, sGridNo);
@@ -1074,11 +1074,11 @@ function RebuildAllCorpseShadeTables(): void {
     pCorpse = &(gRottingCorpse[cnt]);
 
     // If this cump is already visible, continue
-    if (pCorpse->def.bVisible == 1) {
+    if (pCorpse.value.def.bVisible == 1) {
       continue;
     }
 
-    if (!pCorpse->fActivated) {
+    if (!pCorpse.value.fActivated) {
       continue;
     }
 
@@ -1093,9 +1093,9 @@ function CreateCorpsePaletteTables(pCorpse: Pointer<ROTTING_CORPSE>): UINT16 {
   // create the basic shade table
   for (uiCount = 0; uiCount < 256; uiCount++) {
     // combine the rgb of the light color with the object's palette
-    LightPal[uiCount].peRed = (__min(pCorpse->p8BPPPalette[uiCount].peRed + gpLightColors[0].peRed, 255));
-    LightPal[uiCount].peGreen = (__min(pCorpse->p8BPPPalette[uiCount].peGreen + gpLightColors[0].peGreen, 255));
-    LightPal[uiCount].peBlue = (__min(pCorpse->p8BPPPalette[uiCount].peBlue + gpLightColors[0].peBlue, 255));
+    LightPal[uiCount].peRed = (__min(pCorpse.value.p8BPPPalette[uiCount].peRed + gpLightColors[0].peRed, 255));
+    LightPal[uiCount].peGreen = (__min(pCorpse.value.p8BPPPalette[uiCount].peGreen + gpLightColors[0].peGreen, 255));
+    LightPal[uiCount].peBlue = (__min(pCorpse.value.p8BPPPalette[uiCount].peBlue + gpLightColors[0].peBlue, 255));
   }
   // build the shade tables
   CreateCorpseShadedPalette(pCorpse, 0, LightPal);
@@ -1109,10 +1109,10 @@ function CreateCorpsePaletteTables(pCorpse: Pointer<ROTTING_CORPSE>): UINT16 {
 function CreateCorpseShadedPalette(pCorpse: Pointer<ROTTING_CORPSE>, uiBase: UINT32, pShadePal: Pointer<SGPPaletteEntry>): BOOLEAN {
   let uiCount: UINT32;
 
-  pCorpse->pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], TRUE);
+  pCorpse.value.pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], TRUE);
 
   for (uiCount = 1; uiCount < 16; uiCount++) {
-    pCorpse->pShades[uiBase + uiCount] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[uiCount][0], gusShadeLevels[uiCount][1], gusShadeLevels[uiCount][2], FALSE);
+    pCorpse.value.pShades[uiBase + uiCount] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[uiCount][0], gusShadeLevels[uiCount][1], gusShadeLevels[uiCount][2], FALSE);
   }
 
   return TRUE;
@@ -1124,15 +1124,15 @@ function FindCorpseBasedOnStructure(sGridNo: INT16, pStructure: Pointer<STRUCTUR
 
   pLevelNode = gpWorldLevelData[sGridNo].pStructHead;
   while (pLevelNode != NULL) {
-    if (pLevelNode->pStructureData == pStructure) {
+    if (pLevelNode.value.pStructureData == pStructure) {
       break;
     }
-    pLevelNode = pLevelNode->pNext;
+    pLevelNode = pLevelNode.value.pNext;
   }
 
   if (pLevelNode != NULL) {
     // Get our corpse....
-    pCorpse = &(gRottingCorpse[pLevelNode->pAniTile->uiUserData]);
+    pCorpse = &(gRottingCorpse[pLevelNode.value.pAniTile.value.uiUserData]);
   }
 
   return pCorpse;
@@ -1154,7 +1154,7 @@ function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
   pBaseStructure = FindBaseStructure(pStructure);
 
   // Find base gridno...
-  sBaseGridNo = pBaseStructure->sGridNo;
+  sBaseGridNo = pBaseStructure.value.sGridNo;
 
   // Get corpse ID.....
   pCorpse = FindCorpseBasedOnStructure(sBaseGridNo, pBaseStructure);
@@ -1163,7 +1163,7 @@ function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
     return;
   }
 
-  if (pCorpse->def.usFlags & ROTTING_CORPSE_VEHICLE) {
+  if (pCorpse.value.def.usFlags & ROTTING_CORPSE_VEHICLE) {
     return;
   }
 
@@ -1177,16 +1177,16 @@ function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
     AniParams.uiFlags = ANITILE_CACHEDTILE | ANITILE_FORWARD;
     AniParams.sX = CenterX(sBaseGridNo);
     AniParams.sY = CenterY(sBaseGridNo);
-    AniParams.sZ = pCorpse->def.sHeightAdjustment;
+    AniParams.sZ = pCorpse.value.def.sHeightAdjustment;
 
     strcpy(AniParams.zCachedFile, "TILECACHE\\GEN_BLOW.STI");
     CreateAnimationTile(&AniParams);
 
     // Remove....
-    RemoveCorpse(pCorpse->iID);
+    RemoveCorpse(pCorpse.value.iID);
     SetRenderFlags(RENDER_FLAG_FULL);
 
-    if (pCorpse->def.bLevel == 0) {
+    if (pCorpse.value.def.bLevel == 0) {
       // Set some blood......
       SpreadEffect(sBaseGridNo, ((2)), 0, NOBODY, BLOOD_SPREAD_EFFECT, 0, -1);
     }
@@ -1223,11 +1223,11 @@ function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINI
 
   // Get root filename... this removes path and extension
   // USed to find struct data fo rthis corpse...
-  GetRootName(zFilename, zCorpseFilenames[pDef->ubType]);
+  GetRootName(zFilename, zCorpseFilenames[pDef.value.ubType]);
 
   pStructureFileRef = GetCachedTileStructureRefFromFilename(zFilename);
 
-  sSweetGridNo = pDef->sGridNo;
+  sSweetGridNo = pDef.value.sGridNo;
 
   // Save AI pathing vars.  changing the distlimit restricts how
   // far away the pathing will consider.
@@ -1280,7 +1280,7 @@ function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINI
             fDirectionFound = TRUE;
           } else {
             for (cnt3 = 0; cnt3 < 8; cnt3++) {
-              if (OkayToAddStructureToWorld(sGridNo, pDef->bLevel, &(pStructureFileRef->pDBStructureRef[gOneCDirection[cnt3]]), INVALID_STRUCTURE_ID)) {
+              if (OkayToAddStructureToWorld(sGridNo, pDef.value.bLevel, &(pStructureFileRef.value.pDBStructureRef[gOneCDirection[cnt3]]), INVALID_STRUCTURE_ID)) {
                 fDirectionFound = TRUE;
                 fCanSetDirection = TRUE;
                 break;
@@ -1309,7 +1309,7 @@ function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINI
   gubNPCDistLimit = ubSaveNPCDistLimit;
   if (fFound) {
     if (fSetDirection) {
-      pDef->bDirection = ubBestDirection;
+      pDef.value.bDirection = ubBestDirection;
     }
 
     return sLowestGridNo;
@@ -1318,11 +1318,11 @@ function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINI
 }
 
 function IsValidDecapitationCorpse(pCorpse: Pointer<ROTTING_CORPSE>): BOOLEAN {
-  if (pCorpse->def.fHeadTaken) {
+  if (pCorpse.value.def.fHeadTaken) {
     return FALSE;
   }
 
-  return gbCorpseValidForDecapitation[pCorpse->def.ubType];
+  return gbCorpseValidForDecapitation[pCorpse.value.def.ubType];
 }
 
 function GetCorpseAtGridNo(sGridNo: INT16, bLevel: INT8): Pointer<ROTTING_CORPSE> {
@@ -1337,7 +1337,7 @@ function GetCorpseAtGridNo(sGridNo: INT16, bLevel: INT8): Pointer<ROTTING_CORPSE
     pBaseStructure = FindBaseStructure(pStructure);
 
     // Find base gridno...
-    sBaseGridNo = pBaseStructure->sGridNo;
+    sBaseGridNo = pBaseStructure.value.sGridNo;
 
     if (pBaseStructure != NULL) {
       return FindCorpseBasedOnStructure(sBaseGridNo, pBaseStructure);
@@ -1362,16 +1362,16 @@ function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel
   if (IsValidDecapitationCorpse(pCorpse)) {
     // Decapitate.....
     // Copy corpse definition...
-    memcpy(&CorpseDef, &(pCorpse->def), sizeof(ROTTING_CORPSE_DEFINITION));
+    memcpy(&CorpseDef, &(pCorpse.value.def), sizeof(ROTTING_CORPSE_DEFINITION));
 
     // Add new one...
     CorpseDef.ubType = gDecapitatedCorpse[CorpseDef.ubType];
 
-    pCorpse->def.fHeadTaken = TRUE;
+    pCorpse.value.def.fHeadTaken = TRUE;
 
     if (CorpseDef.ubType != 0) {
       // Remove old one...
-      RemoveCorpse(pCorpse->iID);
+      RemoveCorpse(pCorpse.value.iID);
 
       AddRottingCorpse(&CorpseDef);
     }
@@ -1379,7 +1379,7 @@ function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel
     // Add head item.....
 
     // Pick the head based on profile type...
-    switch (pCorpse->def.ubProfile) {
+    switch (pCorpse.value.def.ubProfile) {
       case 83:
         usHeadIndex = HEAD_2;
         break;
@@ -1419,12 +1419,12 @@ function GetBloodFromCorpse(pSoldier: Pointer<SOLDIERTYPE>): void {
   let Object: OBJECTTYPE;
 
   // OK, get corpse
-  pCorpse = &(gRottingCorpse[pSoldier->uiPendingActionData4]);
+  pCorpse = &(gRottingCorpse[pSoldier.value.uiPendingActionData4]);
 
   bObjSlot = FindObj(pSoldier, JAR);
 
   // What kind of corpse ami I?
-  switch (pCorpse->def.ubType) {
+  switch (pCorpse.value.def.ubType) {
     case ADULTMONSTER_DEAD:
     case INFANTMONSTER_DEAD:
 
@@ -1443,7 +1443,7 @@ function GetBloodFromCorpse(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 
   if (bObjSlot != NO_SLOT) {
-    SwapObjs(&(pSoldier->inv[bObjSlot]), &Object);
+    SwapObjs(&(pSoldier.value.inv[bObjSlot]), &Object);
   }
 }
 
@@ -1453,16 +1453,16 @@ function ReduceAmmoDroppedByNonPlayerSoldiers(pSoldier: Pointer<SOLDIERTYPE>, iI
   Assert(pSoldier);
   Assert((iInvSlot >= 0) && (iInvSlot < NUM_INV_SLOTS));
 
-  pObj = &(pSoldier->inv[iInvSlot]);
+  pObj = &(pSoldier.value.inv[iInvSlot]);
 
   // if not a player soldier
-  if (pSoldier->bTeam != gbPlayerNum) {
+  if (pSoldier.value.bTeam != gbPlayerNum) {
     // if it's ammo
-    if (Item[pObj->usItem].usItemClass == IC_AMMO) {
+    if (Item[pObj.value.usItem].usItemClass == IC_AMMO) {
       // don't drop all the clips, just a random # of them between 1 and how many there are
-      pObj->ubNumberOfObjects = (1 + Random(pObj->ubNumberOfObjects));
+      pObj.value.ubNumberOfObjects = (1 + Random(pObj.value.ubNumberOfObjects));
       // recalculate the weight
-      pObj->ubWeight = CalculateObjectWeight(pObj);
+      pObj.value.ubWeight = CalculateObjectWeight(pObj);
     }
   }
 }
@@ -1473,7 +1473,7 @@ function LookForAndMayCommentOnSeeingCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGri
   let cnt: INT32;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
-  if (QuoteExp_HeadShotOnly[pSoldier->ubProfile] == 1) {
+  if (QuoteExp_HeadShotOnly[pSoldier.value.ubProfile] == 1) {
     return;
   }
 
@@ -1483,24 +1483,24 @@ function LookForAndMayCommentOnSeeingCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGri
     return;
   }
 
-  if (pCorpse->def.ubType != ROTTING_STAGE2) {
+  if (pCorpse.value.def.ubType != ROTTING_STAGE2) {
     return;
   }
 
   // If servicing qrows, tolerance is now 1
-  if (pCorpse->def.bNumServicingCrows > 0) {
+  if (pCorpse.value.def.bNumServicingCrows > 0) {
     bToleranceThreshold++;
   }
 
   // Check tolerance
-  if (pSoldier->bCorpseQuoteTolerance <= bToleranceThreshold) {
+  if (pSoldier.value.bCorpseQuoteTolerance <= bToleranceThreshold) {
     // Say quote...
     TacticalCharacterDialogue(pSoldier, QUOTE_HEADSHOT);
 
     BeginMultiPurposeLocator(sGridNo, ubLevel, FALSE);
 
     // Reset values....
-    pSoldier->bCorpseQuoteTolerance = (Random(3) + 1);
+    pSoldier.value.bCorpseQuoteTolerance = (Random(3) + 1);
 
     // 50% chance of adding 1 to other mercs....
     if (Random(2) == 1) {
@@ -1510,8 +1510,8 @@ function LookForAndMayCommentOnSeeingCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGri
       // look for all mercs on the same team,
       for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier++) {
         // ATE: Ok, lets check for some basic things here!
-        if (pTeamSoldier->bLife >= OKLIFE && pTeamSoldier->sGridNo != NOWHERE && pTeamSoldier->bActive && pTeamSoldier->bInSector) {
-          pTeamSoldier->bCorpseQuoteTolerance++;
+        if (pTeamSoldier.value.bLife >= OKLIFE && pTeamSoldier.value.sGridNo != NOWHERE && pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector) {
+          pTeamSoldier.value.bCorpseQuoteTolerance++;
         }
       }
     }
@@ -1526,9 +1526,9 @@ function GetGridNoOfCorpseGivenProfileID(ubProfileID: UINT8): INT16 {
   for (cnt = 0; cnt < giNumRottingCorpse; cnt++) {
     pCorpse = &(gRottingCorpse[cnt]);
 
-    if (pCorpse->fActivated) {
-      if (pCorpse->def.ubProfile == ubProfileID) {
-        return pCorpse->def.sGridNo;
+    if (pCorpse.value.fActivated) {
+      if (pCorpse.value.def.ubProfile == ubProfileID) {
+        return pCorpse.value.def.sGridNo;
       }
     }
   }
@@ -1543,8 +1543,8 @@ function DecayRottingCorpseAIWarnings(): void {
   for (cnt = 0; cnt < giNumRottingCorpse; cnt++) {
     pCorpse = &(gRottingCorpse[cnt]);
 
-    if (pCorpse->fActivated && pCorpse->def.ubAIWarningValue > 0) {
-      pCorpse->def.ubAIWarningValue--;
+    if (pCorpse.value.fActivated && pCorpse.value.def.ubAIWarningValue > 0) {
+      pCorpse.value.def.ubAIWarningValue--;
     }
   }
 }
@@ -1557,10 +1557,10 @@ function GetNearestRottingCorpseAIWarning(sGridNo: INT16): UINT8 {
   for (cnt = 0; cnt < giNumRottingCorpse; cnt++) {
     pCorpse = &(gRottingCorpse[cnt]);
 
-    if (pCorpse->fActivated && pCorpse->def.ubAIWarningValue > 0) {
-      if (PythSpacesAway(sGridNo, pCorpse->def.sGridNo) <= CORPSE_WARNING_DIST) {
-        if (pCorpse->def.ubAIWarningValue > ubHighestWarning) {
-          ubHighestWarning = pCorpse->def.ubAIWarningValue;
+    if (pCorpse.value.fActivated && pCorpse.value.def.ubAIWarningValue > 0) {
+      if (PythSpacesAway(sGridNo, pCorpse.value.def.sGridNo) <= CORPSE_WARNING_DIST) {
+        if (pCorpse.value.def.ubAIWarningValue > ubHighestWarning) {
+          ubHighestWarning = pCorpse.value.def.ubAIWarningValue;
         }
       }
     }

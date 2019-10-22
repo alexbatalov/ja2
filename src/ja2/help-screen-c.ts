@@ -486,9 +486,9 @@ function EnterHelpScreen(): BOOLEAN {
 
     // Set the state of the chec box
     if (gGameSettings.fHideHelpInAllScreens)
-      ButtonList[gHelpScreenDontShowHelpAgainToggle]->uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[gHelpScreenDontShowHelpAgainToggle].value.uiFlags |= BUTTON_CLICKED_ON;
     else
-      ButtonList[gHelpScreenDontShowHelpAgainToggle]->uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[gHelpScreenDontShowHelpAgainToggle].value.uiFlags &= ~BUTTON_CLICKED_ON;
   }
 
   /*
@@ -607,7 +607,7 @@ function ExitHelpScreen(): void {
 
   if (!gHelpScreen.fForceHelpScreenToComeUp) {
     // Get the current value of the checkbox
-    if (ButtonList[gHelpScreenDontShowHelpAgainToggle]->uiFlags & BUTTON_CLICKED_ON) {
+    if (ButtonList[gHelpScreenDontShowHelpAgainToggle].value.uiFlags & BUTTON_CLICKED_ON) {
       gGameSettings.fHideHelpInAllScreens = TRUE;
       gHelpScreen.usHasPlayerSeenHelpScreenInCurrentScreen = 0;
     } else {
@@ -791,7 +791,7 @@ function CreateHelpScreenButtons(): void {
       usPosY += HELP_SCREEN_BTN_HEIGHT + HELP_SCREEN_GAP_BN_BTNS;
     }
 
-    ButtonList[guiHelpScreenBtns[0]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiHelpScreenBtns[0]].value.uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
@@ -1106,7 +1106,7 @@ function DisplayCurrentScreenTitleAndFooter(): void {
 function BtnHelpScreenBtnsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     //		btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // Get the btn id
@@ -1127,13 +1127,13 @@ function BtnHelpScreenBtnsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
                     //change the current sub page, and render it to the buffer
                     ChangeHelpScreenSubPage();
     */
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
 
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     //		btn->uiFlags &= (~BUTTON_CLICKED_ON );
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
@@ -1165,11 +1165,11 @@ function ChangeToHelpScreenSubPage(bNewPage: INT8): void {
 
   //'undepress' all the buttons
   for (i = 0; i < gHelpScreen.bNumberOfButtons; i++) {
-    ButtonList[guiHelpScreenBtns[i]]->uiFlags &= (~BUTTON_CLICKED_ON);
+    ButtonList[guiHelpScreenBtns[i]].value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 
   // depress the proper button
-  ButtonList[guiHelpScreenBtns[gHelpScreen.bCurrentHelpScreenActiveSubPage]]->uiFlags |= BUTTON_CLICKED_ON;
+  ButtonList[guiHelpScreenBtns[gHelpScreen.bCurrentHelpScreenActiveSubPage]].value.uiFlags |= BUTTON_CLICKED_ON;
 
   // change the current sub page, and render it to the buffer
   ChangeHelpScreenSubPage();
@@ -1256,19 +1256,19 @@ function NewScreenSoResetHelpScreen(): void {
 
 function BtnHelpScreenExitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
 
     PrepareToExitHelpScreen();
 
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
@@ -1730,17 +1730,17 @@ function RefreshAllHelpScreenButtons(): void {
 
   // loop through all the buttons, and refresh them
   for (i = 0; i < gHelpScreen.bNumberOfButtons; i++) {
-    ButtonList[guiHelpScreenBtns[i]]->uiFlags |= BUTTON_DIRTY;
+    ButtonList[guiHelpScreenBtns[i]].value.uiFlags |= BUTTON_DIRTY;
   }
 
-  ButtonList[guiHelpScreenExitBtn]->uiFlags |= BUTTON_DIRTY;
+  ButtonList[guiHelpScreenExitBtn].value.uiFlags |= BUTTON_DIRTY;
 
   if (!gHelpScreen.fForceHelpScreenToComeUp) {
-    ButtonList[gHelpScreenDontShowHelpAgainToggle]->uiFlags |= BUTTON_DIRTY;
+    ButtonList[gHelpScreenDontShowHelpAgainToggle].value.uiFlags |= BUTTON_DIRTY;
   }
 
-  ButtonList[giHelpScreenScrollArrows[0]]->uiFlags |= BUTTON_DIRTY;
-  ButtonList[giHelpScreenScrollArrows[1]]->uiFlags |= BUTTON_DIRTY;
+  ButtonList[giHelpScreenScrollArrows[0]].value.uiFlags |= BUTTON_DIRTY;
+  ButtonList[giHelpScreenScrollArrows[1]].value.uiFlags |= BUTTON_DIRTY;
 }
 
 function HelpScreenDetermineWhichMapScreenHelpToShow(): INT8 {
@@ -2009,7 +2009,7 @@ function SelectHelpScrollAreaCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
     gHelpScreen.iLastMouseClickY = -1;
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     gfScrollBoxIsScrolling = TRUE;
-    HelpScreenMouseMoveScrollBox(pRegion->MouseYPos);
+    HelpScreenMouseMoveScrollBox(pRegion.value.MouseYPos);
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
@@ -2020,7 +2020,7 @@ function SelectHelpScrollAreaMovementCallBack(pRegion: Pointer<MOUSE_REGION>, iR
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
   } else if (iReason & MSYS_CALLBACK_REASON_MOVE) {
     if (gfLeftButtonState) {
-      HelpScreenMouseMoveScrollBox(pRegion->MouseYPos);
+      HelpScreenMouseMoveScrollBox(pRegion.value.MouseYPos);
     }
   }
 }
@@ -2080,14 +2080,14 @@ function HelpScreenMouseMoveScrollBox(usMousePosY: INT32): void {
 
 function BtnHelpScreenScrollArrowsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     let iButtonID: INT32 = MSYS_GetBtnUserData(btn, 0);
 
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
 
     // if up
     if (iButtonID == 0) {
@@ -2096,7 +2096,7 @@ function BtnHelpScreenScrollArrowsCallback(btn: Pointer<GUI_BUTTON>, reason: INT
       ChangeTopLineInTextBufferByAmount(1);
     }
 
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
@@ -2109,7 +2109,7 @@ function BtnHelpScreenScrollArrowsCallback(btn: Pointer<GUI_BUTTON>, reason: INT
       ChangeTopLineInTextBufferByAmount(1);
     }
 
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 

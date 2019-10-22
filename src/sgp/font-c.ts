@@ -92,9 +92,9 @@ function SetFontForeground(ubForeground: UINT8): void {
 
   FontForeground8 = ubForeground;
 
-  uiRed = FontObjs[FontDefault]->pPaletteEntry[ubForeground].peRed;
-  uiGreen = FontObjs[FontDefault]->pPaletteEntry[ubForeground].peGreen;
-  uiBlue = FontObjs[FontDefault]->pPaletteEntry[ubForeground].peBlue;
+  uiRed = FontObjs[FontDefault].value.pPaletteEntry[ubForeground].peRed;
+  uiGreen = FontObjs[FontDefault].value.pPaletteEntry[ubForeground].peGreen;
+  uiBlue = FontObjs[FontDefault].value.pPaletteEntry[ubForeground].peBlue;
 
   FontForeground16 = Get16BPPColor(FROMRGB(uiRed, uiGreen, uiBlue));
 }
@@ -109,9 +109,9 @@ function SetFontShadow(ubShadow: UINT8): void {
 
   // FontForeground8=ubForeground;
 
-  uiRed = FontObjs[FontDefault]->pPaletteEntry[ubShadow].peRed;
-  uiGreen = FontObjs[FontDefault]->pPaletteEntry[ubShadow].peGreen;
-  uiBlue = FontObjs[FontDefault]->pPaletteEntry[ubShadow].peBlue;
+  uiRed = FontObjs[FontDefault].value.pPaletteEntry[ubShadow].peRed;
+  uiGreen = FontObjs[FontDefault].value.pPaletteEntry[ubShadow].peGreen;
+  uiBlue = FontObjs[FontDefault].value.pPaletteEntry[ubShadow].peBlue;
 
   FontShadow16 = Get16BPPColor(FROMRGB(uiRed, uiGreen, uiBlue));
 
@@ -144,9 +144,9 @@ function SetFontBackground(ubBackground: UINT8): void {
 
   FontBackground8 = ubBackground;
 
-  uiRed = FontObjs[FontDefault]->pPaletteEntry[ubBackground].peRed;
-  uiGreen = FontObjs[FontDefault]->pPaletteEntry[ubBackground].peGreen;
-  uiBlue = FontObjs[FontDefault]->pPaletteEntry[ubBackground].peBlue;
+  uiRed = FontObjs[FontDefault].value.pPaletteEntry[ubBackground].peRed;
+  uiGreen = FontObjs[FontDefault].value.pPaletteEntry[ubBackground].peGreen;
+  uiBlue = FontObjs[FontDefault].value.pPaletteEntry[ubBackground].peBlue;
 
   FontBackground16 = Get16BPPColor(FROMRGB(uiRed, uiGreen, uiBlue));
 }
@@ -184,7 +184,7 @@ function ResetFontObjectPalette(iFont: INT32): BOOLEAN {
   Assert(iFont <= MAX_FONTS);
   Assert(FontObjs[iFont] != NULL);
 
-  SetFontObjectPalette8BPP(iFont, FontObjs[iFont]->pPaletteEntry);
+  SetFontObjectPalette8BPP(iFont, FontObjs[iFont].value.pPaletteEntry);
 
   return TRUE;
 }
@@ -206,8 +206,8 @@ function SetFontObjectPalette8BPP(iFont: INT32, pPal8: Pointer<SGPPaletteEntry>)
   if ((pPal16 = Create16BPPPalette(pPal8)) == NULL)
     return NULL;
 
-  FontObjs[iFont]->p16BPPPalette = pPal16;
-  FontObjs[iFont]->pShadeCurrent = pPal16;
+  FontObjs[iFont].value.p16BPPPalette = pPal16;
+  FontObjs[iFont].value.pShadeCurrent = pPal16;
 
   return pPal16;
 }
@@ -223,8 +223,8 @@ function SetFontObjectPalette16BPP(iFont: INT32, pPal16: Pointer<UINT16>): Point
   Assert(iFont <= MAX_FONTS);
   Assert(FontObjs[iFont] != NULL);
 
-  FontObjs[iFont]->p16BPPPalette = pPal16;
-  FontObjs[iFont]->pShadeCurrent = pPal16;
+  FontObjs[iFont].value.p16BPPPalette = pPal16;
+  FontObjs[iFont].value.pShadeCurrent = pPal16;
 
   return pPal16;
 }
@@ -240,7 +240,7 @@ function GetFontObjectPalette16BPP(iFont: INT32): Pointer<UINT16> {
   Assert(iFont <= MAX_FONTS);
   Assert(FontObjs[iFont] != NULL);
 
-  return FontObjs[iFont]->p16BPPPalette;
+  return FontObjs[iFont].value.p16BPPPalette;
 }
 
 //*****************************************************************************
@@ -341,8 +341,8 @@ function GetWidth(hSrcVObject: HVOBJECT, ssIndex: INT16): UINT32 {
   }
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject->pETRLEObject[ssIndex]);
-  return (pTrav->usWidth + pTrav->sOffsetX);
+  pTrav = &(hSrcVObject.value.pETRLEObject[ssIndex]);
+  return (pTrav.value.usWidth + pTrav.value.sOffsetX);
 }
 
 //*****************************************************************************
@@ -537,8 +537,8 @@ function GetHeight(hSrcVObject: HVOBJECT, ssIndex: INT16): UINT32 {
   Assert(hSrcVObject != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject->pETRLEObject[ssIndex]);
-  return (pTrav->usHeight + pTrav->sOffsetY);
+  pTrav = &(hSrcVObject.value.pETRLEObject[ssIndex]);
+  return (pTrav.value.usHeight + pTrav.value.sOffsetY);
 }
 
 //*****************************************************************************
@@ -567,10 +567,10 @@ function GetFontHeight(FontNum: INT32): UINT16 {
 function GetIndex(siChar: UINT16): INT16 {
   let pTrav: Pointer<UINT16>;
   let ssCount: UINT16 = 0;
-  let usNumberOfSymbols: UINT16 = pFManager->pTranslationTable->usNumberOfSymbols;
+  let usNumberOfSymbols: UINT16 = pFManager.value.pTranslationTable.value.usNumberOfSymbols;
 
   // search the Translation Table and return the index for the font
-  pTrav = pFManager->pTranslationTable->DynamicArrayOf16BitValues;
+  pTrav = pFManager.value.pTranslationTable.value.DynamicArrayOf16BitValues;
   while (ssCount < usNumberOfSymbols) {
     if (siChar == *pTrav) {
       return ssCount;
@@ -1066,10 +1066,10 @@ function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: Pointer
     return FALSE;
   }
 
-  pFManager->pTranslationTable = pTransTab;
-  pFManager->usDefaultPixelDepth = usDefaultPixelDepth;
-  pTransTab->usNumberOfSymbols = pTransTable->usNumberOfSymbols;
-  pTransTab->DynamicArrayOf16BitValues = pTransTable->DynamicArrayOf16BitValues;
+  pFManager.value.pTranslationTable = pTransTab;
+  pFManager.value.usDefaultPixelDepth = usDefaultPixelDepth;
+  pTransTab.value.usNumberOfSymbols = pTransTable.value.usNumberOfSymbols;
+  pTransTab.value.DynamicArrayOf16BitValues = pTransTable.value.DynamicArrayOf16BitValues;
 
   // Mark all font slots as empty
   for (count = 0; count < MAX_FONTS; count++)
@@ -1103,14 +1103,14 @@ function ShutdownFontManager(): void {
 //*****************************************************************************
 function DestroyEnglishTransTable(): void {
   if (pFManager) {
-    if (pFManager->pTranslationTable != NULL) {
-      if (pFManager->pTranslationTable->DynamicArrayOf16BitValues != NULL) {
-        MemFree(pFManager->pTranslationTable->DynamicArrayOf16BitValues);
+    if (pFManager.value.pTranslationTable != NULL) {
+      if (pFManager.value.pTranslationTable.value.DynamicArrayOf16BitValues != NULL) {
+        MemFree(pFManager.value.pTranslationTable.value.DynamicArrayOf16BitValues);
       }
 
-      MemFree(pFManager->pTranslationTable);
+      MemFree(pFManager.value.pTranslationTable);
 
-      pFManager->pTranslationTable = NULL;
+      pFManager.value.pTranslationTable = NULL;
     }
   }
 }
@@ -1126,9 +1126,9 @@ function CreateEnglishTransTable(): Pointer<FontTranslationTable> {
 
   pTable = MemAlloc(sizeof(FontTranslationTable));
   // ha ha, we have more than Wizardry now (again)
-  pTable->usNumberOfSymbols = 172;
-  pTable->DynamicArrayOf16BitValues = MemAlloc(pTable->usNumberOfSymbols * 2);
-  temp = pTable->DynamicArrayOf16BitValues;
+  pTable.value.usNumberOfSymbols = 172;
+  pTable.value.DynamicArrayOf16BitValues = MemAlloc(pTable.value.usNumberOfSymbols * 2);
+  temp = pTable.value.DynamicArrayOf16BitValues;
 
   *temp = 'A';
   temp++;

@@ -299,62 +299,62 @@ function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UI
   if (pFiles) {
     while (pFiles) {
       // check to see if the file is already there
-      if (pFiles->ubCode == ubCode) {
+      if (pFiles.value.ubCode == ubCode) {
         // if so, return it's id number
-        return pFiles->uiIdNumber;
+        return pFiles.value.uiIdNumber;
       }
 
       // next in the list
-      pFiles = pFiles->Next;
+      pFiles = pFiles.value.Next;
     }
 
     // reset pointer
     pFiles = pFilesListHead;
 
     // go to end of list
-    while (pFiles->Next) {
-      pFiles = pFiles->Next;
+    while (pFiles.value.Next) {
+      pFiles = pFiles.value.Next;
     }
     // alloc space
-    pFiles->Next = MemAlloc(sizeof(FilesUnit));
+    pFiles.value.Next = MemAlloc(sizeof(FilesUnit));
 
     // increment id number
-    uiId = pFiles->uiIdNumber + 1;
+    uiId = pFiles.value.uiIdNumber + 1;
 
     // set up information passed
-    pFiles = pFiles->Next;
-    pFiles->Next = NULL;
-    pFiles->ubCode = ubCode;
-    pFiles->uiDate = uiDate;
-    pFiles->uiIdNumber = uiId;
-    pFiles->ubFormat = ubFormat;
-    pFiles->fRead = fRead;
+    pFiles = pFiles.value.Next;
+    pFiles.value.Next = NULL;
+    pFiles.value.ubCode = ubCode;
+    pFiles.value.uiDate = uiDate;
+    pFiles.value.uiIdNumber = uiId;
+    pFiles.value.ubFormat = ubFormat;
+    pFiles.value.fRead = fRead;
   } else {
     // alloc space
     pFiles = MemAlloc(sizeof(FilesUnit));
 
     // setup info passed
-    pFiles->Next = NULL;
-    pFiles->ubCode = ubCode;
-    pFiles->uiDate = uiDate;
-    pFiles->uiIdNumber = uiId;
+    pFiles.value.Next = NULL;
+    pFiles.value.ubCode = ubCode;
+    pFiles.value.uiDate = uiDate;
+    pFiles.value.uiIdNumber = uiId;
     pFilesListHead = pFiles;
-    pFiles->ubFormat = ubFormat;
-    pFiles->fRead = fRead;
+    pFiles.value.ubFormat = ubFormat;
+    pFiles.value.fRead = fRead;
   }
 
   // null out ptr's to picture file names
-  pFiles->pPicFileNameList[0] = NULL;
-  pFiles->pPicFileNameList[1] = NULL;
+  pFiles.value.pPicFileNameList[0] = NULL;
+  pFiles.value.pPicFileNameList[1] = NULL;
 
   // copy file name strings
 
   // first file
   if (pFirstPicFile) {
     if ((pFirstPicFile[0]) != 0) {
-      pFiles->pPicFileNameList[0] = MemAlloc(strlen(pFirstPicFile) + 1);
-      strcpy(pFiles->pPicFileNameList[0], pFirstPicFile);
-      pFiles->pPicFileNameList[0][strlen(pFirstPicFile)] = 0;
+      pFiles.value.pPicFileNameList[0] = MemAlloc(strlen(pFirstPicFile) + 1);
+      strcpy(pFiles.value.pPicFileNameList[0], pFirstPicFile);
+      pFiles.value.pPicFileNameList[0][strlen(pFirstPicFile)] = 0;
     }
   }
 
@@ -362,9 +362,9 @@ function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UI
 
   if (pSecondPicFile) {
     if ((pSecondPicFile[0]) != 0) {
-      pFiles->pPicFileNameList[1] = MemAlloc(strlen(pSecondPicFile) + 1);
-      strcpy(pFiles->pPicFileNameList[1], pSecondPicFile);
-      pFiles->pPicFileNameList[1][strlen(pSecondPicFile)] = 0;
+      pFiles.value.pPicFileNameList[1] = MemAlloc(strlen(pSecondPicFile) + 1);
+      strcpy(pFiles.value.pPicFileNameList[1], pSecondPicFile);
+      pFiles.value.pPicFileNameList[1][strlen(pSecondPicFile)] = 0;
     }
   }
 
@@ -444,11 +444,11 @@ function OpenAndWriteFilesFile(): BOOLEAN {
   memset(&pSecondFilePath, 0, sizeof(pSecondFilePath));
 
   if (pFilesList != NULL) {
-    if (pFilesList->pPicFileNameList[0]) {
-      strcpy(pFirstFilePath, pFilesList->pPicFileNameList[0]);
+    if (pFilesList.value.pPicFileNameList[0]) {
+      strcpy(pFirstFilePath, pFilesList.value.pPicFileNameList[0]);
     }
-    if (pFilesList->pPicFileNameList[1]) {
-      strcpy(pSecondFilePath, pFilesList->pPicFileNameList[1]);
+    if (pFilesList.value.pPicFileNameList[1]) {
+      strcpy(pSecondFilePath, pFilesList.value.pPicFileNameList[1]);
     }
   }
 
@@ -462,15 +462,15 @@ function OpenAndWriteFilesFile(): BOOLEAN {
   // write info, while there are elements left in the list
   while (pFilesList) {
     // now write date and amount, and code
-    FileWrite(hFileHandle, &(pFilesList->ubCode), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, &(pFilesList->uiDate), sizeof(UINT32), NULL);
+    FileWrite(hFileHandle, &(pFilesList.value.ubCode), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, &(pFilesList.value.uiDate), sizeof(UINT32), NULL);
     FileWrite(hFileHandle, &(pFirstFilePath), 128, NULL);
     FileWrite(hFileHandle, &(pSecondFilePath), 128, NULL);
-    FileWrite(hFileHandle, &(pFilesList->ubFormat), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, &(pFilesList->fRead), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, &(pFilesList.value.ubFormat), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, &(pFilesList.value.fRead), sizeof(UINT8), NULL);
 
     // next element in list
-    pFilesList = pFilesList->Next;
+    pFilesList = pFilesList.value.Next;
   }
 
   // close file
@@ -492,15 +492,15 @@ function ClearFilesList(): void {
     pFilesNode = pFilesList;
 
     // set list head to next node
-    pFilesList = pFilesList->Next;
+    pFilesList = pFilesList.value.Next;
 
     // if present, dealloc string
-    if (pFilesNode->pPicFileNameList[0]) {
-      MemFree(pFilesNode->pPicFileNameList[0]);
+    if (pFilesNode.value.pPicFileNameList[0]) {
+      MemFree(pFilesNode.value.pPicFileNameList[0]);
     }
 
-    if (pFilesNode->pPicFileNameList[1]) {
-      MemFree(pFilesNode->pPicFileNameList[1]);
+    if (pFilesNode.value.pPicFileNameList[1]) {
+      MemFree(pFilesNode.value.pPicFileNameList[1]);
     }
     // delete current node
     MemFree(pFilesNode);
@@ -539,9 +539,9 @@ function DisplayFilesList(): void {
       GetVideoObject(&hHandle, guiHIGHLIGHT);
       BltVideoObject(FRAME_BUFFER, hHandle, 0, FILES_SENDER_TEXT_X - 5, ((iCounter + 9) * BLOCK_HEIGHT) + (iCounter * 2) - 4, VO_BLT_SRCTRANSPARENCY, NULL);
     }
-    mprintf(FILES_SENDER_TEXT_X, ((iCounter + 9) * BLOCK_HEIGHT) + (iCounter * 2) - 2, pFilesSenderList[pFilesList->ubCode]);
+    mprintf(FILES_SENDER_TEXT_X, ((iCounter + 9) * BLOCK_HEIGHT) + (iCounter * 2) - 2, pFilesSenderList[pFilesList.value.ubCode]);
     iCounter++;
-    pFilesList = pFilesList->Next;
+    pFilesList = pFilesList.value.Next;
   }
 
   // reset shadow
@@ -613,7 +613,7 @@ function FilesBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void 
       }
 
       // next element in list
-      pFilesList = pFilesList->Next;
+      pFilesList = pFilesList.value.Next;
 
       // increment counter
       iCounter++;
@@ -651,15 +651,15 @@ function DisplayFormattedText(): BOOLEAN {
   // get the file that was highlighted
   while (iCounter < iHighLightFileLine) {
     iCounter++;
-    pFilesList = pFilesList->Next;
+    pFilesList = pFilesList.value.Next;
   }
 
   // message code found, reset counter
-  iMessageCode = pFilesList->ubCode;
+  iMessageCode = pFilesList.value.ubCode;
   iCounter = 0;
 
   // set file as read
-  pFilesList->fRead = TRUE;
+  pFilesList.value.fRead = TRUE;
 
   // clear the file string structure list
   // get file background object
@@ -677,9 +677,9 @@ function DisplayFormattedText(): BOOLEAN {
     iCounter++;
   }
 
-  iLength = ubFileRecordsLength[pFilesList->ubCode];
+  iLength = ubFileRecordsLength[pFilesList.value.ubCode];
 
-  if (pFilesList->ubFormat < ENRICO_BACKGROUND) {
+  if (pFilesList.value.ubFormat < ENRICO_BACKGROUND) {
     LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", sString, FILE_STRING_SIZE * (iOffSet)*2, FILE_STRING_SIZE * iLength * 2);
   }
 
@@ -689,7 +689,7 @@ function DisplayFormattedText(): BOOLEAN {
   // no shadow
   SetFontShadow(NO_SHADOW);
 
-  switch (pFilesList->ubFormat) {
+  switch (pFilesList.value.ubFormat) {
     case 0:
 
       // no format, all text
@@ -712,7 +712,7 @@ function DisplayFormattedText(): BOOLEAN {
 
       // load graphic
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP(pFilesList->pPicFileNameList[0], VObjectDesc.ImageFile);
+      FilenameForBPP(pFilesList.value.pPicFileNameList[0], VObjectDesc.ImageFile);
       CHECKF(AddVideoObject(&VObjectDesc, &uiFirstTempPicture));
 
       GetVideoObjectETRLESubregionProperties(uiFirstTempPicture, 0, &usFirstWidth, &usFirstHeight);
@@ -746,12 +746,12 @@ function DisplayFormattedText(): BOOLEAN {
 
       // load first graphic
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP(pFilesList->pPicFileNameList[0], VObjectDesc.ImageFile);
+      FilenameForBPP(pFilesList.value.pPicFileNameList[0], VObjectDesc.ImageFile);
       CHECKF(AddVideoObject(&VObjectDesc, &uiFirstTempPicture));
 
       // load second graphic
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      FilenameForBPP(pFilesList->pPicFileNameList[1], VObjectDesc.ImageFile);
+      FilenameForBPP(pFilesList.value.pPicFileNameList[1], VObjectDesc.ImageFile);
       CHECKF(AddVideoObject(&VObjectDesc, &uiSecondTempPicture));
 
       GetVideoObjectETRLESubregionProperties(uiFirstTempPicture, 0, &usFirstWidth, &usFirstHeight);
@@ -800,10 +800,10 @@ function DisplayFormattedText(): BOOLEAN {
     case 3:
       // picture on the left, with text on right and below
       // load first graphic
-      HandleSpecialTerroristFile(pFilesList->ubCode, pFilesList->pPicFileNameList[0]);
+      HandleSpecialTerroristFile(pFilesList.value.ubCode, pFilesList.value.pPicFileNameList[0]);
       break;
     default:
-      HandleSpecialFiles(pFilesList->ubFormat);
+      HandleSpecialFiles(pFilesList.value.ubFormat);
       break;
   }
 
@@ -856,14 +856,14 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
       // find out where this string is
       while (pLocatorString != pTempString) {
         iCounter++;
-        pLocatorString = pLocatorString->Next;
+        pLocatorString = pLocatorString.value.Next;
       }
 
       // move through list and display
       while (pTempString) {
         uiFlags = IAN_WRAP_NO_SHADOW;
         // copy over string
-        wcscpy(sString, pTempString->pString);
+        wcscpy(sString, pTempString.value.pString);
 
         if (sString[0] == 0) {
           // on last page
@@ -929,7 +929,7 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
           fGoingOffCurrentPage = TRUE;
         }
 
-        pTempString = pTempString->Next;
+        pTempString = pTempString.value.Next;
 
         if (pTempString == NULL) {
           // on last page
@@ -1003,20 +1003,20 @@ function AddStringToFilesList(pString: STR16): void {
   pFileString = MemAlloc(sizeof(FileString));
 
   // alloc string and copy
-  pFileString->pString = MemAlloc((wcslen(pString) * 2) + 2);
-  wcscpy(pFileString->pString, pString);
-  pFileString->pString[wcslen(pString)] = 0;
+  pFileString.value.pString = MemAlloc((wcslen(pString) * 2) + 2);
+  wcscpy(pFileString.value.pString, pString);
+  pFileString.value.pString[wcslen(pString)] = 0;
 
   // set Next to NULL
 
-  pFileString->Next = NULL;
+  pFileString.value.Next = NULL;
   if (pFileStringList == NULL) {
     pFileStringList = pFileString;
   } else {
-    while (pTempString->Next) {
-      pTempString = pTempString->Next;
+    while (pTempString.value.Next) {
+      pTempString = pTempString.value.Next;
     }
-    pTempString->Next = pFileString;
+    pTempString.value.Next = pFileString;
   }
 
   return;
@@ -1031,9 +1031,9 @@ function ClearFileStringList(): void {
   if (pFileString == NULL) {
     return;
   }
-  while (pFileString->Next) {
+  while (pFileString.value.Next) {
     pDeleteFileString = pFileString;
-    pFileString = pFileString->Next;
+    pFileString = pFileString.value.Next;
     MemFree(pDeleteFileString);
   }
 
@@ -1071,7 +1071,7 @@ function DeleteButtonsForFilesPage(): void {
 
 // callbacks
 function BtnPreviousFilePageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -1079,22 +1079,22 @@ function BtnPreviousFilePageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
       return;
     }
 
-    if (!(btn->uiFlags & BUTTON_CLICKED_ON)) {
-      btn->uiFlags |= (BUTTON_CLICKED_ON);
+    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
     }
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fWaitAFrame == TRUE) {
       return;
     }
 
-    if ((btn->uiFlags & BUTTON_CLICKED_ON)) {
+    if ((btn.value.uiFlags & BUTTON_CLICKED_ON)) {
       if (giFilesPage > 0) {
         giFilesPage--;
         fWaitAFrame = TRUE;
       }
 
       fReDrawScreenFlag = TRUE;
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       MarkButtonsDirty();
     }
   }
@@ -1103,7 +1103,7 @@ function BtnPreviousFilePageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 }
 
 function BtnNextFilePageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -1111,22 +1111,22 @@ function BtnNextFilePageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
       return;
     }
 
-    if (!(btn->uiFlags & BUTTON_CLICKED_ON)) {
-      btn->uiFlags |= (BUTTON_CLICKED_ON);
+    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
     }
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fWaitAFrame == TRUE) {
       return;
     }
 
-    if ((btn->uiFlags & BUTTON_CLICKED_ON)) {
+    if ((btn.value.uiFlags & BUTTON_CLICKED_ON)) {
       if ((fOnLastFilesPageFlag) == FALSE) {
         fWaitAFrame = TRUE;
         giFilesPage++;
       }
 
       fReDrawScreenFlag = TRUE;
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       MarkButtonsDirty();
     }
   }
@@ -1141,8 +1141,8 @@ function HandleFileViewerButtonStates(): void {
     // not displaying message, leave
     DisableButton(giFilesPageButtons[0]);
     DisableButton(giFilesPageButtons[1]);
-    ButtonList[giFilesPageButtons[0]]->uiFlags &= ~(BUTTON_CLICKED_ON);
-    ButtonList[giFilesPageButtons[1]]->uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giFilesPageButtons[0]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giFilesPageButtons[1]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
     return;
   }
@@ -1150,7 +1150,7 @@ function HandleFileViewerButtonStates(): void {
   // turn off previous page button
   if (giFilesPage == 0) {
     DisableButton(giFilesPageButtons[0]);
-    ButtonList[giFilesPageButtons[0]]->uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giFilesPageButtons[0]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
   } else {
     EnableButton(giFilesPageButtons[0]);
   }
@@ -1158,7 +1158,7 @@ function HandleFileViewerButtonStates(): void {
   // turn off next page button
   if (fOnLastFilesPageFlag == TRUE) {
     DisableButton(giFilesPageButtons[1]);
-    ButtonList[giFilesPageButtons[1]]->uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giFilesPageButtons[1]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
   } else {
     EnableButton(giFilesPageButtons[1]);
   }
@@ -1173,11 +1173,11 @@ function CreateRecordWidth(iRecordNumber: INT32, iRecordWidth: INT32, iRecordHei
   // how wide special records are ( ones that share space with pictures )
   pTempRecord = MemAlloc(sizeof(FileRecordWidth));
 
-  pTempRecord->Next = NULL;
-  pTempRecord->iRecordNumber = iRecordNumber;
-  pTempRecord->iRecordWidth = iRecordWidth;
-  pTempRecord->iRecordHeightAdjustment = iRecordHeightAdjustment;
-  pTempRecord->ubFlags = ubFlags;
+  pTempRecord.value.Next = NULL;
+  pTempRecord.value.iRecordNumber = iRecordNumber;
+  pTempRecord.value.iRecordWidth = iRecordWidth;
+  pTempRecord.value.iRecordHeightAdjustment = iRecordHeightAdjustment;
+  pTempRecord.value.ubFlags = ubFlags;
 
   return pTempRecord;
 }
@@ -1196,13 +1196,13 @@ function CreateWidthRecordsForAruloIntelFile(): FileRecordWidthPtr {
 
   // next record
   //	pTempRecord -> Next = CreateRecordWidth( 43, 200,0, 0 );
-  pTempRecord->Next = CreateRecordWidth(FILES_COUNTER_2_WIDTH, 200, 0, 0);
-  pTempRecord = pTempRecord->Next;
+  pTempRecord.value.Next = CreateRecordWidth(FILES_COUNTER_2_WIDTH, 200, 0, 0);
+  pTempRecord = pTempRecord.value.Next;
 
   // and the next..
   //	pTempRecord -> Next = CreateRecordWidth( 45, 200,0, 0 );
-  pTempRecord->Next = CreateRecordWidth(FILES_COUNTER_3_WIDTH, 200, 0, 0);
-  pTempRecord = pTempRecord->Next;
+  pTempRecord.value.Next = CreateRecordWidth(FILES_COUNTER_3_WIDTH, 200, 0, 0);
+  pTempRecord = pTempRecord.value.Next;
 
   return pRecordListHead;
 }
@@ -1219,11 +1219,11 @@ function CreateWidthRecordsForTerroristFile(): FileRecordWidthPtr {
   pRecordListHead = pTempRecord;
 
   // next record
-  pTempRecord->Next = CreateRecordWidth(5, 170, 0, 0);
-  pTempRecord = pTempRecord->Next;
+  pTempRecord.value.Next = CreateRecordWidth(5, 170, 0, 0);
+  pTempRecord = pTempRecord.value.Next;
 
-  pTempRecord->Next = CreateRecordWidth(6, 170, 0, 0);
-  pTempRecord = pTempRecord->Next;
+  pTempRecord.value.Next = CreateRecordWidth(6, 170, 0, 0);
+  pTempRecord = pTempRecord.value.Next;
 
   return pRecordListHead;
 }
@@ -1240,12 +1240,12 @@ function ClearOutWidthRecordsList(pFileRecordWidthList: FileRecordWidthPtr): voi
     return;
   }
 
-  while (pTempRecord->Next) {
+  while (pTempRecord.value.Next) {
     // set up delete record
     pDeleteRecord = pTempRecord;
 
     // move to next record
-    pTempRecord = pTempRecord->Next;
+    pTempRecord = pTempRecord.value.Next;
 
     MemFree(pDeleteRecord);
   }
@@ -1267,12 +1267,12 @@ function OpenFirstUnreadFile(): void {
   // make sure is a valid
   while (pFilesList) {
     // if iCounter = iFileId, is a valid file
-    if (pFilesList->fRead == FALSE) {
+    if (pFilesList.value.fRead == FALSE) {
       iHighLightFileLine = iCounter;
     }
 
     // next element in list
-    pFilesList = pFilesList->Next;
+    pFilesList = pFilesList.value.Next;
 
     // increment counter
     iCounter++;
@@ -1291,11 +1291,11 @@ function CheckForUnreadFiles(): void {
 
   while (pFilesList) {
     // unread?...if so, set flag
-    if (pFilesList->fRead == FALSE) {
+    if (pFilesList.value.fRead == FALSE) {
       fNewFilesInFileViewer = TRUE;
     }
     // next element in list
-    pFilesList = pFilesList->Next;
+    pFilesList = pFilesList.value.Next;
   }
 
   // if the old flag and the new flag arent the same, either create or destory the fast help region
@@ -1345,14 +1345,14 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
   // find out where this string is
   while (pLocatorString != pTempString) {
     iCounter++;
-    pLocatorString = pLocatorString->Next;
+    pLocatorString = pLocatorString.value.Next;
   }
 
   // move through list and display
   while (pTempString) {
     uiFlags = IAN_WRAP_NO_SHADOW;
     // copy over string
-    wcscpy(sString, pTempString->pString);
+    wcscpy(sString, pTempString.value.pString);
 
     if (sString[0] == 0) {
       // on last page
@@ -1389,7 +1389,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
       fGoingOffCurrentPage = TRUE;
     }
 
-    pTempString = pTempString->Next;
+    pTempString = pTempString.value.Next;
 
     if ((pTempString == NULL) && (fGoingOffCurrentPage == FALSE)) {
       // on last page

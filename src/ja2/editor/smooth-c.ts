@@ -207,9 +207,9 @@ function SmoothExitGridRadius(sMapIndex: INT16, ubRadius: UINT8): void {
         if (GetExitGridLevelNode(sMapIndex, &pShadow)) {
           let usIndex: UINT16;
           SmoothExitGrid(sMapIndex, &usIndex, TRUE);
-          if (usIndex != NO_TILE && usIndex != pShadow->usIndex) {
+          if (usIndex != NO_TILE && usIndex != pShadow.value.usIndex) {
             AddToUndoList(sMapIndex);
-            pShadow->usIndex = usIndex;
+            pShadow.value.usIndex = usIndex;
           }
         }
       }

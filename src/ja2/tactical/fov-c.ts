@@ -202,8 +202,8 @@ function AddSlantRoofFOVSlot(sGridNo: INT16): void {
 
   if (iSlantRoofSlot != -1) {
     pSlantRoof = &gSlantRoofData[iSlantRoofSlot];
-    pSlantRoof->sGridNo = sGridNo;
-    pSlantRoof->fAllocated = TRUE;
+    pSlantRoof.value.sGridNo = sGridNo;
+    pSlantRoof.value.fAllocated = TRUE;
   }
 }
 
@@ -257,21 +257,21 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
   let bStructHeight: INT8;
   let bThroughWindowDirection: INT8;
 
-  if (pSoldier->uiStatusFlags & SOLDIER_ENEMY) {
+  if (pSoldier.value.uiStatusFlags & SOLDIER_ENEMY) {
     // pSoldier->needToLookForItems = FALSE;
     return;
   }
 
-  if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
     return;
   }
 
   // Return if this guy has no gridno, has bad life, etc
-  if (pSoldier->sGridNo == NOWHERE || !pSoldier->bInSector || pSoldier->bLife < OKLIFE) {
+  if (pSoldier.value.sGridNo == NOWHERE || !pSoldier.value.bInSector || pSoldier.value.bLife < OKLIFE) {
     return;
   }
 
-  if (pSoldier->bBlindedCounter > 0) {
+  if (pSoldier.value.bBlindedCounter > 0) {
     return;
   }
 
@@ -286,18 +286,18 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
   // OK, look for doors
   MercLooksForDoors(pSoldier, TRUE);
 
-  who = pSoldier->ubID;
-  dir = pSoldier->bDirection;
+  who = pSoldier.value.ubID;
+  dir = pSoldier.value.bDirection;
 
   // NumMessage("good old reveal",dir);
 
   // a gassed merc can only see 1 tile away due to blurred vision
-  if (pSoldier->uiStatusFlags & SOLDIER_GASSED) {
+  if (pSoldier.value.uiStatusFlags & SOLDIER_GASSED) {
     range = 1;
   } else {
-    range = pSoldier->bViewRange;
+    range = pSoldier.value.bViewRange;
     // balance item viewing range between normal and the limit set by opplist-type functions -- CJC
-    range = (AdjustMaxSightRangeForEnvEffects(pSoldier, LightTrueLevel(pSoldier->sGridNo, pSoldier->bLevel), range) + range) / 2;
+    range = (AdjustMaxSightRangeForEnvEffects(pSoldier, LightTrueLevel(pSoldier.value.sGridNo, pSoldier.value.bLevel), range) + range) / 2;
   }
 
   BuildSightDir(dir, &Dir[0], &Dir[1], &Dir[2], &Dir[3], &Dir[4]);
@@ -306,7 +306,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
 
   // create gridno increment for NOVIEW - in other words, no increment!
   Inc[5] = 0;
-  Dir[5] = pSoldier->bDirection;
+  Dir[5] = pSoldier.value.bDirection;
 
   if (dir % 2 == 1) /* even numbers use ViewPath2 */
     Path2 = TRUE;
@@ -322,7 +322,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
   }
 
   for (maincnt = 0; maincnt < MAXVIEWPATHS; maincnt++) {
-    marker = pSoldier->sGridNo;
+    marker = pSoldier.value.sGridNo;
     Blocking = FALSE;
     twoMoreTiles = FALSE;
     tilesLeftToSee = 99;
@@ -399,9 +399,9 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
       }
 
       if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
-        ubMovementCost = DoorTravelCost(pSoldier, marker, ubMovementCost, (pSoldier->bTeam == gbPlayerNum), &iDoorGridNo);
+        ubMovementCost = DoorTravelCost(pSoldier, marker, ubMovementCost, (pSoldier.value.bTeam == gbPlayerNum), &iDoorGridNo);
         pStructure = FindStructure(iDoorGridNo, STRUCTURE_ANYDOOR);
-        if (pStructure != NULL && pStructure->fFlags & STRUCTURE_TRANSPARENT) {
+        if (pStructure != NULL && pStructure.value.fFlags & STRUCTURE_TRANSPARENT) {
           // cell door or somehow otherwise transparent; allow merc to see through
           ubMovementCost = TRAVELCOST_FLAT;
         }
@@ -528,7 +528,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
               LookForAndMayCommentOnSeeingCorpse(pSoldier, marker, ubLevel);
 
               if (GetItemPool(marker, &pItemPool, ubLevel)) {
-                itemVisible = pItemPool->bVisible;
+                itemVisible = pItemPool.value.bVisible;
 
                 if (SetItemPoolVisibilityOn(pItemPool, INVISIBLE, fShowLocators)) {
                   SetRenderFlags(RENDER_FLAG_FULL);
@@ -555,7 +555,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
 
                       if (gTacticalStatus.ubAttackBusyCount > 0 && (gTacticalStatus.uiFlags & INCOMBAT)) {
                         gTacticalStatus.fItemsSeenOnAttack = TRUE;
-                        gTacticalStatus.ubItemsSeenOnAttackSoldier = pSoldier->ubID;
+                        gTacticalStatus.ubItemsSeenOnAttackSoldier = pSoldier.value.ubID;
                         gTacticalStatus.usItemsSeenOnAttackGridNo = (marker);
                       } else {
                         // Display quote!

@@ -20,9 +20,9 @@ function DecompressInit(pCompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR
   }
 
   // initial defines
-  pZStream->zalloc = ZAlloc;
-  pZStream->zfree = ZFree;
-  pZStream->opaque = NULL;
+  pZStream.value.zalloc = ZAlloc;
+  pZStream.value.zfree = ZFree;
+  pZStream.value.opaque = NULL;
 
   // call the ZLIB init routine
   iZRetCode = inflateInit(pZStream);
@@ -33,8 +33,8 @@ function DecompressInit(pCompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR
   }
 
   // set up our parameters
-  pZStream->next_in = pCompressedData;
-  pZStream->avail_in = uiDataSize;
+  pZStream.value.next_in = pCompressedData;
+  pZStream.value.avail_in = uiDataSize;
   return pZStream;
 }
 
@@ -44,22 +44,22 @@ function Decompress(pDecompPtr: PTR, pBuffer: Pointer<BYTE>, uiBufferLen: UINT32
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
   Assert(pZStream != NULL);
-  Assert(pZStream->zalloc == ZAlloc);
+  Assert(pZStream.value.zalloc == ZAlloc);
 
-  if (pZStream->avail_in == 0) {
+  if (pZStream.value.avail_in == 0) {
     // There is nothing left to decompress!
     return 0;
   }
 
   // set up the z_stream with our parameters
-  pZStream->next_out = pBuffer;
-  pZStream->avail_out = uiBufferLen;
+  pZStream.value.next_out = pBuffer;
+  pZStream.value.avail_out = uiBufferLen;
 
   // decompress!
   iZRetCode = inflate(pZStream, Z_PARTIAL_FLUSH);
   Assert(iZRetCode == Z_OK || iZRetCode == Z_STREAM_END);
 
-  return uiBufferLen - pZStream->avail_out;
+  return uiBufferLen - pZStream.value.avail_out;
 }
 
 function DecompressFini(pDecompPtr: PTR): void {
@@ -67,7 +67,7 @@ function DecompressFini(pDecompPtr: PTR): void {
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
   Assert(pZStream != NULL);
-  Assert(pZStream->zalloc == ZAlloc);
+  Assert(pZStream.value.zalloc == ZAlloc);
 
   inflateEnd(pZStream);
   MemFree(pZStream);
@@ -92,9 +92,9 @@ function CompressInit(pUncompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR
   }
 
   // initial defines
-  pZStream->zalloc = ZAlloc;
-  pZStream->zfree = ZFree;
-  pZStream->opaque = NULL;
+  pZStream.value.zalloc = ZAlloc;
+  pZStream.value.zfree = ZFree;
+  pZStream.value.opaque = NULL;
 
   // call the ZLIB init routine
   iZRetCode = deflateInit(pZStream, Z_BEST_COMPRESSION);
@@ -105,8 +105,8 @@ function CompressInit(pUncompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR
   }
 
   // set up our parameters
-  pZStream->next_in = pUncompressedData;
-  pZStream->avail_in = uiDataSize;
+  pZStream.value.next_in = pUncompressedData;
+  pZStream.value.avail_in = uiDataSize;
   return pZStream;
 }
 
@@ -116,22 +116,22 @@ function Compress(pCompPtr: PTR, pBuffer: Pointer<BYTE>, uiBufferLen: UINT32): U
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
   Assert(pZStream != NULL);
-  Assert(pZStream->zalloc == ZAlloc);
+  Assert(pZStream.value.zalloc == ZAlloc);
 
-  if (pZStream->avail_in == 0) {
+  if (pZStream.value.avail_in == 0) {
     // There is nothing left to compress!
     return 0;
   }
 
   // set up the z_stream with our parameters
-  pZStream->next_out = pBuffer;
-  pZStream->avail_out = uiBufferLen;
+  pZStream.value.next_out = pBuffer;
+  pZStream.value.avail_out = uiBufferLen;
 
   // decompress!
   iZRetCode = deflate(pZStream, Z_FINISH);
   Assert(iZRetCode == Z_STREAM_END);
 
-  return uiBufferLen - pZStream->avail_out;
+  return uiBufferLen - pZStream.value.avail_out;
 }
 
 function CompressFini(pCompPtr: PTR): void {
@@ -139,7 +139,7 @@ function CompressFini(pCompPtr: PTR): void {
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
   Assert(pZStream != NULL);
-  Assert(pZStream->zalloc == ZAlloc);
+  Assert(pZStream.value.zalloc == ZAlloc);
 
   deflateEnd(pZStream);
   MemFree(pZStream);

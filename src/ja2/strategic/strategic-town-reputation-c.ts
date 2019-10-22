@@ -54,7 +54,7 @@ function GetTownOpinionOfMercForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubTownId
   Assert(ubTownId < NUM_TOWNS);
 
   // pass on to
-  return GetTownOpinionOfMerc(pSoldier->ubProfile, ubTownId);
+  return GetTownOpinionOfMerc(pSoldier.value.ubProfile, ubTownId);
 }
 
 function UpdateTownOpinionOfThisMerc(ubProfileId: UINT8, ubTownId: UINT8, bAmount: INT8): void {
@@ -83,7 +83,7 @@ function UpdateTownOpinionOfThisMercForSoldier(pSoldier: Pointer<SOLDIERTYPE>, u
   Assert(ubTownId < NUM_TOWNS);
 
   // pass this on to the profile based function
-  UpdateTownOpinionOfThisMerc(pSoldier->ubProfile, ubTownId, bAmount);
+  UpdateTownOpinionOfThisMerc(pSoldier.value.ubProfile, ubTownId, bAmount);
 }
 
 function HandleSpreadOfAllTownsOpinion(): void {

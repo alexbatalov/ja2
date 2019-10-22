@@ -151,11 +151,11 @@ function GetCachedTile(cFilename: Pointer<INT8>): INT32 {
 
       // ATE: Add z-strip info
       if (gpTileCache[cnt].sStructRefID != -1) {
-        AddZStripInfoToVObject(gpTileCache[cnt].pImagery->vo, gpTileCacheStructInfo[gpTileCache[cnt].sStructRefID].pStructureFileRef, TRUE, 0);
+        AddZStripInfoToVObject(gpTileCache[cnt].pImagery.value.vo, gpTileCacheStructInfo[gpTileCache[cnt].sStructRefID].pStructureFileRef, TRUE, 0);
       }
 
-      if (gpTileCache[cnt].pImagery->pAuxData != NULL) {
-        gpTileCache[cnt].ubNumFrames = gpTileCache[cnt].pImagery->pAuxData->ubNumberOfFrames;
+      if (gpTileCache[cnt].pImagery.value.pAuxData != NULL) {
+        gpTileCache[cnt].ubNumFrames = gpTileCache[cnt].pImagery.value.pAuxData.value.ubNumberOfFrames;
       } else {
         gpTileCache[cnt].ubNumFrames = 1;
       }
@@ -208,7 +208,7 @@ function GetCachedTileVideoObject(iIndex: INT32): HVOBJECT {
     return NULL;
   }
 
-  return gpTileCache[iIndex].pImagery->vo;
+  return gpTileCache[iIndex].pImagery.value.vo;
 }
 
 function GetCachedTileStructureRef(iIndex: INT32): Pointer<STRUCTURE_FILE_REF> {
@@ -242,12 +242,12 @@ function CheckForAndAddTileCacheStructInfo(pNode: Pointer<LEVELNODE>, sGridNo: I
   pStructureFileRef = GetCachedTileStructureRef(usIndex);
 
   if (pStructureFileRef != NULL) {
-    if (!AddStructureToWorld(sGridNo, 0, &(pStructureFileRef->pDBStructureRef[usSubIndex]), pNode)) {
+    if (!AddStructureToWorld(sGridNo, 0, &(pStructureFileRef.value.pDBStructureRef[usSubIndex]), pNode)) {
       if (giDefaultStructIndex != -1) {
         pStructureFileRef = gpTileCacheStructInfo[giDefaultStructIndex].pStructureFileRef;
 
         if (pStructureFileRef != NULL) {
-          AddStructureToWorld(sGridNo, 0, &(pStructureFileRef->pDBStructureRef[usSubIndex]), pNode);
+          AddStructureToWorld(sGridNo, 0, &(pStructureFileRef.value.pDBStructureRef[usSubIndex]), pNode);
         }
       }
     }
@@ -261,7 +261,7 @@ function CheckForAndDeleteTileCacheStructInfo(pNode: Pointer<LEVELNODE>, usIndex
     pStructureFileRef = GetCachedTileStructureRef((usIndex - TILE_CACHE_START_INDEX));
 
     if (pStructureFileRef != NULL) {
-      DeleteStructureFromWorld(pNode->pStructureData);
+      DeleteStructureFromWorld(pNode.value.pStructureData);
     }
   }
 }

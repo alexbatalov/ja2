@@ -76,11 +76,11 @@ function RemoveCursors(): void {
         iMapIndex += ROOF_OFFSET;
       pNode = gpWorldLevelData[iMapIndex].pTopmostHead;
       while (pNode) {
-        if (pNode->usIndex == FIRSTPOINTERS1 || pNode->usIndex == FIRSTPOINTERS5) {
-          RemoveTopmost(iMapIndex, pNode->usIndex);
+        if (pNode.value.usIndex == FIRSTPOINTERS1 || pNode.value.usIndex == FIRSTPOINTERS5) {
+          RemoveTopmost(iMapIndex, pNode.value.usIndex);
           break;
         }
-        pNode = pNode->pNext;
+        pNode = pNode.value.pNext;
       }
     }
   }
@@ -94,12 +94,12 @@ function RemoveBadMarker(): void {
     return;
   pNode = gpWorldLevelData[sBadMarker].pTopmostHead;
   while (pNode) {
-    if (pNode->usIndex == BADMARKER1) {
-      RemoveTopmost(sBadMarker, pNode->usIndex);
+    if (pNode.value.usIndex == BADMARKER1) {
+      RemoveTopmost(sBadMarker, pNode.value.usIndex);
       sBadMarker = -1;
       break;
     }
-    pNode = pNode->pNext;
+    pNode = pNode.value.pNext;
   }
 }
 
@@ -343,21 +343,21 @@ function DrawBuildingLayout(iMapIndex: INT32): void {
   iOffset = iMapIndex - gsBuildingLayoutAnchorGridNo;
   curr = gpBuildingLayoutList;
   while (curr) {
-    iMapIndex = curr->sGridNo + iOffset;
+    iMapIndex = curr.value.sGridNo + iOffset;
     if (iMapIndex > 0 && iMapIndex < WORLD_MAX) {
       fAdd = TRUE;
       pNode = gpWorldLevelData[iMapIndex].pTopmostHead;
       while (pNode) {
-        if (pNode->usIndex == FIRSTPOINTERS1) {
+        if (pNode.value.usIndex == FIRSTPOINTERS1) {
           fAdd = FALSE;
           break;
         }
-        pNode = pNode->pNext;
+        pNode = pNode.value.pNext;
       }
       if (fAdd)
         AddTopmostToTail(iMapIndex, FIRSTPOINTERS1);
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -369,9 +369,9 @@ function RemoveBuildingLayout(): void {
   iOffset = iMapIndex - gsBuildingLayoutAnchorGridNo;
   curr = gpBuildingLayoutList;
   while (curr) {
-    iMapIndex = curr->sGridNo + iOffset;
+    iMapIndex = curr.value.sGridNo + iOffset;
     if (iMapIndex > 0 && iMapIndex < WORLD_MAX)
       RemoveTopmost(iMapIndex, FIRSTPOINTERS1);
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }

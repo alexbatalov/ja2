@@ -87,7 +87,7 @@ function InitNewOverheadDB(ubTilesetID: UINT8): void {
     // Get number of regions
     s = gSmTileSurf[cnt1];
 
-    NumRegions = s.vo->usNumberOfObjects;
+    NumRegions = s.vo.value.usNumberOfObjects;
 
     // Check for overflow
     if (NumRegions > gNumTilesPerType[cnt1]) {
@@ -218,11 +218,11 @@ function GetClosestMercInOverheadMap(sSweetGridNo: INT16, ppReturnedSoldier: Poi
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS)) {
         // Go on sweet stop
-        if (gpWorldLevelData[sGridNo].pMercHead != NULL && gpWorldLevelData[sGridNo].pMercHead->pSoldier->bVisible != -1) {
+        if (gpWorldLevelData[sGridNo].pMercHead != NULL && gpWorldLevelData[sGridNo].pMercHead.value.pSoldier.value.bVisible != -1) {
           uiRange = GetRangeInCellCoordsFromGridNoDiff(sSweetGridNo, sGridNo);
 
           if (uiRange < uiLowestRange) {
-            (*ppReturnedSoldier) = gpWorldLevelData[sGridNo].pMercHead->pSoldier;
+            (*ppReturnedSoldier) = gpWorldLevelData[sGridNo].pMercHead.value.pSoldier;
             uiLowestRange = uiRange;
             fFound = TRUE;
           }
@@ -241,10 +241,10 @@ function DisplayMercNameInOverhead(pSoldier: Pointer<SOLDIERTYPE>): void {
   let sY: INT16;
 
   // Get Screen position of guy.....
-  GetWorldXYAbsoluteScreenXY((pSoldier->sX / CELL_X_SIZE), (pSoldier->sY / CELL_Y_SIZE), &sWorldScreenX, &sWorldScreenY);
+  GetWorldXYAbsoluteScreenXY((pSoldier.value.sX / CELL_X_SIZE), (pSoldier.value.sY / CELL_Y_SIZE), &sWorldScreenX, &sWorldScreenY);
 
   sWorldScreenX = gsStartRestrictedX + (sWorldScreenX / 5) + 5;
-  sWorldScreenY = gsStartRestrictedY + (sWorldScreenY / 5) + (pSoldier->sHeightAdjustment / 5) + (gpWorldLevelData[pSoldier->sGridNo].sHeight / 5) - 8;
+  sWorldScreenY = gsStartRestrictedY + (sWorldScreenY / 5) + (pSoldier.value.sHeightAdjustment / 5) + (gpWorldLevelData[pSoldier.value.sGridNo].sHeight / 5) - 8;
 
   sWorldScreenY += (gsRenderHeight / 5);
 
@@ -254,11 +254,11 @@ function DisplayMercNameInOverhead(pSoldier: Pointer<SOLDIERTYPE>): void {
   SetFontForeground(FONT_MCOLOR_WHITE);
 
   // Center here....
-  FindFontCenterCoordinates(sWorldScreenX, sWorldScreenY, (1), 1, pSoldier->name, TINYFONT1, &sX, &sY);
+  FindFontCenterCoordinates(sWorldScreenX, sWorldScreenY, (1), 1, pSoldier.value.name, TINYFONT1, &sX, &sY);
 
   // OK, selected guy is here...
-  gprintfdirty(sX, sY, pSoldier->name);
-  mprintf(sX, sY, pSoldier->name);
+  gprintfdirty(sX, sY, pSoldier.value.name);
+  mprintf(sX, sY, pSoldier.value.name);
 }
 
 function HandleOverheadMap(): void {
@@ -349,7 +349,7 @@ function HandleOverheadMap(): void {
           DrawItemPoolList(pItemPool, usMapPos, ITEMLIST_DISPLAY, bZLevel, gusMouseXPos, gusMouseYPos);
 
           gfOverItemPool = TRUE;
-          gsOveritemPoolGridNo = pItemPool->sGridNo;
+          gsOveritemPoolGridNo = pItemPool.value.sGridNo;
         }
       }
 
@@ -361,16 +361,16 @@ function HandleOverheadMap(): void {
           DrawItemPoolList(pItemPool, usMapPos, ITEMLIST_DISPLAY, bZLevel, gusMouseXPos, (gusMouseYPos - 5));
 
           gfOverItemPool = TRUE;
-          gsOveritemPoolGridNo = pItemPool->sGridNo;
+          gsOveritemPoolGridNo = pItemPool.value.sGridNo;
         }
       }
     }
 
     if (GetOverheadMouseGridNoForFullSoldiersGridNo(&usMapPos)) {
       if (GetClosestMercInOverheadMap(usMapPos, &pSoldier, 1)) {
-        if (pSoldier->bTeam == gbPlayerNum) {
+        if (pSoldier.value.bTeam == gbPlayerNum) {
           gfUIHandleSelectionAboveGuy = TRUE;
-          gsSelectedGuy = pSoldier->ubID;
+          gsSelectedGuy = pSoldier.value.ubID;
         }
 
         DisplayMercNameInOverhead(pSoldier);
@@ -431,9 +431,9 @@ function GoIntoOverheadMap(): void {
 
   // Add shades to persons....
   GetVideoObject(&hVObject, uiPERSONS);
-  hVObject->pShades[0] = Create16BPPPaletteShaded(hVObject->pPaletteEntry, 256, 256, 256, FALSE);
-  hVObject->pShades[1] = Create16BPPPaletteShaded(hVObject->pPaletteEntry, 310, 310, 310, FALSE);
-  hVObject->pShades[2] = Create16BPPPaletteShaded(hVObject->pPaletteEntry, 0, 0, 0, FALSE);
+  hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 256, 256, 256, FALSE);
+  hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 310, 310, 310, FALSE);
+  hVObject.value.pShades[2] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 0, 0, 0, FALSE);
 
   gfOverheadMapDirty = TRUE;
 
@@ -597,19 +597,19 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
 
           pNode = gpWorldLevelData[usTileIndex].pLandStart;
           while (pNode != NULL) {
-            pTile = &(gSmTileDB[pNode->usIndex]);
+            pTile = &(gSmTileDB[pNode.value.usIndex]);
 
             sX = sTempPosX_S;
             sY = sTempPosY_S - sHeight + (gsRenderHeight / 5);
 
-            pTile->vo->pShadeCurrent = gSmTileSurf[pTile->fType].vo->pShades[pNode->ubShadeLevel];
+            pTile.value.vo.value.pShadeCurrent = gSmTileSurf[pTile.value.fType].vo.value.pShades[pNode.value.ubShadeLevel];
 
             // RENDER!
             // BltVideoObjectFromIndex(  FRAME_BUFFER, SGR1, gSmallTileDatabase[ gpWorldLevelData[ usTileIndex ].pLandHead->usIndex ], sX, sY, VO_BLT_SRCTRANSPARENCY, NULL );
             // BltVideoObjectFromIndex(  FRAME_BUFFER, SGR1, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL );
-            Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile->vo, sX, sY, pTile->usSubIndex);
+            Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile.value.vo, sX, sY, pTile.value.usSubIndex);
 
-            pNode = pNode->pPrevNode;
+            pNode = pNode.value.pPrevNode;
           }
         }
 
@@ -664,15 +664,15 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
 
           pNode = gpWorldLevelData[usTileIndex].pObjectHead;
           while (pNode != NULL) {
-            if (pNode->usIndex < NUMBEROFTILES) {
+            if (pNode.value.usIndex < NUMBEROFTILES) {
               // Don't render itempools!
-              if (!(pNode->uiFlags & LEVELNODE_ITEM)) {
-                pTile = &(gSmTileDB[pNode->usIndex]);
+              if (!(pNode.value.uiFlags & LEVELNODE_ITEM)) {
+                pTile = &(gSmTileDB[pNode.value.usIndex]);
 
                 sX = sTempPosX_S;
                 sY = sTempPosY_S;
 
-                if (gTileDatabase[pNode->usIndex].uiFlags & IGNORE_WORLD_HEIGHT) {
+                if (gTileDatabase[pNode.value.usIndex].uiFlags & IGNORE_WORLD_HEIGHT) {
                   sY -= sModifiedHeight;
                 } else {
                   sY -= sHeight;
@@ -680,46 +680,46 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
 
                 sY += (gsRenderHeight / 5);
 
-                pTile->vo->pShadeCurrent = gSmTileSurf[pTile->fType].vo->pShades[pNode->ubShadeLevel];
+                pTile.value.vo.value.pShadeCurrent = gSmTileSurf[pTile.value.fType].vo.value.pShades[pNode.value.ubShadeLevel];
 
                 // RENDER!
-                Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile->vo, sX, sY, pTile->usSubIndex);
+                Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile.value.vo, sX, sY, pTile.value.usSubIndex);
               }
             }
 
-            pNode = pNode->pNext;
+            pNode = pNode.value.pNext;
           }
 
           pNode = gpWorldLevelData[usTileIndex].pShadowHead;
           while (pNode != NULL) {
-            if (pNode->usIndex < NUMBEROFTILES) {
-              pTile = &(gSmTileDB[pNode->usIndex]);
+            if (pNode.value.usIndex < NUMBEROFTILES) {
+              pTile = &(gSmTileDB[pNode.value.usIndex]);
               sX = sTempPosX_S;
               sY = sTempPosY_S - sHeight;
 
               sY += (gsRenderHeight / 5);
 
-              pTile->vo->pShadeCurrent = gSmTileSurf[pTile->fType].vo->pShades[pNode->ubShadeLevel];
+              pTile.value.vo.value.pShadeCurrent = gSmTileSurf[pTile.value.fType].vo.value.pShades[pNode.value.ubShadeLevel];
 
               // RENDER!
-              Blt8BPPDataTo16BPPBufferShadow(pDestBuf, uiDestPitchBYTES, pTile->vo, sX, sY, pTile->usSubIndex);
+              Blt8BPPDataTo16BPPBufferShadow(pDestBuf, uiDestPitchBYTES, pTile.value.vo, sX, sY, pTile.value.usSubIndex);
             }
 
-            pNode = pNode->pNext;
+            pNode = pNode.value.pNext;
           }
 
           pNode = gpWorldLevelData[usTileIndex].pStructHead;
 
           while (pNode != NULL) {
-            if (pNode->usIndex < NUMBEROFTILES) {
+            if (pNode.value.usIndex < NUMBEROFTILES) {
               // Don't render itempools!
-              if (!(pNode->uiFlags & LEVELNODE_ITEM)) {
-                pTile = &(gSmTileDB[pNode->usIndex]);
+              if (!(pNode.value.uiFlags & LEVELNODE_ITEM)) {
+                pTile = &(gSmTileDB[pNode.value.usIndex]);
 
                 sX = sTempPosX_S;
-                sY = sTempPosY_S - (gTileDatabase[pNode->usIndex].sOffsetHeight / 5);
+                sY = sTempPosY_S - (gTileDatabase[pNode.value.usIndex].sOffsetHeight / 5);
 
-                if (gTileDatabase[pNode->usIndex].uiFlags & IGNORE_WORLD_HEIGHT) {
+                if (gTileDatabase[pNode.value.usIndex].uiFlags & IGNORE_WORLD_HEIGHT) {
                   sY -= sModifiedHeight;
                 } else {
                   sY -= sHeight;
@@ -727,14 +727,14 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
 
                 sY += (gsRenderHeight / 5);
 
-                pTile->vo->pShadeCurrent = gSmTileSurf[pTile->fType].vo->pShades[pNode->ubShadeLevel];
+                pTile.value.vo.value.pShadeCurrent = gSmTileSurf[pTile.value.fType].vo.value.pShades[pNode.value.ubShadeLevel];
 
                 // RENDER!
-                Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile->vo, sX, sY, pTile->usSubIndex);
+                Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile.value.vo, sX, sY, pTile.value.usSubIndex);
               }
             }
 
-            pNode = pNode->pNext;
+            pNode = pNode.value.pNext;
           }
         }
 
@@ -791,24 +791,24 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
 
             pNode = gpWorldLevelData[usTileIndex].pRoofHead;
             while (pNode != NULL) {
-              if (pNode->usIndex < NUMBEROFTILES) {
-                if (!(pNode->uiFlags & LEVELNODE_HIDDEN)) {
-                  pTile = &(gSmTileDB[pNode->usIndex]);
+              if (pNode.value.usIndex < NUMBEROFTILES) {
+                if (!(pNode.value.uiFlags & LEVELNODE_HIDDEN)) {
+                  pTile = &(gSmTileDB[pNode.value.usIndex]);
 
                   sX = sTempPosX_S;
-                  sY = sTempPosY_S - (gTileDatabase[pNode->usIndex].sOffsetHeight / 5) - sHeight;
+                  sY = sTempPosY_S - (gTileDatabase[pNode.value.usIndex].sOffsetHeight / 5) - sHeight;
 
                   sY -= (WALL_HEIGHT / 5);
 
                   sY += (gsRenderHeight / 5);
 
-                  pTile->vo->pShadeCurrent = gSmTileSurf[pTile->fType].vo->pShades[pNode->ubShadeLevel];
+                  pTile.value.vo.value.pShadeCurrent = gSmTileSurf[pTile.value.fType].vo.value.pShades[pNode.value.ubShadeLevel];
 
                   // RENDER!
-                  Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile->vo, sX, sY, pTile->usSubIndex);
+                  Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile.value.vo, sX, sY, pTile.value.usSubIndex);
                 }
               }
-              pNode = pNode->pNext;
+              pNode = pNode.value.pNext;
             }
           }
 
@@ -912,10 +912,10 @@ function RenderOverheadOverlays(): void {
   for (i = 0; i < end; i++) {
     // First, check to see if the soldier exists and is in the sector.
     pSoldier = MercPtrs[i];
-    if (!pSoldier->bActive || !pSoldier->bInSector)
+    if (!pSoldier.value.bActive || !pSoldier.value.bInSector)
       continue;
     // Soldier is here.  Calculate his screen position based on his current gridno.
-    GetOverheadScreenXYFromGridNo(pSoldier->sGridNo, &sX, &sY);
+    GetOverheadScreenXYFromGridNo(pSoldier.value.sGridNo, &sX, &sY);
     // Now, draw his "doll"
 
     // adjust for position.
@@ -923,18 +923,18 @@ function RenderOverheadOverlays(): void {
     sY -= 5;
     // sScreenY -= 7;	//height of doll
 
-    if (!gfTacticalPlacementGUIActive && pSoldier->bLastRenderVisibleValue == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
+    if (!gfTacticalPlacementGUIActive && pSoldier.value.bLastRenderVisibleValue == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
       continue;
     }
 
-    if (pSoldier->sGridNo == NOWHERE) {
+    if (pSoldier.value.sGridNo == NOWHERE) {
       continue;
     }
 
-    sY -= (GetOffsetLandHeight(pSoldier->sGridNo) / 5);
+    sY -= (GetOffsetLandHeight(pSoldier.value.sGridNo) / 5);
 
     // Adjust for height...
-    sY -= (pSoldier->sHeightAdjustment / 5);
+    sY -= (pSoldier.value.sHeightAdjustment / 5);
 
     sY += (gsRenderHeight / 5);
 
@@ -942,24 +942,24 @@ function RenderOverheadOverlays(): void {
     SetObjectShade(hVObject, 0);
 
     // If on roof....
-    if (pSoldier->sHeightAdjustment) {
+    if (pSoldier.value.sHeightAdjustment) {
       SetObjectShade(hVObject, 1);
     }
 
-    if (pSoldier->ubID == gusSelectedSoldier) {
+    if (pSoldier.value.ubID == gusSelectedSoldier) {
       if (gfRadarCurrentGuyFlash && !gfTacticalPlacementGUIActive) {
         SetObjectShade(hVObject, 2);
       }
     }
-    if (gfEditMode && gpSelected && gpSelected->pSoldier == pSoldier) {
+    if (gfEditMode && gpSelected && gpSelected.value.pSoldier == pSoldier) {
       // editor:  show the selected edited merc as the yellow one.
       Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, 0);
     } else
         if (!gfTacticalPlacementGUIActive) {
           // normal
-      Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, pSoldier->bTeam);
+      Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, pSoldier.value.bTeam);
       RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sX, sY, (sX + 3), (sY + 9));
-    } else if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {
+    } else if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
       // vehicle
       Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, 9);
       RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, (sX - 6), (sY), (sX + 9), (sY + 10));
@@ -972,13 +972,13 @@ function RenderOverheadOverlays(): void {
       // tactical placement selected merc
       Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, 7);
       RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, (sX - 2), (sY - 2), (sX + 5), (sY + 11));
-    } else if (gpTacticalPlacementHilightedSoldier == pSoldier && pSoldier->uiStatusFlags) {
+    } else if (gpTacticalPlacementHilightedSoldier == pSoldier && pSoldier.value.uiStatusFlags) {
       // tactical placement hilighted merc
       Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, 8);
       RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, (sX - 2), (sY - 2), (sX + 5), (sY + 11));
     } else {
       // normal
-      Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, pSoldier->bTeam);
+      Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, pSoldier.value.bTeam);
       RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sX, sY, (sX + 3), (sY + 9));
     }
     if (ubPassengers) {
@@ -993,23 +993,23 @@ function RenderOverheadOverlays(): void {
   if (!gfTacticalPlacementGUIActive) {
     for (i = 0; i < guiNumWorldItems; i++) {
       pWorldItem = &gWorldItems[i];
-      if (!pWorldItem || !pWorldItem->fExists || pWorldItem->bVisible != VISIBLE && !(gTacticalStatus.uiFlags & SHOW_ALL_ITEMS)) {
+      if (!pWorldItem || !pWorldItem.value.fExists || pWorldItem.value.bVisible != VISIBLE && !(gTacticalStatus.uiFlags & SHOW_ALL_ITEMS)) {
         continue;
       }
 
-      GetOverheadScreenXYFromGridNo(pWorldItem->sGridNo, &sX, &sY);
+      GetOverheadScreenXYFromGridNo(pWorldItem.value.sGridNo, &sX, &sY);
 
       // adjust for position.
       // sX += 2;
       sY += 6;
-      sY -= (GetOffsetLandHeight(pWorldItem->sGridNo) / 5);
+      sY -= (GetOffsetLandHeight(pWorldItem.value.sGridNo) / 5);
 
       sY += (gsRenderHeight / 5);
 
       if (gfRadarCurrentGuyFlash) {
         usLineColor = Get16BPPColor(FROMRGB(0, 0, 0));
       } else
-        switch (pWorldItem->bVisible) {
+        switch (pWorldItem.value.bVisible) {
           case HIDDEN_ITEM:
             usLineColor = Get16BPPColor(FROMRGB(0, 0, 255));
             break;
@@ -1027,7 +1027,7 @@ function RenderOverheadOverlays(): void {
             break;
         }
 
-      if (gfOverItemPool && gsOveritemPoolGridNo == pWorldItem->sGridNo) {
+      if (gfOverItemPool && gsOveritemPoolGridNo == pWorldItem.value.sGridNo) {
         usLineColor = Get16BPPColor(FROMRGB(255, 0, 0));
       }
 
@@ -1236,13 +1236,13 @@ function ClickOverheadRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32):
     return;
   }
 
-  if (!(reg->uiFlags & BUTTON_ENABLED))
+  if (!(reg.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    reg->uiFlags |= BUTTON_CLICKED_ON;
+    reg.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    reg->uiFlags &= (~BUTTON_CLICKED_ON);
+    reg.value.uiFlags &= (~BUTTON_CLICKED_ON);
     sWorldScreenX = (gusMouseXPos - gsStartRestrictedX) * 5;
     sWorldScreenY = (gusMouseYPos - gsStartRestrictedY) * 5;
 
@@ -1382,10 +1382,10 @@ function CopyOverheadDBShadetablesFromTileset(): void {
   for (uiLoop = 0; uiLoop < NUMBEROFTILETYPES; uiLoop++) {
     pTileSurf = (gTileSurfaceArray[uiLoop]);
 
-    gSmTileSurf[uiLoop].vo->fFlags |= VOBJECT_FLAG_SHADETABLE_SHARED;
+    gSmTileSurf[uiLoop].vo.value.fFlags |= VOBJECT_FLAG_SHADETABLE_SHARED;
 
     for (uiLoop2 = 0; uiLoop2 < HVOBJECT_SHADE_TABLES; uiLoop2++) {
-      gSmTileSurf[uiLoop].vo->pShades[uiLoop2] = pTileSurf->vo->pShades[uiLoop2];
+      gSmTileSurf[uiLoop].vo.value.pShades[uiLoop2] = pTileSurf.value.vo.value.pShades[uiLoop2];
     }
   }
 }

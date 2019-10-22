@@ -291,20 +291,20 @@ function BtnLaptopCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     }
 
     // redraw region
-    if (btn->Area.uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.value.Area.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = TRUE;
     }
 
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (IsMapScreenHelpTextUp()) {
       // stop mapscreen text
       StopMapScreenHelpText();
     }
 
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON | BUTTON_DIRTY);
-      DrawButton(btn->IDNum);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON | BUTTON_DIRTY);
+      DrawButton(btn.value.IDNum);
 
       RequestTriggerExitFromMapscreen(MAP_EXIT_TO_LAPTOP);
     }
@@ -325,14 +325,14 @@ function BtnTacticalCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     }
 
     // redraw region
-    if (btn->Area.uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.value.Area.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = TRUE;
     }
 
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       RequestTriggerExitFromMapscreen(MAP_EXIT_TO_TACTICAL);
     }
@@ -354,14 +354,14 @@ function BtnOptionsFromMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
     }
 
     // redraw region
-    if (btn->uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = TRUE;
     }
 
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       fMapScreenBottomDirty = TRUE;
 
       RequestTriggerExitFromMapscreen(MAP_EXIT_TO_OPTIONS);
@@ -408,14 +408,14 @@ function BtnTimeCompressMoreMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: 
       return;
 
     // redraw region
-    if (btn->uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = TRUE;
     }
 
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       fMapScreenBottomDirty = TRUE;
 
       RequestIncreaseInTimeCompression();
@@ -432,14 +432,14 @@ function BtnTimeCompressLessMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: 
       return;
 
     // redraw region
-    if (btn->uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = TRUE;
     }
 
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       fMapScreenBottomDirty = TRUE;
 
       RequestDecreaseInTimeCompression();
@@ -461,19 +461,19 @@ function BtnMessageDownMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
     }
 
     // redraw region
-    if (btn->uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = TRUE;
     }
 
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
     iLastRepeatScrollTime = 0;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // redraw region
-      if (btn->uiFlags & MSYS_HAS_BACKRECT) {
+      if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
         fMapScreenBottomDirty = TRUE;
       }
 
@@ -495,19 +495,19 @@ function BtnMessageDownMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
     }
 
     // redraw region
-    if (btn->uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = TRUE;
     }
 
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
     iLastRepeatScrollTime = 0;
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // redraw region
-      if (btn->uiFlags & MSYS_HAS_BACKRECT) {
+      if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
         fMapScreenBottomDirty = TRUE;
       }
 
@@ -534,10 +534,10 @@ function BtnMessageUpMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
       return;
     }
 
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
     // redraw region
-    if (btn->Area.uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.value.Area.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = TRUE;
     }
 
@@ -545,11 +545,11 @@ function BtnMessageUpMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   }
 
   else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // redraw region
-      if (btn->uiFlags & MSYS_HAS_BACKRECT) {
+      if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
         fMapScreenBottomDirty = TRUE;
       }
 
@@ -571,19 +571,19 @@ function BtnMessageUpMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
     }
 
     // redraw region
-    if (btn->uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = TRUE;
     }
 
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
     iLastRepeatScrollTime = 0;
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // redraw region
-      if (btn->uiFlags & MSYS_HAS_BACKRECT) {
+      if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
         fMapScreenBottomDirty = TRUE;
       }
 
@@ -608,7 +608,7 @@ function EnableDisableMessageScrollButtonsAndRegions(): void {
   // if no scrolling required, or already showing the topmost message
   if ((ubNumMessages <= MAX_MESSAGES_ON_MAP_BOTTOM) || (gubFirstMapscreenMessageIndex == 0)) {
     DisableButton(guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_UP]);
-    ButtonList[guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_UP]]->uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_UP]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
   } else {
     EnableButton(guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_UP]);
   }
@@ -616,7 +616,7 @@ function EnableDisableMessageScrollButtonsAndRegions(): void {
   // if no scrolling required, or already showing the last message
   if ((ubNumMessages <= MAX_MESSAGES_ON_MAP_BOTTOM) || ((gubFirstMapscreenMessageIndex + MAX_MESSAGES_ON_MAP_BOTTOM) >= ubNumMessages)) {
     DisableButton(guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_DOWN]);
-    ButtonList[guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_DOWN]]->uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_DOWN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
   } else {
     EnableButton(guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_DOWN]);
   }
@@ -1167,7 +1167,7 @@ function AnyUsableRealMercenariesOnTeam(): BOOLEAN {
   for (iCounter = 0; iCounter < iNumberOnTeam; iCounter++) {
     pSoldier = &Menptr[iCounter];
 
-    if ((pSoldier->bActive) && (pSoldier->bLife > 0) && !(pSoldier->uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier) && (pSoldier->bAssignment != ASSIGNMENT_POW) && (pSoldier->bAssignment != ASSIGNMENT_DEAD) && (pSoldier->ubWhatKindOfMercAmI != MERC_TYPE__EPC)) {
+    if ((pSoldier.value.bActive) && (pSoldier.value.bLife > 0) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier) && (pSoldier.value.bAssignment != ASSIGNMENT_POW) && (pSoldier.value.bAssignment != ASSIGNMENT_DEAD) && (pSoldier.value.ubWhatKindOfMercAmI != MERC_TYPE__EPC)) {
       return TRUE;
     }
   }

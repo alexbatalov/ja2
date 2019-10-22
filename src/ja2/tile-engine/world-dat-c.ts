@@ -86,75 +86,75 @@ function InitEngineTilesets(): void {
 
 function SetTilesetOneTerrainValues(): void {
   // FIRST TEXUTRES
-  gTileSurfaceArray[FIRSTTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[SECONDTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[THIRDTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FOURTHTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FIFTHTEXTURE]->ubTerrainID = LOW_GRASS;
-  gTileSurfaceArray[SIXTHTEXTURE]->ubTerrainID = LOW_GRASS;
-  gTileSurfaceArray[SEVENTHTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[REGWATERTEXTURE]->ubTerrainID = LOW_WATER;
-  gTileSurfaceArray[DEEPWATERTEXTURE]->ubTerrainID = DEEP_WATER;
+  gTileSurfaceArray[FIRSTTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[SECONDTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[THIRDTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[FOURTHTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[FIFTHTEXTURE].value.ubTerrainID = LOW_GRASS;
+  gTileSurfaceArray[SIXTHTEXTURE].value.ubTerrainID = LOW_GRASS;
+  gTileSurfaceArray[SEVENTHTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[REGWATERTEXTURE].value.ubTerrainID = LOW_WATER;
+  gTileSurfaceArray[DEEPWATERTEXTURE].value.ubTerrainID = DEEP_WATER;
 
   // NOW ROADS
-  gTileSurfaceArray[FIRSTROAD]->ubTerrainID = DIRT_ROAD;
-  gTileSurfaceArray[ROADPIECES]->ubTerrainID = DIRT_ROAD;
+  gTileSurfaceArray[FIRSTROAD].value.ubTerrainID = DIRT_ROAD;
+  gTileSurfaceArray[ROADPIECES].value.ubTerrainID = DIRT_ROAD;
 
   // NOW FLOORS
-  gTileSurfaceArray[FIRSTFLOOR]->ubTerrainID = FLAT_FLOOR;
-  gTileSurfaceArray[SECONDFLOOR]->ubTerrainID = FLAT_FLOOR;
-  gTileSurfaceArray[THIRDFLOOR]->ubTerrainID = FLAT_FLOOR;
-  gTileSurfaceArray[FOURTHFLOOR]->ubTerrainID = FLAT_FLOOR;
+  gTileSurfaceArray[FIRSTFLOOR].value.ubTerrainID = FLAT_FLOOR;
+  gTileSurfaceArray[SECONDFLOOR].value.ubTerrainID = FLAT_FLOOR;
+  gTileSurfaceArray[THIRDFLOOR].value.ubTerrainID = FLAT_FLOOR;
+  gTileSurfaceArray[FOURTHFLOOR].value.ubTerrainID = FLAT_FLOOR;
 
   // NOW ANY TERRAIN MODIFYING DEBRIS
 }
 
 function SetTilesetTwoTerrainValues(): void {
   // FIRST TEXUTRES
-  gTileSurfaceArray[FIRSTTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[SECONDTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[THIRDTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FOURTHTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FIFTHTEXTURE]->ubTerrainID = LOW_GRASS;
-  gTileSurfaceArray[SIXTHTEXTURE]->ubTerrainID = LOW_GRASS;
-  gTileSurfaceArray[SEVENTHTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[REGWATERTEXTURE]->ubTerrainID = LOW_WATER;
-  gTileSurfaceArray[DEEPWATERTEXTURE]->ubTerrainID = DEEP_WATER;
+  gTileSurfaceArray[FIRSTTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[SECONDTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[THIRDTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[FOURTHTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[FIFTHTEXTURE].value.ubTerrainID = LOW_GRASS;
+  gTileSurfaceArray[SIXTHTEXTURE].value.ubTerrainID = LOW_GRASS;
+  gTileSurfaceArray[SEVENTHTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[REGWATERTEXTURE].value.ubTerrainID = LOW_WATER;
+  gTileSurfaceArray[DEEPWATERTEXTURE].value.ubTerrainID = DEEP_WATER;
 
   // NOW ROADS
-  gTileSurfaceArray[FIRSTROAD]->ubTerrainID = DIRT_ROAD;
-  gTileSurfaceArray[ROADPIECES]->ubTerrainID = DIRT_ROAD;
+  gTileSurfaceArray[FIRSTROAD].value.ubTerrainID = DIRT_ROAD;
+  gTileSurfaceArray[ROADPIECES].value.ubTerrainID = DIRT_ROAD;
 
   // NOW FLOORS
-  gTileSurfaceArray[FIRSTFLOOR]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[SECONDFLOOR]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[THIRDFLOOR]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FOURTHFLOOR]->ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[FIRSTFLOOR].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[SECONDFLOOR].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[THIRDFLOOR].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[FOURTHFLOOR].value.ubTerrainID = FLAT_GROUND;
 }
 
 function SetTilesetThreeTerrainValues(): void {
   // DIFFERENCE FROM #1 IS THAT ROADS ARE PAVED
 
   // FIRST TEXUTRES
-  gTileSurfaceArray[FIRSTTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[SECONDTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[THIRDTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FOURTHTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FIFTHTEXTURE]->ubTerrainID = LOW_GRASS;
-  gTileSurfaceArray[SIXTHTEXTURE]->ubTerrainID = LOW_GRASS;
-  gTileSurfaceArray[SEVENTHTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[REGWATERTEXTURE]->ubTerrainID = LOW_WATER;
-  gTileSurfaceArray[DEEPWATERTEXTURE]->ubTerrainID = DEEP_WATER;
+  gTileSurfaceArray[FIRSTTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[SECONDTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[THIRDTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[FOURTHTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[FIFTHTEXTURE].value.ubTerrainID = LOW_GRASS;
+  gTileSurfaceArray[SIXTHTEXTURE].value.ubTerrainID = LOW_GRASS;
+  gTileSurfaceArray[SEVENTHTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[REGWATERTEXTURE].value.ubTerrainID = LOW_WATER;
+  gTileSurfaceArray[DEEPWATERTEXTURE].value.ubTerrainID = DEEP_WATER;
 
   // NOW ROADS
-  gTileSurfaceArray[FIRSTROAD]->ubTerrainID = PAVED_ROAD;
-  gTileSurfaceArray[ROADPIECES]->ubTerrainID = PAVED_ROAD;
+  gTileSurfaceArray[FIRSTROAD].value.ubTerrainID = PAVED_ROAD;
+  gTileSurfaceArray[ROADPIECES].value.ubTerrainID = PAVED_ROAD;
 
   // NOW FLOORS
-  gTileSurfaceArray[FIRSTFLOOR]->ubTerrainID = FLAT_FLOOR;
-  gTileSurfaceArray[SECONDFLOOR]->ubTerrainID = FLAT_FLOOR;
-  gTileSurfaceArray[THIRDFLOOR]->ubTerrainID = FLAT_FLOOR;
-  gTileSurfaceArray[FOURTHFLOOR]->ubTerrainID = FLAT_FLOOR;
+  gTileSurfaceArray[FIRSTFLOOR].value.ubTerrainID = FLAT_FLOOR;
+  gTileSurfaceArray[SECONDFLOOR].value.ubTerrainID = FLAT_FLOOR;
+  gTileSurfaceArray[THIRDFLOOR].value.ubTerrainID = FLAT_FLOOR;
+  gTileSurfaceArray[FOURTHFLOOR].value.ubTerrainID = FLAT_FLOOR;
 
   // NOW ANY TERRAIN MODIFYING DEBRIS
 }
@@ -163,25 +163,25 @@ function SetTilesetFourTerrainValues(): void {
   // DIFFERENCE FROM #1 IS THAT FLOOR2 IS NOT FLAT_FLOOR BUT FLAT_GROUND
 
   // FIRST TEXUTRES
-  gTileSurfaceArray[FIRSTTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[SECONDTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[THIRDTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FOURTHTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FIFTHTEXTURE]->ubTerrainID = LOW_GRASS;
-  gTileSurfaceArray[SIXTHTEXTURE]->ubTerrainID = LOW_GRASS;
-  gTileSurfaceArray[SEVENTHTEXTURE]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[REGWATERTEXTURE]->ubTerrainID = LOW_WATER;
-  gTileSurfaceArray[DEEPWATERTEXTURE]->ubTerrainID = DEEP_WATER;
+  gTileSurfaceArray[FIRSTTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[SECONDTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[THIRDTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[FOURTHTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[FIFTHTEXTURE].value.ubTerrainID = LOW_GRASS;
+  gTileSurfaceArray[SIXTHTEXTURE].value.ubTerrainID = LOW_GRASS;
+  gTileSurfaceArray[SEVENTHTEXTURE].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[REGWATERTEXTURE].value.ubTerrainID = LOW_WATER;
+  gTileSurfaceArray[DEEPWATERTEXTURE].value.ubTerrainID = DEEP_WATER;
 
   // NOW ROADS
-  gTileSurfaceArray[FIRSTROAD]->ubTerrainID = DIRT_ROAD;
-  gTileSurfaceArray[ROADPIECES]->ubTerrainID = DIRT_ROAD;
+  gTileSurfaceArray[FIRSTROAD].value.ubTerrainID = DIRT_ROAD;
+  gTileSurfaceArray[ROADPIECES].value.ubTerrainID = DIRT_ROAD;
 
   // NOW FLOORS
-  gTileSurfaceArray[FIRSTFLOOR]->ubTerrainID = FLAT_FLOOR;
-  gTileSurfaceArray[SECONDFLOOR]->ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[THIRDFLOOR]->ubTerrainID = FLAT_FLOOR;
-  gTileSurfaceArray[FOURTHFLOOR]->ubTerrainID = FLAT_FLOOR;
+  gTileSurfaceArray[FIRSTFLOOR].value.ubTerrainID = FLAT_FLOOR;
+  gTileSurfaceArray[SECONDFLOOR].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[THIRDFLOOR].value.ubTerrainID = FLAT_FLOOR;
+  gTileSurfaceArray[FOURTHFLOOR].value.ubTerrainID = FLAT_FLOOR;
 
   // NOW ANY TERRAIN MODIFYING DEBRIS
 }

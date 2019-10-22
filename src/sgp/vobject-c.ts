@@ -73,8 +73,8 @@ function ShutdownVideoObjectManager(): BOOLEAN {
   let curr: Pointer<VOBJECT_NODE>;
   while (gpVObjectHead) {
     curr = gpVObjectHead;
-    gpVObjectHead = gpVObjectHead->next;
-    DeleteVideoObject(curr->hVObject);
+    gpVObjectHead = gpVObjectHead.value.next;
+    DeleteVideoObject(curr.value.hVObject);
     MemFree(curr);
   }
   gpVObjectHead = NULL;
@@ -93,7 +93,7 @@ function CountVideoObjectNodes(): UINT32 {
   curr = gpVObjectHead;
   while (curr) {
     i++;
-    curr = curr->next;
+    curr = curr.value.next;
   }
   return i;
 }
@@ -119,22 +119,22 @@ function AddStandardVideoObject(pVObjectDesc: Pointer<VOBJECT_DESC>, puiIndex: P
   // Set into video object list
   if (gpVObjectHead) {
     // Add node after tail
-    gpVObjectTail->next = MemAlloc(sizeof(VOBJECT_NODE));
-    Assert(gpVObjectTail->next); // out of memory?
-    gpVObjectTail->next->prev = gpVObjectTail;
-    gpVObjectTail->next->next = NULL;
-    gpVObjectTail = gpVObjectTail->next;
+    gpVObjectTail.value.next = MemAlloc(sizeof(VOBJECT_NODE));
+    Assert(gpVObjectTail.value.next); // out of memory?
+    gpVObjectTail.value.next.value.prev = gpVObjectTail;
+    gpVObjectTail.value.next.value.next = NULL;
+    gpVObjectTail = gpVObjectTail.value.next;
   } else {
     // new list
     gpVObjectHead = MemAlloc(sizeof(VOBJECT_NODE));
     Assert(gpVObjectHead); // out of memory?
-    gpVObjectHead->prev = gpVObjectHead->next = NULL;
+    gpVObjectHead.value.prev = gpVObjectHead.value.next = NULL;
     gpVObjectTail = gpVObjectHead;
   }
   // Set the hVObject into the node.
-  gpVObjectTail->hVObject = hVObject;
-  gpVObjectTail->uiIndex = guiVObjectIndex += 2;
-  *puiIndex = gpVObjectTail->uiIndex;
+  gpVObjectTail.value.hVObject = hVObject;
+  gpVObjectTail.value.uiIndex = guiVObjectIndex += 2;
+  *puiIndex = gpVObjectTail.value.uiIndex;
   Assert(guiVObjectIndex < 0xfffffff0); // unlikely that we will ever use 2 billion vobjects!
   // We would have to create about 70 vobjects per second for 1 year straight to achieve this...
   guiVObjectSize++;
@@ -160,11 +160,11 @@ function GetVideoObject(hVObject: Pointer<HVOBJECT>, uiIndex: UINT32): BOOLEAN {
 
   curr = gpVObjectHead;
   while (curr) {
-    if (curr->uiIndex == uiIndex) {
-      *hVObject = curr->hVObject;
+    if (curr.value.uiIndex == uiIndex) {
+      *hVObject = curr.value.hVObject;
       return TRUE;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   return FALSE;
 }
@@ -203,28 +203,28 @@ function DeleteVideoObjectFromIndex(uiVObject: UINT32): BOOLEAN {
 
   curr = gpVObjectHead;
   while (curr) {
-    if (curr->uiIndex == uiVObject) {
+    if (curr.value.uiIndex == uiVObject) {
       // Found the node, so detach it and delete it.
 
       // Deallocate the memory for the video object
-      DeleteVideoObject(curr->hVObject);
+      DeleteVideoObject(curr.value.hVObject);
 
       if (curr == gpVObjectHead) {
         // Advance the head, because we are going to remove the head node.
-        gpVObjectHead = gpVObjectHead->next;
+        gpVObjectHead = gpVObjectHead.value.next;
       }
       if (curr == gpVObjectTail) {
         // Back up the tail, because we are going to remove the tail node.
-        gpVObjectTail = gpVObjectTail->prev;
+        gpVObjectTail = gpVObjectTail.value.prev;
       }
       // Detach the node from the vobject list
-      if (curr->next) {
+      if (curr.value.next) {
         // Make the prev node point to the next
-        curr->next->prev = curr->prev;
+        curr.value.next.value.prev = curr.value.prev;
       }
-      if (curr->prev) {
+      if (curr.value.prev) {
         // Make the next node point to the prev
-        curr->prev->next = curr->next;
+        curr.value.prev.value.next = curr.value.next;
       }
 // The node is now detached.  Now deallocate it.
       MemFree(curr);
@@ -232,7 +232,7 @@ function DeleteVideoObjectFromIndex(uiVObject: UINT32): BOOLEAN {
       guiVObjectSize--;
       return TRUE;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   return FALSE;
 }
@@ -283,10 +283,10 @@ function CreateVideoObject(VObjectDesc: Pointer<VOBJECT_DESC>): HVOBJECT {
   // Check creation options
   //	do
   //	{
-  if (VObjectDesc->fCreateFlags & VOBJECT_CREATE_FROMFILE || VObjectDesc->fCreateFlags & VOBJECT_CREATE_FROMHIMAGE) {
-    if (VObjectDesc->fCreateFlags & VOBJECT_CREATE_FROMFILE) {
+  if (VObjectDesc.value.fCreateFlags & VOBJECT_CREATE_FROMFILE || VObjectDesc.value.fCreateFlags & VOBJECT_CREATE_FROMHIMAGE) {
+    if (VObjectDesc.value.fCreateFlags & VOBJECT_CREATE_FROMFILE) {
       // Create himage object from file
-      hImage = CreateImage(VObjectDesc->ImageFile, IMAGE_ALLIMAGEDATA);
+      hImage = CreateImage(VObjectDesc.value.ImageFile, IMAGE_ALLIMAGEDATA);
 
       if (hImage == NULL) {
         MemFree(hVObject);
@@ -295,7 +295,7 @@ function CreateVideoObject(VObjectDesc: Pointer<VOBJECT_DESC>): HVOBJECT {
       }
     } else {
       // create video object from provided hImage
-      hImage = VObjectDesc->hImage;
+      hImage = VObjectDesc.value.hImage;
       if (hImage == NULL) {
         MemFree(hVObject);
         DbgMessage(TOPIC_VIDEOOBJECT, DBG_LEVEL_2, "Invalid hImage pointer given");
@@ -304,7 +304,7 @@ function CreateVideoObject(VObjectDesc: Pointer<VOBJECT_DESC>): HVOBJECT {
     }
 
     // Check if returned himage is TRLE compressed - return error if not
-    if (!(hImage->fFlags & IMAGE_TRLECOMPRESSED)) {
+    if (!(hImage.value.fFlags & IMAGE_TRLECOMPRESSED)) {
       MemFree(hVObject);
       DbgMessage(TOPIC_VIDEOOBJECT, DBG_LEVEL_2, "Invalid Image format given.");
       DestroyImage(hImage);
@@ -312,26 +312,26 @@ function CreateVideoObject(VObjectDesc: Pointer<VOBJECT_DESC>): HVOBJECT {
     }
 
     // Set values from himage
-    hVObject->ubBitDepth = hImage->ubBitDepth;
+    hVObject.value.ubBitDepth = hImage.value.ubBitDepth;
 
     // Get TRLE data
     CHECKF(GetETRLEImageData(hImage, &TempETRLEData));
 
     // Set values
-    hVObject->usNumberOfObjects = TempETRLEData.usNumberOfObjects;
-    hVObject->pETRLEObject = TempETRLEData.pETRLEObject;
-    hVObject->pPixData = TempETRLEData.pPixData;
-    hVObject->uiSizePixData = TempETRLEData.uiSizePixData;
+    hVObject.value.usNumberOfObjects = TempETRLEData.usNumberOfObjects;
+    hVObject.value.pETRLEObject = TempETRLEData.pETRLEObject;
+    hVObject.value.pPixData = TempETRLEData.pPixData;
+    hVObject.value.uiSizePixData = TempETRLEData.uiSizePixData;
 
     // Set palette from himage
-    if (hImage->ubBitDepth == 8) {
-      hVObject->pShade8 = ubColorTables[DEFAULT_SHADE_LEVEL];
-      hVObject->pGlow8 = ubColorTables[0];
+    if (hImage.value.ubBitDepth == 8) {
+      hVObject.value.pShade8 = ubColorTables[DEFAULT_SHADE_LEVEL];
+      hVObject.value.pGlow8 = ubColorTables[0];
 
-      SetVideoObjectPalette(hVObject, hImage->pPalette);
+      SetVideoObjectPalette(hVObject, hImage.value.pPalette);
     }
 
-    if (VObjectDesc->fCreateFlags & VOBJECT_CREATE_FROMFILE) {
+    if (VObjectDesc.value.fCreateFlags & VOBJECT_CREATE_FROMFILE) {
       // Delete himage object
       DestroyImage(hImage);
     }
@@ -360,27 +360,27 @@ function SetVideoObjectPalette(hVObject: HVOBJECT, pSrcPalette: Pointer<SGPPalet
   Assert(pSrcPalette != NULL);
 
   // Create palette object if not already done so
-  if (hVObject->pPaletteEntry == NULL) {
+  if (hVObject.value.pPaletteEntry == NULL) {
     // Create palette
-    hVObject->pPaletteEntry = MemAlloc(sizeof(SGPPaletteEntry) * 256);
-    CHECKF(hVObject->pPaletteEntry != NULL);
+    hVObject.value.pPaletteEntry = MemAlloc(sizeof(SGPPaletteEntry) * 256);
+    CHECKF(hVObject.value.pPaletteEntry != NULL);
 
     // Copy src into palette
-    memcpy(hVObject->pPaletteEntry, pSrcPalette, sizeof(SGPPaletteEntry) * 256);
+    memcpy(hVObject.value.pPaletteEntry, pSrcPalette, sizeof(SGPPaletteEntry) * 256);
   } else {
     // Just Change entries
-    memcpy(hVObject->pPaletteEntry, pSrcPalette, sizeof(SGPPaletteEntry) * 256);
+    memcpy(hVObject.value.pPaletteEntry, pSrcPalette, sizeof(SGPPaletteEntry) * 256);
   }
 
   // Delete 16BPP Palette if one exists
-  if (hVObject->p16BPPPalette != NULL) {
-    MemFree(hVObject->p16BPPPalette);
-    hVObject->p16BPPPalette = NULL;
+  if (hVObject.value.p16BPPPalette != NULL) {
+    MemFree(hVObject.value.p16BPPPalette);
+    hVObject.value.p16BPPPalette = NULL;
   }
 
   // Create 16BPP Palette
-  hVObject->p16BPPPalette = Create16BPPPalette(pSrcPalette);
-  hVObject->pShadeCurrent = hVObject->p16BPPPalette;
+  hVObject.value.p16BPPPalette = Create16BPPPalette(pSrcPalette);
+  hVObject.value.pShadeCurrent = hVObject.value.p16BPPPalette;
 
   //  DbgMessage(TOPIC_VIDEOOBJECT, DBG_LEVEL_3, String("Video Object Palette change successfull" ));
   return TRUE;
@@ -393,7 +393,7 @@ function SetVideoObjectTransparencyColor(hVObject: HVOBJECT, TransColor: COLORVA
   Assert(hVObject != NULL);
 
   // Set trans color into video object
-  hVObject->TransparentColor = TransColor;
+  hVObject.value.TransparentColor = TransColor;
 
   return TRUE;
 }
@@ -408,37 +408,37 @@ function DeleteVideoObject(hVObject: HVOBJECT): BOOLEAN {
   DestroyObjectPaletteTables(hVObject);
 
   // Release palette
-  if (hVObject->pPaletteEntry != NULL) {
-    MemFree(hVObject->pPaletteEntry);
+  if (hVObject.value.pPaletteEntry != NULL) {
+    MemFree(hVObject.value.pPaletteEntry);
     //		hVObject->pPaletteEntry = NULL;
   }
 
-  if (hVObject->pPixData != NULL) {
-    MemFree(hVObject->pPixData);
+  if (hVObject.value.pPixData != NULL) {
+    MemFree(hVObject.value.pPixData);
     //		hVObject->pPixData = NULL;
   }
 
-  if (hVObject->pETRLEObject != NULL) {
-    MemFree(hVObject->pETRLEObject);
+  if (hVObject.value.pETRLEObject != NULL) {
+    MemFree(hVObject.value.pETRLEObject);
     //		hVObject->pETRLEObject = NULL;
   }
 
-  if (hVObject->ppZStripInfo != NULL) {
-    for (usLoop = 0; usLoop < hVObject->usNumberOfObjects; usLoop++) {
-      if (hVObject->ppZStripInfo[usLoop] != NULL) {
-        MemFree(hVObject->ppZStripInfo[usLoop]->pbZChange);
-        MemFree(hVObject->ppZStripInfo[usLoop]);
+  if (hVObject.value.ppZStripInfo != NULL) {
+    for (usLoop = 0; usLoop < hVObject.value.usNumberOfObjects; usLoop++) {
+      if (hVObject.value.ppZStripInfo[usLoop] != NULL) {
+        MemFree(hVObject.value.ppZStripInfo[usLoop].value.pbZChange);
+        MemFree(hVObject.value.ppZStripInfo[usLoop]);
       }
     }
-    MemFree(hVObject->ppZStripInfo);
+    MemFree(hVObject.value.ppZStripInfo);
     //		hVObject->ppZStripInfo = NULL;
   }
 
-  if (hVObject->usNumberOf16BPPObjects > 0) {
-    for (usLoop = 0; usLoop < hVObject->usNumberOf16BPPObjects; usLoop++) {
-      MemFree(hVObject->p16BPPObject[usLoop].p16BPPData);
+  if (hVObject.value.usNumberOf16BPPObjects > 0) {
+    for (usLoop = 0; usLoop < hVObject.value.usNumberOf16BPPObjects; usLoop++) {
+      MemFree(hVObject.value.p16BPPObject[usLoop].p16BPPData);
     }
-    MemFree(hVObject->p16BPPObject);
+    MemFree(hVObject.value.p16BPPObject);
   }
 
   // Release object
@@ -464,62 +464,62 @@ function CreateObjectPaletteTables(pObj: HVOBJECT, uiType: UINT32): UINT16 {
   // this creates the highlight table. Specify the glow-type when creating the tables
   // through uiType, symbols are from VOBJECT.H
   for (count = 0; count < 16; count++) {
-    if ((count == 4) && (pObj->p16BPPPalette == pObj->pShades[count]))
-      pObj->pShades[count] = NULL;
-    else if (pObj->pShades[count] != NULL) {
-      MemFree(pObj->pShades[count]);
-      pObj->pShades[count] = NULL;
+    if ((count == 4) && (pObj.value.p16BPPPalette == pObj.value.pShades[count]))
+      pObj.value.pShades[count] = NULL;
+    else if (pObj.value.pShades[count] != NULL) {
+      MemFree(pObj.value.pShades[count]);
+      pObj.value.pShades[count] = NULL;
     }
   }
 
   switch (uiType) {
     case HVOBJECT_GLOW_GREEN: // green glow
-      pObj->pShades[0] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 0, 255, 0, TRUE);
+      pObj.value.pShades[0] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 0, 255, 0, TRUE);
       break;
     case HVOBJECT_GLOW_BLUE: // blue glow
-      pObj->pShades[0] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 0, 0, 255, TRUE);
+      pObj.value.pShades[0] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 0, 0, 255, TRUE);
       break;
     case HVOBJECT_GLOW_YELLOW: // yellow glow
-      pObj->pShades[0] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 255, 255, 0, TRUE);
+      pObj.value.pShades[0] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 255, 0, TRUE);
       break;
     case HVOBJECT_GLOW_RED: // red glow
-      pObj->pShades[0] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 255, 0, 0, TRUE);
+      pObj.value.pShades[0] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 0, 0, TRUE);
       break;
   }
 
   // these are the brightening tables, 115%-150% brighter than original
-  pObj->pShades[1] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 293, 293, 293, FALSE);
-  pObj->pShades[2] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 281, 281, 281, FALSE);
-  pObj->pShades[3] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 268, 268, 268, FALSE);
+  pObj.value.pShades[1] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 293, 293, 293, FALSE);
+  pObj.value.pShades[2] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 281, 281, 281, FALSE);
+  pObj.value.pShades[3] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 268, 268, 268, FALSE);
 
   // palette 4 is the non-modified palette.
   // if the standard one has already been made, we'll use it
-  if (pObj->p16BPPPalette != NULL)
-    pObj->pShades[4] = pObj->p16BPPPalette;
+  if (pObj.value.p16BPPPalette != NULL)
+    pObj.value.pShades[4] = pObj.value.p16BPPPalette;
   else {
     // or create our own, and assign it to the standard one
-    pObj->pShades[4] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 255, 255, 255, FALSE);
-    pObj->p16BPPPalette = pObj->pShades[4];
+    pObj.value.pShades[4] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 255, 255, FALSE);
+    pObj.value.p16BPPPalette = pObj.value.pShades[4];
   }
 
   // the rest are darkening tables, right down to all-black.
-  pObj->pShades[5] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 195, 195, 195, FALSE);
-  pObj->pShades[6] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 165, 165, 165, FALSE);
-  pObj->pShades[7] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 135, 135, 135, FALSE);
-  pObj->pShades[8] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 105, 105, 105, FALSE);
-  pObj->pShades[9] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 75, 75, 75, FALSE);
-  pObj->pShades[10] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 45, 45, 45, FALSE);
-  pObj->pShades[11] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 36, 36, 36, FALSE);
-  pObj->pShades[12] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 27, 27, 27, FALSE);
-  pObj->pShades[13] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 18, 18, 18, FALSE);
-  pObj->pShades[14] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 9, 9, 9, FALSE);
-  pObj->pShades[15] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 0, 0, 0, FALSE);
+  pObj.value.pShades[5] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 195, 195, 195, FALSE);
+  pObj.value.pShades[6] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 165, 165, 165, FALSE);
+  pObj.value.pShades[7] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 135, 135, 135, FALSE);
+  pObj.value.pShades[8] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 105, 105, 105, FALSE);
+  pObj.value.pShades[9] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 75, 75, 75, FALSE);
+  pObj.value.pShades[10] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 45, 45, 45, FALSE);
+  pObj.value.pShades[11] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 36, 36, 36, FALSE);
+  pObj.value.pShades[12] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 27, 27, 27, FALSE);
+  pObj.value.pShades[13] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 18, 18, 18, FALSE);
+  pObj.value.pShades[14] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 9, 9, 9, FALSE);
+  pObj.value.pShades[15] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 0, 0, 0, FALSE);
 
   // Set current shade table to neutral color
-  pObj->pShadeCurrent = pObj->pShades[4];
+  pObj.value.pShadeCurrent = pObj.value.pShades[4];
 
   // check to make sure every table got a palette
-  for (count = 0; (count < HVOBJECT_SHADE_TABLES) && (pObj->pShades[count] != NULL); count++)
+  for (count = 0; (count < HVOBJECT_SHADE_TABLES) && (pObj.value.pShades[count] != NULL); count++)
     ;
 
   // return the result of the check
@@ -544,7 +544,7 @@ function BltVideoObjectToBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT
   Assert(hSrcVObject != NULL);
 
   // Check For Flags and bit depths
-  switch (hSrcVObject->ubBitDepth) {
+  switch (hSrcVObject.value.ubBitDepth) {
     case 16:
 
       break;
@@ -649,29 +649,29 @@ function DestroyObjectPaletteTables(hVObject: HVOBJECT): BOOLEAN {
   let f16BitPal: BOOLEAN;
 
   for (x = 0; x < HVOBJECT_SHADE_TABLES; x++) {
-    if (!(hVObject->fFlags & VOBJECT_FLAG_SHADETABLE_SHARED)) {
-      if (hVObject->pShades[x] != NULL) {
-        if (hVObject->pShades[x] == hVObject->p16BPPPalette)
+    if (!(hVObject.value.fFlags & VOBJECT_FLAG_SHADETABLE_SHARED)) {
+      if (hVObject.value.pShades[x] != NULL) {
+        if (hVObject.value.pShades[x] == hVObject.value.p16BPPPalette)
           f16BitPal = TRUE;
         else
           f16BitPal = FALSE;
 
-        MemFree(hVObject->pShades[x]);
-        hVObject->pShades[x] = NULL;
+        MemFree(hVObject.value.pShades[x]);
+        hVObject.value.pShades[x] = NULL;
 
         if (f16BitPal)
-          hVObject->p16BPPPalette = NULL;
+          hVObject.value.p16BPPPalette = NULL;
       }
     }
   }
 
-  if (hVObject->p16BPPPalette != NULL) {
-    MemFree(hVObject->p16BPPPalette);
-    hVObject->p16BPPPalette = NULL;
+  if (hVObject.value.p16BPPPalette != NULL) {
+    MemFree(hVObject.value.p16BPPPalette);
+    hVObject.value.p16BPPPalette = NULL;
   }
 
-  hVObject->pShadeCurrent = NULL;
-  hVObject->pGlow = NULL;
+  hVObject.value.pShadeCurrent = NULL;
+  hVObject.value.pGlow = NULL;
 
   return TRUE;
 }
@@ -681,12 +681,12 @@ function SetObjectShade(pObj: HVOBJECT, uiShade: UINT32): UINT16 {
   Assert(uiShade >= 0);
   Assert(uiShade < HVOBJECT_SHADE_TABLES);
 
-  if (pObj->pShades[uiShade] == NULL) {
+  if (pObj.value.pShades[uiShade] == NULL) {
     DbgMessage(TOPIC_VIDEOOBJECT, DBG_LEVEL_2, String("Attempt to set shade level to NULL table"));
     return FALSE;
   }
 
-  pObj->pShadeCurrent = pObj->pShades[uiShade];
+  pObj.value.pShadeCurrent = pObj.value.pShades[uiShade];
   return TRUE;
 }
 
@@ -741,15 +741,15 @@ function GetETRLEPixelValue(pDest: Pointer<UINT8>, hVObject: HVOBJECT, usETRLEIn
 
   // Do a bunch of checks
   CHECKF(hVObject != NULL);
-  CHECKF(usETRLEIndex < hVObject->usNumberOfObjects);
+  CHECKF(usETRLEIndex < hVObject.value.usNumberOfObjects);
 
-  pETRLEObject = &(hVObject->pETRLEObject[usETRLEIndex]);
+  pETRLEObject = &(hVObject.value.pETRLEObject[usETRLEIndex]);
 
-  CHECKF(usX < pETRLEObject->usWidth);
-  CHECKF(usY < pETRLEObject->usHeight);
+  CHECKF(usX < pETRLEObject.value.usWidth);
+  CHECKF(usY < pETRLEObject.value.usHeight);
 
   // Assuming everything's okay, go ahead and look...
-  pCurrent = &(hVObject->pPixData)[pETRLEObject->uiDataOffset];
+  pCurrent = &(hVObject.value.pPixData)[pETRLEObject.value.uiDataOffset];
 
   // Skip past all uninteresting scanlines
   while (usLoopY < usY) {
@@ -792,9 +792,9 @@ function GetETRLEPixelValue(pDest: Pointer<UINT8>, hVObject: HVOBJECT, usETRLEIn
 
 function GetVideoObjectETRLEProperties(hVObject: HVOBJECT, pETRLEObject: Pointer<ETRLEObject>, usIndex: UINT16): BOOLEAN {
   CHECKF(usIndex >= 0);
-  CHECKF(usIndex < hVObject->usNumberOfObjects);
+  CHECKF(usIndex < hVObject.value.usNumberOfObjects);
 
-  memcpy(pETRLEObject, &(hVObject->pETRLEObject[usIndex]), sizeof(ETRLEObject));
+  memcpy(pETRLEObject, &(hVObject.value.pETRLEObject[usIndex]), sizeof(ETRLEObject));
 
   return TRUE;
 }
@@ -840,7 +840,7 @@ function GetVideoObjectPalette16BPP(uiVideoObject: INT32, ppPal16: Pointer<Point
 // Get video object
   CHECKF(GetVideoObject(&hVObject, uiVideoObject));
 
-  *ppPal16 = hVObject->p16BPPPalette;
+  *ppPal16 = hVObject.value.p16BPPPalette;
 
   return TRUE;
 }
@@ -851,7 +851,7 @@ function CopyVideoObjectPalette16BPP(uiVideoObject: INT32, ppPal16: Pointer<UINT
 // Get video object
   CHECKF(GetVideoObject(&hVObject, uiVideoObject));
 
-  memcpy(ppPal16, hVObject->p16BPPPalette, 256 * 2);
+  memcpy(ppPal16, hVObject.value.p16BPPPalette, 256 * 2);
 
   return TRUE;
 }
@@ -860,10 +860,10 @@ function CheckFor16BPPRegion(hVObject: HVOBJECT, usRegionIndex: UINT16, ubShadeL
   let usLoop: UINT16;
   let p16BPPObject: Pointer<SixteenBPPObjectInfo>;
 
-  if (hVObject->usNumberOf16BPPObjects > 0) {
-    for (usLoop = 0; usLoop < hVObject->usNumberOf16BPPObjects; usLoop++) {
-      p16BPPObject = &(hVObject->p16BPPObject[usLoop]);
-      if (p16BPPObject->usRegionIndex == usRegionIndex && p16BPPObject->ubShadeLevel == ubShadeLevel) {
+  if (hVObject.value.usNumberOf16BPPObjects > 0) {
+    for (usLoop = 0; usLoop < hVObject.value.usNumberOf16BPPObjects; usLoop++) {
+      p16BPPObject = &(hVObject.value.p16BPPObject[usLoop]);
+      if (p16BPPObject.value.usRegionIndex == usRegionIndex && p16BPPObject.value.ubShadeLevel == ubShadeLevel) {
         if (pusIndex != NULL) {
           *pusIndex = usLoop;
         }
@@ -887,7 +887,7 @@ function ConvertVObjectRegionTo16BPP(hVObject: HVOBJECT, usRegionIndex: UINT16, 
   let uiLen: UINT32;
 
   // check for existing 16BPP region and then allocate memory
-  if (usRegionIndex >= hVObject->usNumberOfObjects || ubShadeLevel >= HVOBJECT_SHADE_TABLES) {
+  if (usRegionIndex >= hVObject.value.usNumberOfObjects || ubShadeLevel >= HVOBJECT_SHADE_TABLES) {
     return FALSE;
   }
   if (CheckFor16BPPRegion(hVObject, usRegionIndex, ubShadeLevel, NULL) == TRUE) {
@@ -895,44 +895,44 @@ function ConvertVObjectRegionTo16BPP(hVObject: HVOBJECT, usRegionIndex: UINT16, 
     return TRUE;
   }
 
-  if (hVObject->usNumberOf16BPPObjects > 0) {
+  if (hVObject.value.usNumberOf16BPPObjects > 0) {
     // have to reallocate memory
-    hVObject->p16BPPObject = MemRealloc(hVObject->p16BPPObject, sizeof(SixteenBPPObjectInfo) * (hVObject->usNumberOf16BPPObjects + 1));
+    hVObject.value.p16BPPObject = MemRealloc(hVObject.value.p16BPPObject, sizeof(SixteenBPPObjectInfo) * (hVObject.value.usNumberOf16BPPObjects + 1));
   } else {
     // allocate memory for the first 16BPPObject
-    hVObject->p16BPPObject = MemAlloc(sizeof(SixteenBPPObjectInfo));
+    hVObject.value.p16BPPObject = MemAlloc(sizeof(SixteenBPPObjectInfo));
   }
-  if (hVObject->p16BPPObject == NULL) {
-    hVObject->usNumberOf16BPPObjects = 0;
+  if (hVObject.value.p16BPPObject == NULL) {
+    hVObject.value.usNumberOf16BPPObjects = 0;
     return FALSE;
   }
 
   // the new object is the last one in the array
-  p16BPPObject = &(hVObject->p16BPPObject[hVObject->usNumberOf16BPPObjects]);
+  p16BPPObject = &(hVObject.value.p16BPPObject[hVObject.value.usNumberOf16BPPObjects]);
 
   // need twice as much memory because of going from 8 to 16 bits
-  p16BPPObject->p16BPPData = MemAlloc(hVObject->pETRLEObject[usRegionIndex].uiDataLength * 2);
-  if (p16BPPObject->p16BPPData == NULL) {
+  p16BPPObject.value.p16BPPData = MemAlloc(hVObject.value.pETRLEObject[usRegionIndex].uiDataLength * 2);
+  if (p16BPPObject.value.p16BPPData == NULL) {
     return FALSE;
   }
 
-  p16BPPObject->usRegionIndex = usRegionIndex;
-  p16BPPObject->ubShadeLevel = ubShadeLevel;
-  p16BPPObject->usHeight = hVObject->pETRLEObject[usRegionIndex].usHeight;
-  p16BPPObject->usWidth = hVObject->pETRLEObject[usRegionIndex].usWidth;
-  p16BPPObject->sOffsetX = hVObject->pETRLEObject[usRegionIndex].sOffsetX;
-  p16BPPObject->sOffsetY = hVObject->pETRLEObject[usRegionIndex].sOffsetY;
+  p16BPPObject.value.usRegionIndex = usRegionIndex;
+  p16BPPObject.value.ubShadeLevel = ubShadeLevel;
+  p16BPPObject.value.usHeight = hVObject.value.pETRLEObject[usRegionIndex].usHeight;
+  p16BPPObject.value.usWidth = hVObject.value.pETRLEObject[usRegionIndex].usWidth;
+  p16BPPObject.value.sOffsetX = hVObject.value.pETRLEObject[usRegionIndex].sOffsetX;
+  p16BPPObject.value.sOffsetY = hVObject.value.pETRLEObject[usRegionIndex].sOffsetY;
 
   // get the palette
-  p16BPPPalette = hVObject->pShades[ubShadeLevel];
-  pInput = hVObject->pPixData + hVObject->pETRLEObject[usRegionIndex].uiDataOffset;
+  p16BPPPalette = hVObject.value.pShades[ubShadeLevel];
+  pInput = hVObject.value.pPixData + hVObject.value.pETRLEObject[usRegionIndex].uiDataOffset;
 
-  uiDataLength = hVObject->pETRLEObject[usRegionIndex].uiDataLength;
+  uiDataLength = hVObject.value.pETRLEObject[usRegionIndex].uiDataLength;
 
   // now actually do the conversion
 
   uiLen = 0;
-  pOutput = p16BPPObject->p16BPPData;
+  pOutput = p16BPPObject.value.p16BPPData;
   for (uiDataLoop = 0; uiDataLoop < uiDataLength; uiDataLoop++) {
     bData = *pInput;
     if (bData & 0x80) {
@@ -962,7 +962,7 @@ function ConvertVObjectRegionTo16BPP(hVObject: HVOBJECT, usRegionIndex: UINT16, 
       pOutput++;
       pInput++;
       // uiDataLoop++;
-      if (uiLen != p16BPPObject->usWidth)
+      if (uiLen != p16BPPObject.value.usWidth)
         DbgMessage(TOPIC_VIDEOOBJECT, DBG_LEVEL_1, String("Actual pixel width different from header width"));
       uiLen = 0;
     }
@@ -993,7 +993,7 @@ function ConvertVObjectRegionTo16BPP(hVObject: HVOBJECT, usRegionIndex: UINT16, 
                     pInput++;
             } */
   }
-  hVObject->usNumberOf16BPPObjects++;
+  hVObject.value.usNumberOf16BPPObjects++;
   return TRUE;
 }
 

@@ -660,17 +660,17 @@ function RegisterVideoOverlay(uiFlags: UINT32, pTopmostDesc: Pointer<VIDEO_OVERL
 
   if (uiFlags & VOVERLAY_DIRTYBYTEXT) {
     // Get dims by supplied text
-    if (pTopmostDesc->pzText == NULL) {
+    if (pTopmostDesc.value.pzText == NULL) {
       return -1;
     }
 
-    uiStringLength = StringPixLength(pTopmostDesc->pzText, pTopmostDesc->uiFontID);
-    uiStringHeight = GetFontHeight(pTopmostDesc->uiFontID);
+    uiStringLength = StringPixLength(pTopmostDesc.value.pzText, pTopmostDesc.value.uiFontID);
+    uiStringHeight = GetFontHeight(pTopmostDesc.value.uiFontID);
 
-    iBackIndex = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, pTopmostDesc->sLeft, pTopmostDesc->sTop, (pTopmostDesc->sLeft + uiStringLength), (pTopmostDesc->sTop + uiStringHeight));
+    iBackIndex = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, pTopmostDesc.value.sLeft, pTopmostDesc.value.sTop, (pTopmostDesc.value.sLeft + uiStringLength), (pTopmostDesc.value.sTop + uiStringHeight));
   } else {
     // Register background
-    iBackIndex = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, pTopmostDesc->sLeft, pTopmostDesc->sTop, pTopmostDesc->sRight, pTopmostDesc->sBottom);
+    iBackIndex = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, pTopmostDesc.value.sLeft, pTopmostDesc.value.sTop, pTopmostDesc.value.sRight, pTopmostDesc.value.sBottom);
   }
 
   if (iBackIndex == -1) {
@@ -688,11 +688,11 @@ function RegisterVideoOverlay(uiFlags: UINT32, pTopmostDesc: Pointer<VIDEO_OVERL
   gVideoOverlays[iBlitterIndex].fAllocated = 2;
   gVideoOverlays[iBlitterIndex].uiBackground = iBackIndex;
   gVideoOverlays[iBlitterIndex].pBackground = &(gBackSaves[iBackIndex]);
-  gVideoOverlays[iBlitterIndex].BltCallback = pTopmostDesc->BltCallback;
+  gVideoOverlays[iBlitterIndex].BltCallback = pTopmostDesc.value.BltCallback;
 
   // Update blitter info
   // Set update flags to zero since we are forcing all updates
-  pTopmostDesc->uiFlags = 0;
+  pTopmostDesc.value.uiFlags = 0;
   UpdateVideoOverlay(pTopmostDesc, iBlitterIndex, TRUE);
 
   // Set disabled flag to true
@@ -751,35 +751,35 @@ function UpdateVideoOverlay(pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>, iBlitterI
       return FALSE;
     }
 
-    uiFlags = pTopmostDesc->uiFlags;
+    uiFlags = pTopmostDesc.value.uiFlags;
 
     if (fForceAll) {
-      gVideoOverlays[iBlitterIndex].uiFontID = pTopmostDesc->uiFontID;
-      gVideoOverlays[iBlitterIndex].sX = pTopmostDesc->sX;
-      gVideoOverlays[iBlitterIndex].sY = pTopmostDesc->sY;
-      gVideoOverlays[iBlitterIndex].ubFontBack = pTopmostDesc->ubFontBack;
-      gVideoOverlays[iBlitterIndex].ubFontFore = pTopmostDesc->ubFontFore;
+      gVideoOverlays[iBlitterIndex].uiFontID = pTopmostDesc.value.uiFontID;
+      gVideoOverlays[iBlitterIndex].sX = pTopmostDesc.value.sX;
+      gVideoOverlays[iBlitterIndex].sY = pTopmostDesc.value.sY;
+      gVideoOverlays[iBlitterIndex].ubFontBack = pTopmostDesc.value.ubFontBack;
+      gVideoOverlays[iBlitterIndex].ubFontFore = pTopmostDesc.value.ubFontFore;
 
-      if (pTopmostDesc->pzText != NULL) {
-        wcscpy(gVideoOverlays[iBlitterIndex].zText, pTopmostDesc->pzText);
+      if (pTopmostDesc.value.pzText != NULL) {
+        wcscpy(gVideoOverlays[iBlitterIndex].zText, pTopmostDesc.value.pzText);
       }
     } else {
       if (uiFlags & VOVERLAY_DESC_TEXT) {
-        if (pTopmostDesc->pzText != NULL) {
-          wcscpy(gVideoOverlays[iBlitterIndex].zText, pTopmostDesc->pzText);
+        if (pTopmostDesc.value.pzText != NULL) {
+          wcscpy(gVideoOverlays[iBlitterIndex].zText, pTopmostDesc.value.pzText);
         }
       }
 
       if (uiFlags & VOVERLAY_DESC_DISABLED) {
-        gVideoOverlays[iBlitterIndex].fDisabled = pTopmostDesc->fDisabled;
-        DisableBackgroundRect(gVideoOverlays[iBlitterIndex].uiBackground, pTopmostDesc->fDisabled);
+        gVideoOverlays[iBlitterIndex].fDisabled = pTopmostDesc.value.fDisabled;
+        DisableBackgroundRect(gVideoOverlays[iBlitterIndex].uiBackground, pTopmostDesc.value.fDisabled);
       }
 
       // If position has changed and flags are of type that use dirty rects, adjust
       if ((uiFlags & VOVERLAY_DESC_POSITION)) {
         if (gVideoOverlays[iBlitterIndex].uiFlags & VOVERLAY_DIRTYBYTEXT) {
           // Get dims by supplied text
-          if (pTopmostDesc->pzText == NULL) {
+          if (pTopmostDesc.value.pzText == NULL) {
             return FALSE;
           }
 
@@ -790,9 +790,9 @@ function UpdateVideoOverlay(pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>, iBlitterI
           // Remove background
           FreeBackgroundRectPending(gVideoOverlays[iBlitterIndex].uiBackground);
 
-          gVideoOverlays[iBlitterIndex].uiBackground = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, pTopmostDesc->sLeft, pTopmostDesc->sTop, (pTopmostDesc->sLeft + uiStringLength), (pTopmostDesc->sTop + uiStringHeight));
-          gVideoOverlays[iBlitterIndex].sX = pTopmostDesc->sX;
-          gVideoOverlays[iBlitterIndex].sY = pTopmostDesc->sY;
+          gVideoOverlays[iBlitterIndex].uiBackground = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, pTopmostDesc.value.sLeft, pTopmostDesc.value.sTop, (pTopmostDesc.value.sLeft + uiStringLength), (pTopmostDesc.value.sTop + uiStringHeight));
+          gVideoOverlays[iBlitterIndex].sX = pTopmostDesc.value.sX;
+          gVideoOverlays[iBlitterIndex].sY = pTopmostDesc.value.sY;
         }
       }
     }
@@ -1075,15 +1075,15 @@ function BlitMFont(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   let pDestBuf: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
 
-  pDestBuf = LockVideoSurface(pBlitter->uiDestBuff, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(pBlitter.value.uiDestBuff, &uiDestPitchBYTES);
 
-  SetFont(pBlitter->uiFontID);
-  SetFontBackground(pBlitter->ubFontBack);
-  SetFontForeground(pBlitter->ubFontFore);
+  SetFont(pBlitter.value.uiFontID);
+  SetFontBackground(pBlitter.value.ubFontBack);
+  SetFontForeground(pBlitter.value.ubFontFore);
 
-  mprintf_buffer(pDestBuf, uiDestPitchBYTES, pBlitter->uiFontID, pBlitter->sX, pBlitter->sY, pBlitter->zText);
+  mprintf_buffer(pDestBuf, uiDestPitchBYTES, pBlitter.value.uiFontID, pBlitter.value.sX, pBlitter.value.sY, pBlitter.value.zText);
 
-  UnLockVideoSurface(pBlitter->uiDestBuff);
+  UnLockVideoSurface(pBlitter.value.uiDestBuff);
 }
 
 function BlitBufferToBuffer(uiSrcBuffer: UINT32, uiDestBuffer: UINT32, usSrcX: UINT16, usSrcY: UINT16, usWidth: UINT16, usHeight: UINT16): BOOLEAN {

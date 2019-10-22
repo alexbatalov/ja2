@@ -449,10 +449,10 @@ function ShopKeeperScreenHandle(): UINT32 {
   GetShopKeeperInterfaceUserInput();
 
   // Check for any newly added items...
-  if (gpSMCurrentMerc->fCheckForNewlyAddedItems) {
+  if (gpSMCurrentMerc.value.fCheckForNewlyAddedItems) {
     // Startup any newly added items....
     CheckForAnyNewlyAddedItems(gpSMCurrentMerc);
-    gpSMCurrentMerc->fCheckForNewlyAddedItems = FALSE;
+    gpSMCurrentMerc.value.fCheckForNewlyAddedItems = FALSE;
   }
 
   HandleShopKeeperInterface();
@@ -573,12 +573,12 @@ function EnterShopKeeperInterface(): BOOLEAN {
   for (ubCnt = gTacticalStatus.Team[OUR_TEAM].bFirstID; ubCnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; ubCnt++) {
     pSoldier = MercPtrs[ubCnt];
 
-    if (pSoldier->bActive && (pSoldier->ubProfile != NO_PROFILE) && !(pSoldier->uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier)) {
+    if (pSoldier.value.bActive && (pSoldier.value.ubProfile != NO_PROFILE) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier)) {
       // remember whose face is in this slot
-      gubArrayOfEmployedMercs[gubNumberMercsInArray] = pSoldier->ubProfile;
+      gubArrayOfEmployedMercs[gubNumberMercsInArray] = pSoldier.value.ubProfile;
 
       // Create the string for the face file name
-      sprintf(zTemp, "FACES\\33FACE\\%02d.sti", gMercProfiles[pSoldier->ubProfile].ubFaceIndex);
+      sprintf(zTemp, "FACES\\33FACE\\%02d.sti", gMercProfiles[pSoldier.value.ubProfile].ubFaceIndex);
 
       // While we are at it, add their small face
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -715,12 +715,12 @@ function EnterShopKeeperInterface(): BOOLEAN {
     // (you can't be out of space if it isn't a repairman, only they can fill it up with repaired items!)
     if ((ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != ARMS_DEALER_REPAIRS) || (CountNumberOfItemsInThePlayersOfferArea() < SKI_NUM_ARMS_DEALERS_INV_SLOTS)) {
       // if we're supposed to store the original pocket #, but that pocket still holds more of these
-      if ((bSlotNum != -1) && (gpSMCurrentMerc->inv[bSlotNum].ubNumberOfObjects > 0)) {
+      if ((bSlotNum != -1) && (gpSMCurrentMerc.value.inv[bSlotNum].ubNumberOfObjects > 0)) {
         // then we can't store the pocket #, because our system can't return stacked objects
         bSlotNum = -1;
       }
 
-      if (OfferObjectToDealer(&(gItemToAdd.ItemObject), gpSMCurrentMerc->ubProfile, bSlotNum)) {
+      if (OfferObjectToDealer(&(gItemToAdd.ItemObject), gpSMCurrentMerc.value.ubProfile, bSlotNum)) {
         fAddedOK = TRUE;
       }
     }
@@ -730,7 +730,7 @@ function EnterShopKeeperInterface(): BOOLEAN {
       gfDoEvaluationAfterOpening = TRUE;
     } else {
       // add the item back to the current PC into the slot it came from
-      CopyObj(&gItemToAdd.ItemObject, &Menptr[gpSMCurrentMerc->ubID].inv[gItemToAdd.bPreviousInvPos]);
+      CopyObj(&gItemToAdd.ItemObject, &Menptr[gpSMCurrentMerc.value.ubID].inv[gItemToAdd.bPreviousInvPos]);
     }
 
     // Clear the contents of the structure
@@ -766,7 +766,7 @@ function InitShopKeepersFace(ubMercID: UINT8): BOOLEAN {
     return FALSE;
   } else {
     // Create the facial index
-    giShopKeeperFaceIndex = InitFace(ubMercID, pSoldier->ubID, FACE_BIGFACE);
+    giShopKeeperFaceIndex = InitFace(ubMercID, pSoldier.value.ubID, FACE_BIGFACE);
   }
 
   SetAutoFaceActive(FRAME_BUFFER, FACE_AUTO_RESTORE_BUFFER, giShopKeeperFaceIndex, SKI_FACE_X, SKI_FACE_Y);
@@ -884,8 +884,8 @@ function HandleShopKeeperInterface(): void {
     // make sure the buttons dont render
     //		ButtonList[ guiSKI_InvPageUpButton ]->uiFlags |= BUTTON_FORCE_UNDIRTY;
     //		ButtonList[ guiSKI_InvPageDownButton ]->uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[guiSKI_TransactionButton]->uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[guiSKI_DoneButton]->uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[guiSKI_TransactionButton].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[guiSKI_DoneButton].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
 
     // make sure the shop keeper doesn't start talking ( reset the timing variable )
     HandleShopKeeperDialog(2);
@@ -1138,11 +1138,11 @@ function GetShopKeeperInterfaceUserInput(): void {
 
 function BtnSKI_InvPageUpButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     if (gSelectArmsDealerInfo.ubCurrentPage > 1) {
       gSelectArmsDealerInfo.ubCurrentPage--;
@@ -1150,17 +1150,17 @@ function BtnSKI_InvPageUpButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
       EnableDisableDealersInventoryPageButtons();
     }
 
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
 function BtnSKI_InvPageDownButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     if (gSelectArmsDealerInfo.ubCurrentPage < gSelectArmsDealerInfo.ubNumberOfPages) {
       gSelectArmsDealerInfo.ubCurrentPage++;
@@ -1168,7 +1168,7 @@ function BtnSKI_InvPageDownButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT3
       EnableDisableDealersInventoryPageButtons();
     }
 
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
@@ -1194,12 +1194,12 @@ void BtnSKI_EvaluateButtonCallback(GUI_BUTTON *btn,INT32 reason)
 */
 function BtnSKI_TransactionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
 
     // if not already doing it (multiple clicks can be queued up while shopkeeper is still talking)
     if (!gfPerformTransactionInProgress) {
@@ -1215,14 +1215,14 @@ function BtnSKI_TransactionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT3
 
 function BtnSKI_DoneButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
     ExitSKIRequested();
   }
 
-  InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+  InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
 }
 
 function CreateSkiInventorySlotMouseRegions(): void {
@@ -1944,22 +1944,22 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
   // Display the item graphic, and price
   pItem = &Item[usItemIndex];
   GetVideoObject(&hVObject, GetInterfaceGraphicForItem(pItem));
-  pTrav = &(hVObject->pETRLEObject[pItem->ubGraphicNum]);
+  pTrav = &(hVObject.value.pETRLEObject[pItem.value.ubGraphicNum]);
 
-  usHeight = pTrav->usHeight;
-  usWidth = pTrav->usWidth;
+  usHeight = pTrav.value.usHeight;
+  usWidth = pTrav.value.usWidth;
 
-  sCenX = usPosX + 7 + (abs(SKI_INV_WIDTH - 3 - usWidth) / 2) - pTrav->sOffsetX;
-  sCenY = usPosY + (abs(SKI_INV_HEIGHT - usHeight) / 2) - pTrav->sOffsetY;
+  sCenX = usPosX + 7 + (abs(SKI_INV_WIDTH - 3 - usWidth) / 2) - pTrav.value.sOffsetX;
+  sCenY = usPosY + (abs(SKI_INV_HEIGHT - usHeight) / 2) - pTrav.value.sOffsetY;
 
   // Restore the background region
   RestoreExternBackgroundRect(usPosX, usPosY, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT);
 
   // blt the shadow of the item
-  BltVideoObjectOutlineShadowFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem->ubGraphicNum, sCenX - 2, sCenY + 2);
+  BltVideoObjectOutlineShadowFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem.value.ubGraphicNum, sCenX - 2, sCenY + 2);
 
   // blt the item
-  BltVideoObjectOutlineFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem->ubGraphicNum, sCenX, sCenY, Get16BPPColor(FROMRGB(255, 255, 255)), fHighlighted);
+  BltVideoObjectOutlineFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem.value.ubGraphicNum, sCenX, sCenY, Get16BPPColor(FROMRGB(255, 255, 255)), fHighlighted);
 
   // Display the status of the item
   DrawItemUIBarEx(pItemObject, 0, (usPosX + 2), (usPosY + 2 + 20), 2, 20, Get16BPPColor(FROMRGB(140, 136, 119)), Get16BPPColor(FROMRGB(140, 136, 119)), TRUE, guiRENDERBUFFER); // guiSAVEBUFFER
@@ -1984,7 +1984,7 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
     }
   } else if (ubItemArea == ARMS_DEALER_INVENTORY) {
     if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != ARMS_DEALER_REPAIRS) {
-      if (fHatchedOut && pItemObject->ubNumberOfObjects == 0) {
+      if (fHatchedOut && pItemObject.value.ubNumberOfObjects == 0) {
         uiItemCost = 0;
       } else {
         // show the UNIT price, not the total value of all if stacked
@@ -2035,8 +2035,8 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
   // if the there is more then 1 or if the item is stackable and some of it has been bought and only 1 remains
   //	if( pItemObject->ubNumberOfObjects > 1 || Item[ usItemIndex ].usItemClass == IC_AMMO )
   //	if( pItemObject->ubNumberOfObjects > 1 || Item[ usItemIndex ].ubPerPocket > 1 )
-  if ((pItemObject->ubNumberOfObjects > 1) || ((pItemObject->ubNumberOfObjects == 1) && DealerItemIsSafeToStack(usItemIndex) && (ubItemArea == ARMS_DEALER_INVENTORY) && (gpTempDealersInventory[ubSlotNum].uiFlags & ARMS_INV_ITEM_SELECTED))) {
-    swprintf(zTemp, "x%d", pItemObject->ubNumberOfObjects);
+  if ((pItemObject.value.ubNumberOfObjects > 1) || ((pItemObject.value.ubNumberOfObjects == 1) && DealerItemIsSafeToStack(usItemIndex) && (ubItemArea == ARMS_DEALER_INVENTORY) && (gpTempDealersInventory[ubSlotNum].uiFlags & ARMS_INV_ITEM_SELECTED))) {
+    swprintf(zTemp, "x%d", pItemObject.value.ubNumberOfObjects);
     DrawTextToScreen(zTemp, (usPosX + SKI_ITEM_NUMBER_TEXT_OFFSET_X), (usPosY + SKI_ITEM_NUMBER_TEXT_OFFSET_Y), SKI_ITEM_NUMBER_TEXT_WIDTH, SKIT_NUMBER_FONT, SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
   }
 
@@ -2060,7 +2060,7 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
   }
 
   // Display 'JAMMED' if it's jammed
-  if (pItemObject->bGunAmmoStatus < 0) {
+  if (pItemObject.value.bGunAmmoStatus < 0) {
     swprintf(zTemp, TacticalStr[JAMMED_ITEM_STR]);
     VarFindFontCenterCoordinates(usPosX, usPosY, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT, TINYFONT1, &sCenX, &sCenY, zTemp);
     DrawTextToScreen(zTemp, sCenX, sCenY, SKI_INV_SLOT_WIDTH, TINYFONT1, FONT_RED, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
@@ -2121,13 +2121,13 @@ function DetermineArmsDealersSellingInventory(): BOOLEAN {
       for (ubElement = 0; ubElement < gArmsDealersInventory[gbSelectedArmsDealerID][usItemIndex].ubElementsAlloced; ubElement++) {
         pSpecialItem = &(gArmsDealersInventory[gbSelectedArmsDealerID][usItemIndex].SpecialItem[ubElement]);
 
-        if (pSpecialItem->fActive) {
+        if (pSpecialItem.value.fActive) {
           fAddSpecialItem = TRUE;
 
           // if the item is in for repairs
-          if (pSpecialItem->Info.bItemCondition < 0) {
+          if (pSpecialItem.value.Info.bItemCondition < 0) {
             // if the repairs are done
-            if (pSpecialItem->uiRepairDoneTime <= GetWorldTotalMin()) {
+            if (pSpecialItem.value.uiRepairDoneTime <= GetWorldTotalMin()) {
               if (RepairIsDone(usItemIndex, ubElement)) {
                 // don't add it here, it was put in the player's area
                 fAddSpecialItem = FALSE;
@@ -2147,10 +2147,10 @@ function DetermineArmsDealersSellingInventory(): BOOLEAN {
               ubOwner = NO_PROFILE;
             } else {
               // retain owner so we can display this
-              ubOwner = pSpecialItem->ubOwnerProfileId;
+              ubOwner = pSpecialItem.value.ubOwnerProfileId;
             }
 
-            AddItemsToTempDealerInventory(usItemIndex, &(pSpecialItem->Info), ubElement, 1, ubOwner);
+            AddItemsToTempDealerInventory(usItemIndex, &(pSpecialItem.value.Info), ubElement, 1, ubOwner);
           }
         }
       }
@@ -2208,15 +2208,15 @@ function StoreObjectsInNextFreeDealerInvSlot(usItemIndex: UINT16, pSpclItemInfo:
   pDealerInvSlot = &(gpTempDealersInventory[guiNextFreeInvSlot]);
   guiNextFreeInvSlot++;
 
-  pDealerInvSlot->fActive = TRUE;
-  pDealerInvSlot->sItemIndex = usItemIndex;
-  pDealerInvSlot->sSpecialItemElement = sSpecialItemElement;
-  pDealerInvSlot->ubIdOfMercWhoOwnsTheItem = ubOwner;
-  pDealerInvSlot->bSlotIdInOtherLocation = -1;
+  pDealerInvSlot.value.fActive = TRUE;
+  pDealerInvSlot.value.sItemIndex = usItemIndex;
+  pDealerInvSlot.value.sSpecialItemElement = sSpecialItemElement;
+  pDealerInvSlot.value.ubIdOfMercWhoOwnsTheItem = ubOwner;
+  pDealerInvSlot.value.bSlotIdInOtherLocation = -1;
 
   // Create the item object ( with no more than MAX_OBJECTS_PER_SLOT )
   // can't use the real #, because CreateItems() will blindly set the bStatus for however many we tell it, beyond 8
-  MakeObjectOutOfDealerItems(usItemIndex, pSpclItemInfo, &(pDealerInvSlot->ItemObject), min(ubHowMany, MAX_OBJECTS_PER_SLOT));
+  MakeObjectOutOfDealerItems(usItemIndex, pSpclItemInfo, &(pDealerInvSlot.value.ItemObject), min(ubHowMany, MAX_OBJECTS_PER_SLOT));
 
   if (ubHowMany > MAX_OBJECTS_PER_SLOT) {
     // HACK:  Override ItemObject->ubNumberOfObjects (1-8) with the REAL # of items in this box.
@@ -2224,7 +2224,7 @@ function StoreObjectsInNextFreeDealerInvSlot(usItemIndex: UINT16, pSpclItemInfo:
     // so there's no room to store the status of all of them one.  But we only so this for perfect items, so
     // we don't care, it works & saves us a lot hassles here.  Just be careful using the damn things!!!  You can't just
     // pass them off the most functions in Items.C(), use ShopkeeperAutoPlaceObject() and ShopkeeperAddItemToPool() instead.
-    pDealerInvSlot->ItemObject.ubNumberOfObjects = ubHowMany;
+    pDealerInvSlot.value.ItemObject.ubNumberOfObjects = ubHowMany;
   }
 }
 
@@ -2329,43 +2329,43 @@ function CalcShopKeeperItemPrice(fDealerSelling: BOOLEAN, fUnitPriceOnly: BOOLEA
   switch (Item[usItemID].usItemClass) {
     case IC_GUN:
       // add value of the gun
-      uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, usItemID, fDealerSelling) * ItemConditionModifier(usItemID, pItemObject->bGunStatus) * dModifier);
+      uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, usItemID, fDealerSelling) * ItemConditionModifier(usItemID, pItemObject.value.bGunStatus) * dModifier);
 
       // if any ammo is loaded
-      if (pItemObject->usGunAmmoItem != NONE) {
+      if (pItemObject.value.usGunAmmoItem != NONE) {
         // if it's regular ammo
-        if (Item[pItemObject->usGunAmmoItem].usItemClass == IC_AMMO) {
+        if (Item[pItemObject.value.usGunAmmoItem].usItemClass == IC_AMMO) {
           // add value of its remaining ammo
-          uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject->usGunAmmoItem, fDealerSelling) * ItemConditionModifier(pItemObject->usGunAmmoItem, pItemObject->ubGunShotsLeft) * dModifier);
+          uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject.value.usGunAmmoItem, fDealerSelling) * ItemConditionModifier(pItemObject.value.usGunAmmoItem, pItemObject.value.ubGunShotsLeft) * dModifier);
         } else // assume it's attached ammo (mortar shells, grenades)
         {
           // add its value (uses normal status 0-100)
-          uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject->usGunAmmoItem, fDealerSelling) * ItemConditionModifier(pItemObject->usGunAmmoItem, pItemObject->bGunAmmoStatus) * dModifier);
+          uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject.value.usGunAmmoItem, fDealerSelling) * ItemConditionModifier(pItemObject.value.usGunAmmoItem, pItemObject.value.bGunAmmoStatus) * dModifier);
         }
       }
 
       // if multiple guns are stacked, we've only counted the first one
-      ubItemsNotCounted = pItemObject->ubNumberOfObjects - 1;
+      ubItemsNotCounted = pItemObject.value.ubNumberOfObjects - 1;
       break;
 
     case IC_AMMO:
     default:
       // this must handle overloaded objects from dealer boxes!
-      if (pItemObject->ubNumberOfObjects <= MAX_OBJECTS_PER_SLOT) {
+      if (pItemObject.value.ubNumberOfObjects <= MAX_OBJECTS_PER_SLOT) {
         // legal amount, count them all normally (statuses could be different)
-        ubItemsToCount = pItemObject->ubNumberOfObjects;
+        ubItemsToCount = pItemObject.value.ubNumberOfObjects;
         ubItemsNotCounted = 0;
         // in this situation, uiUnitPrice will actually be the sum of the values of ALL the multiple objects
       } else {
         // overloaded amount, count just the first, the others must all be identical
         ubItemsToCount = 1;
-        ubItemsNotCounted = pItemObject->ubNumberOfObjects - 1;
+        ubItemsNotCounted = pItemObject.value.ubNumberOfObjects - 1;
       }
 
       // add the value of each magazine (multiple mags may have vastly different #bullets left)
       for (ubCnt = 0; ubCnt < ubItemsToCount; ubCnt++) {
         // for bullets, ItemConditionModifier will convert the #ShotsLeft into a percentage
-        uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, usItemID, fDealerSelling) * ItemConditionModifier(usItemID, pItemObject->bStatus[ubCnt]) * dModifier);
+        uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, usItemID, fDealerSelling) * ItemConditionModifier(usItemID, pItemObject.value.bStatus[ubCnt]) * dModifier);
 
         if (fUnitPriceOnly) {
           // want price for only one of them.  All statuses must be the same in order to use this flag!
@@ -2377,14 +2377,14 @@ function CalcShopKeeperItemPrice(fDealerSelling: BOOLEAN, fUnitPriceOnly: BOOLEA
 
   // loop through any attachments and add in their price
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pItemObject->usAttachItem[ubCnt] != NONE) {
+    if (pItemObject.value.usAttachItem[ubCnt] != NONE) {
       // add value of this particular attachment
-      uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject->usAttachItem[ubCnt], fDealerSelling) * ItemConditionModifier(pItemObject->usAttachItem[ubCnt], pItemObject->bAttachStatus[ubCnt]) * dModifier);
+      uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject.value.usAttachItem[ubCnt], fDealerSelling) * ItemConditionModifier(pItemObject.value.usAttachItem[ubCnt], pItemObject.value.bAttachStatus[ubCnt]) * dModifier);
     }
   }
 
   // if Flo is doing the dealin' and wheelin'
-  if (gpSMCurrentMerc->ubProfile == FLO) {
+  if (gpSMCurrentMerc.value.ubProfile == FLO) {
     // if it's a GUN or AMMO (but not Launchers, and all attachments and payload is included)
     switch (Item[usItemID].usItemClass) {
       case IC_GUN:
@@ -2537,14 +2537,14 @@ function AddItemToArmsDealerOfferArea(pInvSlot: Pointer<INVENTORY_IN_SLOT>, bSlo
 
       // if the shift key is being pressed, add them all
       if (gfKeyState[SHIFT])
-        ArmsDealerOfferArea[bCnt].ItemObject.ubNumberOfObjects = pInvSlot->ItemObject.ubNumberOfObjects;
+        ArmsDealerOfferArea[bCnt].ItemObject.ubNumberOfObjects = pInvSlot.value.ItemObject.ubNumberOfObjects;
       // If there was more then 1 item, reduce it to only 1 item moved
-      else if (pInvSlot->ItemObject.ubNumberOfObjects > 1)
+      else if (pInvSlot.value.ItemObject.ubNumberOfObjects > 1)
         ArmsDealerOfferArea[bCnt].ItemObject.ubNumberOfObjects = 1;
 
       // Remember where the item came from
       ArmsDealerOfferArea[bCnt].bSlotIdInOtherLocation = bSlotIdInOtherLocation;
-      ArmsDealerOfferArea[bCnt].ubIdOfMercWhoOwnsTheItem = pInvSlot->ubIdOfMercWhoOwnsTheItem;
+      ArmsDealerOfferArea[bCnt].ubIdOfMercWhoOwnsTheItem = pInvSlot.value.ubIdOfMercWhoOwnsTheItem;
       ArmsDealerOfferArea[bCnt].fActive = TRUE;
 
       SetSkiRegionHelpText(&ArmsDealerOfferArea[bCnt], &gDealersOfferSlotsMouseRegions[bCnt], ARMS_DEALER_OFFER_AREA);
@@ -2603,10 +2603,10 @@ function SetSkiFaceRegionHelpText(pInv: Pointer<INVENTORY_IN_SLOT>, pRegion: Poi
   Assert(pRegion);
 
   // if the item isn't NULL, and is owned by a merc
-  if ((pInv != NULL) && (pInv->ubIdOfMercWhoOwnsTheItem != NO_PROFILE)) {
+  if ((pInv != NULL) && (pInv.value.ubIdOfMercWhoOwnsTheItem != NO_PROFILE)) {
     BuildItemHelpTextString(zTempText, pInv, ubScreenArea);
     // add who owns it
-    swprintf(zHelpText, "%s%s %s", gMercProfiles[pInv->ubIdOfMercWhoOwnsTheItem].zNickname, pMessageStrings[MSG_DASH_S], zTempText);
+    swprintf(zHelpText, "%s%s %s", gMercProfiles[pInv.value.ubIdOfMercWhoOwnsTheItem].zNickname, pMessageStrings[MSG_DASH_S], zTempText);
   } else {
     zHelpText[0] = '\0';
   }
@@ -3065,8 +3065,8 @@ function RemoveItemFromDealersInventory(pInvSlot: Pointer<INVENTORY_IN_SLOT>, ub
 
   // Remove all of this item out of the specified inventory slot
   sItemID = gpTempDealersInventory[sInvSlot].sItemIndex;
-  SetSpecialItemInfoFromObject(&SpclItemInfo, &(pInvSlot->ItemObject));
-  RemoveItemFromArmsDealerInventory(gbSelectedArmsDealerID, sItemID, &SpclItemInfo, pInvSlot->ItemObject.ubNumberOfObjects);
+  SetSpecialItemInfoFromObject(&SpclItemInfo, &(pInvSlot.value.ItemObject));
+  RemoveItemFromArmsDealerInventory(gbSelectedArmsDealerID, sItemID, &SpclItemInfo, pInvSlot.value.ItemObject.ubNumberOfObjects);
 
   gfResetShopKeepIdleQuote = TRUE;
   return TRUE;
@@ -3198,7 +3198,7 @@ function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDealerFirs
       Assert((bSlotNum >= -1) && (bSlotNum < NUM_INV_SLOTS));
 
       // if we're supposed to store the original pocket #, but that pocket still holds more of these
-      if ((bSlotNum != -1) && (gpSMCurrentMerc->inv[bSlotNum].ubNumberOfObjects > 0)) {
+      if ((bSlotNum != -1) && (gpSMCurrentMerc.value.inv[bSlotNum].ubNumberOfObjects > 0)) {
         // then we can't store the pocket #, because our system can't return stacked objects
         bSlotNum = -1;
       }
@@ -3207,7 +3207,7 @@ function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDealerFirs
       // if that doesn't work (because there isn't enough room in the player's offer area), the item is picked up into
       // the cursor, and may then get placed into the player's offer area directly, but it will NOT get evaluated that
       // way, and so has no possibility of entering the dealer's inventory (where complex items aren't permitted).
-      if (fOfferToDealerFirst && OfferObjectToDealer(gpItemPointer, gpSMCurrentMerc->ubProfile, bSlotNum)) {
+      if (fOfferToDealerFirst && OfferObjectToDealer(gpItemPointer, gpSMCurrentMerc.value.ubProfile, bSlotNum)) {
         // Reset the cursor
         SetSkiCursor(CURSOR_NORMAL);
       } else // not supposed to offer it, or dealer has no more room
@@ -3231,7 +3231,7 @@ function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDealerFirs
 
         // By necessity, these items don't belong to a slot (so you can't return them via a right click),
         // because it would be too much work to handle attachments, members of a stack, or even items swapped out of slots.
-        gMoveingItem.ubIdOfMercWhoOwnsTheItem = gpSMCurrentMerc->ubProfile;
+        gMoveingItem.ubIdOfMercWhoOwnsTheItem = gpSMCurrentMerc.value.ubProfile;
         gMoveingItem.bSlotIdInOtherLocation = bSlotNum;
 
         // Restrict the cursor to the players offer area and the players inventory
@@ -3453,7 +3453,7 @@ function AddInventoryToSkiLocation(pInv: Pointer<INVENTORY_IN_SLOT>, ubSpotLocat
       else // that slot is full
       {
         // add it elsewhere
-        bSlotAddedTo = AddItemToPlayersOfferArea(pInv->ubIdOfMercWhoOwnsTheItem, pInv, pInv->bSlotIdInOtherLocation);
+        bSlotAddedTo = AddItemToPlayersOfferArea(pInv.value.ubIdOfMercWhoOwnsTheItem, pInv, pInv.value.bSlotIdInOtherLocation);
       }
 
       break;
@@ -3637,33 +3637,33 @@ function IsGunOrAmmoOfSameTypeSelected(pItemObject: Pointer<OBJECTTYPE>): BOOLEA
     return FALSE;
 
   // if the item is ammo
-  if (Item[gpHighLightedItemObject->usItem].usItemClass == IC_AMMO) {
+  if (Item[gpHighLightedItemObject.value.usItem].usItemClass == IC_AMMO) {
     // if there is a gun
-    if (Item[pItemObject->usItem].usItemClass == IC_GUN) {
+    if (Item[pItemObject.value.usItem].usItemClass == IC_GUN) {
       // of the same caliber
-      if (Weapon[pItemObject->usItem].ubCalibre == Magazine[Item[gpHighLightedItemObject->usItem].ubClassIndex].ubCalibre) {
+      if (Weapon[pItemObject.value.usItem].ubCalibre == Magazine[Item[gpHighLightedItemObject.value.usItem].ubClassIndex].ubCalibre) {
         return TRUE;
       }
     }
   }
 
   // else if the item is a gun
-  else if (Item[gpHighLightedItemObject->usItem].usItemClass == IC_GUN) {
+  else if (Item[gpHighLightedItemObject.value.usItem].usItemClass == IC_GUN) {
     // if there is a gun
-    if (Item[pItemObject->usItem].usItemClass == IC_AMMO) {
+    if (Item[pItemObject.value.usItem].usItemClass == IC_AMMO) {
       // of the same caliber
-      if (Weapon[gpHighLightedItemObject->usItem].ubCalibre == Magazine[Item[pItemObject->usItem].ubClassIndex].ubCalibre) {
+      if (Weapon[gpHighLightedItemObject.value.usItem].ubCalibre == Magazine[Item[pItemObject.value.usItem].ubClassIndex].ubCalibre) {
         return TRUE;
       }
     }
   }
 
   // if the highlighted object is an attachment
-  if (Item[pItemObject->usItem].fFlags & ITEM_ATTACHMENT) {
-    if (ValidAttachment(pItemObject->usItem, gpHighLightedItemObject->usItem))
+  if (Item[pItemObject.value.usItem].fFlags & ITEM_ATTACHMENT) {
+    if (ValidAttachment(pItemObject.value.usItem, gpHighLightedItemObject.value.usItem))
       return TRUE;
   } else {
-    if (ValidAttachment(gpHighLightedItemObject->usItem, pItemObject->usItem))
+    if (ValidAttachment(gpHighLightedItemObject.value.usItem, pItemObject.value.usItem))
       return TRUE;
   }
 
@@ -3922,18 +3922,18 @@ function RemoveSkiAtmButtons(): void {
 
 function BtnSKI_AtmButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let ubButton: UINT8 = MSYS_GetBtnUserData(btn, 0);
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // ATM:
 
     //		HandleSkiAtmPanelInput( ubButton );
 
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
@@ -4265,24 +4265,24 @@ function HandleCurrentModeText(ubMode: UINT8): void {
 function ToggleSkiAtmButtons(): void {
   switch (gubCurrentSkiAtmMode) {
     case SKI_ATM_DISABLED_MODE:
-      ButtonList[guiSKI_AtmButton[SKI_ATM_TAKE]]->uiFlags &= ~BUTTON_CLICKED_ON;
-      ButtonList[guiSKI_AtmButton[SKI_ATM_GIVE]]->uiFlags &= ~BUTTON_CLICKED_ON;
-      ButtonList[guiSKI_AtmButton[SKI_ATM_CANCEL]]->uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[SKI_ATM_TAKE]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[SKI_ATM_GIVE]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[SKI_ATM_CANCEL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
       break;
     case SKI_ATM_TAKE_MODE:
     case SKI_ATM_ERR_TAKE_MODE:
-      ButtonList[guiSKI_AtmButton[SKI_ATM_GIVE]]->uiFlags &= ~BUTTON_CLICKED_ON;
-      ButtonList[guiSKI_AtmButton[SKI_ATM_CANCEL]]->uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[SKI_ATM_GIVE]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[SKI_ATM_CANCEL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
 
-      ButtonList[guiSKI_AtmButton[SKI_ATM_TAKE]]->uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[SKI_ATM_TAKE]].value.uiFlags |= BUTTON_CLICKED_ON;
       break;
 
     case SKI_ATM_GIVE_MODE:
     case SKI_ATM_ERR_GIVE_MODE:
-      ButtonList[guiSKI_AtmButton[SKI_ATM_TAKE]]->uiFlags &= ~BUTTON_CLICKED_ON;
-      ButtonList[guiSKI_AtmButton[SKI_ATM_CANCEL]]->uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[SKI_ATM_TAKE]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[SKI_ATM_CANCEL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
 
-      ButtonList[guiSKI_AtmButton[SKI_ATM_GIVE]]->uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[SKI_ATM_GIVE]].value.uiFlags |= BUTTON_CLICKED_ON;
       break;
   }
 }
@@ -4415,11 +4415,11 @@ function EnableDisableEvaluateAndTransactionButtons(): void {
 
   // if the player is in the item desc for the arms dealer items
   if (InItemDescriptionBox() && pShopKeeperItemDescObject != NULL) {
-    ButtonList[guiSKI_TransactionButton]->uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[guiSKI_DoneButton]->uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[guiSKI_TransactionButton].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[guiSKI_DoneButton].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
   } else {
-    ButtonList[guiSKI_TransactionButton]->uiFlags &= ~BUTTON_FORCE_UNDIRTY;
-    ButtonList[guiSKI_DoneButton]->uiFlags &= ~BUTTON_FORCE_UNDIRTY;
+    ButtonList[guiSKI_TransactionButton].value.uiFlags &= ~BUTTON_FORCE_UNDIRTY;
+    ButtonList[guiSKI_DoneButton].value.uiFlags &= ~BUTTON_FORCE_UNDIRTY;
   }
 }
 
@@ -4537,7 +4537,7 @@ function GetInvSlotOfUnfullMoneyInMercInventory(pSoldier: Pointer<SOLDIERTYPE>):
   // loop through the soldier's inventory
   for (ubCnt = 0; ubCnt < NUM_INV_SLOTS; ubCnt++) {
     // Look for MONEY only, not Gold or Silver!!!  And look for a slot not already full
-    if ((pSoldier->inv[ubCnt].usItem == MONEY) && (pSoldier->inv[ubCnt].uiMoneyAmount < MoneySlotLimit(ubCnt))) {
+    if ((pSoldier.value.inv[ubCnt].usItem == MONEY) && (pSoldier.value.inv[ubCnt].uiMoneyAmount < MoneySlotLimit(ubCnt))) {
       return ubCnt;
     }
   }
@@ -5216,23 +5216,23 @@ function SplitComplexObjectIntoSubObjects(pComplexObject: Pointer<OBJECTTYPE>): 
   let ubCnt: UINT8;
 
   Assert(pComplexObject);
-  Assert(pComplexObject->ubNumberOfObjects > 0);
-  Assert(pComplexObject->ubNumberOfObjects <= MAX_OBJECTS_PER_SLOT);
+  Assert(pComplexObject.value.ubNumberOfObjects > 0);
+  Assert(pComplexObject.value.ubNumberOfObjects <= MAX_OBJECTS_PER_SLOT);
 
   // clear subobject array
   memset(gSubObject, 0, sizeof(OBJECTTYPE) * MAX_SUBOBJECTS_PER_OBJECT);
 
   // if it isn't stacked
-  if (pComplexObject->ubNumberOfObjects == 1) {
+  if (pComplexObject.value.ubNumberOfObjects == 1) {
     // make the main item into the very first subobject
     CopyObj(pComplexObject, pNextObj);
 
     // strip off any loaded ammo/payload
-    if (Item[pComplexObject->usItem].usItemClass == IC_GUN) {
+    if (Item[pComplexObject.value.usItem].usItemClass == IC_GUN) {
       // Exception: don't do this with rocket launchers, their "shots left" are fake and this screws 'em up!
-      if (pComplexObject->usItem != ROCKET_LAUNCHER) {
-        pNextObj->ubGunShotsLeft = 0;
-        pNextObj->usGunAmmoItem = NONE;
+      if (pComplexObject.value.usItem != ROCKET_LAUNCHER) {
+        pNextObj.value.ubGunShotsLeft = 0;
+        pNextObj.value.usGunAmmoItem = NONE;
       }
 
       /* gunAmmoStatus is currently not being used that way, it's strictly used as a jammed/unjammed, and so should never be 0
@@ -5264,17 +5264,17 @@ function SplitComplexObjectIntoSubObjects(pComplexObject: Pointer<OBJECTTYPE>): 
     pNextObj = &gSubObject[++ubNextFreeSlot];
 
     // if it's a gun
-    if (Item[pComplexObject->usItem].usItemClass == IC_GUN) {
+    if (Item[pComplexObject.value.usItem].usItemClass == IC_GUN) {
       // and it has ammo/payload
-      if (pComplexObject->usGunAmmoItem != NONE) {
+      if (pComplexObject.value.usGunAmmoItem != NONE) {
         // if it's bullets
-        if (Item[pComplexObject->usGunAmmoItem].usItemClass == IC_AMMO) {
+        if (Item[pComplexObject.value.usGunAmmoItem].usItemClass == IC_AMMO) {
           // and there are some left
-          if (pComplexObject->ubGunShotsLeft > 0) {
+          if (pComplexObject.value.ubGunShotsLeft > 0) {
             // make the bullets into another subobject
-            CreateItem(pComplexObject->usGunAmmoItem, 100, pNextObj);
+            CreateItem(pComplexObject.value.usGunAmmoItem, 100, pNextObj);
             // set how many are left
-            pNextObj->bStatus[0] = pComplexObject->ubGunShotsLeft;
+            pNextObj.value.bStatus[0] = pComplexObject.value.ubGunShotsLeft;
 
             pNextObj = &gSubObject[++ubNextFreeSlot];
           }
@@ -5282,11 +5282,11 @@ function SplitComplexObjectIntoSubObjects(pComplexObject: Pointer<OBJECTTYPE>): 
         } else // non-ammo payload
         {
           // make the payload into another subobject
-          CreateItem(pComplexObject->usGunAmmoItem, pComplexObject->bGunAmmoStatus, pNextObj);
+          CreateItem(pComplexObject.value.usGunAmmoItem, pComplexObject.value.bGunAmmoStatus, pNextObj);
 
           // if the gun was jammed, fix up the payload's status
-          if (pNextObj->bStatus[0] < 0) {
-            pNextObj->bStatus[0] *= -1;
+          if (pNextObj.value.bStatus[0] < 0) {
+            pNextObj.value.bStatus[0] *= -1;
           }
 
           pNextObj = &gSubObject[++ubNextFreeSlot];
@@ -5313,15 +5313,15 @@ function SplitComplexObjectIntoSubObjects(pComplexObject: Pointer<OBJECTTYPE>): 
   } else // stacked
   {
     // these can't be guns, can't have any attachments, can't be imprinted, etc.
-    Assert(Item[pComplexObject->usItem].usItemClass != IC_GUN);
+    Assert(Item[pComplexObject.value.usItem].usItemClass != IC_GUN);
 
     for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-      Assert(pComplexObject->usAttachItem[ubCnt] == NONE);
+      Assert(pComplexObject.value.usAttachItem[ubCnt] == NONE);
     }
 
     // make each item in the stack into a separate subobject
-    for (ubCnt = 0; ubCnt < pComplexObject->ubNumberOfObjects; ubCnt++) {
-      CreateItem(pComplexObject->usItem, pComplexObject->bStatus[ubCnt], pNextObj);
+    for (ubCnt = 0; ubCnt < pComplexObject.value.ubNumberOfObjects; ubCnt++) {
+      CreateItem(pComplexObject.value.usItem, pComplexObject.value.bStatus[ubCnt], pNextObj);
 
       // advance to next available subobject
       pNextObj = &gSubObject[++ubNextFreeSlot];
@@ -5366,7 +5366,7 @@ function AddObjectForEvaluation(pObject: Pointer<OBJECTTYPE>, ubOwnerProfileId: 
   memset(&InvSlot, 0, sizeof(INVENTORY_IN_SLOT));
   memcpy(&InvSlot.ItemObject, pObject, sizeof(OBJECTTYPE));
 
-  InvSlot.sItemIndex = pObject->usItem;
+  InvSlot.sItemIndex = pObject.value.usItem;
   InvSlot.ubLocationOfObject = PLAYERS_INVENTORY;
   InvSlot.ubIdOfMercWhoOwnsTheItem = ubOwnerProfileId;
 
@@ -5393,16 +5393,16 @@ function ShopkeeperAutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObject: Poin
   // so we have to keep a copy to retrieve with every iteration of the loop
   memcpy(&CopyOfObject, pObject, sizeof(OBJECTTYPE));
 
-  ubObjectsLeftToPlace = pObject->ubNumberOfObjects;
+  ubObjectsLeftToPlace = pObject.value.ubNumberOfObjects;
 
   while (ubObjectsLeftToPlace > 0) {
     // figure out how many to place during this loop iteration.  Can't do more than MAX_OBJECTS_PER_SLOT at a time
-    pObject->ubNumberOfObjects = min(MAX_OBJECTS_PER_SLOT, ubObjectsLeftToPlace);
-    ubObjectsLeftToPlace -= pObject->ubNumberOfObjects;
+    pObject.value.ubNumberOfObjects = min(MAX_OBJECTS_PER_SLOT, ubObjectsLeftToPlace);
+    ubObjectsLeftToPlace -= pObject.value.ubNumberOfObjects;
 
     if (!AutoPlaceObject(pSoldier, pObject, fNewItem)) {
       // no more room, didn't all fit - add back in any that we didn't even get to yet
-      pObject->ubNumberOfObjects += ubObjectsLeftToPlace;
+      pObject.value.ubNumberOfObjects += ubObjectsLeftToPlace;
       return FALSE;
     }
 
@@ -5423,12 +5423,12 @@ function ShopkeeperAddItemToPool(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, b
   // so we have to keep a copy to retrieve with every iteration of the loop
   memcpy(&CopyOfObject, pObject, sizeof(OBJECTTYPE));
 
-  ubObjectsLeftToPlace = pObject->ubNumberOfObjects;
+  ubObjectsLeftToPlace = pObject.value.ubNumberOfObjects;
 
   while (ubObjectsLeftToPlace > 0) {
     // figure out how many to place during this loop iteration.  Can't do more than MAX_OBJECTS_PER_SLOT at a time
-    pObject->ubNumberOfObjects = min(MAX_OBJECTS_PER_SLOT, ubObjectsLeftToPlace);
-    ubObjectsLeftToPlace -= pObject->ubNumberOfObjects;
+    pObject.value.ubNumberOfObjects = min(MAX_OBJECTS_PER_SLOT, ubObjectsLeftToPlace);
+    ubObjectsLeftToPlace -= pObject.value.ubNumberOfObjects;
 
     AddItemToPool(sGridNo, pObject, bVisible, ubLevel, usFlags, bRenderZHeightAboveLevel);
 
@@ -5441,24 +5441,24 @@ function IfMercOwnedCopyItemToMercInv(pInv: Pointer<INVENTORY_IN_SLOT>): void {
   let sSoldierID: INT16;
 
   // if the item picked up was in a previous location, and that location is on a merc's inventory
-  if ((pInv->bSlotIdInOtherLocation != -1) && (pInv->ubIdOfMercWhoOwnsTheItem != NO_PROFILE)) {
+  if ((pInv.value.bSlotIdInOtherLocation != -1) && (pInv.value.ubIdOfMercWhoOwnsTheItem != NO_PROFILE)) {
     // then it better be a valid slot #
-    Assert(pInv->bSlotIdInOtherLocation < NUM_INV_SLOTS);
+    Assert(pInv.value.bSlotIdInOtherLocation < NUM_INV_SLOTS);
     // and it better have a valid merc who owned it
-    Assert(pInv->ubIdOfMercWhoOwnsTheItem != NO_PROFILE);
+    Assert(pInv.value.ubIdOfMercWhoOwnsTheItem != NO_PROFILE);
 
     // get soldier
-    sSoldierID = GetSoldierIDFromMercID(pInv->ubIdOfMercWhoOwnsTheItem);
+    sSoldierID = GetSoldierIDFromMercID(pInv.value.ubIdOfMercWhoOwnsTheItem);
     Assert(sSoldierID != -1);
     Assert(CanMercInteractWithSelectedShopkeeper(MercPtrs[sSoldierID]));
 
     // Copy the object back into that merc's original inventory slot
-    CopyObj(&(pInv->ItemObject), &(Menptr[sSoldierID].inv[pInv->bSlotIdInOtherLocation]));
+    CopyObj(&(pInv.value.ItemObject), &(Menptr[sSoldierID].inv[pInv.value.bSlotIdInOtherLocation]));
   }
 }
 
 function IfMercOwnedRemoveItemFromMercInv(pInv: Pointer<INVENTORY_IN_SLOT>): void {
-  IfMercOwnedRemoveItemFromMercInv2(pInv->ubIdOfMercWhoOwnsTheItem, pInv->bSlotIdInOtherLocation);
+  IfMercOwnedRemoveItemFromMercInv2(pInv.value.ubIdOfMercWhoOwnsTheItem, pInv.value.bSlotIdInOtherLocation);
 }
 
 function IfMercOwnedRemoveItemFromMercInv2(ubOwnerProfileId: UINT8, bOwnerSlotId: INT8): void {
@@ -5485,13 +5485,13 @@ function IfMercOwnedRemoveItemFromMercInv2(ubOwnerProfileId: UINT8, bOwnerSlotId
 
 function SKITryToReturnInvToOwnerOrCurrentMerc(pInv: Pointer<INVENTORY_IN_SLOT>): BOOLEAN {
   // don't use this if the item has a copy in merc's inventory!!  It would create a duplicate!!
-  Assert(pInv->bSlotIdInOtherLocation == -1);
+  Assert(pInv.value.bSlotIdInOtherLocation == -1);
 
   // if it does have an owner
-  if (pInv->ubIdOfMercWhoOwnsTheItem != NO_PROFILE) {
+  if (pInv.value.ubIdOfMercWhoOwnsTheItem != NO_PROFILE) {
     let sSoldierID: INT16;
 
-    sSoldierID = GetSoldierIDFromMercID(pInv->ubIdOfMercWhoOwnsTheItem);
+    sSoldierID = GetSoldierIDFromMercID(pInv.value.ubIdOfMercWhoOwnsTheItem);
     // if that soldier is not in player's hire any longer
     if (sSoldierID == -1) {
       return FALSE;
@@ -5528,17 +5528,17 @@ function SKITryToAddInvToMercsInventory(pInv: Pointer<INVENTORY_IN_SLOT>, pSoldi
   let fNewItem: BOOLEAN = FALSE;
 
   // if the item is money
-  if (Item[pInv->sItemIndex].usItemClass == IC_MONEY) {
+  if (Item[pInv.value.sItemIndex].usItemClass == IC_MONEY) {
     // search through the merc's inventory for a pocket of money which isn't full already
     bMoneyInvPos = GetInvSlotOfUnfullMoneyInMercInventory(pSoldier);
 
     // if he has a money pocket going
     if (bMoneyInvPos != -1) {
       // try to add to it.  If successful, it will delete the object...  It returns TRUE even if not all would fit!
-      PlaceObject(pSoldier, bMoneyInvPos, &(pInv->ItemObject));
+      PlaceObject(pSoldier, bMoneyInvPos, &(pInv.value.ItemObject));
 
       // if the money is all gone
-      if (pInv->ItemObject.uiMoneyAmount == 0) {
+      if (pInv.value.ItemObject.uiMoneyAmount == 0) {
         // we've been succesful!
         return TRUE;
       }
@@ -5547,10 +5547,10 @@ function SKITryToAddInvToMercsInventory(pInv: Pointer<INVENTORY_IN_SLOT>, pSoldi
   }
 
   // If it's just been purchased or repaired, mark it as a "new item"
-  fNewItem = (pInv->uiFlags & (ARMS_INV_JUST_PURCHASED | ARMS_INV_ITEM_REPAIRED));
+  fNewItem = (pInv.value.uiFlags & (ARMS_INV_JUST_PURCHASED | ARMS_INV_ITEM_REPAIRED));
 
   // try autoplacing the item in this soldier's inventory.
-  if (!ShopkeeperAutoPlaceObject(pSoldier, &pInv->ItemObject, fNewItem)) {
+  if (!ShopkeeperAutoPlaceObject(pSoldier, &pInv.value.ItemObject, fNewItem)) {
     // failed to add item, inventory probably filled up
     return FALSE;
   }
@@ -5570,16 +5570,16 @@ function CanMercInteractWithSelectedShopkeeper(pSoldier: Pointer<SOLDIERTYPE>): 
 
   pShopkeeper = FindSoldierByProfileID(ArmsDealerInfo[gbSelectedArmsDealerID].ubShopKeeperID, FALSE);
   Assert(pShopkeeper != NULL);
-  Assert(pShopkeeper->bActive);
-  Assert(pShopkeeper->bInSector);
+  Assert(pShopkeeper.value.bActive);
+  Assert(pShopkeeper.value.bInSector);
 
-  if (pShopkeeper->bLife < OKLIFE) {
+  if (pShopkeeper.value.bLife < OKLIFE) {
     return FALSE;
   }
 
-  if (pSoldier->bActive && pSoldier->bInSector && IsMercOnCurrentSquad(pSoldier) && (pSoldier->bLife >= OKLIFE) && !(pSoldier->uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier)) {
-    sDestGridNo = pShopkeeper->sGridNo;
-    bDestLevel = pShopkeeper->bLevel;
+  if (pSoldier.value.bActive && pSoldier.value.bInSector && IsMercOnCurrentSquad(pSoldier) && (pSoldier.value.bLife >= OKLIFE) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier)) {
+    sDestGridNo = pShopkeeper.value.sGridNo;
+    bDestLevel = pShopkeeper.value.bLevel;
 
     // is he close enough to see that gridno if he turns his head?
     sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sDestGridNo, bDestLevel);
@@ -5587,7 +5587,7 @@ function CanMercInteractWithSelectedShopkeeper(pSoldier: Pointer<SOLDIERTYPE>): 
     // If he has LOS...
     if (SoldierTo3DLocationLineOfSightTest(pSoldier, sDestGridNo, bDestLevel, 3, sDistVisible, TRUE)) {
       // Get range to shopkeeper
-      uiRange = GetRangeFromGridNoDiff(pSoldier->sGridNo, sDestGridNo);
+      uiRange = GetRangeFromGridNoDiff(pSoldier.value.sGridNo, sDestGridNo);
 
       // and is close enough to talk to the shopkeeper (use this define INSTEAD of PASSING_ITEM_DISTANCE_OKLIFE!)
       if (uiRange <= NPC_TALK_RADIUS) {
@@ -5698,12 +5698,12 @@ function DealWithItemsStillOnTheTable(): void {
 
 function ReturnItemToPlayerSomehow(pInvSlot: Pointer<INVENTORY_IN_SLOT>, pDropSoldier: Pointer<SOLDIERTYPE>): void {
   // if the item doesn't have a duplicate copy in its owner merc's inventory slot
-  if (pInvSlot->bSlotIdInOtherLocation == -1) {
+  if (pInvSlot.value.bSlotIdInOtherLocation == -1) {
     // first try to give it to its owner, or if he's unavailable, the current merc
     if (!SKITryToReturnInvToOwnerOrCurrentMerc(pInvSlot)) {
       // failed to add item, inventory probably filled up or item is unowned and current merc ineligible.
       // drop it at the specified guy's feet instead
-      ShopkeeperAddItemToPool(pDropSoldier->sGridNo, &pInvSlot->ItemObject, VISIBLE, pDropSoldier->bLevel, 0, 0);
+      ShopkeeperAddItemToPool(pDropSoldier.value.sGridNo, &pInvSlot.value.ItemObject, VISIBLE, pDropSoldier.value.bLevel, 0, 0);
     }
   }
 }
@@ -5810,21 +5810,21 @@ function RepairmanFixingAnyItemsThatShouldBeDoneNow(puiHoursSinceOldestItemRepai
     pDealerItem = &(gArmsDealersInventory[gbSelectedArmsDealerID][usItemIndex]);
 
     // if there is some items in stock
-    if (pDealerItem->ubTotalItems) {
+    if (pDealerItem.value.ubTotalItems) {
       // loop through the array of items
-      for (ubElement = 0; ubElement < pDealerItem->ubElementsAlloced; ubElement++) {
-        pSpecialItem = &(pDealerItem->SpecialItem[ubElement]);
+      for (ubElement = 0; ubElement < pDealerItem.value.ubElementsAlloced; ubElement++) {
+        pSpecialItem = &(pDealerItem.value.SpecialItem[ubElement]);
 
-        if (pSpecialItem->fActive) {
+        if (pSpecialItem.value.fActive) {
           // if the items status is below 0, the item is being repaired
-          if (pSpecialItem->Info.bItemCondition < 0) {
+          if (pSpecialItem.value.Info.bItemCondition < 0) {
             // if the repairs are done
-            if (pSpecialItem->uiRepairDoneTime <= GetWorldTotalMin()) {
+            if (pSpecialItem.value.uiRepairDoneTime <= GetWorldTotalMin()) {
               // at least one item is supposed to be done by now
               fFoundOne = TRUE;
 
-              uiMinutesSinceItWasDone = GetWorldTotalMin() - pSpecialItem->uiRepairDoneTime;
-              uiMinutesShopClosedSinceItWasDone = CalculateMinutesClosedBetween(gbSelectedArmsDealerID, pSpecialItem->uiRepairDoneTime, GetWorldTotalMin());
+              uiMinutesSinceItWasDone = GetWorldTotalMin() - pSpecialItem.value.uiRepairDoneTime;
+              uiMinutesShopClosedSinceItWasDone = CalculateMinutesClosedBetween(gbSelectedArmsDealerID, pSpecialItem.value.uiRepairDoneTime, GetWorldTotalMin());
 
               // calculate how many WORKING hours since this item's been repaired
               uiWorkingHoursSinceThisItemRepaired = (uiMinutesSinceItWasDone - uiMinutesShopClosedSinceItWasDone) / 60;
@@ -5860,18 +5860,18 @@ function DelayRepairsInProgressBy(uiMinutesDelayed: UINT32): void {
     pDealerItem = &(gArmsDealersInventory[gbSelectedArmsDealerID][usItemIndex]);
 
     // if there is some items in stock
-    if (pDealerItem->ubTotalItems) {
+    if (pDealerItem.value.ubTotalItems) {
       // loop through the array of items
-      for (ubElement = 0; ubElement < pDealerItem->ubElementsAlloced; ubElement++) {
-        pSpecialItem = &(pDealerItem->SpecialItem[ubElement]);
+      for (ubElement = 0; ubElement < pDealerItem.value.ubElementsAlloced; ubElement++) {
+        pSpecialItem = &(pDealerItem.value.SpecialItem[ubElement]);
 
-        if (pSpecialItem->fActive) {
+        if (pSpecialItem.value.fActive) {
           // if the items status is below 0, the item is being repaired
-          if (pSpecialItem->Info.bItemCondition < 0) {
-            uiMinutesShopClosedBeforeItsDone = CalculateOvernightRepairDelay(gbSelectedArmsDealerID, pSpecialItem->uiRepairDoneTime, uiMinutesDelayed);
+          if (pSpecialItem.value.Info.bItemCondition < 0) {
+            uiMinutesShopClosedBeforeItsDone = CalculateOvernightRepairDelay(gbSelectedArmsDealerID, pSpecialItem.value.uiRepairDoneTime, uiMinutesDelayed);
 
             // add this many minutes to the repair time estimate
-            pSpecialItem->uiRepairDoneTime += (uiMinutesShopClosedBeforeItsDone + uiMinutesDelayed);
+            pSpecialItem.value.uiRepairDoneTime += (uiMinutesShopClosedBeforeItsDone + uiMinutesDelayed);
           }
         }
       }
@@ -5895,7 +5895,7 @@ function SelectArmsDealersDropItemToGroundRegionCallBack(pRegion: Pointer<MOUSE_
     // if we don't have an item, pick one up
     if (gMoveingItem.sItemIndex != 0) {
       // add the item to the ground
-      ShopkeeperAddItemToPool(pDropSoldier->sGridNo, &gMoveingItem.ItemObject, VISIBLE, pDropSoldier->bLevel, 0, 0);
+      ShopkeeperAddItemToPool(pDropSoldier.value.sGridNo, &gMoveingItem.ItemObject, VISIBLE, pDropSoldier.value.bLevel, 0, 0);
 
       // Reset the cursor
       SetSkiCursor(CURSOR_NORMAL);
@@ -5960,25 +5960,25 @@ function EvaluateInvSlot(pInvSlot: Pointer<INVENTORY_IN_SLOT>): UINT32 {
   }
 
   // Calculate dealer's buying price for the item
-  uiBuyingPrice = CalcShopKeeperItemPrice(DEALER_BUYING, FALSE, pInvSlot->sItemIndex, dPriceModifier, &(pInvSlot->ItemObject));
+  uiBuyingPrice = CalcShopKeeperItemPrice(DEALER_BUYING, FALSE, pInvSlot.value.sItemIndex, dPriceModifier, &(pInvSlot.value.ItemObject));
 
-  pInvSlot->uiItemPrice = uiBuyingPrice;
+  pInvSlot.value.uiItemPrice = uiBuyingPrice;
 
   if (uiBuyingPrice > 0) {
     // check if the item is really badly damaged
-    if (Item[pInvSlot->sItemIndex].usItemClass != IC_AMMO) {
-      if (pInvSlot->ItemObject.bStatus[0] < REALLY_BADLY_DAMAGED_THRESHOLD) {
+    if (Item[pInvSlot.value.sItemIndex].usItemClass != IC_AMMO) {
+      if (pInvSlot.value.ItemObject.bStatus[0] < REALLY_BADLY_DAMAGED_THRESHOLD) {
         uiEvalResult = EVAL_RESULT_OK_BUT_REALLY_DAMAGED;
       }
     }
 
     // the item can be sold here, so mark it as such
-    pInvSlot->uiFlags |= ARMS_INV_PLAYERS_ITEM_HAS_VALUE;
+    pInvSlot.value.uiFlags |= ARMS_INV_PLAYERS_ITEM_HAS_VALUE;
   } else {
     // he normally buys this, but it's in such bad shape that he won't, it's worthless (different quote)
     uiEvalResult = EVAL_RESULT_WORTHLESS;
 
-    pInvSlot->uiFlags &= ~ARMS_INV_PLAYERS_ITEM_HAS_VALUE;
+    pInvSlot.value.uiFlags &= ~ARMS_INV_PLAYERS_ITEM_HAS_VALUE;
   }
 
   return uiEvalResult;
@@ -6066,11 +6066,11 @@ function BuildItemHelpTextString(sString: wchar_t[] /* [] */, pInv: Pointer<INVE
   let zRepairTime: CHAR16[] /* [64] */;
 
   if (pInv != NULL) {
-    GetHelpTextForItem(zHelpText, &(pInv->ItemObject), NULL);
+    GetHelpTextForItem(zHelpText, &(pInv.value.ItemObject), NULL);
 
     // add repair time for items in a repairman's offer area
     if ((ubScreenArea == ARMS_DEALER_OFFER_AREA) && (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS)) {
-      BuildRepairTimeString(zRepairTime, CalculateObjectItemRepairTime(gbSelectedArmsDealerID, &(pInv->ItemObject)));
+      BuildRepairTimeString(zRepairTime, CalculateObjectItemRepairTime(gbSelectedArmsDealerID, &(pInv.value.ItemObject)));
       swprintf(sString, "%s\n(%s: %s)", zHelpText, gzLateLocalizedString[44], zRepairTime);
     } else {
       wcscpy(sString, zHelpText);

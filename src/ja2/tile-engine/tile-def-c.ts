@@ -156,7 +156,7 @@ function CreateTileDatabase(): void {
       // Build start index list
       gTileTypeStartIndex[cnt1] = gTileDatabaseSize;
 
-      NumRegions = TileSurf->vo->usNumberOfObjects;
+      NumRegions = TileSurf.value.vo.value.usNumberOfObjects;
 
       // Check for overflow
       if (NumRegions > gNumTilesPerType[cnt1]) {
@@ -172,14 +172,14 @@ function CreateTileDatabase(): void {
       for (cnt2 = 0; cnt2 < NumRegions; cnt2++) {
         memset(&TileElement, 0, sizeof(TileElement));
         TileElement.usRegionIndex = cnt2;
-        TileElement.hTileSurface = TileSurf->vo;
+        TileElement.hTileSurface = TileSurf.value.vo;
         TileElement.sBuddyNum = -1;
 
         // Check for multi-z stuff
-        if (TileSurf->vo->ppZStripInfo != NULL) {
+        if (TileSurf.value.vo.value.ppZStripInfo != NULL) {
           // Only do this if we are within the # of video objects
-          if (cnt2 < TileSurf->vo->usNumberOfObjects) {
-            if (TileSurf->vo->ppZStripInfo[cnt2] != NULL) {
+          if (cnt2 < TileSurf.value.vo.value.usNumberOfObjects) {
+            if (TileSurf.value.vo.value.ppZStripInfo[cnt2] != NULL) {
               TileElement.uiFlags |= MULTI_Z_TILE;
             }
           } else {
@@ -189,33 +189,33 @@ function CreateTileDatabase(): void {
         }
 
         // Structure database stuff!
-        if (TileSurf->pStructureFileRef != NULL && TileSurf->pStructureFileRef->pubStructureData != NULL) {
-          if (TileSurf->pStructureFileRef->pDBStructureRef[cnt2].pDBStructure != NULL) {
-            TileElement.pDBStructureRef = &(TileSurf->pStructureFileRef->pDBStructureRef[cnt2]);
+        if (TileSurf.value.pStructureFileRef != NULL && TileSurf.value.pStructureFileRef.value.pubStructureData != NULL) {
+          if (TileSurf.value.pStructureFileRef.value.pDBStructureRef[cnt2].pDBStructure != NULL) {
+            TileElement.pDBStructureRef = &(TileSurf.value.pStructureFileRef.value.pDBStructureRef[cnt2]);
 
-            if (TileElement.pDBStructureRef->pDBStructure->fFlags & STRUCTURE_HIDDEN) {
+            if (TileElement.pDBStructureRef.value.pDBStructure.value.fFlags & STRUCTURE_HIDDEN) {
               // ATE: These are ignored!
               // TileElement.uiFlags |= HIDDEN_TILE;
             }
           }
         }
 
-        TileElement.fType = TileSurf->fType;
-        TileElement.ubTerrainID = TileSurf->ubTerrainID;
+        TileElement.fType = TileSurf.value.fType;
+        TileElement.ubTerrainID = TileSurf.value.ubTerrainID;
         TileElement.usWallOrientation = NO_ORIENTATION;
 
-        if (TileSurf->pAuxData != NULL) {
-          if (TileSurf->pAuxData[cnt2].fFlags & AUX_FULL_TILE) {
+        if (TileSurf.value.pAuxData != NULL) {
+          if (TileSurf.value.pAuxData[cnt2].fFlags & AUX_FULL_TILE) {
             TileElement.ubFullTile = 1;
           }
-          if (TileSurf->pAuxData[cnt2].fFlags & AUX_ANIMATED_TILE) {
+          if (TileSurf.value.pAuxData[cnt2].fFlags & AUX_ANIMATED_TILE) {
             // Allocate Animated tile data
-            AllocateAnimTileData(&TileElement, TileSurf->pAuxData[cnt2].ubNumberOfFrames);
+            AllocateAnimTileData(&TileElement, TileSurf.value.pAuxData[cnt2].ubNumberOfFrames);
 
             // Set values into tile element
-            TileElement.pAnimData->bCurrentFrame = TileSurf->pAuxData[cnt2].ubCurrentFrame;
-            for (ubLoop = 0; ubLoop < TileElement.pAnimData->ubNumFrames; ubLoop++) {
-              TileElement.pAnimData->pusFrames[ubLoop] = gTileDatabaseSize - TileElement.pAnimData->bCurrentFrame + ubLoop;
+            TileElement.pAnimData.value.bCurrentFrame = TileSurf.value.pAuxData[cnt2].ubCurrentFrame;
+            for (ubLoop = 0; ubLoop < TileElement.pAnimData.value.ubNumFrames; ubLoop++) {
+              TileElement.pAnimData.value.pusFrames[ubLoop] = gTileDatabaseSize - TileElement.pAnimData.value.bCurrentFrame + ubLoop;
             }
 
             /*
@@ -238,14 +238,14 @@ function CreateTileDatabase(): void {
 
             TileElement.uiFlags |= ANIMATED_TILE;
           }
-          TileElement.usWallOrientation = TileSurf->pAuxData[cnt2].ubWallOrientation;
-          if (TileSurf->pAuxData[cnt2].ubNumberOfTiles > 0) {
-            TileElement.ubNumberOfTiles = TileSurf->pAuxData[cnt2].ubNumberOfTiles;
-            TileElement.pTileLocData = TileSurf->pTileLocData + TileSurf->pAuxData[cnt2].usTileLocIndex;
+          TileElement.usWallOrientation = TileSurf.value.pAuxData[cnt2].ubWallOrientation;
+          if (TileSurf.value.pAuxData[cnt2].ubNumberOfTiles > 0) {
+            TileElement.ubNumberOfTiles = TileSurf.value.pAuxData[cnt2].ubNumberOfTiles;
+            TileElement.pTileLocData = TileSurf.value.pTileLocData + TileSurf.value.pAuxData[cnt2].usTileLocIndex;
           }
         }
 
-        SetSpecificDatabaseValues(cnt1, gTileDatabaseSize, &TileElement, TileSurf->bRaisedObjectType);
+        SetSpecificDatabaseValues(cnt1, gTileDatabaseSize, &TileElement, TileSurf.value.bRaisedObjectType);
 
         gTileDatabase[gTileDatabaseSize] = TileElement;
         gTileDatabaseSize++;
@@ -260,8 +260,8 @@ function CreateTileDatabase(): void {
         for (cnt2 = NumRegions; cnt2 < gNumTilesPerType[cnt1]; cnt2++) {
           memset(&TileElement, 0, sizeof(TileElement));
           TileElement.usRegionIndex = 0;
-          TileElement.hTileSurface = TileSurf->vo;
-          TileElement.fType = TileSurf->fType;
+          TileElement.hTileSurface = TileSurf.value.vo;
+          TileElement.fType = TileSurf.value.fType;
           TileElement.ubFullTile = FALSE;
           TileElement.sOffsetHeight = 0;
           TileElement.ubFullTile = 0;
@@ -304,7 +304,7 @@ function GetLandHeadType(iMapIndex: INT32, puiType: Pointer<UINT32>): BOOLEAN {
 
   CHECKF(gpWorldLevelData[iMapIndex].pLandHead != NULL);
 
-  usIndex = gpWorldLevelData[iMapIndex].pLandHead->usIndex;
+  usIndex = gpWorldLevelData[iMapIndex].pLandHead.value.usIndex;
 
   GetTileType(usIndex, puiType);
 
@@ -395,8 +395,8 @@ function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel: Pointe
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
   while (pLand != NULL) {
-    if (pLand->usIndex != NO_TILE) {
-      GetTileType(pLand->usIndex, &fTileType);
+    if (pLand.value.usIndex != NO_TILE) {
+      GetTileType(pLand.value.usIndex, &fTileType);
 
       if (fTileType == uiNewType) {
         *pubLevel = level;
@@ -405,7 +405,7 @@ function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel: Pointe
     }
 
     level++;
-    pLand = pLand->pNext;
+    pLand = pLand.value.pNext;
   }
 
   return FALSE;
@@ -419,7 +419,7 @@ function GetLandLevelDepth(iMapIndex: UINT32): UINT8 {
 
   while (pLand != NULL) {
     level++;
-    pLand = pLand->pNext;
+    pLand = pLand.value.pNext;
   }
 
   return level;
@@ -541,7 +541,7 @@ function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Poin
 
   while (pLand != NULL) {
     // Get type and height
-    GetTileType(pLand->usIndex, &fTileType);
+    GetTileType(pLand.value.usIndex, &fTileType);
 
     if (gTileTypeLogicalHeight[fTileType] > ubSrcLogHeight) {
       *pubLastLevel = level;
@@ -549,7 +549,7 @@ function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Poin
     }
 
     // Advance to next
-    pLand = pLand->pNext;
+    pLand = pLand.value.pNext;
 
     level++;
   }
@@ -575,7 +575,7 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
   // Look through all objects and Search for type
   while (pLand != NULL) {
     // Get type and height
-    GetTileType(pLand->usIndex, &fTileType);
+    GetTileType(pLand.value.usIndex, &fTileType);
 
     if (gTileTypeLogicalHeight[fTileType] < ubSrcLogHeight) {
       *pubLastLevel = level;
@@ -583,7 +583,7 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
     }
 
     // Get tile element
-    TileElem = gTileDatabase[pLand->usIndex];
+    TileElem = gTileDatabase[pLand.value.usIndex];
 
     // Get full tile flag
     if (TileElem.ubFullTile && fTileType != uiSrcType) {
@@ -591,7 +591,7 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
     }
 
     // Advance to next
-    pLand = pLand->pNext;
+    pLand = pLand.value.pNext;
 
     level++;
   }
@@ -623,7 +623,7 @@ function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrienta
   // Look through all objects and Search for type
 
   while (pStruct != NULL) {
-    GetWallOrientation(pStruct->usIndex, &usCheckWallOrient);
+    GetWallOrientation(pStruct.value.usIndex, &usCheckWallOrient);
 
     if (usCheckWallOrient == usWallOrientation) {
       *pubLevel = level;
@@ -631,7 +631,7 @@ function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrienta
     }
 
     // Advance to next
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
 
     level++;
   }
@@ -651,7 +651,7 @@ function CalculateWallOrientationsAtGridNo(iMapIndex: INT32): UINT8 {
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
   // Traverse all of the pStructs
   while (pStruct != NULL) {
-    GetWallOrientation(pStruct->usIndex, &usCheckWallOrientation);
+    GetWallOrientation(pStruct.value.usIndex, &usCheckWallOrientation);
     if (ubFinalWallOrientation == NO_ORIENTATION) {
       // Get the first valid orientation.
       ubFinalWallOrientation = usCheckWallOrientation;
@@ -677,33 +677,33 @@ function CalculateWallOrientationsAtGridNo(iMapIndex: INT32): UINT8 {
           break;
       }
     // Advance to next
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
   // Only one wall, so return it's orienation.
   return ubFinalWallOrientation;
 }
 
 function AllocateAnimTileData(pTileElem: Pointer<TILE_ELEMENT>, ubNumFrames: UINT8): BOOLEAN {
-  pTileElem->pAnimData = MemAlloc(sizeof(TILE_ANIMATION_DATA));
+  pTileElem.value.pAnimData = MemAlloc(sizeof(TILE_ANIMATION_DATA));
 
-  CHECKF(pTileElem->pAnimData != NULL);
+  CHECKF(pTileElem.value.pAnimData != NULL);
 
-  pTileElem->pAnimData->pusFrames = MemAlloc(sizeof(UINT16) * ubNumFrames);
+  pTileElem.value.pAnimData.value.pusFrames = MemAlloc(sizeof(UINT16) * ubNumFrames);
 
-  CHECKF(pTileElem->pAnimData->pusFrames != NULL);
+  CHECKF(pTileElem.value.pAnimData.value.pusFrames != NULL);
 
   // Set # if frames!
-  pTileElem->pAnimData->ubNumFrames = ubNumFrames;
+  pTileElem.value.pAnimData.value.ubNumFrames = ubNumFrames;
 
   return TRUE;
 }
 
 function FreeAnimTileData(pTileElem: Pointer<TILE_ELEMENT>): void {
-  if (pTileElem->pAnimData != NULL) {
+  if (pTileElem.value.pAnimData != NULL) {
     // Free frames list
-    MemFree(pTileElem->pAnimData->pusFrames);
+    MemFree(pTileElem.value.pAnimData.value.pusFrames);
 
     // Free frames
-    MemFree(pTileElem->pAnimData);
+    MemFree(pTileElem.value.pAnimData);
   }
 }

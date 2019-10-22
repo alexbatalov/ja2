@@ -7,29 +7,29 @@ function InitNPCs(): void {
   pProfile = &(gMercProfiles[SKYRIDER]);
   switch (Random(4)) {
     case 0:
-      pProfile->sSectorX = 15;
-      pProfile->sSectorY = MAP_ROW_B;
-      pProfile->bSectorZ = 0;
+      pProfile.value.sSectorX = 15;
+      pProfile.value.sSectorY = MAP_ROW_B;
+      pProfile.value.bSectorZ = 0;
       break;
     case 1:
-      pProfile->sSectorX = 14;
-      pProfile->sSectorY = MAP_ROW_E;
-      pProfile->bSectorZ = 0;
+      pProfile.value.sSectorX = 14;
+      pProfile.value.sSectorY = MAP_ROW_E;
+      pProfile.value.bSectorZ = 0;
       break;
     case 2:
-      pProfile->sSectorX = 12;
-      pProfile->sSectorY = MAP_ROW_D;
-      pProfile->bSectorZ = 0;
+      pProfile.value.sSectorX = 12;
+      pProfile.value.sSectorY = MAP_ROW_D;
+      pProfile.value.bSectorZ = 0;
       break;
     case 3:
-      pProfile->sSectorX = 16;
-      pProfile->sSectorY = MAP_ROW_C;
-      pProfile->bSectorZ = 0;
+      pProfile.value.sSectorX = 16;
+      pProfile.value.sSectorY = MAP_ROW_C;
+      pProfile.value.bSectorZ = 0;
       break;
   }
 
   // use alternate map, with Skyrider's shack, in this sector
-  SectorInfo[SECTOR(pProfile->sSectorX, pProfile->sSectorY)].uiFlags |= SF_USE_ALTERNATE_MAP;
+  SectorInfo[SECTOR(pProfile.value.sSectorX, pProfile.value.sSectorY)].uiFlags |= SF_USE_ALTERNATE_MAP;
 
   // set up Madlab's secret lab (he'll be added when the meanwhile scene occurs)
 
@@ -54,29 +54,29 @@ function InitNPCs(): void {
   pProfile = &(gMercProfiles[MICKY]);
   switch (Random(5)) {
     case 0:
-      pProfile->sSectorX = 9;
-      pProfile->sSectorY = MAP_ROW_G;
-      pProfile->bSectorZ = 0;
+      pProfile.value.sSectorX = 9;
+      pProfile.value.sSectorY = MAP_ROW_G;
+      pProfile.value.bSectorZ = 0;
       break;
     case 1:
-      pProfile->sSectorX = 13;
-      pProfile->sSectorY = MAP_ROW_D;
-      pProfile->bSectorZ = 0;
+      pProfile.value.sSectorX = 13;
+      pProfile.value.sSectorY = MAP_ROW_D;
+      pProfile.value.bSectorZ = 0;
       break;
     case 2:
-      pProfile->sSectorX = 5;
-      pProfile->sSectorY = MAP_ROW_C;
-      pProfile->bSectorZ = 0;
+      pProfile.value.sSectorX = 5;
+      pProfile.value.sSectorY = MAP_ROW_C;
+      pProfile.value.bSectorZ = 0;
       break;
     case 3:
-      pProfile->sSectorX = 2;
-      pProfile->sSectorY = MAP_ROW_H;
-      pProfile->bSectorZ = 0;
+      pProfile.value.sSectorX = 2;
+      pProfile.value.sSectorY = MAP_ROW_H;
+      pProfile.value.bSectorZ = 0;
       break;
     case 4:
-      pProfile->sSectorX = 6;
-      pProfile->sSectorY = MAP_ROW_C;
-      pProfile->bSectorZ = 0;
+      pProfile.value.sSectorX = 6;
+      pProfile.value.sSectorY = MAP_ROW_C;
+      pProfile.value.bSectorZ = 0;
       break;
   }
 
@@ -88,33 +88,33 @@ function InitNPCs(): void {
   if (gGameOptions.fSciFi) {
     // add Bob
     pProfile = &(gMercProfiles[BOB]);
-    pProfile->sSectorX = 8;
-    pProfile->sSectorY = MAP_ROW_F;
-    pProfile->bSectorZ = 0;
+    pProfile.value.sSectorX = 8;
+    pProfile.value.sSectorY = MAP_ROW_F;
+    pProfile.value.bSectorZ = 0;
 
     // add Gabby in random location
     pProfile = &(gMercProfiles[GABBY]);
     switch (Random(2)) {
       case 0:
-        pProfile->sSectorX = 11;
-        pProfile->sSectorY = MAP_ROW_H;
-        pProfile->bSectorZ = 0;
+        pProfile.value.sSectorX = 11;
+        pProfile.value.sSectorY = MAP_ROW_H;
+        pProfile.value.bSectorZ = 0;
         break;
       case 1:
-        pProfile->sSectorX = 4;
-        pProfile->sSectorY = MAP_ROW_I;
-        pProfile->bSectorZ = 0;
+        pProfile.value.sSectorX = 4;
+        pProfile.value.sSectorY = MAP_ROW_I;
+        pProfile.value.bSectorZ = 0;
         break;
     }
 
     // use alternate map in this sector
-    SectorInfo[SECTOR(pProfile->sSectorX, pProfile->sSectorY)].uiFlags |= SF_USE_ALTERNATE_MAP;
+    SectorInfo[SECTOR(pProfile.value.sSectorX, pProfile.value.sSectorY)].uiFlags |= SF_USE_ALTERNATE_MAP;
   } else {
     // not scifi, so use alternate map in Tixa's b1 level that doesn't have the stairs going down to the caves.
     let pSector: Pointer<UNDERGROUND_SECTORINFO>;
     pSector = FindUnderGroundSector(9, 10, 1); // j9_b1
     if (pSector) {
-      pSector->uiFlags |= SF_USE_ALTERNATE_MAP;
+      pSector.value.uiFlags |= SF_USE_ALTERNATE_MAP;
     }
   }
 
@@ -399,7 +399,7 @@ function AnyMercsHired(): BOOLEAN {
 
   // look for all mercs on the same team,
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pTeamSoldier++) {
-    if (pTeamSoldier->bActive) {
+    if (pTeamSoldier.value.bActive) {
       return TRUE;
     }
   }

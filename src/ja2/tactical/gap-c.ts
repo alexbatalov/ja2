@@ -20,11 +20,11 @@ function AudioGapListInit(zSoundFile: Pointer<CHAR8>, pGapList: Pointer<AudioGap
   pSourceFileName = zSoundFile;
   pDestFileName = sFileName;
   // Initialize GapList
-  pGapList->size = 0;
-  pGapList->current_time = 0;
-  pGapList->pHead = 0;
-  pGapList->pCurrent = 0;
-  pGapList->audio_gap_active = FALSE;
+  pGapList.value.size = 0;
+  pGapList.value.current_time = 0;
+  pGapList.value.pHead = 0;
+  pGapList.value.pCurrent = 0;
+  pGapList.value.audio_gap_active = FALSE;
   pPreviousGap = pCurrentGap = 0;
   // DebugMsg(TOPIC_JA2, DBG_LEVEL_3,String("File is %s", szSoundEffects[uiSampleNum]));
   // Get filename
@@ -58,17 +58,17 @@ function AudioGapListInit(zSoundFile: Pointer<CHAR8>, pGapList: Pointer<AudioGap
       // allocate space for AUDIO_GAP
       pCurrentGap = MemAlloc(sizeof(AUDIO_GAP));
       if (pPreviousGap != 0)
-        pPreviousGap->pNext = pCurrentGap;
+        pPreviousGap.value.pNext = pCurrentGap;
       else {
         // Start of list
-        pGapList->pCurrent = pCurrentGap;
-        pGapList->pHead = pCurrentGap;
+        pGapList.value.pCurrent = pCurrentGap;
+        pGapList.value.pHead = pCurrentGap;
       }
 
-      pGapList->size++;
-      pCurrentGap->pNext = 0;
-      pCurrentGap->uiStart = Start;
-      pCurrentGap->uiEnd = End;
+      pGapList.value.size++;
+      pCurrentGap.value.pNext = 0;
+      pCurrentGap.value.uiStart = Start;
+      pCurrentGap.value.uiEnd = End;
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Gap Start %d and Ends %d", Start, End));
 
       // Increment pointer
@@ -78,13 +78,13 @@ function AudioGapListInit(zSoundFile: Pointer<CHAR8>, pGapList: Pointer<AudioGap
       FileRead(pFile, &Start, sizeof(UINT32), &uiNumBytesRead);
     }
 
-    pGapList->audio_gap_active = FALSE;
-    pGapList->current_time = 0;
+    pGapList.value.audio_gap_active = FALSE;
+    pGapList.value.current_time = 0;
 
     // fclose(pFile);
     FileClose(pFile);
   }
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Gap List Started From File %s and has %d gaps", pDestFileName, pGapList->size));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Gap List Started From File %s and has %d gaps", pDestFileName, pGapList.value.size));
 }
 
 function AudioGapListDone(pGapList: Pointer<AudioGapList>): void {
@@ -93,23 +93,23 @@ function AudioGapListDone(pGapList: Pointer<AudioGapList>): void {
 
   let pCurrent: Pointer<AUDIO_GAP>;
   let pNext: Pointer<AUDIO_GAP>;
-  if (pGapList->pHead != 0) {
-    pCurrent = pGapList->pHead;
-    pNext = pCurrent->pNext;
+  if (pGapList.value.pHead != 0) {
+    pCurrent = pGapList.value.pHead;
+    pNext = pCurrent.value.pNext;
     // There are elements in the list
     while (pNext != 0) {
       // kill pCurrent
       MemFree(pCurrent);
       pCurrent = pNext;
-      pNext = pNext->pNext;
+      pNext = pNext.value.pNext;
     }
     // now kill the last element
     MemFree(pCurrent);
     pCurrent = 0;
   }
-  pGapList->pHead = 0;
-  pGapList->pCurrent = 0;
-  pGapList->size = 0;
+  pGapList.value.pHead = 0;
+  pGapList.value.pCurrent = 0;
+  pGapList.value.size = 0;
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Audio Gap List Deleted"));
 }
 
@@ -130,43 +130,43 @@ function PollAudioGap(uiSampleNum: UINT32, pGapList: Pointer<AudioGapList>): voi
     return;
   }
 
-  if (pGapList->size > 0) {
+  if (pGapList.value.size > 0) {
     time = SoundGetPosition(uiSampleNum);
     //  DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("Sound Sample Time is %d", time) );
   } else {
-    pGapList->audio_gap_active = (FALSE);
+    pGapList.value.audio_gap_active = (FALSE);
     return;
   }
 
   // set current ot head of gap list for this sound
-  pCurrent = pGapList->pHead;
+  pCurrent = pGapList.value.pHead;
 
   // check to see if we have fallen behind
-  if ((time > pCurrent->uiEnd)) {
+  if ((time > pCurrent.value.uiEnd)) {
     // fallen behind
     // catchup
-    while (time > pCurrent->uiEnd) {
-      pCurrent = pCurrent->pNext;
+    while (time > pCurrent.value.uiEnd) {
+      pCurrent = pCurrent.value.pNext;
       if (!pCurrent) {
-        pGapList->audio_gap_active = (FALSE);
+        pGapList.value.audio_gap_active = (FALSE);
         return;
       }
     }
   }
 
   // check to see if time is within the next AUDIO_GAPs start time
-  if ((time > pCurrent->uiStart) && (time < pCurrent->uiEnd)) {
-    if ((time > pCurrent->uiStart) && (time < pCurrent->uiEnd)) {
+  if ((time > pCurrent.value.uiStart) && (time < pCurrent.value.uiEnd)) {
+    if ((time > pCurrent.value.uiStart) && (time < pCurrent.value.uiEnd)) {
       // we are within the time frame
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Gap Started at %d", time));
-      pGapList->audio_gap_active = (TRUE);
-    } else if ((time > pCurrent->uiEnd) && (pGapList->audio_gap_active == TRUE)) {
+      pGapList.value.audio_gap_active = (TRUE);
+    } else if ((time > pCurrent.value.uiEnd) && (pGapList.value.audio_gap_active == TRUE)) {
       // reset if already set
-      pGapList->audio_gap_active = (FALSE);
+      pGapList.value.audio_gap_active = (FALSE);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Gap Ended at %d", time));
     }
   } else {
-    pGapList->audio_gap_active = (FALSE);
+    pGapList.value.audio_gap_active = (FALSE);
   }
 }
 

@@ -103,10 +103,10 @@ function FindPanicBombsAndTriggers(): void {
   for (uiBombIndex = 0; uiBombIndex < guiNumWorldBombs; uiBombIndex++) {
     if (gWorldBombs[uiBombIndex].fExists) {
       pObj = &(gWorldItems[gWorldBombs[uiBombIndex].iItemIndex].o);
-      if (pObj->bFrequency == PANIC_FREQUENCY || pObj->bFrequency == PANIC_FREQUENCY_2 || pObj->bFrequency == PANIC_FREQUENCY_3) {
-        if (pObj->usItem == SWITCH) {
+      if (pObj.value.bFrequency == PANIC_FREQUENCY || pObj.value.bFrequency == PANIC_FREQUENCY_2 || pObj.value.bFrequency == PANIC_FREQUENCY_3) {
+        if (pObj.value.usItem == SWITCH) {
           sGridNo = gWorldItems[gWorldBombs[uiBombIndex].iItemIndex].sGridNo;
-          switch (pObj->bFrequency) {
+          switch (pObj.value.bFrequency) {
             case PANIC_FREQUENCY:
               bPanicIndex = 0;
               break;
@@ -126,7 +126,7 @@ function FindPanicBombsAndTriggers(): void {
 
           pSwitch = FindStructure(sGridNo, STRUCTURE_SWITCH);
           if (pSwitch) {
-            switch (pSwitch->ubWallOrientation) {
+            switch (pSwitch.value.ubWallOrientation) {
               case INSIDE_TOP_LEFT:
               case OUTSIDE_TOP_LEFT:
                 sGridNo += DirectionInc(SOUTH);
@@ -141,8 +141,8 @@ function FindPanicBombsAndTriggers(): void {
           }
 
           gTacticalStatus.sPanicTriggerGridNo[bPanicIndex] = sGridNo;
-          gTacticalStatus.ubPanicTolerance[bPanicIndex] = pObj->ubTolerance;
-          if (pObj->fFlags & OBJECT_ALARM_TRIGGER) {
+          gTacticalStatus.ubPanicTolerance[bPanicIndex] = pObj.value.ubTolerance;
+          if (pObj.value.fFlags & OBJECT_ALARM_TRIGGER) {
             gTacticalStatus.bPanicTriggerIsAlarm[bPanicIndex] = TRUE;
           }
           gTacticalStatus.fPanicFlags |= PANIC_TRIGGERS_HERE;

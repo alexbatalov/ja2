@@ -499,7 +499,7 @@ function PlayJA2AmbientRandom(usNum: UINT32, uiTimeMin: UINT32, uiTimeMax: UINT3
 function PlaySoldierJA2Sample(usID: UINT16, usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, fCheck: BOOLEAN): UINT32 {
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     // CHECK IF GUY IS ON SCREEN BEFORE PLAYING!
-    if ((MercPtrs[usID]->bVisible != -1) || !fCheck) {
+    if ((MercPtrs[usID].value.bVisible != -1) || !fCheck) {
       return PlayJA2Sample(usNum, usRate, CalculateSoundEffectsVolume(ubVolume), ubLoops, uiPan);
     }
   }
@@ -705,18 +705,18 @@ function NewPositionSnd(sGridNo: INT16, uiFlags: UINT32, uiData: UINT32, iSoundT
   // Default to inactive
 
   if (gfPositionSoundsActive) {
-    pPositionSnd->fInActive = FALSE;
+    pPositionSnd.value.fInActive = FALSE;
   } else {
-    pPositionSnd->fInActive = TRUE;
+    pPositionSnd.value.fInActive = TRUE;
   }
 
-  pPositionSnd->sGridNo = sGridNo;
-  pPositionSnd->uiData = uiData;
-  pPositionSnd->uiFlags = uiFlags;
-  pPositionSnd->fAllocated = TRUE;
-  pPositionSnd->iSoundToPlay = iSoundToPlay;
+  pPositionSnd.value.sGridNo = sGridNo;
+  pPositionSnd.value.uiData = uiData;
+  pPositionSnd.value.uiFlags = uiFlags;
+  pPositionSnd.value.fAllocated = TRUE;
+  pPositionSnd.value.iSoundToPlay = iSoundToPlay;
 
-  pPositionSnd->iSoundSampleID = NO_SAMPLE;
+  pPositionSnd.value.iSoundSampleID = NO_SAMPLE;
 
   return iPositionSndIndex;
 }
@@ -726,16 +726,16 @@ function DeletePositionSnd(iPositionSndIndex: INT32): void {
 
   pPositionSnd = &gPositionSndData[iPositionSndIndex];
 
-  if (pPositionSnd->fAllocated) {
+  if (pPositionSnd.value.fAllocated) {
     // Turn inactive first...
-    pPositionSnd->fInActive = TRUE;
+    pPositionSnd.value.fInActive = TRUE;
 
     // End sound...
-    if (pPositionSnd->iSoundSampleID != NO_SAMPLE) {
-      SoundStop(pPositionSnd->iSoundSampleID);
+    if (pPositionSnd.value.iSoundSampleID != NO_SAMPLE) {
+      SoundStop(pPositionSnd.value.iSoundSampleID);
     }
 
-    pPositionSnd->fAllocated = FALSE;
+    pPositionSnd.value.fAllocated = FALSE;
 
     RecountPositionSnds();
   }
@@ -746,8 +746,8 @@ function SetPositionSndGridNo(iPositionSndIndex: INT32, sGridNo: INT16): void {
 
   pPositionSnd = &gPositionSndData[iPositionSndIndex];
 
-  if (pPositionSnd->fAllocated) {
-    pPositionSnd->sGridNo = sGridNo;
+  if (pPositionSnd.value.fAllocated) {
+    pPositionSnd.value.sGridNo = sGridNo;
 
     SetPositionSndsVolumeAndPanning();
   }
@@ -762,13 +762,13 @@ function SetPositionSndsActive(): void {
   for (cnt = 0; cnt < guiNumPositionSnds; cnt++) {
     pPositionSnd = &gPositionSndData[cnt];
 
-    if (pPositionSnd->fAllocated) {
-      if (pPositionSnd->fInActive) {
-        pPositionSnd->fInActive = FALSE;
+    if (pPositionSnd.value.fAllocated) {
+      if (pPositionSnd.value.fInActive) {
+        pPositionSnd.value.fInActive = FALSE;
 
         // Begin sound effect
         // Volume 0
-        pPositionSnd->iSoundSampleID = PlayJA2Sample(pPositionSnd->iSoundToPlay, RATE_11025, 0, 0, MIDDLEPAN);
+        pPositionSnd.value.iSoundSampleID = PlayJA2Sample(pPositionSnd.value.iSoundToPlay, RATE_11025, 0, 0, MIDDLEPAN);
       }
     }
   }
@@ -783,13 +783,13 @@ function SetPositionSndsInActive(): void {
   for (cnt = 0; cnt < guiNumPositionSnds; cnt++) {
     pPositionSnd = &gPositionSndData[cnt];
 
-    if (pPositionSnd->fAllocated) {
-      pPositionSnd->fInActive = TRUE;
+    if (pPositionSnd.value.fAllocated) {
+      pPositionSnd.value.fInActive = TRUE;
 
       // End sound...
-      if (pPositionSnd->iSoundSampleID != NO_SAMPLE) {
-        SoundStop(pPositionSnd->iSoundSampleID);
-        pPositionSnd->iSoundSampleID = NO_SAMPLE;
+      if (pPositionSnd.value.iSoundSampleID != NO_SAMPLE) {
+        SoundStop(pPositionSnd.value.iSoundSampleID);
+        pPositionSnd.value.iSoundSampleID = NO_SAMPLE;
       }
     }
   }
@@ -906,15 +906,15 @@ function SetPositionSndsVolumeAndPanning(): void {
   for (cnt = 0; cnt < guiNumPositionSnds; cnt++) {
     pPositionSnd = &gPositionSndData[cnt];
 
-    if (pPositionSnd->fAllocated) {
-      if (!pPositionSnd->fInActive) {
-        if (pPositionSnd->iSoundSampleID != NO_SAMPLE) {
-          bVolume = PositionSoundVolume(15, pPositionSnd->sGridNo);
+    if (pPositionSnd.value.fAllocated) {
+      if (!pPositionSnd.value.fInActive) {
+        if (pPositionSnd.value.iSoundSampleID != NO_SAMPLE) {
+          bVolume = PositionSoundVolume(15, pPositionSnd.value.sGridNo);
 
-          if (pPositionSnd->uiFlags & POSITION_SOUND_FROM_SOLDIER) {
-            pSoldier = pPositionSnd->uiData;
+          if (pPositionSnd.value.uiFlags & POSITION_SOUND_FROM_SOLDIER) {
+            pSoldier = pPositionSnd.value.uiData;
 
-            if (pSoldier->bVisible == -1) {
+            if (pSoldier.value.bVisible == -1) {
               // Limit volume,,,
               if (bVolume > 10) {
                 bVolume = 10;
@@ -922,11 +922,11 @@ function SetPositionSndsVolumeAndPanning(): void {
             }
           }
 
-          SoundSetVolume(pPositionSnd->iSoundSampleID, bVolume);
+          SoundSetVolume(pPositionSnd.value.iSoundSampleID, bVolume);
 
-          bPan = PositionSoundDir(pPositionSnd->sGridNo);
+          bPan = PositionSoundDir(pPositionSnd.value.sGridNo);
 
-          SoundSetPan(pPositionSnd->iSoundSampleID, bPan);
+          SoundSetPan(pPositionSnd.value.iSoundSampleID, bPan);
         }
       }
     }

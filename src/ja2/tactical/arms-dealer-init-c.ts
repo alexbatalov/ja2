@@ -951,16 +951,16 @@ function AllocMemsetSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>, u
   Assert(pDealerItem);
   Assert(ubElementsNeeded > 0);
 
-  pDealerItem->SpecialItem = MemAlloc(sizeof(DEALER_SPECIAL_ITEM) * ubElementsNeeded);
-  if (pDealerItem->SpecialItem == NULL) {
+  pDealerItem.value.SpecialItem = MemAlloc(sizeof(DEALER_SPECIAL_ITEM) * ubElementsNeeded);
+  if (pDealerItem.value.SpecialItem == NULL) {
     Assert(0);
     return FALSE;
   }
 
   // zero them out (they're inactive until an item is actually added)
-  memset(pDealerItem->SpecialItem, 0, sizeof(DEALER_SPECIAL_ITEM) * ubElementsNeeded);
+  memset(pDealerItem.value.SpecialItem, 0, sizeof(DEALER_SPECIAL_ITEM) * ubElementsNeeded);
 
-  pDealerItem->ubElementsAlloced = ubElementsNeeded;
+  pDealerItem.value.ubElementsAlloced = ubElementsNeeded;
 
   return TRUE;
 }
@@ -968,27 +968,27 @@ function AllocMemsetSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>, u
 function ResizeSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>, ubElementsNeeded: UINT8): BOOLEAN {
   Assert(pDealerItem);
   // must already have a ptr allocated!
-  Assert(pDealerItem->SpecialItem);
+  Assert(pDealerItem.value.SpecialItem);
 
-  if (ubElementsNeeded == pDealerItem->ubElementsAlloced) {
+  if (ubElementsNeeded == pDealerItem.value.ubElementsAlloced) {
     // shouldn't have been called, but what they hey, it's not exactly a problem
     return TRUE;
   }
 
   // already allocated, but change its size
-  pDealerItem->SpecialItem = MemRealloc(pDealerItem->SpecialItem, sizeof(DEALER_SPECIAL_ITEM) * ubElementsNeeded);
-  if (pDealerItem->SpecialItem == NULL) {
+  pDealerItem.value.SpecialItem = MemRealloc(pDealerItem.value.SpecialItem, sizeof(DEALER_SPECIAL_ITEM) * ubElementsNeeded);
+  if (pDealerItem.value.SpecialItem == NULL) {
     Assert(0);
     return FALSE;
   }
 
   // if adding more elements
-  if (ubElementsNeeded > pDealerItem->ubElementsAlloced) {
+  if (ubElementsNeeded > pDealerItem.value.ubElementsAlloced) {
     // zero them out (they're inactive until an item is actually added)
-    memset(&(pDealerItem->SpecialItem[pDealerItem->ubElementsAlloced]), 0, sizeof(DEALER_SPECIAL_ITEM) * (ubElementsNeeded - pDealerItem->ubElementsAlloced));
+    memset(&(pDealerItem.value.SpecialItem[pDealerItem.value.ubElementsAlloced]), 0, sizeof(DEALER_SPECIAL_ITEM) * (ubElementsNeeded - pDealerItem.value.ubElementsAlloced));
   }
 
-  pDealerItem->ubElementsAlloced = ubElementsNeeded;
+  pDealerItem.value.ubElementsAlloced = ubElementsNeeded;
 
   return TRUE;
 }
@@ -996,13 +996,13 @@ function ResizeSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>, ubElem
 function FreeSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>): void {
   Assert(pDealerItem);
   // must already have a ptr allocated!
-  Assert(pDealerItem->SpecialItem);
+  Assert(pDealerItem.value.SpecialItem);
 
-  MemFree(pDealerItem->SpecialItem);
-  pDealerItem->SpecialItem = NULL;
+  MemFree(pDealerItem.value.SpecialItem);
+  pDealerItem.value.SpecialItem = NULL;
 
-  pDealerItem->ubElementsAlloced = 0;
-  pDealerItem->ubTotalItems = pDealerItem->ubPerfectItems;
+  pDealerItem.value.ubElementsAlloced = 0;
+  pDealerItem.value.ubTotalItems = pDealerItem.value.ubPerfectItems;
 
   // doesn't effect perfect items, orders or stray bullets!
 }
@@ -1177,63 +1177,63 @@ function AddObjectToArmsDealerInventory(ubArmsDealer: UINT8, pObject: Pointer<OB
   SetSpecialItemInfoFromObject(&SpclItemInfo, pObject);
 
   // split up all the components of an objecttype and add them as seperate items into the dealer's inventory
-  switch (Item[pObject->usItem].usItemClass) {
+  switch (Item[pObject.value.usItem].usItemClass) {
     case IC_GUN:
       // add the gun (keeps the object's status and imprintID)
       // if the gun was jammed, this will forget about the jam (i.e. dealer immediately unjams anything he buys)
-      AddItemToArmsDealerInventory(ubArmsDealer, pObject->usItem, &SpclItemInfo, 1);
+      AddItemToArmsDealerInventory(ubArmsDealer, pObject.value.usItem, &SpclItemInfo, 1);
 
       // if any GunAmmoItem is specified
-      if (pObject->usGunAmmoItem != NONE) {
+      if (pObject.value.usGunAmmoItem != NONE) {
         // if it's regular ammo
-        if (Item[pObject->usGunAmmoItem].usItemClass == IC_AMMO) {
+        if (Item[pObject.value.usGunAmmoItem].usItemClass == IC_AMMO) {
           // and there are some remaining
-          if (pObject->ubGunShotsLeft > 0) {
+          if (pObject.value.ubGunShotsLeft > 0) {
             // add the bullets of its remaining ammo
-            AddAmmoToArmsDealerInventory(ubArmsDealer, pObject->usGunAmmoItem, pObject->ubGunShotsLeft);
+            AddAmmoToArmsDealerInventory(ubArmsDealer, pObject.value.usGunAmmoItem, pObject.value.ubGunShotsLeft);
           }
         } else // assume it's attached ammo (mortar shells, grenades)
         {
           // add the launchable item (can't be imprinted, or have attachments!)
           SetSpecialItemInfoToDefaults(&SpclItemInfo);
-          SpclItemInfo.bItemCondition = pObject->bGunAmmoStatus;
+          SpclItemInfo.bItemCondition = pObject.value.bGunAmmoStatus;
 
           // if the gun it was in was jammed, get rid of the negative status now
           if (SpclItemInfo.bItemCondition < 0) {
             SpclItemInfo.bItemCondition *= -1;
           }
 
-          AddItemToArmsDealerInventory(ubArmsDealer, pObject->usGunAmmoItem, &SpclItemInfo, 1);
+          AddItemToArmsDealerInventory(ubArmsDealer, pObject.value.usGunAmmoItem, &SpclItemInfo, 1);
         }
       }
       break;
 
     case IC_AMMO:
       // add the contents of each magazine (multiple mags may have vastly different #bullets left)
-      for (ubCnt = 0; ubCnt < pObject->ubNumberOfObjects; ubCnt++) {
-        AddAmmoToArmsDealerInventory(ubArmsDealer, pObject->usItem, pObject->ubShotsLeft[ubCnt]);
+      for (ubCnt = 0; ubCnt < pObject.value.ubNumberOfObjects; ubCnt++) {
+        AddAmmoToArmsDealerInventory(ubArmsDealer, pObject.value.usItem, pObject.value.ubShotsLeft[ubCnt]);
       }
       break;
 
     default:
       // add each object seperately (multiple objects may have vastly different statuses, keep any imprintID)
-      for (ubCnt = 0; ubCnt < pObject->ubNumberOfObjects; ubCnt++) {
-        SpclItemInfo.bItemCondition = pObject->bStatus[ubCnt];
-        AddItemToArmsDealerInventory(ubArmsDealer, pObject->usItem, &SpclItemInfo, 1);
+      for (ubCnt = 0; ubCnt < pObject.value.ubNumberOfObjects; ubCnt++) {
+        SpclItemInfo.bItemCondition = pObject.value.bStatus[ubCnt];
+        AddItemToArmsDealerInventory(ubArmsDealer, pObject.value.usItem, &SpclItemInfo, 1);
       }
       break;
   }
 
   // loop through any detachable attachments and add them as seperate items
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pObject->usAttachItem[ubCnt] != NONE) {
+    if (pObject.value.usAttachItem[ubCnt] != NONE) {
       // ARM: Note: this is only used for selling, not repairs, so attachmentes are seperated when sold to a dealer
       // If the attachment is detachable
-      if (!(Item[pObject->usAttachItem[ubCnt]].fFlags & ITEM_INSEPARABLE)) {
+      if (!(Item[pObject.value.usAttachItem[ubCnt]].fFlags & ITEM_INSEPARABLE)) {
         // add this particular attachment (they can't be imprinted, or themselves have attachments!)
         SetSpecialItemInfoToDefaults(&SpclItemInfo);
-        SpclItemInfo.bItemCondition = pObject->bAttachStatus[ubCnt];
-        AddItemToArmsDealerInventory(ubArmsDealer, pObject->usAttachItem[ubCnt], &SpclItemInfo, 1);
+        SpclItemInfo.bItemCondition = pObject.value.bAttachStatus[ubCnt];
+        AddItemToArmsDealerInventory(ubArmsDealer, pObject.value.usAttachItem[ubCnt], &SpclItemInfo, 1);
       }
     }
   }
@@ -1389,7 +1389,7 @@ function RemoveItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UIN
       pSpecialItem = &(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement]);
 
       // if this element is in use
-      if (pSpecialItem->fActive) {
+      if (pSpecialItem.value.fActive) {
         // and its contents are exactly what we're looking for
         if (memcmp(&(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].Info), pSpclItemInfo, sizeof(SPECIAL_ITEM_INFO)) == 0) {
           // Got one!  Remove it
@@ -1539,7 +1539,7 @@ function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): BOOLEAN {
           ubNowDropping = min(ubLeftToDrop, ubHowManyMaxAtATime);
 
           MakeObjectOutOfDealerItems(usItemIndex, &SpclItemInfo, &TempObject, ubNowDropping);
-          AddItemToPool(pSoldier->sInitialGridNo, &TempObject, INVISIBLE, 0, 0, 0);
+          AddItemToPool(pSoldier.value.sInitialGridNo, &TempObject, INVISIBLE, 0, 0, 0);
 
           ubLeftToDrop -= ubNowDropping;
         }
@@ -1552,10 +1552,10 @@ function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): BOOLEAN {
       for (ubElement = 0; ubElement < gArmsDealersInventory[bArmsDealer][usItemIndex].ubElementsAlloced; ubElement++) {
         pSpecialItem = &(gArmsDealersInventory[bArmsDealer][usItemIndex].SpecialItem[ubElement]);
 
-        if (pSpecialItem->fActive) {
-          MakeObjectOutOfDealerItems(usItemIndex, &(pSpecialItem->Info), &TempObject, 1);
-          AddItemToPool(pSoldier->sInitialGridNo, &TempObject, INVISIBLE, 0, 0, 0);
-          RemoveItemFromArmsDealerInventory(bArmsDealer, usItemIndex, &(pSpecialItem->Info), 1);
+        if (pSpecialItem.value.fActive) {
+          MakeObjectOutOfDealerItems(usItemIndex, &(pSpecialItem.value.Info), &TempObject, 1);
+          AddItemToPool(pSoldier.value.sInitialGridNo, &TempObject, INVISIBLE, 0, 0, 0);
+          RemoveItemFromArmsDealerInventory(bArmsDealer, usItemIndex, &(pSpecialItem.value.Info), 1);
         }
       }
 
@@ -1575,7 +1575,7 @@ function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): BOOLEAN {
     }
 
     // add the money item to the dealers feet
-    AddItemToPool(pSoldier->sInitialGridNo, &TempObject, INVISIBLE, 0, 0, 0);
+    AddItemToPool(pSoldier.value.sInitialGridNo, &TempObject, INVISIBLE, 0, 0, 0);
 
     gArmsDealerStatus[bArmsDealer].uiArmsDealersCash = 0;
   }
@@ -1587,7 +1587,7 @@ function MakeObjectOutOfDealerItems(usItemIndex: UINT16, pSpclItemInfo: Pointer<
   let bItemCondition: INT8;
   let ubCnt: UINT8;
 
-  bItemCondition = pSpclItemInfo->bItemCondition;
+  bItemCondition = pSpclItemInfo.value.bItemCondition;
 
   // if the item condition is below 0, the item is in for repairs, so flip the sign
   if (bItemCondition < 0) {
@@ -1600,24 +1600,24 @@ function MakeObjectOutOfDealerItems(usItemIndex: UINT16, pSpclItemInfo: Pointer<
   CreateItems(usItemIndex, bItemCondition, ubHowMany, pObject);
 
   // set the ImprintID
-  pObject->ubImprintID = pSpclItemInfo->ubImprintID;
+  pObject.value.ubImprintID = pSpclItemInfo.value.ubImprintID;
 
   // add any attachments we've been storing
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pSpclItemInfo->usAttachment[ubCnt] != NONE) {
+    if (pSpclItemInfo.value.usAttachment[ubCnt] != NONE) {
       // store what it is, and its condition
-      pObject->usAttachItem[ubCnt] = pSpclItemInfo->usAttachment[ubCnt];
-      pObject->bAttachStatus[ubCnt] = pSpclItemInfo->bAttachmentStatus[ubCnt];
+      pObject.value.usAttachItem[ubCnt] = pSpclItemInfo.value.usAttachment[ubCnt];
+      pObject.value.bAttachStatus[ubCnt] = pSpclItemInfo.value.bAttachmentStatus[ubCnt];
     }
   }
 
   // if it's a gun
-  if (Item[pObject->usItem].usItemClass == IC_GUN) {
+  if (Item[pObject.value.usItem].usItemClass == IC_GUN) {
     // Empty out the bullets put in by CreateItem().  We now sell all guns empty of bullets.  This is so that we don't
     // have to keep track of #bullets in a gun throughout dealer inventory.  Without this, players could "reload" guns
     // they don't have ammo for by selling them to Tony & buying them right back fully loaded!  One could repeat this
     // ad nauseum (empty the gun between visits) as a (really expensive) way to get unlimited special ammo like rockets.
-    pObject->ubGunShotsLeft = 0;
+    pObject.value.ubGunShotsLeft = 0;
   }
 }
 
@@ -1629,13 +1629,13 @@ function GiveObjectToArmsDealerForRepair(ubArmsDealer: UINT8, pObject: Pointer<O
 
   // Any object passed into here must already be:
   //		a) Unstacked
-  Assert(pObject->ubNumberOfObjects == 1);
+  Assert(pObject.value.ubNumberOfObjects == 1);
 
   //		b) Repairable
-  Assert(CanDealerRepairItem(ubArmsDealer, pObject->usItem));
+  Assert(CanDealerRepairItem(ubArmsDealer, pObject.value.usItem));
 
   //		c) Actually damaged, or a rocket rifle (being reset)
-  Assert((pObject->bStatus[0] < 100) || ItemIsARocketRifle(pObject->usItem));
+  Assert((pObject.value.bStatus[0] < 100) || ItemIsARocketRifle(pObject.value.usItem));
 
   /* ARM: Can now repair with removeable attachments still attached...
           //		d) Already stripped of all *detachable* attachments
@@ -1653,12 +1653,12 @@ function GiveObjectToArmsDealerForRepair(ubArmsDealer: UINT8, pObject: Pointer<O
   */
 
   //		e) If a gun, stripped of any non-ammo-class GunAmmoItems, and bullets
-  if (Item[pObject->usItem].usItemClass == IC_GUN) {
+  if (Item[pObject.value.usItem].usItemClass == IC_GUN) {
     // if any GunAmmoItem is specified
-    if (pObject->usGunAmmoItem != NONE) {
+    if (pObject.value.usGunAmmoItem != NONE) {
       // it better be regular ammo, and empty
-      Assert(Item[pObject->usGunAmmoItem].usItemClass == IC_AMMO);
-      Assert(pObject->ubGunShotsLeft == 0);
+      Assert(Item[pObject.value.usGunAmmoItem].usItemClass == IC_AMMO);
+      Assert(pObject.value.ubGunShotsLeft == 0);
     }
   }
 
@@ -1666,7 +1666,7 @@ function GiveObjectToArmsDealerForRepair(ubArmsDealer: UINT8, pObject: Pointer<O
 
   // ok, given all that, now everything is easy!
   // if the gun was jammed, this will forget about the jam (i.e. dealer immediately unjams anything he will be repairing)
-  GiveItemToArmsDealerforRepair(ubArmsDealer, pObject->usItem, &SpclItemInfo, ubOwnerProfileId);
+  GiveItemToArmsDealerforRepair(ubArmsDealer, pObject.value.usItem, &SpclItemInfo, ubOwnerProfileId);
 }
 
 // PLEASE: Use GiveObjectToArmsDealerForRepair() instead of this when repairing a item in OBJECTTYPE format.
@@ -1677,8 +1677,8 @@ function GiveItemToArmsDealerforRepair(ubArmsDealer: UINT8, usItemIndex: UINT16,
   let uiDoneWhen: UINT32;
 
   Assert(DoesDealerDoRepairs(ubArmsDealer));
-  Assert(pSpclItemInfo->bItemCondition > 0);
-  Assert((pSpclItemInfo->bItemCondition < 100) || ItemIsARocketRifle(usItemIndex));
+  Assert(pSpclItemInfo.value.bItemCondition > 0);
+  Assert((pSpclItemInfo.value.bItemCondition < 100) || ItemIsARocketRifle(usItemIndex));
 
   // figure out the earliest the repairman will be free to start repairing this item
   uiTimeWhenFreeToStartIt = WhenWillRepairmanBeAllDoneRepairing(ubArmsDealer);
@@ -1692,7 +1692,7 @@ function GiveItemToArmsDealerforRepair(ubArmsDealer: UINT8, usItemIndex: UINT16,
   uiDoneWhen = uiTimeWhenFreeToStartIt + uiMinutesToFix + uiMinutesShopClosedBeforeItsDone;
 
   // Negate the status
-  pSpclItemInfo->bItemCondition *= -1;
+  pSpclItemInfo.value.bItemCondition *= -1;
 
   // give it to the dealer
   AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, pSpclItemInfo, 1);
@@ -1739,14 +1739,14 @@ function CalculateSpecialItemRepairTime(ubArmsDealer: UINT8, usItemIndex: UINT16
   let uiRepairTime: UINT32;
   let ubCnt: UINT8;
 
-  uiRepairTime = CalculateSimpleItemRepairTime(ubArmsDealer, usItemIndex, pSpclItemInfo->bItemCondition);
+  uiRepairTime = CalculateSimpleItemRepairTime(ubArmsDealer, usItemIndex, pSpclItemInfo.value.bItemCondition);
 
   // add time to repair any attachments on it
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pSpclItemInfo->usAttachment[ubCnt] != NONE) {
+    if (pSpclItemInfo.value.usAttachment[ubCnt] != NONE) {
       // if damaged and repairable
-      if ((pSpclItemInfo->bAttachmentStatus[ubCnt] < 100) && CanDealerRepairItem(ubArmsDealer, pSpclItemInfo->usAttachment[ubCnt])) {
-        uiRepairTime += CalculateSimpleItemRepairTime(ubArmsDealer, pSpclItemInfo->usAttachment[ubCnt], pSpclItemInfo->bAttachmentStatus[ubCnt]);
+      if ((pSpclItemInfo.value.bAttachmentStatus[ubCnt] < 100) && CanDealerRepairItem(ubArmsDealer, pSpclItemInfo.value.usAttachment[ubCnt])) {
+        uiRepairTime += CalculateSimpleItemRepairTime(ubArmsDealer, pSpclItemInfo.value.usAttachment[ubCnt], pSpclItemInfo.value.bAttachmentStatus[ubCnt]);
       }
     }
   }
@@ -1758,14 +1758,14 @@ function CalculateObjectItemRepairTime(ubArmsDealer: UINT8, pItemObject: Pointer
   let uiRepairTime: UINT32;
   let ubCnt: UINT8;
 
-  uiRepairTime = CalculateSimpleItemRepairTime(ubArmsDealer, pItemObject->usItem, pItemObject->bStatus[0]);
+  uiRepairTime = CalculateSimpleItemRepairTime(ubArmsDealer, pItemObject.value.usItem, pItemObject.value.bStatus[0]);
 
   // add time to repair any attachments on it
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pItemObject->usAttachItem[ubCnt] != NONE) {
+    if (pItemObject.value.usAttachItem[ubCnt] != NONE) {
       // if damaged and repairable
-      if ((pItemObject->bAttachStatus[ubCnt] < 100) && CanDealerRepairItem(ubArmsDealer, pItemObject->usAttachItem[ubCnt])) {
-        uiRepairTime += CalculateSimpleItemRepairTime(ubArmsDealer, pItemObject->usAttachItem[ubCnt], pItemObject->bAttachStatus[ubCnt]);
+      if ((pItemObject.value.bAttachStatus[ubCnt] < 100) && CanDealerRepairItem(ubArmsDealer, pItemObject.value.usAttachItem[ubCnt])) {
+        uiRepairTime += CalculateSimpleItemRepairTime(ubArmsDealer, pItemObject.value.usAttachItem[ubCnt], pItemObject.value.bAttachStatus[ubCnt]);
       }
     }
   }
@@ -1807,14 +1807,14 @@ function CalculateSpecialItemRepairCost(ubArmsDealer: UINT8, usItemIndex: UINT16
   let uiRepairCost: UINT32;
   let ubCnt: UINT8;
 
-  uiRepairCost = CalculateSimpleItemRepairCost(ubArmsDealer, usItemIndex, pSpclItemInfo->bItemCondition);
+  uiRepairCost = CalculateSimpleItemRepairCost(ubArmsDealer, usItemIndex, pSpclItemInfo.value.bItemCondition);
 
   // add cost of repairing any attachments on it
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pSpclItemInfo->usAttachment[ubCnt] != NONE) {
+    if (pSpclItemInfo.value.usAttachment[ubCnt] != NONE) {
       // if damaged and repairable
-      if ((pSpclItemInfo->bAttachmentStatus[ubCnt] < 100) && CanDealerRepairItem(ubArmsDealer, pSpclItemInfo->usAttachment[ubCnt])) {
-        uiRepairCost += CalculateSimpleItemRepairCost(ubArmsDealer, pSpclItemInfo->usAttachment[ubCnt], pSpclItemInfo->bAttachmentStatus[ubCnt]);
+      if ((pSpclItemInfo.value.bAttachmentStatus[ubCnt] < 100) && CanDealerRepairItem(ubArmsDealer, pSpclItemInfo.value.usAttachment[ubCnt])) {
+        uiRepairCost += CalculateSimpleItemRepairCost(ubArmsDealer, pSpclItemInfo.value.usAttachment[ubCnt], pSpclItemInfo.value.bAttachmentStatus[ubCnt]);
       }
     }
   }
@@ -1826,14 +1826,14 @@ function CalculateObjectItemRepairCost(ubArmsDealer: UINT8, pItemObject: Pointer
   let uiRepairCost: UINT32;
   let ubCnt: UINT8;
 
-  uiRepairCost = CalculateSimpleItemRepairCost(ubArmsDealer, pItemObject->usItem, pItemObject->bStatus[0]);
+  uiRepairCost = CalculateSimpleItemRepairCost(ubArmsDealer, pItemObject.value.usItem, pItemObject.value.bStatus[0]);
 
   // add cost of repairing any attachments on it
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pItemObject->usAttachItem[ubCnt] != NONE) {
+    if (pItemObject.value.usAttachItem[ubCnt] != NONE) {
       // if damaged and repairable
-      if ((pItemObject->bAttachStatus[ubCnt] < 100) && CanDealerRepairItem(ubArmsDealer, pItemObject->usAttachItem[ubCnt])) {
-        uiRepairCost += CalculateSimpleItemRepairCost(ubArmsDealer, pItemObject->usAttachItem[ubCnt], pItemObject->bAttachStatus[ubCnt]);
+      if ((pItemObject.value.bAttachStatus[ubCnt] < 100) && CanDealerRepairItem(ubArmsDealer, pItemObject.value.usAttachItem[ubCnt])) {
+        uiRepairCost += CalculateSimpleItemRepairCost(ubArmsDealer, pItemObject.value.usAttachItem[ubCnt], pItemObject.value.bAttachStatus[ubCnt]);
       }
     }
   }
@@ -1889,12 +1889,12 @@ function SetSpecialItemInfoToDefaults(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>)
 
   memset(pSpclItemInfo, 0, sizeof(SPECIAL_ITEM_INFO));
 
-  pSpclItemInfo->bItemCondition = 100;
-  pSpclItemInfo->ubImprintID = NO_PROFILE;
+  pSpclItemInfo.value.bItemCondition = 100;
+  pSpclItemInfo.value.ubImprintID = NO_PROFILE;
 
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    pSpclItemInfo->usAttachment[ubCnt] = NONE;
-    pSpclItemInfo->bAttachmentStatus[ubCnt] = 0;
+    pSpclItemInfo.value.usAttachment[ubCnt] = NONE;
+    pSpclItemInfo.value.bAttachmentStatus[ubCnt] = 0;
   }
 }
 
@@ -1903,29 +1903,29 @@ function SetSpecialItemInfoFromObject(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>,
 
   memset(pSpclItemInfo, 0, sizeof(SPECIAL_ITEM_INFO));
 
-  if (Item[pObject->usItem].usItemClass == IC_AMMO) {
+  if (Item[pObject.value.usItem].usItemClass == IC_AMMO) {
     // ammo condition is always 100, don't use status, which holds the #bullets
-    pSpclItemInfo->bItemCondition = 100;
+    pSpclItemInfo.value.bItemCondition = 100;
   } else {
-    pSpclItemInfo->bItemCondition = pObject->bStatus[0];
+    pSpclItemInfo.value.bItemCondition = pObject.value.bStatus[0];
   }
 
   // only guns currently have imprintID properly initialized...
-  if (Item[pObject->usItem].usItemClass == IC_GUN) {
-    pSpclItemInfo->ubImprintID = pObject->ubImprintID;
+  if (Item[pObject.value.usItem].usItemClass == IC_GUN) {
+    pSpclItemInfo.value.ubImprintID = pObject.value.ubImprintID;
   } else {
     // override garbage imprintIDs (generally 0) for non-guns
-    pSpclItemInfo->ubImprintID = NO_PROFILE;
+    pSpclItemInfo.value.ubImprintID = NO_PROFILE;
   }
 
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pObject->usAttachItem[ubCnt] != NONE) {
+    if (pObject.value.usAttachItem[ubCnt] != NONE) {
       // store what it is
-      pSpclItemInfo->usAttachment[ubCnt] = pObject->usAttachItem[ubCnt];
-      pSpclItemInfo->bAttachmentStatus[ubCnt] = pObject->bAttachStatus[ubCnt];
+      pSpclItemInfo.value.usAttachment[ubCnt] = pObject.value.usAttachItem[ubCnt];
+      pSpclItemInfo.value.bAttachmentStatus[ubCnt] = pObject.value.bAttachStatus[ubCnt];
     } else {
-      pSpclItemInfo->usAttachment[ubCnt] = NONE;
-      pSpclItemInfo->bAttachmentStatus[ubCnt] = 0;
+      pSpclItemInfo.value.usAttachment[ubCnt] = NONE;
+      pSpclItemInfo.value.bAttachmentStatus[ubCnt] = 0;
     }
   }
 }
@@ -1934,18 +1934,18 @@ function IsItemInfoSpecial(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): BOOLEAN {
   let ubCnt: UINT8;
 
   // being damaged / in repairs makes an item special
-  if (pSpclItemInfo->bItemCondition != 100) {
+  if (pSpclItemInfo.value.bItemCondition != 100) {
     return TRUE;
   }
 
   // being imprinted makes an item special
-  if (pSpclItemInfo->ubImprintID != NO_PROFILE) {
+  if (pSpclItemInfo.value.ubImprintID != NO_PROFILE) {
     return TRUE;
   }
 
   // having an attachment makes an item special
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pSpclItemInfo->usAttachment[ubCnt] != NONE) {
+    if (pSpclItemInfo.value.usAttachment[ubCnt] != NONE) {
       return TRUE;
     }
   }

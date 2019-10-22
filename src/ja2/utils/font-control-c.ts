@@ -233,7 +233,7 @@ function SetFontShade(uiFontID: UINT32, bColorID: INT8): BOOLEAN {
 
   pFont = GetFontObject(uiFontID);
 
-  pFont->pShadeCurrent = pFont->pShades[bColorID];
+  pFont.value.pShadeCurrent = pFont.value.pShades[bColorID];
 
   return TRUE;
 }
@@ -243,11 +243,11 @@ function CreateFontPaletteTables(pObj: HVOBJECT): UINT16 {
   let Pal: SGPPaletteEntry[] /* [256] */;
 
   for (count = 0; count < 16; count++) {
-    if ((count == 4) && (pObj->p16BPPPalette == pObj->pShades[count]))
-      pObj->pShades[count] = NULL;
-    else if (pObj->pShades[count] != NULL) {
-      MemFree(pObj->pShades[count]);
-      pObj->pShades[count] = NULL;
+    if ((count == 4) && (pObj.value.p16BPPPalette == pObj.value.pShades[count]))
+      pObj.value.pShades[count] = NULL;
+    else if (pObj.value.pShades[count] != NULL) {
+      MemFree(pObj.value.pShades[count]);
+      pObj.value.pShades[count] = NULL;
     }
   }
 
@@ -258,28 +258,28 @@ function CreateFontPaletteTables(pObj: HVOBJECT): UINT16 {
     Pal[count].peBlue = 255;
   }
 
-  pObj->pShades[FONT_SHADE_RED] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 255, 0, 0, TRUE);
-  pObj->pShades[FONT_SHADE_BLUE] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 0, 0, 255, TRUE);
-  pObj->pShades[FONT_SHADE_GREEN] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 0, 255, 0, TRUE);
-  pObj->pShades[FONT_SHADE_YELLOW] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 255, 255, 0, TRUE);
-  pObj->pShades[FONT_SHADE_NEUTRAL] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 255, 255, 255, FALSE);
+  pObj.value.pShades[FONT_SHADE_RED] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 0, 0, TRUE);
+  pObj.value.pShades[FONT_SHADE_BLUE] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 0, 0, 255, TRUE);
+  pObj.value.pShades[FONT_SHADE_GREEN] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 0, 255, 0, TRUE);
+  pObj.value.pShades[FONT_SHADE_YELLOW] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 255, 0, TRUE);
+  pObj.value.pShades[FONT_SHADE_NEUTRAL] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 255, 255, FALSE);
 
-  pObj->pShades[FONT_SHADE_WHITE] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 255, 255, 255, TRUE);
+  pObj.value.pShades[FONT_SHADE_WHITE] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 255, 255, TRUE);
 
   // the rest are darkening tables, right down to all-black.
-  pObj->pShades[0] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 165, 165, 165, FALSE);
-  pObj->pShades[7] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 135, 135, 135, FALSE);
-  pObj->pShades[8] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 105, 105, 105, FALSE);
-  pObj->pShades[9] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 75, 75, 75, FALSE);
-  pObj->pShades[10] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 45, 45, 45, FALSE);
-  pObj->pShades[11] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 36, 36, 36, FALSE);
-  pObj->pShades[12] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 27, 27, 27, FALSE);
-  pObj->pShades[13] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 18, 18, 18, FALSE);
-  pObj->pShades[14] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 9, 9, 9, FALSE);
-  pObj->pShades[15] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 0, 0, 0, FALSE);
+  pObj.value.pShades[0] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 165, 165, 165, FALSE);
+  pObj.value.pShades[7] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 135, 135, 135, FALSE);
+  pObj.value.pShades[8] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 105, 105, 105, FALSE);
+  pObj.value.pShades[9] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 75, 75, 75, FALSE);
+  pObj.value.pShades[10] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 45, 45, 45, FALSE);
+  pObj.value.pShades[11] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 36, 36, 36, FALSE);
+  pObj.value.pShades[12] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 27, 27, 27, FALSE);
+  pObj.value.pShades[13] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 18, 18, 18, FALSE);
+  pObj.value.pShades[14] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 9, 9, 9, FALSE);
+  pObj.value.pShades[15] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 0, 0, 0, FALSE);
 
   // Set current shade table to neutral color
-  pObj->pShadeCurrent = pObj->pShades[4];
+  pObj.value.pShadeCurrent = pObj.value.pShades[4];
 
   // check to make sure every table got a palette
   // for(count=0; (count < HVOBJECT_SHADE_TABLES) && (pObj->pShades[count]!=NULL); count++);

@@ -13,31 +13,31 @@ function StrategicHandlePlayerTeamMercDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
   let sSectorY: INT16;
 
   // if the soldier HAS a profile
-  if (pSoldier->ubProfile != NO_PROFILE) {
+  if (pSoldier.value.ubProfile != NO_PROFILE) {
     // add to the history log the fact that the merc died and the circumstances
-    if (pSoldier->ubAttackerID != NOBODY) {
-      pKiller = MercPtrs[pSoldier->ubAttackerID];
+    if (pSoldier.value.ubAttackerID != NOBODY) {
+      pKiller = MercPtrs[pSoldier.value.ubAttackerID];
     }
 
     // CJC Nov 11, 2002
     // Use the soldier's sector location unless impossible
-    if (pSoldier->sSectorX != 0 && pSoldier->sSectorY != 0) {
-      sSectorX = pSoldier->sSectorX;
-      sSectorY = pSoldier->sSectorY;
+    if (pSoldier.value.sSectorX != 0 && pSoldier.value.sSectorY != 0) {
+      sSectorX = pSoldier.value.sSectorX;
+      sSectorY = pSoldier.value.sSectorY;
     } else {
       sSectorX = gWorldSectorX;
       sSectorY = gWorldSectorY;
     }
 
-    if (pKiller && pKiller->bTeam == OUR_TEAM) {
-      AddHistoryToPlayersLog(HISTORY_MERC_KILLED_CHARACTER, pSoldier->ubProfile, GetWorldTotalMin(), sSectorX, sSectorY);
+    if (pKiller && pKiller.value.bTeam == OUR_TEAM) {
+      AddHistoryToPlayersLog(HISTORY_MERC_KILLED_CHARACTER, pSoldier.value.ubProfile, GetWorldTotalMin(), sSectorX, sSectorY);
     } else {
-      AddHistoryToPlayersLog(HISTORY_MERC_KILLED, pSoldier->ubProfile, GetWorldTotalMin(), sSectorX, sSectorY);
+      AddHistoryToPlayersLog(HISTORY_MERC_KILLED, pSoldier.value.ubProfile, GetWorldTotalMin(), sSectorX, sSectorY);
     }
   }
 
   if (guiCurrentScreen != GAME_SCREEN) {
-    ScreenMsg(FONT_RED, MSG_INTERFACE, pMercDeadString[0], pSoldier->name);
+    ScreenMsg(FONT_RED, MSG_INTERFACE, pMercDeadString[0], pSoldier.value.name);
   }
 
   // robot and EPCs don't count against death rate - the mercs back home don't particularly give a damn about locals & machines!
@@ -46,27 +46,27 @@ function StrategicHandlePlayerTeamMercDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
     gStrategicStatus.ubMercDeaths++;
   }
 
-  pSoldier->uiStatusFlags |= SOLDIER_DEAD;
+  pSoldier.value.uiStatusFlags |= SOLDIER_DEAD;
 
   // Set breath to 0!
-  pSoldier->bBreathMax = pSoldier->bBreath = 0;
+  pSoldier.value.bBreathMax = pSoldier.value.bBreath = 0;
 
   // not asleep, DEAD!
-  pSoldier->fMercAsleep = FALSE;
+  pSoldier.value.fMercAsleep = FALSE;
 
   // if the merc had life insurance
-  if (pSoldier->usLifeInsurance) {
+  if (pSoldier.value.usLifeInsurance) {
     // if he didn't die during auto-resolve
     if (guiCurrentScreen != AUTORESOLVE_SCREEN) {
       // check whether this was obviously a suspicious death
       // if killed within an hour of being insured
-      if (pSoldier->uiStartTimeOfInsuranceContract <= GetWorldTotalMin() && GetWorldTotalMin() - pSoldier->uiStartTimeOfInsuranceContract < 60) {
-        gMercProfiles[pSoldier->ubProfile].ubSuspiciousDeath = VERY_SUSPICIOUS_DEATH;
+      if (pSoldier.value.uiStartTimeOfInsuranceContract <= GetWorldTotalMin() && GetWorldTotalMin() - pSoldier.value.uiStartTimeOfInsuranceContract < 60) {
+        gMercProfiles[pSoldier.value.ubProfile].ubSuspiciousDeath = VERY_SUSPICIOUS_DEATH;
       }
       // if killed by someone on our team, or while there weren't any opponents around
-      else if (Menptr[pSoldier->ubAttackerID].bTeam == OUR_TEAM || !gTacticalStatus.fEnemyInSector) {
+      else if (Menptr[pSoldier.value.ubAttackerID].bTeam == OUR_TEAM || !gTacticalStatus.fEnemyInSector) {
         // cause insurance company to suspect fraud and investigate this claim
-        gMercProfiles[pSoldier->ubProfile].ubSuspiciousDeath = SUSPICIOUS_DEATH;
+        gMercProfiles[pSoldier.value.ubProfile].ubSuspiciousDeath = SUSPICIOUS_DEATH;
       }
     }
 
@@ -76,21 +76,21 @@ function StrategicHandlePlayerTeamMercDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
   // robot and EPCs don't penalize morale - merc don't care about fighting machines and the lives of locals much
   if (!AM_AN_EPC(pSoldier) && !AM_A_ROBOT(pSoldier)) {
     // Change morale of others based on this
-    HandleMoraleEvent(pSoldier, MORALE_TEAMMATE_DIED, pSoldier->sSectorX, pSoldier->sSectorY, pSoldier->bSectorZ);
+    HandleMoraleEvent(pSoldier, MORALE_TEAMMATE_DIED, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
   }
 
   // if its a MERC merc, record the time of his death
-  if (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
-    pSoldier->iEndofContractTime = GetWorldTotalMin();
+  if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
+    pSoldier.value.iEndofContractTime = GetWorldTotalMin();
 
     // set is so Speck can say that a merc is dead
     LaptopSaveInfo.ubSpeckCanSayPlayersLostQuote = 1;
   }
 
   // Set the fact that the merc is DEAD!!
-  gMercProfiles[pSoldier->ubProfile].bMercStatus = MERC_IS_DEAD;
+  gMercProfiles[pSoldier.value.ubProfile].bMercStatus = MERC_IS_DEAD;
 
-  if (pSoldier->bAssignment != ASSIGNMENT_DEAD) {
+  if (pSoldier.value.bAssignment != ASSIGNMENT_DEAD) {
     SetTimeOfAssignmentChangeForMerc(pSoldier);
   }
 
@@ -138,32 +138,32 @@ function MercDailyUpdate(): void {
   // loop though all the mercs
   for (pSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pSoldier++) {
     // if the merc is active
-    if ((pSoldier->bActive) && (pSoldier->bAssignment != ASSIGNMENT_POW) && (pSoldier->bAssignment != IN_TRANSIT)) {
+    if ((pSoldier.value.bActive) && (pSoldier.value.bAssignment != ASSIGNMENT_POW) && (pSoldier.value.bAssignment != IN_TRANSIT)) {
       // CJC: Reset dialogue flags for quotes that can be said once/day
-      pSoldier->usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_ANNOYING_MERC);
+      pSoldier.value.usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_ANNOYING_MERC);
       // ATE: Reset likes gun flag
-      pSoldier->usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_LIKESGUN);
+      pSoldier.value.usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_LIKESGUN);
       // ATE: Reset seen corpse flag
-      pSoldier->usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_ROTTINGCORPSE);
+      pSoldier.value.usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_ROTTINGCORPSE);
       // ATE; Reset found something nice flag...
-      pSoldier->usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_FOUND_SOMETHING_NICE);
+      pSoldier.value.usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_FOUND_SOMETHING_NICE);
 
       // ATE: Decrement tolerance value...
-      pSoldier->bCorpseQuoteTolerance--;
+      pSoldier.value.bCorpseQuoteTolerance--;
 
-      if (pSoldier->bCorpseQuoteTolerance < 0) {
-        pSoldier->bCorpseQuoteTolerance = 0;
+      if (pSoldier.value.bCorpseQuoteTolerance < 0) {
+        pSoldier.value.bCorpseQuoteTolerance = 0;
       }
 
       // CJC: For some personalities, reset personality quote said flag
-      if (pSoldier->ubProfile != NO_PROFILE) {
-        switch (gMercProfiles[pSoldier->ubProfile].bPersonalityTrait) {
+      if (pSoldier.value.ubProfile != NO_PROFILE) {
+        switch (gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait) {
           case HEAT_INTOLERANT:
           case CLAUSTROPHOBIC:
           case NONSWIMMER:
           case FEAR_OF_INSECTS:
             // repeatable once per day
-            pSoldier->usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_PERSONALITY);
+            pSoldier.value.usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_PERSONALITY);
             break;
           default:
             break;
@@ -173,27 +173,27 @@ function MercDailyUpdate(): void {
       // ATE: Try to see if our equipment sucks!
       if (SoldierHasWorseEquipmentThanUsedTo(pSoldier)) {
         // Randomly anytime between 6:00, and 10:00
-        AddSameDayStrategicEvent(EVENT_MERC_COMPLAIN_EQUIPMENT, 360 + Random(1080), pSoldier->ubProfile);
+        AddSameDayStrategicEvent(EVENT_MERC_COMPLAIN_EQUIPMENT, 360 + Random(1080), pSoldier.value.ubProfile);
       }
 
       // increment days served by this grunt
-      gMercProfiles[pSoldier->ubProfile].usTotalDaysServed++;
+      gMercProfiles[pSoldier.value.ubProfile].usTotalDaysServed++;
 
       // player has hired him, so he'll eligible to get killed off on another job
-      gMercProfiles[pSoldier->ubProfile].ubMiscFlags3 |= PROFILE_MISC_FLAG3_PLAYER_HAD_CHANCE_TO_HIRE;
+      gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags3 |= PROFILE_MISC_FLAG3_PLAYER_HAD_CHANCE_TO_HIRE;
 
       // if the character is an RPC
-      if (pSoldier->ubProfile >= FIRST_RPC && pSoldier->ubProfile < FIRST_NPC) {
-        let sSalary: INT16 = gMercProfiles[pSoldier->ubProfile].sSalary;
+      if (pSoldier.value.ubProfile >= FIRST_RPC && pSoldier.value.ubProfile < FIRST_NPC) {
+        let sSalary: INT16 = gMercProfiles[pSoldier.value.ubProfile].sSalary;
         let iMoneyOwedToMerc: INT32 = 0;
 
         // increment the number of days the mercs has been on the team
-        pSoldier->iTotalContractLength++;
+        pSoldier.value.iTotalContractLength++;
 
         // if the player owes the npc money, the balance field will be negative
-        if (gMercProfiles[pSoldier->ubProfile].iBalance < 0) {
+        if (gMercProfiles[pSoldier.value.ubProfile].iBalance < 0) {
           // the player owes the npc the salary and whatever money the player owes the npc
-          iMoneyOwedToMerc = sSalary + (-gMercProfiles[pSoldier->ubProfile].iBalance);
+          iMoneyOwedToMerc = sSalary + (-gMercProfiles[pSoldier.value.ubProfile].iBalance);
         } else {
           // else the player only owes the salary
           iMoneyOwedToMerc = sSalary;
@@ -204,12 +204,12 @@ function MercDailyUpdate(): void {
           // if the player can afford to pay them
           if (LaptopSaveInfo.iCurrentBalance >= iMoneyOwedToMerc) {
             // add the transaction to the player
-            AddTransactionToPlayersBook(PAYMENT_TO_NPC, pSoldier->ubProfile, GetWorldTotalMin(), -iMoneyOwedToMerc);
+            AddTransactionToPlayersBook(PAYMENT_TO_NPC, pSoldier.value.ubProfile, GetWorldTotalMin(), -iMoneyOwedToMerc);
 
             // if the player owed money to the npc
-            if (gMercProfiles[pSoldier->ubProfile].iBalance < 0) {
+            if (gMercProfiles[pSoldier.value.ubProfile].iBalance < 0) {
               // reset the amount
-              gMercProfiles[pSoldier->ubProfile].iBalance = 0;
+              gMercProfiles[pSoldier.value.ubProfile].iBalance = 0;
             }
           } else {
             let zMoney: CHAR16[] /* [128] */;
@@ -220,20 +220,20 @@ function MercDailyUpdate(): void {
             InsertDollarSignInToString(zMoney);
 
             // Display a screen msg indicating that the npc was NOT paid
-            ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, pMessageStrings[MSG_CANT_AFFORD_TO_PAY_NPC_DAILY_SALARY_MSG], gMercProfiles[pSoldier->ubProfile].zNickname, zMoney);
+            ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, pMessageStrings[MSG_CANT_AFFORD_TO_PAY_NPC_DAILY_SALARY_MSG], gMercProfiles[pSoldier.value.ubProfile].zNickname, zMoney);
 
             // if the merc hasnt been paid for NUM_DAYS_TILL_UNPAID_RPC_QUITS days, the merc will quit
-            if ((gMercProfiles[pSoldier->ubProfile].iBalance - sSalary) <= -(sSalary * NUM_DAYS_TILL_UNPAID_RPC_QUITS)) {
+            if ((gMercProfiles[pSoldier.value.ubProfile].iBalance - sSalary) <= -(sSalary * NUM_DAYS_TILL_UNPAID_RPC_QUITS)) {
               //
               // Set it up so the merc quits
               //
-              MercsContractIsFinished(pSoldier->ubID);
+              MercsContractIsFinished(pSoldier.value.ubID);
             } else {
               // set how much money the player owes the merc
-              gMercProfiles[pSoldier->ubProfile].iBalance -= sSalary;
+              gMercProfiles[pSoldier.value.ubProfile].iBalance -= sSalary;
 
               // Add even for displaying a dialogue telling the player this....
-              AddSameDayStrategicEvent(EVENT_RPC_WHINE_ABOUT_PAY, MERC_ARRIVE_TIME_SLOT_1, pSoldier->ubID);
+              AddSameDayStrategicEvent(EVENT_RPC_WHINE_ABOUT_PAY, MERC_ARRIVE_TIME_SLOT_1, pSoldier.value.ubID);
             }
           }
         }
@@ -243,13 +243,13 @@ function MercDailyUpdate(): void {
 
       CheckIfMercGetsAnotherContract(pSoldier);
     } else {
-      if ((pSoldier->bActive) && (pSoldier->bAssignment == ASSIGNMENT_POW)) {
-        pSoldier->iEndofContractTime += 1440;
+      if ((pSoldier.value.bActive) && (pSoldier.value.bAssignment == ASSIGNMENT_POW)) {
+        pSoldier.value.iEndofContractTime += 1440;
       }
     }
 
     // if active, here, & alive (POW is ok, don't care)
-    if ((pSoldier->bActive) && (pSoldier->bAssignment != ASSIGNMENT_DEAD) && (pSoldier->bAssignment != IN_TRANSIT)) {
+    if ((pSoldier.value.bActive) && (pSoldier.value.bAssignment != ASSIGNMENT_DEAD) && (pSoldier.value.bAssignment != IN_TRANSIT)) {
       // increment the "man days" played counter for each such merc in the player's employment
       gStrategicStatus.uiManDaysPlayed++;
     }
@@ -260,15 +260,15 @@ function MercDailyUpdate(): void {
 
   for (pSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pSoldier++) {
     // if the merc is active
-    if ((pSoldier->bActive) && (pSoldier->bAssignment != ASSIGNMENT_POW) && (pSoldier->bAssignment != IN_TRANSIT)) {
+    if ((pSoldier.value.bActive) && (pSoldier.value.bAssignment != ASSIGNMENT_POW) && (pSoldier.value.bAssignment != IN_TRANSIT)) {
       // if its a MERC merc, determine if the merc should leave ( because player refused to pay for merc )
-      if (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
+      if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
         // if the players account status is invalid
         if (LaptopSaveInfo.gubPlayersMercAccountStatus == MERC_ACCOUNT_INVALID) {
           // if the soldier is alive anc concious
           if (IsTheSoldierAliveAndConcious(pSoldier)) {
             // if the merc should leave today
-            MercsContractIsFinished(pSoldier->ubID);
+            MercsContractIsFinished(pSoldier.value.ubID);
           }
         }
       }
@@ -280,12 +280,12 @@ function MercDailyUpdate(): void {
     pProfile = &(gMercProfiles[cnt]);
 
     // dead guys don't do nuthin' !
-    if (pProfile->bMercStatus == MERC_IS_DEAD) {
+    if (pProfile.value.bMercStatus == MERC_IS_DEAD) {
       continue;
     }
 
     // Every day reset this variable
-    pProfile->uiPrecedentQuoteSaid = 0;
+    pProfile.value.uiPrecedentQuoteSaid = 0;
 
     // skip anyone currently on the player's team
     if (IsMercOnTeam(cnt)) {
@@ -295,12 +295,12 @@ function MercDailyUpdate(): void {
     // if he's an AIM/M.E.R.C. merc
     if (cnt < AIM_AND_MERC_MERCS) {
       // if he's not just on his way home
-      if (pProfile->bMercStatus != MERC_RETURNING_HOME) {
+      if (pProfile.value.bMercStatus != MERC_RETURNING_HOME) {
         // check if any of his stats improve through working or training
         HandleUnhiredMercImprovement(pProfile);
 
         // if he's working on another job
-        if (pProfile->bMercStatus == MERC_WORKING_ELSEWHERE) {
+        if (pProfile.value.bMercStatus == MERC_WORKING_ELSEWHERE) {
           // check if he's killed
           HandleUnhiredMercDeaths(cnt);
         }
@@ -308,22 +308,22 @@ function MercDailyUpdate(): void {
     }
 
     // if merc is currently unavailable
-    if (pProfile->uiDayBecomesAvailable > 0) {
+    if (pProfile.value.uiDayBecomesAvailable > 0) {
       // reduce time til available by one day
-      pProfile->uiDayBecomesAvailable--;
+      pProfile.value.uiDayBecomesAvailable--;
 
       // Check to see if the merc has become available
-      if (pProfile->uiDayBecomesAvailable == 0) {
+      if (pProfile.value.uiDayBecomesAvailable == 0) {
         // if the merc CAN become ready
-        if (pProfile->bMercStatus != MERC_FIRED_AS_A_POW) {
-          pProfile->bMercStatus = MERC_OK;
+        if (pProfile.value.bMercStatus != MERC_FIRED_AS_A_POW) {
+          pProfile.value.bMercStatus = MERC_OK;
 
           // if the player has left a message for this merc
-          if (pProfile->ubMiscFlags3 & PROFILE_MISC_FLAG3_PLAYER_LEFT_MSG_FOR_MERC_AT_AIM) {
+          if (pProfile.value.ubMiscFlags3 & PROFILE_MISC_FLAG3_PLAYER_LEFT_MSG_FOR_MERC_AT_AIM) {
             iOffset = AIM_REPLY_BARRY;
 
             // remove the Flag, so if the merc goes on another assignment, the player can leave an email.
-            pProfile->ubMiscFlags3 &= ~PROFILE_MISC_FLAG3_PLAYER_LEFT_MSG_FOR_MERC_AT_AIM;
+            pProfile.value.ubMiscFlags3 &= ~PROFILE_MISC_FLAG3_PLAYER_LEFT_MSG_FOR_MERC_AT_AIM;
 
             // TO DO: send E-mail to player telling him the merc has returned from an assignment
             AddEmail((iOffset + (cnt * AIM_REPLY_LENGTH_BARRY)), AIM_REPLY_LENGTH_BARRY, (6 + cnt), GetWorldTotalMin());
@@ -337,31 +337,31 @@ function MercDailyUpdate(): void {
         // check to see if he goes on another assignment
         if (cnt < MAX_NUMBER_MERCS) {
           // A.I.M. merc
-          uiChance = 2 * pProfile->bExpLevel;
+          uiChance = 2 * pProfile.value.bExpLevel;
 
           // player has now had a chance to hire him, so he'll eligible to get killed off on another job
-          pProfile->ubMiscFlags3 |= PROFILE_MISC_FLAG3_PLAYER_HAD_CHANCE_TO_HIRE;
+          pProfile.value.ubMiscFlags3 |= PROFILE_MISC_FLAG3_PLAYER_HAD_CHANCE_TO_HIRE;
         } else {
           // M.E.R.C. merc - very rarely get other work
-          uiChance = 1 * pProfile->bExpLevel;
+          uiChance = 1 * pProfile.value.bExpLevel;
 
           // player doesn't have a chance to hire any M.E.R.C's until after Speck's E-mail is sent
           if (GetWorldDay() > DAYS_TIL_M_E_R_C_AVAIL) {
             // player has now had a chance to hire him, so he'll eligible to get killed off on another job
-            pProfile->ubMiscFlags3 |= PROFILE_MISC_FLAG3_PLAYER_HAD_CHANCE_TO_HIRE;
+            pProfile.value.ubMiscFlags3 |= PROFILE_MISC_FLAG3_PLAYER_HAD_CHANCE_TO_HIRE;
           }
         }
 
         if (Random(100) < uiChance) {
-          pProfile->bMercStatus = MERC_WORKING_ELSEWHERE;
-          pProfile->uiDayBecomesAvailable = 1 + Random(6 + (pProfile->bExpLevel / 2)); // 1-(6 to 11) days
+          pProfile.value.bMercStatus = MERC_WORKING_ELSEWHERE;
+          pProfile.value.uiDayBecomesAvailable = 1 + Random(6 + (pProfile.value.bExpLevel / 2)); // 1-(6 to 11) days
         }
       }
     }
 
     // Decrement morale hangover (merc appears hirable, he just gives lame refusals during this time, though)
-    if (pProfile->ubDaysOfMoraleHangover > 0) {
-      pProfile->ubDaysOfMoraleHangover--;
+    if (pProfile.value.ubDaysOfMoraleHangover > 0) {
+      pProfile.value.ubDaysOfMoraleHangover--;
     }
   }
 
@@ -492,7 +492,7 @@ function MercsContractIsFinished(ubID: UINT8): void {
   pSoldier = &Menptr[ubID];
 
   // if the soldier was removed before getting into this function, return
-  if (!pSoldier->bActive)
+  if (!pSoldier.value.bActive)
     return;
 
   if (fShowContractMenu) {
@@ -502,7 +502,7 @@ function MercsContractIsFinished(ubID: UINT8): void {
   // go to mapscreen
   SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_ENTER_MAPSCREEN, 0, 0, 0, 0, 0);
 
-  if (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
+  if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
     // if the players account status is invalid
     if (LaptopSaveInfo.gubPlayersMercAccountStatus == MERC_ACCOUNT_INVALID) {
       // Send the merc home
@@ -516,9 +516,9 @@ function MercsContractIsFinished(ubID: UINT8): void {
 
       TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_CONTRACT_ENDING_NO_ASK_EQUIP, 0, 0);
 
-      pSoldier->ubLeaveHistoryCode = HISTORY_MERC_QUIT;
+      pSoldier.value.ubLeaveHistoryCode = HISTORY_MERC_QUIT;
     }
-  } else if (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__NPC) {
+  } else if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__NPC) {
     InterruptTime();
     PauseGame();
     LockPauseState(10);
@@ -527,7 +527,7 @@ function MercsContractIsFinished(ubID: UINT8): void {
 
     TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_CONTRACT_ENDING_NO_ASK_EQUIP, 0, 0);
 
-    pSoldier->ubLeaveHistoryCode = HISTORY_MERC_QUIT;
+    pSoldier.value.ubLeaveHistoryCode = HISTORY_MERC_QUIT;
   }
 }
 
@@ -538,10 +538,10 @@ function RPCWhineAboutNoPay(ubID: UINT8): void {
   pSoldier = &Menptr[ubID];
 
   // if the soldier was removed before getting into this function, return
-  if (!pSoldier->bActive)
+  if (!pSoldier.value.bActive)
     return;
 
-  if (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__NPC) {
+  if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__NPC) {
     // Say quote for needing pay!
     TacticalCharacterDialogue(pSoldier, QUOTE_NOT_GETTING_PAID);
   }
@@ -557,7 +557,7 @@ function SoldierHasWorseEquipmentThanUsedTo(pSoldier: Pointer<SOLDIERTYPE>): BOO
   let bBestGunIndex: INT8 = -1;
 
   for (cnt = 0; cnt < NUM_INV_SLOTS; cnt++) {
-    usItem = pSoldier->inv[cnt].usItem;
+    usItem = pSoldier.value.inv[cnt].usItem;
 
     // Look for best gun/armour
     if (usItem != NOTHING) {
@@ -582,14 +582,14 @@ function SoldierHasWorseEquipmentThanUsedTo(pSoldier: Pointer<SOLDIERTYPE>): BOO
   // Modify these values based on morale - lower opinion of equipment if morale low, increase if high
   // this of course assumes default morale is 50
   if (bBestGun != -1) {
-    bBestGun = (bBestGun * (50 + pSoldier->bMorale)) / 100;
+    bBestGun = (bBestGun * (50 + pSoldier.value.bMorale)) / 100;
   }
   if (bBestArmour != -1) {
-    bBestArmour = (bBestArmour * (50 + pSoldier->bMorale)) / 100;
+    bBestArmour = (bBestArmour * (50 + pSoldier.value.bMorale)) / 100;
   }
 
   // OK, check values!
-  if ((bBestGun != -1 && bBestGun < (gMercProfiles[pSoldier->ubProfile].bMainGunAttractiveness / 2)) || (bBestArmour != -1 && bBestArmour < (gMercProfiles[pSoldier->ubProfile].bArmourAttractiveness / 2))) {
+  if ((bBestGun != -1 && bBestGun < (gMercProfiles[pSoldier.value.ubProfile].bMainGunAttractiveness / 2)) || (bBestArmour != -1 && bBestArmour < (gMercProfiles[pSoldier.value.ubProfile].bArmourAttractiveness / 2))) {
     // Pipe up!
     return TRUE;
   }
@@ -613,7 +613,7 @@ function MercComplainAboutEquipment(ubProfile: UINT8): void {
   pSoldier = FindSoldierByProfileID(ubProfile, FALSE);
 
   if (pSoldier != NULL) {
-    if (pSoldier->bLife >= OKLIFE && pSoldier->fMercAsleep != TRUE && pSoldier->bAssignment < ON_DUTY) {
+    if (pSoldier.value.bLife >= OKLIFE && pSoldier.value.fMercAsleep != TRUE && pSoldier.value.bAssignment < ON_DUTY) {
       // ATE: Double check that this problem still exists!
       if (SoldierHasWorseEquipmentThanUsedTo(pSoldier)) {
         // Say quote!
@@ -644,11 +644,11 @@ function UpdateBuddyAndHatedCounters(): void {
     fSameGroupOnly = FALSE;
 
     // if the merc is active and on a combat assignment
-    if (pSoldier->bActive && pSoldier->bAssignment < ON_DUTY) {
-      pProfile = &(gMercProfiles[pSoldier->ubProfile]);
+    if (pSoldier.value.bActive && pSoldier.value.bAssignment < ON_DUTY) {
+      pProfile = &(gMercProfiles[pSoldier.value.ubProfile]);
 
       // if we're moving, we only check vs other people in our squad
-      if (pSoldier->ubGroupID != 0 && PlayerIDGroupInMotion(pSoldier->ubGroupID)) {
+      if (pSoldier.value.ubGroupID != 0 && PlayerIDGroupInMotion(pSoldier.value.ubGroupID)) {
         fSameGroupOnly = TRUE;
       }
 
@@ -659,38 +659,38 @@ function UpdateBuddyAndHatedCounters(): void {
       for (pOtherSoldier = MercPtrs[bOtherID]; bOtherID <= bLastTeamID; bOtherID++, pOtherSoldier++) {
         // is this guy in the same sector and on active duty (or in the same moving group)
 
-        if (bOtherID != bMercID && pOtherSoldier->bActive && pOtherSoldier->bAssignment < ON_DUTY) {
+        if (bOtherID != bMercID && pOtherSoldier.value.bActive && pOtherSoldier.value.bAssignment < ON_DUTY) {
           if (fSameGroupOnly) {
             // all we have to check is the group ID
-            if (pSoldier->ubGroupID != pOtherSoldier->ubGroupID) {
+            if (pSoldier.value.ubGroupID != pOtherSoldier.value.ubGroupID) {
               continue;
             }
           } else {
             // check to see if the location is the same
-            if (pOtherSoldier->sSectorX != pSoldier->sSectorX || pOtherSoldier->sSectorY != pSoldier->sSectorY || pOtherSoldier->bSectorZ != pSoldier->bSectorZ) {
+            if (pOtherSoldier.value.sSectorX != pSoldier.value.sSectorX || pOtherSoldier.value.sSectorY != pSoldier.value.sSectorY || pOtherSoldier.value.bSectorZ != pSoldier.value.bSectorZ) {
               continue;
             }
 
             // if the OTHER soldier is in motion then we don't do anything!
-            if (pOtherSoldier->ubGroupID != 0 && PlayerIDGroupInMotion(pOtherSoldier->ubGroupID)) {
+            if (pOtherSoldier.value.ubGroupID != 0 && PlayerIDGroupInMotion(pOtherSoldier.value.ubGroupID)) {
               continue;
             }
           }
 
-          ubOtherProfileID = pOtherSoldier->ubProfile;
+          ubOtherProfileID = pOtherSoldier.value.ubProfile;
 
           for (iLoop = 0; iLoop < 4; iLoop++) {
             switch (iLoop) {
               case 0:
               case 1:
-                if (pProfile->bHated[iLoop] == ubOtherProfileID) {
+                if (pProfile.value.bHated[iLoop] == ubOtherProfileID) {
                   // arrgs, we're on assignment with the person we loathe!
-                  if (pProfile->bHatedCount[iLoop] > 0) {
-                    pProfile->bHatedCount[iLoop]--;
-                    if (pProfile->bHatedCount[iLoop] == 0 && pSoldier->bInSector && gTacticalStatus.fEnemyInSector) {
+                  if (pProfile.value.bHatedCount[iLoop] > 0) {
+                    pProfile.value.bHatedCount[iLoop]--;
+                    if (pProfile.value.bHatedCount[iLoop] == 0 && pSoldier.value.bInSector && gTacticalStatus.fEnemyInSector) {
                       // just reduced count to 0 but we have enemy in sector...
-                      pProfile->bHatedCount[iLoop] = 1;
-                    } else if (pProfile->bHatedCount[iLoop] > 0 && (pProfile->bHatedCount[iLoop] == pProfile->bHatedTime[iLoop] / 2 || (pProfile->bHatedCount[iLoop] < pProfile->bHatedTime[iLoop] / 2 && pProfile->bHatedCount[iLoop] % TIME_BETWEEN_HATED_COMPLAINTS == 0))) {
+                      pProfile.value.bHatedCount[iLoop] = 1;
+                    } else if (pProfile.value.bHatedCount[iLoop] > 0 && (pProfile.value.bHatedCount[iLoop] == pProfile.value.bHatedTime[iLoop] / 2 || (pProfile.value.bHatedCount[iLoop] < pProfile.value.bHatedTime[iLoop] / 2 && pProfile.value.bHatedCount[iLoop] % TIME_BETWEEN_HATED_COMPLAINTS == 0))) {
                       // complain!
                       if (iLoop == 0) {
                         TacticalCharacterDialogue(pSoldier, QUOTE_HATED_MERC_ONE);
@@ -698,9 +698,9 @@ function UpdateBuddyAndHatedCounters(): void {
                         TacticalCharacterDialogue(pSoldier, QUOTE_HATED_MERC_TWO);
                       }
                       StopTimeCompression();
-                    } else if (pProfile->bHatedCount[iLoop] == 0) {
+                    } else if (pProfile.value.bHatedCount[iLoop] == 0) {
                       // zero count!
-                      if (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__MERC || pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__NPC) {
+                      if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__MERC || pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__NPC) {
                         // MERC mercs leave now!
                         if (iLoop == 0) {
                           TacticalCharacterDialogue(pSoldier, QUOTE_MERC_QUIT_HATED1);
@@ -711,7 +711,7 @@ function UpdateBuddyAndHatedCounters(): void {
                         // Leave now! ( handle equipment too )....
                         TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_CONTRACT_ENDING, 0, 0);
 
-                        pSoldier->ubLeaveHistoryCode = HISTORY_MERC_QUIT;
+                        pSoldier.value.ubLeaveHistoryCode = HISTORY_MERC_QUIT;
                       } else {
                         // complain!
                         if (iLoop == 0) {
@@ -719,22 +719,22 @@ function UpdateBuddyAndHatedCounters(): void {
                         } else {
                           TacticalCharacterDialogue(pSoldier, QUOTE_HATED_MERC_TWO);
                         }
-                        pProfile->ubTimeTillNextHatedComplaint = TIME_BETWEEN_HATED_COMPLAINTS - 1;
+                        pProfile.value.ubTimeTillNextHatedComplaint = TIME_BETWEEN_HATED_COMPLAINTS - 1;
                       }
                     }
                   } else {
                     // if we haven't updated the time till our next complaint, do so
                     // if it's 0, gripe.
                     if (!fUpdatedTimeTillNextHatedComplaint) {
-                      if (pProfile->ubTimeTillNextHatedComplaint == 0) {
-                        pProfile->ubTimeTillNextHatedComplaint = TIME_BETWEEN_HATED_COMPLAINTS - 1;
+                      if (pProfile.value.ubTimeTillNextHatedComplaint == 0) {
+                        pProfile.value.ubTimeTillNextHatedComplaint = TIME_BETWEEN_HATED_COMPLAINTS - 1;
                       } else {
-                        pProfile->ubTimeTillNextHatedComplaint--;
+                        pProfile.value.ubTimeTillNextHatedComplaint--;
                       }
                       fUpdatedTimeTillNextHatedComplaint = TRUE;
                     }
 
-                    if (pProfile->ubTimeTillNextHatedComplaint == 0) {
+                    if (pProfile.value.ubTimeTillNextHatedComplaint == 0) {
                       // complain!
                       if (iLoop == 0) {
                         TacticalCharacterDialogue(pSoldier, QUOTE_HATED_MERC_ONE);
@@ -746,46 +746,46 @@ function UpdateBuddyAndHatedCounters(): void {
                 }
                 break;
               case 2:
-                if (pProfile->bLearnToHate == ubOtherProfileID) {
-                  if (pProfile->bLearnToHateCount > 0) {
-                    pProfile->bLearnToHateCount--;
-                    if (pProfile->bLearnToHateCount == 0 && pSoldier->bInSector && gTacticalStatus.fEnemyInSector) {
+                if (pProfile.value.bLearnToHate == ubOtherProfileID) {
+                  if (pProfile.value.bLearnToHateCount > 0) {
+                    pProfile.value.bLearnToHateCount--;
+                    if (pProfile.value.bLearnToHateCount == 0 && pSoldier.value.bInSector && gTacticalStatus.fEnemyInSector) {
                       // just reduced count to 0 but we have enemy in sector...
-                      pProfile->bLearnToHateCount = 1;
-                    } else if (pProfile->bLearnToHateCount > 0 && (pProfile->bLearnToHateCount == pProfile->bLearnToHateTime / 2 || pProfile->bLearnToHateCount < pProfile->bLearnToHateTime / 2 && pProfile->bLearnToHateCount % TIME_BETWEEN_HATED_COMPLAINTS == 0)) {
+                      pProfile.value.bLearnToHateCount = 1;
+                    } else if (pProfile.value.bLearnToHateCount > 0 && (pProfile.value.bLearnToHateCount == pProfile.value.bLearnToHateTime / 2 || pProfile.value.bLearnToHateCount < pProfile.value.bLearnToHateTime / 2 && pProfile.value.bLearnToHateCount % TIME_BETWEEN_HATED_COMPLAINTS == 0)) {
                       // complain!
                       TacticalCharacterDialogue(pSoldier, QUOTE_LEARNED_TO_HATE_MERC);
                       StopTimeCompression();
-                    } else if (pProfile->bLearnToHateCount == 0) {
+                    } else if (pProfile.value.bLearnToHateCount == 0) {
                       // set as bHated[2];
-                      pProfile->bHated[2] = pProfile->bLearnToHate;
-                      pProfile->bMercOpinion[ubOtherProfileID] = HATED_OPINION;
+                      pProfile.value.bHated[2] = pProfile.value.bLearnToHate;
+                      pProfile.value.bMercOpinion[ubOtherProfileID] = HATED_OPINION;
 
-                      if (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__MERC || (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__NPC && (pSoldier->ubProfile == DEVIN || pSoldier->ubProfile == SLAY || pSoldier->ubProfile == IGGY || pSoldier->ubProfile == CONRAD))) {
+                      if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__MERC || (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__NPC && (pSoldier.value.ubProfile == DEVIN || pSoldier.value.ubProfile == SLAY || pSoldier.value.ubProfile == IGGY || pSoldier.value.ubProfile == CONRAD))) {
                         // Leave now! ( handle equipment too )....
                         TacticalCharacterDialogue(pSoldier, QUOTE_MERC_QUIT_LEARN_TO_HATE);
                         TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_CONTRACT_ENDING, 0, 0);
-                        pSoldier->ubLeaveHistoryCode = HISTORY_MERC_QUIT;
-                      } else if (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__NPC) {
+                        pSoldier.value.ubLeaveHistoryCode = HISTORY_MERC_QUIT;
+                      } else if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__NPC) {
                         // whine again
                         TacticalCharacterDialogue(pSoldier, QUOTE_LEARNED_TO_HATE_MERC);
                       }
                     }
-                    if (pProfile->bLearnToHateCount < pProfile->bLearnToHateTime / 2) {
+                    if (pProfile.value.bLearnToHateCount < pProfile.value.bLearnToHateTime / 2) {
                       // gradual opinion drop
-                      pProfile->bMercOpinion[ubOtherProfileID] += (HATED_OPINION - pProfile->bMercOpinion[ubOtherProfileID]) / (pProfile->bLearnToHateCount + 1);
+                      pProfile.value.bMercOpinion[ubOtherProfileID] += (HATED_OPINION - pProfile.value.bMercOpinion[ubOtherProfileID]) / (pProfile.value.bLearnToHateCount + 1);
                     }
                   } else {
                     if (!fUpdatedTimeTillNextHatedComplaint) {
-                      if (pProfile->ubTimeTillNextHatedComplaint == 0) {
-                        pProfile->ubTimeTillNextHatedComplaint = TIME_BETWEEN_HATED_COMPLAINTS - 1;
+                      if (pProfile.value.ubTimeTillNextHatedComplaint == 0) {
+                        pProfile.value.ubTimeTillNextHatedComplaint = TIME_BETWEEN_HATED_COMPLAINTS - 1;
                       } else {
-                        pProfile->ubTimeTillNextHatedComplaint--;
+                        pProfile.value.ubTimeTillNextHatedComplaint--;
                       }
                       fUpdatedTimeTillNextHatedComplaint = TRUE;
                     }
 
-                    if (pProfile->ubTimeTillNextHatedComplaint == 0) {
+                    if (pProfile.value.ubTimeTillNextHatedComplaint == 0) {
                       // complain!
                       TacticalCharacterDialogue(pSoldier, QUOTE_LEARNED_TO_HATE_MERC);
                     }
@@ -793,15 +793,15 @@ function UpdateBuddyAndHatedCounters(): void {
                 }
                 break;
               case 3:
-                if (pProfile->bLearnToLikeCount > 0 && pProfile->bLearnToLike == ubOtherProfileID) {
-                  pProfile->bLearnToLikeCount--;
-                  if (pProfile->bLearnToLikeCount == 0) {
+                if (pProfile.value.bLearnToLikeCount > 0 && pProfile.value.bLearnToLike == ubOtherProfileID) {
+                  pProfile.value.bLearnToLikeCount--;
+                  if (pProfile.value.bLearnToLikeCount == 0) {
                     // add to liked!
-                    pProfile->bBuddy[2] = pProfile->bLearnToLike;
-                    pProfile->bMercOpinion[ubOtherProfileID] = BUDDY_OPINION;
-                  } else if (pProfile->bLearnToLikeCount < pProfile->bLearnToLikeTime / 2) {
+                    pProfile.value.bBuddy[2] = pProfile.value.bLearnToLike;
+                    pProfile.value.bMercOpinion[ubOtherProfileID] = BUDDY_OPINION;
+                  } else if (pProfile.value.bLearnToLikeCount < pProfile.value.bLearnToLikeTime / 2) {
                     // increase opinion of them!
-                    pProfile->bMercOpinion[ubOtherProfileID] += (BUDDY_OPINION - pProfile->bMercOpinion[ubOtherProfileID]) / (pProfile->bLearnToLikeCount + 1);
+                    pProfile.value.bMercOpinion[ubOtherProfileID] += (BUDDY_OPINION - pProfile.value.bMercOpinion[ubOtherProfileID]) / (pProfile.value.bLearnToLikeCount + 1);
                     break;
                   }
                 }
@@ -824,24 +824,24 @@ function HourlyCamouflageUpdate(): void {
 
   // loop through all mercs
   for (pSoldier = MercPtrs[bMercID]; bMercID <= bLastTeamID; bMercID++, pSoldier++) {
-    if (pSoldier->bActive) {
+    if (pSoldier.value.bActive) {
       // if the merc has non-zero camo, degrade it by 1%
-      if ((pSoldier->bCamo > 0) && (!(HAS_SKILL_TRAIT(pSoldier, CAMOUFLAGED)))) {
-        pSoldier->bCamo -= 2;
-        if (pSoldier->bCamo <= 0) {
-          pSoldier->bCamo = 0;
+      if ((pSoldier.value.bCamo > 0) && (!(HAS_SKILL_TRAIT(pSoldier, CAMOUFLAGED)))) {
+        pSoldier.value.bCamo -= 2;
+        if (pSoldier.value.bCamo <= 0) {
+          pSoldier.value.bCamo = 0;
           // Reload palettes....
-          if (pSoldier->bInSector) {
+          if (pSoldier.value.bInSector) {
             CreateSoldierPalettes(pSoldier);
           }
 
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_CAMMO_WORN_OFF], pSoldier->name);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_CAMMO_WORN_OFF], pSoldier.value.name);
           DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
         }
       }
       // if the merc has non-zero monster smell, degrade it by 1
-      if (pSoldier->bMonsterSmell > 0) {
-        pSoldier->bMonsterSmell--;
+      if (pSoldier.value.bMonsterSmell > 0) {
+        pSoldier.value.bMonsterSmell--;
 
         /*
         if (pSoldier->bMonsterSmell == 0)

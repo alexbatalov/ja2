@@ -167,14 +167,14 @@ function DeleteIMPFinishButtons(): void {
 
 function BtnIMPFinishStartOverCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP Homepage About US button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       DoLapTopMessageBox(MSG_BOX_IMP_STYLE, pImpPopUpStrings[1], LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, FinishMessageBoxCallBack);
     }
   }
@@ -183,14 +183,14 @@ function BtnIMPFinishStartOverCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 function BtnIMPFinishDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       iCurrentImpPage = IMP_CONFIRM;
       CreateACharacterFromPlayerEnteredStats();
       fButtonPendingFlag = TRUE;
@@ -208,17 +208,17 @@ function BtnIMPFinishPersonalityCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
   /* static */ let fState: BOOLEAN = 0;
   let iDifference: INT32 = 0;
 
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
     uiBaseTime = GetJA2Clock();
     SpecifyButtonText(giIMPFinishButton[2], pImpButtonText[23]);
     fAnimateFlag = TRUE;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       fButtonPendingFlag = TRUE;
       uiBaseTime = 0;
       fAnimateFlag = FALSE;
@@ -248,19 +248,19 @@ function BtnIMPFinishPersonalityCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
 function BtnIMPFinishAttributesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
   // if not this far in char generation, don't alot ANY action
   if (iCurrentProfileMode < 2) {
-    btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
     return;
   }
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       iCurrentImpPage = IMP_ATTRIBUTE_PAGE;
       fButtonPendingFlag = TRUE;
       SpecifyButtonText(giIMPFinishButton[2], pImpButtonText[2]);
@@ -271,22 +271,22 @@ function BtnIMPFinishAttributesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
 function BtnIMPFinishPortraitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
   // if not this far in char generation, don't alot ANY action
   if (iCurrentProfileMode < 3) {
-    btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
     return;
   }
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
     sFaceX = 253;
     sFaceY = 247;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       sFaceX = 253;
       sFaceY = 245;
     }
@@ -296,24 +296,24 @@ function BtnIMPFinishPortraitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
 function BtnIMPFinishVoiceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
   // if not this far in char generation, don't alot ANY action
   if (iCurrentProfileMode < 4) {
-    btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
     fButtonPendingFlag = TRUE;
     return;
   }
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       // play voice
       if (!SoundIsPlaying(uiVoiceSound)) {
         uiVoiceSound = PlayVoice();
       }
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       fButtonPendingFlag = TRUE;
     }
   }

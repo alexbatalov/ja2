@@ -550,14 +550,14 @@ function UpdateAnimatedCursorFrames(uiCursorIndex: UINT32): void {
   if (uiCursorIndex != VIDEO_NO_CURSOR) {
     pCurData = &(CursorDatabase[uiCursorIndex]);
 
-    for (cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
-      pCurImage = &(pCurData->Composites[cnt]);
+    for (cnt = 0; cnt < pCurData.value.usNumComposites; cnt++) {
+      pCurImage = &(pCurData.value.Composites[cnt]);
 
-      if (CursorFileDatabase[pCurImage->uiFileIndex].ubFlags & ANIMATED_CURSOR) {
-        pCurImage->uiCurrentFrame++;
+      if (CursorFileDatabase[pCurImage.value.uiFileIndex].ubFlags & ANIMATED_CURSOR) {
+        pCurImage.value.uiCurrentFrame++;
 
-        if (pCurImage->uiCurrentFrame == CursorFileDatabase[pCurImage->uiFileIndex].ubNumberOfFrames) {
-          pCurImage->uiCurrentFrame = 0;
+        if (pCurImage.value.uiCurrentFrame == CursorFileDatabase[pCurImage.value.uiFileIndex].ubNumberOfFrames) {
+          pCurImage.value.uiCurrentFrame = 0;
         }
       }
     }
@@ -570,12 +570,12 @@ function UpdateFlashingCursorFrames(uiCursorIndex: UINT32): void {
   if (uiCursorIndex != VIDEO_NO_CURSOR) {
     pCurData = &(CursorDatabase[uiCursorIndex]);
 
-    if ((pCurData->bFlags & (CURSOR_TO_FLASH | CURSOR_TO_FLASH2))) {
-      pCurData->bFlashIndex = !pCurData->bFlashIndex;
+    if ((pCurData.value.bFlags & (CURSOR_TO_FLASH | CURSOR_TO_FLASH2))) {
+      pCurData.value.bFlashIndex = !pCurData.value.bFlashIndex;
 
       // Should we play a sound?
-      if (pCurData->bFlags & (CURSOR_TO_PLAY_SOUND)) {
-        if (pCurData->bFlashIndex) {
+      if (pCurData.value.bFlags & (CURSOR_TO_PLAY_SOUND)) {
+        if (pCurData.value.bFlashIndex) {
           PlayJA2Sample(TARGET_OUT_OF_RANGE, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
         }
       }

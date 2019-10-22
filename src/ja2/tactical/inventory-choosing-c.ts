@@ -164,11 +164,11 @@ function GenerateRandomEquipment(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClas
   Assert(pp);
 
   // kids don't get anything 'cause they don't have any weapon animations and the rest is inappropriate
-  if ((pp->bBodyType == HATKIDCIV) || (pp->bBodyType == KIDCIV)) {
+  if ((pp.value.bBodyType == HATKIDCIV) || (pp.value.bBodyType == KIDCIV)) {
     return;
   }
 
-  if ((pp->bBodyType == TANK_NE) || (pp->bBodyType == TANK_NW)) {
+  if ((pp.value.bBodyType == TANK_NE) || (pp.value.bBodyType == TANK_NW)) {
     EquipTank(pp);
     return;
   }
@@ -296,7 +296,7 @@ function GenerateRandomEquipment(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClas
           case 0:
           case 1:
           case 2:
-            if (pp->bExpLevel >= 3) {
+            if (pp.value.bExpLevel >= 3) {
               // grenade launcher
               fGrenadeLauncher = TRUE;
               bGrenades = 3 + (Random(3)); // 3-5
@@ -306,7 +306,7 @@ function GenerateRandomEquipment(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClas
           case 3:
           case 4:
           case 5:
-            if (pp->bExpLevel >= 4) {
+            if (pp.value.bExpLevel >= 4) {
               // LAW rocket launcher
               fLAW = TRUE;
             }
@@ -314,7 +314,7 @@ function GenerateRandomEquipment(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClas
 
           case 6:
             // one per team maximum!
-            if ((pp->bExpLevel >= 5) && (guiMortarsRolledByTeam < MAX_MORTARS_PER_TEAM)) {
+            if ((pp.value.bExpLevel >= 5) && (guiMortarsRolledByTeam < MAX_MORTARS_PER_TEAM)) {
               // mortar
               fMortar = TRUE;
               guiMortarsRolledByTeam++;
@@ -420,19 +420,19 @@ function GenerateRandomEquipment(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClas
 
   for (i = 0; i < NUM_INV_SLOTS; i++) {
     // clear items, but only if they have write status.
-    if (!(pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)) {
-      memset(&(pp->Inv[i]), 0, sizeof(OBJECTTYPE));
-      pp->Inv[i].fFlags |= OBJECT_UNDROPPABLE;
+    if (!(pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)) {
+      memset(&(pp.value.Inv[i]), 0, sizeof(OBJECTTYPE));
+      pp.value.Inv[i].fFlags |= OBJECT_UNDROPPABLE;
     } else {
       // check to see what kind of item is here.  If we find a gun, for example, it'll make the
       // bWeaponClass negative to signify that a gun has already been specified, and later
       // code will use that to determine that and to pick ammo for it.
-      pItem = &pp->Inv[i];
+      pItem = &pp.value.Inv[i];
       if (!pItem)
         continue;
-      switch (Item[pItem->usItem].usItemClass) {
+      switch (Item[pItem.value.usItem].usItemClass) {
         case IC_GUN:
-          if (pItem->usItem != ROCKET_LAUNCHER) {
+          if (pItem.value.usItem != ROCKET_LAUNCHER) {
             bWeaponClass *= -1;
           } else // rocket launcher!
           {
@@ -518,13 +518,13 @@ function ChooseWeaponForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
     // Linda has added a specific gun to the merc's inventory, but no ammo.  So, we
     // will choose ammunition that works with the gun.
     for (i = 0; i < NUM_INV_SLOTS; i++) {
-      if (Item[pp->Inv[i].usItem].usItemClass == IC_GUN) {
-        usGunIndex = pp->Inv[i].usItem;
+      if (Item[pp.value.Inv[i].usItem].usItemClass == IC_GUN) {
+        usGunIndex = pp.value.Inv[i].usItem;
         ubChanceStandardAmmo = 100 - (bWeaponClass * -9); // weapon class is negative!
         usAmmoIndex = RandomMagazine(usGunIndex, ubChanceStandardAmmo);
 
         if (usGunIndex == ROCKET_RIFLE) {
-          pp->Inv[i].ubImprintID = (NO_PROFILE + 1);
+          pp.value.Inv[i].ubImprintID = (NO_PROFILE + 1);
         }
 
         break;
@@ -575,7 +575,7 @@ function ChooseWeaponForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
       // Count the number of valid attachments.
       for (i = 0; i < MAXITEMS; i++) {
         pItem = &Item[i];
-        if (pItem->usItemClass == IC_MISC && pItem->ubCoolness == bAttachClass && ValidAttachment(i, usGunIndex))
+        if (pItem.value.usItemClass == IC_MISC && pItem.value.ubCoolness == bAttachClass && ValidAttachment(i, usGunIndex))
           usNumMatches++;
       }
       if (!usNumMatches) {
@@ -586,7 +586,7 @@ function ChooseWeaponForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
       usRandom = Random(usNumMatches);
       for (i = 0; i < MAXITEMS; i++) {
         pItem = &Item[i];
-        if (pItem->usItemClass == IC_MISC && pItem->ubCoolness == bAttachClass && ValidAttachment(i, usGunIndex)) {
+        if (pItem.value.usItemClass == IC_MISC && pItem.value.ubCoolness == bAttachClass && ValidAttachment(i, usGunIndex)) {
           if (usRandom)
             usRandom--;
           else {
@@ -599,8 +599,8 @@ function ChooseWeaponForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
   }
   // Now, we have chosen all of the correct items.  Now, we will assign them into the slots.
   // Because we are dealing with enemies, automatically give them full ammo in their weapon.
-  if (!(pp->Inv[HANDPOS].fFlags & OBJECT_NO_OVERWRITE)) {
-    switch (pp->ubSoldierClass) {
+  if (!(pp.value.Inv[HANDPOS].fFlags & OBJECT_NO_OVERWRITE)) {
+    switch (pp.value.ubSoldierClass) {
       case SOLDIER_CLASS_ADMINISTRATOR:
       case SOLDIER_CLASS_ARMY:
       case SOLDIER_CLASS_GREEN_MILITIA:
@@ -622,14 +622,14 @@ function ChooseWeaponForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
         break;
     }
     // don't allow it to be lower than marksmanship, we don't want it to affect their chances of hitting
-    bStatus = max(pp->bMarksmanship, bStatus);
+    bStatus = max(pp.value.bMarksmanship, bStatus);
 
-    CreateItem(usGunIndex, bStatus, &(pp->Inv[HANDPOS]));
-    pp->Inv[HANDPOS].fFlags |= OBJECT_UNDROPPABLE;
+    CreateItem(usGunIndex, bStatus, &(pp.value.Inv[HANDPOS]));
+    pp.value.Inv[HANDPOS].fFlags |= OBJECT_UNDROPPABLE;
 
     // Rocket Rifles must come pre-imprinted, in case carrier gets killed without getting a shot off
     if (usGunIndex == ROCKET_RIFLE) {
-      pp->Inv[HANDPOS].ubImprintID = (NO_PROFILE + 1);
+      pp.value.Inv[HANDPOS].ubImprintID = (NO_PROFILE + 1);
     }
   } else {
     // slot locked, so don't add any attachments to it!
@@ -644,7 +644,7 @@ function ChooseWeaponForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
   if (usAttachIndex) {
     CreateItem(usAttachIndex, 100, &Object);
     Object.fFlags |= OBJECT_UNDROPPABLE;
-    AttachObject(NULL, &(pp->Inv[HANDPOS]), &Object);
+    AttachObject(NULL, &(pp.value.Inv[HANDPOS]), &Object);
   }
 }
 
@@ -889,8 +889,8 @@ function ChooseArmourForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
       for (i = 0; i < MAXITEMS; i++) {
         pItem = &Item[i];
         // NOTE: This relies on treated armor to have a coolness of 0 in order for enemies not to be equipped with it
-        if (pItem->usItemClass == IC_ARMOUR && pItem->ubCoolness == bHelmetClass) {
-          if (Armour[pItem->ubClassIndex].ubArmourClass == ARMOURCLASS_HELMET)
+        if (pItem.value.usItemClass == IC_ARMOUR && pItem.value.ubCoolness == bHelmetClass) {
+          if (Armour[pItem.value.ubClassIndex].ubArmourClass == ARMOURCLASS_HELMET)
             usNumMatches++;
         }
       }
@@ -902,14 +902,14 @@ function ChooseArmourForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
       usRandom = Random(usNumMatches);
       for (i = 0; i < MAXITEMS; i++) {
         pItem = &Item[i];
-        if (pItem->usItemClass == IC_ARMOUR && pItem->ubCoolness == bHelmetClass) {
-          if (Armour[pItem->ubClassIndex].ubArmourClass == ARMOURCLASS_HELMET) {
+        if (pItem.value.usItemClass == IC_ARMOUR && pItem.value.ubCoolness == bHelmetClass) {
+          if (Armour[pItem.value.ubClassIndex].ubArmourClass == ARMOURCLASS_HELMET) {
             if (usRandom)
               usRandom--;
             else {
-              if (!(pp->Inv[HELMETPOS].fFlags & OBJECT_NO_OVERWRITE)) {
-                CreateItem(i, (70 + Random(31)), &(pp->Inv[HELMETPOS]));
-                pp->Inv[HELMETPOS].fFlags |= OBJECT_UNDROPPABLE;
+              if (!(pp.value.Inv[HELMETPOS].fFlags & OBJECT_NO_OVERWRITE)) {
+                CreateItem(i, (70 + Random(31)), &(pp.value.Inv[HELMETPOS]));
+                pp.value.Inv[HELMETPOS].fFlags |= OBJECT_UNDROPPABLE;
               }
               break;
             }
@@ -931,8 +931,8 @@ function ChooseArmourForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
 
         pItem = &Item[i];
         // NOTE: This relies on treated armor to have a coolness of 0 in order for enemies not to be equipped with it
-        if (pItem->usItemClass == IC_ARMOUR && pItem->ubCoolness == bVestClass) {
-          if (Armour[pItem->ubClassIndex].ubArmourClass == ARMOURCLASS_VEST)
+        if (pItem.value.usItemClass == IC_ARMOUR && pItem.value.ubCoolness == bVestClass) {
+          if (Armour[pItem.value.ubClassIndex].ubArmourClass == ARMOURCLASS_VEST)
             usNumMatches++;
         }
       }
@@ -948,21 +948,21 @@ function ChooseArmourForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
           continue;
 
         pItem = &Item[i];
-        if (pItem->usItemClass == IC_ARMOUR && pItem->ubCoolness == bVestClass) {
-          if (Armour[pItem->ubClassIndex].ubArmourClass == ARMOURCLASS_VEST) {
+        if (pItem.value.usItemClass == IC_ARMOUR && pItem.value.ubCoolness == bVestClass) {
+          if (Armour[pItem.value.ubClassIndex].ubArmourClass == ARMOURCLASS_VEST) {
             if (usRandom)
               usRandom--;
             else {
-              if (!(pp->Inv[VESTPOS].fFlags & OBJECT_NO_OVERWRITE)) {
-                CreateItem(i, (70 + Random(31)), &(pp->Inv[VESTPOS]));
-                pp->Inv[VESTPOS].fFlags |= OBJECT_UNDROPPABLE;
+              if (!(pp.value.Inv[VESTPOS].fFlags & OBJECT_NO_OVERWRITE)) {
+                CreateItem(i, (70 + Random(31)), &(pp.value.Inv[VESTPOS]));
+                pp.value.Inv[VESTPOS].fFlags |= OBJECT_UNDROPPABLE;
 
                 if ((i == KEVLAR_VEST) || (i == SPECTRA_VEST)) {
                   // roll to see if he gets a CERAMIC PLATES, too.  Higher chance the higher his entitled vest class is
-                  if (Random(100) < (15 * (bOrigVestClass - pItem->ubCoolness))) {
+                  if (Random(100) < (15 * (bOrigVestClass - pItem.value.ubCoolness))) {
                     CreateItem(CERAMIC_PLATES, (70 + Random(31)), &Object);
                     Object.fFlags |= OBJECT_UNDROPPABLE;
-                    AttachObject(NULL, &(pp->Inv[VESTPOS]), &Object);
+                    AttachObject(NULL, &(pp.value.Inv[VESTPOS]), &Object);
                   }
                 }
               }
@@ -982,8 +982,8 @@ function ChooseArmourForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
       for (i = 0; i < MAXITEMS; i++) {
         pItem = &Item[i];
         // NOTE: This relies on treated armor to have a coolness of 0 in order for enemies not to be equipped with it
-        if (pItem->usItemClass == IC_ARMOUR && pItem->ubCoolness == bLeggingsClass) {
-          if (Armour[pItem->ubClassIndex].ubArmourClass == ARMOURCLASS_LEGGINGS)
+        if (pItem.value.usItemClass == IC_ARMOUR && pItem.value.ubCoolness == bLeggingsClass) {
+          if (Armour[pItem.value.ubClassIndex].ubArmourClass == ARMOURCLASS_LEGGINGS)
             usNumMatches++;
         }
       }
@@ -995,14 +995,14 @@ function ChooseArmourForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, b
       usRandom = Random(usNumMatches);
       for (i = 0; i < MAXITEMS; i++) {
         pItem = &Item[i];
-        if (pItem->usItemClass == IC_ARMOUR && pItem->ubCoolness == bLeggingsClass) {
-          if (Armour[pItem->ubClassIndex].ubArmourClass == ARMOURCLASS_LEGGINGS) {
+        if (pItem.value.usItemClass == IC_ARMOUR && pItem.value.ubCoolness == bLeggingsClass) {
+          if (Armour[pItem.value.ubClassIndex].ubArmourClass == ARMOURCLASS_LEGGINGS) {
             if (usRandom)
               usRandom--;
             else {
-              if (!(pp->Inv[LEGPOS].fFlags & OBJECT_NO_OVERWRITE)) {
-                CreateItem(i, (70 + Random(31)), &(pp->Inv[LEGPOS]));
-                pp->Inv[LEGPOS].fFlags |= OBJECT_UNDROPPABLE;
+              if (!(pp.value.Inv[LEGPOS].fFlags & OBJECT_NO_OVERWRITE)) {
+                CreateItem(i, (70 + Random(31)), &(pp.value.Inv[LEGPOS]));
+                pp.value.Inv[LEGPOS].fFlags |= OBJECT_UNDROPPABLE;
                 break;
               }
             }
@@ -1027,7 +1027,7 @@ function ChooseSpecialWeaponsForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_ST
     // don't find one, we keep lowering the class until we do.
     for (i = 0; i < MAXITEMS; i++) {
       pItem = &Item[i];
-      if ((pItem->usItemClass == IC_BLADE || pItem->usItemClass == IC_THROWING_KNIFE) && pItem->ubCoolness == bKnifeClass) {
+      if ((pItem.value.usItemClass == IC_BLADE || pItem.value.usItemClass == IC_THROWING_KNIFE) && pItem.value.ubCoolness == bKnifeClass) {
         usNumMatches++;
       }
     }
@@ -1039,7 +1039,7 @@ function ChooseSpecialWeaponsForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_ST
     usRandom = Random(usNumMatches);
     for (i = 0; i < MAXITEMS; i++) {
       pItem = &Item[i];
-      if ((pItem->usItemClass == IC_BLADE || pItem->usItemClass == IC_THROWING_KNIFE) && pItem->ubCoolness == bKnifeClass) {
+      if ((pItem.value.usItemClass == IC_BLADE || pItem.value.usItemClass == IC_THROWING_KNIFE) && pItem.value.ubCoolness == bKnifeClass) {
         if (usRandom)
           usRandom--;
         else {
@@ -1083,7 +1083,7 @@ function ChooseSpecialWeaponsForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_ST
 
 function ChooseFaceGearForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>): void {
   let i: INT32;
-  let bDifficultyRating: INT8 = CalcDifficultyModifier(pp->ubSoldierClass);
+  let bDifficultyRating: INT8 = CalcDifficultyModifier(pp.value.ubSoldierClass);
 
   if (gWorldSectorX == TIXA_SECTOR_X && gWorldSectorY == TIXA_SECTOR_Y && StrategicMap[TIXA_SECTOR_X + TIXA_SECTOR_Y * MAP_WORLD_X].fEnemyControlled) {
     // Tixa is a special case that is handled differently.
@@ -1093,7 +1093,7 @@ function ChooseFaceGearForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>)
   // Look for any face item in the big pocket positions (the only place they can be added in the editor)
   // If any are found, then don't assign any
   for (i = BIGPOCK1POS; i < BIGPOCK4POS; i++) {
-    if (Item[pp->Inv[i].usItem].usItemClass == IC_FACE) {
+    if (Item[pp.value.Inv[i].usItem].usItemClass == IC_FACE) {
       return;
     }
   }
@@ -1101,23 +1101,23 @@ function ChooseFaceGearForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>)
   // KM: (NEW)
   // Note the lack of overwritable item checking here.  This is because faceitems are not
   // supported in the editor, hence they can't have this status.
-  switch (pp->ubSoldierClass) {
+  switch (pp.value.ubSoldierClass) {
     case SOLDIER_CLASS_ELITE:
     case SOLDIER_CLASS_ELITE_MILITIA:
       // All elites get a gasmask and either night goggles or uv goggles.
       if (Chance(75)) {
-        CreateItem(GASMASK, (70 + Random(31)), &(pp->Inv[HEAD1POS]));
-        pp->Inv[HEAD1POS].fFlags |= OBJECT_UNDROPPABLE;
+        CreateItem(GASMASK, (70 + Random(31)), &(pp.value.Inv[HEAD1POS]));
+        pp.value.Inv[HEAD1POS].fFlags |= OBJECT_UNDROPPABLE;
       } else {
-        CreateItem(EXTENDEDEAR, (70 + Random(31)), &(pp->Inv[HEAD1POS]));
-        pp->Inv[HEAD1POS].fFlags |= OBJECT_UNDROPPABLE;
+        CreateItem(EXTENDEDEAR, (70 + Random(31)), &(pp.value.Inv[HEAD1POS]));
+        pp.value.Inv[HEAD1POS].fFlags |= OBJECT_UNDROPPABLE;
       }
       if (Chance(75)) {
-        CreateItem(NIGHTGOGGLES, (70 + Random(31)), &(pp->Inv[HEAD2POS]));
-        pp->Inv[HEAD2POS].fFlags |= OBJECT_UNDROPPABLE;
+        CreateItem(NIGHTGOGGLES, (70 + Random(31)), &(pp.value.Inv[HEAD2POS]));
+        pp.value.Inv[HEAD2POS].fFlags |= OBJECT_UNDROPPABLE;
       } else {
-        CreateItem(UVGOGGLES, (70 + Random(31)), &(pp->Inv[HEAD2POS]));
-        pp->Inv[HEAD2POS].fFlags |= OBJECT_UNDROPPABLE;
+        CreateItem(UVGOGGLES, (70 + Random(31)), &(pp.value.Inv[HEAD2POS]));
+        pp.value.Inv[HEAD2POS].fFlags |= OBJECT_UNDROPPABLE;
       }
       break;
     case SOLDIER_CLASS_ARMY:
@@ -1125,17 +1125,17 @@ function ChooseFaceGearForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>)
       if (Chance(bDifficultyRating / 2)) {
         // chance of getting a face item
         if (Chance(50)) {
-          CreateItem(GASMASK, (70 + Random(31)), &(pp->Inv[HEAD1POS]));
-          pp->Inv[HEAD1POS].fFlags |= OBJECT_UNDROPPABLE;
+          CreateItem(GASMASK, (70 + Random(31)), &(pp.value.Inv[HEAD1POS]));
+          pp.value.Inv[HEAD1POS].fFlags |= OBJECT_UNDROPPABLE;
         } else {
-          CreateItem(NIGHTGOGGLES, (70 + Random(31)), &(pp->Inv[HEAD1POS]));
-          pp->Inv[HEAD1POS].fFlags |= OBJECT_UNDROPPABLE;
+          CreateItem(NIGHTGOGGLES, (70 + Random(31)), &(pp.value.Inv[HEAD1POS]));
+          pp.value.Inv[HEAD1POS].fFlags |= OBJECT_UNDROPPABLE;
         }
       }
       if (Chance(bDifficultyRating / 3)) {
         // chance of getting a extended ear
-        CreateItem(EXTENDEDEAR, (70 + Random(31)), &(pp->Inv[HEAD2POS]));
-        pp->Inv[HEAD2POS].fFlags |= OBJECT_UNDROPPABLE;
+        CreateItem(EXTENDEDEAR, (70 + Random(31)), &(pp.value.Inv[HEAD2POS]));
+        pp.value.Inv[HEAD2POS].fFlags |= OBJECT_UNDROPPABLE;
       }
       break;
     case SOLDIER_CLASS_ADMINISTRATOR:
@@ -1162,7 +1162,7 @@ function ChooseKitsForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, bKi
     for (i = 0; i < MAXITEMS; i++) {
       pItem = &Item[i];
       // skip toolkits
-      if ((pItem->usItemClass == IC_KIT) && (pItem->ubCoolness > 0) && pItem->ubCoolness <= bKitClass && (i != TOOLKIT)) {
+      if ((pItem.value.usItemClass == IC_KIT) && (pItem.value.ubCoolness > 0) && pItem.value.ubCoolness <= bKitClass && (i != TOOLKIT)) {
         usNumMatches++;
       }
     }
@@ -1173,7 +1173,7 @@ function ChooseKitsForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, bKi
       for (i = 0; i < MAXITEMS; i++) {
         pItem = &Item[i];
         // skip toolkits
-        if ((pItem->usItemClass == IC_KIT) && (pItem->ubCoolness > 0) && pItem->ubCoolness <= bKitClass && (i != TOOLKIT)) {
+        if ((pItem.value.usItemClass == IC_KIT) && (pItem.value.ubCoolness > 0) && pItem.value.ubCoolness <= bKitClass && (i != TOOLKIT)) {
           if (usRandom)
             usRandom--;
           else {
@@ -1221,7 +1221,7 @@ function ChooseMiscGearForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>,
   i = 0;
   while (iMiscItemsList[i] != -1) {
     pItem = &Item[iMiscItemsList[i]];
-    if ((pItem->ubCoolness > 0) && (pItem->ubCoolness <= bMiscClass)) {
+    if ((pItem.value.ubCoolness > 0) && (pItem.value.ubCoolness <= bMiscClass)) {
       // exclude REGEN_BOOSTERs unless Sci-Fi flag is on
       if ((iMiscItemsList[i] != REGEN_BOOSTER) || (gGameOptions.fSciFi)) {
         usNumMatches++;
@@ -1238,7 +1238,7 @@ function ChooseMiscGearForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>,
     i = 0;
     while (iMiscItemsList[i] != -1) {
       pItem = &Item[iMiscItemsList[i]];
-      if ((pItem->ubCoolness > 0) && (pItem->ubCoolness <= bMiscClass)) {
+      if ((pItem.value.ubCoolness > 0) && (pItem.value.ubCoolness <= bMiscClass)) {
         // exclude REGEN_BOOSTERs unless Sci-Fi flag is on
         if ((iMiscItemsList[i] != REGEN_BOOSTER) || (gGameOptions.fSciFi)) {
           if (usRandom)
@@ -1267,7 +1267,7 @@ function ChooseBombsForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, bB
   // count how many are eligible
   for (i = 0; i < MAXITEMS; i++) {
     pItem = &Item[i];
-    if ((pItem->usItemClass == IC_BOMB) && (pItem->ubCoolness > 0) && (pItem->ubCoolness <= bBombClass)) {
+    if ((pItem.value.usItemClass == IC_BOMB) && (pItem.value.ubCoolness > 0) && (pItem.value.ubCoolness <= bBombClass)) {
       usNumMatches++;
     }
   }
@@ -1277,7 +1277,7 @@ function ChooseBombsForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, bB
     usRandom = Random(usNumMatches);
     for (i = 0; i < MAXITEMS; i++) {
       pItem = &Item[i];
-      if ((pItem->usItemClass == IC_BOMB) && (pItem->ubCoolness > 0) && (pItem->ubCoolness <= bBombClass)) {
+      if ((pItem.value.usItemClass == IC_BOMB) && (pItem.value.ubCoolness > 0) && (pItem.value.ubCoolness <= bBombClass)) {
         if (usRandom)
           usRandom--;
         else {
@@ -1304,29 +1304,29 @@ function ChooseLocationSpecificGearForSoldierCreateStruct(pp: Pointer<SOLDIERCRE
 
 function PlaceObjectInSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, pObject: Pointer<OBJECTTYPE>): BOOLEAN {
   let i: INT8;
-  if (!Item[pObject->usItem].ubPerPocket) {
+  if (!Item[pObject.value.usItem].ubPerPocket) {
     // ubPerPocket == 0 will only fit in large pockets.
-    pObject->ubNumberOfObjects = 1;
+    pObject.value.ubNumberOfObjects = 1;
     for (i = BIGPOCK1POS; i <= BIGPOCK4POS; i++) {
-      if (!(pp->Inv[i].usItem) && !(pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)) {
-        memcpy(&(pp->Inv[i]), pObject, sizeof(OBJECTTYPE));
+      if (!(pp.value.Inv[i].usItem) && !(pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)) {
+        memcpy(&(pp.value.Inv[i]), pObject, sizeof(OBJECTTYPE));
         return TRUE;
       }
     }
     return FALSE;
   } else {
-    pObject->ubNumberOfObjects = min(Item[pObject->usItem].ubPerPocket, pObject->ubNumberOfObjects);
+    pObject.value.ubNumberOfObjects = min(Item[pObject.value.usItem].ubPerPocket, pObject.value.ubNumberOfObjects);
     // try to get it into a small pocket first
     for (i = SMALLPOCK1POS; i <= SMALLPOCK8POS; i++) {
-      if (!(pp->Inv[i].usItem) && !(pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)) {
-        memcpy(&(pp->Inv[i]), pObject, sizeof(OBJECTTYPE));
+      if (!(pp.value.Inv[i].usItem) && !(pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)) {
+        memcpy(&(pp.value.Inv[i]), pObject, sizeof(OBJECTTYPE));
         return TRUE;
       }
     }
     for (i = BIGPOCK1POS; i <= BIGPOCK4POS; i++) {
       // no space free in small pockets, so put it into a large pocket.
-      if (!(pp->Inv[i].usItem) && !(pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)) {
-        memcpy(&(pp->Inv[i]), pObject, sizeof(OBJECTTYPE));
+      if (!(pp.value.Inv[i].usItem) && !(pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)) {
+        memcpy(&(pp.value.Inv[i]), pObject, sizeof(OBJECTTYPE));
         return TRUE;
       }
     }
@@ -1410,16 +1410,16 @@ function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>,
   if (SOLDIER_CLASS_ENEMY(bSoldierClass) && !IsAutoResolveActive()) {
     // SPECIAL handling for weapons: we'll always drop a weapon type that has never been dropped before
     for (i = 0; i < NUM_INV_SLOTS; i++) {
-      usItem = pp->Inv[i].usItem;
+      usItem = pp.value.Inv[i].usItem;
       // if it's a weapon (monster parts included - they won't drop due to checks elsewhere!)
       if ((usItem > NONE) && (usItem < MAX_WEAPONS)) {
         // and we're allowed to change its flags
-        if (!(pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)) {
+        if (!(pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)) {
           // and it's never been dropped before in this game
           if (!gStrategicStatus.fWeaponDroppedAlready[usItem]) {
             // mark it as droppable, and remember we did so.  If the player never kills this particular dude, oh well,
             // tough luck, he missed his chance for an easy reward, he'll have to wait til next time and need some luck...
-            pp->Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
+            pp.value.Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
 
             MarkAllWeaponsOfSameGunClassAsDropped(usItem);
           }
@@ -1471,12 +1471,12 @@ function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>,
   if (fAmmo) {
     // now drops ALL ammo found, not just the first slot
     for (i = 0; i < NUM_INV_SLOTS; i++) {
-      uiItemClass = Item[pp->Inv[i].usItem].usItemClass;
+      uiItemClass = Item[pp.value.Inv[i].usItem].usItemClass;
       if (uiItemClass == IC_AMMO) {
-        if (pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)
+        if (pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)
           continue;
         else {
-          pp->Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
+          pp.value.Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
         }
       }
     }
@@ -1485,9 +1485,9 @@ function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>,
   if (fWeapon) {
     ubNumMatches = 0;
     for (i = 0; i < NUM_INV_SLOTS; i++) {
-      uiItemClass = Item[pp->Inv[i].usItem].usItemClass;
+      uiItemClass = Item[pp.value.Inv[i].usItem].usItemClass;
       if (uiItemClass == IC_GUN || uiItemClass == IC_LAUNCHER) {
-        if (pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)
+        if (pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)
           break;
         else
           ubNumMatches++;
@@ -1495,12 +1495,12 @@ function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>,
     }
     if (ubNumMatches > 0) {
       for (i = 0; i < NUM_INV_SLOTS; i++) {
-        uiItemClass = Item[pp->Inv[i].usItem].usItemClass;
+        uiItemClass = Item[pp.value.Inv[i].usItem].usItemClass;
         if (uiItemClass == IC_GUN || uiItemClass == IC_LAUNCHER) {
-          if (pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)
+          if (pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)
             break;
           else if (!Random(ubNumMatches--)) {
-            pp->Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
+            pp.value.Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
             break;
           }
         }
@@ -1511,9 +1511,9 @@ function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>,
   if (fArmour) {
     ubNumMatches = 0;
     for (i = 0; i < NUM_INV_SLOTS; i++) {
-      uiItemClass = Item[pp->Inv[i].usItem].usItemClass;
+      uiItemClass = Item[pp.value.Inv[i].usItem].usItemClass;
       if (uiItemClass == IC_ARMOUR) {
-        if (pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)
+        if (pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)
           break;
         else
           ubNumMatches++;
@@ -1521,12 +1521,12 @@ function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>,
     }
     if (ubNumMatches > 0) {
       for (i = 0; i < NUM_INV_SLOTS; i++) {
-        uiItemClass = Item[pp->Inv[i].usItem].usItemClass;
+        uiItemClass = Item[pp.value.Inv[i].usItem].usItemClass;
         if (uiItemClass == IC_ARMOUR) {
-          if (pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)
+          if (pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)
             break;
           else if (!Random(ubNumMatches--)) {
-            pp->Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
+            pp.value.Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
             break;
           }
         }
@@ -1537,12 +1537,12 @@ function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>,
   if (fKnife) {
     for (i = 0; i < NUM_INV_SLOTS; i++) {
       // drops FIRST knife found
-      uiItemClass = Item[pp->Inv[i].usItem].usItemClass;
+      uiItemClass = Item[pp.value.Inv[i].usItem].usItemClass;
       if (uiItemClass == IC_BLADE || uiItemClass == IC_THROWING_KNIFE) {
-        if (pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)
+        if (pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)
           break;
         else {
-          pp->Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
+          pp.value.Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
           break;
         }
       }
@@ -1553,9 +1553,9 @@ function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>,
   if (fGrenades) {
     ubNumMatches = 0;
     for (i = 0; i < NUM_INV_SLOTS; i++) {
-      uiItemClass = Item[pp->Inv[i].usItem].usItemClass;
+      uiItemClass = Item[pp.value.Inv[i].usItem].usItemClass;
       if (uiItemClass & IC_GRENADE) {
-        if (pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)
+        if (pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)
           break;
         else
           ubNumMatches++;
@@ -1563,12 +1563,12 @@ function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>,
     }
     if (ubNumMatches > 0) {
       for (i = 0; i < NUM_INV_SLOTS; i++) {
-        uiItemClass = Item[pp->Inv[i].usItem].usItemClass;
+        uiItemClass = Item[pp.value.Inv[i].usItem].usItemClass;
         if (uiItemClass & IC_GRENADE) {
-          if (pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)
+          if (pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)
             break;
           else if (!Random(ubNumMatches--)) {
-            pp->Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
+            pp.value.Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
             break;
           }
         }
@@ -1579,9 +1579,9 @@ function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>,
   if (fKit) {
     ubNumMatches = 0;
     for (i = 0; i < NUM_INV_SLOTS; i++) {
-      uiItemClass = Item[pp->Inv[i].usItem].usItemClass;
+      uiItemClass = Item[pp.value.Inv[i].usItem].usItemClass;
       if (uiItemClass == IC_MEDKIT || uiItemClass == IC_KIT) {
-        if (pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)
+        if (pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)
           break;
         else
           ubNumMatches++;
@@ -1589,12 +1589,12 @@ function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>,
     }
     if (ubNumMatches > 0) {
       for (i = 0; i < NUM_INV_SLOTS; i++) {
-        uiItemClass = Item[pp->Inv[i].usItem].usItemClass;
+        uiItemClass = Item[pp.value.Inv[i].usItem].usItemClass;
         if (uiItemClass == IC_MEDKIT || uiItemClass == IC_KIT) {
-          if (pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)
+          if (pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)
             break;
           else if (!Random(ubNumMatches--)) {
-            pp->Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
+            pp.value.Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
             break;
           }
         }
@@ -1605,9 +1605,9 @@ function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>,
   if (fFace) {
     ubNumMatches = 0;
     for (i = 0; i < NUM_INV_SLOTS; i++) {
-      uiItemClass = Item[pp->Inv[i].usItem].usItemClass;
+      uiItemClass = Item[pp.value.Inv[i].usItem].usItemClass;
       if (uiItemClass == IC_FACE) {
-        if (pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)
+        if (pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)
           break;
         else
           ubNumMatches++;
@@ -1615,12 +1615,12 @@ function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>,
     }
     if (ubNumMatches > 0) {
       for (i = 0; i < NUM_INV_SLOTS; i++) {
-        uiItemClass = Item[pp->Inv[i].usItem].usItemClass;
+        uiItemClass = Item[pp.value.Inv[i].usItem].usItemClass;
         if (uiItemClass == IC_FACE) {
-          if (pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)
+          if (pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)
             break;
           else if (!Random(ubNumMatches--)) {
-            pp->Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
+            pp.value.Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
             break;
           }
         }
@@ -1631,9 +1631,9 @@ function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>,
   if (fMisc) {
     ubNumMatches = 0;
     for (i = 0; i < NUM_INV_SLOTS; i++) {
-      uiItemClass = Item[pp->Inv[i].usItem].usItemClass;
+      uiItemClass = Item[pp.value.Inv[i].usItem].usItemClass;
       if (uiItemClass == IC_MISC) {
-        if (pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)
+        if (pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)
           break;
         else
           ubNumMatches++;
@@ -1641,12 +1641,12 @@ function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>,
     }
     if (ubNumMatches > 0) {
       for (i = 0; i < NUM_INV_SLOTS; i++) {
-        uiItemClass = Item[pp->Inv[i].usItem].usItemClass;
+        uiItemClass = Item[pp.value.Inv[i].usItem].usItemClass;
         if (uiItemClass == IC_MISC) {
-          if (pp->Inv[i].fFlags & OBJECT_NO_OVERWRITE)
+          if (pp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE)
             break;
           else if (!Random(ubNumMatches--)) {
-            pp->Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
+            pp.value.Inv[i].fFlags &= ~OBJECT_UNDROPPABLE;
             break;
           }
         }
@@ -1662,77 +1662,77 @@ function AssignCreatureInventory(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   // all creature items in this first section are only offensive/defensive placeholders, and
   // never get dropped, because they're not real items!
-  switch (pSoldier->ubBodyType) {
+  switch (pSoldier.value.ubBodyType) {
     case ADULTFEMALEMONSTER:
-      CreateItem(CREATURE_OLD_FEMALE_CLAWS, 100, &(pSoldier->inv[HANDPOS]));
-      CreateItem(CREATURE_OLD_FEMALE_HIDE, 100, &(pSoldier->inv[HELMETPOS]));
-      CreateItem(CREATURE_OLD_FEMALE_HIDE, 100, &(pSoldier->inv[VESTPOS]));
-      CreateItem(CREATURE_OLD_FEMALE_HIDE, 100, &(pSoldier->inv[LEGPOS]));
+      CreateItem(CREATURE_OLD_FEMALE_CLAWS, 100, &(pSoldier.value.inv[HANDPOS]));
+      CreateItem(CREATURE_OLD_FEMALE_HIDE, 100, &(pSoldier.value.inv[HELMETPOS]));
+      CreateItem(CREATURE_OLD_FEMALE_HIDE, 100, &(pSoldier.value.inv[VESTPOS]));
+      CreateItem(CREATURE_OLD_FEMALE_HIDE, 100, &(pSoldier.value.inv[LEGPOS]));
       uiChanceToDrop = 30;
       break;
     case AM_MONSTER:
-      CreateItem(CREATURE_OLD_MALE_CLAWS, 100, &(pSoldier->inv[HANDPOS]));
-      CreateItem(CREATURE_OLD_MALE_SPIT, 100, &(pSoldier->inv[SECONDHANDPOS]));
-      CreateItem(CREATURE_OLD_MALE_HIDE, 100, &(pSoldier->inv[HELMETPOS]));
-      CreateItem(CREATURE_OLD_MALE_HIDE, 100, &(pSoldier->inv[VESTPOS]));
-      CreateItem(CREATURE_OLD_MALE_HIDE, 100, &(pSoldier->inv[LEGPOS]));
+      CreateItem(CREATURE_OLD_MALE_CLAWS, 100, &(pSoldier.value.inv[HANDPOS]));
+      CreateItem(CREATURE_OLD_MALE_SPIT, 100, &(pSoldier.value.inv[SECONDHANDPOS]));
+      CreateItem(CREATURE_OLD_MALE_HIDE, 100, &(pSoldier.value.inv[HELMETPOS]));
+      CreateItem(CREATURE_OLD_MALE_HIDE, 100, &(pSoldier.value.inv[VESTPOS]));
+      CreateItem(CREATURE_OLD_MALE_HIDE, 100, &(pSoldier.value.inv[LEGPOS]));
       uiChanceToDrop = 30;
       fMaleCreature = TRUE;
       break;
     case YAF_MONSTER:
-      CreateItem(CREATURE_YOUNG_FEMALE_CLAWS, 100, &(pSoldier->inv[HANDPOS]));
-      CreateItem(CREATURE_YOUNG_FEMALE_HIDE, 100, &(pSoldier->inv[HELMETPOS]));
-      CreateItem(CREATURE_YOUNG_FEMALE_HIDE, 100, &(pSoldier->inv[VESTPOS]));
-      CreateItem(CREATURE_YOUNG_FEMALE_HIDE, 100, &(pSoldier->inv[LEGPOS]));
+      CreateItem(CREATURE_YOUNG_FEMALE_CLAWS, 100, &(pSoldier.value.inv[HANDPOS]));
+      CreateItem(CREATURE_YOUNG_FEMALE_HIDE, 100, &(pSoldier.value.inv[HELMETPOS]));
+      CreateItem(CREATURE_YOUNG_FEMALE_HIDE, 100, &(pSoldier.value.inv[VESTPOS]));
+      CreateItem(CREATURE_YOUNG_FEMALE_HIDE, 100, &(pSoldier.value.inv[LEGPOS]));
       uiChanceToDrop = 15;
       break;
     case YAM_MONSTER:
-      CreateItem(CREATURE_YOUNG_MALE_CLAWS, 100, &(pSoldier->inv[HANDPOS]));
-      CreateItem(CREATURE_YOUNG_MALE_SPIT, 100, &(pSoldier->inv[SECONDHANDPOS]));
-      CreateItem(CREATURE_YOUNG_MALE_HIDE, 100, &(pSoldier->inv[HELMETPOS]));
-      CreateItem(CREATURE_YOUNG_MALE_HIDE, 100, &(pSoldier->inv[VESTPOS]));
-      CreateItem(CREATURE_YOUNG_MALE_HIDE, 100, &(pSoldier->inv[LEGPOS]));
+      CreateItem(CREATURE_YOUNG_MALE_CLAWS, 100, &(pSoldier.value.inv[HANDPOS]));
+      CreateItem(CREATURE_YOUNG_MALE_SPIT, 100, &(pSoldier.value.inv[SECONDHANDPOS]));
+      CreateItem(CREATURE_YOUNG_MALE_HIDE, 100, &(pSoldier.value.inv[HELMETPOS]));
+      CreateItem(CREATURE_YOUNG_MALE_HIDE, 100, &(pSoldier.value.inv[VESTPOS]));
+      CreateItem(CREATURE_YOUNG_MALE_HIDE, 100, &(pSoldier.value.inv[LEGPOS]));
       uiChanceToDrop = 15;
       fMaleCreature = TRUE;
       break;
     case INFANT_MONSTER:
-      CreateItem(CREATURE_INFANT_SPIT, 100, &(pSoldier->inv[HANDPOS]));
-      CreateItem(CREATURE_INFANT_HIDE, 100, &(pSoldier->inv[HELMETPOS]));
-      CreateItem(CREATURE_INFANT_HIDE, 100, &(pSoldier->inv[VESTPOS]));
-      CreateItem(CREATURE_INFANT_HIDE, 100, &(pSoldier->inv[LEGPOS]));
+      CreateItem(CREATURE_INFANT_SPIT, 100, &(pSoldier.value.inv[HANDPOS]));
+      CreateItem(CREATURE_INFANT_HIDE, 100, &(pSoldier.value.inv[HELMETPOS]));
+      CreateItem(CREATURE_INFANT_HIDE, 100, &(pSoldier.value.inv[VESTPOS]));
+      CreateItem(CREATURE_INFANT_HIDE, 100, &(pSoldier.value.inv[LEGPOS]));
       uiChanceToDrop = 5;
       break;
     case LARVAE_MONSTER:
       uiChanceToDrop = 0;
       break;
     case QUEENMONSTER:
-      CreateItem(CREATURE_QUEEN_SPIT, 100, &(pSoldier->inv[HANDPOS]));
-      CreateItem(CREATURE_QUEEN_TENTACLES, 100, &(pSoldier->inv[SECONDHANDPOS]));
-      CreateItem(CREATURE_QUEEN_HIDE, 100, &(pSoldier->inv[HELMETPOS]));
-      CreateItem(CREATURE_QUEEN_HIDE, 100, &(pSoldier->inv[VESTPOS]));
-      CreateItem(CREATURE_QUEEN_HIDE, 100, &(pSoldier->inv[LEGPOS]));
+      CreateItem(CREATURE_QUEEN_SPIT, 100, &(pSoldier.value.inv[HANDPOS]));
+      CreateItem(CREATURE_QUEEN_TENTACLES, 100, &(pSoldier.value.inv[SECONDHANDPOS]));
+      CreateItem(CREATURE_QUEEN_HIDE, 100, &(pSoldier.value.inv[HELMETPOS]));
+      CreateItem(CREATURE_QUEEN_HIDE, 100, &(pSoldier.value.inv[VESTPOS]));
+      CreateItem(CREATURE_QUEEN_HIDE, 100, &(pSoldier.value.inv[LEGPOS]));
       // she can't drop anything, because the items are unreachable anyways (she's too big!)
       uiChanceToDrop = 0;
       break;
     case BLOODCAT:
-      CreateItem(BLOODCAT_CLAW_ATTACK, 100, &(pSoldier->inv[HANDPOS]));
-      CreateItem(BLOODCAT_BITE, 100, &(pSoldier->inv[SECONDHANDPOS]));
+      CreateItem(BLOODCAT_CLAW_ATTACK, 100, &(pSoldier.value.inv[HANDPOS]));
+      CreateItem(BLOODCAT_BITE, 100, &(pSoldier.value.inv[SECONDHANDPOS]));
       fBloodcat = TRUE;
       uiChanceToDrop = 30;
       break;
 
     default:
-      AssertMsg(FALSE, String("Invalid creature bodytype %d", pSoldier->ubBodyType));
+      AssertMsg(FALSE, String("Invalid creature bodytype %d", pSoldier.value.ubBodyType));
       return;
   }
 
   // decide if the creature will drop any REAL bodyparts
   if (Random(100) < uiChanceToDrop) {
-    CreateItem((fBloodcat ? BLOODCAT_CLAWS : CREATURE_PART_CLAWS), (80 + Random(21)), &(pSoldier->inv[BIGPOCK1POS]));
+    CreateItem((fBloodcat ? BLOODCAT_CLAWS : CREATURE_PART_CLAWS), (80 + Random(21)), &(pSoldier.value.inv[BIGPOCK1POS]));
   }
 
   if (Random(100) < uiChanceToDrop) {
-    CreateItem((fBloodcat ? BLOODCAT_TEETH : CREATURE_PART_FLESH), (80 + Random(21)), &(pSoldier->inv[BIGPOCK2POS]));
+    CreateItem((fBloodcat ? BLOODCAT_TEETH : CREATURE_PART_FLESH), (80 + Random(21)), &(pSoldier.value.inv[BIGPOCK2POS]));
   }
 
   // as requested by ATE, males are more likely to drop their "organs" (he actually suggested this, I'm serious!)
@@ -1742,7 +1742,7 @@ function AssignCreatureInventory(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 
   if (Random(100) < uiChanceToDrop) {
-    CreateItem((fBloodcat ? BLOODCAT_PELT : CREATURE_PART_ORGAN), (80 + Random(21)), &(pSoldier->inv[BIGPOCK3POS]));
+    CreateItem((fBloodcat ? BLOODCAT_PELT : CREATURE_PART_ORGAN), (80 + Random(21)), &(pSoldier.value.inv[BIGPOCK3POS]));
   }
 }
 
@@ -1758,7 +1758,7 @@ function ReplaceExtendedGuns(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClass: I
   let usNewAmmo: UINT16;
 
   for (uiLoop = 0; uiLoop < NUM_INV_SLOTS; uiLoop++) {
-    usItem = pp->Inv[uiLoop].usItem;
+    usItem = pp.value.Inv[uiLoop].usItem;
 
     if ((Item[usItem].usItemClass & IC_GUN) && ExtendedGunListGun(usItem)) {
       if (bSoldierClass == SOLDIER_CLASS_NONE) {
@@ -1771,9 +1771,9 @@ function ReplaceExtendedGuns(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClass: I
 
       if (usNewGun != NOTHING) {
         // have to replace!  but first (ugh) must store backup (b/c of attachments)
-        CopyObj(&(pp->Inv[uiLoop]), &OldObj);
-        CreateItem(usNewGun, OldObj.bGunStatus, &(pp->Inv[uiLoop]));
-        pp->Inv[uiLoop].fFlags = OldObj.fFlags;
+        CopyObj(&(pp.value.Inv[uiLoop]), &OldObj);
+        CreateItem(usNewGun, OldObj.bGunStatus, &(pp.value.Inv[uiLoop]));
+        pp.value.Inv[uiLoop].fFlags = OldObj.fFlags;
 
         // copy any valid attachments; for others, just drop them...
         if (ItemHasAttachments(&OldObj)) {
@@ -1782,8 +1782,8 @@ function ReplaceExtendedGuns(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClass: I
           // loop!
           for (uiLoop2 = 0; uiLoop2 < MAX_ATTACHMENTS; uiLoop2++) {
             if ((OldObj.usAttachItem[uiLoop2] != NOTHING) && ValidAttachment(OldObj.usAttachItem[uiLoop2], usNewGun)) {
-              pp->Inv[uiLoop].usAttachItem[uiAttachDestIndex] = OldObj.usAttachItem[uiLoop2];
-              pp->Inv[uiLoop].bAttachStatus[uiAttachDestIndex] = OldObj.bAttachStatus[uiLoop2];
+              pp.value.Inv[uiLoop].usAttachItem[uiAttachDestIndex] = OldObj.usAttachItem[uiLoop2];
+              pp.value.Inv[uiLoop].bAttachStatus[uiAttachDestIndex] = OldObj.bAttachStatus[uiLoop2];
               uiAttachDestIndex++;
             }
           }
@@ -1791,12 +1791,12 @@ function ReplaceExtendedGuns(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClass: I
 
         // must search through inventory and replace ammo accordingly
         for (uiLoop2 = 0; uiLoop2 < NUM_INV_SLOTS; uiLoop2++) {
-          usAmmo = pp->Inv[uiLoop2].usItem;
+          usAmmo = pp.value.Inv[uiLoop2].usItem;
           if ((Item[usAmmo].usItemClass & IC_AMMO)) {
             usNewAmmo = FindReplacementMagazineIfNecessary(usItem, usAmmo, usNewGun);
             if (usNewAmmo != NOTHING) {
               // found a new magazine, replace...
-              CreateItems(usNewAmmo, 100, pp->Inv[uiLoop2].ubNumberOfObjects, &(pp->Inv[uiLoop2]));
+              CreateItems(usNewAmmo, 100, pp.value.Inv[uiLoop2].ubNumberOfObjects, &(pp.value.Inv[uiLoop2]));
             }
           }
         }
@@ -1839,8 +1839,8 @@ function EquipTank(pp: Pointer<SOLDIERCREATE_STRUCT>): void {
   // tanks get special equipment, and they drop nothing (MGs are hard-mounted & non-removable)
 
   // main cannon
-  CreateItem(TANK_CANNON, (80 + Random(21)), &(pp->Inv[HANDPOS]));
-  pp->Inv[HANDPOS].fFlags |= OBJECT_UNDROPPABLE;
+  CreateItem(TANK_CANNON, (80 + Random(21)), &(pp.value.Inv[HANDPOS]));
+  pp.value.Inv[HANDPOS].fFlags |= OBJECT_UNDROPPABLE;
 
   // machine gun
   CreateItems(MINIMI, (80 + Random(21)), 1, &Object);
@@ -1853,12 +1853,12 @@ function EquipTank(pp: Pointer<SOLDIERCREATE_STRUCT>): void {
   PlaceObjectInSoldierCreateStruct(pp, &Object);
 
   // armour equal to spectra all over (for vs explosives)
-  CreateItem(SPECTRA_VEST, 100, &(pp->Inv[VESTPOS]));
-  pp->Inv[VESTPOS].fFlags |= OBJECT_UNDROPPABLE;
-  CreateItem(SPECTRA_HELMET, 100, &(pp->Inv[HELMETPOS]));
-  pp->Inv[HELMETPOS].fFlags |= OBJECT_UNDROPPABLE;
-  CreateItem(SPECTRA_LEGGINGS, 100, &(pp->Inv[LEGPOS]));
-  pp->Inv[LEGPOS].fFlags |= OBJECT_UNDROPPABLE;
+  CreateItem(SPECTRA_VEST, 100, &(pp.value.Inv[VESTPOS]));
+  pp.value.Inv[VESTPOS].fFlags |= OBJECT_UNDROPPABLE;
+  CreateItem(SPECTRA_HELMET, 100, &(pp.value.Inv[HELMETPOS]));
+  pp.value.Inv[HELMETPOS].fFlags |= OBJECT_UNDROPPABLE;
+  CreateItem(SPECTRA_LEGGINGS, 100, &(pp.value.Inv[LEGPOS]));
+  pp.value.Inv[LEGPOS].fFlags |= OBJECT_UNDROPPABLE;
 }
 
 function ResetMortarsOnTeamCount(): void {

@@ -205,13 +205,13 @@ function SelectMercFaceMoveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, reason
   //	fReDrawNewMailFlag = TRUE;
 
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    pRegion->uiFlags &= (~BUTTON_CLICKED_ON);
+    pRegion.value.uiFlags &= (~BUTTON_CLICKED_ON);
     DrawMercsFaceToScreen(ubMercNum, usPosX, usPosY, 1);
-    InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
+    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    pRegion->uiFlags |= BUTTON_CLICKED_ON;
+    pRegion.value.uiFlags |= BUTTON_CLICKED_ON;
     DrawMercsFaceToScreen(ubMercNum, usPosX, usPosY, 0);
-    InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
+    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
   }
 }
 
@@ -236,7 +236,7 @@ function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, 
 
     // if the merc is dead
     // shade the face red, (to signif that he is dead)
-    hFaceHandle->pShades[0] = Create16BPPPaletteShaded(hFaceHandle->pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, TRUE);
+    hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, TRUE);
 
     // set the red pallete to the face
     SetObjectHandleShade(guiAimFiFace[ubMercID], 0);
@@ -248,7 +248,7 @@ function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, 
   }
 
   // else if the merc is currently a POW or, the merc was fired as a pow
-  else if (gMercProfiles[AimMercArray[ubMercID]].bMercStatus == MERC_FIRED_AS_A_POW || (pSoldier && pSoldier->bAssignment == ASSIGNMENT_POW)) {
+  else if (gMercProfiles[AimMercArray[ubMercID]].bMercStatus == MERC_FIRED_AS_A_POW || (pSoldier && pSoldier.value.bAssignment == ASSIGNMENT_POW)) {
     ShadowVideoSurfaceRect(FRAME_BUFFER, usPosX + AIM_FI_FACE_OFFSET, usPosY + AIM_FI_FACE_OFFSET, usPosX + 48 + AIM_FI_FACE_OFFSET, usPosY + 43 + AIM_FI_FACE_OFFSET);
     DrawTextToScreen(pPOWStrings[0], (usPosX + AIM_FI_AWAY_TEXT_OFFSET_X), (usPosY + AIM_FI_AWAY_TEXT_OFFSET_Y), AIM_FI_AWAY_TEXT_OFFSET_WIDTH, FONT10ARIAL, 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   }

@@ -12,16 +12,16 @@ function RemoveMilitiaFromTactical(): void {
   let curr: Pointer<SOLDIERINITNODE>;
   let i: INT32;
   for (i = gTacticalStatus.Team[MILITIA_TEAM].bFirstID; i <= gTacticalStatus.Team[MILITIA_TEAM].bLastID; i++) {
-    if (MercPtrs[i]->bActive) {
-      TacticalRemoveSoldier(MercPtrs[i]->ubID);
+    if (MercPtrs[i].value.bActive) {
+      TacticalRemoveSoldier(MercPtrs[i].value.ubID);
     }
   }
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr->pBasicPlacement->bTeam == MILITIA_TEAM) {
-      curr->pSoldier = NULL;
+    if (curr.value.pBasicPlacement.value.bTeam == MILITIA_TEAM) {
+      curr.value.pSoldier = NULL;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -39,9 +39,9 @@ function PrepareMilitiaForTactical(): void {
     return;
 
   pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
-  ubGreen = pSector->ubNumberOfCivsAtLevel[GREEN_MILITIA];
-  ubRegs = pSector->ubNumberOfCivsAtLevel[REGULAR_MILITIA];
-  ubElites = pSector->ubNumberOfCivsAtLevel[ELITE_MILITIA];
+  ubGreen = pSector.value.ubNumberOfCivsAtLevel[GREEN_MILITIA];
+  ubRegs = pSector.value.ubNumberOfCivsAtLevel[REGULAR_MILITIA];
+  ubElites = pSector.value.ubNumberOfCivsAtLevel[ELITE_MILITIA];
   AddSoldierInitListMilitia(ubGreen, ubRegs, ubElites);
   /*
   for( i = gTacticalStatus.Team[ MILITIA_TEAM ].bFirstID; i <= gTacticalStatus.Team[ MILITIA_TEAM ].bLastID; i++ )
@@ -68,24 +68,24 @@ function HandleMilitiaPromotions(): void {
   cnt = gTacticalStatus.Team[MILITIA_TEAM].bFirstID;
 
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[MILITIA_TEAM].bLastID; cnt++, pTeamSoldier++) {
-    if (pTeamSoldier->bActive && pTeamSoldier->bInSector && pTeamSoldier->bLife > 0) {
-      if (pTeamSoldier->ubMilitiaKills > 0) {
-        ubMilitiaRank = SoldierClassToMilitiaRank(pTeamSoldier->ubSoldierClass);
-        ubPromotions = CheckOneMilitiaForPromotion(gWorldSectorX, gWorldSectorY, ubMilitiaRank, pTeamSoldier->ubMilitiaKills);
+    if (pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector && pTeamSoldier.value.bLife > 0) {
+      if (pTeamSoldier.value.ubMilitiaKills > 0) {
+        ubMilitiaRank = SoldierClassToMilitiaRank(pTeamSoldier.value.ubSoldierClass);
+        ubPromotions = CheckOneMilitiaForPromotion(gWorldSectorX, gWorldSectorY, ubMilitiaRank, pTeamSoldier.value.ubMilitiaKills);
         if (ubPromotions) {
           if (ubPromotions == 2) {
             gbGreenToElitePromotions++;
             gbMilitiaPromotions++;
-          } else if (pTeamSoldier->ubSoldierClass == SOLDIER_CLASS_GREEN_MILITIA) {
+          } else if (pTeamSoldier.value.ubSoldierClass == SOLDIER_CLASS_GREEN_MILITIA) {
             gbGreenToRegPromotions++;
             gbMilitiaPromotions++;
-          } else if (pTeamSoldier->ubSoldierClass == SOLDIER_CLASS_REG_MILITIA) {
+          } else if (pTeamSoldier.value.ubSoldierClass == SOLDIER_CLASS_REG_MILITIA) {
             gbRegToElitePromotions++;
             gbMilitiaPromotions++;
           }
         }
 
-        pTeamSoldier->ubMilitiaKills = 0;
+        pTeamSoldier.value.ubMilitiaKills = 0;
       }
     }
   }

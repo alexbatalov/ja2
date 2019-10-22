@@ -79,8 +79,8 @@ function AniEditScreenHandle(): UINT32 {
   mprintf(0, 0, "SOLDIER ANIMATION VIEWER");
   gprintfdirty(0, 0, "SOLDIER ANIMATION VIEWER");
 
-  mprintf(0, 20, "Current Animation: %S %S", gAnimControl[usStartAnim].zAnimStr, gAnimSurfaceDatabase[pSoldier->usAnimSurface].Filename);
-  gprintfdirty(0, 20, "Current Animation: %S %S", gAnimControl[usStartAnim].zAnimStr, gAnimSurfaceDatabase[pSoldier->usAnimSurface].Filename);
+  mprintf(0, 20, "Current Animation: %S %S", gAnimControl[usStartAnim].zAnimStr, gAnimSurfaceDatabase[pSoldier.value.usAnimSurface].Filename);
+  gprintfdirty(0, 20, "Current Animation: %S %S", gAnimControl[usStartAnim].zAnimStr, gAnimSurfaceDatabase[pSoldier.value.usAnimSurface].Filename);
 
   switch (ubStartHeight) {
     case ANIM_STAND:

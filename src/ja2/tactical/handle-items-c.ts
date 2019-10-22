@@ -22,7 +22,7 @@ function HandleCheckForBadChangeToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pTa
   let fBadChangeToGetThrough: BOOLEAN = FALSE;
 
   if (pTargetSoldier != NULL) {
-    if (SoldierToSoldierBodyPartChanceToGetThrough(pSoldier, pTargetSoldier, pSoldier->bAimShotLocation) < OK_CHANCE_TO_GET_THROUGH) {
+    if (SoldierToSoldierBodyPartChanceToGetThrough(pSoldier, pTargetSoldier, pSoldier.value.bAimShotLocation) < OK_CHANCE_TO_GET_THROUGH) {
       fBadChangeToGetThrough = TRUE;
     }
   } else {
@@ -32,7 +32,7 @@ function HandleCheckForBadChangeToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pTa
   }
 
   if (fBadChangeToGetThrough) {
-    if (gTacticalStatus.sCantGetThroughSoldierGridNo != pSoldier->sGridNo || gTacticalStatus.sCantGetThroughGridNo != sTargetGridNo || gTacticalStatus.ubCantGetThroughID != pSoldier->ubID) {
+    if (gTacticalStatus.sCantGetThroughSoldierGridNo != pSoldier.value.sGridNo || gTacticalStatus.sCantGetThroughGridNo != sTargetGridNo || gTacticalStatus.ubCantGetThroughID != pSoldier.value.ubID) {
       gTacticalStatus.fCantGetThrough = FALSE;
     }
 
@@ -40,18 +40,18 @@ function HandleCheckForBadChangeToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pTa
     if (!gTacticalStatus.fCantGetThrough) {
       gTacticalStatus.fCantGetThrough = TRUE;
       gTacticalStatus.sCantGetThroughGridNo = sTargetGridNo;
-      gTacticalStatus.ubCantGetThroughID = pSoldier->ubID;
-      gTacticalStatus.sCantGetThroughSoldierGridNo = pSoldier->sGridNo;
+      gTacticalStatus.ubCantGetThroughID = pSoldier.value.ubID;
+      gTacticalStatus.sCantGetThroughSoldierGridNo = pSoldier.value.sGridNo;
 
       // PLay quote
       TacticalCharacterDialogue(pSoldier, QUOTE_NO_LINE_OF_FIRE);
       return FALSE;
     } else {
       // Is this a different case?
-      if (gTacticalStatus.sCantGetThroughGridNo != sTargetGridNo || gTacticalStatus.ubCantGetThroughID != pSoldier->ubID || gTacticalStatus.sCantGetThroughSoldierGridNo != pSoldier->sGridNo) {
+      if (gTacticalStatus.sCantGetThroughGridNo != sTargetGridNo || gTacticalStatus.ubCantGetThroughID != pSoldier.value.ubID || gTacticalStatus.sCantGetThroughSoldierGridNo != pSoldier.value.sGridNo) {
         // PLay quote
         gTacticalStatus.sCantGetThroughGridNo = sTargetGridNo;
-        gTacticalStatus.ubCantGetThroughID = pSoldier->ubID;
+        gTacticalStatus.ubCantGetThroughID = pSoldier.value.ubID;
 
         TacticalCharacterDialogue(pSoldier, QUOTE_NO_LINE_OF_FIRE);
         return FALSE;
@@ -80,11 +80,11 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
   let sGridNo: INT16;
 
   // Remove any previous actions
-  pSoldier->ubPendingAction = NO_PENDING_ACTION;
+  pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
 
   // here is where we would set a different value if the weapon mode is on
   // "attached weapon"
-  pSoldier->usAttackingWeapon = usHandItem;
+  pSoldier.value.usAttackingWeapon = usHandItem;
 
   // Find soldier flags depend on if it's our own merc firing or a NPC
   // if ( FindSoldier( usGridNo, &usSoldierIndex, &uiMercFlags, FIND_SOLDIER_GRIDNO )  )
@@ -109,11 +109,11 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
   }
 
   if (pTargetSoldier) {
-    pTargetSoldier->bBeingAttackedCount = 0;
+    pTargetSoldier.value.bBeingAttackedCount = 0;
   }
 
   // Check our soldier's life for unconscious!
-  if (pSoldier->bLife < OKLIFE) {
+  if (pSoldier.value.bLife < OKLIFE) {
     return ITEM_HANDLE_UNCONSCIOUS;
   }
 
@@ -121,23 +121,23 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     return ITEM_HANDLE_BROKEN;
   }
 
-  if (fFromUI && pSoldier->bTeam == gbPlayerNum && pTargetSoldier && (pTargetSoldier->bTeam == gbPlayerNum || pTargetSoldier->bNeutral) && pTargetSoldier->ubBodyType != CROW && Item[usHandItem].usItemClass != IC_MEDKIT) {
-    if (pSoldier->ubProfile != NO_PROFILE) {
+  if (fFromUI && pSoldier.value.bTeam == gbPlayerNum && pTargetSoldier && (pTargetSoldier.value.bTeam == gbPlayerNum || pTargetSoldier.value.bNeutral) && pTargetSoldier.value.ubBodyType != CROW && Item[usHandItem].usItemClass != IC_MEDKIT) {
+    if (pSoldier.value.ubProfile != NO_PROFILE) {
       // nice mercs won't shoot other nice guys or neutral civilians
-      if ((gMercProfiles[pSoldier->ubProfile].ubMiscFlags3 & PROFILE_MISC_FLAG3_GOODGUY) && ((pTargetSoldier->ubProfile == NO_PROFILE && pTargetSoldier->bNeutral) || gMercProfiles[pTargetSoldier->ubProfile].ubMiscFlags3 & PROFILE_MISC_FLAG3_GOODGUY)) {
+      if ((gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags3 & PROFILE_MISC_FLAG3_GOODGUY) && ((pTargetSoldier.value.ubProfile == NO_PROFILE && pTargetSoldier.value.bNeutral) || gMercProfiles[pTargetSoldier.value.ubProfile].ubMiscFlags3 & PROFILE_MISC_FLAG3_GOODGUY)) {
         TacticalCharacterDialogue(pSoldier, QUOTE_REFUSING_ORDER);
         return ITEM_HANDLE_REFUSAL;
       }
-      if (pTargetSoldier->ubProfile != NO_PROFILE) {
+      if (pTargetSoldier.value.ubProfile != NO_PROFILE) {
         // buddies won't shoot each other
-        if (WhichBuddy(pSoldier->ubProfile, pTargetSoldier->ubProfile) != -1) {
+        if (WhichBuddy(pSoldier.value.ubProfile, pTargetSoldier.value.ubProfile) != -1) {
           TacticalCharacterDialogue(pSoldier, QUOTE_REFUSING_ORDER);
           return ITEM_HANDLE_REFUSAL;
         }
       }
 
       // any recruited rebel will refuse to fire on another rebel or neutral nameless civ
-      if (pSoldier->ubCivilianGroup == REBEL_CIV_GROUP && (pTargetSoldier->ubCivilianGroup == REBEL_CIV_GROUP || (pTargetSoldier->bNeutral && pTargetSoldier->ubProfile == NO_PROFILE && pTargetSoldier->ubCivilianGroup == NON_CIV_GROUP && pTargetSoldier->ubBodyType != CROW))) {
+      if (pSoldier.value.ubCivilianGroup == REBEL_CIV_GROUP && (pTargetSoldier.value.ubCivilianGroup == REBEL_CIV_GROUP || (pTargetSoldier.value.bNeutral && pTargetSoldier.value.ubProfile == NO_PROFILE && pTargetSoldier.value.ubCivilianGroup == NON_CIV_GROUP && pTargetSoldier.value.ubBodyType != CROW))) {
         TacticalCharacterDialogue(pSoldier, QUOTE_REFUSING_ORDER);
         return ITEM_HANDLE_REFUSAL;
       }
@@ -151,14 +151,14 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       // check imprint ID
       // NB not-imprinted value is NO_PROFILE
       // imprinted value is profile for mercs & NPCs and NO_PROFILE + 1 for generic dudes
-      if (pSoldier->ubProfile != NO_PROFILE) {
-        if (pSoldier->inv[pSoldier->ubAttackingHand].ubImprintID != pSoldier->ubProfile) {
-          if (pSoldier->inv[pSoldier->ubAttackingHand].ubImprintID == NO_PROFILE) {
+      if (pSoldier.value.ubProfile != NO_PROFILE) {
+        if (pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubImprintID != pSoldier.value.ubProfile) {
+          if (pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubImprintID == NO_PROFILE) {
             // first shot using "virgin" gun... set imprint ID
-            pSoldier->inv[pSoldier->ubAttackingHand].ubImprintID = pSoldier->ubProfile;
+            pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubImprintID = pSoldier.value.ubProfile;
 
             // this could be an NPC (Krott)
-            if (pSoldier->bTeam == gbPlayerNum) {
+            if (pSoldier.value.bTeam == gbPlayerNum) {
               PlayJA2Sample(RG_ID_IMPRINTED, RATE_11025, HIGHVOLUME, 1, MIDDLE);
 
               ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "\"%s\"", TacticalStr[GUN_GOT_FINGERPRINT]);
@@ -167,7 +167,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
             }
           } else {
             // access denied!
-            if (pSoldier->bTeam == gbPlayerNum) {
+            if (pSoldier.value.bTeam == gbPlayerNum) {
               PlayJA2Sample(RG_ID_INVALID, RATE_11025, HIGHVOLUME, 1, MIDDLE);
 
               // if (Random( 100 ) < (UINT32) pSoldier->bWisdom)
@@ -184,9 +184,9 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
         }
       } else {
         // guaranteed not to be controlled by the player, so no feedback required
-        if (pSoldier->inv[pSoldier->ubAttackingHand].ubImprintID != (NO_PROFILE + 1)) {
-          if (pSoldier->inv[pSoldier->ubAttackingHand].ubImprintID == NO_PROFILE) {
-            pSoldier->inv[pSoldier->ubAttackingHand].ubImprintID = (NO_PROFILE + 1);
+        if (pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubImprintID != (NO_PROFILE + 1)) {
+          if (pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubImprintID == NO_PROFILE) {
+            pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubImprintID = (NO_PROFILE + 1);
           } else {
             return ITEM_HANDLE_BROKEN;
           }
@@ -199,13 +199,13 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       // CHECK FOR AMMO!
       if (!EnoughAmmo(pSoldier, fFromUI, HANDPOS)) {
         // ATE: Reflect that we need to reset for bursting
-        pSoldier->fDoSpread = FALSE;
+        pSoldier.value.fDoSpread = FALSE;
         return ITEM_HANDLE_NOAMMO;
       }
 
       // Check if we are reloading
       if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
-        if (pSoldier->fReloading) {
+        if (pSoldier.value.fReloading) {
           return ITEM_HANDLE_RELOADING;
         }
       }
@@ -213,7 +213,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
 
     // Get gridno - either soldier's position or the gridno
     if (pTargetSoldier != NULL) {
-      sTargetGridNo = pTargetSoldier->sGridNo;
+      sTargetGridNo = pTargetSoldier.value.sGridNo;
     } else {
       sTargetGridNo = usGridNo;
     }
@@ -221,7 +221,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     // If it's a player guy, check ChanceToGetThrough to play quote
     if (fFromUI && (gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT)) {
       // Don't do if no spread!
-      if (!pSoldier->fDoSpread) {
+      if (!pSoldier.value.fDoSpread) {
         if (!HandleCheckForBadChangeToGetThrough(pSoldier, pTargetSoldier, sTargetGridNo, bLevel)) {
           return ITEM_HANDLE_OK;
         }
@@ -233,43 +233,43 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     // Our guys NEED TRUE. We shoulkd at some time make sure the AI and
     // our guys are deducting/checking in the same manner to avoid
     // these differences.
-    sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, TRUE, pSoldier->bAimTime);
+    sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, TRUE, pSoldier.value.bAimTime);
 
     GetAPChargeForShootOrStabWRTGunRaises(pSoldier, sTargetGridNo, TRUE, &fAddingTurningCost, &fAddingRaiseGunCost);
 
     // If we are standing and are asked to turn AND raise gun, ignore raise gun...
-    if (gAnimControl[pSoldier->usAnimState].ubHeight == ANIM_STAND) {
+    if (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_STAND) {
       if (fAddingRaiseGunCost) {
-        pSoldier->fDontChargeTurningAPs = TRUE;
+        pSoldier.value.fDontChargeTurningAPs = TRUE;
       }
     } else {
       // If raising gun, don't charge turning!
       if (fAddingTurningCost) {
-        pSoldier->fDontChargeReadyAPs = TRUE;
+        pSoldier.value.fDontChargeReadyAPs = TRUE;
       }
     }
 
     // If this is a player guy, show message about no APS
     if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
-      if ((pSoldier->ubProfile != NO_PROFILE) && (gMercProfiles[pSoldier->ubProfile].bPersonalityTrait == PSYCHO)) {
+      if ((pSoldier.value.ubProfile != NO_PROFILE) && (gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait == PSYCHO)) {
         // psychos might possibly switch to burst if they can
-        if (!pSoldier->bDoBurst && IsGunBurstCapable(pSoldier, HANDPOS, FALSE)) {
+        if (!pSoldier.value.bDoBurst && IsGunBurstCapable(pSoldier, HANDPOS, FALSE)) {
           // chance of firing burst if we have points... chance decreasing when ordered to do aimed shot
 
           // temporarily set burst to true to calculate action points
-          pSoldier->bDoBurst = TRUE;
+          pSoldier.value.bDoBurst = TRUE;
           sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, TRUE, 0);
           // reset burst mode to false (which is what it was at originally)
-          pSoldier->bDoBurst = FALSE;
+          pSoldier.value.bDoBurst = FALSE;
 
           if (EnoughPoints(pSoldier, sAPCost, 0, FALSE)) {
             // we have enough points to do this burst, roll the dice and see if we want to change
-            if (Random(3 + pSoldier->bAimTime) == 0) {
+            if (Random(3 + pSoldier.value.bAimTime) == 0) {
               DoMercBattleSound(pSoldier, BATTLE_SOUND_LAUGH1);
-              pSoldier->bDoBurst = TRUE;
-              pSoldier->bWeaponMode = WM_BURST;
+              pSoldier.value.bDoBurst = TRUE;
+              pSoldier.value.bWeaponMode = WM_BURST;
 
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[26], pSoldier->name);
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[26], pSoldier.value.name);
             }
           }
         }
@@ -282,14 +282,14 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       //		EVENT_FireSoldierWeapon( pSoldier, sTargetGridNo );
       if (fFromUI) {
         // set the target level; if the AI calls this it will have set the level already...
-        pSoldier->bTargetLevel = gsInterfaceLevel;
+        pSoldier.value.bTargetLevel = gsInterfaceLevel;
       }
 
       if (Item[usHandItem].usItemClass != IC_THROWING_KNIFE) {
         // If doing spread, set down the first gridno.....
-        if (pSoldier->fDoSpread) {
-          if (pSoldier->sSpreadLocations[0] != 0) {
-            SendBeginFireWeaponEvent(pSoldier, pSoldier->sSpreadLocations[0]);
+        if (pSoldier.value.fDoSpread) {
+          if (pSoldier.value.sSpreadLocations[0] != 0) {
+            SendBeginFireWeaponEvent(pSoldier, pSoldier.value.sSpreadLocations[0]);
           } else {
             SendBeginFireWeaponEvent(pSoldier, sTargetGridNo);
           }
@@ -324,17 +324,17 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
 
         // If in turn based - refresh aim to first level
         if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
-          pSoldier->bShownAimTime = REFINE_AIM_1;
+          pSoldier.value.bShownAimTime = REFINE_AIM_1;
 
           // Locate to soldier if he's about to shoot!
-          if (pSoldier->bTeam != gbPlayerNum) {
-            ShowRadioLocator(pSoldier->ubID, SHOW_LOCATOR_NORMAL);
+          if (pSoldier.value.bTeam != gbPlayerNum) {
+            ShowRadioLocator(pSoldier.value.ubID, SHOW_LOCATOR_NORMAL);
           }
         }
       }
 
       // OK, set UI
-      SetUIBusy(pSoldier->ubID);
+      SetUIBusy(pSoldier.value.ubID);
     } else {
       return ITEM_HANDLE_NOAPS;
     }
@@ -351,7 +351,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     let fGotAdjacent: BOOLEAN = FALSE;
 
     for (sCnt = 0; sCnt < NUM_WORLD_DIRECTIONS; sCnt++) {
-      sSpot = NewGridNo(pSoldier->sGridNo, DirectionInc(sCnt));
+      sSpot = NewGridNo(pSoldier.value.sGridNo, DirectionInc(sCnt));
 
       // Make sure movement costs are OK....
       if (gubWorldMovementCosts[sSpot][sCnt][bLevel] >= TRAVELCOST_BLOCKED) {
@@ -359,13 +359,13 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       }
 
       // Check for who is there...
-      ubGuyThere = WhoIsThere2(sSpot, pSoldier->bLevel);
+      ubGuyThere = WhoIsThere2(sSpot, pSoldier.value.bLevel);
 
-      if (pTargetSoldier != NULL && ubGuyThere == pTargetSoldier->ubID) {
+      if (pTargetSoldier != NULL && ubGuyThere == pTargetSoldier.value.ubID) {
         // We've got a guy here....
         // Who is the one we want......
         sGotLocation = sSpot;
-        sAdjustedGridNo = pTargetSoldier->sGridNo;
+        sAdjustedGridNo = pTargetSoldier.value.sGridNo;
         ubDirection = sCnt;
         break;
       }
@@ -384,26 +384,26 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
 
     // Did we get a loaction?
     if (sGotLocation != NOWHERE) {
-      pSoldier->sTargetGridNo = usGridNo;
+      pSoldier.value.sTargetGridNo = usGridNo;
 
-      pSoldier->usActionData = usGridNo;
+      pSoldier.value.usActionData = usGridNo;
       // CHECK IF WE ARE AT THIS GRIDNO NOW
-      if (pSoldier->sGridNo != sGotLocation && fGotAdjacent) {
+      if (pSoldier.value.sGridNo != sGotLocation && fGotAdjacent) {
         // SEND PENDING ACTION
-        pSoldier->ubPendingAction = MERC_PUNCH;
-        pSoldier->sPendingActionData2 = sAdjustedGridNo;
-        pSoldier->bPendingActionData3 = ubDirection;
-        pSoldier->ubPendingActionAnimCount = 0;
+        pSoldier.value.ubPendingAction = MERC_PUNCH;
+        pSoldier.value.sPendingActionData2 = sAdjustedGridNo;
+        pSoldier.value.bPendingActionData3 = ubDirection;
+        pSoldier.value.ubPendingActionAnimCount = 0;
 
         // WALK UP TO DEST FIRST
-        EVENT_InternalGetNewSoldierPath(pSoldier, sGotLocation, pSoldier->usUIMovementMode, FALSE, TRUE);
+        EVENT_InternalGetNewSoldierPath(pSoldier, sGotLocation, pSoldier.value.usUIMovementMode, FALSE, TRUE);
       } else {
-        pSoldier->bAction = AI_ACTION_KNIFE_STAB;
+        pSoldier.value.bAction = AI_ACTION_KNIFE_STAB;
         EVENT_SoldierBeginPunchAttack(pSoldier, sAdjustedGridNo, ubDirection);
       }
 
       // OK, set UI
-      SetUIBusy(pSoldier->ubID);
+      SetUIBusy(pSoldier.value.ubID);
 
       gfResetUIMovementOptimization = TRUE;
 
@@ -442,31 +442,31 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
 
     // Calculate AP costs...
     sAPCost = GetAPsToBeginFirstAid(pSoldier);
-    sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+    sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
 
     if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
       // OK, set UI
-      SetUIBusy(pSoldier->ubID);
+      SetUIBusy(pSoldier.value.ubID);
 
       // CHECK IF WE ARE AT THIS GRIDNO NOW
-      if (pSoldier->sGridNo != sActionGridNo) {
+      if (pSoldier.value.sGridNo != sActionGridNo) {
         // SEND PENDING ACTION
-        pSoldier->ubPendingAction = MERC_GIVEAID;
+        pSoldier.value.ubPendingAction = MERC_GIVEAID;
 
         if (fHadToUseCursorPos) {
-          pSoldier->sPendingActionData2 = usMapPos;
+          pSoldier.value.sPendingActionData2 = usMapPos;
         } else {
           if (pTargetSoldier != NULL) {
-            pSoldier->sPendingActionData2 = pTargetSoldier->sGridNo;
+            pSoldier.value.sPendingActionData2 = pTargetSoldier.value.sGridNo;
           } else {
-            pSoldier->sPendingActionData2 = usGridNo;
+            pSoldier.value.sPendingActionData2 = usGridNo;
           }
         }
-        pSoldier->bPendingActionData3 = ubDirection;
-        pSoldier->ubPendingActionAnimCount = 0;
+        pSoldier.value.bPendingActionData3 = ubDirection;
+        pSoldier.value.ubPendingActionAnimCount = 0;
 
         // WALK UP TO DEST FIRST
-        EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier->usUIMovementMode, FALSE, TRUE);
+        EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.value.usUIMovementMode, FALSE, TRUE);
       } else {
         EVENT_SoldierBeginFirstAid(pSoldier, sAdjustedGridNo, ubDirection);
       }
@@ -487,25 +487,25 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     if (sActionGridNo != -1) {
       // Calculate AP costs...
       sAPCost = GetAPsToCutFence(pSoldier);
-      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
 
       if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
         // CHECK IF WE ARE AT THIS GRIDNO NOW
-        if (pSoldier->sGridNo != sActionGridNo) {
+        if (pSoldier.value.sGridNo != sActionGridNo) {
           // SEND PENDING ACTION
-          pSoldier->ubPendingAction = MERC_CUTFFENCE;
-          pSoldier->sPendingActionData2 = sAdjustedGridNo;
-          pSoldier->bPendingActionData3 = ubDirection;
-          pSoldier->ubPendingActionAnimCount = 0;
+          pSoldier.value.ubPendingAction = MERC_CUTFFENCE;
+          pSoldier.value.sPendingActionData2 = sAdjustedGridNo;
+          pSoldier.value.bPendingActionData3 = ubDirection;
+          pSoldier.value.ubPendingActionAnimCount = 0;
 
           // WALK UP TO DEST FIRST
-          EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier->usUIMovementMode, FALSE, TRUE);
+          EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.value.usUIMovementMode, FALSE, TRUE);
         } else {
           EVENT_SoldierBeginCutFence(pSoldier, sAdjustedGridNo, ubDirection);
         }
 
         // OK, set UI
-        SetUIBusy(pSoldier->ubID);
+        SetUIBusy(pSoldier.value.ubID);
 
         if (fFromUI) {
           guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
@@ -530,12 +530,12 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       let sNewGridNo: INT16;
       let ubDirection: UINT8;
 
-      sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier->usUIMovementMode, 5, &ubDirection, 0, MercPtrs[ubMercID]);
+      sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.value.usUIMovementMode, 5, &ubDirection, 0, MercPtrs[ubMercID]);
 
       if (sNewGridNo != NOWHERE) {
         usGridNo = sNewGridNo;
 
-        sVehicleGridNo = MercPtrs[ubMercID]->sGridNo;
+        sVehicleGridNo = MercPtrs[ubMercID].value.sGridNo;
 
         fVehicle = TRUE;
       }
@@ -547,30 +547,30 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     if (sActionGridNo != -1) {
       // Calculate AP costs...
       sAPCost = GetAPsToBeginRepair(pSoldier);
-      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
 
       if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
         // CHECK IF WE ARE AT THIS GRIDNO NOW
-        if (pSoldier->sGridNo != sActionGridNo) {
+        if (pSoldier.value.sGridNo != sActionGridNo) {
           // SEND PENDING ACTION
-          pSoldier->ubPendingAction = MERC_REPAIR;
-          pSoldier->sPendingActionData2 = sAdjustedGridNo;
+          pSoldier.value.ubPendingAction = MERC_REPAIR;
+          pSoldier.value.sPendingActionData2 = sAdjustedGridNo;
 
           if (fVehicle) {
-            pSoldier->sPendingActionData2 = sVehicleGridNo;
+            pSoldier.value.sPendingActionData2 = sVehicleGridNo;
           }
 
-          pSoldier->bPendingActionData3 = ubDirection;
-          pSoldier->ubPendingActionAnimCount = 0;
+          pSoldier.value.bPendingActionData3 = ubDirection;
+          pSoldier.value.ubPendingActionAnimCount = 0;
 
           // WALK UP TO DEST FIRST
-          EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier->usUIMovementMode, FALSE, TRUE);
+          EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.value.usUIMovementMode, FALSE, TRUE);
         } else {
           EVENT_SoldierBeginRepair(pSoldier, sAdjustedGridNo, ubDirection);
         }
 
         // OK, set UI
-        SetUIBusy(pSoldier->ubID);
+        SetUIBusy(pSoldier.value.ubID);
 
         if (fFromUI) {
           guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
@@ -594,12 +594,12 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       let sNewGridNo: INT16;
       let ubDirection: UINT8;
 
-      sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier->usUIMovementMode, 5, &ubDirection, 0, MercPtrs[ubMercID]);
+      sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.value.usUIMovementMode, 5, &ubDirection, 0, MercPtrs[ubMercID]);
 
       if (sNewGridNo != NOWHERE) {
         usGridNo = sNewGridNo;
 
-        sVehicleGridNo = MercPtrs[ubMercID]->sGridNo;
+        sVehicleGridNo = MercPtrs[ubMercID].value.sGridNo;
       }
     }
 
@@ -609,27 +609,27 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     if (sActionGridNo != -1) {
       // Calculate AP costs...
       sAPCost = GetAPsToRefuelVehicle(pSoldier);
-      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
 
       if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
         // CHECK IF WE ARE AT THIS GRIDNO NOW
-        if (pSoldier->sGridNo != sActionGridNo) {
+        if (pSoldier.value.sGridNo != sActionGridNo) {
           // SEND PENDING ACTION
-          pSoldier->ubPendingAction = MERC_FUEL_VEHICLE;
-          pSoldier->sPendingActionData2 = sAdjustedGridNo;
+          pSoldier.value.ubPendingAction = MERC_FUEL_VEHICLE;
+          pSoldier.value.sPendingActionData2 = sAdjustedGridNo;
 
-          pSoldier->sPendingActionData2 = sVehicleGridNo;
-          pSoldier->bPendingActionData3 = ubDirection;
-          pSoldier->ubPendingActionAnimCount = 0;
+          pSoldier.value.sPendingActionData2 = sVehicleGridNo;
+          pSoldier.value.bPendingActionData3 = ubDirection;
+          pSoldier.value.ubPendingActionAnimCount = 0;
 
           // WALK UP TO DEST FIRST
-          EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier->usUIMovementMode, FALSE, TRUE);
+          EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.value.usUIMovementMode, FALSE, TRUE);
         } else {
           EVENT_SoldierBeginRefuel(pSoldier, sAdjustedGridNo, ubDirection);
         }
 
         // OK, set UI
-        SetUIBusy(pSoldier->ubID);
+        SetUIBusy(pSoldier.value.ubID);
 
         if (fFromUI) {
           guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
@@ -650,25 +650,25 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     if (sActionGridNo != -1) {
       // Calculate AP costs...
       sAPCost = GetAPsToUseJar(pSoldier, sActionGridNo);
-      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
 
       if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
         // CHECK IF WE ARE AT THIS GRIDNO NOW
-        if (pSoldier->sGridNo != sActionGridNo) {
+        if (pSoldier.value.sGridNo != sActionGridNo) {
           // SEND PENDING ACTION
-          pSoldier->ubPendingAction = MERC_TAKEBLOOD;
-          pSoldier->sPendingActionData2 = sAdjustedGridNo;
-          pSoldier->bPendingActionData3 = ubDirection;
-          pSoldier->ubPendingActionAnimCount = 0;
+          pSoldier.value.ubPendingAction = MERC_TAKEBLOOD;
+          pSoldier.value.sPendingActionData2 = sAdjustedGridNo;
+          pSoldier.value.bPendingActionData3 = ubDirection;
+          pSoldier.value.ubPendingActionAnimCount = 0;
 
           // WALK UP TO DEST FIRST
-          EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier->usUIMovementMode, FALSE, TRUE);
+          EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.value.usUIMovementMode, FALSE, TRUE);
         } else {
           EVENT_SoldierBeginTakeBlood(pSoldier, sAdjustedGridNo, ubDirection);
         }
 
         // OK, set UI
-        SetUIBusy(pSoldier->ubID);
+        SetUIBusy(pSoldier.value.ubID);
 
         if (fFromUI) {
           guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
@@ -697,25 +697,25 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       if (sActionGridNo != -1) {
         // Calculate AP costs...
         sAPCost = AP_ATTACH_CAN;
-        sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+        sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
 
         if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
           // CHECK IF WE ARE AT THIS GRIDNO NOW
-          if (pSoldier->sGridNo != sActionGridNo) {
+          if (pSoldier.value.sGridNo != sActionGridNo) {
             // SEND PENDING ACTION
-            pSoldier->ubPendingAction = MERC_ATTACH_CAN;
-            pSoldier->sPendingActionData2 = usGridNo;
-            pSoldier->bPendingActionData3 = ubDirection;
-            pSoldier->ubPendingActionAnimCount = 0;
+            pSoldier.value.ubPendingAction = MERC_ATTACH_CAN;
+            pSoldier.value.sPendingActionData2 = usGridNo;
+            pSoldier.value.bPendingActionData3 = ubDirection;
+            pSoldier.value.ubPendingActionAnimCount = 0;
 
             // WALK UP TO DEST FIRST
-            EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier->usUIMovementMode, FALSE, TRUE);
+            EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.value.usUIMovementMode, FALSE, TRUE);
           } else {
             EVENT_SoldierBeginTakeBlood(pSoldier, usGridNo, ubDirection);
           }
 
           // OK, set UI
-          SetUIBusy(pSoldier->ubID);
+          SetUIBusy(pSoldier.value.ubID);
 
           if (fFromUI) {
             guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
@@ -740,14 +740,14 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
       DeductPoints(pSoldier, sAPCost, 0);
       if (usHandItem == XRAY_DEVICE) {
-        PlayJA2Sample(USE_X_RAY_MACHINE, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo));
+        PlayJA2Sample(USE_X_RAY_MACHINE, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
 
         ActivateXRayDevice(pSoldier);
         return ITEM_HANDLE_OK;
       } else // detonator
       {
         // Save gridno....
-        pSoldier->sPendingActionData2 = usGridNo;
+        pSoldier.value.sPendingActionData2 = usGridNo;
 
         EVENT_SoldierBeginUseDetonator(pSoldier);
 
@@ -771,28 +771,28 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
   // Check for a bomb like a mine, that uses a pressure detonator
   if (Item[usHandItem].ubCursor == INVALIDCURS) {
     // Found detonator...
-    if (FindAttachment(&(pSoldier->inv[pSoldier->ubAttackingHand]), DETONATOR) != ITEM_NOT_FOUND || FindAttachment(&(pSoldier->inv[pSoldier->ubAttackingHand]), REMDETONATOR) != ITEM_NOT_FOUND) {
+    if (FindAttachment(&(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), DETONATOR) != ITEM_NOT_FOUND || FindAttachment(&(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), REMDETONATOR) != ITEM_NOT_FOUND) {
       fDropBomb = TRUE;
     }
   }
 
   if (fDropBomb) {
     // Save gridno....
-    pSoldier->sPendingActionData2 = usGridNo;
+    pSoldier.value.sPendingActionData2 = usGridNo;
 
-    if (pSoldier->sGridNo != usGridNo) {
+    if (pSoldier.value.sGridNo != usGridNo) {
       // SEND PENDING ACTION
-      pSoldier->ubPendingAction = MERC_DROPBOMB;
-      pSoldier->ubPendingActionAnimCount = 0;
+      pSoldier.value.ubPendingAction = MERC_DROPBOMB;
+      pSoldier.value.ubPendingActionAnimCount = 0;
 
       // WALK UP TO DEST FIRST
-      EVENT_InternalGetNewSoldierPath(pSoldier, usGridNo, pSoldier->usUIMovementMode, FALSE, TRUE);
+      EVENT_InternalGetNewSoldierPath(pSoldier, usGridNo, pSoldier.value.usUIMovementMode, FALSE, TRUE);
     } else {
       EVENT_SoldierBeginDropBomb(pSoldier);
     }
 
     // OK, set UI
-    SetUIBusy(pSoldier->ubID);
+    SetUIBusy(pSoldier.value.ubID);
 
     if (fFromUI) {
       guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
@@ -804,9 +804,9 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
   // USING THE BLADE
   if (Item[usHandItem].usItemClass == IC_BLADE) {
     // See if we can get there to stab
-    if (pSoldier->ubBodyType == BLOODCAT) {
+    if (pSoldier.value.ubBodyType == BLOODCAT) {
       sActionGridNo = FindNextToAdjacentGridEx(pSoldier, usGridNo, &ubDirection, &sAdjustedGridNo, TRUE, FALSE);
-    } else if (CREATURE_OR_BLOODCAT(pSoldier) && PythSpacesAway(pSoldier->sGridNo, usGridNo) > 1) {
+    } else if (CREATURE_OR_BLOODCAT(pSoldier) && PythSpacesAway(pSoldier.value.sGridNo, usGridNo) > 1) {
       sActionGridNo = FindNextToAdjacentGridEx(pSoldier, usGridNo, &ubDirection, &sAdjustedGridNo, TRUE, FALSE);
       if (sActionGridNo == -1) {
         sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, &ubDirection, &sAdjustedGridNo, TRUE, FALSE);
@@ -816,26 +816,26 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     }
 
     if (sActionGridNo != -1) {
-      pSoldier->usActionData = sActionGridNo;
+      pSoldier.value.usActionData = sActionGridNo;
 
       // CHECK IF WE ARE AT THIS GRIDNO NOW
-      if (pSoldier->sGridNo != sActionGridNo) {
+      if (pSoldier.value.sGridNo != sActionGridNo) {
         // SEND PENDING ACTION
-        pSoldier->ubPendingAction = MERC_KNIFEATTACK;
-        pSoldier->sPendingActionData2 = sAdjustedGridNo;
-        pSoldier->bPendingActionData3 = ubDirection;
-        pSoldier->ubPendingActionAnimCount = 0;
+        pSoldier.value.ubPendingAction = MERC_KNIFEATTACK;
+        pSoldier.value.sPendingActionData2 = sAdjustedGridNo;
+        pSoldier.value.bPendingActionData3 = ubDirection;
+        pSoldier.value.ubPendingActionAnimCount = 0;
 
         // WALK UP TO DEST FIRST
-        EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier->usUIMovementMode, FALSE, TRUE);
+        EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.value.usUIMovementMode, FALSE, TRUE);
       } else {
         // for the benefit of the AI
-        pSoldier->bAction = AI_ACTION_KNIFE_STAB;
+        pSoldier.value.bAction = AI_ACTION_KNIFE_STAB;
         EVENT_SoldierBeginBladeAttack(pSoldier, sAdjustedGridNo, ubDirection);
       }
 
       // OK, set UI
-      SetUIBusy(pSoldier->ubID);
+      SetUIBusy(pSoldier.value.ubID);
 
       if (fFromUI) {
         guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
@@ -857,14 +857,14 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     gTacticalStatus.ubAttackBusyCount++;
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Starting swipe attack, incrementing a.b.c in HandleItems to %d", gTacticalStatus.ubAttackBusyCount));
 
-    sAPCost = CalcTotalAPsToAttack(pSoldier, sGridNo, FALSE, pSoldier->bAimTime);
+    sAPCost = CalcTotalAPsToAttack(pSoldier, sGridNo, FALSE, pSoldier.value.bAimTime);
 
     DeductPoints(pSoldier, sAPCost, 0);
 
     EVENT_InitNewSoldierAnim(pSoldier, QUEEN_SWIPE, 0, FALSE);
 
     // FireWeapon( pSoldier, sTargetGridNo );
-    pSoldier->bAction = AI_ACTION_KNIFE_STAB;
+    pSoldier.value.bAction = AI_ACTION_KNIFE_STAB;
 
     return ITEM_HANDLE_OK;
   }
@@ -875,7 +875,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
 
     // Get gridno - either soldier's position or the gridno
     if (pTargetSoldier != NULL) {
-      sTargetGridNo = pTargetSoldier->sGridNo;
+      sTargetGridNo = pTargetSoldier.value.sGridNo;
     } else {
       sTargetGridNo = usGridNo;
     }
@@ -887,46 +887,46 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       ubDirection = GetDirectionFromGridNo(sTargetGridNo, pSoldier);
 
       // Get new gridno!
-      sCheckGridNo = NewGridNo(pSoldier->sGridNo, DirectionInc(ubDirection));
+      sCheckGridNo = NewGridNo(pSoldier.value.sGridNo, DirectionInc(ubDirection));
 
-      if (!OKFallDirection(pSoldier, sCheckGridNo, pSoldier->bLevel, ubDirection, pSoldier->usAnimState)) {
+      if (!OKFallDirection(pSoldier, sCheckGridNo, pSoldier.value.bLevel, ubDirection, pSoldier.value.usAnimState)) {
         return ITEM_HANDLE_NOROOM;
       }
 
-      pSoldier->fDontChargeAPsForStanceChange = TRUE;
+      pSoldier.value.fDontChargeAPsForStanceChange = TRUE;
     } else if (usHandItem == GLAUNCHER || usHandItem == UNDER_GLAUNCHER) {
       GetAPChargeForShootOrStabWRTGunRaises(pSoldier, sTargetGridNo, TRUE, &fAddingTurningCost, &fAddingRaiseGunCost);
 
       // If we are standing and are asked to turn AND raise gun, ignore raise gun...
-      if (gAnimControl[pSoldier->usAnimState].ubHeight == ANIM_STAND) {
+      if (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_STAND) {
         if (fAddingRaiseGunCost) {
-          pSoldier->fDontChargeTurningAPs = TRUE;
+          pSoldier.value.fDontChargeTurningAPs = TRUE;
         }
       } else {
         // If raising gun, don't charge turning!
         if (fAddingTurningCost) {
-          pSoldier->fDontChargeReadyAPs = TRUE;
+          pSoldier.value.fDontChargeReadyAPs = TRUE;
         }
       }
     }
 
     // If this is a player guy, show message about no APS
     if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
-      pSoldier->ubAttackingHand = HANDPOS;
-      pSoldier->usAttackingWeapon = usHandItem;
-      pSoldier->bTargetLevel = bLevel;
+      pSoldier.value.ubAttackingHand = HANDPOS;
+      pSoldier.value.usAttackingWeapon = usHandItem;
+      pSoldier.value.bTargetLevel = bLevel;
 
       // Look at the cursor, if toss cursor...
       if (Item[usHandItem].ubCursor == TOSSCURS) {
-        pSoldier->sTargetGridNo = sTargetGridNo;
+        pSoldier.value.sTargetGridNo = sTargetGridNo;
         //	pSoldier->sLastTarget = sTargetGridNo;
-        pSoldier->ubTargetID = WhoIsThere2(sTargetGridNo, pSoldier->bTargetLevel);
+        pSoldier.value.ubTargetID = WhoIsThere2(sTargetGridNo, pSoldier.value.bTargetLevel);
 
         // Increment attack counter...
         gTacticalStatus.ubAttackBusyCount++;
 
         // ATE: Don't charge turning...
-        pSoldier->fDontChargeTurningAPs = TRUE;
+        pSoldier.value.fDontChargeTurningAPs = TRUE;
 
         FireWeapon(pSoldier, sTargetGridNo);
       } else {
@@ -934,7 +934,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       }
 
       // OK, set UI
-      SetUIBusy(pSoldier->ubID);
+      SetUIBusy(pSoldier.value.ubID);
 
       return ITEM_HANDLE_OK;
     } else {
@@ -947,7 +947,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
   // CHECK FOR BOMB....
   if (Item[usHandItem].ubCursor == INVALIDCURS) {
     // Found detonator...
-    if (FindAttachment(&(pSoldier->inv[usHandItem]), DETONATOR) != ITEM_NOT_FOUND || FindAttachment(&(pSoldier->inv[usHandItem]), REMDETONATOR)) {
+    if (FindAttachment(&(pSoldier.value.inv[usHandItem]), DETONATOR) != ITEM_NOT_FOUND || FindAttachment(&(pSoldier.value.inv[usHandItem]), REMDETONATOR)) {
       StartBombMessageBox(pSoldier, usGridNo);
 
       if (fFromUI) {
@@ -963,22 +963,22 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
 
 function HandleSoldierDropBomb(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
   // Does this have detonator that needs info?
-  if (FindAttachment(&(pSoldier->inv[HANDPOS]), DETONATOR) != ITEM_NOT_FOUND || FindAttachment(&(pSoldier->inv[HANDPOS]), REMDETONATOR) != ITEM_NOT_FOUND) {
+  if (FindAttachment(&(pSoldier.value.inv[HANDPOS]), DETONATOR) != ITEM_NOT_FOUND || FindAttachment(&(pSoldier.value.inv[HANDPOS]), REMDETONATOR) != ITEM_NOT_FOUND) {
     StartBombMessageBox(pSoldier, sGridNo);
   } else {
     // We have something... all we do is place...
-    if (ArmBomb(&(pSoldier->inv[HANDPOS]), 0)) {
+    if (ArmBomb(&(pSoldier.value.inv[HANDPOS]), 0)) {
       // EXPLOSIVES GAIN (25):  Place a bomb, or buried and armed a mine
       StatChange(pSoldier, EXPLODEAMT, 25, FALSE);
 
-      pSoldier->inv[HANDPOS].bTrap = __min(10, (EffectiveExplosive(pSoldier) / 20) + (EffectiveExpLevel(pSoldier) / 3));
-      pSoldier->inv[HANDPOS].ubBombOwner = pSoldier->ubID + 2;
+      pSoldier.value.inv[HANDPOS].bTrap = __min(10, (EffectiveExplosive(pSoldier) / 20) + (EffectiveExpLevel(pSoldier) / 3));
+      pSoldier.value.inv[HANDPOS].ubBombOwner = pSoldier.value.ubID + 2;
 
       // we now know there is something nasty here
       gpWorldLevelData[sGridNo].uiFlags |= MAPELEMENT_PLAYER_MINE_PRESENT;
 
-      AddItemToPool(sGridNo, &(pSoldier->inv[HANDPOS]), BURIED, pSoldier->bLevel, WORLD_ITEM_ARMED_BOMB, 0);
-      DeleteObj(&(pSoldier->inv[HANDPOS]));
+      AddItemToPool(sGridNo, &(pSoldier.value.inv[HANDPOS]), BURIED, pSoldier.value.bLevel, WORLD_ITEM_ARMED_BOMB, 0);
+      DeleteObj(&(pSoldier.value.inv[HANDPOS]));
     }
   }
 }
@@ -989,16 +989,16 @@ function HandleSoldierUseRemote(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16):
 
 function SoldierHandleDropItem(pSoldier: Pointer<SOLDIERTYPE>): void {
   // LOOK IN PANDING DATA FOR ITEM TO DROP, AND LOCATION
-  if (pSoldier->pTempObject != NULL) {
-    if (pSoldier->bVisible != -1) {
-      PlayJA2Sample(THROW_IMPACT_2, RATE_11025, SoundVolume(MIDVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo));
+  if (pSoldier.value.pTempObject != NULL) {
+    if (pSoldier.value.bVisible != -1) {
+      PlayJA2Sample(THROW_IMPACT_2, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
     }
 
-    AddItemToPool(pSoldier->sGridNo, pSoldier->pTempObject, 1, pSoldier->bLevel, 0, -1);
+    AddItemToPool(pSoldier.value.sGridNo, pSoldier.value.pTempObject, 1, pSoldier.value.bLevel, 0, -1);
     NotifySoldiersToLookforItems();
 
-    MemFree(pSoldier->pTempObject);
-    pSoldier->pTempObject = NULL;
+    MemFree(pSoldier.value.pTempObject);
+    pSoldier.value.pTempObject = NULL;
   }
 }
 
@@ -1007,14 +1007,14 @@ function HandleSoldierThrowItem(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16):
   let ubDirection: UINT8;
 
   // Set attacker to NOBODY, since it's not a combat attack
-  pSoldier->ubTargetID = NOBODY;
+  pSoldier.value.ubTargetID = NOBODY;
 
   // Alrighty, switch based on stance!
-  switch (gAnimControl[pSoldier->usAnimState].ubHeight) {
+  switch (gAnimControl[pSoldier.value.usAnimState].ubHeight) {
     case ANIM_STAND:
 
       // CHECK IF WE ARE NOT ON THE SAME GRIDNO
-      if (sGridNo == pSoldier->sGridNo) {
+      if (sGridNo == pSoldier.value.sGridNo) {
         PickDropItemAnimation(pSoldier);
       } else {
         // CHANGE DIRECTION AT LEAST
@@ -1023,13 +1023,13 @@ function HandleSoldierThrowItem(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16):
         SoldierGotoStationaryStance(pSoldier);
 
         EVENT_SetSoldierDesiredDirection(pSoldier, ubDirection);
-        pSoldier->fTurningUntilDone = TRUE;
+        pSoldier.value.fTurningUntilDone = TRUE;
 
         // Draw item depending on distance from buddy
-        if (GetRangeFromGridNoDiff(sGridNo, pSoldier->sGridNo) < MIN_LOB_RANGE) {
-          pSoldier->usPendingAnimation = LOB_ITEM;
+        if (GetRangeFromGridNoDiff(sGridNo, pSoldier.value.sGridNo) < MIN_LOB_RANGE) {
+          pSoldier.value.usPendingAnimation = LOB_ITEM;
         } else {
-          pSoldier->usPendingAnimation = THROW_ITEM;
+          pSoldier.value.usPendingAnimation = THROW_ITEM;
         }
       }
       break;
@@ -1038,14 +1038,14 @@ function HandleSoldierThrowItem(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16):
     case ANIM_PRONE:
 
       // CHECK IF WE ARE NOT ON THE SAME GRIDNO
-      if (sGridNo == pSoldier->sGridNo) {
+      if (sGridNo == pSoldier.value.sGridNo) {
         // OK, JUST DROP ITEM!
-        if (pSoldier->pTempObject != NULL) {
-          AddItemToPool(sGridNo, pSoldier->pTempObject, 1, pSoldier->bLevel, 0, -1);
+        if (pSoldier.value.pTempObject != NULL) {
+          AddItemToPool(sGridNo, pSoldier.value.pTempObject, 1, pSoldier.value.bLevel, 0, -1);
           NotifySoldiersToLookforItems();
 
-          MemFree(pSoldier->pTempObject);
-          pSoldier->pTempObject = NULL;
+          MemFree(pSoldier.value.pTempObject);
+          pSoldier.value.pTempObject = NULL;
         }
       } else {
         // OK, go from prone/crouch to stand first!
@@ -1063,31 +1063,31 @@ function SoldierGiveItem(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer
   let ubDirection: UINT8;
 
   // Remove any previous actions
-  pSoldier->ubPendingAction = NO_PENDING_ACTION;
+  pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
 
   // See if we can get there to stab
-  sActionGridNo = FindAdjacentGridEx(pSoldier, pTargetSoldier->sGridNo, &ubDirection, &sAdjustedGridNo, TRUE, FALSE);
+  sActionGridNo = FindAdjacentGridEx(pSoldier, pTargetSoldier.value.sGridNo, &ubDirection, &sAdjustedGridNo, TRUE, FALSE);
   if (sActionGridNo != -1) {
     // SEND PENDING ACTION
-    pSoldier->ubPendingAction = MERC_GIVEITEM;
+    pSoldier.value.ubPendingAction = MERC_GIVEITEM;
 
-    pSoldier->bPendingActionData5 = bInvPos;
+    pSoldier.value.bPendingActionData5 = bInvPos;
     // Copy temp object
-    pSoldier->pTempObject = MemAlloc(sizeof(OBJECTTYPE));
-    memcpy(pSoldier->pTempObject, pObject, sizeof(OBJECTTYPE));
+    pSoldier.value.pTempObject = MemAlloc(sizeof(OBJECTTYPE));
+    memcpy(pSoldier.value.pTempObject, pObject, sizeof(OBJECTTYPE));
 
-    pSoldier->sPendingActionData2 = pTargetSoldier->sGridNo;
-    pSoldier->bPendingActionData3 = ubDirection;
-    pSoldier->uiPendingActionData4 = pTargetSoldier->ubID;
-    pSoldier->ubPendingActionAnimCount = 0;
+    pSoldier.value.sPendingActionData2 = pTargetSoldier.value.sGridNo;
+    pSoldier.value.bPendingActionData3 = ubDirection;
+    pSoldier.value.uiPendingActionData4 = pTargetSoldier.value.ubID;
+    pSoldier.value.ubPendingActionAnimCount = 0;
 
     // Set soldier as engaged!
-    pSoldier->uiStatusFlags |= SOLDIER_ENGAGEDINACTION;
+    pSoldier.value.uiStatusFlags |= SOLDIER_ENGAGEDINACTION;
 
     // CHECK IF WE ARE AT THIS GRIDNO NOW
-    if (pSoldier->sGridNo != sActionGridNo) {
+    if (pSoldier.value.sGridNo != sActionGridNo) {
       // WALK UP TO DEST FIRST
-      EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier->usUIMovementMode, FALSE, TRUE);
+      EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.value.usUIMovementMode, FALSE, TRUE);
     } else {
       EVENT_SoldierBeginGiveItem(pSoldier);
       // CHANGE DIRECTION OF TARGET TO OPPOSIDE DIRECTION!
@@ -1095,7 +1095,7 @@ function SoldierGiveItem(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer
     }
 
     // Set target as engaged!
-    pTargetSoldier->uiStatusFlags |= SOLDIER_ENGAGEDINACTION;
+    pTargetSoldier.value.uiStatusFlags |= SOLDIER_ENGAGEDINACTION;
 
     return;
   } else {
@@ -1104,12 +1104,12 @@ function SoldierGiveItem(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer
 }
 
 function SoldierDropItem(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
-  pSoldier->pTempObject = MemAlloc(sizeof(OBJECTTYPE));
-  if (pSoldier->pTempObject == NULL) {
+  pSoldier.value.pTempObject = MemAlloc(sizeof(OBJECTTYPE));
+  if (pSoldier.value.pTempObject == NULL) {
     // OUT OF MEMORY! YIKES!
     return FALSE;
   }
-  memcpy(pSoldier->pTempObject, pObj, sizeof(OBJECTTYPE));
+  memcpy(pSoldier.value.pTempObject, pObj, sizeof(OBJECTTYPE));
   PickDropItemAnimation(pSoldier);
   return TRUE;
 }
@@ -1118,52 +1118,52 @@ function SoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sG
   let sActionGridNo: INT16;
 
   // Remove any previous actions
-  pSoldier->ubPendingAction = NO_PENDING_ACTION;
+  pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
 
   sActionGridNo = AdjustGridNoForItemPlacement(pSoldier, sGridNo);
 
   // SET PENDING ACTIONS!
-  pSoldier->ubPendingAction = MERC_PICKUPITEM;
-  pSoldier->uiPendingActionData1 = iItemIndex;
-  pSoldier->sPendingActionData2 = sActionGridNo;
-  pSoldier->uiPendingActionData4 = sGridNo;
-  pSoldier->bPendingActionData3 = bZLevel;
-  pSoldier->ubPendingActionAnimCount = 0;
+  pSoldier.value.ubPendingAction = MERC_PICKUPITEM;
+  pSoldier.value.uiPendingActionData1 = iItemIndex;
+  pSoldier.value.sPendingActionData2 = sActionGridNo;
+  pSoldier.value.uiPendingActionData4 = sGridNo;
+  pSoldier.value.bPendingActionData3 = bZLevel;
+  pSoldier.value.ubPendingActionAnimCount = 0;
 
   // Deduct points!
   // sAPCost = GetAPsToPickupItem( pSoldier, sGridNo );
   // DeductPoints( pSoldier, sAPCost, 0 );
-  SetUIBusy(pSoldier->ubID);
+  SetUIBusy(pSoldier.value.ubID);
 
   // CHECK IF NOT AT SAME GRIDNO
-  if (pSoldier->sGridNo != sActionGridNo) {
-    if (pSoldier->bTeam == gbPlayerNum) {
-      EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier->usUIMovementMode, TRUE, TRUE);
+  if (pSoldier.value.sGridNo != sActionGridNo) {
+    if (pSoldier.value.bTeam == gbPlayerNum) {
+      EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.value.usUIMovementMode, TRUE, TRUE);
 
       // Say it only if we don;t have to go too far!
-      if (pSoldier->usPathDataSize > 5) {
+      if (pSoldier.value.usPathDataSize > 5) {
         DoMercBattleSound(pSoldier, BATTLE_SOUND_OK1);
       }
     } else {
-      EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier->usUIMovementMode, FALSE, TRUE);
+      EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.value.usUIMovementMode, FALSE, TRUE);
     }
   } else {
     // DO ANIMATION OF PICKUP NOW!
-    PickPickupAnimation(pSoldier, pSoldier->uiPendingActionData1, (pSoldier->uiPendingActionData4), pSoldier->bPendingActionData3);
+    PickPickupAnimation(pSoldier, pSoldier.value.uiPendingActionData1, (pSoldier.value.uiPendingActionData4), pSoldier.value.bPendingActionData3);
   }
 }
 
 function HandleAutoPlaceFail(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sGridNo: INT16): void {
-  if (pSoldier->bTeam == gbPlayerNum) {
+  if (pSoldier.value.bTeam == gbPlayerNum) {
     // Place it in buddy's hand!
     if (gpItemPointer == NULL) {
       InternalBeginItemPointer(pSoldier, &(gWorldItems[iItemIndex].o), NO_SLOT);
     } else {
       // Add back to world...
-      AddItemToPool(sGridNo, &(gWorldItems[iItemIndex].o), 1, pSoldier->bLevel, 0, -1);
+      AddItemToPool(sGridNo, &(gWorldItems[iItemIndex].o), 1, pSoldier.value.bLevel, 0, -1);
 
       // If we are a merc, say DAMN quote....
-      if (pSoldier->bTeam == gbPlayerNum) {
+      if (pSoldier.value.bTeam == gbPlayerNum) {
         DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
       }
     }
@@ -1186,7 +1186,7 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
   if (iItemIndex == ITEM_PICKUP_ACTION_ALL || iItemIndex == ITEM_PICKUP_SELECTION) {
     // DO all pickup!
     // LOOP THROUGH LIST TO FIND NODE WE WANT
-    GetItemPool(sGridNo, &pItemPool, pSoldier->bLevel);
+    GetItemPool(sGridNo, &pItemPool, pSoldier.value.bLevel);
 
     while (pItemPool) {
       if (ItemPoolOKForPickup(pSoldier, pItemPool, bZLevel)) {
@@ -1203,9 +1203,9 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
         cnt++;
 
         if (fPickup) {
-          if (ContinuePastBoobyTrap(pSoldier, sGridNo, bZLevel, pItemPool->iItemIndex, FALSE, &fSaidBoobyTrapQuote)) {
+          if (ContinuePastBoobyTrap(pSoldier, sGridNo, bZLevel, pItemPool.value.iItemIndex, FALSE, &fSaidBoobyTrapQuote)) {
             // Make copy of item
-            memcpy(&Object, &(gWorldItems[pItemPool->iItemIndex].o), sizeof(OBJECTTYPE));
+            memcpy(&Object, &(gWorldItems[pItemPool.value.iItemIndex].o), sizeof(OBJECTTYPE));
 
             if (ItemIsCool(&Object)) {
               fShouldSayCoolQuote = TRUE;
@@ -1216,17 +1216,17 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
               bTempFrequency = Object.bFrequency;
               gpTempSoldier = pSoldier;
               DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[ACTIVATE_SWITCH_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, SwitchMessageBoxCallBack, NULL);
-              pItemPool = pItemPool->pNext;
+              pItemPool = pItemPool.value.pNext;
             } else {
               if (!AutoPlaceObject(pSoldier, &Object, TRUE)) {
                 // check to see if the object has been swapped with one in inventory
-                if (Object.usItem != gWorldItems[pItemPool->iItemIndex].o.usItem || Object.ubNumberOfObjects != gWorldItems[pItemPool->iItemIndex].o.ubNumberOfObjects) {
+                if (Object.usItem != gWorldItems[pItemPool.value.iItemIndex].o.usItem || Object.ubNumberOfObjects != gWorldItems[pItemPool.value.iItemIndex].o.ubNumberOfObjects) {
                   // copy back because item changed, and we must make sure the item pool reflects this.
-                  memcpy(&(gWorldItems[pItemPool->iItemIndex].o), &Object, sizeof(OBJECTTYPE));
+                  memcpy(&(gWorldItems[pItemPool.value.iItemIndex].o), &Object, sizeof(OBJECTTYPE));
                 }
 
                 pItemPoolToDelete = pItemPool;
-                pItemPool = pItemPool->pNext;
+                pItemPool = pItemPool.value.pNext;
                 fFailedAutoPlace = TRUE;
                 // continue, to try and place ay others...
                 continue;
@@ -1251,32 +1251,32 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
               */
 
               // pItemPoolToDelete = pItemPool;
-              iItemIndexToDelete = pItemPool->iItemIndex;
-              pItemPool = pItemPool->pNext;
-              RemoveItemFromPool(sGridNo, iItemIndexToDelete, pSoldier->bLevel);
+              iItemIndexToDelete = pItemPool.value.iItemIndex;
+              pItemPool = pItemPool.value.pNext;
+              RemoveItemFromPool(sGridNo, iItemIndexToDelete, pSoldier.value.bLevel);
             }
           } else {
             // boobytrap found... stop picking up things!
             break;
           }
         } else {
-          pItemPool = pItemPool->pNext;
+          pItemPool = pItemPool.value.pNext;
         }
       } else {
-        pItemPool = pItemPool->pNext;
+        pItemPool = pItemPool.value.pNext;
       }
     }
 
     // ATE; If here, and we failed to add any more stuff, put failed one in our cursor...
     if (pItemPoolToDelete != NULL && fFailedAutoPlace) {
       gfDontChargeAPsToPickup = TRUE;
-      HandleAutoPlaceFail(pSoldier, pItemPoolToDelete->iItemIndex, sGridNo);
-      RemoveItemFromPool(sGridNo, pItemPoolToDelete->iItemIndex, pSoldier->bLevel);
+      HandleAutoPlaceFail(pSoldier, pItemPoolToDelete.value.iItemIndex, sGridNo);
+      RemoveItemFromPool(sGridNo, pItemPoolToDelete.value.iItemIndex, pSoldier.value.bLevel);
       pItemPoolToDelete = NULL;
     }
   } else {
     // REMOVE ITEM FROM POOL
-    if (ItemExistsAtLocation(sGridNo, iItemIndex, pSoldier->bLevel)) {
+    if (ItemExistsAtLocation(sGridNo, iItemIndex, pSoldier.value.bLevel)) {
       if (ContinuePastBoobyTrap(pSoldier, sGridNo, bZLevel, iItemIndex, FALSE, &fSaidBoobyTrapQuote)) {
         // Make copy of item
         memcpy(&Object, &(gWorldItems[iItemIndex].o), sizeof(OBJECTTYPE));
@@ -1309,7 +1309,7 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
                                                           }
                                                   }
           */
-          RemoveItemFromPool(sGridNo, iItemIndex, pSoldier->bLevel);
+          RemoveItemFromPool(sGridNo, iItemIndex, pSoldier.value.bLevel);
 
           if (!AutoPlaceObject(pSoldier, &(gWorldItems[iItemIndex].o), TRUE)) {
             gfDontChargeAPsToPickup = TRUE;
@@ -1321,13 +1321,13 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
   }
 
   // OK, check if potentially a good candidate for cool quote
-  if (fShouldSayCoolQuote && pSoldier->bTeam == gbPlayerNum) {
+  if (fShouldSayCoolQuote && pSoldier.value.bTeam == gbPlayerNum) {
     // Do we have this quote..?
-    if (QuoteExp_GotGunOrUsedGun[pSoldier->ubProfile] == QUOTE_FOUND_SOMETHING_SPECIAL) {
+    if (QuoteExp_GotGunOrUsedGun[pSoldier.value.ubProfile] == QUOTE_FOUND_SOMETHING_SPECIAL) {
       // Have we not said it today?
-      if (!(pSoldier->usQuoteSaidFlags & SOLDIER_QUOTE_SAID_FOUND_SOMETHING_NICE)) {
+      if (!(pSoldier.value.usQuoteSaidFlags & SOLDIER_QUOTE_SAID_FOUND_SOMETHING_NICE)) {
         // set flag
-        pSoldier->usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_FOUND_SOMETHING_NICE;
+        pSoldier.value.usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_FOUND_SOMETHING_NICE;
 
         // Say it....
         // We've found something!
@@ -1339,12 +1339,12 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
   }
 
   // Aknowledge....
-  if (pSoldier->bTeam == OUR_TEAM && !fDidSayCoolQuote && !fSaidBoobyTrapQuote) {
+  if (pSoldier.value.bTeam == OUR_TEAM && !fDidSayCoolQuote && !fSaidBoobyTrapQuote) {
     DoMercBattleSound(pSoldier, BATTLE_SOUND_GOTIT);
   }
 
   // OK partner......look for any hidden items!
-  if (pSoldier->bTeam == gbPlayerNum && LookForHiddenItems(sGridNo, pSoldier->bLevel, TRUE, 0)) {
+  if (pSoldier.value.bTeam == gbPlayerNum && LookForHiddenItems(sGridNo, pSoldier.value.bLevel, TRUE, 0)) {
     // WISDOM GAIN (5):  Found a hidden object
     StatChange(pSoldier, WISDOMAMT, 5, FALSE);
 
@@ -1362,9 +1362,9 @@ function HandleSoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
   let usNum: UINT16;
 
   // Draw menu if more than one item!
-  if (GetItemPool(sGridNo, &pItemPool, pSoldier->bLevel)) {
+  if (GetItemPool(sGridNo, &pItemPool, pSoldier.value.bLevel)) {
     // OK, if an enemy, go directly ( skip menu )
-    if (pSoldier->bTeam != gbPlayerNum) {
+    if (pSoldier.value.bTeam != gbPlayerNum) {
       SoldierGetItemFromWorld(pSoldier, iItemIndex, sGridNo, bZLevel, NULL);
     } else {
       if (gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_PLAYER_MINE_PRESENT) {
@@ -1372,21 +1372,21 @@ function HandleSoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
 
         // override the item index passed in with the one for the bomb in this
         // tile
-        iItemIndex = FindWorldItemForBombInGridNo(sGridNo, pSoldier->bLevel);
+        iItemIndex = FindWorldItemForBombInGridNo(sGridNo, pSoldier.value.bLevel);
 
-        gpBoobyTrapItemPool = GetItemPoolForIndex(sGridNo, iItemIndex, pSoldier->bLevel);
+        gpBoobyTrapItemPool = GetItemPoolForIndex(sGridNo, iItemIndex, pSoldier.value.bLevel);
         gpBoobyTrapSoldier = pSoldier;
         gsBoobyTrapGridNo = sGridNo;
-        gbBoobyTrapLevel = pSoldier->bLevel;
+        gbBoobyTrapLevel = pSoldier.value.bLevel;
         gfDisarmingBuriedBomb = TRUE;
         gbTrapDifficulty = gWorldItems[iItemIndex].o.bTrap;
 
         DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[DISARM_TRAP_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack, NULL);
       } else {
         // OK, only hidden items exist...
-        if (pSoldier->bTeam == gbPlayerNum && DoesItemPoolContainAllHiddenItems(pItemPool)) {
+        if (pSoldier.value.bTeam == gbPlayerNum && DoesItemPoolContainAllHiddenItems(pItemPool)) {
           // He's touched them....
-          if (LookForHiddenItems(sGridNo, pSoldier->bLevel, TRUE, 0)) {
+          if (LookForHiddenItems(sGridNo, pSoldier.value.bLevel, TRUE, 0)) {
             // WISDOM GAIN (5):  Found a hidden object
             StatChange(pSoldier, WISDOMAMT, 5, FALSE);
 
@@ -1401,13 +1401,13 @@ function HandleSoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
           if ((usNum = GetNumOkForDisplayItemsInPool(pItemPool, bZLevel)) == 1) {
             // Find first OK item....
             while (!ItemPoolOKForDisplay(pItemPool, bZLevel)) {
-              pItemPool = pItemPool->pNext;
+              pItemPool = pItemPool.value.pNext;
             }
-            SoldierGetItemFromWorld(pSoldier, pItemPool->iItemIndex, sGridNo, bZLevel, NULL);
+            SoldierGetItemFromWorld(pSoldier, pItemPool.value.iItemIndex, sGridNo, bZLevel, NULL);
           } else {
             if (usNum != 0) {
               // Freeze guy!
-              pSoldier->fPauseAllAnimation = TRUE;
+              pSoldier.value.fPauseAllAnimation = TRUE;
 
               InitializeItemPickupMenu(pSoldier, sGridNo, pItemPool, 0, 0, bZLevel);
 
@@ -1435,12 +1435,12 @@ function AddItemGraphicToWorld(pItem: Pointer<INVTYPE>, sGridNo: INT16, ubLevel:
   if (ubLevel == 0) {
     pNode = AddStructToTail(sGridNo, usTileIndex);
     // SET FLAG FOR AN ITEM
-    pNode->uiFlags |= LEVELNODE_ITEM;
+    pNode.value.uiFlags |= LEVELNODE_ITEM;
   } else {
     AddOnRoofToHead(sGridNo, usTileIndex);
     // SET FLAG FOR AN ITEM
     pNode = gpWorldLevelData[sGridNo].pOnRoofHead;
-    pNode->uiFlags |= LEVELNODE_ITEM;
+    pNode.value.uiFlags |= LEVELNODE_ITEM;
   }
 
   // DIRTY INTERFACE
@@ -1476,7 +1476,7 @@ function RemoveItemGraphicFromWorld(pItem: Pointer<INVTYPE>, sGridNo: INT16, ubL
       break;
     }
 
-    pNode = pNode->pNext;
+    pNode = pNode.value.pNext;
   }
 
   // DIRTY INTERFACE
@@ -1512,12 +1512,12 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
   let fObjectInOpenable: BOOLEAN = FALSE;
   let bTerrainID: INT8;
 
-  Assert(pObject->ubNumberOfObjects <= MAX_OBJECTS_PER_SLOT);
+  Assert(pObject.value.ubNumberOfObjects <= MAX_OBJECTS_PER_SLOT);
 
   // ATE: Check if the gridno is OK
   if ((*psGridNo) == NOWHERE) {
     // Display warning.....
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "Error: Item %d was given invalid grid location %d for item pool. Please Report.", pObject->usItem, (*psGridNo));
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "Error: Item %d was given invalid grid location %d for item pool. Please Report.", pObject.value.usItem, (*psGridNo));
 
     (*psGridNo) = sNewGridNo = gMapInformation.sCenterGridNo;
 
@@ -1530,7 +1530,7 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
   bTerrainID = GetTerrainType(*psGridNo);
 
   if (bTerrainID == DEEP_WATER || bTerrainID == LOW_WATER || bTerrainID == MED_WATER) {
-    if (Item[pObject->usItem].fFlags & ITEM_SINKS) {
+    if (Item[pObject.value.usItem].fFlags & ITEM_SINKS) {
       return NULL;
     }
   }
@@ -1551,12 +1551,12 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
   }
 
   // Check structure database
-  if (gpWorldLevelData[*psGridNo].pStructureHead && (pObject->usItem != OWNERSHIP) && (pObject->usItem != ACTION_ITEM)) {
+  if (gpWorldLevelData[*psGridNo].pStructureHead && (pObject.value.usItem != OWNERSHIP) && (pObject.value.usItem != ACTION_ITEM)) {
     // Something is here, check obstruction in future
     sDesiredLevel = ubLevel ? STRUCTURE_ON_ROOF : STRUCTURE_ON_GROUND;
     pStructure = FindStructure(*psGridNo, STRUCTURE_BLOCKSMOVES);
     while (pStructure) {
-      if (!(pStructure->fFlags & (STRUCTURE_PERSON | STRUCTURE_CORPSE)) && pStructure->sCubeOffset == sDesiredLevel) {
+      if (!(pStructure.value.fFlags & (STRUCTURE_PERSON | STRUCTURE_CORPSE)) && pStructure.value.sCubeOffset == sDesiredLevel) {
         // If we are going into a raised struct AND we have above level set to -1
         if (StructureBottomLevel(pStructure) != 1 && fForceOnGround) {
           break;
@@ -1566,10 +1566,10 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
         pBase = FindBaseStructure(pStructure);
 
         // Get LEVELNODE for struct and remove!
-        sNewGridNo = pBase->sGridNo;
+        sNewGridNo = pBase.value.sGridNo;
 
         // Check for openable flag....
-        if (pStructure->fFlags & STRUCTURE_OPENABLE) {
+        if (pStructure.value.fFlags & STRUCTURE_OPENABLE) {
           // ATE: Set a flag here - we need to know later that we're in an openable...
           fObjectInOpenable = TRUE;
 
@@ -1578,7 +1578,7 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
           usFlags |= WORLD_ITEM_DONTRENDER;
 
           // Openable.. check if it's closed, if so, set visiblity...
-          if (!(pStructure->fFlags & STRUCTURE_OPEN)) {
+          if (!(pStructure.value.fFlags & STRUCTURE_OPEN)) {
             // -2 means - don't reveal!
             bVisible = -2;
           }
@@ -1587,7 +1587,7 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
           break;
         }
         // Else can we place an item on top?
-        else if (pStructure->fFlags & (STRUCTURE_GENERIC)) {
+        else if (pStructure.value.fFlags & (STRUCTURE_GENERIC)) {
           let ubLevel0: UINT8;
           let ubLevel1: UINT8;
           let ubLevel2: UINT8;
@@ -1614,7 +1614,7 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
           }
 
           // Set flag indicating it has an item on top!
-          pStructure->fFlags |= STRUCTURE_HASITEMONTOP;
+          pStructure.value.fFlags |= STRUCTURE_HASITEMONTOP;
           break;
         }
       }
@@ -1623,22 +1623,22 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
     }
   }
 
-  if (pObject->usItem == SWITCH && !fObjectInOpenable) {
+  if (pObject.value.usItem == SWITCH && !fObjectInOpenable) {
     if (bVisible != -2) {
       // switch items which are not hidden inside objects should be considered buried
       bVisible = BURIED;
       // and they are pressure-triggered unless there is a switch structure there
       if (FindStructure(*psGridNo, STRUCTURE_SWITCH) != NULL) {
-        pObject->bDetonatorType = BOMB_SWITCH;
+        pObject.value.bDetonatorType = BOMB_SWITCH;
       } else {
-        pObject->bDetonatorType = BOMB_PRESSURE;
+        pObject.value.bDetonatorType = BOMB_PRESSURE;
       }
     } else {
       // else they are manually controlled
-      pObject->bDetonatorType = BOMB_SWITCH;
+      pObject.value.bDetonatorType = BOMB_SWITCH;
     }
-  } else if (pObject->usItem == ACTION_ITEM) {
-    switch (pObject->bActionValue) {
+  } else if (pObject.value.usItem == ACTION_ITEM) {
+    switch (pObject.value.bActionValue) {
       case ACTION_ITEM_SMALL_PIT:
       case ACTION_ITEM_LARGE_PIT:
         // mark as known about by civs and creatures
@@ -1661,10 +1661,10 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
   if (GetItemPool(*psGridNo, &pItemPool, ubLevel)) {
     // Add to exitsing pool
     // Add graphic
-    pNode = AddItemGraphicToWorld(&(Item[pObject->usItem]), *psGridNo, ubLevel);
+    pNode = AddItemGraphicToWorld(&(Item[pObject.value.usItem]), *psGridNo, ubLevel);
 
     // Set pool head value in levelnode
-    pNode->pItemPool = pItemPool;
+    pNode.value.pItemPool = pItemPool;
 
     // Add New Node
     pItemPoolTemp = pItemPool;
@@ -1672,45 +1672,45 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
     pItemPool = MemAlloc(sizeof(ITEM_POOL));
 
     // Set Next to NULL
-    pItemPool->pNext = NULL;
+    pItemPool.value.pNext = NULL;
     // Set Item index
-    pItemPool->iItemIndex = iWorldItem;
+    pItemPool.value.iItemIndex = iWorldItem;
     // Get a link back!
-    pItemPool->pLevelNode = pNode;
+    pItemPool.value.pLevelNode = pNode;
 
     if (pItemPoolTemp) {
       // Get last item in list
-      while (pItemPoolTemp->pNext != NULL)
-        pItemPoolTemp = pItemPoolTemp->pNext;
+      while (pItemPoolTemp.value.pNext != NULL)
+        pItemPoolTemp = pItemPoolTemp.value.pNext;
 
       // Set Next of previous
-      pItemPoolTemp->pNext = pItemPool;
+      pItemPoolTemp.value.pNext = pItemPool;
     }
     // Set Previous of new one
-    pItemPool->pPrev = pItemPoolTemp;
+    pItemPool.value.pPrev = pItemPoolTemp;
   } else {
-    pNode = AddItemGraphicToWorld(&(Item[pObject->usItem]), *psGridNo, ubLevel);
+    pNode = AddItemGraphicToWorld(&(Item[pObject.value.usItem]), *psGridNo, ubLevel);
 
     // Create new pool
     pItemPool = MemAlloc(sizeof(ITEM_POOL));
 
-    pNode->pItemPool = pItemPool;
+    pNode.value.pItemPool = pItemPool;
 
     // Set prev to NULL
-    pItemPool->pPrev = NULL;
+    pItemPool.value.pPrev = NULL;
     // Set next to NULL
-    pItemPool->pNext = NULL;
+    pItemPool.value.pNext = NULL;
     // Set Item index
-    pItemPool->iItemIndex = iWorldItem;
+    pItemPool.value.iItemIndex = iWorldItem;
     // Get a link back!
-    pItemPool->pLevelNode = pNode;
+    pItemPool.value.pLevelNode = pNode;
 
     // Set flag to indicate item pool presence
     gpWorldLevelData[*psGridNo].uiFlags |= MAPELEMENT_ITEMPOOL_PRESENT;
   }
 
   // Set visible!
-  pItemPool->bVisible = bVisible;
+  pItemPool.value.bVisible = bVisible;
 
   // If bbisible is true, render makered world
   if (bVisible == 1 && GridNoOnScreen((*psGridNo))) {
@@ -1720,12 +1720,12 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
   }
 
   // Set flahs timer
-  pItemPool->bFlashColor = FALSE;
-  pItemPool->sGridNo = *psGridNo;
-  pItemPool->ubLevel = ubLevel;
-  pItemPool->usFlags = usFlags;
-  pItemPool->bVisible = bVisible;
-  pItemPool->bRenderZHeightAboveLevel = bRenderZHeightAboveLevel;
+  pItemPool.value.bFlashColor = FALSE;
+  pItemPool.value.sGridNo = *psGridNo;
+  pItemPool.value.ubLevel = ubLevel;
+  pItemPool.value.usFlags = usFlags;
+  pItemPool.value.bVisible = bVisible;
+  pItemPool.value.bRenderZHeightAboveLevel = bRenderZHeightAboveLevel;
 
   // ATE: Get head of pool again....
   if (GetItemPool(*psGridNo, &pItemPool, ubLevel)) {
@@ -1749,10 +1749,10 @@ function ItemExistsAtLocation(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8)
     // LOOP THROUGH LIST TO FIND NODE WE WANT
     pItemPoolTemp = pItemPool;
     while (pItemPoolTemp != NULL) {
-      if (pItemPoolTemp->iItemIndex == iItemIndex) {
+      if (pItemPoolTemp.value.iItemIndex == iItemIndex) {
         return TRUE;
       }
-      pItemPoolTemp = pItemPoolTemp->pNext;
+      pItemPoolTemp = pItemPoolTemp.value.pNext;
     }
   }
 
@@ -1769,13 +1769,13 @@ function ItemTypeExistsAtLocation(sGridNo: INT16, usItem: UINT16, ubLevel: UINT8
     // LOOP THROUGH LIST TO FIND ITEM WE WANT
     pItemPoolTemp = pItemPool;
     while (pItemPoolTemp != NULL) {
-      if (gWorldItems[pItemPoolTemp->iItemIndex].o.usItem == usItem) {
+      if (gWorldItems[pItemPoolTemp.value.iItemIndex].o.usItem == usItem) {
         if (piItemIndex) {
-          *piItemIndex = pItemPoolTemp->iItemIndex;
+          *piItemIndex = pItemPoolTemp.value.iItemIndex;
         }
         return TRUE;
       }
-      pItemPoolTemp = pItemPoolTemp->pNext;
+      pItemPoolTemp = pItemPoolTemp.value.pNext;
     }
   }
 
@@ -1792,10 +1792,10 @@ function GetItemOfClassTypeInPool(sGridNo: INT16, uiItemClass: UINT32, ubLevel: 
     // LOOP THROUGH LIST TO FIND NODE WE WANT
     pItemPoolTemp = pItemPool;
     while (pItemPoolTemp != NULL) {
-      if (Item[gWorldItems[pItemPoolTemp->iItemIndex].o.usItem].usItemClass & uiItemClass) {
-        return pItemPoolTemp->iItemIndex;
+      if (Item[gWorldItems[pItemPoolTemp.value.iItemIndex].o.usItem].usItemClass & uiItemClass) {
+        return pItemPoolTemp.value.iItemIndex;
       }
-      pItemPoolTemp = pItemPoolTemp->pNext;
+      pItemPoolTemp = pItemPoolTemp.value.pNext;
     }
   }
 
@@ -1812,10 +1812,10 @@ function GetItemPoolForIndex(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8):
     // LOOP THROUGH LIST TO FIND NODE WE WANT
     pItemPoolTemp = pItemPool;
     while (pItemPoolTemp != NULL) {
-      if (pItemPoolTemp->iItemIndex == iItemIndex) {
+      if (pItemPoolTemp.value.iItemIndex == iItemIndex) {
         return pItemPoolTemp;
       }
-      pItemPoolTemp = pItemPoolTemp->pNext;
+      pItemPoolTemp = pItemPoolTemp.value.pNext;
     }
   }
 
@@ -1825,11 +1825,11 @@ function GetItemPoolForIndex(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8):
 function DoesItemPoolContainAnyHiddenItems(pItemPool: Pointer<ITEM_POOL>): BOOLEAN {
   // LOOP THROUGH LIST TO FIND NODE WE WANT
   while (pItemPool != NULL) {
-    if (gWorldItems[pItemPool->iItemIndex].bVisible == HIDDEN_ITEM) {
+    if (gWorldItems[pItemPool.value.iItemIndex].bVisible == HIDDEN_ITEM) {
       return TRUE;
     }
 
-    pItemPool = pItemPool->pNext;
+    pItemPool = pItemPool.value.pNext;
   }
 
   return FALSE;
@@ -1838,11 +1838,11 @@ function DoesItemPoolContainAnyHiddenItems(pItemPool: Pointer<ITEM_POOL>): BOOLE
 function DoesItemPoolContainAllHiddenItems(pItemPool: Pointer<ITEM_POOL>): BOOLEAN {
   // LOOP THROUGH LIST TO FIND NODE WE WANT
   while (pItemPool != NULL) {
-    if (gWorldItems[pItemPool->iItemIndex].bVisible != HIDDEN_ITEM) {
+    if (gWorldItems[pItemPool.value.iItemIndex].bVisible != HIDDEN_ITEM) {
       return FALSE;
     }
 
-    pItemPool = pItemPool->pNext;
+    pItemPool = pItemPool.value.pNext;
   }
 
   return TRUE;
@@ -1858,13 +1858,13 @@ function LookForHiddenItems(sGridNo: INT16, ubLevel: INT8, fSetLocator: BOOLEAN,
 
     // LOOP THROUGH LIST TO FIND NODE WE WANT
     while (pItemPool != NULL) {
-      if (gWorldItems[pItemPool->iItemIndex].bVisible == HIDDEN_ITEM && gWorldItems[pItemPool->iItemIndex].o.usItem != OWNERSHIP) {
+      if (gWorldItems[pItemPool.value.iItemIndex].bVisible == HIDDEN_ITEM && gWorldItems[pItemPool.value.iItemIndex].o.usItem != OWNERSHIP) {
         fFound = TRUE;
 
-        gWorldItems[pItemPool->iItemIndex].bVisible = INVISIBLE;
+        gWorldItems[pItemPool.value.iItemIndex].bVisible = INVISIBLE;
       }
 
-      pItemPool = pItemPool->pNext;
+      pItemPool = pItemPool.value.pNext;
     }
   }
 
@@ -1893,11 +1893,11 @@ function GetZLevelOfItemPoolGivenStructure(sGridNo: INT16, ubLevel: UINT8, pStru
 function GetLargestZLevelOfItemPool(pItemPool: Pointer<ITEM_POOL>): INT8 {
   // OK, loop through pools and get any height != 0........
   while (pItemPool != NULL) {
-    if (pItemPool->bRenderZHeightAboveLevel > 0) {
-      return pItemPool->bRenderZHeightAboveLevel;
+    if (pItemPool.value.bRenderZHeightAboveLevel > 0) {
+      return pItemPool.value.bRenderZHeightAboveLevel;
     }
 
-    pItemPool = pItemPool->pNext;
+    pItemPool = pItemPool.value.pNext;
   }
 
   return 0;
@@ -1906,11 +1906,11 @@ function GetLargestZLevelOfItemPool(pItemPool: Pointer<ITEM_POOL>): INT8 {
 function DoesItemPoolContainAllItemsOfHigherZLevel(pItemPool: Pointer<ITEM_POOL>): BOOLEAN {
   // LOOP THROUGH LIST TO FIND NODE WE WANT
   while (pItemPool != NULL) {
-    if (pItemPool->bRenderZHeightAboveLevel == 0) {
+    if (pItemPool.value.bRenderZHeightAboveLevel == 0) {
       return FALSE;
     }
 
-    pItemPool = pItemPool->pNext;
+    pItemPool = pItemPool.value.pNext;
   }
 
   return TRUE;
@@ -1919,11 +1919,11 @@ function DoesItemPoolContainAllItemsOfHigherZLevel(pItemPool: Pointer<ITEM_POOL>
 function DoesItemPoolContainAllItemsOfZeroZLevel(pItemPool: Pointer<ITEM_POOL>): BOOLEAN {
   // LOOP THROUGH LIST TO FIND NODE WE WANT
   while (pItemPool != NULL) {
-    if (pItemPool->bRenderZHeightAboveLevel != 0) {
+    if (pItemPool.value.bRenderZHeightAboveLevel != 0) {
       return FALSE;
     }
 
-    pItemPool = pItemPool->pNext;
+    pItemPool = pItemPool.value.pNext;
   }
 
   return TRUE;
@@ -1934,7 +1934,7 @@ function RemoveItemPool(sGridNo: INT16, ubLevel: UINT8): void {
 
   // Check for and existing pool on the object layer
   while (GetItemPool(sGridNo, &pItemPool, ubLevel) == TRUE) {
-    RemoveItemFromPool(sGridNo, pItemPool->iItemIndex, ubLevel);
+    RemoveItemFromPool(sGridNo, pItemPool.value.iItemIndex, ubLevel);
   }
 }
 
@@ -1945,10 +1945,10 @@ function RemoveAllUnburiedItems(sGridNo: INT16, ubLevel: UINT8): void {
   GetItemPool(sGridNo, &pItemPool, ubLevel);
 
   while (pItemPool) {
-    if (gWorldItems[pItemPool->iItemIndex].bVisible == BURIED) {
-      pItemPool = pItemPool->pNext;
+    if (gWorldItems[pItemPool.value.iItemIndex].bVisible == BURIED) {
+      pItemPool = pItemPool.value.pNext;
     } else {
-      RemoveItemFromPool(sGridNo, pItemPool->iItemIndex, ubLevel);
+      RemoveItemFromPool(sGridNo, pItemPool.value.iItemIndex, ubLevel);
       // get new start pointer
       GetItemPool(sGridNo, &pItemPool, ubLevel);
     }
@@ -1957,20 +1957,20 @@ function RemoveAllUnburiedItems(sGridNo: INT16, ubLevel: UINT8): void {
 
 function LoopLevelNodeForShowThroughFlag(pNode: Pointer<LEVELNODE>, sGridNo: INT16, ubLevel: UINT8): void {
   while (pNode != NULL) {
-    if (pNode->uiFlags & LEVELNODE_ITEM) {
+    if (pNode.value.uiFlags & LEVELNODE_ITEM) {
       if (ubLevel == 0) {
         // If we are in a room....
         // if ( IsRoofPresentAtGridno( sGridNo ) || gfCaves || gfBasement )
-        { pNode->uiFlags |= LEVELNODE_SHOW_THROUGH; }
+        { pNode.value.uiFlags |= LEVELNODE_SHOW_THROUGH; }
       } else {
-        pNode->uiFlags |= LEVELNODE_SHOW_THROUGH;
+        pNode.value.uiFlags |= LEVELNODE_SHOW_THROUGH;
       }
 
       if (gGameSettings.fOptions[TOPTION_GLOW_ITEMS]) {
-        pNode->uiFlags |= LEVELNODE_DYNAMIC;
+        pNode.value.uiFlags |= LEVELNODE_DYNAMIC;
       }
     }
-    pNode = pNode->pNext;
+    pNode = pNode.value.pNext;
   }
 }
 
@@ -1995,20 +1995,20 @@ function SetItemPoolVisibilityOn(pItemPool: Pointer<ITEM_POOL>, bAllGreaterThan:
 
   pItemPoolTemp = pItemPool;
   while (pItemPoolTemp != NULL) {
-    bVisibleValue = gWorldItems[pItemPoolTemp->iItemIndex].bVisible;
+    bVisibleValue = gWorldItems[pItemPoolTemp.value.iItemIndex].bVisible;
 
     // Update each item...
     if (bVisibleValue != VISIBLE) {
-      if (gWorldItems[pItemPoolTemp->iItemIndex].o.usItem == ACTION_ITEM) {
+      if (gWorldItems[pItemPoolTemp.value.iItemIndex].o.usItem == ACTION_ITEM) {
         // NEVER MAKE VISIBLE!
-        pItemPoolTemp = pItemPoolTemp->pNext;
+        pItemPoolTemp = pItemPoolTemp.value.pNext;
         continue;
       }
 
       // If we have reached a visible value we should not modify, ignore...
-      if (bVisibleValue >= bAllGreaterThan && gWorldItems[pItemPoolTemp->iItemIndex].o.usItem != OWNERSHIP) {
+      if (bVisibleValue >= bAllGreaterThan && gWorldItems[pItemPoolTemp.value.iItemIndex].o.usItem != OWNERSHIP) {
         // Update the world value
-        gWorldItems[pItemPoolTemp->iItemIndex].bVisible = VISIBLE;
+        gWorldItems[pItemPoolTemp.value.iItemIndex].bVisible = VISIBLE;
 
         fAtLeastModified = TRUE;
       }
@@ -2053,10 +2053,10 @@ function SetItemPoolVisibilityOn(pItemPool: Pointer<ITEM_POOL>, bAllGreaterThan:
         // reset fDeleted to false so we don't skip moving through the list more than once
         fDeleted = FALSE;
       } else {
-        pItemPoolTemp = pItemPoolTemp->pNext;
+        pItemPoolTemp = pItemPoolTemp.value.pNext;
       }
     } else {
-      pItemPoolTemp = pItemPoolTemp->pNext;
+      pItemPoolTemp = pItemPoolTemp.value.pNext;
     }
   }
 
@@ -2068,13 +2068,13 @@ function SetItemPoolVisibilityOn(pItemPool: Pointer<ITEM_POOL>, bAllGreaterThan:
   // Update global pool bVisible to true ( if at least one is visible... )
   pItemPoolTemp = pItemPool;
   while (pItemPoolTemp != NULL) {
-    pItemPoolTemp->bVisible = VISIBLE;
+    pItemPoolTemp.value.bVisible = VISIBLE;
 
-    pItemPoolTemp = pItemPoolTemp->pNext;
+    pItemPoolTemp = pItemPoolTemp.value.pNext;
   }
 
   // Handle obscured flag...
-  HandleItemObscuredFlag(pItemPool->sGridNo, pItemPool->ubLevel);
+  HandleItemObscuredFlag(pItemPool.value.sGridNo, pItemPool.value.ubLevel);
 
   if (fSetLocator) {
     SetItemPoolLocator(pItemPool);
@@ -2089,10 +2089,10 @@ function SetItemPoolVisibilityHidden(pItemPool: Pointer<ITEM_POOL>): void {
   pItemPoolTemp = pItemPool;
   while (pItemPoolTemp != NULL) {
     // Update the world value
-    gWorldItems[pItemPoolTemp->iItemIndex].bVisible = HIDDEN_IN_OBJECT;
-    pItemPoolTemp->bVisible = HIDDEN_IN_OBJECT;
+    gWorldItems[pItemPoolTemp.value.iItemIndex].bVisible = HIDDEN_IN_OBJECT;
+    pItemPoolTemp.value.bVisible = HIDDEN_IN_OBJECT;
 
-    pItemPoolTemp = pItemPoolTemp->pNext;
+    pItemPoolTemp = pItemPoolTemp.value.pNext;
   }
 }
 
@@ -2105,19 +2105,19 @@ function AdjustItemPoolVisibility(pItemPool: Pointer<ITEM_POOL>): void {
   pItemPoolTemp = pItemPool;
   while (pItemPoolTemp != NULL) {
     // DEFAULT ITEM POOL TO INVISIBLE....
-    pItemPoolTemp->bVisible = INVISIBLE;
+    pItemPoolTemp.value.bVisible = INVISIBLE;
 
     // Update each item...
     // If we have reached a visible value we should not modify, ignore...
-    if (gWorldItems[pItemPoolTemp->iItemIndex].bVisible == VISIBLE) {
+    if (gWorldItems[pItemPoolTemp.value.iItemIndex].bVisible == VISIBLE) {
       fAtLeastModified = TRUE;
     }
 
-    pItemPoolTemp = pItemPoolTemp->pNext;
+    pItemPoolTemp = pItemPoolTemp.value.pNext;
   }
 
   // Handle obscured flag...
-  HandleItemObscuredFlag(pItemPool->sGridNo, pItemPool->ubLevel);
+  HandleItemObscuredFlag(pItemPool.value.sGridNo, pItemPool.value.ubLevel);
 
   // If we didn;t find any that should be modified..
   if (!fAtLeastModified) {
@@ -2127,13 +2127,13 @@ function AdjustItemPoolVisibility(pItemPool: Pointer<ITEM_POOL>): void {
   // Update global pool bVisible to true ( if at least one is visible... )
   pItemPoolTemp = pItemPool;
   while (pItemPoolTemp != NULL) {
-    pItemPoolTemp->bVisible = VISIBLE;
+    pItemPoolTemp.value.bVisible = VISIBLE;
 
-    pItemPoolTemp = pItemPoolTemp->pNext;
+    pItemPoolTemp = pItemPoolTemp.value.pNext;
   }
 
   // Handle obscured flag...
-  HandleItemObscuredFlag(pItemPool->sGridNo, pItemPool->ubLevel);
+  HandleItemObscuredFlag(pItemPool.value.sGridNo, pItemPool.value.ubLevel);
 }
 
 function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8): BOOLEAN {
@@ -2149,11 +2149,11 @@ function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8): 
     // LOOP THROUGH LIST TO FIND NODE WE WANT
     pItemPoolTemp = pItemPool;
     while (pItemPoolTemp != NULL) {
-      if (pItemPoolTemp->iItemIndex == iItemIndex) {
+      if (pItemPoolTemp.value.iItemIndex == iItemIndex) {
         fItemFound = TRUE;
         break;
       }
-      pItemPoolTemp = pItemPoolTemp->pNext;
+      pItemPoolTemp = pItemPoolTemp.value.pNext;
     }
 
     if (!fItemFound) {
@@ -2162,26 +2162,26 @@ function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8): 
     }
 
     // REMOVE GRAPHIC
-    RemoveItemGraphicFromWorld(&(Item[gWorldItems[iItemIndex].o.usItem]), sGridNo, ubLevel, pItemPoolTemp->pLevelNode);
+    RemoveItemGraphicFromWorld(&(Item[gWorldItems[iItemIndex].o.usItem]), sGridNo, ubLevel, pItemPoolTemp.value.pLevelNode);
 
     // IF WE ARE LOCATIONG STILL, KILL LOCATOR!
-    if (pItemPoolTemp->bFlashColor != 0) {
+    if (pItemPoolTemp.value.bFlashColor != 0) {
       // REMOVE TIMER!
       RemoveFlashItemSlot(pItemPoolTemp);
     }
 
     // REMOVE PREV
-    if (pItemPoolTemp->pPrev != NULL) {
-      pItemPoolTemp->pPrev->pNext = pItemPoolTemp->pNext;
+    if (pItemPoolTemp.value.pPrev != NULL) {
+      pItemPoolTemp.value.pPrev.value.pNext = pItemPoolTemp.value.pNext;
     }
 
     // REMOVE NEXT
-    if (pItemPoolTemp->pNext != NULL) {
-      pItemPoolTemp->pNext->pPrev = pItemPoolTemp->pPrev;
+    if (pItemPoolTemp.value.pNext != NULL) {
+      pItemPoolTemp.value.pNext.value.pPrev = pItemPoolTemp.value.pPrev;
     }
 
     // IF THIS NODE WAS THE HEAD, SET ANOTHER AS HEAD AT THIS GRIDNO
-    if (pItemPoolTemp->pPrev == NULL) {
+    if (pItemPoolTemp.value.pPrev == NULL) {
       // WE'RE HEAD
       if (ubLevel == 0) {
         pObject = gpWorldLevelData[sGridNo].pStructHead;
@@ -2192,12 +2192,12 @@ function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8): 
       fItemFound = FALSE;
       // LOOP THORUGH OBJECT LAYER
       while (pObject != NULL) {
-        if (pObject->uiFlags & LEVELNODE_ITEM) {
+        if (pObject.value.uiFlags & LEVELNODE_ITEM) {
           // ADJUST TO NEXT GUY FOR HEAD
-          pObject->pItemPool = pItemPoolTemp->pNext;
+          pObject.value.pItemPool = pItemPoolTemp.value.pNext;
           fItemFound = TRUE;
         }
-        pObject = pObject->pNext;
+        pObject = pObject.value.pNext;
       }
 
       if (!fItemFound) {
@@ -2207,17 +2207,17 @@ function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8): 
     }
 
     // Find any structure with flag set as having items on top.. if this one did...
-    if (pItemPoolTemp->bRenderZHeightAboveLevel > 0) {
+    if (pItemPoolTemp.value.bRenderZHeightAboveLevel > 0) {
       let pStructure: Pointer<STRUCTURE>;
       let pTempPool: Pointer<ITEM_POOL>;
 
       // Check if an item pool exists here....
-      if (!GetItemPool(pItemPoolTemp->sGridNo, &pTempPool, pItemPoolTemp->ubLevel)) {
-        pStructure = FindStructure(pItemPoolTemp->sGridNo, STRUCTURE_HASITEMONTOP);
+      if (!GetItemPool(pItemPoolTemp.value.sGridNo, &pTempPool, pItemPoolTemp.value.ubLevel)) {
+        pStructure = FindStructure(pItemPoolTemp.value.sGridNo, STRUCTURE_HASITEMONTOP);
 
         if (pStructure != NULL) {
           // Remove...
-          pStructure->fFlags &= (~STRUCTURE_HASITEMONTOP);
+          pStructure.value.fFlags &= (~STRUCTURE_HASITEMONTOP);
 
           // Re-adjust interactive tile...
           BeginCurInteractiveTileCheck(INTILE_CHECK_SELECTIVE);
@@ -2245,8 +2245,8 @@ function MoveItemPools(sStartPos: INT16, sEndPos: INT16): BOOLEAN {
 
   // While there is an existing pool
   while (GetItemPool(sStartPos, &pItemPool, 0)) {
-    memcpy(&TempWorldItem, &(gWorldItems[pItemPool->iItemIndex]), sizeof(WORLDITEM));
-    RemoveItemFromPool(sStartPos, pItemPool->iItemIndex, 0);
+    memcpy(&TempWorldItem, &(gWorldItems[pItemPool.value.iItemIndex]), sizeof(WORLDITEM));
+    RemoveItemFromPool(sStartPos, pItemPool.value.iItemIndex, 0);
     AddItemToPool(sEndPos, &(TempWorldItem.o), -1, TempWorldItem.ubLevel, TempWorldItem.usFlags, TempWorldItem.bRenderZHeightAboveLevel);
   }
   return TRUE;
@@ -2265,8 +2265,8 @@ function GetItemPool(usMapPos: UINT16, ppItemPool: Pointer<Pointer<ITEM_POOL>>, 
 
   // LOOP THORUGH OBJECT LAYER
   while (pObject != NULL) {
-    if (pObject->uiFlags & LEVELNODE_ITEM) {
-      (*ppItemPool) = pObject->pItemPool;
+    if (pObject.value.uiFlags & LEVELNODE_ITEM) {
+      (*ppItemPool) = pObject.value.pItemPool;
 
       // DEF added the check because pObject->pItemPool was NULL which was causing problems
       if (*ppItemPool)
@@ -2275,7 +2275,7 @@ function GetItemPool(usMapPos: UINT16, ppItemPool: Pointer<Pointer<ITEM_POOL>>, 
         return FALSE;
     }
 
-    pObject = pObject->pNext;
+    pObject = pObject.value.pNext;
   }
 
   return FALSE;
@@ -2289,7 +2289,7 @@ function NotifySoldiersToLookforItems(): void {
     pSoldier = MercSlots[cnt];
 
     if (pSoldier != NULL) {
-      pSoldier->uiStatusFlags |= SOLDIER_LOOKFOR_ITEMS;
+      pSoldier.value.uiStatusFlags |= SOLDIER_LOOKFOR_ITEMS;
     }
   }
 }
@@ -2302,7 +2302,7 @@ function AllSoldiersLookforItems(fShowLocators: BOOLEAN): void {
     pSoldier = MercSlots[cnt];
 
     if (pSoldier != NULL) {
-      RevealRoofsAndItems(pSoldier, TRUE, fShowLocators, pSoldier->bLevel, FALSE);
+      RevealRoofsAndItems(pSoldier, TRUE, fShowLocators, pSoldier.value.bLevel, FALSE);
     }
   }
 }
@@ -2317,7 +2317,7 @@ function GetNumOkForDisplayItemsInPool(pItemPool: Pointer<ITEM_POOL>, bZLevel: I
       cnt++;
     }
 
-    pItemPool = pItemPool->pNext;
+    pItemPool = pItemPool.value.pNext;
   }
 
   return cnt;
@@ -2330,13 +2330,13 @@ function AnyItemsVisibleOnLevel(pItemPool: Pointer<ITEM_POOL>, bZLevel: INT8): B
 
   // Determine total #
   while (pItemPool != NULL) {
-    if (pItemPool->bRenderZHeightAboveLevel == bZLevel) {
-      if (gWorldItems[pItemPool->iItemIndex].bVisible == VISIBLE) {
+    if (pItemPool.value.bRenderZHeightAboveLevel == bZLevel) {
+      if (gWorldItems[pItemPool.value.iItemIndex].bVisible == VISIBLE) {
         return TRUE;
       }
     }
 
-    pItemPool = pItemPool->pNext;
+    pItemPool = pItemPool.value.pNext;
   }
 
   return FALSE;
@@ -2348,12 +2348,12 @@ function ItemPoolOKForDisplay(pItemPool: Pointer<ITEM_POOL>, bZLevel: INT8): BOO
   }
 
   // Setup some conditions!
-  if (gWorldItems[pItemPool->iItemIndex].bVisible != VISIBLE) {
+  if (gWorldItems[pItemPool.value.iItemIndex].bVisible != VISIBLE) {
     return FALSE;
   }
 
   // If -1, it means find all
-  if (pItemPool->bRenderZHeightAboveLevel != bZLevel && bZLevel != -1) {
+  if (pItemPool.value.bRenderZHeightAboveLevel != bZLevel && bZLevel != -1) {
     return FALSE;
   }
 
@@ -2365,15 +2365,15 @@ function ItemPoolOKForPickup(pSoldier: Pointer<SOLDIERTYPE>, pItemPool: Pointer<
     return TRUE;
   }
 
-  if (pSoldier->bTeam == gbPlayerNum) {
+  if (pSoldier.value.bTeam == gbPlayerNum) {
     // Setup some conditions!
-    if (gWorldItems[pItemPool->iItemIndex].bVisible != VISIBLE) {
+    if (gWorldItems[pItemPool.value.iItemIndex].bVisible != VISIBLE) {
       return FALSE;
     }
   }
 
   // If -1, it means find all
-  if (pItemPool->bRenderZHeightAboveLevel != bZLevel && bZLevel != -1) {
+  if (pItemPool.value.bRenderZHeightAboveLevel != bZLevel && bZLevel != -1) {
     return FALSE;
   }
 
@@ -2416,7 +2416,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
       cnt++;
     }
 
-    pTempItemPool = pTempItemPool->pNext;
+    pTempItemPool = pTempItemPool.value.pNext;
   }
 
   cnt = bCurStart;
@@ -2436,17 +2436,17 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
 
     sHeight += GetFontHeight(SMALLFONT1) - 2;
 
-    pTempItemPool = pTempItemPool->pNext;
+    pTempItemPool = pTempItemPool.value.pNext;
   }
 
   pTempItemPool = pItemPool;
   while (pTempItemPool != NULL) {
     // ATE: Put some conditions on this....
     if (ItemPoolOKForDisplay(pTempItemPool, bZLevel)) {
-      HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), &(gWorldItems[pTempItemPool->iItemIndex].o), FALSE);
+      HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), &(gWorldItems[pTempItemPool.value.iItemIndex].o), FALSE);
     }
 
-    pTempItemPool = pTempItemPool->pNext;
+    pTempItemPool = pTempItemPool.value.pNext;
   }
 
   // IF COUNT IS ALREADY > MAX, ADD A PREV...
@@ -2462,12 +2462,12 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
   while (pTempItemPool != NULL) {
     if (ItemPoolOKForDisplay(pTempItemPool, bZLevel)) {
       // GET ITEM
-      pItem = &Item[gWorldItems[pTempItemPool->iItemIndex].o.usItem];
+      pItem = &Item[gWorldItems[pTempItemPool.value.iItemIndex].o.usItem];
       // Set string
-      if (gWorldItems[pTempItemPool->iItemIndex].o.ubNumberOfObjects > 1) {
-        swprintf(pStr, "%s (%d)", ShortItemNames[gWorldItems[pTempItemPool->iItemIndex].o.usItem], gWorldItems[pTempItemPool->iItemIndex].o.ubNumberOfObjects);
+      if (gWorldItems[pTempItemPool.value.iItemIndex].o.ubNumberOfObjects > 1) {
+        swprintf(pStr, "%s (%d)", ShortItemNames[gWorldItems[pTempItemPool.value.iItemIndex].o.usItem], gWorldItems[pTempItemPool.value.iItemIndex].o.ubNumberOfObjects);
       } else {
-        swprintf(pStr, "%s", ShortItemNames[gWorldItems[pTempItemPool->iItemIndex].o.usItem]);
+        swprintf(pStr, "%s", ShortItemNames[gWorldItems[pTempItemPool.value.iItemIndex].o.usItem]);
       }
 
       // Get Width
@@ -2478,7 +2478,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
       }
       sLargestLineWidth = sLargeLineWidth;
     }
-    pTempItemPool = pTempItemPool->pNext;
+    pTempItemPool = pTempItemPool.value.pNext;
   }
 
   // Determine where our mouse is!
@@ -2512,7 +2512,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
       cnt++;
     }
 
-    pItemPool = pItemPool->pNext;
+    pItemPool = pItemPool.value.pNext;
   }
 
   // START DISPLAY LOOP
@@ -2545,13 +2545,13 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
 
     if (ItemPoolOKForDisplay(pItemPool, bZLevel)) {
       // GET ITEM
-      pItem = &Item[gWorldItems[pItemPool->iItemIndex].o.usItem];
+      pItem = &Item[gWorldItems[pItemPool.value.iItemIndex].o.usItem];
       // Set string
 
-      if (gWorldItems[pItemPool->iItemIndex].o.ubNumberOfObjects > 1) {
-        swprintf(pStr, "%s (%d)", ShortItemNames[gWorldItems[pItemPool->iItemIndex].o.usItem], gWorldItems[pItemPool->iItemIndex].o.ubNumberOfObjects);
+      if (gWorldItems[pItemPool.value.iItemIndex].o.ubNumberOfObjects > 1) {
+        swprintf(pStr, "%s (%d)", ShortItemNames[gWorldItems[pItemPool.value.iItemIndex].o.usItem], gWorldItems[pItemPool.value.iItemIndex].o.ubNumberOfObjects);
       } else {
-        swprintf(pStr, "%s", ShortItemNames[gWorldItems[pItemPool->iItemIndex].o.usItem]);
+        swprintf(pStr, "%s", ShortItemNames[gWorldItems[pItemPool.value.iItemIndex].o.usItem]);
       }
 
       gprintfdirty(sFontX, sY, pStr);
@@ -2560,7 +2560,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
       sY += GetFontHeight(SMALLFONT1) - 2;
       cnt++;
     }
-    pItemPool = pItemPool->pNext;
+    pItemPool = pItemPool.value.pNext;
 
     if (fDoBack) {
       if (cnt == (bNumItemsListed - 1)) {
@@ -2624,15 +2624,15 @@ function GetListMouseHotSpot(sLargestLineWidth: INT16, bNumItemsListed: INT8, sF
 }
 
 function SetItemPoolLocator(pItemPool: Pointer<ITEM_POOL>): void {
-  pItemPool->bFlashColor = 59;
+  pItemPool.value.bFlashColor = 59;
 
-  pItemPool->uiTimerID = AddFlashItemSlot(pItemPool, NULL, 0);
+  pItemPool.value.uiTimerID = AddFlashItemSlot(pItemPool, NULL, 0);
 }
 
 function SetItemPoolLocatorWithCallback(pItemPool: Pointer<ITEM_POOL>, Callback: ITEM_POOL_LOCATOR_HOOK): void {
-  pItemPool->bFlashColor = 59;
+  pItemPool.value.bFlashColor = 59;
 
-  pItemPool->uiTimerID = AddFlashItemSlot(pItemPool, Callback, 0);
+  pItemPool.value.uiTimerID = AddFlashItemSlot(pItemPool, Callback, 0);
 }
 
 /// ITEM POOL INDICATOR FUNCTIONS
@@ -2717,20 +2717,20 @@ function HandleFlashingItems(): void {
     for (cnt = 0; cnt < guiNumFlashItemSlots; cnt++) {
       pLocator = &(FlashItemSlots[cnt]);
 
-      if (pLocator->fAllocated) {
+      if (pLocator.value.fAllocated) {
         fDoLocator = TRUE;
 
-        if ((pLocator->ubFlags & ITEM_LOCATOR_LOCKED)) {
+        if ((pLocator.value.ubFlags & ITEM_LOCATOR_LOCKED)) {
           if (gTacticalStatus.fLockItemLocators == FALSE) {
             // Turn off!
-            pLocator->ubFlags &= (~ITEM_LOCATOR_LOCKED);
+            pLocator.value.ubFlags &= (~ITEM_LOCATOR_LOCKED);
           } else {
             fDoLocator = FALSE;
           }
         }
 
         if (fDoLocator) {
-          pItemPool = pLocator->pItemPool;
+          pItemPool = pLocator.value.pItemPool;
 
           // Update radio locator
           {
@@ -2739,31 +2739,31 @@ function HandleFlashingItems(): void {
             uiClock = GetJA2Clock();
 
             // Update frame values!
-            if ((uiClock - pLocator->uiLastFrameUpdate) > 80) {
-              pLocator->uiLastFrameUpdate = uiClock;
+            if ((uiClock - pLocator.value.uiLastFrameUpdate) > 80) {
+              pLocator.value.uiLastFrameUpdate = uiClock;
 
               // Update frame
-              pLocator->bRadioFrame++;
+              pLocator.value.bRadioFrame++;
 
-              if (pLocator->bRadioFrame == 5) {
-                pLocator->bRadioFrame = 0;
+              if (pLocator.value.bRadioFrame == 5) {
+                pLocator.value.bRadioFrame = 0;
               }
             }
           }
 
           // UPDATE FLASH COLOR VALUE
-          pItemPool->bFlashColor--;
+          pItemPool.value.bFlashColor--;
 
-          if (pItemPool->ubLevel == 0) {
-            pObject = gpWorldLevelData[pItemPool->sGridNo].pStructHead;
+          if (pItemPool.value.ubLevel == 0) {
+            pObject = gpWorldLevelData[pItemPool.value.sGridNo].pStructHead;
           } else {
-            pObject = gpWorldLevelData[pItemPool->sGridNo].pOnRoofHead;
+            pObject = gpWorldLevelData[pItemPool.value.sGridNo].pOnRoofHead;
           }
 
           // LOOP THORUGH OBJECT LAYER
           while (pObject != NULL) {
-            if (pObject->uiFlags & LEVELNODE_ITEM) {
-              if (pItemPool->bFlashColor == 1) {
+            if (pObject.value.uiFlags & LEVELNODE_ITEM) {
+              if (pItemPool.value.bFlashColor == 1) {
                 // pObject->uiFlags &= (~LEVELNODE_DYNAMIC);
                 // pObject->uiFlags |= ( LEVELNODE_LASTDYNAMIC  );
               } else {
@@ -2771,11 +2771,11 @@ function HandleFlashingItems(): void {
               }
             }
 
-            pObject = pObject->pNext;
+            pObject = pObject.value.pNext;
           }
 
-          if (pItemPool->bFlashColor == 1) {
-            pItemPool->bFlashColor = 0;
+          if (pItemPool.value.bFlashColor == 1) {
+            pItemPool.value.bFlashColor = 0;
 
             // REMOVE TIMER!
             RemoveFlashItemSlot(pItemPool);
@@ -2798,9 +2798,9 @@ function RenderTopmostFlashingItems(): void {
   for (cnt = 0; cnt < guiNumFlashItemSlots; cnt++) {
     pLocator = &(FlashItemSlots[cnt]);
 
-    if (pLocator->fAllocated) {
-      if (!(pLocator->ubFlags & (ITEM_LOCATOR_LOCKED))) {
-        pItemPool = pLocator->pItemPool;
+    if (pLocator.value.fAllocated) {
+      if (!(pLocator.value.ubFlags & (ITEM_LOCATOR_LOCKED))) {
+        pItemPool = pLocator.value.pItemPool;
 
         // Update radio locator
         {
@@ -2814,7 +2814,7 @@ function RenderTopmostFlashingItems(): void {
           let sYPos: INT16;
           let iBack: INT32;
 
-          ConvertGridNoToCenterCellXY(pItemPool->sGridNo, &sX, &sY);
+          ConvertGridNoToCenterCellXY(pItemPool.value.sGridNo, &sX, &sY);
 
           dOffsetX = (sX - gsRenderCenterX);
           dOffsetY = (sY - gsRenderCenterY);
@@ -2823,18 +2823,18 @@ function RenderTopmostFlashingItems(): void {
           FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
           sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
-          sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - gpWorldLevelData[pItemPool->sGridNo].sHeight;
+          sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - gpWorldLevelData[pItemPool.value.sGridNo].sHeight;
 
           // Adjust for offset position on screen
           sXPos -= gsRenderWorldOffsetX;
           sYPos -= gsRenderWorldOffsetY;
-          sYPos -= pItemPool->bRenderZHeightAboveLevel;
+          sYPos -= pItemPool.value.bRenderZHeightAboveLevel;
 
           // Adjust for render height
           sYPos += gsRenderHeight;
 
           // Adjust for level height
-          if (pItemPool->ubLevel) {
+          if (pItemPool.value.ubLevel) {
             sYPos -= ROOF_LEVEL_HEIGHT;
           }
 
@@ -2847,9 +2847,9 @@ function RenderTopmostFlashingItems(): void {
             SetBackgroundRectFilled(iBack);
           }
 
-          BltVideoObjectFromIndex(FRAME_BUFFER, guiRADIO, pLocator->bRadioFrame, sXPos, sYPos, VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObjectFromIndex(FRAME_BUFFER, guiRADIO, pLocator.value.bRadioFrame, sXPos, sYPos, VO_BLT_SRCTRANSPARENCY, NULL);
 
-          DrawItemPoolList(pItemPool, pItemPool->sGridNo, ITEMLIST_DISPLAY, pItemPool->bRenderZHeightAboveLevel, sXPos, sYPos);
+          DrawItemPoolList(pItemPool, pItemPool.value.sGridNo, ITEMLIST_DISPLAY, pItemPool.value.bRenderZHeightAboveLevel, sXPos, sYPos);
         }
       }
     }
@@ -2868,13 +2868,13 @@ function VerifyGiveItem(pSoldier: Pointer<SOLDIERTYPE>, ppTargetSoldier: Pointer
   // DO SOME CHECKS IF WE CAN DO ANIMATION.....
 
   // Get items from pending data
-  pObject = pSoldier->pTempObject;
+  pObject = pSoldier.value.pTempObject;
 
-  sGridNo = pSoldier->sPendingActionData2;
-  ubDirection = pSoldier->bPendingActionData3;
-  ubTargetMercID = pSoldier->uiPendingActionData4;
+  sGridNo = pSoldier.value.sPendingActionData2;
+  ubDirection = pSoldier.value.bPendingActionData3;
+  ubTargetMercID = pSoldier.value.uiPendingActionData4;
 
-  usSoldierIndex = WhoIsThere2(sGridNo, pSoldier->bLevel);
+  usSoldierIndex = WhoIsThere2(sGridNo, pSoldier.value.bLevel);
 
   // See if our target is still available
   if (usSoldierIndex != NOBODY) {
@@ -2892,21 +2892,21 @@ function VerifyGiveItem(pSoldier: Pointer<SOLDIERTYPE>, ppTargetSoldier: Pointer
 
     return TRUE;
   } else {
-    if (pSoldier->pTempObject != NULL) {
-      AddItemToPool(pSoldier->sGridNo, pSoldier->pTempObject, 1, pSoldier->bLevel, 0, -1);
+    if (pSoldier.value.pTempObject != NULL) {
+      AddItemToPool(pSoldier.value.sGridNo, pSoldier.value.pTempObject, 1, pSoldier.value.bLevel, 0, -1);
 
       // Place it on the ground!
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[ITEM_HAS_BEEN_PLACED_ON_GROUND_STR], ShortItemNames[pSoldier->pTempObject->usItem]);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[ITEM_HAS_BEEN_PLACED_ON_GROUND_STR], ShortItemNames[pSoldier.value.pTempObject.value.usItem]);
 
       // OK, disengage buddy
-      pSoldier->uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
+      pSoldier.value.uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
 
       if (ubTargetMercID != NOBODY) {
-        MercPtrs[ubTargetMercID]->uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
+        MercPtrs[ubTargetMercID].value.uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
       }
 
-      MemFree(pSoldier->pTempObject);
-      pSoldier->pTempObject = NULL;
+      MemFree(pSoldier.value.pTempObject);
+      pSoldier.value.pTempObject = NULL;
     }
   }
 
@@ -2928,27 +2928,27 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Get items from pending data
 
   // Get objectype and delete
-  memcpy(&TempObject, pSoldier->pTempObject, sizeof(OBJECTTYPE));
-  MemFree(pSoldier->pTempObject);
-  pSoldier->pTempObject = NULL;
+  memcpy(&TempObject, pSoldier.value.pTempObject, sizeof(OBJECTTYPE));
+  MemFree(pSoldier.value.pTempObject);
+  pSoldier.value.pTempObject = NULL;
 
-  bInvPos = pSoldier->bPendingActionData5;
+  bInvPos = pSoldier.value.bPendingActionData5;
   usItemNum = TempObject.usItem;
 
   // ATE: OK, check if we have an item in the cursor from
   // this soldier and from this inv slot, if so, delete!!!!!!!
   if (gpItemPointer != NULL) {
-    if (pSoldier->ubID == gpItemPointerSoldier->ubID) {
-      if (bInvPos == gbItemPointerSrcSlot && usItemNum == gpItemPointer->usItem) {
+    if (pSoldier.value.ubID == gpItemPointerSoldier.value.ubID) {
+      if (bInvPos == gbItemPointerSrcSlot && usItemNum == gpItemPointer.value.usItem) {
         // Remove!!!
         EndItemPointer();
       }
     }
   }
 
-  sGridNo = pSoldier->sPendingActionData2;
-  ubDirection = pSoldier->bPendingActionData3;
-  ubTargetMercID = pSoldier->uiPendingActionData4;
+  sGridNo = pSoldier.value.sPendingActionData2;
+  ubDirection = pSoldier.value.bPendingActionData3;
+  ubTargetMercID = pSoldier.value.uiPendingActionData4;
 
   // ATE: Deduct APs!
   DeductPoints(pSoldier, AP_PICKUP_ITEM, 0);
@@ -2957,7 +2957,7 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
     // DAVE! - put stuff here to bring up shopkeeper.......
 
     // if the user just clicked on an arms dealer
-    if (IsMercADealer(pTSoldier->ubProfile)) {
+    if (IsMercADealer(pTSoldier.value.ubProfile)) {
       UnSetEngagedInConvFromPCAction(pSoldier);
 
       // if the dealer is Micky,
@@ -2970,8 +2970,8 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
       }
       */
 
-      if (NPCHasUnusedRecordWithGivenApproach(pTSoldier->ubProfile, APPROACH_BUYSELL)) {
-        TriggerNPCWithGivenApproach(pTSoldier->ubProfile, APPROACH_BUYSELL, TRUE);
+      if (NPCHasUnusedRecordWithGivenApproach(pTSoldier.value.ubProfile, APPROACH_BUYSELL)) {
+        TriggerNPCWithGivenApproach(pTSoldier.value.ubProfile, APPROACH_BUYSELL, TRUE);
         return;
       }
       // now also check for buy/sell lines (Oct 13)
@@ -2981,9 +2981,9 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
               TriggerNPCWithGivenApproach( pTSoldier->ubProfile, APPROACH_GIVINGITEM, TRUE );
               return;
       }*/
-      else if (!NPCWillingToAcceptItem(pTSoldier->ubProfile, pSoldier->ubProfile, &TempObject)) {
+      else if (!NPCWillingToAcceptItem(pTSoldier.value.ubProfile, pSoldier.value.ubProfile, &TempObject)) {
         // Enter the shopkeeper interface
-        EnterShopKeeperInterfaceScreen(pTSoldier->ubProfile);
+        EnterShopKeeperInterfaceScreen(pTSoldier.value.ubProfile);
 
         // removed the if, because if the player picked up an item straight from the ground or money strait from the money
         // interface, the item would NOT have a bInvPos, therefore it would not get added to the dealer, and would get deleted
@@ -2999,7 +2999,7 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
           */
 
           if (bInvPos != NO_SLOT) {
-            RemoveObjFrom(&pSoldier->inv[bInvPos], TempObject.ubNumberOfObjects);
+            RemoveObjFrom(&pSoldier.value.inv[bInvPos], TempObject.ubNumberOfObjects);
           }
 
           DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
@@ -3010,7 +3010,7 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
     }
 
     // OK< FOR NOW HANDLE NPC's DIFFERENT!
-    ubProfile = pTSoldier->ubProfile;
+    ubProfile = pTSoldier.value.ubProfile;
 
     // 1 ) PLayer to NPC = NPC
     // 2 ) Player to player = player;
@@ -3031,41 +3031,41 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
       if (!AutoPlaceObject(pTSoldier, &TempObject, TRUE)) {
         // Erase!
         if (bInvPos != NO_SLOT) {
-          DeleteObj(&(pSoldier->inv[bInvPos]));
+          DeleteObj(&(pSoldier.value.inv[bInvPos]));
           DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
         }
 
-        AddItemToPool(pSoldier->sGridNo, &TempObject, 1, pSoldier->bLevel, 0, -1);
+        AddItemToPool(pSoldier.value.sGridNo, &TempObject, 1, pSoldier.value.bLevel, 0, -1);
 
         // We could not place it!
         // Drop it on the ground?
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[ITEM_HAS_BEEN_PLACED_ON_GROUND_STR], ShortItemNames[usItemNum]);
 
         // OK, disengage buddy
-        pSoldier->uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
-        pTSoldier->uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
+        pSoldier.value.uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
+        pTSoldier.value.uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
       } else {
         // Erase!
         if (bInvPos != NO_SLOT) {
-          DeleteObj(&(pSoldier->inv[bInvPos]));
+          DeleteObj(&(pSoldier.value.inv[bInvPos]));
           DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
         }
 
         // OK, it's given, display message!
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[ITEM_HAS_BEEN_GIVEN_TO_STR], ShortItemNames[usItemNum], pTSoldier->name);
+        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[ITEM_HAS_BEEN_GIVEN_TO_STR], ShortItemNames[usItemNum], pTSoldier.value.name);
         if (usItemNum == MONEY) {
           // are we giving money to an NPC, to whom we owe money?
-          if (pTSoldier->ubProfile != NO_PROFILE && gMercProfiles[pTSoldier->ubProfile].iBalance < 0) {
-            gMercProfiles[pTSoldier->ubProfile].iBalance += TempObject.uiMoneyAmount;
-            if (gMercProfiles[pTSoldier->ubProfile].iBalance >= 0) {
+          if (pTSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pTSoldier.value.ubProfile].iBalance < 0) {
+            gMercProfiles[pTSoldier.value.ubProfile].iBalance += TempObject.uiMoneyAmount;
+            if (gMercProfiles[pTSoldier.value.ubProfile].iBalance >= 0) {
               // don't let the player accumulate credit (?)
-              gMercProfiles[pTSoldier->ubProfile].iBalance = 0;
+              gMercProfiles[pTSoldier.value.ubProfile].iBalance = 0;
 
               // report the payment and set facts to indicate people not being owed money
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[GUY_HAS_BEEN_PAID_IN_FULL_STR], pTSoldier->name);
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[GUY_HAS_BEEN_PAID_IN_FULL_STR], pTSoldier.value.name);
             } else {
               // report the payment
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[GUY_STILL_OWED_STR], pTSoldier->name, -gMercProfiles[pTSoldier->ubProfile].iBalance);
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[GUY_STILL_OWED_STR], pTSoldier.value.name, -gMercProfiles[pTSoldier.value.ubProfile].iBalance);
             }
           }
         }
@@ -3073,7 +3073,7 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
     } else {
       // Erase!
       if (bInvPos != NO_SLOT) {
-        RemoveObjs(&(pSoldier->inv[bInvPos]), TempObject.ubNumberOfObjects);
+        RemoveObjs(&(pSoldier.value.inv[bInvPos]), TempObject.ubNumberOfObjects);
         DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
       }
 
@@ -3083,8 +3083,8 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 
   // OK, disengage buddy
-  pSoldier->uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
-  pTSoldier->uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
+  pSoldier.value.uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
+  pTSoldier.value.uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
 }
 
 function AdjustGridNoForItemPlacement(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): INT16 {
@@ -3101,10 +3101,10 @@ function AdjustGridNoForItemPlacement(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   // Check structure database
   if (gpWorldLevelData[sGridNo].pStructureHead) {
     // Something is here, check obstruction in future
-    sDesiredLevel = pSoldier->bLevel ? STRUCTURE_ON_ROOF : STRUCTURE_ON_GROUND;
+    sDesiredLevel = pSoldier.value.bLevel ? STRUCTURE_ON_ROOF : STRUCTURE_ON_GROUND;
     pStructure = FindStructure(sGridNo, STRUCTURE_BLOCKSMOVES);
     while (pStructure) {
-      if (!(pStructure->fFlags & STRUCTURE_PASSABLE) && pStructure->sCubeOffset == sDesiredLevel) {
+      if (!(pStructure.value.fFlags & STRUCTURE_PASSABLE) && pStructure.value.sCubeOffset == sDesiredLevel) {
         // Check for openable flag....
         // if ( pStructure->fFlags & ( STRUCTURE_OPENABLE | STRUCTURE_HASITEMONTOP ) )
         {
@@ -3117,9 +3117,9 @@ function AdjustGridNoForItemPlacement(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   }
 
   // ATE: IF a person is found, use adjacent gridno for it!
-  ubTargetID = WhoIsThere2(sGridNo, pSoldier->bLevel);
+  ubTargetID = WhoIsThere2(sGridNo, pSoldier.value.bLevel);
 
-  if (fStructFound || (ubTargetID != NOBODY && ubTargetID != pSoldier->ubID)) {
+  if (fStructFound || (ubTargetID != NOBODY && ubTargetID != pSoldier.value.ubID)) {
     // GET ADJACENT GRIDNO
     sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, &ubDirection, &sAdjustedGridNo, FALSE, FALSE);
 
@@ -3136,9 +3136,9 @@ function StartBombMessageBox(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): vo
 
   gpTempSoldier = pSoldier;
   gsTempGridno = sGridNo;
-  if (pSoldier->inv[HANDPOS].usItem == REMOTEBOMBTRIGGER) {
+  if (pSoldier.value.inv[HANDPOS].usItem == REMOTEBOMBTRIGGER) {
     DoMessageBox(MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[CHOOSE_BOMB_FREQUENCY_STR], GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
-  } else if (pSoldier->inv[HANDPOS].usItem == REMOTETRIGGER) {
+  } else if (pSoldier.value.inv[HANDPOS].usItem == REMOTETRIGGER) {
     // ATE ignore the commented-out code and add stuff to open the secret passage here
     /*
     switch( pSoldier->inv[HANDPOS].ubLocationID )
@@ -3153,7 +3153,7 @@ function StartBombMessageBox(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): vo
 
     // Check what sector we are in....
     if (gWorldSectorX == 3 && gWorldSectorY == MAP_ROW_O && gbWorldSectorZ == 0) {
-      if (InARoom(pSoldier->sGridNo, &ubRoom) && ubRoom == 4) {
+      if (InARoom(pSoldier.value.sGridNo, &ubRoom) && ubRoom == 4) {
         DoMercBattleSound(pSoldier, BATTLE_SOUND_OK1);
 
         // Open statue
@@ -3164,21 +3164,21 @@ function StartBombMessageBox(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): vo
     } else {
       DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
     }
-  } else if (FindAttachment(&(pSoldier->inv[HANDPOS]), DETONATOR) != ITEM_NOT_FOUND) {
+  } else if (FindAttachment(&(pSoldier.value.inv[HANDPOS]), DETONATOR) != ITEM_NOT_FOUND) {
     DoMessageBox(MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[CHOOSE_TIMER_STR], GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
-  } else if (FindAttachment(&(pSoldier->inv[HANDPOS]), REMDETONATOR) != ITEM_NOT_FOUND) {
+  } else if (FindAttachment(&(pSoldier.value.inv[HANDPOS]), REMDETONATOR) != ITEM_NOT_FOUND) {
     DoMessageBox(MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[CHOOSE_REMOTE_FREQUENCY_STR], GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
   }
 }
 
 function BombMessageBoxCallBack(ubExitValue: UINT8): void {
   if (gpTempSoldier) {
-    if (gpTempSoldier->inv[HANDPOS].usItem == REMOTEBOMBTRIGGER) {
-      SetOffBombsByFrequency(gpTempSoldier->ubID, ubExitValue);
+    if (gpTempSoldier.value.inv[HANDPOS].usItem == REMOTEBOMBTRIGGER) {
+      SetOffBombsByFrequency(gpTempSoldier.value.ubID, ubExitValue);
     } else {
       let iResult: INT32;
 
-      if (FindAttachment(&(gpTempSoldier->inv[HANDPOS]), REMDETONATOR) != ITEM_NOT_FOUND) {
+      if (FindAttachment(&(gpTempSoldier.value.inv[HANDPOS]), REMDETONATOR) != ITEM_NOT_FOUND) {
         iResult = SkillCheck(gpTempSoldier, PLANTING_REMOTE_BOMB_CHECK, 0);
       } else {
         iResult = SkillCheck(gpTempSoldier, PLANTING_BOMB_CHECK, 0);
@@ -3203,19 +3203,19 @@ function BombMessageBoxCallBack(ubExitValue: UINT8): void {
           // and continue
         } else {
           // OOPS! ... BOOM!
-          IgniteExplosion(NOBODY, gpTempSoldier->sX, gpTempSoldier->sY, (gpWorldLevelData[gpTempSoldier->sGridNo].sHeight), gpTempSoldier->sGridNo, gpTempSoldier->inv[HANDPOS].usItem, gpTempSoldier->bLevel);
+          IgniteExplosion(NOBODY, gpTempSoldier.value.sX, gpTempSoldier.value.sY, (gpWorldLevelData[gpTempSoldier.value.sGridNo].sHeight), gpTempSoldier.value.sGridNo, gpTempSoldier.value.inv[HANDPOS].usItem, gpTempSoldier.value.bLevel);
           return;
         }
       }
 
-      if (ArmBomb(&(gpTempSoldier->inv[HANDPOS]), ubExitValue)) {
-        gpTempSoldier->inv[HANDPOS].bTrap = __min(10, (EffectiveExplosive(gpTempSoldier) / 20) + (EffectiveExpLevel(gpTempSoldier) / 3));
+      if (ArmBomb(&(gpTempSoldier.value.inv[HANDPOS]), ubExitValue)) {
+        gpTempSoldier.value.inv[HANDPOS].bTrap = __min(10, (EffectiveExplosive(gpTempSoldier) / 20) + (EffectiveExpLevel(gpTempSoldier) / 3));
         // HACK IMMINENT!
         // value of 1 is stored in maps for SIDE of bomb owner... when we want to use IDs!
         // so we add 2 to all owner IDs passed through here and subtract 2 later
-        gpTempSoldier->inv[HANDPOS].ubBombOwner = gpTempSoldier->ubID + 2;
-        AddItemToPool(gsTempGridno, &(gpTempSoldier->inv[HANDPOS]), 1, gpTempSoldier->bLevel, WORLD_ITEM_ARMED_BOMB, 0);
-        DeleteObj(&(gpTempSoldier->inv[HANDPOS]));
+        gpTempSoldier.value.inv[HANDPOS].ubBombOwner = gpTempSoldier.value.ubID + 2;
+        AddItemToPool(gsTempGridno, &(gpTempSoldier.value.inv[HANDPOS]), 1, gpTempSoldier.value.bLevel, WORLD_ITEM_ARMED_BOMB, 0);
+        DeleteObj(&(gpTempSoldier.value.inv[HANDPOS]));
       }
     }
   }
@@ -3226,29 +3226,29 @@ function HandItemWorks(pSoldier: Pointer<SOLDIERTYPE>, bSlot: INT8): BOOLEAN {
   let fItemWorks: BOOLEAN = TRUE;
   let pObj: Pointer<OBJECTTYPE>;
 
-  pObj = &(pSoldier->inv[bSlot]);
+  pObj = &(pSoldier.value.inv[bSlot]);
 
   // if the item can be damaged, than we must check that it's in good enough
   // shape to be usable, and doesn't break during use.
   // Exception: land mines.  You can bury them broken, they just won't blow!
-  if ((Item[pObj->usItem].fFlags & ITEM_DAMAGEABLE) && (pObj->usItem != MINE) && (Item[pObj->usItem].usItemClass != IC_MEDKIT) && pObj->usItem != GAS_CAN) {
+  if ((Item[pObj.value.usItem].fFlags & ITEM_DAMAGEABLE) && (pObj.value.usItem != MINE) && (Item[pObj.value.usItem].usItemClass != IC_MEDKIT) && pObj.value.usItem != GAS_CAN) {
     // if it's still usable, check whether it breaks
-    if (pObj->bStatus[0] >= USABLE) {
+    if (pObj.value.bStatus[0] >= USABLE) {
       // if a dice roll is greater than the item's status
-      if ((Random(80) + 20) >= (pObj->bStatus[0] + 50)) {
+      if ((Random(80) + 20) >= (pObj.value.bStatus[0] + 50)) {
         fItemJustBroke = TRUE;
         fItemWorks = FALSE;
 
         // item breaks, and becomes unusable...  so its status is reduced
         // to somewhere between 1 and the 1 less than USABLE
-        pObj->bStatus[0] = (1 + Random(USABLE - 1));
+        pObj.value.bStatus[0] = (1 + Random(USABLE - 1));
       }
     } else // it's already unusable
     {
       fItemWorks = FALSE;
     }
 
-    if (!fItemWorks && pSoldier->bTeam == gbPlayerNum) {
+    if (!fItemWorks && pSoldier.value.bTeam == gbPlayerNum) {
       // merc says "This thing doesn't work!"
       TacticalCharacterDialogue(pSoldier, QUOTE_USELESS_ITEM);
       if (fItemJustBroke) {
@@ -3257,9 +3257,9 @@ function HandItemWorks(pSoldier: Pointer<SOLDIERTYPE>, bSlot: INT8): BOOLEAN {
     }
   }
 
-  if (fItemWorks && bSlot == HANDPOS && Item[pObj->usItem].usItemClass == IC_GUN) {
+  if (fItemWorks && bSlot == HANDPOS && Item[pObj.value.usItem].usItemClass == IC_GUN) {
     // are we using two guns at once?
-    if (Item[pSoldier->inv[SECONDHANDPOS].usItem].usItemClass == IC_GUN && pSoldier->inv[SECONDHANDPOS].bGunStatus >= USABLE && pSoldier->inv[SECONDHANDPOS].ubGunShotsLeft > 0) {
+    if (Item[pSoldier.value.inv[SECONDHANDPOS].usItem].usItemClass == IC_GUN && pSoldier.value.inv[SECONDHANDPOS].bGunStatus >= USABLE && pSoldier.value.inv[SECONDHANDPOS].ubGunShotsLeft > 0) {
       // check the second gun for breakage, and if IT breaks, return false
       return HandItemWorks(pSoldier, SECONDHANDPOS);
     }
@@ -3272,7 +3272,7 @@ function SetOffBoobyTrapInMapScreen(pSoldier: Pointer<SOLDIERTYPE>, pObject: Poi
   let ubPtsDmg: UINT8 = 0;
 
   // check if trapped item is an explosive, if so then up the amount of dmg
-  if ((pObject->usItem == TNT) || (pObject->usItem == RDX)) {
+  if ((pObject.value.usItem == TNT) || (pObject.value.usItem == RDX)) {
     // for explosive
     ubPtsDmg = 0;
   } else {
@@ -3291,10 +3291,10 @@ function SetOffBoobyTrap(pItemPool: Pointer<ITEM_POOL>): void {
   if (pItemPool) {
     let sX: INT16;
     let sY: INT16;
-    sX = CenterX(pItemPool->sGridNo);
-    sY = CenterY(pItemPool->sGridNo);
-    IgniteExplosion(NOBODY, sX, sY, (gpWorldLevelData[pItemPool->sGridNo].sHeight + pItemPool->bRenderZHeightAboveLevel), pItemPool->sGridNo, MINI_GRENADE, 0);
-    RemoveItemFromPool(pItemPool->sGridNo, pItemPool->iItemIndex, pItemPool->ubLevel);
+    sX = CenterX(pItemPool.value.sGridNo);
+    sY = CenterY(pItemPool.value.sGridNo);
+    IgniteExplosion(NOBODY, sX, sY, (gpWorldLevelData[pItemPool.value.sGridNo].sHeight + pItemPool.value.bRenderZHeightAboveLevel), pItemPool.value.sGridNo, MINI_GRENADE, 0);
+    RemoveItemFromPool(pItemPool.value.sGridNo, pItemPool.value.iItemIndex, pItemPool.value.ubLevel);
   }
 }
 
@@ -3308,28 +3308,28 @@ function ContinuePastBoobyTrap(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, b
 
   (*pfSaidQuote) = FALSE;
 
-  if (pObj->bTrap > 0) {
-    if (pSoldier->bTeam == gbPlayerNum) {
+  if (pObj.value.bTrap > 0) {
+    if (pSoldier.value.bTeam == gbPlayerNum) {
       // does the player know about this item?
-      fBoobyTrapKnowledge = ((pObj->fFlags & OBJECT_KNOWN_TO_BE_TRAPPED) > 0);
+      fBoobyTrapKnowledge = ((pObj.value.fFlags & OBJECT_KNOWN_TO_BE_TRAPPED) > 0);
 
       // blue flag stuff?
 
       if (!fBoobyTrapKnowledge) {
-        bTrapDifficulty = pObj->bTrap;
+        bTrapDifficulty = pObj.value.bTrap;
         bTrapDetectLevel = CalcTrapDetectLevel(pSoldier, FALSE);
         if (bTrapDetectLevel >= bTrapDifficulty) {
           // spotted the trap!
-          pObj->fFlags |= OBJECT_KNOWN_TO_BE_TRAPPED;
+          pObj.value.fFlags |= OBJECT_KNOWN_TO_BE_TRAPPED;
           fBoobyTrapKnowledge = TRUE;
 
           // Make him warn us:
 
           // Set things up..
           gpBoobyTrapSoldier = pSoldier;
-          gpBoobyTrapItemPool = GetItemPoolForIndex(sGridNo, iItemIndex, pSoldier->bLevel);
+          gpBoobyTrapItemPool = GetItemPoolForIndex(sGridNo, iItemIndex, pSoldier.value.bLevel);
           gsBoobyTrapGridNo = sGridNo;
-          gbBoobyTrapLevel = pSoldier->bLevel;
+          gbBoobyTrapLevel = pSoldier.value.bLevel;
           gfDisarmingBuriedBomb = FALSE;
           gbTrapDifficulty = bTrapDifficulty;
 
@@ -3343,14 +3343,14 @@ function ContinuePastBoobyTrap(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, b
         }
       }
 
-      gpBoobyTrapItemPool = GetItemPoolForIndex(sGridNo, iItemIndex, pSoldier->bLevel);
+      gpBoobyTrapItemPool = GetItemPoolForIndex(sGridNo, iItemIndex, pSoldier.value.bLevel);
       if (fBoobyTrapKnowledge) {
         // have the computer ask us if we want to proceed
         gpBoobyTrapSoldier = pSoldier;
         gsBoobyTrapGridNo = sGridNo;
-        gbBoobyTrapLevel = pSoldier->bLevel;
+        gbBoobyTrapLevel = pSoldier.value.bLevel;
         gfDisarmingBuriedBomb = FALSE;
-        gbTrapDifficulty = pObj->bTrap;
+        gbTrapDifficulty = pObj.value.bTrap;
 
         if (fInStrategic) {
           DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[DISARM_BOOBYTRAP_PROMPT], MAP_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack, NULL);
@@ -3399,7 +3399,7 @@ function BoobyTrapMessageBoxCallBack(ubExitValue: UINT8): void {
 
     if (iCheckResult >= 0) {
       // get the item
-      memcpy(&Object, &(gWorldItems[gpBoobyTrapItemPool->iItemIndex].o), sizeof(OBJECTTYPE));
+      memcpy(&Object, &(gWorldItems[gpBoobyTrapItemPool.value.iItemIndex].o), sizeof(OBJECTTYPE));
 
       // NB owner grossness... bombs 'owned' by the enemy are stored with side value 1 in
       // the map. So if we want to detect a bomb placed by the player, owner is > 1, and
@@ -3435,16 +3435,16 @@ function BoobyTrapMessageBoxCallBack(ubExitValue: UINT8): void {
       // place it in the guy's inventory/cursor
       if (AutoPlaceObject(gpBoobyTrapSoldier, &Object, TRUE)) {
         // remove it from the ground
-        RemoveItemFromPool(gsBoobyTrapGridNo, gpBoobyTrapItemPool->iItemIndex, gbBoobyTrapLevel);
+        RemoveItemFromPool(gsBoobyTrapGridNo, gpBoobyTrapItemPool.value.iItemIndex, gbBoobyTrapLevel);
       } else {
         // make sure the item in the world is untrapped
-        gWorldItems[gpBoobyTrapItemPool->iItemIndex].o.bTrap = 0;
-        gWorldItems[gpBoobyTrapItemPool->iItemIndex].o.fFlags &= ~(OBJECT_KNOWN_TO_BE_TRAPPED);
+        gWorldItems[gpBoobyTrapItemPool.value.iItemIndex].o.bTrap = 0;
+        gWorldItems[gpBoobyTrapItemPool.value.iItemIndex].o.fFlags &= ~(OBJECT_KNOWN_TO_BE_TRAPPED);
 
         // ATE; If we failed to add to inventory, put failed one in our cursor...
         gfDontChargeAPsToPickup = TRUE;
-        HandleAutoPlaceFail(gpBoobyTrapSoldier, gpBoobyTrapItemPool->iItemIndex, gsBoobyTrapGridNo);
-        RemoveItemFromPool(gsBoobyTrapGridNo, gpBoobyTrapItemPool->iItemIndex, gbBoobyTrapLevel);
+        HandleAutoPlaceFail(gpBoobyTrapSoldier, gpBoobyTrapItemPool.value.iItemIndex, gsBoobyTrapGridNo);
+        RemoveItemFromPool(gsBoobyTrapGridNo, gpBoobyTrapItemPool.value.iItemIndex, gbBoobyTrapLevel);
       }
     } else {
       // oops! trap goes off
@@ -3453,7 +3453,7 @@ function BoobyTrapMessageBoxCallBack(ubExitValue: UINT8): void {
       DoMercBattleSound(gpBoobyTrapSoldier, BATTLE_SOUND_CURSE1);
 
       if (gfDisarmingBuriedBomb) {
-        SetOffBombsInGridNo(gpBoobyTrapSoldier->ubID, gsBoobyTrapGridNo, TRUE, gbBoobyTrapLevel);
+        SetOffBombsInGridNo(gpBoobyTrapSoldier.value.ubID, gsBoobyTrapGridNo, TRUE, gbBoobyTrapLevel);
       } else {
         SetOffBoobyTrap(gpBoobyTrapItemPool);
       }
@@ -3524,7 +3524,7 @@ function BoobyTrapInMapScreenMessageBoxCallBack(ubExitValue: UINT8): void {
       DoMercBattleSound(gpBoobyTrapSoldier, BATTLE_SOUND_CURSE1);
 
       if (gfDisarmingBuriedBomb) {
-        SetOffBombsInGridNo(gpBoobyTrapSoldier->ubID, gsBoobyTrapGridNo, TRUE, gbBoobyTrapLevel);
+        SetOffBombsInGridNo(gpBoobyTrapSoldier.value.ubID, gsBoobyTrapGridNo, TRUE, gbBoobyTrapLevel);
       } else {
         SetOffBoobyTrap(gpBoobyTrapItemPool);
       }
@@ -3542,7 +3542,7 @@ function SwitchMessageBoxCallBack(ubExitValue: UINT8): void {
     // Message that switch is activated...
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[60]);
 
-    SetOffBombsByFrequency(gpTempSoldier->ubID, bTempFrequency);
+    SetOffBombsByFrequency(gpTempSoldier.value.ubID, bTempFrequency);
   }
 }
 
@@ -3589,7 +3589,7 @@ function NearbyGroundSeemsWrong(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
     */
   }
 
-  if (pSoldier->bSide == 0) {
+  if (pSoldier.value.bSide == 0) {
     fCheckFlag = MAPELEMENT_PLAYER_MINE_PRESENT;
   } else {
     fCheckFlag = MAPELEMENT_ENEMY_MINE_PRESENT;
@@ -3602,7 +3602,7 @@ function NearbyGroundSeemsWrong(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
       sNextGridNo = NewGridNo(sGridNo, DirectionInc(ubDirection));
 
       // don't check directions that are impassable!
-      ubMovementCost = gubWorldMovementCosts[sNextGridNo][ubDirection][pSoldier->bLevel];
+      ubMovementCost = gubWorldMovementCosts[sNextGridNo][ubDirection][pSoldier.value.bLevel];
       if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
         ubMovementCost = DoorTravelCost(NULL, sNextGridNo, ubMovementCost, FALSE, NULL);
       }
@@ -3618,7 +3618,7 @@ function NearbyGroundSeemsWrong(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
     // if this sNextGridNo isn't out of bounds... but it never can be
     pMapElement = &(gpWorldLevelData[sNextGridNo]);
 
-    if (pMapElement->uiFlags & fCheckFlag) {
+    if (pMapElement.value.uiFlags & fCheckFlag) {
       // already know there's a mine there
       continue;
     }
@@ -3627,19 +3627,19 @@ function NearbyGroundSeemsWrong(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
     for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
       if (gWorldBombs[uiWorldBombIndex].fExists && gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].sGridNo == sNextGridNo) {
         pObj = &(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
-        if (pObj->bDetonatorType == BOMB_PRESSURE && !(pObj->fFlags & OBJECT_KNOWN_TO_BE_TRAPPED) && (!(pObj->fFlags & OBJECT_DISABLED_BOMB))) {
-          if (fMining && pObj->bTrap <= 10) {
+        if (pObj.value.bDetonatorType == BOMB_PRESSURE && !(pObj.value.fFlags & OBJECT_KNOWN_TO_BE_TRAPPED) && (!(pObj.value.fFlags & OBJECT_DISABLED_BOMB))) {
+          if (fMining && pObj.value.bTrap <= 10) {
             // add blue flag
-            AddBlueFlag(sNextGridNo, pSoldier->bLevel);
+            AddBlueFlag(sNextGridNo, pSoldier.value.bLevel);
             fFoundMetal = TRUE;
             break;
-          } else if (ubDetectLevel >= pObj->bTrap) {
-            if (pSoldier->uiStatusFlags & SOLDIER_PC) {
+          } else if (ubDetectLevel >= pObj.value.bTrap) {
+            if (pSoldier.value.uiStatusFlags & SOLDIER_PC) {
               // detected exposives buried nearby...
-              StatChange(pSoldier, EXPLODEAMT, (pObj->bTrap), FALSE);
+              StatChange(pSoldier, EXPLODEAMT, (pObj.value.bTrap), FALSE);
 
               // set item as known
-              pObj->fFlags |= OBJECT_KNOWN_TO_BE_TRAPPED;
+              pObj.value.fFlags |= OBJECT_KNOWN_TO_BE_TRAPPED;
             }
 
             *psProblemGridNo = sNextGridNo;
@@ -3741,7 +3741,7 @@ function AddBlueFlag(sGridNo: INT16, bLevel: INT8): void {
   pNode = AddStructToTail(sGridNo, BLUEFLAG_GRAPHIC);
 
   if (pNode) {
-    pNode->uiFlags |= LEVELNODE_SHOW_THROUGH;
+    pNode.value.uiFlags |= LEVELNODE_SHOW_THROUGH;
   }
 
   ApplyMapChangesToMapTempFile(FALSE);
@@ -3767,7 +3767,7 @@ function RemoveBlueFlag(sGridNo: INT16, bLevel: INT8): void {
 function MakeNPCGrumpyForMinorOffense(pSoldier: Pointer<SOLDIERTYPE>, pOffendingSoldier: Pointer<SOLDIERTYPE>): void {
   CancelAIAction(pSoldier, TRUE);
 
-  switch (pSoldier->ubProfile) {
+  switch (pSoldier.value.ubProfile) {
     case FREDO:
     case FRANZ:
     case HERVE:
@@ -3783,24 +3783,24 @@ function MakeNPCGrumpyForMinorOffense(pSoldier: Pointer<SOLDIERTYPE>, pOffending
     case TINA:
     case ARMAND:
     case WALTER:
-      gMercProfiles[pSoldier->ubProfile].ubMiscFlags3 |= PROFILE_MISC_FLAG3_NPC_PISSED_OFF;
-      TriggerNPCWithIHateYouQuote(pSoldier->ubProfile);
+      gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags3 |= PROFILE_MISC_FLAG3_NPC_PISSED_OFF;
+      TriggerNPCWithIHateYouQuote(pSoldier.value.ubProfile);
       break;
     default:
       // trigger NPCs with quote if available
-      AddToShouldBecomeHostileOrSayQuoteList(pSoldier->ubID);
+      AddToShouldBecomeHostileOrSayQuoteList(pSoldier.value.ubID);
       break;
   }
 
   if (pOffendingSoldier) {
-    pSoldier->bNextAction = AI_ACTION_CHANGE_FACING;
-    pSoldier->usNextActionData = atan8(pSoldier->sX, pSoldier->sY, pOffendingSoldier->sX, pOffendingSoldier->sY);
+    pSoldier.value.bNextAction = AI_ACTION_CHANGE_FACING;
+    pSoldier.value.usNextActionData = atan8(pSoldier.value.sX, pSoldier.value.sY, pOffendingSoldier.value.sX, pOffendingSoldier.value.sY);
   }
 }
 
 function TestPotentialOwner(pSoldier: Pointer<SOLDIERTYPE>): void {
-  if (pSoldier->bActive && pSoldier->bInSector && pSoldier->bLife >= OKLIFE) {
-    if (SoldierToSoldierLineOfSightTest(pSoldier, gpTempSoldier, DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, 0, gpTempSoldier->sGridNo, gpTempSoldier->bLevel), TRUE)) {
+  if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife >= OKLIFE) {
+    if (SoldierToSoldierLineOfSightTest(pSoldier, gpTempSoldier, DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, 0, gpTempSoldier.value.sGridNo, gpTempSoldier.value.bLevel), TRUE)) {
       MakeNPCGrumpyForMinorOffense(pSoldier, gpTempSoldier);
     }
   }
@@ -3814,46 +3814,46 @@ function CheckForPickedOwnership(): void {
   let ubLoop: UINT8;
 
   // LOOP THROUGH LIST TO FIND NODE WE WANT
-  GetItemPool(gsTempGridno, &pItemPool, gpTempSoldier->bLevel);
+  GetItemPool(gsTempGridno, &pItemPool, gpTempSoldier.value.bLevel);
 
   while (pItemPool) {
-    if (gWorldItems[pItemPool->iItemIndex].o.usItem == OWNERSHIP) {
-      if (gWorldItems[pItemPool->iItemIndex].o.ubOwnerProfile != NO_PROFILE) {
-        ubProfile = gWorldItems[pItemPool->iItemIndex].o.ubOwnerProfile;
+    if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == OWNERSHIP) {
+      if (gWorldItems[pItemPool.value.iItemIndex].o.ubOwnerProfile != NO_PROFILE) {
+        ubProfile = gWorldItems[pItemPool.value.iItemIndex].o.ubOwnerProfile;
         pSoldier = FindSoldierByProfileID(ubProfile, FALSE);
         if (pSoldier) {
           TestPotentialOwner(pSoldier);
         }
       }
-      if (gWorldItems[pItemPool->iItemIndex].o.ubOwnerCivGroup != NON_CIV_GROUP) {
-        ubCivGroup = gWorldItems[pItemPool->iItemIndex].o.ubOwnerCivGroup;
+      if (gWorldItems[pItemPool.value.iItemIndex].o.ubOwnerCivGroup != NON_CIV_GROUP) {
+        ubCivGroup = gWorldItems[pItemPool.value.iItemIndex].o.ubOwnerCivGroup;
         if (ubCivGroup == HICKS_CIV_GROUP && CheckFact(FACT_HICKS_MARRIED_PLAYER_MERC, 0)) {
           // skip because hicks appeased
-          pItemPool = pItemPool->pNext;
+          pItemPool = pItemPool.value.pNext;
           continue;
         }
         for (ubLoop = gTacticalStatus.Team[CIV_TEAM].bFirstID; ubLoop <= gTacticalStatus.Team[CIV_TEAM].bLastID; ubLoop++) {
           pSoldier = MercPtrs[ubLoop];
-          if (pSoldier && pSoldier->ubCivilianGroup == ubCivGroup) {
+          if (pSoldier && pSoldier.value.ubCivilianGroup == ubCivGroup) {
             TestPotentialOwner(pSoldier);
           }
         }
       }
     }
-    pItemPool = pItemPool->pNext;
+    pItemPool = pItemPool.value.pNext;
   }
 }
 
 function LoopLevelNodeForItemGlowFlag(pNode: Pointer<LEVELNODE>, sGridNo: INT16, ubLevel: UINT8, fOn: BOOLEAN): void {
   while (pNode != NULL) {
-    if (pNode->uiFlags & LEVELNODE_ITEM) {
+    if (pNode.value.uiFlags & LEVELNODE_ITEM) {
       if (fOn) {
-        pNode->uiFlags |= LEVELNODE_DYNAMIC;
+        pNode.value.uiFlags |= LEVELNODE_DYNAMIC;
       } else {
-        pNode->uiFlags &= (~LEVELNODE_DYNAMIC);
+        pNode.value.uiFlags &= (~LEVELNODE_DYNAMIC);
       }
     }
-    pNode = pNode->pNext;
+    pNode = pNode.value.pNext;
   }
 }
 
@@ -3891,19 +3891,19 @@ function ContinuePastBoobyTrapInMapScreen(pObject: Pointer<OBJECTTYPE>, pSoldier
   let bTrapDifficulty: INT8;
   let bTrapDetectLevel: INT8;
 
-  if (pObject->bTrap > 0) {
-    if (pSoldier->bTeam == gbPlayerNum) {
+  if (pObject.value.bTrap > 0) {
+    if (pSoldier.value.bTeam == gbPlayerNum) {
       // does the player know about this item?
-      fBoobyTrapKnowledge = ((pObject->fFlags & OBJECT_KNOWN_TO_BE_TRAPPED) > 0);
+      fBoobyTrapKnowledge = ((pObject.value.fFlags & OBJECT_KNOWN_TO_BE_TRAPPED) > 0);
 
       // blue flag stuff?
 
       if (!fBoobyTrapKnowledge) {
-        bTrapDifficulty = pObject->bTrap;
+        bTrapDifficulty = pObject.value.bTrap;
         bTrapDetectLevel = CalcTrapDetectLevel(pSoldier, FALSE);
         if (bTrapDetectLevel >= bTrapDifficulty) {
           // spotted the trap!
-          pObject->fFlags |= OBJECT_KNOWN_TO_BE_TRAPPED;
+          pObject.value.fFlags |= OBJECT_KNOWN_TO_BE_TRAPPED;
           fBoobyTrapKnowledge = TRUE;
 
           // Make him warn us:
@@ -3920,7 +3920,7 @@ function ContinuePastBoobyTrapInMapScreen(pObject: Pointer<OBJECTTYPE>, pSoldier
       if (fBoobyTrapKnowledge) {
         // have the computer ask us if we want to proceed
         gpBoobyTrapSoldier = pSoldier;
-        gbTrapDifficulty = pObject->bTrap;
+        gbTrapDifficulty = pObject.value.bTrap;
         DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[DISARM_BOOBYTRAP_PROMPT], MAP_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack, NULL);
       } else {
         // oops!
@@ -4036,16 +4036,16 @@ function FindNearestAvailableGridNoForItem(sSweetGridNo: INT16, ubRadius: INT8):
 }
 
 function CanPlayerUseRocketRifle(pSoldier: Pointer<SOLDIERTYPE>, fDisplay: BOOLEAN): BOOLEAN {
-  if (pSoldier->inv[pSoldier->ubAttackingHand].usItem == ROCKET_RIFLE || pSoldier->inv[pSoldier->ubAttackingHand].usItem == AUTO_ROCKET_RIFLE) {
+  if (pSoldier.value.inv[pSoldier.value.ubAttackingHand].usItem == ROCKET_RIFLE || pSoldier.value.inv[pSoldier.value.ubAttackingHand].usItem == AUTO_ROCKET_RIFLE) {
     // check imprint ID
     // NB not-imprinted value is NO_PROFILE
     // imprinted value is profile for mercs & NPCs and NO_PROFILE + 1 for generic dudes
-    if (pSoldier->ubProfile != NO_PROFILE) {
-      if (pSoldier->inv[pSoldier->ubAttackingHand].ubImprintID != pSoldier->ubProfile) {
+    if (pSoldier.value.ubProfile != NO_PROFILE) {
+      if (pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubImprintID != pSoldier.value.ubProfile) {
         // NOT a virgin gun...
-        if (pSoldier->inv[pSoldier->ubAttackingHand].ubImprintID != NO_PROFILE) {
+        if (pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubImprintID != NO_PROFILE) {
           // access denied!
-          if (pSoldier->bTeam == gbPlayerNum) {
+          if (pSoldier.value.bTeam == gbPlayerNum) {
             PlayJA2Sample(RG_ID_INVALID, RATE_11025, HIGHVOLUME, 1, MIDDLE);
 
             if (fDisplay) {

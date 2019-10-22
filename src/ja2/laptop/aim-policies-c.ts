@@ -597,14 +597,14 @@ function BtnPoliciesAgreeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   if (fOnPage) {
     ubRetValue = MSYS_GetBtnUserData(btn, 0);
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-      btn->uiFlags |= BUTTON_CLICKED_ON;
+      btn.value.uiFlags |= BUTTON_CLICKED_ON;
       InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
       gubPoliciesAgreeButtonDown = ubRetValue;
     }
 
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-      if (btn->uiFlags & BUTTON_CLICKED_ON) {
-        btn->uiFlags &= (~BUTTON_CLICKED_ON);
+      if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+        btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
         // Agree
         fOnPage = FALSE;
@@ -623,7 +623,7 @@ function BtnPoliciesAgreeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
       }
     }
     if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
       gubPoliciesAgreeButtonDown = 255;
       InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
     }
@@ -636,14 +636,14 @@ function BtnPoliciesMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   if (fOnPage) {
     ubRetValue = MSYS_GetBtnUserData(btn, 0);
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-      btn->uiFlags |= BUTTON_CLICKED_ON;
+      btn.value.uiFlags |= BUTTON_CLICKED_ON;
       gubAimPolicyMenuButtonDown = ubRetValue;
       InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
     }
 
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-      if (btn->uiFlags & BUTTON_CLICKED_ON) {
-        btn->uiFlags &= (~BUTTON_CLICKED_ON);
+      if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+        btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
         gubAimPolicyMenuButtonDown = 255;
         // If previous Page
@@ -687,7 +687,7 @@ function BtnPoliciesMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
       }
     }
     if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
       gubAimPolicyMenuButtonDown = 255;
       DisableAimPolicyButton();
       InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
@@ -699,7 +699,7 @@ function ResetAimPolicyButtons(): void {
   let i: int = 0;
 
   for (i = 0; i < AIM_POLICY_MENU_BUTTON_AMOUNT; i++) {
-    ButtonList[guiPoliciesMenuButton[i]]->uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[guiPoliciesMenuButton[i]].value.uiFlags &= ~BUTTON_CLICKED_ON;
   }
 }
 
@@ -708,10 +708,10 @@ function DisableAimPolicyButton(): void {
     return;
 
   if ((gubCurPageNum == AIM_POLICY_TOC_PAGE)) {
-    ButtonList[guiPoliciesMenuButton[0]]->uiFlags |= (BUTTON_CLICKED_ON);
-    ButtonList[guiPoliciesMenuButton[2]]->uiFlags |= (BUTTON_CLICKED_ON);
+    ButtonList[guiPoliciesMenuButton[0]].value.uiFlags |= (BUTTON_CLICKED_ON);
+    ButtonList[guiPoliciesMenuButton[2]].value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if ((gubCurPageNum == AIM_POLICY_LAST_PAGE)) {
-    ButtonList[guiPoliciesMenuButton[3]]->uiFlags |= (BUTTON_CLICKED_ON);
+    ButtonList[guiPoliciesMenuButton[3]].value.uiFlags |= (BUTTON_CLICKED_ON);
   }
 }
 

@@ -815,15 +815,15 @@ function CheckForMissingHospitalSupplies(): void {
     if (gWorldItems[uiLoop].fExists && gWorldItems[uiLoop].o.usItem == OWNERSHIP && gWorldItems[uiLoop].o.ubOwnerCivGroup == DOCTORS_CIV_GROUP) {
       GetItemPool(gWorldItems[uiLoop].sGridNo, &pItemPool, 0);
       while (pItemPool) {
-        pObj = &(gWorldItems[pItemPool->iItemIndex].o);
+        pObj = &(gWorldItems[pItemPool.value.iItemIndex].o);
 
-        if (pObj->bStatus[0] > 60) {
-          if (pObj->usItem == FIRSTAIDKIT || pObj->usItem == MEDICKIT || pObj->usItem == REGEN_BOOSTER || pObj->usItem == ADRENALINE_BOOSTER) {
+        if (pObj.value.bStatus[0] > 60) {
+          if (pObj.value.usItem == FIRSTAIDKIT || pObj.value.usItem == MEDICKIT || pObj.value.usItem == REGEN_BOOSTER || pObj.value.usItem == ADRENALINE_BOOSTER) {
             ubMedicalObjects++;
           }
         }
 
-        pItemPool = pItemPool->pNext;
+        pItemPool = pItemPool.value.pNext;
       }
     }
   }
@@ -899,7 +899,7 @@ function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
   uiCount = 0;
 
   // loop through the number of purchases
-  for (i = 0; i < gpNewBobbyrShipments->ubNumberPurchases; i++) {
+  for (i = 0; i < gpNewBobbyrShipments.value.ubNumberPurchases; i++) {
     ubItemsDelivered = gpNewBobbyrShipments[ubOrderNum].BobbyRayPurchase[i].ubNumberPurchased;
     usItem = gpNewBobbyrShipments[ubOrderNum].BobbyRayPurchase[i].usItemIndex;
 

@@ -17,13 +17,13 @@ function CopyScheduleToList(pSchedule: Pointer<SCHEDULENODE>, pNode: Pointer<SOL
   curr = gpScheduleList;
   gpScheduleList = MemAlloc(sizeof(SCHEDULENODE));
   memcpy(gpScheduleList, pSchedule, sizeof(SCHEDULENODE));
-  gpScheduleList->next = curr;
+  gpScheduleList.value.next = curr;
   gubScheduleID++;
   // Assign all of the links
-  gpScheduleList->ubScheduleID = gubScheduleID;
-  gpScheduleList->ubSoldierID = pNode->pSoldier->ubID;
-  pNode->pDetailedPlacement->ubScheduleID = gubScheduleID;
-  pNode->pSoldier->ubScheduleID = gubScheduleID;
+  gpScheduleList.value.ubScheduleID = gubScheduleID;
+  gpScheduleList.value.ubSoldierID = pNode.value.pSoldier.value.ubID;
+  pNode.value.pDetailedPlacement.value.ubScheduleID = gubScheduleID;
+  pNode.value.pSoldier.value.ubScheduleID = gubScheduleID;
   if (gubScheduleID > 40) {
     // Too much fragmentation, clean it up...
     OptimizeSchedules();
@@ -37,9 +37,9 @@ function GetSchedule(ubScheduleID: UINT8): Pointer<SCHEDULENODE> {
   let curr: Pointer<SCHEDULENODE>;
   curr = gpScheduleList;
   while (curr) {
-    if (curr->ubScheduleID == ubScheduleID)
+    if (curr.value.ubScheduleID == ubScheduleID)
       return curr;
-    curr = curr->next;
+    curr = curr.value.next;
   }
   return NULL;
 }
@@ -52,7 +52,7 @@ function DestroyAllSchedules(): void {
   // Now, delete all of the schedules.
   while (gpScheduleList) {
     curr = gpScheduleList;
-    gpScheduleList = gpScheduleList->next;
+    gpScheduleList = gpScheduleList.value.next;
     MemFree(curr);
   }
   gpScheduleList = NULL;
@@ -66,7 +66,7 @@ function DestroyAllSchedulesWithoutDestroyingEvents(): void {
   // delete all of the schedules.
   while (gpScheduleList) {
     curr = gpScheduleList;
-    gpScheduleList = gpScheduleList->next;
+    gpScheduleList = gpScheduleList.value.next;
     MemFree(curr);
   }
   gpScheduleList = NULL;
@@ -84,21 +84,21 @@ function DeleteSchedule(ubScheduleID: UINT8): void {
 
   curr = gpScheduleList;
 
-  if (gpScheduleList->ubScheduleID == ubScheduleID) {
+  if (gpScheduleList.value.ubScheduleID == ubScheduleID) {
     // Deleting the head
     temp = gpScheduleList;
-    gpScheduleList = gpScheduleList->next;
+    gpScheduleList = gpScheduleList.value.next;
   } else
-    while (curr->next) {
-      if (curr->next->ubScheduleID == ubScheduleID) {
-        temp = curr->next;
-        curr->next = temp->next;
+    while (curr.value.next) {
+      if (curr.value.next.value.ubScheduleID == ubScheduleID) {
+        temp = curr.value.next;
+        curr.value.next = temp.value.next;
         break;
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
   if (temp) {
-    DeleteStrategicEvent(EVENT_PROCESS_TACTICAL_SCHEDULE, temp->ubScheduleID);
+    DeleteStrategicEvent(EVENT_PROCESS_TACTICAL_SCHEDULE, temp.value.ubScheduleID);
     MemFree(temp);
   }
 }
@@ -115,18 +115,18 @@ function ProcessTacticalSchedule(ubScheduleID: UINT8): void {
     return;
   }
   // Attempt to access the soldier involved
-  if (pSchedule->ubSoldierID >= TOTAL_SOLDIERS) {
+  if (pSchedule.value.ubSoldierID >= TOTAL_SOLDIERS) {
     return;
   }
 
   // Validate the existance of the soldier.
-  pSoldier = MercPtrs[pSchedule->ubSoldierID];
-  if (pSoldier->bLife < OKLIFE) {
+  pSoldier = MercPtrs[pSchedule.value.ubSoldierID];
+  if (pSoldier.value.bLife < OKLIFE) {
     // dead or dying!
     return;
   }
 
-  if (!pSoldier->bActive) {
+  if (!pSoldier.value.bActive) {
   }
 
   // Okay, now we have good pointers to the soldier and the schedule.
@@ -136,7 +136,7 @@ function ProcessTacticalSchedule(ubScheduleID: UINT8): void {
     fAutoProcess = TRUE;
   } else {
     for (iScheduleIndex = 0; iScheduleIndex < MAX_SCHEDULE_ACTIONS; iScheduleIndex++) {
-      if (pSchedule->usTime[iScheduleIndex] == GetWorldMinutesInDay()) {
+      if (pSchedule.value.usTime[iScheduleIndex] == GetWorldMinutesInDay()) {
         break;
       }
     }
@@ -157,24 +157,24 @@ function ProcessTacticalSchedule(ubScheduleID: UINT8): void {
   } else {
     // turn off all active-schedule flags before setting
     // the one that should be active!
-    pSchedule->usFlags &= ~SCHEDULE_FLAGS_ACTIVE_ALL;
+    pSchedule.value.usFlags &= ~SCHEDULE_FLAGS_ACTIVE_ALL;
 
     switch (iScheduleIndex) {
       case 0:
-        pSchedule->usFlags |= SCHEDULE_FLAGS_ACTIVE1;
+        pSchedule.value.usFlags |= SCHEDULE_FLAGS_ACTIVE1;
         break;
       case 1:
-        pSchedule->usFlags |= SCHEDULE_FLAGS_ACTIVE2;
+        pSchedule.value.usFlags |= SCHEDULE_FLAGS_ACTIVE2;
         break;
       case 2:
-        pSchedule->usFlags |= SCHEDULE_FLAGS_ACTIVE3;
+        pSchedule.value.usFlags |= SCHEDULE_FLAGS_ACTIVE3;
         break;
       case 3:
-        pSchedule->usFlags |= SCHEDULE_FLAGS_ACTIVE4;
+        pSchedule.value.usFlags |= SCHEDULE_FLAGS_ACTIVE4;
         break;
     }
-    pSoldier->fAIFlags |= AI_CHECK_SCHEDULE;
-    pSoldier->bAIScheduleProgress = 0;
+    pSoldier.value.fAIFlags |= AI_CHECK_SCHEDULE;
+    pSoldier.value.bAIScheduleProgress = 0;
   }
 }
 
@@ -188,33 +188,33 @@ function OptimizeSchedules(): void {
   pSchedule = gpScheduleList;
   while (pSchedule) {
     gubScheduleID++;
-    ubOldScheduleID = pSchedule->ubScheduleID;
+    ubOldScheduleID = pSchedule.value.ubScheduleID;
     if (ubOldScheduleID != gubScheduleID) {
       // The schedule ID has changed, so change all links accordingly.
-      pSchedule->ubScheduleID = gubScheduleID;
+      pSchedule.value.ubScheduleID = gubScheduleID;
       pNode = gSoldierInitHead;
       while (pNode) {
-        if (pNode->pDetailedPlacement && pNode->pDetailedPlacement->ubScheduleID == ubOldScheduleID) {
+        if (pNode.value.pDetailedPlacement && pNode.value.pDetailedPlacement.value.ubScheduleID == ubOldScheduleID) {
           // Temporarily add 100 to the ID number to ensure that it doesn't get used again later.
           // We will remove it immediately after this loop is complete.
-          pNode->pDetailedPlacement->ubScheduleID = gubScheduleID + 100;
-          if (pNode->pSoldier) {
-            pNode->pSoldier->ubScheduleID = gubScheduleID;
+          pNode.value.pDetailedPlacement.value.ubScheduleID = gubScheduleID + 100;
+          if (pNode.value.pSoldier) {
+            pNode.value.pSoldier.value.ubScheduleID = gubScheduleID;
           }
           break;
         }
-        pNode = pNode->next;
+        pNode = pNode.value.next;
       }
     }
-    pSchedule = pSchedule->next;
+    pSchedule = pSchedule.value.next;
   }
   // Remove the +100 IDs.
   pNode = gSoldierInitHead;
   while (pNode) {
-    if (pNode->pDetailedPlacement && pNode->pDetailedPlacement->ubScheduleID > 100) {
-      pNode->pDetailedPlacement->ubScheduleID -= 100;
+    if (pNode.value.pDetailedPlacement && pNode.value.pDetailedPlacement.value.ubScheduleID > 100) {
+      pNode.value.pDetailedPlacement.value.ubScheduleID -= 100;
     }
-    pNode = pNode->next;
+    pNode = pNode.value.next;
   }
 }
 
@@ -231,18 +231,18 @@ function PrepareSchedulesForEditorEntry(): void {
   curr = gpScheduleList;
   prev = NULL;
   while (curr) {
-    if (curr->usFlags & SCHEDULE_FLAGS_TEMPORARY) {
+    if (curr.value.usFlags & SCHEDULE_FLAGS_TEMPORARY) {
       if (prev)
-        prev->next = curr->next;
+        prev.value.next = curr.value.next;
       else
-        gpScheduleList = gpScheduleList->next;
-      MercPtrs[curr->ubSoldierID]->ubScheduleID = 0;
+        gpScheduleList = gpScheduleList.value.next;
+      MercPtrs[curr.value.ubSoldierID].value.ubScheduleID = 0;
       temp = curr;
-      curr = curr->next;
+      curr = curr.value.next;
       MemFree(temp);
       gubScheduleID--;
     } else {
-      if (curr->usFlags & SCHEDULE_FLAGS_SLEEP_CONVERTED) {
+      if (curr.value.usFlags & SCHEDULE_FLAGS_SLEEP_CONVERTED) {
         // uncovert it!
         let i: INT32;
         for (i = 0; i < MAX_SCHEDULE_ACTIONS; i++) {
@@ -250,7 +250,7 @@ function PrepareSchedulesForEditorEntry(): void {
         }
       }
       prev = curr;
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
 }
@@ -276,9 +276,9 @@ function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
     LOADDATA(&temp, *hBuffer, sizeof(SCHEDULENODE));
 
     if (gpScheduleList) {
-      pSchedule->next = MemAlloc(sizeof(SCHEDULENODE));
-      Assert(pSchedule->next);
-      pSchedule = pSchedule->next;
+      pSchedule.value.next = MemAlloc(sizeof(SCHEDULENODE));
+      Assert(pSchedule.value.next);
+      pSchedule = pSchedule.value.next;
       memcpy(pSchedule, &temp, sizeof(SCHEDULENODE));
     } else {
       gpScheduleList = MemAlloc(sizeof(SCHEDULENODE));
@@ -286,9 +286,9 @@ function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
       memcpy(gpScheduleList, &temp, sizeof(SCHEDULENODE));
       pSchedule = gpScheduleList;
     }
-    pSchedule->ubScheduleID = gubScheduleID;
-    pSchedule->ubSoldierID = NO_SOLDIER;
-    pSchedule->next = NULL;
+    pSchedule.value.ubScheduleID = gubScheduleID;
+    pSchedule.value.ubSoldierID = NO_SOLDIER;
+    pSchedule.value.next = NULL;
     gubScheduleID++;
     ubNum--;
   }
@@ -326,9 +326,9 @@ function LoadSchedulesFromSave(hFile: HWFILE): BOOLEAN {
     // LOADDATA( &temp, *hBuffer, sizeof( SCHEDULENODE ) );
 
     if (gpScheduleList) {
-      pSchedule->next = MemAlloc(sizeof(SCHEDULENODE));
-      Assert(pSchedule->next);
-      pSchedule = pSchedule->next;
+      pSchedule.value.next = MemAlloc(sizeof(SCHEDULENODE));
+      Assert(pSchedule.value.next);
+      pSchedule = pSchedule.value.next;
       memcpy(pSchedule, &temp, sizeof(SCHEDULENODE));
     } else {
       gpScheduleList = MemAlloc(sizeof(SCHEDULENODE));
@@ -343,7 +343,7 @@ function LoadSchedulesFromSave(hFile: HWFILE): BOOLEAN {
     pSchedule->ubSoldierID = NO_SOLDIER;
     */
 
-    pSchedule->next = NULL;
+    pSchedule.value.next = NULL;
     gubScheduleID++;
     ubRealNum--;
   }
@@ -364,17 +364,17 @@ function ReverseSchedules(): void {
   pReverseHead = NULL;
   while (gpScheduleList) {
     // reverse the ID
-    gpScheduleList->ubScheduleID = ubOppositeID;
+    gpScheduleList.value.ubScheduleID = ubOppositeID;
     ubOppositeID--;
     // detach current schedule head from list and advance it
     pPrevScheduleHead = gpScheduleList;
-    gpScheduleList = gpScheduleList->next;
+    gpScheduleList = gpScheduleList.value.next;
     // get previous reversed list head (even if null)
     pPrevReverseHead = pReverseHead;
     // Assign the previous schedule head to the reverse head
     pReverseHead = pPrevScheduleHead;
     // Point the next to the previous reverse head.
-    pReverseHead->next = pPrevReverseHead;
+    pReverseHead.value.next = pPrevReverseHead;
   }
   // Now assign the schedule list to the reverse head.
   gpScheduleList = pReverseHead;
@@ -386,13 +386,13 @@ function ClearAllSchedules(): void {
   DestroyAllSchedules();
   pNode = gSoldierInitHead;
   while (pNode) {
-    if (pNode->pDetailedPlacement && pNode->pDetailedPlacement->ubScheduleID) {
-      pNode->pDetailedPlacement->ubScheduleID = 0;
-      if (pNode->pSoldier) {
-        pNode->pSoldier->ubScheduleID = 0;
+    if (pNode.value.pDetailedPlacement && pNode.value.pDetailedPlacement.value.ubScheduleID) {
+      pNode.value.pDetailedPlacement.value.ubScheduleID = 0;
+      if (pNode.value.pSoldier) {
+        pNode.value.pSoldier.value.ubScheduleID = 0;
       }
     }
-    pNode = pNode->next;
+    pNode = pNode.value.next;
   }
 }
 
@@ -407,10 +407,10 @@ function SaveSchedules(hFile: HWFILE): BOOLEAN {
   curr = gpScheduleList;
   while (curr) {
     // skip all default schedules
-    if (!(curr->usFlags & SCHEDULE_FLAGS_TEMPORARY)) {
+    if (!(curr.value.usFlags & SCHEDULE_FLAGS_TEMPORARY)) {
       iNum++;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   ubNum = ((iNum >= 32) ? 32 : iNum);
 
@@ -423,7 +423,7 @@ function SaveSchedules(hFile: HWFILE): BOOLEAN {
   ubNumFucker = 0;
   while (curr) {
     // skip all default schedules
-    if (!(curr->usFlags & SCHEDULE_FLAGS_TEMPORARY)) {
+    if (!(curr.value.usFlags & SCHEDULE_FLAGS_TEMPORARY)) {
       ubNumFucker++;
       if (ubNumFucker > ubNum) {
         return TRUE;
@@ -433,7 +433,7 @@ function SaveSchedules(hFile: HWFILE): BOOLEAN {
         return FALSE;
       }
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   return TRUE;
 }
@@ -456,26 +456,26 @@ function SortSchedule(pSchedule: Pointer<SCHEDULENODE>): BOOLEAN {
     usTime = 0xffff;
     iBestIndex = index;
     for (i = index; i < MAX_SCHEDULE_ACTIONS; i++) {
-      if (pSchedule->usTime[i] < usTime) {
-        usTime = pSchedule->usTime[i];
+      if (pSchedule.value.usTime[i] < usTime) {
+        usTime = pSchedule.value.usTime[i];
         iBestIndex = i;
       }
     }
     if (iBestIndex != index) {
       // we will swap the best index with the current index.
       fSorted = TRUE;
-      usTime = pSchedule->usTime[index];
-      usData1 = pSchedule->usData1[index];
-      usData2 = pSchedule->usData2[index];
-      ubAction = pSchedule->ubAction[index];
-      pSchedule->usTime[index] = pSchedule->usTime[iBestIndex];
-      pSchedule->usData1[index] = pSchedule->usData1[iBestIndex];
-      pSchedule->usData2[index] = pSchedule->usData2[iBestIndex];
-      pSchedule->ubAction[index] = pSchedule->ubAction[iBestIndex];
-      pSchedule->usTime[iBestIndex] = usTime;
-      pSchedule->usData1[iBestIndex] = usData1;
-      pSchedule->usData2[iBestIndex] = usData2;
-      pSchedule->ubAction[iBestIndex] = ubAction;
+      usTime = pSchedule.value.usTime[index];
+      usData1 = pSchedule.value.usData1[index];
+      usData2 = pSchedule.value.usData2[index];
+      ubAction = pSchedule.value.ubAction[index];
+      pSchedule.value.usTime[index] = pSchedule.value.usTime[iBestIndex];
+      pSchedule.value.usData1[index] = pSchedule.value.usData1[iBestIndex];
+      pSchedule.value.usData2[index] = pSchedule.value.usData2[iBestIndex];
+      pSchedule.value.ubAction[index] = pSchedule.value.ubAction[iBestIndex];
+      pSchedule.value.usTime[iBestIndex] = usTime;
+      pSchedule.value.usData1[iBestIndex] = usData1;
+      pSchedule.value.usData2[iBestIndex] = usData2;
+      pSchedule.value.ubAction[iBestIndex] = ubAction;
     }
     index++;
   }
@@ -534,74 +534,74 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
     return;
   }
 
-  pSoldier = MercPtrs[pSchedule->ubSoldierID];
+  pSoldier = MercPtrs[pSchedule.value.ubSoldierID];
 
-  if (pSoldier->ubProfile != NO_PROFILE) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Autoprocessing schedule action %S for %S (%d) at time %02ld:%02ld (set for %02d:%02d), data1 = %d", gszScheduleActions[pSchedule->ubAction[index]], pSoldier->name, pSoldier->ubID, GetWorldHour(), guiMin, pSchedule->usTime[index] / 60, pSchedule->usTime[index] % 60, pSchedule->usData1[index]));
+  if (pSoldier.value.ubProfile != NO_PROFILE) {
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Autoprocessing schedule action %S for %S (%d) at time %02ld:%02ld (set for %02d:%02d), data1 = %d", gszScheduleActions[pSchedule.value.ubAction[index]], pSoldier.value.name, pSoldier.value.ubID, GetWorldHour(), guiMin, pSchedule.value.usTime[index] / 60, pSchedule.value.usTime[index] % 60, pSchedule.value.usData1[index]));
   } else {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Autoprocessing schedule action %S for civ (%d) at time %02ld:%02ld (set for %02d:%02d), data1 = %d", gszScheduleActions[pSchedule->ubAction[index]], pSoldier->ubID, GetWorldHour(), guiMin, pSchedule->usTime[index] / 60, pSchedule->usTime[index] % 60, pSchedule->usData1[index]));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Autoprocessing schedule action %S for civ (%d) at time %02ld:%02ld (set for %02d:%02d), data1 = %d", gszScheduleActions[pSchedule.value.ubAction[index]], pSoldier.value.ubID, GetWorldHour(), guiMin, pSchedule.value.usTime[index] / 60, pSchedule.value.usTime[index] % 60, pSchedule.value.usData1[index]));
   }
 
   // always assume the merc is going to wake, unless the event is a sleep
-  pSoldier->fAIFlags &= ~(AI_ASLEEP);
+  pSoldier.value.fAIFlags &= ~(AI_ASLEEP);
 
-  switch (pSchedule->ubAction[index]) {
+  switch (pSchedule.value.ubAction[index]) {
     case SCHEDULE_ACTION_LOCKDOOR:
     case SCHEDULE_ACTION_UNLOCKDOOR:
     case SCHEDULE_ACTION_OPENDOOR:
     case SCHEDULE_ACTION_CLOSEDOOR:
-      PerformActionOnDoorAdjacentToGridNo(pSchedule->ubAction[index], pSchedule->usData1[index]);
-      BumpAnyExistingMerc(pSchedule->usData2[index]);
-      ConvertGridNoToCellXY(pSchedule->usData2[index], &sCellX, &sCellY);
+      PerformActionOnDoorAdjacentToGridNo(pSchedule.value.ubAction[index], pSchedule.value.usData1[index]);
+      BumpAnyExistingMerc(pSchedule.value.usData2[index]);
+      ConvertGridNoToCellXY(pSchedule.value.usData2[index], &sCellX, &sCellY);
 
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
-      if (GridNoOnEdgeOfMap(pSchedule->usData2[index], &bDirection)) {
+      if (GridNoOnEdgeOfMap(pSchedule.value.usData2[index], &bDirection)) {
         // civ should go off map; this tells us where the civ will return
-        pSoldier->sOffWorldGridNo = pSchedule->usData2[index];
+        pSoldier.value.sOffWorldGridNo = pSchedule.value.usData2[index];
         MoveSoldierFromMercToAwaySlot(pSoldier);
-        pSoldier->bInSector = FALSE;
+        pSoldier.value.bInSector = FALSE;
       } else {
         // let this person patrol from here from now on
-        pSoldier->usPatrolGrid[0] = pSchedule->usData2[index];
+        pSoldier.value.usPatrolGrid[0] = pSchedule.value.usData2[index];
       }
       break;
     case SCHEDULE_ACTION_GRIDNO:
-      BumpAnyExistingMerc(pSchedule->usData1[index]);
-      ConvertGridNoToCellXY(pSchedule->usData1[index], &sCellX, &sCellY);
+      BumpAnyExistingMerc(pSchedule.value.usData1[index]);
+      ConvertGridNoToCellXY(pSchedule.value.usData1[index], &sCellX, &sCellY);
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       // let this person patrol from here from now on
-      pSoldier->usPatrolGrid[0] = pSchedule->usData1[index];
+      pSoldier.value.usPatrolGrid[0] = pSchedule.value.usData1[index];
       break;
     case SCHEDULE_ACTION_ENTERSECTOR:
-      if (pSoldier->ubProfile != NO_PROFILE && gMercProfiles[pSoldier->ubProfile].ubMiscFlags2 & PROFILE_MISC_FLAG2_DONT_ADD_TO_SECTOR) {
+      if (pSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags2 & PROFILE_MISC_FLAG2_DONT_ADD_TO_SECTOR) {
         // never process enter if flag is set
         break;
       }
-      BumpAnyExistingMerc(pSchedule->usData1[index]);
-      ConvertGridNoToCellXY(pSchedule->usData1[index], &sCellX, &sCellY);
+      BumpAnyExistingMerc(pSchedule.value.usData1[index]);
+      ConvertGridNoToCellXY(pSchedule.value.usData1[index], &sCellX, &sCellY);
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       MoveSoldierFromAwayToMercSlot(pSoldier);
-      pSoldier->bInSector = TRUE;
+      pSoldier.value.bInSector = TRUE;
       // let this person patrol from here from now on
-      pSoldier->usPatrolGrid[0] = pSchedule->usData1[index];
+      pSoldier.value.usPatrolGrid[0] = pSchedule.value.usData1[index];
       break;
     case SCHEDULE_ACTION_WAKE:
-      BumpAnyExistingMerc(pSoldier->sInitialGridNo);
-      ConvertGridNoToCellXY(pSoldier->sInitialGridNo, &sCellX, &sCellY);
+      BumpAnyExistingMerc(pSoldier.value.sInitialGridNo);
+      ConvertGridNoToCellXY(pSoldier.value.sInitialGridNo, &sCellX, &sCellY);
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       // let this person patrol from here from now on
-      pSoldier->usPatrolGrid[0] = pSoldier->sInitialGridNo;
+      pSoldier.value.usPatrolGrid[0] = pSoldier.value.sInitialGridNo;
       break;
     case SCHEDULE_ACTION_SLEEP:
-      pSoldier->fAIFlags |= AI_ASLEEP;
+      pSoldier.value.fAIFlags |= AI_ASLEEP;
       // check for someone else in the location
-      BumpAnyExistingMerc(pSchedule->usData1[index]);
-      ConvertGridNoToCellXY(pSchedule->usData1[index], &sCellX, &sCellY);
+      BumpAnyExistingMerc(pSchedule.value.usData1[index]);
+      ConvertGridNoToCellXY(pSchedule.value.usData1[index], &sCellX, &sCellY);
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
-      pSoldier->usPatrolGrid[0] = pSchedule->usData1[index];
+      pSoldier.value.usPatrolGrid[0] = pSchedule.value.usData1[index];
       break;
     case SCHEDULE_ACTION_LEAVESECTOR:
-      sGridNo = FindNearestEdgePoint(pSoldier->sGridNo);
+      sGridNo = FindNearestEdgePoint(pSoldier.value.sGridNo);
       BumpAnyExistingMerc(sGridNo);
       ConvertGridNoToCellXY(sGridNo, &sCellX, &sCellY);
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
@@ -612,9 +612,9 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
 
       // ok, that tells us where the civ will return
-      pSoldier->sOffWorldGridNo = sGridNo;
+      pSoldier.value.sOffWorldGridNo = sGridNo;
       MoveSoldierFromMercToAwaySlot(pSoldier);
-      pSoldier->bInSector = FALSE;
+      pSoldier.value.bInSector = FALSE;
       break;
   }
 }
@@ -628,16 +628,16 @@ function PostSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
   let ubTempAction: UINT8;
   let usTemp: UINT16;
 
-  if ((pSoldier->ubCivilianGroup == KINGPIN_CIV_GROUP) && (gTacticalStatus.fCivGroupHostile[KINGPIN_CIV_GROUP] || ((gubQuest[QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) && (CheckFact(FACT_KINGPIN_CAN_SEND_ASSASSINS, KINGPIN)))) && (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_C) && (pSoldier->ubProfile == NO_PROFILE)) {
+  if ((pSoldier.value.ubCivilianGroup == KINGPIN_CIV_GROUP) && (gTacticalStatus.fCivGroupHostile[KINGPIN_CIV_GROUP] || ((gubQuest[QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) && (CheckFact(FACT_KINGPIN_CAN_SEND_ASSASSINS, KINGPIN)))) && (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_C) && (pSoldier.value.ubProfile == NO_PROFILE)) {
     // no schedules for people guarding Tony's!
     return;
   }
 
-  pSchedule = GetSchedule(pSoldier->ubScheduleID);
+  pSchedule = GetSchedule(pSoldier.value.ubScheduleID);
   if (!pSchedule)
     return;
 
-  if (pSoldier->ubProfile != NO_PROFILE && gMercProfiles[pSoldier->ubProfile].ubMiscFlags3 & PROFILE_MISC_FLAG3_PERMANENT_INSERTION_CODE) {
+  if (pSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags3 & PROFILE_MISC_FLAG3_PERMANENT_INSERTION_CODE) {
     // don't process schedule
     return;
   }
@@ -645,12 +645,12 @@ function PostSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
   // if this schedule doesn't have a time associated with it, then generate a time, but only
   // if it is a sleep schedule.
   for (i = 0; i < MAX_SCHEDULE_ACTIONS; i++) {
-    if (pSchedule->ubAction[i] == SCHEDULE_ACTION_SLEEP) {
+    if (pSchedule.value.ubAction[i] == SCHEDULE_ACTION_SLEEP) {
       // first make sure that this merc has a unique spot to sleep in
-      SecureSleepSpot(pSoldier, pSchedule->usData1[i]);
+      SecureSleepSpot(pSoldier, pSchedule.value.usData1[i]);
 
-      if (pSchedule->usTime[i] == 0xffff) {
-        pSchedule->usTime[i] = ((21 * 60) + Random((3 * 60))); // 9PM - 11:59PM
+      if (pSchedule.value.usTime[i] == 0xffff) {
+        pSchedule.value.usTime[i] = ((21 * 60) + Random((3 * 60))); // 9PM - 11:59PM
 
         if (ScheduleHasMorningNonSleepEntries(pSchedule)) {
           // this guy will sleep until the next non-sleep event
@@ -661,24 +661,24 @@ function PostSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
 
             // NB the wakeup call must be ordered first! so we have to create the
             // wake action and then swap the two.
-            pSchedule->ubAction[bEmpty] = SCHEDULE_ACTION_WAKE;
-            pSchedule->usTime[bEmpty] = (pSchedule->usTime[i] + (8 * 60)) % NUM_MIN_IN_DAY; // sleep for 8 hours
+            pSchedule.value.ubAction[bEmpty] = SCHEDULE_ACTION_WAKE;
+            pSchedule.value.usTime[bEmpty] = (pSchedule.value.usTime[i] + (8 * 60)) % NUM_MIN_IN_DAY; // sleep for 8 hours
 
-            ubTempAction = pSchedule->ubAction[bEmpty];
-            pSchedule->ubAction[bEmpty] = pSchedule->ubAction[i];
-            pSchedule->ubAction[i] = ubTempAction;
+            ubTempAction = pSchedule.value.ubAction[bEmpty];
+            pSchedule.value.ubAction[bEmpty] = pSchedule.value.ubAction[i];
+            pSchedule.value.ubAction[i] = ubTempAction;
 
-            usTemp = pSchedule->usTime[bEmpty];
-            pSchedule->usTime[bEmpty] = pSchedule->usTime[i];
-            pSchedule->usTime[i] = usTemp;
+            usTemp = pSchedule.value.usTime[bEmpty];
+            pSchedule.value.usTime[bEmpty] = pSchedule.value.usTime[i];
+            pSchedule.value.usTime[i] = usTemp;
 
-            usTemp = pSchedule->usData1[bEmpty];
-            pSchedule->usData1[bEmpty] = pSchedule->usData1[i];
-            pSchedule->usData1[i] = usTemp;
+            usTemp = pSchedule.value.usData1[bEmpty];
+            pSchedule.value.usData1[bEmpty] = pSchedule.value.usData1[i];
+            pSchedule.value.usData1[i] = usTemp;
 
-            usTemp = pSchedule->usData2[bEmpty];
-            pSchedule->usData2[bEmpty] = pSchedule->usData2[i];
-            pSchedule->usData2[i] = usTemp;
+            usTemp = pSchedule.value.usData2[bEmpty];
+            pSchedule.value.usData2[bEmpty] = pSchedule.value.usData2[i];
+            pSchedule.value.usData2[i] = usTemp;
           } else {
             // no morning entries but no space for a wakeup either, will sleep till
             // next non-sleep event
@@ -689,7 +689,7 @@ function PostSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
     }
   }
 
-  pSchedule->ubSoldierID = pSoldier->ubID;
+  pSchedule.value.ubSoldierID = pSoldier.value.ubID;
 
   // always process previous 24 hours
   uiEndTime = GetWorldTotalMin();
@@ -724,20 +724,20 @@ function PrepareScheduleForAutoProcessing(pSchedule: Pointer<SCHEDULENODE>, uiSt
     // The start time is later in the day than the end time, which means we'll be wrapping
     // through midnight and continuing to the end time.
     for (i = 0; i < MAX_SCHEDULE_ACTIONS; i++) {
-      if (pSchedule->usTime[i] == 0xffff)
+      if (pSchedule.value.usTime[i] == 0xffff)
         break;
-      if (pSchedule->usTime[i] >= uiStartTime) {
+      if (pSchedule.value.usTime[i] >= uiStartTime) {
         AutoProcessSchedule(pSchedule, i);
       }
     }
     for (i = 0; i < MAX_SCHEDULE_ACTIONS; i++) {
-      if (pSchedule->usTime[i] == 0xffff)
+      if (pSchedule.value.usTime[i] == 0xffff)
         break;
-      if (pSchedule->usTime[i] <= uiEndTime) {
+      if (pSchedule.value.usTime[i] <= uiEndTime) {
         AutoProcessSchedule(pSchedule, i);
       } else {
         // CJC: Note that end time is always passed in here as the current time so GetWorldDayInMinutes will be for the correct day
-        AddStrategicEvent(EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + pSchedule->usTime[i], pSchedule->ubScheduleID);
+        AddStrategicEvent(EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + pSchedule.value.usTime[i], pSchedule.value.ubScheduleID);
         fPostedNextEvent = TRUE;
         break;
       }
@@ -745,14 +745,14 @@ function PrepareScheduleForAutoProcessing(pSchedule: Pointer<SCHEDULENODE>, uiSt
   } else {
     // Much simpler:  start at the start and continue to the end.
     for (i = 0; i < MAX_SCHEDULE_ACTIONS; i++) {
-      if (pSchedule->usTime[i] == 0xffff)
+      if (pSchedule.value.usTime[i] == 0xffff)
         break;
 
-      if (pSchedule->usTime[i] >= uiStartTime && pSchedule->usTime[i] <= uiEndTime) {
+      if (pSchedule.value.usTime[i] >= uiStartTime && pSchedule.value.usTime[i] <= uiEndTime) {
         AutoProcessSchedule(pSchedule, i);
-      } else if (pSchedule->usTime[i] >= uiEndTime) {
+      } else if (pSchedule.value.usTime[i] >= uiEndTime) {
         fPostedNextEvent = TRUE;
-        AddStrategicEvent(EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + pSchedule->usTime[i], pSchedule->ubScheduleID);
+        AddStrategicEvent(EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + pSchedule.value.usTime[i], pSchedule.value.ubScheduleID);
         break;
       }
     }
@@ -762,8 +762,8 @@ function PrepareScheduleForAutoProcessing(pSchedule: Pointer<SCHEDULENODE>, uiSt
     // reached end of schedule, post first event for soldier in the next day
     // 0th event will be first.
     // Feb 1:  ONLY IF THERE IS A VALID EVENT TO POST WITH A VALID TIME!
-    if (pSchedule->usTime[0] != 0xffff) {
-      AddStrategicEvent(EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + NUM_MIN_IN_DAY + pSchedule->usTime[0], pSchedule->ubScheduleID);
+    if (pSchedule.value.usTime[0] != 0xffff) {
+      AddStrategicEvent(EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + NUM_MIN_IN_DAY + pSchedule.value.usTime[0], pSchedule.value.ubScheduleID);
     }
   }
 }
@@ -783,27 +783,27 @@ function PostDefaultSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
   curr = gpScheduleList;
   gpScheduleList = MemAlloc(sizeof(SCHEDULENODE));
   memset(gpScheduleList, 0, sizeof(SCHEDULENODE));
-  gpScheduleList->next = curr;
+  gpScheduleList.value.next = curr;
   gubScheduleID++;
   // Assign all of the links
-  gpScheduleList->ubScheduleID = gubScheduleID;
-  gpScheduleList->ubSoldierID = pSoldier->ubID;
-  pSoldier->ubScheduleID = gubScheduleID;
+  gpScheduleList.value.ubScheduleID = gubScheduleID;
+  gpScheduleList.value.ubSoldierID = pSoldier.value.ubID;
+  pSoldier.value.ubScheduleID = gubScheduleID;
 
   // Clear the data inside the schedule
   for (i = 0; i < MAX_SCHEDULE_ACTIONS; i++) {
-    gpScheduleList->usTime[i] = 0xffff;
-    gpScheduleList->usData1[i] = 0xffff;
-    gpScheduleList->usData2[i] = 0xffff;
+    gpScheduleList.value.usTime[i] = 0xffff;
+    gpScheduleList.value.usData1[i] = 0xffff;
+    gpScheduleList.value.usData2[i] = 0xffff;
   }
   // Have the default schedule enter between 7AM and 8AM
-  gpScheduleList->ubAction[0] = SCHEDULE_ACTION_ENTERSECTOR;
-  gpScheduleList->usTime[0] = (420 + Random(61));
-  gpScheduleList->usData1[0] = pSoldier->sInitialGridNo;
+  gpScheduleList.value.ubAction[0] = SCHEDULE_ACTION_ENTERSECTOR;
+  gpScheduleList.value.usTime[0] = (420 + Random(61));
+  gpScheduleList.value.usData1[0] = pSoldier.value.sInitialGridNo;
   // Have the default schedule leave between 6PM and 8PM
-  gpScheduleList->ubAction[1] = SCHEDULE_ACTION_LEAVESECTOR;
-  gpScheduleList->usTime[1] = (1080 + Random(121));
-  gpScheduleList->usFlags |= SCHEDULE_FLAGS_TEMPORARY;
+  gpScheduleList.value.ubAction[1] = SCHEDULE_ACTION_LEAVESECTOR;
+  gpScheduleList.value.usTime[1] = (1080 + Random(121));
+  gpScheduleList.value.usFlags |= SCHEDULE_FLAGS_TEMPORARY;
 
   if (gubScheduleID == 255) {
     // Too much fragmentation, clean it up...
@@ -826,17 +826,17 @@ function PostSchedules(): void {
   }
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr->pSoldier && curr->pSoldier->bTeam == CIV_TEAM) {
-      if (curr->pDetailedPlacement && curr->pDetailedPlacement->ubScheduleID) {
-        PostSchedule(curr->pSoldier);
+    if (curr.value.pSoldier && curr.value.pSoldier.value.bTeam == CIV_TEAM) {
+      if (curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubScheduleID) {
+        PostSchedule(curr.value.pSoldier);
       } else if (fDefaultSchedulesPossible) {
         // ATE: There should be a better way here...
-        if (curr->pSoldier->ubBodyType != COW && curr->pSoldier->ubBodyType != BLOODCAT && curr->pSoldier->ubBodyType != HUMVEE && curr->pSoldier->ubBodyType != ELDORADO && curr->pSoldier->ubBodyType != ICECREAMTRUCK && curr->pSoldier->ubBodyType != JEEP) {
-          PostDefaultSchedule(curr->pSoldier);
+        if (curr.value.pSoldier.value.ubBodyType != COW && curr.value.pSoldier.value.ubBodyType != BLOODCAT && curr.value.pSoldier.value.ubBodyType != HUMVEE && curr.value.pSoldier.value.ubBodyType != ELDORADO && curr.value.pSoldier.value.ubBodyType != ICECREAMTRUCK && curr.value.pSoldier.value.ubBodyType != JEEP) {
+          PostDefaultSchedule(curr.value.pSoldier);
         }
       }
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -850,7 +850,7 @@ function PerformActionOnDoorAdjacentToGridNo(ubScheduleAction: UINT8, usGridNo: 
       case SCHEDULE_ACTION_LOCKDOOR:
         pDoor = FindDoorInfoAtGridNo(sDoorGridNo);
         if (pDoor) {
-          pDoor->fLocked = TRUE;
+          pDoor.value.fLocked = TRUE;
         }
         // make sure it's closed as well
         ModifyDoorStatus(sDoorGridNo, FALSE, DONTSETDOORSTATUS);
@@ -858,7 +858,7 @@ function PerformActionOnDoorAdjacentToGridNo(ubScheduleAction: UINT8, usGridNo: 
       case SCHEDULE_ACTION_UNLOCKDOOR:
         pDoor = FindDoorInfoAtGridNo(sDoorGridNo);
         if (pDoor) {
-          pDoor->fLocked = FALSE;
+          pDoor.value.fLocked = FALSE;
         }
         break;
       case SCHEDULE_ACTION_OPENDOOR:
@@ -879,7 +879,7 @@ function PostNextSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
   let iBestIndex: INT32;
   let usTime: UINT16;
   let usBestTime: UINT16;
-  pSchedule = GetSchedule(pSoldier->ubScheduleID);
+  pSchedule = GetSchedule(pSoldier.value.ubScheduleID);
   if (!pSchedule) {
     // post default?
     return;
@@ -888,23 +888,23 @@ function PostNextSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
   usBestTime = 0xffff;
   iBestIndex = -1;
   for (i = 0; i < MAX_SCHEDULE_ACTIONS; i++) {
-    if (pSchedule->usTime[i] == 0xffff)
+    if (pSchedule.value.usTime[i] == 0xffff)
       continue;
-    if (pSchedule->usTime[i] == usTime)
+    if (pSchedule.value.usTime[i] == usTime)
       continue;
-    if (pSchedule->usTime[i] > usTime) {
-      if (pSchedule->usTime[i] - usTime < usBestTime) {
-        usBestTime = pSchedule->usTime[i] - usTime;
+    if (pSchedule.value.usTime[i] > usTime) {
+      if (pSchedule.value.usTime[i] - usTime < usBestTime) {
+        usBestTime = pSchedule.value.usTime[i] - usTime;
         iBestIndex = i;
       }
-    } else if ((NUM_MIN_IN_DAY - (usTime - pSchedule->usTime[i])) < usBestTime) {
-      usBestTime = NUM_MIN_IN_DAY - (usTime - pSchedule->usTime[i]);
+    } else if ((NUM_MIN_IN_DAY - (usTime - pSchedule.value.usTime[i])) < usBestTime) {
+      usBestTime = NUM_MIN_IN_DAY - (usTime - pSchedule.value.usTime[i]);
       iBestIndex = i;
     }
   }
   Assert(iBestIndex >= 0);
 
-  AddStrategicEvent(EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + pSchedule->usTime[iBestIndex], pSchedule->ubScheduleID);
+  AddStrategicEvent(EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + pSchedule.value.usTime[iBestIndex], pSchedule.value.ubScheduleID);
 }
 
 function ExtractScheduleEntryAndExitInfo(pSoldier: Pointer<SOLDIERTYPE>, puiEntryTime: Pointer<UINT32>, puiExitTime: Pointer<UINT32>): BOOLEAN {
@@ -916,7 +916,7 @@ function ExtractScheduleEntryAndExitInfo(pSoldier: Pointer<SOLDIERTYPE>, puiEntr
   *puiEntryTime = 0;
   *puiExitTime = 0;
 
-  pSchedule = GetSchedule(pSoldier->ubScheduleID);
+  pSchedule = GetSchedule(pSoldier.value.ubScheduleID);
   if (!pSchedule) {
     // If person had default schedule then would have been assigned and this would
     // have succeeded.
@@ -925,12 +925,12 @@ function ExtractScheduleEntryAndExitInfo(pSoldier: Pointer<SOLDIERTYPE>, puiEntr
   }
 
   for (iLoop = 0; iLoop < MAX_SCHEDULE_ACTIONS; iLoop++) {
-    if (pSchedule->ubAction[iLoop] == SCHEDULE_ACTION_ENTERSECTOR) {
+    if (pSchedule.value.ubAction[iLoop] == SCHEDULE_ACTION_ENTERSECTOR) {
       fFoundEntryTime = TRUE;
-      *puiEntryTime = pSchedule->usTime[iLoop];
-    } else if (pSchedule->ubAction[iLoop] == SCHEDULE_ACTION_LEAVESECTOR) {
+      *puiEntryTime = pSchedule.value.usTime[iLoop];
+    } else if (pSchedule.value.ubAction[iLoop] == SCHEDULE_ACTION_LEAVESECTOR) {
       fFoundExitTime = TRUE;
-      *puiExitTime = pSchedule->usTime[iLoop];
+      *puiExitTime = pSchedule.value.usTime[iLoop];
     }
   }
 
@@ -951,7 +951,7 @@ function ExtractScheduleDoorLockAndUnlockInfo(pSoldier: Pointer<SOLDIERTYPE>, pu
   *puiOpeningTime = 0;
   *puiClosingTime = 0;
 
-  pSchedule = GetSchedule(pSoldier->ubScheduleID);
+  pSchedule = GetSchedule(pSoldier.value.ubScheduleID);
   if (!pSchedule) {
     // If person had default schedule then would have been assigned and this would
     // have succeeded.
@@ -960,12 +960,12 @@ function ExtractScheduleDoorLockAndUnlockInfo(pSoldier: Pointer<SOLDIERTYPE>, pu
   }
 
   for (iLoop = 0; iLoop < MAX_SCHEDULE_ACTIONS; iLoop++) {
-    if (pSchedule->ubAction[iLoop] == SCHEDULE_ACTION_UNLOCKDOOR) {
+    if (pSchedule.value.ubAction[iLoop] == SCHEDULE_ACTION_UNLOCKDOOR) {
       fFoundOpeningTime = TRUE;
-      *puiOpeningTime = pSchedule->usTime[iLoop];
-    } else if (pSchedule->ubAction[iLoop] == SCHEDULE_ACTION_LOCKDOOR) {
+      *puiOpeningTime = pSchedule.value.usTime[iLoop];
+    } else if (pSchedule.value.ubAction[iLoop] == SCHEDULE_ACTION_LOCKDOOR) {
       fFoundClosingTime = TRUE;
-      *puiClosingTime = pSchedule->usTime[iLoop];
+      *puiClosingTime = pSchedule.value.usTime[iLoop];
     }
   }
 
@@ -983,8 +983,8 @@ function GetEarliestMorningScheduleEvent(pSchedule: Pointer<SCHEDULENODE>, puiTi
   *puiTime = 100000;
 
   for (iLoop = 0; iLoop < MAX_SCHEDULE_ACTIONS; iLoop++) {
-    if (pSchedule->usTime[iLoop] < (12 * 60) && pSchedule->usTime[iLoop] < *puiTime) {
-      *puiTime = pSchedule->usTime[iLoop];
+    if (pSchedule.value.usTime[iLoop] < (12 * 60) && pSchedule.value.usTime[iLoop] < *puiTime) {
+      *puiTime = pSchedule.value.usTime[iLoop];
     }
   }
 
@@ -999,8 +999,8 @@ function ScheduleHasMorningNonSleepEntries(pSchedule: Pointer<SCHEDULENODE>): BO
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
-    if (pSchedule->ubAction[bLoop] != SCHEDULE_ACTION_NONE && pSchedule->ubAction[bLoop] != SCHEDULE_ACTION_SLEEP) {
-      if (pSchedule->usTime[bLoop] < (12 * 60)) {
+    if (pSchedule.value.ubAction[bLoop] != SCHEDULE_ACTION_NONE && pSchedule.value.ubAction[bLoop] != SCHEDULE_ACTION_SLEEP) {
+      if (pSchedule.value.usTime[bLoop] < (12 * 60)) {
         return TRUE;
       }
     }
@@ -1012,7 +1012,7 @@ function GetEmptyScheduleEntry(pSchedule: Pointer<SCHEDULENODE>): INT8 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
-    if (pSchedule->ubAction[bLoop] == SCHEDULE_ACTION_NONE) {
+    if (pSchedule.value.ubAction[bLoop] == SCHEDULE_ACTION_NONE) {
       return bLoop;
     }
   }
@@ -1052,8 +1052,8 @@ function FindSleepSpot(pSchedule: Pointer<SCHEDULENODE>): UINT16 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
-    if (pSchedule->ubAction[bLoop] == SCHEDULE_ACTION_SLEEP) {
-      return pSchedule->usData1[bLoop];
+    if (pSchedule.value.ubAction[bLoop] == SCHEDULE_ACTION_SLEEP) {
+      return pSchedule.value.usData1[bLoop];
     }
   }
   return NOWHERE;
@@ -1063,8 +1063,8 @@ function ReplaceSleepSpot(pSchedule: Pointer<SCHEDULENODE>, usNewSpot: UINT16): 
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
-    if (pSchedule->ubAction[bLoop] == SCHEDULE_ACTION_SLEEP) {
-      pSchedule->usData1[bLoop] = usNewSpot;
+    if (pSchedule.value.ubAction[bLoop] == SCHEDULE_ACTION_SLEEP) {
+      pSchedule.value.usData1[bLoop] = usNewSpot;
       break;
     }
   }
@@ -1079,10 +1079,10 @@ function SecureSleepSpot(pSoldier: Pointer<SOLDIERTYPE>, usSleepSpot: UINT16): v
   let ubDirection: UINT8;
 
   // start after this soldier's ID so we don't duplicate work done in previous passes
-  for (uiLoop = pSoldier->ubID + 1; uiLoop <= gTacticalStatus.Team[CIV_TEAM].bLastID; uiLoop++) {
+  for (uiLoop = pSoldier.value.ubID + 1; uiLoop <= gTacticalStatus.Team[CIV_TEAM].bLastID; uiLoop++) {
     pSoldier2 = MercPtrs[uiLoop];
-    if (pSoldier2->bActive && pSoldier2->bInSector && pSoldier2->ubScheduleID != 0) {
-      pSchedule = GetSchedule(pSoldier2->ubScheduleID);
+    if (pSoldier2.value.bActive && pSoldier2.value.bInSector && pSoldier2.value.ubScheduleID != 0) {
+      pSchedule = GetSchedule(pSoldier2.value.ubScheduleID);
       if (pSchedule) {
         usSleepSpot2 = FindSleepSpot(pSchedule);
         if (usSleepSpot2 == usSleepSpot) {

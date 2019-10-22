@@ -67,20 +67,20 @@ function STCILoadRGB(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHeader: 
 
   if (fContents & IMAGE_BITMAPDATA) {
     // Allocate memory for the image data and read it in
-    hImage->pImageData = MemAlloc(pHeader->uiStoredSize);
-    if (hImage->pImageData == NULL) {
+    hImage.value.pImageData = MemAlloc(pHeader.value.uiStoredSize);
+    if (hImage.value.pImageData == NULL) {
       return FALSE;
-    } else if (!FileRead(hFile, hImage->pImageData, pHeader->uiStoredSize, &uiBytesRead) || uiBytesRead != pHeader->uiStoredSize) {
-      MemFree(hImage->pImageData);
+    } else if (!FileRead(hFile, hImage.value.pImageData, pHeader.value.uiStoredSize, &uiBytesRead) || uiBytesRead != pHeader.value.uiStoredSize) {
+      MemFree(hImage.value.pImageData);
       return FALSE;
     }
 
-    hImage->fFlags |= IMAGE_BITMAPDATA;
+    hImage.value.fFlags |= IMAGE_BITMAPDATA;
 
-    if (pHeader->ubDepth == 16) {
+    if (pHeader.value.ubDepth == 16) {
       // ASSUMPTION: file data is 565 R,G,B
 
-      if (gusRedMask != pHeader->RGB.uiRedMask || gusGreenMask != pHeader->RGB.uiGreenMask || gusBlueMask != pHeader->RGB.uiBlueMask) {
+      if (gusRedMask != pHeader.value.RGB.uiRedMask || gusGreenMask != pHeader.value.RGB.uiGreenMask || gusBlueMask != pHeader.value.RGB.uiBlueMask) {
         // colour distribution of the file is different from hardware!  We have to change it!
         DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Converting to current RGB distribution!");
         // Convert the image to the current hardware's specifications
@@ -88,22 +88,22 @@ function STCILoadRGB(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHeader: 
           // hardware wants RGB!
           if (gusRedMask == 0x7C00 && gusGreenMask == 0x03E0 && gusBlueMask == 0x001F) {
             // hardware is 555
-            ConvertRGBDistribution565To555(hImage->p16BPPData, pHeader->usWidth * pHeader->usHeight);
+            ConvertRGBDistribution565To555(hImage.value.p16BPPData, pHeader.value.usWidth * pHeader.value.usHeight);
             return TRUE;
           } else if (gusRedMask == 0xFC00 && gusGreenMask == 0x03E0 && gusBlueMask == 0x001F) {
-            ConvertRGBDistribution565To655(hImage->p16BPPData, pHeader->usWidth * pHeader->usHeight);
+            ConvertRGBDistribution565To655(hImage.value.p16BPPData, pHeader.value.usWidth * pHeader.value.usHeight);
             return TRUE;
           } else if (gusRedMask == 0xF800 && gusGreenMask == 0x07C0 && gusBlueMask == 0x003F) {
-            ConvertRGBDistribution565To556(hImage->p16BPPData, pHeader->usWidth * pHeader->usHeight);
+            ConvertRGBDistribution565To556(hImage.value.p16BPPData, pHeader.value.usWidth * pHeader.value.usHeight);
             return TRUE;
           } else {
             // take the long route
-            ConvertRGBDistribution565ToAny(hImage->p16BPPData, pHeader->usWidth * pHeader->usHeight);
+            ConvertRGBDistribution565ToAny(hImage.value.p16BPPData, pHeader.value.usWidth * pHeader.value.usHeight);
             return TRUE;
           }
         } else {
           // hardware distribution is not R-G-B so we have to take the long route!
-          ConvertRGBDistribution565ToAny(hImage->p16BPPData, pHeader->usWidth * pHeader->usHeight);
+          ConvertRGBDistribution565ToAny(hImage.value.p16BPPData, pHeader.value.usWidth * pHeader.value.usHeight);
           return TRUE;
         }
       }
@@ -119,11 +119,11 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
 
   if (fContents & IMAGE_PALETTE) {
     // Allocate memory for reading in the palette
-    if (pHeader->Indexed.uiNumberOfColours != 256) {
+    if (pHeader.value.Indexed.uiNumberOfColours != 256) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Palettized image has bad palette size.");
       return FALSE;
     }
-    uiFileSectionSize = pHeader->Indexed.uiNumberOfColours * STCI_PALETTE_ELEMENT_SIZE;
+    uiFileSectionSize = pHeader.value.Indexed.uiNumberOfColours * STCI_PALETTE_ELEMENT_SIZE;
     pSTCIPalette = MemAlloc(uiFileSectionSize);
     if (pSTCIPalette == NULL) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Out of memory!");
@@ -146,12 +146,12 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
       MemFree(pSTCIPalette);
       return FALSE;
     }
-    hImage->fFlags |= IMAGE_PALETTE;
+    hImage.value.fFlags |= IMAGE_PALETTE;
     // Free the temporary buffer
     MemFree(pSTCIPalette);
   } else if (fContents & (IMAGE_BITMAPDATA | IMAGE_APPDATA)) {
     // seek past the palette
-    uiFileSectionSize = pHeader->Indexed.uiNumberOfColours * STCI_PALETTE_ELEMENT_SIZE;
+    uiFileSectionSize = pHeader.value.Indexed.uiNumberOfColours * STCI_PALETTE_ELEMENT_SIZE;
     if (FileSeek(hFile, uiFileSectionSize, FILE_SEEK_FROM_CURRENT) == FALSE) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem seeking past palette!");
       FileClose(hFile);
@@ -159,106 +159,106 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
     }
   }
   if (fContents & IMAGE_BITMAPDATA) {
-    if (pHeader->fFlags & STCI_ETRLE_COMPRESSED) {
+    if (pHeader.value.fFlags & STCI_ETRLE_COMPRESSED) {
       // load data for the subimage (object) structures
       Assert(sizeof(ETRLEObject) == STCI_SUBIMAGE_SIZE);
-      hImage->usNumberOfObjects = pHeader->Indexed.usNumberOfSubImages;
-      uiFileSectionSize = hImage->usNumberOfObjects * STCI_SUBIMAGE_SIZE;
-      hImage->pETRLEObject = MemAlloc(uiFileSectionSize);
-      if (hImage->pETRLEObject == NULL) {
+      hImage.value.usNumberOfObjects = pHeader.value.Indexed.usNumberOfSubImages;
+      uiFileSectionSize = hImage.value.usNumberOfObjects * STCI_SUBIMAGE_SIZE;
+      hImage.value.pETRLEObject = MemAlloc(uiFileSectionSize);
+      if (hImage.value.pETRLEObject == NULL) {
         DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Out of memory!");
         FileClose(hFile);
         if (fContents & IMAGE_PALETTE) {
-          MemFree(hImage->pPalette);
+          MemFree(hImage.value.pPalette);
         }
         return FALSE;
       }
-      if (!FileRead(hFile, hImage->pETRLEObject, uiFileSectionSize, &uiBytesRead) || uiBytesRead != uiFileSectionSize) {
+      if (!FileRead(hFile, hImage.value.pETRLEObject, uiFileSectionSize, &uiBytesRead) || uiBytesRead != uiFileSectionSize) {
         DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Error loading subimage structures!");
         FileClose(hFile);
         if (fContents & IMAGE_PALETTE) {
-          MemFree(hImage->pPalette);
+          MemFree(hImage.value.pPalette);
         }
-        MemFree(hImage->pETRLEObject);
+        MemFree(hImage.value.pETRLEObject);
         return FALSE;
       }
-      hImage->uiSizePixData = pHeader->uiStoredSize;
-      hImage->fFlags |= IMAGE_TRLECOMPRESSED;
+      hImage.value.uiSizePixData = pHeader.value.uiStoredSize;
+      hImage.value.fFlags |= IMAGE_TRLECOMPRESSED;
     }
     // allocate memory for and read in the image data
-    hImage->pImageData = MemAlloc(pHeader->uiStoredSize);
-    if (hImage->pImageData == NULL) {
+    hImage.value.pImageData = MemAlloc(pHeader.value.uiStoredSize);
+    if (hImage.value.pImageData == NULL) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Out of memory!");
       FileClose(hFile);
       if (fContents & IMAGE_PALETTE) {
-        MemFree(hImage->pPalette);
+        MemFree(hImage.value.pPalette);
       }
-      if (hImage->usNumberOfObjects > 0) {
-        MemFree(hImage->pETRLEObject);
+      if (hImage.value.usNumberOfObjects > 0) {
+        MemFree(hImage.value.pETRLEObject);
       }
       return FALSE;
-    } else if (!FileRead(hFile, hImage->pImageData, pHeader->uiStoredSize, &uiBytesRead) || uiBytesRead != pHeader->uiStoredSize) {
+    } else if (!FileRead(hFile, hImage.value.pImageData, pHeader.value.uiStoredSize, &uiBytesRead) || uiBytesRead != pHeader.value.uiStoredSize) {
       // Problem reading in the image data!
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Error loading image data!");
       FileClose(hFile);
-      MemFree(hImage->pImageData);
+      MemFree(hImage.value.pImageData);
       if (fContents & IMAGE_PALETTE) {
-        MemFree(hImage->pPalette);
+        MemFree(hImage.value.pPalette);
       }
-      if (hImage->usNumberOfObjects > 0) {
-        MemFree(hImage->pETRLEObject);
+      if (hImage.value.usNumberOfObjects > 0) {
+        MemFree(hImage.value.pETRLEObject);
       }
       return FALSE;
     }
-    hImage->fFlags |= IMAGE_BITMAPDATA;
+    hImage.value.fFlags |= IMAGE_BITMAPDATA;
   } else if (fContents & IMAGE_APPDATA) // then there's a point in seeking ahead
   {
-    if (FileSeek(hFile, pHeader->uiStoredSize, FILE_SEEK_FROM_CURRENT) == FALSE) {
+    if (FileSeek(hFile, pHeader.value.uiStoredSize, FILE_SEEK_FROM_CURRENT) == FALSE) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem seeking past image data!");
       FileClose(hFile);
       return FALSE;
     }
   }
 
-  if (fContents & IMAGE_APPDATA && pHeader->uiAppDataSize > 0) {
+  if (fContents & IMAGE_APPDATA && pHeader.value.uiAppDataSize > 0) {
     // load application-specific data
-    hImage->pAppData = MemAlloc(pHeader->uiAppDataSize);
-    if (hImage->pAppData == NULL) {
+    hImage.value.pAppData = MemAlloc(pHeader.value.uiAppDataSize);
+    if (hImage.value.pAppData == NULL) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Out of memory!");
       FileClose(hFile);
-      MemFree(hImage->pAppData);
+      MemFree(hImage.value.pAppData);
       if (fContents & IMAGE_PALETTE) {
-        MemFree(hImage->pPalette);
+        MemFree(hImage.value.pPalette);
       }
       if (fContents & IMAGE_BITMAPDATA) {
-        MemFree(hImage->pImageData);
+        MemFree(hImage.value.pImageData);
       }
-      if (hImage->usNumberOfObjects > 0) {
-        MemFree(hImage->pETRLEObject);
+      if (hImage.value.usNumberOfObjects > 0) {
+        MemFree(hImage.value.pETRLEObject);
       }
       return FALSE;
     }
-    if (!FileRead(hFile, hImage->pAppData, pHeader->uiAppDataSize, &uiBytesRead) || uiBytesRead != pHeader->uiAppDataSize) {
+    if (!FileRead(hFile, hImage.value.pAppData, pHeader.value.uiAppDataSize, &uiBytesRead) || uiBytesRead != pHeader.value.uiAppDataSize) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Error loading application-specific data!");
       FileClose(hFile);
-      MemFree(hImage->pAppData);
+      MemFree(hImage.value.pAppData);
       if (fContents & IMAGE_PALETTE) {
-        MemFree(hImage->pPalette);
+        MemFree(hImage.value.pPalette);
       }
       if (fContents & IMAGE_BITMAPDATA) {
-        MemFree(hImage->pImageData);
+        MemFree(hImage.value.pImageData);
       }
-      if (hImage->usNumberOfObjects > 0) {
-        MemFree(hImage->pETRLEObject);
+      if (hImage.value.usNumberOfObjects > 0) {
+        MemFree(hImage.value.pETRLEObject);
       }
       return FALSE;
     }
-    hImage->uiAppDataSize = pHeader->uiAppDataSize;
+    hImage.value.uiAppDataSize = pHeader.value.uiAppDataSize;
     ;
-    hImage->fFlags |= IMAGE_APPDATA;
+    hImage.value.fFlags |= IMAGE_APPDATA;
   } else {
-    hImage->pAppData = NULL;
-    hImage->uiAppDataSize = 0;
+    hImage.value.pAppData = NULL;
+    hImage.value.uiAppDataSize = 0;
   }
   return TRUE;
 }
@@ -270,19 +270,19 @@ function STCISetPalette(pSTCIPalette: PTR, hImage: HIMAGE): BOOLEAN {
   pubPalette = pSTCIPalette;
 
   // Allocate memory for palette
-  hImage->pPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);
-  memset(hImage->pPalette, 0, (sizeof(SGPPaletteEntry) * 256));
+  hImage.value.pPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);
+  memset(hImage.value.pPalette, 0, (sizeof(SGPPaletteEntry) * 256));
 
-  if (hImage->pPalette == NULL) {
+  if (hImage.value.pPalette == NULL) {
     return FALSE;
   }
 
   // Initialize the proper palette entries
   for (usIndex = 0; usIndex < 256; usIndex++) {
-    hImage->pPalette[usIndex].peRed = pubPalette->ubRed;
-    hImage->pPalette[usIndex].peGreen = pubPalette->ubGreen;
-    hImage->pPalette[usIndex].peBlue = pubPalette->ubBlue;
-    hImage->pPalette[usIndex].peFlags = 0;
+    hImage.value.pPalette[usIndex].peRed = pubPalette.value.ubRed;
+    hImage.value.pPalette[usIndex].peGreen = pubPalette.value.ubGreen;
+    hImage.value.pPalette[usIndex].peBlue = pubPalette.value.ubBlue;
+    hImage.value.pPalette[usIndex].peFlags = 0;
     pubPalette++;
   }
   return TRUE;

@@ -320,7 +320,7 @@ function InitJA2SelectionWindow(): void {
   // Trees & bushes (The tree button in the "terrain" toolbar)
   for (iCount3 = 0, iCount = 0; iCount < (LASTOSTRUCT - FIRSTFULLSTRUCT + 1); iCount++) {
     hVObject = gTileDatabase[gTileTypeStartIndex[FIRSTFULLSTRUCT + iCount]].hTileSurface;
-    usETRLEObjects = hVObject->usNumberOfObjects;
+    usETRLEObjects = hVObject.value.usNumberOfObjects;
 
     for (iCount2 = 0; iCount2 < usETRLEObjects; iCount2 += 3, iCount3++) {
       OStructs[iCount3].ubType = DISPLAY_GRAPHIC;
@@ -741,10 +741,10 @@ function TrashList(pNode: Pointer<DisplayList>): Pointer<DisplayList> {
   if (pNode == NULL)
     return NULL;
 
-  if (pNode->pNext != NULL)
-    pNode->pNext = TrashList(pNode->pNext);
+  if (pNode.value.pNext != NULL)
+    pNode.value.pNext = TrashList(pNode.value.pNext);
 
-  if (pNode->pNext == NULL)
+  if (pNode.value.pNext == NULL)
     MemFree(pNode);
 
   return NULL;
@@ -778,7 +778,7 @@ function RenderSelectionWindow(): void {
     if (button == NULL)
       return;
 
-    if ((abs(iStartClickX - button->Area.MouseXPos) > 9) || (abs(iStartClickY - (button->Area.MouseYPos + iTopWinCutOff - SelWinStartPoint.iY)) > 9)) {
+    if ((abs(iStartClickX - button.value.Area.MouseXPos) > 9) || (abs(iStartClickY - (button.value.Area.MouseYPos + iTopWinCutOff - SelWinStartPoint.iY)) > 9)) {
       //			iSX = (INT32)iStartClickX;
       //			iEX = (INT32)button->Area.MouseXPos;
       //			iSY = (INT32)iStartClickY;
@@ -836,19 +836,19 @@ function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
   let iYInc: INT16;
   let iXInc: INT16;
 
-  if (!(button->uiFlags & BUTTON_ENABLED))
+  if (!(button.value.uiFlags & BUTTON_ENABLED))
     return;
 
-  iClickX = button->Area.MouseXPos;
-  iClickY = button->Area.MouseYPos + iTopWinCutOff - SelWinStartPoint.iY;
+  iClickX = button.value.Area.MouseXPos;
+  iClickY = button.value.Area.MouseYPos + iTopWinCutOff - SelWinStartPoint.iY;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    button->uiFlags |= BUTTON_CLICKED_ON;
+    button.value.uiFlags |= BUTTON_CLICKED_ON;
     iStartClickX = iClickX;
     iStartClickY = iClickY;
     gfRenderSquareArea = TRUE;
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
-    button->uiFlags |= BUTTON_CLICKED_ON;
+    button.value.uiFlags |= BUTTON_CLICKED_ON;
 
     if (gfRenderSquareArea) {
       gfRenderSquareArea = FALSE;
@@ -860,17 +860,17 @@ function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     fDone = FALSE;
     while ((pNode != NULL) && !fDone) {
-      if ((iClickX >= pNode->iX) && (iClickX < (pNode->iX + pNode->iWidth)) && (iClickY >= pNode->iY) && (iClickY < (pNode->iY + pNode->iHeight))) {
+      if ((iClickX >= pNode.value.iX) && (iClickX < (pNode.value.iX + pNode.value.iWidth)) && (iClickY >= pNode.value.iY) && (iClickY < (pNode.value.iY + pNode.value.iHeight))) {
         fDone = TRUE;
         if (RemoveFromSelectionList(pNode))
-          pNode->fChosen = FALSE;
+          pNode.value.fChosen = FALSE;
       } else
-        pNode = pNode->pNext;
+        pNode = pNode.value.pNext;
     }
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
-    button->uiFlags &= (~BUTTON_CLICKED_ON);
+    button.value.uiFlags &= (~BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    button->uiFlags &= (~BUTTON_CLICKED_ON);
+    button.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     if (!gfRenderSquareArea)
       return;
@@ -902,15 +902,15 @@ function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
 
         fDone = FALSE;
         while ((pNode != NULL) && !fDone) {
-          if ((iClickX >= pNode->iX) && (iClickX < (pNode->iX + pNode->iWidth)) && (iClickY >= pNode->iY) && (iClickY < (pNode->iY + pNode->iHeight))) {
+          if ((iClickX >= pNode.value.iX) && (iClickX < (pNode.value.iX + pNode.value.iWidth)) && (iClickY >= pNode.value.iY) && (iClickY < (pNode.value.iY + pNode.value.iHeight))) {
             fDone = TRUE;
             AddToSelectionList(pNode);
-            pNode->fChosen = TRUE;
-            iXInc = (pNode->iX + pNode->iWidth) - iClickX;
-            if (iYInc < ((pNode->iY + pNode->iHeight) - iClickY))
-              iYInc = (pNode->iY + pNode->iHeight) - iClickY;
+            pNode.value.fChosen = TRUE;
+            iXInc = (pNode.value.iX + pNode.value.iWidth) - iClickX;
+            if (iYInc < ((pNode.value.iY + pNode.value.iHeight) - iClickY))
+              iYInc = (pNode.value.iY + pNode.value.iHeight) - iClickY;
           } else
-            pNode = pNode->pNext;
+            pNode = pNode.value.pNext;
         }
       }
     }
@@ -932,24 +932,24 @@ function DisplaySelectionWindowGraphicalInformation(): void {
   pNode = pDispList;
   fDone = FALSE;
   while ((pNode != NULL) && !fDone) {
-    if ((gusMouseXPos >= pNode->iX) && (gusMouseXPos < (pNode->iX + pNode->iWidth)) && (y >= pNode->iY) && (y < (pNode->iY + pNode->iHeight))) {
+    if ((gusMouseXPos >= pNode.value.iX) && (gusMouseXPos < (pNode.value.iX + pNode.value.iWidth)) && (y >= pNode.value.iY) && (y < (pNode.value.iY + pNode.value.iHeight))) {
       fDone = TRUE;
       // pNode->fChosen = TRUE;
       // iXInc = (pNode->iX + pNode->iWidth) - iClickX;
       // if ( iYInc < ((pNode->iY + pNode->iHeight) - iClickY) )
       //	iYInc = (pNode->iY + pNode->iHeight) - iClickY;
     } else
-      pNode = pNode->pNext;
+      pNode = pNode.value.pNext;
   }
   SetFont(FONT12POINT1);
   SetFontForeground(FONT_WHITE);
   if (pNode) {
     // usObjIndex = (UINT16)pNode->uiObjIndx;
     // usIndex = pNode->uiIndex;
-    if (!gTilesets[giCurrentTilesetID].TileSurfaceFilenames[pNode->uiObjIndx][0]) {
-      mprintf(2, 2, "%S[%d] is from default tileset %s (%S)", gTilesets[0].TileSurfaceFilenames[pNode->uiObjIndx], pNode->uiIndex, gTilesets[0].zName, gTileSurfaceName[pNode->uiObjIndx]);
+    if (!gTilesets[giCurrentTilesetID].TileSurfaceFilenames[pNode.value.uiObjIndx][0]) {
+      mprintf(2, 2, "%S[%d] is from default tileset %s (%S)", gTilesets[0].TileSurfaceFilenames[pNode.value.uiObjIndx], pNode.value.uiIndex, gTilesets[0].zName, gTileSurfaceName[pNode.value.uiObjIndx]);
     } else {
-      mprintf(2, 2, "File:  %S, subindex:  %d (%S)", gTilesets[giCurrentTilesetID].TileSurfaceFilenames[pNode->uiObjIndx], pNode->uiIndex, gTileSurfaceName[pNode->uiObjIndx]);
+      mprintf(2, 2, "File:  %S, subindex:  %d (%S)", gTilesets[giCurrentTilesetID].TileSurfaceFilenames[pNode.value.uiObjIndx], pNode.value.uiIndex, gTileSurfaceName[pNode.value.uiObjIndx]);
     }
   }
   mprintf(350, 2, "Current Tileset:  %s", gTilesets[giCurrentTilesetID].zName);
@@ -968,7 +968,7 @@ function AddToSelectionList(pNode: Pointer<DisplayList>): void {
 
   fDone = FALSE;
   for (iIndex = 0; iIndex < (*pNumSelList) && !fDone; iIndex++) {
-    if (pNode->uiObjIndx == pSelList[iIndex].uiObject && pNode->uiIndex == pSelList[iIndex].usIndex) {
+    if (pNode.value.uiObjIndx == pSelList[iIndex].uiObject && pNode.value.uiIndex == pSelList[iIndex].usIndex) {
       fDone = TRUE;
       iUseIndex = iIndex;
     }
@@ -980,8 +980,8 @@ function AddToSelectionList(pNode: Pointer<DisplayList>): void {
   } else {
     // Wasn't in the list, so add to end (if space available)
     if ((*pNumSelList) < MAX_SELECTIONS) {
-      pSelList[(*pNumSelList)].uiObject = pNode->uiObjIndx;
-      pSelList[(*pNumSelList)].usIndex = pNode->uiIndex;
+      pSelList[(*pNumSelList)].uiObject = pNode.value.uiObjIndx;
+      pSelList[(*pNumSelList)].usIndex = pNode.value.uiIndex;
       pSelList[(*pNumSelList)].sCount = 1;
 
       (*pNumSelList)++;
@@ -1003,8 +1003,8 @@ function ClearSelectionList(): BOOLEAN {
 
   pNode = pDispList;
   while (pNode != NULL) {
-    pNode->fChosen = FALSE;
-    pNode = pNode->pNext;
+    pNode.value.fChosen = FALSE;
+    pNode = pNode.value.pNext;
   }
 
   for (iIndex = 0; iIndex < (*pNumSelList); iIndex++)
@@ -1033,7 +1033,7 @@ function RemoveFromSelectionList(pNode: Pointer<DisplayList>): BOOLEAN {
   fRemoved = FALSE;
   fDone = FALSE;
   for (iIndex = 0; iIndex < (*pNumSelList) && !fDone; iIndex++) {
-    if (pNode->uiObjIndx == pSelList[iIndex].uiObject && pNode->uiIndex == pSelList[iIndex].usIndex) {
+    if (pNode.value.uiObjIndx == pSelList[iIndex].uiObject && pNode.value.uiIndex == pSelList[iIndex].usIndex) {
       fDone = TRUE;
       iUseIndex = iIndex;
     }
@@ -1102,7 +1102,7 @@ function IsInSelectionList(pNode: Pointer<DisplayList>): BOOLEAN {
 
   fFound = FALSE;
   for (iIndex = 0; iIndex < (*pNumSelList) && !fFound; iIndex++) {
-    if (pNode->uiObjIndx == pSelList[iIndex].uiObject && pNode->uiIndex == pSelList[iIndex].usIndex) {
+    if (pNode.value.uiObjIndx == pSelList[iIndex].uiObject && pNode.value.uiIndex == pSelList[iIndex].usIndex) {
       fFound = TRUE;
     }
   }
@@ -1125,7 +1125,7 @@ function FindInSelectionList(pNode: Pointer<DisplayList>): INT32 {
   fFound = FALSE;
   iUseIndex = -1;
   for (iIndex = 0; iIndex < (*pNumSelList) && !fFound; iIndex++) {
-    if (pNode->uiObjIndx == pSelList[iIndex].uiObject && pNode->uiIndex == pSelList[iIndex].usIndex) {
+    if (pNode.value.uiObjIndx == pSelList[iIndex].uiObject && pNode.value.uiIndex == pSelList[iIndex].usIndex) {
       fFound = TRUE;
       iUseIndex = iIndex;
     }
@@ -1169,9 +1169,9 @@ function RestoreSelectionList(): void {
 //	Button callback function for the selection window's OK button
 function OkClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    button->uiFlags |= BUTTON_CLICKED_ON;
+    button.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    button->uiFlags &= (~BUTTON_CLICKED_ON);
+    button.value.uiFlags &= (~BUTTON_CLICKED_ON);
     fAllDone = TRUE;
   }
 }
@@ -1183,9 +1183,9 @@ function OkClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
 //
 function CnclClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    button->uiFlags |= BUTTON_CLICKED_ON;
+    button.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    button->uiFlags &= (~BUTTON_CLICKED_ON);
+    button.value.uiFlags &= (~BUTTON_CLICKED_ON);
     fAllDone = TRUE;
     RestoreSelectionList();
   }
@@ -1198,9 +1198,9 @@ function CnclClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
 //
 function UpClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    button->uiFlags |= BUTTON_CLICKED_ON;
+    button.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    button->uiFlags &= (~BUTTON_CLICKED_ON);
+    button.value.uiFlags &= (~BUTTON_CLICKED_ON);
     ScrollSelWinUp();
   }
 }
@@ -1222,11 +1222,11 @@ function ScrollSelWinUp(): void {
 
   fDone = FALSE;
   while ((pNode != NULL) && !fDone) {
-    if (pNode->iY >= iTopWinCutOff) {
-      iCutOff = pNode->iY;
-      pNode = pNode->pNext;
+    if (pNode.value.iY >= iTopWinCutOff) {
+      iCutOff = pNode.value.iY;
+      pNode = pNode.value.pNext;
     } else {
-      iCutOff = pNode->iY;
+      iCutOff = pNode.value.iY;
       fDone = TRUE;
     }
   }
@@ -1251,9 +1251,9 @@ function ScrollSelWinDown(): void {
 
   fDone = FALSE;
   while ((pNode != NULL) && !fDone) {
-    if (pNode->iY > iTopWinCutOff) {
-      iCutOff = pNode->iY;
-      pNode = pNode->pNext;
+    if (pNode.value.iY > iTopWinCutOff) {
+      iCutOff = pNode.value.iY;
+      pNode = pNode.value.pNext;
     } else
       fDone = TRUE;
   }
@@ -1269,9 +1269,9 @@ function ScrollSelWinDown(): void {
 //
 function DwnClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    button->uiFlags |= BUTTON_CLICKED_ON;
+    button.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    button->uiFlags &= (~BUTTON_CLICKED_ON);
+    button.value.uiFlags &= (~BUTTON_CLICKED_ON);
     ScrollSelWinDown();
   }
 }
@@ -1312,8 +1312,8 @@ function DrawSelections(): void {
 //	properly scrolling the window etc.
 //
 function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UINT16, pDisplayList: Pointer<Pointer<DisplayList>>, pUpperLeft: Pointer<SGPPoint>, pBottomRight: Pointer<SGPPoint>, pSpacing: Pointer<SGPPoint>, fFlags: UINT16): BOOLEAN {
-  let iCurrX: INT32 = pUpperLeft->iX;
-  let iCurrY: INT32 = pUpperLeft->iY;
+  let iCurrX: INT32 = pUpperLeft.value.iX;
+  let iCurrY: INT32 = pUpperLeft.value.iY;
   let usGreatestHeightInRow: UINT16 = 0;
   let usSpecLoop: UINT16;
   let usETRLELoop: UINT16;
@@ -1327,58 +1327,58 @@ function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UIN
 
   for (usSpecLoop = 0; usSpecLoop < usNumSpecs; usSpecLoop++) {
     pDisplaySpec = &(pDisplaySpecs[usSpecLoop]);
-    if (pDisplaySpec->ubType == DISPLAY_GRAPHIC) {
-      if (!pDisplaySpec->hVObject)
+    if (pDisplaySpec.value.ubType == DISPLAY_GRAPHIC) {
+      if (!pDisplaySpec.value.hVObject)
         return FALSE;
-      usETRLEStart = pDisplaySpec->usStart;
-      usETRLEEnd = pDisplaySpec->usEnd;
+      usETRLEStart = pDisplaySpec.value.usStart;
+      usETRLEEnd = pDisplaySpec.value.usEnd;
 
       if (usETRLEStart == DISPLAY_ALL_OBJECTS) {
         usETRLEStart = 0;
-        usETRLEEnd = pDisplaySpec->hVObject->usNumberOfObjects - 1;
+        usETRLEEnd = pDisplaySpec.value.hVObject.value.usNumberOfObjects - 1;
       }
 
       if (usETRLEStart > usETRLEEnd)
         return FALSE;
-      if (usETRLEEnd >= pDisplaySpec->hVObject->usNumberOfObjects)
+      if (usETRLEEnd >= pDisplaySpec.value.hVObject.value.usNumberOfObjects)
         return FALSE;
 
       for (usETRLELoop = usETRLEStart; usETRLELoop <= usETRLEEnd; usETRLELoop++) {
-        pETRLEObject = &(pDisplaySpec->hVObject->pETRLEObject[usETRLELoop]);
+        pETRLEObject = &(pDisplaySpec.value.hVObject.value.pETRLEObject[usETRLELoop]);
 
-        if ((iCurrX + pETRLEObject->usWidth > pBottomRight->iX) || (fFlags & ONE_COLUMN)) {
+        if ((iCurrX + pETRLEObject.value.usWidth > pBottomRight.value.iX) || (fFlags & ONE_COLUMN)) {
           if (fFlags & ONE_ROW) {
             break;
           }
-          iCurrX = pUpperLeft->iX;
-          iCurrY += usGreatestHeightInRow + pSpacing->iY;
+          iCurrX = pUpperLeft.value.iX;
+          iCurrY += usGreatestHeightInRow + pSpacing.value.iY;
           usGreatestHeightInRow = 0;
         }
 
         if ((pCurNode = MemAlloc(sizeof(DisplayList))) != FALSE) {
-          pCurNode->hObj = pDisplaySpec->hVObject;
-          pCurNode->uiIndex = usETRLELoop;
-          pCurNode->iX = iCurrX;
-          pCurNode->iY = iCurrY;
-          pCurNode->iWidth = pETRLEObject->usWidth;
-          pCurNode->iHeight = pETRLEObject->usHeight;
-          pCurNode->pNext = *pDisplayList;
-          pCurNode->uiObjIndx = pDisplaySpec->uiObjIndx;
+          pCurNode.value.hObj = pDisplaySpec.value.hVObject;
+          pCurNode.value.uiIndex = usETRLELoop;
+          pCurNode.value.iX = iCurrX;
+          pCurNode.value.iY = iCurrY;
+          pCurNode.value.iWidth = pETRLEObject.value.usWidth;
+          pCurNode.value.iHeight = pETRLEObject.value.usHeight;
+          pCurNode.value.pNext = *pDisplayList;
+          pCurNode.value.uiObjIndx = pDisplaySpec.value.uiObjIndx;
 
           if (IsInSelectionList(pCurNode))
-            pCurNode->fChosen = TRUE;
+            pCurNode.value.fChosen = TRUE;
           else
-            pCurNode->fChosen = FALSE;
+            pCurNode.value.fChosen = FALSE;
 
           *pDisplayList = pCurNode;
         } else
           return FALSE;
 
-        if (pETRLEObject->usHeight > usGreatestHeightInRow) {
-          usGreatestHeightInRow = pETRLEObject->usHeight;
+        if (pETRLEObject.value.usHeight > usGreatestHeightInRow) {
+          usGreatestHeightInRow = pETRLEObject.value.usHeight;
         }
 
-        iCurrX += pETRLEObject->usWidth + pSpacing->iX;
+        iCurrX += pETRLEObject.value.usWidth + pSpacing.value.iX;
       }
     }
   }
@@ -1405,47 +1405,47 @@ function DisplayWindowFunc(pNode: Pointer<DisplayList>, iTopCutOff: INT16, iBott
   if (pNode == NULL)
     return TRUE;
 
-  if (pNode->iY < iTopCutOff)
+  if (pNode.value.iY < iTopCutOff)
     return TRUE;
 
   fReturnVal = FALSE;
-  if (DisplayWindowFunc(pNode->pNext, iTopCutOff, iBottomCutOff, pUpperLeft, fFlags)) {
-    iCurrY = pUpperLeft->iY + pNode->iY - iTopCutOff;
+  if (DisplayWindowFunc(pNode.value.pNext, iTopCutOff, iBottomCutOff, pUpperLeft, fFlags)) {
+    iCurrY = pUpperLeft.value.iY + pNode.value.iY - iTopCutOff;
 
     if (iCurrY > iBottomCutOff)
       return TRUE;
 
-    pETRLEObject = &(pNode->hObj->pETRLEObject[pNode->uiIndex]);
+    pETRLEObject = &(pNode.value.hObj.value.pETRLEObject[pNode.value.uiIndex]);
 
     // We have to store the offset data in temp variables before zeroing them and blitting
-    sTempOffsetX = pETRLEObject->sOffsetX;
-    sTempOffsetY = pETRLEObject->sOffsetY;
+    sTempOffsetX = pETRLEObject.value.sOffsetX;
+    sTempOffsetY = pETRLEObject.value.sOffsetY;
 
     // Set the offsets used for blitting to 0
-    pETRLEObject->sOffsetX = 0;
-    pETRLEObject->sOffsetY = 0;
+    pETRLEObject.value.sOffsetX = 0;
+    pETRLEObject.value.sOffsetY = 0;
 
     if (fFlags & CLEAR_BACKGROUND) {
       usFillColor = SelWinFillColor;
-      if (pNode->fChosen)
+      if (pNode.value.fChosen)
         usFillColor = SelWinHilightFillColor;
 
-      ColorFillVideoSurfaceArea(FRAME_BUFFER, pNode->iX, iCurrY, pNode->iX + pNode->iWidth, iCurrY + pNode->iHeight, usFillColor);
+      ColorFillVideoSurfaceArea(FRAME_BUFFER, pNode.value.iX, iCurrY, pNode.value.iX + pNode.value.iWidth, iCurrY + pNode.value.iHeight, usFillColor);
     }
 
     sCount = 0;
-    if (pNode->fChosen)
+    if (pNode.value.fChosen)
       sCount = pSelList[FindInSelectionList(pNode)].sCount;
 
-    SetObjectShade(pNode->hObj, DEFAULT_SHADE_LEVEL);
-    fReturnVal = BltVideoObject(FRAME_BUFFER, pNode->hObj, pNode->uiIndex, pNode->iX, iCurrY, VO_BLT_SRCTRANSPARENCY, NULL);
+    SetObjectShade(pNode.value.hObj, DEFAULT_SHADE_LEVEL);
+    fReturnVal = BltVideoObject(FRAME_BUFFER, pNode.value.hObj, pNode.value.uiIndex, pNode.value.iX, iCurrY, VO_BLT_SRCTRANSPARENCY, NULL);
 
     if (sCount != 0) {
-      gprintf(pNode->iX, iCurrY, "%d", sCount);
+      gprintf(pNode.value.iX, iCurrY, "%d", sCount);
     }
 
-    pETRLEObject->sOffsetX = sTempOffsetX;
-    pETRLEObject->sOffsetY = sTempOffsetY;
+    pETRLEObject.value.sOffsetX = sTempOffsetX;
+    pETRLEObject.value.sOffsetY = sTempOffsetY;
   }
 
   return fReturnVal;

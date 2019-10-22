@@ -917,9 +917,9 @@ function ChooseMapEdgepoints(pMapEdgepointInfo: Pointer<MAPEDGEPOINTINFO>, ubStr
       AssertMsg(0, "ChooseMapEdgepoints:  Failed to pass a valid strategic insertion code.");
       break;
   }
-  pMapEdgepointInfo->ubStrategicInsertionCode = ubStrategicInsertionCode;
+  pMapEdgepointInfo.value.ubStrategicInsertionCode = ubStrategicInsertionCode;
   if (!usArraySize) {
-    pMapEdgepointInfo->ubNumPoints = 0;
+    pMapEdgepointInfo.value.ubNumPoints = 0;
     return;
   }
 
@@ -948,9 +948,9 @@ function ChooseMapEdgepoints(pMapEdgepointInfo: Pointer<MAPEDGEPOINTINFO>, ubStr
 
   if (ubNumDesiredPoints >= usArraySize) {
     // We don't have enough points for everyone, return them all.
-    pMapEdgepointInfo->ubNumPoints = usArraySize;
+    pMapEdgepointInfo.value.ubNumPoints = usArraySize;
     for (i = 0; i < usArraySize; i++)
-      pMapEdgepointInfo->sGridNo[i] = psArray[i];
+      pMapEdgepointInfo.value.sGridNo[i] = psArray[i];
 
     // JA2Gold: free the temp array
     MemFree(psTempArray);
@@ -959,10 +959,10 @@ function ChooseMapEdgepoints(pMapEdgepointInfo: Pointer<MAPEDGEPOINTINFO>, ubStr
   // We have more points, so choose them randomly.
   usSlots = usArraySize;
   usCurrSlot = 0;
-  pMapEdgepointInfo->ubNumPoints = ubNumDesiredPoints;
+  pMapEdgepointInfo.value.ubNumPoints = ubNumDesiredPoints;
   for (i = 0; i < usArraySize; i++) {
     if (Random(usSlots) < ubNumDesiredPoints) {
-      pMapEdgepointInfo->sGridNo[usCurrSlot++] = psArray[i];
+      pMapEdgepointInfo.value.sGridNo[usCurrSlot++] = psArray[i];
       ubNumDesiredPoints--;
     }
     usSlots--;
@@ -1264,20 +1264,20 @@ function VerifyEdgepoint(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint: INT16): BOO
   let sGridNo: INT16;
   let bDirection: INT8;
 
-  pSoldier->sGridNo = sEdgepoint;
+  pSoldier.value.sGridNo = sEdgepoint;
 
   iSearchRange = EDGE_OF_MAP_SEARCH;
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+  sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (pSoldier->sGridNo / MAXROW));
+  sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
 
   // Call FindBestPath to set flags in all locations that we can
   // walk into within range.  We have to set some things up first...
@@ -1293,7 +1293,7 @@ function VerifyEdgepoint(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint: INT16): BOO
     }
   }
 
-  FindBestPath(pSoldier, NOWHERE, pSoldier->bLevel, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+  FindBestPath(pSoldier, NOWHERE, pSoldier.value.bLevel, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
 
   // Turn off the "reachable" flag for the current location
   // so we don't consider it
@@ -1330,7 +1330,7 @@ function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEd
   let sYOffset: INT16;
   let sGridNo: INT16;
 
-  pSoldier->sGridNo = sEdgepoint1;
+  pSoldier.value.sGridNo = sEdgepoint1;
 
   if (gWorldSectorX == 14 && gWorldSectorY == 9 && !gbWorldSectorZ) {
     // BRUTAL CODE  -- special case map.
@@ -1340,15 +1340,15 @@ function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEd
   }
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+  sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (pSoldier->sGridNo / MAXROW));
+  sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
 
   // Call FindBestPath to set flags in all locations that we can
   // walk into within range.  We have to set some things up first...
@@ -1364,7 +1364,7 @@ function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEd
     }
   }
 
-  if (FindBestPath(pSoldier, sEdgepoint2, pSoldier->bLevel, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE)) {
+  if (FindBestPath(pSoldier, sEdgepoint2, pSoldier.value.bLevel, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE)) {
     return TRUE;
   }
   return FALSE;

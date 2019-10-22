@@ -311,12 +311,12 @@ function RenderInsuranceContract(): void {
 
 function BtnInsContractPrevButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
       if (gsCurrentInsuranceMercIndex > 2)
         gsCurrentInsuranceMercIndex -= 3;
@@ -324,35 +324,35 @@ function BtnInsContractPrevButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT3
       // signal that we want to change the number of forms on the page
       gfChangeInsuranceFormButtons = TRUE;
 
-      InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
 function BtnInsContractNextButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
       gsCurrentInsuranceMercIndex += 3;
 
       // signal that we want to change the number of forms on the page
       gfChangeInsuranceFormButtons = TRUE;
 
-      InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
@@ -377,19 +377,19 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
     case 0:
       usPosX = INS_CTRCT_ORDER_GRID1_X;
       gubMercIDForMercInForm1 = ubMercID;
-      gsForm1InsuranceLengthNumber = pSoldier->iTotalLengthOfInsuranceContract;
+      gsForm1InsuranceLengthNumber = pSoldier.value.iTotalLengthOfInsuranceContract;
       break;
 
     case 1:
       usPosX = INS_CTRCT_ORDER_GRID2_X;
       gubMercIDForMercInForm2 = ubMercID;
-      gsForm2InsuranceLengthNumber = pSoldier->iTotalLengthOfInsuranceContract;
+      gsForm2InsuranceLengthNumber = pSoldier.value.iTotalLengthOfInsuranceContract;
       break;
 
     case 2:
       usPosX = INS_CTRCT_ORDER_GRID3_X;
       gubMercIDForMercInForm3 = ubMercID;
-      gsForm3InsuranceLengthNumber = pSoldier->iTotalLengthOfInsuranceContract;
+      gsForm3InsuranceLengthNumber = pSoldier.value.iTotalLengthOfInsuranceContract;
       break;
 
     default:
@@ -415,7 +415,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
   if (IsMercDead(ubMercID)) {
     // if the merc is dead
     // shade the face red, (to signify that he is dead)
-    hPixHandle->pShades[0] = Create16BPPPaletteShaded(hPixHandle->pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, TRUE);
+    hPixHandle.value.pShades[0] = Create16BPPPaletteShaded(hPixHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, TRUE);
 
     // set the red pallete to the face
     SetObjectHandleShade(uiInsMercFaceImage, 0);
@@ -431,9 +431,9 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
   DrawTextToScreen(gMercProfiles[ubMercID].zNickname, (usPosX + INS_CTRCT_OG_NICK_NAME_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_OG_NICK_NAME_OFFSET_Y, 0, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Get the text to display the mercs current insurance contract status
-  if (IsMercDead(pSoldier->ubProfile)) {
+  if (IsMercDead(pSoldier.value.ubProfile)) {
     // if the merc has a contract
-    if (pSoldier->usLifeInsurance) {
+    if (pSoldier.value.usLifeInsurance) {
       // Display the contract text
       GetInsuranceText(INS_SNGL_DEAD_WITH_CONTRACT, sText);
     } else {
@@ -443,7 +443,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
     DisplayWrappedString((usPosX + INS_CTRCT_OG_HAS_CONTRACT_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_OG_HAS_CONTRACT_OFFSET_Y, INS_CTRCT_CONTRACT_STATUS_TEXT_WIDTH, 2, INS_FONT_SMALL, INS_FONT_COLOR_RED, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   } else {
     // if the merc has a contract
-    if (pSoldier->usLifeInsurance) {
+    if (pSoldier.value.usLifeInsurance) {
       // if the soldier can extend their insurance
       if (CanSoldierExtendInsuranceContract(pSoldier)) {
         // Display the contract text
@@ -474,7 +474,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_LENGTH_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_LENGTH_OFFSET_Y, 0, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Display the mercs contract length
-  swprintf(sText, "%d", pSoldier->iTotalContractLength);
+  swprintf(sText, "%d", pSoldier.value.iTotalContractLength);
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_OG_BOX_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_LENGTH_OFFSET_Y, INS_CTRCT_OG_BOX_WIDTH, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
 
   // Display the days remaining for the emplyment contract text
@@ -508,7 +508,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
   if (IsMercDead(ubMercID))
     swprintf(sText, "%s", pMessageStrings[MSG_LOWERCASE_NA]);
 
-  else if (pSoldier->usLifeInsurance != 0)
+  else if (pSoldier.value.usLifeInsurance != 0)
     swprintf(sText, "%d", GetTimeRemainingOnSoldiersInsuranceContract(pSoldier));
 
   else
@@ -522,7 +522,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
 
   // if the soldier can get insurance, calculate a new cost
   if (CanSoldierExtendInsuranceContract(pSoldier)) {
-    iCostOfContract = CalculateInsuranceContractCost(CalculateSoldiersInsuranceContractLength(pSoldier), pSoldier->ubProfile);
+    iCostOfContract = CalculateInsuranceContractCost(CalculateSoldiersInsuranceContractLength(pSoldier), pSoldier.value.ubProfile);
   }
 
   else {
@@ -563,15 +563,15 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
 
 function BtnInsuranceAcceptClearForm1ButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       let ubButton: UINT8 = MSYS_GetBtnUserData(btn, 0);
       let ubSoldierID: UINT8 = GetSoldierIDFromMercID(gubMercIDForMercInForm1);
 
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
       // the accept button
       if (ubButton == 0) {
@@ -588,26 +588,26 @@ function BtnInsuranceAcceptClearForm1ButtonCallback(btn: Pointer<GUI_BUTTON>, re
       // redraw the screen
       fPausedReDrawScreenFlag = TRUE;
 
-      InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
 function BtnInsuranceAcceptClearForm2ButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       let ubButton: UINT8 = MSYS_GetBtnUserData(btn, 0);
       let ubSoldierID: UINT8 = GetSoldierIDFromMercID(gubMercIDForMercInForm2);
 
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
       // the accept button
       if (ubButton == 0) {
@@ -624,26 +624,26 @@ function BtnInsuranceAcceptClearForm2ButtonCallback(btn: Pointer<GUI_BUTTON>, re
       // redraw the screen
       fPausedReDrawScreenFlag = TRUE;
 
-      InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
 function BtnInsuranceAcceptClearForm3ButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       let ubButton: UINT8 = MSYS_GetBtnUserData(btn, 0);
       let ubSoldierID: UINT8 = GetSoldierIDFromMercID(gubMercIDForMercInForm3);
 
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
       // the accept button
       if (ubButton == 0) {
@@ -660,12 +660,12 @@ function BtnInsuranceAcceptClearForm3ButtonCallback(btn: Pointer<GUI_BUTTON>, re
       // redraw the screen
       fPausedReDrawScreenFlag = TRUE;
 
-      InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
@@ -838,18 +838,18 @@ function DailyUpdateOfInsuredMercs(): void {
 
   for (pSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pSoldier++) {
     // if the soldier is in the team array
-    if (pSoldier->bActive) {
+    if (pSoldier.value.bActive) {
       // if the merc has life insurance
-      if (pSoldier->usLifeInsurance) {
+      if (pSoldier.value.usLifeInsurance) {
         // if the merc wasn't just hired
-        if (GetWorldDay() != pSoldier->iStartOfInsuranceContract) {
+        if (GetWorldDay() != pSoldier.value.iStartOfInsuranceContract) {
           // if the contract has run out of time
           if (GetTimeRemainingOnSoldiersInsuranceContract(pSoldier) <= 0) {
             // if the soldier isn't dead
-            if (!IsMercDead(pSoldier->ubProfile)) {
-              pSoldier->usLifeInsurance = 0;
-              pSoldier->iTotalLengthOfInsuranceContract = 0;
-              pSoldier->iStartOfInsuranceContract = 0;
+            if (!IsMercDead(pSoldier.value.ubProfile)) {
+              pSoldier.value.usLifeInsurance = 0;
+              pSoldier.value.iTotalLengthOfInsuranceContract = 0;
+              pSoldier.value.iStartOfInsuranceContract = 0;
             }
           }
         }
@@ -877,12 +877,12 @@ function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8): INT32 
 
   // only mercs with at least 2 days to go on their employment contract are insurable
   // def: 2/5/99.  However if they already have insurance is SHOULD be ok
-  if (GetTimeRemainingOnSoldiersContract(pSoldier) < 2 && !(pSoldier->usLifeInsurance != 0 && GetTimeRemainingOnSoldiersContract(pSoldier) >= 1)) {
+  if (GetTimeRemainingOnSoldiersContract(pSoldier) < 2 && !(pSoldier.value.usLifeInsurance != 0 && GetTimeRemainingOnSoldiersContract(pSoldier) >= 1)) {
     return 0;
   }
 
   // If the merc is currently being held captive, get out
-  if (pSoldier->bAssignment == ASSIGNMENT_POW) {
+  if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
     return 0;
   }
 
@@ -898,14 +898,14 @@ function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8): INT32 
   pProfile = &gMercProfiles[ubMercID];
 
   // calculate the degree of training
-  sTotalSkill = (pProfile->bMarksmanship + pProfile->bMedical + pProfile->bMechanical + pProfile->bExplosive + pProfile->bLeadership) / 5;
+  sTotalSkill = (pProfile.value.bMarksmanship + pProfile.value.bMedical + pProfile.value.bMechanical + pProfile.value.bExplosive + pProfile.value.bLeadership) / 5;
   flSkillFactor = DiffFromNormRatio(sTotalSkill, INS_CTRCT_SKILL_BASE);
 
   // calc relative fitness level
-  flFitnessFactor = DiffFromNormRatio(pProfile->bLife, INS_CTRCT_FITNESS_BASE);
+  flFitnessFactor = DiffFromNormRatio(pProfile.value.bLife, INS_CTRCT_FITNESS_BASE);
 
   // calc relative experience
-  flExpFactor = DiffFromNormRatio(pProfile->bExpLevel, INS_CTRCT_EXP_LEVEL_BASE);
+  flExpFactor = DiffFromNormRatio(pProfile.value.bExpLevel, INS_CTRCT_EXP_LEVEL_BASE);
 
   // calc player's survival rate (death rate subtracted from 100)
   flSurvivalFactor = DiffFromNormRatio((100 - CalcDeathRate()), INS_CTRCT_SURVIVAL_BASE);
@@ -921,7 +921,7 @@ function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8): INT32 
   }
 
   // premium depend on merc's salary, the base insurance rate, and the individual's risk factor at this time
-  uiDailyInsurancePremium = (((pProfile->sSalary * INSURANCE_PREMIUM_RATE * flRiskFactor) / 100) + 0.5);
+  uiDailyInsurancePremium = (((pProfile.value.sSalary * INSURANCE_PREMIUM_RATE * flRiskFactor) / 100) + 0.5);
   // multiply by the insurance contract length
   uiTotalInsurancePremium = uiDailyInsurancePremium * iLength;
 
@@ -970,7 +970,7 @@ function BuildInsuranceArray(): void {
   // store profile #s of all insurable mercs in an array
   for (pSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pSoldier++) {
     if (MercIsInsurable(pSoldier)) {
-      gubInsuranceMercArray[gsMaxPlayersOnTeam] = pSoldier->ubProfile;
+      gubInsuranceMercArray[gsMaxPlayersOnTeam] = pSoldier.value.ubProfile;
       gsMaxPlayersOnTeam++;
     }
   }
@@ -984,9 +984,9 @@ function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let uiDaysToPay: UINT32;
 
   Assert(pSoldier != NULL);
-  Assert(pSoldier->ubProfile != NO_PROFILE);
+  Assert(pSoldier.value.ubProfile != NO_PROFILE);
 
-  pProfile = &(gMercProfiles[pSoldier->ubProfile]);
+  pProfile = &(gMercProfiles[pSoldier.value.ubProfile]);
 
   // if we need to add more array elements
   if (LaptopSaveInfo.ubNumberLifeInsurancePayouts <= LaptopSaveInfo.ubNumberLifeInsurancePayoutUsed) {
@@ -1004,8 +1004,8 @@ function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
       break;
   }
 
-  LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubSoldierID = pSoldier->ubID;
-  LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID = pSoldier->ubProfile;
+  LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubSoldierID = pSoldier.value.ubID;
+  LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID = pSoldier.value.ubProfile;
   LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].fActive = TRUE;
 
   // This uses the merc's latest salaries, ignoring that they may be higher than the salaries paid under the current
@@ -1018,20 +1018,20 @@ function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // avoid getting back more than the merc cost if he was on a 2-week contract!
 
   // start with the daily salary
-  uiCostPerDay = pProfile->sSalary;
+  uiCostPerDay = pProfile.value.sSalary;
 
   // consider weekly salary / day
-  if ((pProfile->uiWeeklySalary / 7) < uiCostPerDay) {
-    uiCostPerDay = (pProfile->uiWeeklySalary / 7);
+  if ((pProfile.value.uiWeeklySalary / 7) < uiCostPerDay) {
+    uiCostPerDay = (pProfile.value.uiWeeklySalary / 7);
   }
 
   // consider biweekly salary / day
-  if ((pProfile->uiBiWeeklySalary / 14) < uiCostPerDay) {
-    uiCostPerDay = (pProfile->uiBiWeeklySalary / 14);
+  if ((pProfile.value.uiBiWeeklySalary / 14) < uiCostPerDay) {
+    uiCostPerDay = (pProfile.value.uiBiWeeklySalary / 14);
   }
 
   // calculate how many full, insured days of work the merc is going to miss
-  uiDaysToPay = pSoldier->iTotalLengthOfInsuranceContract - (GetWorldDay() + 1 - pSoldier->iStartOfInsuranceContract);
+  uiDaysToPay = pSoldier.value.iTotalLengthOfInsuranceContract - (GetWorldDay() + 1 - pSoldier.value.iStartOfInsuranceContract);
 
   // calculate & store how much is to be paid out
   LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].iPayOutPrice = uiDaysToPay * uiCostPerDay;
@@ -1040,7 +1040,7 @@ function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   uiTimeInMinutes = GetMidnightOfFutureDayInMinutes(1) + 16 * 60;
 
   // if the death was suspicious, or he's already been investigated twice or more
-  if (pProfile->ubSuspiciousDeath || (gStrategicStatus.ubInsuranceInvestigationsCnt >= 2)) {
+  if (pProfile.value.ubSuspiciousDeath || (gStrategicStatus.ubInsuranceInvestigationsCnt >= 2)) {
     // fraud suspected, claim will be investigated first
     AddStrategicEvent(EVENT_INSURANCE_INVESTIGATION_STARTED, uiTimeInMinutes, ubPayoutID);
   } else {
@@ -1130,14 +1130,14 @@ function InsuranceContractEndGameShutDown(): void {
 
 function MercIsInsurable(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // only A.I.M. mercs currently on player's team
-  if ((pSoldier->bActive) && (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC)) {
+  if ((pSoldier.value.bActive) && (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC)) {
     // with more than one day left on their employment contract are eligible for insurance
     // the second part is because the insurance doesn't pay for any working day already started at time of death
     //		if( ( (pSoldier->iEndofContractTime - GetWorldTotalMin()) > 24 * 60) || pSoldier->usLifeInsurance )
-    if (CanSoldierExtendInsuranceContract(pSoldier) || pSoldier->usLifeInsurance) {
+    if (CanSoldierExtendInsuranceContract(pSoldier) || pSoldier.value.usLifeInsurance) {
       // who aren't currently being held POW
       // POWs are also uninsurable - if already insured, that insurance IS valid but no new contracts or extension allowed
-      if (pSoldier->bAssignment != ASSIGNMENT_POW) {
+      if (pSoldier.value.bAssignment != ASSIGNMENT_POW) {
         return TRUE;
       }
     }
@@ -1214,29 +1214,29 @@ UINT32	GetContractLengthForFormNumber( UINT8 ubFormID )
 
 function GetTimeRemainingOnSoldiersInsuranceContract(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
   // if the soldier has life insurance
-  if (pSoldier->usLifeInsurance) {
+  if (pSoldier.value.usLifeInsurance) {
     // if the insurance contract hasnt started yet
-    if (GetWorldDay() < pSoldier->iStartOfInsuranceContract)
-      return pSoldier->iTotalLengthOfInsuranceContract;
+    if (GetWorldDay() < pSoldier.value.iStartOfInsuranceContract)
+      return pSoldier.value.iTotalLengthOfInsuranceContract;
     else
-      return pSoldier->iTotalLengthOfInsuranceContract - (GetWorldDay() - pSoldier->iStartOfInsuranceContract);
+      return pSoldier.value.iTotalLengthOfInsuranceContract - (GetWorldDay() - pSoldier.value.iStartOfInsuranceContract);
   } else
     return 0;
 }
 
 function GetTimeRemainingOnSoldiersContract(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
-  let iDayMercLeaves: INT32 = (pSoldier->iEndofContractTime / 1440) - 1;
+  let iDayMercLeaves: INT32 = (pSoldier.value.iEndofContractTime / 1440) - 1;
 
   // Since the merc is leaving in the afternoon, we must adjust since the time left would be different if we did the calc
   // at 11:59 or 12:01 ( noon )
-  if (pSoldier->iEndofContractTime % 1440)
+  if (pSoldier.value.iEndofContractTime % 1440)
     iDayMercLeaves++;
 
   // Subtract todays day number
   iDayMercLeaves = iDayMercLeaves - GetWorldDay();
 
-  if (iDayMercLeaves > pSoldier->iTotalContractLength)
-    iDayMercLeaves = pSoldier->iTotalContractLength;
+  if (iDayMercLeaves > pSoldier.value.iTotalContractLength)
+    iDayMercLeaves = pSoldier.value.iTotalContractLength;
 
   return iDayMercLeaves;
   //	return( ( pSoldier->iEndofContractTime - (INT32)GetWorldTotalMin( ) ) / 1440 );
@@ -1249,27 +1249,27 @@ function PurchaseOrExtendInsuranceForSoldier(pSoldier: Pointer<SOLDIERTYPE>, uiI
     AssertMsg(0, "Soldier pointer is NULL!");
 
   // if the user doesnt have insruance already,
-  if (!(pSoldier->usLifeInsurance)) {
+  if (!(pSoldier.value.usLifeInsurance)) {
     // specify the start date of the contract
-    pSoldier->iStartOfInsuranceContract = CalcStartDayOfInsurance(pSoldier);
-    pSoldier->uiStartTimeOfInsuranceContract = GetWorldTotalMin();
+    pSoldier.value.iStartOfInsuranceContract = CalcStartDayOfInsurance(pSoldier);
+    pSoldier.value.uiStartTimeOfInsuranceContract = GetWorldTotalMin();
   }
 
   // transfer money
-  iAmountOfMoneyTransfer = CalculateInsuranceContractCost(uiInsuranceLength, pSoldier->ubProfile);
+  iAmountOfMoneyTransfer = CalculateInsuranceContractCost(uiInsuranceLength, pSoldier.value.ubProfile);
 
   // if the user did have insruance already,
-  if (pSoldier->usLifeInsurance) {
+  if (pSoldier.value.usLifeInsurance) {
     // specify the start date of the contract
-    pSoldier->iStartOfInsuranceContract = CalcStartDayOfInsurance(pSoldier);
+    pSoldier.value.iStartOfInsuranceContract = CalcStartDayOfInsurance(pSoldier);
   }
 
   // add transaction to finaces page
   // if the player has life insurance
-  if (pSoldier->usLifeInsurance) {
+  if (pSoldier.value.usLifeInsurance) {
     // if the player is extending the contract
     if (iAmountOfMoneyTransfer > 0)
-      AddTransactionToPlayersBook(EXTENDED_INSURANCE, pSoldier->ubProfile, GetWorldTotalMin(), -(iAmountOfMoneyTransfer));
+      AddTransactionToPlayersBook(EXTENDED_INSURANCE, pSoldier.value.ubProfile, GetWorldTotalMin(), -(iAmountOfMoneyTransfer));
     else
       Assert(0);
   } else {
@@ -1286,21 +1286,21 @@ function PurchaseOrExtendInsuranceForSoldier(pSoldier: Pointer<SOLDIERTYPE>, uiI
       // else if the player has enought to cover the bill, let him
 
       // the player just purchased life insurance
-      AddTransactionToPlayersBook(PURCHASED_INSURANCE, pSoldier->ubProfile, GetWorldTotalMin(), -(iAmountOfMoneyTransfer));
+      AddTransactionToPlayersBook(PURCHASED_INSURANCE, pSoldier.value.ubProfile, GetWorldTotalMin(), -(iAmountOfMoneyTransfer));
 
       // add an entry in the history page for the purchasing of life insurance
-      AddHistoryToPlayersLog(HISTORY_PURCHASED_INSURANCE, pSoldier->ubProfile, GetWorldTotalMin(), -1, -1);
+      AddHistoryToPlayersLog(HISTORY_PURCHASED_INSURANCE, pSoldier.value.ubProfile, GetWorldTotalMin(), -1, -1);
 
       // Set that we have life insurance
-      pSoldier->usLifeInsurance = 1;
+      pSoldier.value.usLifeInsurance = 1;
     }
   }
 
-  pSoldier->iTotalLengthOfInsuranceContract += uiInsuranceLength;
+  pSoldier.value.iTotalLengthOfInsuranceContract += uiInsuranceLength;
 
   // make sure the length doesnt exceed the contract length
   if ((GetTimeRemainingOnSoldiersInsuranceContract(pSoldier)) > GetTimeRemainingOnSoldiersContract(pSoldier)) {
-    pSoldier->iTotalLengthOfInsuranceContract -= GetTimeRemainingOnSoldiersInsuranceContract(pSoldier) - GetTimeRemainingOnSoldiersContract(pSoldier);
+    pSoldier.value.iTotalLengthOfInsuranceContract -= GetTimeRemainingOnSoldiersInsuranceContract(pSoldier) - GetTimeRemainingOnSoldiersContract(pSoldier);
   }
 }
 
@@ -1316,12 +1316,12 @@ function CalculateSoldiersInsuranceContractLength(pSoldier: Pointer<SOLDIERTYPE>
   let uiTimeRemainingOnSoldiersContract: UINT32 = GetTimeRemainingOnSoldiersContract(pSoldier);
 
   // if the merc is dead
-  if (IsMercDead(pSoldier->ubProfile))
+  if (IsMercDead(pSoldier.value.ubProfile))
     return 0;
 
   // only mercs with at least 2 days to go on their employment contract are insurable
   // def: 2/5/99.  However if they already have insurance is SHOULD be ok
-  if (uiTimeRemainingOnSoldiersContract < 2 && !(pSoldier->usLifeInsurance != 0 && uiTimeRemainingOnSoldiersContract >= 1)) {
+  if (uiTimeRemainingOnSoldiersContract < 2 && !(pSoldier.value.usLifeInsurance != 0 && uiTimeRemainingOnSoldiersContract >= 1)) {
     return 0;
   }
 
@@ -1330,7 +1330,7 @@ function CalculateSoldiersInsuranceContractLength(pSoldier: Pointer<SOLDIERTYPE>
   //
 
   // if the soldier has an insurance contract, dont deduct a day
-  if (pSoldier->usLifeInsurance || DidGameJustStart())
+  if (pSoldier.value.usLifeInsurance || DidGameJustStart())
     iInsuranceContractLength = uiTimeRemainingOnSoldiersContract - GetTimeRemainingOnSoldiersInsuranceContract(pSoldier);
 
   // else deduct a day
@@ -1346,7 +1346,7 @@ function CalculateSoldiersInsuranceContractLength(pSoldier: Pointer<SOLDIERTYPE>
   if (iInsuranceContractLength < 0)
     iInsuranceContractLength = 0;
 
-  if (pSoldier->usLifeInsurance && pSoldier->iStartOfInsuranceContract >= GetWorldDay() && iInsuranceContractLength < 2)
+  if (pSoldier.value.usLifeInsurance && pSoldier.value.iStartOfInsuranceContract >= GetWorldDay() && iInsuranceContractLength < 2)
     iInsuranceContractLength = 0;
 
   return iInsuranceContractLength;
@@ -1356,7 +1356,7 @@ function CalcStartDayOfInsurance(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   let uiDayToStartInsurance: UINT32 = 0;
 
   // if the soldier was just hired ( in transit ), and the game didnt just start
-  if (pSoldier->bAssignment == IN_TRANSIT && !DidGameJustStart()) {
+  if (pSoldier.value.bAssignment == IN_TRANSIT && !DidGameJustStart()) {
     uiDayToStartInsurance = GetWorldDay();
   } else {
     // Get tomorows date ( and convert it to days )
@@ -1375,7 +1375,7 @@ function AreAnyAimMercsOnTeam(): BOOLEAN {
     pSoldier = &Menptr[GetSoldierIDFromMercID(sNextMercID)];
 
     // check to see if any of the mercs are AIM mercs
-    if (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
+    if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
       fIsThereAnyAimMercs = TRUE;
     }
   }

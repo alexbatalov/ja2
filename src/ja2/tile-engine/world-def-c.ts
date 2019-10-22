@@ -52,9 +52,9 @@ function DoorAtGridNo(iMapIndex: UINT32): BOOLEAN {
   let pStruct: Pointer<STRUCTURE>;
   pStruct = gpWorldLevelData[iMapIndex].pStructureHead;
   while (pStruct) {
-    if (pStruct->fFlags & STRUCTURE_ANYDOOR)
+    if (pStruct.value.fFlags & STRUCTURE_ANYDOOR)
       return TRUE;
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
   return FALSE;
 }
@@ -63,9 +63,9 @@ function OpenableAtGridNo(iMapIndex: UINT32): BOOLEAN {
   let pStruct: Pointer<STRUCTURE>;
   pStruct = gpWorldLevelData[iMapIndex].pStructureHead;
   while (pStruct) {
-    if (pStruct->fFlags & STRUCTURE_OPENABLE)
+    if (pStruct.value.fFlags & STRUCTURE_OPENABLE)
       return TRUE;
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
   return FALSE;
 }
@@ -76,12 +76,12 @@ function FloorAtGridNo(iMapIndex: UINT32): BOOLEAN {
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
   // Look through all objects and Search for type
   while (pLand) {
-    if (pLand->usIndex != NO_TILE) {
-      GetTileType(pLand->usIndex, &uiTileType);
+    if (pLand.value.usIndex != NO_TILE) {
+      GetTileType(pLand.value.usIndex, &uiTileType);
       if (uiTileType >= FIRSTFLOOR && uiTileType <= LASTFLOOR) {
         return TRUE;
       }
-      pLand = pLand->pNext;
+      pLand = pLand.value.pNext;
     }
   }
   return FALSE;
@@ -108,12 +108,12 @@ function DOIT(): void {
     pStruct = gpWorldLevelData[uiLoop].pStructHead;
 
     while (pStruct != NULL) {
-      pNewStruct = pStruct->pNext;
+      pNewStruct = pStruct.value.pNext;
 
-      if (pStruct->usIndex >= DEBRISWOOD1 && pStruct->usIndex <= DEBRISWEEDS10) {
-        AddObjectToHead(uiLoop, pStruct->usIndex);
+      if (pStruct.value.usIndex >= DEBRISWOOD1 && pStruct.value.usIndex <= DEBRISWEEDS10) {
+        AddObjectToHead(uiLoop, pStruct.value.usIndex);
 
-        RemoveStruct(uiLoop, pStruct->usIndex);
+        RemoveStruct(uiLoop, pStruct.value.usIndex);
       }
 
       pStruct = pNewStruct;
@@ -318,7 +318,7 @@ function AddTileSurface(cFilename: Pointer<char>, ubType: UINT32, ubTilesetID: U
   if (TileSurf == NULL)
     return FALSE;
 
-  TileSurf->fType = ubType;
+  TileSurf.value.fType = ubType;
 
   SetRaisedObjectFlag(cAdjustedFile, TileSurf);
 
@@ -394,7 +394,7 @@ function BuildTileShadeTables(): void {
         }
 
         RenderProgressBar(0, uiLoop * 100 / NUMBEROFTILETYPES);
-        CreateTilePaletteTables(gTileSurfaceArray[uiLoop]->vo, uiLoop, fForceRebuildForSlot);
+        CreateTilePaletteTables(gTileSurfaceArray[uiLoop].value.vo, uiLoop, fForceRebuildForSlot);
       }
     }
   }
@@ -414,7 +414,7 @@ function DestroyTileShadeTables(): void {
     if (gTileSurfaceArray[uiLoop] != NULL) {
 // Don't Delete shade tables if default are still being used...
       if (gbNewTileSurfaceLoaded[uiLoop] || gfEditorForceShadeTableRebuild) {
-        DestroyObjectPaletteTables(gTileSurfaceArray[uiLoop]->vo);
+        DestroyObjectPaletteTables(gTileSurfaceArray[uiLoop].value.vo);
       }
     }
   }
@@ -447,25 +447,25 @@ function CompileWorldTerrainIDs(): void {
       if (giCurrentTilesetID == TEMP_19) {
         // Get ID
         if (pNode != NULL) {
-          if (pNode->usIndex == ANOTHERDEBRIS4 || pNode->usIndex == ANOTHERDEBRIS6 || pNode->usIndex == ANOTHERDEBRIS7) {
+          if (pNode.value.usIndex == ANOTHERDEBRIS4 || pNode.value.usIndex == ANOTHERDEBRIS6 || pNode.value.usIndex == ANOTHERDEBRIS7) {
             gpWorldLevelData[sGridNo].ubTerrainID = LOW_WATER;
             continue;
           }
         }
       }
 
-      if (pNode == NULL || pNode->usIndex >= NUMBEROFTILES || gTileDatabase[pNode->usIndex].ubTerrainID == NO_TERRAIN) {
+      if (pNode == NULL || pNode.value.usIndex >= NUMBEROFTILES || gTileDatabase[pNode.value.usIndex].ubTerrainID == NO_TERRAIN) {
         // Try terrain instead!
         pNode = gpWorldLevelData[sGridNo].pLandHead;
       }
-      pTileElement = &(gTileDatabase[pNode->usIndex]);
-      if (pTileElement->ubNumberOfTiles > 1) {
-        for (ubLoop = 0; ubLoop < pTileElement->ubNumberOfTiles; ubLoop++) {
-          sTempGridNo = sGridNo + pTileElement->pTileLocData[ubLoop].bTileOffsetX + pTileElement->pTileLocData[ubLoop].bTileOffsetY * WORLD_COLS;
-          gpWorldLevelData[sTempGridNo].ubTerrainID = pTileElement->ubTerrainID;
+      pTileElement = &(gTileDatabase[pNode.value.usIndex]);
+      if (pTileElement.value.ubNumberOfTiles > 1) {
+        for (ubLoop = 0; ubLoop < pTileElement.value.ubNumberOfTiles; ubLoop++) {
+          sTempGridNo = sGridNo + pTileElement.value.pTileLocData[ubLoop].bTileOffsetX + pTileElement.value.pTileLocData[ubLoop].bTileOffsetY * WORLD_COLS;
+          gpWorldLevelData[sTempGridNo].ubTerrainID = pTileElement.value.ubTerrainID;
         }
       } else {
-        gpWorldLevelData[sGridNo].ubTerrainID = pTileElement->ubTerrainID;
+        gpWorldLevelData[sGridNo].ubTerrainID = pTileElement.value.ubTerrainID;
       }
     }
   }
@@ -516,7 +516,7 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
     if (pLand != NULL) {
       // Set TEMPORARY cost here
       // Get from tile database
-      TileElem = gTileDatabase[pLand->usIndex];
+      TileElem = gTileDatabase[pLand.value.usIndex];
 
       // Get terrain type
       ubTerrainID = gpWorldLevelData[usGridNo].ubTerrainID; // = GetTerrainType( (INT16)usGridNo );
@@ -530,11 +530,11 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
     pStructure = gpWorldLevelData[usGridNo].pStructureHead;
     fStructuresOnRoof = FALSE;
     do {
-      if (pStructure->sCubeOffset == STRUCTURE_ON_GROUND) {
-        if (pStructure->fFlags & STRUCTURE_PASSABLE) {
-          if (pStructure->fFlags & STRUCTURE_WIREFENCE && pStructure->fFlags & STRUCTURE_OPEN) {
+      if (pStructure.value.sCubeOffset == STRUCTURE_ON_GROUND) {
+        if (pStructure.value.fFlags & STRUCTURE_PASSABLE) {
+          if (pStructure.value.fFlags & STRUCTURE_WIREFENCE && pStructure.value.fFlags & STRUCTURE_OPEN) {
             // prevent movement along the fence but allow in all other directions
-            switch (pStructure->ubWallOrientation) {
+            switch (pStructure.value.ubWallOrientation) {
               case OUTSIDE_TOP_LEFT:
               case INSIDE_TOP_LEFT:
                 SET_CURRMOVEMENTCOST(NORTH, TRAVELCOST_NOT_STANDING);
@@ -561,10 +561,10 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
             }
           }
           // all other passable structures do not block movement in any way
-        } else if (pStructure->fFlags & STRUCTURE_BLOCKSMOVES) {
-          if ((pStructure->fFlags & STRUCTURE_FENCE) && !(pStructure->fFlags & STRUCTURE_SPECIAL)) {
+        } else if (pStructure.value.fFlags & STRUCTURE_BLOCKSMOVES) {
+          if ((pStructure.value.fFlags & STRUCTURE_FENCE) && !(pStructure.value.fFlags & STRUCTURE_SPECIAL)) {
             // jumpable!
-            switch (pStructure->ubWallOrientation) {
+            switch (pStructure.value.ubWallOrientation) {
               case OUTSIDE_TOP_LEFT:
               case INSIDE_TOP_LEFT:
                 // can be jumped north and south
@@ -621,7 +621,7 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                 }
                 break;
             }
-          } else if (pStructure->pDBStructureRef->pDBStructure->ubArmour == MATERIAL_SANDBAG && StructureHeight(pStructure) < 2) {
+          } else if (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == MATERIAL_SANDBAG && StructureHeight(pStructure) < 2) {
             for (ubDirLoop = 0; ubDirLoop < NUM_WORLD_DIRECTIONS; ubDirLoop++) {
               SET_CURRMOVEMENTCOST(ubDirLoop, TRAVELCOST_OBSTACLE);
             }
@@ -635,7 +635,7 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
               FORCE_SET_MOVEMENTCOST(usGridNo, EAST, 0, TRAVELCOST_FENCE);
               FORCE_SET_MOVEMENTCOST(usGridNo, WEST, 0, TRAVELCOST_FENCE);
             }
-          } else if ((pStructure->fFlags & STRUCTURE_CAVEWALL)) {
+          } else if ((pStructure.value.fFlags & STRUCTURE_CAVEWALL)) {
             for (ubDirLoop = 0; ubDirLoop < NUM_WORLD_DIRECTIONS; ubDirLoop++) {
               SET_CURRMOVEMENTCOST(ubDirLoop, TRAVELCOST_CAVEWALL);
             }
@@ -644,15 +644,15 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
               SET_CURRMOVEMENTCOST(ubDirLoop, TRAVELCOST_OBSTACLE);
             }
           }
-        } else if (pStructure->fFlags & STRUCTURE_ANYDOOR) /*&& (pStructure->fFlags & STRUCTURE_OPEN))*/
+        } else if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) /*&& (pStructure->fFlags & STRUCTURE_OPEN))*/
         {
          // NB closed doors are treated just like walls, in the section after this
 
-          if (pStructure->fFlags & STRUCTURE_DDOOR_LEFT && (pStructure->ubWallOrientation == INSIDE_TOP_RIGHT || pStructure->ubWallOrientation == OUTSIDE_TOP_RIGHT)) {
+          if (pStructure.value.fFlags & STRUCTURE_DDOOR_LEFT && (pStructure.value.ubWallOrientation == INSIDE_TOP_RIGHT || pStructure.value.ubWallOrientation == OUTSIDE_TOP_RIGHT)) {
             // double door, left side (as you look on the screen)
-            switch (pStructure->ubWallOrientation) {
+            switch (pStructure.value.ubWallOrientation) {
               case OUTSIDE_TOP_RIGHT:
-                if (pStructure->fFlags & STRUCTURE_BASE_TILE) {
+                if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
                   // doorpost
                   SET_CURRMOVEMENTCOST(NORTHWEST, TRAVELCOST_WALL);
                   SET_CURRMOVEMENTCOST(WEST, TRAVELCOST_DOOR_CLOSED_HERE);
@@ -690,11 +690,11 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                 // door with no orientation specified!?
                 break;
             }
-          } else if (pStructure->fFlags & STRUCTURE_DDOOR_RIGHT && (pStructure->ubWallOrientation == INSIDE_TOP_LEFT || pStructure->ubWallOrientation == OUTSIDE_TOP_LEFT)) {
+          } else if (pStructure.value.fFlags & STRUCTURE_DDOOR_RIGHT && (pStructure.value.ubWallOrientation == INSIDE_TOP_LEFT || pStructure.value.ubWallOrientation == OUTSIDE_TOP_LEFT)) {
             // double door, right side (as you look on the screen)
-            switch (pStructure->ubWallOrientation) {
+            switch (pStructure.value.ubWallOrientation) {
               case OUTSIDE_TOP_LEFT:
-                if (pStructure->fFlags & STRUCTURE_BASE_TILE) {
+                if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
                   // doorpost
                   SET_CURRMOVEMENTCOST(NORTHWEST, TRAVELCOST_WALL);
                   SET_CURRMOVEMENTCOST(NORTH, TRAVELCOST_DOOR_CLOSED_HERE);
@@ -734,12 +734,12 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                 // door with no orientation specified!?
                 break;
             }
-          } else if (pStructure->fFlags & STRUCTURE_SLIDINGDOOR && pStructure->pDBStructureRef->pDBStructure->ubNumberOfTiles > 1) {
-            switch (pStructure->ubWallOrientation) {
+          } else if (pStructure.value.fFlags & STRUCTURE_SLIDINGDOOR && pStructure.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles > 1) {
+            switch (pStructure.value.ubWallOrientation) {
               case OUTSIDE_TOP_LEFT:
               case INSIDE_TOP_LEFT:
                 // doorframe post in one corner of each of the tiles
-                if (pStructure->fFlags & STRUCTURE_BASE_TILE) {
+                if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
                   SET_CURRMOVEMENTCOST(NORTHWEST, TRAVELCOST_WALL);
                   SET_CURRMOVEMENTCOST(NORTH, TRAVELCOST_DOOR_CLOSED_HERE);
                   SET_CURRMOVEMENTCOST(NORTHEAST, TRAVELCOST_DOOR_CLOSED_HERE);
@@ -758,7 +758,7 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
               case OUTSIDE_TOP_RIGHT:
               case INSIDE_TOP_RIGHT:
                 // doorframe post in one corner of each of the tiles
-                if (pStructure->fFlags & STRUCTURE_BASE_TILE) {
+                if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
                   SET_CURRMOVEMENTCOST(NORTHWEST, TRAVELCOST_WALL);
                   SET_CURRMOVEMENTCOST(WEST, TRAVELCOST_DOOR_CLOSED_HERE);
                   SET_CURRMOVEMENTCOST(SOUTHWEST, TRAVELCOST_DOOR_CLOSED_HERE);
@@ -779,9 +779,9 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
             }
           } else {
             // standard door
-            switch (pStructure->ubWallOrientation) {
+            switch (pStructure.value.ubWallOrientation) {
               case OUTSIDE_TOP_LEFT:
-                if (pStructure->fFlags & STRUCTURE_BASE_TILE) {
+                if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
                   // doorframe
                   SET_CURRMOVEMENTCOST(NORTHEAST, TRAVELCOST_WALL);
                   SET_CURRMOVEMENTCOST(NORTH, TRAVELCOST_DOOR_CLOSED_HERE);
@@ -803,7 +803,7 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                   // SET_MOVEMENTCOST( usGridNo + WORLD_COLS, SOUTHWEST, 0, TRAVELCOST_OBSTACLE );
                   // corner
                   // SET_MOVEMENTCOST( usGridNo + 1 ,NORTHEAST, 0, TRAVELCOST_OBSTACLE );
-                } else if (!(pStructure->fFlags & STRUCTURE_SLIDINGDOOR)) {
+                } else if (!(pStructure.value.fFlags & STRUCTURE_SLIDINGDOOR)) {
                   // door
                   SET_CURRMOVEMENTCOST(NORTHEAST, TRAVELCOST_WALL);
                   SET_CURRMOVEMENTCOST(EAST, TRAVELCOST_DOOR_OPEN_N);
@@ -837,7 +837,7 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                 // corner
                 // SET_MOVEMENTCOST( usGridNo + 1 ,NORTHEAST, 0, TRAVELCOST_OBSTACLE );
                 // door
-                if (!(pStructure->fFlags & STRUCTURE_SLIDINGDOOR)) {
+                if (!(pStructure.value.fFlags & STRUCTURE_SLIDINGDOOR)) {
                   SET_CURRMOVEMENTCOST(EAST, TRAVELCOST_DOOR_OPEN_HERE);
                   SET_CURRMOVEMENTCOST(SOUTHEAST, TRAVELCOST_DOOR_OPEN_HERE);
                   SET_MOVEMENTCOST(usGridNo - 1, WEST, 0, TRAVELCOST_DOOR_OPEN_E);
@@ -848,7 +848,7 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                 break;
 
               case OUTSIDE_TOP_RIGHT:
-                if (pStructure->fFlags & STRUCTURE_BASE_TILE) {
+                if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
                   // doorframe
                   SET_CURRMOVEMENTCOST(SOUTHWEST, TRAVELCOST_OBSTACLE);
                   SET_CURRMOVEMENTCOST(WEST, TRAVELCOST_DOOR_CLOSED_HERE);
@@ -870,7 +870,7 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                   // SET_MOVEMENTCOST( usGridNo + 1, NORTHEAST, 0, TRAVELCOST_OBSTACLE );
                   // corner
                   // SET_MOVEMENTCOST( usGridNo + 1 + WORLD_COLS, SOUTHEAST, 0, TRAVELCOST_OBSTACLE );
-                } else if (!(pStructure->fFlags & STRUCTURE_SLIDINGDOOR)) {
+                } else if (!(pStructure.value.fFlags & STRUCTURE_SLIDINGDOOR)) {
                   // door
                   SET_CURRMOVEMENTCOST(SOUTH, TRAVELCOST_DOOR_OPEN_W);
                   SET_CURRMOVEMENTCOST(SOUTHWEST, TRAVELCOST_DOOR_OPEN_W);
@@ -905,7 +905,7 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                 // corner
                 SET_MOVEMENTCOST( usGridNo - WORLD_COLS,  NORTHWEST, 0, TRAVELCOST_OBSTACLE );
                 */
-                if (!(pStructure->fFlags & STRUCTURE_SLIDINGDOOR)) {
+                if (!(pStructure.value.fFlags & STRUCTURE_SLIDINGDOOR)) {
                   // door
                   SET_CURRMOVEMENTCOST(SOUTH, TRAVELCOST_DOOR_OPEN_HERE);
                   SET_CURRMOVEMENTCOST(SOUTHEAST, TRAVELCOST_DOOR_OPEN_HERE);
@@ -964,9 +964,9 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                           break;
           }
           */
-        } else if (pStructure->fFlags & STRUCTURE_WALLSTUFF) {
+        } else if (pStructure.value.fFlags & STRUCTURE_WALLSTUFF) {
           // ATE: IF a closed door, set to door value
-          switch (pStructure->ubWallOrientation) {
+          switch (pStructure.value.ubWallOrientation) {
             case OUTSIDE_TOP_LEFT:
             case INSIDE_TOP_LEFT:
               SET_CURRMOVEMENTCOST(NORTHEAST, TRAVELCOST_WALL);
@@ -1005,11 +1005,11 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
           }
         }
       } else {
-        if (!(pStructure->fFlags & STRUCTURE_PASSABLE || pStructure->fFlags & STRUCTURE_NORMAL_ROOF)) {
+        if (!(pStructure.value.fFlags & STRUCTURE_PASSABLE || pStructure.value.fFlags & STRUCTURE_NORMAL_ROOF)) {
           fStructuresOnRoof = TRUE;
         }
       }
-      pStructure = pStructure->pNext;
+      pStructure = pStructure.value.pNext;
     } while (pStructure != NULL);
 
     // HIGHEST LAYER
@@ -1353,7 +1353,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
 
     while (pLand != NULL) {
       LayerCount++;
-      pLand = pLand->pNext;
+      pLand = pLand.value.pNext;
     }
     if (LayerCount > 15) {
       swprintf(gzErrorCatchString,
@@ -1381,14 +1381,14 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     ObjectCount = 0;
     while (pObject != NULL) {
       // DON'T WRITE ANY ITEMS
-      if (!(pObject->uiFlags & (LEVELNODE_ITEM))) {
+      if (!(pObject.value.uiFlags & (LEVELNODE_ITEM))) {
         let uiTileType: UINT32;
         // Make sure this isn't a UI Element
-        GetTileType(pObject->usIndex, &uiTileType);
+        GetTileType(pObject.value.usIndex, &uiTileType);
         if (uiTileType < FIRSTPOINTERS)
           ObjectCount++;
       }
-      pObject = pObject->pNext;
+      pObject = pObject.value.pNext;
     }
     if (ObjectCount > 15) {
       swprintf(gzErrorCatchString,
@@ -1411,10 +1411,10 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     StructCount = 0;
     while (pStruct != NULL) {
       // DON'T WRITE ANY ITEMS
-      if (!(pStruct->uiFlags & (LEVELNODE_ITEM))) {
+      if (!(pStruct.value.uiFlags & (LEVELNODE_ITEM))) {
         StructCount++;
       }
-      pStruct = pStruct->pNext;
+      pStruct = pStruct.value.pNext;
     }
     if (StructCount > 15) {
       swprintf(gzErrorCatchString,
@@ -1441,10 +1441,10 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     ShadowCount = 0;
     while (pShadow != NULL) {
       // Don't write any shadowbuddys or exit grids
-      if (!(pShadow->uiFlags & (LEVELNODE_BUDDYSHADOW | LEVELNODE_EXITGRID))) {
+      if (!(pShadow.value.uiFlags & (LEVELNODE_BUDDYSHADOW | LEVELNODE_EXITGRID))) {
         ShadowCount++;
       }
-      pShadow = pShadow->pNext;
+      pShadow = pShadow.value.pNext;
     }
     if (ShadowCount > 15) {
       swprintf(gzErrorCatchString,
@@ -1467,10 +1467,10 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     RoofCount = 0;
     while (pRoof != NULL) {
       // ATE: Don't save revealed roof info...
-      if (pRoof->usIndex != SLANTROOFCEILING1) {
+      if (pRoof.value.usIndex != SLANTROOFCEILING1) {
         RoofCount++;
       }
-      pRoof = pRoof->pNext;
+      pRoof = pRoof.value.pNext;
     }
     if (RoofCount > 15) {
       swprintf(gzErrorCatchString,
@@ -1499,7 +1499,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
 
     while (pOnRoof != NULL) {
       OnRoofCount++;
-      pOnRoof = pOnRoof->pNext;
+      pOnRoof = pOnRoof.value.pNext;
     }
     if (OnRoofCount > 15) {
       swprintf(gzErrorCatchString,
@@ -1534,18 +1534,18 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
       // GET TAIL
       while (pLand != NULL) {
         pTailLand = pLand;
-        pLand = pLand->pNext;
+        pLand = pLand.value.pNext;
       }
 
       while (pTailLand != NULL) {
         // Write out object type and sub-index
-        GetTileType(pTailLand->usIndex, &uiType);
+        GetTileType(pTailLand.value.usIndex, &uiType);
         ubType = uiType;
-        GetTypeSubIndexFromTileIndexChar(uiType, pTailLand->usIndex, &ubTypeSubIndex);
+        GetTypeSubIndexFromTileIndexChar(uiType, pTailLand.value.usIndex, &ubTypeSubIndex);
         FileWrite(hfile, &ubType, sizeof(UINT8), &uiBytesWritten);
         FileWrite(hfile, &ubTypeSubIndex, sizeof(UINT8), &uiBytesWritten);
 
-        pTailLand = pTailLand->pPrevNode;
+        pTailLand = pTailLand.value.pPrevNode;
       }
     }
   }
@@ -1555,20 +1555,20 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     pObject = gpWorldLevelData[cnt].pObjectHead;
     while (pObject != NULL) {
       // DON'T WRITE ANY ITEMS
-      if (!(pObject->uiFlags & (LEVELNODE_ITEM))) {
+      if (!(pObject.value.uiFlags & (LEVELNODE_ITEM))) {
         // Write out object type and sub-index
-        GetTileType(pObject->usIndex, &uiType);
+        GetTileType(pObject.value.usIndex, &uiType);
         // Make sure this isn't a UI Element
         if (uiType < FIRSTPOINTERS) {
           // We are writing 2 bytes for the type subindex in the object layer because the
           // ROADPIECES slot contains more than 256 subindices.
           ubType = uiType;
-          GetTypeSubIndexFromTileIndex(uiType, pObject->usIndex, &usTypeSubIndex);
+          GetTypeSubIndexFromTileIndex(uiType, pObject.value.usIndex, &usTypeSubIndex);
           FileWrite(hfile, &ubType, sizeof(UINT8), &uiBytesWritten);
           FileWrite(hfile, &usTypeSubIndex, sizeof(UINT16), &uiBytesWritten);
         }
       }
-      pObject = pObject->pNext;
+      pObject = pObject.value.pNext;
     }
   }
 
@@ -1577,16 +1577,16 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     pStruct = gpWorldLevelData[cnt].pStructHead;
     while (pStruct != NULL) {
       // DON'T WRITE ANY ITEMS
-      if (!(pStruct->uiFlags & (LEVELNODE_ITEM))) {
+      if (!(pStruct.value.uiFlags & (LEVELNODE_ITEM))) {
         // Write out object type and sub-index
-        GetTileType(pStruct->usIndex, &uiType);
+        GetTileType(pStruct.value.usIndex, &uiType);
         ubType = uiType;
-        GetTypeSubIndexFromTileIndexChar(uiType, pStruct->usIndex, &ubTypeSubIndex);
+        GetTypeSubIndexFromTileIndexChar(uiType, pStruct.value.usIndex, &ubTypeSubIndex);
         FileWrite(hfile, &ubType, sizeof(UINT8), &uiBytesWritten);
         FileWrite(hfile, &ubTypeSubIndex, sizeof(UINT8), &uiBytesWritten);
       }
 
-      pStruct = pStruct->pNext;
+      pStruct = pStruct.value.pNext;
     }
   }
 
@@ -1595,20 +1595,20 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     pShadow = gpWorldLevelData[cnt].pShadowHead;
     while (pShadow != NULL) {
       // Dont't write any buddys or exit grids
-      if (!(pShadow->uiFlags & (LEVELNODE_BUDDYSHADOW | LEVELNODE_EXITGRID))) {
+      if (!(pShadow.value.uiFlags & (LEVELNODE_BUDDYSHADOW | LEVELNODE_EXITGRID))) {
         // Write out object type and sub-index
         // Write out object type and sub-index
-        GetTileType(pShadow->usIndex, &uiType);
+        GetTileType(pShadow.value.usIndex, &uiType);
         ubType = uiType;
-        GetTypeSubIndexFromTileIndexChar(uiType, pShadow->usIndex, &ubTypeSubIndex);
+        GetTypeSubIndexFromTileIndexChar(uiType, pShadow.value.usIndex, &ubTypeSubIndex);
         FileWrite(hfile, &ubType, sizeof(UINT8), &uiBytesWritten);
         FileWrite(hfile, &ubTypeSubIndex, sizeof(UINT8), &uiBytesWritten);
-      } else if (pShadow->uiFlags & LEVELNODE_EXITGRID) {
+      } else if (pShadow.value.uiFlags & LEVELNODE_EXITGRID) {
         // count the number of exitgrids
         usNumExitGrids++;
       }
 
-      pShadow = pShadow->pNext;
+      pShadow = pShadow.value.pNext;
     }
   }
 
@@ -1616,16 +1616,16 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     pRoof = gpWorldLevelData[cnt].pRoofHead;
     while (pRoof != NULL) {
       // ATE: Don't save revealed roof info...
-      if (pRoof->usIndex != SLANTROOFCEILING1) {
+      if (pRoof.value.usIndex != SLANTROOFCEILING1) {
         // Write out object type and sub-index
-        GetTileType(pRoof->usIndex, &uiType);
+        GetTileType(pRoof.value.usIndex, &uiType);
         ubType = uiType;
-        GetTypeSubIndexFromTileIndexChar(uiType, pRoof->usIndex, &ubTypeSubIndex);
+        GetTypeSubIndexFromTileIndexChar(uiType, pRoof.value.usIndex, &ubTypeSubIndex);
         FileWrite(hfile, &ubType, sizeof(UINT8), &uiBytesWritten);
         FileWrite(hfile, &ubTypeSubIndex, sizeof(UINT8), &uiBytesWritten);
       }
 
-      pRoof = pRoof->pNext;
+      pRoof = pRoof.value.pNext;
     }
   }
 
@@ -1634,13 +1634,13 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     pOnRoof = gpWorldLevelData[cnt].pOnRoofHead;
     while (pOnRoof != NULL) {
       // Write out object type and sub-index
-      GetTileType(pOnRoof->usIndex, &uiType);
+      GetTileType(pOnRoof.value.usIndex, &uiType);
       ubType = uiType;
-      GetTypeSubIndexFromTileIndexChar(uiType, pOnRoof->usIndex, &ubTypeSubIndex);
+      GetTypeSubIndexFromTileIndexChar(uiType, pOnRoof.value.usIndex, &ubTypeSubIndex);
       FileWrite(hfile, &ubType, sizeof(UINT8), &uiBytesWritten);
       FileWrite(hfile, &ubTypeSubIndex, sizeof(UINT8), &uiBytesWritten);
 
-      pOnRoof = pOnRoof->pNext;
+      pOnRoof = pOnRoof.value.pNext;
     }
   }
 
@@ -1732,11 +1732,11 @@ function SetBlueFlagFlags(): void {
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     pNode = gpWorldLevelData[cnt].pStructHead;
     while (pNode) {
-      if (pNode->usIndex == BLUEFLAG_GRAPHIC) {
+      if (pNode.value.usIndex == BLUEFLAG_GRAPHIC) {
         gpWorldLevelData[cnt].uiFlags |= MAPELEMENT_PLAYER_MINE_PRESENT;
         break;
       }
-      pNode = pNode->pNext;
+      pNode = pNode.value.pNext;
     }
   }
 }
@@ -1831,8 +1831,8 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
   pSummary = MemAlloc(sizeof(SUMMARYFILE));
   Assert(pSummary);
   memset(pSummary, 0, sizeof(SUMMARYFILE));
-  pSummary->ubSummaryVersion = GLOBAL_SUMMARY_VERSION;
-  pSummary->dMajorMapVersion = gdMajorMapVersion;
+  pSummary.value.ubSummaryVersion = GLOBAL_SUMMARY_VERSION;
+  pSummary.value.dMajorMapVersion = gdMajorMapVersion;
 
   // skip JA2 Version ID
   LOADDATA(&dMajorMapVersion, pBuffer, sizeof(FLOAT));
@@ -1845,7 +1845,7 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
 
   // Read tilesetID
   LOADDATA(&iTilesetID, pBuffer, sizeof(INT32));
-  pSummary->ubTilesetID = iTilesetID;
+  pSummary.value.ubTilesetID = iTilesetID;
 
   // skip soldier size
   pBuffer += sizeof(INT32);
@@ -1896,8 +1896,8 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
     let ubRoomNum: UINT8;
     for (cnt = 0; cnt < WORLD_MAX; cnt++) {
       LOADDATA(&ubRoomNum, pBuffer, 1);
-      if (ubRoomNum > pSummary->ubNumRooms) {
-        pSummary->ubNumRooms = ubRoomNum;
+      if (ubRoomNum > pSummary.value.ubNumRooms) {
+        pSummary.value.ubNumRooms = ubRoomNum;
       }
     }
   }
@@ -1908,14 +1908,14 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
     // RenderProgressBar( 1, 91 );
     // get number of items (for now)
     LOADDATA(&temp, pBuffer, 4);
-    pSummary->usNumItems = temp;
+    pSummary.value.usNumItems = temp;
     // Important:  Saves the file position (byte offset) of the position where the numitems
     //            resides.  Checking this value and comparing to usNumItems will ensure validity.
-    if (pSummary->usNumItems) {
-      pSummary->uiNumItemsPosition = pBuffer - pBufferHead - 4;
+    if (pSummary.value.usNumItems) {
+      pSummary.value.uiNumItemsPosition = pBuffer - pBufferHead - 4;
     }
     // Skip the contents of the world items.
-    pBuffer += sizeof(WORLDITEM) * pSummary->usNumItems;
+    pBuffer += sizeof(WORLDITEM) * pSummary.value.usNumItems;
   }
 
   if (uiFlags & MAP_AMBIENTLIGHTLEVEL_SAVED) {
@@ -1930,9 +1930,9 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
     LOADDATA(&ubTemp, pBuffer, 1);
     pBuffer += sizeof(SGPPaletteEntry) * ubTemp;
     // get number of lights
-    LOADDATA(&pSummary->usNumLights, pBuffer, 2);
+    LOADDATA(&pSummary.value.usNumLights, pBuffer, 2);
     // skip the light loading
-    for (cnt = 0; cnt < pSummary->usNumLights; cnt++) {
+    for (cnt = 0; cnt < pSummary.value.usNumLights; cnt++) {
       let ubStrLen: UINT8;
       pBuffer += sizeof(LIGHT_SPRITE);
       LOADDATA(&ubStrLen, pBuffer, 1);
@@ -1945,7 +1945,7 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
   // read the mapinformation
   LOADDATA(&mapInfo, pBuffer, sizeof(MAPCREATE_STRUCT));
 
-  memcpy(&pSummary->MapInfo, &mapInfo, sizeof(MAPCREATE_STRUCT));
+  memcpy(&pSummary.value.MapInfo, &mapInfo, sizeof(MAPCREATE_STRUCT));
 
   if (uiFlags & MAP_FULLSOLDIER_SAVED) {
     let pTeam: Pointer<TEAMSUMMARY> = NULL;
@@ -1954,126 +1954,126 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
     RenderProgressBar(0, 94);
     // RenderProgressBar( 1, 94 );
 
-    pSummary->uiEnemyPlacementPosition = pBuffer - pBufferHead;
+    pSummary.value.uiEnemyPlacementPosition = pBuffer - pBufferHead;
 
-    for (i = 0; i < pSummary->MapInfo.ubNumIndividuals; i++) {
+    for (i = 0; i < pSummary.value.MapInfo.ubNumIndividuals; i++) {
       LOADDATA(&basic, pBuffer, sizeof(BASIC_SOLDIERCREATE_STRUCT));
 
       switch (basic.bTeam) {
         case ENEMY_TEAM:
-          pTeam = &pSummary->EnemyTeam;
+          pTeam = &pSummary.value.EnemyTeam;
           break;
         case CREATURE_TEAM:
-          pTeam = &pSummary->CreatureTeam;
+          pTeam = &pSummary.value.CreatureTeam;
           break;
         case MILITIA_TEAM:
-          pTeam = &pSummary->RebelTeam;
+          pTeam = &pSummary.value.RebelTeam;
           break;
         case CIV_TEAM:
-          pTeam = &pSummary->CivTeam;
+          pTeam = &pSummary.value.CivTeam;
           break;
       }
       if (basic.bOrders == RNDPTPATROL || basic.bOrders == POINTPATROL) {
         // make sure the placement has at least one waypoint.
         if (!basic.bPatrolCnt) {
-          pSummary->ubEnemiesReqWaypoints++;
+          pSummary.value.ubEnemiesReqWaypoints++;
         }
       } else if (basic.bPatrolCnt) {
-        pSummary->ubEnemiesHaveWaypoints++;
+        pSummary.value.ubEnemiesHaveWaypoints++;
       }
       if (basic.fPriorityExistance)
-        pTeam->ubExistance++;
+        pTeam.value.ubExistance++;
       switch (basic.bRelativeAttributeLevel) {
         case 0:
-          pTeam->ubBadA++;
+          pTeam.value.ubBadA++;
           break;
         case 1:
-          pTeam->ubPoorA++;
+          pTeam.value.ubPoorA++;
           break;
         case 2:
-          pTeam->ubAvgA++;
+          pTeam.value.ubAvgA++;
           break;
         case 3:
-          pTeam->ubGoodA++;
+          pTeam.value.ubGoodA++;
           break;
         case 4:
-          pTeam->ubGreatA++;
+          pTeam.value.ubGreatA++;
           break;
       }
       switch (basic.bRelativeEquipmentLevel) {
         case 0:
-          pTeam->ubBadE++;
+          pTeam.value.ubBadE++;
           break;
         case 1:
-          pTeam->ubPoorE++;
+          pTeam.value.ubPoorE++;
           break;
         case 2:
-          pTeam->ubAvgE++;
+          pTeam.value.ubAvgE++;
           break;
         case 3:
-          pTeam->ubGoodE++;
+          pTeam.value.ubGoodE++;
           break;
         case 4:
-          pTeam->ubGreatE++;
+          pTeam.value.ubGreatE++;
           break;
       }
       if (basic.fDetailedPlacement) {
         // skip static priority placement
         LOADDATA(&priority, pBuffer, sizeof(SOLDIERCREATE_STRUCT));
         if (priority.ubProfile != NO_PROFILE)
-          pTeam->ubProfile++;
+          pTeam.value.ubProfile++;
         else
-          pTeam->ubDetailed++;
+          pTeam.value.ubDetailed++;
         if (basic.bTeam == CIV_TEAM) {
           if (priority.ubScheduleID)
-            pSummary->ubCivSchedules++;
+            pSummary.value.ubCivSchedules++;
           if (priority.bBodyType == COW)
-            pSummary->ubCivCows++;
+            pSummary.value.ubCivCows++;
           else if (priority.bBodyType == BLOODCAT)
-            pSummary->ubCivBloodcats++;
+            pSummary.value.ubCivBloodcats++;
         }
       }
       if (basic.bTeam == ENEMY_TEAM) {
         switch (basic.ubSoldierClass) {
           case SOLDIER_CLASS_ADMINISTRATOR:
-            pSummary->ubNumAdmins++;
+            pSummary.value.ubNumAdmins++;
             if (basic.fPriorityExistance)
-              pSummary->ubAdminExistance++;
+              pSummary.value.ubAdminExistance++;
             if (basic.fDetailedPlacement) {
               if (priority.ubProfile != NO_PROFILE)
-                pSummary->ubAdminProfile++;
+                pSummary.value.ubAdminProfile++;
               else
-                pSummary->ubAdminDetailed++;
+                pSummary.value.ubAdminDetailed++;
             }
             break;
           case SOLDIER_CLASS_ELITE:
-            pSummary->ubNumElites++;
+            pSummary.value.ubNumElites++;
             if (basic.fPriorityExistance)
-              pSummary->ubEliteExistance++;
+              pSummary.value.ubEliteExistance++;
             if (basic.fDetailedPlacement) {
               if (priority.ubProfile != NO_PROFILE)
-                pSummary->ubEliteProfile++;
+                pSummary.value.ubEliteProfile++;
               else
-                pSummary->ubEliteDetailed++;
+                pSummary.value.ubEliteDetailed++;
             }
             break;
           case SOLDIER_CLASS_ARMY:
-            pSummary->ubNumTroops++;
+            pSummary.value.ubNumTroops++;
             if (basic.fPriorityExistance)
-              pSummary->ubTroopExistance++;
+              pSummary.value.ubTroopExistance++;
             if (basic.fDetailedPlacement) {
               if (priority.ubProfile != NO_PROFILE)
-                pSummary->ubTroopProfile++;
+                pSummary.value.ubTroopProfile++;
               else
-                pSummary->ubTroopDetailed++;
+                pSummary.value.ubTroopDetailed++;
             }
             break;
         }
       } else if (basic.bTeam == CREATURE_TEAM) {
         if (basic.bBodyType == BLOODCAT)
-          pTeam->ubNumAnimals++;
+          pTeam.value.ubNumAnimals++;
       }
-      pTeam->ubTotal++;
+      pTeam.value.ubTotal++;
     }
     RenderProgressBar(0, 96);
     // RenderProgressBar( 1, 96 );
@@ -2093,26 +2093,26 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
       LOADDATA(&usMapIndex, pBuffer, 2);
       LOADDATA(&exitGrid, pBuffer, 5);
       fExitGridFound = FALSE;
-      for (loop = 0; loop < pSummary->ubNumExitGridDests; loop++) {
-        if (pSummary->ExitGrid[loop].usGridNo == exitGrid.usGridNo && pSummary->ExitGrid[loop].ubGotoSectorX == exitGrid.ubGotoSectorX && pSummary->ExitGrid[loop].ubGotoSectorY == exitGrid.ubGotoSectorY && pSummary->ExitGrid[loop].ubGotoSectorZ == exitGrid.ubGotoSectorZ) {
+      for (loop = 0; loop < pSummary.value.ubNumExitGridDests; loop++) {
+        if (pSummary.value.ExitGrid[loop].usGridNo == exitGrid.usGridNo && pSummary.value.ExitGrid[loop].ubGotoSectorX == exitGrid.ubGotoSectorX && pSummary.value.ExitGrid[loop].ubGotoSectorY == exitGrid.ubGotoSectorY && pSummary.value.ExitGrid[loop].ubGotoSectorZ == exitGrid.ubGotoSectorZ) {
           // same destination.
-          pSummary->usExitGridSize[loop]++;
+          pSummary.value.usExitGridSize[loop]++;
           fExitGridFound = TRUE;
           break;
         }
       }
       if (!fExitGridFound) {
         if (loop >= 4) {
-          pSummary->fTooManyExitGridDests = TRUE;
+          pSummary.value.fTooManyExitGridDests = TRUE;
         } else {
-          pSummary->ubNumExitGridDests++;
-          pSummary->usExitGridSize[loop]++;
-          pSummary->ExitGrid[loop].usGridNo = exitGrid.usGridNo;
-          pSummary->ExitGrid[loop].ubGotoSectorX = exitGrid.ubGotoSectorX;
-          pSummary->ExitGrid[loop].ubGotoSectorY = exitGrid.ubGotoSectorY;
-          pSummary->ExitGrid[loop].ubGotoSectorZ = exitGrid.ubGotoSectorZ;
-          if (pSummary->ExitGrid[loop].ubGotoSectorX != exitGrid.ubGotoSectorX || pSummary->ExitGrid[loop].ubGotoSectorY != exitGrid.ubGotoSectorY) {
-            pSummary->fInvalidDest[loop] = TRUE;
+          pSummary.value.ubNumExitGridDests++;
+          pSummary.value.usExitGridSize[loop]++;
+          pSummary.value.ExitGrid[loop].usGridNo = exitGrid.usGridNo;
+          pSummary.value.ExitGrid[loop].ubGotoSectorX = exitGrid.ubGotoSectorX;
+          pSummary.value.ExitGrid[loop].ubGotoSectorY = exitGrid.ubGotoSectorY;
+          pSummary.value.ExitGrid[loop].ubGotoSectorZ = exitGrid.ubGotoSectorZ;
+          if (pSummary.value.ExitGrid[loop].ubGotoSectorX != exitGrid.ubGotoSectorX || pSummary.value.ExitGrid[loop].ubGotoSectorY != exitGrid.ubGotoSectorY) {
+            pSummary.value.fInvalidDest[loop] = TRUE;
           }
         }
       }
@@ -2122,17 +2122,17 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
   if (uiFlags & MAP_DOORTABLE_SAVED) {
     let Door: DOOR;
 
-    LOADDATA(&pSummary->ubNumDoors, pBuffer, 1);
+    LOADDATA(&pSummary.value.ubNumDoors, pBuffer, 1);
 
-    for (cnt = 0; cnt < pSummary->ubNumDoors; cnt++) {
+    for (cnt = 0; cnt < pSummary.value.ubNumDoors; cnt++) {
       LOADDATA(&Door, pBuffer, sizeof(DOOR));
 
       if (Door.ubTrapID && Door.ubLockID)
-        pSummary->ubNumDoorsLockedAndTrapped++;
+        pSummary.value.ubNumDoorsLockedAndTrapped++;
       else if (Door.ubLockID)
-        pSummary->ubNumDoorsLocked++;
+        pSummary.value.ubNumDoorsLocked++;
       else if (Door.ubTrapID)
-        pSummary->ubNumDoorsTrapped++;
+        pSummary.value.ubNumDoorsTrapped++;
     }
   }
 
@@ -2591,7 +2591,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
 
   // CHECK IF OUR SELECTED GUY IS GONE!
   if (gusSelectedSoldier != NO_SOLDIER) {
-    if (MercPtrs[gusSelectedSoldier]->bActive == FALSE) {
+    if (MercPtrs[gusSelectedSoldier].value.bActive == FALSE) {
       gusSelectedSoldier = NO_SOLDIER;
     }
   }
@@ -2686,10 +2686,10 @@ function TrashWorld(): void {
   cnt = 0;
 
   for (pSoldier = MercPtrs[cnt]; cnt < MAX_NUM_SOLDIERS; pSoldier++, cnt++) {
-    if (pSoldier->bActive) {
-      if (pSoldier->bTeam == gbPlayerNum) {
+    if (pSoldier.value.bActive) {
+      if (pSoldier.value.bTeam == gbPlayerNum) {
         // Just delete levelnode
-        pSoldier->pLevelNode = NULL;
+        pSoldier.value.pLevelNode = NULL;
       } else {
         // Delete from world
         TacticalRemoveSoldier(cnt);
@@ -2719,64 +2719,64 @@ function TrashWorld(): void {
     pMapTile = &gpWorldLevelData[cnt];
 
     // Free the memory associated with the map tile link lists
-    pLandNode = pMapTile->pLandHead;
+    pLandNode = pMapTile.value.pLandHead;
     while (pLandNode != NULL) {
-      pMapTile->pLandHead = pLandNode->pNext;
+      pMapTile.value.pLandHead = pLandNode.value.pNext;
       MemFree(pLandNode);
-      pLandNode = pMapTile->pLandHead;
+      pLandNode = pMapTile.value.pLandHead;
     }
 
-    pObjectNode = pMapTile->pObjectHead;
+    pObjectNode = pMapTile.value.pObjectHead;
     while (pObjectNode != NULL) {
-      pMapTile->pObjectHead = pObjectNode->pNext;
+      pMapTile.value.pObjectHead = pObjectNode.value.pNext;
       MemFree(pObjectNode);
-      pObjectNode = pMapTile->pObjectHead;
+      pObjectNode = pMapTile.value.pObjectHead;
     }
 
-    pStructNode = pMapTile->pStructHead;
+    pStructNode = pMapTile.value.pStructHead;
     while (pStructNode != NULL) {
-      pMapTile->pStructHead = pStructNode->pNext;
+      pMapTile.value.pStructHead = pStructNode.value.pNext;
       MemFree(pStructNode);
-      pStructNode = pMapTile->pStructHead;
+      pStructNode = pMapTile.value.pStructHead;
     }
 
-    pShadowNode = pMapTile->pShadowHead;
+    pShadowNode = pMapTile.value.pShadowHead;
     while (pShadowNode != NULL) {
-      pMapTile->pShadowHead = pShadowNode->pNext;
+      pMapTile.value.pShadowHead = pShadowNode.value.pNext;
       MemFree(pShadowNode);
-      pShadowNode = pMapTile->pShadowHead;
+      pShadowNode = pMapTile.value.pShadowHead;
     }
 
-    pMercNode = pMapTile->pMercHead;
+    pMercNode = pMapTile.value.pMercHead;
     while (pMercNode != NULL) {
-      pMapTile->pMercHead = pMercNode->pNext;
+      pMapTile.value.pMercHead = pMercNode.value.pNext;
       MemFree(pMercNode);
-      pMercNode = pMapTile->pMercHead;
+      pMercNode = pMapTile.value.pMercHead;
     }
 
-    pRoofNode = pMapTile->pRoofHead;
+    pRoofNode = pMapTile.value.pRoofHead;
     while (pRoofNode != NULL) {
-      pMapTile->pRoofHead = pRoofNode->pNext;
+      pMapTile.value.pRoofHead = pRoofNode.value.pNext;
       MemFree(pRoofNode);
-      pRoofNode = pMapTile->pRoofHead;
+      pRoofNode = pMapTile.value.pRoofHead;
     }
 
-    pOnRoofNode = pMapTile->pOnRoofHead;
+    pOnRoofNode = pMapTile.value.pOnRoofHead;
     while (pOnRoofNode != NULL) {
-      pMapTile->pOnRoofHead = pOnRoofNode->pNext;
+      pMapTile.value.pOnRoofHead = pOnRoofNode.value.pNext;
       MemFree(pOnRoofNode);
-      pOnRoofNode = pMapTile->pOnRoofHead;
+      pOnRoofNode = pMapTile.value.pOnRoofHead;
     }
 
-    pTopmostNode = pMapTile->pTopmostHead;
+    pTopmostNode = pMapTile.value.pTopmostHead;
     while (pTopmostNode != NULL) {
-      pMapTile->pTopmostHead = pTopmostNode->pNext;
+      pMapTile.value.pTopmostHead = pTopmostNode.value.pNext;
       MemFree(pTopmostNode);
-      pTopmostNode = pMapTile->pTopmostHead;
+      pTopmostNode = pMapTile.value.pTopmostHead;
     }
 
-    while (pMapTile->pStructureHead != NULL) {
-      if (DeleteStructureFromWorld(pMapTile->pStructureHead) == FALSE) {
+    while (pMapTile.value.pStructureHead != NULL) {
+      if (DeleteStructureFromWorld(pMapTile.value.pStructureHead) == FALSE) {
         // ERROR!!!!!!
         break;
       }
@@ -2814,74 +2814,74 @@ function TrashMapTile(MapTile: INT16): void {
   pMapTile = &gpWorldLevelData[MapTile];
 
   // Free the memory associated with the map tile link lists
-  pLandNode = pMapTile->pLandHead;
+  pLandNode = pMapTile.value.pLandHead;
   while (pLandNode != NULL) {
-    pMapTile->pLandHead = pLandNode->pNext;
+    pMapTile.value.pLandHead = pLandNode.value.pNext;
     MemFree(pLandNode);
-    pLandNode = pMapTile->pLandHead;
+    pLandNode = pMapTile.value.pLandHead;
   }
-  pMapTile->pLandHead = pMapTile->pLandStart = NULL;
+  pMapTile.value.pLandHead = pMapTile.value.pLandStart = NULL;
 
-  pObjectNode = pMapTile->pObjectHead;
+  pObjectNode = pMapTile.value.pObjectHead;
   while (pObjectNode != NULL) {
-    pMapTile->pObjectHead = pObjectNode->pNext;
+    pMapTile.value.pObjectHead = pObjectNode.value.pNext;
     MemFree(pObjectNode);
-    pObjectNode = pMapTile->pObjectHead;
+    pObjectNode = pMapTile.value.pObjectHead;
   }
-  pMapTile->pObjectHead = NULL;
+  pMapTile.value.pObjectHead = NULL;
 
-  pStructNode = pMapTile->pStructHead;
+  pStructNode = pMapTile.value.pStructHead;
   while (pStructNode != NULL) {
-    pMapTile->pStructHead = pStructNode->pNext;
+    pMapTile.value.pStructHead = pStructNode.value.pNext;
     MemFree(pStructNode);
-    pStructNode = pMapTile->pStructHead;
+    pStructNode = pMapTile.value.pStructHead;
   }
-  pMapTile->pStructHead = NULL;
+  pMapTile.value.pStructHead = NULL;
 
-  pShadowNode = pMapTile->pShadowHead;
+  pShadowNode = pMapTile.value.pShadowHead;
   while (pShadowNode != NULL) {
-    pMapTile->pShadowHead = pShadowNode->pNext;
+    pMapTile.value.pShadowHead = pShadowNode.value.pNext;
     MemFree(pShadowNode);
-    pShadowNode = pMapTile->pShadowHead;
+    pShadowNode = pMapTile.value.pShadowHead;
   }
-  pMapTile->pShadowHead = NULL;
+  pMapTile.value.pShadowHead = NULL;
 
-  pMercNode = pMapTile->pMercHead;
+  pMercNode = pMapTile.value.pMercHead;
   while (pMercNode != NULL) {
-    pMapTile->pMercHead = pMercNode->pNext;
+    pMapTile.value.pMercHead = pMercNode.value.pNext;
     MemFree(pMercNode);
-    pMercNode = pMapTile->pMercHead;
+    pMercNode = pMapTile.value.pMercHead;
   }
-  pMapTile->pMercHead = NULL;
+  pMapTile.value.pMercHead = NULL;
 
-  pRoofNode = pMapTile->pRoofHead;
+  pRoofNode = pMapTile.value.pRoofHead;
   while (pRoofNode != NULL) {
-    pMapTile->pRoofHead = pRoofNode->pNext;
+    pMapTile.value.pRoofHead = pRoofNode.value.pNext;
     MemFree(pRoofNode);
-    pRoofNode = pMapTile->pRoofHead;
+    pRoofNode = pMapTile.value.pRoofHead;
   }
-  pMapTile->pRoofHead = NULL;
+  pMapTile.value.pRoofHead = NULL;
 
-  pOnRoofNode = pMapTile->pOnRoofHead;
+  pOnRoofNode = pMapTile.value.pOnRoofHead;
   while (pOnRoofNode != NULL) {
-    pMapTile->pOnRoofHead = pOnRoofNode->pNext;
+    pMapTile.value.pOnRoofHead = pOnRoofNode.value.pNext;
     MemFree(pOnRoofNode);
-    pOnRoofNode = pMapTile->pOnRoofHead;
+    pOnRoofNode = pMapTile.value.pOnRoofHead;
   }
-  pMapTile->pOnRoofHead = NULL;
+  pMapTile.value.pOnRoofHead = NULL;
 
-  pTopmostNode = pMapTile->pTopmostHead;
+  pTopmostNode = pMapTile.value.pTopmostHead;
   while (pTopmostNode != NULL) {
-    pMapTile->pTopmostHead = pTopmostNode->pNext;
+    pMapTile.value.pTopmostHead = pTopmostNode.value.pNext;
     MemFree(pTopmostNode);
-    pTopmostNode = pMapTile->pTopmostHead;
+    pTopmostNode = pMapTile.value.pTopmostHead;
   }
-  pMapTile->pTopmostHead = NULL;
+  pMapTile.value.pTopmostHead = NULL;
 
-  while (pMapTile->pStructureHead != NULL) {
-    DeleteStructureFromWorld(pMapTile->pStructureHead);
+  while (pMapTile.value.pStructureHead != NULL) {
+    DeleteStructureFromWorld(pMapTile.value.pStructureHead);
   }
-  pMapTile->pStructureHead = pMapTile->pStructureTail = NULL;
+  pMapTile.value.pStructureHead = pMapTile.value.pStructureTail = NULL;
 }
 
 function LoadMapTileset(iTilesetID: INT32): BOOLEAN {
@@ -2966,16 +2966,16 @@ function AddWireFrame(sGridNo: INT16, usIndex: UINT16, fForced: BOOLEAN): void {
 
   while (pTopmost != NULL) {
     // Check if one of the samer type exists!
-    if (pTopmost->usIndex == usIndex) {
+    if (pTopmost.value.usIndex == usIndex) {
       return;
     }
-    pTopmost = pTopmost->pNext;
+    pTopmost = pTopmost.value.pNext;
   }
 
   pTopmostTail = AddTopmostToTail(sGridNo, usIndex);
 
   if (fForced) {
-    pTopmostTail->uiFlags |= LEVELNODE_WIREFRAME;
+    pTopmostTail.value.uiFlags |= LEVELNODE_WIREFRAME;
   }
 }
 
@@ -2986,7 +2986,7 @@ function GetWireframeGraphicNumToUseForWall(sGridNo: INT16, pStructure: Pointer<
   let usSubIndex: UINT16;
   let pBaseStructure: Pointer<STRUCTURE>;
 
-  ubWallOrientation = pStructure->ubWallOrientation;
+  ubWallOrientation = pStructure.value.ubWallOrientation;
 
   pBaseStructure = FindBaseStructure(pStructure);
 
@@ -2994,15 +2994,15 @@ function GetWireframeGraphicNumToUseForWall(sGridNo: INT16, pStructure: Pointer<
     // Find levelnode...
     pNode = gpWorldLevelData[sGridNo].pStructHead;
     while (pNode != NULL) {
-      if (pNode->pStructureData == pBaseStructure) {
+      if (pNode.value.pStructureData == pBaseStructure) {
         break;
       }
-      pNode = pNode->pNext;
+      pNode = pNode.value.pNext;
     }
 
     if (pNode != NULL) {
       // Get Subindex for this wall...
-      GetSubIndexFromTileIndex(pNode->usIndex, &usSubIndex);
+      GetSubIndexFromTileIndex(pNode.value.usIndex, &usSubIndex);
 
       // Check for broken peices...
       if (usSubIndex == 48 || usSubIndex == 52) {
@@ -3066,12 +3066,12 @@ function CalculateWorldWireFrameTiles(fForce: BOOLEAN): void {
 
       while (pStructure != NULL) {
         // Check for doors
-        if (pStructure->fFlags & STRUCTURE_ANYDOOR) {
+        if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
           // ATE: need this additional check here for hidden doors!
-          if (pStructure->fFlags & STRUCTURE_OPENABLE) {
+          if (pStructure.value.fFlags & STRUCTURE_OPENABLE) {
             // Does the gridno we are over have a non-visible tile?
             // Based on orientation
-            ubWallOrientation = pStructure->ubWallOrientation;
+            ubWallOrientation = pStructure.value.ubWallOrientation;
 
             switch (ubWallOrientation) {
               case OUTSIDE_TOP_LEFT:
@@ -3100,10 +3100,10 @@ function CalculateWorldWireFrameTiles(fForce: BOOLEAN): void {
         }
         // Check for windows
         else {
-          if (pStructure->fFlags & STRUCTURE_WALLNWINDOW) {
+          if (pStructure.value.fFlags & STRUCTURE_WALLNWINDOW) {
             // Does the gridno we are over have a non-visible tile?
             // Based on orientation
-            ubWallOrientation = pStructure->ubWallOrientation;
+            ubWallOrientation = pStructure.value.ubWallOrientation;
 
             switch (ubWallOrientation) {
               case OUTSIDE_TOP_LEFT:
@@ -3131,10 +3131,10 @@ function CalculateWorldWireFrameTiles(fForce: BOOLEAN): void {
           }
 
           // Check for walls
-          if (pStructure->fFlags & STRUCTURE_WALLSTUFF) {
+          if (pStructure.value.fFlags & STRUCTURE_WALLSTUFF) {
             // Does the gridno we are over have a non-visible tile?
             // Based on orientation
-            ubWallOrientation = pStructure->ubWallOrientation;
+            ubWallOrientation = pStructure.value.ubWallOrientation;
 
             usWireFrameIndex = GetWireframeGraphicNumToUseForWall(cnt, pStructure);
 
@@ -3195,7 +3195,7 @@ function CalculateWorldWireFrameTiles(fForce: BOOLEAN): void {
           }
         }
 
-        pStructure = pStructure->pNext;
+        pStructure = pStructure.value.pNext;
       }
     }
   }
@@ -3218,13 +3218,13 @@ function RemoveWireFrameTiles(sGridNo: INT16): void {
   pTopmost = gpWorldLevelData[sGridNo].pTopmostHead;
 
   while (pTopmost != NULL) {
-    pNewTopmost = pTopmost->pNext;
+    pNewTopmost = pTopmost.value.pNext;
 
-    if (pTopmost->usIndex < NUMBEROFTILES) {
-      pTileElement = &(gTileDatabase[pTopmost->usIndex]);
+    if (pTopmost.value.usIndex < NUMBEROFTILES) {
+      pTileElement = &(gTileDatabase[pTopmost.value.usIndex]);
 
-      if (pTileElement->fType == WIREFRAMES) {
-        RemoveTopmost(sGridNo, pTopmost->usIndex);
+      if (pTileElement.value.fType == WIREFRAMES) {
+        RemoveTopmost(sGridNo, pTopmost.value.usIndex);
       }
     }
 
@@ -3305,7 +3305,7 @@ function SaveMapLights(hfile: HWFILE): void {
       fSoldierLight = FALSE;
       for (cnt2 = 0; cnt2 < MAX_NUM_SOLDIERS && !fSoldierLight; cnt2++) {
         if (GetSoldier(&pSoldier, cnt2)) {
-          if (pSoldier->iLight == cnt)
+          if (pSoldier.value.iLight == cnt)
             fSoldierLight = TRUE;
         }
       }
@@ -3323,7 +3323,7 @@ function SaveMapLights(hfile: HWFILE): void {
       fSoldierLight = FALSE;
       for (cnt2 = 0; cnt2 < MAX_NUM_SOLDIERS && !fSoldierLight; cnt2++) {
         if (GetSoldier(&pSoldier, cnt2)) {
-          if (pSoldier->iLight == cnt)
+          if (pSoldier.value.iLight == cnt)
             fSoldierLight = TRUE;
         }
       }

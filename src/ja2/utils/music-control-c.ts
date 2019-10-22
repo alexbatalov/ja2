@@ -49,8 +49,8 @@ function NoEnemiesInSight(): BOOLEAN {
 
   // look for all mercs on the same team,
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
-    if (pSoldier->bActive && pSoldier->bLife >= OKLIFE) {
-      if (pSoldier->bOppCnt != 0) {
+    if (pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE) {
+      if (pSoldier.value.bOppCnt != 0) {
         return FALSE;
       }
     }

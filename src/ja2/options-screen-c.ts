@@ -608,7 +608,7 @@ function GetOptionsScreenUserInput(): void {
         case 's':
         case 'S':
           // if the save game button isnt disabled
-          if (ButtonList[guiOptGotoSaveGameBtn]->uiFlags & BUTTON_ENABLED) {
+          if (ButtonList[guiOptGotoSaveGameBtn].value.uiFlags & BUTTON_ENABLED) {
             SetOptionsExitScreen(SAVE_LOAD_SCREEN);
             gfSaveGame = TRUE;
           }
@@ -632,78 +632,78 @@ function SetOptionsExitScreen(uiExitScreen: UINT32): void {
 
 function BtnOptGotoSaveGameCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     SetOptionsExitScreen(SAVE_LOAD_SCREEN);
     gfSaveGame = TRUE;
 
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
 function BtnOptGotoLoadGameCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     SetOptionsExitScreen(SAVE_LOAD_SCREEN);
     gfSaveGame = FALSE;
 
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
 function BtnOptQuitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // Confirm the Exit to the main menu screen
     DoOptionsMessageBox(MSG_BOX_BASIC_STYLE, zOptionsText[OPT_RETURN_TO_MAIN], OPTIONS_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmQuitToMainMenuMessageBoxCallBack);
 
     ///		SetOptionsExitScreen( MAINMENU_SCREEN );
 
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
 function BtnDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     SetOptionsExitScreen(guiPreviousOptionScreen);
 
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
@@ -711,23 +711,23 @@ function BtnOptionsTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
   let ubButton: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       HandleOptionToggle(ubButton, TRUE, FALSE, FALSE);
 
       //			gGameSettings.fOptions[ ubButton ] = TRUE;
-      btn->uiFlags |= BUTTON_CLICKED_ON;
+      btn.value.uiFlags |= BUTTON_CLICKED_ON;
     } else {
-      btn->uiFlags &= ~BUTTON_CLICKED_ON;
+      btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
 
       HandleOptionToggle(ubButton, FALSE, FALSE, FALSE);
     }
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       HandleOptionToggle(ubButton, TRUE, TRUE, FALSE);
 
-      btn->uiFlags |= BUTTON_CLICKED_ON;
+      btn.value.uiFlags |= BUTTON_CLICKED_ON;
     } else {
-      btn->uiFlags &= ~BUTTON_CLICKED_ON;
+      btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
 
       HandleOptionToggle(ubButton, FALSE, TRUE, FALSE);
     }
@@ -742,14 +742,14 @@ function HandleOptionToggle(ubButton: UINT8, fState: BOOLEAN, fDown: BOOLEAN, fP
   if (fState) {
     gGameSettings.fOptions[ubButton] = TRUE;
 
-    ButtonList[guiOptionsToggles[ubButton]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiOptionsToggles[ubButton]].value.uiFlags |= BUTTON_CLICKED_ON;
 
     if (fDown)
       DrawCheckBoxButtonOn(guiOptionsToggles[ubButton]);
   } else {
     gGameSettings.fOptions[ubButton] = FALSE;
 
-    ButtonList[guiOptionsToggles[ubButton]]->uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[guiOptionsToggles[ubButton]].value.uiFlags &= ~BUTTON_CLICKED_ON;
 
     if (fDown)
       DrawCheckBoxButtonOff(guiOptionsToggles[ubButton]);
@@ -757,10 +757,10 @@ function HandleOptionToggle(ubButton: UINT8, fState: BOOLEAN, fDown: BOOLEAN, fP
     // check to see if the user is unselecting either the spech or subtitles toggle
     if (ubButton == TOPTION_SPEECH || ubButton == TOPTION_SUBTITLES) {
       // make sure that at least of of the toggles is still enabled
-      if (!(ButtonList[guiOptionsToggles[TOPTION_SPEECH]]->uiFlags & BUTTON_CLICKED_ON)) {
-        if (!(ButtonList[guiOptionsToggles[TOPTION_SUBTITLES]]->uiFlags & BUTTON_CLICKED_ON)) {
+      if (!(ButtonList[guiOptionsToggles[TOPTION_SPEECH]].value.uiFlags & BUTTON_CLICKED_ON)) {
+        if (!(ButtonList[guiOptionsToggles[TOPTION_SUBTITLES]].value.uiFlags & BUTTON_CLICKED_ON)) {
           gGameSettings.fOptions[ubButton] = TRUE;
-          ButtonList[guiOptionsToggles[ubButton]]->uiFlags |= BUTTON_CLICKED_ON;
+          ButtonList[guiOptionsToggles[ubButton]].value.uiFlags |= BUTTON_CLICKED_ON;
 
           // Confirm the Exit to the main menu screen
           DoOptionsMessageBox(MSG_BOX_BASIC_STYLE, zOptionsText[OPT_NEED_AT_LEAST_SPEECH_OR_SUBTITLE_OPTION_ON], OPTIONS_SCREEN, MSG_BOX_FLAG_OK, NULL);
@@ -845,9 +845,9 @@ function SetOptionsScreenToggleBoxes(): void {
 
   for (cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
     if (gGameSettings.fOptions[cnt])
-      ButtonList[guiOptionsToggles[cnt]]->uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiOptionsToggles[cnt]].value.uiFlags |= BUTTON_CLICKED_ON;
     else
-      ButtonList[guiOptionsToggles[cnt]]->uiFlags &= (~BUTTON_CLICKED_ON);
+      ButtonList[guiOptionsToggles[cnt]].value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
@@ -855,7 +855,7 @@ function GetOptionsScreenToggleBoxes(): void {
   let cnt: UINT8;
 
   for (cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
-    if (ButtonList[guiOptionsToggles[cnt]]->uiFlags & BUTTON_CLICKED_ON)
+    if (ButtonList[guiOptionsToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON)
       gGameSettings.fOptions[cnt] = TRUE;
     else
       gGameSettings.fOptions[cnt] = FALSE;
@@ -896,7 +896,7 @@ function SelectedOptionTextRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReaso
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     HandleOptionToggle(ubButton, (!gGameSettings.fOptions[ubButton]), FALSE, TRUE);
 
-    InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
+    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
   }
 
   else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) // iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT ||
@@ -917,11 +917,11 @@ function SelectedOptionTextRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>
 
     gbHighLightedOptionText = -1;
 
-    InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
+    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     gbHighLightedOptionText = bButton;
 
-    InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
+    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
   }
 }
 
@@ -944,7 +944,7 @@ function HandleHighLightedText(fHighLight: BOOLEAN): void {
       continue;
     }
 
-    if (ButtonList[guiOptionsToggles[ubCnt]]->Area.uiFlags & MSYS_MOUSE_IN_AREA) {
+    if (ButtonList[guiOptionsToggles[ubCnt]].value.Area.uiFlags & MSYS_MOUSE_IN_AREA) {
       gbHighLightedOptionText = ubCnt;
       fHighLight = TRUE;
     }
@@ -1010,11 +1010,11 @@ function SelectedToggleBoxAreaRegionMovementCallBack(pRegion: Pointer<MOUSE_REGI
 
     // loop through all the toggle box's and remove the in area flag
     for (ubCnt = 0; ubCnt < NUM_GAME_OPTIONS; ubCnt++) {
-      ButtonList[guiOptionsToggles[ubCnt]]->Area.uiFlags &= ~MSYS_MOUSE_IN_AREA;
+      ButtonList[guiOptionsToggles[ubCnt]].value.Area.uiFlags &= ~MSYS_MOUSE_IN_AREA;
     }
 
     gbHighLightedOptionText = -1;
 
-    InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
+    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
   }
 }

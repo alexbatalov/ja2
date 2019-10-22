@@ -46,7 +46,7 @@ function BeginAutoBandage(): void {
   // check for anyone needing bandages
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
     // if the soldier isn't active or in sector, we have problems..leave
-    if (!(pSoldier->bActive) || !(pSoldier->bInSector) || (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier->bAssignment == VEHICLE)) {
+    if (!(pSoldier.value.bActive) || !(pSoldier.value.bInSector) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.bAssignment == VEHICLE)) {
       continue;
     }
 
@@ -101,9 +101,9 @@ function HandleAutoBandagePending(): void {
     cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
     for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++, pSoldier++) {
       // Are we in sector?
-      if (pSoldier->bActive) {
-        if (pSoldier->sSectorX == gWorldSectorX && pSoldier->sSectorY == gWorldSectorY && pSoldier->bSectorZ == gbWorldSectorZ && !pSoldier->fBetweenSectors) {
-          if (pSoldier->ubPendingAction != NO_PENDING_ACTION) {
+      if (pSoldier.value.bActive) {
+        if (pSoldier.value.sSectorX == gWorldSectorX && pSoldier.value.sSectorY == gWorldSectorY && pSoldier.value.bSectorZ == gbWorldSectorZ && !pSoldier.value.fBetweenSectors) {
+          if (pSoldier.value.ubPendingAction != NO_PENDING_ACTION) {
             return;
           }
         }
@@ -208,12 +208,12 @@ function CreateAutoBandageString(): BOOLEAN {
 
   cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++, pSoldier++) {
-    if (pSoldier->bActive && pSoldier->bInSector && pSoldier->bLife >= OKLIFE && !(pSoldier->bCollapsed) && pSoldier->bMedical > 0 && FindObjClass(pSoldier, IC_MEDKIT) != NO_SLOT) {
-      ubDoctor[ubDoctors] = pSoldier->ubID;
+    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife >= OKLIFE && !(pSoldier.value.bCollapsed) && pSoldier.value.bMedical > 0 && FindObjClass(pSoldier, IC_MEDKIT) != NO_SLOT) {
+      ubDoctor[ubDoctors] = pSoldier.value.ubID;
       ubDoctors++;
       // increase the length of the string by the size of the name
       // plus 2, one for the comma and one for the space after that
-      uiDoctorNameStringLength += wcslen(pSoldier->name) + 2;
+      uiDoctorNameStringLength += wcslen(pSoldier.value.name) + 2;
     }
   }
   if (ubDoctors == 0) {
@@ -232,7 +232,7 @@ function CreateAutoBandageString(): BOOLEAN {
   }
 
   if (ubDoctors == 1) {
-    swprintf(sAutoBandageString, Message[STR_IS_APPLYING_FIRST_AID], MercPtrs[ubDoctor[0]]->name);
+    swprintf(sAutoBandageString, Message[STR_IS_APPLYING_FIRST_AID], MercPtrs[ubDoctor[0]].value.name);
   } else {
     // make a temporary string to hold most of the doctors names joined by commas
     sTemp = MemAlloc(uiDoctorNameStringLength * sizeof(CHAR16));
@@ -242,7 +242,7 @@ function CreateAutoBandageString(): BOOLEAN {
     }
     wcscpy(sTemp, "");
     for (cnt = 0; cnt < ubDoctors - 1; cnt++) {
-      wcscat(sTemp, MercPtrs[ubDoctor[cnt]]->name);
+      wcscat(sTemp, MercPtrs[ubDoctor[cnt]].value.name);
       if (ubDoctors > 2) {
         if (cnt == ubDoctors - 2) {
           wcscat(sTemp, ",");
@@ -251,7 +251,7 @@ function CreateAutoBandageString(): BOOLEAN {
         }
       }
     }
-    swprintf(sAutoBandageString, Message[STR_ARE_APPLYING_FIRST_AID], sTemp, MercPtrs[ubDoctor[ubDoctors - 1]]->name);
+    swprintf(sAutoBandageString, Message[STR_ARE_APPLYING_FIRST_AID], sTemp, MercPtrs[ubDoctor[ubDoctors - 1]].value.name);
     MemFree(sTemp);
   }
   return TRUE;
@@ -289,9 +289,9 @@ function AutoBandage(fStart: BOOLEAN): void {
 
     cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
     for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++, pSoldier++) {
-      if (pSoldier->bActive) {
-        pSoldier->bSlotItemTakenFrom = NO_SLOT;
-        pSoldier->ubAutoBandagingMedic = NOBODY;
+      if (pSoldier.value.bActive) {
+        pSoldier.value.bSlotItemTakenFrom = NO_SLOT;
+        pSoldier.value.ubAutoBandagingMedic = NOBODY;
       }
     }
 
@@ -321,16 +321,16 @@ function AutoBandage(fStart: BOOLEAN): void {
     // make sure anyone under AI control has their action cancelled
     cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
     for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++, pSoldier++) {
-      if (pSoldier->bActive) {
+      if (pSoldier.value.bActive) {
         ActionDone(pSoldier);
-        if (pSoldier->bSlotItemTakenFrom != NO_SLOT) {
+        if (pSoldier.value.bSlotItemTakenFrom != NO_SLOT) {
           // swap our old hand item back to the main hand
-          SwapObjs(&(pSoldier->inv[HANDPOS]), &(pSoldier->inv[pSoldier->bSlotItemTakenFrom]));
+          SwapObjs(&(pSoldier.value.inv[HANDPOS]), &(pSoldier.value.inv[pSoldier.value.bSlotItemTakenFrom]));
         }
 
         // ATE: Mkae everyone stand up!
-        if (pSoldier->bLife >= OKLIFE && !pSoldier->bCollapsed) {
-          if (gAnimControl[pSoldier->usAnimState].ubHeight != ANIM_STAND) {
+        if (pSoldier.value.bLife >= OKLIFE && !pSoldier.value.bCollapsed) {
+          if (gAnimControl[pSoldier.value.usAnimState].ubHeight != ANIM_STAND) {
             ChangeSoldierStance(pSoldier, ANIM_STAND);
           }
         }
@@ -342,7 +342,7 @@ function AutoBandage(fStart: BOOLEAN): void {
       ActionDone(MercPtrs[ubLoop]);
 
       // If anyone is still doing aid animation, stop!
-      if (MercPtrs[ubLoop]->usAnimState == GIVING_AID) {
+      if (MercPtrs[ubLoop].value.usAnimState == GIVING_AID) {
         SoldierGotoStationaryStance(MercPtrs[ubLoop]);
       }
     }
@@ -763,10 +763,10 @@ function CreateTerminateAutoBandageButton(sX: INT16, sY: INT16): void {
 
 function StopAutoBandageButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       fEndAutoBandage = TRUE;
     }
   }
@@ -909,31 +909,31 @@ function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosit
   }
 
   // is the merc alive?
-  if (!pSoldier->bLife)
+  if (!pSoldier.value.bLife)
     return FALSE;
 
   // yellow one for bleeding
-  iStartY = sCurrentYPosition + 29 - 27 * pSoldier->bLifeMax / 100;
+  iStartY = sCurrentYPosition + 29 - 27 * pSoldier.value.bLifeMax / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 36, iStartY, sCurrentXPosition + 37, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(107, 107, 57)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 37, iStartY, sCurrentXPosition + 38, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(222, 181, 115)));
 
   // pink one for bandaged.
-  iStartY += 27 * pSoldier->bBleeding / 100;
+  iStartY += 27 * pSoldier.value.bBleeding / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 36, iStartY, sCurrentXPosition + 37, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(156, 57, 57)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 37, iStartY, sCurrentXPosition + 38, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(222, 132, 132)));
 
   // red one for actual health
-  iStartY = sCurrentYPosition + 29 - 27 * pSoldier->bLife / 100;
+  iStartY = sCurrentYPosition + 29 - 27 * pSoldier.value.bLife / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 36, iStartY, sCurrentXPosition + 37, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(107, 8, 8)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 37, iStartY, sCurrentXPosition + 38, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(206, 0, 0)));
 
   // BREATH BAR
-  iStartY = sCurrentYPosition + 29 - 27 * pSoldier->bBreathMax / 100;
+  iStartY = sCurrentYPosition + 29 - 27 * pSoldier.value.bBreathMax / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 39, iStartY, sCurrentXPosition + 40, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 8, 132)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 40, iStartY, sCurrentXPosition + 41, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 8, 107)));
 
   // MORALE BAR
-  iStartY = sCurrentYPosition + 29 - 27 * pSoldier->bMorale / 100;
+  iStartY = sCurrentYPosition + 29 - 27 * pSoldier.value.bMorale / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 42, iStartY, sCurrentXPosition + 43, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 156, 8)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 43, iStartY, sCurrentXPosition + 44, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 107, 8)));
 

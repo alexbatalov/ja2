@@ -559,18 +559,18 @@ function StartSomeMercsOnAssignment(): void {
     pProfile = &(gMercProfiles[uiCnt]);
 
     // calc chance to start on assignment
-    uiChance = 5 * pProfile->bExpLevel;
+    uiChance = 5 * pProfile.value.bExpLevel;
 
     if (Random(100) < uiChance) {
-      pProfile->bMercStatus = MERC_WORKING_ELSEWHERE;
-      pProfile->uiDayBecomesAvailable = 1 + Random(6 + (pProfile->bExpLevel / 2)); // 1-(6 to 11) days
+      pProfile.value.bMercStatus = MERC_WORKING_ELSEWHERE;
+      pProfile.value.uiDayBecomesAvailable = 1 + Random(6 + (pProfile.value.bExpLevel / 2)); // 1-(6 to 11) days
     } else {
-      pProfile->bMercStatus = MERC_OK;
-      pProfile->uiDayBecomesAvailable = 0;
+      pProfile.value.bMercStatus = MERC_OK;
+      pProfile.value.uiDayBecomesAvailable = 0;
     }
 
-    pProfile->uiPrecedentQuoteSaid = 0;
-    pProfile->ubDaysOfMoraleHangover = 0;
+    pProfile.value.uiPrecedentQuoteSaid = 0;
+    pProfile.value.ubDaysOfMoraleHangover = 0;
   }
 }
 
@@ -591,18 +591,18 @@ function CalcCompetence(pProfile: Pointer<MERCPROFILESTRUCT>): UINT16 {
 
   // count life twice 'cause it's also hit points
   // mental skills are halved 'cause they're actually not that important within the game
-  uiStats = ((2 * pProfile->bLifeMax) + pProfile->bStrength + pProfile->bAgility + pProfile->bDexterity + ((pProfile->bLeadership + pProfile->bWisdom) / 2)) / 3;
+  uiStats = ((2 * pProfile.value.bLifeMax) + pProfile.value.bStrength + pProfile.value.bAgility + pProfile.value.bDexterity + ((pProfile.value.bLeadership + pProfile.value.bWisdom) / 2)) / 3;
 
   // marksmanship is very important, count it double
-  uiSkills = ((2 * (pow(pProfile->bMarksmanship, 3) / 10000)) + 1.5 * (pow(pProfile->bMedical, 3) / 10000) + (pow(pProfile->bMechanical, 3) / 10000) + (pow(pProfile->bExplosive, 3) / 10000));
+  uiSkills = ((2 * (pow(pProfile.value.bMarksmanship, 3) / 10000)) + 1.5 * (pow(pProfile.value.bMedical, 3) / 10000) + (pow(pProfile.value.bMechanical, 3) / 10000) + (pow(pProfile.value.bExplosive, 3) / 10000));
 
   // action points
-  uiActionPoints = 5 + (((10 * pProfile->bExpLevel + 3 * pProfile->bAgility + 2 * pProfile->bLifeMax + 2 * pProfile->bDexterity) + 20) / 40);
+  uiActionPoints = 5 + (((10 * pProfile.value.bExpLevel + 3 * pProfile.value.bAgility + 2 * pProfile.value.bLifeMax + 2 * pProfile.value.bDexterity) + 20) / 40);
 
   // count how many he has, don't care what they are
-  uiSpecialSkills = ((pProfile->bSkillTrait != 0) ? 1 : 0) + ((pProfile->bSkillTrait2 != 0) ? 1 : 0);
+  uiSpecialSkills = ((pProfile.value.bSkillTrait != 0) ? 1 : 0) + ((pProfile.value.bSkillTrait2 != 0) ? 1 : 0);
 
-  usCompetence = ((pow(pProfile->bExpLevel, 0.2) * uiStats * uiSkills * (uiActionPoints - 6) * (1 + (0.05 * uiSpecialSkills))) / 1000);
+  usCompetence = ((pow(pProfile.value.bExpLevel, 0.2) * uiStats * uiSkills * (uiActionPoints - 6) * (1 + (0.05 * uiSpecialSkills))) / 1000);
 
   // this currently varies from about 10 (Flo) to 1200 (Gus)
   return usCompetence;
@@ -629,7 +629,7 @@ function FindSoldierByProfileID(ubProfileID: UINT8, fPlayerMercsOnly: BOOLEAN): 
   }
 
   for (ubLoop = 0, pSoldier = MercPtrs[0]; ubLoop < ubLoopLimit; ubLoop++, pSoldier++) {
-    if (pSoldier->bActive && pSoldier->ubProfile == ubProfileID) {
+    if (pSoldier.value.bActive && pSoldier.value.ubProfile == ubProfileID) {
       return pSoldier;
     }
   }
@@ -654,12 +654,12 @@ function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Point
   }
 
   // Save merc id for this guy...
-  ubID = pSoldier->ubID;
+  ubID = pSoldier.value.ubID;
 
   ubOldID = ubID;
-  uiOldUniqueId = pSoldier->uiUniqueSoldierIdValue;
+  uiOldUniqueId = pSoldier.value.uiUniqueSoldierIdValue;
 
-  sOldGridNo = pSoldier->sGridNo;
+  sOldGridNo = pSoldier.value.sGridNo;
 
   // Remove him from the game!
   InternalTacticalRemoveSoldier(ubID, FALSE);
@@ -667,18 +667,18 @@ function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Point
   // Create a new one!
   memset(&MercCreateStruct, 0, sizeof(MercCreateStruct));
   MercCreateStruct.bTeam = ubTeam;
-  MercCreateStruct.ubProfile = pSoldier->ubProfile;
-  MercCreateStruct.bBodyType = pSoldier->ubBodyType;
-  MercCreateStruct.sSectorX = pSoldier->sSectorX;
-  MercCreateStruct.sSectorY = pSoldier->sSectorY;
-  MercCreateStruct.bSectorZ = pSoldier->bSectorZ;
-  MercCreateStruct.sInsertionGridNo = pSoldier->sGridNo;
-  MercCreateStruct.bDirection = pSoldier->bDirection;
+  MercCreateStruct.ubProfile = pSoldier.value.ubProfile;
+  MercCreateStruct.bBodyType = pSoldier.value.ubBodyType;
+  MercCreateStruct.sSectorX = pSoldier.value.sSectorX;
+  MercCreateStruct.sSectorY = pSoldier.value.sSectorY;
+  MercCreateStruct.bSectorZ = pSoldier.value.bSectorZ;
+  MercCreateStruct.sInsertionGridNo = pSoldier.value.sGridNo;
+  MercCreateStruct.bDirection = pSoldier.value.bDirection;
 
-  if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
     MercCreateStruct.ubProfile = NO_PROFILE;
     MercCreateStruct.fUseGivenVehicle = TRUE;
-    MercCreateStruct.bUseGivenVehicleID = pSoldier->bVehicleID;
+    MercCreateStruct.bUseGivenVehicleID = pSoldier.value.bVehicleID;
   }
 
   if (ubTeam == gbPlayerNum) {
@@ -689,29 +689,29 @@ function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Point
     pNewSoldier = MercPtrs[ubID];
 
     // Copy vital stats back!
-    pNewSoldier->bLife = pSoldier->bLife;
-    pNewSoldier->bLifeMax = pSoldier->bLifeMax;
-    pNewSoldier->bAgility = pSoldier->bAgility;
-    pNewSoldier->bLeadership = pSoldier->bLeadership;
-    pNewSoldier->bDexterity = pSoldier->bDexterity;
-    pNewSoldier->bStrength = pSoldier->bStrength;
-    pNewSoldier->bWisdom = pSoldier->bWisdom;
-    pNewSoldier->bExpLevel = pSoldier->bExpLevel;
-    pNewSoldier->bMarksmanship = pSoldier->bMarksmanship;
-    pNewSoldier->bMedical = pSoldier->bMedical;
-    pNewSoldier->bMechanical = pSoldier->bMechanical;
-    pNewSoldier->bExplosive = pSoldier->bExplosive;
-    pNewSoldier->bScientific = pSoldier->bScientific;
-    pNewSoldier->bLastRenderVisibleValue = pSoldier->bLastRenderVisibleValue;
-    pNewSoldier->bVisible = pSoldier->bVisible;
+    pNewSoldier.value.bLife = pSoldier.value.bLife;
+    pNewSoldier.value.bLifeMax = pSoldier.value.bLifeMax;
+    pNewSoldier.value.bAgility = pSoldier.value.bAgility;
+    pNewSoldier.value.bLeadership = pSoldier.value.bLeadership;
+    pNewSoldier.value.bDexterity = pSoldier.value.bDexterity;
+    pNewSoldier.value.bStrength = pSoldier.value.bStrength;
+    pNewSoldier.value.bWisdom = pSoldier.value.bWisdom;
+    pNewSoldier.value.bExpLevel = pSoldier.value.bExpLevel;
+    pNewSoldier.value.bMarksmanship = pSoldier.value.bMarksmanship;
+    pNewSoldier.value.bMedical = pSoldier.value.bMedical;
+    pNewSoldier.value.bMechanical = pSoldier.value.bMechanical;
+    pNewSoldier.value.bExplosive = pSoldier.value.bExplosive;
+    pNewSoldier.value.bScientific = pSoldier.value.bScientific;
+    pNewSoldier.value.bLastRenderVisibleValue = pSoldier.value.bLastRenderVisibleValue;
+    pNewSoldier.value.bVisible = pSoldier.value.bVisible;
 
     if (ubTeam == gbPlayerNum) {
-      pNewSoldier->bVisible = 1;
+      pNewSoldier.value.bVisible = 1;
     }
 
     // Copy over any items....
     for (cnt = 0; cnt < NUM_INV_SLOTS; cnt++) {
-      pNewSoldier->inv[cnt] = pSoldier->inv[cnt];
+      pNewSoldier.value.inv[cnt] = pSoldier.value.inv[cnt];
     }
 
     // OK, loop through all active merc slots, change
@@ -720,34 +720,34 @@ function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Point
       pGroupMember = MercSlots[uiSlot];
 
       if (pGroupMember != NULL) {
-        if (pGroupMember->ubTargetID == pSoldier->ubID) {
-          pGroupMember->ubTargetID = pNewSoldier->ubID;
+        if (pGroupMember.value.ubTargetID == pSoldier.value.ubID) {
+          pGroupMember.value.ubTargetID = pNewSoldier.value.ubID;
         }
       }
     }
 
     // Set insertion gridNo
-    pNewSoldier->sInsertionGridNo = sOldGridNo;
+    pNewSoldier.value.sInsertionGridNo = sOldGridNo;
 
     if (gfPotentialTeamChangeDuringDeath) {
       HandleCheckForDeathCommonCode(pSoldier);
     }
 
-    if (gfWorldLoaded && pSoldier->bInSector
+    if (gfWorldLoaded && pSoldier.value.bInSector
         // pSoldier->sSectorX == gWorldSectorX && pSoldier->sSectorY == gWorldSectorY && pSoldier->bSectorZ == gbWorldSectorZ
     ) {
-      AddSoldierToSectorNoCalculateDirectionUseAnimation(ubID, pSoldier->usAnimState, pSoldier->usAniCode);
+      AddSoldierToSectorNoCalculateDirectionUseAnimation(ubID, pSoldier.value.usAnimState, pSoldier.value.usAniCode);
       HandleSight(pNewSoldier, SIGHT_LOOK | SIGHT_RADIO);
     }
 
     // fix up the event queue...
     //	ChangeSoldierIDInQueuedEvents( ubOldID, uiOldUniqueId, pNewSoldier->ubID, pNewSoldier->uiUniqueSoldierIdValue );
 
-    if (pNewSoldier->ubProfile != NO_PROFILE) {
+    if (pNewSoldier.value.ubProfile != NO_PROFILE) {
       if (ubTeam == gbPlayerNum) {
-        gMercProfiles[pNewSoldier->ubProfile].ubMiscFlags |= PROFILE_MISC_FLAG_RECRUITED;
+        gMercProfiles[pNewSoldier.value.ubProfile].ubMiscFlags |= PROFILE_MISC_FLAG_RECRUITED;
       } else {
-        gMercProfiles[pNewSoldier->ubProfile].ubMiscFlags &= (~PROFILE_MISC_FLAG_RECRUITED);
+        gMercProfiles[pNewSoldier.value.ubProfile].ubMiscFlags &= (~PROFILE_MISC_FLAG_RECRUITED);
       }
     }
   }
@@ -782,11 +782,11 @@ function RecruitRPC(ubCharNum: UINT8): BOOLEAN {
   // handle set up any RPC's that will leave us in time
   if (ubCharNum == SLAY) {
     // slay will leave in a week
-    pNewSoldier->iEndofContractTime = GetWorldTotalMin() + (7 * 24 * 60);
+    pNewSoldier.value.iEndofContractTime = GetWorldTotalMin() + (7 * 24 * 60);
 
     KickOutWheelchair(pNewSoldier);
   } else if (ubCharNum == DYNAMO && gubQuest[QUEST_FREE_DYNAMO] == QUESTINPROGRESS) {
-    EndQuest(QUEST_FREE_DYNAMO, pSoldier->sSectorX, pSoldier->sSectorY);
+    EndQuest(QUEST_FREE_DYNAMO, pSoldier.value.sSectorX, pSoldier.value.sSectorY);
   }
   // handle town loyalty adjustment
   HandleTownLoyaltyForNPCRecruitment(pNewSoldier);
@@ -796,24 +796,24 @@ function RecruitRPC(ubCharNum: UINT8): BOOLEAN {
     AddCharacterToAnySquad(pNewSoldier);
   }
 
-  ResetDeadSquadMemberList(pNewSoldier->bAssignment);
+  ResetDeadSquadMemberList(pNewSoldier.value.bAssignment);
 
   DirtyMercPanelInterface(pNewSoldier, DIRTYLEVEL2);
 
-  if (pNewSoldier->inv[HANDPOS].usItem == NOTHING) {
+  if (pNewSoldier.value.inv[HANDPOS].usItem == NOTHING) {
     // empty handed - swap in first available weapon
     let bSlot: INT8;
 
     bSlot = FindObjClass(pNewSoldier, IC_WEAPON);
     if (bSlot != NO_SLOT) {
-      if (Item[pNewSoldier->inv[bSlot].usItem].fFlags & ITEM_TWO_HANDED) {
-        if (bSlot != SECONDHANDPOS && pNewSoldier->inv[SECONDHANDPOS].usItem != NOTHING) {
+      if (Item[pNewSoldier.value.inv[bSlot].usItem].fFlags & ITEM_TWO_HANDED) {
+        if (bSlot != SECONDHANDPOS && pNewSoldier.value.inv[SECONDHANDPOS].usItem != NOTHING) {
           // need to move second hand item out first
-          AutoPlaceObject(pNewSoldier, &(pNewSoldier->inv[SECONDHANDPOS]), FALSE);
+          AutoPlaceObject(pNewSoldier, &(pNewSoldier.value.inv[SECONDHANDPOS]), FALSE);
         }
       }
       // swap item to hand
-      SwapObjs(&(pNewSoldier->inv[bSlot]), &(pNewSoldier->inv[HANDPOS]));
+      SwapObjs(&(pNewSoldier.value.inv[bSlot]), &(pNewSoldier.value.inv[HANDPOS]));
     }
   }
 
@@ -823,16 +823,16 @@ function RecruitRPC(ubCharNum: UINT8): BOOLEAN {
   }
 
   // Set whatkind of merc am i
-  pNewSoldier->ubWhatKindOfMercAmI = MERC_TYPE__NPC;
+  pNewSoldier.value.ubWhatKindOfMercAmI = MERC_TYPE__NPC;
 
   //
   // add a history log that tells the user that a npc has joined the team
   //
   // ( pass in pNewSoldier->sSectorX cause if its invalid, -1, n/a will appear as the sector in the history log )
-  AddHistoryToPlayersLog(HISTORY_RPC_JOINED_TEAM, pNewSoldier->ubProfile, GetWorldTotalMin(), pNewSoldier->sSectorX, pNewSoldier->sSectorY);
+  AddHistoryToPlayersLog(HISTORY_RPC_JOINED_TEAM, pNewSoldier.value.ubProfile, GetWorldTotalMin(), pNewSoldier.value.sSectorX, pNewSoldier.value.sSectorY);
 
   // remove the merc from the Personnel screens departed list ( if they have never been hired before, its ok to call it )
-  RemoveNewlyHiredMercFromPersonnelDepartedList(pSoldier->ubProfile);
+  RemoveNewlyHiredMercFromPersonnelDepartedList(pSoldier.value.ubProfile);
 
   return TRUE;
 }
@@ -855,14 +855,14 @@ function RecruitEPC(ubCharNum: UINT8): BOOLEAN {
 
   // Add this guy to our team!
   pNewSoldier = ChangeSoldierTeam(pSoldier, gbPlayerNum);
-  pNewSoldier->ubWhatKindOfMercAmI = MERC_TYPE__EPC;
+  pNewSoldier.value.ubWhatKindOfMercAmI = MERC_TYPE__EPC;
 
   // Try putting them into the current squad
   if (AddCharacterToSquad(pNewSoldier, CurrentSquad()) == FALSE) {
     AddCharacterToAnySquad(pNewSoldier);
   }
 
-  ResetDeadSquadMemberList(pNewSoldier->bAssignment);
+  ResetDeadSquadMemberList(pNewSoldier.value.bAssignment);
 
   DirtyMercPanelInterface(pNewSoldier, DIRTYLEVEL2);
   // Make the interface panel dirty..
@@ -870,12 +870,12 @@ function RecruitEPC(ubCharNum: UINT8): BOOLEAN {
   gfRerenderInterfaceFromHelpText = TRUE;
 
   // If we are a robot, look to update controller....
-  if (pNewSoldier->uiStatusFlags & SOLDIER_ROBOT) {
+  if (pNewSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
     UpdateRobotControllerGivenRobot(pNewSoldier);
   }
 
   // Set whatkind of merc am i
-  pNewSoldier->ubWhatKindOfMercAmI = MERC_TYPE__EPC;
+  pNewSoldier.value.ubWhatKindOfMercAmI = MERC_TYPE__EPC;
 
   UpdateTeamPanelAssignments();
 
@@ -893,19 +893,19 @@ function UnRecruitEPC(ubCharNum: UINT8): BOOLEAN {
     return FALSE;
   }
 
-  if (pSoldier->ubWhatKindOfMercAmI != MERC_TYPE__EPC) {
+  if (pSoldier.value.ubWhatKindOfMercAmI != MERC_TYPE__EPC) {
     return FALSE;
   }
 
-  if (pSoldier->bAssignment < ON_DUTY) {
-    ResetDeadSquadMemberList(pSoldier->bAssignment);
+  if (pSoldier.value.bAssignment < ON_DUTY) {
+    ResetDeadSquadMemberList(pSoldier.value.bAssignment);
   }
 
   // Rmeove from squad....
   RemoveCharacterFromSquads(pSoldier);
 
   // O< check if this is the only guy in the sector....
-  if (gusSelectedSoldier == pSoldier->ubID) {
+  if (gusSelectedSoldier == pSoldier.value.ubID) {
     gusSelectedSoldier = NOBODY;
   }
 
@@ -915,14 +915,14 @@ function UnRecruitEPC(ubCharNum: UINT8): BOOLEAN {
   // update sector values to current
 
   // check to see if this person should disappear from the map after this
-  if ((ubCharNum == JOHN || ubCharNum == MARY) && pSoldier->sSectorX == 13 && pSoldier->sSectorY == MAP_ROW_B && pSoldier->bSectorZ == 0) {
+  if ((ubCharNum == JOHN || ubCharNum == MARY) && pSoldier.value.sSectorX == 13 && pSoldier.value.sSectorY == MAP_ROW_B && pSoldier.value.bSectorZ == 0) {
     gMercProfiles[ubCharNum].sSectorX = 0;
     gMercProfiles[ubCharNum].sSectorY = 0;
     gMercProfiles[ubCharNum].bSectorZ = 0;
   } else {
-    gMercProfiles[ubCharNum].sSectorX = pSoldier->sSectorX;
-    gMercProfiles[ubCharNum].sSectorY = pSoldier->sSectorY;
-    gMercProfiles[ubCharNum].bSectorZ = pSoldier->bSectorZ;
+    gMercProfiles[ubCharNum].sSectorX = pSoldier.value.sSectorX;
+    gMercProfiles[ubCharNum].sSectorY = pSoldier.value.sSectorY;
+    gMercProfiles[ubCharNum].bSectorZ = pSoldier.value.bSectorZ;
   }
 
   // how do we decide whether or not to set this?
@@ -944,7 +944,7 @@ function WhichBuddy(ubCharNum: UINT8, ubBuddy: UINT8): INT8 {
   pProfile = &(gMercProfiles[ubCharNum]);
 
   for (bLoop = 0; bLoop < 3; bLoop++) {
-    if (pProfile->bBuddy[bLoop] == ubBuddy) {
+    if (pProfile.value.bBuddy[bLoop] == ubBuddy) {
       return bLoop;
     }
   }
@@ -958,7 +958,7 @@ function WhichHated(ubCharNum: UINT8, ubHated: UINT8): INT8 {
   pProfile = &(gMercProfiles[ubCharNum]);
 
   for (bLoop = 0; bLoop < 3; bLoop++) {
-    if (pProfile->bHated[bLoop] == ubHated) {
+    if (pProfile.value.bHated[bLoop] == ubHated) {
       return bLoop;
     }
   }
@@ -991,38 +991,38 @@ function UpdateSoldierPointerDataIntoProfile(fPlayerMercs: BOOLEAN): void {
     pSoldier = MercSlots[uiCount];
 
     if (pSoldier != NULL) {
-      if (pSoldier->ubProfile != NO_PROFILE) {
+      if (pSoldier.value.ubProfile != NO_PROFILE) {
         fDoCopy = FALSE;
 
         // If we are above player mercs
         if (fPlayerMercs) {
-          if (pSoldier->ubProfile < FIRST_RPC) {
+          if (pSoldier.value.ubProfile < FIRST_RPC) {
             fDoCopy = TRUE;
           }
         } else {
-          if (pSoldier->ubProfile >= FIRST_RPC) {
+          if (pSoldier.value.ubProfile >= FIRST_RPC) {
             fDoCopy = TRUE;
           }
         }
 
         if (fDoCopy) {
           // get profile...
-          pProfile = &(gMercProfiles[pSoldier->ubProfile]);
+          pProfile = &(gMercProfiles[pSoldier.value.ubProfile]);
 
           // Copy....
-          pProfile->bLife = pSoldier->bLife;
-          pProfile->bLifeMax = pSoldier->bLifeMax;
-          pProfile->bAgility = pSoldier->bAgility;
-          pProfile->bLeadership = pSoldier->bLeadership;
-          pProfile->bDexterity = pSoldier->bDexterity;
-          pProfile->bStrength = pSoldier->bStrength;
-          pProfile->bWisdom = pSoldier->bWisdom;
-          pProfile->bExpLevel = pSoldier->bExpLevel;
-          pProfile->bMarksmanship = pSoldier->bMarksmanship;
-          pProfile->bMedical = pSoldier->bMedical;
-          pProfile->bMechanical = pSoldier->bMechanical;
-          pProfile->bExplosive = pSoldier->bExplosive;
-          pProfile->bScientific = pSoldier->bScientific;
+          pProfile.value.bLife = pSoldier.value.bLife;
+          pProfile.value.bLifeMax = pSoldier.value.bLifeMax;
+          pProfile.value.bAgility = pSoldier.value.bAgility;
+          pProfile.value.bLeadership = pSoldier.value.bLeadership;
+          pProfile.value.bDexterity = pSoldier.value.bDexterity;
+          pProfile.value.bStrength = pSoldier.value.bStrength;
+          pProfile.value.bWisdom = pSoldier.value.bWisdom;
+          pProfile.value.bExpLevel = pSoldier.value.bExpLevel;
+          pProfile.value.bMarksmanship = pSoldier.value.bMarksmanship;
+          pProfile.value.bMedical = pSoldier.value.bMedical;
+          pProfile.value.bMechanical = pSoldier.value.bMechanical;
+          pProfile.value.bExplosive = pSoldier.value.bExplosive;
+          pProfile.value.bScientific = pSoldier.value.bScientific;
         }
       }
     }
@@ -1053,8 +1053,8 @@ function DoesMercHaveABuddyOnTheTeam(ubMercID: UINT8): BOOLEAN {
 }
 
 function MercIsHot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  if (pSoldier->ubProfile != NO_PROFILE && gMercProfiles[pSoldier->ubProfile].bPersonalityTrait == HEAT_INTOLERANT) {
-    if (SectorTemperature(GetWorldMinutesInDay(), pSoldier->sSectorX, pSoldier->sSectorY, pSoldier->bSectorZ) > 0) {
+  if (pSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait == HEAT_INTOLERANT) {
+    if (SectorTemperature(GetWorldMinutesInDay(), pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) > 0) {
       return TRUE;
     }
   }
@@ -1066,7 +1066,7 @@ function SwapLarrysProfiles(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE
   let ubDestProfile: UINT8;
   let pNewProfile: Pointer<MERCPROFILESTRUCT>;
 
-  ubSrcProfile = pSoldier->ubProfile;
+  ubSrcProfile = pSoldier.value.ubProfile;
   if (ubSrcProfile == LARRY_NORMAL) {
     ubDestProfile = LARRY_DRUNK;
   } else if (ubSrcProfile == LARRY_DRUNK) {
@@ -1077,34 +1077,34 @@ function SwapLarrysProfiles(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE
   }
 
   pNewProfile = &gMercProfiles[ubDestProfile];
-  pNewProfile->ubMiscFlags2 = gMercProfiles[ubSrcProfile].ubMiscFlags2;
-  pNewProfile->ubMiscFlags = gMercProfiles[ubSrcProfile].ubMiscFlags;
-  pNewProfile->sSectorX = gMercProfiles[ubSrcProfile].sSectorX;
-  pNewProfile->sSectorY = gMercProfiles[ubSrcProfile].sSectorY;
-  pNewProfile->uiDayBecomesAvailable = gMercProfiles[ubSrcProfile].uiDayBecomesAvailable;
-  pNewProfile->usKills = gMercProfiles[ubSrcProfile].usKills;
-  pNewProfile->usAssists = gMercProfiles[ubSrcProfile].usAssists;
-  pNewProfile->usShotsFired = gMercProfiles[ubSrcProfile].usShotsFired;
-  pNewProfile->usShotsHit = gMercProfiles[ubSrcProfile].usShotsHit;
-  pNewProfile->usBattlesFought = gMercProfiles[ubSrcProfile].usBattlesFought;
-  pNewProfile->usTimesWounded = gMercProfiles[ubSrcProfile].usTimesWounded;
-  pNewProfile->usTotalDaysServed = gMercProfiles[ubSrcProfile].usTotalDaysServed;
-  pNewProfile->bResigned = gMercProfiles[ubSrcProfile].bResigned;
-  pNewProfile->bActive = gMercProfiles[ubSrcProfile].bActive;
-  pNewProfile->fUseProfileInsertionInfo = gMercProfiles[ubSrcProfile].fUseProfileInsertionInfo;
-  pNewProfile->sGridNo = gMercProfiles[ubSrcProfile].sGridNo;
-  pNewProfile->ubQuoteActionID = gMercProfiles[ubSrcProfile].ubQuoteActionID;
-  pNewProfile->ubLastQuoteSaid = gMercProfiles[ubSrcProfile].ubLastQuoteSaid;
-  pNewProfile->ubStrategicInsertionCode = gMercProfiles[ubSrcProfile].ubStrategicInsertionCode;
-  pNewProfile->bMercStatus = gMercProfiles[ubSrcProfile].bMercStatus;
-  pNewProfile->bSectorZ = gMercProfiles[ubSrcProfile].bSectorZ;
-  pNewProfile->usStrategicInsertionData = gMercProfiles[ubSrcProfile].usStrategicInsertionData;
-  pNewProfile->sTrueSalary = gMercProfiles[ubSrcProfile].sTrueSalary;
-  pNewProfile->ubMiscFlags3 = gMercProfiles[ubSrcProfile].ubMiscFlags3;
-  pNewProfile->ubDaysOfMoraleHangover = gMercProfiles[ubSrcProfile].ubDaysOfMoraleHangover;
-  pNewProfile->ubNumTimesDrugUseInLifetime = gMercProfiles[ubSrcProfile].ubNumTimesDrugUseInLifetime;
-  pNewProfile->uiPrecedentQuoteSaid = gMercProfiles[ubSrcProfile].uiPrecedentQuoteSaid;
-  pNewProfile->sPreCombatGridNo = gMercProfiles[ubSrcProfile].sPreCombatGridNo;
+  pNewProfile.value.ubMiscFlags2 = gMercProfiles[ubSrcProfile].ubMiscFlags2;
+  pNewProfile.value.ubMiscFlags = gMercProfiles[ubSrcProfile].ubMiscFlags;
+  pNewProfile.value.sSectorX = gMercProfiles[ubSrcProfile].sSectorX;
+  pNewProfile.value.sSectorY = gMercProfiles[ubSrcProfile].sSectorY;
+  pNewProfile.value.uiDayBecomesAvailable = gMercProfiles[ubSrcProfile].uiDayBecomesAvailable;
+  pNewProfile.value.usKills = gMercProfiles[ubSrcProfile].usKills;
+  pNewProfile.value.usAssists = gMercProfiles[ubSrcProfile].usAssists;
+  pNewProfile.value.usShotsFired = gMercProfiles[ubSrcProfile].usShotsFired;
+  pNewProfile.value.usShotsHit = gMercProfiles[ubSrcProfile].usShotsHit;
+  pNewProfile.value.usBattlesFought = gMercProfiles[ubSrcProfile].usBattlesFought;
+  pNewProfile.value.usTimesWounded = gMercProfiles[ubSrcProfile].usTimesWounded;
+  pNewProfile.value.usTotalDaysServed = gMercProfiles[ubSrcProfile].usTotalDaysServed;
+  pNewProfile.value.bResigned = gMercProfiles[ubSrcProfile].bResigned;
+  pNewProfile.value.bActive = gMercProfiles[ubSrcProfile].bActive;
+  pNewProfile.value.fUseProfileInsertionInfo = gMercProfiles[ubSrcProfile].fUseProfileInsertionInfo;
+  pNewProfile.value.sGridNo = gMercProfiles[ubSrcProfile].sGridNo;
+  pNewProfile.value.ubQuoteActionID = gMercProfiles[ubSrcProfile].ubQuoteActionID;
+  pNewProfile.value.ubLastQuoteSaid = gMercProfiles[ubSrcProfile].ubLastQuoteSaid;
+  pNewProfile.value.ubStrategicInsertionCode = gMercProfiles[ubSrcProfile].ubStrategicInsertionCode;
+  pNewProfile.value.bMercStatus = gMercProfiles[ubSrcProfile].bMercStatus;
+  pNewProfile.value.bSectorZ = gMercProfiles[ubSrcProfile].bSectorZ;
+  pNewProfile.value.usStrategicInsertionData = gMercProfiles[ubSrcProfile].usStrategicInsertionData;
+  pNewProfile.value.sTrueSalary = gMercProfiles[ubSrcProfile].sTrueSalary;
+  pNewProfile.value.ubMiscFlags3 = gMercProfiles[ubSrcProfile].ubMiscFlags3;
+  pNewProfile.value.ubDaysOfMoraleHangover = gMercProfiles[ubSrcProfile].ubDaysOfMoraleHangover;
+  pNewProfile.value.ubNumTimesDrugUseInLifetime = gMercProfiles[ubSrcProfile].ubNumTimesDrugUseInLifetime;
+  pNewProfile.value.uiPrecedentQuoteSaid = gMercProfiles[ubSrcProfile].uiPrecedentQuoteSaid;
+  pNewProfile.value.sPreCombatGridNo = gMercProfiles[ubSrcProfile].sPreCombatGridNo;
 
   // CJC: this is causing problems so just skip the transfer of exp...
   /*
@@ -1133,35 +1133,35 @@ function SwapLarrysProfiles(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE
           pNewProfile->bExplosivesDelta = gMercProfiles[ ubSrcProfile ].bExplosivesDelta;
           */
 
-  memcpy(pNewProfile->bInvStatus, gMercProfiles[ubSrcProfile].bInvStatus, sizeof(UINT8) * 19);
-  memcpy(pNewProfile->bInvStatus, gMercProfiles[ubSrcProfile].bInvStatus, sizeof(UINT8) * 19);
-  memcpy(pNewProfile->inv, gMercProfiles[ubSrcProfile].inv, sizeof(UINT16) * 19);
-  memcpy(pNewProfile->bMercTownReputation, gMercProfiles[ubSrcProfile].bMercTownReputation, sizeof(UINT8) * 20);
+  memcpy(pNewProfile.value.bInvStatus, gMercProfiles[ubSrcProfile].bInvStatus, sizeof(UINT8) * 19);
+  memcpy(pNewProfile.value.bInvStatus, gMercProfiles[ubSrcProfile].bInvStatus, sizeof(UINT8) * 19);
+  memcpy(pNewProfile.value.inv, gMercProfiles[ubSrcProfile].inv, sizeof(UINT16) * 19);
+  memcpy(pNewProfile.value.bMercTownReputation, gMercProfiles[ubSrcProfile].bMercTownReputation, sizeof(UINT8) * 20);
 
   // remove face
   DeleteSoldierFace(pSoldier);
 
-  pSoldier->ubProfile = ubDestProfile;
+  pSoldier.value.ubProfile = ubDestProfile;
 
   // create new face
-  pSoldier->iFaceIndex = InitSoldierFace(pSoldier);
+  pSoldier.value.iFaceIndex = InitSoldierFace(pSoldier);
 
   // replace profile in group
-  ReplaceSoldierProfileInPlayerGroup(pSoldier->ubGroupID, ubSrcProfile, ubDestProfile);
+  ReplaceSoldierProfileInPlayerGroup(pSoldier.value.ubGroupID, ubSrcProfile, ubDestProfile);
 
-  pSoldier->bStrength = pNewProfile->bStrength + pNewProfile->bStrengthDelta;
-  pSoldier->bDexterity = pNewProfile->bDexterity + pNewProfile->bDexterityDelta;
-  pSoldier->bAgility = pNewProfile->bAgility + pNewProfile->bAgilityDelta;
-  pSoldier->bWisdom = pNewProfile->bWisdom + pNewProfile->bWisdomDelta;
-  pSoldier->bExpLevel = pNewProfile->bExpLevel + pNewProfile->bExpLevelDelta;
-  pSoldier->bLeadership = pNewProfile->bLeadership + pNewProfile->bLeadershipDelta;
+  pSoldier.value.bStrength = pNewProfile.value.bStrength + pNewProfile.value.bStrengthDelta;
+  pSoldier.value.bDexterity = pNewProfile.value.bDexterity + pNewProfile.value.bDexterityDelta;
+  pSoldier.value.bAgility = pNewProfile.value.bAgility + pNewProfile.value.bAgilityDelta;
+  pSoldier.value.bWisdom = pNewProfile.value.bWisdom + pNewProfile.value.bWisdomDelta;
+  pSoldier.value.bExpLevel = pNewProfile.value.bExpLevel + pNewProfile.value.bExpLevelDelta;
+  pSoldier.value.bLeadership = pNewProfile.value.bLeadership + pNewProfile.value.bLeadershipDelta;
 
-  pSoldier->bMarksmanship = pNewProfile->bMarksmanship + pNewProfile->bMarksmanshipDelta;
-  pSoldier->bMechanical = pNewProfile->bMechanical + pNewProfile->bMechanicDelta;
-  pSoldier->bMedical = pNewProfile->bMedical + pNewProfile->bMedicalDelta;
-  pSoldier->bExplosive = pNewProfile->bExplosive + pNewProfile->bExplosivesDelta;
+  pSoldier.value.bMarksmanship = pNewProfile.value.bMarksmanship + pNewProfile.value.bMarksmanshipDelta;
+  pSoldier.value.bMechanical = pNewProfile.value.bMechanical + pNewProfile.value.bMechanicDelta;
+  pSoldier.value.bMedical = pNewProfile.value.bMedical + pNewProfile.value.bMedicalDelta;
+  pSoldier.value.bExplosive = pNewProfile.value.bExplosive + pNewProfile.value.bExplosivesDelta;
 
-  if (pSoldier->ubProfile == LARRY_DRUNK) {
+  if (pSoldier.value.ubProfile == LARRY_DRUNK) {
     SetFactTrue(FACT_LARRY_CHANGED);
   } else {
     SetFactFalse(FACT_LARRY_CHANGED);
@@ -1183,16 +1183,16 @@ function DoesNPCOwnBuilding(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): BOO
   }
 
   // Are we an NPC?
-  if (pSoldier->bTeam != CIV_TEAM) {
+  if (pSoldier.value.bTeam != CIV_TEAM) {
     return FALSE;
   }
 
   // OK, check both ranges
-  if (ubRoomInfo >= gMercProfiles[pSoldier->ubProfile].ubRoomRangeStart[0] && ubRoomInfo <= gMercProfiles[pSoldier->ubProfile].ubRoomRangeEnd[0]) {
+  if (ubRoomInfo >= gMercProfiles[pSoldier.value.ubProfile].ubRoomRangeStart[0] && ubRoomInfo <= gMercProfiles[pSoldier.value.ubProfile].ubRoomRangeEnd[0]) {
     return TRUE;
   }
 
-  if (ubRoomInfo >= gMercProfiles[pSoldier->ubProfile].ubRoomRangeStart[1] && ubRoomInfo <= gMercProfiles[pSoldier->ubProfile].ubRoomRangeEnd[1]) {
+  if (ubRoomInfo >= gMercProfiles[pSoldier.value.ubProfile].ubRoomRangeStart[1] && ubRoomInfo <= gMercProfiles[pSoldier.value.ubProfile].ubRoomRangeEnd[1]) {
     return TRUE;
   }
 

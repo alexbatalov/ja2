@@ -96,7 +96,7 @@ function RemoveMessageBox(): void {
 
 function MsgBoxOkClkCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    butn->uiFlags |= BUTTON_CLICKED_ON;
+    butn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubMessageBoxStatus = MESSAGEBOX_DONE;
     gfMessageBoxResult = TRUE;
@@ -105,7 +105,7 @@ function MsgBoxOkClkCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function MsgBoxCnclClkCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    butn->uiFlags |= BUTTON_CLICKED_ON;
+    butn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubMessageBoxStatus = MESSAGEBOX_DONE;
     gfMessageBoxResult = FALSE;

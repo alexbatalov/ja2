@@ -109,53 +109,53 @@ function SaveMapTempFilesToSavedGameFile(hFile: HWFILE): BOOLEAN {
 
   // then look throught all the underground sectors
   while (TempNode) {
-    if (TempNode->uiFlags & SF_ITEM_TEMP_FILE_EXISTS) {
-      AddTempFileToSavedGame(hFile, SF_ITEM_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_ITEM_TEMP_FILE_EXISTS) {
+      AddTempFileToSavedGame(hFile, SF_ITEM_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
-    if (TempNode->uiFlags & SF_ROTTING_CORPSE_TEMP_FILE_EXISTS) {
-      AddTempFileToSavedGame(hFile, SF_ROTTING_CORPSE_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_ROTTING_CORPSE_TEMP_FILE_EXISTS) {
+      AddTempFileToSavedGame(hFile, SF_ROTTING_CORPSE_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
     // Save the Map Modifications Temp file to the saved game file
-    if (TempNode->uiFlags & SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS) {
-      AddTempFileToSavedGame(hFile, SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS) {
+      AddTempFileToSavedGame(hFile, SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
     // Save the door table to the saved game file
-    if (TempNode->uiFlags & SF_DOOR_TABLE_TEMP_FILES_EXISTS) {
-      AddTempFileToSavedGame(hFile, SF_DOOR_TABLE_TEMP_FILES_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_DOOR_TABLE_TEMP_FILES_EXISTS) {
+      AddTempFileToSavedGame(hFile, SF_DOOR_TABLE_TEMP_FILES_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
     // Save the revealed status temp file to the saved game file
-    if (TempNode->uiFlags & SF_REVEALED_STATUS_TEMP_FILE_EXISTS) {
-      AddTempFileToSavedGame(hFile, SF_REVEALED_STATUS_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_REVEALED_STATUS_TEMP_FILE_EXISTS) {
+      AddTempFileToSavedGame(hFile, SF_REVEALED_STATUS_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
     // Save the door status temp file to the saved game file
-    if (TempNode->uiFlags & SF_DOOR_STATUS_TEMP_FILE_EXISTS) {
-      AddTempFileToSavedGame(hFile, SF_DOOR_STATUS_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_DOOR_STATUS_TEMP_FILE_EXISTS) {
+      AddTempFileToSavedGame(hFile, SF_DOOR_STATUS_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
-    if (TempNode->uiFlags & SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS) {
-      AddTempFileToSavedGame(hFile, SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS) {
+      AddTempFileToSavedGame(hFile, SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
-    if (TempNode->uiFlags & SF_CIV_PRESERVED_TEMP_FILE_EXISTS) {
-      AddTempFileToSavedGame(hFile, SF_CIV_PRESERVED_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_CIV_PRESERVED_TEMP_FILE_EXISTS) {
+      AddTempFileToSavedGame(hFile, SF_CIV_PRESERVED_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
-    if (TempNode->uiFlags & SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS) {
-      AddTempFileToSavedGame(hFile, SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS) {
+      AddTempFileToSavedGame(hFile, SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
-    if (TempNode->uiFlags & SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS) {
-      AddTempFileToSavedGame(hFile, SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS) {
+      AddTempFileToSavedGame(hFile, SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
     // ttt
 
-    TempNode = TempNode->next;
+    TempNode = TempNode.value.next;
   }
 
   return TRUE;
@@ -264,62 +264,62 @@ function LoadMapTempFilesFromSavedGameFile(hFile: HWFILE): BOOLEAN {
 
   // then look throught all the underground sectors
   while (TempNode) {
-    if (TempNode->uiFlags & SF_ITEM_TEMP_FILE_EXISTS) {
-      RetrieveTempFileFromSavedGame(hFile, SF_ITEM_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_ITEM_TEMP_FILE_EXISTS) {
+      RetrieveTempFileFromSavedGame(hFile, SF_ITEM_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
 
       // sync up the temp file data to the sector structure data
-      SynchronizeItemTempFileVisbleItemsToSectorInfoVisbleItems(TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ, TRUE);
+      SynchronizeItemTempFileVisbleItemsToSectorInfoVisbleItems(TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ, TRUE);
     }
 
-    if (TempNode->uiFlags & SF_ROTTING_CORPSE_TEMP_FILE_EXISTS) {
-      RetrieveTempFileFromSavedGame(hFile, SF_ROTTING_CORPSE_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_ROTTING_CORPSE_TEMP_FILE_EXISTS) {
+      RetrieveTempFileFromSavedGame(hFile, SF_ROTTING_CORPSE_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
-    if (TempNode->uiFlags & SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS) {
-      RetrieveTempFileFromSavedGame(hFile, SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS) {
+      RetrieveTempFileFromSavedGame(hFile, SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
-    if (TempNode->uiFlags & SF_DOOR_TABLE_TEMP_FILES_EXISTS) {
-      RetrieveTempFileFromSavedGame(hFile, SF_DOOR_TABLE_TEMP_FILES_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
-    }
-
-    // Get the revealed status temp file From the saved game file
-    if (TempNode->uiFlags & SF_REVEALED_STATUS_TEMP_FILE_EXISTS) {
-      RetrieveTempFileFromSavedGame(hFile, SF_REVEALED_STATUS_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_DOOR_TABLE_TEMP_FILES_EXISTS) {
+      RetrieveTempFileFromSavedGame(hFile, SF_DOOR_TABLE_TEMP_FILES_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
     // Get the revealed status temp file From the saved game file
-    if (TempNode->uiFlags & SF_DOOR_STATUS_TEMP_FILE_EXISTS) {
-      RetrieveTempFileFromSavedGame(hFile, SF_DOOR_STATUS_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_REVEALED_STATUS_TEMP_FILE_EXISTS) {
+      RetrieveTempFileFromSavedGame(hFile, SF_REVEALED_STATUS_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
-    if (TempNode->uiFlags & SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS) {
-      RetrieveTempFileFromSavedGame(hFile, SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    // Get the revealed status temp file From the saved game file
+    if (TempNode.value.uiFlags & SF_DOOR_STATUS_TEMP_FILE_EXISTS) {
+      RetrieveTempFileFromSavedGame(hFile, SF_DOOR_STATUS_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
-    if (TempNode->uiFlags & SF_CIV_PRESERVED_TEMP_FILE_EXISTS) {
-      RetrieveTempFileFromSavedGame(hFile, SF_CIV_PRESERVED_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS) {
+      RetrieveTempFileFromSavedGame(hFile, SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
+    }
+
+    if (TempNode.value.uiFlags & SF_CIV_PRESERVED_TEMP_FILE_EXISTS) {
+      RetrieveTempFileFromSavedGame(hFile, SF_CIV_PRESERVED_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
       if ((gTacticalStatus.uiFlags & LOADING_SAVED_GAME) && guiSaveGameVersion < 78) {
         let pMapName: INT8[] /* [128] */;
 
         // KILL IT!!! KILL KIT!!!! IT IS CORRUPTED!!!
-        GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, pMapName, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+        GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, pMapName, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
         FileDelete(pMapName);
 
         // turn off the flag
-        TempNode->uiFlags &= (~SF_CIV_PRESERVED_TEMP_FILE_EXISTS);
+        TempNode.value.uiFlags &= (~SF_CIV_PRESERVED_TEMP_FILE_EXISTS);
       }
     }
 
-    if (TempNode->uiFlags & SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS) {
-      RetrieveTempFileFromSavedGame(hFile, SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS) {
+      RetrieveTempFileFromSavedGame(hFile, SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
-    if (TempNode->uiFlags & SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS) {
-      RetrieveTempFileFromSavedGame(hFile, SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
+    if (TempNode.value.uiFlags & SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS) {
+      RetrieveTempFileFromSavedGame(hFile, SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
     }
 
-    TempNode = TempNode->next;
+    TempNode = TempNode.value.next;
   }
   // ttt
   return TRUE;
@@ -705,8 +705,8 @@ function HandleAllReachAbleItemsInTheSector(sSectorX: INT16, sSectorY: INT16, bS
 
     for (uiCounter = gTacticalStatus.Team[gbPlayerNum].bFirstID; uiCounter < gTacticalStatus.Team[gbPlayerNum].bLastID; uiCounter++) {
       pSoldier = MercPtrs[uiCounter];
-      if (pSoldier && pSoldier->bActive && pSoldier->bLife > 0 && pSoldier->sSectorX == sSectorX && pSoldier->sSectorY == sSectorY && pSoldier->bSectorZ == bSectorZ) {
-        if (FindBestPath(pSoldier, sGridNo2, pSoldier->bLevel, WALKING, NO_COPYROUTE, 0)) {
+      if (pSoldier && pSoldier.value.bActive && pSoldier.value.bLife > 0 && pSoldier.value.sSectorX == sSectorX && pSoldier.value.sSectorY == sSectorY && pSoldier.value.bSectorZ == bSectorZ) {
+        if (FindBestPath(pSoldier, sGridNo2, pSoldier.value.bLevel, WALKING, NO_COPYROUTE, 0)) {
           fSecondary = TRUE;
           break;
         }
@@ -909,12 +909,12 @@ function SetLastTimePlayerWasInSector(): void {
 
     // loop through and look for the right underground sector
     while (pTempNode) {
-      if ((pTempNode->ubSectorX == gWorldSectorX) && (pTempNode->ubSectorY == gWorldSectorY) && (pTempNode->ubSectorZ == gbWorldSectorZ)) {
+      if ((pTempNode.value.ubSectorX == gWorldSectorX) && (pTempNode.value.ubSectorY == gWorldSectorY) && (pTempNode.value.ubSectorZ == gbWorldSectorZ)) {
         // set the flag indicating that ther is a temp item file exists for the sector
-        pTempNode->uiTimeCurrentSectorWasLastLoaded = GetWorldTotalMin();
+        pTempNode.value.uiTimeCurrentSectorWasLastLoaded = GetWorldTotalMin();
         return; // break out
       }
-      pTempNode = pTempNode->next;
+      pTempNode = pTempNode.value.next;
     }
   }
 }
@@ -929,11 +929,11 @@ function GetLastTimePlayerWasInSector(): UINT32 {
 
     // loop through and look for the right underground sector
     while (pTempNode) {
-      if ((pTempNode->ubSectorX == gWorldSectorX) && (pTempNode->ubSectorY == gWorldSectorY) && (pTempNode->ubSectorZ == gbWorldSectorZ)) {
+      if ((pTempNode.value.ubSectorX == gWorldSectorX) && (pTempNode.value.ubSectorY == gWorldSectorY) && (pTempNode.value.ubSectorZ == gbWorldSectorZ)) {
         // set the flag indicating that ther is a temp item file exists for the sector
-        return pTempNode->uiTimeCurrentSectorWasLastLoaded;
+        return pTempNode.value.uiTimeCurrentSectorWasLastLoaded;
       }
-      pTempNode = pTempNode->next;
+      pTempNode = pTempNode.value.next;
     }
 
     return 0;
@@ -1318,30 +1318,30 @@ function SaveNPCInformationToProfileStruct(): void {
     pSoldier = MercSlots[cnt];
 
     // if it is an active NPC
-    if (pSoldier && pSoldier->ubProfile != NO_PROFILE && pSoldier->bTeam == CIV_TEAM) {
+    if (pSoldier && pSoldier.value.ubProfile != NO_PROFILE && pSoldier.value.bTeam == CIV_TEAM) {
       // Save Temp Npc Quote Info array
-      SaveTempNpcQuoteInfoForNPCToTempFile(pSoldier->ubProfile);
+      SaveTempNpcQuoteInfoForNPCToTempFile(pSoldier.value.ubProfile);
 
-      pProfile = &(gMercProfiles[pSoldier->ubProfile]);
+      pProfile = &(gMercProfiles[pSoldier.value.ubProfile]);
 
-      pProfile->ubQuoteActionID = pSoldier->ubQuoteActionID;
-      pProfile->ubQuoteRecord = pSoldier->ubQuoteRecord;
+      pProfile.value.ubQuoteActionID = pSoldier.value.ubQuoteActionID;
+      pProfile.value.ubQuoteRecord = pSoldier.value.ubQuoteRecord;
 
       // if the merc is NOT added due to flag set, return
-      if (pProfile->ubMiscFlags2 & PROFILE_MISC_FLAG2_DONT_ADD_TO_SECTOR) {
+      if (pProfile.value.ubMiscFlags2 & PROFILE_MISC_FLAG2_DONT_ADD_TO_SECTOR) {
         continue;
       }
 
-      if (pProfile->ubMiscFlags3 & PROFILE_MISC_FLAG3_PERMANENT_INSERTION_CODE) {
+      if (pProfile.value.ubMiscFlags3 & PROFILE_MISC_FLAG3_PERMANENT_INSERTION_CODE) {
         continue;
       }
 
-      pProfile->fUseProfileInsertionInfo = TRUE;
-      pProfile->ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+      pProfile.value.fUseProfileInsertionInfo = TRUE;
+      pProfile.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
       // if ( gTacticalStatus.uiFlags & LOADING_SAVED_GAME )
       //{
       // if we are saving the game, save the NPC's current location
-      pProfile->usStrategicInsertionData = pSoldier->sGridNo;
+      pProfile.value.usStrategicInsertionData = pSoldier.value.sGridNo;
       //}
       /*
       else
@@ -1511,14 +1511,14 @@ function GetNumberOfActiveWorldItemsFromTempFile(sMapX: INT16, sMapY: INT16, bMa
       fFileLoaded = TRUE;
   } else {
     while (TempNode) {
-      if (TempNode->ubSectorX == sMapX && TempNode->ubSectorY == sMapY && TempNode->ubSectorZ == bMapZ) {
-        if (TempNode->uiFlags & SF_ITEM_TEMP_FILE_EXISTS)
+      if (TempNode.value.ubSectorX == sMapX && TempNode.value.ubSectorY == sMapY && TempNode.value.ubSectorZ == bMapZ) {
+        if (TempNode.value.uiFlags & SF_ITEM_TEMP_FILE_EXISTS)
           fFileLoaded = TRUE;
 
         break;
       }
 
-      TempNode = TempNode->next;
+      TempNode = TempNode.value.next;
     }
   }
 
@@ -1565,10 +1565,10 @@ function DoesTempFileExistsForMap(uiType: UINT32, sMapX: INT16, sMapY: INT16, bM
     return (SectorInfo[SECTOR(sMapX, sMapY)].uiFlags & uiType) ? 1 : 0;
   } else {
     while (TempNode) {
-      if (TempNode->ubSectorX == sMapX && TempNode->ubSectorY == sMapY && TempNode->ubSectorZ == bMapZ) {
-        return (TempNode->uiFlags & uiType) ? 1 : 0;
+      if (TempNode.value.ubSectorX == sMapX && TempNode.value.ubSectorY == sMapY && TempNode.value.ubSectorZ == bMapZ) {
+        return (TempNode.value.uiFlags & uiType) ? 1 : 0;
       }
-      TempNode = TempNode->next;
+      TempNode = TempNode.value.next;
     }
   }
 
@@ -1586,8 +1586,8 @@ function GetSoldierIDFromAnyMercID(ubMercID: UINT8): INT16 {
 
   // look for all mercs on the same team,
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= ubLastTeamID; cnt++, pTeamSoldier++) {
-    if (pTeamSoldier->bActive) {
-      if (pTeamSoldier->ubProfile == ubMercID) {
+    if (pTeamSoldier.value.bActive) {
+      if (pTeamSoldier.value.ubProfile == ubMercID) {
         return cnt;
       }
     }
@@ -1835,13 +1835,13 @@ function SetUnderGroundSectorFlag(sSectorX: INT16, sSectorY: INT16, ubSectorZ: U
 
   // loop through and look for the right underground sector
   while (pTempNode) {
-    if ((pTempNode->ubSectorX == sSectorX) && (pTempNode->ubSectorY == sSectorY) && (pTempNode->ubSectorZ == ubSectorZ)) {
+    if ((pTempNode.value.ubSectorX == sSectorX) && (pTempNode.value.ubSectorY == sSectorY) && (pTempNode.value.ubSectorZ == ubSectorZ)) {
       // set the flag indicating that ther is a temp item file exists for the sector
-      pTempNode->uiFlags |= uiFlagToSet;
+      pTempNode.value.uiFlags |= uiFlagToSet;
 
       return TRUE;
     }
-    pTempNode = pTempNode->next;
+    pTempNode = pTempNode.value.next;
   }
 
   return FALSE;
@@ -1854,13 +1854,13 @@ function ReSetUnderGroundSectorFlag(sSectorX: INT16, sSectorY: INT16, ubSectorZ:
 
   // loop through and look for the right underground sector
   while (pTempNode) {
-    if ((pTempNode->ubSectorX == sSectorX) && (pTempNode->ubSectorY == sSectorY) && (pTempNode->ubSectorZ == ubSectorZ)) {
+    if ((pTempNode.value.ubSectorX == sSectorX) && (pTempNode.value.ubSectorY == sSectorY) && (pTempNode.value.ubSectorZ == ubSectorZ)) {
       // set the flag indicating that ther is a temp item file exists for the sector
-      pTempNode->uiFlags &= ~(uiFlagToSet);
+      pTempNode.value.uiFlags &= ~(uiFlagToSet);
 
       return TRUE;
     }
-    pTempNode = pTempNode->next;
+    pTempNode = pTempNode.value.next;
   }
 
   return FALSE;
@@ -1873,14 +1873,14 @@ function GetUnderGroundSectorFlagStatus(sSectorX: INT16, sSectorY: INT16, ubSect
 
   // loop through and look for the right underground sector
   while (pTempNode) {
-    if ((pTempNode->ubSectorX == sSectorX) && (pTempNode->ubSectorY == sSectorY) && (pTempNode->ubSectorZ == ubSectorZ)) {
+    if ((pTempNode.value.ubSectorX == sSectorX) && (pTempNode.value.ubSectorY == sSectorY) && (pTempNode.value.ubSectorZ == ubSectorZ)) {
       // set the flag indicating that ther is a temp item file exists for the sector
-      if (pTempNode->uiFlags & uiFlagToCheck)
+      if (pTempNode.value.uiFlags & uiFlagToCheck)
         return TRUE;
       else
         return FALSE;
     }
-    pTempNode = pTempNode->next;
+    pTempNode = pTempNode.value.next;
   }
   return FALSE;
 }
@@ -1973,18 +1973,18 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
   // go through and and find out how many items there are
   uiNumberOfItems = 0;
   for (i = 0; i < NUM_INV_SLOTS; i++) {
-    if (pSoldier->inv[i].usItem != 0) {
+    if (pSoldier.value.inv[i].usItem != 0) {
       // if not a player soldier
-      if (pSoldier->bTeam != gbPlayerNum) {
+      if (pSoldier.value.bTeam != gbPlayerNum) {
         // this percent of the time, they don't drop stuff they would've dropped in tactical...
         if (Random(100) < 75) {
           // mark it undroppable...
-          pSoldier->inv[i].fFlags |= OBJECT_UNDROPPABLE;
+          pSoldier.value.inv[i].fFlags |= OBJECT_UNDROPPABLE;
         }
       }
 
       // if the item can be dropped
-      if (!(pSoldier->inv[i].fFlags & OBJECT_UNDROPPABLE) || pSoldier->bTeam == gbPlayerNum) {
+      if (!(pSoldier.value.inv[i].fFlags & OBJECT_UNDROPPABLE) || pSoldier.value.bTeam == gbPlayerNum) {
         uiNumberOfItems++;
       }
     }
@@ -2009,19 +2009,19 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
     // loop through all the soldiers items and add them to the world item array
     bCount = 0;
     for (i = 0; i < NUM_INV_SLOTS; i++) {
-      if (pSoldier->inv[i].usItem != 0) {
+      if (pSoldier.value.inv[i].usItem != 0) {
         // if the item can be dropped
-        if (!(pSoldier->inv[i].fFlags & OBJECT_UNDROPPABLE) || pSoldier->bTeam == gbPlayerNum) {
+        if (!(pSoldier.value.inv[i].fFlags & OBJECT_UNDROPPABLE) || pSoldier.value.bTeam == gbPlayerNum) {
           ReduceAmmoDroppedByNonPlayerSoldiers(pSoldier, i);
 
           pWorldItems[bCount].fExists = TRUE;
           pWorldItems[bCount].sGridNo = sGridNo;
-          pWorldItems[bCount].ubLevel = pSoldier->bLevel;
+          pWorldItems[bCount].ubLevel = pSoldier.value.bLevel;
           pWorldItems[bCount].usFlags = uiFlagsForWorldItems;
           pWorldItems[bCount].bVisible = TRUE;
           pWorldItems[bCount].bRenderZHeightAboveLevel = 0;
 
-          memcpy(&(pWorldItems[bCount].o), &pSoldier->inv[i], sizeof(OBJECTTYPE));
+          memcpy(&(pWorldItems[bCount].o), &pSoldier.value.inv[i], sizeof(OBJECTTYPE));
           bCount++;
         }
       }
@@ -2031,7 +2031,7 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
     AddWorldItemsToUnLoadedSector(sMapX, sMapY, bMapZ, sGridNo, uiNumberOfItems, pWorldItems, FALSE);
   }
 
-  DropKeysInKeyRing(pSoldier, sGridNo, pSoldier->bLevel, 1, FALSE, 0, TRUE);
+  DropKeysInKeyRing(pSoldier, sGridNo, pSoldier.value.bLevel, 1, FALSE, 0, TRUE);
 
   //
   // Convert the soldier into a rottng corpse
@@ -2040,22 +2040,22 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
   memset(&Corpse, 0, sizeof(ROTTING_CORPSE_DEFINITION));
 
   // Setup some values!
-  Corpse.ubBodyType = pSoldier->ubBodyType;
+  Corpse.ubBodyType = pSoldier.value.ubBodyType;
   Corpse.sGridNo = sGridNo;
 
   ConvertGridNoToXY(sGridNo, &sXPos, &sYPos);
 
   Corpse.dXPos = (CenterX(sXPos));
   Corpse.dYPos = (CenterY(sYPos));
-  Corpse.sHeightAdjustment = pSoldier->sHeightAdjustment;
+  Corpse.sHeightAdjustment = pSoldier.value.sHeightAdjustment;
   Corpse.bVisible = TRUE;
 
-  SET_PALETTEREP_ID(Corpse.HeadPal, pSoldier->HeadPal);
-  SET_PALETTEREP_ID(Corpse.VestPal, pSoldier->VestPal);
-  SET_PALETTEREP_ID(Corpse.SkinPal, pSoldier->SkinPal);
-  SET_PALETTEREP_ID(Corpse.PantsPal, pSoldier->PantsPal);
+  SET_PALETTEREP_ID(Corpse.HeadPal, pSoldier.value.HeadPal);
+  SET_PALETTEREP_ID(Corpse.VestPal, pSoldier.value.VestPal);
+  SET_PALETTEREP_ID(Corpse.SkinPal, pSoldier.value.SkinPal);
+  SET_PALETTEREP_ID(Corpse.PantsPal, pSoldier.value.PantsPal);
 
-  Corpse.bDirection = pSoldier->bDirection;
+  Corpse.bDirection = pSoldier.value.bDirection;
 
   // Set time of death
   Corpse.uiTimeOfDeath = GetWorldTotalMin();
@@ -2069,7 +2069,7 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
     uiDeathAnim = uiPossibleDeathAnims[Random(4)];
 
   // Set type
-  Corpse.ubType = gubAnimSurfaceCorpseID[pSoldier->ubBodyType][uiDeathAnim];
+  Corpse.ubType = gubAnimSurfaceCorpseID[pSoldier.value.ubBodyType][uiDeathAnim];
 
   Corpse.usFlags |= usFlagsForRottingCorpse;
 
@@ -2109,23 +2109,23 @@ function MercChecksum(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
   let uiChecksum: UINT32 = 1;
   let uiLoop: UINT32;
 
-  uiChecksum += (pSoldier->bLife + 1);
-  uiChecksum *= (pSoldier->bLifeMax + 1);
-  uiChecksum += (pSoldier->bAgility + 1);
-  uiChecksum *= (pSoldier->bDexterity + 1);
-  uiChecksum += (pSoldier->bStrength + 1);
-  uiChecksum *= (pSoldier->bMarksmanship + 1);
-  uiChecksum += (pSoldier->bMedical + 1);
-  uiChecksum *= (pSoldier->bMechanical + 1);
-  uiChecksum += (pSoldier->bExplosive + 1);
+  uiChecksum += (pSoldier.value.bLife + 1);
+  uiChecksum *= (pSoldier.value.bLifeMax + 1);
+  uiChecksum += (pSoldier.value.bAgility + 1);
+  uiChecksum *= (pSoldier.value.bDexterity + 1);
+  uiChecksum += (pSoldier.value.bStrength + 1);
+  uiChecksum *= (pSoldier.value.bMarksmanship + 1);
+  uiChecksum += (pSoldier.value.bMedical + 1);
+  uiChecksum *= (pSoldier.value.bMechanical + 1);
+  uiChecksum += (pSoldier.value.bExplosive + 1);
 
   // put in some multipliers too!
-  uiChecksum *= (pSoldier->bExpLevel + 1);
-  uiChecksum += (pSoldier->ubProfile + 1);
+  uiChecksum *= (pSoldier.value.bExpLevel + 1);
+  uiChecksum += (pSoldier.value.ubProfile + 1);
 
   for (uiLoop = 0; uiLoop < NUM_INV_SLOTS; uiLoop++) {
-    uiChecksum += pSoldier->inv[uiLoop].usItem;
-    uiChecksum += pSoldier->inv[uiLoop].ubNumberOfObjects;
+    uiChecksum += pSoldier.value.inv[uiLoop].usItem;
+    uiChecksum += pSoldier.value.inv[uiLoop].ubNumberOfObjects;
   }
 
   return uiChecksum;
@@ -2135,22 +2135,22 @@ function ProfileChecksum(pProfile: Pointer<MERCPROFILESTRUCT>): UINT32 {
   let uiChecksum: UINT32 = 1;
   let uiLoop: UINT32;
 
-  uiChecksum += (pProfile->bLife + 1);
-  uiChecksum *= (pProfile->bLifeMax + 1);
-  uiChecksum += (pProfile->bAgility + 1);
-  uiChecksum *= (pProfile->bDexterity + 1);
-  uiChecksum += (pProfile->bStrength + 1);
-  uiChecksum *= (pProfile->bMarksmanship + 1);
-  uiChecksum += (pProfile->bMedical + 1);
-  uiChecksum *= (pProfile->bMechanical + 1);
-  uiChecksum += (pProfile->bExplosive + 1);
+  uiChecksum += (pProfile.value.bLife + 1);
+  uiChecksum *= (pProfile.value.bLifeMax + 1);
+  uiChecksum += (pProfile.value.bAgility + 1);
+  uiChecksum *= (pProfile.value.bDexterity + 1);
+  uiChecksum += (pProfile.value.bStrength + 1);
+  uiChecksum *= (pProfile.value.bMarksmanship + 1);
+  uiChecksum += (pProfile.value.bMedical + 1);
+  uiChecksum *= (pProfile.value.bMechanical + 1);
+  uiChecksum += (pProfile.value.bExplosive + 1);
 
   // put in some multipliers too!
-  uiChecksum *= (pProfile->bExpLevel + 1);
+  uiChecksum *= (pProfile.value.bExpLevel + 1);
 
   for (uiLoop = 0; uiLoop < NUM_INV_SLOTS; uiLoop++) {
-    uiChecksum += pProfile->inv[uiLoop];
-    uiChecksum += pProfile->bInvNumber[uiLoop];
+    uiChecksum += pProfile.value.inv[uiLoop];
+    uiChecksum += pProfile.value.bInvNumber[uiLoop];
   }
 
   return uiChecksum;
@@ -2438,7 +2438,7 @@ function GetNumberOfVisibleWorldItemsFromSectorStructureForSector(sMapX: INT16, 
     pSector = FindUnderGroundSector(sMapX, sMapY, bMapZ);
     if (pSector != NULL) {
       // get the number of items
-      uiNumberOfItems = pSector->uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer;
+      uiNumberOfItems = pSector.value.uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer;
     }
   }
 
@@ -2465,7 +2465,7 @@ function SetNumberOfVisibleWorldItemsInSectorStructureForSector(sMapX: INT16, sM
     pSector = FindUnderGroundSector(sMapX, sMapY, bMapZ);
     if (pSector != NULL) {
       // get the number of items
-      pSector->uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer = uiNumberOfItems;
+      pSector.value.uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer = uiNumberOfItems;
     }
   }
 }

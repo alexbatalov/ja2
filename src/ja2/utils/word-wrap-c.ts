@@ -59,17 +59,17 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
     if (TempString[usCurIndex] == 0) {
       // get to next WrappedString structure
       pWrappedString = &FirstWrappedString;
-      while (pWrappedString->pNextWrappedString != NULL)
-        pWrappedString = pWrappedString->pNextWrappedString;
+      while (pWrappedString.value.pNextWrappedString != NULL)
+        pWrappedString = pWrappedString.value.pNextWrappedString;
 
       // allocate memory for the string
-      pWrappedString->pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-      pWrappedString->pNextWrappedString->sString = MemAlloc((wcslen(DestString) + 2) * 2);
-      if (pWrappedString->pNextWrappedString->sString == NULL)
+      pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
+      pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((wcslen(DestString) + 2) * 2);
+      if (pWrappedString.value.pNextWrappedString.value.sString == NULL)
         return NULL;
 
-      wcscpy(pWrappedString->pNextWrappedString->sString, DestString);
-      pWrappedString->pNextWrappedString->pNextWrappedString = NULL;
+      wcscpy(pWrappedString.value.pNextWrappedString.value.sString, DestString);
+      pWrappedString.value.pNextWrappedString.value.pNextWrappedString = NULL;
 
       return FirstWrappedString.pNextWrappedString;
     }
@@ -85,16 +85,16 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
 
       // get to next WrappedString structure
       pWrappedString = &FirstWrappedString;
-      while (pWrappedString->pNextWrappedString != NULL)
-        pWrappedString = pWrappedString->pNextWrappedString;
+      while (pWrappedString.value.pNextWrappedString != NULL)
+        pWrappedString = pWrappedString.value.pNextWrappedString;
 
       // allocate memory for the string
-      pWrappedString->pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-      pWrappedString->pNextWrappedString->sString = MemAlloc((wcslen(DestString) + 2) * 2);
+      pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
+      pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((wcslen(DestString) + 2) * 2);
 
       // Copy the string into the new struct
-      wcscpy(pWrappedString->pNextWrappedString->sString, DestString);
-      pWrappedString->pNextWrappedString->pNextWrappedString = NULL;
+      wcscpy(pWrappedString.value.pNextWrappedString.value.sString, DestString);
+      pWrappedString.value.pNextWrappedString.value.pNextWrappedString = NULL;
 
       fNewLine = FALSE;
 
@@ -173,17 +173,17 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
     if (TempString[usCurIndex] == 0) {
       // get to next WrappedString structure
       pWrappedString = &FirstWrappedString;
-      while (pWrappedString->pNextWrappedString != NULL)
-        pWrappedString = pWrappedString->pNextWrappedString;
+      while (pWrappedString.value.pNextWrappedString != NULL)
+        pWrappedString = pWrappedString.value.pNextWrappedString;
 
       // allocate memory for the string
-      pWrappedString->pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-      pWrappedString->pNextWrappedString->sString = MemAlloc((wcslen(DestString) + 2) * 2);
-      if (pWrappedString->pNextWrappedString->sString == NULL)
+      pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
+      pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((wcslen(DestString) + 2) * 2);
+      if (pWrappedString.value.pNextWrappedString.value.sString == NULL)
         return NULL;
 
-      wcscpy(pWrappedString->pNextWrappedString->sString, DestString);
-      pWrappedString->pNextWrappedString->pNextWrappedString = NULL;
+      wcscpy(pWrappedString.value.pNextWrappedString.value.sString, DestString);
+      pWrappedString.value.pNextWrappedString.value.pNextWrappedString = NULL;
 
       return FirstWrappedString.pNextWrappedString;
     }
@@ -213,18 +213,18 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
 
       // get to next WrappedString structure
       pWrappedString = &FirstWrappedString;
-      while (pWrappedString->pNextWrappedString != NULL)
-        pWrappedString = pWrappedString->pNextWrappedString;
+      while (pWrappedString.value.pNextWrappedString != NULL)
+        pWrappedString = pWrappedString.value.pNextWrappedString;
 
       if (wcslen(DestString) != 0) {
         // allocate memory for the string
-        pWrappedString->pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-        pWrappedString->pNextWrappedString->sString = MemAlloc((wcslen(DestString) + 2) * 2);
-        if (pWrappedString->pNextWrappedString->sString == NULL)
+        pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
+        pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((wcslen(DestString) + 2) * 2);
+        if (pWrappedString.value.pNextWrappedString.value.sString == NULL)
           return NULL;
 
-        wcscpy(pWrappedString->pNextWrappedString->sString, DestString);
-        pWrappedString->pNextWrappedString->pNextWrappedString = NULL;
+        wcscpy(pWrappedString.value.pNextWrappedString.value.sString, DestString);
+        pWrappedString.value.pNextWrappedString.value.pNextWrappedString = NULL;
 
         usCurrentWidthPixels = 0;
         usDestIndex = 0;
@@ -248,27 +248,27 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
 
           // get to next WrappedString structure
           pWrappedString = &FirstWrappedString;
-          while (pWrappedString->pNextWrappedString != NULL)
-            pWrappedString = pWrappedString->pNextWrappedString;
+          while (pWrappedString.value.pNextWrappedString != NULL)
+            pWrappedString = pWrappedString.value.pNextWrappedString;
 
           // allocate memory for the string
-          pWrappedString->pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-          pWrappedString->pNextWrappedString->sString = MemAlloc((wcslen(DestString) + 2) * 2);
-          if (pWrappedString->pNextWrappedString->sString == NULL)
+          pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
+          pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((wcslen(DestString) + 2) * 2);
+          if (pWrappedString.value.pNextWrappedString.value.sString == NULL)
             return NULL;
 
-          wcscpy(pWrappedString->pNextWrappedString->sString, DestString);
-          pWrappedString->pNextWrappedString->pNextWrappedString = NULL;
+          wcscpy(pWrappedString.value.pNextWrappedString.value.sString, DestString);
+          pWrappedString.value.pNextWrappedString.value.pNextWrappedString = NULL;
           if (fNewLine) {
             pWrappedString = &FirstWrappedString;
-            while (pWrappedString->pNextWrappedString != NULL)
-              pWrappedString = pWrappedString->pNextWrappedString;
+            while (pWrappedString.value.pNextWrappedString != NULL)
+              pWrappedString = pWrappedString.value.pNextWrappedString;
 
             // allocate memory for the string
-            pWrappedString->pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-            pWrappedString->pNextWrappedString->sString = MemAlloc((wcslen(pNullString) + 2) * 2);
-            wcscpy(pWrappedString->pNextWrappedString->sString, pNullString);
-            pWrappedString->pNextWrappedString->pNextWrappedString = NULL;
+            pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
+            pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((wcslen(pNullString) + 2) * 2);
+            wcscpy(pWrappedString.value.pNextWrappedString.value.sString, pNullString);
+            pWrappedString.value.pNextWrappedString.value.pNextWrappedString = NULL;
           }
 
           fDone = TRUE;
@@ -326,12 +326,12 @@ function DisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, u
     usWidth = usLineWidthIfWordIsWiderThenWidth;
 
   while (pFirstWrappedString != NULL) {
-    DrawTextToScreen(pFirstWrappedString->sString, usPosX, usPosY, usWidth, uiFont, ubColor, ubBackGroundColor, fDirty, uiFlags);
+    DrawTextToScreen(pFirstWrappedString.value.sString, usPosX, usPosY, usWidth, uiFont, ubColor, ubBackGroundColor, fDirty, uiFlags);
 
     pTempWrappedString = pFirstWrappedString;
-    pFirstWrappedString = pTempWrappedString->pNextWrappedString;
-    MemFree(pTempWrappedString->sString);
-    pTempWrappedString->sString = NULL;
+    pFirstWrappedString = pTempWrappedString.value.pNextWrappedString;
+    MemFree(pTempWrappedString.value.sString);
+    pTempWrappedString.value.sString = NULL;
     MemFree(pTempWrappedString);
     pTempWrappedString = NULL;
 
@@ -349,9 +349,9 @@ function DeleteWrappedString(pWrappedString: Pointer<WRAPPED_STRING>): UINT16 {
 
   while (pWrappedString != NULL) {
     pTempWrappedString = pWrappedString;
-    pWrappedString = pTempWrappedString->pNextWrappedString;
-    MemFree(pTempWrappedString->sString);
-    pTempWrappedString->sString = NULL;
+    pWrappedString = pTempWrappedString.value.pNextWrappedString;
+    MemFree(pTempWrappedString.value.sString);
+    pTempWrappedString.value.sString = NULL;
     MemFree(pTempWrappedString);
     pTempWrappedString = NULL;
 
@@ -1558,12 +1558,12 @@ function GetFirstRecordOnThisPage(RecordList: RecordPtr, uiFont: UINT32, usWidth
   // while we are not on the current page
   while (iCurrentPage < iPage) {
     // build record list to this point
-    while ((iCurrentPositionOnThisPage + IanWrappedStringHeight(0, 0, usWidth, ubGap, uiFont, 0, CurrentRecord->pRecord, 0, 0, 0)) <= iPageSize) {
+    while ((iCurrentPositionOnThisPage + IanWrappedStringHeight(0, 0, usWidth, ubGap, uiFont, 0, CurrentRecord.value.pRecord, 0, 0, 0)) <= iPageSize) {
       // still room on this page
-      iCurrentPositionOnThisPage += IanWrappedStringHeight(0, 0, usWidth, ubGap, uiFont, 0, CurrentRecord->pRecord, 0, 0, 0);
+      iCurrentPositionOnThisPage += IanWrappedStringHeight(0, 0, usWidth, ubGap, uiFont, 0, CurrentRecord.value.pRecord, 0, 0, 0);
 
       // next record
-      CurrentRecord = CurrentRecord->Next;
+      CurrentRecord = CurrentRecord.value.Next;
 
       // check if we have gone too far?
       if (CurrentRecord == NULL) {
@@ -1606,41 +1606,41 @@ function GetFirstStringOnThisPage(RecordList: FileStringPtr, uiFont: UINT32, usW
     pWidthList = WidthList;
 
     while (pWidthList) {
-      if (iCounter == pWidthList->iRecordNumber) {
-        usCurrentWidth = pWidthList->iRecordWidth;
+      if (iCounter == pWidthList.value.iRecordNumber) {
+        usCurrentWidth = pWidthList.value.iRecordWidth;
         //				iCurrentPositionOnThisPage += pWidthList->iRecordHeightAdjustment;
 
-        if (pWidthList->iRecordHeightAdjustment == iPageSize) {
+        if (pWidthList.value.iRecordHeightAdjustment == iPageSize) {
           if (iCurrentPositionOnThisPage != 0)
             iCurrentPositionOnThisPage += iPageSize - iCurrentPositionOnThisPage;
         } else
-          iCurrentPositionOnThisPage += pWidthList->iRecordHeightAdjustment;
+          iCurrentPositionOnThisPage += pWidthList.value.iRecordHeightAdjustment;
       }
-      pWidthList = pWidthList->Next;
+      pWidthList = pWidthList.value.Next;
     }
 
     // build record list to this point
-    while ((iCurrentPositionOnThisPage + IanWrappedStringHeight(0, 0, usCurrentWidth, ubGap, uiFont, 0, CurrentRecord->pString, 0, 0, 0)) < iPageSize) {
+    while ((iCurrentPositionOnThisPage + IanWrappedStringHeight(0, 0, usCurrentWidth, ubGap, uiFont, 0, CurrentRecord.value.pString, 0, 0, 0)) < iPageSize) {
       // still room on this page
-      iCurrentPositionOnThisPage += IanWrappedStringHeight(0, 0, usCurrentWidth, ubGap, uiFont, 0, CurrentRecord->pString, 0, 0, 0);
+      iCurrentPositionOnThisPage += IanWrappedStringHeight(0, 0, usCurrentWidth, ubGap, uiFont, 0, CurrentRecord.value.pString, 0, 0, 0);
 
       // next record
-      CurrentRecord = CurrentRecord->Next;
+      CurrentRecord = CurrentRecord.value.Next;
       iCounter++;
 
       usCurrentWidth = usWidth;
       pWidthList = WidthList;
       while (pWidthList) {
-        if (iCounter == pWidthList->iRecordNumber) {
-          usCurrentWidth = pWidthList->iRecordWidth;
+        if (iCounter == pWidthList.value.iRecordNumber) {
+          usCurrentWidth = pWidthList.value.iRecordWidth;
 
-          if (pWidthList->iRecordHeightAdjustment == iPageSize) {
+          if (pWidthList.value.iRecordHeightAdjustment == iPageSize) {
             if (iCurrentPositionOnThisPage != 0)
               iCurrentPositionOnThisPage += iPageSize - iCurrentPositionOnThisPage;
           } else
-            iCurrentPositionOnThisPage += pWidthList->iRecordHeightAdjustment;
+            iCurrentPositionOnThisPage += pWidthList.value.iRecordHeightAdjustment;
         }
-        pWidthList = pWidthList->Next;
+        pWidthList = pWidthList.value.Next;
       }
     }
 

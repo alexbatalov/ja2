@@ -288,8 +288,8 @@ function DequeAllGameEvents(fExecute: BOOLEAN): BOOLEAN {
 
     if (fExecute) {
       // Check if event has a delay and add to secondary queue if so
-      if (pEvent->usDelay > 0) {
-        AddGameEventToQueue(pEvent->uiEvent, pEvent->usDelay, pEvent->pData, SECONDARY_EVENT_QUEUE);
+      if (pEvent.value.usDelay > 0) {
+        AddGameEventToQueue(pEvent.value.uiEvent, pEvent.value.usDelay, pEvent.value.pData, SECONDARY_EVENT_QUEUE);
       } else {
         ExecuteGameEvent(pEvent);
       }
@@ -309,13 +309,13 @@ function DequeAllGameEvents(fExecute: BOOLEAN): BOOLEAN {
     }
 
     // Check time
-    if ((GetJA2Clock() - pEvent->TimeStamp) > pEvent->usDelay) {
+    if ((GetJA2Clock() - pEvent.value.TimeStamp) > pEvent.value.usDelay) {
       if (fExecute) {
         ExecuteGameEvent(pEvent);
       }
 
       // FLag as expired
-      pEvent->uiFlags = EVENT_EXPIRED;
+      pEvent.value.uiFlags = EVENT_EXPIRED;
     }
   }
 
@@ -328,7 +328,7 @@ function DequeAllGameEvents(fExecute: BOOLEAN): BOOLEAN {
       }
 
       // Check time
-      if (pEvent->uiFlags & EVENT_EXPIRED) {
+      if (pEvent.value.uiFlags & EVENT_EXPIRED) {
         RemoveEvent(&pEvent, cnt, SECONDARY_EVENT_QUEUE);
         FreeEvent(pEvent);
         // Restart loop
@@ -358,8 +358,8 @@ function DequeueAllDemandGameEvents(fExecute: BOOLEAN): BOOLEAN {
 
     if (fExecute) {
       // Check if event has a delay and add to secondary queue if so
-      if (pEvent->usDelay > 0) {
-        AddGameEventToQueue(pEvent->uiEvent, pEvent->usDelay, pEvent->pData, SECONDARY_EVENT_QUEUE);
+      if (pEvent.value.usDelay > 0) {
+        AddGameEventToQueue(pEvent.value.uiEvent, pEvent.value.usDelay, pEvent.value.pData, SECONDARY_EVENT_QUEUE);
       } else {
         ExecuteGameEvent(pEvent);
       }
@@ -376,10 +376,10 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Switch on event type
-  switch (pEvent->uiEvent) {
+  switch (pEvent.value.uiEvent) {
     case E_PLAYSOUND:
 
-      memcpy(&EPlaySound, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&EPlaySound, pEvent.value.pData, pEvent.value.uiDataSize);
 
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Play Sound");
       PlayJA2Sample(EPlaySound.usIndex, EPlaySound.usRate, EPlaySound.ubVolume, EPlaySound.ubLoops, EPlaySound.uiPan);
@@ -387,7 +387,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
 
     case S_CHANGESTATE:
 
-      memcpy(&SChangeState, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&SChangeState, pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
       if (GetSoldier(&pSoldier, SChangeState.usSoldierID) == FALSE) {
@@ -397,7 +397,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       }
 
       // check for error
-      if (pSoldier->uiUniqueSoldierIdValue != SChangeState.uiUniqueId) {
+      if (pSoldier.value.uiUniqueSoldierIdValue != SChangeState.uiUniqueId) {
         break;
       }
 
@@ -408,7 +408,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
 
     case S_CHANGEDEST:
 
-      memcpy(&SChangeDest, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&SChangeDest, pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
       if (GetSoldier(&pSoldier, SChangeDest.usSoldierID) == FALSE) {
@@ -418,7 +418,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       }
 
       // check for error
-      if (pSoldier->uiUniqueSoldierIdValue != SChangeDest.uiUniqueId) {
+      if (pSoldier.value.uiUniqueSoldierIdValue != SChangeDest.uiUniqueId) {
         break;
       }
 
@@ -429,7 +429,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
 
     case S_SETPOSITION:
 
-      memcpy(&SSetPosition, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&SSetPosition, pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
       if (GetSoldier(&pSoldier, SSetPosition.usSoldierID) == FALSE) {
@@ -439,7 +439,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       }
 
       // check for error
-      if (pSoldier->uiUniqueSoldierIdValue != SSetPosition.uiUniqueId) {
+      if (pSoldier.value.uiUniqueSoldierIdValue != SSetPosition.uiUniqueId) {
         break;
       }
 
@@ -450,7 +450,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
 
     case S_GETNEWPATH:
 
-      memcpy(&SGetNewPath, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&SGetNewPath, pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
       if (GetSoldier(&pSoldier, SGetNewPath.usSoldierID) == FALSE) {
@@ -460,7 +460,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       }
 
       // check for error
-      if (pSoldier->uiUniqueSoldierIdValue != SGetNewPath.uiUniqueId) {
+      if (pSoldier.value.uiUniqueSoldierIdValue != SGetNewPath.uiUniqueId) {
         break;
       }
       // Call soldier function
@@ -470,7 +470,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
 
     case S_BEGINTURN:
 
-      memcpy(&SBeginTurn, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&SBeginTurn, pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
       if (GetSoldier(&pSoldier, SBeginTurn.usSoldierID) == FALSE) {
@@ -480,7 +480,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       }
 
       // check for error
-      if (pSoldier->uiUniqueSoldierIdValue != SBeginTurn.uiUniqueId) {
+      if (pSoldier.value.uiUniqueSoldierIdValue != SBeginTurn.uiUniqueId) {
         break;
       }
 
@@ -491,7 +491,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
 
     case S_CHANGESTANCE:
 
-      memcpy(&SChangeStance, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&SChangeStance, pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
       if (GetSoldier(&pSoldier, SChangeStance.usSoldierID) == FALSE) {
@@ -501,7 +501,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       }
 
       // check for error
-      if (pSoldier->uiUniqueSoldierIdValue != SChangeStance.uiUniqueId) {
+      if (pSoldier.value.uiUniqueSoldierIdValue != SChangeStance.uiUniqueId) {
         break;
       }
       // Call soldier function
@@ -511,7 +511,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
 
     case S_SETDIRECTION:
 
-      memcpy(&SSetDirection, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&SSetDirection, pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
       if (GetSoldier(&pSoldier, SSetDirection.usSoldierID) == FALSE) {
@@ -521,7 +521,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       }
 
       // check for error
-      if (pSoldier->uiUniqueSoldierIdValue != SSetDirection.uiUniqueId) {
+      if (pSoldier.value.uiUniqueSoldierIdValue != SSetDirection.uiUniqueId) {
         break;
       }
 
@@ -532,7 +532,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
 
     case S_SETDESIREDDIRECTION:
 
-      memcpy(&SSetDesiredDirection, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&SSetDesiredDirection, pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
       if (GetSoldier(&pSoldier, SSetDesiredDirection.usSoldierID) == FALSE) {
@@ -542,7 +542,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       }
 
       // check for error
-      if (pSoldier->uiUniqueSoldierIdValue != SSetDesiredDirection.uiUniqueId) {
+      if (pSoldier.value.uiUniqueSoldierIdValue != SSetDesiredDirection.uiUniqueId) {
         break;
       }
 
@@ -553,7 +553,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
 
     case S_BEGINFIREWEAPON:
 
-      memcpy(&SBeginFireWeapon, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&SBeginFireWeapon, pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
       if (GetSoldier(&pSoldier, SBeginFireWeapon.usSoldierID) == FALSE) {
@@ -564,21 +564,21 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       }
 
       // check for error
-      if (pSoldier->uiUniqueSoldierIdValue != SBeginFireWeapon.uiUniqueId) {
+      if (pSoldier.value.uiUniqueSoldierIdValue != SBeginFireWeapon.uiUniqueId) {
         break;
       }
 
       // Call soldier function
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Begin Fire Weapon");
-      pSoldier->sTargetGridNo = SBeginFireWeapon.sTargetGridNo;
-      pSoldier->bTargetLevel = SBeginFireWeapon.bTargetLevel;
-      pSoldier->bTargetCubeLevel = SBeginFireWeapon.bTargetCubeLevel;
+      pSoldier.value.sTargetGridNo = SBeginFireWeapon.sTargetGridNo;
+      pSoldier.value.bTargetLevel = SBeginFireWeapon.bTargetLevel;
+      pSoldier.value.bTargetCubeLevel = SBeginFireWeapon.bTargetCubeLevel;
       EVENT_FireSoldierWeapon(pSoldier, SBeginFireWeapon.sTargetGridNo);
       break;
 
     case S_FIREWEAPON:
 
-      memcpy(&SFireWeapon, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&SFireWeapon, pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
       if (GetSoldier(&pSoldier, SFireWeapon.usSoldierID) == FALSE) {
@@ -588,55 +588,55 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       }
 
       // check for error
-      if (pSoldier->uiUniqueSoldierIdValue != SFireWeapon.uiUniqueId) {
+      if (pSoldier.value.uiUniqueSoldierIdValue != SFireWeapon.uiUniqueId) {
         break;
       }
 
       // Call soldier function
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: FireWeapon");
-      pSoldier->sTargetGridNo = SFireWeapon.sTargetGridNo;
-      pSoldier->bTargetLevel = SFireWeapon.bTargetLevel;
-      pSoldier->bTargetCubeLevel = SFireWeapon.bTargetCubeLevel;
+      pSoldier.value.sTargetGridNo = SFireWeapon.sTargetGridNo;
+      pSoldier.value.bTargetLevel = SFireWeapon.bTargetLevel;
+      pSoldier.value.bTargetCubeLevel = SFireWeapon.bTargetCubeLevel;
       FireWeapon(pSoldier, SFireWeapon.sTargetGridNo);
       break;
 
     case S_WEAPONHIT:
 
-      memcpy(&SWeaponHit, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&SWeaponHit, pEvent.value.pData, pEvent.value.uiDataSize);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: WeaponHit %d Damage", SWeaponHit.sDamage));
       WeaponHit(SWeaponHit.usSoldierID, SWeaponHit.usWeaponIndex, SWeaponHit.sDamage, SWeaponHit.sBreathLoss, SWeaponHit.usDirection, SWeaponHit.sXPos, SWeaponHit.sYPos, SWeaponHit.sZPos, SWeaponHit.sRange, SWeaponHit.ubAttackerID, SWeaponHit.fHit, SWeaponHit.ubSpecial, SWeaponHit.ubLocation);
       break;
 
     case S_STRUCTUREHIT:
 
-      memcpy(&SStructureHit, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&SStructureHit, pEvent.value.pData, pEvent.value.uiDataSize);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: StructureHit"));
       StructureHit(SStructureHit.iBullet, SStructureHit.usWeaponIndex, SStructureHit.bWeaponStatus, SStructureHit.ubAttackerID, SStructureHit.sXPos, SStructureHit.sYPos, SStructureHit.sZPos, SStructureHit.usStructureID, SStructureHit.iImpact, TRUE);
       break;
 
     case S_WINDOWHIT:
 
-      memcpy(&SWindowHit, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&SWindowHit, pEvent.value.pData, pEvent.value.uiDataSize);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: WindowHit"));
       WindowHit(SWindowHit.sGridNo, SWindowHit.usStructureID, SWindowHit.fBlowWindowSouth, SWindowHit.fLargeForce);
       break;
 
     case S_MISS:
 
-      memcpy(&SMiss, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&SMiss, pEvent.value.pData, pEvent.value.uiDataSize);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: Shot Miss ( obsolete )"));
       // ShotMiss( SMiss.ubAttackerID );
       break;
 
     case S_NOISE:
-      memcpy(&SNoise, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&SNoise, pEvent.value.pData, pEvent.value.uiDataSize);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: Noise from %d at %d/%d, type %d volume %d", SNoise.ubNoiseMaker, SNoise.sGridNo, SNoise.bLevel, SNoise.ubNoiseType, SNoise.ubVolume));
       OurNoise(SNoise.ubNoiseMaker, SNoise.sGridNo, SNoise.bLevel, SNoise.ubTerrType, SNoise.ubVolume, SNoise.ubNoiseType);
       break;
 
     case S_STOP_MERC:
 
-      memcpy(&SStopMerc, pEvent->pData, pEvent->uiDataSize);
+      memcpy(&SStopMerc, pEvent.value.pData, pEvent.value.uiDataSize);
 
       // Get soldier pointer from ID
       if (GetSoldier(&pSoldier, SStopMerc.usSoldierID) == FALSE) {
@@ -645,7 +645,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
         break;
       }
 
-      if (pSoldier->uiUniqueSoldierIdValue != SStopMerc.uiUniqueId) {
+      if (pSoldier.value.uiUniqueSoldierIdValue != SStopMerc.uiUniqueId) {
         break;
       }
 

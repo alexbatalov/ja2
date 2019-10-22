@@ -20,10 +20,10 @@ function IsJumpableFencePresentAtGridno(sGridNo: INT16): BOOLEAN {
   pStructure = FindStructure(sGridNo, STRUCTURE_OBSTACLE);
 
   if (pStructure) {
-    if (pStructure->fFlags & STRUCTURE_FENCE && !(pStructure->fFlags & STRUCTURE_SPECIAL)) {
+    if (pStructure.value.fFlags & STRUCTURE_FENCE && !(pStructure.value.fFlags & STRUCTURE_SPECIAL)) {
       return TRUE;
     }
-    if (pStructure->pDBStructureRef->pDBStructure->ubArmour == MATERIAL_SANDBAG && StructureHeight(pStructure) < 2) {
+    if (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == MATERIAL_SANDBAG && StructureHeight(pStructure) < 2) {
       return TRUE;
     }
   }
@@ -68,7 +68,7 @@ function GetWallLevelNodeOfSameOrientationAtGridno(sGridNo: INT16, ubOrientation
 
   while (pStructure != NULL) {
     // Check orientation
-    if (pStructure->ubWallOrientation == ubOrientation) {
+    if (pStructure.value.ubWallOrientation == ubOrientation) {
       pNode = FindLevelNodeBasedOnStructure(sGridNo, pStructure);
       return pNode;
     }
@@ -89,10 +89,10 @@ function GetWallLevelNodeAndStructOfSameOrientationAtGridno(sGridNo: INT16, ubOr
 
   while (pStructure != NULL) {
     // Check orientation
-    if (pStructure->ubWallOrientation == ubOrientation) {
+    if (pStructure.value.ubWallOrientation == ubOrientation) {
       pBaseStructure = FindBaseStructure(pStructure);
       if (pBaseStructure) {
-        pNode = FindLevelNodeBasedOnStructure(pBaseStructure->sGridNo, pBaseStructure);
+        pNode = FindLevelNodeBasedOnStructure(pBaseStructure.value.sGridNo, pBaseStructure);
         (*ppStructure) = pBaseStructure;
         return pNode;
       }
@@ -111,7 +111,7 @@ function IsDoorVisibleAtGridNo(sGridNo: INT16): BOOLEAN {
 
   if (pStructure != NULL) {
     // Check around based on orientation
-    switch (pStructure->ubWallOrientation) {
+    switch (pStructure.value.ubWallOrientation) {
       case INSIDE_TOP_LEFT:
       case OUTSIDE_TOP_LEFT:
 
@@ -194,7 +194,7 @@ function WallExistsOfTopLeftOrientation(sGridNo: INT16): BOOLEAN {
 
   while (pStructure != NULL) {
     // Check orientation
-    if (pStructure->ubWallOrientation == INSIDE_TOP_LEFT || pStructure->ubWallOrientation == OUTSIDE_TOP_LEFT) {
+    if (pStructure.value.ubWallOrientation == INSIDE_TOP_LEFT || pStructure.value.ubWallOrientation == OUTSIDE_TOP_LEFT) {
       return TRUE;
     }
 
@@ -212,7 +212,7 @@ function WallExistsOfTopRightOrientation(sGridNo: INT16): BOOLEAN {
 
   while (pStructure != NULL) {
     // Check orientation
-    if (pStructure->ubWallOrientation == INSIDE_TOP_RIGHT || pStructure->ubWallOrientation == OUTSIDE_TOP_RIGHT) {
+    if (pStructure.value.ubWallOrientation == INSIDE_TOP_RIGHT || pStructure.value.ubWallOrientation == OUTSIDE_TOP_RIGHT) {
       return TRUE;
     }
 
@@ -229,9 +229,9 @@ function WallOrClosedDoorExistsOfTopLeftOrientation(sGridNo: INT16): BOOLEAN {
 
   while (pStructure != NULL) {
     // skip it if it's an open door
-    if (!((pStructure->fFlags & STRUCTURE_ANYDOOR) && (pStructure->fFlags & STRUCTURE_OPEN))) {
+    if (!((pStructure.value.fFlags & STRUCTURE_ANYDOOR) && (pStructure.value.fFlags & STRUCTURE_OPEN))) {
       // Check orientation
-      if (pStructure->ubWallOrientation == INSIDE_TOP_LEFT || pStructure->ubWallOrientation == OUTSIDE_TOP_LEFT) {
+      if (pStructure.value.ubWallOrientation == INSIDE_TOP_LEFT || pStructure.value.ubWallOrientation == OUTSIDE_TOP_LEFT) {
         return TRUE;
       }
     }
@@ -249,9 +249,9 @@ function WallOrClosedDoorExistsOfTopRightOrientation(sGridNo: INT16): BOOLEAN {
 
   while (pStructure != NULL) {
     // skip it if it's an open door
-    if (!((pStructure->fFlags & STRUCTURE_ANYDOOR) && (pStructure->fFlags & STRUCTURE_OPEN))) {
+    if (!((pStructure.value.fFlags & STRUCTURE_ANYDOOR) && (pStructure.value.fFlags & STRUCTURE_OPEN))) {
       // Check orientation
-      if (pStructure->ubWallOrientation == INSIDE_TOP_RIGHT || pStructure->ubWallOrientation == OUTSIDE_TOP_RIGHT) {
+      if (pStructure.value.ubWallOrientation == INSIDE_TOP_RIGHT || pStructure.value.ubWallOrientation == OUTSIDE_TOP_RIGHT) {
         return TRUE;
       }
     }
@@ -267,10 +267,10 @@ function OpenRightOrientedDoorWithDoorOnRightOfEdgeExists(sGridNo: INT16): BOOLE
 
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
 
-  while (pStructure != NULL && (pStructure->fFlags & STRUCTURE_OPEN)) {
+  while (pStructure != NULL && (pStructure.value.fFlags & STRUCTURE_OPEN)) {
     // Check orientation
-    if (pStructure->ubWallOrientation == INSIDE_TOP_RIGHT || pStructure->ubWallOrientation == OUTSIDE_TOP_RIGHT) {
-      if ((pStructure->fFlags & STRUCTURE_DOOR) || (pStructure->fFlags & STRUCTURE_DDOOR_RIGHT)) {
+    if (pStructure.value.ubWallOrientation == INSIDE_TOP_RIGHT || pStructure.value.ubWallOrientation == OUTSIDE_TOP_RIGHT) {
+      if ((pStructure.value.fFlags & STRUCTURE_DOOR) || (pStructure.value.fFlags & STRUCTURE_DDOOR_RIGHT)) {
         return TRUE;
       }
     }
@@ -286,10 +286,10 @@ function OpenLeftOrientedDoorWithDoorOnLeftOfEdgeExists(sGridNo: INT16): BOOLEAN
 
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
 
-  while (pStructure != NULL && (pStructure->fFlags & STRUCTURE_OPEN)) {
+  while (pStructure != NULL && (pStructure.value.fFlags & STRUCTURE_OPEN)) {
     // Check orientation
-    if (pStructure->ubWallOrientation == INSIDE_TOP_LEFT || pStructure->ubWallOrientation == OUTSIDE_TOP_LEFT) {
-      if ((pStructure->fFlags & STRUCTURE_DOOR) || (pStructure->fFlags & STRUCTURE_DDOOR_LEFT)) {
+    if (pStructure.value.ubWallOrientation == INSIDE_TOP_LEFT || pStructure.value.ubWallOrientation == OUTSIDE_TOP_LEFT) {
+      if ((pStructure.value.fFlags & STRUCTURE_DOOR) || (pStructure.value.fFlags & STRUCTURE_DDOOR_LEFT)) {
         return TRUE;
       }
     }
@@ -304,7 +304,7 @@ function FindCuttableWireFenceAtGridNo(sGridNo: INT16): Pointer<STRUCTURE> {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WIREFENCE);
-  if (pStructure != NULL && pStructure->ubWallOrientation != NO_ORIENTATION && !(pStructure->fFlags & STRUCTURE_OPEN)) {
+  if (pStructure != NULL && pStructure.value.ubWallOrientation != NO_ORIENTATION && !(pStructure.value.fFlags & STRUCTURE_OPEN)) {
     return pStructure;
   }
   return NULL;
@@ -340,7 +340,7 @@ function IsRepairableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): BOOL
   }
 
   if (ubMerc != NOBODY) {
-    if (MercPtrs[ubMerc]->uiStatusFlags & SOLDIER_VEHICLE) {
+    if (MercPtrs[ubMerc].value.uiStatusFlags & SOLDIER_VEHICLE) {
       return 2;
     }
   }
@@ -365,7 +365,7 @@ function IsRefuelableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): BOOL
   }
 
   if (ubMerc != NOBODY) {
-    if (MercPtrs[ubMerc]->uiStatusFlags & SOLDIER_VEHICLE) {
+    if (MercPtrs[ubMerc].value.uiStatusFlags & SOLDIER_VEHICLE) {
       return TRUE;
     }
   }
@@ -376,7 +376,7 @@ function IsCutWireFenceAtGridNo(sGridNo: INT16): BOOLEAN {
   let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WIREFENCE);
-  if (pStructure != NULL && (pStructure->ubWallOrientation != NO_ORIENTATION) && (pStructure->fFlags & STRUCTURE_OPEN)) {
+  if (pStructure != NULL && (pStructure.value.ubWallOrientation != NO_ORIENTATION) && (pStructure.value.fFlags & STRUCTURE_OPEN)) {
     return TRUE;
   }
   return FALSE;
@@ -391,21 +391,21 @@ function FindDoorAtGridNoOrAdjacent(sGridNo: INT16): INT16 {
   pStructure = FindStructure(sTestGridNo, STRUCTURE_ANYDOOR);
   if (pStructure) {
     pBaseStructure = FindBaseStructure(pStructure);
-    return pBaseStructure->sGridNo;
+    return pBaseStructure.value.sGridNo;
   }
 
   sTestGridNo = sGridNo + DirectionInc(NORTH);
   pStructure = FindStructure(sTestGridNo, STRUCTURE_ANYDOOR);
   if (pStructure) {
     pBaseStructure = FindBaseStructure(pStructure);
-    return pBaseStructure->sGridNo;
+    return pBaseStructure.value.sGridNo;
   }
 
   sTestGridNo = sGridNo + DirectionInc(WEST);
   pStructure = FindStructure(sTestGridNo, STRUCTURE_ANYDOOR);
   if (pStructure) {
     pBaseStructure = FindBaseStructure(pStructure);
-    return pBaseStructure->sGridNo;
+    return pBaseStructure.value.sGridNo;
   }
 
   return NOWHERE;
@@ -428,7 +428,7 @@ function SetOpenableStructureToClosed(sGridNo: INT16, ubLevel: UINT8): BOOLEAN {
     return FALSE;
   }
 
-  if (pStructure->fFlags & STRUCTURE_OPEN) {
+  if (pStructure.value.fFlags & STRUCTURE_OPEN) {
     pNewStructure = SwapStructureForPartner(sGridNo, pStructure);
     if (pNewStructure != NULL) {
       RecompileLocalMovementCosts(sGridNo);

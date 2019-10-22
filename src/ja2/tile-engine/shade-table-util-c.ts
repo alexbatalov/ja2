@@ -122,9 +122,9 @@ function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): BOOLEAN {
   // MISSING:  Compare time stamps.
 
   for (i = 0; i < 16; i++) {
-    pObj->pShades[i] = MemAlloc(512);
-    Assert(pObj->pShades[i]);
-    FileRead(hfile, pObj->pShades[i], 512, &uiNumBytesRead);
+    pObj.value.pShades[i] = MemAlloc(512);
+    Assert(pObj.value.pShades[i]);
+    FileRead(hfile, pObj.value.pShades[i], 512, &uiNumBytesRead);
   }
 
   // The file exists, now make sure the
@@ -157,7 +157,7 @@ function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): BOOLEAN {
     return FALSE;
   }
   for (i = 0; i < 16; i++) {
-    FileWrite(hfile, pObj->pShades[i], 512, &uiNumBytesWritten);
+    FileWrite(hfile, pObj.value.pShades[i], 512, &uiNumBytesWritten);
   }
 
   FileClose(hfile);

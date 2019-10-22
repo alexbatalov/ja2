@@ -177,15 +177,15 @@ function AddCharacterToPlayersTeam(): BOOLEAN {
 
 function BtnIMPConfirmYes(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP Homepage About US button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       // reset button
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       if (LaptopSaveInfo.fIMPCompletedFlag) {
         // already here, leave
@@ -230,13 +230,13 @@ function BtnIMPConfirmYes(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 // fixed? by CJC Nov 28 2002
 function BtnIMPConfirmNo(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP Homepage About US button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       iCurrentImpPage = IMP_FINISH;
 
       /*
@@ -256,7 +256,7 @@ function BtnIMPConfirmNo(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
 fNoAlreadySelected = TRUE;
       */
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
     }
   }
 }
@@ -292,7 +292,7 @@ void BtnIMPConfirmNo( GUI_BUTTON *btn,INT32 reason )
 }
 */
 
-const PROFILE_HAS_SKILL_TRAIT = (p, t) => ((p->bSkillTrait == t) || (p->bSkillTrait2 == t));
+const PROFILE_HAS_SKILL_TRAIT = (p, t) => ((p.value.bSkillTrait == t) || (p.value.bSkillTrait2 == t));
 
 function GiveItemsToPC(ubProfileId: UINT8): void {
   let pProfile: Pointer<MERCPROFILESTRUCT>;
@@ -306,14 +306,14 @@ function GiveItemsToPC(ubProfileId: UINT8): void {
 
   // kevlar vest, leggings, & helmet
   MakeProfileInvItemThisSlot(pProfile, VESTPOS, FLAK_JACKET, 100, 1);
-  if (PreRandom(100) < pProfile->bWisdom) {
+  if (PreRandom(100) < pProfile.value.bWisdom) {
     MakeProfileInvItemThisSlot(pProfile, HELMETPOS, STEEL_HELMET, 100, 1);
   }
 
   // canteen
   MakeProfileInvItemThisSlot(pProfile, SMALLPOCK4POS, CANTEEN, 100, 1);
 
-  if (pProfile->bMarksmanship >= 80) {
+  if (pProfile.value.bMarksmanship >= 80) {
     // good shooters get a better & matching ammo
     MakeProfileInvItemThisSlot(pProfile, HANDPOS, MP5K, 100, 1);
     MakeProfileInvItemThisSlot(pProfile, SMALLPOCK1POS, CLIP9_30, 100, 2);
@@ -325,20 +325,20 @@ function GiveItemsToPC(ubProfileId: UINT8): void {
 
   // OPTIONAL EQUIPMENT: depends on skills & special skills
 
-  if (pProfile->bMedical >= 60) {
+  if (pProfile.value.bMedical >= 60) {
     // strong medics get full medic kit
     MakeProfileInvItemAnySlot(pProfile, MEDICKIT, 100, 1);
-  } else if (pProfile->bMedical >= 30) {
+  } else if (pProfile.value.bMedical >= 30) {
     // passable medics get first aid kit
     MakeProfileInvItemAnySlot(pProfile, FIRSTAIDKIT, 100, 1);
   }
 
-  if (pProfile->bMechanical >= 50) {
+  if (pProfile.value.bMechanical >= 50) {
     // mechanics get toolkit
     MakeProfileInvItemAnySlot(pProfile, TOOLKIT, 100, 1);
   }
 
-  if (pProfile->bExplosive >= 50) {
+  if (pProfile.value.bExplosive >= 50) {
     // loonies get TNT & Detonator
     MakeProfileInvItemAnySlot(pProfile, TNT, 100, 1);
     MakeProfileInvItemAnySlot(pProfile, DETONATOR, 100, 1);
@@ -393,9 +393,9 @@ function MakeProfileInvItemAnySlot(pProfile: Pointer<MERCPROFILESTRUCT>, usItem:
 }
 
 function MakeProfileInvItemThisSlot(pProfile: Pointer<MERCPROFILESTRUCT>, uiPos: UINT32, usItem: UINT16, ubStatus: UINT8, ubHowMany: UINT8): void {
-  pProfile->inv[uiPos] = usItem;
-  pProfile->bInvStatus[uiPos] = ubStatus;
-  pProfile->bInvNumber[uiPos] = ubHowMany;
+  pProfile.value.inv[uiPos] = usItem;
+  pProfile.value.bInvStatus[uiPos] = ubStatus;
+  pProfile.value.bInvNumber[uiPos] = ubHowMany;
 }
 
 function FirstFreeBigEnoughPocket(pProfile: Pointer<MERCPROFILESTRUCT>, usItem: UINT16): INT32 {
@@ -405,7 +405,7 @@ function FirstFreeBigEnoughPocket(pProfile: Pointer<MERCPROFILESTRUCT>, usItem: 
   if (Item[usItem].ubPerPocket != 0) {
     // check small pockets first
     for (uiPos = SMALLPOCK1POS; uiPos <= SMALLPOCK8POS; uiPos++) {
-      if (pProfile->inv[uiPos] == NONE) {
+      if (pProfile.value.inv[uiPos] == NONE) {
         return uiPos;
       }
     }
@@ -413,7 +413,7 @@ function FirstFreeBigEnoughPocket(pProfile: Pointer<MERCPROFILESTRUCT>, usItem: 
 
   // check large pockets
   for (uiPos = BIGPOCK1POS; uiPos <= BIGPOCK4POS; uiPos++) {
-    if (pProfile->inv[uiPos] == NONE) {
+    if (pProfile.value.inv[uiPos] == NONE) {
       return uiPos;
     }
   }

@@ -152,19 +152,19 @@ function UpdateOldVersionMap(): void {
     gMapInformation.ubMapVersion = 21;
     curr = gSoldierInitHead;
     while (curr) {
-      if (curr->pDetailedPlacement) {
+      if (curr.value.pDetailedPlacement) {
         let i: INT32;
         for (i = 0; i < NUM_INV_SLOTS; i++) {
-          if (!curr->pDetailedPlacement->Inv[i].usItem) {
-            if (curr->pDetailedPlacement->Inv[i].fFlags & OBJECT_UNDROPPABLE) {
-              if (curr->pDetailedPlacement->Inv[i].fFlags & OBJECT_NO_OVERWRITE) {
-                curr->pDetailedPlacement->Inv[i].fFlags &= ~OBJECT_NO_OVERWRITE;
+          if (!curr.value.pDetailedPlacement.value.Inv[i].usItem) {
+            if (curr.value.pDetailedPlacement.value.Inv[i].fFlags & OBJECT_UNDROPPABLE) {
+              if (curr.value.pDetailedPlacement.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE) {
+                curr.value.pDetailedPlacement.value.Inv[i].fFlags &= ~OBJECT_NO_OVERWRITE;
               }
             }
           }
         }
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
   if (gMapInformation.ubMapVersion < 22) {
@@ -180,11 +180,11 @@ function UpdateOldVersionMap(): void {
      	// convert all civilians to miners which use uniforms and more masculine body types.
       curr = gSoldierInitHead;
       while (curr) {
-        if (curr->pBasicPlacement->bTeam == CIV_TEAM && !curr->pDetailedPlacement) {
-          curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_MINER;
-          curr->pBasicPlacement->bBodyType = -1;
+        if (curr.value.pBasicPlacement.value.bTeam == CIV_TEAM && !curr.value.pDetailedPlacement) {
+          curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_MINER;
+          curr.value.pBasicPlacement.value.bBodyType = -1;
         }
-        curr = curr->next;
+        curr = curr.value.next;
       }
     }
   }
@@ -206,19 +206,19 @@ function AutoCalculateItemNoOverwriteStatus(): void {
   // 2)  If detailed placement doesn't have item, but item is set to drop (forced empty slot), the "no overwrite" flag is set.
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr->pDetailedPlacement) {
+    if (curr.value.pDetailedPlacement) {
       for (i = 0; i < NUM_INV_SLOTS; i++) {
-        pItem = &curr->pDetailedPlacement->Inv[i];
-        if (pItem->usItem != NONE) {
+        pItem = &curr.value.pDetailedPlacement.value.Inv[i];
+        if (pItem.value.usItem != NONE) {
           // case 1 (see above)
-          pItem->fFlags |= OBJECT_NO_OVERWRITE;
-        } else if (!(pItem->fFlags & OBJECT_UNDROPPABLE)) {
+          pItem.value.fFlags |= OBJECT_NO_OVERWRITE;
+        } else if (!(pItem.value.fFlags & OBJECT_UNDROPPABLE)) {
           // case 2 (see above)
-          pItem->fFlags |= OBJECT_NO_OVERWRITE;
+          pItem.value.fFlags |= OBJECT_NO_OVERWRITE;
         }
       }
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -239,16 +239,16 @@ function ValidateAndUpdateMapVersionIfNecessary(): void {
 // By updating the summary info in conjunction with minor version updates, we can avoid these conflicts
 // and really prevent major map updates.
 function UpdateSummaryInfo(pSummary: Pointer<SUMMARYFILE>): void {
-  if (pSummary->MapInfo.ubMapVersion == MINOR_MAP_VERSION)
+  if (pSummary.value.MapInfo.ubMapVersion == MINOR_MAP_VERSION)
     return;
-  if (pSummary->MapInfo.ubMapVersion < 9) {
+  if (pSummary.value.MapInfo.ubMapVersion < 9) {
     // See bug 10
-    pSummary->ubCivSchedules = 0;
+    pSummary.value.ubCivSchedules = 0;
   }
-  if (pSummary->MapInfo.ubMapVersion < 12) {
-    pSummary->MapInfo.sCenterGridNo = -1;
+  if (pSummary.value.MapInfo.ubMapVersion < 12) {
+    pSummary.value.MapInfo.sCenterGridNo = -1;
   }
-  if (pSummary->MapInfo.ubMapVersion < 16) {
-    pSummary->MapInfo.sIsolatedGridNo = -1;
+  if (pSummary.value.MapInfo.ubMapVersion < 16) {
+    pSummary.value.MapInfo.sIsolatedGridNo = -1;
   }
 }

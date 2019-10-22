@@ -3,7 +3,7 @@
 const MAX_TOSS_SEARCH_DIST = 1; // must throw within this of opponent
 const NPC_TOSS_SAFETY_MARGIN = 4; // all friends must be this far away
 
-const ACTING_ON_SCHEDULE = (p) => ((p)->fAIFlags & AI_CHECK_SCHEDULE);
+const ACTING_ON_SCHEDULE = (p) => ((p).value.fAIFlags & AI_CHECK_SCHEDULE);
 
 // the AI should try to have this many APs before climbing a roof, if possible
 const AI_AP_CLIMBROOF = 15;
@@ -44,7 +44,7 @@ const FORCE = 1;
 
 const MAX_ROAMING_RANGE = WORLD_COLS;
 
-const PTR_CIV_OR_MILITIA = () => (PTR_CIVILIAN() || (pSoldier->bTeam == MILITIA_TEAM));
+const PTR_CIV_OR_MILITIA = () => (PTR_CIVILIAN() || (pSoldier.value.bTeam == MILITIA_TEAM));
 
 const REALTIME_AI_DELAY = () => (10000 + Random(1000));
 const REALTIME_CIV_AI_DELAY = () => (1000 * (gTacticalStatus.Team[MILITIA_TEAM].bMenInSector + gTacticalStatus.Team[CIV_TEAM].bMenInSector) + 5000 + 2000 * Random(3));

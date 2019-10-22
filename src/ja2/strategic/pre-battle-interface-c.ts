@@ -156,9 +156,9 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
 
     // calc sector values
     if (gpBattleGroup) {
-      gubPBSectorX = gpBattleGroup->ubSectorX;
-      gubPBSectorY = gpBattleGroup->ubSectorY;
-      gubPBSectorZ = gpBattleGroup->ubSectorZ;
+      gubPBSectorX = gpBattleGroup.value.ubSectorX;
+      gubPBSectorY = gpBattleGroup.value.ubSectorY;
+      gubPBSectorZ = gpBattleGroup.value.ubSectorZ;
 
       // get number of enemies thought to be here
       SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)].bLastKnownEnemies = NumEnemiesInSector(gubPBSectorX, gubPBSectorY);
@@ -181,9 +181,9 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
     } else if (gbWorldSectorZ) {
       // We are underground, so no autoresolve allowed
       pSector = &SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)];
-      if (pSector->ubCreaturesInBattle) {
+      if (pSector.value.ubCreaturesInBattle) {
         gubExplicitEnemyEncounterCode = FIGHTING_CREATURES_CODE;
-      } else if (pSector->ubAdminsInBattle || pSector->ubTroopsInBattle || pSector->ubElitesInBattle) {
+      } else if (pSector.value.ubAdminsInBattle || pSector.value.ubTroopsInBattle || pSector.value.ubElitesInBattle) {
         gubExplicitEnemyEncounterCode = ENTERING_ENEMY_SECTOR_CODE;
       }
     } else if (gubEnemyEncounterCode == ENTERING_ENEMY_SECTOR_CODE || gubEnemyEncounterCode == ENEMY_ENCOUNTER_CODE || gubEnemyEncounterCode == ENEMY_AMBUSH_CODE || gubEnemyEncounterCode == ENEMY_INVASION_CODE || gubEnemyEncounterCode == BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == ENTERING_BLOODCAT_LAIR_CODE || gubEnemyEncounterCode == CREATURE_ATTACK_CODE) {
@@ -246,10 +246,10 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
   AllowDisabledButtonFastHelp(iPBButton[1], TRUE);
   AllowDisabledButtonFastHelp(iPBButton[2], TRUE);
 
-  gusRetreatButtonLeft = ButtonList[iPBButton[2]]->Area.RegionTopLeftX;
-  gusRetreatButtonTop = ButtonList[iPBButton[2]]->Area.RegionTopLeftY;
-  gusRetreatButtonRight = ButtonList[iPBButton[2]]->Area.RegionBottomRightX;
-  gusRetreatButtonBottom = ButtonList[iPBButton[2]]->Area.RegionBottomRightY;
+  gusRetreatButtonLeft = ButtonList[iPBButton[2]].value.Area.RegionTopLeftX;
+  gusRetreatButtonTop = ButtonList[iPBButton[2]].value.Area.RegionTopLeftY;
+  gusRetreatButtonRight = ButtonList[iPBButton[2]].value.Area.RegionBottomRightX;
+  gusRetreatButtonBottom = ButtonList[iPBButton[2]].value.Area.RegionBottomRightY;
 
   SetButtonCursor(iPBButtonImage[0], MSYS_NO_CURSOR);
   SetButtonCursor(iPBButtonImage[1], MSYS_NO_CURSOR);
@@ -272,7 +272,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
   guiNumUninvolved = 0;
   guiNumInvolved = 0;
   for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
-    if (MercPtrs[i]->bActive && MercPtrs[i]->bLife && !(MercPtrs[i]->uiStatusFlags & SOLDIER_VEHICLE)) {
+    if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife && !(MercPtrs[i].value.uiStatusFlags & SOLDIER_VEHICLE)) {
       if (PlayerMercInvolvedInThisCombat(MercPtrs[i])) {
         // involved
         if (!ubGroupID) {
@@ -280,19 +280,19 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
           // can detect it by comparing the first value with future values.  If we do, then
           // we set a flag which determines whether to use the singular help text or plural version
           // for the retreat button.
-          ubGroupID = MercPtrs[i]->ubGroupID;
+          ubGroupID = MercPtrs[i].value.ubGroupID;
           if (!gpBattleGroup)
             gpBattleGroup = GetGroup(ubGroupID);
-          if (bBestExpLevel > MercPtrs[i]->bExpLevel)
-            bBestExpLevel = MercPtrs[i]->bExpLevel;
-          if (MercPtrs[i]->ubPrevSectorID == 255) {
+          if (bBestExpLevel > MercPtrs[i].value.bExpLevel)
+            bBestExpLevel = MercPtrs[i].value.bExpLevel;
+          if (MercPtrs[i].value.ubPrevSectorID == 255) {
             // Not able to retreat (calculate it for group)
             let pTempGroup: Pointer<GROUP>;
             pTempGroup = GetGroup(ubGroupID);
             Assert(pTempGroup);
             CalculateGroupRetreatSector(pTempGroup);
           }
-        } else if (ubGroupID != MercPtrs[i]->ubGroupID) {
+        } else if (ubGroupID != MercPtrs[i].value.ubGroupID) {
           fUsePluralVersion = TRUE;
         }
         guiNumInvolved++;
@@ -309,7 +309,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
     if (!pBattleGroup) {
       // creature's attacking!
       gubEnemyEncounterCode = CREATURE_ATTACK_CODE;
-    } else if (gpBattleGroup->fPlayer) {
+    } else if (gpBattleGroup.value.fPlayer) {
       if (gubEnemyEncounterCode != BLOODCAT_AMBUSH_CODE && gubEnemyEncounterCode != ENTERING_BLOODCAT_LAIR_CODE) {
         if (ubNumStationaryEnemies) {
           gubEnemyEncounterCode = ENTERING_ENEMY_SECTOR_CODE;
@@ -328,9 +328,9 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
             if (ubNumMobileEnemies > ubNumMercs) {
               let iChance: INT32;
               pSector = &SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)];
-              if (!(pSector->uiFlags & SF_ALREADY_VISITED)) {
+              if (!(pSector.value.uiFlags & SF_ALREADY_VISITED)) {
                 iChance = (4 - bBestExpLevel + 2 * gGameOptions.ubDifficultyLevel + CurrentPlayerProgressPercentage() / 10);
-                if (pSector->uiFlags & SF_ENEMY_AMBUSH_LOCATION) {
+                if (pSector.value.uiFlags & SF_ENEMY_AMBUSH_LOCATION) {
                   iChance += 20;
                 }
                 if (gfCantRetreatInPBI) {
@@ -398,7 +398,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
     pSector = &SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)];
 
     // ALWAYS use these 2 statements together, without setting the boolean, the flag will never be cleaned up!
-    pSector->uiFlags |= SF_PLAYER_KNOWS_ENEMIES_ARE_HERE;
+    pSector.value.uiFlags |= SF_PLAYER_KNOWS_ENEMIES_ARE_HERE;
     gfResetAllPlayerKnowsEnemiesFlags = TRUE;
   }
 
@@ -709,7 +709,7 @@ function RenderPreBattleInterface(): void {
   // This code determines if the cursor is inside the rectangle consisting of the
   // retreat button.  If it is inside, then we set up the variables so that the retreat
   // arrows get drawn in the mapscreen.
-  if (ButtonList[iPBButton[2]]->uiFlags & BUTTON_ENABLED) {
+  if (ButtonList[iPBButton[2]].value.uiFlags & BUTTON_ENABLED) {
     if (gusMouseXPos < gusRetreatButtonLeft || gusMouseXPos > gusRetreatButtonRight || gusMouseYPos < gusRetreatButtonTop || gusMouseYPos > gusRetreatButtonBottom)
       fMouseInRetreatButtonArea = FALSE;
     else
@@ -848,7 +848,7 @@ function RenderPreBattleInterface(): void {
     line = 0;
     y = TOP_Y + 1;
     for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
-      if (MercPtrs[i]->bActive && MercPtrs[i]->bLife && !(MercPtrs[i]->uiStatusFlags & SOLDIER_VEHICLE)) {
+      if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife && !(MercPtrs[i].value.uiStatusFlags & SOLDIER_VEHICLE)) {
         if (PlayerMercInvolvedInThisCombat(MercPtrs[i])) {
           // involved
           if (line == giHilitedInvolved)
@@ -856,7 +856,7 @@ function RenderPreBattleInterface(): void {
           else
             SetFontForeground(FONT_YELLOW);
           // NAME
-          wcscpy(str, MercPtrs[i]->name);
+          wcscpy(str, MercPtrs[i].value.name);
           x = 17 + (52 - StringPixLength(str, BLOCKFONT2)) / 2;
           mprintf(x, y, str);
           // ASSIGN
@@ -896,7 +896,7 @@ function RenderPreBattleInterface(): void {
       pGroup = gpGroupList;
       y = BOTTOM_Y - ROW_HEIGHT * guiNumUninvolved + 2;
       for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
-        if (MercPtrs[i]->bActive && MercPtrs[i]->bLife && !(MercPtrs[i]->uiStatusFlags & SOLDIER_VEHICLE)) {
+        if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife && !(MercPtrs[i].value.uiStatusFlags & SOLDIER_VEHICLE)) {
           if (!PlayerMercInvolvedInThisCombat(MercPtrs[i])) {
             // uninvolved
             if (line == giHilitedUninvolved)
@@ -904,7 +904,7 @@ function RenderPreBattleInterface(): void {
             else
               SetFontForeground(FONT_YELLOW);
             // NAME
-            wcscpy(str, MercPtrs[i]->name);
+            wcscpy(str, MercPtrs[i].value.name);
             x = 17 + (52 - StringPixLength(str, BLOCKFONT2)) / 2;
             mprintf(x, y, str);
             // ASSIGN
@@ -964,9 +964,9 @@ function AutoResolveBattleCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
         gStrategicStatus.usPlayerKills += NumEnemiesInSector(gubPBSectorX, gubPBSectorY);
         EliminateAllEnemies(gubPBSectorX, gubPBSectorY);
         SetMusicMode(MUSIC_TACTICAL_VICTORY);
-        btn->uiFlags &= ~BUTTON_CLICKED_ON;
-        DrawButton(btn->IDNum);
-        InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+        btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
+        DrawButton(btn.value.IDNum);
+        InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
         ExecuteBaseDirtyRectQueue();
         EndFrameBufferRender();
         RefreshScreen(NULL);
@@ -992,9 +992,9 @@ function GoToSectorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         gStrategicStatus.usPlayerKills += NumEnemiesInSector(gubPBSectorX, gubPBSectorY);
         EliminateAllEnemies(gubPBSectorX, gubPBSectorY);
         SetMusicMode(MUSIC_TACTICAL_VICTORY);
-        btn->uiFlags &= ~BUTTON_CLICKED_ON;
-        DrawButton(btn->IDNum);
-        InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+        btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
+        DrawButton(btn.value.IDNum);
+        InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
         ExecuteBaseDirtyRectQueue();
         EndFrameBufferRender();
         RefreshScreen(NULL);
@@ -1003,12 +1003,12 @@ function GoToSectorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         SetMusicMode(MUSIC_TACTICAL_NOTHING);
         return;
       }
-      if (gfPersistantPBI && gpBattleGroup && gpBattleGroup->fPlayer && gubEnemyEncounterCode != ENEMY_AMBUSH_CODE && gubEnemyEncounterCode != CREATURE_ATTACK_CODE && gubEnemyEncounterCode != BLOODCAT_AMBUSH_CODE) {
+      if (gfPersistantPBI && gpBattleGroup && gpBattleGroup.value.fPlayer && gubEnemyEncounterCode != ENEMY_AMBUSH_CODE && gubEnemyEncounterCode != CREATURE_ATTACK_CODE && gubEnemyEncounterCode != BLOODCAT_AMBUSH_CODE) {
         gfEnterTacticalPlacementGUI = TRUE;
       }
-      btn->uiFlags &= ~BUTTON_CLICKED_ON;
-      DrawButton(btn->IDNum);
-      InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+      btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
+      DrawButton(btn.value.IDNum);
+      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
       ExecuteBaseDirtyRectQueue();
       EndFrameBufferRender();
       RefreshScreen(NULL);
@@ -1055,9 +1055,9 @@ function RetreatMercsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       WarpGameTime(300, WARPTIME_NO_PROCESSING_OF_EVENTS);
       ResetMovementForEnemyGroupsInLocation(gubPBSectorX, gubPBSectorY);
 
-      btn->uiFlags &= ~BUTTON_CLICKED_ON;
-      DrawButton(btn->IDNum);
-      InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+      btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
+      DrawButton(btn.value.IDNum);
+      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
       ExecuteBaseDirtyRectQueue();
       EndFrameBufferRender();
       RefreshScreen(NULL);
@@ -1085,31 +1085,31 @@ const enum Enum163 {
 
 function GetSoldierConditionInfo(pSoldier: Pointer<SOLDIERTYPE>, szCondition: Pointer<UINT16>, pubHPPercent: Pointer<UINT8>, pubBPPercent: Pointer<UINT8>): void {
   Assert(pSoldier);
-  *pubHPPercent = (pSoldier->bLife * 100 / pSoldier->bLifeMax);
-  *pubBPPercent = pSoldier->bBreath;
+  *pubHPPercent = (pSoldier.value.bLife * 100 / pSoldier.value.bLifeMax);
+  *pubBPPercent = pSoldier.value.bBreath;
   // Go from the worst condition to the best.
-  if (!pSoldier->bLife) {
+  if (!pSoldier.value.bLife) {
     // 0 life
     swprintf(szCondition, pConditionStrings[COND_DEAD]);
-  } else if (pSoldier->bLife < OKLIFE && pSoldier->bBleeding) {
+  } else if (pSoldier.value.bLife < OKLIFE && pSoldier.value.bBleeding) {
     // life less than OKLIFE and bleeding
     swprintf(szCondition, pConditionStrings[COND_DYING]);
-  } else if (pSoldier->bBreath < OKBREATH && pSoldier->bCollapsed) {
+  } else if (pSoldier.value.bBreath < OKBREATH && pSoldier.value.bCollapsed) {
     // breath less than OKBREATH
     swprintf(szCondition, pConditionStrings[COND_UNCONCIOUS]);
-  } else if (pSoldier->bBleeding > MIN_BLEEDING_THRESHOLD) {
+  } else if (pSoldier.value.bBleeding > MIN_BLEEDING_THRESHOLD) {
     // bleeding
     swprintf(szCondition, pConditionStrings[COND_BLEEDING]);
-  } else if (pSoldier->bLife * 100 < pSoldier->bLifeMax * 50) {
+  } else if (pSoldier.value.bLife * 100 < pSoldier.value.bLifeMax * 50) {
     // less than 50% life
     swprintf(szCondition, pConditionStrings[COND_WOUNDED]);
-  } else if (pSoldier->bBreath < 50) {
+  } else if (pSoldier.value.bBreath < 50) {
     // breath less than half
     swprintf(szCondition, pConditionStrings[COND_FATIGUED]);
-  } else if (pSoldier->bLife * 100 < pSoldier->bLifeMax * 67) {
+  } else if (pSoldier.value.bLife * 100 < pSoldier.value.bLifeMax * 67) {
     // less than 67% life
     swprintf(szCondition, pConditionStrings[COND_FAIR]);
-  } else if (pSoldier->bLife * 100 < pSoldier->bLifeMax * 86) {
+  } else if (pSoldier.value.bLife * 100 < pSoldier.value.bLifeMax * 86) {
     // less than 86% life
     swprintf(szCondition, pConditionStrings[COND_GOOD]);
   } else {
@@ -1253,28 +1253,28 @@ SOLDIERTYPE* UninvolvedSoldier( INT32 index )
 */
 
 function ActivatePreBattleAutoresolveAction(): void {
-  if (ButtonList[iPBButton[0]]->uiFlags & BUTTON_ENABLED) {
+  if (ButtonList[iPBButton[0]].value.uiFlags & BUTTON_ENABLED) {
     // Feign call the autoresolve button using the callback
     AutoResolveBattleCallback(ButtonList[iPBButton[0]], MSYS_CALLBACK_REASON_LBUTTON_UP);
   }
 }
 
 function ActivatePreBattleEnterSectorAction(): void {
-  if (ButtonList[iPBButton[1]]->uiFlags & BUTTON_ENABLED) {
+  if (ButtonList[iPBButton[1]].value.uiFlags & BUTTON_ENABLED) {
     // Feign call the enter sector button using the callback
     GoToSectorCallback(ButtonList[iPBButton[1]], MSYS_CALLBACK_REASON_LBUTTON_UP);
   }
 }
 
 function ActivatePreBattleRetreatAction(): void {
-  if (ButtonList[iPBButton[2]]->uiFlags & BUTTON_ENABLED) {
+  if (ButtonList[iPBButton[2]].value.uiFlags & BUTTON_ENABLED) {
     // Feign call the retreat button using the callback
     RetreatMercsCallback(ButtonList[iPBButton[2]], MSYS_CALLBACK_REASON_LBUTTON_UP);
   }
 }
 
 function ActivateAutomaticAutoResolveStart(): void {
-  ButtonList[iPBButton[0]]->uiFlags |= BUTTON_CLICKED_ON;
+  ButtonList[iPBButton[0]].value.uiFlags |= BUTTON_CLICKED_ON;
   gfIgnoreAllInput = FALSE;
   AutoResolveBattleCallback(ButtonList[iPBButton[0]], MSYS_CALLBACK_REASON_LBUTTON_UP);
 }
@@ -1296,18 +1296,18 @@ function CalculateNonPersistantPBIInfo(): void {
     } else if (gbWorldSectorZ) {
       let pSector: Pointer<UNDERGROUND_SECTORINFO> = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
       Assert(pSector);
-      if (pSector->ubCreaturesInBattle) {
+      if (pSector.value.ubCreaturesInBattle) {
         gubExplicitEnemyEncounterCode = FIGHTING_CREATURES_CODE;
-      } else if (pSector->ubAdminsInBattle || pSector->ubTroopsInBattle || pSector->ubElitesInBattle) {
+      } else if (pSector.value.ubAdminsInBattle || pSector.value.ubTroopsInBattle || pSector.value.ubElitesInBattle) {
         gubExplicitEnemyEncounterCode = ENTERING_ENEMY_SECTOR_CODE;
         gubEnemyEncounterCode = ENTERING_ENEMY_SECTOR_CODE;
       }
     } else {
       let pSector: Pointer<SECTORINFO> = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
       Assert(pSector);
-      if (pSector->ubCreaturesInBattle) {
+      if (pSector.value.ubCreaturesInBattle) {
         gubExplicitEnemyEncounterCode = FIGHTING_CREATURES_CODE;
-      } else if (pSector->ubAdminsInBattle || pSector->ubTroopsInBattle || pSector->ubElitesInBattle) {
+      } else if (pSector.value.ubAdminsInBattle || pSector.value.ubTroopsInBattle || pSector.value.ubElitesInBattle) {
         gubExplicitEnemyEncounterCode = ENTERING_ENEMY_SECTOR_CODE;
         gubEnemyEncounterCode = ENTERING_ENEMY_SECTOR_CODE;
       }
@@ -1336,7 +1336,7 @@ function PutNonSquadMercsInBattleSectorOnSquads(fExitVehicles: BOOLEAN): void {
   pGroup = gpGroupList;
   while (pGroup) {
     // store ptr to next group in list, temporary groups will get deallocated as soon as the merc in it is put on a squad!
-    pNextGroup = pGroup->next;
+    pNextGroup = pGroup.value.next;
 
     if (PlayerGroupInvolvedInThisCombat(pGroup)) {
       // the helicopter group CAN be involved, if it's on the ground, in which case everybody must get out of it
@@ -1362,7 +1362,7 @@ function PutNonSquadMercsInPlayerGroupOnSquads(pGroup: Pointer<GROUP>, fExitVehi
   let bUniqueVehicleSquad: INT8 = -1;
   let fSuccess: BOOLEAN;
 
-  if (pGroup->fVehicle) {
+  if (pGroup.value.fVehicle) {
     // put these guys on their own squad (we need to return their group ID, and can only return one, so they need a unique one
     bUniqueVehicleSquad = GetFirstEmptySquad();
     if (bUniqueVehicleSquad == -1) {
@@ -1370,20 +1370,20 @@ function PutNonSquadMercsInPlayerGroupOnSquads(pGroup: Pointer<GROUP>, fExitVehi
     }
   }
 
-  pPlayer = pGroup->pPlayerList;
+  pPlayer = pGroup.value.pPlayerList;
 
   while (pPlayer) {
-    pSoldier = pPlayer->pSoldier;
+    pSoldier = pPlayer.value.pSoldier;
     Assert(pSoldier);
 
     // store ptr to next soldier in group, once removed from group, his info will get memfree'd!
-    pNextPlayer = pPlayer->next;
+    pNextPlayer = pPlayer.value.next;
 
-    if (pSoldier->bActive && pSoldier->bLife && !(pSoldier->uiStatusFlags & SOLDIER_VEHICLE)) {
+    if (pSoldier.value.bActive && pSoldier.value.bLife && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
       // if involved, but off-duty (includes mercs inside vehicles!)
-      if (PlayerMercInvolvedInThisCombat(pSoldier) && (pSoldier->bAssignment >= ON_DUTY)) {
+      if (PlayerMercInvolvedInThisCombat(pSoldier) && (pSoldier.value.bAssignment >= ON_DUTY)) {
         // if in a vehicle, pull him out
-        if (pSoldier->bAssignment == VEHICLE) {
+        if (pSoldier.value.bAssignment == VEHICLE) {
           if (fExitVehicles) {
             TakeSoldierOutOfVehicle(pSoldier);
 
@@ -1401,8 +1401,8 @@ function PutNonSquadMercsInPlayerGroupOnSquads(pGroup: Pointer<GROUP>, fExitVehi
         Assert(fSuccess);
 
         // clear any desired squad assignments
-        pSoldier->ubNumTraversalsAllowedToMerge = 0;
-        pSoldier->ubDesiredSquadAssignment = NO_ASSIGNMENT;
+        pSoldier.value.ubNumTraversalsAllowedToMerge = 0;
+        pSoldier.value.ubDesiredSquadAssignment = NO_ASSIGNMENT;
 
         // stand him up
         MakeSoldiersTacticalAnimationReflectAssignment(pSoldier);
@@ -1425,9 +1425,9 @@ function WakeUpAllMercsInSectorUnderAttack(): void {
   for (iCounter = 0; iCounter < iNumberOfMercsOnTeam; iCounter++) {
     pSoldier = &(Menptr[iCounter]);
 
-    if (pSoldier->bActive && pSoldier->bLife && !(pSoldier->uiStatusFlags & SOLDIER_VEHICLE)) {
+    if (pSoldier.value.bActive && pSoldier.value.bLife && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
       // if involved, but asleep
-      if (PlayerMercInvolvedInThisCombat(pSoldier) && (pSoldier->fMercAsleep == TRUE)) {
+      if (PlayerMercInvolvedInThisCombat(pSoldier) && (pSoldier.value.fMercAsleep == TRUE)) {
         // FORCE him wake him up
         SetMercAwake(pSoldier, FALSE, TRUE);
       }
@@ -1445,7 +1445,7 @@ function ClearMovementForAllInvolvedPlayerGroups(): void {
       // clear their strategic movement (mercpaths and waypoints)
       ClearMercPathsAndWaypointsForAllInGroup(pGroup);
     }
-    pGroup = pGroup->next;
+    pGroup = pGroup.value.next;
   }
 }
 
@@ -1460,23 +1460,23 @@ function RetreatAllInvolvedPlayerGroups(): void {
   while (pGroup) {
     if (PlayerGroupInvolvedInThisCombat(pGroup)) {
       // don't retreat empty vehicle groups!
-      if (!pGroup->fVehicle || (pGroup->fVehicle && DoesVehicleGroupHaveAnyPassengers(pGroup))) {
+      if (!pGroup.value.fVehicle || (pGroup.value.fVehicle && DoesVehicleGroupHaveAnyPassengers(pGroup))) {
         ClearMercPathsAndWaypointsForAllInGroup(pGroup);
         RetreatGroupToPreviousSector(pGroup);
       }
     }
-    pGroup = pGroup->next;
+    pGroup = pGroup.value.next;
   }
 }
 
 function PlayerMercInvolvedInThisCombat(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   Assert(pSoldier);
-  Assert(pSoldier->bActive);
+  Assert(pSoldier.value.bActive);
 
-  if (!pSoldier->fBetweenSectors && pSoldier->bAssignment != IN_TRANSIT && pSoldier->bAssignment != ASSIGNMENT_POW && pSoldier->bAssignment != ASSIGNMENT_DEAD && !(pSoldier->uiStatusFlags & SOLDIER_VEHICLE) &&
+  if (!pSoldier.value.fBetweenSectors && pSoldier.value.bAssignment != IN_TRANSIT && pSoldier.value.bAssignment != ASSIGNMENT_POW && pSoldier.value.bAssignment != ASSIGNMENT_DEAD && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) &&
       // Robot is involved if it has a valid controller with it, uninvolved otherwise
-      (!AM_A_ROBOT(pSoldier) || (pSoldier->ubRobotRemoteHolderID != NOBODY)) && !SoldierAboardAirborneHeli(pSoldier)) {
-    if (CurrentBattleSectorIs(pSoldier->sSectorX, pSoldier->sSectorY, pSoldier->bSectorZ)) {
+      (!AM_A_ROBOT(pSoldier) || (pSoldier.value.ubRobotRemoteHolderID != NOBODY)) && !SoldierAboardAirborneHeli(pSoldier)) {
+    if (CurrentBattleSectorIs(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ)) {
       // involved
       return TRUE;
     }
@@ -1491,8 +1491,8 @@ function PlayerGroupInvolvedInThisCombat(pGroup: Pointer<GROUP>): BOOLEAN {
 
   // player group, non-empty, not between sectors, in the right sector, isn't a group of in transit, dead, or POW mercs,
   // and either not the helicopter group, or the heli is on the ground
-  if (pGroup->fPlayer && pGroup->ubGroupSize && !pGroup->fBetweenSectors && !GroupHasInTransitDeadOrPOWMercs(pGroup) && (!IsGroupTheHelicopterGroup(pGroup) || !fHelicopterIsAirBorne)) {
-    if (CurrentBattleSectorIs(pGroup->ubSectorX, pGroup->ubSectorY, pGroup->ubSectorZ)) {
+  if (pGroup.value.fPlayer && pGroup.value.ubGroupSize && !pGroup.value.fBetweenSectors && !GroupHasInTransitDeadOrPOWMercs(pGroup) && (!IsGroupTheHelicopterGroup(pGroup) || !fHelicopterIsAirBorne)) {
+    if (CurrentBattleSectorIs(pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubSectorZ)) {
       // involved
       return TRUE;
     }
@@ -1525,13 +1525,13 @@ function CheckForRobotAndIfItsControlled(): void {
 
   // search for the robot on player's team
   for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
-    if (MercPtrs[i]->bActive && MercPtrs[i]->bLife && AM_A_ROBOT(MercPtrs[i])) {
+    if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife && AM_A_ROBOT(MercPtrs[i])) {
       // check whether it has a valid controller with it. This sets its ubRobotRemoteHolderID field.
       UpdateRobotControllerGivenRobot(MercPtrs[i]);
 
       // if he has a controller, set controllers
-      if (MercPtrs[i]->ubRobotRemoteHolderID != NOBODY) {
-        UpdateRobotControllerGivenController(MercPtrs[MercPtrs[i]->ubRobotRemoteHolderID]);
+      if (MercPtrs[i].value.ubRobotRemoteHolderID != NOBODY) {
+        UpdateRobotControllerGivenController(MercPtrs[MercPtrs[i].value.ubRobotRemoteHolderID]);
       }
 
       break;

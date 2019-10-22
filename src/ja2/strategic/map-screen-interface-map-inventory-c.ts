@@ -189,17 +189,17 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOO
 
   GetVideoObject(&hHandle, GetInterfaceGraphicForItem(&(Item[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem])));
 
-  pTrav = &(hHandle->pETRLEObject[Item[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem].ubGraphicNum]);
-  usHeight = pTrav->usHeight;
-  usWidth = pTrav->usWidth;
+  pTrav = &(hHandle.value.pETRLEObject[Item[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem].ubGraphicNum]);
+  usHeight = pTrav.value.usHeight;
+  usWidth = pTrav.value.usWidth;
 
   // set sx and sy
   sX = (MAP_INVENTORY_POOL_SLOT_OFFSET_X + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS)));
   sY = (MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS))));
 
   // CENTER IN SLOT!
-  sCenX = sX + (abs(MAP_INVEN_SPACE_BTWN_SLOTS - usWidth) / 2) - pTrav->sOffsetX;
-  sCenY = sY + (abs(MAP_INVEN_SLOT_HEIGHT - 5 - usHeight) / 2) - pTrav->sOffsetY;
+  sCenX = sX + (abs(MAP_INVEN_SPACE_BTWN_SLOTS - usWidth) / 2) - pTrav.value.sOffsetX;
+  sCenY = sY + (abs(MAP_INVEN_SLOT_HEIGHT - 5 - usHeight) / 2) - pTrav.value.sOffsetY;
 
   if (fMapInventoryItemCompatable[iCurrentSlot]) {
     sOutLine = Get16BPPColor(FROMRGB(255, 255, 255));
@@ -625,7 +625,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
         // notify
         pSoldier = &(Menptr[gCharactersList[bSelectedInfoChar].usSolID]);
 
-        sDistanceFromObject = PythSpacesAway(sObjectSourceGridNo, pSoldier->sGridNo);
+        sDistanceFromObject = PythSpacesAway(sObjectSourceGridNo, pSoldier.value.sGridNo);
 
         /*	if( sDistanceFromObject > MAX_DISTANCE_TO_PICKUP_ITEM )
                 {
@@ -647,7 +647,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
       }
 
       usOldItemIndex = pInventoryPoolList[(iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT) + iCounter].o.usItem;
-      usNewItemIndex = gpItemPointer->usItem;
+      usNewItemIndex = gpItemPointer.value.usItem;
       iOldNumberOfObjects = pInventoryPoolList[(iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT) + iCounter].o.ubNumberOfObjects;
 
       // Else, try to place here
@@ -670,13 +670,13 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
         //}
 
         // Check if it's the same now!
-        if (gpItemPointer->ubNumberOfObjects == 0) {
+        if (gpItemPointer.value.ubNumberOfObjects == 0) {
           MAPEndItemPointer();
         } else {
           // update ptr
           // now set the cursor
-          guiExternVo = GetInterfaceGraphicForItem(&(Item[gpItemPointer->usItem]));
-          gusExternVoSubIndex = Item[gpItemPointer->usItem].ubGraphicNum;
+          guiExternVo = GetInterfaceGraphicForItem(&(Item[gpItemPointer.value.usItem]));
+          gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
           fMapInventoryItem = TRUE;
           MSYS_ChangeRegionCursor(&gMPanelRegion, EXTERN_CURSOR);
@@ -1061,8 +1061,8 @@ function BeginInventoryPoolPtr(pInventorySlot: Pointer<OBJECTTYPE>): void {
     gpItemPointerSoldier = NULL;
 
     // now set the cursor
-    guiExternVo = GetInterfaceGraphicForItem(&(Item[gpItemPointer->usItem]));
-    gusExternVoSubIndex = Item[gpItemPointer->usItem].ubGraphicNum;
+    guiExternVo = GetInterfaceGraphicForItem(&(Item[gpItemPointer.value.usItem]));
+    gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
     fMapInventoryItem = TRUE;
     MSYS_ChangeRegionCursor(&gMPanelRegion, EXTERN_CURSOR);
@@ -1083,19 +1083,19 @@ function GetObjFromInventoryStashSlot(pInventorySlot: Pointer<OBJECTTYPE>, pItem
   }
 
   // if there are only one item in slot, just copy
-  if (pInventorySlot->ubNumberOfObjects == 1) {
+  if (pInventorySlot.value.ubNumberOfObjects == 1) {
     memcpy(pItemPtr, pInventorySlot, sizeof(OBJECTTYPE));
     DeleteObj(pInventorySlot);
   } else {
     // take one item
-    pItemPtr->usItem = pInventorySlot->usItem;
+    pItemPtr.value.usItem = pInventorySlot.value.usItem;
 
     // find first unempty slot
-    pItemPtr->bStatus[0] = pInventorySlot->bStatus[0];
-    pItemPtr->ubNumberOfObjects = 1;
-    pItemPtr->ubWeight = CalculateObjectWeight(pItemPtr);
+    pItemPtr.value.bStatus[0] = pInventorySlot.value.bStatus[0];
+    pItemPtr.value.ubNumberOfObjects = 1;
+    pItemPtr.value.ubWeight = CalculateObjectWeight(pItemPtr);
     RemoveObjFrom(pInventorySlot, 0);
-    pInventorySlot->ubWeight = CalculateObjectWeight(pInventorySlot);
+    pInventorySlot.value.ubWeight = CalculateObjectWeight(pInventorySlot);
   }
 
   return TRUE;
@@ -1104,7 +1104,7 @@ function GetObjFromInventoryStashSlot(pInventorySlot: Pointer<OBJECTTYPE>, pItem
 function RemoveObjectFromStashSlot(pInventorySlot: Pointer<OBJECTTYPE>, pItemPtr: Pointer<OBJECTTYPE>): BOOLEAN {
   CHECKF(pInventorySlot);
 
-  if (pInventorySlot->ubNumberOfObjects == 0) {
+  if (pInventorySlot.value.ubNumberOfObjects == 0) {
     return FALSE;
   } else {
     memcpy(pItemPtr, pInventorySlot, sizeof(OBJECTTYPE));
@@ -1120,11 +1120,11 @@ function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemP
 
   // if there is something there, swap it, if they are of the same type and stackable then add to the count
 
-  ubSlotLimit = Item[pItemPtr->usItem].ubPerPocket;
+  ubSlotLimit = Item[pItemPtr.value.usItem].ubPerPocket;
 
-  if (pInventorySlot->ubNumberOfObjects == 0) {
+  if (pInventorySlot.value.ubNumberOfObjects == 0) {
     // placement in an empty slot
-    ubNumberToDrop = pItemPtr->ubNumberOfObjects;
+    ubNumberToDrop = pItemPtr.value.ubNumberOfObjects;
 
     if (ubNumberToDrop > ubSlotLimit && ubSlotLimit != 0) {
       // drop as many as possible into pocket
@@ -1135,13 +1135,13 @@ function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemP
     // but assuming it isn't
     memcpy(pInventorySlot, pItemPtr, sizeof(OBJECTTYPE));
 
-    if (ubNumberToDrop != pItemPtr->ubNumberOfObjects) {
+    if (ubNumberToDrop != pItemPtr.value.ubNumberOfObjects) {
       // in the InSlot copy, zero out all the objects we didn't drop
-      for (ubLoop = ubNumberToDrop; ubLoop < pItemPtr->ubNumberOfObjects; ubLoop++) {
-        pInventorySlot->bStatus[ubLoop] = 0;
+      for (ubLoop = ubNumberToDrop; ubLoop < pItemPtr.value.ubNumberOfObjects; ubLoop++) {
+        pInventorySlot.value.bStatus[ubLoop] = 0;
       }
     }
-    pInventorySlot->ubNumberOfObjects = ubNumberToDrop;
+    pInventorySlot.value.ubNumberOfObjects = ubNumberToDrop;
 
     // remove a like number of objects from pObj
     RemoveObjs(pItemPtr, ubNumberToDrop);
@@ -1149,14 +1149,14 @@ function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemP
     // replacement/reloading/merging/stacking
 
     // placement in an empty slot
-    ubNumberToDrop = pItemPtr->ubNumberOfObjects;
+    ubNumberToDrop = pItemPtr.value.ubNumberOfObjects;
 
-    if (pItemPtr->usItem == pInventorySlot->usItem) {
-      if (pItemPtr->usItem == MONEY) {
+    if (pItemPtr.value.usItem == pInventorySlot.value.usItem) {
+      if (pItemPtr.value.usItem == MONEY) {
         // always allow money to be combined!
         // average out the status values using a weighted average...
-        pInventorySlot->bStatus[0] = ((pInventorySlot->bMoneyStatus * pInventorySlot->uiMoneyAmount + pItemPtr->bMoneyStatus * pItemPtr->uiMoneyAmount) / (pInventorySlot->uiMoneyAmount + pItemPtr->uiMoneyAmount));
-        pInventorySlot->uiMoneyAmount += pItemPtr->uiMoneyAmount;
+        pInventorySlot.value.bStatus[0] = ((pInventorySlot.value.bMoneyStatus * pInventorySlot.value.uiMoneyAmount + pItemPtr.value.bMoneyStatus * pItemPtr.value.uiMoneyAmount) / (pInventorySlot.value.uiMoneyAmount + pItemPtr.value.uiMoneyAmount));
+        pInventorySlot.value.uiMoneyAmount += pItemPtr.value.uiMoneyAmount;
 
         DeleteObj(pItemPtr);
       } else if (ubSlotLimit < 2) {
@@ -1164,8 +1164,8 @@ function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemP
         SwapObjs(pItemPtr, pInventorySlot);
       } else {
         // stacking
-        if (ubNumberToDrop > ubSlotLimit - pInventorySlot->ubNumberOfObjects) {
-          ubNumberToDrop = ubSlotLimit - pInventorySlot->ubNumberOfObjects;
+        if (ubNumberToDrop > ubSlotLimit - pInventorySlot.value.ubNumberOfObjects) {
+          ubNumberToDrop = ubSlotLimit - pInventorySlot.value.ubNumberOfObjects;
         }
 
         StackObjs(pItemPtr, pInventorySlot, ubNumberToDrop);
@@ -1187,9 +1187,9 @@ function AutoPlaceObjectInInventoryStash(pItemPtr: Pointer<OBJECTTYPE>): BOOLEAN
   pInventorySlot = &(pInventoryPoolList[iTotalNumberOfSlots].o);
 
   // placement in an empty slot
-  ubNumberToDrop = pItemPtr->ubNumberOfObjects;
+  ubNumberToDrop = pItemPtr.value.ubNumberOfObjects;
 
-  ubSlotLimit = ItemSlotLimit(pItemPtr->usItem, BIGPOCK1POS);
+  ubSlotLimit = ItemSlotLimit(pItemPtr.value.usItem, BIGPOCK1POS);
 
   if (ubNumberToDrop > ubSlotLimit && ubSlotLimit != 0) {
     // drop as many as possible into pocket
@@ -1200,13 +1200,13 @@ function AutoPlaceObjectInInventoryStash(pItemPtr: Pointer<OBJECTTYPE>): BOOLEAN
   // but assuming it isn't
   memcpy(pInventorySlot, pItemPtr, sizeof(OBJECTTYPE));
 
-  if (ubNumberToDrop != pItemPtr->ubNumberOfObjects) {
+  if (ubNumberToDrop != pItemPtr.value.ubNumberOfObjects) {
     // in the InSlot copy, zero out all the objects we didn't drop
-    for (ubLoop = ubNumberToDrop; ubLoop < pItemPtr->ubNumberOfObjects; ubLoop++) {
-      pInventorySlot->bStatus[ubLoop] = 0;
+    for (ubLoop = ubNumberToDrop; ubLoop < pItemPtr.value.ubNumberOfObjects; ubLoop++) {
+      pInventorySlot.value.bStatus[ubLoop] = 0;
     }
   }
-  pInventorySlot->ubNumberOfObjects = ubNumberToDrop;
+  pInventorySlot.value.ubNumberOfObjects = ubNumberToDrop;
 
   // remove a like number of objects from pObj
   RemoveObjs(pItemPtr, ubNumberToDrop);
@@ -1216,10 +1216,10 @@ function AutoPlaceObjectInInventoryStash(pItemPtr: Pointer<OBJECTTYPE>): BOOLEAN
 
 function MapInventoryPoolNextBtn(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // if can go to next page, go there
       if (iCurrentInventoryPoolPage < (iLastInventoryPoolPage)) {
@@ -1232,10 +1232,10 @@ function MapInventoryPoolNextBtn(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 
 function MapInventoryPoolPrevBtn(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // if can go to next page, go there
       if (iCurrentInventoryPoolPage > 0) {
@@ -1248,10 +1248,10 @@ function MapInventoryPoolPrevBtn(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 
 function MapInventoryPoolDoneBtn(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // done
       fShowMapInventoryPool = FALSE;
@@ -1598,7 +1598,7 @@ function HandleMapSectorInventory(): void {
 
 // CJC look here to add/remove checks for the sector inventory
 function IsMapScreenWorldItemVisibleInMapInventory(pWorldItem: Pointer<WORLDITEM>): BOOLEAN {
-  if (pWorldItem->bVisible == 1 && pWorldItem->fExists && pWorldItem->o.usItem != SWITCH && pWorldItem->o.usItem != ACTION_ITEM && pWorldItem->o.bTrap <= 0) {
+  if (pWorldItem.value.bVisible == 1 && pWorldItem.value.fExists && pWorldItem.value.o.usItem != SWITCH && pWorldItem.value.o.usItem != ACTION_ITEM && pWorldItem.value.o.bTrap <= 0) {
     return TRUE;
   }
 
@@ -1607,7 +1607,7 @@ function IsMapScreenWorldItemVisibleInMapInventory(pWorldItem: Pointer<WORLDITEM
 
 // CJC look here to add/remove checks for the sector inventory
 function IsMapScreenWorldItemInvisibleInMapInventory(pWorldItem: Pointer<WORLDITEM>): BOOLEAN {
-  if (pWorldItem->fExists && !IsMapScreenWorldItemVisibleInMapInventory(pWorldItem)) {
+  if (pWorldItem.value.fExists && !IsMapScreenWorldItemVisibleInMapInventory(pWorldItem)) {
     return TRUE;
   }
 
@@ -1654,11 +1654,11 @@ function MapScreenSectorInventoryCompare(pNum1: Pointer<void>, pNum2: Pointer<vo
   let ubItem1Quality: UINT8;
   let ubItem2Quality: UINT8;
 
-  usItem1Index = pFirst->o.usItem;
-  usItem2Index = pSecond->o.usItem;
+  usItem1Index = pFirst.value.o.usItem;
+  usItem2Index = pSecond.value.o.usItem;
 
-  ubItem1Quality = pFirst->o.bStatus[0];
-  ubItem2Quality = pSecond->o.bStatus[0];
+  ubItem1Quality = pFirst.value.o.bStatus[0];
+  ubItem2Quality = pSecond.value.o.bStatus[0];
 
   return CompareItemsForSorting(usItem1Index, usItem2Index, ubItem1Quality, ubItem2Quality);
 }

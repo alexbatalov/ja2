@@ -649,14 +649,14 @@ function DestroyIMPAttributeSelectionButtons(): void {
 
 function BtnIMPAttributeFinishCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP attrbite begin button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // are we done diting, or just reviewing the stats?
       if (fReviewStats == TRUE) {
@@ -924,7 +924,7 @@ function BtnIMPAttributeSliderLeftCallback(btn: Pointer<GUI_BUTTON>, reason: INT
   let iValue: INT32 = -1;
 
   // btn callback for IMP personality quiz answer button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   iValue = MSYS_GetBtnUserData(btn, 0);
@@ -937,13 +937,13 @@ function BtnIMPAttributeSliderLeftCallback(btn: Pointer<GUI_BUTTON>, reason: INT
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     DecrementStat(iValue);
     fHasAnySlidingBarMoved = TRUE;
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
     uiBarToReRender = iValue;
   }
 
   else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
     }
   }
 }
@@ -952,7 +952,7 @@ function BtnIMPAttributeSliderRightCallback(btn: Pointer<GUI_BUTTON>, reason: IN
   let iValue: INT32 = -1;
 
   // btn callback for IMP personality quiz answer button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   iValue = MSYS_GetBtnUserData(btn, 0);
@@ -966,12 +966,12 @@ function BtnIMPAttributeSliderRightCallback(btn: Pointer<GUI_BUTTON>, reason: IN
     IncrementStat(iValue);
     fHasAnySlidingBarMoved = TRUE;
     uiBarToReRender = iValue;
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   }
 
   else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
     }
   }
 }
@@ -1080,7 +1080,7 @@ function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
     gpCurrentScrollBox = pRegion;
 
     // get new attribute value x
-    sNewX = pRegion->MouseXPos;
+    sNewX = pRegion.value.MouseXPos;
 
     // sOldX has been reset, set to sNewX
     if (sOldX == -1) {
@@ -1126,8 +1126,8 @@ function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
 
     // get mouse XY
 
-    sX = pRegion->MouseXPos;
-    sY = pRegion->MouseYPos;
+    sX = pRegion.value.MouseXPos;
+    sY = pRegion.value.MouseYPos;
 
     // which region are we in?
 
@@ -1173,8 +1173,8 @@ function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     // get mouse positions
-    sX = pRegion->MouseXPos;
-    sY = pRegion->MouseYPos;
+    sX = pRegion.value.MouseXPos;
+    sY = pRegion.value.MouseYPos;
 
     // get attribute
     iAttribute = MSYS_GetRegionUserData(pRegion, 0);

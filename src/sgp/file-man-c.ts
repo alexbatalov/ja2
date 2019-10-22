@@ -885,7 +885,7 @@ function FileGetSize(hFile: HWFILE): UINT32 {
   } else {
     // if the library is open
     if (IsLibraryOpened(sLibraryID))
-      uiFileSize = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader->uiFileLength;
+      uiFileSize = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.value.uiFileLength;
   }
 
   if (uiFileSize == 0xFFFFFFFF)
@@ -1160,13 +1160,13 @@ function GetFilesInDirectory(hStack: HCONTAINER, pcDir: Pointer<CHAR>, hFile: HA
   iNumFiles = 0;
 
   while (fMore) {
-    if (pFind->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-      if (strcmp(pFind->cFileName, ".") != 0 && strcmp(pFind->cFileName, "..") != 0) {
+    if (pFind.value.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+      if (strcmp(pFind.value.cFileName, ".") != 0 && strcmp(pFind.value.cFileName, "..") != 0) {
         // a valid directory - recurse and find the files in that directory
 
         inFind.dwFileAttributes = FILE_ATTRIBUTE_NORMAL | FILE_ATTRIBUTE_DIRECTORY;
         strcpy(cDir, pcDir);
-        strcpy(&(cDir[strlen(cDir) - 3]), pFind->cFileName);
+        strcpy(&(cDir[strlen(cDir) - 3]), pFind.value.cFileName);
         strcpy(&(cDir[strlen(cDir)]), "\\*.*\0");
         hFileIn = FindFirstFile(cDir, &inFind);
         iNumFiles += GetFilesInDirectory(hStack, cDir, hFileIn, &inFind);
@@ -1175,11 +1175,11 @@ function GetFilesInDirectory(hStack: HCONTAINER, pcDir: Pointer<CHAR>, hFile: HA
     } else {
       iNumFiles++;
       strcpy(cName, pcDir);
-      strcpy(&(cName[strlen(cName) - 3]), pFind->cFileName);
+      strcpy(&(cName[strlen(cName) - 3]), pFind.value.cFileName);
       CharLower(cName);
       hStack = Push(hStack, cName);
     }
-    pFind->dwFileAttributes = FILE_ATTRIBUTE_NORMAL | FILE_ATTRIBUTE_DIRECTORY;
+    pFind.value.dwFileAttributes = FILE_ATTRIBUTE_NORMAL | FILE_ATTRIBUTE_DIRECTORY;
     fMore = FindNextFile(hFile, pFind);
   }
 
@@ -1380,7 +1380,7 @@ function GetFileFirst(pSpec: Pointer<CHAR8>, pGFStruct: Pointer<GETFILESTRUCT>):
   if (!fFound)
     return FALSE;
 
-  pGFStruct->iFindHandle = iWhich;
+  pGFStruct.value.iFindHandle = iWhich;
 
   hFindInfoHandle[iWhich] = FindFirstFile(pSpec, &Win32FindInfo[iWhich]);
 
@@ -1396,8 +1396,8 @@ function GetFileFirst(pSpec: Pointer<CHAR8>, pGFStruct: Pointer<GETFILESTRUCT>):
 function GetFileNext(pGFStruct: Pointer<GETFILESTRUCT>): BOOLEAN {
   CHECKF(pGFStruct != NULL);
 
-  if (FindNextFile(hFindInfoHandle[pGFStruct->iFindHandle], &Win32FindInfo[pGFStruct->iFindHandle])) {
-    W32toSGPFileFind(pGFStruct, &Win32FindInfo[pGFStruct->iFindHandle]);
+  if (FindNextFile(hFindInfoHandle[pGFStruct.value.iFindHandle], &Win32FindInfo[pGFStruct.value.iFindHandle])) {
+    W32toSGPFileFind(pGFStruct, &Win32FindInfo[pGFStruct.value.iFindHandle]);
     return TRUE;
   }
   return FALSE;
@@ -1407,9 +1407,9 @@ function GetFileClose(pGFStruct: Pointer<GETFILESTRUCT>): void {
   if (pGFStruct == NULL)
     return;
 
-  FindClose(hFindInfoHandle[pGFStruct->iFindHandle]);
-  hFindInfoHandle[pGFStruct->iFindHandle] = INVALID_HANDLE_VALUE;
-  fFindInfoInUse[pGFStruct->iFindHandle] = FALSE;
+  FindClose(hFindInfoHandle[pGFStruct.value.iFindHandle]);
+  hFindInfoHandle[pGFStruct.value.iFindHandle] = INVALID_HANDLE_VALUE;
+  fFindInfoInUse[pGFStruct.value.iFindHandle] = FALSE;
 
   return;
 }
@@ -1418,53 +1418,53 @@ function W32toSGPFileFind(pGFStruct: Pointer<GETFILESTRUCT>, pW32Struct: Pointer
   let uiAttribMask: UINT32;
 
   // Copy the filename
-  strcpy(pGFStruct->zFileName, pW32Struct->cFileName);
+  strcpy(pGFStruct.value.zFileName, pW32Struct.value.cFileName);
 
   // Get file size
-  if (pW32Struct->nFileSizeHigh != 0)
-    pGFStruct->uiFileSize = 0xffffffff;
+  if (pW32Struct.value.nFileSizeHigh != 0)
+    pGFStruct.value.uiFileSize = 0xffffffff;
   else
-    pGFStruct->uiFileSize = pW32Struct->nFileSizeLow;
+    pGFStruct.value.uiFileSize = pW32Struct.value.nFileSizeLow;
 
   // Copy the file attributes
-  pGFStruct->uiFileAttribs = 0;
+  pGFStruct.value.uiFileAttribs = 0;
 
   for (uiAttribMask = 0x80000000; uiAttribMask > 0; uiAttribMask >>= 1) {
-    switch (pW32Struct->dwFileAttributes & uiAttribMask) {
+    switch (pW32Struct.value.dwFileAttributes & uiAttribMask) {
       case FILE_ATTRIBUTE_ARCHIVE:
-        pGFStruct->uiFileAttribs |= FILE_IS_ARCHIVE;
+        pGFStruct.value.uiFileAttribs |= FILE_IS_ARCHIVE;
         break;
 
       case FILE_ATTRIBUTE_DIRECTORY:
-        pGFStruct->uiFileAttribs |= FILE_IS_DIRECTORY;
+        pGFStruct.value.uiFileAttribs |= FILE_IS_DIRECTORY;
         break;
 
       case FILE_ATTRIBUTE_HIDDEN:
-        pGFStruct->uiFileAttribs |= FILE_IS_HIDDEN;
+        pGFStruct.value.uiFileAttribs |= FILE_IS_HIDDEN;
         break;
 
       case FILE_ATTRIBUTE_NORMAL:
-        pGFStruct->uiFileAttribs |= FILE_IS_NORMAL;
+        pGFStruct.value.uiFileAttribs |= FILE_IS_NORMAL;
         break;
 
       case FILE_ATTRIBUTE_READONLY:
-        pGFStruct->uiFileAttribs |= FILE_IS_READONLY;
+        pGFStruct.value.uiFileAttribs |= FILE_IS_READONLY;
         break;
 
       case FILE_ATTRIBUTE_SYSTEM:
-        pGFStruct->uiFileAttribs |= FILE_IS_SYSTEM;
+        pGFStruct.value.uiFileAttribs |= FILE_IS_SYSTEM;
         break;
 
       case FILE_ATTRIBUTE_TEMPORARY:
-        pGFStruct->uiFileAttribs |= FILE_IS_TEMPORARY;
+        pGFStruct.value.uiFileAttribs |= FILE_IS_TEMPORARY;
         break;
 
       case FILE_ATTRIBUTE_COMPRESSED:
-        pGFStruct->uiFileAttribs |= FILE_IS_COMPRESSED;
+        pGFStruct.value.uiFileAttribs |= FILE_IS_COMPRESSED;
         break;
 
       case FILE_ATTRIBUTE_OFFLINE:
-        pGFStruct->uiFileAttribs |= FILE_IS_OFFLINE;
+        pGFStruct.value.uiFileAttribs |= FILE_IS_OFFLINE;
         break;
     }
   }
@@ -1664,7 +1664,7 @@ function FileCheckEndOfFile(hFile: HWFILE): BOOLEAN {
           //					UINT32	uiNumBytesRead;
           let uiCurPos: UINT32;
 
-          uiLength = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader->uiFileLength;
+          uiLength = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.value.uiFileLength;
           uiCurPos = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiFilePosInFile;
 
           // if we are trying to read more data then the size of the file, return an error

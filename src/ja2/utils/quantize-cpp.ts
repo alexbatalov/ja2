@@ -73,11 +73,11 @@ void CQuantizer::AddColor(NODE **ppNode, BYTE r, BYTE g, BYTE b, UINT nColorBits
   //
   // Update color information if it's a leaf node.
   //
-  if ((*ppNode)->bIsLeaf) {
-    (*ppNode)->nPixelCount++;
-    (*ppNode)->nRedSum += r;
-    (*ppNode)->nGreenSum += g;
-    (*ppNode)->nBlueSum += b;
+  if ((*ppNode).value.bIsLeaf) {
+    (*ppNode).value.nPixelCount++;
+    (*ppNode).value.nRedSum += r;
+    (*ppNode).value.nGreenSum += g;
+    (*ppNode).value.nBlueSum += b;
   }
 
   //
@@ -86,7 +86,7 @@ void CQuantizer::AddColor(NODE **ppNode, BYTE r, BYTE g, BYTE b, UINT nColorBits
   else {
     int shift = 7 - nLevel;
     int nIndex = (((r & mask[nLevel]) >> shift) << 2) | (((g & mask[nLevel]) >> shift) << 1) | ((b & mask[nLevel]) >> shift);
-    AddColor(&((*ppNode)->pChild[nIndex]), r, g, b, nColorBits, nLevel + 1, pLeafCount, pReducibleNodes);
+    AddColor(&((*ppNode).value.pChild[nIndex]), r, g, b, nColorBits, nLevel + 1, pLeafCount, pReducibleNodes);
   }
 }
 
@@ -96,11 +96,11 @@ NODE *CQuantizer::CreateNode(UINT nLevel, UINT nColorBits, UINT *pLeafCount, NOD
   if ((pNode = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(NODE))) == NULL)
     return NULL;
 
-  pNode->bIsLeaf = (nLevel == nColorBits) ? TRUE : FALSE;
-  if (pNode->bIsLeaf)
+  pNode.value.bIsLeaf = (nLevel == nColorBits) ? TRUE : FALSE;
+  if (pNode.value.bIsLeaf)
     (*pLeafCount)++;
   else {
-    pNode->pNext = pReducibleNodes[nLevel];
+    pNode.value.pNext = pReducibleNodes[nLevel];
     pReducibleNodes[nLevel] = pNode;
   }
   return pNode;
@@ -117,7 +117,7 @@ void CQuantizer::ReduceTree(UINT nColorBits, UINT *pLeafCount, NODE **pReducible
   // Reduce the node most recently added to the list at level i.
   //
   NODE *pNode = pReducibleNodes[i];
-  pReducibleNodes[i] = pNode->pNext;
+  pReducibleNodes[i] = pNode.value.pNext;
 
   UINT nRedSum = 0;
   UINT nGreenSum = 0;
@@ -125,44 +125,44 @@ void CQuantizer::ReduceTree(UINT nColorBits, UINT *pLeafCount, NODE **pReducible
   UINT nChildren = 0;
 
   for (i = 0; i < 8; i++) {
-    if (pNode->pChild[i] != NULL) {
-      nRedSum += pNode->pChild[i]->nRedSum;
-      nGreenSum += pNode->pChild[i]->nGreenSum;
-      nBlueSum += pNode->pChild[i]->nBlueSum;
-      pNode->nPixelCount += pNode->pChild[i]->nPixelCount;
-      HeapFree(GetProcessHeap(), 0, pNode->pChild[i]);
-      pNode->pChild[i] = NULL;
+    if (pNode.value.pChild[i] != NULL) {
+      nRedSum += pNode.value.pChild[i].value.nRedSum;
+      nGreenSum += pNode.value.pChild[i].value.nGreenSum;
+      nBlueSum += pNode.value.pChild[i].value.nBlueSum;
+      pNode.value.nPixelCount += pNode.value.pChild[i].value.nPixelCount;
+      HeapFree(GetProcessHeap(), 0, pNode.value.pChild[i]);
+      pNode.value.pChild[i] = NULL;
       nChildren++;
     }
   }
 
-  pNode->bIsLeaf = TRUE;
-  pNode->nRedSum = nRedSum;
-  pNode->nGreenSum = nGreenSum;
-  pNode->nBlueSum = nBlueSum;
+  pNode.value.bIsLeaf = TRUE;
+  pNode.value.nRedSum = nRedSum;
+  pNode.value.nGreenSum = nGreenSum;
+  pNode.value.nBlueSum = nBlueSum;
   *pLeafCount -= (nChildren - 1);
 }
 
 void CQuantizer::DeleteTree(NODE **ppNode) {
   for (int i = 0; i < 8; i++) {
-    if ((*ppNode)->pChild[i] != NULL)
-      DeleteTree(&((*ppNode)->pChild[i]));
+    if ((*ppNode).value.pChild[i] != NULL)
+      DeleteTree(&((*ppNode).value.pChild[i]));
   }
   HeapFree(GetProcessHeap(), 0, *ppNode);
   *ppNode = NULL;
 }
 
 void CQuantizer::GetPaletteColors(NODE *pTree, RGBQUAD *prgb, UINT *pIndex) {
-  if (pTree->bIsLeaf) {
-    prgb[*pIndex].rgbRed = ((pTree->nRedSum) / (pTree->nPixelCount));
-    prgb[*pIndex].rgbGreen = ((pTree->nGreenSum) / (pTree->nPixelCount));
-    prgb[*pIndex].rgbBlue = ((pTree->nBlueSum) / (pTree->nPixelCount));
+  if (pTree.value.bIsLeaf) {
+    prgb[*pIndex].rgbRed = ((pTree.value.nRedSum) / (pTree.value.nPixelCount));
+    prgb[*pIndex].rgbGreen = ((pTree.value.nGreenSum) / (pTree.value.nPixelCount));
+    prgb[*pIndex].rgbBlue = ((pTree.value.nBlueSum) / (pTree.value.nPixelCount));
     prgb[*pIndex].rgbReserved = 0;
     (*pIndex)++;
   } else {
     for (int i = 0; i < 8; i++) {
-      if (pTree->pChild[i] != NULL)
-        GetPaletteColors(pTree->pChild[i], prgb, pIndex);
+      if (pTree.value.pChild[i] != NULL)
+        GetPaletteColors(pTree.value.pChild[i], prgb, pIndex);
     }
   }
 }

@@ -33,8 +33,8 @@ interface InputAtom {
 }
 
 // Mouse pos extracting macros from InputAtom
-const GETYPOS = (a) => HIWORD(((a)->uiParam));
-const GETXPOS = (a) => LOWORD(((a)->uiParam));
+const GETYPOS = (a) => HIWORD(((a).value.uiParam));
+const GETXPOS = (a) => LOWORD(((a).value.uiParam));
 
 interface StringInput {
   pString: Pointer<UINT16>;
@@ -59,11 +59,11 @@ const _MouseYPos = () => gusMouseYPos;
 // NOTE: this may not be the absolute most-latest current mouse co-ordinates, use GetCursorPos for that
 const _gusMouseInside = (x1, y1, x2, y2) => ((gusMouseXPos >= x1) && (gusMouseXPos <= x2) && (gusMouseYPos >= y1) && (gusMouseYPos <= y2));
 
-const _EvType = (a) => ((a))->usEvent;
-const _EvTimeStamp = (a) => ((a))->uiTimeStamp;
-const _EvKey = (a) => ((a))->usParam;
-const _EvMouseX = (a) => (((a))->uiParam & 0x0000ffff);
-const _EvMouseY = (a) => ((((a))->uiParam & 0xffff0000) >> 16);
-const _EvShiftDown = (a) => (((a))->usKeyState & SHIFT_DOWN);
-const _EvCtrlDown = (a) => (((a))->usKeyState & CTRL_DOWN);
-const _EvAltDown = (a) => (((a))->usKeyState & ALT_DOWN);
+const _EvType = (a) => ((a)).value.usEvent;
+const _EvTimeStamp = (a) => ((a)).value.uiTimeStamp;
+const _EvKey = (a) => ((a)).value.usParam;
+const _EvMouseX = (a) => (((a)).value.uiParam & 0x0000ffff);
+const _EvMouseY = (a) => ((((a)).value.uiParam & 0xffff0000) >> 16);
+const _EvShiftDown = (a) => (((a)).value.usKeyState & SHIFT_DOWN);
+const _EvCtrlDown = (a) => (((a)).value.usKeyState & CTRL_DOWN);
+const _EvAltDown = (a) => (((a)).value.usKeyState & ALT_DOWN);

@@ -91,8 +91,8 @@ function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
 
   switch (wParam) {
     case WM_LBUTTONDOWN: // Update the current mouse position
-      gusMouseXPos = ((lParam)->pt).x;
-      gusMouseYPos = ((lParam)->pt).y;
+      gusMouseXPos = ((lParam).value.pt).x;
+      gusMouseYPos = ((lParam).value.pt).y;
       uiParam = gusMouseYPos;
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
@@ -104,8 +104,8 @@ function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
       QueueEvent(LEFT_BUTTON_DOWN, 0, uiParam);
       break;
     case WM_LBUTTONUP: // Update the current mouse position
-      gusMouseXPos = ((lParam)->pt).x;
-      gusMouseYPos = ((lParam)->pt).y;
+      gusMouseXPos = ((lParam).value.pt).x;
+      gusMouseYPos = ((lParam).value.pt).y;
       uiParam = gusMouseYPos;
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
@@ -117,8 +117,8 @@ function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
       QueueEvent(LEFT_BUTTON_UP, 0, uiParam);
       break;
     case WM_RBUTTONDOWN: // Update the current mouse position
-      gusMouseXPos = ((lParam)->pt).x;
-      gusMouseYPos = ((lParam)->pt).y;
+      gusMouseXPos = ((lParam).value.pt).x;
+      gusMouseYPos = ((lParam).value.pt).y;
       uiParam = gusMouseYPos;
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
@@ -130,8 +130,8 @@ function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
       QueueEvent(RIGHT_BUTTON_DOWN, 0, uiParam);
       break;
     case WM_RBUTTONUP: // Update the current mouse position
-      gusMouseXPos = ((lParam)->pt).x;
-      gusMouseYPos = ((lParam)->pt).y;
+      gusMouseXPos = ((lParam).value.pt).x;
+      gusMouseYPos = ((lParam).value.pt).y;
       uiParam = gusMouseYPos;
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
@@ -143,8 +143,8 @@ function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
       QueueEvent(RIGHT_BUTTON_UP, 0, uiParam);
       break;
     case WM_MOUSEMOVE: // Update the current mouse position
-      gusMouseXPos = ((lParam)->pt).x;
-      gusMouseYPos = ((lParam)->pt).y;
+      gusMouseXPos = ((lParam).value.pt).x;
+      gusMouseYPos = ((lParam).value.pt).y;
       uiParam = gusMouseYPos;
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
@@ -346,7 +346,7 @@ function DequeueSpecificEvent(Event: Pointer<InputAtom>, uiMaskFlags: UINT32): B
     memcpy(Event, &(gEventQueue[gusHeadIndex]), sizeof(InputAtom));
 
     // Check if it has the masks!
-    if ((Event->usEvent & uiMaskFlags)) {
+    if ((Event.value.usEvent & uiMaskFlags)) {
       return DequeueEvent(Event);
     }
   }
@@ -828,8 +828,8 @@ function GetMousePos(Point: Pointer<SGPPoint>): void {
 
   GetCursorPos(&MousePos);
 
-  Point->iX = MousePos.x;
-  Point->iY = MousePos.y;
+  Point.value.iX = MousePos.x;
+  Point.value.iY = MousePos.y;
 
   return;
 }
@@ -857,7 +857,7 @@ function InitStringInput(pInputString: Pointer<UINT16>, usLength: UINT16, pFilte
     DbgMessage(TOPIC_INPUT, DBG_LEVEL_1, "Failed to allocate memory for string descriptor");
     return NULL;
   } else {
-    if ((pStringDescriptor->pOriginalString = MemAlloc(usLength * 2)) == NULL) {
+    if ((pStringDescriptor.value.pOriginalString = MemAlloc(usLength * 2)) == NULL) {
       //
       // free up structure before aborting
       //
@@ -867,37 +867,37 @@ function InitStringInput(pInputString: Pointer<UINT16>, usLength: UINT16, pFilte
       return NULL;
     }
 
-    memcpy(pStringDescriptor->pOriginalString, pInputString, usLength * 2);
+    memcpy(pStringDescriptor.value.pOriginalString, pInputString, usLength * 2);
 
-    pStringDescriptor->pString = pInputString;
-    pStringDescriptor->pFilter = pFilter;
-    pStringDescriptor->usMaxStringLength = usLength;
-    pStringDescriptor->usStringOffset = 0;
-    pStringDescriptor->usCurrentStringLength = 0;
-    while ((pStringDescriptor->usStringOffset < pStringDescriptor->usMaxStringLength) && (*(pStringDescriptor->pString + pStringDescriptor->usStringOffset) != 0)) {
+    pStringDescriptor.value.pString = pInputString;
+    pStringDescriptor.value.pFilter = pFilter;
+    pStringDescriptor.value.usMaxStringLength = usLength;
+    pStringDescriptor.value.usStringOffset = 0;
+    pStringDescriptor.value.usCurrentStringLength = 0;
+    while ((pStringDescriptor.value.usStringOffset < pStringDescriptor.value.usMaxStringLength) && (*(pStringDescriptor.value.pString + pStringDescriptor.value.usStringOffset) != 0)) {
       //
       // Find the last character in the string
       //
 
-      pStringDescriptor->usStringOffset++;
-      pStringDescriptor->usCurrentStringLength++;
+      pStringDescriptor.value.usStringOffset++;
+      pStringDescriptor.value.usCurrentStringLength++;
     }
 
-    if (pStringDescriptor->usStringOffset == pStringDescriptor->usMaxStringLength) {
+    if (pStringDescriptor.value.usStringOffset == pStringDescriptor.value.usMaxStringLength) {
       //
       // Hum the current string has no null terminator. Invalidate the string and
       // start from scratch
       //
 
-      memset(pStringDescriptor->pString, 0, usLength * 2);
-      pStringDescriptor->usStringOffset = 0;
-      pStringDescriptor->usCurrentStringLength = 0;
+      memset(pStringDescriptor.value.pString, 0, usLength * 2);
+      pStringDescriptor.value.usStringOffset = 0;
+      pStringDescriptor.value.usCurrentStringLength = 0;
     }
 
-    pStringDescriptor->fInsertMode = FALSE;
-    pStringDescriptor->fFocus = FALSE;
-    pStringDescriptor->pPreviousString = NULL;
-    pStringDescriptor->pNextString = NULL;
+    pStringDescriptor.value.fInsertMode = FALSE;
+    pStringDescriptor.value.fFocus = FALSE;
+    pStringDescriptor.value.pPreviousString = NULL;
+    pStringDescriptor.value.pNextString = NULL;
 
     return pStringDescriptor;
   }
@@ -905,28 +905,28 @@ function InitStringInput(pInputString: Pointer<UINT16>, usLength: UINT16, pFilte
 
 function LinkPreviousString(pCurrentString: Pointer<StringInput>, pPreviousString: Pointer<StringInput>): void {
   if (pCurrentString != NULL) {
-    if (pCurrentString->pPreviousString != NULL) {
-      pCurrentString->pPreviousString->pNextString = NULL;
+    if (pCurrentString.value.pPreviousString != NULL) {
+      pCurrentString.value.pPreviousString.value.pNextString = NULL;
     }
 
-    pCurrentString->pPreviousString = pPreviousString;
+    pCurrentString.value.pPreviousString = pPreviousString;
 
     if (pPreviousString != NULL) {
-      pPreviousString->pNextString = pCurrentString;
+      pPreviousString.value.pNextString = pCurrentString;
     }
   }
 }
 
 function LinkNextString(pCurrentString: Pointer<StringInput>, pNextString: Pointer<StringInput>): void {
   if (pCurrentString != NULL) {
-    if (pCurrentString->pNextString != NULL) {
-      pCurrentString->pNextString->pPreviousString = NULL;
+    if (pCurrentString.value.pNextString != NULL) {
+      pCurrentString.value.pNextString.value.pPreviousString = NULL;
     }
 
-    pCurrentString->pNextString = pNextString;
+    pCurrentString.value.pNextString = pNextString;
 
     if (pNextString != NULL) {
-      pNextString->pPreviousString = pCurrentString;
+      pNextString.value.pPreviousString = pCurrentString;
     }
   }
 }
@@ -955,140 +955,140 @@ function RedirectToString(usInputCharacter: UINT16): void {
     // Handle the new character input
     switch (usInputCharacter) {
       case ENTER: // ENTER is pressed, the last character field should be set to ENTER
-        if (gpCurrentStringDescriptor->pNextString != NULL) {
-          gpCurrentStringDescriptor->fFocus = FALSE;
-          gpCurrentStringDescriptor = gpCurrentStringDescriptor->pNextString;
-          gpCurrentStringDescriptor->fFocus = TRUE;
-          gpCurrentStringDescriptor->usLastCharacter = 0;
+        if (gpCurrentStringDescriptor.value.pNextString != NULL) {
+          gpCurrentStringDescriptor.value.fFocus = FALSE;
+          gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pNextString;
+          gpCurrentStringDescriptor.value.fFocus = TRUE;
+          gpCurrentStringDescriptor.value.usLastCharacter = 0;
         } else {
-          gpCurrentStringDescriptor->fFocus = FALSE;
-          gpCurrentStringDescriptor->usLastCharacter = usInputCharacter;
+          gpCurrentStringDescriptor.value.fFocus = FALSE;
+          gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
           gfCurrentStringInputState = FALSE;
         }
         break;
       case ESC: // ESC was pressed, the last character field should be set to ESC
-        gpCurrentStringDescriptor->fFocus = FALSE;
-        gpCurrentStringDescriptor->usLastCharacter = usInputCharacter;
+        gpCurrentStringDescriptor.value.fFocus = FALSE;
+        gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
         gfCurrentStringInputState = FALSE;
         break;
       case SHIFT_TAB: // TAB was pressed, the last character field should be set to TAB
-        if (gpCurrentStringDescriptor->pPreviousString != NULL) {
-          gpCurrentStringDescriptor->fFocus = FALSE;
-          gpCurrentStringDescriptor = gpCurrentStringDescriptor->pPreviousString;
-          gpCurrentStringDescriptor->fFocus = TRUE;
-          gpCurrentStringDescriptor->usLastCharacter = 0;
+        if (gpCurrentStringDescriptor.value.pPreviousString != NULL) {
+          gpCurrentStringDescriptor.value.fFocus = FALSE;
+          gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pPreviousString;
+          gpCurrentStringDescriptor.value.fFocus = TRUE;
+          gpCurrentStringDescriptor.value.usLastCharacter = 0;
         }
         break;
       case TAB: // TAB was pressed, the last character field should be set to TAB
-        if (gpCurrentStringDescriptor->pNextString != NULL) {
-          gpCurrentStringDescriptor->fFocus = FALSE;
-          gpCurrentStringDescriptor = gpCurrentStringDescriptor->pNextString;
-          gpCurrentStringDescriptor->fFocus = TRUE;
-          gpCurrentStringDescriptor->usLastCharacter = 0;
+        if (gpCurrentStringDescriptor.value.pNextString != NULL) {
+          gpCurrentStringDescriptor.value.fFocus = FALSE;
+          gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pNextString;
+          gpCurrentStringDescriptor.value.fFocus = TRUE;
+          gpCurrentStringDescriptor.value.usLastCharacter = 0;
         }
         break;
       case UPARROW: // The UPARROW was pressed, the last character field should be set to UPARROW
-        if (gpCurrentStringDescriptor->pPreviousString != NULL) {
-          gpCurrentStringDescriptor->fFocus = FALSE;
-          gpCurrentStringDescriptor = gpCurrentStringDescriptor->pPreviousString;
-          gpCurrentStringDescriptor->fFocus = TRUE;
-          gpCurrentStringDescriptor->usLastCharacter = 0;
+        if (gpCurrentStringDescriptor.value.pPreviousString != NULL) {
+          gpCurrentStringDescriptor.value.fFocus = FALSE;
+          gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pPreviousString;
+          gpCurrentStringDescriptor.value.fFocus = TRUE;
+          gpCurrentStringDescriptor.value.usLastCharacter = 0;
         }
         break;
       case DNARROW: // The DNARROW was pressed, the last character field should be set to DNARROW
-        if (gpCurrentStringDescriptor->pNextString != NULL) {
-          gpCurrentStringDescriptor->fFocus = FALSE;
-          gpCurrentStringDescriptor = gpCurrentStringDescriptor->pNextString;
-          gpCurrentStringDescriptor->fFocus = TRUE;
-          gpCurrentStringDescriptor->usLastCharacter = 0;
+        if (gpCurrentStringDescriptor.value.pNextString != NULL) {
+          gpCurrentStringDescriptor.value.fFocus = FALSE;
+          gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pNextString;
+          gpCurrentStringDescriptor.value.fFocus = TRUE;
+          gpCurrentStringDescriptor.value.usLastCharacter = 0;
         }
         break;
       case LEFTARROW: // The LEFTARROW was pressed, move one character to the left
-        if (gpCurrentStringDescriptor->usStringOffset > 0) {
+        if (gpCurrentStringDescriptor.value.usStringOffset > 0) {
           // Decrement the offset
-          gpCurrentStringDescriptor->usStringOffset--;
+          gpCurrentStringDescriptor.value.usStringOffset--;
         }
-        gpCurrentStringDescriptor->usLastCharacter = usInputCharacter;
+        gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
         break;
       case RIGHTARROW: // The RIGHTARROW was pressed, move one character to the right
-        if (gpCurrentStringDescriptor->usStringOffset < gpCurrentStringDescriptor->usCurrentStringLength) {
+        if (gpCurrentStringDescriptor.value.usStringOffset < gpCurrentStringDescriptor.value.usCurrentStringLength) {
           // Ok we can move the cursor one up without going past the end of string
-          gpCurrentStringDescriptor->usStringOffset++;
+          gpCurrentStringDescriptor.value.usStringOffset++;
         }
-        gpCurrentStringDescriptor->usLastCharacter = usInputCharacter;
+        gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
         break;
       case BACKSPACE: // Delete the character preceding the cursor
-        if (gpCurrentStringDescriptor->usStringOffset > 0) {
+        if (gpCurrentStringDescriptor.value.usStringOffset > 0) {
           // Ok, we are not at the beginning of the string, so we may proceed
-          for (usIndex = gpCurrentStringDescriptor->usStringOffset; usIndex <= gpCurrentStringDescriptor->usCurrentStringLength; usIndex++) {
+          for (usIndex = gpCurrentStringDescriptor.value.usStringOffset; usIndex <= gpCurrentStringDescriptor.value.usCurrentStringLength; usIndex++) {
             // Shift the characters one at a time
-            *(gpCurrentStringDescriptor->pString + usIndex - 1) = *(gpCurrentStringDescriptor->pString + usIndex);
+            *(gpCurrentStringDescriptor.value.pString + usIndex - 1) = *(gpCurrentStringDescriptor.value.pString + usIndex);
           }
-          gpCurrentStringDescriptor->usStringOffset--;
-          gpCurrentStringDescriptor->usCurrentStringLength--;
+          gpCurrentStringDescriptor.value.usStringOffset--;
+          gpCurrentStringDescriptor.value.usCurrentStringLength--;
         }
 
         break;
       case DEL: // Delete the character which follows the cursor
-        if (gpCurrentStringDescriptor->usStringOffset < gpCurrentStringDescriptor->usCurrentStringLength) {
+        if (gpCurrentStringDescriptor.value.usStringOffset < gpCurrentStringDescriptor.value.usCurrentStringLength) {
           // Ok we are not at the end of the string, so we may proceed
-          for (usIndex = gpCurrentStringDescriptor->usStringOffset; usIndex < gpCurrentStringDescriptor->usCurrentStringLength; usIndex++) {
+          for (usIndex = gpCurrentStringDescriptor.value.usStringOffset; usIndex < gpCurrentStringDescriptor.value.usCurrentStringLength; usIndex++) {
             // Shift the characters one at a time
-            *(gpCurrentStringDescriptor->pString + usIndex) = *(gpCurrentStringDescriptor->pString + usIndex + 1);
+            *(gpCurrentStringDescriptor.value.pString + usIndex) = *(gpCurrentStringDescriptor.value.pString + usIndex + 1);
           }
-          gpCurrentStringDescriptor->usCurrentStringLength--;
+          gpCurrentStringDescriptor.value.usCurrentStringLength--;
         }
-        gpCurrentStringDescriptor->usLastCharacter = usInputCharacter;
+        gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
         break;
       case INSERT: // Toggle insert mode
-        if (gpCurrentStringDescriptor->fInsertMode == TRUE) {
-          gpCurrentStringDescriptor->fInsertMode = FALSE;
+        if (gpCurrentStringDescriptor.value.fInsertMode == TRUE) {
+          gpCurrentStringDescriptor.value.fInsertMode = FALSE;
         } else {
-          gpCurrentStringDescriptor->fInsertMode = TRUE;
+          gpCurrentStringDescriptor.value.fInsertMode = TRUE;
         }
-        gpCurrentStringDescriptor->usLastCharacter = usInputCharacter;
+        gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
         break;
       case HOME: // Go to the beginning of the input string
-        gpCurrentStringDescriptor->usStringOffset = 0;
-        gpCurrentStringDescriptor->usLastCharacter = usInputCharacter;
+        gpCurrentStringDescriptor.value.usStringOffset = 0;
+        gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
         break;
       case END
           : // Go to the end of the input string
-        gpCurrentStringDescriptor->usStringOffset = gpCurrentStringDescriptor->usCurrentStringLength;
-        gpCurrentStringDescriptor->usLastCharacter = usInputCharacter;
+        gpCurrentStringDescriptor.value.usStringOffset = gpCurrentStringDescriptor.value.usCurrentStringLength;
+        gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
         break;
       default: //
         // normal input
         //
-        if (CharacterIsValid(usInputCharacter, gpCurrentStringDescriptor->pFilter) == TRUE) {
-          if (gpCurrentStringDescriptor->fInsertMode == TRUE) {
+        if (CharacterIsValid(usInputCharacter, gpCurrentStringDescriptor.value.pFilter) == TRUE) {
+          if (gpCurrentStringDescriptor.value.fInsertMode == TRUE) {
             // Before we can shift characters for the insert, we must make sure we have the space
-            if (gpCurrentStringDescriptor->usCurrentStringLength < (gpCurrentStringDescriptor->usMaxStringLength - 1)) {
+            if (gpCurrentStringDescriptor.value.usCurrentStringLength < (gpCurrentStringDescriptor.value.usMaxStringLength - 1)) {
               // Before we can add a new character we must shift existing ones to for the insert
-              for (usIndex = gpCurrentStringDescriptor->usCurrentStringLength; usIndex > gpCurrentStringDescriptor->usStringOffset; usIndex--) {
+              for (usIndex = gpCurrentStringDescriptor.value.usCurrentStringLength; usIndex > gpCurrentStringDescriptor.value.usStringOffset; usIndex--) {
                 // Shift the characters one at a time
-                *(gpCurrentStringDescriptor->pString + usIndex) = *(gpCurrentStringDescriptor->pString + usIndex - 1);
+                *(gpCurrentStringDescriptor.value.pString + usIndex) = *(gpCurrentStringDescriptor.value.pString + usIndex - 1);
               }
               // Ok now we introduce the new character
-              *(gpCurrentStringDescriptor->pString + usIndex) = usInputCharacter;
-              gpCurrentStringDescriptor->usStringOffset++;
-              gpCurrentStringDescriptor->usCurrentStringLength++;
+              *(gpCurrentStringDescriptor.value.pString + usIndex) = usInputCharacter;
+              gpCurrentStringDescriptor.value.usStringOffset++;
+              gpCurrentStringDescriptor.value.usCurrentStringLength++;
             }
           } else {
             // Ok, add character to string (by overwriting)
-            if (gpCurrentStringDescriptor->usStringOffset < (gpCurrentStringDescriptor->usMaxStringLength - 1)) {
+            if (gpCurrentStringDescriptor.value.usStringOffset < (gpCurrentStringDescriptor.value.usMaxStringLength - 1)) {
               // Ok, we have not exceeded the maximum number of characters yet
-              *(gpCurrentStringDescriptor->pString + gpCurrentStringDescriptor->usStringOffset) = usInputCharacter;
-              gpCurrentStringDescriptor->usStringOffset++;
+              *(gpCurrentStringDescriptor.value.pString + gpCurrentStringDescriptor.value.usStringOffset) = usInputCharacter;
+              gpCurrentStringDescriptor.value.usStringOffset++;
             }
             // Did we push back the current string length (i.e. add character to end of string)
-            if (gpCurrentStringDescriptor->usStringOffset > gpCurrentStringDescriptor->usCurrentStringLength) {
+            if (gpCurrentStringDescriptor.value.usStringOffset > gpCurrentStringDescriptor.value.usCurrentStringLength) {
               // Add a NULL character
-              *(gpCurrentStringDescriptor->pString + gpCurrentStringDescriptor->usStringOffset) = 0;
-              gpCurrentStringDescriptor->usCurrentStringLength++;
+              *(gpCurrentStringDescriptor.value.pString + gpCurrentStringDescriptor.value.usStringOffset) = 0;
+              gpCurrentStringDescriptor.value.usCurrentStringLength++;
             }
           }
-          gpCurrentStringDescriptor->usLastCharacter = usInputCharacter;
+          gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
         }
         break;
     }
@@ -1097,7 +1097,7 @@ function RedirectToString(usInputCharacter: UINT16): void {
 
 function GetStringInputState(): UINT16 {
   if (gpCurrentStringDescriptor != NULL) {
-    return gpCurrentStringDescriptor->usLastCharacter;
+    return gpCurrentStringDescriptor.value.usLastCharacter;
   } else {
     return 0;
   }
@@ -1110,17 +1110,17 @@ function StringInputHasFocus(): BOOLEAN {
 function SetStringFocus(pStringDescriptor: Pointer<StringInput>): BOOLEAN {
   if (pStringDescriptor != NULL) {
     if (gpCurrentStringDescriptor != NULL) {
-      gpCurrentStringDescriptor->fFocus = FALSE;
+      gpCurrentStringDescriptor.value.fFocus = FALSE;
     }
     // Ok overide current entry
     gfCurrentStringInputState = TRUE;
     gpCurrentStringDescriptor = pStringDescriptor;
-    gpCurrentStringDescriptor->fFocus = TRUE;
-    gpCurrentStringDescriptor->usLastCharacter = 0;
+    gpCurrentStringDescriptor.value.fFocus = TRUE;
+    gpCurrentStringDescriptor.value.usLastCharacter = 0;
     return TRUE;
   } else {
     if (gpCurrentStringDescriptor != NULL) {
-      gpCurrentStringDescriptor->fFocus = FALSE;
+      gpCurrentStringDescriptor.value.fFocus = FALSE;
     }
     // Ok overide current entry
     gfCurrentStringInputState = FALSE;
@@ -1130,42 +1130,42 @@ function SetStringFocus(pStringDescriptor: Pointer<StringInput>): BOOLEAN {
 }
 
 function GetCursorPositionInString(pStringDescriptor: Pointer<StringInput>): UINT16 {
-  return pStringDescriptor->usStringOffset;
+  return pStringDescriptor.value.usStringOffset;
 }
 
 function StringHasFocus(pStringDescriptor: Pointer<StringInput>): BOOLEAN {
   if (pStringDescriptor != NULL) {
-    return pStringDescriptor->fFocus;
+    return pStringDescriptor.value.fFocus;
   } else {
     return FALSE;
   }
 }
 
 function RestoreString(pStringDescriptor: Pointer<StringInput>): void {
-  memcpy(pStringDescriptor->pString, pStringDescriptor->pOriginalString, pStringDescriptor->usMaxStringLength * 2);
+  memcpy(pStringDescriptor.value.pString, pStringDescriptor.value.pOriginalString, pStringDescriptor.value.usMaxStringLength * 2);
 
-  pStringDescriptor->usStringOffset = 0;
-  pStringDescriptor->usCurrentStringLength = 0;
-  while ((pStringDescriptor->usStringOffset < pStringDescriptor->usMaxStringLength) && (*(pStringDescriptor->pString + pStringDescriptor->usStringOffset) != 0)) {
+  pStringDescriptor.value.usStringOffset = 0;
+  pStringDescriptor.value.usCurrentStringLength = 0;
+  while ((pStringDescriptor.value.usStringOffset < pStringDescriptor.value.usMaxStringLength) && (*(pStringDescriptor.value.pString + pStringDescriptor.value.usStringOffset) != 0)) {
     //
     // Find the last character in the string
     //
 
-    pStringDescriptor->usStringOffset++;
-    pStringDescriptor->usCurrentStringLength++;
+    pStringDescriptor.value.usStringOffset++;
+    pStringDescriptor.value.usCurrentStringLength++;
   }
 
-  if (pStringDescriptor->usStringOffset == pStringDescriptor->usMaxStringLength) {
+  if (pStringDescriptor.value.usStringOffset == pStringDescriptor.value.usMaxStringLength) {
     //
     // Hum the current string has no null terminator. Invalidate the string and
     // start from scratch
     //
-    memset(pStringDescriptor->pString, 0, pStringDescriptor->usMaxStringLength * 2);
-    pStringDescriptor->usStringOffset = 0;
-    pStringDescriptor->usCurrentStringLength = 0;
+    memset(pStringDescriptor.value.pString, 0, pStringDescriptor.value.usMaxStringLength * 2);
+    pStringDescriptor.value.usStringOffset = 0;
+    pStringDescriptor.value.usCurrentStringLength = 0;
   }
 
-  pStringDescriptor->fInsertMode = FALSE;
+  pStringDescriptor.value.fInsertMode = FALSE;
 }
 
 function EndStringInput(pStringDescriptor: Pointer<StringInput>): void {
@@ -1177,9 +1177,9 @@ function EndStringInput(pStringDescriptor: Pointer<StringInput>): void {
       gfCurrentStringInputState = FALSE;
     }
     // Make sure we have a valid string within the string descriptor
-    if (pStringDescriptor->pOriginalString != NULL) {
+    if (pStringDescriptor.value.pOriginalString != NULL) {
       // free up the string
-      MemFree(pStringDescriptor->pOriginalString);
+      MemFree(pStringDescriptor.value.pOriginalString);
     }
     // free up the descriptor
     MemFree(pStringDescriptor);

@@ -208,32 +208,32 @@ function CreateSummaryWindow(): void {
   // GiveButtonDefaultStatus( iSummaryButton[ SUMMARY_OKAY ], DEFAULT_STATUS_WINDOWS95 );
 
   iSummaryButton[SUMMARY_GRIDCHECKBOX] = CreateCheckBoxButton(MAP_LEFT, (MAP_BOTTOM + 5), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleGridCallback);
-  ButtonList[iSummaryButton[SUMMARY_GRIDCHECKBOX]]->uiFlags |= BUTTON_CLICKED_ON;
+  ButtonList[iSummaryButton[SUMMARY_GRIDCHECKBOX]].value.uiFlags |= BUTTON_CLICKED_ON;
   gfRenderGrid = TRUE;
 
   iSummaryButton[SUMMARY_PROGRESSCHECKBOX] = CreateCheckBoxButton((MAP_LEFT + 50), (MAP_BOTTOM + 5), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleProgressCallback);
-  ButtonList[iSummaryButton[SUMMARY_PROGRESSCHECKBOX]]->uiFlags |= BUTTON_CLICKED_ON;
+  ButtonList[iSummaryButton[SUMMARY_PROGRESSCHECKBOX]].value.uiFlags |= BUTTON_CLICKED_ON;
   gfRenderProgress = TRUE;
 
   iSummaryButton[SUMMARY_ALL] = CreateTextButton("A", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 110, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
   if (giCurrentViewLevel == ALL_LEVELS_MASK || giCurrentViewLevel == ALTERNATE_LEVELS_MASK)
-    ButtonList[iSummaryButton[SUMMARY_ALL]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[SUMMARY_ALL]].value.uiFlags |= BUTTON_CLICKED_ON;
   iSummaryButton[SUMMARY_G] = CreateTextButton("G", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 128, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
   if (giCurrentViewLevel == GROUND_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_GROUND_MASK)
-    ButtonList[iSummaryButton[SUMMARY_G]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[SUMMARY_G]].value.uiFlags |= BUTTON_CLICKED_ON;
   iSummaryButton[SUMMARY_B1] = CreateTextButton("B1", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 146, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
   if (giCurrentViewLevel == BASEMENT1_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B1_MASK)
-    ButtonList[iSummaryButton[SUMMARY_B1]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[SUMMARY_B1]].value.uiFlags |= BUTTON_CLICKED_ON;
   iSummaryButton[SUMMARY_B2] = CreateTextButton("B2", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 164, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
   if (giCurrentViewLevel == BASEMENT2_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B2_MASK)
-    ButtonList[iSummaryButton[SUMMARY_B2]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[SUMMARY_B2]].value.uiFlags |= BUTTON_CLICKED_ON;
   iSummaryButton[SUMMARY_B3] = CreateTextButton("B3", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 182, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
   if (giCurrentViewLevel == BASEMENT3_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B3_MASK)
-    ButtonList[iSummaryButton[SUMMARY_B3]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[SUMMARY_B3]].value.uiFlags |= BUTTON_CLICKED_ON;
 
   iSummaryButton[SUMMARY_ALTERNATE] = CreateCheckBoxButton(MAP_LEFT, (MAP_BOTTOM + 25), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleAlternateCallback);
   if (gfAlternateMaps)
-    ButtonList[iSummaryButton[SUMMARY_ALTERNATE]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[SUMMARY_ALTERNATE]].value.uiFlags |= BUTTON_CLICKED_ON;
 
   iSummaryButton[SUMMARY_LOAD] = CreateTextButton("LOAD", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryLoadMapCallback);
   iSummaryButton[SUMMARY_SAVE] = CreateTextButton("SAVE", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 55, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummarySaveMapCallback);
@@ -249,13 +249,13 @@ function CreateSummaryWindow(): void {
   // SetButtonFastHelpText( iSummaryButton[ SUMMARY_REAL ], L"Display items that appear in Realistic mode." );
   switch (gubSummaryItemMode) {
     case ITEMMODE_SCIFI:
-      ButtonList[iSummaryButton[SUMMARY_SCIFI]]->uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[iSummaryButton[SUMMARY_SCIFI]].value.uiFlags |= BUTTON_CLICKED_ON;
       break;
     case ITEMMODE_REAL:
-      ButtonList[iSummaryButton[SUMMARY_REAL]]->uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[iSummaryButton[SUMMARY_REAL]].value.uiFlags |= BUTTON_CLICKED_ON;
       break;
     case ITEMMODE_ENEMY:
-      ButtonList[iSummaryButton[SUMMARY_ENEMY]]->uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[iSummaryButton[SUMMARY_ENEMY]].value.uiFlags |= BUTTON_CLICKED_ON;
       break;
   }
 
@@ -286,7 +286,7 @@ function CreateSummaryWindow(): void {
     gsSelSectorX = 9;
     gsSelSectorY = 1;
     gpCurrentSectorSummary = gpSectorSummary[8][0][0];
-    ButtonList[iSummaryButton[SUMMARY_LOAD]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[SUMMARY_LOAD]].value.uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
@@ -371,151 +371,151 @@ function RenderSectorInformation(): void {
   SetFontShadow(FONT_NEARBLACK);
 
   s = gpCurrentSectorSummary;
-  m = &gpCurrentSectorSummary->MapInfo;
+  m = &gpCurrentSectorSummary.value.MapInfo;
 
-  if (m->sNorthGridNo != -1)
+  if (m.value.sNorthGridNo != -1)
     ePoints++;
-  if (m->sEastGridNo != -1)
+  if (m.value.sEastGridNo != -1)
     ePoints++;
-  if (m->sSouthGridNo != -1)
+  if (m.value.sSouthGridNo != -1)
     ePoints++;
-  if (m->sWestGridNo != -1)
+  if (m.value.sWestGridNo != -1)
     ePoints++;
-  if (m->sCenterGridNo != -1)
+  if (m.value.sCenterGridNo != -1)
     ePoints++;
-  if (m->sIsolatedGridNo != -1)
+  if (m.value.sIsolatedGridNo != -1)
     ePoints++;
   // start at 10,35
   SetFontForeground(FONT_ORANGE);
-  mprintf(10, 32, "Tileset:  %s", gTilesets[s->ubTilesetID].zName);
-  if (m->ubMapVersion < 10)
+  mprintf(10, 32, "Tileset:  %s", gTilesets[s.value.ubTilesetID].zName);
+  if (m.value.ubMapVersion < 10)
     SetFontForeground(FONT_RED);
-  mprintf(10, 42, "Version Info:  Summary:  1.%02d,  Map:  %d.%02d", s->ubSummaryVersion, s->dMajorMapVersion, m->ubMapVersion);
+  mprintf(10, 42, "Version Info:  Summary:  1.%02d,  Map:  %d.%02d", s.value.ubSummaryVersion, s.value.dMajorMapVersion, m.value.ubMapVersion);
   SetFontForeground(FONT_GRAY2);
-  mprintf(10, 55, "Number of items:  %d", s->usNumItems);
-  mprintf(10, 65, "Number of lights:  %d", s->usNumLights);
+  mprintf(10, 55, "Number of items:  %d", s.value.usNumItems);
+  mprintf(10, 65, "Number of lights:  %d", s.value.usNumLights);
   mprintf(10, 75, "Number of entry points:  %d", ePoints);
   if (ePoints) {
     let x: INT32;
     x = 140;
     mprintf(x, 75, "(");
     x += StringPixLength("(", FONT10ARIAL) + 2;
-    if (m->sNorthGridNo != -1) {
+    if (m.value.sNorthGridNo != -1) {
       mprintf(x, 75, "N");
       x += StringPixLength("N", FONT10ARIAL) + 2;
     }
-    if (m->sEastGridNo != -1) {
+    if (m.value.sEastGridNo != -1) {
       mprintf(x, 75, "E");
       x += StringPixLength("E", FONT10ARIAL) + 2;
     }
-    if (m->sSouthGridNo != -1) {
+    if (m.value.sSouthGridNo != -1) {
       mprintf(x, 75, "S");
       x += StringPixLength("S", FONT10ARIAL) + 2;
     }
-    if (m->sWestGridNo != -1) {
+    if (m.value.sWestGridNo != -1) {
       mprintf(x, 75, "W");
       x += StringPixLength("W", FONT10ARIAL) + 2;
     }
-    if (m->sCenterGridNo != -1) {
+    if (m.value.sCenterGridNo != -1) {
       mprintf(x, 75, "C");
       x += StringPixLength("C", FONT10ARIAL) + 2;
     }
-    if (m->sIsolatedGridNo != -1) {
+    if (m.value.sIsolatedGridNo != -1) {
       mprintf(x, 75, "I");
       x += StringPixLength("I", FONT10ARIAL) + 2;
     }
     mprintf(x, 75, ")");
   }
-  mprintf(10, 85, "Number of rooms:  %d", s->ubNumRooms);
-  mprintf(10, 95, "Total map population:  %d", m->ubNumIndividuals);
-  mprintf(20, 105, "Enemies:  %d", s->EnemyTeam.ubTotal);
-  mprintf(30, 115, "Admins:  %d", s->ubNumAdmins);
-  if (s->ubNumAdmins)
-    mprintf(100, 115, "(%d detailed, %d profile -- %d have priority existance)", s->ubAdminDetailed, s->ubAdminProfile, s->ubAdminExistance);
-  mprintf(30, 125, "Troops:  %d", s->ubNumTroops);
-  if (s->ubNumTroops)
-    mprintf(100, 125, "(%d detailed, %d profile -- %d have priority existance)", s->ubTroopDetailed, s->ubTroopProfile, s->ubTroopExistance);
-  mprintf(30, 135, "Elites:  %d", s->ubNumElites);
-  if (s->ubNumElites)
-    mprintf(100, 135, "(%d detailed, %d profile -- %d have priority existance)", s->ubEliteDetailed, s->ubEliteProfile, s->ubEliteExistance);
-  mprintf(20, 145, "Civilians:  %d", s->CivTeam.ubTotal);
-  if (s->CivTeam.ubTotal)
-    mprintf(100, 145, "(%d detailed, %d profile -- %d have priority existance)", s->CivTeam.ubDetailed, s->CivTeam.ubProfile, s->CivTeam.ubExistance);
-  if (s->ubSummaryVersion >= 9) {
-    mprintf(30, 155, "Humans:  %d", s->CivTeam.ubTotal - s->ubCivCows - s->ubCivBloodcats);
-    mprintf(30, 165, "Cows:  %d", s->ubCivCows);
-    mprintf(30, 175, "Bloodcats:  %d", s->ubCivBloodcats);
+  mprintf(10, 85, "Number of rooms:  %d", s.value.ubNumRooms);
+  mprintf(10, 95, "Total map population:  %d", m.value.ubNumIndividuals);
+  mprintf(20, 105, "Enemies:  %d", s.value.EnemyTeam.ubTotal);
+  mprintf(30, 115, "Admins:  %d", s.value.ubNumAdmins);
+  if (s.value.ubNumAdmins)
+    mprintf(100, 115, "(%d detailed, %d profile -- %d have priority existance)", s.value.ubAdminDetailed, s.value.ubAdminProfile, s.value.ubAdminExistance);
+  mprintf(30, 125, "Troops:  %d", s.value.ubNumTroops);
+  if (s.value.ubNumTroops)
+    mprintf(100, 125, "(%d detailed, %d profile -- %d have priority existance)", s.value.ubTroopDetailed, s.value.ubTroopProfile, s.value.ubTroopExistance);
+  mprintf(30, 135, "Elites:  %d", s.value.ubNumElites);
+  if (s.value.ubNumElites)
+    mprintf(100, 135, "(%d detailed, %d profile -- %d have priority existance)", s.value.ubEliteDetailed, s.value.ubEliteProfile, s.value.ubEliteExistance);
+  mprintf(20, 145, "Civilians:  %d", s.value.CivTeam.ubTotal);
+  if (s.value.CivTeam.ubTotal)
+    mprintf(100, 145, "(%d detailed, %d profile -- %d have priority existance)", s.value.CivTeam.ubDetailed, s.value.CivTeam.ubProfile, s.value.CivTeam.ubExistance);
+  if (s.value.ubSummaryVersion >= 9) {
+    mprintf(30, 155, "Humans:  %d", s.value.CivTeam.ubTotal - s.value.ubCivCows - s.value.ubCivBloodcats);
+    mprintf(30, 165, "Cows:  %d", s.value.ubCivCows);
+    mprintf(30, 175, "Bloodcats:  %d", s.value.ubCivBloodcats);
   }
-  mprintf(20, 185, "Creatures:  %d", s->CreatureTeam.ubTotal);
-  if (s->ubSummaryVersion >= 9) {
-    mprintf(30, 195, "Monsters:  %d", s->CreatureTeam.ubTotal - s->CreatureTeam.ubNumAnimals);
-    mprintf(30, 205, "Bloodcats:  %d", s->CreatureTeam.ubNumAnimals);
+  mprintf(20, 185, "Creatures:  %d", s.value.CreatureTeam.ubTotal);
+  if (s.value.ubSummaryVersion >= 9) {
+    mprintf(30, 195, "Monsters:  %d", s.value.CreatureTeam.ubTotal - s.value.CreatureTeam.ubNumAnimals);
+    mprintf(30, 205, "Bloodcats:  %d", s.value.CreatureTeam.ubNumAnimals);
   }
-  mprintf(10, 215, "Number of locked and/or trapped doors:  %d", s->ubNumDoors);
-  mprintf(20, 225, "Locked:  %d", s->ubNumDoorsLocked);
-  mprintf(20, 235, "Trapped:  %d", s->ubNumDoorsTrapped);
-  mprintf(20, 245, "Locked & Trapped:  %d", s->ubNumDoorsLockedAndTrapped);
-  if (s->ubSummaryVersion >= 8)
-    mprintf(10, 255, "Civilians with schedules:  %d", s->ubCivSchedules);
-  if (s->ubSummaryVersion >= 10) {
-    if (s->fTooManyExitGridDests) {
+  mprintf(10, 215, "Number of locked and/or trapped doors:  %d", s.value.ubNumDoors);
+  mprintf(20, 225, "Locked:  %d", s.value.ubNumDoorsLocked);
+  mprintf(20, 235, "Trapped:  %d", s.value.ubNumDoorsTrapped);
+  mprintf(20, 245, "Locked & Trapped:  %d", s.value.ubNumDoorsLockedAndTrapped);
+  if (s.value.ubSummaryVersion >= 8)
+    mprintf(10, 255, "Civilians with schedules:  %d", s.value.ubCivSchedules);
+  if (s.value.ubSummaryVersion >= 10) {
+    if (s.value.fTooManyExitGridDests) {
       SetFontForeground(FONT_RED);
       mprintf(10, 265, "Too many exit grid destinations (more than 4)...");
     } else {
       let i: UINT8;
       let ubNumInvalid: UINT8 = 0;
       for (i = 0; i < 4; i++) {
-        if (s->fInvalidDest[i])
+        if (s.value.fInvalidDest[i])
           ubNumInvalid++;
       }
       if (ubNumInvalid) {
         SetFontForeground(FONT_RED);
-        mprintf(10, 265, "ExitGrids:  %d (%d with a long distance destination)", s->ubNumExitGridDests, ubNumInvalid);
+        mprintf(10, 265, "ExitGrids:  %d (%d with a long distance destination)", s.value.ubNumExitGridDests, ubNumInvalid);
       } else
-        switch (s->ubNumExitGridDests) {
+        switch (s.value.ubNumExitGridDests) {
           case 0:
             mprintf(10, 265, "ExitGrids:  none");
             break;
           case 1:
-            mprintf(10, 265, "ExitGrids:  1 destination using %d exitgrids", s->usExitGridSize[0]);
+            mprintf(10, 265, "ExitGrids:  1 destination using %d exitgrids", s.value.usExitGridSize[0]);
             break;
           case 2:
-            mprintf(10, 265, "ExitGrids:  2 -- 1) Qty: %d, 2) Qty: %d", s->usExitGridSize[0], s->usExitGridSize[1]);
+            mprintf(10, 265, "ExitGrids:  2 -- 1) Qty: %d, 2) Qty: %d", s.value.usExitGridSize[0], s.value.usExitGridSize[1]);
             break;
           case 3:
-            mprintf(10, 265, "ExitGrids:  3 -- 1) Qty: %d, 2) Qty: %d, 3) Qty: %d", s->usExitGridSize[0], s->usExitGridSize[1], s->usExitGridSize[2]);
+            mprintf(10, 265, "ExitGrids:  3 -- 1) Qty: %d, 2) Qty: %d, 3) Qty: %d", s.value.usExitGridSize[0], s.value.usExitGridSize[1], s.value.usExitGridSize[2]);
             break;
           case 4:
-            mprintf(10, 265, "ExitGrids:  3 -- 1) Qty: %d, 2) Qty: %d, 3) Qty: %d, 4) Qty: %d", s->usExitGridSize[0], s->usExitGridSize[1], s->usExitGridSize[2], s->usExitGridSize[3]);
+            mprintf(10, 265, "ExitGrids:  3 -- 1) Qty: %d, 2) Qty: %d, 3) Qty: %d, 4) Qty: %d", s.value.usExitGridSize[0], s.value.usExitGridSize[1], s.value.usExitGridSize[2], s.value.usExitGridSize[3]);
             break;
         }
     }
   }
-  iOverall = -(2 * s->EnemyTeam.ubBadA) - s->EnemyTeam.ubPoorA + s->EnemyTeam.ubGoodA + (2 * s->EnemyTeam.ubGreatA);
+  iOverall = -(2 * s.value.EnemyTeam.ubBadA) - s.value.EnemyTeam.ubPoorA + s.value.EnemyTeam.ubGoodA + (2 * s.value.EnemyTeam.ubGreatA);
   usLine = 275;
-  mprintf(10, usLine, "Enemy Relative Attributes:  %d bad, %d poor, %d norm, %d good, %d great (%+d Overall)", s->EnemyTeam.ubBadA, s->EnemyTeam.ubPoorA, s->EnemyTeam.ubAvgA, s->EnemyTeam.ubGoodA, s->EnemyTeam.ubGreatA, iOverall);
-  iOverall = -(2 * s->EnemyTeam.ubBadE) - s->EnemyTeam.ubPoorE + s->EnemyTeam.ubGoodE + (2 * s->EnemyTeam.ubGreatE);
+  mprintf(10, usLine, "Enemy Relative Attributes:  %d bad, %d poor, %d norm, %d good, %d great (%+d Overall)", s.value.EnemyTeam.ubBadA, s.value.EnemyTeam.ubPoorA, s.value.EnemyTeam.ubAvgA, s.value.EnemyTeam.ubGoodA, s.value.EnemyTeam.ubGreatA, iOverall);
+  iOverall = -(2 * s.value.EnemyTeam.ubBadE) - s.value.EnemyTeam.ubPoorE + s.value.EnemyTeam.ubGoodE + (2 * s.value.EnemyTeam.ubGreatE);
   usLine += 10;
-  mprintf(10, usLine, "Enemy Relative Equipment:  %d bad, %d poor, %d norm, %d good, %d great (%+d Overall)", s->EnemyTeam.ubBadE, s->EnemyTeam.ubPoorE, s->EnemyTeam.ubAvgE, s->EnemyTeam.ubGoodE, s->EnemyTeam.ubGreatE, iOverall);
+  mprintf(10, usLine, "Enemy Relative Equipment:  %d bad, %d poor, %d norm, %d good, %d great (%+d Overall)", s.value.EnemyTeam.ubBadE, s.value.EnemyTeam.ubPoorE, s.value.EnemyTeam.ubAvgE, s.value.EnemyTeam.ubGoodE, s.value.EnemyTeam.ubGreatE, iOverall);
   usLine += 10;
-  if (s->ubSummaryVersion >= 11) {
-    if (s->ubEnemiesReqWaypoints) {
+  if (s.value.ubSummaryVersion >= 11) {
+    if (s.value.ubEnemiesReqWaypoints) {
       SetFontForeground(FONT_RED);
-      mprintf(10, usLine, "%d placements have patrol orders without any waypoints defined.", s->ubEnemiesReqWaypoints);
+      mprintf(10, usLine, "%d placements have patrol orders without any waypoints defined.", s.value.ubEnemiesReqWaypoints);
       usLine += 10;
     }
   }
-  if (s->ubSummaryVersion >= 13) {
-    if (s->ubEnemiesHaveWaypoints) {
+  if (s.value.ubSummaryVersion >= 13) {
+    if (s.value.ubEnemiesHaveWaypoints) {
       SetFontForeground(FONT_RED);
-      mprintf(10, usLine, "%d placements have waypoints, but without any patrol orders.", s->ubEnemiesHaveWaypoints);
+      mprintf(10, usLine, "%d placements have waypoints, but without any patrol orders.", s.value.ubEnemiesHaveWaypoints);
       usLine += 10;
     }
   }
-  if (s->ubSummaryVersion >= 12) {
-    if (s->usWarningRoomNums) {
+  if (s.value.ubSummaryVersion >= 12) {
+    if (s.value.usWarningRoomNums) {
       SetFontForeground(FONT_RED);
-      mprintf(10, usLine, "%d gridnos have questionable room numbers.  Please validate.", s->usWarningRoomNums);
+      mprintf(10, usLine, "%d gridnos have questionable room numbers.  Please validate.", s.value.usWarningRoomNums);
     }
   }
 }
@@ -560,21 +560,21 @@ function RenderItemDetails(): void {
           if (gpWorldItemsSummaryArray[i].o.usItem == index) {
             if (gubSummaryItemMode == ITEMMODE_SCIFI && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_REALISTIC_ONLY) || gubSummaryItemMode == ITEMMODE_REAL && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_SCIFI_ONLY)) {
               pItem = &gpWorldItemsSummaryArray[i].o;
-              if (!pItem->bFrequency)
+              if (!pItem.value.bFrequency)
                 bFreqIndex = 7;
-              else if (pItem->bFrequency == PANIC_FREQUENCY)
+              else if (pItem.value.bFrequency == PANIC_FREQUENCY)
                 bFreqIndex = 0;
-              else if (pItem->bFrequency == PANIC_FREQUENCY_2)
+              else if (pItem.value.bFrequency == PANIC_FREQUENCY_2)
                 bFreqIndex = 1;
-              else if (pItem->bFrequency == PANIC_FREQUENCY_3)
+              else if (pItem.value.bFrequency == PANIC_FREQUENCY_3)
                 bFreqIndex = 2;
-              else if (pItem->bFrequency == FIRST_MAP_PLACED_FREQUENCY + 1)
+              else if (pItem.value.bFrequency == FIRST_MAP_PLACED_FREQUENCY + 1)
                 bFreqIndex = 3;
-              else if (pItem->bFrequency == FIRST_MAP_PLACED_FREQUENCY + 2)
+              else if (pItem.value.bFrequency == FIRST_MAP_PLACED_FREQUENCY + 2)
                 bFreqIndex = 4;
-              else if (pItem->bFrequency == FIRST_MAP_PLACED_FREQUENCY + 3)
+              else if (pItem.value.bFrequency == FIRST_MAP_PLACED_FREQUENCY + 3)
                 bFreqIndex = 5;
-              else if (pItem->bFrequency == FIRST_MAP_PLACED_FREQUENCY + 4)
+              else if (pItem.value.bFrequency == FIRST_MAP_PLACED_FREQUENCY + 4)
                 bFreqIndex = 6;
               else
                 continue;
@@ -592,9 +592,9 @@ function RenderItemDetails(): void {
         if (gpWorldItemsSummaryArray[i].o.usItem == index) {
           if (gubSummaryItemMode == ITEMMODE_SCIFI && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_REALISTIC_ONLY) || gubSummaryItemMode == ITEMMODE_REAL && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_SCIFI_ONLY)) {
             pItem = &gpWorldItemsSummaryArray[i].o;
-            uiExistChance += (100 - gpWorldItemsSummaryArray[i].ubNonExistChance) * pItem->ubNumberOfObjects;
-            uiStatus += pItem->bStatus[0];
-            uiQuantity += pItem->ubNumberOfObjects;
+            uiExistChance += (100 - gpWorldItemsSummaryArray[i].ubNonExistChance) * pItem.value.ubNumberOfObjects;
+            uiStatus += pItem.value.bStatus[0];
+            uiQuantity += pItem.value.ubNumberOfObjects;
           }
         }
       }
@@ -696,9 +696,9 @@ function RenderItemDetails(): void {
         for (i = 0; i < gusPEnemyItemsSummaryArraySize; i++) {
           if (gpPEnemyItemsSummaryArray[i].usItem == index) {
             pItem = &gpPEnemyItemsSummaryArray[i];
-            uiExistChance += 100 * pItem->ubNumberOfObjects;
-            uiStatus += pItem->bStatus[0];
-            uiQuantity += pItem->ubNumberOfObjects;
+            uiExistChance += 100 * pItem.value.ubNumberOfObjects;
+            uiStatus += pItem.value.bStatus[0];
+            uiQuantity += pItem.value.ubNumberOfObjects;
           }
         }
         if (uiQuantity) {
@@ -755,9 +755,9 @@ function RenderItemDetails(): void {
       for (i = 0; i < gusNEnemyItemsSummaryArraySize; i++) {
         if (gpNEnemyItemsSummaryArray[i].usItem == index) {
           pItem = &gpNEnemyItemsSummaryArray[i];
-          uiExistChance += 100 * pItem->ubNumberOfObjects;
-          uiStatus += pItem->bStatus[0];
-          uiQuantity += pItem->ubNumberOfObjects;
+          uiExistChance += 100 * pItem.value.ubNumberOfObjects;
+          uiStatus += pItem.value.bStatus[0];
+          uiQuantity += pItem.value.ubNumberOfObjects;
         }
       }
       if (uiQuantity) {
@@ -1003,7 +1003,7 @@ function RenderSummaryWindow(): void {
           swprintf(gszDisplayName, gszFilename);
           EnableButton(iSummaryButton[SUMMARY_LOAD]);
           if (gpCurrentSectorSummary) {
-            if (gpCurrentSectorSummary->ubSummaryVersion < GLOBAL_SUMMARY_VERSION)
+            if (gpCurrentSectorSummary.value.ubSummaryVersion < GLOBAL_SUMMARY_VERSION)
               ShowButton(iSummaryButton[SUMMARY_UPDATE]);
             else
               HideButton(iSummaryButton[SUMMARY_UPDATE]);
@@ -1215,7 +1215,7 @@ function RenderSummaryWindow(): void {
               mprintf(MAP_LEFT + x * 13 + 4, ClipRect.iTop + 4, str);
             }
             if (gbSectorLevels[x][y] & GROUND_LEVEL_MASK) {
-              if (!gfItemDetailsMode || !gpSectorSummary[x][y][0] || gpSectorSummary[x][y][0]->usNumItems)
+              if (!gfItemDetailsMode || !gpSectorSummary[x][y][0] || gpSectorSummary[x][y][0].value.usNumItems)
                 continue;
             }
           } else if (giCurrentViewLevel == ALTERNATE_LEVELS_MASK) {
@@ -1235,11 +1235,11 @@ function RenderSummaryWindow(): void {
               mprintf(MAP_LEFT + x * 13 + 4, ClipRect.iTop + 4, str);
             }
             if (gbSectorLevels[x][y] & ALTERNATE_GROUND_MASK) {
-              if (!gfItemDetailsMode || !gpSectorSummary[x][y][4] || gpSectorSummary[x][y][4]->usNumItems)
+              if (!gfItemDetailsMode || !gpSectorSummary[x][y][4] || gpSectorSummary[x][y][4].value.usNumItems)
                 continue;
             }
           } else if (gbSectorLevels[x][y] & giCurrentViewLevel) {
-            if (!gfItemDetailsMode || !gpSectorSummary[x][y][giCurrLevel] || gpSectorSummary[x][y][giCurrLevel]->usNumItems)
+            if (!gfItemDetailsMode || !gpSectorSummary[x][y][giCurrLevel] || gpSectorSummary[x][y][giCurrLevel].value.usNumItems)
               continue;
           }
           ClipRect.iLeft = MAP_LEFT + x * 13;
@@ -1418,14 +1418,14 @@ function SummaryOkayCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function SummaryToggleGridCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfRenderGrid = (btn->uiFlags & BUTTON_CLICKED_ON);
+    gfRenderGrid = (btn.value.uiFlags & BUTTON_CLICKED_ON);
     gfRenderMap = TRUE;
   }
 }
 
 function SummaryToggleAlternateCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       giCurrentViewLevel <<= 4;
       gfAlternateMaps = TRUE;
     } else {
@@ -1438,11 +1438,11 @@ function SummaryToggleAlternateCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
 
 function SummarySciFiCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[iSummaryButton[SUMMARY_SCIFI]]->uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
-    ButtonList[iSummaryButton[SUMMARY_REAL]]->uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[SUMMARY_REAL]]->uiFlags |= BUTTON_DIRTY;
-    ButtonList[iSummaryButton[SUMMARY_ENEMY]]->uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[SUMMARY_ENEMY]]->uiFlags |= BUTTON_DIRTY;
+    ButtonList[iSummaryButton[SUMMARY_SCIFI]].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    ButtonList[iSummaryButton[SUMMARY_REAL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[SUMMARY_REAL]].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[iSummaryButton[SUMMARY_ENEMY]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[SUMMARY_ENEMY]].value.uiFlags |= BUTTON_DIRTY;
     gubSummaryItemMode = ITEMMODE_SCIFI;
     gfRenderSummary = TRUE;
   }
@@ -1450,11 +1450,11 @@ function SummarySciFiCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function SummaryRealCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[iSummaryButton[SUMMARY_SCIFI]]->uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[SUMMARY_SCIFI]]->uiFlags |= BUTTON_DIRTY;
-    ButtonList[iSummaryButton[SUMMARY_REAL]]->uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
-    ButtonList[iSummaryButton[SUMMARY_ENEMY]]->uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[SUMMARY_ENEMY]]->uiFlags |= BUTTON_DIRTY;
+    ButtonList[iSummaryButton[SUMMARY_SCIFI]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[SUMMARY_SCIFI]].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[iSummaryButton[SUMMARY_REAL]].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    ButtonList[iSummaryButton[SUMMARY_ENEMY]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[SUMMARY_ENEMY]].value.uiFlags |= BUTTON_DIRTY;
     gubSummaryItemMode = ITEMMODE_REAL;
     gfRenderSummary = TRUE;
   }
@@ -1462,11 +1462,11 @@ function SummaryRealCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function SummaryEnemyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[iSummaryButton[SUMMARY_SCIFI]]->uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[SUMMARY_SCIFI]]->uiFlags |= BUTTON_DIRTY;
-    ButtonList[iSummaryButton[SUMMARY_REAL]]->uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[SUMMARY_REAL]]->uiFlags |= BUTTON_DIRTY;
-    ButtonList[iSummaryButton[SUMMARY_ENEMY]]->uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    ButtonList[iSummaryButton[SUMMARY_SCIFI]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[SUMMARY_SCIFI]].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[iSummaryButton[SUMMARY_REAL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[SUMMARY_REAL]].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[iSummaryButton[SUMMARY_ENEMY]].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
     gubSummaryItemMode = ITEMMODE_ENEMY;
     gfRenderSummary = TRUE;
   }
@@ -1474,7 +1474,7 @@ function SummaryEnemyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function SummaryToggleProgressCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfRenderProgress = (btn->uiFlags & BUTTON_CLICKED_ON);
+    gfRenderProgress = (btn.value.uiFlags & BUTTON_CLICKED_ON);
     gfRenderMap = TRUE;
   }
 }
@@ -1485,15 +1485,15 @@ function PerformTest(): void {
 function HandleSummaryInput(pEvent: Pointer<InputAtom>): BOOLEAN {
   if (!gfSummaryWindowActive)
     return FALSE;
-  gfCtrlPressed = pEvent->usKeyState & CTRL_DOWN;
-  if (!HandleTextInput(pEvent) && pEvent->usEvent == KEY_DOWN || pEvent->usEvent == KEY_REPEAT) {
+  gfCtrlPressed = pEvent.value.usKeyState & CTRL_DOWN;
+  if (!HandleTextInput(pEvent) && pEvent.value.usEvent == KEY_DOWN || pEvent.value.usEvent == KEY_REPEAT) {
     let x: INT32;
-    switch (pEvent->usParam) {
+    switch (pEvent.value.usParam) {
       case ESC:
         if (!gfWorldLoaded) {
           DestroySummaryWindow();
-          pEvent->usParam = 'x';
-          pEvent->usKeyState |= ALT_DOWN;
+          pEvent.value.usParam = 'x';
+          pEvent.value.usKeyState |= ALT_DOWN;
           gfOverheadMapDirty = TRUE;
           return FALSE;
         }
@@ -1538,7 +1538,7 @@ function HandleSummaryInput(pEvent: Pointer<InputAtom>): BOOLEAN {
         }
         break;
       case 'x':
-        if (pEvent->usKeyState & ALT_DOWN) {
+        if (pEvent.value.usKeyState & ALT_DOWN) {
           DestroySummaryWindow();
           return FALSE;
         }
@@ -1582,9 +1582,9 @@ function HandleSummaryInput(pEvent: Pointer<InputAtom>): BOOLEAN {
 
         break;
     }
-  } else if (pEvent->usEvent == KEY_UP) {
+  } else if (pEvent.value.usEvent == KEY_UP) {
     // for releasing modes requiring persistant state keys
-    switch (pEvent->usParam) {
+    switch (pEvent.value.usParam) {
       case F5:
         ReleaseSummaryWindow();
         break;
@@ -1636,8 +1636,8 @@ function MapMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
     gfRenderMap = TRUE;
     return;
   }
-  gsHiSectorX = min((reg->RelativeXPos / 13) + 1, 16);
-  gsHiSectorY = min((reg->RelativeYPos / 13) + 1, 16);
+  gsHiSectorX = min((reg.value.RelativeXPos / 13) + 1, 16);
+  gsHiSectorY = min((reg.value.RelativeYPos / 13) + 1, 16);
   if (gsPrevX != gsHiSectorX || gsPrevY != gsHiSectorY) {
     gsPrevX = gsHiSectorX;
     gsPrevY = gsHiSectorY;
@@ -1655,8 +1655,8 @@ function MapClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
       gsSelSectorX = 0;
       SelectNextField();
     }
-    gsSelSectorX = min((reg->RelativeXPos / 13) + 1, 16);
-    gsSelSectorY = min((reg->RelativeYPos / 13) + 1, 16);
+    gsSelSectorX = min((reg.value.RelativeXPos / 13) + 1, 16);
+    gsSelSectorY = min((reg.value.RelativeYPos / 13) + 1, 16);
     if (gsSelSectorX != sLastX || gsSelSectorY != sLastY) {
       // clicked in a new sector
       gfOverrideDirty = TRUE;
@@ -1746,7 +1746,7 @@ function SummaryToggleLevelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
       SelectNextField();
     gfRenderSummary = TRUE;
     for (i = SUMMARY_ALL; i <= SUMMARY_B3; i++) {
-      if (btn->IDNum == iSummaryButton[i]) {
+      if (btn.value.IDNum == iSummaryButton[i]) {
         switch (i) {
           case SUMMARY_ALL:
             giCurrentViewLevel = ALL_LEVELS_MASK;
@@ -1767,7 +1767,7 @@ function SummaryToggleLevelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
         if (gfAlternateMaps)
           giCurrentViewLevel <<= 4;
       } else {
-        ButtonList[iSummaryButton[i]]->uiFlags &= (~BUTTON_CLICKED_ON);
+        ButtonList[iSummaryButton[i]].value.uiFlags &= (~BUTTON_CLICKED_ON);
       }
     }
   }
@@ -1882,7 +1882,7 @@ function CalculateOverrideStatus(): void {
       else
         gubOverrideStatus = OVERWRITE;
       ShowButton(iSummaryButton[SUMMARY_OVERRIDE]);
-      ButtonList[iSummaryButton[SUMMARY_OVERRIDE]]->uiFlags &= (~BUTTON_CLICKED_ON);
+      ButtonList[iSummaryButton[SUMMARY_OVERRIDE]].value.uiFlags &= (~BUTTON_CLICKED_ON);
       GetFileClose(&FileInfo);
       DisableButton(iSummaryButton[SUMMARY_SAVE]);
     }
@@ -2201,7 +2201,7 @@ function LoadSummary(pSector: Pointer<UINT8>, ubLevel: UINT8, dMajorMapVersion: 
   gpSectorSummary[x][y][ubLevel] = MemAlloc(sizeof(SUMMARYFILE));
   if (gpSectorSummary[x][y][ubLevel])
     memcpy(gpSectorSummary[x][y][ubLevel], &temp, sizeof(SUMMARYFILE));
-  if (gpSectorSummary[x][y][ubLevel]->ubSummaryVersion < GLOBAL_SUMMARY_VERSION)
+  if (gpSectorSummary[x][y][ubLevel].value.ubSummaryVersion < GLOBAL_SUMMARY_VERSION)
     gusNumEntriesWithOutdatedOrNoSummaryInfo++;
 
   fclose(fp);
@@ -2262,49 +2262,49 @@ function RegenerateSummaryInfoForAllOutdatedMaps(): void {
       sprintf(str, "%c%d", y + 'A', x + 1);
       if (gbSectorLevels[x][y] & GROUND_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][0];
-        if (!pSF || pSF->ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
+        if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
           if (!EvaluateWorld(str, 0))
             ReportError(str, 0);
       }
       if (gbSectorLevels[x][y] & BASEMENT1_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][1];
-        if (!pSF || pSF->ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
+        if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
           if (!EvaluateWorld(str, 1))
             ReportError(str, 1);
       }
       if (gbSectorLevels[x][y] & BASEMENT2_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][2];
-        if (!pSF || pSF->ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
+        if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
           if (!EvaluateWorld(str, 2))
             ReportError(str, 2);
       }
       if (gbSectorLevels[x][y] & BASEMENT3_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][3];
-        if (!pSF || pSF->ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
+        if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
           if (!EvaluateWorld(str, 3))
             ReportError(str, 3);
       }
       if (gbSectorLevels[x][y] & ALTERNATE_GROUND_MASK) {
         pSF = gpSectorSummary[x][y][4];
-        if (!pSF || pSF->ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
+        if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
           if (!EvaluateWorld(str, 4))
             ReportError(str, 4);
       }
       if (gbSectorLevels[x][y] & ALTERNATE_B1_MASK) {
         pSF = gpSectorSummary[x][y][5];
-        if (!pSF || pSF->ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
+        if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
           if (!EvaluateWorld(str, 5))
             ReportError(str, 5);
       }
       if (gbSectorLevels[x][y] & ALTERNATE_B2_MASK) {
         pSF = gpSectorSummary[x][y][6];
-        if (!pSF || pSF->ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
+        if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
           if (!EvaluateWorld(str, 6))
             ReportError(str, 6);
       }
       if (gbSectorLevels[x][y] & ALTERNATE_B3_MASK) {
         pSF = gpSectorSummary[x][y][7];
-        if (!pSF || pSF->ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
+        if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
           if (!EvaluateWorld(str, 7))
             ReportError(str, 7);
       }
@@ -2389,7 +2389,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
       sprintf(name, "%c%d", y + 'A', x + 1);
       if (gbSectorLevels[x][y] & GROUND_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][0];
-        if (!pSF || pSF->ubSummaryVersion < MINIMUMVERSION || pSF->dMajorMapVersion < gdMajorMapVersion) {
+        if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
           gpCurrentSectorSummary = pSF;
           if (!EvaluateWorld(name, 0))
             return;
@@ -2397,7 +2397,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
       }
       if (gbSectorLevels[x][y] & BASEMENT1_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][1];
-        if (!pSF || pSF->ubSummaryVersion < MINIMUMVERSION || pSF->dMajorMapVersion < gdMajorMapVersion) {
+        if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
           gpCurrentSectorSummary = pSF;
           if (!EvaluateWorld(name, 1))
             return;
@@ -2405,7 +2405,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
       }
       if (gbSectorLevels[x][y] & BASEMENT2_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][2];
-        if (!pSF || pSF->ubSummaryVersion < MINIMUMVERSION || pSF->dMajorMapVersion < gdMajorMapVersion) {
+        if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
           gpCurrentSectorSummary = pSF;
           if (!EvaluateWorld(name, 2))
             return;
@@ -2413,7 +2413,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
       }
       if (gbSectorLevels[x][y] & BASEMENT3_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][3];
-        if (!pSF || pSF->ubSummaryVersion < MINIMUMVERSION || pSF->dMajorMapVersion < gdMajorMapVersion) {
+        if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
           gpCurrentSectorSummary = pSF;
           if (!EvaluateWorld(name, 3))
             return;
@@ -2421,7 +2421,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
       }
       if (gbSectorLevels[x][y] & ALTERNATE_GROUND_MASK) {
         pSF = gpSectorSummary[x][y][4];
-        if (!pSF || pSF->ubSummaryVersion < MINIMUMVERSION || pSF->dMajorMapVersion < gdMajorMapVersion) {
+        if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
           gpCurrentSectorSummary = pSF;
           if (!EvaluateWorld(name, 4))
             return;
@@ -2429,7 +2429,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
       }
       if (gbSectorLevels[x][y] & ALTERNATE_B1_MASK) {
         pSF = gpSectorSummary[x][y][5];
-        if (!pSF || pSF->ubSummaryVersion < MINIMUMVERSION || pSF->dMajorMapVersion < gdMajorMapVersion) {
+        if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
           gpCurrentSectorSummary = pSF;
           if (!EvaluateWorld(name, 5))
             return;
@@ -2437,7 +2437,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
       }
       if (gbSectorLevels[x][y] & ALTERNATE_B2_MASK) {
         pSF = gpSectorSummary[x][y][6];
-        if (!pSF || pSF->ubSummaryVersion < MINIMUMVERSION || pSF->dMajorMapVersion < gdMajorMapVersion) {
+        if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
           gpCurrentSectorSummary = pSF;
           if (!EvaluateWorld(name, 6))
             return;
@@ -2445,7 +2445,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
       }
       if (gbSectorLevels[x][y] & ALTERNATE_B3_MASK) {
         pSF = gpSectorSummary[x][y][7];
-        if (!pSF || pSF->ubSummaryVersion < MINIMUMVERSION || pSF->dMajorMapVersion < gdMajorMapVersion) {
+        if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
           gpCurrentSectorSummary = pSF;
           if (!EvaluateWorld(name, 7))
             return;
@@ -2496,9 +2496,9 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
     gusNEnemyItemsSummaryArraySize = 0;
   }
 
-  if (!gpCurrentSectorSummary->uiNumItemsPosition) {
+  if (!gpCurrentSectorSummary.value.uiNumItemsPosition) {
     // Don't have one, so generate them
-    if (gpCurrentSectorSummary->ubSummaryVersion == GLOBAL_SUMMARY_VERSION)
+    if (gpCurrentSectorSummary.value.ubSummaryVersion == GLOBAL_SUMMARY_VERSION)
       gusNumEntriesWithOutdatedOrNoSummaryInfo++;
     SummaryUpdateCallback(ButtonList[iSummaryButton[SUMMARY_UPDATE]], MSYS_CALLBACK_REASON_LBUTTON_UP);
     gpCurrentSectorSummary = gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][giCurrLevel];
@@ -2511,7 +2511,7 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
     return;
   }
   // Now fileseek directly to the file position where the number of world items are stored
-  if (!FileSeek(hfile, gpCurrentSectorSummary->uiNumItemsPosition, FILE_SEEK_FROM_START)) {
+  if (!FileSeek(hfile, gpCurrentSectorSummary.value.uiNumItemsPosition, FILE_SEEK_FROM_START)) {
     // Position couldn't be found!
     FileClose(hfile);
     return;
@@ -2526,9 +2526,9 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
   // Now compare this number with the number the summary thinks we should have.  If they are different,
   // the the summary doesn't match the map.  What we will do is force regenerate the map so that they do
   // match
-  if (uiNumItems != gpCurrentSectorSummary->usNumItems && fAllowRecursion) {
+  if (uiNumItems != gpCurrentSectorSummary.value.usNumItems && fAllowRecursion) {
     FileClose(hfile);
-    gpCurrentSectorSummary->uiNumItemsPosition = 0;
+    gpCurrentSectorSummary.value.uiNumItemsPosition = 0;
     SetupItemDetailsMode(FALSE);
     return;
   }
@@ -2537,7 +2537,7 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
   ShowButton(iSummaryButton[SUMMARY_REAL]);
   ShowButton(iSummaryButton[SUMMARY_ENEMY]);
   gpWorldItemsSummaryArray = MemAlloc(sizeof(WORLDITEM) * uiNumItems);
-  gusWorldItemsSummaryArraySize = gpCurrentSectorSummary->usNumItems;
+  gusWorldItemsSummaryArraySize = gpCurrentSectorSummary.value.usNumItems;
   FileRead(hfile, gpWorldItemsSummaryArray, sizeof(WORLDITEM) * uiNumItems, &uiNumBytesRead);
 
   // NOW, do the enemy's items!
@@ -2548,12 +2548,12 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
   // summary information, then the second pass will repeat the process, except it will record the actual items.
 
   // PASS #1
-  if (!FileSeek(hfile, gpCurrentSectorSummary->uiEnemyPlacementPosition, FILE_SEEK_FROM_START)) {
+  if (!FileSeek(hfile, gpCurrentSectorSummary.value.uiEnemyPlacementPosition, FILE_SEEK_FROM_START)) {
     // Position couldn't be found!
     FileClose(hfile);
     return;
   }
-  for (i = 0; i < gpCurrentSectorSummary->MapInfo.ubNumIndividuals; i++) {
+  for (i = 0; i < gpCurrentSectorSummary.value.MapInfo.ubNumIndividuals; i++) {
     FileRead(hfile, &basic, sizeof(BASIC_SOLDIERCREATE_STRUCT), &uiNumBytesRead);
     if (uiNumBytesRead != sizeof(BASIC_SOLDIERCREATE_STRUCT)) {
       // Invalid situation.
@@ -2577,7 +2577,7 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
       usNumItems = 0;
       for (j = 0; j < 9; j++) {
         pItem = &priority.Inv[gbMercSlotTypes[j]];
-        if (pItem->usItem != NOTHING && !(pItem->fFlags & OBJECT_UNDROPPABLE)) {
+        if (pItem.value.usItem != NOTHING && !(pItem.value.fFlags & OBJECT_UNDROPPABLE)) {
           usNumItems++;
         }
       }
@@ -2602,12 +2602,12 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
   // PASS #2
   // During this pass, simply copy all the data instead of counting it, now that we have already done so.
   usPEnemyIndex = usNEnemyIndex = 0;
-  if (!FileSeek(hfile, gpCurrentSectorSummary->uiEnemyPlacementPosition, FILE_SEEK_FROM_START)) {
+  if (!FileSeek(hfile, gpCurrentSectorSummary.value.uiEnemyPlacementPosition, FILE_SEEK_FROM_START)) {
     // Position couldn't be found!
     FileClose(hfile);
     return;
   }
-  for (i = 0; i < gpCurrentSectorSummary->MapInfo.ubNumIndividuals; i++) {
+  for (i = 0; i < gpCurrentSectorSummary.value.MapInfo.ubNumIndividuals; i++) {
     FileRead(hfile, &basic, sizeof(BASIC_SOLDIERCREATE_STRUCT), &uiNumBytesRead);
     if (uiNumBytesRead != sizeof(BASIC_SOLDIERCREATE_STRUCT)) {
       // Invalid situation.
@@ -2631,7 +2631,7 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
       usNumItems = 0;
       for (j = 0; j < 9; j++) {
         pItem = &priority.Inv[gbMercSlotTypes[j]];
-        if (pItem->usItem != NOTHING && !(pItem->fFlags & OBJECT_UNDROPPABLE)) {
+        if (pItem.value.usItem != NOTHING && !(pItem.value.fFlags & OBJECT_UNDROPPABLE)) {
           if (basic.fPriorityExistance) {
             memcpy(&(gpPEnemyItemsSummaryArray[usPEnemyIndex]), pItem, sizeof(OBJECTTYPE));
             usPEnemyIndex++;
@@ -2648,7 +2648,7 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
 
 function GetCurrentSummaryVersion(): UINT8 {
   if (gpCurrentSectorSummary) {
-    return gpCurrentSectorSummary->MapInfo.ubMapVersion;
+    return gpCurrentSectorSummary.value.MapInfo.ubMapVersion;
   }
   return 0;
 }

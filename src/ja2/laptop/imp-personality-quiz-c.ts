@@ -360,13 +360,13 @@ function DestroyIMPPersonalityQuizAnswerButtons(iNumberOfButtons: INT32): void {
 
 function BtnIMPPersonalityQuizAnswer0Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       // reset buttons
       ResetQuizAnswerButtons();
 
@@ -375,7 +375,7 @@ function BtnIMPPersonalityQuizAnswer0Callback(btn: Pointer<GUI_BUTTON>, reason: 
 
       iCurrentAnswer = 0;
       // now set this button on
-      btn->uiFlags |= (BUTTON_CLICKED_ON);
+      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
       // highlight answer
       PrintImpText();
@@ -390,18 +390,18 @@ function BtnIMPPersonalityQuizAnswer0Callback(btn: Pointer<GUI_BUTTON>, reason: 
 
 function BtnIMPPersonalityQuizAnswer1Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       // reset buttons
       ResetQuizAnswerButtons();
 
       // now set this button on
-      btn->uiFlags |= (BUTTON_CLICKED_ON);
+      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
       // ok, check to see if button was disabled, if so, re enable
       CheckStateOfTheConfirmButton();
@@ -421,18 +421,18 @@ function BtnIMPPersonalityQuizAnswer1Callback(btn: Pointer<GUI_BUTTON>, reason: 
 
 function BtnIMPPersonalityQuizAnswer2Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       // reset buttons
       ResetQuizAnswerButtons();
 
       // now set this button on
-      btn->uiFlags |= (BUTTON_CLICKED_ON);
+      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
       // ok, check to see if button was disabled, if so, re enable
       CheckStateOfTheConfirmButton();
@@ -452,18 +452,18 @@ function BtnIMPPersonalityQuizAnswer2Callback(btn: Pointer<GUI_BUTTON>, reason: 
 
 function BtnIMPPersonalityQuizAnswer3Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       // reset buttons
       ResetQuizAnswerButtons();
 
       // now set this button on
-      btn->uiFlags |= (BUTTON_CLICKED_ON);
+      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
       // ok, check to see if button was disabled, if so, re enable
       CheckStateOfTheConfirmButton();
@@ -483,18 +483,18 @@ function BtnIMPPersonalityQuizAnswer3Callback(btn: Pointer<GUI_BUTTON>, reason: 
 
 function BtnIMPPersonalityQuizAnswer4Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       // reset buttons
       ResetQuizAnswerButtons();
 
       // now set this button on
-      btn->uiFlags |= (BUTTON_CLICKED_ON);
+      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
       // ok, check to see if button was disabled, if so, re enable
       CheckStateOfTheConfirmButton();
@@ -514,18 +514,18 @@ function BtnIMPPersonalityQuizAnswer4Callback(btn: Pointer<GUI_BUTTON>, reason: 
 
 function BtnIMPPersonalityQuizAnswer5Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       // reset buttons
       ResetQuizAnswerButtons();
 
       // now set this button on
-      btn->uiFlags |= (BUTTON_CLICKED_ON);
+      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
       // ok, check to see if button was disabled, if so, re enable
       CheckStateOfTheConfirmButton();
@@ -545,18 +545,18 @@ function BtnIMPPersonalityQuizAnswer5Callback(btn: Pointer<GUI_BUTTON>, reason: 
 
 function BtnIMPPersonalityQuizAnswer6Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       // reset buttons
       ResetQuizAnswerButtons();
 
       // now set this button on
-      btn->uiFlags |= (BUTTON_CLICKED_ON);
+      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
       // ok, check to see if button was disabled, if so, re enable
       CheckStateOfTheConfirmButton();
@@ -576,18 +576,18 @@ function BtnIMPPersonalityQuizAnswer6Callback(btn: Pointer<GUI_BUTTON>, reason: 
 
 function BtnIMPPersonalityQuizAnswer7Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       // reset buttons
       ResetQuizAnswerButtons();
 
       // now set this button on
-      btn->uiFlags |= (BUTTON_CLICKED_ON);
+      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
       // ok, check to see if button was disabled, if so, re enable
       CheckStateOfTheConfirmButton();
@@ -607,18 +607,18 @@ function BtnIMPPersonalityQuizAnswer7Callback(btn: Pointer<GUI_BUTTON>, reason: 
 
 function BtnIMPPersonalityQuizAnswer8Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       // reset buttons
       ResetQuizAnswerButtons();
 
       // now set this button on
-      btn->uiFlags |= (BUTTON_CLICKED_ON);
+      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
       // ok, check to see if button was disabled, if so, re enable
       CheckStateOfTheConfirmButton();
@@ -637,18 +637,18 @@ function BtnIMPPersonalityQuizAnswer8Callback(btn: Pointer<GUI_BUTTON>, reason: 
 
 function BtnIMPPersonalityQuizAnswer9Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       // reset buttons
       ResetQuizAnswerButtons();
 
       // now set this button on
-      btn->uiFlags |= (BUTTON_CLICKED_ON);
+      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
       // ok, check to see if button was disabled, if so, re enable
       CheckStateOfTheConfirmButton();
@@ -666,14 +666,14 @@ function BtnIMPPersonalityQuizAnswer9Callback(btn: Pointer<GUI_BUTTON>, reason: 
 
 function BtnIMPPersonalityQuizAnswerConfirmCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       if (iCurrentAnswer != -1) {
         // reset all the buttons
@@ -706,14 +706,14 @@ function BtnIMPPersonalityQuizAnswerConfirmCallback(btn: Pointer<GUI_BUTTON>, re
 
 function BtnIMPPersonalityQuizStartOverCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       giPreviousPersonalityQuizQuestion = giCurrentPersonalityQuizQuestion;
       giMaxPersonalityQuizQuestion = 0;
       fStartOverFlag = TRUE;
@@ -763,7 +763,7 @@ function ResetQuizAnswerButtons(): void {
 
   // now run through and reset the buttons
   for (iCnt = 0; iCnt < iCounter; iCnt++) {
-    ButtonList[giIMPPersonalityQuizAnswerButton[iCnt]]->uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giIMPPersonalityQuizAnswerButton[iCnt]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
   }
 
   return;
@@ -1481,7 +1481,7 @@ function ToggleQuestionNumberButtonOn(iAnswerNumber: INT32): void {
     ResetQuizAnswerButtons();
 
     // toggle this button on
-    ButtonList[giIMPPersonalityQuizAnswerButton[iAnswerNumber]]->uiFlags |= (BUTTON_CLICKED_ON);
+    ButtonList[giIMPPersonalityQuizAnswerButton[iAnswerNumber]].value.uiFlags |= (BUTTON_CLICKED_ON);
     iCurrentAnswer = iAnswerNumber;
   }
 
@@ -1489,30 +1489,30 @@ function ToggleQuestionNumberButtonOn(iAnswerNumber: INT32): void {
 }
 
 function PreviousQuestionButtonCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       MoveBackAQuestion();
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
     }
   }
   return;
 }
 
 function NextQuestionButtonCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= (BUTTON_CLICKED_ON);
+    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       MoveAheadAQuestion();
-      btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
     }
   }
   return;

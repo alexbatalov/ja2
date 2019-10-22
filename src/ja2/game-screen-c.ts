@@ -123,7 +123,7 @@ function EnterTacticalScreen(): void {
       SelectNextAvailSoldier(MercPtrs[gusSelectedSoldier]);
     }
     // ATE: If the current guy is sleeping, change....
-    if (MercPtrs[gusSelectedSoldier]->fMercAsleep) {
+    if (MercPtrs[gusSelectedSoldier].value.fMercAsleep) {
       SelectNextAvailSoldier(MercPtrs[gusSelectedSoldier]);
     }
   } else {
@@ -340,7 +340,7 @@ function MainGameScreenHandle(): UINT32 {
         if (gTacticalStatus.ubCurrentTeam != gbPlayerNum) {
           AdjustNoAPToFinishMove(MercPtrs[gTacticalStatus.ubEnemySightingOnTheirTurnEnemyID], FALSE);
         }
-        MercPtrs[gTacticalStatus.ubEnemySightingOnTheirTurnEnemyID]->fPauseAllAnimation = FALSE;
+        MercPtrs[gTacticalStatus.ubEnemySightingOnTheirTurnEnemyID].value.fPauseAllAnimation = FALSE;
 
         gTacticalStatus.fEnemySightingOnTheirTurn = FALSE;
       }
@@ -628,8 +628,8 @@ function TacticalScreenLocateToSoldier(): void {
     bLastTeamID = gTacticalStatus.Team[gbPlayerNum].bLastID;
     for (pSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pSoldier++) {
       if (OK_CONTROLLABLE_MERC(pSoldier) && OK_INTERRUPT_MERC(pSoldier)) {
-        LocateSoldier(pSoldier->ubID, 10);
-        SelectSoldier(pSoldier->ubID, FALSE, TRUE);
+        LocateSoldier(pSoldier.value.ubID, 10);
+        SelectSoldier(pSoldier.value.ubID, FALSE, TRUE);
         break;
       }
     }

@@ -146,10 +146,10 @@ function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UIN
   }
 
   if (usFlags & MSG_BOX_FLAG_USE_CENTERING_RECT && pCenteringRect != NULL) {
-    aRect.iTop = pCenteringRect->iTop;
-    aRect.iLeft = pCenteringRect->iLeft;
-    aRect.iBottom = pCenteringRect->iBottom;
-    aRect.iRight = pCenteringRect->iRight;
+    aRect.iTop = pCenteringRect.value.iTop;
+    aRect.iLeft = pCenteringRect.value.iLeft;
+    aRect.iBottom = pCenteringRect.value.iBottom;
+    aRect.iRight = pCenteringRect.value.iRight;
   } else {
     // Use default!
     aRect.iTop = 0;
@@ -436,10 +436,10 @@ function OKMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   /* static */ let fLButtonDown: BOOLEAN = FALSE;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
     fLButtonDown = TRUE;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_OK;
@@ -452,10 +452,10 @@ function YESMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   /* static */ let fLButtonDown: BOOLEAN = FALSE;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
     fLButtonDown = TRUE;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_YES;
@@ -468,10 +468,10 @@ function NOMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   /* static */ let fLButtonDown: BOOLEAN = FALSE;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
     fLButtonDown = TRUE;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_NO;
@@ -484,10 +484,10 @@ function ContractMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   /* static */ let fLButtonDown: BOOLEAN = FALSE;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
     fLButtonDown = TRUE;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_CONTRACT;
@@ -500,10 +500,10 @@ function LieMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   /* static */ let fLButtonDown: BOOLEAN = FALSE;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
     fLButtonDown = TRUE;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_LIE;
@@ -514,9 +514,9 @@ function LieMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function NumberedMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSYS_GetBtnUserData(btn, 0);

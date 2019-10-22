@@ -37,9 +37,9 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
 
   if (ubPlanID == UIPLAN_ACTION_MOVETO) {
     // Calculate cost to move here
-    sAPCost = PlotPath(gpUIPlannedSoldier, sGridNo, COPYROUTE, NO_PLOT, TEMPORARY, gpUIPlannedSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, gpUIPlannedSoldier->bActionPoints);
+    sAPCost = PlotPath(gpUIPlannedSoldier, sGridNo, COPYROUTE, NO_PLOT, TEMPORARY, gpUIPlannedSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, gpUIPlannedSoldier.value.bActionPoints);
     // Adjust for running if we are not already running
-    if (gpUIPlannedSoldier->usUIMovementMode == RUNNING) {
+    if (gpUIPlannedSoldier.value.usUIMovementMode == RUNNING) {
       sAPCost += AP_START_RUN_COST;
     }
 
@@ -48,7 +48,7 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
       MercCreateStruct.bTeam = SOLDIER_CREATE_AUTO_TEAM;
       MercCreateStruct.ubProfile = NO_PROFILE;
       MercCreateStruct.fPlayerPlan = TRUE;
-      MercCreateStruct.bBodyType = gpUIPlannedSoldier->ubBodyType;
+      MercCreateStruct.bBodyType = gpUIPlannedSoldier.value.ubBodyType;
       MercCreateStruct.sInsertionGridNo = sGridNo;
 
       // Get Grid Corrdinates of mouse
@@ -56,14 +56,14 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
         // Get pointer to soldier
         GetSoldier(&pPlanSoldier, ubNewIndex);
 
-        pPlanSoldier->sPlannedTargetX = -1;
-        pPlanSoldier->sPlannedTargetY = -1;
+        pPlanSoldier.value.sPlannedTargetX = -1;
+        pPlanSoldier.value.sPlannedTargetY = -1;
 
         // Compare OPPLISTS!
         // Set ones we don't know about but do now back to old ( ie no new guys )
         for (iLoop = 0; iLoop < MAX_NUM_SOLDIERS; iLoop++) {
-          if (gpUIPlannedSoldier->bOppList[iLoop] < 0) {
-            pPlanSoldier->bOppList[iLoop] = gpUIPlannedSoldier->bOppList[iLoop];
+          if (gpUIPlannedSoldier.value.bOppList[iLoop] < 0) {
+            pPlanSoldier.value.bOppList[iLoop] = gpUIPlannedSoldier.value.bOppList[iLoop];
           }
         }
 
@@ -72,25 +72,25 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
 
         EVENT_SetSoldierPosition(pPlanSoldier, sXPos, sYPos);
         EVENT_SetSoldierDestination(pPlanSoldier, sGridNo);
-        pPlanSoldier->bVisible = 1;
-        pPlanSoldier->usUIMovementMode = gpUIPlannedSoldier->usUIMovementMode;
+        pPlanSoldier.value.bVisible = 1;
+        pPlanSoldier.value.usUIMovementMode = gpUIPlannedSoldier.value.usUIMovementMode;
 
-        pPlanSoldier->bActionPoints = gpUIPlannedSoldier->bActionPoints - sAPCost;
+        pPlanSoldier.value.bActionPoints = gpUIPlannedSoldier.value.bActionPoints - sAPCost;
 
-        pPlanSoldier->ubPlannedUIAPCost = pPlanSoldier->bActionPoints;
+        pPlanSoldier.value.ubPlannedUIAPCost = pPlanSoldier.value.bActionPoints;
 
         // Get direction
-        bDirection = gpUIPlannedSoldier->usPathingData[gpUIPlannedSoldier->usPathDataSize - 1];
+        bDirection = gpUIPlannedSoldier.value.usPathingData[gpUIPlannedSoldier.value.usPathDataSize - 1];
 
         // Set direction
-        pPlanSoldier->bDirection = bDirection;
-        pPlanSoldier->bDesiredDirection = bDirection;
+        pPlanSoldier.value.bDirection = bDirection;
+        pPlanSoldier.value.bDesiredDirection = bDirection;
 
         // Set walking animation
-        ChangeSoldierState(pPlanSoldier, pPlanSoldier->usUIMovementMode, 0, FALSE);
+        ChangeSoldierState(pPlanSoldier, pPlanSoldier.value.usUIMovementMode, 0, FALSE);
 
         // Change selected soldier
-        gusSelectedSoldier = pPlanSoldier->ubID;
+        gusSelectedSoldier = pPlanSoldier.value.ubID;
 
         // Change global planned mode to this guy!
         gpUIPlannedSoldier = pPlanSoldier;
@@ -105,7 +105,7 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Merc will not have enough action points");
     }
   } else if (ubPlanID == UIPLAN_ACTION_FIRE) {
-    sAPCost = CalcTotalAPsToAttack(gpUIPlannedSoldier, sGridNo, TRUE, (gpUIPlannedSoldier->bShownAimTime / 2));
+    sAPCost = CalcTotalAPsToAttack(gpUIPlannedSoldier, sGridNo, TRUE, (gpUIPlannedSoldier.value.bShownAimTime / 2));
 
     // Get XY from Gridno
     ConvertGridNoToCenterCellXY(sGridNo, &sXPos, &sYPos);
@@ -113,12 +113,12 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
     // If this is a player guy, show message about no APS
     if (EnoughPoints(gpUIPlannedSoldier, sAPCost, 0, FALSE)) {
       // CHECK IF WE ARE A PLANNED SOLDIER OR NOT< IF SO< CREATE!
-      if (gpUIPlannedSoldier->ubID < MAX_NUM_SOLDIERS) {
+      if (gpUIPlannedSoldier.value.ubID < MAX_NUM_SOLDIERS) {
         memset(&MercCreateStruct, 0, sizeof(MercCreateStruct));
         MercCreateStruct.bTeam = SOLDIER_CREATE_AUTO_TEAM;
         MercCreateStruct.ubProfile = NO_PROFILE;
         MercCreateStruct.fPlayerPlan = TRUE;
-        MercCreateStruct.bBodyType = gpUIPlannedSoldier->ubBodyType;
+        MercCreateStruct.bBodyType = gpUIPlannedSoldier.value.ubBodyType;
         MercCreateStruct.sInsertionGridNo = sGridNo;
 
         // Get Grid Corrdinates of mouse
@@ -126,38 +126,38 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
           // Get pointer to soldier
           GetSoldier(&pPlanSoldier, ubNewIndex);
 
-          pPlanSoldier->sPlannedTargetX = -1;
-          pPlanSoldier->sPlannedTargetY = -1;
+          pPlanSoldier.value.sPlannedTargetX = -1;
+          pPlanSoldier.value.sPlannedTargetY = -1;
 
           // Compare OPPLISTS!
           // Set ones we don't know about but do now back to old ( ie no new guys )
           for (iLoop = 0; iLoop < MAX_NUM_SOLDIERS; iLoop++) {
-            if (gpUIPlannedSoldier->bOppList[iLoop] < 0) {
-              pPlanSoldier->bOppList[iLoop] = gpUIPlannedSoldier->bOppList[iLoop];
+            if (gpUIPlannedSoldier.value.bOppList[iLoop] < 0) {
+              pPlanSoldier.value.bOppList[iLoop] = gpUIPlannedSoldier.value.bOppList[iLoop];
             }
           }
 
-          EVENT_SetSoldierPosition(pPlanSoldier, gpUIPlannedSoldier->dXPos, gpUIPlannedSoldier->dYPos);
-          EVENT_SetSoldierDestination(pPlanSoldier, gpUIPlannedSoldier->sGridNo);
-          pPlanSoldier->bVisible = 1;
-          pPlanSoldier->usUIMovementMode = gpUIPlannedSoldier->usUIMovementMode;
+          EVENT_SetSoldierPosition(pPlanSoldier, gpUIPlannedSoldier.value.dXPos, gpUIPlannedSoldier.value.dYPos);
+          EVENT_SetSoldierDestination(pPlanSoldier, gpUIPlannedSoldier.value.sGridNo);
+          pPlanSoldier.value.bVisible = 1;
+          pPlanSoldier.value.usUIMovementMode = gpUIPlannedSoldier.value.usUIMovementMode;
 
-          pPlanSoldier->bActionPoints = gpUIPlannedSoldier->bActionPoints - sAPCost;
+          pPlanSoldier.value.bActionPoints = gpUIPlannedSoldier.value.bActionPoints - sAPCost;
 
-          pPlanSoldier->ubPlannedUIAPCost = pPlanSoldier->bActionPoints;
+          pPlanSoldier.value.ubPlannedUIAPCost = pPlanSoldier.value.bActionPoints;
 
           // Get direction
-          bDirection = gpUIPlannedSoldier->usPathingData[gpUIPlannedSoldier->usPathDataSize - 1];
+          bDirection = gpUIPlannedSoldier.value.usPathingData[gpUIPlannedSoldier.value.usPathDataSize - 1];
 
           // Set direction
-          pPlanSoldier->bDirection = bDirection;
-          pPlanSoldier->bDesiredDirection = bDirection;
+          pPlanSoldier.value.bDirection = bDirection;
+          pPlanSoldier.value.bDesiredDirection = bDirection;
 
           // Set walking animation
-          ChangeSoldierState(pPlanSoldier, pPlanSoldier->usUIMovementMode, 0, FALSE);
+          ChangeSoldierState(pPlanSoldier, pPlanSoldier.value.usUIMovementMode, 0, FALSE);
 
           // Change selected soldier
-          gusSelectedSoldier = pPlanSoldier->ubID;
+          gusSelectedSoldier = pPlanSoldier.value.ubID;
 
           // Change global planned mode to this guy!
           gpUIPlannedSoldier = pPlanSoldier;
@@ -166,22 +166,22 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
         }
       }
 
-      gpUIPlannedSoldier->bActionPoints = gpUIPlannedSoldier->bActionPoints - sAPCost;
+      gpUIPlannedSoldier.value.bActionPoints = gpUIPlannedSoldier.value.bActionPoints - sAPCost;
 
-      gpUIPlannedSoldier->ubPlannedUIAPCost = gpUIPlannedSoldier->bActionPoints;
+      gpUIPlannedSoldier.value.ubPlannedUIAPCost = gpUIPlannedSoldier.value.bActionPoints;
 
       // Get direction from gridno
       bDirection = GetDirectionFromGridNo(sGridNo, gpUIPlannedSoldier);
 
       // Set direction
-      gpUIPlannedSoldier->bDirection = bDirection;
-      gpUIPlannedSoldier->bDesiredDirection = bDirection;
+      gpUIPlannedSoldier.value.bDirection = bDirection;
+      gpUIPlannedSoldier.value.bDesiredDirection = bDirection;
 
       // Set to shooting animation
       SelectPausedFireAnimation(gpUIPlannedSoldier);
 
-      gpUIPlannedSoldier->sPlannedTargetX = sXPos;
-      gpUIPlannedSoldier->sPlannedTargetY = sYPos;
+      gpUIPlannedSoldier.value.sPlannedTargetX = sXPos;
+      gpUIPlannedSoldier.value.sPlannedTargetY = sYPos;
 
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Adding Merc Shoot to Plan");
     } else {
@@ -199,15 +199,15 @@ function EndUIPlan(): void {
   for (cnt = MAX_NUM_SOLDIERS; cnt < TOTAL_SOLDIERS; cnt++) {
     pSoldier = MercPtrs[cnt];
 
-    if (pSoldier->bActive) {
-      if (pSoldier->sPlannedTargetX != -1) {
+    if (pSoldier.value.bActive) {
+      if (pSoldier.value.sPlannedTargetX != -1) {
         SetRenderFlags(RENDER_FLAG_FULL);
       }
-      TacticalRemoveSoldier(pSoldier->ubID);
+      TacticalRemoveSoldier(pSoldier.value.ubID);
     }
   }
   gfInUIPlanMode = FALSE;
-  gusSelectedSoldier = gpUIStartPlannedSoldier->ubID;
+  gusSelectedSoldier = gpUIStartPlannedSoldier.value.ubID;
 
   gfPlotNewMovement = TRUE;
 
@@ -221,10 +221,10 @@ function InUIPlanMode(): BOOLEAN {
 function SelectPausedFireAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Determine which animation to do...depending on stance and gun in hand...
 
-  switch (gAnimControl[pSoldier->usAnimState].ubEndHeight) {
+  switch (gAnimControl[pSoldier.value.usAnimState].ubEndHeight) {
     case ANIM_STAND:
 
-      if (pSoldier->bDoBurst > 0) {
+      if (pSoldier.value.bDoBurst > 0) {
         ChangeSoldierState(pSoldier, STANDING_BURST, 2, FALSE);
       } else {
         ChangeSoldierState(pSoldier, SHOOT_RIFLE_STAND, 2, FALSE);

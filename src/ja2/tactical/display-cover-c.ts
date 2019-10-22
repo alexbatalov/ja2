@@ -62,7 +62,7 @@ function DisplayCoverOfSelectedGridNo(): void {
     bStance = GetCurrentMercForDisplayCoverStance();
 
     // if the gridno is different then the last one that was displayed
-    if (sGridNo != gsLastCoverGridNo || gbLastStance != bStance || MercPtrs[gusSelectedSoldier]->sGridNo != gsLastSoldierGridNo) {
+    if (sGridNo != gsLastCoverGridNo || gbLastStance != bStance || MercPtrs[gusSelectedSoldier].value.sGridNo != gsLastSoldierGridNo) {
       // if the cover is currently being displayed
       if (gsLastCoverGridNo != NOWHERE || gbLastStance != -1 || gsLastSoldierGridNo != NOWHERE) {
         // remove the gridnos
@@ -79,7 +79,7 @@ function DisplayCoverOfSelectedGridNo(): void {
 
       gbLastStance = bStance;
       gsLastCoverGridNo = sGridNo;
-      gsLastSoldierGridNo = MercPtrs[gusSelectedSoldier]->sGridNo;
+      gsLastSoldierGridNo = MercPtrs[gusSelectedSoldier].value.sGridNo;
 
       // Fill the array of gridno and cover values
       CalculateCoverInRadiusAroundGridno(sGridNo, gGameSettings.ubSizeOfDisplayCover);
@@ -284,7 +284,7 @@ function CalculateCoverInRadiusAroundGridno(sTargetGridNo: INT16, bSearchRange: 
         ubID = WhoIsThere2(sGridNo, 1);
       }
       // if someone is here, and they are an enemy, skip over them
-      if (ubID != NOBODY && Menptr[ubID].bVisible == TRUE && Menptr[ubID].bTeam != pSoldier->bTeam) {
+      if (ubID != NOBODY && Menptr[ubID].bVisible == TRUE && Menptr[ubID].bTeam != pSoldier.value.bTeam) {
         continue;
       }
 
@@ -320,40 +320,40 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE
     pOpponent = MercSlots[uiLoop];
 
     // if this merc is inactive, at base, on assignment, dead, unconscious
-    if (!pOpponent || pOpponent->bLife < OKLIFE) {
+    if (!pOpponent || pOpponent.value.bLife < OKLIFE) {
       continue; // next merc
     }
 
     // if this man is neutral / on the same side, he's not an opponent
-    if (CONSIDERED_NEUTRAL(pSoldier, pOpponent) || (pSoldier->bSide == pOpponent->bSide)) {
+    if (CONSIDERED_NEUTRAL(pSoldier, pOpponent) || (pSoldier.value.bSide == pOpponent.value.bSide)) {
       continue; // next merc
     }
 
-    pbPersOL = pSoldier->bOppList + pOpponent->ubID;
-    pbPublOL = gbPublicOpplist[OUR_TEAM] + pOpponent->ubID;
+    pbPersOL = pSoldier.value.bOppList + pOpponent.value.ubID;
+    pbPublOL = gbPublicOpplist[OUR_TEAM] + pOpponent.value.ubID;
 
     // if this opponent is unknown personally and publicly
     if (*pbPersOL != SEEN_CURRENTLY && *pbPersOL != SEEN_THIS_TURN && *pbPublOL != SEEN_CURRENTLY && *pbPublOL != SEEN_THIS_TURN) {
       continue; // next merc
     }
 
-    usRange = GetRangeInCellCoordsFromGridNoDiff(pOpponent->sGridNo, sTargetGridNo);
-    usSightLimit = DistanceVisible(pOpponent, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sTargetGridNo, pSoldier->bLevel);
+    usRange = GetRangeInCellCoordsFromGridNoDiff(pOpponent.value.sGridNo, sTargetGridNo);
+    usSightLimit = DistanceVisible(pOpponent, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sTargetGridNo, pSoldier.value.bLevel);
 
     if (usRange > (usSightLimit * CELL_X_SIZE)) {
       continue;
     }
 
     // if actual LOS check fails, then chance to hit is 0, ignore this guy
-    if (SoldierToVirtualSoldierLineOfSightTest(pOpponent, sTargetGridNo, pSoldier->bLevel, bStance, usSightLimit, TRUE) == 0) {
+    if (SoldierToVirtualSoldierLineOfSightTest(pOpponent, sTargetGridNo, pSoldier.value.bLevel, bStance, usSightLimit, TRUE) == 0) {
       continue;
     }
 
-    iGetThrough = SoldierToLocationChanceToGetThrough(pOpponent, sTargetGridNo, pSoldier->bLevel, bStance, NOBODY);
+    iGetThrough = SoldierToLocationChanceToGetThrough(pOpponent, sTargetGridNo, pSoldier.value.bLevel, bStance, NOBODY);
     //	iBulletGetThrough = CalcChanceToHitGun( pOpponent, sTargetGridNo, AP_MAX_AIM_ATTACK, AIM_SHOT_TORSO );
 
     if (WeaponInHand(pOpponent)) {
-      usMaxRange = GunRange(&pOpponent->inv[HANDPOS]);
+      usMaxRange = GunRange(&pOpponent.value.inv[HANDPOS]);
     } else {
       usMaxRange = Weapon[GLOCK_18].usRange;
     }
@@ -399,11 +399,11 @@ function AddCoverObjectToWorld(sGridNo: INT16, usGraphic: UINT16, fRoof: BOOLEAN
     pNode = gpWorldLevelData[sGridNo].pObjectHead;
   }
 
-  pNode->uiFlags |= LEVELNODE_REVEAL;
+  pNode.value.uiFlags |= LEVELNODE_REVEAL;
 
   if (NightTime()) {
-    pNode->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-    pNode->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+    pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+    pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
   }
 }
 
@@ -432,7 +432,7 @@ function GetCurrentMercForDisplayCoverStance(): INT8 {
 
   pSoldier = GetCurrentMercForDisplayCover();
 
-  switch (pSoldier->usUIMovementMode) {
+  switch (pSoldier.value.usUIMovementMode) {
     case PRONE:
     case CRAWLING:
       bStance = ANIM_PRONE;
@@ -467,14 +467,14 @@ function DisplayRangeToTarget(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT
   }
 
   // Get the range to the target location
-  usRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier->sGridNo, sTargetGridNo);
+  usRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, sTargetGridNo);
 
   usRange = usRange / 10;
 
   // if the soldier has a weapon in hand,
   if (WeaponInHand(pSoldier)) {
     // display a string with the weapons range, then range to target
-    swprintf(zOutputString, zNewTacticalMessages[TCTL_MSG__RANGE_TO_TARGET_AND_GUN_RANGE], Weapon[pSoldier->inv[HANDPOS].usItem].usRange / 10, usRange);
+    swprintf(zOutputString, zNewTacticalMessages[TCTL_MSG__RANGE_TO_TARGET_AND_GUN_RANGE], Weapon[pSoldier.value.inv[HANDPOS].usItem].usRange / 10, usRange);
   } else {
     // display a string with the range to target
     swprintf(zOutputString, zNewTacticalMessages[TCTL_MSG__RANGE_TO_TARGET], usRange);
@@ -484,7 +484,7 @@ function DisplayRangeToTarget(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, zOutputString);
 
   // if the target is out of the mercs gun range or knife
-  if (!InRange(pSoldier, sTargetGridNo) && (Item[pSoldier->inv[HANDPOS].usItem].usItemClass == IC_GUN || Item[pSoldier->inv[HANDPOS].usItem].usItemClass == IC_THROWING_KNIFE)) {
+  if (!InRange(pSoldier, sTargetGridNo) && (Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass == IC_GUN || Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass == IC_THROWING_KNIFE)) {
     // Display a warning saying so
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[OUT_OF_RANGE_STRING]);
   }
@@ -507,7 +507,7 @@ function DisplayGridNoVisibleToSoldierGrid(): void {
   // if the cursor is in a the tactical map
   if (sGridNo != NOWHERE && sGridNo != 0) {
     // if the gridno is different then the last one that was displayed
-    if (sGridNo != gsLastVisibleToSoldierGridNo || MercPtrs[gusSelectedSoldier]->sGridNo != gsLastSoldierGridNo) {
+    if (sGridNo != gsLastVisibleToSoldierGridNo || MercPtrs[gusSelectedSoldier].value.sGridNo != gsLastSoldierGridNo) {
       // if the cover is currently being displayed
       if (gsLastVisibleToSoldierGridNo != NOWHERE || gsLastSoldierGridNo != NOWHERE) {
         // remove the gridnos
@@ -520,7 +520,7 @@ function DisplayGridNoVisibleToSoldierGrid(): void {
       }
 
       gsLastVisibleToSoldierGridNo = sGridNo;
-      gsLastSoldierGridNo = MercPtrs[gusSelectedSoldier]->sGridNo;
+      gsLastSoldierGridNo = MercPtrs[gusSelectedSoldier].value.sGridNo;
 
       // Fill the array of gridno and cover values
       CalculateVisibleToSoldierAroundGridno(sGridNo, gGameSettings.ubSizeOfLOS);
@@ -740,8 +740,8 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo
   }
 
   if (ubID != NOBODY) {
-    pPersOL = &(pSoldier->bOppList[ubID]);
-    pbPublOL = &(gbPublicOpplist[pSoldier->bTeam][ubID]);
+    pPersOL = &(pSoldier.value.bOppList[ubID]);
+    pbPublOL = &(gbPublicOpplist[pSoldier.value.bTeam][ubID]);
 
     // if soldier is known about (SEEN or HEARD within last few turns)
     if (*pPersOL || *pbPublOL) {

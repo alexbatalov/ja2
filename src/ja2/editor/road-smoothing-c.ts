@@ -405,12 +405,12 @@ function ReplaceObsoleteRoads(): void {
     pObject = gpWorldLevelData[i].pObjectHead;
     fRoadExistsAtGridNo = FALSE;
     while (pObject) {
-      if (pObject->usIndex >= FIRSTROAD1 && pObject->usIndex <= FIRSTROAD32) {
+      if (pObject.value.usIndex >= FIRSTROAD1 && pObject.value.usIndex <= FIRSTROAD32) {
         fRoadExistsAtGridNo = TRUE;
-        iMacro = pObject->usIndex - FIRSTROAD1;
+        iMacro = pObject.value.usIndex - FIRSTROAD1;
         PlaceRoadMacroAtGridNo(i, iMacro);
       }
-      pObject = pObject->pNext;
+      pObject = pObject.value.pNext;
     }
     if (fRoadExistsAtGridNo) {
       RemoveAllObjectsOfTypeRange(i, FIRSTROAD, FIRSTROAD);

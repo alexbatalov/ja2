@@ -494,8 +494,8 @@ function EnterSaveLoadScreen(): BOOLEAN {
     let pDestBuf: Pointer<UINT8>;
 
     // unmark the 2 buttons from being dirty
-    ButtonList[guiSlgCancelBtn]->uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[guiSlgSaveLoadBtn]->uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[guiSlgCancelBtn].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[guiSlgSaveLoadBtn].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
 
     // CLEAR THE FRAME BUFFER
     pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
@@ -1160,14 +1160,14 @@ function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: Pointer<SAVED_GAME_H
     //
 
     // Check to see if the desc field is bigger then it should be, ie no null char
-    if (wcslen(pSaveGameHeader->sSavedGameDesc) >= SIZE_OF_SAVE_GAME_DESC) {
+    if (wcslen(pSaveGameHeader.value.sSavedGameDesc) >= SIZE_OF_SAVE_GAME_DESC) {
       memset(pSaveGameHeader, 0, sizeof(SAVED_GAME_HEADER));
       gbSaveGameArray[bEntry] = FALSE;
       return FALSE;
     }
 
     // Check to see if the version # field is bigger then it should be, ie no null char
-    if (strlen(pSaveGameHeader->zGameVersionNumber) >= GAME_VERSION_LENGTH) {
+    if (strlen(pSaveGameHeader.value.zGameVersionNumber) >= GAME_VERSION_LENGTH) {
       memset(pSaveGameHeader, 0, sizeof(SAVED_GAME_HEADER));
       gbSaveGameArray[bEntry] = FALSE;
       return FALSE;
@@ -1181,11 +1181,11 @@ function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: Pointer<SAVED_GAME_H
 
 function BtnSlgCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // Exit back
     if (gfCameDirectlyFromGame)
@@ -1197,29 +1197,29 @@ function BtnSlgCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     else
       SetSaveLoadExitScreen(OPTIONS_SCREEN);
 
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
 function BtnSlgSaveLoadCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     SaveLoadGameNumber(gbSelectedSaveLocation);
 
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
@@ -1384,16 +1384,16 @@ function SelectedSaveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT
 function SelectedSaveRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     let bTemp: INT8;
-    pRegion->uiFlags &= (~BUTTON_CLICKED_ON);
+    pRegion.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     bTemp = gbHighLightedLocation;
     gbHighLightedLocation = -1;
     //		DisplaySaveGameList();
     DisplaySaveGameEntry(bTemp);
 
-    InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
+    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    pRegion->uiFlags |= BUTTON_CLICKED_ON;
+    pRegion.value.uiFlags |= BUTTON_CLICKED_ON;
 
     // If we are saving and this is the quick save slot, leave
     if (gfSaveGame && MSYS_GetRegionUserData(pRegion, 0) != 0) {
@@ -1406,7 +1406,7 @@ function SelectedSaveRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reas
     DisplaySaveGameEntry(gbLastHighLightedLocation);
     DisplaySaveGameEntry(gbHighLightedLocation); //, usPosY );
 
-    InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
+    InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
   }
 }
 

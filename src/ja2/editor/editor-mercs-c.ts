@@ -99,8 +99,8 @@ let gbMercSlotTypes: INT8[] /* [9] */ = [
   BIGPOCK4POS,
 ];
 // returns the usItem index of specified slot in the currently selected merc.
-const GetSelectedMercSlotItemIndex = (x) => (gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[x]].usItem);
-const GetSelectedMercSlot = (x) => (&gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[x]]);
+const GetSelectedMercSlotItemIndex = (x) => (gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[x]].usItem);
+const GetSelectedMercSlot = (x) => (&gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[x]]);
 // values indicating which merc inventory slot is hilited and which slot is selected.
 let gbCurrHilite: INT8 = -1;
 let gbCurrSelect: INT8 = -1;
@@ -358,101 +358,101 @@ function ProcessMercEditing(): void {
       switch (iEditWhichStat) {
         case 0:
           ubType = EDIT_COLOR_HEAD;
-          GetPaletteRepIndexFromID(pSoldier->HeadPal, &ubPaletteRep);
+          GetPaletteRepIndexFromID(pSoldier.value.HeadPal, &ubPaletteRep);
 
           ubPaletteRep--;
           if ((ubPaletteRep < iEditColorStart[ubType]) || (ubPaletteRep > (iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType])))
             ubPaletteRep = iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType] - 1;
 
-          SET_PALETTEREP_ID(pSoldier->HeadPal, gpPalRep[ubPaletteRep].ID);
-          sprintf(gpSelected->pDetailedPlacement->HeadPal, pSoldier->HeadPal);
+          SET_PALETTEREP_ID(pSoldier.value.HeadPal, gpPalRep[ubPaletteRep].ID);
+          sprintf(gpSelected.value.pDetailedPlacement.value.HeadPal, pSoldier.value.HeadPal);
           CreateSoldierPalettes(pSoldier);
           break;
         case 1:
           ubType = EDIT_COLOR_HEAD;
-          GetPaletteRepIndexFromID(pSoldier->HeadPal, &ubPaletteRep);
+          GetPaletteRepIndexFromID(pSoldier.value.HeadPal, &ubPaletteRep);
 
           ubPaletteRep++;
           if (ubPaletteRep >= (iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType]))
             ubPaletteRep = iEditColorStart[ubType];
 
-          SET_PALETTEREP_ID(pSoldier->HeadPal, gpPalRep[ubPaletteRep].ID);
-          sprintf(gpSelected->pDetailedPlacement->HeadPal, pSoldier->HeadPal);
+          SET_PALETTEREP_ID(pSoldier.value.HeadPal, gpPalRep[ubPaletteRep].ID);
+          sprintf(gpSelected.value.pDetailedPlacement.value.HeadPal, pSoldier.value.HeadPal);
           CreateSoldierPalettes(pSoldier);
           break;
 
         case 2:
           ubType = EDIT_COLOR_SKIN;
-          GetPaletteRepIndexFromID(pSoldier->SkinPal, &ubPaletteRep);
+          GetPaletteRepIndexFromID(pSoldier.value.SkinPal, &ubPaletteRep);
 
           ubPaletteRep--;
           if (ubPaletteRep < iEditColorStart[ubType])
             ubPaletteRep = iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType] - 1;
 
-          SET_PALETTEREP_ID(pSoldier->SkinPal, gpPalRep[ubPaletteRep].ID);
-          sprintf(gpSelected->pDetailedPlacement->SkinPal, pSoldier->SkinPal);
+          SET_PALETTEREP_ID(pSoldier.value.SkinPal, gpPalRep[ubPaletteRep].ID);
+          sprintf(gpSelected.value.pDetailedPlacement.value.SkinPal, pSoldier.value.SkinPal);
           CreateSoldierPalettes(pSoldier);
           break;
         case 3:
           ubType = EDIT_COLOR_SKIN;
-          GetPaletteRepIndexFromID(pSoldier->SkinPal, &ubPaletteRep);
+          GetPaletteRepIndexFromID(pSoldier.value.SkinPal, &ubPaletteRep);
 
           ubPaletteRep++;
           if (ubPaletteRep >= (iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType]))
             ubPaletteRep = iEditColorStart[ubType];
 
-          SET_PALETTEREP_ID(pSoldier->SkinPal, gpPalRep[ubPaletteRep].ID);
-          sprintf(gpSelected->pDetailedPlacement->SkinPal, pSoldier->SkinPal);
+          SET_PALETTEREP_ID(pSoldier.value.SkinPal, gpPalRep[ubPaletteRep].ID);
+          sprintf(gpSelected.value.pDetailedPlacement.value.SkinPal, pSoldier.value.SkinPal);
           CreateSoldierPalettes(pSoldier);
           break;
 
         case 4:
           ubType = EDIT_COLOR_VEST;
-          GetPaletteRepIndexFromID(pSoldier->VestPal, &ubPaletteRep);
+          GetPaletteRepIndexFromID(pSoldier.value.VestPal, &ubPaletteRep);
 
           ubPaletteRep--;
           if (ubPaletteRep < iEditColorStart[ubType])
             ubPaletteRep = iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType] - 1;
 
-          SET_PALETTEREP_ID(pSoldier->VestPal, gpPalRep[ubPaletteRep].ID);
-          sprintf(gpSelected->pDetailedPlacement->VestPal, pSoldier->VestPal);
+          SET_PALETTEREP_ID(pSoldier.value.VestPal, gpPalRep[ubPaletteRep].ID);
+          sprintf(gpSelected.value.pDetailedPlacement.value.VestPal, pSoldier.value.VestPal);
           CreateSoldierPalettes(pSoldier);
           break;
         case 5:
           ubType = EDIT_COLOR_VEST;
-          GetPaletteRepIndexFromID(pSoldier->VestPal, &ubPaletteRep);
+          GetPaletteRepIndexFromID(pSoldier.value.VestPal, &ubPaletteRep);
 
           ubPaletteRep++;
           if (ubPaletteRep >= (iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType]))
             ubPaletteRep = iEditColorStart[ubType];
 
-          SET_PALETTEREP_ID(pSoldier->VestPal, gpPalRep[ubPaletteRep].ID);
-          sprintf(gpSelected->pDetailedPlacement->VestPal, pSoldier->VestPal);
+          SET_PALETTEREP_ID(pSoldier.value.VestPal, gpPalRep[ubPaletteRep].ID);
+          sprintf(gpSelected.value.pDetailedPlacement.value.VestPal, pSoldier.value.VestPal);
           CreateSoldierPalettes(pSoldier);
           break;
 
         case 6:
           ubType = EDIT_COLOR_PANTS;
-          GetPaletteRepIndexFromID(pSoldier->PantsPal, &ubPaletteRep);
+          GetPaletteRepIndexFromID(pSoldier.value.PantsPal, &ubPaletteRep);
 
           ubPaletteRep--;
           if (ubPaletteRep < iEditColorStart[ubType])
             ubPaletteRep = iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType] - 1;
 
-          SET_PALETTEREP_ID(pSoldier->PantsPal, gpPalRep[ubPaletteRep].ID);
-          sprintf(gpSelected->pDetailedPlacement->PantsPal, pSoldier->PantsPal);
+          SET_PALETTEREP_ID(pSoldier.value.PantsPal, gpPalRep[ubPaletteRep].ID);
+          sprintf(gpSelected.value.pDetailedPlacement.value.PantsPal, pSoldier.value.PantsPal);
           CreateSoldierPalettes(pSoldier);
           break;
         case 7:
           ubType = EDIT_COLOR_PANTS;
-          GetPaletteRepIndexFromID(pSoldier->PantsPal, &ubPaletteRep);
+          GetPaletteRepIndexFromID(pSoldier.value.PantsPal, &ubPaletteRep);
 
           ubPaletteRep++;
           if (ubPaletteRep >= (iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType]))
             ubPaletteRep = iEditColorStart[ubType];
 
-          SET_PALETTEREP_ID(pSoldier->PantsPal, gpPalRep[ubPaletteRep].ID);
-          sprintf(gpSelected->pDetailedPlacement->PantsPal, pSoldier->PantsPal);
+          SET_PALETTEREP_ID(pSoldier.value.PantsPal, gpPalRep[ubPaletteRep].ID);
+          sprintf(gpSelected.value.pDetailedPlacement.value.PantsPal, pSoldier.value.PantsPal);
           CreateSoldierPalettes(pSoldier);
           break;
       }
@@ -522,13 +522,13 @@ function AddMercToWorld(iMapIndex: INT32): void {
 
     // Create the soldier, but don't place it yet.
     if (pSoldier = TacticalCreateSoldier(&gTempDetailedPlacement, &ubID)) {
-      pSoldier->bVisible = 1;
-      pSoldier->bLastRenderVisibleValue = 1;
+      pSoldier.value.bVisible = 1;
+      pSoldier.value.bLastRenderVisibleValue = 1;
       // Set up the soldier in the list, so we can track the soldier in the
       // future (saving, loading, strategic AI)
       pNode = AddBasicPlacementToSoldierInitList(&gTempBasicPlacement);
       Assert(pNode);
-      pNode->pSoldier = pSoldier;
+      pNode.value.pSoldier = pSoldier;
 
       // Add the soldier to physically appear on the map now.
       InternalAddSoldierToSector(ubID, FALSE, FALSE, 0, 0);
@@ -536,10 +536,10 @@ function AddMercToWorld(iMapIndex: INT32): void {
 
       // Move him to the roof if intended and possible.
       if (gfRoofPlacement && FlatRoofAboveGridNo(iMapIndex)) {
-        gpSelected->pBasicPlacement->fOnRoof = TRUE;
-        if (gpSelected->pDetailedPlacement)
-          gpSelected->pDetailedPlacement->fOnRoof = TRUE;
-        SetSoldierHeight(gpSelected->pSoldier, 58.0);
+        gpSelected.value.pBasicPlacement.value.fOnRoof = TRUE;
+        if (gpSelected.value.pDetailedPlacement)
+          gpSelected.value.pDetailedPlacement.value.fOnRoof = TRUE;
+        SetSoldierHeight(gpSelected.value.pSoldier, 58.0);
       }
       UnclickEditorButtons(FIRST_MERCS_INVENTORY_BUTTON, LAST_MERCS_INVENTORY_BUTTON);
       for (i = FIRST_MERCS_INVENTORY_BUTTON; i <= LAST_MERCS_INVENTORY_BUTTON; i++) {
@@ -571,22 +571,22 @@ function HandleRightClickOnMerc(iMapIndex: INT32): void {
   } else if (gsSelectedMercID != -1 && IsLocationSittable(iMapIndex, gfRoofPlacement)) // We want to move the selected merc to this new location.
   {
     RemoveAllObjectsOfTypeRange(gsSelectedMercGridNo, CONFIRMMOVE, CONFIRMMOVE);
-    EVENT_SetSoldierPosition(gpSelected->pSoldier, (sCellX + 5), (sCellY + 5));
+    EVENT_SetSoldierPosition(gpSelected.value.pSoldier, (sCellX + 5), (sCellY + 5));
     if (gfRoofPlacement && FlatRoofAboveGridNo(iMapIndex)) {
-      gpSelected->pBasicPlacement->fOnRoof = TRUE;
-      if (gpSelected->pDetailedPlacement)
-        gpSelected->pDetailedPlacement->fOnRoof = TRUE;
-      SetSoldierHeight(gpSelected->pSoldier, 58.0);
+      gpSelected.value.pBasicPlacement.value.fOnRoof = TRUE;
+      if (gpSelected.value.pDetailedPlacement)
+        gpSelected.value.pDetailedPlacement.value.fOnRoof = TRUE;
+      SetSoldierHeight(gpSelected.value.pSoldier, 58.0);
     } else {
-      gpSelected->pBasicPlacement->fOnRoof = FALSE;
-      if (gpSelected->pDetailedPlacement)
-        gpSelected->pDetailedPlacement->fOnRoof = FALSE;
-      SetSoldierHeight(gpSelected->pSoldier, 0.0);
+      gpSelected.value.pBasicPlacement.value.fOnRoof = FALSE;
+      if (gpSelected.value.pDetailedPlacement)
+        gpSelected.value.pDetailedPlacement.value.fOnRoof = FALSE;
+      SetSoldierHeight(gpSelected.value.pSoldier, 0.0);
     }
     gsSelectedMercGridNo = iMapIndex;
-    gpSelected->pBasicPlacement->usStartingGridNo = gsSelectedMercGridNo;
-    if (gpSelected->pDetailedPlacement)
-      gpSelected->pDetailedPlacement->sInsertionGridNo = gsSelectedMercGridNo;
+    gpSelected.value.pBasicPlacement.value.usStartingGridNo = gsSelectedMercGridNo;
+    if (gpSelected.value.pDetailedPlacement)
+      gpSelected.value.pDetailedPlacement.value.sInsertionGridNo = gsSelectedMercGridNo;
     AddObjectToHead(gsSelectedMercGridNo, CONFIRMMOVE1);
   }
 }
@@ -598,16 +598,16 @@ function ResetAllMercPositions(): void {
   curr = gSoldierInitHead;
   while (curr) {
     gpSelected = curr;
-    curr = curr->next;
+    curr = curr.value.next;
     RemoveSoldierNodeFromInitList(gpSelected);
   }
   // Now, remove any existing original list mercs, then readd them.
   UseEditorOriginalList();
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr->pSoldier) {
-      TacticalRemoveSoldier(curr->pSoldier->ubID);
-      curr->pSoldier = NULL;
+    if (curr.value.pSoldier) {
+      TacticalRemoveSoldier(curr.value.pSoldier.value.ubID);
+      curr.value.pSoldier = NULL;
     }
     // usMapIndex = gpSelected->pBasicPlacement->usStartingGridNo;
     // ConvertGridNoToCellXY( usMapIndex, &sCellX, &sCellY );
@@ -618,7 +618,7 @@ function ResetAllMercPositions(): void {
     //		SetSoldierHeight( gpSelected->pSoldier, 58.0 );
     //	SetMercDirection( gpSelected->pBasicPlacement->bDirection );
     //}
-    curr = curr->next;
+    curr = curr.value.next;
   }
   AddSoldierInitListTeamToWorld(ENEMY_TEAM, 255);
   AddSoldierInitListTeamToWorld(CREATURE_TEAM, 255);
@@ -637,26 +637,26 @@ function AddMercWaypoint(iMapIndex: UINT32): void {
   if (gsSelectedMercID == -1 || (gsSelectedMercID <= gTacticalStatus.Team[OUR_TEAM].bLastID) || gsSelectedMercID >= MAXMERCS)
     return;
 
-  if (iActionParam > gpSelected->pSoldier->bPatrolCnt) {
+  if (iActionParam > gpSelected.value.pSoldier.value.bPatrolCnt) {
     // Fill up missing waypoints with same value as new one
-    for (iNum = gpSelected->pSoldier->bPatrolCnt + 1; iNum <= iActionParam; iNum++) {
-      gpSelected->pBasicPlacement->sPatrolGrid[iNum] = iMapIndex;
-      if (gpSelected->pDetailedPlacement)
-        gpSelected->pDetailedPlacement->sPatrolGrid[iNum] = iMapIndex;
-      gpSelected->pSoldier->usPatrolGrid[iNum] = iMapIndex;
+    for (iNum = gpSelected.value.pSoldier.value.bPatrolCnt + 1; iNum <= iActionParam; iNum++) {
+      gpSelected.value.pBasicPlacement.value.sPatrolGrid[iNum] = iMapIndex;
+      if (gpSelected.value.pDetailedPlacement)
+        gpSelected.value.pDetailedPlacement.value.sPatrolGrid[iNum] = iMapIndex;
+      gpSelected.value.pSoldier.value.usPatrolGrid[iNum] = iMapIndex;
     }
 
-    gpSelected->pBasicPlacement->bPatrolCnt = iActionParam;
-    if (gpSelected->pDetailedPlacement)
-      gpSelected->pDetailedPlacement->bPatrolCnt = iActionParam;
-    gpSelected->pSoldier->bPatrolCnt = iActionParam;
-    gpSelected->pSoldier->bNextPatrolPnt = 1;
+    gpSelected.value.pBasicPlacement.value.bPatrolCnt = iActionParam;
+    if (gpSelected.value.pDetailedPlacement)
+      gpSelected.value.pDetailedPlacement.value.bPatrolCnt = iActionParam;
+    gpSelected.value.pSoldier.value.bPatrolCnt = iActionParam;
+    gpSelected.value.pSoldier.value.bNextPatrolPnt = 1;
   } else {
     // Set this way point
-    gpSelected->pBasicPlacement->sPatrolGrid[iActionParam] = iMapIndex;
-    if (gpSelected->pDetailedPlacement)
-      gpSelected->pDetailedPlacement->sPatrolGrid[iActionParam] = iMapIndex;
-    gpSelected->pSoldier->usPatrolGrid[iActionParam] = iMapIndex;
+    gpSelected.value.pBasicPlacement.value.sPatrolGrid[iActionParam] = iMapIndex;
+    if (gpSelected.value.pDetailedPlacement)
+      gpSelected.value.pDetailedPlacement.value.sPatrolGrid[iActionParam] = iMapIndex;
+    gpSelected.value.pSoldier.value.usPatrolGrid[iActionParam] = iMapIndex;
   }
   gfRenderWorld = TRUE;
 }
@@ -671,20 +671,20 @@ function EraseMercWaypoint(): void {
     return;
 
   // Fill up missing areas
-  if (iActionParam > gpSelected->pSoldier->bPatrolCnt)
+  if (iActionParam > gpSelected.value.pSoldier.value.bPatrolCnt)
     return;
 
-  for (iNum = iActionParam; iNum < gpSelected->pSoldier->bPatrolCnt; iNum++) {
-    gpSelected->pBasicPlacement->sPatrolGrid[iNum] = gpSelected->pBasicPlacement->sPatrolGrid[iNum + 1];
-    if (gpSelected->pDetailedPlacement)
-      gpSelected->pDetailedPlacement->sPatrolGrid[iNum] = gpSelected->pDetailedPlacement->sPatrolGrid[iNum + 1];
-    gpSelected->pSoldier->usPatrolGrid[iNum] = gpSelected->pSoldier->usPatrolGrid[iNum + 1];
+  for (iNum = iActionParam; iNum < gpSelected.value.pSoldier.value.bPatrolCnt; iNum++) {
+    gpSelected.value.pBasicPlacement.value.sPatrolGrid[iNum] = gpSelected.value.pBasicPlacement.value.sPatrolGrid[iNum + 1];
+    if (gpSelected.value.pDetailedPlacement)
+      gpSelected.value.pDetailedPlacement.value.sPatrolGrid[iNum] = gpSelected.value.pDetailedPlacement.value.sPatrolGrid[iNum + 1];
+    gpSelected.value.pSoldier.value.usPatrolGrid[iNum] = gpSelected.value.pSoldier.value.usPatrolGrid[iNum + 1];
   }
 
-  gpSelected->pBasicPlacement->bPatrolCnt--;
-  if (gpSelected->pDetailedPlacement)
-    gpSelected->pDetailedPlacement->bPatrolCnt--;
-  gpSelected->pSoldier->bPatrolCnt--;
+  gpSelected.value.pBasicPlacement.value.bPatrolCnt--;
+  if (gpSelected.value.pDetailedPlacement)
+    gpSelected.value.pDetailedPlacement.value.bPatrolCnt--;
+  gpSelected.value.pSoldier.value.bPatrolCnt--;
   gfRenderWorld = TRUE;
 }
 
@@ -698,28 +698,28 @@ function ChangeBaseSoldierStats(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier == NULL)
     return;
 
-  pSoldier->bLifeMax = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
-  pSoldier->bLife = pSoldier->bLifeMax;
+  pSoldier.value.bLifeMax = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
+  pSoldier.value.bLife = pSoldier.value.bLifeMax;
 
-  pSoldier->bBleeding = 0;
-  pSoldier->bBreath = 100;
+  pSoldier.value.bBleeding = 0;
+  pSoldier.value.bBreath = 100;
 
-  pSoldier->bMarksmanship = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
-  pSoldier->bMedical = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
-  pSoldier->bMechanical = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
-  pSoldier->bExplosive = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
-  pSoldier->bAgility = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
-  pSoldier->bDexterity = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
+  pSoldier.value.bMarksmanship = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
+  pSoldier.value.bMedical = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
+  pSoldier.value.bMechanical = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
+  pSoldier.value.bExplosive = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
+  pSoldier.value.bAgility = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
+  pSoldier.value.bDexterity = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
 
-  pSoldier->bStrength = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
-  pSoldier->bLeadership = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
-  pSoldier->bWisdom = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
-  pSoldier->bScientific = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
+  pSoldier.value.bStrength = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
+  pSoldier.value.bLeadership = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
+  pSoldier.value.bWisdom = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
+  pSoldier.value.bScientific = (sBaseStat[sCurBaseDiff] + (Random(BASE_STAT_DEVIATION * 2) - BASE_STAT_DEVIATION));
 
-  pSoldier->bExpLevel = sBaseExpLvl[sCurBaseDiff];
-  pSoldier->bGunType = Random(BASE_GUNTYPE_DEVIATION);
+  pSoldier.value.bExpLevel = sBaseExpLvl[sCurBaseDiff];
+  pSoldier.value.bGunType = Random(BASE_GUNTYPE_DEVIATION);
 
-  pSoldier->bActionPoints = CalcActionPoints(pSoldier);
+  pSoldier.value.bActionPoints = CalcActionPoints(pSoldier);
 }
 
 //----------------------------------------------------------------------------------------------
@@ -775,38 +775,38 @@ function DisplayEditMercWindow(): void {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 128, iYPos + 16, iXPos + 128 + 104, iYPos + 16 + 19, usFillColorDark);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 17, iXPos + 128 + 104, iYPos + 17 + 19, usFillColorLight);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 17, iXPos + 128 + 103, iYPos + 17 + 18, usFillColorTextBk);
-  iXOff = (105 - StringPixLength(pSoldier->name, FONT12POINT1)) / 2;
-  gprintf(iXPos + 130 + iXOff, iYPos + 20, "%s", pSoldier->name);
+  iXOff = (105 - StringPixLength(pSoldier.value.name, FONT12POINT1)) / 2;
+  gprintf(iXPos + 130 + iXOff, iYPos + 20, "%s", pSoldier.value.name);
 
   // Orders window
   gprintf(iXPos + 128, iYPos + 38, "Orders:");
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 128, iYPos + 51, iXPos + 128 + 104, iYPos + 51 + 19, usFillColorDark);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 52, iXPos + 128 + 104, iYPos + 52 + 19, usFillColorLight);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 52, iXPos + 128 + 103, iYPos + 52 + 18, usFillColorTextBk);
-  iXOff = (105 - StringPixLength(EditMercOrders[pSoldier->bOrders], FONT12POINT1)) / 2;
-  gprintf(iXPos + 130 + iXOff, iYPos + 55, "%s", EditMercOrders[pSoldier->bOrders]);
+  iXOff = (105 - StringPixLength(EditMercOrders[pSoldier.value.bOrders], FONT12POINT1)) / 2;
+  gprintf(iXPos + 130 + iXOff, iYPos + 55, "%s", EditMercOrders[pSoldier.value.bOrders]);
 
   // Combat window
   gprintf(iXPos + 128, iYPos + 73, "Combat Attitude:");
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 128, iYPos + 86, iXPos + 128 + 104, iYPos + 86 + 19, usFillColorDark);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 87, iXPos + 128 + 104, iYPos + 87 + 19, usFillColorLight);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 87, iXPos + 128 + 103, iYPos + 87 + 18, usFillColorTextBk);
-  iXOff = (105 - StringPixLength(EditMercAttitudes[pSoldier->bAttitude], FONT12POINT1)) / 2;
-  gprintf(iXPos + 130 + iXOff, iYPos + 90, "%s", EditMercAttitudes[pSoldier->bAttitude]);
+  iXOff = (105 - StringPixLength(EditMercAttitudes[pSoldier.value.bAttitude], FONT12POINT1)) / 2;
+  gprintf(iXPos + 130 + iXOff, iYPos + 90, "%s", EditMercAttitudes[pSoldier.value.bAttitude]);
 
   // Get stats
-  iEditStat[0] = pSoldier->bLifeMax; // 12 13
-  iEditStat[1] = pSoldier->bLife; // 14 15
-  iEditStat[2] = pSoldier->bStrength; // 16 17
-  iEditStat[3] = pSoldier->bAgility; // 18 19
-  iEditStat[4] = pSoldier->bDexterity; // 20 21
-  iEditStat[5] = pSoldier->bLeadership; // 22 23
-  iEditStat[6] = pSoldier->bWisdom; // 24 25
-  iEditStat[7] = pSoldier->bMarksmanship; // 26 27
-  iEditStat[8] = pSoldier->bExplosive; // 28 29
-  iEditStat[9] = pSoldier->bMedical; // 30 31
-  iEditStat[10] = pSoldier->bScientific; // 32 33
-  iEditStat[11] = pSoldier->bExpLevel; // 34 35
+  iEditStat[0] = pSoldier.value.bLifeMax; // 12 13
+  iEditStat[1] = pSoldier.value.bLife; // 14 15
+  iEditStat[2] = pSoldier.value.bStrength; // 16 17
+  iEditStat[3] = pSoldier.value.bAgility; // 18 19
+  iEditStat[4] = pSoldier.value.bDexterity; // 20 21
+  iEditStat[5] = pSoldier.value.bLeadership; // 22 23
+  iEditStat[6] = pSoldier.value.bWisdom; // 24 25
+  iEditStat[7] = pSoldier.value.bMarksmanship; // 26 27
+  iEditStat[8] = pSoldier.value.bExplosive; // 28 29
+  iEditStat[9] = pSoldier.value.bMedical; // 30 31
+  iEditStat[10] = pSoldier.value.bScientific; // 32 33
+  iEditStat[11] = pSoldier.value.bExpLevel; // 34 35
 
   // Stat value windows
   for (x = 0; x < 12; x++) {
@@ -837,7 +837,7 @@ function IsMercHere(iMapIndex: INT32): INT32 {
   fSoldierFound = FALSE;
   for (IDNumber = 0; IDNumber < MAX_NUM_SOLDIERS && !fSoldierFound; IDNumber++) {
     if (GetSoldier(&pSoldier, IDNumber)) {
-      if (pSoldier->sGridNo == iMapIndex) {
+      if (pSoldier.value.sGridNo == iMapIndex) {
         fSoldierFound = TRUE;
         RetIDNumber = IDNumber;
       }
@@ -883,7 +883,7 @@ function EditMercBkgrndCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function EditMercPrevOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_PREV_ORDER;
   }
@@ -891,7 +891,7 @@ function EditMercPrevOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 
 function EditMercNextOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_NEXT_ORDER;
   }
@@ -899,7 +899,7 @@ function EditMercNextOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 
 function EditMercPrevAttCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_PREV_ATT;
   }
@@ -907,7 +907,7 @@ function EditMercPrevAttCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 
 function EditMercNextAttCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_NEXT_ATT;
   }
@@ -919,7 +919,7 @@ function EditMercStatUpCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditWhichStat = -1;
     for (iBtn = 0; iBtn < 36 && iEditWhichStat == -1; iBtn++) {
-      if (btn->IDNum == iEditorButton[iBtn])
+      if (btn.value.IDNum == iEditorButton[iBtn])
         iEditWhichStat = iBtn;
     }
 
@@ -928,11 +928,11 @@ function EditMercStatUpCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       iEditMercMode = EDIT_MERC_INC_STAT;
     }
 
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_NONE;
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
@@ -942,7 +942,7 @@ function EditMercStatDwnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditWhichStat = -1;
     for (iBtn = 0; iBtn < 36 && iEditWhichStat == -1; iBtn++) {
-      if (btn->IDNum == iEditorButton[iBtn])
+      if (btn.value.IDNum == iEditorButton[iBtn])
         iEditWhichStat = iBtn;
     }
 
@@ -951,11 +951,11 @@ function EditMercStatDwnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
       iEditMercMode = EDIT_MERC_DEC_STAT;
     }
 
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_NONE;
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
@@ -965,7 +965,7 @@ function EditMercSetDirCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditWhichStat = -1;
     for (iBtn = 0; iBtn < 36 && iEditWhichStat == -1; iBtn++) {
-      if (btn->IDNum == iEditorButton[iBtn])
+      if (btn.value.IDNum == iEditorButton[iBtn])
         iEditWhichStat = iBtn;
     }
 
@@ -974,7 +974,7 @@ function EditMercSetDirCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       iEditMercMode = EDIT_MERC_SET_DIR;
     }
 
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
@@ -983,7 +983,7 @@ function EditMercCenterCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_FIND;
 
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
@@ -993,7 +993,7 @@ function EditMercColorDwnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditWhichStat = -1;
     for (iBtn = 0; iBtn < 8 && iEditWhichStat == -1; iBtn++) {
-      if (btn->IDNum == iEditorButton[iBtn])
+      if (btn.value.IDNum == iEditorButton[iBtn])
         iEditWhichStat = iBtn;
     }
 
@@ -1002,24 +1002,24 @@ function EditMercColorDwnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
       iEditMercMode = EDIT_MERC_PREV_COLOR;
     }
 
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
 function MercsToggleColorModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) // button is checked
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) // button is checked
     {
       EnableEditorButtons(FIRST_MERCS_COLOR_BUTTON, LAST_MERCS_COLOR_BUTTON);
-      gpSelected->pDetailedPlacement->fVisible = TRUE;
-      sprintf(gpSelected->pDetailedPlacement->HeadPal, gpSelected->pSoldier->HeadPal);
-      sprintf(gpSelected->pDetailedPlacement->SkinPal, gpSelected->pSoldier->SkinPal);
-      sprintf(gpSelected->pDetailedPlacement->VestPal, gpSelected->pSoldier->VestPal);
-      sprintf(gpSelected->pDetailedPlacement->PantsPal, gpSelected->pSoldier->PantsPal);
+      gpSelected.value.pDetailedPlacement.value.fVisible = TRUE;
+      sprintf(gpSelected.value.pDetailedPlacement.value.HeadPal, gpSelected.value.pSoldier.value.HeadPal);
+      sprintf(gpSelected.value.pDetailedPlacement.value.SkinPal, gpSelected.value.pSoldier.value.SkinPal);
+      sprintf(gpSelected.value.pDetailedPlacement.value.VestPal, gpSelected.value.pSoldier.value.VestPal);
+      sprintf(gpSelected.value.pDetailedPlacement.value.PantsPal, gpSelected.value.pSoldier.value.PantsPal);
     } else // button is unchecked.
     {
       DisableEditorButtons(FIRST_MERCS_COLOR_BUTTON, LAST_MERCS_COLOR_BUTTON);
-      gpSelected->pDetailedPlacement->fVisible = FALSE;
+      gpSelected.value.pDetailedPlacement.value.fVisible = FALSE;
     }
     gfRenderMercInfo = TRUE;
     gfRenderTaskbar = TRUE;
@@ -1031,7 +1031,7 @@ function MercsSetColorsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditWhichStat = -1;
     for (iBtn = FIRST_MERCS_COLOR_BUTTON; iBtn <= LAST_MERCS_COLOR_BUTTON; iBtn++) {
-      if (btn->IDNum == iEditorButton[iBtn]) {
+      if (btn.value.IDNum == iEditorButton[iBtn]) {
         iEditWhichStat = iBtn - FIRST_MERCS_COLOR_BUTTON;
         iEditStatTimer = 0;
         iEditMercMode = EDIT_MERC_NEXT_COLOR;
@@ -1045,7 +1045,7 @@ function MercsSetColorsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 function MercsSetBodyTypeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfRenderMercInfo = TRUE;
-    if (btn->IDNum == iEditorButton[MERCS_BODYTYPE_DOWN])
+    if (btn.value.IDNum == iEditorButton[MERCS_BODYTYPE_DOWN])
       ChangeBodyType(1); // next
     else
       ChangeBodyType(-1); // previous
@@ -1054,7 +1054,7 @@ function MercsSetBodyTypeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
 
 function EditMercDecDifficultyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
 
     iEditorToolbarState = TBAR_MODE_DEC_DIFF;
   }
@@ -1062,7 +1062,7 @@ function EditMercDecDifficultyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 
 function EditMercIncDifficultyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
 
     iEditorToolbarState = TBAR_MODE_INC_DIFF;
   }
@@ -1079,34 +1079,34 @@ function ShowEditMercPalettes(pSoldier: Pointer<SOLDIERTYPE>): void {
     ubPaletteRep = 0xff;
 
   if (pSoldier) {
-    if (!strlen(pSoldier->HeadPal))
+    if (!strlen(pSoldier.value.HeadPal))
       ubPaletteRep = 0xff;
     else
-      GetPaletteRepIndexFromID(pSoldier->HeadPal, &ubPaletteRep);
+      GetPaletteRepIndexFromID(pSoldier.value.HeadPal, &ubPaletteRep);
   }
   ShowEditMercColorSet(ubPaletteRep, 0);
 
   if (pSoldier) {
-    if (!strlen(pSoldier->SkinPal))
+    if (!strlen(pSoldier.value.SkinPal))
       ubPaletteRep = 0xff;
     else
-      GetPaletteRepIndexFromID(pSoldier->SkinPal, &ubPaletteRep);
+      GetPaletteRepIndexFromID(pSoldier.value.SkinPal, &ubPaletteRep);
   }
   ShowEditMercColorSet(ubPaletteRep, 1);
 
   if (pSoldier) {
-    if (!strlen(pSoldier->VestPal))
+    if (!strlen(pSoldier.value.VestPal))
       ubPaletteRep = 0xff;
     else
-      GetPaletteRepIndexFromID(pSoldier->VestPal, &ubPaletteRep);
+      GetPaletteRepIndexFromID(pSoldier.value.VestPal, &ubPaletteRep);
   }
   ShowEditMercColorSet(ubPaletteRep, 2);
 
   if (pSoldier) {
-    if (!strlen(pSoldier->VestPal))
+    if (!strlen(pSoldier.value.VestPal))
       ubPaletteRep = 0xff;
     else
-      GetPaletteRepIndexFromID(pSoldier->PantsPal, &ubPaletteRep);
+      GetPaletteRepIndexFromID(pSoldier.value.PantsPal, &ubPaletteRep);
   }
   ShowEditMercColorSet(ubPaletteRep, 3);
 }
@@ -1192,13 +1192,13 @@ function DisplayWayPoints(): void {
     return;
 
   GetSoldier(&pSoldier, gsSelectedMercID);
-  if (pSoldier == NULL || !pSoldier->bActive)
+  if (pSoldier == NULL || !pSoldier.value.bActive)
     return;
 
   // point 0 is not used!
-  for (bPoint = 1; bPoint <= pSoldier->bPatrolCnt; bPoint++) {
+  for (bPoint = 1; bPoint <= pSoldier.value.bPatrolCnt; bPoint++) {
     // Get the next point
-    sGridNo = pSoldier->usPatrolGrid[bPoint];
+    sGridNo = pSoldier.value.usPatrolGrid[bPoint];
 
     // Can we see it?
     if (!GridNoOnVisibleWorldTile(sGridNo))
@@ -1226,7 +1226,7 @@ function DisplayWayPoints(): void {
     if (sScreenY <= 355) {
       // Shown it on screen!
       SetFont(TINYFONT1);
-      if (pSoldier->bLevel == 1) {
+      if (pSoldier.value.bLevel == 1) {
         SetFontBackground(FONT_LTBLUE);
         sScreenY -= 68;
       } else
@@ -1252,8 +1252,8 @@ function CreateEditMercWindow(): void {
   iXPos = 0;
 
   GetSoldier(&pSoldier, gsSelectedMercID);
-  iEditMercLocation = pSoldier->sGridNo;
-  gpWorldLevelData[iEditMercLocation].pObjectHead->ubShadeLevel = DEFAULT_SHADE_LEVEL;
+  iEditMercLocation = pSoldier.value.sGridNo;
+  gpWorldLevelData[iEditMercLocation].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
 
   iEditMercBkgrndArea = CreateHotSpot(iXPos, iYPos, iWidth, iHeight, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, EditMercBkgrndCallback);
 
@@ -1316,16 +1316,16 @@ function CreateEditMercWindow(): void {
   }
 }
 function SetMercOrders(bOrders: INT8): void {
-  gpSelected->pSoldier->bOrders = bOrders;
-  gpSelected->pBasicPlacement->bOrders = bOrders;
+  gpSelected.value.pSoldier.value.bOrders = bOrders;
+  gpSelected.value.pBasicPlacement.value.bOrders = bOrders;
   UnclickEditorButtons(FIRST_MERCS_ORDERS_BUTTON, LAST_MERCS_ORDERS_BUTTON);
   ClickEditorButton(FIRST_MERCS_ORDERS_BUTTON + bOrders);
   gbDefaultOrders = bOrders;
 }
 
 function SetMercAttitude(bAttitude: INT8): void {
-  gpSelected->pSoldier->bAttitude = bAttitude;
-  gpSelected->pBasicPlacement->bAttitude = bAttitude;
+  gpSelected.value.pSoldier.value.bAttitude = bAttitude;
+  gpSelected.value.pBasicPlacement.value.bAttitude = bAttitude;
   UnclickEditorButtons(FIRST_MERCS_ATTITUDE_BUTTON, LAST_MERCS_ATTITUDE_BUTTON);
   ClickEditorButton(FIRST_MERCS_ATTITUDE_BUTTON + bAttitude);
   gbDefaultAttitude = bAttitude;
@@ -1336,17 +1336,17 @@ function SetMercDirection(bDirection: INT8): void {
   ClickEditorButton(FIRST_MERCS_DIRECTION_BUTTON + bDirection);
 
   gbDefaultDirection = bDirection;
-  gpSelected->pBasicPlacement->bDirection = bDirection;
+  gpSelected.value.pBasicPlacement.value.bDirection = bDirection;
 
   // ATE: Changed these to call functions....
-  EVENT_SetSoldierDirection(gpSelected->pSoldier, bDirection);
-  EVENT_SetSoldierDesiredDirection(gpSelected->pSoldier, bDirection);
+  EVENT_SetSoldierDirection(gpSelected.value.pSoldier, bDirection);
+  EVENT_SetSoldierDesiredDirection(gpSelected.value.pSoldier, bDirection);
 
-  ConvertAniCodeToAniFrame(gpSelected->pSoldier, 0);
+  ConvertAniCodeToAniFrame(gpSelected.value.pSoldier, 0);
 }
 
 function SetMercRelativeEquipment(bLevel: INT8): void {
-  gpSelected->pBasicPlacement->bRelativeEquipmentLevel = bLevel;
+  gpSelected.value.pBasicPlacement.value.bRelativeEquipmentLevel = bLevel;
 
   UnclickEditorButtons(FIRST_MERCS_REL_EQUIPMENT_BUTTON, LAST_MERCS_REL_EQUIPMENT_BUTTON);
   ClickEditorButton(FIRST_MERCS_REL_EQUIPMENT_BUTTON + bLevel);
@@ -1354,9 +1354,9 @@ function SetMercRelativeEquipment(bLevel: INT8): void {
 }
 
 function SetMercRelativeAttributes(bLevel: INT8): void {
-  gpSelected->pBasicPlacement->bRelativeAttributeLevel = bLevel;
+  gpSelected.value.pBasicPlacement.value.bRelativeAttributeLevel = bLevel;
   // We also have to modify the existing soldier incase the user wishes to enter game.
-  ModifySoldierAttributesWithNewRelativeLevel(gpSelected->pSoldier, bLevel);
+  ModifySoldierAttributesWithNewRelativeLevel(gpSelected.value.pSoldier, bLevel);
 
   UnclickEditorButtons(FIRST_MERCS_REL_ATTRIBUTE_BUTTON, LAST_MERCS_REL_ATTRIBUTE_BUTTON);
   ClickEditorButton(FIRST_MERCS_REL_ATTRIBUTE_BUTTON + bLevel);
@@ -1392,9 +1392,9 @@ function IndicateSelectedMerc(sID: INT16): void {
         gpSelected = gSoldierInitHead;
       } else {
         // validate this merc in the list.
-        if (gpSelected->next) {
+        if (gpSelected.value.next) {
           // select the next merc in the list
-          gpSelected = gpSelected->next;
+          gpSelected = gpSelected.value.next;
         } else {
           // we are at the end of the list, so select the first merc in the list.
           gpSelected = gSoldierInitHead;
@@ -1411,11 +1411,11 @@ function IndicateSelectedMerc(sID: INT16): void {
           gpSelected = gSoldierInitHead;
           continue;
         }
-        if (gpSelected->pSoldier && gpSelected->pSoldier->bVisible == 1) {
+        if (gpSelected.value.pSoldier && gpSelected.value.pSoldier.value.bVisible == 1) {
           // we have found a visible soldier, so select him.
           break;
         }
-        gpSelected = gpSelected->next;
+        gpSelected = gpSelected.value.next;
       }
       // we have a valid merc now.
       break;
@@ -1458,9 +1458,9 @@ function IndicateSelectedMerc(sID: INT16): void {
       gpSelected = gSoldierInitHead;
     } else {
       // validate this merc in the list.
-      if (gpSelected->next) {
+      if (gpSelected.value.next) {
         // select the next merc in the list
-        gpSelected = gpSelected->next;
+        gpSelected = gpSelected.value.next;
       } else {
         // we are at the end of the list, so select the first merc in the list.
         gpSelected = gSoldierInitHead;
@@ -1477,17 +1477,17 @@ function IndicateSelectedMerc(sID: INT16): void {
         gpSelected = gSoldierInitHead;
         continue;
       }
-      if (gpSelected->pSoldier && gpSelected->pSoldier->bVisible == 1 && gpSelected->pSoldier->bTeam == bTeam) {
+      if (gpSelected.value.pSoldier && gpSelected.value.pSoldier.value.bVisible == 1 && gpSelected.value.pSoldier.value.bTeam == bTeam) {
         // we have found a visible soldier on the desired team, so select him.
         break;
       }
-      gpSelected = gpSelected->next;
+      gpSelected = gpSelected.value.next;
     }
     if (!gpSelected)
       return;
     if (gpSelected == prev) {
       // we have cycled through the list already, so choose the same guy (if he is on the desired team)...
-      if (!gpSelected->pSoldier || gpSelected->pSoldier->bVisible != 1 || gpSelected->pSoldier->bTeam != bTeam) {
+      if (!gpSelected.value.pSoldier || gpSelected.value.pSoldier.value.bVisible != 1 || gpSelected.value.pSoldier.value.bTeam != bTeam) {
         SetMercEditability(TRUE);
         SetMercEditingMode(MERC_TEAMMODE);
         return;
@@ -1495,26 +1495,26 @@ function IndicateSelectedMerc(sID: INT16): void {
     }
   }
   // if we made it this far, then we have a new merc cursor indicator to draw.
-  if (gpSelected->pSoldier)
-    gsSelectedMercGridNo = gpSelected->pSoldier->sGridNo;
+  if (gpSelected.value.pSoldier)
+    gsSelectedMercGridNo = gpSelected.value.pSoldier.value.sGridNo;
   else {
     SetMercEditability(TRUE);
     SetMercEditingMode(MERC_TEAMMODE);
     return;
   }
-  gsSelectedMercID = gpSelected->pSoldier->ubID;
+  gsSelectedMercID = gpSelected.value.pSoldier.value.ubID;
   AddObjectToHead(gsSelectedMercGridNo, CONFIRMMOVE1);
 
   // If the merc has a valid profile, then turn off editability
-  if (gpSelected->pDetailedPlacement)
-    SetMercEditability((gpSelected->pDetailedPlacement->ubProfile == NO_PROFILE));
+  if (gpSelected.value.pDetailedPlacement)
+    SetMercEditability((gpSelected.value.pDetailedPlacement.value.ubProfile == NO_PROFILE));
   else
     SetMercEditability(TRUE);
 
   if (sID < 0) {
     // We want to center the screen on the next merc, and update the interface.
-    gsRenderCenterX = gpSelected->pSoldier->dXPos;
-    gsRenderCenterY = gpSelected->pSoldier->dYPos;
+    gsRenderCenterX = gpSelected.value.pSoldier.value.dXPos;
+    gsRenderCenterY = gpSelected.value.pSoldier.value.dYPos;
     gfRenderWorld = TRUE;
   }
 
@@ -1528,7 +1528,7 @@ function IndicateSelectedMerc(sID: INT16): void {
   UnclickEditorButton(MERCS_CREATURE);
   UnclickEditorButton(MERCS_REBEL);
   UnclickEditorButton(MERCS_CIVILIAN);
-  switch (gpSelected->pSoldier->bTeam) {
+  switch (gpSelected.value.pSoldier.value.bTeam) {
     case ENEMY_TEAM:
       ClickEditorButton(MERCS_ENEMY);
       iDrawMode = DRAW_MODE_ENEMY;
@@ -1547,7 +1547,7 @@ function IndicateSelectedMerc(sID: INT16): void {
       break;
   }
   // Update the editing mode
-  if (gpSelected->pDetailedPlacement)
+  if (gpSelected.value.pDetailedPlacement)
     SetMercEditingMode(gubLastDetailedMercMode);
   else
     SetMercEditingMode(MERC_BASICMODE);
@@ -1555,24 +1555,24 @@ function IndicateSelectedMerc(sID: INT16): void {
   gfRenderMercInfo = TRUE;
   // These calls will set the proper button states, even though it redundantly
   // assigns the soldier with the same orders/attitude.
-  SetMercOrders(gpSelected->pSoldier->bOrders);
-  SetMercAttitude(gpSelected->pSoldier->bAttitude);
-  SetMercDirection(gpSelected->pSoldier->bDirection);
-  if (gpSelected->pBasicPlacement->fPriorityExistance)
+  SetMercOrders(gpSelected.value.pSoldier.value.bOrders);
+  SetMercAttitude(gpSelected.value.pSoldier.value.bAttitude);
+  SetMercDirection(gpSelected.value.pSoldier.value.bDirection);
+  if (gpSelected.value.pBasicPlacement.value.fPriorityExistance)
     ClickEditorButton(MERCS_PRIORITYEXISTANCE_CHECKBOX);
   else
     UnclickEditorButton(MERCS_PRIORITYEXISTANCE_CHECKBOX);
-  if (gpSelected->pBasicPlacement->fHasKeys)
+  if (gpSelected.value.pBasicPlacement.value.fHasKeys)
     ClickEditorButton(MERCS_HASKEYS_CHECKBOX);
   else
     UnclickEditorButton(MERCS_HASKEYS_CHECKBOX);
-  if (gpSelected->pSoldier->ubProfile == NO_PROFILE) {
-    SetMercRelativeEquipment(gpSelected->pBasicPlacement->bRelativeEquipmentLevel);
-    SetMercRelativeAttributes(gpSelected->pBasicPlacement->bRelativeAttributeLevel);
-    SetEnemyColorCode(gpSelected->pBasicPlacement->ubSoldierClass);
+  if (gpSelected.value.pSoldier.value.ubProfile == NO_PROFILE) {
+    SetMercRelativeEquipment(gpSelected.value.pBasicPlacement.value.bRelativeEquipmentLevel);
+    SetMercRelativeAttributes(gpSelected.value.pBasicPlacement.value.bRelativeAttributeLevel);
+    SetEnemyColorCode(gpSelected.value.pBasicPlacement.value.ubSoldierClass);
   }
   if (iDrawMode == DRAW_MODE_CIVILIAN) {
-    ChangeCivGroup(gpSelected->pSoldier->ubCivilianGroup);
+    ChangeCivGroup(gpSelected.value.pSoldier.value.ubCivilianGroup);
   }
 }
 
@@ -1594,11 +1594,11 @@ function SetupTextInputForMercProfile(): void {
 
   InitTextInputModeWithScheme(DEFAULT_SCHEME);
 
-  sNum = gpSelected->pDetailedPlacement->ubProfile;
+  sNum = gpSelected.value.pDetailedPlacement.value.ubProfile;
   if (sNum == NO_PROFILE)
     str[0] = '\0';
   else
-    CalcStringForValue(str, gpSelected->pDetailedPlacement->ubProfile, NUM_PROFILES);
+    CalcStringForValue(str, gpSelected.value.pDetailedPlacement.value.ubProfile, NUM_PROFILES);
   AddTextInputField(200, 430, 30, 20, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
 }
 
@@ -1607,31 +1607,31 @@ function SetupTextInputForMercAttributes(): void {
 
   InitTextInputModeWithScheme(DEFAULT_SCHEME);
 
-  CalcStringForValue(str, gpSelected->pDetailedPlacement->bExpLevel, 100);
+  CalcStringForValue(str, gpSelected.value.pDetailedPlacement.value.bExpLevel, 100);
   AddTextInputField(200, 365, 20, 15, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT);
-  CalcStringForValue(str, gpSelected->pDetailedPlacement->bLife, 100);
+  CalcStringForValue(str, gpSelected.value.pDetailedPlacement.value.bLife, 100);
   AddTextInputField(200, 390, 20, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  CalcStringForValue(str, gpSelected->pDetailedPlacement->bLifeMax, 100);
+  CalcStringForValue(str, gpSelected.value.pDetailedPlacement.value.bLifeMax, 100);
   AddTextInputField(200, 415, 20, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  CalcStringForValue(str, gpSelected->pDetailedPlacement->bMarksmanship, 100);
+  CalcStringForValue(str, gpSelected.value.pDetailedPlacement.value.bMarksmanship, 100);
   AddTextInputField(200, 440, 20, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  CalcStringForValue(str, gpSelected->pDetailedPlacement->bStrength, 100);
+  CalcStringForValue(str, gpSelected.value.pDetailedPlacement.value.bStrength, 100);
   AddTextInputField(300, 365, 20, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  CalcStringForValue(str, gpSelected->pDetailedPlacement->bAgility, 100);
+  CalcStringForValue(str, gpSelected.value.pDetailedPlacement.value.bAgility, 100);
   AddTextInputField(300, 390, 20, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  CalcStringForValue(str, gpSelected->pDetailedPlacement->bDexterity, 100);
+  CalcStringForValue(str, gpSelected.value.pDetailedPlacement.value.bDexterity, 100);
   AddTextInputField(300, 415, 20, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  CalcStringForValue(str, gpSelected->pDetailedPlacement->bWisdom, 100);
+  CalcStringForValue(str, gpSelected.value.pDetailedPlacement.value.bWisdom, 100);
   AddTextInputField(300, 440, 20, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  CalcStringForValue(str, gpSelected->pDetailedPlacement->bLeadership, 100);
+  CalcStringForValue(str, gpSelected.value.pDetailedPlacement.value.bLeadership, 100);
   AddTextInputField(400, 365, 20, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  CalcStringForValue(str, gpSelected->pDetailedPlacement->bExplosive, 100);
+  CalcStringForValue(str, gpSelected.value.pDetailedPlacement.value.bExplosive, 100);
   AddTextInputField(400, 390, 20, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  CalcStringForValue(str, gpSelected->pDetailedPlacement->bMedical, 100);
+  CalcStringForValue(str, gpSelected.value.pDetailedPlacement.value.bMedical, 100);
   AddTextInputField(400, 415, 20, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  CalcStringForValue(str, gpSelected->pDetailedPlacement->bMechanical, 100);
+  CalcStringForValue(str, gpSelected.value.pDetailedPlacement.value.bMechanical, 100);
   AddTextInputField(400, 440, 20, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  CalcStringForValue(str, gpSelected->pDetailedPlacement->bMorale, 100);
+  CalcStringForValue(str, gpSelected.value.pDetailedPlacement.value.bMorale, 100);
   AddTextInputField(500, 365, 20, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
 
   if (!gfCanEditMercs)
@@ -1653,41 +1653,41 @@ function CalcStringForValue(str: Pointer<UINT16>, iValue: INT32, uiMax: UINT32):
 function ExtractAndUpdateMercAttributes(): void {
   // If we have just deleted the merc's detailed placement in the editor, we don't
   // need to extract the information
-  if (!gpSelected->pDetailedPlacement)
+  if (!gpSelected.value.pDetailedPlacement)
     return;
 
   // It just so happens that GetNumericStrict...() will return -1 for any blank fields.
   //-1 values in the detailed placement work nicely, because that signifies that specific
   // field isn't static.  Any other value becomes static, and static values override any
   // generated values.
-  gpSelected->pDetailedPlacement->bExpLevel = min(GetNumericStrictValueFromField(0), 100);
-  gpSelected->pDetailedPlacement->bLife = min(GetNumericStrictValueFromField(1), 100);
-  gpSelected->pDetailedPlacement->bLifeMax = min(GetNumericStrictValueFromField(2), 100);
-  gpSelected->pDetailedPlacement->bMarksmanship = min(GetNumericStrictValueFromField(3), 100);
-  gpSelected->pDetailedPlacement->bStrength = min(GetNumericStrictValueFromField(4), 100);
-  gpSelected->pDetailedPlacement->bAgility = min(GetNumericStrictValueFromField(5), 100);
-  gpSelected->pDetailedPlacement->bDexterity = min(GetNumericStrictValueFromField(6), 100);
-  gpSelected->pDetailedPlacement->bWisdom = min(GetNumericStrictValueFromField(7), 100);
-  gpSelected->pDetailedPlacement->bLeadership = min(GetNumericStrictValueFromField(8), 100);
-  gpSelected->pDetailedPlacement->bExplosive = min(GetNumericStrictValueFromField(9), 100);
-  gpSelected->pDetailedPlacement->bMedical = min(GetNumericStrictValueFromField(10), 100);
-  gpSelected->pDetailedPlacement->bMechanical = min(GetNumericStrictValueFromField(11), 100);
-  gpSelected->pDetailedPlacement->bMorale = min(GetNumericStrictValueFromField(11), 100);
+  gpSelected.value.pDetailedPlacement.value.bExpLevel = min(GetNumericStrictValueFromField(0), 100);
+  gpSelected.value.pDetailedPlacement.value.bLife = min(GetNumericStrictValueFromField(1), 100);
+  gpSelected.value.pDetailedPlacement.value.bLifeMax = min(GetNumericStrictValueFromField(2), 100);
+  gpSelected.value.pDetailedPlacement.value.bMarksmanship = min(GetNumericStrictValueFromField(3), 100);
+  gpSelected.value.pDetailedPlacement.value.bStrength = min(GetNumericStrictValueFromField(4), 100);
+  gpSelected.value.pDetailedPlacement.value.bAgility = min(GetNumericStrictValueFromField(5), 100);
+  gpSelected.value.pDetailedPlacement.value.bDexterity = min(GetNumericStrictValueFromField(6), 100);
+  gpSelected.value.pDetailedPlacement.value.bWisdom = min(GetNumericStrictValueFromField(7), 100);
+  gpSelected.value.pDetailedPlacement.value.bLeadership = min(GetNumericStrictValueFromField(8), 100);
+  gpSelected.value.pDetailedPlacement.value.bExplosive = min(GetNumericStrictValueFromField(9), 100);
+  gpSelected.value.pDetailedPlacement.value.bMedical = min(GetNumericStrictValueFromField(10), 100);
+  gpSelected.value.pDetailedPlacement.value.bMechanical = min(GetNumericStrictValueFromField(11), 100);
+  gpSelected.value.pDetailedPlacement.value.bMorale = min(GetNumericStrictValueFromField(11), 100);
 
   // make sure that experience level ranges between 1 and 9
-  if (gpSelected->pDetailedPlacement->bExpLevel != -1)
-    gpSelected->pDetailedPlacement->bExpLevel = max(min(gpSelected->pDetailedPlacement->bExpLevel, 9), 1);
+  if (gpSelected.value.pDetailedPlacement.value.bExpLevel != -1)
+    gpSelected.value.pDetailedPlacement.value.bExpLevel = max(min(gpSelected.value.pDetailedPlacement.value.bExpLevel, 9), 1);
 
   // no such thing as a life max of 0
-  if (!gpSelected->pDetailedPlacement->bLifeMax)
-    gpSelected->pDetailedPlacement->bLifeMax = 1;
+  if (!gpSelected.value.pDetailedPlacement.value.bLifeMax)
+    gpSelected.value.pDetailedPlacement.value.bLifeMax = 1;
 
   // make sure the life doesn't exceed the maxlife...
-  if (gpSelected->pDetailedPlacement->bLifeMax != -1 && gpSelected->pDetailedPlacement->bLife != -1 && gpSelected->pDetailedPlacement->bLife > gpSelected->pDetailedPlacement->bLifeMax)
-    gpSelected->pDetailedPlacement->bLife = gpSelected->pDetailedPlacement->bLifeMax;
+  if (gpSelected.value.pDetailedPlacement.value.bLifeMax != -1 && gpSelected.value.pDetailedPlacement.value.bLife != -1 && gpSelected.value.pDetailedPlacement.value.bLife > gpSelected.value.pDetailedPlacement.value.bLifeMax)
+    gpSelected.value.pDetailedPlacement.value.bLife = gpSelected.value.pDetailedPlacement.value.bLifeMax;
 
   // update the soldier
-  UpdateSoldierWithStaticDetailedInformation(gpSelected->pSoldier, gpSelected->pDetailedPlacement);
+  UpdateSoldierWithStaticDetailedInformation(gpSelected.value.pSoldier, gpSelected.value.pDetailedPlacement);
 }
 
 function ExtractAndUpdateMercProfile(): void {
@@ -1696,28 +1696,28 @@ function ExtractAndUpdateMercProfile(): void {
 
   // If we have just deleted the merc's detailed placement in the editor, we don't
   // need to extract the information
-  if (!gpSelected->pDetailedPlacement)
+  if (!gpSelected.value.pDetailedPlacement)
     return;
 
   // if the string is blank, returning -1, then set the value to NO_PROFILE
   // because ubProfile is unsigned.
   sNum = min(GetNumericStrictValueFromField(0), NUM_PROFILES);
   if (sNum == -1) {
-    gpSelected->pDetailedPlacement->ubProfile = NO_PROFILE;
-    gpSelected->pDetailedPlacement->fCopyProfileItemsOver = FALSE;
+    gpSelected.value.pDetailedPlacement.value.ubProfile = NO_PROFILE;
+    gpSelected.value.pDetailedPlacement.value.fCopyProfileItemsOver = FALSE;
     SetMercEditability(TRUE);
   } else if (sPrev != sNum) {
-    gpSelected->pDetailedPlacement->ubProfile = sNum;
-    gpSelected->pDetailedPlacement->fCopyProfileItemsOver = TRUE;
-    gpSelected->pBasicPlacement->fPriorityExistance = TRUE;
+    gpSelected.value.pDetailedPlacement.value.ubProfile = sNum;
+    gpSelected.value.pDetailedPlacement.value.fCopyProfileItemsOver = TRUE;
+    gpSelected.value.pBasicPlacement.value.fPriorityExistance = TRUE;
     ClickEditorButton(MERCS_PRIORITYEXISTANCE_CHECKBOX);
     SetMercEditability(FALSE);
   } else
     return;
 
-  UpdateSoldierWithStaticDetailedInformation(gpSelected->pSoldier, gpSelected->pDetailedPlacement);
-  if (gpSelected->pSoldier->bTeam == CIV_TEAM) {
-    ChangeCivGroup(gpSelected->pSoldier->ubCivilianGroup);
+  UpdateSoldierWithStaticDetailedInformation(gpSelected.value.pSoldier, gpSelected.value.pDetailedPlacement);
+  if (gpSelected.value.pSoldier.value.bTeam == CIV_TEAM) {
+    ChangeCivGroup(gpSelected.value.pSoldier.value.ubCivilianGroup);
   }
 }
 
@@ -1750,7 +1750,7 @@ function ExtractAndUpdateMercSchedule(): void {
       fValidSchedule = TRUE;
   }
 
-  if (!gpSelected->pSoldier->ubScheduleID) {
+  if (!gpSelected.value.pSoldier.value.ubScheduleID) {
     // The soldier doesn't actually have a schedule yet, so create one if necessary (not blank)
     if (fValidSchedule) {
       // create a new schedule
@@ -1762,27 +1762,27 @@ function ExtractAndUpdateMercSchedule(): void {
     }
   } else {
     let pSchedule: Pointer<SCHEDULENODE>;
-    pSchedule = GetSchedule(gpSelected->pSoldier->ubScheduleID);
+    pSchedule = GetSchedule(gpSelected.value.pSoldier.value.ubScheduleID);
     if (!pSchedule) {
-      gpSelected->pSoldier->ubScheduleID = 0;
-      gpSelected->pDetailedPlacement->ubScheduleID = 0;
+      gpSelected.value.pSoldier.value.ubScheduleID = 0;
+      gpSelected.value.pDetailedPlacement.value.ubScheduleID = 0;
       HideEditorButton(MERCS_GLOWSCHEDULE);
       ShowEditorButton(MERCS_SCHEDULE);
       return;
     }
     if (fValidSchedule) {
       // overwrite the existing schedule with the new one.
-      gCurrSchedule.ubScheduleID = gpSelected->pSoldier->ubScheduleID;
+      gCurrSchedule.ubScheduleID = gpSelected.value.pSoldier.value.ubScheduleID;
       if (SortSchedule(&gCurrSchedule))
         fScheduleNeedsUpdate = TRUE;
-      pNext = pSchedule->next;
+      pNext = pSchedule.value.next;
       memcpy(pSchedule, &gCurrSchedule, sizeof(SCHEDULENODE));
-      pSchedule->next = pNext;
+      pSchedule.value.next = pNext;
     } else {
       // remove the existing schedule, as the new one is blank.
-      DeleteSchedule(pSchedule->ubScheduleID);
-      gpSelected->pSoldier->ubScheduleID = 0;
-      gpSelected->pDetailedPlacement->ubScheduleID = 0;
+      DeleteSchedule(pSchedule.value.ubScheduleID);
+      gpSelected.value.pSoldier.value.ubScheduleID = 0;
+      gpSelected.value.pDetailedPlacement.value.ubScheduleID = 0;
       HideEditorButton(MERCS_GLOWSCHEDULE);
       ShowEditorButton(MERCS_SCHEDULE);
     }
@@ -1818,27 +1818,27 @@ function ExtractCurrentMercModeInfo(fKillTextInputMode: BOOLEAN): void {
 }
 
 function InitDetailedPlacementForMerc(): void {
-  Assert(!gpSelected->pDetailedPlacement);
+  Assert(!gpSelected.value.pDetailedPlacement);
 
-  gpSelected->pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
+  gpSelected.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
 
-  Assert(gpSelected->pDetailedPlacement);
+  Assert(gpSelected.value.pDetailedPlacement);
 
-  gpSelected->pBasicPlacement->fDetailedPlacement = TRUE;
-  gpSelected->pBasicPlacement->fPriorityExistance = FALSE;
-  CreateStaticDetailedPlacementGivenBasicPlacementInfo(gpSelected->pDetailedPlacement, gpSelected->pBasicPlacement);
+  gpSelected.value.pBasicPlacement.value.fDetailedPlacement = TRUE;
+  gpSelected.value.pBasicPlacement.value.fPriorityExistance = FALSE;
+  CreateStaticDetailedPlacementGivenBasicPlacementInfo(gpSelected.value.pDetailedPlacement, gpSelected.value.pBasicPlacement);
 
   ClearCurrentSchedule();
 
   // update the soldier
-  UpdateSoldierWithStaticDetailedInformation(gpSelected->pSoldier, gpSelected->pDetailedPlacement);
+  UpdateSoldierWithStaticDetailedInformation(gpSelected.value.pSoldier, gpSelected.value.pDetailedPlacement);
 }
 
 function KillDetailedPlacementForMerc(): void {
-  Assert(gpSelected->pDetailedPlacement);
-  MemFree(gpSelected->pDetailedPlacement);
-  gpSelected->pDetailedPlacement = NULL;
-  gpSelected->pBasicPlacement->fDetailedPlacement = FALSE;
+  Assert(gpSelected.value.pDetailedPlacement);
+  MemFree(gpSelected.value.pDetailedPlacement);
+  gpSelected.value.pDetailedPlacement = NULL;
+  gpSelected.value.pBasicPlacement.value.fDetailedPlacement = FALSE;
   SetMercEditability(TRUE);
 }
 
@@ -1854,7 +1854,7 @@ function ChangeBodyType(bOffset: INT8): void //+1 or -1 only
   // verify that we have a proper offset ( only +-1 allowed )
   Assert(bOffset == -1 || bOffset == 1);
   // get access to information depending on the team
-  switch (gpSelected->pBasicPlacement->bTeam) {
+  switch (gpSelected.value.pBasicPlacement.value.bTeam) {
     case ENEMY_TEAM:
       pbArray = bEnemyArray;
       iMax = MAX_ENEMYTYPES;
@@ -1875,10 +1875,10 @@ function ChangeBodyType(bOffset: INT8): void //+1 or -1 only
   // find the matching bodytype index within the array.
   for (x = 0; x < iMax; x++) {
     iIndex = pbArray[x];
-    if (iIndex == gpSelected->pBasicPlacement->bBodyType)
+    if (iIndex == gpSelected.value.pBasicPlacement.value.bBodyType)
       break;
   }
-  Assert(iIndex == gpSelected->pBasicPlacement->bBodyType);
+  Assert(iIndex == gpSelected.value.pBasicPlacement.value.bBodyType);
   // now we have a match, so go to the next element (depending on offset value)
   x += bOffset;
   if (x >= iMax)
@@ -1888,10 +1888,10 @@ function ChangeBodyType(bOffset: INT8): void //+1 or -1 only
   iIndex = pbArray[x];
   // Set the new bodytype into the and update the soldier info
   if (iIndex != -1) {
-    gpSelected->pSoldier->ubBodyType = iIndex;
+    gpSelected.value.pSoldier.value.ubBodyType = iIndex;
     // Set the flags based on the bodytype
-    gpSelected->pSoldier->uiStatusFlags &= ~(SOLDIER_VEHICLE | SOLDIER_ROBOT | SOLDIER_ANIMAL | SOLDIER_MONSTER);
-    switch (gpSelected->pSoldier->ubBodyType) {
+    gpSelected.value.pSoldier.value.uiStatusFlags &= ~(SOLDIER_VEHICLE | SOLDIER_ROBOT | SOLDIER_ANIMAL | SOLDIER_MONSTER);
+    switch (gpSelected.value.pSoldier.value.ubBodyType) {
       case ADULTFEMALEMONSTER:
       case AM_MONSTER:
       case YAF_MONSTER:
@@ -1899,15 +1899,15 @@ function ChangeBodyType(bOffset: INT8): void //+1 or -1 only
       case LARVAE_MONSTER:
       case INFANT_MONSTER:
       case QUEENMONSTER:
-        gpSelected->pSoldier->uiStatusFlags |= SOLDIER_MONSTER;
+        gpSelected.value.pSoldier.value.uiStatusFlags |= SOLDIER_MONSTER;
         break;
       case BLOODCAT:
       case COW:
       case CROW:
-        gpSelected->pSoldier->uiStatusFlags |= SOLDIER_ANIMAL;
+        gpSelected.value.pSoldier.value.uiStatusFlags |= SOLDIER_ANIMAL;
         break;
       case ROBOTNOWEAPON:
-        gpSelected->pSoldier->uiStatusFlags |= SOLDIER_ROBOT;
+        gpSelected.value.pSoldier.value.uiStatusFlags |= SOLDIER_ROBOT;
         break;
       case HUMVEE:
       case ELDORADO:
@@ -1915,21 +1915,21 @@ function ChangeBodyType(bOffset: INT8): void //+1 or -1 only
       case JEEP:
       case TANK_NW:
       case TANK_NE:
-        gpSelected->pSoldier->uiStatusFlags |= SOLDIER_VEHICLE;
+        gpSelected.value.pSoldier.value.uiStatusFlags |= SOLDIER_VEHICLE;
         break;
     }
-    SetSoldierAnimationSurface(gpSelected->pSoldier, gpSelected->pSoldier->usAnimState);
+    SetSoldierAnimationSurface(gpSelected.value.pSoldier, gpSelected.value.pSoldier.value.usAnimState);
   }
   // Update the placement's info as well.
-  gpSelected->pBasicPlacement->bBodyType = iIndex;
-  if (gpSelected->pDetailedPlacement) {
-    gpSelected->pDetailedPlacement->bBodyType = iIndex;
+  gpSelected.value.pBasicPlacement.value.bBodyType = iIndex;
+  if (gpSelected.value.pDetailedPlacement) {
+    gpSelected.value.pDetailedPlacement.value.bBodyType = iIndex;
   }
-  if (gpSelected->pSoldier->bTeam == CREATURE_TEAM) {
+  if (gpSelected.value.pSoldier.value.bTeam == CREATURE_TEAM) {
     gbCurrCreature = iIndex;
-    AssignCreatureInventory(gpSelected->pSoldier);
+    AssignCreatureInventory(gpSelected.value.pSoldier);
   }
-  CreateSoldierPalettes(gpSelected->pSoldier);
+  CreateSoldierPalettes(gpSelected.value.pSoldier);
 }
 
 function SetMercEditability(fEditable: BOOLEAN): void {
@@ -1941,7 +1941,7 @@ function SetMercEditability(fEditable: BOOLEAN): void {
     // enable buttons to allow editing
     EnableEditorButtons(MERCS_EQUIPMENT_BAD, MERCS_ATTRIBUTES_GREAT);
     EnableEditorButtons(FIRST_MERCS_COLORMODE_BUTTON, LAST_MERCS_COLORMODE_BUTTON);
-    if (gpSelected && gpSelected->pDetailedPlacement && !gpSelected->pDetailedPlacement->fVisible)
+    if (gpSelected && gpSelected.value.pDetailedPlacement && !gpSelected.value.pDetailedPlacement.value.fVisible)
       UnclickEditorButton(MERCS_TOGGLECOLOR_BUTTON);
     EnableEditorButton(MERCS_PRIORITYEXISTANCE_CHECKBOX);
     EnableEditorButton(MERCS_CIVILIAN_GROUP);
@@ -2062,12 +2062,12 @@ function SetMercEditingMode(ubNewMode: UINT8): void {
   if (gsSelectedMercID != -1 && ubNewMode == MERC_TEAMMODE) {
     // attempt to weed out conditions where we select a team that matches the currently
     // selected merc.  We don't want to deselect him in this case.
-    if (gpSelected->pSoldier->bTeam == ENEMY_TEAM && iDrawMode == DRAW_MODE_ENEMY || gpSelected->pSoldier->bTeam == CREATURE_TEAM && iDrawMode == DRAW_MODE_CREATURE || gpSelected->pSoldier->bTeam == MILITIA_TEAM && iDrawMode == DRAW_MODE_REBEL || gpSelected->pSoldier->bTeam == CIV_TEAM && iDrawMode == DRAW_MODE_CIVILIAN) {
+    if (gpSelected.value.pSoldier.value.bTeam == ENEMY_TEAM && iDrawMode == DRAW_MODE_ENEMY || gpSelected.value.pSoldier.value.bTeam == CREATURE_TEAM && iDrawMode == DRAW_MODE_CREATURE || gpSelected.value.pSoldier.value.bTeam == MILITIA_TEAM && iDrawMode == DRAW_MODE_REBEL || gpSelected.value.pSoldier.value.bTeam == CIV_TEAM && iDrawMode == DRAW_MODE_CIVILIAN) {
       // Same team, so don't deselect merc.  Instead, keep the previous editing mode
       // because we are still editing this merc.
       gubCurrMercMode = gubPrevMercMode;
       // if we don't have a detailed placement, auto set to basic mode.
-      if (!gpSelected->pDetailedPlacement)
+      if (!gpSelected.value.pDetailedPlacement)
         gubCurrMercMode = MERC_BASICMODE;
     } else {
       // Different teams, so deselect the current merc and the detailed checkbox if applicable.
@@ -2157,8 +2157,8 @@ function SetMercEditingMode(ubNewMode: UINT8): void {
       ShowEditorButtons(FIRST_MERCS_COLORMODE_BUTTON, LAST_MERCS_COLORMODE_BUTTON);
       UnclickEditorButtons(FIRST_MERCS_PRIORITYMODE_BUTTON, LAST_MERCS_PRIORITYMODE_BUTTON);
       ClickEditorButton(MERCS_APPEARANCE);
-      if (gfCanEditMercs && gpSelected && gpSelected->pDetailedPlacement) {
-        if (!gpSelected->pDetailedPlacement->fVisible) {
+      if (gfCanEditMercs && gpSelected && gpSelected.value.pDetailedPlacement) {
+        if (!gpSelected.value.pDetailedPlacement.value.fVisible) {
           UnclickEditorButton(MERCS_TOGGLECOLOR_BUTTON);
           DisableEditorButtons(FIRST_MERCS_COLOR_BUTTON, LAST_MERCS_COLOR_BUTTON);
         } else {
@@ -2183,14 +2183,14 @@ function SetMercEditingMode(ubNewMode: UINT8): void {
   }
   // Show or hide the schedule buttons
   if (gpSelected && gubCurrMercMode != MERC_GETITEMMODE) {
-    if (gpSelected->pDetailedPlacement && gpSelected->pDetailedPlacement->ubScheduleID) {
+    if (gpSelected.value.pDetailedPlacement && gpSelected.value.pDetailedPlacement.value.ubScheduleID) {
       HideEditorButton(MERCS_SCHEDULE);
       ShowEditorButton(MERCS_GLOWSCHEDULE);
     } else {
       HideEditorButton(MERCS_GLOWSCHEDULE);
-      if (gpSelected->pDetailedPlacement) {
+      if (gpSelected.value.pDetailedPlacement) {
         ShowEditorButton(MERCS_SCHEDULE);
-        if (gpSelected->pSoldier->bTeam == CIV_TEAM)
+        if (gpSelected.value.pSoldier.value.bTeam == CIV_TEAM)
           EnableEditorButton(MERCS_SCHEDULE);
         else
           DisableEditorButton(MERCS_SCHEDULE);
@@ -2205,7 +2205,7 @@ function SetMercEditingMode(ubNewMode: UINT8): void {
 
 function DisplayBodyTypeInfo(): void {
   let str: UINT16[] /* [20] */;
-  switch (gpSelected->pBasicPlacement->bBodyType) {
+  switch (gpSelected.value.pBasicPlacement.value.bBodyType) {
     case RANDOM:
       swprintf(str, "Random");
       break;
@@ -2363,7 +2363,7 @@ function UpdateMercsInfo(): void {
       break;
     case MERC_APPEARANCEMODE:
       SetFont(FONT10ARIAL);
-      if (gpSelected->pDetailedPlacement->fVisible || gpSelected->pDetailedPlacement->ubProfile != NO_PROFILE)
+      if (gpSelected.value.pDetailedPlacement.value.fVisible || gpSelected.value.pDetailedPlacement.value.ubProfile != NO_PROFILE)
         SetFontForeground(FONT_YELLOW);
       else
         SetFontForeground(FONT_DKYELLOW);
@@ -2376,12 +2376,12 @@ function UpdateMercsInfo(): void {
 
       SetFont(SMALLCOMPFONT);
       SetFontForeground(FONT_BLACK);
-      if (gpSelected->pDetailedPlacement->fVisible || gpSelected->pDetailedPlacement->ubProfile != NO_PROFILE) {
-        mprintfEditor(396, 374, "%S    ", gpSelected->pSoldier->HeadPal);
-        mprintfEditor(396, 398, "%S    ", gpSelected->pSoldier->SkinPal);
-        mprintfEditor(396, 422, "%S    ", gpSelected->pSoldier->VestPal);
-        mprintfEditor(396, 446, "%S    ", gpSelected->pSoldier->PantsPal);
-        ShowEditMercPalettes(gpSelected->pSoldier);
+      if (gpSelected.value.pDetailedPlacement.value.fVisible || gpSelected.value.pDetailedPlacement.value.ubProfile != NO_PROFILE) {
+        mprintfEditor(396, 374, "%S    ", gpSelected.value.pSoldier.value.HeadPal);
+        mprintfEditor(396, 398, "%S    ", gpSelected.value.pSoldier.value.SkinPal);
+        mprintfEditor(396, 422, "%S    ", gpSelected.value.pSoldier.value.VestPal);
+        mprintfEditor(396, 446, "%S    ", gpSelected.value.pSoldier.value.PantsPal);
+        ShowEditMercPalettes(gpSelected.value.pSoldier);
       } else {
         mprintf(396, 374, "RANDOM");
         mprintf(396, 398, "RANDOM");
@@ -2401,13 +2401,13 @@ function UpdateMercsInfo(): void {
         swprintf(tempStr, "%s%s%s%s%s%d.", "By specifying a profile index, all of the information will be extracted from the profile ", "and override any values that you have edited.  It will also disable the editing features ", "though, you will still be able to view stats, etc.  Pressing ENTER will automatically ", "extract the number you have typed.  A blank field will clear the profile.  The current ", "number of profiles range from 0 to ", NUM_PROFILES);
         DisplayWrappedString(180, 370, 400, 2, FONT10ARIAL, 146, tempStr, FONT_BLACK, FALSE, LEFT_JUSTIFIED);
         SetFont(FONT12POINT1);
-        if (gpSelected->pDetailedPlacement->ubProfile == NO_PROFILE) {
+        if (gpSelected.value.pDetailedPlacement.value.ubProfile == NO_PROFILE) {
           SetFontForeground(FONT_GRAY3);
           mprintfEditor(240, 435, "Current Profile:  n/a                            ");
         } else {
           SetFontForeground(FONT_WHITE);
           ClearTaskbarRegion(240, 435, 580, 445);
-          mprintf(240, 435, "Current Profile:  %s", gMercProfiles[gpSelected->pDetailedPlacement->ubProfile].zName);
+          mprintf(240, 435, "Current Profile:  %s", gMercProfiles[gpSelected.value.pDetailedPlacement.value.ubProfile].zName);
         }
       }
       break;
@@ -2415,7 +2415,7 @@ function UpdateMercsInfo(): void {
       SetFont(FONT10ARIAL);
       SetFontForeground(FONT_WHITE);
       SetFontShadow(FONT_NEARBLACK);
-      switch (gpSelected->pSoldier->bOrders) {
+      switch (gpSelected.value.pSoldier.value.bOrders) {
         case STATIONARY:
           mprintf(430, 363, "STATIONARY");
           break;
@@ -2509,7 +2509,7 @@ let mercRects: SGPRect[] /* [9] */ = [
 ];
 
 function PointInRect(pRect: Pointer<SGPRect>, x: INT32, y: INT32): BOOLEAN {
-  return x >= pRect->iLeft && x <= pRect->iRight && y >= pRect->iTop && y <= pRect->iBottom;
+  return x >= pRect.value.iLeft && x <= pRect.value.iRight && y >= pRect.value.iTop && y <= pRect.value.iBottom;
 }
 
 function DrawRect(pRect: Pointer<SGPRect>, color: INT16): void {
@@ -2517,7 +2517,7 @@ function DrawRect(pRect: Pointer<SGPRect>, color: INT16): void {
   let pDestBuf: Pointer<UINT8>;
   pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
-  RectangleDraw(TRUE, pRect->iLeft + MERCPANEL_X, pRect->iTop + MERCPANEL_Y, pRect->iRight + MERCPANEL_X, pRect->iBottom + MERCPANEL_Y, color, pDestBuf);
+  RectangleDraw(TRUE, pRect.value.iLeft + MERCPANEL_X, pRect.value.iTop + MERCPANEL_Y, pRect.value.iRight + MERCPANEL_X, pRect.value.iBottom + MERCPANEL_Y, color, pDestBuf);
   UnLockVideoSurface(FRAME_BUFFER);
   // InvalidateRegion( pRect->iLeft+175, pRect->iTop+361, pRect->iRight+176, pRect->iBottom+362 );
 }
@@ -2544,7 +2544,7 @@ function RenderSelectedMercsInventory(): void {
       Blt16BPPTo16BPPTrans(pDst, uiDstPitchBYTES, pSrc, uiSrcPitchBYTES, xp, yp, 0, 0, i < 3 ? 22 : 44, 15, 0);
       UnLockVideoSurface(FRAME_BUFFER);
       UnLockVideoSurface(guiMercInvPanelBuffers[i]);
-      LoadItemInfo(gpMercSlotItem[i]->usItem, pItemName, NULL);
+      LoadItemInfo(gpMercSlotItem[i].value.usItem, pItemName, NULL);
       // Render the text
       switch (i) {
         case 2: // legs (to the right of the box, but move it down to make room for right hand text)
@@ -2622,32 +2622,32 @@ function AddNewItemToSelectedMercsInventory(fCreate: BOOLEAN): void {
       return;
     }
     // Create the item, and set up the slot.
-    fUnDroppable = gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[gbCurrSelect]].fFlags & OBJECT_UNDROPPABLE ? TRUE : FALSE;
+    fUnDroppable = gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]].fFlags & OBJECT_UNDROPPABLE ? TRUE : FALSE;
 
     if (Item[gusMercsNewItemIndex].usItemClass == IC_KEY) {
-      CreateKeyObject(&gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[gbCurrSelect]], 1, eInfo.sSelItemIndex);
+      CreateKeyObject(&gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]], 1, eInfo.sSelItemIndex);
     } else {
-      CreateItem(gusMercsNewItemIndex, 100, &gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[gbCurrSelect]]);
+      CreateItem(gusMercsNewItemIndex, 100, &gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]]);
     }
     if (fUnDroppable) {
-      gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[gbCurrSelect]].fFlags |= OBJECT_UNDROPPABLE;
+      gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]].fFlags |= OBJECT_UNDROPPABLE;
     }
 
     // randomize the status on non-ammo items.
-    if (!(Item[gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[gbCurrSelect]].usItem].usItemClass & IC_AMMO))
-      gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[gbCurrSelect]].bStatus[0] = (80 + Random(21));
+    if (!(Item[gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]].usItem].usItemClass & IC_AMMO))
+      gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]].bStatus[0] = (80 + Random(21));
 
     if (gusMercsNewItemIndex) {
-      gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[gbCurrSelect]].fFlags |= OBJECT_NO_OVERWRITE;
+      gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]].fFlags |= OBJECT_NO_OVERWRITE;
     }
   }
   // allow the slot to point to the selected merc's inventory for editing/rendering purposes.
-  gpMercSlotItem[gbCurrSelect] = &gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[gbCurrSelect]];
+  gpMercSlotItem[gbCurrSelect] = &gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]];
 
   if (!fCreate) {
     // it is possible to have a null item which we don't want to blit!  Also, we need to set the
     // new item index, so that it can extract the item's image using that.
-    gusMercsNewItemIndex = gpMercSlotItem[gbCurrSelect]->usItem;
+    gusMercsNewItemIndex = gpMercSlotItem[gbCurrSelect].value.usItem;
     if (!gpMercSlotItem[gbCurrSelect])
       return;
   }
@@ -2685,15 +2685,15 @@ function AddNewItemToSelectedMercsInventory(fCreate: BOOLEAN): void {
   item = &Item[gusMercsNewItemIndex];
   uiVideoObjectIndex = GetInterfaceGraphicForItem(item);
   GetVideoObject(&hVObject, uiVideoObjectIndex);
-  BltVideoObjectOutlineFromIndex(uiSrcID, uiVideoObjectIndex, item->ubGraphicNum, 0, 0, 0, FALSE);
+  BltVideoObjectOutlineFromIndex(uiSrcID, uiVideoObjectIndex, item.value.ubGraphicNum, 0, 0, 0, FALSE);
 
   // crop the source image
-  pObject = &hVObject->pETRLEObject[item->ubGraphicNum];
-  iSrcWidth = pObject->usWidth;
-  iSrcHeight = pObject->usHeight;
-  SrcRect.iLeft += pObject->sOffsetX;
+  pObject = &hVObject.value.pETRLEObject[item.value.ubGraphicNum];
+  iSrcWidth = pObject.value.usWidth;
+  iSrcHeight = pObject.value.usHeight;
+  SrcRect.iLeft += pObject.value.sOffsetX;
   SrcRect.iRight = SrcRect.iLeft + iSrcWidth;
-  SrcRect.iTop += pObject->sOffsetY;
+  SrcRect.iTop += pObject.value.sOffsetY;
   SrcRect.iBottom = SrcRect.iTop + iSrcHeight;
 
   // if the source image width is less than 30 (small slot), then modify the DstRect.
@@ -2819,13 +2819,13 @@ function HandleMercInventoryPanel(sX: INT16, sY: INT16, bEvent: INT8): void {
 
 function UpdateMercItemSlots(): void {
   let x: INT8;
-  if (!gpSelected->pDetailedPlacement) {
+  if (!gpSelected.value.pDetailedPlacement) {
     for (x = 0; x < 9; x++) {
       gpMercSlotItem[x] = NULL;
     }
   } else {
-    if (gpSelected->pDetailedPlacement->ubProfile != NO_PROFILE) {
-      memcpy(gpSelected->pDetailedPlacement->Inv, gpSelected->pSoldier->inv, sizeof(OBJECTTYPE) * NUM_INV_SLOTS);
+    if (gpSelected.value.pDetailedPlacement.value.ubProfile != NO_PROFILE) {
+      memcpy(gpSelected.value.pDetailedPlacement.value.Inv, gpSelected.value.pSoldier.value.inv, sizeof(OBJECTTYPE) * NUM_INV_SLOTS);
     }
     for (x = 0; x < 9; x++) {
       // Set the curr select and the addnewitem function will handle the rest, including rebuilding
@@ -2843,10 +2843,10 @@ function UpdateMercItemSlots(): void {
 function SetDroppableCheckboxesBasedOnMercsInventory(): void {
   let pItem: Pointer<OBJECTTYPE>;
   let i: INT32;
-  if (gpSelected && gpSelected->pDetailedPlacement) {
+  if (gpSelected && gpSelected.value.pDetailedPlacement) {
     for (i = 0; i < 9; i++) {
-      pItem = &gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[i]];
-      if (pItem->fFlags & OBJECT_UNDROPPABLE) {
+      pItem = &gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[i]];
+      if (pItem.value.fFlags & OBJECT_UNDROPPABLE) {
         // check box is clear
         UnclickEditorButton(MERCS_HEAD_SLOT + i);
       } else {
@@ -2857,70 +2857,70 @@ function SetDroppableCheckboxesBasedOnMercsInventory(): void {
 }
 
 function SetEnemyColorCode(ubColorCode: UINT8): void {
-  if (gpSelected->pDetailedPlacement && gpSelected->pDetailedPlacement->ubProfile != NO_PROFILE)
+  if (gpSelected.value.pDetailedPlacement && gpSelected.value.pDetailedPlacement.value.ubProfile != NO_PROFILE)
     return;
 
   UnclickEditorButtons(FIRST_MERCS_COLORCODE_BUTTON, LAST_MERCS_COLORCODE_BUTTON);
   switch (ubColorCode) {
     case SOLDIER_CLASS_ARMY:
-      gpSelected->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_ARMY;
+      gpSelected.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ARMY;
       gubSoldierClass = SOLDIER_CLASS_ARMY;
-      if (gpSelected->pDetailedPlacement)
-        gpSelected->pDetailedPlacement->ubSoldierClass = SOLDIER_CLASS_ARMY;
-      SET_PALETTEREP_ID(gpSelected->pSoldier->VestPal, "REDVEST");
-      SET_PALETTEREP_ID(gpSelected->pSoldier->PantsPal, "GREENPANTS");
+      if (gpSelected.value.pDetailedPlacement)
+        gpSelected.value.pDetailedPlacement.value.ubSoldierClass = SOLDIER_CLASS_ARMY;
+      SET_PALETTEREP_ID(gpSelected.value.pSoldier.value.VestPal, "REDVEST");
+      SET_PALETTEREP_ID(gpSelected.value.pSoldier.value.PantsPal, "GREENPANTS");
       ClickEditorButton(MERCS_ARMY_CODE);
       break;
     case SOLDIER_CLASS_ADMINISTRATOR:
-      gpSelected->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
+      gpSelected.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
       gubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
-      if (gpSelected->pDetailedPlacement)
-        gpSelected->pDetailedPlacement->ubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
+      if (gpSelected.value.pDetailedPlacement)
+        gpSelected.value.pDetailedPlacement.value.ubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
       ClickEditorButton(MERCS_ADMIN_CODE);
-      SET_PALETTEREP_ID(gpSelected->pSoldier->VestPal, "BLUEVEST");
-      SET_PALETTEREP_ID(gpSelected->pSoldier->PantsPal, "BLUEPANTS");
+      SET_PALETTEREP_ID(gpSelected.value.pSoldier.value.VestPal, "BLUEVEST");
+      SET_PALETTEREP_ID(gpSelected.value.pSoldier.value.PantsPal, "BLUEPANTS");
       break;
     case SOLDIER_CLASS_ELITE:
-      gpSelected->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_ELITE;
+      gpSelected.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE;
       gubSoldierClass = SOLDIER_CLASS_ELITE;
-      if (gpSelected->pDetailedPlacement)
-        gpSelected->pDetailedPlacement->ubSoldierClass = SOLDIER_CLASS_ELITE;
-      SET_PALETTEREP_ID(gpSelected->pSoldier->VestPal, "BLACKSHIRT");
-      SET_PALETTEREP_ID(gpSelected->pSoldier->PantsPal, "BLACKPANTS");
+      if (gpSelected.value.pDetailedPlacement)
+        gpSelected.value.pDetailedPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE;
+      SET_PALETTEREP_ID(gpSelected.value.pSoldier.value.VestPal, "BLACKSHIRT");
+      SET_PALETTEREP_ID(gpSelected.value.pSoldier.value.PantsPal, "BLACKPANTS");
       ClickEditorButton(MERCS_ELITE_CODE);
       break;
     case SOLDIER_CLASS_MINER:
       // will probably never get called
-      gpSelected->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_ELITE;
+      gpSelected.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE;
       gubSoldierClass = SOLDIER_CLASS_MINER;
-      if (gpSelected->pDetailedPlacement)
-        gpSelected->pDetailedPlacement->ubSoldierClass = SOLDIER_CLASS_ELITE;
-      SET_PALETTEREP_ID(gpSelected->pSoldier->VestPal, "greyVEST");
-      SET_PALETTEREP_ID(gpSelected->pSoldier->PantsPal, "BEIGEPANTS");
+      if (gpSelected.value.pDetailedPlacement)
+        gpSelected.value.pDetailedPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE;
+      SET_PALETTEREP_ID(gpSelected.value.pSoldier.value.VestPal, "greyVEST");
+      SET_PALETTEREP_ID(gpSelected.value.pSoldier.value.PantsPal, "BEIGEPANTS");
       break;
 
     default:
       return;
   }
-  CreateSoldierPalettes(gpSelected->pSoldier);
+  CreateSoldierPalettes(gpSelected.value.pSoldier);
 }
 
 function SetEnemyDroppableStatus(uiSlot: UINT32, fDroppable: BOOLEAN): void {
   if (gpSelected) {
     if (fDroppable) {
-      if (gpSelected->pDetailedPlacement)
-        gpSelected->pDetailedPlacement->Inv[uiSlot].fFlags &= (~OBJECT_UNDROPPABLE);
-      if (gpSelected->pSoldier)
-        gpSelected->pSoldier->inv[uiSlot].fFlags &= (~OBJECT_UNDROPPABLE);
+      if (gpSelected.value.pDetailedPlacement)
+        gpSelected.value.pDetailedPlacement.value.Inv[uiSlot].fFlags &= (~OBJECT_UNDROPPABLE);
+      if (gpSelected.value.pSoldier)
+        gpSelected.value.pSoldier.value.inv[uiSlot].fFlags &= (~OBJECT_UNDROPPABLE);
     } else {
-      if (gpSelected->pDetailedPlacement)
-        gpSelected->pDetailedPlacement->Inv[uiSlot].fFlags |= OBJECT_UNDROPPABLE;
-      if (gpSelected->pSoldier)
-        gpSelected->pSoldier->inv[uiSlot].fFlags |= OBJECT_UNDROPPABLE;
+      if (gpSelected.value.pDetailedPlacement)
+        gpSelected.value.pDetailedPlacement.value.Inv[uiSlot].fFlags |= OBJECT_UNDROPPABLE;
+      if (gpSelected.value.pSoldier)
+        gpSelected.value.pSoldier.value.inv[uiSlot].fFlags |= OBJECT_UNDROPPABLE;
     }
   }
   if (gbCurrSelect != -1 && uiSlot == gbMercSlotTypes[gbCurrSelect]) {
-    if (gpMercSlotItem[gbCurrSelect]->usItem == NOTHING)
+    if (gpMercSlotItem[gbCurrSelect].value.usItem == NOTHING)
       SpecifyItemToEdit(gpMercSlotItem[gbCurrSelect], -1);
   }
 }
@@ -2930,11 +2930,11 @@ function ChangeCivGroup(ubNewCivGroup: UINT8): void {
   if (gubCivGroup == ubNewCivGroup)
     return;
   gubCivGroup = ubNewCivGroup;
-  if (gpSelected && gpSelected->pSoldier) {
-    gpSelected->pBasicPlacement->ubCivilianGroup = gubCivGroup;
-    if (gpSelected->pDetailedPlacement)
-      gpSelected->pDetailedPlacement->ubCivilianGroup = gubCivGroup;
-    gpSelected->pSoldier->ubCivilianGroup = gubCivGroup;
+  if (gpSelected && gpSelected.value.pSoldier) {
+    gpSelected.value.pBasicPlacement.value.ubCivilianGroup = gubCivGroup;
+    if (gpSelected.value.pDetailedPlacement)
+      gpSelected.value.pDetailedPlacement.value.ubCivilianGroup = gubCivGroup;
+    gpSelected.value.pSoldier.value.ubCivilianGroup = gubCivGroup;
   }
   // Adjust the text on the button
   SpecifyButtonText(iEditorButton[MERCS_CIVILIAN_GROUP], gszCivGroupNames[gubCivGroup]);
@@ -2952,19 +2952,19 @@ function RenderMercStrings(): void {
 
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr->pSoldier && curr->pSoldier->bVisible == 1) {
+    if (curr.value.pSoldier && curr.value.pSoldier.value.bVisible == 1) {
       // Render the health text
-      pSoldier = curr->pSoldier;
+      pSoldier = curr.value.pSoldier;
       GetSoldierAboveGuyPositions(pSoldier, &sXPos, &sYPos, FALSE);
       // Display name
       SetFont(TINYFONT1);
       SetFontBackground(FONT_BLACK);
       SetFontForeground(FONT_WHITE);
-      if (pSoldier->ubProfile != NO_PROFILE) {
-        FindFontCenterCoordinates(sXPos, sYPos, (80), 1, pSoldier->name, TINYFONT1, &sX, &sY);
+      if (pSoldier.value.ubProfile != NO_PROFILE) {
+        FindFontCenterCoordinates(sXPos, sYPos, (80), 1, pSoldier.value.name, TINYFONT1, &sX, &sY);
         if (sY < 352) {
-          gprintfdirty(sX, sY, pSoldier->name);
-          mprintf(sX, sY, pSoldier->name);
+          gprintfdirty(sX, sY, pSoldier.value.name);
+          mprintf(sX, sY, pSoldier.value.name);
         }
         sYPos += 10;
 
@@ -2982,7 +2982,7 @@ function RenderMercStrings(): void {
         sYPos += 10;
 
         SetFontForeground(FONT_GRAY2);
-        swprintf(str, "Slot #%d", pSoldier->ubID);
+        swprintf(str, "Slot #%d", pSoldier.value.ubID);
         FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, &sX, &sY);
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
@@ -3004,7 +3004,7 @@ function RenderMercStrings(): void {
         sYPos += 10;
 
         SetFontForeground(FONT_GRAY2);
-        swprintf(str, "Slot #%d", pSoldier->ubID);
+        swprintf(str, "Slot #%d", pSoldier.value.ubID);
         FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, &sX, &sY);
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
@@ -3012,9 +3012,9 @@ function RenderMercStrings(): void {
         }
         sYPos += 10;
       }
-      if (curr->pBasicPlacement->bOrders == RNDPTPATROL || curr->pBasicPlacement->bOrders == POINTPATROL) {
+      if (curr.value.pBasicPlacement.value.bOrders == RNDPTPATROL || curr.value.pBasicPlacement.value.bOrders == POINTPATROL) {
         // make sure the placement has at least one waypoint.
-        if (!curr->pBasicPlacement->bPatrolCnt) {
+        if (!curr.value.pBasicPlacement.value.bPatrolCnt) {
           if (GetJA2Clock() % 1000 < 500)
             SetFontForeground(FONT_DKRED);
           else
@@ -3027,7 +3027,7 @@ function RenderMercStrings(): void {
           }
           sYPos += 10;
         }
-      } else if (curr->pBasicPlacement->bPatrolCnt) {
+      } else if (curr.value.pBasicPlacement.value.bPatrolCnt) {
         if (GetJA2Clock() % 1000 < 500)
           SetFontForeground(FONT_DKRED);
         else
@@ -3041,7 +3041,7 @@ function RenderMercStrings(): void {
         sYPos += 10;
       }
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   if (gubCurrMercMode == MERC_SCHEDULEMODE) {
     RenderCurrentSchedule();
@@ -3054,15 +3054,15 @@ function SetMercTeamVisibility(bTeam: INT8, fVisible: BOOLEAN): void {
   curr = gSoldierInitHead;
   bVisible = fVisible ? 1 : -1;
   while (curr) {
-    if (curr->pBasicPlacement->bTeam == bTeam) {
-      if (curr->pSoldier) {
-        curr->pSoldier->bLastRenderVisibleValue = bVisible;
-        curr->pSoldier->bVisible = bVisible;
+    if (curr.value.pBasicPlacement.value.bTeam == bTeam) {
+      if (curr.value.pSoldier) {
+        curr.value.pSoldier.value.bLastRenderVisibleValue = bVisible;
+        curr.value.pSoldier.value.bVisible = bVisible;
       }
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
-  if (gpSelected && gpSelected->pSoldier && gpSelected->pSoldier->bTeam == bTeam && !fVisible) {
+  if (gpSelected && gpSelected.value.pSoldier && gpSelected.value.pSoldier.value.bTeam == bTeam && !fVisible) {
     IndicateSelectedMerc(SELECT_NO_MERC);
   }
 }
@@ -3123,7 +3123,7 @@ function RegisterCurrentScheduleAction(iMapIndex: INT32): void {
   if (gfUseScheduleData2) {
     if (gfSingleAction)
       return;
-    iDrawMode = DRAW_MODE_PLAYER + gpSelected->pBasicPlacement->bTeam;
+    iDrawMode = DRAW_MODE_PLAYER + gpSelected.value.pBasicPlacement.value.bTeam;
     gCurrSchedule.usData2[gubCurrentScheduleActionIndex] = iMapIndex;
     SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_DATA1B + gubCurrentScheduleActionIndex], str);
     DetermineScheduleEditability();
@@ -3153,7 +3153,7 @@ function RegisterCurrentScheduleAction(iMapIndex: INT32): void {
       case SCHEDULE_ACTION_GRIDNO:
       case SCHEDULE_ACTION_ENTERSECTOR:
       case SCHEDULE_ACTION_SLEEP:
-        iDrawMode = DRAW_MODE_PLAYER + gpSelected->pBasicPlacement->bTeam;
+        iDrawMode = DRAW_MODE_PLAYER + gpSelected.value.pBasicPlacement.value.bTeam;
         DetermineScheduleEditability();
         gubScheduleInstructions = SCHEDULE_INSTRUCTIONS_NONE;
         gfRenderTaskbar = TRUE;
@@ -3341,38 +3341,38 @@ function UpdateScheduleInfo(): void {
   let i: INT32;
   let pSchedule: Pointer<SCHEDULENODE>;
   let str: UINT16[] /* [6] */;
-  if (gpSelected->pSoldier->ubScheduleID) {
-    pSchedule = GetSchedule(gpSelected->pSoldier->ubScheduleID);
+  if (gpSelected.value.pSoldier.value.ubScheduleID) {
+    pSchedule = GetSchedule(gpSelected.value.pSoldier.value.ubScheduleID);
     if (!pSchedule) {
       return;
     }
     for (i = 0; i < 4; i++) {
       // Update the text and buttons
-      MSYS_SetBtnUserData(iEditorButton[MERCS_SCHEDULE_ACTION1 + i], 0, pSchedule->ubAction[i]);
-      SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_ACTION1 + i], gszScheduleActions[pSchedule->ubAction[i]]);
+      MSYS_SetBtnUserData(iEditorButton[MERCS_SCHEDULE_ACTION1 + i], 0, pSchedule.value.ubAction[i]);
+      SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_ACTION1 + i], gszScheduleActions[pSchedule.value.ubAction[i]]);
       swprintf(str, "");
-      if (pSchedule->usData1[i] != 0xffff)
-        swprintf(str, "%d", pSchedule->usData1[i]);
+      if (pSchedule.value.usData1[i] != 0xffff)
+        swprintf(str, "%d", pSchedule.value.usData1[i]);
       SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_DATA1A + i], str);
       swprintf(str, "");
-      if (pSchedule->usData2[i] != 0xffff)
-        swprintf(str, "%d", pSchedule->usData2[i]);
+      if (pSchedule.value.usData2[i] != 0xffff)
+        swprintf(str, "%d", pSchedule.value.usData2[i]);
       SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_DATA1B + i], str);
       if (gubCurrMercMode == MERC_SCHEDULEMODE) {
         // Update the text input fields too!
-        SetExclusive24HourTimeValue((i + 1), pSchedule->usTime[i]);
+        SetExclusive24HourTimeValue((i + 1), pSchedule.value.usTime[i]);
       }
     }
 
     // Check or uncheck the checkbox buttons based on the schedule's status.
     UnclickEditorButtons(MERCS_SCHEDULE_VARIANCE1, MERCS_SCHEDULE_VARIANCE4);
-    if (pSchedule->usFlags & SCHEDULE_FLAGS_VARIANCE1)
+    if (pSchedule.value.usFlags & SCHEDULE_FLAGS_VARIANCE1)
       ClickEditorButton(MERCS_SCHEDULE_VARIANCE1);
-    if (pSchedule->usFlags & SCHEDULE_FLAGS_VARIANCE2)
+    if (pSchedule.value.usFlags & SCHEDULE_FLAGS_VARIANCE2)
       ClickEditorButton(MERCS_SCHEDULE_VARIANCE2);
-    if (pSchedule->usFlags & SCHEDULE_FLAGS_VARIANCE3)
+    if (pSchedule.value.usFlags & SCHEDULE_FLAGS_VARIANCE3)
       ClickEditorButton(MERCS_SCHEDULE_VARIANCE3);
-    if (pSchedule->usFlags & SCHEDULE_FLAGS_VARIANCE4)
+    if (pSchedule.value.usFlags & SCHEDULE_FLAGS_VARIANCE4)
       ClickEditorButton(MERCS_SCHEDULE_VARIANCE4);
 
     // Copy the schedule over to the current global schedule used for editing purposes.
@@ -3392,9 +3392,9 @@ function CopyMercPlacement(iMapIndex: INT32): void {
     return;
   }
   gfSaveBuffer = TRUE;
-  memcpy(&gSaveBufferBasicPlacement, gpSelected->pBasicPlacement, sizeof(BASIC_SOLDIERCREATE_STRUCT));
+  memcpy(&gSaveBufferBasicPlacement, gpSelected.value.pBasicPlacement, sizeof(BASIC_SOLDIERCREATE_STRUCT));
   if (gSaveBufferBasicPlacement.fDetailedPlacement) {
-    memcpy(&gSaveBufferDetailedPlacement, gpSelected->pDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
+    memcpy(&gSaveBufferDetailedPlacement, gpSelected.value.pDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
   }
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Placement copied.");
 }
@@ -3470,26 +3470,26 @@ function PasteMercPlacement(iMapIndex: INT32): void {
 
     // Create the soldier, but don't place it yet.
     if (pSoldier = TacticalCreateSoldier(&tempDetailedPlacement, &ubID)) {
-      pSoldier->bVisible = 1;
-      pSoldier->bLastRenderVisibleValue = 1;
+      pSoldier.value.bVisible = 1;
+      pSoldier.value.bLastRenderVisibleValue = 1;
       // Set up the soldier in the list, so we can track the soldier in the
       // future (saving, loading, strategic AI)
       pNode = AddBasicPlacementToSoldierInitList(&gTempBasicPlacement);
       Assert(pNode);
-      pNode->pSoldier = pSoldier;
+      pNode.value.pSoldier = pSoldier;
       if (gSaveBufferBasicPlacement.fDetailedPlacement) {
         // Add the static detailed placement information in the same newly created node as the basic placement.
         // read static detailed placement from file
         // allocate memory for new static detailed placement
         gTempBasicPlacement.fDetailedPlacement = TRUE;
         gTempBasicPlacement.fPriorityExistance = gSaveBufferBasicPlacement.fPriorityExistance;
-        pNode->pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
-        if (!pNode->pDetailedPlacement) {
+        pNode.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
+        if (!pNode.value.pDetailedPlacement) {
           AssertMsg(0, "Failed to allocate memory for new detailed placement in PasteMercPlacement.");
           return;
         }
         // copy the file information from temp var to node in list.
-        memcpy(pNode->pDetailedPlacement, &gSaveBufferDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
+        memcpy(pNode.value.pDetailedPlacement, &gSaveBufferDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
       }
 
       // Add the soldier to physically appear on the map now.
@@ -3498,10 +3498,10 @@ function PasteMercPlacement(iMapIndex: INT32): void {
 
       // Move him to the roof if intended and possible.
       if (gfRoofPlacement && FlatRoofAboveGridNo(iMapIndex)) {
-        gpSelected->pBasicPlacement->fOnRoof = TRUE;
-        if (gpSelected->pDetailedPlacement)
-          gpSelected->pDetailedPlacement->fOnRoof = TRUE;
-        SetSoldierHeight(gpSelected->pSoldier, 58.0);
+        gpSelected.value.pBasicPlacement.value.fOnRoof = TRUE;
+        if (gpSelected.value.pDetailedPlacement)
+          gpSelected.value.pDetailedPlacement.value.fOnRoof = TRUE;
+        SetSoldierHeight(gpSelected.value.pSoldier, 58.0);
       }
       UnclickEditorButtons(FIRST_MERCS_INVENTORY_BUTTON, LAST_MERCS_INVENTORY_BUTTON);
       for (i = FIRST_MERCS_INVENTORY_BUTTON; i <= LAST_MERCS_INVENTORY_BUTTON; i++) {

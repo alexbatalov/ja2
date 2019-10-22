@@ -11,10 +11,10 @@ function CountNumberOfNodesWithSoldiers(): UINT32 {
   let num: UINT32 = 0;
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr->pSoldier) {
+    if (curr.value.pSoldier) {
       num++;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   return num;
 }
@@ -43,20 +43,20 @@ function AddBasicPlacementToSoldierInitList(pBasicPlacement: Pointer<BASIC_SOLDI
   memset(curr, 0, sizeof(SOLDIERINITNODE));
 
   // Allocate memory for basic placement
-  curr->pBasicPlacement = MemAlloc(sizeof(BASIC_SOLDIERCREATE_STRUCT));
-  if (!curr->pBasicPlacement) {
+  curr.value.pBasicPlacement = MemAlloc(sizeof(BASIC_SOLDIERCREATE_STRUCT));
+  if (!curr.value.pBasicPlacement) {
     AssertMsg(0, "Failed to allocate memory for AddBasicPlacementToSoldierInitList.");
     return NULL;
   }
 
   // Copy memory for basic placement
-  memcpy(curr->pBasicPlacement, pBasicPlacement, sizeof(BASIC_SOLDIERCREATE_STRUCT));
+  memcpy(curr.value.pBasicPlacement, pBasicPlacement, sizeof(BASIC_SOLDIERCREATE_STRUCT));
 
   // It is impossible to set up detailed placement stuff now.
   // If there is any detailed placement information during map load, it will be added
   // immediately after this function call.
-  curr->pDetailedPlacement = NULL;
-  curr->pSoldier = NULL;
+  curr.value.pDetailedPlacement = NULL;
+  curr.value.pSoldier = NULL;
 
   // Insert the new node in the list in its proper place.
   if (!gSoldierInitHead) {
@@ -66,14 +66,14 @@ function AddBasicPlacementToSoldierInitList(pBasicPlacement: Pointer<BASIC_SOLDI
     else
       gAlternateSoldierInitListHead = curr;
     gSoldierInitTail = curr;
-    gSoldierInitHead->next = NULL;
-    gSoldierInitHead->prev = NULL;
+    gSoldierInitHead.value.next = NULL;
+    gSoldierInitHead.value.prev = NULL;
   } else {
     // TEMP:  no sorting, just enemies
-    curr->prev = gSoldierInitTail;
-    curr->next = NULL;
-    gSoldierInitTail->next = curr;
-    gSoldierInitTail = gSoldierInitTail->next;
+    curr.value.prev = gSoldierInitTail;
+    curr.value.next = NULL;
+    gSoldierInitTail.value.next = curr;
+    gSoldierInitTail = gSoldierInitTail.value.next;
   }
   if (gfOriginalList)
     gMapInformation.ubNumIndividuals++;
@@ -85,35 +85,35 @@ function RemoveSoldierNodeFromInitList(pNode: Pointer<SOLDIERINITNODE>): void {
     return;
   if (gfOriginalList)
     gMapInformation.ubNumIndividuals--;
-  if (pNode->pBasicPlacement) {
-    MemFree(pNode->pBasicPlacement);
-    pNode->pBasicPlacement = NULL;
+  if (pNode.value.pBasicPlacement) {
+    MemFree(pNode.value.pBasicPlacement);
+    pNode.value.pBasicPlacement = NULL;
   }
-  if (pNode->pDetailedPlacement) {
-    MemFree(pNode->pDetailedPlacement);
-    pNode->pDetailedPlacement = NULL;
+  if (pNode.value.pDetailedPlacement) {
+    MemFree(pNode.value.pDetailedPlacement);
+    pNode.value.pDetailedPlacement = NULL;
   }
-  if (pNode->pSoldier) {
-    if (pNode->pSoldier->ubID >= 20) {
-      TacticalRemoveSoldier(pNode->pSoldier->ubID);
+  if (pNode.value.pSoldier) {
+    if (pNode.value.pSoldier.value.ubID >= 20) {
+      TacticalRemoveSoldier(pNode.value.pSoldier.value.ubID);
     } else {
       let bug: INT8 = 0;
     }
   }
   if (pNode == gSoldierInitHead) {
-    gSoldierInitHead = gSoldierInitHead->next;
+    gSoldierInitHead = gSoldierInitHead.value.next;
     if (gSoldierInitHead)
-      gSoldierInitHead->prev = NULL;
+      gSoldierInitHead.value.prev = NULL;
     if (gfOriginalList)
       gOriginalSoldierInitListHead = gSoldierInitHead;
     else
       gAlternateSoldierInitListHead = gSoldierInitHead;
   } else if (pNode == gSoldierInitTail) {
-    gSoldierInitTail = gSoldierInitTail->prev;
-    gSoldierInitTail->next = NULL;
+    gSoldierInitTail = gSoldierInitTail.value.prev;
+    gSoldierInitTail.value.next = NULL;
   } else {
-    pNode->prev->next = pNode->next;
-    pNode->next->prev = pNode->prev;
+    pNode.value.prev.value.next = pNode.value.next;
+    pNode.value.next.value.prev = pNode.value.prev;
   }
   MemFree(pNode);
 }
@@ -146,15 +146,15 @@ function SaveSoldiersToMap(fp: HWFILE): BOOLEAN {
   for (i = 0; i < gMapInformation.ubNumIndividuals; i++) {
     if (!curr)
       return FALSE;
-    curr->ubNodeID = i;
-    FileWrite(fp, curr->pBasicPlacement, sizeof(BASIC_SOLDIERCREATE_STRUCT), &uiBytesWritten);
+    curr.value.ubNodeID = i;
+    FileWrite(fp, curr.value.pBasicPlacement, sizeof(BASIC_SOLDIERCREATE_STRUCT), &uiBytesWritten);
 
-    if (curr->pBasicPlacement->fDetailedPlacement) {
-      if (!curr->pDetailedPlacement)
+    if (curr.value.pBasicPlacement.value.fDetailedPlacement) {
+      if (!curr.value.pDetailedPlacement)
         return FALSE;
-      FileWrite(fp, curr->pDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), &uiBytesWritten);
+      FileWrite(fp, curr.value.pDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), &uiBytesWritten);
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   return TRUE;
 }
@@ -194,7 +194,7 @@ function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
   for (i = 0; i < ubNumIndividuals; i++) {
     LOADDATA(&tempBasicPlacement, *hBuffer, sizeof(BASIC_SOLDIERCREATE_STRUCT));
     pNode = AddBasicPlacementToSoldierInitList(&tempBasicPlacement);
-    pNode->ubNodeID = i;
+    pNode.value.ubNodeID = i;
     if (!pNode) {
       AssertMsg(0, "Failed to allocate memory for new basic placement in LoadSoldiersFromMap.");
       return FALSE;
@@ -204,17 +204,17 @@ function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
       // read static detailed placement from file
       LOADDATA(&tempDetailedPlacement, *hBuffer, sizeof(SOLDIERCREATE_STRUCT));
       // allocate memory for new static detailed placement
-      pNode->pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
-      if (!pNode->pDetailedPlacement) {
+      pNode.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
+      if (!pNode.value.pDetailedPlacement) {
         AssertMsg(0, "Failed to allocate memory for new detailed placement in LoadSoldiersFromMap.");
         return FALSE;
       }
       // copy the file information from temp var to node in list.
-      memcpy(pNode->pDetailedPlacement, &tempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
+      memcpy(pNode.value.pDetailedPlacement, &tempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
 
       if (tempDetailedPlacement.ubProfile != NO_PROFILE) {
-        pNode->pDetailedPlacement->ubCivilianGroup = gMercProfiles[tempDetailedPlacement.ubProfile].ubCivilianGroup;
-        pNode->pBasicPlacement->ubCivilianGroup = gMercProfiles[tempDetailedPlacement.ubProfile].ubCivilianGroup;
+        pNode.value.pDetailedPlacement.value.ubCivilianGroup = gMercProfiles[tempDetailedPlacement.ubProfile].ubCivilianGroup;
+        pNode.value.pBasicPlacement.value.ubCivilianGroup = gMercProfiles[tempDetailedPlacement.ubProfile].ubCivilianGroup;
       }
     }
     if (tempBasicPlacement.bBodyType == COW) {
@@ -254,140 +254,140 @@ function SortSoldierInitList(): void {
 
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr->pDetailedPlacement && curr->pDetailedPlacement->ubProfile == FREDO) {
+    if (curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == FREDO) {
       fFredoAtStart = TRUE;
       break;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 
   // 1st priority sort
   curr = gSoldierInitTail;
   while (curr) {
-    if (curr->pSoldier && curr != gSoldierInitTail) {
+    if (curr.value.pSoldier && curr != gSoldierInitTail) {
       // This node has an existing soldier, so move to end of list.
       // copy node
       temp = curr;
       if (temp == gSoldierInitHead) {
         // If we dealing with the head, we need to move it now.
-        gSoldierInitHead = gSoldierInitHead->next;
+        gSoldierInitHead = gSoldierInitHead.value.next;
         if (gfOriginalList)
           gOriginalSoldierInitListHead = gSoldierInitHead;
         else
           gAlternateSoldierInitListHead = gSoldierInitHead;
-        gSoldierInitHead->prev = NULL;
-        temp->next = NULL;
+        gSoldierInitHead.value.prev = NULL;
+        temp.value.next = NULL;
       }
-      curr = curr->prev;
+      curr = curr.value.prev;
       // detach node from list
-      if (temp->prev)
-        temp->prev->next = temp->next;
-      if (temp->next)
-        temp->next->prev = temp->prev;
+      if (temp.value.prev)
+        temp.value.prev.value.next = temp.value.next;
+      if (temp.value.next)
+        temp.value.next.value.prev = temp.value.prev;
       // add node to end of list
-      temp->prev = gSoldierInitTail;
-      temp->next = NULL;
-      gSoldierInitTail->next = temp;
+      temp.value.prev = gSoldierInitTail;
+      temp.value.next = NULL;
+      gSoldierInitTail.value.next = temp;
       gSoldierInitTail = temp;
     } else {
-      curr = curr->prev;
+      curr = curr.value.prev;
     }
   }
   // 4th -- put to start
   curr = gSoldierInitHead;
   while (curr) {
-    if (!curr->pSoldier && !curr->pBasicPlacement->fPriorityExistance && curr->pDetailedPlacement && curr != gSoldierInitHead) {
+    if (!curr.value.pSoldier && !curr.value.pBasicPlacement.value.fPriorityExistance && curr.value.pDetailedPlacement && curr != gSoldierInitHead) {
       // Priority existance nodes without detailed placement info are moved to beginning of list
       // copy node
       temp = curr;
       if (temp == gSoldierInitTail) {
         // If we dealing with the tail, we need to move it now.
-        gSoldierInitTail = gSoldierInitTail->prev;
-        gSoldierInitTail->next = NULL;
-        temp->prev = NULL;
+        gSoldierInitTail = gSoldierInitTail.value.prev;
+        gSoldierInitTail.value.next = NULL;
+        temp.value.prev = NULL;
       }
-      curr = curr->next;
+      curr = curr.value.next;
       // detach node from list
-      if (temp->prev)
-        temp->prev->next = temp->next;
-      if (temp->next)
-        temp->next->prev = temp->prev;
+      if (temp.value.prev)
+        temp.value.prev.value.next = temp.value.next;
+      if (temp.value.next)
+        temp.value.next.value.prev = temp.value.prev;
       // add node to beginning of list
-      temp->prev = NULL;
-      temp->next = gSoldierInitHead;
-      gSoldierInitHead->prev = temp;
+      temp.value.prev = NULL;
+      temp.value.next = gSoldierInitHead;
+      gSoldierInitHead.value.prev = temp;
       gSoldierInitHead = temp;
       if (gfOriginalList)
         gOriginalSoldierInitListHead = gSoldierInitHead;
       else
         gAlternateSoldierInitListHead = gSoldierInitHead;
     } else {
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
   // 3rd priority sort (see below for reason why we do 2nd after 3rd)
   curr = gSoldierInitHead;
   while (curr) {
-    if (!curr->pSoldier && curr->pBasicPlacement->fPriorityExistance && !curr->pDetailedPlacement && curr != gSoldierInitHead) {
+    if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.fPriorityExistance && !curr.value.pDetailedPlacement && curr != gSoldierInitHead) {
       // Priority existance nodes without detailed placement info are moved to beginning of list
       // copy node
       temp = curr;
       if (temp == gSoldierInitTail) {
         // If we dealing with the tail, we need to move it now.
-        gSoldierInitTail = gSoldierInitTail->prev;
-        gSoldierInitTail->next = NULL;
-        temp->prev = NULL;
+        gSoldierInitTail = gSoldierInitTail.value.prev;
+        gSoldierInitTail.value.next = NULL;
+        temp.value.prev = NULL;
       }
-      curr = curr->next;
+      curr = curr.value.next;
       // detach node from list
-      if (temp->prev)
-        temp->prev->next = temp->next;
-      if (temp->next)
-        temp->next->prev = temp->prev;
+      if (temp.value.prev)
+        temp.value.prev.value.next = temp.value.next;
+      if (temp.value.next)
+        temp.value.next.value.prev = temp.value.prev;
       // add node to beginning of list
-      temp->prev = NULL;
-      temp->next = gSoldierInitHead;
-      gSoldierInitHead->prev = temp;
+      temp.value.prev = NULL;
+      temp.value.next = gSoldierInitHead;
+      gSoldierInitHead.value.prev = temp;
       gSoldierInitHead = temp;
       if (gfOriginalList)
         gOriginalSoldierInitListHead = gSoldierInitHead;
       else
         gAlternateSoldierInitListHead = gSoldierInitHead;
     } else {
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
   // 2nd priority sort (by adding these to the front, it'll be before the
   // 3rd priority sort.  This is why we do it after.
   curr = gSoldierInitHead;
   while (curr) {
-    if (!curr->pSoldier && curr->pBasicPlacement->fPriorityExistance && curr->pDetailedPlacement && curr != gSoldierInitHead) {
+    if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.fPriorityExistance && curr.value.pDetailedPlacement && curr != gSoldierInitHead) {
       // Priority existance nodes are moved to beginning of list
       // copy node
       temp = curr;
       if (temp == gSoldierInitTail) {
         // If we dealing with the tail, we need to move it now.
-        gSoldierInitTail = gSoldierInitTail->prev;
-        gSoldierInitTail->next = NULL;
-        temp->prev = NULL;
+        gSoldierInitTail = gSoldierInitTail.value.prev;
+        gSoldierInitTail.value.next = NULL;
+        temp.value.prev = NULL;
       }
-      curr = curr->next;
+      curr = curr.value.next;
       // detach node from list
-      if (temp->prev)
-        temp->prev->next = temp->next;
-      if (temp->next)
-        temp->next->prev = temp->prev;
+      if (temp.value.prev)
+        temp.value.prev.value.next = temp.value.next;
+      if (temp.value.next)
+        temp.value.next.value.prev = temp.value.prev;
       // add node to beginning of list
-      temp->prev = NULL;
-      temp->next = gSoldierInitHead;
-      gSoldierInitHead->prev = temp;
+      temp.value.prev = NULL;
+      temp.value.next = gSoldierInitHead;
+      gSoldierInitHead.value.prev = temp;
       gSoldierInitHead = temp;
       if (gfOriginalList)
         gOriginalSoldierInitListHead = gSoldierInitHead;
       else
         gAlternateSoldierInitListHead = gSoldierInitHead;
     } else {
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
   // 4th priority sort
@@ -397,11 +397,11 @@ function SortSoldierInitList(): void {
 
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr->pDetailedPlacement && curr->pDetailedPlacement->ubProfile == FREDO) {
+    if (curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == FREDO) {
       fFredoAtEnd = TRUE;
       break;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -414,8 +414,8 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
   // Get profile from placement info
   memset(&tempDetailedPlacement, 0, sizeof(SOLDIERCREATE_STRUCT));
 
-  if (curr->pDetailedPlacement) {
-    ubProfile = curr->pDetailedPlacement->ubProfile;
+  if (curr.value.pDetailedPlacement) {
+    ubProfile = curr.value.pDetailedPlacement.value.ubProfile;
 
     if (ubProfile != NO_PROFILE && !gfEditMode) {
       if (gMercProfiles[ubProfile].sSectorX != gWorldSectorX || gMercProfiles[ubProfile].sSectorY != gWorldSectorY || gMercProfiles[ubProfile].bSectorZ != gbWorldSectorZ || gMercProfiles[ubProfile].ubMiscFlags & (PROFILE_MISC_FLAG_RECRUITED | PROFILE_MISC_FLAG_EPCACTIVE) ||
@@ -428,7 +428,7 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
     if (!gfEditMode) {
       // CJC, August 18, 1999: don't do this code unless the ice cream truck is on our team
       if (FindSoldierByProfileID(ICECREAMTRUCK, TRUE) != NULL) {
-        if (curr->pDetailedPlacement->bBodyType == ICECREAMTRUCK) {
+        if (curr.value.pDetailedPlacement.value.bBodyType == ICECREAMTRUCK) {
           // Check to see if Hamous is here and not recruited.  If so, add truck
           if (gMercProfiles[HAMOUS].sSectorX != gWorldSectorX || gMercProfiles[HAMOUS].sSectorY != gWorldSectorY || gMercProfiles[HAMOUS].bSectorZ) {
             // not here, so don't add
@@ -441,9 +441,9 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
         }
       }
     }
-    CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlacementInfo(&tempDetailedPlacement, curr->pDetailedPlacement, curr->pBasicPlacement);
+    CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlacementInfo(&tempDetailedPlacement, curr.value.pDetailedPlacement, curr.value.pBasicPlacement);
   } else {
-    CreateDetailedPlacementGivenBasicPlacementInfo(&tempDetailedPlacement, curr->pBasicPlacement);
+    CreateDetailedPlacementGivenBasicPlacementInfo(&tempDetailedPlacement, curr.value.pBasicPlacement);
   }
 
   if (!gfEditMode) {
@@ -524,11 +524,11 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
   }
 
   if (pSoldier = TacticalCreateSoldier(&tempDetailedPlacement, &ubID)) {
-    curr->pSoldier = pSoldier;
-    curr->ubSoldierID = ubID;
+    curr.value.pSoldier = pSoldier;
+    curr.value.ubSoldierID = ubID;
     AddSoldierToSectorNoCalculateDirection(ubID);
 
-    if (pSoldier->bActive && pSoldier->bInSector && pSoldier->bTeam == ENEMY_TEAM && !pSoldier->inv[HANDPOS].usItem) {
+    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bTeam == ENEMY_TEAM && !pSoldier.value.inv[HANDPOS].usItem) {
       pSoldier = pSoldier;
     }
 
@@ -544,12 +544,12 @@ function AddPlacementToWorldByProfileID(ubProfile: UINT8): void {
 
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr->pDetailedPlacement && curr->pDetailedPlacement->ubProfile == ubProfile && !curr->pSoldier) {
+    if (curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == ubProfile && !curr.value.pSoldier) {
       // Matching profile, so add this placement.
       AddPlacementToWorld(curr);
       break;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -571,33 +571,33 @@ function AddSoldierInitListTeamToWorld(bTeam: INT8, ubMaxNum: UINT8): UINT8 {
     // convert all civilians to miners which use uniforms and more masculine body types.
     curr = gSoldierInitHead;
     while (curr) {
-      if (curr->pBasicPlacement->bTeam == CIV_TEAM && !curr->pDetailedPlacement) {
-        curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_MINER;
-        curr->pBasicPlacement->bBodyType = -1;
+      if (curr.value.pBasicPlacement.value.bTeam == CIV_TEAM && !curr.value.pDetailedPlacement) {
+        curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_MINER;
+        curr.value.pBasicPlacement.value.bBodyType = -1;
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
 
   // Count the current number of soldiers of the specified team
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr->pBasicPlacement->bTeam == bTeam && curr->pSoldier)
+    if (curr.value.pBasicPlacement.value.bTeam == bTeam && curr.value.pSoldier)
       ubNumAdded++; // already one here!
-    curr = curr->next;
+    curr = curr.value.next;
   }
 
   curr = gSoldierInitHead;
 
   // First fill up all of the priority existance slots...
-  while (curr && curr->pBasicPlacement->fPriorityExistance && ubNumAdded < ubMaxNum) {
-    if (curr->pBasicPlacement->bTeam == bTeam) {
+  while (curr && curr.value.pBasicPlacement.value.fPriorityExistance && ubNumAdded < ubMaxNum) {
+    if (curr.value.pBasicPlacement.value.bTeam == bTeam) {
       // Matching team, so add this placement.
       if (AddPlacementToWorld(curr)) {
         ubNumAdded++;
       }
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   if (ubNumAdded == ubMaxNum)
     return ubNumAdded;
@@ -608,10 +608,10 @@ function AddSoldierInitListTeamToWorld(bTeam: INT8, ubMaxNum: UINT8): UINT8 {
   mark = curr;
   ubSlotsAvailable = 0;
   ubSlotsToFill = ubMaxNum - ubNumAdded;
-  while (curr && !curr->pSoldier && ubNumAdded < ubMaxNum) {
-    if (curr->pBasicPlacement->bTeam == bTeam)
+  while (curr && !curr.value.pSoldier && ubNumAdded < ubMaxNum) {
+    if (curr.value.pBasicPlacement.value.bTeam == bTeam)
       ubSlotsAvailable++;
-    curr = curr->next;
+    curr = curr.value.next;
   }
 
   // we now have the number, so compared it to the num we can add, and determine how we will
@@ -623,8 +623,8 @@ function AddSoldierInitListTeamToWorld(bTeam: INT8, ubMaxNum: UINT8): UINT8 {
   curr = mark;
   // while we have a list, with no active soldiers, the num added is less than the max num requested, and
   // we have slots available, process the list to add new soldiers.
-  while (curr && !curr->pSoldier && ubNumAdded < ubMaxNum && ubSlotsAvailable) {
-    if (curr->pBasicPlacement->bTeam == bTeam) {
+  while (curr && !curr.value.pSoldier && ubNumAdded < ubMaxNum && ubSlotsAvailable) {
+    if (curr.value.pBasicPlacement.value.bTeam == bTeam) {
       if (ubSlotsAvailable <= ubSlotsToFill || Random(ubSlotsAvailable) < ubSlotsToFill) {
         // found matching team, so add this soldier to the game.
         if (AddPlacementToWorld(curr)) {
@@ -642,7 +642,7 @@ function AddSoldierInitListTeamToWorld(bTeam: INT8, ubMaxNum: UINT8): UINT8 {
       // With the decrementing of the slot vars in this manner, the chances increase so that all slots
       // will be full by the time the end of the list comes up.
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   return ubNumAdded;
 }
@@ -691,42 +691,42 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
   // This information will be used to randomly determine which of these placements
   // will be added based on the number of slots we can still add.
   curr = gSoldierInitHead;
-  while (curr && !curr->pSoldier) {
-    if (curr->pBasicPlacement->bTeam == ENEMY_TEAM) {
-      switch (curr->pBasicPlacement->ubSoldierClass) {
+  while (curr && !curr.value.pSoldier) {
+    if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
+      switch (curr.value.pBasicPlacement.value.ubSoldierClass) {
         case SOLDIER_CLASS_ELITE:
-          if (curr->pBasicPlacement->fPriorityExistance && curr->pDetailedPlacement)
+          if (curr.value.pBasicPlacement.value.fPriorityExistance && curr.value.pDetailedPlacement)
             ubElitePDSlots++;
-          else if (curr->pBasicPlacement->fPriorityExistance)
+          else if (curr.value.pBasicPlacement.value.fPriorityExistance)
             ubElitePSlots++;
-          else if (curr->pDetailedPlacement)
+          else if (curr.value.pDetailedPlacement)
             ubEliteDSlots++;
           else
             ubEliteBSlots++;
           break;
         case SOLDIER_CLASS_ADMINISTRATOR:
-          if (curr->pBasicPlacement->fPriorityExistance && curr->pDetailedPlacement)
+          if (curr.value.pBasicPlacement.value.fPriorityExistance && curr.value.pDetailedPlacement)
             ubAdminPDSlots++;
-          else if (curr->pBasicPlacement->fPriorityExistance)
+          else if (curr.value.pBasicPlacement.value.fPriorityExistance)
             ubAdminPSlots++;
-          else if (curr->pDetailedPlacement)
+          else if (curr.value.pDetailedPlacement)
             ubAdminDSlots++;
           else
             ubAdminBSlots++;
           break;
         case SOLDIER_CLASS_ARMY:
-          if (curr->pBasicPlacement->fPriorityExistance && curr->pDetailedPlacement)
+          if (curr.value.pBasicPlacement.value.fPriorityExistance && curr.value.pDetailedPlacement)
             ubTroopPDSlots++;
-          else if (curr->pBasicPlacement->fPriorityExistance)
+          else if (curr.value.pBasicPlacement.value.fPriorityExistance)
             ubTroopPSlots++;
-          else if (curr->pDetailedPlacement)
+          else if (curr.value.pDetailedPlacement)
             ubTroopDSlots++;
           else
             ubTroopBSlots++;
           break;
       }
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 
   // ADD PLACEMENTS WITH PRIORITY EXISTANCE WITH DETAILED PLACEMENT INFORMATION FIRST
@@ -750,9 +750,9 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
     }
     // Now, loop through the priority existance and detailed placement section of the list.
     curr = gSoldierInitHead;
-    while (curr && ubMaxNum && *pCurrTotal && *pCurrSlots && curr->pDetailedPlacement && curr->pBasicPlacement->fPriorityExistance) {
-      if (!curr->pSoldier && curr->pBasicPlacement->bTeam == ENEMY_TEAM) {
-        if (curr->pBasicPlacement->ubSoldierClass == ubCurrClass) {
+    while (curr && ubMaxNum && *pCurrTotal && *pCurrSlots && curr.value.pDetailedPlacement && curr.value.pBasicPlacement.value.fPriorityExistance) {
+      if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
+        if (curr.value.pBasicPlacement.value.ubSoldierClass == ubCurrClass) {
           if (*pCurrSlots <= *pCurrTotal || Random(*pCurrSlots) < *pCurrTotal) {
             // found matching team, so add this soldier to the game.
             if (AddPlacementToWorld(curr)) {
@@ -766,14 +766,14 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
           // will be full by the time the end of the list comes up.
         }
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
   if (!ubMaxNum)
     return;
   curr = gSoldierInitHead;
-  while (curr && curr->pDetailedPlacement && curr->pBasicPlacement->fPriorityExistance)
-    curr = curr->next;
+  while (curr && curr.value.pDetailedPlacement && curr.value.pBasicPlacement.value.fPriorityExistance)
+    curr = curr.value.next;
   mark = curr;
 
   // ADD PLACEMENTS WITH PRIORITY EXISTANCE AND NO DETAILED PLACEMENT INFORMATION SECOND
@@ -797,9 +797,9 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
     }
     // Now, loop through the priority existance and non detailed placement section of the list.
     curr = mark;
-    while (curr && ubMaxNum && *pCurrTotal && *pCurrSlots && !curr->pDetailedPlacement && curr->pBasicPlacement->fPriorityExistance) {
-      if (!curr->pSoldier && curr->pBasicPlacement->bTeam == ENEMY_TEAM) {
-        if (curr->pBasicPlacement->ubSoldierClass == ubCurrClass) {
+    while (curr && ubMaxNum && *pCurrTotal && *pCurrSlots && !curr.value.pDetailedPlacement && curr.value.pBasicPlacement.value.fPriorityExistance) {
+      if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
+        if (curr.value.pBasicPlacement.value.ubSoldierClass == ubCurrClass) {
           if (*pCurrSlots <= *pCurrTotal || Random(*pCurrSlots) < *pCurrTotal) {
             // found matching team, so add this soldier to the game.
             if (AddPlacementToWorld(curr)) {
@@ -813,14 +813,14 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
           // will be full by the time the end of the list comes up.
         }
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
   if (!ubMaxNum)
     return;
   curr = mark;
-  while (curr && !curr->pDetailedPlacement && curr->pBasicPlacement->fPriorityExistance)
-    curr = curr->next;
+  while (curr && !curr.value.pDetailedPlacement && curr.value.pBasicPlacement.value.fPriorityExistance)
+    curr = curr.value.next;
   mark = curr;
 
   // ADD PLACEMENTS WITH NO DETAILED PLACEMENT AND PRIORITY EXISTANCE INFORMATION SECOND
@@ -844,9 +844,9 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
     }
     // Now, loop through the priority existance and detailed placement section of the list.
     curr = mark;
-    while (curr && ubMaxNum && *pCurrTotal && *pCurrSlots && curr->pDetailedPlacement && !curr->pBasicPlacement->fPriorityExistance) {
-      if (!curr->pSoldier && curr->pBasicPlacement->bTeam == ENEMY_TEAM) {
-        if (curr->pBasicPlacement->ubSoldierClass == ubCurrClass) {
+    while (curr && ubMaxNum && *pCurrTotal && *pCurrSlots && curr.value.pDetailedPlacement && !curr.value.pBasicPlacement.value.fPriorityExistance) {
+      if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
+        if (curr.value.pBasicPlacement.value.ubSoldierClass == ubCurrClass) {
           if (*pCurrSlots <= *pCurrTotal || Random(*pCurrSlots) < *pCurrTotal) {
             // found matching team, so add this soldier to the game.
             if (AddPlacementToWorld(curr)) {
@@ -860,14 +860,14 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
           // will be full by the time the end of the list comes up.
         }
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
   if (!ubMaxNum)
     return;
   curr = mark;
-  while (curr && curr->pDetailedPlacement && !curr->pBasicPlacement->fPriorityExistance)
-    curr = curr->next;
+  while (curr && curr.value.pDetailedPlacement && !curr.value.pBasicPlacement.value.fPriorityExistance)
+    curr = curr.value.next;
   mark = curr;
 
   // Kris: January 11, 2000 -- NEW!!!
@@ -877,18 +877,18 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
   // for priority existance slots.  All of the matches have been already assigned in the above passes.
   // We'll have to convert the soldier type of the slot to match.
   curr = gSoldierInitHead;
-  while (curr && ubMaxNum && curr->pBasicPlacement->fPriorityExistance) {
-    if (!curr->pSoldier && curr->pBasicPlacement->bTeam == ENEMY_TEAM) {
+  while (curr && ubMaxNum && curr.value.pBasicPlacement.value.fPriorityExistance) {
+    if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
       // Choose which team to use.
       iRandom = Random(ubMaxNum);
       if (iRandom < ubTotalElite) {
-        curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_ELITE;
+        curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE;
         ubTotalElite--;
       } else if (iRandom < ubTotalElite + ubTotalTroops) {
-        curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_ARMY;
+        curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ARMY;
         ubTotalTroops--;
       } else if (iRandom < ubTotalElite + ubTotalTroops + ubTotalAdmin) {
-        curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
+        curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
         ubTotalAdmin--;
       } else
         Assert(0);
@@ -897,7 +897,7 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
       } else
         return;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   if (!ubMaxNum)
     return;
@@ -924,8 +924,8 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
     // Now, loop through the regular basic placements section of the list.
     curr = mark;
     while (curr && ubMaxNum && *pCurrTotal && *pCurrSlots) {
-      if (!curr->pSoldier && curr->pBasicPlacement->bTeam == ENEMY_TEAM) {
-        if (curr->pBasicPlacement->ubSoldierClass == ubCurrClass) {
+      if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
+        if (curr.value.pBasicPlacement.value.ubSoldierClass == ubCurrClass) {
           if (*pCurrSlots <= *pCurrTotal || Random(*pCurrSlots) < *pCurrTotal) {
             // found matching team, so add this soldier to the game.
             if (AddPlacementToWorld(curr)) {
@@ -939,7 +939,7 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
           // will be full by the time the end of the list comes up.
         }
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
   if (!ubMaxNum)
@@ -955,29 +955,29 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
   ubFreeSlots = 0;
   curr = gSoldierInitHead;
   while (curr) {
-    if (!curr->pSoldier && curr->pBasicPlacement->bTeam == ENEMY_TEAM)
+    if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM)
       ubFreeSlots++;
-    curr = curr->next;
+    curr = curr.value.next;
   }
 
   // Now, loop through the entire list again, but for the last time.  All enemies will be inserted now ignoring
   // detailed placements and classes.
   curr = gSoldierInitHead;
   while (curr && ubFreeSlots && ubMaxNum) {
-    if (!curr->pSoldier && curr->pBasicPlacement->bTeam == ENEMY_TEAM) {
+    if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
       // Randomly determine if we will use this slot; the more available slots in proportion to
       // the number of enemies, the lower the chance of accepting the slot.
       if (ubFreeSlots <= ubMaxNum || Random(ubFreeSlots) < ubMaxNum) {
         // Choose which team to use.
         iRandom = Random(ubMaxNum);
         if (iRandom < ubTotalElite) {
-          curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_ELITE;
+          curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE;
           ubTotalElite--;
         } else if (iRandom < ubTotalElite + ubTotalTroops) {
-          curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_ARMY;
+          curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ARMY;
           ubTotalTroops--;
         } else if (iRandom < ubTotalElite + ubTotalTroops + ubTotalAdmin) {
-          curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
+          curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
           ubTotalAdmin--;
         } else
           Assert(0);
@@ -998,7 +998,7 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
       // With the decrementing of the slot vars in this manner, the chances increase so that all slots
       // will be full by the time the end of the list comes up.
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -1033,34 +1033,34 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
   curr = gSoldierInitHead;
 
   // First fill up only the priority existance slots (as long as the availability and class are okay)
-  while (curr && curr->pBasicPlacement->fPriorityExistance && ubMaxNum) {
+  while (curr && curr.value.pBasicPlacement.value.fPriorityExistance && ubMaxNum) {
     fDoPlacement = TRUE;
 
-    if (curr->pBasicPlacement->bTeam == ENEMY_TEAM || curr->pBasicPlacement->bTeam == MILITIA_TEAM) {
+    if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM || curr.value.pBasicPlacement.value.bTeam == MILITIA_TEAM) {
       // Matching team (kindof), now check the soldier class...
-      if (ubNumElites && curr->pBasicPlacement->ubSoldierClass == SOLDIER_CLASS_ELITE) {
-        curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_ELITE_MILITIA;
+      if (ubNumElites && curr.value.pBasicPlacement.value.ubSoldierClass == SOLDIER_CLASS_ELITE) {
+        curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE_MILITIA;
         ubNumElites--;
-      } else if (ubNumRegs && curr->pBasicPlacement->ubSoldierClass == SOLDIER_CLASS_ARMY) {
-        curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_REG_MILITIA;
+      } else if (ubNumRegs && curr.value.pBasicPlacement.value.ubSoldierClass == SOLDIER_CLASS_ARMY) {
+        curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_REG_MILITIA;
         ubNumRegs--;
-      } else if (ubNumGreen && curr->pBasicPlacement->ubSoldierClass == SOLDIER_CLASS_ADMINISTRATOR) {
-        curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_GREEN_MILITIA;
+      } else if (ubNumGreen && curr.value.pBasicPlacement.value.ubSoldierClass == SOLDIER_CLASS_ADMINISTRATOR) {
+        curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_GREEN_MILITIA;
         ubNumGreen--;
       } else
         fDoPlacement = FALSE;
 
       if (fDoPlacement) {
-        curr->pBasicPlacement->bTeam = MILITIA_TEAM;
-        curr->pBasicPlacement->bOrders = STATIONARY;
-        curr->pBasicPlacement->bAttitude = Random(MAXATTITUDES);
-        if (curr->pDetailedPlacement) {
+        curr.value.pBasicPlacement.value.bTeam = MILITIA_TEAM;
+        curr.value.pBasicPlacement.value.bOrders = STATIONARY;
+        curr.value.pBasicPlacement.value.bAttitude = Random(MAXATTITUDES);
+        if (curr.value.pDetailedPlacement) {
           // delete the detailed placement information.
-          MemFree(curr->pDetailedPlacement);
-          curr->pDetailedPlacement = NULL;
-          curr->pBasicPlacement->fDetailedPlacement = FALSE;
-          RandomizeRelativeLevel(&(curr->pBasicPlacement->bRelativeAttributeLevel), curr->pBasicPlacement->ubSoldierClass);
-          RandomizeRelativeLevel(&(curr->pBasicPlacement->bRelativeEquipmentLevel), curr->pBasicPlacement->ubSoldierClass);
+          MemFree(curr.value.pDetailedPlacement);
+          curr.value.pDetailedPlacement = NULL;
+          curr.value.pBasicPlacement.value.fDetailedPlacement = FALSE;
+          RandomizeRelativeLevel(&(curr.value.pBasicPlacement.value.bRelativeAttributeLevel), curr.value.pBasicPlacement.value.ubSoldierClass);
+          RandomizeRelativeLevel(&(curr.value.pBasicPlacement.value.bRelativeEquipmentLevel), curr.value.pBasicPlacement.value.ubSoldierClass);
         }
         if (AddPlacementToWorld(curr)) {
           ubMaxNum--;
@@ -1068,7 +1068,7 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
           return;
       }
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   if (!ubMaxNum)
     return;
@@ -1076,9 +1076,9 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
   // This information will be used to randomly determine which of these placements
   // will be added based on the number of slots we can still add.
   mark = curr;
-  while (curr && !curr->pSoldier) {
-    if (curr->pBasicPlacement->bTeam == ENEMY_TEAM || curr->pBasicPlacement->bTeam == MILITIA_TEAM) {
-      switch (curr->pBasicPlacement->ubSoldierClass) {
+  while (curr && !curr.value.pSoldier) {
+    if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM || curr.value.pBasicPlacement.value.bTeam == MILITIA_TEAM) {
+      switch (curr.value.pBasicPlacement.value.ubSoldierClass) {
         case SOLDIER_CLASS_ELITE:
           ubEliteSlots++;
           break;
@@ -1090,7 +1090,7 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
           break;
       }
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 
   // we now have the numbers of available slots for each soldier class, so loop through three times
@@ -1113,21 +1113,21 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
     }
     // Now, loop through the basic placement of the list.
     curr = mark; // mark is the marker where the basic placements start.
-    while (curr && !curr->pSoldier && ubMaxNum && *pCurrTotal && *pCurrSlots) {
-      if (curr->pBasicPlacement->bTeam == ENEMY_TEAM || curr->pBasicPlacement->bTeam == MILITIA_TEAM) {
-        if (curr->pBasicPlacement->ubSoldierClass == ubCurrClass) {
+    while (curr && !curr.value.pSoldier && ubMaxNum && *pCurrTotal && *pCurrSlots) {
+      if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM || curr.value.pBasicPlacement.value.bTeam == MILITIA_TEAM) {
+        if (curr.value.pBasicPlacement.value.ubSoldierClass == ubCurrClass) {
           if (*pCurrSlots <= *pCurrTotal || Random(*pCurrSlots) < *pCurrTotal) {
-            curr->pBasicPlacement->bTeam = MILITIA_TEAM;
-            curr->pBasicPlacement->bOrders = STATIONARY;
+            curr.value.pBasicPlacement.value.bTeam = MILITIA_TEAM;
+            curr.value.pBasicPlacement.value.bOrders = STATIONARY;
             switch (ubCurrClass) {
               case SOLDIER_CLASS_ADMINISTRATOR:
-                curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_GREEN_MILITIA;
+                curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_GREEN_MILITIA;
                 break;
               case SOLDIER_CLASS_ARMY:
-                curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_REG_MILITIA;
+                curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_REG_MILITIA;
                 break;
               case SOLDIER_CLASS_ELITE:
-                curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_ELITE_MILITIA;
+                curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE_MILITIA;
                 break;
             }
             // found matching team, so add this soldier to the game.
@@ -1142,7 +1142,7 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
           // will be full by the time the end of the list comes up.
         }
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
   }
   if (!ubMaxNum)
@@ -1157,42 +1157,42 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
   ubFreeSlots = 0;
   curr = gSoldierInitHead;
   while (curr) {
-    if (!curr->pSoldier && (curr->pBasicPlacement->bTeam == ENEMY_TEAM || curr->pBasicPlacement->bTeam == MILITIA_TEAM))
+    if (!curr.value.pSoldier && (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM || curr.value.pBasicPlacement.value.bTeam == MILITIA_TEAM))
       ubFreeSlots++;
-    curr = curr->next;
+    curr = curr.value.next;
   }
 
   // Now, loop through the entire list again, but for the last time.  All enemies will be inserted now ignoring
   // detailed placements and classes.
   curr = gSoldierInitHead;
   while (curr && ubFreeSlots && ubMaxNum) {
-    if (!curr->pSoldier && (curr->pBasicPlacement->bTeam == ENEMY_TEAM || curr->pBasicPlacement->bTeam == MILITIA_TEAM)) {
+    if (!curr.value.pSoldier && (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM || curr.value.pBasicPlacement.value.bTeam == MILITIA_TEAM)) {
       // Randomly determine if we will use this slot; the more available slots in proportion to
       // the number of enemies, the lower the chance of accepting the slot.
       if (ubFreeSlots <= ubMaxNum || Random(ubFreeSlots) < ubMaxNum) {
         // Choose which team to use.
         iRandom = Random(ubMaxNum);
         if (iRandom < ubNumElites) {
-          curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_ELITE_MILITIA;
+          curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE_MILITIA;
           ubNumElites--;
         } else if (iRandom < ubNumElites + ubNumRegs) {
-          curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_REG_MILITIA;
+          curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_REG_MILITIA;
           ubNumRegs--;
         } else if (iRandom < ubNumElites + ubNumRegs + ubNumGreen) {
-          curr->pBasicPlacement->ubSoldierClass = SOLDIER_CLASS_GREEN_MILITIA;
+          curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_GREEN_MILITIA;
           ubNumGreen--;
         } else
           Assert(0);
-        curr->pBasicPlacement->bTeam = MILITIA_TEAM;
-        curr->pBasicPlacement->bOrders = STATIONARY;
-        curr->pBasicPlacement->bAttitude = Random(MAXATTITUDES);
-        if (curr->pDetailedPlacement) {
+        curr.value.pBasicPlacement.value.bTeam = MILITIA_TEAM;
+        curr.value.pBasicPlacement.value.bOrders = STATIONARY;
+        curr.value.pBasicPlacement.value.bAttitude = Random(MAXATTITUDES);
+        if (curr.value.pDetailedPlacement) {
           // delete the detailed placement information.
-          MemFree(curr->pDetailedPlacement);
-          curr->pDetailedPlacement = NULL;
-          curr->pBasicPlacement->fDetailedPlacement = FALSE;
-          RandomizeRelativeLevel(&(curr->pBasicPlacement->bRelativeAttributeLevel), curr->pBasicPlacement->ubSoldierClass);
-          RandomizeRelativeLevel(&(curr->pBasicPlacement->bRelativeEquipmentLevel), curr->pBasicPlacement->ubSoldierClass);
+          MemFree(curr.value.pDetailedPlacement);
+          curr.value.pDetailedPlacement = NULL;
+          curr.value.pBasicPlacement.value.fDetailedPlacement = FALSE;
+          RandomizeRelativeLevel(&(curr.value.pBasicPlacement.value.bRelativeAttributeLevel), curr.value.pBasicPlacement.value.ubSoldierClass);
+          RandomizeRelativeLevel(&(curr.value.pBasicPlacement.value.bRelativeEquipmentLevel), curr.value.pBasicPlacement.value.ubSoldierClass);
         }
         if (AddPlacementToWorld(curr)) {
           ubMaxNum--;
@@ -1203,7 +1203,7 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
       // With the decrementing of the slot vars in this manner, the chances increase so that all slots
       // will be full by the time the end of the list comes up.
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -1222,13 +1222,13 @@ function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumI
   if (fQueen) {
     curr = gSoldierInitHead;
     while (curr) {
-      if (!curr->pSoldier && curr->pBasicPlacement->bTeam == CREATURE_TEAM && curr->pBasicPlacement->bBodyType == QUEENMONSTER) {
+      if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == CREATURE_TEAM && curr.value.pBasicPlacement.value.bBodyType == QUEENMONSTER) {
         if (!AddPlacementToWorld(curr)) {
           fQueen = FALSE;
           break;
         }
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
     if (!fQueen) {
     }
@@ -1236,22 +1236,22 @@ function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumI
 
   // First fill up only the priority existance slots (as long as the availability and bodytypes match)
   curr = gSoldierInitHead;
-  while (curr && curr->pBasicPlacement->fPriorityExistance && ubNumCreatures) {
+  while (curr && curr.value.pBasicPlacement.value.fPriorityExistance && ubNumCreatures) {
     fDoPlacement = TRUE;
 
-    if (curr->pBasicPlacement->bTeam == CREATURE_TEAM) {
+    if (curr.value.pBasicPlacement.value.bTeam == CREATURE_TEAM) {
       // Matching team, now check the soldier class...
-      if (ubNumLarvae && curr->pBasicPlacement->bBodyType == LARVAE_MONSTER)
+      if (ubNumLarvae && curr.value.pBasicPlacement.value.bBodyType == LARVAE_MONSTER)
         ubNumLarvae--;
-      else if (ubNumInfants && curr->pBasicPlacement->bBodyType == INFANT_MONSTER)
+      else if (ubNumInfants && curr.value.pBasicPlacement.value.bBodyType == INFANT_MONSTER)
         ubNumInfants--;
-      else if (ubNumYoungMales && curr->pBasicPlacement->bBodyType == YAM_MONSTER)
+      else if (ubNumYoungMales && curr.value.pBasicPlacement.value.bBodyType == YAM_MONSTER)
         ubNumYoungMales--;
-      else if (ubNumYoungFemales && curr->pBasicPlacement->bBodyType == YAF_MONSTER)
+      else if (ubNumYoungFemales && curr.value.pBasicPlacement.value.bBodyType == YAF_MONSTER)
         ubNumYoungFemales--;
-      else if (ubNumAdultMales && curr->pBasicPlacement->bBodyType == AM_MONSTER)
+      else if (ubNumAdultMales && curr.value.pBasicPlacement.value.bBodyType == AM_MONSTER)
         ubNumAdultMales--;
-      else if (ubNumAdultFemales && curr->pBasicPlacement->bBodyType == ADULTFEMALEMONSTER)
+      else if (ubNumAdultFemales && curr.value.pBasicPlacement.value.bBodyType == ADULTFEMALEMONSTER)
         ubNumAdultFemales--;
       else
         fDoPlacement = FALSE;
@@ -1262,7 +1262,7 @@ function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumI
           return;
       }
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   if (!ubNumCreatures)
     return;
@@ -1271,15 +1271,15 @@ function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumI
   curr = gSoldierInitHead;
   ubFreeSlots = 0;
   while (curr) {
-    if (!curr->pSoldier && curr->pBasicPlacement->bTeam == CREATURE_TEAM)
+    if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == CREATURE_TEAM)
       ubFreeSlots++;
-    curr = curr->next;
+    curr = curr.value.next;
   }
   // Now, if we still have creatures to place, do so completely randomly, overriding priority
   // placements, etc.
   curr = gSoldierInitHead;
   while (curr && ubFreeSlots && ubNumCreatures) {
-    if (!curr->pSoldier && curr->pBasicPlacement->bTeam == CREATURE_TEAM) {
+    if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == CREATURE_TEAM) {
       // Randomly determine if we will use this slot; the more available slots in proportion to
       // the number of enemies, the lower the chance of accepting the slot.
       if (ubFreeSlots <= ubNumCreatures || Random(ubFreeSlots) < ubNumCreatures) {
@@ -1288,29 +1288,29 @@ function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumI
 
         if (ubNumLarvae && iRandom < ubNumLarvae) {
           ubNumLarvae--;
-          curr->pBasicPlacement->bBodyType = LARVAE_MONSTER;
+          curr.value.pBasicPlacement.value.bBodyType = LARVAE_MONSTER;
         } else if (ubNumInfants && iRandom < ubNumLarvae + ubNumInfants) {
           ubNumInfants--;
-          curr->pBasicPlacement->bBodyType = INFANT_MONSTER;
+          curr.value.pBasicPlacement.value.bBodyType = INFANT_MONSTER;
         } else if (ubNumYoungMales && iRandom < ubNumLarvae + ubNumInfants + ubNumYoungMales) {
           ubNumYoungMales--;
-          curr->pBasicPlacement->bBodyType = YAM_MONSTER;
+          curr.value.pBasicPlacement.value.bBodyType = YAM_MONSTER;
         } else if (ubNumYoungFemales && iRandom < ubNumLarvae + ubNumInfants + ubNumYoungMales + ubNumYoungFemales) {
           ubNumYoungFemales--;
-          curr->pBasicPlacement->bBodyType = YAF_MONSTER;
+          curr.value.pBasicPlacement.value.bBodyType = YAF_MONSTER;
         } else if (ubNumAdultMales && iRandom < ubNumLarvae + ubNumInfants + ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales) {
           ubNumAdultMales--;
-          curr->pBasicPlacement->bBodyType = AM_MONSTER;
+          curr.value.pBasicPlacement.value.bBodyType = AM_MONSTER;
         } else if (ubNumAdultFemales && iRandom < ubNumLarvae + ubNumInfants + ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales) {
           ubNumAdultFemales--;
-          curr->pBasicPlacement->bBodyType = ADULTFEMALEMONSTER;
+          curr.value.pBasicPlacement.value.bBodyType = ADULTFEMALEMONSTER;
         } else
           Assert(0);
-        if (curr->pDetailedPlacement) {
+        if (curr.value.pDetailedPlacement) {
           // delete the detailed placement information.
-          MemFree(curr->pDetailedPlacement);
-          curr->pDetailedPlacement = NULL;
-          curr->pBasicPlacement->fDetailedPlacement = FALSE;
+          MemFree(curr.value.pDetailedPlacement);
+          curr.value.pDetailedPlacement = NULL;
+          curr.value.pBasicPlacement.value.fDetailedPlacement = FALSE;
         }
         if (AddPlacementToWorld(curr)) {
           ubNumCreatures--;
@@ -1322,7 +1322,7 @@ function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumI
       // With the decrementing of the slot vars in this manner, the chances increase so that all slots
       // will be full by the time the end of the list comes up.
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -1330,9 +1330,9 @@ function FindSoldierInitNodeWithProfileID(usProfile: UINT16): Pointer<SOLDIERINI
   let curr: Pointer<SOLDIERINITNODE>;
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr->pDetailedPlacement && curr->pDetailedPlacement->ubProfile == usProfile)
+    if (curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == usProfile)
       return curr;
-    curr = curr->next;
+    curr = curr.value.next;
   }
   return NULL;
 }
@@ -1341,9 +1341,9 @@ function FindSoldierInitNodeWithID(usID: UINT16): Pointer<SOLDIERINITNODE> {
   let curr: Pointer<SOLDIERINITNODE>;
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr->pSoldier->ubID == usID)
+    if (curr.value.pSoldier.value.ubID == usID)
       return curr;
-    curr = curr->next;
+    curr = curr.value.next;
   }
   return NULL;
 }
@@ -1354,8 +1354,8 @@ function UseEditorOriginalList(): void {
   gSoldierInitHead = gOriginalSoldierInitListHead;
   curr = gSoldierInitHead;
   if (curr) {
-    while (curr->next)
-      curr = curr->next;
+    while (curr.value.next)
+      curr = curr.value.next;
   }
   if (curr)
     gSoldierInitTail = curr;
@@ -1367,8 +1367,8 @@ function UseEditorAlternateList(): void {
   gSoldierInitHead = gAlternateSoldierInitListHead;
   curr = gSoldierInitHead;
   if (curr) {
-    while (curr->next)
-      curr = curr->next;
+    while (curr.value.next)
+      curr = curr.value.next;
   }
   if (curr)
     gSoldierInitTail = curr;
@@ -1382,25 +1382,25 @@ function EvaluateDeathEffectsToSoldierInitList(pSoldier: Pointer<SOLDIERTYPE>): 
   let ubNodeID: UINT8;
   curr = gSoldierInitHead;
   ubNodeID = 0;
-  if (pSoldier->bTeam == MILITIA_TEAM)
+  if (pSoldier.value.bTeam == MILITIA_TEAM)
     return;
   while (curr) {
-    if (curr->pSoldier == pSoldier) {
+    if (curr.value.pSoldier == pSoldier) {
       // Matching soldier found
-      if (curr->pDetailedPlacement) {
+      if (curr.value.pDetailedPlacement) {
         // This soldier used detailed placement information, so we must save the
         // node ID into the temp file which signifies that the
 
         // RECORD UBNODEID IN TEMP FILE.
 
-        curr->pSoldier = NULL;
-        MemFree(curr->pDetailedPlacement);
-        curr->pDetailedPlacement = NULL;
+        curr.value.pSoldier = NULL;
+        MemFree(curr.value.pDetailedPlacement);
+        curr.value.pDetailedPlacement = NULL;
         return;
       }
     }
     ubNodeID++;
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -1408,14 +1408,14 @@ function RemoveDetailedPlacementInfo(ubNodeID: UINT8): void {
   let curr: Pointer<SOLDIERINITNODE>;
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr->ubNodeID == ubNodeID) {
-      if (curr->pDetailedPlacement) {
-        MemFree(curr->pDetailedPlacement);
-        curr->pDetailedPlacement = NULL;
+    if (curr.value.ubNodeID == ubNodeID) {
+      if (curr.value.pDetailedPlacement) {
+        MemFree(curr.value.pDetailedPlacement);
+        curr.value.pDetailedPlacement = NULL;
         return;
       }
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -1431,7 +1431,7 @@ function SaveSoldierInitListLinks(hfile: HWFILE): BOOLEAN {
   curr = gSoldierInitHead;
   while (curr) {
     ubSlots++;
-    curr = curr->next;
+    curr = curr.value.next;
   }
   //...and save it.
   FileWrite(hfile, &ubSlots, 1, &uiNumBytesWritten);
@@ -1441,18 +1441,18 @@ function SaveSoldierInitListLinks(hfile: HWFILE): BOOLEAN {
   // Now, go through each node, and save just the ubSoldierID, if that soldier is alive.
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr->pSoldier && !curr->pSoldier->bActive) {
-      curr->ubSoldierID = 0;
+    if (curr.value.pSoldier && !curr.value.pSoldier.value.bActive) {
+      curr.value.ubSoldierID = 0;
     }
-    FileWrite(hfile, &curr->ubNodeID, 1, &uiNumBytesWritten);
+    FileWrite(hfile, &curr.value.ubNodeID, 1, &uiNumBytesWritten);
     if (uiNumBytesWritten != 1) {
       return FALSE;
     }
-    FileWrite(hfile, &curr->ubSoldierID, 1, &uiNumBytesWritten);
+    FileWrite(hfile, &curr.value.ubSoldierID, 1, &uiNumBytesWritten);
     if (uiNumBytesWritten != 1) {
       return FALSE;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   return TRUE;
 }
@@ -1481,14 +1481,14 @@ function LoadSoldierInitListLinks(hfile: HWFILE): BOOLEAN {
     if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
       curr = gSoldierInitHead;
       while (curr) {
-        if (curr->ubNodeID == ubNodeID) {
-          curr->ubSoldierID = ubSoldierID;
+        if (curr.value.ubNodeID == ubNodeID) {
+          curr.value.ubSoldierID = ubSoldierID;
           if (ubSoldierID >= gTacticalStatus.Team[ENEMY_TEAM].bFirstID && ubSoldierID <= gTacticalStatus.Team[CREATURE_TEAM].bLastID || ubSoldierID >= gTacticalStatus.Team[CIV_TEAM].bFirstID && ubSoldierID <= gTacticalStatus.Team[CIV_TEAM].bLastID) {
             // only enemies and creatures.
-            curr->pSoldier = MercPtrs[ubSoldierID];
+            curr.value.pSoldier = MercPtrs[ubSoldierID];
           }
         }
-        curr = curr->next;
+        curr = curr.value.next;
       }
     }
   }
@@ -1507,34 +1507,34 @@ function AddSoldierInitListBloodcats(): void {
   ubSectorID = SECTOR(gWorldSectorX, gWorldSectorY);
   pSector = &SectorInfo[ubSectorID];
 
-  if (!pSector->bBloodCatPlacements) {
+  if (!pSector.value.bBloodCatPlacements) {
     // This map has no bloodcat placements, so don't waste CPU time.
     return;
   }
 
-  if (pSector->bBloodCatPlacements) {
+  if (pSector.value.bBloodCatPlacements) {
     // We don't yet know the number of bloodcat placements in this sector so
     // count them now, and permanently record it.
     let bBloodCatPlacements: INT8 = 0;
     curr = gSoldierInitHead;
     while (curr) {
-      if (curr->pBasicPlacement->bBodyType == BLOODCAT) {
+      if (curr.value.pBasicPlacement.value.bBodyType == BLOODCAT) {
         bBloodCatPlacements++;
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
-    if (bBloodCatPlacements != pSector->bBloodCatPlacements && ubSectorID != SEC_I16 && ubSectorID != SEC_N5) {
-      pSector->bBloodCatPlacements = bBloodCatPlacements;
-      pSector->bBloodCats = -1;
+    if (bBloodCatPlacements != pSector.value.bBloodCatPlacements && ubSectorID != SEC_I16 && ubSectorID != SEC_N5) {
+      pSector.value.bBloodCatPlacements = bBloodCatPlacements;
+      pSector.value.bBloodCats = -1;
       if (!bBloodCatPlacements) {
         return;
       }
     }
   }
-  if (pSector->bBloodCats > 0) {
+  if (pSector.value.bBloodCats > 0) {
     // Add them to the world now...
     let ubNumAdded: UINT8 = 0;
-    let ubMaxNum: UINT8 = pSector->bBloodCats;
+    let ubMaxNum: UINT8 = pSector.value.bBloodCats;
     let mark: Pointer<SOLDIERINITNODE>;
     let ubSlotsToFill: UINT8;
     let ubSlotsAvailable: UINT8;
@@ -1549,22 +1549,22 @@ function AddSoldierInitListBloodcats(): void {
     // Count the current number of soldiers of the specified team
     curr = gSoldierInitHead;
     while (curr) {
-      if (curr->pBasicPlacement->bBodyType == BLOODCAT && curr->pSoldier)
+      if (curr.value.pBasicPlacement.value.bBodyType == BLOODCAT && curr.value.pSoldier)
         ubNumAdded++; // already one here!
-      curr = curr->next;
+      curr = curr.value.next;
     }
 
     curr = gSoldierInitHead;
 
     // First fill up all of the priority existance slots...
-    while (curr && curr->pBasicPlacement->fPriorityExistance && ubNumAdded < ubMaxNum) {
-      if (curr->pBasicPlacement->bBodyType == BLOODCAT) {
+    while (curr && curr.value.pBasicPlacement.value.fPriorityExistance && ubNumAdded < ubMaxNum) {
+      if (curr.value.pBasicPlacement.value.bBodyType == BLOODCAT) {
         // Matching team, so add this placement.
         if (AddPlacementToWorld(curr)) {
           ubNumAdded++;
         }
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
     if (ubNumAdded == ubMaxNum)
       return;
@@ -1575,10 +1575,10 @@ function AddSoldierInitListBloodcats(): void {
     mark = curr;
     ubSlotsAvailable = 0;
     ubSlotsToFill = ubMaxNum - ubNumAdded;
-    while (curr && !curr->pSoldier && ubNumAdded < ubMaxNum) {
-      if (curr->pBasicPlacement->bBodyType == BLOODCAT)
+    while (curr && !curr.value.pSoldier && ubNumAdded < ubMaxNum) {
+      if (curr.value.pBasicPlacement.value.bBodyType == BLOODCAT)
         ubSlotsAvailable++;
-      curr = curr->next;
+      curr = curr.value.next;
     }
 
     // we now have the number, so compared it to the num we can add, and determine how we will
@@ -1590,8 +1590,8 @@ function AddSoldierInitListBloodcats(): void {
     curr = mark;
     // while we have a list, with no active soldiers, the num added is less than the max num requested, and
     // we have slots available, process the list to add new soldiers.
-    while (curr && !curr->pSoldier && ubNumAdded < ubMaxNum && ubSlotsAvailable) {
-      if (curr->pBasicPlacement->bBodyType == BLOODCAT) {
+    while (curr && !curr.value.pSoldier && ubNumAdded < ubMaxNum && ubSlotsAvailable) {
+      if (curr.value.pBasicPlacement.value.bBodyType == BLOODCAT) {
         if (ubSlotsAvailable <= ubSlotsToFill || Random(ubSlotsAvailable) < ubSlotsToFill) {
           // found matching team, so add this soldier to the game.
           if (AddPlacementToWorld(curr)) {
@@ -1609,7 +1609,7 @@ function AddSoldierInitListBloodcats(): void {
         // With the decrementing of the slot vars in this manner, the chances increase so that all slots
         // will be full by the time the end of the list comes up.
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
     return;
   }
@@ -1621,10 +1621,10 @@ function FindSoldierInitListNodeByProfile(ubProfile: UINT8): Pointer<SOLDIERINIT
   curr = gSoldierInitHead;
 
   while (curr) {
-    if (curr->pDetailedPlacement && curr->pDetailedPlacement->ubProfile == ubProfile) {
+    if (curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == ubProfile) {
       return curr;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   return NULL;
 }
@@ -1663,8 +1663,8 @@ function AddProfilesUsingProfileInsertionData(): void {
     }
     if (pSoldier) {
       // Now, insert the soldier.
-      pSoldier->ubStrategicInsertionCode = gMercProfiles[i].ubStrategicInsertionCode;
-      pSoldier->usStrategicInsertionData = gMercProfiles[i].usStrategicInsertionData;
+      pSoldier.value.ubStrategicInsertionCode = gMercProfiles[i].ubStrategicInsertionCode;
+      pSoldier.value.usStrategicInsertionData = gMercProfiles[i].usStrategicInsertionData;
       UpdateMercInSector(pSoldier, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
       // CJC: Note well that unless an error occurs, UpdateMercInSector calls
       // AddSoldierToSector
@@ -1672,25 +1672,25 @@ function AddProfilesUsingProfileInsertionData(): void {
 
       // check action ID values
       if (gMercProfiles[i].ubQuoteRecord) {
-        pSoldier->ubQuoteRecord = gMercProfiles[i].ubQuoteRecord;
-        pSoldier->ubQuoteActionID = gMercProfiles[i].ubQuoteActionID;
-        if (pSoldier->ubQuoteActionID == QUOTE_ACTION_ID_CHECKFORDEST) {
+        pSoldier.value.ubQuoteRecord = gMercProfiles[i].ubQuoteRecord;
+        pSoldier.value.ubQuoteActionID = gMercProfiles[i].ubQuoteActionID;
+        if (pSoldier.value.ubQuoteActionID == QUOTE_ACTION_ID_CHECKFORDEST) {
           // gridno will have been changed to destination... so we're there...
           NPCReachedDestination(pSoldier, FALSE);
         }
       }
 
       // make sure this person's pointer is set properly in the init list
-      curr = FindSoldierInitListNodeByProfile(pSoldier->ubProfile);
+      curr = FindSoldierInitListNodeByProfile(pSoldier.value.ubProfile);
       if (curr) {
-        curr->pSoldier = pSoldier;
-        curr->ubSoldierID = pSoldier->ubID;
+        curr.value.pSoldier = pSoldier;
+        curr.value.ubSoldierID = pSoldier.value.ubID;
         // also connect schedules here
-        if (curr->pDetailedPlacement->ubScheduleID != 0) {
-          let pSchedule: Pointer<SCHEDULENODE> = GetSchedule(curr->pDetailedPlacement->ubScheduleID);
+        if (curr.value.pDetailedPlacement.value.ubScheduleID != 0) {
+          let pSchedule: Pointer<SCHEDULENODE> = GetSchedule(curr.value.pDetailedPlacement.value.ubScheduleID);
           if (pSchedule) {
-            pSchedule->ubSoldierID = pSoldier->ubID;
-            pSoldier->ubScheduleID = curr->pDetailedPlacement->ubScheduleID;
+            pSchedule.value.ubSoldierID = pSoldier.value.ubID;
+            pSoldier.value.ubScheduleID = curr.value.pDetailedPlacement.value.ubScheduleID;
           }
         }
       }
@@ -1703,10 +1703,10 @@ function AddProfilesNotUsingProfileInsertionData(): void {
   // Count the current number of soldiers of the specified team
   curr = gSoldierInitHead;
   while (curr) {
-    if (!curr->pSoldier && curr->pBasicPlacement->bTeam == CIV_TEAM && curr->pDetailedPlacement && curr->pDetailedPlacement->ubProfile != NO_PROFILE && !gMercProfiles[curr->pDetailedPlacement->ubProfile].fUseProfileInsertionInfo && gMercProfiles[curr->pDetailedPlacement->ubProfile].bLife) {
+    if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == CIV_TEAM && curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile != NO_PROFILE && !gMercProfiles[curr.value.pDetailedPlacement.value.ubProfile].fUseProfileInsertionInfo && gMercProfiles[curr.value.pDetailedPlacement.value.ubProfile].bLife) {
       AddPlacementToWorld(curr);
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -1734,14 +1734,14 @@ function NewWayOfLoadingEnemySoldierInitListLinks(hfile: HWFILE): BOOLEAN {
     if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
       curr = gSoldierInitHead;
       while (curr) {
-        if (curr->ubNodeID == ubNodeID) {
-          curr->ubSoldierID = ubSoldierID;
+        if (curr.value.ubNodeID == ubNodeID) {
+          curr.value.ubSoldierID = ubSoldierID;
           if (ubSoldierID >= gTacticalStatus.Team[ENEMY_TEAM].bFirstID && ubSoldierID <= gTacticalStatus.Team[CREATURE_TEAM].bLastID) {
             // only enemies and creatures.
-            curr->pSoldier = MercPtrs[ubSoldierID];
+            curr.value.pSoldier = MercPtrs[ubSoldierID];
           }
         }
-        curr = curr->next;
+        curr = curr.value.next;
       }
     }
   }
@@ -1772,14 +1772,14 @@ function NewWayOfLoadingCivilianInitListLinks(hfile: HWFILE): BOOLEAN {
     if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
       curr = gSoldierInitHead;
       while (curr) {
-        if (curr->ubNodeID == ubNodeID) {
-          curr->ubSoldierID = ubSoldierID;
+        if (curr.value.ubNodeID == ubNodeID) {
+          curr.value.ubSoldierID = ubSoldierID;
           if (ubSoldierID >= gTacticalStatus.Team[CIV_TEAM].bFirstID && ubSoldierID <= gTacticalStatus.Team[CIV_TEAM].bLastID) {
             // only enemies and creatures.
-            curr->pSoldier = MercPtrs[ubSoldierID];
+            curr.value.pSoldier = MercPtrs[ubSoldierID];
           }
         }
-        curr = curr->next;
+        curr = curr.value.next;
       }
     }
   }
@@ -1810,14 +1810,14 @@ function LookAtButDontProcessEnemySoldierInitListLinks(hfile: HWFILE): BOOLEAN {
     if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
       curr = gSoldierInitHead;
       while (curr) {
-        if (curr->ubNodeID == ubNodeID) {
-          curr->ubSoldierID = ubSoldierID;
+        if (curr.value.ubNodeID == ubNodeID) {
+          curr.value.ubSoldierID = ubSoldierID;
           if (ubSoldierID >= gTacticalStatus.Team[ENEMY_TEAM].bFirstID && ubSoldierID <= gTacticalStatus.Team[CREATURE_TEAM].bLastID) {
             // only enemies and creatures.
-            curr->pSoldier = MercPtrs[ubSoldierID];
+            curr.value.pSoldier = MercPtrs[ubSoldierID];
           }
         }
-        curr = curr->next;
+        curr = curr.value.next;
       }
     }
   }
@@ -1836,7 +1836,7 @@ function StripEnemyDetailedPlacementsIfSectorWasPlayerLiberated(): void {
 
   pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
 
-  if (!pSector->uiTimeLastPlayerLiberated) {
+  if (!pSector.value.uiTimeLastPlayerLiberated) {
     // The player has never owned the sector.
     return;
   }
@@ -1845,17 +1845,17 @@ function StripEnemyDetailedPlacementsIfSectorWasPlayerLiberated(): void {
   // placements will remain.  This prevents tanks and "specially detailed" enemies from coming back.
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr->pDetailedPlacement) {
-      if (curr->pBasicPlacement->bTeam == ENEMY_TEAM) {
-        MemFree(curr->pDetailedPlacement);
-        curr->pDetailedPlacement = NULL;
-        curr->pBasicPlacement->fDetailedPlacement = FALSE;
-        curr->pBasicPlacement->fPriorityExistance = FALSE;
-        curr->pBasicPlacement->bBodyType = -1;
-        RandomizeRelativeLevel(&(curr->pBasicPlacement->bRelativeAttributeLevel), curr->pBasicPlacement->ubSoldierClass);
-        RandomizeRelativeLevel(&(curr->pBasicPlacement->bRelativeEquipmentLevel), curr->pBasicPlacement->ubSoldierClass);
+    if (curr.value.pDetailedPlacement) {
+      if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
+        MemFree(curr.value.pDetailedPlacement);
+        curr.value.pDetailedPlacement = NULL;
+        curr.value.pBasicPlacement.value.fDetailedPlacement = FALSE;
+        curr.value.pBasicPlacement.value.fPriorityExistance = FALSE;
+        curr.value.pBasicPlacement.value.bBodyType = -1;
+        RandomizeRelativeLevel(&(curr.value.pBasicPlacement.value.bRelativeAttributeLevel), curr.value.pBasicPlacement.value.ubSoldierClass);
+        RandomizeRelativeLevel(&(curr.value.pBasicPlacement.value.bRelativeEquipmentLevel), curr.value.pBasicPlacement.value.ubSoldierClass);
       }
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }

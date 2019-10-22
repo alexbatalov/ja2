@@ -6,13 +6,13 @@ function NewUndergroundNode(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8
   AssertMsg(curr, "Failed to create an underground sector info node.");
   memset(curr, 0, sizeof(UNDERGROUND_SECTORINFO));
 
-  curr->ubSectorX = ubSectorX;
-  curr->ubSectorY = ubSectorY;
-  curr->ubSectorZ = ubSectorZ;
+  curr.value.ubSectorX = ubSectorX;
+  curr.value.ubSectorY = ubSectorY;
+  curr.value.ubSectorZ = ubSectorZ;
 
   if (gpUndergroundSectorInfoTail) {
-    gpUndergroundSectorInfoTail->next = curr;
-    gpUndergroundSectorInfoTail = gpUndergroundSectorInfoTail->next;
+    gpUndergroundSectorInfoTail.value.next = curr;
+    gpUndergroundSectorInfoTail = gpUndergroundSectorInfoTail.value.next;
   } else {
     gpUndergroundSectorInfoHead = curr;
     gpUndergroundSectorInfoTail = gpUndergroundSectorInfoHead;
@@ -26,33 +26,33 @@ function InitKnowFacilitiesFlags(): void {
 
   // Cambria hospital
   pSector = &SectorInfo[SEC_G8];
-  pSector->uiFacilitiesFlags |= SFCF_HOSPITAL;
+  pSector.value.uiFacilitiesFlags |= SFCF_HOSPITAL;
   pSector = &SectorInfo[SEC_F8];
-  pSector->uiFacilitiesFlags |= SFCF_HOSPITAL;
+  pSector.value.uiFacilitiesFlags |= SFCF_HOSPITAL;
   pSector = &SectorInfo[SEC_G9];
-  pSector->uiFacilitiesFlags |= SFCF_HOSPITAL;
+  pSector.value.uiFacilitiesFlags |= SFCF_HOSPITAL;
   pSector = &SectorInfo[SEC_F9];
-  pSector->uiFacilitiesFlags |= SFCF_HOSPITAL;
+  pSector.value.uiFacilitiesFlags |= SFCF_HOSPITAL;
 
   // Drassen airport
   pSector = &SectorInfo[SEC_B13];
-  pSector->uiFacilitiesFlags |= SFCF_AIRPORT;
+  pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
   pSector = &SectorInfo[SEC_C13];
-  pSector->uiFacilitiesFlags |= SFCF_AIRPORT;
+  pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
   pSector = &SectorInfo[SEC_D13];
-  pSector->uiFacilitiesFlags |= SFCF_AIRPORT;
+  pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
 
   // Meduna airport & military complex
   pSector = &SectorInfo[SEC_N3];
-  pSector->uiFacilitiesFlags |= SFCF_AIRPORT;
+  pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
   pSector = &SectorInfo[SEC_N4];
-  pSector->uiFacilitiesFlags |= SFCF_AIRPORT;
+  pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
   pSector = &SectorInfo[SEC_N5];
-  pSector->uiFacilitiesFlags |= SFCF_AIRPORT;
+  pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
   pSector = &SectorInfo[SEC_O3];
-  pSector->uiFacilitiesFlags |= SFCF_AIRPORT;
+  pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
   pSector = &SectorInfo[SEC_O4];
-  pSector->uiFacilitiesFlags |= SFCF_AIRPORT;
+  pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
 
   return;
 }
@@ -62,28 +62,28 @@ function InitMiningLocations(): void {
   // Set up mining sites
 
   pSector = &SectorInfo[SEC_D4];
-  pSector->uiFlags |= SF_MINING_SITE;
+  pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 33;
 
   pSector = &SectorInfo[SEC_D13];
-  pSector->uiFlags |= SF_MINING_SITE;
+  pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 41;
 
   pSector = &SectorInfo[SEC_B2];
-  pSector->uiFlags |= SF_MINING_SITE;
+  pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 20;
 
   pSector = &SectorInfo[SEC_H8];
-  pSector->uiFlags |= SF_MINING_SITE;
+  pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 64;
 
   pSector = &SectorInfo[SEC_I14];
-  pSector->uiFlags |= SF_MINING_SITE;
+  pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 80;
 
   // Grumm
   pSector = &SectorInfo[SEC_H3];
-  pSector->uiFlags |= SF_MINING_SITE;
+  pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 100;
 }
 
@@ -93,7 +93,7 @@ function GeneratePatrolGroups(): void {
   let ubNumTroops: UINT8;
   ubNumTroops = (3 + gGameOptions.ubDifficultyLevel + Random(3));
   pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_C7, 0, ubNumTroops, 0);
-  pGroup->ubTransportationMask = CAR;
+  pGroup.value.ubTransportationMask = CAR;
   AddWaypointToPGroup(pGroup, 8, 3); // C8
   AddWaypointToPGroup(pGroup, 7, 3); // C7
 
@@ -101,43 +101,43 @@ function GeneratePatrolGroups(): void {
   pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_D9, 0, ubNumTroops, 0);
   AddWaypointToPGroup(pGroup, 9, 5); // E9
   AddWaypointToPGroup(pGroup, 9, 4); // D9
-  pGroup->ubTransportationMask = TRUCK;
+  pGroup.value.ubTransportationMask = TRUCK;
 
   ubNumTroops = (3 + gGameOptions.ubDifficultyLevel + Random(3));
   pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_B9, 0, ubNumTroops, 0);
   AddWaypointToPGroup(pGroup, 12, 2); // B12
   AddWaypointToPGroup(pGroup, 9, 2); // B9
-  pGroup->ubTransportationMask = FOOT;
+  pGroup.value.ubTransportationMask = FOOT;
 
   ubNumTroops = (3 + gGameOptions.ubDifficultyLevel + Random(3));
   pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_A14, 0, ubNumTroops, 0);
-  pGroup->ubMoveType = ENDTOEND_FORWARDS;
+  pGroup.value.ubMoveType = ENDTOEND_FORWARDS;
   AddWaypointToPGroup(pGroup, 13, 1); // A13
   AddWaypointToPGroup(pGroup, 15, 1); // A15
   AddWaypointToPGroup(pGroup, 15, 5); // E15
   AddWaypointToPGroup(pGroup, 13, 5); // E13
   AddWaypointToPGroup(pGroup, 12, 5); // E12
   AddWaypointToPGroup(pGroup, 12, 3); // C12
-  pGroup->ubTransportationMask = TRACKED;
+  pGroup.value.ubTransportationMask = TRACKED;
 
   ubNumTroops = (5 + gGameOptions.ubDifficultyLevel * 2 + Random(4));
   pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_N6, 0, ubNumTroops, 0);
   AddWaypointToPGroup(pGroup, 9, 14); // N9
   AddWaypointToPGroup(pGroup, 6, 14); // N6
-  pGroup->ubTransportationMask = CAR;
+  pGroup.value.ubTransportationMask = CAR;
 
   ubNumTroops = (5 + gGameOptions.ubDifficultyLevel * 2 + Random(4));
   pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_N10, 0, ubNumTroops, 0);
   AddWaypointToPGroup(pGroup, 10, 11); // K10
   AddWaypointToPGroup(pGroup, 10, 14); // N10
-  pGroup->ubTransportationMask = CAR;
+  pGroup.value.ubTransportationMask = CAR;
 }
 
 function TrashUndergroundSectorInfo(): void {
   let curr: Pointer<UNDERGROUND_SECTORINFO>;
   while (gpUndergroundSectorInfoHead) {
     curr = gpUndergroundSectorInfoHead;
-    gpUndergroundSectorInfoHead = gpUndergroundSectorInfoHead->next;
+    gpUndergroundSectorInfoHead = gpUndergroundSectorInfoHead.value.next;
     MemFree(curr);
   }
   gpUndergroundSectorInfoHead = NULL;
@@ -172,136 +172,136 @@ function BuildUndergroundSectorInfoList(): void {
   curr = NewUndergroundNode(9, 10, 1);
   switch (gGameOptions.ubDifficultyLevel) {
     case DIF_LEVEL_EASY:
-      curr->ubNumTroops = 8;
+      curr.value.ubNumTroops = 8;
       break;
     case DIF_LEVEL_MEDIUM:
-      curr->ubNumTroops = 11;
+      curr.value.ubNumTroops = 11;
       break;
     case DIF_LEVEL_HARD:
-      curr->ubNumTroops = 15;
+      curr.value.ubNumTroops = 15;
       break;
   }
   // J9 feeding zone
   curr = NewUndergroundNode(9, 10, 2);
-  curr->ubNumCreatures = (2 + gGameOptions.ubDifficultyLevel * 2 + Random(2));
+  curr.value.ubNumCreatures = (2 + gGameOptions.ubDifficultyLevel * 2 + Random(2));
 
   // K4
   curr = NewUndergroundNode(4, 11, 1);
-  curr->ubNumTroops = (6 + gGameOptions.ubDifficultyLevel * 2 + Random(3));
-  curr->ubNumElites = (4 + gGameOptions.ubDifficultyLevel + Random(2));
+  curr.value.ubNumTroops = (6 + gGameOptions.ubDifficultyLevel * 2 + Random(3));
+  curr.value.ubNumElites = (4 + gGameOptions.ubDifficultyLevel + Random(2));
 
   // O3
   curr = NewUndergroundNode(3, 15, 1);
-  curr->ubNumTroops = (6 + gGameOptions.ubDifficultyLevel * 2 + Random(3));
-  curr->ubNumElites = (4 + gGameOptions.ubDifficultyLevel + Random(2));
-  curr->ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
+  curr.value.ubNumTroops = (6 + gGameOptions.ubDifficultyLevel * 2 + Random(3));
+  curr.value.ubNumElites = (4 + gGameOptions.ubDifficultyLevel + Random(2));
+  curr.value.ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
 
   // P3
   curr = NewUndergroundNode(3, 16, 1);
   switch (gGameOptions.ubDifficultyLevel) {
     case DIF_LEVEL_EASY:
-      curr->ubNumElites = (8 + Random(3));
+      curr.value.ubNumElites = (8 + Random(3));
       break;
     case DIF_LEVEL_MEDIUM:
-      curr->ubNumElites = (10 + Random(5));
+      curr.value.ubNumElites = (10 + Random(5));
       break;
     case DIF_LEVEL_HARD:
-      curr->ubNumElites = (14 + Random(6));
+      curr.value.ubNumElites = (14 + Random(6));
       break;
   }
-  curr->ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
 
   // Do all of the mandatory underground mine sectors
 
   // Drassen's mine
   // D13_B1
   curr = NewUndergroundNode(13, 4, 1);
-  curr->ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
   // E13_B1
   curr = NewUndergroundNode(13, 5, 1);
-  curr->ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
   // E13_B2
   curr = NewUndergroundNode(13, 5, 2);
-  curr->ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
   // F13_B2
   curr = NewUndergroundNode(13, 6, 2);
-  curr->ubAdjacentSectors |= NORTH_ADJACENT_SECTOR | SOUTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= NORTH_ADJACENT_SECTOR | SOUTH_ADJACENT_SECTOR;
   // G13_B2
   curr = NewUndergroundNode(13, 7, 2);
-  curr->ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
   // G13_B3
   curr = NewUndergroundNode(13, 7, 3);
-  curr->ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
   // F13_B3
   curr = NewUndergroundNode(13, 6, 3);
-  curr->ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
 
   // Cambria's mine
   // H8_B1
   curr = NewUndergroundNode(8, 8, 1);
-  curr->ubAdjacentSectors |= EAST_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= EAST_ADJACENT_SECTOR;
   // H9_B1
   curr = NewUndergroundNode(9, 8, 1);
-  curr->ubAdjacentSectors |= WEST_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= WEST_ADJACENT_SECTOR;
   // H9_B2
   curr = NewUndergroundNode(9, 8, 2);
-  curr->ubAdjacentSectors |= WEST_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= WEST_ADJACENT_SECTOR;
   // H8_B2
   curr = NewUndergroundNode(8, 8, 2);
-  curr->ubAdjacentSectors |= EAST_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= EAST_ADJACENT_SECTOR;
   // H8_B3
   curr = NewUndergroundNode(8, 8, 3);
-  curr->ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
   // I8_B3
   curr = NewUndergroundNode(8, 9, 3);
-  curr->ubAdjacentSectors |= NORTH_ADJACENT_SECTOR | SOUTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= NORTH_ADJACENT_SECTOR | SOUTH_ADJACENT_SECTOR;
   // J8_B3
   curr = NewUndergroundNode(8, 10, 3);
-  curr->ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
 
   // Alma's mine
   // I14_B1
   curr = NewUndergroundNode(14, 9, 1);
-  curr->ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
   // J14_B1
   curr = NewUndergroundNode(14, 10, 1);
-  curr->ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
   // J14_B2
   curr = NewUndergroundNode(14, 10, 2);
-  curr->ubAdjacentSectors |= WEST_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= WEST_ADJACENT_SECTOR;
   // J13_B2
   curr = NewUndergroundNode(13, 10, 2);
-  curr->ubAdjacentSectors |= EAST_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= EAST_ADJACENT_SECTOR;
   // J13_B3
   curr = NewUndergroundNode(13, 10, 3);
-  curr->ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
   // K13_B3
   curr = NewUndergroundNode(13, 11, 3);
-  curr->ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
 
   // Grumm's mine
   // H3_B1
   curr = NewUndergroundNode(3, 8, 1);
-  curr->ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
   // I3_B1
   curr = NewUndergroundNode(3, 9, 1);
-  curr->ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
   // I3_B2
   curr = NewUndergroundNode(3, 9, 2);
-  curr->ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
   // H3_B2
   curr = NewUndergroundNode(3, 8, 2);
-  curr->ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR | EAST_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR | EAST_ADJACENT_SECTOR;
   // H4_B2
   curr = NewUndergroundNode(4, 8, 2);
-  curr->ubAdjacentSectors |= WEST_ADJACENT_SECTOR;
-  curr->uiFlags |= SF_PENDING_ALTERNATE_MAP;
+  curr.value.ubAdjacentSectors |= WEST_ADJACENT_SECTOR;
+  curr.value.uiFlags |= SF_PENDING_ALTERNATE_MAP;
   // H4_B3
   curr = NewUndergroundNode(4, 8, 3);
-  curr->ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= NORTH_ADJACENT_SECTOR;
   // G4_B3
   curr = NewUndergroundNode(4, 7, 3);
-  curr->ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
+  curr.value.ubAdjacentSectors |= SOUTH_ADJACENT_SECTOR;
 }
 
 // This is the function that is called only once, when the player begins a new game.  This will calculate

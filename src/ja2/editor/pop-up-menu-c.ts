@@ -75,20 +75,20 @@ function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirection: UINT
 
   switch (ubDirection) {
     case DIR_UPRIGHT:
-      usX = button->Area.RegionTopLeftX;
-      usY = button->Area.RegionTopLeftY;
+      usX = button.value.Area.RegionTopLeftX;
+      usY = button.value.Area.RegionTopLeftY;
       break;
     case DIR_UPLEFT:
-      usX = button->Area.RegionBottomRightX;
-      usY = button->Area.RegionTopLeftY;
+      usX = button.value.Area.RegionBottomRightX;
+      usY = button.value.Area.RegionTopLeftY;
       break;
     case DIR_DOWNRIGHT:
-      usX = button->Area.RegionTopLeftX;
-      usY = button->Area.RegionBottomRightY;
+      usX = button.value.Area.RegionTopLeftX;
+      usY = button.value.Area.RegionBottomRightY;
       break;
     case DIR_DOWNLEFT:
-      usX = button->Area.RegionBottomRightX;
-      usY = button->Area.RegionBottomRightY;
+      usX = button.value.Area.RegionBottomRightX;
+      usY = button.value.Area.RegionBottomRightY;
       break;
   }
 

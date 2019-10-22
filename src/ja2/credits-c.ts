@@ -454,7 +454,7 @@ function HandleCreditScreen(): void {
   HandleCreditEyeBlinking();
 
   // is it time to get a new node
-  if (gCrdtLastAddedNode == NULL || (CRDT_START_POS_Y - (gCrdtLastAddedNode->sPosY + gCrdtLastAddedNode->sHeightOfString - 16)) >= guiGapTillReadNextCredit) {
+  if (gCrdtLastAddedNode == NULL || (CRDT_START_POS_Y - (gCrdtLastAddedNode.value.sPosY + gCrdtLastAddedNode.value.sHeightOfString - 16)) >= guiGapTillReadNextCredit) {
     // if there are no more credits in the file
     if (!GetNextCreditFromTextFile() && gCrdtLastAddedNode == NULL) {
       SetCreditsExitScreen(MAINMENU_SCREEN);
@@ -534,7 +534,7 @@ function ShutDownCreditList(): BOOLEAN {
   while (pNodeToDelete != NULL) {
     pTemp = pNodeToDelete;
 
-    pNodeToDelete = pNodeToDelete->pNext;
+    pNodeToDelete = pNodeToDelete.value.pNext;
 
     // Delete the current node
     DeleteNode(pTemp);
@@ -553,33 +553,33 @@ function DeleteNode(pNodeToDelete: Pointer<CRDT_NODE>): BOOLEAN {
   }
 
   // if its Not the first node
-  if (pNodeToDelete->pPrev != NULL)
-    pNodeToDelete->pPrev = pNodeToDelete->pNext;
+  if (pNodeToDelete.value.pPrev != NULL)
+    pNodeToDelete.value.pPrev = pNodeToDelete.value.pNext;
   else {
-    if (gCrdtRootNode->pNext != NULL) {
-      gCrdtRootNode = gCrdtRootNode->pNext;
-      gCrdtRootNode->pPrev = NULL;
+    if (gCrdtRootNode.value.pNext != NULL) {
+      gCrdtRootNode = gCrdtRootNode.value.pNext;
+      gCrdtRootNode.value.pPrev = NULL;
     }
   }
 
   // if its the last node in the list
-  if (pNodeToDelete->pNext == NULL && pNodeToDelete->pPrev != NULL)
-    pNodeToDelete->pPrev->pNext = NULL;
+  if (pNodeToDelete.value.pNext == NULL && pNodeToDelete.value.pPrev != NULL)
+    pNodeToDelete.value.pPrev.value.pNext = NULL;
 
   // iof the node that is being deleted is the first node
   if (pTempNode == gCrdtRootNode)
     gCrdtRootNode = NULL;
 
   // Free the string
-  if (pTempNode->pString != NULL) {
-    MemFree(pTempNode->pString);
-    pTempNode->pString = NULL;
+  if (pTempNode.value.pString != NULL) {
+    MemFree(pTempNode.value.pString);
+    pTempNode.value.pString = NULL;
   }
 
   // if the node had something to display, delete a surface for it
-  if (pTempNode->uiType == CRDT_NODE_DEFAULT) {
-    DeleteVideoSurfaceFromIndex(pTempNode->uiVideoSurfaceImage);
-    pTempNode->uiVideoSurfaceImage = 0;
+  if (pTempNode.value.uiType == CRDT_NODE_DEFAULT) {
+    DeleteVideoSurfaceFromIndex(pTempNode.value.uiVideoSurfaceImage);
+    pTempNode.value.uiVideoSurfaceImage = 0;
   }
 
   // Free the node
@@ -636,55 +636,55 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN
   //
 
   // the type of the node
-  pNodeToAdd->uiType = uiType;
+  pNodeToAdd.value.uiType = uiType;
 
   // any flags that are added
-  pNodeToAdd->uiFlags = uiFlags;
+  pNodeToAdd.value.uiFlags = uiFlags;
 
   // the starting left position for the it
-  pNodeToAdd->sPosX = CRDT_TEXT_START_LOC;
+  pNodeToAdd.value.sPosX = CRDT_TEXT_START_LOC;
 
   // Allocate memory for the string
-  pNodeToAdd->pString = MemAlloc(uiSizeOfString);
-  if (pNodeToAdd->pString == NULL)
+  pNodeToAdd.value.pString = MemAlloc(uiSizeOfString);
+  if (pNodeToAdd.value.pString == NULL)
     return FALSE;
 
   // copy the string into the node
-  wcscpy(pNodeToAdd->pString, pString);
+  wcscpy(pNodeToAdd.value.pString, pString);
 
   // Calculate the height of the string
-  pNodeToAdd->sHeightOfString = DisplayWrappedString(0, 0, CRDT_WIDTH_OF_TEXT_AREA, 2, uiFontToUse, uiColorToUse, pNodeToAdd->pString, 0, FALSE, DONT_DISPLAY_TEXT) + 1;
+  pNodeToAdd.value.sHeightOfString = DisplayWrappedString(0, 0, CRDT_WIDTH_OF_TEXT_AREA, 2, uiFontToUse, uiColorToUse, pNodeToAdd.value.pString, 0, FALSE, DONT_DISPLAY_TEXT) + 1;
 
   // starting y position on the screen
-  pNodeToAdd->sPosY = CRDT_START_POS_Y;
+  pNodeToAdd.value.sPosY = CRDT_START_POS_Y;
 
   //	pNodeToAdd->uiLastTime = GetJA2Clock();
 
   // if the node can have something to display, Create a surface for it
-  if (pNodeToAdd->uiType == CRDT_NODE_DEFAULT) {
+  if (pNodeToAdd.value.uiType == CRDT_NODE_DEFAULT) {
     let vs_desc: VSURFACE_DESC;
 
     // Create a background video surface to blt the face onto
     vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
     vs_desc.usWidth = CRDT_WIDTH_OF_TEXT_AREA;
-    vs_desc.usHeight = pNodeToAdd->sHeightOfString;
+    vs_desc.usHeight = pNodeToAdd.value.sHeightOfString;
     vs_desc.ubBitDepth = 16;
 
-    if (AddVideoSurface(&vs_desc, &pNodeToAdd->uiVideoSurfaceImage) == 0) {
+    if (AddVideoSurface(&vs_desc, &pNodeToAdd.value.uiVideoSurfaceImage) == 0) {
       return FALSE;
     }
 
     // Set transparency
-    SetVideoSurfaceTransparency(pNodeToAdd->uiVideoSurfaceImage, 0);
+    SetVideoSurfaceTransparency(pNodeToAdd.value.uiVideoSurfaceImage, 0);
 
     // fill the surface with a transparent color
-    ColorFillVideoSurfaceArea(pNodeToAdd->uiVideoSurfaceImage, 0, 0, CRDT_WIDTH_OF_TEXT_AREA, pNodeToAdd->sHeightOfString, 0);
+    ColorFillVideoSurfaceArea(pNodeToAdd.value.uiVideoSurfaceImage, 0, 0, CRDT_WIDTH_OF_TEXT_AREA, pNodeToAdd.value.sHeightOfString, 0);
 
     // set the font dest buffer to be the surface
-    SetFontDestBuffer(pNodeToAdd->uiVideoSurfaceImage, 0, 0, CRDT_WIDTH_OF_TEXT_AREA, pNodeToAdd->sHeightOfString, FALSE);
+    SetFontDestBuffer(pNodeToAdd.value.uiVideoSurfaceImage, 0, 0, CRDT_WIDTH_OF_TEXT_AREA, pNodeToAdd.value.sHeightOfString, FALSE);
 
     // write the string onto the surface
-    DisplayWrappedString(0, 1, CRDT_WIDTH_OF_TEXT_AREA, 2, uiFontToUse, uiColorToUse, pNodeToAdd->pString, 0, FALSE, gubCrdtJustification);
+    DisplayWrappedString(0, 1, CRDT_WIDTH_OF_TEXT_AREA, 2, uiFontToUse, uiColorToUse, pNodeToAdd.value.pString, 0, FALSE, gubCrdtJustification);
 
     // reset the font dest buffer
     SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
@@ -699,20 +699,20 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN
     // make the new node the root node
     gCrdtRootNode = pNodeToAdd;
 
-    gCrdtRootNode->pNext = NULL;
-    gCrdtRootNode->pPrev = NULL;
+    gCrdtRootNode.value.pNext = NULL;
+    gCrdtRootNode.value.pPrev = NULL;
   } else {
     pTemp = gCrdtRootNode;
 
-    while (pTemp->pNext != NULL) {
-      pTemp = pTemp->pNext;
+    while (pTemp.value.pNext != NULL) {
+      pTemp = pTemp.value.pNext;
     }
 
     // Add the new node to the list
-    pTemp->pNext = pNodeToAdd;
+    pTemp.value.pNext = pNodeToAdd;
 
     // Assign the prev node
-    pNodeToAdd->pPrev = pTemp;
+    pNodeToAdd.value.pPrev = pTemp;
   }
 
   gCrdtLastAddedNode = pNodeToAdd;
@@ -741,13 +741,13 @@ function HandleCreditNodes(): void {
   while (pCurrent != NULL) {
     pTemp = pCurrent;
 
-    pCurrent = pCurrent->pNext;
+    pCurrent = pCurrent.value.pNext;
 
     // Handle the current node
     HandleCurrentCreditNode(pTemp);
 
     // if the node is to be deleted
-    if (pTemp->fDelete) {
+    if (pTemp.value.fDelete) {
       // delete the node
       DeleteNode(pTemp);
     }
@@ -760,7 +760,7 @@ function HandleCreditNodes(): void {
 
 function HandleCurrentCreditNode(pCurrent: Pointer<CRDT_NODE>): void {
   // switch on the type of node
-  switch (pCurrent->uiType) {
+  switch (pCurrent.value.uiType) {
       // new codes:
     case CRDT_NODE_DEFAULT:
       HandleNode_Default(pCurrent);
@@ -782,16 +782,16 @@ function HandleNode_Default(pCurrent: Pointer<CRDT_NODE>): void {
     DisplayCreditNode(pCurrent);
 
     // Save the old position
-    pCurrent->sOldPosX = pCurrent->sPosX;
-    pCurrent->sOldPosY = pCurrent->sPosY;
+    pCurrent.value.sOldPosX = pCurrent.value.sPosX;
+    pCurrent.value.sOldPosY = pCurrent.value.sPosY;
 
     // Move the current node up
-    pCurrent->sPosY -= CRDT_SCROLL_PIXEL_AMOUNT;
+    pCurrent.value.sPosY -= CRDT_SCROLL_PIXEL_AMOUNT;
 
     // if the node is entirely off the screen
-    if ((pCurrent->sPosY + pCurrent->sHeightOfString) < CRDT_LINE_NODE_DISAPPEARS_AT) {
+    if ((pCurrent.value.sPosY + pCurrent.value.sHeightOfString) < CRDT_LINE_NODE_DISAPPEARS_AT) {
       // mark the node to be deleted this frame
-      pCurrent->fDelete = TRUE;
+      pCurrent.value.fDelete = TRUE;
     }
 
     // Update the last time to be the current time
@@ -799,7 +799,7 @@ function HandleNode_Default(pCurrent: Pointer<CRDT_NODE>): void {
 
     //		pCurrent->uiLastTime = ( uiCurrentTime - ( uiCurrentTime - pCurrent->uiLastTime - guiCrdtNodeScrollSpeed) );
 
-    pCurrent->uiLastTime = GetJA2Clock();
+    pCurrent.value.uiLastTime = GetJA2Clock();
   }
 }
 
@@ -807,11 +807,11 @@ function DisplayCreditNode(pCurrent: Pointer<CRDT_NODE>): BOOLEAN {
   let hVSurface: HVSURFACE;
 
   // Currently, we have no need to display a node that doesnt have a string
-  if (pCurrent->pString == NULL)
+  if (pCurrent.value.pString == NULL)
     return FALSE;
 
   // if the node is new and we havent displayed it yet
-  if (pCurrent->uiLastTime == 0) {
+  if (pCurrent.value.uiLastTime == 0) {
   }
 
   // else we have to restore were the string was
@@ -821,24 +821,24 @@ function DisplayCreditNode(pCurrent: Pointer<CRDT_NODE>): BOOLEAN {
     //
 
     // if the surface is at the bottom of the screen
-    if (pCurrent->sOldPosY + pCurrent->sHeightOfString > CRDT_START_POS_Y) {
-      let sHeight: INT16 = 480 - pCurrent->sOldPosY;
-      RestoreExternBackgroundRect(pCurrent->sOldPosX, pCurrent->sOldPosY, CRDT_WIDTH_OF_TEXT_AREA, sHeight);
-    } else if (pCurrent->sOldPosY > CRDT_LINE_NODE_DISAPPEARS_AT) {
-      RestoreExternBackgroundRect(pCurrent->sOldPosX, pCurrent->sOldPosY, CRDT_WIDTH_OF_TEXT_AREA, pCurrent->sHeightOfString);
+    if (pCurrent.value.sOldPosY + pCurrent.value.sHeightOfString > CRDT_START_POS_Y) {
+      let sHeight: INT16 = 480 - pCurrent.value.sOldPosY;
+      RestoreExternBackgroundRect(pCurrent.value.sOldPosX, pCurrent.value.sOldPosY, CRDT_WIDTH_OF_TEXT_AREA, sHeight);
+    } else if (pCurrent.value.sOldPosY > CRDT_LINE_NODE_DISAPPEARS_AT) {
+      RestoreExternBackgroundRect(pCurrent.value.sOldPosX, pCurrent.value.sOldPosY, CRDT_WIDTH_OF_TEXT_AREA, pCurrent.value.sHeightOfString);
     }
 
     // if the surface is at the top of the screen
     else {
-      let sHeight: INT16 = pCurrent->sOldPosY + pCurrent->sHeightOfString;
+      let sHeight: INT16 = pCurrent.value.sOldPosY + pCurrent.value.sHeightOfString;
 
-      RestoreExternBackgroundRect(pCurrent->sOldPosX, CRDT_LINE_NODE_DISAPPEARS_AT, CRDT_WIDTH_OF_TEXT_AREA, sHeight);
+      RestoreExternBackgroundRect(pCurrent.value.sOldPosX, CRDT_LINE_NODE_DISAPPEARS_AT, CRDT_WIDTH_OF_TEXT_AREA, sHeight);
     }
   }
 
-  GetVideoSurface(&hVSurface, pCurrent->uiVideoSurfaceImage);
+  GetVideoSurface(&hVSurface, pCurrent.value.uiVideoSurfaceImage);
 
-  BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, pCurrent->sPosX, pCurrent->sPosY, VS_BLT_CLIPPED | VS_BLT_USECOLORKEY, NULL);
+  BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, pCurrent.value.sPosX, pCurrent.value.sPosY, VS_BLT_CLIPPED | VS_BLT_USECOLORKEY, NULL);
 
   return TRUE;
 }
@@ -1050,7 +1050,7 @@ function CountNumberOfCreditNodes(): UINT32 {
   while (pTempNode) {
     uiNumNodes++;
 
-    pTempNode = pTempNode->pNext;
+    pTempNode = pTempNode.value.pNext;
   }
 
   return uiNumNodes;

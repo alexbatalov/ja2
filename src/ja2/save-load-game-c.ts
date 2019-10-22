@@ -1615,31 +1615,31 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
       pSoldier = FindSoldierByProfileID(SKYRIDER, FALSE);
 
       if (pSoldier != NULL) {
-        TacticalRemoveSoldier(pSoldier->ubID);
+        TacticalRemoveSoldier(pSoldier.value.ubID);
       }
 
       // add the pilot at a random location!
       pProfile = &(gMercProfiles[SKYRIDER]);
       switch (Random(4)) {
         case 0:
-          pProfile->sSectorX = 15;
-          pProfile->sSectorY = MAP_ROW_B;
-          pProfile->bSectorZ = 0;
+          pProfile.value.sSectorX = 15;
+          pProfile.value.sSectorY = MAP_ROW_B;
+          pProfile.value.bSectorZ = 0;
           break;
         case 1:
-          pProfile->sSectorX = 14;
-          pProfile->sSectorY = MAP_ROW_E;
-          pProfile->bSectorZ = 0;
+          pProfile.value.sSectorX = 14;
+          pProfile.value.sSectorY = MAP_ROW_E;
+          pProfile.value.bSectorZ = 0;
           break;
         case 2:
-          pProfile->sSectorX = 12;
-          pProfile->sSectorY = MAP_ROW_D;
-          pProfile->bSectorZ = 0;
+          pProfile.value.sSectorX = 12;
+          pProfile.value.sSectorY = MAP_ROW_D;
+          pProfile.value.bSectorZ = 0;
           break;
         case 3:
-          pProfile->sSectorX = 16;
-          pProfile->sSectorY = MAP_ROW_C;
-          pProfile->bSectorZ = 0;
+          pProfile.value.sSectorX = 16;
+          pProfile.value.sSectorY = MAP_ROW_C;
+          pProfile.value.bSectorZ = 0;
           break;
       }
     }
@@ -1998,10 +1998,10 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
       gMercProfiles[ROBOT].bAgility = 50;
       pSoldier = FindSoldierByProfileID(ROBOT, FALSE);
       if (pSoldier) {
-        pSoldier->inv[VESTPOS].usItem = SPECTRA_VEST_18;
-        pSoldier->inv[HELMETPOS].usItem = SPECTRA_HELMET_18;
-        pSoldier->inv[LEGPOS].usItem = SPECTRA_LEGGINGS_18;
-        pSoldier->bAgility = 50;
+        pSoldier.value.inv[VESTPOS].usItem = SPECTRA_VEST_18;
+        pSoldier.value.inv[HELMETPOS].usItem = SPECTRA_HELMET_18;
+        pSoldier.value.inv[LEGPOS].usItem = SPECTRA_LEGGINGS_18;
+        pSoldier.value.bAgility = 50;
       }
     }
   }
@@ -2241,7 +2241,7 @@ function SaveEmailToSavedGame(hFile: HWFILE): BOOLEAN {
 
   // loop through all the email to find out the total number
   while (pEmail) {
-    pEmail = pEmail->Next;
+    pEmail = pEmail.value.Next;
     uiNumOfEmails++;
   }
 
@@ -2257,7 +2257,7 @@ function SaveEmailToSavedGame(hFile: HWFILE): BOOLEAN {
   pEmail = pEmailList;
   for (cnt = 0; cnt < uiNumOfEmails; cnt++) {
     // Get the strng length of the subject
-    uiStringLength = (wcslen(pEmail->pSubject) + 1) * 2;
+    uiStringLength = (wcslen(pEmail.value.pSubject) + 1) * 2;
 
     // write the length of the current emails subject to the saved game file
     FileWrite(hFile, &uiStringLength, sizeof(UINT32), &uiNumBytesWritten);
@@ -2266,25 +2266,25 @@ function SaveEmailToSavedGame(hFile: HWFILE): BOOLEAN {
     }
 
     // write the subject of the current email to the saved game file
-    FileWrite(hFile, pEmail->pSubject, uiStringLength, &uiNumBytesWritten);
+    FileWrite(hFile, pEmail.value.pSubject, uiStringLength, &uiNumBytesWritten);
     if (uiNumBytesWritten != uiStringLength) {
       return FALSE;
     }
 
     // Get the current emails data and asign it to the 'Saved email' struct
-    SavedEmail.usOffset = pEmail->usOffset;
-    SavedEmail.usLength = pEmail->usLength;
-    SavedEmail.ubSender = pEmail->ubSender;
-    SavedEmail.iDate = pEmail->iDate;
-    SavedEmail.iId = pEmail->iId;
-    SavedEmail.iFirstData = pEmail->iFirstData;
-    SavedEmail.uiSecondData = pEmail->uiSecondData;
-    SavedEmail.fRead = pEmail->fRead;
-    SavedEmail.fNew = pEmail->fNew;
-    SavedEmail.iThirdData = pEmail->iThirdData;
-    SavedEmail.iFourthData = pEmail->iFourthData;
-    SavedEmail.uiFifthData = pEmail->uiFifthData;
-    SavedEmail.uiSixData = pEmail->uiSixData;
+    SavedEmail.usOffset = pEmail.value.usOffset;
+    SavedEmail.usLength = pEmail.value.usLength;
+    SavedEmail.ubSender = pEmail.value.ubSender;
+    SavedEmail.iDate = pEmail.value.iDate;
+    SavedEmail.iId = pEmail.value.iId;
+    SavedEmail.iFirstData = pEmail.value.iFirstData;
+    SavedEmail.uiSecondData = pEmail.value.uiSecondData;
+    SavedEmail.fRead = pEmail.value.fRead;
+    SavedEmail.fNew = pEmail.value.fNew;
+    SavedEmail.iThirdData = pEmail.value.iThirdData;
+    SavedEmail.iFourthData = pEmail.value.iFourthData;
+    SavedEmail.uiFifthData = pEmail.value.uiFifthData;
+    SavedEmail.uiSixData = pEmail.value.uiSixData;
 
     // write the email header to the saved game file
     FileWrite(hFile, &SavedEmail, sizeof(SavedEmailStruct), &uiNumBytesWritten);
@@ -2293,7 +2293,7 @@ function SaveEmailToSavedGame(hFile: HWFILE): BOOLEAN {
     }
 
     // advance to the next email
-    pEmail = pEmail->Next;
+    pEmail = pEmail.value.Next;
   }
 
   return TRUE;
@@ -2363,37 +2363,37 @@ function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
       return FALSE;
     memset(pTempEmail, 0, sizeof(Email));
 
-    pTempEmail->usOffset = SavedEmail.usOffset;
-    pTempEmail->usLength = SavedEmail.usLength;
-    pTempEmail->ubSender = SavedEmail.ubSender;
-    pTempEmail->iDate = SavedEmail.iDate;
-    pTempEmail->iId = SavedEmail.iId;
-    pTempEmail->fRead = SavedEmail.fRead;
-    pTempEmail->fNew = SavedEmail.fNew;
-    pTempEmail->pSubject = pData;
-    pTempEmail->iFirstData = SavedEmail.iFirstData;
-    pTempEmail->uiSecondData = SavedEmail.uiSecondData;
-    pTempEmail->iThirdData = SavedEmail.iThirdData;
-    pTempEmail->iFourthData = SavedEmail.iFourthData;
-    pTempEmail->uiFifthData = SavedEmail.uiFifthData;
-    pTempEmail->uiSixData = SavedEmail.uiSixData;
+    pTempEmail.value.usOffset = SavedEmail.usOffset;
+    pTempEmail.value.usLength = SavedEmail.usLength;
+    pTempEmail.value.ubSender = SavedEmail.ubSender;
+    pTempEmail.value.iDate = SavedEmail.iDate;
+    pTempEmail.value.iId = SavedEmail.iId;
+    pTempEmail.value.fRead = SavedEmail.fRead;
+    pTempEmail.value.fNew = SavedEmail.fNew;
+    pTempEmail.value.pSubject = pData;
+    pTempEmail.value.iFirstData = SavedEmail.iFirstData;
+    pTempEmail.value.uiSecondData = SavedEmail.uiSecondData;
+    pTempEmail.value.iThirdData = SavedEmail.iThirdData;
+    pTempEmail.value.iFourthData = SavedEmail.iFourthData;
+    pTempEmail.value.uiFifthData = SavedEmail.uiFifthData;
+    pTempEmail.value.uiSixData = SavedEmail.uiSixData;
 
     // add the current email in
-    pEmail->Next = pTempEmail;
-    pTempEmail->Prev = pEmail;
+    pEmail.value.Next = pTempEmail;
+    pTempEmail.value.Prev = pEmail;
 
     // moved to the next email
-    pEmail = pEmail->Next;
+    pEmail = pEmail.value.Next;
 
-    AddMessageToPages(pTempEmail->iId);
+    AddMessageToPages(pTempEmail.value.iId);
   }
 
   // if there are emails
   if (cnt) {
     // the first node of the LL was a dummy, node,get rid  of it
     pTempEmail = pEmailList;
-    pEmailList = pEmailList->Next;
-    pEmailList->Prev = NULL;
+    pEmailList = pEmailList.value.Next;
+    pEmailList.value.Prev = NULL;
     MemFree(pTempEmail);
   } else {
     MemFree(pEmailList);
@@ -2725,7 +2725,7 @@ function SaveMercPathFromSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
   // loop through to get all the nodes
   while (pTempPath) {
     uiNumOfNodes++;
-    pTempPath = pTempPath->pNext;
+    pTempPath = pTempPath.value.pNext;
   }
 
   // Save the number of the nodes
@@ -2745,7 +2745,7 @@ function SaveMercPathFromSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
       return FALSE;
     }
 
-    pTempPath = pTempPath->pNext;
+    pTempPath = pTempPath.value.pNext;
   }
 
   return TRUE;
@@ -2800,15 +2800,15 @@ function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
     // Put the node into the list
     if (cnt == 0) {
       pTempPath = pTemp;
-      pTemp->pPrev = NULL;
+      pTemp.value.pPrev = NULL;
     } else {
-      pTempPath->pNext = pTemp;
-      pTemp->pPrev = pTempPath;
+      pTempPath.value.pNext = pTemp;
+      pTemp.value.pPrev = pTempPath;
 
-      pTempPath = pTempPath->pNext;
+      pTempPath = pTempPath.value.pNext;
     }
 
-    pTemp->pNext = NULL;
+    pTemp.value.pNext = NULL;
   }
 
   // move to beginning of list
@@ -2816,7 +2816,7 @@ function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
 
   Menptr[ubID].pMercPath = pTempPath;
   if (Menptr[ubID].pMercPath)
-    Menptr[ubID].pMercPath->pPrev = NULL;
+    Menptr[ubID].pMercPath.value.pPrev = NULL;
 
   return TRUE;
 }
@@ -2892,7 +2892,7 @@ function SaveGeneralInfo(hFile: HWFILE): BOOLEAN {
   sGeneralInfo.ubQuitType = ubQuitType;
 
   if (pContractReHireSoldier != NULL)
-    sGeneralInfo.sContractRehireSoldierID = pContractReHireSoldier->ubID;
+    sGeneralInfo.sContractRehireSoldierID = pContractReHireSoldier.value.ubID;
   else
     sGeneralInfo.sContractRehireSoldierID = -1;
 
@@ -2906,7 +2906,7 @@ function SaveGeneralInfo(hFile: HWFILE): BOOLEAN {
 
   // Save the selected merc
   if (gpSMCurrentMerc)
-    sGeneralInfo.ubSMCurrentMercID = gpSMCurrentMerc->ubID;
+    sGeneralInfo.ubSMCurrentMercID = gpSMCurrentMerc.value.ubID;
   else
     sGeneralInfo.ubSMCurrentMercID = 255;
 
@@ -3354,10 +3354,10 @@ function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Po
     *psSectorY = gWorldSectorY;
     *pbSectorZ = gbWorldSectorZ;
   } else if (iCurrentTacticalSquad != NO_CURRENT_SQUAD && Squad[iCurrentTacticalSquad][0]) {
-    if (Squad[iCurrentTacticalSquad][0]->bAssignment != IN_TRANSIT) {
-      *psSectorX = Squad[iCurrentTacticalSquad][0]->sSectorX;
-      *psSectorY = Squad[iCurrentTacticalSquad][0]->sSectorY;
-      *pbSectorZ = Squad[iCurrentTacticalSquad][0]->bSectorZ;
+    if (Squad[iCurrentTacticalSquad][0].value.bAssignment != IN_TRANSIT) {
+      *psSectorX = Squad[iCurrentTacticalSquad][0].value.sSectorX;
+      *psSectorY = Squad[iCurrentTacticalSquad][0].value.sSectorY;
+      *pbSectorZ = Squad[iCurrentTacticalSquad][0].value.bSectorZ;
     }
   } else {
     let sSoldierCnt: INT16;
@@ -3372,12 +3372,12 @@ function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Po
 
     // loop through all the mercs on the players team to find the one that is not moving
     for (pSoldier = MercPtrs[sSoldierCnt]; sSoldierCnt <= bLastTeamID; sSoldierCnt++, pSoldier++) {
-      if (pSoldier->bActive) {
-        if (pSoldier->bAssignment != IN_TRANSIT && !pSoldier->fBetweenSectors) {
+      if (pSoldier.value.bActive) {
+        if (pSoldier.value.bAssignment != IN_TRANSIT && !pSoldier.value.fBetweenSectors) {
           // we found an alive, merc that is not moving
-          *psSectorX = pSoldier->sSectorX;
-          *psSectorY = pSoldier->sSectorY;
-          *pbSectorZ = pSoldier->bSectorZ;
+          *psSectorX = pSoldier.value.sSectorX;
+          *psSectorY = pSoldier.value.sSectorY;
+          *pbSectorZ = pSoldier.value.bSectorZ;
           fFoundAMerc = TRUE;
           break;
         }
@@ -3392,11 +3392,11 @@ function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Po
 
       // loop through all the mercs and find one that is moving
       for (pSoldier = MercPtrs[sSoldierCnt]; sSoldierCnt <= bLastTeamID; sSoldierCnt++, pSoldier++) {
-        if (pSoldier->bActive) {
+        if (pSoldier.value.bActive) {
           // we found an alive, merc that is not moving
-          *psSectorX = pSoldier->sSectorX;
-          *psSectorY = pSoldier->sSectorY;
-          *pbSectorZ = pSoldier->bSectorZ;
+          *psSectorX = pSoldier.value.sSectorX;
+          *psSectorY = pSoldier.value.sSectorY;
+          *pbSectorZ = pSoldier.value.bSectorZ;
           fFoundAMerc = TRUE;
           break;
         }
@@ -3434,70 +3434,70 @@ function TruncateStrategicGroupSizes(): void {
   let i: INT32;
   for (i = SEC_A1; i < SEC_P16; i++) {
     pSector = &SectorInfo[i];
-    if (pSector->ubNumAdmins + pSector->ubNumTroops + pSector->ubNumElites > MAX_STRATEGIC_TEAM_SIZE) {
-      if (pSector->ubNumAdmins > pSector->ubNumTroops) {
-        if (pSector->ubNumAdmins > pSector->ubNumElites) {
-          pSector->ubNumAdmins = 20;
-          pSector->ubNumTroops = 0;
-          pSector->ubNumElites = 0;
+    if (pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites > MAX_STRATEGIC_TEAM_SIZE) {
+      if (pSector.value.ubNumAdmins > pSector.value.ubNumTroops) {
+        if (pSector.value.ubNumAdmins > pSector.value.ubNumElites) {
+          pSector.value.ubNumAdmins = 20;
+          pSector.value.ubNumTroops = 0;
+          pSector.value.ubNumElites = 0;
         } else {
-          pSector->ubNumAdmins = 0;
-          pSector->ubNumTroops = 0;
-          pSector->ubNumElites = 20;
+          pSector.value.ubNumAdmins = 0;
+          pSector.value.ubNumTroops = 0;
+          pSector.value.ubNumElites = 20;
         }
-      } else if (pSector->ubNumTroops > pSector->ubNumElites) {
-        if (pSector->ubNumTroops > pSector->ubNumAdmins) {
-          pSector->ubNumAdmins = 0;
-          pSector->ubNumTroops = 20;
-          pSector->ubNumElites = 0;
+      } else if (pSector.value.ubNumTroops > pSector.value.ubNumElites) {
+        if (pSector.value.ubNumTroops > pSector.value.ubNumAdmins) {
+          pSector.value.ubNumAdmins = 0;
+          pSector.value.ubNumTroops = 20;
+          pSector.value.ubNumElites = 0;
         } else {
-          pSector->ubNumAdmins = 20;
-          pSector->ubNumTroops = 0;
-          pSector->ubNumElites = 0;
+          pSector.value.ubNumAdmins = 20;
+          pSector.value.ubNumTroops = 0;
+          pSector.value.ubNumElites = 0;
         }
       } else {
-        if (pSector->ubNumElites > pSector->ubNumTroops) {
-          pSector->ubNumAdmins = 0;
-          pSector->ubNumTroops = 0;
-          pSector->ubNumElites = 20;
+        if (pSector.value.ubNumElites > pSector.value.ubNumTroops) {
+          pSector.value.ubNumAdmins = 0;
+          pSector.value.ubNumTroops = 0;
+          pSector.value.ubNumElites = 20;
         } else {
-          pSector->ubNumAdmins = 0;
-          pSector->ubNumTroops = 20;
-          pSector->ubNumElites = 0;
+          pSector.value.ubNumAdmins = 0;
+          pSector.value.ubNumTroops = 20;
+          pSector.value.ubNumElites = 0;
         }
       }
     }
     // militia
-    if (pSector->ubNumberOfCivsAtLevel[0] + pSector->ubNumberOfCivsAtLevel[1] + pSector->ubNumberOfCivsAtLevel[2] > MAX_STRATEGIC_TEAM_SIZE) {
-      if (pSector->ubNumberOfCivsAtLevel[0] > pSector->ubNumberOfCivsAtLevel[1]) {
-        if (pSector->ubNumberOfCivsAtLevel[0] > pSector->ubNumberOfCivsAtLevel[2]) {
-          pSector->ubNumberOfCivsAtLevel[0] = 20;
-          pSector->ubNumberOfCivsAtLevel[1] = 0;
-          pSector->ubNumberOfCivsAtLevel[2] = 0;
+    if (pSector.value.ubNumberOfCivsAtLevel[0] + pSector.value.ubNumberOfCivsAtLevel[1] + pSector.value.ubNumberOfCivsAtLevel[2] > MAX_STRATEGIC_TEAM_SIZE) {
+      if (pSector.value.ubNumberOfCivsAtLevel[0] > pSector.value.ubNumberOfCivsAtLevel[1]) {
+        if (pSector.value.ubNumberOfCivsAtLevel[0] > pSector.value.ubNumberOfCivsAtLevel[2]) {
+          pSector.value.ubNumberOfCivsAtLevel[0] = 20;
+          pSector.value.ubNumberOfCivsAtLevel[1] = 0;
+          pSector.value.ubNumberOfCivsAtLevel[2] = 0;
         } else {
-          pSector->ubNumberOfCivsAtLevel[0] = 0;
-          pSector->ubNumberOfCivsAtLevel[1] = 0;
-          pSector->ubNumberOfCivsAtLevel[2] = 20;
+          pSector.value.ubNumberOfCivsAtLevel[0] = 0;
+          pSector.value.ubNumberOfCivsAtLevel[1] = 0;
+          pSector.value.ubNumberOfCivsAtLevel[2] = 20;
         }
-      } else if (pSector->ubNumberOfCivsAtLevel[1] > pSector->ubNumberOfCivsAtLevel[2]) {
-        if (pSector->ubNumberOfCivsAtLevel[1] > pSector->ubNumberOfCivsAtLevel[0]) {
-          pSector->ubNumberOfCivsAtLevel[0] = 0;
-          pSector->ubNumberOfCivsAtLevel[1] = 20;
-          pSector->ubNumberOfCivsAtLevel[2] = 0;
+      } else if (pSector.value.ubNumberOfCivsAtLevel[1] > pSector.value.ubNumberOfCivsAtLevel[2]) {
+        if (pSector.value.ubNumberOfCivsAtLevel[1] > pSector.value.ubNumberOfCivsAtLevel[0]) {
+          pSector.value.ubNumberOfCivsAtLevel[0] = 0;
+          pSector.value.ubNumberOfCivsAtLevel[1] = 20;
+          pSector.value.ubNumberOfCivsAtLevel[2] = 0;
         } else {
-          pSector->ubNumberOfCivsAtLevel[0] = 20;
-          pSector->ubNumberOfCivsAtLevel[1] = 0;
-          pSector->ubNumberOfCivsAtLevel[2] = 0;
+          pSector.value.ubNumberOfCivsAtLevel[0] = 20;
+          pSector.value.ubNumberOfCivsAtLevel[1] = 0;
+          pSector.value.ubNumberOfCivsAtLevel[2] = 0;
         }
       } else {
-        if (pSector->ubNumberOfCivsAtLevel[2] > pSector->ubNumberOfCivsAtLevel[1]) {
-          pSector->ubNumberOfCivsAtLevel[0] = 0;
-          pSector->ubNumberOfCivsAtLevel[1] = 0;
-          pSector->ubNumberOfCivsAtLevel[2] = 20;
+        if (pSector.value.ubNumberOfCivsAtLevel[2] > pSector.value.ubNumberOfCivsAtLevel[1]) {
+          pSector.value.ubNumberOfCivsAtLevel[0] = 0;
+          pSector.value.ubNumberOfCivsAtLevel[1] = 0;
+          pSector.value.ubNumberOfCivsAtLevel[2] = 20;
         } else {
-          pSector->ubNumberOfCivsAtLevel[0] = 0;
-          pSector->ubNumberOfCivsAtLevel[1] = 20;
-          pSector->ubNumberOfCivsAtLevel[2] = 0;
+          pSector.value.ubNumberOfCivsAtLevel[0] = 0;
+          pSector.value.ubNumberOfCivsAtLevel[1] = 20;
+          pSector.value.ubNumberOfCivsAtLevel[2] = 0;
         }
       }
     }
@@ -3505,43 +3505,43 @@ function TruncateStrategicGroupSizes(): void {
   // Enemy groups
   pGroup = gpGroupList;
   while (pGroup) {
-    if (!pGroup->fPlayer) {
-      if (pGroup->pEnemyGroup->ubNumAdmins + pGroup->pEnemyGroup->ubNumTroops + pGroup->pEnemyGroup->ubNumElites > MAX_STRATEGIC_TEAM_SIZE) {
-        pGroup->ubGroupSize = 20;
-        if (pGroup->pEnemyGroup->ubNumAdmins > pGroup->pEnemyGroup->ubNumTroops) {
-          if (pGroup->pEnemyGroup->ubNumAdmins > pGroup->pEnemyGroup->ubNumElites) {
-            pGroup->pEnemyGroup->ubNumAdmins = 20;
-            pGroup->pEnemyGroup->ubNumTroops = 0;
-            pGroup->pEnemyGroup->ubNumElites = 0;
+    if (!pGroup.value.fPlayer) {
+      if (pGroup.value.pEnemyGroup.value.ubNumAdmins + pGroup.value.pEnemyGroup.value.ubNumTroops + pGroup.value.pEnemyGroup.value.ubNumElites > MAX_STRATEGIC_TEAM_SIZE) {
+        pGroup.value.ubGroupSize = 20;
+        if (pGroup.value.pEnemyGroup.value.ubNumAdmins > pGroup.value.pEnemyGroup.value.ubNumTroops) {
+          if (pGroup.value.pEnemyGroup.value.ubNumAdmins > pGroup.value.pEnemyGroup.value.ubNumElites) {
+            pGroup.value.pEnemyGroup.value.ubNumAdmins = 20;
+            pGroup.value.pEnemyGroup.value.ubNumTroops = 0;
+            pGroup.value.pEnemyGroup.value.ubNumElites = 0;
           } else {
-            pGroup->pEnemyGroup->ubNumAdmins = 0;
-            pGroup->pEnemyGroup->ubNumTroops = 0;
-            pGroup->pEnemyGroup->ubNumElites = 20;
+            pGroup.value.pEnemyGroup.value.ubNumAdmins = 0;
+            pGroup.value.pEnemyGroup.value.ubNumTroops = 0;
+            pGroup.value.pEnemyGroup.value.ubNumElites = 20;
           }
-        } else if (pGroup->pEnemyGroup->ubNumTroops > pGroup->pEnemyGroup->ubNumElites) {
-          if (pGroup->pEnemyGroup->ubNumTroops > pGroup->pEnemyGroup->ubNumAdmins) {
-            pGroup->pEnemyGroup->ubNumAdmins = 0;
-            pGroup->pEnemyGroup->ubNumTroops = 20;
-            pGroup->pEnemyGroup->ubNumElites = 0;
+        } else if (pGroup.value.pEnemyGroup.value.ubNumTroops > pGroup.value.pEnemyGroup.value.ubNumElites) {
+          if (pGroup.value.pEnemyGroup.value.ubNumTroops > pGroup.value.pEnemyGroup.value.ubNumAdmins) {
+            pGroup.value.pEnemyGroup.value.ubNumAdmins = 0;
+            pGroup.value.pEnemyGroup.value.ubNumTroops = 20;
+            pGroup.value.pEnemyGroup.value.ubNumElites = 0;
           } else {
-            pGroup->pEnemyGroup->ubNumAdmins = 20;
-            pGroup->pEnemyGroup->ubNumTroops = 0;
-            pGroup->pEnemyGroup->ubNumElites = 0;
+            pGroup.value.pEnemyGroup.value.ubNumAdmins = 20;
+            pGroup.value.pEnemyGroup.value.ubNumTroops = 0;
+            pGroup.value.pEnemyGroup.value.ubNumElites = 0;
           }
         } else {
-          if (pGroup->pEnemyGroup->ubNumElites > pGroup->pEnemyGroup->ubNumTroops) {
-            pGroup->pEnemyGroup->ubNumAdmins = 0;
-            pGroup->pEnemyGroup->ubNumTroops = 0;
-            pGroup->pEnemyGroup->ubNumElites = 20;
+          if (pGroup.value.pEnemyGroup.value.ubNumElites > pGroup.value.pEnemyGroup.value.ubNumTroops) {
+            pGroup.value.pEnemyGroup.value.ubNumAdmins = 0;
+            pGroup.value.pEnemyGroup.value.ubNumTroops = 0;
+            pGroup.value.pEnemyGroup.value.ubNumElites = 20;
           } else {
-            pGroup->pEnemyGroup->ubNumAdmins = 0;
-            pGroup->pEnemyGroup->ubNumTroops = 20;
-            pGroup->pEnemyGroup->ubNumElites = 0;
+            pGroup.value.pEnemyGroup.value.ubNumAdmins = 0;
+            pGroup.value.pEnemyGroup.value.ubNumTroops = 20;
+            pGroup.value.pEnemyGroup.value.ubNumElites = 0;
           }
         }
       }
     }
-    pGroup = pGroup->next;
+    pGroup = pGroup.value.next;
   }
 }
 
@@ -3556,9 +3556,9 @@ function UpdateMercMercContractInfo(): void {
     if (pSoldier == NULL)
       continue;
 
-    gMercProfiles[ubCnt].iMercMercContractLength = pSoldier->iTotalContractLength;
+    gMercProfiles[ubCnt].iMercMercContractLength = pSoldier.value.iTotalContractLength;
 
-    pSoldier->iTotalContractLength = 0;
+    pSoldier.value.iTotalContractLength = 0;
   }
 }
 
@@ -3665,26 +3665,26 @@ function HandleOldBobbyRMailOrders(): void {
 function CalcJA2EncryptionSet(pSaveGameHeader: Pointer<SAVED_GAME_HEADER>): UINT32 {
   let uiEncryptionSet: UINT32 = 0;
 
-  uiEncryptionSet = pSaveGameHeader->uiSavedGameVersion;
-  uiEncryptionSet *= pSaveGameHeader->uiFlags;
-  uiEncryptionSet += pSaveGameHeader->iCurrentBalance;
-  uiEncryptionSet *= (pSaveGameHeader->ubNumOfMercsOnPlayersTeam + 1);
-  uiEncryptionSet += pSaveGameHeader->bSectorZ * 3;
-  uiEncryptionSet += pSaveGameHeader->ubLoadScreenID;
+  uiEncryptionSet = pSaveGameHeader.value.uiSavedGameVersion;
+  uiEncryptionSet *= pSaveGameHeader.value.uiFlags;
+  uiEncryptionSet += pSaveGameHeader.value.iCurrentBalance;
+  uiEncryptionSet *= (pSaveGameHeader.value.ubNumOfMercsOnPlayersTeam + 1);
+  uiEncryptionSet += pSaveGameHeader.value.bSectorZ * 3;
+  uiEncryptionSet += pSaveGameHeader.value.ubLoadScreenID;
 
-  if (pSaveGameHeader->fAlternateSector) {
+  if (pSaveGameHeader.value.fAlternateSector) {
     uiEncryptionSet += 7;
   }
 
-  if (pSaveGameHeader->uiRandom % 2 == 0) {
+  if (pSaveGameHeader.value.uiRandom % 2 == 0) {
     uiEncryptionSet++;
 
-    if (pSaveGameHeader->uiRandom % 7 == 0) {
+    if (pSaveGameHeader.value.uiRandom % 7 == 0) {
       uiEncryptionSet++;
-      if (pSaveGameHeader->uiRandom % 23 == 0) {
+      if (pSaveGameHeader.value.uiRandom % 23 == 0) {
         uiEncryptionSet++;
       }
-      if (pSaveGameHeader->uiRandom % 79 == 0) {
+      if (pSaveGameHeader.value.uiRandom % 79 == 0) {
         uiEncryptionSet += 2;
       }
     }
@@ -3697,20 +3697,20 @@ function CalcJA2EncryptionSet(pSaveGameHeader: Pointer<SAVED_GAME_HEADER>): UINT
 
   uiEncryptionSet = uiEncryptionSet % 10;
 
-  uiEncryptionSet += pSaveGameHeader->uiDay / 10;
+  uiEncryptionSet += pSaveGameHeader.value.uiDay / 10;
 
   uiEncryptionSet = uiEncryptionSet % 19;
 
   // now pick a different set of #s depending on what game options we've chosen
-  if (pSaveGameHeader->sInitialGameOptions.fGunNut) {
+  if (pSaveGameHeader.value.sInitialGameOptions.fGunNut) {
     uiEncryptionSet += BASE_NUMBER_OF_ROTATION_ARRAYS * 6;
   }
 
-  if (pSaveGameHeader->sInitialGameOptions.fSciFi) {
+  if (pSaveGameHeader.value.sInitialGameOptions.fSciFi) {
     uiEncryptionSet += BASE_NUMBER_OF_ROTATION_ARRAYS * 3;
   }
 
-  switch (pSaveGameHeader->sInitialGameOptions.ubDifficultyLevel) {
+  switch (pSaveGameHeader.value.sInitialGameOptions.ubDifficultyLevel) {
     case DIF_LEVEL_EASY:
       uiEncryptionSet += 0;
       break;

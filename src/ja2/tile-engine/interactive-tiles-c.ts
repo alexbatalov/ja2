@@ -46,7 +46,7 @@ function StartInteractiveObject(sGridNo: INT16, usStructureID: UINT16, pSoldier:
   let pStructure: Pointer<STRUCTURE>;
 
   // ATE: Patch fix: Don't allow if alreay in animation
-  if (pSoldier->usAnimState == OPEN_STRUCT || pSoldier->usAnimState == OPEN_STRUCT_CROUCHED || pSoldier->usAnimState == BEGIN_OPENSTRUCT || pSoldier->usAnimState == BEGIN_OPENSTRUCT_CROUCHED) {
+  if (pSoldier.value.usAnimState == OPEN_STRUCT || pSoldier.value.usAnimState == OPEN_STRUCT_CROUCHED || pSoldier.value.usAnimState == BEGIN_OPENSTRUCT || pSoldier.value.usAnimState == BEGIN_OPENSTRUCT_CROUCHED) {
     return FALSE;
   }
 
@@ -54,20 +54,20 @@ function StartInteractiveObject(sGridNo: INT16, usStructureID: UINT16, pSoldier:
   if (pStructure == NULL) {
     return FALSE;
   }
-  if (pStructure->fFlags & STRUCTURE_ANYDOOR) {
+  if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
     // Add soldier event for opening door....
-    pSoldier->ubPendingAction = MERC_OPENDOOR;
-    pSoldier->uiPendingActionData1 = usStructureID;
-    pSoldier->sPendingActionData2 = sGridNo;
-    pSoldier->bPendingActionData3 = ubDirection;
-    pSoldier->ubPendingActionAnimCount = 0;
+    pSoldier.value.ubPendingAction = MERC_OPENDOOR;
+    pSoldier.value.uiPendingActionData1 = usStructureID;
+    pSoldier.value.sPendingActionData2 = sGridNo;
+    pSoldier.value.bPendingActionData3 = ubDirection;
+    pSoldier.value.ubPendingActionAnimCount = 0;
   } else {
     // Add soldier event for opening door....
-    pSoldier->ubPendingAction = MERC_OPENSTRUCT;
-    pSoldier->uiPendingActionData1 = usStructureID;
-    pSoldier->sPendingActionData2 = sGridNo;
-    pSoldier->bPendingActionData3 = ubDirection;
-    pSoldier->ubPendingActionAnimCount = 0;
+    pSoldier.value.ubPendingAction = MERC_OPENSTRUCT;
+    pSoldier.value.uiPendingActionData1 = usStructureID;
+    pSoldier.value.sPendingActionData2 = sGridNo;
+    pSoldier.value.bPendingActionData3 = ubDirection;
+    pSoldier.value.ubPendingActionAnimCount = 0;
   }
 
   return TRUE;
@@ -77,7 +77,7 @@ function CalcInteractiveObjectAPs(sGridNo: INT16, pStructure: Pointer<STRUCTURE>
   if (pStructure == NULL) {
     return FALSE;
   }
-  if (pStructure->fFlags & STRUCTURE_ANYDOOR) {
+  if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
     // For doors, if open, we can safely add APs for closing
     // If closed, we do not know what to do yet...
     // if ( pStructure->fFlags & STRUCTURE_OPEN )
@@ -105,7 +105,7 @@ function InteractWithInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>, pStructur
     return FALSE;
   }
 
-  if (pStructure->fFlags & STRUCTURE_ANYDOOR) {
+  if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
     fDoor = TRUE;
   }
 
@@ -119,8 +119,8 @@ function SoldierHandleInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN
   let usStructureID: UINT16;
   let sGridNo: INT16;
 
-  sGridNo = pSoldier->sPendingActionData2;
-  usStructureID = pSoldier->uiPendingActionData1;
+  sGridNo = pSoldier.value.sPendingActionData2;
+  usStructureID = pSoldier.value.uiPendingActionData1;
 
   // HANDLE SOLDIER ACTIONS
   pStructure = FindStructureByID(sGridNo, usStructureID);
@@ -147,7 +147,7 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   }
 
   // Do sound...
-  if (!(pStructure->fFlags & STRUCTURE_OPEN)) {
+  if (!(pStructure.value.fFlags & STRUCTURE_OPEN)) {
     // Play Opening sound...
     PlayJA2Sample(GetStructureOpenSound(pStructure, FALSE), RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
   } else {
@@ -156,32 +156,32 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   }
 
   // ATE: Don't handle switches!
-  if (!(pStructure->fFlags & STRUCTURE_SWITCH)) {
-    if (pSoldier->bTeam == gbPlayerNum) {
+  if (!(pStructure.value.fFlags & STRUCTURE_SWITCH)) {
+    if (pSoldier.value.bTeam == gbPlayerNum) {
       if (sGridNo == BOBBYR_SHIPPING_DEST_GRIDNO && gWorldSectorX == BOBBYR_SHIPPING_DEST_SECTOR_X && gWorldSectorY == BOBBYR_SHIPPING_DEST_SECTOR_Y && gbWorldSectorZ == BOBBYR_SHIPPING_DEST_SECTOR_Z && CheckFact(FACT_PABLOS_STOLE_FROM_LATEST_SHIPMENT, 0) && !(CheckFact(FACT_PLAYER_FOUND_ITEMS_MISSING, 0))) {
         SayQuoteFromNearbyMercInSector(BOBBYR_SHIPPING_DEST_GRIDNO, 3, QUOTE_STUFF_MISSING_DRASSEN);
         fDidMissingQuote = TRUE;
       }
-    } else if (pSoldier->bTeam == CIV_TEAM) {
-      if (pSoldier->ubProfile != NO_PROFILE) {
-        TriggerNPCWithGivenApproach(pSoldier->ubProfile, APPROACH_DONE_OPEN_STRUCTURE, FALSE);
+    } else if (pSoldier.value.bTeam == CIV_TEAM) {
+      if (pSoldier.value.ubProfile != NO_PROFILE) {
+        TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, APPROACH_DONE_OPEN_STRUCTURE, FALSE);
       }
     }
 
     // LOOK for item pool here...
-    if (GetItemPool(sGridNo, &pItemPool, pSoldier->bLevel)) {
+    if (GetItemPool(sGridNo, &pItemPool, pSoldier.value.bLevel)) {
       // Update visiblity....
-      if (!(pStructure->fFlags & STRUCTURE_OPEN)) {
+      if (!(pStructure.value.fFlags & STRUCTURE_OPEN)) {
         let fDoHumm: BOOLEAN = TRUE;
         let fDoLocators: BOOLEAN = TRUE;
 
-        if (pSoldier->bTeam != gbPlayerNum) {
+        if (pSoldier.value.bTeam != gbPlayerNum) {
           fDoHumm = FALSE;
           fDoLocators = FALSE;
         }
 
         // Look for ownership here....
-        if (gWorldItems[pItemPool->iItemIndex].o.usItem == OWNERSHIP) {
+        if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == OWNERSHIP) {
           fDoHumm = FALSE;
           TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND, BATTLE_SOUND_NOTHING, 500);
         }
@@ -194,8 +194,8 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
 
         // ATE: Check now many things in pool.....
         if (!fDidMissingQuote) {
-          if (pItemPool->pNext != NULL) {
-            if (pItemPool->pNext->pNext != NULL) {
+          if (pItemPool.value.pNext != NULL) {
+            if (pItemPool.value.pNext.value.pNext != NULL) {
               fDoHumm = FALSE;
 
               TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND, BATTLE_SOUND_COOL1, 500);
@@ -210,7 +210,7 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
         SetItemPoolVisibilityHidden(pItemPool);
       }
     } else {
-      if (!(pStructure->fFlags & STRUCTURE_OPEN)) {
+      if (!(pStructure.value.fFlags & STRUCTURE_OPEN)) {
         TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND, BATTLE_SOUND_NOTHING, 500);
       }
     }
@@ -224,9 +224,9 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   if (pNewStructure != NULL) {
     RecompileLocalMovementCosts(sGridNo);
     SetRenderFlags(RENDER_FLAG_FULL);
-    if (pNewStructure->fFlags & STRUCTURE_SWITCH) {
+    if (pNewStructure.value.fFlags & STRUCTURE_SWITCH) {
       // just turned a switch on!
-      ActivateSwitchInGridNo(pSoldier->ubID, sGridNo);
+      ActivateSwitchInGridNo(pSoldier.value.ubID, sGridNo);
     }
   }
 }
@@ -240,7 +240,7 @@ function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: BOOLEAN): UINT3
   pIntNode = GetCurInteractiveTileGridNoAndStructure(&sGridNo, &pStructure);
 
   if (pIntNode != NULL && pStructure != NULL) {
-    if (pStructure->fFlags & STRUCTURE_ANYDOOR) {
+    if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
       SetDoorString(sGridNo);
 
       if (fConfirm) {
@@ -249,7 +249,7 @@ function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: BOOLEAN): UINT3
         return NORMALHANDCURSOR_UICURSOR;
       }
     } else {
-      if (pStructure->fFlags & STRUCTURE_SWITCH) {
+      if (pStructure.value.fFlags & STRUCTURE_SWITCH) {
         wcscpy(gzIntTileLocation, gzLateLocalizedString[25]);
         gfUIIntTileLocation = TRUE;
       }
@@ -279,7 +279,7 @@ function SetActionModeDoorCursorText(): void {
   pIntNode = GetCurInteractiveTileGridNoAndStructure(&sGridNo, &pStructure);
 
   if (pIntNode != NULL && pStructure != NULL) {
-    if (pStructure->fFlags & STRUCTURE_ANYDOOR) {
+    if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
       SetDoorString(sGridNo);
     }
   }
@@ -303,23 +303,23 @@ function GetLevelNodeScreenRect(pNode: Pointer<LEVELNODE>, pRect: Pointer<SGPRec
 
   FromCellToScreenCoordinates(sOffsetX, sOffsetY, &sTempX_S, &sTempY_S);
 
-  if (pNode->uiFlags & LEVELNODE_CACHEDANITILE) {
-    pTrav = &(gpTileCache[pNode->pAniTile->sCachedTileID].pImagery->vo->pETRLEObject[pNode->pAniTile->sCurrentFrame]);
+  if (pNode.value.uiFlags & LEVELNODE_CACHEDANITILE) {
+    pTrav = &(gpTileCache[pNode.value.pAniTile.value.sCachedTileID].pImagery.value.vo.value.pETRLEObject[pNode.value.pAniTile.value.sCurrentFrame]);
   } else {
-    TileElem = &(gTileDatabase[pNode->usIndex]);
+    TileElem = &(gTileDatabase[pNode.value.usIndex]);
 
     // Adjust for current frames and animations....
-    if (TileElem->uiFlags & ANIMATED_TILE) {
-      Assert(TileElem->pAnimData != NULL);
-      TileElem = &gTileDatabase[TileElem->pAnimData->pusFrames[TileElem->pAnimData->bCurrentFrame]];
-    } else if ((pNode->uiFlags & LEVELNODE_ANIMATION)) {
-      if (pNode->sCurrentFrame != -1) {
-        Assert(TileElem->pAnimData != NULL);
-        TileElem = &gTileDatabase[TileElem->pAnimData->pusFrames[pNode->sCurrentFrame]];
+    if (TileElem.value.uiFlags & ANIMATED_TILE) {
+      Assert(TileElem.value.pAnimData != NULL);
+      TileElem = &gTileDatabase[TileElem.value.pAnimData.value.pusFrames[TileElem.value.pAnimData.value.bCurrentFrame]];
+    } else if ((pNode.value.uiFlags & LEVELNODE_ANIMATION)) {
+      if (pNode.value.sCurrentFrame != -1) {
+        Assert(TileElem.value.pAnimData != NULL);
+        TileElem = &gTileDatabase[TileElem.value.pAnimData.value.pusFrames[pNode.value.sCurrentFrame]];
       }
     }
 
-    pTrav = &(TileElem->hTileSurface->pETRLEObject[TileElem->usRegionIndex]);
+    pTrav = &(TileElem.value.hTileSurface.value.pETRLEObject[TileElem.value.usRegionIndex]);
   }
 
   sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sTempX_S;
@@ -338,20 +338,20 @@ function GetLevelNodeScreenRect(pNode: Pointer<LEVELNODE>, pRect: Pointer<SGPRec
   // Adjust for render height
   sScreenY += gsRenderHeight;
 
-  usHeight = pTrav->usHeight;
-  usWidth = pTrav->usWidth;
+  usHeight = pTrav.value.usHeight;
+  usWidth = pTrav.value.usWidth;
 
   // Add to start position of dest buffer
-  sScreenX += (pTrav->sOffsetX - (WORLD_TILE_X / 2));
-  sScreenY += (pTrav->sOffsetY - (WORLD_TILE_Y / 2));
+  sScreenX += (pTrav.value.sOffsetX - (WORLD_TILE_X / 2));
+  sScreenY += (pTrav.value.sOffsetY - (WORLD_TILE_Y / 2));
 
   // Adjust y offset!
   sScreenY += (WORLD_TILE_Y / 2);
 
-  pRect->iLeft = sScreenX;
-  pRect->iTop = sScreenY;
-  pRect->iBottom = sScreenY + usHeight;
-  pRect->iRight = sScreenX + usWidth;
+  pRect.value.iLeft = sScreenX;
+  pRect.value.iTop = sScreenY;
+  pRect.value.iBottom = sScreenY + usHeight;
+  pRect.value.iRight = sScreenX + usWidth;
 }
 
 function CompileInteractiveTiles(): void {
@@ -371,7 +371,7 @@ function LogMouseOverInteractiveTile(sGridNo: INT16): void {
   }
 
   // Also, don't allow for mercs who are on upper level...
-  if (gusSelectedSoldier != NOBODY && MercPtrs[gusSelectedSoldier]->bLevel == 1) {
+  if (gusSelectedSoldier != NOBODY && MercPtrs[gusSelectedSoldier].value.bLevel == 1) {
     return;
   }
 
@@ -420,7 +420,7 @@ function LogMouseOverInteractiveTile(sGridNo: INT16): void {
         }
       }
 
-      pNode = pNode->pNext;
+      pNode = pNode.value.pNext;
     }
   }
 }
@@ -440,13 +440,13 @@ function InternalGetCurInteractiveTile(fRejectItemsOnTop: BOOLEAN): Pointer<LEVE
     pNode = gpWorldLevelData[gCurIntTile.sGridNo].pStructHead;
 
     while (pNode != NULL) {
-      if (pNode->usIndex == gCurIntTile.sTileIndex) {
+      if (pNode.value.usIndex == gCurIntTile.sTileIndex) {
         if (fRejectItemsOnTop) {
           // get strucuture here...
           if (gCurIntTile.fStructure) {
             pStructure = FindStructureByID(gCurIntTile.sGridNo, gCurIntTile.usStructureID);
             if (pStructure != NULL) {
-              if (pStructure->fFlags & STRUCTURE_HASITEMONTOP) {
+              if (pStructure.value.fFlags & STRUCTURE_HASITEMONTOP) {
                 return NULL;
               }
             } else {
@@ -458,7 +458,7 @@ function InternalGetCurInteractiveTile(fRejectItemsOnTop: BOOLEAN): Pointer<LEVE
         return pNode;
       }
 
-      pNode = pNode->pNext;
+      pNode = pNode.value.pNext;
     }
   }
 
@@ -544,11 +544,11 @@ function EndCurInteractiveTileCheck(): void {
       pCurIntTile = &gCurIntTile;
     }
 
-    gCurIntTile.sGridNo = pCurIntTile->sFoundGridNo;
-    gCurIntTile.sTileIndex = pCurIntTile->pFoundNode->usIndex;
+    gCurIntTile.sGridNo = pCurIntTile.value.sFoundGridNo;
+    gCurIntTile.sTileIndex = pCurIntTile.value.pFoundNode.value.usIndex;
 
-    if (pCurIntTile->pFoundNode->pStructureData != NULL) {
-      gCurIntTile.usStructureID = pCurIntTile->pFoundNode->pStructureData->usStructureID;
+    if (pCurIntTile.value.pFoundNode.value.pStructureData != NULL) {
+      gCurIntTile.usStructureID = pCurIntTile.value.pFoundNode.value.pStructureData.value.usStructureID;
       gCurIntTile.fStructure = TRUE;
     } else {
       gCurIntTile.fStructure = FALSE;
@@ -567,38 +567,38 @@ function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN
   let TileElem: Pointer<TILE_ELEMENT>;
   let pStructure: Pointer<STRUCTURE>;
 
-  if (pNode->uiFlags & LEVELNODE_CACHEDANITILE) {
+  if (pNode.value.uiFlags & LEVELNODE_CACHEDANITILE) {
     return FALSE;
   }
 
-  TileElem = &(gTileDatabase[pNode->usIndex]);
+  TileElem = &(gTileDatabase[pNode.value.usIndex]);
 
   if (gCurIntTile.ubFlags == INTILE_CHECK_SELECTIVE) {
     // See if we are on an interactable tile!
     // Try and get struct data from levelnode pointer
-    pStructure = pNode->pStructureData;
+    pStructure = pNode.value.pStructureData;
 
     // If no data, quit
     if (pStructure == NULL) {
       return FALSE;
     }
 
-    if (!(pStructure->fFlags & (STRUCTURE_OPENABLE | STRUCTURE_HASITEMONTOP))) {
+    if (!(pStructure.value.fFlags & (STRUCTURE_OPENABLE | STRUCTURE_HASITEMONTOP))) {
       return FALSE;
     }
 
-    if (gusSelectedSoldier != NOBODY && MercPtrs[gusSelectedSoldier]->ubBodyType == ROBOTNOWEAPON) {
+    if (gusSelectedSoldier != NOBODY && MercPtrs[gusSelectedSoldier].value.ubBodyType == ROBOTNOWEAPON) {
       return FALSE;
     }
 
     // If we are a door, we need a different definition of being visible than other structs
-    if (pStructure->fFlags & STRUCTURE_ANYDOOR) {
+    if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
       if (!IsDoorVisibleAtGridNo(sGridNo)) {
         return FALSE;
       }
 
       // OK, For a OPENED door, addition requirements are: need to be in 'HAND CURSOR' mode...
-      if (pStructure->fFlags & STRUCTURE_OPEN) {
+      if (pStructure.value.fFlags & STRUCTURE_OPEN) {
         // Are we in hand cursor mode?
         if (gCurrentUIMode != HANDCURSOR_MODE && gCurrentUIMode != ACTION_MODE) {
           return FALSE;
@@ -613,11 +613,11 @@ function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN
       }
     } else {
       // IF we are a switch, reject in another direction...
-      if (pStructure->fFlags & STRUCTURE_SWITCH) {
+      if (pStructure.value.fFlags & STRUCTURE_SWITCH) {
         // Find a new gridno based on switch's orientation...
         let sNewGridNo: INT16 = NOWHERE;
 
-        switch (pStructure->pDBStructureRef->pDBStructure->ubWallOrientation) {
+        switch (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubWallOrientation) {
           case OUTSIDE_TOP_LEFT:
           case INSIDE_TOP_LEFT:
 
@@ -648,8 +648,8 @@ function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN
     }
 
     // Check if it's a hidden struct and we have not revealed anything!
-    if (TileElem->uiFlags & HIDDEN_TILE) {
-      if (!IsHiddenStructureVisible(sGridNo, pNode->usIndex)) {
+    if (TileElem.value.uiFlags & HIDDEN_TILE) {
+      if (!IsHiddenStructureVisible(sGridNo, pNode.value.usIndex)) {
         // Return false
         return FALSE;
       }
@@ -662,25 +662,25 @@ function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN
 function RefinePointCollisionOnStruct(sGridNo: INT16, sTestX: INT16, sTestY: INT16, sSrcX: INT16, sSrcY: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN {
   let TileElem: Pointer<TILE_ELEMENT>;
 
-  if (pNode->uiFlags & LEVELNODE_CACHEDANITILE) {
+  if (pNode.value.uiFlags & LEVELNODE_CACHEDANITILE) {
     // Check it!
-    return CheckVideoObjectScreenCoordinateInData(gpTileCache[pNode->pAniTile->sCachedTileID].pImagery->vo, pNode->pAniTile->sCurrentFrame, (sTestX - sSrcX), (-1 * (sTestY - sSrcY)));
+    return CheckVideoObjectScreenCoordinateInData(gpTileCache[pNode.value.pAniTile.value.sCachedTileID].pImagery.value.vo, pNode.value.pAniTile.value.sCurrentFrame, (sTestX - sSrcX), (-1 * (sTestY - sSrcY)));
   } else {
-    TileElem = &(gTileDatabase[pNode->usIndex]);
+    TileElem = &(gTileDatabase[pNode.value.usIndex]);
 
     // Adjust for current frames and animations....
-    if (TileElem->uiFlags & ANIMATED_TILE) {
-      Assert(TileElem->pAnimData != NULL);
-      TileElem = &gTileDatabase[TileElem->pAnimData->pusFrames[TileElem->pAnimData->bCurrentFrame]];
-    } else if ((pNode->uiFlags & LEVELNODE_ANIMATION)) {
-      if (pNode->sCurrentFrame != -1) {
-        Assert(TileElem->pAnimData != NULL);
-        TileElem = &gTileDatabase[TileElem->pAnimData->pusFrames[pNode->sCurrentFrame]];
+    if (TileElem.value.uiFlags & ANIMATED_TILE) {
+      Assert(TileElem.value.pAnimData != NULL);
+      TileElem = &gTileDatabase[TileElem.value.pAnimData.value.pusFrames[TileElem.value.pAnimData.value.bCurrentFrame]];
+    } else if ((pNode.value.uiFlags & LEVELNODE_ANIMATION)) {
+      if (pNode.value.sCurrentFrame != -1) {
+        Assert(TileElem.value.pAnimData != NULL);
+        TileElem = &gTileDatabase[TileElem.value.pAnimData.value.pusFrames[pNode.value.sCurrentFrame]];
       }
     }
 
     // Check it!
-    return CheckVideoObjectScreenCoordinateInData(TileElem->hTileSurface, TileElem->usRegionIndex, (sTestX - sSrcX), (-1 * (sTestY - sSrcY)));
+    return CheckVideoObjectScreenCoordinateInData(TileElem.value.hTileSurface, TileElem.value.usRegionIndex, (sTestX - sSrcX), (-1 * (sTestY - sSrcY)));
   }
 }
 
@@ -701,10 +701,10 @@ function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, usIndex: 
   Assert(hSrcVObject != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject->pETRLEObject[usIndex]);
-  usHeight = pTrav->usHeight;
-  usWidth = pTrav->usWidth;
-  uiOffset = pTrav->uiDataOffset;
+  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  usHeight = pTrav.value.usHeight;
+  usWidth = pTrav.value.usWidth;
+  uiOffset = pTrav.value.uiDataOffset;
 
   // Calculate test position we are looking for!
   // Calculate from 0, 0 at top left!
@@ -712,7 +712,7 @@ function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, usIndex: 
   iStartPos = 0;
   LineSkip = usWidth;
 
-  SrcPtr = hSrcVObject->pPixData + uiOffset;
+  SrcPtr = hSrcVObject.value.pPixData + uiOffset;
 
   __asm {
     mov esi, SrcPtr

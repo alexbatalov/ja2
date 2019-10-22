@@ -239,18 +239,18 @@ function RecountNPCSaves(): void {
 
 function ScheduleMeanwhileEvent(pMeanwhileDef: Pointer<MEANWHILE_DEFINITION>, uiTime: UINT32): void {
   // event scheduled to happen before, ignore
-  if (GetMeanWhileFlag(pMeanwhileDef->ubMeanwhileID) == TRUE) {
+  if (GetMeanWhileFlag(pMeanwhileDef.value.ubMeanwhileID) == TRUE) {
     return;
   }
 
   // set the meanwhile flag for this event
-  SetMeanWhileFlag(pMeanwhileDef->ubMeanwhileID);
+  SetMeanWhileFlag(pMeanwhileDef.value.ubMeanwhileID);
 
   // set the id value
-  ubCurrentMeanWhileId = pMeanwhileDef->ubMeanwhileID;
+  ubCurrentMeanWhileId = pMeanwhileDef.value.ubMeanwhileID;
 
   // Copy definiaiotn structure into position in global array....
-  memcpy(&(gMeanwhileDef[pMeanwhileDef->ubMeanwhileID]), pMeanwhileDef, sizeof(MEANWHILE_DEFINITION));
+  memcpy(&(gMeanwhileDef[pMeanwhileDef.value.ubMeanwhileID]), pMeanwhileDef, sizeof(MEANWHILE_DEFINITION));
 
   // A meanwhile.. poor elliot!
   // increment his slapped count...
@@ -260,7 +260,7 @@ function ScheduleMeanwhileEvent(pMeanwhileDef: Pointer<MEANWHILE_DEFINITION>, ui
     gMercProfiles[ELLIOT].bNPCData++;
   }
 
-  AddStrategicEvent(EVENT_MEANWHILE, uiTime, pMeanwhileDef->ubMeanwhileID);
+  AddStrategicEvent(EVENT_MEANWHILE, uiTime, pMeanwhileDef.value.ubMeanwhileID);
 }
 
 function BeginMeanwhile(ubMeanwhileID: UINT8): BOOLEAN {
@@ -535,14 +535,14 @@ function AreInMeanwhile(): BOOLEAN {
   // scenes have precedence over a new battle if they occur in the same second.
   curr = gpEventList;
   while (curr) {
-    if (curr->uiTimeStamp == GetWorldTotalSeconds()) {
-      if (curr->ubCallbackID == EVENT_MEANWHILE) {
+    if (curr.value.uiTimeStamp == GetWorldTotalSeconds()) {
+      if (curr.value.ubCallbackID == EVENT_MEANWHILE) {
         return TRUE;
       }
     } else {
       return FALSE;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 
   return FALSE;
@@ -743,7 +743,7 @@ function LocateToMeanwhileCharacter(): void {
     pSoldier = FindSoldierByProfileID(gCurrentMeanwhileDef.ubNPCNumber, FALSE);
 
     if (pSoldier != NULL) {
-      LocateSoldier(pSoldier->ubID, FALSE);
+      LocateSoldier(pSoldier.value.ubID, FALSE);
     }
   }
 }

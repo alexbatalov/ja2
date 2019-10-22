@@ -227,14 +227,14 @@ function DrawUICursor(): BOOLEAN {
       } else {
         pNode = AddTopmostToTail(gusCurMousePos, GetSnapCursorIndex(gUICursors[guiCurUICursor].usAdditionalData));
       }
-      pNode->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      pNode->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
 
       if (gsInterfaceLevel == I_ROOF_LEVEL) {
         // Put one on the roof as well
         AddOnRoofToHead(gusCurMousePos, GetSnapCursorIndex(gUICursors[guiCurUICursor].usAdditionalData));
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusCurMousePos].pOnRoofHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusCurMousePos].pOnRoofHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       }
     }
 
@@ -247,13 +247,13 @@ function DrawUICursor(): BOOLEAN {
       if (gsInterfaceLevel == I_ROOF_LEVEL) {
         // If we are over a target, jump to that....
         if (gfUIFullTargetFound) {
-          gusTargetDropPos = MercPtrs[gusUIFullTargetID]->sGridNo;
+          gusTargetDropPos = MercPtrs[gusUIFullTargetID].value.sGridNo;
         }
 
         // Put tile on the floor
         AddTopmostToTail(gusTargetDropPos, FIRSTPOINTERS14);
-        gpWorldLevelData[gusTargetDropPos].pTopmostHead->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        gpWorldLevelData[gusTargetDropPos].pTopmostHead->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusTargetDropPos].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusTargetDropPos].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       }
     }
 
@@ -263,7 +263,7 @@ function DrawUICursor(): BOOLEAN {
 
       // ATE; Is the current guy in steath mode?
       if (gusSelectedSoldier != NOBODY) {
-        if (MercPtrs[gusSelectedSoldier]->bStealthMode) {
+        if (MercPtrs[gusSelectedSoldier].value.bStealthMode) {
           usTileCursor = FIRSTPOINTERS9;
         }
       }
@@ -273,7 +273,7 @@ function DrawUICursor(): BOOLEAN {
 
         // ATE; Is the current guy in steath mode?
         if (gusSelectedSoldier != NOBODY) {
-          if (MercPtrs[gusSelectedSoldier]->bStealthMode) {
+          if (MercPtrs[gusSelectedSoldier].value.bStealthMode) {
             usTileCursor = FIRSTPOINTERS10;
           }
         }
@@ -285,14 +285,14 @@ function DrawUICursor(): BOOLEAN {
         pNode = AddTopmostToTail(gusCurMousePos, GetSnapCursorIndex(usTileCursor));
       }
 
-      pNode->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      pNode->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
 
       if (gsInterfaceLevel == I_ROOF_LEVEL) {
         // Put one on the roof as well
         AddOnRoofToHead(gusCurMousePos, GetSnapCursorIndex(usTileCursor));
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusCurMousePos].pOnRoofHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusCurMousePos].pOnRoofHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       }
     }
 
@@ -422,8 +422,8 @@ function DrawSnappingCursor(): void {
     case NORMAL_SNAPUICURSOR:
 
       AddTopmostToHead(gusCurMousePos, FIRSTPOINTERS1);
-      gpWorldLevelData[gusCurMousePos].pTopmostHead->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      gpWorldLevelData[gusCurMousePos].pTopmostHead->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      gpWorldLevelData[gusCurMousePos].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      gpWorldLevelData[gusCurMousePos].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       break;
 
     case ALL_MOVE_RUN_UICURSOR:
@@ -433,8 +433,8 @@ function DrawSnappingCursor(): void {
       } else {
         AddUIElem(gusCurMousePos, GOODRUN1, 0, 0, &pNewUIElem);
       }
-      pNewUIElem->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      pNewUIElem->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       break;
 
     case ALL_MOVE_WALK_UICURSOR:
@@ -444,8 +444,8 @@ function DrawSnappingCursor(): void {
       } else {
         AddUIElem(gusCurMousePos, GOODWALK1, 0, 0, &pNewUIElem);
       }
-      pNewUIElem->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      pNewUIElem->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       break;
 
     case ALL_MOVE_SWAT_UICURSOR:
@@ -455,8 +455,8 @@ function DrawSnappingCursor(): void {
       } else {
         AddUIElem(gusCurMousePos, GOODSWAT1, 0, 0, &pNewUIElem);
       }
-      pNewUIElem->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      pNewUIElem->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       break;
 
     case ALL_MOVE_PRONE_UICURSOR:
@@ -466,8 +466,8 @@ function DrawSnappingCursor(): void {
       } else {
         AddUIElem(gusCurMousePos, GOODPRONE1, 0, -6, &pNewUIElem);
       }
-      pNewUIElem->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      pNewUIElem->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       break;
 
     case ALL_MOVE_VEHICLE_UICURSOR:
@@ -477,8 +477,8 @@ function DrawSnappingCursor(): void {
       } else {
         AddUIElem(gusCurMousePos, VEHICLEMOVE1, 0, 0, &pNewUIElem);
       }
-      pNewUIElem->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      pNewUIElem->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       break;
 
     case MOVE_REALTIME_UICURSOR:
@@ -488,27 +488,27 @@ function DrawSnappingCursor(): void {
 
       if (gsInterfaceLevel > 0) {
         AddUIElem(gusCurMousePos, BADMARKER1, 0, -WALL_HEIGHT - 8, &pNewUIElem);
-        pNewUIElem->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        pNewUIElem->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
 
         if (gGameSettings.fOptions[TOPTION_3D_CURSOR]) {
           AddTopmostToHead(gusCurMousePos, FIRSTPOINTERS13);
-          gpWorldLevelData[gusCurMousePos].pTopmostHead->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-          gpWorldLevelData[gusCurMousePos].pTopmostHead->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+          gpWorldLevelData[gusCurMousePos].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+          gpWorldLevelData[gusCurMousePos].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
         }
 
         AddOnRoofToHead(gusCurMousePos, FIRSTPOINTERS14);
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusCurMousePos].pOnRoofHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusCurMousePos].pOnRoofHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       } else {
         AddTopmostToHead(gusCurMousePos, BADMARKER1);
-        gpWorldLevelData[gusCurMousePos].pTopmostHead->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        gpWorldLevelData[gusCurMousePos].pTopmostHead->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusCurMousePos].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusCurMousePos].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
 
         if (gGameSettings.fOptions[TOPTION_3D_CURSOR]) {
           AddTopmostToHead(gusCurMousePos, FIRSTPOINTERS13);
-          gpWorldLevelData[gusCurMousePos].pTopmostHead->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-          gpWorldLevelData[gusCurMousePos].pTopmostHead->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+          gpWorldLevelData[gusCurMousePos].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+          gpWorldLevelData[gusCurMousePos].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
         }
       }
       break;
@@ -531,10 +531,10 @@ function DrawSnappingCursor(): void {
     } else {
       AddUIElem(gusCurMousePos, DISPLAY_AP_INDEX, SNAPCURSOR_AP_X_STARTVAL, SNAPCURSOR_AP_Y_STARTVAL, &pNewUIElem);
     }
-    pNewUIElem->uiFlags |= LEVELNODE_DISPLAY_AP;
-    pNewUIElem->uiAPCost = gsCurrentActionPoints;
-    pNewUIElem->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-    pNewUIElem->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+    pNewUIElem.value.uiFlags |= LEVELNODE_DISPLAY_AP;
+    pNewUIElem.value.uiAPCost = gsCurrentActionPoints;
+    pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+    pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
 
     if (!fShowAP) {
       gfUIDisplayActionPointsBlack = TRUE;
@@ -569,8 +569,8 @@ function HandleLooseCursorDraw(): void {
 
   if (gfLooseCursorOn) {
     AddUIElem(gsLooseCursorGridNo, FIRSTPOINTERS4, 0, 0, &pNewUIElem);
-    pNewUIElem->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-    pNewUIElem->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+    pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+    pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
   }
 }
 

@@ -192,11 +192,11 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
         } else if (Random(uiChanceIn) == 0) {
           // don't consider people as obstacles
           if (NewOKDestination(&FakeSoldier, sCurrGridNo, FALSE, 0)) {
-            pBuilding->sUpClimbSpots[pBuilding->ubNumClimbSpots] = sCurrGridNo;
-            pBuilding->sDownClimbSpots[pBuilding->ubNumClimbSpots] = sRightGridNo;
-            pBuilding->ubNumClimbSpots++;
+            pBuilding.value.sUpClimbSpots[pBuilding.value.ubNumClimbSpots] = sCurrGridNo;
+            pBuilding.value.sDownClimbSpots[pBuilding.value.ubNumClimbSpots] = sRightGridNo;
+            pBuilding.value.ubNumClimbSpots++;
 
-            if (pBuilding->ubNumClimbSpots == MAX_CLIMBSPOTS_PER_BUILDING) {
+            if (pBuilding.value.ubNumClimbSpots == MAX_CLIMBSPOTS_PER_BUILDING) {
               // gotta stop!
               return pBuilding;
             }
@@ -219,10 +219,10 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
         }
       } else {
         // can't select this spot
-        if ((sPrevGridNo != NOWHERE) && (pBuilding->ubNumClimbSpots > 0)) {
-          if (pBuilding->sDownClimbSpots[pBuilding->ubNumClimbSpots - 1] == sCurrGridNo) {
+        if ((sPrevGridNo != NOWHERE) && (pBuilding.value.ubNumClimbSpots > 0)) {
+          if (pBuilding.value.sDownClimbSpots[pBuilding.value.ubNumClimbSpots - 1] == sCurrGridNo) {
             // unselect previous spot
-            pBuilding->ubNumClimbSpots--;
+            pBuilding.value.ubNumClimbSpots--;
             // overwrote a selected spot so go into automatic selection for later
             uiChanceIn = 1;
           }
@@ -334,16 +334,16 @@ function FindClosestClimbPoint(sStartGridNo: INT16, sDesiredGridNo: INT16, fClim
     return NOWHERE;
   }
 
-  ubNumClimbSpots = pBuilding->ubNumClimbSpots;
+  ubNumClimbSpots = pBuilding.value.ubNumClimbSpots;
 
   if (fClimbUp) {
-    psClimbSpots = pBuilding->sUpClimbSpots;
+    psClimbSpots = pBuilding.value.sUpClimbSpots;
   } else {
-    psClimbSpots = pBuilding->sDownClimbSpots;
+    psClimbSpots = pBuilding.value.sDownClimbSpots;
   }
 
   for (ubLoop = 0; ubLoop < ubNumClimbSpots; ubLoop++) {
-    if ((WhoIsThere2(pBuilding->sUpClimbSpots[ubLoop], 0) == NOBODY) && (WhoIsThere2(pBuilding->sDownClimbSpots[ubLoop], 1) == NOBODY)) {
+    if ((WhoIsThere2(pBuilding.value.sUpClimbSpots[ubLoop], 0) == NOBODY) && (WhoIsThere2(pBuilding.value.sDownClimbSpots[ubLoop], 1) == NOBODY)) {
       sDistance = PythSpacesAway(sStartGridNo, psClimbSpots[ubLoop]);
       if (sDistance < sClosestDistance) {
         sClosestDistance = sDistance;

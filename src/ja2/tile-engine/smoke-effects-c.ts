@@ -101,13 +101,13 @@ function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubOwner: U
   pSmoke = &gSmokeEffectData[iSmokeIndex];
 
   // Set some values...
-  pSmoke->sGridNo = sGridNo;
-  pSmoke->usItem = usItem;
-  pSmoke->uiTimeOfLastUpdate = GetWorldTotalSeconds();
+  pSmoke.value.sGridNo = sGridNo;
+  pSmoke.value.usItem = usItem;
+  pSmoke.value.uiTimeOfLastUpdate = GetWorldTotalSeconds();
 
   // Are we indoors?
   if (GetTerrainType(sGridNo) == FLAT_FLOOR) {
-    pSmoke->bFlags |= SMOKE_EFFECT_INDOORS;
+    pSmoke.value.bFlags |= SMOKE_EFFECT_INDOORS;
   }
 
   switch (usItem) {
@@ -159,24 +159,24 @@ function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubOwner: U
       break;
   }
 
-  pSmoke->ubDuration = ubDuration;
-  pSmoke->ubRadius = ubStartRadius;
-  pSmoke->bAge = 0;
-  pSmoke->fAllocated = TRUE;
-  pSmoke->bType = bSmokeEffectType;
-  pSmoke->ubOwner = ubOwner;
+  pSmoke.value.ubDuration = ubDuration;
+  pSmoke.value.ubRadius = ubStartRadius;
+  pSmoke.value.bAge = 0;
+  pSmoke.value.fAllocated = TRUE;
+  pSmoke.value.bType = bSmokeEffectType;
+  pSmoke.value.ubOwner = ubOwner;
 
-  if (pSmoke->bFlags & SMOKE_EFFECT_INDOORS) {
+  if (pSmoke.value.bFlags & SMOKE_EFFECT_INDOORS) {
     // Duration is increased by 2 turns...indoors
-    pSmoke->ubDuration += 3;
+    pSmoke.value.ubDuration += 3;
   }
 
   if (bLevel) {
-    pSmoke->bFlags |= SMOKE_EFFECT_ON_ROOF;
+    pSmoke.value.bFlags |= SMOKE_EFFECT_ON_ROOF;
   }
 
   // ATE: FALSE into subsequent-- it's the first one!
-  SpreadEffect(pSmoke->sGridNo, pSmoke->ubRadius, pSmoke->usItem, pSmoke->ubOwner, FALSE, bLevel, iSmokeIndex);
+  SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, FALSE, bLevel, iSmokeIndex);
 
   return iSmokeIndex;
 }
@@ -191,7 +191,7 @@ function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16
 
   pSmoke = &gSmokeEffectData[iSmokeEffectID];
 
-  if ((pSmoke->ubDuration - pSmoke->bAge) < 2) {
+  if ((pSmoke.value.ubDuration - pSmoke.value.bAge) < 2) {
     fDissipating = TRUE;
     // Remove old one...
     RemoveSmokeEffectFromTile(sGridNo, bLevel);
@@ -339,7 +339,7 @@ function DecaySmokeEffects(uiTime: UINT32): void {
   for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
     if (MercSlots[cnt]) {
       // reset 'hit by gas' flags
-      MercSlots[cnt]->fHitByGasFlags = 0;
+      MercSlots[cnt].value.fHitByGasFlags = 0;
     }
   }
 
@@ -352,8 +352,8 @@ function DecaySmokeEffects(uiTime: UINT32): void {
 
     pSmoke = &gSmokeEffectData[cnt];
 
-    if (pSmoke->fAllocated) {
-      if (pSmoke->bFlags & SMOKE_EFFECT_ON_ROOF) {
+    if (pSmoke.value.fAllocated) {
+      if (pSmoke.value.bFlags & SMOKE_EFFECT_ON_ROOF) {
         bLevel = 1;
       } else {
         bLevel = 0;
@@ -365,22 +365,22 @@ function DecaySmokeEffects(uiTime: UINT32): void {
         fUpdate = TRUE;
       } else {
         // ATE: Do this every so ofte, to acheive the effect we want...
-        if ((uiTime - pSmoke->uiTimeOfLastUpdate) > 10) {
+        if ((uiTime - pSmoke.value.uiTimeOfLastUpdate) > 10) {
           fUpdate = TRUE;
 
-          usNumUpdates = ((uiTime - pSmoke->uiTimeOfLastUpdate) / 10);
+          usNumUpdates = ((uiTime - pSmoke.value.uiTimeOfLastUpdate) / 10);
         }
       }
 
       if (fUpdate) {
-        pSmoke->uiTimeOfLastUpdate = uiTime;
+        pSmoke.value.uiTimeOfLastUpdate = uiTime;
 
         for (cnt2 = 0; cnt2 < usNumUpdates; cnt2++) {
-          pSmoke->bAge++;
+          pSmoke.value.bAge++;
 
-          if (pSmoke->bAge == 1) {
+          if (pSmoke.value.bAge == 1) {
             // ATE: At least mark for update!
-            pSmoke->bFlags |= SMOKE_EFFECT_MARK_FOR_UPDATE;
+            pSmoke.value.bFlags |= SMOKE_EFFECT_MARK_FOR_UPDATE;
             fSpreadEffect = FALSE;
           } else {
             fSpreadEffect = TRUE;
@@ -388,30 +388,30 @@ function DecaySmokeEffects(uiTime: UINT32): void {
 
           if (fSpreadEffect) {
             // if this cloud remains effective (duration not reached)
-            if (pSmoke->bAge <= pSmoke->ubDuration) {
+            if (pSmoke.value.bAge <= pSmoke.value.ubDuration) {
               // ATE: Only mark now and increse radius - actual drawing is done
               // in another pass cause it could
               // just get erased...
-              pSmoke->bFlags |= SMOKE_EFFECT_MARK_FOR_UPDATE;
+              pSmoke.value.bFlags |= SMOKE_EFFECT_MARK_FOR_UPDATE;
 
               // calculate the new cloud radius
               // cloud expands by 1 every turn outdoors, and every other turn indoors
 
               // ATE: If radius is < maximun, increase radius, otherwise keep at max
-              if (pSmoke->ubRadius < Explosive[Item[pSmoke->usItem].ubClassIndex].ubRadius) {
-                pSmoke->ubRadius++;
+              if (pSmoke.value.ubRadius < Explosive[Item[pSmoke.value.usItem].ubClassIndex].ubRadius) {
+                pSmoke.value.ubRadius++;
               }
             } else {
               // deactivate tear gas cloud (use last known radius)
-              SpreadEffect(pSmoke->sGridNo, pSmoke->ubRadius, pSmoke->usItem, pSmoke->ubOwner, ERASE_SPREAD_EFFECT, bLevel, cnt);
-              pSmoke->fAllocated = FALSE;
+              SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, ERASE_SPREAD_EFFECT, bLevel, cnt);
+              pSmoke.value.fAllocated = FALSE;
               break;
             }
           }
         }
       } else {
         // damage anyone standing in cloud
-        SpreadEffect(pSmoke->sGridNo, pSmoke->ubRadius, pSmoke->usItem, pSmoke->ubOwner, REDO_SPREAD_EFFECT, 0, cnt);
+        SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, REDO_SPREAD_EFFECT, 0, cnt);
       }
     }
   }
@@ -419,17 +419,17 @@ function DecaySmokeEffects(uiTime: UINT32): void {
   for (cnt = 0; cnt < guiNumSmokeEffects; cnt++) {
     pSmoke = &gSmokeEffectData[cnt];
 
-    if (pSmoke->fAllocated) {
-      if (pSmoke->bFlags & SMOKE_EFFECT_ON_ROOF) {
+    if (pSmoke.value.fAllocated) {
+      if (pSmoke.value.bFlags & SMOKE_EFFECT_ON_ROOF) {
         bLevel = 1;
       } else {
         bLevel = 0;
       }
 
       // if this cloud remains effective (duration not reached)
-      if (pSmoke->bFlags & SMOKE_EFFECT_MARK_FOR_UPDATE) {
-        SpreadEffect(pSmoke->sGridNo, pSmoke->ubRadius, pSmoke->usItem, pSmoke->ubOwner, TRUE, bLevel, cnt);
-        pSmoke->bFlags &= (~SMOKE_EFFECT_MARK_FOR_UPDATE);
+      if (pSmoke.value.bFlags & SMOKE_EFFECT_MARK_FOR_UPDATE) {
+        SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, TRUE, bLevel, cnt);
+        pSmoke.value.bFlags &= (~SMOKE_EFFECT_MARK_FOR_UPDATE);
       }
     }
   }
@@ -683,9 +683,9 @@ function UpdateSmokeEffectGraphics(): void {
         bLevel = 0;
       }
 
-      SpreadEffect(pSmoke->sGridNo, pSmoke->ubRadius, pSmoke->usItem, pSmoke->ubOwner, ERASE_SPREAD_EFFECT, bLevel, uiCnt);
+      SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, ERASE_SPREAD_EFFECT, bLevel, uiCnt);
 
-      SpreadEffect(pSmoke->sGridNo, pSmoke->ubRadius, pSmoke->usItem, pSmoke->ubOwner, TRUE, bLevel, uiCnt);
+      SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, TRUE, bLevel, uiCnt);
     }
   }
 }

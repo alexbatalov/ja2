@@ -119,7 +119,7 @@ function CalcBestCTGT(pSoldier: Pointer<SOLDIERTYPE>, ubOppID: UINT8, sOppGridNo
 
   sCheckSpot = -1;
 
-  sCentralGridNo = pSoldier->sGridNo;
+  sCentralGridNo = pSoldier.value.sGridNo;
 
   // precalculate these for speed
   // what was struct for?
@@ -162,8 +162,8 @@ function CalcBestCTGT(pSoldier: Pointer<SOLDIERTYPE>, ubOppID: UINT8, sOppGridNo
           // "virtually" so we can calculate what our cover is from there
 
           // NOTE: GOTTA SET THESE 3 FIELDS *BACK* AFTER USING THIS FUNCTION!!!
-          pSoldier->sGridNo = sAdjSpot; // pretend he's standing at 'sAdjSpot'
-          AICenterXY(sAdjSpot, &(pSoldier->dXPos), &(pSoldier->dYPos));
+          pSoldier.value.sGridNo = sAdjSpot; // pretend he's standing at 'sAdjSpot'
+          AICenterXY(sAdjSpot, &(pSoldier.value.dXPos), &(pSoldier.value.dYPos));
           bThisCTGT = CalcWorstCTGTForPosition(pSoldier, ubOppID, sOppGridNo, bLevel, iMyAPsLeft);
           if (bThisCTGT > bBestCTGT) {
             bBestCTGT = bThisCTGT;
@@ -214,27 +214,27 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
   // HATE IT, THEN CHANGE ChanceToGetThrough() TO WORK FROM A GRIDNO TO GRIDNO
 
   // if this is theoretical, and I'm not actually at sMyGridNo right now
-  if (pMe->sGridNo != sMyGridNo) {
-    sMyRealGridNo = pMe->sGridNo; // remember where I REALLY am
-    dMyX = pMe->dXPos;
-    dMyY = pMe->dYPos;
+  if (pMe.value.sGridNo != sMyGridNo) {
+    sMyRealGridNo = pMe.value.sGridNo; // remember where I REALLY am
+    dMyX = pMe.value.dXPos;
+    dMyY = pMe.value.dYPos;
 
-    pMe->sGridNo = sMyGridNo; // but pretend I'm standing at sMyGridNo
+    pMe.value.sGridNo = sMyGridNo; // but pretend I'm standing at sMyGridNo
     ConvertGridNoToCenterCellXY(sMyGridNo, &sTempX, &sTempY);
-    pMe->dXPos = sTempX;
-    pMe->dYPos = sTempY;
+    pMe.value.dXPos = sTempX;
+    pMe.value.dYPos = sTempY;
   }
 
   // if this is theoretical, and he's not actually at hisGrid right now
-  if (pHim->sGridNo != sHisGridNo) {
-    sHisRealGridNo = pHim->sGridNo; // remember where he REALLY is
-    dHisX = pHim->dXPos;
-    dHisY = pHim->dYPos;
+  if (pHim.value.sGridNo != sHisGridNo) {
+    sHisRealGridNo = pHim.value.sGridNo; // remember where he REALLY is
+    dHisX = pHim.value.dXPos;
+    dHisY = pHim.value.dYPos;
 
-    pHim->sGridNo = sHisGridNo; // but pretend he's standing at sHisGridNo
+    pHim.value.sGridNo = sHisGridNo; // but pretend he's standing at sHisGridNo
     ConvertGridNoToCenterCellXY(sHisGridNo, &sTempX, &sTempY);
-    pHim->dXPos = sTempX;
-    pHim->dYPos = sTempY;
+    pHim.value.dXPos = sTempX;
+    pHim.value.dYPos = sTempY;
   }
 
   if (InWaterOrGas(pHim, sHisGridNo)) {
@@ -243,7 +243,7 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
     // optimistically assume we'll be behind the best cover available at this spot
 
     // bHisActualCTGT = ChanceToGetThrough(pHim,sMyGridNo,FAKE,ACTUAL,TESTWALLS,9999,M9PISTOL,NOT_FOR_LOS); // assume a gunshot
-    bHisActualCTGT = CalcWorstCTGTForPosition(pHim, pMe->ubID, sMyGridNo, pMe->bLevel, iMyAPsLeft);
+    bHisActualCTGT = CalcWorstCTGTForPosition(pHim, pMe.value.ubID, sMyGridNo, pMe.value.bLevel, iMyAPsLeft);
   }
 
   // normally, that will be the cover I'll use, unless worst case over-rides it
@@ -254,13 +254,13 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
     // if we didn't remember his real gridno earlier up above, we got to now,
     // because calculating worst case is about to play with it in a big way!
     if (sHisRealGridNo == NOWHERE) {
-      sHisRealGridNo = pHim->sGridNo; // remember where he REALLY is
-      dHisX = pHim->dXPos;
-      dHisY = pHim->dYPos;
+      sHisRealGridNo = pHim.value.sGridNo; // remember where he REALLY is
+      dHisX = pHim.value.dXPos;
+      dHisY = pHim.value.dYPos;
     }
 
     // calculate where my cover is worst if opponent moves just 1 tile over
-    bHisBestCTGT = CalcBestCTGT(pHim, pMe->ubID, sMyGridNo, pMe->bLevel, iMyAPsLeft);
+    bHisBestCTGT = CalcBestCTGT(pHim, pMe.value.ubID, sMyGridNo, pMe.value.bLevel, iMyAPsLeft);
 
     // if he can actually improve his CTGT by moving to a nearby gridno
     if (bHisBestCTGT > bHisActualCTGT) {
@@ -275,18 +275,18 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
     bMyCTGT = 0;
   } else {
     // put him at sHisGridNo if necessary!
-    if (pHim->sGridNo != sHisGridNo) {
-      pHim->sGridNo = sHisGridNo;
+    if (pHim.value.sGridNo != sHisGridNo) {
+      pHim.value.sGridNo = sHisGridNo;
       ConvertGridNoToCenterCellXY(sHisGridNo, &sTempX, &sTempY);
-      pHim->dXPos = sTempX;
-      pHim->dYPos = sTempY;
+      pHim.value.dXPos = sTempX;
+      pHim.value.dYPos = sTempY;
     }
     // bMyCTGT = ChanceToGetThrough(pMe,sHisGridNo,FAKE,ACTUAL,TESTWALLS,9999,M9PISTOL,NOT_FOR_LOS); // assume a gunshot
     // bMyCTGT = SoldierToLocationChanceToGetThrough( pMe, sHisGridNo, pMe->bTargetLevel, pMe->bTargetCubeLevel );
 
     // let's not assume anything about the stance the enemy might take, so take an average
     // value... no cover give a higher value than partial cover
-    bMyCTGT = CalcAverageCTGTForPosition(pMe, pHim->ubID, sHisGridNo, pHim->bLevel, iMyAPsLeft);
+    bMyCTGT = CalcAverageCTGTForPosition(pMe, pHim.value.ubID, sHisGridNo, pHim.value.bLevel, iMyAPsLeft);
 
     // since NPCs are too dumb to shoot "blind", ie. at opponents that they
     // themselves can't see (mercs can, using another as a spotter!), if the
@@ -298,15 +298,15 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
 
   // UNDO ANY TEMPORARY "DAMAGE" DONE ABOVE
   if (sMyRealGridNo != NOWHERE) {
-    pMe->sGridNo = sMyRealGridNo; // put me back where I belong!
-    pMe->dXPos = dMyX; // also change the 'x'
-    pMe->dYPos = dMyY; // and the 'y'
+    pMe.value.sGridNo = sMyRealGridNo; // put me back where I belong!
+    pMe.value.dXPos = dMyX; // also change the 'x'
+    pMe.value.dYPos = dMyY; // and the 'y'
   }
 
   if (sHisRealGridNo != NOWHERE) {
-    pHim->sGridNo = sHisRealGridNo; // put HIM back where HE belongs!
-    pHim->dXPos = dHisX; // also change the 'x'
-    pHim->dYPos = dHisY; // and the 'y'
+    pHim.value.sGridNo = sHisRealGridNo; // put HIM back where HE belongs!
+    pHim.value.dXPos = dHisX; // also change the 'x'
+    pHim.value.dYPos = dHisY; // and the 'y'
   }
 
   // these value should be < 1 million each
@@ -315,12 +315,12 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
 
   // try to account for who outnumbers who: the side with the advantage thus
   // (hopefully) values offense more, while those in trouble will play defense
-  if (pHim->bOppCnt > 1) {
-    iHisPosValue /= pHim->bOppCnt;
+  if (pHim.value.bOppCnt > 1) {
+    iHisPosValue /= pHim.value.bOppCnt;
   }
 
-  if (pMe->bOppCnt > 1) {
-    iMyPosValue /= pMe->bOppCnt;
+  if (pMe.value.bOppCnt > 1) {
+    iMyPosValue /= pMe.value.bOppCnt;
   }
 
   // if my positional value is worth something at all here
@@ -395,8 +395,8 @@ function NumberOfTeamMatesAdjacent(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT1
     if (sTempGridNo != sGridNo)
       ;
     {
-      ubWhoIsThere = WhoIsThere2(sGridNo, pSoldier->bLevel);
-      if (ubWhoIsThere != NOBODY && ubWhoIsThere != pSoldier->ubID && MercPtrs[ubWhoIsThere]->bTeam == pSoldier->bTeam) {
+      ubWhoIsThere = WhoIsThere2(sGridNo, pSoldier.value.bLevel);
+      if (ubWhoIsThere != NOBODY && ubWhoIsThere != pSoldier.value.ubID && MercPtrs[ubWhoIsThere].value.bTeam == pSoldier.value.bTeam) {
         ubCount++;
       }
     }
@@ -478,12 +478,12 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
 
   // BUILD A LIST OF THREATENING GRID #s FROM PERSONAL & PUBLIC opplists
 
-  pusLastLoc = &(gsLastKnownOppLoc[pSoldier->ubID][0]);
+  pusLastLoc = &(gsLastKnownOppLoc[pSoldier.value.ubID][0]);
 
   // hang a pointer into personal opplist
-  pbPersOL = &(pSoldier->bOppList[0]);
+  pbPersOL = &(pSoldier.value.bOppList[0]);
   // hang a pointer into public opplist
-  pbPublOL = &(gbPublicOpplist[pSoldier->bTeam][0]);
+  pbPublOL = &(gbPublicOpplist[pSoldier.value.bTeam][0]);
 
   // decide how far we're gonna be looking
   iSearchRange = gbDiff[DIFF_MAX_COVER_RANGE][SoldierDifficultyLevel(pSoldier)];
@@ -500,8 +500,8 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
           }*/
 
   // maximum search range is 1 tile / 8 pts of wisdom
-  if (iSearchRange > (pSoldier->bWisdom / 8)) {
-    iSearchRange = (pSoldier->bWisdom / 8);
+  if (iSearchRange > (pSoldier.value.bWisdom / 8)) {
+    iSearchRange = (pSoldier.value.bWisdom / 8);
   }
 
   if (!gfTurnBasedAI) {
@@ -511,12 +511,12 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
 
   usMovementMode = DetermineMovementMode(pSoldier, AI_ACTION_TAKE_COVER);
 
-  if (pSoldier->bAlertStatus >= STATUS_RED) // if already in battle
+  if (pSoldier.value.bAlertStatus >= STATUS_RED) // if already in battle
   {
     // must be able to reach the cover, so it can't possibly be more than
     // action points left (rounded down) tiles away, since minimum
     // cost to move per tile is 1 points.
-    iMaxMoveTilesLeft = __max(0, pSoldier->bActionPoints - MinAPsToStartMovement(pSoldier, usMovementMode));
+    iMaxMoveTilesLeft = __max(0, pSoldier.value.bActionPoints - MinAPsToStartMovement(pSoldier, usMovementMode));
     // NumMessage("In BLACK, maximum tiles to move left = ",maxMoveTilesLeft);
 
     // if we can't go as far as the usual full search range
@@ -541,18 +541,18 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
     pOpponent = MercSlots[uiLoop];
 
     // if this merc is inactive, at base, on assignment, dead, unconscious
-    if (!pOpponent || pOpponent->bLife < OKLIFE) {
+    if (!pOpponent || pOpponent.value.bLife < OKLIFE) {
       continue; // next merc
     }
 
     // if this man is neutral / on the same side, he's not an opponent
-    if (CONSIDERED_NEUTRAL(pSoldier, pOpponent) || (pSoldier->bSide == pOpponent->bSide)) {
+    if (CONSIDERED_NEUTRAL(pSoldier, pOpponent) || (pSoldier.value.bSide == pOpponent.value.bSide)) {
       continue; // next merc
     }
 
-    pbPersOL = pSoldier->bOppList + pOpponent->ubID;
-    pbPublOL = gbPublicOpplist[pSoldier->bTeam] + pOpponent->ubID;
-    pusLastLoc = gsLastKnownOppLoc[pSoldier->ubID] + pOpponent->ubID;
+    pbPersOL = pSoldier.value.bOppList + pOpponent.value.ubID;
+    pbPublOL = gbPublicOpplist[pSoldier.value.bTeam] + pOpponent.value.ubID;
+    pusLastLoc = gsLastKnownOppLoc[pSoldier.value.ubID] + pOpponent.value.ubID;
 
     // if this opponent is unknown personally and publicly
     if ((*pbPersOL == NOT_HEARD_OR_SEEN) && (*pbPublOL == NOT_HEARD_OR_SEEN)) {
@@ -560,7 +560,7 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
     }
 
     // Special stuff for Carmen the bounty hunter
-    if (pSoldier->bAttitude == ATTACKSLAYONLY && pOpponent->ubProfile != 64) {
+    if (pSoldier.value.bAttitude == ATTACKSLAYONLY && pOpponent.value.ubProfile != 64) {
       continue; // next opponent
     }
 
@@ -571,13 +571,13 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
       iThreatCertainty = ThreatPercent[*pbPersOL - OLDEST_HEARD_VALUE];
     } else {
       // using public knowledge, obtain opponent's "best guess" gridno
-      sThreatLoc = gsPublicLastKnownOppLoc[pSoldier->bTeam][pOpponent->ubID];
+      sThreatLoc = gsPublicLastKnownOppLoc[pSoldier.value.bTeam][pOpponent.value.ubID];
       iThreatCertainty = ThreatPercent[*pbPublOL - OLDEST_HEARD_VALUE];
     }
 
     // calculate how far away this threat is (in adjusted pixels)
     // iThreatRange = AdjPixelsAway(CenterX(pSoldier->sGridNo),CenterY(pSoldier->sGridNo),CenterX(sThreatLoc),CenterY(sThreatLoc));
-    iThreatRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier->sGridNo, sThreatLoc);
+    iThreatRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, sThreatLoc);
 
     // NumMessage("Threat Range = ",iThreatRange);
 
@@ -587,7 +587,7 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
     }
 
     // remember this opponent as a current threat, but DON'T REDUCE FOR COVER!
-    Threat[uiThreatCnt].iValue = CalcManThreatValue(pOpponent, pSoldier->sGridNo, FALSE, pSoldier);
+    Threat[uiThreatCnt].iValue = CalcManThreatValue(pOpponent, pSoldier.value.sGridNo, FALSE, pSoldier);
 
     // if the opponent is no threat at all for some reason
     if (Threat[uiThreatCnt].iValue == -999) {
@@ -632,32 +632,32 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
     // if this threat is CURRENTLY within 20 tiles
     if (Threat[uiLoop].iOrigRange <= MAX_THREAT_RANGE) {
       // add this opponent's cover value to our current total cover value
-      iCurrentCoverValue += CalcCoverValue(pSoldier, pSoldier->sGridNo, iMyThreatValue, pSoldier->bActionPoints, uiLoop, Threat[uiLoop].iOrigRange, morale, &iCurrentScale);
+      iCurrentCoverValue += CalcCoverValue(pSoldier, pSoldier.value.sGridNo, iMyThreatValue, pSoldier.value.bActionPoints, uiLoop, Threat[uiLoop].iOrigRange, morale, &iCurrentScale);
     }
     // sprintf(tempstr,"iCurrentCoverValue after opponent %d is now %d",iLoop,iCurrentCoverValue);
     // PopMessage(tempstr);
   }
 
-  iCurrentCoverValue -= (iCurrentCoverValue / 10) * NumberOfTeamMatesAdjacent(pSoldier, pSoldier->sGridNo);
+  iCurrentCoverValue -= (iCurrentCoverValue / 10) * NumberOfTeamMatesAdjacent(pSoldier, pSoldier.value.sGridNo);
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+  sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (pSoldier->sGridNo / MAXROW));
+  sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
   // NumMessage("sMaxDown = ",sMaxDown);
 
   iRoamRange = RoamingRange(pSoldier, &sOrigin);
 
   // if status isn't black (life & death combat), and roaming range is limited
-  if ((pSoldier->bAlertStatus != STATUS_BLACK) && (iRoamRange < MAX_ROAMING_RANGE) && (sOrigin != NOWHERE)) {
+  if ((pSoldier.value.bAlertStatus != STATUS_BLACK) && (iRoamRange < MAX_ROAMING_RANGE) && (sOrigin != NOWHERE)) {
     // must try to stay within or return to the point of origin
-    iDistFromOrigin = SpacesAway(sOrigin, pSoldier->sGridNo);
+    iDistFromOrigin = SpacesAway(sOrigin, pSoldier.value.sGridNo);
   } else {
     // don't care how far from origin we go
     iDistFromOrigin = -1;
@@ -666,10 +666,10 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
   // the initial cover value to beat is our current cover value
   iBestCoverValue = iCurrentCoverValue;
 
-  if (pSoldier->bAlertStatus >= STATUS_RED) // if already in battle
+  if (pSoldier.value.bAlertStatus >= STATUS_RED) // if already in battle
   {
     // to speed this up, tell PathAI to cancel any paths beyond our AP reach!
-    gubNPCAPBudget = pSoldier->bActionPoints;
+    gubNPCAPBudget = pSoldier.value.bActionPoints;
   } else {
     // even if not under pressure, limit to 1 turn's travelling distance
     // hope this isn't too expensive...
@@ -687,7 +687,7 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
   // reset the "reachable" flags in the region we're looking at
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
     for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
-      sGridNo = pSoldier->sGridNo + sXOffset + (MAXCOL * sYOffset);
+      sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
       if (!(sGridNo >= 0 && sGridNo < WORLD_MAX)) {
         continue;
       }
@@ -695,11 +695,11 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
     }
   }
 
-  FindBestPath(pSoldier, NOWHERE, pSoldier->bLevel, DetermineMovementMode(pSoldier, AI_ACTION_TAKE_COVER), COPYREACHABLE_AND_APS, 0);
+  FindBestPath(pSoldier, NOWHERE, pSoldier.value.bLevel, DetermineMovementMode(pSoldier, AI_ACTION_TAKE_COVER), COPYREACHABLE_AND_APS, 0);
 
   // Turn off the "reachable" flag for his current location
   // so we don't consider it
-  gpWorldLevelData[pSoldier->sGridNo].uiFlags &= ~(MAPELEMENT_REACHABLE);
+  gpWorldLevelData[pSoldier.value.sGridNo].uiFlags &= ~(MAPELEMENT_REACHABLE);
 
   // SET UP DOUBLE-LOOP TO STEP THROUGH POTENTIAL GRID #s
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
@@ -707,7 +707,7 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
       // HandleMyMouseCursor(KEYBOARDALSO);
 
       // calculate the next potential gridno
-      sGridNo = pSoldier->sGridNo + sXOffset + (MAXCOL * sYOffset);
+      sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
       if (!(sGridNo >= 0 && sGridNo < WORLD_MAX)) {
         continue;
       }
@@ -741,7 +741,7 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
       }
 
       // ignore blacklisted spot
-      if (sGridNo == pSoldier->sBlackList) {
+      if (sGridNo == pSoldier.value.sBlackList) {
         continue;
       }
 
@@ -779,7 +779,7 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
         iThreatRange = GetRangeInCellCoordsFromGridNoDiff(sGridNo, Threat[uiLoop].sGridNo);
         // if this threat would be within 20 tiles, count it
         if (iThreatRange <= MAX_THREAT_RANGE) {
-          iCoverValue += CalcCoverValue(pSoldier, sGridNo, iMyThreatValue, (pSoldier->bActionPoints - iPathCost), uiLoop, iThreatRange, morale, &iCoverScale);
+          iCoverValue += CalcCoverValue(pSoldier, sGridNo, iMyThreatValue, (pSoldier.value.bActionPoints - iPathCost), uiLoop, iThreatRange, morale, &iCoverScale);
         }
 
         // sprintf(tempstr,"iCoverValue after opponent %d is now %d",iLoop,iCoverValue);
@@ -800,7 +800,7 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
         // reduce cover at nighttime based on how bright the light is at that location
         // using the difference in sighting distance between the background and the
         // light for this tile
-        ubLightPercentDifference = (gbLightSighting[0][LightTrueLevel(sGridNo, pSoldier->bLevel)] - ubBackgroundLightPercent);
+        ubLightPercentDifference = (gbLightSighting[0][LightTrueLevel(sGridNo, pSoldier.value.bLevel)] - ubBackgroundLightPercent);
         if (iCoverValue >= 0) {
           iCoverValue -= (iCoverValue / 100) * ubLightPercentDifference;
         } else {
@@ -896,17 +896,17 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     pOpponent = MercSlots[uiLoop];
 
     // if this merc is inactive, at base, on assignment, dead, unconscious
-    if (!pOpponent || (pOpponent->bLife < OKLIFE)) {
+    if (!pOpponent || (pOpponent.value.bLife < OKLIFE)) {
       continue; // next merc
     }
 
     // if this man is neutral / on the same side, he's not an opponent
-    if (CONSIDERED_NEUTRAL(pSoldier, pOpponent) || (pSoldier->bSide == pOpponent->bSide)) {
+    if (CONSIDERED_NEUTRAL(pSoldier, pOpponent) || (pSoldier.value.bSide == pOpponent.value.bSide)) {
       continue; // next merc
     }
 
-    pbPersOL = &(pSoldier->bOppList[pOpponent->ubID]);
-    pbPublOL = &(gbPublicOpplist[pSoldier->bTeam][pOpponent->ubID]);
+    pbPersOL = &(pSoldier.value.bOppList[pOpponent.value.ubID]);
+    pbPublOL = &(gbPublicOpplist[pSoldier.value.bTeam][pOpponent.value.ubID]);
 
     // if this opponent is unknown personally and publicly
     if ((*pbPersOL == NOT_HEARD_OR_SEEN) && (*pbPublOL == NOT_HEARD_OR_SEEN)) {
@@ -914,26 +914,26 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     }
 
     // Special stuff for Carmen the bounty hunter
-    if (pSoldier->bAttitude == ATTACKSLAYONLY && pOpponent->ubProfile != 64) {
+    if (pSoldier.value.bAttitude == ATTACKSLAYONLY && pOpponent.value.ubProfile != 64) {
       continue; // next opponent
     }
 
     // if the opponent is no threat at all for some reason
-    if (CalcManThreatValue(pOpponent, pSoldier->sGridNo, FALSE, pSoldier) == -999) {
+    if (CalcManThreatValue(pOpponent, pSoldier.value.sGridNo, FALSE, pSoldier) == -999) {
       continue; // check next opponent
     }
 
     // if personal knowledge is more up to date or at least equal
     if ((gubKnowledgeValue[*pbPublOL - OLDEST_HEARD_VALUE][*pbPersOL - OLDEST_HEARD_VALUE] > 0) || (*pbPersOL == *pbPublOL)) {
       // using personal knowledge, obtain opponent's "best guess" gridno
-      sThreatLoc = gsLastKnownOppLoc[pSoldier->ubID][pOpponent->ubID];
+      sThreatLoc = gsLastKnownOppLoc[pSoldier.value.ubID][pOpponent.value.ubID];
     } else {
       // using public knowledge, obtain opponent's "best guess" gridno
-      sThreatLoc = gsPublicLastKnownOppLoc[pSoldier->bTeam][pOpponent->ubID];
+      sThreatLoc = gsPublicLastKnownOppLoc[pSoldier.value.bTeam][pOpponent.value.ubID];
     }
 
     // calculate how far away this threat is (in adjusted pixels)
-    iThreatRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier->sGridNo, sThreatLoc);
+    iThreatRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, sThreatLoc);
 
     if (iThreatRange < iClosestThreatRange) {
       iClosestThreatRange = iThreatRange;
@@ -952,7 +952,7 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   }
 
   // get roaming range here; for civilians, running away is limited by roam range
-  if (pSoldier->bTeam == CIV_TEAM) {
+  if (pSoldier.value.bTeam == CIV_TEAM) {
     iRoamRange = RoamingRange(pSoldier, &sOrigin);
     if (iRoamRange == 0) {
       return sBestSpot;
@@ -960,22 +960,22 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   } else {
     // dummy values
     iRoamRange = 100;
-    sOrigin = pSoldier->sGridNo;
+    sOrigin = pSoldier.value.sGridNo;
   }
 
   // DETERMINE CO-ORDINATE LIMITS OF SQUARE AREA TO BE CHECKED
   // THIS IS A LOT QUICKER THAN COVER, SO DO A LARGER AREA, NOT AFFECTED BY
   // DIFFICULTY SETTINGS...
 
-  if (pSoldier->bAlertStatus == STATUS_BLACK) // if already in battle
+  if (pSoldier.value.bAlertStatus == STATUS_BLACK) // if already in battle
   {
-    iSearchRange = pSoldier->bActionPoints / 2;
+    iSearchRange = pSoldier.value.bActionPoints / 2;
 
     // to speed this up, tell PathAI to cancel any paths beyond our AP reach!
-    gubNPCAPBudget = pSoldier->bActionPoints;
+    gubNPCAPBudget = pSoldier.value.bActionPoints;
   } else {
     // even if not under pressure, limit to 1 turn's travelling distance
-    gubNPCAPBudget = __min(pSoldier->bActionPoints / 2, CalcActionPoints(pSoldier));
+    gubNPCAPBudget = __min(pSoldier.value.bActionPoints / 2, CalcActionPoints(pSoldier));
 
     iSearchRange = gubNPCAPBudget / 2;
   }
@@ -998,15 +998,15 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   // NumMessage("gubNPCAPBudget = ",gubNPCAPBudget);
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+  sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (pSoldier->sGridNo / MAXROW));
+  sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
   // NumMessage("sMaxDown = ",sMaxDown);
 
   // Call FindBestPath to set flags in all locations that we can
@@ -1018,7 +1018,7 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   // reset the "reachable" flags in the region we're looking at
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
     for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
-      sGridNo = pSoldier->sGridNo + sXOffset + (MAXCOL * sYOffset);
+      sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
       if (!(sGridNo >= 0 && sGridNo < WORLD_MAX)) {
         continue;
       }
@@ -1027,16 +1027,16 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     }
   }
 
-  FindBestPath(pSoldier, NOWHERE, pSoldier->bLevel, DetermineMovementMode(pSoldier, AI_ACTION_RUN_AWAY), COPYREACHABLE, 0);
+  FindBestPath(pSoldier, NOWHERE, pSoldier.value.bLevel, DetermineMovementMode(pSoldier, AI_ACTION_RUN_AWAY), COPYREACHABLE, 0);
 
   // Turn off the "reachable" flag for his current location
   // so we don't consider it
-  gpWorldLevelData[pSoldier->sGridNo].uiFlags &= ~(MAPELEMENT_REACHABLE);
+  gpWorldLevelData[pSoldier.value.sGridNo].uiFlags &= ~(MAPELEMENT_REACHABLE);
 
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
     for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
       // calculate the next potential gridno
-      sGridNo = pSoldier->sGridNo + sXOffset + (MAXCOL * sYOffset);
+      sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
       // NumMessage("Testing gridno #",gridno);
       if (!(sGridNo >= 0 && sGridNo < WORLD_MAX)) {
         continue;
@@ -1046,7 +1046,7 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
         continue;
       }
 
-      if (sGridNo == pSoldier->sBlackList) {
+      if (sGridNo == pSoldier.value.sBlackList) {
         continue;
       }
 
@@ -1056,7 +1056,7 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
         }
       }
 
-      if (pSoldier->bTeam == CIV_TEAM) {
+      if (pSoldier.value.bTeam == CIV_TEAM) {
         iRoamRange = RoamingRange(pSoldier, &sOrigin);
         if (PythSpacesAway(sOrigin, sGridNo) > iRoamRange) {
           continue;
@@ -1073,7 +1073,7 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 
       iSpotClosestThreatRange = 1500;
 
-      if (pSoldier->bTeam == ENEMY_TEAM && GridNoOnEdgeOfMap(sGridNo, &bEscapeDirection)) {
+      if (pSoldier.value.bTeam == ENEMY_TEAM && GridNoOnEdgeOfMap(sGridNo, &bEscapeDirection)) {
         // We can escape!  This is better than anything else except a closer spot which we can
         // cross over from.
 
@@ -1083,7 +1083,7 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
         // The edge spot closest to us which is on the edge will have the highest value, so
         // it will be picked over locations further away.
         // Only reachable gridnos will be picked so this should hopefully look okay
-        iSpotClosestThreatRange -= PythSpacesAway(pSoldier->sGridNo, sGridNo);
+        iSpotClosestThreatRange -= PythSpacesAway(pSoldier.value.sGridNo, sGridNo);
       } else {
         bEscapeDirection = -1;
         // for every opponent that threatens, consider this spot's cover vs. him
@@ -1114,7 +1114,7 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 
   if (bBestEscapeDirection != -1) {
     // Woohoo!  We can escape!  Fake some stuff with the quote-related actions
-    pSoldier->ubQuoteActionID = GetTraversalQuoteActionID(bBestEscapeDirection);
+    pSoldier.value.ubQuoteActionID = GetTraversalQuoteActionID(bBestEscapeDirection);
   }
 
   return sBestSpot;
@@ -1141,15 +1141,15 @@ function FindNearestUngassedLand(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     // NumMessage("Trying iSearchRange = ", iSearchRange);
 
     // determine maximum horizontal limits
-    sMaxLeft = min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+    sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
     // NumMessage("sMaxLeft = ",sMaxLeft);
-    sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+    sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
     // NumMessage("sMaxRight = ",sMaxRight);
 
     // determine maximum vertical limits
-    sMaxUp = min(iSearchRange, (pSoldier->sGridNo / MAXROW));
+    sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
     // NumMessage("sMaxUp = ",sMaxUp);
-    sMaxDown = min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+    sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
     // NumMessage("sMaxDown = ",sMaxDown);
 
     // Call FindBestPath to set flags in all locations that we can
@@ -1161,7 +1161,7 @@ function FindNearestUngassedLand(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     // reset the "reachable" flags in the region we're looking at
     for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
       for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
-        sGridNo = pSoldier->sGridNo + sXOffset + (MAXCOL * sYOffset);
+        sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
         if (!(sGridNo >= 0 && sGridNo < WORLD_MAX)) {
           continue;
         }
@@ -1170,17 +1170,17 @@ function FindNearestUngassedLand(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
       }
     }
 
-    FindBestPath(pSoldier, NOWHERE, pSoldier->bLevel, DetermineMovementMode(pSoldier, AI_ACTION_LEAVE_WATER_GAS), COPYREACHABLE, 0);
+    FindBestPath(pSoldier, NOWHERE, pSoldier.value.bLevel, DetermineMovementMode(pSoldier, AI_ACTION_LEAVE_WATER_GAS), COPYREACHABLE, 0);
 
     // Turn off the "reachable" flag for his current location
     // so we don't consider it
-    gpWorldLevelData[pSoldier->sGridNo].uiFlags &= ~(MAPELEMENT_REACHABLE);
+    gpWorldLevelData[pSoldier.value.sGridNo].uiFlags &= ~(MAPELEMENT_REACHABLE);
 
     // SET UP DOUBLE-LOOP TO STEP THROUGH POTENTIAL GRID #s
     for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
       for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
         // calculate the next potential gridno
-        sGridNo = pSoldier->sGridNo + sXOffset + (MAXCOL * sYOffset);
+        sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
         // NumMessage("Testing gridno #",gridno);
         if (!(sGridNo >= 0 && sGridNo < WORLD_MAX)) {
           continue;
@@ -1191,7 +1191,7 @@ function FindNearestUngassedLand(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
         }
 
         // ignore blacklisted spot
-        if (sGridNo == pSoldier->sBlackList) {
+        if (sGridNo == pSoldier.value.sBlackList) {
           continue;
         }
 
@@ -1244,7 +1244,7 @@ function FindNearbyDarkerSpot(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   let iRoamRange: INT32;
   let sOrigin: INT16;
 
-  bCurrLightLevel = LightTrueLevel(pSoldier->sGridNo, pSoldier->bLevel);
+  bCurrLightLevel = LightTrueLevel(pSoldier.value.sGridNo, pSoldier.value.bLevel);
 
   iRoamRange = RoamingRange(pSoldier, &sOrigin);
 
@@ -1252,15 +1252,15 @@ function FindNearbyDarkerSpot(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   // this should almost never need to search farther than 5 or 10 squares...
   for (iSearchRange = 5; iSearchRange <= 15; iSearchRange += 5) {
     // determine maximum horizontal limits
-    sMaxLeft = min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+    sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
     // NumMessage("sMaxLeft = ",sMaxLeft);
-    sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+    sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
     // NumMessage("sMaxRight = ",sMaxRight);
 
     // determine maximum vertical limits
-    sMaxUp = min(iSearchRange, (pSoldier->sGridNo / MAXROW));
+    sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
     // NumMessage("sMaxUp = ",sMaxUp);
-    sMaxDown = min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+    sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
     // NumMessage("sMaxDown = ",sMaxDown);
 
     // Call FindBestPath to set flags in all locations that we can
@@ -1272,7 +1272,7 @@ function FindNearbyDarkerSpot(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     // reset the "reachable" flags in the region we're looking at
     for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
       for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
-        sGridNo = pSoldier->sGridNo + sXOffset + (MAXCOL * sYOffset);
+        sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
         if (!(sGridNo >= 0 && sGridNo < WORLD_MAX)) {
           continue;
         }
@@ -1281,17 +1281,17 @@ function FindNearbyDarkerSpot(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
       }
     }
 
-    FindBestPath(pSoldier, NOWHERE, pSoldier->bLevel, DetermineMovementMode(pSoldier, AI_ACTION_LEAVE_WATER_GAS), COPYREACHABLE, 0);
+    FindBestPath(pSoldier, NOWHERE, pSoldier.value.bLevel, DetermineMovementMode(pSoldier, AI_ACTION_LEAVE_WATER_GAS), COPYREACHABLE, 0);
 
     // Turn off the "reachable" flag for his current location
     // so we don't consider it
-    gpWorldLevelData[pSoldier->sGridNo].uiFlags &= ~(MAPELEMENT_REACHABLE);
+    gpWorldLevelData[pSoldier.value.sGridNo].uiFlags &= ~(MAPELEMENT_REACHABLE);
 
     // SET UP DOUBLE-LOOP TO STEP THROUGH POTENTIAL GRID #s
     for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
       for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
         // calculate the next potential gridno
-        sGridNo = pSoldier->sGridNo + sXOffset + (MAXCOL * sYOffset);
+        sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
         // NumMessage("Testing gridno #",gridno);
         if (!(sGridNo >= 0 && sGridNo < WORLD_MAX)) {
           continue;
@@ -1302,7 +1302,7 @@ function FindNearbyDarkerSpot(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
         }
 
         // ignore blacklisted spot
-        if (sGridNo == pSoldier->sBlackList) {
+        if (sGridNo == pSoldier.value.sBlackList) {
           continue;
         }
 
@@ -1312,7 +1312,7 @@ function FindNearbyDarkerSpot(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
         }
 
         // screen out anything brighter than our current best spot
-        bLightLevel = LightTrueLevel(sGridNo, pSoldier->bLevel);
+        bLightLevel = LightTrueLevel(sGridNo, pSoldier.value.bLevel);
 
         bLightDiff = gbLightSighting[0][bCurrLightLevel] - gbLightSighting[0][bLightLevel];
 
@@ -1378,7 +1378,7 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
   iTempValue = -1;
   iItemIndex = iBestItemIndex = -1;
 
-  if (pSoldier->bActionPoints < AP_PICKUP_ITEM) {
+  if (pSoldier.value.bActionPoints < AP_PICKUP_ITEM) {
     return AI_ACTION_NONE;
   }
 
@@ -1388,7 +1388,7 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
 
   iSearchRange = gbDiff[DIFF_MAX_COVER_RANGE][SoldierDifficultyLevel(pSoldier)];
 
-  switch (pSoldier->bAttitude) {
+  switch (pSoldier.value.bAttitude) {
     case DEFENSIVE:
       iSearchRange--;
       break;
@@ -1410,8 +1410,8 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
   }
 
   // maximum search range is 1 tile / 10 pts of wisdom
-  if (iSearchRange > (pSoldier->bWisdom / 10)) {
-    iSearchRange = (pSoldier->bWisdom / 10);
+  if (iSearchRange > (pSoldier.value.bWisdom / 10)) {
+    iSearchRange = (pSoldier.value.bWisdom / 10);
   }
 
   if (!gfTurnBasedAI) {
@@ -1423,15 +1423,15 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
   iSearchRange /= 2;
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+  sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (pSoldier->sGridNo / MAXROW));
+  sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
   // NumMessage("sMaxDown = ",sMaxDown);
 
   // Call FindBestPath to set flags in all locations that we can
@@ -1442,12 +1442,12 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
 
   // set an AP limit too, to our APs less the cost of picking up an item
   // and less the cost of dropping an item since we might need to do that
-  gubNPCAPBudget = pSoldier->bActionPoints - AP_PICKUP_ITEM;
+  gubNPCAPBudget = pSoldier.value.bActionPoints - AP_PICKUP_ITEM;
 
   // reset the "reachable" flags in the region we're looking at
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
     for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
-      sGridNo = pSoldier->sGridNo + sXOffset + (MAXCOL * sYOffset);
+      sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
       if (!(sGridNo >= 0 && sGridNo < WORLD_MAX)) {
         continue;
       }
@@ -1456,13 +1456,13 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
     }
   }
 
-  FindBestPath(pSoldier, NOWHERE, pSoldier->bLevel, DetermineMovementMode(pSoldier, AI_ACTION_PICKUP_ITEM), COPYREACHABLE, 0);
+  FindBestPath(pSoldier, NOWHERE, pSoldier.value.bLevel, DetermineMovementMode(pSoldier, AI_ACTION_PICKUP_ITEM), COPYREACHABLE, 0);
 
   // SET UP DOUBLE-LOOP TO STEP THROUGH POTENTIAL GRID #s
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
     for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
       // calculate the next potential gridno
-      sGridNo = pSoldier->sGridNo + sXOffset + (MAXCOL * sYOffset);
+      sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
       if (!(sGridNo >= 0 && sGridNo < WORLD_MAX)) {
         continue;
       }
@@ -1474,106 +1474,106 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
 
       if ((gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_ITEMPOOL_PRESENT) && (gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REACHABLE)) {
         // ignore blacklisted spot
-        if (sGridNo == pSoldier->sBlackList) {
+        if (sGridNo == pSoldier.value.sBlackList) {
           continue;
         }
 
         iValue = 0;
-        GetItemPool(sGridNo, &pItemPool, pSoldier->bLevel);
+        GetItemPool(sGridNo, &pItemPool, pSoldier.value.bLevel);
         switch (bReason) {
           case SEARCH_AMMO:
             // we are looking for ammo to match the gun in usItem
             while (pItemPool) {
-              pObj = &(gWorldItems[pItemPool->iItemIndex].o);
-              pItem = &(Item[pObj->usItem]);
-              if (pItem->usItemClass == IC_GUN && pObj->bStatus[0] >= MINIMUM_REQUIRED_STATUS) {
+              pObj = &(gWorldItems[pItemPool.value.iItemIndex].o);
+              pItem = &(Item[pObj.value.usItem]);
+              if (pItem.value.usItemClass == IC_GUN && pObj.value.bStatus[0] >= MINIMUM_REQUIRED_STATUS) {
                 // maybe this gun has ammo (adjust for whether it is better than ours!)
-                if (pObj->bGunAmmoStatus < 0 || pObj->ubGunShotsLeft == 0 || (pObj->usItem == ROCKET_RIFLE && pObj->ubImprintID != NOBODY && pObj->ubImprintID != pSoldier->ubID)) {
+                if (pObj.value.bGunAmmoStatus < 0 || pObj.value.ubGunShotsLeft == 0 || (pObj.value.usItem == ROCKET_RIFLE && pObj.value.ubImprintID != NOBODY && pObj.value.ubImprintID != pSoldier.value.ubID)) {
                   iTempValue = 0;
                 } else {
-                  iTempValue = pObj->ubGunShotsLeft * Weapon[pObj->usItem].ubDeadliness / Weapon[usItem].ubDeadliness;
+                  iTempValue = pObj.value.ubGunShotsLeft * Weapon[pObj.value.usItem].ubDeadliness / Weapon[usItem].ubDeadliness;
                 }
-              } else if (ValidAmmoType(usItem, pObj->usItem)) {
+              } else if (ValidAmmoType(usItem, pObj.value.usItem)) {
                 iTempValue = TotalPoints(pObj);
               } else {
                 iTempValue = 0;
               }
               if (iTempValue > iValue) {
                 iValue = iTempValue;
-                iItemIndex = pItemPool->iItemIndex;
+                iItemIndex = pItemPool.value.iItemIndex;
               }
-              pItemPool = pItemPool->pNext;
+              pItemPool = pItemPool.value.pNext;
             }
             break;
           case SEARCH_WEAPONS:
             while (pItemPool) {
-              pObj = &(gWorldItems[pItemPool->iItemIndex].o);
-              pItem = &(Item[pObj->usItem]);
-              if (pItem->usItemClass & IC_WEAPON && pObj->bStatus[0] >= MINIMUM_REQUIRED_STATUS) {
-                if ((pItem->usItemClass & IC_GUN) && (pObj->bGunAmmoStatus < 0 || pObj->ubGunShotsLeft == 0 || ((pObj->usItem == ROCKET_RIFLE || pObj->usItem == AUTO_ROCKET_RIFLE) && pObj->ubImprintID != NOBODY && pObj->ubImprintID != pSoldier->ubID))) {
+              pObj = &(gWorldItems[pItemPool.value.iItemIndex].o);
+              pItem = &(Item[pObj.value.usItem]);
+              if (pItem.value.usItemClass & IC_WEAPON && pObj.value.bStatus[0] >= MINIMUM_REQUIRED_STATUS) {
+                if ((pItem.value.usItemClass & IC_GUN) && (pObj.value.bGunAmmoStatus < 0 || pObj.value.ubGunShotsLeft == 0 || ((pObj.value.usItem == ROCKET_RIFLE || pObj.value.usItem == AUTO_ROCKET_RIFLE) && pObj.value.ubImprintID != NOBODY && pObj.value.ubImprintID != pSoldier.value.ubID))) {
                   // jammed or out of ammo, skip it!
                   iTempValue = 0;
-                } else if (Item[pSoldier->inv[HANDPOS].usItem].usItemClass & IC_WEAPON) {
-                  if (Weapon[pObj->usItem].ubDeadliness > Weapon[pSoldier->inv[HANDPOS].usItem].ubDeadliness) {
-                    iTempValue = 100 * Weapon[pObj->usItem].ubDeadliness / Weapon[pSoldier->inv[HANDPOS].usItem].ubDeadliness;
+                } else if (Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass & IC_WEAPON) {
+                  if (Weapon[pObj.value.usItem].ubDeadliness > Weapon[pSoldier.value.inv[HANDPOS].usItem].ubDeadliness) {
+                    iTempValue = 100 * Weapon[pObj.value.usItem].ubDeadliness / Weapon[pSoldier.value.inv[HANDPOS].usItem].ubDeadliness;
                   } else {
                     iTempValue = 0;
                   }
                 } else {
-                  iTempValue = 200 + Weapon[pObj->usItem].ubDeadliness;
+                  iTempValue = 200 + Weapon[pObj.value.usItem].ubDeadliness;
                 }
               } else {
                 iTempValue = 0;
               }
               if (iTempValue > iValue) {
                 iValue = iTempValue;
-                iItemIndex = pItemPool->iItemIndex;
+                iItemIndex = pItemPool.value.iItemIndex;
               }
-              pItemPool = pItemPool->pNext;
+              pItemPool = pItemPool.value.pNext;
             }
             break;
           default:
             while (pItemPool) {
-              pObj = &(gWorldItems[pItemPool->iItemIndex].o);
-              pItem = &(Item[pObj->usItem]);
-              if (pItem->usItemClass & IC_WEAPON && pObj->bStatus[0] >= MINIMUM_REQUIRED_STATUS) {
-                if ((pItem->usItemClass & IC_GUN) && (pObj->bGunAmmoStatus < 0 || pObj->ubGunShotsLeft == 0 || ((pObj->usItem == ROCKET_RIFLE || pObj->usItem == AUTO_ROCKET_RIFLE) && pObj->ubImprintID != NOBODY && pObj->ubImprintID != pSoldier->ubID))) {
+              pObj = &(gWorldItems[pItemPool.value.iItemIndex].o);
+              pItem = &(Item[pObj.value.usItem]);
+              if (pItem.value.usItemClass & IC_WEAPON && pObj.value.bStatus[0] >= MINIMUM_REQUIRED_STATUS) {
+                if ((pItem.value.usItemClass & IC_GUN) && (pObj.value.bGunAmmoStatus < 0 || pObj.value.ubGunShotsLeft == 0 || ((pObj.value.usItem == ROCKET_RIFLE || pObj.value.usItem == AUTO_ROCKET_RIFLE) && pObj.value.ubImprintID != NOBODY && pObj.value.ubImprintID != pSoldier.value.ubID))) {
                   // jammed or out of ammo, skip it!
                   iTempValue = 0;
-                } else if ((Item[pSoldier->inv[HANDPOS].usItem].usItemClass & IC_WEAPON)) {
-                  if (Weapon[pObj->usItem].ubDeadliness > Weapon[pSoldier->inv[HANDPOS].usItem].ubDeadliness) {
-                    iTempValue = 100 * Weapon[pObj->usItem].ubDeadliness / Weapon[pSoldier->inv[HANDPOS].usItem].ubDeadliness;
+                } else if ((Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass & IC_WEAPON)) {
+                  if (Weapon[pObj.value.usItem].ubDeadliness > Weapon[pSoldier.value.inv[HANDPOS].usItem].ubDeadliness) {
+                    iTempValue = 100 * Weapon[pObj.value.usItem].ubDeadliness / Weapon[pSoldier.value.inv[HANDPOS].usItem].ubDeadliness;
                   } else {
                     iTempValue = 0;
                   }
                 } else {
-                  iTempValue = 200 + Weapon[pObj->usItem].ubDeadliness;
+                  iTempValue = 200 + Weapon[pObj.value.usItem].ubDeadliness;
                 }
-              } else if (pItem->usItemClass == IC_ARMOUR && pObj->bStatus[0] >= MINIMUM_REQUIRED_STATUS) {
-                switch (Armour[pItem->ubClassIndex].ubArmourClass) {
+              } else if (pItem.value.usItemClass == IC_ARMOUR && pObj.value.bStatus[0] >= MINIMUM_REQUIRED_STATUS) {
+                switch (Armour[pItem.value.ubClassIndex].ubArmourClass) {
                   case ARMOURCLASS_HELMET:
-                    if (pSoldier->inv[HELMETPOS].usItem == NOTHING) {
+                    if (pSoldier.value.inv[HELMETPOS].usItem == NOTHING) {
                       iTempValue = 200 + EffectiveArmour(pObj);
-                    } else if (EffectiveArmour(&(pSoldier->inv[HELMETPOS])) > EffectiveArmour(pObj)) {
-                      iTempValue = 100 * EffectiveArmour(pObj) / EffectiveArmour(&(pSoldier->inv[HELMETPOS]));
+                    } else if (EffectiveArmour(&(pSoldier.value.inv[HELMETPOS])) > EffectiveArmour(pObj)) {
+                      iTempValue = 100 * EffectiveArmour(pObj) / EffectiveArmour(&(pSoldier.value.inv[HELMETPOS]));
                     } else {
                       iTempValue = 0;
                     }
                     break;
                   case ARMOURCLASS_VEST:
-                    if (pSoldier->inv[VESTPOS].usItem == NOTHING) {
+                    if (pSoldier.value.inv[VESTPOS].usItem == NOTHING) {
                       iTempValue = 200 + EffectiveArmour(pObj);
-                    } else if (EffectiveArmour(&(pSoldier->inv[HELMETPOS])) > EffectiveArmour(pObj)) {
-                      iTempValue = 100 * EffectiveArmour(pObj) / EffectiveArmour(&(pSoldier->inv[VESTPOS]));
+                    } else if (EffectiveArmour(&(pSoldier.value.inv[HELMETPOS])) > EffectiveArmour(pObj)) {
+                      iTempValue = 100 * EffectiveArmour(pObj) / EffectiveArmour(&(pSoldier.value.inv[VESTPOS]));
                     } else {
                       iTempValue = 0;
                     }
                     break;
                   case ARMOURCLASS_LEGGINGS:
-                    if (pSoldier->inv[LEGPOS].usItem == NOTHING) {
+                    if (pSoldier.value.inv[LEGPOS].usItem == NOTHING) {
                       iTempValue = 200 + EffectiveArmour(pObj);
-                    } else if (EffectiveArmour(&(pSoldier->inv[HELMETPOS])) > EffectiveArmour(pObj)) {
-                      iTempValue = 100 * EffectiveArmour(pObj) / EffectiveArmour(&(pSoldier->inv[LEGPOS]));
+                    } else if (EffectiveArmour(&(pSoldier.value.inv[HELMETPOS])) > EffectiveArmour(pObj)) {
+                      iTempValue = 100 * EffectiveArmour(pObj) / EffectiveArmour(&(pSoldier.value.inv[LEGPOS]));
                     } else {
                       iTempValue = 0;
                     }
@@ -1587,13 +1587,13 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
 
               if (iTempValue > iValue) {
                 iValue = iTempValue;
-                iItemIndex = pItemPool->iItemIndex;
+                iItemIndex = pItemPool.value.iItemIndex;
               }
-              pItemPool = pItemPool->pNext;
+              pItemPool = pItemPool.value.pNext;
             }
             break;
         }
-        iValue = (3 * iValue) / (3 + PythSpacesAway(sGridNo, pSoldier->sGridNo));
+        iValue = (3 * iValue) / (3 + PythSpacesAway(sGridNo, pSoldier.value.sGridNo));
         if (iValue > iBestValue) {
           sBestSpot = sGridNo;
           iBestValue = iValue;
@@ -1604,30 +1604,30 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
   }
 
   if (sBestSpot != NOWHERE) {
-    DebugAI(String("%d decides to pick up %S", pSoldier->ubID, ItemNames[gWorldItems[iBestItemIndex].o.usItem]));
+    DebugAI(String("%d decides to pick up %S", pSoldier.value.ubID, ItemNames[gWorldItems[iBestItemIndex].o.usItem]));
     if (Item[gWorldItems[iBestItemIndex].o.usItem].usItemClass == IC_GUN) {
       if (FindBetterSpotForItem(pSoldier, HANDPOS) == FALSE) {
-        if (pSoldier->bActionPoints < AP_PICKUP_ITEM + AP_PICKUP_ITEM) {
+        if (pSoldier.value.bActionPoints < AP_PICKUP_ITEM + AP_PICKUP_ITEM) {
           return AI_ACTION_NONE;
         }
-        if (pSoldier->inv[HANDPOS].fFlags & OBJECT_UNDROPPABLE) {
+        if (pSoldier.value.inv[HANDPOS].fFlags & OBJECT_UNDROPPABLE) {
           // destroy this item!
-          DebugAI(String("%d decides he must drop %S first so destroys it", pSoldier->ubID, ItemNames[pSoldier->inv[HANDPOS].usItem]));
-          DeleteObj(&(pSoldier->inv[HANDPOS]));
+          DebugAI(String("%d decides he must drop %S first so destroys it", pSoldier.value.ubID, ItemNames[pSoldier.value.inv[HANDPOS].usItem]));
+          DeleteObj(&(pSoldier.value.inv[HANDPOS]));
           DeductPoints(pSoldier, AP_PICKUP_ITEM, 0);
         } else {
           // we want to drop this item!
-          DebugAI(String("%d decides he must drop %S first", pSoldier->ubID, ItemNames[pSoldier->inv[HANDPOS].usItem]));
+          DebugAI(String("%d decides he must drop %S first", pSoldier.value.ubID, ItemNames[pSoldier.value.inv[HANDPOS].usItem]));
 
-          pSoldier->bNextAction = AI_ACTION_PICKUP_ITEM;
-          pSoldier->usNextActionData = sBestSpot;
-          pSoldier->iNextActionSpecialData = iBestItemIndex;
+          pSoldier.value.bNextAction = AI_ACTION_PICKUP_ITEM;
+          pSoldier.value.usNextActionData = sBestSpot;
+          pSoldier.value.iNextActionSpecialData = iBestItemIndex;
           return AI_ACTION_DROP_ITEM;
         }
       }
     }
-    pSoldier->uiPendingActionData1 = iBestItemIndex;
-    pSoldier->usActionData = sBestSpot;
+    pSoldier.value.uiPendingActionData1 = iBestItemIndex;
+    pSoldier.value.usActionData = sBestSpot;
     return AI_ACTION_PICKUP_ITEM;
   }
 
@@ -1650,23 +1650,23 @@ function FindClosestDoor(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   iSearchRange = 5;
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+  sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (pSoldier->sGridNo / MAXROW));
+  sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
   // NumMessage("sMaxDown = ",sMaxDown);
   // SET UP DOUBLE-LOOP TO STEP THROUGH POTENTIAL GRID #s
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
     for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
       // calculate the next potential gridno
-      sGridNo = pSoldier->sGridNo + sXOffset + (MAXCOL * sYOffset);
+      sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
       if (FindStructure(sGridNo, STRUCTURE_ANYDOOR) != NULL) {
-        iDist = PythSpacesAway(pSoldier->sGridNo, sGridNo);
+        iDist = PythSpacesAway(pSoldier.value.sGridNo, sGridNo);
         if (iDist < iClosestDist) {
           iClosestDist = iDist;
           sClosestDoor = sGridNo;
@@ -1825,20 +1825,20 @@ function FindNearbyPointOnEdgeOfMap(pSoldier: Pointer<SOLDIERTYPE>, pbDirection:
   iSearchRange = EDGE_OF_MAP_SEARCH;
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+  sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (pSoldier->sGridNo / MAXROW));
+  sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
 
   // reset the "reachable" flags in the region we're looking at
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
     for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
-      sGridNo = pSoldier->sGridNo + sXOffset + (MAXCOL * sYOffset);
+      sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
       if (!(sGridNo >= 0 && sGridNo < WORLD_MAX)) {
         continue;
       }
@@ -1847,17 +1847,17 @@ function FindNearbyPointOnEdgeOfMap(pSoldier: Pointer<SOLDIERTYPE>, pbDirection:
     }
   }
 
-  FindBestPath(pSoldier, NOWHERE, pSoldier->bLevel, WALKING, COPYREACHABLE, 0);
+  FindBestPath(pSoldier, NOWHERE, pSoldier.value.bLevel, WALKING, COPYREACHABLE, 0);
 
   // Turn off the "reachable" flag for his current location
   // so we don't consider it
-  gpWorldLevelData[pSoldier->sGridNo].uiFlags &= ~(MAPELEMENT_REACHABLE);
+  gpWorldLevelData[pSoldier.value.sGridNo].uiFlags &= ~(MAPELEMENT_REACHABLE);
 
   // SET UP DOUBLE-LOOP TO STEP THROUGH POTENTIAL GRID #s
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
     for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
       // calculate the next potential gridno
-      sGridNo = pSoldier->sGridNo + sXOffset + (MAXCOL * sYOffset);
+      sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
       if (!(sGridNo >= 0 && sGridNo < WORLD_MAX)) {
         continue;
       }
@@ -1867,7 +1867,7 @@ function FindNearbyPointOnEdgeOfMap(pSoldier: Pointer<SOLDIERTYPE>, pbDirection:
       }
 
       if (GridNoOnEdgeOfMap(sGridNo, &bDirection)) {
-        iPathCost = PythSpacesAway(pSoldier->sGridNo, sGridNo);
+        iPathCost = PythSpacesAway(pSoldier.value.sGridNo, sGridNo);
 
         if (iPathCost < iClosestPathCost) {
           // this place is closer
@@ -1888,8 +1888,8 @@ function FindRouteBackOntoMap(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: INT16
   // values
 
   // well, let's TRY just taking a path to the place we're supposed to go...
-  if (FindBestPath(pSoldier, sDestGridNo, pSoldier->bLevel, WALKING, COPYROUTE, 0)) {
-    pSoldier->bPathStored = TRUE;
+  if (FindBestPath(pSoldier, sDestGridNo, pSoldier.value.bLevel, WALKING, COPYROUTE, 0)) {
+    pSoldier.value.bPathStored = TRUE;
     return sDestGridNo;
   } else {
     return NOWHERE;
@@ -1915,25 +1915,25 @@ function FindClosestBoxingRingSpot(pSoldier: Pointer<SOLDIERTYPE>, fInRing: BOOL
   iSearchRange = 7;
 
   // determine maximum horizontal limits
-  sMaxLeft = min(iSearchRange, (pSoldier->sGridNo % MAXCOL));
+  sMaxLeft = min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier->sGridNo % MAXCOL) + 1));
+  sMaxRight = min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
-  if ((pSoldier->bTeam == gbPlayerNum) && (fInRing == FALSE)) {
+  if ((pSoldier.value.bTeam == gbPlayerNum) && (fInRing == FALSE)) {
     // have player not go to the left of the ring
     sMaxLeft = 0;
   }
 
   // determine maximum vertical limits
-  sMaxUp = min(iSearchRange, (pSoldier->sGridNo / MAXROW));
+  sMaxUp = min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier->sGridNo / MAXROW) + 1));
+  sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
 
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
     for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
       // calculate the next potential gridno
-      sGridNo = pSoldier->sGridNo + sXOffset + (MAXCOL * sYOffset);
+      sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
       if (InARoom(sGridNo, &ubRoom)) {
         if ((fInRing && ubRoom == BOXING_RING) || (!fInRing && ubRoom != BOXING_RING) && LegalNPCDestination(pSoldier, sGridNo, IGNORE_PATH, NOWATER, 0)) {
           iDistance = abs(sXOffset) + abs(sYOffset);
@@ -1985,7 +1985,7 @@ function FindNearestOpenableNonDoor(sStartGridNo: INT16): INT16 {
       pStructure = FindStructure(sGridNo, STRUCTURE_OPENABLE);
       if (pStructure) {
         // skip any doors
-        while (pStructure && (pStructure->fFlags & STRUCTURE_ANYDOOR)) {
+        while (pStructure && (pStructure.value.fFlags & STRUCTURE_ANYDOOR)) {
           pStructure = FindNextStructure(pStructure, STRUCTURE_OPENABLE);
         }
         // if we still have a pointer, then we have found a valid non-door openable structure

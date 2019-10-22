@@ -136,8 +136,8 @@ const enum Enum274 {
   DEVOLVE,
 }
 
-const BUDDY_MERC = (prof, bud) => ((prof)->bBuddy[0] == (bud) || (prof)->bBuddy[1] == (bud) || (prof)->bBuddy[2] == (bud));
-const HATED_MERC = (prof, hat) => ((prof)->bHated[0] == (hat) || (prof)->bHated[1] == (hat) || (prof)->bHated[2] == (hat));
+const BUDDY_MERC = (prof, bud) => ((prof).value.bBuddy[0] == (bud) || (prof).value.bBuddy[1] == (bud) || (prof).value.bBuddy[2] == (bud));
+const HATED_MERC = (prof, hat) => ((prof).value.bHated[0] == (hat) || (prof).value.bHated[1] == (hat) || (prof).value.bHated[2] == (hat));
 
 const BUDDY_OPINION = +25;
 const HATED_OPINION = -25;

@@ -168,11 +168,11 @@ function GetFinance(uiId: UINT32): FinanceUnitPtr {
 
   // look for finance object with Id
   while (pFinance) {
-    if (pFinance->uiIdNumber == uiId)
+    if (pFinance.value.uiIdNumber == uiId)
       break;
 
     // next finance record
-    pFinance = pFinance->Next;
+    pFinance = pFinance.value.Next;
   }
 
   return pFinance;
@@ -186,11 +186,11 @@ function GetTotalDebits(): UINT32 {
   // run to end of list
   while (pFinance) {
     // if a debit, add to debit total
-    if (pFinance->iAmount > 0)
-      uiDebits += ((pFinance->iAmount));
+    if (pFinance.value.iAmount > 0)
+      uiDebits += ((pFinance.value.iAmount));
 
     // next finance record
-    pFinance = pFinance->Next;
+    pFinance = pFinance.value.Next;
   }
 
   return uiDebits;
@@ -204,11 +204,11 @@ function GetTotalCredits(): UINT32 {
   // run to end of list
   while (pFinance) {
     // if a credit, add to credit total
-    if (pFinance->iAmount < 0)
-      uiCredits += ((pFinance->iAmount));
+    if (pFinance.value.iAmount < 0)
+      uiCredits += ((pFinance.value.iAmount));
 
     // next finance record
-    pFinance = pFinance->Next;
+    pFinance = pFinance.value.Next;
   }
 
   return uiCredits;
@@ -221,11 +221,11 @@ function GetDayCredits(usDayNumber: UINT32): UINT32 {
 
   while (pFinance) {
     // if a credit and it occurs on day passed
-    if ((pFinance->iAmount < 0) && ((pFinance->uiDate / (60 * 24)) == usDayNumber))
-      uiCredits += ((pFinance->iAmount));
+    if ((pFinance.value.iAmount < 0) && ((pFinance.value.uiDate / (60 * 24)) == usDayNumber))
+      uiCredits += ((pFinance.value.iAmount));
 
     // next finance record
-    pFinance = pFinance->Next;
+    pFinance = pFinance.value.Next;
   }
 
   return uiCredits;
@@ -237,11 +237,11 @@ function GetDayDebits(usDayNumber: UINT32): UINT32 {
   let pFinance: FinanceUnitPtr = pFinanceListHead;
 
   while (pFinance) {
-    if ((pFinance->iAmount > 0) && ((pFinance->uiDate / (60 * 24)) == usDayNumber))
-      uiDebits += ((pFinance->iAmount));
+    if ((pFinance.value.iAmount > 0) && ((pFinance.value.uiDate / (60 * 24)) == usDayNumber))
+      uiDebits += ((pFinance.value.iAmount));
 
     // next finance record
-    pFinance = pFinance->Next;
+    pFinance = pFinance.value.Next;
   }
 
   return uiDebits;
@@ -253,11 +253,11 @@ function GetTotalToDay(sTimeInMins: INT32): INT32 {
   let pFinance: FinanceUnitPtr = pFinanceListHead;
 
   while (pFinance) {
-    if (((pFinance->uiDate / (60 * 24)) <= sTimeInMins / (24 * 60)))
-      uiTotal += ((pFinance->iAmount));
+    if (((pFinance.value.uiDate / (60 * 24)) <= sTimeInMins / (24 * 60)))
+      uiTotal += ((pFinance.value.iAmount));
 
     // next finance record
-    pFinance = pFinance->Next;
+    pFinance = pFinance.value.Next;
   }
 
   return uiTotal;
@@ -604,24 +604,24 @@ function DrawRecordsText(): void {
   // get balance to this point
   while (pTempFinance != pCurFinance) {
     // increment balance by amount of transaction
-    iBalance += pTempFinance->iAmount;
+    iBalance += pTempFinance.value.iAmount;
 
     // next element
-    pTempFinance = pTempFinance->Next;
+    pTempFinance = pTempFinance.value.Next;
   }
 
   // loop through record list
   for (iCounter; iCounter < NUM_RECORDS_PER_PAGE; iCounter++) {
     // get and write the date
-    swprintf(sString, "%d", pCurFinance->uiDate / (24 * 60));
+    swprintf(sString, "%d", pCurFinance.value.uiDate / (24 * 60));
 
     FindFontCenterCoordinates(RECORD_DATE_X, 0, RECORD_DATE_WIDTH, 0, sString, FINANCE_TEXT_FONT, &usX, &usY);
     mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT) + 6)), sString);
 
     // get and write debit/ credit
-    if (pCurFinance->iAmount >= 0) {
+    if (pCurFinance.value.iAmount >= 0) {
       // increase in asset - debit
-      swprintf(sString, "%d", pCurFinance->iAmount);
+      swprintf(sString, "%d", pCurFinance.value.iAmount);
       // insert commas
       InsertCommasForDollarFigure(sString);
       // insert dollar sight for first record in the list
@@ -633,7 +633,7 @@ function DrawRecordsText(): void {
       mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT) + 6)), sString);
     } else {
       // decrease in asset - credit
-      swprintf(sString, "%d", pCurFinance->iAmount * (-1));
+      swprintf(sString, "%d", pCurFinance.value.iAmount * (-1));
       SetFontForeground(FONT_RED);
       InsertCommasForDollarFigure(sString);
       // insert dollar sight for first record in the list
@@ -647,7 +647,7 @@ function DrawRecordsText(): void {
     }
 
     // the balance to this point
-    iBalance = pCurFinance->iBalanceToDate;
+    iBalance = pCurFinance.value.iBalanceToDate;
 
     // set font based on balance
     if (iBalance >= 0) {
@@ -677,7 +677,7 @@ function DrawRecordsText(): void {
     SetFontForeground(FONT_BLACK);
 
     // next finance
-    pCurFinance = pCurFinance->Next;
+    pCurFinance = pCurFinance.value.Next;
 
     // last page, no finances left, return
     if (!pCurFinance) {
@@ -980,7 +980,7 @@ function ClearFinanceList(): void {
     pFinanceNode = pFinanceList;
 
     // set list head to next node
-    pFinanceList = pFinanceList->Next;
+    pFinanceList = pFinanceList.value.Next;
 
     // delete current node
     MemFree(pFinanceNode);
@@ -997,37 +997,37 @@ function ProcessAndEnterAFinacialRecord(ubCode: UINT8, uiDate: UINT32, iAmount: 
   // add to finance list
   if (pFinance) {
     // go to end of list
-    while (pFinance->Next)
-      pFinance = pFinance->Next;
+    while (pFinance.value.Next)
+      pFinance = pFinance.value.Next;
 
     // alloc space
-    pFinance->Next = MemAlloc(sizeof(FinanceUnit));
+    pFinance.value.Next = MemAlloc(sizeof(FinanceUnit));
 
     // increment id number
-    uiId = pFinance->uiIdNumber + 1;
+    uiId = pFinance.value.uiIdNumber + 1;
 
     // set up information passed
-    pFinance = pFinance->Next;
-    pFinance->Next = NULL;
-    pFinance->ubCode = ubCode;
-    pFinance->ubSecondCode = ubSecondCode;
-    pFinance->uiDate = uiDate;
-    pFinance->iAmount = iAmount;
-    pFinance->uiIdNumber = uiId;
-    pFinance->iBalanceToDate = iBalanceToDate;
+    pFinance = pFinance.value.Next;
+    pFinance.value.Next = NULL;
+    pFinance.value.ubCode = ubCode;
+    pFinance.value.ubSecondCode = ubSecondCode;
+    pFinance.value.uiDate = uiDate;
+    pFinance.value.iAmount = iAmount;
+    pFinance.value.uiIdNumber = uiId;
+    pFinance.value.iBalanceToDate = iBalanceToDate;
   } else {
     // alloc space
     uiId = ReadInLastElementOfFinanceListAndReturnIdNumber();
     pFinance = MemAlloc(sizeof(FinanceUnit));
 
     // setup info passed
-    pFinance->Next = NULL;
-    pFinance->ubCode = ubCode;
-    pFinance->ubSecondCode = ubSecondCode;
-    pFinance->uiDate = uiDate;
-    pFinance->iAmount = iAmount;
-    pFinance->uiIdNumber = uiId;
-    pFinance->iBalanceToDate = iBalanceToDate;
+    pFinance.value.Next = NULL;
+    pFinance.value.ubCode = ubCode;
+    pFinance.value.ubSecondCode = ubSecondCode;
+    pFinance.value.uiDate = uiDate;
+    pFinance.value.iAmount = iAmount;
+    pFinance.value.uiIdNumber = uiId;
+    pFinance.value.iBalanceToDate = iBalanceToDate;
     pFinanceListHead = pFinance;
   }
   pCurrentFinance = pFinanceListHead;
@@ -1070,7 +1070,7 @@ function DestroyFinanceButtons(): void {
 }
 function BtnFinanceDisplayPrevPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
     // if greater than page zero, we can move back, decrement iCurrentPage counter
     LoadPreviousPage();
@@ -1084,7 +1084,7 @@ function BtnFinanceDisplayPrevPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT
 
 function BtnFinanceDisplayNextPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
     // increment currentPage
     // IncrementCurrentPageFinancialDisplay( );
     LoadNextPage();
@@ -1102,7 +1102,7 @@ function BtnFinanceFirstLastPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let uiButton: UINT32 = MSYS_GetBtnUserData(btn, 0);
 
-    btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
     // if its the first page button
     if (uiButton == 0) {
@@ -1151,11 +1151,11 @@ function IncrementCurrentPageFinancialDisplay(): void {
     // found the next page,  first record thereof
     if (iCounter == NUM_RECORDS_PER_PAGE + 1) {
       fOkToIncrementPage = TRUE;
-      pCurrentFinance = pTempFinance->Next;
+      pCurrentFinance = pTempFinance.value.Next;
     }
 
     // next record
-    pTempFinance = pTempFinance->Next;
+    pTempFinance = pTempFinance.value.Next;
     iCounter++;
   }
 
@@ -1168,7 +1168,7 @@ function IncrementCurrentPageFinancialDisplay(): void {
 }
 
 function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): void {
-  switch (pFinance->ubCode) {
+  switch (pFinance.value.ubCode) {
     case ACCRUED_INTEREST:
       swprintf(pString, "%s", pTransactionText[ACCRUED_INTEREST]);
       break;
@@ -1182,7 +1182,7 @@ function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): voi
       break;
 
     case HIRED_MERC:
-      swprintf(pString, pMessageStrings[MSG_HIRED_MERC], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pMessageStrings[MSG_HIRED_MERC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
     case BOBBYR_PURCHASE:
@@ -1190,11 +1190,11 @@ function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): voi
       break;
 
     case PAY_SPECK_FOR_MERC:
-      swprintf(pString, "%s", pTransactionText[PAY_SPECK_FOR_MERC], gMercProfiles[pFinance->ubSecondCode].zName);
+      swprintf(pString, "%s", pTransactionText[PAY_SPECK_FOR_MERC], gMercProfiles[pFinance.value.ubSecondCode].zName);
       break;
 
     case MEDICAL_DEPOSIT:
-      swprintf(pString, pTransactionText[MEDICAL_DEPOSIT], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionText[MEDICAL_DEPOSIT], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
     case IMP_PROFILE:
@@ -1202,35 +1202,35 @@ function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): voi
       break;
 
     case PURCHASED_INSURANCE:
-      swprintf(pString, pTransactionText[PURCHASED_INSURANCE], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionText[PURCHASED_INSURANCE], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
     case REDUCED_INSURANCE:
-      swprintf(pString, pTransactionText[REDUCED_INSURANCE], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionText[REDUCED_INSURANCE], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
     case EXTENDED_INSURANCE:
-      swprintf(pString, pTransactionText[EXTENDED_INSURANCE], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionText[EXTENDED_INSURANCE], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
     case CANCELLED_INSURANCE:
-      swprintf(pString, pTransactionText[CANCELLED_INSURANCE], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionText[CANCELLED_INSURANCE], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
     case INSURANCE_PAYOUT:
-      swprintf(pString, pTransactionText[INSURANCE_PAYOUT], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionText[INSURANCE_PAYOUT], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
     case EXTENDED_CONTRACT_BY_1_DAY:
-      swprintf(pString, pTransactionAlternateText[1], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionAlternateText[1], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
     case EXTENDED_CONTRACT_BY_1_WEEK:
-      swprintf(pString, pTransactionAlternateText[2], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionAlternateText[2], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
     case EXTENDED_CONTRACT_BY_2_WEEKS:
-      swprintf(pString, pTransactionAlternateText[3], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionAlternateText[3], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
     case DEPOSIT_FROM_GOLD_MINE:
@@ -1243,42 +1243,42 @@ function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): voi
       break;
 
     case FULL_MEDICAL_REFUND:
-      swprintf(pString, pTransactionText[FULL_MEDICAL_REFUND], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionText[FULL_MEDICAL_REFUND], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
     case PARTIAL_MEDICAL_REFUND:
-      swprintf(pString, pTransactionText[PARTIAL_MEDICAL_REFUND], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionText[PARTIAL_MEDICAL_REFUND], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
     case NO_MEDICAL_REFUND:
-      swprintf(pString, pTransactionText[NO_MEDICAL_REFUND], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionText[NO_MEDICAL_REFUND], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
     case TRANSFER_FUNDS_TO_MERC:
-      swprintf(pString, pTransactionText[TRANSFER_FUNDS_TO_MERC], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionText[TRANSFER_FUNDS_TO_MERC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
     case TRANSFER_FUNDS_FROM_MERC:
-      swprintf(pString, pTransactionText[TRANSFER_FUNDS_FROM_MERC], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionText[TRANSFER_FUNDS_FROM_MERC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
     case PAYMENT_TO_NPC:
-      swprintf(pString, pTransactionText[PAYMENT_TO_NPC], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionText[PAYMENT_TO_NPC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
     case (TRAIN_TOWN_MILITIA): {
       let str: UINT16[] /* [128] */;
       let ubSectorX: UINT8;
       let ubSectorY: UINT8;
-      ubSectorX = SECTORX(pFinance->ubSecondCode);
-      ubSectorY = SECTORY(pFinance->ubSecondCode);
+      ubSectorX = SECTORX(pFinance.value.ubSecondCode);
+      ubSectorY = SECTORY(pFinance.value.ubSecondCode);
       GetSectorIDString(ubSectorX, ubSectorY, 0, str, TRUE);
       swprintf(pString, pTransactionText[TRAIN_TOWN_MILITIA], str);
     } break;
 
     case (PURCHASED_ITEM_FROM_DEALER):
-      swprintf(pString, pTransactionText[PURCHASED_ITEM_FROM_DEALER], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionText[PURCHASED_ITEM_FROM_DEALER], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
     case (MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT):
-      swprintf(pString, pTransactionText[MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT], gMercProfiles[pFinance->ubSecondCode].zNickname);
+      swprintf(pString, pTransactionText[MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
   }
 }
@@ -1307,11 +1307,11 @@ function DisplayFinancePageNumberAndDateRange(): void {
     }
   }
 
-  uiLastDate = pCurrentFinance->uiDate;
+  uiLastDate = pCurrentFinance.value.uiDate;
   // find last page
   while (pTempFinance) {
     iCounter++;
-    pTempFinance = pTempFinance->Next;
+    pTempFinance = pTempFinance.value.Next;
   }
 
   // get the last page
@@ -1399,11 +1399,11 @@ function AppendFinanceToEndOfFile(pFinance: FinanceUnitPtr): BOOLEAN {
 
   // write finance to disk
   // now write date and amount, and code
-  FileWrite(hFileHandle, &(pFinanceList->ubCode), sizeof(UINT8), NULL);
-  FileWrite(hFileHandle, &(pFinanceList->ubSecondCode), sizeof(UINT8), NULL);
-  FileWrite(hFileHandle, &(pFinanceList->uiDate), sizeof(UINT32), NULL);
-  FileWrite(hFileHandle, &(pFinanceList->iAmount), sizeof(INT32), NULL);
-  FileWrite(hFileHandle, &(pFinanceList->iBalanceToDate), sizeof(INT32), NULL);
+  FileWrite(hFileHandle, &(pFinanceList.value.ubCode), sizeof(UINT8), NULL);
+  FileWrite(hFileHandle, &(pFinanceList.value.ubSecondCode), sizeof(UINT8), NULL);
+  FileWrite(hFileHandle, &(pFinanceList.value.uiDate), sizeof(UINT32), NULL);
+  FileWrite(hFileHandle, &(pFinanceList.value.iAmount), sizeof(INT32), NULL);
+  FileWrite(hFileHandle, &(pFinanceList.value.iBalanceToDate), sizeof(INT32), NULL);
 
   // close file
   FileClose(hFileHandle);

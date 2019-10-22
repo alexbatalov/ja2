@@ -295,7 +295,7 @@ function ValidateSkillsList(): void {
   // remove from the generated traits list any traits that don't match
   // the character's skills
   pProfile = &(gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId]);
-  if (pProfile->bMechanical == 0) {
+  if (pProfile.value.bMechanical == 0) {
     // without mechanical, electronics is useless
     iIndex = FindSkillInSkillsList(ELECTRONICS);
     while (iIndex != -1) {
@@ -305,9 +305,9 @@ function ValidateSkillsList(): void {
   }
 
   // special check for lockpicking
-  iValue = pProfile->bMechanical;
-  iValue = (iValue * pProfile->bWisdom) / 100;
-  iValue = (iValue * pProfile->bDexterity) / 100;
+  iValue = pProfile.value.bMechanical;
+  iValue = (iValue * pProfile.value.bWisdom) / 100;
+  iValue = (iValue * pProfile.value.bDexterity) / 100;
   if (iValue + gbSkillTraitBonus[LOCKPICKING] < 50) {
     // not good enough for lockpicking!
 
@@ -319,7 +319,7 @@ function ValidateSkillsList(): void {
     }
   }
 
-  if (pProfile->bMarksmanship == 0) {
+  if (pProfile.value.bMarksmanship == 0) {
     // without marksmanship, the following traits are useless:
     // auto weapons, heavy weapons
     iIndex = FindSkillInSkillsList(AUTO_WEAPS);

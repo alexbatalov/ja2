@@ -42,17 +42,17 @@ function CreateBullet(ubFirerID: UINT8, fFake: BOOLEAN, usFlags: UINT16): INT32 
 
   pBullet = &gBullets[iBulletIndex];
 
-  pBullet->iBullet = iBulletIndex;
-  pBullet->fAllocated = TRUE;
-  pBullet->fLocated = FALSE;
-  pBullet->ubFirerID = ubFirerID;
-  pBullet->usFlags = usFlags;
-  pBullet->usLastStructureHit = 0;
+  pBullet.value.iBullet = iBulletIndex;
+  pBullet.value.fAllocated = TRUE;
+  pBullet.value.fLocated = FALSE;
+  pBullet.value.ubFirerID = ubFirerID;
+  pBullet.value.usFlags = usFlags;
+  pBullet.value.usLastStructureHit = 0;
 
   if (fFake) {
-    pBullet->fReal = FALSE;
+    pBullet.value.fReal = FALSE;
   } else {
-    pBullet->fReal = TRUE;
+    pBullet.value.fReal = TRUE;
   }
 
   return iBulletIndex;
@@ -69,40 +69,40 @@ function HandleBulletSpecialFlags(iBulletIndex: INT32): void {
 
   memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
 
-  if (pBullet->fReal) {
+  if (pBullet.value.fReal) {
     // Create ani tile if this is a spit!
-    if (pBullet->usFlags & (BULLET_FLAG_KNIFE)) {
-      AniParams.sGridNo = pBullet->sGridNo;
+    if (pBullet.value.usFlags & (BULLET_FLAG_KNIFE)) {
+      AniParams.sGridNo = pBullet.value.sGridNo;
       AniParams.ubLevelID = ANI_STRUCT_LEVEL;
       AniParams.sDelay = 100;
       AniParams.sStartFrame = 3;
       AniParams.uiFlags = ANITILE_CACHEDTILE | ANITILE_FORWARD | ANITILE_LOOPING | ANITILE_USE_DIRECTION_FOR_START_FRAME;
-      AniParams.sX = FIXEDPT_TO_INT32(pBullet->qCurrX);
-      AniParams.sY = FIXEDPT_TO_INT32(pBullet->qCurrY);
-      AniParams.sZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(pBullet->qCurrZ));
+      AniParams.sX = FIXEDPT_TO_INT32(pBullet.value.qCurrX);
+      AniParams.sY = FIXEDPT_TO_INT32(pBullet.value.qCurrY);
+      AniParams.sZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(pBullet.value.qCurrZ));
 
-      if (pBullet->usFlags & (BULLET_FLAG_CREATURE_SPIT)) {
+      if (pBullet.value.usFlags & (BULLET_FLAG_CREATURE_SPIT)) {
         strcpy(AniParams.zCachedFile, "TILECACHE\\SPIT2.STI");
-      } else if (pBullet->usFlags & (BULLET_FLAG_KNIFE)) {
+      } else if (pBullet.value.usFlags & (BULLET_FLAG_KNIFE)) {
         strcpy(AniParams.zCachedFile, "TILECACHE\\KNIFING.STI");
-        pBullet->ubItemStatus = pBullet->pFirer->inv[HANDPOS].bStatus[0];
+        pBullet.value.ubItemStatus = pBullet.value.pFirer.value.inv[HANDPOS].bStatus[0];
       }
 
       // Get direction to use for this guy....
-      dX = ((pBullet->qIncrX) / FIXEDPT_FRACTIONAL_RESOLUTION);
-      dY = ((pBullet->qIncrY) / FIXEDPT_FRACTIONAL_RESOLUTION);
+      dX = ((pBullet.value.qIncrX) / FIXEDPT_FRACTIONAL_RESOLUTION);
+      dY = ((pBullet.value.qIncrY) / FIXEDPT_FRACTIONAL_RESOLUTION);
 
       ubDirection = atan8(0, 0, (dX * 100), (dY * 100));
 
       AniParams.uiUserData3 = ubDirection;
 
-      pBullet->pAniTile = CreateAnimationTile(&AniParams);
+      pBullet.value.pAniTile = CreateAnimationTile(&AniParams);
 
       // IF we are anything that needs a shadow.. set it here....
-      if (pBullet->usFlags & (BULLET_FLAG_KNIFE)) {
+      if (pBullet.value.usFlags & (BULLET_FLAG_KNIFE)) {
         AniParams.ubLevelID = ANI_SHADOW_LEVEL;
         AniParams.sZ = 0;
-        pBullet->pShadowAniTile = CreateAnimationTile(&AniParams);
+        pBullet.value.pShadowAniTile = CreateAnimationTile(&AniParams);
       }
     }
   }
@@ -118,8 +118,8 @@ function RemoveBullet(iBullet: INT32): void {
     gBullets[iBullet].fToDelete = TRUE;
 
     // decrement reference to bullet in the firer
-    gBullets[iBullet].pFirer->bBulletsLeft--;
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Ending bullet, bullets left %d", gBullets[iBullet].pFirer->bBulletsLeft));
+    gBullets[iBullet].pFirer.value.bBulletsLeft--;
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Ending bullet, bullets left %d", gBullets[iBullet].pFirer.value.bBulletsLeft));
 
     if (gBullets[iBullet].usFlags & (BULLET_FLAG_KNIFE)) {
       // Delete ani tile
@@ -147,7 +147,7 @@ function LocateBullet(iBulletIndex: INT32): void {
   if (gGameSettings.fOptions[TOPTION_SHOW_MISSES]) {
     // Check if a bad guy fired!
     if (gBullets[iBulletIndex].ubFirerID != NOBODY) {
-      if (MercPtrs[gBullets[iBulletIndex].ubFirerID]->bSide == gbPlayerNum) {
+      if (MercPtrs[gBullets[iBulletIndex].ubFirerID].value.bSide == gbPlayerNum) {
         if (!gBullets[iBulletIndex].fLocated) {
           gBullets[iBulletIndex].fLocated = TRUE;
 
@@ -206,13 +206,13 @@ function UpdateBullets(): void {
         {
           if (gBullets[uiCount].usFlags & (BULLET_FLAG_KNIFE)) {
             if (gBullets[uiCount].pAniTile != NULL) {
-              gBullets[uiCount].pAniTile->sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
-              gBullets[uiCount].pAniTile->sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
-              gBullets[uiCount].pAniTile->pLevelNode->sRelativeZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(gBullets[uiCount].qCurrZ));
+              gBullets[uiCount].pAniTile.value.sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
+              gBullets[uiCount].pAniTile.value.sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
+              gBullets[uiCount].pAniTile.value.pLevelNode.value.sRelativeZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(gBullets[uiCount].qCurrZ));
 
               if (gBullets[uiCount].usFlags & (BULLET_FLAG_KNIFE)) {
-                gBullets[uiCount].pShadowAniTile->sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
-                gBullets[uiCount].pShadowAniTile->sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
+                gBullets[uiCount].pShadowAniTile.value.sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
+                gBullets[uiCount].pShadowAniTile.value.sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
               }
             }
           }
@@ -220,21 +220,21 @@ function UpdateBullets(): void {
           else if (gBullets[uiCount].usFlags & (BULLET_FLAG_MISSILE | BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_TANK_CANNON | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT)) {
           } else {
             pNode = AddStructToTail(gBullets[uiCount].sGridNo, BULLETTILE1);
-            pNode->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-            pNode->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
-            pNode->uiFlags |= (LEVELNODE_USEABSOLUTEPOS | LEVELNODE_IGNOREHEIGHT);
-            pNode->sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
-            pNode->sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
-            pNode->sRelativeZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(gBullets[uiCount].qCurrZ));
+            pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+            pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+            pNode.value.uiFlags |= (LEVELNODE_USEABSOLUTEPOS | LEVELNODE_IGNOREHEIGHT);
+            pNode.value.sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
+            pNode.value.sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
+            pNode.value.sRelativeZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(gBullets[uiCount].qCurrZ));
 
             // Display shadow
             pNode = AddStructToTail(gBullets[uiCount].sGridNo, BULLETTILE2);
-            pNode->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-            pNode->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
-            pNode->uiFlags |= (LEVELNODE_USEABSOLUTEPOS | LEVELNODE_IGNOREHEIGHT);
-            pNode->sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
-            pNode->sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
-            pNode->sRelativeZ = gpWorldLevelData[gBullets[uiCount].sGridNo].sHeight;
+            pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+            pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+            pNode.value.uiFlags |= (LEVELNODE_USEABSOLUTEPOS | LEVELNODE_IGNOREHEIGHT);
+            pNode.value.sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
+            pNode.value.sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
+            pNode.value.sRelativeZ = gpWorldLevelData[gBullets[uiCount].sGridNo].sHeight;
           }
         }
       } else {
@@ -265,14 +265,14 @@ function AddMissileTrail(pBullet: Pointer<BULLET>, qCurrX: FIXEDPT, qCurrY: FIXE
   let AniParams: ANITILE_PARAMS;
 
   // If we are a small missle, don't show
-  if (pBullet->usFlags & (BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT)) {
-    if (pBullet->iLoop < 5) {
+  if (pBullet.value.usFlags & (BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT)) {
+    if (pBullet.value.iLoop < 5) {
       return;
     }
   }
 
   // If we are a small missle, don't show
-  if (pBullet->usFlags & (BULLET_FLAG_TANK_CANNON)) {
+  if (pBullet.value.usFlags & (BULLET_FLAG_TANK_CANNON)) {
     // if ( pBullet->iLoop < 40 )
     //{
     return;
@@ -280,7 +280,7 @@ function AddMissileTrail(pBullet: Pointer<BULLET>, qCurrX: FIXEDPT, qCurrY: FIXE
   }
 
   memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
-  AniParams.sGridNo = pBullet->sGridNo;
+  AniParams.sGridNo = pBullet.value.sGridNo;
   AniParams.ubLevelID = ANI_STRUCT_LEVEL;
   AniParams.sDelay = (100 + Random(100));
   AniParams.sStartFrame = 0;
@@ -289,13 +289,13 @@ function AddMissileTrail(pBullet: Pointer<BULLET>, qCurrX: FIXEDPT, qCurrY: FIXE
   AniParams.sY = FIXEDPT_TO_INT32(qCurrY);
   AniParams.sZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(qCurrZ));
 
-  if (pBullet->usFlags & (BULLET_FLAG_MISSILE | BULLET_FLAG_TANK_CANNON)) {
+  if (pBullet.value.usFlags & (BULLET_FLAG_MISSILE | BULLET_FLAG_TANK_CANNON)) {
     strcpy(AniParams.zCachedFile, "TILECACHE\\MSLE_SMK.STI");
-  } else if (pBullet->usFlags & (BULLET_FLAG_SMALL_MISSILE)) {
+  } else if (pBullet.value.usFlags & (BULLET_FLAG_SMALL_MISSILE)) {
     strcpy(AniParams.zCachedFile, "TILECACHE\\MSLE_SMA.STI");
-  } else if (pBullet->usFlags & (BULLET_FLAG_CREATURE_SPIT)) {
+  } else if (pBullet.value.usFlags & (BULLET_FLAG_CREATURE_SPIT)) {
     strcpy(AniParams.zCachedFile, "TILECACHE\\MSLE_SPT.STI");
-  } else if (pBullet->usFlags & (BULLET_FLAG_FLAME)) {
+  } else if (pBullet.value.usFlags & (BULLET_FLAG_FLAME)) {
     strcpy(AniParams.zCachedFile, "TILECACHE\\FLMTHR2.STI");
     AniParams.sDelay = (100);
   }

@@ -97,7 +97,7 @@ function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam:
       // if a device has been removed
       if (wParam == DBT_DEVICEREMOVECOMPLETE) {
         // if its  a disk
-        if (pHeader->dbch_devicetype == DBT_DEVTYP_VOLUME) {
+        if (pHeader.value.dbch_devicetype == DBT_DEVTYP_VOLUME) {
           // check to see if the play cd is still in the cdrom
           if (!CheckIfGameCdromIsInCDromDrive()) {
           }

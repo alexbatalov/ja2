@@ -107,7 +107,7 @@ function DeleteWinFont(iFont: INT32): void {
   pWinFont = GetWinFont(iFont);
 
   if (pWinFont != NULL) {
-    DeleteObject(pWinFont->hFont);
+    DeleteObject(pWinFont.value.hFont);
   }
 }
 
@@ -117,7 +117,7 @@ function SetWinFontForeColor(iFont: INT32, pColor: Pointer<COLORVAL>): void {
   pWinFont = GetWinFont(iFont);
 
   if (pWinFont != NULL) {
-    pWinFont->ForeColor = (*pColor);
+    pWinFont.value.ForeColor = (*pColor);
   }
 }
 
@@ -127,7 +127,7 @@ function SetWinFontBackColor(iFont: INT32, pColor: Pointer<COLORVAL>): void {
   pWinFont = GetWinFont(iFont);
 
   if (pWinFont != NULL) {
-    pWinFont->BackColor = (*pColor);
+    pWinFont.value.BackColor = (*pColor);
   }
 }
 
@@ -162,9 +162,9 @@ function PrintWinFont(uiDestBuf: UINT32, iFont: INT32, x: INT32, y: INT32, pFont
 
   IDirectDrawSurface2_GetDC(pDDSurface, &hdc);
 
-  SelectObject(hdc, pWinFont->hFont);
-  SetTextColor(hdc, pWinFont->ForeColor);
-  SetBkColor(hdc, pWinFont->BackColor);
+  SelectObject(hdc, pWinFont.value.hFont);
+  SetTextColor(hdc, pWinFont.value.ForeColor);
+  SetBkColor(hdc, pWinFont.value.BackColor);
   SetBkMode(hdc, TRANSPARENT);
 
   GetTextExtentPoint32(hdc, string, len, &RectSize);
@@ -188,7 +188,7 @@ function WinFontStringPixLength(string2: Pointer<UINT16>, iFont: INT32): INT16 {
   sprintf(string, "%S", string2);
 
   hdc = GetDC(NULL);
-  SelectObject(hdc, pWinFont->hFont);
+  SelectObject(hdc, pWinFont.value.hFont);
   GetTextExtentPoint32(hdc, string, strlen(string), &RectSize);
   ReleaseDC(NULL, hdc);
 
@@ -210,7 +210,7 @@ function GetWinFontHeight(string2: Pointer<UINT16>, iFont: INT32): INT16 {
   sprintf(string, "%S", string2);
 
   hdc = GetDC(NULL);
-  SelectObject(hdc, pWinFont->hFont);
+  SelectObject(hdc, pWinFont.value.hFont);
   GetTextExtentPoint32(hdc, string, strlen(string), &RectSize);
   ReleaseDC(NULL, hdc);
 
@@ -240,9 +240,9 @@ function EnumFontFamExProc(lpelfe: Pointer<ENUMLOGFONTEX>, lpntme: Pointer<NEWTE
   let szFontName: UINT8[] /* [32] */;
 
   sprintf(szFontName, "%S", gzFontName);
-  if (!strcmp(szFontName, lpelfe->elfFullName)) {
+  if (!strcmp(szFontName, lpelfe.value.elfFullName)) {
     gfEnumSucceed = TRUE;
-    memcpy(&gLogFont, &(lpelfe->elfLogFont), sizeof(LOGFONT));
+    memcpy(&gLogFont, &(lpelfe.value.elfLogFont), sizeof(LOGFONT));
   }
 
   return TRUE;

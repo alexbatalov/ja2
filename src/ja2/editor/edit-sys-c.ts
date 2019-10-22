@@ -81,11 +81,11 @@ function EraseMapTile(iMapIndex: UINT32): void {
         break;
 
       // is there only 1 ground tile here? if so, get out o here
-      if (gpWorldLevelData[iMapIndex].pLandHead->pNext == NULL)
+      if (gpWorldLevelData[iMapIndex].pLandHead.value.pNext == NULL)
         break;
       AddToUndoList(iMapIndex);
-      GetTileType(gpWorldLevelData[iMapIndex].pLandHead->usIndex, &uiCheckType);
-      RemoveLand(iMapIndex, gpWorldLevelData[iMapIndex].pLandHead->usIndex);
+      GetTileType(gpWorldLevelData[iMapIndex].pLandHead.value.usIndex, &uiCheckType);
+      RemoveLand(iMapIndex, gpWorldLevelData[iMapIndex].pLandHead.value.usIndex);
       SmoothTerrainRadius(iMapIndex, uiCheckType, 1, TRUE);
       break;
     case DRAW_MODE_OSTRUCTS:
@@ -508,7 +508,7 @@ function PasteBanks(iMapIndex: UINT32, usStructIndex: UINT16, fReplace: BOOLEAN)
 
     if (gpWorldLevelData[iMapIndex].pStructHead != NULL) {
       // CHECK IF THE SAME TILE IS HERE
-      if (gpWorldLevelData[iMapIndex].pStructHead->usIndex == (gTileTypeStartIndex[usUseObjIndex] + usUseIndex)) {
+      if (gpWorldLevelData[iMapIndex].pStructHead.value.usIndex == (gTileTypeStartIndex[usUseObjIndex] + usUseIndex)) {
         fDoPaste = FALSE;
       }
     } else {
@@ -978,14 +978,14 @@ function RaiseWorldLand(): void {
     gpWorldLevelData[cnt].sHeight = 0;
 
     while (pStruct) {
-      pTileElement = &(gTileDatabase[pStruct->usIndex]);
-      if (pTileElement->fType == FIRSTCLIFF) {
+      pTileElement = &(gTileDatabase[pStruct.value.usIndex]);
+      if (pTileElement.value.fType == FIRSTCLIFF) {
         fSomethingRaised = TRUE;
         // DebugMsg(TOPIC_JA2,DBG_LEVEL_3,String("Cliff found at count=%d",cnt));
-        if (pTileElement->ubNumberOfTiles > 1) {
+        if (pTileElement.value.ubNumberOfTiles > 1) {
           // DebugMsg(TOPIC_JA2,DBG_LEVEL_3,String("Cliff has %d children", pTileElement->ubNumberOfTiles));
-          for (ubLoop = 0; ubLoop < pTileElement->ubNumberOfTiles; ubLoop++) {
-            usIndex = pStruct->usIndex;
+          for (ubLoop = 0; ubLoop < pTileElement.value.ubNumberOfTiles; ubLoop++) {
+            usIndex = pStruct.value.usIndex;
             // need means to turn land raising on and off based on the tile ID and the offset in the
             // tile database when reading into the mapsystem
             // turning off of land raising can only be done
@@ -993,7 +993,7 @@ function RaiseWorldLand(): void {
             // so simply detect this tile set and turn off instead of on
             // element 1 is 12 tiles and is unique
 
-            sTempGridNo = cnt + pTileElement->pTileLocData[ubLoop].bTileOffsetX + pTileElement->pTileLocData[ubLoop].bTileOffsetY * WORLD_COLS;
+            sTempGridNo = cnt + pTileElement.value.pTileLocData[ubLoop].bTileOffsetX + pTileElement.value.pTileLocData[ubLoop].bTileOffsetY * WORLD_COLS;
             // Check for valid gridno
             if (OutOfBounds(cnt, sTempGridNo)) {
               continue;
@@ -1029,7 +1029,7 @@ function RaiseWorldLand(): void {
           }
         }
       }
-      pStruct = pStruct->pNext;
+      pStruct = pStruct.value.pNext;
     }
   }
 
@@ -1163,7 +1163,7 @@ function EliminateObjectLayerRedundancy(): void {
     pValidRoad = pValidAnother = NULL;
     numRoads = numAnothers = 0;
     while (pObject) {
-      GetTileType(pObject->usIndex, &uiType);
+      GetTileType(pObject.value.usIndex, &uiType);
       if (uiType == ROADPIECES) {
         // keep track of the last valid road piece, and count the total
         pValidRoad = pObject;
@@ -1173,19 +1173,19 @@ function EliminateObjectLayerRedundancy(): void {
         pValidAnother = pObject;
         numAnothers++;
       }
-      pObject = pObject->pNext;
+      pObject = pObject.value.pNext;
     }
     if (pValidRoad && numRoads > 1) {
       // we have more than two roadpieces on the same gridno, so get rid of them, replacing it
       // with the visible one.
-      usIndex = pValidRoad->usIndex;
+      usIndex = pValidRoad.value.usIndex;
       RemoveAllObjectsOfTypeRange(i, ROADPIECES, ROADPIECES);
       AddObjectToHead(i, usIndex);
     }
     if (pValidAnother && numAnothers > 1) {
       // we have more than two anotherdebris on the same gridno, so get rid of them, replacing it
       // with the visible one.
-      usIndex = pValidAnother->usIndex;
+      usIndex = pValidAnother.value.usIndex;
       RemoveAllObjectsOfTypeRange(i, ANOTHERDEBRIS, ANOTHERDEBRIS);
       AddObjectToHead(i, usIndex);
     }

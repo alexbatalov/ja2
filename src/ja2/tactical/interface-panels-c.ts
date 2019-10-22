@@ -408,16 +408,16 @@ let gbStanceButPos: INT8[][][] /* [2][3][3] */ = [
 function GetUIApsToDisplay(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let pVehicle: Pointer<SOLDIERTYPE>;
 
-  if (pSoldier->uiStatusFlags & SOLDIER_DRIVER) {
-    pVehicle = GetSoldierStructureForVehicle(pSoldier->iVehicleId);
+  if (pSoldier.value.uiStatusFlags & SOLDIER_DRIVER) {
+    pVehicle = GetSoldierStructureForVehicle(pSoldier.value.iVehicleId);
 
     if (pVehicle != NULL) {
-      return pVehicle->bActionPoints;
+      return pVehicle.value.bActionPoints;
     } else {
       return 0;
     }
   } else {
-    return pSoldier->bActionPoints;
+    return pSoldier.value.bActionPoints;
   }
 }
 
@@ -441,17 +441,17 @@ function CheckForDisabledForGiveItem(): void {
   gfSMDisableForItems = TRUE;
 
   // ATE: Is the current merc unconscious.....
-  if (gpSMCurrentMerc->bLife < OKLIFE && gpItemPointer != NULL) {
+  if (gpSMCurrentMerc.value.bLife < OKLIFE && gpItemPointer != NULL) {
     // Go through each merc and see if there is one closeby....
     cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
     for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
-      if (pSoldier->bActive && pSoldier->bLife >= OKLIFE && !(pSoldier->uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier) && pSoldier->bInSector && IsMercOnCurrentSquad(pSoldier)) {
-        sDist = PythSpacesAway(gpSMCurrentMerc->sGridNo, pSoldier->sGridNo);
+      if (pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier) && pSoldier.value.bInSector && IsMercOnCurrentSquad(pSoldier)) {
+        sDist = PythSpacesAway(gpSMCurrentMerc.value.sGridNo, pSoldier.value.sGridNo);
 
-        sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, gpSMCurrentMerc->sGridNo, gpSMCurrentMerc->bLevel);
+        sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, gpSMCurrentMerc.value.sGridNo, gpSMCurrentMerc.value.bLevel);
 
         // Check LOS....
-        if (SoldierTo3DLocationLineOfSightTest(pSoldier, gpSMCurrentMerc->sGridNo, gpSMCurrentMerc->bLevel, 3, sDistVisible, TRUE)) {
+        if (SoldierTo3DLocationLineOfSightTest(pSoldier, gpSMCurrentMerc.value.sGridNo, gpSMCurrentMerc.value.bLevel, 3, sDistVisible, TRUE)) {
           if (sDist <= PASSING_ITEM_DISTANCE_NOTOKLIFE) {
             gfSMDisableForItems = FALSE;
             break; // found one, no need to keep looking
@@ -463,17 +463,17 @@ function CheckForDisabledForGiveItem(): void {
     ubSrcSoldier = gusSelectedSoldier;
 
     if (gpItemPointer != NULL) {
-      ubSrcSoldier = gpItemPointerSoldier->ubID;
+      ubSrcSoldier = gpItemPointerSoldier.value.ubID;
     }
 
     // OK buddy, check our currently selected merc and disable/enable if not close enough...
     if (ubSrcSoldier != NOBODY) {
       if (gusSMCurrentMerc != ubSrcSoldier) {
-        sDestGridNo = MercPtrs[gusSMCurrentMerc]->sGridNo;
-        bDestLevel = MercPtrs[gusSMCurrentMerc]->bLevel;
+        sDestGridNo = MercPtrs[gusSMCurrentMerc].value.sGridNo;
+        bDestLevel = MercPtrs[gusSMCurrentMerc].value.bLevel;
 
         // Get distance....
-        sDist = PythSpacesAway(MercPtrs[ubSrcSoldier]->sGridNo, sDestGridNo);
+        sDist = PythSpacesAway(MercPtrs[ubSrcSoldier].value.sGridNo, sDestGridNo);
 
         // is he close enough to see that gridno if he turns his head?
         sDistVisible = DistanceVisible(MercPtrs[ubSrcSoldier], DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sDestGridNo, bDestLevel);
@@ -481,7 +481,7 @@ function CheckForDisabledForGiveItem(): void {
         // Check LOS....
         if (SoldierTo3DLocationLineOfSightTest(MercPtrs[ubSrcSoldier], sDestGridNo, bDestLevel, 3, sDistVisible, TRUE)) {
           // UNCONSCIOUS GUYS ONLY 1 tile AWAY
-          if (MercPtrs[gusSMCurrentMerc]->bLife < CONSCIOUSNESS) {
+          if (MercPtrs[gusSMCurrentMerc].value.bLife < CONSCIOUSNESS) {
             if (sDist <= PASSING_ITEM_DISTANCE_NOTOKLIFE) {
               gfSMDisableForItems = FALSE;
             }
@@ -534,7 +534,7 @@ function SetSMPanelCurrentMerc(ubNewID: UINT8): void {
   if (gfInItemPickupMenu) {
     gfSMDisableForItems = TRUE;
   } else {
-    if ((gpItemPointer != NULL || guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE || gpSMCurrentMerc->bLife < OKLIFE)) {
+    if ((gpItemPointer != NULL || guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE || gpSMCurrentMerc.value.bLife < OKLIFE)) {
       CheckForDisabledForGiveItem();
     } else {
       gfSMDisableForItems = FALSE;
@@ -566,7 +566,7 @@ function UpdateForContOverPortrait(pSoldier: Pointer<SOLDIERTYPE>, fOn: BOOLEAN)
     }
   } else {
     for (cnt = 0; cnt < 6; cnt++) {
-      if (gTeamPanel[cnt].ubID == pSoldier->ubID) {
+      if (gTeamPanel[cnt].ubID == pSoldier.value.ubID) {
         if (IsMouseInRegion(&gTEAM_FaceRegions[cnt])) {
           HandleMouseOverSoldierFaceForContMove(pSoldier, fOn);
         }
@@ -581,15 +581,15 @@ function UpdateSMPanel(): void {
   let bDirection: INT8;
   let ubStanceState: UINT8;
 
-  if (gpSMCurrentMerc->sGridNo == NOWHERE) {
+  if (gpSMCurrentMerc.value.sGridNo == NOWHERE) {
     return;
   }
 
   // Stance
-  ubStanceState = gpSMCurrentMerc->ubDesiredHeight;
+  ubStanceState = gpSMCurrentMerc.value.ubDesiredHeight;
 
   if (ubStanceState == NO_DESIRED_HEIGHT) {
-    ubStanceState = gAnimControl[gpSMCurrentMerc->usAnimState].ubEndHeight;
+    ubStanceState = gAnimControl[gpSMCurrentMerc.value.usAnimState].ubEndHeight;
   }
 
   switch (ubStanceState) {
@@ -634,7 +634,7 @@ function UpdateSMPanel(): void {
     }
 
     // Make new
-    giSMStealthImages = UseLoadedButtonImage(iSMPanelImages[STANCE_IMAGES], gbStanceButPos[gpSMCurrentMerc->bStealthMode][gbSMCurStanceObj][0], gbStanceButPos[gpSMCurrentMerc->bStealthMode][gbSMCurStanceObj][1], -1, gbStanceButPos[gpSMCurrentMerc->bStealthMode][gbSMCurStanceObj][2], -1);
+    giSMStealthImages = UseLoadedButtonImage(iSMPanelImages[STANCE_IMAGES], gbStanceButPos[gpSMCurrentMerc.value.bStealthMode][gbSMCurStanceObj][0], gbStanceButPos[gpSMCurrentMerc.value.bStealthMode][gbSMCurStanceObj][1], -1, gbStanceButPos[gpSMCurrentMerc.value.bStealthMode][gbSMCurStanceObj][2], -1);
 
     giSMStealthButton = QuickCreateButton(giSMStealthImages, SM_STEALTHMODE_X, SM_STEALTHMODE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnStealthModeCallback);
 
@@ -656,17 +656,17 @@ function UpdateSMPanel(): void {
   CheckForReEvaluateDisabledINVPanelButtons();
 
   // Check for any newly added items we need.....
-  if (gpSMCurrentMerc->fCheckForNewlyAddedItems) {
+  if (gpSMCurrentMerc.value.fCheckForNewlyAddedItems) {
     // Startup any newly added items....
     CheckForAnyNewlyAddedItems(gpSMCurrentMerc);
 
-    gpSMCurrentMerc->fCheckForNewlyAddedItems = FALSE;
+    gpSMCurrentMerc.value.fCheckForNewlyAddedItems = FALSE;
   }
 
   // Set Disable /Enable UI based on buddy's stats
-  if (ButtonList[iSMPanelButtons[BURSTMODE_BUTTON]]->ImageNum != iBurstButtonImages[gpSMCurrentMerc->bWeaponMode]) {
-    ButtonList[iSMPanelButtons[BURSTMODE_BUTTON]]->ImageNum = iBurstButtonImages[gpSMCurrentMerc->bWeaponMode];
-    ButtonList[iSMPanelButtons[BURSTMODE_BUTTON]]->uiFlags |= BUTTON_DIRTY;
+  if (ButtonList[iSMPanelButtons[BURSTMODE_BUTTON]].value.ImageNum != iBurstButtonImages[gpSMCurrentMerc.value.bWeaponMode]) {
+    ButtonList[iSMPanelButtons[BURSTMODE_BUTTON]].value.ImageNum = iBurstButtonImages[gpSMCurrentMerc.value.bWeaponMode];
+    ButtonList[iSMPanelButtons[BURSTMODE_BUTTON]].value.uiFlags |= BUTTON_DIRTY;
   }
 
   /*
@@ -687,19 +687,19 @@ function UpdateSMPanel(): void {
   */
 
   // Toggle MUTE button...
-  if (gpSMCurrentMerc->uiStatusFlags & SOLDIER_MUTE) {
-    if (!ButtonList[iSMPanelButtons[MUTE_BUTTON]]->ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[MUTE_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
+  if (gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_MUTE) {
+    if (!ButtonList[iSMPanelButtons[MUTE_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[MUTE_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
     }
   } else {
-    if (!ButtonList[iSMPanelButtons[MUTE_BUTTON]]->ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[MUTE_BUTTON]]->uiFlags &= (~BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[MUTE_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[MUTE_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
     }
   }
 
   DisableButton(iSMPanelButtons[CLIMB_BUTTON]);
 
-  GetMercClimbDirection(gpSMCurrentMerc->ubID, &fNearLowerLevel, &fNearHeigherLevel);
+  GetMercClimbDirection(gpSMCurrentMerc.value.ubID, &fNearLowerLevel, &fNearHeigherLevel);
 
   if (fNearLowerLevel || fNearHeigherLevel) {
     if (fNearLowerLevel) {
@@ -715,7 +715,7 @@ function UpdateSMPanel(): void {
     }
   }
 
-  if (FindFenceJumpDirection(gpSMCurrentMerc, gpSMCurrentMerc->sGridNo, gpSMCurrentMerc->bDirection, &bDirection)) {
+  if (FindFenceJumpDirection(gpSMCurrentMerc, gpSMCurrentMerc.value.sGridNo, gpSMCurrentMerc.value.bDirection, &bDirection)) {
     EnableButton(iSMPanelButtons[CLIMB_BUTTON]);
   }
 
@@ -727,47 +727,47 @@ function UpdateSMPanel(): void {
 
   //	if ( gpSMCurrentMerc->bUIInterfaceLevel > 0 )
   if (gsInterfaceLevel > 0) {
-    if (!ButtonList[iSMPanelButtons[UPDOWN_BUTTON]]->ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[UPDOWN_BUTTON]]->uiFlags |= (BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[UPDOWN_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[UPDOWN_BUTTON]].value.uiFlags |= (BUTTON_CLICKED_ON);
     }
   } else {
-    if (!ButtonList[iSMPanelButtons[UPDOWN_BUTTON]]->ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[UPDOWN_BUTTON]]->uiFlags &= (~BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[UPDOWN_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[UPDOWN_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
     }
   }
 
   if (gCurrentUIMode == HANDCURSOR_MODE) {
-    if (!ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]]->ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
+    if (!ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
     }
   } else {
-    if (!ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]]->ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]]->uiFlags &= (~BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
     }
   }
 
   if (gCurrentUIMode == TALKCURSOR_MODE) {
-    if (!ButtonList[iSMPanelButtons[TALK_BUTTON]]->ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[TALK_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
+    if (!ButtonList[iSMPanelButtons[TALK_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[TALK_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
     }
   } else {
-    if (!ButtonList[iSMPanelButtons[TALK_BUTTON]]->ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[TALK_BUTTON]]->uiFlags &= (~BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[TALK_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[TALK_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
     }
   }
 
   if (gCurrentUIMode == LOOKCURSOR_MODE) {
-    if (!ButtonList[iSMPanelButtons[LOOK_BUTTON]]->ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[LOOK_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
+    if (!ButtonList[iSMPanelButtons[LOOK_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[LOOK_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
     }
   } else {
-    if (!ButtonList[iSMPanelButtons[LOOK_BUTTON]]->ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[LOOK_BUTTON]]->uiFlags &= (~BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[LOOK_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[LOOK_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
     }
   }
 
   // If not selected ( or dead ), disable/gray some buttons
-  if (gusSelectedSoldier != gpSMCurrentMerc->ubID || (gpSMCurrentMerc->bLife < OKLIFE) || (gTacticalStatus.ubCurrentTeam != gbPlayerNum) || gfSMDisableForItems) {
+  if (gusSelectedSoldier != gpSMCurrentMerc.value.ubID || (gpSMCurrentMerc.value.bLife < OKLIFE) || (gTacticalStatus.ubCurrentTeam != gbPlayerNum) || gfSMDisableForItems) {
     DisableButton(iSMPanelButtons[CLIMB_BUTTON]);
     DisableButton(iSMPanelButtons[BURSTMODE_BUTTON]);
     DisableButton(iSMPanelButtons[STANCEUP_BUTTON]);
@@ -780,7 +780,7 @@ function UpdateSMPanel(): void {
     }
   } else {
     // Enable some buttons!
-    if (IsGunBurstCapable(gpSMCurrentMerc, HANDPOS, FALSE) || FindAttachment(&(gpSMCurrentMerc->inv[HANDPOS]), UNDER_GLAUNCHER) != ITEM_NOT_FOUND) {
+    if (IsGunBurstCapable(gpSMCurrentMerc, HANDPOS, FALSE) || FindAttachment(&(gpSMCurrentMerc.value.inv[HANDPOS]), UNDER_GLAUNCHER) != ITEM_NOT_FOUND) {
       EnableButton(iSMPanelButtons[BURSTMODE_BUTTON]);
     } else {
       DisableButton(iSMPanelButtons[BURSTMODE_BUTTON]);
@@ -816,11 +816,11 @@ function ReevaluateItemHatches(pSoldier: Pointer<SOLDIERTYPE>, fAllValid: BOOLEA
       // if( guiCurrentScreen != MAP_SCREEN )
       {
         // Check attachments, override to valid placement if valid merge...
-        if (ValidAttachment(gpItemPointer->usItem, pSoldier->inv[cnt].usItem)) {
+        if (ValidAttachment(gpItemPointer.value.usItem, pSoldier.value.inv[cnt].usItem)) {
           gbInvalidPlacementSlot[cnt] = FALSE;
         }
 
-        if (ValidMerge(gpItemPointer->usItem, pSoldier->inv[cnt].usItem)) {
+        if (ValidMerge(gpItemPointer.value.usItem, pSoldier.value.inv[cnt].usItem)) {
           gbInvalidPlacementSlot[cnt] = FALSE;
         }
       }
@@ -1306,7 +1306,7 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
         BltVideoObjectFromIndex(guiSAVEBUFFER, guiSMObjects2, 0, SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
         RestoreExternBackgroundRect(SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, SM_SELMERC_PLATE_WIDTH, SM_SELMERC_PLATE_HEIGHT);
       } else {
-        if (gusSelectedSoldier == gpSMCurrentMerc->ubID && gTacticalStatus.ubCurrentTeam == OUR_TEAM && OK_INTERRUPT_MERC(gpSMCurrentMerc)) {
+        if (gusSelectedSoldier == gpSMCurrentMerc.value.ubID && gTacticalStatus.ubCurrentTeam == OUR_TEAM && OK_INTERRUPT_MERC(gpSMCurrentMerc)) {
           BltVideoObjectFromIndex(guiSAVEBUFFER, guiSMObjects, 0, SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
           RestoreExternBackgroundRect(SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, SM_SELMERC_PLATE_WIDTH, SM_SELMERC_PLATE_HEIGHT);
         }
@@ -1327,7 +1327,7 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
         BltVideoObjectFromIndex(guiSAVEBUFFER, guiSMObjects2, 0, SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
         RestoreExternBackgroundRect(SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, SM_SELMERC_PLATE_WIDTH, SM_SELMERC_PLATE_HEIGHT);
       } else {
-        if (gusSelectedSoldier == gpSMCurrentMerc->ubID && gTacticalStatus.ubCurrentTeam == OUR_TEAM && OK_INTERRUPT_MERC(gpSMCurrentMerc)) {
+        if (gusSelectedSoldier == gpSMCurrentMerc.value.ubID && gTacticalStatus.ubCurrentTeam == OUR_TEAM && OK_INTERRUPT_MERC(gpSMCurrentMerc)) {
           BltVideoObjectFromIndex(guiSAVEBUFFER, guiSMObjects, 0, SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
           RestoreExternBackgroundRect(SM_SELMERC_PLATE_X, SM_SELMERC_PLATE_Y, SM_SELMERC_PLATE_WIDTH, SM_SELMERC_PLATE_HEIGHT);
         }
@@ -1366,67 +1366,67 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
       mprintf(SM_CAMMO_LABEL_X - StringPixLength(pInvPanelTitleStrings[2], BLOCKFONT2), SM_CAMMO_LABEL_Y, pInvPanelTitleStrings[2]);
       mprintf(SM_CAMMO_PERCENT_X, SM_CAMMO_PERCENT_Y, "%%");
 
-      UpdateStatColor(gpSMCurrentMerc->uiChangeAgilityTime, (gpSMCurrentMerc->usValueGoneUp & AGIL_INCREASE ? TRUE : FALSE));
+      UpdateStatColor(gpSMCurrentMerc.value.uiChangeAgilityTime, (gpSMCurrentMerc.value.usValueGoneUp & AGIL_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc->bAgility);
+      swprintf(sString, "%2d", gpSMCurrentMerc.value.bAgility);
       FindFontRightCoordinates(SM_AGI_X, SM_AGI_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
-      UpdateStatColor(gpSMCurrentMerc->uiChangeDexterityTime, (gpSMCurrentMerc->usValueGoneUp & DEX_INCREASE ? TRUE : FALSE));
+      UpdateStatColor(gpSMCurrentMerc.value.uiChangeDexterityTime, (gpSMCurrentMerc.value.usValueGoneUp & DEX_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc->bDexterity);
+      swprintf(sString, "%2d", gpSMCurrentMerc.value.bDexterity);
       FindFontRightCoordinates(SM_DEX_X, SM_DEX_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
-      UpdateStatColor(gpSMCurrentMerc->uiChangeStrengthTime, (gpSMCurrentMerc->usValueGoneUp & STRENGTH_INCREASE ? TRUE : FALSE));
+      UpdateStatColor(gpSMCurrentMerc.value.uiChangeStrengthTime, (gpSMCurrentMerc.value.usValueGoneUp & STRENGTH_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc->bStrength);
+      swprintf(sString, "%2d", gpSMCurrentMerc.value.bStrength);
       FindFontRightCoordinates(SM_STR_X, SM_STR_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
-      UpdateStatColor(gpSMCurrentMerc->uiChangeLeadershipTime, (gpSMCurrentMerc->usValueGoneUp & LDR_INCREASE ? TRUE : FALSE));
+      UpdateStatColor(gpSMCurrentMerc.value.uiChangeLeadershipTime, (gpSMCurrentMerc.value.usValueGoneUp & LDR_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc->bLeadership);
+      swprintf(sString, "%2d", gpSMCurrentMerc.value.bLeadership);
       FindFontRightCoordinates(SM_CHAR_X, SM_CHAR_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
-      UpdateStatColor(gpSMCurrentMerc->uiChangeWisdomTime, (gpSMCurrentMerc->usValueGoneUp & WIS_INCREASE ? TRUE : FALSE));
+      UpdateStatColor(gpSMCurrentMerc.value.uiChangeWisdomTime, (gpSMCurrentMerc.value.usValueGoneUp & WIS_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc->bWisdom);
+      swprintf(sString, "%2d", gpSMCurrentMerc.value.bWisdom);
       FindFontRightCoordinates(SM_WIS_X, SM_WIS_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
-      UpdateStatColor(gpSMCurrentMerc->uiChangeLevelTime, (gpSMCurrentMerc->usValueGoneUp & LVL_INCREASE ? TRUE : FALSE));
+      UpdateStatColor(gpSMCurrentMerc.value.uiChangeLevelTime, (gpSMCurrentMerc.value.usValueGoneUp & LVL_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc->bExpLevel);
+      swprintf(sString, "%2d", gpSMCurrentMerc.value.bExpLevel);
       FindFontRightCoordinates(SM_EXPLVL_X, SM_EXPLVL_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
-      UpdateStatColor(gpSMCurrentMerc->uiChangeMarksmanshipTime, (gpSMCurrentMerc->usValueGoneUp & MRK_INCREASE ? TRUE : FALSE));
+      UpdateStatColor(gpSMCurrentMerc.value.uiChangeMarksmanshipTime, (gpSMCurrentMerc.value.usValueGoneUp & MRK_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc->bMarksmanship);
+      swprintf(sString, "%2d", gpSMCurrentMerc.value.bMarksmanship);
       FindFontRightCoordinates(SM_MRKM_X, SM_MRKM_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
-      UpdateStatColor(gpSMCurrentMerc->uiChangeExplosivesTime, (gpSMCurrentMerc->usValueGoneUp & EXP_INCREASE ? TRUE : FALSE));
+      UpdateStatColor(gpSMCurrentMerc.value.uiChangeExplosivesTime, (gpSMCurrentMerc.value.usValueGoneUp & EXP_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc->bExplosive);
+      swprintf(sString, "%2d", gpSMCurrentMerc.value.bExplosive);
       FindFontRightCoordinates(SM_EXPL_X, SM_EXPL_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
-      UpdateStatColor(gpSMCurrentMerc->uiChangeMechanicalTime, (gpSMCurrentMerc->usValueGoneUp & MECH_INCREASE ? TRUE : FALSE));
+      UpdateStatColor(gpSMCurrentMerc.value.uiChangeMechanicalTime, (gpSMCurrentMerc.value.usValueGoneUp & MECH_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc->bMechanical);
+      swprintf(sString, "%2d", gpSMCurrentMerc.value.bMechanical);
       FindFontRightCoordinates(SM_MECH_X, SM_MECH_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
-      UpdateStatColor(gpSMCurrentMerc->uiChangeMedicalTime, (gpSMCurrentMerc->usValueGoneUp & MED_INCREASE ? TRUE : FALSE));
+      UpdateStatColor(gpSMCurrentMerc.value.uiChangeMedicalTime, (gpSMCurrentMerc.value.usValueGoneUp & MED_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, "%2d", gpSMCurrentMerc->bMedical);
+      swprintf(sString, "%2d", gpSMCurrentMerc.value.bMedical);
       FindFontRightCoordinates(SM_MED_X, SM_MED_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
-      if (gpSMCurrentMerc->bLife >= OKLIFE) {
+      if (gpSMCurrentMerc.value.bLife >= OKLIFE) {
         SetFontBackground(FONT_MCOLOR_BLACK);
         SetFontForeground(STATS_TEXT_FONT_COLOR);
       } else {
@@ -1445,7 +1445,7 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
       mprintf(usX, usY, sString);
 
       // Display cammo value!
-      swprintf(sString, "%3d", gpSMCurrentMerc->bCamo);
+      swprintf(sString, "%3d", gpSMCurrentMerc.value.bCamo);
       FindFontRightCoordinates(SM_CAMMO_X, SM_CAMMO_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
@@ -1460,7 +1460,7 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
     // Render Name!
     SetFont(BLOCKFONT2);
 
-    if (gpSMCurrentMerc->bStealthMode) {
+    if (gpSMCurrentMerc.value.bStealthMode) {
       SetFontBackground(FONT_MCOLOR_BLACK);
       SetFontForeground(FONT_MCOLOR_LTYELLOW);
     } else {
@@ -1469,22 +1469,22 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
     }
 
     RestoreExternBackgroundRect(SM_SELMERCNAME_X, SM_SELMERCNAME_Y, SM_SELMERCNAME_WIDTH, SM_SELMERCNAME_HEIGHT);
-    VarFindFontCenterCoordinates(SM_SELMERCNAME_X, SM_SELMERCNAME_Y, SM_SELMERCNAME_WIDTH, SM_SELMERCNAME_HEIGHT, SMALLFONT1, &sFontX, &sFontY, "%s", gpSMCurrentMerc->name);
-    mprintf(sFontX + 5, sFontY, "%s", gpSMCurrentMerc->name);
+    VarFindFontCenterCoordinates(SM_SELMERCNAME_X, SM_SELMERCNAME_Y, SM_SELMERCNAME_WIDTH, SM_SELMERCNAME_HEIGHT, SMALLFONT1, &sFontX, &sFontY, "%s", gpSMCurrentMerc.value.name);
+    mprintf(sFontX + 5, sFontY, "%s", gpSMCurrentMerc.value.name);
   }
 
   if (*pfDirty != DIRTYLEVEL0) {
     // UPdate stats!
-    if (gpSMCurrentMerc->bLife != 0) {
-      if (gpSMCurrentMerc->uiStatusFlags & SOLDIER_VEHICLE) {
-        swprintf(pStr, TacticalStr[VEHICLE_VITAL_STATS_POPUPTEXT], gpSMCurrentMerc->bLife, gpSMCurrentMerc->bLifeMax, gpSMCurrentMerc->bBreath, gpSMCurrentMerc->bBreathMax);
+    if (gpSMCurrentMerc.value.bLife != 0) {
+      if (gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_VEHICLE) {
+        swprintf(pStr, TacticalStr[VEHICLE_VITAL_STATS_POPUPTEXT], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax, gpSMCurrentMerc.value.bBreath, gpSMCurrentMerc.value.bBreathMax);
         SetRegionFastHelpText(&(gSM_SELMERCBarsRegion), pStr);
-      } else if (gpSMCurrentMerc->uiStatusFlags & SOLDIER_ROBOT) {
-        swprintf(pStr, gzLateLocalizedString[16], gpSMCurrentMerc->bLife, gpSMCurrentMerc->bLifeMax);
+      } else if (gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_ROBOT) {
+        swprintf(pStr, gzLateLocalizedString[16], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax);
         SetRegionFastHelpText(&(gTEAM_BarsRegions[cnt]), pStr);
       } else {
         GetMoraleString(gpSMCurrentMerc, pMoraleStr);
-        swprintf(pStr, TacticalStr[MERC_VITAL_STATS_POPUPTEXT], gpSMCurrentMerc->bLife, gpSMCurrentMerc->bLifeMax, gpSMCurrentMerc->bBreath, gpSMCurrentMerc->bBreathMax, pMoraleStr);
+        swprintf(pStr, TacticalStr[MERC_VITAL_STATS_POPUPTEXT], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax, gpSMCurrentMerc.value.bBreath, gpSMCurrentMerc.value.bBreathMax, pMoraleStr);
         SetRegionFastHelpText(&(gSM_SELMERCBarsRegion), pStr);
       }
     } else {
@@ -1496,18 +1496,18 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
       SetRegionHelpEndCallback(&gSM_SELMERCBarsRegion, SkiHelpTextDoneCallBack);
 
     // display AP
-    if (!(gpSMCurrentMerc->uiStatusFlags & SOLDIER_DEAD)) {
-      if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT) && gpSMCurrentMerc->bLife >= OKLIFE) {
+    if (!(gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_DEAD)) {
+      if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT) && gpSMCurrentMerc.value.bLife >= OKLIFE) {
         SetFont(TINYFONT1);
         // if ( gpSMCurrentMerc->sLastTarget != NOWHERE && !EnoughPoints( gpSMCurrentMerc, MinAPsToAttack( gpSMCurrentMerc, gpSMCurrentMerc->sLastTarget, FALSE ), 0, FALSE ) || GetUIApsToDisplay( gpSMCurrentMerc ) < 0 )
-        if (!EnoughPoints(gpSMCurrentMerc, MinAPsToAttack(gpSMCurrentMerc, gpSMCurrentMerc->sLastTarget, FALSE), 0, FALSE) || GetUIApsToDisplay(gpSMCurrentMerc) < 0) {
+        if (!EnoughPoints(gpSMCurrentMerc, MinAPsToAttack(gpSMCurrentMerc, gpSMCurrentMerc.value.sLastTarget, FALSE), 0, FALSE) || GetUIApsToDisplay(gpSMCurrentMerc) < 0) {
           SetFontBackground(FONT_MCOLOR_BLACK);
           SetFontForeground(FONT_MCOLOR_DKRED);
         } else {
           if (MercUnderTheInfluence(gpSMCurrentMerc)) {
             SetFontBackground(FONT_MCOLOR_BLACK);
             SetFontForeground(FONT_MCOLOR_LTBLUE);
-          } else if (gpSMCurrentMerc->bStealthMode) {
+          } else if (gpSMCurrentMerc.value.bStealthMode) {
             SetFontBackground(FONT_MCOLOR_BLACK);
             SetFontForeground(FONT_MCOLOR_LTYELLOW);
           } else {
@@ -1524,7 +1524,7 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
       // Display bars
       DrawLifeUIBarEx(gpSMCurrentMerc, SM_SELMERC_HEALTH_X, SM_SELMERC_HEALTH_Y, SM_SELMERC_HEALTH_WIDTH, SM_SELMERC_HEALTH_HEIGHT, TRUE, FRAME_BUFFER);
 
-      if (!(gpSMCurrentMerc->uiStatusFlags & SOLDIER_ROBOT)) {
+      if (!(gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_ROBOT)) {
         DrawBreathUIBarEx(gpSMCurrentMerc, SM_SELMERC_BREATH_X, SM_SELMERC_BREATH_Y, SM_SELMERC_HEALTH_WIDTH, SM_SELMERC_HEALTH_HEIGHT, TRUE, FRAME_BUFFER);
         DrawMoraleUIBarEx(gpSMCurrentMerc, SM_SELMERC_MORALE_X, SM_SELMERC_MORALE_Y, SM_SELMERC_MORALE_WIDTH, SM_SELMERC_MORALE_HEIGHT, TRUE, FRAME_BUFFER);
       }
@@ -1556,7 +1556,7 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
 }
 
 function UpdateStatColor(uiTimer: UINT32, fIncrease: BOOLEAN): void {
-  if (gpSMCurrentMerc->bLife >= OKLIFE) {
+  if (gpSMCurrentMerc.value.bLife >= OKLIFE) {
     if ((GetJA2Clock() < CHANGE_STAT_RECENTLY_DURATION + uiTimer) && (uiTimer != 0)) {
       if (fIncrease) {
         SetFontForeground(FONT_LTGREEN);
@@ -1582,7 +1582,7 @@ function SMInvMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
     return;
   }
 
-  if (gpSMCurrentMerc->inv[uiHandPos].usItem == NOTHING)
+  if (gpSMCurrentMerc.value.inv[uiHandPos].usItem == NOTHING)
     return;
 
   if (iReason == MSYS_CALLBACK_REASON_MOVE) {
@@ -1644,13 +1644,13 @@ function SMInvClickCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
     // If we do not have an item in hand, start moving it
     if (gpItemPointer != NULL) {
       // ATE: OK, get source, dest guy if different... check for and then charge appropriate APs
-      ubSrcID = gpSMCurrentMerc->ubID;
-      ubDestID = gpItemPointerSoldier->ubID;
+      ubSrcID = gpSMCurrentMerc.value.ubID;
+      ubDestID = gpItemPointerSoldier.value.ubID;
 
       // if ( ubSrcID == ubDestID )
       {
         // We are doing this ourselve, continue
-        if (gpSMCurrentMerc->bLife >= CONSCIOUSNESS) {
+        if (gpSMCurrentMerc.value.bLife >= CONSCIOUSNESS) {
           // usNewItemIndex = gpItemPointer->usItem;
 
           // Try to apply camo....
@@ -1660,7 +1660,7 @@ function SMInvClickCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
               fInterfacePanelDirty = DIRTYLEVEL2;
 
               // Check if it's the same now!
-              if (gpItemPointer->ubNumberOfObjects == 0) {
+              if (gpItemPointer.value.ubNumberOfObjects == 0) {
                 gbCompatibleApplyItem = FALSE;
                 EndItemPointer();
               }
@@ -1674,7 +1674,7 @@ function SMInvClickCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
               fInterfacePanelDirty = DIRTYLEVEL2;
 
               // Check if it's the same now!
-              if (gpItemPointer->ubNumberOfObjects == 0) {
+              if (gpItemPointer.value.ubNumberOfObjects == 0) {
                 gbCompatibleApplyItem = FALSE;
                 EndItemPointer();
               }
@@ -1685,7 +1685,7 @@ function SMInvClickCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
               fInterfacePanelDirty = DIRTYLEVEL2;
 
               // Check if it's the same now!
-              if (gpItemPointer->ubNumberOfObjects == 0) {
+              if (gpItemPointer.value.ubNumberOfObjects == 0) {
                 gbCompatibleApplyItem = FALSE;
                 EndItemPointer();
               }
@@ -1698,7 +1698,7 @@ function SMInvClickCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
             fInterfacePanelDirty = DIRTYLEVEL2;
 
             // Check if it's the same now!
-            if (gpItemPointer->ubNumberOfObjects == 0) {
+            if (gpItemPointer.value.ubNumberOfObjects == 0) {
               gbCompatibleApplyItem = FALSE;
               EndItemPointer();
             }
@@ -1730,7 +1730,7 @@ function HandleNailsVestFetish(pSoldier: Pointer<SOLDIERTYPE>, uiHandPos: UINT32
   let fRefuse: BOOLEAN = FALSE;
 
   // OK are we nails?
-  if (pSoldier->ubProfile == 34) {
+  if (pSoldier.value.ubProfile == 34) {
     // if this the VEST POS?
     if (uiHandPos == VESTPOS) {
       // Are we trying to pick it up?
@@ -1759,8 +1759,8 @@ function HandleNailsVestFetish(pSoldier: Pointer<SOLDIERTYPE>, uiHandPos: UINT32
 
 function UIHandleItemPlacement(ubHandPos: UINT8, usOldItemIndex: UINT16, usNewItemIndex: UINT16, fDeductPoints: BOOLEAN): BOOLEAN {
   if (_KeyDown(CTRL)) {
-    CleanUpStack(&(gpSMCurrentMerc->inv[ubHandPos]), gpItemPointer);
-    if (gpItemPointer->ubNumberOfObjects == 0) {
+    CleanUpStack(&(gpSMCurrentMerc.value.inv[ubHandPos]), gpItemPointer);
+    if (gpItemPointer.value.ubNumberOfObjects == 0) {
       EndItemPointer();
     }
     return TRUE;
@@ -1770,10 +1770,10 @@ function UIHandleItemPlacement(ubHandPos: UINT8, usOldItemIndex: UINT16, usNewIt
   if (PlaceObject(gpSMCurrentMerc, ubHandPos, gpItemPointer)) {
     if (fDeductPoints) {
       // Deduct points
-      if (gpItemPointerSoldier->bLife >= CONSCIOUSNESS) {
+      if (gpItemPointerSoldier.value.bLife >= CONSCIOUSNESS) {
         DeductPoints(gpItemPointerSoldier, 2, 0);
       }
-      if (gpSMCurrentMerc->bLife >= CONSCIOUSNESS) {
+      if (gpSMCurrentMerc.value.bLife >= CONSCIOUSNESS) {
         DeductPoints(gpSMCurrentMerc, 2, 0);
       }
     }
@@ -1784,12 +1784,12 @@ function UIHandleItemPlacement(ubHandPos: UINT8, usOldItemIndex: UINT16, usNewIt
     fInterfacePanelDirty = DIRTYLEVEL2;
 
     // Check if cursor is empty now
-    if (gpItemPointer->ubNumberOfObjects == 0) {
+    if (gpItemPointer.value.ubNumberOfObjects == 0) {
       EndItemPointer();
     }
 
     if (gpItemPointerSoldier != gpSMCurrentMerc) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[MSG_ITEM_PASSED_TO_MERC], ShortItemNames[usNewItemIndex], gpSMCurrentMerc->name);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[MSG_ITEM_PASSED_TO_MERC], ShortItemNames[usNewItemIndex], gpSMCurrentMerc.value.name);
     }
 
     // UPDATE ITEM POINTER.....
@@ -1831,7 +1831,7 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
   // if we are in the shop keeper interface
   if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
     // and this inventory slot is hatched out
-    if (ShouldSoldierDisplayHatchOnItem(gpSMCurrentMerc->ubProfile, uiHandPos)) {
+    if (ShouldSoldierDisplayHatchOnItem(gpSMCurrentMerc.value.ubProfile, uiHandPos)) {
       // it means that item is a copy of one in the player's offer area, so we treat it as if the slot was empty (ignore)
       // if the cursor has an item in it, we still ignore the click, because handling swaps in this situation would be
       // ugly, we'd have to the the swap, then make the bOwnerSlot of the item just picked up a -1 in its offer area spot.
@@ -1850,11 +1850,11 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
     // If we do not have an item in hand, start moving it
     if (gpItemPointer == NULL) {
       // Return if empty
-      if (gpSMCurrentMerc->inv[uiHandPos].usItem == NOTHING)
+      if (gpSMCurrentMerc.value.inv[uiHandPos].usItem == NOTHING)
         return;
 
-      if (gpSMCurrentMerc->ubID != gusSelectedSoldier) {
-        SelectSoldier(gpSMCurrentMerc->ubID, FALSE, FALSE);
+      if (gpSMCurrentMerc.value.ubID != gusSelectedSoldier) {
+        SelectSoldier(gpSMCurrentMerc.value.ubID, FALSE, FALSE);
       }
 
       // OK, check if this is Nails, and we're in the vest position , don't allow it to come off....
@@ -1863,14 +1863,14 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
       }
 
       if (_KeyDown(CTRL)) {
-        CleanUpStack(&(gpSMCurrentMerc->inv[uiHandPos]), NULL);
+        CleanUpStack(&(gpSMCurrentMerc.value.inv[uiHandPos]), NULL);
         return;
       }
 
       // Turn off new item glow!
-      gpSMCurrentMerc->bNewItemCount[uiHandPos] = 0;
+      gpSMCurrentMerc.value.bNewItemCount[uiHandPos] = 0;
 
-      usOldItemIndex = gpSMCurrentMerc->inv[uiHandPos].usItem;
+      usOldItemIndex = gpSMCurrentMerc.value.inv[uiHandPos].usItem;
 
       // move item into the mouse cursor
       BeginItemPointer(gpSMCurrentMerc, uiHandPos);
@@ -1892,8 +1892,8 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
       let fDeductPoints: BOOLEAN = FALSE;
 
       // ATE: OK, get source, dest guy if different... check for and then charge appropriate APs
-      ubSrcID = gpSMCurrentMerc->ubID;
-      ubDestID = gpItemPointerSoldier->ubID;
+      ubSrcID = gpSMCurrentMerc.value.ubID;
+      ubDestID = gpItemPointerSoldier.value.ubID;
 
       if (ubSrcID == ubDestID) {
         // We are doing this ourselve, continue
@@ -1903,7 +1903,7 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
         fDeductPoints = TRUE;
 
         // First check points for src guy
-        if (gpItemPointerSoldier->bLife >= CONSCIOUSNESS) {
+        if (gpItemPointerSoldier.value.bLife >= CONSCIOUSNESS) {
           if (EnoughPoints(gpItemPointerSoldier, 3, 0, TRUE)) {
             fOKToGo = TRUE;
           }
@@ -1913,7 +1913,7 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
 
         // Should we go on?
         if (fOKToGo) {
-          if (gpSMCurrentMerc->bLife >= CONSCIOUSNESS) {
+          if (gpSMCurrentMerc.value.bLife >= CONSCIOUSNESS) {
             if (EnoughPoints(gpSMCurrentMerc, 3, 0, TRUE)) {
               fOKToGo = TRUE;
             } else {
@@ -1925,12 +1925,12 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
 
       if (fOKToGo) {
         // OK, check if this is Nails, and we're in the vest position , don't allow it to come off....
-        if (HandleNailsVestFetish(gpSMCurrentMerc, uiHandPos, gpItemPointer->usItem)) {
+        if (HandleNailsVestFetish(gpSMCurrentMerc, uiHandPos, gpItemPointer.value.usItem)) {
           return;
         }
 
-        usOldItemIndex = gpSMCurrentMerc->inv[uiHandPos].usItem;
-        usNewItemIndex = gpItemPointer->usItem;
+        usOldItemIndex = gpSMCurrentMerc.value.inv[uiHandPos].usItem;
+        usNewItemIndex = gpItemPointer.value.usItem;
 
         if (uiHandPos == HANDPOS || uiHandPos == SECONDHANDPOS || uiHandPos == HELMETPOS || uiHandPos == VESTPOS || uiHandPos == LEGPOS) {
           // if ( ValidAttachmentClass( usNewItemIndex, usOldItemIndex ) )
@@ -1961,7 +1961,7 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
         }
 
         // remember the item type currently in the item pointer
-        usItemPrevInItemPointer = gpItemPointer->usItem;
+        usItemPrevInItemPointer = gpItemPointer.value.usItem;
 
         if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
           // If it's just been purchased or repaired, mark it as a "new item"
@@ -1981,7 +1981,7 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
               SetSkiCursor(CURSOR_NORMAL);
             } else {
               // if we're holding something else in the pointer now
-              if (usItemPrevInItemPointer != gpItemPointer->usItem) {
+              if (usItemPrevInItemPointer != gpItemPointer.value.usItem) {
                 // pick up item swapped out of inventory slot into cursor (don't try to sell)
                 BeginSkiItemPointer(PLAYERS_INVENTORY, -1, FALSE);
               } else {
@@ -2041,7 +2041,7 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
     fRightDown = FALSE;
 
     // Return if empty
-    if (gpSMCurrentMerc->inv[uiHandPos].usItem == NOTHING)
+    if (gpSMCurrentMerc.value.inv[uiHandPos].usItem == NOTHING)
       return;
 
     // CJC: OK, get source, dest guy if different, don't allow panels to be brought up
@@ -2053,11 +2053,11 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
     */
 
     // Turn off new item glow!
-    gpSMCurrentMerc->bNewItemCount[uiHandPos] = 0;
+    gpSMCurrentMerc.value.bNewItemCount[uiHandPos] = 0;
 
     // Some global stuff here - for esc, etc
     // Check for # of slots in item
-    if ((gpSMCurrentMerc->inv[uiHandPos].ubNumberOfObjects > 1 && ItemSlotLimit(gpSMCurrentMerc->inv[uiHandPos].usItem, uiHandPos) > 0) && (guiCurrentScreen != MAP_SCREEN)) {
+    if ((gpSMCurrentMerc.value.inv[uiHandPos].ubNumberOfObjects > 1 && ItemSlotLimit(gpSMCurrentMerc.value.inv[uiHandPos].usItem, uiHandPos) > 0) && (guiCurrentScreen != MAP_SCREEN)) {
       if (!InItemStackPopup()) {
         // InitItemStackPopup( gpSMCurrentMerc, (UINT8)uiHandPos, SM_ITEMDESC_START_X, SM_ITEMDESC_START_Y, SM_ITEMDESC_WIDTH, SM_ITEMDESC_HEIGHT );
         InitItemStackPopup(gpSMCurrentMerc, uiHandPos, 216, INV_INTERFACE_START_Y, 314, (480 - INV_INTERFACE_START_Y));
@@ -2075,12 +2075,12 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
 
 function MergeMessageBoxCallBack(ubExitValue: UINT8): void {
   if (ubExitValue == MSG_BOX_RETURN_YES) {
-    AttachObject(gpItemPointerSoldier, &(gpSMCurrentMerc->inv[gubHandPos]), gpItemPointer);
+    AttachObject(gpItemPointerSoldier, &(gpSMCurrentMerc.value.inv[gubHandPos]), gpItemPointer);
 
     // re-evaluate repairs
     gfReEvaluateEveryonesNothingToDo = TRUE;
 
-    if (gpItemPointer->usItem == NOTHING) {
+    if (gpItemPointer.value.usItem == NOTHING) {
       // merge item consumed
       EndItemPointer();
       fInterfacePanelDirty = DIRTYLEVEL2;
@@ -2103,26 +2103,26 @@ function HandleMouseOverSoldierFaceForContMove(pSoldier: Pointer<SOLDIERTYPE>, f
     if (CheckForMercContMove(pSoldier)) {
       // Display 'cont' on face....
       // Get face
-      pFace = &gFacesData[pSoldier->iFaceIndex];
+      pFace = &gFacesData[pSoldier.value.iFaceIndex];
 
-      pFace->fDisplayTextOver = FACE_DRAW_TEXT_OVER;
-      wcscpy(pFace->zDisplayText, TacticalStr[CONTINUE_OVER_FACE_STR]);
+      pFace.value.fDisplayTextOver = FACE_DRAW_TEXT_OVER;
+      wcscpy(pFace.value.zDisplayText, TacticalStr[CONTINUE_OVER_FACE_STR]);
 
-      sGridNo = pSoldier->sFinalDestination;
+      sGridNo = pSoldier.value.sFinalDestination;
 
-      if (pSoldier->bGoodContPath) {
-        sGridNo = pSoldier->sContPathLocation;
+      if (pSoldier.value.bGoodContPath) {
+        sGridNo = pSoldier.value.sContPathLocation;
       }
 
       // While our mouse is here, draw a path!
-      PlotPath(pSoldier, sGridNo, NO_COPYROUTE, PLOT, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      PlotPath(pSoldier, sGridNo, NO_COPYROUTE, PLOT, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
     }
   } else {
     // Remove 'cont' on face....
     // Get face
-    pFace = &gFacesData[pSoldier->iFaceIndex];
+    pFace = &gFacesData[pSoldier.value.iFaceIndex];
 
-    pFace->fDisplayTextOver = FACE_ERASE_TEXT_OVER;
+    pFace.value.fDisplayTextOver = FACE_ERASE_TEXT_OVER;
 
     // Erase path!
     ErasePath(TRUE);
@@ -2160,17 +2160,17 @@ function SelectedMercButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // ATE: Don't if this guy can't....
     if (!gfSMDisableForItems) {
-      if (gpSMCurrentMerc->uiStatusFlags & (SOLDIER_DRIVER | SOLDIER_PASSENGER)) {
-        pVehicle = GetSoldierStructureForVehicle(gpSMCurrentMerc->iVehicleId);
+      if (gpSMCurrentMerc.value.uiStatusFlags & (SOLDIER_DRIVER | SOLDIER_PASSENGER)) {
+        pVehicle = GetSoldierStructureForVehicle(gpSMCurrentMerc.value.iVehicleId);
 
-        HandleLocateSelectMerc(pVehicle->ubID, 0);
+        HandleLocateSelectMerc(pVehicle.value.ubID, 0);
       } else {
         if (CheckForMercContMove(gpSMCurrentMerc)) {
           // Continue
           ContinueMercMovement(gpSMCurrentMerc);
           ErasePath(TRUE);
         } else {
-          HandleLocateSelectMerc(gpSMCurrentMerc->ubID, 0);
+          HandleLocateSelectMerc(gpSMCurrentMerc.value.ubID, 0);
         }
       }
     }
@@ -2207,9 +2207,9 @@ function SelectedMercEnemyIndicatorCallback(pRegion: Pointer<MOUSE_REGION>, iRea
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // ATE: Don't if this guy can't....
     if (!gfSMDisableForItems) {
-      if (gpSMCurrentMerc->uiStatusFlags & (SOLDIER_DRIVER | SOLDIER_PASSENGER)) {
+      if (gpSMCurrentMerc.value.uiStatusFlags & (SOLDIER_DRIVER | SOLDIER_PASSENGER)) {
       } else {
-        if (gpSMCurrentMerc->bOppCnt > 0) {
+        if (gpSMCurrentMerc.value.bOppCnt > 0) {
           CycleVisibleEnemies(gpSMCurrentMerc);
         } else {
           SelectedMercButtonCallback(pRegion, iReason);
@@ -2222,15 +2222,15 @@ function SelectedMercEnemyIndicatorCallback(pRegion: Pointer<MOUSE_REGION>, iRea
 function BtnStanceUpCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   let bNewStance: INT8;
 
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-    bNewStance = gAnimControl[gpSMCurrentMerc->usAnimState].ubEndHeight;
+    bNewStance = gAnimControl[gpSMCurrentMerc.value.usAnimState].ubEndHeight;
 
     if (bNewStance == ANIM_CROUCH) {
       bNewStance = ANIM_STAND;
@@ -2238,20 +2238,20 @@ function BtnStanceUpCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       bNewStance = ANIM_CROUCH;
     }
 
-    UIHandleSoldierStanceChange(gpSMCurrentMerc->ubID, bNewStance);
+    UIHandleSoldierStanceChange(gpSMCurrentMerc.value.ubID, bNewStance);
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
 function BtnUpdownCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // gsInterfaceLevel = gpSMCurrentMerc->bUIInterfaceLevel;
 
@@ -2259,9 +2259,9 @@ function BtnUpdownCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     UIHandleChangeLevel(NULL);
 
     // Remember soldier's new value
-    gpSMCurrentMerc->bUIInterfaceLevel = gsInterfaceLevel;
+    gpSMCurrentMerc.value.bUIInterfaceLevel = gsInterfaceLevel;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
@@ -2270,15 +2270,15 @@ function BtnClimbCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   let fNearLowerLevel: BOOLEAN;
   let bDirection: INT8;
 
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-    GetMercClimbDirection(gpSMCurrentMerc->ubID, &fNearLowerLevel, &fNearHeigherLevel);
+    GetMercClimbDirection(gpSMCurrentMerc.value.ubID, &fNearLowerLevel, &fNearHeigherLevel);
 
     if (fNearLowerLevel) {
       BeginSoldierClimbDownRoof(gpSMCurrentMerc);
@@ -2287,26 +2287,26 @@ function BtnClimbCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       BeginSoldierClimbUpRoof(gpSMCurrentMerc);
     }
 
-    if (FindFenceJumpDirection(gpSMCurrentMerc, gpSMCurrentMerc->sGridNo, gpSMCurrentMerc->bDirection, &bDirection)) {
+    if (FindFenceJumpDirection(gpSMCurrentMerc, gpSMCurrentMerc.value.sGridNo, gpSMCurrentMerc.value.bDirection, &bDirection)) {
       BeginSoldierClimbFence(gpSMCurrentMerc);
     }
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
 function BtnStanceDownCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   let bNewStance: INT8;
 
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-    bNewStance = gAnimControl[gpSMCurrentMerc->usAnimState].ubEndHeight;
+    bNewStance = gAnimControl[gpSMCurrentMerc.value.usAnimState].ubEndHeight;
 
     if (bNewStance == ANIM_STAND) {
       bNewStance = ANIM_CROUCH;
@@ -2314,32 +2314,32 @@ function BtnStanceDownCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       bNewStance = ANIM_PRONE;
     }
 
-    UIHandleSoldierStanceChange(gpSMCurrentMerc->ubID, bNewStance);
+    UIHandleSoldierStanceChange(gpSMCurrentMerc.value.ubID, bNewStance);
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
 function BtnStealthModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-    gpSMCurrentMerc->bStealthMode = !gpSMCurrentMerc->bStealthMode;
+    gpSMCurrentMerc.value.bStealthMode = !gpSMCurrentMerc.value.bStealthMode;
     gfUIStanceDifferent = TRUE;
     gfPlotNewMovement = TRUE;
     fInterfacePanelDirty = DIRTYLEVEL2;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
 function BtnHandCursorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -2348,7 +2348,7 @@ function BtnHandCursorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function BtnTalkCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -2357,16 +2357,16 @@ function BtnTalkCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function BtnMuteCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (gpSMCurrentMerc->uiStatusFlags & SOLDIER_MUTE) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[MUTE_OFF_STR], gpSMCurrentMerc->name);
-      gpSMCurrentMerc->uiStatusFlags &= (~SOLDIER_MUTE);
+    if (gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_MUTE) {
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[MUTE_OFF_STR], gpSMCurrentMerc.value.name);
+      gpSMCurrentMerc.value.uiStatusFlags &= (~SOLDIER_MUTE);
     } else {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[MUTE_ON_STR], gpSMCurrentMerc->name);
-      gpSMCurrentMerc->uiStatusFlags |= (SOLDIER_MUTE);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[MUTE_ON_STR], gpSMCurrentMerc.value.name);
+      gpSMCurrentMerc.value.uiStatusFlags |= (SOLDIER_MUTE);
     }
   }
 }
@@ -2374,13 +2374,13 @@ function BtnMuteCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 function BtnPrevMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   let sID: INT16;
 
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     sID = FindPrevActiveAndAliveMerc(gpSMCurrentMerc, TRUE, TRUE);
 
@@ -2403,20 +2403,20 @@ function BtnPrevMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
     }
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
 function BtnNextMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   let sID: INT16;
 
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     sID = FindNextActiveAndAliveMerc(gpSMCurrentMerc, TRUE, TRUE);
 
@@ -2440,55 +2440,55 @@ function BtnNextMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
     }
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
 function BtnOptionsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     guiPreviousOptionScreen = guiCurrentScreen;
     LeaveTacticalScreen(OPTIONS_SCREEN);
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
 function BtnSMDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     gfBeginEndTurn = TRUE;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
 function BtnMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // Enter mapscreen...
     // gfEnteringMapScreen = TRUE;
     GoToMapScreenFromTactical();
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
@@ -2511,7 +2511,7 @@ void CycleCallback( GUI_BUTTON *btn, INT32 reason )
 */
 
 function BtnBurstModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn->uiFlags & BUTTON_ENABLED))
+  if (!(btn.value.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -2523,13 +2523,13 @@ function BtnBurstModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function BtnLookCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     ToggleLookCursorMode(NULL);
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
@@ -2713,37 +2713,37 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
       } else {
         pSoldier = MercPtrs[gTeamPanel[cnt].ubID];
 
-        if (pSoldier->uiStatusFlags & (SOLDIER_DRIVER)) {
+        if (pSoldier.value.uiStatusFlags & (SOLDIER_DRIVER)) {
           // Get soldier pointer for vehicle.....
           let pVehicle: Pointer<SOLDIERTYPE>;
 
-          pVehicle = GetSoldierStructureForVehicle(pSoldier->iVehicleId);
+          pVehicle = GetSoldierStructureForVehicle(pSoldier.value.iVehicleId);
 
           // OK, for each item, set dirty text if applicable!
-          swprintf(pStr, TacticalStr[DRIVER_POPUPTEXT], pVehicle->bLife, pVehicle->bLifeMax, pVehicle->bBreath, pVehicle->bBreathMax);
+          swprintf(pStr, TacticalStr[DRIVER_POPUPTEXT], pVehicle.value.bLife, pVehicle.value.bLifeMax, pVehicle.value.bBreath, pVehicle.value.bBreathMax);
           SetRegionFastHelpText(&(gTEAM_FirstHandInv[cnt]), pStr);
         }
         // Add text for first hand popup
         else {
-          GetHelpTextForItem(pStr, &(pSoldier->inv[HANDPOS]), pSoldier);
+          GetHelpTextForItem(pStr, &(pSoldier.value.inv[HANDPOS]), pSoldier);
 
           // OK, for each item, set dirty text if applicable!
           SetRegionFastHelpText(&(gTEAM_FirstHandInv[cnt]), pStr);
         }
 
         // Add text for seonc hand popup
-        if (pSoldier->uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
+        if (pSoldier.value.uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
           // OK, for each item, set dirty text if applicable!
           SetRegionFastHelpText(&(gTEAM_SecondHandInv[cnt]), TacticalStr[EXIT_VEHICLE_POPUPTEXT]);
         } else {
-          GetHelpTextForItem(pStr, &(pSoldier->inv[SECONDHANDPOS]), pSoldier);
+          GetHelpTextForItem(pStr, &(pSoldier.value.inv[SECONDHANDPOS]), pSoldier);
 
           // OK, for each item, set dirty text if applicable!
           SetRegionFastHelpText(&(gTEAM_SecondHandInv[cnt]), pStr);
         }
 
         // Render Selected guy if selected
-        if (gusSelectedSoldier == pSoldier->ubID && gTacticalStatus.ubCurrentTeam == OUR_TEAM && OK_INTERRUPT_MERC(pSoldier)) {
+        if (gusSelectedSoldier == pSoldier.value.ubID && gTacticalStatus.ubCurrentTeam == OUR_TEAM && OK_INTERRUPT_MERC(pSoldier)) {
           // if(gbPixelDepth==16)
           //{
           BltVideoObjectFromIndex(guiSAVEBUFFER, guiTEAMObjects, 0, sTEAMFaceHighlXY[posIndex], sTEAMFaceHighlXY[posIndex + 1], VO_BLT_SRCTRANSPARENCY, NULL);
@@ -2774,7 +2774,7 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
         // Render name!
         SetFont(BLOCKFONT2);
 
-        if (pSoldier->bStealthMode) {
+        if (pSoldier.value.bStealthMode) {
           SetFontBackground(FONT_MCOLOR_BLACK);
           SetFontForeground(FONT_MCOLOR_LTYELLOW);
         } else {
@@ -2784,9 +2784,9 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
 
         // RENDER ON SAVE BUFFER!
         SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
-        VarFindFontCenterCoordinates((sTEAMNamesXY[posIndex] + 2), (sTEAMNamesXY[posIndex + 1]), TM_NAME_WIDTH, TM_NAME_HEIGHT, BLOCKFONT2, &sFontX, &sFontY, "%s", pSoldier->name);
-        mprintf(sFontX, sFontY, "%s", pSoldier->name);
-        gprintfRestore(sFontX, sFontY, "%s", pSoldier->name);
+        VarFindFontCenterCoordinates((sTEAMNamesXY[posIndex] + 2), (sTEAMNamesXY[posIndex + 1]), TM_NAME_WIDTH, TM_NAME_HEIGHT, BLOCKFONT2, &sFontX, &sFontY, "%s", pSoldier.value.name);
+        mprintf(sFontX, sFontY, "%s", pSoldier.value.name);
+        gprintfRestore(sFontX, sFontY, "%s", pSoldier.value.name);
         // reset to frame buffer!
         SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
       }
@@ -2802,24 +2802,24 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
       pSoldier = MercPtrs[gTeamPanel[cnt].ubID];
 
       // Update animations....
-      if (pSoldier->fClosePanel || pSoldier->fClosePanelToDie) {
-        pSoldier->sPanelFaceX = gFacesData[pSoldier->iFaceIndex].usFaceX;
-        pSoldier->sPanelFaceY = gFacesData[pSoldier->iFaceIndex].usFaceY;
+      if (pSoldier.value.fClosePanel || pSoldier.value.fClosePanelToDie) {
+        pSoldier.value.sPanelFaceX = gFacesData[pSoldier.value.iFaceIndex].usFaceX;
+        pSoldier.value.sPanelFaceY = gFacesData[pSoldier.value.iFaceIndex].usFaceY;
       }
 
       if (fDirty != DIRTYLEVEL0) {
         // UPdate stats!
         if (fDirty == DIRTYLEVEL2) {
-          if (pSoldier->bLife != 0) {
-            if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {
-              swprintf(pStr, TacticalStr[VEHICLE_VITAL_STATS_POPUPTEXT], pSoldier->bLife, pSoldier->bLifeMax, pSoldier->bBreath, pSoldier->bBreathMax);
+          if (pSoldier.value.bLife != 0) {
+            if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+              swprintf(pStr, TacticalStr[VEHICLE_VITAL_STATS_POPUPTEXT], pSoldier.value.bLife, pSoldier.value.bLifeMax, pSoldier.value.bBreath, pSoldier.value.bBreathMax);
               SetRegionFastHelpText(&(gTEAM_BarsRegions[cnt]), pStr);
-            } else if (pSoldier->uiStatusFlags & SOLDIER_ROBOT) {
-              swprintf(pStr, gzLateLocalizedString[16], pSoldier->bLife, pSoldier->bLifeMax);
+            } else if (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
+              swprintf(pStr, gzLateLocalizedString[16], pSoldier.value.bLife, pSoldier.value.bLifeMax);
               SetRegionFastHelpText(&(gTEAM_BarsRegions[cnt]), pStr);
             } else {
               GetMoraleString(pSoldier, pMoraleStr);
-              swprintf(pStr, TacticalStr[MERC_VITAL_STATS_POPUPTEXT], pSoldier->bLife, pSoldier->bLifeMax, pSoldier->bBreath, pSoldier->bBreathMax, pMoraleStr);
+              swprintf(pStr, TacticalStr[MERC_VITAL_STATS_POPUPTEXT], pSoldier.value.bLife, pSoldier.value.bLifeMax, pSoldier.value.bBreath, pSoldier.value.bBreathMax, pMoraleStr);
               SetRegionFastHelpText(&(gTEAM_BarsRegions[cnt]), pStr);
             }
           } else {
@@ -2827,27 +2827,27 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
           }
         }
 
-        if (!(pSoldier->uiStatusFlags & SOLDIER_DEAD)) {
+        if (!(pSoldier.value.uiStatusFlags & SOLDIER_DEAD)) {
           DrawLifeUIBarEx(pSoldier, sTEAMLifeXY[posIndex], sTEAMLifeXY[posIndex + 1], TM_LIFEBAR_WIDTH, TM_LIFEBAR_HEIGHT, TRUE, FRAME_BUFFER);
 
-          if (!(pSoldier->uiStatusFlags & SOLDIER_ROBOT)) {
+          if (!(pSoldier.value.uiStatusFlags & SOLDIER_ROBOT)) {
             DrawBreathUIBarEx(pSoldier, sTEAMBreathXY[posIndex], sTEAMBreathXY[posIndex + 1], TM_LIFEBAR_WIDTH, TM_LIFEBAR_HEIGHT, TRUE, FRAME_BUFFER);
             DrawMoraleUIBarEx(pSoldier, sTEAMMoraleXY[posIndex], sTEAMMoraleXY[posIndex + 1], TM_LIFEBAR_WIDTH, TM_LIFEBAR_HEIGHT, TRUE, FRAME_BUFFER);
           }
 
-          if (gTacticalStatus.uiFlags & TURNBASED && pSoldier->bLife >= OKLIFE) {
+          if (gTacticalStatus.uiFlags & TURNBASED && pSoldier.value.bLife >= OKLIFE) {
             // Render APs
             SetFont(TINYFONT1);
 
             // if ( pSoldier->sLastTarget != NOWHERE && !EnoughPoints( pSoldier, MinAPsToAttack( pSoldier, pSoldier->sLastTarget, TRUE ), 0, FALSE ) || GetUIApsToDisplay( pSoldier ) < 0 )
-            if (!EnoughPoints(pSoldier, MinAPsToAttack(pSoldier, pSoldier->sLastTarget, TRUE), 0, FALSE) || GetUIApsToDisplay(pSoldier) < 0) {
+            if (!EnoughPoints(pSoldier, MinAPsToAttack(pSoldier, pSoldier.value.sLastTarget, TRUE), 0, FALSE) || GetUIApsToDisplay(pSoldier) < 0) {
               SetFontBackground(FONT_MCOLOR_BLACK);
               SetFontForeground(FONT_MCOLOR_DKRED);
             } else {
               if (MercUnderTheInfluence(pSoldier)) {
                 SetFontBackground(FONT_MCOLOR_BLACK);
                 SetFontForeground(FONT_MCOLOR_LTBLUE);
-              } else if (pSoldier->bStealthMode) {
+              } else if (pSoldier.value.bStealthMode) {
                 SetFontBackground(FONT_MCOLOR_BLACK);
                 SetFontForeground(FONT_MCOLOR_LTYELLOW);
               } else {
@@ -2941,22 +2941,22 @@ function RemoveTEAMPanelButtons(): void {
 
 function BtnEndTurnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // END TURN
     UIHandleEndTurn(NULL);
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
 function BtnRostermodeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     if (guiCurrentScreen == GAME_SCREEN) {
       GoToMapScreenFromTactical();
@@ -2968,14 +2968,14 @@ function BtnRostermodeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 // callback to handle squad switching callback
 function BtnSquadCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Not Implemented Yet" );
     ToggleRadarScreenRender();
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
@@ -3046,20 +3046,20 @@ function HandleMouseOverTeamFaceForContMove(fOn: BOOLEAN): void {
     if (CheckForMercContMove(gpSMCurrentMerc)) {
       // Display 'cont' on face....
       // Get face
-      pFace = &gFacesData[gpSMCurrentMerc->iFaceIndex];
+      pFace = &gFacesData[gpSMCurrentMerc.value.iFaceIndex];
 
-      pFace->fDisplayTextOver = FACE_DRAW_TEXT_OVER;
-      wcscpy(pFace->zDisplayText, TacticalStr[CONTINUE_OVER_FACE_STR]);
+      pFace.value.fDisplayTextOver = FACE_DRAW_TEXT_OVER;
+      wcscpy(pFace.value.zDisplayText, TacticalStr[CONTINUE_OVER_FACE_STR]);
 
       // While our mouse is here, draw a path!
-      PlotPath(gpSMCurrentMerc, gpSMCurrentMerc->sFinalDestination, NO_COPYROUTE, PLOT, TEMPORARY, gpSMCurrentMerc->usUIMovementMode, NOT_STEALTH, FORWARD, gpSMCurrentMerc->bActionPoints);
+      PlotPath(gpSMCurrentMerc, gpSMCurrentMerc.value.sFinalDestination, NO_COPYROUTE, PLOT, TEMPORARY, gpSMCurrentMerc.value.usUIMovementMode, NOT_STEALTH, FORWARD, gpSMCurrentMerc.value.bActionPoints);
     }
   } else {
     // Remove 'cont' on face....
     // Get face
-    pFace = &gFacesData[gpSMCurrentMerc->iFaceIndex];
+    pFace = &gFacesData[gpSMCurrentMerc.value.iFaceIndex];
 
-    pFace->fDisplayTextOver = FACE_ERASE_TEXT_OVER;
+    pFace.value.fDisplayTextOver = FACE_ERASE_TEXT_OVER;
 
     // Erase path!
     ErasePath(TRUE);
@@ -3091,7 +3091,7 @@ function MercFacePanelMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 
   pSoldier = MercPtrs[ubSoldierID];
 
-  if (!pSoldier->bActive) {
+  if (!pSoldier.value.bActive) {
     return;
   }
 
@@ -3123,18 +3123,18 @@ function EnemyIndicatorClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
     return;
   }
 
-  if (!MercPtrs[ubSoldierID]->bActive) {
+  if (!MercPtrs[ubSoldierID].value.bActive) {
     return;
   }
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (MercPtrs[ubSoldierID]->uiStatusFlags & (SOLDIER_DRIVER | SOLDIER_PASSENGER)) {
+    if (MercPtrs[ubSoldierID].value.uiStatusFlags & (SOLDIER_DRIVER | SOLDIER_PASSENGER)) {
     } else {
       let pSoldier: Pointer<SOLDIERTYPE>;
 
       pSoldier = MercPtrs[ubSoldierID];
 
-      if (pSoldier->bOppCnt > 0) {
+      if (pSoldier.value.bOppCnt > 0) {
         // Cycle....
         CycleVisibleEnemies(pSoldier);
       } else {
@@ -3174,16 +3174,16 @@ function MercFacePanelCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
     return;
   }
 
-  if (!MercPtrs[ubSoldierID]->bActive) {
+  if (!MercPtrs[ubSoldierID].value.bActive) {
     return;
   }
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (!gfInItemPickupMenu && gpItemPointer == NULL) {
-      if (MercPtrs[ubSoldierID]->uiStatusFlags & (SOLDIER_DRIVER | SOLDIER_PASSENGER)) {
-        pVehicle = GetSoldierStructureForVehicle(MercPtrs[ubSoldierID]->iVehicleId);
+      if (MercPtrs[ubSoldierID].value.uiStatusFlags & (SOLDIER_DRIVER | SOLDIER_PASSENGER)) {
+        pVehicle = GetSoldierStructureForVehicle(MercPtrs[ubSoldierID].value.iVehicleId);
 
-        HandleLocateSelectMerc(pVehicle->ubID, 0);
+        HandleLocateSelectMerc(pVehicle.value.ubID, 0);
       } else {
         if (!InOverheadMap()) {
           // If we can continue a move, do so!
@@ -3202,7 +3202,7 @@ function MercFacePanelCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
     if (!InOverheadMap()) {
       // Only if guy is not dead!
-      if (!(MercPtrs[ubSoldierID]->uiStatusFlags & SOLDIER_DEAD) && !AM_AN_EPC(MercPtrs[ubSoldierID]) && !(MercPtrs[ubSoldierID]->uiStatusFlags & (SOLDIER_DRIVER | SOLDIER_PASSENGER))) {
+      if (!(MercPtrs[ubSoldierID].value.uiStatusFlags & SOLDIER_DEAD) && !AM_AN_EPC(MercPtrs[ubSoldierID]) && !(MercPtrs[ubSoldierID].value.uiStatusFlags & (SOLDIER_DRIVER | SOLDIER_PASSENGER))) {
         gfSwitchPanel = TRUE;
         gbNewPanel = SM_PANEL;
         gubNewPanelParam = ubSoldierID;
@@ -3214,7 +3214,7 @@ function MercFacePanelCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
 function HandleLocateSelectMerc(ubID: UINT8, bFlag: INT8): void {
   let fSelect: BOOLEAN = FALSE;
 
-  if (!MercPtrs[ubID]->bActive) {
+  if (!MercPtrs[ubID].value.bActive) {
     return;
   }
 
@@ -3224,7 +3224,7 @@ function HandleLocateSelectMerc(ubID: UINT8, bFlag: INT8): void {
   }
 
   // ATE: No matter what we do... if below OKLIFE, just locate....
-  if (MercPtrs[ubID]->bLife < OKLIFE) {
+  if (MercPtrs[ubID].value.bLife < OKLIFE) {
     LocateSoldier(ubID, SETLOCATOR);
     return;
   }
@@ -3233,14 +3233,14 @@ function HandleLocateSelectMerc(ubID: UINT8, bFlag: INT8): void {
     if (gGameSettings.fOptions[TOPTION_OLD_SELECTION_METHOD]) {
       // Select merc
       InternalSelectSoldier(ubID, TRUE, FALSE, TRUE);
-      MercPtrs[ubID]->fFlashLocator = FALSE;
+      MercPtrs[ubID].value.fFlashLocator = FALSE;
       ResetMultiSelection();
     } else {
       // Just locate....
       LocateSoldier(ubID, SETLOCATOR);
     }
   } else {
-    if (MercPtrs[ubID]->fFlashLocator == FALSE) {
+    if (MercPtrs[ubID].value.fFlashLocator == FALSE) {
       if (gGameSettings.fOptions[TOPTION_OLD_SELECTION_METHOD]) {
         // If we are currently selected, slide to location
         if (ubID == gusSelectedSoldier) {
@@ -3281,7 +3281,7 @@ function HandleLocateSelectMerc(ubID: UINT8, bFlag: INT8): void {
 
     if (fSelect) {
       // Select merc, only if alive!
-      if (!(MercPtrs[ubID]->uiStatusFlags & SOLDIER_DEAD)) {
+      if (!(MercPtrs[ubID].value.uiStatusFlags & SOLDIER_DEAD)) {
         InternalSelectSoldier(ubID, TRUE, FALSE, TRUE);
       }
     }
@@ -3294,12 +3294,12 @@ function HandleLocateSelectMerc(ubID: UINT8, bFlag: INT8): void {
 }
 
 function ShowRadioLocator(ubID: UINT8, ubLocatorSpeed: UINT8): void {
-  RESETTIMECOUNTER(MercPtrs[ubID]->FlashSelCounter, FLASH_SELECTOR_DELAY);
+  RESETTIMECOUNTER(MercPtrs[ubID].value.FlashSelCounter, FLASH_SELECTOR_DELAY);
 
   // LocateSoldier( ubID, FALSE );	// IC - this is already being done outside of this function :)
-  MercPtrs[ubID]->fFlashLocator = TRUE;
+  MercPtrs[ubID].value.fFlashLocator = TRUE;
   // gbPanelSelectedGuy = ubID;	IC - had to move this outside to make this function versatile
-  MercPtrs[ubID]->sLocatorFrame = 0;
+  MercPtrs[ubID].value.sLocatorFrame = 0;
 
   if (ubLocatorSpeed == SHOW_LOCATOR_NORMAL) {
     // If we are an AI guy, and we have the baton, make lower...
@@ -3309,24 +3309,24 @@ function ShowRadioLocator(ubID: UINT8, ubLocatorSpeed: UINT8): void {
     //
     // se
     //
-    MercPtrs[ubID]->ubNumLocateCycles = 5;
+    MercPtrs[ubID].value.ubNumLocateCycles = 5;
     //
   } else {
-    MercPtrs[ubID]->ubNumLocateCycles = 3;
+    MercPtrs[ubID].value.ubNumLocateCycles = 3;
   }
 }
 
 function EndRadioLocator(ubID: UINT8): void {
-  MercPtrs[ubID]->fFlashLocator = FALSE;
-  MercPtrs[ubID]->fShowLocator = FALSE;
+  MercPtrs[ubID].value.fFlashLocator = FALSE;
+  MercPtrs[ubID].value.fShowLocator = FALSE;
 }
 
 function CheckForFacePanelStartAnims(pSoldier: Pointer<SOLDIERTYPE>, sPanelX: INT16, sPanelY: INT16): void {
-  if (!pSoldier->bActive) {
+  if (!pSoldier.value.bActive) {
     return;
   }
 
-  if (pSoldier->fUIdeadMerc) {
+  if (pSoldier.value.fUIdeadMerc) {
     //		pSoldier->sPanelFaceX	= sPanelX;
     //		pSoldier->sPanelFaceY	= sPanelY;
   }
@@ -3340,154 +3340,154 @@ function FinishAnySkullPanelAnimations(): void {
 
   // run through list
   for (pTeamSoldier = MercPtrs[cnt2]; cnt2 <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt2++, pTeamSoldier++) {
-    if (pTeamSoldier->bActive && pTeamSoldier->bLife == 0) {
-      if (pTeamSoldier->fUIdeadMerc || pTeamSoldier->fClosePanelToDie) {
+    if (pTeamSoldier.value.bActive && pTeamSoldier.value.bLife == 0) {
+      if (pTeamSoldier.value.fUIdeadMerc || pTeamSoldier.value.fClosePanelToDie) {
         HandlePlayerTeamMemberDeathAfterSkullAnimation(pTeamSoldier);
 
-        pTeamSoldier->fUIdeadMerc = FALSE;
-        pTeamSoldier->fClosePanelToDie = FALSE;
+        pTeamSoldier.value.fUIdeadMerc = FALSE;
+        pTeamSoldier.value.fClosePanelToDie = FALSE;
       }
     }
   }
 }
 
 function HandlePanelFaceAnimations(pSoldier: Pointer<SOLDIERTYPE>): void {
-  if (pSoldier->bTeam != gbPlayerNum) {
+  if (pSoldier.value.bTeam != gbPlayerNum) {
     return;
   }
 
-  if (!pSoldier->bActive) {
+  if (!pSoldier.value.bActive) {
     return;
   }
 
-  if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
     // Don't do this for a vehice.
     return;
   }
 
   // If this is the first time we are active, open panel!
-  if (pSoldier->fUInewMerc) {
-    pSoldier->fUInewMerc = FALSE;
+  if (pSoldier.value.fUInewMerc) {
+    pSoldier.value.fUInewMerc = FALSE;
   }
 
-  if (pSoldier->fUICloseMerc) {
-    pSoldier->fUICloseMerc = FALSE;
+  if (pSoldier.value.fUICloseMerc) {
+    pSoldier.value.fUICloseMerc = FALSE;
   }
 
-  if (pSoldier->fUIdeadMerc) {
-    pSoldier->sPanelFaceX = gFacesData[pSoldier->iFaceIndex].usFaceX;
-    pSoldier->sPanelFaceY = gFacesData[pSoldier->iFaceIndex].usFaceY;
+  if (pSoldier.value.fUIdeadMerc) {
+    pSoldier.value.sPanelFaceX = gFacesData[pSoldier.value.iFaceIndex].usFaceX;
+    pSoldier.value.sPanelFaceY = gFacesData[pSoldier.value.iFaceIndex].usFaceY;
 
-    pSoldier->fUIdeadMerc = FALSE;
-    pSoldier->fClosePanel = TRUE;
-    pSoldier->fClosePanelToDie = TRUE;
-    pSoldier->ubClosePanelFrame = 0;
-    pSoldier->ubDeadPanelFrame = 0;
-    RESETTIMECOUNTER(pSoldier->PanelAnimateCounter, 160);
+    pSoldier.value.fUIdeadMerc = FALSE;
+    pSoldier.value.fClosePanel = TRUE;
+    pSoldier.value.fClosePanelToDie = TRUE;
+    pSoldier.value.ubClosePanelFrame = 0;
+    pSoldier.value.ubDeadPanelFrame = 0;
+    RESETTIMECOUNTER(pSoldier.value.PanelAnimateCounter, 160);
   }
 
-  if (pSoldier->fClosePanel) {
-    if (TIMECOUNTERDONE(pSoldier->PanelAnimateCounter, 160)) {
-      pSoldier->ubClosePanelFrame++;
+  if (pSoldier.value.fClosePanel) {
+    if (TIMECOUNTERDONE(pSoldier.value.PanelAnimateCounter, 160)) {
+      pSoldier.value.ubClosePanelFrame++;
 
-      if (pSoldier->ubClosePanelFrame > 5) {
-        pSoldier->fClosePanel = FALSE;
-        pSoldier->ubClosePanelFrame = 5;
+      if (pSoldier.value.ubClosePanelFrame > 5) {
+        pSoldier.value.fClosePanel = FALSE;
+        pSoldier.value.ubClosePanelFrame = 5;
 
-        if (pSoldier->fClosePanelToDie) {
-          pSoldier->fDeadPanel = TRUE;
+        if (pSoldier.value.fClosePanelToDie) {
+          pSoldier.value.fDeadPanel = TRUE;
           // PlayJA2Sample( (UINT8)HEADCR_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN );
         } else {
-          if (!gFacesData[pSoldier->iFaceIndex].fDisabled) {
-            RestoreExternBackgroundRect(pSoldier->sPanelFaceX, pSoldier->sPanelFaceY, TM_FACE_WIDTH, TM_FACE_HEIGHT);
+          if (!gFacesData[pSoldier.value.iFaceIndex].fDisabled) {
+            RestoreExternBackgroundRect(pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, TM_FACE_WIDTH, TM_FACE_HEIGHT);
           }
         }
       }
-      RESETTIMECOUNTER(pSoldier->PanelAnimateCounter, 160);
+      RESETTIMECOUNTER(pSoldier.value.PanelAnimateCounter, 160);
     }
   }
 
-  if (pSoldier->fClosePanel) {
+  if (pSoldier.value.fClosePanel) {
     // Render panel!
     // if(gbPixelDepth==16)
     //{
-    if (!gFacesData[pSoldier->iFaceIndex].fDisabled) {
-      RestoreExternBackgroundRect(pSoldier->sPanelFaceX, pSoldier->sPanelFaceY, TM_FACE_WIDTH, TM_FACE_HEIGHT);
-      BltVideoObjectFromIndex(FRAME_BUFFER, guiCLOSE, pSoldier->ubClosePanelFrame, pSoldier->sPanelFaceX, pSoldier->sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
-      InvalidateRegion(pSoldier->sPanelFaceX, pSoldier->sPanelFaceY, pSoldier->sPanelFaceX + TM_FACE_WIDTH, pSoldier->sPanelFaceY + TM_FACE_HEIGHT);
+    if (!gFacesData[pSoldier.value.iFaceIndex].fDisabled) {
+      RestoreExternBackgroundRect(pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, TM_FACE_WIDTH, TM_FACE_HEIGHT);
+      BltVideoObjectFromIndex(FRAME_BUFFER, guiCLOSE, pSoldier.value.ubClosePanelFrame, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+      InvalidateRegion(pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, pSoldier.value.sPanelFaceX + TM_FACE_WIDTH, pSoldier.value.sPanelFaceY + TM_FACE_HEIGHT);
     }
     //}
   }
 
-  if (pSoldier->fDeadPanel) {
-    if (TIMECOUNTERDONE(pSoldier->PanelAnimateCounter, 160)) {
-      pSoldier->ubDeadPanelFrame++;
+  if (pSoldier.value.fDeadPanel) {
+    if (TIMECOUNTERDONE(pSoldier.value.PanelAnimateCounter, 160)) {
+      pSoldier.value.ubDeadPanelFrame++;
 
-      if (pSoldier->ubDeadPanelFrame == 4) {
-        ScreenMsg(FONT_RED, MSG_SKULL_UI_FEEDBACK, pMercDeadString[0], pSoldier->name);
+      if (pSoldier.value.ubDeadPanelFrame == 4) {
+        ScreenMsg(FONT_RED, MSG_SKULL_UI_FEEDBACK, pMercDeadString[0], pSoldier.value.name);
 
         PlayJA2Sample(DOORCR_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
         PlayJA2Sample(HEADCR_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
       }
 
-      if (pSoldier->ubDeadPanelFrame > 5) {
-        pSoldier->fDeadPanel = FALSE;
-        pSoldier->ubDeadPanelFrame = 5;
-        pSoldier->fClosePanelToDie = FALSE;
+      if (pSoldier.value.ubDeadPanelFrame > 5) {
+        pSoldier.value.fDeadPanel = FALSE;
+        pSoldier.value.ubDeadPanelFrame = 5;
+        pSoldier.value.fClosePanelToDie = FALSE;
 
         // Finish!
-        if (!gFacesData[pSoldier->iFaceIndex].fDisabled) {
-          BltVideoObjectFromIndex(guiSAVEBUFFER, guiDEAD, pSoldier->ubDeadPanelFrame, pSoldier->sPanelFaceX, pSoldier->sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+        if (!gFacesData[pSoldier.value.iFaceIndex].fDisabled) {
+          BltVideoObjectFromIndex(guiSAVEBUFFER, guiDEAD, pSoldier.value.ubDeadPanelFrame, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
 
           // Blit hatch!
-          BltVideoObjectFromIndex(guiSAVEBUFFER, guiHATCH, 0, pSoldier->sPanelFaceX, pSoldier->sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObjectFromIndex(guiSAVEBUFFER, guiHATCH, 0, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
 
-          RestoreExternBackgroundRect(pSoldier->sPanelFaceX, pSoldier->sPanelFaceY, TM_FACE_WIDTH, TM_FACE_HEIGHT);
+          RestoreExternBackgroundRect(pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, TM_FACE_WIDTH, TM_FACE_HEIGHT);
         }
         HandlePlayerTeamMemberDeathAfterSkullAnimation(pSoldier);
       }
-      RESETTIMECOUNTER(pSoldier->PanelAnimateCounter, 160);
+      RESETTIMECOUNTER(pSoldier.value.PanelAnimateCounter, 160);
     }
   }
 
-  if (pSoldier->fDeadPanel) {
+  if (pSoldier.value.fDeadPanel) {
     // Render panel!
     // if(gbPixelDepth==16)
     //{
-    if (!gFacesData[pSoldier->iFaceIndex].fDisabled) {
-      BltVideoObjectFromIndex(FRAME_BUFFER, guiDEAD, pSoldier->ubDeadPanelFrame, pSoldier->sPanelFaceX, pSoldier->sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+    if (!gFacesData[pSoldier.value.iFaceIndex].fDisabled) {
+      BltVideoObjectFromIndex(FRAME_BUFFER, guiDEAD, pSoldier.value.ubDeadPanelFrame, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
 
       // Blit hatch!
-      BltVideoObjectFromIndex(guiSAVEBUFFER, guiHATCH, 0, pSoldier->sPanelFaceX, pSoldier->sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(guiSAVEBUFFER, guiHATCH, 0, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
 
-      InvalidateRegion(pSoldier->sPanelFaceX, pSoldier->sPanelFaceY, pSoldier->sPanelFaceX + TM_FACE_WIDTH, pSoldier->sPanelFaceY + TM_FACE_HEIGHT);
+      InvalidateRegion(pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, pSoldier.value.sPanelFaceX + TM_FACE_WIDTH, pSoldier.value.sPanelFaceY + TM_FACE_HEIGHT);
     }
     //}
   }
 
-  if (pSoldier->fOpenPanel) {
-    if (TIMECOUNTERDONE(pSoldier->PanelAnimateCounter, 160)) {
-      pSoldier->bOpenPanelFrame--;
+  if (pSoldier.value.fOpenPanel) {
+    if (TIMECOUNTERDONE(pSoldier.value.PanelAnimateCounter, 160)) {
+      pSoldier.value.bOpenPanelFrame--;
 
-      if (pSoldier->bOpenPanelFrame < 0) {
-        pSoldier->fOpenPanel = FALSE;
-        pSoldier->bOpenPanelFrame = 0;
+      if (pSoldier.value.bOpenPanelFrame < 0) {
+        pSoldier.value.fOpenPanel = FALSE;
+        pSoldier.value.bOpenPanelFrame = 0;
 
-        if (!gFacesData[pSoldier->iFaceIndex].fDisabled) {
-          RestoreExternBackgroundRect(pSoldier->sPanelFaceX, pSoldier->sPanelFaceY, TM_FACE_WIDTH, TM_FACE_HEIGHT);
+        if (!gFacesData[pSoldier.value.iFaceIndex].fDisabled) {
+          RestoreExternBackgroundRect(pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, TM_FACE_WIDTH, TM_FACE_HEIGHT);
         }
       }
-      RESETTIMECOUNTER(pSoldier->PanelAnimateCounter, 160);
+      RESETTIMECOUNTER(pSoldier.value.PanelAnimateCounter, 160);
     }
   }
 
-  if (pSoldier->fOpenPanel) {
+  if (pSoldier.value.fOpenPanel) {
     // Render panel!
     // if(gbPixelDepth==16)
     //{
-    if (!gFacesData[pSoldier->iFaceIndex].fDisabled) {
-      RestoreExternBackgroundRect(pSoldier->sPanelFaceX, pSoldier->sPanelFaceY, TM_FACE_WIDTH, TM_FACE_HEIGHT);
-      BltVideoObjectFromIndex(FRAME_BUFFER, guiCLOSE, pSoldier->bOpenPanelFrame, pSoldier->sPanelFaceX, pSoldier->sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
+    if (!gFacesData[pSoldier.value.iFaceIndex].fDisabled) {
+      RestoreExternBackgroundRect(pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, TM_FACE_WIDTH, TM_FACE_HEIGHT);
+      BltVideoObjectFromIndex(FRAME_BUFFER, guiCLOSE, pSoldier.value.bOpenPanelFrame, pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
       // InvalidateRegion( sTEAMFacesXY[ ubOpenPanelID ], sTEAMFacesXY[ ubOpenPanelID + 1 ], sTEAMFacesXY[ ubOpenPanelID ] + TM_FACE_WIDTH, sTEAMFacesXY[ ubOpenPanelID + 1 ] + TM_FACE_HEIGHT );
     }
     //}
@@ -3498,21 +3498,21 @@ function HandleSoldierFaceFlash(pSoldier: Pointer<SOLDIERTYPE>, sFaceX: INT16, s
 }
 
 function RenderSoldierTeamInv(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16, ubPanelNum: UINT8, fDirty: BOOLEAN): void {
-  if (pSoldier->bActive && !(pSoldier->uiStatusFlags & SOLDIER_DEAD)) {
-    if (pSoldier->uiStatusFlags & SOLDIER_DRIVER) {
+  if (pSoldier.value.bActive && !(pSoldier.value.uiStatusFlags & SOLDIER_DEAD)) {
+    if (pSoldier.value.uiStatusFlags & SOLDIER_DRIVER) {
       BltVideoObjectFromIndex(guiSAVEBUFFER, guiVEHINV, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
       RestoreExternBackgroundRect(sX, sY, (TM_INV_WIDTH), (TM_INV_HEIGHT));
     } else {
       // Look in primary hand
-      INVRenderItem(guiSAVEBUFFER, pSoldier, &(pSoldier->inv[HANDPOS]), sX, sY, TM_INV_WIDTH, TM_INV_HEIGHT, fDirty, &(gfTEAM_HandInvDispText[ubPanelNum][HANDPOS]), 0, FALSE, 0);
+      INVRenderItem(guiSAVEBUFFER, pSoldier, &(pSoldier.value.inv[HANDPOS]), sX, sY, TM_INV_WIDTH, TM_INV_HEIGHT, fDirty, &(gfTEAM_HandInvDispText[ubPanelNum][HANDPOS]), 0, FALSE, 0);
     }
 
-    if (pSoldier->uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
+    if (pSoldier.value.uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
       BltVideoObjectFromIndex(guiSAVEBUFFER, guiVEHINV, 1, sX, (sY + TM_INV_HAND_SEPY), VO_BLT_SRCTRANSPARENCY, NULL);
       RestoreExternBackgroundRect(sX, (sY + TM_INV_HAND_SEPY), (TM_INV_WIDTH), (TM_INV_HEIGHT));
     } else {
       // Do secondary hand
-      INVRenderItem(guiSAVEBUFFER, pSoldier, &(pSoldier->inv[SECONDHANDPOS]), sX, (sY + TM_INV_HAND_SEPY), TM_INV_WIDTH, TM_INV_HEIGHT, fDirty, &(gfTEAM_HandInvDispText[ubPanelNum][SECONDHANDPOS]), 0, FALSE, 0);
+      INVRenderItem(guiSAVEBUFFER, pSoldier, &(pSoldier.value.inv[SECONDHANDPOS]), sX, (sY + TM_INV_HAND_SEPY), TM_INV_WIDTH, TM_INV_HEIGHT, fDirty, &(gfTEAM_HandInvDispText[ubPanelNum][SECONDHANDPOS]), 0, FALSE, 0);
     }
   }
 }
@@ -3538,7 +3538,7 @@ function TMFirstHandInvCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
   // Now use soldier ID values
   ubSoldierID = gTeamPanel[ubID].ubID;
 
-  if (!MercPtrs[ubSoldierID]->bActive) {
+  if (!MercPtrs[ubSoldierID].value.bActive) {
     return;
   }
 
@@ -3578,10 +3578,10 @@ function TMClickFirstHandInvCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
 
   if (iReason == MSYS_CALLBACK_REASON_RBUTTON_UP) {
     if (!AM_A_ROBOT(MercPtrs[ubSoldierID])) {
-      usOldHandItem = MercPtrs[ubSoldierID]->inv[HANDPOS].usItem;
+      usOldHandItem = MercPtrs[ubSoldierID].value.inv[HANDPOS].usItem;
       // SwapOutHandItem( MercPtrs[ ubSoldierID ] );
       SwapHandItems(MercPtrs[ubSoldierID]);
-      ReLoadSoldierAnimationDueToHandItemChange(MercPtrs[ubSoldierID], usOldHandItem, MercPtrs[ubSoldierID]->inv[HANDPOS].usItem);
+      ReLoadSoldierAnimationDueToHandItemChange(MercPtrs[ubSoldierID], usOldHandItem, MercPtrs[ubSoldierID].value.inv[HANDPOS].usItem);
       fInterfacePanelDirty = DIRTYLEVEL2;
     }
   }
@@ -3604,18 +3604,18 @@ function TMClickSecondHandInvCallback(pRegion: Pointer<MOUSE_REGION>, iReason: I
     return;
 
   if (iReason == MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (MercPtrs[ubSoldierID]->uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
+    if (MercPtrs[ubSoldierID].value.uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
       ExitVehicle(MercPtrs[ubSoldierID]);
     }
   }
 
   if (iReason == MSYS_CALLBACK_REASON_RBUTTON_UP) {
-    if (MercPtrs[ubSoldierID]->uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
+    if (MercPtrs[ubSoldierID].value.uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
     } else {
       if (!AM_A_ROBOT(MercPtrs[ubSoldierID])) {
-        usOldHandItem = MercPtrs[ubSoldierID]->inv[HANDPOS].usItem;
+        usOldHandItem = MercPtrs[ubSoldierID].value.inv[HANDPOS].usItem;
         SwapHandItems(MercPtrs[ubSoldierID]);
-        ReLoadSoldierAnimationDueToHandItemChange(MercPtrs[ubSoldierID], usOldHandItem, MercPtrs[ubSoldierID]->inv[HANDPOS].usItem);
+        ReLoadSoldierAnimationDueToHandItemChange(MercPtrs[ubSoldierID], usOldHandItem, MercPtrs[ubSoldierID].value.inv[HANDPOS].usItem);
         fInterfacePanelDirty = DIRTYLEVEL2;
       }
     }
@@ -3669,7 +3669,7 @@ function AddPlayerToInterfaceTeamSlot(ubID: UINT8): void {
   let cnt: INT32;
 
   // If we are a vehicle don't ever add.....
-  if (MercPtrs[ubID]->uiStatusFlags & SOLDIER_VEHICLE) {
+  if (MercPtrs[ubID].value.uiStatusFlags & SOLDIER_VEHICLE) {
     return;
   }
 
@@ -3687,7 +3687,7 @@ function AddPlayerToInterfaceTeamSlot(ubID: UINT8): void {
         fInterfacePanelDirty = DIRTYLEVEL2;
 
         // Set ID to do open anim
-        MercPtrs[ubID]->fUInewMerc = TRUE;
+        MercPtrs[ubID].value.fUInewMerc = TRUE;
 
         break;
       }
@@ -3733,13 +3733,13 @@ function RemovePlayerFromInterfaceTeamSlot(ubPanelSlot: UINT8): BOOLEAN {
   }
 
   if (gTeamPanel[ubPanelSlot].fOccupied) {
-    if (!(MercPtrs[gTeamPanel[ubPanelSlot].ubID]->uiStatusFlags & SOLDIER_DEAD)) {
+    if (!(MercPtrs[gTeamPanel[ubPanelSlot].ubID].value.uiStatusFlags & SOLDIER_DEAD)) {
       // Set Id to close
-      MercPtrs[gTeamPanel[ubPanelSlot].ubID]->fUICloseMerc = TRUE;
+      MercPtrs[gTeamPanel[ubPanelSlot].ubID].value.fUICloseMerc = TRUE;
     }
 
     // Set face to inactive...
-    SetAutoFaceInActive(MercPtrs[gTeamPanel[ubPanelSlot].ubID]->iFaceIndex);
+    SetAutoFaceInActive(MercPtrs[gTeamPanel[ubPanelSlot].ubID].value.iFaceIndex);
 
     gTeamPanel[ubPanelSlot].fOccupied = FALSE;
     gTeamPanel[ubPanelSlot].ubID = NOBODY;
@@ -3773,25 +3773,25 @@ function RenderTownIDString(): void {
 }
 
 function CheckForAndAddMercToTeamPanel(pSoldier: Pointer<SOLDIERTYPE>): void {
-  if (pSoldier->bActive) {
+  if (pSoldier.value.bActive) {
     // Add to interface if the are ours
-    if (pSoldier->bTeam == gbPlayerNum) {
+    if (pSoldier.value.bTeam == gbPlayerNum) {
       // Are we in the loaded sector?
-      if (pSoldier->sSectorX == gWorldSectorX && pSoldier->sSectorY == gWorldSectorY && pSoldier->bSectorZ == gbWorldSectorZ && !pSoldier->fBetweenSectors && pSoldier->bInSector) {
+      if (pSoldier.value.sSectorX == gWorldSectorX && pSoldier.value.sSectorY == gWorldSectorY && pSoldier.value.bSectorZ == gbWorldSectorZ && !pSoldier.value.fBetweenSectors && pSoldier.value.bInSector) {
         // IF on duty....
-        if ((pSoldier->bAssignment == CurrentSquad()) || (SoldierIsDeadAndWasOnSquad(pSoldier, (CurrentSquad())))) {
-          if (pSoldier->bAssignment == ASSIGNMENT_DEAD) {
-            pSoldier->fUICloseMerc = FALSE;
+        if ((pSoldier.value.bAssignment == CurrentSquad()) || (SoldierIsDeadAndWasOnSquad(pSoldier, (CurrentSquad())))) {
+          if (pSoldier.value.bAssignment == ASSIGNMENT_DEAD) {
+            pSoldier.value.fUICloseMerc = FALSE;
           }
           // ATE: ALrighty, if we have the insertion code of helicopter..... don't add just yet!
           /// ( will add in heli code )
-          if (pSoldier->ubStrategicInsertionCode != INSERTION_CODE_CHOPPER) {
-            AddPlayerToInterfaceTeamSlot(pSoldier->ubID);
+          if (pSoldier.value.ubStrategicInsertionCode != INSERTION_CODE_CHOPPER) {
+            AddPlayerToInterfaceTeamSlot(pSoldier.value.ubID);
           }
 
           // ARE WE A VEHICLE.....
-          if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {
-            AddPassangersToTeamPanel(pSoldier->bVehicleID);
+          if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+            AddPassangersToTeamPanel(pSoldier.value.bVehicleID);
           }
         }
       } else {
@@ -3811,10 +3811,10 @@ function FindNextMercInTeamPanel(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKL
   let bFirstID: INT32;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
-  bFirstID = GetTeamSlotFromPlayerID(pSoldier->ubID);
+  bFirstID = GetTeamSlotFromPlayerID(pSoldier.value.ubID);
 
   if (bFirstID == -1) {
-    return pSoldier->ubID;
+    return pSoldier.value.ubID;
   }
 
   for (cnt = (bFirstID + 1); cnt < NUM_TEAM_SLOTS; cnt++) {
@@ -3823,17 +3823,17 @@ function FindNextMercInTeamPanel(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKL
       pTeamSoldier = MercPtrs[gTeamPanel[cnt].ubID];
 
       if (fOnlyRegularMercs) {
-        if (pTeamSoldier->bActive && (AM_AN_EPC(pTeamSoldier) || AM_A_ROBOT(pTeamSoldier))) {
+        if (pTeamSoldier.value.bActive && (AM_AN_EPC(pTeamSoldier) || AM_A_ROBOT(pTeamSoldier))) {
           continue;
         }
       }
 
       if (fGoodForLessOKLife) {
-        if (pTeamSoldier->bLife > 0 && pTeamSoldier->bActive && pTeamSoldier->bInSector && pTeamSoldier->bTeam == gbPlayerNum && pTeamSoldier->bAssignment < ON_DUTY && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier->bAssignment == pTeamSoldier->bAssignment) {
+        if (pTeamSoldier.value.bLife > 0 && pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector && pTeamSoldier.value.bTeam == gbPlayerNum && pTeamSoldier.value.bAssignment < ON_DUTY && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier.value.bAssignment == pTeamSoldier.value.bAssignment) {
           return gTeamPanel[cnt].ubID;
         }
       } else {
-        if (OK_CONTROLLABLE_MERC(pTeamSoldier) && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier->bAssignment == pTeamSoldier->bAssignment) {
+        if (OK_CONTROLLABLE_MERC(pTeamSoldier) && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier.value.bAssignment == pTeamSoldier.value.bAssignment) {
           return gTeamPanel[cnt].ubID;
         }
       }
@@ -3847,17 +3847,17 @@ function FindNextMercInTeamPanel(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKL
       pTeamSoldier = MercPtrs[gTeamPanel[cnt].ubID];
 
       if (fOnlyRegularMercs) {
-        if (pTeamSoldier->bActive && (AM_AN_EPC(pTeamSoldier) || AM_A_ROBOT(pTeamSoldier))) {
+        if (pTeamSoldier.value.bActive && (AM_AN_EPC(pTeamSoldier) || AM_A_ROBOT(pTeamSoldier))) {
           continue;
         }
       }
 
       if (fGoodForLessOKLife) {
-        if (pTeamSoldier->bLife > 0 && pTeamSoldier->bActive && pTeamSoldier->bInSector && pTeamSoldier->bTeam == gbPlayerNum && pTeamSoldier->bAssignment < ON_DUTY && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier->bAssignment == pTeamSoldier->bAssignment) {
+        if (pTeamSoldier.value.bLife > 0 && pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector && pTeamSoldier.value.bTeam == gbPlayerNum && pTeamSoldier.value.bAssignment < ON_DUTY && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier.value.bAssignment == pTeamSoldier.value.bAssignment) {
           return gTeamPanel[cnt].ubID;
         }
       } else {
-        if (OK_CONTROLLABLE_MERC(pTeamSoldier) && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier->bAssignment == pTeamSoldier->bAssignment) {
+        if (OK_CONTROLLABLE_MERC(pTeamSoldier) && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier.value.bAssignment == pTeamSoldier.value.bAssignment) {
           return gTeamPanel[cnt].ubID;
         }
       }
@@ -3865,7 +3865,7 @@ function FindNextMercInTeamPanel(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKL
   }
 
   // IF we are here, keep as we always were!
-  return pSoldier->ubID;
+  return pSoldier.value.ubID;
 }
 
 function HelpTextDoneCallback(): void {
@@ -4017,14 +4017,14 @@ function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
     // If we do not have an item in hand, start moving it
     if (gpItemPointer == NULL) {
       // Return if empty
-      if ((gpItemPopupSoldier->pKeyRing[uiKeyRing].ubKeyID == INVALID_KEY_NUMBER) || (gpItemPopupSoldier->pKeyRing[uiKeyRing].ubNumber == 0))
+      if ((gpItemPopupSoldier.value.pKeyRing[uiKeyRing].ubKeyID == INVALID_KEY_NUMBER) || (gpItemPopupSoldier.value.pKeyRing[uiKeyRing].ubNumber == 0))
         return;
 
       // If our flags are set to do this, gofoit!
       if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
       } else {
-        if (gpItemPopupSoldier->ubID != gusSelectedSoldier) {
-          SelectSoldier(gpItemPopupSoldier->ubID, FALSE, FALSE);
+        if (gpItemPopupSoldier.value.ubID != gusSelectedSoldier) {
+          SelectSoldier(gpItemPopupSoldier.value.ubID, FALSE, FALSE);
         }
       }
 
@@ -4038,14 +4038,14 @@ function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
       let fOKToGo: BOOLEAN = FALSE;
       let fDeductPoints: BOOLEAN = FALSE;
 
-      if ((gpItemPointer->usItem < FIRST_KEY) || (gpItemPointer->usItem > KEY_32)) {
+      if ((gpItemPointer.value.usItem < FIRST_KEY) || (gpItemPointer.value.usItem > KEY_32)) {
         return;
       }
 
       // ATE: OK, get source, dest guy if different... check for and then charge appropriate APs
       ubSrcID = gCharactersList[bSelectedInfoChar].usSolID;
       if (gpItemPointerSoldier) {
-        ubDestID = gpItemPointerSoldier->ubID;
+        ubDestID = gpItemPointerSoldier.value.ubID;
       } else {
         ubDestID = ubSrcID;
       }
@@ -4058,7 +4058,7 @@ function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
         fDeductPoints = TRUE;
 
         // First check points for src guy
-        if (gpItemPointerSoldier->bLife >= CONSCIOUSNESS) {
+        if (gpItemPointerSoldier.value.bLife >= CONSCIOUSNESS) {
           if (EnoughPoints(gpItemPointerSoldier, 2, 0, TRUE)) {
             fOKToGo = TRUE;
           }
@@ -4068,7 +4068,7 @@ function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
 
         // Should we go on?
         if (fOKToGo) {
-          if (gpSMCurrentMerc->bLife >= CONSCIOUSNESS) {
+          if (gpSMCurrentMerc.value.bLife >= CONSCIOUSNESS) {
             if (EnoughPoints(gpSMCurrentMerc, 2, 0, TRUE)) {
               fOKToGo = TRUE;
             } else {
@@ -4082,15 +4082,15 @@ function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
         // usOldItemIndex = gpSMCurrentMerc->inv[ uiHandPos ].usItem;
         // usNewItemIndex = gpItemPointer->usItem;
 
-        if (gpItemPopupSoldier->pKeyRing[uiKeyRing].ubKeyID == INVALID_KEY_NUMBER || gpItemPopupSoldier->pKeyRing[uiKeyRing].ubKeyID == gpItemPointer->ubKeyID) {
+        if (gpItemPopupSoldier.value.pKeyRing[uiKeyRing].ubKeyID == INVALID_KEY_NUMBER || gpItemPopupSoldier.value.pKeyRing[uiKeyRing].ubKeyID == gpItemPointer.value.ubKeyID) {
           // Try to place here
           if ((iNumberOfKeysTaken = AddKeysToSlot(gpItemPopupSoldier, uiKeyRing, gpItemPointer))) {
             if (fDeductPoints) {
               // Deduct points
-              if (gpItemPointerSoldier->bLife >= CONSCIOUSNESS) {
+              if (gpItemPointerSoldier.value.bLife >= CONSCIOUSNESS) {
                 DeductPoints(gpItemPointerSoldier, 2, 0);
               }
-              if (gpItemPopupSoldier->bLife >= CONSCIOUSNESS) {
+              if (gpItemPopupSoldier.value.bLife >= CONSCIOUSNESS) {
                 DeductPoints(gpItemPopupSoldier, 2, 0);
               }
             }
@@ -4098,10 +4098,10 @@ function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
             // Dirty
             fInterfacePanelDirty = DIRTYLEVEL2;
 
-            gpItemPointer->ubNumberOfObjects -= iNumberOfKeysTaken;
+            gpItemPointer.value.ubNumberOfObjects -= iNumberOfKeysTaken;
 
             // Check if it's the same now!
-            if (gpItemPointer->ubNumberOfObjects == 0) {
+            if (gpItemPointer.value.ubNumberOfObjects == 0) {
               if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) {
                 MAPEndItemPointer();
               } else {
@@ -4120,10 +4120,10 @@ function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
 
           if (fDeductPoints) {
             // Deduct points
-            if (gpItemPointerSoldier && gpItemPointerSoldier->bLife >= CONSCIOUSNESS) {
+            if (gpItemPointerSoldier && gpItemPointerSoldier.value.bLife >= CONSCIOUSNESS) {
               DeductPoints(gpItemPointerSoldier, 2, 0);
             }
-            if (gpSMCurrentMerc->bLife >= CONSCIOUSNESS) {
+            if (gpSMCurrentMerc.value.bLife >= CONSCIOUSNESS) {
               DeductPoints(gpSMCurrentMerc, 2, 0);
             }
           }
@@ -4141,7 +4141,7 @@ function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
     fRightDown = FALSE;
 
     // Return if empty
-    if ((gpItemPopupSoldier->pKeyRing[uiKeyRing].ubKeyID == INVALID_KEY_NUMBER) || (gpItemPopupSoldier->pKeyRing[uiKeyRing].ubNumber == 0)) {
+    if ((gpItemPopupSoldier.value.pKeyRing[uiKeyRing].ubKeyID == INVALID_KEY_NUMBER) || (gpItemPopupSoldier.value.pKeyRing[uiKeyRing].ubNumber == 0)) {
       DeleteKeyRingPopup();
       fTeamPanelDirty = TRUE;
       return;
@@ -4197,40 +4197,40 @@ function DisableSMPpanelButtonsWhenInShopKeeperInterface(fDontDrawButtons: BOOLE
     // ATM:
 
     // Go through the buttons that will be under the ShopKeepers ATM panel and disable them
-    ButtonList[iSMPanelButtons[STANCEUP_BUTTON]]->uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[UPDOWN_BUTTON]]->uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[CLIMB_BUTTON]]->uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[STANCEDOWN_BUTTON]]->uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]]->uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[BURSTMODE_BUTTON]]->uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[LOOK_BUTTON]]->uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[TALK_BUTTON]]->uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[MUTE_BUTTON]]->uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[STANCEUP_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[UPDOWN_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[CLIMB_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[STANCEDOWN_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[BURSTMODE_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[LOOK_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[TALK_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[MUTE_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
 
-    ButtonList[giSMStealthButton]->uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[giSMStealthButton].value.uiFlags &= ~BUTTON_DIRTY;
 
     // Make sure the options button is disabled
-    ButtonList[iSMPanelButtons[OPTIONS_BUTTON]]->uiFlags &= ~BUTTON_ENABLED;
+    ButtonList[iSMPanelButtons[OPTIONS_BUTTON]].value.uiFlags &= ~BUTTON_ENABLED;
 
     // Make sure the mapscreen button is disabled
-    ButtonList[iSMPanelButtons[SM_MAP_SCREEN_BUTTON]]->uiFlags &= ~BUTTON_ENABLED;
+    ButtonList[iSMPanelButtons[SM_MAP_SCREEN_BUTTON]].value.uiFlags &= ~BUTTON_ENABLED;
 
-    ButtonList[iSMPanelButtons[STANCEUP_BUTTON]]->uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[UPDOWN_BUTTON]]->uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[CLIMB_BUTTON]]->uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[STANCEDOWN_BUTTON]]->uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]]->uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[BURSTMODE_BUTTON]]->uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[LOOK_BUTTON]]->uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[TALK_BUTTON]]->uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[MUTE_BUTTON]]->uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[STANCEUP_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[UPDOWN_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[CLIMB_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[STANCEDOWN_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[BURSTMODE_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[LOOK_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[TALK_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[MUTE_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
 
-    ButtonList[giSMStealthButton]->uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[giSMStealthButton].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
   }
 }
 
 function IsMouseInRegion(pRegion: Pointer<MOUSE_REGION>): BOOLEAN {
-  if ((gusMouseXPos >= pRegion->RegionTopLeftX) && (gusMouseXPos <= pRegion->RegionBottomRightX) && (gusMouseYPos >= pRegion->RegionTopLeftY) && (gusMouseYPos <= pRegion->RegionBottomRightY)) {
+  if ((gusMouseXPos >= pRegion.value.RegionTopLeftX) && (gusMouseXPos <= pRegion.value.RegionBottomRightX) && (gusMouseYPos >= pRegion.value.RegionTopLeftY) && (gusMouseYPos <= pRegion.value.RegionBottomRightY)) {
     return TRUE;
   } else {
     return FALSE;
@@ -4263,7 +4263,7 @@ function SMInvMoneyButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
     // if the player has an item in his hand,
     if (gpItemPointer != NULL) {
       // and the item is money
-      if (Item[gpItemPointer->usItem].usItemClass == IC_MONEY) {
+      if (Item[gpItemPointer.value.usItem].usItemClass == IC_MONEY) {
         let zText: CHAR16[] /* [512] */;
         let zMoney: CHAR16[] /* [64] */;
 
@@ -4271,7 +4271,7 @@ function SMInvMoneyButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
         guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
         HandleTacticalUI();
 
-        swprintf(zMoney, "%d", gpItemPointer->uiMoneyAmount);
+        swprintf(zMoney, "%d", gpItemPointer.value.uiMoneyAmount);
 
         InsertCommasForDollarFigure(zMoney);
         InsertDollarSignInToString(zMoney);
@@ -4310,7 +4310,7 @@ function SMInvMoneyButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
 function ConfirmationToDepositMoneyToPlayersAccount(ubExitValue: UINT8): void {
   if (ubExitValue == MSG_BOX_RETURN_YES) {
     // add the money to the players account
-    AddTransactionToPlayersBook(MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT, gpSMCurrentMerc->ubProfile, GetWorldTotalMin(), gpItemPointer->uiMoneyAmount);
+    AddTransactionToPlayersBook(MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT, gpSMCurrentMerc.value.ubProfile, GetWorldTotalMin(), gpItemPointer.value.uiMoneyAmount);
 
     // dirty shopkeeper
     gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
@@ -4357,13 +4357,13 @@ function GoToMapScreenFromTactical(): void {
 
 function HandleTacticalEffectsOfEquipmentChange(pSoldier: Pointer<SOLDIERTYPE>, uiInvPos: UINT32, usOldItem: UINT16, usNewItem: UINT16): void {
   // if in attached weapon mode and don't have weapon with GL attached in hand, reset weapon mode
-  if (pSoldier->bWeaponMode == WM_ATTACHED && FindAttachment(&(pSoldier->inv[HANDPOS]), UNDER_GLAUNCHER) == NO_SLOT) {
-    pSoldier->bWeaponMode = WM_NORMAL;
-    pSoldier->bDoBurst = FALSE;
+  if (pSoldier.value.bWeaponMode == WM_ATTACHED && FindAttachment(&(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER) == NO_SLOT) {
+    pSoldier.value.bWeaponMode = WM_NORMAL;
+    pSoldier.value.bDoBurst = FALSE;
   }
 
   // if he is loaded tactically
-  if (pSoldier->bInSector) {
+  if (pSoldier.value.bInSector) {
     // If this is our main hand
     if (uiInvPos == HANDPOS || uiInvPos == SECONDHANDPOS) {
       // check if we need to change animation!
@@ -4378,9 +4378,9 @@ function HandleTacticalEffectsOfEquipmentChange(pSoldier: Pointer<SOLDIERTYPE>, 
     }
   } else {
     // as a minimum
-    if ((Item[pSoldier->inv[HANDPOS].usItem].usItemClass & IC_WEAPON) && Weapon[pSoldier->inv[HANDPOS].usItem].ubShotsPerBurst == 0) {
-      pSoldier->bDoBurst = FALSE;
-      pSoldier->bWeaponMode = WM_NORMAL;
+    if ((Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass & IC_WEAPON) && Weapon[pSoldier.value.inv[HANDPOS].usItem].ubShotsPerBurst == 0) {
+      pSoldier.value.bDoBurst = FALSE;
+      pSoldier.value.bWeaponMode = WM_NORMAL;
     }
   }
 }

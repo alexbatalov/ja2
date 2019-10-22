@@ -103,7 +103,7 @@ function MercThinksHisMoraleIsTooLow(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let bRepTolerance: INT8;
   let bMoraleTolerance: INT8;
 
-  bRepTolerance = gMercProfiles[pSoldier->ubProfile].bReputationTolerance;
+  bRepTolerance = gMercProfiles[pSoldier.value.ubProfile].bReputationTolerance;
 
   // if he couldn't care less what it is
   if (bRepTolerance == 101) {
@@ -115,7 +115,7 @@ function MercThinksHisMoraleIsTooLow(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // above 50, morale is GOOD, never below tolerance then
   bMoraleTolerance = (100 - bRepTolerance) / 2;
 
-  if (pSoldier->bMorale < bMoraleTolerance) {
+  if (pSoldier.value.bMorale < bMoraleTolerance) {
     // too low - sorry
     return TRUE;
   } else {

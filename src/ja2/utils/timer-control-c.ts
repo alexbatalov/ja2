@@ -88,8 +88,8 @@ function TimeProc(uID: UINT, uMsg: UINT, dwUser: DWORD, dw1: DWORD, dw2: DWORD):
         // IN Mapscreen, loop through player's team.....
         for (gCNT = gTacticalStatus.Team[gbPlayerNum].bFirstID; gCNT <= gTacticalStatus.Team[gbPlayerNum].bLastID; gCNT++) {
           gPSOLDIER = MercPtrs[gCNT];
-          UPDATETIMECOUNTER(gPSOLDIER->PortraitFlashCounter);
-          UPDATETIMECOUNTER(gPSOLDIER->PanelAnimateCounter);
+          UPDATETIMECOUNTER(gPSOLDIER.value.PortraitFlashCounter);
+          UPDATETIMECOUNTER(gPSOLDIER.value.PanelAnimateCounter);
         }
       } else {
         // Set update flags for soldiers
@@ -98,16 +98,16 @@ function TimeProc(uID: UINT, uMsg: UINT, dwUser: DWORD, dw1: DWORD, dw2: DWORD):
           gPSOLDIER = MercSlots[gCNT];
 
           if (gPSOLDIER != NULL) {
-            UPDATETIMECOUNTER(gPSOLDIER->UpdateCounter);
-            UPDATETIMECOUNTER(gPSOLDIER->DamageCounter);
-            UPDATETIMECOUNTER(gPSOLDIER->ReloadCounter);
-            UPDATETIMECOUNTER(gPSOLDIER->FlashSelCounter);
-            UPDATETIMECOUNTER(gPSOLDIER->BlinkSelCounter);
-            UPDATETIMECOUNTER(gPSOLDIER->PortraitFlashCounter);
-            UPDATETIMECOUNTER(gPSOLDIER->AICounter);
-            UPDATETIMECOUNTER(gPSOLDIER->FadeCounter);
-            UPDATETIMECOUNTER(gPSOLDIER->NextTileCounter);
-            UPDATETIMECOUNTER(gPSOLDIER->PanelAnimateCounter);
+            UPDATETIMECOUNTER(gPSOLDIER.value.UpdateCounter);
+            UPDATETIMECOUNTER(gPSOLDIER.value.DamageCounter);
+            UPDATETIMECOUNTER(gPSOLDIER.value.ReloadCounter);
+            UPDATETIMECOUNTER(gPSOLDIER.value.FlashSelCounter);
+            UPDATETIMECOUNTER(gPSOLDIER.value.BlinkSelCounter);
+            UPDATETIMECOUNTER(gPSOLDIER.value.PortraitFlashCounter);
+            UPDATETIMECOUNTER(gPSOLDIER.value.AICounter);
+            UPDATETIMECOUNTER(gPSOLDIER.value.FadeCounter);
+            UPDATETIMECOUNTER(gPSOLDIER.value.NextTileCounter);
+            UPDATETIMECOUNTER(gPSOLDIER.value.PanelAnimateCounter);
           }
         }
       }

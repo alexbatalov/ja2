@@ -27,7 +27,7 @@ function NumHostilesInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16):
     let pSector: Pointer<UNDERGROUND_SECTORINFO>;
     pSector = FindUnderGroundSector(sSectorX, sSectorY, sSectorZ);
     if (pSector) {
-      ubNumHostiles = (pSector->ubNumAdmins + pSector->ubNumTroops + pSector->ubNumElites + pSector->ubNumCreatures);
+      ubNumHostiles = (pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites + pSector.value.ubNumCreatures);
     }
   } else {
     let pSector: Pointer<SECTORINFO>;
@@ -35,15 +35,15 @@ function NumHostilesInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16):
 
     // Count stationary hostiles
     pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
-    ubNumHostiles = (pSector->ubNumAdmins + pSector->ubNumTroops + pSector->ubNumElites + pSector->ubNumCreatures);
+    ubNumHostiles = (pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites + pSector.value.ubNumCreatures);
 
     // Count mobile enemies
     pGroup = gpGroupList;
     while (pGroup) {
-      if (!pGroup->fPlayer && !pGroup->fVehicle && pGroup->ubSectorX == sSectorX && pGroup->ubSectorY == sSectorY) {
-        ubNumHostiles += pGroup->ubGroupSize;
+      if (!pGroup.value.fPlayer && !pGroup.value.fVehicle && pGroup.value.ubSectorX == sSectorX && pGroup.value.ubSectorY == sSectorY) {
+        ubNumHostiles += pGroup.value.ubGroupSize;
       }
-      pGroup = pGroup->next;
+      pGroup = pGroup.value.next;
     }
   }
 
@@ -61,7 +61,7 @@ function NumEnemiesInAnySector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16
     let pSector: Pointer<UNDERGROUND_SECTORINFO>;
     pSector = FindUnderGroundSector(sSectorX, sSectorY, sSectorZ);
     if (pSector) {
-      ubNumEnemies = (pSector->ubNumAdmins + pSector->ubNumTroops + pSector->ubNumElites);
+      ubNumEnemies = (pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites);
     }
   } else {
     let pSector: Pointer<SECTORINFO>;
@@ -69,15 +69,15 @@ function NumEnemiesInAnySector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16
 
     // Count stationary enemies
     pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
-    ubNumEnemies = (pSector->ubNumAdmins + pSector->ubNumTroops + pSector->ubNumElites);
+    ubNumEnemies = (pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites);
 
     // Count mobile enemies
     pGroup = gpGroupList;
     while (pGroup) {
-      if (!pGroup->fPlayer && !pGroup->fVehicle && pGroup->ubSectorX == sSectorX && pGroup->ubSectorY == sSectorY) {
-        ubNumEnemies += pGroup->ubGroupSize;
+      if (!pGroup.value.fPlayer && !pGroup.value.fVehicle && pGroup.value.ubSectorX == sSectorX && pGroup.value.ubSectorY == sSectorY) {
+        ubNumEnemies += pGroup.value.ubGroupSize;
       }
-      pGroup = pGroup->next;
+      pGroup = pGroup.value.next;
     }
   }
 
@@ -91,14 +91,14 @@ function NumEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
   Assert(sSectorX >= 1 && sSectorX <= 16);
   Assert(sSectorY >= 1 && sSectorY <= 16);
   pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
-  ubNumTroops = (pSector->ubNumAdmins + pSector->ubNumTroops + pSector->ubNumElites);
+  ubNumTroops = (pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites);
 
   pGroup = gpGroupList;
   while (pGroup) {
-    if (!pGroup->fPlayer && !pGroup->fVehicle && pGroup->ubSectorX == sSectorX && pGroup->ubSectorY == sSectorY) {
-      ubNumTroops += pGroup->ubGroupSize;
+    if (!pGroup.value.fPlayer && !pGroup.value.fVehicle && pGroup.value.ubSectorX == sSectorX && pGroup.value.ubSectorY == sSectorY) {
+      ubNumTroops += pGroup.value.ubGroupSize;
     }
-    pGroup = pGroup->next;
+    pGroup = pGroup.value.next;
   }
   return ubNumTroops;
 }
@@ -109,18 +109,18 @@ function NumStationaryEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
   Assert(sSectorY >= 1 && sSectorY <= 16);
   pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
 
-  if (pSector->ubGarrisonID == NO_GARRISON) {
+  if (pSector.value.ubGarrisonID == NO_GARRISON) {
     // If no garrison, no stationary.
     return 0;
   }
 
   // don't count roadblocks as stationary garrison, we want to see how many enemies are in them, not question marks
-  if (gGarrisonGroup[pSector->ubGarrisonID].ubComposition == ROADBLOCK) {
+  if (gGarrisonGroup[pSector.value.ubGarrisonID].ubComposition == ROADBLOCK) {
     // pretend they're not stationary
     return 0;
   }
 
-  return (pSector->ubNumAdmins + pSector->ubNumTroops + pSector->ubNumElites);
+  return (pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites);
 }
 
 function NumMobileEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
@@ -133,16 +133,16 @@ function NumMobileEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
   ubNumTroops = 0;
   pGroup = gpGroupList;
   while (pGroup) {
-    if (!pGroup->fPlayer && !pGroup->fVehicle && pGroup->ubSectorX == sSectorX && pGroup->ubSectorY == sSectorY) {
-      ubNumTroops += pGroup->ubGroupSize;
+    if (!pGroup.value.fPlayer && !pGroup.value.fVehicle && pGroup.value.ubSectorX == sSectorX && pGroup.value.ubSectorY == sSectorY) {
+      ubNumTroops += pGroup.value.ubGroupSize;
     }
-    pGroup = pGroup->next;
+    pGroup = pGroup.value.next;
   }
 
   pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
-  if (pSector->ubGarrisonID == ROADBLOCK) {
+  if (pSector.value.ubGarrisonID == ROADBLOCK) {
     // consider these troops as mobile troops even though they are in a garrison
-    ubNumTroops += (pSector->ubNumAdmins + pSector->ubNumTroops + pSector->ubNumElites);
+    ubNumTroops += (pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites);
   }
 
   return ubNumTroops;
@@ -158,20 +158,20 @@ function GetNumberOfMobileEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubN
   *pubNumTroops = *pubNumElites = *pubNumAdmins = 0;
   pGroup = gpGroupList;
   while (pGroup) {
-    if (!pGroup->fPlayer && !pGroup->fVehicle && pGroup->ubSectorX == sSectorX && pGroup->ubSectorY == sSectorY) {
-      *pubNumTroops += pGroup->pEnemyGroup->ubNumTroops;
-      *pubNumElites += pGroup->pEnemyGroup->ubNumElites;
-      *pubNumAdmins += pGroup->pEnemyGroup->ubNumAdmins;
+    if (!pGroup.value.fPlayer && !pGroup.value.fVehicle && pGroup.value.ubSectorX == sSectorX && pGroup.value.ubSectorY == sSectorY) {
+      *pubNumTroops += pGroup.value.pEnemyGroup.value.ubNumTroops;
+      *pubNumElites += pGroup.value.pEnemyGroup.value.ubNumElites;
+      *pubNumAdmins += pGroup.value.pEnemyGroup.value.ubNumAdmins;
     }
-    pGroup = pGroup->next;
+    pGroup = pGroup.value.next;
   }
 
   pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
-  if (pSector->ubGarrisonID == ROADBLOCK) {
+  if (pSector.value.ubGarrisonID == ROADBLOCK) {
     // consider these troops as mobile troops even though they are in a garrison
-    *pubNumAdmins += pSector->ubNumAdmins;
-    *pubNumTroops += pSector->ubNumTroops;
-    *pubNumElites += pSector->ubNumElites;
+    *pubNumAdmins += pSector.value.ubNumAdmins;
+    *pubNumTroops += pSector.value.ubNumTroops;
+    *pubNumElites += pSector.value.ubNumElites;
   }
 }
 
@@ -182,9 +182,9 @@ function GetNumberOfStationaryEnemiesInSector(sSectorX: INT16, sSectorY: INT16, 
   pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
 
   // grab the number of each type in the stationary sector
-  *pubNumAdmins = pSector->ubNumAdmins;
-  *pubNumTroops = pSector->ubNumTroops;
-  *pubNumElites = pSector->ubNumElites;
+  *pubNumAdmins = pSector.value.ubNumAdmins;
+  *pubNumTroops = pSector.value.ubNumTroops;
+  *pubNumElites = pSector.value.ubNumElites;
 }
 
 function GetNumberOfEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubNumAdmins: Pointer<UINT8>, pubNumTroops: Pointer<UINT8>, pubNumElites: Pointer<UINT8>): void {
@@ -211,18 +211,18 @@ function EndTacticalBattleForEnemy(): void {
   if (gbWorldSectorZ > 0) {
     let pSector: Pointer<UNDERGROUND_SECTORINFO>;
     pSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
-    pSector->ubAdminsInBattle = 0;
-    pSector->ubTroopsInBattle = 0;
-    pSector->ubElitesInBattle = 0;
+    pSector.value.ubAdminsInBattle = 0;
+    pSector.value.ubTroopsInBattle = 0;
+    pSector.value.ubElitesInBattle = 0;
   } else if (!gbWorldSectorZ) {
     let pSector: Pointer<SECTORINFO>;
     pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
     // grab the number of each type in the stationary sector
-    pSector->ubAdminsInBattle = 0;
-    pSector->ubTroopsInBattle = 0;
-    pSector->ubElitesInBattle = 0;
-    pSector->ubNumCreatures = 0;
-    pSector->ubCreaturesInBattle = 0;
+    pSector.value.ubAdminsInBattle = 0;
+    pSector.value.ubTroopsInBattle = 0;
+    pSector.value.ubElitesInBattle = 0;
+    pSector.value.ubNumCreatures = 0;
+    pSector.value.ubCreaturesInBattle = 0;
   } else // negative
     return;
 
@@ -232,22 +232,22 @@ function EndTacticalBattleForEnemy(): void {
   // Clear enemies in battle for all mobile groups in the sector.
   pGroup = gpGroupList;
   while (pGroup) {
-    if (!pGroup->fPlayer && !pGroup->fVehicle && pGroup->ubSectorX == gWorldSectorX && pGroup->ubSectorY == gWorldSectorY) {
-      pGroup->pEnemyGroup->ubTroopsInBattle = 0;
-      pGroup->pEnemyGroup->ubElitesInBattle = 0;
-      pGroup->pEnemyGroup->ubAdminsInBattle = 0;
+    if (!pGroup.value.fPlayer && !pGroup.value.fVehicle && pGroup.value.ubSectorX == gWorldSectorX && pGroup.value.ubSectorY == gWorldSectorY) {
+      pGroup.value.pEnemyGroup.value.ubTroopsInBattle = 0;
+      pGroup.value.pEnemyGroup.value.ubElitesInBattle = 0;
+      pGroup.value.pEnemyGroup.value.ubAdminsInBattle = 0;
     }
-    pGroup = pGroup->next;
+    pGroup = pGroup.value.next;
   }
 
   // Check to see if any of our mercs have abandoned the militia during a battle.  This is cause for a rather
   // severe loyalty blow.
   for (i = gTacticalStatus.Team[MILITIA_TEAM].bFirstID; i <= gTacticalStatus.Team[MILITIA_TEAM].bLastID; i++) {
-    if (MercPtrs[i]->bActive && MercPtrs[i]->bInSector && MercPtrs[i]->bLife >= OKLIFE) {
+    if (MercPtrs[i].value.bActive && MercPtrs[i].value.bInSector && MercPtrs[i].value.bLife >= OKLIFE) {
       // found one live militia, so look for any enemies/creatures.
       // NOTE: this is relying on ENEMY_TEAM being immediately followed by CREATURE_TEAM
       for (i = gTacticalStatus.Team[ENEMY_TEAM].bFirstID; i <= gTacticalStatus.Team[CREATURE_TEAM].bLastID; i++) {
-        if (MercPtrs[i]->bActive && MercPtrs[i]->bInSector && MercPtrs[i]->bLife >= OKLIFE) {
+        if (MercPtrs[i].value.bActive && MercPtrs[i].value.bInSector && MercPtrs[i].value.bLife >= OKLIFE) {
           // confirmed at least one enemy here, so do the loyalty penalty.
           HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_ABANDON_MILITIA, gWorldSectorX, gWorldSectorY, 0);
           break;
@@ -265,7 +265,7 @@ function NumFreeEnemySlots(): UINT8 {
   // Count the number of free enemy slots.  It is possible to have multiple groups exceed the maximum.
   for (i = gTacticalStatus.Team[ENEMY_TEAM].bFirstID; i <= gTacticalStatus.Team[ENEMY_TEAM].bLastID; i++) {
     pSoldier = &Menptr[i];
-    if (!pSoldier->bActive)
+    if (!pSoldier.value.bActive)
       ubNumFreeSlots++;
   }
   return ubNumFreeSlots;
@@ -294,20 +294,20 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
   if (gbWorldSectorZ > 0)
     return PrepareEnemyForUndergroundBattle();
 
-  if (gpBattleGroup && !gpBattleGroup->fPlayer) {
+  if (gpBattleGroup && !gpBattleGroup.value.fPlayer) {
     // The enemy has instigated the battle which means they are the ones entering the conflict.
     // The player was actually in the sector first, and the enemy doesn't use reinforced placements
     HandleArrivalOfReinforcements(gpBattleGroup);
     // It is possible that other enemy groups have also arrived.  Add them in the same manner.
     pGroup = gpGroupList;
     while (pGroup) {
-      if (pGroup != gpBattleGroup && !pGroup->fPlayer && !pGroup->fVehicle && pGroup->ubSectorX == gpBattleGroup->ubSectorX && pGroup->ubSectorY == gpBattleGroup->ubSectorY && !pGroup->pEnemyGroup->ubAdminsInBattle && !pGroup->pEnemyGroup->ubTroopsInBattle && !pGroup->pEnemyGroup->ubElitesInBattle) {
+      if (pGroup != gpBattleGroup && !pGroup.value.fPlayer && !pGroup.value.fVehicle && pGroup.value.ubSectorX == gpBattleGroup.value.ubSectorX && pGroup.value.ubSectorY == gpBattleGroup.value.ubSectorY && !pGroup.value.pEnemyGroup.value.ubAdminsInBattle && !pGroup.value.pEnemyGroup.value.ubTroopsInBattle && !pGroup.value.pEnemyGroup.value.ubElitesInBattle) {
         HandleArrivalOfReinforcements(pGroup);
       }
-      pGroup = pGroup->next;
+      pGroup = pGroup.value.next;
     }
     ValidateEnemiesHaveWeapons();
-    return (gpBattleGroup->ubGroupSize > 0);
+    return (gpBattleGroup.value.ubGroupSize > 0);
   }
 
   if (!gbWorldSectorZ) {
@@ -317,14 +317,14 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
   }
 
   pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
-  if (pSector->uiFlags & SF_USE_MAP_SETTINGS) {
+  if (pSector.value.uiFlags & SF_USE_MAP_SETTINGS) {
     // count the number of enemy placements in a map and use those
     let curr: Pointer<SOLDIERINITNODE>;
     curr = gSoldierInitHead;
     ubTotalAdmins = ubTotalTroops = ubTotalElites = 0;
     while (curr) {
-      if (curr->pBasicPlacement->bTeam == ENEMY_TEAM) {
-        switch (curr->pBasicPlacement->ubSoldierClass) {
+      if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
+        switch (curr.value.pBasicPlacement.value.ubSoldierClass) {
           case SOLDIER_CLASS_ADMINISTRATOR:
             ubTotalAdmins++;
             break;
@@ -336,18 +336,18 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
             break;
         }
       }
-      curr = curr->next;
+      curr = curr.value.next;
     }
-    pSector->ubNumAdmins = ubTotalAdmins;
-    pSector->ubNumTroops = ubTotalTroops;
-    pSector->ubNumElites = ubTotalElites;
-    pSector->ubAdminsInBattle = 0;
-    pSector->ubTroopsInBattle = 0;
-    pSector->ubElitesInBattle = 0;
+    pSector.value.ubNumAdmins = ubTotalAdmins;
+    pSector.value.ubNumTroops = ubTotalTroops;
+    pSector.value.ubNumElites = ubTotalElites;
+    pSector.value.ubAdminsInBattle = 0;
+    pSector.value.ubTroopsInBattle = 0;
+    pSector.value.ubElitesInBattle = 0;
   } else {
-    ubTotalAdmins = (pSector->ubNumAdmins - pSector->ubAdminsInBattle);
-    ubTotalTroops = (pSector->ubNumTroops - pSector->ubTroopsInBattle);
-    ubTotalElites = (pSector->ubNumElites - pSector->ubElitesInBattle);
+    ubTotalAdmins = (pSector.value.ubNumAdmins - pSector.value.ubAdminsInBattle);
+    ubTotalTroops = (pSector.value.ubNumTroops - pSector.value.ubTroopsInBattle);
+    ubTotalElites = (pSector.value.ubNumElites - pSector.value.ubElitesInBattle);
   }
   ubStationaryEnemies = (ubTotalAdmins + ubTotalTroops + ubTotalElites);
 
@@ -357,9 +357,9 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
     ubTotalElites = min(32 - ubTotalAdmins + ubTotalTroops, ubTotalElites);
   }
 
-  pSector->ubAdminsInBattle += ubTotalAdmins;
-  pSector->ubTroopsInBattle += ubTotalTroops;
-  pSector->ubElitesInBattle += ubTotalElites;
+  pSector.value.ubAdminsInBattle += ubTotalAdmins;
+  pSector.value.ubTroopsInBattle += ubTotalTroops;
+  pSector.value.ubElitesInBattle += ubTotalElites;
 
   // Search for movement groups that happen to be in the sector.
   sNumSlots = NumFreeEnemySlots();
@@ -375,10 +375,10 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
   // processed.
   pGroup = gpGroupList;
   while (pGroup && sNumSlots) {
-    if (!pGroup->fPlayer && !pGroup->fVehicle && pGroup->ubSectorX == gWorldSectorX && pGroup->ubSectorY == gWorldSectorY && !gbWorldSectorZ) {
+    if (!pGroup.value.fPlayer && !pGroup.value.fVehicle && pGroup.value.ubSectorX == gWorldSectorX && pGroup.value.ubSectorY == gWorldSectorY && !gbWorldSectorZ) {
       // Process enemy group in sector.
       if (sNumSlots > 0) {
-        ubNumAdmins = (pGroup->pEnemyGroup->ubNumAdmins - pGroup->pEnemyGroup->ubAdminsInBattle);
+        ubNumAdmins = (pGroup.value.pEnemyGroup.value.ubNumAdmins - pGroup.value.pEnemyGroup.value.ubAdminsInBattle);
         sNumSlots -= ubNumAdmins;
         if (sNumSlots < 0) {
           // adjust the value to zero
@@ -386,12 +386,12 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
           sNumSlots = 0;
           gfPendingEnemies = TRUE;
         }
-        pGroup->pEnemyGroup->ubAdminsInBattle += ubNumAdmins;
+        pGroup.value.pEnemyGroup.value.ubAdminsInBattle += ubNumAdmins;
         ubTotalAdmins += ubNumAdmins;
       }
       if (sNumSlots > 0) {
         // Add regular army forces.
-        ubNumTroops = (pGroup->pEnemyGroup->ubNumTroops - pGroup->pEnemyGroup->ubTroopsInBattle);
+        ubNumTroops = (pGroup.value.pEnemyGroup.value.ubNumTroops - pGroup.value.pEnemyGroup.value.ubTroopsInBattle);
         sNumSlots -= ubNumTroops;
         if (sNumSlots < 0) {
           // adjust the value to zero
@@ -399,12 +399,12 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
           sNumSlots = 0;
           gfPendingEnemies = TRUE;
         }
-        pGroup->pEnemyGroup->ubTroopsInBattle += ubNumTroops;
+        pGroup.value.pEnemyGroup.value.ubTroopsInBattle += ubNumTroops;
         ubTotalTroops += ubNumTroops;
       }
       if (sNumSlots > 0) {
         // Add elite troops
-        ubNumElites = (pGroup->pEnemyGroup->ubNumElites - pGroup->pEnemyGroup->ubElitesInBattle);
+        ubNumElites = (pGroup.value.pEnemyGroup.value.ubNumElites - pGroup.value.pEnemyGroup.value.ubElitesInBattle);
         sNumSlots -= ubNumElites;
         if (sNumSlots < 0) {
           // adjust the value to zero
@@ -412,26 +412,26 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
           sNumSlots = 0;
           gfPendingEnemies = TRUE;
         }
-        pGroup->pEnemyGroup->ubElitesInBattle += ubNumElites;
+        pGroup.value.pEnemyGroup.value.ubElitesInBattle += ubNumElites;
         ubTotalElites += ubNumElites;
       }
       // NOTE:
       // no provisions for profile troop leader or retreat groups yet.
     }
-    if (pGroup->fPlayer && !pGroup->fVehicle && !pGroup->fBetweenSectors && pGroup->ubSectorX == gWorldSectorX && pGroup->ubSectorY == gWorldSectorY && !gbWorldSectorZ) {
+    if (pGroup.value.fPlayer && !pGroup.value.fVehicle && !pGroup.value.fBetweenSectors && pGroup.value.ubSectorX == gWorldSectorX && pGroup.value.ubSectorY == gWorldSectorY && !gbWorldSectorZ) {
       // TEMP:  The player path needs to get destroyed, otherwise, it'll be impossible to move the
       //			 group after the battle is resolved.
 
       // no one in the group any more continue loop
-      if (pGroup->pPlayerList == NULL) {
-        pGroup = pGroup->next;
+      if (pGroup.value.pPlayerList == NULL) {
+        pGroup = pGroup.value.next;
         continue;
       }
 
       // clear the movt for this grunt and his buddies
-      RemoveGroupWaypoints(pGroup->ubGroupID);
+      RemoveGroupWaypoints(pGroup.value.ubGroupID);
     }
-    pGroup = pGroup->next;
+    pGroup = pGroup.value.next;
   }
 
   // if there are no troops in the current groups, then we're done.
@@ -449,25 +449,25 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
   while (pGroup && sNumSlots) {
     i = gTacticalStatus.Team[ENEMY_TEAM].bFirstID;
     pSoldier = &Menptr[i];
-    if (!pGroup->fPlayer && !pGroup->fVehicle && pGroup->ubSectorX == gWorldSectorX && pGroup->ubSectorY == gWorldSectorY && !gbWorldSectorZ) {
-      num = pGroup->ubGroupSize;
-      ubNumAdmins = pGroup->pEnemyGroup->ubAdminsInBattle;
-      ubNumTroops = pGroup->pEnemyGroup->ubTroopsInBattle;
-      ubNumElites = pGroup->pEnemyGroup->ubElitesInBattle;
+    if (!pGroup.value.fPlayer && !pGroup.value.fVehicle && pGroup.value.ubSectorX == gWorldSectorX && pGroup.value.ubSectorY == gWorldSectorY && !gbWorldSectorZ) {
+      num = pGroup.value.ubGroupSize;
+      ubNumAdmins = pGroup.value.pEnemyGroup.value.ubAdminsInBattle;
+      ubNumTroops = pGroup.value.pEnemyGroup.value.ubTroopsInBattle;
+      ubNumElites = pGroup.value.pEnemyGroup.value.ubElitesInBattle;
       while (num && sNumSlots && i <= gTacticalStatus.Team[ENEMY_TEAM].bLastID) {
-        while (!pSoldier->bActive || pSoldier->ubGroupID) {
+        while (!pSoldier.value.bActive || pSoldier.value.ubGroupID) {
           pSoldier = &Menptr[++i];
           if (i > gTacticalStatus.Team[ENEMY_TEAM].bLastID) {
             AssertMsg(0, "Failed to assign battle counters for enemies properly. Please send save. KM:0.");
           }
         }
-        switch (pSoldier->ubSoldierClass) {
+        switch (pSoldier.value.ubSoldierClass) {
           case SOLDIER_CLASS_ADMINISTRATOR:
             if (ubNumAdmins) {
               num--;
               sNumSlots--;
               ubNumAdmins--;
-              pSoldier->ubGroupID = pGroup->ubGroupID;
+              pSoldier.value.ubGroupID = pGroup.value.ubGroupID;
             }
             break;
           case SOLDIER_CLASS_ARMY:
@@ -475,7 +475,7 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
               num--;
               sNumSlots--;
               ubNumTroops--;
-              pSoldier->ubGroupID = pGroup->ubGroupID;
+              pSoldier.value.ubGroupID = pGroup.value.ubGroupID;
             }
             break;
           case SOLDIER_CLASS_ELITE:
@@ -483,14 +483,14 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
               num--;
               sNumSlots--;
               ubNumElites--;
-              pSoldier->ubGroupID = pGroup->ubGroupID;
+              pSoldier.value.ubGroupID = pGroup.value.ubGroupID;
             }
             break;
         }
         pSoldier = &Menptr[++i];
       }
     }
-    pGroup = pGroup->next;
+    pGroup = pGroup.value.next;
   }
 
   ValidateEnemiesHaveWeapons();
@@ -505,21 +505,21 @@ function PrepareEnemyForUndergroundBattle(): BOOLEAN {
   let ubTotalElites: UINT8;
   pUnderground = gpUndergroundSectorInfoHead;
   while (pUnderground) {
-    if (pUnderground->ubSectorX == gWorldSectorX && pUnderground->ubSectorY == gWorldSectorY && pUnderground->ubSectorZ == gbWorldSectorZ) {
+    if (pUnderground.value.ubSectorX == gWorldSectorX && pUnderground.value.ubSectorY == gWorldSectorY && pUnderground.value.ubSectorZ == gbWorldSectorZ) {
       // This is the sector we are going to be fighting in.
-      if (pUnderground->ubNumAdmins || pUnderground->ubNumTroops || pUnderground->ubNumElites) {
-        ubTotalAdmins = (pUnderground->ubNumAdmins - pUnderground->ubAdminsInBattle);
-        ubTotalTroops = (pUnderground->ubNumTroops - pUnderground->ubTroopsInBattle);
-        ubTotalElites = (pUnderground->ubNumElites - pUnderground->ubElitesInBattle);
-        pUnderground->ubAdminsInBattle += ubTotalAdmins;
-        pUnderground->ubTroopsInBattle += ubTotalTroops;
-        pUnderground->ubElitesInBattle += ubTotalElites;
-        AddSoldierInitListEnemyDefenceSoldiers(pUnderground->ubNumAdmins, pUnderground->ubNumTroops, pUnderground->ubNumElites);
+      if (pUnderground.value.ubNumAdmins || pUnderground.value.ubNumTroops || pUnderground.value.ubNumElites) {
+        ubTotalAdmins = (pUnderground.value.ubNumAdmins - pUnderground.value.ubAdminsInBattle);
+        ubTotalTroops = (pUnderground.value.ubNumTroops - pUnderground.value.ubTroopsInBattle);
+        ubTotalElites = (pUnderground.value.ubNumElites - pUnderground.value.ubElitesInBattle);
+        pUnderground.value.ubAdminsInBattle += ubTotalAdmins;
+        pUnderground.value.ubTroopsInBattle += ubTotalTroops;
+        pUnderground.value.ubElitesInBattle += ubTotalElites;
+        AddSoldierInitListEnemyDefenceSoldiers(pUnderground.value.ubNumAdmins, pUnderground.value.ubNumTroops, pUnderground.value.ubNumElites);
         ValidateEnemiesHaveWeapons();
       }
-      return (pUnderground->ubNumAdmins + pUnderground->ubNumTroops + pUnderground->ubNumElites > 0);
+      return (pUnderground.value.ubNumAdmins + pUnderground.value.ubNumTroops + pUnderground.value.ubNumElites > 0);
     }
-    pUnderground = pUnderground->next;
+    pUnderground = pUnderground.value.next;
   }
 
   // underground sector not found in list
@@ -534,78 +534,78 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
   let str: UINT16[] /* [128] */;
   EvaluateDeathEffectsToSoldierInitList(pSoldier);
 
-  switch (pSoldier->ubProfile) {
+  switch (pSoldier.value.ubProfile) {
     case MIKE:
     case IGGY:
-      if (pSoldier->ubProfile == IGGY && !gubFact[FACT_IGGY_AVAILABLE_TO_ARMY]) {
+      if (pSoldier.value.ubProfile == IGGY && !gubFact[FACT_IGGY_AVAILABLE_TO_ARMY]) {
         // Iggy is on our team!
         break;
       }
-      if (!pSoldier->bSectorZ) {
-        pSector = &SectorInfo[SECTOR(pSoldier->sSectorX, pSoldier->sSectorY)];
-        if (pSector->ubNumElites) {
-          pSector->ubNumElites--;
+      if (!pSoldier.value.bSectorZ) {
+        pSector = &SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)];
+        if (pSector.value.ubNumElites) {
+          pSector.value.ubNumElites--;
         }
-        if (pSector->ubElitesInBattle) {
-          pSector->ubElitesInBattle--;
+        if (pSector.value.ubElitesInBattle) {
+          pSector.value.ubElitesInBattle--;
         }
       } else {
         let pUnderground: Pointer<UNDERGROUND_SECTORINFO>;
-        pUnderground = FindUnderGroundSector(pSoldier->sSectorX, pSoldier->sSectorY, pSoldier->bSectorZ);
+        pUnderground = FindUnderGroundSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
         Assert(pUnderground);
-        if (pUnderground->ubNumElites) {
-          pUnderground->ubNumElites--;
+        if (pUnderground.value.ubNumElites) {
+          pUnderground.value.ubNumElites--;
         }
-        if (pUnderground->ubElitesInBattle) {
-          pUnderground->ubElitesInBattle--;
+        if (pUnderground.value.ubElitesInBattle) {
+          pUnderground.value.ubElitesInBattle--;
         }
       }
       break;
   }
 
-  if (pSoldier->bNeutral || pSoldier->bTeam != ENEMY_TEAM && pSoldier->bTeam != CREATURE_TEAM)
+  if (pSoldier.value.bNeutral || pSoldier.value.bTeam != ENEMY_TEAM && pSoldier.value.bTeam != CREATURE_TEAM)
     return;
   // we are recording an enemy death
-  if (pSoldier->ubGroupID) {
+  if (pSoldier.value.ubGroupID) {
     // The enemy was in a mobile group
     let pGroup: Pointer<GROUP>;
-    pGroup = GetGroup(pSoldier->ubGroupID);
+    pGroup = GetGroup(pSoldier.value.ubGroupID);
     if (!pGroup) {
       return;
     }
-    if (pGroup->fPlayer) {
+    if (pGroup.value.fPlayer) {
       return;
     }
-    switch (pSoldier->ubSoldierClass) {
+    switch (pSoldier.value.ubSoldierClass) {
       case SOLDIER_CLASS_ELITE:
-        if (pGroup->pEnemyGroup->ubNumElites) {
-          pGroup->pEnemyGroup->ubNumElites--;
+        if (pGroup.value.pEnemyGroup.value.ubNumElites) {
+          pGroup.value.pEnemyGroup.value.ubNumElites--;
         }
-        if (pGroup->pEnemyGroup->ubElitesInBattle) {
-          pGroup->pEnemyGroup->ubElitesInBattle--;
+        if (pGroup.value.pEnemyGroup.value.ubElitesInBattle) {
+          pGroup.value.pEnemyGroup.value.ubElitesInBattle--;
         }
         break;
       case SOLDIER_CLASS_ARMY:
-        if (pGroup->pEnemyGroup->ubNumTroops) {
-          pGroup->pEnemyGroup->ubNumTroops--;
+        if (pGroup.value.pEnemyGroup.value.ubNumTroops) {
+          pGroup.value.pEnemyGroup.value.ubNumTroops--;
         }
-        if (pGroup->pEnemyGroup->ubTroopsInBattle) {
-          pGroup->pEnemyGroup->ubTroopsInBattle--;
+        if (pGroup.value.pEnemyGroup.value.ubTroopsInBattle) {
+          pGroup.value.pEnemyGroup.value.ubTroopsInBattle--;
         }
         break;
       case SOLDIER_CLASS_ADMINISTRATOR:
-        if (pGroup->pEnemyGroup->ubNumAdmins) {
-          pGroup->pEnemyGroup->ubNumAdmins--;
+        if (pGroup.value.pEnemyGroup.value.ubNumAdmins) {
+          pGroup.value.pEnemyGroup.value.ubNumAdmins--;
         }
-        if (pGroup->pEnemyGroup->ubAdminsInBattle) {
-          pGroup->pEnemyGroup->ubAdminsInBattle--;
+        if (pGroup.value.pEnemyGroup.value.ubAdminsInBattle) {
+          pGroup.value.pEnemyGroup.value.ubAdminsInBattle--;
         }
         break;
     }
-    if (pGroup->ubGroupSize)
-      pGroup->ubGroupSize--;
+    if (pGroup.value.ubGroupSize)
+      pGroup.value.ubGroupSize--;
     RecalculateGroupWeight(pGroup);
-    if (!pGroup->ubGroupSize) {
+    if (!pGroup.value.ubGroupSize) {
       RemovePGroup(pGroup);
     }
   } else {
@@ -615,91 +615,91 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
       let pSector: Pointer<SECTORINFO>;
 
       if (!IsAutoResolveActive()) {
-        pSector = &SectorInfo[SECTOR(pSoldier->sSectorX, pSoldier->sSectorY)];
+        pSector = &SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)];
       } else {
         pSector = &SectorInfo[GetAutoResolveSectorID()];
       }
 
-      switch (pSoldier->ubSoldierClass) {
+      switch (pSoldier.value.ubSoldierClass) {
         case SOLDIER_CLASS_ADMINISTRATOR:
-          if (pSector->ubNumAdmins) {
-            pSector->ubNumAdmins--;
+          if (pSector.value.ubNumAdmins) {
+            pSector.value.ubNumAdmins--;
           }
-          if (pSector->ubAdminsInBattle) {
-            pSector->ubAdminsInBattle--;
+          if (pSector.value.ubAdminsInBattle) {
+            pSector.value.ubAdminsInBattle--;
           }
           break;
         case SOLDIER_CLASS_ARMY:
-          if (pSector->ubNumTroops) {
-            pSector->ubNumTroops--;
+          if (pSector.value.ubNumTroops) {
+            pSector.value.ubNumTroops--;
           }
-          if (pSector->ubTroopsInBattle) {
-            pSector->ubTroopsInBattle--;
+          if (pSector.value.ubTroopsInBattle) {
+            pSector.value.ubTroopsInBattle--;
           }
           break;
         case SOLDIER_CLASS_ELITE:
-          if (pSector->ubNumElites) {
-            pSector->ubNumElites--;
+          if (pSector.value.ubNumElites) {
+            pSector.value.ubNumElites--;
           }
-          if (pSector->ubElitesInBattle) {
-            pSector->ubElitesInBattle--;
+          if (pSector.value.ubElitesInBattle) {
+            pSector.value.ubElitesInBattle--;
           }
           break;
         case SOLDIER_CLASS_CREATURE:
-          if (pSoldier->ubBodyType != BLOODCAT) {
-            if (pSector->ubNumCreatures) {
-              pSector->ubNumCreatures--;
+          if (pSoldier.value.ubBodyType != BLOODCAT) {
+            if (pSector.value.ubNumCreatures) {
+              pSector.value.ubNumCreatures--;
             }
-            if (pSector->ubCreaturesInBattle) {
-              pSector->ubCreaturesInBattle--;
+            if (pSector.value.ubCreaturesInBattle) {
+              pSector.value.ubCreaturesInBattle--;
             }
           } else {
-            if (pSector->bBloodCats) {
-              pSector->bBloodCats--;
+            if (pSector.value.bBloodCats) {
+              pSector.value.bBloodCats--;
             }
           }
 
           break;
       }
-      RecalculateSectorWeight(SECTOR(pSoldier->sSectorX, pSoldier->sSectorY));
+      RecalculateSectorWeight(SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY));
     } else {
       // basement level (UNDERGROUND_SECTORINFO)
       let pSector: Pointer<UNDERGROUND_SECTORINFO> = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
       if (pSector) {
-        switch (pSoldier->ubSoldierClass) {
+        switch (pSoldier.value.ubSoldierClass) {
           case SOLDIER_CLASS_ADMINISTRATOR:
-            if (pSector->ubNumAdmins) {
-              pSector->ubNumAdmins--;
+            if (pSector.value.ubNumAdmins) {
+              pSector.value.ubNumAdmins--;
             }
-            if (pSector->ubAdminsInBattle) {
-              pSector->ubAdminsInBattle--;
+            if (pSector.value.ubAdminsInBattle) {
+              pSector.value.ubAdminsInBattle--;
             }
             break;
           case SOLDIER_CLASS_ARMY:
-            if (pSector->ubNumTroops) {
-              pSector->ubNumTroops--;
+            if (pSector.value.ubNumTroops) {
+              pSector.value.ubNumTroops--;
             }
-            if (pSector->ubTroopsInBattle) {
-              pSector->ubTroopsInBattle--;
+            if (pSector.value.ubTroopsInBattle) {
+              pSector.value.ubTroopsInBattle--;
             }
             break;
           case SOLDIER_CLASS_ELITE:
-            if (pSector->ubNumElites) {
-              pSector->ubNumElites--;
+            if (pSector.value.ubNumElites) {
+              pSector.value.ubNumElites--;
             }
-            if (pSector->ubElitesInBattle) {
-              pSector->ubElitesInBattle--;
+            if (pSector.value.ubElitesInBattle) {
+              pSector.value.ubElitesInBattle--;
             }
             break;
           case SOLDIER_CLASS_CREATURE:
-            if (pSector->ubNumCreatures) {
-              pSector->ubNumCreatures--;
+            if (pSector.value.ubNumCreatures) {
+              pSector.value.ubNumCreatures--;
             }
-            if (pSector->ubCreaturesInBattle) {
-              pSector->ubCreaturesInBattle--;
+            if (pSector.value.ubCreaturesInBattle) {
+              pSector.value.ubCreaturesInBattle--;
             }
 
-            if (!pSector->ubNumCreatures && gWorldSectorX != 9 && gWorldSectorY != 10) {
+            if (!pSector.value.ubNumCreatures && gWorldSectorX != 9 && gWorldSectorY != 10) {
               // If the player has successfully killed all creatures in ANY underground sector except J9
               // then cancel any pending creature town attack.
               DeleteAllStrategicEventsOfType(EVENT_CREATURE_ATTACK);
@@ -708,7 +708,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
             // a monster has died.  Post an event to immediately check whether a mine has been cleared.
             AddStrategicEventUsingSeconds(EVENT_CHECK_IF_MINE_CLEARED, GetWorldTotalSeconds() + 15, 0);
 
-            if (pSoldier->ubBodyType == QUEENMONSTER) {
+            if (pSoldier.value.ubBodyType == QUEENMONSTER) {
               // Need to call this, as the queen is really big, and killing her leaves a bunch
               // of bad tiles in behind her.  Calling this function cleans it up.
               InvalidateWorldRedundency();
@@ -721,15 +721,15 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
       }
     }
   }
-  if (!pSoldier->bSectorZ) {
-    pSector = &SectorInfo[SECTOR(pSoldier->sSectorX, pSoldier->sSectorY)];
-    iNumEnemiesInSector = NumEnemiesInSector(pSoldier->sSectorX, pSoldier->sSectorY);
+  if (!pSoldier.value.bSectorZ) {
+    pSector = &SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)];
+    iNumEnemiesInSector = NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
     if (iNumEnemiesInSector) {
-      if (pSector->bLastKnownEnemies >= 0) {
-        pSector->bLastKnownEnemies = iNumEnemiesInSector;
+      if (pSector.value.bLastKnownEnemies >= 0) {
+        pSector.value.bLastKnownEnemies = iNumEnemiesInSector;
       }
     } else {
-      pSector->bLastKnownEnemies = 0;
+      pSector.value.bLastKnownEnemies = 0;
     }
   }
 }
@@ -758,27 +758,27 @@ function AddPossiblePendingEnemiesToBattle(): void {
   }
   pGroup = gpGroupList;
   while (pGroup && ubSlots) {
-    if (!pGroup->fPlayer && !pGroup->fVehicle && pGroup->ubSectorX == gWorldSectorX && pGroup->ubSectorY == gWorldSectorY && !gbWorldSectorZ) {
+    if (!pGroup.value.fPlayer && !pGroup.value.fVehicle && pGroup.value.ubSectorX == gWorldSectorX && pGroup.value.ubSectorY == gWorldSectorY && !gbWorldSectorZ) {
       // This enemy group is currently in the sector.
       ubNumElites = ubNumTroops = ubNumAdmins = 0;
-      ubNumAvailable = pGroup->ubGroupSize - pGroup->pEnemyGroup->ubElitesInBattle - pGroup->pEnemyGroup->ubTroopsInBattle - pGroup->pEnemyGroup->ubAdminsInBattle;
+      ubNumAvailable = pGroup.value.ubGroupSize - pGroup.value.pEnemyGroup.value.ubElitesInBattle - pGroup.value.pEnemyGroup.value.ubTroopsInBattle - pGroup.value.pEnemyGroup.value.ubAdminsInBattle;
       while (ubNumAvailable && ubSlots) {
         // This group has enemies waiting for a chance to enter the battle.
-        if (pGroup->pEnemyGroup->ubTroopsInBattle < pGroup->pEnemyGroup->ubNumTroops) {
+        if (pGroup.value.pEnemyGroup.value.ubTroopsInBattle < pGroup.value.pEnemyGroup.value.ubNumTroops) {
           // Add a regular troop.
-          pGroup->pEnemyGroup->ubTroopsInBattle++;
+          pGroup.value.pEnemyGroup.value.ubTroopsInBattle++;
           ubNumAvailable--;
           ubSlots--;
           ubNumTroops++;
-        } else if (pGroup->pEnemyGroup->ubElitesInBattle < pGroup->pEnemyGroup->ubNumElites) {
+        } else if (pGroup.value.pEnemyGroup.value.ubElitesInBattle < pGroup.value.pEnemyGroup.value.ubNumElites) {
           // Add an elite troop
-          pGroup->pEnemyGroup->ubElitesInBattle++;
+          pGroup.value.pEnemyGroup.value.ubElitesInBattle++;
           ubNumAvailable--;
           ubSlots--;
           ubNumElites++;
-        } else if (pGroup->pEnemyGroup->ubAdminsInBattle < pGroup->pEnemyGroup->ubNumAdmins) {
+        } else if (pGroup.value.pEnemyGroup.value.ubAdminsInBattle < pGroup.value.pEnemyGroup.value.ubNumAdmins) {
           // Add an elite troop
-          pGroup->pEnemyGroup->ubAdminsInBattle++;
+          pGroup.value.pEnemyGroup.value.ubAdminsInBattle++;
           ubNumAvailable--;
           ubSlots--;
           ubNumAdmins++;
@@ -791,30 +791,30 @@ function AddPossiblePendingEnemiesToBattle(): void {
         // groups appear on different sides of the map.
         let ubStrategicInsertionCode: UINT8 = 0;
         // First, determine which entrypoint to use, based on the travel direction of the group.
-        if (pGroup->ubPrevX && pGroup->ubPrevY) {
-          if (pGroup->ubSectorX < pGroup->ubPrevX)
+        if (pGroup.value.ubPrevX && pGroup.value.ubPrevY) {
+          if (pGroup.value.ubSectorX < pGroup.value.ubPrevX)
             ubStrategicInsertionCode = INSERTION_CODE_EAST;
-          else if (pGroup->ubSectorX > pGroup->ubPrevX)
+          else if (pGroup.value.ubSectorX > pGroup.value.ubPrevX)
             ubStrategicInsertionCode = INSERTION_CODE_WEST;
-          else if (pGroup->ubSectorY < pGroup->ubPrevY)
+          else if (pGroup.value.ubSectorY < pGroup.value.ubPrevY)
             ubStrategicInsertionCode = INSERTION_CODE_SOUTH;
-          else if (pGroup->ubSectorY > pGroup->ubPrevY)
+          else if (pGroup.value.ubSectorY > pGroup.value.ubPrevY)
             ubStrategicInsertionCode = INSERTION_CODE_NORTH;
-        } else if (pGroup->ubNextX && pGroup->ubNextY) {
-          if (pGroup->ubSectorX < pGroup->ubNextX)
+        } else if (pGroup.value.ubNextX && pGroup.value.ubNextY) {
+          if (pGroup.value.ubSectorX < pGroup.value.ubNextX)
             ubStrategicInsertionCode = INSERTION_CODE_EAST;
-          else if (pGroup->ubSectorX > pGroup->ubNextX)
+          else if (pGroup.value.ubSectorX > pGroup.value.ubNextX)
             ubStrategicInsertionCode = INSERTION_CODE_WEST;
-          else if (pGroup->ubSectorY < pGroup->ubNextY)
+          else if (pGroup.value.ubSectorY < pGroup.value.ubNextY)
             ubStrategicInsertionCode = INSERTION_CODE_SOUTH;
-          else if (pGroup->ubSectorY > pGroup->ubNextY)
+          else if (pGroup.value.ubSectorY > pGroup.value.ubNextY)
             ubStrategicInsertionCode = INSERTION_CODE_NORTH;
         }
         // Add the number of each type of troop and place them in the appropriate positions
         AddEnemiesToBattle(pGroup, ubStrategicInsertionCode, ubNumAdmins, ubNumTroops, ubNumElites, FALSE);
       }
     }
-    pGroup = pGroup->next;
+    pGroup = pGroup.value.next;
   }
   if (ubSlots) {
     // After going through the process, we have finished with some free slots and no more enemies to add.
@@ -834,7 +834,7 @@ function NotifyPlayersOfNewEnemies(): void {
   for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
     // find a merc that is aware.
     pSoldier = MercPtrs[i];
-    if (pSoldier->bInSector && pSoldier->bActive && pSoldier->bLife >= OKLIFE && pSoldier->bBreath >= OKBREATH) {
+    if (pSoldier.value.bInSector && pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE && pSoldier.value.bBreath >= OKBREATH) {
       iSoldiers++;
     }
   }
@@ -845,7 +845,7 @@ function NotifyPlayersOfNewEnemies(): void {
     for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
       // find a merc that is aware.
       pSoldier = MercPtrs[i];
-      if (pSoldier->bInSector && pSoldier->bActive && pSoldier->bLife >= OKLIFE) {
+      if (pSoldier.value.bInSector && pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE) {
         iSoldiers++;
       }
     }
@@ -855,7 +855,7 @@ function NotifyPlayersOfNewEnemies(): void {
     for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
       // find a merc that is aware.
       pSoldier = MercPtrs[i];
-      if (pSoldier->bInSector && pSoldier->bActive && pSoldier->bLife >= OKLIFE && ((pSoldier->bBreath >= OKBREATH) || fIgnoreBreath)) {
+      if (pSoldier.value.bInSector && pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE && ((pSoldier.value.bBreath >= OKBREATH) || fIgnoreBreath)) {
         if (!iChosenSoldier) {
           // ATE: This is to allow special handling of initial heli drop
           if (!DidGameJustStart()) {
@@ -899,21 +899,21 @@ function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UI
     // update the strategic counters
     if (!gbWorldSectorZ) {
       let pSector: Pointer<SECTORINFO> = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
-      pSector->ubNumAdmins += ubNumAdmins;
-      pSector->ubAdminsInBattle += ubNumAdmins;
-      pSector->ubNumTroops += ubNumTroops;
-      pSector->ubTroopsInBattle += ubNumTroops;
-      pSector->ubNumElites += ubNumElites;
-      pSector->ubElitesInBattle += ubNumElites;
+      pSector.value.ubNumAdmins += ubNumAdmins;
+      pSector.value.ubAdminsInBattle += ubNumAdmins;
+      pSector.value.ubNumTroops += ubNumTroops;
+      pSector.value.ubTroopsInBattle += ubNumTroops;
+      pSector.value.ubNumElites += ubNumElites;
+      pSector.value.ubElitesInBattle += ubNumElites;
     } else {
       let pSector: Pointer<UNDERGROUND_SECTORINFO> = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
       if (pSector) {
-        pSector->ubNumAdmins += ubNumAdmins;
-        pSector->ubAdminsInBattle += ubNumAdmins;
-        pSector->ubNumTroops += ubNumTroops;
-        pSector->ubTroopsInBattle += ubNumTroops;
-        pSector->ubNumElites += ubNumElites;
-        pSector->ubElitesInBattle += ubNumElites;
+        pSector.value.ubNumAdmins += ubNumAdmins;
+        pSector.value.ubAdminsInBattle += ubNumAdmins;
+        pSector.value.ubNumTroops += ubNumTroops;
+        pSector.value.ubTroopsInBattle += ubNumTroops;
+        pSector.value.ubNumElites += ubNumElites;
+        pSector.value.ubElitesInBattle += ubNumElites;
       }
     }
     // Because the enemies magically appeared, have one of our soldiers say something...
@@ -930,18 +930,18 @@ function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UI
       ubTotalSoldiers--;
       pSoldier = TacticalCreateEliteEnemy();
       if (pGroup) {
-        pSoldier->ubGroupID = pGroup->ubGroupID;
+        pSoldier.value.ubGroupID = pGroup.value.ubGroupID;
       }
 
-      pSoldier->ubInsertionDirection = bDesiredDirection;
+      pSoldier.value.ubInsertionDirection = bDesiredDirection;
       // Setup the position
       if (ubCurrSlot < MapEdgepointInfo.ubNumPoints) {
         // using an edgepoint
-        pSoldier->ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
-        pSoldier->usStrategicInsertionData = MapEdgepointInfo.sGridNo[ubCurrSlot++];
+        pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+        pSoldier.value.usStrategicInsertionData = MapEdgepointInfo.sGridNo[ubCurrSlot++];
       } else {
         // no edgepoints left, so put him at the entrypoint.
-        pSoldier->ubStrategicInsertionCode = ubStrategicInsertionCode;
+        pSoldier.value.ubStrategicInsertionCode = ubStrategicInsertionCode;
       }
       UpdateMercInSector(pSoldier, gWorldSectorX, gWorldSectorY, 0);
     } else if (ubNumTroops && Random(ubTotalSoldiers) < (ubNumElites + ubNumTroops)) {
@@ -949,18 +949,18 @@ function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UI
       ubTotalSoldiers--;
       pSoldier = TacticalCreateArmyTroop();
       if (pGroup) {
-        pSoldier->ubGroupID = pGroup->ubGroupID;
+        pSoldier.value.ubGroupID = pGroup.value.ubGroupID;
       }
 
-      pSoldier->ubInsertionDirection = bDesiredDirection;
+      pSoldier.value.ubInsertionDirection = bDesiredDirection;
       // Setup the position
       if (ubCurrSlot < MapEdgepointInfo.ubNumPoints) {
         // using an edgepoint
-        pSoldier->ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
-        pSoldier->usStrategicInsertionData = MapEdgepointInfo.sGridNo[ubCurrSlot++];
+        pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+        pSoldier.value.usStrategicInsertionData = MapEdgepointInfo.sGridNo[ubCurrSlot++];
       } else {
         // no edgepoints left, so put him at the entrypoint.
-        pSoldier->ubStrategicInsertionCode = ubStrategicInsertionCode;
+        pSoldier.value.ubStrategicInsertionCode = ubStrategicInsertionCode;
       }
       UpdateMercInSector(pSoldier, gWorldSectorX, gWorldSectorY, 0);
     } else if (ubNumAdmins && Random(ubTotalSoldiers) < (ubNumElites + ubNumTroops + ubNumAdmins)) {
@@ -968,18 +968,18 @@ function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UI
       ubTotalSoldiers--;
       pSoldier = TacticalCreateAdministrator();
       if (pGroup) {
-        pSoldier->ubGroupID = pGroup->ubGroupID;
+        pSoldier.value.ubGroupID = pGroup.value.ubGroupID;
       }
 
-      pSoldier->ubInsertionDirection = bDesiredDirection;
+      pSoldier.value.ubInsertionDirection = bDesiredDirection;
       // Setup the position
       if (ubCurrSlot < MapEdgepointInfo.ubNumPoints) {
         // using an edgepoint
-        pSoldier->ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
-        pSoldier->usStrategicInsertionData = MapEdgepointInfo.sGridNo[ubCurrSlot++];
+        pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+        pSoldier.value.usStrategicInsertionData = MapEdgepointInfo.sGridNo[ubCurrSlot++];
       } else {
         // no edgepoints left, so put him at the entrypoint.
-        pSoldier->ubStrategicInsertionCode = ubStrategicInsertionCode;
+        pSoldier.value.ubStrategicInsertionCode = ubStrategicInsertionCode;
       }
       UpdateMercInSector(pSoldier, gWorldSectorX, gWorldSectorY, 0);
     }
@@ -994,7 +994,7 @@ function SaveUnderGroundSectorInfoToSaveGame(hFile: HWFILE): BOOLEAN {
   // Loop through all the nodes to count how many there are
   while (TempNode) {
     uiNumOfRecords++;
-    TempNode = TempNode->next;
+    TempNode = TempNode.value.next;
   }
 
   // Write how many nodes there are
@@ -1012,7 +1012,7 @@ function SaveUnderGroundSectorInfoToSaveGame(hFile: HWFILE): BOOLEAN {
       return FALSE;
     }
 
-    TempNode = TempNode->next;
+    TempNode = TempNode.value.next;
   }
 
   return TRUE;
@@ -1050,14 +1050,14 @@ function LoadUnderGroundSectorInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
     if (cnt == 0) {
       gpUndergroundSectorInfoHead = TempNode;
       TempSpot = gpUndergroundSectorInfoHead;
-      TempSpot->next = NULL;
+      TempSpot.value.next = NULL;
     } else {
       // assign the new node to the LL
-      TempSpot->next = TempNode;
+      TempSpot.value.next = TempNode;
 
       // advance to the next node
-      TempSpot = TempSpot->next;
-      TempSpot->next = NULL;
+      TempSpot = TempSpot.value.next;
+      TempSpot.value.next = NULL;
       gpUndergroundSectorInfoTail = TempSpot;
     }
   }
@@ -1072,10 +1072,10 @@ function FindUnderGroundSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8): Pointe
   // Loop through all the underground sectors looking for specified sector
   while (pUnderground) {
     // If the sector is the right one
-    if (pUnderground->ubSectorX == sMapX && pUnderground->ubSectorY == sMapY && pUnderground->ubSectorZ == bMapZ) {
+    if (pUnderground.value.ubSectorX == sMapX && pUnderground.value.ubSectorY == sMapY && pUnderground.value.ubSectorZ == bMapZ) {
       return pUnderground;
     }
-    pUnderground = pUnderground->next;
+    pUnderground = pUnderground.value.next;
   }
 
   return NULL;
@@ -1163,12 +1163,12 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   // If this is an EPC , just kill them...
   if (AM_AN_EPC(pSoldier)) {
-    pSoldier->bLife = 0;
+    pSoldier.value.bLife = 0;
     HandleSoldierDeath(pSoldier, &fMadeCorpse);
     return;
   }
 
-  if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
     return;
   }
 
@@ -1184,18 +1184,18 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
     InternalEndQuest(QUEST_HELD_IN_ALMA, gWorldSectorX, gWorldSectorY, FALSE);
   }
 
-  HandleMoraleEvent(pSoldier, MORALE_MERC_CAPTURED, pSoldier->sSectorX, pSoldier->sSectorY, pSoldier->bSectorZ);
+  HandleMoraleEvent(pSoldier, MORALE_MERC_CAPTURED, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
 
   // Change to POW....
   //-add him to a POW assignment/group
-  if ((pSoldier->bAssignment != ASSIGNMENT_POW)) {
+  if ((pSoldier.value.bAssignment != ASSIGNMENT_POW)) {
     SetTimeOfAssignmentChangeForMerc(pSoldier);
   }
 
   ChangeSoldiersAssignment(pSoldier, ASSIGNMENT_POW);
   // ATE: Make them neutral!
   if (gubQuest[QUEST_HELD_IN_ALMA] == QUESTNOTSTARTED) {
-    pSoldier->bNeutral = TRUE;
+    pSoldier.value.bNeutral = TRUE;
   }
 
   RemoveCharacterFromSquads(pSoldier);
@@ -1203,16 +1203,16 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Is this the first one..?
   if (gubQuest[QUEST_HELD_IN_ALMA] == QUESTNOTSTARTED) {
     //-teleport him to NE Alma sector (not Tixa as originally planned)
-    pSoldier->sSectorX = 13;
-    pSoldier->sSectorY = 9;
-    pSoldier->bSectorZ = 0;
+    pSoldier.value.sSectorX = 13;
+    pSoldier.value.sSectorY = 9;
+    pSoldier.value.bSectorZ = 0;
 
     // put him on the floor!!
-    pSoldier->bLevel = 0;
+    pSoldier.value.bLevel = 0;
 
     // OK, drop all items!
     for (i = 0; i < NUM_INV_SLOTS; i++) {
-      if (pSoldier->inv[i].usItem != 0) {
+      if (pSoldier.value.inv[i].usItem != 0) {
         WorldItem.fExists = TRUE;
         WorldItem.sGridNo = sAlmaCaptureItemsGridNo[gStrategicStatus.ubNumCapturedForRescue];
         WorldItem.ubLevel = 0;
@@ -1220,29 +1220,29 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
         WorldItem.bVisible = FALSE;
         WorldItem.bRenderZHeightAboveLevel = 0;
 
-        memcpy(&(WorldItem.o), &pSoldier->inv[i], sizeof(OBJECTTYPE));
+        memcpy(&(WorldItem.o), &pSoldier.value.inv[i], sizeof(OBJECTTYPE));
 
         AddWorldItemsToUnLoadedSector(13, 9, 0, sAlmaCaptureItemsGridNo[gStrategicStatus.ubNumCapturedForRescue], 1, &WorldItem, FALSE);
-        DeleteObj(&(pSoldier->inv[i]));
+        DeleteObj(&(pSoldier.value.inv[i]));
       }
     }
 
-    pSoldier->ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
-    pSoldier->usStrategicInsertionData = sAlmaCaptureGridNos[gStrategicStatus.ubNumCapturedForRescue];
+    pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+    pSoldier.value.usStrategicInsertionData = sAlmaCaptureGridNos[gStrategicStatus.ubNumCapturedForRescue];
 
     gStrategicStatus.ubNumCapturedForRescue++;
   } else if (gubQuest[QUEST_HELD_IN_ALMA] == QUESTDONE) {
     //-teleport him to N7
-    pSoldier->sSectorX = 7;
-    pSoldier->sSectorY = 14;
-    pSoldier->bSectorZ = 0;
+    pSoldier.value.sSectorX = 7;
+    pSoldier.value.sSectorY = 14;
+    pSoldier.value.bSectorZ = 0;
 
     // put him on the floor!!
-    pSoldier->bLevel = 0;
+    pSoldier.value.bLevel = 0;
 
     // OK, drop all items!
     for (i = 0; i < NUM_INV_SLOTS; i++) {
-      if (pSoldier->inv[i].usItem != 0) {
+      if (pSoldier.value.inv[i].usItem != 0) {
         WorldItem.fExists = TRUE;
         WorldItem.sGridNo = sInterrogationItemGridNo[gStrategicStatus.ubNumCapturedForRescue];
         WorldItem.ubLevel = 0;
@@ -1250,40 +1250,40 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
         WorldItem.bVisible = FALSE;
         WorldItem.bRenderZHeightAboveLevel = 0;
 
-        memcpy(&(WorldItem.o), &pSoldier->inv[i], sizeof(OBJECTTYPE));
+        memcpy(&(WorldItem.o), &pSoldier.value.inv[i], sizeof(OBJECTTYPE));
 
         AddWorldItemsToUnLoadedSector(7, 14, 0, sInterrogationItemGridNo[gStrategicStatus.ubNumCapturedForRescue], 1, &WorldItem, FALSE);
-        DeleteObj(&(pSoldier->inv[i]));
+        DeleteObj(&(pSoldier.value.inv[i]));
       }
     }
 
-    pSoldier->ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
-    pSoldier->usStrategicInsertionData = gsInterrogationGridNo[gStrategicStatus.ubNumCapturedForRescue];
+    pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+    pSoldier.value.usStrategicInsertionData = gsInterrogationGridNo[gStrategicStatus.ubNumCapturedForRescue];
 
     gStrategicStatus.ubNumCapturedForRescue++;
   }
 
   // Bandaging him would prevent him from dying (due to low HP)
-  pSoldier->bBleeding = 0;
+  pSoldier.value.bBleeding = 0;
 
   // wake him up
-  if (pSoldier->fMercAsleep) {
+  if (pSoldier.value.fMercAsleep) {
     PutMercInAwakeState(pSoldier);
-    pSoldier->fForcedToStayAwake = FALSE;
+    pSoldier.value.fForcedToStayAwake = FALSE;
   }
 
   // Set his life to 50% + or - 10 HP.
-  pSoldier->bLife = pSoldier->bLifeMax / 2;
-  if (pSoldier->bLife <= 35) {
-    pSoldier->bLife = 35;
-  } else if (pSoldier->bLife >= 45) {
-    pSoldier->bLife += (10 - Random(21));
+  pSoldier.value.bLife = pSoldier.value.bLifeMax / 2;
+  if (pSoldier.value.bLife <= 35) {
+    pSoldier.value.bLife = 35;
+  } else if (pSoldier.value.bLife >= 45) {
+    pSoldier.value.bLife += (10 - Random(21));
   }
 
   // make him quite exhausted when found
-  pSoldier->bBreath = pSoldier->bBreathMax = 50;
-  pSoldier->sBreathRed = 0;
-  pSoldier->fMercCollapsedFlag = FALSE;
+  pSoldier.value.bBreath = pSoldier.value.bBreathMax = 50;
+  pSoldier.value.sBreathRed = 0;
+  pSoldier.value.fMercCollapsedFlag = FALSE;
 }
 
 function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
@@ -1296,32 +1296,32 @@ function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
   return;
   // If any of the soldiers are dying, kill them now.
   for (i = gTacticalStatus.Team[ENEMY_TEAM].bFirstID; i <= gTacticalStatus.Team[ENEMY_TEAM].bLastID; i++) {
-    if (MercPtrs[i]->bActive && MercPtrs[i]->bLife < OKLIFE && MercPtrs[i]->bLife) {
-      MercPtrs[i]->bLife = 0;
+    if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife < OKLIFE && MercPtrs[i].value.bLife) {
+      MercPtrs[i].value.bLife = 0;
       HandleSoldierDeath(MercPtrs[i], &fMadeCorpse);
       bKilledEnemies++;
     }
   }
   // Do the same for the creatures.
   for (i = gTacticalStatus.Team[CREATURE_TEAM].bFirstID; i <= gTacticalStatus.Team[CREATURE_TEAM].bLastID; i++) {
-    if (MercPtrs[i]->bActive && MercPtrs[i]->bLife < OKLIFE && MercPtrs[i]->bLife) {
-      MercPtrs[i]->bLife = 0;
+    if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife < OKLIFE && MercPtrs[i].value.bLife) {
+      MercPtrs[i].value.bLife = 0;
       HandleSoldierDeath(MercPtrs[i], &fMadeCorpse);
       bKilledCreatures++;
     }
   }
   // Militia
   for (i = gTacticalStatus.Team[MILITIA_TEAM].bFirstID; i <= gTacticalStatus.Team[MILITIA_TEAM].bLastID; i++) {
-    if (MercPtrs[i]->bActive && MercPtrs[i]->bLife < OKLIFE && MercPtrs[i]->bLife) {
-      MercPtrs[i]->bLife = 0;
+    if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife < OKLIFE && MercPtrs[i].value.bLife) {
+      MercPtrs[i].value.bLife = 0;
       HandleSoldierDeath(MercPtrs[i], &fMadeCorpse);
       bKilledRebels++;
     }
   }
   // Civilians
   for (i = gTacticalStatus.Team[CIV_TEAM].bFirstID; i <= gTacticalStatus.Team[CIV_TEAM].bLastID; i++) {
-    if (MercPtrs[i]->bActive && MercPtrs[i]->bLife < OKLIFE && MercPtrs[i]->bLife) {
-      MercPtrs[i]->bLife = 0;
+    if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife < OKLIFE && MercPtrs[i].value.bLife) {
+      MercPtrs[i].value.bLife = 0;
       HandleSoldierDeath(MercPtrs[i], &fMadeCorpse);
       bKilledCivilians++;
     }
@@ -1340,27 +1340,27 @@ function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
   if (!gbWorldSectorZ) {
     let pSector: Pointer<SECTORINFO>;
     pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
-    pSector->ubAdminsInBattle = 0;
-    pSector->ubTroopsInBattle = 0;
-    pSector->ubElitesInBattle = 0;
-    pSector->ubCreaturesInBattle = 0;
+    pSector.value.ubAdminsInBattle = 0;
+    pSector.value.ubTroopsInBattle = 0;
+    pSector.value.ubElitesInBattle = 0;
+    pSector.value.ubCreaturesInBattle = 0;
     // RecalculateSectorWeight(
   } else if (gbWorldSectorZ > 0) {
     let pSector: Pointer<UNDERGROUND_SECTORINFO>;
     pSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
     if (!pSector)
       return;
-    pSector->ubAdminsInBattle = 0;
-    pSector->ubTroopsInBattle = 0;
-    pSector->ubElitesInBattle = 0;
-    pSector->ubCreaturesInBattle = 0;
+    pSector.value.ubAdminsInBattle = 0;
+    pSector.value.ubTroopsInBattle = 0;
+    pSector.value.ubElitesInBattle = 0;
+    pSector.value.ubCreaturesInBattle = 0;
   }
 }
 
 function PlayerSectorDefended(ubSectorID: UINT8): BOOLEAN {
   let pSector: Pointer<SECTORINFO>;
   pSector = &SectorInfo[ubSectorID];
-  if (pSector->ubNumberOfCivsAtLevel[GREEN_MILITIA] + pSector->ubNumberOfCivsAtLevel[REGULAR_MILITIA] + pSector->ubNumberOfCivsAtLevel[ELITE_MILITIA]) {
+  if (pSector.value.ubNumberOfCivsAtLevel[GREEN_MILITIA] + pSector.value.ubNumberOfCivsAtLevel[REGULAR_MILITIA] + pSector.value.ubNumberOfCivsAtLevel[ELITE_MILITIA]) {
     // militia in sector
     return TRUE;
   }
@@ -1380,8 +1380,8 @@ function OnlyHostileCivsInSector(): BOOLEAN {
   // Look for any hostile civs.
   for (i = gTacticalStatus.Team[CIV_TEAM].bFirstID; i <= gTacticalStatus.Team[CIV_TEAM].bLastID; i++) {
     pSoldier = MercPtrs[i];
-    if (pSoldier->bActive && pSoldier->bInSector && pSoldier->bLife) {
-      if (!pSoldier->bNeutral) {
+    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife) {
+      if (!pSoldier.value.bNeutral) {
         fHostileCivs = TRUE;
         break;
       }
@@ -1394,24 +1394,24 @@ function OnlyHostileCivsInSector(): BOOLEAN {
   // Look for anybody else hostile.  If found, return FALSE immediately.
   for (i = gTacticalStatus.Team[ENEMY_TEAM].bFirstID; i <= gTacticalStatus.Team[ENEMY_TEAM].bLastID; i++) {
     pSoldier = MercPtrs[i];
-    if (pSoldier->bActive && pSoldier->bInSector && pSoldier->bLife) {
-      if (!pSoldier->bNeutral) {
+    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife) {
+      if (!pSoldier.value.bNeutral) {
         return FALSE;
       }
     }
   }
   for (i = gTacticalStatus.Team[CREATURE_TEAM].bFirstID; i <= gTacticalStatus.Team[CREATURE_TEAM].bLastID; i++) {
     pSoldier = MercPtrs[i];
-    if (pSoldier->bActive && pSoldier->bInSector && pSoldier->bLife) {
-      if (!pSoldier->bNeutral) {
+    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife) {
+      if (!pSoldier.value.bNeutral) {
         return FALSE;
       }
     }
   }
   for (i = gTacticalStatus.Team[MILITIA_TEAM].bFirstID; i <= gTacticalStatus.Team[MILITIA_TEAM].bLastID; i++) {
     pSoldier = MercPtrs[i];
-    if (pSoldier->bActive && pSoldier->bInSector && pSoldier->bLife) {
-      if (!pSoldier->bNeutral) {
+    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife) {
+      if (!pSoldier.value.bNeutral) {
         return FALSE;
       }
     }

@@ -50,8 +50,8 @@ function UpdateRegenCounters(): void {
   let ubID: UINT8;
 
   for (ubID = gTacticalStatus.Team[gbPlayerNum].bFirstID; ubID <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubID++) {
-    if (MercPtrs[ubID]->bRegenBoostersUsedToday > 0) {
-      MercPtrs[ubID]->bRegenBoostersUsedToday--;
+    if (MercPtrs[ubID].value.bRegenBoostersUsedToday > 0) {
+      MercPtrs[ubID].value.bRegenBoostersUsedToday--;
     }
   }
 }
@@ -135,13 +135,13 @@ function HourlyLarryUpdate(): void {
     pSoldier = FindSoldierByProfileID(LARRY_DRUNK, TRUE);
   }
   if (pSoldier) {
-    if (pSoldier->bAssignment >= ON_DUTY) {
+    if (pSoldier.value.bAssignment >= ON_DUTY) {
       return;
     }
-    if (pSoldier->fBetweenSectors) {
+    if (pSoldier.value.fBetweenSectors) {
       return;
     }
-    if (pSoldier->bActive && pSoldier->bInSector && (gTacticalStatus.fEnemyInSector || guiCurrentScreen == GAME_SCREEN)) {
+    if (pSoldier.value.bActive && pSoldier.value.bInSector && (gTacticalStatus.fEnemyInSector || guiCurrentScreen == GAME_SCREEN)) {
       return;
     }
 
@@ -157,7 +157,7 @@ function HourlyLarryUpdate(): void {
     // check to see if we're in a bar sector, if we are, we have access to alcohol
     // which may be better than anything we've got...
     if (usTemptation < BAR_TEMPTATION && GetCurrentBalance() >= Item[ALCOHOL].usPrice) {
-      if (pSoldier->bSectorZ == 0 && ((pSoldier->sSectorX == 13 && pSoldier->sSectorY == MAP_ROW_B) || (pSoldier->sSectorX == 13 && pSoldier->sSectorY == MAP_ROW_C) || (pSoldier->sSectorX == 5 && pSoldier->sSectorY == MAP_ROW_C) || (pSoldier->sSectorX == 6 && pSoldier->sSectorY == MAP_ROW_C) || (pSoldier->sSectorX == 5 && pSoldier->sSectorY == MAP_ROW_D) || (pSoldier->sSectorX == 2 && pSoldier->sSectorY == MAP_ROW_H))) {
+      if (pSoldier.value.bSectorZ == 0 && ((pSoldier.value.sSectorX == 13 && pSoldier.value.sSectorY == MAP_ROW_B) || (pSoldier.value.sSectorX == 13 && pSoldier.value.sSectorY == MAP_ROW_C) || (pSoldier.value.sSectorX == 5 && pSoldier.value.sSectorY == MAP_ROW_C) || (pSoldier.value.sSectorX == 6 && pSoldier.value.sSectorY == MAP_ROW_C) || (pSoldier.value.sSectorX == 5 && pSoldier.value.sSectorY == MAP_ROW_D) || (pSoldier.value.sSectorX == 2 && pSoldier.value.sSectorY == MAP_ROW_H))) {
         // in a bar!
         fBar = TRUE;
         usTemptation = BAR_TEMPTATION;
@@ -165,18 +165,18 @@ function HourlyLarryUpdate(): void {
     }
 
     if (usTemptation > 0) {
-      if (pSoldier->ubProfile == LARRY_NORMAL) {
+      if (pSoldier.value.ubProfile == LARRY_NORMAL) {
         gMercProfiles[LARRY_NORMAL].bNPCData += Random(usTemptation);
         if (gMercProfiles[LARRY_NORMAL].bNPCData >= LARRY_FALLS_OFF_WAGON) {
           if (fBar) {
             // take $ from player's account
             usCashAmount = Item[ALCOHOL].usPrice;
-            AddTransactionToPlayersBook(TRANSFER_FUNDS_TO_MERC, pSoldier->ubProfile, GetWorldTotalMin(), -(usCashAmount));
+            AddTransactionToPlayersBook(TRANSFER_FUNDS_TO_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), -(usCashAmount));
             // give Larry some booze and set slot etc values appropriately
             bBoozeSlot = FindEmptySlotWithin(pSoldier, HANDPOS, SMALLPOCK8POS);
             if (bBoozeSlot != NO_SLOT) {
               // give Larry booze here
-              CreateItem(ALCOHOL, 100, &(pSoldier->inv[bBoozeSlot]));
+              CreateItem(ALCOHOL, 100, &(pSoldier.value.inv[bBoozeSlot]));
             }
             bSlot = bBoozeSlot;
             bLarryItemLoop = 1;
@@ -184,7 +184,7 @@ function HourlyLarryUpdate(): void {
           // ahhhh!!!
           SwapLarrysProfiles(pSoldier);
           if (bSlot != NO_SLOT) {
-            UseKitPoints(&(pSoldier->inv[bSlot]), LarryItems[bLarryItemLoop][2], pSoldier);
+            UseKitPoints(&(pSoldier.value.inv[bSlot]), LarryItems[bLarryItemLoop][2], pSoldier);
           }
         }
       } else {
@@ -197,22 +197,22 @@ function HourlyLarryUpdate(): void {
         if (fBar) {
           // take $ from player's account
           usCashAmount = Item[ALCOHOL].usPrice;
-          AddTransactionToPlayersBook(TRANSFER_FUNDS_TO_MERC, pSoldier->ubProfile, GetWorldTotalMin(), -(usCashAmount));
+          AddTransactionToPlayersBook(TRANSFER_FUNDS_TO_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), -(usCashAmount));
           // give Larry some booze and set slot etc values appropriately
           bBoozeSlot = FindEmptySlotWithin(pSoldier, HANDPOS, SMALLPOCK8POS);
           if (bBoozeSlot != NO_SLOT) {
             // give Larry booze here
-            CreateItem(ALCOHOL, 100, &(pSoldier->inv[bBoozeSlot]));
+            CreateItem(ALCOHOL, 100, &(pSoldier.value.inv[bBoozeSlot]));
           }
           bSlot = bBoozeSlot;
           bLarryItemLoop = 1;
         }
         if (bSlot != NO_SLOT) {
           // ahhhh!!!
-          UseKitPoints(&(pSoldier->inv[bSlot]), LarryItems[bLarryItemLoop][2], pSoldier);
+          UseKitPoints(&(pSoldier.value.inv[bSlot]), LarryItems[bLarryItemLoop][2], pSoldier);
         }
       }
-    } else if (pSoldier->ubProfile == LARRY_DRUNK) {
+    } else if (pSoldier.value.ubProfile == LARRY_DRUNK) {
       gMercProfiles[LARRY_NORMAL].bNPCData -= Random(2);
       if (gMercProfiles[LARRY_NORMAL].bNPCData <= 0) {
         // goes sober!
@@ -228,15 +228,15 @@ function HourlyCheckIfSlayAloneSoHeCanLeave(): void {
   if (!pSoldier) {
     return;
   }
-  if (pSoldier->fBetweenSectors) {
+  if (pSoldier.value.fBetweenSectors) {
     return;
   }
-  if (!pSoldier->bActive || !pSoldier->bLife) {
+  if (!pSoldier.value.bActive || !pSoldier.value.bLife) {
     return;
   }
-  if (PlayerMercsInSector(pSoldier->sSectorX, pSoldier->sSectorY, pSoldier->bSectorZ) == 1) {
+  if (PlayerMercsInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) == 1) {
     if (Chance(15)) {
-      pSoldier->ubLeaveHistoryCode = HISTORY_SLAY_MYSTERIOUSLY_LEFT;
+      pSoldier.value.ubLeaveHistoryCode = HISTORY_SLAY_MYSTERIOUSLY_LEFT;
       TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_CONTRACT_ENDING_NO_ASK_EQUIP, 0, 0);
     }
   }

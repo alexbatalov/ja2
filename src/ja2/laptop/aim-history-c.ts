@@ -391,15 +391,15 @@ function BtnHistoryMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
   gubAimHistoryMenuButtonDown = 255;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
 
     gubAimHistoryMenuButtonDown = ubRetValue;
 
     InvalidateRegion(AIM_HISTORY_MENU_X, AIM_HISTORY_MENU_Y, AIM_HISTORY_MENU_END_X, AIM_HISTORY_MENU_END_Y);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
       ResetAimHistoryButtons();
 
       if (ubRetValue == 1) {
@@ -410,7 +410,7 @@ function BtnHistoryMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
           //						RenderAimHistory();
           ResetAimHistoryButtons();
         } else
-          btn->uiFlags |= (BUTTON_CLICKED_ON);
+          btn.value.uiFlags |= (BUTTON_CLICKED_ON);
       }
 
       // Home Page
@@ -432,7 +432,7 @@ function BtnHistoryMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
           }
           //						RenderAimHistory();
         } else
-          btn->uiFlags |= (BUTTON_CLICKED_ON);
+          btn.value.uiFlags |= (BUTTON_CLICKED_ON);
       }
 
       DisableAimHistoryButton();
@@ -441,7 +441,7 @@ function BtnHistoryMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     DisableAimHistoryButton();
 
@@ -453,7 +453,7 @@ function ResetAimHistoryButtons(): void {
   let i: int = 0;
 
   for (i = 0; i < AIM_HISTORY_MENU_BUTTON_AMOUNT; i++) {
-    ButtonList[guiHistoryMenuButton[i]]->uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[guiHistoryMenuButton[i]].value.uiFlags &= ~BUTTON_CLICKED_ON;
   }
 }
 
@@ -462,9 +462,9 @@ function DisableAimHistoryButton(): void {
     return;
 
   if ((gubCurPageNum == 0)) {
-    ButtonList[guiHistoryMenuButton[0]]->uiFlags |= (BUTTON_CLICKED_ON);
+    ButtonList[guiHistoryMenuButton[0]].value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if ((gubCurPageNum == 5)) {
-    ButtonList[guiHistoryMenuButton[AIM_HISTORY_MENU_BUTTON_AMOUNT - 1]]->uiFlags |= (BUTTON_CLICKED_ON);
+    ButtonList[guiHistoryMenuButton[AIM_HISTORY_MENU_BUTTON_AMOUNT - 1]].value.uiFlags |= (BUTTON_CLICKED_ON);
   }
 }
 

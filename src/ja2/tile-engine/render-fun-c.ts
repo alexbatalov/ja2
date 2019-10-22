@@ -20,8 +20,8 @@ function SetTileRangeRoomNum(pSelectRegion: Pointer<SGPRect>, ubRoomNum: UINT8):
   let cnt1: INT32;
   let cnt2: INT32;
 
-  for (cnt1 = pSelectRegion->iTop; cnt1 <= pSelectRegion->iBottom; cnt1++) {
-    for (cnt2 = pSelectRegion->iLeft; cnt2 <= pSelectRegion->iRight; cnt2++) {
+  for (cnt1 = pSelectRegion.value.iTop; cnt1 <= pSelectRegion.value.iBottom; cnt1++) {
+    for (cnt2 = pSelectRegion.value.iLeft; cnt2 <= pSelectRegion.value.iRight; cnt2++) {
       gubWorldRoomInfo[MAPROWCOLTOPOS(cnt1, cnt2)] = ubRoomNum;
     }
   }
@@ -100,26 +100,26 @@ function SetGridNoRevealedFlag(sGridNo: UINT16): void {
   pStructure = gpWorldLevelData[sGridNo].pStructureHead;
 
   while (pStructure != NULL) {
-    if (pStructure->sCubeOffset == STRUCTURE_ON_GROUND || (pStructure->fFlags & STRUCTURE_SLANTED_ROOF)) {
-      if (((pStructure->fFlags & STRUCTURE_OBSTACLE) && !(pStructure->fFlags & (STRUCTURE_PERSON | STRUCTURE_CORPSE))) || (pStructure->fFlags & STRUCTURE_SLANTED_ROOF)) {
+    if (pStructure.value.sCubeOffset == STRUCTURE_ON_GROUND || (pStructure.value.fFlags & STRUCTURE_SLANTED_ROOF)) {
+      if (((pStructure.value.fFlags & STRUCTURE_OBSTACLE) && !(pStructure.value.fFlags & (STRUCTURE_PERSON | STRUCTURE_CORPSE))) || (pStructure.value.fFlags & STRUCTURE_SLANTED_ROOF)) {
         pBase = FindBaseStructure(pStructure);
 
         // Get LEVELNODE for struct and remove!
-        pNode = FindLevelNodeBasedOnStructure(pBase->sGridNo, pBase);
+        pNode = FindLevelNodeBasedOnStructure(pBase.value.sGridNo, pBase);
 
         if (pNode)
-          pNode->uiFlags |= LEVELNODE_SHOW_THROUGH;
+          pNode.value.uiFlags |= LEVELNODE_SHOW_THROUGH;
 
-        if (pStructure->fFlags & STRUCTURE_SLANTED_ROOF) {
-          AddSlantRoofFOVSlot(pBase->sGridNo);
+        if (pStructure.value.fFlags & STRUCTURE_SLANTED_ROOF) {
+          AddSlantRoofFOVSlot(pBase.value.sGridNo);
 
           // Set hidden...
-          pNode->uiFlags |= LEVELNODE_HIDDEN;
+          pNode.value.uiFlags |= LEVELNODE_HIDDEN;
         }
       }
     }
 
-    pStructure = pStructure->pNext;
+    pStructure = pStructure.value.pNext;
   }
 
   gubWorldRoomHidden[gubWorldRoomInfo[sGridNo]] = FALSE;
@@ -143,12 +143,12 @@ function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
     pBase = FindBaseStructure(pStructure);
 
     // Get LEVELNODE for struct and remove!
-    pNode = FindLevelNodeBasedOnStructure(pBase->sGridNo, pBase);
+    pNode = FindLevelNodeBasedOnStructure(pBase.value.sGridNo, pBase);
 
     // Loop through each gridno and see if revealed....
-    for (ubLoop = 0; ubLoop < pBase->pDBStructureRef->pDBStructure->ubNumberOfTiles; ubLoop++) {
-      ppTile = pBase->pDBStructureRef->ppTile;
-      sGridNo = pBase->sGridNo + ppTile[ubLoop]->sPosRelToBase;
+    for (ubLoop = 0; ubLoop < pBase.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles; ubLoop++) {
+      ppTile = pBase.value.pDBStructureRef.value.ppTile;
+      sGridNo = pBase.value.sGridNo + ppTile[ubLoop].value.sPosRelToBase;
 
       if (sGridNo < 0 || sGridNo > WORLD_MAX) {
         continue;
@@ -156,7 +156,7 @@ function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
 
       // Given gridno,
       // IF NOT REVEALED AND HIDDEN....
-      if (!(gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) && pNode->uiFlags & LEVELNODE_HIDDEN) {
+      if (!(gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) && pNode.value.uiFlags & LEVELNODE_HIDDEN) {
         // Add graphic if one does not already exist....
         if (!TypeExistsInRoofLayer(sGridNo, SLANTROOFCEILING, &usIndex)) {
           // Add
@@ -240,8 +240,8 @@ function AddSpecialTileRange(pSelectRegion: Pointer<SGPRect>): BOOLEAN {
   let cnt1: INT32;
   let cnt2: INT32;
 
-  for (cnt1 = pSelectRegion->iTop; cnt1 <= pSelectRegion->iBottom; cnt1++) {
-    for (cnt2 = pSelectRegion->iLeft; cnt2 <= pSelectRegion->iRight; cnt2++) {
+  for (cnt1 = pSelectRegion.value.iTop; cnt1 <= pSelectRegion.value.iBottom; cnt1++) {
+    for (cnt2 = pSelectRegion.value.iLeft; cnt2 <= pSelectRegion.value.iRight; cnt2++) {
       AddObjectToHead(MAPROWCOLTOPOS(cnt1, cnt2), SPECIALTILE_MAPEXIT);
     }
   }
@@ -253,8 +253,8 @@ function RemoveSpecialTileRange(pSelectRegion: Pointer<SGPRect>): BOOLEAN {
   let cnt1: INT32;
   let cnt2: INT32;
 
-  for (cnt1 = pSelectRegion->iTop; cnt1 <= pSelectRegion->iBottom; cnt1++) {
-    for (cnt2 = pSelectRegion->iLeft; cnt2 <= pSelectRegion->iRight; cnt2++) {
+  for (cnt1 = pSelectRegion.value.iTop; cnt1 <= pSelectRegion.value.iBottom; cnt1++) {
+    for (cnt2 = pSelectRegion.value.iLeft; cnt2 <= pSelectRegion.value.iRight; cnt2++) {
       RemoveObject(MAPROWCOLTOPOS(cnt1, cnt2), SPECIALTILE_MAPEXIT);
     }
   }

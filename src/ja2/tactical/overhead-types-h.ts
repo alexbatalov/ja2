@@ -85,7 +85,7 @@ const FADE_DELAY = 150;
 const FLASH_SELECTOR_DELAY = 4000;
 const BLINK_SELECTOR_DELAY = 250;
 
-const PTR_OURTEAM = () => (pSoldier->bTeam == gbPlayerNum);
+const PTR_OURTEAM = () => (pSoldier.value.bTeam == gbPlayerNum);
 
 const DONTLOOK = 0;
 const LOOK = 1;

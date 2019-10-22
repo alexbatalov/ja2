@@ -22,12 +22,12 @@ function CreateLevelNode(ppNode: Pointer<Pointer<LEVELNODE>>): BOOLEAN {
   memset(*ppNode, 0, sizeof(LEVELNODE));
 
   // Set default values
-  (*ppNode)->ubShadeLevel = LightGetAmbient();
-  (*ppNode)->ubNaturalShadeLevel = LightGetAmbient();
-  (*ppNode)->pSoldier = NULL;
-  (*ppNode)->pNext = NULL;
-  (*ppNode)->sRelativeX = 0;
-  (*ppNode)->sRelativeY = 0;
+  (*ppNode).value.ubShadeLevel = LightGetAmbient();
+  (*ppNode).value.ubNaturalShadeLevel = LightGetAmbient();
+  (*ppNode).value.pSoldier = NULL;
+  (*ppNode).value.pNext = NULL;
+  (*ppNode).value.sRelativeX = 0;
+  (*ppNode).value.sRelativeY = 0;
 
   guiLevelNodes++;
 
@@ -48,11 +48,11 @@ function CountLevelNodes(): void {
     pME = &(gpWorldLevelData[uiLoop]);
     // start at 1 to skip land head ptr; 0 stores total
     for (uiLoop2 = 1; uiLoop2 < 9; uiLoop2++) {
-      pLN = pME->pLevelNodes[uiLoop2];
+      pLN = pME.value.pLevelNodes[uiLoop2];
       while (pLN != NULL) {
         guiLNCount[uiLoop2]++;
         guiLNCount[0]++;
-        pLN = pLN->pNext;
+        pLN = pLN.value.pNext;
       }
     }
   }
@@ -78,16 +78,16 @@ function TypeExistsInLevel(pStartNode: Pointer<LEVELNODE>, fType: UINT32, pusInd
 
   // Look through all objects and Search for type
   while (pStartNode != NULL) {
-    if (pStartNode->usIndex != NO_TILE && pStartNode->usIndex < NUMBEROFTILES) {
-      GetTileType(pStartNode->usIndex, &fTileType);
+    if (pStartNode.value.usIndex != NO_TILE && pStartNode.value.usIndex < NUMBEROFTILES) {
+      GetTileType(pStartNode.value.usIndex, &fTileType);
 
       if (fTileType == fType) {
-        *pusIndex = pStartNode->usIndex;
+        *pusIndex = pStartNode.value.usIndex;
         return TRUE;
       }
     }
 
-    pStartNode = pStartNode->pNext;
+    pStartNode = pStartNode.value.pNext;
   }
 
   // Could not find it, return FALSE
@@ -98,54 +98,54 @@ function TypeExistsInLevel(pStartNode: Pointer<LEVELNODE>, fType: UINT32, pusInd
 function SetLevelShadeLevel(pStartNode: Pointer<LEVELNODE>, ubShadeLevel: UINT8): void {
   // Look through all objects and Search for type
   while (pStartNode != NULL) {
-    pStartNode->ubShadeLevel = ubShadeLevel;
+    pStartNode.value.ubShadeLevel = ubShadeLevel;
 
     // Advance to next
-    pStartNode = pStartNode->pNext;
+    pStartNode = pStartNode.value.pNext;
   }
 }
 
 function AdjustLevelShadeLevel(pStartNode: Pointer<LEVELNODE>, bShadeDiff: INT8): void {
   // Look through all objects and Search for type
   while (pStartNode != NULL) {
-    pStartNode->ubShadeLevel += bShadeDiff;
+    pStartNode.value.ubShadeLevel += bShadeDiff;
 
-    if (pStartNode->ubShadeLevel > MAX_SHADE_LEVEL) {
-      pStartNode->ubShadeLevel = MAX_SHADE_LEVEL;
+    if (pStartNode.value.ubShadeLevel > MAX_SHADE_LEVEL) {
+      pStartNode.value.ubShadeLevel = MAX_SHADE_LEVEL;
     }
 
-    if (pStartNode->ubShadeLevel < MIN_SHADE_LEVEL) {
-      pStartNode->ubShadeLevel = MIN_SHADE_LEVEL;
+    if (pStartNode.value.ubShadeLevel < MIN_SHADE_LEVEL) {
+      pStartNode.value.ubShadeLevel = MIN_SHADE_LEVEL;
     }
 
     // Advance to next
-    pStartNode = pStartNode->pNext;
+    pStartNode = pStartNode.value.pNext;
   }
 }
 
 function SetIndexLevelNodeFlags(pStartNode: Pointer<LEVELNODE>, uiFlags: UINT32, usIndex: UINT16): void {
   // Look through all objects and Search for type
   while (pStartNode != NULL) {
-    if (pStartNode->usIndex == usIndex) {
-      pStartNode->uiFlags |= uiFlags;
+    if (pStartNode.value.usIndex == usIndex) {
+      pStartNode.value.uiFlags |= uiFlags;
       break;
     }
 
     // Advance to next
-    pStartNode = pStartNode->pNext;
+    pStartNode = pStartNode.value.pNext;
   }
 }
 
 function RemoveIndexLevelNodeFlags(pStartNode: Pointer<LEVELNODE>, uiFlags: UINT32, usIndex: UINT16): void {
   // Look through all objects and Search for type
   while (pStartNode != NULL) {
-    if (pStartNode->usIndex == usIndex) {
-      pStartNode->uiFlags &= (~uiFlags);
+    if (pStartNode.value.usIndex == usIndex) {
+      pStartNode.value.uiFlags &= (~uiFlags);
       break;
     }
 
     // Advance to next
-    pStartNode = pStartNode->pNext;
+    pStartNode = pStartNode.value.pNext;
   }
 }
 
@@ -161,22 +161,22 @@ function AddObjectToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE>
   // If we're at the head, set here
   if (pObject == NULL) {
     CHECKF(CreateLevelNode(&pNextObject) != FALSE);
-    pNextObject->usIndex = usIndex;
+    pNextObject.value.usIndex = usIndex;
 
     gpWorldLevelData[iMapIndex].pObjectHead = pNextObject;
   } else {
     while (pObject != NULL) {
-      if (pObject->pNext == NULL) {
+      if (pObject.value.pNext == NULL) {
         CHECKF(CreateLevelNode(&pNextObject) != FALSE);
-        pObject->pNext = pNextObject;
+        pObject.value.pNext = pNextObject;
 
-        pNextObject->pNext = NULL;
-        pNextObject->usIndex = usIndex;
+        pNextObject.value.pNext = NULL;
+        pNextObject.value.usIndex = usIndex;
 
         break;
       }
 
-      pObject = pObject->pNext;
+      pObject = pObject.value.pNext;
     }
   }
 
@@ -194,8 +194,8 @@ function AddObjectToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
   CHECKF(CreateLevelNode(&pNextObject) != FALSE);
 
-  pNextObject->pNext = pObject;
-  pNextObject->usIndex = usIndex;
+  pNextObject.value.pNext = pObject;
+  pNextObject.value.usIndex = usIndex;
 
   // Set head
   gpWorldLevelData[iMapIndex].pObjectHead = pNextObject;
@@ -220,14 +220,14 @@ function RemoveObject(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   // Look through all objects and remove index if found
 
   while (pObject != NULL) {
-    if (pObject->usIndex == usIndex) {
+    if (pObject.value.usIndex == usIndex) {
       // OK, set links
       // Check for head or tail
       if (pOldObject == NULL) {
         // It's the head
-        gpWorldLevelData[iMapIndex].pObjectHead = pObject->pNext;
+        gpWorldLevelData[iMapIndex].pObjectHead = pObject.value.pNext;
       } else {
-        pOldObject->pNext = pObject->pNext;
+        pOldObject.value.pNext = pObject.value.pNext;
       }
 
       CheckForAndDeleteTileCacheStructInfo(pObject, usIndex);
@@ -243,7 +243,7 @@ function RemoveObject(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
     }
 
     pOldObject = pObject;
-    pObject = pObject->pNext;
+    pObject = pObject.value.pNext;
   }
 
   // Could not find it, return FALSE
@@ -263,13 +263,13 @@ function TypeRangeExistsInObjectLayer(iMapIndex: UINT32, fStartType: UINT32, fEn
   while (pObject != NULL) {
     // Advance to next
     pOldObject = pObject;
-    pObject = pObject->pNext;
+    pObject = pObject.value.pNext;
 
-    if (pOldObject->usIndex != NO_TILE && pOldObject->usIndex < NUMBEROFTILES) {
-      GetTileType(pOldObject->usIndex, &fTileType);
+    if (pOldObject.value.usIndex != NO_TILE && pOldObject.value.usIndex < NUMBEROFTILES) {
+      GetTileType(pOldObject.value.usIndex, &fTileType);
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
-        *pusObjectIndex = pOldObject->usIndex;
+        *pusObjectIndex = pOldObject.value.usIndex;
         return TRUE;
       }
     }
@@ -317,14 +317,14 @@ function RemoveAllObjectsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEnd
   while (pObject != NULL) {
     // Advance to next
     pOldObject = pObject;
-    pObject = pObject->pNext;
+    pObject = pObject.value.pNext;
 
-    if (pOldObject->usIndex != NO_TILE && pOldObject->usIndex < NUMBEROFTILES) {
-      GetTileType(pOldObject->usIndex, &fTileType);
+    if (pOldObject.value.usIndex != NO_TILE && pOldObject.value.usIndex < NUMBEROFTILES) {
+      GetTileType(pOldObject.value.usIndex, &fTileType);
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
         // Remove Item
-        RemoveObject(iMapIndex, pOldObject->usIndex);
+        RemoveObject(iMapIndex, pOldObject.value.usIndex);
         fRetVal = TRUE;
       }
     }
@@ -345,23 +345,23 @@ function AddLandToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE> {
   // If we're at the head, set here
   if (pLand == NULL) {
     CHECKF(CreateLevelNode(&pNextLand) != FALSE);
-    pNextLand->usIndex = usIndex;
+    pNextLand.value.usIndex = usIndex;
 
     gpWorldLevelData[iMapIndex].pLandHead = pNextLand;
   } else {
     while (pLand != NULL) {
-      if (pLand->pNext == NULL) {
+      if (pLand.value.pNext == NULL) {
         CHECKF(CreateLevelNode(&pNextLand) != FALSE);
-        pLand->pNext = pNextLand;
+        pLand.value.pNext = pNextLand;
 
-        pNextLand->pNext = NULL;
-        pNextLand->pPrevNode = pLand;
-        pNextLand->usIndex = usIndex;
+        pNextLand.value.pNext = NULL;
+        pNextLand.value.pPrevNode = pLand;
+        pNextLand.value.usIndex = usIndex;
 
         break;
       }
 
-      pLand = pLand->pNext;
+      pLand = pLand.value.pNext;
     }
   }
 
@@ -379,10 +379,10 @@ function AddLandToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   // Allocate head
   CHECKF(CreateLevelNode(&pNextLand) != FALSE);
 
-  pNextLand->pNext = pLand;
-  pNextLand->pPrevNode = NULL;
-  pNextLand->usIndex = usIndex;
-  pNextLand->ubShadeLevel = LightGetAmbient();
+  pNextLand.value.pNext = pLand;
+  pNextLand.value.pPrevNode = NULL;
+  pNextLand.value.usIndex = usIndex;
+  pNextLand.value.ubShadeLevel = LightGetAmbient();
 
   if (usIndex < NUMBEROFTILES) {
     // Get tile element
@@ -399,7 +399,7 @@ function AddLandToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
   // If it's NOT the first head
   if (pLand != NULL) {
-    pLand->pPrevNode = pNextLand;
+    pLand.value.pPrevNode = pNextLand;
   }
 
   ResetSpecificLayerOptimizing(TILES_DYNAMIC_LAND);
@@ -422,20 +422,20 @@ function RemoveLandEx(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   // Look through all Lands and remove index if found
 
   while (pLand != NULL) {
-    if (pLand->usIndex == usIndex) {
+    if (pLand.value.usIndex == usIndex) {
       // OK, set links
       // Check for head or tail
-      if (pLand->pPrevNode == NULL) {
+      if (pLand.value.pPrevNode == NULL) {
         // It's the head
-        gpWorldLevelData[iMapIndex].pLandHead = pLand->pNext;
+        gpWorldLevelData[iMapIndex].pLandHead = pLand.value.pNext;
       } else {
-        pLand->pPrevNode->pNext = pLand->pNext;
+        pLand.value.pPrevNode.value.pNext = pLand.value.pNext;
       }
 
       // Check for tail
-      if (pLand->pNext == NULL) {
+      if (pLand.value.pNext == NULL) {
       } else {
-        pLand->pNext->pPrevNode = pLand->pPrevNode;
+        pLand.value.pNext.value.pPrevNode = pLand.value.pPrevNode;
       }
 
       // Delete memory assosiated with item
@@ -444,7 +444,7 @@ function RemoveLandEx(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
       break;
     }
-    pLand = pLand->pNext;
+    pLand = pLand.value.pNext;
   }
 
   // Could not find it, return FALSE
@@ -464,9 +464,9 @@ function AdjustForFullTile(iMapIndex: UINT32): BOOLEAN {
   // Look through all Lands and remove index if found
 
   while (pLand != NULL) {
-    if (pLand->usIndex < NUMBEROFTILES) {
+    if (pLand.value.usIndex < NUMBEROFTILES) {
       // If this is a full tile, set new full tile
-      TileElem = gTileDatabase[pLand->usIndex];
+      TileElem = gTileDatabase[pLand.value.usIndex];
 
       // Check for full tile
       if (TileElem.ubFullTile) {
@@ -475,7 +475,7 @@ function AdjustForFullTile(iMapIndex: UINT32): BOOLEAN {
       }
     }
     pOldLand = pLand;
-    pLand = pLand->pNext;
+    pLand = pLand.value.pNext;
   }
 
   // Could not find a full tile
@@ -506,9 +506,9 @@ function ReplaceLandIndex(iMapIndex: UINT32, usOldIndex: UINT16, usNewIndex: UIN
   // Look through all Lands and remove index if found
 
   while (pLand != NULL) {
-    if (pLand->usIndex == usOldIndex) {
+    if (pLand.value.usIndex == usOldIndex) {
       // OK, set new index value
-      pLand->usIndex = usNewIndex;
+      pLand.value.usIndex = usNewIndex;
 
       AdjustForFullTile(iMapIndex);
 
@@ -516,7 +516,7 @@ function ReplaceLandIndex(iMapIndex: UINT32, usOldIndex: UINT16, usNewIndex: UIN
     }
 
     // Advance
-    pLand = pLand->pNext;
+    pLand = pLand.value.pNext;
   }
 
   // Could not find it, return FALSE
@@ -542,15 +542,15 @@ function TypeRangeExistsInLandLayer(iMapIndex: UINT32, fStartType: UINT32, fEndT
   // Look through all objects and Search for type
 
   while (pLand != NULL) {
-    if (pLand->usIndex != NO_TILE) {
-      GetTileType(pLand->usIndex, &fTileType);
+    if (pLand.value.usIndex != NO_TILE) {
+      GetTileType(pLand.value.usIndex, &fTileType);
 
       // Advance to next
       pOldLand = pLand;
-      pLand = pLand->pNext;
+      pLand = pLand.value.pNext;
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
-        *pusLandIndex = pOldLand->usIndex;
+        *pusLandIndex = pOldLand.value.usIndex;
         return TRUE;
       }
     }
@@ -570,15 +570,15 @@ function TypeRangeExistsInLandHead(iMapIndex: UINT32, fStartType: UINT32, fEndTy
 
   // Look through all objects and Search for type
 
-  if (pLand->usIndex != NO_TILE) {
-    GetTileType(pLand->usIndex, &fTileType);
+  if (pLand.value.usIndex != NO_TILE) {
+    GetTileType(pLand.value.usIndex, &fTileType);
 
     // Advance to next
     pOldLand = pLand;
-    pLand = pLand->pNext;
+    pLand = pLand.value.pNext;
 
     if (fTileType >= fStartType && fTileType <= fEndType) {
-      *pusLandIndex = pOldLand->usIndex;
+      *pusLandIndex = pOldLand.value.usIndex;
       return TRUE;
     }
   }
@@ -598,15 +598,15 @@ function TypeRangeExistsInStructLayer(iMapIndex: UINT32, fStartType: UINT32, fEn
   // Look through all objects and Search for type
 
   while (pStruct != NULL) {
-    if (pStruct->usIndex != NO_TILE) {
-      GetTileType(pStruct->usIndex, &fTileType);
+    if (pStruct.value.usIndex != NO_TILE) {
+      GetTileType(pStruct.value.usIndex, &fTileType);
 
       // Advance to next
       pOldStruct = pStruct;
-      pStruct = pStruct->pNext;
+      pStruct = pStruct.value.pNext;
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
-        *pusStructIndex = pOldStruct->usIndex;
+        *pusStructIndex = pOldStruct.value.usIndex;
         return TRUE;
       }
     }
@@ -628,16 +628,16 @@ function RemoveAllLandsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEndTy
   // Look through all objects and Search for type
 
   while (pLand != NULL) {
-    if (pLand->usIndex != NO_TILE) {
-      GetTileType(pLand->usIndex, &fTileType);
+    if (pLand.value.usIndex != NO_TILE) {
+      GetTileType(pLand.value.usIndex, &fTileType);
 
       // Advance to next
       pOldLand = pLand;
-      pLand = pLand->pNext;
+      pLand = pLand.value.pNext;
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
         // Remove Item
-        RemoveLand(iMapIndex, pOldLand->usIndex);
+        RemoveLand(iMapIndex, pOldLand.value.usIndex);
         fRetVal = TRUE;
       }
     }
@@ -673,10 +673,10 @@ function DeleteAllLandLayers(iMapIndex: UINT32): BOOLEAN {
   while (pLand != NULL) {
     // Advance to next
     pOldLand = pLand;
-    pLand = pLand->pNext;
+    pLand = pLand.value.pNext;
 
     // Remove Item
-    RemoveLandEx(iMapIndex, pOldLand->usIndex);
+    RemoveLandEx(iMapIndex, pOldLand.value.usIndex);
   }
 
   // Set world data values
@@ -702,7 +702,7 @@ function InsertLandIndexAtLevel(iMapIndex: UINT32, usIndex: UINT16, ubLevel: UIN
 
   // Allocate memory for new item
   CHECKF(CreateLevelNode(&pNextLand) != FALSE);
-  pNextLand->usIndex = usIndex;
+  pNextLand.value.usIndex = usIndex;
 
   // Move to index before insertion
   while (pLand != NULL) {
@@ -711,7 +711,7 @@ function InsertLandIndexAtLevel(iMapIndex: UINT32, usIndex: UINT16, ubLevel: UIN
       break;
     }
 
-    pLand = pLand->pNext;
+    pLand = pLand.value.pNext;
     level++;
   }
 
@@ -721,14 +721,14 @@ function InsertLandIndexAtLevel(iMapIndex: UINT32, usIndex: UINT16, ubLevel: UIN
   }
 
   // Set links, according to position!
-  pNextLand->pPrevNode = pLand;
-  pNextLand->pNext = pLand->pNext;
-  pLand->pNext = pNextLand;
+  pNextLand.value.pPrevNode = pLand;
+  pNextLand.value.pNext = pLand.value.pNext;
+  pLand.value.pNext = pNextLand;
 
   // Check for tail
-  if (pNextLand->pNext == NULL) {
+  if (pNextLand.value.pNext == NULL) {
   } else {
-    pNextLand->pNext->pPrevNode = pNextLand;
+    pNextLand.value.pNext.value.pPrevNode = pNextLand;
   }
 
   AdjustForFullTile(iMapIndex);
@@ -752,7 +752,7 @@ function RemoveHigherLandLevels(iMapIndex: UINT32, fSrcType: UINT32, puiHigherTy
   // GEt tail
   while (pLand != NULL) {
     pOldLand = pLand;
-    pLand = pLand->pNext;
+    pLand = pLand.value.pNext;
   }
 
   pLand = pOldLand;
@@ -762,15 +762,15 @@ function RemoveHigherLandLevels(iMapIndex: UINT32, fSrcType: UINT32, puiHigherTy
 
   // Look through all objects and Search for height
   while (pLand != NULL) {
-    GetTileType(pLand->usIndex, &fTileType);
+    GetTileType(pLand.value.usIndex, &fTileType);
 
     // Advance to next
     pOldLand = pLand;
-    pLand = pLand->pPrevNode;
+    pLand = pLand.value.pPrevNode;
 
     if (gTileTypeLogicalHeight[fTileType] > ubSrcLogHeight) {
       // Remove Item
-      SetLandIndex(iMapIndex, pOldLand->usIndex, fTileType, TRUE);
+      SetLandIndex(iMapIndex, pOldLand.value.usIndex, fTileType, TRUE);
 
       (*pubNumHigherTypes)++;
 
@@ -800,11 +800,11 @@ function SetLowerLandLevels(iMapIndex: UINT32, fSrcType: UINT32, usIndex: UINT16
 
   // Look through all objects and Search for height
   while (pLand != NULL) {
-    GetTileType(pLand->usIndex, &fTileType);
+    GetTileType(pLand.value.usIndex, &fTileType);
 
     // Advance to next
     pOldLand = pLand;
-    pLand = pLand->pNext;
+    pLand = pLand.value.pNext;
 
     if (gTileTypeLogicalHeight[fTileType] < ubSrcLogHeight) {
       // Set item
@@ -859,16 +859,16 @@ function AddStructToTailCommon(iMapIndex: UINT32, usIndex: UINT16, fAddStructDBI
       }
     }
 
-    pNextStruct->usIndex = usIndex;
+    pNextStruct.value.usIndex = usIndex;
 
-    pNextStruct->pNext = NULL;
+    pNextStruct.value.pNext = NULL;
 
     gpWorldLevelData[iMapIndex].pStructHead = pNextStruct;
   } else {
     // MOVE TO TAIL
     while (pStruct != NULL) {
       pTailStruct = pStruct;
-      pStruct = pStruct->pNext;
+      pStruct = pStruct.value.pNext;
     }
 
     CHECKN(CreateLevelNode(&pNextStruct) != FALSE);
@@ -886,28 +886,28 @@ function AddStructToTailCommon(iMapIndex: UINT32, usIndex: UINT16, fAddStructDBI
         }
       }
     }
-    pNextStruct->usIndex = usIndex;
+    pNextStruct.value.usIndex = usIndex;
 
-    pNextStruct->pNext = NULL;
-    pTailStruct->pNext = pNextStruct;
+    pNextStruct.value.pNext = NULL;
+    pTailStruct.value.pNext = pNextStruct;
   }
 
   // Check flags for tiledat and set a shadow if we have a buddy
   if (usIndex < NUMBEROFTILES) {
     if (!GridNoIndoors(iMapIndex) && gTileDatabase[usIndex].uiFlags & HAS_SHADOW_BUDDY && gTileDatabase[usIndex].sBuddyNum != -1) {
       AddShadowToHead(iMapIndex, gTileDatabase[usIndex].sBuddyNum);
-      gpWorldLevelData[iMapIndex].pShadowHead->uiFlags |= LEVELNODE_BUDDYSHADOW;
+      gpWorldLevelData[iMapIndex].pShadowHead.value.uiFlags |= LEVELNODE_BUDDYSHADOW;
     }
 
     // Check for special flag to stop burn-through on same-tile structs...
     if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
-      pDBStructure = gTileDatabase[usIndex].pDBStructureRef->pDBStructure;
+      pDBStructure = gTileDatabase[usIndex].pDBStructureRef.value.pDBStructure;
 
       // Default to off....
       gpWorldLevelData[iMapIndex].ubExtFlags[0] &= (~MAPELEMENT_EXT_NOBURN_STRUCT);
 
       // If we are NOT a wall and NOT multi-tiles, set mapelement flag...
-      if (!FindStructure(iMapIndex, STRUCTURE_WALLSTUFF) && pDBStructure->ubNumberOfTiles == 1) {
+      if (!FindStructure(iMapIndex, STRUCTURE_WALLSTUFF) && pDBStructure.value.ubNumberOfTiles == 1) {
         // Set flag...
         gpWorldLevelData[iMapIndex].ubExtFlags[0] |= MAPELEMENT_EXT_NOBURN_STRUCT;
       }
@@ -943,30 +943,30 @@ function AddStructToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
     }
   }
 
-  pNextStruct->pNext = pStruct;
-  pNextStruct->usIndex = usIndex;
+  pNextStruct.value.pNext = pStruct;
+  pNextStruct.value.usIndex = usIndex;
 
   // Set head
   gpWorldLevelData[iMapIndex].pStructHead = pNextStruct;
 
-  SetWorldFlagsFromNewNode(iMapIndex, pNextStruct->usIndex);
+  SetWorldFlagsFromNewNode(iMapIndex, pNextStruct.value.usIndex);
 
   if (usIndex < NUMBEROFTILES) {
     // Check flags for tiledat and set a shadow if we have a buddy
     if (!GridNoIndoors(iMapIndex) && gTileDatabase[usIndex].uiFlags & HAS_SHADOW_BUDDY && gTileDatabase[usIndex].sBuddyNum != -1) {
       AddShadowToHead(iMapIndex, gTileDatabase[usIndex].sBuddyNum);
-      gpWorldLevelData[iMapIndex].pShadowHead->uiFlags |= LEVELNODE_BUDDYSHADOW;
+      gpWorldLevelData[iMapIndex].pShadowHead.value.uiFlags |= LEVELNODE_BUDDYSHADOW;
     }
 
     // Check for special flag to stop burn-through on same-tile structs...
     if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
-      pDBStructure = gTileDatabase[usIndex].pDBStructureRef->pDBStructure;
+      pDBStructure = gTileDatabase[usIndex].pDBStructureRef.value.pDBStructure;
 
       // Default to off....
       gpWorldLevelData[iMapIndex].ubExtFlags[0] &= (~MAPELEMENT_EXT_NOBURN_STRUCT);
 
       // If we are NOT a wall and NOT multi-tiles, set mapelement flag...
-      if (!!FindStructure(iMapIndex, STRUCTURE_WALLSTUFF) && pDBStructure->ubNumberOfTiles == 1) {
+      if (!!FindStructure(iMapIndex, STRUCTURE_WALLSTUFF) && pDBStructure.value.ubNumberOfTiles == 1) {
         // Set flag...
         gpWorldLevelData[iMapIndex].ubExtFlags[0] |= MAPELEMENT_EXT_NOBURN_STRUCT;
       }
@@ -998,7 +998,7 @@ function InsertStructIndex(iMapIndex: UINT32, usIndex: UINT16, ubLevel: UINT8): 
   // Allocate memory for new item
   CHECKF(CreateLevelNode(&pNextStruct) != FALSE);
 
-  pNextStruct->usIndex = usIndex;
+  pNextStruct.value.usIndex = usIndex;
 
   // Move to index before insertion
   while (pStruct != NULL) {
@@ -1007,7 +1007,7 @@ function InsertStructIndex(iMapIndex: UINT32, usIndex: UINT16, ubLevel: UINT8): 
       break;
     }
 
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
     level++;
   }
 
@@ -1029,8 +1029,8 @@ function InsertStructIndex(iMapIndex: UINT32, usIndex: UINT16, ubLevel: UINT8): 
   }
 
   // Set links, according to position!
-  pNextStruct->pNext = pStruct->pNext;
-  pStruct->pNext = pNextStruct;
+  pNextStruct.value.pNext = pStruct.value.pNext;
+  pStruct.value.pNext = pNextStruct;
 
   // CheckForAndAddTileCacheStructInfo( pNextStruct, (INT16)iMapIndex, usIndex );
 
@@ -1056,15 +1056,15 @@ function RemoveStructFromTailCommon(iMapIndex: UINT32, fRemoveStructDBInfo: BOOL
   // GOTO TAIL
   while (pStruct != NULL) {
     // AT THE TAIL
-    if (pStruct->pNext == NULL) {
+    if (pStruct.value.pNext == NULL) {
       if (pPrevStruct != NULL) {
-        pPrevStruct->pNext = pStruct->pNext;
+        pPrevStruct.value.pNext = pStruct.value.pNext;
       } else
         gpWorldLevelData[iMapIndex].pStructHead = pPrevStruct;
 
       if (fRemoveStructDBInfo) {
         // Check for special flag to stop burn-through on same-tile structs...
-        if (pStruct->pStructureData != NULL) {
+        if (pStruct.value.pStructureData != NULL) {
           // If we are NOT a wall and NOT multi-tiles, set mapelement flag...
           // if ( !( pStruct->pStructureData->fFlags & STRUCTURE_WALLSTUFF ) && pStruct->pStructureData->pDBStructureRef->pDBStructure->ubNumberOfTiles == 1 )
           //{
@@ -1073,10 +1073,10 @@ function RemoveStructFromTailCommon(iMapIndex: UINT32, fRemoveStructDBInfo: BOOL
           //}
         }
 
-        DeleteStructureFromWorld(pStruct->pStructureData);
+        DeleteStructureFromWorld(pStruct.value.pStructureData);
       }
 
-      usIndex = pStruct->usIndex;
+      usIndex = pStruct.value.usIndex;
 
       // If we have to, make sure to remove this node when we reload the map from a saved game
       RemoveStructFromMapTempFile(iMapIndex, usIndex);
@@ -1094,7 +1094,7 @@ function RemoveStructFromTailCommon(iMapIndex: UINT32, fRemoveStructDBInfo: BOOL
     }
 
     pPrevStruct = pStruct;
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
 
   return TRUE;
@@ -1109,18 +1109,18 @@ function RemoveStruct(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   // Look through all structs and remove index if found
 
   while (pStruct != NULL) {
-    if (pStruct->usIndex == usIndex) {
+    if (pStruct.value.usIndex == usIndex) {
       // OK, set links
       // Check for head or tail
       if (pOldStruct == NULL) {
         // It's the head
-        gpWorldLevelData[iMapIndex].pStructHead = pStruct->pNext;
+        gpWorldLevelData[iMapIndex].pStructHead = pStruct.value.pNext;
       } else {
-        pOldStruct->pNext = pStruct->pNext;
+        pOldStruct.value.pNext = pStruct.value.pNext;
       }
 
       // Check for special flag to stop burn-through on same-tile structs...
-      if (pStruct->pStructureData != NULL) {
+      if (pStruct.value.pStructureData != NULL) {
         // If we are NOT a wall and NOT multi-tiles, set mapelement flag...
         // if ( !( pStruct->pStructureData->fFlags & STRUCTURE_WALLSTUFF ) && pStruct->pStructureData->pDBStructureRef->pDBStructure->ubNumberOfTiles == 1 )
         //{
@@ -1130,7 +1130,7 @@ function RemoveStruct(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
       }
 
       // Delete memory assosiated with item
-      DeleteStructureFromWorld(pStruct->pStructureData);
+      DeleteStructureFromWorld(pStruct.value.pStructureData);
 
       // If we have to, make sure to remove this node when we reload the map from a saved game
       RemoveStructFromMapTempFile(iMapIndex, usIndex);
@@ -1148,7 +1148,7 @@ function RemoveStruct(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
     }
 
     pOldStruct = pStruct;
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
 
   // Could not find it, return FALSE
@@ -1162,7 +1162,7 @@ function RemoveStructFromLevelNode(iMapIndex: UINT32, pNode: Pointer<LEVELNODE>)
   let pOldStruct: Pointer<LEVELNODE> = NULL;
   let usIndex: UINT16;
 
-  usIndex = pNode->usIndex;
+  usIndex = pNode.value.usIndex;
 
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
 
@@ -1174,18 +1174,18 @@ function RemoveStructFromLevelNode(iMapIndex: UINT32, pNode: Pointer<LEVELNODE>)
       // Check for head or tail
       if (pOldStruct == NULL) {
         // It's the head
-        gpWorldLevelData[iMapIndex].pStructHead = pStruct->pNext;
+        gpWorldLevelData[iMapIndex].pStructHead = pStruct.value.pNext;
       } else {
-        pOldStruct->pNext = pStruct->pNext;
+        pOldStruct.value.pNext = pStruct.value.pNext;
       }
 
       // Delete memory assosiated with item
-      DeleteStructureFromWorld(pStruct->pStructureData);
+      DeleteStructureFromWorld(pStruct.value.pStructureData);
 
       // If we have to, make sure to remove this node when we reload the map from a saved game
       RemoveStructFromMapTempFile(iMapIndex, usIndex);
 
-      if (pNode->usIndex < NUMBEROFTILES) {
+      if (pNode.value.usIndex < NUMBEROFTILES) {
         // Check flags for tiledat and set a shadow if we have a buddy
         if (!GridNoIndoors(iMapIndex) && gTileDatabase[usIndex].uiFlags & HAS_SHADOW_BUDDY && gTileDatabase[usIndex].sBuddyNum != -1) {
           RemoveShadow(iMapIndex, gTileDatabase[usIndex].sBuddyNum);
@@ -1198,7 +1198,7 @@ function RemoveStructFromLevelNode(iMapIndex: UINT32, pNode: Pointer<LEVELNODE>)
     }
 
     pOldStruct = pStruct;
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
 
   // Could not find it, return FALSE
@@ -1219,19 +1219,19 @@ function RemoveAllStructsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEnd
   // Look through all structs and Search for type
 
   while (pStruct != NULL) {
-    if (pStruct->usIndex != NO_TILE) {
-      GetTileType(pStruct->usIndex, &fTileType);
+    if (pStruct.value.usIndex != NO_TILE) {
+      GetTileType(pStruct.value.usIndex, &fTileType);
 
       // Advance to next
       pOldStruct = pStruct;
-      pStruct = pStruct->pNext;
+      pStruct = pStruct.value.pNext;
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
-        usIndex = pOldStruct->usIndex;
+        usIndex = pOldStruct.value.usIndex;
 
         // Remove Item
         if (usIndex < NUMBEROFTILES) {
-          RemoveStruct(iMapIndex, pOldStruct->usIndex);
+          RemoveStruct(iMapIndex, pOldStruct.value.usIndex);
           fRetVal = TRUE;
           if (!GridNoIndoors(iMapIndex) && gTileDatabase[usIndex].uiFlags & HAS_SHADOW_BUDDY && gTileDatabase[usIndex].sBuddyNum != -1) {
             RemoveShadow(iMapIndex, gTileDatabase[usIndex].sBuddyNum);
@@ -1287,7 +1287,7 @@ function AddWallToStructLayer(iMapIndex: INT32, usIndex: UINT16, fReplace: BOOLE
 
   // Look through all objects and Search for orientation
   while (pStruct != NULL) {
-    GetWallOrientation(pStruct->usIndex, &usCheckWallOrient);
+    GetWallOrientation(pStruct.value.usIndex, &usCheckWallOrient);
     // OLD CASE
     // if ( usCheckWallOrient > usWallOrientation )
     // Kris:
@@ -1299,7 +1299,7 @@ function AddWallToStructLayer(iMapIndex: INT32, usIndex: UINT16, fReplace: BOOLE
       }
     }
 
-    GetTileType(pStruct->usIndex, &uiCheckType);
+    GetTileType(pStruct.value.usIndex, &uiCheckType);
 
     //		if ( uiCheckType >= FIRSTFLOOR && uiCheckType <= LASTFLOOR )
     if (uiCheckType >= FIRSTROOF && uiCheckType <= LASTROOF) {
@@ -1317,14 +1317,14 @@ function AddWallToStructLayer(iMapIndex: INT32, usIndex: UINT16, fReplace: BOOLE
     if ((usWallOrientation == INSIDE_TOP_RIGHT || usWallOrientation == OUTSIDE_TOP_RIGHT) && (usCheckWallOrient == INSIDE_TOP_RIGHT || usCheckWallOrient == OUTSIDE_TOP_RIGHT) || (usWallOrientation == INSIDE_TOP_LEFT || usWallOrientation == OUTSIDE_TOP_LEFT) && (usCheckWallOrient == INSIDE_TOP_LEFT || usCheckWallOrient == OUTSIDE_TOP_LEFT)) {
       // Same, if replace, replace here
       if (fReplace) {
-        return ReplaceStructIndex(iMapIndex, pStruct->usIndex, usIndex);
+        return ReplaceStructIndex(iMapIndex, pStruct.value.usIndex, usIndex);
       } else {
         return FALSE;
       }
     }
 
     // Advance to next
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
 
     ubLevel++;
   }
@@ -1381,15 +1381,15 @@ function SetStructIndexFlagsFromTypeRange(iMapIndex: UINT32, fStartType: UINT32,
   // Look through all structs and Search for type
 
   while (pStruct != NULL) {
-    if (pStruct->usIndex != NO_TILE) {
-      GetTileType(pStruct->usIndex, &fTileType);
+    if (pStruct.value.usIndex != NO_TILE) {
+      GetTileType(pStruct.value.usIndex, &fTileType);
 
       // Advance to next
       pOldStruct = pStruct;
-      pStruct = pStruct->pNext;
+      pStruct = pStruct.value.pNext;
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
-        pOldStruct->uiFlags |= uiFlags;
+        pOldStruct.value.uiFlags |= uiFlags;
       }
     }
   }
@@ -1417,15 +1417,15 @@ function RemoveStructIndexFlagsFromTypeRange(iMapIndex: UINT32, fStartType: UINT
   // Look through all structs and Search for type
 
   while (pStruct != NULL) {
-    if (pStruct->usIndex != NO_TILE) {
-      GetTileType(pStruct->usIndex, &fTileType);
+    if (pStruct.value.usIndex != NO_TILE) {
+      GetTileType(pStruct.value.usIndex, &fTileType);
 
       // Advance to next
       pOldStruct = pStruct;
-      pStruct = pStruct->pNext;
+      pStruct = pStruct.value.pNext;
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
-        pOldStruct->uiFlags &= (~uiFlags);
+        pOldStruct.value.uiFlags &= (~uiFlags);
       }
     }
   }
@@ -1443,20 +1443,20 @@ function AddShadowToTail(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   // If we're at the head, set here
   if (pShadow == NULL) {
     CHECKF(CreateLevelNode(&pShadow) != FALSE);
-    pShadow->usIndex = usIndex;
+    pShadow.value.usIndex = usIndex;
 
     gpWorldLevelData[iMapIndex].pShadowHead = pShadow;
   } else {
     while (pShadow != NULL) {
-      if (pShadow->pNext == NULL) {
+      if (pShadow.value.pNext == NULL) {
         CHECKF(CreateLevelNode(&pNextShadow) != FALSE);
-        pShadow->pNext = pNextShadow;
-        pNextShadow->pNext = NULL;
-        pNextShadow->usIndex = usIndex;
+        pShadow.value.pNext = pNextShadow;
+        pNextShadow.value.pNext = NULL;
+        pNextShadow.value.usIndex = usIndex;
         break;
       }
 
-      pShadow = pShadow->pNext;
+      pShadow = pShadow.value.pNext;
     }
   }
 
@@ -1473,9 +1473,9 @@ function AddExclusiveShadow(iMapIndex: UINT32, usIndex: UINT16): void {
 
   pShadow = gpWorldLevelData[iMapIndex].pShadowHead;
   while (pShadow) {
-    if (pShadow->usIndex == usIndex)
+    if (pShadow.value.usIndex == usIndex)
       return;
-    pShadow = pShadow->pNext;
+    pShadow = pShadow.value.pNext;
   }
   AddShadowToHead(iMapIndex, usIndex);
 }
@@ -1488,8 +1488,8 @@ function AddShadowToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
   // Allocate head
   CHECKF(CreateLevelNode(&pNextShadow) != FALSE);
-  pNextShadow->pNext = pShadow;
-  pNextShadow->usIndex = usIndex;
+  pNextShadow.value.pNext = pShadow;
+  pNextShadow.value.usIndex = usIndex;
 
   // Set head
   gpWorldLevelData[iMapIndex].pShadowHead = pNextShadow;
@@ -1507,14 +1507,14 @@ function RemoveShadow(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   // Look through all shadows and remove index if found
 
   while (pShadow != NULL) {
-    if (pShadow->usIndex == usIndex) {
+    if (pShadow.value.usIndex == usIndex) {
       // OK, set links
       // Check for head or tail
       if (pOldShadow == NULL) {
         // It's the head
-        gpWorldLevelData[iMapIndex].pShadowHead = pShadow->pNext;
+        gpWorldLevelData[iMapIndex].pShadowHead = pShadow.value.pNext;
       } else {
-        pOldShadow->pNext = pShadow->pNext;
+        pOldShadow.value.pNext = pShadow.value.pNext;
       }
 
       // Delete memory assosiated with item
@@ -1525,7 +1525,7 @@ function RemoveShadow(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
     }
 
     pOldShadow = pShadow;
-    pShadow = pShadow->pNext;
+    pShadow = pShadow.value.pNext;
   }
 
   // Could not find it, return FALSE
@@ -1547,9 +1547,9 @@ function RemoveShadowFromLevelNode(iMapIndex: UINT32, pNode: Pointer<LEVELNODE>)
       // Check for head or tail
       if (pOldShadow == NULL) {
         // It's the head
-        gpWorldLevelData[iMapIndex].pShadowHead = pShadow->pNext;
+        gpWorldLevelData[iMapIndex].pShadowHead = pShadow.value.pNext;
       } else {
-        pOldShadow->pNext = pShadow->pNext;
+        pOldShadow.value.pNext = pShadow.value.pNext;
       }
 
       // Delete memory assosiated with item
@@ -1560,7 +1560,7 @@ function RemoveShadowFromLevelNode(iMapIndex: UINT32, pNode: Pointer<LEVELNODE>)
     }
 
     pOldShadow = pShadow;
-    pShadow = pShadow->pNext;
+    pShadow = pShadow.value.pNext;
   }
 
   // Could not find it, return FALSE
@@ -1577,14 +1577,14 @@ function RemoveStructShadowPartner(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN 
   // Look through all shadows and remove index if found
 
   while (pShadow != NULL) {
-    if (pShadow->usIndex == usIndex) {
+    if (pShadow.value.usIndex == usIndex) {
       // OK, set links
       // Check for head or tail
       if (pOldShadow == NULL) {
         // It's the head
-        gpWorldLevelData[iMapIndex].pShadowHead = pShadow->pNext;
+        gpWorldLevelData[iMapIndex].pShadowHead = pShadow.value.pNext;
       } else {
-        pOldShadow->pNext = pShadow->pNext;
+        pOldShadow.value.pNext = pShadow.value.pNext;
       }
 
       // Delete memory assosiated with item
@@ -1595,7 +1595,7 @@ function RemoveStructShadowPartner(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN 
     }
 
     pOldShadow = pShadow;
-    pShadow = pShadow->pNext;
+    pShadow = pShadow.value.pNext;
   }
 
   // Could not find it, return FALSE
@@ -1614,16 +1614,16 @@ function RemoveAllShadowsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEnd
   // Look through all shadows and Search for type
 
   while (pShadow != NULL) {
-    if (pShadow->usIndex != NO_TILE) {
-      GetTileType(pShadow->usIndex, &fTileType);
+    if (pShadow.value.usIndex != NO_TILE) {
+      GetTileType(pShadow.value.usIndex, &fTileType);
 
       // Advance to next
       pOldShadow = pShadow;
-      pShadow = pShadow->pNext;
+      pShadow = pShadow.value.pNext;
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
         // Remove Item
-        RemoveShadow(iMapIndex, pOldShadow->usIndex);
+        RemoveShadow(iMapIndex, pOldShadow.value.usIndex);
         fRetVal = TRUE;
       }
     }
@@ -1641,13 +1641,13 @@ function RemoveAllShadows(iMapIndex: UINT32): BOOLEAN {
   // Look through all shadows and Search for type
 
   while (pShadow != NULL) {
-    if (pShadow->usIndex != NO_TILE) {
+    if (pShadow.value.usIndex != NO_TILE) {
       // Advance to next
       pOldShadow = pShadow;
-      pShadow = pShadow->pNext;
+      pShadow = pShadow.value.pNext;
 
       // Remove Item
-      RemoveShadow(iMapIndex, pOldShadow->usIndex);
+      RemoveShadow(iMapIndex, pOldShadow.value.usIndex);
       fRetVal = TRUE;
     }
   }
@@ -1673,14 +1673,14 @@ function AddMercToHead(iMapIndex: UINT32, pSoldier: Pointer<SOLDIERTYPE>, fAddSt
 
   // Allocate head
   CHECKF(CreateLevelNode(&pNextMerc) != FALSE);
-  pNextMerc->pNext = pMerc;
-  pNextMerc->pSoldier = pSoldier;
-  pNextMerc->uiFlags |= LEVELNODE_SOLDIER;
+  pNextMerc.value.pNext = pMerc;
+  pNextMerc.value.pSoldier = pSoldier;
+  pNextMerc.value.uiFlags |= LEVELNODE_SOLDIER;
 
   // Add structure info if we want
   if (fAddStructInfo) {
     // Set soldier's levelnode
-    pSoldier->pLevelNode = pNextMerc;
+    pSoldier.value.pLevelNode = pNextMerc;
 
     AddMercStructureInfo(iMapIndex, pSoldier);
   }
@@ -1696,9 +1696,9 @@ function AddMercStructureInfo(sGridNo: INT16, pSoldier: Pointer<SOLDIERTYPE>): B
   let usAnimSurface: UINT16;
 
   // Get surface data
-  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier->usAnimState);
+  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
 
-  AddMercStructureInfoFromAnimSurface(sGridNo, pSoldier, usAnimSurface, pSoldier->usAnimState);
+  AddMercStructureInfoFromAnimSurface(sGridNo, pSoldier, usAnimSurface, pSoldier.value.usAnimState);
 
   return TRUE;
 }
@@ -1708,9 +1708,9 @@ function AddMercStructureInfoFromAnimSurface(sGridNo: INT16, pSoldier: Pointer<S
   let fReturn: BOOLEAN;
 
   // Turn off multi tile flag...
-  pSoldier->uiStatusFlags &= (~SOLDIER_MULTITILE);
+  pSoldier.value.uiStatusFlags &= (~SOLDIER_MULTITILE);
 
-  if (pSoldier->pLevelNode == NULL) {
+  if (pSoldier.value.pLevelNode == NULL) {
     return FALSE;
   }
 
@@ -1719,18 +1719,18 @@ function AddMercStructureInfoFromAnimSurface(sGridNo: INT16, pSoldier: Pointer<S
   }
 
   // Remove existing structs
-  DeleteStructureFromWorld(pSoldier->pLevelNode->pStructureData);
-  pSoldier->pLevelNode->pStructureData = NULL;
+  DeleteStructureFromWorld(pSoldier.value.pLevelNode.value.pStructureData);
+  pSoldier.value.pLevelNode.value.pStructureData = NULL;
 
-  pStructureFileRef = GetAnimationStructureRef(pSoldier->ubID, usAnimSurface, usAnimState);
+  pStructureFileRef = GetAnimationStructureRef(pSoldier.value.ubID, usAnimSurface, usAnimState);
 
   // Now check if we are multi-tiled!
   if (pStructureFileRef != NULL) {
-    if (pSoldier->ubBodyType == QUEENMONSTER) {
+    if (pSoldier.value.ubBodyType == QUEENMONSTER) {
       // Queen uses onely one direction....
-      fReturn = AddStructureToWorld(sGridNo, pSoldier->bLevel, &(pStructureFileRef->pDBStructureRef[0]), pSoldier->pLevelNode);
+      fReturn = AddStructureToWorld(sGridNo, pSoldier.value.bLevel, &(pStructureFileRef.value.pDBStructureRef[0]), pSoldier.value.pLevelNode);
     } else {
-      fReturn = AddStructureToWorld(sGridNo, pSoldier->bLevel, &(pStructureFileRef->pDBStructureRef[gOneCDirection[pSoldier->bDirection]]), pSoldier->pLevelNode);
+      fReturn = AddStructureToWorld(sGridNo, pSoldier.value.bLevel, &(pStructureFileRef.value.pDBStructureRef[gOneCDirection[pSoldier.value.bDirection]]), pSoldier.value.pLevelNode);
     }
     /*
                     if ( fReturn == FALSE )
@@ -1748,19 +1748,19 @@ function AddMercStructureInfoFromAnimSurface(sGridNo: INT16, pSoldier: Pointer<S
 
     if (fReturn == FALSE) {
       // Debug msg
-      ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "FAILED: add struct info for merc %d (%s), at %d direction %d", pSoldier->ubID, pSoldier->name, sGridNo, pSoldier->bDirection);
+      ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "FAILED: add struct info for merc %d (%s), at %d direction %d", pSoldier.value.ubID, pSoldier.value.name, sGridNo, pSoldier.value.bDirection);
 
-      if (pStructureFileRef->pDBStructureRef[gOneCDirection[pSoldier->bDirection]].pDBStructure->ubNumberOfTiles > 1) {
+      if (pStructureFileRef.value.pDBStructureRef[gOneCDirection[pSoldier.value.bDirection]].pDBStructure.value.ubNumberOfTiles > 1) {
         // If we have more than one tile
-        pSoldier->uiStatusFlags |= SOLDIER_MULTITILE_Z;
+        pSoldier.value.uiStatusFlags |= SOLDIER_MULTITILE_Z;
       }
 
       return FALSE;
     } else {
       // Turn on if we are multi-tiled
-      if (pSoldier->pLevelNode->pStructureData->pDBStructureRef->pDBStructure->ubNumberOfTiles > 1) {
+      if (pSoldier.value.pLevelNode.value.pStructureData.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles > 1) {
         // If we have more than one tile
-        pSoldier->uiStatusFlags |= SOLDIER_MULTITILE_Z;
+        pSoldier.value.uiStatusFlags |= SOLDIER_MULTITILE_Z;
       } else {
         // pSoldier->uiStatusFlags |= SOLDIER_MULTITILE_NZ;
       }
@@ -1778,23 +1778,23 @@ function OKToAddMercToWorld(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8): B
   // if ( pSoldier->uiStatusFlags & SOLDIER_MULTITILE )
   {
     // Get surface data
-    usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier->usAnimState);
+    usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
     if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
       return FALSE;
     }
 
-    pStructFileRef = GetAnimationStructureRef(pSoldier->ubID, usAnimSurface, pSoldier->usAnimState);
+    pStructFileRef = GetAnimationStructureRef(pSoldier.value.ubID, usAnimSurface, pSoldier.value.usAnimState);
 
     // Now check if we have multi-tile info!
     if (pStructFileRef != NULL) {
       // Try adding struct to this location, if we can it's good!
-      if (pSoldier->pLevelNode && pSoldier->pLevelNode->pStructureData != NULL) {
-        usOKToAddStructID = pSoldier->pLevelNode->pStructureData->usStructureID;
+      if (pSoldier.value.pLevelNode && pSoldier.value.pLevelNode.value.pStructureData != NULL) {
+        usOKToAddStructID = pSoldier.value.pLevelNode.value.pStructureData.value.usStructureID;
       } else {
         usOKToAddStructID = INVALID_STRUCTURE_ID;
       }
 
-      if (!OkayToAddStructureToWorld(pSoldier->sGridNo, pSoldier->bLevel, &(pStructFileRef->pDBStructureRef[gOneCDirection[bDirection]]), usOKToAddStructID)) {
+      if (!OkayToAddStructureToWorld(pSoldier.value.sGridNo, pSoldier.value.bLevel, &(pStructFileRef.value.pDBStructureRef[gOneCDirection[bDirection]]), usOKToAddStructID)) {
         return FALSE;
       }
     }
@@ -1805,14 +1805,14 @@ function OKToAddMercToWorld(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8): B
 
 function UpdateMercStructureInfo(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // Remove strucute info!
-  if (pSoldier->pLevelNode == NULL) {
+  if (pSoldier.value.pLevelNode == NULL) {
     return FALSE;
   }
 
   // DeleteStructureFromWorld( pSoldier->pLevelNode->pStructureData );
 
   // Add new one!
-  return AddMercStructureInfo(pSoldier->sGridNo, pSoldier);
+  return AddMercStructureInfo(pSoldier.value.sGridNo, pSoldier);
 }
 
 function RemoveMerc(iMapIndex: UINT32, pSoldier: Pointer<SOLDIERTYPE>, fPlaceHolder: BOOLEAN): BOOLEAN {
@@ -1831,14 +1831,14 @@ function RemoveMerc(iMapIndex: UINT32, pSoldier: Pointer<SOLDIERTYPE>, fPlaceHol
   while (pMerc != NULL) {
     fMercFound = FALSE;
 
-    if (pMerc->pSoldier == pSoldier) {
+    if (pMerc.value.pSoldier == pSoldier) {
       // If it's a placeholder, check!
       if (fPlaceHolder) {
-        if ((pMerc->uiFlags & LEVELNODE_MERCPLACEHOLDER)) {
+        if ((pMerc.value.uiFlags & LEVELNODE_MERCPLACEHOLDER)) {
           fMercFound = TRUE;
         }
       } else {
-        if (!(pMerc->uiFlags & LEVELNODE_MERCPLACEHOLDER)) {
+        if (!(pMerc.value.uiFlags & LEVELNODE_MERCPLACEHOLDER)) {
           fMercFound = TRUE;
         }
       }
@@ -1848,17 +1848,17 @@ function RemoveMerc(iMapIndex: UINT32, pSoldier: Pointer<SOLDIERTYPE>, fPlaceHol
         // Check for head or tail
         if (pOldMerc == NULL) {
           // It's the head
-          gpWorldLevelData[iMapIndex].pMercHead = pMerc->pNext;
+          gpWorldLevelData[iMapIndex].pMercHead = pMerc.value.pNext;
         } else {
-          pOldMerc->pNext = pMerc->pNext;
+          pOldMerc.value.pNext = pMerc.value.pNext;
         }
 
         if (!fPlaceHolder) {
           // Set level node to NULL
-          pSoldier->pLevelNode = NULL;
+          pSoldier.value.pLevelNode = NULL;
 
           // Remove strucute info!
-          DeleteStructureFromWorld(pMerc->pStructureData);
+          DeleteStructureFromWorld(pMerc.value.pStructureData);
         }
 
         // Delete memory assosiated with item
@@ -1870,7 +1870,7 @@ function RemoveMerc(iMapIndex: UINT32, pSoldier: Pointer<SOLDIERTYPE>, fPlaceHol
     }
 
     pOldMerc = pMerc;
-    pMerc = pMerc->pNext;
+    pMerc = pMerc.value.pNext;
   }
 
   // Could not find it, return FALSE
@@ -1900,14 +1900,14 @@ function AddRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE> {
         }
       }
     }
-    pRoof->usIndex = usIndex;
+    pRoof.value.usIndex = usIndex;
 
     gpWorldLevelData[iMapIndex].pRoofHead = pRoof;
 
     pNextRoof = pRoof;
   } else {
     while (pRoof != NULL) {
-      if (pRoof->pNext == NULL) {
+      if (pRoof.value.pNext == NULL) {
         CHECKF(CreateLevelNode(&pNextRoof) != FALSE);
 
         if (usIndex < NUMBEROFTILES) {
@@ -1919,15 +1919,15 @@ function AddRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE> {
             }
           }
         }
-        pRoof->pNext = pNextRoof;
+        pRoof.value.pNext = pNextRoof;
 
-        pNextRoof->pNext = NULL;
-        pNextRoof->usIndex = usIndex;
+        pNextRoof.value.pNext = NULL;
+        pNextRoof.value.usIndex = usIndex;
 
         break;
       }
 
-      pRoof = pRoof->pNext;
+      pRoof = pRoof.value.pNext;
     }
   }
 
@@ -1954,8 +1954,8 @@ function AddRoofToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
     }
   }
 
-  pNextRoof->pNext = pRoof;
-  pNextRoof->usIndex = usIndex;
+  pNextRoof.value.pNext = pRoof;
+  pNextRoof.value.usIndex = usIndex;
 
   // Set head
   gpWorldLevelData[iMapIndex].pRoofHead = pNextRoof;
@@ -1973,17 +1973,17 @@ function RemoveRoof(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   // Look through all Roofs and remove index if found
 
   while (pRoof != NULL) {
-    if (pRoof->usIndex == usIndex) {
+    if (pRoof.value.usIndex == usIndex) {
       // OK, set links
       // Check for head or tail
       if (pOldRoof == NULL) {
         // It's the head
-        gpWorldLevelData[iMapIndex].pRoofHead = pRoof->pNext;
+        gpWorldLevelData[iMapIndex].pRoofHead = pRoof.value.pNext;
       } else {
-        pOldRoof->pNext = pRoof->pNext;
+        pOldRoof.value.pNext = pRoof.value.pNext;
       }
       // Delete memory assosiated with item
-      DeleteStructureFromWorld(pRoof->pStructureData);
+      DeleteStructureFromWorld(pRoof.value.pStructureData);
       MemFree(pRoof);
       guiLevelNodes--;
 
@@ -1991,7 +1991,7 @@ function RemoveRoof(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
     }
 
     pOldRoof = pRoof;
-    pRoof = pRoof->pNext;
+    pRoof = pRoof.value.pNext;
   }
 
   // Could not find it, return FALSE
@@ -2017,15 +2017,15 @@ function TypeRangeExistsInRoofLayer(iMapIndex: UINT32, fStartType: UINT32, fEndT
   // Look through all objects and Search for type
 
   while (pRoof != NULL) {
-    if (pRoof->usIndex != NO_TILE) {
-      GetTileType(pRoof->usIndex, &fTileType);
+    if (pRoof.value.usIndex != NO_TILE) {
+      GetTileType(pRoof.value.usIndex, &fTileType);
 
       // Advance to next
       pOldRoof = pRoof;
-      pRoof = pRoof->pNext;
+      pRoof = pRoof.value.pNext;
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
-        *pusRoofIndex = pOldRoof->usIndex;
+        *pusRoofIndex = pOldRoof.value.usIndex;
         return TRUE;
       }
     }
@@ -2045,11 +2045,11 @@ function IndexExistsInRoofLayer(sGridNo: INT16, usIndex: UINT16): BOOLEAN {
   // Look through all objects and Search for type
 
   while (pRoof != NULL) {
-    if (pRoof->usIndex == usIndex) {
+    if (pRoof.value.usIndex == usIndex) {
       return TRUE;
     }
 
-    pRoof = pRoof->pNext;
+    pRoof = pRoof.value.pNext;
   }
 
   // Could not find it, return FALSE
@@ -2083,16 +2083,16 @@ function RemoveAllRoofsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEndTy
   // Look through all Roofs and Search for type
 
   while (pRoof != NULL) {
-    if (pRoof->usIndex != NO_TILE) {
-      GetTileType(pRoof->usIndex, &fTileType);
+    if (pRoof.value.usIndex != NO_TILE) {
+      GetTileType(pRoof.value.usIndex, &fTileType);
 
       // Advance to next
       pOldRoof = pRoof;
-      pRoof = pRoof->pNext;
+      pRoof = pRoof.value.pNext;
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
         // Remove Item
-        RemoveRoof(iMapIndex, pOldRoof->usIndex);
+        RemoveRoof(iMapIndex, pOldRoof.value.usIndex);
         fRetVal = TRUE;
       }
     }
@@ -2113,15 +2113,15 @@ function RemoveRoofIndexFlagsFromTypeRange(iMapIndex: UINT32, fStartType: UINT32
   // Look through all Roofs and Search for type
 
   while (pRoof != NULL) {
-    if (pRoof->usIndex != NO_TILE) {
-      GetTileType(pRoof->usIndex, &fTileType);
+    if (pRoof.value.usIndex != NO_TILE) {
+      GetTileType(pRoof.value.usIndex, &fTileType);
 
       // Advance to next
       pOldRoof = pRoof;
-      pRoof = pRoof->pNext;
+      pRoof = pRoof.value.pNext;
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
-        pOldRoof->uiFlags &= (~uiFlags);
+        pOldRoof.value.uiFlags &= (~uiFlags);
       }
     }
   }
@@ -2137,15 +2137,15 @@ function SetRoofIndexFlagsFromTypeRange(iMapIndex: UINT32, fStartType: UINT32, f
   // Look through all Roofs and Search for type
 
   while (pRoof != NULL) {
-    if (pRoof->usIndex != NO_TILE) {
-      GetTileType(pRoof->usIndex, &fTileType);
+    if (pRoof.value.usIndex != NO_TILE) {
+      GetTileType(pRoof.value.usIndex, &fTileType);
 
       // Advance to next
       pOldRoof = pRoof;
-      pRoof = pRoof->pNext;
+      pRoof = pRoof.value.pNext;
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
-        pOldRoof->uiFlags |= uiFlags;
+        pOldRoof.value.uiFlags |= uiFlags;
       }
     }
   }
@@ -2173,7 +2173,7 @@ function AddOnRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE>
         }
       }
     }
-    pOnRoof->usIndex = usIndex;
+    pOnRoof.value.usIndex = usIndex;
 
     gpWorldLevelData[iMapIndex].pOnRoofHead = pOnRoof;
 
@@ -2181,7 +2181,7 @@ function AddOnRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE>
     return pOnRoof;
   } else {
     while (pOnRoof != NULL) {
-      if (pOnRoof->pNext == NULL) {
+      if (pOnRoof.value.pNext == NULL) {
         CHECKF(CreateLevelNode(&pNextOnRoof) != FALSE);
 
         if (usIndex < NUMBEROFTILES) {
@@ -2194,14 +2194,14 @@ function AddOnRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE>
           }
         }
 
-        pOnRoof->pNext = pNextOnRoof;
+        pOnRoof.value.pNext = pNextOnRoof;
 
-        pNextOnRoof->pNext = NULL;
-        pNextOnRoof->usIndex = usIndex;
+        pNextOnRoof.value.pNext = NULL;
+        pNextOnRoof.value.usIndex = usIndex;
         break;
       }
 
-      pOnRoof = pOnRoof->pNext;
+      pOnRoof = pOnRoof.value.pNext;
     }
   }
 
@@ -2226,8 +2226,8 @@ function AddOnRoofToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
     }
   }
 
-  pNextOnRoof->pNext = pOnRoof;
-  pNextOnRoof->usIndex = usIndex;
+  pNextOnRoof.value.pNext = pOnRoof;
+  pNextOnRoof.value.usIndex = usIndex;
 
   // Set head
   gpWorldLevelData[iMapIndex].pOnRoofHead = pNextOnRoof;
@@ -2245,14 +2245,14 @@ function RemoveOnRoof(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   // Look through all OnRoofs and remove index if found
 
   while (pOnRoof != NULL) {
-    if (pOnRoof->usIndex == usIndex) {
+    if (pOnRoof.value.usIndex == usIndex) {
       // OK, set links
       // Check for head or tail
       if (pOldOnRoof == NULL) {
         // It's the head
-        gpWorldLevelData[iMapIndex].pOnRoofHead = pOnRoof->pNext;
+        gpWorldLevelData[iMapIndex].pOnRoofHead = pOnRoof.value.pNext;
       } else {
-        pOldOnRoof->pNext = pOnRoof->pNext;
+        pOldOnRoof.value.pNext = pOnRoof.value.pNext;
       }
 
       // REMOVE ONROOF!
@@ -2263,7 +2263,7 @@ function RemoveOnRoof(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
     }
 
     pOldOnRoof = pOnRoof;
-    pOnRoof = pOnRoof->pNext;
+    pOnRoof = pOnRoof.value.pNext;
   }
 
   // Could not find it, return FALSE
@@ -2285,9 +2285,9 @@ function RemoveOnRoofFromLevelNode(iMapIndex: UINT32, pNode: Pointer<LEVELNODE>)
       // Check for head or tail
       if (pOldOnRoof == NULL) {
         // It's the head
-        gpWorldLevelData[iMapIndex].pOnRoofHead = pOnRoof->pNext;
+        gpWorldLevelData[iMapIndex].pOnRoofHead = pOnRoof.value.pNext;
       } else {
-        pOldOnRoof->pNext = pOnRoof->pNext;
+        pOldOnRoof.value.pNext = pOnRoof.value.pNext;
       }
 
       // REMOVE ONROOF!
@@ -2298,7 +2298,7 @@ function RemoveOnRoofFromLevelNode(iMapIndex: UINT32, pNode: Pointer<LEVELNODE>)
     }
 
     pOldOnRoof = pOnRoof;
-    pOnRoof = pOnRoof->pNext;
+    pOnRoof = pOnRoof.value.pNext;
   }
 
   // Could not find it, return FALSE
@@ -2341,16 +2341,16 @@ function RemoveAllOnRoofsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEnd
   // Look through all OnRoofs and Search for type
 
   while (pOnRoof != NULL) {
-    if (pOnRoof->usIndex != NO_TILE) {
-      GetTileType(pOnRoof->usIndex, &fTileType);
+    if (pOnRoof.value.usIndex != NO_TILE) {
+      GetTileType(pOnRoof.value.usIndex, &fTileType);
 
       // Advance to next
       pOldOnRoof = pOnRoof;
-      pOnRoof = pOnRoof->pNext;
+      pOnRoof = pOnRoof.value.pNext;
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
         // Remove Item
-        RemoveOnRoof(iMapIndex, pOldOnRoof->usIndex);
+        RemoveOnRoof(iMapIndex, pOldOnRoof.value.usIndex);
         fRetVal = TRUE;
       }
     }
@@ -2370,21 +2370,21 @@ function AddTopmostToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE
   // If we're at the head, set here
   if (pTopmost == NULL) {
     CHECKN(CreateLevelNode(&pNextTopmost) != FALSE);
-    pNextTopmost->usIndex = usIndex;
+    pNextTopmost.value.usIndex = usIndex;
 
     gpWorldLevelData[iMapIndex].pTopmostHead = pNextTopmost;
   } else {
     while (pTopmost != NULL) {
-      if (pTopmost->pNext == NULL) {
+      if (pTopmost.value.pNext == NULL) {
         CHECKN(CreateLevelNode(&pNextTopmost) != FALSE);
-        pTopmost->pNext = pNextTopmost;
-        pNextTopmost->pNext = NULL;
-        pNextTopmost->usIndex = usIndex;
+        pTopmost.value.pNext = pNextTopmost;
+        pNextTopmost.value.pNext = NULL;
+        pNextTopmost.value.usIndex = usIndex;
 
         break;
       }
 
-      pTopmost = pTopmost->pNext;
+      pTopmost = pTopmost.value.pNext;
     }
   }
 
@@ -2400,9 +2400,9 @@ function AddUIElem(iMapIndex: UINT32, usIndex: UINT16, sRelativeX: INT8, sRelati
   CHECKF(pTopmost != NULL);
 
   // Set flags
-  pTopmost->uiFlags |= LEVELNODE_USERELPOS;
-  pTopmost->sRelativeX = sRelativeX;
-  pTopmost->sRelativeY = sRelativeY;
+  pTopmost.value.uiFlags |= LEVELNODE_USERELPOS;
+  pTopmost.value.sRelativeX = sRelativeX;
+  pTopmost.value.sRelativeY = sRelativeY;
 
   if (ppNewNode != NULL) {
     *ppNewNode = pTopmost;
@@ -2424,8 +2424,8 @@ function AddTopmostToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
   // Allocate head
   CHECKF(CreateLevelNode(&pNextTopmost) != FALSE);
-  pNextTopmost->pNext = pTopmost;
-  pNextTopmost->usIndex = usIndex;
+  pNextTopmost.value.pNext = pTopmost;
+  pNextTopmost.value.usIndex = usIndex;
 
   // Set head
   gpWorldLevelData[iMapIndex].pTopmostHead = pNextTopmost;
@@ -2443,14 +2443,14 @@ function RemoveTopmost(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   // Look through all topmosts and remove index if found
 
   while (pTopmost != NULL) {
-    if (pTopmost->usIndex == usIndex) {
+    if (pTopmost.value.usIndex == usIndex) {
       // OK, set links
       // Check for head or tail
       if (pOldTopmost == NULL) {
         // It's the head
-        gpWorldLevelData[iMapIndex].pTopmostHead = pTopmost->pNext;
+        gpWorldLevelData[iMapIndex].pTopmostHead = pTopmost.value.pNext;
       } else {
-        pOldTopmost->pNext = pTopmost->pNext;
+        pOldTopmost.value.pNext = pTopmost.value.pNext;
       }
 
       // Delete memory assosiated with item
@@ -2461,7 +2461,7 @@ function RemoveTopmost(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
     }
 
     pOldTopmost = pTopmost;
-    pTopmost = pTopmost->pNext;
+    pTopmost = pTopmost.value.pNext;
   }
 
   // Could not find it, return FALSE
@@ -2474,7 +2474,7 @@ function RemoveTopmostFromLevelNode(iMapIndex: UINT32, pNode: Pointer<LEVELNODE>
   let pOldTopmost: Pointer<LEVELNODE> = NULL;
   let usIndex: UINT16;
 
-  usIndex = pNode->usIndex;
+  usIndex = pNode.value.usIndex;
 
   pTopmost = gpWorldLevelData[iMapIndex].pTopmostHead;
 
@@ -2486,9 +2486,9 @@ function RemoveTopmostFromLevelNode(iMapIndex: UINT32, pNode: Pointer<LEVELNODE>
       // Check for head or tail
       if (pOldTopmost == NULL) {
         // It's the head
-        gpWorldLevelData[iMapIndex].pTopmostHead = pTopmost->pNext;
+        gpWorldLevelData[iMapIndex].pTopmostHead = pTopmost.value.pNext;
       } else {
-        pOldTopmost->pNext = pTopmost->pNext;
+        pOldTopmost.value.pNext = pTopmost.value.pNext;
       }
 
       // Delete memory assosiated with item
@@ -2499,7 +2499,7 @@ function RemoveTopmostFromLevelNode(iMapIndex: UINT32, pNode: Pointer<LEVELNODE>
     }
 
     pOldTopmost = pTopmost;
-    pTopmost = pTopmost->pNext;
+    pTopmost = pTopmost.value.pNext;
   }
 
   // Could not find it, return FALSE
@@ -2520,14 +2520,14 @@ function RemoveAllTopmostsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEn
   while (pTopmost != NULL) {
     // Advance to next
     pOldTopmost = pTopmost;
-    pTopmost = pTopmost->pNext;
+    pTopmost = pTopmost.value.pNext;
 
-    if (pOldTopmost->usIndex != NO_TILE && pOldTopmost->usIndex < NUMBEROFTILES) {
-      GetTileType(pOldTopmost->usIndex, &fTileType);
+    if (pOldTopmost.value.usIndex != NO_TILE && pOldTopmost.value.usIndex < NUMBEROFTILES) {
+      GetTileType(pOldTopmost.value.usIndex, &fTileType);
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
         // Remove Item
-        RemoveTopmost(iMapIndex, pOldTopmost->usIndex);
+        RemoveTopmost(iMapIndex, pOldTopmost.value.usIndex);
         fRetVal = TRUE;
       }
     }
@@ -2648,14 +2648,14 @@ function WhoIsThere2(sGridNo: INT16, bLevel: INT8): UINT8 {
 
     while (pStructure) {
       // person must either have their pSoldier->sGridNo here or be non-passable
-      if ((pStructure->fFlags & STRUCTURE_PERSON) && (!(pStructure->fFlags & STRUCTURE_PASSABLE) || MercPtrs[pStructure->usStructureID]->sGridNo == sGridNo)) {
-        if ((bLevel == 0 && pStructure->sCubeOffset == 0) || (bLevel > 0 && pStructure->sCubeOffset > 0)) {
+      if ((pStructure.value.fFlags & STRUCTURE_PERSON) && (!(pStructure.value.fFlags & STRUCTURE_PASSABLE) || MercPtrs[pStructure.value.usStructureID].value.sGridNo == sGridNo)) {
+        if ((bLevel == 0 && pStructure.value.sCubeOffset == 0) || (bLevel > 0 && pStructure.value.sCubeOffset > 0)) {
           // found a person, on the right level!
           // structure ID and merc ID are identical for merc structures
-          return pStructure->usStructureID;
+          return pStructure.value.usStructureID;
         }
       }
-      pStructure = pStructure->pNext;
+      pStructure = pStructure.value.pNext;
     }
   }
 
@@ -2694,7 +2694,7 @@ function Water(sGridNo: INT16): BOOLEAN {
   }
 
   pMapElement = &(gpWorldLevelData[sGridNo]);
-  if (pMapElement->ubTerrainID == LOW_WATER || pMapElement->ubTerrainID == MED_WATER || pMapElement->ubTerrainID == DEEP_WATER) {
+  if (pMapElement.value.ubTerrainID == LOW_WATER || pMapElement.value.ubTerrainID == MED_WATER || pMapElement.value.ubTerrainID == DEEP_WATER) {
     // check for a bridge!  otherwise...
     return TRUE;
   } else {
@@ -2706,7 +2706,7 @@ function DeepWater(sGridNo: INT16): BOOLEAN {
   let pMapElement: Pointer<MAP_ELEMENT>;
 
   pMapElement = &(gpWorldLevelData[sGridNo]);
-  if (pMapElement->ubTerrainID == DEEP_WATER) {
+  if (pMapElement.value.ubTerrainID == DEEP_WATER) {
     // check for a bridge!  otherwise...
     return TRUE;
   } else {
@@ -2727,15 +2727,15 @@ function SetStructAframeFlags(iMapIndex: UINT32, uiFlags: UINT32): void {
 
   // Look through all Roofs and Search for type
   while (pStruct != NULL) {
-    if (pStruct->usIndex != NO_TILE) {
-      GetTileFlags(pStruct->usIndex, &uiTileFlags);
+    if (pStruct.value.usIndex != NO_TILE) {
+      GetTileFlags(pStruct.value.usIndex, &uiTileFlags);
 
       // Advance to next
       pOldStruct = pStruct;
-      pStruct = pStruct->pNext;
+      pStruct = pStruct.value.pNext;
 
       if (uiTileFlags & AFRAME_TILE) {
-        pOldStruct->uiFlags |= uiFlags;
+        pOldStruct.value.uiFlags |= uiFlags;
       }
     }
   }
@@ -2750,15 +2750,15 @@ function RemoveStructAframeFlags(iMapIndex: UINT32, uiFlags: UINT32): void {
 
   // Look through all Roofs and Search for type
   while (pStruct != NULL) {
-    if (pStruct->usIndex != NO_TILE) {
-      GetTileFlags(pStruct->usIndex, &uiTileFlags);
+    if (pStruct.value.usIndex != NO_TILE) {
+      GetTileFlags(pStruct.value.usIndex, &uiTileFlags);
 
       // Advance to next
       pOldStruct = pStruct;
-      pStruct = pStruct->pNext;
+      pStruct = pStruct.value.pNext;
 
       if (uiTileFlags & AFRAME_TILE) {
-        pOldStruct->uiFlags &= (~uiFlags);
+        pOldStruct.value.uiFlags &= (~uiFlags);
       }
     }
   }
@@ -2770,37 +2770,37 @@ function FindLevelNodeBasedOnStructure(sGridNo: INT16, pStructure: Pointer<STRUC
   // ATE: First look on the struct layer.....
   pLevelNode = gpWorldLevelData[sGridNo].pStructHead;
   while (pLevelNode != NULL) {
-    if (pLevelNode->pStructureData == pStructure) {
+    if (pLevelNode.value.pStructureData == pStructure) {
       return pLevelNode;
     }
-    pLevelNode = pLevelNode->pNext;
+    pLevelNode = pLevelNode.value.pNext;
   }
 
   // Next the roof layer....
   pLevelNode = gpWorldLevelData[sGridNo].pRoofHead;
   while (pLevelNode != NULL) {
-    if (pLevelNode->pStructureData == pStructure) {
+    if (pLevelNode.value.pStructureData == pStructure) {
       return pLevelNode;
     }
-    pLevelNode = pLevelNode->pNext;
+    pLevelNode = pLevelNode.value.pNext;
   }
 
   // Then the object layer....
   pLevelNode = gpWorldLevelData[sGridNo].pObjectHead;
   while (pLevelNode != NULL) {
-    if (pLevelNode->pStructureData == pStructure) {
+    if (pLevelNode.value.pStructureData == pStructure) {
       return pLevelNode;
     }
-    pLevelNode = pLevelNode->pNext;
+    pLevelNode = pLevelNode.value.pNext;
   }
 
   // Finally the onroof layer....
   pLevelNode = gpWorldLevelData[sGridNo].pOnRoofHead;
   while (pLevelNode != NULL) {
-    if (pLevelNode->pStructureData == pStructure) {
+    if (pLevelNode.value.pStructureData == pStructure) {
       return pLevelNode;
     }
-    pLevelNode = pLevelNode->pNext;
+    pLevelNode = pLevelNode.value.pNext;
   }
 
   // Assert here if it cannot be found....
@@ -2821,10 +2821,10 @@ function FindShadow(sGridNo: INT16, usStructIndex: UINT16): Pointer<LEVELNODE> {
 
   pLevelNode = gpWorldLevelData[sGridNo].pShadowHead;
   while (pLevelNode != NULL) {
-    if (pLevelNode->usIndex == usShadowIndex) {
+    if (pLevelNode.value.usIndex == usShadowIndex) {
       break;
     }
-    pLevelNode = pLevelNode->pNext;
+    pLevelNode = pLevelNode.value.pNext;
   }
   return pLevelNode;
 }
@@ -2838,16 +2838,16 @@ function WorldHideTrees(): void {
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     pNode = gpWorldLevelData[cnt].pStructHead;
     while (pNode != NULL) {
-      GetTileFlags(pNode->usIndex, &fTileFlags);
+      GetTileFlags(pNode.value.usIndex, &fTileFlags);
 
       if (fTileFlags & FULL3D_TILE) {
-        if (!(pNode->uiFlags & LEVELNODE_REVEALTREES)) {
-          pNode->uiFlags |= (LEVELNODE_REVEALTREES);
+        if (!(pNode.value.uiFlags & LEVELNODE_REVEALTREES)) {
+          pNode.value.uiFlags |= (LEVELNODE_REVEALTREES);
         }
 
         fRerender = TRUE;
       }
-      pNode = pNode->pNext;
+      pNode = pNode.value.pNext;
     }
   }
 
@@ -2863,16 +2863,16 @@ function WorldShowTrees(): void {
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     pNode = gpWorldLevelData[cnt].pStructHead;
     while (pNode != NULL) {
-      GetTileFlags(pNode->usIndex, &fTileFlags);
+      GetTileFlags(pNode.value.usIndex, &fTileFlags);
 
       if (fTileFlags & FULL3D_TILE) {
-        if ((pNode->uiFlags & LEVELNODE_REVEALTREES)) {
-          pNode->uiFlags &= (~(LEVELNODE_REVEALTREES));
+        if ((pNode.value.uiFlags & LEVELNODE_REVEALTREES)) {
+          pNode.value.uiFlags &= (~(LEVELNODE_REVEALTREES));
         }
 
         fRerender = TRUE;
       }
-      pNode = pNode->pNext;
+      pNode = pNode.value.pNext;
     }
   }
 
@@ -2893,14 +2893,14 @@ function SetWallLevelnodeFlags(sGridNo: UINT16, uiFlags: UINT32): void {
   // Look through all objects and Search for type
 
   while (pStruct != NULL) {
-    if (pStruct->pStructureData != NULL) {
+    if (pStruct.value.pStructureData != NULL) {
       // See if we are a wall!
-      if (pStruct->pStructureData->fFlags & STRUCTURE_WALLSTUFF) {
-        pStruct->uiFlags |= uiFlags;
+      if (pStruct.value.pStructureData.value.fFlags & STRUCTURE_WALLSTUFF) {
+        pStruct.value.uiFlags |= uiFlags;
       }
     }
     // Advance to next
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
 }
 
@@ -2912,14 +2912,14 @@ function RemoveWallLevelnodeFlags(sGridNo: UINT16, uiFlags: UINT32): void {
   // Look through all objects and Search for type
 
   while (pStruct != NULL) {
-    if (pStruct->pStructureData != NULL) {
+    if (pStruct.value.pStructureData != NULL) {
       // See if we are a wall!
-      if (pStruct->pStructureData->fFlags & STRUCTURE_WALLSTUFF) {
-        pStruct->uiFlags &= (~uiFlags);
+      if (pStruct.value.pStructureData.value.fFlags & STRUCTURE_WALLSTUFF) {
+        pStruct.value.uiFlags &= (~uiFlags);
       }
     }
     // Advance to next
-    pStruct = pStruct->pNext;
+    pStruct = pStruct.value.pNext;
   }
 }
 

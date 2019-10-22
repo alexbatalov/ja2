@@ -19,17 +19,17 @@ function CreateAnimationTile(pAniParams: Pointer<ANITILE_PARAMS>): Pointer<ANITI
   let ubTempDir: UINT8;
 
   // Get some parameters from structure sent in...
-  sGridNo = pAniParams->sGridNo;
-  ubLevel = pAniParams->ubLevelID;
-  usTileType = pAniParams->usTileType;
-  usTileIndex = pAniParams->usTileIndex;
-  sDelay = pAniParams->sDelay;
-  sStartFrame = pAniParams->sStartFrame;
-  uiFlags = pAniParams->uiFlags;
-  pGivenNode = pAniParams->pGivenLevelNode;
-  sX = pAniParams->sX;
-  sY = pAniParams->sY;
-  sZ = pAniParams->sZ;
+  sGridNo = pAniParams.value.sGridNo;
+  ubLevel = pAniParams.value.ubLevelID;
+  usTileType = pAniParams.value.usTileType;
+  usTileIndex = pAniParams.value.usTileIndex;
+  sDelay = pAniParams.value.sDelay;
+  sStartFrame = pAniParams.value.sStartFrame;
+  uiFlags = pAniParams.value.uiFlags;
+  pGivenNode = pAniParams.value.pGivenLevelNode;
+  sX = pAniParams.value.sX;
+  sY = pAniParams.value.sY;
+  sZ = pAniParams.value.sZ;
 
   pAniNode = pAniTileHead;
 
@@ -37,11 +37,11 @@ function CreateAnimationTile(pAniParams: Pointer<ANITILE_PARAMS>): Pointer<ANITI
   pNewAniNode = MemAlloc(sizeof(ANITILE));
 
   if ((uiFlags & ANITILE_EXISTINGTILE)) {
-    pNewAniNode->pLevelNode = pGivenNode;
-    pNewAniNode->pLevelNode->pAniTile = pNewAniNode;
+    pNewAniNode.value.pLevelNode = pGivenNode;
+    pNewAniNode.value.pLevelNode.value.pAniTile = pNewAniNode;
   } else {
     if ((uiFlags & ANITILE_CACHEDTILE)) {
-      iCachedTile = GetCachedTile(pAniParams->zCachedFile);
+      iCachedTile = GetCachedTile(pAniParams.value.zCachedFile);
 
       if (iCachedTile == -1) {
         return NULL;
@@ -93,26 +93,26 @@ function CreateAnimationTile(pAniParams: Pointer<ANITILE_PARAMS>): Pointer<ANITI
     }
 
     // SET NEW TILE VALUES
-    pNode->ubShadeLevel = DEFAULT_SHADE_LEVEL;
-    pNode->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+    pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+    pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
 
-    pNewAniNode->pLevelNode = pNode;
+    pNewAniNode.value.pLevelNode = pNode;
 
     if ((uiFlags & ANITILE_CACHEDTILE)) {
-      pNewAniNode->pLevelNode->uiFlags |= (LEVELNODE_CACHEDANITILE);
-      pNewAniNode->sCachedTileID = iCachedTile;
-      pNewAniNode->usCachedTileSubIndex = usTileType;
-      pNewAniNode->pLevelNode->pAniTile = pNewAniNode;
-      pNewAniNode->sRelativeX = sX;
-      pNewAniNode->sRelativeY = sY;
-      pNewAniNode->pLevelNode->sRelativeZ = sZ;
+      pNewAniNode.value.pLevelNode.value.uiFlags |= (LEVELNODE_CACHEDANITILE);
+      pNewAniNode.value.sCachedTileID = iCachedTile;
+      pNewAniNode.value.usCachedTileSubIndex = usTileType;
+      pNewAniNode.value.pLevelNode.value.pAniTile = pNewAniNode;
+      pNewAniNode.value.sRelativeX = sX;
+      pNewAniNode.value.sRelativeY = sY;
+      pNewAniNode.value.pLevelNode.value.sRelativeZ = sZ;
     }
     // Can't set relative X,Y,Z IF FLAGS ANITILE_CACHEDTILE set!
     else if ((uiFlags & ANITILE_USEABSOLUTEPOS)) {
-      pNewAniNode->pLevelNode->sRelativeX = sX;
-      pNewAniNode->pLevelNode->sRelativeY = sY;
-      pNewAniNode->pLevelNode->sRelativeZ = sZ;
-      pNewAniNode->pLevelNode->uiFlags |= (LEVELNODE_USEABSOLUTEPOS);
+      pNewAniNode.value.pLevelNode.value.sRelativeX = sX;
+      pNewAniNode.value.pLevelNode.value.sRelativeY = sY;
+      pNewAniNode.value.pLevelNode.value.sRelativeZ = sZ;
+      pNewAniNode.value.pLevelNode.value.uiFlags |= (LEVELNODE_USEABSOLUTEPOS);
     }
   }
 
@@ -149,73 +149,73 @@ function CreateAnimationTile(pAniParams: Pointer<ANITILE_PARAMS>): Pointer<ANITI
   }
 
   // SET FLAGS FOR LEVELNODE
-  pNewAniNode->pLevelNode->uiFlags |= (LEVELNODE_ANIMATION | LEVELNODE_USEZ | LEVELNODE_DYNAMIC);
+  pNewAniNode.value.pLevelNode.value.uiFlags |= (LEVELNODE_ANIMATION | LEVELNODE_USEZ | LEVELNODE_DYNAMIC);
 
   if ((uiFlags & ANITILE_NOZBLITTER)) {
-    pNewAniNode->pLevelNode->uiFlags |= LEVELNODE_NOZBLITTER;
+    pNewAniNode.value.pLevelNode.value.uiFlags |= LEVELNODE_NOZBLITTER;
   }
 
   if ((uiFlags & ANITILE_ALWAYS_TRANSLUCENT)) {
-    pNewAniNode->pLevelNode->uiFlags |= LEVELNODE_REVEAL;
+    pNewAniNode.value.pLevelNode.value.uiFlags |= LEVELNODE_REVEAL;
   }
 
   if ((uiFlags & ANITILE_USEBEST_TRANSLUCENT)) {
-    pNewAniNode->pLevelNode->uiFlags |= LEVELNODE_USEBESTTRANSTYPE;
+    pNewAniNode.value.pLevelNode.value.uiFlags |= LEVELNODE_USEBESTTRANSTYPE;
   }
 
   if ((uiFlags & ANITILE_ANIMATE_Z)) {
-    pNewAniNode->pLevelNode->uiFlags |= LEVELNODE_DYNAMICZ;
+    pNewAniNode.value.pLevelNode.value.uiFlags |= LEVELNODE_DYNAMICZ;
   }
 
   if ((uiFlags & ANITILE_PAUSED)) {
-    pNewAniNode->pLevelNode->uiFlags |= (LEVELNODE_LASTDYNAMIC | LEVELNODE_UPDATESAVEBUFFERONCE);
-    pNewAniNode->pLevelNode->uiFlags &= (~LEVELNODE_DYNAMIC);
+    pNewAniNode.value.pLevelNode.value.uiFlags |= (LEVELNODE_LASTDYNAMIC | LEVELNODE_UPDATESAVEBUFFERONCE);
+    pNewAniNode.value.pLevelNode.value.uiFlags &= (~LEVELNODE_DYNAMIC);
   }
 
   if ((uiFlags & ANITILE_OPTIMIZEFORSMOKEEFFECT)) {
-    pNewAniNode->pLevelNode->uiFlags |= LEVELNODE_NOWRITEZ;
+    pNewAniNode.value.pLevelNode.value.uiFlags |= LEVELNODE_NOWRITEZ;
   }
 
   // SET ANITILE VALUES
-  pNewAniNode->ubLevelID = ubLevel;
-  pNewAniNode->usTileIndex = usTileIndex;
+  pNewAniNode.value.ubLevelID = ubLevel;
+  pNewAniNode.value.usTileIndex = usTileIndex;
 
   if ((uiFlags & ANITILE_CACHEDTILE)) {
-    pNewAniNode->usNumFrames = gpTileCache[iCachedTile].ubNumFrames;
+    pNewAniNode.value.usNumFrames = gpTileCache[iCachedTile].ubNumFrames;
   } else {
     Assert(gTileDatabase[usTileIndex].pAnimData != NULL);
-    pNewAniNode->usNumFrames = gTileDatabase[usTileIndex].pAnimData->ubNumFrames;
+    pNewAniNode.value.usNumFrames = gTileDatabase[usTileIndex].pAnimData.value.ubNumFrames;
   }
 
   if ((uiFlags & ANITILE_USE_DIRECTION_FOR_START_FRAME)) {
     // Our start frame is actually a direction indicator
-    ubTempDir = gOneCDirection[pAniParams->uiUserData3];
-    sStartFrame = sStartFrame + (pNewAniNode->usNumFrames * ubTempDir);
+    ubTempDir = gOneCDirection[pAniParams.value.uiUserData3];
+    sStartFrame = sStartFrame + (pNewAniNode.value.usNumFrames * ubTempDir);
   }
 
   if ((uiFlags & ANITILE_USE_4DIRECTION_FOR_START_FRAME)) {
     // Our start frame is actually a direction indicator
-    ubTempDir = gb4DirectionsFrom8[pAniParams->uiUserData3];
-    sStartFrame = sStartFrame + (pNewAniNode->usNumFrames * ubTempDir);
+    ubTempDir = gb4DirectionsFrom8[pAniParams.value.uiUserData3];
+    sStartFrame = sStartFrame + (pNewAniNode.value.usNumFrames * ubTempDir);
   }
 
-  pNewAniNode->usTileType = usTileType;
-  pNewAniNode->pNext = pAniNode;
-  pNewAniNode->uiFlags = uiFlags;
-  pNewAniNode->sDelay = sDelay;
-  pNewAniNode->sCurrentFrame = sStartFrame;
-  pNewAniNode->uiTimeLastUpdate = GetJA2Clock();
-  pNewAniNode->sGridNo = sGridNo;
+  pNewAniNode.value.usTileType = usTileType;
+  pNewAniNode.value.pNext = pAniNode;
+  pNewAniNode.value.uiFlags = uiFlags;
+  pNewAniNode.value.sDelay = sDelay;
+  pNewAniNode.value.sCurrentFrame = sStartFrame;
+  pNewAniNode.value.uiTimeLastUpdate = GetJA2Clock();
+  pNewAniNode.value.sGridNo = sGridNo;
 
-  pNewAniNode->sStartFrame = sStartFrame;
+  pNewAniNode.value.sStartFrame = sStartFrame;
 
-  pNewAniNode->ubKeyFrame1 = pAniParams->ubKeyFrame1;
-  pNewAniNode->uiKeyFrame1Code = pAniParams->uiKeyFrame1Code;
-  pNewAniNode->ubKeyFrame2 = pAniParams->ubKeyFrame2;
-  pNewAniNode->uiKeyFrame2Code = pAniParams->uiKeyFrame2Code;
-  pNewAniNode->uiUserData = pAniParams->uiUserData;
-  pNewAniNode->ubUserData2 = pAniParams->ubUserData2;
-  pNewAniNode->uiUserData3 = pAniParams->uiUserData3;
+  pNewAniNode.value.ubKeyFrame1 = pAniParams.value.ubKeyFrame1;
+  pNewAniNode.value.uiKeyFrame1Code = pAniParams.value.uiKeyFrame1Code;
+  pNewAniNode.value.ubKeyFrame2 = pAniParams.value.ubKeyFrame2;
+  pNewAniNode.value.uiKeyFrame2Code = pAniParams.value.uiKeyFrame2Code;
+  pNewAniNode.value.uiUserData = pAniParams.value.uiUserData;
+  pNewAniNode.value.ubUserData2 = pAniParams.value.ubUserData2;
+  pNewAniNode.value.uiUserData3 = pAniParams.value.uiUserData3;
 
   // Set head
   pAniTileHead = pNewAniNode;
@@ -235,7 +235,7 @@ function DeleteAniTiles(): void {
 
   while (pAniNode != NULL) {
     pNode = pAniNode;
-    pAniNode = pAniNode->pNext;
+    pAniNode = pAniNode.value.pNext;
 
     DeleteAniTile(pNode);
   }
@@ -254,52 +254,52 @@ function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
       // Check for head or tail
       if (pOldAniNode == NULL) {
         // It's the head
-        pAniTileHead = pAniTile->pNext;
+        pAniTileHead = pAniTile.value.pNext;
       } else {
-        pOldAniNode->pNext = pAniNode->pNext;
+        pOldAniNode.value.pNext = pAniNode.value.pNext;
       }
 
-      if (!(pAniNode->uiFlags & ANITILE_EXISTINGTILE)) {
+      if (!(pAniNode.value.uiFlags & ANITILE_EXISTINGTILE)) {
         // Delete memory assosiated with item
-        switch (pAniNode->ubLevelID) {
+        switch (pAniNode.value.ubLevelID) {
           case ANI_STRUCT_LEVEL:
 
-            RemoveStructFromLevelNode(pAniNode->sGridNo, pAniNode->pLevelNode);
+            RemoveStructFromLevelNode(pAniNode.value.sGridNo, pAniNode.value.pLevelNode);
             break;
 
           case ANI_SHADOW_LEVEL:
 
-            RemoveShadowFromLevelNode(pAniNode->sGridNo, pAniNode->pLevelNode);
+            RemoveShadowFromLevelNode(pAniNode.value.sGridNo, pAniNode.value.pLevelNode);
             break;
 
           case ANI_OBJECT_LEVEL:
 
-            RemoveObject(pAniNode->sGridNo, pAniNode->usTileIndex);
+            RemoveObject(pAniNode.value.sGridNo, pAniNode.value.usTileIndex);
             break;
 
           case ANI_ROOF_LEVEL:
 
-            RemoveRoof(pAniNode->sGridNo, pAniNode->usTileIndex);
+            RemoveRoof(pAniNode.value.sGridNo, pAniNode.value.usTileIndex);
             break;
 
           case ANI_ONROOF_LEVEL:
 
-            RemoveOnRoof(pAniNode->sGridNo, pAniNode->usTileIndex);
+            RemoveOnRoof(pAniNode.value.sGridNo, pAniNode.value.usTileIndex);
             break;
 
           case ANI_TOPMOST_LEVEL:
 
-            RemoveTopmostFromLevelNode(pAniNode->sGridNo, pAniNode->pLevelNode);
+            RemoveTopmostFromLevelNode(pAniNode.value.sGridNo, pAniNode.value.pLevelNode);
             break;
         }
 
-        if ((pAniNode->uiFlags & ANITILE_CACHEDTILE)) {
-          RemoveCachedTile(pAniNode->sCachedTileID);
+        if ((pAniNode.value.uiFlags & ANITILE_CACHEDTILE)) {
+          RemoveCachedTile(pAniNode.value.sCachedTileID);
         }
 
-        if (pAniNode->uiFlags & ANITILE_EXPLOSION) {
+        if (pAniNode.value.uiFlags & ANITILE_EXPLOSION) {
           // Talk to the explosion data...
-          RemoveExplosionData(pAniNode->uiUserData3);
+          RemoveExplosionData(pAniNode.value.uiUserData3);
 
           if (!gfExplosionQueueActive) {
             // turn on sighting again
@@ -309,40 +309,40 @@ function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
 
           // Freeup attacker from explosion
           DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Reducing attacker busy count..., EXPLOSION effect gone off"));
-          ReduceAttackBusyCount(pAniNode->ubUserData2, FALSE);
+          ReduceAttackBusyCount(pAniNode.value.ubUserData2, FALSE);
         }
 
-        if (pAniNode->uiFlags & ANITILE_RELEASE_ATTACKER_WHEN_DONE) {
+        if (pAniNode.value.uiFlags & ANITILE_RELEASE_ATTACKER_WHEN_DONE) {
           // First delete the bullet!
-          RemoveBullet(pAniNode->uiUserData3);
+          RemoveBullet(pAniNode.value.uiUserData3);
 
           DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Freeing up attacker - miss finished animation"));
-          FreeUpAttacker(pAniNode->ubAttackerMissed);
+          FreeUpAttacker(pAniNode.value.ubAttackerMissed);
         }
       } else {
-        TileElem = &(gTileDatabase[pAniNode->usTileIndex]);
+        TileElem = &(gTileDatabase[pAniNode.value.usTileIndex]);
 
         // OK, update existing tile usIndex....
-        Assert(TileElem->pAnimData != NULL);
-        pAniNode->pLevelNode->usIndex = TileElem->pAnimData->pusFrames[pAniNode->pLevelNode->sCurrentFrame];
+        Assert(TileElem.value.pAnimData != NULL);
+        pAniNode.value.pLevelNode.value.usIndex = TileElem.value.pAnimData.value.pusFrames[pAniNode.value.pLevelNode.value.sCurrentFrame];
 
         // OK, set our frame data back to zero....
-        pAniNode->pLevelNode->sCurrentFrame = 0;
+        pAniNode.value.pLevelNode.value.sCurrentFrame = 0;
 
         // Set some flags to write to Z / update save buffer
         // pAniNode->pLevelNode->uiFlags |=( LEVELNODE_LASTDYNAMIC | LEVELNODE_UPDATESAVEBUFFERONCE );
-        pAniNode->pLevelNode->uiFlags &= ~(LEVELNODE_DYNAMIC | LEVELNODE_USEZ | LEVELNODE_ANIMATION);
+        pAniNode.value.pLevelNode.value.uiFlags &= ~(LEVELNODE_DYNAMIC | LEVELNODE_USEZ | LEVELNODE_ANIMATION);
 
-        if (pAniNode->uiFlags & ANITILE_DOOR) {
+        if (pAniNode.value.uiFlags & ANITILE_DOOR) {
           // unset door busy!
           let pDoorStatus: Pointer<DOOR_STATUS>;
 
-          pDoorStatus = GetDoorStatus(pAniNode->sGridNo);
+          pDoorStatus = GetDoorStatus(pAniNode.value.sGridNo);
           if (pDoorStatus) {
-            pDoorStatus->ubFlags &= ~(DOOR_BUSY);
+            pDoorStatus.value.ubFlags &= ~(DOOR_BUSY);
           }
 
-          if (GridNoOnScreen(pAniNode->sGridNo)) {
+          if (GridNoOnScreen(pAniNode.value.sGridNo)) {
             SetRenderFlags(RENDER_FLAG_FULL);
           }
         }
@@ -353,7 +353,7 @@ function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
     }
 
     pOldAniNode = pAniNode;
-    pAniNode = pAniNode->pNext;
+    pAniNode = pAniNode.value.pNext;
   }
 }
 
@@ -370,78 +370,78 @@ function UpdateAniTiles(): void {
 
   while (pAniNode != NULL) {
     pNode = pAniNode;
-    pAniNode = pAniNode->pNext;
+    pAniNode = pAniNode.value.pNext;
 
-    if ((uiClock - pNode->uiTimeLastUpdate) > pNode->sDelay && !(pNode->uiFlags & ANITILE_PAUSED)) {
-      pNode->uiTimeLastUpdate = GetJA2Clock();
+    if ((uiClock - pNode.value.uiTimeLastUpdate) > pNode.value.sDelay && !(pNode.value.uiFlags & ANITILE_PAUSED)) {
+      pNode.value.uiTimeLastUpdate = GetJA2Clock();
 
-      if (pNode->uiFlags & (ANITILE_OPTIMIZEFORSLOWMOVING)) {
-        pNode->pLevelNode->uiFlags |= (LEVELNODE_DYNAMIC);
-        pNode->pLevelNode->uiFlags &= (~LEVELNODE_LASTDYNAMIC);
-      } else if (pNode->uiFlags & (ANITILE_OPTIMIZEFORSMOKEEFFECT)) {
+      if (pNode.value.uiFlags & (ANITILE_OPTIMIZEFORSLOWMOVING)) {
+        pNode.value.pLevelNode.value.uiFlags |= (LEVELNODE_DYNAMIC);
+        pNode.value.pLevelNode.value.uiFlags &= (~LEVELNODE_LASTDYNAMIC);
+      } else if (pNode.value.uiFlags & (ANITILE_OPTIMIZEFORSMOKEEFFECT)) {
         //	pNode->pLevelNode->uiFlags |= LEVELNODE_DYNAMICZ;
         ResetSpecificLayerOptimizing(TILES_DYNAMIC_STRUCTURES);
-        pNode->pLevelNode->uiFlags &= (~LEVELNODE_LASTDYNAMIC);
-        pNode->pLevelNode->uiFlags |= (LEVELNODE_DYNAMIC);
+        pNode.value.pLevelNode.value.uiFlags &= (~LEVELNODE_LASTDYNAMIC);
+        pNode.value.pLevelNode.value.uiFlags |= (LEVELNODE_DYNAMIC);
       }
 
-      if (pNode->uiFlags & ANITILE_FORWARD) {
-        usMaxFrames = pNode->usNumFrames;
+      if (pNode.value.uiFlags & ANITILE_FORWARD) {
+        usMaxFrames = pNode.value.usNumFrames;
 
-        if (pNode->uiFlags & ANITILE_USE_DIRECTION_FOR_START_FRAME) {
-          ubTempDir = gOneCDirection[pNode->uiUserData3];
-          usMaxFrames = usMaxFrames + (pNode->usNumFrames * ubTempDir);
+        if (pNode.value.uiFlags & ANITILE_USE_DIRECTION_FOR_START_FRAME) {
+          ubTempDir = gOneCDirection[pNode.value.uiUserData3];
+          usMaxFrames = usMaxFrames + (pNode.value.usNumFrames * ubTempDir);
         }
 
-        if (pNode->uiFlags & ANITILE_USE_4DIRECTION_FOR_START_FRAME) {
-          ubTempDir = gb4DirectionsFrom8[pNode->uiUserData3];
-          usMaxFrames = usMaxFrames + (pNode->usNumFrames * ubTempDir);
+        if (pNode.value.uiFlags & ANITILE_USE_4DIRECTION_FOR_START_FRAME) {
+          ubTempDir = gb4DirectionsFrom8[pNode.value.uiUserData3];
+          usMaxFrames = usMaxFrames + (pNode.value.usNumFrames * ubTempDir);
         }
 
-        if ((pNode->sCurrentFrame + 1) < usMaxFrames) {
-          pNode->sCurrentFrame++;
-          pNode->pLevelNode->sCurrentFrame = pNode->sCurrentFrame;
+        if ((pNode.value.sCurrentFrame + 1) < usMaxFrames) {
+          pNode.value.sCurrentFrame++;
+          pNode.value.pLevelNode.value.sCurrentFrame = pNode.value.sCurrentFrame;
 
-          if (pNode->uiFlags & ANITILE_EXPLOSION) {
+          if (pNode.value.uiFlags & ANITILE_EXPLOSION) {
             // Talk to the explosion data...
-            UpdateExplosionFrame(pNode->uiUserData3, pNode->sCurrentFrame);
+            UpdateExplosionFrame(pNode.value.uiUserData3, pNode.value.sCurrentFrame);
           }
 
           // CHECK IF WE SHOULD BE DISPLAYING TRANSLUCENTLY!
-          if (pNode->sCurrentFrame == pNode->ubKeyFrame1) {
-            switch (pNode->uiKeyFrame1Code) {
+          if (pNode.value.sCurrentFrame == pNode.value.ubKeyFrame1) {
+            switch (pNode.value.uiKeyFrame1Code) {
               case ANI_KEYFRAME_BEGIN_TRANSLUCENCY:
 
-                pNode->pLevelNode->uiFlags |= LEVELNODE_REVEAL;
+                pNode.value.pLevelNode.value.uiFlags |= LEVELNODE_REVEAL;
                 break;
 
               case ANI_KEYFRAME_CHAIN_WATER_EXPLOSION:
 
-                IgniteExplosion(pNode->ubUserData2, pNode->pLevelNode->sRelativeX, pNode->pLevelNode->sRelativeY, 0, pNode->sGridNo, (pNode->uiUserData), 0);
+                IgniteExplosion(pNode.value.ubUserData2, pNode.value.pLevelNode.value.sRelativeX, pNode.value.pLevelNode.value.sRelativeY, 0, pNode.value.sGridNo, (pNode.value.uiUserData), 0);
                 break;
 
               case ANI_KEYFRAME_DO_SOUND:
 
-                PlayJA2Sample(pNode->uiUserData, RATE_11025, SoundVolume(MIDVOLUME, pNode->uiUserData3), 1, SoundDir(pNode->uiUserData3));
+                PlayJA2Sample(pNode.value.uiUserData, RATE_11025, SoundVolume(MIDVOLUME, pNode.value.uiUserData3), 1, SoundDir(pNode.value.uiUserData3));
                 break;
             }
           }
 
           // CHECK IF WE SHOULD BE DISPLAYING TRANSLUCENTLY!
-          if (pNode->sCurrentFrame == pNode->ubKeyFrame2) {
+          if (pNode.value.sCurrentFrame == pNode.value.ubKeyFrame2) {
             let ubExpType: UINT8;
 
-            switch (pNode->uiKeyFrame2Code) {
+            switch (pNode.value.uiKeyFrame2Code) {
               case ANI_KEYFRAME_BEGIN_DAMAGE:
 
-                ubExpType = Explosive[Item[pNode->uiUserData].ubClassIndex].ubType;
+                ubExpType = Explosive[Item[pNode.value.uiUserData].ubClassIndex].ubType;
 
                 if (ubExpType == EXPLOSV_TEARGAS || ubExpType == EXPLOSV_MUSTGAS || ubExpType == EXPLOSV_SMOKE) {
                   // Do sound....
                   // PlayJA2Sample( AIR_ESCAPING_1, RATE_11025, SoundVolume( HIGHVOLUME, pNode->sGridNo ), 1, SoundDir( pNode->sGridNo ) );
-                  NewSmokeEffect(pNode->sGridNo, pNode->uiUserData, gExplosionData[pNode->uiUserData3].Params.bLevel, pNode->ubUserData2);
+                  NewSmokeEffect(pNode.value.sGridNo, pNode.value.uiUserData, gExplosionData[pNode.value.uiUserData3].Params.bLevel, pNode.value.ubUserData2);
                 } else {
-                  SpreadEffect(pNode->sGridNo, Explosive[Item[pNode->uiUserData].ubClassIndex].ubRadius, pNode->uiUserData, pNode->ubUserData2, FALSE, gExplosionData[pNode->uiUserData3].Params.bLevel, -1);
+                  SpreadEffect(pNode.value.sGridNo, Explosive[Item[pNode.value.uiUserData].ubClassIndex].ubRadius, pNode.value.uiUserData, pNode.value.ubUserData2, FALSE, gExplosionData[pNode.value.uiUserData3].Params.bLevel, -1);
                 }
                 // Forfait any other animations this frame....
                 return;
@@ -449,26 +449,26 @@ function UpdateAniTiles(): void {
           }
         } else {
           // We are done!
-          if (pNode->uiFlags & ANITILE_LOOPING) {
-            pNode->sCurrentFrame = pNode->sStartFrame;
+          if (pNode.value.uiFlags & ANITILE_LOOPING) {
+            pNode.value.sCurrentFrame = pNode.value.sStartFrame;
 
-            if ((pNode->uiFlags & ANITILE_USE_DIRECTION_FOR_START_FRAME)) {
+            if ((pNode.value.uiFlags & ANITILE_USE_DIRECTION_FOR_START_FRAME)) {
               // Our start frame is actually a direction indicator
-              ubTempDir = gOneCDirection[pNode->uiUserData3];
-              pNode->sCurrentFrame = (pNode->usNumFrames * ubTempDir);
+              ubTempDir = gOneCDirection[pNode.value.uiUserData3];
+              pNode.value.sCurrentFrame = (pNode.value.usNumFrames * ubTempDir);
             }
 
-            if ((pNode->uiFlags & ANITILE_USE_4DIRECTION_FOR_START_FRAME)) {
+            if ((pNode.value.uiFlags & ANITILE_USE_4DIRECTION_FOR_START_FRAME)) {
               // Our start frame is actually a direction indicator
-              ubTempDir = gb4DirectionsFrom8[pNode->uiUserData3];
-              pNode->sCurrentFrame = (pNode->usNumFrames * ubTempDir);
+              ubTempDir = gb4DirectionsFrom8[pNode.value.uiUserData3];
+              pNode.value.sCurrentFrame = (pNode.value.usNumFrames * ubTempDir);
             }
-          } else if (pNode->uiFlags & ANITILE_REVERSE_LOOPING) {
+          } else if (pNode.value.uiFlags & ANITILE_REVERSE_LOOPING) {
             // Turn off backwards flag
-            pNode->uiFlags &= (~ANITILE_FORWARD);
+            pNode.value.uiFlags &= (~ANITILE_FORWARD);
 
             // Turn onn forwards flag
-            pNode->uiFlags |= ANITILE_BACKWARD;
+            pNode.value.uiFlags |= ANITILE_BACKWARD;
           } else {
             // Delete from world!
             DeleteAniTile(pNode);
@@ -481,12 +481,12 @@ function UpdateAniTiles(): void {
         }
       }
 
-      if (pNode->uiFlags & ANITILE_BACKWARD) {
-        if (pNode->uiFlags & ANITILE_ERASEITEMFROMSAVEBUFFFER) {
+      if (pNode.value.uiFlags & ANITILE_BACKWARD) {
+        if (pNode.value.uiFlags & ANITILE_ERASEITEMFROMSAVEBUFFFER) {
           // ATE: Check if bounding box is on the screen...
-          if (pNode->bFrameCountAfterStart == 0) {
-            pNode->bFrameCountAfterStart = 1;
-            pNode->pLevelNode->uiFlags |= (LEVELNODE_DYNAMIC);
+          if (pNode.value.bFrameCountAfterStart == 0) {
+            pNode.value.bFrameCountAfterStart = 1;
+            pNode.value.pLevelNode.value.uiFlags |= (LEVELNODE_DYNAMIC);
 
             // Dangerous here, since we may not even be on the screen...
             SetRenderFlags(RENDER_FLAG_FULL);
@@ -497,51 +497,51 @@ function UpdateAniTiles(): void {
 
         usMinFrames = 0;
 
-        if (pNode->uiFlags & ANITILE_USE_DIRECTION_FOR_START_FRAME) {
-          ubTempDir = gOneCDirection[pNode->uiUserData3];
-          usMinFrames = (pNode->usNumFrames * ubTempDir);
+        if (pNode.value.uiFlags & ANITILE_USE_DIRECTION_FOR_START_FRAME) {
+          ubTempDir = gOneCDirection[pNode.value.uiUserData3];
+          usMinFrames = (pNode.value.usNumFrames * ubTempDir);
         }
 
-        if (pNode->uiFlags & ANITILE_USE_4DIRECTION_FOR_START_FRAME) {
-          ubTempDir = gb4DirectionsFrom8[pNode->uiUserData3];
-          usMinFrames = (pNode->usNumFrames * ubTempDir);
+        if (pNode.value.uiFlags & ANITILE_USE_4DIRECTION_FOR_START_FRAME) {
+          ubTempDir = gb4DirectionsFrom8[pNode.value.uiUserData3];
+          usMinFrames = (pNode.value.usNumFrames * ubTempDir);
         }
 
-        if ((pNode->sCurrentFrame - 1) >= usMinFrames) {
-          pNode->sCurrentFrame--;
-          pNode->pLevelNode->sCurrentFrame = pNode->sCurrentFrame;
+        if ((pNode.value.sCurrentFrame - 1) >= usMinFrames) {
+          pNode.value.sCurrentFrame--;
+          pNode.value.pLevelNode.value.sCurrentFrame = pNode.value.sCurrentFrame;
 
-          if (pNode->uiFlags & ANITILE_EXPLOSION) {
+          if (pNode.value.uiFlags & ANITILE_EXPLOSION) {
             // Talk to the explosion data...
-            UpdateExplosionFrame(pNode->uiUserData3, pNode->sCurrentFrame);
+            UpdateExplosionFrame(pNode.value.uiUserData3, pNode.value.sCurrentFrame);
           }
         } else {
           // We are done!
-          if (pNode->uiFlags & ANITILE_PAUSE_AFTER_LOOP) {
+          if (pNode.value.uiFlags & ANITILE_PAUSE_AFTER_LOOP) {
             // Turn off backwards flag
-            pNode->uiFlags &= (~ANITILE_BACKWARD);
+            pNode.value.uiFlags &= (~ANITILE_BACKWARD);
 
             // Pause
-            pNode->uiFlags |= ANITILE_PAUSED;
-          } else if (pNode->uiFlags & ANITILE_LOOPING) {
-            pNode->sCurrentFrame = pNode->sStartFrame;
+            pNode.value.uiFlags |= ANITILE_PAUSED;
+          } else if (pNode.value.uiFlags & ANITILE_LOOPING) {
+            pNode.value.sCurrentFrame = pNode.value.sStartFrame;
 
-            if ((pNode->uiFlags & ANITILE_USE_DIRECTION_FOR_START_FRAME)) {
+            if ((pNode.value.uiFlags & ANITILE_USE_DIRECTION_FOR_START_FRAME)) {
               // Our start frame is actually a direction indicator
-              ubTempDir = gOneCDirection[pNode->uiUserData3];
-              pNode->sCurrentFrame = (pNode->usNumFrames * ubTempDir);
+              ubTempDir = gOneCDirection[pNode.value.uiUserData3];
+              pNode.value.sCurrentFrame = (pNode.value.usNumFrames * ubTempDir);
             }
-            if ((pNode->uiFlags & ANITILE_USE_4DIRECTION_FOR_START_FRAME)) {
+            if ((pNode.value.uiFlags & ANITILE_USE_4DIRECTION_FOR_START_FRAME)) {
               // Our start frame is actually a direction indicator
-              ubTempDir = gb4DirectionsFrom8[pNode->uiUserData3];
-              pNode->sCurrentFrame = (pNode->usNumFrames * ubTempDir);
+              ubTempDir = gb4DirectionsFrom8[pNode.value.uiUserData3];
+              pNode.value.sCurrentFrame = (pNode.value.usNumFrames * ubTempDir);
             }
-          } else if (pNode->uiFlags & ANITILE_REVERSE_LOOPING) {
+          } else if (pNode.value.uiFlags & ANITILE_REVERSE_LOOPING) {
             // Turn off backwards flag
-            pNode->uiFlags &= (~ANITILE_BACKWARD);
+            pNode.value.uiFlags &= (~ANITILE_BACKWARD);
 
             // Turn onn forwards flag
-            pNode->uiFlags |= ANITILE_FORWARD;
+            pNode.value.uiFlags |= ANITILE_FORWARD;
           } else {
             // Delete from world!
             DeleteAniTile(pNode);
@@ -549,9 +549,9 @@ function UpdateAniTiles(): void {
             return;
           }
 
-          if (pNode->uiFlags & ANITILE_ERASEITEMFROMSAVEBUFFFER) {
+          if (pNode.value.uiFlags & ANITILE_ERASEITEMFROMSAVEBUFFFER) {
             // ATE: Check if bounding box is on the screen...
-            pNode->bFrameCountAfterStart = 0;
+            pNode.value.bFrameCountAfterStart = 0;
             // pNode->pLevelNode->uiFlags |= LEVELNODE_UPDATESAVEBUFFERONCE;
 
             // Dangerous here, since we may not even be on the screen...
@@ -560,23 +560,23 @@ function UpdateAniTiles(): void {
         }
       }
     } else {
-      if (pNode->uiFlags & (ANITILE_OPTIMIZEFORSLOWMOVING)) {
+      if (pNode.value.uiFlags & (ANITILE_OPTIMIZEFORSLOWMOVING)) {
         // ONLY TURN OFF IF PAUSED...
-        if ((pNode->uiFlags & ANITILE_ERASEITEMFROMSAVEBUFFFER)) {
-          if (pNode->uiFlags & ANITILE_PAUSED) {
-            if (pNode->pLevelNode->uiFlags & LEVELNODE_DYNAMIC) {
-              pNode->pLevelNode->uiFlags &= (~LEVELNODE_DYNAMIC);
-              pNode->pLevelNode->uiFlags |= (LEVELNODE_LASTDYNAMIC);
+        if ((pNode.value.uiFlags & ANITILE_ERASEITEMFROMSAVEBUFFFER)) {
+          if (pNode.value.uiFlags & ANITILE_PAUSED) {
+            if (pNode.value.pLevelNode.value.uiFlags & LEVELNODE_DYNAMIC) {
+              pNode.value.pLevelNode.value.uiFlags &= (~LEVELNODE_DYNAMIC);
+              pNode.value.pLevelNode.value.uiFlags |= (LEVELNODE_LASTDYNAMIC);
               SetRenderFlags(RENDER_FLAG_FULL);
             }
           }
         } else {
-          pNode->pLevelNode->uiFlags &= (~LEVELNODE_DYNAMIC);
-          pNode->pLevelNode->uiFlags |= (LEVELNODE_LASTDYNAMIC);
+          pNode.value.pLevelNode.value.uiFlags &= (~LEVELNODE_DYNAMIC);
+          pNode.value.pLevelNode.value.uiFlags |= (LEVELNODE_LASTDYNAMIC);
         }
-      } else if (pNode->uiFlags & (ANITILE_OPTIMIZEFORSMOKEEFFECT)) {
-        pNode->pLevelNode->uiFlags |= (LEVELNODE_LASTDYNAMIC);
-        pNode->pLevelNode->uiFlags &= (~LEVELNODE_DYNAMIC);
+      } else if (pNode.value.uiFlags & (ANITILE_OPTIMIZEFORSMOKEEFFECT)) {
+        pNode.value.pLevelNode.value.uiFlags |= (LEVELNODE_LASTDYNAMIC);
+        pNode.value.pLevelNode.value.uiFlags &= (~LEVELNODE_DYNAMIC);
       }
     }
   }
@@ -586,19 +586,19 @@ function SetAniTileFrame(pAniTile: Pointer<ANITILE>, sFrame: INT16): void {
   let ubTempDir: UINT8;
   let sStartFrame: INT16 = 0;
 
-  if ((pAniTile->uiFlags & ANITILE_USE_DIRECTION_FOR_START_FRAME)) {
+  if ((pAniTile.value.uiFlags & ANITILE_USE_DIRECTION_FOR_START_FRAME)) {
     // Our start frame is actually a direction indicator
-    ubTempDir = gOneCDirection[pAniTile->uiUserData3];
-    sStartFrame = sFrame + (pAniTile->usNumFrames * ubTempDir);
+    ubTempDir = gOneCDirection[pAniTile.value.uiUserData3];
+    sStartFrame = sFrame + (pAniTile.value.usNumFrames * ubTempDir);
   }
 
-  if ((pAniTile->uiFlags & ANITILE_USE_4DIRECTION_FOR_START_FRAME)) {
+  if ((pAniTile.value.uiFlags & ANITILE_USE_4DIRECTION_FOR_START_FRAME)) {
     // Our start frame is actually a direction indicator
-    ubTempDir = gb4DirectionsFrom8[pAniTile->uiUserData3];
-    sStartFrame = sFrame + (pAniTile->usNumFrames * ubTempDir);
+    ubTempDir = gb4DirectionsFrom8[pAniTile.value.uiUserData3];
+    sStartFrame = sFrame + (pAniTile.value.usNumFrames * ubTempDir);
   }
 
-  pAniTile->sCurrentFrame = sStartFrame;
+  pAniTile.value.sCurrentFrame = sStartFrame;
 }
 
 function GetCachedAniTileOfType(sGridNo: INT16, ubLevelID: UINT8, uiFlags: UINT32): Pointer<ANITILE> {
@@ -641,13 +641,13 @@ function GetCachedAniTileOfType(sGridNo: INT16, ubLevelID: UINT8, uiFlags: UINT3
   }
 
   while (pNode != NULL) {
-    if (pNode->uiFlags & LEVELNODE_CACHEDANITILE) {
-      if (pNode->pAniTile->uiFlags & uiFlags) {
-        return pNode->pAniTile;
+    if (pNode.value.uiFlags & LEVELNODE_CACHEDANITILE) {
+      if (pNode.value.pAniTile.value.uiFlags & uiFlags) {
+        return pNode.value.pAniTile;
       }
     }
 
-    pNode = pNode->pNext;
+    pNode = pNode.value.pNext;
   }
 
   return NULL;
@@ -655,17 +655,17 @@ function GetCachedAniTileOfType(sGridNo: INT16, ubLevelID: UINT8, uiFlags: UINT3
 
 function HideAniTile(pAniTile: Pointer<ANITILE>, fHide: BOOLEAN): void {
   if (fHide) {
-    pAniTile->pLevelNode->uiFlags |= LEVELNODE_HIDDEN;
+    pAniTile.value.pLevelNode.value.uiFlags |= LEVELNODE_HIDDEN;
   } else {
-    pAniTile->pLevelNode->uiFlags &= (~LEVELNODE_HIDDEN);
+    pAniTile.value.pLevelNode.value.uiFlags &= (~LEVELNODE_HIDDEN);
   }
 }
 
 function PauseAniTile(pAniTile: Pointer<ANITILE>, fPause: BOOLEAN): void {
   if (fPause) {
-    pAniTile->uiFlags |= ANITILE_PAUSED;
+    pAniTile.value.uiFlags |= ANITILE_PAUSED;
   } else {
-    pAniTile->uiFlags &= (~ANITILE_PAUSED);
+    pAniTile.value.uiFlags &= (~ANITILE_PAUSED);
   }
 }
 
@@ -678,9 +678,9 @@ function PauseAllAniTilesOfType(uiType: UINT32, fPause: BOOLEAN): void {
 
   while (pAniNode != NULL) {
     pNode = pAniNode;
-    pAniNode = pAniNode->pNext;
+    pAniNode = pAniNode.value.pNext;
 
-    if (pNode->uiFlags & uiType) {
+    if (pNode.value.uiFlags & uiType) {
       PauseAniTile(pNode, fPause);
     }
   }

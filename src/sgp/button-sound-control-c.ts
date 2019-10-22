@@ -1,5 +1,5 @@
 function SpecifyButtonSoundScheme(iButtonID: INT32, bSoundScheme: INT8): void {
-  ButtonList[iButtonID]->ubSoundSchemeID = bSoundScheme;
+  ButtonList[iButtonID].value.ubSoundSchemeID = bSoundScheme;
   if (bSoundScheme == BUTTON_SOUND_SCHEME_GENERIC) {
     switch (guiCurrentScreen) {
       case MAINMENU_SCREEN:
@@ -7,22 +7,22 @@ function SpecifyButtonSoundScheme(iButtonID: INT32, bSoundScheme: INT8): void {
       case LOADSAVE_SCREEN:
       case SAVE_LOAD_SCREEN:
       case INIT_SCREEN:
-        ButtonList[iButtonID]->ubSoundSchemeID = BUTTON_SOUND_SCHEME_BIGSWITCH3;
+        ButtonList[iButtonID].value.ubSoundSchemeID = BUTTON_SOUND_SCHEME_BIGSWITCH3;
         break;
 
       case LAPTOP_SCREEN:
-        ButtonList[iButtonID]->ubSoundSchemeID = BUTTON_SOUND_SCHEME_COMPUTERBEEP2;
+        ButtonList[iButtonID].value.ubSoundSchemeID = BUTTON_SOUND_SCHEME_COMPUTERBEEP2;
         break;
 
       case AUTORESOLVE_SCREEN:
       case MAP_SCREEN:
       case GAME_SCREEN:
       case SHOPKEEPER_SCREEN:
-        ButtonList[iButtonID]->ubSoundSchemeID = BUTTON_SOUND_SCHEME_SMALLSWITCH2;
+        ButtonList[iButtonID].value.ubSoundSchemeID = BUTTON_SOUND_SCHEME_SMALLSWITCH2;
         break;
 
       case GAME_INIT_OPTIONS_SCREEN:
-        ButtonList[iButtonID]->ubSoundSchemeID = BUTTON_SOUND_SCHEME_VERYSMALLSWITCH2;
+        ButtonList[iButtonID].value.ubSoundSchemeID = BUTTON_SOUND_SCHEME_VERYSMALLSWITCH2;
         break;
 
         // Anything not handled gets NO sound.
@@ -46,7 +46,7 @@ function PlayButtonSound(iButtonID: INT32, iSoundType: INT32): void {
     return;
   }
 
-  switch (ButtonList[iButtonID]->ubSoundSchemeID) {
+  switch (ButtonList[iButtonID].value.ubSoundSchemeID) {
     case BUTTON_SOUND_SCHEME_NONE:
     case BUTTON_SOUND_SCHEME_GENERIC:
       break;

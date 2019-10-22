@@ -138,7 +138,7 @@ function MapUtilScreenHandle(): UINT32 {
     return MAPUTILITY_SCREEN;
   }
 
-  sprintf(zFilename, "%s", FListNode->FileInfo.zFileName);
+  sprintf(zFilename, "%s", FListNode.value.FileInfo.zFileName);
 
   // OK, load maps and do overhead shrinkage of them...
   if (!LoadWorld(zFilename)) {
@@ -300,7 +300,7 @@ function MapUtilScreenHandle(): UINT32 {
   }
 
   // Set next
-  FListNode = FListNode->pNext;
+  FListNode = FListNode.value.pNext;
   sCurFile++;
 
   return MAPUTILITY_SCREEN;

@@ -71,9 +71,9 @@ function PushTextInputLevel(): void {
   let pNewLevel: Pointer<STACKTEXTINPUTNODE>;
   pNewLevel = MemAlloc(sizeof(STACKTEXTINPUTNODE));
   Assert(pNewLevel);
-  pNewLevel->head = gpTextInputHead;
-  pNewLevel->pColors = pColors;
-  pNewLevel->next = pInputStack;
+  pNewLevel.value.head = gpTextInputHead;
+  pNewLevel.value.pColors = pColors;
+  pNewLevel.value.next = pInputStack;
   pInputStack = pNewLevel;
   DisableAllTextFields();
 }
@@ -83,10 +83,10 @@ function PushTextInputLevel(): void {
 // happy with killing non-existant text input modes.
 function PopTextInputLevel(): void {
   let pLevel: Pointer<STACKTEXTINPUTNODE>;
-  gpTextInputHead = pInputStack->head;
-  pColors = pInputStack->pColors;
+  gpTextInputHead = pInputStack.value.head;
+  pColors = pInputStack.value.pColors;
   pLevel = pInputStack;
-  pInputStack = pInputStack->next;
+  pInputStack = pInputStack.value.next;
   MemFree(pLevel);
   pLevel = NULL;
   EnableAllTextFields();
@@ -124,9 +124,9 @@ function InitTextInputMode(): void {
   Assert(pColors);
   gfTextInputMode = TRUE;
   gfEditingText = FALSE;
-  pColors->fBevelling = FALSE;
-  pColors->fUseDisabledAutoShade = TRUE;
-  pColors->usCursorColor = 0;
+  pColors.value.fBevelling = FALSE;
+  pColors.value.fUseDisabledAutoShade = TRUE;
+  pColors.value.usCursorColor = 0;
 }
 
 // A hybrid version of InitTextInput() which uses a specific scheme.  JA2's editor uses scheme 1, so
@@ -152,11 +152,11 @@ function KillTextInputMode(): void {
     return;
   curr = gpTextInputHead;
   while (curr) {
-    gpTextInputHead = gpTextInputHead->next;
-    if (curr->szString) {
-      MemFree(curr->szString);
-      curr->szString = NULL;
-      MSYS_RemoveRegion(&curr->region);
+    gpTextInputHead = gpTextInputHead.value.next;
+    if (curr.value.szString) {
+      MemFree(curr.value.szString);
+      curr.value.szString = NULL;
+      MSYS_RemoveRegion(&curr.value.region);
     }
     MemFree(curr);
     curr = gpTextInputHead;
@@ -193,51 +193,51 @@ function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: IN
   pNode = MemAlloc(sizeof(TEXTINPUTNODE));
   Assert(pNode);
   memset(pNode, 0, sizeof(TEXTINPUTNODE));
-  pNode->next = NULL;
+  pNode.value.next = NULL;
   if (!gpTextInputHead) // first entry, so we start with text input.
   {
     gfEditingText = TRUE;
     gpTextInputHead = gpTextInputTail = pNode;
-    pNode->prev = NULL;
-    pNode->ubID = 0;
+    pNode.value.prev = NULL;
+    pNode.value.ubID = 0;
     gpActive = pNode;
   } else // add to the end of the list.
   {
-    gpTextInputTail->next = pNode;
-    pNode->prev = gpTextInputTail;
-    pNode->ubID = (gpTextInputTail->ubID + 1);
-    gpTextInputTail = gpTextInputTail->next;
+    gpTextInputTail.value.next = pNode;
+    pNode.value.prev = gpTextInputTail;
+    pNode.value.ubID = (gpTextInputTail.value.ubID + 1);
+    gpTextInputTail = gpTextInputTail.value.next;
   }
   // Setup the information for the node
-  pNode->usInputType = usInputType; // setup the filter type
+  pNode.value.usInputType = usInputType; // setup the filter type
   // All 24hourclock inputtypes have 6 characters.  01:23 (null terminated)
   if (usInputType == INPUTTYPE_EXCLUSIVE_24HOURCLOCK)
     ubMaxChars = 6;
   // Allocate and copy the string.
-  pNode->szString = MemAlloc((ubMaxChars + 1) * sizeof(UINT16));
-  Assert(pNode->szString);
+  pNode.value.szString = MemAlloc((ubMaxChars + 1) * sizeof(UINT16));
+  Assert(pNode.value.szString);
   if (szInitText) {
-    pNode->ubStrLen = wcslen(szInitText);
-    Assert(pNode->ubStrLen <= ubMaxChars);
-    swprintf(pNode->szString, szInitText);
+    pNode.value.ubStrLen = wcslen(szInitText);
+    Assert(pNode.value.ubStrLen <= ubMaxChars);
+    swprintf(pNode.value.szString, szInitText);
   } else {
-    pNode->ubStrLen = 0;
-    swprintf(pNode->szString, "");
+    pNode.value.ubStrLen = 0;
+    swprintf(pNode.value.szString, "");
   }
-  pNode->ubMaxChars = ubMaxChars; // max string length
+  pNode.value.ubMaxChars = ubMaxChars; // max string length
 
   // if this is the first field, then hilight it.
   if (gpTextInputHead == pNode) {
     gubStartHilite = 0;
-    gubEndHilite = pNode->ubStrLen;
-    gubCursorPos = pNode->ubStrLen;
+    gubEndHilite = pNode.value.ubStrLen;
+    gubCursorPos = pNode.value.ubStrLen;
     gfHiliteMode = TRUE;
   }
-  pNode->fUserField = FALSE;
-  pNode->fEnabled = TRUE;
+  pNode.value.fUserField = FALSE;
+  pNode.value.fEnabled = TRUE;
   // Setup the region.
-  MSYS_DefineRegion(&pNode->region, sLeft, sTop, (sLeft + sWidth), (sTop + sHeight), bPriority, gusTextInputCursor, MouseMovedInTextRegionCallback, MouseClickedInTextRegionCallback);
-  MSYS_SetRegionUserData(&pNode->region, 0, pNode->ubID);
+  MSYS_DefineRegion(&pNode.value.region, sLeft, sTop, (sLeft + sWidth), (sTop + sHeight), bPriority, gusTextInputCursor, MouseMovedInTextRegionCallback, MouseClickedInTextRegionCallback);
+  MSYS_SetRegionUserData(&pNode.value.region, 0, pNode.value.ubID);
 }
 
 // This allows you to insert special processing functions and modes that can't be determined here.  An example
@@ -251,27 +251,27 @@ function AddUserInputField(userFunction: INPUT_CALLBACK): void {
   let pNode: Pointer<TEXTINPUTNODE>;
   pNode = MemAlloc(sizeof(TEXTINPUTNODE));
   Assert(pNode);
-  pNode->next = NULL;
+  pNode.value.next = NULL;
   if (!gpTextInputHead) // first entry, so we don't start with text input.
   {
     gfEditingText = FALSE;
     gpTextInputHead = gpTextInputTail = pNode;
-    pNode->prev = NULL;
-    pNode->ubID = 0;
+    pNode.value.prev = NULL;
+    pNode.value.ubID = 0;
     gpActive = pNode;
   } else // add to the end of the list.
   {
-    gpTextInputTail->next = pNode;
-    pNode->prev = gpTextInputTail;
-    pNode->ubID = (gpTextInputTail->ubID + 1);
-    gpTextInputTail = gpTextInputTail->next;
+    gpTextInputTail.value.next = pNode;
+    pNode.value.prev = gpTextInputTail;
+    pNode.value.ubID = (gpTextInputTail.value.ubID + 1);
+    gpTextInputTail = gpTextInputTail.value.next;
   }
   // Setup the information for the node
-  pNode->fUserField = TRUE;
-  pNode->szString = NULL;
-  pNode->fEnabled = TRUE;
+  pNode.value.fUserField = TRUE;
+  pNode.value.szString = NULL;
+  pNode.value.fEnabled = TRUE;
   // Setup the callback
-  pNode->InputCallback = userFunction;
+  pNode.value.InputCallback = userFunction;
 }
 
 // Removes the specified field from the existing fields.  If it doesn't exist, then there will be an
@@ -280,20 +280,20 @@ function RemoveTextInputField(ubField: UINT8): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
-    if (curr->ubID == ubField) {
+    if (curr.value.ubID == ubField) {
       if (curr == gpActive)
         SelectNextField();
       if (curr == gpTextInputHead)
-        gpTextInputHead = gpTextInputHead->next;
+        gpTextInputHead = gpTextInputHead.value.next;
       // Detach the node.
-      if (curr->next)
-        curr->next->prev = curr->prev;
-      if (curr->prev)
-        curr->prev->next = curr->next;
-      if (curr->szString) {
-        MemFree(curr->szString);
-        curr->szString = NULL;
-        MSYS_RemoveRegion(&curr->region);
+      if (curr.value.next)
+        curr.value.next.value.prev = curr.value.prev;
+      if (curr.value.prev)
+        curr.value.prev.value.next = curr.value.next;
+      if (curr.value.szString) {
+        MemFree(curr.value.szString);
+        curr.value.szString = NULL;
+        MSYS_RemoveRegion(&curr.value.region);
       }
       MemFree(curr);
       curr = NULL;
@@ -303,7 +303,7 @@ function RemoveTextInputField(ubField: UINT8): void {
       }
       return;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   AssertMsg(0, "Attempt to remove a text input field that doesn't exist.  Check your IDs.");
 }
@@ -311,7 +311,7 @@ function RemoveTextInputField(ubField: UINT8): void {
 // Returns the gpActive field ID number.  It'll return -1 if no field is active.
 function GetActiveFieldID(): INT16 {
   if (gpActive)
-    return gpActive->ubID;
+    return gpActive.value.ubID;
   return -1;
 }
 
@@ -322,20 +322,20 @@ function SetInputFieldStringWith16BitString(ubField: UINT8, szNewText: Pointer<U
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
-    if (curr->ubID == ubField) {
+    if (curr.value.ubID == ubField) {
       if (szNewText) {
-        curr->ubStrLen = wcslen(szNewText);
-        Assert(curr->ubStrLen <= curr->ubMaxChars);
-        swprintf(curr->szString, szNewText);
-      } else if (!curr->fUserField) {
-        curr->ubStrLen = 0;
-        swprintf(curr->szString, "");
+        curr.value.ubStrLen = wcslen(szNewText);
+        Assert(curr.value.ubStrLen <= curr.value.ubMaxChars);
+        swprintf(curr.value.szString, szNewText);
+      } else if (!curr.value.fUserField) {
+        curr.value.ubStrLen = 0;
+        swprintf(curr.value.szString, "");
       } else {
-        AssertMsg(0, String("Attempting to illegally set text into user field %d", curr->ubID));
+        AssertMsg(0, String("Attempting to illegally set text into user field %d", curr.value.ubID));
       }
       return;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -343,20 +343,20 @@ function SetInputFieldStringWith8BitString(ubField: UINT8, szNewText: Pointer<UI
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
-    if (curr->ubID == ubField) {
+    if (curr.value.ubID == ubField) {
       if (szNewText) {
-        curr->ubStrLen = strlen(szNewText);
-        Assert(curr->ubStrLen <= curr->ubMaxChars);
-        swprintf(curr->szString, "%S", szNewText);
-      } else if (!curr->fUserField) {
-        curr->ubStrLen = 0;
-        swprintf(curr->szString, "");
+        curr.value.ubStrLen = strlen(szNewText);
+        Assert(curr.value.ubStrLen <= curr.value.ubMaxChars);
+        swprintf(curr.value.szString, "%S", szNewText);
+      } else if (!curr.value.fUserField) {
+        curr.value.ubStrLen = 0;
+        swprintf(curr.value.szString, "");
       } else {
-        AssertMsg(0, String("Attempting to illegally set text into user field %d", curr->ubID));
+        AssertMsg(0, String("Attempting to illegally set text into user field %d", curr.value.ubID));
       }
       return;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -365,11 +365,11 @@ function Get8BitStringFromField(ubField: UINT8, szString: Pointer<UINT8>): void 
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
-    if (curr->ubID == ubField) {
-      sprintf(szString, "%S", curr->szString);
+    if (curr.value.ubID == ubField) {
+      sprintf(szString, "%S", curr.value.szString);
       return;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   szString[0] = '\0';
 }
@@ -378,11 +378,11 @@ function Get16BitStringFromField(ubField: UINT8, szString: Pointer<UINT16>): voi
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
-    if (curr->ubID == ubField) {
-      swprintf(szString, curr->szString);
+    if (curr.value.ubID == ubField) {
+      swprintf(szString, curr.value.szString);
       return;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   szString[0] = '\0';
 }
@@ -420,22 +420,22 @@ function SetInputFieldStringWithNumericStrictValue(ubField: UINT8, iNumber: INT3
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
-    if (curr->ubID == ubField) {
-      if (curr->fUserField)
-        AssertMsg(0, String("Attempting to illegally set text into user field %d", curr->ubID));
+    if (curr.value.ubID == ubField) {
+      if (curr.value.fUserField)
+        AssertMsg(0, String("Attempting to illegally set text into user field %d", curr.value.ubID));
       if (iNumber < 0) // negative number converts to blank string
-        swprintf(curr->szString, "");
+        swprintf(curr.value.szString, "");
       else {
-        let iMax: INT32 = pow(10.0, curr->ubMaxChars);
+        let iMax: INT32 = pow(10.0, curr.value.ubMaxChars);
         if (iNumber > iMax) // set string to max value based on number of chars.
-          swprintf(curr->szString, "%d", iMax - 1);
+          swprintf(curr.value.szString, "%d", iMax - 1);
         else // set string to the number given
-          swprintf(curr->szString, "%d", iNumber);
+          swprintf(curr.value.szString, "%d", iNumber);
       }
-      curr->ubStrLen = wcslen(curr->szString);
+      curr.value.ubStrLen = wcslen(curr.value.szString);
       return;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -444,23 +444,23 @@ function SetActiveField(ubField: UINT8): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
-    if (curr != gpActive && curr->ubID == ubField && curr->fEnabled) {
+    if (curr != gpActive && curr.value.ubID == ubField && curr.value.fEnabled) {
       gpActive = curr;
-      if (gpActive->szString) {
+      if (gpActive.value.szString) {
         gubStartHilite = 0;
-        gubEndHilite = gpActive->ubStrLen;
-        gubCursorPos = gpActive->ubStrLen;
+        gubEndHilite = gpActive.value.ubStrLen;
+        gubCursorPos = gpActive.value.ubStrLen;
         gfHiliteMode = TRUE;
         gfEditingText = TRUE;
       } else {
         gfHiliteMode = FALSE;
         gfEditingText = FALSE;
-        if (gpActive->InputCallback)
-          (gpActive->InputCallback)(gpActive->ubID, TRUE);
+        if (gpActive.value.InputCallback)
+          (gpActive.value.InputCallback)(gpActive.value.ubID, TRUE);
       }
       return;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -470,28 +470,28 @@ function SelectNextField(): void {
 
   if (!gpActive)
     return;
-  if (gpActive->szString)
+  if (gpActive.value.szString)
     RenderInactiveTextFieldNode(gpActive);
-  else if (gpActive->InputCallback)
-    (gpActive->InputCallback)(gpActive->ubID, FALSE);
+  else if (gpActive.value.InputCallback)
+    (gpActive.value.InputCallback)(gpActive.value.ubID, FALSE);
   pStart = gpActive;
   while (!fDone) {
-    gpActive = gpActive->next;
+    gpActive = gpActive.value.next;
     if (!gpActive)
       gpActive = gpTextInputHead;
-    if (gpActive->fEnabled) {
+    if (gpActive.value.fEnabled) {
       fDone = TRUE;
-      if (gpActive->szString) {
+      if (gpActive.value.szString) {
         gubStartHilite = 0;
-        gubEndHilite = gpActive->ubStrLen;
-        gubCursorPos = gpActive->ubStrLen;
+        gubEndHilite = gpActive.value.ubStrLen;
+        gubCursorPos = gpActive.value.ubStrLen;
         gfHiliteMode = TRUE;
         gfEditingText = TRUE;
       } else {
         gfHiliteMode = FALSE;
         gfEditingText = FALSE;
-        if (gpActive->InputCallback)
-          (gpActive->InputCallback)(gpActive->ubID, TRUE);
+        if (gpActive.value.InputCallback)
+          (gpActive.value.InputCallback)(gpActive.value.ubID, TRUE);
       }
     }
     if (gpActive == pStart) {
@@ -507,28 +507,28 @@ function SelectPrevField(): void {
 
   if (!gpActive)
     return;
-  if (gpActive->szString)
+  if (gpActive.value.szString)
     RenderInactiveTextFieldNode(gpActive);
-  else if (gpActive->InputCallback)
-    (gpActive->InputCallback)(gpActive->ubID, FALSE);
+  else if (gpActive.value.InputCallback)
+    (gpActive.value.InputCallback)(gpActive.value.ubID, FALSE);
   pStart = gpActive;
   while (!fDone) {
-    gpActive = gpActive->prev;
+    gpActive = gpActive.value.prev;
     if (!gpActive)
       gpActive = gpTextInputTail;
-    if (gpActive->fEnabled) {
+    if (gpActive.value.fEnabled) {
       fDone = TRUE;
-      if (gpActive->szString) {
+      if (gpActive.value.szString) {
         gubStartHilite = 0;
-        gubEndHilite = gpActive->ubStrLen;
-        gubCursorPos = gpActive->ubStrLen;
+        gubEndHilite = gpActive.value.ubStrLen;
+        gubCursorPos = gpActive.value.ubStrLen;
         gfHiliteMode = TRUE;
         gfEditingText = TRUE;
       } else {
         gfHiliteMode = FALSE;
         gfEditingText = FALSE;
-        if (gpActive->InputCallback)
-          (gpActive->InputCallback)(gpActive->ubID, TRUE);
+        if (gpActive.value.InputCallback)
+          (gpActive.value.InputCallback)(gpActive.value.ubID, TRUE);
       }
     }
     if (gpActive == pStart) {
@@ -543,39 +543,39 @@ function SelectPrevField(): void {
 // that all text input boxes are exactly the same color scheme.  However, these colors can be set at anytime,
 // but will effect all of the colors.
 function SetTextInputFont(usFont: UINT16): void {
-  pColors->usFont = usFont;
+  pColors.value.usFont = usFont;
 }
 
 function Set16BPPTextFieldColor(usTextFieldColor: UINT16): void {
-  pColors->usTextFieldColor = usTextFieldColor;
+  pColors.value.usTextFieldColor = usTextFieldColor;
 }
 
 function SetTextInputRegularColors(ubForeColor: UINT8, ubShadowColor: UINT8): void {
-  pColors->ubForeColor = ubForeColor;
-  pColors->ubShadowColor = ubShadowColor;
+  pColors.value.ubForeColor = ubForeColor;
+  pColors.value.ubShadowColor = ubShadowColor;
 }
 
 function SetTextInputHilitedColors(ubForeColor: UINT8, ubShadowColor: UINT8, ubBackColor: UINT8): void {
-  pColors->ubHiForeColor = ubForeColor;
-  pColors->ubHiShadowColor = ubShadowColor;
-  pColors->ubHiBackColor = ubBackColor;
+  pColors.value.ubHiForeColor = ubForeColor;
+  pColors.value.ubHiShadowColor = ubShadowColor;
+  pColors.value.ubHiBackColor = ubBackColor;
 }
 
 function SetDisabledTextFieldColors(ubForeColor: UINT8, ubShadowColor: UINT8, usTextFieldColor: UINT16): void {
-  pColors->fUseDisabledAutoShade = FALSE;
-  pColors->ubDisabledForeColor = ubForeColor;
-  pColors->ubDisabledShadowColor = ubShadowColor;
-  pColors->usDisabledTextFieldColor = usTextFieldColor;
+  pColors.value.fUseDisabledAutoShade = FALSE;
+  pColors.value.ubDisabledForeColor = ubForeColor;
+  pColors.value.ubDisabledShadowColor = ubShadowColor;
+  pColors.value.usDisabledTextFieldColor = usTextFieldColor;
 }
 
 function SetBevelColors(usBrighterColor: UINT16, usDarkerColor: UINT16): void {
-  pColors->fBevelling = TRUE;
-  pColors->usBrighterColor = usBrighterColor;
-  pColors->usDarkerColor = usDarkerColor;
+  pColors.value.fBevelling = TRUE;
+  pColors.value.usBrighterColor = usBrighterColor;
+  pColors.value.usDarkerColor = usDarkerColor;
 }
 
 function SetCursorColor(usCursorColor: UINT16): void {
-  pColors->usCursorColor = usCursorColor;
+  pColors.value.usCursorColor = usCursorColor;
 }
 
 // All CTRL and ALT keys combinations, F1-F12 keys, ENTER and ESC are ignored allowing
@@ -601,32 +601,32 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
   if (!gfTextInputMode)
     return FALSE;
   // currently in a user field, so return unless TAB or SHIFT_TAB are pressed.
-  if (!gfEditingText && Event->usParam != TAB && Event->usParam != SHIFT_TAB)
+  if (!gfEditingText && Event.value.usParam != TAB && Event.value.usParam != SHIFT_TAB)
     return FALSE;
   // unless we are psycho typers, we only want to process these key events.
-  if (Event->usEvent != KEY_DOWN && Event->usEvent != KEY_REPEAT)
+  if (Event.value.usEvent != KEY_DOWN && Event.value.usEvent != KEY_REPEAT)
     return FALSE;
   // ESC and ENTER must be handled externally, due to the infinite uses for it.
   // When editing text, ESC is equivalent to cancel, and ENTER is to confirm.
-  if (Event->usParam == ESC)
+  if (Event.value.usParam == ESC)
     return FALSE;
-  if (Event->usParam == ENTER) {
+  if (Event.value.usParam == ENTER) {
     PlayJA2Sample(REMOVING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
     return FALSE;
   }
-  if (Event->usKeyState & ALT_DOWN || Event->usKeyState & CTRL_DOWN && Event->usParam != DEL)
+  if (Event.value.usKeyState & ALT_DOWN || Event.value.usKeyState & CTRL_DOWN && Event.value.usParam != DEL)
     return FALSE;
   // F1-F12 regardless of state are processed externally as well.
-  if (Event->usParam >= F1 && Event->usParam <= F12 || Event->usParam >= SHIFT_F1 && Event->usParam <= SHIFT_F12) {
+  if (Event.value.usParam >= F1 && Event.value.usParam <= F12 || Event.value.usParam >= SHIFT_F1 && Event.value.usParam <= SHIFT_F12) {
     return FALSE;
   }
-  if (Event->usParam == '%' || Event->usParam == '\\') {
+  if (Event.value.usParam == '%' || Event.value.usParam == '\\') {
     // Input system doesn't support strings that are format specifiers.
     return FALSE;
   }
   // If we have met all of the conditions, we then have a valid key press
   // which will be handled universally for all text input fields
-  switch (Event->usParam) {
+  switch (Event.value.usParam) {
     case TAB:
       // Always selects the next field, even when a user defined field is currently selected.
       // The order in which you add your text and user fields dictates the cycling order when
@@ -658,13 +658,13 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
         gubCursorPos = gubEndHilite;
         break;
       }
-      if (gubCursorPos < gpActive->ubStrLen)
+      if (gubCursorPos < gpActive.value.ubStrLen)
         gubCursorPos++;
       break;
     case END:
       // Any hilighting is cleared and the cursor moves to the end of the text.
       gfHiliteMode = FALSE;
-      gubCursorPos = gpActive->ubStrLen;
+      gubCursorPos = gpActive.value.ubStrLen;
       break;
     case HOME:
       // Any hilighting is cleared and the cursor moves to the beginning of the line.
@@ -691,7 +691,7 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
         gfHiliteMode = TRUE;
         gubStartHilite = gubCursorPos;
       }
-      if (gubCursorPos < gpActive->ubStrLen)
+      if (gubCursorPos < gpActive.value.ubStrLen)
         gubCursorPos++;
       gubEndHilite = gubCursorPos;
       break;
@@ -702,7 +702,7 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
         gfHiliteMode = TRUE;
         gubStartHilite = gubCursorPos;
       }
-      gubCursorPos = gpActive->ubStrLen;
+      gubCursorPos = gpActive.value.ubStrLen;
       gubEndHilite = gubCursorPos;
       break;
     case SHIFT_HOME:
@@ -721,9 +721,9 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
       // DEL will either delete the selected text, or the character to the right
       // of the cursor if applicable.
       PlayJA2Sample(ENTERING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
-      if (Event->usKeyState & CTRL_DOWN) {
+      if (Event.value.usKeyState & CTRL_DOWN) {
         gubStartHilite = 0;
-        gubEndHilite = gpActive->ubStrLen;
+        gubEndHilite = gpActive.value.ubStrLen;
         gfHiliteMode = TRUE;
         DeleteHilitedText();
       } else if (gfHiliteMode)
@@ -744,12 +744,12 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
     default: // check for typing keys
       if (gfHiliteMode)
         DeleteHilitedText();
-      if (gpActive->usInputType >= INPUTTYPE_EXCLUSIVE_BASEVALUE)
-        HandleExclusiveInput(Event->usParam);
+      if (gpActive.value.usInputType >= INPUTTYPE_EXCLUSIVE_BASEVALUE)
+        HandleExclusiveInput(Event.value.usParam);
       else {
         // Use abbreviations
-        let key: UINT32 = Event->usParam;
-        let type: UINT16 = gpActive->usInputType;
+        let key: UINT32 = Event.value.usParam;
+        let type: UINT16 = gpActive.value.usInputType;
         // Handle space key
         if (key == SPACE && type & INPUTTYPE_SPACES) {
           AddChar(key);
@@ -799,7 +799,7 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
 }
 
 function HandleExclusiveInput(uiKey: UINT32): void {
-  switch (gpActive->usInputType) {
+  switch (gpActive.value.usInputType) {
     case INPUTTYPE_EXCLUSIVE_DOSFILENAME: // dos file names
       if (uiKey >= 'A' && uiKey <= 'Z' || uiKey >= 'a' && uiKey <= 'z' || uiKey >= '0' && uiKey <= '9' || uiKey == '_' || uiKey == '.') {
         if (!gubCursorPos && uiKey >= '0' && uiKey <= '9') {
@@ -828,11 +828,11 @@ function HandleExclusiveInput(uiKey: UINT32): void {
           AddChar(uiKey);
       } else if (gubCursorPos == 1) {
         if (uiKey >= '0' && uiKey <= '9') {
-          if (gpActive->szString[0] == '2' && uiKey > '3')
+          if (gpActive.value.szString[0] == '2' && uiKey > '3')
             break;
           AddChar(uiKey);
         }
-        if (!gpActive->szString[2])
+        if (!gpActive.value.szString[2])
           AddChar(':');
         else
           gubCursorPos++;
@@ -856,28 +856,28 @@ function HandleExclusiveInput(uiKey: UINT32): void {
 
 function AddChar(uiKey: UINT32): void {
   PlayJA2Sample(ENTERING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
-  if (gpActive->ubStrLen >= gpActive->ubMaxChars) {
+  if (gpActive.value.ubStrLen >= gpActive.value.ubMaxChars) {
     // max length reached.  Just replace the last character with new one.
-    gpActive->ubStrLen = gpActive->ubMaxChars;
-    gpActive->szString[gpActive->ubStrLen - 1] = uiKey;
-    gpActive->szString[gpActive->ubStrLen] = '\0';
+    gpActive.value.ubStrLen = gpActive.value.ubMaxChars;
+    gpActive.value.szString[gpActive.value.ubStrLen - 1] = uiKey;
+    gpActive.value.szString[gpActive.value.ubStrLen] = '\0';
     return;
-  } else if (gubCursorPos == gpActive->ubStrLen) {
+  } else if (gubCursorPos == gpActive.value.ubStrLen) {
     // add character to end
-    gpActive->szString[gpActive->ubStrLen] = uiKey;
-    gpActive->szString[gpActive->ubStrLen + 1] = '\0';
-    gpActive->ubStrLen++;
-    gubCursorPos = gpActive->ubStrLen;
+    gpActive.value.szString[gpActive.value.ubStrLen] = uiKey;
+    gpActive.value.szString[gpActive.value.ubStrLen + 1] = '\0';
+    gpActive.value.ubStrLen++;
+    gubCursorPos = gpActive.value.ubStrLen;
   } else {
     // insert character after cursor
     let sChar: INT16;
-    sChar = (gpActive->ubStrLen + 1);
+    sChar = (gpActive.value.ubStrLen + 1);
     while (sChar >= gubCursorPos) {
-      gpActive->szString[sChar + 1] = gpActive->szString[sChar];
+      gpActive.value.szString[sChar + 1] = gpActive.value.szString[sChar];
       sChar--;
     }
-    gpActive->szString[gubCursorPos] = uiKey;
-    gpActive->ubStrLen++;
+    gpActive.value.szString[gubCursorPos] = uiKey;
+    gpActive.value.ubStrLen++;
     gubCursorPos++;
   }
 }
@@ -907,14 +907,14 @@ function DeleteHilitedText(): void {
 
 function RemoveChar(ubArrayIndex: UINT8): void {
   let fDeleting: BOOLEAN = FALSE;
-  while (ubArrayIndex < gpActive->ubStrLen) {
-    gpActive->szString[ubArrayIndex] = gpActive->szString[ubArrayIndex + 1];
+  while (ubArrayIndex < gpActive.value.ubStrLen) {
+    gpActive.value.szString[ubArrayIndex] = gpActive.value.szString[ubArrayIndex + 1];
     ubArrayIndex++;
     fDeleting = TRUE;
   }
   // if we deleted a char, then decrement the strlen.
   if (fDeleting)
-    gpActive->ubStrLen--;
+    gpActive.value.ubStrLen--;
 }
 
 // Internally used to continue highlighting text
@@ -927,39 +927,39 @@ function MouseMovedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT3
       let iNextCharPos: INT32;
       let ubNewID: UINT8;
       ubNewID = MSYS_GetRegionUserData(reg, 0);
-      if (ubNewID != gpActive->ubID) {
+      if (ubNewID != gpActive.value.ubID) {
         // deselect the current text edit region if applicable, then find the new one.
         RenderInactiveTextFieldNode(gpActive);
         curr = gpTextInputHead;
         while (curr) {
-          if (curr->ubID == ubNewID) {
+          if (curr.value.ubID == ubNewID) {
             gpActive = curr;
             break;
           }
-          curr = curr->next;
+          curr = curr.value.next;
         }
       }
       if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-        if (gusMouseYPos < reg->RegionTopLeftY) {
+        if (gusMouseYPos < reg.value.RegionTopLeftY) {
           gubEndHilite = 0;
           gfHiliteMode = TRUE;
           return;
-        } else if (gusMouseYPos > reg->RegionBottomRightY) {
-          gubEndHilite = gpActive->ubStrLen;
+        } else if (gusMouseYPos > reg.value.RegionBottomRightY) {
+          gubEndHilite = gpActive.value.ubStrLen;
           gfHiliteMode = TRUE;
           return;
         }
       }
 
       // Calculate the cursor position.
-      iClickX = gusMouseXPos - reg->RegionTopLeftX;
+      iClickX = gusMouseXPos - reg.value.RegionTopLeftX;
       iCurrCharPos = 0;
       gubCursorPos = 0;
-      iNextCharPos = StringPixLengthArg(pColors->usFont, 1, gpActive->szString) / 2;
-      while (iCurrCharPos + (iNextCharPos - iCurrCharPos) / 2 < iClickX && gubCursorPos < gpActive->ubStrLen) {
+      iNextCharPos = StringPixLengthArg(pColors.value.usFont, 1, gpActive.value.szString) / 2;
+      while (iCurrCharPos + (iNextCharPos - iCurrCharPos) / 2 < iClickX && gubCursorPos < gpActive.value.ubStrLen) {
         gubCursorPos++;
         iCurrCharPos = iNextCharPos;
-        iNextCharPos = StringPixLengthArg(pColors->usFont, gubCursorPos + 1, gpActive->szString);
+        iNextCharPos = StringPixLengthArg(pColors.value.usFont, gubCursorPos + 1, gpActive.value.szString);
       }
       gubEndHilite = gubCursorPos;
       if (gubEndHilite != gubStartHilite)
@@ -977,29 +977,29 @@ function MouseClickedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: IN
     let iNextCharPos: INT32;
     let ubNewID: UINT8;
     ubNewID = MSYS_GetRegionUserData(reg, 0);
-    if (ubNewID != gpActive->ubID) {
+    if (ubNewID != gpActive.value.ubID) {
       // deselect the current text edit region if applicable, then find the new one.
       RenderInactiveTextFieldNode(gpActive);
       curr = gpTextInputHead;
       while (curr) {
-        if (curr->ubID == ubNewID) {
+        if (curr.value.ubID == ubNewID) {
           gpActive = curr;
           break;
         }
-        curr = curr->next;
+        curr = curr.value.next;
       }
     }
     // Signifies that we are typing text now.
     gfEditingText = TRUE;
     // Calculate the cursor position.
-    iClickX = gusMouseXPos - reg->RegionTopLeftX;
+    iClickX = gusMouseXPos - reg.value.RegionTopLeftX;
     iCurrCharPos = 0;
     gubCursorPos = 0;
-    iNextCharPos = StringPixLengthArg(pColors->usFont, 1, gpActive->szString) / 2;
-    while (iCurrCharPos + (iNextCharPos - iCurrCharPos) / 2 < iClickX && gubCursorPos < gpActive->ubStrLen) {
+    iNextCharPos = StringPixLengthArg(pColors.value.usFont, 1, gpActive.value.szString) / 2;
+    while (iCurrCharPos + (iNextCharPos - iCurrCharPos) / 2 < iClickX && gubCursorPos < gpActive.value.ubStrLen) {
       gubCursorPos++;
       iCurrCharPos = iNextCharPos;
-      iNextCharPos = StringPixLengthArg(pColors->usFont, gubCursorPos + 1, gpActive->szString);
+      iNextCharPos = StringPixLengthArg(pColors.value.usFont, gubCursorPos + 1, gpActive.value.szString);
     }
     gubStartHilite = gubCursorPos; // This value is the anchor
     gubEndHilite = gubCursorPos; // The end will move with the cursor as long as it's down.
@@ -1009,30 +1009,30 @@ function MouseClickedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: IN
 
 function RenderBackgroundField(pNode: Pointer<TEXTINPUTNODE>): void {
   let usColor: UINT16;
-  if (pColors->fBevelling) {
-    ColorFillVideoSurfaceArea(FRAME_BUFFER, pNode->region.RegionTopLeftX, pNode->region.RegionTopLeftY, pNode->region.RegionBottomRightX, pNode->region.RegionBottomRightY, pColors->usDarkerColor);
-    ColorFillVideoSurfaceArea(FRAME_BUFFER, pNode->region.RegionTopLeftX + 1, pNode->region.RegionTopLeftY + 1, pNode->region.RegionBottomRightX, pNode->region.RegionBottomRightY, pColors->usBrighterColor);
+  if (pColors.value.fBevelling) {
+    ColorFillVideoSurfaceArea(FRAME_BUFFER, pNode.value.region.RegionTopLeftX, pNode.value.region.RegionTopLeftY, pNode.value.region.RegionBottomRightX, pNode.value.region.RegionBottomRightY, pColors.value.usDarkerColor);
+    ColorFillVideoSurfaceArea(FRAME_BUFFER, pNode.value.region.RegionTopLeftX + 1, pNode.value.region.RegionTopLeftY + 1, pNode.value.region.RegionBottomRightX, pNode.value.region.RegionBottomRightY, pColors.value.usBrighterColor);
   }
-  if (!pNode->fEnabled && !pColors->fUseDisabledAutoShade)
-    usColor = pColors->usDisabledTextFieldColor;
+  if (!pNode.value.fEnabled && !pColors.value.fUseDisabledAutoShade)
+    usColor = pColors.value.usDisabledTextFieldColor;
   else
-    usColor = pColors->usTextFieldColor;
+    usColor = pColors.value.usTextFieldColor;
 
-  ColorFillVideoSurfaceArea(FRAME_BUFFER, pNode->region.RegionTopLeftX + 1, pNode->region.RegionTopLeftY + 1, pNode->region.RegionBottomRightX - 1, pNode->region.RegionBottomRightY - 1, usColor);
+  ColorFillVideoSurfaceArea(FRAME_BUFFER, pNode.value.region.RegionTopLeftX + 1, pNode.value.region.RegionTopLeftY + 1, pNode.value.region.RegionBottomRightX - 1, pNode.value.region.RegionBottomRightY - 1, usColor);
 
-  InvalidateRegion(pNode->region.RegionTopLeftX, pNode->region.RegionTopLeftY, pNode->region.RegionBottomRightX, pNode->region.RegionBottomRightY);
+  InvalidateRegion(pNode.value.region.RegionTopLeftX, pNode.value.region.RegionTopLeftY, pNode.value.region.RegionBottomRightX, pNode.value.region.RegionBottomRightY);
 }
 
 function RenderActiveTextField(): void {
   let uiCursorXPos: UINT32;
   let usOffset: UINT16;
   let str: UINT16[] /* [256] */;
-  if (!gpActive || !gpActive->szString)
+  if (!gpActive || !gpActive.value.szString)
     return;
 
   SaveFontSettings();
-  SetFont(pColors->usFont);
-  usOffset = ((gpActive->region.RegionBottomRightY - gpActive->region.RegionTopLeftY - GetFontHeight(pColors->usFont)) / 2);
+  SetFont(pColors.value.usFont);
+  usOffset = ((gpActive.value.region.RegionBottomRightY - gpActive.value.region.RegionTopLeftY - GetFontHeight(pColors.value.usFont)) / 2);
   RenderBackgroundField(gpActive);
   if (gfHiliteMode && gubStartHilite != gubEndHilite) {
     // Some or all of the text is hilighted, so we will use a different method.
@@ -1048,39 +1048,39 @@ function RenderActiveTextField(): void {
       usEnd = gubStartHilite;
     }
     // Traverse the string one character at a time, and draw the highlited part differently.
-    for (i = 0; i < gpActive->ubStrLen; i++) {
-      uiCursorXPos = StringPixLengthArg(pColors->usFont, i, gpActive->szString) + 3;
+    for (i = 0; i < gpActive.value.ubStrLen; i++) {
+      uiCursorXPos = StringPixLengthArg(pColors.value.usFont, i, gpActive.value.szString) + 3;
       if (i >= usStart && i < usEnd) {
         // in highlighted part of text
-        SetFontForeground(pColors->ubHiForeColor);
-        SetFontShadow(pColors->ubHiShadowColor);
-        SetFontBackground(pColors->ubHiBackColor);
+        SetFontForeground(pColors.value.ubHiForeColor);
+        SetFontShadow(pColors.value.ubHiShadowColor);
+        SetFontBackground(pColors.value.ubHiBackColor);
       } else {
         // in regular part of text
-        SetFontForeground(pColors->ubForeColor);
-        SetFontShadow(pColors->ubShadowColor);
+        SetFontForeground(pColors.value.ubForeColor);
+        SetFontShadow(pColors.value.ubShadowColor);
         SetFontBackground(0);
       }
-      if (gpActive->szString[i] != '%') {
-        mprintf(uiCursorXPos + gpActive->region.RegionTopLeftX, gpActive->region.RegionTopLeftY + usOffset, "%c", gpActive->szString[i]);
+      if (gpActive.value.szString[i] != '%') {
+        mprintf(uiCursorXPos + gpActive.value.region.RegionTopLeftX, gpActive.value.region.RegionTopLeftY + usOffset, "%c", gpActive.value.szString[i]);
       } else {
-        mprintf(uiCursorXPos + gpActive->region.RegionTopLeftX, gpActive->region.RegionTopLeftY + usOffset, "%%");
+        mprintf(uiCursorXPos + gpActive.value.region.RegionTopLeftX, gpActive.value.region.RegionTopLeftY + usOffset, "%%");
       }
     }
   } else {
-    SetFontForeground(pColors->ubForeColor);
-    SetFontShadow(pColors->ubShadowColor);
+    SetFontForeground(pColors.value.ubForeColor);
+    SetFontShadow(pColors.value.ubShadowColor);
     SetFontBackground(0);
-    DoublePercentileCharacterFromStringIntoString(gpActive->szString, str);
-    mprintf(gpActive->region.RegionTopLeftX + 3, gpActive->region.RegionTopLeftY + usOffset, str);
+    DoublePercentileCharacterFromStringIntoString(gpActive.value.szString, str);
+    mprintf(gpActive.value.region.RegionTopLeftX + 3, gpActive.value.region.RegionTopLeftY + usOffset, str);
   }
   // Draw the cursor in the correct position.
-  if (gfEditingText && gpActive->szString) {
-    DoublePercentileCharacterFromStringIntoString(gpActive->szString, str);
-    uiCursorXPos = StringPixLengthArg(pColors->usFont, gubCursorPos, str) + 2;
+  if (gfEditingText && gpActive.value.szString) {
+    DoublePercentileCharacterFromStringIntoString(gpActive.value.szString, str);
+    uiCursorXPos = StringPixLengthArg(pColors.value.usFont, gubCursorPos, str) + 2;
     if (GetJA2Clock() % 1000 < 500) {
       // draw the blinking ibeam cursor during the on blink period.
-      ColorFillVideoSurfaceArea(FRAME_BUFFER, gpActive->region.RegionTopLeftX + uiCursorXPos, gpActive->region.RegionTopLeftY + usOffset, gpActive->region.RegionTopLeftX + uiCursorXPos + 1, gpActive->region.RegionTopLeftY + usOffset + GetFontHeight(pColors->usFont), pColors->usCursorColor);
+      ColorFillVideoSurfaceArea(FRAME_BUFFER, gpActive.value.region.RegionTopLeftX + uiCursorXPos, gpActive.value.region.RegionTopLeftY + usOffset, gpActive.value.region.RegionTopLeftX + uiCursorXPos + 1, gpActive.value.region.RegionTopLeftY + usOffset + GetFontHeight(pColors.value.usFont), pColors.value.usCursorColor);
     }
   }
   RestoreFontSettings();
@@ -1094,54 +1094,54 @@ function RenderInactiveTextField(ubID: UINT8): void {
   curr = gpTextInputHead;
   pNode = NULL;
   while (curr) {
-    if (curr->ubID == ubID) {
+    if (curr.value.ubID == ubID) {
       pNode = curr;
       break;
     }
   }
-  if (!pNode || !pNode->szString)
+  if (!pNode || !pNode.value.szString)
     return;
   SaveFontSettings();
-  SetFont(pColors->usFont);
-  usOffset = ((pNode->region.RegionBottomRightY - pNode->region.RegionTopLeftY - GetFontHeight(pColors->usFont)) / 2);
-  SetFontForeground(pColors->ubForeColor);
-  SetFontShadow(pColors->ubShadowColor);
+  SetFont(pColors.value.usFont);
+  usOffset = ((pNode.value.region.RegionBottomRightY - pNode.value.region.RegionTopLeftY - GetFontHeight(pColors.value.usFont)) / 2);
+  SetFontForeground(pColors.value.ubForeColor);
+  SetFontShadow(pColors.value.ubShadowColor);
   SetFontBackground(0);
   RenderBackgroundField(pNode);
-  DoublePercentileCharacterFromStringIntoString(pNode->szString, str);
-  mprintf(pNode->region.RegionTopLeftX + 3, pNode->region.RegionTopLeftY + usOffset, str);
+  DoublePercentileCharacterFromStringIntoString(pNode.value.szString, str);
+  mprintf(pNode.value.region.RegionTopLeftX + 3, pNode.value.region.RegionTopLeftY + usOffset, str);
   RestoreFontSettings();
 }
 
 function RenderInactiveTextFieldNode(pNode: Pointer<TEXTINPUTNODE>): void {
   let usOffset: UINT16;
   let str: UINT16[] /* [256] */;
-  if (!pNode || !pNode->szString)
+  if (!pNode || !pNode.value.szString)
     return;
   SaveFontSettings();
-  SetFont(pColors->usFont);
-  if (!pNode->fEnabled && pColors->fUseDisabledAutoShade) {
+  SetFont(pColors.value.usFont);
+  if (!pNode.value.fEnabled && pColors.value.fUseDisabledAutoShade) {
     // use the color scheme specified by the user.
-    SetFontForeground(pColors->ubDisabledForeColor);
-    SetFontShadow(pColors->ubDisabledShadowColor);
+    SetFontForeground(pColors.value.ubDisabledForeColor);
+    SetFontShadow(pColors.value.ubDisabledShadowColor);
   } else {
-    SetFontForeground(pColors->ubForeColor);
-    SetFontShadow(pColors->ubShadowColor);
+    SetFontForeground(pColors.value.ubForeColor);
+    SetFontShadow(pColors.value.ubShadowColor);
   }
-  usOffset = ((pNode->region.RegionBottomRightY - pNode->region.RegionTopLeftY - GetFontHeight(pColors->usFont)) / 2);
+  usOffset = ((pNode.value.region.RegionBottomRightY - pNode.value.region.RegionTopLeftY - GetFontHeight(pColors.value.usFont)) / 2);
   SetFontBackground(0);
   RenderBackgroundField(pNode);
-  DoublePercentileCharacterFromStringIntoString(pNode->szString, str);
-  mprintf(pNode->region.RegionTopLeftX + 3, pNode->region.RegionTopLeftY + usOffset, str);
+  DoublePercentileCharacterFromStringIntoString(pNode.value.szString, str);
+  mprintf(pNode.value.region.RegionTopLeftX + 3, pNode.value.region.RegionTopLeftY + usOffset, str);
   RestoreFontSettings();
-  if (!pNode->fEnabled && pColors->fUseDisabledAutoShade) {
+  if (!pNode.value.fEnabled && pColors.value.fUseDisabledAutoShade) {
     let pDestBuf: Pointer<UINT8>;
     let uiDestPitchBYTES: UINT32;
     let ClipRect: SGPRect;
-    ClipRect.iLeft = pNode->region.RegionTopLeftX;
-    ClipRect.iRight = pNode->region.RegionBottomRightX;
-    ClipRect.iTop = pNode->region.RegionTopLeftY;
-    ClipRect.iBottom = pNode->region.RegionBottomRightY;
+    ClipRect.iLeft = pNode.value.region.RegionTopLeftX;
+    ClipRect.iRight = pNode.value.region.RegionBottomRightX;
+    ClipRect.iTop = pNode.value.region.RegionTopLeftY;
+    ClipRect.iBottom = pNode.value.region.RegionBottomRightY;
     pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
     Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, &ClipRect);
     UnLockVideoSurface(FRAME_BUFFER);
@@ -1156,12 +1156,12 @@ function RenderAllTextFields(): void {
   // if they exist at all.
   stackCurr = pInputStack;
   while (stackCurr) {
-    curr = stackCurr->head;
+    curr = stackCurr.value.head;
     while (curr) {
       RenderInactiveTextFieldNode(curr);
-      curr = curr->next;
+      curr = curr.value.next;
     }
-    stackCurr = stackCurr->next;
+    stackCurr = stackCurr.value.next;
   }
   // Render the current text input level
   curr = gpTextInputHead;
@@ -1170,7 +1170,7 @@ function RenderAllTextFields(): void {
       RenderInactiveTextFieldNode(curr);
     else
       RenderActiveTextField();
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -1178,16 +1178,16 @@ function EnableTextField(ubID: UINT8): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
-    if (curr->ubID == ubID) {
-      if (!curr->fEnabled) {
+    if (curr.value.ubID == ubID) {
+      if (!curr.value.fEnabled) {
         if (!gpActive)
           gpActive = curr;
-        MSYS_EnableRegion(&curr->region);
-        curr->fEnabled = TRUE;
+        MSYS_EnableRegion(&curr.value.region);
+        curr.value.fEnabled = TRUE;
       } else
         return;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -1195,16 +1195,16 @@ function DisableTextField(ubID: UINT8): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
-    if (curr->ubID == ubID) {
+    if (curr.value.ubID == ubID) {
       if (gpActive == curr)
         SelectNextField();
-      if (curr->fEnabled) {
-        MSYS_DisableRegion(&curr->region);
-        curr->fEnabled = FALSE;
+      if (curr.value.fEnabled) {
+        MSYS_DisableRegion(&curr.value.region);
+        curr.value.fEnabled = FALSE;
       } else
         return;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -1212,15 +1212,15 @@ function EnableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
-    if (curr->ubID >= ubFirstID && curr->ubID <= ubLastID) {
+    if (curr.value.ubID >= ubFirstID && curr.value.ubID <= ubLastID) {
       if (gpActive == curr)
         SelectNextField();
-      if (!curr->fEnabled) {
-        MSYS_EnableRegion(&curr->region);
-        curr->fEnabled = TRUE;
+      if (!curr.value.fEnabled) {
+        MSYS_EnableRegion(&curr.value.region);
+        curr.value.fEnabled = TRUE;
       }
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -1228,15 +1228,15 @@ function DisableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
-    if (curr->ubID >= ubFirstID && curr->ubID <= ubLastID) {
+    if (curr.value.ubID >= ubFirstID && curr.value.ubID <= ubLastID) {
       if (gpActive == curr)
         SelectNextField();
-      if (curr->fEnabled) {
-        MSYS_DisableRegion(&curr->region);
-        curr->fEnabled = FALSE;
+      if (curr.value.fEnabled) {
+        MSYS_DisableRegion(&curr.value.region);
+        curr.value.fEnabled = FALSE;
       }
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -1244,11 +1244,11 @@ function EnableAllTextFields(): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
-    if (!curr->fEnabled) {
-      MSYS_EnableRegion(&curr->region);
-      curr->fEnabled = TRUE;
+    if (!curr.value.fEnabled) {
+      MSYS_EnableRegion(&curr.value.region);
+      curr.value.fEnabled = TRUE;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   if (!gpActive)
     gpActive = gpTextInputHead;
@@ -1258,11 +1258,11 @@ function DisableAllTextFields(): void {
   let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
-    if (curr->fEnabled) {
-      MSYS_DisableRegion(&curr->region);
-      curr->fEnabled = FALSE;
+    if (curr.value.fEnabled) {
+      MSYS_DisableRegion(&curr.value.region);
+      curr.value.fEnabled = FALSE;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
   gpActive = NULL;
 }
@@ -1291,7 +1291,7 @@ function ExecuteCopyCommand(): void {
   let ubCount: UINT8;
   let ubStart: UINT8;
   let ubEnd: UINT8;
-  if (!gpActive || !gpActive->szString)
+  if (!gpActive || !gpActive.value.szString)
     return;
   // Delete the current contents in the clipboard
   KillClipboard();
@@ -1308,7 +1308,7 @@ function ExecuteCopyCommand(): void {
     szClipboard = MemAlloc((ubCount + 1) * 2);
     Assert(szClipboard);
     for (ubCount = ubStart; ubCount < ubEnd; ubCount++) {
-      szClipboard[ubCount - ubStart] = gpActive->szString[ubCount];
+      szClipboard[ubCount - ubStart] = gpActive.value.szString[ubCount];
     }
     szClipboard[ubCount - ubStart] = '\0';
   }
@@ -1341,8 +1341,8 @@ function SaveAndRemoveCurrentTextInputMode(): void {
   pSavedHead = gpTextInputHead;
   pSavedColors = pColors;
   if (pInputStack) {
-    gpTextInputHead = pInputStack->head;
-    pColors = pInputStack->pColors;
+    gpTextInputHead = pInputStack.value.head;
+    pColors = pInputStack.value.pColors;
   } else {
     gpTextInputHead = NULL;
     pColors = NULL;
@@ -1373,18 +1373,18 @@ function SetTextInputCursor(usNewCursor: UINT16): void {
   // if they exist at all.
   stackCurr = pInputStack;
   while (stackCurr) {
-    curr = stackCurr->head;
+    curr = stackCurr.value.head;
     while (curr) {
       MSYS_SetCurrentCursor(usNewCursor);
-      curr = curr->next;
+      curr = curr.value.next;
     }
-    stackCurr = stackCurr->next;
+    stackCurr = stackCurr.value.next;
   }
   // Render the current text input level
   curr = gpTextInputHead;
   while (curr) {
     MSYS_SetCurrentCursor(usNewCursor);
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 
@@ -1394,30 +1394,30 @@ function GetExclusive24HourTimeValueFromField(ubField: UINT8): UINT16 {
   let usTime: UINT16;
   curr = gpTextInputHead;
   while (curr) {
-    if (curr->ubID == ubField) {
-      if (curr->usInputType != INPUTTYPE_EXCLUSIVE_24HOURCLOCK)
+    if (curr.value.ubID == ubField) {
+      if (curr.value.usInputType != INPUTTYPE_EXCLUSIVE_24HOURCLOCK)
         return 0xffff; // illegal!
       // First validate the hours 00-23
-      if (curr->szString[0] == '2' && curr->szString[1] >= '0' && // 20-23
-              curr->szString[1] <= '3' ||
-          curr->szString[0] >= '0' && curr->szString[0] <= '1' && // 00-19
-              curr->szString[1] >= '0' && curr->szString[1] <= '9') {
+      if (curr.value.szString[0] == '2' && curr.value.szString[1] >= '0' && // 20-23
+              curr.value.szString[1] <= '3' ||
+          curr.value.szString[0] >= '0' && curr.value.szString[0] <= '1' && // 00-19
+              curr.value.szString[1] >= '0' && curr.value.szString[1] <= '9') {
                 // Next, validate the colon, and the minutes 00-59
-        if (curr->szString[2] == ':' && curr->szString[5] == 0 && //	:
-            curr->szString[3] >= '0' && curr->szString[3] <= '5' && // 0-5
-            curr->szString[4] >= '0' && curr->szString[4] <= '9') // 0-9
+        if (curr.value.szString[2] == ':' && curr.value.szString[5] == 0 && //	:
+            curr.value.szString[3] >= '0' && curr.value.szString[3] <= '5' && // 0-5
+            curr.value.szString[4] >= '0' && curr.value.szString[4] <= '9') // 0-9
         {
           // Hours
-          usTime = ((curr->szString[0] - 0x30) * 10 + curr->szString[1] - 0x30) * 60;
+          usTime = ((curr.value.szString[0] - 0x30) * 10 + curr.value.szString[1] - 0x30) * 60;
           // Minutes
-          usTime += (curr->szString[3] - 0x30) * 10 + curr->szString[4] - 0x30;
+          usTime += (curr.value.szString[3] - 0x30) * 10 + curr.value.szString[4] - 0x30;
           return usTime;
         }
       }
       // invalid
       return 0xffff;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 
   AssertMsg(FALSE, String("GetExclusive24HourTimeValueFromField: Invalid field %d", ubField));
@@ -1435,19 +1435,19 @@ function SetExclusive24HourTimeValue(ubField: UINT8, usTime: UINT16): void {
   usTime = min(1439, usTime);
   curr = gpTextInputHead;
   while (curr) {
-    if (curr->ubID == ubField) {
-      if (curr->fUserField)
-        AssertMsg(0, String("Attempting to illegally set text into user field %d", curr->ubID));
-      curr->szString[0] = (usTime / 600) + 0x30; // 10 hours
-      curr->szString[1] = (usTime / 60 % 10) + 0x30; // 1 hour
+    if (curr.value.ubID == ubField) {
+      if (curr.value.fUserField)
+        AssertMsg(0, String("Attempting to illegally set text into user field %d", curr.value.ubID));
+      curr.value.szString[0] = (usTime / 600) + 0x30; // 10 hours
+      curr.value.szString[1] = (usTime / 60 % 10) + 0x30; // 1 hour
       usTime %= 60; // truncate the hours
-      curr->szString[2] = ':';
-      curr->szString[3] = (usTime / 10) + 0x30; // 10 minutes
-      curr->szString[4] = (usTime % 10) + 0x30; // 1 minute;
-      curr->szString[5] = 0;
+      curr.value.szString[2] = ':';
+      curr.value.szString[3] = (usTime / 10) + 0x30; // 10 minutes
+      curr.value.szString[4] = (usTime % 10) + 0x30; // 1 minute;
+      curr.value.szString[5] = 0;
       return;
     }
-    curr = curr->next;
+    curr = curr.value.next;
   }
 }
 

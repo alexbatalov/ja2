@@ -133,8 +133,8 @@ function SurrenderMessageBoxCallBack(ubExitValue: UINT8): void {
 
     for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier++) {
       // Are we active and in sector.....
-      if (pTeamSoldier->bActive && pTeamSoldier->bInSector) {
-        if (pTeamSoldier->bLife != 0) {
+      if (pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector) {
+        if (pTeamSoldier.value.bLife != 0) {
           EnemyCapturesPlayerSoldier(pTeamSoldier);
 
           RemoveSoldierFromTacticalSector(pTeamSoldier, TRUE);
@@ -171,7 +171,7 @@ function ShutDownQuoteBox(fForce: BOOLEAN): void {
     gCivQuoteData.bActive = FALSE;
 
     // do we need to do anything at the end of the civ quote?
-    if (gCivQuoteData.pCiv && gCivQuoteData.pCiv->bAction == AI_ACTION_OFFER_SURRENDER) {
+    if (gCivQuoteData.pCiv && gCivQuoteData.pCiv.value.bAction == AI_ACTION_OFFER_SURRENDER) {
       DoMessageBox(MSG_BOX_BASIC_STYLE, Message[STR_SURRENDER], GAME_SCREEN, MSG_BOX_FLAG_YESNO, SurrenderMessageBoxCallBack, NULL);
     }
   }
@@ -188,7 +188,7 @@ function ShutDownQuoteBoxIfActive(): BOOLEAN {
 }
 
 function GetCivType(pCiv: Pointer<SOLDIERTYPE>): INT8 {
-  if (pCiv->ubProfile != NO_PROFILE) {
+  if (pCiv.value.ubProfile != NO_PROFILE) {
     return CIV_TYPE_NA;
   }
 
@@ -196,22 +196,22 @@ function GetCivType(pCiv: Pointer<SOLDIERTYPE>): INT8 {
   // 1 ) check sector....
   if (gWorldSectorX == 10 && gWorldSectorY == 6 && gbWorldSectorZ == 0) {
     // 2 ) the only female....
-    if (pCiv->ubCivilianGroup == 0 && pCiv->bTeam != gbPlayerNum && pCiv->ubBodyType == REGFEMALE) {
+    if (pCiv.value.ubCivilianGroup == 0 && pCiv.value.bTeam != gbPlayerNum && pCiv.value.ubBodyType == REGFEMALE) {
       // She's a ho!
       return CIV_TYPE_MARRIED_PC;
     }
   }
 
   // OK, look for enemy type - MUST be on enemy team, merc bodytype
-  if (pCiv->bTeam == ENEMY_TEAM && IS_MERC_BODY_TYPE(pCiv)) {
+  if (pCiv.value.bTeam == ENEMY_TEAM && IS_MERC_BODY_TYPE(pCiv)) {
     return CIV_TYPE_ENEMY;
   }
 
-  if (pCiv->bTeam != CIV_TEAM && pCiv->bTeam != MILITIA_TEAM) {
+  if (pCiv.value.bTeam != CIV_TEAM && pCiv.value.bTeam != MILITIA_TEAM) {
     return CIV_TYPE_NA;
   }
 
-  switch (pCiv->ubBodyType) {
+  switch (pCiv.value.ubBodyType) {
     case REGMALE:
     case BIGMALE:
     case STOCKYMALE:
@@ -250,9 +250,9 @@ function GetCivType(pCiv: Pointer<SOLDIERTYPE>): INT8 {
 
 function RenderCivQuoteBoxOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   if (gCivQuoteData.iVideoOverlay != -1) {
-    RenderMercPopUpBoxFromIndex(gCivQuoteData.iDialogueBox, pBlitter->sX, pBlitter->sY, pBlitter->uiDestBuff);
+    RenderMercPopUpBoxFromIndex(gCivQuoteData.iDialogueBox, pBlitter.value.sX, pBlitter.value.sY, pBlitter.value.uiDestBuff);
 
-    InvalidateRegion(pBlitter->sX, pBlitter->sY, pBlitter->sX + gusCivQuoteBoxWidth, pBlitter->sY + gusCivQuoteBoxHeight);
+    InvalidateRegion(pBlitter.value.sX, pBlitter.value.sY, pBlitter.value.sX + gusCivQuoteBoxWidth, pBlitter.value.sY + gusCivQuoteBoxHeight);
   }
 }
 
@@ -368,17 +368,17 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
     // Determine what type of quote to say...
     // Are are we going to attack?
 
-    if (pCiv->bAction == AI_ACTION_TOSS_PROJECTILE || pCiv->bAction == AI_ACTION_FIRE_GUN || pCiv->bAction == AI_ACTION_FIRE_GUN || pCiv->bAction == AI_ACTION_KNIFE_MOVE) {
+    if (pCiv.value.bAction == AI_ACTION_TOSS_PROJECTILE || pCiv.value.bAction == AI_ACTION_FIRE_GUN || pCiv.value.bAction == AI_ACTION_FIRE_GUN || pCiv.value.bAction == AI_ACTION_KNIFE_MOVE) {
       return CIV_QUOTE_ENEMY_THREAT;
-    } else if (pCiv->bAction == AI_ACTION_OFFER_SURRENDER) {
+    } else if (pCiv.value.bAction == AI_ACTION_OFFER_SURRENDER) {
       return CIV_QUOTE_ENEMY_OFFER_SURRENDER;
     }
     // Hurt?
-    else if (pCiv->bLife < 30) {
+    else if (pCiv.value.bLife < 30) {
       return CIV_QUOTE_ENEMY_HURT;
     }
     // elite?
-    else if (pCiv->ubSoldierClass == SOLDIER_CLASS_ELITE) {
+    else if (pCiv.value.ubSoldierClass == SOLDIER_CLASS_ELITE) {
       return CIV_QUOTE_ENEMY_ELITE;
     } else {
       return CIV_QUOTE_ENEMY_ADMIN;
@@ -396,10 +396,10 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
 
   // CIV GROUPS FIRST!
   // Hicks.....
-  if (pCiv->ubCivilianGroup == HICKS_CIV_GROUP) {
+  if (pCiv.value.ubCivilianGroup == HICKS_CIV_GROUP) {
     // Are they friendly?
     // if ( gTacticalStatus.fCivGroupHostile[ HICKS_CIV_GROUP ] < CIV_GROUP_WILL_BECOME_HOSTILE )
-    if (pCiv->bNeutral) {
+    if (pCiv.value.bNeutral) {
       return CIV_QUOTE_HICKS_FRIENDLY;
     } else {
       return CIV_QUOTE_HICKS_ENEMIES;
@@ -407,10 +407,10 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   }
 
   // Goons.....
-  if (pCiv->ubCivilianGroup == KINGPIN_CIV_GROUP) {
+  if (pCiv.value.ubCivilianGroup == KINGPIN_CIV_GROUP) {
     // Are they friendly?
     // if ( gTacticalStatus.fCivGroupHostile[ KINGPIN_CIV_GROUP ] < CIV_GROUP_WILL_BECOME_HOSTILE )
-    if (pCiv->bNeutral) {
+    if (pCiv.value.bNeutral) {
       return CIV_QUOTE_GOONS_FRIENDLY;
     } else {
       return CIV_QUOTE_GOONS_ENEMIES;
@@ -418,7 +418,7 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   }
 
   // ATE: Cowering people take precedence....
-  if ((pCiv->uiStatusFlags & SOLDIER_COWERING) || (pCiv->bTeam == CIV_TEAM && (gTacticalStatus.uiFlags & INCOMBAT))) {
+  if ((pCiv.value.uiStatusFlags & SOLDIER_COWERING) || (pCiv.value.bTeam == CIV_TEAM && (gTacticalStatus.uiFlags & INCOMBAT))) {
     if (ubCivType == CIV_TYPE_ADULT) {
       return CIV_QUOTE_ADULTS_COWER;
     } else {
@@ -427,7 +427,7 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   }
 
   // Kid slaves...
-  if (pCiv->ubCivilianGroup == FACTORY_KIDS_GROUP) {
+  if (pCiv.value.ubCivilianGroup == FACTORY_KIDS_GROUP) {
     // Check fact.....
     if (CheckFact(FACT_DOREEN_HAD_CHANGE_OF_HEART, 0) || !CheckFact(FACT_DOREEN_ALIVE, 0)) {
       return CIV_QUOTE_KID_SLAVES_FREE;
@@ -437,7 +437,7 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   }
 
   // BEGGERS
-  if (pCiv->ubCivilianGroup == BEGGARS_CIV_GROUP) {
+  if (pCiv.value.ubCivilianGroup == BEGGARS_CIV_GROUP) {
     // Check if we are in a town...
     if (bTownId != BLANK_SECTOR && gbWorldSectorZ == 0) {
       if (bTownId == SAN_MONA && ubCivType == CIV_TYPE_ADULT) {
@@ -454,7 +454,7 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   }
 
   // REBELS
-  if (pCiv->ubCivilianGroup == REBEL_CIV_GROUP) {
+  if (pCiv.value.ubCivilianGroup == REBEL_CIV_GROUP) {
     // DO normal beggers...
     if (ubCivType == CIV_TYPE_ADULT) {
       return CIV_QUOTE_ADULTS_REBELS;
@@ -464,15 +464,15 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   }
 
   // Do miltitia...
-  if (pCiv->bTeam == MILITIA_TEAM) {
+  if (pCiv.value.bTeam == MILITIA_TEAM) {
     // Different types....
-    if (pCiv->ubSoldierClass == SOLDIER_CLASS_GREEN_MILITIA) {
+    if (pCiv.value.ubSoldierClass == SOLDIER_CLASS_GREEN_MILITIA) {
       return CIV_QUOTE_GREEN_MILITIA;
     }
-    if (pCiv->ubSoldierClass == SOLDIER_CLASS_REG_MILITIA) {
+    if (pCiv.value.ubSoldierClass == SOLDIER_CLASS_REG_MILITIA) {
       return CIV_QUOTE_MEDIUM_MILITIA;
     }
-    if (pCiv->ubSoldierClass == SOLDIER_CLASS_ELITE_MILITIA) {
+    if (pCiv.value.ubSoldierClass == SOLDIER_CLASS_ELITE_MILITIA) {
       return CIV_QUOTE_ELITE_MILITIA;
     }
   }
@@ -504,7 +504,7 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   }
 
   // ATE: check miners......
-  if (pCiv->ubSoldierClass == SOLDIER_CLASS_MINER) {
+  if (pCiv.value.ubSoldierClass == SOLDIER_CLASS_MINER) {
     bMiners = TRUE;
 
     // If not a civ hint available...
@@ -592,11 +592,11 @@ function StartCivQuote(pCiv: Pointer<SOLDIERTYPE>): void {
 
   // ATE: Check for old quote.....
   // This could have been stored on last attempt...
-  if (pCiv->bCurrentCivQuote == CIV_QUOTE_HINT) {
+  if (pCiv.value.bCurrentCivQuote == CIV_QUOTE_HINT) {
     // Determine which quote to say.....
     // CAN'T USE HINTS, since we just did one...
-    pCiv->bCurrentCivQuote = -1;
-    pCiv->bCurrentCivQuoteDelta = 0;
+    pCiv.value.bCurrentCivQuote = -1;
+    pCiv.value.bCurrentCivQuoteDelta = 0;
     ubCivQuoteID = DetermineCivQuoteEntry(pCiv, &ubCivHintToUse, FALSE);
   } else {
     // Determine which quote to say.....
@@ -606,19 +606,19 @@ function StartCivQuote(pCiv: Pointer<SOLDIERTYPE>): void {
   // Determine entry id
   // ATE: Try and get entry from soldier pointer....
   if (ubCivQuoteID != CIV_QUOTE_HINT) {
-    if (pCiv->bCurrentCivQuote == -1) {
+    if (pCiv.value.bCurrentCivQuote == -1) {
       // Pick random one
-      pCiv->bCurrentCivQuote = Random(gCivQuotes[ubCivQuoteID].ubNumEntries - 2);
-      pCiv->bCurrentCivQuoteDelta = 0;
+      pCiv.value.bCurrentCivQuote = Random(gCivQuotes[ubCivQuoteID].ubNumEntries - 2);
+      pCiv.value.bCurrentCivQuoteDelta = 0;
     }
 
-    ubEntryID = pCiv->bCurrentCivQuote + pCiv->bCurrentCivQuoteDelta;
+    ubEntryID = pCiv.value.bCurrentCivQuote + pCiv.value.bCurrentCivQuoteDelta;
   } else {
     ubEntryID = ubCivHintToUse;
 
     // ATE: set value for quote ID.....
-    pCiv->bCurrentCivQuote = ubCivQuoteID;
-    pCiv->bCurrentCivQuoteDelta = ubEntryID;
+    pCiv.value.bCurrentCivQuote = ubCivQuoteID;
+    pCiv.value.bCurrentCivQuoteDelta = ubEntryID;
   }
 
   // Determine location...
@@ -632,10 +632,10 @@ function StartCivQuote(pCiv: Pointer<SOLDIERTYPE>): void {
 
   // Increment use
   if (ubCivQuoteID != CIV_QUOTE_HINT) {
-    pCiv->bCurrentCivQuoteDelta++;
+    pCiv.value.bCurrentCivQuoteDelta++;
 
-    if (pCiv->bCurrentCivQuoteDelta == 2) {
-      pCiv->bCurrentCivQuoteDelta = 0;
+    if (pCiv.value.bCurrentCivQuoteDelta == 2) {
+      pCiv.value.bCurrentCivQuoteDelta = 0;
     }
   }
 }

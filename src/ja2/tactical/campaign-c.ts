@@ -1,30 +1,30 @@
 // give pSoldier usNumChances to improve ubStat.  If it's from training, it doesn't count towards experience level gain
 function StatChange(pSoldier: Pointer<SOLDIERTYPE>, ubStat: UINT8, usNumChances: UINT16, ubReason: UINT8): void {
   Assert(pSoldier != NULL);
-  Assert(pSoldier->bActive);
+  Assert(pSoldier.value.bActive);
 
   // ignore non-player soldiers
   if (!PTR_OURTEAM)
     return;
 
   // ignore anything without a profile
-  if (pSoldier->ubProfile == NO_PROFILE)
+  if (pSoldier.value.ubProfile == NO_PROFILE)
     return;
 
   // ignore vehicles and robots
-  if ((pSoldier->uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier->uiStatusFlags & SOLDIER_ROBOT))
+  if ((pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT))
     return;
 
-  if (pSoldier->bAssignment == ASSIGNMENT_POW) {
-    ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, "ERROR: StatChange: %s improving stats while POW! ubStat %d", pSoldier->name, ubStat);
+  if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+    ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, "ERROR: StatChange: %s improving stats while POW! ubStat %d", pSoldier.value.name, ubStat);
     return;
   }
 
   // no points earned while somebody is unconscious (for assist XPs, and such)
-  if (pSoldier->bLife < CONSCIOUSNESS)
+  if (pSoldier.value.bLife < CONSCIOUSNESS)
     return;
 
-  ProcessStatChange(&(gMercProfiles[pSoldier->ubProfile]), ubStat, usNumChances, ubReason);
+  ProcessStatChange(&(gMercProfiles[pSoldier.value.ubProfile]), ubStat, usNumChances, ubReason);
 
   // Update stats....right away... ATE
   UpdateStats(pSoldier);
@@ -34,10 +34,10 @@ function StatChange(pSoldier: Pointer<SOLDIERTYPE>, ubStat: UINT8, usNumChances:
 // give pProfile usNumChances to improve ubStat.  If it's from training, it doesn't count towards experience level gain
 function ProfileStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, usNumChances: UINT16, ubReason: UINT8): void {
   // dead guys don't do nuthin' !
-  if (pProfile->bMercStatus == MERC_IS_DEAD)
+  if (pProfile.value.bMercStatus == MERC_IS_DEAD)
     return;
 
-  if (pProfile->bLife < OKLIFE)
+  if (pProfile.value.bLife < OKLIFE)
     return;
 
   ProcessStatChange(pProfile, ubStat, usNumChances, ubReason);
@@ -59,78 +59,78 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
 
   Assert(pProfile != NULL);
 
-  if (pProfile->bEvolution == NO_EVOLUTION)
+  if (pProfile.value.bEvolution == NO_EVOLUTION)
     return; // No change possible, quit right away
 
   // if this is a Reverse-Evolving merc who attempting to train
-  if ((ubReason == FROM_TRAINING) && (pProfile->bEvolution == DEVOLVE))
+  if ((ubReason == FROM_TRAINING) && (pProfile.value.bEvolution == DEVOLVE))
     return; // he doesn't get any benefit, but isn't penalized either
 
   if (usNumChances == 0)
     return;
 
-  usSubpointsPerPoint = SubpointsPerPoint(ubStat, pProfile->bExpLevel);
-  usSubpointsPerLevel = SubpointsPerPoint(EXPERAMT, pProfile->bExpLevel);
+  usSubpointsPerPoint = SubpointsPerPoint(ubStat, pProfile.value.bExpLevel);
+  usSubpointsPerLevel = SubpointsPerPoint(EXPERAMT, pProfile.value.bExpLevel);
 
   switch (ubStat) {
     case HEALTHAMT:
-      bCurrentRating = pProfile->bLifeMax;
-      psStatGainPtr = &(pProfile->sLifeGain);
+      bCurrentRating = pProfile.value.bLifeMax;
+      psStatGainPtr = &(pProfile.value.sLifeGain);
       // NB physical stat checks not affected by wisdom, unless training is going on
       fAffectedByWisdom = FALSE;
       break;
 
     case AGILAMT:
-      bCurrentRating = pProfile->bAgility;
-      psStatGainPtr = &(pProfile->sAgilityGain);
+      bCurrentRating = pProfile.value.bAgility;
+      psStatGainPtr = &(pProfile.value.sAgilityGain);
       fAffectedByWisdom = FALSE;
       break;
 
     case DEXTAMT:
-      bCurrentRating = pProfile->bDexterity;
-      psStatGainPtr = &(pProfile->sDexterityGain);
+      bCurrentRating = pProfile.value.bDexterity;
+      psStatGainPtr = &(pProfile.value.sDexterityGain);
       fAffectedByWisdom = FALSE;
       break;
 
     case WISDOMAMT:
-      bCurrentRating = pProfile->bWisdom;
-      psStatGainPtr = &(pProfile->sWisdomGain);
+      bCurrentRating = pProfile.value.bWisdom;
+      psStatGainPtr = &(pProfile.value.sWisdomGain);
       break;
 
     case MEDICALAMT:
-      bCurrentRating = pProfile->bMedical;
-      psStatGainPtr = &(pProfile->sMedicalGain);
+      bCurrentRating = pProfile.value.bMedical;
+      psStatGainPtr = &(pProfile.value.sMedicalGain);
       break;
 
     case EXPLODEAMT:
-      bCurrentRating = pProfile->bExplosive;
-      psStatGainPtr = &(pProfile->sExplosivesGain);
+      bCurrentRating = pProfile.value.bExplosive;
+      psStatGainPtr = &(pProfile.value.sExplosivesGain);
       break;
 
     case MECHANAMT:
-      bCurrentRating = pProfile->bMechanical;
-      psStatGainPtr = &(pProfile->sMechanicGain);
+      bCurrentRating = pProfile.value.bMechanical;
+      psStatGainPtr = &(pProfile.value.sMechanicGain);
       break;
 
     case MARKAMT:
-      bCurrentRating = pProfile->bMarksmanship;
-      psStatGainPtr = &(pProfile->sMarksmanshipGain);
+      bCurrentRating = pProfile.value.bMarksmanship;
+      psStatGainPtr = &(pProfile.value.sMarksmanshipGain);
       break;
 
     case EXPERAMT:
-      bCurrentRating = pProfile->bExpLevel;
-      psStatGainPtr = &(pProfile->sExpLevelGain);
+      bCurrentRating = pProfile.value.bExpLevel;
+      psStatGainPtr = &(pProfile.value.sExpLevelGain);
       break;
 
     case STRAMT:
-      bCurrentRating = pProfile->bStrength;
-      psStatGainPtr = &(pProfile->sStrengthGain);
+      bCurrentRating = pProfile.value.bStrength;
+      psStatGainPtr = &(pProfile.value.sStrengthGain);
       fAffectedByWisdom = FALSE;
       break;
 
     case LDRAMT:
-      bCurrentRating = pProfile->bLeadership;
-      psStatGainPtr = &(pProfile->sLeadershipGain);
+      bCurrentRating = pProfile.value.bLeadership;
+      psStatGainPtr = &(pProfile.value.sLeadershipGain);
       break;
 
     default:
@@ -151,7 +151,7 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
 
   // loop once for each chance to improve
   for (uiCnt = 0; uiCnt < usNumChances; uiCnt++) {
-    if (pProfile->bEvolution == NORMAL_EVOLUTION) // Evolves!
+    if (pProfile.value.bEvolution == NORMAL_EVOLUTION) // Evolves!
     {
       // if this is improving from a failure, and a successful roll would give us enough to go up a point
       if ((ubReason == FROM_FAILURE) && ((*psStatGainPtr + 1) >= usSubpointsPerPoint)) {
@@ -176,7 +176,7 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
 
       // if there IS a usChance, adjust it for high or low wisdom (50 is avg)
       if (usChance > 0 && fAffectedByWisdom) {
-        usChance += (usChance * (pProfile->bWisdom + (pProfile->sWisdomGain / SubpointsPerPoint(WISDOMAMT, pProfile->bExpLevel)) - 50)) / 100;
+        usChance += (usChance * (pProfile.value.bWisdom + (pProfile.value.sWisdomGain / SubpointsPerPoint(WISDOMAMT, pProfile.value.bExpLevel)) - 50)) / 100;
       }
 
       /*
@@ -199,14 +199,14 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
         // as long as we're not dealing with exp_level changes (already added above!)
         // and it's not from training, and the exp level isn't max'ed out already
         if ((ubStat != EXPERAMT) && (ubReason != FROM_TRAINING)) {
-          uiEffLevel = pProfile->bExpLevel + (pProfile->sExpLevelGain / usSubpointsPerLevel);
+          uiEffLevel = pProfile.value.bExpLevel + (pProfile.value.sExpLevelGain / usSubpointsPerLevel);
 
           // if level is not at maximum
           if (uiEffLevel < MAXEXPLEVEL) {
             // if this is NOT improving from a failure, OR it would NOT give us enough to go up a level
-            if ((ubReason != FROM_FAILURE) || ((pProfile->sExpLevelGain + 1) < usSubpointsPerLevel)) {
+            if ((ubReason != FROM_FAILURE) || ((pProfile.value.sExpLevelGain + 1) < usSubpointsPerLevel)) {
               // all other stat changes count towards experience level changes (1 for 1 basis)
-              pProfile->sExpLevelGain++;
+              pProfile.value.sExpLevelGain++;
             }
           }
         }
@@ -243,7 +243,7 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
 
         // if there IS a usChance, adjust it for high or low wisdom (50 is avg)
         if (usChance > 0 && fAffectedByWisdom) {
-          usChance -= (usChance * (pProfile->bWisdom + (pProfile->sWisdomGain / SubpointsPerPoint(WISDOMAMT, pProfile->bExpLevel)) - 50)) / 100;
+          usChance -= (usChance * (pProfile.value.bWisdom + (pProfile.value.sWisdomGain / SubpointsPerPoint(WISDOMAMT, pProfile.value.bExpLevel)) - 50)) / 100;
         }
 
         // if there's ANY usChance, minimum usChance is 1% regardless of wisdom
@@ -259,12 +259,12 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
         // as long as we're not dealing with exp_level changes (already added above!)
         // and it's not from training, and the exp level isn't max'ed out already
         if ((ubStat != EXPERAMT) && (ubReason != FROM_TRAINING)) {
-          uiEffLevel = pProfile->bExpLevel + (pProfile->sExpLevelGain / usSubpointsPerLevel);
+          uiEffLevel = pProfile.value.bExpLevel + (pProfile.value.sExpLevelGain / usSubpointsPerLevel);
 
           // if level is not at minimum
           if (uiEffLevel > 1) {
             // all other stat changes count towards experience level changes (1 for 1 basis)
-            pProfile->sExpLevelGain--;
+            pProfile.value.sExpLevelGain--;
           }
         }
       }
@@ -274,14 +274,14 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
   // exclude training, that's not under our control
   if (ubReason != FROM_TRAINING) {
     // increment counters that track how often stat changes are being awarded
-    pProfile->usStatChangeChances[ubStat] += usNumChances;
-    pProfile->usStatChangeSuccesses[ubStat] += abs(sSubPointChange);
+    pProfile.value.usStatChangeChances[ubStat] += usNumChances;
+    pProfile.value.usStatChangeSuccesses[ubStat] += abs(sSubPointChange);
   }
 }
 
 // convert hired mercs' stats subpoint changes into actual point changes where warranted
 function UpdateStats(pSoldier: Pointer<SOLDIERTYPE>): void {
-  ProcessUpdateStats(&(gMercProfiles[pSoldier->ubProfile]), pSoldier);
+  ProcessUpdateStats(&(gMercProfiles[pSoldier.value.ubProfile]), pSoldier);
 }
 
 // UpdateStats version for mercs not currently on player's team
@@ -303,74 +303,74 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
   let usIncreaseValue: UINT16 = 0;
   let usSubpointsPerPoint: UINT16;
 
-  usSubpointsPerPoint = SubpointsPerPoint(ubStat, pProfile->bExpLevel);
+  usSubpointsPerPoint = SubpointsPerPoint(ubStat, pProfile.value.bExpLevel);
 
   // build ptrs to appropriate profiletype stat fields
   switch (ubStat) {
     case HEALTHAMT:
-      psStatGainPtr = &(pProfile->sLifeGain);
-      pbStatDeltaPtr = &(pProfile->bLifeDelta);
-      pbStatPtr = &(pProfile->bLifeMax);
+      psStatGainPtr = &(pProfile.value.sLifeGain);
+      pbStatDeltaPtr = &(pProfile.value.bLifeDelta);
+      pbStatPtr = &(pProfile.value.bLifeMax);
       break;
 
     case AGILAMT:
-      psStatGainPtr = &(pProfile->sAgilityGain);
-      pbStatDeltaPtr = &(pProfile->bAgilityDelta);
-      pbStatPtr = &(pProfile->bAgility);
+      psStatGainPtr = &(pProfile.value.sAgilityGain);
+      pbStatDeltaPtr = &(pProfile.value.bAgilityDelta);
+      pbStatPtr = &(pProfile.value.bAgility);
       break;
 
     case DEXTAMT:
-      psStatGainPtr = &(pProfile->sDexterityGain);
-      pbStatDeltaPtr = &(pProfile->bDexterityDelta);
-      pbStatPtr = &(pProfile->bDexterity);
+      psStatGainPtr = &(pProfile.value.sDexterityGain);
+      pbStatDeltaPtr = &(pProfile.value.bDexterityDelta);
+      pbStatPtr = &(pProfile.value.bDexterity);
       break;
 
     case WISDOMAMT:
-      psStatGainPtr = &(pProfile->sWisdomGain);
-      pbStatDeltaPtr = &(pProfile->bWisdomDelta);
-      pbStatPtr = &(pProfile->bWisdom);
+      psStatGainPtr = &(pProfile.value.sWisdomGain);
+      pbStatDeltaPtr = &(pProfile.value.bWisdomDelta);
+      pbStatPtr = &(pProfile.value.bWisdom);
       break;
 
     case MEDICALAMT:
-      psStatGainPtr = &(pProfile->sMedicalGain);
-      pbStatDeltaPtr = &(pProfile->bMedicalDelta);
-      pbStatPtr = &(pProfile->bMedical);
+      psStatGainPtr = &(pProfile.value.sMedicalGain);
+      pbStatDeltaPtr = &(pProfile.value.bMedicalDelta);
+      pbStatPtr = &(pProfile.value.bMedical);
       break;
 
     case EXPLODEAMT:
-      psStatGainPtr = &(pProfile->sExplosivesGain);
-      pbStatDeltaPtr = &(pProfile->bExplosivesDelta);
-      pbStatPtr = &(pProfile->bExplosive);
+      psStatGainPtr = &(pProfile.value.sExplosivesGain);
+      pbStatDeltaPtr = &(pProfile.value.bExplosivesDelta);
+      pbStatPtr = &(pProfile.value.bExplosive);
       break;
 
     case MECHANAMT:
-      psStatGainPtr = &(pProfile->sMechanicGain);
-      pbStatDeltaPtr = &(pProfile->bMechanicDelta);
-      pbStatPtr = &(pProfile->bMechanical);
+      psStatGainPtr = &(pProfile.value.sMechanicGain);
+      pbStatDeltaPtr = &(pProfile.value.bMechanicDelta);
+      pbStatPtr = &(pProfile.value.bMechanical);
       break;
 
     case MARKAMT:
-      psStatGainPtr = &(pProfile->sMarksmanshipGain);
-      pbStatDeltaPtr = &(pProfile->bMarksmanshipDelta);
-      pbStatPtr = &(pProfile->bMarksmanship);
+      psStatGainPtr = &(pProfile.value.sMarksmanshipGain);
+      pbStatDeltaPtr = &(pProfile.value.bMarksmanshipDelta);
+      pbStatPtr = &(pProfile.value.bMarksmanship);
       break;
 
     case EXPERAMT:
-      psStatGainPtr = &(pProfile->sExpLevelGain);
-      pbStatDeltaPtr = &(pProfile->bExpLevelDelta);
-      pbStatPtr = &(pProfile->bExpLevel);
+      psStatGainPtr = &(pProfile.value.sExpLevelGain);
+      pbStatDeltaPtr = &(pProfile.value.bExpLevelDelta);
+      pbStatPtr = &(pProfile.value.bExpLevel);
       break;
 
     case STRAMT:
-      psStatGainPtr = &(pProfile->sStrengthGain);
-      pbStatDeltaPtr = &(pProfile->bStrengthDelta);
-      pbStatPtr = &(pProfile->bStrength);
+      psStatGainPtr = &(pProfile.value.sStrengthGain);
+      pbStatDeltaPtr = &(pProfile.value.bStrengthDelta);
+      pbStatPtr = &(pProfile.value.bStrength);
       break;
 
     case LDRAMT:
-      psStatGainPtr = &(pProfile->sLeadershipGain);
-      pbStatDeltaPtr = &(pProfile->bLeadershipDelta);
-      pbStatPtr = &(pProfile->bLeadership);
+      psStatGainPtr = &(pProfile.value.sLeadershipGain);
+      pbStatDeltaPtr = &(pProfile.value.bLeadershipDelta);
+      pbStatPtr = &(pProfile.value.bLeadership);
       break;
   }
 
@@ -379,68 +379,68 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
     // build ptrs to appropriate soldiertype stat fields
     switch (ubStat) {
       case HEALTHAMT:
-        pbSoldierStatPtr = &(pSoldier->bLifeMax);
-        puiStatTimerPtr = &(pSoldier->uiChangeHealthTime);
+        pbSoldierStatPtr = &(pSoldier.value.bLifeMax);
+        puiStatTimerPtr = &(pSoldier.value.uiChangeHealthTime);
         usIncreaseValue = HEALTH_INCREASE;
         break;
 
       case AGILAMT:
-        pbSoldierStatPtr = &(pSoldier->bAgility);
-        puiStatTimerPtr = &(pSoldier->uiChangeAgilityTime);
+        pbSoldierStatPtr = &(pSoldier.value.bAgility);
+        puiStatTimerPtr = &(pSoldier.value.uiChangeAgilityTime);
         usIncreaseValue = AGIL_INCREASE;
         break;
 
       case DEXTAMT:
-        pbSoldierStatPtr = &(pSoldier->bDexterity);
-        puiStatTimerPtr = &(pSoldier->uiChangeDexterityTime);
+        pbSoldierStatPtr = &(pSoldier.value.bDexterity);
+        puiStatTimerPtr = &(pSoldier.value.uiChangeDexterityTime);
         usIncreaseValue = DEX_INCREASE;
         break;
 
       case WISDOMAMT:
-        pbSoldierStatPtr = &(pSoldier->bWisdom);
-        puiStatTimerPtr = &(pSoldier->uiChangeWisdomTime);
+        pbSoldierStatPtr = &(pSoldier.value.bWisdom);
+        puiStatTimerPtr = &(pSoldier.value.uiChangeWisdomTime);
         usIncreaseValue = WIS_INCREASE;
         break;
 
       case MEDICALAMT:
-        pbSoldierStatPtr = &(pSoldier->bMedical);
-        puiStatTimerPtr = &(pSoldier->uiChangeMedicalTime);
+        pbSoldierStatPtr = &(pSoldier.value.bMedical);
+        puiStatTimerPtr = &(pSoldier.value.uiChangeMedicalTime);
         usIncreaseValue = MED_INCREASE;
         break;
 
       case EXPLODEAMT:
-        pbSoldierStatPtr = &(pSoldier->bExplosive);
-        puiStatTimerPtr = &(pSoldier->uiChangeExplosivesTime);
+        pbSoldierStatPtr = &(pSoldier.value.bExplosive);
+        puiStatTimerPtr = &(pSoldier.value.uiChangeExplosivesTime);
         usIncreaseValue = EXP_INCREASE;
         break;
 
       case MECHANAMT:
-        pbSoldierStatPtr = &(pSoldier->bMechanical);
-        puiStatTimerPtr = &(pSoldier->uiChangeMechanicalTime);
+        pbSoldierStatPtr = &(pSoldier.value.bMechanical);
+        puiStatTimerPtr = &(pSoldier.value.uiChangeMechanicalTime);
         usIncreaseValue = MECH_INCREASE;
         break;
 
       case MARKAMT:
-        pbSoldierStatPtr = &(pSoldier->bMarksmanship);
-        puiStatTimerPtr = &(pSoldier->uiChangeMarksmanshipTime);
+        pbSoldierStatPtr = &(pSoldier.value.bMarksmanship);
+        puiStatTimerPtr = &(pSoldier.value.uiChangeMarksmanshipTime);
         usIncreaseValue = MRK_INCREASE;
         break;
 
       case EXPERAMT:
-        pbSoldierStatPtr = &(pSoldier->bExpLevel);
-        puiStatTimerPtr = &(pSoldier->uiChangeLevelTime);
+        pbSoldierStatPtr = &(pSoldier.value.bExpLevel);
+        puiStatTimerPtr = &(pSoldier.value.uiChangeLevelTime);
         usIncreaseValue = LVL_INCREASE;
         break;
 
       case STRAMT:
-        pbSoldierStatPtr = &(pSoldier->bStrength);
-        puiStatTimerPtr = &(pSoldier->uiChangeStrengthTime);
+        pbSoldierStatPtr = &(pSoldier.value.bStrength);
+        puiStatTimerPtr = &(pSoldier.value.uiChangeStrengthTime);
         usIncreaseValue = STRENGTH_INCREASE;
         break;
 
       case LDRAMT:
-        pbSoldierStatPtr = &(pSoldier->bLeadership);
-        puiStatTimerPtr = &(pSoldier->uiChangeLeadershipTime);
+        pbSoldierStatPtr = &(pSoldier.value.bLeadership);
+        puiStatTimerPtr = &(pSoldier.value.uiChangeLeadershipTime);
         usIncreaseValue = LDR_INCREASE;
         break;
     }
@@ -487,7 +487,7 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
         let wTempString: CHAR16[] /* [128] */;
 
         // tell player about it
-        BuildStatChangeString(wTempString, pSoldier->name, fChangeTypeIncrease, sPtsChanged, ubStat);
+        BuildStatChangeString(wTempString, pSoldier.value.name, fChangeTypeIncrease, sPtsChanged, ubStat);
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, wTempString);
       }
 
@@ -498,9 +498,9 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
       *puiStatTimerPtr = GetJA2Clock();
 
       if (fChangeTypeIncrease) {
-        pSoldier->usValueGoneUp |= usIncreaseValue;
+        pSoldier.value.usValueGoneUp |= usIncreaseValue;
       } else {
-        pSoldier->usValueGoneUp &= ~(usIncreaseValue);
+        pSoldier.value.usValueGoneUp &= ~(usIncreaseValue);
       }
 
       fInterfacePanelDirty = DIRTYLEVEL2;
@@ -509,21 +509,21 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
     // special handling for LIFEMAX
     if (ubStat == HEALTHAMT) {
       // adjust current health by the same amount as max health
-      pProfile->bLife += sPtsChanged;
+      pProfile.value.bLife += sPtsChanged;
 
       // don't let this kill a guy or knock him out!!!
-      if (pProfile->bLife < OKLIFE) {
-        pProfile->bLife = OKLIFE;
+      if (pProfile.value.bLife < OKLIFE) {
+        pProfile.value.bLife = OKLIFE;
       }
 
       // if the guy is employed by player
       if (pSoldier != NULL) {
         // adjust current health by the same amount as max health
-        pSoldier->bLife += sPtsChanged;
+        pSoldier.value.bLife += sPtsChanged;
 
         // don't let this kill a guy or knock him out!!!
-        if (pSoldier->bLife < OKLIFE) {
-          pSoldier->bLife = OKLIFE;
+        if (pSoldier.value.bLife < OKLIFE) {
+          pSoldier.value.bLife = OKLIFE;
         }
       }
     }
@@ -533,16 +533,16 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
     if ((ubStat == EXPERAMT) && fChangeTypeIncrease) {
       // if the guy is employed by player
       if (pSoldier != NULL) {
-        switch (pSoldier->ubWhatKindOfMercAmI) {
+        switch (pSoldier.value.ubWhatKindOfMercAmI) {
           case MERC_TYPE__AIM_MERC:
             // A.I.M.
-            pSoldier->fContractPriceHasIncreased = TRUE;
+            pSoldier.value.fContractPriceHasIncreased = TRUE;
             fChangeSalary = TRUE;
             break;
 
           case MERC_TYPE__MERC:
             // M.E.R.C.
-            ubMercMercIdValue = pSoldier->ubProfile;
+            ubMercMercIdValue = pSoldier.value.ubProfile;
 
             // Biff's profile id ( 40 ) is the base
             ubMercMercIdValue -= BIFF;
@@ -578,11 +578,11 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
       if (fChangeSalary) {
         // increase all salaries and medical deposits, once for each level gained
         for (uiLevelCnt = 0; uiLevelCnt < sPtsChanged; uiLevelCnt++) {
-          pProfile->sSalary = CalcNewSalary(pProfile->sSalary, fChangeTypeIncrease, MAX_DAILY_SALARY);
-          pProfile->uiWeeklySalary = CalcNewSalary(pProfile->uiWeeklySalary, fChangeTypeIncrease, MAX_LARGE_SALARY);
-          pProfile->uiBiWeeklySalary = CalcNewSalary(pProfile->uiBiWeeklySalary, fChangeTypeIncrease, MAX_LARGE_SALARY);
-          pProfile->sTrueSalary = CalcNewSalary(pProfile->sTrueSalary, fChangeTypeIncrease, MAX_DAILY_SALARY);
-          pProfile->sMedicalDepositAmount = CalcNewSalary(pProfile->sMedicalDepositAmount, fChangeTypeIncrease, MAX_DAILY_SALARY);
+          pProfile.value.sSalary = CalcNewSalary(pProfile.value.sSalary, fChangeTypeIncrease, MAX_DAILY_SALARY);
+          pProfile.value.uiWeeklySalary = CalcNewSalary(pProfile.value.uiWeeklySalary, fChangeTypeIncrease, MAX_LARGE_SALARY);
+          pProfile.value.uiBiWeeklySalary = CalcNewSalary(pProfile.value.uiBiWeeklySalary, fChangeTypeIncrease, MAX_LARGE_SALARY);
+          pProfile.value.sTrueSalary = CalcNewSalary(pProfile.value.sTrueSalary, fChangeTypeIncrease, MAX_DAILY_SALARY);
+          pProfile.value.sMedicalDepositAmount = CalcNewSalary(pProfile.value.sMedicalDepositAmount, fChangeTypeIncrease, MAX_DAILY_SALARY);
 
           // if (pSoldier != NULL)
           // DON'T increase the *effective* medical deposit, it's already been paid out
@@ -611,7 +611,7 @@ function ProcessUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Poin
   // if hired, not back at AIM
   if (pSoldier != NULL) {
     // ATE: if in the midst of an attack, if in the field, delay all stat changes until the check made after the 'attack'...
-    if ((gTacticalStatus.ubAttackBusyCount > 0) && pSoldier->bInSector && (gTacticalStatus.uiFlags & INCOMBAT))
+    if ((gTacticalStatus.ubAttackBusyCount > 0) && pSoldier.value.bInSector && (gTacticalStatus.uiFlags & INCOMBAT))
       return;
 
     // ignore non-player soldiers
@@ -619,27 +619,27 @@ function ProcessUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Poin
       return;
 
     // ignore anything without a profile
-    if (pSoldier->ubProfile == NO_PROFILE)
+    if (pSoldier.value.ubProfile == NO_PROFILE)
       return;
 
     // ignore vehicles and robots
-    if ((pSoldier->uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier->uiStatusFlags & SOLDIER_ROBOT))
+    if ((pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT))
       return;
 
     // delay increases while merc is dying
-    if (pSoldier->bLife < OKLIFE)
+    if (pSoldier.value.bLife < OKLIFE)
       return;
 
     // ignore POWs - shouldn't ever be getting this far
-    if (pSoldier->bAssignment == ASSIGNMENT_POW) {
+    if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
       return;
     }
   } else {
     // dead guys don't do nuthin' !
-    if (pProfile->bMercStatus == MERC_IS_DEAD)
+    if (pProfile.value.bMercStatus == MERC_IS_DEAD)
       return;
 
-    if (pProfile->bLife < OKLIFE)
+    if (pProfile.value.bLife < OKLIFE)
       return;
   }
 
@@ -648,75 +648,75 @@ function ProcessUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Poin
     // set default min & max, subpoints/pt.
     bMinStatValue = 1;
     bMaxStatValue = MAX_STAT_VALUE;
-    usSubpointsPerPoint = SubpointsPerPoint(ubStat, pProfile->bExpLevel);
+    usSubpointsPerPoint = SubpointsPerPoint(ubStat, pProfile.value.bExpLevel);
 
     // build ptrs to appropriate profiletype stat fields
     switch (ubStat) {
       case HEALTHAMT:
-        psStatGainPtr = &(pProfile->sLifeGain);
-        pbStatPtr = &(pProfile->bLifeMax);
+        psStatGainPtr = &(pProfile.value.sLifeGain);
+        pbStatPtr = &(pProfile.value.bLifeMax);
 
         bMinStatValue = OKLIFE;
         break;
 
       case AGILAMT:
-        psStatGainPtr = &(pProfile->sAgilityGain);
-        pbStatPtr = &(pProfile->bAgility);
+        psStatGainPtr = &(pProfile.value.sAgilityGain);
+        pbStatPtr = &(pProfile.value.bAgility);
         break;
 
       case DEXTAMT:
-        psStatGainPtr = &(pProfile->sDexterityGain);
-        pbStatPtr = &(pProfile->bDexterity);
+        psStatGainPtr = &(pProfile.value.sDexterityGain);
+        pbStatPtr = &(pProfile.value.bDexterity);
         break;
 
       case WISDOMAMT:
-        psStatGainPtr = &(pProfile->sWisdomGain);
-        pbStatPtr = &(pProfile->bWisdom);
+        psStatGainPtr = &(pProfile.value.sWisdomGain);
+        pbStatPtr = &(pProfile.value.bWisdom);
         break;
 
       case MEDICALAMT:
-        psStatGainPtr = &(pProfile->sMedicalGain);
-        pbStatPtr = &(pProfile->bMedical);
+        psStatGainPtr = &(pProfile.value.sMedicalGain);
+        pbStatPtr = &(pProfile.value.bMedical);
 
         bMinStatValue = 0;
         break;
 
       case EXPLODEAMT:
-        psStatGainPtr = &(pProfile->sExplosivesGain);
-        pbStatPtr = &(pProfile->bExplosive);
+        psStatGainPtr = &(pProfile.value.sExplosivesGain);
+        pbStatPtr = &(pProfile.value.bExplosive);
 
         bMinStatValue = 0;
         break;
 
       case MECHANAMT:
-        psStatGainPtr = &(pProfile->sMechanicGain);
-        pbStatPtr = &(pProfile->bMechanical);
+        psStatGainPtr = &(pProfile.value.sMechanicGain);
+        pbStatPtr = &(pProfile.value.bMechanical);
 
         bMinStatValue = 0;
         break;
 
       case MARKAMT:
-        psStatGainPtr = &(pProfile->sMarksmanshipGain);
-        pbStatPtr = &(pProfile->bMarksmanship);
+        psStatGainPtr = &(pProfile.value.sMarksmanshipGain);
+        pbStatPtr = &(pProfile.value.bMarksmanship);
 
         bMinStatValue = 0;
         break;
 
       case EXPERAMT:
-        psStatGainPtr = &(pProfile->sExpLevelGain);
-        pbStatPtr = &(pProfile->bExpLevel);
+        psStatGainPtr = &(pProfile.value.sExpLevelGain);
+        pbStatPtr = &(pProfile.value.bExpLevel);
 
         bMaxStatValue = MAXEXPLEVEL;
         break;
 
       case STRAMT:
-        psStatGainPtr = &(pProfile->sStrengthGain);
-        pbStatPtr = &(pProfile->bStrength);
+        psStatGainPtr = &(pProfile.value.sStrengthGain);
+        pbStatPtr = &(pProfile.value.bStrength);
         break;
 
       case LDRAMT:
-        psStatGainPtr = &(pProfile->sLeadershipGain);
-        pbStatPtr = &(pProfile->bLeadership);
+        psStatGainPtr = &(pProfile.value.sLeadershipGain);
+        pbStatPtr = &(pProfile.value.bLeadership);
         break;
     }
 
@@ -725,47 +725,47 @@ function ProcessUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Poin
       // build ptrs to appropriate soldiertype stat fields
       switch (ubStat) {
         case HEALTHAMT:
-          pbSoldierStatPtr = &(pSoldier->bLifeMax);
+          pbSoldierStatPtr = &(pSoldier.value.bLifeMax);
           break;
 
         case AGILAMT:
-          pbSoldierStatPtr = &(pSoldier->bAgility);
+          pbSoldierStatPtr = &(pSoldier.value.bAgility);
           break;
 
         case DEXTAMT:
-          pbSoldierStatPtr = &(pSoldier->bDexterity);
+          pbSoldierStatPtr = &(pSoldier.value.bDexterity);
           break;
 
         case WISDOMAMT:
-          pbSoldierStatPtr = &(pSoldier->bWisdom);
+          pbSoldierStatPtr = &(pSoldier.value.bWisdom);
           break;
 
         case MEDICALAMT:
-          pbSoldierStatPtr = &(pSoldier->bMedical);
+          pbSoldierStatPtr = &(pSoldier.value.bMedical);
           break;
 
         case EXPLODEAMT:
-          pbSoldierStatPtr = &(pSoldier->bExplosive);
+          pbSoldierStatPtr = &(pSoldier.value.bExplosive);
           break;
 
         case MECHANAMT:
-          pbSoldierStatPtr = &(pSoldier->bMechanical);
+          pbSoldierStatPtr = &(pSoldier.value.bMechanical);
           break;
 
         case MARKAMT:
-          pbSoldierStatPtr = &(pSoldier->bMarksmanship);
+          pbSoldierStatPtr = &(pSoldier.value.bMarksmanship);
           break;
 
         case EXPERAMT:
-          pbSoldierStatPtr = &(pSoldier->bExpLevel);
+          pbSoldierStatPtr = &(pSoldier.value.bExpLevel);
           break;
 
         case STRAMT:
-          pbSoldierStatPtr = &(pSoldier->bStrength);
+          pbSoldierStatPtr = &(pSoldier.value.bStrength);
           break;
 
         case LDRAMT:
-          pbSoldierStatPtr = &(pSoldier->bLeadership);
+          pbSoldierStatPtr = &(pSoldier.value.bLeadership);
           break;
       }
     }
@@ -802,9 +802,9 @@ function HandleAnyStatChangesAfterAttack(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   // must check everyone on player's team, not just the shooter
-  for (cnt = 0, pSoldier = MercPtrs[0]; cnt <= gTacticalStatus.Team[MercPtrs[0]->bTeam].bLastID; cnt++, pSoldier++) {
-    if (pSoldier->bActive) {
-      ProcessUpdateStats(&(gMercProfiles[pSoldier->ubProfile]), pSoldier);
+  for (cnt = 0, pSoldier = MercPtrs[0]; cnt <= gTacticalStatus.Team[MercPtrs[0].value.bTeam].bLastID; cnt++, pSoldier++) {
+    if (pSoldier.value.bActive) {
+      ProcessUpdateStats(&(gMercProfiles[pSoldier.value.ubProfile]), pSoldier);
     }
   }
 }
@@ -914,7 +914,7 @@ function HandleUnhiredMercImprovement(pProfile: Pointer<MERCPROFILESTRUCT>): voi
   ubNumStats = LAST_CHANGEABLE_STAT - FIRST_CHANGEABLE_STAT + 1;
 
   // if he's working on another job
-  if (pProfile->bMercStatus == MERC_WORKING_ELSEWHERE) {
+  if (pProfile.value.bMercStatus == MERC_WORKING_ELSEWHERE) {
     // if he did't do anything interesting today
     if (Random(100) < 20) {
       // no chance to change today
@@ -927,13 +927,13 @@ function HandleUnhiredMercImprovement(pProfile: Pointer<MERCPROFILESTRUCT>): voi
     // 80 wisdom gives 8 rolls per stat per day, 10 stats, avg success rate 40% = 32pts per day,
     // so about 10 working days to hit lvl 2.  This seems high, but mercs don't actually "work" that often, and it's twice
     // as long to hit level 3.  If we go lower, attribs & skills will barely move.
-    usNumChances = (pProfile->bWisdom / 10);
+    usNumChances = (pProfile.value.bWisdom / 10);
     for (ubStat = FIRST_CHANGEABLE_STAT; ubStat <= LAST_CHANGEABLE_STAT; ubStat++) {
       ProfileStatChange(pProfile, ubStat, usNumChances, FALSE);
     }
   } else {
     // if the merc just takes it easy (high level or stupid mercs are more likely to)
-    if ((Random(10) < pProfile->bExpLevel) || (Random(100) > pProfile->bWisdom)) {
+    if ((Random(10) < pProfile.value.bExpLevel) || (Random(100) > pProfile.value.bWisdom)) {
       // no chance to change today
       return;
     }
@@ -946,7 +946,7 @@ function HandleUnhiredMercImprovement(pProfile: Pointer<MERCPROFILESTRUCT>): voi
     } while (ubStat == EXPERAMT);
 
     // try to improve that one stat
-    ProfileStatChange(pProfile, ubStat, (pProfile->bWisdom / 2), FROM_TRAINING);
+    ProfileStatChange(pProfile, ubStat, (pProfile.value.bWisdom / 2), FROM_TRAINING);
   }
 
   ProfileUpdateStats(pProfile);
@@ -959,7 +959,7 @@ function HandleUnhiredMercDeaths(iProfileID: INT32): void {
   let pProfile: Pointer<MERCPROFILESTRUCT> = &(gMercProfiles[iProfileID]);
 
   // if the player has never yet had the chance to hire this merc
-  if (!(pProfile->ubMiscFlags3 & PROFILE_MISC_FLAG3_PLAYER_HAD_CHANCE_TO_HIRE)) {
+  if (!(pProfile.value.ubMiscFlags3 & PROFILE_MISC_FLAG3_PLAYER_HAD_CHANCE_TO_HIRE)) {
     // then we're not allowed to kill him (to avoid really pissing off player by killing his very favorite merc)
     return;
   }
@@ -987,9 +987,9 @@ function HandleUnhiredMercDeaths(iProfileID: INT32): void {
   }
 
   // calculate this merc's (small) chance to get killed today (out of 1000)
-  sChance = 10 - pProfile->bExpLevel;
+  sChance = 10 - pProfile.value.bExpLevel;
 
-  switch (pProfile->bPersonalityTrait) {
+  switch (pProfile.value.bPersonalityTrait) {
     case FORGETFUL:
     case NERVOUS:
     case PSYCHO:
@@ -999,17 +999,17 @@ function HandleUnhiredMercDeaths(iProfileID: INT32): void {
   }
 
   // stealthy guys are slightly less likely to get killed (they're careful)
-  if (pProfile->bSkillTrait == STEALTHY) {
+  if (pProfile.value.bSkillTrait == STEALTHY) {
     sChance -= 1;
   }
-  if (pProfile->bSkillTrait2 == STEALTHY) {
+  if (pProfile.value.bSkillTrait2 == STEALTHY) {
     sChance -= 1;
   }
 
   if (PreRandom(1000) < sChance) {
     // this merc gets Killed In Action!!!
-    pProfile->bMercStatus = MERC_IS_DEAD;
-    pProfile->uiDayBecomesAvailable = 0;
+    pProfile.value.bMercStatus = MERC_IS_DEAD;
+    pProfile.value.uiDayBecomesAvailable = 0;
 
     // keep count of how many there have been
     gStrategicStatus.ubUnhiredMercDeaths++;
@@ -1164,7 +1164,7 @@ function AwardExperienceBonusToActiveSquad(ubExpBonusType: UINT8): void {
 
   // to do: find guys in sector on the currently active squad, those that are conscious get this amount in XPs
   for (ubGuynum = gTacticalStatus.Team[gbPlayerNum].bFirstID, pSoldier = MercPtrs[ubGuynum]; ubGuynum <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubGuynum++, pSoldier++) {
-    if (pSoldier->bActive && pSoldier->bInSector && IsMercOnCurrentSquad(pSoldier) && (pSoldier->bLife >= CONSCIOUSNESS) && !(pSoldier->uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier)) {
+    if (pSoldier.value.bActive && pSoldier.value.bInSector && IsMercOnCurrentSquad(pSoldier) && (pSoldier.value.bLife >= CONSCIOUSNESS) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier)) {
       StatChange(pSoldier, EXPERAMT, usXPs, FALSE);
     }
   }

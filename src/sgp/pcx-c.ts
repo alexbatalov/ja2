@@ -19,25 +19,25 @@ function LoadPCXFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   let pPcxObject: Pointer<PcxObject>;
 
   // First Load a PCX Image
-  pPcxObject = LoadPcx(hImage->ImageFile);
+  pPcxObject = LoadPcx(hImage.value.ImageFile);
 
   if (pPcxObject == NULL) {
     return FALSE;
   }
 
   // Set some header information
-  hImage->usWidth = pPcxObject->usWidth;
-  hImage->usHeight = pPcxObject->usHeight;
-  hImage->ubBitDepth = 8;
-  hImage->fFlags = hImage->fFlags | fContents;
+  hImage.value.usWidth = pPcxObject.value.usWidth;
+  hImage.value.usHeight = pPcxObject.value.usHeight;
+  hImage.value.ubBitDepth = 8;
+  hImage.value.fFlags = hImage.value.fFlags | fContents;
 
   // Read and allocate bitmap block if requested
   if (fContents & IMAGE_BITMAPDATA) {
     // Allocate memory for buffer
-    hImage->p8BPPData = MemAlloc(hImage->usWidth * hImage->usHeight);
+    hImage.value.p8BPPData = MemAlloc(hImage.value.usWidth * hImage.value.usHeight);
 
-    if (!BlitPcxToBuffer(pPcxObject, hImage->p8BPPData, hImage->usWidth, hImage->usHeight, 0, 0, FALSE)) {
-      MemFree(hImage->p8BPPData);
+    if (!BlitPcxToBuffer(pPcxObject, hImage.value.p8BPPData, hImage.value.usWidth, hImage.value.usHeight, 0, 0, FALSE)) {
+      MemFree(hImage.value.p8BPPData);
       return FALSE;
     }
   }
@@ -46,11 +46,11 @@ function LoadPCXFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
     SetPcxPalette(pPcxObject, hImage);
 
     // Create 16 BPP palette if flags and BPP justify
-    hImage->pui16BPPPalette = Create16BPPPalette(hImage->pPalette);
+    hImage.value.pui16BPPPalette = Create16BPPPalette(hImage.value.pPalette);
   }
 
   // Free and remove pcx object
-  MemFree(pPcxObject->pPcxBuffer);
+  MemFree(pPcxObject.value.pPcxBuffer);
   MemFree(pPcxObject);
 
   return TRUE;
@@ -82,9 +82,9 @@ function LoadPcx(pFilename: Pointer<UINT8>): Pointer<PcxObject> {
     return NULL;
   }
 
-  pCurrentPcxObject->pPcxBuffer = MemAlloc(uiFileSize - (sizeof(PcxHeader) + 768));
+  pCurrentPcxObject.value.pPcxBuffer = MemAlloc(uiFileSize - (sizeof(PcxHeader) + 768));
 
-  if (pCurrentPcxObject->pPcxBuffer == NULL) {
+  if (pCurrentPcxObject.value.pPcxBuffer == NULL) {
     return NULL;
   }
 
@@ -93,28 +93,28 @@ function LoadPcx(pFilename: Pointer<UINT8>): Pointer<PcxObject> {
   if ((Header.ubManufacturer != 10) || (Header.ubEncoding != 1)) {
     // We have an invalid pcx format
     // Delete the object
-    MemFree(pCurrentPcxObject->pPcxBuffer);
+    MemFree(pCurrentPcxObject.value.pPcxBuffer);
     MemFree(pCurrentPcxObject);
     return NULL;
   }
 
   if (Header.ubBitsPerPixel == 8) {
-    pCurrentPcxObject->usPcxFlags = PCX_256COLOR;
+    pCurrentPcxObject.value.usPcxFlags = PCX_256COLOR;
   } else {
-    pCurrentPcxObject->usPcxFlags = 0;
+    pCurrentPcxObject.value.usPcxFlags = 0;
   }
 
-  pCurrentPcxObject->usWidth = 1 + (Header.usRight - Header.usLeft);
-  pCurrentPcxObject->usHeight = 1 + (Header.usBottom - Header.usTop);
-  pCurrentPcxObject->uiBufferSize = uiFileSize - 768 - sizeof(PcxHeader);
+  pCurrentPcxObject.value.usWidth = 1 + (Header.usRight - Header.usLeft);
+  pCurrentPcxObject.value.usHeight = 1 + (Header.usBottom - Header.usTop);
+  pCurrentPcxObject.value.uiBufferSize = uiFileSize - 768 - sizeof(PcxHeader);
 
   // We are ready to read in the pcx buffer data. Therefore we must lock the buffer
-  pPcxBuffer = pCurrentPcxObject->pPcxBuffer;
+  pPcxBuffer = pCurrentPcxObject.value.pPcxBuffer;
 
-  FileRead(hFileHandle, pPcxBuffer, pCurrentPcxObject->uiBufferSize, NULL);
+  FileRead(hFileHandle, pPcxBuffer, pCurrentPcxObject.value.uiBufferSize, NULL);
 
   // Read in the palette
-  FileRead(hFileHandle, &(pCurrentPcxObject->ubPalette[0]), 768, NULL);
+  FileRead(hFileHandle, &(pCurrentPcxObject.value.ubPalette[0]), 768, NULL);
 
   // Close file
   FileClose(hFileHandle);
@@ -138,9 +138,9 @@ function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer
   let uiStartOffset: UINT32;
   let uiCurrentOffset: UINT32;
 
-  pPcxBuffer = pCurrentPcxObject->pPcxBuffer;
+  pPcxBuffer = pCurrentPcxObject.value.pPcxBuffer;
 
-  if (((pCurrentPcxObject->usWidth + usX) == usBufferWidth) && ((pCurrentPcxObject->usHeight + usY) == usBufferHeight)) {
+  if (((pCurrentPcxObject.value.usWidth + usX) == usBufferWidth) && ((pCurrentPcxObject.value.usHeight + usY) == usBufferHeight)) {
     // Pre-compute PCX blitting aspects.
     uiImageSize = usBufferWidth * usBufferHeight;
     ubMode = PCX_NORMAL;
@@ -189,20 +189,20 @@ function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer
     }
   } else {
     // Pre-compute PCX blitting aspects.
-    if ((pCurrentPcxObject->usWidth + usX) >= usBufferWidth) {
-      pCurrentPcxObject->usPcxFlags |= PCX_X_CLIPPING;
+    if ((pCurrentPcxObject.value.usWidth + usX) >= usBufferWidth) {
+      pCurrentPcxObject.value.usPcxFlags |= PCX_X_CLIPPING;
       usMaxX = usBufferWidth - 1;
     } else {
-      usMaxX = pCurrentPcxObject->usWidth + usX;
+      usMaxX = pCurrentPcxObject.value.usWidth + usX;
     }
 
-    if ((pCurrentPcxObject->usHeight + usY) >= usBufferHeight) {
-      pCurrentPcxObject->usPcxFlags |= PCX_Y_CLIPPING;
-      uiImageSize = pCurrentPcxObject->usWidth * (usBufferHeight - usY);
+    if ((pCurrentPcxObject.value.usHeight + usY) >= usBufferHeight) {
+      pCurrentPcxObject.value.usPcxFlags |= PCX_Y_CLIPPING;
+      uiImageSize = pCurrentPcxObject.value.usWidth * (usBufferHeight - usY);
       usMaxY = usBufferHeight - 1;
     } else {
-      uiImageSize = pCurrentPcxObject->usWidth * pCurrentPcxObject->usHeight;
-      usMaxY = pCurrentPcxObject->usHeight + usY;
+      uiImageSize = pCurrentPcxObject.value.usWidth * pCurrentPcxObject.value.usHeight;
+      usMaxY = pCurrentPcxObject.value.usHeight + usY;
     }
 
     ubMode = PCX_NORMAL;
@@ -290,21 +290,21 @@ function SetPcxPalette(pCurrentPcxObject: Pointer<PcxObject>, hImage: HIMAGE): B
   let Index: UINT16;
   let pubPalette: Pointer<UINT8>;
 
-  pubPalette = &(pCurrentPcxObject->ubPalette[0]);
+  pubPalette = &(pCurrentPcxObject.value.ubPalette[0]);
 
   // Allocate memory for palette
-  hImage->pPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);
+  hImage.value.pPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);
 
-  if (hImage->pPalette == NULL) {
+  if (hImage.value.pPalette == NULL) {
     return FALSE;
   }
 
   // Initialize the proper palette entries
   for (Index = 0; Index < 256; Index++) {
-    hImage->pPalette[Index].peRed = *(pubPalette + (Index * 3));
-    hImage->pPalette[Index].peGreen = *(pubPalette + (Index * 3) + 1);
-    hImage->pPalette[Index].peBlue = *(pubPalette + (Index * 3) + 2);
-    hImage->pPalette[Index].peFlags = 0;
+    hImage.value.pPalette[Index].peRed = *(pubPalette + (Index * 3));
+    hImage.value.pPalette[Index].peGreen = *(pubPalette + (Index * 3) + 1);
+    hImage.value.pPalette[Index].peBlue = *(pubPalette + (Index * 3) + 2);
+    hImage.value.pPalette[Index].peFlags = 0;
   }
 
   return TRUE;

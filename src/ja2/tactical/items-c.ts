@@ -878,21 +878,21 @@ function StandardGunListAmmoReplacement(usAmmo: UINT16): UINT16 {
 }
 
 function WeaponInHand(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  if (Item[pSoldier->inv[HANDPOS].usItem].usItemClass & (IC_WEAPON | IC_THROWN)) {
-    if (pSoldier->inv[HANDPOS].usItem == ROCKET_RIFLE || pSoldier->inv[HANDPOS].usItem == AUTO_ROCKET_RIFLE) {
-      if (pSoldier->inv[HANDPOS].ubImprintID != NO_PROFILE) {
-        if (pSoldier->ubProfile != NO_PROFILE) {
-          if (pSoldier->inv[HANDPOS].ubImprintID != pSoldier->ubProfile) {
+  if (Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass & (IC_WEAPON | IC_THROWN)) {
+    if (pSoldier.value.inv[HANDPOS].usItem == ROCKET_RIFLE || pSoldier.value.inv[HANDPOS].usItem == AUTO_ROCKET_RIFLE) {
+      if (pSoldier.value.inv[HANDPOS].ubImprintID != NO_PROFILE) {
+        if (pSoldier.value.ubProfile != NO_PROFILE) {
+          if (pSoldier.value.inv[HANDPOS].ubImprintID != pSoldier.value.ubProfile) {
             return FALSE;
           }
         } else {
-          if (pSoldier->inv[HANDPOS].ubImprintID != (NO_PROFILE + 1)) {
+          if (pSoldier.value.inv[HANDPOS].ubImprintID != (NO_PROFILE + 1)) {
             return FALSE;
           }
         }
       }
     }
-    if (pSoldier->inv[HANDPOS].bGunStatus >= USABLE) {
+    if (pSoldier.value.inv[HANDPOS].bGunStatus >= USABLE) {
       return TRUE;
     }
   }
@@ -926,7 +926,7 @@ function FindObj(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16): INT8 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
-    if (pSoldier->inv[bLoop].usItem == usItem) {
+    if (pSoldier.value.inv[bLoop].usItem == usItem) {
       return bLoop;
     }
   }
@@ -937,7 +937,7 @@ function FindUsableObj(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16): INT8 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
-    if (pSoldier->inv[bLoop].usItem == usItem && pSoldier->inv[bLoop].bStatus[0] >= USABLE) {
+    if (pSoldier.value.inv[bLoop].usItem == usItem && pSoldier.value.inv[bLoop].bStatus[0] >= USABLE) {
       return bLoop;
     }
   }
@@ -951,7 +951,7 @@ function FindObjExcludingSlot(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, bE
     if (bLoop == bExcludeSlot) {
       continue;
     }
-    if (pSoldier->inv[bLoop].usItem == usItem) {
+    if (pSoldier.value.inv[bLoop].usItem == usItem) {
       return bLoop;
     }
   }
@@ -962,7 +962,7 @@ function FindExactObj(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>)
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
-    if ((pObj == &(pSoldier->inv[bLoop])) && (memcmp(&(pSoldier->inv[bLoop]), pObj, sizeof(OBJECTTYPE)) == 0)) {
+    if ((pObj == &(pSoldier.value.inv[bLoop])) && (memcmp(&(pSoldier.value.inv[bLoop]), pObj, sizeof(OBJECTTYPE)) == 0)) {
       return bLoop;
     }
   }
@@ -973,7 +973,7 @@ function FindObjWithin(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, bLower: I
   let bLoop: INT8;
 
   for (bLoop = bLower; bLoop <= bUpper; bLoop++) {
-    if (pSoldier->inv[bLoop].usItem == usItem) {
+    if (pSoldier.value.inv[bLoop].usItem == usItem) {
       return bLoop;
     }
   }
@@ -992,7 +992,7 @@ function FindObjInObjRange(pSoldier: Pointer<SOLDIERTYPE>, usItem1: UINT16, usIt
   }
 
   for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
-    usTemp = pSoldier->inv[bLoop].usItem;
+    usTemp = pSoldier.value.inv[bLoop].usItem;
     if (usTemp >= usItem1 && usTemp <= usItem2) {
       return bLoop;
     }
@@ -1005,7 +1005,7 @@ function FindObjClass(pSoldier: Pointer<SOLDIERTYPE>, usItemClass: UINT32): INT8
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
-    if (Item[pSoldier->inv[bLoop].usItem].usItemClass & usItemClass) {
+    if (Item[pSoldier.value.inv[bLoop].usItem].usItemClass & usItemClass) {
       return bLoop;
     }
   }
@@ -1016,7 +1016,7 @@ function FindObjClassAfterSlot(pSoldier: Pointer<SOLDIERTYPE>, bStartAfter: INT8
   let bLoop: INT8;
 
   for (bLoop = bStartAfter + 1; bLoop < NUM_INV_SLOTS; bLoop++) {
-    if (Item[pSoldier->inv[bLoop].usItem].usItemClass == usItemClass) {
+    if (Item[pSoldier.value.inv[bLoop].usItem].usItemClass == usItemClass) {
       return bLoop;
     }
   }
@@ -1035,8 +1035,8 @@ function FindAIUsableObjClass(pSoldier: Pointer<SOLDIERTYPE>, usItemClass: UINT3
   // Do not consider tank cannons or rocket launchers to be "guns"
 
   for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
-    if ((Item[pSoldier->inv[bLoop].usItem].usItemClass & usItemClass) && !(pSoldier->inv[bLoop].fFlags & OBJECT_AI_UNUSABLE) && (pSoldier->inv[bLoop].bStatus[0] >= USABLE)) {
-      if (usItemClass == IC_GUN && EXPLOSIVE_GUN(pSoldier->inv[bLoop].usItem)) {
+    if ((Item[pSoldier.value.inv[bLoop].usItem].usItemClass & usItemClass) && !(pSoldier.value.inv[bLoop].fFlags & OBJECT_AI_UNUSABLE) && (pSoldier.value.inv[bLoop].bStatus[0] >= USABLE)) {
+      if (usItemClass == IC_GUN && EXPLOSIVE_GUN(pSoldier.value.inv[bLoop].usItem)) {
         continue;
       }
       return bLoop;
@@ -1052,8 +1052,8 @@ function FindAIUsableObjClassWithin(pSoldier: Pointer<SOLDIERTYPE>, usItemClass:
   // Do not consider tank cannons or rocket launchers to be "guns"
 
   for (bLoop = bLower; bLoop <= bUpper; bLoop++) {
-    if ((Item[pSoldier->inv[bLoop].usItem].usItemClass & usItemClass) && !(pSoldier->inv[bLoop].fFlags & OBJECT_AI_UNUSABLE) && (pSoldier->inv[bLoop].bStatus[0] >= USABLE)) {
-      if (usItemClass == IC_GUN && EXPLOSIVE_GUN(pSoldier->inv[bLoop].usItem)) {
+    if ((Item[pSoldier.value.inv[bLoop].usItem].usItemClass & usItemClass) && !(pSoldier.value.inv[bLoop].fFlags & OBJECT_AI_UNUSABLE) && (pSoldier.value.inv[bLoop].bStatus[0] >= USABLE)) {
+      if (usItemClass == IC_GUN && EXPLOSIVE_GUN(pSoldier.value.inv[bLoop].usItem)) {
         continue;
       }
       return bLoop;
@@ -1066,8 +1066,8 @@ function FindEmptySlotWithin(pSoldier: Pointer<SOLDIERTYPE>, bLower: INT8, bUppe
   let bLoop: INT8;
 
   for (bLoop = bLower; bLoop <= bUpper; bLoop++) {
-    if (pSoldier->inv[bLoop].usItem == 0) {
-      if (bLoop == SECONDHANDPOS && Item[pSoldier->inv[HANDPOS].usItem].fFlags & ITEM_TWO_HANDED) {
+    if (pSoldier.value.inv[bLoop].usItem == 0) {
+      if (bLoop == SECONDHANDPOS && Item[pSoldier.value.inv[HANDPOS].usItem].fFlags & ITEM_TWO_HANDED) {
         continue;
       } else {
         return bLoop;
@@ -1078,7 +1078,7 @@ function FindEmptySlotWithin(pSoldier: Pointer<SOLDIERTYPE>, bLower: INT8, bUppe
 }
 
 function GLGrenadeInSlot(pSoldier: Pointer<SOLDIERTYPE>, bSlot: INT8): BOOLEAN {
-  switch (pSoldier->inv[bSlot].usItem) {
+  switch (pSoldier.value.inv[bSlot].usItem) {
     case GL_HE_GRENADE:
     case GL_TEARGAS_GRENADE:
     case GL_STUN_GRENADE:
@@ -1108,21 +1108,21 @@ function FindThrowableGrenade(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // JA2Gold: give some priority to looking for flares when at night
   // this is AI only so we can put in some customization for night
   if (GetTimeOfDayAmbientLightLevel() == NORMAL_LIGHTLEVEL_NIGHT) {
-    if (pSoldier->bLife > (pSoldier->bLifeMax / 2)) {
+    if (pSoldier.value.bLife > (pSoldier.value.bLifeMax / 2)) {
       fCheckForFlares = TRUE;
     }
   }
   if (fCheckForFlares) {
     // Do a priority check for flares first
     for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
-      if (pSoldier->inv[bLoop].usItem == BREAK_LIGHT) {
+      if (pSoldier.value.inv[bLoop].usItem == BREAK_LIGHT) {
         return bLoop;
       }
     }
   }
 
   for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
-    if ((Item[pSoldier->inv[bLoop].usItem].usItemClass & IC_GRENADE) && !GLGrenadeInSlot(pSoldier, bLoop)) {
+    if ((Item[pSoldier.value.inv[bLoop].usItem].usItemClass & IC_GRENADE) && !GLGrenadeInSlot(pSoldier, bLoop)) {
       return bLoop;
     }
   }
@@ -1133,7 +1133,7 @@ function FindAttachment(pObj: Pointer<OBJECTTYPE>, usItem: UINT16): INT8 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_ATTACHMENTS; bLoop++) {
-    if (pObj->usAttachItem[bLoop] == usItem) {
+    if (pObj.value.usAttachItem[bLoop] == usItem) {
       return bLoop;
     }
   }
@@ -1144,7 +1144,7 @@ function FindAttachmentByClass(pObj: Pointer<OBJECTTYPE>, uiItemClass: UINT32): 
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_ATTACHMENTS; bLoop++) {
-    if (Item[pObj->usAttachItem[bLoop]].usItemClass == uiItemClass) {
+    if (Item[pObj.value.usAttachItem[bLoop]].usItemClass == uiItemClass) {
       return bLoop;
     }
   }
@@ -1155,7 +1155,7 @@ function FindLaunchable(pSoldier: Pointer<SOLDIERTYPE>, usWeapon: UINT16): INT8 
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
-    if (ValidLaunchable(pSoldier->inv[bLoop].usItem, usWeapon)) {
+    if (ValidLaunchable(pSoldier.value.inv[bLoop].usItem, usWeapon)) {
       return bLoop;
     }
   }
@@ -1166,7 +1166,7 @@ function FindLaunchableAttachment(pObj: Pointer<OBJECTTYPE>, usWeapon: UINT16): 
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_ATTACHMENTS; bLoop++) {
-    if (pObj->usAttachItem[bLoop] != NOTHING && ValidLaunchable(pObj->usAttachItem[bLoop], usWeapon)) {
+    if (pObj.value.usAttachItem[bLoop] != NOTHING && ValidLaunchable(pObj.value.usAttachItem[bLoop], usWeapon)) {
       return bLoop;
     }
   }
@@ -1176,7 +1176,7 @@ function FindLaunchableAttachment(pObj: Pointer<OBJECTTYPE>, usWeapon: UINT16): 
 
 // Simple check to see if the item has any attachments
 function ItemHasAttachments(pObj: Pointer<OBJECTTYPE>): BOOLEAN {
-  if ((pObj->usAttachItem[0] == NOTHING) && (pObj->usAttachItem[1] == NOTHING) && (pObj->usAttachItem[2] == NOTHING) && (pObj->usAttachItem[3] == NOTHING)) {
+  if ((pObj.value.usAttachItem[0] == NOTHING) && (pObj.value.usAttachItem[1] == NOTHING) && (pObj.value.usAttachItem[2] == NOTHING) && (pObj.value.usAttachItem[3] == NOTHING)) {
     return FALSE;
   }
   return TRUE;
@@ -1257,7 +1257,7 @@ function ValidItemAttachment(pObj: Pointer<OBJECTTYPE>, usAttachment: UINT16, fA
   let fSimilarItems: BOOLEAN = FALSE;
   let usSimilarItem: UINT16 = NOTHING;
 
-  if (!ValidAttachment(usAttachment, pObj->usItem)) {
+  if (!ValidAttachment(usAttachment, pObj.value.usItem)) {
     // check for an underslung grenade launcher attached to the gun
     if ((FindAttachment(pObj, UNDER_GLAUNCHER) != ITEM_NOT_FOUND) && ValidLaunchable(usAttachment, UNDER_GLAUNCHER)) {
       return TRUE;
@@ -1278,11 +1278,11 @@ function ValidItemAttachment(pObj: Pointer<OBJECTTYPE>, usAttachment: UINT16, fA
       }
       */
     } else {
-      if (fAttemptingAttachment && ValidAttachmentClass(usAttachment, pObj->usItem)) {
+      if (fAttemptingAttachment && ValidAttachmentClass(usAttachment, pObj.value.usItem)) {
         // well, maybe the player thought he could
         let zTemp: UINT16[] /* [100] */;
 
-        swprintf(zTemp, Message[STR_CANT_ATTACH], ItemNames[usAttachment], ItemNames[pObj->usItem]);
+        swprintf(zTemp, Message[STR_CANT_ATTACH], ItemNames[usAttachment], ItemNames[pObj.value.usItem]);
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, zTemp);
       }
 
@@ -1426,7 +1426,7 @@ function ValidLaunchable(usLaunchable: UINT16, usItem: UINT16): BOOLEAN {
 }
 
 function ValidItemLaunchable(pObj: Pointer<OBJECTTYPE>, usAttachment: UINT16): BOOLEAN {
-  if (!ValidLaunchable(usAttachment, pObj->usItem)) {
+  if (!ValidLaunchable(usAttachment, pObj.value.usItem)) {
     return FALSE;
   }
   // if we can find another of the same class as the attachment, it's not possible
@@ -1503,22 +1503,22 @@ function CalculateObjectWeight(pObject: Pointer<OBJECTTYPE>): UINT8 {
   let usWeight: UINT16;
   let pItem: Pointer<INVTYPE>;
 
-  pItem = &(Item[pObject->usItem]);
+  pItem = &(Item[pObject.value.usItem]);
 
   // Start with base weight
-  usWeight = pItem->ubWeight;
+  usWeight = pItem.value.ubWeight;
 
-  if (pItem->ubPerPocket < 2) {
+  if (pItem.value.ubPerPocket < 2) {
     // account for any attachments
     for (cnt = 0; cnt < MAX_ATTACHMENTS; cnt++) {
-      if (pObject->usAttachItem[cnt] != NOTHING) {
-        usWeight += Item[pObject->usAttachItem[cnt]].ubWeight;
+      if (pObject.value.usAttachItem[cnt] != NOTHING) {
+        usWeight += Item[pObject.value.usAttachItem[cnt]].ubWeight;
       }
     }
 
     // add in weight of ammo
-    if (Item[pObject->usItem].usItemClass == IC_GUN && pObject->ubGunShotsLeft > 0) {
-      usWeight += Item[pObject->usGunAmmoItem].ubWeight;
+    if (Item[pObject.value.usItem].usItemClass == IC_GUN && pObject.value.ubGunShotsLeft > 0) {
+      usWeight += Item[pObject.value.usGunAmmoItem].ubWeight;
     }
   }
 
@@ -1536,10 +1536,10 @@ function CalculateCarriedWeight(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
   let ubStrengthForCarrying: UINT8;
 
   for (ubLoop = 0; ubLoop < NUM_INV_SLOTS; ubLoop++) {
-    usWeight = pSoldier->inv[ubLoop].ubWeight;
-    if (Item[pSoldier->inv[ubLoop].usItem].ubPerPocket > 1) {
+    usWeight = pSoldier.value.inv[ubLoop].ubWeight;
+    if (Item[pSoldier.value.inv[ubLoop].usItem].ubPerPocket > 1) {
       // account for # of items
-      usWeight *= pSoldier->inv[ubLoop].ubNumberOfObjects;
+      usWeight *= pSoldier.value.inv[ubLoop].ubNumberOfObjects;
     }
     uiTotalWeight += usWeight;
   }
@@ -1590,21 +1590,21 @@ function RemoveObjFrom(pObj: Pointer<OBJECTTYPE>, ubRemoveIndex: UINT8): void {
   // remove 1 object from an OBJECTTYPE, starting at index bRemoveIndex
   let ubLoop: UINT8;
 
-  if (pObj->ubNumberOfObjects < ubRemoveIndex) {
+  if (pObj.value.ubNumberOfObjects < ubRemoveIndex) {
     // invalid index!
     return;
-  } else if (pObj->ubNumberOfObjects == 1) {
+  } else if (pObj.value.ubNumberOfObjects == 1) {
     // delete!
     DeleteObj(pObj);
   } else {
     // shift down all the values that should be down
-    for (ubLoop = ubRemoveIndex + 1; ubLoop < pObj->ubNumberOfObjects; ubLoop++) {
-      pObj->bStatus[ubLoop - 1] = pObj->bStatus[ubLoop];
+    for (ubLoop = ubRemoveIndex + 1; ubLoop < pObj.value.ubNumberOfObjects; ubLoop++) {
+      pObj.value.bStatus[ubLoop - 1] = pObj.value.bStatus[ubLoop];
     }
     // and set the upper value to 0
-    pObj->bStatus[pObj->ubNumberOfObjects - 1] = 0;
+    pObj.value.bStatus[pObj.value.ubNumberOfObjects - 1] = 0;
     // make the number of objects recorded match the array
-    pObj->ubNumberOfObjects--;
+    pObj.value.ubNumberOfObjects--;
   }
 }
 
@@ -1615,51 +1615,51 @@ function RemoveObjs(pObj: Pointer<OBJECTTYPE>, ubNumberToRemove: UINT8): void {
   if (ubNumberToRemove == 0) {
     return;
   }
-  if (ubNumberToRemove >= pObj->ubNumberOfObjects) {
+  if (ubNumberToRemove >= pObj.value.ubNumberOfObjects) {
     // delete!
     DeleteObj(pObj);
   } else {
     for (ubLoop = 0; ubLoop < ubNumberToRemove; ubLoop++) {
       RemoveObjFrom(pObj, 0);
     }
-    pObj->ubWeight = CalculateObjectWeight(pObj);
+    pObj.value.ubWeight = CalculateObjectWeight(pObj);
   }
 }
 
 function GetObjFrom(pObj: Pointer<OBJECTTYPE>, ubGetIndex: UINT8, pDest: Pointer<OBJECTTYPE>): void {
-  if (!pDest || ubGetIndex >= pObj->ubNumberOfObjects) {
+  if (!pDest || ubGetIndex >= pObj.value.ubNumberOfObjects) {
     return;
   }
-  if (pObj->ubNumberOfObjects == 1) {
+  if (pObj.value.ubNumberOfObjects == 1) {
     memcpy(pDest, pObj, sizeof(OBJECTTYPE));
     DeleteObj(pObj);
   } else {
-    pDest->usItem = pObj->usItem;
-    pDest->bStatus[0] = pObj->bStatus[ubGetIndex];
-    pDest->ubNumberOfObjects = 1;
-    pDest->ubWeight = CalculateObjectWeight(pDest);
+    pDest.value.usItem = pObj.value.usItem;
+    pDest.value.bStatus[0] = pObj.value.bStatus[ubGetIndex];
+    pDest.value.ubNumberOfObjects = 1;
+    pDest.value.ubWeight = CalculateObjectWeight(pDest);
     RemoveObjFrom(pObj, ubGetIndex);
-    pObj->ubWeight = CalculateObjectWeight(pObj);
+    pObj.value.ubWeight = CalculateObjectWeight(pObj);
   }
 }
 
 function SwapWithinObj(pObj: Pointer<OBJECTTYPE>, ubIndex1: UINT8, ubIndex2: UINT8): void {
   let bTemp: INT8;
 
-  if (pObj->ubNumberOfObjects >= ubIndex1 || pObj->ubNumberOfObjects >= ubIndex1) {
+  if (pObj.value.ubNumberOfObjects >= ubIndex1 || pObj.value.ubNumberOfObjects >= ubIndex1) {
     return;
   }
 
-  bTemp = pObj->bStatus[ubIndex1];
-  pObj->bStatus[ubIndex1] = pObj->bStatus[ubIndex2];
-  pObj->bStatus[ubIndex2] = bTemp;
+  bTemp = pObj.value.bStatus[ubIndex1];
+  pObj.value.bStatus[ubIndex1] = pObj.value.bStatus[ubIndex2];
+  pObj.value.bStatus[ubIndex2] = bTemp;
 }
 
 function DamageObj(pObj: Pointer<OBJECTTYPE>, bAmount: INT8): void {
-  if (bAmount >= pObj->bStatus[0]) {
-    pObj->bStatus[0] = 1;
+  if (bAmount >= pObj.value.bStatus[0]) {
+    pObj.value.bStatus[0] = 1;
   } else {
-    pObj->bStatus[0] -= bAmount;
+    pObj.value.bStatus[0] -= bAmount;
   }
 }
 
@@ -1668,18 +1668,18 @@ function StackObjs(pSourceObj: Pointer<OBJECTTYPE>, pTargetObj: Pointer<OBJECTTY
 
   // copy over N status values
   for (ubLoop = 0; ubLoop < ubNumberToCopy; ubLoop++) {
-    pTargetObj->bStatus[ubLoop + pTargetObj->ubNumberOfObjects] = pSourceObj->bStatus[ubLoop];
+    pTargetObj.value.bStatus[ubLoop + pTargetObj.value.ubNumberOfObjects] = pSourceObj.value.bStatus[ubLoop];
   }
 
   // now in the source object, move the rest down N places
-  for (ubLoop = ubNumberToCopy; ubLoop < pSourceObj->ubNumberOfObjects; ubLoop++) {
-    pSourceObj->bStatus[ubLoop - ubNumberToCopy] = pSourceObj->bStatus[ubLoop];
+  for (ubLoop = ubNumberToCopy; ubLoop < pSourceObj.value.ubNumberOfObjects; ubLoop++) {
+    pSourceObj.value.bStatus[ubLoop - ubNumberToCopy] = pSourceObj.value.bStatus[ubLoop];
   }
 
-  pTargetObj->ubNumberOfObjects += ubNumberToCopy;
+  pTargetObj.value.ubNumberOfObjects += ubNumberToCopy;
   RemoveObjs(pSourceObj, ubNumberToCopy);
-  pSourceObj->ubWeight = CalculateObjectWeight(pSourceObj);
-  pTargetObj->ubWeight = CalculateObjectWeight(pTargetObj);
+  pSourceObj.value.ubWeight = CalculateObjectWeight(pSourceObj);
+  pTargetObj.value.ubWeight = CalculateObjectWeight(pTargetObj);
 }
 
 function CleanUpStack(pObj: Pointer<OBJECTTYPE>, pCursorObj: Pointer<OBJECTTYPE>): void {
@@ -1688,31 +1688,31 @@ function CleanUpStack(pObj: Pointer<OBJECTTYPE>, pCursorObj: Pointer<OBJECTTYPE>
   let bMaxPoints: INT8;
   let bPointsToMove: INT8;
 
-  if (!(Item[pObj->usItem].usItemClass & IC_AMMO || Item[pObj->usItem].usItemClass & IC_KIT || Item[pObj->usItem].usItemClass & IC_MEDKIT)) {
+  if (!(Item[pObj.value.usItem].usItemClass & IC_AMMO || Item[pObj.value.usItem].usItemClass & IC_KIT || Item[pObj.value.usItem].usItemClass & IC_MEDKIT)) {
     return;
   }
 
-  if (Item[pObj->usItem].usItemClass & IC_AMMO) {
-    bMaxPoints = Magazine[Item[pObj->usItem].ubClassIndex].ubMagSize;
+  if (Item[pObj.value.usItem].usItemClass & IC_AMMO) {
+    bMaxPoints = Magazine[Item[pObj.value.usItem].ubClassIndex].ubMagSize;
   } else {
     bMaxPoints = 100;
   }
 
-  if (pCursorObj && pCursorObj->usItem == pObj->usItem) {
-    for (bLoop = pCursorObj->ubNumberOfObjects - 1; bLoop >= 0; bLoop--) {
-      if (pCursorObj->bStatus[bLoop] > 0) {
+  if (pCursorObj && pCursorObj.value.usItem == pObj.value.usItem) {
+    for (bLoop = pCursorObj.value.ubNumberOfObjects - 1; bLoop >= 0; bLoop--) {
+      if (pCursorObj.value.bStatus[bLoop] > 0) {
         // take the points here and distribute over the lower #d items
-        for (bLoop2 = pObj->ubNumberOfObjects - 1; bLoop2 >= 0; bLoop2--) {
-          if (pObj->bStatus[bLoop2] < bMaxPoints) {
-            bPointsToMove = bMaxPoints - pObj->bStatus[bLoop2];
-            bPointsToMove = __min(bPointsToMove, pCursorObj->bStatus[bLoop]);
+        for (bLoop2 = pObj.value.ubNumberOfObjects - 1; bLoop2 >= 0; bLoop2--) {
+          if (pObj.value.bStatus[bLoop2] < bMaxPoints) {
+            bPointsToMove = bMaxPoints - pObj.value.bStatus[bLoop2];
+            bPointsToMove = __min(bPointsToMove, pCursorObj.value.bStatus[bLoop]);
 
-            pObj->bStatus[bLoop2] += bPointsToMove;
+            pObj.value.bStatus[bLoop2] += bPointsToMove;
 
-            pCursorObj->bStatus[bLoop] -= bPointsToMove;
-            if (pCursorObj->bStatus[bLoop] == 0) {
+            pCursorObj.value.bStatus[bLoop] -= bPointsToMove;
+            if (pCursorObj.value.bStatus[bLoop] == 0) {
               // done!
-              pCursorObj->ubNumberOfObjects--;
+              pCursorObj.value.ubNumberOfObjects--;
               break;
             }
           }
@@ -1721,20 +1721,20 @@ function CleanUpStack(pObj: Pointer<OBJECTTYPE>, pCursorObj: Pointer<OBJECTTYPE>
     }
   }
 
-  for (bLoop = pObj->ubNumberOfObjects - 1; bLoop >= 0; bLoop--) {
-    if (pObj->bStatus[bLoop] > 0) {
+  for (bLoop = pObj.value.ubNumberOfObjects - 1; bLoop >= 0; bLoop--) {
+    if (pObj.value.bStatus[bLoop] > 0) {
       // take the points here and distribute over the lower #d items
       for (bLoop2 = bLoop - 1; bLoop2 >= 0; bLoop2--) {
-        if (pObj->bStatus[bLoop2] < bMaxPoints) {
-          bPointsToMove = bMaxPoints - pObj->bStatus[bLoop2];
-          bPointsToMove = __min(bPointsToMove, pObj->bStatus[bLoop]);
+        if (pObj.value.bStatus[bLoop2] < bMaxPoints) {
+          bPointsToMove = bMaxPoints - pObj.value.bStatus[bLoop2];
+          bPointsToMove = __min(bPointsToMove, pObj.value.bStatus[bLoop]);
 
-          pObj->bStatus[bLoop2] += bPointsToMove;
+          pObj.value.bStatus[bLoop2] += bPointsToMove;
 
-          pObj->bStatus[bLoop] -= bPointsToMove;
-          if (pObj->bStatus[bLoop] == 0) {
+          pObj.value.bStatus[bLoop] -= bPointsToMove;
+          if (pObj.value.bStatus[bLoop] == 0) {
             // done!
-            pObj->ubNumberOfObjects--;
+            pObj.value.ubNumberOfObjects--;
             break;
           }
         }
@@ -1746,14 +1746,14 @@ function CleanUpStack(pObj: Pointer<OBJECTTYPE>, pCursorObj: Pointer<OBJECTTYPE>
 function PlaceObjectAtObjectIndex(pSourceObj: Pointer<OBJECTTYPE>, pTargetObj: Pointer<OBJECTTYPE>, ubIndex: UINT8): BOOLEAN {
   let bTemp: INT8;
 
-  if (pSourceObj->usItem != pTargetObj->usItem) {
+  if (pSourceObj.value.usItem != pTargetObj.value.usItem) {
     return TRUE;
   }
-  if (ubIndex < pTargetObj->ubNumberOfObjects) {
+  if (ubIndex < pTargetObj.value.ubNumberOfObjects) {
     // swap
-    bTemp = pSourceObj->bStatus[0];
-    pSourceObj->bStatus[0] = pTargetObj->bStatus[ubIndex];
-    pTargetObj->bStatus[ubIndex] = bTemp;
+    bTemp = pSourceObj.value.bStatus[0];
+    pSourceObj.value.bStatus[0] = pTargetObj.value.bStatus[ubIndex];
+    pTargetObj.value.bStatus[ubIndex] = bTemp;
     return TRUE;
   } else {
     // add to end
@@ -1787,25 +1787,25 @@ function ReloadGun(pSoldier: Pointer<SOLDIERTYPE>, pGun: Pointer<OBJECTTYPE>, pA
     }
   }
 
-  if (Item[pGun->usItem].usItemClass == IC_LAUNCHER || pGun->usItem == TANK_CANNON) {
+  if (Item[pGun.value.usItem].usItemClass == IC_LAUNCHER || pGun.value.usItem == TANK_CANNON) {
     if (AttachObject(pSoldier, pGun, pAmmo) == FALSE) {
       // abort
       return FALSE;
     }
   } else {
-    fEmptyGun = (pGun->ubGunShotsLeft == 0);
-    fReloadingWithStack = (pAmmo->ubNumberOfObjects > 1);
-    fSameAmmoType = (pGun->ubGunAmmoType == Magazine[Item[pAmmo->usItem].ubClassIndex].ubAmmoType);
-    fSameMagazineSize = (Magazine[Item[pAmmo->usItem].ubClassIndex].ubMagSize == Weapon[pGun->usItem].ubMagSize);
+    fEmptyGun = (pGun.value.ubGunShotsLeft == 0);
+    fReloadingWithStack = (pAmmo.value.ubNumberOfObjects > 1);
+    fSameAmmoType = (pGun.value.ubGunAmmoType == Magazine[Item[pAmmo.value.usItem].ubClassIndex].ubAmmoType);
+    fSameMagazineSize = (Magazine[Item[pAmmo.value.usItem].ubClassIndex].ubMagSize == Weapon[pGun.value.usItem].ubMagSize);
 
     if (fEmptyGun) {
       bReloadType = RELOAD_PLACE;
     } else {
       // record old ammo
       memset(&OldAmmo, 0, sizeof(OBJECTTYPE));
-      OldAmmo.usItem = pGun->usGunAmmoItem;
+      OldAmmo.usItem = pGun.value.usGunAmmoItem;
       OldAmmo.ubNumberOfObjects = 1;
-      OldAmmo.ubShotsLeft[0] = pGun->ubGunShotsLeft;
+      OldAmmo.ubShotsLeft[0] = pGun.value.ubGunShotsLeft;
 
       if (fSameMagazineSize) {
         if (fSameAmmoType) {
@@ -1833,41 +1833,41 @@ function ReloadGun(pSoldier: Pointer<SOLDIERTYPE>, pGun: Pointer<OBJECTTYPE>, pA
 
     if (fSameMagazineSize) {
       // record new ammo item for gun
-      usNewAmmoItem = pAmmo->usItem;
+      usNewAmmoItem = pAmmo.value.usItem;
 
       if (bReloadType == RELOAD_TOPOFF) {
-        ubBulletsToMove = __min(pAmmo->ubShotsLeft[0], Weapon[pGun->usItem].ubMagSize - pGun->ubGunShotsLeft);
+        ubBulletsToMove = __min(pAmmo.value.ubShotsLeft[0], Weapon[pGun.value.usItem].ubMagSize - pGun.value.ubGunShotsLeft);
       } else {
-        ubBulletsToMove = pAmmo->ubShotsLeft[0];
+        ubBulletsToMove = pAmmo.value.ubShotsLeft[0];
       }
-    } else if (Magazine[Item[pAmmo->usItem].ubClassIndex].ubMagSize > Weapon[pGun->usItem].ubMagSize) {
-      usNewAmmoItem = pAmmo->usItem - 1;
+    } else if (Magazine[Item[pAmmo.value.usItem].ubClassIndex].ubMagSize > Weapon[pGun.value.usItem].ubMagSize) {
+      usNewAmmoItem = pAmmo.value.usItem - 1;
       if (bReloadType == RELOAD_TOPOFF) {
-        ubBulletsToMove = __min(pAmmo->ubShotsLeft[0], Weapon[pGun->usItem].ubMagSize - pGun->ubGunShotsLeft);
+        ubBulletsToMove = __min(pAmmo.value.ubShotsLeft[0], Weapon[pGun.value.usItem].ubMagSize - pGun.value.ubGunShotsLeft);
       } else {
-        ubBulletsToMove = __min(pAmmo->ubShotsLeft[0], Weapon[pGun->usItem].ubMagSize);
+        ubBulletsToMove = __min(pAmmo.value.ubShotsLeft[0], Weapon[pGun.value.usItem].ubMagSize);
       }
     } else // mag is smaller than weapon mag
     {
-      usNewAmmoItem = pAmmo->usItem + 1;
+      usNewAmmoItem = pAmmo.value.usItem + 1;
       if (bReloadType == RELOAD_TOPOFF) {
-        ubBulletsToMove = __min(pAmmo->ubShotsLeft[0], Weapon[pGun->usItem].ubMagSize - pGun->ubGunShotsLeft);
+        ubBulletsToMove = __min(pAmmo.value.ubShotsLeft[0], Weapon[pGun.value.usItem].ubMagSize - pGun.value.ubGunShotsLeft);
       } else {
-        ubBulletsToMove = __min(pAmmo->ubShotsLeft[0], Weapon[pGun->usItem].ubMagSize);
+        ubBulletsToMove = __min(pAmmo.value.ubShotsLeft[0], Weapon[pGun.value.usItem].ubMagSize);
       }
     }
 
     switch (bReloadType) {
       case RELOAD_PLACE:
-        pGun->ubGunShotsLeft = ubBulletsToMove;
-        pGun->ubGunAmmoType = Magazine[Item[pAmmo->usItem].ubClassIndex].ubAmmoType;
-        pGun->usGunAmmoItem = usNewAmmoItem;
+        pGun.value.ubGunShotsLeft = ubBulletsToMove;
+        pGun.value.ubGunAmmoType = Magazine[Item[pAmmo.value.usItem].ubClassIndex].ubAmmoType;
+        pGun.value.usGunAmmoItem = usNewAmmoItem;
         break;
 
       case RELOAD_SWAP:
-        pGun->ubGunShotsLeft = ubBulletsToMove;
-        pGun->ubGunAmmoType = Magazine[Item[pAmmo->usItem].ubClassIndex].ubAmmoType;
-        pGun->usGunAmmoItem = usNewAmmoItem;
+        pGun.value.ubGunShotsLeft = ubBulletsToMove;
+        pGun.value.ubGunAmmoType = Magazine[Item[pAmmo.value.usItem].ubClassIndex].ubAmmoType;
+        pGun.value.usGunAmmoItem = usNewAmmoItem;
         if (fReloadingWithStack) {
           // add to end of stack
           StackObjs(&OldAmmo, pAmmo, 1);
@@ -1879,7 +1879,7 @@ function ReloadGun(pSoldier: Pointer<SOLDIERTYPE>, pGun: Pointer<OBJECTTYPE>, pA
             // try autoplace
             if (!AutoPlaceObject(pSoldier, &OldAmmo, FALSE)) {
               // put it on the ground
-              AddItemToPool(pSoldier->sGridNo, &OldAmmo, 1, pSoldier->bLevel, 0, -1);
+              AddItemToPool(pSoldier.value.sGridNo, &OldAmmo, 1, pSoldier.value.bLevel, 0, -1);
             }
             // delete the object now in the cursor
             DeleteObj(pAmmo);
@@ -1895,23 +1895,23 @@ function ReloadGun(pSoldier: Pointer<SOLDIERTYPE>, pGun: Pointer<OBJECTTYPE>, pA
           return FALSE;
         }
         // place first ammo in gun
-        pGun->ubGunShotsLeft = ubBulletsToMove;
-        pGun->ubGunAmmoType = Magazine[Item[pAmmo->usItem].ubClassIndex].ubAmmoType;
-        pGun->usGunAmmoItem = usNewAmmoItem;
+        pGun.value.ubGunShotsLeft = ubBulletsToMove;
+        pGun.value.ubGunAmmoType = Magazine[Item[pAmmo.value.usItem].ubClassIndex].ubAmmoType;
+        pGun.value.usGunAmmoItem = usNewAmmoItem;
 
         break;
 
       case RELOAD_TOPOFF:
         // ADD that many bullets to gun
-        pGun->ubGunShotsLeft += ubBulletsToMove;
+        pGun.value.ubGunShotsLeft += ubBulletsToMove;
         break;
     }
 
     if (!(bReloadType == RELOAD_SWAP && !fReloadingWithStack)) {
       // remove # of bullets, delete 1 object if necessary
 
-      pAmmo->ubShotsLeft[0] -= ubBulletsToMove;
-      if (pAmmo->ubShotsLeft[0] == 0) {
+      pAmmo.value.ubShotsLeft[0] -= ubBulletsToMove;
+      if (pAmmo.value.ubShotsLeft[0] == 0) {
         RemoveObjs(pAmmo, 1);
       }
     }
@@ -1919,26 +1919,26 @@ function ReloadGun(pSoldier: Pointer<SOLDIERTYPE>, pGun: Pointer<OBJECTTYPE>, pA
 
   // OK, let's play a sound of reloading too...
   // If this guy is visible...
-  if (pSoldier->bVisible != -1) {
+  if (pSoldier.value.bVisible != -1) {
     // Play some effects!
-    usReloadSound = Weapon[pGun->usItem].sReloadSound;
+    usReloadSound = Weapon[pGun.value.usItem].sReloadSound;
 
     if (usReloadSound != 0 && !IsAutoResolveActive()) {
       PlayJA2Sample(usReloadSound, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
     }
   }
 
-  if (pSoldier->bTeam == gbPlayerNum) {
+  if (pSoldier.value.bTeam == gbPlayerNum) {
     // spit out a message if this is one of our folks reloading
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_PLAYER_RELOADS], pSoldier->name);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_PLAYER_RELOADS], pSoldier.value.name);
   }
 
   DeductPoints(pSoldier, bAPs, 0);
-  pGun->ubWeight = CalculateObjectWeight(pGun);
+  pGun.value.ubWeight = CalculateObjectWeight(pGun);
 
-  if (pGun->bGunAmmoStatus >= 0) {
+  if (pGun.value.bGunAmmoStatus >= 0) {
     // make sure gun ammo status is 100, if gun isn't jammed
-    pGun->bGunAmmoStatus = 100;
+    pGun.value.bGunAmmoStatus = 100;
   }
 
   return TRUE;
@@ -1949,26 +1949,26 @@ function EmptyWeaponMagazine(pWeapon: Pointer<OBJECTTYPE>, pAmmo: Pointer<OBJECT
 
   CHECKF(pAmmo != NULL);
 
-  if (pWeapon->ubGunShotsLeft > 0) {
+  if (pWeapon.value.ubGunShotsLeft > 0) {
     // start by erasing ammo item, just in case...
     DeleteObj(pAmmo);
 
-    pAmmo->ubShotsLeft[0] = pWeapon->ubGunShotsLeft;
-    pAmmo->usItem = pWeapon->usGunAmmoItem;
-    pAmmo->ubNumberOfObjects = 1;
+    pAmmo.value.ubShotsLeft[0] = pWeapon.value.ubGunShotsLeft;
+    pAmmo.value.usItem = pWeapon.value.usGunAmmoItem;
+    pAmmo.value.ubNumberOfObjects = 1;
 
-    pWeapon->ubGunShotsLeft = 0;
-    pWeapon->ubGunAmmoType = 0;
+    pWeapon.value.ubGunShotsLeft = 0;
+    pWeapon.value.ubGunAmmoType = 0;
     // pWeapon->usGunAmmoItem		= 0; // leaving the ammo item the same for auto-reloading purposes
 
     // Play some effects!
-    usReloadSound = Weapon[pWeapon->usItem].sReloadSound;
+    usReloadSound = Weapon[pWeapon.value.usItem].sReloadSound;
 
     if (usReloadSound != 0) {
       PlayJA2Sample(usReloadSound, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
     }
 
-    pWeapon->ubWeight = CalculateObjectWeight(pWeapon);
+    pWeapon.value.ubWeight = CalculateObjectWeight(pWeapon);
 
     return TRUE;
   } else {
@@ -2030,9 +2030,9 @@ function FindAmmo(pSoldier: Pointer<SOLDIERTYPE>, ubCalibre: UINT8, ubMagSize: U
     if (bLoop == bExcludeSlot) {
       continue;
     }
-    pItem = &(Item[pSoldier->inv[bLoop].usItem]);
-    if (pItem->usItemClass == IC_AMMO) {
-      if (Magazine[pItem->ubClassIndex].ubCalibre == ubCalibre && (Magazine[pItem->ubClassIndex].ubMagSize == ubMagSize || ubMagSize == ANY_MAGSIZE)) {
+    pItem = &(Item[pSoldier.value.inv[bLoop].usItem]);
+    if (pItem.value.usItemClass == IC_AMMO) {
+      if (Magazine[pItem.value.ubClassIndex].ubCalibre == ubCalibre && (Magazine[pItem.value.ubClassIndex].ubMagSize == ubMagSize || ubMagSize == ANY_MAGSIZE)) {
         return bLoop;
       }
     }
@@ -2047,24 +2047,24 @@ function FindAmmoToReload(pSoldier: Pointer<SOLDIERTYPE>, bWeaponIn: INT8, bExcl
   if (pSoldier == NULL) {
     return NO_SLOT;
   }
-  pObj = &(pSoldier->inv[bWeaponIn]);
-  if (Item[pObj->usItem].usItemClass == IC_GUN && pObj->usItem != TANK_CANNON) {
+  pObj = &(pSoldier.value.inv[bWeaponIn]);
+  if (Item[pObj.value.usItem].usItemClass == IC_GUN && pObj.value.usItem != TANK_CANNON) {
     // look for same ammo as before
-    bSlot = FindObjExcludingSlot(pSoldier, pObj->usGunAmmoItem, bExcludeSlot);
+    bSlot = FindObjExcludingSlot(pSoldier, pObj.value.usGunAmmoItem, bExcludeSlot);
     if (bSlot != NO_SLOT) {
       // reload using this ammo!
       return bSlot;
     }
     // look for any ammo that matches which is of the same calibre and magazine size
-    bSlot = FindAmmo(pSoldier, Weapon[pObj->usItem].ubCalibre, Weapon[pObj->usItem].ubMagSize, bExcludeSlot);
+    bSlot = FindAmmo(pSoldier, Weapon[pObj.value.usItem].ubCalibre, Weapon[pObj.value.usItem].ubMagSize, bExcludeSlot);
     if (bSlot != NO_SLOT) {
       return bSlot;
     } else {
       // look for any ammo that matches which is of the same calibre (different size okay)
-      return FindAmmo(pSoldier, Weapon[pObj->usItem].ubCalibre, ANY_MAGSIZE, bExcludeSlot);
+      return FindAmmo(pSoldier, Weapon[pObj.value.usItem].ubCalibre, ANY_MAGSIZE, bExcludeSlot);
     }
   } else {
-    switch (pObj->usItem) {
+    switch (pObj.value.usItem) {
       case MORTAR:
         return FindObj(pSoldier, MORTAR_SHELL);
       case TANK_CANNON:
@@ -2085,26 +2085,26 @@ function AutoReload(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let fRet: BOOLEAN;
 
   CHECKF(pSoldier);
-  pObj = &(pSoldier->inv[HANDPOS]);
+  pObj = &(pSoldier.value.inv[HANDPOS]);
 
-  if (Item[pObj->usItem].usItemClass == IC_GUN || Item[pObj->usItem].usItemClass == IC_LAUNCHER) {
+  if (Item[pObj.value.usItem].usItemClass == IC_GUN || Item[pObj.value.usItem].usItemClass == IC_LAUNCHER) {
     bSlot = FindAmmoToReload(pSoldier, HANDPOS, NO_SLOT);
     if (bSlot != NO_SLOT) {
       // reload using this ammo!
-      fRet = ReloadGun(pSoldier, pObj, &(pSoldier->inv[bSlot]));
+      fRet = ReloadGun(pSoldier, pObj, &(pSoldier.value.inv[bSlot]));
       // if we are valid for two-pistol shooting (reloading) and we have enough APs still
       // then do a reload of both guns!
       if ((fRet == TRUE) && IsValidSecondHandShotForReloadingPurposes(pSoldier)) {
-        pObj = &(pSoldier->inv[SECONDHANDPOS]);
+        pObj = &(pSoldier.value.inv[SECONDHANDPOS]);
         bSlot = FindAmmoToReload(pSoldier, SECONDHANDPOS, NO_SLOT);
         if (bSlot != NO_SLOT) {
           // ce would reload using this ammo!
-          bAPCost = GetAPsToReloadGunWithAmmo(pObj, &(pSoldier->inv[bSlot]));
+          bAPCost = GetAPsToReloadGunWithAmmo(pObj, &(pSoldier.value.inv[bSlot]));
           if (EnoughPoints(pSoldier, bAPCost, 0, FALSE)) {
             // reload the 2nd gun too
-            fRet = ReloadGun(pSoldier, pObj, &(pSoldier->inv[bSlot]));
+            fRet = ReloadGun(pSoldier, pObj, &(pSoldier.value.inv[bSlot]));
           } else {
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_RELOAD_ONLY_ONE_GUN], pSoldier->name);
+            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_RELOAD_ONLY_ONE_GUN], pSoldier.value.name);
           }
         }
       }
@@ -2124,7 +2124,7 @@ function GetAttachmentComboMerge(pObj: Pointer<OBJECTTYPE>): INT8 {
   let bAttachPos: INT8;
 
   while (AttachmentComboMerge[bIndex].usItem != NOTHING) {
-    if (pObj->usItem == AttachmentComboMerge[bIndex].usItem) {
+    if (pObj.value.usItem == AttachmentComboMerge[bIndex].usItem) {
       // search for all the appropriate attachments
       for (bAttachLoop = 0; bAttachLoop < 2; bAttachLoop++) {
         if (AttachmentComboMerge[bIndex].usAttachment[bAttachLoop] == NOTHING) {
@@ -2166,18 +2166,18 @@ function PerformAttachmentComboMerge(pObj: Pointer<OBJECTTYPE>, bAttachmentCombo
     bAttachPos = FindAttachment(pObj, AttachmentComboMerge[bAttachmentComboMerge].usAttachment[bAttachLoop]);
     AssertMsg(bAttachPos != -1, String("Attachment combo merge couldn't find a necessary attachment"));
 
-    uiStatusTotal += pObj->bAttachStatus[bAttachPos];
+    uiStatusTotal += pObj.value.bAttachStatus[bAttachPos];
     bNumStatusContributors++;
 
-    pObj->usAttachItem[bAttachPos] = NOTHING;
-    pObj->bAttachStatus[bAttachPos] = 0;
+    pObj.value.usAttachItem[bAttachPos] = NOTHING;
+    pObj.value.bAttachStatus[bAttachPos] = 0;
   }
 
-  uiStatusTotal += pObj->bStatus[0];
+  uiStatusTotal += pObj.value.bStatus[0];
   bNumStatusContributors++;
 
-  pObj->usItem = AttachmentComboMerge[bAttachmentComboMerge].usResult;
-  pObj->bStatus[0] = (uiStatusTotal / bNumStatusContributors);
+  pObj.value.usItem = AttachmentComboMerge[bAttachmentComboMerge].usResult;
+  pObj.value.bStatus[0] = (uiStatusTotal / bNumStatusContributors);
 }
 
 function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECTTYPE>, pAttachment: Pointer<OBJECTTYPE>): BOOLEAN {
@@ -2192,19 +2192,19 @@ function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECT
   let bAttachComboMerge: INT8;
   let fValidLaunchable: BOOLEAN = FALSE;
 
-  fValidLaunchable = ValidLaunchable(pAttachment->usItem, pTargetObj->usItem);
+  fValidLaunchable = ValidLaunchable(pAttachment.value.usItem, pTargetObj.value.usItem);
 
-  if (fValidLaunchable || ValidItemAttachment(pTargetObj, pAttachment->usItem, TRUE)) {
+  if (fValidLaunchable || ValidItemAttachment(pTargetObj, pAttachment.value.usItem, TRUE)) {
     let TempObj: OBJECTTYPE = [ 0 ];
 
     // find an attachment position...
     // second half of this 'if' is for attaching GL grenades to a gun
-    if (fValidLaunchable || pAttachment->usItem >= GL_HE_GRENADE && pAttachment->usItem <= GL_SMOKE_GRENADE) {
+    if (fValidLaunchable || pAttachment.value.usItem >= GL_HE_GRENADE && pAttachment.value.usItem <= GL_SMOKE_GRENADE) {
       // try replacing if possible
-      bAttachPos = FindAttachmentByClass(pTargetObj, Item[pAttachment->usItem].usItemClass);
+      bAttachPos = FindAttachmentByClass(pTargetObj, Item[pAttachment.value.usItem].usItemClass);
       if (bAttachPos != NO_SLOT) {
         // we can only do a swap if there is only 1 grenade being attached
-        if (pAttachment->ubNumberOfObjects > 1) {
+        if (pAttachment.value.ubNumberOfObjects > 1) {
           return FALSE;
         }
       } else {
@@ -2212,7 +2212,7 @@ function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECT
       }
     } else {
       // try replacing if possible
-      bAttachPos = FindAttachment(pTargetObj, pAttachment->usItem);
+      bAttachPos = FindAttachment(pTargetObj, pAttachment.value.usItem);
       if (bAttachPos == NO_SLOT) {
         bAttachPos = FindAttachment(pTargetObj, NOTHING);
       }
@@ -2222,7 +2222,7 @@ function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECT
       return FALSE;
     } else {
       if (pSoldier) {
-        bAttachInfoIndex = GetAttachmentInfoIndex(pAttachment->usItem);
+        bAttachInfoIndex = GetAttachmentInfoIndex(pAttachment.value.usItem);
         // in-game (not behind the scenes) attachment
         if (bAttachInfoIndex != -1 && AttachmentInfo[bAttachInfoIndex].bAttachmentSkillCheck != NO_CHECK) {
           iCheckResult = SkillCheck(pSoldier, AttachmentInfo[bAttachInfoIndex].bAttachmentSkillCheck, AttachmentInfo[bAttachInfoIndex].bAttachmentSkillCheckMod);
@@ -2239,40 +2239,40 @@ function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECT
           }
         }
 
-        if (ValidItemAttachment(pTargetObj, pAttachment->usItem, TRUE)) // not launchable
+        if (ValidItemAttachment(pTargetObj, pAttachment.value.usItem, TRUE)) // not launchable
         {
           // attachment sounds
-          if (Item[pTargetObj->usItem].usItemClass & IC_WEAPON) {
-            PlayJA2Sample(ATTACH_TO_GUN, RATE_11025, SoundVolume(MIDVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo));
-          } else if (Item[pTargetObj->usItem].usItemClass & IC_ARMOUR) {
-            PlayJA2Sample(ATTACH_CERAMIC_PLATES, RATE_11025, SoundVolume(MIDVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo));
-          } else if (Item[pTargetObj->usItem].usItemClass & IC_BOMB) {
-            PlayJA2Sample(ATTACH_DETONATOR, RATE_11025, SoundVolume(MIDVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo));
+          if (Item[pTargetObj.value.usItem].usItemClass & IC_WEAPON) {
+            PlayJA2Sample(ATTACH_TO_GUN, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+          } else if (Item[pTargetObj.value.usItem].usItemClass & IC_ARMOUR) {
+            PlayJA2Sample(ATTACH_CERAMIC_PLATES, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+          } else if (Item[pTargetObj.value.usItem].usItemClass & IC_BOMB) {
+            PlayJA2Sample(ATTACH_DETONATOR, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
           }
         }
       }
 
-      if (pTargetObj->usAttachItem[bAttachPos] != NOTHING) {
-        CreateItem(pTargetObj->usAttachItem[bAttachPos], pTargetObj->bAttachStatus[bAttachPos], &TempObj);
+      if (pTargetObj.value.usAttachItem[bAttachPos] != NOTHING) {
+        CreateItem(pTargetObj.value.usAttachItem[bAttachPos], pTargetObj.value.bAttachStatus[bAttachPos], &TempObj);
       }
 
-      pTargetObj->usAttachItem[bAttachPos] = pAttachment->usItem;
-      pTargetObj->bAttachStatus[bAttachPos] = pAttachment->bStatus[0];
+      pTargetObj.value.usAttachItem[bAttachPos] = pAttachment.value.usItem;
+      pTargetObj.value.bAttachStatus[bAttachPos] = pAttachment.value.bStatus[0];
 
-      if (pAttachment->usItem == UNDER_GLAUNCHER) {
+      if (pAttachment.value.usItem == UNDER_GLAUNCHER) {
         // transfer any attachment (max 1) from the grenade launcher to the gun
-        if (pAttachment->usAttachItem[0] != NOTHING) {
+        if (pAttachment.value.usAttachItem[0] != NOTHING) {
           bSecondAttachPos = FindAttachment(pTargetObj, NOTHING);
           if (bSecondAttachPos == ITEM_NOT_FOUND) {
             // not enough room for all attachments - cancel!!
-            pTargetObj->usAttachItem[bAttachPos] = NOTHING;
-            pTargetObj->bAttachStatus[bAttachPos] = 0;
+            pTargetObj.value.usAttachItem[bAttachPos] = NOTHING;
+            pTargetObj.value.bAttachStatus[bAttachPos] = 0;
             return FALSE;
           } else {
-            pTargetObj->usAttachItem[bSecondAttachPos] = pAttachment->usAttachItem[0];
-            pTargetObj->bAttachStatus[bSecondAttachPos] = pAttachment->bAttachStatus[0];
-            pAttachment->usAttachItem[0] = NOTHING;
-            pAttachment->bAttachStatus[0] = 0;
+            pTargetObj.value.usAttachItem[bSecondAttachPos] = pAttachment.value.usAttachItem[0];
+            pTargetObj.value.bAttachStatus[bSecondAttachPos] = pAttachment.value.bAttachStatus[0];
+            pAttachment.value.usAttachItem[0] = NOTHING;
+            pAttachment.value.bAttachStatus[0] = 0;
           }
         }
       }
@@ -2293,13 +2293,13 @@ function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECT
         }
       }
 
-      pTargetObj->ubWeight = CalculateObjectWeight(pTargetObj);
+      pTargetObj.value.ubWeight = CalculateObjectWeight(pTargetObj);
 
       return TRUE;
     }
   }
   // check for merges
-  else if (EvaluateValidMerge(pAttachment->usItem, pTargetObj->usItem, &usResult, &ubType)) {
+  else if (EvaluateValidMerge(pAttachment.value.usItem, pTargetObj.value.usItem, &usResult, &ubType)) {
     if (ubType != COMBINE_POINTS) {
       if (!EnoughPoints(pSoldier, AP_MERGE, 0, TRUE)) {
         return FALSE;
@@ -2311,24 +2311,24 @@ function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECT
     switch (ubType) {
       case COMBINE_POINTS:
         // transfer points...
-        if (Item[pTargetObj->usItem].usItemClass == IC_AMMO) {
-          ubLimit = Magazine[Item[pTargetObj->usItem].ubClassIndex].ubMagSize;
+        if (Item[pTargetObj.value.usItem].usItemClass == IC_AMMO) {
+          ubLimit = Magazine[Item[pTargetObj.value.usItem].ubClassIndex].ubMagSize;
         } else {
           ubLimit = 100;
         }
 
         // count down through # of attaching items and add to status of item in position 0
-        for (bLoop = pAttachment->ubNumberOfObjects - 1; bLoop >= 0; bLoop--) {
-          if (pTargetObj->bStatus[0] + pAttachment->bStatus[bLoop] <= ubLimit) {
+        for (bLoop = pAttachment.value.ubNumberOfObjects - 1; bLoop >= 0; bLoop--) {
+          if (pTargetObj.value.bStatus[0] + pAttachment.value.bStatus[bLoop] <= ubLimit) {
             // consume this one totally and continue
-            pTargetObj->bStatus[0] += pAttachment->bStatus[bLoop];
+            pTargetObj.value.bStatus[0] += pAttachment.value.bStatus[bLoop];
             RemoveObjFrom(pAttachment, bLoop);
             // reset loop limit
-            bLoop = pAttachment->ubNumberOfObjects; // add 1 to counteract the -1 from the loop
+            bLoop = pAttachment.value.ubNumberOfObjects; // add 1 to counteract the -1 from the loop
           } else {
             // add part of this one and then we're done
-            pAttachment->bStatus[bLoop] -= (ubLimit - pTargetObj->bStatus[0]);
-            pTargetObj->bStatus[0] = ubLimit;
+            pAttachment.value.bStatus[bLoop] -= (ubLimit - pTargetObj.value.bStatus[0]);
+            pTargetObj.value.bStatus[0] = ubLimit;
             break;
           }
         }
@@ -2371,13 +2371,13 @@ function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECT
         // fall through
       default:
         // the merge will combine the two items
-        pTargetObj->usItem = usResult;
+        pTargetObj.value.usItem = usResult;
         if (ubType != TREAT_ARMOUR) {
-          pTargetObj->bStatus[0] = (pTargetObj->bStatus[0] + pAttachment->bStatus[0]) / 2;
+          pTargetObj.value.bStatus[0] = (pTargetObj.value.bStatus[0] + pAttachment.value.bStatus[0]) / 2;
         }
         DeleteObj(pAttachment);
-        pTargetObj->ubWeight = CalculateObjectWeight(pTargetObj);
-        if (pSoldier && pSoldier->bTeam == gbPlayerNum) {
+        pTargetObj.value.ubWeight = CalculateObjectWeight(pTargetObj);
+        if (pSoldier && pSoldier.value.bTeam == gbPlayerNum) {
           DoMercBattleSound(pSoldier, BATTLE_SOUND_COOL1);
         }
         break;
@@ -2393,15 +2393,15 @@ function CanItemFitInPosition(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJE
 
   switch (bPos) {
     case SECONDHANDPOS:
-      if (Item[pSoldier->inv[HANDPOS].usItem].fFlags & ITEM_TWO_HANDED) {
+      if (Item[pSoldier.value.inv[HANDPOS].usItem].fFlags & ITEM_TWO_HANDED) {
         return FALSE;
       }
       break;
     case HANDPOS:
-      if (Item[pObj->usItem].fFlags & ITEM_TWO_HANDED) {
-        if (pSoldier->inv[HANDPOS].usItem != NOTHING && pSoldier->inv[SECONDHANDPOS].usItem != NOTHING) {
+      if (Item[pObj.value.usItem].fFlags & ITEM_TWO_HANDED) {
+        if (pSoldier.value.inv[HANDPOS].usItem != NOTHING && pSoldier.value.inv[SECONDHANDPOS].usItem != NOTHING) {
           // two items in hands; try moving the second one so we can swap
-          if (Item[pSoldier->inv[SECONDHANDPOS].usItem].ubPerPocket == 0) {
+          if (Item[pSoldier.value.inv[SECONDHANDPOS].usItem].ubPerPocket == 0) {
             bNewPos = FindEmptySlotWithin(pSoldier, BIGPOCK1POS, BIGPOCK4POS);
           } else {
             bNewPos = FindEmptySlotWithin(pSoldier, BIGPOCK1POS, SMALLPOCK8POS);
@@ -2413,8 +2413,8 @@ function CanItemFitInPosition(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJE
 
           if (fDoingPlacement) {
             // otherwise move it.
-            CopyObj(&(pSoldier->inv[SECONDHANDPOS]), &(pSoldier->inv[bNewPos]));
-            DeleteObj(&(pSoldier->inv[SECONDHANDPOS]));
+            CopyObj(&(pSoldier.value.inv[SECONDHANDPOS]), &(pSoldier.value.inv[bNewPos]));
+            DeleteObj(&(pSoldier.value.inv[SECONDHANDPOS]));
           }
         }
       }
@@ -2422,22 +2422,22 @@ function CanItemFitInPosition(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJE
     case VESTPOS:
     case HELMETPOS:
     case LEGPOS:
-      if (Item[pObj->usItem].usItemClass != IC_ARMOUR) {
+      if (Item[pObj.value.usItem].usItemClass != IC_ARMOUR) {
         return FALSE;
       }
       switch (bPos) {
         case VESTPOS:
-          if (Armour[Item[pObj->usItem].ubClassIndex].ubArmourClass != ARMOURCLASS_VEST) {
+          if (Armour[Item[pObj.value.usItem].ubClassIndex].ubArmourClass != ARMOURCLASS_VEST) {
             return FALSE;
           }
           break;
         case HELMETPOS:
-          if (Armour[Item[pObj->usItem].ubClassIndex].ubArmourClass != ARMOURCLASS_HELMET) {
+          if (Armour[Item[pObj.value.usItem].ubClassIndex].ubArmourClass != ARMOURCLASS_HELMET) {
             return FALSE;
           }
           break;
         case LEGPOS:
-          if (Armour[Item[pObj->usItem].ubClassIndex].ubArmourClass != ARMOURCLASS_LEGGINGS) {
+          if (Armour[Item[pObj.value.usItem].ubClassIndex].ubArmourClass != ARMOURCLASS_LEGGINGS) {
             return FALSE;
           }
           break;
@@ -2447,14 +2447,14 @@ function CanItemFitInPosition(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJE
       break;
     case HEAD1POS:
     case HEAD2POS:
-      if (Item[pObj->usItem].usItemClass != IC_FACE) {
+      if (Item[pObj.value.usItem].usItemClass != IC_FACE) {
         return FALSE;
       }
     default:
       break;
   }
 
-  ubSlotLimit = ItemSlotLimit(pObj->usItem, bPos);
+  ubSlotLimit = ItemSlotLimit(pObj.value.usItem, bPos);
   if (ubSlotLimit == 0 && bPos >= SMALLPOCK1POS) {
     // doesn't fit!
     return FALSE;
@@ -2467,7 +2467,7 @@ function DropObjIfThereIsRoom(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: 
   // try autoplacing item in bSlot elsewhere, then do a placement
   let fAutoPlacedOld: BOOLEAN;
 
-  fAutoPlacedOld = AutoPlaceObject(pSoldier, &(pSoldier->inv[bPos]), FALSE);
+  fAutoPlacedOld = AutoPlaceObject(pSoldier, &(pSoldier.value.inv[bPos]), FALSE);
   if (fAutoPlacedOld) {
     return PlaceObject(pSoldier, bPos, pObj);
   } else {
@@ -2485,7 +2485,7 @@ function PlaceObject(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<O
   let pInSlot: Pointer<OBJECTTYPE>;
   let fObjectWasRobotRemote: BOOLEAN = FALSE;
 
-  if (pObj->usItem == ROBOT_REMOTE_CONTROL) {
+  if (pObj.value.usItem == ROBOT_REMOTE_CONTROL) {
     fObjectWasRobotRemote = TRUE;
   }
 
@@ -2496,37 +2496,37 @@ function PlaceObject(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<O
   // If the position is either head slot, then the item must be IC_FACE (checked in
   // CanItemFitInPosition).
   if (bPos == HEAD1POS) {
-    if (!CompatibleFaceItem(pObj->usItem, pSoldier->inv[HEAD2POS].usItem)) {
+    if (!CompatibleFaceItem(pObj.value.usItem, pSoldier.value.inv[HEAD2POS].usItem)) {
       let zTemp: UINT16[] /* [150] */;
 
-      swprintf(zTemp, Message[STR_CANT_USE_TWO_ITEMS], ItemNames[pObj->usItem], ItemNames[pSoldier->inv[HEAD2POS].usItem]);
+      swprintf(zTemp, Message[STR_CANT_USE_TWO_ITEMS], ItemNames[pObj.value.usItem], ItemNames[pSoldier.value.inv[HEAD2POS].usItem]);
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, zTemp);
       return FALSE;
     }
   } else if (bPos == HEAD2POS) {
-    if (!CompatibleFaceItem(pObj->usItem, pSoldier->inv[HEAD1POS].usItem)) {
+    if (!CompatibleFaceItem(pObj.value.usItem, pSoldier.value.inv[HEAD1POS].usItem)) {
       let zTemp: UINT16[] /* [150] */;
 
-      swprintf(zTemp, Message[STR_CANT_USE_TWO_ITEMS], ItemNames[pObj->usItem], ItemNames[pSoldier->inv[HEAD1POS].usItem]);
+      swprintf(zTemp, Message[STR_CANT_USE_TWO_ITEMS], ItemNames[pObj.value.usItem], ItemNames[pSoldier.value.inv[HEAD1POS].usItem]);
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, zTemp);
       return FALSE;
     }
   }
 
-  if (Item[pObj->usItem].usItemClass == IC_KEY && pSoldier->uiStatusFlags & SOLDIER_PC) {
-    if (KeyTable[pObj->ubKeyID].usDateFound == 0) {
-      KeyTable[pObj->ubKeyID].usDateFound = GetWorldDay();
-      KeyTable[pObj->ubKeyID].usSectorFound = SECTOR(pSoldier->sSectorX, pSoldier->sSectorY);
+  if (Item[pObj.value.usItem].usItemClass == IC_KEY && pSoldier.value.uiStatusFlags & SOLDIER_PC) {
+    if (KeyTable[pObj.value.ubKeyID].usDateFound == 0) {
+      KeyTable[pObj.value.ubKeyID].usDateFound = GetWorldDay();
+      KeyTable[pObj.value.ubKeyID].usSectorFound = SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
     }
   }
 
-  ubSlotLimit = ItemSlotLimit(pObj->usItem, bPos);
+  ubSlotLimit = ItemSlotLimit(pObj.value.usItem, bPos);
 
-  pInSlot = &(pSoldier->inv[bPos]);
+  pInSlot = &(pSoldier.value.inv[bPos]);
 
-  if (pInSlot->ubNumberOfObjects == 0) {
+  if (pInSlot.value.ubNumberOfObjects == 0) {
     // placement in an empty slot
-    ubNumberToDrop = pObj->ubNumberOfObjects;
+    ubNumberToDrop = pObj.value.ubNumberOfObjects;
 
     if (ubNumberToDrop > __max(ubSlotLimit, 1)) {
       // drop as many as possible into pocket
@@ -2545,44 +2545,44 @@ function PlaceObject(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<O
                     }
     */
 
-    if (ubNumberToDrop != pObj->ubNumberOfObjects) {
+    if (ubNumberToDrop != pObj.value.ubNumberOfObjects) {
       // in the InSlot copy, zero out all the objects we didn't drop
-      for (ubLoop = ubNumberToDrop; ubLoop < pObj->ubNumberOfObjects; ubLoop++) {
-        pInSlot->bStatus[ubLoop] = 0;
+      for (ubLoop = ubNumberToDrop; ubLoop < pObj.value.ubNumberOfObjects; ubLoop++) {
+        pInSlot.value.bStatus[ubLoop] = 0;
       }
     }
-    pInSlot->ubNumberOfObjects = ubNumberToDrop;
+    pInSlot.value.ubNumberOfObjects = ubNumberToDrop;
 
     // remove a like number of objects from pObj
     RemoveObjs(pObj, ubNumberToDrop);
-    if (pObj->ubNumberOfObjects == 0) {
+    if (pObj.value.ubNumberOfObjects == 0) {
       // dropped everything
-      if (bPos == HANDPOS && Item[pInSlot->usItem].fFlags & ITEM_TWO_HANDED) {
+      if (bPos == HANDPOS && Item[pInSlot.value.usItem].fFlags & ITEM_TWO_HANDED) {
         // We just performed a successful drop of a two-handed object into the
         // main hand
-        if (pSoldier->inv[SECONDHANDPOS].usItem != 0) {
+        if (pSoldier.value.inv[SECONDHANDPOS].usItem != 0) {
           // swap what WAS in the second hand into the cursor
-          SwapObjs(pObj, &(pSoldier->inv[SECONDHANDPOS]));
+          SwapObjs(pObj, &(pSoldier.value.inv[SECONDHANDPOS]));
         }
       }
     }
   } else {
     // replacement/reloading/merging/stacking
     // keys have an additional check for key ID being the same
-    if ((pObj->usItem == pInSlot->usItem) && (Item[pObj->usItem].usItemClass != IC_KEY || pObj->ubKeyID == pInSlot->ubKeyID)) {
-      if (Item[pObj->usItem].usItemClass == IC_MONEY) {
+    if ((pObj.value.usItem == pInSlot.value.usItem) && (Item[pObj.value.usItem].usItemClass != IC_KEY || pObj.value.ubKeyID == pInSlot.value.ubKeyID)) {
+      if (Item[pObj.value.usItem].usItemClass == IC_MONEY) {
         let uiMoneyMax: UINT32 = MoneySlotLimit(bPos);
 
         // always allow money to be combined!
         // IGNORE STATUS!
 
-        if (pInSlot->uiMoneyAmount + pObj->uiMoneyAmount > uiMoneyMax) {
+        if (pInSlot.value.uiMoneyAmount + pObj.value.uiMoneyAmount > uiMoneyMax) {
           // remove X dollars
-          pObj->uiMoneyAmount -= (uiMoneyMax - pInSlot->uiMoneyAmount);
+          pObj.value.uiMoneyAmount -= (uiMoneyMax - pInSlot.value.uiMoneyAmount);
           // set in slot to maximum
-          pInSlot->uiMoneyAmount = uiMoneyMax;
+          pInSlot.value.uiMoneyAmount = uiMoneyMax;
         } else {
-          pInSlot->uiMoneyAmount += pObj->uiMoneyAmount;
+          pInSlot.value.uiMoneyAmount += pObj.value.uiMoneyAmount;
           DeleteObj(pObj);
           /*
                                                   if( guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE )
@@ -2593,7 +2593,7 @@ function PlaceObject(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<O
           */
         }
       } else if (ubSlotLimit == 1 || (ubSlotLimit == 0 && bPos >= HANDPOS && bPos <= BIGPOCK4POS)) {
-        if (pObj->ubNumberOfObjects <= 1) {
+        if (pObj.value.ubNumberOfObjects <= 1) {
           // swapping
           SwapObjs(pObj, pInSlot);
         } else {
@@ -2604,18 +2604,18 @@ function PlaceObject(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<O
         return DropObjIfThereIsRoom(pSoldier, bPos, pObj);
       } else {
         // stacking
-        ubNumberToDrop = ubSlotLimit - pInSlot->ubNumberOfObjects;
-        if (ubNumberToDrop > pObj->ubNumberOfObjects) {
-          ubNumberToDrop = pObj->ubNumberOfObjects;
+        ubNumberToDrop = ubSlotLimit - pInSlot.value.ubNumberOfObjects;
+        if (ubNumberToDrop > pObj.value.ubNumberOfObjects) {
+          ubNumberToDrop = pObj.value.ubNumberOfObjects;
         }
         StackObjs(pObj, pInSlot, ubNumberToDrop);
       }
     } else {
       // replacement, unless reloading...
-      switch (Item[pInSlot->usItem].usItemClass) {
+      switch (Item[pInSlot.value.usItem].usItemClass) {
         case IC_GUN:
-          if (Item[pObj->usItem].usItemClass == IC_AMMO) {
-            if (Weapon[pInSlot->usItem].ubCalibre == Magazine[Item[pObj->usItem].ubClassIndex].ubCalibre) {
+          if (Item[pObj.value.usItem].usItemClass == IC_AMMO) {
+            if (Weapon[pInSlot.value.usItem].ubCalibre == Magazine[Item[pObj.value.usItem].ubClassIndex].ubCalibre) {
               // reload...
               return ReloadGun(pSoldier, pInSlot, pObj);
             } else {
@@ -2626,21 +2626,21 @@ function PlaceObject(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<O
           }
           break;
         case IC_LAUNCHER: {
-          if (ValidLaunchable(pObj->usItem, pInSlot->usItem)) {
+          if (ValidLaunchable(pObj.value.usItem, pInSlot.value.usItem)) {
             // reload...
             return ReloadGun(pSoldier, pInSlot, pObj);
           }
         } break;
       }
 
-      if ((Item[pObj->usItem].fFlags & ITEM_TWO_HANDED) && (bPos == HANDPOS)) {
-        if (pSoldier->inv[SECONDHANDPOS].usItem != 0) {
+      if ((Item[pObj.value.usItem].fFlags & ITEM_TWO_HANDED) && (bPos == HANDPOS)) {
+        if (pSoldier.value.inv[SECONDHANDPOS].usItem != 0) {
           // both pockets have something in them, so we can't swap
           return FALSE;
         } else {
           SwapObjs(pObj, pInSlot);
         }
-      } else if (pObj->ubNumberOfObjects <= __max(ubSlotLimit, 1)) {
+      } else if (pObj.value.ubNumberOfObjects <= __max(ubSlotLimit, 1)) {
         // swapping
         SwapObjs(pObj, pInSlot);
       } else {
@@ -2650,7 +2650,7 @@ function PlaceObject(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<O
   }
 
   // ATE: Put this in to see if we should update the robot, if we were given a controller...
-  if (pSoldier->bTeam == gbPlayerNum && fObjectWasRobotRemote) {
+  if (pSoldier.value.bTeam == gbPlayerNum && fObjectWasRobotRemote) {
     UpdateRobotControllerGivenController(pSoldier);
   }
 
@@ -2663,31 +2663,31 @@ function InternalAutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<O
   let ubPerSlot: UINT8;
 
   // statuses of extra objects would be 0 if the # exceeds the maximum
-  Assert(pObj->ubNumberOfObjects <= MAX_OBJECTS_PER_SLOT);
+  Assert(pObj.value.ubNumberOfObjects <= MAX_OBJECTS_PER_SLOT);
 
-  pItem = &(Item[pObj->usItem]);
-  ubPerSlot = pItem->ubPerPocket;
+  pItem = &(Item[pObj.value.usItem]);
+  ubPerSlot = pItem.value.ubPerPocket;
 
   // Overrides to the standard system: put guns in hand, armour on body (if slot empty)
-  switch (pItem->usItemClass) {
+  switch (pItem.value.usItemClass) {
     case IC_GUN:
     case IC_BLADE:
     case IC_LAUNCHER:
     case IC_BOMB:
     case IC_GRENADE:
-      if (!(pItem->fFlags & ITEM_TWO_HANDED)) {
-        if (pSoldier->inv[HANDPOS].usItem == NONE) {
+      if (!(pItem.value.fFlags & ITEM_TWO_HANDED)) {
+        if (pSoldier.value.inv[HANDPOS].usItem == NONE) {
           // put the one-handed weapon in the guy's hand...
           PlaceObject(pSoldier, HANDPOS, pObj);
           SetNewItem(pSoldier, HANDPOS, fNewItem);
-          if (pObj->ubNumberOfObjects == 0) {
+          if (pObj.value.ubNumberOfObjects == 0) {
             return TRUE;
           }
-        } else if (!(Item[pSoldier->inv[HANDPOS].usItem].fFlags & ITEM_TWO_HANDED) && pSoldier->inv[SECONDHANDPOS].usItem == NONE) {
+        } else if (!(Item[pSoldier.value.inv[HANDPOS].usItem].fFlags & ITEM_TWO_HANDED) && pSoldier.value.inv[SECONDHANDPOS].usItem == NONE) {
           // put the one-handed weapon in the guy's 2nd hand...
           PlaceObject(pSoldier, SECONDHANDPOS, pObj);
           SetNewItem(pSoldier, SECONDHANDPOS, fNewItem);
-          if (pObj->ubNumberOfObjects == 0) {
+          if (pObj.value.ubNumberOfObjects == 0) {
             return TRUE;
           }
         }
@@ -2697,33 +2697,33 @@ function InternalAutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<O
       break;
 
     case IC_ARMOUR:
-      switch (Armour[Item[pObj->usItem].ubClassIndex].ubArmourClass) {
+      switch (Armour[Item[pObj.value.usItem].ubClassIndex].ubArmourClass) {
         case ARMOURCLASS_VEST:
-          if (pSoldier->inv[VESTPOS].usItem == NONE) {
+          if (pSoldier.value.inv[VESTPOS].usItem == NONE) {
             // put on the armour!
             PlaceObject(pSoldier, VESTPOS, pObj);
             SetNewItem(pSoldier, VESTPOS, fNewItem);
-            if (pObj->ubNumberOfObjects == 0) {
+            if (pObj.value.ubNumberOfObjects == 0) {
               return TRUE;
             }
           }
           break;
         case ARMOURCLASS_LEGGINGS:
-          if (pSoldier->inv[LEGPOS].usItem == NONE) {
+          if (pSoldier.value.inv[LEGPOS].usItem == NONE) {
             // put on the armour!
             PlaceObject(pSoldier, LEGPOS, pObj);
             SetNewItem(pSoldier, LEGPOS, fNewItem);
-            if (pObj->ubNumberOfObjects == 0) {
+            if (pObj.value.ubNumberOfObjects == 0) {
               return TRUE;
             }
           }
           break;
         case ARMOURCLASS_HELMET:
-          if (pSoldier->inv[HELMETPOS].usItem == NONE) {
+          if (pSoldier.value.inv[HELMETPOS].usItem == NONE) {
             // put on the armour!
             PlaceObject(pSoldier, HELMETPOS, pObj);
             SetNewItem(pSoldier, HELMETPOS, fNewItem);
-            if (pObj->ubNumberOfObjects == 0) {
+            if (pObj.value.ubNumberOfObjects == 0) {
               return TRUE;
             }
           }
@@ -2734,16 +2734,16 @@ function InternalAutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<O
       // otherwise stuff it in a slot somewhere
       break;
     case IC_FACE:
-      if ((pSoldier->inv[HEAD1POS].usItem == NOTHING) && CompatibleFaceItem(pObj->usItem, pSoldier->inv[HEAD2POS].usItem)) {
+      if ((pSoldier.value.inv[HEAD1POS].usItem == NOTHING) && CompatibleFaceItem(pObj.value.usItem, pSoldier.value.inv[HEAD2POS].usItem)) {
         PlaceObject(pSoldier, HEAD1POS, pObj);
         SetNewItem(pSoldier, HEAD1POS, fNewItem);
-        if (pObj->ubNumberOfObjects == 0) {
+        if (pObj.value.ubNumberOfObjects == 0) {
           return TRUE;
         }
-      } else if ((pSoldier->inv[HEAD2POS].usItem == NOTHING) && CompatibleFaceItem(pObj->usItem, pSoldier->inv[HEAD1POS].usItem)) {
+      } else if ((pSoldier.value.inv[HEAD2POS].usItem == NOTHING) && CompatibleFaceItem(pObj.value.usItem, pSoldier.value.inv[HEAD1POS].usItem)) {
         PlaceObject(pSoldier, HEAD2POS, pObj);
         SetNewItem(pSoldier, HEAD2POS, fNewItem);
-        if (pObj->ubNumberOfObjects == 0) {
+        if (pObj.value.ubNumberOfObjects == 0) {
           return TRUE;
         }
       }
@@ -2762,7 +2762,7 @@ function InternalAutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<O
         return FALSE;
       }
       if (bSlot == SECONDHANDPOS) {
-        if (pSoldier->inv[HANDPOS].usItem != NONE) {
+        if (pSoldier.value.inv[HANDPOS].usItem != NONE) {
           bSlot++;
           continue;
         }
@@ -2771,7 +2771,7 @@ function InternalAutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<O
       // and SECONDHANDPOS is full
       PlaceObject(pSoldier, bSlot, pObj);
       SetNewItem(pSoldier, bSlot, fNewItem);
-      if (pObj->ubNumberOfObjects == 0) {
+      if (pObj.value.ubNumberOfObjects == 0) {
         return TRUE;
       }
       bSlot++;
@@ -2779,22 +2779,22 @@ function InternalAutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<O
   } else {
     // Small items; don't allow stack/dumping for keys right now as that
     // would require a bunch of functions for finding the same object by two values...
-    if (ubPerSlot > 1 || Item[pObj->usItem].usItemClass == IC_KEY || Item[pObj->usItem].usItemClass == IC_MONEY) {
+    if (ubPerSlot > 1 || Item[pObj.value.usItem].usItemClass == IC_KEY || Item[pObj.value.usItem].usItemClass == IC_MONEY) {
       // First, look for slots with the same object, and dump into them.
       bSlot = HANDPOS;
       while (1) {
-        bSlot = FindObjWithin(pSoldier, pObj->usItem, bSlot, SMALLPOCK8POS);
+        bSlot = FindObjWithin(pSoldier, pObj.value.usItem, bSlot, SMALLPOCK8POS);
         if (bSlot == ITEM_NOT_FOUND) {
           break;
         }
         if (bSlot != bExcludeSlot) {
-          if (((Item[pObj->usItem].usItemClass == IC_MONEY) && pSoldier->inv[bSlot].uiMoneyAmount < MoneySlotLimit(bSlot)) || (Item[pObj->usItem].usItemClass != IC_MONEY && pSoldier->inv[bSlot].ubNumberOfObjects < ItemSlotLimit(pObj->usItem, bSlot))) {
+          if (((Item[pObj.value.usItem].usItemClass == IC_MONEY) && pSoldier.value.inv[bSlot].uiMoneyAmount < MoneySlotLimit(bSlot)) || (Item[pObj.value.usItem].usItemClass != IC_MONEY && pSoldier.value.inv[bSlot].ubNumberOfObjects < ItemSlotLimit(pObj.value.usItem, bSlot))) {
             // NEW: If in SKI, don't auto-place anything into a stackable slot that's currently hatched out!  Such slots
             // will disappear in their entirety if sold/moved, causing anything added through here to vanish also!
-            if (!((guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) && ShouldSoldierDisplayHatchOnItem(pSoldier->ubProfile, bSlot))) {
+            if (!((guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) && ShouldSoldierDisplayHatchOnItem(pSoldier.value.ubProfile, bSlot))) {
               PlaceObject(pSoldier, bSlot, pObj);
               SetNewItem(pSoldier, bSlot, fNewItem);
-              if (pObj->ubNumberOfObjects == 0) {
+              if (pObj.value.ubNumberOfObjects == 0) {
                 return TRUE;
               }
             }
@@ -2812,7 +2812,7 @@ function InternalAutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<O
       }
       PlaceObject(pSoldier, bSlot, pObj);
       SetNewItem(pSoldier, bSlot, fNewItem);
-      if (pObj->ubNumberOfObjects == 0) {
+      if (pObj.value.ubNumberOfObjects == 0) {
         return TRUE;
       }
       bSlot++;
@@ -2826,7 +2826,7 @@ function InternalAutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<O
       }
       PlaceObject(pSoldier, bSlot, pObj);
       SetNewItem(pSoldier, bSlot, fNewItem);
-      if (pObj->ubNumberOfObjects == 0) {
+      if (pObj.value.ubNumberOfObjects == 0) {
         return TRUE;
       }
       bSlot++;
@@ -2841,11 +2841,11 @@ function AutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYP
 
 function RemoveObjectFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   CHECKF(pObj);
-  if (pSoldier->inv[bPos].ubNumberOfObjects == 0) {
+  if (pSoldier.value.inv[bPos].ubNumberOfObjects == 0) {
     return FALSE;
   } else {
-    memcpy(pObj, &(pSoldier->inv[bPos]), sizeof(OBJECTTYPE));
-    DeleteObj(&(pSoldier->inv[bPos]));
+    memcpy(pObj, &(pSoldier.value.inv[bPos]), sizeof(OBJECTTYPE));
+    DeleteObj(&(pSoldier.value.inv[bPos]));
     return TRUE;
   }
 }
@@ -2855,19 +2855,19 @@ function RemoveKeyFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT
 
   CHECKF(pObj);
 
-  if ((pSoldier->pKeyRing[bKeyRingPosition].ubNumber == 0) || (pSoldier->pKeyRing[bKeyRingPosition].ubKeyID == INVALID_KEY_NUMBER)) {
+  if ((pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber == 0) || (pSoldier.value.pKeyRing[bKeyRingPosition].ubKeyID == INVALID_KEY_NUMBER)) {
     return FALSE;
   } else {
     // memcpy( pObj, &(pSoldier->inv[bPos]), sizeof( OBJECTTYPE ) );
 
     // create an object
-    ubItem = pSoldier->pKeyRing[bKeyRingPosition].ubKeyID;
+    ubItem = pSoldier.value.pKeyRing[bKeyRingPosition].ubKeyID;
 
-    if (pSoldier->pKeyRing[bKeyRingPosition].ubNumber > 1) {
-      pSoldier->pKeyRing[bKeyRingPosition].ubNumber--;
+    if (pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber > 1) {
+      pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber--;
     } else {
-      pSoldier->pKeyRing[bKeyRingPosition].ubNumber = 0;
-      pSoldier->pKeyRing[bKeyRingPosition].ubKeyID = INVALID_KEY_NUMBER;
+      pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber = 0;
+      pSoldier.value.pKeyRing[bKeyRingPosition].ubKeyID = INVALID_KEY_NUMBER;
     }
 
     return CreateKeyObject(pObj, 1, ubItem);
@@ -2881,21 +2881,21 @@ function RemoveKeysFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: IN
 
   CHECKF(pObj);
 
-  if ((pSoldier->pKeyRing[bKeyRingPosition].ubNumber == 0) || (pSoldier->pKeyRing[bKeyRingPosition].ubKeyID == INVALID_KEY_NUMBER)) {
+  if ((pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber == 0) || (pSoldier.value.pKeyRing[bKeyRingPosition].ubKeyID == INVALID_KEY_NUMBER)) {
     return FALSE;
   } else {
     // memcpy( pObj, &(pSoldier->inv[bPos]), sizeof( OBJECTTYPE ) );
 
-    if (pSoldier->pKeyRing[bKeyRingPosition].ubNumber < ubNumberOfKeys) {
-      ubNumberOfKeys = pSoldier->pKeyRing[bKeyRingPosition].ubNumber;
+    if (pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber < ubNumberOfKeys) {
+      ubNumberOfKeys = pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber;
     }
 
-    ubItems = pSoldier->pKeyRing[bKeyRingPosition].ubKeyID;
-    if (pSoldier->pKeyRing[bKeyRingPosition].ubNumber - ubNumberOfKeys > 0) {
-      pSoldier->pKeyRing[bKeyRingPosition].ubNumber--;
+    ubItems = pSoldier.value.pKeyRing[bKeyRingPosition].ubKeyID;
+    if (pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber - ubNumberOfKeys > 0) {
+      pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber--;
     } else {
-      pSoldier->pKeyRing[bKeyRingPosition].ubNumber = 0;
-      pSoldier->pKeyRing[bKeyRingPosition].ubKeyID = INVALID_KEY_NUMBER;
+      pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber = 0;
+      pSoldier.value.pKeyRing[bKeyRingPosition].ubKeyID = INVALID_KEY_NUMBER;
     }
 
     // create an object
@@ -2907,38 +2907,38 @@ function RemoveKeysFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: IN
 function AddKeysToSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, pObj: Pointer<OBJECTTYPE>): UINT8 {
   let ubNumberNotAdded: UINT8 = 0;
 
-  if (pSoldier->uiStatusFlags & SOLDIER_PC) // redundant but what the hey
+  if (pSoldier.value.uiStatusFlags & SOLDIER_PC) // redundant but what the hey
   {
-    if (KeyTable[pObj->ubKeyID].usDateFound == 0) {
-      KeyTable[pObj->ubKeyID].usDateFound = GetWorldDay();
-      KeyTable[pObj->ubKeyID].usSectorFound = SECTOR(pSoldier->sSectorX, pSoldier->sSectorY);
+    if (KeyTable[pObj.value.ubKeyID].usDateFound == 0) {
+      KeyTable[pObj.value.ubKeyID].usDateFound = GetWorldDay();
+      KeyTable[pObj.value.ubKeyID].usSectorFound = SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
     }
   }
 
   // check if we are going to far
-  if ((pSoldier->pKeyRing[bKeyRingPosition].ubNumber + pObj->ubNumberOfObjects) > Item[pObj->usItem].ubPerPocket) {
+  if ((pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber + pObj.value.ubNumberOfObjects) > Item[pObj.value.usItem].ubPerPocket) {
     // only take what we can
-    ubNumberNotAdded = pObj->ubNumberOfObjects - (Item[pObj->usItem].ubPerPocket - pSoldier->pKeyRing[bKeyRingPosition].ubNumber);
+    ubNumberNotAdded = pObj.value.ubNumberOfObjects - (Item[pObj.value.usItem].ubPerPocket - pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber);
 
     // set to max
-    pSoldier->pKeyRing[bKeyRingPosition].ubNumber = Item[pObj->usItem].ubPerPocket;
+    pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber = Item[pObj.value.usItem].ubPerPocket;
 
-    if (pSoldier->pKeyRing[bKeyRingPosition].ubNumber == 0) {
-      pSoldier->pKeyRing[bKeyRingPosition].ubKeyID = pObj->ubKeyID;
+    if (pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber == 0) {
+      pSoldier.value.pKeyRing[bKeyRingPosition].ubKeyID = pObj.value.ubKeyID;
     }
 
     // return number used
-    return pObj->ubNumberOfObjects - ubNumberNotAdded;
+    return pObj.value.ubNumberOfObjects - ubNumberNotAdded;
   } else {
     // check
-    if (pSoldier->pKeyRing[bKeyRingPosition].ubNumber == 0) {
-      pSoldier->pKeyRing[bKeyRingPosition].ubKeyID = pObj->ubKeyID;
+    if (pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber == 0) {
+      pSoldier.value.pKeyRing[bKeyRingPosition].ubKeyID = pObj.value.ubKeyID;
     }
 
-    pSoldier->pKeyRing[bKeyRingPosition].ubNumber += pObj->ubNumberOfObjects;
+    pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber += pObj.value.ubNumberOfObjects;
   }
 
-  return pObj->ubNumberOfObjects;
+  return pObj.value.ubNumberOfObjects;
 }
 
 function SwapKeysToSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, pObj: Pointer<OBJECTTYPE>): UINT8 {
@@ -2947,10 +2947,10 @@ function SwapKeysToSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, 
   let TempObj: OBJECTTYPE;
 
   // create temp object to hold keys currently in key ring slot
-  CreateKeyObject(&TempObj, pSoldier->pKeyRing[bKeyRingPosition].ubNumber, pSoldier->pKeyRing[bKeyRingPosition].ubKeyID);
+  CreateKeyObject(&TempObj, pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber, pSoldier.value.pKeyRing[bKeyRingPosition].ubKeyID);
 
-  pSoldier->pKeyRing[bKeyRingPosition].ubNumber = pObj->ubNumberOfObjects;
-  pSoldier->pKeyRing[bKeyRingPosition].ubKeyID = pObj->ubKeyID;
+  pSoldier.value.pKeyRing[bKeyRingPosition].ubNumber = pObj.value.ubNumberOfObjects;
+  pSoldier.value.pKeyRing[bKeyRingPosition].ubKeyID = pObj.value.ubKeyID;
 
   // swap params?
   CopyObj(&TempObj, pObj);
@@ -2963,7 +2963,7 @@ function CreateKeyObject(pObj: Pointer<OBJECTTYPE>, ubNumberOfKeys: UINT8, ubKey
 
   fRet = CreateItems((FIRST_KEY + LockTable[ubKeyID].usKeyItem), 100, ubNumberOfKeys, pObj);
   if (fRet) {
-    pObj->ubKeyID = ubKeyID;
+    pObj.value.ubKeyID = ubKeyID;
   }
   // fRet = CreateItems( (UINT16)(ubKeyIdValue + FIRST_KEY) , 100, ubNumberOfKeys, pObj )
   // return(  );
@@ -2993,8 +2993,8 @@ function TotalPoints(pObj: Pointer<OBJECTTYPE>): UINT16 {
   let usPoints: UINT16 = 0;
   let ubLoop: UINT8;
 
-  for (ubLoop = 0; ubLoop < pObj->ubNumberOfObjects; ubLoop++) {
-    usPoints += pObj->bStatus[ubLoop];
+  for (ubLoop = 0; ubLoop < pObj.value.ubNumberOfObjects; ubLoop++) {
+    usPoints += pObj.value.bStatus[ubLoop];
   }
   return usPoints;
 }
@@ -3005,21 +3005,21 @@ function UseKitPoints(pObj: Pointer<OBJECTTYPE>, usPoints: UINT16, pSoldier: Poi
   let bLoop: INT8;
   let usOriginalPoints: UINT16 = usPoints;
 
-  for (bLoop = pObj->ubNumberOfObjects - 1; bLoop >= 0; bLoop--) {
-    if (usPoints < pObj->bStatus[bLoop]) {
-      pObj->bStatus[bLoop] -= usPoints;
+  for (bLoop = pObj.value.ubNumberOfObjects - 1; bLoop >= 0; bLoop--) {
+    if (usPoints < pObj.value.bStatus[bLoop]) {
+      pObj.value.bStatus[bLoop] -= usPoints;
       return usOriginalPoints;
     } else {
       // consume this kit totally
-      usPoints -= pObj->bStatus[bLoop];
-      pObj->bStatus[bLoop] = 0;
+      usPoints -= pObj.value.bStatus[bLoop];
+      pObj.value.bStatus[bLoop] = 0;
 
-      pObj->ubNumberOfObjects--;
+      pObj.value.ubNumberOfObjects--;
     }
   }
 
   // check if pocket/hand emptied..update inventory, then update panel
-  if (pObj->ubNumberOfObjects == 0) {
+  if (pObj.value.ubNumberOfObjects == 0) {
     // Delete object
     DeleteObj(pObj);
 
@@ -3183,7 +3183,7 @@ function DefaultMagazine(usItem: UINT16): UINT16 {
   pWeapon = &(Weapon[usItem]);
   usLoop = 0;
   while (Magazine[usLoop].ubCalibre != NOAMMO) {
-    if (Magazine[usLoop].ubCalibre == pWeapon->ubCalibre && Magazine[usLoop].ubMagSize == pWeapon->ubMagSize) {
+    if (Magazine[usLoop].ubCalibre == pWeapon.value.ubCalibre && Magazine[usLoop].ubMagSize == pWeapon.value.ubMagSize) {
       return MagazineClassIndexToItemType(usLoop);
     }
 
@@ -3250,7 +3250,7 @@ function RandomMagazine(usItem: UINT16, ubPercentStandard: UINT8): UINT16 {
   // find & store all possible mag types that fit this gun
   usLoop = 0;
   while (Magazine[usLoop].ubCalibre != NOAMMO) {
-    if (Magazine[usLoop].ubCalibre == pWeapon->ubCalibre && Magazine[usLoop].ubMagSize == pWeapon->ubMagSize) {
+    if (Magazine[usLoop].ubCalibre == pWeapon.value.ubCalibre && Magazine[usLoop].ubMagSize == pWeapon.value.ubMagSize) {
       // store it! (make sure array is big enough)
       Assert(usPossibleMagCnt < MAX_AMMO_TYPES_PER_GUN);
       usPossibleMagIndex[usPossibleMagCnt++] = usLoop;
@@ -3290,24 +3290,24 @@ function CreateGun(usItem: UINT16, bStatus: INT8, pObj: Pointer<OBJECTTYPE>): BO
   }
 
   memset(pObj, 0, sizeof(OBJECTTYPE));
-  pObj->usItem = usItem;
-  pObj->ubNumberOfObjects = 1;
-  pObj->bGunStatus = bStatus;
-  pObj->ubImprintID = NO_PROFILE;
-  pObj->ubWeight = CalculateObjectWeight(pObj);
+  pObj.value.usItem = usItem;
+  pObj.value.ubNumberOfObjects = 1;
+  pObj.value.bGunStatus = bStatus;
+  pObj.value.ubImprintID = NO_PROFILE;
+  pObj.value.ubWeight = CalculateObjectWeight(pObj);
 
   if (Weapon[usItem].ubWeaponClass == MONSTERCLASS) {
-    pObj->ubGunShotsLeft = Weapon[usItem].ubMagSize;
-    pObj->ubGunAmmoType = AMMO_MONSTER;
+    pObj.value.ubGunShotsLeft = Weapon[usItem].ubMagSize;
+    pObj.value.ubGunAmmoType = AMMO_MONSTER;
   } else if (EXPLOSIVE_GUN(usItem)) {
     if (usItem == ROCKET_LAUNCHER) {
-      pObj->ubGunShotsLeft = 1;
+      pObj.value.ubGunShotsLeft = 1;
     } else {
       // cannon
-      pObj->ubGunShotsLeft = 0;
+      pObj.value.ubGunShotsLeft = 0;
     }
-    pObj->bGunAmmoStatus = 100;
-    pObj->ubGunAmmoType = 0;
+    pObj.value.bGunAmmoStatus = 100;
+    pObj.value.ubGunAmmoType = 0;
   } else {
     usAmmo = DefaultMagazine(usItem);
     Assert(usAmmo != 0);
@@ -3315,10 +3315,10 @@ function CreateGun(usItem: UINT16, bStatus: INT8, pObj: Pointer<OBJECTTYPE>): BO
       // item's calibre & mag size not found in magazine list!
       return FALSE;
     } else {
-      pObj->usGunAmmoItem = usAmmo;
-      pObj->ubGunAmmoType = Magazine[Item[usAmmo].ubClassIndex].ubAmmoType;
-      pObj->bGunAmmoStatus = 100;
-      pObj->ubGunShotsLeft = Magazine[Item[usAmmo].ubClassIndex].ubMagSize;
+      pObj.value.usGunAmmoItem = usAmmo;
+      pObj.value.ubGunAmmoType = Magazine[Item[usAmmo].ubClassIndex].ubAmmoType;
+      pObj.value.bGunAmmoStatus = 100;
+      pObj.value.ubGunShotsLeft = Magazine[Item[usAmmo].ubClassIndex].ubMagSize;
       /*
       if (usItem == CAWS)
       {
@@ -3338,10 +3338,10 @@ function CreateMagazine(usItem: UINT16, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
     return FALSE;
   }
   memset(pObj, 0, sizeof(OBJECTTYPE));
-  pObj->usItem = usItem;
-  pObj->ubNumberOfObjects = 1;
-  pObj->ubShotsLeft[0] = Magazine[Item[usItem].ubClassIndex].ubMagSize;
-  pObj->ubWeight = CalculateObjectWeight(pObj);
+  pObj.value.usItem = usItem;
+  pObj.value.ubNumberOfObjects = 1;
+  pObj.value.ubShotsLeft[0] = Magazine[Item[usItem].ubClassIndex].ubMagSize;
+  pObj.value.ubWeight = CalculateObjectWeight(pObj);
   return TRUE;
 }
 
@@ -3357,22 +3357,22 @@ function CreateItem(usItem: UINT16, bStatus: INT8, pObj: Pointer<OBJECTTYPE>): B
   } else if (Item[usItem].usItemClass == IC_AMMO) {
     fRet = CreateMagazine(usItem, pObj);
   } else {
-    pObj->usItem = usItem;
-    pObj->ubNumberOfObjects = 1;
+    pObj.value.usItem = usItem;
+    pObj.value.ubNumberOfObjects = 1;
     if (usItem == MONEY) {
       // special case... always set status to 100 when creating
       // and use status value to determine amount!
-      pObj->bStatus[0] = 100;
-      pObj->uiMoneyAmount = bStatus * 50;
+      pObj.value.bStatus[0] = 100;
+      pObj.value.uiMoneyAmount = bStatus * 50;
     } else {
-      pObj->bStatus[0] = bStatus;
+      pObj.value.bStatus[0] = bStatus;
     }
-    pObj->ubWeight = CalculateObjectWeight(pObj);
+    pObj.value.ubWeight = CalculateObjectWeight(pObj);
     fRet = TRUE;
   }
   if (fRet) {
     if (Item[usItem].fFlags & ITEM_DEFAULT_UNDROPPABLE) {
-      pObj->fFlags |= OBJECT_UNDROPPABLE;
+      pObj.value.fFlags |= OBJECT_UNDROPPABLE;
     }
   }
   return fRet;
@@ -3396,10 +3396,10 @@ function CreateItems(usItem: UINT16, bStatus: INT8, ubNumber: UINT8, pObj: Point
       // we reference status[0] here because the status value might actually be a
       // # of rounds of ammo, in which case the value won't be the bStatus value
       // passed in.
-      pObj->bStatus[ubLoop] = pObj->bStatus[0];
+      pObj.value.bStatus[ubLoop] = pObj.value.bStatus[0];
     }
-    pObj->ubNumberOfObjects = ubNumber;
-    pObj->ubWeight *= ubNumber;
+    pObj.value.ubNumberOfObjects = ubNumber;
+    pObj.value.ubWeight *= ubNumber;
     return TRUE;
   }
   return FALSE;
@@ -3410,7 +3410,7 @@ function CreateMoney(uiMoney: UINT32, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
 
   fOk = CreateItem(MONEY, 100, pObj);
   if (fOk) {
-    pObj->uiMoneyAmount = uiMoney;
+    pObj.value.uiMoneyAmount = uiMoney;
   }
   return fOk;
 }
@@ -3421,8 +3421,8 @@ function ArmBomb(pObj: Pointer<OBJECTTYPE>, bSetting: INT8): BOOLEAN {
   let fTimed: BOOLEAN = FALSE;
   let fSwitch: BOOLEAN = FALSE;
 
-  if (pObj->usItem == ACTION_ITEM) {
-    switch (pObj->bActionValue) {
+  if (pObj.value.usItem == ACTION_ITEM) {
+    switch (pObj.value.bActionValue) {
       case ACTION_ITEM_SMALL_PIT:
       case ACTION_ITEM_LARGE_PIT:
         fPressure = TRUE;
@@ -3433,11 +3433,11 @@ function ArmBomb(pObj: Pointer<OBJECTTYPE>, bSetting: INT8): BOOLEAN {
     }
   } else if (FindAttachment(pObj, DETONATOR) != ITEM_NOT_FOUND) {
     fTimed = TRUE;
-  } else if ((FindAttachment(pObj, REMDETONATOR) != ITEM_NOT_FOUND) || (pObj->usItem == ACTION_ITEM)) {
+  } else if ((FindAttachment(pObj, REMDETONATOR) != ITEM_NOT_FOUND) || (pObj.value.usItem == ACTION_ITEM)) {
     fRemote = TRUE;
-  } else if (pObj->usItem == MINE || pObj->usItem == TRIP_FLARE || pObj->usItem == TRIP_KLAXON || pObj->usItem == ACTION_ITEM) {
+  } else if (pObj.value.usItem == MINE || pObj.value.usItem == TRIP_FLARE || pObj.value.usItem == TRIP_KLAXON || pObj.value.usItem == ACTION_ITEM) {
     fPressure = TRUE;
-  } else if (pObj->usItem == SWITCH) {
+  } else if (pObj.value.usItem == SWITCH) {
     // this makes a remote detonator into a pressure-sensitive trigger
     if (bSetting == PANIC_FREQUENCY) {
       // panic trigger is only activated by expending APs, not by
@@ -3452,28 +3452,28 @@ function ArmBomb(pObj: Pointer<OBJECTTYPE>, bSetting: INT8): BOOLEAN {
   }
 
   if (fRemote) {
-    pObj->bDetonatorType = BOMB_REMOTE;
-    pObj->bFrequency = bSetting;
+    pObj.value.bDetonatorType = BOMB_REMOTE;
+    pObj.value.bFrequency = bSetting;
   } else if (fPressure) {
-    pObj->bDetonatorType = BOMB_PRESSURE;
-    pObj->bFrequency = 0;
+    pObj.value.bDetonatorType = BOMB_PRESSURE;
+    pObj.value.bFrequency = 0;
   } else if (fTimed) {
-    pObj->bDetonatorType = BOMB_TIMED;
+    pObj.value.bDetonatorType = BOMB_TIMED;
     // In realtime the player could choose to put down a bomb right before a turn expires, SO
     // add 1 to the setting in RT
-    pObj->bDelay = bSetting;
+    pObj.value.bDelay = bSetting;
     if (!(gTacticalStatus.uiFlags & TURNBASED && gTacticalStatus.uiFlags & INCOMBAT)) {
-      pObj->bDelay++;
+      pObj.value.bDelay++;
     }
   } else if (fSwitch) {
-    pObj->bDetonatorType = BOMB_SWITCH;
-    pObj->bFrequency = bSetting;
+    pObj.value.bDetonatorType = BOMB_SWITCH;
+    pObj.value.bFrequency = bSetting;
   } else {
     return FALSE;
   }
 
-  pObj->fFlags |= OBJECT_ARMED_BOMB;
-  pObj->usBombItem = pObj->usItem;
+  pObj.value.fFlags |= OBJECT_ARMED_BOMB;
+  pObj.value.usBombItem = pObj.value.usItem;
   return TRUE;
 }
 
@@ -3487,17 +3487,17 @@ function RenumberAttachments(pObj: Pointer<OBJECTTYPE>): void {
   while (!fDone) {
     bFirstSpace = -1;
     for (bAttachPos = 0; bAttachPos < MAX_ATTACHMENTS; bAttachPos++) {
-      if (pObj->usAttachItem[bAttachPos] == NOTHING) {
+      if (pObj.value.usAttachItem[bAttachPos] == NOTHING) {
         if (bFirstSpace == -1) {
           bFirstSpace = bAttachPos;
         }
       } else {
         if (bFirstSpace != -1) {
           // move the attachment!
-          pObj->usAttachItem[bFirstSpace] = pObj->usAttachItem[bAttachPos];
-          pObj->bAttachStatus[bFirstSpace] = pObj->bAttachStatus[bAttachPos];
-          pObj->usAttachItem[bAttachPos] = NOTHING;
-          pObj->bAttachStatus[bAttachPos] = 0;
+          pObj.value.usAttachItem[bFirstSpace] = pObj.value.usAttachItem[bAttachPos];
+          pObj.value.bAttachStatus[bFirstSpace] = pObj.value.bAttachStatus[bAttachPos];
+          pObj.value.usAttachItem[bAttachPos] = NOTHING;
+          pObj.value.bAttachStatus[bAttachPos] = 0;
           // restart loop at beginning, or quit if we reached the end of the
           // attachments
           break;
@@ -3519,46 +3519,46 @@ function RemoveAttachment(pObj: Pointer<OBJECTTYPE>, bAttachPos: INT8, pNewObj: 
   if (bAttachPos < 0 || bAttachPos >= MAX_ATTACHMENTS) {
     return FALSE;
   }
-  if (pObj->usAttachItem[bAttachPos] == NOTHING) {
+  if (pObj.value.usAttachItem[bAttachPos] == NOTHING) {
     return FALSE;
   }
 
-  if (Item[pObj->usAttachItem[bAttachPos]].fFlags & ITEM_INSEPARABLE) {
+  if (Item[pObj.value.usAttachItem[bAttachPos]].fFlags & ITEM_INSEPARABLE) {
     return FALSE;
   }
 
   // if pNewObj is passed in NULL, then we just delete the attachment
   if (pNewObj != NULL) {
-    CreateItem(pObj->usAttachItem[bAttachPos], pObj->bAttachStatus[bAttachPos], pNewObj);
+    CreateItem(pObj.value.usAttachItem[bAttachPos], pObj.value.bAttachStatus[bAttachPos], pNewObj);
   }
 
-  pObj->usAttachItem[bAttachPos] = NOTHING;
-  pObj->bAttachStatus[bAttachPos] = 0;
+  pObj.value.usAttachItem[bAttachPos] = NOTHING;
+  pObj.value.bAttachStatus[bAttachPos] = 0;
 
-  if (pNewObj && pNewObj->usItem == UNDER_GLAUNCHER) {
+  if (pNewObj && pNewObj.value.usItem == UNDER_GLAUNCHER) {
     // look for any grenade; if it exists, we must make it an
     // attachment of the grenade launcher
     bGrenade = FindAttachmentByClass(pObj, IC_GRENADE);
     if (bGrenade != ITEM_NOT_FOUND) {
-      pNewObj->usAttachItem[0] = pObj->usAttachItem[bGrenade];
-      pNewObj->bAttachStatus[0] = pObj->bAttachStatus[bGrenade];
-      pObj->usAttachItem[bGrenade] = NOTHING;
-      pObj->bAttachStatus[bGrenade] = 0;
-      pNewObj->ubWeight = CalculateObjectWeight(pNewObj);
+      pNewObj.value.usAttachItem[0] = pObj.value.usAttachItem[bGrenade];
+      pNewObj.value.bAttachStatus[0] = pObj.value.bAttachStatus[bGrenade];
+      pObj.value.usAttachItem[bGrenade] = NOTHING;
+      pObj.value.bAttachStatus[bGrenade] = 0;
+      pNewObj.value.ubWeight = CalculateObjectWeight(pNewObj);
     }
   }
 
   RenumberAttachments(pObj);
 
-  pObj->ubWeight = CalculateObjectWeight(pObj);
+  pObj.value.ubWeight = CalculateObjectWeight(pObj);
   return TRUE;
 }
 
 function SetNewItem(pSoldier: Pointer<SOLDIERTYPE>, ubInvPos: UINT8, fNewItem: BOOLEAN): void {
   if (fNewItem) {
-    pSoldier->bNewItemCount[ubInvPos] = -1;
-    pSoldier->bNewItemCycleCount[ubInvPos] = NEW_ITEM_CYCLE_COUNT;
-    pSoldier->fCheckForNewlyAddedItems = TRUE;
+    pSoldier.value.bNewItemCount[ubInvPos] = -1;
+    pSoldier.value.bNewItemCycleCount[ubInvPos] = NEW_ITEM_CYCLE_COUNT;
+    pSoldier.value.fCheckForNewlyAddedItems = TRUE;
   }
 }
 
@@ -3570,27 +3570,27 @@ function PlaceObjectInSoldierProfile(ubProfile: UINT8, pObject: Pointer<OBJECTTY
   let bStatus: INT8;
   let fReturnVal: BOOLEAN = FALSE;
 
-  usItem = pObject->usItem;
-  bStatus = pObject->bStatus[0];
+  usItem = pObject.value.usItem;
+  bStatus = pObject.value.bStatus[0];
   pSoldier = FindSoldierByProfileID(ubProfile, FALSE);
 
   if (Item[usItem].usItemClass == IC_MONEY && gMercProfiles[ubProfile].uiMoney > 0) {
-    gMercProfiles[ubProfile].uiMoney += pObject->uiMoneyAmount;
+    gMercProfiles[ubProfile].uiMoney += pObject.value.uiMoneyAmount;
     SetMoneyInSoldierProfile(ubProfile, gMercProfiles[ubProfile].uiMoney);
     return TRUE;
   }
 
   for (bLoop = BIGPOCK1POS; bLoop < SMALLPOCK8POS; bLoop++) {
-    if (gMercProfiles[ubProfile].bInvNumber[bLoop] == 0 && (pSoldier == NULL || pSoldier->inv[bLoop].usItem == NOTHING)) {
+    if (gMercProfiles[ubProfile].bInvNumber[bLoop] == 0 && (pSoldier == NULL || pSoldier.value.inv[bLoop].usItem == NOTHING)) {
       // CJC: Deal with money by putting money into # stored in profile
       if (Item[usItem].usItemClass == IC_MONEY) {
-        gMercProfiles[ubProfile].uiMoney += pObject->uiMoneyAmount;
+        gMercProfiles[ubProfile].uiMoney += pObject.value.uiMoneyAmount;
         // change any gold/silver to money
         usItem = MONEY;
       } else {
         gMercProfiles[ubProfile].inv[bLoop] = usItem;
         gMercProfiles[ubProfile].bInvStatus[bLoop] = bStatus;
-        gMercProfiles[ubProfile].bInvNumber[bLoop] = pObject->ubNumberOfObjects;
+        gMercProfiles[ubProfile].bInvNumber[bLoop] = pObject.value.ubNumberOfObjects;
       }
 
       fReturnVal = TRUE;
@@ -3607,9 +3607,9 @@ function PlaceObjectInSoldierProfile(ubProfile: UINT8, pObject: Pointer<OBJECTTY
     if (pSoldier != NULL) {
       // OK, place in soldier...
       if (usItem == MONEY) {
-        CreateMoney(gMercProfiles[ubProfile].uiMoney, &(pSoldier->inv[bLoop]));
+        CreateMoney(gMercProfiles[ubProfile].uiMoney, &(pSoldier.value.inv[bLoop]));
       } else {
-        if (pSoldier->ubProfile == MADLAB) {
+        if (pSoldier.value.ubProfile == MADLAB) {
           // remove attachments and drop them
           let Attachment: OBJECTTYPE;
 
@@ -3617,12 +3617,12 @@ function PlaceObjectInSoldierProfile(ubProfile: UINT8, pObject: Pointer<OBJECTTY
             // remove also checks for existence attachment
             if (RemoveAttachment(pObject, bLoop2, &Attachment) == TRUE) {
               // drop it in Madlab's tile
-              AddItemToPool(pSoldier->sGridNo, &Attachment, 1, 0, 0, 0);
+              AddItemToPool(pSoldier.value.sGridNo, &Attachment, 1, 0, 0, 0);
             }
           }
         }
 
-        CreateItem(usItem, bStatus, &(pSoldier->inv[bLoop]));
+        CreateItem(usItem, bStatus, &(pSoldier.value.inv[bLoop]));
       }
     }
   }
@@ -3709,7 +3709,7 @@ function RemoveInvObject(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16): void {
   bInvPos = FindObj(pSoldier, usItem);
   if (bInvPos != NO_SLOT) {
     // Erase!
-    memset(&(pSoldier->inv[bInvPos]), 0, sizeof(OBJECTTYPE));
+    memset(&(pSoldier.value.inv[bInvPos]), 0, sizeof(OBJECTTYPE));
 
     // Dirty!
     DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
@@ -3761,47 +3761,47 @@ function DamageItem(pObject: Pointer<OBJECTTYPE>, iDamage: INT32, fOnGround: BOO
   let bLoop: INT8;
   let bDamage: INT8;
 
-  if ((Item[pObject->usItem].fFlags & ITEM_DAMAGEABLE || Item[pObject->usItem].usItemClass == IC_AMMO) && pObject->ubNumberOfObjects > 0) {
-    for (bLoop = 0; bLoop < pObject->ubNumberOfObjects; bLoop++) {
+  if ((Item[pObject.value.usItem].fFlags & ITEM_DAMAGEABLE || Item[pObject.value.usItem].usItemClass == IC_AMMO) && pObject.value.ubNumberOfObjects > 0) {
+    for (bLoop = 0; bLoop < pObject.value.ubNumberOfObjects; bLoop++) {
       // if the status of the item is negative then it's trapped/jammed;
       // leave it alone
-      if (pObject->usItem != NOTHING && pObject->bStatus[bLoop] > 0) {
-        bDamage = CheckItemForDamage(pObject->usItem, iDamage);
-        switch (pObject->usItem) {
+      if (pObject.value.usItem != NOTHING && pObject.value.bStatus[bLoop] > 0) {
+        bDamage = CheckItemForDamage(pObject.value.usItem, iDamage);
+        switch (pObject.value.usItem) {
           case JAR_CREATURE_BLOOD:
           case JAR:
           case JAR_HUMAN_BLOOD:
           case JAR_ELIXIR:
             if (PreRandom(bDamage) > 5) {
               // smash!
-              bDamage = pObject->bStatus[bLoop];
+              bDamage = pObject.value.bStatus[bLoop];
             }
             break;
           default:
             break;
         }
-        if (Item[pObject->usItem].usItemClass == IC_AMMO) {
+        if (Item[pObject.value.usItem].usItemClass == IC_AMMO) {
           if (PreRandom(100) < bDamage) {
             // destroy clip completely
-            pObject->bStatus[bLoop] = 1;
+            pObject.value.bStatus[bLoop] = 1;
           }
         } else {
-          pObject->bStatus[bLoop] -= bDamage;
-          if (pObject->bStatus[bLoop] < 1) {
-            pObject->bStatus[bLoop] = 1;
+          pObject.value.bStatus[bLoop] -= bDamage;
+          if (pObject.value.bStatus[bLoop] < 1) {
+            pObject.value.bStatus[bLoop] = 1;
           }
         }
         // I don't think we increase viewrange based on items any more
         // FUN STUFF!  Check for explosives going off as a result!
-        if (Item[pObject->usItem].usItemClass & IC_EXPLOSV) {
-          if (CheckForChainReaction(pObject->usItem, pObject->bStatus[bLoop], bDamage, fOnGround)) {
+        if (Item[pObject.value.usItem].usItemClass & IC_EXPLOSV) {
+          if (CheckForChainReaction(pObject.value.usItem, pObject.value.bStatus[bLoop], bDamage, fOnGround)) {
             return TRUE;
           }
         }
 
         // remove item from index AFTER checking explosions because need item data for explosion!
-        if (pObject->bStatus[bLoop] == 1) {
-          if (pObject->ubNumberOfObjects > 1) {
+        if (pObject.value.bStatus[bLoop] == 1) {
+          if (pObject.value.ubNumberOfObjects > 1) {
             RemoveObjFrom(pObject, bLoop);
             // since an item was just removed, the items above the current were all shifted down one;
             // to process them properly, we have to back up 1 in the counter
@@ -3812,10 +3812,10 @@ function DamageItem(pObject: Pointer<OBJECTTYPE>, iDamage: INT32, fOnGround: BOO
     }
 
     for (bLoop = 0; bLoop < MAX_ATTACHMENTS; bLoop++) {
-      if (pObject->usAttachItem[bLoop] != NOTHING && pObject->bAttachStatus[bLoop] > 0) {
-        pObject->bAttachStatus[bLoop] -= CheckItemForDamage(pObject->usAttachItem[bLoop], iDamage);
-        if (pObject->bAttachStatus[bLoop] < 1) {
-          pObject->bAttachStatus[bLoop] = 1;
+      if (pObject.value.usAttachItem[bLoop] != NOTHING && pObject.value.bAttachStatus[bLoop] > 0) {
+        pObject.value.bAttachStatus[bLoop] -= CheckItemForDamage(pObject.value.usAttachItem[bLoop], iDamage);
+        if (pObject.value.bAttachStatus[bLoop] < 1) {
+          pObject.value.bAttachStatus[bLoop] = 1;
         }
       }
     }
@@ -3834,21 +3834,21 @@ function CheckEquipmentForDamage(pSoldier: Pointer<SOLDIERTYPE>, iDamage: INT32)
   }
 
   for (bSlot = 0; bSlot < NUM_INV_SLOTS; bSlot++) {
-    ubNumberOfObjects = pSoldier->inv[bSlot].ubNumberOfObjects;
-    fBlowsUp = DamageItem(&(pSoldier->inv[bSlot]), iDamage, FALSE);
+    ubNumberOfObjects = pSoldier.value.inv[bSlot].ubNumberOfObjects;
+    fBlowsUp = DamageItem(&(pSoldier.value.inv[bSlot]), iDamage, FALSE);
     if (fBlowsUp) {
       // blow it up!
       if (gTacticalStatus.ubAttackBusyCount) {
-        IgniteExplosion(pSoldier->ubAttackerID, CenterX(pSoldier->sGridNo), CenterY(pSoldier->sGridNo), 0, pSoldier->sGridNo, pSoldier->inv[bSlot].usItem, pSoldier->bLevel);
+        IgniteExplosion(pSoldier.value.ubAttackerID, CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), 0, pSoldier.value.sGridNo, pSoldier.value.inv[bSlot].usItem, pSoldier.value.bLevel);
       } else {
-        IgniteExplosion(pSoldier->ubID, CenterX(pSoldier->sGridNo), CenterY(pSoldier->sGridNo), 0, pSoldier->sGridNo, pSoldier->inv[bSlot].usItem, pSoldier->bLevel);
+        IgniteExplosion(pSoldier.value.ubID, CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), 0, pSoldier.value.sGridNo, pSoldier.value.inv[bSlot].usItem, pSoldier.value.bLevel);
       }
 
       // Remove item!
-      DeleteObj(&(pSoldier->inv[bSlot]));
+      DeleteObj(&(pSoldier.value.inv[bSlot]));
 
       DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
-    } else if (ubNumberOfObjects != pSoldier->inv[bSlot].ubNumberOfObjects) {
+    } else if (ubNumberOfObjects != pSoldier.value.inv[bSlot].ubNumberOfObjects) {
       DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
     }
   }
@@ -3861,15 +3861,15 @@ function CheckEquipmentForFragileItemDamage(pSoldier: Pointer<SOLDIERTYPE>, iDam
   let fPlayedGlassBreak: BOOLEAN = FALSE;
 
   for (bSlot = 0; bSlot < NUM_INV_SLOTS; bSlot++) {
-    switch (pSoldier->inv[bSlot].usItem) {
+    switch (pSoldier.value.inv[bSlot].usItem) {
       case JAR_CREATURE_BLOOD:
       case JAR:
       case JAR_HUMAN_BLOOD:
       case JAR_ELIXIR:
-        ubNumberOfObjects = pSoldier->inv[bSlot].ubNumberOfObjects;
-        DamageItem(&(pSoldier->inv[bSlot]), iDamage, FALSE);
-        if (!fPlayedGlassBreak && (ubNumberOfObjects != pSoldier->inv[bSlot].ubNumberOfObjects)) {
-          PlayJA2Sample(GLASS_CRACK, RATE_11025, SoundVolume(MIDVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo));
+        ubNumberOfObjects = pSoldier.value.inv[bSlot].ubNumberOfObjects;
+        DamageItem(&(pSoldier.value.inv[bSlot]), iDamage, FALSE);
+        if (!fPlayedGlassBreak && (ubNumberOfObjects != pSoldier.value.inv[bSlot].ubNumberOfObjects)) {
+          PlayJA2Sample(GLASS_CRACK, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
           fPlayedGlassBreak = TRUE;
           // only dirty once
           DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
@@ -3887,11 +3887,11 @@ function DamageItemOnGround(pObject: Pointer<OBJECTTYPE>, sGridNo: INT16, bLevel
   fBlowsUp = DamageItem(pObject, iDamage, TRUE);
   if (fBlowsUp) {
     // OK, Ignite this explosion!
-    IgniteExplosion(ubOwner, CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, pObject->usItem, bLevel);
+    IgniteExplosion(ubOwner, CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, pObject.value.usItem, bLevel);
 
     // Remove item!
     return TRUE;
-  } else if ((pObject->ubNumberOfObjects < 2) && (pObject->bStatus[0] < USABLE)) {
+  } else if ((pObject.value.ubNumberOfObjects < 2) && (pObject.value.bStatus[0] < USABLE)) {
     return TRUE;
   } else {
     return FALSE;
@@ -3901,7 +3901,7 @@ function DamageItemOnGround(pObject: Pointer<OBJECTTYPE>, sGridNo: INT16, bLevel
 // is the item a medical kit/first aid kit item?
 function IsMedicalKitItem(pObject: Pointer<OBJECTTYPE>): INT8 {
   // check item id against current medical kits
-  switch (pObject->usItem) {
+  switch (pObject.value.usItem) {
     case (MEDICKIT):
       // medical bag, return 1
       return 1;
@@ -3915,20 +3915,20 @@ function SwapHandItems(pSoldier: Pointer<SOLDIERTYPE>): void {
   let fOk: BOOLEAN;
 
   CHECKV(pSoldier);
-  if (pSoldier->inv[HANDPOS].usItem == NOTHING || pSoldier->inv[SECONDHANDPOS].usItem == NOTHING) {
+  if (pSoldier.value.inv[HANDPOS].usItem == NOTHING || pSoldier.value.inv[SECONDHANDPOS].usItem == NOTHING) {
     // whatever is in the second hand can be swapped to the main hand!
-    SwapObjs(&(pSoldier->inv[HANDPOS]), &(pSoldier->inv[SECONDHANDPOS]));
+    SwapObjs(&(pSoldier.value.inv[HANDPOS]), &(pSoldier.value.inv[SECONDHANDPOS]));
     DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
   } else {
-    if (TwoHandedItem(pSoldier->inv[SECONDHANDPOS].usItem)) {
+    if (TwoHandedItem(pSoldier.value.inv[SECONDHANDPOS].usItem)) {
       // must move the item in the main hand elsewhere in the inventory
-      fOk = InternalAutoPlaceObject(pSoldier, &(pSoldier->inv[HANDPOS]), FALSE, HANDPOS);
+      fOk = InternalAutoPlaceObject(pSoldier, &(pSoldier.value.inv[HANDPOS]), FALSE, HANDPOS);
       if (!fOk) {
         return;
       }
       // the main hand is now empty so a swap is going to work...
     }
-    SwapObjs(&(pSoldier->inv[HANDPOS]), &(pSoldier->inv[SECONDHANDPOS]));
+    SwapObjs(&(pSoldier.value.inv[HANDPOS]), &(pSoldier.value.inv[SECONDHANDPOS]));
     DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
   }
 }
@@ -3939,15 +3939,15 @@ function SwapOutHandItem(pSoldier: Pointer<SOLDIERTYPE>): void {
   CHECKV(pSoldier);
 
   // puts away the item in the main hand
-  if (pSoldier->inv[HANDPOS].usItem != NOTHING) {
-    if (pSoldier->inv[SECONDHANDPOS].usItem == NOTHING) {
+  if (pSoldier.value.inv[HANDPOS].usItem != NOTHING) {
+    if (pSoldier.value.inv[SECONDHANDPOS].usItem == NOTHING) {
       // just swap the hand item to the second hand
-      SwapObjs(&(pSoldier->inv[HANDPOS]), &(pSoldier->inv[SECONDHANDPOS]));
+      SwapObjs(&(pSoldier.value.inv[HANDPOS]), &(pSoldier.value.inv[SECONDHANDPOS]));
       DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
       return;
     } else {
       // try placing it somewhere else in our inventory
-      fOk = AutoPlaceObject(pSoldier, &(pSoldier->inv[HANDPOS]), FALSE);
+      fOk = AutoPlaceObject(pSoldier, &(pSoldier.value.inv[HANDPOS]), FALSE);
       if (fOk) {
         DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
       }
@@ -3963,10 +3963,10 @@ function WaterDamage(pSoldier: Pointer<SOLDIERTYPE>): void {
   let bDieSize: INT8;
   let uiRoll: UINT32;
 
-  if (pSoldier->bOverTerrainType == DEEP_WATER) {
+  if (pSoldier.value.bOverTerrainType == DEEP_WATER) {
     for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
       // if there's an item here that can get water damaged...
-      if (pSoldier->inv[bLoop].usItem && Item[pSoldier->inv[bLoop].usItem].fFlags & ITEM_WATER_DAMAGES) {
+      if (pSoldier.value.inv[bLoop].usItem && Item[pSoldier.value.inv[bLoop].usItem].fFlags & ITEM_WATER_DAMAGES) {
         // roll the 'ol 100-sided dice
         uiRoll = PreRandom(100);
 
@@ -3976,38 +3976,38 @@ function WaterDamage(pSoldier: Pointer<SOLDIERTYPE>): void {
           bDamage = (10 - uiRoll);
 
           // but don't let anything drop lower than 1%
-          pSoldier->inv[bLoop].bStatus[0] -= bDamage;
-          if (pSoldier->inv[bLoop].bStatus[0] < 1) {
-            pSoldier->inv[bLoop].bStatus[0] = 1;
+          pSoldier.value.inv[bLoop].bStatus[0] -= bDamage;
+          if (pSoldier.value.inv[bLoop].bStatus[0] < 1) {
+            pSoldier.value.inv[bLoop].bStatus[0] = 1;
           }
         }
       }
     }
   }
-  if (pSoldier->bCamo > 0 && !HAS_SKILL_TRAIT(pSoldier, CAMOUFLAGED)) {
+  if (pSoldier.value.bCamo > 0 && !HAS_SKILL_TRAIT(pSoldier, CAMOUFLAGED)) {
     // reduce camouflage by 2% per tile of deep water
     // and 1% for medium water
-    if (pSoldier->bOverTerrainType == DEEP_WATER) {
-      pSoldier->bCamo = __max(0, pSoldier->bCamo - 2);
+    if (pSoldier.value.bOverTerrainType == DEEP_WATER) {
+      pSoldier.value.bCamo = __max(0, pSoldier.value.bCamo - 2);
     } else {
-      pSoldier->bCamo = __max(0, pSoldier->bCamo - 1);
+      pSoldier.value.bCamo = __max(0, pSoldier.value.bCamo - 1);
     }
-    if (pSoldier->bCamo == 0) {
+    if (pSoldier.value.bCamo == 0) {
       // Reload palettes....
-      if (pSoldier->bInSector) {
+      if (pSoldier.value.bInSector) {
         CreateSoldierPalettes(pSoldier);
       }
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_CAMMO_WASHED_OFF], pSoldier->name);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_CAMMO_WASHED_OFF], pSoldier.value.name);
     }
   }
-  if (pSoldier->bTeam == gbPlayerNum && pSoldier->bMonsterSmell > 0) {
-    if (pSoldier->bOverTerrainType == DEEP_WATER) {
+  if (pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bMonsterSmell > 0) {
+    if (pSoldier.value.bOverTerrainType == DEEP_WATER) {
       bDieSize = 10;
     } else {
       bDieSize = 20;
     }
     if (Random(bDieSize) == 0) {
-      pSoldier->bMonsterSmell--;
+      pSoldier.value.bMonsterSmell--;
     }
   }
 
@@ -4020,7 +4020,7 @@ function ApplyCammo(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, p
 
   (*pfGoodAPs) = TRUE;
 
-  if (pObj->usItem != CAMOUFLAGEKIT) {
+  if (pObj.value.usItem != CAMOUFLAGEKIT) {
     return FALSE;
   }
 
@@ -4035,23 +4035,23 @@ function ApplyCammo(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, p
     return FALSE;
   }
 
-  if (pSoldier->bCamo == 100) {
+  if (pSoldier.value.bCamo == 100) {
     // nothing more to add
     return FALSE;
   }
 
   // points are used up at a rate of 50% kit = 100% cammo on guy
   // add 1 to round off
-  bPointsToUse = (100 - pSoldier->bCamo + 1) / 2;
+  bPointsToUse = (100 - pSoldier.value.bCamo + 1) / 2;
   bPointsToUse = __min(bPointsToUse, usTotalKitPoints);
-  pSoldier->bCamo = __min(100, pSoldier->bCamo + bPointsToUse * 2);
+  pSoldier.value.bCamo = __min(100, pSoldier.value.bCamo + bPointsToUse * 2);
 
   UseKitPoints(pObj, bPointsToUse, pSoldier);
 
   DeductPoints(pSoldier, AP_CAMOFLAGE, 0);
 
   // Reload palettes....
-  if (pSoldier->bInSector) {
+  if (pSoldier.value.bInSector) {
     CreateSoldierPalettes(pSoldier);
   }
 
@@ -4064,7 +4064,7 @@ function ApplyCanteen(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>,
 
   (*pfGoodAPs) = TRUE;
 
-  if (pObj->usItem != CANTEEN) {
+  if (pObj.value.usItem != CANTEEN) {
     return FALSE;
   }
 
@@ -4079,8 +4079,8 @@ function ApplyCanteen(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>,
     return TRUE;
   }
 
-  if (pSoldier->bTeam == gbPlayerNum) {
-    if (gMercProfiles[pSoldier->ubProfile].bSex == MALE) {
+  if (pSoldier.value.bTeam == gbPlayerNum) {
+    if (gMercProfiles[pSoldier.value.ubProfile].bSex == MALE) {
       PlayJA2Sample(DRINK_CANTEEN_MALE, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
     } else {
       PlayJA2Sample(DRINK_CANTEEN_FEMALE, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
@@ -4090,7 +4090,7 @@ function ApplyCanteen(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>,
   sPointsToUse = __min(20, usTotalKitPoints);
 
   // CJC Feb 9.  Canteens don't seem effective enough, so doubled return from them
-  DeductPoints(pSoldier, AP_DRINK, (2 * sPointsToUse * -(100 - pSoldier->bBreath)));
+  DeductPoints(pSoldier, AP_DRINK, (2 * sPointsToUse * -(100 - pSoldier.value.bBreath)));
 
   UseKitPoints(pObj, sPointsToUse, pSoldier);
 
@@ -4105,7 +4105,7 @@ function ApplyElixir(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, 
 
   (*pfGoodAPs) = TRUE;
 
-  if (pObj->usItem != JAR_ELIXIR) {
+  if (pObj.value.usItem != JAR_ELIXIR) {
     return FALSE;
   }
 
@@ -4122,12 +4122,12 @@ function ApplyElixir(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, 
 
   DeductPoints(pSoldier, AP_CAMOFLAGE, 0);
 
-  sPointsToUse = (MAX_HUMAN_CREATURE_SMELL - pSoldier->bMonsterSmell) * 2;
+  sPointsToUse = (MAX_HUMAN_CREATURE_SMELL - pSoldier.value.bMonsterSmell) * 2;
   sPointsToUse = __min(sPointsToUse, usTotalKitPoints);
 
   UseKitPoints(pObj, sPointsToUse, pSoldier);
 
-  pSoldier->bMonsterSmell += sPointsToUse / 2;
+  pSoldier.value.bMonsterSmell += sPointsToUse / 2;
 
   return TRUE;
 }
@@ -4141,15 +4141,15 @@ function ConvertObjectTypeMoneyValueToProfileMoneyValue(uiMoneyAmount: UINT32): 
 }
 
 function ItemIsCool(pObj: Pointer<OBJECTTYPE>): BOOLEAN {
-  if (pObj->bStatus[0] < 60) {
+  if (pObj.value.bStatus[0] < 60) {
     return FALSE;
   }
-  if (Item[pObj->usItem].usItemClass & IC_WEAPON) {
-    if (Weapon[pObj->usItem].ubDeadliness >= 30) {
+  if (Item[pObj.value.usItem].usItemClass & IC_WEAPON) {
+    if (Weapon[pObj.value.usItem].ubDeadliness >= 30) {
       return TRUE;
     }
-  } else if (Item[pObj->usItem].usItemClass & IC_ARMOUR) {
-    if (Armour[Item[pObj->usItem].ubClassIndex].ubProtection >= 20) {
+  } else if (Item[pObj.value.usItem].usItemClass & IC_ARMOUR) {
+    if (Armour[Item[pObj.value.usItem].ubClassIndex].ubProtection >= 20) {
       return TRUE;
     }
   }
@@ -4163,18 +4163,18 @@ function ActivateXRayDevice(pSoldier: Pointer<SOLDIERTYPE>): void {
   let bBatteries: INT8;
 
   // check for batteries
-  bBatteries = FindAttachment(&(pSoldier->inv[HANDPOS]), BATTERIES);
+  bBatteries = FindAttachment(&(pSoldier.value.inv[HANDPOS]), BATTERIES);
   if (bBatteries == NO_SLOT) {
     // doesn't work without batteries!
     return;
   }
 
   // use up 8-12 percent of batteries
-  pSoldier->inv[HANDPOS].bAttachStatus[bBatteries] -= (8 + Random(5));
-  if (pSoldier->inv[HANDPOS].bAttachStatus[bBatteries] <= 0) {
+  pSoldier.value.inv[HANDPOS].bAttachStatus[bBatteries] -= (8 + Random(5));
+  if (pSoldier.value.inv[HANDPOS].bAttachStatus[bBatteries] <= 0) {
     // destroy batteries
-    pSoldier->inv[HANDPOS].usAttachItem[bBatteries] = NOTHING;
-    pSoldier->inv[HANDPOS].bAttachStatus[bBatteries] = 0;
+    pSoldier.value.inv[HANDPOS].usAttachItem[bBatteries] = NOTHING;
+    pSoldier.value.inv[HANDPOS].bAttachStatus[bBatteries] = 0;
   }
 
   // first, scan through all mercs and turn off xrayed flag for anyone
@@ -4182,9 +4182,9 @@ function ActivateXRayDevice(pSoldier: Pointer<SOLDIERTYPE>): void {
   for (uiSlot = 0; uiSlot < guiNumMercSlots; uiSlot++) {
     pSoldier2 = MercSlots[uiSlot];
     if (pSoldier2) {
-      if ((pSoldier2->ubMiscSoldierFlags & SOLDIER_MISC_XRAYED) && (pSoldier2->ubXRayedBy == pSoldier->ubID)) {
-        pSoldier2->ubMiscSoldierFlags &= (~SOLDIER_MISC_XRAYED);
-        pSoldier2->ubXRayedBy = NOBODY;
+      if ((pSoldier2.value.ubMiscSoldierFlags & SOLDIER_MISC_XRAYED) && (pSoldier2.value.ubXRayedBy == pSoldier.value.ubID)) {
+        pSoldier2.value.ubMiscSoldierFlags &= (~SOLDIER_MISC_XRAYED);
+        pSoldier2.value.ubXRayedBy = NOBODY;
       }
     }
   }
@@ -4192,20 +4192,20 @@ function ActivateXRayDevice(pSoldier: Pointer<SOLDIERTYPE>): void {
   for (uiSlot = 0; uiSlot < guiNumMercSlots; uiSlot++) {
     pSoldier2 = MercSlots[uiSlot];
     if (pSoldier2) {
-      if (pSoldier2->bTeam != pSoldier->bTeam && PythSpacesAway(pSoldier->sGridNo, pSoldier2->sGridNo) < XRAY_RANGE) {
-        pSoldier2->ubMiscSoldierFlags |= SOLDIER_MISC_XRAYED;
-        pSoldier2->ubXRayedBy = pSoldier->ubID;
+      if (pSoldier2.value.bTeam != pSoldier.value.bTeam && PythSpacesAway(pSoldier.value.sGridNo, pSoldier2.value.sGridNo) < XRAY_RANGE) {
+        pSoldier2.value.ubMiscSoldierFlags |= SOLDIER_MISC_XRAYED;
+        pSoldier2.value.ubXRayedBy = pSoldier.value.ubID;
       }
     }
   }
-  pSoldier->uiXRayActivatedTime = GetWorldTotalSeconds();
+  pSoldier.value.uiXRayActivatedTime = GetWorldTotalSeconds();
 }
 
 function TurnOffXRayEffects(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pSoldier2: Pointer<SOLDIERTYPE>;
   let uiSlot: UINT32;
 
-  if (!pSoldier->uiXRayActivatedTime) {
+  if (!pSoldier.value.uiXRayActivatedTime) {
     return;
   }
 
@@ -4214,11 +4214,11 @@ function TurnOffXRayEffects(pSoldier: Pointer<SOLDIERTYPE>): void {
   for (uiSlot = 0; uiSlot < guiNumMercSlots; uiSlot++) {
     pSoldier2 = MercSlots[uiSlot];
     if (pSoldier2) {
-      if ((pSoldier2->ubMiscSoldierFlags & SOLDIER_MISC_XRAYED) && (pSoldier2->ubXRayedBy == pSoldier->ubID)) {
-        pSoldier2->ubMiscSoldierFlags &= (~SOLDIER_MISC_XRAYED);
-        pSoldier2->ubXRayedBy = NOBODY;
+      if ((pSoldier2.value.ubMiscSoldierFlags & SOLDIER_MISC_XRAYED) && (pSoldier2.value.ubXRayedBy == pSoldier.value.ubID)) {
+        pSoldier2.value.ubMiscSoldierFlags &= (~SOLDIER_MISC_XRAYED);
+        pSoldier2.value.ubXRayedBy = NOBODY;
       }
     }
   }
-  pSoldier->uiXRayActivatedTime = 0;
+  pSoldier.value.uiXRayActivatedTime = 0;
 }

@@ -116,14 +116,14 @@ function CalcDoorInfoUsingSmartMethod(iMapIndex: UINT32, pusDoorType: Pointer<UI
   let usWallOrientation: UINT16;
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
-    GetWallOrientation(pWall->usIndex, &usWallOrientation);
+    GetWallOrientation(pWall.value.usIndex, &usWallOrientation);
     *pusIndex = CalcSmartDoorIndex(usWallOrientation) - 1;
     *pusDoorType = CalcSmartDoorType();
     return TRUE;
   }
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
-    GetWallOrientation(pWall->usIndex, &usWallOrientation);
+    GetWallOrientation(pWall.value.usIndex, &usWallOrientation);
     *pusIndex = CalcSmartDoorIndex(usWallOrientation) - 1;
     *pusDoorType = CalcSmartDoorType();
     return TRUE;
@@ -138,27 +138,27 @@ function CalcWindowInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<
 
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
-    GetTileType(pWall->usIndex, &uiTileType);
+    GetTileType(pWall.value.usIndex, &uiTileType);
     *pusWallType = uiTileType;
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a window, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
       *pusWallType = SearchForWallType(iMapIndex);
     }
-    GetWallOrientation(pWall->usIndex, &usWallOrientation);
+    GetWallOrientation(pWall.value.usIndex, &usWallOrientation);
     *pusIndex = CalcSmartWindowIndex(usWallOrientation) - 1;
     return TRUE;
   }
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
-    GetTileType(pWall->usIndex, &uiTileType);
+    GetTileType(pWall.value.usIndex, &uiTileType);
     *pusWallType = uiTileType;
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a window, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
       *pusWallType = SearchForWallType(iMapIndex);
     }
-    GetWallOrientation(pWall->usIndex, &usWallOrientation);
+    GetWallOrientation(pWall.value.usIndex, &usWallOrientation);
     *pusIndex = CalcSmartWindowIndex(usWallOrientation) - 1;
     return TRUE;
   }
@@ -179,27 +179,27 @@ function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Poin
 
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
-    GetTileType(pWall->usIndex, &uiTileType);
+    GetTileType(pWall.value.usIndex, &uiTileType);
     *pusWallType = uiTileType;
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a walltype, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
       *pusWallType = SearchForWallType(iMapIndex);
     }
-    GetWallOrientation(pWall->usIndex, &usWallOrientation);
+    GetWallOrientation(pWall.value.usIndex, &usWallOrientation);
     *pusIndex = CalcSmartBrokenWallIndex(usWallOrientation) - 1;
     return TRUE;
   }
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
-    GetTileType(pWall->usIndex, &uiTileType);
+    GetTileType(pWall.value.usIndex, &uiTileType);
     *pusWallType = uiTileType;
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a walltype, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
       *pusWallType = SearchForWallType(iMapIndex);
     }
-    GetWallOrientation(pWall->usIndex, &usWallOrientation);
+    GetWallOrientation(pWall.value.usIndex, &usWallOrientation);
     *pusIndex = CalcSmartBrokenWallIndex(usWallOrientation) - 1;
     return TRUE;
   }
@@ -422,20 +422,20 @@ function PasteSmartDoor(iMapIndex: UINT32): void {
   let usWallOrientation: UINT16;
 
   if (pWall = GetVerticalWall(iMapIndex)) {
-    GetWallOrientation(pWall->usIndex, &usWallOrientation);
+    GetWallOrientation(pWall.value.usIndex, &usWallOrientation);
     usIndex = CalcSmartDoorIndex(usWallOrientation);
     usDoorType = CalcSmartDoorType();
     AddToUndoList(iMapIndex);
     GetTileIndexFromTypeSubIndex(usDoorType, usIndex, &usTileIndex);
-    ReplaceStructIndex(iMapIndex, pWall->usIndex, usTileIndex);
+    ReplaceStructIndex(iMapIndex, pWall.value.usIndex, usTileIndex);
   }
   if (pWall = GetHorizontalWall(iMapIndex)) {
-    GetWallOrientation(pWall->usIndex, &usWallOrientation);
+    GetWallOrientation(pWall.value.usIndex, &usWallOrientation);
     usIndex = CalcSmartDoorIndex(usWallOrientation);
     usDoorType = CalcSmartDoorType();
     AddToUndoList(iMapIndex);
     GetTileIndexFromTypeSubIndex(usDoorType, usIndex, &usTileIndex);
-    ReplaceStructIndex(iMapIndex, pWall->usIndex, usTileIndex);
+    ReplaceStructIndex(iMapIndex, pWall.value.usIndex, usTileIndex);
   }
 }
 
@@ -450,36 +450,36 @@ function PasteSmartWindow(iMapIndex: UINT32): void {
 
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
-    GetTileType(pWall->usIndex, &uiTileType);
+    GetTileType(pWall.value.usIndex, &uiTileType);
     usWallType = uiTileType;
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a window, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
       usWallType = SearchForWallType(iMapIndex);
     }
-    GetWallOrientation(pWall->usIndex, &usWallOrientation);
+    GetWallOrientation(pWall.value.usIndex, &usWallOrientation);
     usIndex = CalcSmartWindowIndex(usWallOrientation);
     // Calculate the new graphic for the window type selected.
 
     AddToUndoList(iMapIndex);
     GetTileIndexFromTypeSubIndex(usWallType, usIndex, &usNewWallIndex);
-    ReplaceStructIndex(iMapIndex, pWall->usIndex, usNewWallIndex);
+    ReplaceStructIndex(iMapIndex, pWall.value.usIndex, usNewWallIndex);
   }
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
-    GetTileType(pWall->usIndex, &uiTileType);
+    GetTileType(pWall.value.usIndex, &uiTileType);
     usWallType = uiTileType;
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a window, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
       usWallType = SearchForWallType(iMapIndex);
     }
-    GetWallOrientation(pWall->usIndex, &usWallOrientation);
+    GetWallOrientation(pWall.value.usIndex, &usWallOrientation);
     usIndex = CalcSmartWindowIndex(usWallOrientation);
     // Calculate the new graphic for the window type selected.
     AddToUndoList(iMapIndex);
     GetTileIndexFromTypeSubIndex(usWallType, usIndex, &usNewWallIndex);
-    ReplaceStructIndex(iMapIndex, pWall->usIndex, usNewWallIndex);
+    ReplaceStructIndex(iMapIndex, pWall.value.usIndex, usNewWallIndex);
   }
 }
 
@@ -494,40 +494,40 @@ function PasteSmartBrokenWall(iMapIndex: UINT32): void {
 
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
-    GetTileType(pWall->usIndex, &uiTileType);
+    GetTileType(pWall.value.usIndex, &uiTileType);
     usWallType = uiTileType;
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
       usWallType = SearchForWallType(iMapIndex);
     }
-    GetWallOrientation(pWall->usIndex, &usWallOrientation);
+    GetWallOrientation(pWall.value.usIndex, &usWallOrientation);
     usIndex = CalcSmartBrokenWallIndex(usWallOrientation);
     if (usIndex == 0xffff) {
       AddToUndoList(iMapIndex);
-      RemoveStruct(iMapIndex, pWall->usIndex);
+      RemoveStruct(iMapIndex, pWall.value.usIndex);
     } else {
       AddToUndoList(iMapIndex);
       GetTileIndexFromTypeSubIndex(usWallType, usIndex, &usNewWallIndex);
-      ReplaceStructIndex(iMapIndex, pWall->usIndex, usNewWallIndex);
+      ReplaceStructIndex(iMapIndex, pWall.value.usIndex, usNewWallIndex);
     }
   }
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
-    GetTileType(pWall->usIndex, &uiTileType);
+    GetTileType(pWall.value.usIndex, &uiTileType);
     usWallType = uiTileType;
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a window, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
       usWallType = SearchForWallType(iMapIndex);
     }
-    GetWallOrientation(pWall->usIndex, &usWallOrientation);
+    GetWallOrientation(pWall.value.usIndex, &usWallOrientation);
     usIndex = CalcSmartBrokenWallIndex(usWallOrientation);
     if (usIndex == 0xffff) {
       AddToUndoList(iMapIndex);
-      RemoveStruct(iMapIndex, pWall->usIndex);
+      RemoveStruct(iMapIndex, pWall.value.usIndex);
     } else {
       AddToUndoList(iMapIndex);
       GetTileIndexFromTypeSubIndex(usWallType, usIndex, &usNewWallIndex);
-      ReplaceStructIndex(iMapIndex, pWall->usIndex, usNewWallIndex);
+      ReplaceStructIndex(iMapIndex, pWall.value.usIndex, usNewWallIndex);
     }
     // Calculate the new graphic for the window type selected.
   }

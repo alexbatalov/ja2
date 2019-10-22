@@ -259,16 +259,16 @@ function EnterGIOScreen(): BOOLEAN {
     usPosY += GIO_GAP_BN_SETTINGS;
   }
   if (gGameOptions.ubDifficultyLevel == DIF_LEVEL_EASY)
-    ButtonList[guiDifficultySettingsToggles[GIO_DIFF_EASY]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiDifficultySettingsToggles[GIO_DIFF_EASY]].value.uiFlags |= BUTTON_CLICKED_ON;
 
   else if (gGameOptions.ubDifficultyLevel == DIF_LEVEL_MEDIUM)
-    ButtonList[guiDifficultySettingsToggles[GIO_DIFF_MED]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiDifficultySettingsToggles[GIO_DIFF_MED]].value.uiFlags |= BUTTON_CLICKED_ON;
 
   else if (gGameOptions.ubDifficultyLevel == DIF_LEVEL_HARD)
-    ButtonList[guiDifficultySettingsToggles[GIO_DIFF_HARD]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiDifficultySettingsToggles[GIO_DIFF_HARD]].value.uiFlags |= BUTTON_CLICKED_ON;
 
   else
-    ButtonList[guiDifficultySettingsToggles[GIO_DIFF_MED]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiDifficultySettingsToggles[GIO_DIFF_MED]].value.uiFlags |= BUTTON_CLICKED_ON;
 
   //
   // Check box to toggle Game settings ( realistic, sci fi )
@@ -282,9 +282,9 @@ function EnterGIOScreen(): BOOLEAN {
     usPosY += GIO_GAP_BN_SETTINGS;
   }
   if (gGameOptions.fSciFi)
-    ButtonList[guiGameStyleToggles[GIO_SCI_FI]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiGameStyleToggles[GIO_SCI_FI]].value.uiFlags |= BUTTON_CLICKED_ON;
   else
-    ButtonList[guiGameStyleToggles[GIO_REALISTIC]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiGameStyleToggles[GIO_REALISTIC]].value.uiFlags |= BUTTON_CLICKED_ON;
 
   // JA2Gold: iron man buttons
   usPosY = GIO_IRON_MAN_SETTING_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
@@ -295,9 +295,9 @@ function EnterGIOScreen(): BOOLEAN {
     usPosY += GIO_GAP_BN_SETTINGS;
   }
   if (gGameOptions.fIronManMode)
-    ButtonList[guiGameSaveToggles[GIO_IRON_MAN]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiGameSaveToggles[GIO_IRON_MAN]].value.uiFlags |= BUTTON_CLICKED_ON;
   else
-    ButtonList[guiGameSaveToggles[GIO_CAN_SAVE]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiGameSaveToggles[GIO_CAN_SAVE]].value.uiFlags |= BUTTON_CLICKED_ON;
 
   //
   // Check box to toggle Gun options
@@ -312,9 +312,9 @@ function EnterGIOScreen(): BOOLEAN {
   }
 
   if (gGameOptions.fGunNut)
-    ButtonList[guiGunOptionToggles[GIO_GUN_NUT]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiGunOptionToggles[GIO_GUN_NUT]].value.uiFlags |= BUTTON_CLICKED_ON;
   else
-    ButtonList[guiGunOptionToggles[GIO_REDUCED_GUNS]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiGunOptionToggles[GIO_REDUCED_GUNS]].value.uiFlags |= BUTTON_CLICKED_ON;
 
   // JA2 Gold: no more timed turns
   //
@@ -543,28 +543,28 @@ function BtnDifficultyTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let ubButton: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       let cnt: UINT8;
 
       for (cnt = 0; cnt < NUM_DIFF_SETTINGS; cnt++) {
-        ButtonList[guiDifficultySettingsToggles[cnt]]->uiFlags &= ~BUTTON_CLICKED_ON;
+        ButtonList[guiDifficultySettingsToggles[cnt]].value.uiFlags &= ~BUTTON_CLICKED_ON;
       }
 
       // enable the current button
-      btn->uiFlags |= BUTTON_CLICKED_ON;
+      btn.value.uiFlags |= BUTTON_CLICKED_ON;
     } else {
       let cnt: UINT8;
       let fAnyChecked: BOOLEAN = FALSE;
 
       // if none of the other boxes are checked, do not uncheck this box
       for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
-        if (ButtonList[guiDifficultySettingsToggles[cnt]]->uiFlags & BUTTON_CLICKED_ON) {
+        if (ButtonList[guiDifficultySettingsToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
           fAnyChecked = TRUE;
         }
       }
       // if none are checked, re check this one
       if (!fAnyChecked)
-        btn->uiFlags |= BUTTON_CLICKED_ON;
+        btn.value.uiFlags |= BUTTON_CLICKED_ON;
     }
   }
 }
@@ -573,28 +573,28 @@ function BtnGameStyleTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let ubButton: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       let cnt: UINT8;
 
       for (cnt = 0; cnt < NUM_GAME_STYLES; cnt++) {
-        ButtonList[guiGameStyleToggles[cnt]]->uiFlags &= ~BUTTON_CLICKED_ON;
+        ButtonList[guiGameStyleToggles[cnt]].value.uiFlags &= ~BUTTON_CLICKED_ON;
       }
 
       // enable the current button
-      btn->uiFlags |= BUTTON_CLICKED_ON;
+      btn.value.uiFlags |= BUTTON_CLICKED_ON;
     } else {
       let cnt: UINT8;
       let fAnyChecked: BOOLEAN = FALSE;
 
       // if none of the other boxes are checked, do not uncheck this box
       for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
-        if (ButtonList[guiGameStyleToggles[cnt]]->uiFlags & BUTTON_CLICKED_ON) {
+        if (ButtonList[guiGameStyleToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
           fAnyChecked = TRUE;
         }
       }
       // if none are checked, re check this one
       if (!fAnyChecked)
-        btn->uiFlags |= BUTTON_CLICKED_ON;
+        btn.value.uiFlags |= BUTTON_CLICKED_ON;
     }
   }
 }
@@ -603,28 +603,28 @@ function BtnGameSaveTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     //		UINT8	ubButton = (UINT8)MSYS_GetBtnUserData( btn, 0 );
 
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       let cnt: UINT8;
 
       for (cnt = 0; cnt < NUM_SAVE_OPTIONS; cnt++) {
-        ButtonList[guiGameSaveToggles[cnt]]->uiFlags &= ~BUTTON_CLICKED_ON;
+        ButtonList[guiGameSaveToggles[cnt]].value.uiFlags &= ~BUTTON_CLICKED_ON;
       }
 
       // enable the current button
-      btn->uiFlags |= BUTTON_CLICKED_ON;
+      btn.value.uiFlags |= BUTTON_CLICKED_ON;
     } else {
       let cnt: UINT8;
       let fAnyChecked: BOOLEAN = FALSE;
 
       // if none of the other boxes are checked, do not uncheck this box
       for (cnt = 0; cnt < NUM_SAVE_OPTIONS; cnt++) {
-        if (ButtonList[guiGameSaveToggles[cnt]]->uiFlags & BUTTON_CLICKED_ON) {
+        if (ButtonList[guiGameSaveToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
           fAnyChecked = TRUE;
         }
       }
       // if none are checked, re check this one
       if (!fAnyChecked)
-        btn->uiFlags |= BUTTON_CLICKED_ON;
+        btn.value.uiFlags |= BUTTON_CLICKED_ON;
     }
   }
 }
@@ -633,28 +633,28 @@ function BtnGunOptionsTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let ubButton: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
-    if (btn->uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       let cnt: UINT8;
 
       for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
-        ButtonList[guiGunOptionToggles[cnt]]->uiFlags &= ~BUTTON_CLICKED_ON;
+        ButtonList[guiGunOptionToggles[cnt]].value.uiFlags &= ~BUTTON_CLICKED_ON;
       }
 
       // enable the current button
-      btn->uiFlags |= BUTTON_CLICKED_ON;
+      btn.value.uiFlags |= BUTTON_CLICKED_ON;
     } else {
       let cnt: UINT8;
       let fAnyChecked: BOOLEAN = FALSE;
 
       // if none of the other boxes are checked, do not uncheck this box
       for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
-        if (ButtonList[guiGunOptionToggles[cnt]]->uiFlags & BUTTON_CLICKED_ON) {
+        if (ButtonList[guiGunOptionToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
           fAnyChecked = TRUE;
         }
       }
       // if none are checked, re check this one
       if (!fAnyChecked)
-        btn->uiFlags |= BUTTON_CLICKED_ON;
+        btn.value.uiFlags |= BUTTON_CLICKED_ON;
     }
   }
 }
@@ -702,11 +702,11 @@ void BtnTimedTurnsTogglesCallback( GUI_BUTTON *btn, INT32 reason )
 
 function BtnGIODoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // if the user doesnt have IRON MAN mode selected
     if (!DisplayMessageToUserAboutIronManMode()) {
@@ -714,21 +714,21 @@ function BtnGIODoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       DisplayMessageToUserAboutGameDifficulty();
     }
 
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
 function BtnGIOCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     gubGameOptionScreenHandler = GIO_CANCEL;
 
-    InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
+    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
 }
 
@@ -736,7 +736,7 @@ function GetCurrentDifficultyButtonSetting(): UINT8 {
   let cnt: UINT8;
 
   for (cnt = 0; cnt < NUM_DIFF_SETTINGS; cnt++) {
-    if (ButtonList[guiDifficultySettingsToggles[cnt]]->uiFlags & BUTTON_CLICKED_ON) {
+    if (ButtonList[guiDifficultySettingsToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
       return cnt;
     }
   }
@@ -748,7 +748,7 @@ function GetCurrentGameStyleButtonSetting(): UINT8 {
   let cnt: UINT8;
 
   for (cnt = 0; cnt < NUM_GAME_STYLES; cnt++) {
-    if (ButtonList[guiGameStyleToggles[cnt]]->uiFlags & BUTTON_CLICKED_ON) {
+    if (ButtonList[guiGameStyleToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
       return cnt;
     }
   }
@@ -759,7 +759,7 @@ function GetCurrentGunButtonSetting(): UINT8 {
   let cnt: UINT8;
 
   for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
-    if (ButtonList[guiGunOptionToggles[cnt]]->uiFlags & BUTTON_CLICKED_ON) {
+    if (ButtonList[guiGunOptionToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
       return cnt;
     }
   }
@@ -787,7 +787,7 @@ function GetCurrentGameSaveButtonSetting(): UINT8 {
   let cnt: UINT8;
 
   for (cnt = 0; cnt < NUM_SAVE_OPTIONS; cnt++) {
-    if (ButtonList[guiGameSaveToggles[cnt]]->uiFlags & BUTTON_CLICKED_ON) {
+    if (ButtonList[guiGameSaveToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
       return cnt;
     }
   }
@@ -919,7 +919,7 @@ function ConfirmGioIronManMessageBoxCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_YES) {
     gubGameOptionScreenHandler = GIO_IRON_MAN_MODE;
   } else {
-    ButtonList[guiGameSaveToggles[GIO_IRON_MAN]]->uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[guiGameSaveToggles[GIO_CAN_SAVE]]->uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiGameSaveToggles[GIO_IRON_MAN]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[guiGameSaveToggles[GIO_CAN_SAVE]].value.uiFlags |= BUTTON_CLICKED_ON;
   }
 }

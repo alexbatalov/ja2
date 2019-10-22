@@ -471,7 +471,7 @@ function ClickEditorButton(iEditorButtonID: INT32): void {
   if (iEditorButton[iEditorButtonID] != -1) {
     butn = ButtonList[iEditorButton[iEditorButtonID]];
     if (butn)
-      butn->uiFlags |= BUTTON_CLICKED_ON;
+      butn.value.uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
@@ -482,7 +482,7 @@ function UnclickEditorButton(iEditorButtonID: INT32): void {
   if (iEditorButton[iEditorButtonID] != -1) {
     butn = ButtonList[iEditorButton[iEditorButtonID]];
     if (butn)
-      butn->uiFlags &= (~BUTTON_CLICKED_ON);
+      butn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
@@ -509,7 +509,7 @@ function ClickEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: IN
     Assert(iEditorButton[i] != -1);
     b = ButtonList[iEditorButton[i]];
     Assert(b);
-    b->uiFlags |= BUTTON_CLICKED_ON;
+    b.value.uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
@@ -520,7 +520,7 @@ function UnclickEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: 
     Assert(iEditorButton[i] != -1);
     b = ButtonList[iEditorButton[i]];
     Assert(b);
-    b->uiFlags &= (~BUTTON_CLICKED_ON);
+    b.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
@@ -618,27 +618,27 @@ function RenderMapEntryPointsAndLights(): void {
 }
 
 function BuildTriggerName(pItem: Pointer<OBJECTTYPE>, szItemName: Pointer<UINT16>): void {
-  if (pItem->usItem == SWITCH) {
-    if (pItem->bFrequency == PANIC_FREQUENCY)
+  if (pItem.value.usItem == SWITCH) {
+    if (pItem.value.bFrequency == PANIC_FREQUENCY)
       swprintf(szItemName, "Panic Trigger1");
-    else if (pItem->bFrequency == PANIC_FREQUENCY_2)
+    else if (pItem.value.bFrequency == PANIC_FREQUENCY_2)
       swprintf(szItemName, "Panic Trigger2");
-    else if (pItem->bFrequency == PANIC_FREQUENCY_3)
+    else if (pItem.value.bFrequency == PANIC_FREQUENCY_3)
       swprintf(szItemName, "Panic Trigger3");
     else
-      swprintf(szItemName, "Trigger%d", pItem->bFrequency - 50);
+      swprintf(szItemName, "Trigger%d", pItem.value.bFrequency - 50);
   } else {
     // action item
-    if (pItem->bDetonatorType == BOMB_PRESSURE)
+    if (pItem.value.bDetonatorType == BOMB_PRESSURE)
       swprintf(szItemName, "Pressure Action");
-    else if (pItem->bFrequency == PANIC_FREQUENCY)
+    else if (pItem.value.bFrequency == PANIC_FREQUENCY)
       swprintf(szItemName, "Panic Action1");
-    else if (pItem->bFrequency == PANIC_FREQUENCY_2)
+    else if (pItem.value.bFrequency == PANIC_FREQUENCY_2)
       swprintf(szItemName, "Panic Action2");
-    else if (pItem->bFrequency == PANIC_FREQUENCY_3)
+    else if (pItem.value.bFrequency == PANIC_FREQUENCY_3)
       swprintf(szItemName, "Panic Action3");
     else
-      swprintf(szItemName, "Action%d", pItem->bFrequency - 50);
+      swprintf(szItemName, "Action%d", pItem.value.bFrequency - 50);
   }
 }
 
@@ -712,35 +712,35 @@ function RenderSelectedItemBlownUp(): void {
     return;
 
   // Display the enlarged item graphic
-  uiVideoObjectIndex = GetInterfaceGraphicForItem(&Item[gpItem->usItem]);
+  uiVideoObjectIndex = GetInterfaceGraphicForItem(&Item[gpItem.value.usItem]);
   GetVideoObject(&hVObject, uiVideoObjectIndex);
 
-  sWidth = hVObject->pETRLEObject[Item[gpItem->usItem].ubGraphicNum].usWidth;
-  sOffsetX = hVObject->pETRLEObject[Item[gpItem->usItem].ubGraphicNum].sOffsetX;
+  sWidth = hVObject.value.pETRLEObject[Item[gpItem.value.usItem].ubGraphicNum].usWidth;
+  sOffsetX = hVObject.value.pETRLEObject[Item[gpItem.value.usItem].ubGraphicNum].sOffsetX;
   xp = sScreenX + (40 - sWidth - sOffsetX * 2) / 2;
 
-  sHeight = hVObject->pETRLEObject[Item[gpItem->usItem].ubGraphicNum].usHeight;
-  sOffsetY = hVObject->pETRLEObject[Item[gpItem->usItem].ubGraphicNum].sOffsetY;
+  sHeight = hVObject.value.pETRLEObject[Item[gpItem.value.usItem].ubGraphicNum].usHeight;
+  sOffsetY = hVObject.value.pETRLEObject[Item[gpItem.value.usItem].ubGraphicNum].sOffsetY;
   yp = sScreenY + (20 - sHeight - sOffsetY * 2) / 2;
 
-  BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, Item[gpItem->usItem].ubGraphicNum, xp, yp, Get16BPPColor(FROMRGB(0, 140, 170)), TRUE);
+  BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, Item[gpItem.value.usItem].ubGraphicNum, xp, yp, Get16BPPColor(FROMRGB(0, 140, 170)), TRUE);
 
   // Display the item name above it
   SetFont(FONT10ARIAL);
   SetFontForeground(FONT_YELLOW);
   SetFontShadow(FONT_NEARBLACK);
-  if (gpItem->usItem == ACTION_ITEM || gpItem->usItem == SWITCH) {
+  if (gpItem.value.usItem == ACTION_ITEM || gpItem.value.usItem == SWITCH) {
     BuildTriggerName(gpItem, szItemName);
-  } else if (Item[gpItem->usItem].usItemClass == IC_KEY) {
-    swprintf(szItemName, "%S", LockTable[gpItem->ubKeyID].ubEditorName);
+  } else if (Item[gpItem.value.usItem].usItemClass == IC_KEY) {
+    swprintf(szItemName, "%S", LockTable[gpItem.value.ubKeyID].ubEditorName);
   } else {
-    LoadItemInfo(gpItem->usItem, szItemName, NULL);
+    LoadItemInfo(gpItem.value.usItem, szItemName, NULL);
   }
   xp = sScreenX - (StringPixLength(szItemName, FONT10ARIAL) - 40) / 2;
   yp -= 10;
   mprintf(xp, yp, szItemName);
 
-  if (gpItem->usItem == ACTION_ITEM) {
+  if (gpItem.value.usItem == ACTION_ITEM) {
     let pStr: Pointer<UINT16>;
     pStr = GetActionItemName(gpItem);
     xp = sScreenX - (StringPixLength(pStr, FONT10ARIALBOLD) - 40) / 2;
@@ -757,14 +757,14 @@ function RenderSelectedItemBlownUp(): void {
   Assert(pItemPool);
   while (pItemPool) {
     i++;
-    pItemPool = pItemPool->pNext;
+    pItemPool = pItemPool.value.pNext;
   }
   xp = sScreenX;
   yp = sScreenY + 10;
   mprintf(xp, yp, "%d", i);
 
   // If the item is hidden, render a blinking H (just like DG)
-  if (gWorldItems[gpItemPool->iItemIndex].bVisible == HIDDEN_ITEM || gWorldItems[gpItemPool->iItemIndex].bVisible == BURIED) {
+  if (gWorldItems[gpItemPool.value.iItemIndex].bVisible == HIDDEN_ITEM || gWorldItems[gpItemPool.value.iItemIndex].bVisible == BURIED) {
     SetFont(FONT10ARIALBOLD);
     if (GetJA2Clock() % 1000 > 500) {
       SetFontForeground(249);

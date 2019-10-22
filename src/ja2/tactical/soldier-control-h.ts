@@ -80,8 +80,8 @@ const SOLDIER_LOOK_NEXT_TURNSOLDIER = 0x80000000;
 #define	SOLDIER_TRAIT_MARTIALARTS		0x0800
 #define	SOLDIER_TRAIT_KNIFING				0x1000
 */
-const HAS_SKILL_TRAIT = (s, t) => (s->ubSkillTrait1 == t || s->ubSkillTrait2 == t);
-const NUM_SKILL_TRAITS = (s, t) => ((s->ubSkillTrait1 == t) ? ((s->ubSkillTrait2 == t) ? 2 : 1) : ((s->ubSkillTrait2 == t) ? 1 : 0));
+const HAS_SKILL_TRAIT = (s, t) => (s.value.ubSkillTrait1 == t || s.value.ubSkillTrait2 == t);
+const NUM_SKILL_TRAITS = (s, t) => ((s.value.ubSkillTrait1 == t) ? ((s.value.ubSkillTrait2 == t) ? 2 : 1) : ((s.value.ubSkillTrait2 == t) ? 1 : 0));
 
 const SOLDIER_QUOTE_SAID_IN_SHIT = 0x0001;
 const SOLDIER_QUOTE_SAID_LOW_BREATH = 0x0002;
@@ -126,7 +126,7 @@ const BLOODTIME = 5;
 const FOOTPRINTTIME = 2;
 const MIN_BLEEDING_THRESHOLD = 12; // you're OK while <4 Yellow life bars
 
-const BANDAGED = (s) => (s->bLifeMax - s->bLife - s->bBleeding);
+const BANDAGED = (s) => (s.value.bLifeMax - s.value.bLife - s.value.bBleeding);
 
 // amount of time a stats is to be displayed differently, due to change
 const CHANGE_STAT_RECENTLY_DURATION = 60000;
@@ -261,7 +261,7 @@ const SOLDIER_CLASS_MILITIA = (bSoldierClass) => ((bSoldierClass >= SOLDIER_CLAS
 // This macro should be used whenever we want to see if someone is neutral
 // IF WE ARE CONSIDERING ATTACKING THEM.  Creatures & bloodcats will attack neutrals
 // but they can't attack empty vehicles!!
-const CONSIDERED_NEUTRAL = (me, them) => ((them->bNeutral) && (me->bTeam != CREATURE_TEAM || (them->uiStatusFlags & SOLDIER_VEHICLE)));
+const CONSIDERED_NEUTRAL = (me, them) => ((them.value.bNeutral) && (me.value.bTeam != CREATURE_TEAM || (them.value.uiStatusFlags & SOLDIER_VEHICLE)));
 
 interface KEY_ON_RING {
   ubKeyID: UINT8;
@@ -923,7 +923,7 @@ interface ANIM_PROF {
 // Functions
 ////////////
 
-const PTR_CIVILIAN = () => (pSoldier->bTeam == CIV_TEAM);
-const PTR_CROUCHED = () => (gAnimControl[pSoldier->usAnimState].ubHeight == ANIM_CROUCH);
-const PTR_STANDING = () => (gAnimControl[pSoldier->usAnimState].ubHeight == ANIM_STAND);
-const PTR_PRONE = () => (gAnimControl[pSoldier->usAnimState].ubHeight == ANIM_PRONE);
+const PTR_CIVILIAN = () => (pSoldier.value.bTeam == CIV_TEAM);
+const PTR_CROUCHED = () => (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_CROUCH);
+const PTR_STANDING = () => (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_STAND);
+const PTR_PRONE = () => (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_PRONE);

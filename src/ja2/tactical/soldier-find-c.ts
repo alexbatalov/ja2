@@ -64,19 +64,19 @@ function GetSoldierFindFlags(ubID: UINT16): UINT32 {
     MercFlags |= SELECTED_MERC;
   }
   if (ubID >= gTacticalStatus.Team[gbPlayerNum].bFirstID && ubID <= gTacticalStatus.Team[gbPlayerNum].bLastID) {
-    if ((pSoldier->uiStatusFlags & SOLDIER_VEHICLE) && !GetNumberInVehicle(pSoldier->bVehicleID)) {
+    if ((pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !GetNumberInVehicle(pSoldier.value.bVehicleID)) {
       // Don't do anything!
     } else {
       // It's our own merc
       MercFlags |= OWNED_MERC;
 
-      if (pSoldier->bAssignment < ON_DUTY) {
+      if (pSoldier.value.bAssignment < ON_DUTY) {
         MercFlags |= ONDUTY_MERC;
       }
     }
   } else {
     // Check the side, etc
-    if (!pSoldier->bNeutral && (pSoldier->bSide != gbPlayerNum)) {
+    if (!pSoldier.value.bNeutral && (pSoldier.value.bSide != gbPlayerNum)) {
       // It's an enemy merc
       MercFlags |= ENEMY_MERC;
     } else {
@@ -90,15 +90,15 @@ function GetSoldierFindFlags(ubID: UINT16): UINT32 {
     MercFlags |= NOINTERRUPT_MERC;
   }
 
-  if (pSoldier->bLife < OKLIFE) {
+  if (pSoldier.value.bLife < OKLIFE) {
     MercFlags |= UNCONSCIOUS_MERC;
   }
 
-  if (pSoldier->bLife == 0) {
+  if (pSoldier.value.bLife == 0) {
     MercFlags |= DEAD_MERC;
   }
 
-  if (pSoldier->bVisible != -1 || (gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
+  if (pSoldier.value.bVisible != -1 || (gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
     MercFlags |= VISIBLE_MERC;
   }
 
@@ -145,15 +145,15 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
     fInGridNo = FALSE;
 
     if (pSoldier != NULL) {
-      if (pSoldier->bActive && !(pSoldier->uiStatusFlags & SOLDIER_DEAD) && (pSoldier->bVisible != -1 || (gTacticalStatus.uiFlags & SHOW_ALL_MERCS))) {
+      if (pSoldier.value.bActive && !(pSoldier.value.uiStatusFlags & SOLDIER_DEAD) && (pSoldier.value.bVisible != -1 || (gTacticalStatus.uiFlags & SHOW_ALL_MERCS))) {
         // OK, ignore if we are a passenger...
-        if (pSoldier->uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
+        if (pSoldier.value.uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
           continue;
         }
 
         // If we want same level, skip if buggy's not on the same level!
         if (uiFlags & FIND_SOLDIER_SAMELEVEL) {
-          if (pSoldier->bLevel != (uiFlags >> 16)) {
+          if (pSoldier.value.bLevel != (uiFlags >> 16)) {
             continue;
           }
         }
@@ -163,7 +163,7 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
         if (uiFlags & FIND_SOLDIER_GRIDNO) {
           fDoFull = FALSE;
         } else if (uiFlags & FIND_SOLDIER_SELECTIVE) {
-          if (pSoldier->ubID >= gTacticalStatus.Team[gbPlayerNum].bFirstID && pSoldier->ubID <= gTacticalStatus.Team[gbPlayerNum].bLastID) {
+          if (pSoldier.value.ubID >= gTacticalStatus.Team[gbPlayerNum].bFirstID && pSoldier.value.ubID <= gTacticalStatus.Team[gbPlayerNum].bLastID) {
             fDoFull = TRUE;
           } else {
             fDoFull = FALSE;
@@ -191,13 +191,13 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
             fInScreenRect = TRUE;
           }
 
-          if (pSoldier->sGridNo == sGridNo) {
+          if (pSoldier.value.sGridNo == sGridNo) {
             fInGridNo = TRUE;
           }
 
           // ATE: If we are an enemy....
           if (!gGameSettings.fOptions[TOPTION_SMART_CURSOR]) {
-            if (pSoldier->ubID >= gTacticalStatus.Team[gbPlayerNum].bFirstID && pSoldier->ubID <= gTacticalStatus.Team[gbPlayerNum].bLastID) {
+            if (pSoldier.value.ubID >= gTacticalStatus.Team[gbPlayerNum].bFirstID && pSoldier.value.ubID <= gTacticalStatus.Team[gbPlayerNum].bLastID) {
               // ATE: NOT if we are in action or comfirm action mode
               if (gCurrentUIMode != ACTION_MODE && gCurrentUIMode != CONFIRM_ACTION_MODE || gUIActionModeChangeDueToMouseOver) {
                 fInScreenRect = FALSE;
@@ -207,7 +207,7 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
 
           // ATE: Refine this further....
           // Check if this is the selected guy....
-          if (pSoldier->ubID == gusSelectedSoldier) {
+          if (pSoldier.value.ubID == gusSelectedSoldier) {
             // Are we in action mode...
             if (gCurrentUIMode == ACTION_MODE || gCurrentUIMode == CONFIRM_ACTION_MODE) {
               // Are we in medic mode?
@@ -221,21 +221,21 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
           // Make sure we are always on guy if we are on same gridno
           if (fInScreenRect || fInGridNo) {
             // Check if we are a vehicle and refine if so....
-            if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {
-              usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier->usAnimState);
+            if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+              usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
 
               if (usAnimSurface != INVALID_ANIMATION_SURFACE) {
                 iMercScreenX = (sScreenX - aRect.iLeft);
                 iMercScreenY = (-1 * (sScreenY - aRect.iBottom));
 
-                if (!CheckVideoObjectScreenCoordinateInData(gAnimSurfaceDatabase[usAnimSurface].hVideoObject, pSoldier->usAniFrame, iMercScreenX, iMercScreenY)) {
+                if (!CheckVideoObjectScreenCoordinateInData(gAnimSurfaceDatabase[usAnimSurface].hVideoObject, pSoldier.value.usAniFrame, iMercScreenX, iMercScreenY)) {
                   continue;
                 }
               }
             }
 
             // If thgis is from a gridno, use mouse pos!
-            if (pSoldier->sGridNo == sGridNo) {
+            if (pSoldier.value.sGridNo == sGridNo) {
             }
 
             // Only break here if we're not creating a stack of these fellas
@@ -243,7 +243,7 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
               gfHandleStack = TRUE;
 
               // Add this one!
-              gSoldierStack.ubIDs[gSoldierStack.bNum] = pSoldier->ubID;
+              gSoldierStack.ubIDs[gSoldierStack.bNum] = pSoldier.value.ubID;
               gSoldierStack.bNum++;
 
               // Determine if it's the current
@@ -260,9 +260,9 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
               if (gSoldierStack.fUseGridNo) {
                 fSoldierFound = FALSE;
                 break;
-              } else if (gSoldierStack.ubIDs[gSoldierStack.bCur] == pSoldier->ubID) {
+              } else if (gSoldierStack.ubIDs[gSoldierStack.bCur] == pSoldier.value.ubID) {
                 // Set it!
-                ubBestMerc = pSoldier->ubID;
+                ubBestMerc = pSoldier.value.ubID;
 
                 fSoldierFound = TRUE;
                 break;
@@ -274,7 +274,7 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
                 sHeighestMercScreenY = sMaxScreenMercY;
 
                 // Set it!
-                ubBestMerc = pSoldier->ubID;
+                ubBestMerc = pSoldier.value.ubID;
               }
 
               fSoldierFound = TRUE;
@@ -286,9 +286,9 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
           // Selective means don't give out enemy mercs if they are not visible
 
           ///&& !NewOKDestination( pSoldier, sGridNo, TRUE, (INT8)gsInterfaceLevel )
-          if (pSoldier->sGridNo == sGridNo && !NewOKDestination(pSoldier, sGridNo, TRUE, gsInterfaceLevel)) {
+          if (pSoldier.value.sGridNo == sGridNo && !NewOKDestination(pSoldier, sGridNo, TRUE, gsInterfaceLevel)) {
             // Set it!
-            ubBestMerc = pSoldier->ubID;
+            ubBestMerc = pSoldier.value.ubID;
 
             fSoldierFound = TRUE;
             break;
@@ -378,18 +378,18 @@ function IsValidTargetMerc(ubSoldierID: UINT8): BOOLEAN {
   let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[ubSoldierID];
 
   // CHECK IF ACTIVE!
-  if (!pSoldier->bActive) {
+  if (!pSoldier.value.bActive) {
     return FALSE;
   }
 
   // CHECK IF DEAD
-  if (pSoldier->bLife == 0) {
+  if (pSoldier.value.bLife == 0) {
     // return( FALSE );
   }
 
   // IF BAD GUY - CHECK VISIVILITY
-  if (pSoldier->bTeam != gbPlayerNum) {
-    if (pSoldier->bVisible == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
+  if (pSoldier.value.bTeam != gbPlayerNum) {
+    if (pSoldier.value.bVisible == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
       return FALSE;
     }
   }
@@ -403,8 +403,8 @@ function IsGridNoInScreenRect(sGridNo: INT16, pRect: Pointer<SGPRect>): BOOLEAN 
   let sMapPos: INT16;
 
   // Start with top left corner
-  iXTrav = pRect->iLeft;
-  iYTrav = pRect->iTop;
+  iXTrav = pRect.value.iLeft;
+  iYTrav = pRect.value.iTop;
 
   do {
     do {
@@ -415,11 +415,11 @@ function IsGridNoInScreenRect(sGridNo: INT16, pRect: Pointer<SGPRect>): BOOLEAN 
       }
 
       iXTrav += WORLD_TILE_X;
-    } while (iXTrav < pRect->iRight);
+    } while (iXTrav < pRect.value.iRight);
 
     iYTrav += WORLD_TILE_Y;
-    iXTrav = pRect->iLeft;
-  } while (iYTrav < pRect->iBottom);
+    iXTrav = pRect.value.iLeft;
+  } while (iYTrav < pRect.value.iBottom);
 
   return FALSE;
 }
@@ -433,12 +433,12 @@ function GetSoldierScreenRect(pSoldier: Pointer<SOLDIERTYPE>, pRect: Pointer<SGP
 
   GetSoldierScreenPos(pSoldier, &sMercScreenX, &sMercScreenY);
 
-  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier->usAnimState);
+  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    pRect->iLeft = sMercScreenX;
-    pRect->iTop = sMercScreenY;
-    pRect->iBottom = sMercScreenY + 5;
-    pRect->iRight = sMercScreenX + 5;
+    pRect.value.iLeft = sMercScreenX;
+    pRect.value.iTop = sMercScreenY;
+    pRect.value.iBottom = sMercScreenY + 5;
+    pRect.value.iRight = sMercScreenX + 5;
 
     return;
   }
@@ -447,16 +447,16 @@ function GetSoldierScreenRect(pSoldier: Pointer<SOLDIERTYPE>, pRect: Pointer<SGP
   // usHeight				= (UINT32)pTrav->usHeight;
   // usWidth					= (UINT32)pTrav->usWidth;
 
-  pRect->iLeft = sMercScreenX;
-  pRect->iTop = sMercScreenY;
-  pRect->iBottom = sMercScreenY + pSoldier->sBoundingBoxHeight;
-  pRect->iRight = sMercScreenX + pSoldier->sBoundingBoxWidth;
+  pRect.value.iLeft = sMercScreenX;
+  pRect.value.iTop = sMercScreenY;
+  pRect.value.iBottom = sMercScreenY + pSoldier.value.sBoundingBoxHeight;
+  pRect.value.iRight = sMercScreenX + pSoldier.value.sBoundingBoxWidth;
 }
 
 function GetSoldierAnimDims(pSoldier: Pointer<SOLDIERTYPE>, psHeight: Pointer<INT16>, psWidth: Pointer<INT16>): void {
   let usAnimSurface: UINT16;
 
-  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier->usAnimState);
+  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
     *psHeight = 5;
@@ -469,18 +469,18 @@ function GetSoldierAnimDims(pSoldier: Pointer<SOLDIERTYPE>, psHeight: Pointer<IN
   // depending on the frame and the value returned here will vary thusly. However, for the
   // uses of this function, we should be able to use just the first frame...
 
-  if (pSoldier->usAniFrame >= gAnimSurfaceDatabase[usAnimSurface].hVideoObject->usNumberOfObjects) {
+  if (pSoldier.value.usAniFrame >= gAnimSurfaceDatabase[usAnimSurface].hVideoObject.value.usNumberOfObjects) {
     let i: int = 0;
   }
 
-  *psHeight = pSoldier->sBoundingBoxHeight;
-  *psWidth = pSoldier->sBoundingBoxWidth;
+  *psHeight = pSoldier.value.sBoundingBoxHeight;
+  *psWidth = pSoldier.value.sBoundingBoxWidth;
 }
 
 function GetSoldierAnimOffsets(pSoldier: Pointer<SOLDIERTYPE>, sOffsetX: Pointer<INT16>, sOffsetY: Pointer<INT16>): void {
   let usAnimSurface: UINT16;
 
-  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier->usAnimState);
+  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
     *sOffsetX = 0;
@@ -489,8 +489,8 @@ function GetSoldierAnimOffsets(pSoldier: Pointer<SOLDIERTYPE>, sOffsetX: Pointer
     return;
   }
 
-  *sOffsetX = pSoldier->sBoundingBoxOffsetX;
-  *sOffsetY = pSoldier->sBoundingBoxOffsetY;
+  *sOffsetX = pSoldier.value.sBoundingBoxOffsetX;
+  *sOffsetY = pSoldier.value.sBoundingBoxOffsetY;
 }
 
 function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
@@ -503,7 +503,7 @@ function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Pointer<
   let usAnimSurface: UINT16;
   //		ETRLEObject *pTrav;
 
-  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier->usAnimState);
+  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
     *psScreenX = 0;
@@ -512,8 +512,8 @@ function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Pointer<
   }
 
   // Get 'TRUE' merc position
-  dOffsetX = pSoldier->dXPos - gsRenderCenterX;
-  dOffsetY = pSoldier->dYPos - gsRenderCenterY;
+  dOffsetX = pSoldier.value.dXPos - gsRenderCenterX;
+  dOffsetY = pSoldier.value.dYPos - gsRenderCenterY;
 
   FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
@@ -525,7 +525,7 @@ function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Pointer<
   // Adjust starting screen coordinates
   sMercScreenX -= gsRenderWorldOffsetX;
   sMercScreenY -= gsRenderWorldOffsetY;
-  sMercScreenY -= gpWorldLevelData[pSoldier->sGridNo].sHeight;
+  sMercScreenY -= gpWorldLevelData[pSoldier.value.sGridNo].sHeight;
 
   // Adjust for render height
   sMercScreenY += gsRenderHeight;
@@ -533,10 +533,10 @@ function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Pointer<
   // Add to start position of dest buffer
   // sMercScreenX += pTrav->sOffsetX;
   // sMercScreenY += pTrav->sOffsetY;
-  sMercScreenX += pSoldier->sBoundingBoxOffsetX;
-  sMercScreenY += pSoldier->sBoundingBoxOffsetY;
+  sMercScreenX += pSoldier.value.sBoundingBoxOffsetX;
+  sMercScreenY += pSoldier.value.sBoundingBoxOffsetY;
 
-  sMercScreenY -= pSoldier->sHeightAdjustment;
+  sMercScreenY -= pSoldier.value.sHeightAdjustment;
 
   *psScreenX = sMercScreenX;
   *psScreenY = sMercScreenY;
@@ -552,7 +552,7 @@ function GetSoldierTRUEScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Poin
   let dTempY_S: FLOAT;
   let usAnimSurface: UINT16;
 
-  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier->usAnimState);
+  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
     *psScreenX = 0;
@@ -561,8 +561,8 @@ function GetSoldierTRUEScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Poin
   }
 
   // Get 'TRUE' merc position
-  dOffsetX = pSoldier->dXPos - gsRenderCenterX;
-  dOffsetY = pSoldier->dYPos - gsRenderCenterY;
+  dOffsetX = pSoldier.value.dXPos - gsRenderCenterX;
+  dOffsetY = pSoldier.value.dYPos - gsRenderCenterY;
 
   FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
@@ -575,9 +575,9 @@ function GetSoldierTRUEScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Poin
 
   // Adjust for render height
   sMercScreenY += gsRenderHeight;
-  sMercScreenY -= gpWorldLevelData[pSoldier->sGridNo].sHeight;
+  sMercScreenY -= gpWorldLevelData[pSoldier.value.sGridNo].sHeight;
 
-  sMercScreenY -= pSoldier->sHeightAdjustment;
+  sMercScreenY -= pSoldier.value.sHeightAdjustment;
 
   *psScreenX = sMercScreenX;
   *psScreenY = sMercScreenY;
@@ -612,11 +612,11 @@ function SoldierOnScreen(usID: UINT16): BOOLEAN {
   // Get pointer of soldier
   pSoldier = MercPtrs[usID];
 
-  return GridNoOnScreen(pSoldier->sGridNo);
+  return GridNoOnScreen(pSoldier.value.sGridNo);
 }
 
 function SoldierOnVisibleWorldTile(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  return GridNoOnVisibleWorldTile(pSoldier->sGridNo);
+  return GridNoOnVisibleWorldTile(pSoldier.value.sGridNo);
 }
 
 function SoldierLocationRelativeToScreen(sGridNo: INT16, usReasonID: UINT16, pbDirection: Pointer<INT8>, puiScrollFlags: Pointer<UINT32>): BOOLEAN {
@@ -711,7 +711,7 @@ function FindRelativeSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, usFlags: Po
     dRelPer = sRelY / (aRect.iBottom - aRect.iTop);
 
     // Determine relative positions
-    switch (gAnimControl[pSoldier->usAnimState].ubHeight) {
+    switch (gAnimControl[pSoldier.value.usAnimState].ubHeight) {
       case ANIM_STAND:
 
         if (dRelPer < .2) {
@@ -755,7 +755,7 @@ function QuickFindSoldier(sGridNo: INT16): UINT8 {
     pSoldier = MercSlots[cnt];
 
     if (pSoldier != NULL) {
-      if (pSoldier->sGridNo == sGridNo && pSoldier->bVisible != -1) {
+      if (pSoldier.value.sGridNo == sGridNo && pSoldier.value.bVisible != -1) {
         return cnt;
       }
     }

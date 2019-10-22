@@ -42,10 +42,10 @@ let gszActionItemDesc: UINT16[][] /* [NUM_ACTIONITEMS][30] */ = [
 ];
 
 function GetActionItemName(pItem: Pointer<OBJECTTYPE>): Pointer<UINT16> {
-  if (!pItem || pItem->usItem != ACTION_ITEM)
+  if (!pItem || pItem.value.usItem != ACTION_ITEM)
     return NULL;
-  if (pItem->bActionValue != ACTION_ITEM_BLOW_UP) {
-    switch (pItem->bActionValue) {
+  if (pItem.value.bActionValue != ACTION_ITEM_BLOW_UP) {
+    switch (pItem.value.bActionValue) {
       case ACTION_ITEM_OPEN_DOOR:
         return gszActionItemDesc[ACTIONITEM_OPEN];
       case ACTION_ITEM_CLOSE_DOOR:
@@ -96,7 +96,7 @@ function GetActionItemName(pItem: Pointer<OBJECTTYPE>): Pointer<UINT16> {
         return NULL;
     }
   } else
-    switch (pItem->usBombItem) {
+    switch (pItem.value.usBombItem) {
       case STUN_GRENADE:
         return gszActionItemDesc[ACTIONITEM_STUN];
       case SMOKE_GRENADE:
@@ -192,11 +192,11 @@ function DisableItemStatsPanel(): void {
 function ExecuteItemStatsCmd(ubAction: UINT8): void {
   switch (ubAction) {
     case ITEMSTATS_APPLY:
-      if (gpItem && gpItem->usItem == ACTION_ITEM) {
+      if (gpItem && gpItem.value.usItem == ACTION_ITEM) {
         ExtractAndUpdateActionItemsGUI();
-      } else if (gpItem && gpItem->usItem == SWITCH) {
+      } else if (gpItem && gpItem.value.usItem == SWITCH) {
         ExtractAndUpdateTriggersGUI();
-      } else if (gpItem && gpItem->usItem == OWNERSHIP) {
+      } else if (gpItem && gpItem.value.usItem == OWNERSHIP) {
         ExtractAndUpdateOwnershipGUI();
       } else
         switch (gbEditingMode) {
@@ -250,11 +250,11 @@ function RemoveItemGUI(): void {
     KillTextInputMode();
   HideEditorButton(ITEMSTATS_HIDDEN_BTN);
   RemoveGameTypeFlags();
-  if (gpItem && gpItem->usItem == ACTION_ITEM) {
+  if (gpItem && gpItem.value.usItem == ACTION_ITEM) {
     RemoveActionItemsGUI();
-  } else if (gpItem && gpItem->usItem == SWITCH) {
+  } else if (gpItem && gpItem.value.usItem == SWITCH) {
     RemoveTriggersGUI();
-  } else if (gpItem && gpItem->usItem == OWNERSHIP) {
+  } else if (gpItem && gpItem.value.usItem == OWNERSHIP) {
     RemoveOwnershipGUI();
   } else
     switch (gbEditingMode) {
@@ -317,23 +317,23 @@ function SpecifyItemToEdit(pItem: Pointer<OBJECTTYPE>, iMapIndex: INT32): void {
 
   SetupGameTypeFlags();
 
-  if (Item[gpItem->usItem].usItemClass == IC_MONEY) {
+  if (Item[gpItem.value.usItem].usItemClass == IC_MONEY) {
     gbEditingMode = EDITING_MONEY;
     SetupMoneyGUI();
-  } else if (gpItem->usItem == ACTION_ITEM) {
+  } else if (gpItem.value.usItem == ACTION_ITEM) {
     gbEditingMode = EDITING_ACTIONITEMS;
     SetupActionItemsGUI();
     HideEditorButton(ITEMSTATS_HIDDEN_BTN);
-  } else if (gpItem->usItem == SWITCH) {
+  } else if (gpItem.value.usItem == SWITCH) {
     gbEditingMode = EDITING_TRIGGERS;
     SetupTriggersGUI();
     HideEditorButton(ITEMSTATS_HIDDEN_BTN);
-  } else if (gpItem->usItem == OWNERSHIP) {
+  } else if (gpItem.value.usItem == OWNERSHIP) {
     gbEditingMode = EDITING_OWNERSHIP;
     SetupOwnershipGUI();
     HideEditorButton(ITEMSTATS_HIDDEN_BTN);
   } else
-    switch (Item[gpItem->usItem].usItemClass) {
+    switch (Item[gpItem.value.usItem].usItemClass) {
       case IC_GUN:
         gbEditingMode = EDITING_GUNS;
         SetupGunGUI();
@@ -369,7 +369,7 @@ function SpecifyItemToEdit(pItem: Pointer<OBJECTTYPE>, iMapIndex: INT32): void {
         SetupKeysGUI();
         break;
       case IC_PUNCH:
-        if (gpItem->usItem != NOTHING) {
+        if (gpItem.value.usItem != NOTHING) {
           gbEditingMode = EDITING_EQUIPMENT;
           SetupEquipGUI();
           break;
@@ -377,7 +377,7 @@ function SpecifyItemToEdit(pItem: Pointer<OBJECTTYPE>, iMapIndex: INT32): void {
         // else fall through and act as nothing
       case IC_NONE:
         gbEditingMode = EDITING_NOTHING;
-        if (!(gpItem->fFlags & OBJECT_UNDROPPABLE))
+        if (!(gpItem.value.fFlags & OBJECT_UNDROPPABLE))
           gbEditingMode = EDITING_DROPPABLE;
         break;
       default:
@@ -385,7 +385,7 @@ function SpecifyItemToEdit(pItem: Pointer<OBJECTTYPE>, iMapIndex: INT32): void {
         break;
     }
   if (gpItemPool) {
-    if (gWorldItems[gpItemPool->iItemIndex].bVisible == INVISIBLE) {
+    if (gWorldItems[gpItemPool.value.iItemIndex].bVisible == INVISIBLE) {
       UnclickEditorButton(ITEMSTATS_HIDDEN_BTN);
       ShowSelectedItem();
     } else {
@@ -458,12 +458,12 @@ function UpdateItemStatsPanel(): void {
     case EDITING_TRIGGERS:
       mprintf(512, 369, "Trap Level");
       mprintf(512, 389, "Tolerance");
-      if (gpEditingItemPool && gpItem->bFrequency >= PANIC_FREQUENCY_3 && gpItem->bFrequency <= PANIC_FREQUENCY)
+      if (gpEditingItemPool && gpItem.value.bFrequency >= PANIC_FREQUENCY_3 && gpItem.value.bFrequency <= PANIC_FREQUENCY)
         mprintf(500, 407, "Alarm Trigger");
       break;
   }
   if (gpEditingItemPool) {
-    let iPercent: INT32 = 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance;
+    let iPercent: INT32 = 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance;
     if (iPercent == 100)
       SetFontForeground(FONT_YELLOW);
     else if (iPercent >= 50)
@@ -480,36 +480,36 @@ function UpdateItemStatsPanel(): void {
 
 function RealisticOnlyCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[giRealisticCheckboxButton]->uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
-    ButtonList[giSciFiCheckboxButton]->uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[giSciFiCheckboxButton]->uiFlags |= BUTTON_DIRTY;
-    ButtonList[giBothCheckboxButton]->uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[giBothCheckboxButton]->uiFlags |= BUTTON_DIRTY;
-    gWorldItems[gpEditingItemPool->iItemIndex].usFlags &= ~(WORLD_ITEM_REALISTIC_ONLY | WORLD_ITEM_SCIFI_ONLY);
-    gWorldItems[gpEditingItemPool->iItemIndex].usFlags |= WORLD_ITEM_REALISTIC_ONLY;
+    ButtonList[giRealisticCheckboxButton].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    ButtonList[giSciFiCheckboxButton].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[giSciFiCheckboxButton].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[giBothCheckboxButton].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[giBothCheckboxButton].value.uiFlags |= BUTTON_DIRTY;
+    gWorldItems[gpEditingItemPool.value.iItemIndex].usFlags &= ~(WORLD_ITEM_REALISTIC_ONLY | WORLD_ITEM_SCIFI_ONLY);
+    gWorldItems[gpEditingItemPool.value.iItemIndex].usFlags |= WORLD_ITEM_REALISTIC_ONLY;
   }
 }
 
 function SciFiOnlyCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[giRealisticCheckboxButton]->uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[giRealisticCheckboxButton]->uiFlags |= BUTTON_DIRTY;
-    ButtonList[giSciFiCheckboxButton]->uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
-    ButtonList[giBothCheckboxButton]->uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[giBothCheckboxButton]->uiFlags |= BUTTON_DIRTY;
-    gWorldItems[gpEditingItemPool->iItemIndex].usFlags &= ~(WORLD_ITEM_REALISTIC_ONLY | WORLD_ITEM_SCIFI_ONLY);
-    gWorldItems[gpEditingItemPool->iItemIndex].usFlags |= WORLD_ITEM_SCIFI_ONLY;
+    ButtonList[giRealisticCheckboxButton].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[giRealisticCheckboxButton].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[giSciFiCheckboxButton].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    ButtonList[giBothCheckboxButton].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[giBothCheckboxButton].value.uiFlags |= BUTTON_DIRTY;
+    gWorldItems[gpEditingItemPool.value.iItemIndex].usFlags &= ~(WORLD_ITEM_REALISTIC_ONLY | WORLD_ITEM_SCIFI_ONLY);
+    gWorldItems[gpEditingItemPool.value.iItemIndex].usFlags |= WORLD_ITEM_SCIFI_ONLY;
   }
 }
 
 function BothModesCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[giRealisticCheckboxButton]->uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[giRealisticCheckboxButton]->uiFlags |= BUTTON_DIRTY;
-    ButtonList[giSciFiCheckboxButton]->uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[giSciFiCheckboxButton]->uiFlags |= BUTTON_DIRTY;
-    ButtonList[giBothCheckboxButton]->uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
-    gWorldItems[gpEditingItemPool->iItemIndex].usFlags &= ~(WORLD_ITEM_REALISTIC_ONLY | WORLD_ITEM_SCIFI_ONLY);
+    ButtonList[giRealisticCheckboxButton].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[giRealisticCheckboxButton].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[giSciFiCheckboxButton].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[giSciFiCheckboxButton].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[giBothCheckboxButton].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    gWorldItems[gpEditingItemPool.value.iItemIndex].usFlags &= ~(WORLD_ITEM_REALISTIC_ONLY | WORLD_ITEM_SCIFI_ONLY);
   }
 }
 
@@ -522,12 +522,12 @@ function SetupGameTypeFlags(): void {
     giSciFiCheckboxButton = CreateCheckBoxButton(616, 365, "EDITOR//radiobutton.sti", MSYS_PRIORITY_NORMAL, SciFiOnlyCheckboxCallback);
     SetButtonFastHelpText(giSciFiCheckboxButton, "Item appears in |Sci-Fi mode only.");
 
-    if (gWorldItems[gpEditingItemPool->iItemIndex].usFlags & WORLD_ITEM_REALISTIC_ONLY)
-      ButtonList[giRealisticCheckboxButton]->uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
-    else if (gWorldItems[gpEditingItemPool->iItemIndex].usFlags & WORLD_ITEM_SCIFI_ONLY)
-      ButtonList[giSciFiCheckboxButton]->uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    if (gWorldItems[gpEditingItemPool.value.iItemIndex].usFlags & WORLD_ITEM_REALISTIC_ONLY)
+      ButtonList[giRealisticCheckboxButton].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    else if (gWorldItems[gpEditingItemPool.value.iItemIndex].usFlags & WORLD_ITEM_SCIFI_ONLY)
+      ButtonList[giSciFiCheckboxButton].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
     else
-      ButtonList[giBothCheckboxButton]->uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+      ButtonList[giBothCheckboxButton].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
   }
 }
 
@@ -550,70 +550,70 @@ function SetupGunGUI(): void {
   let str: UINT16[] /* [20] */;
   let yp: INT16;
   memset(gfAttachment, 0, NUM_ATTACHMENT_BUTTONS);
-  swprintf(str, "%d", gpItem->bGunStatus);
+  swprintf(str, "%d", gpItem.value.bGunStatus);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gpItem->ubGunShotsLeft);
+  swprintf(str, "%d", gpItem.value.ubGunShotsLeft);
   AddTextInputField(485, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gpItem->bTrap);
+  swprintf(str, "%d", gpItem.value.bTrap);
   AddTextInputField(485, 420, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
   // Attachments are a dynamic part of guns.  None, some, or all attachments could be available
   // for a particular weapon.  Show only the ones that we can apply to this gun.
   yp = 383;
   guiAttachmentButton[SILENCER_ATTACHMENT_BUTTON] = -1;
-  if (ValidAttachment(SILENCER, gpItem->usItem)) {
+  if (ValidAttachment(SILENCER, gpItem.value.usItem)) {
     guiAttachmentButton[SILENCER_ATTACHMENT_BUTTON] = CreateTextButton("SILENCER", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, SILENCER) != -1) {
-      ButtonList[guiAttachmentButton[SILENCER_ATTACHMENT_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiAttachmentButton[SILENCER_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[0] = TRUE;
     }
   }
   guiAttachmentButton[SNIPERSCOPE_ATTACHMENT_BUTTON] = -1;
-  if (ValidAttachment(SNIPERSCOPE, gpItem->usItem)) {
+  if (ValidAttachment(SNIPERSCOPE, gpItem.value.usItem)) {
     guiAttachmentButton[SNIPERSCOPE_ATTACHMENT_BUTTON] = CreateTextButton("SNIPERSCOPE", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, SNIPERSCOPE) != -1) {
-      ButtonList[guiAttachmentButton[SNIPERSCOPE_ATTACHMENT_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiAttachmentButton[SNIPERSCOPE_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[1] = TRUE;
     }
   }
   guiAttachmentButton[LASERSCOPE_ATTACHMENT_BUTTON] = -1;
-  if (ValidAttachment(LASERSCOPE, gpItem->usItem)) {
+  if (ValidAttachment(LASERSCOPE, gpItem.value.usItem)) {
     guiAttachmentButton[LASERSCOPE_ATTACHMENT_BUTTON] = CreateTextButton("LASERSCOPE", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, LASERSCOPE) != -1) {
-      ButtonList[guiAttachmentButton[LASERSCOPE_ATTACHMENT_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiAttachmentButton[LASERSCOPE_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[2] = TRUE;
     }
   }
   guiAttachmentButton[BIPOD_ATTACHMENT_BUTTON] = -1;
-  if (ValidAttachment(BIPOD, gpItem->usItem)) {
+  if (ValidAttachment(BIPOD, gpItem.value.usItem)) {
     guiAttachmentButton[BIPOD_ATTACHMENT_BUTTON] = CreateTextButton("BIPOD", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, BIPOD) != -1) {
-      ButtonList[guiAttachmentButton[BIPOD_ATTACHMENT_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiAttachmentButton[BIPOD_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[3] = TRUE;
     }
   }
   guiAttachmentButton[DUCKBILL_ATTACHMENT_BUTTON] = -1;
-  if (ValidAttachment(DUCKBILL, gpItem->usItem)) {
+  if (ValidAttachment(DUCKBILL, gpItem.value.usItem)) {
     guiAttachmentButton[DUCKBILL_ATTACHMENT_BUTTON] = CreateTextButton("DUCKBILL", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, DUCKBILL) != -1) {
-      ButtonList[guiAttachmentButton[DUCKBILL_ATTACHMENT_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiAttachmentButton[DUCKBILL_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[4] = TRUE;
     }
   }
   guiAttachmentButton[GLAUNCHER_ATTACHMENT_BUTTON] = -1;
-  if (ValidAttachment(UNDER_GLAUNCHER, gpItem->usItem)) {
+  if (ValidAttachment(UNDER_GLAUNCHER, gpItem.value.usItem)) {
     guiAttachmentButton[GLAUNCHER_ATTACHMENT_BUTTON] = CreateTextButton("G-LAUNCHER", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, UNDER_GLAUNCHER) != -1) {
-      ButtonList[guiAttachmentButton[GLAUNCHER_ATTACHMENT_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiAttachmentButton[GLAUNCHER_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[5] = TRUE;
     }
   }
@@ -638,37 +638,37 @@ function ExtractAndUpdateGunGUI(): void {
     i = 20 + Random(81);
   else
     i = min(i, 100);
-  gpItem->bGunStatus = i;
+  gpItem.value.bGunStatus = i;
   SetInputFieldStringWithNumericStrictValue(1, i);
   // Update the ammo
   i = GetNumericStrictValueFromField(2);
   if (i == -1)
-    i = Random(1 + Weapon[gpItem->usItem].ubMagSize);
+    i = Random(1 + Weapon[gpItem.value.usItem].ubMagSize);
   else
-    i = min(i, Weapon[gpItem->usItem].ubMagSize);
-  gpItem->ubGunShotsLeft = i;
+    i = min(i, Weapon[gpItem.value.usItem].ubMagSize);
+  gpItem.value.ubGunShotsLeft = i;
   SetInputFieldStringWithNumericStrictValue(2, i);
   // Update the trap level
   i = GetNumericStrictValueFromField(3);
   i = (i == -1) ? 0 : min(i, 20);
-  gpItem->bTrap = i;
+  gpItem.value.bTrap = i;
   SetInputFieldStringWithNumericStrictValue(3, i);
   if (gpEditingItemPool) {
     giDefaultExistChance = GetNumericStrictValueFromField(4);
     giDefaultExistChance = (giDefaultExistChance == -1) ? 100 : max(1, min(giDefaultExistChance, 100));
-    gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
+    gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
     SetInputFieldStringWithNumericStrictValue(4, giDefaultExistChance);
   }
 }
 
 function SetupAmmoGUI(): void {
   let str: UINT16[] /* [20] */;
-  swprintf(str, "%d", gpItem->ubNumberOfObjects);
+  swprintf(str, "%d", gpItem.value.ubNumberOfObjects);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gpItem->bTrap);
+  swprintf(str, "%d", gpItem.value.bTrap);
   AddTextInputField(485, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
 }
@@ -682,41 +682,41 @@ function ExtractAndUpdateAmmoGUI(): void {
   // Update the number of clips
   i = GetNumericStrictValueFromField(1);
   if (i == -1)
-    i = 1 + Random(Item[gpItem->usItem].ubPerPocket);
+    i = 1 + Random(Item[gpItem.value.usItem].ubPerPocket);
   else
-    i = max(1, min(i, Item[gpItem->usItem].ubPerPocket));
-  gpItem->ubNumberOfObjects = i;
+    i = max(1, min(i, Item[gpItem.value.usItem].ubPerPocket));
+  gpItem.value.ubNumberOfObjects = i;
   SetInputFieldStringWithNumericStrictValue(1, i);
-  CreateItems(gpItem->usItem, 100, gpItem->ubNumberOfObjects, gpItem);
+  CreateItems(gpItem.value.usItem, 100, gpItem.value.ubNumberOfObjects, gpItem);
   // Update the trap level
   i = GetNumericStrictValueFromField(2);
   i = (i == -1) ? 0 : min(i, 20);
-  gpItem->bTrap = i;
+  gpItem.value.bTrap = i;
   SetInputFieldStringWithNumericStrictValue(2, i);
   if (gpEditingItemPool) {
     giDefaultExistChance = GetNumericStrictValueFromField(3);
     giDefaultExistChance = (giDefaultExistChance == -1) ? 100 : max(1, min(giDefaultExistChance, 100));
-    gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
+    gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
     SetInputFieldStringWithNumericStrictValue(3, giDefaultExistChance);
   }
 }
 
 function SetupArmourGUI(): void {
   let str: UINT16[] /* [20] */;
-  swprintf(str, "%d", gpItem->bStatus[0]);
+  swprintf(str, "%d", gpItem.value.bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gpItem->bTrap);
+  swprintf(str, "%d", gpItem.value.bTrap);
   AddTextInputField(485, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
 
   guiCeramicPlatesButton = -1;
-  if (ValidAttachment(CERAMIC_PLATES, gpItem->usItem)) {
+  if (ValidAttachment(CERAMIC_PLATES, gpItem.value.usItem)) {
     guiCeramicPlatesButton = CreateTextButton("CERAMIC PLATES", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 558, 375, 72, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleCeramicPlates);
     if (FindAttachment(gpItem, CERAMIC_PLATES) != -1) {
-      ButtonList[guiCeramicPlatesButton]->uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiCeramicPlatesButton].value.uiFlags |= BUTTON_CLICKED_ON;
       gfCeramicPlates = TRUE;
     }
   }
@@ -737,29 +737,29 @@ function ExtractAndUpdateArmourGUI(): void {
     i = 20 + Random(81);
   else
     i = min(i, 100);
-  gpItem->bStatus[0] = i;
+  gpItem.value.bStatus[0] = i;
   SetInputFieldStringWithNumericStrictValue(1, i);
   // Update the trap level
   i = GetNumericStrictValueFromField(2);
   i = (i == -1) ? 0 : min(i, 20);
-  gpItem->bTrap = i;
+  gpItem.value.bTrap = i;
   SetInputFieldStringWithNumericStrictValue(2, i);
   if (gpEditingItemPool) {
     giDefaultExistChance = GetNumericStrictValueFromField(3);
     giDefaultExistChance = (giDefaultExistChance == -1) ? 100 : max(1, min(giDefaultExistChance, 100));
-    gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
+    gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
     SetInputFieldStringWithNumericStrictValue(3, giDefaultExistChance);
   }
 }
 
 function SetupEquipGUI(): void {
   let str: UINT16[] /* [20] */;
-  swprintf(str, "%d", gpItem->bStatus[0]);
+  swprintf(str, "%d", gpItem.value.bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gpItem->bTrap);
+  swprintf(str, "%d", gpItem.value.bTrap);
   AddTextInputField(485, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
 }
@@ -776,17 +776,17 @@ function ExtractAndUpdateEquipGUI(): void {
     i = 20 + Random(81);
   else
     i = min(i, 100);
-  gpItem->bStatus[0] = i;
+  gpItem.value.bStatus[0] = i;
   SetInputFieldStringWithNumericStrictValue(1, i);
   // Update the trap level
   i = GetNumericStrictValueFromField(2);
   i = (i == -1) ? 0 : min(i, 20);
-  gpItem->bTrap = i;
+  gpItem.value.bTrap = i;
   SetInputFieldStringWithNumericStrictValue(2, i);
   if (gpEditingItemPool) {
     giDefaultExistChance = GetNumericStrictValueFromField(3);
     giDefaultExistChance = (giDefaultExistChance == -1) ? 100 : max(1, min(giDefaultExistChance, 100));
-    gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
+    gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
     SetInputFieldStringWithNumericStrictValue(3, giDefaultExistChance);
   }
 }
@@ -794,27 +794,27 @@ function ExtractAndUpdateEquipGUI(): void {
 function SetupExplosivesGUI(): void {
   let str: UINT16[] /* [20] */;
   let yp: INT16;
-  swprintf(str, "%d", gpItem->bStatus[0]);
+  swprintf(str, "%d", gpItem.value.bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gpItem->ubNumberOfObjects);
+  swprintf(str, "%d", gpItem.value.ubNumberOfObjects);
   AddTextInputField(485, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT);
-  if (Item[gpItem->usItem].ubPerPocket == 1) {
+  if (Item[gpItem.value.usItem].ubPerPocket == 1) {
     DisableTextField(2);
   }
-  swprintf(str, "%d", gpItem->bTrap);
+  swprintf(str, "%d", gpItem.value.bTrap);
   AddTextInputField(485, 420, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
   yp = 375;
   gfDetonator = FALSE;
   guiDetonatorButton = -1;
-  if (ValidAttachment(DETONATOR, gpItem->usItem)) {
+  if (ValidAttachment(DETONATOR, gpItem.value.usItem)) {
     guiDetonatorButton = CreateTextButton("DETONATOR", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleDetonator);
     yp += 14;
     if (FindAttachment(gpItem, DETONATOR) != -1) {
-      ButtonList[guiDetonatorButton]->uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiDetonatorButton].value.uiFlags |= BUTTON_CLICKED_ON;
       gfDetonator = TRUE;
     }
   }
@@ -835,38 +835,38 @@ function ExtractAndUpdateExplosivesGUI(): void {
     i = 20 + Random(81);
   else
     i = min(i, 100);
-  gpItem->bStatus[0] = i;
+  gpItem.value.bStatus[0] = i;
   SetInputFieldStringWithNumericStrictValue(1, i);
   // Update the quantity
-  if (Item[gpItem->usItem].ubPerPocket > 1) {
+  if (Item[gpItem.value.usItem].ubPerPocket > 1) {
     i = GetNumericStrictValueFromField(2);
     if (i == -1)
-      i = 1 + Random(Item[gpItem->usItem].ubPerPocket);
+      i = 1 + Random(Item[gpItem.value.usItem].ubPerPocket);
     else
-      i = max(1, min(i, Item[gpItem->usItem].ubPerPocket));
-    gpItem->ubNumberOfObjects = i;
+      i = max(1, min(i, Item[gpItem.value.usItem].ubPerPocket));
+    gpItem.value.ubNumberOfObjects = i;
     SetInputFieldStringWithNumericStrictValue(2, i);
-    CreateItems(gpItem->usItem, gpItem->bStatus[0], gpItem->ubNumberOfObjects, gpItem);
+    CreateItems(gpItem.value.usItem, gpItem.value.bStatus[0], gpItem.value.ubNumberOfObjects, gpItem);
   }
   // Update the trap level
   i = GetNumericStrictValueFromField(3);
   i = (i == -1) ? 0 : min(i, 20);
-  gpItem->bTrap = i;
+  gpItem.value.bTrap = i;
   SetInputFieldStringWithNumericStrictValue(3, i);
   if (gpEditingItemPool) {
     giDefaultExistChance = GetNumericStrictValueFromField(4);
     giDefaultExistChance = (giDefaultExistChance == -1) ? 100 : max(1, min(giDefaultExistChance, 100));
-    gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
+    gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
     SetInputFieldStringWithNumericStrictValue(4, giDefaultExistChance);
   }
 }
 
 function SetupMoneyGUI(): void {
   let str: UINT16[] /* [20] */;
-  swprintf(str, "%d", gpItem->uiMoneyAmount);
+  swprintf(str, "%d", gpItem.value.uiMoneyAmount);
   AddTextInputField(485, 380, 45, 15, MSYS_PRIORITY_NORMAL, str, 5, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
 }
@@ -879,13 +879,13 @@ function ExtractAndUpdateMoneyGUI(): void {
     i = Random(20000);
   else
     i = max(1, min(i, 20000));
-  gpItem->uiMoneyAmount = i;
-  gpItem->bStatus[0] = 100;
+  gpItem.value.uiMoneyAmount = i;
+  gpItem.value.bStatus[0] = 100;
   SetInputFieldStringWithNumericStrictValue(1, i);
   if (gpEditingItemPool) {
     giDefaultExistChance = GetNumericStrictValueFromField(2);
     giDefaultExistChance = (giDefaultExistChance == -1) ? 100 : max(1, min(giDefaultExistChance, 100));
-    gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
+    gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
     SetInputFieldStringWithNumericStrictValue(2, giDefaultExistChance);
   }
 }
@@ -895,19 +895,19 @@ function RemoveMoneyGUI(): void {
 
 function SetupOwnershipGUI(): void {
   let str: UINT16[] /* [20] */;
-  swprintf(str, "%d", gpItem->ubOwnerProfile);
+  swprintf(str, "%d", gpItem.value.ubOwnerProfile);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  giOwnershipGroupButton = CreateTextButton(gszCivGroupNames[gpItem->ubOwnerCivGroup], SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 485, 415, 80, 25, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, OwnershipGroupButtonCallback);
+  giOwnershipGroupButton = CreateTextButton(gszCivGroupNames[gpItem.value.ubOwnerCivGroup], SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 485, 415, 80, 25, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, OwnershipGroupButtonCallback);
 }
 
 function OwnershipGroupButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    InitPopupMenu(btn->IDNum, OWNERSHIPGROUP_POPUP, DIR_UPLEFT);
+    InitPopupMenu(btn.value.IDNum, OWNERSHIPGROUP_POPUP, DIR_UPLEFT);
   }
 }
 
 function SetOwnershipGroup(ubNewGroup: UINT8): void {
-  gpItem->ubOwnerCivGroup = ubNewGroup;
+  gpItem.value.ubOwnerCivGroup = ubNewGroup;
   SpecifyButtonText(giOwnershipGroupButton, gszCivGroupNames[ubNewGroup]);
 }
 
@@ -919,7 +919,7 @@ function ExtractAndUpdateOwnershipGUI(): void {
     i = Random(0);
   else
     i = max(0, min(i, 255));
-  gpItem->ubOwnerProfile = i;
+  gpItem.value.ubOwnerProfile = i;
   SetInputFieldStringWithNumericStrictValue(1, i);
 }
 
@@ -933,7 +933,7 @@ function RemoveOwnershipGUI(): void {
 function SetupKeysGUI(): void {
   let str: UINT16[] /* [20] */;
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
 }
@@ -942,7 +942,7 @@ function ExtractAndUpdateKeysGUI(): void {
   if (gpEditingItemPool) {
     giDefaultExistChance = GetNumericStrictValueFromField(1);
     giDefaultExistChance = (giDefaultExistChance == -1) ? 100 : max(1, min(giDefaultExistChance, 100));
-    gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
+    gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
     SetInputFieldStringWithNumericStrictValue(1, giDefaultExistChance);
   }
 }
@@ -953,12 +953,12 @@ function RemoveKeysGUI(): void {
 function SetupActionItemsGUI(): void {
   let str: UINT16[] /* [4] */;
   let pStr: Pointer<UINT16>;
-  swprintf(str, "%d", gpItem->bStatus[0]);
+  swprintf(str, "%d", gpItem.value.bStatus[0]);
   AddTextInputField(485, 365, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gpItem->bTrap);
+  swprintf(str, "%d", gpItem.value.bTrap);
   AddTextInputField(485, 385, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
   pStr = GetActionItemName(gpItem);
@@ -973,20 +973,20 @@ function ExtractAndUpdateActionItemsGUI(): void {
     i = 20 + Random(81);
   else
     i = min(i, 100);
-  gpItem->bStatus[0] = i;
+  gpItem.value.bStatus[0] = i;
   SetInputFieldStringWithNumericStrictValue(1, i);
   // Update the trap level
   i = GetNumericStrictValueFromField(2);
   i = (i == -1) ? 0 : min(i, 20);
-  if (i != gpItem->bTrap)
+  if (i != gpItem.value.bTrap)
     gbDefaultBombTrapLevel = i;
-  gpItem->bTrap = i;
+  gpItem.value.bTrap = i;
   SetInputFieldStringWithNumericStrictValue(2, i);
 
   if (gpEditingItemPool) {
     giDefaultExistChance = GetNumericStrictValueFromField(3);
     giDefaultExistChance = (giDefaultExistChance == -1) ? 100 : max(1, min(giDefaultExistChance, 100));
-    gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
+    gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
     SetInputFieldStringWithNumericStrictValue(3, giDefaultExistChance);
   }
 }
@@ -1000,27 +1000,27 @@ function RemoveActionItemsGUI(): void {
 
 function AlarmTriggerCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON)
-      gpItem->fFlags |= OBJECT_ALARM_TRIGGER;
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON)
+      gpItem.value.fFlags |= OBJECT_ALARM_TRIGGER;
     else
-      gpItem->fFlags &= ~OBJECT_ALARM_TRIGGER;
+      gpItem.value.fFlags &= ~OBJECT_ALARM_TRIGGER;
   }
 }
 
 function SetupTriggersGUI(): void {
   let str: UINT16[] /* [4] */;
-  swprintf(str, "%d", gpItem->bTrap);
+  swprintf(str, "%d", gpItem.value.bTrap);
   AddTextInputField(485, 365, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, "%d", gpItem->ubTolerance);
+  swprintf(str, "%d", gpItem.value.ubTolerance);
   AddTextInputField(485, 385, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-    if (gpItem->bFrequency <= PANIC_FREQUENCY && gpItem->bFrequency >= PANIC_FREQUENCY_3) {
+    if (gpItem.value.bFrequency <= PANIC_FREQUENCY && gpItem.value.bFrequency >= PANIC_FREQUENCY_3) {
       giAlarmTriggerButton = CreateCheckBoxButton(485, 405, "EDITOR//smCheckBox.sti", MSYS_PRIORITY_NORMAL, AlarmTriggerCheckboxCallback);
       SetButtonFastHelpText(giAlarmTriggerButton, "If the panic trigger is an alarm trigger,\nenemies won't attempt to use it if they\nare already aware of your presence.");
-      if (gpItem->fFlags & OBJECT_ALARM_TRIGGER)
-        ButtonList[giAlarmTriggerButton]->uiFlags |= BUTTON_CLICKED_ON;
+      if (gpItem.value.fFlags & OBJECT_ALARM_TRIGGER)
+        ButtonList[giAlarmTriggerButton].value.uiFlags |= BUTTON_CLICKED_ON;
     }
   }
 }
@@ -1030,24 +1030,24 @@ function ExtractAndUpdateTriggersGUI(): void {
   // Update the trap level
   i = GetNumericStrictValueFromField(1);
   i = (i == -1) ? 0 : min(i, 20);
-  gpItem->bTrap = i;
+  gpItem.value.bTrap = i;
   SetInputFieldStringWithNumericStrictValue(1, i);
 
   i = GetNumericStrictValueFromField(2);
   i = (i == -1) ? 0 : max(0, min(i, 99));
-  gpItem->ubTolerance = i;
+  gpItem.value.ubTolerance = i;
   SetInputFieldStringWithNumericStrictValue(2, i);
 
   if (gpEditingItemPool) {
     giDefaultExistChance = GetNumericStrictValueFromField(3);
     giDefaultExistChance = (giDefaultExistChance == -1) ? 100 : max(1, min(giDefaultExistChance, 100));
-    gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
+    gWorldItems[gpEditingItemPool.value.iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
     SetInputFieldStringWithNumericStrictValue(3, giDefaultExistChance);
   }
 }
 
 function RemoveTriggersGUI(): void {
-  if (gpEditingItemPool && gpItem->bFrequency <= PANIC_FREQUENCY && gpItem->bFrequency >= PANIC_FREQUENCY_3) {
+  if (gpEditingItemPool && gpItem.value.bFrequency <= PANIC_FREQUENCY && gpItem.value.bFrequency >= PANIC_FREQUENCY_3) {
     if (giAlarmTriggerButton != -1) {
       RemoveButton(giAlarmTriggerButton);
       giAlarmTriggerButton = -1;
@@ -1086,14 +1086,14 @@ function ToggleAttachment(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         // Found it, now check the state of the button.
         if (!gfAttachment[i]) {
           gfAttachment[i] = TRUE;
-          btn->uiFlags |= BUTTON_CLICKED_ON;
-          CreateItem(usAttachment, gpItem->bGunStatus, &temp);
+          btn.value.uiFlags |= BUTTON_CLICKED_ON;
+          CreateItem(usAttachment, gpItem.value.bGunStatus, &temp);
           AttachObject(NULL, gpItem, &temp);
         } else {
           // Button is out, so remove the attachment
           let slot: INT8;
           gfAttachment[i] = FALSE;
-          btn->uiFlags &= ~BUTTON_CLICKED_ON;
+          btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
           slot = FindAttachment(gpItem, usAttachment);
           if (slot != -1)
             RemoveAttachment(gpItem, slot, &temp);
@@ -1109,12 +1109,12 @@ function ToggleCeramicPlates(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     let temp: OBJECTTYPE;
     gfCeramicPlates ^= TRUE;
     if (gfCeramicPlates) {
-      btn->uiFlags |= BUTTON_CLICKED_ON;
-      CreateItem(CERAMIC_PLATES, gpItem->bStatus[0], &temp);
+      btn.value.uiFlags |= BUTTON_CLICKED_ON;
+      CreateItem(CERAMIC_PLATES, gpItem.value.bStatus[0], &temp);
       AttachObject(NULL, gpItem, &temp);
     } else {
       let slot: INT8;
-      btn->uiFlags &= ~BUTTON_CLICKED_ON;
+      btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
       slot = FindAttachment(gpItem, CERAMIC_PLATES);
       if (slot != -1)
         RemoveAttachment(gpItem, slot, &temp);
@@ -1127,14 +1127,14 @@ function ToggleDetonator(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     let temp: OBJECTTYPE;
     if (!gfDetonator) {
       gfDetonator = TRUE;
-      btn->uiFlags |= BUTTON_CLICKED_ON;
-      CreateItem(DETONATOR, gpItem->bStatus[0], &temp);
+      btn.value.uiFlags |= BUTTON_CLICKED_ON;
+      CreateItem(DETONATOR, gpItem.value.bStatus[0], &temp);
       AttachObject(NULL, gpItem, &temp);
     } else {
       // Button is out, so remove the attachment
       let slot: INT8;
       gfDetonator = FALSE;
-      btn->uiFlags &= ~BUTTON_CLICKED_ON;
+      btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
       slot = FindAttachment(gpItem, DETONATOR);
       if (slot != -1)
         RemoveAttachment(gpItem, slot, &temp);
@@ -1149,133 +1149,133 @@ function ActionItemCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function ChangeActionItem(pItem: Pointer<OBJECTTYPE>, bActionItemIndex: INT8): void {
-  pItem->usItem = ACTION_ITEM;
-  pItem->bActionValue = ACTION_ITEM_BLOW_UP;
+  pItem.value.usItem = ACTION_ITEM;
+  pItem.value.bActionValue = ACTION_ITEM_BLOW_UP;
   switch (bActionItemIndex) {
     case ACTIONITEM_TRIP_KLAXON:
-      pItem->usBombItem = TRIP_KLAXON;
+      pItem.value.usBombItem = TRIP_KLAXON;
       break;
     case ACTIONITEM_FLARE:
-      pItem->usBombItem = TRIP_FLARE;
+      pItem.value.usBombItem = TRIP_FLARE;
       break;
     case ACTIONITEM_TEARGAS:
-      pItem->usBombItem = TEARGAS_GRENADE;
+      pItem.value.usBombItem = TEARGAS_GRENADE;
       break;
     case ACTIONITEM_STUN:
-      pItem->usBombItem = STUN_GRENADE;
+      pItem.value.usBombItem = STUN_GRENADE;
       break;
     case ACTIONITEM_SMOKE:
-      pItem->usBombItem = SMOKE_GRENADE;
+      pItem.value.usBombItem = SMOKE_GRENADE;
       break;
     case ACTIONITEM_MUSTARD:
-      pItem->usBombItem = MUSTARD_GRENADE;
+      pItem.value.usBombItem = MUSTARD_GRENADE;
       break;
     case ACTIONITEM_MINE:
-      pItem->usBombItem = MINE;
+      pItem.value.usBombItem = MINE;
       break;
     case ACTIONITEM_OPEN:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_OPEN_DOOR;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_OPEN_DOOR;
       break;
     case ACTIONITEM_CLOSE:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_CLOSE_DOOR;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_CLOSE_DOOR;
       break;
     case ACTIONITEM_UNLOCK_DOOR:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_UNLOCK_DOOR;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_UNLOCK_DOOR;
       break;
     case ACTIONITEM_TOGGLE_LOCK:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_TOGGLE_LOCK;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_TOGGLE_LOCK;
       break;
     case ACTIONITEM_UNTRAP_DOOR:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_UNTRAP_DOOR;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_UNTRAP_DOOR;
       break;
     case ACTIONITEM_TOGGLE_PRESSURE_ITEMS:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_TOGGLE_PRESSURE_ITEMS;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_TOGGLE_PRESSURE_ITEMS;
       break;
     case ACTIONITEM_SMPIT:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_SMALL_PIT;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_SMALL_PIT;
       break;
     case ACTIONITEM_LGPIT:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_LARGE_PIT;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_LARGE_PIT;
       break;
     case ACTIONITEM_TOGGLE_DOOR:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_TOGGLE_DOOR;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_TOGGLE_DOOR;
       break;
     case ACTIONITEM_TOGGLE_ACTION1:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_TOGGLE_ACTION1;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_TOGGLE_ACTION1;
       break;
     case ACTIONITEM_TOGGLE_ACTION2:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_TOGGLE_ACTION2;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_TOGGLE_ACTION2;
       break;
     case ACTIONITEM_TOGGLE_ACTION3:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_TOGGLE_ACTION3;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_TOGGLE_ACTION3;
       break;
     case ACTIONITEM_TOGGLE_ACTION4:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_TOGGLE_ACTION4;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_TOGGLE_ACTION4;
       break;
     case ACTIONITEM_ENTER_BROTHEL:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_ENTER_BROTHEL;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_ENTER_BROTHEL;
       break;
     case ACTIONITEM_EXIT_BROTHEL:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_EXIT_BROTHEL;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_EXIT_BROTHEL;
       break;
     case ACTIONITEM_KINGPIN_ALARM:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_KINGPIN_ALARM;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_KINGPIN_ALARM;
       break;
     case ACTIONITEM_SEX:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_SEX;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_SEX;
       break;
     case ACTIONITEM_REVEAL_ROOM:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_REVEAL_ROOM;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_REVEAL_ROOM;
       break;
     case ACTIONITEM_LOCAL_ALARM:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_LOCAL_ALARM;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_LOCAL_ALARM;
       break;
     case ACTIONITEM_GLOBAL_ALARM:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_GLOBAL_ALARM;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_GLOBAL_ALARM;
       break;
     case ACTIONITEM_KLAXON:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_KLAXON;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_KLAXON;
       break;
     case ACTIONITEM_SMALL:
-      pItem->usBombItem = HAND_GRENADE;
+      pItem.value.usBombItem = HAND_GRENADE;
       break;
     case ACTIONITEM_MEDIUM:
-      pItem->usBombItem = TNT;
+      pItem.value.usBombItem = TNT;
       break;
     case ACTIONITEM_LARGE:
-      pItem->usBombItem = C4;
+      pItem.value.usBombItem = C4;
       break;
     case ACTIONITEM_MUSEUM_ALARM:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_MUSEUM_ALARM;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_MUSEUM_ALARM;
       break;
     case ACTIONITEM_BLOODCAT_ALARM:
-      pItem->usBombItem = NOTHING;
-      pItem->bActionValue = ACTION_ITEM_BLOODCAT_ALARM;
+      pItem.value.usBombItem = NOTHING;
+      pItem.value.bActionValue = ACTION_ITEM_BLOODCAT_ALARM;
       break;
     case ACTIONITEM_BIG_TEAR_GAS:
-      pItem->usBombItem = BIG_TEAR_GAS;
+      pItem.value.usBombItem = BIG_TEAR_GAS;
       break;
   }
 }
@@ -1287,22 +1287,22 @@ function UpdateActionItem(bActionItemIndex: INT8): void {
     return;
 
   // If the previous item was a pit, remove it before changing it
-  if (gpItem->usItem == ACTION_ITEM) {
-    if (gpItem->bActionValue == ACTION_ITEM_SMALL_PIT)
-      Remove3X3Pit(gWorldItems[gpItemPool->iItemIndex].sGridNo);
-    else if (gpItem->bActionValue == ACTION_ITEM_LARGE_PIT)
-      Remove5X5Pit(gWorldItems[gpItemPool->iItemIndex].sGridNo);
+  if (gpItem.value.usItem == ACTION_ITEM) {
+    if (gpItem.value.bActionValue == ACTION_ITEM_SMALL_PIT)
+      Remove3X3Pit(gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
+    else if (gpItem.value.bActionValue == ACTION_ITEM_LARGE_PIT)
+      Remove5X5Pit(gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
   }
 
   ChangeActionItem(gpItem, gbActionItemIndex);
   SpecifyButtonText(guiActionItemButton, GetActionItemName(gpItem));
 
   // If the new item is a pit, add it so we can see how it looks.
-  if (gpItem->usItem == ACTION_ITEM) {
-    if (gpItem->bActionValue == ACTION_ITEM_SMALL_PIT)
-      Add3X3Pit(gWorldItems[gpItemPool->iItemIndex].sGridNo);
-    else if (gpItem->bActionValue == ACTION_ITEM_LARGE_PIT)
-      Add5X5Pit(gWorldItems[gpItemPool->iItemIndex].sGridNo);
+  if (gpItem.value.usItem == ACTION_ITEM) {
+    if (gpItem.value.bActionValue == ACTION_ITEM_SMALL_PIT)
+      Add3X3Pit(gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
+    else if (gpItem.value.bActionValue == ACTION_ITEM_LARGE_PIT)
+      Add5X5Pit(gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
   }
 }
 
@@ -1310,7 +1310,7 @@ function ReEvaluateAttachmentStatii(): void {
   let i: INT32;
   let usAttachment: UINT16;
   for (i = 0; i < NUM_ATTACHMENT_BUTTONS; i++) {
-    if (guiAttachmentButton[i] != -1 && !(ButtonList[guiAttachmentButton[i]]->uiFlags & BUTTON_CLICKED_ON)) {
+    if (guiAttachmentButton[i] != -1 && !(ButtonList[guiAttachmentButton[i]].value.uiFlags & BUTTON_CLICKED_ON)) {
       // if button exists and button isn't clicked
       switch (i) {
         case 0:

@@ -335,10 +335,10 @@ function BuildingToggleInfoViewCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
 // MAPINFO
 function BtnFakeLightCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON)
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON)
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
     else
-      btn->uiFlags |= BUTTON_CLICKED_ON;
+      btn.value.uiFlags |= BUTTON_CLICKED_ON;
 
     iEditorToolbarState = TBAR_MODE_FAKE_LIGHTING;
   }
@@ -465,7 +465,7 @@ function BtnLoadCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function BtnChangeTilesetCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
     iEditorToolbarState = TBAR_MODE_CHANGE_TILESET;
   }
 }
@@ -563,35 +563,35 @@ function ItemsRightScrollCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
 // MERCS
 function MercsTogglePlayers(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfShowPlayers = btn->uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
+    gfShowPlayers = btn.value.uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
     SetMercTeamVisibility(OUR_TEAM, gfShowCivilians);
   }
 }
 
 function MercsToggleEnemies(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfShowEnemies = btn->uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
+    gfShowEnemies = btn.value.uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
     SetMercTeamVisibility(ENEMY_TEAM, gfShowEnemies);
   }
 }
 
 function MercsToggleCreatures(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfShowCreatures = btn->uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
+    gfShowCreatures = btn.value.uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
     SetMercTeamVisibility(CREATURE_TEAM, gfShowCreatures);
   }
 }
 
 function MercsToggleRebels(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfShowRebels = btn->uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
+    gfShowRebels = btn.value.uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
     SetMercTeamVisibility(MILITIA_TEAM, gfShowRebels);
   }
 }
 
 function MercsToggleCivilians(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfShowCivilians = btn->uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
+    gfShowCivilians = btn.value.uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
     SetMercTeamVisibility(CIV_TEAM, gfShowCivilians);
   }
 }
@@ -681,7 +681,7 @@ function MercsInventorySlotCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let uiSlot: INT32;
     uiSlot = MSYS_GetBtnUserData(btn, 0);
-    if (btn->uiFlags & BUTTON_CLICKED_ON)
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON)
       SetEnemyDroppableStatus(uiSlot, TRUE);
     else
       SetEnemyDroppableStatus(uiSlot, FALSE);
@@ -698,7 +698,7 @@ function MercsSetEnemyColorCodeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
 
 function MercsCivilianGroupCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn->uiFlags |= BUTTON_CLICKED_ON;
+    btn.value.uiFlags |= BUTTON_CLICKED_ON;
     iEditorToolbarState = TBAR_MODE_CIVILIAN_GROUP;
   }
 }
@@ -733,7 +733,7 @@ function MercsScheduleAction4Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
 
 function MercsScheduleToggleVariance1Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON)
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON)
       gCurrSchedule.usFlags |= SCHEDULE_FLAGS_VARIANCE1;
     else
       gCurrSchedule.usFlags &= ~SCHEDULE_FLAGS_VARIANCE1;
@@ -742,7 +742,7 @@ function MercsScheduleToggleVariance1Callback(btn: Pointer<GUI_BUTTON>, reason: 
 
 function MercsScheduleToggleVariance2Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON)
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON)
       gCurrSchedule.usFlags |= SCHEDULE_FLAGS_VARIANCE2;
     else
       gCurrSchedule.usFlags &= ~SCHEDULE_FLAGS_VARIANCE2;
@@ -751,7 +751,7 @@ function MercsScheduleToggleVariance2Callback(btn: Pointer<GUI_BUTTON>, reason: 
 
 function MercsScheduleToggleVariance3Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON)
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON)
       gCurrSchedule.usFlags |= SCHEDULE_FLAGS_VARIANCE3;
     else
       gCurrSchedule.usFlags &= ~SCHEDULE_FLAGS_VARIANCE3;
@@ -760,7 +760,7 @@ function MercsScheduleToggleVariance3Callback(btn: Pointer<GUI_BUTTON>, reason: 
 
 function MercsScheduleToggleVariance4Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON)
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON)
       gCurrSchedule.usFlags |= SCHEDULE_FLAGS_VARIANCE4;
     else
       gCurrSchedule.usFlags &= ~SCHEDULE_FLAGS_VARIANCE4;
@@ -856,7 +856,7 @@ function MercsScheduleClearCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
 
 function MercsDetailedPlacementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON) // button is checked
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON) // button is checked
     {
       InitDetailedPlacementForMerc();
       SetMercEditingMode(MERC_GENERALMODE);
@@ -871,12 +871,12 @@ function MercsDetailedPlacementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
 function MercsPriorityExistanceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gpSelected) {
-      if (btn->uiFlags & BUTTON_CLICKED_ON) // button is checked
+      if (btn.value.uiFlags & BUTTON_CLICKED_ON) // button is checked
       {
-        gpSelected->pBasicPlacement->fPriorityExistance = TRUE;
+        gpSelected.value.pBasicPlacement.value.fPriorityExistance = TRUE;
       } else // button is unchecked.
       {
-        gpSelected->pBasicPlacement->fPriorityExistance = FALSE;
+        gpSelected.value.pBasicPlacement.value.fPriorityExistance = FALSE;
       }
     }
   }
@@ -885,15 +885,15 @@ function MercsPriorityExistanceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
 function MercsHasKeysCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gpSelected) {
-      if (btn->uiFlags & BUTTON_CLICKED_ON) // button is checked
+      if (btn.value.uiFlags & BUTTON_CLICKED_ON) // button is checked
       {
-        gpSelected->pBasicPlacement->fHasKeys = TRUE;
+        gpSelected.value.pBasicPlacement.value.fHasKeys = TRUE;
       } else // button is unchecked.
       {
-        gpSelected->pBasicPlacement->fHasKeys = FALSE;
+        gpSelected.value.pBasicPlacement.value.fHasKeys = FALSE;
       }
-      if (gpSelected->pDetailedPlacement) {
-        gpSelected->pDetailedPlacement->fHasKeys = gpSelected->pBasicPlacement->fHasKeys;
+      if (gpSelected.value.pDetailedPlacement) {
+        gpSelected.value.pDetailedPlacement.value.fHasKeys = gpSelected.value.pBasicPlacement.value.fHasKeys;
       }
     }
   }
@@ -955,7 +955,7 @@ function MercsFindSelectedMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
     GetSoldier(&pSoldier, gsSelectedMercID);
     if (!pSoldier)
       return;
-    CenterScreenAtMapIndex(pSoldier->sGridNo);
+    CenterScreenAtMapIndex(pSoldier.value.sGridNo);
   }
 }
 
@@ -970,14 +970,14 @@ function MercsSetRelativeAttributesCallback(btn: Pointer<GUI_BUTTON>, reason: IN
 }
 
 function MouseMovedInMercRegion(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
-  HandleMercInventoryPanel(reg->RelativeXPos, reg->RelativeYPos, GUI_MOVE_EVENT);
+  HandleMercInventoryPanel(reg.value.RelativeXPos, reg.value.RelativeYPos, GUI_MOVE_EVENT);
 }
 
 function MouseClickedInMercRegion(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
-    HandleMercInventoryPanel(reg->RelativeXPos, reg->RelativeYPos, GUI_LCLICK_EVENT);
+    HandleMercInventoryPanel(reg.value.RelativeXPos, reg.value.RelativeYPos, GUI_LCLICK_EVENT);
   else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP)
-    HandleMercInventoryPanel(reg->RelativeXPos, reg->RelativeYPos, GUI_RCLICK_EVENT);
+    HandleMercInventoryPanel(reg.value.RelativeXPos, reg.value.RelativeYPos, GUI_RCLICK_EVENT);
 }
 
 // VARIOUS
@@ -990,17 +990,17 @@ function BtnUndoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 function BtnEraseCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (iDrawMode >= DRAW_MODE_ERASE)
-      btn->uiFlags &= (~BUTTON_CLICKED_ON);
+      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
     else
-      btn->uiFlags |= BUTTON_CLICKED_ON;
-    iEditorToolbarState = (btn->uiFlags & BUTTON_CLICKED_ON) ? (TBAR_MODE_ERASE) : (TBAR_MODE_ERASE_OFF);
+      btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    iEditorToolbarState = (btn.value.uiFlags & BUTTON_CLICKED_ON) ? (TBAR_MODE_ERASE) : (TBAR_MODE_ERASE_OFF);
   }
 }
 
 // ITEM STATS
 function ItemStatsToggleHideCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn->uiFlags & BUTTON_CLICKED_ON)
+    if (btn.value.uiFlags & BUTTON_CLICKED_ON)
       ExecuteItemStatsCmd(ITEMSTATS_HIDE);
     else
       ExecuteItemStatsCmd(ITEMSTATS_SHOW);

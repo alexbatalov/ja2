@@ -44,14 +44,14 @@ function SmkPollFlics(): BOOLEAN {
       if (!fSuspendFlics) {
         if (!SmackWait(SmkList[uiCount].SmackHandle)) {
           DDLockSurface(SmkList[uiCount].lpDDS, NULL, &SurfaceDescription, 0, NULL);
-          SmackToBuffer(SmkList[uiCount].SmackHandle, SmkList[uiCount].uiLeft, SmkList[uiCount].uiTop, SurfaceDescription.lPitch, SmkList[uiCount].SmackHandle->Height, SurfaceDescription.lpSurface, guiSmackPixelFormat);
+          SmackToBuffer(SmkList[uiCount].SmackHandle, SmkList[uiCount].uiLeft, SmkList[uiCount].uiTop, SurfaceDescription.lPitch, SmkList[uiCount].SmackHandle.value.Height, SurfaceDescription.lpSurface, guiSmackPixelFormat);
           SmackDoFrame(SmkList[uiCount].SmackHandle);
           DDUnlockSurface(SmkList[uiCount].lpDDS, SurfaceDescription.lpSurface);
           // temp til I figure out what to do with it
           // InvalidateRegion(0,0, 640, 480, FALSE);
 
           // Check to see if the flic is done the last frame
-          if (SmkList[uiCount].SmackHandle->FrameNum == (SmkList[uiCount].SmackHandle->Frames - 1)) {
+          if (SmkList[uiCount].SmackHandle.value.FrameNum == (SmkList[uiCount].SmackHandle.value.Frames - 1)) {
             // If flic is looping, reset frame to 0
             if (SmkList[uiCount].uiFlags & SMK_FLIC_LOOP)
               SmackGoto(SmkList[uiCount].SmackHandle, 0);
@@ -112,9 +112,9 @@ function SmkPlayFlic(cFilename: Pointer<CHAR8>, uiLeft: UINT32, uiTop: UINT32, f
   SmkSetBlitPosition(pSmack, uiLeft, uiTop);
 
   // We're now playing, flag the flic for the poller to update
-  pSmack->uiFlags |= SMK_FLIC_PLAYING;
+  pSmack.value.uiFlags |= SMK_FLIC_PLAYING;
   if (fClose)
-    pSmack->uiFlags |= SMK_FLIC_AUTOCLOSE;
+    pSmack.value.uiFlags |= SMK_FLIC_AUTOCLOSE;
 
   return pSmack;
 }
@@ -130,21 +130,21 @@ function SmkOpenFlic(cFilename: Pointer<CHAR8>): Pointer<SMKFLIC> {
   }
 
   // Attempt opening the filename
-  if (!(pSmack->hFileHandle = FileOpen(cFilename, FILE_OPEN_EXISTING | FILE_ACCESS_READ, FALSE))) {
+  if (!(pSmack.value.hFileHandle = FileOpen(cFilename, FILE_OPEN_EXISTING | FILE_ACCESS_READ, FALSE))) {
     ErrorMsg("SMK ERROR: Can't open the SMK file");
     return NULL;
   }
 
   // Get the real file handle for the file man handle for the smacker file
-  hFile = GetRealFileHandleFromFileManFileHandle(pSmack->hFileHandle);
+  hFile = GetRealFileHandleFromFileManFileHandle(pSmack.value.hFileHandle);
 
   // Allocate a Smacker buffer for video decompression
-  if (!(pSmack->SmackBuffer = SmackBufferOpen(hDisplayWindow, SMACKAUTOBLIT, 640, 480, 0, 0))) {
+  if (!(pSmack.value.SmackBuffer = SmackBufferOpen(hDisplayWindow, SMACKAUTOBLIT, 640, 480, 0, 0))) {
     ErrorMsg("SMK ERROR: Can't allocate a Smacker decompression buffer");
     return NULL;
   }
 
-  if (!(pSmack->SmackHandle = SmackOpen(hFile, SMACKFILEHANDLE | SMACKTRACKS, SMACKAUTOEXTRA)))
+  if (!(pSmack.value.SmackHandle = SmackOpen(hFile, SMACKFILEHANDLE | SMACKTRACKS, SMACKAUTOEXTRA)))
   //	if(!(pSmack->SmackHandle=SmackOpen(cFilename, SMACKTRACKS, SMACKAUTOEXTRA)))
   {
     ErrorMsg("SMK ERROR: Smacker won't open the SMK file");
@@ -154,30 +154,30 @@ function SmkOpenFlic(cFilename: Pointer<CHAR8>): Pointer<SMKFLIC> {
   // Make sure we have a video surface
   SmkSetupVideo();
 
-  pSmack->cFilename = cFilename;
-  pSmack->lpDDS = lpVideoPlayback2;
-  pSmack->hWindow = hDisplayWindow;
+  pSmack.value.cFilename = cFilename;
+  pSmack.value.lpDDS = lpVideoPlayback2;
+  pSmack.value.hWindow = hDisplayWindow;
 
   // Smack flic is now open and ready to go
-  pSmack->uiFlags |= SMK_FLIC_OPEN;
+  pSmack.value.uiFlags |= SMK_FLIC_OPEN;
 
   return pSmack;
 }
 
 function SmkSetBlitPosition(pSmack: Pointer<SMKFLIC>, uiLeft: UINT32, uiTop: UINT32): void {
-  pSmack->uiLeft = uiLeft;
-  pSmack->uiTop = uiTop;
+  pSmack.value.uiLeft = uiLeft;
+  pSmack.value.uiTop = uiTop;
 }
 
 function SmkCloseFlic(pSmack: Pointer<SMKFLIC>): void {
   // Attempt opening the filename
-  FileClose(pSmack->hFileHandle);
+  FileClose(pSmack.value.hFileHandle);
 
   // Deallocate the smack buffers
-  SmackBufferClose(pSmack->SmackBuffer);
+  SmackBufferClose(pSmack.value.SmackBuffer);
 
   // Close the smack flic
-  SmackClose(pSmack->SmackHandle);
+  SmackClose(pSmack.value.SmackHandle);
 
   // Zero the memory, flags, etc.
   memset(pSmack, 0, sizeof(SMKFLIC));

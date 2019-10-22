@@ -1,9 +1,9 @@
 function DelayEventIfBattleInProgress(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
   let pNewEvent: Pointer<STRATEGICEVENT>;
   if (gTacticalStatus.fEnemyInSector) {
-    pNewEvent = AddAdvancedStrategicEvent(pEvent->ubEventType, pEvent->ubCallbackID, pEvent->uiTimeStamp + 180 + Random(121), pEvent->uiParam);
+    pNewEvent = AddAdvancedStrategicEvent(pEvent.value.ubEventType, pEvent.value.ubCallbackID, pEvent.value.uiTimeStamp + 180 + Random(121), pEvent.value.uiParam);
     Assert(pNewEvent);
-    pNewEvent->uiTimeOffset = pEvent->uiTimeOffset;
+    pNewEvent.value.uiTimeOffset = pEvent.value.uiTimeOffset;
     return TRUE;
   }
   return FALSE;
@@ -16,18 +16,18 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
   gfPreventDeletionOfAnyEvent = TRUE;
   // No events can be posted before this time when gfProcessingGameEvents is set, otherwise,
   // we have a chance of running into an infinite loop.
-  guiTimeStampOfCurrentlyExecutingEvent = pEvent->uiTimeStamp;
+  guiTimeStampOfCurrentlyExecutingEvent = pEvent.value.uiTimeStamp;
 
-  if (pEvent->ubFlags & SEF_DELETION_PENDING) {
+  if (pEvent.value.ubFlags & SEF_DELETION_PENDING) {
     gfPreventDeletionOfAnyEvent = fOrigPreventFlag;
     return FALSE;
   }
 
   // Look at the ID of event and do stuff according to that!
-  switch (pEvent->ubCallbackID) {
+  switch (pEvent.value.ubCallbackID) {
     case EVENT_CHANGELIGHTVAL:
       // Change light to value
-      gubEnvLightValue = pEvent->uiParam;
+      gubEnvLightValue = pEvent.value.uiParam;
       if (!gfBasement && !gfCaves)
         gfDoLighting = TRUE;
       break;
@@ -35,20 +35,20 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
       CheckForQuests(GetWorldDay());
       break;
     case EVENT_AMBIENT:
-      if (pEvent->ubEventType == ENDRANGED_EVENT) {
-        if (pEvent->uiParam != NO_SAMPLE) {
-          SoundRemoveSampleFlags(pEvent->uiParam, SAMPLE_RANDOM);
+      if (pEvent.value.ubEventType == ENDRANGED_EVENT) {
+        if (pEvent.value.uiParam != NO_SAMPLE) {
+          SoundRemoveSampleFlags(pEvent.value.uiParam, SAMPLE_RANDOM);
         }
       } else {
-        pEvent->uiParam = SetupNewAmbientSound(pEvent->uiParam);
+        pEvent.value.uiParam = SetupNewAmbientSound(pEvent.value.uiParam);
       }
       break;
     case EVENT_AIM_RESET_MERC_ANNOYANCE:
-      ResetMercAnnoyanceAtPlayer(pEvent->uiParam);
+      ResetMercAnnoyanceAtPlayer(pEvent.value.uiParam);
       break;
     // The players purchase from Bobby Ray has arrived
     case EVENT_BOBBYRAY_PURCHASE:
-      BobbyRayPurchaseEventCallback(pEvent->uiParam);
+      BobbyRayPurchaseEventCallback(pEvent.value.uiParam);
       break;
     // Gets called once a day ( at BOBBYRAY_UPDATE_TIME).  To simulate the items being bought and sold at bobby rays
     case EVENT_DAILY_UPDATE_BOBBY_RAY_INVENTORY:
@@ -58,7 +58,7 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
       break;
     // Add items to BobbyR's new/used inventory
     case EVENT_UPDATE_BOBBY_RAY_INVENTORY:
-      AddFreshBobbyRayInventory(pEvent->uiParam);
+      AddFreshBobbyRayInventory(pEvent.value.uiParam);
       break;
     // Called once a day to update the number of days that a hired merc from M.E.R.C. has been on contract.
     // Also if the player hasn't paid for a while Specks will start sending e-mails to the player
@@ -74,7 +74,7 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
     // If a merc gets hired and they dont show up immediately, the merc gets added to the queue and shows up
     // uiTimeTillMercArrives  minutes later
     case EVENT_DELAYED_HIRING_OF_MERC:
-      MercArrivesCallback(pEvent->uiParam);
+      MercArrivesCallback(pEvent.value.uiParam);
       break;
     // handles the life insurance contract for a merc from AIM.
     case EVENT_HANDLE_INSURED_MERCS:
@@ -82,7 +82,7 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
       break;
     // handles when a merc is killed an there is a life insurance payout
     case EVENT_PAY_LIFE_INSURANCE_FOR_DEAD_MERC:
-      InsuranceContractPayLifeInsuranceForDeadMerc(pEvent->uiParam);
+      InsuranceContractPayLifeInsuranceForDeadMerc(pEvent.value.uiParam);
       break;
     // gets called every day at midnight.
     case EVENT_MERC_DAILY_UPDATE:
@@ -100,25 +100,25 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
       break;
     // When a merc is supposed to leave
     case EVENT_MERC_CONTRACT_OVER:
-      MercsContractIsFinished(pEvent->uiParam);
+      MercsContractIsFinished(pEvent.value.uiParam);
       break;
     case EVENT_ADDSOLDIER_TO_UPDATE_BOX:
       // if the grunt is currently active, add to update box
-      if (Menptr[pEvent->uiParam].bActive) {
-        AddSoldierToWaitingListQueue(&(Menptr[pEvent->uiParam]));
+      if (Menptr[pEvent.value.uiParam].bActive) {
+        AddSoldierToWaitingListQueue(&(Menptr[pEvent.value.uiParam]));
       }
       break;
     case EVENT_SET_MENU_REASON:
-      AddReasonToWaitingListQueue(pEvent->uiParam);
+      AddReasonToWaitingListQueue(pEvent.value.uiParam);
       break;
     // Whenever any group (player or enemy) arrives in a new sector during movement.
     case EVENT_GROUP_ARRIVAL:
       // ValidateGameEvents();
-      GroupArrivedAtSector(pEvent->uiParam, TRUE, FALSE);
+      GroupArrivedAtSector(pEvent.value.uiParam, TRUE, FALSE);
       // ValidateGameEvents();
       break;
     case EVENT_MERC_COMPLAIN_EQUIPMENT:
-      MercComplainAboutEquipment(pEvent->uiParam);
+      MercComplainAboutEquipment(pEvent.value.uiParam);
       break;
     case EVENT_HOURLY_UPDATE:
       HandleHourlyUpdate();
@@ -140,7 +140,7 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
       HandleSpreadOfAllTownsOpinion();
       break;
     case EVENT_SET_BY_NPC_SYSTEM:
-      HandleNPCSystemEvent(pEvent->uiParam);
+      HandleNPCSystemEvent(pEvent.value.uiParam);
       break;
     case EVENT_SECOND_AIRPORT_ATTENDANT_ARRIVED:
       AddSecondAirportAttendant();
@@ -152,10 +152,10 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
       HandleHeliHoverTooLong();
       break;
     case EVENT_MERC_LEAVE_EQUIP_IN_DRASSEN:
-      HandleEquipmentLeftInDrassen(pEvent->uiParam);
+      HandleEquipmentLeftInDrassen(pEvent.value.uiParam);
       break;
     case EVENT_MERC_LEAVE_EQUIP_IN_OMERTA:
-      HandleEquipmentLeftInOmerta(pEvent->uiParam);
+      HandleEquipmentLeftInOmerta(pEvent.value.uiParam);
       break;
     case EVENT_BANDAGE_BLEEDING_MERCS:
       BandageBleedingDyingPatientsBeingTreated();
@@ -167,7 +167,7 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
       HandleGroupAboutToArrive();
       break;
     case EVENT_PROCESS_TACTICAL_SCHEDULE:
-      ProcessTacticalSchedule(pEvent->uiParam);
+      ProcessTacticalSchedule(pEvent.value.uiParam);
       break;
     case EVENT_BEGINRAINSTORM:
       // EnvBeginRainStorm( (UINT8)pEvent->uiParam );
@@ -190,14 +190,14 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
       break;
 
     case EVENT_MAKE_CIV_GROUP_HOSTILE_ON_NEXT_SECTOR_ENTRANCE:
-      MakeCivGroupHostileOnNextSectorEntrance(pEvent->uiParam);
+      MakeCivGroupHostileOnNextSectorEntrance(pEvent.value.uiParam);
       break;
     case EVENT_BEGIN_AIR_RAID:
       BeginAirRaid();
       break;
     case EVENT_MEANWHILE:
       if (!DelayEventIfBattleInProgress(pEvent)) {
-        BeginMeanwhile(pEvent->uiParam);
+        BeginMeanwhile(pEvent.value.uiParam);
         InterruptTime();
       }
       break;
@@ -213,13 +213,13 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
       CreatureNightPlanning();
       break;
     case EVENT_CREATURE_ATTACK:
-      CreatureAttackTown(pEvent->uiParam, FALSE);
+      CreatureAttackTown(pEvent.value.uiParam, FALSE);
       break;
     case EVENT_EVALUATE_QUEEN_SITUATION:
       EvaluateQueenSituation();
       break;
     case EVENT_CHECK_ENEMY_CONTROLLED_SECTOR:
-      CheckEnemyControlledSector(pEvent->uiParam);
+      CheckEnemyControlledSector(pEvent.value.uiParam);
       break;
     case EVENT_TURN_ON_NIGHT_LIGHTS:
       TurnOnNightLights();
@@ -240,13 +240,13 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
       HandleEnricoEmail();
       break;
     case EVENT_INSURANCE_INVESTIGATION_STARTED:
-      StartInsuranceInvestigation(pEvent->uiParam);
+      StartInsuranceInvestigation(pEvent.value.uiParam);
       break;
     case EVENT_INSURANCE_INVESTIGATION_OVER:
-      EndInsuranceInvestigation(pEvent->uiParam);
+      EndInsuranceInvestigation(pEvent.value.uiParam);
       break;
     case EVENT_TEMPERATURE_UPDATE:
-      UpdateTemperature(pEvent->uiParam);
+      UpdateTemperature(pEvent.value.uiParam);
       break;
     case EVENT_KEITH_GOING_OUT_OF_BUSINESS:
       // make sure killbillies are still alive, if so, set fact 274 true
@@ -259,20 +259,20 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
       GetMercSiteBackOnline();
       break;
     case EVENT_INVESTIGATE_SECTOR:
-      InvestigateSector(pEvent->uiParam);
+      InvestigateSector(pEvent.value.uiParam);
       break;
     case EVENT_CHECK_IF_MINE_CLEARED:
       // If so, the head miner will say so, and the mine's shutdown will be ended.
       HourlyMinesUpdate(); // not-so hourly, in this case!
       break;
     case EVENT_REMOVE_ASSASSIN:
-      RemoveAssassin(pEvent->uiParam);
+      RemoveAssassin(pEvent.value.uiParam);
       break;
     case EVENT_BEGIN_CONTRACT_RENEWAL_SEQUENCE:
       BeginContractRenewalSequence();
       break;
     case EVENT_RPC_WHINE_ABOUT_PAY:
-      RPCWhineAboutNoPay(pEvent->uiParam);
+      RPCWhineAboutNoPay(pEvent.value.uiParam);
       break;
 
     case EVENT_HAVENT_MADE_IMP_CHARACTER_EMAIL:
@@ -284,7 +284,7 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
       break;
 
     case EVENT_MERC_MERC_WENT_UP_LEVEL_EMAIL_DELAY:
-      MERCMercWentUpALevelSendEmail(pEvent->uiParam);
+      MERCMercWentUpALevelSendEmail(pEvent.value.uiParam);
       break;
 
     case EVENT_MERC_SITE_NEW_MERC_AVAILABLE:

@@ -163,7 +163,7 @@ function MilitiaRankToSoldierClass(ubRank: UINT8): INT8 {
 function StrategicAddMilitiaToSector(sMapX: INT16, sMapY: INT16, ubRank: UINT8, ubHowMany: UINT8): void {
   let pSectorInfo: Pointer<SECTORINFO> = &(SectorInfo[SECTOR(sMapX, sMapY)]);
 
-  pSectorInfo->ubNumberOfCivsAtLevel[ubRank] += ubHowMany;
+  pSectorInfo.value.ubNumberOfCivsAtLevel[ubRank] += ubHowMany;
 
   // update the screen display
   fMapPanelDirty = TRUE;
@@ -173,15 +173,15 @@ function StrategicPromoteMilitiaInSector(sMapX: INT16, sMapY: INT16, ubCurrentRa
   let pSectorInfo: Pointer<SECTORINFO> = &(SectorInfo[SECTOR(sMapX, sMapY)]);
 
   // damn well better have that many around to promote!
-  Assert(pSectorInfo->ubNumberOfCivsAtLevel[ubCurrentRank] >= ubHowMany);
+  Assert(pSectorInfo.value.ubNumberOfCivsAtLevel[ubCurrentRank] >= ubHowMany);
 
   // KM : July 21, 1999 patch fix
-  if (pSectorInfo->ubNumberOfCivsAtLevel[ubCurrentRank] < ubHowMany) {
+  if (pSectorInfo.value.ubNumberOfCivsAtLevel[ubCurrentRank] < ubHowMany) {
     return;
   }
 
-  pSectorInfo->ubNumberOfCivsAtLevel[ubCurrentRank] -= ubHowMany;
-  pSectorInfo->ubNumberOfCivsAtLevel[ubCurrentRank + 1] += ubHowMany;
+  pSectorInfo.value.ubNumberOfCivsAtLevel[ubCurrentRank] -= ubHowMany;
+  pSectorInfo.value.ubNumberOfCivsAtLevel[ubCurrentRank + 1] += ubHowMany;
 
   // update the screen display
   fMapPanelDirty = TRUE;
@@ -191,14 +191,14 @@ function StrategicRemoveMilitiaFromSector(sMapX: INT16, sMapY: INT16, ubRank: UI
   let pSectorInfo: Pointer<SECTORINFO> = &(SectorInfo[SECTOR(sMapX, sMapY)]);
 
   // damn well better have that many around to remove!
-  Assert(pSectorInfo->ubNumberOfCivsAtLevel[ubRank] >= ubHowMany);
+  Assert(pSectorInfo.value.ubNumberOfCivsAtLevel[ubRank] >= ubHowMany);
 
   // KM : July 21, 1999 patch fix
-  if (pSectorInfo->ubNumberOfCivsAtLevel[ubRank] < ubHowMany) {
+  if (pSectorInfo.value.ubNumberOfCivsAtLevel[ubRank] < ubHowMany) {
     return;
   }
 
-  pSectorInfo->ubNumberOfCivsAtLevel[ubRank] -= ubHowMany;
+  pSectorInfo.value.ubNumberOfCivsAtLevel[ubRank] -= ubHowMany;
 
   // update the screen display
   fMapPanelDirty = TRUE;
@@ -428,8 +428,8 @@ function HandleInterfaceMessageForContinuingTrainingMilitia(pSoldier: Pointer<SO
   let sStringB: CHAR16[] /* [128] */;
   let bTownId: INT8;
 
-  sSectorX = pSoldier->sSectorX;
-  sSectorY = pSoldier->sSectorY;
+  sSectorX = pSoldier.value.sSectorX;
+  sSectorY = pSoldier.value.sSectorY;
 
   Assert(SectorInfo[SECTOR(sSectorX, sSectorY)].fMilitiaTrainingPaid == FALSE);
 
@@ -526,7 +526,7 @@ function CantTrainMilitiaOkBoxCallback(bExitValue: UINT8): void {
 function MilitiaTrainingRejected(): void {
   if (gfYesNoPromptIsForContinue) {
     // take all mercs in that sector off militia training
-    ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(pMilitiaTrainerSoldier->sSectorX, pMilitiaTrainerSoldier->sSectorY);
+    ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(pMilitiaTrainerSoldier.value.sSectorX, pMilitiaTrainerSoldier.value.sSectorY);
   } else {
     // take all mercs in unpaid sectors EVERYWHERE off militia training
     ResetAssignmentsForMercsTrainingUnpaidSectorsInSelectedList(0);
@@ -648,9 +648,9 @@ function HandleCompletionOfTownTrainingByGroupWithTrainer(pTrainer: Pointer<SOLD
   let iCounter: INT32 = 0;
 
   // get the sector values
-  sSectorX = pTrainer->sSectorX;
-  sSectorY = pTrainer->sSectorY;
-  bSectorZ = pTrainer->bSectorZ;
+  sSectorX = pTrainer.value.sSectorX;
+  sSectorY = pTrainer.value.sSectorY;
+  bSectorZ = pTrainer.value.bSectorZ;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     // valid character?
@@ -662,11 +662,11 @@ function HandleCompletionOfTownTrainingByGroupWithTrainer(pTrainer: Pointer<SOLD
     pSoldier = &Menptr[gCharactersList[iCounter].usSolID];
 
     // valid soldier?
-    if (pSoldier->bActive == FALSE) {
+    if (pSoldier.value.bActive == FALSE) {
       continue;
     }
 
-    if ((pSoldier->bAssignment == TRAIN_TOWN) && (pSoldier->sSectorX == sSectorX) && (pSoldier->sSectorY == sSectorY) && (pSoldier->bSectorZ == bSectorZ)) {
+    if ((pSoldier.value.bAssignment == TRAIN_TOWN) && (pSoldier.value.sSectorX == sSectorX) && (pSoldier.value.sSectorY == sSectorY) && (pSoldier.value.bSectorZ == bSectorZ)) {
       // done assignment
       AssignmentDone(pSoldier, FALSE, FALSE);
     }
@@ -682,14 +682,14 @@ function AddSectorForSoldierToListOfSectorsThatCompletedMilitiaTraining(pSoldier
   let pCurrentSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   // get the sector value
-  sSector = pSoldier->sSectorX + pSoldier->sSectorY * MAP_WORLD_X;
+  sSector = pSoldier.value.sSectorX + pSoldier.value.sSectorY * MAP_WORLD_X;
 
   while (giListOfMercsInSectorsCompletedMilitiaTraining[iCounter] != -1) {
     // get the current soldier
     pCurrentSoldier = &Menptr[giListOfMercsInSectorsCompletedMilitiaTraining[iCounter]];
 
     // get the current sector value
-    sCurrentSector = pCurrentSoldier->sSectorX + pCurrentSoldier->sSectorY * MAP_WORLD_X;
+    sCurrentSector = pCurrentSoldier.value.sSectorX + pCurrentSoldier.value.sSectorY * MAP_WORLD_X;
 
     // is the merc's sector already in the list?
     if (sCurrentSector == sSector) {
@@ -703,7 +703,7 @@ function AddSectorForSoldierToListOfSectorsThatCompletedMilitiaTraining(pSoldier
   }
 
   // add merc to the list
-  giListOfMercsInSectorsCompletedMilitiaTraining[iCounter] = pSoldier->ubID;
+  giListOfMercsInSectorsCompletedMilitiaTraining[iCounter] = pSoldier.value.ubID;
 
   return;
 }
@@ -728,9 +728,9 @@ function HandleContinueOfTownTraining(): void {
     // get the soldier
     pSoldier = &Menptr[giListOfMercsInSectorsCompletedMilitiaTraining[iCounter]];
 
-    if (pSoldier->bActive) {
+    if (pSoldier.value.bActive) {
       fContinueEventPosted = TRUE;
-      SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_CONTINUE_TRAINING_MILITIA, pSoldier->ubProfile, 0, 0, 0, 0);
+      SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_CONTINUE_TRAINING_MILITIA, pSoldier.value.ubProfile, 0, 0, 0, 0);
 
       // now set all of these peoples assignment done too
       // HandleInterfaceMessageForContinuingTrainingMilitia( pSoldier );
@@ -774,9 +774,9 @@ function BuildListOfUnpaidTrainableSectors(): void {
           pSoldier = &Menptr[gCharactersList[iCounter].usSolID];
 
           if (CanCharacterTrainMilitia(pSoldier) == TRUE) {
-            if (SectorInfo[SECTOR(pSoldier->sSectorX, pSoldier->sSectorY)].fMilitiaTrainingPaid == FALSE) {
+            if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == FALSE) {
               // check to see if this sector is a town and needs equipment
-              gsUnpaidStrategicSector[iCounter] = CALCULATE_STRATEGIC_INDEX(pSoldier->sSectorX, pSoldier->sSectorY);
+              gsUnpaidStrategicSector[iCounter] = CALCULATE_STRATEGIC_INDEX(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
             }
           }
         }
@@ -788,9 +788,9 @@ function BuildListOfUnpaidTrainableSectors(): void {
     iCounter = 0;
 
     if (CanCharacterTrainMilitia(pSoldier) == TRUE) {
-      if (SectorInfo[SECTOR(pSoldier->sSectorX, pSoldier->sSectorY)].fMilitiaTrainingPaid == FALSE) {
+      if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == FALSE) {
         // check to see if this sector is a town and needs equipment
-        gsUnpaidStrategicSector[iCounter] = CALCULATE_STRATEGIC_INDEX(pSoldier->sSectorX, pSoldier->sSectorY);
+        gsUnpaidStrategicSector[iCounter] = CALCULATE_STRATEGIC_INDEX(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
       }
     }
   }
@@ -848,7 +848,7 @@ function ContinueTrainingInThisSector(): void {
   Assert(pMilitiaTrainerSoldier);
 
   // pay up in the sector where pMilitiaTrainerSoldier is
-  ubSector = SECTOR(pMilitiaTrainerSoldier->sSectorX, pMilitiaTrainerSoldier->sSectorY);
+  ubSector = SECTOR(pMilitiaTrainerSoldier.value.sSectorX, pMilitiaTrainerSoldier.value.sSectorY);
   PayForTrainingInSector(ubSector);
 }
 
@@ -872,11 +872,11 @@ function ResetDoneFlagForAllMilitiaTrainersInSector(ubSector: UINT8): void {
   for (iCounter = 0; iCounter <= gTacticalStatus.Team[OUR_TEAM].bLastID; iCounter++) {
     pSoldier = &Menptr[iCounter];
 
-    if (pSoldier->bActive) {
-      if (pSoldier->bAssignment == TRAIN_TOWN) {
-        if ((SECTOR(pSoldier->sSectorX, pSoldier->sSectorY) == ubSector) && (pSoldier->bSectorZ == 0)) {
-          pSoldier->fDoneAssignmentAndNothingToDoFlag = FALSE;
-          pSoldier->usQuoteSaidExtFlags &= ~SOLDIER_QUOTE_SAID_DONE_ASSIGNMENT;
+    if (pSoldier.value.bActive) {
+      if (pSoldier.value.bAssignment == TRAIN_TOWN) {
+        if ((SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY) == ubSector) && (pSoldier.value.bSectorZ == 0)) {
+          pSoldier.value.fDoneAssignmentAndNothingToDoFlag = FALSE;
+          pSoldier.value.usQuoteSaidExtFlags &= ~SOLDIER_QUOTE_SAID_DONE_ASSIGNMENT;
         }
       }
     }

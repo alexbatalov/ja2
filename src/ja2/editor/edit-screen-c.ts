@@ -600,7 +600,7 @@ function DrawTempMouseCursorObject(): BOOLEAN {
       }
       gCursorNode = ForceStructToTail(iCurBankMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
       // ATE: Set this levelnode as dynamic!
-      gCursorNode->uiFlags |= LEVELNODE_DYNAMIC;
+      gCursorNode.value.uiFlags |= LEVELNODE_DYNAMIC;
       return TRUE;
     } else
       return FALSE;
@@ -808,28 +808,28 @@ function ShowCurrentDrawingMode(): void {
 
   // If we actually have something to draw, draw it
   if ((usUseIndex != 0xffff) && (usObjIndex != 0xffff)) {
-    pETRLEObject = &(gTileDatabase[gTileTypeStartIndex[usObjIndex]].hTileSurface->pETRLEObject[usUseIndex]);
+    pETRLEObject = &(gTileDatabase[gTileTypeStartIndex[usObjIndex]].hTileSurface.value.pETRLEObject[usUseIndex]);
 
-    iPicWidth = pETRLEObject->usWidth;
-    iPicHeight = pETRLEObject->usHeight;
+    iPicWidth = pETRLEObject.value.usWidth;
+    iPicHeight = pETRLEObject.value.usHeight;
 
     // Center the picture in the display window.
     iStartX = (100 - iPicWidth) / 2;
     iStartY = (60 - iPicHeight) / 2;
 
     // We have to store the offset data in temp variables before zeroing them and blitting
-    sTempOffsetX = pETRLEObject->sOffsetX;
-    sTempOffsetY = pETRLEObject->sOffsetY;
+    sTempOffsetX = pETRLEObject.value.sOffsetX;
+    sTempOffsetY = pETRLEObject.value.sOffsetY;
 
     // Set the offsets used for blitting to 0
-    pETRLEObject->sOffsetX = 0;
-    pETRLEObject->sOffsetY = 0;
+    pETRLEObject.value.sOffsetX = 0;
+    pETRLEObject.value.sOffsetY = 0;
 
     SetObjectShade(gTileDatabase[gTileTypeStartIndex[usObjIndex]].hTileSurface, DEFAULT_SHADE_LEVEL);
     BltVideoObject(FRAME_BUFFER, gTileDatabase[gTileTypeStartIndex[usObjIndex]].hTileSurface, usUseIndex, (0 + iStartX), (400 + iStartY), VO_BLT_SRCTRANSPARENCY, NULL);
 
-    pETRLEObject->sOffsetX = sTempOffsetX;
-    pETRLEObject->sOffsetY = sTempOffsetY;
+    pETRLEObject.value.sOffsetX = sTempOffsetX;
+    pETRLEObject.value.sOffsetY = sTempOffsetY;
   }
 
   // Set the color for the window's border. Blueish color = Normal, Red = Fake lighting is turned on
@@ -2343,8 +2343,8 @@ function ShowCurrentSlotSurface(vSurface: UINT32, iWindow: INT32): void {
 
   GetVideoSurface(&hvSurface, vSurface);
 
-  iPicWidth = hvSurface->usWidth;
-  iPicHeight = hvSurface->usHeight;
+  iPicWidth = hvSurface.value.usWidth;
+  iPicHeight = hvSurface.value.usHeight;
 
   if (iPicWidth > iWinWidth) {
     ClipRect.iLeft = (iPicWidth - iWinWidth) / 2;
@@ -2400,27 +2400,27 @@ function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
   GetClippingRect(&ClipRect);
   SetClippingRect(&NewRect);
 
-  pETRLEObject = &(hVObj->pETRLEObject[0]);
+  pETRLEObject = &(hVObj.value.pETRLEObject[0]);
 
-  iPicWidth = pETRLEObject->usWidth;
-  iPicHeight = pETRLEObject->usHeight;
+  iPicWidth = pETRLEObject.value.usWidth;
+  iPicHeight = pETRLEObject.value.usHeight;
 
   iStartX = ((iWinWidth - iPicWidth) / 2) + NewRect.iLeft;
   iStartY = ((iWinHeight - iPicHeight) / 2) + NewRect.iTop;
 
   // We have to store the offset data in temp variables before zeroing them and blitting
-  sTempOffsetX = pETRLEObject->sOffsetX;
-  sTempOffsetY = pETRLEObject->sOffsetY;
+  sTempOffsetX = pETRLEObject.value.sOffsetX;
+  sTempOffsetY = pETRLEObject.value.sOffsetY;
 
   // Set the offsets used for blitting to 0
-  pETRLEObject->sOffsetX = 0;
-  pETRLEObject->sOffsetY = 0;
+  pETRLEObject.value.sOffsetX = 0;
+  pETRLEObject.value.sOffsetY = 0;
 
   SetObjectShade(hVObj, DEFAULT_SHADE_LEVEL);
   BltVideoObject(FRAME_BUFFER, hVObj, 0, (iStartX), (iStartY), VO_BLT_SRCTRANSPARENCY, NULL);
 
-  pETRLEObject->sOffsetX = sTempOffsetX;
-  pETRLEObject->sOffsetY = sTempOffsetY;
+  pETRLEObject.value.sOffsetX = sTempOffsetX;
+  pETRLEObject.value.sOffsetY = sTempOffsetY;
 
   SetClippingRect(&ClipRect);
 }
@@ -2486,7 +2486,7 @@ function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): B
   iMapIndex = (iMapY * WORLD_COLS) + iMapX;
   if (!TypeExistsInObjectLayer(iMapIndex, GOODRING, &usTmpIndex)) {
     AddObjectToHead(iMapIndex, GOODRING1);
-    gpWorldLevelData[iMapIndex].pObjectHead->ubShadeLevel = DEFAULT_SHADE_LEVEL;
+    gpWorldLevelData[iMapIndex].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
   }
 
   AddLightToUndoList(iMapIndex, 0, 0);
@@ -2523,7 +2523,7 @@ function RemoveLight(iMapX: INT16, iMapY: INT16): BOOLEAN {
         fSoldierLight = FALSE;
         for (cnt = 0; cnt < MAX_NUM_SOLDIERS && !fSoldierLight; cnt++) {
           if (GetSoldier(&pSoldier, cnt)) {
-            if (pSoldier->iLight == iCount)
+            if (pSoldier.value.iLight == iCount)
               fSoldierLight = TRUE;
           }
         }
@@ -2574,7 +2574,7 @@ function ShowLightPositionHandles(): void {
       fSoldierLight = FALSE;
       for (cnt = 0; cnt < MAX_NUM_SOLDIERS && !fSoldierLight; cnt++) {
         if (GetSoldier(&pSoldier, cnt)) {
-          if (pSoldier->iLight == iCount)
+          if (pSoldier.value.iLight == iCount)
             fSoldierLight = TRUE;
         }
       }
@@ -2583,7 +2583,7 @@ function ShowLightPositionHandles(): void {
         iMapIndex = (LightSprites[iCount].iY * WORLD_COLS) + LightSprites[iCount].iX;
         if (!TypeExistsInObjectLayer(iMapIndex, GOODRING, &usTmpIndex)) {
           AddObjectToHead(iMapIndex, GOODRING1);
-          gpWorldLevelData[iMapIndex].pObjectHead->ubShadeLevel = DEFAULT_SHADE_LEVEL;
+          gpWorldLevelData[iMapIndex].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
         }
       }
     }
@@ -2609,7 +2609,7 @@ function RemoveLightPositionHandles(): void {
       fSoldierLight = FALSE;
       for (cnt = 0; cnt < MAX_NUM_SOLDIERS && !fSoldierLight; cnt++) {
         if (GetSoldier(&pSoldier, cnt)) {
-          if (pSoldier->iLight == iCount)
+          if (pSoldier.value.iLight == iCount)
             fSoldierLight = TRUE;
         }
       }
@@ -2687,9 +2687,9 @@ function CheckForFences(): BOOLEAN {
 
   for (usCheck = 0; usCheck < iNumOStructs2Selected; usCheck++) {
     T = &gTileDatabase[gTileTypeStartIndex[pSelList[usCheck].uiObject]];
-    if (T->pDBStructureRef == NULL)
+    if (T.value.pDBStructureRef == NULL)
       fFence = FALSE;
-    else if (!(T->pDBStructureRef->pDBStructure->fFlags & STRUCTURE_ANYFENCE))
+    else if (!(T.value.pDBStructureRef.value.pDBStructure.value.fFlags & STRUCTURE_ANYFENCE))
       fFence = FALSE;
   }
 
@@ -3309,7 +3309,7 @@ function EditScreenHandle(): UINT32 {
 
   if (gfRenderWorld) {
     if (gCursorNode)
-      gCursorNode->uiFlags &= (~LEVELNODE_REVEAL);
+      gCursorNode.value.uiFlags &= (~LEVELNODE_REVEAL);
 
     // This flag is the beast that makes the renderer do everything
     MarkWorldDirty();

@@ -345,7 +345,7 @@ function BtnHistoryDisplayPrevPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT
   // force redraw
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     fReDrawScreenFlag = TRUE;
-    btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
     // this page is > 0, there are pages before it, decrement
 
     if (iCurrentHistoryPage > 0) {
@@ -367,7 +367,7 @@ function BtnHistoryDisplayNextPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT
   // force redraw
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // increment currentPage
-    btn->uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
     LoadNextHistoryPage();
     // set new state
     SetHistoryButtonStates();
@@ -443,41 +443,41 @@ function ProcessAndEnterAHistoryRecord(ubCode: UINT8, uiDate: UINT32, ubSecondCo
   // add to History list
   if (pHistory) {
     // go to end of list
-    while (pHistory->Next)
-      pHistory = pHistory->Next;
+    while (pHistory.value.Next)
+      pHistory = pHistory.value.Next;
 
     // alloc space
-    pHistory->Next = MemAlloc(sizeof(HistoryUnit));
+    pHistory.value.Next = MemAlloc(sizeof(HistoryUnit));
 
     // increment id number
-    uiId = pHistory->uiIdNumber + 1;
+    uiId = pHistory.value.uiIdNumber + 1;
 
     // set up information passed
-    pHistory = pHistory->Next;
-    pHistory->Next = NULL;
-    pHistory->ubCode = ubCode;
-    pHistory->ubSecondCode = ubSecondCode;
-    pHistory->uiDate = uiDate;
-    pHistory->uiIdNumber = uiId;
-    pHistory->sSectorX = sSectorX;
-    pHistory->sSectorY = sSectorY;
-    pHistory->bSectorZ = bSectorZ;
-    pHistory->ubColor = ubColor;
+    pHistory = pHistory.value.Next;
+    pHistory.value.Next = NULL;
+    pHistory.value.ubCode = ubCode;
+    pHistory.value.ubSecondCode = ubSecondCode;
+    pHistory.value.uiDate = uiDate;
+    pHistory.value.uiIdNumber = uiId;
+    pHistory.value.sSectorX = sSectorX;
+    pHistory.value.sSectorY = sSectorY;
+    pHistory.value.bSectorZ = bSectorZ;
+    pHistory.value.ubColor = ubColor;
   } else {
     // alloc space
     pHistory = MemAlloc(sizeof(HistoryUnit));
 
     // setup info passed
-    pHistory->Next = NULL;
-    pHistory->ubCode = ubCode;
-    pHistory->ubSecondCode = ubSecondCode;
-    pHistory->uiDate = uiDate;
-    pHistory->uiIdNumber = uiId;
+    pHistory.value.Next = NULL;
+    pHistory.value.ubCode = ubCode;
+    pHistory.value.ubSecondCode = ubSecondCode;
+    pHistory.value.uiDate = uiDate;
+    pHistory.value.uiIdNumber = uiId;
     pHistoryListHead = pHistory;
-    pHistory->sSectorX = sSectorX;
-    pHistory->sSectorY = sSectorY;
-    pHistory->bSectorZ = bSectorZ;
-    pHistory->ubColor = ubColor;
+    pHistory.value.sSectorX = sSectorX;
+    pHistory.value.sSectorY = sSectorY;
+    pHistory.value.bSectorZ = bSectorZ;
+    pHistory.value.ubColor = ubColor;
   }
 
   return uiId;
@@ -559,16 +559,16 @@ function OpenAndWriteHistoryFile(): BOOLEAN {
   // write info, while there are elements left in the list
   while (pHistoryList) {
     // now write date and amount, and code
-    FileWrite(hFileHandle, &(pHistoryList->ubCode), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, &(pHistoryList->ubSecondCode), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, &(pHistoryList->uiDate), sizeof(UINT32), NULL);
-    FileWrite(hFileHandle, &(pHistoryList->sSectorX), sizeof(INT16), NULL);
-    FileWrite(hFileHandle, &(pHistoryList->sSectorY), sizeof(INT16), NULL);
-    FileWrite(hFileHandle, &(pHistoryList->bSectorZ), sizeof(INT8), NULL);
-    FileWrite(hFileHandle, &(pHistoryList->ubColor), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, &(pHistoryList.value.ubCode), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, &(pHistoryList.value.ubSecondCode), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, &(pHistoryList.value.uiDate), sizeof(UINT32), NULL);
+    FileWrite(hFileHandle, &(pHistoryList.value.sSectorX), sizeof(INT16), NULL);
+    FileWrite(hFileHandle, &(pHistoryList.value.sSectorY), sizeof(INT16), NULL);
+    FileWrite(hFileHandle, &(pHistoryList.value.bSectorZ), sizeof(INT8), NULL);
+    FileWrite(hFileHandle, &(pHistoryList.value.ubColor), sizeof(UINT8), NULL);
 
     // next element in list
-    pHistoryList = pHistoryList->Next;
+    pHistoryList = pHistoryList.value.Next;
   }
 
   // close file
@@ -591,7 +591,7 @@ function ClearHistoryList(): void {
     pHistoryNode = pHistoryList;
 
     // set list head to next node
-    pHistoryList = pHistoryList->Next;
+    pHistoryList = pHistoryList.value.Next;
 
     // delete current node
     MemFree(pHistoryNode);
@@ -672,13 +672,13 @@ function DrawHistoryRecordsText(): void {
 
   // loop through record list
   for (iCounter; iCounter < NUM_RECORDS_PER_PAGE; iCounter++) {
-    if (pCurHistory->ubColor == 0) {
+    if (pCurHistory.value.ubColor == 0) {
       SetFontForeground(FONT_BLACK);
     } else {
       SetFontForeground(FONT_RED);
     }
     // get and write the date
-    swprintf(sString, "%d", (pCurHistory->uiDate / (24 * 60)));
+    swprintf(sString, "%d", (pCurHistory.value.uiDate / (24 * 60)));
     FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, sString, HISTORY_TEXT_FONT, &usX, &usY);
     mprintf(usX, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, sString);
 
@@ -689,11 +689,11 @@ function DrawHistoryRecordsText(): void {
     mprintf(RECORD_DATE_X + RECORD_LOCATION_WIDTH + RECORD_DATE_WIDTH + 15, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, sString);
 
     // no location
-    if ((pCurHistory->sSectorX == -1) || (pCurHistory->sSectorY == -1)) {
+    if ((pCurHistory.value.sSectorX == -1) || (pCurHistory.value.sSectorY == -1)) {
       FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, pHistoryLocations[0], HISTORY_TEXT_FONT, &sX, &sY);
       mprintf(sX, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, pHistoryLocations[0]);
     } else {
-      GetSectorIDString(pCurHistory->sSectorX, pCurHistory->sSectorY, pCurHistory->bSectorZ, sString, TRUE);
+      GetSectorIDString(pCurHistory.value.sSectorX, pCurHistory.value.sSectorY, pCurHistory.value.bSectorZ, sString, TRUE);
       FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, sString, HISTORY_TEXT_FONT, &sX, &sY);
 
       ReduceStringLength(sString, RECORD_LOCATION_WIDTH + 10, HISTORY_TEXT_FONT);
@@ -705,7 +705,7 @@ function DrawHistoryRecordsText(): void {
     SetFontForeground(FONT_BLACK);
 
     // next History
-    pCurHistory = pCurHistory->Next;
+    pCurHistory = pCurHistory.value.Next;
 
     // last page, no Historys left, return
     if (!pCurHistory) {
@@ -779,7 +779,7 @@ function DisplayPageNumberAndDateRange(): void {
     return;
   }
 
-  uiLastDate = pCurrentHistory->uiDate;
+  uiLastDate = pCurrentHistory.value.uiDate;
 
   /*
           // find last page
@@ -803,10 +803,10 @@ function DisplayPageNumberAndDateRange(): void {
 
   // run through list until end or num_records, which ever first
   while ((pTempHistory) && (iCounter < NUM_RECORDS_PER_PAGE)) {
-    uiLastDate = pTempHistory->uiDate;
+    uiLastDate = pTempHistory.value.uiDate;
     iCounter++;
 
-    pTempHistory = pTempHistory->Next;
+    pTempHistory = pTempHistory.value.Next;
   }
 
   // get the last page
@@ -814,7 +814,7 @@ function DisplayPageNumberAndDateRange(): void {
   swprintf(sString, "%s  %d / %d", pHistoryHeaders[1], iCurrentHistoryPage, iLastPage + 1);
   mprintf(PAGE_NUMBER_X, PAGE_NUMBER_Y, sString);
 
-  swprintf(sString, "%s %d - %d", pHistoryHeaders[2], pCurrentHistory->uiDate / (24 * 60), uiLastDate / (24 * 60));
+  swprintf(sString, "%s %d - %d", pHistoryHeaders[2], pCurrentHistory.value.uiDate / (24 * 60), uiLastDate / (24 * 60));
   mprintf(HISTORY_DATE_X, HISTORY_DATE_Y, sString);
 
   // reset shadow
@@ -826,22 +826,22 @@ function DisplayPageNumberAndDateRange(): void {
 function ProcessHistoryTransactionString(pString: STR16, pHistory: HistoryUnitPtr): void {
   let sString: CHAR16[] /* [128] */;
 
-  switch (pHistory->ubCode) {
+  switch (pHistory.value.ubCode) {
     case HISTORY_ENTERED_HISTORY_MODE:
       swprintf(pString, pHistoryStrings[HISTORY_ENTERED_HISTORY_MODE]);
       break;
 
     case HISTORY_HIRED_MERC_FROM_AIM:
-      swprintf(pString, pHistoryStrings[HISTORY_HIRED_MERC_FROM_AIM], gMercProfiles[pHistory->ubSecondCode].zName);
+      swprintf(pString, pHistoryStrings[HISTORY_HIRED_MERC_FROM_AIM], gMercProfiles[pHistory.value.ubSecondCode].zName);
       break;
 
     case HISTORY_MERC_KILLED:
-      if (pHistory->ubSecondCode != NO_PROFILE)
-        swprintf(pString, pHistoryStrings[HISTORY_MERC_KILLED], gMercProfiles[pHistory->ubSecondCode].zName);
+      if (pHistory.value.ubSecondCode != NO_PROFILE)
+        swprintf(pString, pHistoryStrings[HISTORY_MERC_KILLED], gMercProfiles[pHistory.value.ubSecondCode].zName);
       break;
 
     case HISTORY_HIRED_MERC_FROM_MERC:
-      swprintf(pString, pHistoryStrings[HISTORY_HIRED_MERC_FROM_MERC], gMercProfiles[pHistory->ubSecondCode].zName);
+      swprintf(pString, pHistoryStrings[HISTORY_HIRED_MERC_FROM_MERC], gMercProfiles[pHistory.value.ubSecondCode].zName);
       break;
 
     case HISTORY_SETTLED_ACCOUNTS_AT_MERC:
@@ -854,50 +854,50 @@ function ProcessHistoryTransactionString(pString: STR16, pHistory: HistoryUnitPt
       swprintf(pString, pHistoryStrings[HISTORY_CHARACTER_GENERATED]);
       break;
     case (HISTORY_PURCHASED_INSURANCE):
-      swprintf(pString, pHistoryStrings[HISTORY_PURCHASED_INSURANCE], gMercProfiles[pHistory->ubSecondCode].zNickname);
+      swprintf(pString, pHistoryStrings[HISTORY_PURCHASED_INSURANCE], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
     case (HISTORY_CANCELLED_INSURANCE):
-      swprintf(pString, pHistoryStrings[HISTORY_CANCELLED_INSURANCE], gMercProfiles[pHistory->ubSecondCode].zNickname);
+      swprintf(pString, pHistoryStrings[HISTORY_CANCELLED_INSURANCE], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
     case (HISTORY_INSURANCE_CLAIM_PAYOUT):
-      swprintf(pString, pHistoryStrings[HISTORY_INSURANCE_CLAIM_PAYOUT], gMercProfiles[pHistory->ubSecondCode].zNickname);
+      swprintf(pString, pHistoryStrings[HISTORY_INSURANCE_CLAIM_PAYOUT], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
     case HISTORY_EXTENDED_CONTRACT_1_DAY:
-      swprintf(pString, pHistoryStrings[HISTORY_EXTENDED_CONTRACT_1_DAY], gMercProfiles[pHistory->ubSecondCode].zNickname);
+      swprintf(pString, pHistoryStrings[HISTORY_EXTENDED_CONTRACT_1_DAY], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
     case HISTORY_EXTENDED_CONTRACT_1_WEEK:
-      swprintf(pString, pHistoryStrings[HISTORY_EXTENDED_CONTRACT_1_WEEK], gMercProfiles[pHistory->ubSecondCode].zNickname);
+      swprintf(pString, pHistoryStrings[HISTORY_EXTENDED_CONTRACT_1_WEEK], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
     case HISTORY_EXTENDED_CONTRACT_2_WEEK:
-      swprintf(pString, pHistoryStrings[HISTORY_EXTENDED_CONTRACT_2_WEEK], gMercProfiles[pHistory->ubSecondCode].zNickname);
+      swprintf(pString, pHistoryStrings[HISTORY_EXTENDED_CONTRACT_2_WEEK], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
     case (HISTORY_MERC_FIRED):
-      swprintf(pString, pHistoryStrings[HISTORY_MERC_FIRED], gMercProfiles[pHistory->ubSecondCode].zNickname);
+      swprintf(pString, pHistoryStrings[HISTORY_MERC_FIRED], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
     case (HISTORY_MERC_QUIT):
-      swprintf(pString, pHistoryStrings[HISTORY_MERC_QUIT], gMercProfiles[pHistory->ubSecondCode].zNickname);
+      swprintf(pString, pHistoryStrings[HISTORY_MERC_QUIT], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
     case (HISTORY_QUEST_STARTED):
-      GetQuestStartedString(pHistory->ubSecondCode, sString);
+      GetQuestStartedString(pHistory.value.ubSecondCode, sString);
       swprintf(pString, sString);
 
       break;
     case (HISTORY_QUEST_FINISHED):
-      GetQuestEndedString(pHistory->ubSecondCode, sString);
+      GetQuestEndedString(pHistory.value.ubSecondCode, sString);
       swprintf(pString, sString);
 
       break;
     case (HISTORY_TALKED_TO_MINER):
-      swprintf(pString, pHistoryStrings[HISTORY_TALKED_TO_MINER], pTownNames[pHistory->ubSecondCode]);
+      swprintf(pString, pHistoryStrings[HISTORY_TALKED_TO_MINER], pTownNames[pHistory.value.ubSecondCode]);
       break;
     case (HISTORY_LIBERATED_TOWN):
-      swprintf(pString, pHistoryStrings[HISTORY_LIBERATED_TOWN], pTownNames[pHistory->ubSecondCode]);
+      swprintf(pString, pHistoryStrings[HISTORY_LIBERATED_TOWN], pTownNames[pHistory.value.ubSecondCode]);
       break;
     case (HISTORY_CHEAT_ENABLED):
       swprintf(pString, pHistoryStrings[HISTORY_CHEAT_ENABLED]);
@@ -906,13 +906,13 @@ function ProcessHistoryTransactionString(pString: STR16, pHistory: HistoryUnitPt
       swprintf(pString, pHistoryStrings[HISTORY_TALKED_TO_FATHER_WALKER]);
       break;
     case HISTORY_MERC_MARRIED_OFF:
-      swprintf(pString, pHistoryStrings[HISTORY_MERC_MARRIED_OFF], gMercProfiles[pHistory->ubSecondCode].zNickname);
+      swprintf(pString, pHistoryStrings[HISTORY_MERC_MARRIED_OFF], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
     case HISTORY_MERC_CONTRACT_EXPIRED:
-      swprintf(pString, pHistoryStrings[HISTORY_MERC_CONTRACT_EXPIRED], gMercProfiles[pHistory->ubSecondCode].zName);
+      swprintf(pString, pHistoryStrings[HISTORY_MERC_CONTRACT_EXPIRED], gMercProfiles[pHistory.value.ubSecondCode].zName);
       break;
     case HISTORY_RPC_JOINED_TEAM:
-      swprintf(pString, pHistoryStrings[HISTORY_RPC_JOINED_TEAM], gMercProfiles[pHistory->ubSecondCode].zName);
+      swprintf(pString, pHistoryStrings[HISTORY_RPC_JOINED_TEAM], gMercProfiles[pHistory.value.ubSecondCode].zName);
       break;
     case HISTORY_ENRICO_COMPLAINED:
       swprintf(pString, pHistoryStrings[HISTORY_ENRICO_COMPLAINED]);
@@ -922,14 +922,14 @@ function ProcessHistoryTransactionString(pString: STR16, pHistory: HistoryUnitPt
     case HISTORY_MINE_SHUTDOWN:
     case HISTORY_MINE_REOPENED:
       // all the same format
-      swprintf(pString, pHistoryStrings[pHistory->ubCode], pTownNames[pHistory->ubSecondCode]);
+      swprintf(pString, pHistoryStrings[pHistory.value.ubCode], pTownNames[pHistory.value.ubSecondCode]);
       break;
     case HISTORY_LOST_BOXING:
     case HISTORY_WON_BOXING:
     case HISTORY_DISQUALIFIED_BOXING:
     case HISTORY_NPC_KILLED:
     case HISTORY_MERC_KILLED_CHARACTER:
-      swprintf(pString, pHistoryStrings[pHistory->ubCode], gMercProfiles[pHistory->ubSecondCode].zNickname);
+      swprintf(pString, pHistoryStrings[pHistory.value.ubCode], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
     // ALL SIMPLE HISTORY LOG MSGS, NO PARAMS
@@ -978,7 +978,7 @@ function ProcessHistoryTransactionString(pString: STR16, pHistory: HistoryUnitPt
     case HISTORY_SLAUGHTEREDBLOODCATS:
     case HISTORY_GAVE_CARMEN_HEAD:
     case HISTORY_SLAY_MYSTERIOUSLY_LEFT:
-      swprintf(pString, pHistoryStrings[pHistory->ubCode]);
+      swprintf(pString, pHistoryStrings[pHistory.value.ubCode]);
       break;
   }
 }
@@ -1151,15 +1151,15 @@ function WriteOutHistoryRecords(uiPage: UINT32): BOOLEAN {
   uiByteCount = /*sizeof( INT32 )+ */ (uiPage - 1) * NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD;
   // file exists, read in data, continue until end of page
   while ((iCount < NUM_RECORDS_PER_PAGE) && (fOkToContinue)) {
-    FileWrite(hFileHandle, &(pList->ubCode), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, &(pList->ubSecondCode), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, &(pList->uiDate), sizeof(UINT32), NULL);
-    FileWrite(hFileHandle, &(pList->sSectorX), sizeof(INT16), NULL);
-    FileWrite(hFileHandle, &(pList->sSectorY), sizeof(INT16), NULL);
-    FileWrite(hFileHandle, &(pList->bSectorZ), sizeof(INT8), NULL);
-    FileWrite(hFileHandle, &(pList->ubColor), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, &(pList.value.ubCode), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, &(pList.value.ubSecondCode), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, &(pList.value.uiDate), sizeof(UINT32), NULL);
+    FileWrite(hFileHandle, &(pList.value.sSectorX), sizeof(INT16), NULL);
+    FileWrite(hFileHandle, &(pList.value.sSectorY), sizeof(INT16), NULL);
+    FileWrite(hFileHandle, &(pList.value.bSectorZ), sizeof(INT8), NULL);
+    FileWrite(hFileHandle, &(pList.value.ubColor), sizeof(UINT8), NULL);
 
-    pList = pList->Next;
+    pList = pList.value.Next;
 
     // we've overextended our welcome, and bypassed end of file, get out
     if (pList == NULL) {
@@ -1301,13 +1301,13 @@ function AppendHistoryToEndOfFile(pHistory: HistoryUnitPtr): BOOLEAN {
   }
 
   // now write date and amount, and code
-  FileWrite(hFileHandle, &(pHistoryList->ubCode), sizeof(UINT8), NULL);
-  FileWrite(hFileHandle, &(pHistoryList->ubSecondCode), sizeof(UINT8), NULL);
-  FileWrite(hFileHandle, &(pHistoryList->uiDate), sizeof(UINT32), NULL);
-  FileWrite(hFileHandle, &(pHistoryList->sSectorX), sizeof(INT16), NULL);
-  FileWrite(hFileHandle, &(pHistoryList->sSectorY), sizeof(INT16), NULL);
-  FileWrite(hFileHandle, &(pHistoryList->bSectorZ), sizeof(INT8), NULL);
-  FileWrite(hFileHandle, &(pHistoryList->ubColor), sizeof(UINT8), NULL);
+  FileWrite(hFileHandle, &(pHistoryList.value.ubCode), sizeof(UINT8), NULL);
+  FileWrite(hFileHandle, &(pHistoryList.value.ubSecondCode), sizeof(UINT8), NULL);
+  FileWrite(hFileHandle, &(pHistoryList.value.uiDate), sizeof(UINT32), NULL);
+  FileWrite(hFileHandle, &(pHistoryList.value.sSectorX), sizeof(INT16), NULL);
+  FileWrite(hFileHandle, &(pHistoryList.value.sSectorY), sizeof(INT16), NULL);
+  FileWrite(hFileHandle, &(pHistoryList.value.bSectorZ), sizeof(INT8), NULL);
+  FileWrite(hFileHandle, &(pHistoryList.value.ubColor), sizeof(UINT8), NULL);
 
   // close file
   FileClose(hFileHandle);
@@ -1331,9 +1331,9 @@ function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16): void
   pList = pHistoryListHead;
 
   while (pList) {
-    if ((pList->ubSecondCode == ubCode) && (pList->ubCode == HISTORY_QUEST_STARTED)) {
+    if ((pList.value.ubSecondCode == ubCode) && (pList.value.ubCode == HISTORY_QUEST_STARTED)) {
       // reset color
-      pList->ubColor = 0;
+      pList.value.ubColor = 0;
       fFound = TRUE;
 
       // save
@@ -1342,7 +1342,7 @@ function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16): void
     }
 
     if (fFound != TRUE) {
-      pList = pList->Next;
+      pList = pList.value.Next;
     }
   }
 
@@ -1374,15 +1374,15 @@ function GetTimeQuestWasStarted(ubCode: UINT8): UINT32 {
   pList = pHistoryListHead;
 
   while (pList) {
-    if ((pList->ubSecondCode == ubCode) && (pList->ubCode == HISTORY_QUEST_STARTED)) {
-      uiTime = pList->uiDate;
+    if ((pList.value.ubSecondCode == ubCode) && (pList.value.ubCode == HISTORY_QUEST_STARTED)) {
+      uiTime = pList.value.uiDate;
       fFound = TRUE;
 
       pList = NULL;
     }
 
     if (fFound != TRUE) {
-      pList = pList->Next;
+      pList = pList.value.Next;
     }
   }
 

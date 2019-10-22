@@ -136,12 +136,12 @@ function DecaySmells(): void {
   // return;
 
   for (uiLoop = 0, pMapElement = gpWorldLevelData; uiLoop < WORLD_MAX; uiLoop++, pMapElement++) {
-    if (pMapElement->ubSmellInfo) {
+    if (pMapElement.value.ubSmellInfo) {
       // decay smell strength!
-      DECAY_SMELL_STRENGTH(pMapElement->ubSmellInfo);
+      DECAY_SMELL_STRENGTH(pMapElement.value.ubSmellInfo);
       // if the strength left is 0, wipe the whole byte to clear the type
-      if (SMELL_STRENGTH(pMapElement->ubSmellInfo) == 0) {
-        pMapElement->ubSmellInfo = 0;
+      if (SMELL_STRENGTH(pMapElement.value.ubSmellInfo) == 0) {
+        pMapElement.value.ubSmellInfo = 0;
       }
     }
   }
@@ -152,40 +152,40 @@ function DecayBlood(): void {
   let pMapElement: Pointer<MAP_ELEMENT>;
 
   for (uiLoop = 0, pMapElement = gpWorldLevelData; uiLoop < WORLD_MAX; uiLoop++, pMapElement++) {
-    if (pMapElement->ubBloodInfo) {
+    if (pMapElement.value.ubBloodInfo) {
       // delay blood timer!
-      DECAY_BLOOD_DELAY_TIME(pMapElement->ubBloodInfo);
-      if (BLOOD_DELAY_TIME(pMapElement->ubBloodInfo) == 0) {
+      DECAY_BLOOD_DELAY_TIME(pMapElement.value.ubBloodInfo);
+      if (BLOOD_DELAY_TIME(pMapElement.value.ubBloodInfo) == 0) {
         // Set re-evaluate flag
-        pMapElement->uiFlags |= MAPELEMENT_REEVALUATEBLOOD;
+        pMapElement.value.uiFlags |= MAPELEMENT_REEVALUATEBLOOD;
 
         // reduce the floor blood strength if it is above zero
-        if (BLOOD_FLOOR_STRENGTH(pMapElement->ubBloodInfo) > 0) {
-          DECAY_BLOOD_FLOOR_STRENGTH(pMapElement->ubBloodInfo)
-          if (BLOOD_FLOOR_STRENGTH(pMapElement->ubBloodInfo) == 0) {
+        if (BLOOD_FLOOR_STRENGTH(pMapElement.value.ubBloodInfo) > 0) {
+          DECAY_BLOOD_FLOOR_STRENGTH(pMapElement.value.ubBloodInfo)
+          if (BLOOD_FLOOR_STRENGTH(pMapElement.value.ubBloodInfo) == 0) {
             // delete the blood graphic on the floor!
             // then
-            if (NO_BLOOD_STRENGTH(pMapElement->ubBloodInfo)) {
+            if (NO_BLOOD_STRENGTH(pMapElement.value.ubBloodInfo)) {
               // wipe the whole byte to zero
-              pMapElement->ubBloodInfo = 0;
+              pMapElement.value.ubBloodInfo = 0;
             }
           }
         }
         // reduce the roof blood strength if it is above zero
-        if (BLOOD_ROOF_STRENGTH(pMapElement->ubBloodInfo) > 0) {
-          DECAY_BLOOD_ROOF_STRENGTH(pMapElement->ubBloodInfo)
-          if (BLOOD_ROOF_STRENGTH(pMapElement->ubBloodInfo) == 0) {
+        if (BLOOD_ROOF_STRENGTH(pMapElement.value.ubBloodInfo) > 0) {
+          DECAY_BLOOD_ROOF_STRENGTH(pMapElement.value.ubBloodInfo)
+          if (BLOOD_ROOF_STRENGTH(pMapElement.value.ubBloodInfo) == 0) {
             // delete the blood graphic on the roof!
-            if (NO_BLOOD_STRENGTH(pMapElement->ubBloodInfo)) {
+            if (NO_BLOOD_STRENGTH(pMapElement.value.ubBloodInfo)) {
               // wipe the whole byte to zero
-              pMapElement->ubBloodInfo = 0;
+              pMapElement.value.ubBloodInfo = 0;
             }
           }
         }
 
         // if any blood remaining, reset time
-        if (pMapElement->ubBloodInfo) {
-          SET_BLOOD_DELAY_TIME(pMapElement->ubBloodInfo);
+        if (pMapElement.value.ubBloodInfo) {
+          SET_BLOOD_DELAY_TIME(pMapElement.value.ubBloodInfo);
         }
       }
       // end of blood handling
@@ -240,18 +240,18 @@ function DropSmell(pSoldier: Pointer<SOLDIERTYPE>): void {
    *  the tile, it overrides dropping smells of any type
    */
 
-  if (pSoldier->bLevel == 0) {
-    pMapElement = &(gpWorldLevelData[pSoldier->sGridNo]);
-    if (pMapElement->ubBloodInfo) {
+  if (pSoldier.value.bLevel == 0) {
+    pMapElement = &(gpWorldLevelData[pSoldier.value.sGridNo]);
+    if (pMapElement.value.ubBloodInfo) {
       // blood here, don't drop any smell
       return;
     }
 
-    if (pSoldier->bNormalSmell > pSoldier->bMonsterSmell) {
-      ubStrength = pSoldier->bNormalSmell - pSoldier->bMonsterSmell;
+    if (pSoldier.value.bNormalSmell > pSoldier.value.bMonsterSmell) {
+      ubStrength = pSoldier.value.bNormalSmell - pSoldier.value.bMonsterSmell;
       ubSmell = HUMAN;
     } else {
-      ubStrength = pSoldier->bMonsterSmell - pSoldier->bNormalSmell;
+      ubStrength = pSoldier.value.bMonsterSmell - pSoldier.value.bNormalSmell;
       if (ubStrength == 0) {
         // don't drop any smell
         return;
@@ -259,11 +259,11 @@ function DropSmell(pSoldier: Pointer<SOLDIERTYPE>): void {
       ubSmell = CREATURE_ON_FLOOR;
     }
 
-    if (pMapElement->ubSmellInfo) {
+    if (pMapElement.value.ubSmellInfo) {
       // smell already exists here; check to see if it's the same or not
 
-      ubOldSmell = SMELL_TYPE(pMapElement->ubSmellInfo);
-      ubOldStrength = SMELL_STRENGTH(pMapElement->ubSmellInfo);
+      ubOldSmell = SMELL_TYPE(pMapElement.value.ubSmellInfo);
+      ubOldStrength = SMELL_STRENGTH(pMapElement.value.ubSmellInfo);
       if (ubOldSmell == ubSmell) {
         // same smell; increase the strength to the bigger of the two strengths,
         // plus 1/5 of the smaller
@@ -273,20 +273,20 @@ function DropSmell(pSoldier: Pointer<SOLDIERTYPE>): void {
         // different smell; we muddy the smell by reducing the smell strength
         if (ubOldStrength > ubStrength) {
           ubOldStrength -= ubStrength / 3;
-          SET_SMELL(pMapElement->ubSmellInfo, ubOldStrength, ubOldSmell);
+          SET_SMELL(pMapElement.value.ubSmellInfo, ubOldStrength, ubOldSmell);
         } else {
           ubStrength -= ubOldStrength / 3;
           if (ubStrength > 0) {
-            SET_SMELL(pMapElement->ubSmellInfo, ubStrength, ubSmell);
+            SET_SMELL(pMapElement.value.ubSmellInfo, ubStrength, ubSmell);
           } else {
             // smell reduced to 0 - wipe all info on it!
-            pMapElement->ubSmellInfo = 0;
+            pMapElement.value.ubSmellInfo = 0;
           }
         }
       }
     } else {
       // the simple case, dropping a smell in a location where there is none
-      SET_SMELL(pMapElement->ubSmellInfo, ubStrength, ubSmell);
+      SET_SMELL(pMapElement.value.ubSmellInfo, ubStrength, ubSmell);
     }
   }
   // otherwise skip dropping smell
@@ -318,60 +318,60 @@ function InternalDropBlood(sGridNo: INT16, bLevel: INT8, ubType: UINT8, ubStreng
   pMapElement = &(gpWorldLevelData[sGridNo]);
   if (bLevel == 0) {
     // dropping blood on ground
-    ubOldStrength = BLOOD_FLOOR_STRENGTH(pMapElement->ubBloodInfo);
+    ubOldStrength = BLOOD_FLOOR_STRENGTH(pMapElement.value.ubBloodInfo);
     if (ubOldStrength > 0) {
       // blood already there... we'll leave the decay time as it is
-      if (BLOOD_FLOOR_TYPE(pMapElement->ubBloodInfo) == ubType) {
+      if (BLOOD_FLOOR_TYPE(pMapElement.value.ubBloodInfo) == ubType) {
         // combine blood strengths!
         ubNewStrength = __min((ubOldStrength + ubStrength), BLOOD_STRENGTH_MAX);
 
-        SET_BLOOD_FLOOR_STRENGTH(pMapElement->ubBloodInfo, ubNewStrength);
+        SET_BLOOD_FLOOR_STRENGTH(pMapElement.value.ubBloodInfo, ubNewStrength);
       } else {
         // replace the existing blood if more is being dropped than exists
         if (ubStrength > ubOldStrength) {
           // replace!
-          SET_BLOOD_FLOOR_STRENGTH(pMapElement->ubBloodInfo, ubStrength);
+          SET_BLOOD_FLOOR_STRENGTH(pMapElement.value.ubBloodInfo, ubStrength);
         }
         // else we don't drop anything at all
       }
     } else {
       // no blood on the ground yet, so drop this amount!
       // set decay time
-      SET_BLOOD_DELAY_TIME(pMapElement->ubBloodInfo);
-      SET_BLOOD_FLOOR_STRENGTH(pMapElement->ubBloodInfo, ubStrength);
+      SET_BLOOD_DELAY_TIME(pMapElement.value.ubBloodInfo);
+      SET_BLOOD_FLOOR_STRENGTH(pMapElement.value.ubBloodInfo, ubStrength);
       // NB blood floor type stored in smell byte!
-      SET_BLOOD_FLOOR_TYPE(pMapElement->ubSmellInfo, ubType);
+      SET_BLOOD_FLOOR_TYPE(pMapElement.value.ubSmellInfo, ubType);
     }
   } else {
     // dropping blood on roof
-    ubOldStrength = BLOOD_ROOF_STRENGTH(pMapElement->ubBloodInfo);
+    ubOldStrength = BLOOD_ROOF_STRENGTH(pMapElement.value.ubBloodInfo);
     if (ubOldStrength > 0) {
       // blood already there... we'll leave the decay time as it is
-      if (BLOOD_ROOF_TYPE(pMapElement->ubSmellInfo) == ubType) {
+      if (BLOOD_ROOF_TYPE(pMapElement.value.ubSmellInfo) == ubType) {
         // combine blood strengths!
         ubNewStrength = __max(ubOldStrength, ubStrength) + 1;
         // make sure the strength is legal
         ubNewStrength = __max(ubNewStrength, BLOOD_STRENGTH_MAX);
-        SET_BLOOD_ROOF_STRENGTH(pMapElement->ubBloodInfo, ubNewStrength);
+        SET_BLOOD_ROOF_STRENGTH(pMapElement.value.ubBloodInfo, ubNewStrength);
       } else {
         // replace the existing blood if more is being dropped than exists
         if (ubStrength > ubOldStrength) {
           // replace!
-          SET_BLOOD_ROOF_STRENGTH(pMapElement->ubBloodInfo, ubStrength);
+          SET_BLOOD_ROOF_STRENGTH(pMapElement.value.ubBloodInfo, ubStrength);
         }
         // else we don't drop anything at all
       }
     } else {
       // no blood on the roof yet, so drop this amount!
       // set decay time
-      SET_BLOOD_DELAY_TIME(pMapElement->ubBloodInfo);
-      SET_BLOOD_ROOF_STRENGTH(pMapElement->ubBloodInfo, ubNewStrength);
-      SET_BLOOD_ROOF_TYPE(pMapElement->ubSmellInfo, ubType);
+      SET_BLOOD_DELAY_TIME(pMapElement.value.ubBloodInfo);
+      SET_BLOOD_ROOF_STRENGTH(pMapElement.value.ubBloodInfo, ubNewStrength);
+      SET_BLOOD_ROOF_TYPE(pMapElement.value.ubSmellInfo, ubType);
     }
   }
 
   // Turn on flag...
-  pMapElement->uiFlags |= MAPELEMENT_REEVALUATEBLOOD;
+  pMapElement.value.uiFlags |= MAPELEMENT_REEVALUATEBLOOD;
 
   if (bVisible != -1) {
     UpdateBloodGraphics(sGridNo, bLevel);
@@ -389,8 +389,8 @@ function DropBlood(pSoldier: Pointer<SOLDIERTYPE>, ubStrength: UINT8, bVisible: 
    */
 
   // figure out the type of blood that we're dropping
-  if (pSoldier->uiStatusFlags & SOLDIER_MONSTER) {
-    if (pSoldier->bLevel == 0) {
+  if (pSoldier.value.uiStatusFlags & SOLDIER_MONSTER) {
+    if (pSoldier.value.bLevel == 0) {
       ubType = CREATURE_ON_FLOOR;
     } else {
       ubType = CREATURE_ON_ROOF;
@@ -399,7 +399,7 @@ function DropBlood(pSoldier: Pointer<SOLDIERTYPE>, ubStrength: UINT8, bVisible: 
     ubType = 0;
   }
 
-  InternalDropBlood(pSoldier->sGridNo, pSoldier->bLevel, ubType, ubStrength, bVisible);
+  InternalDropBlood(pSoldier.value.sGridNo, pSoldier.value.bLevel, ubType, ubStrength, bVisible);
 }
 
 function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
@@ -416,13 +416,13 @@ function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
     return;
   }
 
-  if (pMapElement->uiFlags & MAPELEMENT_REEVALUATEBLOOD) {
+  if (pMapElement.value.uiFlags & MAPELEMENT_REEVALUATEBLOOD) {
     // Turn off flag!
-    pMapElement->uiFlags &= (~MAPELEMENT_REEVALUATEBLOOD);
+    pMapElement.value.uiFlags &= (~MAPELEMENT_REEVALUATEBLOOD);
 
     // Ground
     if (bLevel == 0) {
-      bValue = BLOOD_FLOOR_STRENGTH(pMapElement->ubBloodInfo);
+      bValue = BLOOD_FLOOR_STRENGTH(pMapElement.value.ubBloodInfo);
 
       // OK, remove tile graphic if one exists....
       if (TypeRangeExistsInObjectLayer(sGridNo, HUMANBLOOD, CREATUREBLOOD, &usIndex)) {
@@ -441,7 +441,7 @@ function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
       if (bValue > 0) {
         usIndex = ((Random(4) * 4) + ubBloodGraphicLUT[bValue]);
 
-        if (BLOOD_FLOOR_TYPE(pMapElement->ubSmellInfo) == 0) {
+        if (BLOOD_FLOOR_TYPE(pMapElement.value.ubSmellInfo) == 0) {
           GetTileIndexFromTypeSubIndex(HUMANBLOOD, (usIndex + 1), &usNewIndex);
         } else {
           GetTileIndexFromTypeSubIndex(CREATUREBLOOD, (usIndex + 1), &usNewIndex);
@@ -457,7 +457,7 @@ function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
         // ApplyMapChangesToMapTempFile( FALSE );
 
         // Update rendering!
-        pMapElement->uiFlags |= MAPELEMENT_REDRAW;
+        pMapElement.value.uiFlags |= MAPELEMENT_REDRAW;
         SetRenderFlags(RENDER_FLAG_MARKED);
       }
     }

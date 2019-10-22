@@ -111,14 +111,14 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
     pMap = &pTempArrayOfMaps[cnt];
 
     // Switch on the type that should either be added or removed from the map
-    switch (pMap->ubType) {
+    switch (pMap.value.ubType) {
       // If we are adding to the map
       case SLM_LAND:
         break;
       case SLM_OBJECT:
-        GetTileIndexFromTypeSubIndex(pMap->usImageType, pMap->usSubImageIndex, &usIndex);
+        GetTileIndexFromTypeSubIndex(pMap.value.usImageType, pMap.value.usSubImageIndex, &usIndex);
 
-        AddObjectFromMapTempFileToMap(pMap->usGridNo, usIndex);
+        AddObjectFromMapTempFileToMap(pMap.value.usGridNo, usIndex);
 
         // Save this struct back to the temp file
         SaveModifiedMapStructToMapTempFile(pMap, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
@@ -128,9 +128,9 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
 
         break;
       case SLM_STRUCT:
-        GetTileIndexFromTypeSubIndex(pMap->usImageType, pMap->usSubImageIndex, &usIndex);
+        GetTileIndexFromTypeSubIndex(pMap.value.usImageType, pMap.value.usSubImageIndex, &usIndex);
 
-        AddStructFromMapTempFileToMap(pMap->usGridNo, usIndex);
+        AddStructFromMapTempFileToMap(pMap.value.usGridNo, usIndex);
 
         // Save this struct back to the temp file
         SaveModifiedMapStructToMapTempFile(pMap, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
@@ -159,12 +159,12 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
         // ATE: OK, dor doors, the usIndex can be varied, opened, closed, etc
         // we MUSTR delete ANY door type on this gridno
         // Since we can only have one door per gridno, we're safe to do so.....
-        if (pMap->usImageType >= FIRSTDOOR && pMap->usImageType <= FOURTHDOOR) {
+        if (pMap.value.usImageType >= FIRSTDOOR && pMap.value.usImageType <= FOURTHDOOR) {
           // Remove ANY door...
-          RemoveAllStructsOfTypeRange(pMap->usGridNo, FIRSTDOOR, FOURTHDOOR);
+          RemoveAllStructsOfTypeRange(pMap.value.usGridNo, FIRSTDOOR, FOURTHDOOR);
         } else {
-          GetTileIndexFromTypeSubIndex(pMap->usImageType, pMap->usSubImageIndex, &usIndex);
-          RemoveSavedStructFromMap(pMap->usGridNo, usIndex);
+          GetTileIndexFromTypeSubIndex(pMap.value.usImageType, pMap.value.usSubImageIndex, &usIndex);
+          RemoveSavedStructFromMap(pMap.value.usGridNo, usIndex);
         }
 
         // Save this struct back to the temp file
@@ -195,12 +195,12 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
       case SLM_EXIT_GRIDS: {
         let ExitGrid: EXITGRID;
         gfLoadingExitGrids = TRUE;
-        ExitGrid.usGridNo = pMap->usSubImageIndex;
-        ExitGrid.ubGotoSectorX = pMap->usImageType;
-        ExitGrid.ubGotoSectorY = (pMap->usImageType >> 8);
-        ExitGrid.ubGotoSectorZ = pMap->ubExtra;
+        ExitGrid.usGridNo = pMap.value.usSubImageIndex;
+        ExitGrid.ubGotoSectorX = pMap.value.usImageType;
+        ExitGrid.ubGotoSectorY = (pMap.value.usImageType >> 8);
+        ExitGrid.ubGotoSectorZ = pMap.value.ubExtra;
 
-        AddExitGridToWorld(pMap->usGridNo, &ExitGrid);
+        AddExitGridToWorld(pMap.value.usGridNo, &ExitGrid);
         gfLoadingExitGrids = FALSE;
 
         // Save this struct back to the temp file
@@ -211,11 +211,11 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
       } break;
 
       case SLM_OPENABLE_STRUCT:
-        SetOpenableStructStatusFromMapTempFile(pMap->usGridNo, pMap->usImageType);
+        SetOpenableStructStatusFromMapTempFile(pMap.value.usGridNo, pMap.value.usImageType);
         break;
 
       case SLM_WINDOW_HIT:
-        if (ModifyWindowStatus(pMap->usGridNo)) {
+        if (ModifyWindowStatus(pMap.value.usGridNo)) {
           // Save this struct back to the temp file
           SaveModifiedMapStructToMapTempFile(pMap, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
@@ -404,11 +404,11 @@ function SaveBloodSmellAndRevealedStatesFromMapToTempFile(): void {
       // loop through all the structures and add all that are damaged
       while (pCurrent) {
         // if the structure has been damaged
-        if (pCurrent->ubHitPoints < pCurrent->pDBStructureRef->pDBStructure->ubHitPoints) {
+        if (pCurrent.value.ubHitPoints < pCurrent.value.pDBStructureRef.value.pDBStructure.value.ubHitPoints) {
           let ubBitToSet: UINT8 = 0x80;
           let ubLevel: UINT8 = 0;
 
-          if (pCurrent->sCubeOffset != 0)
+          if (pCurrent.value.sCubeOffset != 0)
             ubLevel |= ubBitToSet;
 
           memset(&Map, 0, sizeof(MODIFY_MAP));
@@ -416,11 +416,11 @@ function SaveBloodSmellAndRevealedStatesFromMapToTempFile(): void {
           // Save the Damaged value
           Map.usGridNo = cnt;
           //					Map.usIndex			= StructureFlagToType( pCurrent->fFlags ) | ( pCurrent->ubHitPoints << 8 );
-          Map.usImageType = StructureFlagToType(pCurrent->fFlags);
-          Map.usSubImageIndex = pCurrent->ubHitPoints;
+          Map.usImageType = StructureFlagToType(pCurrent.value.fFlags);
+          Map.usSubImageIndex = pCurrent.value.ubHitPoints;
 
           Map.ubType = SLM_DAMAGED_STRUCT;
-          Map.ubExtra = pCurrent->ubWallOrientation | ubLevel;
+          Map.ubExtra = pCurrent.value.ubWallOrientation | ubLevel;
 
           // Save the change to the map file
           SaveModifiedMapStructToMapTempFile(&Map, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
@@ -435,10 +435,10 @@ function SaveBloodSmellAndRevealedStatesFromMapToTempFile(): void {
     // if this structure
     if (pStructure) {
       // if the current structure has an openable structure in it, and it is NOT a door
-      if (!(pStructure->fFlags & STRUCTURE_ANYDOOR)) {
+      if (!(pStructure.value.fFlags & STRUCTURE_ANYDOOR)) {
         let fStatusOnTheMap: BOOLEAN;
 
-        fStatusOnTheMap = ((pStructure->fFlags & STRUCTURE_OPEN) != 0);
+        fStatusOnTheMap = ((pStructure.value.fFlags & STRUCTURE_OPEN) != 0);
 
         AddOpenableStructStatusToMapTempFile(cnt, fStatusOnTheMap);
       }
@@ -448,18 +448,18 @@ function SaveBloodSmellAndRevealedStatesFromMapToTempFile(): void {
 
 // The BloodInfo is saved in the bottom byte and the smell info in the upper byte
 function AddBloodOrSmellFromMapTempFileToMap(pMap: Pointer<MODIFY_MAP>): void {
-  gpWorldLevelData[pMap->usGridNo].ubBloodInfo = pMap->usImageType;
+  gpWorldLevelData[pMap.value.usGridNo].ubBloodInfo = pMap.value.usImageType;
 
   // if the blood and gore option IS set, add blood
   if (gGameSettings.fOptions[TOPTION_BLOOD_N_GORE]) {
     // Update graphics for both levels...
-    gpWorldLevelData[pMap->usGridNo].uiFlags |= MAPELEMENT_REEVALUATEBLOOD;
-    UpdateBloodGraphics(pMap->usGridNo, 0);
-    gpWorldLevelData[pMap->usGridNo].uiFlags |= MAPELEMENT_REEVALUATEBLOOD;
-    UpdateBloodGraphics(pMap->usGridNo, 1);
+    gpWorldLevelData[pMap.value.usGridNo].uiFlags |= MAPELEMENT_REEVALUATEBLOOD;
+    UpdateBloodGraphics(pMap.value.usGridNo, 0);
+    gpWorldLevelData[pMap.value.usGridNo].uiFlags |= MAPELEMENT_REEVALUATEBLOOD;
+    UpdateBloodGraphics(pMap.value.usGridNo, 1);
   }
 
-  gpWorldLevelData[pMap->usGridNo].ubSmellInfo = pMap->usSubImageIndex;
+  gpWorldLevelData[pMap.value.usGridNo].ubSmellInfo = pMap.value.usSubImageIndex;
 }
 
 function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
@@ -599,23 +599,23 @@ function DamageStructsFromMapTempFile(pMap: Pointer<MODIFY_MAP>): void {
   let ubType: UINT8 = 0;
 
   // Find the base structure
-  pCurrent = FindStructure(pMap->usGridNo, STRUCTURE_BASE_TILE);
+  pCurrent = FindStructure(pMap.value.usGridNo, STRUCTURE_BASE_TILE);
 
   if (pCurrent == NULL)
     return;
 
-  bLevel = pMap->ubExtra & ubBitToSet;
-  ubWallOrientation = pMap->ubExtra & ~ubBitToSet;
-  ubType = pMap->usImageType;
+  bLevel = pMap.value.ubExtra & ubBitToSet;
+  ubWallOrientation = pMap.value.ubExtra & ~ubBitToSet;
+  ubType = pMap.value.usImageType;
 
   // Check to see if the desired strucure node is in this tile
-  pCurrent = FindStructureBySavedInfo(pMap->usGridNo, ubType, ubWallOrientation, bLevel);
+  pCurrent = FindStructureBySavedInfo(pMap.value.usGridNo, ubType, ubWallOrientation, bLevel);
 
   if (pCurrent != NULL) {
     // Assign the hitpoints
-    pCurrent->ubHitPoints = (pMap->usSubImageIndex);
+    pCurrent.value.ubHitPoints = (pMap.value.usSubImageIndex);
 
-    gpWorldLevelData[pCurrent->sGridNo].uiFlags |= MAPELEMENT_STRUCTURE_DAMAGED;
+    gpWorldLevelData[pCurrent.value.sGridNo].uiFlags |= MAPELEMENT_STRUCTURE_DAMAGED;
   }
 }
 
@@ -729,10 +729,10 @@ function AddExitGridToMapTempFile(usGridNo: UINT16, pExitGrid: Pointer<EXITGRID>
   Map.usGridNo = usGridNo;
   //	Map.usIndex		= pExitGrid->ubGotoSectorX;
 
-  Map.usImageType = pExitGrid->ubGotoSectorX | (pExitGrid->ubGotoSectorY << 8);
-  Map.usSubImageIndex = pExitGrid->usGridNo;
+  Map.usImageType = pExitGrid.value.ubGotoSectorX | (pExitGrid.value.ubGotoSectorY << 8);
+  Map.usSubImageIndex = pExitGrid.value.usGridNo;
 
-  Map.ubExtra = pExitGrid->ubGotoSectorZ;
+  Map.ubExtra = pExitGrid.value.ubGotoSectorZ;
   Map.ubType = SLM_EXIT_GRIDS;
 
   SaveModifiedMapStructToMapTempFile(&Map, sSectorX, sSectorY, ubSectorZ);
@@ -806,7 +806,7 @@ function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX
     pMap = &pTempArrayOfMaps[cnt];
 
     // if this is the peice we are looking for
-    if (pMap->usGridNo == uiMapIndex && pMap->usImageType == uiType && pMap->usSubImageIndex == usSubIndex) {
+    if (pMap.value.usGridNo == uiMapIndex && pMap.value.usImageType == uiType && pMap.value.usSubImageIndex == usSubIndex) {
       // Do nothin
       fRetVal = TRUE;
     } else {
@@ -868,7 +868,7 @@ function SetOpenableStructStatusFromMapTempFile(uiMapIndex: UINT32, fOpened: BOO
     return;
   }
 
-  fStatusOnTheMap = ((pStructure->fFlags & STRUCTURE_OPEN) != 0);
+  fStatusOnTheMap = ((pStructure.value.fFlags & STRUCTURE_OPEN) != 0);
 
   if (fStatusOnTheMap != fOpened) {
     // Adjust the item's gridno to the base of struct.....
@@ -876,7 +876,7 @@ function SetOpenableStructStatusFromMapTempFile(uiMapIndex: UINT32, fOpened: BOO
 
     // Get LEVELNODE for struct and remove!
     if (pBase) {
-      sBaseGridNo = pBase->sGridNo;
+      sBaseGridNo = pBase.value.sGridNo;
     }
 
     if (SwapStructureForPartnerWithoutTriggeringSwitches(uiMapIndex, pStructure) == NULL) {
@@ -964,11 +964,11 @@ function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, usSecto
     pMap = &pTempArrayOfMaps[cnt];
 
     // if this element is of the same type
-    if (pMap->ubType == SLM_OPENABLE_STRUCT) {
+    if (pMap.value.ubType == SLM_OPENABLE_STRUCT) {
       // if its on the same gridno
-      if (pMap->usGridNo == usGridNo) {
+      if (pMap.value.usGridNo == usGridNo) {
         // Change to the desired settings
-        pMap->usImageType = fChangeToOpen;
+        pMap.value.usImageType = fChangeToOpen;
 
         break;
       }

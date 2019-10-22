@@ -168,12 +168,12 @@ function RemoveSoldierFromHelicopter(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     return FALSE;
   }
 
-  pSoldier->sSectorX = pVehicleList[iHelicopterVehicleId].sSectorX;
-  pSoldier->sSectorY = pVehicleList[iHelicopterVehicleId].sSectorY;
-  pSoldier->bSectorZ = 0;
+  pSoldier.value.sSectorX = pVehicleList[iHelicopterVehicleId].sSectorX;
+  pSoldier.value.sSectorY = pVehicleList[iHelicopterVehicleId].sSectorY;
+  pSoldier.value.bSectorZ = 0;
 
   // reset between sectors
-  pSoldier->fBetweenSectors = FALSE;
+  pSoldier.value.fBetweenSectors = FALSE;
 
   // remove from the vehicle
   return TakeSoldierOutOfVehicle(pSoldier);
@@ -597,9 +597,9 @@ function DistanceOfIntendedHelicopterPath(): INT32 {
 
   // any path yet?
   if (pNode != NULL) {
-    while (pNode->pNext) {
+    while (pNode.value.pNext) {
       iLength++;
-      pNode = pNode->pNext;
+      pNode = pNode.value.pNext;
     }
   }
 
@@ -607,9 +607,9 @@ function DistanceOfIntendedHelicopterPath(): INT32 {
 
   // any path yet?
   if (pNode != NULL) {
-    while (pNode->pNext) {
+    while (pNode.value.pNext) {
       iLength++;
-      pNode = pNode->pNext;
+      pNode = pNode.value.pNext;
     }
   }
 
@@ -758,8 +758,8 @@ function MoveAllInHelicopterToFootMovementGroup(): UINT8 {
 
     if (pSoldier != NULL) {
       // better really be in there!
-      Assert(pSoldier->bAssignment == VEHICLE);
-      Assert(pSoldier->iVehicleId == iHelicopterVehicleId);
+      Assert(pSoldier.value.bAssignment == VEHICLE);
+      Assert(pSoldier.value.iVehicleId == iHelicopterVehicleId);
 
       fAnyoneAboard = TRUE;
 
@@ -772,12 +772,12 @@ function MoveAllInHelicopterToFootMovementGroup(): UINT8 {
       // called when buddy is added to a squad. However, the insertion code onlt sets set for
       // the first merc, so the rest are going to use whatever they had previously....
       if (!fInsertionCodeSet) {
-        ubInsertionCode = pSoldier->ubStrategicInsertionCode;
-        usInsertionData = pSoldier->usStrategicInsertionData;
+        ubInsertionCode = pSoldier.value.ubStrategicInsertionCode;
+        usInsertionData = pSoldier.value.usStrategicInsertionData;
         fInsertionCodeSet = TRUE;
       } else {
-        pSoldier->ubStrategicInsertionCode = ubInsertionCode;
-        pSoldier->usStrategicInsertionData = usInsertionData;
+        pSoldier.value.ubStrategicInsertionCode = ubInsertionCode;
+        pSoldier.value.usStrategicInsertionData = usInsertionData;
       }
     }
   }
@@ -1056,9 +1056,9 @@ function LastSectorInHelicoptersPath(): INT16 {
   // any path yet?
   if (pNode != NULL) {
     while (pNode) {
-      uiLocation = pNode->uiSectorId;
+      uiLocation = pNode.value.uiSectorId;
 
-      pNode = pNode->pNext;
+      pNode = pNode.value.pNext;
     }
   }
 
@@ -1066,9 +1066,9 @@ function LastSectorInHelicoptersPath(): INT16 {
   // any path yet?
   if (pNode != NULL) {
     while (pNode) {
-      uiLocation = pNode->uiSectorId;
+      uiLocation = pNode.value.uiSectorId;
 
-      pNode = pNode->pNext;
+      pNode = pNode.value.pNext;
     }
   }
 
@@ -1274,8 +1274,8 @@ function HandleHelicopterOnGroundGraphic(): void {
           pSoldier = FindSoldierByProfileID(SKYRIDER, FALSE);
 
           // ATE: Don't do this if buddy is on our team!
-          if (pSoldier != NULL && pSoldier->bTeam != gbPlayerNum) {
-            TacticalRemoveSoldier(pSoldier->ubID);
+          if (pSoldier != NULL && pSoldier.value.bTeam != gbPlayerNum) {
+            TacticalRemoveSoldier(pSoldier.value.ubID);
           }
         }
       }
@@ -1319,8 +1319,8 @@ function HandleHelicopterOnGroundSkyriderProfile(): void {
           pSoldier = FindSoldierByProfileID(SKYRIDER, FALSE);
 
           // ATE: Don't do this if buddy is on our team!
-          if (pSoldier != NULL && pSoldier->bTeam != gbPlayerNum) {
-            TacticalRemoveSoldier(pSoldier->ubID);
+          if (pSoldier != NULL && pSoldier.value.bTeam != gbPlayerNum) {
+            TacticalRemoveSoldier(pSoldier.value.ubID);
           }
         }
       }
@@ -1508,7 +1508,7 @@ function EndOfHelicoptersPath(): BOOLEAN {
     return TRUE;
   }
 
-  if (pVehicleList[iHelicopterVehicleId].pMercPath->pNext == NULL) {
+  if (pVehicleList[iHelicopterVehicleId].pMercPath.value.pNext == NULL) {
     return TRUE;
   }
 
@@ -1606,7 +1606,7 @@ function IsSkyriderIsFlyingInSector(sSectorX: INT16, sSectorY: INT16): BOOLEAN {
     pGroup = GetGroup(pVehicleList[iHelicopterVehicleId].ubMovementGroup);
 
     // the right sector?
-    if ((sSectorX == pGroup->ubSectorX) && (sSectorY == pGroup->ubSectorY)) {
+    if ((sSectorX == pGroup.value.ubSectorX) && (sSectorY == pGroup.value.ubSectorY)) {
       return TRUE;
     }
   }
@@ -1615,7 +1615,7 @@ function IsSkyriderIsFlyingInSector(sSectorX: INT16, sSectorY: INT16): BOOLEAN {
 }
 
 function IsGroupTheHelicopterGroup(pGroup: Pointer<GROUP>): BOOLEAN {
-  if ((iHelicopterVehicleId != -1) && VehicleIdIsValid(iHelicopterVehicleId) && (pVehicleList[iHelicopterVehicleId].ubMovementGroup != 0) && (pVehicleList[iHelicopterVehicleId].ubMovementGroup == pGroup->ubGroupID)) {
+  if ((iHelicopterVehicleId != -1) && VehicleIdIsValid(iHelicopterVehicleId) && (pVehicleList[iHelicopterVehicleId].ubMovementGroup != 0) && (pVehicleList[iHelicopterVehicleId].ubMovementGroup == pGroup.value.ubGroupID)) {
     return TRUE;
   }
 
@@ -1648,18 +1648,18 @@ function GetNumSafeSectorsInPath(): INT16 {
   if (pNode != NULL) {
     // first node: skip it if that's the sector the chopper is currently in, AND
     // we're NOT gonna be changing directions (not actually performed until waypoints are rebuilt AFTER plotting is done)
-    if ((pNode->uiSectorId == iHeliSector) && (pNode->pNext != NULL) && !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, GET_X_FROM_STRATEGIC_INDEX(pNode->pNext->uiSectorId), GET_Y_FROM_STRATEGIC_INDEX(pNode->pNext->uiSectorId))) {
-      pNode = pNode->pNext;
+    if ((pNode.value.uiSectorId == iHeliSector) && (pNode.value.pNext != NULL) && !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, GET_X_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId), GET_Y_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId))) {
+      pNode = pNode.value.pNext;
     }
 
     while (pNode) {
-      uiLocation = pNode->uiSectorId;
+      uiLocation = pNode.value.uiSectorId;
 
       if (!StrategicMap[uiLocation].fEnemyAirControlled) {
         uiCount++;
       }
 
-      pNode = pNode->pNext;
+      pNode = pNode.value.pNext;
     }
   }
 
@@ -1669,18 +1669,18 @@ function GetNumSafeSectorsInPath(): INT16 {
     // first node: skip it if that's the sector the chopper is currently in, AND
     // we're NOT gonna be changing directions (not actually performed until waypoints are rebuilt AFTER plotting is done)
     // OR if the chopper has a mercpath, in which case this a continuation of it that would count the sector twice
-    if (((pNode->uiSectorId == iHeliSector) && (pNode->pNext != NULL) && !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, GET_X_FROM_STRATEGIC_INDEX(pNode->pNext->uiSectorId), GET_Y_FROM_STRATEGIC_INDEX(pNode->pNext->uiSectorId))) || (GetLengthOfPath(pVehicleList[iHelicopterVehicleId].pMercPath) > 0)) {
-      pNode = pNode->pNext;
+    if (((pNode.value.uiSectorId == iHeliSector) && (pNode.value.pNext != NULL) && !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, GET_X_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId), GET_Y_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId))) || (GetLengthOfPath(pVehicleList[iHelicopterVehicleId].pMercPath) > 0)) {
+      pNode = pNode.value.pNext;
     }
 
     while (pNode) {
-      uiLocation = pNode->uiSectorId;
+      uiLocation = pNode.value.uiSectorId;
 
       if (!StrategicMap[uiLocation].fEnemyAirControlled) {
         uiCount++;
       }
 
-      pNode = pNode->pNext;
+      pNode = pNode.value.pNext;
     }
   }
 
@@ -1713,18 +1713,18 @@ function GetNumUnSafeSectorsInPath(): INT16 {
   if (pNode != NULL) {
     // first node: skip it if that's the sector the chopper is currently in, AND
     // we're NOT gonna be changing directions (not actually performed until waypoints are rebuilt AFTER plotting is done)
-    if ((pNode->uiSectorId == iHeliSector) && (pNode->pNext != NULL) && !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, GET_X_FROM_STRATEGIC_INDEX(pNode->pNext->uiSectorId), GET_Y_FROM_STRATEGIC_INDEX(pNode->pNext->uiSectorId))) {
-      pNode = pNode->pNext;
+    if ((pNode.value.uiSectorId == iHeliSector) && (pNode.value.pNext != NULL) && !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, GET_X_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId), GET_Y_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId))) {
+      pNode = pNode.value.pNext;
     }
 
     while (pNode) {
-      uiLocation = pNode->uiSectorId;
+      uiLocation = pNode.value.uiSectorId;
 
       if (StrategicMap[uiLocation].fEnemyAirControlled) {
         uiCount++;
       }
 
-      pNode = pNode->pNext;
+      pNode = pNode.value.pNext;
     }
   }
 
@@ -1734,18 +1734,18 @@ function GetNumUnSafeSectorsInPath(): INT16 {
     // first node: skip it if that's the sector the chopper is currently in, AND
     // we're NOT gonna be changing directions (not actually performed until waypoints are rebuilt AFTER plotting is done)
     // OR if the chopper has a mercpath, in which case this a continuation of it that would count the sector twice
-    if (((pNode->uiSectorId == iHeliSector) && (pNode->pNext != NULL) && !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, GET_X_FROM_STRATEGIC_INDEX(pNode->pNext->uiSectorId), GET_Y_FROM_STRATEGIC_INDEX(pNode->pNext->uiSectorId))) || (GetLengthOfPath(pVehicleList[iHelicopterVehicleId].pMercPath) > 0)) {
-      pNode = pNode->pNext;
+    if (((pNode.value.uiSectorId == iHeliSector) && (pNode.value.pNext != NULL) && !GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, GET_X_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId), GET_Y_FROM_STRATEGIC_INDEX(pNode.value.pNext.value.uiSectorId))) || (GetLengthOfPath(pVehicleList[iHelicopterVehicleId].pMercPath) > 0)) {
+      pNode = pNode.value.pNext;
     }
 
     while (pNode) {
-      uiLocation = pNode->uiSectorId;
+      uiLocation = pNode.value.uiSectorId;
 
       if (StrategicMap[uiLocation].fEnemyAirControlled) {
         uiCount++;
       }
 
-      pNode = pNode->pNext;
+      pNode = pNode.value.pNext;
     }
   }
 
@@ -1845,7 +1845,7 @@ function SoldierAboardAirborneHeli(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   Assert(pSoldier);
 
   // if not in a vehicle, or not aboard the helicopter
-  if ((pSoldier->bAssignment != VEHICLE) || (pSoldier->iVehicleId != iHelicopterVehicleId)) {
+  if ((pSoldier.value.bAssignment != VEHICLE) || (pSoldier.value.iVehicleId != iHelicopterVehicleId)) {
     return FALSE;
   }
 

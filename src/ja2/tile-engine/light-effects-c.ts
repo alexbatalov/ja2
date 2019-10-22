@@ -33,23 +33,23 @@ function UpdateLightingSprite(pLight: Pointer<LIGHTEFFECT>): void {
   let LightName: CHAR8[] /* [20] */;
   // Build light....
 
-  sprintf(LightName, "Light%d", pLight->bRadius);
+  sprintf(LightName, "Light%d", pLight.value.bRadius);
 
   // Delete old one if one exists...
-  if (pLight->iLight != (-1)) {
-    LightSpriteDestroy(pLight->iLight);
-    pLight->iLight = -1;
+  if (pLight.value.iLight != (-1)) {
+    LightSpriteDestroy(pLight.value.iLight);
+    pLight.value.iLight = -1;
   }
 
   // Effect light.....
-  if ((pLight->iLight = LightSpriteCreate(LightName, 0)) == (-1)) {
+  if ((pLight.value.iLight = LightSpriteCreate(LightName, 0)) == (-1)) {
     // Could not light!
     return;
   }
 
-  LightSpritePower(pLight->iLight, TRUE);
+  LightSpritePower(pLight.value.iLight, TRUE);
   //	LightSpriteFake( pLight->iLight );
-  LightSpritePosition(pLight->iLight, (CenterX(pLight->sGridNo) / CELL_X_SIZE), (CenterY(pLight->sGridNo) / CELL_Y_SIZE));
+  LightSpritePosition(pLight.value.iLight, (CenterX(pLight.value.sGridNo) / CELL_X_SIZE), (CenterY(pLight.value.sGridNo) / CELL_Y_SIZE));
 }
 
 function NewLightEffect(sGridNo: INT16, bType: INT8): INT32 {
@@ -66,10 +66,10 @@ function NewLightEffect(sGridNo: INT16, bType: INT8): INT32 {
   pLight = &gLightEffectData[iLightIndex];
 
   // Set some values...
-  pLight->sGridNo = sGridNo;
-  pLight->bType = bType;
-  pLight->iLight = -1;
-  pLight->uiTimeOfLastUpdate = GetWorldTotalSeconds();
+  pLight.value.sGridNo = sGridNo;
+  pLight.value.bType = bType;
+  pLight.value.iLight = -1;
+  pLight.value.uiTimeOfLastUpdate = GetWorldTotalSeconds();
 
   switch (bType) {
     case LIGHT_FLARE_MARK_1:
@@ -79,10 +79,10 @@ function NewLightEffect(sGridNo: INT16, bType: INT8): INT32 {
       break;
   }
 
-  pLight->ubDuration = ubDuration;
-  pLight->bRadius = ubStartRadius;
-  pLight->bAge = 0;
-  pLight->fAllocated = TRUE;
+  pLight.value.ubDuration = ubDuration;
+  pLight.value.bRadius = ubStartRadius;
+  pLight.value.bAge = 0;
+  pLight.value.fAllocated = TRUE;
 
   UpdateLightingSprite(pLight);
 
@@ -100,13 +100,13 @@ function RemoveLightEffectFromTile(sGridNo: INT16): void {
   for (cnt = 0; cnt < guiNumLightEffects; cnt++) {
     pLight = &gLightEffectData[cnt];
 
-    if (pLight->fAllocated) {
-      if (pLight->sGridNo == sGridNo) {
-        pLight->fAllocated = FALSE;
+    if (pLight.value.fAllocated) {
+      if (pLight.value.sGridNo == sGridNo) {
+        pLight.value.fAllocated = FALSE;
 
         // Remove light....
-        if (pLight->iLight != (-1)) {
-          LightSpriteDestroy(pLight->iLight);
+        if (pLight.value.iLight != (-1)) {
+          LightSpriteDestroy(pLight.value.iLight);
         }
         break;
       }
@@ -127,25 +127,25 @@ function DecayLightEffects(uiTime: UINT32): void {
 
     fDelete = FALSE;
 
-    if (pLight->fAllocated) {
+    if (pLight.value.fAllocated) {
       // ATE: Do this every so ofte, to acheive the effect we want...
-      if ((uiTime - pLight->uiTimeOfLastUpdate) > 350) {
-        usNumUpdates = ((uiTime - pLight->uiTimeOfLastUpdate) / 350);
+      if ((uiTime - pLight.value.uiTimeOfLastUpdate) > 350) {
+        usNumUpdates = ((uiTime - pLight.value.uiTimeOfLastUpdate) / 350);
 
-        pLight->uiTimeOfLastUpdate = uiTime;
+        pLight.value.uiTimeOfLastUpdate = uiTime;
 
         for (cnt2 = 0; cnt2 < usNumUpdates; cnt2++) {
-          pLight->bAge++;
+          pLight.value.bAge++;
 
           // if this cloud remains effective (duration not reached)
-          if (pLight->bAge < pLight->ubDuration) {
+          if (pLight.value.bAge < pLight.value.ubDuration) {
             // calculate the new cloud radius
             // cloud expands by 1 every turn outdoors, and every other turn indoors
-            if ((pLight->bAge % 2)) {
-              pLight->bRadius--;
+            if ((pLight.value.bAge % 2)) {
+              pLight.value.bRadius--;
             }
 
-            if (pLight->bRadius == 0) {
+            if (pLight.value.bRadius == 0) {
               // Delete...
               fDelete = TRUE;
               break;
@@ -159,10 +159,10 @@ function DecayLightEffects(uiTime: UINT32): void {
         }
 
         if (fDelete) {
-          pLight->fAllocated = FALSE;
+          pLight.value.fAllocated = FALSE;
 
-          if (pLight->iLight != (-1)) {
-            LightSpriteDestroy(pLight->iLight);
+          if (pLight.value.iLight != (-1)) {
+            LightSpriteDestroy(pLight.value.iLight);
           }
         }
 

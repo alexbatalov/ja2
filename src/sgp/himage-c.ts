@@ -82,8 +82,8 @@ function CreateImage(ImageFile: SGPFILENAME, fContents: UINT16): HIMAGE {
   // hImage->pui16BPPPalette = NULL;
 
   // Set filename and loader
-  strcpy(hImage->ImageFile, ImageFile);
-  hImage->iFileLoader = iFileLoader;
+  strcpy(hImage.value.ImageFile, ImageFile);
+  hImage.value.iFileLoader = iFileLoader;
 
   if (!LoadImageData(hImage, fContents)) {
     return NULL;
@@ -108,39 +108,39 @@ function DestroyImage(hImage: HIMAGE): BOOLEAN {
 function ReleaseImageData(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   Assert(hImage != NULL);
 
-  if ((fContents & IMAGE_PALETTE) && (hImage->fFlags & IMAGE_PALETTE)) {
+  if ((fContents & IMAGE_PALETTE) && (hImage.value.fFlags & IMAGE_PALETTE)) {
     // Destroy palette
-    if (hImage->pPalette != NULL) {
-      MemFree(hImage->pPalette);
-      hImage->pPalette = NULL;
+    if (hImage.value.pPalette != NULL) {
+      MemFree(hImage.value.pPalette);
+      hImage.value.pPalette = NULL;
     }
 
-    if (hImage->pui16BPPPalette != NULL) {
-      MemFree(hImage->pui16BPPPalette);
-      hImage->pui16BPPPalette = NULL;
+    if (hImage.value.pui16BPPPalette != NULL) {
+      MemFree(hImage.value.pui16BPPPalette);
+      hImage.value.pui16BPPPalette = NULL;
     }
 
     // Remove contents flag
-    hImage->fFlags = hImage->fFlags ^ IMAGE_PALETTE;
+    hImage.value.fFlags = hImage.value.fFlags ^ IMAGE_PALETTE;
   }
 
-  if ((fContents & IMAGE_BITMAPDATA) && (hImage->fFlags & IMAGE_BITMAPDATA)) {
+  if ((fContents & IMAGE_BITMAPDATA) && (hImage.value.fFlags & IMAGE_BITMAPDATA)) {
     // Destroy image data
-    Assert(hImage->pImageData != NULL);
-    MemFree(hImage->pImageData);
-    hImage->pImageData = NULL;
-    if (hImage->usNumberOfObjects > 0) {
-      MemFree(hImage->pETRLEObject);
+    Assert(hImage.value.pImageData != NULL);
+    MemFree(hImage.value.pImageData);
+    hImage.value.pImageData = NULL;
+    if (hImage.value.usNumberOfObjects > 0) {
+      MemFree(hImage.value.pETRLEObject);
     }
     // Remove contents flag
-    hImage->fFlags = hImage->fFlags ^ IMAGE_BITMAPDATA;
+    hImage.value.fFlags = hImage.value.fFlags ^ IMAGE_BITMAPDATA;
   }
 
-  if ((fContents & IMAGE_APPDATA) && (hImage->fFlags & IMAGE_APPDATA)) {
+  if ((fContents & IMAGE_APPDATA) && (hImage.value.fFlags & IMAGE_APPDATA)) {
     // get rid of the APP DATA
-    if (hImage->pAppData != NULL) {
-      MemFree(hImage->pAppData);
-      hImage->fFlags &= (~IMAGE_APPDATA);
+    if (hImage.value.pAppData != NULL) {
+      MemFree(hImage.value.pAppData);
+      hImage.value.fFlags &= (~IMAGE_APPDATA);
     }
   }
 
@@ -153,7 +153,7 @@ function LoadImageData(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   Assert(hImage != NULL);
 
   // Switch on file loader
-  switch (hImage->iFileLoader) {
+  switch (hImage.value.iFileLoader) {
     case TGA_FILE_READER:
 
       fReturnVal = LoadTGAFileToImage(hImage, fContents);
@@ -184,19 +184,19 @@ function CopyImageToBuffer(hImage: HIMAGE, fBufferType: UINT32, pDestBuf: Pointe
   // Use blitter based on type of image
   Assert(hImage != NULL);
 
-  if (hImage->ubBitDepth == 8 && fBufferType == BUFFER_8BPP) {
+  if (hImage.value.ubBitDepth == 8 && fBufferType == BUFFER_8BPP) {
     // Default do here
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_2, "Copying 8 BPP Imagery.");
     return Copy8BPPImageTo8BPPBuffer(hImage, pDestBuf, usDestWidth, usDestHeight, usX, usY, srcRect);
   }
 
-  if (hImage->ubBitDepth == 8 && fBufferType == BUFFER_16BPP) {
+  if (hImage.value.ubBitDepth == 8 && fBufferType == BUFFER_16BPP) {
     // Default do here
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Copying 8 BPP Imagery to 16BPP Buffer.");
     return Copy8BPPImageTo16BPPBuffer(hImage, pDestBuf, usDestWidth, usDestHeight, usX, usY, srcRect);
   }
 
-  if (hImage->ubBitDepth == 16 && fBufferType == BUFFER_16BPP) {
+  if (hImage.value.ubBitDepth == 16 && fBufferType == BUFFER_16BPP) {
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Automatically Copying 16 BPP Imagery.");
     return Copy16BPPImageTo16BPPBuffer(hImage, pDestBuf, usDestWidth, usDestHeight, usX, usY, srcRect);
   }
@@ -215,33 +215,33 @@ function Copy8BPPImageTo8BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDe
 
   // Assertions
   Assert(hImage != NULL);
-  Assert(hImage->p16BPPData != NULL);
+  Assert(hImage.value.p16BPPData != NULL);
 
   // Validations
   CHECKF(usX >= 0);
   CHECKF(usX < usDestWidth);
   CHECKF(usY >= 0);
   CHECKF(usY < usDestHeight);
-  CHECKF(srcRect->iRight > srcRect->iLeft);
-  CHECKF(srcRect->iBottom > srcRect->iTop);
+  CHECKF(srcRect.value.iRight > srcRect.value.iLeft);
+  CHECKF(srcRect.value.iBottom > srcRect.value.iTop);
 
   // Determine memcopy coordinates
-  uiSrcStart = srcRect->iTop * hImage->usWidth + srcRect->iLeft;
+  uiSrcStart = srcRect.value.iTop * hImage.value.usWidth + srcRect.value.iLeft;
   uiDestStart = usY * usDestWidth + usX;
-  uiNumLines = (srcRect->iBottom - srcRect->iTop) + 1;
-  uiLineSize = (srcRect->iRight - srcRect->iLeft) + 1;
+  uiNumLines = (srcRect.value.iBottom - srcRect.value.iTop) + 1;
+  uiLineSize = (srcRect.value.iRight - srcRect.value.iLeft) + 1;
 
   Assert(usDestWidth >= uiLineSize);
   Assert(usDestHeight >= uiNumLines);
 
   // Copy line by line
   pDest = pDestBuf + uiDestStart;
-  pSrc = hImage->p8BPPData + uiSrcStart;
+  pSrc = hImage.value.p8BPPData + uiSrcStart;
 
   for (cnt = 0; cnt < uiNumLines - 1; cnt++) {
     memcpy(pDest, pSrc, uiLineSize);
     pDest += usDestWidth;
-    pSrc += hImage->usWidth;
+    pSrc += hImage.value.usWidth;
   }
   // Do last line
   memcpy(pDest, pSrc, uiLineSize);
@@ -259,33 +259,33 @@ function Copy16BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, us
   let pSrc: Pointer<UINT16>;
 
   Assert(hImage != NULL);
-  Assert(hImage->p16BPPData != NULL);
+  Assert(hImage.value.p16BPPData != NULL);
 
   // Validations
   CHECKF(usX >= 0);
-  CHECKF(usX < hImage->usWidth);
+  CHECKF(usX < hImage.value.usWidth);
   CHECKF(usY >= 0);
-  CHECKF(usY < hImage->usHeight);
-  CHECKF(srcRect->iRight > srcRect->iLeft);
-  CHECKF(srcRect->iBottom > srcRect->iTop);
+  CHECKF(usY < hImage.value.usHeight);
+  CHECKF(srcRect.value.iRight > srcRect.value.iLeft);
+  CHECKF(srcRect.value.iBottom > srcRect.value.iTop);
 
   // Determine memcopy coordinates
-  uiSrcStart = srcRect->iTop * hImage->usWidth + srcRect->iLeft;
+  uiSrcStart = srcRect.value.iTop * hImage.value.usWidth + srcRect.value.iLeft;
   uiDestStart = usY * usDestWidth + usX;
-  uiNumLines = (srcRect->iBottom - srcRect->iTop) + 1;
-  uiLineSize = (srcRect->iRight - srcRect->iLeft) + 1;
+  uiNumLines = (srcRect.value.iBottom - srcRect.value.iTop) + 1;
+  uiLineSize = (srcRect.value.iRight - srcRect.value.iLeft) + 1;
 
   CHECKF(usDestWidth >= uiLineSize);
   CHECKF(usDestHeight >= uiNumLines);
 
   // Copy line by line
   pDest = pDestBuf + uiDestStart;
-  pSrc = hImage->p16BPPData + uiSrcStart;
+  pSrc = hImage.value.p16BPPData + uiSrcStart;
 
   for (cnt = 0; cnt < uiNumLines - 1; cnt++) {
     memcpy(pDest, pSrc, uiLineSize * 2);
     pDest += usDestWidth;
-    pSrc += hImage->usWidth;
+    pSrc += hImage.value.usWidth;
   }
   // Do last line
   memcpy(pDest, pSrc, uiLineSize * 2);
@@ -314,33 +314,33 @@ function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usD
   let pDestTemp: Pointer<UINT16>;
   let p16BPPPalette: Pointer<UINT16>;
 
-  p16BPPPalette = hImage->pui16BPPPalette;
+  p16BPPPalette = hImage.value.pui16BPPPalette;
 
   // Assertions
   Assert(p16BPPPalette != NULL);
   Assert(hImage != NULL);
 
   // Validations
-  CHECKF(hImage->p16BPPData != NULL);
+  CHECKF(hImage.value.p16BPPData != NULL);
   CHECKF(usX >= 0);
   CHECKF(usX < usDestWidth);
   CHECKF(usY >= 0);
   CHECKF(usY < usDestHeight);
-  CHECKF(srcRect->iRight > srcRect->iLeft);
-  CHECKF(srcRect->iBottom > srcRect->iTop);
+  CHECKF(srcRect.value.iRight > srcRect.value.iLeft);
+  CHECKF(srcRect.value.iBottom > srcRect.value.iTop);
 
   // Determine memcopy coordinates
-  uiSrcStart = srcRect->iTop * hImage->usWidth + srcRect->iLeft;
+  uiSrcStart = srcRect.value.iTop * hImage.value.usWidth + srcRect.value.iLeft;
   uiDestStart = usY * usDestWidth + usX;
-  uiNumLines = (srcRect->iBottom - srcRect->iTop);
-  uiLineSize = (srcRect->iRight - srcRect->iLeft);
+  uiNumLines = (srcRect.value.iBottom - srcRect.value.iTop);
+  uiLineSize = (srcRect.value.iRight - srcRect.value.iLeft);
 
   CHECKF(usDestWidth >= uiLineSize);
   CHECKF(usDestHeight >= uiNumLines);
 
   // Convert to Pixel specification
   pDest = pDestBuf + uiDestStart;
-  pSrc = hImage->p8BPPData + uiSrcStart;
+  pSrc = hImage.value.p8BPPData + uiSrcStart;
   DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, String("Start Copying at %p", pDest));
 
   // For every entry, look up into 16BPP palette
@@ -355,7 +355,7 @@ function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usD
     }
 
     pDest += usDestWidth;
-    pSrc += hImage->usWidth;
+    pSrc += hImage.value.usWidth;
   }
   // Do last line
   DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, String("End Copying at %p", pDest));
@@ -604,10 +604,10 @@ function ConvertRGBToPaletteEntry(sbStart: UINT8, sbEnd: UINT8, pOldPalette: Poi
   pInitEntry = pPalEntry;
   DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_0, "Converting RGB palette to SGPPaletteEntry");
   for (Index = 0; Index <= (sbEnd - sbStart); Index++) {
-    pPalEntry->peRed = *(pOldPalette + (Index * 3));
-    pPalEntry->peGreen = *(pOldPalette + (Index * 3) + 1);
-    pPalEntry->peBlue = *(pOldPalette + (Index * 3) + 2);
-    pPalEntry->peFlags = 0;
+    pPalEntry.value.peRed = *(pOldPalette + (Index * 3));
+    pPalEntry.value.peGreen = *(pOldPalette + (Index * 3) + 1);
+    pPalEntry.value.peBlue = *(pOldPalette + (Index * 3) + 2);
+    pPalEntry.value.peFlags = 0;
     pPalEntry++;
   }
   return pInitEntry;
@@ -619,23 +619,23 @@ function GetETRLEImageData(hImage: HIMAGE, pBuffer: Pointer<ETRLEData>): BOOLEAN
   Assert(pBuffer != NULL);
 
   // Create memory for data
-  pBuffer->usNumberOfObjects = hImage->usNumberOfObjects;
+  pBuffer.value.usNumberOfObjects = hImage.value.usNumberOfObjects;
 
   // Create buffer for objects
-  pBuffer->pETRLEObject = MemAlloc(sizeof(ETRLEObject) * pBuffer->usNumberOfObjects);
-  CHECKF(pBuffer->pETRLEObject != NULL);
+  pBuffer.value.pETRLEObject = MemAlloc(sizeof(ETRLEObject) * pBuffer.value.usNumberOfObjects);
+  CHECKF(pBuffer.value.pETRLEObject != NULL);
 
   // Copy into buffer
-  memcpy(pBuffer->pETRLEObject, hImage->pETRLEObject, sizeof(ETRLEObject) * pBuffer->usNumberOfObjects);
+  memcpy(pBuffer.value.pETRLEObject, hImage.value.pETRLEObject, sizeof(ETRLEObject) * pBuffer.value.usNumberOfObjects);
 
   // Allocate memory for pixel data
-  pBuffer->pPixData = MemAlloc(hImage->uiSizePixData);
-  CHECKF(pBuffer->pPixData != NULL);
+  pBuffer.value.pPixData = MemAlloc(hImage.value.uiSizePixData);
+  CHECKF(pBuffer.value.pPixData != NULL);
 
-  pBuffer->uiSizePixData = hImage->uiSizePixData;
+  pBuffer.value.uiSizePixData = hImage.value.uiSizePixData;
 
   // Copy into buffer
-  memcpy(pBuffer->pPixData, hImage->pPixData8, pBuffer->uiSizePixData);
+  memcpy(pBuffer.value.pPixData, hImage.value.pPixData8, pBuffer.value.uiSizePixData);
 
   return TRUE;
 }

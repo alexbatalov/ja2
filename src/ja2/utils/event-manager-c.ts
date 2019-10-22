@@ -57,15 +57,15 @@ function AddEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, uiDataSize:
   CHECKF(pEvent != NULL);
 
   // Set values
-  pEvent->TimeStamp = GetJA2Clock();
-  pEvent->usDelay = usDelay;
-  pEvent->uiEvent = uiEvent;
-  pEvent->uiFlags = 0;
-  pEvent->uiDataSize = uiDataSize;
-  pEvent->pData = pEvent;
-  pEvent->pData = pEvent->pData + uiEventSize;
+  pEvent.value.TimeStamp = GetJA2Clock();
+  pEvent.value.usDelay = usDelay;
+  pEvent.value.uiEvent = uiEvent;
+  pEvent.value.uiFlags = 0;
+  pEvent.value.uiDataSize = uiDataSize;
+  pEvent.value.pData = pEvent;
+  pEvent.value.pData = pEvent.value.pData + uiEventSize;
 
-  memcpy(pEvent->pData, pEventData, uiDataSize);
+  memcpy(pEvent.value.pData, pEventData, uiDataSize);
 
   // Add event to queue
   hQueue = GetQueue(ubQueueID);
