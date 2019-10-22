@@ -1,18 +1,18 @@
-let gsBoxerGridNo: INT16[] /* [NUM_BOXERS] */ = {
+let gsBoxerGridNo: INT16[] /* [NUM_BOXERS] */ = [
   11393,
   11233,
   11073,
-};
-let gubBoxerID: UINT8[] /* [NUM_BOXERS] */ = {
+];
+let gubBoxerID: UINT8[] /* [NUM_BOXERS] */ = [
   NOBODY,
   NOBODY,
   NOBODY,
-};
-let gfBoxerFought: BOOLEAN[] /* [NUM_BOXERS] */ = {
+];
+let gfBoxerFought: BOOLEAN[] /* [NUM_BOXERS] */ = [
   FALSE,
   FALSE,
   FALSE,
-};
+];
 let gfLastBoxingMatchWonByPlayer: BOOLEAN = FALSE;
 let gubBoxingMatchesWon: UINT8 = 0;
 let gubBoxersRests: UINT8 = 0;
@@ -153,10 +153,10 @@ function CountPeopleInBoxingRingAndDoActions(): void {
   let ubRoom: UINT8;
   let ubPlayersInRing: UINT8 = 0;
   let pSoldier: Pointer<SOLDIERTYPE>;
-  let pInRing: Pointer<SOLDIERTYPE>[] /* [2] */ = {
+  let pInRing: Pointer<SOLDIERTYPE>[] /* [2] */ = [
     NULL,
     NULL,
-  };
+  ];
   let pNonBoxingPlayer: Pointer<SOLDIERTYPE> = NULL;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {

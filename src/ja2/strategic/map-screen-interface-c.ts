@@ -75,21 +75,21 @@ let guiSectorLocatorGraphicID: UINT32; // icon graphic ID
 const ANIMATED_BATTLEICON_FRAME_TIME = 80;
 const MAX_FRAME_COUNT_FOR_ANIMATED_BATTLE_ICON = 12;
 
-let pMapScreenFastHelpLocationList: SGPPoint[] /* [] */ = {
-  { 25, 200 },
-  { 150, 200 },
-  { 450, 430 },
-  { 400, 200 },
-  { 250, 100 },
-  { 100, 100 },
-  { 100, 100 },
-  { 100, 100 },
-  { 100, 100 },
-  { 150, 200 },
-  { 100, 100 },
-};
+let pMapScreenFastHelpLocationList: SGPPoint[] /* [] */ = [
+  [ 25, 200 ],
+  [ 150, 200 ],
+  [ 450, 430 ],
+  [ 400, 200 ],
+  [ 250, 100 ],
+  [ 100, 100 ],
+  [ 100, 100 ],
+  [ 100, 100 ],
+  [ 100, 100 ],
+  [ 150, 200 ],
+  [ 100, 100 ],
+];
 
-let pMapScreenFastHelpWidthList: INT32[] /* [] */ = {
+let pMapScreenFastHelpWidthList: INT32[] /* [] */ = [
   100,
   100,
   100,
@@ -100,7 +100,7 @@ let pMapScreenFastHelpWidthList: INT32[] /* [] */ = {
   100,
   100,
   300,
-};
+];
 
 // number of mercs in sector capable of moving
 let giNumberOfSoldiersInSectorMoving: INT32 = 0;
@@ -139,7 +139,7 @@ let gCharactersList: MapScreenCharacterSt[] /* [MAX_CHARACTER_COUNT + 1] */;
 
 let gMapStatusBarsRegion: MOUSE_REGION;
 
-let MovePosition: SGPPoint = { 450, 100 };
+let MovePosition: SGPPoint = [ 450, 100 ];
 
 // which lines are selected? .. for assigning groups of mercs to the same thing
 let fSelectedListOfMercsForMapScreen: BOOLEAN[] /* [MAX_CHARACTER_COUNT] */;
@@ -220,29 +220,29 @@ let fShowRemoveMenu: BOOLEAN = FALSE;
 let fRebuildMoveBox: BOOLEAN = FALSE;
 
 // positions for all the pop up boxes
-let ContractDimensions: SGPRect = { 0, 0, 140, 60 };
-let ContractPosition: SGPPoint = { 120, 50 };
-let AttributeDimensions: SGPRect = { 0, 0, 100, 95 };
-let AttributePosition: SGPPoint = { 220, 150 };
-let TrainDimensions: SGPRect = { 0, 0, 100, 95 };
-let TrainPosition: SGPPoint = { 160, 150 };
-let VehicleDimensions: SGPRect = { 0, 0, 80, 60 };
-let VehiclePosition: SGPPoint = { 160, 150 };
+let ContractDimensions: SGPRect = [ 0, 0, 140, 60 ];
+let ContractPosition: SGPPoint = [ 120, 50 ];
+let AttributeDimensions: SGPRect = [ 0, 0, 100, 95 ];
+let AttributePosition: SGPPoint = [ 220, 150 ];
+let TrainDimensions: SGPRect = [ 0, 0, 100, 95 ];
+let TrainPosition: SGPPoint = [ 160, 150 ];
+let VehicleDimensions: SGPRect = [ 0, 0, 80, 60 ];
+let VehiclePosition: SGPPoint = [ 160, 150 ];
 
-let RepairPosition: SGPPoint = { 160, 150 };
-let RepairDimensions: SGPRect = { 0, 0, 80, 80 };
+let RepairPosition: SGPPoint = [ 160, 150 ];
+let RepairDimensions: SGPRect = [ 0, 0, 80, 80 ];
 
-let AssignmentDimensions: SGPRect = { 0, 0, 100, 95 };
-let AssignmentPosition: SGPPoint = { 120, 150 };
-let SquadPosition: SGPPoint = { 160, 150 };
-let SquadDimensions: SGPRect = { 0, 0, 140, 60 };
+let AssignmentDimensions: SGPRect = [ 0, 0, 100, 95 ];
+let AssignmentPosition: SGPPoint = [ 120, 150 ];
+let SquadPosition: SGPPoint = [ 160, 150 ];
+let SquadDimensions: SGPRect = [ 0, 0, 140, 60 ];
 
-let OrigContractPosition: SGPPoint = { 120, 50 };
-let OrigAttributePosition: SGPPoint = { 220, 150 };
-let OrigSquadPosition: SGPPoint = { 160, 150 };
-let OrigAssignmentPosition: SGPPoint = { 120, 150 };
-let OrigTrainPosition: SGPPoint = { 160, 150 };
-let OrigVehiclePosition: SGPPoint = { 160, 150 };
+let OrigContractPosition: SGPPoint = [ 120, 50 ];
+let OrigAttributePosition: SGPPoint = [ 220, 150 ];
+let OrigSquadPosition: SGPPoint = [ 160, 150 ];
+let OrigAssignmentPosition: SGPPoint = [ 120, 150 ];
+let OrigTrainPosition: SGPPoint = [ 160, 150 ];
+let OrigVehiclePosition: SGPPoint = [ 160, 150 ];
 
 // extern BOOLEAN fMapExitDueToMessageBox;
 
@@ -863,7 +863,7 @@ function DoMapMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExit
 }
 
 function DoMapMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): INT32 {
-  let CenteringRect: SGPRect = { 0, 0, 640, INV_INTERFACE_START_Y };
+  let CenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
 
   // reset the highlighted line
   giHighLine = -1;

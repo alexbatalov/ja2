@@ -5,25 +5,25 @@ interface BobbyROrderLocationStruct {
   usStandardService: UINT16;
 }
 
-let BobbyROrderLocations: BobbyROrderLocationStruct[] /* [] */ = {
-  { &pDeliveryLocationStrings[0], 20, 15, 10 },
-  { &pDeliveryLocationStrings[1], 295, 150, 85 },
-  { &pDeliveryLocationStrings[2], 200, 100, 50 }, // the only one that really matters
-  { &pDeliveryLocationStrings[3], 100, 55, 30 },
-  { &pDeliveryLocationStrings[4], 95, 65, 40 },
-  { &pDeliveryLocationStrings[5], 55, 40, 25 },
-  { &pDeliveryLocationStrings[6], 35, 25, 15 },
-  { &pDeliveryLocationStrings[7], 200, 100, 50 },
-  { &pDeliveryLocationStrings[8], 190, 90, 45 },
-  { &pDeliveryLocationStrings[9], 35, 25, 15 },
-  { &pDeliveryLocationStrings[10], 100, 55, 30 },
-  { &pDeliveryLocationStrings[11], 35, 25, 15 },
-  { &pDeliveryLocationStrings[12], 45, 30, 20 },
-  { &pDeliveryLocationStrings[13], 55, 40, 25 },
-  { &pDeliveryLocationStrings[14], 100, 55, 30 },
-  { &pDeliveryLocationStrings[15], 100, 55, 30 },
-  { &pDeliveryLocationStrings[16], 45, 30, 20 },
-};
+let BobbyROrderLocations: BobbyROrderLocationStruct[] /* [] */ = [
+  [ &pDeliveryLocationStrings[0], 20, 15, 10 ],
+  [ &pDeliveryLocationStrings[1], 295, 150, 85 ],
+  [ &pDeliveryLocationStrings[2], 200, 100, 50 ], // the only one that really matters
+  [ &pDeliveryLocationStrings[3], 100, 55, 30 ],
+  [ &pDeliveryLocationStrings[4], 95, 65, 40 ],
+  [ &pDeliveryLocationStrings[5], 55, 40, 25 ],
+  [ &pDeliveryLocationStrings[6], 35, 25, 15 ],
+  [ &pDeliveryLocationStrings[7], 200, 100, 50 ],
+  [ &pDeliveryLocationStrings[8], 190, 90, 45 ],
+  [ &pDeliveryLocationStrings[9], 35, 25, 15 ],
+  [ &pDeliveryLocationStrings[10], 100, 55, 30 ],
+  [ &pDeliveryLocationStrings[11], 35, 25, 15 ],
+  [ &pDeliveryLocationStrings[12], 45, 30, 20 ],
+  [ &pDeliveryLocationStrings[13], 55, 40, 25 ],
+  [ &pDeliveryLocationStrings[14], 100, 55, 30 ],
+  [ &pDeliveryLocationStrings[15], 100, 55, 30 ],
+  [ &pDeliveryLocationStrings[16], 45, 30, 20 ],
+];
 
 // drop down menu
 const enum Enum69 {
@@ -180,11 +180,11 @@ const BOBBYR_PACKAXGE_WEIGHT_X = BOBBYR_LOCATION_BOX_X;
 const BOBBYR_PACKAXGE_WEIGHT_Y = LAPTOP_SCREEN_WEB_UL_Y + 249;
 const BOBBYR_PACKAXGE_WEIGHT_WIDTH = 188;
 
-let gShippingSpeedAreas: UINT16[] /* [] */ = {
+let gShippingSpeedAreas: UINT16[] /* [] */ = [
   585, 218 + LAPTOP_SCREEN_WEB_DELTA_Y,
   585, 238 + LAPTOP_SCREEN_WEB_DELTA_Y,
   585, 258 + LAPTOP_SCREEN_WEB_DELTA_Y,
-};
+];
 
 // Identifier for the images
 let guiBobbyRayTitle: UINT32;

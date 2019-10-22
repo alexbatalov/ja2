@@ -3,7 +3,7 @@ const IMP_MERC_FILE = "IMP.dat";
 let giIMPConfirmButton: UINT32[] /* [2] */;
 let giIMPConfirmButtonImage: UINT32[] /* [2] */;
 let fNoAlreadySelected: BOOLEAN = FALSE;
-let uiEyeXPositions: UINT16[] /* [] */ = {
+let uiEyeXPositions: UINT16[] /* [] */ = [
   8,
   9,
   8,
@@ -20,9 +20,9 @@ let uiEyeXPositions: UINT16[] /* [] */ = {
   11,
   8, // 214
   5,
-};
+];
 
-let uiEyeYPositions: UINT16[] /* [] */ = {
+let uiEyeYPositions: UINT16[] /* [] */ = [
   5,
   4,
   5,
@@ -39,9 +39,9 @@ let uiEyeYPositions: UINT16[] /* [] */ = {
   5,
   5, // 214
   6,
-};
+];
 
-let uiMouthXPositions: UINT16[] /* [] */ = {
+let uiMouthXPositions: UINT16[] /* [] */ = [
   8,
   9,
   7,
@@ -58,9 +58,9 @@ let uiMouthXPositions: UINT16[] /* [] */ = {
   9,
   7, // 214
   5,
-};
+];
 
-let uiMouthYPositions: UINT16[] /* [] */ = {
+let uiMouthYPositions: UINT16[] /* [] */ = [
   21,
   23,
   24,
@@ -77,7 +77,7 @@ let uiMouthYPositions: UINT16[] /* [] */ = {
   23,
   24, // 214
   26,
-};
+];
 
 let fLoadingCharacterForPreviousImpProfile: BOOLEAN = FALSE;
 

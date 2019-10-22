@@ -1,4 +1,4 @@
-let gbSmoothStruct: INT16[] /* [] */ = {
+let gbSmoothStruct: INT16[] /* [] */ = [
   3, 2, 12, 27, 12, 0,
   5, 2, 15, 30, 39, 0,
   7, 2, 17, 32, 41, 0,
@@ -15,7 +15,7 @@ let gbSmoothStruct: INT16[] /* [] */ = {
   16, 2, 24, 34, 48, 0,
   10, 2, 25, 35, 49, 0,
   -1,
-};
+];
 
 // This is a list of smoothed out water/shoreline textures
 // Coding is as such:
@@ -27,7 +27,7 @@ let gbSmoothStruct: INT16[] /* [] */ = {
 // FIRST			ENTRY			MAJIC NUMBER CALCULATED
 // 2nd				ENTRY			# OF VARIATIONS
 // 3rd, 4rth  ENTRY			TILE NUMBERS ( entry 1, entry 2 )
-let gbSmoothWaterStruct: INT16[] /* [] */ = {
+let gbSmoothWaterStruct: INT16[] /* [] */ = [
   1020, 1, 11, 0,
   1000, 1, 12, 0,
   510, 2, 13, 43,
@@ -66,7 +66,7 @@ let gbSmoothWaterStruct: INT16[] /* [] */ = {
   54, 1, 44, 0,
   108, 1, 45, 0,
   -1,
-};
+];
 
 function SmoothTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, fForceSmooth: BOOLEAN): void {
   let temp: int = 0;

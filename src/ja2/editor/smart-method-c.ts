@@ -232,18 +232,18 @@ function PasteSmartWall(iMapIndex: UINT32): void {
   let usWallType: UINT16;
 
   // These are the counters for the walls of each type
-  let usNumV: UINT16[] /* [4] */ = {
+  let usNumV: UINT16[] /* [4] */ = [
     0,
     0,
     0,
     0,
-  }; // vertical wall weights
-  let usNumH: UINT16[] /* [4] */ = {
+  ]; // vertical wall weights
+  let usNumH: UINT16[] /* [4] */ = [
     0,
     0,
     0,
     0,
-  }; // horizontal wall weights
+  ]; // horizontal wall weights
 
   //*A* See above documentation
   if (GetVerticalWall(iMapIndex) && GetHorizontalWall(iMapIndex))

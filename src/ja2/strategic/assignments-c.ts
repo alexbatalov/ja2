@@ -39,12 +39,12 @@ interface REPAIR_PASS_SLOTS_TYPE {
   bSlot: INT8[] /* [12] */; // list of slots to be repaired in this pass
 }
 
-let gRepairPassSlotList: REPAIR_PASS_SLOTS_TYPE[] /* [NUM_REPAIR_PASS_TYPES] */ = {
+let gRepairPassSlotList: REPAIR_PASS_SLOTS_TYPE[] /* [NUM_REPAIR_PASS_TYPES] */ = [
   // pass					# choices												slots repaired in this pass
-  { /* hands and armor */ 5, { HANDPOS, SECONDHANDPOS, VESTPOS, HELMETPOS, LEGPOS, -1, -1, -1, -1, -1, -1, -1 } },
-  { /* headgear */ 2, { HEAD1POS, HEAD2POS, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 } },
-  { /* pockets */ 12, { BIGPOCK1POS, BIGPOCK2POS, BIGPOCK3POS, BIGPOCK4POS, SMALLPOCK1POS, SMALLPOCK2POS, SMALLPOCK3POS, SMALLPOCK4POS, SMALLPOCK5POS, SMALLPOCK6POS, SMALLPOCK7POS, SMALLPOCK8POS } },
-};
+  [ /* hands and armor */ 5, [ HANDPOS, SECONDHANDPOS, VESTPOS, HELMETPOS, LEGPOS, -1, -1, -1, -1, -1, -1, -1 ] ],
+  [ /* headgear */ 2, [ HEAD1POS, HEAD2POS, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ] ],
+  [ /* pockets */ 12, [ BIGPOCK1POS, BIGPOCK2POS, BIGPOCK3POS, BIGPOCK4POS, SMALLPOCK1POS, SMALLPOCK2POS, SMALLPOCK3POS, SMALLPOCK4POS, SMALLPOCK5POS, SMALLPOCK6POS, SMALLPOCK7POS, SMALLPOCK8POS ] ],
+];
 
 // PopUp Box Handles
 let ghAssignmentBox: INT32 = -1;

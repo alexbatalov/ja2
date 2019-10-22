@@ -5,7 +5,7 @@
 //	SANMONA_ARMS_GROUP,
 //	ANGELS_GROUP,
 //	NUM_CIV_GROUPS
-let gszCivGroupNames: UINT16[][] /* [NUM_CIV_GROUPS][20] */ = {
+let gszCivGroupNames: UINT16[][] /* [NUM_CIV_GROUPS][20] */ = [
   L"NONE",
   L"REBEL",
   L"KINGPIN",
@@ -28,7 +28,7 @@ let gszCivGroupNames: UINT16[][] /* [NUM_CIV_GROUPS][20] */ = {
   L"UNUSED17",
   L"UNUSED18",
   L"UNUSED19",
-};
+];
 
 //--------------------------------------------------
 
@@ -42,7 +42,7 @@ let gszCivGroupNames: UINT16[][] /* [NUM_CIV_GROUPS][20] */ = {
 //	SCHEDULE_ACTION_ENTERSECTOR,
 //	SCHEDULE_ACTION_STAYINSECTOR,
 //  SCHEDULE_ACTION_SLEEP,
-let gszScheduleActions: UINT16[][] /* [NUM_SCHEDULE_ACTIONS][20] */ = {
+let gszScheduleActions: UINT16[][] /* [NUM_SCHEDULE_ACTIONS][20] */ = [
   L"No action",
   L"Lock door",
   L"Unlock door",
@@ -54,7 +54,7 @@ let gszScheduleActions: UINT16[][] /* [NUM_SCHEDULE_ACTIONS][20] */ = {
   L"Stay in sector",
   L"Sleep",
   L"Ignore this!",
-};
+];
 
 const enum Enum40 {
   SCHEDULE_INSTRUCTIONS_NONE,
@@ -74,7 +74,7 @@ let gubScheduleInstructions: UINT8 = SCHEDULE_INSTRUCTIONS_NONE;
 // array which keeps track of which item is in which slot.  This is dependant on the selected merc, so
 // these temp values must be updated when different mercs are selected, and reset when a merc detailed
 // placement is created.
-let gpMercSlotItem: Pointer<OBJECTTYPE>[] /* [9] */ = {
+let gpMercSlotItem: Pointer<OBJECTTYPE>[] /* [9] */ = [
   NULL,
   NULL,
   NULL,
@@ -84,10 +84,10 @@ let gpMercSlotItem: Pointer<OBJECTTYPE>[] /* [9] */ = {
   NULL,
   NULL,
   NULL,
-};
+];
 // Because we only support these nine slots, they aren't continuous values, so this array helps
 // processing functions by referring to this array to get the appropriate slot.
-let gbMercSlotTypes: INT8[] /* [9] */ = {
+let gbMercSlotTypes: INT8[] /* [9] */ = [
   HELMETPOS,
   VESTPOS,
   LEGPOS,
@@ -97,7 +97,7 @@ let gbMercSlotTypes: INT8[] /* [9] */ = {
   BIGPOCK2POS,
   BIGPOCK3POS,
   BIGPOCK4POS,
-};
+];
 // returns the usItem index of specified slot in the currently selected merc.
 const GetSelectedMercSlotItemIndex = (x) => (gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[x]].usItem);
 const GetSelectedMercSlot = (x) => (&gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[x]]);
@@ -181,29 +181,29 @@ const DEFAULT_DIFF = 2;
 
 let sCurBaseDiff: INT16 = DEFAULT_DIFF;
 let fAskForBaseDifficulty: BOOLEAN = TRUE;
-let zDiffNames: Pointer<UINT16>[] /* [NUM_DIFF_LVLS] */ = {
+let zDiffNames: Pointer<UINT16>[] /* [NUM_DIFF_LVLS] */ = [
   L"Wimp",
   L"Easy",
   L"Average",
   L"Tough",
   L"Steroid Users Only",
-};
-let sBaseStat: INT16[] /* [NUM_DIFF_LVLS] */ = {
+];
+let sBaseStat: INT16[] /* [NUM_DIFF_LVLS] */ = [
   50,
   60,
   70,
   80,
   90,
-};
-let sBaseExpLvl: INT16[] /* [NUM_DIFF_LVLS] */ = {
+];
+let sBaseExpLvl: INT16[] /* [NUM_DIFF_LVLS] */ = [
   1,
   3,
   5,
   7,
   9,
-};
+];
 
-let EditMercStat: Pointer<UINT16>[] /* [12] */ = {
+let EditMercStat: Pointer<UINT16>[] /* [12] */ = [
   L"Max Health",
   L"Cur Health",
   L"Strength",
@@ -216,10 +216,10 @@ let EditMercStat: Pointer<UINT16>[] /* [12] */ = {
   L"Medical",
   L"Scientific",
   L"Exp Level",
-};
+];
 
 const NUM_MERC_ORDERS = 8;
-let EditMercOrders: Pointer<UINT16>[] /* [8] */ = {
+let EditMercOrders: Pointer<UINT16>[] /* [8] */ = [
   L"Stationary",
   L"On Guard",
   L"Close Patrol",
@@ -228,16 +228,16 @@ let EditMercOrders: Pointer<UINT16>[] /* [8] */ = {
   L"On Call",
   L"Seek Enemy",
   L"Random Point Patrol",
-};
+];
 
-let EditMercAttitudes: Pointer<UINT16>[] /* [6] */ = {
+let EditMercAttitudes: Pointer<UINT16>[] /* [6] */ = [
   L"Defensive",
   L"Brave Loner",
   L"Brave Buddy",
   L"Cunning Loner",
   L"Cunning Buddy",
   L"Aggressive",
-};
+];
 
 // information for bodytypes.
 const RANDOM = -1;
@@ -247,7 +247,7 @@ const MAX_CREATURETYPES = 8;
 const MAX_REBELTYPES = 7;
 const MAX_CIVTYPES = 18;
 //#define MAX_CIVRANDOMTYPES		11
-let bEnemyArray: INT8[] /* [MAX_ENEMYTYPES] */ = {
+let bEnemyArray: INT8[] /* [MAX_ENEMYTYPES] */ = [
   RANDOM,
   REGMALE,
   BIGMALE,
@@ -255,8 +255,8 @@ let bEnemyArray: INT8[] /* [MAX_ENEMYTYPES] */ = {
   REGFEMALE,
   TANK_NW,
   TANK_NE,
-};
-let bCreatureArray: INT8[] /* [MAX_CREATURETYPES] */ = {
+];
+let bCreatureArray: INT8[] /* [MAX_CREATURETYPES] */ = [
   BLOODCAT,
   LARVAE_MONSTER,
   INFANT_MONSTER,
@@ -265,8 +265,8 @@ let bCreatureArray: INT8[] /* [MAX_CREATURETYPES] */ = {
   ADULTFEMALEMONSTER,
   AM_MONSTER,
   QUEENMONSTER,
-};
-let bRebelArray: INT8[] /* [MAX_REBELTYPES] */ = {
+];
+let bRebelArray: INT8[] /* [MAX_REBELTYPES] */ = [
   RANDOM,
   FATCIV,
   MANCIV,
@@ -274,8 +274,8 @@ let bRebelArray: INT8[] /* [MAX_REBELTYPES] */ = {
   BIGMALE,
   STOCKYMALE,
   REGFEMALE,
-};
-let bCivArray: INT8[] /* [MAX_CIVTYPES] */ = {
+];
+let bCivArray: INT8[] /* [MAX_CIVTYPES] */ = [
   RANDOM,
   FATCIV,
   MANCIV,
@@ -294,7 +294,7 @@ let bCivArray: INT8[] /* [MAX_CIVTYPES] */ = {
   CRIPPLECIV,
   ROBOTNOWEAPON,
   COW,
-};
+];
 let gbCurrCreature: INT8 = BLOODCAT;
 
 let gfSaveBuffer: BOOLEAN = FALSE;
@@ -2496,17 +2496,17 @@ function UpdateMercsInfo(): void {
 // is called by the region callback functions to handle these cases.  The event types are defined
 // in Editor Taskbar Utils.h.  Here are the internal functions...
 
-let mercRects: SGPRect[] /* [9] */ = {
-  { 75, 0, 104, 19 }, // head
-  { 75, 22, 104, 41 }, // body
-  { 76, 73, 105, 92 }, // legs
-  { 26, 43, 78, 62 }, // left hand
-  { 104, 42, 156, 61 }, // right hand
-  { 180, 6, 232, 25 }, // pack 1
-  { 180, 29, 232, 48 }, // pack 2
-  { 180, 52, 232, 71 }, // pack 3
-  { 180, 75, 232, 94 }, // pack 4
-};
+let mercRects: SGPRect[] /* [9] */ = [
+  [ 75, 0, 104, 19 ], // head
+  [ 75, 22, 104, 41 ], // body
+  [ 76, 73, 105, 92 ], // legs
+  [ 26, 43, 78, 62 ], // left hand
+  [ 104, 42, 156, 61 ], // right hand
+  [ 180, 6, 232, 25 ], // pack 1
+  [ 180, 29, 232, 48 ], // pack 2
+  [ 180, 52, 232, 71 ], // pack 3
+  [ 180, 75, 232, 94 ], // pack 4
+];
 
 function PointInRect(pRect: Pointer<SGPRect>, x: INT32, y: INT32): BOOLEAN {
   return x >= pRect->iLeft && x <= pRect->iRight && y >= pRect->iTop && y <= pRect->iBottom;

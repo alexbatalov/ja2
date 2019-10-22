@@ -12,7 +12,7 @@ let gfSurrendered: BOOLEAN = FALSE;
 
 let gCivQuotes: CIV_QUOTE[] /* [NUM_CIV_QUOTES] */;
 
-let gubNumEntries: UINT8[] /* [NUM_CIV_QUOTES] */ = {
+let gubNumEntries: UINT8[] /* [NUM_CIV_QUOTES] */ = [
   15,
   15,
   15,
@@ -67,7 +67,7 @@ let gubNumEntries: UINT8[] /* [NUM_CIV_QUOTES] */ = {
   3,
   3,
   3,
-};
+];
 
 interface QUOTE_SYSTEM_STRUCT {
   bActive: BOOLEAN;

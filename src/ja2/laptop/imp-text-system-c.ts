@@ -9,7 +9,7 @@ let fInitialized: BOOLEAN = FALSE;
 let iIMPTextRecordLengths: INT32[] /* [300] */;
 
 // the length of persona questions
-let iIMPQuestionLengths: INT32[] /* [25] */ = {
+let iIMPQuestionLengths: INT32[] /* [25] */ = [
   7,
   5,
   5,
@@ -35,7 +35,7 @@ let iIMPQuestionLengths: INT32[] /* [25] */ = {
   6,
   5,
   5,
-};
+];
 
 const QTN_FIRST_COLUMN_X = 80;
 const QTN_SECOND_COLUMN_X = 320;

@@ -264,7 +264,7 @@ function ResetInterface(): void {
   }
 }
 
-let guiColors: UINT32[] /* [12] */ = {
+let guiColors: UINT32[] /* [12] */ = [
   FROMRGB(198, 163, 0),
   FROMRGB(185, 150, 0),
   FROMRGB(172, 136, 0),
@@ -277,7 +277,7 @@ let guiColors: UINT32[] /* [12] */ = {
   FROMRGB(159, 123, 0),
   FROMRGB(172, 136, 0),
   FROMRGB(185, 150, 0),
-};
+];
 
 function RenderRubberBanding(): void {
   let usLineColor: UINT16;

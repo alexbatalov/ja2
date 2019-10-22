@@ -30,22 +30,22 @@ let fZoomFlag: BOOLEAN = FALSE;
 // BOOLEAN fDisabledMapBorder = FALSE;
 
 // buttons & button images
-let giMapBorderButtons: INT32[] /* [6] */ = {
+let giMapBorderButtons: INT32[] /* [6] */ = [
   -1,
   -1,
   -1,
   -1,
   -1,
   -1,
-};
-let giMapBorderButtonsImage: INT32[] /* [6] */ = {
+];
+let giMapBorderButtonsImage: INT32[] /* [6] */ = [
   -1,
   -1,
   -1,
   -1,
   -1,
   -1,
-};
+];
 
 // UINT32 guiMapBorderScrollButtons[ 4 ] = { -1, -1, -1, -1 };
 // UINT32 guiMapBorderScrollButtonsImage[ 4 ];

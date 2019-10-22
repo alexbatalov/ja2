@@ -383,7 +383,7 @@ function DrawAimPolicyMenu(): BOOLEAN {
   let uiStartLoc: UINT32 = 0;
   let sText: wchar_t[] /* [400] */;
   let hContentButtonHandle: HVOBJECT;
-  let ubLocInFile: UINT8[] /* [] */ = {
+  let ubLocInFile: UINT8[] /* [] */ = [
     DEFINITIONS,
     LENGTH_OF_ENGAGEMENT,
     LOCATION_0F_ENGAGEMENT,
@@ -393,7 +393,7 @@ function DrawAimPolicyMenu(): BOOLEAN {
     ENGAGEMENT_TERMINATION,
     EQUIPMENT_AND_INVENTORY,
     POLICY_MEDICAL,
-  };
+  ];
 
   GetVideoObject(&hContentButtonHandle, guiContentButton);
 

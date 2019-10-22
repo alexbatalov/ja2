@@ -6,7 +6,7 @@ let guiBaseJA2NoPauseClock: UINT32 = 0;
 
 let gfPauseClock: BOOLEAN = FALSE;
 
-let giTimerIntervals: INT32[] /* [NUMTIMERS] */ = {
+let giTimerIntervals: INT32[] /* [NUMTIMERS] */ = [
   5, // Tactical Overhead
   20, // NEXTSCROLL
   200, // Start Scroll
@@ -33,7 +33,7 @@ let giTimerIntervals: INT32[] /* [NUMTIMERS] */ = {
   400,
   10, // Music Overhead
   100, // Rubber band start delay
-};
+];
 
 // TIMER COUNTERS
 let giTimerCounters: INT32[] /* [NUMTIMERS] */;

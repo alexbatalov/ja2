@@ -99,11 +99,11 @@ let gfFaceMouseRegionsActive: BOOLEAN;
 // BOOLEAN		gfDestroyDoneRegion;
 let gfReDrawScreen: BOOLEAN = FALSE;
 
-let AimArchivesSubPagesVisitedFlag: BOOLEAN[] /* [3] */ = {
+let AimArchivesSubPagesVisitedFlag: BOOLEAN[] /* [3] */ = [
   0,
   0,
   0,
-};
+];
 
 // Mouse Regions
 

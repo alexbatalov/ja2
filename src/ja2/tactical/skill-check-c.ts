@@ -88,13 +88,13 @@ function EffectiveLeadership(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 function EffectiveExpLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iEffExpLevel: INT32;
   let bDrunkLevel: INT8;
-  let iExpModifier: INT32[] /* [] */ = {
+  let iExpModifier: INT32[] /* [] */ = [
     0, // SOBER
     0, // Feeling good
     -1, // Borderline
     -2, // Drunk
     0, // Hung
-  };
+  ];
 
   iEffExpLevel = pSoldier->bExpLevel;
 

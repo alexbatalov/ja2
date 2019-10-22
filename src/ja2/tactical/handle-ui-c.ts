@@ -56,73 +56,73 @@ let gfOKForExchangeCursor: BOOLEAN = FALSE;
 let guiUIInterfaceSwapCursorsTime: UINT32 = 0;
 let gsJumpOverGridNo: INT16 = 0;
 
-let gEvents: UI_EVENT[] /* [NUM_UI_EVENTS] */ = {
-  { 0, IDLE_MODE, UIHandleIDoNothing, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, IDLE_MODE, UIHandleExit, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleNewMerc, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleNewBadMerc, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleSelectMerc, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleEnterEditMode, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleEnterPalEditMode, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleEndTurn, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleTestHit, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleChangeLevel, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, IDLE_MODE, UIHandleIOnTerrain, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, IDLE_MODE, UIHandleIChangeToIdle, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, IDLE_MODE, UIHandleILoadLevel, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleISoldierDebug, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILOSDebug, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILevelNodeDebug, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleIGotoDemoMode, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILoadFirstLevel, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILoadSecondLevel, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILoadThirdLevel, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILoadFourthLevel, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILoadFifthLevel, FALSE, FALSE, 0, { 0, 0, 0 } },
+let gEvents: UI_EVENT[] /* [NUM_UI_EVENTS] */ = [
+  [ 0, IDLE_MODE, UIHandleIDoNothing, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, IDLE_MODE, UIHandleExit, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleNewMerc, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleNewBadMerc, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleSelectMerc, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleEnterEditMode, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleEnterPalEditMode, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleEndTurn, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleTestHit, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleChangeLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, IDLE_MODE, UIHandleIOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, IDLE_MODE, UIHandleIChangeToIdle, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, IDLE_MODE, UIHandleILoadLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleISoldierDebug, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILOSDebug, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILevelNodeDebug, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleIGotoDemoMode, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILoadFirstLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILoadSecondLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILoadThirdLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILoadFourthLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILoadFifthLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
 
-  { 0, ENEMYS_TURN_MODE, UIHandleIETOnTerrain, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleIETEndTurn, FALSE, FALSE, 0, { 0, 0, 0 } },
+  [ 0, ENEMYS_TURN_MODE, UIHandleIETOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleIETEndTurn, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
 
-  { 0, MOVE_MODE, UIHandleMOnTerrain, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, ACTION_MODE, UIHandleMChangeToAction, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, HANDCURSOR_MODE, UIHandleMChangeToHandMode, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleMCycleMovement, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, CONFIRM_MOVE_MODE, UIHandleMCycleMoveAll, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SNAPMOUSE, ADJUST_STANCE_MODE, UIHandleMAdjustStanceMode, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, POPUP_MODE, UIHandlePOPUPMSG, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, ACTION_MODE, UIHandleAOnTerrain, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleAChangeToMove, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, CONFIRM_ACTION_MODE, UIHandleAChangeToConfirmAction, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleAEndAction, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SNAPMOUSE, MENU_MODE, UIHandleMovementMenu, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SNAPMOUSE, MENU_MODE, UIHandlePositionMenu, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, CONFIRM_MOVE_MODE, UIHandleCWait, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleCMoveMerc, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, CONFIRM_MOVE_MODE, UIHandleCOnTerrain, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, MOVE_MODE, UIHandlePADJAdjustStance, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, CONFIRM_ACTION_MODE, UIHandleCAOnTerrain, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, ACTION_MODE, UIHandleCAMercShoot, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, ACTION_MODE, UIHandleCAEndConfirmAction, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, HANDCURSOR_MODE, UIHandleHCOnTerrain, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, GETTINGITEM_MODE, UIHandleHCGettingItem, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, LOOKCURSOR_MODE, UIHandleLCOnTerrain, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, LOOKCURSOR_MODE, UIHandleLCChangeToLook, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleLCLook, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, TALKINGMENU_MODE, UIHandleTATalkingMenu, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, TALKCURSOR_MODE, UIHandleTOnTerrain, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, TALKCURSOR_MODE, UIHandleTChangeToTalking, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, LOCKUI_MODE, UIHandleLUIOnTerrain, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, LOCKUI_MODE, UIHandleLUIBeginLock, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleLUIEndLock, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, OPENDOOR_MENU_MODE, UIHandleOpenDoorMenu, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, LOCKOURTURN_UI_MODE, UIHandleLAOnTerrain, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, LOCKOURTURN_UI_MODE, UIHandleLABeginLockOurTurn, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleLAEndLockOurTurn, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, EXITSECTORMENU_MODE, UIHandleEXExitSectorMenu, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, RUBBERBAND_MODE, UIHandleRubberBandOnTerrain, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, JUMPOVER_MODE, UIHandleJumpOverOnTerrain, FALSE, FALSE, 0, { 0, 0, 0 } },
-  { 0, MOVE_MODE, UIHandleJumpOver, FALSE, FALSE, 0, { 0, 0, 0 } },
-};
+  [ 0, MOVE_MODE, UIHandleMOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, ACTION_MODE, UIHandleMChangeToAction, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, HANDCURSOR_MODE, UIHandleMChangeToHandMode, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleMCycleMovement, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, CONFIRM_MOVE_MODE, UIHandleMCycleMoveAll, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SNAPMOUSE, ADJUST_STANCE_MODE, UIHandleMAdjustStanceMode, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, POPUP_MODE, UIHandlePOPUPMSG, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, ACTION_MODE, UIHandleAOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleAChangeToMove, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, CONFIRM_ACTION_MODE, UIHandleAChangeToConfirmAction, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleAEndAction, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SNAPMOUSE, MENU_MODE, UIHandleMovementMenu, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SNAPMOUSE, MENU_MODE, UIHandlePositionMenu, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, CONFIRM_MOVE_MODE, UIHandleCWait, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleCMoveMerc, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, CONFIRM_MOVE_MODE, UIHandleCOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, MOVE_MODE, UIHandlePADJAdjustStance, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, CONFIRM_ACTION_MODE, UIHandleCAOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, ACTION_MODE, UIHandleCAMercShoot, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, ACTION_MODE, UIHandleCAEndConfirmAction, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, HANDCURSOR_MODE, UIHandleHCOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, GETTINGITEM_MODE, UIHandleHCGettingItem, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, LOOKCURSOR_MODE, UIHandleLCOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, LOOKCURSOR_MODE, UIHandleLCChangeToLook, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleLCLook, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, TALKINGMENU_MODE, UIHandleTATalkingMenu, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, TALKCURSOR_MODE, UIHandleTOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, TALKCURSOR_MODE, UIHandleTChangeToTalking, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, LOCKUI_MODE, UIHandleLUIOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, LOCKUI_MODE, UIHandleLUIBeginLock, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleLUIEndLock, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, OPENDOOR_MENU_MODE, UIHandleOpenDoorMenu, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, LOCKOURTURN_UI_MODE, UIHandleLAOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, LOCKOURTURN_UI_MODE, UIHandleLABeginLockOurTurn, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleLAEndLockOurTurn, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, EXITSECTORMENU_MODE, UIHandleEXExitSectorMenu, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, RUBBERBAND_MODE, UIHandleRubberBandOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, JUMPOVER_MODE, UIHandleJumpOverOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, MOVE_MODE, UIHandleJumpOver, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+];
 
 let gCurrentUIMode: UI_MODE = IDLE_MODE;
 let gOldUIMode: UI_MODE = IDLE_MODE;
@@ -166,7 +166,7 @@ let gUITargetShotWaiting: BOOLEAN = FALSE;
 let gsUITargetShotGridNo: UINT16 = NOWHERE;
 let gUIUseReverse: BOOLEAN = FALSE;
 
-let gRubberBandRect: SGPRect = { 0, 0, 0, 0 };
+let gRubberBandRect: SGPRect = [ 0, 0, 0, 0 ];
 let gRubberBandActive: BOOLEAN = FALSE;
 let gfIgnoreOnSelectedGuy: BOOLEAN = FALSE;
 let gfViewPortAdjustedForSouth: BOOLEAN = FALSE;
@@ -4758,12 +4758,12 @@ function IsValidJumpLocation(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fCh
   let sDistance: INT16 = 0;
   let sSpot: INT16;
   let sIntSpot: INT16;
-  let sDirs: INT16[] /* [4] */ = {
+  let sDirs: INT16[] /* [4] */ = [
     NORTH,
     EAST,
     SOUTH,
     WEST,
-  };
+  ];
   let cnt: INT32;
   let ubGuyThere: UINT8;
   let ubMovementCost: UINT8;

@@ -25,19 +25,19 @@ interface RGBCOLOR {
   ubBlue: UINT8;
 }
 
-let GlowColors: RGBCOLOR[] /* [] */ = {
-  { 0, 0, 0 },
-  { 25, 0, 0 },
-  { 50, 0, 0 },
-  { 75, 0, 0 },
-  { 100, 0, 0 },
-  { 125, 0, 0 },
-  { 150, 0, 0 },
-  { 175, 0, 0 },
-  { 200, 0, 0 },
-  { 225, 0, 0 },
-  { 250, 0, 0 },
-};
+let GlowColors: RGBCOLOR[] /* [] */ = [
+  [ 0, 0, 0 ],
+  [ 25, 0, 0 ],
+  [ 50, 0, 0 ],
+  [ 75, 0, 0 ],
+  [ 100, 0, 0 ],
+  [ 125, 0, 0 ],
+  [ 150, 0, 0 ],
+  [ 175, 0, 0 ],
+  [ 200, 0, 0 ],
+  [ 225, 0, 0 ],
+  [ 250, 0, 0 ],
+];
 
 // laptop programs
 const enum Enum93 {
@@ -329,7 +329,7 @@ let fHardDriveLightOn: BOOLEAN = FALSE;
 let fFlickerHD: BOOLEAN = FALSE;
 
 // the screens limiting rect
-let LaptopScreenRect: SGPRect = { LAPTOP_UL_X, LAPTOP_UL_Y - 5, LAPTOP_SCREEN_LR_X + 2, LAPTOP_SCREEN_LR_Y + 5 + 19 };
+let LaptopScreenRect: SGPRect = [ LAPTOP_UL_X, LAPTOP_UL_Y - 5, LAPTOP_SCREEN_LR_X + 2, LAPTOP_SCREEN_LR_Y + 5 + 19 ];
 
 // the sub pages vistsed or not status within the web browser
 let gfWWWaitSubSitesVisitedFlags: BOOLEAN[] /* [LAPTOP_MODE_SIRTECH - LAPTOP_MODE_WWW] */;
@@ -3538,7 +3538,7 @@ function LapTopScreenCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
 }
 
 function DoLapTopMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
-  let pCenteringRect: SGPRect = { LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_LR_Y };
+  let pCenteringRect: SGPRect = [ LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_LR_Y ];
 
   // reset exit mode
   fExitDueToMessageBox = TRUE;
@@ -3562,7 +3562,7 @@ function DoLapTopSystemMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16
 }
 
 function DoLapTopSystemMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
-  let CenteringRect: SGPRect = { 0, 0, 640, INV_INTERFACE_START_Y };
+  let CenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
   // reset exit mode
   fExitDueToMessageBox = TRUE;
 

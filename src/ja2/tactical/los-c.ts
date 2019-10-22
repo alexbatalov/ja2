@@ -44,49 +44,49 @@ function FPMult32(uiA: UINT32, uiB: UINT32): UINT32 {
   return uiResult;
 }
 
-/* static */ let ddShotgunSpread: DOUBLE[][][] /* [3][BUCKSHOT_SHOTS][2] */ = {
-  {
+/* static */ let ddShotgunSpread: DOUBLE[][][] /* [3][BUCKSHOT_SHOTS][2] */ = [
+  [
     // spread of about 2 degrees in all directions
     // Horiz,	 Vert
-    { 0.0, 0.0 },
-    { -0.012, 0.0 },
-    { +0.012, 0.0 },
-    { 0.0, -0.012 },
-    { 0.0, +0.012 },
-    { -0.008, -0.008 },
-    { -0.008, +0.008 },
-    { +0.008, -0.008 },
-    { +0.008, +0.008 }
-  },
-  {
+    [ 0.0, 0.0 ],
+    [ -0.012, 0.0 ],
+    [ +0.012, 0.0 ],
+    [ 0.0, -0.012 ],
+    [ 0.0, +0.012 ],
+    [ -0.008, -0.008 ],
+    [ -0.008, +0.008 ],
+    [ +0.008, -0.008 ],
+    [ +0.008, +0.008 ]
+  ],
+  [
     // duckbill flattens the spread and makes it wider horizontally (5 degrees)
     // Horiz,	 Vert
-    { 0.0, 0.0 },
-    { -0.008, 0.0 },
-    { +0.008, 0.0 },
-    { -0.016, 0.0 },
-    { +0.016, 0.0 },
-    { -0.024, 0.0 },
-    { +0.024, 0.0 },
-    { -0.032, 0.0 },
-    { +0.032, 0.0 },
-  },
-  {
+    [ 0.0, 0.0 ],
+    [ -0.008, 0.0 ],
+    [ +0.008, 0.0 ],
+    [ -0.016, 0.0 ],
+    [ +0.016, 0.0 ],
+    [ -0.024, 0.0 ],
+    [ +0.024, 0.0 ],
+    [ -0.032, 0.0 ],
+    [ +0.032, 0.0 ],
+  ],
+  [
     // flamethrower more spread out
     // Horiz,	 Vert
-    { 0.0, 0.0 },
-    { -0.120, 0.0 },
-    { +0.120, 0.0 },
-    { 0.0, -0.120 },
-    { 0.0, +0.120 },
-    { -0.080, -0.080 },
-    { -0.080, +0.080 },
-    { +0.080, -0.080 },
-    { +0.080, +0.080 },
-  },
-};
+    [ 0.0, 0.0 ],
+    [ -0.120, 0.0 ],
+    [ +0.120, 0.0 ],
+    [ 0.0, -0.120 ],
+    [ 0.0, +0.120 ],
+    [ -0.080, -0.080 ],
+    [ -0.080, +0.080 ],
+    [ +0.080, -0.080 ],
+    [ +0.080, +0.080 ],
+  ],
+];
 
-/* static */ let gubTreeSightReduction: UINT8[] /* [ANIM_STAND + 1] */ = {
+/* static */ let gubTreeSightReduction: UINT8[] /* [ANIM_STAND + 1] */ = [
   0,
   8, // prone
   0,
@@ -94,13 +94,13 @@ function FPMult32(uiA: UINT32, uiB: UINT32): UINT32 {
   0,
   0,
   6, // standing
-};
+];
 
 const MAX_DIST_FOR_LESS_THAN_MAX_CHANCE_TO_HIT_STRUCTURE = 25;
 
 const MAX_CHANCE_OF_HITTING_STRUCTURE = 90;
 
-/* static */ let guiStructureHitChance: UINT32[] /* [MAX_DIST_FOR_LESS_THAN_MAX_CHANCE_TO_HIT_STRUCTURE + 1] */ = {
+/* static */ let guiStructureHitChance: UINT32[] /* [MAX_DIST_FOR_LESS_THAN_MAX_CHANCE_TO_HIT_STRUCTURE + 1] */ = [
   0, // 0 tiles
   0,
   0,
@@ -127,7 +127,7 @@ const MAX_CHANCE_OF_HITTING_STRUCTURE = 90;
   84,
   86,
   88, // 25 tiles
-};
+];
 
 const PERCENT_BULLET_SLOWED_BY_RANGE = 25;
 
@@ -3919,11 +3919,11 @@ function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOAT, dDel
   return COLLISION_NONE;
 }
 
-let gsLOSDirLUT: INT16[][] /* [3][3] */ = {
-  { 315, 0, 45 },
-  { 270, 0, 90 },
-  { 225, 180, 135 },
-};
+let gsLOSDirLUT: INT16[][] /* [3][3] */ = [
+  [ 315, 0, 45 ],
+  [ 270, 0, 90 ],
+  [ 225, 180, 135 ],
+];
 
 function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: INT8, bLOSZ: INT8, dDeltaX: FLOAT, dDeltaY: FLOAT, dDeltaZ: FLOAT, pdNormalX: Pointer<FLOAT>, pdNormalY: Pointer<FLOAT>, pdNormalZ: Pointer<FLOAT>): BOOLEAN {
   let cntx: INT32;

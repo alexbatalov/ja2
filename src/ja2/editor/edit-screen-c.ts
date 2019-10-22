@@ -2727,7 +2727,7 @@ function EnsureStatusOfEditorButtons(): void {
 }
 
 function HandleMouseClicksInGameScreen(): void {
-  let dummy: EXITGRID = { 0, 0, 0, 0 };
+  let dummy: EXITGRID = [ 0, 0, 0, 0 ];
   let sX: INT16;
   let sY: INT16;
   let fPrevState: BOOLEAN;

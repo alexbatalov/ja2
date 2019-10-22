@@ -90,27 +90,27 @@ interface AIR_RAID_POS {
   bY: INT8;
 }
 
-let ubPerpDirections: AIR_RAID_DIR[] /* [] */ = {
-  { 2, 6 },
-  { 3, 7 },
-  { 0, 4 },
-  { 1, 5 },
-  { 2, 6 },
-  { 3, 7 },
-  { 0, 4 },
-  { 1, 5 },
-};
+let ubPerpDirections: AIR_RAID_DIR[] /* [] */ = [
+  [ 2, 6 ],
+  [ 3, 7 ],
+  [ 0, 4 ],
+  [ 1, 5 ],
+  [ 2, 6 ],
+  [ 3, 7 ],
+  [ 0, 4 ],
+  [ 1, 5 ],
+];
 
-let ubXYTragetInvFromDirection: AIR_RAID_POS[] /* [] */ = {
-  { 0, -1 },
-  { 1, -1 },
-  { 1, 0 },
-  { 1, 1 },
-  { 0, 1 },
-  { -1, 1 },
-  { -1, 0 },
-  { -1, -1 },
-};
+let ubXYTragetInvFromDirection: AIR_RAID_POS[] /* [] */ = [
+  [ 0, -1 ],
+  [ 1, -1 ],
+  [ 1, 0 ],
+  [ 1, 1 ],
+  [ 0, 1 ],
+  [ -1, 1 ],
+  [ -1, 0 ],
+  [ -1, -1 ],
+];
 
 function ScheduleAirRaid(pAirRaidDef: Pointer<AIR_RAID_DEFINITION>): void {
   // Make sure only one is cheduled...
@@ -208,7 +208,7 @@ function BeginAirRaid(): BOOLEAN {
 }
 
 function PickLocationNearAnyMercInSector(): INT16 {
-  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
+  let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;

@@ -8,12 +8,12 @@
  *    starting with the deletion of a MULTI SPECIAL structure
  */
 
-let AtHeight: UINT8[] /* [PROFILE_Z_SIZE] */ = {
+let AtHeight: UINT8[] /* [PROFILE_Z_SIZE] */ = [
   0x01,
   0x02,
   0x04,
   0x08,
-};
+];
 
 const FIRST_AVAILABLE_STRUCTURE_ID = (INVALID_STRUCTURE_ID + 2);
 
@@ -21,7 +21,7 @@ let gusNextAvailableStructureID: UINT16 = FIRST_AVAILABLE_STRUCTURE_ID;
 
 let gpStructureFileRefs: Pointer<STRUCTURE_FILE_REF>;
 
-let guiMaterialHitSound: INT32[] /* [NUM_MATERIAL_TYPES] */ = {
+let guiMaterialHitSound: INT32[] /* [NUM_MATERIAL_TYPES] */ = [
   -1,
   S_WOOD_IMPACT1,
   S_WOOD_IMPACT2,
@@ -50,7 +50,7 @@ let guiMaterialHitSound: INT32[] /* [NUM_MATERIAL_TYPES] */ = {
   S_METAL_IMPACT3,
   S_STONE_IMPACT1,
   S_METAL_IMPACT3,
-};
+];
 
 /*
 index  1-10, organics
@@ -70,7 +70,7 @@ index 23, really heavy metal
 index 24, indestructable stone
 index 25, indestructable metal
 */
-let gubMaterialArmour: UINT8[] /* [] */ = {
+let gubMaterialArmour: UINT8[] /* [] */ = [
   // note: must increase; r.c. should block *AP* 7.62mm rounds
   0, // nothing
   25, // dry timber; wood wall +1/2
@@ -100,7 +100,7 @@ let gubMaterialArmour: UINT8[] /* [] */ = {
   127, // rock indestructable
   127, // indestructable
   57, // like 22 but with screen windows
-};
+];
 
 // Function operating on a structure tile
 function FilledTilePositions(pTile: Pointer<DB_STRUCTURE_TILE>): UINT8 {
@@ -1366,13 +1366,13 @@ function DebugStructurePage1(): void {
   let bDens3: INT8;
   let bStructures: INT8;
 
-  /* static */ let WallOrientationString: CHAR16[][] /* [5][15] */ = {
+  /* static */ let WallOrientationString: CHAR16[][] /* [5][15] */ = [
     L"None",
     L"Inside left",
     L"Inside right",
     L"Outside left",
     L"Outside right",
-  };
+  ];
 
   SetFont(LARGEFONT1);
   gprintf(0, 0, L"DEBUG STRUCTURES PAGE 1 OF 1");

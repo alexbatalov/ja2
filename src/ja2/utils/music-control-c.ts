@@ -18,7 +18,7 @@ let bBattleModeSong: INT8;
 
 let gbFadeSpeed: INT8 = 1;
 
-let szMusicList: Pointer<CHAR8>[] /* [NUM_MUSIC] */ = {
+let szMusicList: Pointer<CHAR8>[] /* [NUM_MUSIC] */ = [
   "MUSIC\\marimbad 2.wav",
   "MUSIC\\menumix1.wav",
   "MUSIC\\nothing A.wav",
@@ -34,7 +34,7 @@ let szMusicList: Pointer<CHAR8>[] /* [NUM_MUSIC] */ = {
   "MUSIC\\tensor B.wav",
   "MUSIC\\creepy.wav",
   "MUSIC\\creature battle.wav",
-};
+];
 
 let gfForceMusicToTense: BOOLEAN = FALSE;
 let gfDontRestartSong: BOOLEAN = FALSE;

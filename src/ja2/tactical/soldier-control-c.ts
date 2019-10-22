@@ -24,7 +24,7 @@ const enum Enum256 {
 }
 
 // LUT for conversion from 8-direction to extended direction
-let ubExtDirection: UINT8[] /* [] */ = {
+let ubExtDirection: UINT8[] /* [] */ = [
   EX_NORTH,
   EX_NORTHEAST,
   EX_EAST,
@@ -33,9 +33,9 @@ let ubExtDirection: UINT8[] /* [] */ = {
   EX_SOUTHWEST,
   EX_WEST,
   EX_NORTHWEST,
-};
+];
 
-let gExtOneCDirection: UINT8[] /* [EX_NUM_WORLD_DIRECTIONS] */ = {
+let gExtOneCDirection: UINT8[] /* [EX_NUM_WORLD_DIRECTIONS] */ = [
   4,
   5,
   6,
@@ -75,7 +75,7 @@ let gExtOneCDirection: UINT8[] /* [EX_NUM_WORLD_DIRECTIONS] */ = {
   1,
   2,
   3,
-};
+];
 
 interface BATTLESNDS_STRUCT {
   zName: CHAR8[] /* [20] */;
@@ -86,27 +86,27 @@ interface BATTLESNDS_STRUCT {
   fStopDialogue: BOOLEAN;
 }
 
-let gBattleSndsData: BATTLESNDS_STRUCT[] /* [] */ = {
-  { "ok1", 2, 1, 1, 1, 2 },
-  { "ok2", 0, 1, 1, 1, 2 },
-  { "cool", 0, 1, 0, 1, 0 },
-  { "curse", 0, 1, 1, 1, 0 },
-  { "hit1", 2, 1, 1, 1, 1 },
-  { "hit2", 0, 1, 1, 1, 1 },
-  { "laugh", 0, 1, 1, 1, 0 },
-  { "attn", 0, 1, 0, 1, 0 },
-  { "dying", 0, 1, 1, 1, 1 },
-  { "humm", 0, 0, 0, 1, 1 },
-  { "noth", 0, 0, 0, 1, 1 },
-  { "gotit", 0, 0, 0, 1, 1 },
-  { "lmok1", 2, 1, 0, 1, 2 },
-  { "lmok2", 0, 1, 0, 1, 2 },
-  { "lmattn", 0, 1, 0, 1, 0 },
-  { "locked", 0, 0, 0, 1, 0 },
-  { "enem", 0, 1, 1, 1, 0 },
-};
+let gBattleSndsData: BATTLESNDS_STRUCT[] /* [] */ = [
+  [ "ok1", 2, 1, 1, 1, 2 ],
+  [ "ok2", 0, 1, 1, 1, 2 ],
+  [ "cool", 0, 1, 0, 1, 0 ],
+  [ "curse", 0, 1, 1, 1, 0 ],
+  [ "hit1", 2, 1, 1, 1, 1 ],
+  [ "hit2", 0, 1, 1, 1, 1 ],
+  [ "laugh", 0, 1, 1, 1, 0 ],
+  [ "attn", 0, 1, 0, 1, 0 ],
+  [ "dying", 0, 1, 1, 1, 1 ],
+  [ "humm", 0, 0, 0, 1, 1 ],
+  [ "noth", 0, 0, 0, 1, 1 ],
+  [ "gotit", 0, 0, 0, 1, 1 ],
+  [ "lmok1", 2, 1, 0, 1, 2 ],
+  [ "lmok2", 0, 1, 0, 1, 2 ],
+  [ "lmattn", 0, 1, 0, 1, 0 ],
+  [ "locked", 0, 0, 0, 1, 0 ],
+  [ "enem", 0, 1, 1, 1, 0 ],
+];
 
-let bHealthStrRanges: UINT8[] /* [] */ = {
+let bHealthStrRanges: UINT8[] /* [] */ = [
   15,
   30,
   45,
@@ -114,9 +114,9 @@ let bHealthStrRanges: UINT8[] /* [] */ = {
   75,
   90,
   101,
-};
+];
 
-let gsTerrainTypeSpeedModifiers: INT16[] /* [] */ = {
+let gsTerrainTypeSpeedModifiers: INT16[] /* [] */ = [
   5, // Flat ground
   5, // Floor
   5, // Paved road
@@ -127,7 +127,7 @@ let gsTerrainTypeSpeedModifiers: INT16[] /* [] */ = {
   20, // LOW WATER
   25, // MID WATER
   30, // DEEP WATER
-};
+];
 
 // Kris:
 // Temporary for testing the speed of the translucency.  Pressing Ctrl+L in turn based
@@ -135,11 +135,11 @@ let gsTerrainTypeSpeedModifiers: INT16[] /* [] */ = {
 // increase the speed of the game.
 let gfCalcTranslucency: BOOLEAN = FALSE;
 
-let gsFullTileDirections: INT16[] /* [MAX_FULLTILE_DIRECTIONS] */ = {
+let gsFullTileDirections: INT16[] /* [MAX_FULLTILE_DIRECTIONS] */ = [
   -1,
   -WORLD_COLS - 1,
   -WORLD_COLS,
-};
+];
 
 // Palette ranges
 let guiNumPaletteSubRanges: UINT32;
@@ -3838,7 +3838,7 @@ savedPts = MAX_AP_CARRIED;
 }
 
 // UTILITY FUNCTIONS CALLED BY OVERHEAD.H
-let gDirectionFrom8to2: UINT8[] /* [] */ = {
+let gDirectionFrom8to2: UINT8[] /* [] */ = [
   0,
   0,
   1,
@@ -3847,7 +3847,7 @@ let gDirectionFrom8to2: UINT8[] /* [] */ = {
   1,
   1,
   0,
-};
+];
 
 function ConvertAniCodeToAniFrame(pSoldier: Pointer<SOLDIERTYPE>, usAniFrame: UINT16): BOOLEAN {
   let usAnimSurface: UINT16;
@@ -4143,7 +4143,7 @@ function TurnSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-let gRedGlowR: UINT8[] /* [] */ = {
+let gRedGlowR: UINT8[] /* [] */ = [
   0, // Normal shades
   25,
   50,
@@ -4165,9 +4165,9 @@ let gRedGlowR: UINT8[] /* [] */ = {
   175,
   200,
   225,
-};
+];
 
-let gOrangeGlowR: UINT8[] /* [] */ = {
+let gOrangeGlowR: UINT8[] /* [] */ = [
   0, // Normal shades
   25,
   50,
@@ -4189,9 +4189,9 @@ let gOrangeGlowR: UINT8[] /* [] */ = {
   175,
   200,
   225,
-};
+];
 
-let gOrangeGlowG: UINT8[] /* [] */ = {
+let gOrangeGlowG: UINT8[] /* [] */ = [
   0, // Normal shades
   20,
   40,
@@ -4213,7 +4213,7 @@ let gOrangeGlowG: UINT8[] /* [] */ = {
   140,
   160,
   180,
-};
+];
 
 function CreateSoldierPalettes(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let usAnimSurface: UINT16;

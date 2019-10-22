@@ -82,23 +82,23 @@ let Room: DisplaySpec[] /* [ROOM_NUMELEMENTS] */;
 // These are all of the different selection lists.  Changing the max_selections will
 // change the number of selections values you can have at a time.  This is Bret's gay code,
 // though I've cleaned it up a lot.
-let SelOStructs: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTFULLSTRUCT, 0, 1 } }; // Default selections
-let SelOStructs1: Selections[] /* [MAX_SELECTIONS] */ = { { FOURTHOSTRUCT, 0, 1 } }; // Default selections
-let SelOStructs2: Selections[] /* [MAX_SELECTIONS] */ = { { THIRDOSTRUCT, 0, 1 } }; // Default selections
-let SelBanks: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTCLIFF, 0, 1 } };
-let SelRoads: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTROAD, 0, 1 } };
-let SelDebris: Selections[] /* [MAX_SELECTIONS] */ = { { DEBRISROCKS, 0, 1 } };
-let SelSingleWall: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTWALL, 0, 1 } };
-let SelSingleDoor: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTDOOR, 0, 1 } };
-let SelSingleWindow: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTWALL, 44, 1 } };
-let SelSingleRoof: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTROOF, 0, 1 } };
-let SelSingleNewRoof: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTROOF, 0, 1 } };
-let SelSingleBrokenWall: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTDECORATIONS, 0, 1 } };
-let SelSingleDecor: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTISTRUCT, 0, 1 } };
-let SelSingleDecal: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTWALLDECAL, 0, 1 } };
-let SelSingleFloor: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTFLOOR, 0, 1 } };
-let SelSingleToilet: Selections[] /* [MAX_SELECTIONS] */ = { { FIFTHISTRUCT, 0, 1 } };
-let SelRoom: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTWALL, 0, 1 } };
+let SelOStructs: Selections[] /* [MAX_SELECTIONS] */ = [ [ FIRSTFULLSTRUCT, 0, 1 ] ]; // Default selections
+let SelOStructs1: Selections[] /* [MAX_SELECTIONS] */ = [ [ FOURTHOSTRUCT, 0, 1 ] ]; // Default selections
+let SelOStructs2: Selections[] /* [MAX_SELECTIONS] */ = [ [ THIRDOSTRUCT, 0, 1 ] ]; // Default selections
+let SelBanks: Selections[] /* [MAX_SELECTIONS] */ = [ [ FIRSTCLIFF, 0, 1 ] ];
+let SelRoads: Selections[] /* [MAX_SELECTIONS] */ = [ [ FIRSTROAD, 0, 1 ] ];
+let SelDebris: Selections[] /* [MAX_SELECTIONS] */ = [ [ DEBRISROCKS, 0, 1 ] ];
+let SelSingleWall: Selections[] /* [MAX_SELECTIONS] */ = [ [ FIRSTWALL, 0, 1 ] ];
+let SelSingleDoor: Selections[] /* [MAX_SELECTIONS] */ = [ [ FIRSTDOOR, 0, 1 ] ];
+let SelSingleWindow: Selections[] /* [MAX_SELECTIONS] */ = [ [ FIRSTWALL, 44, 1 ] ];
+let SelSingleRoof: Selections[] /* [MAX_SELECTIONS] */ = [ [ FIRSTROOF, 0, 1 ] ];
+let SelSingleNewRoof: Selections[] /* [MAX_SELECTIONS] */ = [ [ FIRSTROOF, 0, 1 ] ];
+let SelSingleBrokenWall: Selections[] /* [MAX_SELECTIONS] */ = [ [ FIRSTDECORATIONS, 0, 1 ] ];
+let SelSingleDecor: Selections[] /* [MAX_SELECTIONS] */ = [ [ FIRSTISTRUCT, 0, 1 ] ];
+let SelSingleDecal: Selections[] /* [MAX_SELECTIONS] */ = [ [ FIRSTWALLDECAL, 0, 1 ] ];
+let SelSingleFloor: Selections[] /* [MAX_SELECTIONS] */ = [ [ FIRSTFLOOR, 0, 1 ] ];
+let SelSingleToilet: Selections[] /* [MAX_SELECTIONS] */ = [ [ FIFTHISTRUCT, 0, 1 ] ];
+let SelRoom: Selections[] /* [MAX_SELECTIONS] */ = [ [ FIRSTWALL, 0, 1 ] ];
 
 // Number of objects currently in the selection list
 let iNumOStructsSelected: INT32 = 1;

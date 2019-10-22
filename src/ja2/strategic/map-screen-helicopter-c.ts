@@ -41,21 +41,21 @@ let fSkyRiderAvailable: BOOLEAN = FALSE;
 let fHelicopterDestroyed: BOOLEAN = FALSE;
 
 // list of sector locations where SkyRider can be refueled
-let ubRefuelList: UINT8[][] /* [NUMBER_OF_REFUEL_SITES][2] */ = {
-  { 13, 2 }, // Drassen airport
-  { 6, 9 }, // Estoni
-};
+let ubRefuelList: UINT8[][] /* [NUMBER_OF_REFUEL_SITES][2] */ = [
+  [ 13, 2 ], // Drassen airport
+  [ 6, 9 ], // Estoni
+];
 
-let sRefuelStartGridNo: INT16[] /* [NUMBER_OF_REFUEL_SITES] */ = {
+let sRefuelStartGridNo: INT16[] /* [NUMBER_OF_REFUEL_SITES] */ = [
   9001, // drassen
   13068, // estoni
-};
+];
 
 // whether or not helicopter can refuel at this site
-let fRefuelingSiteAvailable: BOOLEAN[] /* [NUMBER_OF_REFUEL_SITES] */ = {
+let fRefuelingSiteAvailable: BOOLEAN[] /* [NUMBER_OF_REFUEL_SITES] */ = [
   FALSE,
   FALSE,
-};
+];
 
 // is the heli in the air?
 let fHelicopterIsAirBorne: BOOLEAN = FALSE;

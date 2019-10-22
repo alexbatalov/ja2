@@ -321,13 +321,13 @@ function InitTocMenu(): BOOLEAN {
   let usWidth: UINT16 = 0;
   let uiStartLoc: UINT32 = 0;
   let sText: wchar_t[] /* [400] */;
-  let ubLocInFile: UINT8[] /* [] */ = {
+  let ubLocInFile: UINT8[] /* [] */ = [
     IN_THE_BEGINNING,
     THE_ISLAND_METAVIRA,
     GUS_TARBALLS,
     WORD_FROM_FOUNDER,
     INCORPORATION,
-  };
+  ];
 
   let hContentButtonHandle: HVOBJECT;
 

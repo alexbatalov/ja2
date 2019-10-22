@@ -1,5 +1,5 @@
 let guiLNCount: UINT32[] /* [9] */;
-/* static */ let gzLevelString: CHAR16[][] /* [9][15] */ = {
+/* static */ let gzLevelString: CHAR16[][] /* [9][15] */ = [
   L"",
   L"Land    %d",
   L"Object  %d",
@@ -9,7 +9,7 @@ let guiLNCount: UINT32[] /* [9] */;
   L"Roof    %d",
   L"Onroof  %d",
   L"Topmost %d",
-};
+];
 
 let guiLevelNodes: UINT32 = 0;
 

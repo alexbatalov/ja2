@@ -10,7 +10,7 @@ let ubNumberOfVehicles: UINT8 = 0;
 // static info for each vehicle....
 
 // the mvt groups associated with vehcile types
-let iMvtTypes: INT32[] /* [] */ = {
+let iMvtTypes: INT32[] /* [] */ = [
   CAR, // eldorado
   CAR, // hummer
   CAR, // ice cream truck
@@ -18,43 +18,43 @@ let iMvtTypes: INT32[] /* [] */ = {
   CAR, // tank
 
   AIR, // helicopter
-};
+];
 
-let iSeatingCapacities: INT32[] /* [] */ = {
+let iSeatingCapacities: INT32[] /* [] */ = [
   6, // eldorado
   6, // hummer
   6, // ice cream truck
   6, // jeep
   6, // tank
   6, // helicopter
-};
+];
 
-let iEnterVehicleSndID: INT32[] /* [] */ = {
+let iEnterVehicleSndID: INT32[] /* [] */ = [
   S_VECH1_INTO,
   S_VECH1_INTO,
   S_VECH1_INTO,
   S_VECH1_INTO,
   S_VECH1_INTO,
   S_VECH1_INTO,
-};
+];
 
-let iMoveVehicleSndID: INT32[] /* [] */ = {
+let iMoveVehicleSndID: INT32[] /* [] */ = [
   S_VECH1_MOVE,
   S_VECH1_MOVE,
   S_VECH1_MOVE,
   S_VECH1_MOVE,
   S_VECH1_MOVE,
   S_VECH1_MOVE,
-};
+];
 
-let ubVehicleTypeProfileID: UINT8[] /* [] */ = {
+let ubVehicleTypeProfileID: UINT8[] /* [] */ = [
   PROF_ELDERODO,
   PROF_HUMMER,
   PROF_ICECREAM,
   NPC164,
   NPC164,
   PROF_HELICOPTER,
-};
+];
 
 /*
 // location of crits based on facing
@@ -78,14 +78,14 @@ INT8 bInternalCritHitsByLocation[ NUMBER_OF_EXTERNAL_HIT_LOCATIONS_ON_VEHICLE ][
         HELICOPTER,
 */
 
-let sVehicleArmourType: INT16[] /* [NUMBER_OF_TYPES_OF_VEHICLES] */ = {
+let sVehicleArmourType: INT16[] /* [NUMBER_OF_TYPES_OF_VEHICLES] */ = [
   KEVLAR_VEST, // El Dorado
   SPECTRA_VEST, // Hummer
   KEVLAR_VEST, // Ice cream truck
   KEVLAR_VEST, // Jeep
   SPECTRA_VEST, // Tank - do we want this?
   KEVLAR_VEST, // Helicopter
-};
+];
 
 /*
 INT16 sVehicleExternalOrigArmorValues[ NUMBER_OF_TYPES_OF_VEHICLES ][ NUMBER_OF_INTERNAL_HIT_LOCATIONS_IN_VEHICLE ]={
@@ -2004,7 +2004,7 @@ function IsSoldierInThisVehicleSquad(pSoldier: Pointer<SOLDIERTYPE>, bSquadNumbe
 }
 
 function PickRandomPassengerFromVehicle(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
-  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
+  let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
   let iCounter: INT32;

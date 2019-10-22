@@ -11,13 +11,13 @@ const enum Enum55 {
   BETA,
   RELEASE,
 }
-let gszVersionType: UINT16[][] /* [5][10] */ = {
+let gszVersionType: UINT16[][] /* [5][10] */ = [
   L"Pre-Alpha",
   L"Alpha",
   L"Demo",
   L"Beta",
   L"Release",
-};
+];
 const GLOBAL_SUMMARY_STATE = RELEASE;
 
 // Regular masks

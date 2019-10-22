@@ -1692,13 +1692,13 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
 }
 
 const NUM_DIR_SEARCHES = 5;
-let bDirectionsForShadowSearch: INT8[] /* [NUM_DIR_SEARCHES] */ = {
+let bDirectionsForShadowSearch: INT8[] /* [NUM_DIR_SEARCHES] */ = [
   WEST,
   SOUTHWEST,
   SOUTH,
   SOUTHEAST,
   EAST,
-};
+];
 
 function OptimizeMapForShadows(): void {
   let cnt: INT32;

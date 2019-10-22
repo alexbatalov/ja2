@@ -31,11 +31,11 @@ const AIM_LINK_LINK_TEXT_3_Y = AIM_LINK_INSURANCE_LINK_Y + 45;
 let guiBobbyLink: UINT32;
 let guiFuneralLink: UINT32;
 let guiInsuranceLink: UINT32;
-let gubLinkPages: UINT8[] /* [] */ = {
+let gubLinkPages: UINT8[] /* [] */ = [
   BOBBYR_BOOKMARK,
   FUNERAL_BOOKMARK,
   INSURANCE_BOOKMARK,
-};
+];
 
 // Clicking on guys Face
 let gSelectedLinkRegion: MOUSE_REGION[] /* [AIM_LINK_NUM_LINKS] */;

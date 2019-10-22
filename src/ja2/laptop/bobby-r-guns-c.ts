@@ -115,13 +115,13 @@ let guiGunsGrid: UINT32;
 let guiBrTitle: UINT32;
 let gusCurWeaponIndex: UINT16;
 let gubCurPage: UINT8;
-let ubCatalogueButtonValues: UINT8[] /* [] */ = {
+let ubCatalogueButtonValues: UINT8[] /* [] */ = [
   LAPTOP_MODE_BOBBY_R_GUNS,
   LAPTOP_MODE_BOBBY_R_AMMO,
   LAPTOP_MODE_BOBBY_R_ARMOR,
   LAPTOP_MODE_BOBBY_R_MISC,
   LAPTOP_MODE_BOBBY_R_USED,
-};
+];
 
 let gusLastItemIndex: UINT16 = 0;
 let gusFirstItemIndex: UINT16 = 0;

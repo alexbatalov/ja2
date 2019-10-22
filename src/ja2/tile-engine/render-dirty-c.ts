@@ -11,7 +11,7 @@ let guiNumVideoOverlays: UINT32 = 0;
 // BACKGROUND_SAVE	gTopmostSaves[BACKGROUND_BUFFERS];
 // UINT32 guiNumTopmostSaves=0;
 
-let gDirtyClipRect: SGPRect = { 0, 0, 640, 480 };
+let gDirtyClipRect: SGPRect = [ 0, 0, 640, 480 ];
 
 let gfViewportDirty: BOOLEAN = FALSE;
 

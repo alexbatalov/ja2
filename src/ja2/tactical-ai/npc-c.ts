@@ -1,29 +1,29 @@
 const NUM_CIVQUOTE_SECTORS = 20;
 const MINERS_CIV_QUOTE_INDEX = 16;
 
-let gsCivQuoteSector: INT16[][] /* [NUM_CIVQUOTE_SECTORS][2] */ = {
-  { 2, MAP_ROW_A },
-  { 2, MAP_ROW_B },
-  { 13, MAP_ROW_B },
-  { 13, MAP_ROW_C },
-  { 13, MAP_ROW_D },
-  { 8, MAP_ROW_F },
-  { 9, MAP_ROW_F },
-  { 8, MAP_ROW_G },
-  { 9, MAP_ROW_G },
-  { 1, MAP_ROW_H },
+let gsCivQuoteSector: INT16[][] /* [NUM_CIVQUOTE_SECTORS][2] */ = [
+  [ 2, MAP_ROW_A ],
+  [ 2, MAP_ROW_B ],
+  [ 13, MAP_ROW_B ],
+  [ 13, MAP_ROW_C ],
+  [ 13, MAP_ROW_D ],
+  [ 8, MAP_ROW_F ],
+  [ 9, MAP_ROW_F ],
+  [ 8, MAP_ROW_G ],
+  [ 9, MAP_ROW_G ],
+  [ 1, MAP_ROW_H ],
 
-  { 2, MAP_ROW_H },
-  { 3, MAP_ROW_H },
-  { 8, MAP_ROW_H },
-  { 13, MAP_ROW_H },
-  { 14, MAP_ROW_I },
-  { 11, MAP_ROW_L },
-  { 12, MAP_ROW_L },
-  { 0, 0 }, // THIS ONE USED NOW - FOR bSectorZ > 0.....
-  { 0, 0 },
-  { 0, 0 },
-};
+  [ 2, MAP_ROW_H ],
+  [ 3, MAP_ROW_H ],
+  [ 8, MAP_ROW_H ],
+  [ 13, MAP_ROW_H ],
+  [ 14, MAP_ROW_I ],
+  [ 11, MAP_ROW_L ],
+  [ 12, MAP_ROW_L ],
+  [ 0, 0 ], // THIS ONE USED NOW - FOR bSectorZ > 0.....
+  [ 0, 0 ],
+  [ 0, 0 ],
+];
 
 const NO_FACT = (MAX_FACTS - 1);
 const NO_QUEST = 255;
@@ -33,20 +33,20 @@ const NO_QUOTE = 255;
 const IRRELEVANT = 255;
 const NO_MOVE = 65535;
 
-let gpNPCQuoteInfoArray: Pointer<NPCQuoteInfo>[] /* [NUM_PROFILES] */ = { NULL };
-let gpBackupNPCQuoteInfoArray: Pointer<NPCQuoteInfo>[] /* [NUM_PROFILES] */ = { NULL };
-let gpCivQuoteInfoArray: Pointer<NPCQuoteInfo>[] /* [NUM_CIVQUOTE_SECTORS] */ = { NULL };
+let gpNPCQuoteInfoArray: Pointer<NPCQuoteInfo>[] /* [NUM_PROFILES] */ = [ NULL ];
+let gpBackupNPCQuoteInfoArray: Pointer<NPCQuoteInfo>[] /* [NUM_PROFILES] */ = [ NULL ];
+let gpCivQuoteInfoArray: Pointer<NPCQuoteInfo>[] /* [NUM_CIVQUOTE_SECTORS] */ = [ NULL ];
 
 let gubTeamPenalty: UINT8;
 
-let gbFirstApproachFlags: INT8[] /* [4] */ = {
+let gbFirstApproachFlags: INT8[] /* [4] */ = [
   0x01,
   0x02,
   0x04,
   0x08,
-};
+];
 
-let gubAlternateNPCFileNumsForQueenMeanwhiles: UINT8[] /* [] */ = {
+let gubAlternateNPCFileNumsForQueenMeanwhiles: UINT8[] /* [] */ = [
   160,
   161,
   162,
@@ -64,8 +64,8 @@ let gubAlternateNPCFileNumsForQueenMeanwhiles: UINT8[] /* [] */ = {
   174,
   175,
   176,
-};
-let gubAlternateNPCFileNumsForElliotMeanwhiles: UINT8[] /* [] */ = {
+];
+let gubAlternateNPCFileNumsForElliotMeanwhiles: UINT8[] /* [] */ = [
   180,
   181,
   182,
@@ -83,7 +83,7 @@ let gubAlternateNPCFileNumsForElliotMeanwhiles: UINT8[] /* [] */ = {
   194,
   195,
   196,
-};
+];
 
 //
 // NPC QUOTE LOW LEVEL ROUTINES
@@ -1948,7 +1948,7 @@ function PCDoesFirstAidOnNPC(ubNPC: UINT8): BOOLEAN {
 
 function TriggerClosestMercWhoCanSeeNPC(ubNPC: UINT8, pQuotePtr: Pointer<NPCQuoteInfo>): void {
   // Loop through all mercs, gather closest mercs who can see and trigger one!
-  let ubMercsInSector: UINT8[] /* [40] */ = { 0 };
+  let ubMercsInSector: UINT8[] /* [40] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
@@ -2424,7 +2424,7 @@ function LoadBackupNPCInfoFromSavedGameFile(hFile: HWFILE, uiSaveGameVersion: UI
 }
 
 function TriggerFriendWithHostileQuote(ubNPC: UINT8): void {
-  let ubMercsAvailable: UINT8[] /* [40] */ = { 0 };
+  let ubMercsAvailable: UINT8[] /* [40] */ = [ 0 ];
   let ubNumMercsAvailable: UINT8 = 0;
   let ubChosenMerc: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;

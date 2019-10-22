@@ -79,7 +79,7 @@ let iTownDistances: INT32[][] /* [NUM_TOWNS][NUM_TOWNS] */;
 
 const BASIC_COST_FOR_CIV_MURDER = (10 * GAIN_PTS_PER_LOYALTY_PT);
 
-let uiPercentLoyaltyDecreaseForCivMurder: UINT32[] /* [] */ = {
+let uiPercentLoyaltyDecreaseForCivMurder: UINT32[] /* [] */ = [
   // These get multiplied by GAIN_PTS_PER_LOYALTY_PT so they're in % of loyalty decrease (for an average town)
   (5 * GAIN_PTS_PER_LOYALTY_PT), // fat civ
   (7 * GAIN_PTS_PER_LOYALTY_PT), // man civ
@@ -89,11 +89,11 @@ let uiPercentLoyaltyDecreaseForCivMurder: UINT32[] /* [] */ = {
   (20 * GAIN_PTS_PER_LOYALTY_PT), // kid
   (20 * GAIN_PTS_PER_LOYALTY_PT), // cripple
   (1 * GAIN_PTS_PER_LOYALTY_PT), // cow
-};
+];
 
 // on a scale of 1-100, this is a measure of how much each town hates the Queen's opression & is willing to stand against it
 // it primarily controls the RATE of loyalty change in each town: the loyalty effect of the same events depends on it
-let gubTownRebelSentiment: UINT8[] /* [NUM_TOWNS] */ = {
+let gubTownRebelSentiment: UINT8[] /* [NUM_TOWNS] */ = [
   0, // not a town - blank sector index
   90, // OMERTA,	- They ARE the rebels!!!
   30, // DRASSEN,	- Rebel friendly, makes it pretty easy to get first mine's income going at the start
@@ -107,9 +107,9 @@ let gubTownRebelSentiment: UINT8[] /* [NUM_TOWNS] */ = {
   12, // BALIME,	- Rich town, high loyalty to Queen
   10, // MEDUNA,	- Enemy HQ, for God's sake!
   35, // CHITZENA, - Artificially high 'cause there's not enough fights near it to get the loyalty up otherwise
-};
+];
 
-let gfTownUsesLoyalty: BOOLEAN[] /* [NUM_TOWNS] */ = {
+let gfTownUsesLoyalty: BOOLEAN[] /* [NUM_TOWNS] */ = [
   FALSE, // not a town - blank sector index
   TRUE, // OMERTA
   TRUE, // DRASSEN
@@ -123,7 +123,7 @@ let gfTownUsesLoyalty: BOOLEAN[] /* [NUM_TOWNS] */ = {
   TRUE, // BALIME
   TRUE, // MEDUNA
   TRUE, // CHITZENA
-};
+];
 
 // location of first enocunter with enemy
 let sWorldSectorLocationOfFirstBattle: INT16 = 0;

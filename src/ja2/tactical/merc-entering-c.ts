@@ -33,9 +33,9 @@ const enum Enum233 {
   HELI_DONE,
 }
 
-let ubHeliScripts: UINT8[][] /* [NUM_HELI_STATES][MAX_HELI_SCRIPT] */ = {
+let ubHeliScripts: UINT8[][] /* [NUM_HELI_STATES][MAX_HELI_SCRIPT] */ = [
   // HELI_APPROACH
-  {
+  [
     HELI_REST,
     HELI_REST,
     HELI_REST,
@@ -71,10 +71,10 @@ let ubHeliScripts: UINT8[][] /* [NUM_HELI_STATES][MAX_HELI_SCRIPT] */ = {
     HELI_REST,
     HELI_REST,
     HELI_GOTO_MOVETO,
-  },
+  ],
 
   // MOVE TO
-  {
+  [
     HELI_SHOW_HELI,
     HELI_MOVEY,
     HELI_MOVEY,
@@ -110,10 +110,10 @@ let ubHeliScripts: UINT8[][] /* [NUM_HELI_STATES][MAX_HELI_SCRIPT] */ = {
     HELI_MOVEY,
     HELI_MOVEY,
     HELI_GOTO_BEGINDROP,
-  },
+  ],
 
   // HELI_BEGIN_DROP
-  {
+  [
     HELI_MOVE_DOWN,
     HELI_MOVE_DOWN,
     HELI_MOVE_DOWN,
@@ -149,10 +149,10 @@ let ubHeliScripts: UINT8[][] /* [NUM_HELI_STATES][MAX_HELI_SCRIPT] */ = {
     HELI_MOVE_DOWN,
     HELI_MOVE_DOWN,
     HELI_GOTO_DROP,
-  },
+  ],
 
   // Heli Begin Drop
-  {
+  [
     HELI_MOVESMALL_UP,
     HELI_MOVESMALL_UP,
     HELI_MOVESMALL_UP,
@@ -188,10 +188,10 @@ let ubHeliScripts: UINT8[][] /* [NUM_HELI_STATES][MAX_HELI_SCRIPT] */ = {
     HELI_MOVESMALL_DOWN,
     HELI_MOVESMALL_DOWN,
     HELI_GOTO_DROP,
-  },
+  ],
 
   // HELI END DROP
-  {
+  [
     HELI_MOVE_UP,
     HELI_MOVE_UP,
     HELI_MOVE_UP,
@@ -227,10 +227,10 @@ let ubHeliScripts: UINT8[][] /* [NUM_HELI_STATES][MAX_HELI_SCRIPT] */ = {
     HELI_MOVE_UP,
     HELI_MOVE_UP,
     HELI_GOTO_MOVEAWAY,
-  },
+  ],
 
   // MOVE AWAY
-  {
+  [
     HELI_MOVELARGERY,
     HELI_MOVELARGERY,
     HELI_MOVELARGERY,
@@ -266,10 +266,10 @@ let ubHeliScripts: UINT8[][] /* [NUM_HELI_STATES][MAX_HELI_SCRIPT] */ = {
     HELI_MOVELARGERY,
     HELI_MOVELARGERY,
     HELI_GOTO_EXIT,
-  },
+  ],
 
   // HELI EXIT
-  {
+  [
     HELI_REST,
     HELI_REST,
     HELI_REST,
@@ -305,8 +305,8 @@ let ubHeliScripts: UINT8[][] /* [NUM_HELI_STATES][MAX_HELI_SCRIPT] */ = {
     HELI_REST,
     HELI_REST,
     HELI_DONE,
-  },
-};
+  ],
+];
 
 let gfHandleHeli: BOOLEAN = FALSE;
 let gusHeliSeats: UINT8[] /* [MAX_MERC_IN_HELI] */;

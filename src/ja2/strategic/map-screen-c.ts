@@ -257,19 +257,19 @@ type PopUpBoxPtr = Pointer<PopUpBox>;
 
 // TABLES
 
-let GlowColorsA: RGBCOLOR[] /* [] */ = {
-  { 0, 0, 0 },
-  { 25, 0, 0 },
-  { 50, 0, 0 },
-  { 75, 0, 0 },
-  { 100, 0, 0 },
-  { 125, 0, 0 },
-  { 150, 0, 0 },
-  { 175, 0, 0 },
-  { 200, 0, 0 },
-  { 225, 0, 0 },
-  { 250, 0, 0 },
-};
+let GlowColorsA: RGBCOLOR[] /* [] */ = [
+  [ 0, 0, 0 ],
+  [ 25, 0, 0 ],
+  [ 50, 0, 0 ],
+  [ 75, 0, 0 ],
+  [ 100, 0, 0 ],
+  [ 125, 0, 0 ],
+  [ 150, 0, 0 ],
+  [ 175, 0, 0 ],
+  [ 200, 0, 0 ],
+  [ 225, 0, 0 ],
+  [ 250, 0, 0 ],
+];
 /* unused
 RGBCOLOR GlowColorsB[]={
         {0,0,0},
@@ -299,41 +299,41 @@ RGBCOLOR GlowColorsC[]={
 };
 */
 
-let gMapSortButtons: SGPPoint[] /* [MAX_SORT_METHODS] */ = {
-  { 12, 125 },
-  { 68, 125 },
-  { 124, 125 },
-  { 148, 125 },
-  { 185, 125 },
-  { 223, 125 },
-};
+let gMapSortButtons: SGPPoint[] /* [MAX_SORT_METHODS] */ = [
+  [ 12, 125 ],
+  [ 68, 125 ],
+  [ 124, 125 ],
+  [ 148, 125 ],
+  [ 185, 125 ],
+  [ 223, 125 ],
+];
 
 // map screen's inventory panel pockets - top right corner coordinates
-let gMapScreenInvPocketXY: INV_REGION_DESC[] /* [] */ = {
-  { 204, 116 }, // HELMETPOS
-  { 204, 145 }, // VESTPOS
-  { 204, 205 }, // LEGPOS,
-  { 21, 116 }, // HEAD1POS
-  { 21, 140 }, // HEAD2POS
-  { 21, 194 }, // HANDPOS,
-  { 21, 218 }, // SECONDHANDPOS
-  { 98, 251 }, // BIGPOCK1
-  { 98, 275 }, // BIGPOCK2
-  { 98, 299 }, // BIGPOCK3
-  { 98, 323 }, // BIGPOCK4
-  { 22, 251 }, // SMALLPOCK1
-  { 22, 275 }, // SMALLPOCK2
-  { 22, 299 }, // SMALLPOCK3
-  { 22, 323 }, // SMALLPOCK4
-  { 60, 251 }, // SMALLPOCK5
-  { 60, 275 }, // SMALLPOCK6
-  { 60, 299 }, // SMALLPOCK7
-  { 60, 323 }, // SMALLPOCK8
-};
+let gMapScreenInvPocketXY: INV_REGION_DESC[] /* [] */ = [
+  [ 204, 116 ], // HELMETPOS
+  [ 204, 145 ], // VESTPOS
+  [ 204, 205 ], // LEGPOS,
+  [ 21, 116 ], // HEAD1POS
+  [ 21, 140 ], // HEAD2POS
+  [ 21, 194 ], // HANDPOS,
+  [ 21, 218 ], // SECONDHANDPOS
+  [ 98, 251 ], // BIGPOCK1
+  [ 98, 275 ], // BIGPOCK2
+  [ 98, 299 ], // BIGPOCK3
+  [ 98, 323 ], // BIGPOCK4
+  [ 22, 251 ], // SMALLPOCK1
+  [ 22, 275 ], // SMALLPOCK2
+  [ 22, 299 ], // SMALLPOCK3
+  [ 22, 323 ], // SMALLPOCK4
+  [ 60, 251 ], // SMALLPOCK5
+  [ 60, 275 ], // SMALLPOCK6
+  [ 60, 299 ], // SMALLPOCK7
+  [ 60, 323 ], // SMALLPOCK8
+];
 
-let gSCamoXY: INV_REGION_DESC = {
+let gSCamoXY: INV_REGION_DESC = [
   INV_BODY_X, INV_BODY_Y // X, Y Location of Map screen's Camouflage region
-};
+];
 
 // GLOBAL VARIABLES (OURS)
 
@@ -406,28 +406,28 @@ let gubMAP_HandInvDispText: UINT8[] /* [NUM_INV_SLOTS] */;
 let bSelectedInfoChar: INT8 = -1;
 
 // map sort button images
-let giMapSortButtonImage: INT32[] /* [MAX_SORT_METHODS] */ = {
+let giMapSortButtonImage: INT32[] /* [MAX_SORT_METHODS] */ = [
   -1,
   -1,
   -1,
   -1,
   -1,
   -1,
-};
-let giMapSortButton: INT32[] /* [MAX_SORT_METHODS] */ = {
+];
+let giMapSortButton: INT32[] /* [MAX_SORT_METHODS] */ = [
   -1,
   -1,
   -1,
   -1,
   -1,
   -1,
-};
+];
 
 let giCharInfoButtonImage: INT32[] /* [2] */;
-let giCharInfoButton: INT32[] /* [2] */ = {
+let giCharInfoButton: INT32[] /* [2] */ = [
   -1,
   -1,
-};
+];
 
 let giMapInvButtonDoneImage: INT32;
 let giMapInvDoneButton: INT32 = -1;
@@ -8136,14 +8136,14 @@ function MapSortBtnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 function AddTeamPanelSortButtonsForMapScreen(): void {
   let iCounter: INT32 = 0;
   let filename: SGPFILENAME;
-  let iImageIndex: INT32[] /* [MAX_SORT_METHODS] */ = {
+  let iImageIndex: INT32[] /* [MAX_SORT_METHODS] */ = [
     0,
     1,
     5,
     2,
     3,
     4,
-  }; // sleep image is out or order (last)
+  ]; // sleep image is out or order (last)
 
   GetMLGFilename(filename, MLG_GOLDPIECEBUTTONS);
 
@@ -8489,7 +8489,7 @@ function CheckForAndRenderNewMailOverlay(): void {
         if (!(ButtonList[guiMapBottomExitButtons[MAP_EXIT_TO_LAPTOP]]->uiFlags & BUTTON_ENABLED)) {
           let uiDestPitchBYTES: UINT32;
           let pDestBuf: Pointer<UINT8>;
-          let area: SGPRect = { 463, 417, 477, 425 };
+          let area: SGPRect = [ 463, 417, 477, 425 ];
 
           pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
           Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, &area);

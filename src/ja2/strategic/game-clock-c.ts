@@ -41,13 +41,13 @@ let guiDay: UINT32;
 let guiHour: UINT32;
 let guiMin: UINT32;
 let gswzWorldTimeStr: UINT16[] /* [20] */;
-let giTimeCompressSpeeds: INT32[] /* [NUM_TIME_COMPRESS_SPEEDS] */ = {
+let giTimeCompressSpeeds: INT32[] /* [NUM_TIME_COMPRESS_SPEEDS] */ = [
   0,
   1,
   5 * 60,
   30 * 60,
   60 * 60,
-};
+];
 let usPausedActualWidth: UINT16;
 let usPausedActualHeight: UINT16;
 let guiTimeOfLastEventQuery: UINT32 = 0;

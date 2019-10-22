@@ -12,7 +12,7 @@ let gfRandomizingPatrolGroup: BOOLEAN = FALSE;
 let gubNumGroupsArrivedSimultaneously: UINT8 = 0;
 
 // Doesn't require text localization.  This is for debug strings only.
-let gszTerrain: UINT8[][] /* [NUM_TRAVTERRAIN_TYPES][15] */ = {
+let gszTerrain: UINT8[][] /* [NUM_TRAVTERRAIN_TYPES][15] */ = [
   "TOWN",
   "ROAD",
   "PLAINS",
@@ -26,14 +26,14 @@ let gszTerrain: UINT8[][] /* [NUM_TRAVTERRAIN_TYPES][15] */ = {
   "NS_RIVER",
   "EW_RIVER",
   "EDGEOFWORLD",
-};
+];
 
 let gfUndergroundTacticalTraversal: BOOLEAN = FALSE;
 
 // remembers which player group is the Continue/Stop prompt about?  No need to save as long as you can't save while prompt ON
 let gpGroupPrompting: Pointer<GROUP> = NULL;
 
-let uniqueIDMask: UINT32[] /* [8] */ = {
+let uniqueIDMask: UINT32[] /* [8] */ = [
   0,
   0,
   0,
@@ -42,7 +42,7 @@ let uniqueIDMask: UINT32[] /* [8] */ = {
   0,
   0,
   0,
-};
+];
 
 // Internal function manipulation prototypes
 
@@ -685,7 +685,7 @@ function PrepareForPreBattleInterface(pPlayerDialogGroup: Pointer<GROUP>, pIniti
   // ATE; Changed alogrithm here...
   // We first loop through the group and save ubID's ov valid guys to talk....
   // ( Can't if sleeping, unconscious, and EPC, etc....
-  let ubMercsInGroup: UINT8[] /* [20] */ = { 0 };
+  let ubMercsInGroup: UINT8[] /* [20] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;

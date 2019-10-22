@@ -1,5 +1,5 @@
 function HandleRPCDescription(): void {
-  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
+  let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;

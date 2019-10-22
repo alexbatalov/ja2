@@ -9,7 +9,7 @@ const DEADLOCK_DELAY = 15000;
 
 //#define TESTAI
 
-let GameOption: INT8[] /* [MAXGAMEOPTIONS] */ = {
+let GameOption: INT8[] /* [MAXGAMEOPTIONS] */ = [
   0,
   0,
   0,
@@ -24,21 +24,21 @@ let GameOption: INT8[] /* [MAXGAMEOPTIONS] */ = {
   0,
   0,
   0,
-};
+];
 
 const AI_LIMIT_PER_UPDATE = 1;
 
 let gfTurnBasedAI: BOOLEAN;
 
-let gbDiff: INT8[][] /* [MAX_DIFF_PARMS][5] */ = {
+let gbDiff: INT8[][] /* [MAX_DIFF_PARMS][5] */ = [
   //       AI DIFFICULTY SETTING
   // WIMPY  EASY  NORMAL  TOUGH  ELITE
-  { -20, -10, 0, 10, 20 }, // DIFF_ENEMY_EQUIP_MOD
-  { -10, -5, 0, 5, 10 }, // DIFF_ENEMY_TO_HIT_MOD
-  { -2, -1, 0, 1, 2 }, // DIFF_ENEMY_INTERRUPT_MOD
-  { 50, 65, 80, 90, 95 }, // DIFF_RADIO_RED_ALERT
-  { 4, 6, 8, 10, 13 } // DIFF_MAX_COVER_RANGE
-};
+  [ -20, -10, 0, 10, 20 ], // DIFF_ENEMY_EQUIP_MOD
+  [ -10, -5, 0, 5, 10 ], // DIFF_ENEMY_TO_HIT_MOD
+  [ -2, -1, 0, 1, 2 ], // DIFF_ENEMY_INTERRUPT_MOD
+  [ 50, 65, 80, 90, 95 ], // DIFF_RADIO_RED_ALERT
+  [ 4, 6, 8, 10, 13 ] // DIFF_MAX_COVER_RANGE
+];
 
 function DebugAI(szOutput: STR): void {
 }
@@ -568,12 +568,12 @@ function DestNotSpokenFor(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16): BOOLE
 
 function FindAdjacentSpotBeside(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16): INT16 {
   let cnt: INT32;
-  let mods: INT16[] /* [4] */ = {
+  let mods: INT16[] /* [4] */ = [
     -1,
     -MAPWIDTH,
     1,
     MAPWIDTH,
-  };
+  ];
   let sTempGridno: INT16;
   let sCheapestCost: INT16 = 500;
   let sMovementCost: INT16;
@@ -838,7 +838,7 @@ let Threat: THREATTYPE[] /* [MAXMERCS] */;
 
 // threat percentage is based on the certainty of opponent knowledge:
 // opplist value:        -4  -3  -2  -1 SEEN  1    2   3   4   5
-let ThreatPercent: int[] /* [10] */ = {
+let ThreatPercent: int[] /* [10] */ = [
   20,
   40,
   60,
@@ -849,7 +849,7 @@ let ThreatPercent: int[] /* [10] */ = {
   75,
   60,
   45,
-};
+];
 
 function NPCDoesAct(pSoldier: Pointer<SOLDIERTYPE>): void {
   // if the action is visible and we're in a hidden turnbased mode, go to turnbased

@@ -4,9 +4,9 @@ let gsNumAmbData: INT16 = 0;
 let gubCurrentSteadyStateAmbience: UINT8 = SSA_NONE;
 let gubCurrentSteadyStateSound: UINT8 = 0;
 let guiCurrentSteadyStateSoundHandle: UINT32 = NO_SAMPLE;
-let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIENCES] */ = {
+let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIENCES] */ = [
   // NONE
-  {
+  [
     // DAY
     "",
     "",
@@ -17,10 +17,10 @@ let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIE
     "",
     "",
     "",
-  },
+  ],
 
   // COUNTRYSIZE
-  {
+  [
     // DAY
     "SOUNDS\\SSA\\insects Day 01.wav",
     "",
@@ -31,10 +31,10 @@ let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIE
     "SOUNDS\\SSA\\night_crickets_01B.wav",
     "SOUNDS\\SSA\\night_crickets_01C.wav",
     "SOUNDS\\SSA\\night_crickets_01A.wav",
-  },
+  ],
 
   // NEAR WATER
-  {
+  [
     // DAY
     "SOUNDS\\SSA\\swamp_day_01a.wav",
     "SOUNDS\\SSA\\swamp_day_01b.wav",
@@ -45,10 +45,10 @@ let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIE
     "SOUNDS\\SSA\\marsh_at_night_01b.wav",
     "SOUNDS\\SSA\\marsh_at_night_01c.wav",
     "SOUNDS\\SSA\\marsh_at_night_01d.wav",
-  },
+  ],
 
   // INWATER
-  {
+  [
     // DAY
     "SOUNDS\\SSA\\middle_of_water_01d.wav",
     "SOUNDS\\SSA\\middle_of_water_01c.wav",
@@ -59,10 +59,10 @@ let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIE
     "SOUNDS\\SSA\\middle_of_water_01c.wav",
     "SOUNDS\\SSA\\middle_of_water_01b.wav",
     "SOUNDS\\SSA\\middle_of_water_01a.wav",
-  },
+  ],
 
   // HEAVY FOREST
-  {
+  [
     // day
     "SOUNDS\\SSA\\JUNGLE_DAY_01a.wav",
     "SOUNDS\\SSA\\JUNGLE_DAY_01b.wav",
@@ -73,10 +73,10 @@ let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIE
     "SOUNDS\\SSA\\night_crickets_03b.wav",
     "SOUNDS\\SSA\\night_crickets_03c.wav",
     "SOUNDS\\SSA\\night_crickets_03d.wav",
-  },
+  ],
 
   // PINE FOREST
-  {
+  [
     // DAY
     "SOUNDS\\SSA\\pine_forest_01a.wav",
     "SOUNDS\\SSA\\pine_forest_01b.wav",
@@ -87,10 +87,10 @@ let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIE
     "SOUNDS\\SSA\\night_crickets_02b.wav",
     "SOUNDS\\SSA\\night_crickets_02c.wav",
     "SOUNDS\\SSA\\night_crickets_02d.wav",
-  },
+  ],
 
   // ABANDANDED
-  {
+  [
     // DAY
     "SOUNDS\\SSA\\metal_wind_01a.wav",
     "SOUNDS\\SSA\\metal_wind_01b.wav",
@@ -101,10 +101,10 @@ let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIE
     "SOUNDS\\SSA\\night_insects_01b.wav",
     "SOUNDS\\SSA\\night_insects_01c.wav",
     "SOUNDS\\SSA\\night_insects_01d.wav",
-  },
+  ],
 
   // AIRPORT
-  {
+  [
     // DAY
     "SOUNDS\\SSA\\rotating radar dish.wav",
     "",
@@ -115,10 +115,10 @@ let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIE
     "",
     "",
     "",
-  },
+  ],
 
   // WASTE LAND
-  {
+  [
     // DAY
     "SOUNDS\\SSA\\gentle_wind.wav",
     "",
@@ -129,10 +129,10 @@ let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIE
     "",
     "",
     "",
-  },
+  ],
 
   // UNDERGROUND
-  {
+  [
     // DAY
     "SOUNDS\\SSA\\low ominous ambience.wav",
     "",
@@ -143,10 +143,10 @@ let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIE
     "",
     "",
     "",
-  },
+  ],
 
   // OCEAN
-  {
+  [
     // DAY
     "SOUNDS\\SSA\\sea_01a.wav",
     "SOUNDS\\SSA\\sea_01b.wav",
@@ -157,8 +157,8 @@ let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIE
     "SOUNDS\\SSA\\ocean_waves_01b.wav",
     "SOUNDS\\SSA\\ocean_waves_01c.wav",
     "SOUNDS\\SSA\\ocean_waves_01d.wav",
-  },
-};
+  ],
+];
 
 function LoadAmbientControlFile(ubAmbientID: UINT8): BOOLEAN {
   let zFilename: SGPFILENAME;

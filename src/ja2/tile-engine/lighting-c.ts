@@ -47,16 +47,16 @@ let ubAmbientLightLevel: UINT8 = DEFAULT_SHADE_LEVEL;
 let gubNumLightColors: UINT8 = 1;
 
 // Externed in Rotting Corpses.c
-let gpLightColors: SGPPaletteEntry[] /* [3] */ = {
-  { 0, 0, 0, 0 },
-  { 0, 0, 255, 0 },
-  { 0, 0, 0, 0 },
-};
+let gpLightColors: SGPPaletteEntry[] /* [3] */ = [
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 255, 0 ],
+  [ 0, 0, 0, 0 ],
+];
 
-let gpOrigLights: SGPPaletteEntry[] /* [2] */ = {
-  { 0, 0, 0, 0 },
-  { 0, 0, 255, 0 },
-};
+let gpOrigLights: SGPPaletteEntry[] /* [2] */ = [
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 255, 0 ],
+];
 
 /*
 UINT16 gusShadeLevels[16][3]={{500, 500, 500},				// green table
@@ -122,24 +122,24 @@ UINT16 gusShadeLevels[16][3] =
 */
 
 // JA2 Gold:
-let gusShadeLevels: UINT16[][] /* [16][3] */ = {
-  { 500, 500, 500 },
-  { 450, 450, 450 }, // bright
-  { 350, 350, 350 },
-  { 300, 300, 300 },
-  { 255, 255, 255 }, // normal
-  { 231, 199, 199 },
-  { 209, 185, 185 },
-  { 187, 171, 171 },
-  { 165, 157, 157 }, // darkening
-  { 143, 143, 143 },
-  { 121, 121, 129 },
-  { 99, 99, 115 },
-  { 77, 77, 101 }, // night
-  { 36, 36, 244 },
-  { 18, 18, 224 },
-  { 48, 222, 48 },
-};
+let gusShadeLevels: UINT16[][] /* [16][3] */ = [
+  [ 500, 500, 500 ],
+  [ 450, 450, 450 ], // bright
+  [ 350, 350, 350 ],
+  [ 300, 300, 300 ],
+  [ 255, 255, 255 ], // normal
+  [ 231, 199, 199 ],
+  [ 209, 185, 185 ],
+  [ 187, 171, 171 ],
+  [ 165, 157, 157 ], // darkening
+  [ 143, 143, 143 ],
+  [ 121, 121, 129 ],
+  [ 99, 99, 115 ],
+  [ 77, 77, 101 ], // night
+  [ 36, 36, 244 ],
+  [ 18, 18, 224 ],
+  [ 48, 222, 48 ],
+];
 
 // Set this true if you want the shadetables to be loaded from the text file.
 let gfLoadShadeTablesFromTextFile: BOOLEAN = FALSE;

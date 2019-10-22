@@ -11,57 +11,57 @@ const MAX_MORTARS_PER_TEAM = 1; // one team can't randomly roll more than this m
 
 let guiMortarsRolledByTeam: UINT32 = 0;
 
-let gRegularArmyGunChoices: ARMY_GUN_CHOICE_TYPE[] /* [ARMY_GUN_LEVELS] */ = {
+let gRegularArmyGunChoices: ARMY_GUN_CHOICE_TYPE[] /* [ARMY_GUN_LEVELS] */ = [
   // INDEX		CLASS				 #CHOICES
-  {
-   /* 0 - lo pistols			*/ 2, SW38, DESERTEAGLE, -1, -1, -1 },
-  {
-   /* 1 - hi pistols			*/ 2, GLOCK_17, BERETTA_93R, -1, -1, -1 },
-  {
-   /* 2 - lo SMG/shotgun	*/ 2, M870, MP5K, -1, -1, -1 },
-  {
-   /* 3 - lo rifles			*/ 1, MINI14, -1, -1, -1, -1 },
-  {
-   /* 4 - hi SMGs				*/ 2, MAC10, COMMANDO, -1, -1, -1 },
-  {
-   /* 5 - med rifles  		*/ 1, G41, -1, -1, -1, -1 },
-  {
-   /* 6 - sniper rifles	*/ 1, M24, -1, -1, -1, -1 },
-  {
-   /* 7 - hi rifles			*/ 2, M14, C7, -1, -1, -1 },
-  {
-   /* 8 - best rifle			*/ 1, FNFAL, -1, -1, -1, -1 },
-  {
-   /* 9 - machine guns		*/ 1, MINIMI, -1, -1, -1, -1 },
-  {
-   /* 10- rocket rifle		*/ 2, ROCKET_RIFLE, MINIMI, -1, -1, -1 },
-};
+  [
+   /* 0 - lo pistols			*/ 2, SW38, DESERTEAGLE, -1, -1, -1 ],
+  [
+   /* 1 - hi pistols			*/ 2, GLOCK_17, BERETTA_93R, -1, -1, -1 ],
+  [
+   /* 2 - lo SMG/shotgun	*/ 2, M870, MP5K, -1, -1, -1 ],
+  [
+   /* 3 - lo rifles			*/ 1, MINI14, -1, -1, -1, -1 ],
+  [
+   /* 4 - hi SMGs				*/ 2, MAC10, COMMANDO, -1, -1, -1 ],
+  [
+   /* 5 - med rifles  		*/ 1, G41, -1, -1, -1, -1 ],
+  [
+   /* 6 - sniper rifles	*/ 1, M24, -1, -1, -1, -1 ],
+  [
+   /* 7 - hi rifles			*/ 2, M14, C7, -1, -1, -1 ],
+  [
+   /* 8 - best rifle			*/ 1, FNFAL, -1, -1, -1, -1 ],
+  [
+   /* 9 - machine guns		*/ 1, MINIMI, -1, -1, -1, -1 ],
+  [
+   /* 10- rocket rifle		*/ 2, ROCKET_RIFLE, MINIMI, -1, -1, -1 ],
+];
 
-let gExtendedArmyGunChoices: ARMY_GUN_CHOICE_TYPE[] /* [ARMY_GUN_LEVELS] */ = {
+let gExtendedArmyGunChoices: ARMY_GUN_CHOICE_TYPE[] /* [ARMY_GUN_LEVELS] */ = [
   // INDEX		CLASS				 #CHOICES
-  {
-   /* 0 - lo pistols			*/ 5, SW38, BARRACUDA, DESERTEAGLE, GLOCK_17, M1911 },
-  {
-   /* 1 - hi pist/shtgn	*/ 4, GLOCK_18, BERETTA_93R, BERETTA_92F, M870, -1 },
-  {
-   /* 2 - lo SMGs/shtgn	*/ 5, TYPE85, THOMPSON, MP53, MP5K, SPAS15 },
-  {
-   /* 3 - lo rifles    	*/ 2, MINI14, SKS, -1, -1, -1 },
-  {
-   /* 4 - hi SMGs				*/ 3, MAC10, AKSU74, COMMANDO, -1, -1 },
-  {
-   /* 5 - med rifles  		*/ 4, AKM, G3A3, G41, AK74, -1 },
-  {
-   /* 6 - sniper rifles	*/ 2, DRAGUNOV, M24, -1, -1, -1 },
-  {
-   /* 7 - hi rifles			*/ 4, FAMAS, M14, AUG, C7, -1 },
-  {
-   /* 8 - best rifle			*/ 1, FNFAL, -1, -1, -1, -1 },
-  {
-   /* 9 - machine guns		*/ 3, MINIMI, RPK74, HK21E, -1, -1 },
-  {
-   /* 10- rocket rifle		*/ 4, ROCKET_RIFLE, ROCKET_RIFLE, RPK74, HK21E, -1 },
-};
+  [
+   /* 0 - lo pistols			*/ 5, SW38, BARRACUDA, DESERTEAGLE, GLOCK_17, M1911 ],
+  [
+   /* 1 - hi pist/shtgn	*/ 4, GLOCK_18, BERETTA_93R, BERETTA_92F, M870, -1 ],
+  [
+   /* 2 - lo SMGs/shtgn	*/ 5, TYPE85, THOMPSON, MP53, MP5K, SPAS15 ],
+  [
+   /* 3 - lo rifles    	*/ 2, MINI14, SKS, -1, -1, -1 ],
+  [
+   /* 4 - hi SMGs				*/ 3, MAC10, AKSU74, COMMANDO, -1, -1 ],
+  [
+   /* 5 - med rifles  		*/ 4, AKM, G3A3, G41, AK74, -1 ],
+  [
+   /* 6 - sniper rifles	*/ 2, DRAGUNOV, M24, -1, -1, -1 ],
+  [
+   /* 7 - hi rifles			*/ 4, FAMAS, M14, AUG, C7, -1 ],
+  [
+   /* 8 - best rifle			*/ 1, FNFAL, -1, -1, -1, -1 ],
+  [
+   /* 9 - machine guns		*/ 3, MINIMI, RPK74, HK21E, -1, -1 ],
+  [
+   /* 10- rocket rifle		*/ 4, ROCKET_RIFLE, ROCKET_RIFLE, RPK74, HK21E, -1 ],
+];
 
 function InitArmyGunTypes(): void {
   let pGunChoiceTable: Pointer<ARMY_GUN_CHOICE_TYPE>;
@@ -1200,7 +1200,7 @@ function ChooseMiscGearForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>,
   let Object: OBJECTTYPE;
 
   // not all of these are IC_MISC, some are IC_PUNCH (not covered anywhere else)
-  let iMiscItemsList: INT32[] /* [] */ = {
+  let iMiscItemsList: INT32[] /* [] */ = [
     CANTEEN,
     CANTEEN,
     CANTEEN,
@@ -1215,7 +1215,7 @@ function ChooseMiscGearForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>,
     CIGARS,
     GOLDWATCH,
     -1,
-  };
+  ];
 
   // count how many are eligible
   i = 0;

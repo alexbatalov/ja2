@@ -1641,7 +1641,7 @@ function CountAdjacentSpreadTargets(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget
   let bTargets: INT8;
   let sTarget: INT16;
   let pTarget: Pointer<SOLDIERTYPE>;
-  let pTargets: Pointer<SOLDIERTYPE>[] /* [5] */ = { NULL };
+  let pTargets: Pointer<SOLDIERTYPE>[] /* [5] */ = [ NULL ];
 
   bTargetIndex = -1;
   bCheckDir = -1;
@@ -1760,7 +1760,7 @@ function CalcSpreadBurst(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget: INT16, bT
   let bTargets: INT8;
   let sTarget: INT16;
   let pTarget: Pointer<SOLDIERTYPE>;
-  let pTargets: Pointer<SOLDIERTYPE>[] /* [5] */ = { NULL };
+  let pTargets: Pointer<SOLDIERTYPE>[] /* [5] */ = [ NULL ];
   let bAdjacents: INT8;
   let bOtherAdjacents: INT8;
 

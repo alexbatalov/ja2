@@ -1,4 +1,4 @@
-let QuestDescText: STR16[] /* [] */ = {
+let QuestDescText: STR16[] /* [] */ = [
   L"Deliver Letter",
   L"Food Route",
   L"Terrorists",
@@ -31,9 +31,9 @@ let QuestDescText: STR16[] /* [] */ = {
   L"No 27 Yet",
   L"No 28 Yet",
   L"No 29 Yet",
-};
+];
 
-let FactDescText: STR16[] /* [] */ = {
+let FactDescText: STR16[] /* [] */ = [
   L"Omerta Liberated",
   L"Drassen Liberated",
   L"Sanmona Liberated",
@@ -584,4 +584,4 @@ let FactDescText: STR16[] /* [] */ = {
   L"",
   L"",
   L"", // 500
-};
+];

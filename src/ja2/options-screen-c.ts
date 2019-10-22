@@ -813,7 +813,7 @@ function DoOptionsMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, ui
 }
 
 function DoOptionsMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
-  let CenteringRect: SGPRect = { 0, 0, 639, 479 };
+  let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // reset exit mode
   gfExitOptionsDueToMessageBox = TRUE;

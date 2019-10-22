@@ -1,6 +1,6 @@
 const MAX_MEANWHILE_PROFILES = 10;
 
-let gzMeanwhileStr: INT8[][] /* [][30] */ = {
+let gzMeanwhileStr: INT8[][] /* [][30] */ = [
   "End of player's first battle",
   "Drassen Lib. ",
   "Cambria Lib.",
@@ -18,10 +18,10 @@ let gzMeanwhileStr: INT8[][] /* [][30] */ = {
   "AWOL Madlab",
   "Outskirts Meduna",
   "Balime Lib.",
-};
+];
 
 // the snap to grid nos for meanwhile scenes
-let gusMeanWhileGridNo: UINT16[] /* [] */ = {
+let gusMeanWhileGridNo: UINT16[] /* [] */ = [
   12248,
   12248,
   12248,
@@ -39,7 +39,7 @@ let gusMeanWhileGridNo: UINT16[] /* [] */ = {
   12248,
   12248,
   12248,
-};
+];
 
 interface NPC_SAVE_INFO {
   ubProfile: UINT8;

@@ -7,7 +7,7 @@ const SET_PROFILE_GAINS2 = 500, 500, 500, 500, 500, 500, 500, 500, 500;
 
 let gMercProfiles: MERCPROFILESTRUCT[] /* [NUM_PROFILES] */;
 
-let gbSkillTraitBonus: INT8[] /* [NUM_SKILLTRAITS] */ = {
+let gbSkillTraitBonus: INT8[] /* [NUM_SKILLTRAITS] */ = [
   0, // NO_SKILLTRAIT
   25, // LOCKPICKING
   15, // HANDTOHAND
@@ -24,9 +24,9 @@ let gbSkillTraitBonus: INT8[] /* [NUM_SKILLTRAITS] */ = {
   30, // KNIFING
   15, // ONROOF
   0, // CAMOUFLAGED
-};
+];
 
-let gubBasicInventoryPositions: UINT8[] /* [] */ = {
+let gubBasicInventoryPositions: UINT8[] /* [] */ = [
   HELMETPOS,
   VESTPOS,
   LEGPOS,
@@ -35,11 +35,11 @@ let gubBasicInventoryPositions: UINT8[] /* [] */ = {
   BIGPOCK2POS,
   BIGPOCK3POS,
   BIGPOCK4POS,
-};
+];
 
 const NUM_TERRORISTS = 6;
 
-let gubTerrorists: UINT8[] /* [NUM_TERRORISTS + 1] */ = {
+let gubTerrorists: UINT8[] /* [NUM_TERRORISTS + 1] */ = [
   DRUGGIST,
   SLAY,
   ANNIE,
@@ -47,92 +47,92 @@ let gubTerrorists: UINT8[] /* [NUM_TERRORISTS + 1] */ = {
   TIFFANY,
   T_REX,
   0,
-};
+];
 
 let gubNumTerrorists: UINT8 = 0;
 
 const NUM_TERRORIST_POSSIBLE_LOCATIONS = 5;
 
-let gsTerroristSector: INT16[][][] /* [NUM_TERRORISTS][NUM_TERRORIST_POSSIBLE_LOCATIONS][2] */ = {
+let gsTerroristSector: INT16[][][] /* [NUM_TERRORISTS][NUM_TERRORIST_POSSIBLE_LOCATIONS][2] */ = [
   // Elgin... preplaced
-  {
-    { 0, 0 },
-    { 0, 0 },
-    { 0, 0 },
-    { 0, 0 },
-    { 0, 0 },
-  },
+  [
+    [ 0, 0 ],
+    [ 0, 0 ],
+    [ 0, 0 ],
+    [ 0, 0 ],
+    [ 0, 0 ],
+  ],
   // Slay
-  {
-    { 9, MAP_ROW_F },
-    { 14, MAP_ROW_I },
-    { 1, MAP_ROW_G },
-    { 2, MAP_ROW_G },
-    { 8, MAP_ROW_G },
-  },
+  [
+    [ 9, MAP_ROW_F ],
+    [ 14, MAP_ROW_I ],
+    [ 1, MAP_ROW_G ],
+    [ 2, MAP_ROW_G ],
+    [ 8, MAP_ROW_G ],
+  ],
   // Matron
-  {
-    { 14, MAP_ROW_I },
-    { 6, MAP_ROW_C },
-    { 2, MAP_ROW_B },
-    { 11, MAP_ROW_L },
-    { 8, MAP_ROW_G },
-  },
+  [
+    [ 14, MAP_ROW_I ],
+    [ 6, MAP_ROW_C ],
+    [ 2, MAP_ROW_B ],
+    [ 11, MAP_ROW_L ],
+    [ 8, MAP_ROW_G ],
+  ],
   // Imposter
-  {
-    { 1, MAP_ROW_G },
-    { 9, MAP_ROW_F },
-    { 11, MAP_ROW_L },
-    { 8, MAP_ROW_G },
-    { 2, MAP_ROW_G },
-  },
+  [
+    [ 1, MAP_ROW_G ],
+    [ 9, MAP_ROW_F ],
+    [ 11, MAP_ROW_L ],
+    [ 8, MAP_ROW_G ],
+    [ 2, MAP_ROW_G ],
+  ],
   // Tiffany
-  {
-    { 14, MAP_ROW_I },
-    { 2, MAP_ROW_G },
-    { 14, MAP_ROW_H },
-    { 6, MAP_ROW_C },
-    { 2, MAP_ROW_B },
-  },
+  [
+    [ 14, MAP_ROW_I ],
+    [ 2, MAP_ROW_G ],
+    [ 14, MAP_ROW_H ],
+    [ 6, MAP_ROW_C ],
+    [ 2, MAP_ROW_B ],
+  ],
   // Rexall
-  {
-    { 9, MAP_ROW_F },
-    { 14, MAP_ROW_H },
-    { 2, MAP_ROW_H },
-    { 1, MAP_ROW_G },
-    { 2, MAP_ROW_B },
-  },
-};
+  [
+    [ 9, MAP_ROW_F ],
+    [ 14, MAP_ROW_H ],
+    [ 2, MAP_ROW_H ],
+    [ 1, MAP_ROW_G ],
+    [ 2, MAP_ROW_B ],
+  ],
+];
 
 let gsRobotGridNo: INT16;
 
 const NUM_ASSASSINS = 6;
 
-let gubAssassins: UINT8[] /* [NUM_ASSASSINS] */ = {
+let gubAssassins: UINT8[] /* [NUM_ASSASSINS] */ = [
   JIM,
   JACK,
   OLAF,
   RAY,
   OLGA,
   TYRONE,
-};
+];
 
 const NUM_ASSASSIN_POSSIBLE_TOWNS = 5;
 
-let gbAssassinTown: INT8[][] /* [NUM_ASSASSINS][NUM_ASSASSIN_POSSIBLE_TOWNS] */ = {
+let gbAssassinTown: INT8[][] /* [NUM_ASSASSINS][NUM_ASSASSIN_POSSIBLE_TOWNS] */ = [
   // Jim
-  { CAMBRIA, DRASSEN, ALMA, BALIME, GRUMM },
+  [ CAMBRIA, DRASSEN, ALMA, BALIME, GRUMM ],
   // Jack
-  { CHITZENA, ESTONI, ALMA, BALIME, GRUMM },
+  [ CHITZENA, ESTONI, ALMA, BALIME, GRUMM ],
   // Olaf
-  { DRASSEN, ESTONI, ALMA, CAMBRIA, BALIME },
+  [ DRASSEN, ESTONI, ALMA, CAMBRIA, BALIME ],
   // Ray
-  { CAMBRIA, OMERTA, BALIME, GRUMM, DRASSEN },
+  [ CAMBRIA, OMERTA, BALIME, GRUMM, DRASSEN ],
   // Olga
-  { CHITZENA, OMERTA, CAMBRIA, ALMA, GRUMM },
+  [ CHITZENA, OMERTA, CAMBRIA, ALMA, GRUMM ],
   // Tyrone
-  { CAMBRIA, BALIME, ALMA, GRUMM, DRASSEN },
-};
+  [ CAMBRIA, BALIME, ALMA, GRUMM, DRASSEN ],
+];
 
 function LoadMercProfiles(): BOOLEAN {
   //	FILE *fptr;
@@ -286,12 +286,12 @@ function DecideActiveTerrorists(): void {
   let uiChance: UINT32;
   let uiLocationChoice: UINT32;
   let fFoundSpot: BOOLEAN;
-  let sTerroristPlacement: INT16[][] /* [MAX_ADDITIONAL_TERRORISTS][2] */ = {
-    { 0, 0 },
-    { 0, 0 },
-    { 0, 0 },
-    { 0, 0 },
-  };
+  let sTerroristPlacement: INT16[][] /* [MAX_ADDITIONAL_TERRORISTS][2] */ = [
+    [ 0, 0 ],
+    [ 0, 0 ],
+    [ 0, 0 ],
+    [ 0, 0 ],
+  ];
 
   // one terrorist will always be Elgin
   // determine how many more terrorists - 2 to 4 more
@@ -447,14 +447,14 @@ function MakeRemainingTerroristsTougher(): void {
 }
 
 function DecideOnAssassin(): void {
-  let ubAssassinPossibility: UINT8[] /* [NUM_ASSASSINS] */ = {
+  let ubAssassinPossibility: UINT8[] /* [NUM_ASSASSINS] */ = [
     NO_PROFILE,
     NO_PROFILE,
     NO_PROFILE,
     NO_PROFILE,
     NO_PROFILE,
     NO_PROFILE,
-  };
+  ];
   let ubAssassinsPossible: UINT8 = 0;
   let ubLoop: UINT8;
   let ubLoop2: UINT8;

@@ -132,13 +132,13 @@ UINT8		gubNumUsedPages;
 
 let guiLastBobbyRayPage: UINT32;
 
-let gubBobbyRPages: UINT8[] /* [] */ = {
+let gubBobbyRPages: UINT8[] /* [] */ = [
   LAPTOP_MODE_BOBBY_R_USED,
   LAPTOP_MODE_BOBBY_R_MISC,
   LAPTOP_MODE_BOBBY_R_GUNS,
   LAPTOP_MODE_BOBBY_R_AMMO,
   LAPTOP_MODE_BOBBY_R_ARMOR,
-};
+];
 
 // Bobby's Sign menu mouse regions
 let gSelectedBobbiesSignMenuRegion: MOUSE_REGION[] /* [BOBBIES_NUMBER_SIGNS] */;
@@ -151,7 +151,7 @@ function EnterBobbyR(): BOOLEAN {
   let i: UINT8;
 
   // an array of mouse regions for the bobbies signs.  Top Left corner, bottom right corner
-  let usMouseRegionPosArray: UINT16[] /* [] */ = {
+  let usMouseRegionPosArray: UINT16[] /* [] */ = [
     BOBBIES_USED_SIGN_X, BOBBIES_USED_SIGN_Y,
     BOBBIES_USED_SIGN_X + BOBBIES_USED_SIGN_WIDTH, BOBBIES_USED_SIGN_Y + BOBBIES_USED_SIGN_HEIGHT,
     BOBBIES_MISC_SIGN_X, BOBBIES_MISC_SIGN_Y,
@@ -162,7 +162,7 @@ function EnterBobbyR(): BOOLEAN {
     BOBBIES_AMMO_SIGN_X + BOBBIES_AMMO_SIGN_WIDTH, BOBBIES_AMMO_SIGN_Y + BOBBIES_AMMO_SIGN_HEIGHT,
     BOBBIES_ARMOUR_SIGN_X, BOBBIES_ARMOUR_SIGN_Y,
     BOBBIES_ARMOUR_SIGN_X + BOBBIES_ARMOUR_SIGN_WIDTH, BOBBIES_ARMOUR_SIGN_Y + BOBBIES_ARMOUR_SIGN_HEIGHT,
-  };
+  ];
 
   InitBobbyRWoodBackground();
 

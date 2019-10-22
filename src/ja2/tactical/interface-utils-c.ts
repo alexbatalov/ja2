@@ -26,20 +26,20 @@ const enum Enum222 {
 }
 
 // the ids for the car portraits
-let giCarPortraits: INT32[] /* [4] */ = {
+let giCarPortraits: INT32[] /* [4] */ = [
   -1,
   -1,
   -1,
   -1,
-};
+];
 
 // the car portrait file names
-let pbCarPortraitFileNames: STR[] /* [] */ = {
+let pbCarPortraitFileNames: STR[] /* [] */ = [
   "INTERFACE\\eldorado.sti",
   "INTERFACE\\Hummer.sti",
   "INTERFACE\\ice Cream Truck.sti",
   "INTERFACE\\Jeep.sti",
-};
+];
 
 // load int he portraits for the car faces that will be use in mapscreen
 function LoadCarPortraitValues(): BOOLEAN {

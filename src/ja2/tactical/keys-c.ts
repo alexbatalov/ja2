@@ -1,45 +1,45 @@
 let gpDoorStatus: Pointer<DOOR_STATUS> = NULL;
 let gubNumDoorStatus: UINT8 = 0;
 
-let KeyTable: KEY[] /* [NUM_KEYS] */ = {
+let KeyTable: KEY[] /* [NUM_KEYS] */ = [
   // Item #			Flags		Sector, Date Found
   //
-  { KEY_1, 0, 0, 0 },
-  { KEY_2, 0, 0, 0 },
-  { KEY_3, 0, 0, 0 },
-  { KEY_4, 0, 0, 0 },
-  { KEY_5, 0, 0, 0 },
-  { KEY_6, 0, 0, 0 },
-  { KEY_7, 0, 0, 0 },
-  { KEY_8, 0, 0, 0 },
-  { KEY_9, 0, 0, 0 },
-  { KEY_10, 0, 0, 0 },
+  [ KEY_1, 0, 0, 0 ],
+  [ KEY_2, 0, 0, 0 ],
+  [ KEY_3, 0, 0, 0 ],
+  [ KEY_4, 0, 0, 0 ],
+  [ KEY_5, 0, 0, 0 ],
+  [ KEY_6, 0, 0, 0 ],
+  [ KEY_7, 0, 0, 0 ],
+  [ KEY_8, 0, 0, 0 ],
+  [ KEY_9, 0, 0, 0 ],
+  [ KEY_10, 0, 0, 0 ],
 
-  { KEY_11, 0, 0, 0 },
-  { KEY_12, 0, 0, 0 },
-  { KEY_13, 0, 0, 0 },
-  { KEY_14, 0, 0, 0 },
-  { KEY_15, 0, 0, 0 },
-  { KEY_16, 0, 0, 0 },
-  { KEY_17, 0, 0, 0 },
-  { KEY_18, 0, 0, 0 },
-  { KEY_19, 0, 0, 0 },
-  { KEY_20, 0, 0, 0 },
+  [ KEY_11, 0, 0, 0 ],
+  [ KEY_12, 0, 0, 0 ],
+  [ KEY_13, 0, 0, 0 ],
+  [ KEY_14, 0, 0, 0 ],
+  [ KEY_15, 0, 0, 0 ],
+  [ KEY_16, 0, 0, 0 ],
+  [ KEY_17, 0, 0, 0 ],
+  [ KEY_18, 0, 0, 0 ],
+  [ KEY_19, 0, 0, 0 ],
+  [ KEY_20, 0, 0, 0 ],
 
-  { KEY_21, 0, 0, 0 },
-  { KEY_22, 0, 0, 0 },
-  { KEY_23, 0, 0, 0 },
-  { KEY_24, 0, 0, 0 },
-  { KEY_25, 0, 0, 0 },
-  { KEY_26, 0, 0, 0 },
-  { KEY_27, 0, 0, 0 },
-  { KEY_28, 0, 0, 0 },
-  { KEY_29, 0, 0, 0 },
-  { KEY_30, 0, 0, 0 },
+  [ KEY_21, 0, 0, 0 ],
+  [ KEY_22, 0, 0, 0 ],
+  [ KEY_23, 0, 0, 0 ],
+  [ KEY_24, 0, 0, 0 ],
+  [ KEY_25, 0, 0, 0 ],
+  [ KEY_26, 0, 0, 0 ],
+  [ KEY_27, 0, 0, 0 ],
+  [ KEY_28, 0, 0, 0 ],
+  [ KEY_29, 0, 0, 0 ],
+  [ KEY_30, 0, 0, 0 ],
 
-  { KEY_31, 0, 0, 0 },
-  { KEY_32, 0, 0, 0 },
-};
+  [ KEY_31, 0, 0, 0 ],
+  [ KEY_32, 0, 0, 0 ],
+];
 
 // Current number of doors in world.
 let gubNumDoors: UINT8 = 0;
@@ -50,7 +50,7 @@ let gubNumDoors: UINT8 = 0;
 // the current number (gubNumDoors) will be <= to it.
 let gubMaxDoors: UINT8 = 0;
 
-let LockTable: LOCK[] /* [NUM_LOCKS] */ = { 0 };
+let LockTable: LOCK[] /* [NUM_LOCKS] */ = [ 0 ];
 
 /*
 LOCK LockTable[NUM_LOCKS] =
@@ -72,15 +72,15 @@ LOCK LockTable[NUM_LOCKS] =
 };
 */
 
-let DoorTrapTable: DOORTRAP[] /* [NUM_DOOR_TRAPS] */ = {
-  { 0 }, // nothing
-  { DOOR_TRAP_STOPS_ACTION }, // explosion
-  { DOOR_TRAP_STOPS_ACTION | DOOR_TRAP_RECURRING }, // electric
-  { DOOR_TRAP_RECURRING }, // siren
-  { DOOR_TRAP_RECURRING | DOOR_TRAP_SILENT }, // silent alarm
-  { DOOR_TRAP_RECURRING }, // brothel siren
-  { DOOR_TRAP_STOPS_ACTION | DOOR_TRAP_RECURRING }, // super electric
-};
+let DoorTrapTable: DOORTRAP[] /* [NUM_DOOR_TRAPS] */ = [
+  [ 0 ], // nothing
+  [ DOOR_TRAP_STOPS_ACTION ], // explosion
+  [ DOOR_TRAP_STOPS_ACTION | DOOR_TRAP_RECURRING ], // electric
+  [ DOOR_TRAP_RECURRING ], // siren
+  [ DOOR_TRAP_RECURRING | DOOR_TRAP_SILENT ], // silent alarm
+  [ DOOR_TRAP_RECURRING ], // brothel siren
+  [ DOOR_TRAP_STOPS_ACTION | DOOR_TRAP_RECURRING ], // super electric
+];
 
 // Dynamic array of Doors.  For general game purposes, the doors that are locked and/or trapped
 // are permanently saved within the map, and are loaded and allocated when the map is loaded.  Because
@@ -1037,7 +1037,7 @@ function GetDoorStatus(sGridNo: INT16): Pointer<DOOR_STATUS> {
 function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: BOOLEAN): BOOLEAN {
   let cnt: INT32;
   let cnt2: INT32;
-  let bDirs: INT8[] /* [8] */ = {
+  let bDirs: INT8[] /* [8] */ = [
     NORTH,
     SOUTH,
     EAST,
@@ -1046,7 +1046,7 @@ function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: BOOLEAN): BOOLEAN {
     NORTHWEST,
     SOUTHEAST,
     SOUTHWEST,
-  };
+  ];
   let pSoldier: Pointer<SOLDIERTYPE>;
   let sDistVisible: INT16;
   let pDoorStatus: Pointer<DOOR_STATUS>;
@@ -1110,7 +1110,7 @@ function MercLooksForDoors(pSoldier: Pointer<SOLDIERTYPE>, fUpdateValue: BOOLEAN
   let sDistVisible: INT16;
   let sGridNo: INT16;
   let pDoorStatus: Pointer<DOOR_STATUS>;
-  let bDirs: INT8[] /* [8] */ = {
+  let bDirs: INT8[] /* [8] */ = [
     NORTH,
     SOUTH,
     EAST,
@@ -1119,7 +1119,7 @@ function MercLooksForDoors(pSoldier: Pointer<SOLDIERTYPE>, fUpdateValue: BOOLEAN
     NORTHWEST,
     SOUTHEAST,
     SOUTHWEST,
-  };
+  ];
   let usNewGridNo: INT16;
 
   // Loop through all corpses....

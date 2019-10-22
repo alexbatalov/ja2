@@ -22,23 +22,23 @@ const MAX_NUMBER_OF_POPUP_BOXES = 10;
 // MercTextBox.h
 
 // filenames for border popup .sti's
-let zMercBorderPopupFilenames: STR8[] /* [] */ = {
+let zMercBorderPopupFilenames: STR8[] /* [] */ = [
   "INTERFACE\\TactPopUp.sti",
   "INTERFACE\\TactRedPopUp.sti",
   "INTERFACE\\TactBluePopUp.sti",
   "INTERFACE\\TactPopUpMain.sti",
   "INTERFACE\\LaptopPopup.sti",
-};
+];
 
 // filenames for background popup .pcx's
-let zMercBackgroundPopupFilenames: STR8[] /* [] */ = {
+let zMercBackgroundPopupFilenames: STR8[] /* [] */ = [
   "INTERFACE\\TactPopupBackground.pcx",
   "INTERFACE\\TactPopupWhiteBackground.pcx",
   "INTERFACE\\TactPopupGreyBackground.pcx",
   "INTERFACE\\TactPopupBackgroundMain.pcx",
   "INTERFACE\\LaptopPopupBackground.pcx",
   "INTERFACE\\imp_popup_background.pcx",
-};
+];
 
 // the pop up box structure
 let gBasicPopUpTextBox: MercPopUpBox;

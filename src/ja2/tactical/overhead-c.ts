@@ -22,7 +22,7 @@ const NEW_FADE_DELAY = 60;
 
 // ATE: GLOBALS FOR E3
 let gubCurrentScene: UINT8 = 0;
-let gzLevelFilenames: CHAR8[][] /* [][50] */ = {
+let gzLevelFilenames: CHAR8[][] /* [][50] */ = [
   "A9.dat",
   "ScotTBMines.dat",
   "LindaTBCaves.dat",
@@ -30,9 +30,9 @@ let gzLevelFilenames: CHAR8[][] /* [][50] */ = {
   "IanRTNight.dat",
   "LindaRTCave1.dat",
   "LindaRTCave2.dat",
-};
+];
 
-let ubLevelMoveLink: INT8[] /* [10] */ = {
+let ubLevelMoveLink: INT8[] /* [10] */ = [
   1,
   2,
   3,
@@ -43,7 +43,7 @@ let ubLevelMoveLink: INT8[] /* [10] */ = {
   0,
   0,
   0,
-};
+];
 
 // Soldier List used for all soldier overhead interaction
 let Menptr: SOLDIERTYPE[] /* [TOTAL_SOLDIERS] */;
@@ -64,14 +64,14 @@ let gbShowEnemies: INT8 = FALSE;
 
 let gfMovingAnimation: BOOLEAN = FALSE;
 
-let gzAlertStr: CHAR8[][] /* [][30] */ = {
+let gzAlertStr: CHAR8[][] /* [][30] */ = [
   "GREEN",
   "YELLOW",
   "RED",
   "BLACK",
-};
+];
 
-let gzActionStr: CHAR8[][] /* [][30] */ = {
+let gzActionStr: CHAR8[][] /* [][30] */ = [
   "NONE",
 
   "RANDOM PATROL",
@@ -128,9 +128,9 @@ let gzActionStr: CHAR8[][] /* [][30] */ = {
   "EC&M",
   "TRAVERSE DOWN",
   "OFFER SURRENDER",
-};
+];
 
-let gzDirectionStr: CHAR8[][] /* [][30] */ = {
+let gzDirectionStr: CHAR8[][] /* [][30] */ = [
   "NORTHEAST",
   "EAST",
   "SOUTHEAST",
@@ -139,10 +139,10 @@ let gzDirectionStr: CHAR8[][] /* [][30] */ = {
   "WEST",
   "NORTHWEST",
   "NORTH",
-};
+];
 
 // TEMP VALUES FOR TEAM DEAFULT POSITIONS
-let bDefaultTeamRanges: UINT8[][] /* [MAXTEAMS][2] */ = {
+let bDefaultTeamRanges: UINT8[][] /* [MAXTEAMS][2] */ = [
   0,
   19, // 20  US
   20,
@@ -155,16 +155,16 @@ let bDefaultTeamRanges: UINT8[][] /* [MAXTEAMS][2] */ = {
   MAX_NUM_SOLDIERS - 1, // 32  CIVILIANS
   MAX_NUM_SOLDIERS,
   TOTAL_SOLDIERS - 1, // PLANNING SOLDIERS
-};
+];
 
-let bDefaultTeamColors: COLORVAL[] /* [MAXTEAMS] */ = {
+let bDefaultTeamColors: COLORVAL[] /* [MAXTEAMS] */ = [
   FROMRGB(255, 255, 0),
   FROMRGB(255, 0, 0),
   FROMRGB(255, 0, 255),
   FROMRGB(0, 255, 0),
   FROMRGB(255, 255, 255),
   FROMRGB(0, 0, 255),
-};
+];
 
 let gubWaitingForAllMercsToExitCode: UINT8 = 0;
 let gbNumMercsUntilWaitingOver: INT8 = 0;
@@ -565,7 +565,7 @@ function UnPauseAI(): void {
   giPauseAllAITimer = 0;
 }
 
-let gdRadiansForAngle: FLOAT[] /* [] */ = {
+let gdRadiansForAngle: FLOAT[] /* [] */ = [
   PI,
   (3 * PI / 4),
   (PI / 2),
@@ -575,7 +575,7 @@ let gdRadiansForAngle: FLOAT[] /* [] */ = {
   ((-PI) / 4),
   (-PI / 2),
   (-3 * PI / 4),
-};
+];
 
 function ExecuteOverhead(): BOOLEAN {
   let cnt: UINT32;
@@ -3475,12 +3475,12 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
 
   let sFourGrids: INT16[] /* [4] */;
   let sDistance: INT16 = 0;
-  let sDirs: INT16[] /* [4] */ = {
+  let sDirs: INT16[] /* [4] */ = [
     NORTH,
     EAST,
     SOUTH,
     WEST,
-  };
+  ];
   let cnt: INT32;
   let sClosest: INT16 = NOWHERE;
   let sSpot: INT16;
@@ -3718,12 +3718,12 @@ function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
 
   let sFourGrids: INT16[] /* [4] */;
   let sDistance: INT16 = 0;
-  let sDirs: INT16[] /* [4] */ = {
+  let sDirs: INT16[] /* [4] */ = [
     NORTH,
     EAST,
     SOUTH,
     WEST,
-  };
+  ];
   let cnt: INT32;
   let sClosest: INT16 = WORLD_MAX;
   let sSpot: INT16;
@@ -4460,7 +4460,7 @@ function WeSawSomeoneThisTurn(): BOOLEAN {
 }
 
 function SayBattleSoundFromAnyBodyInSector(iBattleSnd: INT32): void {
-  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
+  let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
@@ -6274,7 +6274,7 @@ function HostileBloodcatsPresent(): BOOLEAN {
 }
 
 function HandleCreatureTenseQuote(): void {
-  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
+  let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;

@@ -231,21 +231,21 @@ function HandleLimitedNumExecutions(): void {
   FileClose(hFileHandle);
 }
 
-let gCheckFilenames: SGPFILENAME[] /* [] */ = {
+let gCheckFilenames: SGPFILENAME[] /* [] */ = [
   "DATA\\INTRO.SLF",
   "DATA\\LOADSCREENS.SLF",
   "DATA\\MAPS.SLF",
   "DATA\\NPC_SPEECH.SLF",
   "DATA\\SPEECH.SLF",
-};
+];
 
-let gCheckFileMinSizes: UINT32[] /* [] */ = {
+let gCheckFileMinSizes: UINT32[] /* [] */ = [
   68000000,
   36000000,
   87000000,
   187000000,
   236000000,
-};
+];
 
 function HandleJA2CDCheck(): BOOLEAN {
   return TRUE;

@@ -5,60 +5,60 @@ const TIME_FOR_RANDOM_ANIM_CHECK = 2;
 
 let gfLastMercTalkedAboutKillingID: BOOLEAN = NOBODY;
 
-let gHopFenceForwardSEDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
+let gHopFenceForwardSEDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = [
   2.2,
   0.7,
   3.2,
   0.7,
-};
-let gHopFenceForwardNWDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
+];
+let gHopFenceForwardNWDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = [
   2.7,
   1.0,
   2.7,
   1.0,
-};
-let gHopFenceForwardFullSEDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
+];
+let gHopFenceForwardFullSEDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = [
   1.1,
   1.0,
   2.1,
   1.1,
-};
-let gHopFenceForwardFullNWDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
+];
+let gHopFenceForwardFullNWDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = [
   0.8,
   0.2,
   2.7,
   0.8,
-};
-let gFalloffBackwardsDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
+];
+let gFalloffBackwardsDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = [
   1,
   0.8,
   1,
   1,
-};
-let gClimbUpRoofDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
+];
+let gClimbUpRoofDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = [
   2,
   0.1,
   2,
   2,
-};
-let gClimbUpRoofLATDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
+];
+let gClimbUpRoofLATDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = [
   0.7,
   0.5,
   0.7,
   0.5,
-};
-let gClimbDownRoofStartDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
+];
+let gClimbDownRoofStartDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = [
   5.0,
   1.0,
   1,
   1,
-};
-let gClimbUpRoofDistGoingLower: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
+];
+let gClimbUpRoofDistGoingLower: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = [
   0.9,
   0.1,
   1,
   1,
-};
+];
 
 function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let SFireWeapon: EV_S_FIREWEAPON;
@@ -2411,8 +2411,8 @@ function ShouldMercSayHappyWithGunQuote(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN
 }
 
 function SayBuddyWitnessedQuoteFromKill(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
-  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
-  let bBuddyIndex: INT8[] /* [20] */ = { -1 };
+  let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
+  let bBuddyIndex: INT8[] /* [20] */ = [ -1 ];
   let bTempBuddyIndex: INT8;
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
@@ -2505,7 +2505,7 @@ function SayBuddyWitnessedQuoteFromKill(pKillerSoldier: Pointer<SOLDIERTYPE>, sG
 function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
   let cnt: INT32;
-  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
+  let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
   let fDoSomeoneElse: BOOLEAN = FALSE;

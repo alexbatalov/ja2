@@ -110,14 +110,14 @@ function HourlyQuestUpdate(): void {
 
 const BAR_TEMPTATION = 4;
 const NUM_LARRY_ITEMS = 6;
-let LarryItems: UINT16[][] /* [NUM_LARRY_ITEMS][3] */ = {
-  { ADRENALINE_BOOSTER, 5, 100 },
-  { ALCOHOL, BAR_TEMPTATION, 25 },
-  { MEDICKIT, 4, 10 },
-  { WINE, 3, 50 },
-  { REGEN_BOOSTER, 3, 100 },
-  { BEER, 2, 100 },
-};
+let LarryItems: UINT16[][] /* [NUM_LARRY_ITEMS][3] */ = [
+  [ ADRENALINE_BOOSTER, 5, 100 ],
+  [ ALCOHOL, BAR_TEMPTATION, 25 ],
+  [ MEDICKIT, 4, 10 ],
+  [ WINE, 3, 50 ],
+  [ REGEN_BOOSTER, 3, 100 ],
+  [ BEER, 2, 100 ],
+];
 
 const LARRY_FALLS_OFF_WAGON = 8;
 

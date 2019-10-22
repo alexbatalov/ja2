@@ -72,7 +72,7 @@ const AIM_SORT_ALUMNI_TEXT_Y = 351 + LAPTOP_SCREEN_WEB_DELTA_Y;
 
 const AIM_SORT_FIRST_SORT_CLOUMN_GAP = 22;
 
-let AimSortCheckBoxLoc: UINT16[] /* [] */ = {
+let AimSortCheckBoxLoc: UINT16[] /* [] */ = [
   (AIM_SORT_SORT_BY_X + 9), (AIM_SORT_SORT_BY_Y + 34),
   (AIM_SORT_SORT_BY_X + 9), (AIM_SORT_SORT_BY_Y + 47),
   (AIM_SORT_SORT_BY_X + 9), (AIM_SORT_SORT_BY_Y + 60),
@@ -81,7 +81,7 @@ let AimSortCheckBoxLoc: UINT16[] /* [] */ = {
   (AIM_SORT_SORT_BY_X + 111), (AIM_SORT_SORT_BY_Y + 60),
   (AIM_SORT_SORT_BY_X + 172), (AIM_SORT_SORT_BY_Y + 4),
   (AIM_SORT_SORT_BY_X + 172), (AIM_SORT_SORT_BY_Y + 17),
-};
+];
 
 let gubCurrentSortMode: UINT8;
 let gubOldSortMode: UINT8;

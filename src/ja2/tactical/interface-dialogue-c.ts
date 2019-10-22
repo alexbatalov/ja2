@@ -1,12 +1,12 @@
-let sBasementEnterGridNos: INT16[] /* [] */ = {
+let sBasementEnterGridNos: INT16[] /* [] */ = [
   13362,
   13363,
   13364,
   13365,
   13525,
   13524,
-};
-let sBasementExitGridNos: INT16[] /* [] */ = {
+];
+let sBasementExitGridNos: INT16[] /* [] */ = [
   8047,
   8207,
   8208,
@@ -15,7 +15,7 @@ let sBasementExitGridNos: INT16[] /* [] */ = {
   7728,
   7727,
   7567,
-};
+];
 
 let gusDialogueMessageBoxType: UINT16;
 
@@ -58,14 +58,14 @@ const TALK_PANEL_POPUP_RIGHT = 3;
 // chance vince will say random quote to player during conv.
 const CHANCE_FOR_DOCTOR_TO_SAY_RANDOM_QUOTE = 20;
 
-let ubTalkMenuApproachIDs: UINT8[] /* [] */ = {
+let ubTalkMenuApproachIDs: UINT8[] /* [] */ = [
   APPROACH_REPEAT,
   APPROACH_FRIENDLY,
   APPROACH_DIRECT,
   APPROACH_THREATEN,
   APPROACH_BUYSELL,
   APPROACH_RECRUIT,
-};
+];
 
 const enum Enum211 {
   DIALOG_DONE,

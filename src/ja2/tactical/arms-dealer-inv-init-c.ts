@@ -1,29 +1,29 @@
 // This table controls the order items appear in inventory at BR's and dealers, and which kinds of items are sold used
-let DealerItemSortInfo: ITEM_SORT_ENTRY[] /* [] */ = {
+let DealerItemSortInfo: ITEM_SORT_ENTRY[] /* [] */ = [
   //  item class					weapon class	sold used?
-  { IC_GUN, HANDGUNCLASS, TRUE },
-  { IC_GUN, SHOTGUNCLASS, TRUE },
-  { IC_GUN, SMGCLASS, TRUE },
-  { IC_GUN, RIFLECLASS, TRUE },
-  { IC_GUN, MGCLASS, FALSE },
-  { IC_LAUNCHER, NOGUNCLASS, FALSE },
-  { IC_AMMO, NOGUNCLASS, FALSE },
-  { IC_GRENADE, NOGUNCLASS, FALSE },
-  { IC_BOMB, NOGUNCLASS, FALSE },
-  { IC_BLADE, NOGUNCLASS, FALSE },
-  { IC_THROWING_KNIFE, NOGUNCLASS, FALSE },
-  { IC_PUNCH, NOGUNCLASS, FALSE },
-  { IC_ARMOUR, NOGUNCLASS, TRUE },
-  { IC_FACE, NOGUNCLASS, TRUE },
-  { IC_MEDKIT, NOGUNCLASS, FALSE },
-  { IC_KIT, NOGUNCLASS, FALSE },
-  { IC_MISC, NOGUNCLASS, TRUE },
-  { IC_THROWN, NOGUNCLASS, FALSE },
-  { IC_KEY, NOGUNCLASS, FALSE },
+  [ IC_GUN, HANDGUNCLASS, TRUE ],
+  [ IC_GUN, SHOTGUNCLASS, TRUE ],
+  [ IC_GUN, SMGCLASS, TRUE ],
+  [ IC_GUN, RIFLECLASS, TRUE ],
+  [ IC_GUN, MGCLASS, FALSE ],
+  [ IC_LAUNCHER, NOGUNCLASS, FALSE ],
+  [ IC_AMMO, NOGUNCLASS, FALSE ],
+  [ IC_GRENADE, NOGUNCLASS, FALSE ],
+  [ IC_BOMB, NOGUNCLASS, FALSE ],
+  [ IC_BLADE, NOGUNCLASS, FALSE ],
+  [ IC_THROWING_KNIFE, NOGUNCLASS, FALSE ],
+  [ IC_PUNCH, NOGUNCLASS, FALSE ],
+  [ IC_ARMOUR, NOGUNCLASS, TRUE ],
+  [ IC_FACE, NOGUNCLASS, TRUE ],
+  [ IC_MEDKIT, NOGUNCLASS, FALSE ],
+  [ IC_KIT, NOGUNCLASS, FALSE ],
+  [ IC_MISC, NOGUNCLASS, TRUE ],
+  [ IC_THROWN, NOGUNCLASS, FALSE ],
+  [ IC_KEY, NOGUNCLASS, FALSE ],
 
   // marks end of list
-  { IC_NONE, NOGUNCLASS, FALSE },
-};
+  [ IC_NONE, NOGUNCLASS, FALSE ],
+];
 
 //
 // Setup the inventory arrays for each of the arms dealers
@@ -36,149 +36,149 @@ let DealerItemSortInfo: ITEM_SORT_ENTRY[] /* [] */ = {
 // Tony ( Weapons only )
 //
 
-let gTonyInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
+let gTonyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
   // Rare guns/ammo that Tony will buy although he won't ever sell them
-  { ROCKET_RIFLE, 0 },
-  { AUTO_ROCKET_RIFLE, 0 },
-  { AUTOMAG_III, 0 },
+  [ ROCKET_RIFLE, 0 ],
+  [ AUTO_ROCKET_RIFLE, 0 ],
+  [ AUTOMAG_III, 0 ],
   //	{ FLAMETHROWER,					0 },
 
   // Weapons
-  { GLOCK_17, 1 }, /* Glock 17        */
-  { GLOCK_18, 1 }, /* Glock 18        */
-  { BERETTA_92F, 1 }, /* Beretta 92F     */
-  { BERETTA_93R, 1 }, /* Beretta 93R     */
-  { SW38, 1 }, /* .38 S&W Special */
-  { BARRACUDA, 1 }, /* .357 Barracuda  */
-  { DESERTEAGLE, 1 }, /* .357 DesertEagle*/
-  { M1911, 1 }, /* .45 M1911			 */
-  { MP5K, 1 }, /* H&K MP5K      	 */
-  { MAC10, 1 }, /* .45 MAC-10	     */
+  [ GLOCK_17, 1 ], /* Glock 17        */
+  [ GLOCK_18, 1 ], /* Glock 18        */
+  [ BERETTA_92F, 1 ], /* Beretta 92F     */
+  [ BERETTA_93R, 1 ], /* Beretta 93R     */
+  [ SW38, 1 ], /* .38 S&W Special */
+  [ BARRACUDA, 1 ], /* .357 Barracuda  */
+  [ DESERTEAGLE, 1 ], /* .357 DesertEagle*/
+  [ M1911, 1 ], /* .45 M1911			 */
+  [ MP5K, 1 ], /* H&K MP5K      	 */
+  [ MAC10, 1 ], /* .45 MAC-10	     */
 
-  { THOMPSON, 1 }, /* Thompson M1A1   */
-  { COMMANDO, 1 }, /* Colt Commando   */
-  { MP53, 1 }, /* H&K MP53		 		 */
-  { AKSU74, 1 }, /* AKSU-74         */
-  { TYPE85, 1 }, /* Type-85         */
-  { SKS, 1 }, /* SKS             */
-  { DRAGUNOV, 1 }, /* Dragunov        */
-  { M24, 1 }, /* M24             */
-  { AUG, 1 }, /* Steyr AUG       */
+  [ THOMPSON, 1 ], /* Thompson M1A1   */
+  [ COMMANDO, 1 ], /* Colt Commando   */
+  [ MP53, 1 ], /* H&K MP53		 		 */
+  [ AKSU74, 1 ], /* AKSU-74         */
+  [ TYPE85, 1 ], /* Type-85         */
+  [ SKS, 1 ], /* SKS             */
+  [ DRAGUNOV, 1 ], /* Dragunov        */
+  [ M24, 1 ], /* M24             */
+  [ AUG, 1 ], /* Steyr AUG       */
 
-  { G41, 1 }, /* H&K G41         */
-  { MINI14, 1 }, /* Ruger Mini-14   */
-  { C7, 1 }, /* C-7             */
-  { FAMAS, 1 }, /* FA-MAS          */
-  { AK74, 1 }, /* AK-74           */
-  { AKM, 1 }, /* AKM             */
-  { M14, 1 }, /* M-14            */
-  { G3A3, 1 }, /* H&K G3A3        */
-  { FNFAL, 1 }, /* FN-FAL          */
+  [ G41, 1 ], /* H&K G41         */
+  [ MINI14, 1 ], /* Ruger Mini-14   */
+  [ C7, 1 ], /* C-7             */
+  [ FAMAS, 1 ], /* FA-MAS          */
+  [ AK74, 1 ], /* AK-74           */
+  [ AKM, 1 ], /* AKM             */
+  [ M14, 1 ], /* M-14            */
+  [ G3A3, 1 ], /* H&K G3A3        */
+  [ FNFAL, 1 ], /* FN-FAL          */
 
-  { MINIMI, 1 },
-  { RPK74, 1 },
-  { HK21E, 1 },
+  [ MINIMI, 1 ],
+  [ RPK74, 1 ],
+  [ HK21E, 1 ],
 
-  { M870, 1 }, /* Remington M870  */
-  { SPAS15, 1 }, /* SPAS-15         */
+  [ M870, 1 ], /* Remington M870  */
+  [ SPAS15, 1 ], /* SPAS-15         */
 
-  { GLAUNCHER, 1 }, /* grenade launcher*/
-  { UNDER_GLAUNCHER, 1 }, /* underslung g.l. */
-  { ROCKET_LAUNCHER, 1 }, /* rocket Launcher */
-  { MORTAR, 1 },
+  [ GLAUNCHER, 1 ], /* grenade launcher*/
+  [ UNDER_GLAUNCHER, 1 ], /* underslung g.l. */
+  [ ROCKET_LAUNCHER, 1 ], /* rocket Launcher */
+  [ MORTAR, 1 ],
 
   // SAP guns
-  { G11, 1 },
-  { CAWS, 1 },
-  { P90, 1 },
+  [ G11, 1 ],
+  [ CAWS, 1 ],
+  [ P90, 1 ],
 
-  { DART_GUN, 1 },
+  [ DART_GUN, 1 ],
 
   // Ammo
-  { CLIP9_15, 8 },
-  { CLIP9_30, 6 },
-  { CLIP9_15_AP, 3 }, /* CLIP9_15_AP */
-  { CLIP9_30_AP, 3 }, /* CLIP9_30_AP */
-  { CLIP9_15_HP, 3 }, /* CLIP9_15_HP */
-  { CLIP9_30_HP, 3 }, /* CLIP9_30_HP */
+  [ CLIP9_15, 8 ],
+  [ CLIP9_30, 6 ],
+  [ CLIP9_15_AP, 3 ], /* CLIP9_15_AP */
+  [ CLIP9_30_AP, 3 ], /* CLIP9_30_AP */
+  [ CLIP9_15_HP, 3 ], /* CLIP9_15_HP */
+  [ CLIP9_30_HP, 3 ], /* CLIP9_30_HP */
 
-  { CLIP38_6, 10 }, /* CLIP38_6 */
-  { CLIP38_6_AP, 5 }, /* CLIP38_6_AP */
-  { CLIP38_6_HP, 5 }, /* CLIP38_6_HP */
+  [ CLIP38_6, 10 ], /* CLIP38_6 */
+  [ CLIP38_6_AP, 5 ], /* CLIP38_6_AP */
+  [ CLIP38_6_HP, 5 ], /* CLIP38_6_HP */
 
-  { CLIP45_7, 6 },
+  [ CLIP45_7, 6 ],
   /* CLIP45_7 */ // 70
 
-  { CLIP45_30, 8 }, /* CLIP45_30 */
-  { CLIP45_7_AP, 3 }, /* CLIP45_7_AP */
-  { CLIP45_30_AP, 3 }, /* CLIP45_30_AP */
-  { CLIP45_7_HP, 3 }, /* CLIP45_7_HP */
-  { CLIP45_30_HP, 3 }, /* CLIP45_30_HP */
+  [ CLIP45_30, 8 ], /* CLIP45_30 */
+  [ CLIP45_7_AP, 3 ], /* CLIP45_7_AP */
+  [ CLIP45_30_AP, 3 ], /* CLIP45_30_AP */
+  [ CLIP45_7_HP, 3 ], /* CLIP45_7_HP */
+  [ CLIP45_30_HP, 3 ], /* CLIP45_30_HP */
 
-  { CLIP357_6, 6 }, /* CLIP357_6 */
-  { CLIP357_9, 5 }, /* CLIP357_9 */
-  { CLIP357_6_AP, 3 }, /* CLIP357_6_AP */
-  { CLIP357_9_AP, 3 }, /* CLIP357_9_AP */
-  { CLIP357_6_HP, 3 },
+  [ CLIP357_6, 6 ], /* CLIP357_6 */
+  [ CLIP357_9, 5 ], /* CLIP357_9 */
+  [ CLIP357_6_AP, 3 ], /* CLIP357_6_AP */
+  [ CLIP357_9_AP, 3 ], /* CLIP357_9_AP */
+  [ CLIP357_6_HP, 3 ],
   /* CLIP357_6_HP */ // 80
-  { CLIP357_9_HP, 3 }, /* CLIP357_9_HP */
+  [ CLIP357_9_HP, 3 ], /* CLIP357_9_HP */
 
-  { CLIP545_30_AP, 6 }, /* CLIP545_30_AP */
-  { CLIP545_30_HP, 3 }, /* CLIP545_30_HP */
+  [ CLIP545_30_AP, 6 ], /* CLIP545_30_AP */
+  [ CLIP545_30_HP, 3 ], /* CLIP545_30_HP */
 
-  { CLIP556_30_AP, 6 }, /* CLIP556_30_AP */
-  { CLIP556_30_HP, 3 }, /* CLIP556_30_HP */
+  [ CLIP556_30_AP, 6 ], /* CLIP556_30_AP */
+  [ CLIP556_30_HP, 3 ], /* CLIP556_30_HP */
 
-  { CLIP762W_10_AP, 6 }, /* CLIP762W_10_AP */
-  { CLIP762W_30_AP, 5 }, /* CLIP762W_30_AP */
-  { CLIP762W_10_HP, 3 }, /* CLIP762W_10_HP */
-  { CLIP762W_30_HP, 3 }, /* CLIP762W_30_HP */
+  [ CLIP762W_10_AP, 6 ], /* CLIP762W_10_AP */
+  [ CLIP762W_30_AP, 5 ], /* CLIP762W_30_AP */
+  [ CLIP762W_10_HP, 3 ], /* CLIP762W_10_HP */
+  [ CLIP762W_30_HP, 3 ], /* CLIP762W_30_HP */
 
-  { CLIP762N_5_AP, 8 },
+  [ CLIP762N_5_AP, 8 ],
   /* CLIP762N_5_AP */ // 90
-  { CLIP762N_20_AP, 5 }, /* CLIP762N_20_AP */
-  { CLIP762N_5_HP, 3 }, /* CLIP762N_5_HP */
-  { CLIP762N_20_HP, 3 }, /* CLIP762N_20_HP */
+  [ CLIP762N_20_AP, 5 ], /* CLIP762N_20_AP */
+  [ CLIP762N_5_HP, 3 ], /* CLIP762N_5_HP */
+  [ CLIP762N_20_HP, 3 ], /* CLIP762N_20_HP */
 
-  { CLIP47_50_SAP, 5 }, /* CLIP47_50_SAP */
+  [ CLIP47_50_SAP, 5 ], /* CLIP47_50_SAP */
 
-  { CLIP57_50_AP, 6 }, /* CLIP57_50_AP */
-  { CLIP57_50_HP, 3 }, /* CLIP57_50_HP */
+  [ CLIP57_50_AP, 6 ], /* CLIP57_50_AP */
+  [ CLIP57_50_HP, 3 ], /* CLIP57_50_HP */
 
-  { CLIP12G_7, 9 }, /* CLIP12G_7 */
-  { CLIP12G_7_BUCKSHOT, 9 }, /* CLIP12G_7_BUCKSHOT */
+  [ CLIP12G_7, 9 ], /* CLIP12G_7 */
+  [ CLIP12G_7_BUCKSHOT, 9 ], /* CLIP12G_7_BUCKSHOT */
 
-  { CLIPCAWS_10_SAP, 5 }, /* CLIPCAWS_10_SAP */
-  { CLIPCAWS_10_FLECH, 3 },
+  [ CLIPCAWS_10_SAP, 5 ], /* CLIPCAWS_10_SAP */
+  [ CLIPCAWS_10_FLECH, 3 ],
   /* CLIPCAWS_10_FLECH */ // 100
 
-  { CLIPROCKET_AP, 3 },
-  { CLIPROCKET_HE, 1 },
-  { CLIPROCKET_HEAT, 1 },
+  [ CLIPROCKET_AP, 3 ],
+  [ CLIPROCKET_HE, 1 ],
+  [ CLIPROCKET_HEAT, 1 ],
 
-  { CLIPDART_SLEEP, 5 },
+  [ CLIPDART_SLEEP, 5 ],
 
   //	{ CLIPFLAME,						5	},
 
   // "launchables" (New! From McCain!) - these are basically ammo
-  { GL_HE_GRENADE, 2 },
-  { GL_TEARGAS_GRENADE, 2 },
-  { GL_STUN_GRENADE, 2 },
-  { GL_SMOKE_GRENADE, 2 },
-  { MORTAR_SHELL, 1 },
+  [ GL_HE_GRENADE, 2 ],
+  [ GL_TEARGAS_GRENADE, 2 ],
+  [ GL_STUN_GRENADE, 2 ],
+  [ GL_SMOKE_GRENADE, 2 ],
+  [ MORTAR_SHELL, 1 ],
 
   // knives
-  { COMBAT_KNIFE, 3 },
-  { THROWING_KNIFE, 6 },
-  { BRASS_KNUCKLES, 1 },
-  { MACHETE, 1 },
+  [ COMBAT_KNIFE, 3 ],
+  [ THROWING_KNIFE, 6 ],
+  [ BRASS_KNUCKLES, 1 ],
+  [ MACHETE, 1 ],
 
   // attachments
-  { SILENCER, 3 },
-  { SNIPERSCOPE, 3 },
-  { LASERSCOPE, 1 },
-  { BIPOD, 3 },
-  { DUCKBILL, 2 },
+  [ SILENCER, 3 ],
+  [ SNIPERSCOPE, 3 ],
+  [ LASERSCOPE, 1 ],
+  [ BIPOD, 3 ],
+  [ DUCKBILL, 2 ],
 
   /*
           // grenades
@@ -190,389 +190,389 @@ let gTonyInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
           { SMOKE_GRENADE,				5 },
   */
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Devin		( Explosives )
 //
-let gDevinInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
-  { STUN_GRENADE, 3 },
-  { TEARGAS_GRENADE, 3 },
-  { MUSTARD_GRENADE, 2 },
-  { MINI_GRENADE, 3 },
-  { HAND_GRENADE, 2 },
-  { SMOKE_GRENADE, 3 },
+let gDevinInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
+  [ STUN_GRENADE, 3 ],
+  [ TEARGAS_GRENADE, 3 ],
+  [ MUSTARD_GRENADE, 2 ],
+  [ MINI_GRENADE, 3 ],
+  [ HAND_GRENADE, 2 ],
+  [ SMOKE_GRENADE, 3 ],
 
-  { GL_HE_GRENADE, 2 },
-  { GL_TEARGAS_GRENADE, 2 },
-  { GL_STUN_GRENADE, 2 },
-  { GL_SMOKE_GRENADE, 2 },
-  { MORTAR_SHELL, 1 },
+  [ GL_HE_GRENADE, 2 ],
+  [ GL_TEARGAS_GRENADE, 2 ],
+  [ GL_STUN_GRENADE, 2 ],
+  [ GL_SMOKE_GRENADE, 2 ],
+  [ MORTAR_SHELL, 1 ],
 
-  { CLIPROCKET_AP, 1 },
-  { CLIPROCKET_HE, 1 },
-  { CLIPROCKET_HEAT, 1 },
+  [ CLIPROCKET_AP, 1 ],
+  [ CLIPROCKET_HE, 1 ],
+  [ CLIPROCKET_HEAT, 1 ],
 
-  { DETONATOR, 10 },
-  { REMDETONATOR, 5 },
-  { REMOTEBOMBTRIGGER, 5 },
+  [ DETONATOR, 10 ],
+  [ REMDETONATOR, 5 ],
+  [ REMOTEBOMBTRIGGER, 5 ],
 
-  { MINE, 6 },
-  { RDX, 5 },
-  { TNT, 5 },
-  { C1, 4 },
-  { HMX, 3 },
-  { C4, 2 },
+  [ MINE, 6 ],
+  [ RDX, 5 ],
+  [ TNT, 5 ],
+  [ C1, 4 ],
+  [ HMX, 3 ],
+  [ C4, 2 ],
 
-  { SHAPED_CHARGE, 5 },
+  [ SHAPED_CHARGE, 5 ],
 
   //	{	TRIP_FLARE,								2 },
   //	{	TRIP_KLAXON,							2 },
 
-  { GLAUNCHER, 1 }, /* grenade launcher*/
-  { UNDER_GLAUNCHER, 1 }, /* underslung g.l. */
-  { ROCKET_LAUNCHER, 1 }, /* rocket Launcher */
-  { MORTAR, 1 },
+  [ GLAUNCHER, 1 ], /* grenade launcher*/
+  [ UNDER_GLAUNCHER, 1 ], /* underslung g.l. */
+  [ ROCKET_LAUNCHER, 1 ], /* rocket Launcher */
+  [ MORTAR, 1 ],
 
-  { METALDETECTOR, 2 },
-  { WIRECUTTERS, 1 },
-  { DUCT_TAPE, 1 },
+  [ METALDETECTOR, 2 ],
+  [ WIRECUTTERS, 1 ],
+  [ DUCT_TAPE, 1 ],
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Franz	(Expensive pawn shop )
 //
-let gFranzInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
-  { NIGHTGOGGLES, 3 },
+let gFranzInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
+  [ NIGHTGOGGLES, 3 ],
 
-  { LASERSCOPE, 3 },
-  { METALDETECTOR, 2 },
-  { EXTENDEDEAR, 2 },
+  [ LASERSCOPE, 3 ],
+  [ METALDETECTOR, 2 ],
+  [ EXTENDEDEAR, 2 ],
 
-  { DART_GUN, 1 },
+  [ DART_GUN, 1 ],
 
-  { KEVLAR_VEST, 1 },
-  { KEVLAR_LEGGINGS, 1 },
-  { KEVLAR_HELMET, 1 },
-  { KEVLAR2_VEST, 1 },
-  { SPECTRA_VEST, 1 },
-  { SPECTRA_LEGGINGS, 1 },
-  { SPECTRA_HELMET, 1 },
+  [ KEVLAR_VEST, 1 ],
+  [ KEVLAR_LEGGINGS, 1 ],
+  [ KEVLAR_HELMET, 1 ],
+  [ KEVLAR2_VEST, 1 ],
+  [ SPECTRA_VEST, 1 ],
+  [ SPECTRA_LEGGINGS, 1 ],
+  [ SPECTRA_HELMET, 1 ],
 
-  { CERAMIC_PLATES, 1 },
+  [ CERAMIC_PLATES, 1 ],
 
-  { CAMOUFLAGEKIT, 1 },
+  [ CAMOUFLAGEKIT, 1 ],
 
-  { VIDEO_CAMERA, 1 }, // for robot quest
+  [ VIDEO_CAMERA, 1 ], // for robot quest
 
-  { LAME_BOY, 1 },
-  { FUMBLE_PAK, 1 },
+  [ LAME_BOY, 1 ],
+  [ FUMBLE_PAK, 1 ],
 
-  { GOLDWATCH, 1 },
-  { GOLFCLUBS, 1 },
+  [ GOLDWATCH, 1 ],
+  [ GOLFCLUBS, 1 ],
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Keith		( Cheap Pawn Shop )
 //
-let gKeithInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
-  { FIRSTAIDKIT, 5 },
+let gKeithInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
+  [ FIRSTAIDKIT, 5 ],
 
   // WARNING: Keith must not carry any guns, it would conflict with his story/quest
 
-  { COMBAT_KNIFE, 2 },
-  { THROWING_KNIFE, 3 },
-  { BRASS_KNUCKLES, 1 },
-  { MACHETE, 1 },
+  [ COMBAT_KNIFE, 2 ],
+  [ THROWING_KNIFE, 3 ],
+  [ BRASS_KNUCKLES, 1 ],
+  [ MACHETE, 1 ],
 
-  { SUNGOGGLES, 3 },
-  { FLAK_JACKET, 2 },
-  { STEEL_HELMET, 3 },
-  { LEATHER_JACKET, 1 },
+  [ SUNGOGGLES, 3 ],
+  [ FLAK_JACKET, 2 ],
+  [ STEEL_HELMET, 3 ],
+  [ LEATHER_JACKET, 1 ],
 
-  { CANTEEN, 5 },
-  { CROWBAR, 1 },
-  { JAR, 6 },
+  [ CANTEEN, 5 ],
+  [ CROWBAR, 1 ],
+  [ JAR, 6 ],
 
-  { TOOLKIT, 1 },
-  { GASMASK, 1 },
+  [ TOOLKIT, 1 ],
+  [ GASMASK, 1 ],
 
-  { SILVER_PLATTER, 1 },
+  [ SILVER_PLATTER, 1 ],
 
-  { WALKMAN, 1 },
-  { PORTABLETV, 1 },
+  [ WALKMAN, 1 ],
+  [ PORTABLETV, 1 ],
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Sam		( Hardware )
 //
-let gSamInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
-  { FIRSTAIDKIT, 3 },
+let gSamInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
+  [ FIRSTAIDKIT, 3 ],
 
-  { LOCKSMITHKIT, 4 },
-  { TOOLKIT, 3 },
+  [ LOCKSMITHKIT, 4 ],
+  [ TOOLKIT, 3 ],
 
-  { CANTEEN, 5 },
+  [ CANTEEN, 5 ],
 
-  { CROWBAR, 3 },
-  { WIRECUTTERS, 3 },
+  [ CROWBAR, 3 ],
+  [ WIRECUTTERS, 3 ],
 
-  { DUCKBILL, 3 },
-  { JAR, 12 },
-  { BREAK_LIGHT, 12 }, // flares
+  [ DUCKBILL, 3 ],
+  [ JAR, 12 ],
+  [ BREAK_LIGHT, 12 ], // flares
 
-  { METALDETECTOR, 1 },
+  [ METALDETECTOR, 1 ],
 
-  { VIDEO_CAMERA, 1 },
+  [ VIDEO_CAMERA, 1 ],
 
-  { QUICK_GLUE, 3 },
-  { COPPER_WIRE, 5 },
-  { BATTERIES, 10 },
+  [ QUICK_GLUE, 3 ],
+  [ COPPER_WIRE, 5 ],
+  [ BATTERIES, 10 ],
 
-  { CLIP9_15, 5 },
-  { CLIP9_30, 5 },
-  { CLIP38_6, 5 },
-  { CLIP45_7, 5 },
-  { CLIP45_30, 5 },
-  { CLIP357_6, 5 },
-  { CLIP357_9, 5 },
-  { CLIP12G_7, 9 },
-  { CLIP12G_7_BUCKSHOT, 9 },
+  [ CLIP9_15, 5 ],
+  [ CLIP9_30, 5 ],
+  [ CLIP38_6, 5 ],
+  [ CLIP45_7, 5 ],
+  [ CLIP45_30, 5 ],
+  [ CLIP357_6, 5 ],
+  [ CLIP357_9, 5 ],
+  [ CLIP12G_7, 9 ],
+  [ CLIP12G_7_BUCKSHOT, 9 ],
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Jake			( Junk )
 //
-let gJakeInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
-  { FIRSTAIDKIT, 4 },
-  { MEDICKIT, 3 },
+let gJakeInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
+  [ FIRSTAIDKIT, 4 ],
+  [ MEDICKIT, 3 ],
 
-  { SW38, 1 },
-  { CLIP38_6, 5 },
+  [ SW38, 1 ],
+  [ CLIP38_6, 5 ],
 
-  { JAR, 3 },
-  { CANTEEN, 2 },
-  { BEER, 6 },
+  [ JAR, 3 ],
+  [ CANTEEN, 2 ],
+  [ BEER, 6 ],
 
-  { CROWBAR, 1 },
-  { WIRECUTTERS, 1 },
+  [ CROWBAR, 1 ],
+  [ WIRECUTTERS, 1 ],
 
-  { COMBAT_KNIFE, 1 },
-  { THROWING_KNIFE, 1 },
-  { BRASS_KNUCKLES, 1 },
-  { MACHETE, 1 },
+  [ COMBAT_KNIFE, 1 ],
+  [ THROWING_KNIFE, 1 ],
+  [ BRASS_KNUCKLES, 1 ],
+  [ MACHETE, 1 ],
 
-  { BREAK_LIGHT, 5 }, // flares
+  [ BREAK_LIGHT, 5 ], // flares
 
-  { BIPOD, 1 },
+  [ BIPOD, 1 ],
 
-  { TSHIRT, 6 },
-  { CIGARS, 3 },
-  { PORNOS, 1 },
+  [ TSHIRT, 6 ],
+  [ CIGARS, 3 ],
+  [ PORNOS, 1 ],
 
-  { LOCKSMITHKIT, 1 },
+  [ LOCKSMITHKIT, 1 ],
 
   // "new" items, presumed unsafe for demo
-  { TSHIRT_DEIDRANNA, 2 },
-  { XRAY_BULB, 1 },
+  [ TSHIRT_DEIDRANNA, 2 ],
+  [ XRAY_BULB, 1 ],
 
   // additional stuff possible in real game
-  { GLOCK_17, 1 }, /* Glock 17        */
-  { GLOCK_18, 1 }, /* Glock 18        */
-  { BERETTA_92F, 1 }, /* Beretta 92F     */
-  { BERETTA_93R, 1 }, /* Beretta 93R     */
-  { BARRACUDA, 1 }, /* .357 Barracuda  */
-  { DESERTEAGLE, 1 }, /* .357 DesertEagle*/
-  { M1911, 1 }, /* .45 M1911			 */
+  [ GLOCK_17, 1 ], /* Glock 17        */
+  [ GLOCK_18, 1 ], /* Glock 18        */
+  [ BERETTA_92F, 1 ], /* Beretta 92F     */
+  [ BERETTA_93R, 1 ], /* Beretta 93R     */
+  [ BARRACUDA, 1 ], /* .357 Barracuda  */
+  [ DESERTEAGLE, 1 ], /* .357 DesertEagle*/
+  [ M1911, 1 ], /* .45 M1911			 */
 
-  { DISCARDED_LAW, 1 },
+  [ DISCARDED_LAW, 1 ],
 
-  { STEEL_HELMET, 1 },
+  [ STEEL_HELMET, 1 ],
 
-  { TOOLKIT, 1 },
+  [ TOOLKIT, 1 ],
 
-  { WINE, 1 },
-  { ALCOHOL, 1 },
+  [ WINE, 1 ],
+  [ ALCOHOL, 1 ],
 
-  { GOLDWATCH, 1 },
-  { GOLFCLUBS, 1 },
-  { WALKMAN, 1 },
-  { PORTABLETV, 1 },
+  [ GOLDWATCH, 1 ],
+  [ GOLFCLUBS, 1 ],
+  [ WALKMAN, 1 ],
+  [ PORTABLETV, 1 ],
 
   // stuff a real pawn shop wouldn't have, but it does make him a bit more useful
-  { COMPOUND18, 1 },
-  { CERAMIC_PLATES, 1 },
+  [ COMPOUND18, 1 ],
+  [ CERAMIC_PLATES, 1 ],
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Howard		( Pharmaceuticals )
 //
-let gHowardInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
-  { FIRSTAIDKIT, 10 },
-  { MEDICKIT, 5 },
-  { ADRENALINE_BOOSTER, 5 },
-  { REGEN_BOOSTER, 5 },
+let gHowardInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
+  [ FIRSTAIDKIT, 10 ],
+  [ MEDICKIT, 5 ],
+  [ ADRENALINE_BOOSTER, 5 ],
+  [ REGEN_BOOSTER, 5 ],
 
-  { ALCOHOL, 3 },
-  { COMBAT_KNIFE, 2 },
+  [ ALCOHOL, 3 ],
+  [ COMBAT_KNIFE, 2 ],
 
-  { CLIPDART_SLEEP, 5 },
+  [ CLIPDART_SLEEP, 5 ],
 
-  { CHEWING_GUM, 3 },
+  [ CHEWING_GUM, 3 ],
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Gabby			( Creature parts and Blood )
 //
-let gGabbyInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
-  { JAR, 12 },
-  { JAR_ELIXIR, 3 },
+let gGabbyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
+  [ JAR, 12 ],
+  [ JAR_ELIXIR, 3 ],
   // buys these, but can't supply them (player is the only source)
-  { JAR_CREATURE_BLOOD, 0 },
-  { JAR_QUEEN_CREATURE_BLOOD, 0 },
-  { BLOODCAT_CLAWS, 0 },
-  { BLOODCAT_TEETH, 0 },
-  { BLOODCAT_PELT, 0 },
-  { CREATURE_PART_CLAWS, 0 },
-  { CREATURE_PART_FLESH, 0 },
-  { CREATURE_PART_ORGAN, 0 },
+  [ JAR_CREATURE_BLOOD, 0 ],
+  [ JAR_QUEEN_CREATURE_BLOOD, 0 ],
+  [ BLOODCAT_CLAWS, 0 ],
+  [ BLOODCAT_TEETH, 0 ],
+  [ BLOODCAT_PELT, 0 ],
+  [ CREATURE_PART_CLAWS, 0 ],
+  [ CREATURE_PART_FLESH, 0 ],
+  [ CREATURE_PART_ORGAN, 0 ],
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Frank  ( Alcohol )
 //
-let gFrankInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
-  { BEER, 12 },
-  { WINE, 6 },
-  { ALCOHOL, 9 },
+let gFrankInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
+  [ BEER, 12 ],
+  [ WINE, 6 ],
+  [ ALCOHOL, 9 ],
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Elgin  ( Alcohol )
 //
-let gElginInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
-  { BEER, 12 },
-  { WINE, 6 },
-  { ALCOHOL, 9 },
+let gElginInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
+  [ BEER, 12 ],
+  [ WINE, 6 ],
+  [ ALCOHOL, 9 ],
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Manny  ( Alcohol )
 //
-let gMannyInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
-  { BEER, 12 },
-  { WINE, 6 },
-  { ALCOHOL, 9 },
+let gMannyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
+  [ BEER, 12 ],
+  [ WINE, 6 ],
+  [ ALCOHOL, 9 ],
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Herve Santos		( Alcohol )
 //
-let gHerveInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
-  { BEER, 12 },
-  { WINE, 6 },
-  { ALCOHOL, 9 },
+let gHerveInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
+  [ BEER, 12 ],
+  [ WINE, 6 ],
+  [ ALCOHOL, 9 ],
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Peter Santos ( Alcohol )
 //
-let gPeterInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
-  { BEER, 12 },
-  { WINE, 6 },
-  { ALCOHOL, 9 },
+let gPeterInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
+  [ BEER, 12 ],
+  [ WINE, 6 ],
+  [ ALCOHOL, 9 ],
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Alberto Santos		( Alcohol )
 //
-let gAlbertoInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
-  { BEER, 12 },
-  { WINE, 6 },
-  { ALCOHOL, 9 },
+let gAlbertoInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
+  [ BEER, 12 ],
+  [ WINE, 6 ],
+  [ ALCOHOL, 9 ],
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Carlo Santos		( Alcohol )
 //
-let gCarloInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
-  { BEER, 12 },
-  { WINE, 6 },
-  { ALCOHOL, 9 },
+let gCarloInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
+  [ BEER, 12 ],
+  [ WINE, 6 ],
+  [ ALCOHOL, 9 ],
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Micky	( BUYS Animal / Creature parts )
 //
 
-let gMickyInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
+let gMickyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
   // ONLY BUYS THIS STUFF, DOESN'T SELL IT
-  { BLOODCAT_CLAWS, 0 },
-  { BLOODCAT_TEETH, 0 },
-  { BLOODCAT_PELT, 0 },
-  { CREATURE_PART_CLAWS, 0 },
-  { CREATURE_PART_FLESH, 0 },
-  { CREATURE_PART_ORGAN, 0 },
-  { JAR_QUEEN_CREATURE_BLOOD, 0 },
+  [ BLOODCAT_CLAWS, 0 ],
+  [ BLOODCAT_TEETH, 0 ],
+  [ BLOODCAT_PELT, 0 ],
+  [ CREATURE_PART_CLAWS, 0 ],
+  [ CREATURE_PART_FLESH, 0 ],
+  [ CREATURE_PART_ORGAN, 0 ],
+  [ JAR_QUEEN_CREATURE_BLOOD, 0 ],
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Arnie		( Weapons REPAIR )
 //
-let gArnieInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
+let gArnieInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
   // NO INVENTORY
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Perko			( REPAIR)
 //
-let gPerkoInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
+let gPerkoInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
   // NO INVENTORY
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 //
 // Fredo			( Electronics REPAIR)
 //
-let gFredoInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
+let gFredoInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
   // NO INVENTORY
 
-  { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
-};
+  [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
+];
 
 // prototypes
 

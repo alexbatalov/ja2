@@ -18,20 +18,20 @@ const enum Enum295 {
 const FRENZY_THRESHOLD = 8;
 const MAX_EAT_DIST = 5;
 
-let gbCallPriority: INT8[][] /* [NUM_CREATURE_CALLS][NUM_CREATURE_CALLERS] */ = {
-  { 0, 0, 0 }, // CALL_NONE
-  { 3, 5, 12 }, // CALL_1_PREY
-  { 5, 9, 12 }, // CALL_MULTIPLE_PREY
-  { 4, 7, 12 }, // CALL_ATTACKED
-  { 6, 9, 12 }, // CALL_CRIPPLED
-};
+let gbCallPriority: INT8[][] /* [NUM_CREATURE_CALLS][NUM_CREATURE_CALLERS] */ = [
+  [ 0, 0, 0 ], // CALL_NONE
+  [ 3, 5, 12 ], // CALL_1_PREY
+  [ 5, 9, 12 ], // CALL_MULTIPLE_PREY
+  [ 4, 7, 12 ], // CALL_ATTACKED
+  [ 6, 9, 12 ], // CALL_CRIPPLED
+];
 
-let gbHuntCallPriority: INT8[] /* [NUM_CREATURE_CALLS] */ = {
+let gbHuntCallPriority: INT8[] /* [NUM_CREATURE_CALLS] */ = [
   4, // CALL_1_PREY
   5, // CALL_MULTIPLE_PREY
   7, // CALL_ATTACKED
   8, // CALL_CRIPPLED
-};
+];
 
 const PRIORITY_DECR_DISTANCE = 30;
 

@@ -4,7 +4,7 @@ let giSciFiCheckboxButton: INT32 = -1;
 let giAlarmTriggerButton: INT32 = -1;
 let giOwnershipGroupButton: INT32 = -1;
 
-let gszActionItemDesc: UINT16[][] /* [NUM_ACTIONITEMS][30] */ = {
+let gszActionItemDesc: UINT16[][] /* [NUM_ACTIONITEMS][30] */ = [
   L"Klaxon Mine",
   L"Flare Mine",
   L"Teargas Explosion",
@@ -39,7 +39,7 @@ let gszActionItemDesc: UINT16[][] /* [NUM_ACTIONITEMS][30] */ = {
   L"Museum alarm",
   L"Bloodcat alarm",
   L"Big teargas",
-};
+];
 
 function GetActionItemName(pItem: Pointer<OBJECTTYPE>): Pointer<UINT16> {
   if (!pItem || pItem->usItem != ACTION_ITEM)

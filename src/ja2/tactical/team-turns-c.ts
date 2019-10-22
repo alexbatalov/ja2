@@ -1,9 +1,9 @@
 const END_OF_INTERRUPTS = 255;
 
-let gubOutOfTurnOrder: UINT8[] /* [MAXMERCS] */ = {
+let gubOutOfTurnOrder: UINT8[] /* [MAXMERCS] */ = [
   END_OF_INTERRUPTS,
   0,
-};
+];
 let gubOutOfTurnPersons: UINT8 = 0;
 
 const LATEST_INTERRUPT_GUY = () => (gubOutOfTurnOrder[gubOutOfTurnPersons]);
@@ -1285,7 +1285,7 @@ function AddToIntList(ubID: UINT8, fGainControl: BOOLEAN, fCommunicate: BOOLEAN)
 }
 
 function VerifyOutOfTurnOrderArray(): void {
-  let ubTeamHighest: UINT8[] /* [MAXTEAMS] */ = { 0 };
+  let ubTeamHighest: UINT8[] /* [MAXTEAMS] */ = [ 0 ];
   let ubTeamsInList: UINT8;
   let ubNextInArrayOnTeam: UINT8;
   let ubNextIndex: UINT8;

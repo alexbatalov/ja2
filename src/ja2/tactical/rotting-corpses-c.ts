@@ -10,7 +10,7 @@ const DELAY_UNTIL_DONE_ROTTING = (3 * NUM_SEC_IN_DAY / 60);
 const MAX_NUM_CROWS = 6;
 
 // When adding a corpse, add struct data...
-let zCorpseFilenames: CHAR8[][] /* [NUM_CORPSES][70] */ = {
+let zCorpseFilenames: CHAR8[][] /* [NUM_CORPSES][70] */ = [
   "",
   "ANIMS\\CORPSES\\S_D_JFK.STI",
   "ANIMS\\CORPSES\\S_D_BCK.STI",
@@ -70,10 +70,10 @@ let zCorpseFilenames: CHAR8[][] /* [NUM_CORPSES][70] */ = {
   "ANIMS\\CORPSES\\J_DEAD.STI",
   "ANIMS\\CORPSES\\S_BURNT.STI",
   "ANIMS\\CORPSES\\S_EXPLD.STI",
-};
+];
 
 // When adding a corpse, add struct data...
-let zNoBloodCorpseFilenames: CHAR8[][] /* [NUM_CORPSES][70] */ = {
+let zNoBloodCorpseFilenames: CHAR8[][] /* [NUM_CORPSES][70] */ = [
   "",
   "ANIMS\\CORPSES\\M_D_JFK_NB.STI",
   "ANIMS\\CORPSES\\S_D_BCK_NB.STI",
@@ -133,9 +133,9 @@ let zNoBloodCorpseFilenames: CHAR8[][] /* [NUM_CORPSES][70] */ = {
   "ANIMS\\CORPSES\\J_DEAD.STI",
   "ANIMS\\CORPSES\\S_BURNT.STI",
   "ANIMS\\CORPSES\\S_EXPLD.STI",
-};
+];
 
-let gb4DirectionsFrom8: UINT8[] /* [8] */ = {
+let gb4DirectionsFrom8: UINT8[] /* [8] */ = [
   7, // NORTH
   0, // NE
   0, // E
@@ -144,9 +144,9 @@ let gb4DirectionsFrom8: UINT8[] /* [8] */ = {
   0, // SW,
   2, // W,
   0 // NW
-};
+];
 
-let gb2DirectionsFrom8: UINT8[] /* [8] */ = {
+let gb2DirectionsFrom8: UINT8[] /* [8] */ = [
   0, // NORTH
   7, // NE
   7, // E
@@ -155,19 +155,10 @@ let gb2DirectionsFrom8: UINT8[] /* [8] */ = {
   7, // SW,
   7, // W,
   7 // NW
-};
+];
 
-let gbCorpseValidForDecapitation: BOOLEAN[] /* [NUM_CORPSES] */ = {
+let gbCorpseValidForDecapitation: BOOLEAN[] /* [NUM_CORPSES] */ = [
   0,
-  0,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-
   0,
   1,
   1,
@@ -186,69 +177,78 @@ let gbCorpseValidForDecapitation: BOOLEAN[] /* [NUM_CORPSES] */ = {
   1,
   1,
 
-  // Civs....
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-
-  1,
-  1,
-  1,
-  1,
-  0,
-  0,
-  0,
-  0,
   0,
   1,
-
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-};
-
-let gDecapitatedCorpse: INT8[] /* [NUM_CORPSES] */ = {
-  0,
-  SMERC_JFK,
-  SMERC_JFK,
-  SMERC_JFK,
-  SMERC_JFK,
-  SMERC_JFK,
-  SMERC_JFK,
-  SMERC_JFK,
-  SMERC_JFK,
-
-  MMERC_JFK,
-  MMERC_JFK,
-  MMERC_JFK,
-  MMERC_JFK,
-  MMERC_JFK,
-  MMERC_JFK,
-  MMERC_JFK,
-  MMERC_JFK,
-
-  FMERC_JFK,
-  FMERC_JFK,
-  FMERC_JFK,
-  FMERC_JFK,
-  FMERC_JFK,
-  FMERC_JFK,
-  FMERC_JFK,
-  FMERC_JFK,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
 
   // Civs....
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+
+  1,
+  1,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+];
+
+let gDecapitatedCorpse: INT8[] /* [NUM_CORPSES] */ = [
+  0,
+  SMERC_JFK,
+  SMERC_JFK,
+  SMERC_JFK,
+  SMERC_JFK,
+  SMERC_JFK,
+  SMERC_JFK,
+  SMERC_JFK,
+  SMERC_JFK,
+
+  MMERC_JFK,
+  MMERC_JFK,
+  MMERC_JFK,
+  MMERC_JFK,
+  MMERC_JFK,
+  MMERC_JFK,
+  MMERC_JFK,
+  MMERC_JFK,
+
+  FMERC_JFK,
+  FMERC_JFK,
+  FMERC_JFK,
+  FMERC_JFK,
+  FMERC_JFK,
+  FMERC_JFK,
+  FMERC_JFK,
+  FMERC_JFK,
+
+  // Civs....
   0,
   0,
   0,
@@ -279,7 +279,7 @@ let gDecapitatedCorpse: INT8[] /* [NUM_CORPSES] */ = {
   0,
   0,
   0,
-};
+];
 
 let gRottingCorpse: ROTTING_CORPSE[] /* [MAX_ROTTING_CORPSES] */;
 let giNumRottingCorpse: INT32 = 0;

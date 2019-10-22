@@ -30,49 +30,49 @@ let guiEnvWeather: UINT32 = 0;
 let guiRainLoop: UINT32 = NO_SAMPLE;
 
 // frame cues for lightning
-let ubLightningTable: UINT8[][][] /* [3][10][2] */ = {
-  {
-    { 0, 15 },
-    { 1, 0 },
-    { 2, 0 },
-    { 3, 6 },
-    { 4, 0 },
-    { 5, 0 },
-    { 6, 0 },
-    { 7, 0 },
-    { 8, 0 },
-    { 9, 0 },
-  },
+let ubLightningTable: UINT8[][][] /* [3][10][2] */ = [
+  [
+    [ 0, 15 ],
+    [ 1, 0 ],
+    [ 2, 0 ],
+    [ 3, 6 ],
+    [ 4, 0 ],
+    [ 5, 0 ],
+    [ 6, 0 ],
+    [ 7, 0 ],
+    [ 8, 0 ],
+    [ 9, 0 ],
+  ],
 
-  {
-    { 0, 15 },
-    { 1, 0 },
-    { 2, 0 },
-    { 3, 6 },
-    { 4, 0 },
-    { 5, 15 },
-    { 6, 0 },
-    { 7, 6 },
-    { 8, 0 },
-    { 9, 0 },
-  },
+  [
+    [ 0, 15 ],
+    [ 1, 0 ],
+    [ 2, 0 ],
+    [ 3, 6 ],
+    [ 4, 0 ],
+    [ 5, 15 ],
+    [ 6, 0 ],
+    [ 7, 6 ],
+    [ 8, 0 ],
+    [ 9, 0 ],
+  ],
 
-  {
-    { 0, 15 },
-    { 1, 0 },
-    { 2, 15 },
-    { 3, 0 },
-    { 4, 0 },
-    { 5, 0 },
-    { 6, 0 },
-    { 7, 0 },
-    { 8, 0 },
-    { 9, 0 },
-  },
-};
+  [
+    [ 0, 15 ],
+    [ 1, 0 ],
+    [ 2, 15 ],
+    [ 3, 0 ],
+    [ 4, 0 ],
+    [ 5, 0 ],
+    [ 6, 0 ],
+    [ 7, 0 ],
+    [ 8, 0 ],
+    [ 9, 0 ],
+  ],
+];
 
 // CJC: I don't think these are used anywhere!
-let guiTODFlags: UINT8[] /* [ENV_NUM_TIMES] */ = {
+let guiTODFlags: UINT8[] /* [ENV_NUM_TIMES] */ = [
   ENV_TOD_FLAGS_NIGHT, // 00
   ENV_TOD_FLAGS_NIGHT, // 01
   ENV_TOD_FLAGS_NIGHT, // 02
@@ -97,7 +97,7 @@ let guiTODFlags: UINT8[] /* [ENV_NUM_TIMES] */ = {
   ENV_TOD_FLAGS_DUSK, // 21
   ENV_TOD_FLAGS_NIGHT, // 22
   ENV_TOD_FLAGS_NIGHT, // 23
-};
+];
 
 const enum Enum302 {
   COOL,

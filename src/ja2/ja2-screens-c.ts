@@ -18,12 +18,12 @@ let uiDoTitleAnimTime: UINT32 = 0;
 let gfDoTitleAnimation: BOOLEAN = FALSE;
 let gfStartTitleAnimation: BOOLEAN = FALSE;
 
-let gDebugRenderOverride: RENDER_HOOK[] /* [MAX_DEBUG_PAGES] */ = {
+let gDebugRenderOverride: RENDER_HOOK[] /* [MAX_DEBUG_PAGES] */ = [
   DefaultDebugPage1,
   DefaultDebugPage2,
   DefaultDebugPage3,
   DefaultDebugPage4,
-};
+];
 
 function DisplayFrameRate(): void {
   /* static */ let uiFPS: UINT32 = 0;

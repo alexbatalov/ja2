@@ -80,7 +80,7 @@ let gfRenderFullThisFrame: BOOLEAN = 0;
 // UINT8		gubIntTileCheckFlags	 = INTILE_CHECK_FULL;
 let gubIntTileCheckFlags: UINT8 = INTILE_CHECK_SELECTIVE;
 
-let ubRGBItemCycleWhiteColors: UINT8[] /* [] */ = {
+let ubRGBItemCycleWhiteColors: UINT8[] /* [] */ = [
   25, 25, 25,
   50, 50, 50,
   75, 75, 75,
@@ -146,9 +146,9 @@ let ubRGBItemCycleWhiteColors: UINT8[] /* [] */ = {
   75, 75, 75,
   50, 50, 50,
   25, 25, 25,
-};
+];
 
-let ubRGBItemCycleRedColors: UINT8[] /* [] */ = {
+let ubRGBItemCycleRedColors: UINT8[] /* [] */ = [
   25, 0, 0,
   50, 0, 0,
   75, 0, 0,
@@ -214,9 +214,9 @@ let ubRGBItemCycleRedColors: UINT8[] /* [] */ = {
   75, 0, 0,
   50, 0, 0,
   25, 0, 0,
-};
+];
 
-let ubRGBItemCycleYellowColors: UINT8[] /* [] */ = {
+let ubRGBItemCycleYellowColors: UINT8[] /* [] */ = [
   25, 25, 0,
   50, 50, 0,
   75, 75, 0,
@@ -282,28 +282,28 @@ let ubRGBItemCycleYellowColors: UINT8[] /* [] */ = {
   75, 75, 0,
   50, 50, 0,
   25, 25, 0,
-};
+];
 
 const NUMSPEEDS = 5;
 
-let gubNewScrollXSpeeds: UINT8[][] /* [2][NUMSPEEDS] */ = {
-  { 40, 80, 100, 180, 200 }, // Non-video mode scroll
-  { 20, 40, 80, 80, 80 }, // Video mode scroll
-};
+let gubNewScrollXSpeeds: UINT8[][] /* [2][NUMSPEEDS] */ = [
+  [ 40, 80, 100, 180, 200 ], // Non-video mode scroll
+  [ 20, 40, 80, 80, 80 ], // Video mode scroll
+];
 
-let gubNewScrollYSpeeds: UINT8[][] /* [2][NUMSPEEDS] */ = {
-  { 40, 80, 100, 180, 200 }, // Non-video mode scroll
-  { 10, 20, 60, 80, 80 }, // Video mode scroll
-};
+let gubNewScrollYSpeeds: UINT8[][] /* [2][NUMSPEEDS] */ = [
+  [ 40, 80, 100, 180, 200 ], // Non-video mode scroll
+  [ 10, 20, 60, 80, 80 ], // Video mode scroll
+];
 
 // These speeds are only an indication of how long to do each subtile step until moving on to another
-let gubNewScrollIDSpeeds: UINT8[] /* [] */ = {
+let gubNewScrollIDSpeeds: UINT8[] /* [] */ = [
   10,
   10,
   20,
   20,
   20,
-};
+];
 
 let gubScrollSpeedStartID: UINT8 = 2;
 let gubScrollSpeedEndID: UINT8 = 4;
@@ -321,7 +321,7 @@ let uiAdditiveLayerUsedFlags: UINT32 = 0xffffffff;
 // Array of shade values to use.....
 const NUM_GLOW_FRAMES = 30;
 
-let gsGlowFrames: INT16[] /* [] */ = {
+let gsGlowFrames: INT16[] /* [] */ = [
   0,
   0,
   0,
@@ -354,10 +354,10 @@ let gsGlowFrames: INT16[] /* [] */ = {
   4,
   2,
   0,
-};
+];
 
 // This has to be the same # of frames as NUM_GLOW_FRAMES
-let gsFastGlowFrames: INT16[] /* [] */ = {
+let gsFastGlowFrames: INT16[] /* [] */ = [
   0,
   0,
   6,
@@ -390,12 +390,12 @@ let gsFastGlowFrames: INT16[] /* [] */ = {
   7,
   6,
   5,
-};
+];
 
 // The glow frame pointer can be adjusted to use a faster/ slower glow
 let gpGlowFramePointer: Pointer<INT16> = gsGlowFrames;
 
-let gScrollDirectionFlags: UINT32[] /* [NUM_WORLD_DIRECTIONS] */ = {
+let gScrollDirectionFlags: UINT32[] /* [NUM_WORLD_DIRECTIONS] */ = [
   SCROLL_UP | SCROLL_RIGHT,
   SCROLL_RIGHT,
   SCROLL_DOWN | SCROLL_RIGHT,
@@ -404,7 +404,7 @@ let gScrollDirectionFlags: UINT32[] /* [NUM_WORLD_DIRECTIONS] */ = {
   SCROLL_LEFT,
   SCROLL_UP | SCROLL_LEFT,
   SCROLL_UP,
-};
+];
 
 let SCROLL_X_STEP: INT16 = (WORLD_TILE_X);
 let SCROLL_Y_STEP: INT16 = (WORLD_TILE_Y * 2);
@@ -484,7 +484,7 @@ let guiScrollDirection: INT32;
 // Rendering flags (full, partial, etc.)
 let gRenderFlags: UINT32 = 0;
 
-let gClippingRect: SGPRect = { 0, 0, 640, 360 };
+let gClippingRect: SGPRect = [ 0, 0, 640, 360 ];
 let gOldClipRect: SGPRect;
 let gsRenderCenterX: INT16;
 let gsRenderCenterY: INT16;
@@ -507,27 +507,27 @@ interface RenderFXType {
   fObscured: BOOLEAN;
 }
 
-let RenderFX: RenderFXType[] /* [] */ = {
-  { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE }, // STATIC LAND
-  { FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE }, // STATIC OBJECTS
-  { FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE }, // STATIC SHADOWS
-  { FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE }, // STATIC STRUCTS
-  { FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE }, // STATIC ROOF
-  { FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE }, // STATIC ONROOF
-  { FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE }, // STATIC TOPMOST
-  { TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE }, // DYNAMIC LAND
-  { TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE }, // DYNAMIC OBJECT
-  { TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE }, // DYNAMIC SHADOW
-  { TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE }, // DYNAMIC STRUCT MERCS
-  { TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE }, // DYNAMIC MERCS
-  { TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE }, // DYNAMIC STRUCT
-  { TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE }, // DYNAMIC ROOF
-  { TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE }, // DYNAMIC HIGHMERCS
-  { TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE }, // DYNAMIC ONROOF
-  { TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE }, // DYNAMIC TOPMOST
-};
+let RenderFX: RenderFXType[] /* [] */ = [
+  [ FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE ], // STATIC LAND
+  [ FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE ], // STATIC OBJECTS
+  [ FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE ], // STATIC SHADOWS
+  [ FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE ], // STATIC STRUCTS
+  [ FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE ], // STATIC ROOF
+  [ FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE ], // STATIC ONROOF
+  [ FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE ], // STATIC TOPMOST
+  [ TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE ], // DYNAMIC LAND
+  [ TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE ], // DYNAMIC OBJECT
+  [ TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE ], // DYNAMIC SHADOW
+  [ TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE ], // DYNAMIC STRUCT MERCS
+  [ TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE ], // DYNAMIC MERCS
+  [ TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE ], // DYNAMIC STRUCT
+  [ TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE ], // DYNAMIC ROOF
+  [ TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE ], // DYNAMIC HIGHMERCS
+  [ TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE ], // DYNAMIC ONROOF
+  [ TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE ], // DYNAMIC TOPMOST
+];
 
-let RenderFXStartIndex: UINT8[] /* [] */ = {
+let RenderFXStartIndex: UINT8[] /* [] */ = [
   LAND_START_INDEX, // STATIC LAND
   OBJECT_START_INDEX, // STATIC OBJECTS
   SHADOW_START_INDEX, // STATIC SHADOWS
@@ -545,7 +545,7 @@ let RenderFXStartIndex: UINT8[] /* [] */ = {
   MERC_START_INDEX, // DYNAMIC HIGHMERCS
   ONROOF_START_INDEX, // DYNAMIC ONROOF
   TOPMOST_START_INDEX, // DYNAMIC TOPMOST
-};
+];
 
 // INT16 gsCoordArray[ 500 ][ 500 ][ 4 ];
 // INT16 gsCoordArrayX;

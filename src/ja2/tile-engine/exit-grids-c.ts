@@ -1,7 +1,7 @@
 let gfLoadingExitGrids: BOOLEAN = FALSE;
 
 // used by editor.
-let gExitGrid: EXITGRID = { 0, 1, 1, 0 };
+let gExitGrid: EXITGRID = [ 0, 1, 1, 0 ];
 
 let gfOverrideInsertionWithExitGrid: BOOLEAN = FALSE;
 

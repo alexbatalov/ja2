@@ -45,73 +45,73 @@ let gfUseAlternateMap: BOOLEAN = FALSE;
 let fFoundOrta: BOOLEAN = FALSE;
 
 // have any of the sam sites been found
-let fSamSiteFound: BOOLEAN[] /* [NUMBER_OF_SAMS] */ = {
+let fSamSiteFound: BOOLEAN[] /* [NUMBER_OF_SAMS] */ = [
   FALSE,
   FALSE,
   FALSE,
   FALSE,
-};
+];
 
-let pSamList: INT16[] /* [NUMBER_OF_SAMS] */ = {
+let pSamList: INT16[] /* [NUMBER_OF_SAMS] */ = [
   SECTOR(SAM_1_X, SAM_1_Y),
   SECTOR(SAM_2_X, SAM_2_Y),
   SECTOR(SAM_3_X, SAM_3_Y),
   SECTOR(SAM_4_X, SAM_4_Y),
-};
+];
 
-let pSamGridNoAList: INT16[] /* [NUMBER_OF_SAMS] */ = {
+let pSamGridNoAList: INT16[] /* [NUMBER_OF_SAMS] */ = [
   10196,
   11295,
   16080,
   11913,
-};
+];
 
-let pSamGridNoBList: INT16[] /* [NUMBER_OF_SAMS] */ = {
+let pSamGridNoBList: INT16[] /* [NUMBER_OF_SAMS] */ = [
   10195,
   11135,
   15920,
   11912,
-};
+];
 
 // ATE: Update this w/ graphic used
 // Use 3 if / orientation, 4 if \ orientation
-let gbSAMGraphicList: INT8[] /* [NUMBER_OF_SAMS] */ = {
+let gbSAMGraphicList: INT8[] /* [NUMBER_OF_SAMS] */ = [
   4,
   3,
   3,
   3,
-};
+];
 
 let gbMercIsNewInThisSector: INT8[] /* [MAX_NUM_SOLDIERS] */;
 
 // the amount of time that a soldier will wait to return to desired/old squad
 const DESIRE_SQUAD_RESET_DELAY = 12 * 60;
 
-let ubSAMControlledSectors: UINT8[][] /* [MAP_WORLD_Y][MAP_WORLD_X] */ = {
+let ubSAMControlledSectors: UINT8[][] /* [MAP_WORLD_Y][MAP_WORLD_X] */ = [
   //   1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16
-  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+  [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
 
-  { 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 2, 2, 2, 2, 2, 2, 0 }, // A
-  { 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 0 }, // B
-  { 0, 1, 1, 1, 1, 1, 1, 1, 3, 2, 2, 2, 2, 2, 2, 2, 2, 0 }, // C
-  { 0, 1, 1, 1, 1, 1, 1, 1, 3, 3, 2, 2, 2, 2, 2, 2, 2, 0 }, // D
-  { 0, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 0 }, // E
-  { 0, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 0 }, // F
-  { 0, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 0 }, // G
-  { 0, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 0 }, // H
-  { 0, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 0 }, // I
-  { 0, 1, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 0 }, // J
-  { 0, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 0 }, // K
-  { 0, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 0 }, // L
-  { 0, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 2, 2, 2, 0 }, // M
-  { 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 0 }, // N
-  { 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 0 }, // O
-  { 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 0 }, // P
+  [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 2, 2, 2, 2, 2, 2, 0 ], // A
+  [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 0 ], // B
+  [ 0, 1, 1, 1, 1, 1, 1, 1, 3, 2, 2, 2, 2, 2, 2, 2, 2, 0 ], // C
+  [ 0, 1, 1, 1, 1, 1, 1, 1, 3, 3, 2, 2, 2, 2, 2, 2, 2, 0 ], // D
+  [ 0, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 0 ], // E
+  [ 0, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 0 ], // F
+  [ 0, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 0 ], // G
+  [ 0, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 0 ], // H
+  [ 0, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 0 ], // I
+  [ 0, 1, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 0 ], // J
+  [ 0, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 0 ], // K
+  [ 0, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 0 ], // L
+  [ 0, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 2, 2, 2, 0 ], // M
+  [ 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 0 ], // N
+  [ 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 0 ], // O
+  [ 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 0 ], // P
 
-  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-};
+  [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+];
 
-let DirXIncrementer: INT16[] /* [8] */ = {
+let DirXIncrementer: INT16[] /* [8] */ = [
   0, // N
   1, // NE
   1, // E
@@ -120,9 +120,9 @@ let DirXIncrementer: INT16[] /* [8] */ = {
   -1, // SW
   -1, // W
   -1 // NW
-};
+];
 
-let DirYIncrementer: INT16[] /* [8] */ = {
+let DirYIncrementer: INT16[] /* [8] */ = [
   -1, // N
   -1, // NE
   0, // E
@@ -131,9 +131,9 @@ let DirYIncrementer: INT16[] /* [8] */ = {
   1, // SW
   0, // W
   -1 // NW
-};
+];
 
-let pVertStrings: STR8[] /* [] */ = {
+let pVertStrings: STR8[] /* [] */ = [
   "X",
   "A",
   "B",
@@ -153,9 +153,9 @@ let pVertStrings: STR8[] /* [] */ = {
   "P",
   "Q",
   "R",
-};
+];
 
-let pHortStrings: STR8[] /* [] */ = {
+let pHortStrings: STR8[] /* [] */ = [
   "X",
   "1",
   "2",
@@ -174,7 +174,7 @@ let pHortStrings: STR8[] /* [] */ = {
   "15",
   "16",
   "17",
-};
+];
 
 function UndergroundTacticalTraversalTime(bExitDirection: INT8): UINT32 {
   // We are attempting to traverse in an underground environment.  We need to use a complete different
@@ -437,45 +437,45 @@ function GetCurrentWorldSector(psMapX: Pointer<INT16>, psMapY: Pointer<INT16>): 
 
 function HandleRPCDescriptionOfSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
   let cnt: UINT32;
-  let ubSectorDescription: UINT8[][] /* [33][3] */ = {
+  let ubSectorDescription: UINT8[][] /* [33][3] */ = [
     // row (letter), column, quote #
-    { 2, 13, 0 }, // b13	Drassen
-    { 3, 13, 1 }, // c13	Drassen
-    { 4, 13, 2 }, // d13	Drassen
-    { 8, 13, 3 }, // h13	Alma
-    { 8, 14, 4 }, // h14	Alma
-    { 9, 13, 5 }, // i13	Alma * (extra quote 6 if Sci-fi ) *
-    { 9, 14, 7 }, // i14	Alma
-    { 6, 8, 8 }, // f8	Cambria
-    { 6, 9, 9 }, // f9	Cambria
-    { 7, 8, 10 }, // g8	Cambria
+    [ 2, 13, 0 ], // b13	Drassen
+    [ 3, 13, 1 ], // c13	Drassen
+    [ 4, 13, 2 ], // d13	Drassen
+    [ 8, 13, 3 ], // h13	Alma
+    [ 8, 14, 4 ], // h14	Alma
+    [ 9, 13, 5 ], // i13	Alma * (extra quote 6 if Sci-fi ) *
+    [ 9, 14, 7 ], // i14	Alma
+    [ 6, 8, 8 ], // f8	Cambria
+    [ 6, 9, 9 ], // f9	Cambria
+    [ 7, 8, 10 ], // g8	Cambria
 
-    { 7, 9, 11 }, // g9	Cambria
-    { 3, 6, 12 }, // c6	San Mona
-    { 3, 5, 13 }, // c5	San Mona
-    { 4, 5, 14 }, // d5	San Mona
-    { 2, 2, 15 }, // b2	Chitzena
-    { 1, 2, 16 }, // a2	Chitzena
-    { 7, 1, 17 }, // g1	Grumm
-    { 8, 1, 18 }, // h1	Grumm
-    { 7, 2, 19 }, // g2 	Grumm
-    { 8, 2, 20 }, // h2	Grumm
+    [ 7, 9, 11 ], // g9	Cambria
+    [ 3, 6, 12 ], // c6	San Mona
+    [ 3, 5, 13 ], // c5	San Mona
+    [ 4, 5, 14 ], // d5	San Mona
+    [ 2, 2, 15 ], // b2	Chitzena
+    [ 1, 2, 16 ], // a2	Chitzena
+    [ 7, 1, 17 ], // g1	Grumm
+    [ 8, 1, 18 ], // h1	Grumm
+    [ 7, 2, 19 ], // g2 	Grumm
+    [ 8, 2, 20 ], // h2	Grumm
 
-    { 9, 6, 21 }, // i6	Estoni
-    { 11, 4, 22 }, // k4	Orta
-    { 12, 11, 23 }, // l11	Balime
-    { 12, 12, 24 }, // l12	Balime
-    { 15, 3, 25 }, // o3	Meduna
-    { 16, 3, 26 }, // p3	Meduna
-    { 14, 4, 27 }, // n4	Meduna
-    { 14, 3, 28 }, // n3	Meduna
-    { 15, 4, 30 }, // o4	Meduna
-    { 10, 9, 31 }, // j9	Tixa
+    [ 9, 6, 21 ], // i6	Estoni
+    [ 11, 4, 22 ], // k4	Orta
+    [ 12, 11, 23 ], // l11	Balime
+    [ 12, 12, 24 ], // l12	Balime
+    [ 15, 3, 25 ], // o3	Meduna
+    [ 16, 3, 26 ], // p3	Meduna
+    [ 14, 4, 27 ], // n4	Meduna
+    [ 14, 3, 28 ], // n3	Meduna
+    [ 15, 4, 30 ], // o4	Meduna
+    [ 10, 9, 31 ], // j9	Tixa
 
-    { 4, 15, 32 }, // d15	NE SAM
-    { 4, 2, 33 }, // d2	NW SAM
-    { 9, 8, 34 }, // i8	CENTRAL SAM
-  };
+    [ 4, 15, 32 ], // d15	NE SAM
+    [ 4, 2, 33 ], // d2	NW SAM
+    [ 9, 8, 34 ], // i8	CENTRAL SAM
+  ];
 
   // Default to false
   gTacticalStatus.fCountingDownForGuideDescription = FALSE;
@@ -846,12 +846,12 @@ function PrepareLoadedSector(): void {
 
 const RANDOM_HEAD_MINERS = 4;
 function HandleQuestCodeOnSectorEntry(sNewSectorX: INT16, sNewSectorY: INT16, bNewSectorZ: INT8): void {
-  let ubRandomMiner: UINT8[] /* [RANDOM_HEAD_MINERS] */ = {
+  let ubRandomMiner: UINT8[] /* [RANDOM_HEAD_MINERS] */ = [
     106,
     156,
     157,
     158,
-  };
+  ];
   let ubMiner: UINT8;
   let ubMinersPlaced: UINT8;
   let ubMine: UINT8;

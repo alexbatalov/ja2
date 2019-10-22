@@ -855,19 +855,19 @@ function MessageBoxScreenShutdown(): UINT32 {
 
 // a basic box that don't care what screen we came from
 function DoScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
-  let CenteringRect: SGPRect = { 0, 0, 640, INV_INTERFACE_START_Y };
+  let CenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
   DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, &CenteringRect);
 }
 
 // a basic box that don't care what screen we came from
 function DoUpperScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
-  let CenteringRect: SGPRect = { 0, 0, 640, INV_INTERFACE_START_Y / 2 };
+  let CenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y / 2 ];
   DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, &CenteringRect);
 }
 
 // a basic box that don't care what screen we came from
 function DoLowerScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
-  let CenteringRect: SGPRect = { 0, INV_INTERFACE_START_Y / 2, 640, INV_INTERFACE_START_Y };
+  let CenteringRect: SGPRect = [ 0, INV_INTERFACE_START_Y / 2, 640, INV_INTERFACE_START_Y ];
   DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, &CenteringRect);
 }
 

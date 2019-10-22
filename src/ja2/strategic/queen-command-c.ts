@@ -6,11 +6,11 @@ let SectorInfo: SECTORINFO[] /* [256] */;
 let gpUndergroundSectorInfoHead: Pointer<UNDERGROUND_SECTORINFO> = NULL;
 let gfPendingEnemies: BOOLEAN = FALSE;
 
-let gsInterrogationGridNo: INT16[] /* [3] */ = {
+let gsInterrogationGridNo: INT16[] /* [3] */ = [
   7756,
   7757,
   7758,
-};
+];
 
 function ValidateEnemiesHaveWeapons(): void {
 }
@@ -1133,22 +1133,22 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   let fMadeCorpse: BOOLEAN;
   let iNumEnemiesInSector: INT32;
 
-  /* static */ let sAlmaCaptureGridNos: INT16[] /* [] */ = {
+  /* static */ let sAlmaCaptureGridNos: INT16[] /* [] */ = [
     9208,
     9688,
     9215,
-  };
-  /* static */ let sAlmaCaptureItemsGridNo: INT16[] /* [] */ = {
+  ];
+  /* static */ let sAlmaCaptureItemsGridNo: INT16[] /* [] */ = [
     12246,
     12406,
     13046,
-  };
+  ];
 
-  /* static */ let sInterrogationItemGridNo: INT16[] /* [] */ = {
+  /* static */ let sInterrogationItemGridNo: INT16[] /* [] */ = [
     12089,
     12089,
     12089,
-  };
+  ];
 
   // ATE: Check first if ! in player captured sequence already
   // CJC Dec 1 2002: fixing multiple captures

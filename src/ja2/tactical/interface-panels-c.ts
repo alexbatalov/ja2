@@ -235,121 +235,121 @@ let gusNewItemIndex: UINT16;
 let gfDeductPoints: BOOLEAN;
 
 // ARRAY FOR INV PANEL INTERFACE ITEM POSITIONS
-let gSMInvPocketXY: INV_REGION_DESC[] /* [] */ = {
-  { 344, 347 }, // HELMETPOS
-  { 344, 376 }, // VESTPOS
-  { 344, 436 }, // LEGPOS,
-  { 226, 347 }, // HEAD1POS
-  { 226, 371 }, // HEAD2POS
-  { 226, 424 }, // HANDPOS,
-  { 226, 448 }, // SECONDHANDPOS
-  { 468, 346 }, // BIGPOCK1
-  { 468, 370 }, // BIGPOCK2
-  { 468, 394 }, // BIGPOCK3
-  { 468, 418 }, // BIGPOCK4
-  { 396, 346 }, // SMALLPOCK1
-  { 396, 370 }, // SMALLPOCK2
-  { 396, 394 }, // SMALLPOCK3
-  { 396, 418 }, // SMALLPOCK4
-  { 432, 346 }, // SMALLPOCK5
-  { 432, 370 }, // SMALLPOCK6
-  { 432, 394 }, // SMALLPOCK7
-  { 432, 418 }, // SMALLPOCK8
-};
+let gSMInvPocketXY: INV_REGION_DESC[] /* [] */ = [
+  [ 344, 347 ], // HELMETPOS
+  [ 344, 376 ], // VESTPOS
+  [ 344, 436 ], // LEGPOS,
+  [ 226, 347 ], // HEAD1POS
+  [ 226, 371 ], // HEAD2POS
+  [ 226, 424 ], // HANDPOS,
+  [ 226, 448 ], // SECONDHANDPOS
+  [ 468, 346 ], // BIGPOCK1
+  [ 468, 370 ], // BIGPOCK2
+  [ 468, 394 ], // BIGPOCK3
+  [ 468, 418 ], // BIGPOCK4
+  [ 396, 346 ], // SMALLPOCK1
+  [ 396, 370 ], // SMALLPOCK2
+  [ 396, 394 ], // SMALLPOCK3
+  [ 396, 418 ], // SMALLPOCK4
+  [ 432, 346 ], // SMALLPOCK5
+  [ 432, 370 ], // SMALLPOCK6
+  [ 432, 394 ], // SMALLPOCK7
+  [ 432, 418 ], // SMALLPOCK8
+];
 
-let gSMCamoXY: INV_REGION_DESC = {
+let gSMCamoXY: INV_REGION_DESC = [
   SM_BODYINV_X, SM_BODYINV_Y // X, Y Location of cammo region
-};
+];
 
-let sTEAMAPPanelXY: INT16[] /* [] */ = {
+let sTEAMAPPanelXY: INT16[] /* [] */ = [
   69, (6 + INTERFACE_START_Y),
   151, (6 + INTERFACE_START_Y),
   234, (6 + INTERFACE_START_Y),
   317, (6 + INTERFACE_START_Y),
   401, (6 + INTERFACE_START_Y),
   484, (6 + INTERFACE_START_Y),
-};
+];
 
-let sTEAMFacesXY: INT16[] /* [] */ = {
+let sTEAMFacesXY: INT16[] /* [] */ = [
   13, (366),
   97, (366),
   180, (366),
   263, (366),
   346, (366),
   429, (366),
-};
+];
 
-let sTEAMNamesXY: INT16[] /* [] */ = {
+let sTEAMNamesXY: INT16[] /* [] */ = [
   7, (415),
   90, (415),
   173, (415),
   256, (415),
   339, (415),
   422, (415),
-};
+];
 
-let sTEAMFaceHighlXY: INT16[] /* [] */ = {
+let sTEAMFaceHighlXY: INT16[] /* [] */ = [
   4, (2 + INTERFACE_START_Y),
   87, (2 + INTERFACE_START_Y),
   170, (2 + INTERFACE_START_Y),
   253, (2 + INTERFACE_START_Y),
   336, (2 + INTERFACE_START_Y),
   419, (2 + INTERFACE_START_Y),
-};
+];
 
-let sTEAMLifeXY: INT16[] /* [] */ = {
+let sTEAMLifeXY: INT16[] /* [] */ = [
   69, (365 + TM_LIFEBAR_HEIGHT),
   152, (365 + TM_LIFEBAR_HEIGHT),
   235, (365 + TM_LIFEBAR_HEIGHT),
   318, (365 + TM_LIFEBAR_HEIGHT),
   401, (365 + TM_LIFEBAR_HEIGHT),
   484, (365 + TM_LIFEBAR_HEIGHT),
-};
+];
 
-let sTEAMBreathXY: INT16[] /* [] */ = {
+let sTEAMBreathXY: INT16[] /* [] */ = [
   75, (365 + TM_LIFEBAR_HEIGHT),
   158, (365 + TM_LIFEBAR_HEIGHT),
   241, (365 + TM_LIFEBAR_HEIGHT),
   324, (365 + TM_LIFEBAR_HEIGHT),
   407, (365 + TM_LIFEBAR_HEIGHT),
   490, (365 + TM_LIFEBAR_HEIGHT),
-};
+];
 
-let sTEAMMoraleXY: INT16[] /* [] */ = {
+let sTEAMMoraleXY: INT16[] /* [] */ = [
   81, (365 + TM_LIFEBAR_HEIGHT),
   164, (365 + TM_LIFEBAR_HEIGHT),
   247, (365 + TM_LIFEBAR_HEIGHT),
   330, (365 + TM_LIFEBAR_HEIGHT),
   413, (365 + TM_LIFEBAR_HEIGHT),
   496, (365 + TM_LIFEBAR_HEIGHT),
-};
+];
 
-let sTEAMApXY: INT16[] /* [] */ = {
+let sTEAMApXY: INT16[] /* [] */ = [
   70, (413),
   153, (413),
   235, (413),
   319, (413),
   402, (413),
   485, (413),
-};
+];
 
-let sTEAMBarsXY: INT16[] /* [] */ = {
+let sTEAMBarsXY: INT16[] /* [] */ = [
   61, (363),
   145, (363),
   228, (363),
   311, (363),
   394, (363),
   477, (362),
-};
+];
 
-let sTEAMHandInvXY: INT16[] /* [] */ = {
+let sTEAMHandInvXY: INT16[] /* [] */ = [
   TM_INV_HAND1STARTX + (0 * TM_INV_HAND_SEP), TM_INV_HAND1STARTY,
   TM_INV_HAND1STARTX + (1 * TM_INV_HAND_SEP), TM_INV_HAND1STARTY,
   TM_INV_HAND1STARTX + (2 * TM_INV_HAND_SEP), TM_INV_HAND1STARTY,
   TM_INV_HAND1STARTX + (3 * TM_INV_HAND_SEP), TM_INV_HAND1STARTY,
   TM_INV_HAND1STARTX + (4 * TM_INV_HAND_SEP), TM_INV_HAND1STARTY,
   TM_INV_HAND1STARTX + (5 * TM_INV_HAND_SEP), TM_INV_HAND1STARTY,
-};
+];
 
 let iSMPanelButtons: INT32[] /* [NUM_SM_BUTTONS] */;
 let iTEAMPanelButtons: INT32[] /* [NUM_TEAM_BUTTONS] */;
@@ -384,25 +384,25 @@ let gusSMCurrentMerc: UINT16 = 0;
 let gpSMCurrentMerc: Pointer<SOLDIERTYPE> = NULL;
 let gbSMCurStanceObj: INT8;
 
-let gbStanceButPos: INT8[][][] /* [2][3][3] */ = {
+let gbStanceButPos: INT8[][][] /* [2][3][3] */ = [
   // NON-STEALTH
-  {
-    {
-      { 16, 14, 15 },
-      { 10, 8, 9 },
-      { 22, 20, 21 },
-    },
-  },
+  [
+    [
+      [ 16, 14, 15 ],
+      [ 10, 8, 9 ],
+      [ 22, 20, 21 ],
+    ],
+  ],
 
   // STEALTH MODE
-  {
-    {
-      { 13, 11, 12 },
-      { 7, 5, 6 },
-      { 19, 17, 18 },
-    },
-  },
-};
+  [
+    [
+      [ 13, 11, 12 ],
+      [ 7, 5, 6 ],
+      [ 19, 17, 18 ],
+    ],
+  ],
+];
 
 // Wraps up check for AP-s get from a different soldier for in a vehicle...
 function GetUIApsToDisplay(pSoldier: Pointer<SOLDIERTYPE>): INT8 {

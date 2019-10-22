@@ -1,7 +1,7 @@
 // This value is used to keep a small static array of uBID's which are stacked
 const MAX_STACKED_MERCS = 10;
 
-let gScrollSlideInertiaDirection: UINT32[] /* [NUM_WORLD_DIRECTIONS] */ = {
+let gScrollSlideInertiaDirection: UINT32[] /* [NUM_WORLD_DIRECTIONS] */ = [
   3,
   0,
   0,
@@ -10,7 +10,7 @@ let gScrollSlideInertiaDirection: UINT32[] /* [NUM_WORLD_DIRECTIONS] */ = {
   0,
   3,
   3,
-};
+];
 
 // Struct used for cycling through multiple mercs per mouse position
 interface SOLDIER_STACK_TYPE {

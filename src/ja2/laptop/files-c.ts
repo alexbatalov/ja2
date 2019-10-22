@@ -66,7 +66,7 @@ let giFilesPage: INT32 = 0;
 const SLAY_LENGTH = 12;
 const ENRICO_LENGTH = 0;
 
-let ubFileRecordsLength: UINT8[] /* [] */ = {
+let ubFileRecordsLength: UINT8[] /* [] */ = [
   ENRICO_LENGTH,
   SLAY_LENGTH,
   SLAY_LENGTH,
@@ -74,9 +74,9 @@ let ubFileRecordsLength: UINT8[] /* [] */ = {
   SLAY_LENGTH,
   SLAY_LENGTH,
   SLAY_LENGTH,
-};
+];
 
-let ubFileOffsets: UINT16[] /* [] */ = {
+let ubFileOffsets: UINT16[] /* [] */ = [
   0,
   ENRICO_LENGTH,
   SLAY_LENGTH + ENRICO_LENGTH,
@@ -84,9 +84,9 @@ let ubFileOffsets: UINT16[] /* [] */ = {
   3 * SLAY_LENGTH + ENRICO_LENGTH,
   4 * SLAY_LENGTH + ENRICO_LENGTH,
   5 * SLAY_LENGTH + ENRICO_LENGTH,
-};
+];
 
-let usProfileIdsForTerroristFiles: UINT16[] /* [] */ = {
+let usProfileIdsForTerroristFiles: UINT16[] /* [] */ = [
   0, // no body
   112, // elgin
   64, // slay
@@ -95,7 +95,7 @@ let usProfileIdsForTerroristFiles: UINT16[] /* [] */ = {
   110, // tiff
   111, // t-rex
   112, // elgin
-};
+];
 // buttons for next and previous pages
 let giFilesPageButtons: UINT32[] /* [2] */;
 let giFilesPageButtonsImage: UINT32[] /* [2] */;

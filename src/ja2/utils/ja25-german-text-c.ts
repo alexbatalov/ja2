@@ -1,6 +1,6 @@
 // VERY TRUNCATED FILE COPIED FROM JA2.5 FOR ITS FEATURES FOR JA2 GOLD
 
-let zNewTacticalMessages: STR16[] /* [] */ = {
+let zNewTacticalMessages: STR16[] /* [] */ = [
   L"Entfernung zum Ziel: %d Felder",
   L"Verbinden Sie den Transmitter mit Ihrem Laptop-Computer.",
   L"Sie haben nicht genug Geld, um %s anzuheuern",
@@ -24,9 +24,9 @@ let zNewTacticalMessages: STR16[] /* [] */ = {
   L"Kampagne: %S",
   L"Sie haben die Kampagne %S gewählt. Diese ist eine vom Spieler modifizierte Version der Originalkampagne von JA2UB. Möchten Sie die Kampagne %S spielen?",
   L"Um den Editor zu benutzen, müssen Sie eine andere als die Standardkampgane auswählen.",
-};
+];
 
 //@@@:  New string as of March 3, 2000.
-let gzIronManModeWarningText: STR16[] /* [] */ = {
+let gzIronManModeWarningText: STR16[] /* [] */ = [
   L"You have chosen IRON MAN mode. This setting makes the game considerably more challenging as you will not be able to save your game when in a sector occupied by enemies. This setting will affect the entire course of the game.  Are you sure want to play in IRON MAN mode?",
-};
+];

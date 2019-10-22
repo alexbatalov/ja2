@@ -24,7 +24,7 @@
 //
 //**************************************************************************
 
-let gzJA2ScreenNames: STR16[] /* [] */ = {
+let gzJA2ScreenNames: STR16[] /* [] */ = [
   L"EDIT_SCREEN",
   L"SAVING_SCREEN",
   L"LOADING_SCREEN",
@@ -50,7 +50,7 @@ let gzJA2ScreenNames: STR16[] /* [] */ = {
   L"DEMO_EXIT_SCREEN",
   L"INTRO_SCREEN",
   L"CREDIT_SCREEN",
-};
+];
 
 /* static */ let gfMemDebug: BOOLEAN = TRUE;
 // debug variable for total memory currently allocated

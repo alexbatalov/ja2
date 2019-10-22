@@ -48,11 +48,11 @@ const WAV_CHUNK_DATA = 2;
 
 const NUM_WAV_CHUNKS = 3;
 
-let cWAVChunks: Pointer<CHAR8>[] /* [3] */ = {
+let cWAVChunks: Pointer<CHAR8>[] /* [3] */ = [
   "RIFF",
   "FMT ",
   "DATA",
-};
+];
 
 // global settings
 const SOUND_MAX_CACHED = 128; // number of cache slots
@@ -98,7 +98,7 @@ let gh3DListener: H3DPOBJECT = 0;
 let gfUsingEAX: BOOLEAN = TRUE;
 let guiRoomTypeIndex: UINT32 = 0;
 
-let pEAXRoomTypes: Pointer<CHAR8>[] /* [EAXROOMTYPE_NUM_TYPES] */ = {
+let pEAXRoomTypes: Pointer<CHAR8>[] /* [EAXROOMTYPE_NUM_TYPES] */ = [
   // None
   "PLAIN",
 
@@ -118,7 +118,7 @@ let pEAXRoomTypes: Pointer<CHAR8>[] /* [EAXROOMTYPE_NUM_TYPES] */ = {
 
   // Swimming
   "UNDERWATER",
-};
+];
 
 //*******************************************************************************
 // High Level Interface

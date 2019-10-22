@@ -204,15 +204,15 @@ interface MoneyLoc {
   y: UINT16;
 }
 
-let gMoneyButtonLoc: MoneyLoc = { 343, 351 };
-let gMoneyButtonOffsets: MoneyLoc[] /* [] */ = {
-  { 0, 0 },
-  { 34, 0 },
-  { 0, 32 },
-  { 34, 32 },
-  { 8, 22 },
-};
-let gMapMoneyButtonLoc: MoneyLoc = { 174, 115 };
+let gMoneyButtonLoc: MoneyLoc = [ 343, 351 ];
+let gMoneyButtonOffsets: MoneyLoc[] /* [] */ = [
+  [ 0, 0 ],
+  [ 34, 0 ],
+  [ 0, 32 ],
+  [ 34, 32 ],
+  [ 8, 22 ],
+];
+let gMapMoneyButtonLoc: MoneyLoc = [ 174, 115 ];
 
 // number of keys on keyring, temp for now
 const NUMBER_KEYS_ON_KEYRING = 28;
@@ -250,7 +250,7 @@ let giMapInvDescButton: INT32 = -1;
 
 let gfItemPopupRegionCallbackEndFix: BOOLEAN = FALSE;
 
-let ubRGBItemCyclePlacedItemColors: UINT8[] /* [] */ = {
+let ubRGBItemCyclePlacedItemColors: UINT8[] /* [] */ = [
   25, 25, 25,
   50, 50, 50,
   75, 75, 75,
@@ -272,7 +272,7 @@ let ubRGBItemCyclePlacedItemColors: UINT8[] /* [] */ = {
   75, 75, 75,
   50, 50, 50,
   25, 25, 25,
-};
+];
 
 interface INV_DESC_STATS {
   sX: INT16;
@@ -299,103 +299,103 @@ interface INV_HELPTEXT {
   sString2: STR16[] /* [NUM_INV_HELPTEXT_ENTRIES] */;
 }
 
-let gWeaponStats: INV_DESC_STATS[] /* [] */ = {
-  { 202, 25, 83 },
-  { 202, 15, 83 },
-  { 202, 15, 83 },
-  { 265, 40, 20 },
-  { 202, 40, 32 },
-  { 202, 50, 32 },
-  { 265, 50, 20 },
-  { 234, 50, 0 },
-  { 290, 50, 0 },
-};
+let gWeaponStats: INV_DESC_STATS[] /* [] */ = [
+  [ 202, 25, 83 ],
+  [ 202, 15, 83 ],
+  [ 202, 15, 83 ],
+  [ 265, 40, 20 ],
+  [ 202, 40, 32 ],
+  [ 202, 50, 32 ],
+  [ 265, 50, 20 ],
+  [ 234, 50, 0 ],
+  [ 290, 50, 0 ],
+];
 
 // displayed AFTER the mass/weight/"Kg" line
-let gMoneyStats: INV_DESC_STATS[] /* [] */ = {
-  { 202, 14, 78 },
-  { 212, 25, 78 },
-  { 202, 40, 78 },
-  { 212, 51, 78 },
-};
+let gMoneyStats: INV_DESC_STATS[] /* [] */ = [
+  [ 202, 14, 78 ],
+  [ 212, 25, 78 ],
+  [ 202, 40, 78 ],
+  [ 212, 51, 78 ],
+];
 
 // displayed AFTER the mass/weight/"Kg" line
-let gMapMoneyStats: INV_DESC_STATS[] /* [] */ = {
-  { 51, 97, 45 },
-  { 61, 107, 75 },
-  { 51, 125, 45 },
-  { 61, 135, 70 },
-};
+let gMapMoneyStats: INV_DESC_STATS[] /* [] */ = [
+  [ 51, 97, 45 ],
+  [ 61, 107, 75 ],
+  [ 51, 125, 45 ],
+  [ 61, 135, 70 ],
+];
 
-let gMapWeaponStats: INV_DESC_STATS[] /* [] */ = {
-  { 72 - 20, 20 + 80 + 8, 80 },
-  { 72 - 20, 20 + 80 - 2, 80 },
-  { 72 - 20, 20 + 80 - 2, 80 },
-  { 72 + 65 - 20, 40 + 80 + 4, 21 },
-  { 72 - 20, 40 + 80 + 4, 30 },
-  { 72 - 20, 53 + 80 + 2, 30 },
-  { 72 + 65 - 20, 53 + 80 + 2, 25 },
-  { 86, 53 + 80 + 2, 0 },
-  { 145, 53 + 80 + 2, 0 },
-};
+let gMapWeaponStats: INV_DESC_STATS[] /* [] */ = [
+  [ 72 - 20, 20 + 80 + 8, 80 ],
+  [ 72 - 20, 20 + 80 - 2, 80 ],
+  [ 72 - 20, 20 + 80 - 2, 80 ],
+  [ 72 + 65 - 20, 40 + 80 + 4, 21 ],
+  [ 72 - 20, 40 + 80 + 4, 30 ],
+  [ 72 - 20, 53 + 80 + 2, 30 ],
+  [ 72 + 65 - 20, 53 + 80 + 2, 25 ],
+  [ 86, 53 + 80 + 2, 0 ],
+  [ 145, 53 + 80 + 2, 0 ],
+];
 
-let gItemDescAttachmentsXY: INV_ATTACHXY[] /* [] */ = {
-  { 129, 12, SM_INV_SLOT_HEIGHT, SM_INV_SLOT_WIDTH, INV_BAR_DX - 1, INV_BAR_DY + 1 },
-  { 163, 12, SM_INV_SLOT_HEIGHT, SM_INV_SLOT_WIDTH, INV_BAR_DX - 1, INV_BAR_DY + 1 },
-  { 129, 39, SM_INV_SLOT_HEIGHT, SM_INV_SLOT_WIDTH, INV_BAR_DX - 1, INV_BAR_DY + 1 },
-  { 163, 39, SM_INV_SLOT_HEIGHT, SM_INV_SLOT_WIDTH, INV_BAR_DX - 1, INV_BAR_DY + 1 },
-};
+let gItemDescAttachmentsXY: INV_ATTACHXY[] /* [] */ = [
+  [ 129, 12, SM_INV_SLOT_HEIGHT, SM_INV_SLOT_WIDTH, INV_BAR_DX - 1, INV_BAR_DY + 1 ],
+  [ 163, 12, SM_INV_SLOT_HEIGHT, SM_INV_SLOT_WIDTH, INV_BAR_DX - 1, INV_BAR_DY + 1 ],
+  [ 129, 39, SM_INV_SLOT_HEIGHT, SM_INV_SLOT_WIDTH, INV_BAR_DX - 1, INV_BAR_DY + 1 ],
+  [ 163, 39, SM_INV_SLOT_HEIGHT, SM_INV_SLOT_WIDTH, INV_BAR_DX - 1, INV_BAR_DY + 1 ],
+];
 
-let gMapItemDescAttachmentsXY: INV_ATTACHXY[] /* [] */ = {
-  { 173, 10, SM_INV_SLOT_HEIGHT, 26, INV_BAR_DX + 2, INV_BAR_DY },
-  { 211, 10, SM_INV_SLOT_HEIGHT, 26, INV_BAR_DX + 2, INV_BAR_DY },
-  { 173, 36, SM_INV_SLOT_HEIGHT, 26, INV_BAR_DX + 2, INV_BAR_DY },
-  { 211, 36, SM_INV_SLOT_HEIGHT, 26, INV_BAR_DX + 2, INV_BAR_DY },
-};
+let gMapItemDescAttachmentsXY: INV_ATTACHXY[] /* [] */ = [
+  [ 173, 10, SM_INV_SLOT_HEIGHT, 26, INV_BAR_DX + 2, INV_BAR_DY ],
+  [ 211, 10, SM_INV_SLOT_HEIGHT, 26, INV_BAR_DX + 2, INV_BAR_DY ],
+  [ 173, 36, SM_INV_SLOT_HEIGHT, 26, INV_BAR_DX + 2, INV_BAR_DY ],
+  [ 211, 36, SM_INV_SLOT_HEIGHT, 26, INV_BAR_DX + 2, INV_BAR_DY ],
+];
 
-let gItemDescProsConsRects: SGPRect[] /* [] */ = {
+let gItemDescProsConsRects: SGPRect[] /* [] */ = [
   // NB the left value is calculated based on the width of the 'pros' and 'cons' labels
-  { 0, 111, 313, 118 },
-  { 0, 119, 313, 126 },
-};
+  [ 0, 111, 313, 118 ],
+  [ 0, 119, 313, 126 ],
+];
 
-let gMapItemDescProsConsRects: SGPRect[] /* [] */ = {
-  { 0, 231, 313, 238 },
-  { 0, 239, 313, 246 },
-};
+let gMapItemDescProsConsRects: SGPRect[] /* [] */ = [
+  [ 0, 231, 313, 238 ],
+  [ 0, 239, 313, 246 ],
+];
 
-let gItemDescHelpText: INV_HELPTEXT = {
-  { 69 }, // x locations
-  { 12 }, // y locations
-  { 170 }, // widths
-  { Message[STR_ATTACHMENT_HELP] },
-  { Message[STR_ATTACHMENT_INVALID_HELP] },
-};
+let gItemDescHelpText: INV_HELPTEXT = [
+  [ 69 ], // x locations
+  [ 12 ], // y locations
+  [ 170 ], // widths
+  [ Message[STR_ATTACHMENT_HELP] ],
+  [ Message[STR_ATTACHMENT_INVALID_HELP] ],
+];
 
 let gfItemDescHelpTextOffset: BOOLEAN = FALSE;
 
 // ARRAY FOR INV PANEL INTERFACE ITEM POSITIONS (sX,sY get set via InitInvSlotInterface() )
-let gSMInvData: INV_REGIONS[] /* [] */ = {
-  { FALSE, INV_BAR_DX, INV_BAR_DY, HEAD_INV_SLOT_WIDTH, HEAD_INV_SLOT_HEIGHT, 0, 0 }, // HELMETPOS
-  { FALSE, INV_BAR_DX, INV_BAR_DY, VEST_INV_SLOT_WIDTH, VEST_INV_SLOT_HEIGHT, 0, 0 }, // VESTPOS
-  { FALSE, INV_BAR_DX, INV_BAR_DY, LEGS_INV_SLOT_WIDTH, LEGS_INV_SLOT_HEIGHT, 0, 0 }, // LEGPOS,
-  { FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 }, // HEAD1POS
-  { FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 }, // HEAD2POS
-  { TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 }, // HANDPOS,
-  { TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 }, // SECONDHANDPOS
-  { TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 }, // BIGPOCK1
-  { TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 }, // BIGPOCK2
-  { TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 }, // BIGPOCK3
-  { TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 }, // BIGPOCK4
-  { FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 }, // SMALLPOCK1
-  { FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 }, // SMALLPOCK2
-  { FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 }, // SMALLPOCK3
-  { FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 }, // SMALLPOCK4
-  { FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 }, // SMALLPOCK5
-  { FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 }, // SMALLPOCK6
-  { FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 }, // SMALLPOCK7
-  { FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 }, // SMALLPOCK8
-};
+let gSMInvData: INV_REGIONS[] /* [] */ = [
+  [ FALSE, INV_BAR_DX, INV_BAR_DY, HEAD_INV_SLOT_WIDTH, HEAD_INV_SLOT_HEIGHT, 0, 0 ], // HELMETPOS
+  [ FALSE, INV_BAR_DX, INV_BAR_DY, VEST_INV_SLOT_WIDTH, VEST_INV_SLOT_HEIGHT, 0, 0 ], // VESTPOS
+  [ FALSE, INV_BAR_DX, INV_BAR_DY, LEGS_INV_SLOT_WIDTH, LEGS_INV_SLOT_HEIGHT, 0, 0 ], // LEGPOS,
+  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // HEAD1POS
+  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // HEAD2POS
+  [ TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // HANDPOS,
+  [ TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // SECONDHANDPOS
+  [ TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // BIGPOCK1
+  [ TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // BIGPOCK2
+  [ TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // BIGPOCK3
+  [ TRUE, INV_BAR_DX, INV_BAR_DY, BIG_INV_SLOT_WIDTH, BIG_INV_SLOT_HEIGHT, 0, 0 ], // BIGPOCK4
+  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK1
+  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK2
+  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK3
+  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK4
+  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK5
+  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK6
+  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK7
+  [ FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 ], // SMALLPOCK8
+];
 
 interface REMOVE_MONEY {
   uiTotalAmount: UINT32;

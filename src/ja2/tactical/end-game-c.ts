@@ -1,9 +1,9 @@
-let sStatueGridNos: INT16[] /* [] */ = {
+let sStatueGridNos: INT16[] /* [] */ = [
   13829,
   13830,
   13669,
   13670,
-};
+];
 
 let gpKillerSoldier: Pointer<SOLDIERTYPE> = NULL;
 let gsGridNo: INT16;

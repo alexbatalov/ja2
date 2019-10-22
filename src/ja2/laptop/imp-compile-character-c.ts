@@ -13,26 +13,26 @@ let PersonalityList: INT32[] /* [ATTITUDE_LIST_SIZE] */;
 let iLastElementInPersonalityList: INT32 = 0;
 
 // positions of the face x and y for eyes and mouth for the 10 portraits
-let sFacePositions: INT16[][] /* [NUMBER_OF_PLAYER_PORTRAITS][4] */ = {
-  { 0, 0, 0, 0 },
-  { 0, 0, 0, 0 },
-  { 0, 0, 0, 0 },
-  { 0, 0, 0, 0 },
-  { 0, 0, 0, 0 },
-  { 0, 0, 0, 0 },
-  { 0, 0, 0, 0 },
-  { 0, 0, 0, 0 },
-  { 0, 0, 0, 0 },
-  { 0, 0, 0, 0 },
-  { 0, 0, 0, 0 },
-  { 0, 0, 0, 0 },
-  { 0, 0, 0, 0 },
-  { 0, 0, 0, 0 },
-  { 0, 0, 0, 0 },
-  { 0, 0, 0, 0 },
-};
+let sFacePositions: INT16[][] /* [NUMBER_OF_PLAYER_PORTRAITS][4] */ = [
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0 ],
+];
 
-let pPlayerSelectedFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] */ = {
+let pPlayerSelectedFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] */ = [
   "Faces\\200.sti",
   "Faces\\201.sti",
   "Faces\\202.sti",
@@ -49,9 +49,9 @@ let pPlayerSelectedFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] */ = {
   "Faces\\213.sti",
   "Faces\\214.sti",
   "Faces\\215.sti",
-};
+];
 
-let pPlayerSelectedBigFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] */ = {
+let pPlayerSelectedBigFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] */ = [
   "Faces\\BigFaces\\200.sti",
   "Faces\\BigFaces\\201.sti",
   "Faces\\BigFaces\\202.sti",
@@ -68,7 +68,7 @@ let pPlayerSelectedBigFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] */ =
   "Faces\\BigFaces\\213.sti",
   "Faces\\BigFaces\\214.sti",
   "Faces\\BigFaces\\215.sti",
-};
+];
 
 function CreateACharacterFromPlayerEnteredStats(): void {
   // copy over full name
@@ -157,7 +157,7 @@ function CreatePlayerAttitude(): void {
   let iCounter: INT32 = 0;
   let iCounter2: INT32 = 0;
 
-  let iAttitudeHits: INT32[] /* [NUM_ATTITUDES] */ = { 0 };
+  let iAttitudeHits: INT32[] /* [NUM_ATTITUDES] */ = [ 0 ];
   let iHighestHits: INT32 = 0;
   let iNumAttitudesWithHighestHits: INT32 = 0;
 
@@ -548,21 +548,21 @@ function SetMercSkinAndHairColors(): void {
   };
 
   // skin strings
-  let sSkinStrings: STR[] /* [] */ = {
+  let sSkinStrings: STR[] /* [] */ = [
     "PINKSKIN",
     "TANSKIN",
     "DARKSKIN",
     "BLACKSKIN",
-  };
+  ];
 
   // the hair colors
-  let sHairStrings: STR[] /* [] */ = {
+  let sHairStrings: STR[] /* [] */ = [
     "BROWNHEAD",
     "BLACKHEAD",
     "WHITEHEAD",
     "BLONDHEAD",
     "REDHEAD",
-  };
+  ];
 
   // given the portrait number, set the merc's skin and hair color
   let sSkinColor: INT16 = 0;

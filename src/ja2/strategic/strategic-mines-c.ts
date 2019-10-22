@@ -18,43 +18,43 @@ const MINE_PRODUCTION_PERIOD = (3 * 60); // time seperating daily mine productio
 let gMineStatus: MINE_STATUS_TYPE[] /* [MAX_NUMBER_OF_MINES] */;
 
 // this table holds mine values that never change and don't need to be saved
-let gMineLocation: MINE_LOCATION_TYPE[] /* [MAX_NUMBER_OF_MINES] */ = {
-  { 4, 4, SAN_MONA },
-  { 13, 4, DRASSEN },
-  { 14, 9, ALMA },
-  { 8, 8, CAMBRIA },
-  { 2, 2, CHITZENA },
-  { 3, 8, GRUMM },
-};
+let gMineLocation: MINE_LOCATION_TYPE[] /* [MAX_NUMBER_OF_MINES] */ = [
+  [ 4, 4, SAN_MONA ],
+  [ 13, 4, DRASSEN ],
+  [ 14, 9, ALMA ],
+  [ 8, 8, CAMBRIA ],
+  [ 2, 2, CHITZENA ],
+  [ 3, 8, GRUMM ],
+];
 
 // the are not being randomized at all at this time
-let gubMineTypes: UINT8[] /* [] */ = {
+let gubMineTypes: UINT8[] /* [] */ = [
   GOLD_MINE, // SAN MONA
   SILVER_MINE, // DRASSEN
   SILVER_MINE, // ALMA
   SILVER_MINE, // CAMBRIA
   SILVER_MINE, // CHITZENA
   GOLD_MINE, // GRUMM
-};
+];
 
 // These values also determine the most likely ratios of mine sizes after random production increases are done
-let guiMinimumMineProduction: UINT32[] /* [] */ = {
+let guiMinimumMineProduction: UINT32[] /* [] */ = [
   0, // SAN MONA
   1000, // DRASSEN
   1500, // ALMA
   1500, // CAMBRIA
   500, // CHITZENA
   2000, // GRUMM
-};
+];
 
-let gHeadMinerData: HEAD_MINER_TYPE[] /* [NUM_HEAD_MINERS] */ = {
+let gHeadMinerData: HEAD_MINER_TYPE[] /* [NUM_HEAD_MINERS] */ = [
   //	Profile #		running out		creatures!		all dead!		creatures again!		external face graphic
-  { FRED, 17, 18, 27, 26, MINER_FRED_EXTERNAL_FACE },
-  { MATT, -1, 18, 32, 31, MINER_MATT_EXTERNAL_FACE },
-  { OSWALD, 14, 15, 24, 23, MINER_OSWALD_EXTERNAL_FACE },
-  { CALVIN, 14, 15, 24, 23, MINER_CALVIN_EXTERNAL_FACE },
-  { CARL, 14, 15, 24, 23, MINER_CARL_EXTERNAL_FACE },
-};
+  [ FRED, 17, 18, 27, 26, MINER_FRED_EXTERNAL_FACE ],
+  [ MATT, -1, 18, 32, 31, MINER_MATT_EXTERNAL_FACE ],
+  [ OSWALD, 14, 15, 24, 23, MINER_OSWALD_EXTERNAL_FACE ],
+  [ CALVIN, 14, 15, 24, 23, MINER_CALVIN_EXTERNAL_FACE ],
+  [ CARL, 14, 15, 24, 23, MINER_CARL_EXTERNAL_FACE ],
+];
 
 /* gradual monster infestation concept was ditched, now simply IN PRODUCTION or SHUT DOWN
 

@@ -120,25 +120,25 @@ interface FlowerOrderLocationStruct {
 
 const FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS = 17;
 
-let FlowerOrderLocations: FlowerOrderLocationStruct[] /* [FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS] */ = {
-  { &pDeliveryLocationStrings[0], 20, 15 },
-  { &pDeliveryLocationStrings[1], 95, 70 },
-  { &pDeliveryLocationStrings[2], 100, 75 },
-  { &pDeliveryLocationStrings[3], 50, 35 },
-  { &pDeliveryLocationStrings[4], 70, 50 },
-  { &pDeliveryLocationStrings[5], 45, 35 },
-  { &pDeliveryLocationStrings[6], 30, 25 },
-  { &pDeliveryLocationStrings[7], 100, 75 },
-  { &pDeliveryLocationStrings[8], 100, 75 },
-  { &pDeliveryLocationStrings[9], 30, 25 },
-  { &pDeliveryLocationStrings[10], 95, 70 },
-  { &pDeliveryLocationStrings[11], 30, 25 },
-  { &pDeliveryLocationStrings[12], 40, 30 },
-  { &pDeliveryLocationStrings[13], 45, 35 },
-  { &pDeliveryLocationStrings[14], 95, 70 },
-  { &pDeliveryLocationStrings[15], 50, 40 },
-  { &pDeliveryLocationStrings[16], 40, 30 },
-};
+let FlowerOrderLocations: FlowerOrderLocationStruct[] /* [FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS] */ = [
+  [ &pDeliveryLocationStrings[0], 20, 15 ],
+  [ &pDeliveryLocationStrings[1], 95, 70 ],
+  [ &pDeliveryLocationStrings[2], 100, 75 ],
+  [ &pDeliveryLocationStrings[3], 50, 35 ],
+  [ &pDeliveryLocationStrings[4], 70, 50 ],
+  [ &pDeliveryLocationStrings[5], 45, 35 ],
+  [ &pDeliveryLocationStrings[6], 30, 25 ],
+  [ &pDeliveryLocationStrings[7], 100, 75 ],
+  [ &pDeliveryLocationStrings[8], 100, 75 ],
+  [ &pDeliveryLocationStrings[9], 30, 25 ],
+  [ &pDeliveryLocationStrings[10], 95, 70 ],
+  [ &pDeliveryLocationStrings[11], 30, 25 ],
+  [ &pDeliveryLocationStrings[12], 40, 30 ],
+  [ &pDeliveryLocationStrings[13], 45, 35 ],
+  [ &pDeliveryLocationStrings[14], 95, 70 ],
+  [ &pDeliveryLocationStrings[15], 50, 40 ],
+  [ &pDeliveryLocationStrings[16], 40, 30 ],
+];
 
 let guiDeliveryLocation: UINT32;
 let guiFlowerFrame: UINT32;
@@ -168,18 +168,18 @@ const enum Enum81 {
 let gubFlowerDestDropDownMode: UINT8;
 let gubCurrentlySelectedFlowerLocation: UINT8;
 
-let gsSentimentTextField: wchar_t[] /* [FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS] */ = { 0 };
-let gsNameTextField: wchar_t[] /* [FLOWER_ORDER_NAME_FIELD_NUM_CHARS] */ = { 0 };
+let gsSentimentTextField: wchar_t[] /* [FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS] */ = [ 0 ];
+let gsNameTextField: wchar_t[] /* [FLOWER_ORDER_NAME_FIELD_NUM_CHARS] */ = [ 0 ];
 
 // buttons
 let guiFlowerOrderButtonImage: INT32;
 
-let gubFlowerOrder_AdditioanalServicePrices: UINT8[] /* [] */ = {
+let gubFlowerOrder_AdditioanalServicePrices: UINT8[] /* [] */ = [
   10,
   20,
   10,
   10,
-};
+];
 
 let guiFlowerOrderBackButton: UINT32;
 

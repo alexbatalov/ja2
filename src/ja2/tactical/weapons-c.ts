@@ -75,10 +75,10 @@ const MONSTSPIT = (impact, rof, deadl, clip, range, av, hv, sd) =>
 // from Compendium of Modern Firearms (Edge of the Sword Vol 1)
 
 // JA2 GOLD: reduced pistol ready time to 0, tweaked sniper rifle values and G11 range
-let Weapon: WEAPONTYPE[] /* [MAX_WEAPONS] */ = {
+let Weapon: WEAPONTYPE[] /* [MAX_WEAPONS] */ = [
   //          Description			  Ammo      Bullet	Ready	 4xSng Burst	Burst	Deadl	Accu	Clip	Range Attack Impact		Fire
   //										   Spd  Imp	Time	 ROF	 ROF		penal	iness	racy	Size					Vol   Vol			Sounds
-  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0 }, // nada!  must have min range of 10
+  [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0 ], // nada!  must have min range of 10
   PISTOL(/* Glock 17			*/ AMMO9, 24, 21, 0, 14, 0, 0, 8, 0, 15, 120, 60, 5, S_GLOCK17, NO_WEAPON_SOUND), // wt 6  // Austria
   M_PISTOL(/* Glock 18		*/ AMMO9, 24, 21, 0, 14, 5, 15, 9, 0, 15, 120, 60, 5, S_GLOCK18, S_BURSTTYPE1), // wt 6  // Austria
   PISTOL(/* Beretta 92F     */ AMMO9, 23, 22, 0, 16, 0, 0, 9, 0, 15, 120, 60, 5, S_BERETTA92, NO_WEAPON_SOUND), // wt 11 // Italy
@@ -125,10 +125,10 @@ let Weapon: WEAPONTYPE[] /* [MAX_WEAPONS] */ = {
 
   BLADE(/* Combat knife    */ 18, 12, 5, 40, 2, NO_WEAPON_SOUND),
   THROWINGBLADE(/* Throwing knife  */ 15, 12, 4, 150, 2, S_THROWKNIFE),
-  { 0 }, // rock
+  [ 0 ], // rock
   LAUNCHER(/* grenade launcher*/ 30, 3, 5, 80, 0, 500, 20, 10, S_GLAUNCHER),
   LAUNCHER(/* mortar */ 30, 0, 5, 100, 0, 550, 20, 10, S_MORTAR_SHOT),
-  { 0 }, // another rock
+  [ 0 ], // another rock
   BLADE(/* yng male claws */ 14, 10, 1, 10, 2, NO_WEAPON_SOUND),
   BLADE(/* yng fem claws */ 18, 10, 1, 10, 2, NO_WEAPON_SOUND),
   BLADE(/* old male claws */ 20, 10, 1, 10, 2, NO_WEAPON_SOUND),
@@ -153,141 +153,141 @@ let Weapon: WEAPONTYPE[] /* [MAX_WEAPONS] */ = {
   SHOTGUN(/* Flamethrower */ AMMOFLAME, 24, 60, 2, 10, 0, 0, 53, 0, 5, 130, 40, 8, S_CAWS, S_BURSTTYPE1),
   PUNCHWEAPON(/* crowbar */ 25, 10, 4, 0, 0),
   ASRIFLE(/* auto rckt rifle */ AMMOROCKET, 20, 38, 2, 12, 5, 10, 97, 0, 5, 600, 80, 10, S_SMALL_ROCKET_LAUNCHER, S_BURSTTYPE1),
-};
+];
 
-let Magazine: MAGTYPE[] /* [] */ = {
+let Magazine: MAGTYPE[] /* [] */ = [
   // calibre,			 mag size,			ammo type
-  { AMMO9, 15, AMMO_REGULAR },
-  { AMMO9, 30, AMMO_REGULAR },
-  { AMMO9, 15, AMMO_AP },
-  { AMMO9, 30, AMMO_AP },
-  { AMMO9, 15, AMMO_HP },
-  { AMMO9, 30, AMMO_HP },
-  { AMMO38, 6, AMMO_REGULAR },
-  { AMMO38, 6, AMMO_AP },
-  { AMMO38, 6, AMMO_HP },
-  { AMMO45, 7, AMMO_REGULAR },
-  { AMMO45, 30, AMMO_REGULAR },
-  { AMMO45, 7, AMMO_AP },
-  { AMMO45, 30, AMMO_AP },
-  { AMMO45, 7, AMMO_HP },
-  { AMMO45, 30, AMMO_HP },
-  { AMMO357, 6, AMMO_REGULAR },
-  { AMMO357, 9, AMMO_REGULAR },
-  { AMMO357, 6, AMMO_AP },
-  { AMMO357, 9, AMMO_AP },
-  { AMMO357, 6, AMMO_HP },
-  { AMMO357, 9, AMMO_HP },
-  { AMMO545, 30, AMMO_AP },
-  { AMMO545, 30, AMMO_HP },
-  { AMMO556, 30, AMMO_AP },
-  { AMMO556, 30, AMMO_HP },
-  { AMMO762W, 10, AMMO_AP },
-  { AMMO762W, 30, AMMO_AP },
-  { AMMO762W, 10, AMMO_HP },
-  { AMMO762W, 30, AMMO_HP },
-  { AMMO762N, 5, AMMO_AP },
-  { AMMO762N, 20, AMMO_AP },
-  { AMMO762N, 5, AMMO_HP },
-  { AMMO762N, 20, AMMO_HP },
-  { AMMO47, 50, AMMO_SUPER_AP },
-  { AMMO57, 50, AMMO_AP },
-  { AMMO57, 50, AMMO_HP },
-  { AMMO12G, 7, AMMO_BUCKSHOT },
-  { AMMO12G, 7, AMMO_REGULAR },
-  { AMMOCAWS, 10, AMMO_BUCKSHOT },
-  { AMMOCAWS, 10, AMMO_SUPER_AP },
-  { AMMOROCKET, 5, AMMO_SUPER_AP },
-  { AMMOROCKET, 5, AMMO_HE },
-  { AMMOROCKET, 5, AMMO_HEAT },
-  { AMMODART, 1, AMMO_SLEEP_DART },
-  { AMMOFLAME, 5, AMMO_BUCKSHOT },
-  { NOAMMO, 0, 0 },
-};
+  [ AMMO9, 15, AMMO_REGULAR ],
+  [ AMMO9, 30, AMMO_REGULAR ],
+  [ AMMO9, 15, AMMO_AP ],
+  [ AMMO9, 30, AMMO_AP ],
+  [ AMMO9, 15, AMMO_HP ],
+  [ AMMO9, 30, AMMO_HP ],
+  [ AMMO38, 6, AMMO_REGULAR ],
+  [ AMMO38, 6, AMMO_AP ],
+  [ AMMO38, 6, AMMO_HP ],
+  [ AMMO45, 7, AMMO_REGULAR ],
+  [ AMMO45, 30, AMMO_REGULAR ],
+  [ AMMO45, 7, AMMO_AP ],
+  [ AMMO45, 30, AMMO_AP ],
+  [ AMMO45, 7, AMMO_HP ],
+  [ AMMO45, 30, AMMO_HP ],
+  [ AMMO357, 6, AMMO_REGULAR ],
+  [ AMMO357, 9, AMMO_REGULAR ],
+  [ AMMO357, 6, AMMO_AP ],
+  [ AMMO357, 9, AMMO_AP ],
+  [ AMMO357, 6, AMMO_HP ],
+  [ AMMO357, 9, AMMO_HP ],
+  [ AMMO545, 30, AMMO_AP ],
+  [ AMMO545, 30, AMMO_HP ],
+  [ AMMO556, 30, AMMO_AP ],
+  [ AMMO556, 30, AMMO_HP ],
+  [ AMMO762W, 10, AMMO_AP ],
+  [ AMMO762W, 30, AMMO_AP ],
+  [ AMMO762W, 10, AMMO_HP ],
+  [ AMMO762W, 30, AMMO_HP ],
+  [ AMMO762N, 5, AMMO_AP ],
+  [ AMMO762N, 20, AMMO_AP ],
+  [ AMMO762N, 5, AMMO_HP ],
+  [ AMMO762N, 20, AMMO_HP ],
+  [ AMMO47, 50, AMMO_SUPER_AP ],
+  [ AMMO57, 50, AMMO_AP ],
+  [ AMMO57, 50, AMMO_HP ],
+  [ AMMO12G, 7, AMMO_BUCKSHOT ],
+  [ AMMO12G, 7, AMMO_REGULAR ],
+  [ AMMOCAWS, 10, AMMO_BUCKSHOT ],
+  [ AMMOCAWS, 10, AMMO_SUPER_AP ],
+  [ AMMOROCKET, 5, AMMO_SUPER_AP ],
+  [ AMMOROCKET, 5, AMMO_HE ],
+  [ AMMOROCKET, 5, AMMO_HEAT ],
+  [ AMMODART, 1, AMMO_SLEEP_DART ],
+  [ AMMOFLAME, 5, AMMO_BUCKSHOT ],
+  [ NOAMMO, 0, 0 ],
+];
 
-let Armour: ARMOURTYPE[] /* [] */ = {
+let Armour: ARMOURTYPE[] /* [] */ = [
   //	Class					      Protection	Degradation%			Description
   //  -------------       ----------  ------------      ----------------
-  { ARMOURCLASS_VEST, 10, 25 }, /* Flak jacket     */
-  { ARMOURCLASS_VEST, 13, 20 }, /* Flak jacket w X */
-  { ARMOURCLASS_VEST, 16, 15 }, /* Flak jacket w Y */
-  { ARMOURCLASS_VEST, 15, 20 }, /* Kevlar jacket   */
-  { ARMOURCLASS_VEST, 19, 15 }, /* Kevlar jack w X */
-  { ARMOURCLASS_VEST, 24, 10 }, /* Kevlar jack w Y */
-  { ARMOURCLASS_VEST, 30, 15 }, /* Spectra jacket  */
-  { ARMOURCLASS_VEST, 36, 10 }, /* Spectra jack w X*/
-  { ARMOURCLASS_VEST, 42, 5 }, /* Spectra jack w Y*/
-  { ARMOURCLASS_LEGGINGS, 15, 20 }, /* Kevlar leggings */
-  { ARMOURCLASS_LEGGINGS, 19, 15 }, /* Kevlar legs w X */
+  [ ARMOURCLASS_VEST, 10, 25 ], /* Flak jacket     */
+  [ ARMOURCLASS_VEST, 13, 20 ], /* Flak jacket w X */
+  [ ARMOURCLASS_VEST, 16, 15 ], /* Flak jacket w Y */
+  [ ARMOURCLASS_VEST, 15, 20 ], /* Kevlar jacket   */
+  [ ARMOURCLASS_VEST, 19, 15 ], /* Kevlar jack w X */
+  [ ARMOURCLASS_VEST, 24, 10 ], /* Kevlar jack w Y */
+  [ ARMOURCLASS_VEST, 30, 15 ], /* Spectra jacket  */
+  [ ARMOURCLASS_VEST, 36, 10 ], /* Spectra jack w X*/
+  [ ARMOURCLASS_VEST, 42, 5 ], /* Spectra jack w Y*/
+  [ ARMOURCLASS_LEGGINGS, 15, 20 ], /* Kevlar leggings */
+  [ ARMOURCLASS_LEGGINGS, 19, 15 ], /* Kevlar legs w X */
 
-  { ARMOURCLASS_LEGGINGS, 24, 10 }, /* Kevlar legs w Y */
-  { ARMOURCLASS_LEGGINGS, 30, 15 }, /* Spectra leggings*/
-  { ARMOURCLASS_LEGGINGS, 36, 10 }, /* Spectra legs w X*/
-  { ARMOURCLASS_LEGGINGS, 42, 5 }, /* Spectra legs w Y*/
-  { ARMOURCLASS_HELMET, 10, 5 }, /* Steel helmet    */
-  { ARMOURCLASS_HELMET, 15, 20 }, /* Kevlar helmet   */
-  { ARMOURCLASS_HELMET, 19, 15 }, /* Kevlar helm w X */
-  { ARMOURCLASS_HELMET, 24, 10 }, /* Kevlar helm w Y */
-  { ARMOURCLASS_HELMET, 30, 15 }, /* Spectra helmet  */
-  { ARMOURCLASS_HELMET, 36, 10 }, /* Spectra helm w X*/
+  [ ARMOURCLASS_LEGGINGS, 24, 10 ], /* Kevlar legs w Y */
+  [ ARMOURCLASS_LEGGINGS, 30, 15 ], /* Spectra leggings*/
+  [ ARMOURCLASS_LEGGINGS, 36, 10 ], /* Spectra legs w X*/
+  [ ARMOURCLASS_LEGGINGS, 42, 5 ], /* Spectra legs w Y*/
+  [ ARMOURCLASS_HELMET, 10, 5 ], /* Steel helmet    */
+  [ ARMOURCLASS_HELMET, 15, 20 ], /* Kevlar helmet   */
+  [ ARMOURCLASS_HELMET, 19, 15 ], /* Kevlar helm w X */
+  [ ARMOURCLASS_HELMET, 24, 10 ], /* Kevlar helm w Y */
+  [ ARMOURCLASS_HELMET, 30, 15 ], /* Spectra helmet  */
+  [ ARMOURCLASS_HELMET, 36, 10 ], /* Spectra helm w X*/
 
-  { ARMOURCLASS_HELMET, 42, 5 }, /* Spectra helm w Y*/
-  { ARMOURCLASS_PLATE, 15, 200 }, /* Ceramic plates  */
-  { ARMOURCLASS_MONST, 3, 0 }, /* Infant creature hide */
-  { ARMOURCLASS_MONST, 5, 0 }, /* Young male creature hide  */
-  { ARMOURCLASS_MONST, 6, 0 }, /* Male creature hide  */
-  { ARMOURCLASS_MONST, 20, 0 }, /* Queen creature hide  */
-  { ARMOURCLASS_VEST, 2, 25 }, /* Leather jacket    */
-  { ARMOURCLASS_VEST, 12, 30 }, /* Leather jacket w kevlar */
-  { ARMOURCLASS_VEST, 16, 25 }, /* Leather jacket w kevlar & compound 18 */
-  { ARMOURCLASS_VEST, 19, 20 }, /* Leather jacket w kevlar & queen blood */
+  [ ARMOURCLASS_HELMET, 42, 5 ], /* Spectra helm w Y*/
+  [ ARMOURCLASS_PLATE, 15, 200 ], /* Ceramic plates  */
+  [ ARMOURCLASS_MONST, 3, 0 ], /* Infant creature hide */
+  [ ARMOURCLASS_MONST, 5, 0 ], /* Young male creature hide  */
+  [ ARMOURCLASS_MONST, 6, 0 ], /* Male creature hide  */
+  [ ARMOURCLASS_MONST, 20, 0 ], /* Queen creature hide  */
+  [ ARMOURCLASS_VEST, 2, 25 ], /* Leather jacket    */
+  [ ARMOURCLASS_VEST, 12, 30 ], /* Leather jacket w kevlar */
+  [ ARMOURCLASS_VEST, 16, 25 ], /* Leather jacket w kevlar & compound 18 */
+  [ ARMOURCLASS_VEST, 19, 20 ], /* Leather jacket w kevlar & queen blood */
 
-  { ARMOURCLASS_MONST, 7, 0 }, /* Young female creature hide */
-  { ARMOURCLASS_MONST, 8, 0 }, /* Old female creature hide  */
-  { ARMOURCLASS_VEST, 1, 25 }, /* T-shirt */
-  { ARMOURCLASS_VEST, 22, 20 }, /* Kevlar 2 jacket   */
-  { ARMOURCLASS_VEST, 27, 15 }, /* Kevlar 2 jack w X */
-  { ARMOURCLASS_VEST, 32, 10 }, /* Kevlar 2 jack w Y */
-};
+  [ ARMOURCLASS_MONST, 7, 0 ], /* Young female creature hide */
+  [ ARMOURCLASS_MONST, 8, 0 ], /* Old female creature hide  */
+  [ ARMOURCLASS_VEST, 1, 25 ], /* T-shirt */
+  [ ARMOURCLASS_VEST, 22, 20 ], /* Kevlar 2 jacket   */
+  [ ARMOURCLASS_VEST, 27, 15 ], /* Kevlar 2 jack w X */
+  [ ARMOURCLASS_VEST, 32, 10 ], /* Kevlar 2 jack w Y */
+];
 
-let Explosive: EXPLOSIVETYPE[] /* [] */ = {
+let Explosive: EXPLOSIVETYPE[] /* [] */ = [
   //	Type							Yield		Yield2		Radius		Volume		Volatility	Animation			Description
   //										-----		-------		------		------		----------	--------- 		------------------
-  { EXPLOSV_STUN, 1, 70, 4, 0, 0, STUN_BLAST /* stun grenade       */ },
-  { EXPLOSV_TEARGAS, 0, 20, 4, 0, 0, TARGAS_EXP /* tear gas grenade   */ },
-  { EXPLOSV_MUSTGAS, 15, 40, 4, 0, 0, MUSTARD_EXP /* mustard gas grenade*/ },
-  { EXPLOSV_NORMAL, 15, 7, 3, 15, 1, BLAST_1 /* mini hand grenade  */ },
-  { EXPLOSV_NORMAL, 25, 10, 4, 25, 1, BLAST_1 /* reg hand grenade   */ },
-  { EXPLOSV_NORMAL, 40, 12, 5, 20, 10, BLAST_2 /* RDX                */ },
-  { EXPLOSV_NORMAL, 50, 15, 5, 50, 2, BLAST_2 /* TNT (="explosives")*/ },
-  { EXPLOSV_NORMAL, 60, 15, 6, 60, 2, BLAST_2 /* HMX (=RDX+TNT)     */ },
-  { EXPLOSV_NORMAL, 55, 15, 6, 55, 0, BLAST_2 /* C1  (=RDX+min oil) */ },
-  { EXPLOSV_NORMAL, 50, 22, 6, 50, 2, BLAST_2 /* mortar shell       */ },
+  [ EXPLOSV_STUN, 1, 70, 4, 0, 0, STUN_BLAST /* stun grenade       */ ],
+  [ EXPLOSV_TEARGAS, 0, 20, 4, 0, 0, TARGAS_EXP /* tear gas grenade   */ ],
+  [ EXPLOSV_MUSTGAS, 15, 40, 4, 0, 0, MUSTARD_EXP /* mustard gas grenade*/ ],
+  [ EXPLOSV_NORMAL, 15, 7, 3, 15, 1, BLAST_1 /* mini hand grenade  */ ],
+  [ EXPLOSV_NORMAL, 25, 10, 4, 25, 1, BLAST_1 /* reg hand grenade   */ ],
+  [ EXPLOSV_NORMAL, 40, 12, 5, 20, 10, BLAST_2 /* RDX                */ ],
+  [ EXPLOSV_NORMAL, 50, 15, 5, 50, 2, BLAST_2 /* TNT (="explosives")*/ ],
+  [ EXPLOSV_NORMAL, 60, 15, 6, 60, 2, BLAST_2 /* HMX (=RDX+TNT)     */ ],
+  [ EXPLOSV_NORMAL, 55, 15, 6, 55, 0, BLAST_2 /* C1  (=RDX+min oil) */ ],
+  [ EXPLOSV_NORMAL, 50, 22, 6, 50, 2, BLAST_2 /* mortar shell       */ ],
 
-  { EXPLOSV_NORMAL, 30, 30, 2, 30, 2, BLAST_1 /* mine               */ },
-  { EXPLOSV_NORMAL, 65, 30, 7, 65, 0, BLAST_1 /* C4  ("plastique")  */ },
-  { EXPLOSV_FLARE, 0, 0, 10, 0, 0, BLAST_1 /* trip flare				  */ },
-  { EXPLOSV_NOISE, 0, 0, 50, 50, 0, BLAST_1 /* trip klaxon        */ },
-  { EXPLOSV_NORMAL, 20, 0, 1, 20, 0, BLAST_1 /* shaped charge      */ },
-  { EXPLOSV_FLARE, 0, 0, 10, 0, 0, BLAST_1, /* break light        */ },
-  { EXPLOSV_NORMAL, 25, 5, 4, 25, 1, BLAST_1, /* GL grenade					*/ },
-  { EXPLOSV_TEARGAS, 0, 20, 3, 0, 0, TARGAS_EXP, /* GL tear gas grenade*/ },
-  { EXPLOSV_STUN, 1, 50, 4, 0, 0, STUN_BLAST, /* GL stun grenade		*/ },
-  { EXPLOSV_SMOKE, 0, 0, 3, 0, 0, SMOKE_EXP, /* GL smoke grenade		*/ },
+  [ EXPLOSV_NORMAL, 30, 30, 2, 30, 2, BLAST_1 /* mine               */ ],
+  [ EXPLOSV_NORMAL, 65, 30, 7, 65, 0, BLAST_1 /* C4  ("plastique")  */ ],
+  [ EXPLOSV_FLARE, 0, 0, 10, 0, 0, BLAST_1 /* trip flare				  */ ],
+  [ EXPLOSV_NOISE, 0, 0, 50, 50, 0, BLAST_1 /* trip klaxon        */ ],
+  [ EXPLOSV_NORMAL, 20, 0, 1, 20, 0, BLAST_1 /* shaped charge      */ ],
+  [ EXPLOSV_FLARE, 0, 0, 10, 0, 0, BLAST_1, /* break light        */ ],
+  [ EXPLOSV_NORMAL, 25, 5, 4, 25, 1, BLAST_1, /* GL grenade					*/ ],
+  [ EXPLOSV_TEARGAS, 0, 20, 3, 0, 0, TARGAS_EXP, /* GL tear gas grenade*/ ],
+  [ EXPLOSV_STUN, 1, 50, 4, 0, 0, STUN_BLAST, /* GL stun grenade		*/ ],
+  [ EXPLOSV_SMOKE, 0, 0, 3, 0, 0, SMOKE_EXP, /* GL smoke grenade		*/ ],
 
-  { EXPLOSV_SMOKE, 0, 0, 4, 0, 0, SMOKE_EXP, /* smoke grenade			*/ },
-  { EXPLOSV_NORMAL, 60, 20, 6, 60, 2, BLAST_2, /* Tank Shell         */ },
-  { EXPLOSV_NORMAL, 100, 0, 0, 0, 0, BLAST_1, /* Fake structure igniter*/ },
-  { EXPLOSV_NORMAL, 100, 0, 1, 0, 0, BLAST_1, /* creature cocktail */ },
-  { EXPLOSV_NORMAL, 50, 10, 5, 50, 2, BLAST_2, /* fake struct explosion*/ },
-  { EXPLOSV_NORMAL, 50, 10, 5, 50, 2, BLAST_3, /* fake vehicle explosion*/ },
-  { EXPLOSV_TEARGAS, 0, 40, 4, 0, 0, TARGAS_EXP /* big tear gas */ },
-  { EXPLOSV_CREATUREGAS, 5, 0, 1, 0, 0, NO_BLAST /* small creature gas*/ },
-  { EXPLOSV_CREATUREGAS, 8, 0, 3, 0, 0, NO_BLAST /* big creature gas*/ },
-  { EXPLOSV_CREATUREGAS, 0, 0, 0, 0, 0, NO_BLAST /* vry sm creature gas*/ },
-};
+  [ EXPLOSV_SMOKE, 0, 0, 4, 0, 0, SMOKE_EXP, /* smoke grenade			*/ ],
+  [ EXPLOSV_NORMAL, 60, 20, 6, 60, 2, BLAST_2, /* Tank Shell         */ ],
+  [ EXPLOSV_NORMAL, 100, 0, 0, 0, 0, BLAST_1, /* Fake structure igniter*/ ],
+  [ EXPLOSV_NORMAL, 100, 0, 1, 0, 0, BLAST_1, /* creature cocktail */ ],
+  [ EXPLOSV_NORMAL, 50, 10, 5, 50, 2, BLAST_2, /* fake struct explosion*/ ],
+  [ EXPLOSV_NORMAL, 50, 10, 5, 50, 2, BLAST_3, /* fake vehicle explosion*/ ],
+  [ EXPLOSV_TEARGAS, 0, 40, 4, 0, 0, TARGAS_EXP /* big tear gas */ ],
+  [ EXPLOSV_CREATUREGAS, 5, 0, 1, 0, 0, NO_BLAST /* small creature gas*/ ],
+  [ EXPLOSV_CREATUREGAS, 8, 0, 3, 0, 0, NO_BLAST /* big creature gas*/ ],
+  [ EXPLOSV_CREATUREGAS, 0, 0, 0, 0, 0, NO_BLAST /* vry sm creature gas*/ ],
+];
 
-let gzBurstSndStrings: INT8[][] /* [][30] */ = {
+let gzBurstSndStrings: INT8[][] /* [][30] */ = [
   "", // NOAMMO
   "", // 38
   "9mm Burst ", // 9mm
@@ -305,16 +305,16 @@ let gzBurstSndStrings: INT8[][] /* [][30] */ = {
   "RL Automatic ", // Rocket
   "", // Dart
   "", // Flame (unused)
-};
+];
 
 // the amount of momentum reduction for the head, torso, and legs
 // used to determine whether the bullet will go through someone
-let BodyImpactReduction: UINT8[] /* [4] */ = {
+let BodyImpactReduction: UINT8[] /* [4] */ = [
   0,
   15,
   30,
   23,
-};
+];
 
 function GunRange(pObj: Pointer<OBJECTTYPE>): UINT16 {
   let bAttachPos: INT8;
@@ -3602,11 +3602,11 @@ function ChangeWeaponMode(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function DishoutQueenSwipeDamage(pQueenSoldier: Pointer<SOLDIERTYPE>): void {
-  let bValidDishoutDirs: INT8[][] /* [3][3] */ = {
-    { NORTH, NORTHEAST, -1 },
-    { EAST, SOUTHEAST, -1 },
-    { SOUTH, -1, -1 },
-  };
+  let bValidDishoutDirs: INT8[][] /* [3][3] */ = [
+    [ NORTH, NORTHEAST, -1 ],
+    [ EAST, SOUTHEAST, -1 ],
+    [ SOUTH, -1, -1 ],
+  ];
 
   let cnt: UINT32;
   let cnt2: UINT32;

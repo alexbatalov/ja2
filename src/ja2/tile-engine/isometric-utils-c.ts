@@ -1,7 +1,7 @@
 let guiForceRefreshMousePositionCalculation: UINT32 = 0;
 
 // GLOBALS
-let DirIncrementer: INT16[] /* [8] */ = {
+let DirIncrementer: INT16[] /* [8] */ = [
   -MAPWIDTH, // N
   1 - MAPWIDTH, // NE
   1, // E
@@ -10,10 +10,10 @@ let DirIncrementer: INT16[] /* [8] */ = {
   MAPWIDTH - 1, // SW
   -1, // W
   -MAPWIDTH - 1, // NW
-};
+];
 
 // Opposite directions
-let gOppositeDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = {
+let gOppositeDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
   SOUTH,
   SOUTHWEST,
   WEST,
@@ -22,9 +22,9 @@ let gOppositeDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = {
   NORTHEAST,
   EAST,
   SOUTHEAST,
-};
+];
 
-let gTwoCCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = {
+let gTwoCCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
   WEST,
   NORTHWEST,
   NORTH,
@@ -33,9 +33,9 @@ let gTwoCCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = {
   SOUTHEAST,
   SOUTH,
   SOUTHWEST,
-};
+];
 
-let gTwoCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = {
+let gTwoCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
   EAST,
   SOUTHEAST,
   SOUTH,
@@ -44,9 +44,9 @@ let gTwoCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = {
   NORTHWEST,
   NORTH,
   NORTHEAST,
-};
+];
 
-let gOneCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = {
+let gOneCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
   NORTHEAST,
   EAST,
   SOUTHEAST,
@@ -55,9 +55,9 @@ let gOneCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = {
   WEST,
   NORTHWEST,
   NORTH,
-};
+];
 
-let gOneCCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = {
+let gOneCCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
   NORTHWEST,
   NORTH,
   NORTHEAST,
@@ -66,12 +66,12 @@ let gOneCCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = {
   SOUTH,
   SOUTHWEST,
   WEST,
-};
+];
 
 //														DIRECTION FACING			 DIRECTION WE WANT TO GOTO
-let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORLD_DIRECTIONS] */ = {
+let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORLD_DIRECTIONS] */ = [
   // NORTH
-  {
+  [
     WEST, // EITHER
     NORTHWEST,
     NORTH,
@@ -80,10 +80,10 @@ let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORLD_DIREC
     NORTHWEST,
     NORTH,
     NORTHEAST,
-  },
+  ],
 
   // NORTH EAST
-  {
+  [
     NORTHWEST,
     NORTHWEST, // EITHER
     SOUTH,
@@ -92,10 +92,10 @@ let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORLD_DIREC
     SOUTHEAST, // EITHER
     NORTH,
     NORTHEAST,
-  },
+  ],
 
   // EAST
-  {
+  [
     EAST,
     SOUTHEAST,
     NORTH, // EITHER
@@ -104,10 +104,10 @@ let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORLD_DIREC
     SOUTHEAST,
     NORTH, // EITHER
     NORTHEAST,
-  },
+  ],
 
   // SOUTHEAST
-  {
+  [
     EAST,
     SOUTHEAST,
     SOUTH,
@@ -116,10 +116,10 @@ let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORLD_DIREC
     SOUTHEAST,
     SOUTH,
     SOUTHWEST, // EITHER
-  },
+  ],
 
   // SOUTH
-  {
+  [
     WEST, // EITHER
     SOUTHEAST,
     SOUTH,
@@ -128,10 +128,10 @@ let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORLD_DIREC
     SOUTHEAST,
     SOUTH,
     SOUTHWEST,
-  },
+  ],
 
   // SOUTHWEST
-  {
+  [
     WEST,
     NORTHWEST, // EITHER
     SOUTH,
@@ -140,10 +140,10 @@ let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORLD_DIREC
     SOUTHEAST, // EITHER
     SOUTH,
     SOUTHWEST,
-  },
+  ],
 
   // WEST
-  {
+  [
     WEST,
     NORTHWEST,
     NORTH, // EITHER
@@ -152,10 +152,10 @@ let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORLD_DIREC
     NORTHWEST,
     SOUTH, // EITHER
     SOUTHWEST,
-  },
+  ],
 
   // NORTHWEST
-  {
+  [
     WEST,
     NORTHWEST,
     NORTH,
@@ -164,8 +164,8 @@ let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORLD_DIREC
     NORTHWEST,
     NORTH,
     NORTHEAST, // EITHER
-  },
-};
+  ],
+];
 
 function FromCellToScreenCoordinates(sCellX: INT16, sCellY: INT16, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
   *psScreenX = (2 * sCellX) - (2 * sCellY);

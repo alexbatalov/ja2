@@ -3,7 +3,7 @@
 // 512-767 is when ALT is pressed and 768-1023 is when CTRL is pressed. This table should be modified
 // during translation
 
-let gsKeyTranslationTable: UINT16[] /* [1024] */ = {
+let gsKeyTranslationTable: UINT16[] /* [1024] */ = [
   0, //
   1, //
   2, //
@@ -1028,4 +1028,4 @@ let gsKeyTranslationTable: UINT16[] /* [1024] */ = {
   1021, // CTRL-UP
   1022, // CTRL-PGUP
   1023, // CURSOR
-};
+];

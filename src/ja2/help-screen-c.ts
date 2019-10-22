@@ -154,12 +154,12 @@ interface HELP_SCREEN_BTN_TEXT_RECORD {
 }
 
 // An array of record nums for the text on the help buttons
-let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_NUMBER_OF_HELP_SCREENS] */ = {
+let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_NUMBER_OF_HELP_SCREENS] */ = [
   // new screen:
 
   // Laptop button record nums
   //	HELP_SCREEN_LAPTOP,
-  {
+  [
     HLP_TXT_LAPTOP_BUTTON_1,
     HLP_TXT_LAPTOP_BUTTON_2,
     HLP_TXT_LAPTOP_BUTTON_3,
@@ -168,10 +168,10 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
     HLP_TXT_LAPTOP_BUTTON_6,
     HLP_TXT_LAPTOP_BUTTON_7,
     HLP_TXT_LAPTOP_BUTTON_8,
-  },
+  ],
 
   //	HELP_SCREEN_MAPSCREEN,
-  {
+  [
     HLP_TXT_WELCOM_TO_ARULCO_BUTTON_1,
     HLP_TXT_WELCOM_TO_ARULCO_BUTTON_2,
     HLP_TXT_WELCOM_TO_ARULCO_BUTTON_3,
@@ -180,10 +180,10 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
     HLP_TXT_WELCOM_TO_ARULCO_BUTTON_6,
     HLP_TXT_WELCOM_TO_ARULCO_BUTTON_7,
     HLP_TXT_WELCOM_TO_ARULCO_BUTTON_8,
-  },
+  ],
 
   //	HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED,
-  {
+  [
     -1,
     -1,
     -1,
@@ -192,10 +192,10 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
     -1,
     -1,
     -1,
-  },
+  ],
 
   //	HELP_SCREEN_MAPSCREEN_NOT_IN_ARULCO,
-  {
+  [
     -1,
     -1,
     -1,
@@ -204,10 +204,10 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
     -1,
     -1,
     -1,
-  },
+  ],
 
   //	HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY,
-  {
+  [
     -1,
     -1,
     -1,
@@ -216,10 +216,10 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
     -1,
     -1,
     -1,
-  },
+  ],
 
   //	HELP_SCREEN_TACTICAL,
-  {
+  [
     HLP_TXT_TACTICAL_BUTTON_1,
     HLP_TXT_TACTICAL_BUTTON_2,
     HLP_TXT_TACTICAL_BUTTON_3,
@@ -228,10 +228,10 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
     HLP_TXT_TACTICAL_BUTTON_6,
     -1,
     -1,
-  },
+  ],
 
   //	HELP_SCREEN_OPTIONS,
-  {
+  [
     -1,
     -1,
     -1,
@@ -240,10 +240,10 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
     -1,
     -1,
     -1,
-  },
+  ],
 
   //	HELP_SCREEN_LOAD_GAME,
-  {
+  [
     -1,
     -1,
     -1,
@@ -252,8 +252,8 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
     -1,
     -1,
     -1,
-  },
-};
+  ],
+];
 
 let gfHelpScreenEntry: BOOLEAN = TRUE;
 let gfHelpScreenExit: BOOLEAN = FALSE;

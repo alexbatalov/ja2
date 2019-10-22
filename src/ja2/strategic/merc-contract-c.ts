@@ -799,7 +799,7 @@ function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointe
   let zShortTownIDString: CHAR16[] /* [50] */;
 
   // use YES/NO Pop up box, settup for particular screen
-  let pCenteringRect: SGPRect = { 0, 0, 640, 480 };
+  let pCenteringRect: SGPRect = [ 0, 0, 640, 480 ];
 
   // GetSectorIDString( pSoldier->sSectorX, pSoldier->sSectorY, pSoldier->bSectorZ, zTownIDString, TRUE );
 
@@ -972,7 +972,7 @@ function FindOutIfAnyMercAboutToLeaveIsGonnaRenew(): void {
   let pSoldierWhoWillQuit: Pointer<SOLDIERTYPE> = NULL;
   let iCounter: INT32 = 0;
   let iNumberOnTeam: INT32 = 0;
-  let ubPotentialMercs: UINT8[] /* [20] */ = { 0 };
+  let ubPotentialMercs: UINT8[] /* [20] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
 

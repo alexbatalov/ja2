@@ -263,19 +263,19 @@ const HELI_SHADOW_ICON_HEIGHT = 11;
 
 // the militia box buttons and images
 let giMapMilitiaButtonImage: INT32[] /* [5] */;
-let giMapMilitiaButton: INT32[] /* [5] */ = {
+let giMapMilitiaButton: INT32[] /* [5] */ = [
   -1,
   -1,
   -1,
   -1,
   -1,
-};
+];
 
-let gsMilitiaSectorButtonColors: INT16[] /* [] */ = {
+let gsMilitiaSectorButtonColors: INT16[] /* [] */ = [
   FONT_LTGREEN,
   FONT_LTBLUE,
   16,
-};
+];
 
 // track number of townspeople picked up
 let sGreensOnCursor: INT16 = 0;
@@ -323,7 +323,7 @@ let guiMapBorderHeliSectors: UINT32;
 // list of map sectors that player isn't allowed to even highlight
 let sBadSectorsList: BOOLEAN[][] /* [WORLD_MAP_X][WORLD_MAP_X] */;
 
-let sBaseSectorList: INT16[] /* [] */ = {
+let sBaseSectorList: INT16[] /* [] */ = [
   // NOTE: These co-ordinates must match the top left corner of the 3x3 town tiles cutouts in Interface/MilitiaMaps.sti!
   SECTOR(9, 1), // Omerta
   SECTOR(13, 2), // Drassen
@@ -337,46 +337,46 @@ let sBaseSectorList: INT16[] /* [] */ = {
   SECTOR(11, 11), // Balime
   SECTOR(3, 14), // Meduna
   SECTOR(2, 1), // Chitzena
-};
+];
 
 // position of town names on the map
 // these are no longer PIXELS, but 10 * the X,Y position in SECTORS (fractions possible) to the X-CENTER of the town
-let pTownPoints: POINT[] /* [] */ = {
-  { 0, 0 },
-  { 90, 10 }, // Omerta
-  { 125, 40 }, // Drassen
-  { 130, 90 }, // Alma
-  { 15, 80 }, // Grumm
-  { 85, 100 }, // Tixa
-  { 95, 70 }, // Cambria
-  { 45, 40 }, // San Mona
-  { 55, 90 }, // Estoni
-  { 35, 110 }, // Orta
-  { 110, 120 }, // Balime
-  { 45, 150 }, // Meduna
-  { 15, 20 }, // Chitzena
-};
+let pTownPoints: POINT[] /* [] */ = [
+  [ 0, 0 ],
+  [ 90, 10 ], // Omerta
+  [ 125, 40 ], // Drassen
+  [ 130, 90 ], // Alma
+  [ 15, 80 ], // Grumm
+  [ 85, 100 ], // Tixa
+  [ 95, 70 ], // Cambria
+  [ 45, 40 ], // San Mona
+  [ 55, 90 ], // Estoni
+  [ 35, 110 ], // Orta
+  [ 110, 120 ], // Balime
+  [ 45, 150 ], // Meduna
+  [ 15, 20 ], // Chitzena
+];
 
-let gpSamSectorX: INT16[] /* [] */ = {
+let gpSamSectorX: INT16[] /* [] */ = [
   SAM_1_X,
   SAM_2_X,
   SAM_3_X,
   SAM_4_X,
-};
-let gpSamSectorY: INT16[] /* [] */ = {
+];
+let gpSamSectorY: INT16[] /* [] */ = [
   SAM_1_Y,
   SAM_2_Y,
   SAM_3_Y,
   SAM_4_Y,
-};
+];
 
 // map region
-let MapScreenRect: SGPRect = { (MAP_VIEW_START_X + MAP_GRID_X - 2), (MAP_VIEW_START_Y + MAP_GRID_Y - 1), MAP_VIEW_START_X + MAP_VIEW_WIDTH - 1 + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT - 10 + MAP_GRID_Y };
+let MapScreenRect: SGPRect = [ (MAP_VIEW_START_X + MAP_GRID_X - 2), (MAP_VIEW_START_Y + MAP_GRID_Y - 1), MAP_VIEW_START_X + MAP_VIEW_WIDTH - 1 + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT - 10 + MAP_GRID_Y ];
 
 let gOldClipRect: SGPRect;
 
 // screen region
-let FullScreenRect: SGPRect = { 0, 0, 640, 480 };
+let FullScreenRect: SGPRect = [ 0, 0, 640, 480 ];
 
 // temp helicopter path
 let pTempHelicopterPath: PathStPtr = NULL;
@@ -3204,7 +3204,7 @@ function RestoreBackgroundForMapGrid(sMapX: INT16, sMapY: INT16): void {
 
 function ClipBlitsToMapViewRegion(): void {
   // the standard mapscreen rectangle doesn't work for clipping while zoomed...
-  let ZoomedMapScreenClipRect: SGPRect = { MAP_VIEW_START_X + MAP_GRID_X, MAP_VIEW_START_Y + MAP_GRID_Y - 1, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + MAP_GRID_Y - 10 };
+  let ZoomedMapScreenClipRect: SGPRect = [ MAP_VIEW_START_X + MAP_GRID_X, MAP_VIEW_START_Y + MAP_GRID_Y - 1, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + MAP_GRID_Y - 10 ];
   let pRectToUse: Pointer<SGPRect>;
 
   if (fZoomFlag)

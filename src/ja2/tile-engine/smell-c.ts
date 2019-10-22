@@ -42,7 +42,7 @@
 
 // LUT for which graphic to use based on strength
 //															 0  1,  2,  3,  4,  5,  6, 7
-let ubBloodGraphicLUT: UINT8[] /* [] */ = {
+let ubBloodGraphicLUT: UINT8[] /* [] */ = [
   3,
   3,
   2,
@@ -51,7 +51,7 @@ let ubBloodGraphicLUT: UINT8[] /* [] */ = {
   1,
   0,
   0,
-};
+];
 
 const SMELL_STRENGTH_MAX = 63;
 const BLOOD_STRENGTH_MAX = 7;

@@ -1946,12 +1946,12 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
   let sXPos: INT16;
   let sYPos: INT16;
   let uiDeathAnim: UINT32;
-  let uiPossibleDeathAnims: UINT32[] /* [] */ = {
+  let uiPossibleDeathAnims: UINT32[] /* [] */ = [
     GENERIC_HIT_DEATH,
     FALLBACK_HIT_DEATH,
     PRONE_HIT_DEATH,
     FLYBACK_HIT_DEATH,
-  };
+  ];
   const ubNumOfDeaths: UINT8 = 4;
 
   // setup the flags for the items and the rotting corpses
@@ -2099,7 +2099,7 @@ function TempFileLoadErrorMessageReturnCallback(ubRetVal: UINT8): void {
 // think it succeeded the load.  This sets up the dialog for the game exit, after the hacker
 // message appears.
 function InitExitGameDialogBecauseFileHackDetected(): void {
-  let CenteringRect: SGPRect = { 0, 0, 639, 479 };
+  let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // do message box and return
   giErrorMessageBox = DoMessageBox(MSG_BOX_BASIC_STYLE, pAntiHackerString[ANTIHACKERSTR_EXITGAME], GAME_SCREEN, MSG_BOX_FLAG_OK, TempFileLoadErrorMessageReturnCallback, &CenteringRect);
@@ -2237,7 +2237,7 @@ function NewJA2EncryptedFileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UIN
 }
 
 const ROTATION_ARRAY_SIZE = 46;
-let ubRotationArray: UINT8[] /* [46] */ = {
+let ubRotationArray: UINT8[] /* [46] */ = [
   132,
   235,
   125,
@@ -2284,7 +2284,7 @@ let ubRotationArray: UINT8[] /* [46] */ = {
   175,
   57,
   233,
-};
+];
 
 function JA2EncryptedFileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): BOOLEAN {
   let uiLoop: UINT32;

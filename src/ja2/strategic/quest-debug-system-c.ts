@@ -162,13 +162,13 @@ const enum Enum166 {
   QD_DROP_DOWN_CANCEL,
 }
 
-let QuestStates: STR16[] /* [] */ = {
+let QuestStates: STR16[] /* [] */ = [
   L"N.S.",
   L"In Prog.",
   L"Done",
-};
+];
 
-let QuestDebugText: STR16[] /* [] */ = {
+let QuestDebugText: STR16[] /* [] */ = [
   L"Quest Debug System",
   L"Quests",
   L"Quest Number",
@@ -217,7 +217,7 @@ let QuestDebugText: STR16[] /* [] */ = {
   L"ESC:         To Stop the merc from Talking",
   L"",
   L"",
-};
+];
 
 // enums for above strings
 const enum Enum167 {
@@ -269,7 +269,7 @@ const enum Enum167 {
   QUEST_DBS_ESC_TOP_STOP_TALKING,
 }
 
-let PocketText: STR16[] /* [] */ = {
+let PocketText: STR16[] /* [] */ = [
   L"Helmet",
   L"Vest",
   L"Leg",
@@ -289,7 +289,7 @@ let PocketText: STR16[] /* [] */ = {
   L"Smallpock6",
   L"Smallpock7",
   L"Smallpock8",
-};
+];
 
 //*******************************
 //
@@ -2807,7 +2807,7 @@ function EnableQDSButtons(): void {
 }
 
 function DoQDSMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
-  let pCenteringRect: SGPRect = { 0, 0, 639, 479 };
+  let pCenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // reset exit mode
   gfExitQdsDueToMessageBox = TRUE;

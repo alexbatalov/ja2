@@ -596,16 +596,16 @@ function PixelateVideoObjectRect(uiDestVSurface: UINT32, X1: INT32, Y1: INT32, X
   let pBuffer: Pointer<UINT16>;
   let uiPitch: UINT32;
   let area: SGPRect;
-  let uiPattern: UINT8[][] /* [8][8] */ = {
-    { 0, 1, 0, 1, 0, 1, 0, 1 },
-    { 1, 0, 1, 0, 1, 0, 1, 0 },
-    { 0, 1, 0, 1, 0, 1, 0, 1 },
-    { 1, 0, 1, 0, 1, 0, 1, 0 },
-    { 0, 1, 0, 1, 0, 1, 0, 1 },
-    { 1, 0, 1, 0, 1, 0, 1, 0 },
-    { 0, 1, 0, 1, 0, 1, 0, 1 },
-    { 1, 0, 1, 0, 1, 0, 1, 0 },
-  };
+  let uiPattern: UINT8[][] /* [8][8] */ = [
+    [ 0, 1, 0, 1, 0, 1, 0, 1 ],
+    [ 1, 0, 1, 0, 1, 0, 1, 0 ],
+    [ 0, 1, 0, 1, 0, 1, 0, 1 ],
+    [ 1, 0, 1, 0, 1, 0, 1, 0 ],
+    [ 0, 1, 0, 1, 0, 1, 0, 1 ],
+    [ 1, 0, 1, 0, 1, 0, 1, 0 ],
+    [ 0, 1, 0, 1, 0, 1, 0, 1 ],
+    [ 1, 0, 1, 0, 1, 0, 1, 0 ],
+  ];
 
   // Lock video surface
   pBuffer = LockVideoSurface(uiDestVSurface, &uiPitch);

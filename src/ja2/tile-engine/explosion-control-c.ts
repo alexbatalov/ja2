@@ -1,6 +1,6 @@
 // MODULE FOR EXPLOSIONS
 
-let ubTransKeyFrame: UINT8[] /* [NUM_EXP_TYPES] */ = {
+let ubTransKeyFrame: UINT8[] /* [NUM_EXP_TYPES] */ = [
   0,
   17,
   28,
@@ -10,9 +10,9 @@ let ubTransKeyFrame: UINT8[] /* [NUM_EXP_TYPES] */ = {
   1,
   1,
   1,
-};
+];
 
-let ubDamageKeyFrame: UINT8[] /* [NUM_EXP_TYPES] */ = {
+let ubDamageKeyFrame: UINT8[] /* [NUM_EXP_TYPES] */ = [
   0,
   3,
   5,
@@ -22,9 +22,9 @@ let ubDamageKeyFrame: UINT8[] /* [NUM_EXP_TYPES] */ = {
   18,
   18,
   18,
-};
+];
 
-let uiExplosionSoundID: UINT32[] /* [NUM_EXP_TYPES] */ = {
+let uiExplosionSoundID: UINT32[] /* [NUM_EXP_TYPES] */ = [
   EXPLOSION_1,
   EXPLOSION_1,
   EXPLOSION_BLAST_2, // LARGE
@@ -34,9 +34,9 @@ let uiExplosionSoundID: UINT32[] /* [NUM_EXP_TYPES] */ = {
   AIR_ESCAPING_1,
   AIR_ESCAPING_1,
   AIR_ESCAPING_1,
-};
+];
 
-let zBlastFilenames: CHAR8[][] /* [][70] */ = {
+let zBlastFilenames: CHAR8[][] /* [][70] */ = [
   "",
   "TILECACHE\\ZGRAV_D.STI",
   "TILECACHE\\ZGRAV_C.STI",
@@ -46,9 +46,9 @@ let zBlastFilenames: CHAR8[][] /* [][70] */ = {
   "TILECACHE\\TEAR_EXP.STI",
   "TILECACHE\\TEAR_EXP.STI",
   "TILECACHE\\MUST_EXP.STI",
-};
+];
 
-let sBlastSpeeds: CHAR8[] /* [] */ = {
+let sBlastSpeeds: CHAR8[] /* [] */ = [
   0,
   80,
   80,
@@ -58,7 +58,7 @@ let sBlastSpeeds: CHAR8[] /* [] */ = {
   80,
   80,
   80,
-};
+];
 
 const BOMB_QUEUE_DELAY = () => (1000 + Random(500));
 

@@ -5,19 +5,19 @@ interface SKIRGBCOLOR {
   ubBlue: UINT8;
 }
 
-let SkiGlowColorsA: SKIRGBCOLOR[] /* [] */ = {
-  { 0, 0, 0 },
-  { 25, 0, 0 },
-  { 50, 0, 0 },
-  { 75, 0, 0 },
-  { 100, 0, 0 },
-  { 125, 0, 0 },
-  { 150, 0, 0 },
-  { 175, 0, 0 },
-  { 200, 0, 0 },
-  { 225, 0, 0 },
-  { 250, 0, 0 },
-};
+let SkiGlowColorsA: SKIRGBCOLOR[] /* [] */ = [
+  [ 0, 0, 0 ],
+  [ 25, 0, 0 ],
+  [ 50, 0, 0 ],
+  [ 75, 0, 0 ],
+  [ 100, 0, 0 ],
+  [ 125, 0, 0 ],
+  [ 150, 0, 0 ],
+  [ 175, 0, 0 ],
+  [ 200, 0, 0 ],
+  [ 225, 0, 0 ],
+  [ 250, 0, 0 ],
+];
 
 ////////////////////////////////////////////
 //
@@ -2296,16 +2296,16 @@ function DrawHatchOnInventory(uiSurface: UINT32, usPosX: UINT16, usPosY: UINT16,
   let pDestBuf: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
   let ClipRect: SGPRect;
-  /* static */ let Pattern: UINT8[][] /* [8][8] */ = {
-    { 1, 0, 1, 0, 1, 0, 1, 0 },
-    { 0, 1, 0, 1, 0, 1, 0, 1 },
-    { 1, 0, 1, 0, 1, 0, 1, 0 },
-    { 0, 1, 0, 1, 0, 1, 0, 1 },
-    { 1, 0, 1, 0, 1, 0, 1, 0 },
-    { 0, 1, 0, 1, 0, 1, 0, 1 },
-    { 1, 0, 1, 0, 1, 0, 1, 0 },
-    { 0, 1, 0, 1, 0, 1, 0, 1 },
-  };
+  /* static */ let Pattern: UINT8[][] /* [8][8] */ = [
+    [ 1, 0, 1, 0, 1, 0, 1, 0 ],
+    [ 0, 1, 0, 1, 0, 1, 0, 1 ],
+    [ 1, 0, 1, 0, 1, 0, 1, 0 ],
+    [ 0, 1, 0, 1, 0, 1, 0, 1 ],
+    [ 1, 0, 1, 0, 1, 0, 1, 0 ],
+    [ 0, 1, 0, 1, 0, 1, 0, 1 ],
+    [ 1, 0, 1, 0, 1, 0, 1, 0 ],
+    [ 0, 1, 0, 1, 0, 1, 0, 1 ],
+  ];
   ClipRect.iLeft = usPosX;
   ClipRect.iRight = usPosX + usWidth;
   ClipRect.iTop = usPosY;
@@ -4766,7 +4766,7 @@ function EvaluateItemAddedToPlayersOfferArea(bSlotID: INT8, fFirstOne: BOOLEAN):
 }
 
 function DoSkiMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
-  let pCenteringRect: SGPRect = { 0, 0, 639, 339 };
+  let pCenteringRect: SGPRect = [ 0, 0, 639, 339 ];
 
   // reset exit mode
   gfExitSKIDueToMessageBox = TRUE;

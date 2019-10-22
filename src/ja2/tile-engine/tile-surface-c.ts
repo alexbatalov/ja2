@@ -114,7 +114,7 @@ function DeleteTileSurface(pTileSurf: PTILE_IMAGERY): void {
 function SetRaisedObjectFlag(cFilename: Pointer<char>, pTileSurf: Pointer<TILE_IMAGERY>): void {
   let cnt: INT32 = 0;
   let cRootFile: CHAR8[] /* [128] */;
-  let ubRaisedObjectFiles: UINT8[][] /* [][80] */ = {
+  let ubRaisedObjectFiles: UINT8[][] /* [][80] */ = [
     "bones",
     "bones2",
     "grass2",
@@ -127,7 +127,7 @@ function SetRaisedObjectFlag(cFilename: Pointer<char>, pTileSurf: Pointer<TILE_I
     "twigs",
     "wing",
     "1",
-  };
+  ];
 
   // Loop through array of RAISED objecttype imagery and
   // set global value...

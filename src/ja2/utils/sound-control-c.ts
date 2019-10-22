@@ -11,7 +11,7 @@ UINT32 HIGHVOLUME								START_HIGHVOLUME;
 let guiSpeechVolume: UINT32 = MIDVOLUME;
 let guiSoundEffectsVolume: UINT32 = MIDVOLUME;
 
-let szSoundEffects: char[][] /* [NUM_SAMPLES][255] */ = {
+let szSoundEffects: char[][] /* [NUM_SAMPLES][255] */ = [
   "SOUNDS\\RICOCHET 01.WAV",
   "SOUNDS\\RICOCHET 02.WAV",
   "SOUNDS\\RICOCHET 01.WAV",
@@ -345,9 +345,9 @@ let szSoundEffects: char[][] /* [NUM_SAMPLES][255] */ = {
   "SOUNDS\\x ray activated.WAV",
   "SOUNDS\\catch object.wav",
   "SOUNDS\\fence open.wav",
-};
+];
 
-let szAmbientEffects: char[][] /* [NUM_AMBIENTS][255] */ = {
+let szAmbientEffects: char[][] /* [NUM_AMBIENTS][255] */ = [
   "SOUNDS\\storm1.wav",
   "SOUNDS\\storm2.wav",
   "SOUNDS\\rain_loop_22k.wav",
@@ -362,9 +362,9 @@ let szAmbientEffects: char[][] /* [NUM_AMBIENTS][255] */ = {
   "SOUNDS\\owl3.wav",
   "SOUNDS\\night_bird1.wav",
   "SOUNDS\\night_bird3.wav",
-};
+];
 
-let AmbientVols: UINT8[] /* [NUM_AMBIENTS] */ = {
+let AmbientVols: UINT8[] /* [NUM_AMBIENTS] */ = [
   25, // lightning 1
   25, // lightning 2
   10, // rain 1
@@ -379,7 +379,7 @@ let AmbientVols: UINT8[] /* [NUM_AMBIENTS] */ = {
   25, // owl 3
   25, // night bird 1
   25, // night bird 2
-};
+];
 
 let gDelayedSoundParms: SOUNDPARMS;
 let guiDelayedSoundNum: UINT32;

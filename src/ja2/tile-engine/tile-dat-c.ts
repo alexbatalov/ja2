@@ -1,4 +1,4 @@
-let gOpenDoorList: INT16[] /* [20] */ = {
+let gOpenDoorList: INT16[] /* [20] */ = [
   FIRSTDOOR1,
   SECONDDOOR1,
   THIRDDOOR1,
@@ -16,9 +16,9 @@ let gOpenDoorList: INT16[] /* [20] */ = {
   THIRDDOOR16,
   FOURTHDOOR16,
   -1,
-};
+];
 
-let gOpenDoorShadowList: INT16[] /* [20] */ = {
+let gOpenDoorShadowList: INT16[] /* [20] */ = [
   FIRSTDOORSH1,
   SECONDDOORSH1,
   THIRDDOORSH1,
@@ -36,9 +36,9 @@ let gOpenDoorShadowList: INT16[] /* [20] */ = {
   THIRDDOORSH16,
   FOURTHDOORSH16,
   -1,
-};
+];
 
-let gClosedDoorList: INT16[] /* [20] */ = {
+let gClosedDoorList: INT16[] /* [20] */ = [
   FIRSTDOOR5,
   SECONDDOOR5,
   THIRDDOOR5,
@@ -56,9 +56,9 @@ let gClosedDoorList: INT16[] /* [20] */ = {
   THIRDDOOR20,
   FOURTHDOOR20,
   -1,
-};
+];
 
-let gClosedDoorShadowList: INT16[] /* [20] */ = {
+let gClosedDoorShadowList: INT16[] /* [20] */ = [
   FIRSTDOORSH5,
   SECONDDOORSH5,
   THIRDDOORSH5,
@@ -76,10 +76,10 @@ let gClosedDoorShadowList: INT16[] /* [20] */ = {
   THIRDDOORSH20,
   FOURTHDOORSH20,
   -1,
-};
+];
 
 // REVERSE BUDDIES FROM SHADOW BACK TO STRUCT
-let gReverseShadowBuddys: INT16[] /* [] */ = {
+let gReverseShadowBuddys: INT16[] /* [] */ = [
   FIRSTCLIFFSHADOW,
   FIRSTCLIFFSHADOW1,
   FIRSTCLIFF1,
@@ -171,10 +171,10 @@ let gReverseShadowBuddys: INT16[] /* [] */ = {
   SECONDLARGEEXPDEBRIS1,
 
   -1,
-};
+];
 
 // SHADOW BUDDIES FROM STRUCT FORWARD TO SHADOW
-let gForwardShadowBuddys: INT16[] /* [] */ = {
+let gForwardShadowBuddys: INT16[] /* [] */ = [
   FIRSTCLIFF,
   FIRSTCLIFF1,
   FIRSTCLIFFSHADOW1,
@@ -265,10 +265,10 @@ let gForwardShadowBuddys: INT16[] /* [] */ = {
   SECONDLARGEEXPDEBRISSHADOW1,
 
   -1,
-};
+];
 
 // Global variable used to initialize tile database with full tile spec
-let gFullBaseTileValues: UINT8[] /* [] */ = {
+let gFullBaseTileValues: UINT8[] /* [] */ = [
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // First Texture
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -307,9 +307,9 @@ let gFullBaseTileValues: UINT8[] /* [] */ = {
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // Water2 Texture
-};
+];
 
-let gTileSurfaceName: STR[] /* [NUMBEROFTILETYPES] */ = {
+let gTileSurfaceName: STR[] /* [NUMBEROFTILETYPES] */ = [
   "TEXTURE1",
   "TEXTURE2",
   "TEXTURE3",
@@ -481,9 +481,9 @@ let gTileSurfaceName: STR[] /* [NUMBEROFTILETYPES] */ = {
   "MISS2",
   "MISS3",
   "WIREFRAME",
-};
+];
 
-let gNumTilesPerType: UINT16[] /* [NUMBEROFTILETYPES] */ = {
+let gNumTilesPerType: UINT16[] /* [NUMBEROFTILETYPES] */ = [
   FIRSTTEXTURE35 - FIRSTTEXTURE1 + 1,
   SECONDTEXTURE35 - SECONDTEXTURE1 + 1,
   THIRDTEXTURE35 - THIRDTEXTURE1 + 1,
@@ -666,9 +666,9 @@ let gNumTilesPerType: UINT16[] /* [NUMBEROFTILETYPES] */ = {
   SECONDMISS5 - SECONDMISS1 + 1,
   THIRDMISS14 - THIRDMISS1 + 1,
   WIREFRAMES15 - WIREFRAMES1 + 1,
-};
+];
 
-let gTileTypeLogicalHeight: UINT8[] /* [NUMBEROFTILETYPES] */ = {
+let gTileTypeLogicalHeight: UINT8[] /* [NUMBEROFTILETYPES] */ = [
   2, // First texture
   2, // Second texture
   2, // Third texture
@@ -678,7 +678,7 @@ let gTileTypeLogicalHeight: UINT8[] /* [NUMBEROFTILETYPES] */ = {
   2, // Seventh texture
   10, // First water
   10, // Second water
-};
+];
 
 function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileElement: Pointer<TILE_ELEMENT>, fUseRaisedObjectType: BOOLEAN): void {
   let ubLoop: UINT8;

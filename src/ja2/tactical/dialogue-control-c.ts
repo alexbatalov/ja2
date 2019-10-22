@@ -36,16 +36,16 @@ type DIALOGUE_Q_STRUCT_PTR = Pointer<DIALOGUE_Q_STRUCT>;
 let fExternFacesLoaded: BOOLEAN = FALSE;
 
 let uiExternalStaticNPCFaces: UINT32[] /* [NUMBER_OF_EXTERNAL_NPC_FACES] */;
-let uiExternalFaceProfileIds: UINT32[] /* [NUMBER_OF_EXTERNAL_NPC_FACES] */ = {
+let uiExternalFaceProfileIds: UINT32[] /* [NUMBER_OF_EXTERNAL_NPC_FACES] */ = [
   97,
   106,
   148,
   156,
   157,
   158,
-};
+];
 
-let gubMercValidPrecedentQuoteID: UINT8[] /* [NUMBER_VALID_MERC_PRECEDENT_QUOTES] */ = {
+let gubMercValidPrecedentQuoteID: UINT8[] /* [NUMBER_VALID_MERC_PRECEDENT_QUOTES] */ = [
   80,
   81,
   82,
@@ -59,12 +59,12 @@ let gubMercValidPrecedentQuoteID: UINT8[] /* [NUMBER_VALID_MERC_PRECEDENT_QUOTES
   100,
   101,
   102,
-};
+];
 
-let gusStopTimeQuoteList: UINT16[] /* [] */ = {
+let gusStopTimeQuoteList: UINT16[] /* [] */ = [
   QUOTE_BOOBYTRAP_ITEM,
   QUOTE_SUSPICIOUS_GROUND,
-};
+];
 
 let gubNumStopTimeQuotes: UINT8 = 2;
 
@@ -1894,7 +1894,7 @@ function RenderSubtitleBoxOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 }
 
 function SayQuoteFromAnyBodyInSector(usQuoteNum: UINT16): void {
-  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
+  let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
@@ -1943,7 +1943,7 @@ function SayQuoteFromAnyBodyInSector(usQuoteNum: UINT16): void {
 }
 
 function SayQuoteFromAnyBodyInThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, usQuoteNum: UINT16): void {
-  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
+  let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
@@ -1984,7 +1984,7 @@ function SayQuoteFromAnyBodyInThisSector(sSectorX: INT16, sSectorY: INT16, bSect
 }
 
 function SayQuoteFromNearbyMercInSector(sGridNo: INT16, bDistance: INT8, usQuoteNum: UINT16): void {
-  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
+  let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
@@ -2019,7 +2019,7 @@ function SayQuoteFromNearbyMercInSector(sGridNo: INT16, bDistance: INT8, usQuote
 }
 
 function SayQuote58FromNearbyMercInSector(sGridNo: INT16, bDistance: INT8, usQuoteNum: UINT16, bSex: INT8): void {
-  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
+  let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
   let pTeamSoldier: Pointer<SOLDIERTYPE>;

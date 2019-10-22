@@ -19,7 +19,7 @@ let guiCurrentUniqueSoldierId: UINT32 = 1;
 
 // CJC note: trust me, it's easiest just to put this here; this is the only
 // place it should need to be used
-let gubItemDroppableFlag: UINT8[] /* [NUM_INV_SLOTS] */ = {
+let gubItemDroppableFlag: UINT8[] /* [NUM_INV_SLOTS] */ = [
   0x01,
   0x02,
   0x04,
@@ -39,7 +39,7 @@ let gubItemDroppableFlag: UINT8[] /* [NUM_INV_SLOTS] */ = {
   0,
   0,
   0,
-};
+];
 
 function RandomizeNewSoldierStats(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): void {
   pCreateStruct->bLifeMax = Random(50) + 50;

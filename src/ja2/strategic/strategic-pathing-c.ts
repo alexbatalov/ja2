@@ -8,12 +8,12 @@ let gfPlotToAvoidPlayerInfuencedSectors: BOOLEAN = FALSE;
 
 // UINT16 gusEndPlotGridNo;
 
-let ubFromMapDirToInsertionCode: UINT8[] /* [] */ = {
+let ubFromMapDirToInsertionCode: UINT8[] /* [] */ = [
   INSERTION_CODE_SOUTH, // NORTH_STRATEGIC_MOVE
   INSERTION_CODE_WEST, // EAST_STRATEGIC_MOVE
   INSERTION_CODE_NORTH, // SOUTH_STRATEGIC_MOVE
   INSERTION_CODE_EAST // WEST_STRATEGIC_MOVE
-};
+];
 
 // Globals
 interface path_t {
@@ -120,7 +120,7 @@ const QUESEARCH = (ndx, NDX) => {
 
 let queRequests: INT32;
 
-let diStratDelta: INT16[] /* [8] */ = {
+let diStratDelta: INT16[] /* [8] */ = [
   -MAP_WIDTH, // N
   1 - MAP_WIDTH, // NE
   1, // E
@@ -129,7 +129,7 @@ let diStratDelta: INT16[] /* [8] */ = {
   MAP_WIDTH - 1, // SW
   -1, // W
   -MAP_WIDTH - 1 // NW
-};
+];
 
 // this will find if a shortest strategic path
 

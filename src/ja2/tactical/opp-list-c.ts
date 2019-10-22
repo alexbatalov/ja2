@@ -44,19 +44,19 @@ let gubPublicNoiseVolume: UINT8[] /* [MAXTEAMS] */;
 let gsPublicNoiseGridno: INT16[] /* [MAXTEAMS] */;
 let gbPublicNoiseLevel: INT8[] /* [MAXTEAMS] */;
 
-let gubKnowledgeValue: UINT8[][] /* [10][10] */ = {
+let gubKnowledgeValue: UINT8[][] /* [10][10] */ = [
   //   P E R S O N A L   O P P L I S T  //
   // -4   -3   -2   -1   0   1   2   3   4   5   //
-  { 0, 1, 2, 3, 0, 5, 4, 3, 2, 1 }, // -4
-  { 0, 0, 1, 2, 0, 4, 3, 2, 1, 0 }, // -3    O
-  { 0, 0, 0, 1, 0, 3, 2, 1, 0, 0 }, // -2  P P
-  { 0, 0, 0, 0, 0, 2, 1, 0, 0, 0 }, // -1  U P
-  { 0, 1, 2, 3, 0, 5, 4, 3, 2, 1 }, //  0  B L
-  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //  1  L I
-  { 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 }, //  2  I S
-  { 0, 0, 0, 1, 0, 2, 1, 0, 0, 0 }, //  3  C T
-  { 0, 0, 1, 2, 0, 3, 2, 1, 0, 0 }, //  4
-  { 0, 1, 2, 3, 0, 4, 3, 2, 1, 0 }, //  5
+  [ 0, 1, 2, 3, 0, 5, 4, 3, 2, 1 ], // -4
+  [ 0, 0, 1, 2, 0, 4, 3, 2, 1, 0 ], // -3    O
+  [ 0, 0, 0, 1, 0, 3, 2, 1, 0, 0 ], // -2  P P
+  [ 0, 0, 0, 0, 0, 2, 1, 0, 0, 0 ], // -1  U P
+  [ 0, 1, 2, 3, 0, 5, 4, 3, 2, 1 ], //  0  B L
+  [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //  1  L I
+  [ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 ], //  2  I S
+  [ 0, 0, 0, 1, 0, 2, 1, 0, 0, 0 ], //  3  C T
+  [ 0, 0, 1, 2, 0, 3, 2, 1, 0, 0 ], //  4
+  [ 0, 1, 2, 3, 0, 4, 3, 2, 1, 0 ], //  5
 
   /*
      //   P E R S O N A L   O P P L I S T  //
@@ -70,7 +70,7 @@ let gubKnowledgeValue: UINT8[][] /* [10][10] */ = {
      {   0,   0,   1,  0,  2,  1,  0,  0   }, //  3  C T
      {   0,   1,   2,  0,  3,  2,  1,  0   }  //  4
            */
-};
+];
 
 const MAX_WATCHED_LOC_POINTS = 4;
 const WATCHED_LOC_RADIUS = 1;
@@ -81,33 +81,33 @@ let gubWatchedLocPoints: UINT8[][] /* [TOTAL_SOLDIERS][NUM_WATCHED_LOCS] */;
 let gfWatchedLocReset: BOOLEAN[][] /* [TOTAL_SOLDIERS][NUM_WATCHED_LOCS] */;
 let gfWatchedLocHasBeenIncremented: BOOLEAN[][] /* [TOTAL_SOLDIERS][NUM_WATCHED_LOCS] */;
 
-let gbLookDistance: INT8[][] /* [8][8] */ = {
+let gbLookDistance: INT8[][] /* [8][8] */ = [
   //  LOOKER DIR       LOOKEE DIR
 
   //                   NORTH    | NORTHEAST  |   EAST   |  SOUTHEAST  |   SOUTH  |  SOUTHWEST  |   WEST    |  NORTHWEST
 
-  /* NORTH      */ { STRAIGHT, ANGLE, SIDE, SBEHIND, BEHIND, SBEHIND, SIDE, ANGLE },
+  /* NORTH      */ [ STRAIGHT, ANGLE, SIDE, SBEHIND, BEHIND, SBEHIND, SIDE, ANGLE ],
 
-  /* NORTHEAST  */ { ANGLE, STRAIGHT, ANGLE, SIDE, SBEHIND, BEHIND, SBEHIND, SIDE },
+  /* NORTHEAST  */ [ ANGLE, STRAIGHT, ANGLE, SIDE, SBEHIND, BEHIND, SBEHIND, SIDE ],
 
-  /* EAST       */ { SIDE, ANGLE, STRAIGHT, ANGLE, SIDE, SBEHIND, BEHIND, SBEHIND },
+  /* EAST       */ [ SIDE, ANGLE, STRAIGHT, ANGLE, SIDE, SBEHIND, BEHIND, SBEHIND ],
 
-  /* SOUTHEAST  */ { SBEHIND, SIDE, ANGLE, STRAIGHT, ANGLE, SIDE, SBEHIND, BEHIND },
+  /* SOUTHEAST  */ [ SBEHIND, SIDE, ANGLE, STRAIGHT, ANGLE, SIDE, SBEHIND, BEHIND ],
 
-  /* SOUTH      */ { BEHIND, SBEHIND, SIDE, ANGLE, STRAIGHT, ANGLE, SIDE, SBEHIND },
+  /* SOUTH      */ [ BEHIND, SBEHIND, SIDE, ANGLE, STRAIGHT, ANGLE, SIDE, SBEHIND ],
 
-  /* SOUTHWEST  */ { SBEHIND, BEHIND, SBEHIND, SIDE, ANGLE, STRAIGHT, ANGLE, SIDE },
+  /* SOUTHWEST  */ [ SBEHIND, BEHIND, SBEHIND, SIDE, ANGLE, STRAIGHT, ANGLE, SIDE ],
 
-  /* WEST       */ { SIDE, SBEHIND, BEHIND, SBEHIND, SIDE, ANGLE, STRAIGHT, ANGLE },
+  /* WEST       */ [ SIDE, SBEHIND, BEHIND, SBEHIND, SIDE, ANGLE, STRAIGHT, ANGLE ],
 
-  /* NORTHWEST  */ { ANGLE, SIDE, SBEHIND, BEHIND, SBEHIND, SIDE, ANGLE, STRAIGHT },
-};
+  /* NORTHWEST  */ [ ANGLE, SIDE, SBEHIND, BEHIND, SBEHIND, SIDE, ANGLE, STRAIGHT ],
+];
 
-let gbSmellStrength: INT8[] /* [3] */ = {
+let gbSmellStrength: INT8[] /* [3] */ = [
   NORMAL_HUMAN_SMELL_STRENGTH, // normal
   NORMAL_HUMAN_SMELL_STRENGTH + 2, // slob
   NORMAL_HUMAN_SMELL_STRENGTH - 1 // snob
-};
+];
 
 let gsWhoThrewRock: UINT16 = NOBODY;
 
@@ -116,9 +116,9 @@ const UVGOGGLES_BONUS = 4;
 
 // % values of sighting distance at various light levels
 
-let gbLightSighting: INT8[][] /* [1][16] */ = {
+let gbLightSighting: INT8[][] /* [1][16] */ = [
   // human
-  {
+  [
     80, // brightest
     86,
     93,
@@ -135,8 +135,8 @@ let gbLightSighting: INT8[][] /* [1][16] */ = {
     30,
     17,
     9,
-  },
-};
+  ],
+];
 /*
 {
 { // human

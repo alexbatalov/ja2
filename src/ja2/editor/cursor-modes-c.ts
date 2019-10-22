@@ -11,14 +11,14 @@ let sGridX: INT16;
 let sGridY: INT16;
 let sBadMarker: INT16 = -1;
 
-let wszSelType: Pointer<UINT16>[] /* [6] */ = {
+let wszSelType: Pointer<UINT16>[] /* [6] */ = [
   L"Small",
   L"Medium",
   L"Large",
   L"XLarge",
   L"Width: xx",
   L"Area",
-};
+];
 
 let gfAllowRightButtonSelections: BOOLEAN = FALSE;
 let gfCurrentSelectionWithRightButton: BOOLEAN = FALSE;

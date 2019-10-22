@@ -86,7 +86,7 @@ let gFileDataBase: DatabaseManagerHeaderStruct;
 // FileSystem gfs;
 
 let Win32FindInfo: WIN32_FIND_DATA[] /* [20] */;
-let fFindInfoInUse: BOOLEAN[] /* [20] */ = {
+let fFindInfoInUse: BOOLEAN[] /* [20] */ = [
   FALSE,
   FALSE,
   FALSE,
@@ -107,8 +107,8 @@ let fFindInfoInUse: BOOLEAN[] /* [20] */ = {
   FALSE,
   FALSE,
   FALSE,
-};
-let hFindInfoHandle: HANDLE[] /* [20] */ = {
+];
+let hFindInfoHandle: HANDLE[] /* [20] */ = [
   INVALID_HANDLE_VALUE,
   INVALID_HANDLE_VALUE,
   INVALID_HANDLE_VALUE,
@@ -129,7 +129,7 @@ let hFindInfoHandle: HANDLE[] /* [20] */ = {
   INVALID_HANDLE_VALUE,
   INVALID_HANDLE_VALUE,
   INVALID_HANDLE_VALUE,
-};
+];
 
 //**************************************************************************
 //

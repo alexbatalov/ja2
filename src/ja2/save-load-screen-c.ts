@@ -125,7 +125,7 @@ let guiSlgBackGroundImage: UINT32;
 let guiBackGroundAddOns: UINT32;
 
 // The string that will contain the game desc text
-let gzGameDescTextField: wchar_t[] /* [SIZE_OF_SAVE_GAME_DESC] */ = { 0 };
+let gzGameDescTextField: wchar_t[] /* [SIZE_OF_SAVE_GAME_DESC] */ = [ 0 ];
 
 let gfUserInTextInputMode: BOOLEAN = FALSE;
 let gubSaveGameNextPass: UINT8 = 0;
@@ -857,7 +857,7 @@ function DoSaveLoadMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, u
 }
 
 function DoSaveLoadMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
-  let CenteringRect: SGPRect = { 0, 0, 639, 479 };
+  let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // do message box and return
   giSaveLoadMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, &CenteringRect);

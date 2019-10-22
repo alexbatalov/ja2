@@ -39,7 +39,7 @@ const enum Enum20 {
 
 let giCurrentIntroBeingPlayed: INT32 = SMKINTRO_NO_VIDEO;
 
-let gpzSmackerFileNames: Pointer<CHAR>[] /* [] */ = {
+let gpzSmackerFileNames: Pointer<CHAR>[] /* [] */ = [
   // begining of the game
   "INTRO\\Rebel_cr.smk",
   "INTRO\\Omerta.smk",
@@ -55,7 +55,7 @@ let gpzSmackerFileNames: Pointer<CHAR>[] /* [] */ = {
 
   "INTRO\\SplashScreen.smk",
   "INTRO\\TalonSoftid_endhold.smk",
-};
+];
 
 // enums used for when the intro screen can come up, either begining game intro, or end game cinematic
 let gbIntroScreenMode: INT8 = -1;

@@ -221,7 +221,7 @@ function HandleShortCutExitState(): void {
   // look at the state of fGameIsRunning, if set false, then prompt user for confirmation
 
   // use YES/NO Pop up box, settup for particular screen
-  let pCenteringRect: SGPRect = { 0, 0, 640, INV_INTERFACE_START_Y };
+  let pCenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
 
   if (guiCurrentScreen == ERROR_SCREEN) {
     // an assert failure, don't bring up the box!

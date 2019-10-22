@@ -1,31 +1,31 @@
-let ubDrugTravelRate: UINT8[] /* [] */ = {
+let ubDrugTravelRate: UINT8[] /* [] */ = [
   4,
   2,
-};
-let ubDrugWearoffRate: UINT8[] /* [] */ = {
+];
+let ubDrugWearoffRate: UINT8[] /* [] */ = [
   2,
   2,
-};
-let ubDrugEffect: UINT8[] /* [] */ = {
+];
+let ubDrugEffect: UINT8[] /* [] */ = [
   15,
   8,
-};
-let ubDrugSideEffect: UINT8[] /* [] */ = {
+];
+let ubDrugSideEffect: UINT8[] /* [] */ = [
   20,
   10,
-};
-let ubDrugSideEffectRate: UINT8[] /* [] */ = {
+];
+let ubDrugSideEffectRate: UINT8[] /* [] */ = [
   2,
   1,
-};
+];
 
-let giDrunkModifier: INT32[] /* [] */ = {
+let giDrunkModifier: INT32[] /* [] */ = [
   100, // Sober
   75, // Feeling good,
   65, // Bporderline
   50, // Drunk
   100, // HungOver
-};
+];
 
 const HANGOVER_AP_REDUCE = 5;
 const HANGOVER_BP_REDUCE = 200;

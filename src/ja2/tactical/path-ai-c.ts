@@ -84,7 +84,7 @@ const NOPASS = (TRAVELCOST_BLOCKED);
 /* static */ let iSkipListSize: INT32;
 /* static */ let iClosedListSize: INT32;
 /* static */ let bSkipListLevel: INT8;
-/* static */ let iSkipListLevelLimit: INT32[] /* [8] */ = {
+/* static */ let iSkipListLevelLimit: INT32[] /* [8] */ = [
   0,
   4,
   16,
@@ -93,7 +93,7 @@ const NOPASS = (TRAVELCOST_BLOCKED);
   1024,
   4192,
   16384,
-};
+];
 
 const ESTIMATE0 = () => ((dx > dy) ? (dx) : (dy));
 const ESTIMATE1 = () => ((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
@@ -332,7 +332,7 @@ let guiPathingData: UINT32[] /* [256] */;
 /* static */ let giPlotCnt: INT32;
 /* static */ let guiEndPlotGridNo: UINT32;
 
-/* static */ let dirDelta: INT32[] /* [8] */ = {
+/* static */ let dirDelta: INT32[] /* [8] */ = [
   -MAPWIDTH, // N
   1 - MAPWIDTH, // NE
   1, // E
@@ -341,7 +341,7 @@ let guiPathingData: UINT32[] /* [256] */;
   MAPWIDTH - 1, // SW
   -1, // W
   -MAPWIDTH - 1, // NW
-};
+];
 
 const LOOPING_CLOCKWISE = 0;
 const LOOPING_COUNTERCLOCKWISE = 1;
@@ -1712,13 +1712,13 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
   let sOldGrid: INT16 = 0;
   let sFootOrderIndex: INT16;
   let sSwitchValue: INT16;
-  let sFootOrder: INT16[] /* [5] */ = {
+  let sFootOrder: INT16[] /* [5] */ = [
     GREENSTEPSTART,
     PURPLESTEPSTART,
     BLUESTEPSTART,
     ORANGESTEPSTART,
     REDSTEPSTART,
-  };
+  ];
   let usTileIndex: UINT16;
   let usTileNum: UINT16;
   let pNode: Pointer<LEVELNODE>;
