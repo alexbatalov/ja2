@@ -7492,7 +7492,7 @@ function InternalIsValidStance(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8,
 
       // Something gone funny here....
       usAnimState = pSoldier->usAnimState;
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Wrong desired stance given: %d, %d.", bNewStance, pSoldier->usAnimState);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "Wrong desired stance given: %d, %d.", bNewStance, pSoldier->usAnimState);
   }
 
   usAnimSurface = DetermineSoldierAnimationSurface(pSoldier, usAnimState);

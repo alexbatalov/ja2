@@ -464,7 +464,7 @@ function EnterHelpScreen(): BOOLEAN {
   // Create the exit buttons
   giExitBtnImage = LoadButtonImage("INTERFACE\\HelpScreen.sti", -1, 0, 4, 2, 6);
 
-  guiHelpScreenExitBtn = CreateIconAndTextButton(giExitBtnImage, L"", HELP_SCREEN_BTN_FONT, HELP_SCREEN_BTN_FONT_ON_COLOR, DEFAULT_SHADOW, HELP_SCREEN_BTN_FONT_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, BtnHelpScreenExitCallback);
+  guiHelpScreenExitBtn = CreateIconAndTextButton(giExitBtnImage, "", HELP_SCREEN_BTN_FONT, HELP_SCREEN_BTN_FONT_ON_COLOR, DEFAULT_SHADOW, HELP_SCREEN_BTN_FONT_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, BtnHelpScreenExitCallback);
   SetButtonFastHelpText(guiHelpScreenExitBtn, gzHelpScreenText[HLP_SCRN_TXT__EXIT_SCREEN]);
   SetButtonCursor(guiHelpScreenExitBtn, gHelpScreen.usCursor);
 

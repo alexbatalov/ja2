@@ -225,7 +225,7 @@ function AutoCalculateItemNoOverwriteStatus(): void {
 function ValidateAndUpdateMapVersionIfNecessary(): void {
   // Older versions of mercs may require updating due to past bug fixes, new changes, etc.
   if (gMapInformation.ubMapVersion < MINOR_MAP_VERSION) {
-    SetRelativeStartAndEndPercentage(0, 92, 93, L"Updating older map version...");
+    SetRelativeStartAndEndPercentage(0, 92, 93, "Updating older map version...");
     RenderProgressBar(0, 0);
     UpdateOldVersionMap();
   } else if (gMapInformation.ubMapVersion > MINOR_MAP_VERSION) {

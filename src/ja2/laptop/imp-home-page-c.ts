@@ -287,7 +287,7 @@ function HandleTextEvent(uiKey: UINT32): void {
 
 function ProcessPlayerInputActivationString(): void {
   // prcess string to see if it matches activation string
-  if (((wcscmp(pPlayerActivationString, L"XEP624") == 0) || (wcscmp(pPlayerActivationString, L"xep624") == 0)) && (LaptopSaveInfo.fIMPCompletedFlag == FALSE) && (LaptopSaveInfo.gfNewGameLaptop < 2)) {
+  if (((wcscmp(pPlayerActivationString, "XEP624") == 0) || (wcscmp(pPlayerActivationString, "xep624") == 0)) && (LaptopSaveInfo.fIMPCompletedFlag == FALSE) && (LaptopSaveInfo.gfNewGameLaptop < 2)) {
     iCurrentImpPage = IMP_MAIN_PAGE;
   }
   /*
@@ -297,7 +297,7 @@ function ProcessPlayerInputActivationString(): void {
           }
   */
   else {
-    if (((wcscmp(pPlayerActivationString, L"XEP624") != 0) && (wcscmp(pPlayerActivationString, L"xep624") != 0))) {
+    if (((wcscmp(pPlayerActivationString, "XEP624") != 0) && (wcscmp(pPlayerActivationString, "xep624") != 0))) {
       DoLapTopMessageBox(MSG_BOX_IMP_STYLE, pImpPopUpStrings[0], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
     } else if (LaptopSaveInfo.fIMPCompletedFlag == TRUE) {
       DoLapTopMessageBox(MSG_BOX_IMP_STYLE, pImpPopUpStrings[6], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);

@@ -76,41 +76,41 @@ function AniEditScreenHandle(): UINT32 {
   EndFrameBufferRender();
 
   SetFont(LARGEFONT1);
-  mprintf(0, 0, L"SOLDIER ANIMATION VIEWER");
-  gprintfdirty(0, 0, L"SOLDIER ANIMATION VIEWER");
+  mprintf(0, 0, "SOLDIER ANIMATION VIEWER");
+  gprintfdirty(0, 0, "SOLDIER ANIMATION VIEWER");
 
-  mprintf(0, 20, L"Current Animation: %S %S", gAnimControl[usStartAnim].zAnimStr, gAnimSurfaceDatabase[pSoldier->usAnimSurface].Filename);
-  gprintfdirty(0, 20, L"Current Animation: %S %S", gAnimControl[usStartAnim].zAnimStr, gAnimSurfaceDatabase[pSoldier->usAnimSurface].Filename);
+  mprintf(0, 20, "Current Animation: %S %S", gAnimControl[usStartAnim].zAnimStr, gAnimSurfaceDatabase[pSoldier->usAnimSurface].Filename);
+  gprintfdirty(0, 20, "Current Animation: %S %S", gAnimControl[usStartAnim].zAnimStr, gAnimSurfaceDatabase[pSoldier->usAnimSurface].Filename);
 
   switch (ubStartHeight) {
     case ANIM_STAND:
 
-      mprintf(0, 40, L"Current Stance: STAND");
+      mprintf(0, 40, "Current Stance: STAND");
       break;
 
     case ANIM_CROUCH:
 
-      mprintf(0, 40, L"Current Stance: CROUCH");
+      mprintf(0, 40, "Current Stance: CROUCH");
       break;
 
     case ANIM_PRONE:
 
-      mprintf(0, 40, L"Current Stance: PRONE");
+      mprintf(0, 40, "Current Stance: PRONE");
       break;
   }
-  gprintfdirty(0, 40, L"Current Animation: %S", gAnimControl[usStartAnim].zAnimStr);
+  gprintfdirty(0, 40, "Current Animation: %S", gAnimControl[usStartAnim].zAnimStr);
 
   if (fToggle) {
-    mprintf(0, 60, L"FORCE ON");
-    gprintfdirty(0, 60, L"FORCE OFF");
+    mprintf(0, 60, "FORCE ON");
+    gprintfdirty(0, 60, "FORCE OFF");
   }
 
   if (fToggle2) {
-    mprintf(0, 70, L"LOADED ORDER ON");
-    gprintfdirty(0, 70, L"LOADED ORDER ON");
+    mprintf(0, 70, "LOADED ORDER ON");
+    gprintfdirty(0, 70, "LOADED ORDER ON");
 
-    mprintf(0, 90, L"LOADED ORDER : %S", gAnimControl[pusStates[ubCurLoadedState]].zAnimStr);
-    gprintfdirty(0, 90, L"LOADED ORDER : %S", gAnimControl[pusStates[ubCurLoadedState]].zAnimStr);
+    mprintf(0, 90, "LOADED ORDER : %S", gAnimControl[pusStates[ubCurLoadedState]].zAnimStr);
+    gprintfdirty(0, 90, "LOADED ORDER : %S", gAnimControl[pusStates[ubCurLoadedState]].zAnimStr);
   }
 
   if (DequeueEvent(&InputEvent) == TRUE) {
@@ -279,7 +279,7 @@ function BuildListFile(): void {
       ubNumStates = cnt;
       pusStates[cnt] = usState;
     } else {
-      swprintf(zError, L"Animation str %S is not known: ", currFilename);
+      swprintf(zError, "Animation str %S is not known: ", currFilename);
       DoMessageBox(MSG_BOX_BASIC_STYLE, zError, ANIEDIT_SCREEN, MSG_BOX_FLAG_YESNO, NULL, NULL);
       fclose(infoFile);
       return;

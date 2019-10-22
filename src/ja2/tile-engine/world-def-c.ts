@@ -225,7 +225,7 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTiles
 
   // uiFillColor = Get16BPPColor(FROMRGB( 100, 0, 0 ));
   // load the tile surfaces
-  SetRelativeStartAndEndPercentage(0, 1, 35, L"Tile Surfaces");
+  SetRelativeStartAndEndPercentage(0, 1, 35, "Tile Surfaces");
   for (uiLoop = 0; uiLoop < NUMBEROFTILETYPES; uiLoop++) {
     uiPercentage = (uiLoop * 100) / (NUMBEROFTILETYPES - 1);
     RenderProgressBar(0, uiPercentage);
@@ -1357,8 +1357,8 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     }
     if (LayerCount > 15) {
       swprintf(gzErrorCatchString,
-               L"SAVE ABORTED!  Land count too high (%d) for gridno %d."
-               L"  Need to fix before map can be saved!  There are %d additional warnings.",
+               "SAVE ABORTED!  Land count too high (%d) for gridno %d."
+               "  Need to fix before map can be saved!  There are %d additional warnings.",
                LayerCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = TRUE;
       FileClose(hfile);
@@ -1367,7 +1367,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     if (LayerCount > 10) {
       uiNumWarningsCaught++;
       gfErrorCatch = TRUE;
-      swprintf(gzErrorCatchString, L"Warnings %d -- Last warning:  Land count warning of %d for gridno %d.", uiNumWarningsCaught, LayerCount, cnt);
+      swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  Land count warning of %d for gridno %d.", uiNumWarningsCaught, LayerCount, cnt);
     }
     bCounts[cnt][0] = LayerCount;
 
@@ -1392,8 +1392,8 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     }
     if (ObjectCount > 15) {
       swprintf(gzErrorCatchString,
-               L"SAVE ABORTED!  Object count too high (%d) for gridno %d."
-               L"  Need to fix before map can be saved!  There are %d additional warnings.",
+               "SAVE ABORTED!  Object count too high (%d) for gridno %d."
+               "  Need to fix before map can be saved!  There are %d additional warnings.",
                ObjectCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = TRUE;
       FileClose(hfile);
@@ -1402,7 +1402,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     if (ObjectCount > 10) {
       uiNumWarningsCaught++;
       gfErrorCatch = TRUE;
-      swprintf(gzErrorCatchString, L"Warnings %d -- Last warning:  Object count warning of %d for gridno %d.", uiNumWarningsCaught, ObjectCount, cnt);
+      swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  Object count warning of %d for gridno %d.", uiNumWarningsCaught, ObjectCount, cnt);
     }
     bCounts[cnt][1] = ObjectCount;
 
@@ -1418,8 +1418,8 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     }
     if (StructCount > 15) {
       swprintf(gzErrorCatchString,
-               L"SAVE ABORTED!  Struct count too high (%d) for gridno %d."
-               L"  Need to fix before map can be saved!  There are %d additional warnings.",
+               "SAVE ABORTED!  Struct count too high (%d) for gridno %d."
+               "  Need to fix before map can be saved!  There are %d additional warnings.",
                StructCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = TRUE;
       FileClose(hfile);
@@ -1428,7 +1428,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     if (StructCount > 10) {
       uiNumWarningsCaught++;
       gfErrorCatch = TRUE;
-      swprintf(gzErrorCatchString, L"Warnings %d -- Last warning:  Struct count warning of %d for gridno %d.", uiNumWarningsCaught, StructCount, cnt);
+      swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  Struct count warning of %d for gridno %d.", uiNumWarningsCaught, StructCount, cnt);
     }
     bCounts[cnt][2] = StructCount;
 
@@ -1448,8 +1448,8 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     }
     if (ShadowCount > 15) {
       swprintf(gzErrorCatchString,
-               L"SAVE ABORTED!  Shadow count too high (%d) for gridno %d."
-               L"  Need to fix before map can be saved!  There are %d additional warnings.",
+               "SAVE ABORTED!  Shadow count too high (%d) for gridno %d."
+               "  Need to fix before map can be saved!  There are %d additional warnings.",
                ShadowCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = TRUE;
       FileClose(hfile);
@@ -1458,7 +1458,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     if (ShadowCount > 10) {
       uiNumWarningsCaught++;
       gfErrorCatch = TRUE;
-      swprintf(gzErrorCatchString, L"Warnings %d -- Last warning:  Shadow count warning of %d for gridno %d.", uiNumWarningsCaught, ShadowCount, cnt);
+      swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  Shadow count warning of %d for gridno %d.", uiNumWarningsCaught, ShadowCount, cnt);
     }
     bCounts[cnt][3] = ShadowCount;
 
@@ -1474,8 +1474,8 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     }
     if (RoofCount > 15) {
       swprintf(gzErrorCatchString,
-               L"SAVE ABORTED!  Roof count too high (%d) for gridno %d."
-               L"  Need to fix before map can be saved!  There are %d additional warnings.",
+               "SAVE ABORTED!  Roof count too high (%d) for gridno %d."
+               "  Need to fix before map can be saved!  There are %d additional warnings.",
                RoofCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = TRUE;
       FileClose(hfile);
@@ -1484,7 +1484,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     if (RoofCount > 10) {
       uiNumWarningsCaught++;
       gfErrorCatch = TRUE;
-      swprintf(gzErrorCatchString, L"Warnings %d -- Last warning:  Roof count warning of %d for gridno %d.", uiNumWarningsCaught, RoofCount, cnt);
+      swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  Roof count warning of %d for gridno %d.", uiNumWarningsCaught, RoofCount, cnt);
     }
     bCounts[cnt][4] = RoofCount;
 
@@ -1503,8 +1503,8 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     }
     if (OnRoofCount > 15) {
       swprintf(gzErrorCatchString,
-               L"SAVE ABORTED!  OnRoof count too high (%d) for gridno %d."
-               L"  Need to fix before map can be saved!  There are %d additional warnings.",
+               "SAVE ABORTED!  OnRoof count too high (%d) for gridno %d."
+               "  Need to fix before map can be saved!  There are %d additional warnings.",
                OnRoofCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = TRUE;
       FileClose(hfile);
@@ -1513,7 +1513,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     if (OnRoofCount > 10) {
       uiNumWarningsCaught++;
       gfErrorCatch = TRUE;
-      swprintf(gzErrorCatchString, L"Warnings %d -- Last warning:  OnRoof count warning of %d for gridno %d.", uiNumWarningsCaught, OnRoofCount, cnt);
+      swprintf(gzErrorCatchString, "Warnings %d -- Last warning:  OnRoof count warning of %d for gridno %d.", uiNumWarningsCaught, OnRoofCount, cnt);
     }
     bCounts[cnt][5] = RoofCount;
 
@@ -1818,7 +1818,7 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
   FileRead(hfile, pBuffer, uiFileSize, &uiBytesRead);
   FileClose(hfile);
 
-  swprintf(str, L"Analyzing map %S", szFilename);
+  swprintf(str, "Analyzing map %S", szFilename);
   if (!gfUpdatingNow)
     SetRelativeStartAndEndPercentage(0, 0, 100, str);
   else
@@ -2190,7 +2190,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     return FALSE;
   }
 
-  SetRelativeStartAndEndPercentage(0, 0, 1, L"Trashing world...");
+  SetRelativeStartAndEndPercentage(0, 0, 1, "Trashing world...");
 
   TrashWorld();
 
@@ -2244,7 +2244,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
 
   // FP 0x00c810
 
-  SetRelativeStartAndEndPercentage(0, 35, 40, L"Counting layers...");
+  SetRelativeStartAndEndPercentage(0, 35, 40, "Counting layers...");
   RenderProgressBar(0, 100);
 
   // Read layer counts
@@ -2281,7 +2281,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   fp = 0x025810;
   offset = 0;
 
-  SetRelativeStartAndEndPercentage(0, 40, 43, L"Loading land layers...");
+  SetRelativeStartAndEndPercentage(0, 40, 43, "Loading land layers...");
   RenderProgressBar(0, 100);
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
@@ -2306,7 +2306,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   fp += offset;
   offset = 0;
 
-  SetRelativeStartAndEndPercentage(0, 43, 46, L"Loading object layer...");
+  SetRelativeStartAndEndPercentage(0, 43, 46, "Loading object layer...");
   RenderProgressBar(0, 100);
 
   if (0) {
@@ -2352,7 +2352,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   fp += offset;
   offset = 0;
 
-  SetRelativeStartAndEndPercentage(0, 46, 49, L"Loading struct layer...");
+  SetRelativeStartAndEndPercentage(0, 46, 49, "Loading struct layer...");
   RenderProgressBar(0, 100);
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
@@ -2384,7 +2384,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   fp += offset;
   offset = 0;
 
-  SetRelativeStartAndEndPercentage(0, 49, 52, L"Loading shadow layer...");
+  SetRelativeStartAndEndPercentage(0, 49, 52, "Loading shadow layer...");
   RenderProgressBar(0, 100);
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
@@ -2408,7 +2408,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   fp += offset;
   offset = 0;
 
-  SetRelativeStartAndEndPercentage(0, 52, 55, L"Loading roof layer...");
+  SetRelativeStartAndEndPercentage(0, 52, 55, "Loading roof layer...");
   RenderProgressBar(0, 100);
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
@@ -2432,7 +2432,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   fp += offset;
   offset = 0;
 
-  SetRelativeStartAndEndPercentage(0, 55, 58, L"Loading on roof layer...");
+  SetRelativeStartAndEndPercentage(0, 55, 58, "Loading on roof layer...");
   RenderProgressBar(0, 100);
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
@@ -2464,7 +2464,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
 //   }
 // #endif
 
-  SetRelativeStartAndEndPercentage(0, 58, 59, L"Loading room information...");
+  SetRelativeStartAndEndPercentage(0, 58, 59, "Loading room information...");
   RenderProgressBar(0, 100);
 
   gubMaxRoomNumber = 0;
@@ -2486,7 +2486,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
 
   memset(gubWorldRoomHidden, TRUE, sizeof(gubWorldRoomHidden));
 
-  SetRelativeStartAndEndPercentage(0, 59, 61, L"Loading items...");
+  SetRelativeStartAndEndPercentage(0, 59, 61, "Loading items...");
   RenderProgressBar(0, 100);
 
   if (uiFlags & MAP_WORLDITEMS_SAVED) {
@@ -2496,7 +2496,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     gfLoadPitsWithoutArming = FALSE;
   }
 
-  SetRelativeStartAndEndPercentage(0, 62, 85, L"Loading lights...");
+  SetRelativeStartAndEndPercentage(0, 62, 85, "Loading lights...");
   RenderProgressBar(0, 0);
 
   if (uiFlags & MAP_AMBIENTLIGHTLEVEL_SAVED) {
@@ -2522,28 +2522,28 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   }
   LightSetBaseLevel(ubAmbientLightLevel);
 
-  SetRelativeStartAndEndPercentage(0, 85, 86, L"Loading map information...");
+  SetRelativeStartAndEndPercentage(0, 85, 86, "Loading map information...");
   RenderProgressBar(0, 0);
 
   LoadMapInformation(&pBuffer);
 
   if (uiFlags & MAP_FULLSOLDIER_SAVED) {
-    SetRelativeStartAndEndPercentage(0, 86, 87, L"Loading placements...");
+    SetRelativeStartAndEndPercentage(0, 86, 87, "Loading placements...");
     RenderProgressBar(0, 0);
     LoadSoldiersFromMap(&pBuffer);
   }
   if (uiFlags & MAP_EXITGRIDS_SAVED) {
-    SetRelativeStartAndEndPercentage(0, 87, 88, L"Loading exit grids...");
+    SetRelativeStartAndEndPercentage(0, 87, 88, "Loading exit grids...");
     RenderProgressBar(0, 0);
     LoadExitGrids(&pBuffer);
   }
   if (uiFlags & MAP_DOORTABLE_SAVED) {
-    SetRelativeStartAndEndPercentage(0, 89, 90, L"Loading door tables...");
+    SetRelativeStartAndEndPercentage(0, 89, 90, "Loading door tables...");
     RenderProgressBar(0, 0);
     LoadDoorTableFromMap(&pBuffer);
   }
   if (uiFlags & MAP_EDGEPOINTS_SAVED) {
-    SetRelativeStartAndEndPercentage(0, 90, 91, L"Loading edgepoints...");
+    SetRelativeStartAndEndPercentage(0, 90, 91, "Loading edgepoints...");
     RenderProgressBar(0, 0);
     if (!LoadMapEdgepoints(&pBuffer))
       fGenerateEdgePoints = TRUE; // only if the map had the older edgepoint system
@@ -2551,7 +2551,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     fGenerateEdgePoints = TRUE;
   }
   if (uiFlags & MAP_NPCSCHEDULES_SAVED) {
-    SetRelativeStartAndEndPercentage(0, 91, 92, L"Loading NPC schedules...");
+    SetRelativeStartAndEndPercentage(0, 91, 92, "Loading NPC schedules...");
     RenderProgressBar(0, 0);
     LoadSchedules(&pBuffer);
   }
@@ -2561,13 +2561,13 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   // if we arent loading a saved game
   //	if( !(gTacticalStatus.uiFlags & LOADING_SAVED_GAME ) )
   {
-    SetRelativeStartAndEndPercentage(0, 93, 94, L"Init Loaded World...");
+    SetRelativeStartAndEndPercentage(0, 93, 94, "Init Loaded World...");
     RenderProgressBar(0, 0);
     InitLoadedWorld();
   }
 
   if (fGenerateEdgePoints) {
-    SetRelativeStartAndEndPercentage(0, 94, 95, L"Generating map edgepoints...");
+    SetRelativeStartAndEndPercentage(0, 94, 95, "Generating map edgepoints...");
     RenderProgressBar(0, 0);
     CompileWorldMovementCosts();
     GenerateMapEdgepoints();
@@ -2575,7 +2575,7 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
 
   RenderProgressBar(0, 20);
 
-  SetRelativeStartAndEndPercentage(0, 95, 100, L"General initialization...");
+  SetRelativeStartAndEndPercentage(0, 95, 100, "General initialization...");
   // RESET AI!
   InitOpponentKnowledgeSystem();
 

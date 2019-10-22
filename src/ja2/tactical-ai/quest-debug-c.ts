@@ -22,7 +22,7 @@ function ToggleQuestDebugModes(ubType: UINT8): void {
   let ubLevel: UINT8;
 
   if (ubType == QD_NPC_MSG) {
-    wcscpy(sType, L"NPC Debug:");
+    wcscpy(sType, "NPC Debug:");
 
     // check to see if its out of range
     if (gubNPCDebugOutPutLevel <= QD_OUTPUT_NONE + 1)
@@ -34,7 +34,7 @@ function ToggleQuestDebugModes(ubType: UINT8): void {
 
     ubLevel = gubNPCDebugOutPutLevel;
   } else {
-    wcscpy(sType, L"QUEST Debug:");
+    wcscpy(sType, "QUEST Debug:");
 
     // check to see if its out of range
     if (gubQuestDebugOutPutLevel <= QD_OUTPUT_NONE)
@@ -49,11 +49,11 @@ function ToggleQuestDebugModes(ubType: UINT8): void {
 
   // Display a messasge to the screen
   if (ubLevel == QD_OUTPUT_NONE)
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"%s No Output", sType);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "%s No Output", sType);
   else if (ubLevel == QD_OUTPUT_LEVEL_ALL)
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"%s All messages", sType);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "%s All messages", sType);
   else
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"%s Level %d", sType, ubLevel);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "%s Level %d", sType, ubLevel);
 }
 
 function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: STR, ...args: any[]): void {

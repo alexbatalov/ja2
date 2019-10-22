@@ -280,7 +280,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
       SetFontForeground(FONT_MCOLOR_WHITE);
       SetFontDestBuffer(eInfo.uiBuffer, 0, 0, eInfo.sWidth, eInfo.sHeight, FALSE);
 
-      swprintf(pStr, L"%S", LockTable[i].ubEditorName);
+      swprintf(pStr, "%S", LockTable[i].ubEditorName);
       DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT, FONT_WHITE, pStr, FONT_BLACK, TRUE, CENTER_JUSTIFIED);
 
       // Calculate the center position of the graphic in a 60 pixel wide area.
@@ -368,30 +368,30 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
 
           if (eInfo.uiItemType != TBAR_MODE_ITEM_TRIGGERS) {
             LoadItemInfo(usCounter, pItemName, NULL);
-            swprintf(pStr, L"%s", pItemName);
+            swprintf(pStr, "%s", pItemName);
           } else {
             if (i == PRESSURE_ACTION_ID) {
-              swprintf(pStr, L"Pressure Action");
+              swprintf(pStr, "Pressure Action");
             } else if (i < 2) {
               if (usCounter == SWITCH)
-                swprintf(pStr, L"Panic Trigger1");
+                swprintf(pStr, "Panic Trigger1");
               else
-                swprintf(pStr, L"Panic Action1");
+                swprintf(pStr, "Panic Action1");
             } else if (i < 4) {
               if (usCounter == SWITCH)
-                swprintf(pStr, L"Panic Trigger2");
+                swprintf(pStr, "Panic Trigger2");
               else
-                swprintf(pStr, L"Panic Action2");
+                swprintf(pStr, "Panic Action2");
             } else if (i < 6) {
               if (usCounter == SWITCH)
-                swprintf(pStr, L"Panic Trigger3");
+                swprintf(pStr, "Panic Trigger3");
               else
-                swprintf(pStr, L"Panic Action3");
+                swprintf(pStr, "Panic Action3");
             } else {
               if (usCounter == SWITCH)
-                swprintf(pStr, L"Trigger%d", (i - 4) / 2);
+                swprintf(pStr, "Trigger%d", (i - 4) / 2);
               else
-                swprintf(pStr, L"Action%d", (i - 4) / 2);
+                swprintf(pStr, "Action%d", (i - 4) / 2);
             }
           }
           DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT, FONT_WHITE, pStr, FONT_BLACK, TRUE, CENTER_JUSTIFIED);
@@ -517,9 +517,9 @@ function RenderEditorItemsInfo(): void {
       SetFontForeground(FONT_YELLOW);
       SetFontShadow(FONT_NEARBLACK);
       if (usNumItems == usQuantity)
-        mprintf(x + 12, y + 4, L"%d", usNumItems);
+        mprintf(x + 12, y + 4, "%d", usNumItems);
       else
-        mprintf(x + 12, y + 4, L"%d(%d)", usNumItems, usQuantity);
+        mprintf(x + 12, y + 4, "%d(%d)", usNumItems, usQuantity);
     }
   }
 }
@@ -1348,9 +1348,9 @@ function DisplayItemStatistics(): void {
   LoadItemInfo(usItemIndex, pItemName, NULL);
 
   mprintf(50 - StringPixLength(pItemName, SMALLCOMPFONT) / 2, 403, pItemName);
-  mprintf(2, 410, L"Status Info Line 1");
-  mprintf(2, 420, L"Status Info Line 2");
-  mprintf(2, 430, L"Status Info Line 3");
-  mprintf(2, 440, L"Status Info Line 4");
-  mprintf(2, 450, L"Status Info Line 5");
+  mprintf(2, 410, "Status Info Line 1");
+  mprintf(2, 420, "Status Info Line 2");
+  mprintf(2, 430, "Status Info Line 3");
+  mprintf(2, 440, "Status Info Line 4");
+  mprintf(2, 450, "Status Info Line 5");
 }

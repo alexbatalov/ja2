@@ -1752,7 +1752,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
         if (iRetCode != ITEM_HANDLE_BROKEN) // if the item broke, this is 'legal' and doesn't need reporting
         {
           DebugAI(String("AI %d got error code %ld from HandleItem, doing action %d, has %d APs... aborting deadlock!", pSoldier->ubID, iRetCode, pSoldier->bAction, pSoldier->bActionPoints));
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"AI %d got error code %ld from HandleItem, doing action %d... aborting deadlock!", pSoldier->ubID, iRetCode, pSoldier->bAction);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "AI %d got error code %ld from HandleItem, doing action %d... aborting deadlock!", pSoldier->ubID, iRetCode, pSoldier->bAction);
         }
         CancelAIAction(pSoldier, FORCE);
         EndAIGuysTurn(pSoldier);

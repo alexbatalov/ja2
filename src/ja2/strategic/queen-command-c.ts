@@ -1329,13 +1329,13 @@ function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
 
   // TEST MESSAGES ONLY!
   if (bKilledCivilians)
-    ScreenMsg(FONT_BLUE, MSG_TESTVERSION, L"%d civilians died after you left the sector.", bKilledCivilians);
+    ScreenMsg(FONT_BLUE, MSG_TESTVERSION, "%d civilians died after you left the sector.", bKilledCivilians);
   if (bKilledRebels)
-    ScreenMsg(FONT_BLUE, MSG_TESTVERSION, L"%d militia died after you left the sector.", bKilledRebels);
+    ScreenMsg(FONT_BLUE, MSG_TESTVERSION, "%d militia died after you left the sector.", bKilledRebels);
   if (bKilledEnemies)
-    ScreenMsg(FONT_BLUE, MSG_TESTVERSION, L"%d enemies died after you left the sector.", bKilledEnemies);
+    ScreenMsg(FONT_BLUE, MSG_TESTVERSION, "%d enemies died after you left the sector.", bKilledEnemies);
   if (bKilledCreatures)
-    ScreenMsg(FONT_BLUE, MSG_TESTVERSION, L"%d creatures died after you left the sector.", bKilledCreatures);
+    ScreenMsg(FONT_BLUE, MSG_TESTVERSION, "%d creatures died after you left the sector.", bKilledCreatures);
 
   if (!gbWorldSectorZ) {
     let pSector: Pointer<SECTORINFO>;

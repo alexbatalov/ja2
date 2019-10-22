@@ -737,7 +737,7 @@ function DisplayFlowerDynamicItems(): void {
   */
   // order number
   usPosX = StringPixLength(sOrderFormText[FLORIST_ORDER_ORDER_NUMBER], FLOWER_ORDEER_SMALL_FONT) + 5 + FLOWER_ORDER_ORDER_NUM_NAME_X;
-  swprintf(sTemp, L"%d", LaptopSaveInfo.uiFlowerOrderNumber);
+  swprintf(sTemp, "%d", LaptopSaveInfo.uiFlowerOrderNumber);
   DrawTextToScreen(sTemp, usPosX, FLOWER_ORDER_ORDER_NUM_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT, FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   guiFlowerPrice = 0;
@@ -761,7 +761,7 @@ function DisplayFlowerDynamicItems(): void {
   usPosX = StringPixLength(sOrderFormText[FLORIST_ORDER_PRICE], FLOWER_ORDEER_SMALL_FONT) + 5 + FLOWER_ORDER_BOUQUET_NAME_X;
   uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * guiCurrentlySelectedFlower + FLOR_GALLERY_TEXT_TITLE_SIZE;
   LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_PRICE_SIZE);
-  swscanf(sTemp, L"%hu", &usPrice);
+  swscanf(sTemp, "%hu", &usPrice);
 
   // if its the next day delivery
   if (gfFLoristCheckBox0Down)
@@ -770,7 +770,7 @@ function DisplayFlowerDynamicItems(): void {
   else
     guiFlowerPrice += usPrice + FlowerOrderLocations[gubCurrentlySelectedFlowerLocation].ubWhenItGetsThereCost;
 
-  swprintf(sTemp, L"$%d.00 %s", guiFlowerPrice, pMessageStrings[MSG_USDOLLAR_ABBREVIATION]);
+  swprintf(sTemp, "$%d.00 %s", guiFlowerPrice, pMessageStrings[MSG_USDOLLAR_ABBREVIATION]);
   DrawTextToScreen(sTemp, usPosX, FLOWER_ORDER_BOUQUET_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT, FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 }
 
@@ -1012,7 +1012,7 @@ function InitFlowerOrderTextInputBoxes(): void {
   }
 
   if (wcslen(gsSentimentTextField) >= FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS - 2) {
-    gsSentimentTextField[FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS - 1] = L'\0';
+    gsSentimentTextField[FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS - 1] = '\0';
   }
 
   // personal sentiment box

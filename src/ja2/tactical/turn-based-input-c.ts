@@ -1792,7 +1792,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             }
           } else if (fCtrl) {
             if (INFORMATION_CHEAT_LEVEL()) {
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Memory Used: %d + %d = %d vs: %d", guiMemTotal, giMemUsedInSurfaces, (guiMemTotal + giMemUsedInSurfaces), (giStartingMemValue - MemGetFree()));
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Memory Used: %d + %d = %d vs: %d", guiMemTotal, giMemUsedInSurfaces, (guiMemTotal + giMemUsedInSurfaces), (giStartingMemValue - MemGetFree()));
             }
           } else {
             // nothing in hand and the Map Screen button for whichever panel we're in must be enabled
@@ -2417,7 +2417,7 @@ function ToggleRealTime(puiNewEvent: Pointer<UINT32>): void {
     gTacticalStatus.uiFlags &= (~TURNBASED);
     gTacticalStatus.uiFlags |= REALTIME;
 
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Switching to Realtime.");
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Switching to Realtime.");
   } else if (gTacticalStatus.uiFlags & REALTIME) {
     // Change to turn-based
     gTacticalStatus.uiFlags |= TURNBASED;
@@ -2425,7 +2425,7 @@ function ToggleRealTime(puiNewEvent: Pointer<UINT32>): void {
 
     *puiNewEvent = M_ON_TERRAIN;
 
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Switching to Turnbased.");
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Switching to Turnbased.");
   }
 
   // Plot new path!
@@ -2745,12 +2745,12 @@ function CreateNextCivType(): void {
 function ToggleCliffDebug(): void {
   // Set option to show all mercs
   if (gTacticalStatus.uiFlags & DEBUGCLIFFS) {
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Cliff debug OFF.");
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, "Cliff debug OFF.");
 
     gTacticalStatus.uiFlags &= (~DEBUGCLIFFS);
     SetRenderFlags(RENDER_FLAG_FULL);
   } else {
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Cliff debug ON.");
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, "Cliff debug ON.");
 
     gTacticalStatus.uiFlags |= DEBUGCLIFFS;
   }

@@ -240,14 +240,14 @@ function CreateAutoBandageString(): BOOLEAN {
     if (!sTemp) {
       return FALSE;
     }
-    wcscpy(sTemp, L"");
+    wcscpy(sTemp, "");
     for (cnt = 0; cnt < ubDoctors - 1; cnt++) {
       wcscat(sTemp, MercPtrs[ubDoctor[cnt]]->name);
       if (ubDoctors > 2) {
         if (cnt == ubDoctors - 2) {
-          wcscat(sTemp, L",");
+          wcscat(sTemp, ",");
         } else {
-          wcscat(sTemp, L", ");
+          wcscat(sTemp, ", ");
         }
       }
     }
@@ -295,7 +295,7 @@ function AutoBandage(fStart: BOOLEAN): void {
       }
     }
 
-    ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"Begin auto bandage.");
+    ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "Begin auto bandage.");
 
     if (CreateAutoBandageString()) {
       giBoxId = PrepareMercPopupBox(-1, DIALOG_MERC_POPUP_BACKGROUND, DIALOG_MERC_POPUP_BORDER, sAutoBandageString, 200, 40, 10, 30, &gusTextBoxWidth, &gusTextBoxHeight);
@@ -363,7 +363,7 @@ function AutoBandage(fStart: BOOLEAN): void {
     // Delete popup!
     RemoveMercPopupBoxFromIndex(giBoxId);
     giBoxId = -1;
-    ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"End auto bandage.");
+    ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "End auto bandage.");
 
     // build a mask
     MSYS_RemoveRegion(&gAutoBandageRegion);
@@ -572,7 +572,7 @@ function DisplayAutoBandageUpdatePanel(): void {
         RenderSoldierSmallFaceForAutoBandagePanel(iIndex, sCurrentXPosition, sCurrentYPosition);
 
         // display the mercs name
-        swprintf(sString, L"%s", (Menptr[iDoctorList[iCounterA * iNumberDoctorsWide + iCounterB]]).name);
+        swprintf(sString, "%s", (Menptr[iDoctorList[iCounterA * iNumberDoctorsWide + iCounterB]]).name);
         FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1, &sX, &sY);
         SetFont(TINYFONT1);
         SetFontForeground(FONT_LTRED);
@@ -606,7 +606,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   //	iCurPixelY = sYPosition;
   iCurPixelY = sYPosition + ((iCounterA - 1) * TACT_UPDATE_MERC_FACE_X_HEIGHT);
 
-  swprintf(sString, L"%s", zMarksMapScreenText[13]);
+  swprintf(sString, "%s", zMarksMapScreenText[13]);
   FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1, &sX, &sY);
   // print medic
   mprintf(sX, sYPosition - 7, sString);
@@ -634,7 +634,7 @@ function DisplayAutoBandageUpdatePanel(): void {
         RenderSoldierSmallFaceForAutoBandagePanel(iIndex + iNumberDoctors, sCurrentXPosition, sCurrentYPosition);
 
         // display the mercs name
-        swprintf(sString, L"%s", (Menptr[iPatientList[iIndex]]).name);
+        swprintf(sString, "%s", (Menptr[iPatientList[iIndex]]).name);
         FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1, &sX, &sY);
         SetFont(TINYFONT1);
         SetFontForeground(FONT_LTRED);
@@ -696,7 +696,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
 
-  swprintf(sString, L"%s", zMarksMapScreenText[14]);
+  swprintf(sString, "%s", zMarksMapScreenText[14]);
   FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1, &sX, &sY);
   // print patient
   mprintf(sX, iCurPixelY + (TACT_UPDATE_MERC_FACE_X_HEIGHT) + 2, sString);

@@ -476,8 +476,8 @@ function RenderTopmostTacticalInterface(): void {
     SetFont(LARGEFONT1);
     SetFontBackground(FONT_MCOLOR_BLACK);
     SetFontForeground(FONT_MCOLOR_WHITE);
-    gprintfdirty(0, 300, L"OPPONENT %d DEADLOCKED - 'Q' TO DEBUG, <ALT><ENTER> END OPP TURN", gUIDeadlockedSoldier);
-    mprintf(0, 300, L"OPPONENT %d DEADLOCKED - 'Q' TO DEBUG, <ALT><ENTER> END OPP TURN", gUIDeadlockedSoldier);
+    gprintfdirty(0, 300, "OPPONENT %d DEADLOCKED - 'Q' TO DEBUG, <ALT><ENTER> END OPP TURN", gUIDeadlockedSoldier);
+    mprintf(0, 300, "OPPONENT %d DEADLOCKED - 'Q' TO DEBUG, <ALT><ENTER> END OPP TURN", gUIDeadlockedSoldier);
   }
 
   // Syncronize for upcoming soldier counters
@@ -539,8 +539,8 @@ function RenderTopmostTacticalInterface(): void {
           SetFontBackground(FONT_MCOLOR_BLACK);
           SetFontForeground(FONT_MCOLOR_WHITE);
 
-          gprintfdirty(sDamageX, sDamageY, L"-%d", pSoldier->sDamage);
-          mprintf(sDamageX, sDamageY, L"-%d", pSoldier->sDamage);
+          gprintfdirty(sDamageX, sDamageY, "-%d", pSoldier->sDamage);
+          mprintf(sDamageX, sDamageY, "-%d", pSoldier->sDamage);
         }
       }
     }

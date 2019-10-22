@@ -1272,7 +1272,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
       fRaiseName = TRUE;
     } else if (pSoldier->bAssignment >= ON_DUTY) {
       SetFontForeground(FONT_YELLOW);
-      swprintf(NameStr, L"(%s)", pAssignmentStrings[pSoldier->bAssignment]);
+      swprintf(NameStr, "(%s)", pAssignmentStrings[pSoldier->bAssignment]);
       FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, &sX, &sY);
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
@@ -1298,12 +1298,12 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
 
     if (fDoName) {
       if (fRaiseName) {
-        swprintf(NameStr, L"%s", pSoldier->name);
+        swprintf(NameStr, "%s", pSoldier->name);
         FindFontCenterCoordinates(sXPos, (sYPos - 10), (80), 1, NameStr, TINYFONT1, &sX, &sY);
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
       } else {
-        swprintf(NameStr, L"%s", pSoldier->name);
+        swprintf(NameStr, "%s", pSoldier->name);
         FindFontCenterCoordinates(sXPos, sYPos, (80), 1, NameStr, TINYFONT1, &sX, &sY);
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
@@ -1733,7 +1733,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
     swprintf(zDisp, pTacticalPopupButtonStrings[USE_KEYRING_ICON]);
   } else {
-    swprintf(zDisp, L"%s ( %d )", pTacticalPopupButtonStrings[USE_KEYRING_ICON], AP_UNLOCK_DOOR);
+    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[USE_KEYRING_ICON], AP_UNLOCK_DOOR);
   }
   SetButtonFastHelpText(iActionIcons[USE_KEYRING_ICON], zDisp);
 
@@ -1755,7 +1755,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
     swprintf(zDisp, pTacticalPopupButtonStrings[USE_CROWBAR_ICON]);
   } else {
-    swprintf(zDisp, L"%s ( %d )", pTacticalPopupButtonStrings[USE_CROWBAR_ICON], AP_USE_CROWBAR);
+    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[USE_CROWBAR_ICON], AP_USE_CROWBAR);
   }
   SetButtonFastHelpText(iActionIcons[USE_CROWBAR_ICON], zDisp);
 
@@ -1777,7 +1777,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
     swprintf(zDisp, pTacticalPopupButtonStrings[LOCKPICK_DOOR_ICON]);
   } else {
-    swprintf(zDisp, L"%s ( %d )", pTacticalPopupButtonStrings[LOCKPICK_DOOR_ICON], AP_PICKLOCK);
+    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[LOCKPICK_DOOR_ICON], AP_PICKLOCK);
   }
   SetButtonFastHelpText(iActionIcons[LOCKPICK_DOOR_ICON], zDisp);
 
@@ -1799,7 +1799,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
     swprintf(zDisp, pTacticalPopupButtonStrings[EXPLOSIVE_DOOR_ICON]);
   } else {
-    swprintf(zDisp, L"%s ( %d )", pTacticalPopupButtonStrings[EXPLOSIVE_DOOR_ICON], AP_EXPLODE_DOOR);
+    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[EXPLOSIVE_DOOR_ICON], AP_EXPLODE_DOOR);
   }
   SetButtonFastHelpText(iActionIcons[EXPLOSIVE_DOOR_ICON], zDisp);
 
@@ -1823,13 +1823,13 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
       swprintf(zDisp, pTacticalPopupButtonStrings[CANCEL_ICON + 1]);
     } else {
-      swprintf(zDisp, L"%s ( %d )", pTacticalPopupButtonStrings[CANCEL_ICON + 1], AP_OPEN_DOOR);
+      swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[CANCEL_ICON + 1], AP_OPEN_DOOR);
     }
   } else {
     if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
       swprintf(zDisp, pTacticalPopupButtonStrings[OPEN_DOOR_ICON]);
     } else {
-      swprintf(zDisp, L"%s ( %d )", pTacticalPopupButtonStrings[OPEN_DOOR_ICON], AP_OPEN_DOOR);
+      swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[OPEN_DOOR_ICON], AP_OPEN_DOOR);
     }
   }
   SetButtonFastHelpText(iActionIcons[OPEN_DOOR_ICON], zDisp);
@@ -1848,7 +1848,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
     swprintf(zDisp, pTacticalPopupButtonStrings[EXAMINE_DOOR_ICON]);
   } else {
-    swprintf(zDisp, L"%s ( %d )", pTacticalPopupButtonStrings[EXAMINE_DOOR_ICON], AP_EXAMINE_DOOR);
+    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[EXAMINE_DOOR_ICON], AP_EXAMINE_DOOR);
   }
   SetButtonFastHelpText(iActionIcons[EXAMINE_DOOR_ICON], zDisp);
 
@@ -1865,7 +1865,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
     swprintf(zDisp, pTacticalPopupButtonStrings[BOOT_DOOR_ICON]);
   } else {
-    swprintf(zDisp, L"%s ( %d )", pTacticalPopupButtonStrings[BOOT_DOOR_ICON], AP_BOOT_DOOR);
+    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[BOOT_DOOR_ICON], AP_BOOT_DOOR);
   }
   SetButtonFastHelpText(iActionIcons[BOOT_DOOR_ICON], zDisp);
 
@@ -1882,7 +1882,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
     swprintf(zDisp, pTacticalPopupButtonStrings[UNTRAP_DOOR_ICON]);
   } else {
-    swprintf(zDisp, L"%s ( %d )", pTacticalPopupButtonStrings[UNTRAP_DOOR_ICON], AP_UNTRAP_DOOR);
+    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[UNTRAP_DOOR_ICON], AP_UNTRAP_DOOR);
   }
   SetButtonFastHelpText(iActionIcons[UNTRAP_DOOR_ICON], zDisp);
 

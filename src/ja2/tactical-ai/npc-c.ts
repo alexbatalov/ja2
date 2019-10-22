@@ -926,7 +926,7 @@ function HandleNPCBeingGivenMoneyByPlayer(ubNPC: UINT8, uiMoneyAmount: UINT32, p
       } else {
         let sTempString: INT16[] /* [100] */;
 
-        swprintf(sTempString, L"%ld", iCost - uiMoneyAmount - giHospitalTempBalance);
+        swprintf(sTempString, "%ld", iCost - uiMoneyAmount - giHospitalTempBalance);
         InsertDollarSignInToString(sTempString);
 
         // not enough cash

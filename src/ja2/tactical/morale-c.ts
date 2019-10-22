@@ -520,7 +520,7 @@ function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: INT8, s
 
     default:
       // debug message
-      ScreenMsg(MSG_FONT_RED, MSG_BETAVERSION, L"Invalid morale event type = %d.  AM/CC-1", bMoraleEvent);
+      ScreenMsg(MSG_FONT_RED, MSG_BETAVERSION, "Invalid morale event type = %d.  AM/CC-1", bMoraleEvent);
       break;
   }
 

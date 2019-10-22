@@ -52,8 +52,8 @@ const CREDITS_LINESIZE = 80 * 2;
 //
 // new codes:
 const CRDT_START_CODE = '@';
-const CRDT_SEPARATION_CODE = L",";
-const CRDT_END_CODE = L";";
+const CRDT_SEPARATION_CODE = ",";
+const CRDT_END_CODE = ";";
 
 const CRDT_DELAY_BN_STRINGS_CODE = 'D';
 const CRDT_DELAY_BN_SECTIONS_CODE = 'B';
@@ -950,7 +950,7 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
     let uiNewDelay: UINT32 = 0;
 
     // Get the delay from the string
-    swscanf(&pzCode[1], L"%d%*s", &uiNewDelay);
+    swscanf(&pzCode[1], "%d%*s", &uiNewDelay);
 
     //		guiCrdtDelayBetweenNodes = uiNewDelay;
     guiGapBetweenCreditNodes = uiNewDelay;
@@ -963,7 +963,7 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
     let uiNewDelay: UINT32 = 0;
 
     // Get the delay from the string
-    swscanf(&pzCode[1], L"%d%*s", &uiNewDelay);
+    swscanf(&pzCode[1], "%d%*s", &uiNewDelay);
 
     //		guiCrdtDelayBetweenCreditSection = uiNewDelay;
     guiGapBetweenCreditSections = uiNewDelay;
@@ -975,7 +975,7 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
     let uiScrollSpeed: UINT32 = 0;
 
     // Get the delay from the string
-    swscanf(&pzCode[1], L"%d%*s", &uiScrollSpeed);
+    swscanf(&pzCode[1], "%d%*s", &uiScrollSpeed);
 
     guiCrdtNodeScrollSpeed = uiScrollSpeed;
 
@@ -986,7 +986,7 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
     let uiJustification: UINT32 = 0;
 
     // Get the delay from the string
-    swscanf(&pzCode[1], L"%d%*s", &uiJustification);
+    swscanf(&pzCode[1], "%d%*s", &uiJustification);
 
     // get the justification
     switch (uiJustification) {
@@ -1008,14 +1008,14 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
 
   else if (pzCode[0] == CRDT_TITLE_FONT_COLOR) {
     // Get the new color for the title
-    swscanf(&pzCode[1], L"%d%*s", &gubCreditScreenTitleColor);
+    swscanf(&pzCode[1], "%d%*s", &gubCreditScreenTitleColor);
 
     return CRDT_NODE_NONE;
   }
 
   else if (pzCode[0] == CRDT_ACTIVE_FONT_COLOR) {
     // Get the new color for the active text
-    swscanf(&pzCode[1], L"%d%*s", &gubCreditScreenActiveColor);
+    swscanf(&pzCode[1], "%d%*s", &gubCreditScreenActiveColor);
 
     return CRDT_NODE_NONE;
   }

@@ -678,7 +678,7 @@ function DrawHistoryRecordsText(): void {
       SetFontForeground(FONT_RED);
     }
     // get and write the date
-    swprintf(sString, L"%d", (pCurHistory->uiDate / (24 * 60)));
+    swprintf(sString, "%d", (pCurHistory->uiDate / (24 * 60)));
     FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, sString, HISTORY_TEXT_FONT, &usX, &usY);
     mprintf(usX, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, sString);
 
@@ -767,10 +767,10 @@ function DisplayPageNumberAndDateRange(): void {
   SetFontShadow(NO_SHADOW);
 
   if (!pCurrentHistory) {
-    swprintf(sString, L"%s  %d / %d", pHistoryHeaders[1], 1, 1);
+    swprintf(sString, "%s  %d / %d", pHistoryHeaders[1], 1, 1);
     mprintf(PAGE_NUMBER_X, PAGE_NUMBER_Y, sString);
 
-    swprintf(sString, L"%s %d - %d", pHistoryHeaders[2], 1, 1);
+    swprintf(sString, "%s %d - %d", pHistoryHeaders[2], 1, 1);
     mprintf(HISTORY_DATE_X, HISTORY_DATE_Y, sString);
 
     // reset shadow
@@ -811,10 +811,10 @@ function DisplayPageNumberAndDateRange(): void {
 
   // get the last page
 
-  swprintf(sString, L"%s  %d / %d", pHistoryHeaders[1], iCurrentHistoryPage, iLastPage + 1);
+  swprintf(sString, "%s  %d / %d", pHistoryHeaders[1], iCurrentHistoryPage, iLastPage + 1);
   mprintf(PAGE_NUMBER_X, PAGE_NUMBER_Y, sString);
 
-  swprintf(sString, L"%s %d - %d", pHistoryHeaders[2], pCurrentHistory->uiDate / (24 * 60), uiLastDate / (24 * 60));
+  swprintf(sString, "%s %d - %d", pHistoryHeaders[2], pCurrentHistory->uiDate / (24 * 60), uiLastDate / (24 * 60));
   mprintf(HISTORY_DATE_X, HISTORY_DATE_Y, sString);
 
   // reset shadow

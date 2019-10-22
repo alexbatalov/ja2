@@ -12,11 +12,11 @@ const enum Enum55 {
   RELEASE,
 }
 let gszVersionType: UINT16[][] /* [5][10] */ = [
-  L"Pre-Alpha",
-  L"Alpha",
-  L"Demo",
-  L"Beta",
-  L"Release",
+  "Pre-Alpha",
+  "Alpha",
+  "Demo",
+  "Beta",
+  "Release",
 ];
 const GLOBAL_SUMMARY_STATE = RELEASE;
 
@@ -204,7 +204,7 @@ function CreateSummaryWindow(): void {
   SpecifyDisabledButtonStyle(iSummaryButton[SUMMARY_BACKGROUND], DISABLED_STYLE_NONE);
   DisableButton(iSummaryButton[SUMMARY_BACKGROUND]);
 
-  iSummaryButton[SUMMARY_OKAY] = CreateTextButton(L"Okay", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 585, 325, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryOkayCallback);
+  iSummaryButton[SUMMARY_OKAY] = CreateTextButton("Okay", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 585, 325, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryOkayCallback);
   // GiveButtonDefaultStatus( iSummaryButton[ SUMMARY_OKAY ], DEFAULT_STATUS_WINDOWS95 );
 
   iSummaryButton[SUMMARY_GRIDCHECKBOX] = CreateCheckBoxButton(MAP_LEFT, (MAP_BOTTOM + 5), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleGridCallback);
@@ -215,19 +215,19 @@ function CreateSummaryWindow(): void {
   ButtonList[iSummaryButton[SUMMARY_PROGRESSCHECKBOX]]->uiFlags |= BUTTON_CLICKED_ON;
   gfRenderProgress = TRUE;
 
-  iSummaryButton[SUMMARY_ALL] = CreateTextButton(L"A", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 110, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
+  iSummaryButton[SUMMARY_ALL] = CreateTextButton("A", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 110, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
   if (giCurrentViewLevel == ALL_LEVELS_MASK || giCurrentViewLevel == ALTERNATE_LEVELS_MASK)
     ButtonList[iSummaryButton[SUMMARY_ALL]]->uiFlags |= BUTTON_CLICKED_ON;
-  iSummaryButton[SUMMARY_G] = CreateTextButton(L"G", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 128, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
+  iSummaryButton[SUMMARY_G] = CreateTextButton("G", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 128, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
   if (giCurrentViewLevel == GROUND_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_GROUND_MASK)
     ButtonList[iSummaryButton[SUMMARY_G]]->uiFlags |= BUTTON_CLICKED_ON;
-  iSummaryButton[SUMMARY_B1] = CreateTextButton(L"B1", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 146, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
+  iSummaryButton[SUMMARY_B1] = CreateTextButton("B1", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 146, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
   if (giCurrentViewLevel == BASEMENT1_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B1_MASK)
     ButtonList[iSummaryButton[SUMMARY_B1]]->uiFlags |= BUTTON_CLICKED_ON;
-  iSummaryButton[SUMMARY_B2] = CreateTextButton(L"B2", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 164, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
+  iSummaryButton[SUMMARY_B2] = CreateTextButton("B2", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 164, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
   if (giCurrentViewLevel == BASEMENT2_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B2_MASK)
     ButtonList[iSummaryButton[SUMMARY_B2]]->uiFlags |= BUTTON_CLICKED_ON;
-  iSummaryButton[SUMMARY_B3] = CreateTextButton(L"B3", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 182, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
+  iSummaryButton[SUMMARY_B3] = CreateTextButton("B3", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 182, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
   if (giCurrentViewLevel == BASEMENT3_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B3_MASK)
     ButtonList[iSummaryButton[SUMMARY_B3]]->uiFlags |= BUTTON_CLICKED_ON;
 
@@ -235,11 +235,11 @@ function CreateSummaryWindow(): void {
   if (gfAlternateMaps)
     ButtonList[iSummaryButton[SUMMARY_ALTERNATE]]->uiFlags |= BUTTON_CLICKED_ON;
 
-  iSummaryButton[SUMMARY_LOAD] = CreateTextButton(L"LOAD", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryLoadMapCallback);
-  iSummaryButton[SUMMARY_SAVE] = CreateTextButton(L"SAVE", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 55, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummarySaveMapCallback);
+  iSummaryButton[SUMMARY_LOAD] = CreateTextButton("LOAD", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryLoadMapCallback);
+  iSummaryButton[SUMMARY_SAVE] = CreateTextButton("SAVE", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 55, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummarySaveMapCallback);
   iSummaryButton[SUMMARY_OVERRIDE] = CreateCheckBoxButton((MAP_LEFT + 110), (MAP_BOTTOM + 59), "EDITOR\\smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryOverrideCallback);
 
-  iSummaryButton[SUMMARY_UPDATE] = CreateTextButton(L"Update", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 255, 15, 40, 16, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryUpdateCallback);
+  iSummaryButton[SUMMARY_UPDATE] = CreateTextButton("Update", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 255, 15, 40, 16, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryUpdateCallback);
 
   iSummaryButton[SUMMARY_REAL] = CreateCheckBoxButton(350, 47, "EDITOR\\radiobutton.sti", MSYS_PRIORITY_HIGH, SummaryRealCallback);
   iSummaryButton[SUMMARY_SCIFI] = CreateCheckBoxButton(376, 47, "EDITOR\\radiobutton.sti", MSYS_PRIORITY_HIGH, SummarySciFiCallback);
@@ -262,7 +262,7 @@ function CreateSummaryWindow(): void {
   // Init the textinput field.
   InitTextInputModeWithScheme(DEFAULT_SCHEME);
   AddUserInputField(NULL); // just so we can use short cut keys while not typing.
-  AddTextInputField(MAP_LEFT + 112, MAP_BOTTOM + 75, 100, 18, MSYS_PRIORITY_HIGH, L"", 20, INPUTTYPE_EXCLUSIVE_DOSFILENAME);
+  AddTextInputField(MAP_LEFT + 112, MAP_BOTTOM + 75, 100, 18, MSYS_PRIORITY_HIGH, "", 20, INPUTTYPE_EXCLUSIVE_DOSFILENAME);
 
   for (i = 1; i < NUM_SUMMARY_BUTTONS; i++)
     HideButton(iSummaryButton[i]);
@@ -387,80 +387,80 @@ function RenderSectorInformation(): void {
     ePoints++;
   // start at 10,35
   SetFontForeground(FONT_ORANGE);
-  mprintf(10, 32, L"Tileset:  %s", gTilesets[s->ubTilesetID].zName);
+  mprintf(10, 32, "Tileset:  %s", gTilesets[s->ubTilesetID].zName);
   if (m->ubMapVersion < 10)
     SetFontForeground(FONT_RED);
-  mprintf(10, 42, L"Version Info:  Summary:  1.%02d,  Map:  %d.%02d", s->ubSummaryVersion, s->dMajorMapVersion, m->ubMapVersion);
+  mprintf(10, 42, "Version Info:  Summary:  1.%02d,  Map:  %d.%02d", s->ubSummaryVersion, s->dMajorMapVersion, m->ubMapVersion);
   SetFontForeground(FONT_GRAY2);
-  mprintf(10, 55, L"Number of items:  %d", s->usNumItems);
-  mprintf(10, 65, L"Number of lights:  %d", s->usNumLights);
-  mprintf(10, 75, L"Number of entry points:  %d", ePoints);
+  mprintf(10, 55, "Number of items:  %d", s->usNumItems);
+  mprintf(10, 65, "Number of lights:  %d", s->usNumLights);
+  mprintf(10, 75, "Number of entry points:  %d", ePoints);
   if (ePoints) {
     let x: INT32;
     x = 140;
-    mprintf(x, 75, L"(");
-    x += StringPixLength(L"(", FONT10ARIAL) + 2;
+    mprintf(x, 75, "(");
+    x += StringPixLength("(", FONT10ARIAL) + 2;
     if (m->sNorthGridNo != -1) {
-      mprintf(x, 75, L"N");
-      x += StringPixLength(L"N", FONT10ARIAL) + 2;
+      mprintf(x, 75, "N");
+      x += StringPixLength("N", FONT10ARIAL) + 2;
     }
     if (m->sEastGridNo != -1) {
-      mprintf(x, 75, L"E");
-      x += StringPixLength(L"E", FONT10ARIAL) + 2;
+      mprintf(x, 75, "E");
+      x += StringPixLength("E", FONT10ARIAL) + 2;
     }
     if (m->sSouthGridNo != -1) {
-      mprintf(x, 75, L"S");
-      x += StringPixLength(L"S", FONT10ARIAL) + 2;
+      mprintf(x, 75, "S");
+      x += StringPixLength("S", FONT10ARIAL) + 2;
     }
     if (m->sWestGridNo != -1) {
-      mprintf(x, 75, L"W");
-      x += StringPixLength(L"W", FONT10ARIAL) + 2;
+      mprintf(x, 75, "W");
+      x += StringPixLength("W", FONT10ARIAL) + 2;
     }
     if (m->sCenterGridNo != -1) {
-      mprintf(x, 75, L"C");
-      x += StringPixLength(L"C", FONT10ARIAL) + 2;
+      mprintf(x, 75, "C");
+      x += StringPixLength("C", FONT10ARIAL) + 2;
     }
     if (m->sIsolatedGridNo != -1) {
-      mprintf(x, 75, L"I");
-      x += StringPixLength(L"I", FONT10ARIAL) + 2;
+      mprintf(x, 75, "I");
+      x += StringPixLength("I", FONT10ARIAL) + 2;
     }
-    mprintf(x, 75, L")");
+    mprintf(x, 75, ")");
   }
-  mprintf(10, 85, L"Number of rooms:  %d", s->ubNumRooms);
-  mprintf(10, 95, L"Total map population:  %d", m->ubNumIndividuals);
-  mprintf(20, 105, L"Enemies:  %d", s->EnemyTeam.ubTotal);
-  mprintf(30, 115, L"Admins:  %d", s->ubNumAdmins);
+  mprintf(10, 85, "Number of rooms:  %d", s->ubNumRooms);
+  mprintf(10, 95, "Total map population:  %d", m->ubNumIndividuals);
+  mprintf(20, 105, "Enemies:  %d", s->EnemyTeam.ubTotal);
+  mprintf(30, 115, "Admins:  %d", s->ubNumAdmins);
   if (s->ubNumAdmins)
-    mprintf(100, 115, L"(%d detailed, %d profile -- %d have priority existance)", s->ubAdminDetailed, s->ubAdminProfile, s->ubAdminExistance);
-  mprintf(30, 125, L"Troops:  %d", s->ubNumTroops);
+    mprintf(100, 115, "(%d detailed, %d profile -- %d have priority existance)", s->ubAdminDetailed, s->ubAdminProfile, s->ubAdminExistance);
+  mprintf(30, 125, "Troops:  %d", s->ubNumTroops);
   if (s->ubNumTroops)
-    mprintf(100, 125, L"(%d detailed, %d profile -- %d have priority existance)", s->ubTroopDetailed, s->ubTroopProfile, s->ubTroopExistance);
-  mprintf(30, 135, L"Elites:  %d", s->ubNumElites);
+    mprintf(100, 125, "(%d detailed, %d profile -- %d have priority existance)", s->ubTroopDetailed, s->ubTroopProfile, s->ubTroopExistance);
+  mprintf(30, 135, "Elites:  %d", s->ubNumElites);
   if (s->ubNumElites)
-    mprintf(100, 135, L"(%d detailed, %d profile -- %d have priority existance)", s->ubEliteDetailed, s->ubEliteProfile, s->ubEliteExistance);
-  mprintf(20, 145, L"Civilians:  %d", s->CivTeam.ubTotal);
+    mprintf(100, 135, "(%d detailed, %d profile -- %d have priority existance)", s->ubEliteDetailed, s->ubEliteProfile, s->ubEliteExistance);
+  mprintf(20, 145, "Civilians:  %d", s->CivTeam.ubTotal);
   if (s->CivTeam.ubTotal)
-    mprintf(100, 145, L"(%d detailed, %d profile -- %d have priority existance)", s->CivTeam.ubDetailed, s->CivTeam.ubProfile, s->CivTeam.ubExistance);
+    mprintf(100, 145, "(%d detailed, %d profile -- %d have priority existance)", s->CivTeam.ubDetailed, s->CivTeam.ubProfile, s->CivTeam.ubExistance);
   if (s->ubSummaryVersion >= 9) {
-    mprintf(30, 155, L"Humans:  %d", s->CivTeam.ubTotal - s->ubCivCows - s->ubCivBloodcats);
-    mprintf(30, 165, L"Cows:  %d", s->ubCivCows);
-    mprintf(30, 175, L"Bloodcats:  %d", s->ubCivBloodcats);
+    mprintf(30, 155, "Humans:  %d", s->CivTeam.ubTotal - s->ubCivCows - s->ubCivBloodcats);
+    mprintf(30, 165, "Cows:  %d", s->ubCivCows);
+    mprintf(30, 175, "Bloodcats:  %d", s->ubCivBloodcats);
   }
-  mprintf(20, 185, L"Creatures:  %d", s->CreatureTeam.ubTotal);
+  mprintf(20, 185, "Creatures:  %d", s->CreatureTeam.ubTotal);
   if (s->ubSummaryVersion >= 9) {
-    mprintf(30, 195, L"Monsters:  %d", s->CreatureTeam.ubTotal - s->CreatureTeam.ubNumAnimals);
-    mprintf(30, 205, L"Bloodcats:  %d", s->CreatureTeam.ubNumAnimals);
+    mprintf(30, 195, "Monsters:  %d", s->CreatureTeam.ubTotal - s->CreatureTeam.ubNumAnimals);
+    mprintf(30, 205, "Bloodcats:  %d", s->CreatureTeam.ubNumAnimals);
   }
-  mprintf(10, 215, L"Number of locked and/or trapped doors:  %d", s->ubNumDoors);
-  mprintf(20, 225, L"Locked:  %d", s->ubNumDoorsLocked);
-  mprintf(20, 235, L"Trapped:  %d", s->ubNumDoorsTrapped);
-  mprintf(20, 245, L"Locked & Trapped:  %d", s->ubNumDoorsLockedAndTrapped);
+  mprintf(10, 215, "Number of locked and/or trapped doors:  %d", s->ubNumDoors);
+  mprintf(20, 225, "Locked:  %d", s->ubNumDoorsLocked);
+  mprintf(20, 235, "Trapped:  %d", s->ubNumDoorsTrapped);
+  mprintf(20, 245, "Locked & Trapped:  %d", s->ubNumDoorsLockedAndTrapped);
   if (s->ubSummaryVersion >= 8)
-    mprintf(10, 255, L"Civilians with schedules:  %d", s->ubCivSchedules);
+    mprintf(10, 255, "Civilians with schedules:  %d", s->ubCivSchedules);
   if (s->ubSummaryVersion >= 10) {
     if (s->fTooManyExitGridDests) {
       SetFontForeground(FONT_RED);
-      mprintf(10, 265, L"Too many exit grid destinations (more than 4)...");
+      mprintf(10, 265, "Too many exit grid destinations (more than 4)...");
     } else {
       let i: UINT8;
       let ubNumInvalid: UINT8 = 0;
@@ -470,52 +470,52 @@ function RenderSectorInformation(): void {
       }
       if (ubNumInvalid) {
         SetFontForeground(FONT_RED);
-        mprintf(10, 265, L"ExitGrids:  %d (%d with a long distance destination)", s->ubNumExitGridDests, ubNumInvalid);
+        mprintf(10, 265, "ExitGrids:  %d (%d with a long distance destination)", s->ubNumExitGridDests, ubNumInvalid);
       } else
         switch (s->ubNumExitGridDests) {
           case 0:
-            mprintf(10, 265, L"ExitGrids:  none");
+            mprintf(10, 265, "ExitGrids:  none");
             break;
           case 1:
-            mprintf(10, 265, L"ExitGrids:  1 destination using %d exitgrids", s->usExitGridSize[0]);
+            mprintf(10, 265, "ExitGrids:  1 destination using %d exitgrids", s->usExitGridSize[0]);
             break;
           case 2:
-            mprintf(10, 265, L"ExitGrids:  2 -- 1) Qty: %d, 2) Qty: %d", s->usExitGridSize[0], s->usExitGridSize[1]);
+            mprintf(10, 265, "ExitGrids:  2 -- 1) Qty: %d, 2) Qty: %d", s->usExitGridSize[0], s->usExitGridSize[1]);
             break;
           case 3:
-            mprintf(10, 265, L"ExitGrids:  3 -- 1) Qty: %d, 2) Qty: %d, 3) Qty: %d", s->usExitGridSize[0], s->usExitGridSize[1], s->usExitGridSize[2]);
+            mprintf(10, 265, "ExitGrids:  3 -- 1) Qty: %d, 2) Qty: %d, 3) Qty: %d", s->usExitGridSize[0], s->usExitGridSize[1], s->usExitGridSize[2]);
             break;
           case 4:
-            mprintf(10, 265, L"ExitGrids:  3 -- 1) Qty: %d, 2) Qty: %d, 3) Qty: %d, 4) Qty: %d", s->usExitGridSize[0], s->usExitGridSize[1], s->usExitGridSize[2], s->usExitGridSize[3]);
+            mprintf(10, 265, "ExitGrids:  3 -- 1) Qty: %d, 2) Qty: %d, 3) Qty: %d, 4) Qty: %d", s->usExitGridSize[0], s->usExitGridSize[1], s->usExitGridSize[2], s->usExitGridSize[3]);
             break;
         }
     }
   }
   iOverall = -(2 * s->EnemyTeam.ubBadA) - s->EnemyTeam.ubPoorA + s->EnemyTeam.ubGoodA + (2 * s->EnemyTeam.ubGreatA);
   usLine = 275;
-  mprintf(10, usLine, L"Enemy Relative Attributes:  %d bad, %d poor, %d norm, %d good, %d great (%+d Overall)", s->EnemyTeam.ubBadA, s->EnemyTeam.ubPoorA, s->EnemyTeam.ubAvgA, s->EnemyTeam.ubGoodA, s->EnemyTeam.ubGreatA, iOverall);
+  mprintf(10, usLine, "Enemy Relative Attributes:  %d bad, %d poor, %d norm, %d good, %d great (%+d Overall)", s->EnemyTeam.ubBadA, s->EnemyTeam.ubPoorA, s->EnemyTeam.ubAvgA, s->EnemyTeam.ubGoodA, s->EnemyTeam.ubGreatA, iOverall);
   iOverall = -(2 * s->EnemyTeam.ubBadE) - s->EnemyTeam.ubPoorE + s->EnemyTeam.ubGoodE + (2 * s->EnemyTeam.ubGreatE);
   usLine += 10;
-  mprintf(10, usLine, L"Enemy Relative Equipment:  %d bad, %d poor, %d norm, %d good, %d great (%+d Overall)", s->EnemyTeam.ubBadE, s->EnemyTeam.ubPoorE, s->EnemyTeam.ubAvgE, s->EnemyTeam.ubGoodE, s->EnemyTeam.ubGreatE, iOverall);
+  mprintf(10, usLine, "Enemy Relative Equipment:  %d bad, %d poor, %d norm, %d good, %d great (%+d Overall)", s->EnemyTeam.ubBadE, s->EnemyTeam.ubPoorE, s->EnemyTeam.ubAvgE, s->EnemyTeam.ubGoodE, s->EnemyTeam.ubGreatE, iOverall);
   usLine += 10;
   if (s->ubSummaryVersion >= 11) {
     if (s->ubEnemiesReqWaypoints) {
       SetFontForeground(FONT_RED);
-      mprintf(10, usLine, L"%d placements have patrol orders without any waypoints defined.", s->ubEnemiesReqWaypoints);
+      mprintf(10, usLine, "%d placements have patrol orders without any waypoints defined.", s->ubEnemiesReqWaypoints);
       usLine += 10;
     }
   }
   if (s->ubSummaryVersion >= 13) {
     if (s->ubEnemiesHaveWaypoints) {
       SetFontForeground(FONT_RED);
-      mprintf(10, usLine, L"%d placements have waypoints, but without any patrol orders.", s->ubEnemiesHaveWaypoints);
+      mprintf(10, usLine, "%d placements have waypoints, but without any patrol orders.", s->ubEnemiesHaveWaypoints);
       usLine += 10;
     }
   }
   if (s->ubSummaryVersion >= 12) {
     if (s->usWarningRoomNums) {
       SetFontForeground(FONT_RED);
-      mprintf(10, usLine, L"%d gridnos have questionable room numbers.  Please validate.", s->usWarningRoomNums);
+      mprintf(10, usLine, "%d gridnos have questionable room numbers.  Please validate.", s->usWarningRoomNums);
     }
   }
 }
@@ -541,9 +541,9 @@ function RenderItemDetails(): void {
   SetFont(FONT10ARIAL);
   SetFontForeground(FONT_GRAY2);
   SetFontShadow(FONT_NEARBLACK);
-  mprintf(364, 49, L"R");
-  mprintf(390, 49, L"S");
-  mprintf(364, 62, L"Enemy");
+  mprintf(364, 49, "R");
+  mprintf(390, 49, "S");
+  mprintf(364, 62, "Enemy");
   yp = 20;
   xp = 5;
   if (gubSummaryItemMode != ITEMMODE_ENEMY && gpWorldItemsSummaryArray) {
@@ -608,16 +608,16 @@ function RenderItemDetails(): void {
         dAvgStatus = uiStatus / uiQuantity;
         // Display stats.
         LoadShortNameItemInfo(index, str);
-        mprintf(xp, yp, L"%s", str);
-        mprintf(xp + 85, yp, L"%3.02f", dAvgExistChance);
-        mprintf(xp + 110, yp, L"@ %3.02f%%", dAvgStatus);
+        mprintf(xp, yp, "%s", str);
+        mprintf(xp + 85, yp, "%3.02f", dAvgExistChance);
+        mprintf(xp + 110, yp, "@ %3.02f%%", dAvgStatus);
         yp += 10;
         if (yp >= 355) {
           xp += 170;
           yp = 20;
           if (xp >= 300) {
             SetFontForeground(FONT_RED);
-            mprintf(350, 350, L"TOO MANY ITEMS TO DISPLAY!");
+            mprintf(350, 350, "TOO MANY ITEMS TO DISPLAY!");
             return;
           }
         }
@@ -634,37 +634,37 @@ function RenderItemDetails(): void {
           SetFontForeground(77);
         switch (i) {
           case 0:
-            swprintf(str, L"Panic1");
+            swprintf(str, "Panic1");
             break;
           case 1:
-            swprintf(str, L"Panic2");
+            swprintf(str, "Panic2");
             break;
           case 2:
-            swprintf(str, L"Panic3");
+            swprintf(str, "Panic3");
             break;
           case 3:
-            swprintf(str, L"Norm1");
+            swprintf(str, "Norm1");
             break;
           case 4:
-            swprintf(str, L"Norm2");
+            swprintf(str, "Norm2");
             break;
           case 5:
-            swprintf(str, L"Norm3");
+            swprintf(str, "Norm3");
             break;
           case 6:
-            swprintf(str, L"Norm4");
+            swprintf(str, "Norm4");
             break;
           case 7:
-            swprintf(str, L"Pressure Actions");
+            swprintf(str, "Pressure Actions");
             break;
         }
         if (i < 7) {
           dAvgExistChance = (uiTriggerExistChance[i] / 100.0);
           dAvgStatus = (uiActionExistChance[i] / 100.0);
-          mprintf(xp, yp, L"%s:  %3.02f trigger(s), %3.02f action(s)", str, dAvgExistChance, dAvgStatus);
+          mprintf(xp, yp, "%s:  %3.02f trigger(s), %3.02f action(s)", str, dAvgExistChance, dAvgStatus);
         } else {
           dAvgExistChance = (uiActionExistChance[i] / 100.0);
-          mprintf(xp, yp, L"%s:  %3.02f", str, dAvgExistChance);
+          mprintf(xp, yp, "%s:  %3.02f", str, dAvgExistChance);
         }
         yp += 10;
         if (yp >= 355) {
@@ -672,7 +672,7 @@ function RenderItemDetails(): void {
           yp = 20;
           if (xp >= 300) {
             SetFontForeground(FONT_RED);
-            mprintf(350, 350, L"TOO MANY ITEMS TO DISPLAY!");
+            mprintf(350, 350, "TOO MANY ITEMS TO DISPLAY!");
             return;
           }
         }
@@ -680,13 +680,13 @@ function RenderItemDetails(): void {
     }
   } else if (gubSummaryItemMode == ITEMMODE_ENEMY) {
     SetFontForeground(FONT_YELLOW);
-    mprintf(xp, yp, L"PRIORITY ENEMY DROPPED ITEMS");
+    mprintf(xp, yp, "PRIORITY ENEMY DROPPED ITEMS");
     yp += 10;
 
     // Do the priority existance guys first
     if (!gpPEnemyItemsSummaryArray) {
       SetFontForeground(FONT_DKYELLOW);
-      mprintf(xp, yp, L"None");
+      mprintf(xp, yp, "None");
       yp += 10;
     } else
       for (index = 1; index < MAXITEMS; index++) {
@@ -711,16 +711,16 @@ function RenderItemDetails(): void {
           dAvgStatus = uiStatus / uiQuantity;
           // Display stats.
           LoadShortNameItemInfo(index, str);
-          mprintf(xp, yp, L"%s", str);
-          mprintf(xp + 85, yp, L"%3.02f", dAvgExistChance);
-          mprintf(xp + 110, yp, L"@ %3.02f%%", dAvgStatus);
+          mprintf(xp, yp, "%s", str);
+          mprintf(xp + 85, yp, "%3.02f", dAvgExistChance);
+          mprintf(xp + 110, yp, "@ %3.02f%%", dAvgStatus);
           yp += 10;
           if (yp >= 355) {
             xp += 170;
             yp = 20;
             if (xp >= 300) {
               SetFontForeground(FONT_RED);
-              mprintf(350, 350, L"TOO MANY ITEMS TO DISPLAY!");
+              mprintf(350, 350, "TOO MANY ITEMS TO DISPLAY!");
               return;
             }
           }
@@ -730,14 +730,14 @@ function RenderItemDetails(): void {
     yp += 5;
 
     SetFontForeground(FONT_YELLOW);
-    mprintf(xp, yp, L"NORMAL ENEMY DROPPED ITEMS");
+    mprintf(xp, yp, "NORMAL ENEMY DROPPED ITEMS");
     yp += 10;
     if (yp >= 355) {
       xp += 170;
       yp = 20;
       if (xp >= 300) {
         SetFontForeground(FONT_RED);
-        mprintf(350, 350, L"TOO MANY ITEMS TO DISPLAY!");
+        mprintf(350, 350, "TOO MANY ITEMS TO DISPLAY!");
         return;
       }
     }
@@ -745,7 +745,7 @@ function RenderItemDetails(): void {
     // Do the priority existance guys first
     if (!gpNEnemyItemsSummaryArray) {
       SetFontForeground(FONT_DKYELLOW);
-      mprintf(xp, yp, L"None");
+      mprintf(xp, yp, "None");
       yp += 10;
     }
     for (index = 1; index < MAXITEMS; index++) {
@@ -770,16 +770,16 @@ function RenderItemDetails(): void {
         dAvgStatus = uiStatus / uiQuantity;
         // Display stats.
         LoadShortNameItemInfo(index, str);
-        mprintf(xp, yp, L"%s", str);
-        mprintf(xp + 85, yp, L"%3.02f", dAvgExistChance);
-        mprintf(xp + 110, yp, L"@ %3.02f%%", dAvgStatus);
+        mprintf(xp, yp, "%s", str);
+        mprintf(xp + 85, yp, "%3.02f", dAvgExistChance);
+        mprintf(xp + 110, yp, "@ %3.02f%%", dAvgStatus);
         yp += 10;
         if (yp >= 355) {
           xp += 170;
           yp = 20;
           if (xp >= 300) {
             SetFontForeground(FONT_RED);
-            mprintf(350, 350, L"TOO MANY ITEMS TO DISPLAY!");
+            mprintf(350, 350, "TOO MANY ITEMS TO DISPLAY!");
             return;
           }
         }
@@ -787,7 +787,7 @@ function RenderItemDetails(): void {
     }
   } else {
     SetFontForeground(FONT_RED);
-    mprintf(5, 50, L"ERROR:  Can't load the items for this map.  Reason unknown.");
+    mprintf(5, 50, "ERROR:  Can't load the items for this map.  Reason unknown.");
   }
 }
 
@@ -800,7 +800,7 @@ function RenderSummaryWindow(): void {
   let y: INT32;
   if ((GetActiveFieldID() == 1) != gfTempFile) {
     gfTempFile ^= 1;
-    SetInputFieldStringWith16BitString(1, L"");
+    SetInputFieldStringWith16BitString(1, "");
     gfRenderSummary = TRUE;
   }
   if (gfTempFile) // constantly extract the temp filename for updating purposes.
@@ -820,14 +820,14 @@ function RenderSummaryWindow(): void {
     SetFontShadow(FONT_DKKHAKI);
     SetFontBackground(0);
     if (!gfItemDetailsMode) {
-      mprintf(10, 5, L"CAMPAIGN EDITOR -- %s Version 1.%02d", gszVersionType[GLOBAL_SUMMARY_STATE], GLOBAL_SUMMARY_VERSION);
+      mprintf(10, 5, "CAMPAIGN EDITOR -- %s Version 1.%02d", gszVersionType[GLOBAL_SUMMARY_STATE], GLOBAL_SUMMARY_VERSION);
     }
 
     // This section builds the proper header to be displayed for an existing global summary.
     if (!gfWorldLoaded) {
       SetFontForeground(FONT_RED);
       SetFontShadow(FONT_NEARBLACK);
-      mprintf(270, 5, L"(NO MAP LOADED).");
+      mprintf(270, 5, "(NO MAP LOADED).");
     }
     SetFont(FONT10ARIAL);
     SetFontShadow(FONT_NEARBLACK);
@@ -837,24 +837,24 @@ function RenderSummaryWindow(): void {
       if (gusNumEntriesWithOutdatedOrNoSummaryInfo && !gfOutdatedDenied) {
         DisableButton(iSummaryButton[SUMMARY_LOAD]);
         SetFontForeground(FONT_YELLOW);
-        mprintf(10, 20, L"You currently have %d outdated maps.", gusNumEntriesWithOutdatedOrNoSummaryInfo);
-        mprintf(10, 30, L"The more maps that need to be updated, the longer it takes.  It'll take ");
-        mprintf(10, 40, L"approximately 4 minutes on a P200MMX to analyse 100 maps, so");
-        mprintf(10, 50, L"depending on your computer, it may vary.");
+        mprintf(10, 20, "You currently have %d outdated maps.", gusNumEntriesWithOutdatedOrNoSummaryInfo);
+        mprintf(10, 30, "The more maps that need to be updated, the longer it takes.  It'll take ");
+        mprintf(10, 40, "approximately 4 minutes on a P200MMX to analyse 100 maps, so");
+        mprintf(10, 50, "depending on your computer, it may vary.");
         SetFontForeground(FONT_LTRED);
-        mprintf(10, 65, L"Do you wish to regenerate info for ALL these maps at this time (y/n)?");
+        mprintf(10, 65, "Do you wish to regenerate info for ALL these maps at this time (y/n)?");
       } else if (!gsSelSectorX && !gsSectorX || gfTempFile) {
         DisableButton(iSummaryButton[SUMMARY_LOAD]);
         SetFontForeground(FONT_LTRED);
-        mprintf(10, 20, L"There is no sector currently selected.");
+        mprintf(10, 20, "There is no sector currently selected.");
         if (gfTempFile) {
           SetFontForeground(FONT_YELLOW);
-          mprintf(10, 30, L"Entering a temp file name that doesn't follow campaign editor conventions...");
+          mprintf(10, 30, "Entering a temp file name that doesn't follow campaign editor conventions...");
           goto SPECIALCASE_LABEL; // OUCH!!!
         } else if (!gfWorldLoaded) {
           SetFontForeground(FONT_YELLOW);
-          mprintf(10, 30, L"You need to either load an existing map or create a new map before being");
-          mprintf(10, 40, L"able to enter the editor, or you can quit (ESC or Alt+x).");
+          mprintf(10, 30, "You need to either load an existing map or create a new map before being");
+          mprintf(10, 40, "able to enter the editor, or you can quit (ESC or Alt+x).");
         }
       } else {
         // Build sector string
@@ -862,7 +862,7 @@ function RenderSummaryWindow(): void {
           x = gsSelSectorX - 1, y = gsSelSectorY - 1;
         else
           x = gsSectorX - 1, y = gsSectorY - 1;
-        swprintf(str, L"%c%d", y + 'A', x + 1);
+        swprintf(str, "%c%d", y + 'A', x + 1);
         swprintf(gszFilename, str);
         giCurrLevel = giCurrentViewLevel;
         switch (giCurrentViewLevel) {
@@ -931,42 +931,42 @@ function RenderSummaryWindow(): void {
           switch (giCurrLevel) {
             case GROUND_LEVEL_MASK:
               giCurrLevel = 0;
-              wcscat(str, L", ground level");
+              wcscat(str, ", ground level");
               gpCurrentSectorSummary = gpSectorSummary[x][y][0];
               break;
             case BASEMENT1_LEVEL_MASK:
               giCurrLevel = 1;
-              wcscat(str, L", underground level 1");
+              wcscat(str, ", underground level 1");
               gpCurrentSectorSummary = gpSectorSummary[x][y][1];
               break;
             case BASEMENT2_LEVEL_MASK:
               giCurrLevel = 2;
-              wcscat(str, L", underground level 2");
+              wcscat(str, ", underground level 2");
               gpCurrentSectorSummary = gpSectorSummary[x][y][2];
               break;
             case BASEMENT3_LEVEL_MASK:
               giCurrLevel = 3;
-              wcscat(str, L", underground level 3");
+              wcscat(str, ", underground level 3");
               gpCurrentSectorSummary = gpSectorSummary[x][y][3];
               break;
             case ALTERNATE_GROUND_MASK:
               giCurrLevel = 4;
-              wcscat(str, L", alternate G level");
+              wcscat(str, ", alternate G level");
               gpCurrentSectorSummary = gpSectorSummary[x][y][4];
               break;
             case ALTERNATE_B1_MASK:
               giCurrLevel = 5;
-              wcscat(str, L", alternate B1 level");
+              wcscat(str, ", alternate B1 level");
               gpCurrentSectorSummary = gpSectorSummary[x][y][5];
               break;
             case ALTERNATE_B2_MASK:
               giCurrLevel = 6;
-              wcscat(str, L", alternate B2 level");
+              wcscat(str, ", alternate B2 level");
               gpCurrentSectorSummary = gpSectorSummary[x][y][6];
               break;
             case ALTERNATE_B3_MASK:
               giCurrLevel = 7;
-              wcscat(str, L", alternate B3 level");
+              wcscat(str, ", alternate B3 level");
               gpCurrentSectorSummary = gpSectorSummary[x][y][7];
               break;
           }
@@ -976,28 +976,28 @@ function RenderSummaryWindow(): void {
         if (fSectorSummaryExists) {
           switch (giCurrLevel) {
             case 0:
-              wcscat(gszFilename, L".dat");
+              wcscat(gszFilename, ".dat");
               break;
             case 1:
-              wcscat(gszFilename, L"_b1.dat");
+              wcscat(gszFilename, "_b1.dat");
               break;
             case 2:
-              wcscat(gszFilename, L"_b2.dat");
+              wcscat(gszFilename, "_b2.dat");
               break;
             case 3:
-              wcscat(gszFilename, L"_b3.dat");
+              wcscat(gszFilename, "_b3.dat");
               break;
             case 4:
-              wcscat(gszFilename, L"_a.dat");
+              wcscat(gszFilename, "_a.dat");
               break;
             case 5:
-              wcscat(gszFilename, L"_b1_a.dat");
+              wcscat(gszFilename, "_b1_a.dat");
               break;
             case 6:
-              wcscat(gszFilename, L"_b2_a.dat");
+              wcscat(gszFilename, "_b2_a.dat");
               break;
             case 7:
-              wcscat(gszFilename, L"_b3_a.dat");
+              wcscat(gszFilename, "_b3_a.dat");
               break;
           }
           swprintf(gszDisplayName, gszFilename);
@@ -1016,10 +1016,10 @@ function RenderSummaryWindow(): void {
                 SetupItemDetailsMode(TRUE);
                 gfSetupItemDetailsMode = FALSE;
               }
-              mprintf(10, 5, L"ITEM DETAILS -- sector %s", str);
+              mprintf(10, 5, "ITEM DETAILS -- sector %s", str);
               RenderItemDetails();
             } else {
-              mprintf(10, 20, L"Summary Information for sector %s:", str);
+              mprintf(10, 20, "Summary Information for sector %s:", str);
               HideButton(iSummaryButton[SUMMARY_REAL]);
               HideButton(iSummaryButton[SUMMARY_SCIFI]);
               HideButton(iSummaryButton[SUMMARY_ENEMY]);
@@ -1028,11 +1028,11 @@ function RenderSummaryWindow(): void {
           } else {
             SetFontForeground(FONT_RED);
             if (gfItemDetailsMode) {
-              mprintf(10, 5, L"Summary Information for sector %s", str);
-              mprintf(10, 15, L"does not exist.");
+              mprintf(10, 5, "Summary Information for sector %s", str);
+              mprintf(10, 15, "does not exist.");
             } else {
-              mprintf(10, 20, L"Summary Information for sector %s", str);
-              mprintf(10, 30, L"does not exist.");
+              mprintf(10, 20, "Summary Information for sector %s", str);
+              mprintf(10, 30, "does not exist.");
             }
             ShowButton(iSummaryButton[SUMMARY_UPDATE]);
           }
@@ -1044,37 +1044,37 @@ function RenderSummaryWindow(): void {
             SetFontShadow(0);
           }
           if (gfItemDetailsMode)
-            mprintf(10, 5, L"No information exists for sector %s.", str);
+            mprintf(10, 5, "No information exists for sector %s.", str);
           else
-            mprintf(10, 20, L"No information exists for sector %s.", str);
+            mprintf(10, 20, "No information exists for sector %s.", str);
           SetFontShadow(FONT_NEARBLACK);
 
           switch (giCurrentViewLevel) {
             case ALL_LEVELS_MASK:
             case GROUND_LEVEL_MASK:
-              wcscat(gszFilename, L".dat");
+              wcscat(gszFilename, ".dat");
               break;
             case BASEMENT1_LEVEL_MASK:
-              wcscat(gszFilename, L"_b1.dat");
+              wcscat(gszFilename, "_b1.dat");
               break;
             case BASEMENT2_LEVEL_MASK:
-              wcscat(gszFilename, L"_b2.dat");
+              wcscat(gszFilename, "_b2.dat");
               break;
             case BASEMENT3_LEVEL_MASK:
-              wcscat(gszFilename, L"_b3.dat");
+              wcscat(gszFilename, "_b3.dat");
               break;
             case ALTERNATE_LEVELS_MASK:
             case ALTERNATE_GROUND_MASK:
-              wcscat(gszFilename, L"_a.dat");
+              wcscat(gszFilename, "_a.dat");
               break;
             case ALTERNATE_B1_MASK:
-              wcscat(gszFilename, L"_b1_a.dat");
+              wcscat(gszFilename, "_b1_a.dat");
               break;
             case ALTERNATE_B2_MASK:
-              wcscat(gszFilename, L"_b2_a.dat");
+              wcscat(gszFilename, "_b2_a.dat");
               break;
             case ALTERNATE_B3_MASK:
-              wcscat(gszFilename, L"_b3_a.dat");
+              wcscat(gszFilename, "_b3_a.dat");
               break;
           }
           swprintf(gszDisplayName, gszFilename);
@@ -1088,46 +1088,46 @@ function RenderSummaryWindow(): void {
             SetFontForeground(FONT_LTKHAKI);
           else
             SetFontForeground(FONT_LTBLUE);
-          mprintf(MAP_LEFT + 110, MAP_BOTTOM + 55, L"FILE:  %s", gszDisplayName);
+          mprintf(MAP_LEFT + 110, MAP_BOTTOM + 55, "FILE:  %s", gszDisplayName);
         } else // little higher to make room for the override checkbox and text.
         {
           if (!gfAlternateMaps)
             SetFontForeground(FONT_LTKHAKI);
           else
             SetFontForeground(FONT_LTBLUE);
-          mprintf(MAP_LEFT + 110, MAP_BOTTOM + 46, L"FILE:  %s", gszDisplayName);
+          mprintf(MAP_LEFT + 110, MAP_BOTTOM + 46, "FILE:  %s", gszDisplayName);
           if (gubOverrideStatus == READONLY) {
             SetFontForeground((gfOverride ? FONT_YELLOW : FONT_LTRED));
-            mprintf(MAP_LEFT + 124, MAP_BOTTOM + 61, L"Override READONLY");
+            mprintf(MAP_LEFT + 124, MAP_BOTTOM + 61, "Override READONLY");
           } else {
             SetFontForeground((gfOverride ? FONT_YELLOW : FONT_ORANGE));
-            mprintf(MAP_LEFT + 124, MAP_BOTTOM + 61, L"Overwrite File");
+            mprintf(MAP_LEFT + 124, MAP_BOTTOM + 61, "Overwrite File");
           }
         }
       }
     } else if (!gfDeniedSummaryCreation) {
       SetFontForeground(FONT_GRAY1);
-      mprintf(10, 20, L"You currently have no summary data.  By creating one, you will be able to keep track");
-      mprintf(10, 30, L"of information pertaining to all of the sectors you edit and save.  The creation process");
-      mprintf(10, 40, L"will analyse all maps in your \\MAPS directory, and generate a new one.  This could");
-      mprintf(10, 50, L"take a few minutes depending on how many valid maps you have.  Valid maps are");
-      mprintf(10, 60, L"maps following the proper naming convention from a1.dat - p16.dat.  Underground maps");
-      mprintf(10, 70, L"are signified by appending _b1 to _b3 before the .dat (ex:  a9_b1.dat). ");
+      mprintf(10, 20, "You currently have no summary data.  By creating one, you will be able to keep track");
+      mprintf(10, 30, "of information pertaining to all of the sectors you edit and save.  The creation process");
+      mprintf(10, 40, "will analyse all maps in your \\MAPS directory, and generate a new one.  This could");
+      mprintf(10, 50, "take a few minutes depending on how many valid maps you have.  Valid maps are");
+      mprintf(10, 60, "maps following the proper naming convention from a1.dat - p16.dat.  Underground maps");
+      mprintf(10, 70, "are signified by appending _b1 to _b3 before the .dat (ex:  a9_b1.dat). ");
       SetFontForeground(FONT_LTRED);
-      mprintf(10, 85, L"Do you wish to do this now (y/n)?");
+      mprintf(10, 85, "Do you wish to do this now (y/n)?");
     } else {
       SetFontForeground(FONT_LTRED);
-      mprintf(10, 20, L"No summary info.  Creation denied.");
+      mprintf(10, 20, "No summary info.  Creation denied.");
     }
 
     SetFont(FONT10ARIAL);
     SetFontForeground(FONT_GRAY3);
-    mprintf(MAP_LEFT + 15, MAP_BOTTOM + 7, L"Grid");
-    mprintf(MAP_LEFT + 65, MAP_BOTTOM + 7, L"Progress");
-    mprintf(MAP_LEFT + 15, MAP_BOTTOM + 27, L"Use Alternate Maps");
+    mprintf(MAP_LEFT + 15, MAP_BOTTOM + 7, "Grid");
+    mprintf(MAP_LEFT + 65, MAP_BOTTOM + 7, "Progress");
+    mprintf(MAP_LEFT + 15, MAP_BOTTOM + 27, "Use Alternate Maps");
     // Draw the mode tabs
     SetFontForeground(FONT_YELLOW);
-    mprintf(354, 18, L"Summary");
+    mprintf(354, 18, "Summary");
     pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
     RectangleDraw(TRUE, 350, 15, 405, 28, 0, pDestBuf);
@@ -1142,7 +1142,7 @@ function RenderSummaryWindow(): void {
     } else {
       SetFontForeground(FONT_RED);
     }
-    mprintf(354, 33, L"Items");
+    mprintf(354, 33, "Items");
     pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
     RectangleDraw(TRUE, 350, 30, 405, 43, 0, pDestBuf);
@@ -1170,11 +1170,11 @@ function RenderSummaryWindow(): void {
     SetFont(SMALLCOMPFONT);
     SetFontForeground(FONT_BLACK);
     for (y = 0; y < 16; y++) {
-      mprintf(MAP_LEFT - 8, MAP_TOP + 4 + y * 13, L"%c", 65 + y);
+      mprintf(MAP_LEFT - 8, MAP_TOP + 4 + y * 13, "%c", 65 + y);
     }
     for (x = 1; x <= 16; x++) {
       let str: UINT16[] /* [3] */;
-      swprintf(str, L"%d", x);
+      swprintf(str, "%d", x);
       mprintf(MAP_LEFT + x * 13 - (13 + StringPixLength(str, SMALLCOMPFONT)) / 2, MAP_TOP - 8, str);
     }
     if (gfRenderGrid) {
@@ -1211,7 +1211,7 @@ function RenderSummaryWindow(): void {
               // is no ground level, then it'll be shadowed.
               SetFont(SMALLCOMPFONT);
               SetFontForeground(FONT_YELLOW);
-              swprintf(str, L"%d", ubNumUndergroundLevels);
+              swprintf(str, "%d", ubNumUndergroundLevels);
               mprintf(MAP_LEFT + x * 13 + 4, ClipRect.iTop + 4, str);
             }
             if (gbSectorLevels[x][y] & GROUND_LEVEL_MASK) {
@@ -1231,7 +1231,7 @@ function RenderSummaryWindow(): void {
               // is no ground level, then it'll be shadowed.
               SetFont(SMALLCOMPFONT);
               SetFontForeground(FONT_YELLOW);
-              swprintf(str, L"%d", ubNumUndergroundLevels);
+              swprintf(str, "%d", ubNumUndergroundLevels);
               mprintf(MAP_LEFT + x * 13 + 4, ClipRect.iTop + 4, str);
             }
             if (gbSectorLevels[x][y] & ALTERNATE_GROUND_MASK) {
@@ -1309,14 +1309,14 @@ function UpdateSectorSummary(gszFilename: Pointer<UINT16>, fUpdate: BOOLEAN): vo
 
   gfRenderSummary = TRUE;
   // Extract the sector
-  if (gszFilename[2] < L'0' || gszFilename[2] > L'9')
-    x = gszFilename[1] - L'0';
+  if (gszFilename[2] < '0' || gszFilename[2] > '9')
+    x = gszFilename[1] - '0';
   else
-    x = (gszFilename[1] - L'0') * 10 + gszFilename[2] - L'0';
+    x = (gszFilename[1] - '0') * 10 + gszFilename[2] - '0';
   if (gszFilename[0] >= 'a')
-    y = gszFilename[0] - L'a' + 1;
+    y = gszFilename[0] - 'a' + 1;
   else
-    y = gszFilename[0] - L'A' + 1;
+    y = gszFilename[0] - 'A' + 1;
   gfMapFileDirty = FALSE;
 
   // Validate that the values extracted are in fact a sector
@@ -1328,9 +1328,9 @@ function UpdateSectorSummary(gszFilename: Pointer<UINT16>, fUpdate: BOOLEAN): vo
   // The idea here is to get a pointer to the filename's period, then
   // focus on the character previous to it.  If it is a 1, 2, or 3, then
   // the filename was in a basement level.  Otherwise, it is a ground level.
-  ptr = wcsstr(gszFilename, L"_a.dat");
+  ptr = wcsstr(gszFilename, "_a.dat");
   if (ptr) {
-    ptr = wcsstr(gszFilename, L"_b");
+    ptr = wcsstr(gszFilename, "_b");
     if (ptr && ptr[2] >= '1' && ptr[2] <= '3' && ptr[5] == '.') {
       // it's a alternate basement map
       switch (ptr[2]) {
@@ -1352,7 +1352,7 @@ function UpdateSectorSummary(gszFilename: Pointer<UINT16>, fUpdate: BOOLEAN): vo
       giCurrLevel = 4;
     }
   } else {
-    ptr = wcsstr(gszFilename, L"_b");
+    ptr = wcsstr(gszFilename, "_b");
     if (ptr && ptr[2] >= '1' && ptr[2] <= '3' && ptr[3] == '.') {
       // it's a alternate basement map
       switch (ptr[2]) {
@@ -1385,7 +1385,7 @@ function UpdateSectorSummary(gszFilename: Pointer<UINT16>, fUpdate: BOOLEAN): vo
     SetFont(FONT10ARIAL);
     SetFontForeground(FONT_LTKHAKI);
     SetFontShadow(FONT_NEARBLACK);
-    swprintf(str, L"Analyzing map:  %s...", gszFilename);
+    swprintf(str, "Analyzing map:  %s...", gszFilename);
 
     if (gfSummaryWindowActive) {
       mprintf(MAP_LEFT, MAP_BOTTOM + 100, str);
@@ -1790,7 +1790,7 @@ function SummaryLoadMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     CreateProgressBar(0, MAP_LEFT + 5, MAP_BOTTOM + 110, 573, MAP_BOTTOM + 120);
 
     DefineProgressBarPanel(0, 65, 79, 94, MAP_LEFT, 318, 578, 356);
-    swprintf(str, L"Loading map:  %s", gszDisplayName);
+    swprintf(str, "Loading map:  %s", gszDisplayName);
     SetProgressBarTitle(0, str, BLOCKFONT2, FONT_RED, FONT_NEARBLACK);
     SetProgressBarMsgAttributes(0, SMALLCOMPFONT, FONT_BLACK, FONT_BLACK);
 
@@ -1802,12 +1802,12 @@ function SummaryLoadMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       gfMapFileDirty = FALSE;
     }
     RemoveProgressBar(0);
-    ptr = wcsstr(gszDisplayName, L"_b");
-    if (!ptr || ptr[3] != L'.') {
+    ptr = wcsstr(gszDisplayName, "_b");
+    if (!ptr || ptr[3] != '.') {
       gsSectorLayer = GROUND_LEVEL_MASK;
       giCurrLevel = 0;
     } else {
-      switch (ptr[2] - L'0') {
+      switch (ptr[2] - '0') {
         case 1:
           gsSectorLayer = BASEMENT1_LEVEL_MASK;
           break;
@@ -1874,7 +1874,7 @@ function CalculateOverrideStatus(): void {
       sprintf(ptr, ".dat");
   } else
     sprintf(szFilename, "MAPS\\%S", gszFilename);
-  swprintf(gszDisplayName, L"%S", &(szFilename[5]));
+  swprintf(gszDisplayName, "%S", &(szFilename[5]));
   if (GetFileFirst(szFilename, &FileInfo)) {
     if (gfWorldLoaded) {
       if (FileInfo.uiFileAttribs & (FILE_IS_READONLY | FILE_IS_SYSTEM))
@@ -2229,12 +2229,12 @@ function ReportError(pSector: Pointer<UINT8>, ubLevel: UINT8): void {
   let temp: UINT16[] /* [10] */;
 
   // Make sure the file exists... if not, then return false
-  swprintf(str, L"%S", pSector);
+  swprintf(str, "%S", pSector);
   if (ubLevel % 4) {
-    swprintf(temp, L"_b%d.dat", ubLevel % 4);
+    swprintf(temp, "_b%d.dat", ubLevel % 4);
     wcscat(str, temp);
   }
-  mprintf(10, yp, L"Skipping update for %s.  Probably due to tileset conflicts...", str);
+  mprintf(10, yp, "Skipping update for %s.  Probably due to tileset conflicts...", str);
   InvalidateScreen();
   yp++;
 }
@@ -2249,7 +2249,7 @@ function RegenerateSummaryInfoForAllOutdatedMaps(): void {
   // DefineProgressBarPanel( 0, 65, 79, 94, 10, 80, 310, 152 );
   CreateProgressBar(0, 20, 100, 300, 112); // master (total)
   DefineProgressBarPanel(0, 65, 79, 94, 10, 80, 310, 132);
-  SetProgressBarTitle(0, L"Generating map information", BLOCKFONT2, FONT_RED, FONT_NEARBLACK);
+  SetProgressBarTitle(0, "Generating map information", BLOCKFONT2, FONT_RED, FONT_NEARBLACK);
   SetProgressBarMsgAttributes(0, SMALLCOMPFONT, FONT_BLACK, FONT_BLACK);
   gfUpdatingNow = TRUE;
 
@@ -2319,7 +2319,7 @@ function SummaryUpdateCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     let str: UINT8[] /* [40] */;
     CreateProgressBar(0, 20, 100, 300, 112); // slave (individual)
     DefineProgressBarPanel(0, 65, 79, 94, 10, 80, 310, 132);
-    SetProgressBarTitle(0, L"Generating map summary", BLOCKFONT2, FONT_RED, FONT_NEARBLACK);
+    SetProgressBarTitle(0, "Generating map summary", BLOCKFONT2, FONT_RED, FONT_NEARBLACK);
     SetProgressBarMsgAttributes(0, SMALLCOMPFONT, FONT_BLACK, FONT_BLACK);
 
     if (gpCurrentSectorSummary) {
@@ -2347,7 +2347,7 @@ function ExtractTempFilename(): void {
     gfOverrideDirty = TRUE;
   }
   if (!wcslen(str))
-    swprintf(gszDisplayName, L"test.dat");
+    swprintf(gszDisplayName, "test.dat");
 }
 
 function ApologizeOverrideAndForceUpdateEverything(): void {
@@ -2367,16 +2367,16 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
   SetFont(HUGEFONT);
   SetFontForeground(FONT_RED);
   SetFontShadow(FONT_NEARBLACK);
-  swprintf(str, L"MAJOR VERSION UPDATE");
+  swprintf(str, "MAJOR VERSION UPDATE");
   mprintf(320 - StringPixLength(str, HUGEFONT) / 2, 105, str);
   SetFont(FONT10ARIAL);
   SetFontForeground(FONT_YELLOW);
-  swprintf(str, L"There are %d maps requiring a major version update.", gusNumberOfMapsToBeForceUpdated);
+  swprintf(str, "There are %d maps requiring a major version update.", gusNumberOfMapsToBeForceUpdated);
   mprintf(320 - StringPixLength(str, FONT10ARIAL) / 2, 130, str);
 
   CreateProgressBar(2, 120, 170, 520, 202);
   DefineProgressBarPanel(2, 65, 79, 94, 100, 150, 540, 222);
-  SetProgressBarTitle(2, L"Updating all outdated maps", BLOCKFONT2, FONT_RED, 0);
+  SetProgressBarTitle(2, "Updating all outdated maps", BLOCKFONT2, FONT_RED, 0);
   SetProgressBarMsgAttributes(2, SMALLCOMPFONT, FONT_BLACK, FONT_BLACK);
 
   gusCurrent = 0;

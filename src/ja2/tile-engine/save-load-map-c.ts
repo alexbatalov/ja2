@@ -717,7 +717,7 @@ function AddExitGridToMapTempFile(usGridNo: UINT16, pExitGrid: Pointer<EXITGRID>
   let Map: MODIFY_MAP;
 
   if (!gfApplyChangesToTempFile) {
-    ScreenMsg(FONT_MCOLOR_WHITE, MSG_BETAVERSION, L"Called AddExitGridToMapTempFile() without calling ApplyMapChangesToMapTempFile()");
+    ScreenMsg(FONT_MCOLOR_WHITE, MSG_BETAVERSION, "Called AddExitGridToMapTempFile() without calling ApplyMapChangesToMapTempFile()");
     return;
   }
 

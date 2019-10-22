@@ -503,14 +503,14 @@ function StartInterrupt(): void {
           if (ubInterrupters > 6) {
             // flush... display string, then clear it (we could have 20 names!)
             // add comma to end, we know we have another person after this...
-            wcscat(sTemp, L", ");
+            wcscat(sTemp, ", ");
             ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, sTemp);
-            wcscpy(sTemp, L"");
+            wcscpy(sTemp, "");
             ubInterrupters = 1;
           }
 
           if (ubInterrupters > 1) {
-            wcscat(sTemp, L", ");
+            wcscat(sTemp, ", ");
           }
           wcscat(sTemp, pTempSoldier->name);
         }

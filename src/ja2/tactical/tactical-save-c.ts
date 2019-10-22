@@ -556,7 +556,7 @@ function AddItemsToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, sGrid
       pWorldItems[cnt].usFlags |= WORLD_ITEM_GRIDNO_NOT_SET_USE_ENTRY_POINT;
 
       // Display warning.....
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Error: Trying to add item ( %d: %s ) to invalid gridno in unloaded sector. Please Report.", pWorldItems[cnt].o.usItem, ItemNames[pWorldItems[cnt].o.usItem]);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "Error: Trying to add item ( %d: %s ) to invalid gridno in unloaded sector. Please Report.", pWorldItems[cnt].o.usItem, ItemNames[pWorldItems[cnt].o.usItem]);
     }
 
     memcpy(&(pWorldItems[cnt].o), &pObject[uiLoop1], sizeof(OBJECTTYPE));

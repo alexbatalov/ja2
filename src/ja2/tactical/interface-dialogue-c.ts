@@ -542,8 +542,8 @@ function RenderTalkingMenu(): void {
       SetFontBackground(FONT_MCOLOR_BLACK);
       SetFontForeground(33);
     }
-    VarFindFontCenterCoordinates((gTalkPanel.sX + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_Y), TALK_PANEL_NAME_WIDTH, TALK_PANEL_NAME_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, L"%s", gMercProfiles[gTalkPanel.ubCharNum].zNickname);
-    mprintf(sFontX, sFontY, L"%s", gMercProfiles[ubCharacterNum].zNickname);
+    VarFindFontCenterCoordinates((gTalkPanel.sX + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_Y), TALK_PANEL_NAME_WIDTH, TALK_PANEL_NAME_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, "%s", gMercProfiles[gTalkPanel.ubCharNum].zNickname);
+    mprintf(sFontX, sFontY, "%s", gMercProfiles[ubCharacterNum].zNickname);
 
     // Set font settings back
     SetFontShadow(DEFAULT_SHADOW);
@@ -646,8 +646,8 @@ function RenderTalkingMenu(): void {
         {
           switch (cnt) {
             case 0:
-              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, L"%s", zTalkMenuStrings[cnt]);
-              mprintf(sFontX, sFontY, L"%s", zTalkMenuStrings[cnt]);
+              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, "%s", zTalkMenuStrings[cnt]);
+              mprintf(sFontX, sFontY, "%s", zTalkMenuStrings[cnt]);
               break;
             case 4:
               // if its an arms dealer
@@ -661,12 +661,12 @@ function RenderTalkingMenu(): void {
               } else
                 wcscpy(zTempString, zTalkMenuStrings[cnt]);
 
-              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, L"%s", zTempString);
-              mprintf(sFontX, sFontY, L"%s", zTempString);
+              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, "%s", zTempString);
+              mprintf(sFontX, sFontY, "%s", zTempString);
               break;
             default:
-              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, L"%s (%d)", zTalkMenuStrings[cnt], ubTalkMenuApproachIDs[cnt]);
-              mprintf(sFontX, sFontY, L"%s (%d)", zTalkMenuStrings[cnt], CalcDesireToTalk(ubCharacterNum, gubSrcSoldierProfile, ubTalkMenuApproachIDs[cnt]));
+              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, "%s (%d)", zTalkMenuStrings[cnt], ubTalkMenuApproachIDs[cnt]);
+              mprintf(sFontX, sFontY, "%s (%d)", zTalkMenuStrings[cnt], CalcDesireToTalk(ubCharacterNum, gubSrcSoldierProfile, ubTalkMenuApproachIDs[cnt]));
               break;
           }
         } else {
@@ -682,11 +682,11 @@ function RenderTalkingMenu(): void {
             } else
               wcscpy(zTempString, zTalkMenuStrings[cnt]);
 
-            VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, L"%s", zTempString);
-            mprintf(sFontX, sFontY, L"%s", zTempString);
+            VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, "%s", zTempString);
+            mprintf(sFontX, sFontY, "%s", zTempString);
           } else {
-            VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, L"%s", zTalkMenuStrings[cnt]);
-            mprintf(sFontX, sFontY, L"%s", zTalkMenuStrings[cnt]);
+            VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, "%s", zTalkMenuStrings[cnt]);
+            mprintf(sFontX, sFontY, "%s", zTalkMenuStrings[cnt]);
           }
         }
       }
@@ -3527,7 +3527,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         }
         break;
       default:
-        ScreenMsg(FONT_MCOLOR_RED, MSG_TESTVERSION, L"No code support for NPC action %d", usActionCode);
+        ScreenMsg(FONT_MCOLOR_RED, MSG_TESTVERSION, "No code support for NPC action %d", usActionCode);
         break;
     }
   }
@@ -3648,7 +3648,7 @@ function StartDialogueMessageBox(ubProfileID: UINT8, usMessageBoxType: UINT16): 
     case NPC_ACTION_ASK_ABOUT_PAYING_RPC:
     case NPC_ACTION_ASK_ABOUT_PAYING_RPC_WITH_DAILY_SALARY:
     case NPC_ACTION_REDUCE_CONRAD_SALARY_CONDITIONS:
-      swprintf(zTemp2, L"%d", gMercProfiles[ubProfileID].sSalary);
+      swprintf(zTemp2, "%d", gMercProfiles[ubProfileID].sSalary);
       InsertDollarSignInToString(zTemp2);
       swprintf(zTemp, TacticalStr[HIRE_PROMPT], gMercProfiles[ubProfileID].zNickname, zTemp2);
       DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
@@ -3658,7 +3658,7 @@ function StartDialogueMessageBox(ubProfileID: UINT8, usMessageBoxType: UINT16): 
       DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[BOXING_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
       break;
     case NPC_ACTION_BUY_LEATHER_KEVLAR_VEST:
-      swprintf(zTemp2, L"%d", Item[LEATHER_JACKET_W_KEVLAR].usPrice);
+      swprintf(zTemp2, "%d", Item[LEATHER_JACKET_W_KEVLAR].usPrice);
       InsertDollarSignInToString(zTemp2);
       swprintf(zTemp, TacticalStr[BUY_VEST_PROMPT], ItemNames[LEATHER_JACKET_W_KEVLAR], zTemp2);
       DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
@@ -3677,14 +3677,14 @@ function StartDialogueMessageBox(ubProfileID: UINT8, usMessageBoxType: UINT16): 
       } else {
         iTemp -= giHospitalRefund;
       }
-      swprintf(zTemp2, L"%ld", iTemp);
+      swprintf(zTemp2, "%ld", iTemp);
       InsertDollarSignInToString(zTemp2);
       swprintf(zTemp, TacticalStr[PAY_MONEY_PROMPT], zTemp2);
 
       DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
       break;
     case NPC_ACTION_BUY_VEHICLE_REQUESTOR:
-      swprintf(zTemp2, L"%ld", 10000);
+      swprintf(zTemp2, "%ld", 10000);
       InsertDollarSignInToString(zTemp2);
       swprintf(zTemp, TacticalStr[PAY_MONEY_PROMPT], zTemp2);
 

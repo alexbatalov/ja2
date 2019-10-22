@@ -1171,7 +1171,7 @@ function HandleEquipmentLeftInOmerta(uiSlotIndex: UINT32): void {
       swprintf(sString, pLeftEquipmentString[0], gMercProfiles[guiLeaveListOwnerProfileId[uiSlotIndex]].zNickname);
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, sString);
     } else {
-      swprintf(sString, L"A departing merc has left their equipment in Omerta.");
+      swprintf(sString, "A departing merc has left their equipment in Omerta.");
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, sString);
     }
   }
@@ -1202,7 +1202,7 @@ function HandleEquipmentLeftInDrassen(uiSlotIndex: UINT32): void {
       swprintf(sString, pLeftEquipmentString[1], gMercProfiles[guiLeaveListOwnerProfileId[uiSlotIndex]].zNickname);
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, sString);
     } else {
-      swprintf(sString, L"A departing merc has left their equipment in Drassen.");
+      swprintf(sString, "A departing merc has left their equipment in Drassen.");
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, sString);
     }
   }
@@ -1540,21 +1540,21 @@ function UpdateCharRegionHelpText(): void {
       if (pSoldier->bLife != 0) {
         if (AM_A_ROBOT(MercPtrs[gCharactersList[bSelectedInfoChar].usSolID])) {
           // robot (condition only)
-          swprintf(sString, L"%s: %d/%d", pMapScreenStatusStrings[3], pSoldier->bLife, pSoldier->bLifeMax);
+          swprintf(sString, "%s: %d/%d", pMapScreenStatusStrings[3], pSoldier->bLife, pSoldier->bLifeMax);
         } else if (Menptr[gCharactersList[bSelectedInfoChar].usSolID].uiStatusFlags & SOLDIER_VEHICLE) {
           // vehicle (condition/fuel)
-          swprintf(sString, L"%s: %d/%d, %s: %d/%d", pMapScreenStatusStrings[3], pSoldier->bLife, pSoldier->bLifeMax, pMapScreenStatusStrings[4], pSoldier->bBreath, pSoldier->bBreathMax);
+          swprintf(sString, "%s: %d/%d, %s: %d/%d", pMapScreenStatusStrings[3], pSoldier->bLife, pSoldier->bLifeMax, pMapScreenStatusStrings[4], pSoldier->bBreath, pSoldier->bBreathMax);
         } else {
           // person (health/energy/morale)
           GetMoraleString(pSoldier, pMoraleStr);
-          swprintf(sString, L"%s: %d/%d, %s: %d/%d, %s: %s", pMapScreenStatusStrings[0], pSoldier->bLife, pSoldier->bLifeMax, pMapScreenStatusStrings[1], pSoldier->bBreath, pSoldier->bBreathMax, pMapScreenStatusStrings[2], pMoraleStr);
+          swprintf(sString, "%s: %d/%d, %s: %d/%d, %s: %s", pMapScreenStatusStrings[0], pSoldier->bLife, pSoldier->bLifeMax, pMapScreenStatusStrings[1], pSoldier->bBreath, pSoldier->bBreathMax, pMapScreenStatusStrings[2], pMoraleStr);
         }
       } else {
-        wcscpy(sString, L"");
+        wcscpy(sString, "");
       }
     } else {
       // POW - stats unknown
-      swprintf(sString, L"%s: ??, %s: ??, %s: ??", pMapScreenStatusStrings[0], pMapScreenStatusStrings[1], pMapScreenStatusStrings[2]);
+      swprintf(sString, "%s: ??, %s: ??, %s: ??", pMapScreenStatusStrings[0], pMapScreenStatusStrings[1], pMapScreenStatusStrings[2]);
     }
 
     SetRegionFastHelpText(&gMapStatusBarsRegion, sString);
@@ -1564,7 +1564,7 @@ function UpdateCharRegionHelpText(): void {
       SetButtonFastHelpText(giMapContractButton, pMapScreenMouseRegionHelpText[3]);
       EnableButton(giMapContractButton);
     } else {
-      SetButtonFastHelpText(giMapContractButton, L"");
+      SetButtonFastHelpText(giMapContractButton, "");
       DisableButton(giMapContractButton);
     }
 
@@ -1577,13 +1577,13 @@ function UpdateCharRegionHelpText(): void {
       }
     } else // can't toggle it, don't show any inventory help text
     {
-      SetRegionFastHelpText(&gCharInfoHandRegion, L"");
+      SetRegionFastHelpText(&gCharInfoHandRegion, "");
     }
   } else {
     // invalid soldier
-    SetRegionFastHelpText(&(gMapStatusBarsRegion), L"");
-    SetButtonFastHelpText(giMapContractButton, L"");
-    SetRegionFastHelpText(&gCharInfoHandRegion, L"");
+    SetRegionFastHelpText(&(gMapStatusBarsRegion), "");
+    SetButtonFastHelpText(giMapContractButton, "");
+    SetRegionFastHelpText(&gCharInfoHandRegion, "");
     DisableButton(giMapContractButton);
   }
 }
@@ -2763,19 +2763,19 @@ function AddStringsToMoveBox(): void {
 
   // add title
   GetShortSectorString(sSelMapX, sSelMapY, sStringB);
-  swprintf(sString, L"%s %s", pMovementMenuStrings[0], sStringB);
+  swprintf(sString, "%s %s", pMovementMenuStrings[0], sStringB);
   AddMonoString(&hStringHandle, sString);
 
   // blank line
-  AddMonoString(&hStringHandle, L"");
+  AddMonoString(&hStringHandle, "");
 
   // add squads
   for (iCount = 0; iCount < giNumberOfSquadsInSectorMoving; iCount++) {
     // add this squad, now add all the grunts in it
     if (fSquadIsMoving[iCount]) {
-      swprintf(sString, L"*%s*", pSquadMenuStrings[iSquadMovingList[iCount]]);
+      swprintf(sString, "*%s*", pSquadMenuStrings[iSquadMovingList[iCount]]);
     } else {
-      swprintf(sString, L"%s", pSquadMenuStrings[iSquadMovingList[iCount]]);
+      swprintf(sString, "%s", pSquadMenuStrings[iSquadMovingList[iCount]]);
     }
     AddMonoString(&hStringHandle, sString);
 
@@ -2784,9 +2784,9 @@ function AddStringsToMoveBox(): void {
       if (pSoldierMovingList[iCountB]->bAssignment == iSquadMovingList[iCount]) {
         // add mercs in squads
         if (IsSoldierSelectedForMovement(pSoldierMovingList[iCountB]) == TRUE) {
-          swprintf(sString, L"   *%s*", pSoldierMovingList[iCountB]->name);
+          swprintf(sString, "   *%s*", pSoldierMovingList[iCountB]->name);
         } else {
-          swprintf(sString, L"   %s", pSoldierMovingList[iCountB]->name);
+          swprintf(sString, "   %s", pSoldierMovingList[iCountB]->name);
         }
         AddMonoString(&hStringHandle, sString);
       }
@@ -2797,9 +2797,9 @@ function AddStringsToMoveBox(): void {
   for (iCount = 0; iCount < giNumberOfVehiclesInSectorMoving; iCount++) {
     // add this vehicle
     if (fVehicleIsMoving[iCount]) {
-      swprintf(sString, L"*%s*", pVehicleStrings[pVehicleList[iVehicleMovingList[iCount]].ubVehicleType]);
+      swprintf(sString, "*%s*", pVehicleStrings[pVehicleList[iVehicleMovingList[iCount]].ubVehicleType]);
     } else {
-      swprintf(sString, L"%s", pVehicleStrings[pVehicleList[iVehicleMovingList[iCount]].ubVehicleType]);
+      swprintf(sString, "%s", pVehicleStrings[pVehicleList[iVehicleMovingList[iCount]].ubVehicleType]);
     }
     AddMonoString(&hStringHandle, sString);
 
@@ -2808,9 +2808,9 @@ function AddStringsToMoveBox(): void {
       if ((pSoldierMovingList[iCountB]->bAssignment == VEHICLE) && (pSoldierMovingList[iCountB]->iVehicleId == iVehicleMovingList[iCount])) {
         // add mercs in vehicles
         if (IsSoldierSelectedForMovement(pSoldierMovingList[iCountB]) == TRUE) {
-          swprintf(sString, L"   *%s*", pSoldierMovingList[iCountB]->name);
+          swprintf(sString, "   *%s*", pSoldierMovingList[iCountB]->name);
         } else {
-          swprintf(sString, L"   %s", pSoldierMovingList[iCountB]->name);
+          swprintf(sString, "   %s", pSoldierMovingList[iCountB]->name);
         }
         AddMonoString(&hStringHandle, sString);
       }
@@ -2826,9 +2826,9 @@ function AddStringsToMoveBox(): void {
       if (fFirstOne) {
         // add OTHER header line
         if (AllOtherSoldiersInListAreSelected()) {
-          swprintf(sString, L"*%s*", pMovementMenuStrings[3]);
+          swprintf(sString, "*%s*", pMovementMenuStrings[3]);
         } else {
-          swprintf(sString, L"%s", pMovementMenuStrings[3]);
+          swprintf(sString, "%s", pMovementMenuStrings[3]);
         }
         AddMonoString(&hStringHandle, sString);
 
@@ -2837,28 +2837,28 @@ function AddStringsToMoveBox(): void {
 
       // add OTHER soldiers (not on duty nor in a vehicle)
       if (IsSoldierSelectedForMovement(pSoldierMovingList[iCount]) == TRUE) {
-        swprintf(sString, L"  *%s ( %s )*", pSoldierMovingList[iCount]->name, pAssignmentStrings[pSoldierMovingList[iCount]->bAssignment]);
+        swprintf(sString, "  *%s ( %s )*", pSoldierMovingList[iCount]->name, pAssignmentStrings[pSoldierMovingList[iCount]->bAssignment]);
       } else {
-        swprintf(sString, L"   %s ( %s )", pSoldierMovingList[iCount]->name, pAssignmentStrings[pSoldierMovingList[iCount]->bAssignment]);
+        swprintf(sString, "   %s ( %s )", pSoldierMovingList[iCount]->name, pAssignmentStrings[pSoldierMovingList[iCount]->bAssignment]);
       }
       AddMonoString(&hStringHandle, sString);
     }
   }
 
   // blank line
-  AddMonoString(&hStringHandle, L"");
+  AddMonoString(&hStringHandle, "");
 
   if (IsAnythingSelectedForMoving()) {
     // add PLOT MOVE line
-    swprintf(sString, L"%s", pMovementMenuStrings[1]);
+    swprintf(sString, "%s", pMovementMenuStrings[1]);
     AddMonoString(&hStringHandle, sString);
   } else {
     // blank line
-    AddMonoString(&hStringHandle, L"");
+    AddMonoString(&hStringHandle, "");
   }
 
   // add cancel line
-  swprintf(sString, L"%s", pMovementMenuStrings[2]);
+  swprintf(sString, "%s", pMovementMenuStrings[2]);
   AddMonoString(&hStringHandle, sString);
 
   return;
@@ -3771,7 +3771,7 @@ function DisplaySoldierUpdateBox(): void {
       RenderSoldierSmallFaceForUpdatePanel(iCounter, iFaceX, iFaceY);
 
       // display the mercs name
-      swprintf(sString, L"%s", pUpdateSoldierBox[iCounter]->name);
+      swprintf(sString, "%s", pUpdateSoldierBox[iCounter]->name);
       DrawTextToScreen(sString, (iFaceX - 5), (iFaceY + 31), 57, TINYFONT1, FONT_LTRED, FONT_BLACK, 0, CENTER_JUSTIFIED);
     }
   }
@@ -4173,29 +4173,29 @@ function InitTimersForMoveMenuMouseRegions(): void {
 
 function UpdateHelpTextForMapScreenMercIcons(): void {
   if ((bSelectedInfoChar == -1) || (gCharactersList[bSelectedInfoChar].fValid == FALSE)) {
-    SetRegionFastHelpText(&(gContractIconRegion), L"");
-    SetRegionFastHelpText(&(gInsuranceIconRegion), L"");
-    SetRegionFastHelpText(&(gDepositIconRegion), L"");
+    SetRegionFastHelpText(&(gContractIconRegion), "");
+    SetRegionFastHelpText(&(gInsuranceIconRegion), "");
+    SetRegionFastHelpText(&(gDepositIconRegion), "");
   } else {
     // if merc is an AIM merc
     if (Menptr[gCharactersList[bSelectedInfoChar].usSolID].ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
       SetRegionFastHelpText(&(gContractIconRegion), zMarksMapScreenText[22]);
     } else {
-      SetRegionFastHelpText(&(gContractIconRegion), L"");
+      SetRegionFastHelpText(&(gContractIconRegion), "");
     }
 
     // if merc has life insurance
     if (Menptr[gCharactersList[bSelectedInfoChar].usSolID].usLifeInsurance > 0) {
       SetRegionFastHelpText(&(gInsuranceIconRegion), zMarksMapScreenText[3]);
     } else {
-      SetRegionFastHelpText(&(gInsuranceIconRegion), L"");
+      SetRegionFastHelpText(&(gInsuranceIconRegion), "");
     }
 
     // if merc has a medical deposit
     if (Menptr[gCharactersList[bSelectedInfoChar].usSolID].usMedicalDeposit > 0) {
       SetRegionFastHelpText(&(gDepositIconRegion), zMarksMapScreenText[12]);
     } else {
-      SetRegionFastHelpText(&(gDepositIconRegion), L"");
+      SetRegionFastHelpText(&(gDepositIconRegion), "");
     }
   }
 }
@@ -4386,7 +4386,7 @@ function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT16, sSe
       iValue = GetProjectedTotalDailyIncome();
 
       // parse the string
-      swprintf(sStringC, L"%d", iValue);
+      swprintf(sStringC, "%d", iValue);
 
       // insert
       InsertCommasForDollarFigure(sStringC);
@@ -4623,9 +4623,9 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
     if (((pSoldier->bAssignment == VEHICLE) && (GetNumberOfNonEPCsInVehicle(pSoldier->iVehicleId) == 0)) || ((pSoldier->bAssignment < ON_DUTY) && (NumberOfNonEPCsInSquad(pSoldier->bAssignment) == 0))) {
       // are they male or female
       if (gMercProfiles[pSoldier->ubProfile].bSex == MALE) {
-        swprintf(gsCustomErrorString, L"%s %s", pSoldier->name, pMapErrorString[6]);
+        swprintf(gsCustomErrorString, "%s %s", pSoldier->name, pMapErrorString[6]);
       } else {
-        swprintf(gsCustomErrorString, L"%s %s", pSoldier->name, pMapErrorString[7]);
+        swprintf(gsCustomErrorString, "%s %s", pSoldier->name, pMapErrorString[7]);
       }
 
       *pbErrorNumber = -99; // customized error message!

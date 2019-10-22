@@ -499,7 +499,7 @@ function DrawMouseText(): void {
       // Set dest for gprintf to be different
       SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, FALSE);
 
-      swprintf(pStr, L"%d", gsCurrentActionPoints);
+      swprintf(pStr, "%d", gsCurrentActionPoints);
 
       if (gfUIDisplayActionPointsCenter) {
         FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, pStr, TINYFONT1, &sX, &sY);
@@ -529,7 +529,7 @@ function DrawMouseText(): void {
         SetFontShadow(DEFAULT_SHADOW);
       }
 
-      mprintf(sX, sY, L"%d", gsCurrentActionPoints);
+      mprintf(sX, sY, "%d", gsCurrentActionPoints);
       // mprintf( sX, sY, L"%d %d", sX, sY );
 
       // LeaveMutex(MOUSE_BUFFER_MUTEX, __LINE__, __FILE__);

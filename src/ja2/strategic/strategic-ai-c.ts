@@ -1866,7 +1866,7 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
       // The reinforcements aren't coming from the currently loaded sector!
       iReinforcementsAvailable = ReinforcementsAvailable(iSrcGarrisonID);
       if (iReinforcementsAvailable <= 0) {
-        SAIReportError(L"Attempting to send reinforcements from a garrison that doesn't have any! -- KM:0 (with prior saved game and strategic decisions.txt)");
+        SAIReportError("Attempting to send reinforcements from a garrison that doesn't have any! -- KM:0 (with prior saved game and strategic decisions.txt)");
         return;
       }
       // Send the lowest of the two:  number requested or number available
@@ -2973,7 +2973,7 @@ function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, sSector
       }
       break;
     default:
-      ScreenMsg(FONT_RED, MSG_DEBUG, L"QueenAI failed to handle action code %d.", usActionCode);
+      ScreenMsg(FONT_RED, MSG_DEBUG, "QueenAI failed to handle action code %d.", usActionCode);
       break;
   }
 }
@@ -3108,7 +3108,7 @@ function StrategicHandleQueenLosingControlOfSector(sSectorX: INT16, sSectorY: IN
 
   if (StrategicMap[sSectorX + sSectorY * MAP_WORLD_X].fEnemyControlled) {
     // If the sector doesn't belong to the player, then we shouldn't be calling this function!
-    SAIReportError(L"StrategicHandleQueenLosingControlOfSector() was called for a sector that is internally considered to be enemy controlled.");
+    SAIReportError("StrategicHandleQueenLosingControlOfSector() was called for a sector that is internally considered to be enemy controlled.");
     return;
   }
 
@@ -3411,20 +3411,20 @@ function RenderAIViewerGarrisonInfo(x: INT32, y: INT32, pSector: Pointer<SECTORI
     iSurplus = pSector->ubNumTroops + pSector->ubNumAdmins + pSector->ubNumElites - iDesired;
     SetFontForeground(FONT_WHITE);
     if (iSurplus >= 0) {
-      mprintf(x, y, L"%d desired, %d surplus troops", iDesired, iSurplus);
+      mprintf(x, y, "%d desired, %d surplus troops", iDesired, iSurplus);
     } else {
-      mprintf(x, y, L"%d desired, %d reinforcements requested", iDesired, -iSurplus);
+      mprintf(x, y, "%d desired, %d reinforcements requested", iDesired, -iSurplus);
     }
     if (gGarrisonGroup[pSector->ubGarrisonID].ubPendingGroupID) {
       let pGroup: Pointer<GROUP>;
       pGroup = GetGroup(gGarrisonGroup[pSector->ubGarrisonID].ubPendingGroupID);
-      mprintf(x, y + 10, L"%d reinforcements on route from group %d in %c%d", pGroup->ubGroupSize, pGroup->ubGroupID, pGroup->ubSectorY + 'A' - 1, pGroup->ubSectorX);
+      mprintf(x, y + 10, "%d reinforcements on route from group %d in %c%d", pGroup->ubGroupSize, pGroup->ubGroupID, pGroup->ubSectorY + 'A' - 1, pGroup->ubSectorX);
     } else {
-      mprintf(x, y + 10, L"No pending reinforcements for this sector.");
+      mprintf(x, y + 10, "No pending reinforcements for this sector.");
     }
   } else {
     SetFontForeground(FONT_GRAY2);
-    mprintf(x, y, L"No garrison information for this sector.");
+    mprintf(x, y, "No garrison information for this sector.");
   }
 }
 
@@ -4080,7 +4080,7 @@ function RedirectEnemyGroupsMovingThroughSector(ubSectorX: UINT8, ubSectorY: UIN
     pGroup = pGroup->next;
   }
   if (ubNumGroupsRedirected) {
-    ScreenMsg(FONT_LTBLUE, MSG_BETAVERSION, L"Test message for new feature:  %d enemy groups were redirected away from moving through sector %c%d.  Please don't report unless this number is greater than 5.", ubNumGroupsRedirected, ubSectorY + 'A' - 1, ubSectorX);
+    ScreenMsg(FONT_LTBLUE, MSG_BETAVERSION, "Test message for new feature:  %d enemy groups were redirected away from moving through sector %c%d.  Please don't report unless this number is greater than 5.", ubNumGroupsRedirected, ubSectorY + 'A' - 1, ubSectorX);
   }
   return ubNumGroupsRedirected;
 }

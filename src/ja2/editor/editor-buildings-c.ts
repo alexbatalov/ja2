@@ -43,16 +43,16 @@ function UpdateBuildingsInfo(): void {
   // print the headers on top of the columns
   SetFont(SMALLCOMPFONT);
   SetFontForeground(FONT_RED);
-  mprintfEditor(112, 362, L"TOGGLE");
-  mprintfEditor(114, 372, L"VIEWS");
+  mprintfEditor(112, 362, "TOGGLE");
+  mprintfEditor(114, 372, "VIEWS");
   SetFontForeground(FONT_YELLOW);
-  mprintfEditor(185, 362, L"SELECTION METHOD");
+  mprintfEditor(185, 362, "SELECTION METHOD");
   SetFontForeground(FONT_LTGREEN);
-  mprintfEditor(290, 362, L"SMART METHOD");
+  mprintfEditor(290, 362, "SMART METHOD");
   SetFontForeground(FONT_LTBLUE);
-  mprintfEditor(390, 362, L"BUILDING METHOD");
+  mprintfEditor(390, 362, "BUILDING METHOD");
   SetFontForeground(FONT_GRAY2);
-  mprintfEditor(437, 404, L"Room#");
+  mprintfEditor(437, 404, "Room#");
 }
 
 // Uses a recursive method to elimate adjacent tiles of structure information.
@@ -436,12 +436,12 @@ function InitDoorEditing(iMapIndex: INT32): void {
   iDoorButton[DOOR_BACKGROUND] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 200, 130, 240, 100, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   DisableButton(iDoorButton[DOOR_BACKGROUND]);
   SpecifyDisabledButtonStyle(iDoorButton[DOOR_BACKGROUND], DISABLED_STYLE_NONE);
-  iDoorButton[DOOR_OKAY] = CreateTextButton(L"Okay", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 330, 195, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoorOkayCallback);
-  iDoorButton[DOOR_CANCEL] = CreateTextButton(L"Cancel", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 385, 195, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoorCancelCallback);
+  iDoorButton[DOOR_OKAY] = CreateTextButton("Okay", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 330, 195, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoorOkayCallback);
+  iDoorButton[DOOR_CANCEL] = CreateTextButton("Cancel", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 385, 195, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoorCancelCallback);
   InitTextInputModeWithScheme(DEFAULT_SCHEME);
-  AddTextInputField(210, 155, 25, 16, MSYS_PRIORITY_HIGH, L"0", 3, INPUTTYPE_NUMERICSTRICT);
-  AddTextInputField(210, 175, 25, 16, MSYS_PRIORITY_HIGH, L"0", 2, INPUTTYPE_NUMERICSTRICT);
-  AddTextInputField(210, 195, 25, 16, MSYS_PRIORITY_HIGH, L"0", 2, INPUTTYPE_NUMERICSTRICT);
+  AddTextInputField(210, 155, 25, 16, MSYS_PRIORITY_HIGH, "0", 3, INPUTTYPE_NUMERICSTRICT);
+  AddTextInputField(210, 175, 25, 16, MSYS_PRIORITY_HIGH, "0", 2, INPUTTYPE_NUMERICSTRICT);
+  AddTextInputField(210, 195, 25, 16, MSYS_PRIORITY_HIGH, "0", 2, INPUTTYPE_NUMERICSTRICT);
   iDoorButton[DOOR_LOCKED] = CreateCheckBoxButton(210, 215, "EDITOR//SmCheckbox.sti", MSYS_PRIORITY_HIGH, DoorToggleLockedCallback);
 
   pDoor = FindDoorInfoAtGridNo(iDoorMapIndex);
@@ -544,13 +544,13 @@ function RenderDoorEditingWindow(): void {
   SetFontForeground(FONT_YELLOW);
   SetFontShadow(FONT_NEARBLACK);
   SetFontBackground(0);
-  mprintf(210, 140, L"Editing lock attributes at map index %d.", iDoorMapIndex);
+  mprintf(210, 140, "Editing lock attributes at map index %d.", iDoorMapIndex);
 
   SetFontForeground(FONT_GRAY2);
-  mprintf(238, 160, L"Lock ID");
-  mprintf(238, 180, L"Trap Type");
-  mprintf(238, 200, L"Trap Level");
-  mprintf(238, 218, L"Locked");
+  mprintf(238, 160, "Lock ID");
+  mprintf(238, 180, "Trap Type");
+  mprintf(238, 200, "Trap Level");
+  mprintf(238, 218, "Locked");
 }
 
 function KillDoorEditing(): void {
@@ -612,7 +612,7 @@ function SetupTextInputForBuildings(): void {
   let str: UINT16[] /* [4] */;
   InitTextInputModeWithScheme(DEFAULT_SCHEME);
   AddUserInputField(NULL); // just so we can use short cut keys while not typing.
-  swprintf(str, L"%d", gubMaxRoomNumber);
+  swprintf(str, "%d", gubMaxRoomNumber);
   AddTextInputField(410, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
 }
 
@@ -626,7 +626,7 @@ function ExtractAndUpdateBuildingInfo(): void {
   } else {
     gubCurrRoomNumber = 0;
   }
-  swprintf(str, L"%d", gubCurrRoomNumber);
+  swprintf(str, "%d", gubCurrRoomNumber);
   SetInputFieldStringWith16BitString(1, str);
   SetActiveField(0);
 }

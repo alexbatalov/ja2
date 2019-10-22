@@ -737,7 +737,7 @@ function IssueHeadMinerQuote(bMineIndex: INT8, ubQuoteType: UINT8): void {
   // make sure the miner ain't dead
   if (gMercProfiles[usHeadMinerProfileId].bLife < OKLIFE) {
     // debug message
-    ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"Head Miner #%s can't talk (quote #%d)", gMercProfiles[usHeadMinerProfileId].zNickname, ubQuoteType);
+    ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "Head Miner #%s can't talk (quote #%d)", gMercProfiles[usHeadMinerProfileId].zNickname, ubQuoteType);
     return;
   }
 

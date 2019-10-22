@@ -134,12 +134,12 @@ function GameLoop(): void {
           let uiSpaceOnDrive: UINT32;
           let zSizeNeeded: CHAR16[] /* [512] */;
 
-          swprintf(zSizeNeeded, L"%d", REQUIRED_FREE_SPACE / BYTESINMEGABYTE);
+          swprintf(zSizeNeeded, "%d", REQUIRED_FREE_SPACE / BYTESINMEGABYTE);
           InsertCommasForDollarFigure(zSizeNeeded);
 
           uiSpaceOnDrive = GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
 
-          swprintf(zSpaceOnDrive, L"%.2f", uiSpaceOnDrive / BYTESINMEGABYTE);
+          swprintf(zSpaceOnDrive, "%.2f", uiSpaceOnDrive / BYTESINMEGABYTE);
 
           swprintf(zText, pMessageStrings[MSG_LOWDISKSPACE_WARNING], zSpaceOnDrive, zSizeNeeded);
 

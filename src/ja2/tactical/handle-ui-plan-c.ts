@@ -11,7 +11,7 @@ function BeginUIPlan(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
   gfPlotNewMovement = TRUE;
 
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Entering Planning Mode");
+  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Entering Planning Mode");
 
   return TRUE;
 }
@@ -99,10 +99,10 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
 
         gfPlotNewMovement = TRUE;
 
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Adding Merc Move to Plan");
+        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Adding Merc Move to Plan");
       }
     } else {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Merc will not have enough action points");
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Merc will not have enough action points");
     }
   } else if (ubPlanID == UIPLAN_ACTION_FIRE) {
     sAPCost = CalcTotalAPsToAttack(gpUIPlannedSoldier, sGridNo, TRUE, (gpUIPlannedSoldier->bShownAimTime / 2));
@@ -183,9 +183,9 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
       gpUIPlannedSoldier->sPlannedTargetX = sXPos;
       gpUIPlannedSoldier->sPlannedTargetY = sYPos;
 
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Adding Merc Shoot to Plan");
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Adding Merc Shoot to Plan");
     } else {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Merc will not have enough action points");
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Merc will not have enough action points");
     }
   }
   return TRUE;
@@ -211,7 +211,7 @@ function EndUIPlan(): void {
 
   gfPlotNewMovement = TRUE;
 
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Leaving Planning Mode");
+  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Leaving Planning Mode");
 }
 
 function InUIPlanMode(): BOOLEAN {

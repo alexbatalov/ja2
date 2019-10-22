@@ -222,7 +222,7 @@ function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: IN
     swprintf(pNode->szString, szInitText);
   } else {
     pNode->ubStrLen = 0;
-    swprintf(pNode->szString, L"");
+    swprintf(pNode->szString, "");
   }
   pNode->ubMaxChars = ubMaxChars; // max string length
 
@@ -329,7 +329,7 @@ function SetInputFieldStringWith16BitString(ubField: UINT8, szNewText: Pointer<U
         swprintf(curr->szString, szNewText);
       } else if (!curr->fUserField) {
         curr->ubStrLen = 0;
-        swprintf(curr->szString, L"");
+        swprintf(curr->szString, "");
       } else {
         AssertMsg(0, String("Attempting to illegally set text into user field %d", curr->ubID));
       }
@@ -347,10 +347,10 @@ function SetInputFieldStringWith8BitString(ubField: UINT8, szNewText: Pointer<UI
       if (szNewText) {
         curr->ubStrLen = strlen(szNewText);
         Assert(curr->ubStrLen <= curr->ubMaxChars);
-        swprintf(curr->szString, L"%S", szNewText);
+        swprintf(curr->szString, "%S", szNewText);
       } else if (!curr->fUserField) {
         curr->ubStrLen = 0;
-        swprintf(curr->szString, L"");
+        swprintf(curr->szString, "");
       } else {
         AssertMsg(0, String("Attempting to illegally set text into user field %d", curr->ubID));
       }
@@ -424,13 +424,13 @@ function SetInputFieldStringWithNumericStrictValue(ubField: UINT8, iNumber: INT3
       if (curr->fUserField)
         AssertMsg(0, String("Attempting to illegally set text into user field %d", curr->ubID));
       if (iNumber < 0) // negative number converts to blank string
-        swprintf(curr->szString, L"");
+        swprintf(curr->szString, "");
       else {
         let iMax: INT32 = pow(10.0, curr->ubMaxChars);
         if (iNumber > iMax) // set string to max value based on number of chars.
-          swprintf(curr->szString, L"%d", iMax - 1);
+          swprintf(curr->szString, "%d", iMax - 1);
         else // set string to the number given
-          swprintf(curr->szString, L"%d", iNumber);
+          swprintf(curr->szString, "%d", iNumber);
       }
       curr->ubStrLen = wcslen(curr->szString);
       return;
@@ -1062,9 +1062,9 @@ function RenderActiveTextField(): void {
         SetFontBackground(0);
       }
       if (gpActive->szString[i] != '%') {
-        mprintf(uiCursorXPos + gpActive->region.RegionTopLeftX, gpActive->region.RegionTopLeftY + usOffset, L"%c", gpActive->szString[i]);
+        mprintf(uiCursorXPos + gpActive->region.RegionTopLeftX, gpActive->region.RegionTopLeftY + usOffset, "%c", gpActive->szString[i]);
       } else {
-        mprintf(uiCursorXPos + gpActive->region.RegionTopLeftX, gpActive->region.RegionTopLeftY + usOffset, L"%%");
+        mprintf(uiCursorXPos + gpActive->region.RegionTopLeftX, gpActive->region.RegionTopLeftY + usOffset, "%%");
       }
     }
   } else {
@@ -1310,7 +1310,7 @@ function ExecuteCopyCommand(): void {
     for (ubCount = ubStart; ubCount < ubEnd; ubCount++) {
       szClipboard[ubCount - ubStart] = gpActive->szString[ubCount];
     }
-    szClipboard[ubCount - ubStart] = L'\0';
+    szClipboard[ubCount - ubStart] = '\0';
   }
 }
 
@@ -1429,7 +1429,7 @@ function SetExclusive24HourTimeValue(ubField: UINT8, usTime: UINT16): void {
   let curr: Pointer<TEXTINPUTNODE>;
   // First make sure the time is a valid time.  If not, then use 23:59
   if (usTime == 0xffff) {
-    SetInputFieldStringWith16BitString(ubField, L"");
+    SetInputFieldStringWith16BitString(ubField, "");
     return;
   }
   usTime = min(1439, usTime);

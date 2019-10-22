@@ -316,7 +316,7 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
 
   // Save the current sectors open temp files to the disk
   if (!SaveCurrentSectorsInformationToTempItemFile()) {
-    ScreenMsg(FONT_MCOLOR_WHITE, MSG_TESTVERSION, L"ERROR in SaveCurrentSectorsInformationToTempItemFile()");
+    ScreenMsg(FONT_MCOLOR_WHITE, MSG_TESTVERSION, "ERROR in SaveCurrentSectorsInformationToTempItemFile()");
     goto FAILED_TO_SAVE;
   }
 
@@ -903,7 +903,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   uiRelStartPerc = 0;
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Strategic Events...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Strategic Events...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -915,7 +915,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 0;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Laptop Info");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Laptop Info");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -926,7 +926,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 0;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Merc Profiles...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Merc Profiles...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -940,7 +940,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 30;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Soldier Structure...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Soldier Structure...");
   uiRelStartPerc = uiRelEndPerc;
 
   //
@@ -953,7 +953,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Finances Data File...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Finances Data File...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -967,7 +967,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"History File...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "History File...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -981,7 +981,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"The Laptop FILES file...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "The Laptop FILES file...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -995,7 +995,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Email...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Email...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1007,7 +1007,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Strategic Information...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Strategic Information...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1019,7 +1019,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"UnderGround Information...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "UnderGround Information...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1031,7 +1031,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Squad Info...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Squad Info...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1043,7 +1043,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Strategic Movement Groups...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Strategic Movement Groups...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1055,7 +1055,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 30;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"All the Map Temp files...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "All the Map Temp files...");
   uiRelStartPerc = uiRelEndPerc;
 
   // Load all the map temp files from the saved game file into the maps\temp directory
@@ -1066,7 +1066,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Quest Info...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Quest Info...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1077,7 +1077,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"OppList Info...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "OppList Info...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1088,7 +1088,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"MapScreen Messages...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "MapScreen Messages...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1099,7 +1099,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"NPC Info...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "NPC Info...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1110,7 +1110,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"KeyTable...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "KeyTable...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1121,7 +1121,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Npc Temp Quote File...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Npc Temp Quote File...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1132,7 +1132,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 0;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"PreGenerated Random Files...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "PreGenerated Random Files...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1143,7 +1143,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 0;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Smoke Effect Structures...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Smoke Effect Structures...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1154,7 +1154,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Arms Dealers Inventory...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Arms Dealers Inventory...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1165,7 +1165,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 0;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Misc info...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Misc info...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1176,7 +1176,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Mine Status...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Mine Status...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1187,7 +1187,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 0;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Town Loyalty...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Town Loyalty...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1200,7 +1200,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Vehicle Information...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Vehicle Information...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1213,7 +1213,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Bullet Information...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Bullet Information...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1226,7 +1226,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Physics table...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Physics table...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1239,7 +1239,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Air Raid Info...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Air Raid Info...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1252,7 +1252,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 0;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Team Turn Info...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Team Turn Info...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1265,7 +1265,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Explosion Table...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Explosion Table...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1278,7 +1278,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Creature Spreading...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Creature Spreading...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1291,7 +1291,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Strategic Status...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Strategic Status...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1304,7 +1304,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Strategic AI...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Strategic AI...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1317,7 +1317,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Lighting Effects...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Lighting Effects...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1330,7 +1330,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Watched Locs Info...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Watched Locs Info...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1343,7 +1343,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Item cursor Info...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Item cursor Info...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1356,7 +1356,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Civ Quote System...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Civ Quote System...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1369,7 +1369,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Backed up NPC Info...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Backed up NPC Info...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1382,7 +1382,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Meanwhile definitions...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Meanwhile definitions...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1397,7 +1397,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Schedules...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Schedules...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1412,7 +1412,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Extra Vehicle Info...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Extra Vehicle Info...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1433,7 +1433,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Contract renweal sequence stuff...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Contract renweal sequence stuff...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1479,7 +1479,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   /// lll
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Final Checks...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Final Checks...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1509,7 +1509,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Final Checks...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Final Checks...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1522,7 +1522,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   PostSchedules();
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Final Checks...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Final Checks...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1543,7 +1543,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   //	ResetMilitia();
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Final Checks...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Final Checks...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1563,7 +1563,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   SaveGameSettings();
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Final Checks...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Final Checks...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1579,7 +1579,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   uiRelEndPerc += 1;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Final Checks...");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Final Checks...");
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
@@ -1678,7 +1678,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   gfLoadedGame = TRUE;
 
   uiRelEndPerc = 100;
-  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, L"Done!");
+  SetRelativeStartAndEndPercentage(0, uiRelStartPerc, uiRelEndPerc, "Done!");
   RenderProgressBar(0, 100);
 
   RemoveLoadingScreenProgressBar();

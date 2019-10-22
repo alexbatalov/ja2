@@ -238,7 +238,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOO
   wcscpy(sString, ShortItemNames[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem]);
 
   if (StringPixLength(sString, MAP_IVEN_FONT) >= (MAP_INVEN_SLOT_WIDTH)) {
-    ReduceStringLength(sString, (MAP_INVEN_SLOT_WIDTH - StringPixLength(L" ...", MAP_IVEN_FONT)), MAP_IVEN_FONT);
+    ReduceStringLength(sString, (MAP_INVEN_SLOT_WIDTH - StringPixLength(" ...", MAP_IVEN_FONT)), MAP_IVEN_FONT);
   }
 
   FindFontCenterCoordinates((4 + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS))), 0, MAP_INVEN_SLOT_WIDTH, 0, sString, MAP_IVEN_FONT, &sWidth, &sHeight);
@@ -296,7 +296,7 @@ function UpdateHelpTextForInvnentoryStashSlots(): void {
       */
     } else {
       // OK, for each item, set dirty text if applicable!
-      SetRegionFastHelpText(&(MapInventoryPoolSlots[iCounter]), L"");
+      SetRegionFastHelpText(&(MapInventoryPoolSlots[iCounter]), "");
     }
   }
 
@@ -823,7 +823,7 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
 
       // TEST!!  If the item exists, and is NOT VALID, report it
       if (pTotalSectorList[iCounter].fExists && pTotalSectorList[iCounter].o.usItem > MAXITEMS) {
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"The %d item in the list is NOT valid. Please send save.  DF 1.", iCounter);
+        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "The %d item in the list is NOT valid. Please send save.  DF 1.", iCounter);
       }
 
       if (IsMapScreenWorldItemVisibleInMapInventory(&pTotalSectorList[iCounter])) {
@@ -1273,7 +1273,7 @@ function DisplayPagesForMapInventoryPool(): void {
   SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
 
   // grab current and last pages
-  swprintf(sString, L"%d / %d", iCurrentInventoryPoolPage + 1, iLastInventoryPoolPage + 1);
+  swprintf(sString, "%d / %d", iCurrentInventoryPoolPage + 1, iLastInventoryPoolPage + 1);
 
   // grab centered coords
   FindFontCenterCoordinates(MAP_INVENTORY_POOL_PAGE_X, MAP_INVENTORY_POOL_PAGE_Y, MAP_INVENTORY_POOL_PAGE_WIDTH, MAP_INVENTORY_POOL_PAGE_HEIGHT, sString, MAP_SCREEN_FONT, &sX, &sY);
@@ -1320,7 +1320,7 @@ function DrawNumberOfIventoryPoolItems(): void {
   iNumberOfItems = GetTotalNumberOfItemsInSectorStash();
 
   // get number of items
-  swprintf(sString, L"%d", iNumberOfItems);
+  swprintf(sString, "%d", iNumberOfItems);
 
   // set font stuff
   SetFont(COMPFONT);
@@ -1363,7 +1363,7 @@ function DisplayCurrentSector(): void {
   let sX: INT16;
   let sY: INT16;
 
-  swprintf(sString, L"%s%s%s", pMapVertIndex[sSelMapY], pMapHortIndex[sSelMapX], pMapDepthIndex[iCurrentMapSectorZ]);
+  swprintf(sString, "%s%s%s", pMapVertIndex[sSelMapY], pMapHortIndex[sSelMapX], pMapDepthIndex[iCurrentMapSectorZ]);
 
   // set font stuff
   SetFont(COMPFONT);

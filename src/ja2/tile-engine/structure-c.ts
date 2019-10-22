@@ -1367,15 +1367,15 @@ function DebugStructurePage1(): void {
   let bStructures: INT8;
 
   /* static */ let WallOrientationString: CHAR16[][] /* [5][15] */ = [
-    L"None",
-    L"Inside left",
-    L"Inside right",
-    L"Outside left",
-    L"Outside right",
+    "None",
+    "Inside left",
+    "Inside right",
+    "Outside left",
+    "Outside right",
   ];
 
   SetFont(LARGEFONT1);
-  gprintf(0, 0, L"DEBUG STRUCTURES PAGE 1 OF 1");
+  gprintf(0, 0, "DEBUG STRUCTURES PAGE 1 OF 1");
   if (GetMouseMapPos(&sGridNo) == FALSE) {
     return;
     // gprintf( 0, LINE_HEIGHT * 1, L"No structure selected" );
@@ -1387,7 +1387,7 @@ function DebugStructurePage1(): void {
     sDesiredLevel = STRUCTURE_ON_ROOF;
   }
 
-  gprintf(320, 0, L"Building %d", gubBuildingInfo[sGridNo]);
+  gprintf(320, 0, "Building %d", gubBuildingInfo[sGridNo]);
   /*
   pLand = gpWorldLevelData[sGridNo].pLandHead;
   gprintf( 320, 0, L"Fake light %d", pLand->ubFakeShadeLevel );
@@ -1404,50 +1404,50 @@ function DebugStructurePage1(): void {
 
   if (pStructure != NULL) {
     if (pStructure->fFlags & STRUCTURE_GENERIC) {
-      gprintf(0, LINE_HEIGHT * 1, L"Generic structure %x #%d", pStructure->fFlags, pStructure->pDBStructureRef->pDBStructure->usStructureNumber);
+      gprintf(0, LINE_HEIGHT * 1, "Generic structure %x #%d", pStructure->fFlags, pStructure->pDBStructureRef->pDBStructure->usStructureNumber);
     } else if (pStructure->fFlags & STRUCTURE_TREE) {
-      gprintf(0, LINE_HEIGHT * 1, L"Tree");
+      gprintf(0, LINE_HEIGHT * 1, "Tree");
     } else if (pStructure->fFlags & STRUCTURE_WALL) {
-      gprintf(0, LINE_HEIGHT * 1, L"Wall with orientation %s", WallOrientationString[pStructure->ubWallOrientation]);
+      gprintf(0, LINE_HEIGHT * 1, "Wall with orientation %s", WallOrientationString[pStructure->ubWallOrientation]);
     } else if (pStructure->fFlags & STRUCTURE_WALLNWINDOW) {
-      gprintf(0, LINE_HEIGHT * 1, L"Wall with window");
+      gprintf(0, LINE_HEIGHT * 1, "Wall with window");
     } else if (pStructure->fFlags & STRUCTURE_VEHICLE) {
-      gprintf(0, LINE_HEIGHT * 1, L"Vehicle %d", pStructure->pDBStructureRef->pDBStructure->usStructureNumber);
+      gprintf(0, LINE_HEIGHT * 1, "Vehicle %d", pStructure->pDBStructureRef->pDBStructure->usStructureNumber);
     } else if (pStructure->fFlags & STRUCTURE_NORMAL_ROOF) {
-      gprintf(0, LINE_HEIGHT * 1, L"Roof");
+      gprintf(0, LINE_HEIGHT * 1, "Roof");
     } else if (pStructure->fFlags & STRUCTURE_SLANTED_ROOF) {
-      gprintf(0, LINE_HEIGHT * 1, L"Slanted roof");
+      gprintf(0, LINE_HEIGHT * 1, "Slanted roof");
     } else if (pStructure->fFlags & STRUCTURE_DOOR) {
-      gprintf(0, LINE_HEIGHT * 1, L"Door with orientation %s", WallOrientationString[pStructure->ubWallOrientation]);
+      gprintf(0, LINE_HEIGHT * 1, "Door with orientation %s", WallOrientationString[pStructure->ubWallOrientation]);
     } else if (pStructure->fFlags & STRUCTURE_SLIDINGDOOR) {
-      gprintf(0, LINE_HEIGHT * 1, L"%s sliding door with orientation %s", (pStructure->fFlags & STRUCTURE_OPEN) ? L"Open" : L"Closed", WallOrientationString[pStructure->ubWallOrientation]);
+      gprintf(0, LINE_HEIGHT * 1, "%s sliding door with orientation %s", (pStructure->fFlags & STRUCTURE_OPEN) ? "Open" : "Closed", WallOrientationString[pStructure->ubWallOrientation]);
     } else if (pStructure->fFlags & STRUCTURE_DDOOR_LEFT) {
-      gprintf(0, LINE_HEIGHT * 1, L"DDoorLft with orientation %s", WallOrientationString[pStructure->ubWallOrientation]);
+      gprintf(0, LINE_HEIGHT * 1, "DDoorLft with orientation %s", WallOrientationString[pStructure->ubWallOrientation]);
     } else if (pStructure->fFlags & STRUCTURE_DDOOR_RIGHT) {
-      gprintf(0, LINE_HEIGHT * 1, L"DDoorRt with orientation %s", WallOrientationString[pStructure->ubWallOrientation]);
+      gprintf(0, LINE_HEIGHT * 1, "DDoorRt with orientation %s", WallOrientationString[pStructure->ubWallOrientation]);
     } else {
-      gprintf(0, LINE_HEIGHT * 1, L"UNKNOWN STRUCTURE! (%x)", pStructure->fFlags);
+      gprintf(0, LINE_HEIGHT * 1, "UNKNOWN STRUCTURE! (%x)", pStructure->fFlags);
     }
     bHeight = StructureHeight(pStructure);
     pBase = FindBaseStructure(pStructure);
-    gprintf(0, LINE_HEIGHT * 2, L"Structure height %d, cube offset %d, armour %d, HP %d", bHeight, pStructure->sCubeOffset, gubMaterialArmour[pStructure->pDBStructureRef->pDBStructure->ubArmour], pBase->ubHitPoints);
+    gprintf(0, LINE_HEIGHT * 2, "Structure height %d, cube offset %d, armour %d, HP %d", bHeight, pStructure->sCubeOffset, gubMaterialArmour[pStructure->pDBStructureRef->pDBStructure->ubArmour], pBase->ubHitPoints);
     if (StructureDensity(pStructure, &bDens0, &bDens1, &bDens2, &bDens3) == TRUE) {
-      gprintf(0, LINE_HEIGHT * 3, L"Structure fill %d%%/%d%%/%d%%/%d%% density %d", bDens0, bDens1, bDens2, bDens3, pStructure->pDBStructureRef->pDBStructure->ubDensity);
+      gprintf(0, LINE_HEIGHT * 3, "Structure fill %d%%/%d%%/%d%%/%d%% density %d", bDens0, bDens1, bDens2, bDens3, pStructure->pDBStructureRef->pDBStructure->ubDensity);
     }
 
-    gprintf(0, LINE_HEIGHT * 4, L"Structure ID %d", pStructure->usStructureID);
+    gprintf(0, LINE_HEIGHT * 4, "Structure ID %d", pStructure->usStructureID);
 
     pStructure = gpWorldLevelData[sGridNo].pStructureHead;
     for (bStructures = 0; pStructure != NULL; pStructure = pStructure->pNext) {
       bStructures++;
     }
-    gprintf(0, LINE_HEIGHT * 12, L"Number of structures = %d", bStructures);
+    gprintf(0, LINE_HEIGHT * 12, "Number of structures = %d", bStructures);
   }
-  gprintf(0, LINE_HEIGHT * 13, L"N %d NE %d E %d SE %d", gubWorldMovementCosts[sGridNo][NORTH][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][NORTHEAST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][EAST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][SOUTHEAST][gsInterfaceLevel]);
-  gprintf(0, LINE_HEIGHT * 14, L"S %d SW %d W %d NW %d", gubWorldMovementCosts[sGridNo][SOUTH][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][SOUTHWEST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][WEST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][NORTHWEST][gsInterfaceLevel]);
-  gprintf(0, LINE_HEIGHT * 15, L"Ground smell %d strength %d", SMELL_TYPE(gpWorldLevelData[sGridNo].ubSmellInfo), SMELL_STRENGTH(gpWorldLevelData[sGridNo].ubSmellInfo));
+  gprintf(0, LINE_HEIGHT * 13, "N %d NE %d E %d SE %d", gubWorldMovementCosts[sGridNo][NORTH][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][NORTHEAST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][EAST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][SOUTHEAST][gsInterfaceLevel]);
+  gprintf(0, LINE_HEIGHT * 14, "S %d SW %d W %d NW %d", gubWorldMovementCosts[sGridNo][SOUTH][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][SOUTHWEST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][WEST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][NORTHWEST][gsInterfaceLevel]);
+  gprintf(0, LINE_HEIGHT * 15, "Ground smell %d strength %d", SMELL_TYPE(gpWorldLevelData[sGridNo].ubSmellInfo), SMELL_STRENGTH(gpWorldLevelData[sGridNo].ubSmellInfo));
 
-  gprintf(0, LINE_HEIGHT * 16, L"Adj soldiers %d", gpWorldLevelData[sGridNo].ubAdjacentSoldierCnt);
+  gprintf(0, LINE_HEIGHT * 16, "Adj soldiers %d", gpWorldLevelData[sGridNo].ubAdjacentSoldierCnt);
 }
 
 function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<STRUCTURE_FILE_REF>, fFromAnimation: BOOLEAN, sSTIStartIndex: INT16): BOOLEAN {

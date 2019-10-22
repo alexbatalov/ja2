@@ -37,7 +37,7 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
   va_end(argptr);
 
   usCurIndex = usEndIndex = usDestIndex = 0;
-  OneChar[1] = L'\0';
+  OneChar[1] = '\0';
 
   while (!fDone) {
     fNewLine = FALSE;
@@ -131,7 +131,7 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
   let fTheStringIsToLong: BOOLEAN = FALSE;
   let iCounter: INT32 = 0;
   let iErrorCount: INT32 = 0;
-  pNullString[0] = L' ';
+  pNullString[0] = ' ';
   pNullString[1] = 0;
 
   memset(&FirstWrappedString, 0, sizeof(WRAPPED_STRING));
@@ -146,7 +146,7 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
   va_end(argptr);
 
   usCurIndex = usEndIndex = usDestIndex = 0;
-  OneChar[1] = L'\0';
+  OneChar[1] = '\0';
 
   while (!fDone) {
     // Kris:
@@ -192,10 +192,10 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
     {
       // if an error has occured, and the string is too long
       if (fTheStringIsToLong)
-        DestString[usDestIndex] = L' ';
+        DestString[usDestIndex] = ' ';
 
       // Go back to begining of word
-      while ((DestString[usDestIndex] != L' ') && (usCurIndex > 0)) {
+      while ((DestString[usDestIndex] != ' ') && (usCurIndex > 0)) {
         OneChar[0] = DestString[usDestIndex];
 
         usCurrentWidthPixels -= WFStringPixLength(OneChar, ulFont);
@@ -458,8 +458,8 @@ function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16
   let ubLocalColor: UINT8 = ubColor;
   let fBoldOn: BOOLEAN = FALSE;
 
-  let zLineString: CHAR16[] /* [128] */ = L"";
-  let zWordString: CHAR16[] /* [64] */ = L"";
+  let zLineString: CHAR16[] /* [128] */ = "";
+  let zWordString: CHAR16[] /* [64] */ = "";
 
   usHeight = WFGetFontHeight(uiFont);
 
@@ -827,7 +827,7 @@ function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16
   } while (pString[usSourceCounter++] != 0);
 
   // terminate the entire paragraph with a null string (null character guaranteed)
-  wcscat(zLineString, L"");
+  wcscat(zLineString, "");
 
   // shadow control
   if (IAN_WRAP_NO_SHADOW & uiFlags) {
@@ -912,7 +912,7 @@ function CleanOutControlCodesFromString(pSourceString: STR16, pDestString: STR16
     fRemoveCurrentChar = FALSE;
   }
 
-  pDestString[iDestCounter] = L'\0';
+  pDestString[iDestCounter] = '\0';
 
   return;
 }
@@ -938,8 +938,8 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
   let ubLocalColor: UINT8 = ubColor;
   let fBoldOn: BOOLEAN = FALSE;
   let iTotalHeight: UINT32 = 0;
-  let zLineString: CHAR16[] /* [640] */ = L"";
-  let zWordString: CHAR16[] /* [640] */ = L"";
+  let zLineString: CHAR16[] /* [640] */ = "";
+  let zWordString: CHAR16[] /* [640] */ = "";
 
   usHeight = WFGetFontHeight(uiFont);
 
@@ -1213,7 +1213,7 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
   } while (pString[usSourceCounter++] != 0);
 
   // terminate the entire paragraph with a null string (null character guaranteed)
-  wcscat(zLineString, L"");
+  wcscat(zLineString, "");
 
   // draw the paragraph
   DrawTextToScreen(zLineString, usLocalPosX, usPosY, usLocalWidth, uiLocalFont, ubLocalColor, ubBackGroundColor, fDirty, usJustification);
@@ -1238,8 +1238,8 @@ function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16,
   let ubLocalColor: UINT8 = ubColor;
   let fBoldOn: BOOLEAN = FALSE;
   let iTotalHeight: UINT32 = 0;
-  let zLineString: CHAR16[] /* [640] */ = L"";
-  let zWordString: CHAR16[] /* [640] */ = L"";
+  let zLineString: CHAR16[] /* [640] */ = "";
+  let zWordString: CHAR16[] /* [640] */ = "";
 
   usHeight = WFGetFontHeight(uiFont);
 
@@ -1668,8 +1668,8 @@ function ReduceStringLength(pString: STR16, uiWidthToFitIn: UINT32, uiFont: UINT
 
   uiStringPixWidth = WFStringPixLength(pString, uiFont);
 
-  OneChar[1] = L'\0';
-  zTemp[0] = L'\0';
+  OneChar[1] = '\0';
+  zTemp[0] = '\0';
 
   // if the string is wider then the loaction
   if (uiStringPixWidth <= uiWidthToFitIn) {
@@ -1678,7 +1678,7 @@ function ReduceStringLength(pString: STR16, uiWidthToFitIn: UINT32, uiFont: UINT
   }
 
   // addd the '...' to the string
-  wcscpy(zStrDots, L"...");
+  wcscpy(zStrDots, "...");
 
   // get the width of the '...'
   uiDotWidth = StringPixLength(zStrDots, uiFont);
@@ -1714,7 +1714,7 @@ function ReduceStringLength(pString: STR16, uiWidthToFitIn: UINT32, uiFont: UINT
   }
 
   // combine the temp string and the '...' to form the finished string
-  swprintf(pString, L"%s%s", zTemp, zStrDots);
+  swprintf(pString, "%s%s", zTemp, zStrDots);
 
   return TRUE;
 }

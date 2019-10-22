@@ -317,7 +317,7 @@ function EditModeInit(): BOOLEAN {
 function EditModeShutdown(): BOOLEAN {
   if (gfConfirmExitFirst) {
     gfConfirmExitPending = TRUE;
-    CreateMessageBox(L"Exit editor?");
+    CreateMessageBox("Exit editor?");
     return FALSE;
   }
 
@@ -1122,7 +1122,7 @@ function HandleKeyboardShortcuts(): void {
       if (gfGotoGridNoUI) {
         switch (EditorInputEvent.usParam) {
           case ESC:
-            SetInputFieldStringWith16BitString(0, L"");
+            SetInputFieldStringWith16BitString(0, "");
             RemoveGotoGridNoUI();
             break;
           case ENTER:
@@ -1130,7 +1130,7 @@ function HandleKeyboardShortcuts(): void {
             break;
           case 'x':
             if (EditorInputEvent.usKeyState & ALT_DOWN) {
-              SetInputFieldStringWith16BitString(0, L"");
+              SetInputFieldStringWith16BitString(0, "");
               RemoveGotoGridNoUI();
               iCurrentAction = ACTION_QUIT_GAME;
             }
@@ -1313,7 +1313,7 @@ function HandleKeyboardShortcuts(): void {
 
           case F4:
             MusicPlay(giMusicID);
-            ScreenMsg(FONT_YELLOW, MSG_DEBUG, L"%S", szMusicList[giMusicID]);
+            ScreenMsg(FONT_YELLOW, MSG_DEBUG, "%S", szMusicList[giMusicID]);
             giMusicID++;
             if (giMusicID >= NUM_MUSIC)
               giMusicID = 0;
@@ -1360,15 +1360,15 @@ function HandleKeyboardShortcuts(): void {
           case F9:
             break;
           case F10:
-            CreateMessageBox(L"Are you sure you wish to remove all lights?");
+            CreateMessageBox("Are you sure you wish to remove all lights?");
             gfRemoveLightsPending = TRUE;
             break;
           case F11:
-            CreateMessageBox(L"Are you sure you wish to reverse the schedules?");
+            CreateMessageBox("Are you sure you wish to reverse the schedules?");
             gfScheduleReversalPending = TRUE;
             break;
           case F12:
-            CreateMessageBox(L"Are you sure you wish to clear all of the schedules?");
+            CreateMessageBox("Are you sure you wish to clear all of the schedules?");
             gfScheduleClearPending = TRUE;
             break;
 
@@ -1580,10 +1580,10 @@ function HandleKeyboardShortcuts(): void {
             break;
           case 'T':
             if (fShowTrees) {
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Removing Treetops");
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Removing Treetops");
               WorldHideTrees();
             } else {
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Showing Treetops");
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Showing Treetops");
               WorldShowTrees();
             }
             fShowTrees = !fShowTrees;
@@ -1751,16 +1751,16 @@ function PerformSelectedAction(): UINT32 {
     case ACTION_NEW_MAP:
       fNewMap = TRUE;
       if (gfPendingBasement)
-        CreateMessageBox(L"Delete current map and start a new basement level?");
+        CreateMessageBox("Delete current map and start a new basement level?");
       else if (gfPendingCaves)
-        CreateMessageBox(L"Delete current map and start a new cave level?");
+        CreateMessageBox("Delete current map and start a new cave level?");
       else
-        CreateMessageBox(L"Delete current map and start a new outdoor level?");
+        CreateMessageBox("Delete current map and start a new outdoor level?");
       break;
 
     case ACTION_SET_NEW_BACKGROUND:
       if (!fBeenWarned)
-        CreateMessageBox(L" Wipe out ground textures? ");
+        CreateMessageBox(" Wipe out ground textures? ");
       else {
         gCurrentBackground = TerrainBackgroundTile;
         SetBackgroundTexture();
@@ -2145,68 +2145,68 @@ function WaitForHelpScreenResponse(): UINT32 {
 
   SetFont(gp12PointFont1);
 
-  gprintf(55, 55, L"HOME");
-  gprintf(205, 55, L"Toggle fake editor lighting ON/OFF");
+  gprintf(55, 55, "HOME");
+  gprintf(205, 55, "Toggle fake editor lighting ON/OFF");
 
-  gprintf(55, 67, L"INSERT");
-  gprintf(205, 67, L"Toggle fill mode ON/OFF");
+  gprintf(55, 67, "INSERT");
+  gprintf(205, 67, "Toggle fill mode ON/OFF");
 
-  gprintf(55, 79, L"BKSPC");
-  gprintf(205, 79, L"Undo last change");
+  gprintf(55, 79, "BKSPC");
+  gprintf(205, 79, "Undo last change");
 
-  gprintf(55, 91, L"DEL");
-  gprintf(205, 91, L"Quick erase object under mouse cursor");
+  gprintf(55, 91, "DEL");
+  gprintf(205, 91, "Quick erase object under mouse cursor");
 
-  gprintf(55, 103, L"ESC");
-  gprintf(205, 103, L"Exit editor");
+  gprintf(55, 103, "ESC");
+  gprintf(205, 103, "Exit editor");
 
-  gprintf(55, 115, L"PGUP/PGDN");
-  gprintf(205, 115, L"Change object to be pasted");
+  gprintf(55, 115, "PGUP/PGDN");
+  gprintf(205, 115, "Change object to be pasted");
 
-  gprintf(55, 127, L"F1");
-  gprintf(205, 127, L"This help screen");
+  gprintf(55, 127, "F1");
+  gprintf(205, 127, "This help screen");
 
-  gprintf(55, 139, L"F10");
-  gprintf(205, 139, L"Save current map");
+  gprintf(55, 139, "F10");
+  gprintf(205, 139, "Save current map");
 
-  gprintf(55, 151, L"F11");
-  gprintf(205, 151, L"Load map as current");
+  gprintf(55, 151, "F11");
+  gprintf(205, 151, "Load map as current");
 
-  gprintf(55, 163, L"+/-");
-  gprintf(205, 163, L"Change shadow darkness by .01");
+  gprintf(55, 163, "+/-");
+  gprintf(205, 163, "Change shadow darkness by .01");
 
-  gprintf(55, 175, L"SHFT +/-");
-  gprintf(205, 175, L"Change shadow darkness by .05");
+  gprintf(55, 175, "SHFT +/-");
+  gprintf(205, 175, "Change shadow darkness by .05");
 
-  gprintf(55, 187, L"0 - 9");
-  gprintf(205, 187, L"Change map/tileset filename");
+  gprintf(55, 187, "0 - 9");
+  gprintf(205, 187, "Change map/tileset filename");
 
-  gprintf(55, 199, L"b");
-  gprintf(205, 199, L"Change brush size");
+  gprintf(55, 199, "b");
+  gprintf(205, 199, "Change brush size");
 
-  gprintf(55, 211, L"d");
-  gprintf(205, 211, L"Draw debris");
+  gprintf(55, 211, "d");
+  gprintf(205, 211, "Draw debris");
 
-  gprintf(55, 223, L"o");
-  gprintf(205, 223, L"Draw obstacle");
+  gprintf(55, 223, "o");
+  gprintf(205, 223, "Draw obstacle");
 
-  gprintf(55, 235, L"r");
-  gprintf(205, 235, L"Draw rocks");
+  gprintf(55, 235, "r");
+  gprintf(205, 235, "Draw rocks");
 
-  gprintf(55, 247, L"t");
-  gprintf(205, 247, L"Toggle trees display ON/OFF");
+  gprintf(55, 247, "t");
+  gprintf(205, 247, "Toggle trees display ON/OFF");
 
-  gprintf(55, 259, L"g");
-  gprintf(205, 259, L"Draw ground textures");
+  gprintf(55, 259, "g");
+  gprintf(205, 259, "Draw ground textures");
 
-  gprintf(55, 271, L"w");
-  gprintf(205, 271, L"Draw building walls");
+  gprintf(55, 271, "w");
+  gprintf(205, 271, "Draw building walls");
 
-  gprintf(55, 283, L"e");
-  gprintf(205, 283, L"Toggle erase mode ON/OFF");
+  gprintf(55, 283, "e");
+  gprintf(205, 283, "Toggle erase mode ON/OFF");
 
-  gprintf(55, 295, L"h");
-  gprintf(205, 295, L"Toggle roofs ON/OFF");
+  gprintf(55, 295, "h");
+  gprintf(205, 295, "Toggle roofs ON/OFF");
 
   fLeaveScreen = FALSE;
 
@@ -3135,7 +3135,7 @@ function ProcessAreaSelection(fWithLeftButton: BOOLEAN): void {
         gubMaxRoomNumber++;
         if (iCurrentTaskbar == TASK_BUILDINGS && TextInputMode()) {
           let str: UINT16[] /* [4] */;
-          swprintf(str, L"%d", gubCurrRoomNumber);
+          swprintf(str, "%d", gubCurrRoomNumber);
           SetInputFieldStringWith16BitString(1, str);
           SetActiveField(0);
         }
@@ -3225,13 +3225,13 @@ function EditScreenHandle(): UINT32 {
   StartFrameBufferRender();
 
   if (gfWorldLoaded && gMapInformation.ubMapVersion <= 7 && !gfCorruptMap) {
-    ScreenMsg(FONT_MCOLOR_RED, MSG_ERROR, L"Map data has just been corrupted.  Don't save, don't quit, get Kris!  If he's not here, save the map using a temp filename and document everything you just did, especially your last action!");
+    ScreenMsg(FONT_MCOLOR_RED, MSG_ERROR, "Map data has just been corrupted.  Don't save, don't quit, get Kris!  If he's not here, save the map using a temp filename and document everything you just did, especially your last action!");
     gfCorruptMap = TRUE;
   }
   if (gfWorldLoaded && gubScheduleID > 40 && !gfCorruptSchedules) {
     OptimizeSchedules();
     if (gubScheduleID > 32) {
-      ScreenMsg(FONT_MCOLOR_RED, MSG_ERROR, L"Schedule data has just been corrupted.  Don't save, don't quit, get Kris!  If he's not here, save the map using a temp filename and document everything you just did, especially your last action!");
+      ScreenMsg(FONT_MCOLOR_RED, MSG_ERROR, "Schedule data has just been corrupted.  Don't save, don't quit, get Kris!  If he's not here, save the map using a temp filename and document everything you just did, especially your last action!");
       gfCorruptSchedules = TRUE;
     }
   }
@@ -3361,7 +3361,7 @@ function CreateGotoGridNoUI(): void {
   // Disable the rest of the editor
   DisableEditorTaskbar();
   // Create the background panel.
-  guiGotoGridNoUIButtonID = CreateTextButton(L"Enter gridno:", FONT10ARIAL, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 290, 155, 60, 50, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, MSYS_NO_CALLBACK);
+  guiGotoGridNoUIButtonID = CreateTextButton("Enter gridno:", FONT10ARIAL, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 290, 155, 60, 50, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, MSYS_NO_CALLBACK);
   SpecifyDisabledButtonStyle(guiGotoGridNoUIButtonID, DISABLED_STYLE_NONE);
   SpecifyButtonTextOffsets(guiGotoGridNoUIButtonID, 5, 5, FALSE);
   DisableButton(guiGotoGridNoUIButtonID);
@@ -3369,7 +3369,7 @@ function CreateGotoGridNoUI(): void {
   MSYS_DefineRegion(&GotoGridNoUIRegion, 0, 0, 640, 480, MSYS_PRIORITY_NORMAL + 1, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Init a text input field.
   InitTextInputModeWithScheme(DEFAULT_SCHEME);
-  AddTextInputField(300, 180, 40, 18, MSYS_PRIORITY_HIGH, L"", 6, INPUTTYPE_NUMERICSTRICT);
+  AddTextInputField(300, 180, 40, 18, MSYS_PRIORITY_HIGH, "", 6, INPUTTYPE_NUMERICSTRICT);
 }
 
 function RemoveGotoGridNoUI(): void {
@@ -3397,6 +3397,6 @@ function UpdateLastActionBeforeLeaving(): void {
 
 function ReloadMap(): void {
   let szFilename: UINT16[] /* [30] */;
-  swprintf(szFilename, L"%S", gubFilename);
+  swprintf(szFilename, "%S", gubFilename);
   ExternalLoadMap(szFilename);
 }

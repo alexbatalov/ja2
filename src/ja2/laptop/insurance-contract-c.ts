@@ -114,7 +114,7 @@ function GameInitInsuranceContract(): void {
 function EnterLaptopInitInsuranceContract(): void {
   let zTextField: wchar_t[] /* [14] */;
 
-  swprintf(zTextField, L"%d", 0);
+  swprintf(zTextField, "%d", 0);
   SetInputFieldStringWith16BitString(1, zTextField);
   SetInputFieldStringWith16BitString(2, zTextField);
   SetInputFieldStringWith16BitString(3, zTextField);
@@ -242,7 +242,7 @@ function RenderInsuranceContract(): void {
 
   // Display the red bar under the link at the bottom.  and the text
   DisplaySmallRedLineWithShadow(usPosX, INS_CTRCT_BOTTON_LINK_RED_BAR_Y, (usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH), INS_CTRCT_BOTTON_LINK_RED_BAR_Y);
-  swprintf(sText, L"%s", pMessageStrings[MSG_HOMEPAGE]);
+  swprintf(sText, "%s", pMessageStrings[MSG_HOMEPAGE]);
   DisplayWrappedString(usPosX, INS_CTRCT_BOTTON_LINK_Y + 18, INS_CTRCT_BOTTOM_LINK_RED_WIDTH, 2, INS_FONT_MED, INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   usPosX += INS_CTRCT_BOTTOM_LINK_RED_BAR_OFFSET;
@@ -474,7 +474,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_LENGTH_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_LENGTH_OFFSET_Y, 0, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Display the mercs contract length
-  swprintf(sText, L"%d", pSoldier->iTotalContractLength);
+  swprintf(sText, "%d", pSoldier->iTotalContractLength);
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_OG_BOX_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_LENGTH_OFFSET_Y, INS_CTRCT_OG_BOX_WIDTH, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
 
   // Display the days remaining for the emplyment contract text
@@ -483,9 +483,9 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
 
   // display the amount of time the merc has left on their Regular contract
   if (IsMercDead(ubMercID))
-    swprintf(sText, L"%s", pMessageStrings[MSG_LOWERCASE_NA]);
+    swprintf(sText, "%s", pMessageStrings[MSG_LOWERCASE_NA]);
   else
-    swprintf(sText, L"%d", GetTimeRemainingOnSoldiersContract(pSoldier));
+    swprintf(sText, "%d", GetTimeRemainingOnSoldiersContract(pSoldier));
 
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_OG_BOX_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_DAYS_REMAINING_OFFSET_Y, INS_CTRCT_OG_BOX_WIDTH, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
 
@@ -506,13 +506,13 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
 
   // if the soldier has insurance, disply the length of time the merc has left
   if (IsMercDead(ubMercID))
-    swprintf(sText, L"%s", pMessageStrings[MSG_LOWERCASE_NA]);
+    swprintf(sText, "%s", pMessageStrings[MSG_LOWERCASE_NA]);
 
   else if (pSoldier->usLifeInsurance != 0)
-    swprintf(sText, L"%d", GetTimeRemainingOnSoldiersInsuranceContract(pSoldier));
+    swprintf(sText, "%d", GetTimeRemainingOnSoldiersInsuranceContract(pSoldier));
 
   else
-    swprintf(sText, L"%d", 0);
+    swprintf(sText, "%d", 0);
 
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_OG_BOX_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_DAYS_REMAINING_OFFSET_Y + 54, INS_CTRCT_OG_BOX_WIDTH, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
 
@@ -538,13 +538,13 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
     DrawTextToScreen(sText, (usPosX + INS_CTRCT_EMPLYMNT_CNTRCT_TEXT_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_PREMIUM_OWING_OFFSET_Y, INS_CTRCT_ORDER_GRID_WIDTH, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
     // display the amount of refund
-    swprintf(sText, L"%d", iCostOfContract);
+    swprintf(sText, "%d", iCostOfContract);
     InsertCommasForDollarFigure(sText);
     InsertDollarSignInToString(sText);
   }
 
   if (IsMercDead(ubMercID)) {
-    swprintf(sText, L"0");
+    swprintf(sText, "0");
     InsertDollarSignInToString(sText);
   }
   // display the amount owing
@@ -553,7 +553,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
   //
   // Get the insurance contract length for the merc
   //
-  swprintf(sText, L"%d", CalculateSoldiersInsuranceContractLength(pSoldier));
+  swprintf(sText, "%d", CalculateSoldiersInsuranceContractLength(pSoldier));
 
   // Display the length of time the player can get for the insurance contract
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_OG_BOX_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_LENGTH_OFFSET_Y + 52 + 2, INS_CTRCT_OG_BOX_WIDTH, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);

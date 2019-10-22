@@ -270,7 +270,7 @@ function RenderTacticalPlacementGUI(): void {
 
     GetSectorIDString(gubPBSectorX, gubPBSectorY, gubPBSectorZ, str, TRUE);
 
-    mprintf(120, 335, L"%s %s -- %s...", gpStrategicString[STR_TP_SECTOR], str, gpStrategicString[STR_TP_CHOOSEENTRYPOSITIONS]);
+    mprintf(120, 335, "%s %s -- %s...", gpStrategicString[STR_TP_SECTOR], str, gpStrategicString[STR_TP_CHOOSEENTRYPOSITIONS]);
 
     // Shade out the part of the tactical map that isn't considered placable.
     BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, 320, 640, 160);
@@ -337,7 +337,7 @@ function RenderTacticalPlacementGUI(): void {
     if (gMercPlacement[i].fPlaced) {
       RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, (xp + 16), (yp + 14), (xp + 24), (yp + 22));
     } else {
-      mprintf(xp + 16, yp + 14, L"?");
+      mprintf(xp + 16, yp + 14, "?");
       InvalidateRegion(xp + 16, yp + 14, xp + 24, yp + 22);
     }
     SetFont(BLOCKFONT);

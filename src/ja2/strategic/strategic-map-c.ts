@@ -380,7 +380,7 @@ function InitializeSAMSites(): void {
 // get short sector name without town name
 function GetShortSectorString(sMapX: INT16, sMapY: INT16, sString: STR16): void {
   // OK, build string id like J11
-  swprintf(sString, L"%S%S", pVertStrings[sMapY], pHortStrings[sMapX]);
+  swprintf(sString, "%S%S", pVertStrings[sMapY], pHortStrings[sMapX]);
 
   return;
 }
@@ -425,7 +425,7 @@ function GetMapFileName(sMapX: INT16, sMapY: INT16, bSectorZ: INT8, bString: STR
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Map does not exist for %s, using default.", bTestString));
     // Set to a string we know!
     sprintf(bString, "H10.DAT", pVertStrings[sMapY], pHortStrings[sMapX]);
-    ScreenMsg(FONT_YELLOW, MSG_DEBUG, L"Using PLACEHOLDER map!");
+    ScreenMsg(FONT_YELLOW, MSG_DEBUG, "Using PLACEHOLDER map!");
   }
   return;
 }
@@ -839,7 +839,7 @@ function PrepareLoadedSector(): void {
     CalculateNonPersistantPBIInfo();
   }
 
-  ScreenMsg(FONT_YELLOW, MSG_DEBUG, L"Current Time is: %d", GetWorldTotalMin());
+  ScreenMsg(FONT_YELLOW, MSG_DEBUG, "Current Time is: %d", GetWorldTotalMin());
 
   AllTeamsLookForAll(TRUE);
 }
@@ -1257,7 +1257,7 @@ function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT16, sSe
         case INSERTION_CODE_PRIMARY_EDGEINDEX:
           pSoldier->sInsertionGridNo = SearchForClosestPrimaryMapEdgepoint(pSoldier->sPendingActionData2, pSoldier->usStrategicInsertionData);
           if (pSoldier->sInsertionGridNo == NOWHERE) {
-            ScreenMsg(FONT_RED, MSG_ERROR, L"Main edgepoint search failed for %s -- substituting entrypoint.", pSoldier->name);
+            ScreenMsg(FONT_RED, MSG_ERROR, "Main edgepoint search failed for %s -- substituting entrypoint.", pSoldier->name);
             pSoldier->ubStrategicInsertionCode = pSoldier->usStrategicInsertionData;
             goto MAPEDGEPOINT_SEARCH_FAILED;
           }
@@ -1265,7 +1265,7 @@ function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT16, sSe
         case INSERTION_CODE_SECONDARY_EDGEINDEX:
           pSoldier->sInsertionGridNo = SearchForClosestSecondaryMapEdgepoint(pSoldier->sPendingActionData2, pSoldier->usStrategicInsertionData);
           if (pSoldier->sInsertionGridNo == NOWHERE) {
-            ScreenMsg(FONT_RED, MSG_ERROR, L"Isolated edgepont search failed for %s -- substituting entrypoint.", pSoldier->name);
+            ScreenMsg(FONT_RED, MSG_ERROR, "Isolated edgepont search failed for %s -- substituting entrypoint.", pSoldier->name);
             pSoldier->ubStrategicInsertionCode = pSoldier->usStrategicInsertionData;
             goto MAPEDGEPOINT_SEARCH_FAILED;
           }
@@ -1302,22 +1302,22 @@ function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT16, sSe
         let sGridNo: INT16;
         GetLoadedSectorString(szSector);
         if (gMapInformation.sNorthGridNo != -1) {
-          swprintf(szEntry, L"north");
+          swprintf(szEntry, "north");
           sGridNo = gMapInformation.sNorthGridNo;
         } else if (gMapInformation.sEastGridNo != -1) {
-          swprintf(szEntry, L"east");
+          swprintf(szEntry, "east");
           sGridNo = gMapInformation.sEastGridNo;
         } else if (gMapInformation.sSouthGridNo != -1) {
-          swprintf(szEntry, L"south");
+          swprintf(szEntry, "south");
           sGridNo = gMapInformation.sSouthGridNo;
         } else if (gMapInformation.sWestGridNo != -1) {
-          swprintf(szEntry, L"west");
+          swprintf(szEntry, "west");
           sGridNo = gMapInformation.sWestGridNo;
         } else if (gMapInformation.sCenterGridNo != -1) {
-          swprintf(szEntry, L"center");
+          swprintf(szEntry, "center");
           sGridNo = gMapInformation.sCenterGridNo;
         } else {
-          ScreenMsg(FONT_RED, MSG_BETAVERSION, L"Sector %s has NO entrypoints -- using precise center of map for %s.", szSector, pSoldier->name);
+          ScreenMsg(FONT_RED, MSG_BETAVERSION, "Sector %s has NO entrypoints -- using precise center of map for %s.", szSector, pSoldier->name);
           pSoldier->sInsertionGridNo = 12880;
           AddSoldierToSector(pSoldier->ubID);
           return;
@@ -1325,19 +1325,19 @@ function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT16, sSe
         pSoldier->sInsertionGridNo = sGridNo;
         switch (pSoldier->ubStrategicInsertionCode) {
           case INSERTION_CODE_NORTH:
-            ScreenMsg(FONT_RED, MSG_BETAVERSION, L"Sector %s doesn't have a north entrypoint -- substituting  %s entrypoint for %s.", szSector, szEntry, pSoldier->name);
+            ScreenMsg(FONT_RED, MSG_BETAVERSION, "Sector %s doesn't have a north entrypoint -- substituting  %s entrypoint for %s.", szSector, szEntry, pSoldier->name);
             break;
           case INSERTION_CODE_EAST:
-            ScreenMsg(FONT_RED, MSG_BETAVERSION, L"Sector %s doesn't have a east entrypoint -- substituting  %s entrypoint for %s.", szSector, szEntry, pSoldier->name);
+            ScreenMsg(FONT_RED, MSG_BETAVERSION, "Sector %s doesn't have a east entrypoint -- substituting  %s entrypoint for %s.", szSector, szEntry, pSoldier->name);
             break;
           case INSERTION_CODE_SOUTH:
-            ScreenMsg(FONT_RED, MSG_BETAVERSION, L"Sector %s doesn't have a south entrypoint -- substituting  %s entrypoint for %s.", szSector, szEntry, pSoldier->name);
+            ScreenMsg(FONT_RED, MSG_BETAVERSION, "Sector %s doesn't have a south entrypoint -- substituting  %s entrypoint for %s.", szSector, szEntry, pSoldier->name);
             break;
           case INSERTION_CODE_WEST:
-            ScreenMsg(FONT_RED, MSG_BETAVERSION, L"Sector %s doesn't have a west entrypoint -- substituting  %s entrypoint for %s.", szSector, szEntry, pSoldier->name);
+            ScreenMsg(FONT_RED, MSG_BETAVERSION, "Sector %s doesn't have a west entrypoint -- substituting  %s entrypoint for %s.", szSector, szEntry, pSoldier->name);
             break;
           case INSERTION_CODE_CENTER:
-            ScreenMsg(FONT_RED, MSG_BETAVERSION, L"Sector %s doesn't have a center entrypoint -- substituting  %s entrypoint for %s.", szSector, szEntry, pSoldier->name);
+            ScreenMsg(FONT_RED, MSG_BETAVERSION, "Sector %s doesn't have a center entrypoint -- substituting  %s entrypoint for %s.", szSector, szEntry, pSoldier->name);
             break;
         }
       }
@@ -1385,38 +1385,38 @@ function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, zSt
     if (pUnderground && (pUnderground->fVisited || gfGettingNameFromSaveLoadScreen)) {
       bMineIndex = GetIdOfMineForSector(sSectorX, sSectorY, bSectorZ);
       if (bMineIndex != -1) {
-        swprintf(zString, L"%c%d: %s %s", 'A' + sSectorY - 1, sSectorX, pTownNames[GetTownAssociatedWithMine(bMineIndex)], pwMineStrings[0]);
+        swprintf(zString, "%c%d: %s %s", 'A' + sSectorY - 1, sSectorX, pTownNames[GetTownAssociatedWithMine(bMineIndex)], pwMineStrings[0]);
       } else
         switch (SECTOR(sSectorX, sSectorY)) {
           case SEC_A10:
-            swprintf(zString, L"A10: %s", pLandTypeStrings[REBEL_HIDEOUT]);
+            swprintf(zString, "A10: %s", pLandTypeStrings[REBEL_HIDEOUT]);
             break;
           case SEC_J9:
-            swprintf(zString, L"J9: %s", pLandTypeStrings[TIXA_DUNGEON]);
+            swprintf(zString, "J9: %s", pLandTypeStrings[TIXA_DUNGEON]);
             break;
           case SEC_K4:
-            swprintf(zString, L"K4: %s", pLandTypeStrings[ORTA_BASEMENT]);
+            swprintf(zString, "K4: %s", pLandTypeStrings[ORTA_BASEMENT]);
             break;
           case SEC_O3:
-            swprintf(zString, L"O3: %s", pLandTypeStrings[TUNNEL]);
+            swprintf(zString, "O3: %s", pLandTypeStrings[TUNNEL]);
             break;
           case SEC_P3:
-            swprintf(zString, L"P3: %s", pLandTypeStrings[SHELTER]);
+            swprintf(zString, "P3: %s", pLandTypeStrings[SHELTER]);
             break;
           default:
-            swprintf(zString, L"%c%d: %s", 'A' + sSectorY - 1, sSectorX, pLandTypeStrings[CREATURE_LAIR]);
+            swprintf(zString, "%c%d: %s", 'A' + sSectorY - 1, sSectorX, pLandTypeStrings[CREATURE_LAIR]);
             break;
         }
     } else {
       // Display nothing
-      wcscpy(zString, L"");
+      wcscpy(zString, "");
     }
   } else {
     bTownNameID = StrategicMap[CALCULATE_STRATEGIC_INDEX(sSectorX, sSectorY)].bNameId;
     ubSectorID = SECTOR(sSectorX, sSectorY);
     pSector = &SectorInfo[ubSectorID];
     ubLandType = pSector->ubTraversability[4];
-    swprintf(zString, L"%c%d: ", 'A' + sSectorY - 1, sSectorX);
+    swprintf(zString, "%c%d: ", 'A' + sSectorY - 1, sSectorX);
 
     if (bTownNameID == BLANK_SECTOR) {
       // OK, build string id like J11
@@ -1501,7 +1501,7 @@ function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, zSt
                 case SEC_H3:
                 case SEC_H8:
                 case SEC_I14:
-                  wcscat(zString, L" "); // space
+                  wcscat(zString, " "); // space
                   wcscat(zString, pwMineStrings[0]); // then "Mine"
                   break;
               }
@@ -3496,13 +3496,13 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
 
 function GetLoadedSectorString(pString: Pointer<UINT16>): void {
   if (!gfWorldLoaded) {
-    swprintf(pString, L"");
+    swprintf(pString, "");
     return;
   }
   if (gbWorldSectorZ) {
-    swprintf(pString, L"%c%d_b%d", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ);
+    swprintf(pString, "%c%d_b%d", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ);
   } else if (!gbWorldSectorZ) {
-    swprintf(pString, L"%c%d", gWorldSectorY + 'A' - 1, gWorldSectorX);
+    swprintf(pString, "%c%d", gWorldSectorY + 'A' - 1, gWorldSectorX);
   }
 }
 
@@ -3576,7 +3576,7 @@ function HandleDefiniteUnloadingOfWorld(ubUnloadCode: UINT8): BOOLEAN {
   } else if (ubUnloadCode == ABOUT_TO_TRASH_WORLD) {
     // Save the current sectors open temp files to the disk
     if (!SaveCurrentSectorsInformationToTempItemFile()) {
-      ScreenMsg(FONT_MCOLOR_WHITE, MSG_TESTVERSION, L"ERROR in SaveCurrentSectorsInformationToTempItemFile()");
+      ScreenMsg(FONT_MCOLOR_WHITE, MSG_TESTVERSION, "ERROR in SaveCurrentSectorsInformationToTempItemFile()");
       return FALSE;
     }
 

@@ -1462,7 +1462,7 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
 
   if (sInterGridNo != NOWHERE) {
     // IF so, adjust target height, gridno....
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Through a window!");
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, "Through a window!");
 
     fThroughIntermediateGridNo = TRUE;
   }

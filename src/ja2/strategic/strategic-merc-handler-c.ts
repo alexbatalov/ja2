@@ -114,7 +114,7 @@ function MercDailyUpdate(): void {
     return;
 
   // debug message
-  ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"%s - Doing MercDailyUpdate", WORLDTIMESTR);
+  ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "%s - Doing MercDailyUpdate", WORLDTIMESTR);
 
   // if the death rate is very low (this is independent of mercs' personal deathrate tolerances)
   if (CalcDeathRate() < 5) {
@@ -215,7 +215,7 @@ function MercDailyUpdate(): void {
             let zMoney: CHAR16[] /* [128] */;
 
             // create a string for the salary owed to the npc
-            swprintf(zMoney, L"%d", sSalary);
+            swprintf(zMoney, "%d", sSalary);
             InsertCommasForDollarFigure(zMoney);
             InsertDollarSignInToString(zMoney);
 

@@ -685,7 +685,7 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
       iLoyaltyChange /= 100;
 
       // debug message
-      ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"You're being blamed for a death you didn't cause!");
+      ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "You're being blamed for a death you didn't cause!");
     }
   }
 
@@ -696,7 +696,7 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
       fIncrement = FALSE;
 
       // debug message
-      ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"Civilian killed by friendly forces.");
+      ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "Civilian killed by friendly forces.");
       break;
 
     case ENEMY_TEAM:
@@ -706,7 +706,7 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
         fIncrement = TRUE;
 
         // debug message
-        ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"Enemy soldiers murdered a civilian. Town loyalty increases");
+        ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "Enemy soldiers murdered a civilian. Town loyalty increases");
       } else {
         // reduce, we're expected to provide some protection, but not miracles
         iLoyaltyChange *= REDUCTION_FOR_MURDER_OF_INNOCENT_BY_ENEMY_IN_OUR_SECTOR;
@@ -716,7 +716,7 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
         fIncrement = FALSE;
 
         // debug message
-        ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"Town holds you responsible for murder by enemy.");
+        ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "Town holds you responsible for murder by enemy.");
       }
       break;
 
@@ -731,7 +731,7 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
         fIncrement = FALSE;
 
         // debug message
-        ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"Town holds you responsible for murder by rebels.");
+        ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "Town holds you responsible for murder by rebels.");
       }
       break;
 
@@ -926,7 +926,7 @@ function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: I
           pItemList[iCounter].fExists = FALSE;
 
           // debug message
-          ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"%s stolen in %s!", ItemNames[pItemList[iCounter].o.usItem], wSectorName);
+          ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "%s stolen in %s!", ItemNames[pItemList[iCounter].o.usItem], wSectorName);
         }
       }
     }
@@ -946,7 +946,7 @@ function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: I
         if (Random(100) < ubChance) {
           RemoveItemFromPool(gWorldItems[iCounter].sGridNo, iCounter, gWorldItems[iCounter].ubLevel);
           // debug message
-          ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"%s stolen in %s!", ItemNames[gWorldItems[iCounter].o.usItem], wSectorName);
+          ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "%s stolen in %s!", ItemNames[gWorldItems[iCounter].o.usItem], wSectorName);
         }
       }
     }

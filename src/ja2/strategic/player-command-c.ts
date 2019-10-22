@@ -3,21 +3,21 @@ function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilitiesString:
 
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags == 0) {
     // none
-    swprintf(sFacilitiesString, L"%s", sFacilitiesStrings[0]);
+    swprintf(sFacilitiesString, "%s", sFacilitiesStrings[0]);
     return;
   }
 
   // hospital
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags & SFCF_HOSPITAL) {
-    swprintf(sFacilitiesString, L"%s", sFacilitiesStrings[1]);
+    swprintf(sFacilitiesString, "%s", sFacilitiesStrings[1]);
   }
 
   // industry
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags & SFCF_INDUSTRY) {
     if (wcslen(sFacilitiesString) == 0) {
-      swprintf(sFacilitiesString, L"%s", sFacilitiesStrings[2]);
+      swprintf(sFacilitiesString, "%s", sFacilitiesStrings[2]);
     } else {
-      wcscat(sFacilitiesString, L",");
+      wcscat(sFacilitiesString, ",");
       wcscat(sFacilitiesString, sFacilitiesStrings[2]);
     }
   }
@@ -25,9 +25,9 @@ function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilitiesString:
   // prison
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags & SFCF_PRISON) {
     if (wcslen(sFacilitiesString) == 0) {
-      swprintf(sFacilitiesString, L"%s", sFacilitiesStrings[3]);
+      swprintf(sFacilitiesString, "%s", sFacilitiesStrings[3]);
     } else {
-      wcscat(sFacilitiesString, L",");
+      wcscat(sFacilitiesString, ",");
       wcscat(sFacilitiesString, sFacilitiesStrings[3]);
     }
   }
@@ -35,9 +35,9 @@ function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilitiesString:
   // airport
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags & SFCF_AIRPORT) {
     if (wcslen(sFacilitiesString) == 0) {
-      swprintf(sFacilitiesString, L"%s", sFacilitiesStrings[5]);
+      swprintf(sFacilitiesString, "%s", sFacilitiesStrings[5]);
     } else {
-      wcscat(sFacilitiesString, L",");
+      wcscat(sFacilitiesString, ",");
       wcscat(sFacilitiesString, sFacilitiesStrings[5]);
     }
   }
@@ -45,9 +45,9 @@ function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilitiesString:
   // gun range
   if (SectorInfo[SECTOR(sMapX, sMapY)].uiFacilitiesFlags & SFCF_GUN_RANGE) {
     if (wcslen(sFacilitiesString) == 0) {
-      swprintf(sFacilitiesString, L"%s", sFacilitiesStrings[6]);
+      swprintf(sFacilitiesString, "%s", sFacilitiesStrings[6]);
     } else {
-      wcscat(sFacilitiesString, L",");
+      wcscat(sFacilitiesString, ",");
       wcscat(sFacilitiesString, sFacilitiesStrings[6]);
     }
   }

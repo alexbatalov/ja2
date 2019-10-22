@@ -1079,7 +1079,7 @@ function CreateSMPanelButtons(): BOOLEAN {
   SetButtonFastHelpText(iSMPanelButtons[SM_MAP_SCREEN_BUTTON], TacticalStr[MAPSCREEN_POPUPTEXT]);
   SetBtnHelpEndCallback(iSMPanelButtons[SM_MAP_SCREEN_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[SM_DONE_BUTTON] = CreateIconAndTextButton(iSMPanelImages[DONE_IMAGES], L"", FONT12ARIAL, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SM_DONE_X, SM_DONE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnSMDoneCallback);
+  iSMPanelButtons[SM_DONE_BUTTON] = CreateIconAndTextButton(iSMPanelImages[DONE_IMAGES], "", FONT12ARIAL, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SM_DONE_X, SM_DONE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnSMDoneCallback);
   SetButtonFastHelpText(iSMPanelButtons[SM_DONE_BUTTON], TacticalStr[END_TURN_POPUPTEXT]);
   SetBtnHelpEndCallback(iSMPanelButtons[SM_DONE_BUTTON], HelpTextDoneCallback);
 
@@ -1358,71 +1358,71 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
       }
 
       mprintf(SM_ARMOR_LABEL_X - StringPixLength(pInvPanelTitleStrings[0], BLOCKFONT2) / 2, SM_ARMOR_LABEL_Y, pInvPanelTitleStrings[0]);
-      mprintf(SM_ARMOR_PERCENT_X, SM_ARMOR_PERCENT_Y, L"%%");
+      mprintf(SM_ARMOR_PERCENT_X, SM_ARMOR_PERCENT_Y, "%%");
 
       mprintf(SM_WEIGHT_LABEL_X - StringPixLength(pInvPanelTitleStrings[1], BLOCKFONT2), SM_WEIGHT_LABEL_Y, pInvPanelTitleStrings[1]);
-      mprintf(SM_WEIGHT_PERCENT_X, SM_WEIGHT_PERCENT_Y, L"%%");
+      mprintf(SM_WEIGHT_PERCENT_X, SM_WEIGHT_PERCENT_Y, "%%");
 
       mprintf(SM_CAMMO_LABEL_X - StringPixLength(pInvPanelTitleStrings[2], BLOCKFONT2), SM_CAMMO_LABEL_Y, pInvPanelTitleStrings[2]);
-      mprintf(SM_CAMMO_PERCENT_X, SM_CAMMO_PERCENT_Y, L"%%");
+      mprintf(SM_CAMMO_PERCENT_X, SM_CAMMO_PERCENT_Y, "%%");
 
       UpdateStatColor(gpSMCurrentMerc->uiChangeAgilityTime, (gpSMCurrentMerc->usValueGoneUp & AGIL_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, L"%2d", gpSMCurrentMerc->bAgility);
+      swprintf(sString, "%2d", gpSMCurrentMerc->bAgility);
       FindFontRightCoordinates(SM_AGI_X, SM_AGI_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc->uiChangeDexterityTime, (gpSMCurrentMerc->usValueGoneUp & DEX_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, L"%2d", gpSMCurrentMerc->bDexterity);
+      swprintf(sString, "%2d", gpSMCurrentMerc->bDexterity);
       FindFontRightCoordinates(SM_DEX_X, SM_DEX_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc->uiChangeStrengthTime, (gpSMCurrentMerc->usValueGoneUp & STRENGTH_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, L"%2d", gpSMCurrentMerc->bStrength);
+      swprintf(sString, "%2d", gpSMCurrentMerc->bStrength);
       FindFontRightCoordinates(SM_STR_X, SM_STR_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc->uiChangeLeadershipTime, (gpSMCurrentMerc->usValueGoneUp & LDR_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, L"%2d", gpSMCurrentMerc->bLeadership);
+      swprintf(sString, "%2d", gpSMCurrentMerc->bLeadership);
       FindFontRightCoordinates(SM_CHAR_X, SM_CHAR_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc->uiChangeWisdomTime, (gpSMCurrentMerc->usValueGoneUp & WIS_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, L"%2d", gpSMCurrentMerc->bWisdom);
+      swprintf(sString, "%2d", gpSMCurrentMerc->bWisdom);
       FindFontRightCoordinates(SM_WIS_X, SM_WIS_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc->uiChangeLevelTime, (gpSMCurrentMerc->usValueGoneUp & LVL_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, L"%2d", gpSMCurrentMerc->bExpLevel);
+      swprintf(sString, "%2d", gpSMCurrentMerc->bExpLevel);
       FindFontRightCoordinates(SM_EXPLVL_X, SM_EXPLVL_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc->uiChangeMarksmanshipTime, (gpSMCurrentMerc->usValueGoneUp & MRK_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, L"%2d", gpSMCurrentMerc->bMarksmanship);
+      swprintf(sString, "%2d", gpSMCurrentMerc->bMarksmanship);
       FindFontRightCoordinates(SM_MRKM_X, SM_MRKM_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc->uiChangeExplosivesTime, (gpSMCurrentMerc->usValueGoneUp & EXP_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, L"%2d", gpSMCurrentMerc->bExplosive);
+      swprintf(sString, "%2d", gpSMCurrentMerc->bExplosive);
       FindFontRightCoordinates(SM_EXPL_X, SM_EXPL_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc->uiChangeMechanicalTime, (gpSMCurrentMerc->usValueGoneUp & MECH_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, L"%2d", gpSMCurrentMerc->bMechanical);
+      swprintf(sString, "%2d", gpSMCurrentMerc->bMechanical);
       FindFontRightCoordinates(SM_MECH_X, SM_MECH_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc->uiChangeMedicalTime, (gpSMCurrentMerc->usValueGoneUp & MED_INCREASE ? TRUE : FALSE));
 
-      swprintf(sString, L"%2d", gpSMCurrentMerc->bMedical);
+      swprintf(sString, "%2d", gpSMCurrentMerc->bMedical);
       FindFontRightCoordinates(SM_MED_X, SM_MED_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
@@ -1435,17 +1435,17 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
       }
 
       // Display armour value!
-      swprintf(sString, L"%3d", ArmourPercent(gpSMCurrentMerc));
+      swprintf(sString, "%3d", ArmourPercent(gpSMCurrentMerc));
       FindFontRightCoordinates(SM_ARMOR_X, SM_ARMOR_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
       // Display wieght value!
-      swprintf(sString, L"%3d", CalculateCarriedWeight(gpSMCurrentMerc));
+      swprintf(sString, "%3d", CalculateCarriedWeight(gpSMCurrentMerc));
       FindFontRightCoordinates(SM_WEIGHT_X, SM_WEIGHT_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
       // Display cammo value!
-      swprintf(sString, L"%3d", gpSMCurrentMerc->bCamo);
+      swprintf(sString, "%3d", gpSMCurrentMerc->bCamo);
       FindFontRightCoordinates(SM_CAMMO_X, SM_CAMMO_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
       mprintf(usX, usY, sString);
 
@@ -1469,8 +1469,8 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
     }
 
     RestoreExternBackgroundRect(SM_SELMERCNAME_X, SM_SELMERCNAME_Y, SM_SELMERCNAME_WIDTH, SM_SELMERCNAME_HEIGHT);
-    VarFindFontCenterCoordinates(SM_SELMERCNAME_X, SM_SELMERCNAME_Y, SM_SELMERCNAME_WIDTH, SM_SELMERCNAME_HEIGHT, SMALLFONT1, &sFontX, &sFontY, L"%s", gpSMCurrentMerc->name);
-    mprintf(sFontX + 5, sFontY, L"%s", gpSMCurrentMerc->name);
+    VarFindFontCenterCoordinates(SM_SELMERCNAME_X, SM_SELMERCNAME_Y, SM_SELMERCNAME_WIDTH, SM_SELMERCNAME_HEIGHT, SMALLFONT1, &sFontX, &sFontY, "%s", gpSMCurrentMerc->name);
+    mprintf(sFontX + 5, sFontY, "%s", gpSMCurrentMerc->name);
   }
 
   if (*pfDirty != DIRTYLEVEL0) {
@@ -1488,7 +1488,7 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
         SetRegionFastHelpText(&(gSM_SELMERCBarsRegion), pStr);
       }
     } else {
-      SetRegionFastHelpText(&(gSM_SELMERCBarsRegion), L"");
+      SetRegionFastHelpText(&(gSM_SELMERCBarsRegion), "");
     }
 
     // if we are in the shop keeper interface
@@ -1516,9 +1516,9 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
           }
         }
 
-        gprintfRestore(SM_SELMERC_AP_X, SM_SELMERC_AP_Y, L"%2d", GetUIApsToDisplay(gpSMCurrentMerc));
-        VarFindFontCenterCoordinates(SM_SELMERC_AP_X, SM_SELMERC_AP_Y, SM_SELMERC_AP_WIDTH, SM_SELMERC_AP_HEIGHT, TINYFONT1, &sFontX, &sFontY, L"%d", GetUIApsToDisplay(gpSMCurrentMerc));
-        mprintf(sFontX, SM_SELMERC_AP_Y, L"%d", GetUIApsToDisplay(gpSMCurrentMerc));
+        gprintfRestore(SM_SELMERC_AP_X, SM_SELMERC_AP_Y, "%2d", GetUIApsToDisplay(gpSMCurrentMerc));
+        VarFindFontCenterCoordinates(SM_SELMERC_AP_X, SM_SELMERC_AP_Y, SM_SELMERC_AP_WIDTH, SM_SELMERC_AP_HEIGHT, TINYFONT1, &sFontX, &sFontY, "%d", GetUIApsToDisplay(gpSMCurrentMerc));
+        mprintf(sFontX, SM_SELMERC_AP_Y, "%d", GetUIApsToDisplay(gpSMCurrentMerc));
       }
 
       // Display bars
@@ -2784,9 +2784,9 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
 
         // RENDER ON SAVE BUFFER!
         SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
-        VarFindFontCenterCoordinates((sTEAMNamesXY[posIndex] + 2), (sTEAMNamesXY[posIndex + 1]), TM_NAME_WIDTH, TM_NAME_HEIGHT, BLOCKFONT2, &sFontX, &sFontY, L"%s", pSoldier->name);
-        mprintf(sFontX, sFontY, L"%s", pSoldier->name);
-        gprintfRestore(sFontX, sFontY, L"%s", pSoldier->name);
+        VarFindFontCenterCoordinates((sTEAMNamesXY[posIndex] + 2), (sTEAMNamesXY[posIndex + 1]), TM_NAME_WIDTH, TM_NAME_HEIGHT, BLOCKFONT2, &sFontX, &sFontY, "%s", pSoldier->name);
+        mprintf(sFontX, sFontY, "%s", pSoldier->name);
+        gprintfRestore(sFontX, sFontY, "%s", pSoldier->name);
         // reset to frame buffer!
         SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
       }
@@ -2823,7 +2823,7 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
               SetRegionFastHelpText(&(gTEAM_BarsRegions[cnt]), pStr);
             }
           } else {
-            SetRegionFastHelpText(&(gTEAM_BarsRegions[cnt]), L"");
+            SetRegionFastHelpText(&(gTEAM_BarsRegions[cnt]), "");
           }
         }
 
@@ -2858,8 +2858,8 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
             RestoreExternBackgroundRect(sTEAMApXY[posIndex], sTEAMApXY[posIndex + 1], TM_AP_WIDTH, TM_AP_HEIGHT);
 
             if (gTacticalStatus.uiFlags & INCOMBAT) {
-              VarFindFontCenterCoordinates(sTEAMApXY[posIndex], sTEAMApXY[posIndex + 1], TM_AP_WIDTH, TM_AP_HEIGHT, TINYFONT1, &sFontX, &sFontY, L"%d", GetUIApsToDisplay(pSoldier));
-              mprintf(sFontX, sTEAMApXY[posIndex + 1], L"%d", GetUIApsToDisplay(pSoldier));
+              VarFindFontCenterCoordinates(sTEAMApXY[posIndex], sTEAMApXY[posIndex + 1], TM_AP_WIDTH, TM_AP_HEIGHT, TINYFONT1, &sFontX, &sFontY, "%d", GetUIApsToDisplay(pSoldier));
+              mprintf(sFontX, sTEAMApXY[posIndex + 1], "%d", GetUIApsToDisplay(pSoldier));
             }
           }
         } else {
@@ -3769,7 +3769,7 @@ function RenderTownIDString(): void {
   GetSectorIDString(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, zTownIDString, TRUE);
   ReduceStringLength(zTownIDString, 80, COMPFONT);
   VarFindFontCenterCoordinates(548, 425, 80, 16, COMPFONT, &sFontX, &sFontY, zTownIDString);
-  mprintf(sFontX, sFontY, L"%s", zTownIDString);
+  mprintf(sFontX, sFontY, "%s", zTownIDString);
 }
 
 function CheckForAndAddMercToTeamPanel(pSoldier: Pointer<SOLDIERTYPE>): void {
@@ -4271,7 +4271,7 @@ function SMInvMoneyButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
         guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
         HandleTacticalUI();
 
-        swprintf(zMoney, L"%d", gpItemPointer->uiMoneyAmount);
+        swprintf(zMoney, "%d", gpItemPointer->uiMoneyAmount);
 
         InsertCommasForDollarFigure(zMoney);
         InsertDollarSignInToString(zMoney);

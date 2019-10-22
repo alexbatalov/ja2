@@ -317,7 +317,7 @@ function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
     SetFontForeground(FONT_YELLOW);
     SetFontShadow(FONT_NEARBLACK);
     ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, 640, 480, 0);
-    mprintf(5, 5, L"Error loading save, attempting to patch save to version 1.02...", vs_desc.ImageFile);
+    mprintf(5, 5, "Error loading save, attempting to patch save to version 1.02...", vs_desc.ImageFile);
   } else if (AddVideoSurface(&vs_desc, &uiLoadScreen)) {
     // Blit the background image
     GetVideoSurface(&hVSurface, uiLoadScreen);
@@ -329,7 +329,7 @@ function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
     SetFontForeground(FONT_YELLOW);
     SetFontShadow(FONT_NEARBLACK);
     ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, 640, 480, 0);
-    mprintf(5, 5, L"%S loadscreen data file not found...", vs_desc.ImageFile);
+    mprintf(5, 5, "%S loadscreen data file not found...", vs_desc.ImageFile);
   }
 
   gubLastLoadingScreenID = ubLoadScreenID;

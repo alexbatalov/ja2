@@ -83,7 +83,7 @@ function RenderTerrainTileButtons(): void {
       BltVideoObject(ButtonDestBuffer, gTileDatabase[gTileTypeStartIndex[x]].hTileSurface, 0, (usX + 1), (usY + 1), VO_BLT_SRCTRANSPARENCY, NULL);
 
       if (fUseTerrainWeights) {
-        mprintf(usX + 2, usY + 2, L"%d", ubTerrainTileButtonWeight[x]);
+        mprintf(usX + 2, usY + 2, "%d", ubTerrainTileButtonWeight[x]);
       }
     }
   }

@@ -1186,7 +1186,7 @@ function DrawDate(iCounter: INT32, iDate: INT32, fRead: BOOLEAN): void {
     SetFont(FONT10ARIALBOLD);
   }
   // draw date of message being displayed in mail viewer
-  swprintf(sString, L"%s %d", pDayStrings[0], iDate / (24 * 60));
+  swprintf(sString, "%s %d", pDayStrings[0], iDate / (24 * 60));
   mprintf(DATE_X, ((4 + MIDDLE_Y + iCounter * MIDDLE_WIDTH)), sString);
 
   SetFont(MESSAGE_FONT);
@@ -2408,7 +2408,7 @@ function DisplayEmailMessageSubjectDateFromLines(pMail: EmailPtr, iViewerY: INT3
   mprintf(usX, MESSAGE_DATE_Y + iViewerY, pEmailHeaders[2]);
 
   // the actual date info
-  swprintf(sString, L"%d", ((pMail->iDate) / (24 * 60)));
+  swprintf(sString, "%d", ((pMail->iDate) / (24 * 60)));
   mprintf(MESSAGE_HEADER_X + 235, MESSAGE_DATE_Y + iViewerY, sString);
 
   // print subject
@@ -2766,7 +2766,7 @@ function HandleIMPCharProfileResultsMessage(): void {
       if (iCounter == 0) {
         let zTemp: wchar_t[] /* [512] */;
 
-        swprintf(zTemp, L" %s", gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].zName);
+        swprintf(zTemp, " %s", gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].zName);
         wcscat(pString, zTemp);
       }
 
@@ -3825,9 +3825,9 @@ function DisplayWhichPageOfEmailProgramIsDisplayed(): void {
 
   // page number
   if (iLastPage < 0)
-    swprintf(sString, L"%d / %d", 1, 1);
+    swprintf(sString, "%d / %d", 1, 1);
   else
-    swprintf(sString, L"%d / %d", iCurrentPage + 1, iLastPage + 1);
+    swprintf(sString, "%d / %d", iCurrentPage + 1, iLastPage + 1);
 
   // print it
   mprintf(PAGE_NUMBER_X, PAGE_NUMBER_Y, sString);
@@ -3886,7 +3886,7 @@ function DisplayNumberOfPagesToThisEmail(iViewerY: INT32): BOOLEAN {
   giNumberOfPagesToCurrentEmail = (giNumberOfPagesToCurrentEmail);
 
   // parse current page and max number of pages to email
-  swprintf(sString, L"%d / %d", (giMessagePage + 1), (giNumberOfPagesToCurrentEmail - 1));
+  swprintf(sString, "%d / %d", (giMessagePage + 1), (giNumberOfPagesToCurrentEmail - 1));
 
   SetFont(FONT12ARIAL);
   SetFontForeground(FONT_BLACK);
@@ -4183,15 +4183,15 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<CHAR16>
   let pSubString: Pointer<CHAR16> = NULL;
   let fReplacingMercName: BOOLEAN = TRUE;
 
-  let sMercName: CHAR16[] /* [32] */ = L"$MERCNAME$"; // Doesnt need to be translated, inside Email.txt and will be replaced by the mercs name
-  let sAmount: CHAR16[] /* [32] */ = L"$AMOUN$"; // Doesnt need to be translated, inside Email.txt and will be replaced by a dollar amount
+  let sMercName: CHAR16[] /* [32] */ = "$MERCNAME$"; // Doesnt need to be translated, inside Email.txt and will be replaced by the mercs name
+  let sAmount: CHAR16[] /* [32] */ = "$AMOUN$"; // Doesnt need to be translated, inside Email.txt and will be replaced by a dollar amount
   let sSearchString: CHAR16[] /* [32] */;
 
   // Copy the original string over to the temp string
   wcscpy(pTempString, pFinishedString);
 
   // Null out the string
-  pFinishedString[0] = L'\0';
+  pFinishedString[0] = '\0';
 
   // Keep looping through to replace all references to the keyword
   while (iCurLocInSourceString < iLengthOfSourceString) {
@@ -4241,7 +4241,7 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<CHAR16>
       } else {
         let sDollarAmount: CHAR16[] /* [64] */;
 
-        swprintf(sDollarAmount, L"%d", pMail->iFirstData);
+        swprintf(sDollarAmount, "%d", pMail->iFirstData);
 
         InsertCommasForDollarFigure(sDollarAmount);
         InsertDollarSignInToString(sDollarAmount);

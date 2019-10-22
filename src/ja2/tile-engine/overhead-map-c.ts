@@ -984,8 +984,8 @@ function RenderOverheadOverlays(): void {
     if (ubPassengers) {
       SetFont(SMALLCOMPFONT);
       SetFontForeground(FONT_WHITE);
-      gprintfdirty((sX - 3), sY, L"%d", ubPassengers);
-      mprintf_buffer(pDestBuf, uiDestPitchBYTES, SMALLCOMPFONT, sX - 3, sY, L"%d", ubPassengers);
+      gprintfdirty((sX - 3), sY, "%d", ubPassengers);
+      mprintf_buffer(pDestBuf, uiDestPitchBYTES, SMALLCOMPFONT, sX - 3, sY, "%d", ubPassengers);
     }
   }
 

@@ -390,7 +390,7 @@ function DrawNameOfLoadedSector(): void {
   ReduceStringLength(sString, 80, COMPFONT);
 
   VarFindFontCenterCoordinates(548, 426, 80, 16, COMPFONT, &sFontX, &sFontY, sString);
-  mprintf(sFontX, sFontY, L"%s", sString);
+  mprintf(sFontX, sFontY, "%s", sString);
 }
 
 function CompressModeClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
@@ -637,9 +637,9 @@ function DisplayCompressMode(): void {
   // get compress speed
   if (giTimeCompressMode != NOT_USING_TIME_COMPRESSION) {
     if (IsTimeBeingCompressed()) {
-      swprintf(sString, L"%s", sTimeStrings[giTimeCompressMode]);
+      swprintf(sString, "%s", sTimeStrings[giTimeCompressMode]);
     } else {
-      swprintf(sString, L"%s", sTimeStrings[0]);
+      swprintf(sString, "%s", sTimeStrings[0]);
     }
   }
 
@@ -1005,21 +1005,21 @@ function DisplayCurrentBalanceTitleForMapBottom(): void {
   SetFontForeground(MAP_BOTTOM_FONT_COLOR);
   SetFontBackground(FONT_BLACK);
 
-  swprintf(sString, L"%s", pMapScreenBottomText[0]);
+  swprintf(sString, "%s", pMapScreenBottomText[0]);
 
   // center it
   VarFindFontCenterCoordinates(359, 387 - 14, 437 - 359, 10, COMPFONT, &sFontX, &sFontY, sString);
 
   // print it
-  mprintf(sFontX, sFontY, L"%s", sString);
+  mprintf(sFontX, sFontY, "%s", sString);
 
-  swprintf(sString, L"%s", zMarksMapScreenText[2]);
+  swprintf(sString, "%s", zMarksMapScreenText[2]);
 
   // center it
   VarFindFontCenterCoordinates(359, 433 - 14, 437 - 359, 10, COMPFONT, &sFontX, &sFontY, sString);
 
   // print it
-  mprintf(sFontX, sFontY, L"%s", sString);
+  mprintf(sFontX, sFontY, "%s", sString);
 
   // ste the font buffer
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
@@ -1040,7 +1040,7 @@ function DisplayCurrentBalanceForMapBottom(): void {
   SetFontForeground(183);
   SetFontBackground(FONT_BLACK);
 
-  swprintf(sString, L"%d", LaptopSaveInfo.iCurrentBalance);
+  swprintf(sString, "%d", LaptopSaveInfo.iCurrentBalance);
 
   // insert
 
@@ -1051,7 +1051,7 @@ function DisplayCurrentBalanceForMapBottom(): void {
   VarFindFontCenterCoordinates(359, 387 + 2, 437 - 359, 10, COMPFONT, &sFontX, &sFontY, sString);
 
   // print it
-  mprintf(sFontX, sFontY, L"%s", sString);
+  mprintf(sFontX, sFontY, "%s", sString);
 
   return;
 }
@@ -1124,7 +1124,7 @@ function DisplayProjectedDailyMineIncome(): void {
   SetFontForeground(183);
   SetFontBackground(FONT_BLACK);
 
-  swprintf(sString, L"%d", iRate);
+  swprintf(sString, "%d", iRate);
 
   // insert
   InsertCommasForDollarFigure(sString);
@@ -1134,7 +1134,7 @@ function DisplayProjectedDailyMineIncome(): void {
   VarFindFontCenterCoordinates(359, 433 + 2, 437 - 359, 10, COMPFONT, &sFontX, &sFontY, sString);
 
   // print it
-  mprintf(sFontX, sFontY, L"%s", sString);
+  mprintf(sFontX, sFontY, "%s", sString);
 
   return;
 }

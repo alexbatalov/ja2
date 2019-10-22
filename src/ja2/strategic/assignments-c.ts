@@ -6291,7 +6291,7 @@ function CreateSquadBox(): void {
   // add strings for box
   for (uiCounter = 0; uiCounter <= uiMaxSquad; uiCounter++) {
     // get info about current squad and put in  string
-    swprintf(sString, L"%s ( %d/%d )", pSquadMenuStrings[uiCounter], NumberOfPeopleInSquad(uiCounter), NUMBER_OF_SOLDIERS_PER_SQUAD);
+    swprintf(sString, "%s ( %d/%d )", pSquadMenuStrings[uiCounter], NumberOfPeopleInSquad(uiCounter), NUMBER_OF_SOLDIERS_PER_SQUAD);
     AddMonoString(&hStringHandle, sString);
 
     // make sure it is unhighlighted
@@ -6541,39 +6541,39 @@ function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
         case (CONTRACT_MENU_DAY):
 
           if (pCharacter->ubWhatKindOfMercAmI != MERC_TYPE__AIM_MERC) {
-            swprintf(sDollarString, L"%d", 0);
+            swprintf(sDollarString, "%d", 0);
           } else {
-            swprintf(sDollarString, L"%d", gMercProfiles[pCharacter->ubProfile].sSalary);
+            swprintf(sDollarString, "%d", gMercProfiles[pCharacter->ubProfile].sSalary);
           }
           InsertCommasForDollarFigure(sDollarString);
           InsertDollarSignInToString(sDollarString);
-          swprintf(sString, L"%s ( %s )", pContractStrings[uiCounter], sDollarString);
+          swprintf(sString, "%s ( %s )", pContractStrings[uiCounter], sDollarString);
           AddMonoString(&hStringHandle, sString);
           break;
         case (CONTRACT_MENU_WEEK):
 
           if (pCharacter->ubWhatKindOfMercAmI != MERC_TYPE__AIM_MERC) {
-            swprintf(sDollarString, L"%d", 0);
+            swprintf(sDollarString, "%d", 0);
           } else {
-            swprintf(sDollarString, L"%d", gMercProfiles[pCharacter->ubProfile].uiWeeklySalary);
+            swprintf(sDollarString, "%d", gMercProfiles[pCharacter->ubProfile].uiWeeklySalary);
           }
 
           InsertCommasForDollarFigure(sDollarString);
           InsertDollarSignInToString(sDollarString);
-          swprintf(sString, L"%s ( %s )", pContractStrings[uiCounter], sDollarString);
+          swprintf(sString, "%s ( %s )", pContractStrings[uiCounter], sDollarString);
           AddMonoString(&hStringHandle, sString);
           break;
         case (CONTRACT_MENU_TWO_WEEKS):
 
           if (pCharacter->ubWhatKindOfMercAmI != MERC_TYPE__AIM_MERC) {
-            swprintf(sDollarString, L"%d", 0);
+            swprintf(sDollarString, "%d", 0);
           } else {
-            swprintf(sDollarString, L"%d", gMercProfiles[pCharacter->ubProfile].uiBiWeeklySalary);
+            swprintf(sDollarString, "%d", gMercProfiles[pCharacter->ubProfile].uiBiWeeklySalary);
           }
 
           InsertCommasForDollarFigure(sDollarString);
           InsertDollarSignInToString(sDollarString);
-          swprintf(sString, L"%s ( %s )", pContractStrings[uiCounter], sDollarString);
+          swprintf(sString, "%s ( %s )", pContractStrings[uiCounter], sDollarString);
           AddMonoString(&hStringHandle, sString);
           break;
         default:
@@ -6769,7 +6769,7 @@ function CreateAssignmentsBox(): void {
     // if we have a soldier, and this is the squad line
     if ((uiCounter == ASSIGN_MENU_ON_DUTY) && (pSoldier != NULL) && (pSoldier->bAssignment < ON_DUTY)) {
       // show his squad # in brackets
-      swprintf(sString, L"%s(%d)", pAssignMenuStrings[uiCounter], pSoldier->bAssignment + 1);
+      swprintf(sString, "%s(%d)", pAssignMenuStrings[uiCounter], pSoldier->bAssignment + 1);
     } else {
       swprintf(sString, pAssignMenuStrings[uiCounter]);
     }

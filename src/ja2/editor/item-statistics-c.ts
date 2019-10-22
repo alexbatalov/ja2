@@ -5,40 +5,40 @@ let giAlarmTriggerButton: INT32 = -1;
 let giOwnershipGroupButton: INT32 = -1;
 
 let gszActionItemDesc: UINT16[][] /* [NUM_ACTIONITEMS][30] */ = [
-  L"Klaxon Mine",
-  L"Flare Mine",
-  L"Teargas Explosion",
-  L"Stun Explosion",
-  L"Smoke Explosion",
-  L"Mustard Gas",
-  L"Land Mine",
-  L"Open Door",
-  L"Close Door",
-  L"3x3 Hidden Pit",
-  L"5x5 Hidden Pit",
-  L"Small Explosion",
-  L"Medium Explosion",
-  L"Large Explosion",
-  L"Toggle Door",
-  L"Toggle Action1s",
-  L"Toggle Action2s",
-  L"Toggle Action3s",
-  L"Toggle Action4s",
-  L"Enter Brothel",
-  L"Exit Brothel",
-  L"Kingpin Alarm",
-  L"Sex with Prostitute",
-  L"Reveal Room",
-  L"Local Alarm",
-  L"Global Alarm",
-  L"Klaxon Sound",
-  L"Unlock door",
-  L"Toggle lock",
-  L"Untrap door",
-  L"Tog pressure items",
-  L"Museum alarm",
-  L"Bloodcat alarm",
-  L"Big teargas",
+  "Klaxon Mine",
+  "Flare Mine",
+  "Teargas Explosion",
+  "Stun Explosion",
+  "Smoke Explosion",
+  "Mustard Gas",
+  "Land Mine",
+  "Open Door",
+  "Close Door",
+  "3x3 Hidden Pit",
+  "5x5 Hidden Pit",
+  "Small Explosion",
+  "Medium Explosion",
+  "Large Explosion",
+  "Toggle Door",
+  "Toggle Action1s",
+  "Toggle Action2s",
+  "Toggle Action3s",
+  "Toggle Action4s",
+  "Enter Brothel",
+  "Exit Brothel",
+  "Kingpin Alarm",
+  "Sex with Prostitute",
+  "Reveal Room",
+  "Local Alarm",
+  "Global Alarm",
+  "Klaxon Sound",
+  "Unlock door",
+  "Toggle lock",
+  "Untrap door",
+  "Tog pressure items",
+  "Museum alarm",
+  "Bloodcat alarm",
+  "Big teargas",
 ];
 
 function GetActionItemName(pItem: Pointer<OBJECTTYPE>): Pointer<UINT16> {
@@ -402,64 +402,64 @@ function UpdateItemStatsPanel(): void {
   SetFontShadow(FONT_NEARBLACK);
   SetFontBackground(FONT_BLACK);
   if (gpItem && iCurrentTaskbar == TASK_ITEMS && gbEditingMode != EDITING_TRIGGERS && gbEditingMode != EDITING_ACTIONITEMS) {
-    mprintf(500, 366, L"Toggle hide flag");
+    mprintf(500, 366, "Toggle hide flag");
   }
   SetFontForeground(FONT_YELLOW);
   switch (gbEditingMode) {
     case EDITING_NOTHING:
       if (iCurrentTaskbar == TASK_ITEMS)
-        mprintf(520, 400, L"No item selected.");
+        mprintf(520, 400, "No item selected.");
       else {
-        mprintf(500, 390, L"Slot available for");
-        mprintf(500, 400, L"random generation.");
+        mprintf(500, 390, "Slot available for");
+        mprintf(500, 400, "random generation.");
       }
       return;
     case EDITING_KEYS:
       if (!gpEditingItemPool) {
-        mprintf(500, 400, L"Keys not editable.");
+        mprintf(500, 400, "Keys not editable.");
         return;
       }
       break;
     case EDITING_OWNERSHIP:
-      mprintf(512, 384, L"ProfileID of owner");
+      mprintf(512, 384, "ProfileID of owner");
       return;
     case EDITING_NOT_YET_IMPLEMENTED:
-      mprintf(500, 400, L"Item class not implemented.");
+      mprintf(500, 400, "Item class not implemented.");
       return;
     case EDITING_DROPPABLE:
-      mprintf(500, 400, L"Slot locked as empty.");
+      mprintf(500, 400, "Slot locked as empty.");
       return;
     case EDITING_GUNS:
-      mprintf(512, 384, L"Status");
-      mprintf(512, 404, L"Rounds");
-      mprintf(512, 424, L"Trap Level");
+      mprintf(512, 384, "Status");
+      mprintf(512, 404, "Rounds");
+      mprintf(512, 424, "Trap Level");
       break;
     case EDITING_AMMO:
-      mprintf(512, 384, L"Quantity");
-      mprintf(512, 404, L"Trap Level");
+      mprintf(512, 384, "Quantity");
+      mprintf(512, 404, "Trap Level");
       break;
     case EDITING_ARMOUR:
     case EDITING_EQUIPMENT:
-      mprintf(512, 384, L"Status");
-      mprintf(512, 404, L"Trap Level");
+      mprintf(512, 384, "Status");
+      mprintf(512, 404, "Trap Level");
       break;
     case EDITING_EXPLOSIVES:
-      mprintf(512, 380, L"Status");
-      mprintf(512, 404, L"Quantity");
-      mprintf(512, 424, L"Trap Level");
+      mprintf(512, 380, "Status");
+      mprintf(512, 404, "Quantity");
+      mprintf(512, 424, "Trap Level");
       break;
     case EDITING_MONEY:
-      mprintf(532, 384, L"Dollars");
+      mprintf(532, 384, "Dollars");
       break;
     case EDITING_ACTIONITEMS:
-      mprintf(512, 369, L"Status");
-      mprintf(512, 389, L"Trap Level");
+      mprintf(512, 369, "Status");
+      mprintf(512, 389, "Trap Level");
       break;
     case EDITING_TRIGGERS:
-      mprintf(512, 369, L"Trap Level");
-      mprintf(512, 389, L"Tolerance");
+      mprintf(512, 369, "Trap Level");
+      mprintf(512, 389, "Tolerance");
       if (gpEditingItemPool && gpItem->bFrequency >= PANIC_FREQUENCY_3 && gpItem->bFrequency <= PANIC_FREQUENCY)
-        mprintf(500, 407, L"Alarm Trigger");
+        mprintf(500, 407, "Alarm Trigger");
       break;
   }
   if (gpEditingItemPool) {
@@ -470,10 +470,10 @@ function UpdateItemStatsPanel(): void {
       SetFontForeground(FONT_ORANGE);
     else
       SetFontForeground(FONT_RED);
-    mprintf(512, 444, L"Exist Chance");
-    mprintf(587, 366, L"B");
-    mprintf(609, 366, L"R");
-    mprintf(630, 366, L"S");
+    mprintf(512, 444, "Exist Chance");
+    mprintf(587, 366, "B");
+    mprintf(609, 366, "R");
+    mprintf(630, 366, "S");
   }
   InvalidateRegion(477, 362, 161, 97);
 }
@@ -516,11 +516,11 @@ function BothModesCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 function SetupGameTypeFlags(): void {
   if (gpEditingItemPool) {
     giBothCheckboxButton = CreateCheckBoxButton(573, 365, "EDITOR//radiobutton.sti", MSYS_PRIORITY_NORMAL, BothModesCheckboxCallback);
-    SetButtonFastHelpText(giBothCheckboxButton, L"Item appears in both Sci-Fi and Realistic modes. (|B)");
+    SetButtonFastHelpText(giBothCheckboxButton, "Item appears in both Sci-Fi and Realistic modes. (|B)");
     giRealisticCheckboxButton = CreateCheckBoxButton(595, 365, "EDITOR//radiobutton.sti", MSYS_PRIORITY_NORMAL, RealisticOnlyCheckboxCallback);
-    SetButtonFastHelpText(giRealisticCheckboxButton, L"Item appears in |Realistic mode only.");
+    SetButtonFastHelpText(giRealisticCheckboxButton, "Item appears in |Realistic mode only.");
     giSciFiCheckboxButton = CreateCheckBoxButton(616, 365, "EDITOR//radiobutton.sti", MSYS_PRIORITY_NORMAL, SciFiOnlyCheckboxCallback);
-    SetButtonFastHelpText(giSciFiCheckboxButton, L"Item appears in |Sci-Fi mode only.");
+    SetButtonFastHelpText(giSciFiCheckboxButton, "Item appears in |Sci-Fi mode only.");
 
     if (gWorldItems[gpEditingItemPool->iItemIndex].usFlags & WORLD_ITEM_REALISTIC_ONLY)
       ButtonList[giRealisticCheckboxButton]->uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
@@ -550,14 +550,14 @@ function SetupGunGUI(): void {
   let str: UINT16[] /* [20] */;
   let yp: INT16;
   memset(gfAttachment, 0, NUM_ATTACHMENT_BUTTONS);
-  swprintf(str, L"%d", gpItem->bGunStatus);
+  swprintf(str, "%d", gpItem->bGunStatus);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, L"%d", gpItem->ubGunShotsLeft);
+  swprintf(str, "%d", gpItem->ubGunShotsLeft);
   AddTextInputField(485, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, L"%d", gpItem->bTrap);
+  swprintf(str, "%d", gpItem->bTrap);
   AddTextInputField(485, 420, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, L"%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
   // Attachments are a dynamic part of guns.  None, some, or all attachments could be available
@@ -565,7 +565,7 @@ function SetupGunGUI(): void {
   yp = 383;
   guiAttachmentButton[SILENCER_ATTACHMENT_BUTTON] = -1;
   if (ValidAttachment(SILENCER, gpItem->usItem)) {
-    guiAttachmentButton[SILENCER_ATTACHMENT_BUTTON] = CreateTextButton(L"SILENCER", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+    guiAttachmentButton[SILENCER_ATTACHMENT_BUTTON] = CreateTextButton("SILENCER", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, SILENCER) != -1) {
       ButtonList[guiAttachmentButton[SILENCER_ATTACHMENT_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
@@ -574,7 +574,7 @@ function SetupGunGUI(): void {
   }
   guiAttachmentButton[SNIPERSCOPE_ATTACHMENT_BUTTON] = -1;
   if (ValidAttachment(SNIPERSCOPE, gpItem->usItem)) {
-    guiAttachmentButton[SNIPERSCOPE_ATTACHMENT_BUTTON] = CreateTextButton(L"SNIPERSCOPE", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+    guiAttachmentButton[SNIPERSCOPE_ATTACHMENT_BUTTON] = CreateTextButton("SNIPERSCOPE", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, SNIPERSCOPE) != -1) {
       ButtonList[guiAttachmentButton[SNIPERSCOPE_ATTACHMENT_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
@@ -583,7 +583,7 @@ function SetupGunGUI(): void {
   }
   guiAttachmentButton[LASERSCOPE_ATTACHMENT_BUTTON] = -1;
   if (ValidAttachment(LASERSCOPE, gpItem->usItem)) {
-    guiAttachmentButton[LASERSCOPE_ATTACHMENT_BUTTON] = CreateTextButton(L"LASERSCOPE", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+    guiAttachmentButton[LASERSCOPE_ATTACHMENT_BUTTON] = CreateTextButton("LASERSCOPE", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, LASERSCOPE) != -1) {
       ButtonList[guiAttachmentButton[LASERSCOPE_ATTACHMENT_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
@@ -592,7 +592,7 @@ function SetupGunGUI(): void {
   }
   guiAttachmentButton[BIPOD_ATTACHMENT_BUTTON] = -1;
   if (ValidAttachment(BIPOD, gpItem->usItem)) {
-    guiAttachmentButton[BIPOD_ATTACHMENT_BUTTON] = CreateTextButton(L"BIPOD", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+    guiAttachmentButton[BIPOD_ATTACHMENT_BUTTON] = CreateTextButton("BIPOD", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, BIPOD) != -1) {
       ButtonList[guiAttachmentButton[BIPOD_ATTACHMENT_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
@@ -601,7 +601,7 @@ function SetupGunGUI(): void {
   }
   guiAttachmentButton[DUCKBILL_ATTACHMENT_BUTTON] = -1;
   if (ValidAttachment(DUCKBILL, gpItem->usItem)) {
-    guiAttachmentButton[DUCKBILL_ATTACHMENT_BUTTON] = CreateTextButton(L"DUCKBILL", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+    guiAttachmentButton[DUCKBILL_ATTACHMENT_BUTTON] = CreateTextButton("DUCKBILL", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, DUCKBILL) != -1) {
       ButtonList[guiAttachmentButton[DUCKBILL_ATTACHMENT_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
@@ -610,7 +610,7 @@ function SetupGunGUI(): void {
   }
   guiAttachmentButton[GLAUNCHER_ATTACHMENT_BUTTON] = -1;
   if (ValidAttachment(UNDER_GLAUNCHER, gpItem->usItem)) {
-    guiAttachmentButton[GLAUNCHER_ATTACHMENT_BUTTON] = CreateTextButton(L"G-LAUNCHER", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+    guiAttachmentButton[GLAUNCHER_ATTACHMENT_BUTTON] = CreateTextButton("G-LAUNCHER", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, UNDER_GLAUNCHER) != -1) {
       ButtonList[guiAttachmentButton[GLAUNCHER_ATTACHMENT_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
@@ -663,12 +663,12 @@ function ExtractAndUpdateGunGUI(): void {
 
 function SetupAmmoGUI(): void {
   let str: UINT16[] /* [20] */;
-  swprintf(str, L"%d", gpItem->ubNumberOfObjects);
+  swprintf(str, "%d", gpItem->ubNumberOfObjects);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, L"%d", gpItem->bTrap);
+  swprintf(str, "%d", gpItem->bTrap);
   AddTextInputField(485, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, L"%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
 }
@@ -703,18 +703,18 @@ function ExtractAndUpdateAmmoGUI(): void {
 
 function SetupArmourGUI(): void {
   let str: UINT16[] /* [20] */;
-  swprintf(str, L"%d", gpItem->bStatus[0]);
+  swprintf(str, "%d", gpItem->bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, L"%d", gpItem->bTrap);
+  swprintf(str, "%d", gpItem->bTrap);
   AddTextInputField(485, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, L"%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
 
   guiCeramicPlatesButton = -1;
   if (ValidAttachment(CERAMIC_PLATES, gpItem->usItem)) {
-    guiCeramicPlatesButton = CreateTextButton(L"CERAMIC PLATES", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 558, 375, 72, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleCeramicPlates);
+    guiCeramicPlatesButton = CreateTextButton("CERAMIC PLATES", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 558, 375, 72, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleCeramicPlates);
     if (FindAttachment(gpItem, CERAMIC_PLATES) != -1) {
       ButtonList[guiCeramicPlatesButton]->uiFlags |= BUTTON_CLICKED_ON;
       gfCeramicPlates = TRUE;
@@ -754,12 +754,12 @@ function ExtractAndUpdateArmourGUI(): void {
 
 function SetupEquipGUI(): void {
   let str: UINT16[] /* [20] */;
-  swprintf(str, L"%d", gpItem->bStatus[0]);
+  swprintf(str, "%d", gpItem->bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, L"%d", gpItem->bTrap);
+  swprintf(str, "%d", gpItem->bTrap);
   AddTextInputField(485, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, L"%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
 }
@@ -794,24 +794,24 @@ function ExtractAndUpdateEquipGUI(): void {
 function SetupExplosivesGUI(): void {
   let str: UINT16[] /* [20] */;
   let yp: INT16;
-  swprintf(str, L"%d", gpItem->bStatus[0]);
+  swprintf(str, "%d", gpItem->bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, L"%d", gpItem->ubNumberOfObjects);
+  swprintf(str, "%d", gpItem->ubNumberOfObjects);
   AddTextInputField(485, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT);
   if (Item[gpItem->usItem].ubPerPocket == 1) {
     DisableTextField(2);
   }
-  swprintf(str, L"%d", gpItem->bTrap);
+  swprintf(str, "%d", gpItem->bTrap);
   AddTextInputField(485, 420, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, L"%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
   yp = 375;
   gfDetonator = FALSE;
   guiDetonatorButton = -1;
   if (ValidAttachment(DETONATOR, gpItem->usItem)) {
-    guiDetonatorButton = CreateTextButton(L"DETONATOR", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleDetonator);
+    guiDetonatorButton = CreateTextButton("DETONATOR", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleDetonator);
     yp += 14;
     if (FindAttachment(gpItem, DETONATOR) != -1) {
       ButtonList[guiDetonatorButton]->uiFlags |= BUTTON_CLICKED_ON;
@@ -863,10 +863,10 @@ function ExtractAndUpdateExplosivesGUI(): void {
 
 function SetupMoneyGUI(): void {
   let str: UINT16[] /* [20] */;
-  swprintf(str, L"%d", gpItem->uiMoneyAmount);
+  swprintf(str, "%d", gpItem->uiMoneyAmount);
   AddTextInputField(485, 380, 45, 15, MSYS_PRIORITY_NORMAL, str, 5, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, L"%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
 }
@@ -895,7 +895,7 @@ function RemoveMoneyGUI(): void {
 
 function SetupOwnershipGUI(): void {
   let str: UINT16[] /* [20] */;
-  swprintf(str, L"%d", gpItem->ubOwnerProfile);
+  swprintf(str, "%d", gpItem->ubOwnerProfile);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   giOwnershipGroupButton = CreateTextButton(gszCivGroupNames[gpItem->ubOwnerCivGroup], SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 485, 415, 80, 25, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, OwnershipGroupButtonCallback);
 }
@@ -933,7 +933,7 @@ function RemoveOwnershipGUI(): void {
 function SetupKeysGUI(): void {
   let str: UINT16[] /* [20] */;
   if (gpEditingItemPool) {
-    swprintf(str, L"%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
 }
@@ -953,12 +953,12 @@ function RemoveKeysGUI(): void {
 function SetupActionItemsGUI(): void {
   let str: UINT16[] /* [4] */;
   let pStr: Pointer<UINT16>;
-  swprintf(str, L"%d", gpItem->bStatus[0]);
+  swprintf(str, "%d", gpItem->bStatus[0]);
   AddTextInputField(485, 365, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, L"%d", gpItem->bTrap);
+  swprintf(str, "%d", gpItem->bTrap);
   AddTextInputField(485, 385, 25, 15, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, L"%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   }
   pStr = GetActionItemName(gpItem);
@@ -1009,16 +1009,16 @@ function AlarmTriggerCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
 
 function SetupTriggersGUI(): void {
   let str: UINT16[] /* [4] */;
-  swprintf(str, L"%d", gpItem->bTrap);
+  swprintf(str, "%d", gpItem->bTrap);
   AddTextInputField(485, 365, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
-  swprintf(str, L"%d", gpItem->ubTolerance);
+  swprintf(str, "%d", gpItem->ubTolerance);
   AddTextInputField(485, 385, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
-    swprintf(str, L"%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
+    swprintf(str, "%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
     if (gpItem->bFrequency <= PANIC_FREQUENCY && gpItem->bFrequency >= PANIC_FREQUENCY_3) {
       giAlarmTriggerButton = CreateCheckBoxButton(485, 405, "EDITOR//smCheckBox.sti", MSYS_PRIORITY_NORMAL, AlarmTriggerCheckboxCallback);
-      SetButtonFastHelpText(giAlarmTriggerButton, L"If the panic trigger is an alarm trigger,\nenemies won't attempt to use it if they\nare already aware of your presence.");
+      SetButtonFastHelpText(giAlarmTriggerButton, "If the panic trigger is an alarm trigger,\nenemies won't attempt to use it if they\nare already aware of your presence.");
       if (gpItem->fFlags & OBJECT_ALARM_TRIGGER)
         ButtonList[giAlarmTriggerButton]->uiFlags |= BUTTON_CLICKED_ON;
     }

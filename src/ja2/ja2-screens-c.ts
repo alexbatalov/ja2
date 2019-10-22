@@ -58,12 +58,12 @@ function DisplayFrameRate(): void {
   if (gbFPSDisplay == SHOW_FULL_FPS) {
     // FRAME RATE
     memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
-    swprintf(VideoOverlayDesc.pzText, L"%ld", __min(uiFPS, 1000));
+    swprintf(VideoOverlayDesc.pzText, "%ld", __min(uiFPS, 1000));
     VideoOverlayDesc.uiFlags = VOVERLAY_DESC_TEXT;
     UpdateVideoOverlay(&VideoOverlayDesc, giFPSOverlay, FALSE);
 
     // TIMER COUNTER
-    swprintf(VideoOverlayDesc.pzText, L"%ld", __min(giTimerDiag, 1000));
+    swprintf(VideoOverlayDesc.pzText, "%ld", __min(giTimerDiag, 1000));
     VideoOverlayDesc.uiFlags = VOVERLAY_DESC_TEXT;
     UpdateVideoOverlay(&VideoOverlayDesc, giCounterPeriodOverlay, FALSE);
 
@@ -129,14 +129,14 @@ function ErrorScreenHandle(): UINT32 {
   SetFont(LARGEFONT1);
   SetFontBackground(FONT_MCOLOR_BLACK);
   SetFontForeground(FONT_MCOLOR_LTGRAY);
-  mprintf(50, 200, L"RUNTIME ERROR");
+  mprintf(50, 200, "RUNTIME ERROR");
 
-  mprintf(50, 225, L"PRESS <ESC> TO EXIT");
+  mprintf(50, 225, "PRESS <ESC> TO EXIT");
 
   SetFont(FONT12ARIAL);
   SetFontForeground(FONT_YELLOW);
   SetFontShadow(60); // 60 is near black
-  mprintf(50, 255, L"%S", gubErrorText);
+  mprintf(50, 255, "%S", gubErrorText);
   SetFontForeground(FONT_LTRED);
 
   if (!fFirstTime) {
@@ -220,10 +220,10 @@ function InitScreenHandle(): UINT32 {
 
     // mprintf( 10, 420, zVersionLabel );
 
-    mprintf(10, 430, L"%s: %s (%S)", pMessageStrings[MSG_VERSION], zVersionLabel, czVersionNumber);
+    mprintf(10, 430, "%s: %s (%S)", pMessageStrings[MSG_VERSION], zVersionLabel, czVersionNumber);
 
     if (gfDontUseDDBlits) {
-      mprintf(10, 440, L"Using software blitters");
+      mprintf(10, 440, "Using software blitters");
     }
 
     InvalidateScreen();
@@ -538,22 +538,22 @@ function SetDebugRenderHook(pDebugRenderOverride: RENDER_HOOK, ubPage: INT8): vo
 
 function DefaultDebugPage1(): void {
   SetFont(LARGEFONT1);
-  gprintf(0, 0, L"DEBUG PAGE ONE");
+  gprintf(0, 0, "DEBUG PAGE ONE");
 }
 
 function DefaultDebugPage2(): void {
   SetFont(LARGEFONT1);
-  gprintf(0, 0, L"DEBUG PAGE TWO");
+  gprintf(0, 0, "DEBUG PAGE TWO");
 }
 
 function DefaultDebugPage3(): void {
   SetFont(LARGEFONT1);
-  gprintf(0, 0, L"DEBUG PAGE THREE");
+  gprintf(0, 0, "DEBUG PAGE THREE");
 }
 
 function DefaultDebugPage4(): void {
   SetFont(LARGEFONT1);
-  gprintf(0, 0, L"DEBUG PAGE FOUR");
+  gprintf(0, 0, "DEBUG PAGE FOUR");
 }
 
 function SexScreenInit(): UINT32 {

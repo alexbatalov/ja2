@@ -292,7 +292,7 @@ function CreateFontPaletteTables(pObj: HVOBJECT): UINT16 {
 function WFGetFontHeight(FontNum: INT32): UINT16 {
   if (USE_WINFONTS()) {
     // return how many Y pixels we used
-    return GetWinFontHeight(L"a\0", GET_WINFONT());
+    return GetWinFontHeight("a\0", GET_WINFONT());
   } else {
     // return how many Y pixels we used
     return GetFontHeight(FontNum);

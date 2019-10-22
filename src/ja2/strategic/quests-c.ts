@@ -1077,7 +1077,7 @@ function InitQuestEngine(): void {
 function CheckForQuests(uiDay: UINT32): void {
   // This function gets called at 8:00 AM time of the day
 
-  ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"Checking For Quests, Day %d", uiDay);
+  ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "Checking For Quests, Day %d", uiDay);
 
   // -------------------------------------------------------------------------------
   // QUEST 0 : DELIVER LETTER
@@ -1086,7 +1086,7 @@ function CheckForQuests(uiDay: UINT32): void {
   // already started
   if (gubQuest[QUEST_DELIVER_LETTER] == QUESTNOTSTARTED) {
     StartQuest(QUEST_DELIVER_LETTER, -1, -1);
-    ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"Started DELIVER LETTER quest");
+    ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "Started DELIVER LETTER quest");
   }
 
   // This quest gets turned OFF through conversation with Miguel - when user hands

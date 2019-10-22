@@ -241,22 +241,22 @@ function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UIN
     sButtonX = sBlankSpace / 2;
     sButtonY = usTextBoxHeight - MSGBOX_BUTTON_HEIGHT - 10;
 
-    gMsgBox.uiButton[0] = CreateIconAndTextButton(gMsgBox.iButtonImages, L"1", FONT12ARIAL, ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, NumberedMsgBoxCallback);
+    gMsgBox.uiButton[0] = CreateIconAndTextButton(gMsgBox.iButtonImages, "1", FONT12ARIAL, ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, NumberedMsgBoxCallback);
     MSYS_SetBtnUserData(gMsgBox.uiButton[0], 0, 1);
     SetButtonCursor(gMsgBox.uiButton[0], usCursor);
 
     sButtonX += MSGBOX_SMALL_BUTTON_WIDTH + MSGBOX_SMALL_BUTTON_X_SEP;
-    gMsgBox.uiButton[1] = CreateIconAndTextButton(gMsgBox.iButtonImages, L"2", FONT12ARIAL, ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, NumberedMsgBoxCallback);
+    gMsgBox.uiButton[1] = CreateIconAndTextButton(gMsgBox.iButtonImages, "2", FONT12ARIAL, ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, NumberedMsgBoxCallback);
     MSYS_SetBtnUserData(gMsgBox.uiButton[1], 0, 2);
     SetButtonCursor(gMsgBox.uiButton[1], usCursor);
 
     sButtonX += MSGBOX_SMALL_BUTTON_WIDTH + MSGBOX_SMALL_BUTTON_X_SEP;
-    gMsgBox.uiButton[2] = CreateIconAndTextButton(gMsgBox.iButtonImages, L"3", FONT12ARIAL, ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, NumberedMsgBoxCallback);
+    gMsgBox.uiButton[2] = CreateIconAndTextButton(gMsgBox.iButtonImages, "3", FONT12ARIAL, ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, NumberedMsgBoxCallback);
     MSYS_SetBtnUserData(gMsgBox.uiButton[2], 0, 3);
     SetButtonCursor(gMsgBox.uiButton[2], usCursor);
 
     sButtonX += MSGBOX_SMALL_BUTTON_WIDTH + MSGBOX_SMALL_BUTTON_X_SEP;
-    gMsgBox.uiButton[3] = CreateIconAndTextButton(gMsgBox.iButtonImages, L"4", FONT12ARIAL, ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, NumberedMsgBoxCallback);
+    gMsgBox.uiButton[3] = CreateIconAndTextButton(gMsgBox.iButtonImages, "4", FONT12ARIAL, ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, NumberedMsgBoxCallback);
     MSYS_SetBtnUserData(gMsgBox.uiButton[3], 0, 4);
     SetButtonCursor(gMsgBox.uiButton[3], usCursor);
     ForceButtonUnDirty(gMsgBox.uiButton[3]);

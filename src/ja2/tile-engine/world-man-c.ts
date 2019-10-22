@@ -1,14 +1,14 @@
 let guiLNCount: UINT32[] /* [9] */;
 /* static */ let gzLevelString: CHAR16[][] /* [9][15] */ = [
-  L"",
-  L"Land    %d",
-  L"Object  %d",
-  L"Struct  %d",
-  L"Shadow  %d",
-  L"Merc    %d",
-  L"Roof    %d",
-  L"Onroof  %d",
-  L"Topmost %d",
+  "",
+  "Land    %d",
+  "Object  %d",
+  "Struct  %d",
+  "Shadow  %d",
+  "Merc    %d",
+  "Roof    %d",
+  "Onroof  %d",
+  "Topmost %d",
 ];
 
 let guiLevelNodes: UINT32 = 0;
@@ -63,14 +63,14 @@ function DebugLevelNodePage(): void {
   let uiLoop: UINT32;
 
   SetFont(LARGEFONT1);
-  gprintf(0, 0, L"DEBUG LEVELNODES PAGE 1 OF 1");
+  gprintf(0, 0, "DEBUG LEVELNODES PAGE 1 OF 1");
 
   for (uiLoop = 1; uiLoop < 9; uiLoop++) {
     gprintf(0, LINE_HEIGHT * (uiLoop + 1), gzLevelString[uiLoop], guiLNCount[uiLoop]);
   }
-  gprintf(0, LINE_HEIGHT * 12, L"%d land nodes in excess of world max (25600)", guiLNCount[1] - WORLD_MAX);
-  gprintf(0, LINE_HEIGHT * 13, L"Total # levelnodes %d, %d bytes each", guiLNCount[0], sizeof(LEVELNODE));
-  gprintf(0, LINE_HEIGHT * 14, L"Total memory for levelnodes %d", guiLNCount[0] * sizeof(LEVELNODE));
+  gprintf(0, LINE_HEIGHT * 12, "%d land nodes in excess of world max (25600)", guiLNCount[1] - WORLD_MAX);
+  gprintf(0, LINE_HEIGHT * 13, "Total # levelnodes %d, %d bytes each", guiLNCount[0], sizeof(LEVELNODE));
+  gprintf(0, LINE_HEIGHT * 14, "Total memory for levelnodes %d", guiLNCount[0] * sizeof(LEVELNODE));
 }
 
 function TypeExistsInLevel(pStartNode: Pointer<LEVELNODE>, fType: UINT32, pusIndex: Pointer<UINT16>): BOOLEAN {
@@ -1748,7 +1748,7 @@ function AddMercStructureInfoFromAnimSurface(sGridNo: INT16, pSoldier: Pointer<S
 
     if (fReturn == FALSE) {
       // Debug msg
-      ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"FAILED: add struct info for merc %d (%s), at %d direction %d", pSoldier->ubID, pSoldier->name, sGridNo, pSoldier->bDirection);
+      ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "FAILED: add struct info for merc %d (%s), at %d direction %d", pSoldier->ubID, pSoldier->name, sGridNo, pSoldier->bDirection);
 
       if (pStructureFileRef->pDBStructureRef[gOneCDirection[pSoldier->bDirection]].pDBStructure->ubNumberOfTiles > 1) {
         // If we have more than one tile

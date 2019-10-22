@@ -1629,8 +1629,8 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
                   SetFont(TINYFONT1);
                   SetFontDestBuffer(guiSAVEBUFFER, 0, gsVIEWPORT_WINDOW_START_Y, 640, gsVIEWPORT_WINDOW_END_Y, FALSE);
-                  VarFindFontCenterCoordinates(sXPos, sYPos, 1, 1, TINYFONT1, &sX, &sY, L"%d", pNode->uiAPCost);
-                  mprintf_buffer(pDestBuf, uiDestPitchBYTES, TINYFONT1, sX, sY, L"%d", pNode->uiAPCost);
+                  VarFindFontCenterCoordinates(sXPos, sYPos, 1, 1, TINYFONT1, &sX, &sY, "%d", pNode->uiAPCost);
+                  mprintf_buffer(pDestBuf, uiDestPitchBYTES, TINYFONT1, sX, sY, "%d", pNode->uiAPCost);
                   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
                 } else if ((uiLevelNodeFlags & LEVELNODE_ERASEZ) && !(uiFlags & TILES_DIRTY)) {
                   Zero8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex);
@@ -1988,8 +1988,8 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     if (pSoldier != NULL && pSoldier->ubID >= MAX_NUM_SOLDIERS) {
                       SetFont(TINYFONT1);
                       SetFontDestBuffer(guiSAVEBUFFER, 0, gsVIEWPORT_WINDOW_START_Y, 640, gsVIEWPORT_WINDOW_END_Y, FALSE);
-                      VarFindFontCenterCoordinates(sXPos, sYPos, 1, 1, TINYFONT1, &sX, &sY, L"%d", pSoldier->ubPlannedUIAPCost);
-                      mprintf_buffer(pDestBuf, uiDestPitchBYTES, TINYFONT1, sX, sY, L"%d", pSoldier->ubPlannedUIAPCost);
+                      VarFindFontCenterCoordinates(sXPos, sYPos, 1, 1, TINYFONT1, &sX, &sY, "%d", pSoldier->ubPlannedUIAPCost);
+                      mprintf_buffer(pDestBuf, uiDestPitchBYTES, TINYFONT1, sX, sY, "%d", pSoldier->ubPlannedUIAPCost);
                       SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
                     }
                   }
@@ -5560,7 +5560,7 @@ function RenderRoomInfo(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPoin
               SetFontForeground(FONT_LTGREEN);
               break;
           }
-          mprintf_buffer(pDestBuf, uiDestPitchBYTES, TINYFONT1, sX, sY, L"%d", gubWorldRoomInfo[usTileIndex]);
+          mprintf_buffer(pDestBuf, uiDestPitchBYTES, TINYFONT1, sX, sY, "%d", gubWorldRoomInfo[usTileIndex]);
           SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
         }
       }

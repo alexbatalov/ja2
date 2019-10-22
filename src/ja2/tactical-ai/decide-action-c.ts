@@ -102,7 +102,7 @@ function DecideActionSchedule(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
                   pDoor->fLocked = TRUE;
                 }
               } else {
-                ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Schedule involved locked door at %d but there's no lock there!", usGridNo1);
+                ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "Schedule involved locked door at %d but there's no lock there!", usGridNo1);
                 fDoUseDoor = FALSE;
               }
             }
@@ -196,7 +196,7 @@ function DecideActionSchedule(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
                     }
                   } else {
                     // WTF?  Warning time!
-                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Schedule involved locked door at %d but there's no lock there!", usGridNo1);
+                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "Schedule involved locked door at %d but there's no lock there!", usGridNo1);
                     fDoUseDoor = FALSE;
                   }
                 }

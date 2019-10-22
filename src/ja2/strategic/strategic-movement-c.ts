@@ -1670,7 +1670,7 @@ function PossibleToCoordinateSimultaneousGroupArrivals(pFirstGroup: Pointer<GROU
     swprintf(str, pStr,
              pEnemyType, // Enemy type (Enemies or bloodcats)
              'A' + gpPendingSimultaneousGroup->ubSectorY - 1, gpPendingSimultaneousGroup->ubSectorX); // Sector location
-    wcscat(str, L"  ");
+    wcscat(str, "  ");
     wcscat(str, gpStrategicString[STR_COORDINATE]);
     // Setup the dialog
 
@@ -1946,7 +1946,7 @@ function RemovePGroup(pGroup: Pointer<GROUP>): void {
   if (pGroup->fPersistant && !gfRemovingAllGroups) {
     CancelEmptyPersistentGroupMovement(pGroup);
     return;
-    DoScreenIndependantMessageBox(L"Strategic Info Warning:  Attempting to delete a persistant group.", MSG_BOX_FLAG_OK, NULL);
+    DoScreenIndependantMessageBox("Strategic Info Warning:  Attempting to delete a persistant group.", MSG_BOX_FLAG_OK, NULL);
   }
   // if removing head, then advance head first.
   if (pGroup == gpGroupList)

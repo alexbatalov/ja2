@@ -697,9 +697,9 @@ function UIHandleNewMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     bReturnCode = HireMerc(&HireMercStruct);
 
     if (bReturnCode == MERC_HIRE_FAILED) {
-      ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, L"Merc hire failed:  Either already hired or dislikes you.");
+      ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, "Merc hire failed:  Either already hired or dislikes you.");
     } else if (bReturnCode == MERC_HIRE_OVER_20_MERCS_HIRED) {
-      ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, L"Can't hire more than 20 mercs.");
+      ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, "Can't hire more than 20 mercs.");
     } else {
       // Get soldier from profile
       pSoldier = FindSoldierByProfileID(ubTemp, FALSE);
@@ -803,7 +803,7 @@ function UIHandleEndTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     if (FileExists("..\\AutoSave.pls") && CanGameBeSaved()) {
       // Save the game
       guiPreviousOptionScreen = guiCurrentScreen;
-      SaveGame(SAVE__END_TURN_NUM, L"End Turn Auto Save");
+      SaveGame(SAVE__END_TURN_NUM, "End Turn Auto Save");
     }
 
     // End our turn!

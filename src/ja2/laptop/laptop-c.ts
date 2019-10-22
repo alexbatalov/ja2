@@ -3376,7 +3376,7 @@ function DisplayPlayersBalanceToDate(): void {
   SetFontShadow(NO_SHADOW);
 
   // parse straigth number
-  swprintf(sString, L"%d", LaptopSaveInfo.iCurrentBalance);
+  swprintf(sString, "%d", LaptopSaveInfo.iCurrentBalance);
 
   // put in commas, then dollar sign
   InsertCommasForDollarFigure(sString);
@@ -4256,7 +4256,7 @@ function PrintBalance(): void {
   SetFontBackground(FONT_BLACK);
   SetFontShadow(NO_SHADOW);
 
-  swprintf(pString, L"%d", LaptopSaveInfo.iCurrentBalance);
+  swprintf(pString, "%d", LaptopSaveInfo.iCurrentBalance);
   InsertCommasForDollarFigure(pString);
   InsertDollarSignInToString(pString);
 
@@ -4298,7 +4298,7 @@ function PrintNumberOnTeam(): void {
     }
   }
 
-  swprintf(pString, L"%s %d", pPersonnelString[0], iCounter);
+  swprintf(pString, "%s %d", pPersonnelString[0], iCounter);
 
   usFontHeight = GetFontHeight(FONT10ARIAL);
   usStrLength = StringPixLength(pString, FONT10ARIAL);
@@ -4473,7 +4473,7 @@ function RenderWWWProgramTitleBar(): BOOLEAN {
   else {
     iIndex = guiCurrentLaptopMode - LAPTOP_MODE_WWW - 1;
 
-    swprintf(sString, L"%s  -  %s", pWebTitle[0], pWebPagesTitles[iIndex]);
+    swprintf(sString, "%s  -  %s", pWebTitle[0], pWebPagesTitles[iIndex]);
     mprintf(140, 33, sString);
   }
 
@@ -5069,7 +5069,7 @@ function CreateFileAndNewEmailIconFastHelpText(uiHelpTextID: UINT32, fClearHelpT
   }
 
   if (fClearHelpText)
-    SetRegionFastHelpText(pRegion, L"");
+    SetRegionFastHelpText(pRegion, "");
   else
     SetRegionFastHelpText(pRegion, gzLaptopHelpText[uiHelpTextID]);
 

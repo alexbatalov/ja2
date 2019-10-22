@@ -806,7 +806,7 @@ function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointe
   GetShortSectorString(pSoldier->sSectorX, pSoldier->sSectorY, zShortTownIDString);
 
   // Set string for generic button
-  swprintf(gzUserDefinedButton1, L"%s", zShortTownIDString);
+  swprintf(gzUserDefinedButton1, "%s", zShortTownIDString);
 
   pLeaveSoldier = pSoldier;
 
@@ -836,14 +836,14 @@ function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointe
   else if (StrategicMap[(AIRPORT_X + (MAP_WORLD_X * AIRPORT_Y))].fEnemyControlled == FALSE) {
     if ((pSoldier->sSectorX == AIRPORT_X) && (pSoldier->sSectorY == AIRPORT_Y) && (pSoldier->bSectorZ == 0)) {
       if (gMercProfiles[pSoldier->ubProfile].bSex == MALE) {
-        swprintf(sString, L"%s %s", pSoldier->name, pMercHeLeaveString[3]);
+        swprintf(sString, "%s %s", pSoldier->name, pMercHeLeaveString[3]);
       } else {
-        swprintf(sString, L"%s %s", pSoldier->name, pMercSheLeaveString[3]);
+        swprintf(sString, "%s %s", pSoldier->name, pMercSheLeaveString[3]);
       }
       fInSector = TRUE;
     } else {
       // Set string for generic button
-      swprintf(gzUserDefinedButton2, L"B13");
+      swprintf(gzUserDefinedButton2, "B13");
 
       if (gMercProfiles[pSoldier->ubProfile].bSex == MALE) {
         swprintf(sString, pMercHeLeaveString[0], pSoldier->name, zShortTownIDString);
@@ -854,14 +854,14 @@ function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointe
   } else {
     if ((pSoldier->sSectorX == OMERTA_LEAVE_EQUIP_SECTOR_X) && (pSoldier->sSectorY == OMERTA_LEAVE_EQUIP_SECTOR_Y) && (pSoldier->bSectorZ == 0)) {
       if (gMercProfiles[pSoldier->ubProfile].bSex == MALE) {
-        swprintf(sString, L"%s %s", pSoldier->name, pMercHeLeaveString[2]);
+        swprintf(sString, "%s %s", pSoldier->name, pMercHeLeaveString[2]);
       } else {
-        swprintf(sString, L"%s %s", pSoldier->name, pMercSheLeaveString[2]);
+        swprintf(sString, "%s %s", pSoldier->name, pMercSheLeaveString[2]);
       }
       fInSector = TRUE;
     } else {
       // Set string for generic button
-      swprintf(gzUserDefinedButton2, L"A9");
+      swprintf(gzUserDefinedButton2, "A9");
 
       if (gMercProfiles[pSoldier->ubProfile].bSex == MALE) {
         swprintf(sString, pMercHeLeaveString[1], pSoldier->name, zShortTownIDString);
@@ -1059,7 +1059,7 @@ function HandleNotifyPlayerCanAffordInsurance(pSoldier: Pointer<SOLDIERTYPE>, ub
   let sStringA: CHAR16[] /* [32] */;
 
   // parse the cost
-  swprintf(sStringA, L"%d", iCost);
+  swprintf(sStringA, "%d", iCost);
 
   // insert the commans and dollar sign
   InsertCommasForDollarFigure(sStringA);

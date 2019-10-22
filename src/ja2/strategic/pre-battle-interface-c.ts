@@ -147,8 +147,8 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
     }
 
     // reset the help text for mouse regions
-    SetRegionFastHelpText(&gCharInfoHandRegion, L"");
-    SetRegionFastHelpText(&gMapStatusBarsRegion, L"");
+    SetRegionFastHelpText(&gCharInfoHandRegion, "");
+    SetRegionFastHelpText(&gMapStatusBarsRegion, "");
 
     gfDisplayPotentialRetreatPaths = FALSE;
 
@@ -813,29 +813,29 @@ function RenderPreBattleInterface(): void {
     SetFontShadow(FONT_NEARBLACK);
 
     GetSectorIDString(gubPBSectorX, gubPBSectorY, gubPBSectorZ, pSectorName, TRUE);
-    mprintf(70, 17, L"%s %s", gpStrategicString[STR_PB_SECTOR], pSectorName);
+    mprintf(70, 17, "%s %s", gpStrategicString[STR_PB_SECTOR], pSectorName);
 
     // enemy
     SetFont(FONT14ARIAL);
     if (gubEnemyEncounterCode == CREATURE_ATTACK_CODE || gubEnemyEncounterCode == BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == ENTERING_BLOODCAT_LAIR_CODE || WhatPlayerKnowsAboutEnemiesInSector(gubPBSectorX, gubPBSectorY) != KNOWS_HOW_MANY) {
       // don't know how many
-      swprintf(str, L"?");
+      swprintf(str, "?");
       SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)].bLastKnownEnemies = -2;
     } else {
       // know exactly how many
       i = NumEnemiesInSector(gubPBSectorX, gubPBSectorY);
-      swprintf(str, L"%d", i);
+      swprintf(str, "%d", i);
       SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)].bLastKnownEnemies = i;
     }
     x = 57 + (27 - StringPixLength(str, FONT14ARIAL)) / 2;
     y = 36;
     mprintf(x, y, str);
     // player
-    swprintf(str, L"%d", guiNumInvolved);
+    swprintf(str, "%d", guiNumInvolved);
     x = 142 + (27 - StringPixLength(str, FONT14ARIAL)) / 2;
     mprintf(x, y, str);
     // militia
-    swprintf(str, L"%d", CountAllMilitiaInSector(gubPBSectorX, gubPBSectorY));
+    swprintf(str, "%d", CountAllMilitiaInSector(gubPBSectorX, gubPBSectorY));
     x = 227 + (27 - StringPixLength(str, FONT14ARIAL)) / 2;
     mprintf(x, y, str);
     SetFontShadow(FONT_NEARBLACK);
@@ -868,14 +868,14 @@ function RenderPreBattleInterface(): void {
           x = 129 + (58 - StringPixLength(str, BLOCKFONT2)) / 2;
           mprintf(x, y, str);
           // HP
-          swprintf(str, L"%d%%", ubHPPercent);
+          swprintf(str, "%d%%", ubHPPercent);
           x = 189 + (25 - StringPixLength(str, BLOCKFONT2)) / 2;
-          wcscat(str, L"%");
+          wcscat(str, "%");
           mprintf(x, y, str);
           // BP
-          swprintf(str, L"%d%%", ubBPPercent);
+          swprintf(str, "%d%%", ubBPPercent);
           x = 217 + (25 - StringPixLength(str, BLOCKFONT2)) / 2;
-          wcscat(str, L"%");
+          wcscat(str, "%");
           mprintf(x, y, str);
 
           line++;

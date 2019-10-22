@@ -463,7 +463,7 @@ function DisplayMercsStats(ubMercID: UINT8): void {
   DrawTextToScreen(MercInfo[MERC_FILES_SALARY], MERC_STATS_SECOND_COL_X, usPosY, 0, MERC_NAME_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   usPosX = MERC_STATS_SECOND_COL_X + StringPixLength(MercInfo[MERC_FILES_SALARY], MERC_NAME_FONT) + 1;
-  swprintf(sString, L"%d %s", gMercProfiles[ubMercID].sSalary, MercInfo[MERC_FILES_PER_DAY]);
+  swprintf(sString, "%d %s", gMercProfiles[ubMercID].sSalary, MercInfo[MERC_FILES_PER_DAY]);
   DrawTextToScreen(sString, usPosX, usPosY, 95, MERC_NAME_FONT, MERC_DYNAMIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
 }
 

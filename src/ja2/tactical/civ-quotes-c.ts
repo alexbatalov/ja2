@@ -286,10 +286,10 @@ function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, ubEntryI
     return;
   }
 
-  swprintf(gzCivQuote, L"\"%s\"", zQuote);
+  swprintf(gzCivQuote, "\"%s\"", zQuote);
 
   if (ubCivQuoteID == CIV_QUOTE_HINT) {
-    MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, L"%s", gzCivQuote);
+    MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, "%s", gzCivQuote);
   }
 
   // Create video oeverlay....

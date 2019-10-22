@@ -67,7 +67,7 @@ function InitNewGameClock(): void {
   guiDay = (guiGameClock / NUM_SEC_IN_DAY);
   guiHour = (guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR;
   guiMin = (guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN;
-  swprintf(WORLDTIMESTR, L"%s %d, %02d:%02d", pDayStrings[0], guiDay, guiHour, guiMin);
+  swprintf(WORLDTIMESTR, "%s %d, %02d:%02d", pDayStrings[0], guiDay, guiHour, guiMin);
   guiTimeCurrentSectorWasLastLoaded = 0;
   guiGameSecondsPerRealSecond = 0;
   gubClockResolution = 1;
@@ -166,7 +166,7 @@ function AdvanceClock(ubWarpCode: UINT8): void {
   guiHour = (guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR;
   guiMin = (guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN;
 
-  swprintf(WORLDTIMESTR, L"%s %d, %02d:%02d", gpGameClockString[STR_GAMECLOCK_DAY_NAME], guiDay, guiHour, guiMin);
+  swprintf(WORLDTIMESTR, "%s %d, %02d:%02d", gpGameClockString[STR_GAMECLOCK_DAY_NAME], guiDay, guiHour, guiMin);
 
   if (gfResetAllPlayerKnowsEnemiesFlags && !gTacticalStatus.fEnemyInSector) {
     ClearAnySectorsFlashingNumberOfEnemies();
@@ -470,7 +470,7 @@ function UnPauseGame(): void {
   if (gfGamePaused) {
     // ignore request if locked
     if (gfLockPauseState) {
-      ScreenMsg(FONT_ORANGE, MSG_TESTVERSION, L"Call to UnPauseGame() while Pause State is LOCKED! AM-4");
+      ScreenMsg(FONT_ORANGE, MSG_TESTVERSION, "Call to UnPauseGame() while Pause State is LOCKED! AM-4");
       return;
     }
 
@@ -768,7 +768,7 @@ function LoadGameClock(hFile: HWFILE): BOOLEAN {
   guiHour = (guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR;
   guiMin = (guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN;
 
-  swprintf(WORLDTIMESTR, L"%s %d, %02d:%02d", pDayStrings[0], guiDay, guiHour, guiMin);
+  swprintf(WORLDTIMESTR, "%s %d, %02d:%02d", pDayStrings[0], guiDay, guiHour, guiMin);
 
   if (!gfBasement && !gfCaves)
     gfDoLighting = TRUE;

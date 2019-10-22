@@ -16,7 +16,7 @@ function StatChange(pSoldier: Pointer<SOLDIERTYPE>, ubStat: UINT8, usNumChances:
     return;
 
   if (pSoldier->bAssignment == ASSIGNMENT_POW) {
-    ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, L"ERROR: StatChange: %s improving stats while POW! ubStat %d", pSoldier->name, ubStat);
+    ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, "ERROR: StatChange: %s improving stats while POW! ubStat %d", pSoldier->name, ubStat);
     return;
   }
 
@@ -135,7 +135,7 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
 
     default:
       // BETA message
-      ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, L"ERROR: ProcessStatChange: Rcvd unknown ubStat %d", ubStat);
+      ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, "ERROR: ProcessStatChange: Rcvd unknown ubStat %d", ubStat);
       return;
   }
 
@@ -898,7 +898,7 @@ function SubpointsPerPoint(ubStat: UINT8, bExpLevel: INT8): UINT16 {
 
     default:
       // BETA message
-      ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, L"SubpointsPerPoint: ERROR - Unknown ubStat %d", ubStat);
+      ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, "SubpointsPerPoint: ERROR - Unknown ubStat %d", ubStat);
       return 100;
   }
 
@@ -1133,7 +1133,7 @@ function HourlyProgressUpdate(): void {
     gStrategicStatus.ubHighestProgress = ubCurrentProgress;
 
     // debug message
-    ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"New player progress record: %d%%", gStrategicStatus.ubHighestProgress);
+    ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "New player progress record: %d%%", gStrategicStatus.ubHighestProgress);
   }
 }
 
@@ -1191,7 +1191,7 @@ function BuildStatChangeString(wString: STR16, wName: STR16, fIncrease: BOOLEAN,
     ubStringIndex += 2;
   }
 
-  swprintf(wString, L"%s %s %d %s %s", wName, sPreStatBuildString[fIncrease ? 1 : 0], abs(sPtsChanged), sPreStatBuildString[ubStringIndex], sStatGainStrings[ubStat - FIRST_CHANGEABLE_STAT]);
+  swprintf(wString, "%s %s %d %s %s", wName, sPreStatBuildString[fIncrease ? 1 : 0], abs(sPtsChanged), sPreStatBuildString[ubStringIndex], sStatGainStrings[ubStat - FIRST_CHANGEABLE_STAT]);
 }
 
 function CalcImportantSectorControl(): UINT8 {

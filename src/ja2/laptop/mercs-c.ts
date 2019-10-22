@@ -1231,7 +1231,7 @@ function HandleTalkingSpeck(): void {
           return;
         }
 
-        if (gsSpeckDialogueTextPopUp[0] != L'\0') {
+        if (gsSpeckDialogueTextPopUp[0] != '\0') {
           //					DrawButton( guiAccountBoxButton );
           //					ButtonList[ guiAccountBoxButton ]->uiFlags |= BUTTON_FORCE_UNDIRTY;
 
@@ -1283,7 +1283,7 @@ function DisplayTextForSpeckVideoPopUp(pString: STR16): void {
 
 //	wcscpy(gsSpeckDialogueTextPopUp, pString);
 // add the "" around the speech.
-  swprintf(gsSpeckDialogueTextPopUp, L"\"%s\"", pString);
+  swprintf(gsSpeckDialogueTextPopUp, "\"%s\"", pString);
 
   gfDisplaySpeckTextBox = TRUE;
 

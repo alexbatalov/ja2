@@ -613,7 +613,7 @@ function DrawRecordsText(): void {
   // loop through record list
   for (iCounter; iCounter < NUM_RECORDS_PER_PAGE; iCounter++) {
     // get and write the date
-    swprintf(sString, L"%d", pCurFinance->uiDate / (24 * 60));
+    swprintf(sString, "%d", pCurFinance->uiDate / (24 * 60));
 
     FindFontCenterCoordinates(RECORD_DATE_X, 0, RECORD_DATE_WIDTH, 0, sString, FINANCE_TEXT_FONT, &usX, &usY);
     mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT) + 6)), sString);
@@ -621,7 +621,7 @@ function DrawRecordsText(): void {
     // get and write debit/ credit
     if (pCurFinance->iAmount >= 0) {
       // increase in asset - debit
-      swprintf(sString, L"%d", pCurFinance->iAmount);
+      swprintf(sString, "%d", pCurFinance->iAmount);
       // insert commas
       InsertCommasForDollarFigure(sString);
       // insert dollar sight for first record in the list
@@ -633,7 +633,7 @@ function DrawRecordsText(): void {
       mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT) + 6)), sString);
     } else {
       // decrease in asset - credit
-      swprintf(sString, L"%d", pCurFinance->iAmount * (-1));
+      swprintf(sString, "%d", pCurFinance->iAmount * (-1));
       SetFontForeground(FONT_RED);
       InsertCommasForDollarFigure(sString);
       // insert dollar sight for first record in the list
@@ -663,7 +663,7 @@ function DrawRecordsText(): void {
     mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT) + 6)), sString);
 
     // print the balance string
-    swprintf(sString, L"%d", iBalance);
+    swprintf(sString, "%d", iBalance);
     InsertCommasForDollarFigure(sString);
     // insert dollar sight for first record in the list
     // DEF: 3/19/99: removed cause we want to see the dollar sign on ALL entries
@@ -741,7 +741,7 @@ function DrawSummaryText(): void {
 
   // yesterdays income
   iBalance = GetPreviousDaysIncome();
-  swprintf(pString, L"%d", iBalance);
+  swprintf(pString, "%d", iBalance);
 
   InsertCommasForDollarFigure(pString);
 
@@ -756,7 +756,7 @@ function DrawSummaryText(): void {
 
   // yesterdays other
   iBalance = GetYesterdaysOtherDeposits();
-  swprintf(pString, L"%d", iBalance);
+  swprintf(pString, "%d", iBalance);
 
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
@@ -774,7 +774,7 @@ function DrawSummaryText(): void {
     iBalance *= -1;
   }
 
-  swprintf(pString, L"%d", iBalance);
+  swprintf(pString, "%d", iBalance);
 
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
@@ -793,7 +793,7 @@ function DrawSummaryText(): void {
     iBalance *= -1;
   }
 
-  swprintf(pString, L"%d", iBalance);
+  swprintf(pString, "%d", iBalance);
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
@@ -805,7 +805,7 @@ function DrawSummaryText(): void {
 
   // todays income
   iBalance = GetTodaysDaysIncome();
-  swprintf(pString, L"%d", iBalance);
+  swprintf(pString, "%d", iBalance);
 
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
@@ -818,7 +818,7 @@ function DrawSummaryText(): void {
 
   // todays other
   iBalance = GetTodaysOtherDeposits();
-  swprintf(pString, L"%d", iBalance);
+  swprintf(pString, "%d", iBalance);
 
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
@@ -837,7 +837,7 @@ function DrawSummaryText(): void {
     iBalance *= (-1);
   }
 
-  swprintf(pString, L"%d", iBalance);
+  swprintf(pString, "%d", iBalance);
 
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
@@ -853,10 +853,10 @@ function DrawSummaryText(): void {
   if (iBalance < 0) {
     iBalance *= -1;
     SetFontForeground(FONT_RED);
-    swprintf(pString, L"%d", iBalance);
+    swprintf(pString, "%d", iBalance);
     iBalance *= -1;
   } else {
-    swprintf(pString, L"%d", iBalance);
+    swprintf(pString, "%d", iBalance);
   }
 
   InsertCommasForDollarFigure(pString);
@@ -868,7 +868,7 @@ function DrawSummaryText(): void {
 
   // todays forcast income
   iBalance = GetProjectedTotalDailyIncome();
-  swprintf(pString, L"%d", iBalance);
+  swprintf(pString, "%d", iBalance);
 
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
@@ -884,10 +884,10 @@ function DrawSummaryText(): void {
   if (iBalance < 0) {
     iBalance *= -1;
     SetFontForeground(FONT_RED);
-    swprintf(pString, L"%d", iBalance);
+    swprintf(pString, "%d", iBalance);
     iBalance *= -1;
   } else {
-    swprintf(pString, L"%d", iBalance);
+    swprintf(pString, "%d", iBalance);
   }
 
   InsertCommasForDollarFigure(pString);
@@ -1170,15 +1170,15 @@ function IncrementCurrentPageFinancialDisplay(): void {
 function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): void {
   switch (pFinance->ubCode) {
     case ACCRUED_INTEREST:
-      swprintf(pString, L"%s", pTransactionText[ACCRUED_INTEREST]);
+      swprintf(pString, "%s", pTransactionText[ACCRUED_INTEREST]);
       break;
 
     case ANONYMOUS_DEPOSIT:
-      swprintf(pString, L"%s", pTransactionText[ANONYMOUS_DEPOSIT]);
+      swprintf(pString, "%s", pTransactionText[ANONYMOUS_DEPOSIT]);
       break;
 
     case TRANSACTION_FEE:
-      swprintf(pString, L"%s", pTransactionText[TRANSACTION_FEE]);
+      swprintf(pString, "%s", pTransactionText[TRANSACTION_FEE]);
       break;
 
     case HIRED_MERC:
@@ -1186,11 +1186,11 @@ function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): voi
       break;
 
     case BOBBYR_PURCHASE:
-      swprintf(pString, L"%s", pTransactionText[BOBBYR_PURCHASE]);
+      swprintf(pString, "%s", pTransactionText[BOBBYR_PURCHASE]);
       break;
 
     case PAY_SPECK_FOR_MERC:
-      swprintf(pString, L"%s", pTransactionText[PAY_SPECK_FOR_MERC], gMercProfiles[pFinance->ubSecondCode].zName);
+      swprintf(pString, "%s", pTransactionText[PAY_SPECK_FOR_MERC], gMercProfiles[pFinance->ubSecondCode].zName);
       break;
 
     case MEDICAL_DEPOSIT:
@@ -1198,7 +1198,7 @@ function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): voi
       break;
 
     case IMP_PROFILE:
-      swprintf(pString, L"%s", pTransactionText[IMP_PROFILE]);
+      swprintf(pString, "%s", pTransactionText[IMP_PROFILE]);
       break;
 
     case PURCHASED_INSURANCE:
@@ -1239,7 +1239,7 @@ function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): voi
       break;
 
     case PURCHASED_FLOWERS:
-      swprintf(pString, L"%s", pTransactionText[PURCHASED_FLOWERS]);
+      swprintf(pString, "%s", pTransactionText[PURCHASED_FLOWERS]);
       break;
 
     case FULL_MEDICAL_REFUND:
@@ -1301,7 +1301,7 @@ function DisplayFinancePageNumberAndDateRange(): void {
   if (!pCurrentFinance) {
     pCurrentFinance = pFinanceListHead;
     if (!pCurrentFinance) {
-      swprintf(sString, L"%s %d / %d", pFinanceHeaders[5], iCurrentPage + 1, guiLastPageInRecordsList + 2);
+      swprintf(sString, "%s %d / %d", pFinanceHeaders[5], iCurrentPage + 1, guiLastPageInRecordsList + 2);
       mprintf(PAGE_NUMBER_X, PAGE_NUMBER_Y, sString);
       return;
     }
@@ -1316,7 +1316,7 @@ function DisplayFinancePageNumberAndDateRange(): void {
 
   // get the last page
 
-  swprintf(sString, L"%s %d / %d", pFinanceHeaders[5], iCurrentPage + 1, guiLastPageInRecordsList + 2);
+  swprintf(sString, "%s %d / %d", pFinanceHeaders[5], iCurrentPage + 1, guiLastPageInRecordsList + 2);
   mprintf(PAGE_NUMBER_X, PAGE_NUMBER_Y, sString);
 
   // reset shadow
@@ -1649,7 +1649,7 @@ function InsertCommasForDollarFigure(pString: STR16): void {
         sTempCounter--;
       }
       // now insert comma
-      pString[sCounter] = L',';
+      pString[sCounter] = ',';
     }
 
     // increment count of digits
@@ -1678,7 +1678,7 @@ function InsertDollarSignInToString(pString: STR16): void {
     iCounter--;
   }
 
-  pString[0] = L'$';
+  pString[0] = '$';
 
   return;
 }

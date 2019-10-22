@@ -161,7 +161,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
             if (pSoldier->bTeam == gbPlayerNum) {
               PlayJA2Sample(RG_ID_IMPRINTED, RATE_11025, HIGHVOLUME, 1, MIDDLE);
 
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"\"%s\"", TacticalStr[GUN_GOT_FINGERPRINT]);
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "\"%s\"", TacticalStr[GUN_GOT_FINGERPRINT]);
 
               return ITEM_HANDLE_BROKEN;
             }
@@ -1517,7 +1517,7 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
   // ATE: Check if the gridno is OK
   if ((*psGridNo) == NOWHERE) {
     // Display warning.....
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Error: Item %d was given invalid grid location %d for item pool. Please Report.", pObject->usItem, (*psGridNo));
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "Error: Item %d was given invalid grid location %d for item pool. Please Report.", pObject->usItem, (*psGridNo));
 
     (*psGridNo) = sNewGridNo = gMapInformation.sCenterGridNo;
 
@@ -2465,9 +2465,9 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
       pItem = &Item[gWorldItems[pTempItemPool->iItemIndex].o.usItem];
       // Set string
       if (gWorldItems[pTempItemPool->iItemIndex].o.ubNumberOfObjects > 1) {
-        swprintf(pStr, L"%s (%d)", ShortItemNames[gWorldItems[pTempItemPool->iItemIndex].o.usItem], gWorldItems[pTempItemPool->iItemIndex].o.ubNumberOfObjects);
+        swprintf(pStr, "%s (%d)", ShortItemNames[gWorldItems[pTempItemPool->iItemIndex].o.usItem], gWorldItems[pTempItemPool->iItemIndex].o.ubNumberOfObjects);
       } else {
-        swprintf(pStr, L"%s", ShortItemNames[gWorldItems[pTempItemPool->iItemIndex].o.usItem]);
+        swprintf(pStr, "%s", ShortItemNames[gWorldItems[pTempItemPool->iItemIndex].o.usItem]);
       }
 
       // Get Width
@@ -2549,9 +2549,9 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
       // Set string
 
       if (gWorldItems[pItemPool->iItemIndex].o.ubNumberOfObjects > 1) {
-        swprintf(pStr, L"%s (%d)", ShortItemNames[gWorldItems[pItemPool->iItemIndex].o.usItem], gWorldItems[pItemPool->iItemIndex].o.ubNumberOfObjects);
+        swprintf(pStr, "%s (%d)", ShortItemNames[gWorldItems[pItemPool->iItemIndex].o.usItem], gWorldItems[pItemPool->iItemIndex].o.ubNumberOfObjects);
       } else {
-        swprintf(pStr, L"%s", ShortItemNames[gWorldItems[pItemPool->iItemIndex].o.usItem]);
+        swprintf(pStr, "%s", ShortItemNames[gWorldItems[pItemPool->iItemIndex].o.usItem]);
       }
 
       gprintfdirty(sFontX, sY, pStr);
@@ -4049,7 +4049,7 @@ function CanPlayerUseRocketRifle(pSoldier: Pointer<SOLDIERTYPE>, fDisplay: BOOLE
             PlayJA2Sample(RG_ID_INVALID, RATE_11025, HIGHVOLUME, 1, MIDDLE);
 
             if (fDisplay) {
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, L"\"%s\"", TacticalStr[GUN_NOGOOD_FINGERPRINT]);
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, "\"%s\"", TacticalStr[GUN_NOGOOD_FINGERPRINT]);
             }
           }
           return FALSE;

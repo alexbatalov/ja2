@@ -161,16 +161,16 @@ function CreateJA2SelectionWindow(sWhat: INT16): void {
   iSelectWin = CreateHotSpot(0, 0, 600, 360, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SelWinClkCallback);
 
   iCancelWin = CreateIconButton(iButtonIcons[CANCEL_ICON], 0, BUTTON_USE_DEFAULT, 600, 40, 40, 40, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, CnclClkCallback);
-  SetButtonFastHelpText(iCancelWin, L"Cancel selections");
+  SetButtonFastHelpText(iCancelWin, "Cancel selections");
 
   iOkWin = CreateIconButton(iButtonIcons[OK_ICON], 0, BUTTON_USE_DEFAULT, 600, 0, 40, 40, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, OkClkCallback);
-  SetButtonFastHelpText(iOkWin, L"Accept selections");
+  SetButtonFastHelpText(iOkWin, "Accept selections");
 
   iScrollUp = CreateIconButton(iButtonIcons[UP_ICON], 0, BUTTON_USE_DEFAULT, 600, 80, 40, 160, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, UpClkCallback);
-  SetButtonFastHelpText(iScrollUp, L"Scroll window up");
+  SetButtonFastHelpText(iScrollUp, "Scroll window up");
 
   iScrollDown = CreateIconButton(iButtonIcons[DOWN_ICON], 0, BUTTON_USE_DEFAULT, 600, 240, 40, 160, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DwnClkCallback);
-  SetButtonFastHelpText(iScrollDown, L"Scroll window down");
+  SetButtonFastHelpText(iScrollDown, "Scroll window down");
 
   fButtonsPresent = TRUE;
 
@@ -947,12 +947,12 @@ function DisplaySelectionWindowGraphicalInformation(): void {
     // usObjIndex = (UINT16)pNode->uiObjIndx;
     // usIndex = pNode->uiIndex;
     if (!gTilesets[giCurrentTilesetID].TileSurfaceFilenames[pNode->uiObjIndx][0]) {
-      mprintf(2, 2, L"%S[%d] is from default tileset %s (%S)", gTilesets[0].TileSurfaceFilenames[pNode->uiObjIndx], pNode->uiIndex, gTilesets[0].zName, gTileSurfaceName[pNode->uiObjIndx]);
+      mprintf(2, 2, "%S[%d] is from default tileset %s (%S)", gTilesets[0].TileSurfaceFilenames[pNode->uiObjIndx], pNode->uiIndex, gTilesets[0].zName, gTileSurfaceName[pNode->uiObjIndx]);
     } else {
-      mprintf(2, 2, L"File:  %S, subindex:  %d (%S)", gTilesets[giCurrentTilesetID].TileSurfaceFilenames[pNode->uiObjIndx], pNode->uiIndex, gTileSurfaceName[pNode->uiObjIndx]);
+      mprintf(2, 2, "File:  %S, subindex:  %d (%S)", gTilesets[giCurrentTilesetID].TileSurfaceFilenames[pNode->uiObjIndx], pNode->uiIndex, gTileSurfaceName[pNode->uiObjIndx]);
     }
   }
-  mprintf(350, 2, L"Current Tileset:  %s", gTilesets[giCurrentTilesetID].zName);
+  mprintf(350, 2, "Current Tileset:  %s", gTilesets[giCurrentTilesetID].zName);
 }
 
 //----------------------------------------------------------------------------------------------
@@ -1441,7 +1441,7 @@ function DisplayWindowFunc(pNode: Pointer<DisplayList>, iTopCutOff: INT16, iBott
     fReturnVal = BltVideoObject(FRAME_BUFFER, pNode->hObj, pNode->uiIndex, pNode->iX, iCurrY, VO_BLT_SRCTRANSPARENCY, NULL);
 
     if (sCount != 0) {
-      gprintf(pNode->iX, iCurrY, L"%d", sCount);
+      gprintf(pNode->iX, iCurrY, "%d", sCount);
     }
 
     pETRLEObject->sOffsetX = sTempOffsetX;

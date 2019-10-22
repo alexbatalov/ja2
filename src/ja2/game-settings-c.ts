@@ -435,22 +435,22 @@ function IsDriveLetterACDromDrive(pDriveLetter: STR): BOOLEAN {
 
 function DisplayGameSettings(): void {
   // Display the version number
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"%s: %s (%S)", pMessageStrings[MSG_VERSION], zVersionLabel, czVersionNumber);
+  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s (%S)", pMessageStrings[MSG_VERSION], zVersionLabel, czVersionNumber);
 
   // Display the difficulty level
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"%s: %s", gzGIOScreenText[GIO_DIF_LEVEL_TEXT], gzGIOScreenText[gGameOptions.ubDifficultyLevel + GIO_EASY_TEXT - 1]);
+  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[GIO_DIF_LEVEL_TEXT], gzGIOScreenText[gGameOptions.ubDifficultyLevel + GIO_EASY_TEXT - 1]);
 
   // Iron man option
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"%s: %s", gzGIOScreenText[GIO_GAME_SAVE_STYLE_TEXT], gzGIOScreenText[GIO_SAVE_ANYWHERE_TEXT + gGameOptions.fIronManMode]);
+  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[GIO_GAME_SAVE_STYLE_TEXT], gzGIOScreenText[GIO_SAVE_ANYWHERE_TEXT + gGameOptions.fIronManMode]);
 
   // Gun option
   if (gGameOptions.fGunNut)
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"%s: %s", gzGIOScreenText[GIO_GUN_OPTIONS_TEXT], gzGIOScreenText[GIO_GUN_NUT_TEXT]);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[GIO_GUN_OPTIONS_TEXT], gzGIOScreenText[GIO_GUN_NUT_TEXT]);
   else
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"%s: %s", gzGIOScreenText[GIO_GUN_OPTIONS_TEXT], gzGIOScreenText[GIO_REDUCED_GUNS_TEXT]);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[GIO_GUN_OPTIONS_TEXT], gzGIOScreenText[GIO_REDUCED_GUNS_TEXT]);
 
   // Sci fi option
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"%s: %s", gzGIOScreenText[GIO_GAME_STYLE_TEXT], gzGIOScreenText[GIO_REALISTIC_TEXT + gGameOptions.fSciFi]);
+  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[GIO_GAME_STYLE_TEXT], gzGIOScreenText[GIO_REALISTIC_TEXT + gGameOptions.fSciFi]);
 
   // Timed Turns option
   // JA2Gold: no timed turns

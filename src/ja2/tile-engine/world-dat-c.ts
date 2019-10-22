@@ -52,7 +52,7 @@ function InitEngineTilesets(): void {
     FileRead(hfile, &(gTilesets[cnt].ubAmbientID), sizeof(UINT8), &uiNumBytesRead);
 
     // Set into tileset
-    swprintf(gTilesets[cnt].zName, L"%S", zName);
+    swprintf(gTilesets[cnt].zName, "%S", zName);
 
     // Loop for files
     for (cnt2 = 0; cnt2 < uiNumFiles; cnt2++) {

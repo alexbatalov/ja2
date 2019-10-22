@@ -510,7 +510,7 @@ function CheckForValidArrivalSector(): void {
 
     GetShortSectorString(gsMercArriveSectorX, gsMercArriveSectorY, zShortTownIDString2);
 
-    swprintf(sString, L"Arrival of new recruits is being rerouted to sector %s, as scheduled drop-off point of sector %s is enemy occupied.", zShortTownIDString2, zShortTownIDString1);
+    swprintf(sString, "Arrival of new recruits is being rerouted to sector %s, as scheduled drop-off point of sector %s is enemy occupied.", zShortTownIDString2, zShortTownIDString1);
 
     DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, NULL);
   }

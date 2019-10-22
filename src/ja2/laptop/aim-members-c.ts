@@ -734,7 +734,7 @@ function RenderAIMMembers(): BOOLEAN {
   // Display Option Gear Cost text
   DrawTextToScreen(CharacterInfo[AIM_MEMBER_OPTIONAL_GEAR], AIM_MEMBER_OPTIONAL_GEAR_X, AIM_MEMBER_OPTIONAL_GEAR_Y, 0, AIM_M_FONT_STATIC_TEXT, AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
-  swprintf(wTemp, L"%d", gMercProfiles[gbCurrentSoldier].usOptionalGearCost);
+  swprintf(wTemp, "%d", gMercProfiles[gbCurrentSoldier].usOptionalGearCost);
   InsertCommasForDollarFigure(wTemp);
   InsertDollarSignInToString(wTemp);
   uiPosX = AIM_MEMBER_OPTIONAL_GEAR_X + StringPixLength(CharacterInfo[AIM_MEMBER_OPTIONAL_GEAR], AIM_M_FONT_STATIC_TEXT) + 5;
@@ -781,7 +781,7 @@ function RenderAIMMembers(): BOOLEAN {
 function DrawNumeralsToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY: UINT16, ulFont: UINT32, ubColor: UINT8): BOOLEAN {
   let sStr: wchar_t[] /* [10] */;
 
-  swprintf(sStr, L"%d", iNumber);
+  swprintf(sStr, "%d", iNumber);
 
   DrawTextToScreen(sStr, usLocX, usLocY, bWidth, ulFont, ubColor, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
 
@@ -791,7 +791,7 @@ function DrawNumeralsToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLo
 function DrawMoneyToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY: UINT16, ulFont: UINT32, ubColor: UINT8): BOOLEAN {
   let sStr: wchar_t[] /* [10] */;
 
-  swprintf(sStr, L"%d", iNumber);
+  swprintf(sStr, "%d", iNumber);
   InsertCommasForDollarFigure(sStr);
   InsertDollarSignInToString(sStr);
 
@@ -841,11 +841,11 @@ function UpdateMercInfo(): BOOLEAN {
     let sMedicalString: wchar_t[] /* [40] */;
 
     // Display the medical cost
-    swprintf(zTemp, L"%d", gMercProfiles[gbCurrentSoldier].sMedicalDepositAmount);
+    swprintf(zTemp, "%d", gMercProfiles[gbCurrentSoldier].sMedicalDepositAmount);
     InsertCommasForDollarFigure(zTemp);
     InsertDollarSignInToString(zTemp);
 
-    swprintf(sMedicalString, L"%s %s", zTemp, CharacterInfo[AIM_MEMBER_MEDICAL_DEPOSIT_REQ]);
+    swprintf(sMedicalString, "%s %s", zTemp, CharacterInfo[AIM_MEMBER_MEDICAL_DEPOSIT_REQ]);
 
     // If the string will be displayed in more then 2 lines, recenter the string
     if ((DisplayWrappedString(0, 0, AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL, AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(AIM_FONT12ARIAL)) > 2) {
@@ -1086,7 +1086,7 @@ function DisplayMercsInventory(ubMercID: UINT8): BOOLEAN {
         let zTempStr: wchar_t[] /* [32] */;
         //				UINT16	usWidthOfNumber;
 
-        swprintf(zTempStr, L"x%d", gMercProfiles[ubMercID].bInvNumber[i]);
+        swprintf(zTempStr, "x%d", gMercProfiles[ubMercID].bInvNumber[i]);
 
         DrawTextToScreen(zTempStr, (PosX - 1), (PosY + 20), AIM_MEMBER_WEAPON_NAME_WIDTH, AIM_M_FONT_DYNAMIC_TEXT, AIM_M_WEAPON_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
       } else {
@@ -1367,7 +1367,7 @@ function DisplayDots(usNameX: UINT16, usNameY: UINT16, usStatX: UINT16, pString:
 
   usPosX = usStatX;
   for (i = usNameX + usStringLength; i <= usPosX; usPosX -= 7) {
-    DrawTextToScreen(L".", usPosX, usNameY, 0, AIM_M_FONT_STATIC_TEXT, AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(".", usPosX, usNameY, 0, AIM_M_FONT_STATIC_TEXT, AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   }
 }
 
@@ -1588,10 +1588,10 @@ function DisplayVideoConferencingDisplay(): BOOLEAN {
 
   // Title & Name
   if (gubVideoConferencingMode == AIM_VIDEO_INIT_MODE) {
-    swprintf(sMercName, L"%s", VideoConfercingText[AIM_MEMBER_CONNECTING]);
+    swprintf(sMercName, "%s", VideoConfercingText[AIM_MEMBER_CONNECTING]);
     DrawTextToScreen(sMercName, AIM_MEMBER_VIDEO_NAME_X, AIM_MEMBER_VIDEO_NAME_Y, 0, FONT12ARIAL, AIM_M_VIDEO_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   } else {
-    swprintf(sMercName, L"%s %s", VideoConfercingText[AIM_MEMBER_VIDEO_CONF_WITH], gMercProfiles[gbCurrentSoldier].zName);
+    swprintf(sMercName, "%s %s", VideoConfercingText[AIM_MEMBER_VIDEO_CONF_WITH], gMercProfiles[gbCurrentSoldier].zName);
     DrawTextToScreen(sMercName, AIM_MEMBER_VIDEO_NAME_X, AIM_MEMBER_VIDEO_NAME_Y, 0, FONT12ARIAL, AIM_M_VIDEO_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   }
 
@@ -1728,7 +1728,7 @@ function DisplayMercChargeAmount(): UINT32 {
     }
   }
 
-  swprintf(wDollarTemp, L"%d", giContractAmount);
+  swprintf(wDollarTemp, "%d", giContractAmount);
   InsertCommasForDollarFigure(wDollarTemp);
   InsertDollarSignInToString(wDollarTemp);
 
@@ -1736,9 +1736,9 @@ function DisplayMercChargeAmount(): UINT32 {
   //	if( FindSoldierByProfileID( gbCurrentSoldier, TRUE ) == NULL )
   {
     if (gMercProfiles[gbCurrentSoldier].bMedicalDeposit)
-      swprintf(wTemp, L"%s %s", wDollarTemp, VideoConfercingText[AIM_MEMBER_WITH_MEDICAL]);
+      swprintf(wTemp, "%s %s", wDollarTemp, VideoConfercingText[AIM_MEMBER_WITH_MEDICAL]);
     else
-      swprintf(wTemp, L"%s", wDollarTemp);
+      swprintf(wTemp, "%s", wDollarTemp);
 
     DrawTextToScreen(wTemp, AIM_CONTRACT_CHARGE_AMOUNNT_X + 1, AIM_CONTRACT_CHARGE_AMOUNNT_Y + 3, 0, AIM_M_VIDEO_CONTRACT_AMOUNT_FONT, AIM_M_VIDEO_CONTRACT_AMOUNT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   }
@@ -1767,12 +1767,12 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: S
       if (sString1 != NULL)
         wcscpy(sPopUpString1, sString1);
       else
-        sPopUpString1[0] = L'\0';
+        sPopUpString1[0] = '\0';
 
       if (sString2 != NULL)
         wcscpy(sPopUpString2, sString2);
       else
-        sPopUpString2[0] = L'\0';
+        sPopUpString2[0] = '\0';
 
       usPopUpBoxPosX = usPosX;
       usPopUpBoxPosY = usPosY;
@@ -1821,9 +1821,9 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: S
       SetFontShadow(AIM_M_VIDEO_NAME_SHADOWCOLOR);
 
       usTempPosY += AIM_POPUP_BOX_STRING1_Y;
-      if (sPopUpString1[0] != L'\0')
+      if (sPopUpString1[0] != '\0')
         usTempPosY += DisplayWrappedString(usPopUpBoxPosX, usTempPosY, AIM_POPUP_BOX_WIDTH, 2, AIM_POPUP_BOX_FONT, AIM_POPUP_BOX_COLOR, sPopUpString1, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-      if (sPopUpString2[0] != L'\0')
+      if (sPopUpString2[0] != '\0')
         DisplayWrappedString(usPopUpBoxPosX, (usTempPosY + 4), AIM_POPUP_BOX_WIDTH, 2, AIM_POPUP_BOX_FONT, AIM_POPUP_BOX_COLOR, sPopUpString2, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
       SetFontShadow(DEFAULT_SHADOW);
@@ -1945,7 +1945,7 @@ function BtnAnsweringMachineButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT
 
         // Display a message box displaying a messsage that the message was recorded
         //				DoLapTopMessageBox( 10, AimPopUpText[ AIM_MEMBER_MESSAGE_RECORDED ], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL );
-        InitCreateDeleteAimPopUpBox(AIM_POPUP_CREATE, L" ", AimPopUpText[AIM_MEMBER_MESSAGE_RECORDED], AIM_POPUP_BOX_X, AIM_POPUP_BOX_Y, AIM_POPUP_BOX_SUCCESS);
+        InitCreateDeleteAimPopUpBox(AIM_POPUP_CREATE, " ", AimPopUpText[AIM_MEMBER_MESSAGE_RECORDED], AIM_POPUP_BOX_X, AIM_POPUP_BOX_Y, AIM_POPUP_BOX_SUCCESS);
 
         SpecifyDisabledButtonStyle(giAnsweringMachineButton[1], DISABLED_STYLE_NONE);
         DisableButton(giAnsweringMachineButton[1]);
@@ -2093,7 +2093,7 @@ function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): BOOLEAN {
 }
 
 function DisplayTextForMercFaceVideoPopUp(pString: STR16): void {
-  swprintf(gsTalkingMercText, L"\"%s\"", pString);
+  swprintf(gsTalkingMercText, "\"%s\"", pString);
 
   // Set the minimum time for the dialogue text to be present
   usAimMercSpeechDuration = wcslen(gsTalkingMercText) * AIM_TEXT_SPEECH_MODIFIER;
@@ -3457,7 +3457,7 @@ function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
   uiHour = ((LaptopSaveInfo.sLastHiredMerc.uiArrivalTime) - (((LaptopSaveInfo.sLastHiredMerc.uiArrivalTime) / 1440) * 1440)) / 60;
 
   // create the time string
-  swprintf(zTimeString, L"%02d:%02d", uiHour, 0);
+  swprintf(zTimeString, "%02d:%02d", uiHour, 0);
 
   // get the id string
   GetSectorIDString(gsMercArriveSectorX, gsMercArriveSectorY, 0, zSectorIDString, FALSE);

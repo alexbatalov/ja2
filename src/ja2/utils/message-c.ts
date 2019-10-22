@@ -544,7 +544,7 @@ function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, 
     return;
     usColor = DEBUG_COLOR;
     wcscpy(DestStringA, DestString);
-    swprintf(DestString, L"Debug: %s", DestStringA);
+    swprintf(DestString, "Debug: %s", DestStringA);
     WriteMessageToFile(DestStringA);
   }
 
@@ -669,7 +669,7 @@ function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, .
     vswprintf(DestString, pStringA, argptr); // process gprintf string (get output str)
     va_end(argptr);
 
-    swprintf(DestStringA, L"DEBUG: %s", DestString);
+    swprintf(DestStringA, "DEBUG: %s", DestString);
 
     BeginUIMessage(DestStringA);
     WriteMessageToFile(DestStringA);
@@ -707,7 +707,7 @@ function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, .
     return;
     usColor = DEBUG_COLOR;
     wcscpy(DestStringA, DestString);
-    swprintf(DestString, L"Debug: %s", DestStringA);
+    swprintf(DestString, "Debug: %s", DestStringA);
   }
 
   if (ubPriority == MSG_DIALOG) {

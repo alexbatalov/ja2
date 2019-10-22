@@ -89,7 +89,7 @@ function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: UINT8, 
     ColorFillVideoSurfaceArea(uiDestSurface, sTLX, sTLY, sBRX, sBRY, us16BPPColor);
   }
 
-  gprintf(ubXPos + (16 * 20), ubYPos, L"%S", gpPalRep[ubPaletteRep].ID);
+  gprintf(ubXPos + (16 * 20), ubYPos, "%S", gpPalRep[ubPaletteRep].ID);
 
   return TRUE;
 }
@@ -140,7 +140,7 @@ function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16
       }
       if (!fLineSplit) {
         // We completed the check for a space, but failed, so use the hyphen method.
-        swprintf(pStr2, L"-%s", &(pStr[uiHyphenLet]));
+        swprintf(pStr2, "-%s", &(pStr[uiHyphenLet]));
         pStr[uiHyphenLet] = '/0';
         fLineSplit = TRUE; // hyphen method
         break;

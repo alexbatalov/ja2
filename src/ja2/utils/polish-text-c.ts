@@ -94,9 +94,9 @@ FAST HELP TEXT -- Explains how the syntax of fast help text works.
 
 */
 
-let ItemNames: UINT16[][] /* [MAXITEMS][80] */ = [ L"" ];
+let ItemNames: UINT16[][] /* [MAXITEMS][80] */ = [ "" ];
 
-let ShortItemNames: UINT16[][] /* [MAXITEMS][80] */ = [ L"" ];
+let ShortItemNames: UINT16[][] /* [MAXITEMS][80] */ = [ "" ];
 
 // Different weapon calibres
 // CAWS is Close Assault Weapon System and should probably be left as it is
@@ -104,23 +104,23 @@ let ShortItemNames: UINT16[][] /* [MAXITEMS][80] */ = [ L"" ];
 // WP is Warsaw Pact
 // cal is an abbreviation for calibre
 let AmmoCaliber: UINT16[][] /* [][20] */ = [
-  L"0",
-  L".38 cal",
-  L"9mm",
-  L".45 cal",
-  L".357 cal",
-  L"12 gauge",
-  L"CAWS",
-  L"5.45mm",
-  L"5.56mm",
-  L"7.62mm NATO",
-  L"7.62mm WP",
-  L"4.7mm",
-  L"5.7mm",
-  L"Monstrum",
-  L"Rakiety",
-  L"", // dart
-  L"", // flame
+  "0",
+  ".38 cal",
+  "9mm",
+  ".45 cal",
+  ".357 cal",
+  "12 gauge",
+  "CAWS",
+  "5.45mm",
+  "5.56mm",
+  "7.62mm NATO",
+  "7.62mm WP",
+  "4.7mm",
+  "5.7mm",
+  "Monstrum",
+  "Rakiety",
+  "", // dart
+  "", // flame
 ];
 
 // This BobbyRayAmmoCaliber is virtually the same as AmmoCaliber however the bobby version doesnt have as much room for the words.
@@ -131,1795 +131,1795 @@ let AmmoCaliber: UINT16[][] /* [][20] */ = [
 // WP is Warsaw Pact
 // cal is an abbreviation for calibre
 let BobbyRayAmmoCaliber: UINT16[][] /* [][20] */ = [
-  L"0",
-  L".38 cal",
-  L"9mm",
-  L".45 cal",
-  L".357 cal",
-  L"12 gauge",
-  L"CAWS",
-  L"5.45mm",
-  L"5.56mm",
-  L"7.62mm N.",
-  L"7.62mm WP",
-  L"4.7mm",
-  L"5.7mm",
-  L"Monstrum",
-  L"Rakiety",
-  L"", // dart
+  "0",
+  ".38 cal",
+  "9mm",
+  ".45 cal",
+  ".357 cal",
+  "12 gauge",
+  "CAWS",
+  "5.45mm",
+  "5.56mm",
+  "7.62mm N.",
+  "7.62mm WP",
+  "4.7mm",
+  "5.7mm",
+  "Monstrum",
+  "Rakiety",
+  "", // dart
 ];
 
 let WeaponType: UINT16[][] /* [][30] */ = [
-  L"Inny",
-  L"Pistolet",
-  L"Pistolet maszynowy",
-  L"Karabin maszynowy",
-  L"Karabin",
-  L"Karabin snajperski",
-  L"Karabin bojowy",
-  L"Lekki karabin maszynowy",
-  L"Strzelba",
+  "Inny",
+  "Pistolet",
+  "Pistolet maszynowy",
+  "Karabin maszynowy",
+  "Karabin",
+  "Karabin snajperski",
+  "Karabin bojowy",
+  "Lekki karabin maszynowy",
+  "Strzelba",
 ];
 
 let TeamTurnString: UINT16[][] /* [][STRING_LENGTH] */ = [
-  L"Tura gracza", // player's turn
-  L"Tura przeciwnika",
-  L"Tura stworzeń",
-  L"Tura samoobrony",
-  L"Tura cywili",
+  "Tura gracza", // player's turn
+  "Tura przeciwnika",
+  "Tura stworzeń",
+  "Tura samoobrony",
+  "Tura cywili",
   // planning turn
 ];
 
 let Message: UINT16[][] /* [][STRING_LENGTH] */ = [
-  L"",
+  "",
 
   // In the following 8 strings, the %s is the merc's name, and the %d (if any) is a number.
 
-  L"%s dostał(a) w głowę i traci 1 punkt inteligencji!",
-  L"%s dostał(a) w ramię i traci 1 punkt zręcznoci!",
-  L"%s dostał(a) w klatkę piersiowš i traci 1 punkt siły!",
-  L"%s dostał(a) w nogi i traci 1 punkt zwinnoci!",
-  L"%s dostał(a) w głowę i traci %d pkt. inteligencji!",
-  L"%s dostał(a) w ramię i traci %d pkt. zręcznoci!",
-  L"%s dostał(a) w klatkę piersiowš i traci %d pkt. siły!",
-  L"%s dostał(a) w nogi i traci %d pkt. zwinnoci!",
-  L"Przerwanie!",
+  "%s dostał(a) w głowę i traci 1 punkt inteligencji!",
+  "%s dostał(a) w ramię i traci 1 punkt zręcznoci!",
+  "%s dostał(a) w klatkę piersiowš i traci 1 punkt siły!",
+  "%s dostał(a) w nogi i traci 1 punkt zwinnoci!",
+  "%s dostał(a) w głowę i traci %d pkt. inteligencji!",
+  "%s dostał(a) w ramię i traci %d pkt. zręcznoci!",
+  "%s dostał(a) w klatkę piersiowš i traci %d pkt. siły!",
+  "%s dostał(a) w nogi i traci %d pkt. zwinnoci!",
+  "Przerwanie!",
 
   // The first %s is a merc's name, the second is a string from pNoiseVolStr,
   // the third is a string from pNoiseTypeStr, and the last is a string from pDirectionStr
 
-  L"", // OBSOLETE
-  L"Dotarły twoje posiłki!",
+  "", // OBSOLETE
+  "Dotarły twoje posiłki!",
 
   // In the following four lines, all %s's are merc names
 
-  L"%s przeładowuje.",
-  L"%s posiada za mało Punktów Akcji!",
-  L"%s udziela pierwszej pomocy. (Nacinij dowolny klawisz aby przerwać.)",
-  L"%s i %s udzielajš pierwszej pomocy. (Nacinij dowolny klawisz aby przerwać.)",
+  "%s przeładowuje.",
+  "%s posiada za mało Punktów Akcji!",
+  "%s udziela pierwszej pomocy. (Nacinij dowolny klawisz aby przerwać.)",
+  "%s i %s udzielajš pierwszej pomocy. (Nacinij dowolny klawisz aby przerwać.)",
   // the following 17 strings are used to create lists of gun advantages and disadvantages
   // (separated by commas)
-  L"niezawodna",
-  L"zawodna",
-  L"łatwa w naprawie",
-  L"trudna do naprawy",
-  L"solidna",
-  L"niesolidna",
-  L"szybkostrzelna",
-  L"wolno strzelajšca",
-  L"daleki zasięg",
-  L"krótki zasięg",
-  L"mała waga",
-  L"duża waga",
-  L"niewielkie rozmiary",
-  L"szybki cišgły ogień",
-  L"brak cišgłego ognia",
-  L"duży magazynek",
-  L"mały magazynek",
+  "niezawodna",
+  "zawodna",
+  "łatwa w naprawie",
+  "trudna do naprawy",
+  "solidna",
+  "niesolidna",
+  "szybkostrzelna",
+  "wolno strzelajšca",
+  "daleki zasięg",
+  "krótki zasięg",
+  "mała waga",
+  "duża waga",
+  "niewielkie rozmiary",
+  "szybki cišgły ogień",
+  "brak cišgłego ognia",
+  "duży magazynek",
+  "mały magazynek",
 
   // In the following two lines, all %s's are merc names
 
-  L"%s: kamuflaż się starł.",
-  L"%s: kamuflaż się zmył.",
+  "%s: kamuflaż się starł.",
+  "%s: kamuflaż się zmył.",
 
   // The first %s is a merc name and the second %s is an item name
 
-  L"Brak amunicji w dodatkowej broni!",
-  L"%s ukradł(a): %s.",
+  "Brak amunicji w dodatkowej broni!",
+  "%s ukradł(a): %s.",
 
   // The %s is a merc name
 
-  L"%s ma broń bez funkcji cišgłego ognia.",
+  "%s ma broń bez funkcji cišgłego ognia.",
 
-  L"Już masz co takiego dołšczone.",
-  L"Połšczyć przedmioty?",
+  "Już masz co takiego dołšczone.",
+  "Połšczyć przedmioty?",
 
   // Both %s's are item names
 
-  L"%s i %s nie pasujš do siebie.",
+  "%s i %s nie pasujš do siebie.",
 
-  L"Brak",
-  L"Wyjmij amunicję",
-  L"Dodatki",
+  "Brak",
+  "Wyjmij amunicję",
+  "Dodatki",
 
   // You cannot use "item(s)" and your "other item" at the same time.
   // Ex:  You cannot use sun goggles and you gas mask at the same time.
-  L" %s i %s nie mogš być używane jednoczenie.",
+  " %s i %s nie mogš być używane jednoczenie.",
 
-  L"Element, który masz na kursorze myszy może być dołšczony do pewnych przedmiotów, poprzez umieszczenie go w jednym z czterech slotów.",
-  L"Element, który masz na kursorze myszy może być dołšczony do pewnych przedmiotów, poprzez umieszczenie go w jednym z czterech slotów. (Jednak w tym przypadku, przedmioty do siebie nie pasujš.)",
-  L"Ten sektor nie został oczyszczony z wrogów!",
-  L"Wcišż musisz dać %s %s",
-  L"%s dostał(a) w głowę!",
-  L"Przerwać walkę?",
-  L"Ta zmiana będzie trwała. Kontynuować?",
-  L"%s ma więcej energii!",
-  L"%s polizgnšł(nęła) się na kulkach!",
-  L"%s nie chwycił(a) - %s!",
-  L"%s naprawił(a) %s",
-  L"Przerwanie dla: ",
-  L"Poddać się?",
-  L"Ta osoba nie chce twojej pomocy.",
-  L"NIE SĽDZĘ!",
-  L"Aby podróżować helikopterem Skyridera, musisz najpierw zmienić przydział najemników na POJAZD/HELIKOPTER.",
-  L"%s miał(a) czas by przeładować tylko jednš broń",
-  L"Tura dzikich kotów",
+  "Element, który masz na kursorze myszy może być dołšczony do pewnych przedmiotów, poprzez umieszczenie go w jednym z czterech slotów.",
+  "Element, który masz na kursorze myszy może być dołšczony do pewnych przedmiotów, poprzez umieszczenie go w jednym z czterech slotów. (Jednak w tym przypadku, przedmioty do siebie nie pasujš.)",
+  "Ten sektor nie został oczyszczony z wrogów!",
+  "Wcišż musisz dać %s %s",
+  "%s dostał(a) w głowę!",
+  "Przerwać walkę?",
+  "Ta zmiana będzie trwała. Kontynuować?",
+  "%s ma więcej energii!",
+  "%s polizgnšł(nęła) się na kulkach!",
+  "%s nie chwycił(a) - %s!",
+  "%s naprawił(a) %s",
+  "Przerwanie dla: ",
+  "Poddać się?",
+  "Ta osoba nie chce twojej pomocy.",
+  "NIE SĽDZĘ!",
+  "Aby podróżować helikopterem Skyridera, musisz najpierw zmienić przydział najemników na POJAZD/HELIKOPTER.",
+  "%s miał(a) czas by przeładować tylko jednš broń",
+  "Tura dzikich kotów",
 ];
 
 // the names of the towns in the game
 
 let pTownNames: STR16[] /* [] */ = [
-  L"",
-  L"Omerta",
-  L"Drassen",
-  L"Alma",
-  L"Grumm",
-  L"Tixa",
-  L"Cambria",
-  L"San Mona",
-  L"Estoni",
-  L"Orta",
-  L"Balime",
-  L"Meduna",
-  L"Chitzena",
+  "",
+  "Omerta",
+  "Drassen",
+  "Alma",
+  "Grumm",
+  "Tixa",
+  "Cambria",
+  "San Mona",
+  "Estoni",
+  "Orta",
+  "Balime",
+  "Meduna",
+  "Chitzena",
 ];
 
 // the types of time compression. For example: is the timer paused? at normal speed, 5 minutes per second, etc.
 // min is an abbreviation for minutes
 
 let sTimeStrings: STR16[] /* [] */ = [
-  L"Pauza",
-  L"Normalna",
-  L"5 min.",
-  L"30 min.",
-  L"60 min.",
-  L"6 godz.", // NEW
+  "Pauza",
+  "Normalna",
+  "5 min.",
+  "30 min.",
+  "60 min.",
+  "6 godz.", // NEW
 ];
 
 // Assignment Strings: what assignment does the merc  have right now? For example, are they on a squad, training,
 // administering medical aid (doctor) or training a town. All are abbreviated. 8 letters is the longest it can be.
 
 let pAssignmentStrings: STR16[] /* [] */ = [
-  L"Oddz. 1",
-  L"Oddz. 2",
-  L"Oddz. 3",
-  L"Oddz. 4",
-  L"Oddz. 5",
-  L"Oddz. 6",
-  L"Oddz. 7",
-  L"Oddz. 8",
-  L"Oddz. 9",
-  L"Oddz. 10",
-  L"Oddz. 11",
-  L"Oddz. 12",
-  L"Oddz. 13",
-  L"Oddz. 14",
-  L"Oddz. 15",
-  L"Oddz. 16",
-  L"Oddz. 17",
-  L"Oddz. 18",
-  L"Oddz. 19",
-  L"Oddz. 20",
-  L"Służba", // on active duty
-  L"Lekarz", // administering medical aid
-  L"Pacjent", // getting medical aid
-  L"Pojazd", // sitting around resting
-  L"Podróż", // in transit - abbreviated form
-  L"Naprawa", // repairing
-  L"Praktyka", // training themselves  // ***************NEW******************** as of June 24. 1998
-  L"Samoobr.", // training a town to revolt // *************NEW******************** as of June 24, 1998
-  L"Instruk.", // training a teammate
-  L"Uczeń", // being trained by someone else // *******************NEW************** as of June 24, 1998
-  L"Nie żyje", // dead
-  L"Obezwł.", // abbreviation for incapacitated
-  L"Jeniec", // Prisoner of war - captured
-  L"Szpital", // patient in a hospital
-  L"Pusty", // Vehicle is empty
+  "Oddz. 1",
+  "Oddz. 2",
+  "Oddz. 3",
+  "Oddz. 4",
+  "Oddz. 5",
+  "Oddz. 6",
+  "Oddz. 7",
+  "Oddz. 8",
+  "Oddz. 9",
+  "Oddz. 10",
+  "Oddz. 11",
+  "Oddz. 12",
+  "Oddz. 13",
+  "Oddz. 14",
+  "Oddz. 15",
+  "Oddz. 16",
+  "Oddz. 17",
+  "Oddz. 18",
+  "Oddz. 19",
+  "Oddz. 20",
+  "Służba", // on active duty
+  "Lekarz", // administering medical aid
+  "Pacjent", // getting medical aid
+  "Pojazd", // sitting around resting
+  "Podróż", // in transit - abbreviated form
+  "Naprawa", // repairing
+  "Praktyka", // training themselves  // ***************NEW******************** as of June 24. 1998
+  "Samoobr.", // training a town to revolt // *************NEW******************** as of June 24, 1998
+  "Instruk.", // training a teammate
+  "Uczeń", // being trained by someone else // *******************NEW************** as of June 24, 1998
+  "Nie żyje", // dead
+  "Obezwł.", // abbreviation for incapacitated
+  "Jeniec", // Prisoner of war - captured
+  "Szpital", // patient in a hospital
+  "Pusty", // Vehicle is empty
 ];
 
 let pMilitiaString: STR16[] /* [] */ = [
-  L"Samoobrona", // the title of the militia box
-  L"Bez przydziału", // the number of unassigned militia troops
-  L"Nie możesz przemieszczać oddziałów samoobrony gdy nieprzyjaciel jest w sektorze!",
+  "Samoobrona", // the title of the militia box
+  "Bez przydziału", // the number of unassigned militia troops
+  "Nie możesz przemieszczać oddziałów samoobrony gdy nieprzyjaciel jest w sektorze!",
 ];
 
 let pMilitiaButtonString: STR16[] /* [] */ = [
-  L"Auto", // auto place the militia troops for the player
-  L"OK", // done placing militia troops
+  "Auto", // auto place the militia troops for the player
+  "OK", // done placing militia troops
 ];
 
 let pConditionStrings: STR16[] /* [] */ = [
-  L"Doskonały", // the state of a soldier .. excellent health
-  L"Dobry", // good health
-  L"Doć dobry", // fair health
-  L"Ranny", // wounded health
-  L"Zmęczony", // L"Wyczerpany", // tired
-  L"Krwawi", // bleeding to death
-  L"Nieprzyt.", // knocked out
-  L"Umierajšcy", // near death
-  L"Nie żyje", // dead
+  "Doskonały", // the state of a soldier .. excellent health
+  "Dobry", // good health
+  "Doć dobry", // fair health
+  "Ranny", // wounded health
+  "Zmęczony", // L"Wyczerpany", // tired
+  "Krwawi", // bleeding to death
+  "Nieprzyt.", // knocked out
+  "Umierajšcy", // near death
+  "Nie żyje", // dead
 ];
 
 let pEpcMenuStrings: STR16[] /* [] */ = [
-  L"Służba", // set merc on active duty
-  L"Pacjent", // set as a patient to receive medical aid
-  L"Pojazd", // tell merc to enter vehicle
-  L"Wypuć", // let the escorted character go off on their own
-  L"Anuluj", // close this menu
+  "Służba", // set merc on active duty
+  "Pacjent", // set as a patient to receive medical aid
+  "Pojazd", // tell merc to enter vehicle
+  "Wypuć", // let the escorted character go off on their own
+  "Anuluj", // close this menu
 ];
 
 // look at pAssignmentString above for comments
 
 let pPersonnelAssignmentStrings: STR16[] /* [] */ = [
-  L"Oddz. 1",
-  L"Oddz. 2",
-  L"Oddz. 3",
-  L"Oddz. 4",
-  L"Oddz. 5",
-  L"Oddz. 6",
-  L"Oddz. 7",
-  L"Oddz. 8",
-  L"Oddz. 9",
-  L"Oddz. 10",
-  L"Oddz. 11",
-  L"Oddz. 12",
-  L"Oddz. 13",
-  L"Oddz. 14",
-  L"Oddz. 15",
-  L"Oddz. 16",
-  L"Oddz. 17",
-  L"Oddz. 18",
-  L"Oddz. 19",
-  L"Oddz. 20",
-  L"Służba",
-  L"Lekarz",
-  L"Pacjent",
-  L"Pojazd",
-  L"Podróż",
-  L"Naprawa",
-  L"Praktyka",
-  L"Trenuje samoobronę",
-  L"Instruktor",
-  L"Uczeń",
-  L"Nie żyje",
-  L"Obezwładniony",
-  L"Jeniec",
-  L"Szpital",
-  L"Pusty", // Vehicle is empty
+  "Oddz. 1",
+  "Oddz. 2",
+  "Oddz. 3",
+  "Oddz. 4",
+  "Oddz. 5",
+  "Oddz. 6",
+  "Oddz. 7",
+  "Oddz. 8",
+  "Oddz. 9",
+  "Oddz. 10",
+  "Oddz. 11",
+  "Oddz. 12",
+  "Oddz. 13",
+  "Oddz. 14",
+  "Oddz. 15",
+  "Oddz. 16",
+  "Oddz. 17",
+  "Oddz. 18",
+  "Oddz. 19",
+  "Oddz. 20",
+  "Służba",
+  "Lekarz",
+  "Pacjent",
+  "Pojazd",
+  "Podróż",
+  "Naprawa",
+  "Praktyka",
+  "Trenuje samoobronę",
+  "Instruktor",
+  "Uczeń",
+  "Nie żyje",
+  "Obezwładniony",
+  "Jeniec",
+  "Szpital",
+  "Pusty", // Vehicle is empty
 ];
 
 // refer to above for comments
 
 let pLongAssignmentStrings: STR16[] /* [] */ = [
-  L"Oddział 1",
-  L"Oddział 2",
-  L"Oddział 3",
-  L"Oddział 4",
-  L"Oddział 5",
-  L"Oddział 6",
-  L"Oddział 7",
-  L"Oddział 8",
-  L"Oddział 9",
-  L"Oddział 10",
-  L"Oddział 11",
-  L"Oddział 12",
-  L"Oddział 13",
-  L"Oddział 14",
-  L"Oddział 15",
-  L"Oddział 16",
-  L"Oddział 17",
-  L"Oddział 18",
-  L"Oddział 19",
-  L"Oddział 20",
-  L"Służba",
-  L"Lekarz",
-  L"Pacjent",
-  L"Pojazd",
-  L"W podróży",
-  L"Naprawa",
-  L"Praktyka",
-  L"Trenuj samoobronę",
-  L"Trenuj oddział",
-  L"Uczeń",
-  L"Nie żyje",
-  L"Obezwładniony",
-  L"Jeniec",
-  L"W szpitalu",
-  L"Pusty", // Vehicle is empty
+  "Oddział 1",
+  "Oddział 2",
+  "Oddział 3",
+  "Oddział 4",
+  "Oddział 5",
+  "Oddział 6",
+  "Oddział 7",
+  "Oddział 8",
+  "Oddział 9",
+  "Oddział 10",
+  "Oddział 11",
+  "Oddział 12",
+  "Oddział 13",
+  "Oddział 14",
+  "Oddział 15",
+  "Oddział 16",
+  "Oddział 17",
+  "Oddział 18",
+  "Oddział 19",
+  "Oddział 20",
+  "Służba",
+  "Lekarz",
+  "Pacjent",
+  "Pojazd",
+  "W podróży",
+  "Naprawa",
+  "Praktyka",
+  "Trenuj samoobronę",
+  "Trenuj oddział",
+  "Uczeń",
+  "Nie żyje",
+  "Obezwładniony",
+  "Jeniec",
+  "W szpitalu",
+  "Pusty", // Vehicle is empty
 ];
 
 // the contract options
 
 let pContractStrings: STR16[] /* [] */ = [
-  L"Opcje kontraktu:",
-  L"", // a blank line, required
-  L"Zaproponuj 1 dzień", // offer merc a one day contract extension
-  L"Zaproponuj 1 tydzień", // 1 week
-  L"Zaproponuj 2 tygodnie", // 2 week
-  L"Zwolnij", // end merc's contract
-  L"Anuluj", // stop showing this menu
+  "Opcje kontraktu:",
+  "", // a blank line, required
+  "Zaproponuj 1 dzień", // offer merc a one day contract extension
+  "Zaproponuj 1 tydzień", // 1 week
+  "Zaproponuj 2 tygodnie", // 2 week
+  "Zwolnij", // end merc's contract
+  "Anuluj", // stop showing this menu
 ];
 
 let pPOWStrings: STR16[] /* [] */ = [
-  L"Jeniec", // an acronym for Prisoner of War
-  L"??",
+  "Jeniec", // an acronym for Prisoner of War
+  "??",
 ];
 
 let pLongAttributeStrings: STR16[] /* [] */ = [
-  L"SIŁA", // The merc's strength attribute. Others below represent the other attributes.
-  L"ZRĘCZNOĆ",
-  L"ZWINNOĆ",
-  L"INTELIGENCJA",
-  L"UMIEJĘTNOCI STRZELECKIE",
-  L"WIEDZA MEDYCZNA",
-  L"ZNAJOMOĆ MECHANIKI",
-  L"UMIEJĘTNOĆ DOWODZENIA",
-  L"ZNAJOMOĆ MATERIAŁÓW WYBUCHOWYCH",
-  L"POZIOM DOWIADCZENIA",
+  "SIŁA", // The merc's strength attribute. Others below represent the other attributes.
+  "ZRĘCZNOĆ",
+  "ZWINNOĆ",
+  "INTELIGENCJA",
+  "UMIEJĘTNOCI STRZELECKIE",
+  "WIEDZA MEDYCZNA",
+  "ZNAJOMOĆ MECHANIKI",
+  "UMIEJĘTNOĆ DOWODZENIA",
+  "ZNAJOMOĆ MATERIAŁÓW WYBUCHOWYCH",
+  "POZIOM DOWIADCZENIA",
 ];
 
 let pInvPanelTitleStrings: STR16[] /* [] */ = [
-  L"Osłona", // the armor rating of the merc
-  L"Ekwip.", // the weight the merc is carrying
-  L"Kamuf.", // the merc's camouflage rating
+  "Osłona", // the armor rating of the merc
+  "Ekwip.", // the weight the merc is carrying
+  "Kamuf.", // the merc's camouflage rating
 ];
 
 let pShortAttributeStrings: STR16[] /* [] */ = [
-  L"Zwn", // the abbreviated version of : agility
-  L"Zrc", // dexterity
-  L"Sił", // strength
-  L"Dow", // leadership
-  L"Int", // wisdom
-  L"Do", // experience level
-  L"Str", // marksmanship skill
-  L"Wyb", // explosive skill
-  L"Mec", // mechanical skill
-  L"Med", // medical skill
+  "Zwn", // the abbreviated version of : agility
+  "Zrc", // dexterity
+  "Sił", // strength
+  "Dow", // leadership
+  "Int", // wisdom
+  "Do", // experience level
+  "Str", // marksmanship skill
+  "Wyb", // explosive skill
+  "Mec", // mechanical skill
+  "Med", // medical skill
 ];
 
 let pUpperLeftMapScreenStrings: STR16[] /* [] */ = [
-  L"Przydział", // the mercs current assignment // *********************NEW****************** as of June 24, 1998
-  L"Kontrakt", // the contract info about the merc
-  L"Zdrowie", // the health level of the current merc
-  L"Morale", // the morale of the current merc
-  L"Stan", // the condition of the current vehicle
-  L"Paliwo", // the fuel level of the current vehicle
+  "Przydział", // the mercs current assignment // *********************NEW****************** as of June 24, 1998
+  "Kontrakt", // the contract info about the merc
+  "Zdrowie", // the health level of the current merc
+  "Morale", // the morale of the current merc
+  "Stan", // the condition of the current vehicle
+  "Paliwo", // the fuel level of the current vehicle
 ];
 
 let pTrainingStrings: STR16[] /* [] */ = [
-  L"Praktyka", // tell merc to train self // ****************************NEW******************* as of June 24, 1998
-  L"Samoobrona", // tell merc to train town // *****************************NEW ****************** as of June 24, 1998
-  L"Instruktor", // tell merc to act as trainer
-  L"Uczeń", // tell merc to be train by other // **********************NEW******************* as of June 24, 1998
+  "Praktyka", // tell merc to train self // ****************************NEW******************* as of June 24, 1998
+  "Samoobrona", // tell merc to train town // *****************************NEW ****************** as of June 24, 1998
+  "Instruktor", // tell merc to act as trainer
+  "Uczeń", // tell merc to be train by other // **********************NEW******************* as of June 24, 1998
 ];
 
 let pGuardMenuStrings: STR16[] /* [] */ = [
-  L"Limit ognia:", // the allowable rate of fire for a merc who is guarding
-  L" Agresywny ogień", // the merc can be aggressive in their choice of fire rates
-  L" Oszczędzaj amunicję", // conserve ammo
-  L" Strzelaj w ostatecznoci", // fire only when the merc needs to
-  L"Inne opcje:", // other options available to merc
-  L" Może się wycofać", // merc can retreat
-  L" Może szukać schronienia", // merc is allowed to seek cover
-  L" Może pomagać partnerom", // merc can assist teammates
-  L"OK", // done with this menu
-  L"Anuluj", // cancel this menu
+  "Limit ognia:", // the allowable rate of fire for a merc who is guarding
+  " Agresywny ogień", // the merc can be aggressive in their choice of fire rates
+  " Oszczędzaj amunicję", // conserve ammo
+  " Strzelaj w ostatecznoci", // fire only when the merc needs to
+  "Inne opcje:", // other options available to merc
+  " Może się wycofać", // merc can retreat
+  " Może szukać schronienia", // merc is allowed to seek cover
+  " Może pomagać partnerom", // merc can assist teammates
+  "OK", // done with this menu
+  "Anuluj", // cancel this menu
 ];
 
 // This string has the same comments as above, however the * denotes the option has been selected by the player
 
 let pOtherGuardMenuStrings: STR16[] /* [] */ = [
-  L"Limit ognia:",
-  L" *Agresywny ogień*",
-  L" *Oszczędzaj amunicję*",
-  L" *Strzelaj w ostatecznoci*",
-  L"Inne opcje:",
-  L" *Może się wycofać*",
-  L" *Może szukać schronienia*",
-  L" *Może pomagać partnerom*",
-  L"OK",
-  L"Anuluj",
+  "Limit ognia:",
+  " *Agresywny ogień*",
+  " *Oszczędzaj amunicję*",
+  " *Strzelaj w ostatecznoci*",
+  "Inne opcje:",
+  " *Może się wycofać*",
+  " *Może szukać schronienia*",
+  " *Może pomagać partnerom*",
+  "OK",
+  "Anuluj",
 ];
 
 let pAssignMenuStrings: STR16[] /* [] */ = [
-  L"Służba", // merc is on active duty
-  L"Lekarz", // the merc is acting as a doctor
-  L"Pacjent", // the merc is receiving medical attention
-  L"Pojazd", // the merc is in a vehicle
-  L"Naprawa", // the merc is repairing items
-  L"Szkolenie", // the merc is training
-  L"Anuluj", // cancel this menu
+  "Służba", // merc is on active duty
+  "Lekarz", // the merc is acting as a doctor
+  "Pacjent", // the merc is receiving medical attention
+  "Pojazd", // the merc is in a vehicle
+  "Naprawa", // the merc is repairing items
+  "Szkolenie", // the merc is training
+  "Anuluj", // cancel this menu
 ];
 
 let pRemoveMercStrings: STR16[] /* [] */ = [
-  L"Usuń najemnika", // remove dead merc from current team
-  L"Anuluj",
+  "Usuń najemnika", // remove dead merc from current team
+  "Anuluj",
 ];
 
 let pAttributeMenuStrings: STR16[] /* [] */ = [
-  L"Siła",
-  L"Zręcznoć",
-  L"Zwinnoć",
-  L"Zdrowie",
-  L"Um. strzeleckie",
-  L"Wiedza med.",
-  L"Zn. mechaniki",
-  L"Um. dowodzenia",
-  L"Zn. mat. wyb.",
-  L"Anuluj",
+  "Siła",
+  "Zręcznoć",
+  "Zwinnoć",
+  "Zdrowie",
+  "Um. strzeleckie",
+  "Wiedza med.",
+  "Zn. mechaniki",
+  "Um. dowodzenia",
+  "Zn. mat. wyb.",
+  "Anuluj",
 ];
 
 let pTrainingMenuStrings: STR16[] /* [] */ = [
-  L"Praktyka", // train yourself //****************************NEW************************** as of June 24, 1998
-  L"Samoobrona", // train the town // ****************************NEW ************************* as of June 24, 1998
-  L"Instruktor", // train your teammates // *******************NEW************************** as of June 24, 1998
-  L"Uczeń", // be trained by an instructor //***************NEW************************** as of June 24, 1998
-  L"Anuluj", // cancel this menu
+  "Praktyka", // train yourself //****************************NEW************************** as of June 24, 1998
+  "Samoobrona", // train the town // ****************************NEW ************************* as of June 24, 1998
+  "Instruktor", // train your teammates // *******************NEW************************** as of June 24, 1998
+  "Uczeń", // be trained by an instructor //***************NEW************************** as of June 24, 1998
+  "Anuluj", // cancel this menu
 ];
 
 let pSquadMenuStrings: STR16[] /* [] */ = [
-  L"Oddział  1",
-  L"Oddział  2",
-  L"Oddział  3",
-  L"Oddział  4",
-  L"Oddział  5",
-  L"Oddział  6",
-  L"Oddział  7",
-  L"Oddział  8",
-  L"Oddział  9",
-  L"Oddział 10",
-  L"Oddział 11",
-  L"Oddział 12",
-  L"Oddział 13",
-  L"Oddział 14",
-  L"Oddział 15",
-  L"Oddział 16",
-  L"Oddział 17",
-  L"Oddział 18",
-  L"Oddział 19",
-  L"Oddział 20",
-  L"Anuluj",
+  "Oddział  1",
+  "Oddział  2",
+  "Oddział  3",
+  "Oddział  4",
+  "Oddział  5",
+  "Oddział  6",
+  "Oddział  7",
+  "Oddział  8",
+  "Oddział  9",
+  "Oddział 10",
+  "Oddział 11",
+  "Oddział 12",
+  "Oddział 13",
+  "Oddział 14",
+  "Oddział 15",
+  "Oddział 16",
+  "Oddział 17",
+  "Oddział 18",
+  "Oddział 19",
+  "Oddział 20",
+  "Anuluj",
 ];
 
 let pPersonnelTitle: STR16[] /* [] */ = [
-  L"Personel", // the title for the personnel screen/program application
+  "Personel", // the title for the personnel screen/program application
 ];
 
 let pPersonnelScreenStrings: STR16[] /* [] */ = [
-  L"Zdrowie: ", // health of merc
-  L"Zwinnoć: ",
-  L"Zręcznoć: ",
-  L"Siła: ",
-  L"Um. dowodzenia: ",
-  L"Inteligencja: ",
-  L"Poziom dow.: ", // experience level
-  L"Um. strzeleckie: ",
-  L"Zn. mechaniki: ",
-  L"Zn. mat. wybuchowych: ",
-  L"Wiedza medyczna: ",
-  L"Zastaw na życie: ", // amount of medical deposit put down on the merc
-  L"Bieżšcy kontrakt: ", // cost of current contract
-  L"Liczba zabójstw: ", // number of kills by merc
-  L"Liczba asyst: ", // number of assists on kills by merc
-  L"Dzienny koszt:", // daily cost of merc
-  L"Ogólny koszt:", // total cost of merc
-  L"Wartoć kontraktu:", // cost of current contract
-  L"Usługi ogółem", // total service rendered by merc
-  L"Zaległa kwota", // amount left on MERC merc to be paid
-  L"Celnoć:", // percentage of shots that hit target
-  L"Iloć walk:", // number of battles fought
-  L"Ranny(a):", // number of times merc has been wounded
-  L"Umiejętnoci:",
-  L"Brak umięjętnoci",
+  "Zdrowie: ", // health of merc
+  "Zwinnoć: ",
+  "Zręcznoć: ",
+  "Siła: ",
+  "Um. dowodzenia: ",
+  "Inteligencja: ",
+  "Poziom dow.: ", // experience level
+  "Um. strzeleckie: ",
+  "Zn. mechaniki: ",
+  "Zn. mat. wybuchowych: ",
+  "Wiedza medyczna: ",
+  "Zastaw na życie: ", // amount of medical deposit put down on the merc
+  "Bieżšcy kontrakt: ", // cost of current contract
+  "Liczba zabójstw: ", // number of kills by merc
+  "Liczba asyst: ", // number of assists on kills by merc
+  "Dzienny koszt:", // daily cost of merc
+  "Ogólny koszt:", // total cost of merc
+  "Wartoć kontraktu:", // cost of current contract
+  "Usługi ogółem", // total service rendered by merc
+  "Zaległa kwota", // amount left on MERC merc to be paid
+  "Celnoć:", // percentage of shots that hit target
+  "Iloć walk:", // number of battles fought
+  "Ranny(a):", // number of times merc has been wounded
+  "Umiejętnoci:",
+  "Brak umięjętnoci",
 ];
 
 // These string correspond to enums used in by the SkillTrait enums in SoldierProfileType.h
 let gzMercSkillText: STR16[] /* [] */ = [
-  L"Brak umiejętnoci",
-  L"Otwieranie zamków",
-  L"Walka wręcz",
-  L"Elektronika",
-  L"Nocne operacje",
-  L"Rzucanie",
-  L"Szkolenie",
-  L"Ciężka broń",
-  L"Broń automatyczna",
-  L"Skradanie się",
-  L"Oburęcznoć",
-  L"Kradzieże",
-  L"Sztuki walki",
-  L"Broń biała",
-  L"Snajper",
-  L"Kamuflaż",
-  L"(Eksp.)",
+  "Brak umiejętnoci",
+  "Otwieranie zamków",
+  "Walka wręcz",
+  "Elektronika",
+  "Nocne operacje",
+  "Rzucanie",
+  "Szkolenie",
+  "Ciężka broń",
+  "Broń automatyczna",
+  "Skradanie się",
+  "Oburęcznoć",
+  "Kradzieże",
+  "Sztuki walki",
+  "Broń biała",
+  "Snajper",
+  "Kamuflaż",
+  "(Eksp.)",
 ];
 
 // This is pop up help text for the options that are available to the merc
 
 let pTacticalPopupButtonStrings: STR16[] /* [] */ = [
-  L"W|stań/Id",
-  L"S|chyl się/Id",
-  L"Wstań/Biegnij (|R)",
-  L"|Padnij/Czołgaj się",
-  L"Patrz (|L)",
-  L"Akcja",
-  L"Rozmawiaj",
-  L"Zbadaj (|C|t|r|l)",
+  "W|stań/Id",
+  "S|chyl się/Id",
+  "Wstań/Biegnij (|R)",
+  "|Padnij/Czołgaj się",
+  "Patrz (|L)",
+  "Akcja",
+  "Rozmawiaj",
+  "Zbadaj (|C|t|r|l)",
 
   // Pop up door menu
-  L"Otwórz",
-  L"Poszukaj pułapek",
-  L"Użyj wytrychów",
-  L"Wyważ",
-  L"Usuń pułapki",
-  L"Zamknij na klucz",
-  L"Otwórz kluczem",
-  L"Użyj ładunku wybuchowego",
-  L"Użyj łomu",
-  L"Anuluj (|E|s|c)",
-  L"Zamknij",
+  "Otwórz",
+  "Poszukaj pułapek",
+  "Użyj wytrychów",
+  "Wyważ",
+  "Usuń pułapki",
+  "Zamknij na klucz",
+  "Otwórz kluczem",
+  "Użyj ładunku wybuchowego",
+  "Użyj łomu",
+  "Anuluj (|E|s|c)",
+  "Zamknij",
 ];
 
 // Door Traps. When we examine a door, it could have a particular trap on it. These are the traps.
 
 let pDoorTrapStrings: STR16[] /* [] */ = [
-  L"nie posiada żadnych pułapek",
-  L"ma założony ładunek wybuchowy",
-  L"jest pod napięciem",
-  L"posiada syrenę alarmowš",
-  L"posiada dyskretny alarm",
+  "nie posiada żadnych pułapek",
+  "ma założony ładunek wybuchowy",
+  "jest pod napięciem",
+  "posiada syrenę alarmowš",
+  "posiada dyskretny alarm",
 ];
 
 // Contract Extension. These are used for the contract extension with AIM mercenaries.
 
 let pContractExtendStrings: STR16[] /* [] */ = [
-  L"dzień",
-  L"tydzień",
-  L"dwa tygodnie",
+  "dzień",
+  "tydzień",
+  "dwa tygodnie",
 ];
 
 // On the map screen, there are four columns. This text is popup help text that identifies the individual columns.
 
 let pMapScreenMouseRegionHelpText: STR16[] /* [] */ = [
-  L"Wybór postaci",
-  L"Przydział najemnika",
-  L"Nanie trasę podróży",
-  L"Kontrakt najemnika",
-  L"Usuń najemnika",
-  L"pij", // *****************************NEW********************* as of June 29, 1998
+  "Wybór postaci",
+  "Przydział najemnika",
+  "Nanie trasę podróży",
+  "Kontrakt najemnika",
+  "Usuń najemnika",
+  "pij", // *****************************NEW********************* as of June 29, 1998
 ];
 
 // volumes of noises
 
 let pNoiseVolStr: STR16[] /* [] */ = [
-  L"CICHY",
-  L"WYRANY",
-  L"GŁONY",
-  L"BARDZO GŁONY",
+  "CICHY",
+  "WYRANY",
+  "GŁONY",
+  "BARDZO GŁONY",
 ];
 
 // types of noises
 
 // OBSOLETE
 let pNoiseTypeStr: STR16[] /* [] */ = [
-  L"NIEOKRELONY DWIĘK",
-  L"ODGŁOS RUCHU",
-  L"ODGŁOS SKRZYPNIĘCIA",
-  L"PLUSK",
-  L"ODGŁOS UDERZENIA",
-  L"STRZAŁ",
-  L"WYBUCH",
-  L"KRZYK",
-  L"ODGŁOS UDERZENIA",
-  L"ODGŁOS UDERZENIA",
-  L"ŁOMOT",
-  L"TRZASK",
+  "NIEOKRELONY DWIĘK",
+  "ODGŁOS RUCHU",
+  "ODGŁOS SKRZYPNIĘCIA",
+  "PLUSK",
+  "ODGŁOS UDERZENIA",
+  "STRZAŁ",
+  "WYBUCH",
+  "KRZYK",
+  "ODGŁOS UDERZENIA",
+  "ODGŁOS UDERZENIA",
+  "ŁOMOT",
+  "TRZASK",
 ];
 
 // Directions that are used to report noises
 
 let pDirectionStr: STR16[] /* [] */ = [
-  L"PŁN-WSCH",
-  L"WSCH",
-  L"PŁD-WSCH",
-  L"PŁD",
-  L"PŁD-ZACH",
-  L"ZACH",
-  L"PŁN-ZACH",
-  L"PŁN",
+  "PŁN-WSCH",
+  "WSCH",
+  "PŁD-WSCH",
+  "PŁD",
+  "PŁD-ZACH",
+  "ZACH",
+  "PŁN-ZACH",
+  "PŁN",
 ];
 
 // These are the different terrain types.
 
 let pLandTypeStrings: STR16[] /* [] */ = [
-  L"Miasto",
-  L"Droga",
-  L"Otwarty teren",
-  L"Pustynia",
-  L"Las",
-  L"Las",
-  L"Bagno",
-  L"Woda",
-  L"Wzgórza",
-  L"Teren nieprzejezdny",
-  L"Rzeka", // river from north to south
-  L"Rzeka", // river from east to west
-  L"Terytorium innego kraju",
+  "Miasto",
+  "Droga",
+  "Otwarty teren",
+  "Pustynia",
+  "Las",
+  "Las",
+  "Bagno",
+  "Woda",
+  "Wzgórza",
+  "Teren nieprzejezdny",
+  "Rzeka", // river from north to south
+  "Rzeka", // river from east to west
+  "Terytorium innego kraju",
   // NONE of the following are used for directional travel, just for the sector description.
-  L"Tropiki",
-  L"Pola uprawne",
-  L"Otwarty teren, droga",
-  L"Las, droga",
-  L"Las, droga",
-  L"Tropiki, droga",
-  L"Las, droga",
-  L"Wybrzeże",
-  L"Góry, droga",
-  L"Wybrzeże, droga",
-  L"Pustynia, droga",
-  L"Bagno, droga",
-  L"Las, Rakiety Z-P",
-  L"Pustynia, Rakiety Z-P",
-  L"Tropiki, Rakiety Z-P",
-  L"Meduna, Rakiety Z-P",
+  "Tropiki",
+  "Pola uprawne",
+  "Otwarty teren, droga",
+  "Las, droga",
+  "Las, droga",
+  "Tropiki, droga",
+  "Las, droga",
+  "Wybrzeże",
+  "Góry, droga",
+  "Wybrzeże, droga",
+  "Pustynia, droga",
+  "Bagno, droga",
+  "Las, Rakiety Z-P",
+  "Pustynia, Rakiety Z-P",
+  "Tropiki, Rakiety Z-P",
+  "Meduna, Rakiety Z-P",
 
   // These are descriptions for special sectors
-  L"Szpital w Cambrii",
-  L"Lotnisko w Drassen",
-  L"Lotnisko w Medunie",
-  L"Rakiety Z-P",
-  L"Kryjówka rebeliantów", // The rebel base underground in sector A10
-  L"Tixa - Lochy", // The basement of the Tixa Prison (J9)
-  L"Gniazdo stworzeń", // Any mine sector with creatures in it
-  L"Orta - Piwnica", // The basement of Orta (K4)
-  L"Tunel", // The tunnel access from the maze garden in Meduna
+  "Szpital w Cambrii",
+  "Lotnisko w Drassen",
+  "Lotnisko w Medunie",
+  "Rakiety Z-P",
+  "Kryjówka rebeliantów", // The rebel base underground in sector A10
+  "Tixa - Lochy", // The basement of the Tixa Prison (J9)
+  "Gniazdo stworzeń", // Any mine sector with creatures in it
+  "Orta - Piwnica", // The basement of Orta (K4)
+  "Tunel", // The tunnel access from the maze garden in Meduna
             // leading to the secret shelter underneath the palace
-  L"Schron", // The shelter underneath the queen's palace
-  L"", // Unused
+  "Schron", // The shelter underneath the queen's palace
+  "", // Unused
 ];
 
 let gpStrategicString: STR16[] /* [] */ = [
-  L"", // Unused
-  L"%s wykryto w sektorze %c%d, a inny oddział jest w drodze.", // STR_DETECTED_SINGULAR
-  L"%s wykryto w sektorze %c%d, a inne oddziały sš w drodze.", // STR_DETECTED_PLURAL
-  L"Chcesz skoordynować jednoczesne przybycie?", // STR_COORDINATE
+  "", // Unused
+  "%s wykryto w sektorze %c%d, a inny oddział jest w drodze.", // STR_DETECTED_SINGULAR
+  "%s wykryto w sektorze %c%d, a inne oddziały sš w drodze.", // STR_DETECTED_PLURAL
+  "Chcesz skoordynować jednoczesne przybycie?", // STR_COORDINATE
 
   // Dialog strings for enemies.
 
-  L"Wróg daje ci szansę się poddać.", // STR_ENEMY_SURRENDER_OFFER
-  L"Wróg schwytał resztę twoich nieprzytomnych najemników.", // STR_ENEMY_CAPTURED
+  "Wróg daje ci szansę się poddać.", // STR_ENEMY_SURRENDER_OFFER
+  "Wróg schwytał resztę twoich nieprzytomnych najemników.", // STR_ENEMY_CAPTURED
 
   // The text that goes on the autoresolve buttons
 
-  L"Odwrót", // The retreat button				//STR_AR_RETREAT_BUTTON
-  L"OK", // The done button				//STR_AR_DONE_BUTTON
+  "Odwrót", // The retreat button				//STR_AR_RETREAT_BUTTON
+  "OK", // The done button				//STR_AR_DONE_BUTTON
 
   // The headers are for the autoresolve type (MUST BE UPPERCASE)
 
-  L"OBRONA", // STR_AR_DEFEND_HEADER
-  L"ATAK", // STR_AR_ATTACK_HEADER
-  L"STARCIE", // STR_AR_ENCOUNTER_HEADER
-  L"Sektor", // The Sector A9 part of the header		//STR_AR_SECTOR_HEADER
+  "OBRONA", // STR_AR_DEFEND_HEADER
+  "ATAK", // STR_AR_ATTACK_HEADER
+  "STARCIE", // STR_AR_ENCOUNTER_HEADER
+  "Sektor", // The Sector A9 part of the header		//STR_AR_SECTOR_HEADER
 
   // The battle ending conditions
 
-  L"ZWYCIĘSTWO!", // STR_AR_OVER_VICTORY
-  L"PORAŻKA!", // STR_AR_OVER_DEFEAT
-  L"KAPITULACJA!", // STR_AR_OVER_SURRENDERED
-  L"NIEWOLA!", // STR_AR_OVER_CAPTURED
-  L"ODWRÓT!", // STR_AR_OVER_RETREATED
+  "ZWYCIĘSTWO!", // STR_AR_OVER_VICTORY
+  "PORAŻKA!", // STR_AR_OVER_DEFEAT
+  "KAPITULACJA!", // STR_AR_OVER_SURRENDERED
+  "NIEWOLA!", // STR_AR_OVER_CAPTURED
+  "ODWRÓT!", // STR_AR_OVER_RETREATED
 
   // These are the labels for the different types of enemies we fight in autoresolve.
 
-  L"Samoobrona", // STR_AR_MILITIA_NAME,
-  L"Elity", // STR_AR_ELITE_NAME,
-  L"Żołnierze", // STR_AR_TROOP_NAME,
-  L"Administrator", // STR_AR_ADMINISTRATOR_NAME,
-  L"Stworzenie", // STR_AR_CREATURE_NAME,
+  "Samoobrona", // STR_AR_MILITIA_NAME,
+  "Elity", // STR_AR_ELITE_NAME,
+  "Żołnierze", // STR_AR_TROOP_NAME,
+  "Administrator", // STR_AR_ADMINISTRATOR_NAME,
+  "Stworzenie", // STR_AR_CREATURE_NAME,
 
   // Label for the length of time the battle took
 
-  L"Czas trwania", // STR_AR_TIME_ELAPSED,
+  "Czas trwania", // STR_AR_TIME_ELAPSED,
 
   // Labels for status of merc if retreating.  (UPPERCASE)
 
-  L"WYCOFAŁ(A) SIĘ", // STR_AR_MERC_RETREATED,
-  L"WYCOFUJE SIĘ", // STR_AR_MERC_RETREATING,
-  L"WYCOFAJ SIĘ", // STR_AR_MERC_RETREAT,
+  "WYCOFAŁ(A) SIĘ", // STR_AR_MERC_RETREATED,
+  "WYCOFUJE SIĘ", // STR_AR_MERC_RETREATING,
+  "WYCOFAJ SIĘ", // STR_AR_MERC_RETREAT,
 
   // PRE BATTLE INTERFACE STRINGS
   // Goes on the three buttons in the prebattle interface.  The Auto resolve button represents
   // a system that automatically resolves the combat for the player without having to do anything.
   // These strings must be short (two lines -- 6-8 chars per line)
 
-  L"Rozst. autom.", // STR_PB_AUTORESOLVE_BTN,
-  L"Id do sektora", // STR_PB_GOTOSECTOR_BTN,
-  L"Wycof. ludzi", // STR_PB_RETREATMERCS_BTN,
+  "Rozst. autom.", // STR_PB_AUTORESOLVE_BTN,
+  "Id do sektora", // STR_PB_GOTOSECTOR_BTN,
+  "Wycof. ludzi", // STR_PB_RETREATMERCS_BTN,
 
   // The different headers(titles) for the prebattle interface.
-  L"STARCIE Z WROGIEM", // STR_PB_ENEMYENCOUNTER_HEADER,
-  L"INWAZJA WROGA", // STR_PB_ENEMYINVASION_HEADER, // 30
-  L"ZASADZKA WROGA",
-  L"WEJCIE DO WROGIEGO SEKTORA",
-  L"ATAK STWORÓW",
-  L"ATAK DZIKICH KOTÓW", // STR_PB_BLOODCATAMBUSH_HEADER
-  L"WEJCIE DO LEGOWISKA DZIKICH KOTÓW", // STR_PB_ENTERINGBLOODCATLAIR_HEADER
+  "STARCIE Z WROGIEM", // STR_PB_ENEMYENCOUNTER_HEADER,
+  "INWAZJA WROGA", // STR_PB_ENEMYINVASION_HEADER, // 30
+  "ZASADZKA WROGA",
+  "WEJCIE DO WROGIEGO SEKTORA",
+  "ATAK STWORÓW",
+  "ATAK DZIKICH KOTÓW", // STR_PB_BLOODCATAMBUSH_HEADER
+  "WEJCIE DO LEGOWISKA DZIKICH KOTÓW", // STR_PB_ENTERINGBLOODCATLAIR_HEADER
 
   // Various single words for direct translation.  The Civilians represent the civilian
   // militia occupying the sector being attacked.  Limited to 9-10 chars
 
-  L"Położenie",
-  L"Wrogowie",
-  L"Najemnicy",
-  L"Samoobrona",
-  L"Stwory",
-  L"Dzikie koty",
-  L"Sektor",
-  L"Brak", // If there are no uninvolved mercs in this fight.
-  L"N/D", // Acronym of Not Applicable N/A
-  L"d", // One letter abbreviation of day
-  L"g", // One letter abbreviation of hour
+  "Położenie",
+  "Wrogowie",
+  "Najemnicy",
+  "Samoobrona",
+  "Stwory",
+  "Dzikie koty",
+  "Sektor",
+  "Brak", // If there are no uninvolved mercs in this fight.
+  "N/D", // Acronym of Not Applicable N/A
+  "d", // One letter abbreviation of day
+  "g", // One letter abbreviation of hour
 
   // TACTICAL PLACEMENT USER INTERFACE STRINGS
   // The four buttons
 
-  L"Wyczyć",
-  L"Rozprosz",
-  L"Zgrupuj",
-  L"OK",
+  "Wyczyć",
+  "Rozprosz",
+  "Zgrupuj",
+  "OK",
 
   // The help text for the four buttons.  Use \n to denote new line (just like enter).
 
-  L"Kasuje wszystkie pozy|cje najemników, \ni pozwala ponownie je wprowadzić.",
-  L"Po każdym nacinięciu rozmie|szcza\nlosowo twoich najemników.",
-  L"|Grupuje najemników w wybranym miejscu.",
-  L"Kliknij ten klawisz gdy już rozmiecisz \nswoich najemników. (|E|n|t|e|r)",
-  L"Musisz rozmiecić wszystkich najemników \nzanim rozpoczniesz walkę.",
+  "Kasuje wszystkie pozy|cje najemników, \ni pozwala ponownie je wprowadzić.",
+  "Po każdym nacinięciu rozmie|szcza\nlosowo twoich najemników.",
+  "|Grupuje najemników w wybranym miejscu.",
+  "Kliknij ten klawisz gdy już rozmiecisz \nswoich najemników. (|E|n|t|e|r)",
+  "Musisz rozmiecić wszystkich najemników \nzanim rozpoczniesz walkę.",
 
   // Various strings (translate word for word)
 
-  L"Sektor",
-  L"Wybierz poczštkowe pozycje",
+  "Sektor",
+  "Wybierz poczštkowe pozycje",
 
   // Strings used for various popup message boxes.  Can be as long as desired.
 
-  L"To miejsce nie jest zbyt dobre. Jest niedostępne. Spróbuj gdzie indziej.",
-  L"Rozmieć swoich najemników na podwietlonej częci mapy.",
+  "To miejsce nie jest zbyt dobre. Jest niedostępne. Spróbuj gdzie indziej.",
+  "Rozmieć swoich najemników na podwietlonej częci mapy.",
 
   // This message is for mercs arriving in sectors.  Ex:  Red has arrived in sector A9.
   // Don't uppercase first character, or add spaces on either end.
 
-  L"przybył(a) do sektora",
+  "przybył(a) do sektora",
 
   // These entries are for button popup help text for the prebattle interface.  All popup help
   // text supports the use of \n to denote new line.  Do not use spaces before or after the \n.
-  L"|Automatycznie prowadzi walkę za ciebie,\nnie ładujšc planszy.",
-  L"Atakujšc sektor wroga nie można automatycznie rozstrzygnšć walki.",
-  L"Wejcie do s|ektora by nawišzać walkę z wrogiem.",
-  L"Wycofuje oddział do sšsiedniego sekto|ra.", // singular version
-  L"Wycofuje wszystkie oddziały do sšsiedniego sekto|ra.", // multiple groups with same previous sector
+  "|Automatycznie prowadzi walkę za ciebie,\nnie ładujšc planszy.",
+  "Atakujšc sektor wroga nie można automatycznie rozstrzygnšć walki.",
+  "Wejcie do s|ektora by nawišzać walkę z wrogiem.",
+  "Wycofuje oddział do sšsiedniego sekto|ra.", // singular version
+  "Wycofuje wszystkie oddziały do sšsiedniego sekto|ra.", // multiple groups with same previous sector
 
   // various popup messages for battle conditions.
 
   //%c%d is the sector -- ex:  A9
-  L"Nieprzyjaciel zatakował oddziały samoobrony w sektorze %c%d.",
+  "Nieprzyjaciel zatakował oddziały samoobrony w sektorze %c%d.",
   //%c%d is the sector -- ex:  A9
-  L"Stworzenia zaatakowały oddziały samoobrony w sektorze %c%d.",
+  "Stworzenia zaatakowały oddziały samoobrony w sektorze %c%d.",
   // 1st %d refers to the number of civilians eaten by monsters,  %c%d is the sector -- ex:  A9
   // Note:  the minimum number of civilians eaten will be two.
-  L"Stworzenia zatakowały i zabiły %d cywili w sektorze %s.",
+  "Stworzenia zatakowały i zabiły %d cywili w sektorze %s.",
   //%c%d is the sector -- ex:  A9
-  L"Nieprzyjaciel zatakował twoich najemników w sektorze %s.  Żaden z twoich najemników nie może walczyć!",
+  "Nieprzyjaciel zatakował twoich najemników w sektorze %s.  Żaden z twoich najemników nie może walczyć!",
   //%c%d is the sector -- ex:  A9
-  L"Stworzenia zatakowały twoich najemników w sektorze %s.  Żaden z twoich najemników nie może walczyć!",
+  "Stworzenia zatakowały twoich najemników w sektorze %s.  Żaden z twoich najemników nie może walczyć!",
 ];
 
 let gpGameClockString: STR16[] /* [] */ = [
   // This is the day represented in the game clock.  Must be very short, 4 characters max.
-  L"Dzień",
+  "Dzień",
 ];
 
 // When the merc finds a key, they can get a description of it which
 // tells them where and when they found it.
 let sKeyDescriptionStrings: STR16[] /* [2] */ = [
-  L"Zn. w sektorze:",
-  L"Zn. w dniu:",
+  "Zn. w sektorze:",
+  "Zn. w dniu:",
 ];
 
 // The headers used to describe various weapon statistics.
 
 let gWeaponStatsDesc: INT16[][] /* [][14] */ = [
-  L"Waga (%s):", // change kg to another weight unit if your standard is not kilograms, and TELL SIR-TECH!
-  L"Stan:",
-  L"Iloć:", // Number of bullets left in a magazine
-  L"Zas.:", // Range
-  L"Siła:", // Damage
-  L"PA:", // abbreviation for Action Points
-  L"",
-  L"=",
-  L"=",
+  "Waga (%s):", // change kg to another weight unit if your standard is not kilograms, and TELL SIR-TECH!
+  "Stan:",
+  "Iloć:", // Number of bullets left in a magazine
+  "Zas.:", // Range
+  "Siła:", // Damage
+  "PA:", // abbreviation for Action Points
+  "",
+  "=",
+  "=",
 ];
 
 // The headers used for the merc's money.
 
 let gMoneyStatsDesc: INT16[][] /* [][13] */ = [
-  L"Kwota",
-  L"Pozostało:", // this is the overall balance
-  L"Kwota",
-  L"Wydzielić:", // the amount he wants to separate from the overall balance to get two piles of money
+  "Kwota",
+  "Pozostało:", // this is the overall balance
+  "Kwota",
+  "Wydzielić:", // the amount he wants to separate from the overall balance to get two piles of money
 
-  L"Bieżšce",
-  L"Saldo",
-  L"Kwota do",
-  L"podjęcia",
+  "Bieżšce",
+  "Saldo",
+  "Kwota do",
+  "podjęcia",
 ];
 
 // The health of various creatures, enemies, characters in the game. The numbers following each are for comment
 // only, but represent the precentage of points remaining.
 
 let zHealthStr: UINT16[][] /* [][13] */ = [
-  L"UMIERAJĽCY", //	>= 0
-  L"KRYTYCZNY", //	>= 15
-  L"KIEPSKI", //	>= 30
-  L"RANNY", //	>= 45
-  L"ZDROWY", //	>= 60
-  L"SILNY", // 	>= 75
-  L"DOSKONAŁY", // 	>= 90
+  "UMIERAJĽCY", //	>= 0
+  "KRYTYCZNY", //	>= 15
+  "KIEPSKI", //	>= 30
+  "RANNY", //	>= 45
+  "ZDROWY", //	>= 60
+  "SILNY", // 	>= 75
+  "DOSKONAŁY", // 	>= 90
 ];
 
 let gzMoneyAmounts: STR16[] /* [6] */ = [
-  L"$1000",
-  L"$100",
-  L"$10",
-  L"OK",
-  L"Wydziel",
-  L"Podejmij",
+  "$1000",
+  "$100",
+  "$10",
+  "OK",
+  "Wydziel",
+  "Podejmij",
 ];
 
 // short words meaning "Advantages" for "Pros" and "Disadvantages" for "Cons."
-let gzProsLabel: INT16[] /* [10] */ = [ L"Zalety:" ];
+let gzProsLabel: INT16[] /* [10] */ = [ "Zalety:" ];
 
-let gzConsLabel: INT16[] /* [10] */ = [ L"Wady:" ];
+let gzConsLabel: INT16[] /* [10] */ = [ "Wady:" ];
 
 // Conversation options a player has when encountering an NPC
 let zTalkMenuStrings: UINT16[][] /* [6][SMALL_STRING_LENGTH] */ = [
-  L"Powtórz", // meaning "Repeat yourself"
-  L"Przyjanie", // approach in a friendly
-  L"Bezporednio", // approach directly - let's get down to business
-  L"Gronie", // approach threateningly - talk now, or I'll blow your face off
-  L"Daj",
-  L"Rekrutuj",
+  "Powtórz", // meaning "Repeat yourself"
+  "Przyjanie", // approach in a friendly
+  "Bezporednio", // approach directly - let's get down to business
+  "Gronie", // approach threateningly - talk now, or I'll blow your face off
+  "Daj",
+  "Rekrutuj",
 ];
 
 // Some NPCs buy, sell or repair items. These different options are available for those NPCs as well.
 let zDealerStrings: UINT16[][] /* [4][SMALL_STRING_LENGTH] */ = [
-  L"Kup/Sprzedaj",
-  L"Kup",
-  L"Sprzedaj",
-  L"Napraw",
+  "Kup/Sprzedaj",
+  "Kup",
+  "Sprzedaj",
+  "Napraw",
 ];
 
 let zDialogActions: UINT16[][] /* [1][SMALL_STRING_LENGTH] */ = [
-  L"OK",
+  "OK",
 ];
 
 // These are vehicles in the game.
 
 let pVehicleStrings: STR16[] /* [] */ = [
-  L"Eldorado",
-  L"Hummer", // a hummer jeep/truck -- military vehicle
-  L"Furgonetka z lodami",
-  L"Jeep",
-  L"Czołg",
-  L"Helikopter",
+  "Eldorado",
+  "Hummer", // a hummer jeep/truck -- military vehicle
+  "Furgonetka z lodami",
+  "Jeep",
+  "Czołg",
+  "Helikopter",
 ];
 
 let pShortVehicleStrings: STR16[] /* [] */ = [
-  L"Eldor.",
-  L"Hummer", // the HMVV
-  L"Furg.",
-  L"Jeep",
-  L"Czołg",
-  L"Heli.", // the helicopter
+  "Eldor.",
+  "Hummer", // the HMVV
+  "Furg.",
+  "Jeep",
+  "Czołg",
+  "Heli.", // the helicopter
 ];
 
 let zVehicleName: STR16[] /* [] */ = [
-  L"Eldorado",
-  L"Hummer", // a military jeep. This is a brand name.
-  L"Furg.", // Ice cream truck
-  L"Jeep",
-  L"Czołg",
-  L"Heli.", // an abbreviation for Helicopter
+  "Eldorado",
+  "Hummer", // a military jeep. This is a brand name.
+  "Furg.", // Ice cream truck
+  "Jeep",
+  "Czołg",
+  "Heli.", // an abbreviation for Helicopter
 ];
 
 // These are messages Used in the Tactical Screen
 
 let TacticalStr: UINT16[][] /* [][MED_STRING_LENGTH] */ = [
-  L"Nalot",
-  L"Udzielić automatycznie pierwszej pomocy?",
+  "Nalot",
+  "Udzielić automatycznie pierwszej pomocy?",
 
   // CAMFIELD NUKE THIS and add quote #66.
 
-  L"%s zauważył(a) że dostawa jest niekompletna.",
+  "%s zauważył(a) że dostawa jest niekompletna.",
 
   // The %s is a string from pDoorTrapStrings
 
-  L"Zamek %s.",
-  L"Brak zamka.",
-  L"Sukces!",
-  L"Niepowodzenie.",
-  L"Sukces!",
-  L"Niepowodzenie.",
-  L"Zamek nie ma pułapek.",
-  L"Sukces!",
+  "Zamek %s.",
+  "Brak zamka.",
+  "Sukces!",
+  "Niepowodzenie.",
+  "Sukces!",
+  "Niepowodzenie.",
+  "Zamek nie ma pułapek.",
+  "Sukces!",
   // The %s is a merc name
-  L"%s nie posiada odpowiedniego klucza.",
-  L"Zamek został rozbrojony.",
-  L"Zamek nie ma pułapek.",
-  L"Zamknięte.",
-  L"DRZWI",
-  L"ZABEZP.",
-  L"ZAMKNIĘTE",
-  L"OTWARTE",
-  L"ROZWALONE",
-  L"Tu jest przełšcznik. Włšczyć go?",
-  L"Rozbroić pułapkę?",
-  L"Poprz...",
-  L"Nast...",
-  L"Więcej...",
+  "%s nie posiada odpowiedniego klucza.",
+  "Zamek został rozbrojony.",
+  "Zamek nie ma pułapek.",
+  "Zamknięte.",
+  "DRZWI",
+  "ZABEZP.",
+  "ZAMKNIĘTE",
+  "OTWARTE",
+  "ROZWALONE",
+  "Tu jest przełšcznik. Włšczyć go?",
+  "Rozbroić pułapkę?",
+  "Poprz...",
+  "Nast...",
+  "Więcej...",
 
   // In the next 2 strings, %s is an item name
 
-  L"%s - położono na ziemi.",
-  L"%s - przekazano do - %s.",
+  "%s - położono na ziemi.",
+  "%s - przekazano do - %s.",
 
   // In the next 2 strings, %s is a name
 
-  L"%s otrzymał(a) całš zapłatę.",
-  L"%s - należnoć wobec niej/niego wynosi jeszcze %d.",
-  L"Wybierz częstotliwoć sygnału detonujšcego:", // in this case, frequency refers to a radio signal
-  L"Ile tur do eksplozji:", // how much time, in turns, until the bomb blows
-  L"Ustaw częstotliwoć zdalnego detonatora:", // in this case, frequency refers to a radio signal
-  L"Rozbroić pułapkę?",
-  L"Usunšć niebieskš flagę?",
-  L"Umiecić tutaj niebieskš flagę?",
-  L"Kończšca tura",
+  "%s otrzymał(a) całš zapłatę.",
+  "%s - należnoć wobec niej/niego wynosi jeszcze %d.",
+  "Wybierz częstotliwoć sygnału detonujšcego:", // in this case, frequency refers to a radio signal
+  "Ile tur do eksplozji:", // how much time, in turns, until the bomb blows
+  "Ustaw częstotliwoć zdalnego detonatora:", // in this case, frequency refers to a radio signal
+  "Rozbroić pułapkę?",
+  "Usunšć niebieskš flagę?",
+  "Umiecić tutaj niebieskš flagę?",
+  "Kończšca tura",
 
   // In the next string, %s is a name. Stance refers to way they are standing.
 
-  L"Na pewno chcesz zaatakować - %s?",
-  L"Pojazdy nie mogš zmieniać pozycji.",
-  L"Robot nie może zmieniać pozycji.",
+  "Na pewno chcesz zaatakować - %s?",
+  "Pojazdy nie mogš zmieniać pozycji.",
+  "Robot nie może zmieniać pozycji.",
 
   // In the next 3 strings, %s is a name
 
-  L"%s nie może zmienić pozycji w tym miejscu.",
-  L"%s nie może tu otrzymać pierwszej pomocy.",
-  L"%s nie potrzebuje pierwszej pomocy.",
-  L"Nie można ruszyć w to miejsce.",
-  L"Oddział jest już kompletny. Nie ma miejsca dla nowych rekrutów.", // there's no room for a recruit on the player's team
+  "%s nie może zmienić pozycji w tym miejscu.",
+  "%s nie może tu otrzymać pierwszej pomocy.",
+  "%s nie potrzebuje pierwszej pomocy.",
+  "Nie można ruszyć w to miejsce.",
+  "Oddział jest już kompletny. Nie ma miejsca dla nowych rekrutów.", // there's no room for a recruit on the player's team
 
   // In the next string, %s is a name
 
-  L"%s pracuje już dla ciebie.",
+  "%s pracuje już dla ciebie.",
 
   // Here %s is a name and %d is a number
 
-  L"%s - należnoć wobec niej/niego wynosi %d$.",
+  "%s - należnoć wobec niej/niego wynosi %d$.",
 
   // In the next string, %s is a name
 
-  L"%s - Eskortować tš osobę?",
+  "%s - Eskortować tš osobę?",
 
   // In the next string, the first %s is a name and the second %s is an amount of money (including $ sign)
 
-  L"%s - Zatrudnić tš osobę za %s dziennie?",
+  "%s - Zatrudnić tš osobę za %s dziennie?",
 
   // This line is used repeatedly to ask player if they wish to participate in a boxing match.
 
-  L"Chcesz walczyć?",
+  "Chcesz walczyć?",
 
   // In the next string, the first %s is an item name and the
   // second %s is an amount of money (including $ sign)
 
-  L"%s - Kupić to za %s?",
+  "%s - Kupić to za %s?",
 
   // In the next string, %s is a name
 
-  L"%s jest pod eskortš oddziału %d.",
+  "%s jest pod eskortš oddziału %d.",
 
   // These messages are displayed during play to alert the player to a particular situation
 
-  L"ZACIĘTA", // weapon is jammed.
-  L"Robot potrzebuje amunicji kaliber %s.", // Robot is out of ammo
-  L"Rzucić tam? To niemożliwe.", // Merc can't throw to the destination he selected
+  "ZACIĘTA", // weapon is jammed.
+  "Robot potrzebuje amunicji kaliber %s.", // Robot is out of ammo
+  "Rzucić tam? To niemożliwe.", // Merc can't throw to the destination he selected
 
   // These are different buttons that the player can turn on and off.
 
-  L"Skradanie się (|Z)",
-  L"Ekran |Mapy",
-  L"Koniec tury (|D)",
-  L"Rozmowa",
-  L"Wycisz",
-  L"Pozycja do góry (|P|g|U|p)",
-  L"Poziom kursora (|T|a|b)",
-  L"Wspinaj się / Zeskocz",
-  L"Pozycja w dół (|P|g|D|n)",
-  L"Badać (|C|t|r|l)",
-  L"Poprzedni najemnik",
-  L"Następny najemnik (|S|p|a|c|j|a)",
-  L"|Opcje",
-  L"Cišgły ogień (|B)",
-  L"Spójrz/Obróć się (|L)",
-  L"Zdrowie: %d/%d\nEnergia: %d/%d\nMorale: %s",
-  L"Co?", // this means "what?"
-  L"Kont", // an abbrieviation for "Continued"
-  L"%s ma włšczone potwierdzenia głosowe.",
-  L"%s ma wyłšczone potwierdzenia głosowe.",
-  L"Stan: %d/%d\nPaliwo: %d/%d",
-  L"Wysišd z pojazdu",
-  L"Zmień oddział ( |S|h|i|f|t |S|p|a|c|j|a )",
-  L"Prowad",
-  L"N/D", // this is an acronym for "Not Applicable."
-  L"Użyj ( Walka wręcz )",
-  L"Użyj ( Broni palnej )",
-  L"Użyj ( Broni białej )",
-  L"Użyj ( Mat. wybuchowych )",
-  L"Użyj ( Apteczki )",
-  L"(Łap)",
-  L"(Przeładuj)",
-  L"(Daj)",
-  L"%s - pułapka została uruchomiona.",
-  L"%s przybył(a) na miejsce.",
-  L"%s stracił(a) wszystkie Punkty Akcji.",
-  L"%s jest nieosišgalny(na).",
-  L"%s ma już założone opatrunki.",
-  L"%s nie ma bandaży.",
-  L"Wróg w sektorze!",
-  L"Nie ma wroga w zasięgu wzroku.",
-  L"Zbyt mało Punktów Akcji.",
-  L"Nikt nie używa zdalnego sterowania.",
-  L"Cišgły ogień opróżnił magazynek!",
-  L"ŻOŁNIERZ",
-  L"STWÓR",
-  L"SAMOOBRONA",
-  L"CYWIL",
-  L"Wyjcie z sektora",
-  L"OK",
-  L"Anuluj",
-  L"Wybrany najemnik",
-  L"Wszyscy najemnicy w oddziale",
-  L"Id do sektora",
-  L"Otwórz mapę",
-  L"Nie można opucić sektora z tej strony.",
-  L"%s jest zbyt daleko.",
-  L"Usuń korony drzew",
-  L"Pokaż korony drzew",
-  L"WRONA", // Crow, as in the large black bird
-  L"SZYJA",
-  L"GŁOWA",
-  L"TUŁÓW",
-  L"NOGI",
-  L"Powiedzieć królowej to, co chce wiedzieć?",
-  L"Wzór odcisku palca pobrany",
-  L"Niewłaciwy wzór odcisku palca. Broń bezużyteczna.",
-  L"Cel osišgnięty",
-  L"Droga zablokowana",
-  L"Wpłata/Podjęcie pieniędzy", // Help text over the $ button on the Single Merc Panel
-  L"Nikt nie potrzebuje pierwszej pomocy.",
-  L"Zac.", // Short form of JAMMED, for small inv slots
-  L"Nie można się tam dostać.", // used ( now ) for when we click on a cliff
-  L"Przejcie zablokowane. Czy chcesz zamienić się miejscami z tš osobš?",
-  L"Osoba nie chce się przesunšć.",
+  "Skradanie się (|Z)",
+  "Ekran |Mapy",
+  "Koniec tury (|D)",
+  "Rozmowa",
+  "Wycisz",
+  "Pozycja do góry (|P|g|U|p)",
+  "Poziom kursora (|T|a|b)",
+  "Wspinaj się / Zeskocz",
+  "Pozycja w dół (|P|g|D|n)",
+  "Badać (|C|t|r|l)",
+  "Poprzedni najemnik",
+  "Następny najemnik (|S|p|a|c|j|a)",
+  "|Opcje",
+  "Cišgły ogień (|B)",
+  "Spójrz/Obróć się (|L)",
+  "Zdrowie: %d/%d\nEnergia: %d/%d\nMorale: %s",
+  "Co?", // this means "what?"
+  "Kont", // an abbrieviation for "Continued"
+  "%s ma włšczone potwierdzenia głosowe.",
+  "%s ma wyłšczone potwierdzenia głosowe.",
+  "Stan: %d/%d\nPaliwo: %d/%d",
+  "Wysišd z pojazdu",
+  "Zmień oddział ( |S|h|i|f|t |S|p|a|c|j|a )",
+  "Prowad",
+  "N/D", // this is an acronym for "Not Applicable."
+  "Użyj ( Walka wręcz )",
+  "Użyj ( Broni palnej )",
+  "Użyj ( Broni białej )",
+  "Użyj ( Mat. wybuchowych )",
+  "Użyj ( Apteczki )",
+  "(Łap)",
+  "(Przeładuj)",
+  "(Daj)",
+  "%s - pułapka została uruchomiona.",
+  "%s przybył(a) na miejsce.",
+  "%s stracił(a) wszystkie Punkty Akcji.",
+  "%s jest nieosišgalny(na).",
+  "%s ma już założone opatrunki.",
+  "%s nie ma bandaży.",
+  "Wróg w sektorze!",
+  "Nie ma wroga w zasięgu wzroku.",
+  "Zbyt mało Punktów Akcji.",
+  "Nikt nie używa zdalnego sterowania.",
+  "Cišgły ogień opróżnił magazynek!",
+  "ŻOŁNIERZ",
+  "STWÓR",
+  "SAMOOBRONA",
+  "CYWIL",
+  "Wyjcie z sektora",
+  "OK",
+  "Anuluj",
+  "Wybrany najemnik",
+  "Wszyscy najemnicy w oddziale",
+  "Id do sektora",
+  "Otwórz mapę",
+  "Nie można opucić sektora z tej strony.",
+  "%s jest zbyt daleko.",
+  "Usuń korony drzew",
+  "Pokaż korony drzew",
+  "WRONA", // Crow, as in the large black bird
+  "SZYJA",
+  "GŁOWA",
+  "TUŁÓW",
+  "NOGI",
+  "Powiedzieć królowej to, co chce wiedzieć?",
+  "Wzór odcisku palca pobrany",
+  "Niewłaciwy wzór odcisku palca. Broń bezużyteczna.",
+  "Cel osišgnięty",
+  "Droga zablokowana",
+  "Wpłata/Podjęcie pieniędzy", // Help text over the $ button on the Single Merc Panel
+  "Nikt nie potrzebuje pierwszej pomocy.",
+  "Zac.", // Short form of JAMMED, for small inv slots
+  "Nie można się tam dostać.", // used ( now ) for when we click on a cliff
+  "Przejcie zablokowane. Czy chcesz zamienić się miejscami z tš osobš?",
+  "Osoba nie chce się przesunšć.",
   // In the following message, '%s' would be replaced with a quantity of money (e.g. $200)
-  L"Zgadzasz się zapłacić %s?",
-  L"Zgadzasz się na darmowe leczenie?",
-  L"Zgadasz się na małżeństwo z Darylem?",
-  L"Kółko na klucze",
-  L"Nie możesz tego zrobić z eskortowanš osobš.",
-  L"Oszczędzić Krotta?",
-  L"Poza zasięgiem broni",
-  L"Górnik",
-  L"Pojazdem można podróżować tylko pomiędzy sektorami",
-  L"Teraz nie można automatycznie udzielić pierwszej pomocy",
-  L"Przejcie zablokowane dla - %s",
-  L"Twoi najemnicy, schwytani przez żołnierzy Deidranny, sš tutaj uwięzieni!",
-  L"Zamek został trafiony",
-  L"Zamek został zniszczony",
-  L"Kto inny majstruje przy tych drzwiach.",
-  L"Stan: %d/%d\nPaliwo: %d/%d",
-  L"%s nie widzi - %s.", // Cannot see person trying to talk to
+  "Zgadzasz się zapłacić %s?",
+  "Zgadzasz się na darmowe leczenie?",
+  "Zgadasz się na małżeństwo z Darylem?",
+  "Kółko na klucze",
+  "Nie możesz tego zrobić z eskortowanš osobš.",
+  "Oszczędzić Krotta?",
+  "Poza zasięgiem broni",
+  "Górnik",
+  "Pojazdem można podróżować tylko pomiędzy sektorami",
+  "Teraz nie można automatycznie udzielić pierwszej pomocy",
+  "Przejcie zablokowane dla - %s",
+  "Twoi najemnicy, schwytani przez żołnierzy Deidranny, sš tutaj uwięzieni!",
+  "Zamek został trafiony",
+  "Zamek został zniszczony",
+  "Kto inny majstruje przy tych drzwiach.",
+  "Stan: %d/%d\nPaliwo: %d/%d",
+  "%s nie widzi - %s.", // Cannot see person trying to talk to
 ];
 
 // Varying helptext explains (for the "Go to Sector/Map" checkbox) what will happen given different circumstances in the "exiting sector" interface.
 let pExitingSectorHelpText: STR16[] /* [] */ = [
   // Helptext for the "Go to Sector" checkbox button, that explains what will happen when the box is checked.
-  L"Jeli zaznaczysz tę opcję, to sšsiedni sektor zostanie natychmiast załadowany.",
-  L"Jeli zaznaczysz tę opcję, to na czas podróży pojawi się automatycznie ekran mapy.",
+  "Jeli zaznaczysz tę opcję, to sšsiedni sektor zostanie natychmiast załadowany.",
+  "Jeli zaznaczysz tę opcję, to na czas podróży pojawi się automatycznie ekran mapy.",
 
   // If you attempt to leave a sector when you have multiple squads in a hostile sector.
-  L"Ten sektor jest okupowany przez wroga i nie możesz tu zostawić najemników.\nMusisz uporać się z tš sytuacjš zanim załadujesz inny sektor.",
+  "Ten sektor jest okupowany przez wroga i nie możesz tu zostawić najemników.\nMusisz uporać się z tš sytuacjš zanim załadujesz inny sektor.",
 
   // Because you only have one squad in the sector, and the "move all" option is checked, the "go to sector" option is locked to on.
   // The helptext explains why it is locked.
-  L"Gdy wyprowadzisz swoich pozostałych najemników z tego sektora,\nsšsiedni sektor zostanie automatycznie załadowany.",
-  L"Gdy wyprowadzisz swoich pozostałych najemników z tego sektora,\nto na czas podróży pojawi się automatycznie ekran mapy.",
+  "Gdy wyprowadzisz swoich pozostałych najemników z tego sektora,\nsšsiedni sektor zostanie automatycznie załadowany.",
+  "Gdy wyprowadzisz swoich pozostałych najemników z tego sektora,\nto na czas podróży pojawi się automatycznie ekran mapy.",
 
   // If an EPC is the selected merc, it won't allow the merc to leave alone as the merc is being escorted.  The "single" button is disabled.
-  L"%s jest pod eskortš twoich najemników i nie może bez nich opucić tego sektora.",
+  "%s jest pod eskortš twoich najemników i nie może bez nich opucić tego sektora.",
 
   // If only one conscious merc is left and is selected, and there are EPCs in the squad, the merc will be prohibited from leaving alone.
   // There are several strings depending on the gender of the merc and how many EPCs are in the squad.
   // DO NOT USE THE NEWLINE HERE AS IT IS USED FOR BOTH HELPTEXT AND SCREEN MESSAGES!
-  L"%s nie może sam opucić tego sektora, gdyż %s jest pod jego eskortš.", // male singular
-  L"%s nie może sama opucić tego sektora, gdyż %s jest pod jej eskortš.", // female singular
-  L"%s nie może sam opucić tego sektora, gdyż eskortuje inne osoby.", // male plural
-  L"%s nie może sama opucić tego sektora, gdyż eskortuje inne osoby.", // female plural
+  "%s nie może sam opucić tego sektora, gdyż %s jest pod jego eskortš.", // male singular
+  "%s nie może sama opucić tego sektora, gdyż %s jest pod jej eskortš.", // female singular
+  "%s nie może sam opucić tego sektora, gdyż eskortuje inne osoby.", // male plural
+  "%s nie może sama opucić tego sektora, gdyż eskortuje inne osoby.", // female plural
 
   // If one or more of your mercs in the selected squad aren't in range of the traversal area, then the  "move all" option is disabled,
   // and this helptext explains why.
-  L"Wszyscy twoi najemnicy muszš być w pobliżu,\naby oddział mógł się przemieszczać.",
+  "Wszyscy twoi najemnicy muszš być w pobliżu,\naby oddział mógł się przemieszczać.",
 
-  L"", // UNUSED
+  "", // UNUSED
 
   // Standard helptext for single movement.  Explains what will happen (splitting the squad)
-  L"Jeli zaznaczysz tę opcję, %s będzie podróżować w pojedynkę\ni automatycznie znajdzie się w osobnym oddziale.",
+  "Jeli zaznaczysz tę opcję, %s będzie podróżować w pojedynkę\ni automatycznie znajdzie się w osobnym oddziale.",
 
   // Standard helptext for all movement.  Explains what will happen (moving the squad)
-  L"Jeli zaznaczysz tę opcję, aktualnie\nwybrany oddział opuci ten sektor.",
+  "Jeli zaznaczysz tę opcję, aktualnie\nwybrany oddział opuci ten sektor.",
 
   // This strings is used BEFORE the "exiting sector" interface is created.  If you have an EPC selected and you attempt to tactically
   // traverse the EPC while the escorting mercs aren't near enough (or dead, dying, or unconscious), this message will appear and the
   //"exiting sector" interface will not appear.  This is just like the situation where
   // This string is special, as it is not used as helptext.  Do not use the special newline character (\n) for this string.
-  L"%s jest pod eskortš twoich najemników i nie może bez nich opucić tego sektora. Aby opucić sektor twoi najemnicy muszš być w pobliżu.",
+  "%s jest pod eskortš twoich najemników i nie może bez nich opucić tego sektora. Aby opucić sektor twoi najemnicy muszš być w pobliżu.",
 ];
 
 let pRepairStrings: STR16[] /* [] */ = [
-  L"Wyposażenie", // tell merc to repair items in inventory
-  L"Baza rakiet Z-P", // tell merc to repair SAM site - SAM is an acronym for Surface to Air Missile
-  L"Anuluj", // cancel this menu
-  L"Robot", // repair the robot
+  "Wyposażenie", // tell merc to repair items in inventory
+  "Baza rakiet Z-P", // tell merc to repair SAM site - SAM is an acronym for Surface to Air Missile
+  "Anuluj", // cancel this menu
+  "Robot", // repair the robot
 ];
 
 // NOTE: combine prestatbuildstring with statgain to get a line like the example below.
 // "John has gained 3 points of marksmanship skill."
 
 let sPreStatBuildString: STR16[] /* [] */ = [
-  L"traci", // the merc has lost a statistic
-  L"zyskuje", // the merc has gained a statistic
-  L"pkt.", // singular
-  L"pkt.", // plural
-  L"pkt.", // singular
-  L"pkt.", // plural
+  "traci", // the merc has lost a statistic
+  "zyskuje", // the merc has gained a statistic
+  "pkt.", // singular
+  "pkt.", // plural
+  "pkt.", // singular
+  "pkt.", // plural
 ];
 
 let sStatGainStrings: STR16[] /* [] */ = [
-  L"zdrowia.",
-  L"zwinnoci.",
-  L"zręcznoci.",
-  L"inteligencji.",
-  L"umiejętnoci medycznych.",
-  L"umiejętnoci w dziedzinie materiałów wybuchowych.",
-  L"umiejętnoci w dziedzinie mechaniki.",
-  L"umiejętnoci strzeleckich.",
-  L"dowiadczenia.",
-  L"siły.",
-  L"umiejętnoci dowodzenia.",
+  "zdrowia.",
+  "zwinnoci.",
+  "zręcznoci.",
+  "inteligencji.",
+  "umiejętnoci medycznych.",
+  "umiejętnoci w dziedzinie materiałów wybuchowych.",
+  "umiejętnoci w dziedzinie mechaniki.",
+  "umiejętnoci strzeleckich.",
+  "dowiadczenia.",
+  "siły.",
+  "umiejętnoci dowodzenia.",
 ];
 
 let pHelicopterEtaStrings: STR16[] /* [] */ = [
-  L"Całkowita trasa:  ", // total distance for helicopter to travel
-  L" Bezp.:   ", // distance to travel to destination
-  L" Niebezp.:", // distance to return from destination to airport
-  L"Całkowity koszt: ", // total cost of trip by helicopter
-  L"PCP:  ", // ETA is an acronym for "estimated time of arrival"
-  L"Helikopter ma mało paliwa i musi wylšdować na terenie wroga.", // warning that the sector the helicopter is going to use for refueling is under enemy control ->
-  L"Pasażerowie: ",
-  L"Wybór Skyridera lub pasażerów?",
-  L"Skyrider",
-  L"Pasażerowie",
+  "Całkowita trasa:  ", // total distance for helicopter to travel
+  " Bezp.:   ", // distance to travel to destination
+  " Niebezp.:", // distance to return from destination to airport
+  "Całkowity koszt: ", // total cost of trip by helicopter
+  "PCP:  ", // ETA is an acronym for "estimated time of arrival"
+  "Helikopter ma mało paliwa i musi wylšdować na terenie wroga.", // warning that the sector the helicopter is going to use for refueling is under enemy control ->
+  "Pasażerowie: ",
+  "Wybór Skyridera lub pasażerów?",
+  "Skyrider",
+  "Pasażerowie",
 ];
 
 let sMapLevelString: STR16[] /* [] */ = [
-  L"Poziom:", // what level below the ground is the player viewing in mapscreen
+  "Poziom:", // what level below the ground is the player viewing in mapscreen
 ];
 
 let gsLoyalString: STR16[] /* [] */ = [
-  L"Lojalnoci", // the loyalty rating of a town ie : Loyal 53%
+  "Lojalnoci", // the loyalty rating of a town ie : Loyal 53%
 ];
 
 // error message for when player is trying to give a merc a travel order while he's underground.
 
 let gsUndergroundString: STR16[] /* [] */ = [
-  L"nie można wydawać rozkazów podróży pod ziemiš.",
+  "nie można wydawać rozkazów podróży pod ziemiš.",
 ];
 
 let gsTimeStrings: STR16[] /* [] */ = [
-  L"g", // hours abbreviation
-  L"m", // minutes abbreviation
-  L"s", // seconds abbreviation
-  L"d", // days abbreviation
+  "g", // hours abbreviation
+  "m", // minutes abbreviation
+  "s", // seconds abbreviation
+  "d", // days abbreviation
 ];
 
 // text for the various facilities in the sector
 
 let sFacilitiesStrings: STR16[] /* [] */ = [
-  L"Brak",
-  L"Szpital",
-  L"Przemysł",
-  L"Więzienie",
-  L"Baza wojskowa",
-  L"Lotnisko",
-  L"Strzelnica", // a field for soldiers to practise their shooting skills
+  "Brak",
+  "Szpital",
+  "Przemysł",
+  "Więzienie",
+  "Baza wojskowa",
+  "Lotnisko",
+  "Strzelnica", // a field for soldiers to practise their shooting skills
 ];
 
 // text for inventory pop up button
 
 let pMapPopUpInventoryText: STR16[] /* [] */ = [
-  L"Inwentarz",
-  L"Zamknij",
+  "Inwentarz",
+  "Zamknij",
 ];
 
 // town strings
 
 let pwTownInfoStrings: STR16[] /* [] */ = [
-  L"Rozmiar", // 0 // size of the town in sectors
-  L"", // blank line, required
-  L"Pod kontrolš", // how much of town is controlled
-  L"Brak", // none of this town
-  L"Przynależna kopalnia", // mine associated with this town
-  L"Lojalnoć", // 5 // the loyalty level of this town
-  L"Wyszkolonych", // the forces in the town trained by the player
-  L"",
-  L"Główne obiekty", // main facilities in this town
-  L"Poziom", // the training level of civilians in this town
-  L"Szkolenie cywili", // 10 // state of civilian training in town
-  L"Samoobrona", // the state of the trained civilians in the town
+  "Rozmiar", // 0 // size of the town in sectors
+  "", // blank line, required
+  "Pod kontrolš", // how much of town is controlled
+  "Brak", // none of this town
+  "Przynależna kopalnia", // mine associated with this town
+  "Lojalnoć", // 5 // the loyalty level of this town
+  "Wyszkolonych", // the forces in the town trained by the player
+  "",
+  "Główne obiekty", // main facilities in this town
+  "Poziom", // the training level of civilians in this town
+  "Szkolenie cywili", // 10 // state of civilian training in town
+  "Samoobrona", // the state of the trained civilians in the town
 ];
 
 // Mine strings
 
 let pwMineStrings: STR16[] /* [] */ = [
-  L"Kopalnia", // 0
-  L"Srebro",
-  L"Złoto",
-  L"Dzienna produkcja",
-  L"Możliwa produkcja",
-  L"Opuszczona", // 5
-  L"Zamknięta",
-  L"Na wyczerpaniu",
-  L"Produkuje",
-  L"Stan",
-  L"Tempo produkcji",
-  L"Typ złoża", // 10
-  L"Kontrola miasta",
-  L"Lojalnoć miasta",
+  "Kopalnia", // 0
+  "Srebro",
+  "Złoto",
+  "Dzienna produkcja",
+  "Możliwa produkcja",
+  "Opuszczona", // 5
+  "Zamknięta",
+  "Na wyczerpaniu",
+  "Produkuje",
+  "Stan",
+  "Tempo produkcji",
+  "Typ złoża", // 10
+  "Kontrola miasta",
+  "Lojalnoć miasta",
   //	L"Górnicy",
 ];
 
 // blank sector strings
 
 let pwMiscSectorStrings: STR16[] /* [] */ = [
-  L"Siły wroga",
-  L"Sektor",
-  L"Przedmiotów",
-  L"Nieznane",
-  L"Pod kontrolš",
-  L"Tak",
-  L"Nie",
+  "Siły wroga",
+  "Sektor",
+  "Przedmiotów",
+  "Nieznane",
+  "Pod kontrolš",
+  "Tak",
+  "Nie",
 ];
 
 // error strings for inventory
 
 let pMapInventoryErrorString: STR16[] /* [] */ = [
-  L"%s jest zbyt daleko.", // Merc is in sector with item but not close enough
-  L"Nie można wybrać tego najemnika.", // MARK CARTER
-  L"%s nie może stšd zabrać tego przedmiotu, gdyż nie jest w tym sektorze.",
-  L"Podczas walki nie można korzystać z tego panelu.",
-  L"Podczas walki nie można korzystać z tego panelu.",
-  L"%s nie może tu zostawić tego przedmiotu, gdyż nie jest w tym sektorze.",
+  "%s jest zbyt daleko.", // Merc is in sector with item but not close enough
+  "Nie można wybrać tego najemnika.", // MARK CARTER
+  "%s nie może stšd zabrać tego przedmiotu, gdyż nie jest w tym sektorze.",
+  "Podczas walki nie można korzystać z tego panelu.",
+  "Podczas walki nie można korzystać z tego panelu.",
+  "%s nie może tu zostawić tego przedmiotu, gdyż nie jest w tym sektorze.",
 ];
 
 let pMapInventoryStrings: STR16[] /* [] */ = [
-  L"Położenie", // sector these items are in
-  L"Razem przedmiotów", // total number of items in sector
+  "Położenie", // sector these items are in
+  "Razem przedmiotów", // total number of items in sector
 ];
 
 // help text for the user
 
 let pMapScreenFastHelpTextList: STR16[] /* [] */ = [
-  L"Kliknij w kolumnie 'Przydz.', aby przydzielić najemnika do innego oddziału lub wybranego zadania.",
-  L"Aby wyznaczyć najemnikowi cel w innym sektorze, kliknij pole w kolumnie 'Cel'.",
-  L"Gdy najemnicy otrzymajš już rozkaz przemieszczenia się, kompresja czasu pozwala im szybciej dotrzeć na miejsce.",
-  L"Kliknij lewym klawiszem aby wybrać sektor. Kliknij ponownie aby wydać najemnikom rozkazy przemieszczenia, lub kliknij prawym klawiszem by uzyskać informacje o sektorze.",
-  L"Nacinij w dowolnym momencie klawisz 'H' by wywietlić okienko pomocy.",
-  L"Próbny tekst",
-  L"Próbny tekst",
-  L"Próbny tekst",
-  L"Próbny tekst",
-  L"Niewiele możesz tu zrobić, dopóki najemnicy nie przylecš do Arulco. Gdy już zbierzesz swój oddział, kliknij przycisk Kompresji Czasu, w prawym dolnym rogu. W ten sposób twoi najemnicy szybciej dotrš na miejsce.",
+  "Kliknij w kolumnie 'Przydz.', aby przydzielić najemnika do innego oddziału lub wybranego zadania.",
+  "Aby wyznaczyć najemnikowi cel w innym sektorze, kliknij pole w kolumnie 'Cel'.",
+  "Gdy najemnicy otrzymajš już rozkaz przemieszczenia się, kompresja czasu pozwala im szybciej dotrzeć na miejsce.",
+  "Kliknij lewym klawiszem aby wybrać sektor. Kliknij ponownie aby wydać najemnikom rozkazy przemieszczenia, lub kliknij prawym klawiszem by uzyskać informacje o sektorze.",
+  "Nacinij w dowolnym momencie klawisz 'H' by wywietlić okienko pomocy.",
+  "Próbny tekst",
+  "Próbny tekst",
+  "Próbny tekst",
+  "Próbny tekst",
+  "Niewiele możesz tu zrobić, dopóki najemnicy nie przylecš do Arulco. Gdy już zbierzesz swój oddział, kliknij przycisk Kompresji Czasu, w prawym dolnym rogu. W ten sposób twoi najemnicy szybciej dotrš na miejsce.",
 ];
 
 // movement menu text
 
 let pMovementMenuStrings: STR16[] /* [] */ = [
-  L"Przemieć najemników", // title for movement box
-  L"Nanie trasę podróży", // done with movement menu, start plotting movement
-  L"Anuluj", // cancel this menu
-  L"Inni", // title for group of mercs not on squads nor in vehicles
+  "Przemieć najemników", // title for movement box
+  "Nanie trasę podróży", // done with movement menu, start plotting movement
+  "Anuluj", // cancel this menu
+  "Inni", // title for group of mercs not on squads nor in vehicles
 ];
 
 let pUpdateMercStrings: STR16[] /* [] */ = [
-  L"Oj:", // an error has occured
-  L"Wygasł kontrakt najemników:", // this pop up came up due to a merc contract ending
-  L"Najemnicy wypełnili zadanie:", // this pop up....due to more than one merc finishing assignments
-  L"Najemnicy wrócili do pracy:", // this pop up ....due to more than one merc waking up and returing to work
-  L"Odpoczywajšcy najemnicy:", // this pop up ....due to more than one merc being tired and going to sleep
-  L"Wkrótce wygasnš kontrakty:", // this pop up came up due to a merc contract ending
+  "Oj:", // an error has occured
+  "Wygasł kontrakt najemników:", // this pop up came up due to a merc contract ending
+  "Najemnicy wypełnili zadanie:", // this pop up....due to more than one merc finishing assignments
+  "Najemnicy wrócili do pracy:", // this pop up ....due to more than one merc waking up and returing to work
+  "Odpoczywajšcy najemnicy:", // this pop up ....due to more than one merc being tired and going to sleep
+  "Wkrótce wygasnš kontrakty:", // this pop up came up due to a merc contract ending
 ];
 
 // map screen map border buttons help text
 
 let pMapScreenBorderButtonHelpText: STR16[] /* [] */ = [
-  L"Pokaż miasta (|W)",
-  L"Pokaż kopalnie (|M)",
-  L"Pokaż oddziały i wrogów (|T)",
-  L"Pokaż przestrzeń powietrznš (|A)",
-  L"Pokaż przedmioty (|I)",
-  L"Pokaż samoobronę i wrogów (|Z)",
+  "Pokaż miasta (|W)",
+  "Pokaż kopalnie (|M)",
+  "Pokaż oddziały i wrogów (|T)",
+  "Pokaż przestrzeń powietrznš (|A)",
+  "Pokaż przedmioty (|I)",
+  "Pokaż samoobronę i wrogów (|Z)",
 ];
 
 let pMapScreenBottomFastHelp: STR16[] /* [] */ = [
-  L"|Laptop",
-  L"Ekran taktyczny (|E|s|c)",
-  L"|Opcje",
-  L"Kompresja czasu (|+)", // time compress more
-  L"Kompresja czasu (|-)", // time compress less
-  L"Poprzedni komunikat (|S|t|r|z|a|ł|k|a |w |g|ó|r|ę)\nPoprzednia strona (|P|g|U|p)", // previous message in scrollable list
-  L"Następny komunikat (|S|t|r|z|a|ł|k|a |w |d|ó|ł)\nNastępna strona (|P|g|D|n)", // next message in the scrollable list
-  L"Włšcz/Wyłšcz kompresję czasu (|S|p|a|c|j|a)", // start/stop time compression
+  "|Laptop",
+  "Ekran taktyczny (|E|s|c)",
+  "|Opcje",
+  "Kompresja czasu (|+)", // time compress more
+  "Kompresja czasu (|-)", // time compress less
+  "Poprzedni komunikat (|S|t|r|z|a|ł|k|a |w |g|ó|r|ę)\nPoprzednia strona (|P|g|U|p)", // previous message in scrollable list
+  "Następny komunikat (|S|t|r|z|a|ł|k|a |w |d|ó|ł)\nNastępna strona (|P|g|D|n)", // next message in the scrollable list
+  "Włšcz/Wyłšcz kompresję czasu (|S|p|a|c|j|a)", // start/stop time compression
 ];
 
 let pMapScreenBottomText: STR16[] /* [] */ = [
-  L"Saldo dostępne", // current balance in player bank account
+  "Saldo dostępne", // current balance in player bank account
 ];
 
 let pMercDeadString: STR16[] /* [] */ = [
-  L"%s nie żyje.",
+  "%s nie żyje.",
 ];
 
 let pDayStrings: STR16[] /* [] */ = [
-  L"Dzień",
+  "Dzień",
 ];
 
 // the list of email sender names
 
 let pSenderNameList: STR16[] /* [] */ = [
-  L"Enrico",
-  L"Psych Pro Inc",
-  L"Pomoc",
-  L"Psych Pro Inc",
-  L"Speck",
-  L"R.I.S.",
-  L"Barry",
-  L"Blood",
-  L"Lynx",
-  L"Grizzly",
-  L"Vicki",
-  L"Trevor",
-  L"Grunty",
-  L"Ivan",
-  L"Steroid",
-  L"Igor",
-  L"Shadow",
-  L"Red",
-  L"Reaper",
-  L"Fidel",
-  L"Fox",
-  L"Sidney",
-  L"Gus",
-  L"Buns",
-  L"Ice",
-  L"Spider",
-  L"Cliff",
-  L"Bull",
-  L"Hitman",
-  L"Buzz",
-  L"Raider",
-  L"Raven",
-  L"Static",
-  L"Len",
-  L"Danny",
-  L"Magic",
-  L"Stephan",
-  L"Scully",
-  L"Malice",
-  L"Dr.Q",
-  L"Nails",
-  L"Thor",
-  L"Scope",
-  L"Wolf",
-  L"MD",
-  L"Meltdown",
+  "Enrico",
+  "Psych Pro Inc",
+  "Pomoc",
+  "Psych Pro Inc",
+  "Speck",
+  "R.I.S.",
+  "Barry",
+  "Blood",
+  "Lynx",
+  "Grizzly",
+  "Vicki",
+  "Trevor",
+  "Grunty",
+  "Ivan",
+  "Steroid",
+  "Igor",
+  "Shadow",
+  "Red",
+  "Reaper",
+  "Fidel",
+  "Fox",
+  "Sidney",
+  "Gus",
+  "Buns",
+  "Ice",
+  "Spider",
+  "Cliff",
+  "Bull",
+  "Hitman",
+  "Buzz",
+  "Raider",
+  "Raven",
+  "Static",
+  "Len",
+  "Danny",
+  "Magic",
+  "Stephan",
+  "Scully",
+  "Malice",
+  "Dr.Q",
+  "Nails",
+  "Thor",
+  "Scope",
+  "Wolf",
+  "MD",
+  "Meltdown",
   //----------
-  L"M.I.S. Ubezpieczenia",
-  L"Bobby Ray",
-  L"Kingpin",
-  L"John Kulba",
-  L"A.I.M.",
+  "M.I.S. Ubezpieczenia",
+  "Bobby Ray",
+  "Kingpin",
+  "John Kulba",
+  "A.I.M.",
 ];
 
 // next/prev strings
 
 let pTraverseStrings: STR16[] /* [] */ = [
-  L"Poprzedni",
-  L"Następny",
+  "Poprzedni",
+  "Następny",
 ];
 
 // new mail notify string
 
 let pNewMailStrings: STR16[] /* [] */ = [
-  L"Masz nowš pocztę...",
+  "Masz nowš pocztę...",
 ];
 
 // confirm player's intent to delete messages
 
 let pDeleteMailStrings: STR16[] /* [] */ = [
-  L"Usunšć wiadomoć?",
-  L"Usunšć wiadomoć?",
+  "Usunšć wiadomoć?",
+  "Usunšć wiadomoć?",
 ];
 
 // the sort header strings
 
 let pEmailHeaders: STR16[] /* [] */ = [
-  L"Od:",
-  L"Temat:",
-  L"Dzień:",
+  "Od:",
+  "Temat:",
+  "Dzień:",
 ];
 
 // email titlebar text
 
 let pEmailTitleText: STR16[] /* [] */ = [
-  L"Skrzynka odbiorcza",
+  "Skrzynka odbiorcza",
 ];
 
 // the financial screen strings
 let pFinanceTitle: STR16[] /* [] */ = [
-  L"Księgowy Plus", // the name we made up for the financial program in the game
+  "Księgowy Plus", // the name we made up for the financial program in the game
 ];
 
 let pFinanceSummary: STR16[] /* [] */ = [
-  L"Wypłata:", // credit (subtract from) to player's account
-  L"Wpłata:", // debit (add to) to player's account
-  L"Wczorajsze wpływy:",
-  L"Wczorajsze dodatkowe wpływy:",
-  L"Wczorajsze wydatki:",
-  L"Saldo na koniec dnia:",
-  L"Dzisiejsze wpływy:",
-  L"Dzisiejsze dodatkowe wpływy:",
-  L"Dzisiejsze wydatki:",
-  L"Saldo dostępne:",
-  L"Przewidywane wpływy:",
-  L"Przewidywane saldo:", // projected balance for player for tommorow
+  "Wypłata:", // credit (subtract from) to player's account
+  "Wpłata:", // debit (add to) to player's account
+  "Wczorajsze wpływy:",
+  "Wczorajsze dodatkowe wpływy:",
+  "Wczorajsze wydatki:",
+  "Saldo na koniec dnia:",
+  "Dzisiejsze wpływy:",
+  "Dzisiejsze dodatkowe wpływy:",
+  "Dzisiejsze wydatki:",
+  "Saldo dostępne:",
+  "Przewidywane wpływy:",
+  "Przewidywane saldo:", // projected balance for player for tommorow
 ];
 
 // headers to each list in financial screen
 
 let pFinanceHeaders: STR16[] /* [] */ = [
-  L"Dzień", // the day column
-  L"Ma", // the credits column
-  L"Winien", // the debits column
-  L"Transakcja", // transaction type - see TransactionText below
-  L"Saldo", // balance at this point in time
-  L"Strona", // page number
-  L"Dzień (dni)", // the day(s) of transactions this page displays
+  "Dzień", // the day column
+  "Ma", // the credits column
+  "Winien", // the debits column
+  "Transakcja", // transaction type - see TransactionText below
+  "Saldo", // balance at this point in time
+  "Strona", // page number
+  "Dzień (dni)", // the day(s) of transactions this page displays
 ];
 
 let pTransactionText: STR16[] /* [] */ = [
-  L"Narosłe odsetki", // interest the player has accumulated so far
-  L"Anonimowa wpłata",
-  L"Koszt transakcji",
-  L"Wynajęto -", // Merc was hired
-  L"Zakupy u Bobby'ego Ray'a", // Bobby Ray is the name of an arms dealer
-  L"Uregulowanie rachunków w M.E.R.C.",
-  L"Zastaw na życie dla - %s", // medical deposit for merc
-  L"Analiza profilu w IMP", // IMP is the acronym for International Mercenary Profiling
-  L"Ubezpieczneie dla - %s",
-  L"Redukcja ubezp. dla - %s",
-  L"Przedł. ubezp. dla - %s", // johnny contract extended
-  L"Anulowano ubezp. dla - %s",
-  L"Odszkodowanie za - %s", // insurance claim for merc
-  L"1 dzień", // merc's contract extended for a day
-  L"1 tydzień", // merc's contract extended for a week
-  L"2 tygodnie", // ... for 2 weeks
-  L"Przychód z kopalni",
-  L"", // String nuked
-  L"Zakup kwiatów",
-  L"Pełny zwrot zastawu za - %s",
-  L"Częciowy zwrot zastawu za - %s",
-  L"Brak zwrotu zastawu za - %s",
-  L"Zapłata dla - %s", // %s is the name of the npc being paid
-  L"Transfer funduszy do - %s", // transfer funds to a merc
-  L"Transfer funduszy od - %s", // transfer funds from a merc
-  L"Samoobrona w - %s", // initial cost to equip a town's militia
-  L"Zakupy u - %s.", // is used for the Shop keeper interface.  The dealers name will be appended to the end of the string.
-  L"%s wpłacił(a) pienišdze.",
+  "Narosłe odsetki", // interest the player has accumulated so far
+  "Anonimowa wpłata",
+  "Koszt transakcji",
+  "Wynajęto -", // Merc was hired
+  "Zakupy u Bobby'ego Ray'a", // Bobby Ray is the name of an arms dealer
+  "Uregulowanie rachunków w M.E.R.C.",
+  "Zastaw na życie dla - %s", // medical deposit for merc
+  "Analiza profilu w IMP", // IMP is the acronym for International Mercenary Profiling
+  "Ubezpieczneie dla - %s",
+  "Redukcja ubezp. dla - %s",
+  "Przedł. ubezp. dla - %s", // johnny contract extended
+  "Anulowano ubezp. dla - %s",
+  "Odszkodowanie za - %s", // insurance claim for merc
+  "1 dzień", // merc's contract extended for a day
+  "1 tydzień", // merc's contract extended for a week
+  "2 tygodnie", // ... for 2 weeks
+  "Przychód z kopalni",
+  "", // String nuked
+  "Zakup kwiatów",
+  "Pełny zwrot zastawu za - %s",
+  "Częciowy zwrot zastawu za - %s",
+  "Brak zwrotu zastawu za - %s",
+  "Zapłata dla - %s", // %s is the name of the npc being paid
+  "Transfer funduszy do - %s", // transfer funds to a merc
+  "Transfer funduszy od - %s", // transfer funds from a merc
+  "Samoobrona w - %s", // initial cost to equip a town's militia
+  "Zakupy u - %s.", // is used for the Shop keeper interface.  The dealers name will be appended to the end of the string.
+  "%s wpłacił(a) pienišdze.",
 ];
 
 let pTransactionAlternateText: STR16[] /* [] */ = [
-  L"Ubezpieczenie dla -", // insurance for a merc
-  L"Przedł. kontrakt z - %s o 1 dzień.", // entend mercs contract by a day
-  L"Przedł. kontrakt z - %s o 1 tydzień.",
-  L"Przedł. kontrakt z - %s o 2 tygodnie.",
+  "Ubezpieczenie dla -", // insurance for a merc
+  "Przedł. kontrakt z - %s o 1 dzień.", // entend mercs contract by a day
+  "Przedł. kontrakt z - %s o 1 tydzień.",
+  "Przedł. kontrakt z - %s o 2 tygodnie.",
 ];
 
 // helicopter pilot payment
 
 let pSkyriderText: STR16[] /* [] */ = [
-  L"Skyriderowi zapłacono %d$", // skyrider was paid an amount of money
-  L"Skyriderowi trzeba jeszcze zapłacić %d$", // skyrider is still owed an amount of money
-  L"Skyrider zatankował", // skyrider has finished refueling
-  L"", // unused
-  L"", // unused
-  L"Skyrider jest gotów do kolejnego lotu.", // Skyrider was grounded but has been freed
-  L"Skyrider nie ma pasażerów. Jeli chcesz przetransportować najemników, zmień ich przydział na POJAZD/HELIKOPTER.",
+  "Skyriderowi zapłacono %d$", // skyrider was paid an amount of money
+  "Skyriderowi trzeba jeszcze zapłacić %d$", // skyrider is still owed an amount of money
+  "Skyrider zatankował", // skyrider has finished refueling
+  "", // unused
+  "", // unused
+  "Skyrider jest gotów do kolejnego lotu.", // Skyrider was grounded but has been freed
+  "Skyrider nie ma pasażerów. Jeli chcesz przetransportować najemników, zmień ich przydział na POJAZD/HELIKOPTER.",
 ];
 
 // strings for different levels of merc morale
 
 let pMoralStrings: STR16[] /* [] */ = [
-  L"wietne",
-  L"Dobre",
-  L"Stabilne",
-  L"Słabe",
-  L"Panika",
-  L"Złe",
+  "wietne",
+  "Dobre",
+  "Stabilne",
+  "Słabe",
+  "Panika",
+  "Złe",
 ];
 
 // Mercs equipment has now arrived and is now available in Omerta or Drassen.
 
 let pLeftEquipmentString: STR16[] /* [] */ = [
-  L"%s - jego/jej sprzęt jest już w Omercie( A9 ).",
-  L"%s - jego/jej sprzęt jest już w Drassen( B13 ).",
+  "%s - jego/jej sprzęt jest już w Omercie( A9 ).",
+  "%s - jego/jej sprzęt jest już w Drassen( B13 ).",
 ];
 
 // Status that appears on the Map Screen
 
 let pMapScreenStatusStrings: STR16[] /* [] */ = [
-  L"Zdrowie",
-  L"Energia",
-  L"Morale",
-  L"Stan", // the condition of the current vehicle (its "health")
-  L"Paliwo", // the fuel level of the current vehicle (its "energy")
+  "Zdrowie",
+  "Energia",
+  "Morale",
+  "Stan", // the condition of the current vehicle (its "health")
+  "Paliwo", // the fuel level of the current vehicle (its "energy")
 ];
 
 let pMapScreenPrevNextCharButtonHelpText: STR16[] /* [] */ = [
-  L"Poprzedni najemnik (|S|t|r|z|a|ł|k|a |w |l|e|w|o)", // previous merc in the list
-  L"Następny najemnik (|S|t|r|z|a|ł|k|a |w |p|r|a|w|o)", // next merc in the list
+  "Poprzedni najemnik (|S|t|r|z|a|ł|k|a |w |l|e|w|o)", // previous merc in the list
+  "Następny najemnik (|S|t|r|z|a|ł|k|a |w |p|r|a|w|o)", // next merc in the list
 ];
 
 let pEtaString: STR16[] /* [] */ = [
-  L"PCP:", // eta is an acronym for Estimated Time of Arrival
+  "PCP:", // eta is an acronym for Estimated Time of Arrival
 ];
 
 let pTrashItemText: STR16[] /* [] */ = [
-  L"Więcej tego nie zobaczysz. Czy na pewno chcesz to zrobić?", // do you want to continue and lose the item forever
-  L"To wyglšda na co NAPRAWDĘ ważnego. Czy NA PEWNO chcesz to zniszczyć?", // does the user REALLY want to trash this item
+  "Więcej tego nie zobaczysz. Czy na pewno chcesz to zrobić?", // do you want to continue and lose the item forever
+  "To wyglšda na co NAPRAWDĘ ważnego. Czy NA PEWNO chcesz to zniszczyć?", // does the user REALLY want to trash this item
 ];
 
 let pMapErrorString: STR16[] /* [] */ = [
-  L"Oddział nie może się przemieszczać, jeli który z najemników pi.",
+  "Oddział nie może się przemieszczać, jeli który z najemników pi.",
 
   // 1-5
-  L"Najpierw wyprowad oddział na powierzchnię.",
-  L"Rozkazy przemieszczenia? To jest sektor wroga!",
-  L"Aby podróżować najemnicy muszš być przydzieleni do oddziału lub pojazdu.",
-  L"Nie masz jeszcze ludzi.", // you have no members, can't do anything
-  L"Najemnik nie może wypełnić tego rozkazu.", // merc can't comply with your order
+  "Najpierw wyprowad oddział na powierzchnię.",
+  "Rozkazy przemieszczenia? To jest sektor wroga!",
+  "Aby podróżować najemnicy muszš być przydzieleni do oddziału lub pojazdu.",
+  "Nie masz jeszcze ludzi.", // you have no members, can't do anything
+  "Najemnik nie może wypełnić tego rozkazu.", // merc can't comply with your order
   // 6-10
-  L"musi mieć eskortę, aby się przemieszczać. Umieć go w oddziale z eskortš.", // merc can't move unescorted .. for a male
-  L"musi mieć eskortę, aby się przemieszczać. Umieć jš w oddziale z eskortš.", // for a female
-  L"Najemnik nie przybył jeszcze do Arulco!",
-  L"Wyglšda na to, że trzeba wpierw uregulować sprawy kontraktu.",
-  L"",
+  "musi mieć eskortę, aby się przemieszczać. Umieć go w oddziale z eskortš.", // merc can't move unescorted .. for a male
+  "musi mieć eskortę, aby się przemieszczać. Umieć jš w oddziale z eskortš.", // for a female
+  "Najemnik nie przybył jeszcze do Arulco!",
+  "Wyglšda na to, że trzeba wpierw uregulować sprawy kontraktu.",
+  "",
   // 11-15
-  L"Rozkazy przemieszczenia? Trwa walka!",
-  L"Zaatakowały cię dzikie koty, w sektorze %s!",
-  L"W sektorze I16 znajduje się co, co wyglšda na legowisko dzikich kotów!",
-  L"",
-  L"Baza rakiet Ziemia-Powietrze została przejęta.",
+  "Rozkazy przemieszczenia? Trwa walka!",
+  "Zaatakowały cię dzikie koty, w sektorze %s!",
+  "W sektorze I16 znajduje się co, co wyglšda na legowisko dzikich kotów!",
+  "",
+  "Baza rakiet Ziemia-Powietrze została przejęta.",
   // 16-20
-  L"%s - kopalnia została przejęta. Twój dzienny przychód został zredukowany do %s.",
-  L"Nieprzyjaciel bezkonfliktowo przejšł sektor %s.",
-  L"Przynajmniej jeden z twoich najemników nie został do tego przydzielony.",
-  L"%s nie może się przyłšczyć, ponieważ %s jest pełny",
-  L"%s nie może się przyłšczyć, ponieważ %s jest zbyt daleko.",
+  "%s - kopalnia została przejęta. Twój dzienny przychód został zredukowany do %s.",
+  "Nieprzyjaciel bezkonfliktowo przejšł sektor %s.",
+  "Przynajmniej jeden z twoich najemników nie został do tego przydzielony.",
+  "%s nie może się przyłšczyć, ponieważ %s jest pełny",
+  "%s nie może się przyłšczyć, ponieważ %s jest zbyt daleko.",
   // 21-25
-  L"%s - kopalnia została przejęta przez siły Deidranny!",
-  L"Siły Deidranny włanie zaatakowały bazę rakiet Ziemia-Powietrze w - %s.",
-  L"Siły Deidranny włanie zaatakowały - %s.",
-  L"Włanie zauważono siły Deidranny w - %s.",
-  L"Siły Deidranny włanie przejęły - %s.",
+  "%s - kopalnia została przejęta przez siły Deidranny!",
+  "Siły Deidranny włanie zaatakowały bazę rakiet Ziemia-Powietrze w - %s.",
+  "Siły Deidranny włanie zaatakowały - %s.",
+  "Włanie zauważono siły Deidranny w - %s.",
+  "Siły Deidranny włanie przejęły - %s.",
   // 26-30
-  L"Przynajmniej jeden z twoich najemników nie mógł się położyć spać.",
-  L"Przynajmniej jeden z twoich najemników nie mógł wstać.",
-  L"Oddziały samoobrony nie pojawiš się dopóki nie zostanš wyszkolone.",
-  L"%s nie może się w tej chwili przemieszczać.",
-  L"Żołnierze samoobrony, którzy znajdujš się poza granicami miasta, nie mogš być przeniesieni do innego sektora.",
+  "Przynajmniej jeden z twoich najemników nie mógł się położyć spać.",
+  "Przynajmniej jeden z twoich najemników nie mógł wstać.",
+  "Oddziały samoobrony nie pojawiš się dopóki nie zostanš wyszkolone.",
+  "%s nie może się w tej chwili przemieszczać.",
+  "Żołnierze samoobrony, którzy znajdujš się poza granicami miasta, nie mogš być przeniesieni do innego sektora.",
   // 31-35
-  L"Nie możesz trenować samoobrony w - %s.",
-  L"Pusty pojazd nie może się poruszać!",
-  L"%s ma zbyt wiele ran by podróżować!",
-  L"Musisz wpierw opucić muzeum!",
-  L"%s nie żyje!",
+  "Nie możesz trenować samoobrony w - %s.",
+  "Pusty pojazd nie może się poruszać!",
+  "%s ma zbyt wiele ran by podróżować!",
+  "Musisz wpierw opucić muzeum!",
+  "%s nie żyje!",
   // 36-40
-  L"%s nie może się zamienić z - %s, ponieważ się porusza",
-  L"%s nie może w ten sposób wejc do pojazdu",
-  L"%s nie może się dołšczyć do - %s",
-  L"Nie możesz kompresować czasu dopóki nie zatrudnisz sobie kilku nowych najemników!",
-  L"Ten pojazd może się poruszać tylko po drodze!",
+  "%s nie może się zamienić z - %s, ponieważ się porusza",
+  "%s nie może w ten sposób wejc do pojazdu",
+  "%s nie może się dołšczyć do - %s",
+  "Nie możesz kompresować czasu dopóki nie zatrudnisz sobie kilku nowych najemników!",
+  "Ten pojazd może się poruszać tylko po drodze!",
   // 41-45
-  L"Nie można zmieniać przydziału najemników, którzy sš w drodze",
-  L"Pojazd nie ma paliwa!",
-  L"%s jest zbyt zmęczony(na) by podróżować.",
-  L"Żaden z pasażerów nie jest w stanie kierować tym pojazdem.",
-  L"Jeden lub więcej członków tego oddziału nie może się w tej chwili przemieszczać.",
+  "Nie można zmieniać przydziału najemników, którzy sš w drodze",
+  "Pojazd nie ma paliwa!",
+  "%s jest zbyt zmęczony(na) by podróżować.",
+  "Żaden z pasażerów nie jest w stanie kierować tym pojazdem.",
+  "Jeden lub więcej członków tego oddziału nie może się w tej chwili przemieszczać.",
   // 46-50
-  L"Jeden lub więcej INNYCH członków tego oddziału nie może się w tej chwili przemieszczać.",
-  L"Pojazd jest uszkodzony!",
-  L"Pamiętaj, że w jednym sektorze tylko dwóch najemników może trenować żołnierzy samoobrony.",
-  L"Robot nie może się poruszać bez operatora. Umieć ich razem w jednym oddziale.",
+  "Jeden lub więcej INNYCH członków tego oddziału nie może się w tej chwili przemieszczać.",
+  "Pojazd jest uszkodzony!",
+  "Pamiętaj, że w jednym sektorze tylko dwóch najemników może trenować żołnierzy samoobrony.",
+  "Robot nie może się poruszać bez operatora. Umieć ich razem w jednym oddziale.",
 ];
 
 // help text used during strategic route plotting
 let pMapPlotStrings: STR16[] /* [] */ = [
-  L"Kliknij ponownie sektor docelowy, aby zatwierdzić trasę podróży, lub kliknij inny sektor, aby jš wydłużyć.",
-  L"Trasa podróży zatwierdzona.",
-  L"Cel podróży nie został zmieniony.",
-  L"Trasa podróży została anulowana.",
-  L"Trasa podróży została skrócona.",
+  "Kliknij ponownie sektor docelowy, aby zatwierdzić trasę podróży, lub kliknij inny sektor, aby jš wydłużyć.",
+  "Trasa podróży zatwierdzona.",
+  "Cel podróży nie został zmieniony.",
+  "Trasa podróży została anulowana.",
+  "Trasa podróży została skrócona.",
 ];
 
 // help text used when moving the merc arrival sector
 let pBullseyeStrings: STR16[] /* [] */ = [
-  L"Kliknij sektor, do którego majš przylatywać najemnicy.",
-  L"Dobrze. Przylatujšcy najemnicy będš zrzucani w %s",
-  L"Najemnicy nie mogš tu przylatywać. Przestrzeń powietrzna nie jest zabezpieczona!",
-  L"Anulowano. Sektor zrzutu nie został zmieniony.",
-  L"Przestrzeń powietrzna nad %s nie jest już bezpieczna! Sektor zrzutu został przesunięty do %s.",
+  "Kliknij sektor, do którego majš przylatywać najemnicy.",
+  "Dobrze. Przylatujšcy najemnicy będš zrzucani w %s",
+  "Najemnicy nie mogš tu przylatywać. Przestrzeń powietrzna nie jest zabezpieczona!",
+  "Anulowano. Sektor zrzutu nie został zmieniony.",
+  "Przestrzeń powietrzna nad %s nie jest już bezpieczna! Sektor zrzutu został przesunięty do %s.",
 ];
 
 // help text for mouse regions
 
 let pMiscMapScreenMouseRegionHelpText: STR16[] /* [] */ = [
-  L"Otwórz wyposażenie (|E|n|t|e|r)",
-  L"Zniszcz przedmiot",
-  L"Zamknij wyposażenie (|E|n|t|e|r)",
+  "Otwórz wyposażenie (|E|n|t|e|r)",
+  "Zniszcz przedmiot",
+  "Zamknij wyposażenie (|E|n|t|e|r)",
 ];
 
 // male version of where equipment is left
 let pMercHeLeaveString: STR16[] /* [] */ = [
-  L"Czy %s ma zostawić swój sprzęt w sektorze, w którym się obecnie znajduje (%s), czy w Dressen (B13), skšd odlatuje? ",
-  L"Czy %s ma zostawić swój sprzęt w sektorze, w którym się obecnie znajduje (%s), czy w Omercie (A9), skšd odlatuje?",
-  L"wkrótce odchodzi i zostawi swój sprzęt w Omercie (A9).",
-  L"wkrótce odchodzi i zostawi swój sprzęt w Drassen (B13).",
-  L"%s wkrótce odchodzi i zostawi swój sprzęt w %s.",
+  "Czy %s ma zostawić swój sprzęt w sektorze, w którym się obecnie znajduje (%s), czy w Dressen (B13), skšd odlatuje? ",
+  "Czy %s ma zostawić swój sprzęt w sektorze, w którym się obecnie znajduje (%s), czy w Omercie (A9), skšd odlatuje?",
+  "wkrótce odchodzi i zostawi swój sprzęt w Omercie (A9).",
+  "wkrótce odchodzi i zostawi swój sprzęt w Drassen (B13).",
+  "%s wkrótce odchodzi i zostawi swój sprzęt w %s.",
 ];
 
 // female version
 let pMercSheLeaveString: STR16[] /* [] */ = [
-  L"Czy %s ma zostawić swój sprzęt w sektorze, w którym się obecnie znajduje (%s), czy w Dressen (B13), skšd odlatuje? ",
-  L"Czy %s ma zostawić swój sprzęt w sektorze, w którym się obecnie znajduje (%s), czy w Omercie (A9), skšd odlatuje?",
-  L"wkrótce odchodzi i zostawi swój sprzęt w Omercie (A9).",
-  L"wkrótce odchodzi i zostawi swój sprzęt w Drassen (B13).",
-  L"%s wkrótce odchodzi i zostawi swój sprzęt w %s.",
+  "Czy %s ma zostawić swój sprzęt w sektorze, w którym się obecnie znajduje (%s), czy w Dressen (B13), skšd odlatuje? ",
+  "Czy %s ma zostawić swój sprzęt w sektorze, w którym się obecnie znajduje (%s), czy w Omercie (A9), skšd odlatuje?",
+  "wkrótce odchodzi i zostawi swój sprzęt w Omercie (A9).",
+  "wkrótce odchodzi i zostawi swój sprzęt w Drassen (B13).",
+  "%s wkrótce odchodzi i zostawi swój sprzęt w %s.",
 ];
 
 let pMercContractOverStrings: STR16[] /* [] */ = [
-  L" zakończył kontrakt więc wyjechał.", // merc's contract is over and has departed
-  L" zakończyła kontrakt więc wyjechała.", // merc's contract is over and has departed
-  L" - jego kontrakt został zerwany więc odszedł.", // merc's contract has been terminated
-  L" - jej kontrakt został zerwany więc odeszła.", // merc's contract has been terminated
-  L"Masz za duży dług wobec M.E.R.C. więc %s odchodzi.", // Your M.E.R.C. account is invalid so merc left
+  " zakończył kontrakt więc wyjechał.", // merc's contract is over and has departed
+  " zakończyła kontrakt więc wyjechała.", // merc's contract is over and has departed
+  " - jego kontrakt został zerwany więc odszedł.", // merc's contract has been terminated
+  " - jej kontrakt został zerwany więc odeszła.", // merc's contract has been terminated
+  "Masz za duży dług wobec M.E.R.C. więc %s odchodzi.", // Your M.E.R.C. account is invalid so merc left
 ];
 
 // Text used on IMP Web Pages
 
 let pImpPopUpStrings: STR16[] /* [] */ = [
-  L"Nieprawidłowy kod dostępu",
-  L"Czy na pewno chcesz wznowić proces okrelenia profilu?",
-  L"Wprowad nazwisko oraz płeć",
-  L"Wstępna kontrola stanu twoich finansów wykazała, że nie stać cię na analizę profilu.",
-  L"Opcja tym razem nieaktywna.",
-  L"Aby wykonać profil, musisz mieć miejsce dla przynajmniej jednego członka załogi.",
-  L"Profil został już wykonany.",
+  "Nieprawidłowy kod dostępu",
+  "Czy na pewno chcesz wznowić proces okrelenia profilu?",
+  "Wprowad nazwisko oraz płeć",
+  "Wstępna kontrola stanu twoich finansów wykazała, że nie stać cię na analizę profilu.",
+  "Opcja tym razem nieaktywna.",
+  "Aby wykonać profil, musisz mieć miejsce dla przynajmniej jednego członka załogi.",
+  "Profil został już wykonany.",
 ];
 
 // button labels used on the IMP site
 
 let pImpButtonText: STR16[] /* [] */ = [
-  L"O Nas", // about the IMP site
-  L"ZACZNIJ", // begin profiling
-  L"Osobowoć", // personality section
-  L"Atrybuty", // personal stats/attributes section
-  L"Portret", // the personal portrait selection
-  L"Głos %d", // the voice selection
-  L"Gotowe", // done profiling
-  L"Zacznij od poczštku", // start over profiling
-  L"Tak, wybieram tš odpowied.",
-  L"Tak",
-  L"Nie",
-  L"Skończone", // finished answering questions
-  L"Poprz.", // previous question..abbreviated form
-  L"Nast.", // next question
-  L"TAK, JESTEM.", // yes, I am certain
-  L"NIE, CHCĘ ZACZĽĆ OD NOWA.", // no, I want to start over the profiling process
-  L"TAK",
-  L"NIE",
-  L"Wstecz", // back one page
-  L"Anuluj", // cancel selection
-  L"Tak.",
-  L"Nie, Chcę spojrzeć jeszcze raz.",
-  L"Rejestr", // the IMP site registry..when name and gender is selected
-  L"Analizuję...", // analyzing your profile results
-  L"OK",
-  L"Głos",
+  "O Nas", // about the IMP site
+  "ZACZNIJ", // begin profiling
+  "Osobowoć", // personality section
+  "Atrybuty", // personal stats/attributes section
+  "Portret", // the personal portrait selection
+  "Głos %d", // the voice selection
+  "Gotowe", // done profiling
+  "Zacznij od poczštku", // start over profiling
+  "Tak, wybieram tš odpowied.",
+  "Tak",
+  "Nie",
+  "Skończone", // finished answering questions
+  "Poprz.", // previous question..abbreviated form
+  "Nast.", // next question
+  "TAK, JESTEM.", // yes, I am certain
+  "NIE, CHCĘ ZACZĽĆ OD NOWA.", // no, I want to start over the profiling process
+  "TAK",
+  "NIE",
+  "Wstecz", // back one page
+  "Anuluj", // cancel selection
+  "Tak.",
+  "Nie, Chcę spojrzeć jeszcze raz.",
+  "Rejestr", // the IMP site registry..when name and gender is selected
+  "Analizuję...", // analyzing your profile results
+  "OK",
+  "Głos",
 ];
 
 let pExtraIMPStrings: STR16[] /* [] */ = [
-  L"Aby zaczšć analizę profilu, wybierz osobowoć.",
-  L"Teraz okrel swoje atrybuty.",
-  L"Teraz możesz przystšpić do wyboru portretu.",
-  L"Aby zakończyć proces, wybierz próbkę głosu, która ci najbardziej odpowiada.",
+  "Aby zaczšć analizę profilu, wybierz osobowoć.",
+  "Teraz okrel swoje atrybuty.",
+  "Teraz możesz przystšpić do wyboru portretu.",
+  "Aby zakończyć proces, wybierz próbkę głosu, która ci najbardziej odpowiada.",
 ];
 
 let pFilesTitle: STR16[] /* [] */ = [
-  L"Przeglšdarka plików",
+  "Przeglšdarka plików",
 ];
 
 let pFilesSenderList: STR16[] /* [] */ = [
-  L"Raport Rozp.", // the recon report sent to the player. Recon is an abbreviation for reconissance
-  L"Intercept #1", // first intercept file .. Intercept is the title of the organization sending the file...similar in function to INTERPOL/CIA/KGB..refer to fist record in files.txt for the translated title
-  L"Intercept #2", // second intercept file
-  L"Intercept #3", // third intercept file
-  L"Intercept #4", // fourth intercept file
-  L"Intercept #5", // fifth intercept file
-  L"Intercept #6", // sixth intercept file
+  "Raport Rozp.", // the recon report sent to the player. Recon is an abbreviation for reconissance
+  "Intercept #1", // first intercept file .. Intercept is the title of the organization sending the file...similar in function to INTERPOL/CIA/KGB..refer to fist record in files.txt for the translated title
+  "Intercept #2", // second intercept file
+  "Intercept #3", // third intercept file
+  "Intercept #4", // fourth intercept file
+  "Intercept #5", // fifth intercept file
+  "Intercept #6", // sixth intercept file
 ];
 
 // Text having to do with the History Log
 
 let pHistoryTitle: STR16[] /* [] */ = [
-  L"Historia",
+  "Historia",
 ];
 
 let pHistoryHeaders: STR16[] /* [] */ = [
-  L"Dzień", // the day the history event occurred
-  L"Strona", // the current page in the history report we are in
-  L"Dzień", // the days the history report occurs over
-  L"Położenie", // location (in sector) the event occurred
-  L"Zdarzenie", // the event label
+  "Dzień", // the day the history event occurred
+  "Strona", // the current page in the history report we are in
+  "Dzień", // the days the history report occurs over
+  "Położenie", // location (in sector) the event occurred
+  "Zdarzenie", // the event label
 ];
 
 // various history events
@@ -1929,168 +1929,168 @@ let pHistoryHeaders: STR16[] /* [] */ = [
 // GO INTO THE LAPTOP/HISTORY LOG AND CHECK OUT THE STRINGS. CONTROL-R INSERTS
 // MANY (NOT ALL) OF THE STRINGS IN THE FOLLOWING LIST INTO THE GAME.
 let pHistoryStrings: STR16[] /* [] */ = [
-  L"", // leave this line blank
+  "", // leave this line blank
   // 1-5
-  L"%s najęty(ta) w A.I.M.", // merc was hired from the aim site
-  L"%s najęty(ta) w M.E.R.C.", // merc was hired from the aim site
-  L"%s ginie.", // merc was killed
-  L"Uregulowano rachunki w M.E.R.C.", // paid outstanding bills at MERC
-  L"Przyjęto zlecenie od Enrico Chivaldori",
+  "%s najęty(ta) w A.I.M.", // merc was hired from the aim site
+  "%s najęty(ta) w M.E.R.C.", // merc was hired from the aim site
+  "%s ginie.", // merc was killed
+  "Uregulowano rachunki w M.E.R.C.", // paid outstanding bills at MERC
+  "Przyjęto zlecenie od Enrico Chivaldori",
   // 6-10
-  L"Profil IMP wygenerowany",
-  L"Podpisano umowę ubezpieczeniowš dla %s.", // insurance contract purchased
-  L"Anulowano umowę ubezpieczeniowš dla %s.", // insurance contract canceled
-  L"Wypłata ubezpieczenia za %s.", // insurance claim payout for merc
-  L"Przedłużono kontrakt z: %s o 1 dzień.", // Extented "mercs name"'s for a day
+  "Profil IMP wygenerowany",
+  "Podpisano umowę ubezpieczeniowš dla %s.", // insurance contract purchased
+  "Anulowano umowę ubezpieczeniowš dla %s.", // insurance contract canceled
+  "Wypłata ubezpieczenia za %s.", // insurance claim payout for merc
+  "Przedłużono kontrakt z: %s o 1 dzień.", // Extented "mercs name"'s for a day
   // 11-15
-  L"Przedłużono kontrakt z: %s o 1 tydzień.", // Extented "mercs name"'s for a week
-  L"Przedłużono kontrakt z: %s o 2 tygodnie.", // Extented "mercs name"'s 2 weeks
-  L"%s zwolniony(na).", // "merc's name" was dismissed.
-  L"%s odchodzi.", // "merc's name" quit.
-  L"przyjęto zadanie.", // a particular quest started
+  "Przedłużono kontrakt z: %s o 1 tydzień.", // Extented "mercs name"'s for a week
+  "Przedłużono kontrakt z: %s o 2 tygodnie.", // Extented "mercs name"'s 2 weeks
+  "%s zwolniony(na).", // "merc's name" was dismissed.
+  "%s odchodzi.", // "merc's name" quit.
+  "przyjęto zadanie.", // a particular quest started
   // 16-20
-  L"zadanie wykonane.",
-  L"Rozmawiano szefem kopalni %s", // talked to head miner of town
-  L"Wyzwolono - %s",
-  L"Użyto kodu Cheat",
-  L"Żywnoć powinna być jutro w Omercie",
+  "zadanie wykonane.",
+  "Rozmawiano szefem kopalni %s", // talked to head miner of town
+  "Wyzwolono - %s",
+  "Użyto kodu Cheat",
+  "Żywnoć powinna być jutro w Omercie",
   // 21-25
-  L"%s odchodzi, aby wzišć lub z Darylem Hickiem",
-  L"Wygasł kontrakt z - %s.",
-  L"%s zrekrutowany(na).",
-  L"Enrico narzeka na brak postępów",
-  L"Walka wygrana",
+  "%s odchodzi, aby wzišć lub z Darylem Hickiem",
+  "Wygasł kontrakt z - %s.",
+  "%s zrekrutowany(na).",
+  "Enrico narzeka na brak postępów",
+  "Walka wygrana",
   // 26-30
-  L"%s - w kopalni kończy się ruda",
-  L"%s - w kopalni skończyła się ruda",
-  L"%s - kopalnia została zamknięta",
-  L"%s - kopalnia została otwarta",
-  L"Informacja o więzieniu zwanym Tixa.",
+  "%s - w kopalni kończy się ruda",
+  "%s - w kopalni skończyła się ruda",
+  "%s - kopalnia została zamknięta",
+  "%s - kopalnia została otwarta",
+  "Informacja o więzieniu zwanym Tixa.",
   // 31-35
-  L"Informacja o tajnej fabryce broni zwanej Orta.",
-  L"Naukowiec w Orcie ofiarował kilka karabinów rakietowych.",
-  L"Królowa Deidranna robi użytek ze zwłok.",
-  L"Frank opowiedział o walkach w San Monie.",
-  L"Pewien pacjent twierdzi, że widział co w kopalni.",
+  "Informacja o tajnej fabryce broni zwanej Orta.",
+  "Naukowiec w Orcie ofiarował kilka karabinów rakietowych.",
+  "Królowa Deidranna robi użytek ze zwłok.",
+  "Frank opowiedział o walkach w San Monie.",
+  "Pewien pacjent twierdzi, że widział co w kopalni.",
   // 36-40
-  L"Goć o imieniu Devin sprzedaje materiały wybuchowe.",
-  L"Spotkanie ze sławynm eks-najemnikiem A.I.M. - Mike'iem!",
-  L"Tony handluje broniš.",
-  L"Otrzymano karabin rakietowy od sierżanta Krotta.",
-  L"Dano Kyle'owi akt własnoci sklepu Angela.",
+  "Goć o imieniu Devin sprzedaje materiały wybuchowe.",
+  "Spotkanie ze sławynm eks-najemnikiem A.I.M. - Mike'iem!",
+  "Tony handluje broniš.",
+  "Otrzymano karabin rakietowy od sierżanta Krotta.",
+  "Dano Kyle'owi akt własnoci sklepu Angela.",
   // 41-45
-  L"Madlab zaoferował się zbudować robota.",
-  L"Gabby potrafi zrobić miksturę chronišcš przed robakami.",
-  L"Keith wypadł z interesu.",
-  L"Howard dostarczał cyjanek królowej Deidrannie.",
-  L"Spotkanie z handlarzem Keithem w Cambrii.",
+  "Madlab zaoferował się zbudować robota.",
+  "Gabby potrafi zrobić miksturę chronišcš przed robakami.",
+  "Keith wypadł z interesu.",
+  "Howard dostarczał cyjanek królowej Deidrannie.",
+  "Spotkanie z handlarzem Keithem w Cambrii.",
   // 46-50
-  L"Spotkanie z aptekarzem Howardem w Balime",
-  L"Spotkanie z Perko, prowadzšcym mały warsztat.",
-  L"Spotkanie z Samem z Balime - prowadzi sklep z narzędziami.",
-  L"Franz handluje sprzętem elektronicznym.",
-  L"Arnold prowadzi warsztat w Grumm.",
+  "Spotkanie z aptekarzem Howardem w Balime",
+  "Spotkanie z Perko, prowadzšcym mały warsztat.",
+  "Spotkanie z Samem z Balime - prowadzi sklep z narzędziami.",
+  "Franz handluje sprzętem elektronicznym.",
+  "Arnold prowadzi warsztat w Grumm.",
   // 51-55
-  L"Fredo naprawia sprzęt elektroniczny w Grumm.",
-  L"Otrzymano darowiznę od bogatego gocia w Balime.",
-  L"Spotkano Jake'a, który prowadzi złomowisko.",
-  L"Jaki włóczęga dał nam elektronicznš kartę dostępu.",
-  L"Przekupiono Waltera, aby otworzył drzwi do piwnicy.",
+  "Fredo naprawia sprzęt elektroniczny w Grumm.",
+  "Otrzymano darowiznę od bogatego gocia w Balime.",
+  "Spotkano Jake'a, który prowadzi złomowisko.",
+  "Jaki włóczęga dał nam elektronicznš kartę dostępu.",
+  "Przekupiono Waltera, aby otworzył drzwi do piwnicy.",
   // 56-60
-  L"Dave oferuje darmowe tankowania, jeli będzie miał paliwo.",
-  L"Greased Pablo's palms.",
-  L"Kingpin trzyma pienišdze w kopalni w San Mona.",
-  L"%s wygrał(a) walkę",
-  L"%s przegrał(a) walkę",
+  "Dave oferuje darmowe tankowania, jeli będzie miał paliwo.",
+  "Greased Pablo's palms.",
+  "Kingpin trzyma pienišdze w kopalni w San Mona.",
+  "%s wygrał(a) walkę",
+  "%s przegrał(a) walkę",
   // 61-65
-  L"%s zdyskwalifikowany(na) podczas walki",
-  L"Znaleziono dużo pieniędzy w opuszczonej kopalni.",
-  L"Spotkano zabójcę nasłanego przez Kingpina.",
-  L"Utrata kontroli nad sektorem", // ENEMY_INVASION_CODE
-  L"Sektor obroniony",
+  "%s zdyskwalifikowany(na) podczas walki",
+  "Znaleziono dużo pieniędzy w opuszczonej kopalni.",
+  "Spotkano zabójcę nasłanego przez Kingpina.",
+  "Utrata kontroli nad sektorem", // ENEMY_INVASION_CODE
+  "Sektor obroniony",
   // 66-70
-  L"Przegrana bitwa", // ENEMY_ENCOUNTER_CODE
-  L"Fatalna zasadzka", // ENEMY_AMBUSH_CODE
-  L"Usunieto zasadzkę wroga",
-  L"Nieudany atak", // ENTERING_ENEMY_SECTOR_CODE
-  L"Udany atak!",
+  "Przegrana bitwa", // ENEMY_ENCOUNTER_CODE
+  "Fatalna zasadzka", // ENEMY_AMBUSH_CODE
+  "Usunieto zasadzkę wroga",
+  "Nieudany atak", // ENTERING_ENEMY_SECTOR_CODE
+  "Udany atak!",
   // 71-75
-  L"Stworzenia zaatakowały", // CREATURE_ATTACK_CODE
-  L"Zabity(ta) przez dzikie koty", // BLOODCAT_AMBUSH_CODE
-  L"Wyrżnięto dzikie koty",
-  L"%s zabity(ta)",
-  L"Przekazano Carmenowi głowę terrorysty",
-  L"Slay odszedł",
-  L"Zabito: %s",
+  "Stworzenia zaatakowały", // CREATURE_ATTACK_CODE
+  "Zabity(ta) przez dzikie koty", // BLOODCAT_AMBUSH_CODE
+  "Wyrżnięto dzikie koty",
+  "%s zabity(ta)",
+  "Przekazano Carmenowi głowę terrorysty",
+  "Slay odszedł",
+  "Zabito: %s",
 ];
 
 let pHistoryLocations: STR16[] /* [] */ = [
-  L"N/D", // N/A is an acronym for Not Applicable
+  "N/D", // N/A is an acronym for Not Applicable
 ];
 
 // icon text strings that appear on the laptop
 
 let pLaptopIcons: STR16[] /* [] */ = [
-  L"E-mail",
-  L"Sieć",
-  L"Finanse",
-  L"Personel",
-  L"Historia",
-  L"Pliki",
-  L"Zamknij",
-  L"sir-FER 4.0", // our play on the company name (Sirtech) and web surFER
+  "E-mail",
+  "Sieć",
+  "Finanse",
+  "Personel",
+  "Historia",
+  "Pliki",
+  "Zamknij",
+  "sir-FER 4.0", // our play on the company name (Sirtech) and web surFER
 ];
 
 // bookmarks for different websites
 // IMPORTANT make sure you move down the Cancel string as bookmarks are being added
 
 let pBookMarkStrings: STR16[] /* [] */ = [
-  L"A.I.M.",
-  L"Bobby Ray's",
-  L"I.M.P",
-  L"M.E.R.C.",
-  L"Pogrzeby",
-  L"Kwiaty",
-  L"Ubezpieczenia",
-  L"Anuluj",
+  "A.I.M.",
+  "Bobby Ray's",
+  "I.M.P",
+  "M.E.R.C.",
+  "Pogrzeby",
+  "Kwiaty",
+  "Ubezpieczenia",
+  "Anuluj",
 ];
 
 let pBookmarkTitle: STR16[] /* [] */ = [
-  L"Ulubione",
-  L"Aby w przyszłoci otworzyć to menu, kliknij prawym klawiszem myszy.",
+  "Ulubione",
+  "Aby w przyszłoci otworzyć to menu, kliknij prawym klawiszem myszy.",
 ];
 
 // When loading or download a web page
 
 let pDownloadString: STR16[] /* [] */ = [
-  L"Ładowanie strony...",
-  L"Otwieranie strony...",
+  "Ładowanie strony...",
+  "Otwieranie strony...",
 ];
 
 // This is the text used on the bank machines, here called ATMs for Automatic Teller Machine
 
 let gsAtmSideButtonText: STR16[] /* [] */ = [
-  L"OK",
-  L"We", // take money from merc
-  L"Daj", // give money to merc
-  L"Anuluj", // cancel transaction
-  L"Skasuj", // clear amount being displayed on the screen
+  "OK",
+  "We", // take money from merc
+  "Daj", // give money to merc
+  "Anuluj", // cancel transaction
+  "Skasuj", // clear amount being displayed on the screen
 ];
 
 let gsAtmStartButtonText: STR16[] /* [] */ = [
-  L"Transfer $", // transfer money to merc -- short form
-  L"Atrybuty", // view stats of the merc
-  L"Wyposażenie", // view the inventory of the merc
-  L"Zatrudnienie",
+  "Transfer $", // transfer money to merc -- short form
+  "Atrybuty", // view stats of the merc
+  "Wyposażenie", // view the inventory of the merc
+  "Zatrudnienie",
 ];
 
 let sATMText: STR16[] /* [] */ = [
-  L"Przesłać fundusze?", // transfer funds to merc?
-  L"OK?", // are we certain?
-  L"Wprowad kwotę", // enter the amount you want to transfer to merc
-  L"Wybierz typ", // select the type of transfer to merc
-  L"Brak rodków", // not enough money to transfer to merc
-  L"Kwota musi być podzielna przez $10", // transfer amount must be a multiple of $10
+  "Przesłać fundusze?", // transfer funds to merc?
+  "OK?", // are we certain?
+  "Wprowad kwotę", // enter the amount you want to transfer to merc
+  "Wybierz typ", // select the type of transfer to merc
+  "Brak rodków", // not enough money to transfer to merc
+  "Kwota musi być podzielna przez $10", // transfer amount must be a multiple of $10
 ];
 
 // Web error messages. Please use foreign language equivilant for these messages.
@@ -2098,291 +2098,291 @@ let sATMText: STR16[] /* [] */ = [
 // URL is the acronym for Uniform Resource Locator
 
 let pErrorStrings: STR16[] /* [] */ = [
-  L"Błšd",
-  L"Serwer nie posiada DNS.",
-  L"Sprawd adres URL i spróbuj ponownie.",
-  L"OK",
-  L"Niestabilne połšczenie z Hostem. Transfer może trwać dłużej.",
+  "Błšd",
+  "Serwer nie posiada DNS.",
+  "Sprawd adres URL i spróbuj ponownie.",
+  "OK",
+  "Niestabilne połšczenie z Hostem. Transfer może trwać dłużej.",
 ];
 
 let pPersonnelString: STR16[] /* [] */ = [
-  L"Najemnicy:", // mercs we have
+  "Najemnicy:", // mercs we have
 ];
 
 let pWebTitle: STR16[] /* [] */ = [
-  L"sir-FER 4.0", // our name for thL"sir-FER 4.0",		// our name for the version of the browser, play on company name
+  "sir-FER 4.0", // our name for thL"sir-FER 4.0",		// our name for the version of the browser, play on company name
 ];
 
 // The titles for the web program title bar, for each page loaded
 
 let pWebPagesTitles: STR16[] /* [] */ = [
-  L"A.I.M.",
-  L"A.I.M. Członkowie",
-  L"A.I.M. Portrety", // a mug shot is another name for a portrait
-  L"A.I.M. Lista",
-  L"A.I.M.",
-  L"A.I.M. Weterani",
-  L"A.I.M. Polisy",
-  L"A.I.M. Historia",
-  L"A.I.M. Linki",
-  L"M.E.R.C.",
-  L"M.E.R.C. Konta",
-  L"M.E.R.C. Rejestracja",
-  L"M.E.R.C. Indeks",
-  L"Bobby Ray's",
-  L"Bobby Ray's - Broń",
-  L"Bobby Ray's - Amunicja",
-  L"Bobby Ray's - Pancerz",
-  L"Bobby Ray's - Różne", // misc is an abbreviation for miscellaneous
-  L"Bobby Ray's - Używane",
-  L"Bobby Ray's - Zamówienie pocztowe",
-  L"I.M.P.",
-  L"I.M.P.",
-  L"United Floral Service",
-  L"United Floral Service - Galeria",
-  L"United Floral Service - Zamówienie",
-  L"United Floral Service - Galeria kartek",
-  L"Malleus, Incus & Stapes - Brokerzy ubezpieczeniowi",
-  L"Informacja",
-  L"Kontrakt",
-  L"Uwagi",
-  L"McGillicutty - Zakład pogrzebowy",
-  L"",
-  L"Nie odnaleziono URL.",
-  L"Bobby Ray's - Ostatnie dostawy",
-  L"",
-  L"",
+  "A.I.M.",
+  "A.I.M. Członkowie",
+  "A.I.M. Portrety", // a mug shot is another name for a portrait
+  "A.I.M. Lista",
+  "A.I.M.",
+  "A.I.M. Weterani",
+  "A.I.M. Polisy",
+  "A.I.M. Historia",
+  "A.I.M. Linki",
+  "M.E.R.C.",
+  "M.E.R.C. Konta",
+  "M.E.R.C. Rejestracja",
+  "M.E.R.C. Indeks",
+  "Bobby Ray's",
+  "Bobby Ray's - Broń",
+  "Bobby Ray's - Amunicja",
+  "Bobby Ray's - Pancerz",
+  "Bobby Ray's - Różne", // misc is an abbreviation for miscellaneous
+  "Bobby Ray's - Używane",
+  "Bobby Ray's - Zamówienie pocztowe",
+  "I.M.P.",
+  "I.M.P.",
+  "United Floral Service",
+  "United Floral Service - Galeria",
+  "United Floral Service - Zamówienie",
+  "United Floral Service - Galeria kartek",
+  "Malleus, Incus & Stapes - Brokerzy ubezpieczeniowi",
+  "Informacja",
+  "Kontrakt",
+  "Uwagi",
+  "McGillicutty - Zakład pogrzebowy",
+  "",
+  "Nie odnaleziono URL.",
+  "Bobby Ray's - Ostatnie dostawy",
+  "",
+  "",
 ];
 
 let pShowBookmarkString: STR16[] /* [] */ = [
-  L"Sir-Pomoc",
-  L"Kliknij ponownie Sieć by otworzyć menu Ulubione.",
+  "Sir-Pomoc",
+  "Kliknij ponownie Sieć by otworzyć menu Ulubione.",
 ];
 
 let pLaptopTitles: STR16[] /* [] */ = [
-  L"Poczta",
-  L"Przeglšdarka plików",
-  L"Personel",
-  L"Księgowy Plus",
-  L"Historia",
+  "Poczta",
+  "Przeglšdarka plików",
+  "Personel",
+  "Księgowy Plus",
+  "Historia",
 ];
 
 let pPersonnelDepartedStateStrings: STR16[] /* [] */ = [
   // reasons why a merc has left.
-  L"mierć w akcji",
-  L"Zwolnienie",
-  L"Inny",
-  L"Małżeństwo",
-  L"Koniec kontraktu",
-  L"Rezygnacja",
+  "mierć w akcji",
+  "Zwolnienie",
+  "Inny",
+  "Małżeństwo",
+  "Koniec kontraktu",
+  "Rezygnacja",
 ];
 // personnel strings appearing in the Personnel Manager on the laptop
 
 let pPersonelTeamStrings: STR16[] /* [] */ = [
-  L"Bieżšcy oddział",
-  L"Wyjazdy",
-  L"Koszt dzienny:",
-  L"Najwyższy koszt:",
-  L"Najniższy koszt:",
-  L"mierć w akcji:",
-  L"Zwolnienie:",
-  L"Inny:",
+  "Bieżšcy oddział",
+  "Wyjazdy",
+  "Koszt dzienny:",
+  "Najwyższy koszt:",
+  "Najniższy koszt:",
+  "mierć w akcji:",
+  "Zwolnienie:",
+  "Inny:",
 ];
 
 let pPersonnelCurrentTeamStatsStrings: STR16[] /* [] */ = [
-  L"Najniższy",
-  L"redni",
-  L"Najwyższy",
+  "Najniższy",
+  "redni",
+  "Najwyższy",
 ];
 
 let pPersonnelTeamStatsStrings: STR16[] /* [] */ = [
-  L"ZDR",
-  L"ZWN",
-  L"ZRCZ",
-  L"SIŁA",
-  L"DOW",
-  L"INT",
-  L"DOW",
-  L"STRZ",
-  L"MECH",
-  L"WYB",
-  L"MED",
+  "ZDR",
+  "ZWN",
+  "ZRCZ",
+  "SIŁA",
+  "DOW",
+  "INT",
+  "DOW",
+  "STRZ",
+  "MECH",
+  "WYB",
+  "MED",
 ];
 
 // horizontal and vertical indices on the map screen
 
 let pMapVertIndex: STR16[] /* [] */ = [
-  L"X",
-  L"A",
-  L"B",
-  L"C",
-  L"D",
-  L"E",
-  L"F",
-  L"G",
-  L"H",
-  L"I",
-  L"J",
-  L"K",
-  L"L",
-  L"M",
-  L"N",
-  L"O",
-  L"P",
+  "X",
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
 ];
 
 let pMapHortIndex: STR16[] /* [] */ = [
-  L"X",
-  L"1",
-  L"2",
-  L"3",
-  L"4",
-  L"5",
-  L"6",
-  L"7",
-  L"8",
-  L"9",
-  L"10",
-  L"11",
-  L"12",
-  L"13",
-  L"14",
-  L"15",
-  L"16",
+  "X",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+  "11",
+  "12",
+  "13",
+  "14",
+  "15",
+  "16",
 ];
 
 let pMapDepthIndex: STR16[] /* [] */ = [
-  L"",
-  L"-1",
-  L"-2",
-  L"-3",
+  "",
+  "-1",
+  "-2",
+  "-3",
 ];
 
 // text that appears on the contract button
 
 let pContractButtonString: STR16[] /* [] */ = [
-  L"Kontrakt",
+  "Kontrakt",
 ];
 
 // text that appears on the update panel buttons
 
 let pUpdatePanelButtons: STR16[] /* [] */ = [
-  L"Dalej",
-  L"Stop",
+  "Dalej",
+  "Stop",
 ];
 
 // Text which appears when everyone on your team is incapacitated and incapable of battle
 
 let LargeTacticalStr: UINT16[][] /* [][LARGE_STRING_LENGTH] */ = [
-  L"Pokonano cię w tym sektorze!",
-  L"Wróg nie zna litoci i pożera was wszystkich!",
-  L"Nieprzytomni członkowie twojego oddziału zostali pojmani!",
-  L"Członkowie twojego oddziału zostali uwięzieni.",
+  "Pokonano cię w tym sektorze!",
+  "Wróg nie zna litoci i pożera was wszystkich!",
+  "Nieprzytomni członkowie twojego oddziału zostali pojmani!",
+  "Członkowie twojego oddziału zostali uwięzieni.",
 ];
 
 // Insurance Contract.c
 // The text on the buttons at the bottom of the screen.
 
 let InsContractText: STR16[] /* [] */ = [
-  L"Wstecz",
-  L"Dalej",
+  "Wstecz",
+  "Dalej",
   // L"Akceptuję",
-  L"OK",
-  L"Skasuj",
+  "OK",
+  "Skasuj",
 ];
 
 // Insurance Info
 // Text on the buttons on the bottom of the screen
 
 let InsInfoText: STR16[] /* [] */ = [
-  L"Wstecz",
-  L"Dalej",
+  "Wstecz",
+  "Dalej",
 ];
 
 // For use at the M.E.R.C. web site. Text relating to the player's account with MERC
 
 let MercAccountText: STR16[] /* [] */ = [
   // Text on the buttons on the bottom of the screen
-  L"Autoryzacja",
-  L"Strona główna",
-  L"Konto #:",
-  L"Najemnik",
-  L"Dni",
-  L"Stawka", // 5
-  L"Opłata",
-  L"Razem:",
-  L"Czy na pewno chcesz zatwierdzić płatnoć: %s?", // the %s is a string that contains the dollar amount ( ex. "$150" )
+  "Autoryzacja",
+  "Strona główna",
+  "Konto #:",
+  "Najemnik",
+  "Dni",
+  "Stawka", // 5
+  "Opłata",
+  "Razem:",
+  "Czy na pewno chcesz zatwierdzić płatnoć: %s?", // the %s is a string that contains the dollar amount ( ex. "$150" )
 ];
 
 // For use at the M.E.R.C. web site. Text relating a MERC mercenary
 
 let MercInfo: STR16[] /* [] */ = [
-  L"Zdrowie",
-  L"Zwinnoć",
-  L"Sprawnoć",
-  L"Siła",
-  L"Um. dowodz.",
-  L"Inteligencja",
-  L"Poz. dowiadczenia",
-  L"Um. strzeleckie",
-  L"Zn. mechaniki",
-  L"Mat. wybuchowe",
-  L"Wiedza medyczna",
+  "Zdrowie",
+  "Zwinnoć",
+  "Sprawnoć",
+  "Siła",
+  "Um. dowodz.",
+  "Inteligencja",
+  "Poz. dowiadczenia",
+  "Um. strzeleckie",
+  "Zn. mechaniki",
+  "Mat. wybuchowe",
+  "Wiedza medyczna",
 
-  L"Poprzedni",
-  L"Najmij",
-  L"Następny",
-  L"Dodatkowe informacje",
-  L"Strona główna",
-  L"Najęty",
-  L"Koszt:",
-  L"Dziennie",
-  L"Nie żyje",
+  "Poprzedni",
+  "Najmij",
+  "Następny",
+  "Dodatkowe informacje",
+  "Strona główna",
+  "Najęty",
+  "Koszt:",
+  "Dziennie",
+  "Nie żyje",
 
-  L"Wyglšda na to, że chcesz wynajšć zbyt wielu najemników. Limit wynosi 18.",
-  L"Niedostępny",
+  "Wyglšda na to, że chcesz wynajšć zbyt wielu najemników. Limit wynosi 18.",
+  "Niedostępny",
 ];
 
 // For use at the M.E.R.C. web site. Text relating to opening an account with MERC
 
 let MercNoAccountText: STR16[] /* [] */ = [
   // Text on the buttons at the bottom of the screen
-  L"Otwórz konto",
-  L"Anuluj",
-  L"Nie posiadasz konta. Czy chcesz sobie założyć?",
+  "Otwórz konto",
+  "Anuluj",
+  "Nie posiadasz konta. Czy chcesz sobie założyć?",
 ];
 
 // For use at the M.E.R.C. web site. MERC Homepage
 
 let MercHomePageText: STR16[] /* [] */ = [
   // Description of various parts on the MERC page
-  L"Speck T. Kline, założyciel i właciciel",
-  L"Aby otworzyć konto nacinij tu",
-  L"Aby zobaczyć konto nacinij tu",
-  L"Aby obejrzeć akta nacinij tu",
+  "Speck T. Kline, założyciel i właciciel",
+  "Aby otworzyć konto nacinij tu",
+  "Aby zobaczyć konto nacinij tu",
+  "Aby obejrzeć akta nacinij tu",
   // The version number on the video conferencing system that pops up when Speck is talking
-  L"Speck Com v3.2",
+  "Speck Com v3.2",
 ];
 
 // For use at MiGillicutty's Web Page.
 
 let sFuneralString: STR16[] /* [] */ = [
-  L"Zakład pogrzebowy McGillicutty, pomaga rodzinom pogršżonym w smutku od 1983.",
-  L"Kierownik, były najemnik A.I.M. Murray \'Pops\' McGillicutty jest dowiadczonym pracownikiem zakładu pogrzebowego.",
-  L"Przez całe życie obcował ze mierciš, 'Pops' wie jak trudne sš te chwile.",
-  L"Zakład pogrzebowy McGillicutty oferuje szeroki zakres usług, od duchowego wsparcia po rekonstrukcję silnie zniekształconych zwłok.",
-  L"Pozwól by McGillicutty ci pomógł a twój ukochany będzie spoczywał w pokoju.",
+  "Zakład pogrzebowy McGillicutty, pomaga rodzinom pogršżonym w smutku od 1983.",
+  "Kierownik, były najemnik A.I.M. Murray \'Pops\' McGillicutty jest dowiadczonym pracownikiem zakładu pogrzebowego.",
+  "Przez całe życie obcował ze mierciš, 'Pops' wie jak trudne sš te chwile.",
+  "Zakład pogrzebowy McGillicutty oferuje szeroki zakres usług, od duchowego wsparcia po rekonstrukcję silnie zniekształconych zwłok.",
+  "Pozwól by McGillicutty ci pomógł a twój ukochany będzie spoczywał w pokoju.",
 
   // Text for the various links available at the bottom of the page
-  L"WYLIJ KWIATY",
-  L"KOLEKCJA TRUMIEN I URN",
-  L"USŁUGI KREMA- CYJNE",
-  L"USŁUGI PLANOWANIA POGRZEBU",
-  L"KARTKI POGRZE- BOWE",
+  "WYLIJ KWIATY",
+  "KOLEKCJA TRUMIEN I URN",
+  "USŁUGI KREMA- CYJNE",
+  "USŁUGI PLANOWANIA POGRZEBU",
+  "KARTKI POGRZE- BOWE",
 
   // The text that comes up when you click on any of the links ( except for send flowers ).
-  L"Niestety, z powodu mierci w rodzinie, nie działajš jeszcze wszystkie elementy tej strony.",
-  L"Przepraszamy za powyższe uniedogodnienie.",
+  "Niestety, z powodu mierci w rodzinie, nie działajš jeszcze wszystkie elementy tej strony.",
+  "Przepraszamy za powyższe uniedogodnienie.",
 ];
 
 // Text for the florist Home page
@@ -2390,26 +2390,26 @@ let sFuneralString: STR16[] /* [] */ = [
 let sFloristText: STR16[] /* [] */ = [
   // Text on the button on the bottom of the page
 
-  L"Galeria",
+  "Galeria",
 
   // Address of United Florist
 
-  L"\"Zrzucamy z samolotu w dowolnym miejscu\"",
-  L"1-555-POCZUJ-MNIE",
-  L"Ul. Nosowska 333, Zapuszczone miasto, CA USA 90210",
-  L"http://www.poczuj-mnie.com",
+  "\"Zrzucamy z samolotu w dowolnym miejscu\"",
+  "1-555-POCZUJ-MNIE",
+  "Ul. Nosowska 333, Zapuszczone miasto, CA USA 90210",
+  "http://www.poczuj-mnie.com",
 
   // detail of the florist page
 
-  L"Działamy szybko i sprawnie!",
-  L"Gwarantujemy dostawę w dowolny punkt na Ziemi, następnego dnia po złożeniu zamówienia!",
-  L"Oferujemy najniższe ceny na wiecie!",
-  L"Pokaż nam ofertę z niższš cenš, a dostaniesz w nagrodę tuzin róż, za darmo!",
-  L"Latajšca flora, fauna i kwiaty od 1981.",
-  L"Nasz ozdobiony bombowiec zrzuci twój bukiet w promieniu co najwyżej dziesięciu mil od żšdanego miejsca. Kiedy tylko zechcesz!",
-  L"Pozwól nam zaspokoić twoje kwieciste fantazje.",
-  L"Bruce, nasz wiatowej renomy projektant bukietów, zerwie dla ciebie najwieższe i najwspanialsze kwiaty z naszej szklarni.",
-  L"I pamiętaj, jeli czego nie mamy, możemy to szybko zasadzić!",
+  "Działamy szybko i sprawnie!",
+  "Gwarantujemy dostawę w dowolny punkt na Ziemi, następnego dnia po złożeniu zamówienia!",
+  "Oferujemy najniższe ceny na wiecie!",
+  "Pokaż nam ofertę z niższš cenš, a dostaniesz w nagrodę tuzin róż, za darmo!",
+  "Latajšca flora, fauna i kwiaty od 1981.",
+  "Nasz ozdobiony bombowiec zrzuci twój bukiet w promieniu co najwyżej dziesięciu mil od żšdanego miejsca. Kiedy tylko zechcesz!",
+  "Pozwól nam zaspokoić twoje kwieciste fantazje.",
+  "Bruce, nasz wiatowej renomy projektant bukietów, zerwie dla ciebie najwieższe i najwspanialsze kwiaty z naszej szklarni.",
+  "I pamiętaj, jeli czego nie mamy, możemy to szybko zasadzić!",
 ];
 
 // Florist OrderForm
@@ -2417,33 +2417,33 @@ let sFloristText: STR16[] /* [] */ = [
 let sOrderFormText: STR16[] /* [] */ = [
   // Text on the buttons
 
-  L"Powrót",
-  L"Wylij",
-  L"Skasuj",
-  L"Galeria",
+  "Powrót",
+  "Wylij",
+  "Skasuj",
+  "Galeria",
 
-  L"Nazwa bukietu:",
-  L"Cena:", // 5
-  L"Zamówienie numer:",
-  L"Czas dostawy",
-  L"nast. dnia",
-  L"dostawa gdy to będzie możliwe",
-  L"Miejsce dostawy", // 10
-  L"Dodatkowe usługi",
-  L"Zgnieciony bukiet($10)",
-  L"Czarne Róże($20)",
-  L"Zwiędnięty bukiet($10)",
-  L"Ciasto owocowe (jeżeli będzie)($10)", // 15
-  L"Osobiste kondolencje:",
-  L"Ze względu na rozmiar karteczek, tekst nie może zawierać więcej niż 75 znaków.",
-  L"...możesz też przejrzeć nasze",
+  "Nazwa bukietu:",
+  "Cena:", // 5
+  "Zamówienie numer:",
+  "Czas dostawy",
+  "nast. dnia",
+  "dostawa gdy to będzie możliwe",
+  "Miejsce dostawy", // 10
+  "Dodatkowe usługi",
+  "Zgnieciony bukiet($10)",
+  "Czarne Róże($20)",
+  "Zwiędnięty bukiet($10)",
+  "Ciasto owocowe (jeżeli będzie)($10)", // 15
+  "Osobiste kondolencje:",
+  "Ze względu na rozmiar karteczek, tekst nie może zawierać więcej niż 75 znaków.",
+  "...możesz też przejrzeć nasze",
 
-  L"STANDARDOWE KARTKI",
-  L"Informacja o rachunku", // 20
+  "STANDARDOWE KARTKI",
+  "Informacja o rachunku", // 20
 
   // The text that goes beside the area where the user can enter their name
 
-  L"Nazwisko:",
+  "Nazwisko:",
 ];
 
 // Florist Gallery.c
@@ -2451,108 +2451,108 @@ let sOrderFormText: STR16[] /* [] */ = [
 let sFloristGalleryText: STR16[] /* [] */ = [
   // text on the buttons
 
-  L"Poprz.", // abbreviation for previous
-  L"Nast.", // abbreviation for next
+  "Poprz.", // abbreviation for previous
+  "Nast.", // abbreviation for next
 
-  L"Kliknij wybranš pozycję aby złożyć zamówienie.",
-  L"Uwaga: $10 dodatkowej opłaty za zwiędnięty lub zgnieciony bukiet.",
+  "Kliknij wybranš pozycję aby złożyć zamówienie.",
+  "Uwaga: $10 dodatkowej opłaty za zwiędnięty lub zgnieciony bukiet.",
 
   // text on the button
 
-  L"Główna",
+  "Główna",
 ];
 
 // Florist Cards
 
 let sFloristCards: STR16[] /* [] */ = [
-  L"Kliknij swój wybór",
-  L"Wstecz",
+  "Kliknij swój wybór",
+  "Wstecz",
 ];
 
 // Text for Bobby Ray's Mail Order Site
 
 let BobbyROrderFormText: STR16[] /* [] */ = [
-  L"Formularz zamówienia", // Title of the page
-  L"Iloć", // The number of items ordered
-  L"Waga (%s)", // The weight of the item
-  L"Nazwa", // The name of the item
-  L"Cena", // the item's weight
-  L"Wartoć", // 5	// The total price of all of items of the same type
-  L"W sumie", // The sub total of all the item totals added
-  L"Transport", // S&H is an acronym for Shipping and Handling
-  L"Razem", // The grand total of all item totals + the shipping and handling
-  L"Miejsce dostawy",
-  L"Czas dostawy", // 10	// See below
-  L"Koszt (za %s.)", // The cost to ship the items
-  L"Ekspres - 24h", // Gets deliverd the next day
-  L"2 dni robocze", // Gets delivered in 2 days
-  L"Standardowa dostawa", // Gets delivered in 3 days
-  L" Wyczyć", // 15			// Clears the order page
-  L" Akceptuję", // Accept the order
-  L"Wstecz", // text on the button that returns to the previous page
-  L"Strona główna", // Text on the button that returns to the home page
-  L"* oznacza używane rzeczy", // Disclaimer stating that the item is used
-  L"Nie stać cię na to.", // 20	// A popup message that to warn of not enough money
-  L"<BRAK>", // Gets displayed when there is no valid city selected
-  L"Miejsce docelowe przesyłki: %s. Potwierdzasz?", // A popup that asks if the city selected is the correct one
-  L"Waga przesyłki*", // Displays the weight of the package
-  L"* Min. Waga", // Disclaimer states that there is a minimum weight for the package
-  L"Dostawy",
+  "Formularz zamówienia", // Title of the page
+  "Iloć", // The number of items ordered
+  "Waga (%s)", // The weight of the item
+  "Nazwa", // The name of the item
+  "Cena", // the item's weight
+  "Wartoć", // 5	// The total price of all of items of the same type
+  "W sumie", // The sub total of all the item totals added
+  "Transport", // S&H is an acronym for Shipping and Handling
+  "Razem", // The grand total of all item totals + the shipping and handling
+  "Miejsce dostawy",
+  "Czas dostawy", // 10	// See below
+  "Koszt (za %s.)", // The cost to ship the items
+  "Ekspres - 24h", // Gets deliverd the next day
+  "2 dni robocze", // Gets delivered in 2 days
+  "Standardowa dostawa", // Gets delivered in 3 days
+  " Wyczyć", // 15			// Clears the order page
+  " Akceptuję", // Accept the order
+  "Wstecz", // text on the button that returns to the previous page
+  "Strona główna", // Text on the button that returns to the home page
+  "* oznacza używane rzeczy", // Disclaimer stating that the item is used
+  "Nie stać cię na to.", // 20	// A popup message that to warn of not enough money
+  "<BRAK>", // Gets displayed when there is no valid city selected
+  "Miejsce docelowe przesyłki: %s. Potwierdzasz?", // A popup that asks if the city selected is the correct one
+  "Waga przesyłki*", // Displays the weight of the package
+  "* Min. Waga", // Disclaimer states that there is a minimum weight for the package
+  "Dostawy",
 ];
 
 // This text is used when on the various Bobby Ray Web site pages that sell items
 
 let BobbyRText: STR16[] /* [] */ = [
-  L"Zamów", // Title
+  "Zamów", // Title
 
-  L"Kliknij wybrane towary. Lewym klawiszem zwiększasz iloć towaru, a prawym zmniejszasz. Gdy już skompletujesz swoje zakupy przejd do formularza zamówienia.", // instructions on how to order
+  "Kliknij wybrane towary. Lewym klawiszem zwiększasz iloć towaru, a prawym zmniejszasz. Gdy już skompletujesz swoje zakupy przejd do formularza zamówienia.", // instructions on how to order
 
   // Text on the buttons to go the various links
 
-  L"Poprzednia", //
-  L"Broń", // 3
-  L"Amunicja", // 4
-  L"Ochraniacze", // 5
-  L"Różne", // 6	//misc is an abbreviation for miscellaneous
-  L"Używane", // 7
-  L"Następna",
-  L"FORMULARZ",
-  L"Strona główna", // 10
+  "Poprzednia", //
+  "Broń", // 3
+  "Amunicja", // 4
+  "Ochraniacze", // 5
+  "Różne", // 6	//misc is an abbreviation for miscellaneous
+  "Używane", // 7
+  "Następna",
+  "FORMULARZ",
+  "Strona główna", // 10
 
   // The following 2 lines are used on the Ammunition page.
   // They are used for help text to display how many items the player's merc has
   // that can use this type of ammo
 
-  L"Twój zespół posiada", // 11
-  L"szt. broni do której pasuje amunicja tego typu", // 12
+  "Twój zespół posiada", // 11
+  "szt. broni do której pasuje amunicja tego typu", // 12
 
   // The following lines provide information on the items
 
-  L"Waga:", // Weight of all the items of the same type
-  L"Kal:", // the caliber of the gun
-  L"Mag:", // number of rounds of ammo the Magazine can hold
-  L"Zas:", // The range of the gun
-  L"Siła:", // Damage of the weapon
-  L"CS:", // Weapon's Rate Of Fire, acroymn ROF
-  L"Koszt:", // Cost of the item
-  L"Na stanie:", // The number of items still in the store's inventory
-  L"Iloć na zamów.:", // The number of items on order
-  L"Uszkodz.", // If the item is damaged
-  L"Waga:", // the Weight of the item
-  L"Razem:", // The total cost of all items on order
-  L"* Stan: %%", // if the item is damaged, displays the percent function of the item
+  "Waga:", // Weight of all the items of the same type
+  "Kal:", // the caliber of the gun
+  "Mag:", // number of rounds of ammo the Magazine can hold
+  "Zas:", // The range of the gun
+  "Siła:", // Damage of the weapon
+  "CS:", // Weapon's Rate Of Fire, acroymn ROF
+  "Koszt:", // Cost of the item
+  "Na stanie:", // The number of items still in the store's inventory
+  "Iloć na zamów.:", // The number of items on order
+  "Uszkodz.", // If the item is damaged
+  "Waga:", // the Weight of the item
+  "Razem:", // The total cost of all items on order
+  "* Stan: %%", // if the item is damaged, displays the percent function of the item
 
   // Popup that tells the player that they can only order 10 items at a time
 
-  L"Przepraszamy za to utrudnienie, ale na jednym zamówieniu może się znajdować tylko 10 pozycji! Jeli potrzebujesz więcej, złóż kolejne zamówienie.",
+  "Przepraszamy za to utrudnienie, ale na jednym zamówieniu może się znajdować tylko 10 pozycji! Jeli potrzebujesz więcej, złóż kolejne zamówienie.",
 
   // A popup that tells the user that they are trying to order more items then the store has in stock
 
-  L"Przykro nam. Chwilowo nie mamy tego więcej na magazynie. Proszę spróbować póniej.",
+  "Przykro nam. Chwilowo nie mamy tego więcej na magazynie. Proszę spróbować póniej.",
 
   // A popup that tells the user that the store is temporarily sold out
 
-  L"Przykro nam, ale chwilowo nie mamy tego towaru na magazynie",
+  "Przykro nam, ale chwilowo nie mamy tego towaru na magazynie",
 ];
 
 // Text for Bobby Ray's Home Page
@@ -2560,50 +2560,50 @@ let BobbyRText: STR16[] /* [] */ = [
 let BobbyRaysFrontText: STR16[] /* [] */ = [
   // Details on the web site
 
-  L"Tu znajdziesz nowoci z dziedziny broni i osprzętu wojskowego",
-  L"Zaspokoimy wszystkie twoje potrzeby w dziedzinie materiałów wybuchowych",
-  L"UŻYWANE RZECZY",
+  "Tu znajdziesz nowoci z dziedziny broni i osprzętu wojskowego",
+  "Zaspokoimy wszystkie twoje potrzeby w dziedzinie materiałów wybuchowych",
+  "UŻYWANE RZECZY",
 
   // Text for the various links to the sub pages
 
-  L"RÓŻNE",
-  L"BROŃ",
-  L"AMUNICJA", // 5
-  L"OCHRANIACZE",
+  "RÓŻNE",
+  "BROŃ",
+  "AMUNICJA", // 5
+  "OCHRANIACZE",
 
   // Details on the web site
 
-  L"Jeli MY tego nie mamy, to znaczy, że nigdzie tego nie dostaniesz!",
-  L"W trakcie budowy",
+  "Jeli MY tego nie mamy, to znaczy, że nigdzie tego nie dostaniesz!",
+  "W trakcie budowy",
 ];
 
 // Text for the AIM page.
 // This is the text used when the user selects the way to sort the aim mercanaries on the AIM mug shot page
 
 let AimSortText: STR16[] /* [] */ = [
-  L"Członkowie A.I.M.", // Title
+  "Członkowie A.I.M.", // Title
 
-  L"Sortuj wg:", // Title for the way to sort
+  "Sortuj wg:", // Title for the way to sort
 
   // sort by...
 
-  L"Ceny",
-  L"Dowiadczenia",
-  L"Um. strzeleckich",
-  L"Um. med.",
-  L"Zn. mat. wyb.",
-  L"Zn. mechaniki",
+  "Ceny",
+  "Dowiadczenia",
+  "Um. strzeleckich",
+  "Um. med.",
+  "Zn. mat. wyb.",
+  "Zn. mechaniki",
 
   // Text of the links to other AIM pages
 
-  L"Portrety najemników",
-  L"Akta najemnika",
-  L"Pokaż galerię byłych członków A.I.M.",
+  "Portrety najemników",
+  "Akta najemnika",
+  "Pokaż galerię byłych członków A.I.M.",
 
   // text to display how the entries will be sorted
 
-  L"Rosnšco",
-  L"Malejšco",
+  "Rosnšco",
+  "Malejšco",
 ];
 
 // Aim Policies.c
@@ -2612,12 +2612,12 @@ let AimSortText: STR16[] /* [] */ = [
 let AimPolicyText: STR16[] /* [] */ = [
   // The text on the buttons at the bottom of the page
 
-  L"Poprzednia str.",
-  L"Strona główna",
-  L"Przepisy",
-  L"Następna str.",
-  L"Rezygnuję",
-  L"Akceptuję",
+  "Poprzednia str.",
+  "Strona główna",
+  "Przepisy",
+  "Następna str.",
+  "Rezygnuję",
+  "Akceptuję",
 ];
 
 // Aim Member.c
@@ -2626,10 +2626,10 @@ let AimPolicyText: STR16[] /* [] */ = [
 // Instructions to the user to either start video conferencing with the merc, or to go the mug shot index
 
 let AimMemberText: STR16[] /* [] */ = [
-  L"Lewy klawisz myszy",
-  L"kontakt z najemnikiem",
-  L"Prawy klawisz myszy",
-  L"lista portretów",
+  "Lewy klawisz myszy",
+  "kontakt z najemnikiem",
+  "Prawy klawisz myszy",
+  "lista portretów",
 ];
 
 // Aim Member.c
@@ -2638,37 +2638,37 @@ let AimMemberText: STR16[] /* [] */ = [
 let CharacterInfo: STR16[] /* [] */ = [
   // The various attributes of the merc
 
-  L"Zdrowie",
-  L"Zwinnoć",
-  L"Sprawnoć",
-  L"Siła",
-  L"Um. dowodzenia",
-  L"Inteligencja",
-  L"Poziom dow.",
-  L"Um. strzeleckie",
-  L"Zn. mechaniki",
-  L"Zn. mat. wyb.",
-  L"Wiedza med.", // 10
+  "Zdrowie",
+  "Zwinnoć",
+  "Sprawnoć",
+  "Siła",
+  "Um. dowodzenia",
+  "Inteligencja",
+  "Poziom dow.",
+  "Um. strzeleckie",
+  "Zn. mechaniki",
+  "Zn. mat. wyb.",
+  "Wiedza med.", // 10
 
   // the contract expenses' area
 
-  L"Zapłata",
-  L"Czas",
-  L"1 dzień",
-  L"1 tydzień",
-  L"2 tygodnie",
+  "Zapłata",
+  "Czas",
+  "1 dzień",
+  "1 tydzień",
+  "2 tygodnie",
 
   // text for the buttons that either go to the previous merc,
   // start talking to the merc, or go to the next merc
 
-  L"Poprzedni",
-  L"Kontakt",
-  L"Następny",
+  "Poprzedni",
+  "Kontakt",
+  "Następny",
 
-  L"Dodatkowe informacje", // Title for the additional info for the merc's bio
-  L"Aktywni członkowie", // 20		// Title of the page
-  L"Opcjonalne wyposażenie:", // Displays the optional gear cost
-  L"Wymagany jest zastaw na życie", // If the merc required a medical deposit, this is displayed
+  "Dodatkowe informacje", // Title for the additional info for the merc's bio
+  "Aktywni członkowie", // 20		// Title of the page
+  "Opcjonalne wyposażenie:", // Displays the optional gear cost
+  "Wymagany jest zastaw na życie", // If the merc required a medical deposit, this is displayed
 ];
 
 // Aim Member.c
@@ -2677,34 +2677,34 @@ let CharacterInfo: STR16[] /* [] */ = [
 // The following text is used with the video conference popup
 
 let VideoConfercingText: STR16[] /* [] */ = [
-  L"Wartoć kontraktu:", // Title beside the cost of hiring the merc
+  "Wartoć kontraktu:", // Title beside the cost of hiring the merc
 
   // Text on the buttons to select the length of time the merc can be hired
 
-  L"Jeden dzień",
-  L"Jeden tydzień",
-  L"Dwa tygodnie",
+  "Jeden dzień",
+  "Jeden tydzień",
+  "Dwa tygodnie",
 
   // Text on the buttons to determine if you want the merc to come with the equipment
 
-  L"Bez sprzętu",
-  L"We sprzęt",
+  "Bez sprzętu",
+  "We sprzęt",
 
   // Text on the Buttons
 
-  L"TRANSFER", // to actually hire the merc
-  L"ANULUJ", // go back to the previous menu
-  L"WYNAJMIJ", // go to menu in which you can hire the merc
-  L"ROZŁĽCZ", // stops talking with the merc
-  L"OK",
-  L"NAGRAJ SIĘ", // if the merc is not there, you can leave a message
+  "TRANSFER", // to actually hire the merc
+  "ANULUJ", // go back to the previous menu
+  "WYNAJMIJ", // go to menu in which you can hire the merc
+  "ROZŁĽCZ", // stops talking with the merc
+  "OK",
+  "NAGRAJ SIĘ", // if the merc is not there, you can leave a message
 
   // Text on the top of the video conference popup
 
-  L"Wideo konferencja z - ",
-  L"Łšczę. . .",
+  "Wideo konferencja z - ",
+  "Łšczę. . .",
 
-  L"z zastawem" // Displays if you are hiring the merc with the medical deposit
+  "z zastawem" // Displays if you are hiring the merc with the medical deposit
 ];
 
 // Aim Member.c
@@ -2713,28 +2713,28 @@ let VideoConfercingText: STR16[] /* [] */ = [
 // The text that pops up when you select the TRANSFER FUNDS button
 
 let AimPopUpText: STR16[] /* [] */ = [
-  L"TRANSFER ZAKOŃCZONY POMYLNIE", // You hired the merc
-  L"PRZEPROWADZENIE TRANSFERU NIE MOŻLIWE", // Player doesn't have enough money, message 1
-  L"BRAK RODKÓW", // Player doesn't have enough money, message 2
+  "TRANSFER ZAKOŃCZONY POMYLNIE", // You hired the merc
+  "PRZEPROWADZENIE TRANSFERU NIE MOŻLIWE", // Player doesn't have enough money, message 1
+  "BRAK RODKÓW", // Player doesn't have enough money, message 2
 
   // if the merc is not available, one of the following is displayed over the merc's face
 
-  L"Wynajęto",
-  L"Proszę zostaw wiadomoć",
-  L"Nie żyje",
+  "Wynajęto",
+  "Proszę zostaw wiadomoć",
+  "Nie żyje",
 
   // If you try to hire more mercs than game can support
 
-  L"Masz już pełny zespół 18 najemników.",
+  "Masz już pełny zespół 18 najemników.",
 
-  L"Nagrana wiadomoć",
-  L"Wiadomoć zapisana",
+  "Nagrana wiadomoć",
+  "Wiadomoć zapisana",
 ];
 
 // AIM Link.c
 
 let AimLinkText: STR16[] /* [] */ = [
-  L"A.I.M. Linki", // The title of the AIM links page
+  "A.I.M. Linki", // The title of the AIM links page
 ];
 
 // Aim History
@@ -2742,14 +2742,14 @@ let AimLinkText: STR16[] /* [] */ = [
 // This page displays the history of AIM
 
 let AimHistoryText: STR16[] /* [] */ = [
-  L"A.I.M. Historia", // Title
+  "A.I.M. Historia", // Title
 
   // Text on the buttons at the bottom of the page
 
-  L"Poprzednia str.",
-  L"Strona główna",
-  L"Byli członkowie",
-  L"Następna str.",
+  "Poprzednia str.",
+  "Strona główna",
+  "Byli członkowie",
+  "Następna str.",
 ];
 
 // Aim Mug Shot Index
@@ -2759,43 +2759,43 @@ let AimHistoryText: STR16[] /* [] */ = [
 let AimFiText: STR16[] /* [] */ = [
   // displays the way in which the mercs were sorted
 
-  L"ceny",
-  L"dowiadczenia",
-  L"um. strzeleckich",
-  L"um. medycznych",
-  L"zn. materiałów wyb.",
-  L"zn. mechaniki",
+  "ceny",
+  "dowiadczenia",
+  "um. strzeleckich",
+  "um. medycznych",
+  "zn. materiałów wyb.",
+  "zn. mechaniki",
 
   // The title of the page, the above text gets added at the end of this text
 
-  L"Członkowie A.I.M. posortowani rosnšco wg %s",
-  L"Członkowie A.I.M. posortowani malejšco wg %s",
+  "Członkowie A.I.M. posortowani rosnšco wg %s",
+  "Członkowie A.I.M. posortowani malejšco wg %s",
 
   // Instructions to the players on what to do
 
-  L"Lewy klawisz",
-  L"Wybór najemnika", // 10
-  L"Prawy klawisz",
-  L"Opcje sortowania",
+  "Lewy klawisz",
+  "Wybór najemnika", // 10
+  "Prawy klawisz",
+  "Opcje sortowania",
 
   // Gets displayed on top of the merc's portrait if they are...
 
-  L"Wyjechał(a)",
-  L"Nie żyje", // 14
-  L"Wynajęto",
+  "Wyjechał(a)",
+  "Nie żyje", // 14
+  "Wynajęto",
 ];
 
 // AimArchives.
 // The page that displays information about the older AIM alumni merc... mercs who are no longer with AIM
 
 let AimAlumniText: STR16[] /* [] */ = [
-  L"STRONA 1",
-  L"STRONA 2",
-  L"STRONA 3",
+  "STRONA 1",
+  "STRONA 2",
+  "STRONA 3",
 
-  L"Byli członkowie A.I.M.", // Title of the page
+  "Byli członkowie A.I.M.", // Title of the page
 
-  L"OK" // Stops displaying information on selected merc
+  "OK" // Stops displaying information on selected merc
 ];
 
 // AIM Home Page
@@ -2803,29 +2803,29 @@ let AimAlumniText: STR16[] /* [] */ = [
 let AimScreenText: STR16[] /* [] */ = [
   // AIM disclaimers
 
-  L"Znaki A.I.M. i logo A.I.M. sš prawnie chronione w większoci krajów.",
-  L"Więc nawet nie myl o próbie ich podrobienia.",
-  L"Copyright 1998-1999 A.I.M., Ltd. All rights reserved.",
+  "Znaki A.I.M. i logo A.I.M. sš prawnie chronione w większoci krajów.",
+  "Więc nawet nie myl o próbie ich podrobienia.",
+  "Copyright 1998-1999 A.I.M., Ltd. All rights reserved.",
 
   // Text for an advertisement that gets displayed on the AIM page
 
-  L"United Floral Service",
-  L"\"Zrzucamy gdziekolwiek\"", // 10
-  L"Zrób to jak należy...",
-  L"...za pierwszym razem",
-  L"Broń i akcesoria, jeli czego nie mamy, to tego nie potrzebujesz.",
+  "United Floral Service",
+  "\"Zrzucamy gdziekolwiek\"", // 10
+  "Zrób to jak należy...",
+  "...za pierwszym razem",
+  "Broń i akcesoria, jeli czego nie mamy, to tego nie potrzebujesz.",
 ];
 
 // Aim Home Page
 
 let AimBottomMenuText: STR16[] /* [] */ = [
   // Text for the links at the bottom of all AIM pages
-  L"Strona główna",
-  L"Członkowie",
-  L"Byli członkowie",
-  L"Przepisy",
-  L"Historia",
-  L"Linki",
+  "Strona główna",
+  "Członkowie",
+  "Byli członkowie",
+  "Przepisy",
+  "Historia",
+  "Linki",
 ];
 
 // ShopKeeper Interface
@@ -2833,20 +2833,20 @@ let AimBottomMenuText: STR16[] /* [] */ = [
 // the various store clerks scattered through out the game.
 
 let SKI_Text: STR16[] /* [] */ = [
-  L"TOWARY NA STANIE", // Header for the merchandise available
-  L"STRONA", // The current store inventory page being displayed
-  L"KOSZT OGÓŁEM", // The total cost of the the items in the Dealer inventory area
-  L"WARTOĆ OGÓŁEM", // The total value of items player wishes to sell
-  L"WYCENA", // Button text for dealer to evaluate items the player wants to sell
-  L"TRANSAKCJA", // Button text which completes the deal. Makes the transaction.
-  L"OK", // Text for the button which will leave the shopkeeper interface.
-  L"KOSZT NAPRAWY", // The amount the dealer will charge to repair the merc's goods
-  L"1 GODZINA", // SINGULAR! The text underneath the inventory slot when an item is given to the dealer to be repaired
-  L"%d GODZIN(Y)", // PLURAL!   The text underneath the inventory slot when an item is given to the dealer to be repaired
-  L"NAPRAWIONO", // Text appearing over an item that has just been repaired by a NPC repairman dealer
-  L"Brak miejsca by zaoferować więcej rzeczy.", // Message box that tells the user there is no more room to put there stuff
-  L"%d MINUT(Y)", // The text underneath the inventory slot when an item is given to the dealer to be repaired
-  L"Upuć przedmiot na ziemię.",
+  "TOWARY NA STANIE", // Header for the merchandise available
+  "STRONA", // The current store inventory page being displayed
+  "KOSZT OGÓŁEM", // The total cost of the the items in the Dealer inventory area
+  "WARTOĆ OGÓŁEM", // The total value of items player wishes to sell
+  "WYCENA", // Button text for dealer to evaluate items the player wants to sell
+  "TRANSAKCJA", // Button text which completes the deal. Makes the transaction.
+  "OK", // Text for the button which will leave the shopkeeper interface.
+  "KOSZT NAPRAWY", // The amount the dealer will charge to repair the merc's goods
+  "1 GODZINA", // SINGULAR! The text underneath the inventory slot when an item is given to the dealer to be repaired
+  "%d GODZIN(Y)", // PLURAL!   The text underneath the inventory slot when an item is given to the dealer to be repaired
+  "NAPRAWIONO", // Text appearing over an item that has just been repaired by a NPC repairman dealer
+  "Brak miejsca by zaoferować więcej rzeczy.", // Message box that tells the user there is no more room to put there stuff
+  "%d MINUT(Y)", // The text underneath the inventory slot when an item is given to the dealer to be repaired
+  "Upuć przedmiot na ziemię.",
 ];
 
 // ShopKeeper Interface
@@ -2854,519 +2854,519 @@ let SKI_Text: STR16[] /* [] */ = [
 
 let SkiAtmText: STR16[] /* [] */ = [
   // Text on buttons on the banking machine, displayed at the bottom of the page
-  L"0",
-  L"1",
-  L"2",
-  L"3",
-  L"4",
-  L"5",
-  L"6",
-  L"7",
-  L"8",
-  L"9",
-  L"OK", // Transfer the money
-  L"We", // Take money from the player
-  L"Daj", // Give money to the player
-  L"Anuluj", // Cancel the transfer
-  L"Skasuj", // Clear the money display
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "OK", // Transfer the money
+  "We", // Take money from the player
+  "Daj", // Give money to the player
+  "Anuluj", // Cancel the transfer
+  "Skasuj", // Clear the money display
 ];
 
 // Shopkeeper Interface
 let gzSkiAtmText: STR16[] /* [] */ = [
   // Text on the bank machine panel that....
-  L"Wybierz", // tells the user to select either to give or take from the merc
-  L"Wprowad kwotę", // Enter the amount to transfer
-  L"Transfer gotówki do najemnika", // Giving money to the merc
-  L"Transfer gotówki od najemnika", // Taking money from the merc
-  L"Brak rodków", // Not enough money to transfer
-  L"Saldo", // Display the amount of money the player currently has
+  "Wybierz", // tells the user to select either to give or take from the merc
+  "Wprowad kwotę", // Enter the amount to transfer
+  "Transfer gotówki do najemnika", // Giving money to the merc
+  "Transfer gotówki od najemnika", // Taking money from the merc
+  "Brak rodków", // Not enough money to transfer
+  "Saldo", // Display the amount of money the player currently has
 ];
 
 let SkiMessageBoxText: STR16[] /* [] */ = [
-  L"Czy chcesz dołożyć %s ze swojego konta, aby pokryć różnicę?",
-  L"Brak rodków. Brakuje ci %s",
-  L"Czy chcesz przeznaczyć %s ze swojego konta, aby pokryć koszty?",
-  L"Popro o rozpoczęcie transakscji",
-  L"Popro o naprawę wybranych przedmiotów",
-  L"Zakończ rozmowę",
-  L"Saldo dostępne",
+  "Czy chcesz dołożyć %s ze swojego konta, aby pokryć różnicę?",
+  "Brak rodków. Brakuje ci %s",
+  "Czy chcesz przeznaczyć %s ze swojego konta, aby pokryć koszty?",
+  "Popro o rozpoczęcie transakscji",
+  "Popro o naprawę wybranych przedmiotów",
+  "Zakończ rozmowę",
+  "Saldo dostępne",
 ];
 
 // OptionScreen.c
 
 let zOptionsText: STR16[] /* [] */ = [
   // button Text
-  L"Zapisz grę",
-  L"Odczytaj grę",
-  L"Wyjcie",
-  L"OK",
+  "Zapisz grę",
+  "Odczytaj grę",
+  "Wyjcie",
+  "OK",
 
   // Text above the slider bars
-  L"Efekty",
-  L"Dialogi",
-  L"Muzyka",
+  "Efekty",
+  "Dialogi",
+  "Muzyka",
 
   // Confirmation pop when the user selects..
-  L"Zakończyć grę i wrócić do głównego menu?",
+  "Zakończyć grę i wrócić do głównego menu?",
 
-  L"Musisz włšczyć opcję dialogów lub napisów.",
+  "Musisz włšczyć opcję dialogów lub napisów.",
 ];
 
 // SaveLoadScreen
 let zSaveLoadText: STR16[] /* [] */ = [
-  L"Zapisz grę",
-  L"Odczytaj grę",
-  L"Anuluj",
-  L"Zapisz wybranš",
-  L"Odczytaj wybranš",
+  "Zapisz grę",
+  "Odczytaj grę",
+  "Anuluj",
+  "Zapisz wybranš",
+  "Odczytaj wybranš",
 
-  L"Gra została pomylnie zapisana",
-  L"BŁĽD podczas zapisu gry!",
-  L"Gra została pomylnie odczytana",
-  L"BŁĽD podczas odczytu gry!",
+  "Gra została pomylnie zapisana",
+  "BŁĽD podczas zapisu gry!",
+  "Gra została pomylnie odczytana",
+  "BŁĽD podczas odczytu gry!",
 
-  L"Wersja gry w zapisanym pliku różni się od bieżšcej. Prawdopodobnie można bezpiecznie kontynuować. Kontynuować?",
-  L"Zapisane pliki gier mogš być uszkodzone. Czy chcesz je usunšć?",
-
-// Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
-// is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
-// used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
-  L"Próba odczytu starszej wersji zapisu gry.  Zaktualizować ten zapis i odczytać grę?",
+  "Wersja gry w zapisanym pliku różni się od bieżšcej. Prawdopodobnie można bezpiecznie kontynuować. Kontynuować?",
+  "Zapisane pliki gier mogš być uszkodzone. Czy chcesz je usunšć?",
 
 // Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
 // is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 // used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
-  L"Próba odczytu starszej wersji zapisu gry.  Zaktualizować ten zapis i odczytać grę?",
+  "Próba odczytu starszej wersji zapisu gry.  Zaktualizować ten zapis i odczytać grę?",
 
-  L"Czy na pewno chcesz nadpisać grę na pozycji %d?",
-  L"Chcesz odczytać grę z pozycji",
+// Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
+// is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
+// used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
+  "Próba odczytu starszej wersji zapisu gry.  Zaktualizować ten zapis i odczytać grę?",
+
+  "Czy na pewno chcesz nadpisać grę na pozycji %d?",
+  "Chcesz odczytać grę z pozycji",
 
   // The first %d is a number that contains the amount of free space on the users hard drive,
   // the second is the recommended amount of free space.
-  L"Brak miejsca na dysku twardym.  Na dysku wolne jest %d MB, a wymagane jest przynajmniej %d MB.",
+  "Brak miejsca na dysku twardym.  Na dysku wolne jest %d MB, a wymagane jest przynajmniej %d MB.",
 
-  L"Zapisuję...", // When saving a game, a message box with this string appears on the screen
+  "Zapisuję...", // When saving a game, a message box with this string appears on the screen
 
-  L"Standardowe uzbrojenie",
-  L"Całe mnóstwo broni",
-  L"Realistyczna gra",
-  L"Elementy S-F",
+  "Standardowe uzbrojenie",
+  "Całe mnóstwo broni",
+  "Realistyczna gra",
+  "Elementy S-F",
 
-  L"Stopień trudnoci",
+  "Stopień trudnoci",
 ];
 
 // MapScreen
 let zMarksMapScreenText: STR16[] /* [] */ = [
-  L"Poziom mapy",
-  L"Nie masz jeszcze żołnierzy samoobrony.  Musisz najpierw wytrenować mieszkańców miast.",
-  L"Dzienny przychód",
-  L"Najmemnik ma polisę ubezpieczeniowš",
-  L"%s nie potrzebuje snu.",
-  L"%s jest w drodze i nie może spać",
-  L"%s jest zbyt zmęczony(na), spróbuj trochę póniej.",
-  L"%s prowadzi.",
-  L"Oddział nie może się poruszać jeżeli jeden z najemników pi.",
+  "Poziom mapy",
+  "Nie masz jeszcze żołnierzy samoobrony.  Musisz najpierw wytrenować mieszkańców miast.",
+  "Dzienny przychód",
+  "Najmemnik ma polisę ubezpieczeniowš",
+  "%s nie potrzebuje snu.",
+  "%s jest w drodze i nie może spać",
+  "%s jest zbyt zmęczony(na), spróbuj trochę póniej.",
+  "%s prowadzi.",
+  "Oddział nie może się poruszać jeżeli jeden z najemników pi.",
 
   // stuff for contracts
-  L"Mimo, że możesz opłacić kontrakt, to jednak nie masz gotówki by opłacić składkę ubezpieczeniowš za najemnika.",
-  L"%s - składka ubezpieczeniowa najemnika będzie kosztować %s za %d dzień(dni). Czy chcesz jš opłacić?",
-  L"Inwentarz sektora",
-  L"Najemnik posiada zastaw na życie.",
+  "Mimo, że możesz opłacić kontrakt, to jednak nie masz gotówki by opłacić składkę ubezpieczeniowš za najemnika.",
+  "%s - składka ubezpieczeniowa najemnika będzie kosztować %s za %d dzień(dni). Czy chcesz jš opłacić?",
+  "Inwentarz sektora",
+  "Najemnik posiada zastaw na życie.",
 
   // other items
-  L"Lekarze", // people acting a field medics and bandaging wounded mercs // **************************************NEW******** as of July 09, 1998
-  L"Pacjenci", // people who are being bandaged by a medic // ****************************************************NEW******** as of July 10, 1998
-  L"Gotowe", // Continue on with the game after autobandage is complete
-  L"Przerwij", // Stop autobandaging of patients by medics now
-  L"Przykro nam, ale ta opcja jest wyłšczona w wersji demo.", // informs player this option/button has been disabled in the demo
-  L"%s nie ma zestawu narzędzi.",
-  L"%s nie ma apteczki.",
-  L"Brak chętnych ludzi do szkolenia, w tej chwili.",
-  L"%s posiada już maksymalnš liczbę oddziałów samoobrony.",
-  L"Najemnik ma kontrakt na okrelony czas.",
-  L"Kontrakt najemnika nie jest ubezpieczony",
+  "Lekarze", // people acting a field medics and bandaging wounded mercs // **************************************NEW******** as of July 09, 1998
+  "Pacjenci", // people who are being bandaged by a medic // ****************************************************NEW******** as of July 10, 1998
+  "Gotowe", // Continue on with the game after autobandage is complete
+  "Przerwij", // Stop autobandaging of patients by medics now
+  "Przykro nam, ale ta opcja jest wyłšczona w wersji demo.", // informs player this option/button has been disabled in the demo
+  "%s nie ma zestawu narzędzi.",
+  "%s nie ma apteczki.",
+  "Brak chętnych ludzi do szkolenia, w tej chwili.",
+  "%s posiada już maksymalnš liczbę oddziałów samoobrony.",
+  "Najemnik ma kontrakt na okrelony czas.",
+  "Kontrakt najemnika nie jest ubezpieczony",
 ];
 
 let pLandMarkInSectorString: STR16[] /* [] */ = [
-  L"Oddział %d zauważył kogo w sektorze %s",
+  "Oddział %d zauważył kogo w sektorze %s",
 ];
 
 // confirm the player wants to pay X dollars to build a militia force in town
 let pMilitiaConfirmStrings: STR16[] /* [] */ = [
-  L"Szkolenie oddziału samoobrony będzie kosztowało $", // telling player how much it will cost
-  L"Zatwierdzasz wydatek?", // asking player if they wish to pay the amount requested
-  L"Nie stać cię na to.", // telling the player they can't afford to train this town
-  L"Kontynuować szkolenie samoobrony w - %s (%s %d)?", // continue training this town?
-  L"Koszt $", // the cost in dollars to train militia
-  L"( T/N )", // abbreviated yes/no
-  L"", // unused
-  L"Szkolenie samoobrony w %d sektorach będzie kosztowało $ %d. %s", // cost to train sveral sectors at once
-  L"Nie masz %d$, aby wyszkolić samoobronę w tym miecie.",
-  L"%s musi mieć %d% lojalnoci, aby można było kontynuować szkolenie samoobrony.",
-  L"Nie możesz już dłużej szkolić samoobrony w miecie %s.",
+  "Szkolenie oddziału samoobrony będzie kosztowało $", // telling player how much it will cost
+  "Zatwierdzasz wydatek?", // asking player if they wish to pay the amount requested
+  "Nie stać cię na to.", // telling the player they can't afford to train this town
+  "Kontynuować szkolenie samoobrony w - %s (%s %d)?", // continue training this town?
+  "Koszt $", // the cost in dollars to train militia
+  "( T/N )", // abbreviated yes/no
+  "", // unused
+  "Szkolenie samoobrony w %d sektorach będzie kosztowało $ %d. %s", // cost to train sveral sectors at once
+  "Nie masz %d$, aby wyszkolić samoobronę w tym miecie.",
+  "%s musi mieć %d% lojalnoci, aby można było kontynuować szkolenie samoobrony.",
+  "Nie możesz już dłużej szkolić samoobrony w miecie %s.",
 ];
 
 // Strings used in the popup box when withdrawing, or depositing money from the $ sign at the bottom of the single merc panel
 let gzMoneyWithdrawMessageText: STR16[] /* [] */ = [
-  L"Jednorazowo możesz wypłacić do 20,000$.",
-  L"Czy na pewno chcesz wpłacić %s na swoje konto?",
+  "Jednorazowo możesz wypłacić do 20,000$.",
+  "Czy na pewno chcesz wpłacić %s na swoje konto?",
 ];
 
 let gzCopyrightText: STR16[] /* [] */ = [
-  L"Copyright (C) 1999 Sir-tech Canada Ltd.  All rights reserved.",
+  "Copyright (C) 1999 Sir-tech Canada Ltd.  All rights reserved.",
 ];
 
 // option Text
 let zOptionsToggleText: STR16[] /* [] */ = [
-  L"Dialogi",
-  L"Wycisz potwierdzenia",
-  L"Napisy",
-  L"Wstrzymuj napisy",
-  L"Animowany dym",
-  L"Drastyczne sceny",
-  L"Nigdy nie ruszaj mojej myszki!",
-  L"Stara metoda wyboru",
-  L"Pokazuj trasę ruchu",
-  L"Pokazuj chybione strzały",
-  L"Potwierdzenia w trybie Real-Time",
-  L"Informacja, że najemnik pi/budzi się",
-  L"Używaj systemu metrycznego",
-  L"wiatło wokół najemników podczas ruchu",
-  L"Przycišgaj kursor do najemników",
-  L"Przycišgaj kursor do drzwi",
-  L"Pulsujšce przedmioty",
-  L"Pokazuj korony drzew",
-  L"Pokazuj siatkę",
-  L"Pokazuj kursor 3D",
+  "Dialogi",
+  "Wycisz potwierdzenia",
+  "Napisy",
+  "Wstrzymuj napisy",
+  "Animowany dym",
+  "Drastyczne sceny",
+  "Nigdy nie ruszaj mojej myszki!",
+  "Stara metoda wyboru",
+  "Pokazuj trasę ruchu",
+  "Pokazuj chybione strzały",
+  "Potwierdzenia w trybie Real-Time",
+  "Informacja, że najemnik pi/budzi się",
+  "Używaj systemu metrycznego",
+  "wiatło wokół najemników podczas ruchu",
+  "Przycišgaj kursor do najemników",
+  "Przycišgaj kursor do drzwi",
+  "Pulsujšce przedmioty",
+  "Pokazuj korony drzew",
+  "Pokazuj siatkę",
+  "Pokazuj kursor 3D",
 ];
 
 // This is the help text associated with the above toggles.
 let zOptionsScreenHelpText: STR16[] /* [] */ = [
   // speech
-  L"Włšcz tę opcję, jeli chcesz słuchać dialogów.",
+  "Włšcz tę opcję, jeli chcesz słuchać dialogów.",
 
   // Mute Confirmation
-  L"Włšcza lub wyłšcza głosowe potwierzenia postaci.",
+  "Włšcza lub wyłšcza głosowe potwierzenia postaci.",
 
   // Subtitles
-  L"Włšcza lub wyłšcza napisy podczas dialogów.",
+  "Włšcza lub wyłšcza napisy podczas dialogów.",
 
   // Key to advance speech
-  L"Jeli napisy sš włšczone, opcja ta pozwoli ci spokojnie je przeczytać podczas dialogu.",
+  "Jeli napisy sš włšczone, opcja ta pozwoli ci spokojnie je przeczytać podczas dialogu.",
 
   // Toggle smoke animation
-  L"Wyłšcz tę opcję, aby poprawić płynnoć działania gry.",
+  "Wyłšcz tę opcję, aby poprawić płynnoć działania gry.",
 
   // Blood n Gore
-  L"Wyłšcz tę opcję, jeli nie lubisz widoku krwi.",
+  "Wyłšcz tę opcję, jeli nie lubisz widoku krwi.",
 
   // Never move my mouse
-  L"Wyłšcz tę opcję, aby kursor myszki automatycznie ustawiał się nad pojawiajšcymi się okienkami dialogowymi.",
+  "Wyłšcz tę opcję, aby kursor myszki automatycznie ustawiał się nad pojawiajšcymi się okienkami dialogowymi.",
 
   // Old selection method
-  L"Włšcz tę opcję, aby wybór postaci działał tak jak w poprzedniej wersji gry.",
+  "Włšcz tę opcję, aby wybór postaci działał tak jak w poprzedniej wersji gry.",
 
   // Show movement path
-  L"Włšcz tę opcję jeli chcesz widzieć trasę ruchu w trybie Real-Time.",
+  "Włšcz tę opcję jeli chcesz widzieć trasę ruchu w trybie Real-Time.",
 
   // show misses
-  L"Włšcz tę opcję, aby zobaczyć w co trafiajš twoje kule gdy pudłujesz.",
+  "Włšcz tę opcję, aby zobaczyć w co trafiajš twoje kule gdy pudłujesz.",
 
   // Real Time Confirmation
-  L"Gdy opcja ta jest włšczona, każdy ruch najemnika w trybie Real-Time będzie wymagał dodatkowego, potwierdzajšcego kliknięcia.",
+  "Gdy opcja ta jest włšczona, każdy ruch najemnika w trybie Real-Time będzie wymagał dodatkowego, potwierdzajšcego kliknięcia.",
 
   // Sleep/Wake notification
-  L"Gdy opcja ta jest włšczona, wywietlana będzie informacja, że najemnik położył się spać lub wstał i wrócił do pracy.",
+  "Gdy opcja ta jest włšczona, wywietlana będzie informacja, że najemnik położył się spać lub wstał i wrócił do pracy.",
 
   // Use the metric system
-  L"Gdy opcja ta jest włšczona, gra używa systemu metrycznego.",
+  "Gdy opcja ta jest włšczona, gra używa systemu metrycznego.",
 
   // Merc Lighted movement
-  L"Gdy opcja ta jest włšczona, teren wokół najemnika będzie owietlony podczas ruchu. Wyłšcz tę opcję, jeli obniża płynnoć gry.",
+  "Gdy opcja ta jest włšczona, teren wokół najemnika będzie owietlony podczas ruchu. Wyłšcz tę opcję, jeli obniża płynnoć gry.",
 
   // Smart cursor
-  L"Gdy opcja ta jest włšczona, kursor automatycznie ustawia się na najemnikach gdy znajdzie się w ich pobliżu.",
+  "Gdy opcja ta jest włšczona, kursor automatycznie ustawia się na najemnikach gdy znajdzie się w ich pobliżu.",
 
   // snap cursor to the door
-  L"Gdy opcja ta jest włšczona, kursor automatycznie ustawi się na drzwiach gdy znajdzie się w ich pobliżu.",
+  "Gdy opcja ta jest włšczona, kursor automatycznie ustawi się na drzwiach gdy znajdzie się w ich pobliżu.",
 
   // glow items
-  L"Gdy opcja ta jest włšczona, przedmioty pulsujš. ( |I )",
+  "Gdy opcja ta jest włšczona, przedmioty pulsujš. ( |I )",
 
   // toggle tree tops
-  L"Gdy opcja ta jest włšczona, wywietlane sš korony drzew. ( |T )",
+  "Gdy opcja ta jest włšczona, wywietlane sš korony drzew. ( |T )",
 
   // toggle wireframe
-  L"Gdy opcja ta jest włšczona, wywietlane sš zarysy niewidocznych cian. ( |W )",
+  "Gdy opcja ta jest włšczona, wywietlane sš zarysy niewidocznych cian. ( |W )",
 
-  L"Gdy opcja ta jest włšczona, kursor ruchu wywietlany jest w 3D. ( |Home )",
+  "Gdy opcja ta jest włšczona, kursor ruchu wywietlany jest w 3D. ( |Home )",
 ];
 
 let gzGIOScreenText: STR16[] /* [] */ = [
-  L"POCZĽTKOWE USTAWIENIA GRY",
-  L"Styl gry",
-  L"Realistyczny",
-  L"S-F",
-  L"Opcje broni",
-  L"Mnóstwo broni",
-  L"Standardowe uzbrojenie",
-  L"Stopień trudnoci",
-  L"Nowicjusz",
-  L"Dowiadczony",
-  L"Ekspert",
-  L"Ok",
-  L"Anuluj",
-  L"Dodatkowe opcje",
-  L"Nielimitowany czas",
-  L"Tury limitowane czasowo",
-  L"Nie działa w wersji demo",
+  "POCZĽTKOWE USTAWIENIA GRY",
+  "Styl gry",
+  "Realistyczny",
+  "S-F",
+  "Opcje broni",
+  "Mnóstwo broni",
+  "Standardowe uzbrojenie",
+  "Stopień trudnoci",
+  "Nowicjusz",
+  "Dowiadczony",
+  "Ekspert",
+  "Ok",
+  "Anuluj",
+  "Dodatkowe opcje",
+  "Nielimitowany czas",
+  "Tury limitowane czasowo",
+  "Nie działa w wersji demo",
 ];
 
 let pDeliveryLocationStrings: STR16[] /* [] */ = [
-  L"Austin", // Austin, Texas, USA
-  L"Bagdad", // Baghdad, Iraq (Suddam Hussein's home)
-  L"Drassen", // The main place in JA2 that you can receive items.  The other towns are dummy names...
-  L"Hong Kong", // Hong Kong, Hong Kong
-  L"Bejrut", // Beirut, Lebanon	(Middle East)
-  L"Londyn", // London, England
-  L"Los Angeles", // Los Angeles, California, USA (SW corner of USA)
-  L"Meduna", // Meduna -- the other airport in JA2 that you can receive items.
-  L"Metavira", // The island of Metavira was the fictional location used by JA1
-  L"Miami", // Miami, Florida, USA (SE corner of USA)
-  L"Moskwa", // Moscow, USSR
-  L"Nowy Jork", // New York, New York, USA
-  L"Ottawa", // Ottawa, Ontario, Canada -- where JA2 was made!
-  L"Paryż", // Paris, France
-  L"Trypolis", // Tripoli, Libya (eastern Mediterranean)
-  L"Tokio", // Tokyo, Japan
-  L"Vancouver", // Vancouver, British Columbia, Canada (west coast near US border)
+  "Austin", // Austin, Texas, USA
+  "Bagdad", // Baghdad, Iraq (Suddam Hussein's home)
+  "Drassen", // The main place in JA2 that you can receive items.  The other towns are dummy names...
+  "Hong Kong", // Hong Kong, Hong Kong
+  "Bejrut", // Beirut, Lebanon	(Middle East)
+  "Londyn", // London, England
+  "Los Angeles", // Los Angeles, California, USA (SW corner of USA)
+  "Meduna", // Meduna -- the other airport in JA2 that you can receive items.
+  "Metavira", // The island of Metavira was the fictional location used by JA1
+  "Miami", // Miami, Florida, USA (SE corner of USA)
+  "Moskwa", // Moscow, USSR
+  "Nowy Jork", // New York, New York, USA
+  "Ottawa", // Ottawa, Ontario, Canada -- where JA2 was made!
+  "Paryż", // Paris, France
+  "Trypolis", // Tripoli, Libya (eastern Mediterranean)
+  "Tokio", // Tokyo, Japan
+  "Vancouver", // Vancouver, British Columbia, Canada (west coast near US border)
 ];
 
 let pSkillAtZeroWarning: STR16[] /* [] */ = [
   // This string is used in the IMP character generation.  It is possible to select 0 ability
   // in a skill meaning you can't use it.  This text is confirmation to the player.
-  L"Na pewno? Wartoć zero oznacza brak jakichkolwiek umiejętnoci w tej dziedzinie.",
+  "Na pewno? Wartoć zero oznacza brak jakichkolwiek umiejętnoci w tej dziedzinie.",
 ];
 
 let pIMPBeginScreenStrings: STR16[] /* [] */ = [
-  L"( Maks. 8 znaków )",
+  "( Maks. 8 znaków )",
 ];
 
 let pIMPFinishButtonText: STR16[] /* [1] */ = [
-  L"Analizuję",
+  "Analizuję",
 ];
 
 let pIMPFinishStrings: STR16[] /* [] */ = [
-  L"Dziękujemy, %s", //%s is the name of the merc
+  "Dziękujemy, %s", //%s is the name of the merc
 ];
 
 // the strings for imp voices screen
 let pIMPVoicesStrings: STR16[] /* [] */ = [
-  L"Głos",
+  "Głos",
 ];
 
 let pDepartedMercPortraitStrings: STR16[] /* [] */ = [
-  L"mierć w akcji",
-  L"Zwolnienie",
-  L"Inny",
+  "mierć w akcji",
+  "Zwolnienie",
+  "Inny",
 ];
 
 // title for program
 let pPersTitleText: STR16[] /* [] */ = [
-  L"Personel",
+  "Personel",
 ];
 
 // paused game strings
 let pPausedGameText: STR16[] /* [] */ = [
-  L"Gra wstrzymana",
-  L"Wznów grę (|P|a|u|s|e)",
-  L"Wstrzymaj grę (|P|a|u|s|e)",
+  "Gra wstrzymana",
+  "Wznów grę (|P|a|u|s|e)",
+  "Wstrzymaj grę (|P|a|u|s|e)",
 ];
 
 let pMessageStrings: STR16[] /* [] */ = [
-  L"Zakończyć grę?",
-  L"OK",
-  L"TAK",
-  L"NIE",
-  L"ANULUJ",
-  L"NAJMIJ",
-  L"LIE",
-  L"Brak opisu", // Save slots that don't have a description.
-  L"Gra zapisana.",
-  L"Gra zapisana.",
-  L"Szybki zapis", // The name of the quicksave file (filename, text reference)
-  L"SaveGame", // The name of the normal savegame file, such as SaveGame01, SaveGame02, etc.
-  L"sav", // The 3 character dos extension (represents sav)
-  L"..\\SavedGames", // The name of the directory where games are saved.
-  L"Dzień",
-  L"Najemn.",
-  L"Wolna pozycja", // An empty save game slot
-  L"Demo", // Demo of JA2
-  L"Debug", // State of development of a project (JA2) that is a debug build
-  L"", // Release build for JA2
-  L"strz/min", // Abbreviation for Rounds per minute -- the potential # of bullets fired in a minute.
-  L"min", // Abbreviation for minute.
-  L"m", // One character abbreviation for meter (metric distance measurement unit).
-  L"kul", // Abbreviation for rounds (# of bullets)
-  L"kg", // Abbreviation for kilogram (metric weight measurement unit)
-  L"lb", // Abbreviation for pounds (Imperial weight measurement unit)
-  L"Strona główna", // Home as in homepage on the internet.
-  L"USD", // Abbreviation to US dollars
-  L"N/D", // Lowercase acronym for not applicable.
-  L"Tymczasem", // Meanwhile
-  L"%s przybył(a) do sektora %s%s", // Name/Squad has arrived in sector A9.  Order must not change without notifying
+  "Zakończyć grę?",
+  "OK",
+  "TAK",
+  "NIE",
+  "ANULUJ",
+  "NAJMIJ",
+  "LIE",
+  "Brak opisu", // Save slots that don't have a description.
+  "Gra zapisana.",
+  "Gra zapisana.",
+  "Szybki zapis", // The name of the quicksave file (filename, text reference)
+  "SaveGame", // The name of the normal savegame file, such as SaveGame01, SaveGame02, etc.
+  "sav", // The 3 character dos extension (represents sav)
+  "..\\SavedGames", // The name of the directory where games are saved.
+  "Dzień",
+  "Najemn.",
+  "Wolna pozycja", // An empty save game slot
+  "Demo", // Demo of JA2
+  "Debug", // State of development of a project (JA2) that is a debug build
+  "", // Release build for JA2
+  "strz/min", // Abbreviation for Rounds per minute -- the potential # of bullets fired in a minute.
+  "min", // Abbreviation for minute.
+  "m", // One character abbreviation for meter (metric distance measurement unit).
+  "kul", // Abbreviation for rounds (# of bullets)
+  "kg", // Abbreviation for kilogram (metric weight measurement unit)
+  "lb", // Abbreviation for pounds (Imperial weight measurement unit)
+  "Strona główna", // Home as in homepage on the internet.
+  "USD", // Abbreviation to US dollars
+  "N/D", // Lowercase acronym for not applicable.
+  "Tymczasem", // Meanwhile
+  "%s przybył(a) do sektora %s%s", // Name/Squad has arrived in sector A9.  Order must not change without notifying
                                     // SirTech
-  L"Wersja",
-  L"Wolna pozycja na szybki zapis",
-  L"Ta pozycja zarezerwowana jest na szybkie zapisy wykonywane podczas gry kombinacjš klawiszy ALT+S.",
-  L"Otw.",
-  L"Zamkn.",
-  L"Brak miejsca na dysku twardym.  Na dysku wolne jest %s MB, a wymagane jest przynajmniej %s MB.",
-  L"Najęto - %s z A.I.M.",
-  L"%s złapał(a) %s", //'Merc name' has caught 'item' -- let SirTech know if name comes after item.
-  L"%s zaaplikował(a) sobie lekarstwo", //'Merc name' has taken the drug
-  L"%s nie posiada wiedzy medycznej", //'Merc name' has no medical skill.
+  "Wersja",
+  "Wolna pozycja na szybki zapis",
+  "Ta pozycja zarezerwowana jest na szybkie zapisy wykonywane podczas gry kombinacjš klawiszy ALT+S.",
+  "Otw.",
+  "Zamkn.",
+  "Brak miejsca na dysku twardym.  Na dysku wolne jest %s MB, a wymagane jest przynajmniej %s MB.",
+  "Najęto - %s z A.I.M.",
+  "%s złapał(a) %s", //'Merc name' has caught 'item' -- let SirTech know if name comes after item.
+  "%s zaaplikował(a) sobie lekarstwo", //'Merc name' has taken the drug
+  "%s nie posiada wiedzy medycznej", //'Merc name' has no medical skill.
 
   // CDRom errors (such as ejecting CD while attempting to read the CD)
-  L"Integralnoć gry została narażona na szwank.",
-  L"BŁĽD: Wyjęto płytę CD",
+  "Integralnoć gry została narażona na szwank.",
+  "BŁĽD: Wyjęto płytę CD",
 
   // When firing heavier weapons in close quarters, you may not have enough room to do so.
-  L"Nie ma miejsca, żeby stšd oddać strzał.",
+  "Nie ma miejsca, żeby stšd oddać strzał.",
 
   // Can't change stance due to objects in the way...
-  L"Nie można zmienić pozycji w tej chwili.",
+  "Nie można zmienić pozycji w tej chwili.",
 
   // Simple text indications that appear in the game, when the merc can do one of these things.
-  L"Upuć",
-  L"Rzuć",
-  L"Podaj",
+  "Upuć",
+  "Rzuć",
+  "Podaj",
 
-  L"%s przekazano do - %s.", //"Item" passed to "merc".  Please try to keep the item %s before the merc %s, otherwise,
+  "%s przekazano do - %s.", //"Item" passed to "merc".  Please try to keep the item %s before the merc %s, otherwise,
                              // must notify SirTech.
-  L"Brak wolnego miejsca, by przekazać %s do - %s.", // pass "item" to "merc".  Same instructions as above.
+  "Brak wolnego miejsca, by przekazać %s do - %s.", // pass "item" to "merc".  Same instructions as above.
 
   // A list of attachments appear after the items.  Ex:  Kevlar vest ( Ceramic Plate 'Attached )'
-  L" dołšczono )",
+  " dołšczono )",
 
   // Cheat modes
-  L"Pierwszy poziom lamerskich zagrywek osišgnięty",
-  L"Drugi poziom lamerskich zagrywek osišgnięty",
+  "Pierwszy poziom lamerskich zagrywek osišgnięty",
+  "Drugi poziom lamerskich zagrywek osišgnięty",
 
   // Toggling various stealth modes
-  L"Oddział ma włšczony tryb skradania się.",
-  L"Oddział ma wyłšczony tryb skradania się.",
-  L"%s ma włšczony tryb skradania się.",
-  L"%s ma wyłšczony tryb skradania się.",
+  "Oddział ma włšczony tryb skradania się.",
+  "Oddział ma wyłšczony tryb skradania się.",
+  "%s ma włšczony tryb skradania się.",
+  "%s ma wyłšczony tryb skradania się.",
 
   // Wireframes are shown through buildings to reveal doors and windows that can't otherwise be seen in
   // an isometric engine.  You can toggle this mode freely in the game.
-  L"Dodatkowe siatki włšczone.",
-  L"Dodatkowe siatki wyłšczone.",
+  "Dodatkowe siatki włšczone.",
+  "Dodatkowe siatki wyłšczone.",
 
   // These are used in the cheat modes for changing levels in the game.  Going from a basement level to
   // an upper level, etc.
-  L"Nie można wyjć do góry z tego poziomu...",
-  L"Nie ma już niższych poziomów...",
-  L"Wejcie na %d poziom pod ziemiš...",
-  L"Wyjcie z podziemii...",
+  "Nie można wyjć do góry z tego poziomu...",
+  "Nie ma już niższych poziomów...",
+  "Wejcie na %d poziom pod ziemiš...",
+  "Wyjcie z podziemii...",
 
-  L" - ", // used in the shop keeper inteface to mark the ownership of the item eg Red's gun
-  L"Automatyczne centrowanie ekranu wyłšczone.",
-  L"Automatyczne centrowanie ekranu włšczone.",
-  L"Kursor 3D wyłšczony.",
-  L"Kursor 3D włšczony.",
-  L"Oddział %d aktywny.",
-  L"%s - Nie stać cię by wypłacić jej/jemu dziennš pensję w wysokoci %s.", // first %s is the mercs name, the seconds is a string containing the salary
-  L"Pomiń",
-  L"%s nie może odejć sam(a).",
-  L"Utworzono zapis gry o nazwie SaveGame99.sav. W razie potrzeby zmień jego nazwę na SaveGame01..10. Wtedy będzie można go odczytać ze standardowego okna odczytu gry.",
-  L"%s wypił(a) trochę - %s",
-  L"Przesyłka dotarła do Drassen.",
-  L"%s przybędzie do wyznaczonego punktu zrzutu (sektor %s) w dniu %d, około godziny %s.", // first %s is mercs name, next is the sector location and name where they will be arriving in, lastely is the day an the time of arrival
-  L"Lista historii zaktualizowana.",
+  " - ", // used in the shop keeper inteface to mark the ownership of the item eg Red's gun
+  "Automatyczne centrowanie ekranu wyłšczone.",
+  "Automatyczne centrowanie ekranu włšczone.",
+  "Kursor 3D wyłšczony.",
+  "Kursor 3D włšczony.",
+  "Oddział %d aktywny.",
+  "%s - Nie stać cię by wypłacić jej/jemu dziennš pensję w wysokoci %s.", // first %s is the mercs name, the seconds is a string containing the salary
+  "Pomiń",
+  "%s nie może odejć sam(a).",
+  "Utworzono zapis gry o nazwie SaveGame99.sav. W razie potrzeby zmień jego nazwę na SaveGame01..10. Wtedy będzie można go odczytać ze standardowego okna odczytu gry.",
+  "%s wypił(a) trochę - %s",
+  "Przesyłka dotarła do Drassen.",
+  "%s przybędzie do wyznaczonego punktu zrzutu (sektor %s) w dniu %d, około godziny %s.", // first %s is mercs name, next is the sector location and name where they will be arriving in, lastely is the day an the time of arrival
+  "Lista historii zaktualizowana.",
 ];
 
 let ItemPickupHelpPopup: UINT16[][] /* [][40] */ = [
-  L"OK",
-  L"W górę",
-  L"Wybierz wszystko",
-  L"W dół",
-  L"Anuluj",
+  "OK",
+  "W górę",
+  "Wybierz wszystko",
+  "W dół",
+  "Anuluj",
 ];
 
 let pDoctorWarningString: STR16[] /* [] */ = [
-  L"%s jest za daleko, aby poddać się leczeniu.",
-  L"Lekarze nie mogli opatrzyć wszystkich rannych.",
+  "%s jest za daleko, aby poddać się leczeniu.",
+  "Lekarze nie mogli opatrzyć wszystkich rannych.",
 ];
 
 let pMilitiaButtonsHelpText: STR16[] /* [] */ = [
-  L"Podnie(Prawy klawisz myszy)/upuć(Lewy klawisz myszy) Zielonych żołnierzy", // button help text informing player they can pick up or drop militia with this button
-  L"Podnie(Prawy klawisz myszy)/upuć(Lewy klawisz myszy) Dowiadczonych żołnierzy",
-  L"Podnie(Prawy klawisz myszy)/upuć(Lewy klawisz myszy) Weteranów",
-  L"Umieszcza jednakowš iloć żołnierzy samoobrony w każdym sektorze.",
+  "Podnie(Prawy klawisz myszy)/upuć(Lewy klawisz myszy) Zielonych żołnierzy", // button help text informing player they can pick up or drop militia with this button
+  "Podnie(Prawy klawisz myszy)/upuć(Lewy klawisz myszy) Dowiadczonych żołnierzy",
+  "Podnie(Prawy klawisz myszy)/upuć(Lewy klawisz myszy) Weteranów",
+  "Umieszcza jednakowš iloć żołnierzy samoobrony w każdym sektorze.",
 ];
 
 let pMapScreenJustStartedHelpText: STR16[] /* [] */ = [
-  L"Zajrzyj do A.I.M. i zatrudnij kilku najemników (*Wskazówka* musisz otworzyć laptopa)", // to inform the player to hired some mercs to get things going
-  L"Jeli chcesz już udać się do Arulco, kliknij przycisk kompresji czasu, w prawym dolnym rogu ekranu.", // to inform the player to hit time compression to get the game underway
+  "Zajrzyj do A.I.M. i zatrudnij kilku najemników (*Wskazówka* musisz otworzyć laptopa)", // to inform the player to hired some mercs to get things going
+  "Jeli chcesz już udać się do Arulco, kliknij przycisk kompresji czasu, w prawym dolnym rogu ekranu.", // to inform the player to hit time compression to get the game underway
 ];
 
 let pAntiHackerString: STR16[] /* [] */ = [
-  L"Błšd. Brakuje pliku, lub jest on uszkodzony. Gra zostanie przerwana.",
+  "Błšd. Brakuje pliku, lub jest on uszkodzony. Gra zostanie przerwana.",
 ];
 
 let gzLaptopHelpText: STR16[] /* [] */ = [
   // Buttons:
-  L"Przeglšdanie poczty",
-  L"Przeglšdanie stron internetowych",
-  L"Przeglšdanie plików i załšczników pocztowych",
-  L"Rejestr zdarzeń",
-  L"Informacje o członkach oddziału",
-  L"Finanse i rejestr transakcji",
-  L"Koniec pracy z laptopem",
+  "Przeglšdanie poczty",
+  "Przeglšdanie stron internetowych",
+  "Przeglšdanie plików i załšczników pocztowych",
+  "Rejestr zdarzeń",
+  "Informacje o członkach oddziału",
+  "Finanse i rejestr transakcji",
+  "Koniec pracy z laptopem",
 
   // Bottom task bar icons (if they exist):
-  L"Masz nowš pocztę",
-  L"Masz nowe pliki",
+  "Masz nowš pocztę",
+  "Masz nowe pliki",
 
   // Bookmarks:
-  L"Międzynarodowe Stowarzyszenie Najemników",
-  L"Bobby Ray's - Internetowy sklep z broniš",
-  L"Instytut Badań Najemników",
-  L"Bardziej Ekonomiczne Centrum Rekrutacyjne",
-  L"McGillicutty's - Zakład pogrzebowy",
-  L"United Floral Service",
-  L"Brokerzy ubezpieczeniowi",
+  "Międzynarodowe Stowarzyszenie Najemników",
+  "Bobby Ray's - Internetowy sklep z broniš",
+  "Instytut Badań Najemników",
+  "Bardziej Ekonomiczne Centrum Rekrutacyjne",
+  "McGillicutty's - Zakład pogrzebowy",
+  "United Floral Service",
+  "Brokerzy ubezpieczeniowi",
 ];
 
 let gzHelpScreenText: STR16[] /* [] */ = [
-  L"Zamknij okno pomocy",
+  "Zamknij okno pomocy",
 ];
 
 let gzNonPersistantPBIText: STR16[] /* [] */ = [
-  L"Trwa walka. Najemników można wycofać tylko na ekranie taktycznym.",
-  L"W|ejd do sektora, aby kontynuować walkę.",
-  L"|Automatycznie rozstrzyga walkę.",
-  L"Nie można automatycznie rozstrzygnšć walki, gdy atakujesz.",
-  L"Nie można automatycznie rozstrzygnšć walki, gdy wpadasz w pułapkę.",
-  L"Nie można automatycznie rozstrzygnšć walki, gdy walczysz ze stworzeniami w kopalni.",
-  L"Nie można automatycznie rozstrzygnšć walki, gdy w sektorze sš wrodzy cywile.",
-  L"Nie można automatycznie rozstrzygnšć walki, gdy w sektorze sš dzikie koty.",
-  L"TRWA WALKA",
-  L"W tym momencie nie możesz się wycofać.",
+  "Trwa walka. Najemników można wycofać tylko na ekranie taktycznym.",
+  "W|ejd do sektora, aby kontynuować walkę.",
+  "|Automatycznie rozstrzyga walkę.",
+  "Nie można automatycznie rozstrzygnšć walki, gdy atakujesz.",
+  "Nie można automatycznie rozstrzygnšć walki, gdy wpadasz w pułapkę.",
+  "Nie można automatycznie rozstrzygnšć walki, gdy walczysz ze stworzeniami w kopalni.",
+  "Nie można automatycznie rozstrzygnšć walki, gdy w sektorze sš wrodzy cywile.",
+  "Nie można automatycznie rozstrzygnšć walki, gdy w sektorze sš dzikie koty.",
+  "TRWA WALKA",
+  "W tym momencie nie możesz się wycofać.",
 ];
 
 let gzMiscString: STR16[] /* [] */ = [
-  L"Żołnierze samoobrony kontynuujš walkę bez pomocy twoich najemników...",
-  L"W tym momencie tankowanie nie jest konieczne.",
-  L"W baku jest %d%% paliwa.",
-  L"Żołnierze Deidranny przejęli całkowitš kontrolę nad - %s.",
-  L"Nie masz już gdzie zatankować.",
+  "Żołnierze samoobrony kontynuujš walkę bez pomocy twoich najemników...",
+  "W tym momencie tankowanie nie jest konieczne.",
+  "W baku jest %d%% paliwa.",
+  "Żołnierze Deidranny przejęli całkowitš kontrolę nad - %s.",
+  "Nie masz już gdzie zatankować.",
 ];
 
 let gzIntroScreen: STR16[] /* [] */ = [
-  L"Nie odnaleziono filmu wprowadzajšcego",
+  "Nie odnaleziono filmu wprowadzajšcego",
 ];
 
 // These strings are combined with a merc name, a volume string (from pNoiseVolStr),
@@ -3374,243 +3374,243 @@ let gzIntroScreen: STR16[] /* [] */ = [
 // report a noise.
 // e.g. "Sidney hears a loud sound of MOVEMENT coming from the SOUTH."
 let pNewNoiseStr: STR16[] /* [] */ = [
-  L"%s słyszy %s DWIĘK dochodzšcy z %s.",
-  L"%s słyszy %s ODGŁOS RUCHU dochodzšcy z %s.",
-  L"%s słyszy %s ODGŁOS SKRZYPNIĘCIA dochodzšcy z %s.",
-  L"%s słyszy %s PLUSK dochodzšcy z %s.",
-  L"%s słyszy %s ODGŁOS UDERZENIA dochodzšcy z %s.",
-  L"%s słyszy %s WYBUCH dochodzšcy z %s.",
-  L"%s słyszy %s KRZYK dochodzšcy z %s.",
-  L"%s słyszy %s ODGŁOS UDERZENIA dochodzšcy z %s.",
-  L"%s słyszy %s ODGŁOS UDERZENIA dochodzšcy z %s.",
-  L"%s słyszy %s ŁOMOT dochodzšcy z %s.",
-  L"%s słyszy %s TRZASK dochodzšcy z %s.",
+  "%s słyszy %s DWIĘK dochodzšcy z %s.",
+  "%s słyszy %s ODGŁOS RUCHU dochodzšcy z %s.",
+  "%s słyszy %s ODGŁOS SKRZYPNIĘCIA dochodzšcy z %s.",
+  "%s słyszy %s PLUSK dochodzšcy z %s.",
+  "%s słyszy %s ODGŁOS UDERZENIA dochodzšcy z %s.",
+  "%s słyszy %s WYBUCH dochodzšcy z %s.",
+  "%s słyszy %s KRZYK dochodzšcy z %s.",
+  "%s słyszy %s ODGŁOS UDERZENIA dochodzšcy z %s.",
+  "%s słyszy %s ODGŁOS UDERZENIA dochodzšcy z %s.",
+  "%s słyszy %s ŁOMOT dochodzšcy z %s.",
+  "%s słyszy %s TRZASK dochodzšcy z %s.",
 ];
 
 let wMapScreenSortButtonHelpText: STR16[] /* [] */ = [
-  L"Sortuj według kolumny Imię (|F|1)",
-  L"Sortuj według kolumny Przydział (|F|2)",
-  L"Sortuj według kolumny Sen (|F|3)",
-  L"Sortuj według kolumny Lokalizacja (|F|4)",
-  L"Sortuj według kolumny Cel podróży (|F|5)",
-  L"Sortuj według kolumny Wyjazd (|F|6)",
+  "Sortuj według kolumny Imię (|F|1)",
+  "Sortuj według kolumny Przydział (|F|2)",
+  "Sortuj według kolumny Sen (|F|3)",
+  "Sortuj według kolumny Lokalizacja (|F|4)",
+  "Sortuj według kolumny Cel podróży (|F|5)",
+  "Sortuj według kolumny Wyjazd (|F|6)",
 ];
 
 let BrokenLinkText: STR16[] /* [] */ = [
-  L"Błšd 404",
-  L"Nie odnaleziono strony.",
+  "Błšd 404",
+  "Nie odnaleziono strony.",
 ];
 
 let gzBobbyRShipmentText: STR16[] /* [] */ = [
-  L"Ostatnie dostawy",
-  L"Zamówienie nr ",
-  L"Iloć przedmiotów",
-  L"Zamówiono:",
+  "Ostatnie dostawy",
+  "Zamówienie nr ",
+  "Iloć przedmiotów",
+  "Zamówiono:",
 ];
 
 let gzCreditNames: STR16[] /* [] */ = [
-  L"Chris Camfield",
-  L"Shaun Lyng",
-  L"Kris Märnes",
-  L"Ian Currie",
-  L"Linda Currie",
-  L"Eric \"WTF\" Cheng",
-  L"Lynn Holowka",
-  L"Norman \"NRG\" Olsen",
-  L"George Brooks",
-  L"Andrew Stacey",
-  L"Scot Loving",
-  L"Andrew \"Big Cheese\" Emmons",
-  L"Dave \"The Feral\" French",
-  L"Alex Meduna",
-  L"Joey \"Joeker\" Whelan",
+  "Chris Camfield",
+  "Shaun Lyng",
+  "Kris Märnes",
+  "Ian Currie",
+  "Linda Currie",
+  "Eric \"WTF\" Cheng",
+  "Lynn Holowka",
+  "Norman \"NRG\" Olsen",
+  "George Brooks",
+  "Andrew Stacey",
+  "Scot Loving",
+  "Andrew \"Big Cheese\" Emmons",
+  "Dave \"The Feral\" French",
+  "Alex Meduna",
+  "Joey \"Joeker\" Whelan",
 ];
 
 let gzCreditNameTitle: STR16[] /* [] */ = [
-  L"Game Internals Programmer", // Chris Camfield
-  L"Co-designer/Writer", // Shaun Lyng
-  L"Strategic Systems & Editor Programmer", // Kris Marnes
-  L"Producer/Co-designer", // Ian Currie
-  L"Co-designer/Map Designer", // Linda Currie
-  L"Artist", // Eric \"WTF\" Cheng
-  L"Beta Coordinator, Support", // Lynn Holowka
-  L"Artist Extraordinaire", // Norman \"NRG\" Olsen
-  L"Sound Guru", // George Brooks
-  L"Screen Designer/Artist", // Andrew Stacey
-  L"Lead Artist/Animator", // Scot Loving
-  L"Lead Programmer", // Andrew \"Big Cheese Doddle\" Emmons
-  L"Programmer", // Dave French
-  L"Strategic Systems & Game Balance Programmer", // Alex Meduna
-  L"Portraits Artist", // Joey \"Joeker\" Whelan",
+  "Game Internals Programmer", // Chris Camfield
+  "Co-designer/Writer", // Shaun Lyng
+  "Strategic Systems & Editor Programmer", // Kris Marnes
+  "Producer/Co-designer", // Ian Currie
+  "Co-designer/Map Designer", // Linda Currie
+  "Artist", // Eric \"WTF\" Cheng
+  "Beta Coordinator, Support", // Lynn Holowka
+  "Artist Extraordinaire", // Norman \"NRG\" Olsen
+  "Sound Guru", // George Brooks
+  "Screen Designer/Artist", // Andrew Stacey
+  "Lead Artist/Animator", // Scot Loving
+  "Lead Programmer", // Andrew \"Big Cheese Doddle\" Emmons
+  "Programmer", // Dave French
+  "Strategic Systems & Game Balance Programmer", // Alex Meduna
+  "Portraits Artist", // Joey \"Joeker\" Whelan",
 ];
 
 let gzCreditNameFunny: STR16[] /* [] */ = [
-  L"", // Chris Camfield
-  L"(still learning punctuation)", // Shaun Lyng
-  L"(\"It's done. I'm just fixing it\")", // Kris \"The Cow Rape Man\" Marnes
-  L"(getting much too old for this)", // Ian Currie
-  L"(and working on Wizardry 8)", // Linda Currie
-  L"(forced at gunpoint to also do QA)", // Eric \"WTF\" Cheng
-  L"(Left us for the CFSA - go figure...)", // Lynn Holowka
-  L"", // Norman \"NRG\" Olsen
-  L"", // George Brooks
-  L"(Dead Head and jazz lover)", // Andrew Stacey
-  L"(his real name is Robert)", // Scot Loving
-  L"(the only responsible person)", // Andrew \"Big Cheese Doddle\" Emmons
-  L"(can now get back to motocrossing)", // Dave French
-  L"(stolen from Wizardry 8)", // Alex Meduna
-  L"(did items and loading screens too!)", // Joey \"Joeker\" Whelan",
+  "", // Chris Camfield
+  "(still learning punctuation)", // Shaun Lyng
+  "(\"It's done. I'm just fixing it\")", // Kris \"The Cow Rape Man\" Marnes
+  "(getting much too old for this)", // Ian Currie
+  "(and working on Wizardry 8)", // Linda Currie
+  "(forced at gunpoint to also do QA)", // Eric \"WTF\" Cheng
+  "(Left us for the CFSA - go figure...)", // Lynn Holowka
+  "", // Norman \"NRG\" Olsen
+  "", // George Brooks
+  "(Dead Head and jazz lover)", // Andrew Stacey
+  "(his real name is Robert)", // Scot Loving
+  "(the only responsible person)", // Andrew \"Big Cheese Doddle\" Emmons
+  "(can now get back to motocrossing)", // Dave French
+  "(stolen from Wizardry 8)", // Alex Meduna
+  "(did items and loading screens too!)", // Joey \"Joeker\" Whelan",
 ];
 
 let sRepairsDoneString: STR16[] /* [] */ = [
-  L"%s skończył(a) naprawiać własne wyposażenie",
-  L"%s skończył(a) naprawiać broń i ochraniacze wszystkich członków oddziału",
-  L"%s skończył(a) naprawiać wyposażenie wszystkich członków oddziału",
-  L"%s skończył(a) naprawiać ekwipunek wszystkich członków oddziału",
+  "%s skończył(a) naprawiać własne wyposażenie",
+  "%s skończył(a) naprawiać broń i ochraniacze wszystkich członków oddziału",
+  "%s skończył(a) naprawiać wyposażenie wszystkich członków oddziału",
+  "%s skończył(a) naprawiać ekwipunek wszystkich członków oddziału",
 ];
 
 let zGioDifConfirmText: STR16[] /* [] */ = [
-  L"Wybrano opcję Nowicjusz. Opcja ta jest przeznaczona dla niedowiadczonych graczy, lub dla tych, którzy nie majš ochoty na długie i ciężkie walki. Pamiętaj, że opcja ta ma wpływ na przebieg całej gry. Czy na pewno chcesz grać w trybie Nowicjusz?",
-  L"Wybrano opcję Dowiadczony. Opcja ta jest przenaczona dla graczy posiadajšcych już pewne dowiadczenie w grach tego typu. Pamiętaj, że opcja ta ma wpływ na przebieg całej gry. Czy na pewno chcesz grać w trybie Dowiadczony?",
-  L"Wybrano opcję Ekspert. Jakby co, to ostrzegalimy cię. Nie obwiniaj nas, jeli wrócisz w plastikowym worku. Pamiętaj, że opcja ta ma wpływ na przebieg całej gry. Czy na pewno chcesz grać w trybie Ekspert?",
+  "Wybrano opcję Nowicjusz. Opcja ta jest przeznaczona dla niedowiadczonych graczy, lub dla tych, którzy nie majš ochoty na długie i ciężkie walki. Pamiętaj, że opcja ta ma wpływ na przebieg całej gry. Czy na pewno chcesz grać w trybie Nowicjusz?",
+  "Wybrano opcję Dowiadczony. Opcja ta jest przenaczona dla graczy posiadajšcych już pewne dowiadczenie w grach tego typu. Pamiętaj, że opcja ta ma wpływ na przebieg całej gry. Czy na pewno chcesz grać w trybie Dowiadczony?",
+  "Wybrano opcję Ekspert. Jakby co, to ostrzegalimy cię. Nie obwiniaj nas, jeli wrócisz w plastikowym worku. Pamiętaj, że opcja ta ma wpływ na przebieg całej gry. Czy na pewno chcesz grać w trybie Ekspert?",
 ];
 
 let gzLateLocalizedString: STR16[] /* [] */ = [
-  L"%S - nie odnaleziono pliku...",
+  "%S - nie odnaleziono pliku...",
 
   // 1-5
-  L"Robot nie może opucić sektora bez operatora.",
+  "Robot nie może opucić sektora bez operatora.",
 
   // This message comes up if you have pending bombs waiting to explode in tactical.
-  L"Nie można teraz kompresować czasu.  Poczekaj na fajerwerki!",
+  "Nie można teraz kompresować czasu.  Poczekaj na fajerwerki!",
 
   //'Name' refuses to move.
-  L"%s nie chce się przesunšć.",
+  "%s nie chce się przesunšć.",
 
   //%s a merc name
-  L"%s ma zbyt mało energii, aby zmienić pozycję.",
+  "%s ma zbyt mało energii, aby zmienić pozycję.",
 
   // A message that pops up when a vehicle runs out of gas.
-  L"%s nie ma paliwa i stoi w sektorze %c%d.",
+  "%s nie ma paliwa i stoi w sektorze %c%d.",
 
   // 6-10
 
   // the following two strings are combined with the pNewNoise[] strings above to report noises
   // heard above or below the merc
-  L"GÓRY",
-  L"DOŁU",
+  "GÓRY",
+  "DOŁU",
 
   // The following strings are used in autoresolve for autobandaging related feedback.
-  L"Żaden z twoich najemników nie posiada wiedzy medycznej.",
-  L"Brak rodków medycznych, aby założyć rannym opatrunki.",
-  L"Zabrakło rodków medycznych, aby założyć wszystkim rannym opatrunki.",
-  L"Żaden z twoich najemników nie potrzebuje pomocy medycznej.",
-  L"Automatyczne zakładanie opatrunków rannym najemnikom.",
-  L"Wszystkim twoim najemnikom założono opatrunki.",
+  "Żaden z twoich najemników nie posiada wiedzy medycznej.",
+  "Brak rodków medycznych, aby założyć rannym opatrunki.",
+  "Zabrakło rodków medycznych, aby założyć wszystkim rannym opatrunki.",
+  "Żaden z twoich najemników nie potrzebuje pomocy medycznej.",
+  "Automatyczne zakładanie opatrunków rannym najemnikom.",
+  "Wszystkim twoim najemnikom założono opatrunki.",
 
   // 14
-  L"Arulco",
+  "Arulco",
 
-  L"(dach)",
+  "(dach)",
 
-  L"Zdrowie: %d/%d",
+  "Zdrowie: %d/%d",
 
   // In autoresolve if there were 5 mercs fighting 8 enemies the text would be "5 vs. 8"
   //"vs." is the abbreviation of versus.
-  L"%d vs. %d",
+  "%d vs. %d",
 
-  L"%s - brak wolnych miejsc!", //(ex "The ice cream truck is full")
+  "%s - brak wolnych miejsc!", //(ex "The ice cream truck is full")
 
-  L"%s nie potrzebuje pierwszej pomocy lecz opieki lekarza lub dłuższego odpoczynku.",
+  "%s nie potrzebuje pierwszej pomocy lecz opieki lekarza lub dłuższego odpoczynku.",
 
   // 20
   // Happens when you get shot in the legs, and you fall down.
-  L"%s dostał(a) w nogi i upadł(a)!",
+  "%s dostał(a) w nogi i upadł(a)!",
   // Name can't speak right now.
-  L"%s nie może teraz mówić.",
+  "%s nie może teraz mówić.",
 
   // 22-24 plural versions
-  L"%d zielonych żołnierzy samoobrony awansowało na weteranów.",
-  L"%d zielonych żołnierzy samoobrony awansowało na regularnych żołnierzy.",
-  L"%d regularnych żołnierzy samoobrony awansowało na weteranów.",
+  "%d zielonych żołnierzy samoobrony awansowało na weteranów.",
+  "%d zielonych żołnierzy samoobrony awansowało na regularnych żołnierzy.",
+  "%d regularnych żołnierzy samoobrony awansowało na weteranów.",
 
   // 25
-  L"Przełšcznik",
+  "Przełšcznik",
 
   // 26
   // Name has gone psycho -- when the game forces the player into burstmode (certain unstable characters)
-  L"%s dostaje wira!",
+  "%s dostaje wira!",
 
   // 27-28
   // Messages why a player can't time compress.
-  L"Niebezpiecznie jest kompresować teraz czas, gdyż masz najemników w sektorze %s.",
-  L"Niebezpiecznie jest kompresować teraz czas, gdyż masz najemników w kopalni zaatakowanej przez robale.",
+  "Niebezpiecznie jest kompresować teraz czas, gdyż masz najemników w sektorze %s.",
+  "Niebezpiecznie jest kompresować teraz czas, gdyż masz najemników w kopalni zaatakowanej przez robale.",
 
   // 29-31 singular versions
-  L"1 zielony żołnierz samoobrony awansował na weterana.",
-  L"1 zielony żołnierz samoobrony awansował na regularnego żołnierza.",
-  L"1 regularny żołnierz samoobrony awansował na weterana.",
+  "1 zielony żołnierz samoobrony awansował na weterana.",
+  "1 zielony żołnierz samoobrony awansował na regularnego żołnierza.",
+  "1 regularny żołnierz samoobrony awansował na weterana.",
 
   // 32-34
-  L"%s nic nie mówi.",
-  L"Wyjć na powierzchnię?",
-  L"(Oddział %d)",
+  "%s nic nie mówi.",
+  "Wyjć na powierzchnię?",
+  "(Oddział %d)",
 
   // 35
   // Ex: "Red has repaired Scope's MP5K".  Careful to maintain the proper order (Red before Scope, Scope before MP5K)
-  L"%s naprawił(a) najemnikowi - %s, jego/jej - %s",
+  "%s naprawił(a) najemnikowi - %s, jego/jej - %s",
 
   // 36
-  L"DZIKI KOT",
+  "DZIKI KOT",
 
   // 37-38 "Name trips and falls"
-  L"%s potyka się i upada",
-  L"Nie można stšd podnieć tego przedmiotu.",
+  "%s potyka się i upada",
+  "Nie można stšd podnieć tego przedmiotu.",
 
   // 39
-  L"Żaden z twoich najemników nie jest w stanie walczyć.  Żołnierze samoobrony sami będš walczyć z robalami.",
+  "Żaden z twoich najemników nie jest w stanie walczyć.  Żołnierze samoobrony sami będš walczyć z robalami.",
 
   // 40-43
   //%s is the name of merc.
-  L"%s nie ma rodków medycznych!",
-  L"%s nie posiada odpowiedniej wiedzy, aby kogokolwiek wyleczyć!",
-  L"%s nie ma narzędzi!",
-  L"%s nie posiada odpowiedniej wiedzy, aby cokolwiek naprawić!",
+  "%s nie ma rodków medycznych!",
+  "%s nie posiada odpowiedniej wiedzy, aby kogokolwiek wyleczyć!",
+  "%s nie ma narzędzi!",
+  "%s nie posiada odpowiedniej wiedzy, aby cokolwiek naprawić!",
 
   // 44-45
-  L"Czas naprawy",
-  L"%s nie widzi tej osoby.",
+  "Czas naprawy",
+  "%s nie widzi tej osoby.",
 
   // 46-48
-  L"%s - przedłużka lufy jego/jej broni odpada!",
-  L"W jednym sektorze, szkolenie samoobrony może prowadzić tylko %d instruktor(ów).",
-  L"Na pewno?",
+  "%s - przedłużka lufy jego/jej broni odpada!",
+  "W jednym sektorze, szkolenie samoobrony może prowadzić tylko %d instruktor(ów).",
+  "Na pewno?",
 
   // 49-50
-  L"Kompresja czasu",
-  L"Pojazd ma pełny zbiornik paliwa.",
+  "Kompresja czasu",
+  "Pojazd ma pełny zbiornik paliwa.",
 
   // 51-52 Fast help text in mapscreen.
-  L"Kontynuuj kompresję czasu (|S|p|a|c|j|a)",
-  L"Zatrzymaj kompresję czasu (|E|s|c)",
+  "Kontynuuj kompresję czasu (|S|p|a|c|j|a)",
+  "Zatrzymaj kompresję czasu (|E|s|c)",
 
   // 53-54 "Magic has unjammed the Glock 18" or "Magic has unjammed Raven's H&K G11"
-  L"%s odblokował(a) - %s",
-  L"%s odblokował(a) najemnikowi - %s, jego/jej - %s",
+  "%s odblokował(a) - %s",
+  "%s odblokował(a) najemnikowi - %s, jego/jej - %s",
 
   // 55
-  L"Nie można kompresować czasu, gdy otwarty jest inwentarz sektora.",
+  "Nie można kompresować czasu, gdy otwarty jest inwentarz sektora.",
 
-  L"Nie odnaleziono płyty nr 2 Jagged Alliance 2.",
+  "Nie odnaleziono płyty nr 2 Jagged Alliance 2.",
 
-  L"Przedmioty zostały pomylnie połšczone.",
+  "Przedmioty zostały pomylnie połšczone.",
 
   // 58
   // Displayed with the version information when cheats are enabled.
-  L"Bieżšcy/Maks. postęp: %d%%/%d%%",
+  "Bieżšcy/Maks. postęp: %d%%/%d%%",
 
   // 59
-  L"Eskortować Johna i Mary?",
+  "Eskortować Johna i Mary?",
 
-  L"Przełšcznik aktywowany.",
+  "Przełšcznik aktywowany.",
 ];

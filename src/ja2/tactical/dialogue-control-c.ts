@@ -439,7 +439,7 @@ function HandleDialogue(): void {
 
         EndModalTactical();
 
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Ending Modal Tactical Quote.");
+        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, "Ending Modal Tactical Quote.");
       }
 
       if (gpCurrentTalkingFace->uiFlags & FACE_TRIGGER_PREBATTLE_INT) {
@@ -715,7 +715,7 @@ function HandleDialogue(): void {
     if (QItem->uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_SHOPKEEPER) {
       if (QItem->uiSpecialEventData < 3) {
         // post a notice if the player wants to withdraw money from thier account to cover the difference?
-        swprintf(zMoney, L"%d", QItem->uiSpecialEventData2);
+        swprintf(zMoney, "%d", QItem->uiSpecialEventData2);
         InsertCommasForDollarFigure(zMoney);
         InsertDollarSignInToString(zMoney);
       }
@@ -1433,12 +1433,12 @@ function GetDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iDataSize: UINT3
     if (DialogueDataFileExistsForProfile(ubCharacterNum, 0, FALSE, &pFilename)) {
       LoadEncryptedDataFromFile(pFilename, zDialogueText, usQuoteNum * iDataSize, iDataSize);
       if (zDialogueText[0] == 0) {
-        swprintf(zDialogueText, L"I have no text in the EDT file ( %d ) %S", usQuoteNum, pFilename);
+        swprintf(zDialogueText, "I have no text in the EDT file ( %d ) %S", usQuoteNum, pFilename);
 
         return FALSE;
       }
     } else {
-      swprintf(zDialogueText, L"I have no text in the file ( %d ) %S", usQuoteNum, pFilename);
+      swprintf(zDialogueText, "I have no text in the file ( %d ) %S", usQuoteNum, pFilename);
 
       return FALSE;
     }
@@ -1488,9 +1488,9 @@ function HandleTacticalNPCTextUI(ubCharacterNum: UINT8, zQuoteStr: Pointer<INT16
   }
 
   // post message to mapscreen message system
-  swprintf(gTalkPanel.zQuoteStr, L"\"%s\"", zQuoteStr);
-  swprintf(zText, L"%s: \"%s\"", gMercProfiles[ubCharacterNum].zNickname, zQuoteStr);
-  MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, L"%s", zText);
+  swprintf(gTalkPanel.zQuoteStr, "\"%s\"", zQuoteStr);
+  swprintf(zText, "%s: \"%s\"", gMercProfiles[ubCharacterNum].zNickname, zQuoteStr);
+  MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, "%s", zText);
 }
 
 // Handlers for tactical UI stuff
@@ -1505,9 +1505,9 @@ function DisplayTextForExternalNPC(ubCharacterNum: UINT8, zQuoteStr: STR16): voi
   }
 
   // post message to mapscreen message system
-  swprintf(gTalkPanel.zQuoteStr, L"\"%s\"", zQuoteStr);
-  swprintf(zText, L"%s: \"%s\"", gMercProfiles[ubCharacterNum].zNickname, zQuoteStr);
-  MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, L"%s", zText);
+  swprintf(gTalkPanel.zQuoteStr, "\"%s\"", zQuoteStr);
+  swprintf(zText, "%s: \"%s\"", gMercProfiles[ubCharacterNum].zNickname, zQuoteStr);
+  MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, "%s", zText);
 
   if (guiCurrentScreen == MAP_SCREEN) {
     sLeft = (gsExternPanelXPosition + 97);
@@ -1528,7 +1528,7 @@ function HandleTacticalTextUI(iFaceIndex: INT32, pSoldier: Pointer<SOLDIERTYPE>,
   // BUild text
   // How do we do this with defines?
   // swprintf( zText, L"\xb4\xa2 %s: \xb5 \"%s\"", gMercProfiles[ ubCharacterNum ].zNickname, zQuoteStr );
-  swprintf(zText, L"\"%s\"", zQuoteStr);
+  swprintf(zText, "\"%s\"", zQuoteStr);
   sLeft = 110;
 
   // previous version
@@ -1536,8 +1536,8 @@ function HandleTacticalTextUI(iFaceIndex: INT32, pSoldier: Pointer<SOLDIERTYPE>,
 
   ExecuteTacticalTextBox(sLeft, zText);
 
-  swprintf(zText, L"%s: \"%s\"", gMercProfiles[pSoldier->ubProfile].zNickname, zQuoteStr);
-  MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, L"%s", zText);
+  swprintf(zText, "%s: \"%s\"", gMercProfiles[pSoldier->ubProfile].zNickname, zQuoteStr);
+  MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, "%s", zText);
 }
 
 function ExecuteTacticalTextBoxForLastQuote(sLeftPosition: INT16, pString: STR16): void {
@@ -1724,7 +1724,7 @@ function HandleDialogueEnd(pFace: Pointer<FACETYPE>): void {
     }
 
     if (pFace->fTalking) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"HandleDialogueEnd() face still talking.");
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, "HandleDialogueEnd() face still talking.");
       return;
     }
 
@@ -1844,8 +1844,8 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
       // reset the font dest buffer
       SetFontDestBuffer(pBlitter->uiDestBuff, 0, 0, 640, 480, FALSE);
 
-      VarFindFontCenterCoordinates((pBlitter->sX + 12), (pBlitter->sY + 55), 73, 9, BLOCKFONT2, &sFontX, &sFontY, L"%s", pSoldier->name);
-      mprintf(sFontX, sFontY, L"%s", pSoldier->name);
+      VarFindFontCenterCoordinates((pBlitter->sX + 12), (pBlitter->sY + 55), 73, 9, BLOCKFONT2, &sFontX, &sFontY, "%s", pSoldier->name);
+      mprintf(sFontX, sFontY, "%s", pSoldier->name);
 
       // What sector are we in, ( and is it the same as ours? )
       if (pSoldier->sSectorX != gWorldSectorX || pSoldier->sSectorY != gWorldSectorY || pSoldier->bSectorZ != gbWorldSectorZ || pSoldier->fBetweenSectors) {
@@ -1853,8 +1853,8 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 
         ReduceStringLength(zTownIDString, 64, BLOCKFONT2);
 
-        VarFindFontCenterCoordinates((pBlitter->sX + 12), (pBlitter->sY + 68), 73, 9, BLOCKFONT2, &sFontX, &sFontY, L"%s", zTownIDString);
-        mprintf(sFontX, sFontY, L"%s", zTownIDString);
+        VarFindFontCenterCoordinates((pBlitter->sX + 12), (pBlitter->sY + 68), 73, 9, BLOCKFONT2, &sFontX, &sFontY, "%s", zTownIDString);
+        mprintf(sFontX, sFontY, "%s", zTownIDString);
       }
 
       // reset the font dest buffer
@@ -1865,8 +1865,8 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
       DrawBreathUIBarEx(pSoldier, (pBlitter->sX + 75), (pBlitter->sY + 47), 3, 42, FALSE, pBlitter->uiDestBuff);
       DrawMoraleUIBarEx(pSoldier, (pBlitter->sX + 81), (pBlitter->sY + 47), 3, 42, FALSE, pBlitter->uiDestBuff);
     } else {
-      VarFindFontCenterCoordinates((pBlitter->sX + 9), (pBlitter->sY + 55), 73, 9, BLOCKFONT2, &sFontX, &sFontY, L"%s", gMercProfiles[gpCurrentTalkingFace->ubCharacterNum].zNickname);
-      mprintf(sFontX, sFontY, L"%s", gMercProfiles[gpCurrentTalkingFace->ubCharacterNum].zNickname);
+      VarFindFontCenterCoordinates((pBlitter->sX + 9), (pBlitter->sY + 55), 73, 9, BLOCKFONT2, &sFontX, &sFontY, "%s", gMercProfiles[gpCurrentTalkingFace->ubCharacterNum].zNickname);
+      mprintf(sFontX, sFontY, "%s", gMercProfiles[gpCurrentTalkingFace->ubCharacterNum].zNickname);
     }
 
     // RenderAutoFace( gpCurrentTalkingFace->iID );
@@ -2147,7 +2147,7 @@ function CheckForStopTimeQuotes(usQuoteNum: UINT16): void {
 
     gpCurrentTalkingFace->uiFlags |= FACE_MODAL;
 
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Starting Modal Tactical Quote.");
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, "Starting Modal Tactical Quote.");
   }
 }
 

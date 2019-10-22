@@ -400,7 +400,7 @@ function HandleInterfaceMessageForCostOfTrainingMilitia(pSoldier: Pointer<SOLDIE
   if (iNumberOfSectors > 1) {
     swprintf(sString, pMilitiaConfirmStrings[7], iNumberOfSectors, giTotalCostOfTraining, pMilitiaConfirmStrings[1]);
   } else {
-    swprintf(sString, L"%s%d. %s", pMilitiaConfirmStrings[0], giTotalCostOfTraining, pMilitiaConfirmStrings[1]);
+    swprintf(sString, "%s%d. %s", pMilitiaConfirmStrings[0], giTotalCostOfTraining, pMilitiaConfirmStrings[1]);
   }
 
   // if we are in mapscreen, make a pop up
@@ -504,7 +504,7 @@ function PayMilitiaTrainingYesNoBoxCallback(bExitValue: UINT8): void {
     {
       StopTimeCompression();
 
-      swprintf(sString, L"%s", pMilitiaConfirmStrings[2]);
+      swprintf(sString, "%s", pMilitiaConfirmStrings[2]);
       DoMapMessageBox(MSG_BOX_BASIC_STYLE, sString, MAP_SCREEN, MSG_BOX_FLAG_OK, CantTrainMilitiaOkBoxCallback);
     }
   } else if (bExitValue == MSG_BOX_RETURN_NO) {
@@ -932,7 +932,7 @@ function MilitiaTrainingAllowedInTown(bTownId: INT8): BOOLEAN {
 function BuildMilitiaPromotionsString(str: Pointer<UINT16>): void {
   let pStr: UINT16[] /* [256] */;
   let fAddSpace: BOOLEAN = FALSE;
-  swprintf(str, L"");
+  swprintf(str, "");
 
   if (!gbMilitiaPromotions) {
     return;
@@ -948,14 +948,14 @@ function BuildMilitiaPromotionsString(str: Pointer<UINT16>): void {
 
   if (gbGreenToRegPromotions > 1) {
     if (fAddSpace) {
-      wcscat(str, L" ");
+      wcscat(str, " ");
     }
     swprintf(pStr, gzLateLocalizedString[23], gbGreenToRegPromotions);
     wcscat(str, pStr);
     fAddSpace = TRUE;
   } else if (gbGreenToRegPromotions == 1) {
     if (fAddSpace) {
-      wcscat(str, L" ");
+      wcscat(str, " ");
     }
     wcscat(str, gzLateLocalizedString[30]);
     fAddSpace = TRUE;
@@ -963,13 +963,13 @@ function BuildMilitiaPromotionsString(str: Pointer<UINT16>): void {
 
   if (gbRegToElitePromotions > 1) {
     if (fAddSpace) {
-      wcscat(str, L" ");
+      wcscat(str, " ");
     }
     swprintf(pStr, gzLateLocalizedString[24], gbRegToElitePromotions);
     wcscat(str, pStr);
   } else if (gbRegToElitePromotions == 1) {
     if (fAddSpace) {
-      wcscat(str, L" ");
+      wcscat(str, " ");
     }
     wcscat(str, gzLateLocalizedString[31]);
     fAddSpace = TRUE;

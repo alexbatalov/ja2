@@ -1498,7 +1498,7 @@ function RenderAutoResolve(): void {
 
     // Render the total battle time elapsed.
     SetFont(FONT10ARIAL);
-    swprintf(str, L"%s:  %dm %02ds", gpStrategicString[STR_AR_TIME_ELAPSED], gpAR->uiTotalElapsedBattleTimeInMilliseconds / 60000, (gpAR->uiTotalElapsedBattleTimeInMilliseconds % 60000) / 1000);
+    swprintf(str, "%s:  %dm %02ds", gpStrategicString[STR_AR_TIME_ELAPSED], gpAR->uiTotalElapsedBattleTimeInMilliseconds / 60000, (gpAR->uiTotalElapsedBattleTimeInMilliseconds % 60000) / 1000);
     xp = gpAR->sCenterStartX + 70 - StringPixLength(str, FONT10ARIAL) / 2;
     yp = 290 + gpAR->bVerticalOffset;
     SetFontForeground(FONT_YELLOW);
@@ -2807,12 +2807,12 @@ function DrawDebugText(pCell: Pointer<SOLDIERCELL>): void {
   yp = pCell->yp + 4;
   if (pCell->uiFlags & CELL_TEAMLEADER) {
     // debug str
-    mprintf(xp, yp, L"LEADER");
+    mprintf(xp, yp, "LEADER");
     yp += 9;
   }
-  mprintf(xp, yp, L"AT: %d", pCell->usAttack);
+  mprintf(xp, yp, "AT: %d", pCell->usAttack);
   yp += 9;
-  mprintf(xp, yp, L"DF: %d", pCell->usDefence);
+  mprintf(xp, yp, "DF: %d", pCell->usDefence);
   yp += 9;
 
   xp = pCell->xp;
@@ -2821,19 +2821,19 @@ function DrawDebugText(pCell: Pointer<SOLDIERCELL>): void {
   SetFontShadow(FONT_NEARBLACK);
   if (pCell->uiFlags & CELL_FIREDATTARGET) {
     SetFontForeground(FONT_YELLOW);
-    mprintf(xp, yp, L"FIRE");
+    mprintf(xp, yp, "FIRE");
     pCell->uiFlags &= ~CELL_FIREDATTARGET;
     yp += 13;
   }
   if (pCell->uiFlags & CELL_DODGEDATTACK) {
     SetFontForeground(FONT_BLUE);
-    mprintf(xp, yp, L"MISS");
+    mprintf(xp, yp, "MISS");
     pCell->uiFlags &= ~CELL_DODGEDATTACK;
     yp += 13;
   }
   if (pCell->uiFlags & CELL_HITBYATTACKER) {
     SetFontForeground(FONT_RED);
-    mprintf(xp, yp, L"HIT");
+    mprintf(xp, yp, "HIT");
     pCell->uiFlags &= ~CELL_HITBYATTACKER;
     yp += 13;
   }

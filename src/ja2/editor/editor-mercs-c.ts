@@ -6,28 +6,28 @@
 //	ANGELS_GROUP,
 //	NUM_CIV_GROUPS
 let gszCivGroupNames: UINT16[][] /* [NUM_CIV_GROUPS][20] */ = [
-  L"NONE",
-  L"REBEL",
-  L"KINGPIN",
-  L"SANMONA ARMS",
-  L"ANGELS",
+  "NONE",
+  "REBEL",
+  "KINGPIN",
+  "SANMONA ARMS",
+  "ANGELS",
 
-  L"BEGGARS",
-  L"TOURISTS",
-  L"ALMA MIL",
-  L"DOCTORS",
-  L"COUPLE1",
+  "BEGGARS",
+  "TOURISTS",
+  "ALMA MIL",
+  "DOCTORS",
+  "COUPLE1",
 
-  L"HICKS",
-  L"WARDEN",
-  L"JUNKYARD",
-  L"FACTORY KIDS",
-  L"QUEENS",
-  L"UNUSED15",
-  L"UNUSED16",
-  L"UNUSED17",
-  L"UNUSED18",
-  L"UNUSED19",
+  "HICKS",
+  "WARDEN",
+  "JUNKYARD",
+  "FACTORY KIDS",
+  "QUEENS",
+  "UNUSED15",
+  "UNUSED16",
+  "UNUSED17",
+  "UNUSED18",
+  "UNUSED19",
 ];
 
 //--------------------------------------------------
@@ -43,17 +43,17 @@ let gszCivGroupNames: UINT16[][] /* [NUM_CIV_GROUPS][20] */ = [
 //	SCHEDULE_ACTION_STAYINSECTOR,
 //  SCHEDULE_ACTION_SLEEP,
 let gszScheduleActions: UINT16[][] /* [NUM_SCHEDULE_ACTIONS][20] */ = [
-  L"No action",
-  L"Lock door",
-  L"Unlock door",
-  L"Open door",
-  L"Close door",
-  L"Move to gridno",
-  L"Leave sector",
-  L"Enter sector",
-  L"Stay in sector",
-  L"Sleep",
-  L"Ignore this!",
+  "No action",
+  "Lock door",
+  "Unlock door",
+  "Open door",
+  "Close door",
+  "Move to gridno",
+  "Leave sector",
+  "Enter sector",
+  "Stay in sector",
+  "Sleep",
+  "Ignore this!",
 ];
 
 const enum Enum40 {
@@ -182,11 +182,11 @@ const DEFAULT_DIFF = 2;
 let sCurBaseDiff: INT16 = DEFAULT_DIFF;
 let fAskForBaseDifficulty: BOOLEAN = TRUE;
 let zDiffNames: Pointer<UINT16>[] /* [NUM_DIFF_LVLS] */ = [
-  L"Wimp",
-  L"Easy",
-  L"Average",
-  L"Tough",
-  L"Steroid Users Only",
+  "Wimp",
+  "Easy",
+  "Average",
+  "Tough",
+  "Steroid Users Only",
 ];
 let sBaseStat: INT16[] /* [NUM_DIFF_LVLS] */ = [
   50,
@@ -204,39 +204,39 @@ let sBaseExpLvl: INT16[] /* [NUM_DIFF_LVLS] */ = [
 ];
 
 let EditMercStat: Pointer<UINT16>[] /* [12] */ = [
-  L"Max Health",
-  L"Cur Health",
-  L"Strength",
-  L"Agility",
-  L"Dexterity",
-  L"Charisma",
-  L"Wisdom",
-  L"Marksmanship",
-  L"Explosives",
-  L"Medical",
-  L"Scientific",
-  L"Exp Level",
+  "Max Health",
+  "Cur Health",
+  "Strength",
+  "Agility",
+  "Dexterity",
+  "Charisma",
+  "Wisdom",
+  "Marksmanship",
+  "Explosives",
+  "Medical",
+  "Scientific",
+  "Exp Level",
 ];
 
 const NUM_MERC_ORDERS = 8;
 let EditMercOrders: Pointer<UINT16>[] /* [8] */ = [
-  L"Stationary",
-  L"On Guard",
-  L"Close Patrol",
-  L"Far Patrol",
-  L"Point Patrol",
-  L"On Call",
-  L"Seek Enemy",
-  L"Random Point Patrol",
+  "Stationary",
+  "On Guard",
+  "Close Patrol",
+  "Far Patrol",
+  "Point Patrol",
+  "On Call",
+  "Seek Enemy",
+  "Random Point Patrol",
 ];
 
 let EditMercAttitudes: Pointer<UINT16>[] /* [6] */ = [
-  L"Defensive",
-  L"Brave Loner",
-  L"Brave Buddy",
-  L"Cunning Loner",
-  L"Cunning Buddy",
-  L"Aggressive",
+  "Defensive",
+  "Brave Loner",
+  "Brave Buddy",
+  "Cunning Loner",
+  "Cunning Buddy",
+  "Aggressive",
 ];
 
 // information for bodytypes.
@@ -771,28 +771,28 @@ function DisplayEditMercWindow(): void {
   SetFont(FONT12POINT1);
 
   // Name window
-  gprintf(iXPos + 128, iYPos + 3, L"Merc Name:");
+  gprintf(iXPos + 128, iYPos + 3, "Merc Name:");
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 128, iYPos + 16, iXPos + 128 + 104, iYPos + 16 + 19, usFillColorDark);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 17, iXPos + 128 + 104, iYPos + 17 + 19, usFillColorLight);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 17, iXPos + 128 + 103, iYPos + 17 + 18, usFillColorTextBk);
   iXOff = (105 - StringPixLength(pSoldier->name, FONT12POINT1)) / 2;
-  gprintf(iXPos + 130 + iXOff, iYPos + 20, L"%s", pSoldier->name);
+  gprintf(iXPos + 130 + iXOff, iYPos + 20, "%s", pSoldier->name);
 
   // Orders window
-  gprintf(iXPos + 128, iYPos + 38, L"Orders:");
+  gprintf(iXPos + 128, iYPos + 38, "Orders:");
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 128, iYPos + 51, iXPos + 128 + 104, iYPos + 51 + 19, usFillColorDark);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 52, iXPos + 128 + 104, iYPos + 52 + 19, usFillColorLight);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 52, iXPos + 128 + 103, iYPos + 52 + 18, usFillColorTextBk);
   iXOff = (105 - StringPixLength(EditMercOrders[pSoldier->bOrders], FONT12POINT1)) / 2;
-  gprintf(iXPos + 130 + iXOff, iYPos + 55, L"%s", EditMercOrders[pSoldier->bOrders]);
+  gprintf(iXPos + 130 + iXOff, iYPos + 55, "%s", EditMercOrders[pSoldier->bOrders]);
 
   // Combat window
-  gprintf(iXPos + 128, iYPos + 73, L"Combat Attitude:");
+  gprintf(iXPos + 128, iYPos + 73, "Combat Attitude:");
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 128, iYPos + 86, iXPos + 128 + 104, iYPos + 86 + 19, usFillColorDark);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 87, iXPos + 128 + 104, iYPos + 87 + 19, usFillColorLight);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 87, iXPos + 128 + 103, iYPos + 87 + 18, usFillColorTextBk);
   iXOff = (105 - StringPixLength(EditMercAttitudes[pSoldier->bAttitude], FONT12POINT1)) / 2;
-  gprintf(iXPos + 130 + iXOff, iYPos + 90, L"%s", EditMercAttitudes[pSoldier->bAttitude]);
+  gprintf(iXPos + 130 + iXOff, iYPos + 90, "%s", EditMercAttitudes[pSoldier->bAttitude]);
 
   // Get stats
   iEditStat[0] = pSoldier->bLifeMax; // 12 13
@@ -810,14 +810,14 @@ function DisplayEditMercWindow(): void {
 
   // Stat value windows
   for (x = 0; x < 12; x++) {
-    gprintf(iXPos + 6, iYPos + 114 + (20 * x), L"%s", EditMercStat[x]);
+    gprintf(iXPos + 6, iYPos + 114 + (20 * x), "%s", EditMercStat[x]);
     ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 116, iYPos + 110 + (20 * x), iXPos + 116 + 30, iYPos + 110 + (20 * x) + 19, usFillColorDark);
     ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 117, iYPos + 111 + (20 * x), iXPos + 116 + 30, iYPos + 111 + (20 * x) + 19, usFillColorLight);
     ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 117, iYPos + 111 + (20 * x), iXPos + 116 + 29, iYPos + 111 + (20 * x) + 18, usFillColorTextBk);
 
-    swprintf(TempString, L"%d", iEditStat[x]);
+    swprintf(TempString, "%d", iEditStat[x]);
     iXOff = (30 - StringPixLength(TempString, FONT12POINT1)) / 2;
-    gprintf(iXPos + 118 + iXOff, iYPos + 114 + (20 * x), L"%s", TempString);
+    gprintf(iXPos + 118 + iXOff, iYPos + 114 + (20 * x), "%s", TempString);
   }
 }
 
@@ -1232,8 +1232,8 @@ function DisplayWayPoints(): void {
       } else
         SetFontBackground(FONT_LTRED);
       SetFontForeground(FONT_WHITE);
-      VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1, &sX, &sY, L"%d", bPoint);
-      mprintf(sX, sY, L"%d", bPoint);
+      VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1, &sX, &sY, "%d", bPoint);
+      mprintf(sX, sY, "%d", bPoint);
     }
   }
 }
@@ -1257,8 +1257,8 @@ function CreateEditMercWindow(): void {
 
   iEditMercBkgrndArea = CreateHotSpot(iXPos, iYPos, iWidth, iHeight, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, EditMercBkgrndCallback);
 
-  iEditMercColorPage = CreateTextButton(L"Merc Colors", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, (iXPos + 183), (iYPos + 315), 80, 20, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercChangeToColorPageCallback);
-  iEditMercEnd = CreateTextButton(L"Done", FONT12POINT1, FONT_MCOLOR_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, (iXPos + 183), (iYPos + 337), 80, 20, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercDoneEditCallback);
+  iEditMercColorPage = CreateTextButton("Merc Colors", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, (iXPos + 183), (iYPos + 315), 80, 20, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercChangeToColorPageCallback);
+  iEditMercEnd = CreateTextButton("Done", FONT12POINT1, FONT_MCOLOR_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, (iXPos + 183), (iYPos + 337), 80, 20, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercDoneEditCallback);
 
   // Disable color editing for PC Mercs
   if (gsSelectedMercID >= gTacticalStatus.Team[OUR_TEAM].bFirstID && gsSelectedMercID <= gTacticalStatus.Team[OUR_TEAM].bLastID)
@@ -1266,13 +1266,13 @@ function CreateEditMercWindow(): void {
 
   iEditorButton[8] = QuickCreateButton(giEditMercImage[0], (iXPos + 98), (iYPos + 51), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercPrevOrderCallback);
   iEditorButton[9] = QuickCreateButton(giEditMercImage[1], (iXPos + 233), (iYPos + 51), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercNextOrderCallback);
-  SetButtonFastHelpText(iEditorButton[8], L"Previous merc standing orders");
-  SetButtonFastHelpText(iEditorButton[9], L"Next merc standing orders");
+  SetButtonFastHelpText(iEditorButton[8], "Previous merc standing orders");
+  SetButtonFastHelpText(iEditorButton[9], "Next merc standing orders");
 
   iEditorButton[10] = QuickCreateButton(giEditMercImage[0], (iXPos + 98), (iYPos + 86), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercPrevAttCallback);
   iEditorButton[11] = QuickCreateButton(giEditMercImage[1], (iXPos + 233), (iYPos + 86), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercNextAttCallback);
-  SetButtonFastHelpText(iEditorButton[10], L"Previous merc combat attitude");
-  SetButtonFastHelpText(iEditorButton[11], L"Next merc combat attitude");
+  SetButtonFastHelpText(iEditorButton[10], "Previous merc combat attitude");
+  SetButtonFastHelpText(iEditorButton[11], "Next merc combat attitude");
 
   iEditorButton[12] = QuickCreateButton(giEditMercImage[0], (iXPos + 86), (iYPos + 110), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatDwnCallback);
   iEditorButton[13] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 110), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatUpCallback);
@@ -1311,8 +1311,8 @@ function CreateEditMercWindow(): void {
   iEditorButton[35] = QuickCreateButton(giEditMercImage[1], (iXPos + 146), (iYPos + 330), BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, EditMercStatUpCallback);
 
   for (x = 12; x < 36; x += 2) {
-    SetButtonFastHelpText(iEditorButton[x], L"Decrease merc stat");
-    SetButtonFastHelpText(iEditorButton[x + 1], L"Increase merc stat");
+    SetButtonFastHelpText(iEditorButton[x], "Decrease merc stat");
+    SetButtonFastHelpText(iEditorButton[x + 1], "Increase merc stat");
   }
 }
 function SetMercOrders(bOrders: INT8): void {
@@ -1645,9 +1645,9 @@ function CalcStringForValue(str: Pointer<UINT16>, iValue: INT32, uiMax: UINT32):
   if (iValue < 0) // a blank string is determined by a negative value.
     str[0] = '\0';
   else if (iValue > uiMax) // higher than max attribute value, so convert it to the max.
-    swprintf(str, L"%d", uiMax);
+    swprintf(str, "%d", uiMax);
   else // this is a valid static value, so convert it to a string.
-    swprintf(str, L"%d", iValue);
+    swprintf(str, "%d", iValue);
 }
 
 function ExtractAndUpdateMercAttributes(): void {
@@ -1724,13 +1724,13 @@ function ExtractAndUpdateMercProfile(): void {
 function SetupTextInputForMercSchedule(): void {
   InitTextInputModeWithScheme(DEFAULT_SCHEME);
   AddUserInputField(NULL);
-  AddTextInputField(268, 373, 36, 16, MSYS_PRIORITY_NORMAL, L"", 6, INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
+  AddTextInputField(268, 373, 36, 16, MSYS_PRIORITY_NORMAL, "", 6, INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
   SetExclusive24HourTimeValue(1, gCurrSchedule.usTime[0]);
-  AddTextInputField(268, 394, 36, 16, MSYS_PRIORITY_NORMAL, L"", 6, INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
+  AddTextInputField(268, 394, 36, 16, MSYS_PRIORITY_NORMAL, "", 6, INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
   SetExclusive24HourTimeValue(2, gCurrSchedule.usTime[1]);
-  AddTextInputField(268, 415, 36, 16, MSYS_PRIORITY_NORMAL, L"", 6, INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
+  AddTextInputField(268, 415, 36, 16, MSYS_PRIORITY_NORMAL, "", 6, INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
   SetExclusive24HourTimeValue(3, gCurrSchedule.usTime[2]);
-  AddTextInputField(268, 436, 36, 16, MSYS_PRIORITY_NORMAL, L"", 6, INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
+  AddTextInputField(268, 436, 36, 16, MSYS_PRIORITY_NORMAL, "", 6, INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
   SetExclusive24HourTimeValue(4, gCurrSchedule.usTime[3]);
 }
 
@@ -2207,88 +2207,88 @@ function DisplayBodyTypeInfo(): void {
   let str: UINT16[] /* [20] */;
   switch (gpSelected->pBasicPlacement->bBodyType) {
     case RANDOM:
-      swprintf(str, L"Random");
+      swprintf(str, "Random");
       break;
     case REGMALE:
-      swprintf(str, L"Reg Male");
+      swprintf(str, "Reg Male");
       break;
     case BIGMALE:
-      swprintf(str, L"Big Male");
+      swprintf(str, "Big Male");
       break;
     case STOCKYMALE:
-      swprintf(str, L"Stocky Male");
+      swprintf(str, "Stocky Male");
       break;
     case REGFEMALE:
-      swprintf(str, L"Reg Female");
+      swprintf(str, "Reg Female");
       break;
     case TANK_NE:
-      swprintf(str, L"NE Tank");
+      swprintf(str, "NE Tank");
       break;
     case TANK_NW:
-      swprintf(str, L"NW Tank");
+      swprintf(str, "NW Tank");
       break;
     case FATCIV:
-      swprintf(str, L"Fat Civilian");
+      swprintf(str, "Fat Civilian");
       break;
     case MANCIV:
-      swprintf(str, L"M Civilian");
+      swprintf(str, "M Civilian");
       break;
     case MINICIV:
-      swprintf(str, L"Miniskirt");
+      swprintf(str, "Miniskirt");
       break;
     case DRESSCIV:
-      swprintf(str, L"F Civilian");
+      swprintf(str, "F Civilian");
       break;
     case HATKIDCIV:
-      swprintf(str, L"Kid w/ Hat");
+      swprintf(str, "Kid w/ Hat");
       break;
     case HUMVEE:
-      swprintf(str, L"Humvee");
+      swprintf(str, "Humvee");
       break;
     case ELDORADO:
-      swprintf(str, L"Eldorado");
+      swprintf(str, "Eldorado");
       break;
     case ICECREAMTRUCK:
-      swprintf(str, L"Icecream Truck");
+      swprintf(str, "Icecream Truck");
       break;
     case JEEP:
-      swprintf(str, L"Jeep");
+      swprintf(str, "Jeep");
       break;
     case KIDCIV:
-      swprintf(str, L"Kid Civilian");
+      swprintf(str, "Kid Civilian");
       break;
     case COW:
-      swprintf(str, L"Domestic Cow");
+      swprintf(str, "Domestic Cow");
       break;
     case CRIPPLECIV:
-      swprintf(str, L"Cripple");
+      swprintf(str, "Cripple");
       break;
     case ROBOTNOWEAPON:
-      swprintf(str, L"Unarmed Robot");
+      swprintf(str, "Unarmed Robot");
       break;
     case LARVAE_MONSTER:
-      swprintf(str, L"Larvae");
+      swprintf(str, "Larvae");
       break;
     case INFANT_MONSTER:
-      swprintf(str, L"Infant");
+      swprintf(str, "Infant");
       break;
     case YAF_MONSTER:
-      swprintf(str, L"Yng F Monster");
+      swprintf(str, "Yng F Monster");
       break;
     case YAM_MONSTER:
-      swprintf(str, L"Yng M Monster");
+      swprintf(str, "Yng M Monster");
       break;
     case ADULTFEMALEMONSTER:
-      swprintf(str, L"Adt F Monster");
+      swprintf(str, "Adt F Monster");
       break;
     case AM_MONSTER:
-      swprintf(str, L"Adt M Monster");
+      swprintf(str, "Adt M Monster");
       break;
     case QUEENMONSTER:
-      swprintf(str, L"Queen Monster");
+      swprintf(str, "Queen Monster");
       break;
     case BLOODCAT:
-      swprintf(str, L"Bloodcat");
+      swprintf(str, "Bloodcat");
       break;
   }
   DrawEditorInfoBox(str, FONT10ARIAL, 490, 364, 70, 20);
@@ -2319,47 +2319,47 @@ function UpdateMercsInfo(): void {
       SetFont(SMALLCOMPFONT);
       SetFontForeground(FONT_YELLOW);
       SetFontShadow(FONT_NEARBLACK);
-      mprintf(240, 363, L" --=ORDERS=-- ");
-      mprintf(240, 419, L"--=ATTITUDE=--");
+      mprintf(240, 363, " --=ORDERS=-- ");
+      mprintf(240, 419, "--=ATTITUDE=--");
       if (iDrawMode == DRAW_MODE_CREATURE) {
         DisplayBodyTypeInfo();
         SetFont(SMALLCOMPFONT);
         SetFontForeground(FONT_LTBLUE);
-        mprintf(493, 416, L"RELATIVE");
-        mprintf(480, 422, L"ATTRIBUTES");
+        mprintf(493, 416, "RELATIVE");
+        mprintf(480, 422, "ATTRIBUTES");
       } else {
         SetFontForeground(FONT_LTGREEN);
-        mprintf(480, 363, L"RELATIVE");
-        mprintf(480, 371, L"EQUIPMENT");
+        mprintf(480, 363, "RELATIVE");
+        mprintf(480, 371, "EQUIPMENT");
         SetFontForeground(FONT_LTBLUE);
-        mprintf(530, 363, L"RELATIVE");
-        mprintf(530, 371, L"ATTRIBUTES");
+        mprintf(530, 363, "RELATIVE");
+        mprintf(530, 371, "ATTRIBUTES");
       }
       if (iDrawMode == DRAW_MODE_ENEMY) {
         SetFont(FONT10ARIAL);
         SetFontForeground(FONT_YELLOW);
-        mprintf(590, 411, L"Army");
-        mprintf(590, 425, L"Admin");
-        mprintf(590, 439, L"Elite");
+        mprintf(590, 411, "Army");
+        mprintf(590, 425, "Admin");
+        mprintf(590, 439, "Elite");
       }
       break;
     case MERC_ATTRIBUTEMODE:
       SetFont(FONT10ARIAL);
       SetFontForeground(FONT_YELLOW);
       SetFontShadow(FONT_NEARBLACK);
-      mprintf(225, 370, L"Exp. Level");
-      mprintf(225, 395, L"Life");
-      mprintf(225, 420, L"LifeMax");
-      mprintf(225, 445, L"Marksmanship");
-      mprintf(325, 370, L"Strength");
-      mprintf(325, 395, L"Agility");
-      mprintf(325, 420, L"Dexterity");
-      mprintf(325, 445, L"Wisdom");
-      mprintf(425, 370, L"Leadership");
-      mprintf(425, 395, L"Explosives");
-      mprintf(425, 420, L"Medical");
-      mprintf(425, 445, L"Mechanical");
-      mprintf(525, 370, L"Morale");
+      mprintf(225, 370, "Exp. Level");
+      mprintf(225, 395, "Life");
+      mprintf(225, 420, "LifeMax");
+      mprintf(225, 445, "Marksmanship");
+      mprintf(325, 370, "Strength");
+      mprintf(325, 395, "Agility");
+      mprintf(325, 420, "Dexterity");
+      mprintf(325, 445, "Wisdom");
+      mprintf(425, 370, "Leadership");
+      mprintf(425, 395, "Explosives");
+      mprintf(425, 420, "Medical");
+      mprintf(425, 445, "Mechanical");
+      mprintf(525, 370, "Morale");
       break;
     case MERC_APPEARANCEMODE:
       SetFont(FONT10ARIAL);
@@ -2369,24 +2369,24 @@ function UpdateMercsInfo(): void {
         SetFontForeground(FONT_DKYELLOW);
       SetFontShadow(FONT_NEARBLACK);
 
-      mprintf(396, 364, L"Hair color:");
-      mprintf(396, 388, L"Skin color:");
-      mprintf(396, 412, L"Vest color:");
-      mprintf(396, 436, L"Pant color:");
+      mprintf(396, 364, "Hair color:");
+      mprintf(396, 388, "Skin color:");
+      mprintf(396, 412, "Vest color:");
+      mprintf(396, 436, "Pant color:");
 
       SetFont(SMALLCOMPFONT);
       SetFontForeground(FONT_BLACK);
       if (gpSelected->pDetailedPlacement->fVisible || gpSelected->pDetailedPlacement->ubProfile != NO_PROFILE) {
-        mprintfEditor(396, 374, L"%S    ", gpSelected->pSoldier->HeadPal);
-        mprintfEditor(396, 398, L"%S    ", gpSelected->pSoldier->SkinPal);
-        mprintfEditor(396, 422, L"%S    ", gpSelected->pSoldier->VestPal);
-        mprintfEditor(396, 446, L"%S    ", gpSelected->pSoldier->PantsPal);
+        mprintfEditor(396, 374, "%S    ", gpSelected->pSoldier->HeadPal);
+        mprintfEditor(396, 398, "%S    ", gpSelected->pSoldier->SkinPal);
+        mprintfEditor(396, 422, "%S    ", gpSelected->pSoldier->VestPal);
+        mprintfEditor(396, 446, "%S    ", gpSelected->pSoldier->PantsPal);
         ShowEditMercPalettes(gpSelected->pSoldier);
       } else {
-        mprintf(396, 374, L"RANDOM");
-        mprintf(396, 398, L"RANDOM");
-        mprintf(396, 422, L"RANDOM");
-        mprintf(396, 446, L"RANDOM");
+        mprintf(396, 374, "RANDOM");
+        mprintf(396, 398, "RANDOM");
+        mprintf(396, 422, "RANDOM");
+        mprintf(396, 446, "RANDOM");
         ShowEditMercPalettes(NULL); // will display grey scale to signify random
       }
       DisplayBodyTypeInfo();
@@ -2398,16 +2398,16 @@ function UpdateMercsInfo(): void {
       {
         // scope trick
         let tempStr: UINT16[] /* [500] */;
-        swprintf(tempStr, L"%s%s%s%s%s%d.", L"By specifying a profile index, all of the information will be extracted from the profile ", L"and override any values that you have edited.  It will also disable the editing features ", L"though, you will still be able to view stats, etc.  Pressing ENTER will automatically ", L"extract the number you have typed.  A blank field will clear the profile.  The current ", L"number of profiles range from 0 to ", NUM_PROFILES);
+        swprintf(tempStr, "%s%s%s%s%s%d.", "By specifying a profile index, all of the information will be extracted from the profile ", "and override any values that you have edited.  It will also disable the editing features ", "though, you will still be able to view stats, etc.  Pressing ENTER will automatically ", "extract the number you have typed.  A blank field will clear the profile.  The current ", "number of profiles range from 0 to ", NUM_PROFILES);
         DisplayWrappedString(180, 370, 400, 2, FONT10ARIAL, 146, tempStr, FONT_BLACK, FALSE, LEFT_JUSTIFIED);
         SetFont(FONT12POINT1);
         if (gpSelected->pDetailedPlacement->ubProfile == NO_PROFILE) {
           SetFontForeground(FONT_GRAY3);
-          mprintfEditor(240, 435, L"Current Profile:  n/a                            ");
+          mprintfEditor(240, 435, "Current Profile:  n/a                            ");
         } else {
           SetFontForeground(FONT_WHITE);
           ClearTaskbarRegion(240, 435, 580, 445);
-          mprintf(240, 435, L"Current Profile:  %s", gMercProfiles[gpSelected->pDetailedPlacement->ubProfile].zName);
+          mprintf(240, 435, "Current Profile:  %s", gMercProfiles[gpSelected->pDetailedPlacement->ubProfile].zName);
         }
       }
       break;
@@ -2417,74 +2417,74 @@ function UpdateMercsInfo(): void {
       SetFontShadow(FONT_NEARBLACK);
       switch (gpSelected->pSoldier->bOrders) {
         case STATIONARY:
-          mprintf(430, 363, L"STATIONARY");
+          mprintf(430, 363, "STATIONARY");
           break;
         case ONCALL:
-          mprintf(430, 363, L"ON CALL");
+          mprintf(430, 363, "ON CALL");
           break;
         case ONGUARD:
-          mprintf(430, 363, L"ON GUARD");
+          mprintf(430, 363, "ON GUARD");
           break;
         case SEEKENEMY:
-          mprintf(430, 363, L"SEEK ENEMY");
+          mprintf(430, 363, "SEEK ENEMY");
           break;
         case CLOSEPATROL:
-          mprintf(430, 363, L"CLOSE PATROL");
+          mprintf(430, 363, "CLOSE PATROL");
           break;
         case FARPATROL:
-          mprintf(430, 363, L"FAR PATROL");
+          mprintf(430, 363, "FAR PATROL");
           break;
         case POINTPATROL:
-          mprintf(430, 363, L"POINT PATROL");
+          mprintf(430, 363, "POINT PATROL");
           break;
         case RNDPTPATROL:
-          mprintf(430, 363, L"RND PT PATROL");
+          mprintf(430, 363, "RND PT PATROL");
           break;
       }
       SetFontForeground(FONT_YELLOW);
-      mprintf(186, 363, L"Action");
-      mprintf(268, 363, L"Time");
-      mprintf(309, 363, L"V");
-      mprintf(331, 363, L"GridNo 1");
-      mprintf(381, 363, L"GridNo 2");
-      mprintf(172, 376, L"1)");
-      mprintf(172, 397, L"2)");
-      mprintf(172, 418, L"3)");
-      mprintf(172, 439, L"4)");
+      mprintf(186, 363, "Action");
+      mprintf(268, 363, "Time");
+      mprintf(309, 363, "V");
+      mprintf(331, 363, "GridNo 1");
+      mprintf(381, 363, "GridNo 2");
+      mprintf(172, 376, "1)");
+      mprintf(172, 397, "2)");
+      mprintf(172, 418, "3)");
+      mprintf(172, 439, "4)");
       if (gubScheduleInstructions) {
         let str: UINT16[] /* [255] */;
-        let keyword: UINT16[] /* [10] */ = L"";
+        let keyword: UINT16[] /* [10] */ = "";
         ColorFillVideoSurfaceArea(FRAME_BUFFER, 431, 388, 590, 450, Get16BPPColor(FROMRGB(32, 45, 72)));
         switch (gCurrSchedule.ubAction[gubCurrentScheduleActionIndex]) {
           case SCHEDULE_ACTION_LOCKDOOR:
-            swprintf(keyword, L"lock");
+            swprintf(keyword, "lock");
             break;
           case SCHEDULE_ACTION_UNLOCKDOOR:
-            swprintf(keyword, L"unlock");
+            swprintf(keyword, "unlock");
             break;
           case SCHEDULE_ACTION_OPENDOOR:
-            swprintf(keyword, L"open");
+            swprintf(keyword, "open");
             break;
           case SCHEDULE_ACTION_CLOSEDOOR:
-            swprintf(keyword, L"close");
+            swprintf(keyword, "close");
             break;
         }
         switch (gubScheduleInstructions) {
           case SCHEDULE_INSTRUCTIONS_DOOR1:
-            swprintf(str, L"Click on the gridno adjacent to the door that you wish to %s.", keyword);
+            swprintf(str, "Click on the gridno adjacent to the door that you wish to %s.", keyword);
             break;
           case SCHEDULE_INSTRUCTIONS_DOOR2:
-            swprintf(str, L"Click on the gridno where you wish to move after you %s the door.", keyword);
+            swprintf(str, "Click on the gridno where you wish to move after you %s the door.", keyword);
             break;
           case SCHEDULE_INSTRUCTIONS_GRIDNO:
-            swprintf(str, L"Click on the gridno where you wish to move to.");
+            swprintf(str, "Click on the gridno where you wish to move to.");
             break;
           case SCHEDULE_INSTRUCTIONS_SLEEP:
-            swprintf(str, L"Click on the gridno where you wish to sleep at.  Person will automatically return to original position after waking up.");
+            swprintf(str, "Click on the gridno where you wish to sleep at.  Person will automatically return to original position after waking up.");
           default:
             return;
         }
-        wcscat(str, L"  Hit ESC to abort entering this line in the schedule.");
+        wcscat(str, "  Hit ESC to abort entering this line in the schedule.");
         DisplayWrappedString(436, 392, 149, 2, FONT10ARIAL, FONT_YELLOW, str, FONT_BLACK, FALSE, LEFT_JUSTIFIED);
       }
       break;
@@ -2982,7 +2982,7 @@ function RenderMercStrings(): void {
         sYPos += 10;
 
         SetFontForeground(FONT_GRAY2);
-        swprintf(str, L"Slot #%d", pSoldier->ubID);
+        swprintf(str, "Slot #%d", pSoldier->ubID);
         FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, &sX, &sY);
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
@@ -3004,7 +3004,7 @@ function RenderMercStrings(): void {
         sYPos += 10;
 
         SetFontForeground(FONT_GRAY2);
-        swprintf(str, L"Slot #%d", pSoldier->ubID);
+        swprintf(str, "Slot #%d", pSoldier->ubID);
         FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, &sX, &sY);
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
@@ -3019,7 +3019,7 @@ function RenderMercStrings(): void {
             SetFontForeground(FONT_DKRED);
           else
             SetFontForeground(FONT_RED);
-          swprintf(str, L"Patrol orders with no waypoints");
+          swprintf(str, "Patrol orders with no waypoints");
           FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, &sX, &sY);
           if (sY < 352) {
             gprintfdirty(sX, sY, str);
@@ -3032,7 +3032,7 @@ function RenderMercStrings(): void {
           SetFontForeground(FONT_DKRED);
         else
           SetFontForeground(FONT_RED);
-        swprintf(str, L"Waypoints with no patrol orders");
+        swprintf(str, "Waypoints with no patrol orders");
         FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, &sX, &sY);
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
@@ -3119,7 +3119,7 @@ function CancelCurrentScheduleAction(): void {
 function RegisterCurrentScheduleAction(iMapIndex: INT32): void {
   let str: UINT16[] /* [6] */;
   MarkWorldDirty();
-  swprintf(str, L"%d", iMapIndex);
+  swprintf(str, "%d", iMapIndex);
   if (gfUseScheduleData2) {
     if (gfSingleAction)
       return;
@@ -3268,13 +3268,13 @@ function ClearCurrentSchedule(): void {
   memset(&gCurrSchedule, 0, sizeof(SCHEDULENODE));
   for (i = 0; i < 4; i++) {
     MSYS_SetBtnUserData(iEditorButton[MERCS_SCHEDULE_ACTION1 + i], 0, 0);
-    SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_ACTION1 + i], L"No action");
+    SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_ACTION1 + i], "No action");
     gCurrSchedule.usTime[i] = 0xffff;
     SetExclusive24HourTimeValue((i + 1), gCurrSchedule.usTime[i]); // blanks the field
     gCurrSchedule.usData1[i] = 0xffff;
-    SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_DATA1A + i], L"");
+    SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_DATA1A + i], "");
     gCurrSchedule.usData2[i] = 0xffff;
-    SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_DATA1B + i], L"");
+    SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_DATA1B + i], "");
   }
   // Remove the variance stuff
   gCurrSchedule.usFlags = 0;
@@ -3330,7 +3330,7 @@ function RenderCurrentSchedule(): void {
       SetFont(TINYFONT1);
       SetFontBackground(FONT_LTKHAKI);
       SetFontForeground(FONT_WHITE);
-      swprintf(str, L"%d%c", i / 2 + 1, 'A' + (i % 2));
+      swprintf(str, "%d%c", i / 2 + 1, 'A' + (i % 2));
       VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1, &sX, &sY, str);
       mprintf(sX, sY, str);
     }
@@ -3350,13 +3350,13 @@ function UpdateScheduleInfo(): void {
       // Update the text and buttons
       MSYS_SetBtnUserData(iEditorButton[MERCS_SCHEDULE_ACTION1 + i], 0, pSchedule->ubAction[i]);
       SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_ACTION1 + i], gszScheduleActions[pSchedule->ubAction[i]]);
-      swprintf(str, L"");
+      swprintf(str, "");
       if (pSchedule->usData1[i] != 0xffff)
-        swprintf(str, L"%d", pSchedule->usData1[i]);
+        swprintf(str, "%d", pSchedule->usData1[i]);
       SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_DATA1A + i], str);
-      swprintf(str, L"");
+      swprintf(str, "");
       if (pSchedule->usData2[i] != 0xffff)
-        swprintf(str, L"%d", pSchedule->usData2[i]);
+        swprintf(str, "%d", pSchedule->usData2[i]);
       SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_DATA1B + i], str);
       if (gubCurrMercMode == MERC_SCHEDULEMODE) {
         // Update the text input fields too!
@@ -3388,7 +3388,7 @@ let gSaveBufferDetailedPlacement: SOLDIERCREATE_STRUCT;
 
 function CopyMercPlacement(iMapIndex: INT32): void {
   if (gsSelectedMercID == -1) {
-    ScreenMsg(FONT_MCOLOR_LTRED, MSG_INTERFACE, L"Placement not copied because no placement selected.");
+    ScreenMsg(FONT_MCOLOR_LTRED, MSG_INTERFACE, "Placement not copied because no placement selected.");
     return;
   }
   gfSaveBuffer = TRUE;
@@ -3396,7 +3396,7 @@ function CopyMercPlacement(iMapIndex: INT32): void {
   if (gSaveBufferBasicPlacement.fDetailedPlacement) {
     memcpy(&gSaveBufferDetailedPlacement, gpSelected->pDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
   }
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Placement copied.");
+  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Placement copied.");
 }
 
 function PasteMercPlacement(iMapIndex: INT32): void {
@@ -3405,7 +3405,7 @@ function PasteMercPlacement(iMapIndex: INT32): void {
   let i: INT32;
 
   if (!gfSaveBuffer) {
-    ScreenMsg(FONT_MCOLOR_LTRED, MSG_INTERFACE, L"Placement not pasted as no placement is saved in buffer.");
+    ScreenMsg(FONT_MCOLOR_LTRED, MSG_INTERFACE, "Placement not pasted as no placement is saved in buffer.");
     return;
   }
 
@@ -3507,9 +3507,9 @@ function PasteMercPlacement(iMapIndex: INT32): void {
       for (i = FIRST_MERCS_INVENTORY_BUTTON; i <= LAST_MERCS_INVENTORY_BUTTON; i++) {
         SetEnemyDroppableStatus(gbMercSlotTypes[i - FIRST_MERCS_INVENTORY_BUTTON], FALSE);
       }
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Placement pasted.");
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Placement pasted.");
     } else {
-      ScreenMsg(FONT_MCOLOR_LTRED, MSG_INTERFACE, L"Placement not pasted as the maximum number of placements for this team is already used.");
+      ScreenMsg(FONT_MCOLOR_LTRED, MSG_INTERFACE, "Placement not pasted as the maximum number of placements for this team is already used.");
     }
   }
 }

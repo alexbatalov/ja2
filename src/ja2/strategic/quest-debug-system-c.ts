@@ -163,60 +163,60 @@ const enum Enum166 {
 }
 
 let QuestStates: STR16[] /* [] */ = [
-  L"N.S.",
-  L"In Prog.",
-  L"Done",
+  "N.S.",
+  "In Prog.",
+  "Done",
 ];
 
 let QuestDebugText: STR16[] /* [] */ = [
-  L"Quest Debug System",
-  L"Quests",
-  L"Quest Number",
-  L"Quest Title",
-  L"Status",
-  L"Facts",
-  L"Fact Number",
-  L"Desc.",
-  L"Select Merc",
-  L"Select Item",
-  L"NPC RecordLog",
-  L"Exit Quest Debug",
-  L"NPC Info",
-  L"** No Item **",
-  L"Add Merc To Location",
-  L"Add Item To Location",
-  L"Change Day",
-  L"NPC log Button",
-  L"Please Enter the grid #",
-  L"Give Item To NPC",
-  L"View NPC's Inventory",
-  L"Please enter the number of days to advance.",
-  L"NPC Inventory",
-  L"View NPC's in current sector",
-  L"No NPC's In Sector",
-  L"Please Enter New Value for ",
-  L"0,1,2",
-  L"0,1",
-  L"Quest #",
-  L"Fact #",
-  L"Pg Facts Up",
-  L"Pg Facts Down",
-  L"No Text",
-  L"CurrentGridNo",
-  L"Refresh NPC Script",
-  L"Succesfully Refreshed",
-  L"Failed Refreshing",
-  L"Restore All NPC's inventory",
-  L"Start Merc Talking",
-  L"Please enter a quote number for the selected merc to start talking from.",
-  L"RPC is added to team",
-  L"RPC says Sector Desc",
-  L"Space:       Toggle Pausing Merc Speech",
-  L"Left Arrow:  Previous Quote",
-  L"Right Arrow: Next Quote",
-  L"ESC:         To Stop the merc from Talking",
-  L"",
-  L"",
+  "Quest Debug System",
+  "Quests",
+  "Quest Number",
+  "Quest Title",
+  "Status",
+  "Facts",
+  "Fact Number",
+  "Desc.",
+  "Select Merc",
+  "Select Item",
+  "NPC RecordLog",
+  "Exit Quest Debug",
+  "NPC Info",
+  "** No Item **",
+  "Add Merc To Location",
+  "Add Item To Location",
+  "Change Day",
+  "NPC log Button",
+  "Please Enter the grid #",
+  "Give Item To NPC",
+  "View NPC's Inventory",
+  "Please enter the number of days to advance.",
+  "NPC Inventory",
+  "View NPC's in current sector",
+  "No NPC's In Sector",
+  "Please Enter New Value for ",
+  "0,1,2",
+  "0,1",
+  "Quest #",
+  "Fact #",
+  "Pg Facts Up",
+  "Pg Facts Down",
+  "No Text",
+  "CurrentGridNo",
+  "Refresh NPC Script",
+  "Succesfully Refreshed",
+  "Failed Refreshing",
+  "Restore All NPC's inventory",
+  "Start Merc Talking",
+  "Please enter a quote number for the selected merc to start talking from.",
+  "RPC is added to team",
+  "RPC says Sector Desc",
+  "Space:       Toggle Pausing Merc Speech",
+  "Left Arrow:  Previous Quote",
+  "Right Arrow: Next Quote",
+  "ESC:         To Stop the merc from Talking",
+  "",
+  "",
 ];
 
 // enums for above strings
@@ -270,25 +270,25 @@ const enum Enum167 {
 }
 
 let PocketText: STR16[] /* [] */ = [
-  L"Helmet",
-  L"Vest",
-  L"Leg",
-  L"Head1",
-  L"Head2",
-  L"Hand",
-  L"Second Hand",
-  L"Bigpock1",
-  L"Bigpock2",
-  L"Bigpock3",
-  L"Bigpock4",
-  L"Smallpock1",
-  L"Smallpock2",
-  L"Smallpock3",
-  L"Smallpock4",
-  L"Smallpock5",
-  L"Smallpock6",
-  L"Smallpock7",
-  L"Smallpock8",
+  "Helmet",
+  "Vest",
+  "Leg",
+  "Head1",
+  "Head2",
+  "Hand",
+  "Second Hand",
+  "Bigpock1",
+  "Bigpock2",
+  "Bigpock3",
+  "Bigpock4",
+  "Smallpock1",
+  "Smallpock2",
+  "Smallpock3",
+  "Smallpock4",
+  "Smallpock5",
+  "Smallpock6",
+  "Smallpock7",
+  "Smallpock8",
 ];
 
 //*******************************
@@ -676,7 +676,7 @@ function EnterQuestDebugSystem(): BOOLEAN {
   guiQuestDebugRestoreNPCInvButton = CreateTextButton(QuestDebugText[QUEST_DBS_RESTORE_NPC_INVENTORY], QUEST_DBS_FONT_STATIC_TEXT, QUEST_DBS_COLOR_STATIC_TEXT, FONT_BLACK, BUTTON_USE_DEFAULT, QUEST_DBS_RESTORE_NPC_INV_BTN_X, QUEST_DBS_RESTORE_NPC_INV_BTN_Y, QUEST_DBS_LIST_BOX_WIDTH, QDS_BUTTON_HEIGHT, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, BUTTON_NO_CALLBACK, BtnQuestDebugRestoreNPCInvButtonCallback);
 
   // NPC log button
-  swprintf(zName, L"%s - (%s)", QuestDebugText[QUEST_DBS_NPC_LOG_BUTTON], gfNpcLogButton ? L"On" : L"Off");
+  swprintf(zName, "%s - (%s)", QuestDebugText[QUEST_DBS_NPC_LOG_BUTTON], gfNpcLogButton ? "On" : "Off");
   guiQuestDebugNPCLogButtonButton = CreateTextButton(zName, QUEST_DBS_FONT_STATIC_TEXT, QUEST_DBS_COLOR_STATIC_TEXT, FONT_BLACK, BUTTON_USE_DEFAULT, QUEST_DBS_NPC_LOG_BTN_X, QUEST_DBS_NPC_LOG_BTN_Y, QUEST_DBS_LIST_BOX_WIDTH, QDS_BUTTON_HEIGHT, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, BUTTON_NO_CALLBACK, BtnQuestDebugNPCLogButtonButtonCallback);
 
   guiQuestDebugNPCRefreshButtonButton = CreateTextButton(QuestDebugText[QUEST_DBS_REFRESH_NPC], QUEST_DBS_FONT_STATIC_TEXT, QUEST_DBS_COLOR_STATIC_TEXT, FONT_BLACK, BUTTON_USE_DEFAULT, QUEST_DBS_NPC_REFRESH_BTN_X, QUEST_DBS_NPC_REFRESH_BTN_Y, QUEST_DBS_LIST_BOX_WIDTH, QDS_BUTTON_HEIGHT, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, BUTTON_NO_CALLBACK, BtnQuestDebugNPCRefreshButtonButtonCallback);
@@ -751,9 +751,9 @@ function EnterQuestDebugSystem(): BOOLEAN {
     let zItemDesc: UINT16[] /* [SIZE_ITEM_INFO] */;
 
     if (gfUseLocalNPCs)
-      swprintf(zItemDesc, L"%d - %s", gubCurrentNpcInSector[giHaveSelectedNPC], gMercProfiles[gubCurrentNpcInSector[giHaveSelectedNPC]].zNickname);
+      swprintf(zItemDesc, "%d - %s", gubCurrentNpcInSector[giHaveSelectedNPC], gMercProfiles[gubCurrentNpcInSector[giHaveSelectedNPC]].zNickname);
     else
-      swprintf(zItemDesc, L"%d - %s", giHaveSelectedNPC, gMercProfiles[giHaveSelectedNPC].zNickname);
+      swprintf(zItemDesc, "%d - %s", giHaveSelectedNPC, gMercProfiles[giHaveSelectedNPC].zNickname);
     SpecifyButtonText(guiQuestDebugCurNPCButton, zItemDesc);
 
     gNpcListBox.sCurSelectedItem = giHaveSelectedNPC;
@@ -767,7 +767,7 @@ function EnterQuestDebugSystem(): BOOLEAN {
 
     wcscpy(zItemName, ShortItemNames[giHaveSelectedItem]);
 
-    swprintf(zItemDesc, L"%d - %s", giHaveSelectedItem, zItemName);
+    swprintf(zItemDesc, "%d - %s", giHaveSelectedItem, zItemName);
     SpecifyButtonText(guiQuestDebugCurItemButton, zItemDesc);
 
     gItemListBox.sCurSelectedItem = giHaveSelectedItem;
@@ -864,7 +864,7 @@ function HandleQuestDebugSystem(): void {
   }
 
   if (gfAddKeyNextPass) {
-    swprintf(zTemp, L"  Please enter the Keys ID. ( 0 - %d )", NUM_KEYS);
+    swprintf(zTemp, "  Please enter the Keys ID. ( 0 - %d )", NUM_KEYS);
     TextEntryBox(zTemp, AddKeyToGridNo);
     gfAddKeyNextPass = FALSE;
   }
@@ -924,7 +924,7 @@ function DisplayCurrentGridNo(): void {
   if (gsQdsEnteringGridNo != 0) {
     let zTemp: CHAR16[] /* [512] */;
 
-    swprintf(zTemp, L"%s:  %d", QuestDebugText[QUEST_DBS_CURRENT_GRIDNO], gsQdsEnteringGridNo);
+    swprintf(zTemp, "%s:  %d", QuestDebugText[QUEST_DBS_CURRENT_GRIDNO], gsQdsEnteringGridNo);
     DrawTextToScreen(zTemp, QUEST_DBS_NPC_CURRENT_GRIDNO_X, QUEST_DBS_NPC_CURRENT_GRIDNO_Y, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT, QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   }
 }
@@ -1037,7 +1037,7 @@ function GetUserInput(): void {
 
           // toggle whether dropped items are damaged or not
           gfDropDamagedItems ^= 1;
-          swprintf(zTemp, L"Items dropped will be in %s condition", gfDropDamagedItems ? L"DAMAGED" : L"PERFECT");
+          swprintf(zTemp, "Items dropped will be in %s condition", gfDropDamagedItems ? "DAMAGED" : "PERFECT");
           DoQDSMessageBox(MSG_BOX_BASIC_STYLE, zTemp, QUEST_DEBUG_SCREEN, MSG_BOX_FLAG_OK, NULL);
         } break;
       }
@@ -1199,7 +1199,7 @@ function DisplayQuestList(): void {
   usPosY = QUEST_DBS_FIRST_COL_NUMBER_Y + QUEST_DBS_LIST_TEXT_OFFSET; //&& (usCount < QUEST_DBS_MAX_DISPLAYED_ENTRIES )
   for (usLoop1 = 0, usCount = 0; (usLoop1 < MAX_QUESTS); usLoop1++) {
     // Display Quest Number text
-    swprintf(sTemp, L"%02d", usLoop1);
+    swprintf(sTemp, "%02d", usLoop1);
     DrawTextToScreen(sTemp, QUEST_DBS_FIRST_COL_NUMBER_X, usPosY, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT, QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
     // Display Quest title text
@@ -1229,12 +1229,12 @@ function DisplayFactList(): void {
 
   for (usLoop1 = gusFactAtTopOfList, usCount = 0; (usLoop1 < NUM_FACTS) && (usCount < QUEST_DBS_NUM_DISPLAYED_FACTS); usLoop1++) {
     // Display Quest Number text
-    swprintf(sTemp, L"%02d", usLoop1);
+    swprintf(sTemp, "%02d", usLoop1);
     DrawTextToScreen(sTemp, QUEST_DBS_SECOND_COL_NUMBER_X, usPosY, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT, QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
     // Display Quest title text
     if (FactDescText[usLoop1][0] == '\0') {
-      swprintf(sTemp, L"No Fact %03d Yet", usLoop1);
+      swprintf(sTemp, "No Fact %03d Yet", usLoop1);
       DisplayWrappedString(QUEST_DBS_SECOND_COL_TITLE_X, usPosY, QUEST_DBS_SECOND_TITLE_COL_WIDTH, 2, QUEST_DBS_FONT_DYNAMIC_TEXT, QUEST_DBS_COLOR_STATIC_TEXT, sTemp, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
     } else {
       wcscpy(sTemp, FactDescText[usLoop1]);
@@ -1247,7 +1247,7 @@ function DisplayFactList(): void {
       DrawTextToScreen(sTemp, QUEST_DBS_SECOND_COL_TITLE_X, usPosY, QUEST_DBS_SECOND_TITLE_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT, QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
     }
 
-    DrawTextToScreen(gubFact[usLoop1] ? L"True" : L"False", QUEST_DBS_SECOND_COL_STATUS_X, usPosY, QUEST_DBS_STATUS_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT, QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(gubFact[usLoop1] ? "True" : "False", QUEST_DBS_SECOND_COL_STATUS_X, usPosY, QUEST_DBS_STATUS_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT, QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
     usPosY += usTextHeight;
     usCount++;
@@ -1562,9 +1562,9 @@ function DisplaySelectedNPC(): void {
     SetFontShadow(DEFAULT_SHADOW);
 
     if (gfUseLocalNPCs)
-      swprintf(zButtonName, L"%d - %s", gubCurrentNpcInSector[gpActiveListBox->sCurSelectedItem], gMercProfiles[gubCurrentNpcInSector[gpActiveListBox->sCurSelectedItem]].zNickname);
+      swprintf(zButtonName, "%d - %s", gubCurrentNpcInSector[gpActiveListBox->sCurSelectedItem], gMercProfiles[gubCurrentNpcInSector[gpActiveListBox->sCurSelectedItem]].zNickname);
     else
-      swprintf(zButtonName, L"%d - %s", gpActiveListBox->sCurSelectedItem, gMercProfiles[gpActiveListBox->sCurSelectedItem].zNickname);
+      swprintf(zButtonName, "%d - %s", gpActiveListBox->sCurSelectedItem, gMercProfiles[gpActiveListBox->sCurSelectedItem].zNickname);
 
     SpecifyButtonText(guiQuestDebugCurNPCButton, zButtonName);
   }
@@ -1617,7 +1617,7 @@ function DisplaySelectedItem(): void {
     DrawTextToScreen(zItemName, gpActiveListBox->usScrollPosX, (usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT, 2, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
     SetFontShadow(DEFAULT_SHADOW);
 
-    swprintf(zButtonName, L"%d - %s", gpActiveListBox->sCurSelectedItem, zItemName);
+    swprintf(zButtonName, "%d - %s", gpActiveListBox->sCurSelectedItem, zItemName);
 
     SpecifyButtonText(guiQuestDebugCurItemButton, zButtonName);
   }
@@ -1893,7 +1893,7 @@ function BtnQuestDebugAddNpcToLocationButtonCallback(btn: Pointer<GUI_BUTTON>, r
     let zTemp: CHAR16[] /* [512] */;
     btn->uiFlags &= (~BUTTON_CLICKED_ON);
 
-    swprintf(zTemp, L"%s where %s will be added.", QuestDebugText[QUEST_DBS_ENTER_GRID_NUM], gMercProfiles[gNpcListBox.sCurSelectedItem].zNickname);
+    swprintf(zTemp, "%s where %s will be added.", QuestDebugText[QUEST_DBS_ENTER_GRID_NUM], gMercProfiles[gNpcListBox.sCurSelectedItem].zNickname);
     TextEntryBox(zTemp, AddNPCToGridNo);
 
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -1919,7 +1919,7 @@ function BtnQuestDebugAddItemToLocationButtonCallback(btn: Pointer<GUI_BUTTON>, 
     //			Assert(0);
     wcscpy(zItemName, ShortItemNames[gItemListBox.sCurSelectedItem]);
 
-    swprintf(zTemp, L"%s where the %s will be added.", QuestDebugText[QUEST_DBS_ENTER_GRID_NUM], zItemName);
+    swprintf(zTemp, "%s where the %s will be added.", QuestDebugText[QUEST_DBS_ENTER_GRID_NUM], zItemName);
     TextEntryBox(zTemp, AddItemToGridNo);
 
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -1977,7 +1977,7 @@ function BtnQuestDebugChangeDayButtonCallback(btn: Pointer<GUI_BUTTON>, reason: 
 
     btn->uiFlags &= (~BUTTON_CLICKED_ON);
 
-    swprintf(zTemp, L"%s   Current Day is %d", QuestDebugText[QUEST_DBS_PLEASE_ENTER_DAY], GetWorldDay());
+    swprintf(zTemp, "%s   Current Day is %d", QuestDebugText[QUEST_DBS_PLEASE_ENTER_DAY], GetWorldDay());
 
     // get the day to change the game day to
     TextEntryBox(zTemp, ChangeDayNumber);
@@ -2044,7 +2044,7 @@ function BtnQuestDebugNPCLogButtonButtonCallback(btn: Pointer<GUI_BUTTON>, reaso
       btn->uiFlags |= BUTTON_CLICKED_ON;
     }
 
-    swprintf(zName, L"%s - (%s)", QuestDebugText[QUEST_DBS_NPC_LOG_BUTTON], gfNpcLogButton ? L"On" : L"Off");
+    swprintf(zName, "%s - (%s)", QuestDebugText[QUEST_DBS_NPC_LOG_BUTTON], gfNpcLogButton ? "On" : "Off");
     SpecifyButtonText(guiQuestDebugNPCLogButtonButton, zName);
 
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -2078,9 +2078,9 @@ function BtnQuestDebugNPCRefreshButtonButtonCallback(btn: Pointer<GUI_BUTTON>, r
 
     // if the function succeded
     if (fRetVal) {
-      swprintf(zTemp, L"%s %s", QuestDebugText[QUEST_DBS_REFRESH_OK], gMercProfiles[ubMercID].zNickname);
+      swprintf(zTemp, "%s %s", QuestDebugText[QUEST_DBS_REFRESH_OK], gMercProfiles[ubMercID].zNickname);
     } else {
-      swprintf(zTemp, L"%s %s", QuestDebugText[QUEST_DBS_REFRESH_FAILED], gMercProfiles[ubMercID].zNickname);
+      swprintf(zTemp, "%s %s", QuestDebugText[QUEST_DBS_REFRESH_FAILED], gMercProfiles[ubMercID].zNickname);
     }
 
     DoQDSMessageBox(MSG_BOX_BASIC_STYLE, zTemp, QUEST_DEBUG_SCREEN, MSG_BOX_FLAG_OK, NULL);
@@ -2138,7 +2138,7 @@ function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: STR16, Entry
       }
 
       // create the ok button
-      guiQuestDebugTextEntryOkBtn = CreateTextButton(L"OK", QUEST_DBS_FONT_STATIC_TEXT, QUEST_DBS_COLOR_STATIC_TEXT, FONT_BLACK, BUTTON_USE_DEFAULT, QUEST_DBS_TEB_X + QUEST_DBS_TEB_WIDTH / 2 - 12, QUEST_DBS_TEB_Y + QUEST_DBS_TEB_HEIGHT - 30, 30, 25, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 50, BUTTON_NO_CALLBACK, BtnQuestDebugTextEntryOkBtnButtonCallback);
+      guiQuestDebugTextEntryOkBtn = CreateTextButton("OK", QUEST_DBS_FONT_STATIC_TEXT, QUEST_DBS_COLOR_STATIC_TEXT, FONT_BLACK, BUTTON_USE_DEFAULT, QUEST_DBS_TEB_X + QUEST_DBS_TEB_WIDTH / 2 - 12, QUEST_DBS_TEB_Y + QUEST_DBS_TEB_HEIGHT - 30, 30, 25, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 50, BUTTON_NO_CALLBACK, BtnQuestDebugTextEntryOkBtnButtonCallback);
       SetButtonCursor(guiQuestDebugTextEntryOkBtn, CURSOR_WWW);
 
       wcscpy(zString, pString);
@@ -2180,7 +2180,7 @@ function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: STR16, Entry
       // if the text is not null
       if (zText[0] != '\0') {
         // get the number from the string
-        swscanf(zText, L"%ld", &iTextEntryNumber);
+        swscanf(zText, "%ld", &iTextEntryNumber);
       } else
         iTextEntryNumber = 0;
 
@@ -2249,7 +2249,7 @@ function ScrollQuestListRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
     gubCurQuestSelected = MSYS_GetRegionUserData(pRegion, 0);
 
     // qqq
-    swprintf(String, L"%s %s %d \"%s\" ( %s )", QuestDebugText[QUEST_DBS_ENTER_NEW_VALUE], QuestDebugText[QUEST_DBS_QUEST_NUM], gubCurQuestSelected, QuestDescText[gubCurQuestSelected], QuestDebugText[QUEST_DBS_0_1_2]);
+    swprintf(String, "%s %s %d \"%s\" ( %s )", QuestDebugText[QUEST_DBS_ENTER_NEW_VALUE], QuestDebugText[QUEST_DBS_QUEST_NUM], gubCurQuestSelected, QuestDescText[gubCurQuestSelected], QuestDebugText[QUEST_DBS_0_1_2]);
 
     TextEntryBox(String, ChangeQuestState);
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
@@ -2264,9 +2264,9 @@ function ScrollFactListRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
     gusCurFactSelected = MSYS_GetRegionUserData(pRegion, 0) + gusFactAtTopOfList;
 
     if (FactDescText[gusCurFactSelected][0] == '\0')
-      swprintf(String, L"%s %s %d \"%s\" ( %s )", QuestDebugText[QUEST_DBS_ENTER_NEW_VALUE], QuestDebugText[QUEST_DBS_FACT_NUM], gusCurFactSelected, QuestDebugText[QUEST_DBS_NO_TEXT], QuestDebugText[QUEST_DBS_0_1]);
+      swprintf(String, "%s %s %d \"%s\" ( %s )", QuestDebugText[QUEST_DBS_ENTER_NEW_VALUE], QuestDebugText[QUEST_DBS_FACT_NUM], gusCurFactSelected, QuestDebugText[QUEST_DBS_NO_TEXT], QuestDebugText[QUEST_DBS_0_1]);
     else
-      swprintf(String, L"%s %s %d \"%s\" ( %s )", QuestDebugText[QUEST_DBS_ENTER_NEW_VALUE], QuestDebugText[QUEST_DBS_FACT_NUM], gusCurFactSelected, FactDescText[gusCurFactSelected], QuestDebugText[QUEST_DBS_0_1]);
+      swprintf(String, "%s %s %d \"%s\" ( %s )", QuestDebugText[QUEST_DBS_ENTER_NEW_VALUE], QuestDebugText[QUEST_DBS_FACT_NUM], gusCurFactSelected, FactDescText[gusCurFactSelected], QuestDebugText[QUEST_DBS_0_1]);
 
     TextEntryBox(String, ChangeFactState);
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
@@ -2295,7 +2295,7 @@ function InitQuestDebugTextInputBoxes(): void {
           }
   */
 
-  swprintf(sTemp, L"%d", gsQdsEnteringGridNo);
+  swprintf(sTemp, "%d", gsQdsEnteringGridNo);
 
   // Text entry field
   AddTextInputField(QUEST_DBS_TEB_X + QUEST_DBS_TEB_WIDTH / 2 - 30, QUEST_DBS_TEB_Y + 65, 60, 15, MSYS_PRIORITY_HIGH + 60, sTemp, QUEST_DBS_TEXT_FIELD_WIDTH, INPUTTYPE_NUMERICSTRICT);
@@ -2421,7 +2421,7 @@ function CreateDestroyDisplayNPCInventoryPopup(ubAction: UINT8): void {
       }
 
       // create the ok button
-      guiQuestDebugNPCInventOkBtn = CreateTextButton(L"OK", QUEST_DBS_FONT_STATIC_TEXT, QUEST_DBS_COLOR_STATIC_TEXT, FONT_BLACK, BUTTON_USE_DEFAULT, QUEST_DBS_NPC_INV_POPUP_X + QUEST_DBS_NPC_INV_POPUP_WIDTH / 2 - 12, QUEST_DBS_NPC_INV_POPUP_Y + QUEST_DBS_NPC_INV_POPUP_HEIGHT - 30, 30, 25, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 50, BUTTON_NO_CALLBACK, BtnQuestDebugNPCInventOkBtnButtonCallback);
+      guiQuestDebugNPCInventOkBtn = CreateTextButton("OK", QUEST_DBS_FONT_STATIC_TEXT, QUEST_DBS_COLOR_STATIC_TEXT, FONT_BLACK, BUTTON_USE_DEFAULT, QUEST_DBS_NPC_INV_POPUP_X + QUEST_DBS_NPC_INV_POPUP_WIDTH / 2 - 12, QUEST_DBS_NPC_INV_POPUP_Y + QUEST_DBS_NPC_INV_POPUP_HEIGHT - 30, 30, 25, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 50, BUTTON_NO_CALLBACK, BtnQuestDebugNPCInventOkBtnButtonCallback);
       SetButtonCursor(guiQuestDebugNPCInventOkBtn, CURSOR_WWW);
 
       break;
@@ -2918,7 +2918,7 @@ function StartMercTalkingFromQuoteNum(iQuoteToStartTalkingFrom: INT32): void {
 
   // do some error checks
   if (iQuoteToStartTalkingFrom < 0 || iQuoteToStartTalkingFrom > uiMaxNumberOfQuotes) {
-    swprintf(zTemp, L"Please enter a value between 0 and %d", uiMaxNumberOfQuotes);
+    swprintf(zTemp, "Please enter a value between 0 and %d", uiMaxNumberOfQuotes);
     DoQDSMessageBox(MSG_BOX_BASIC_STYLE, zTemp, QUEST_DEBUG_SCREEN, MSG_BOX_FLAG_OK, NULL);
   } else {
     // Start the merc talking from the selected quote number
@@ -3070,7 +3070,7 @@ function DisplayQDSCurrentlyQuoteNum(): void {
   // Display the box frame
   ColorFillVideoSurfaceArea(FRAME_BUFFER, QDS_CURRENT_QUOTE_NUM_BOX_X, QDS_CURRENT_QUOTE_NUM_BOX_Y, QDS_CURRENT_QUOTE_NUM_BOX_X + QDS_CURRENT_QUOTE_NUM_BOX_WIDTH, QDS_CURRENT_QUOTE_NUM_BOX_Y + QDS_CURRENT_QUOTE_NUM_BOX_HEIGHT, Get16BPPColor(FROMRGB(32, 41, 53)));
 
-  swprintf(zTemp, L"'%s' is currently saying quote #%d", gMercProfiles[gTalkingMercSoldier->ubProfile].zNickname, giSelectedMercCurrentQuote - 1);
+  swprintf(zTemp, "'%s' is currently saying quote #%d", gMercProfiles[gTalkingMercSoldier->ubProfile].zNickname, giSelectedMercCurrentQuote - 1);
 
   // Display the text box caption
   usPosY = QDS_CURRENT_QUOTE_NUM_BOX_Y + 4;
@@ -3178,12 +3178,12 @@ function GetDebugLocationString(usProfileID: UINT16, pzText: STR16): void {
   // if their is a soldier, the soldier is alive and the soldier is off the map
   if (pSoldier != NULL && pSoldier->bActive && pSoldier->uiStatusFlags & SOLDIER_OFF_MAP) {
     // the soldier is on schedule
-    swprintf(pzText, L"On Schdl.");
+    swprintf(pzText, "On Schdl.");
   }
 
   // if the soldier is dead
   else if (gMercProfiles[usProfileID].bMercStatus == MERC_IS_DEAD) {
-    swprintf(pzText, L"Dead");
+    swprintf(pzText, "Dead");
   }
 
   // the soldier is in this sector

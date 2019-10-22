@@ -1026,10 +1026,10 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
       let zDifString: CHAR16[] /* [256] */;
 
       // Create a string for difficulty level
-      swprintf(zDifString, L"%s %s", gzGIOScreenText[GIO_EASY_TEXT + SaveGameHeader.sInitialGameOptions.ubDifficultyLevel - 1], zSaveLoadText[SLG_DIFF]);
+      swprintf(zDifString, "%s %s", gzGIOScreenText[GIO_EASY_TEXT + SaveGameHeader.sInitialGameOptions.ubDifficultyLevel - 1], zSaveLoadText[SLG_DIFF]);
 
       // make a string containing the extended options
-      swprintf(zMouseHelpTextString, L"%20s     %22s     %22s     %22s", zDifString,
+      swprintf(zMouseHelpTextString, "%20s     %22s     %22s     %22s", zDifString,
                /*gzGIOScreenText[ GIO_TIMED_TURN_TITLE_TEXT + SaveGameHeader.sInitialGameOptions.fTurnTimeLimit + 1],*/
 
                SaveGameHeader.sInitialGameOptions.fIronManMode ? gzGIOScreenText[GIO_IRON_MAN_TEXT] : gzGIOScreenText[GIO_SAVE_ANYWHERE_TEXT],
@@ -1042,7 +1042,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
       DrawTextToScreen(zMouseHelpTextString, (usPosX + SLG_DATE_OFFSET_X), (usPosY + SLG_DATE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
     } else {
       // Create the string for the Data
-      swprintf(zDateString, L"%s %d, %02d:%02d", pMessageStrings[MSG_DAY], SaveGameHeader.uiDay, SaveGameHeader.ubHour, SaveGameHeader.ubMin);
+      swprintf(zDateString, "%s %d, %02d:%02d", pMessageStrings[MSG_DAY], SaveGameHeader.uiDay, SaveGameHeader.ubHour, SaveGameHeader.ubMin);
 
       // Create the string for the current location
       if (SaveGameHeader.sSectorX == -1 && SaveGameHeader.sSectorY == -1 || SaveGameHeader.bSectorZ < 0) {
@@ -1065,14 +1065,14 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
       // if only 1 merc is on the team
       if (SaveGameHeader.ubNumOfMercsOnPlayersTeam == 1) {
         // use "merc"
-        swprintf(zNumMercsString, L"%d %s", SaveGameHeader.ubNumOfMercsOnPlayersTeam, MercAccountText[MERC_ACCOUNT_MERC]);
+        swprintf(zNumMercsString, "%d %s", SaveGameHeader.ubNumOfMercsOnPlayersTeam, MercAccountText[MERC_ACCOUNT_MERC]);
       } else {
         // use "mercs"
-        swprintf(zNumMercsString, L"%d %s", SaveGameHeader.ubNumOfMercsOnPlayersTeam, pMessageStrings[MSG_MERCS]);
+        swprintf(zNumMercsString, "%d %s", SaveGameHeader.ubNumOfMercsOnPlayersTeam, pMessageStrings[MSG_MERCS]);
       }
 
       // Get the current balance
-      swprintf(zBalanceString, L"%d", SaveGameHeader.iCurrentBalance);
+      swprintf(zBalanceString, "%d", SaveGameHeader.iCurrentBalance);
       InsertCommasForDollarFigure(zBalanceString);
       InsertDollarSignInToString(zBalanceString);
 
@@ -1480,7 +1480,7 @@ function SetSelection(ubNewSelection: UINT8): void {
     gbSaveGameSelectedLocation[gbSelectedSaveLocation] = SLG_UNSELECTED_SLOT_GRAPHICS_NUMBER;
 
     // reset the slots help text
-    SetRegionFastHelpText(&gSelectedSaveRegion[gbSelectedSaveLocation], L"\0");
+    SetRegionFastHelpText(&gSelectedSaveRegion[gbSelectedSaveLocation], "\0");
   }
 
   gfRedrawSaveLoadScreen = TRUE;
@@ -1644,10 +1644,10 @@ function DisplayOnScreenNumber(fErase: BOOLEAN): void {
 
     if (bLoopNum != 10) {
       bNum = bLoopNum;
-      swprintf(zTempString, L"%2d", bNum);
+      swprintf(zTempString, "%2d", bNum);
     } else {
       bNum = 0;
-      swprintf(zTempString, L"%2d", bNum);
+      swprintf(zTempString, "%2d", bNum);
     }
 
     if (!fErase)

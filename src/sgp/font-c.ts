@@ -448,7 +448,7 @@ function StringNPixLength(string: Pointer<UINT16>, uiMaxCount: UINT32, UseFont: 
   uiCharCount = 0;
   curletter = string;
 
-  while ((*curletter) != L'\0' && uiCharCount < uiMaxCount) {
+  while ((*curletter) != '\0' && uiCharCount < uiMaxCount) {
     transletter = GetIndex(*curletter++);
     Cur += GetWidth(FontObjs[UseFont], transletter);
     uiCharCount++;
@@ -475,7 +475,7 @@ function StringPixLength(string: Pointer<UINT16>, UseFont: INT32): INT16 {
   Cur = 0;
   curletter = string;
 
-  while ((*curletter) != L'\0') {
+  while ((*curletter) != '\0') {
     transletter = GetIndex(*curletter++);
     Cur += GetWidth(FontObjs[UseFont], transletter);
   }

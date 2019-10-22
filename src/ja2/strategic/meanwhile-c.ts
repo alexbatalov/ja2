@@ -285,7 +285,7 @@ function BeginMeanwhile(ubMeanwhileID: UINT8): BOOLEAN {
 function BringupMeanwhileBox(): void {
   let zStr: INT16[] /* [256] */;
 
-  swprintf(zStr, L"%s.....", pMessageStrings[MSG_MEANWHILE]);
+  swprintf(zStr, "%s.....", pMessageStrings[MSG_MEANWHILE]);
 
   if (gCurrentMeanwhileDef.ubMeanwhileID != INTERROGATION && MeanwhileSceneSeen(gCurrentMeanwhileDef.ubMeanwhileID))
   {

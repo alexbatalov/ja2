@@ -249,9 +249,9 @@ function BtnIMPBeginScreenDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
       // back to mainpage
 
       // check to see if a name has been selected, if not, do not allow player to proceed with more char generation
-      if ((pFullNameString[0] != 0) && (pFullNameString[0] != L' ') && (bGenderFlag != -1)) {
+      if ((pFullNameString[0] != 0) && (pFullNameString[0] != ' ') && (bGenderFlag != -1)) {
         // valid full name, check to see if nick name
-        if ((pNickNameString[0] == 0) || (pNickNameString[0] == L' ')) {
+        if ((pNickNameString[0] == 0) || (pNickNameString[0] == ' ')) {
           // no nick name
           // copy first name to nick name
           CopyFirstNameIntoNickName();
@@ -724,7 +724,7 @@ function DisplayFemaleGlowCursor(): void {
 function CopyFirstNameIntoNickName(): void {
   // this procedure will copy the characters first name in to the nickname for the character
   let iCounter: UINT32 = 0;
-  while ((pFullNameString[iCounter] != L' ') && (iCounter < 20) && (pFullNameString[iCounter] != 0)) {
+  while ((pFullNameString[iCounter] != ' ') && (iCounter < 20) && (pFullNameString[iCounter] != 0)) {
     // copy charcters into nick name
     pNickNameString[iCounter] = pFullNameString[iCounter];
     iCounter++;
@@ -896,10 +896,10 @@ function RenderGender(): void {
   SetFontForeground(184);
   if (bGenderFlag == IMP_MALE) {
     // IMP_MALE, render x in IMP_MALE box
-    mprintf(MALE_BOX_X + 9, MALE_BOX_Y + 6, L"X");
+    mprintf(MALE_BOX_X + 9, MALE_BOX_Y + 6, "X");
   } else {
     // IMP_FEMALE, render x in IMP_FEMALE box
-    mprintf(FEMALE_BOX_X + 9, MALE_BOX_Y + 6, L"X");
+    mprintf(FEMALE_BOX_X + 9, MALE_BOX_Y + 6, "X");
   }
 }
 
@@ -919,9 +919,9 @@ function CheckCharacterInputForEgg(): BOOLEAN {
   let HireMercStruct: MERC_HIRE_STRUCT;
 
   return FALSE;
-  if ((wcscmp(pFullNameString, L"Test Female") == 0) && (wcscmp(pNickNameString, L"Test") == 0)) {
-    wcscpy(pFullNameString, L"Test Female");
-    wcscpy(pNickNameString, L"Test");
+  if ((wcscmp(pFullNameString, "Test Female") == 0) && (wcscmp(pNickNameString, "Test") == 0)) {
+    wcscpy(pFullNameString, "Test Female");
+    wcscpy(pNickNameString, "Test");
     bGenderFlag = IMP_FEMALE;
     iHealth = 55;
     iAgility = 55;
