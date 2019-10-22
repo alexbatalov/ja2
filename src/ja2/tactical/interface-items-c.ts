@@ -2422,13 +2422,13 @@ function RenderItemDescriptionBox(): void {
     fWeight = (CalculateObjectWeight(gpItemDescObject)) / 10;
     if (!gGameSettings.fOptions[TOPTION_USE_METRIC_SYSTEM]) // metric units not enabled
     {
-      fWeight = fWeight * 2.2f;
+      fWeight = fWeight * 2.2;
     }
 
     // Add weight of attachments here !
 
     if (fWeight < 0.1) {
-      fWeight = 0.1f;
+      fWeight = 0.1;
     }
 
     // Render, stat  name
@@ -2792,7 +2792,7 @@ function RenderItemDescriptionBox(): void {
     // Calculate total weight of item and attachments
     fWeight = (CalculateObjectWeight(gpItemDescObject)) / 10;
     if (!gGameSettings.fOptions[TOPTION_USE_METRIC_SYSTEM]) {
-      fWeight = fWeight * 2.2f;
+      fWeight = fWeight * 2.2;
     }
 
     if (fWeight < 0.1) {

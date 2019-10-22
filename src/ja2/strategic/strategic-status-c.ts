@@ -31,7 +31,7 @@ function LoadStrategicStatusFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   return TRUE;
 }
 
-const DEATH_RATE_SEVERITY = 1.0f; // increase to make death rates higher for same # of deaths/time
+const DEATH_RATE_SEVERITY = 1.0; // increase to make death rates higher for same # of deaths/time
 
 function CalcDeathRate(): UINT8 {
   let uiDeathRate: UINT32 = 0;

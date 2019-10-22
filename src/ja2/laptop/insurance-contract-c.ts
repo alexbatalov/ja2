@@ -858,8 +858,8 @@ function DailyUpdateOfInsuredMercs(): void {
   }
 }
 
-const MIN_INSURANCE_RATIO = 0.1f;
-const MAX_INSURANCE_RATIO = 10.0f;
+const MIN_INSURANCE_RATIO = 0.1;
+const MAX_INSURANCE_RATIO = 10.0;
 
 function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8): INT32 {
   let pProfile: Pointer<MERCPROFILESTRUCT>;

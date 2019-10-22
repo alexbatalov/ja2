@@ -1369,7 +1369,7 @@ function SoldierTo3DLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>,
   CHECKF(fOk);
 
   if (bCubeLevel > 0) {
-    dEndZPos = ((bCubeLevel + bLevel * PROFILE_Z_SIZE) - 0.5f) * HEIGHT_UNITS_PER_INDEX;
+    dEndZPos = ((bCubeLevel + bLevel * PROFILE_Z_SIZE) - 0.5) * HEIGHT_UNITS_PER_INDEX;
     dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sGridNo].sHeight);
   } else {
     ubTargetID = WhoIsThere2(sGridNo, bLevel);
@@ -1859,9 +1859,9 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
 function BulletHitStructure(pBullet: Pointer<BULLET>, usStructureID: UINT16, iImpact: INT32, pFirer: Pointer<SOLDIERTYPE>, qCurrX: FIXEDPT, qCurrY: FIXEDPT, qCurrZ: FIXEDPT, fStopped: BOOLEAN): void {
   let SStructureHit: EV_S_STRUCTUREHIT;
 
-  SStructureHit.sXPos = FIXEDPT_TO_INT32(qCurrX + FloatToFixed(0.5f)); // + 0.5);
-  SStructureHit.sYPos = FIXEDPT_TO_INT32(qCurrY + FloatToFixed(0.5f)); // (dCurrY + 0.5);
-  SStructureHit.sZPos = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(qCurrZ + FloatToFixed(0.5f))); // dCurrZ + 0.5) );
+  SStructureHit.sXPos = FIXEDPT_TO_INT32(qCurrX + FloatToFixed(0.5)); // + 0.5);
+  SStructureHit.sYPos = FIXEDPT_TO_INT32(qCurrY + FloatToFixed(0.5)); // (dCurrY + 0.5);
+  SStructureHit.sZPos = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(qCurrZ + FloatToFixed(0.5))); // dCurrZ + 0.5) );
   SStructureHit.usWeaponIndex = pFirer.value.usAttackingWeapon;
   SStructureHit.bWeaponStatus = pBullet.value.ubItemStatus;
   SStructureHit.ubAttackerID = pFirer.value.ubID;
@@ -2509,12 +2509,12 @@ function SoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>
   } else {
     if (bCubeLevel) {
       // fire at the centre of the cube specified
-      dEndZPos = (((bCubeLevel + bLevel * PROFILE_Z_SIZE)) - 0.5f) * HEIGHT_UNITS_PER_INDEX;
+      dEndZPos = (((bCubeLevel + bLevel * PROFILE_Z_SIZE)) - 0.5) * HEIGHT_UNITS_PER_INDEX;
     } else {
       bStructHeight = GetStructureTargetHeight(sGridNo, (bLevel == 1));
       if (bStructHeight > 0) {
         // fire at the centre of the cube of the tallest structure
-        dEndZPos = ((bStructHeight + bLevel * PROFILE_Z_SIZE) - 0.5f) * HEIGHT_UNITS_PER_INDEX;
+        dEndZPos = ((bStructHeight + bLevel * PROFILE_Z_SIZE) - 0.5) * HEIGHT_UNITS_PER_INDEX;
       } else {
         // fire at 1 unit above the level of the ground
         dEndZPos = ((bLevel * PROFILE_Z_SIZE) * HEIGHT_UNITS_PER_INDEX + 1);
@@ -2582,12 +2582,12 @@ function AISoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYP
   } else {
     if (bCubeLevel) {
       // fire at the centre of the cube specified
-      dEndZPos = ((bCubeLevel + bLevel * PROFILE_Z_SIZE) - 0.5f) * HEIGHT_UNITS_PER_INDEX;
+      dEndZPos = ((bCubeLevel + bLevel * PROFILE_Z_SIZE) - 0.5) * HEIGHT_UNITS_PER_INDEX;
     } else {
       bStructHeight = GetStructureTargetHeight(sGridNo, (bLevel == 1));
       if (bStructHeight > 0) {
         // fire at the centre of the cube of the tallest structure
-        dEndZPos = ((bStructHeight + bLevel * PROFILE_Z_SIZE) - 0.5f) * HEIGHT_UNITS_PER_INDEX;
+        dEndZPos = ((bStructHeight + bLevel * PROFILE_Z_SIZE) - 0.5) * HEIGHT_UNITS_PER_INDEX;
       } else {
         // fire at 1 unit above the level of the ground
         dEndZPos = ((bLevel * PROFILE_Z_SIZE) * HEIGHT_UNITS_PER_INDEX + 1);
@@ -2803,7 +2803,7 @@ function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT, dEndY
   }
 
   ddOrigHorizAngle = atan2(dDeltaY, dDeltaX);
-  ddOrigVerticAngle = atan2(dDeltaZ, (d2DDistance * 2.56f));
+  ddOrigVerticAngle = atan2(dDeltaZ, (d2DDistance * 2.56));
 
   ubShots = 1;
 
@@ -3696,7 +3696,7 @@ function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOAT, dDel
     pTarget = pMapElement.value.pMercHead.value.pSoldier;
     dTargetX = pTarget.value.dXPos;
     dTargetY = pTarget.value.dYPos;
-    dTargetZMin = 0.0f;
+    dTargetZMin = 0.0;
     CalculateSoldierZPos(pTarget, HEIGHT, addressof(dTargetZMax));
     if (pTarget.value.bLevel > 0) {
       // on roof

@@ -35,7 +35,7 @@ function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam:
   // ATE: This is for older win95 or NT 3.51 to get MOUSE_WHEEL Messages
   if (Message == guiMouseWheelMsg) {
     QueueEvent(MOUSE_WHEEL, wParam, lParam);
-    return 0L;
+    return 0;
   }
 
   switch (Message) {
@@ -108,7 +108,7 @@ function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam:
     default:
       return DefWindowProc(hWindow, Message, wParam, lParam);
   }
-  return 0L;
+  return 0;
 }
 
 function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: int): BOOLEAN {

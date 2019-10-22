@@ -2431,7 +2431,7 @@ function CalcShopKeeperItemPrice(fDealerSelling: BOOLEAN, fUnitPriceOnly: BOOLEA
 }
 
 function ItemConditionModifier(usItemIndex: UINT16, bStatus: INT8): FLOAT {
-  let dConditionModifier: FLOAT = 1.0f;
+  let dConditionModifier: FLOAT = 1.0;
 
   // if the item is ammo, the condition modifier is based on how many shots are left
   if (Item[usItemIndex].usItemClass == IC_AMMO) {
@@ -2448,7 +2448,7 @@ function ItemConditionModifier(usItemIndex: UINT16, bStatus: INT8): FLOAT {
 
     if (Item[usItemIndex].fFlags & ITEM_REPAIRABLE) {
       // a REPAIRABLE item at 0% is still worth 50% of its full price, not 0%
-      dConditionModifier = 0.5f + (bStatus / 200);
+      dConditionModifier = 0.5 + (bStatus / 200);
     } else {
       // an UNREPAIRABLE item is worth precisely its condition percentage
       dConditionModifier = bStatus / 100;

@@ -1849,7 +1849,7 @@ function DisplayPackageWeight(): void {
 
   // Display the weight
   //	swprintf( zTemp, L"%3.1f %s", fWeight, pMessageStrings[ MSG_KILOGRAM_ABBREVIATION ] );
-  swprintf(zTemp, "%3.1f %s", (GetWeightBasedOnMetricOption(uiTotalWeight) / 10.0f), GetWeightUnitString());
+  swprintf(zTemp, "%3.1f %s", (GetWeightBasedOnMetricOption(uiTotalWeight) / 10.0), GetWeightUnitString());
   DrawTextToScreen(zTemp, BOBBYR_PACKAXGE_WEIGHT_X + 3, BOBBYR_PACKAXGE_WEIGHT_Y + 4, BOBBYR_PACKAXGE_WEIGHT_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
 }
 

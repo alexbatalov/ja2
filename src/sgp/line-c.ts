@@ -37,13 +37,13 @@ function Clipt(denom: FLOAT, num: FLOAT, tE: Pointer<FLOAT>, tL: Pointer<FLOAT>)
 
   accept = TRUE;
 
-  if (denom > 0.0f) {
+  if (denom > 0.0) {
     t = num / denom;
     if (t > tL.value)
       accept = FALSE;
     else if (t > tE.value)
       tE.value = t;
-  } else if (denom < 0.0f) {
+  } else if (denom < 0.0) {
     t = num / denom;
     if (t < tE.value)
       accept = FALSE;
@@ -82,14 +82,14 @@ function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Po
   if (dx == 0.0 && dy == 0.0 && ClipPoint(ix0.value, iy0.value))
     visible = TRUE;
   else {
-    te = 0.0f;
-    tl = 1.0f;
+    te = 0.0;
+    tl = 1.0;
     if (Clipt(dx, giClipXMin - x0, addressof(te), addressof(tl))) {
       if (Clipt(-dx, x0 - giClipXMax, addressof(te), addressof(tl))) {
         if (Clipt(dy, giClipYMin - y0, addressof(te), addressof(tl))) {
           if (Clipt(-dy, y0 - giClipYMax, addressof(te), addressof(tl))) {
             visible = TRUE;
-            if (tl < 1.0f) {
+            if (tl < 1.0) {
               x1 = x0 + tl * dx;
               y1 = y0 + tl * dy;
             }

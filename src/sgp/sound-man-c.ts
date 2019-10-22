@@ -2321,7 +2321,7 @@ function Sound3DInitProvider(pProviderName: Pointer<CHAR8>): BOOLEAN {
             AIL_close_3D_provider(gh3DProvider);
             return FALSE;
           }
-          Sound3DSetListener(0.0f, 0.0f, 0.0f);
+          Sound3DSetListener(0.0, 0.0, 0.0);
 
           AIL_3D_provider_attribute(gh3DProvider, "EAX environment selection", addressof(iResult));
           if (iResult != (-1))
@@ -2660,7 +2660,7 @@ function Sound3DStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer
   AIL_set_3D_velocity_vector(pSoundList[uiChannel].hM3D, pParms.value.Pos.flVelX, pParms.value.Pos.flVelY, pParms.value.Pos.flVelZ);
   AIL_set_3D_orientation(pSoundList[uiChannel].hM3D, pParms.value.Pos.flFaceX, pParms.value.Pos.flFaceY, pParms.value.Pos.flFaceZ, pParms.value.Pos.flUpX, pParms.value.Pos.flUpY, pParms.value.Pos.flUpZ);
   //	AIL_set_3D_sample_distances(pSoundList[uiChannel].hM3D, pParms->Pos.flFalloffMax, pParms->Pos.flFalloffMin);
-  AIL_set_3D_sample_distances(pSoundList[uiChannel].hM3D, 99999999.9f, 99999999.9f);
+  AIL_set_3D_sample_distances(pSoundList[uiChannel].hM3D, 99999999.9, 99999999.9);
 
   uiSoundID = SoundGetUniqueID();
   pSoundList[uiChannel].uiSoundID = uiSoundID;

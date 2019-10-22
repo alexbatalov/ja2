@@ -684,7 +684,7 @@ function GetTargetWorldPositions(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: 
     dTargetY = sYMapPos;
     if (pSoldier.value.bTargetCubeLevel) {
       // fire at the centre of the cube specified
-      dTargetZ = ((pSoldier.value.bTargetCubeLevel + pSoldier.value.bTargetLevel * PROFILE_Z_SIZE) - 0.5f) * HEIGHT_UNITS_PER_INDEX;
+      dTargetZ = ((pSoldier.value.bTargetCubeLevel + pSoldier.value.bTargetLevel * PROFILE_Z_SIZE) - 0.5) * HEIGHT_UNITS_PER_INDEX;
     } else {
       bStructHeight = GetStructureTargetHeight(sTargetGridNo, (pSoldier.value.bTargetLevel == 1));
       if (bStructHeight > 0) {
@@ -693,7 +693,7 @@ function GetTargetWorldPositions(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: 
           // reduce target level by 1
           bStructHeight--;
         }
-        dTargetZ = ((bStructHeight + pSoldier.value.bTargetLevel * PROFILE_Z_SIZE) - 0.5f) * HEIGHT_UNITS_PER_INDEX;
+        dTargetZ = ((bStructHeight + pSoldier.value.bTargetLevel * PROFILE_Z_SIZE) - 0.5) * HEIGHT_UNITS_PER_INDEX;
       } else {
         // fire at 1 unit above the level of the ground
         dTargetZ = (pSoldier.value.bTargetLevel * PROFILE_Z_SIZE) * HEIGHT_UNITS_PER_INDEX + 1;
