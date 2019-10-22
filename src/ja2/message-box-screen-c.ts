@@ -605,7 +605,7 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
 
   // Call done callback!
   if (gMsgBox.ExitCallback != NULL) {
-    (*(gMsgBox.ExitCallback))(ubExitCode);
+    ((gMsgBox.ExitCallback).value)(ubExitCode);
   }
 
   // if ur in a non gamescreen and DONT want the msg box to use the save buffer, unset gfDontOverRideSaveBuffer in ur callback

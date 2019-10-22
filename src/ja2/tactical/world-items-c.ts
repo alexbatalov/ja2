@@ -293,18 +293,18 @@ function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
   TrashWorldItems();
 
   // Read the number of items that were saved in the map.
-  LOADDATA(addressof(uiNumWorldItems), *hBuffer, 4);
+  LOADDATA(addressof(uiNumWorldItems), hBuffer.value, 4);
 
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME && !gfEditMode) {
     // The sector has already been visited.  The items are saved in a different format that will be
     // loaded later on.  So, all we need to do is skip the data entirely.
-    *hBuffer += sizeof(WORLDITEM) * uiNumWorldItems;
+    hBuffer.value += sizeof(WORLDITEM) * uiNumWorldItems;
     return;
   } else
     for (i = 0; i < uiNumWorldItems; i++) {
       // Add all of the items to the world indirectly through AddItemToPool, but only if the chance
       // associated with them succeed.
-      LOADDATA(addressof(dummyItem), *hBuffer, sizeof(WORLDITEM));
+      LOADDATA(addressof(dummyItem), hBuffer.value, sizeof(WORLDITEM));
       if (dummyItem.o.usItem == OWNERSHIP) {
         dummyItem.ubNonExistChance = 0;
       }

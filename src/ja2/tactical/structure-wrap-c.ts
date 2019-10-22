@@ -83,7 +83,7 @@ function GetWallLevelNodeAndStructOfSameOrientationAtGridno(sGridNo: INT16, ubOr
   let pStructure: Pointer<STRUCTURE>;
   let pBaseStructure: Pointer<STRUCTURE>;
 
-  (*ppStructure) = NULL;
+  (ppStructure.value) = NULL;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WALLSTUFF);
 
@@ -93,7 +93,7 @@ function GetWallLevelNodeAndStructOfSameOrientationAtGridno(sGridNo: INT16, ubOr
       pBaseStructure = FindBaseStructure(pStructure);
       if (pBaseStructure) {
         pNode = FindLevelNodeBasedOnStructure(pBaseStructure.value.sGridNo, pBaseStructure);
-        (*ppStructure) = pBaseStructure;
+        (ppStructure.value) = pBaseStructure;
         return pNode;
       }
     }
@@ -336,7 +336,7 @@ function IsRepairableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): BOOL
   ubMerc = WhoIsThere2(sGridNo, 0);
 
   if (pubID != NULL) {
-    (*pubID) = ubMerc;
+    (pubID.value) = ubMerc;
   }
 
   if (ubMerc != NOBODY) {
@@ -361,7 +361,7 @@ function IsRefuelableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): BOOL
   ubMerc = WhoIsThere2(sGridNo, 0);
 
   if (pubID != NULL) {
-    (*pubID) = ubMerc;
+    (pubID.value) = ubMerc;
   }
 
   if (ubMerc != NOBODY) {

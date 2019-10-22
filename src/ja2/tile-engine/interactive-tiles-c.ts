@@ -82,8 +82,8 @@ function CalcInteractiveObjectAPs(sGridNo: INT16, pStructure: Pointer<STRUCTURE>
     // If closed, we do not know what to do yet...
     // if ( pStructure->fFlags & STRUCTURE_OPEN )
     //{
-    *psAPCost = AP_OPEN_DOOR;
-    *psBPCost = AP_OPEN_DOOR;
+    psAPCost.value = AP_OPEN_DOOR;
+    psBPCost.value = AP_OPEN_DOOR;
     //}
     // else
     //{
@@ -91,8 +91,8 @@ function CalcInteractiveObjectAPs(sGridNo: INT16, pStructure: Pointer<STRUCTURE>
     //	*psBPCost = 0;
     //}
   } else {
-    *psAPCost = AP_OPEN_DOOR;
-    *psBPCost = AP_OPEN_DOOR;
+    psAPCost.value = AP_OPEN_DOOR;
+    psBPCost.value = AP_OPEN_DOOR;
   }
 
   return TRUE;
@@ -475,9 +475,9 @@ function GetCurInteractiveTileGridNo(psGridNo: Pointer<INT16>): Pointer<LEVELNOD
   pNode = GetCurInteractiveTile();
 
   if (pNode != NULL) {
-    *psGridNo = gCurIntTile.sGridNo;
+    psGridNo.value = gCurIntTile.sGridNo;
   } else {
-    *psGridNo = NOWHERE;
+    psGridNo.value = NOWHERE;
   }
 
   return pNode;
@@ -487,24 +487,24 @@ function ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<IN
   let pNode: Pointer<LEVELNODE>;
   let pStructure: Pointer<STRUCTURE>;
 
-  *ppStructure = NULL;
+  ppStructure.value = NULL;
 
   pNode = InternalGetCurInteractiveTile(fRejectOnTopItems);
 
   if (pNode != NULL) {
-    *psGridNo = gCurIntTile.sGridNo;
+    psGridNo.value = gCurIntTile.sGridNo;
   } else {
-    *psGridNo = NOWHERE;
+    psGridNo.value = NOWHERE;
   }
 
   if (pNode != NULL) {
     if (gCurIntTile.fStructure) {
       pStructure = FindStructureByID(gCurIntTile.sGridNo, gCurIntTile.usStructureID);
       if (pStructure == NULL) {
-        *ppStructure = NULL;
+        ppStructure.value = NULL;
         return NULL;
       } else {
-        *ppStructure = pStructure;
+        ppStructure.value = pStructure;
       }
     }
   }

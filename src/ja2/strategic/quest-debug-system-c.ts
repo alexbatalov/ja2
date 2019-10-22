@@ -1469,7 +1469,7 @@ function DisplaySelectedListBox(): void {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, usPosX, usPosY - 1, usPosX + gpActiveListBox.value.usScrollWidth, usPosY + gpActiveListBox.value.usScrollHeight, Get16BPPColor(FROMRGB(45, 59, 74)));
 
   // Display the selected list box's display function
-  (*(gpActiveListBox.value.DisplayFunction))();
+  ((gpActiveListBox.value.DisplayFunction).value)();
 
   // Display the Scroll BAr area
   // clear the scroll bar background
@@ -2188,7 +2188,7 @@ function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: STR16, Entry
       DestroyQuestDebugTextInputBoxes();
 
       if (ubAction != QD_DROP_DOWN_CANCEL)
-        (*(TextEntryCallback))(iTextEntryNumber);
+        ((TextEntryCallback).value)(iTextEntryNumber);
     } break;
 
     case QD_DROP_DOWN_DISPLAY: {

@@ -5335,24 +5335,24 @@ function SplitComplexObjectIntoSubObjects(pComplexObject: Pointer<OBJECTTYPE>): 
 function CountSubObjectsInObject(pComplexObject: Pointer<OBJECTTYPE>, pubTotalSubObjects: Pointer<UINT8>, pubRepairableSubObjects: Pointer<UINT8>, pubNonRepairableSubObjects: Pointer<UINT8>): void {
   let ubSubObject: UINT8;
 
-  *pubTotalSubObjects = 0;
-  *pubRepairableSubObjects = 0;
-  *pubNonRepairableSubObjects = 0;
+  pubTotalSubObjects.value = 0;
+  pubRepairableSubObjects.value = 0;
+  pubNonRepairableSubObjects.value = 0;
 
   // check every subobject and count it as either repairable or non-
   for (ubSubObject = 0; ubSubObject < MAX_SUBOBJECTS_PER_OBJECT; ubSubObject++) {
     // if there is something stored there
     if (gSubObject[ubSubObject].usItem != NONE) {
-      (*pubTotalSubObjects)++;
+      (pubTotalSubObjects.value)++;
 
       // is it in need of fixing, and also repairable by this dealer?
       // A jammed gun with a 100% status is NOT repairable - shouldn't ever happen
       if ((gSubObject[ubSubObject].bStatus[0] != 100) && CanDealerRepairItem(gbSelectedArmsDealerID, gSubObject[ubSubObject].usItem))
 
       {
-        (*pubRepairableSubObjects)++;
+        (pubRepairableSubObjects.value)++;
       } else {
-        (*pubNonRepairableSubObjects)++;
+        (pubNonRepairableSubObjects.value)++;
       }
     }
   }
@@ -5803,7 +5803,7 @@ function RepairmanFixingAnyItemsThatShouldBeDoneNow(puiHoursSinceOldestItemRepai
   if (!DoesDealerDoRepairs(gbSelectedArmsDealerID))
     return FALSE;
 
-  *puiHoursSinceOldestItemRepaired = 0;
+  puiHoursSinceOldestItemRepaired.value = 0;
 
   // loop through the dealers inventory and check if there are only unrepaired items
   for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
@@ -5830,8 +5830,8 @@ function RepairmanFixingAnyItemsThatShouldBeDoneNow(puiHoursSinceOldestItemRepai
               uiWorkingHoursSinceThisItemRepaired = (uiMinutesSinceItWasDone - uiMinutesShopClosedSinceItWasDone) / 60;
 
               // we need to determine how long it's been since the item that's been repaired for the longest time was done
-              if (uiWorkingHoursSinceThisItemRepaired > *puiHoursSinceOldestItemRepaired) {
-                *puiHoursSinceOldestItemRepaired = uiWorkingHoursSinceThisItemRepaired;
+              if (uiWorkingHoursSinceThisItemRepaired > puiHoursSinceOldestItemRepaired.value) {
+                puiHoursSinceOldestItemRepaired.value = uiWorkingHoursSinceThisItemRepaired;
               }
             }
           }

@@ -333,7 +333,7 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE
     pbPublOL = gbPublicOpplist[OUR_TEAM] + pOpponent.value.ubID;
 
     // if this opponent is unknown personally and publicly
-    if (*pbPersOL != SEEN_CURRENTLY && *pbPersOL != SEEN_THIS_TURN && *pbPublOL != SEEN_CURRENTLY && *pbPublOL != SEEN_THIS_TURN) {
+    if (pbPersOL.value != SEEN_CURRENTLY && pbPersOL.value != SEEN_THIS_TURN && pbPublOL.value != SEEN_CURRENTLY && pbPublOL.value != SEEN_THIS_TURN) {
       continue; // next merc
     }
 
@@ -744,7 +744,7 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo
     pbPublOL = addressof(gbPublicOpplist[pSoldier.value.bTeam][ubID]);
 
     // if soldier is known about (SEEN or HEARD within last few turns)
-    if (*pPersOL || *pbPublOL) {
+    if (pPersOL.value || pbPublOL.value) {
       bAware = TRUE;
     }
   }

@@ -4567,8 +4567,8 @@ function GetMapXY(sX: INT16, sY: INT16, psMapWorldX: Pointer<INT16>, psMapWorldY
     return FALSE;
   }
 
-  *psMapWorldX = (sMapX / MAP_GRID_X);
-  *psMapWorldY = (sMapY / MAP_GRID_Y);
+  psMapWorldX.value = (sMapX / MAP_GRID_X);
+  psMapWorldY.value = (sMapY / MAP_GRID_Y);
 
   return TRUE;
 }
@@ -4714,14 +4714,14 @@ function PollLeftButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
             gfAllowSkyriderTooFarQuote = TRUE;
 
             // draw new map route
-            *puiNewEvent = MAP_EVENT_PLOT_PATH;
+            puiNewEvent.value = MAP_EVENT_PLOT_PATH;
           }
         } else // not plotting movement
         {
           // if not plotting a path
           if ((fEndPlotting == FALSE) && (fJustFinishedPlotting == FALSE)) {
             // make this sector selected / trigger movement box / start helicopter plotting / changing arrival sector
-            *puiNewEvent = MAP_EVENT_CLICK_SECTOR;
+            puiNewEvent.value = MAP_EVENT_CLICK_SECTOR;
           }
 
           fEndPlotting = FALSE;
@@ -4789,7 +4789,7 @@ function PollRightButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
 
         if ((bSelectedDestChar != -1) || (fPlotForHelicopter == TRUE)) {
           // cancel/shorten the path
-          *puiNewEvent = MAP_EVENT_CANCEL_PATH;
+          puiNewEvent.value = MAP_EVENT_CANCEL_PATH;
         } else {
           if (GetMouseMapXY(addressof(sMapX), addressof(sMapY))) {
             /*
@@ -7023,7 +7023,7 @@ function CheckIfClickOnLastSectorInPath(sX: INT16, sY: INT16): BOOLEAN {
 
       // rebuild waypoints - helicopter
       ppMovePath = addressof(pVehicleList[iHelicopterVehicleId].pMercPath);
-      RebuildWayPointsForGroupPath(*ppMovePath, pVehicleList[iHelicopterVehicleId].ubMovementGroup);
+      RebuildWayPointsForGroupPath(ppMovePath.value, pVehicleList[iHelicopterVehicleId].ubMovementGroup);
 
       // pointer to previous helicopter path
       pPreviousMercPath = gpHelicopterPreviousMercPath;
@@ -7078,7 +7078,7 @@ function CheckIfClickOnLastSectorInPath(sX: INT16, sY: INT16): BOOLEAN {
     EndConfirmMapMoveMode();
 
     // if we really did plot a path (this will skip message if left click on current sector with no path)
-    if (GetLengthOfPath(*ppMovePath) > 0) {
+    if (GetLengthOfPath(ppMovePath.value) > 0) {
       // then verbally confirm this destination!
       HandleNewDestConfirmation(sX, sY);
     } else // NULL path confirmed
@@ -7135,7 +7135,7 @@ function RebuildWayPointsForAllSelectedCharsGroups(): void {
       // if we haven't already rebuilt this group
       if (!fGroupIDRebuilt[ubGroupId]) {
         // rebuild it now
-        RebuildWayPointsForGroupPath(*ppMovePath, ubGroupId);
+        RebuildWayPointsForGroupPath(ppMovePath.value, ubGroupId);
 
         // mark it as rebuilt
         fGroupIDRebuilt[ubGroupId] = TRUE;
@@ -9499,7 +9499,7 @@ function GetMapscreenMercDepartureString(pSoldier: Pointer<SOLDIERTYPE>, sString
     if (iMinsRemaining >= MAP_TIME_UNDER_THIS_DISPLAY_AS_HOURS) {
       iDaysRemaining = iMinsRemaining / (24 * 60);
 
-      *pubFontColor = FONT_LTGREEN;
+      pubFontColor.value = FONT_LTGREEN;
 
       swprintf(sString, "%d%s", iDaysRemaining, gpStrategicString[STR_PB_DAYS_ABBREVIATION]);
     } else // less than 3 days
@@ -9512,9 +9512,9 @@ function GetMapscreenMercDepartureString(pSoldier: Pointer<SOLDIERTYPE>, sString
 
       // last 3 days is Red, last 4 hours start flashing red/white!
       if ((iMinsRemaining <= MINS_TO_FLASH_CONTRACT_TIME) && (fFlashContractFlag == TRUE)) {
-        *pubFontColor = FONT_WHITE;
+        pubFontColor.value = FONT_WHITE;
       } else {
-        *pubFontColor = FONT_RED;
+        pubFontColor.value = FONT_RED;
       }
 
       swprintf(sString, "%d%s", iHoursRemaining, gpStrategicString[STR_PB_HOURS_ABBREVIATION]);
@@ -9567,18 +9567,18 @@ function RestorePreviousPaths(): void {
       gpHelicopterPreviousMercPath = MoveToBeginningOfPathList(gpHelicopterPreviousMercPath);
 
       // clear current path
-      *ppMovePath = ClearStrategicPathList(*ppMovePath, ubGroupId);
+      ppMovePath.value = ClearStrategicPathList(ppMovePath.value, ubGroupId);
       // replace it with the previous one
-      *ppMovePath = CopyPaths(gpHelicopterPreviousMercPath, *ppMovePath);
+      ppMovePath.value = CopyPaths(gpHelicopterPreviousMercPath, ppMovePath.value);
       // will need to rebuild waypoints
       fPathChanged = TRUE;
     } else // no previous path
     {
       // if he currently has a path
-      if (*ppMovePath) {
+      if (ppMovePath.value) {
         // wipe it out!
-        *ppMovePath = MoveToBeginningOfPathList(*ppMovePath);
-        *ppMovePath = ClearStrategicPathList(*ppMovePath, ubGroupId);
+        ppMovePath.value = MoveToBeginningOfPathList(ppMovePath.value);
+        ppMovePath.value = ClearStrategicPathList(ppMovePath.value, ubGroupId);
         // will need to rebuild waypoints
         fPathChanged = TRUE;
       }
@@ -9586,10 +9586,10 @@ function RestorePreviousPaths(): void {
 
     if (fPathChanged) {
       // rebuild waypoints
-      RebuildWayPointsForGroupPath(*ppMovePath, ubGroupId);
+      RebuildWayPointsForGroupPath(ppMovePath.value, ubGroupId);
 
       // copy his path to all selected characters
-      CopyPathToAllSelectedCharacters(*ppMovePath);
+      CopyPathToAllSelectedCharacters(ppMovePath.value);
     }
   } else // character(s) plotting
   {
@@ -9620,18 +9620,18 @@ function RestorePreviousPaths(): void {
           gpCharacterPreviousMercPath[iCounter] = MoveToBeginningOfPathList(gpCharacterPreviousMercPath[iCounter]);
 
           // clear current path
-          *ppMovePath = ClearStrategicPathList(*ppMovePath, ubGroupId);
+          ppMovePath.value = ClearStrategicPathList(ppMovePath.value, ubGroupId);
           // replace it with the previous one
-          *ppMovePath = CopyPaths(gpCharacterPreviousMercPath[iCounter], *ppMovePath);
+          ppMovePath.value = CopyPaths(gpCharacterPreviousMercPath[iCounter], ppMovePath.value);
           // will need to rebuild waypoints
           fPathChanged = TRUE;
         } else // no previous path stored
         {
           // if he has one now, wipe it out
-          if (*ppMovePath) {
+          if (ppMovePath.value) {
             // wipe it out!
-            *ppMovePath = MoveToBeginningOfPathList(*ppMovePath);
-            *ppMovePath = ClearStrategicPathList(*ppMovePath, ubGroupId);
+            ppMovePath.value = MoveToBeginningOfPathList(ppMovePath.value);
+            ppMovePath.value = ClearStrategicPathList(ppMovePath.value, ubGroupId);
             // will need to rebuild waypoints
             fPathChanged = TRUE;
           }
@@ -9639,7 +9639,7 @@ function RestorePreviousPaths(): void {
 
         if (fPathChanged) {
           // rebuild waypoints
-          RebuildWayPointsForGroupPath(*ppMovePath, ubGroupId);
+          RebuildWayPointsForGroupPath(ppMovePath.value, ubGroupId);
         }
       }
     }

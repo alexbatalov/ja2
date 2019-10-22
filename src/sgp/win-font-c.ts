@@ -117,7 +117,7 @@ function SetWinFontForeColor(iFont: INT32, pColor: Pointer<COLORVAL>): void {
   pWinFont = GetWinFont(iFont);
 
   if (pWinFont != NULL) {
-    pWinFont.value.ForeColor = (*pColor);
+    pWinFont.value.ForeColor = (pColor.value);
   }
 }
 
@@ -127,7 +127,7 @@ function SetWinFontBackColor(iFont: INT32, pColor: Pointer<COLORVAL>): void {
   pWinFont = GetWinFont(iFont);
 
   if (pWinFont != NULL) {
-    pWinFont.value.BackColor = (*pColor);
+    pWinFont.value.BackColor = (pColor.value);
   }
 }
 

@@ -39,16 +39,16 @@ function Clipt(denom: FLOAT, num: FLOAT, tE: Pointer<FLOAT>, tL: Pointer<FLOAT>)
 
   if (denom > 0.0f) {
     t = num / denom;
-    if (t > *tL)
+    if (t > tL.value)
       accept = FALSE;
-    else if (t > *tE)
-      *tE = t;
+    else if (t > tE.value)
+      tE.value = t;
   } else if (denom < 0.0f) {
     t = num / denom;
-    if (t < *tE)
+    if (t < tE.value)
       accept = FALSE;
-    else if (t < *tL)
-      *tL = t;
+    else if (t < tL.value)
+      tL.value = t;
   } else if (num > 0)
     accept = FALSE;
 
@@ -70,16 +70,16 @@ function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Po
   let x1: FLOAT;
   let y1: FLOAT;
 
-  x0 = *ix0;
-  x1 = *ix1;
-  y0 = *iy0;
-  y1 = *iy1;
+  x0 = ix0.value;
+  x1 = ix1.value;
+  y0 = iy0.value;
+  y1 = iy1.value;
 
   dx = x1 - x0;
   dy = y1 - y0;
   visible = FALSE;
 
-  if (dx == 0.0 && dy == 0.0 && ClipPoint(*ix0, *iy0))
+  if (dx == 0.0 && dy == 0.0 && ClipPoint(ix0.value, iy0.value))
     visible = TRUE;
   else {
     te = 0.0f;
@@ -103,10 +103,10 @@ function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Po
     }
   }
 
-  *ix0 = x0;
-  *ix1 = x1;
-  *iy0 = y0;
-  *iy1 = y1;
+  ix0.value = x0;
+  ix1.value = x1;
+  iy0.value = y0;
+  iy1.value = y1;
 
   return visible;
 }
@@ -323,7 +323,7 @@ function PixelDraw(fClip: BOOLEAN, xp: INT32, yp: INT32, sColor: INT16, pScreen:
    the first pixel of the next run. */
 function DrawHorizontalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLength: int, Color: int, ScreenWidth: int): void {
   let i: int;
-  let WorkingScreenPtr: Pointer<char> = *ScreenPtr;
+  let WorkingScreenPtr: Pointer<char> = ScreenPtr.value;
   let col2: char = Color >> 8;
   let col1: char = Color & 0x00FF;
 
@@ -334,14 +334,14 @@ function DrawHorizontalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, Run
   }
   /* Advance to the next scan line */
   WorkingScreenPtr += giImageWidth;
-  *ScreenPtr = WorkingScreenPtr;
+  ScreenPtr.value = WorkingScreenPtr;
 }
 
 /* Draws a vertical run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
 function DrawVerticalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLength: int, Color: int, ScreenWidth: int): void {
   let i: int;
-  let WorkingScreenPtr: Pointer<char> = *ScreenPtr;
+  let WorkingScreenPtr: Pointer<char> = ScreenPtr.value;
   let col2: char = Color >> 8;
   let col1: char = Color & 0x00FF;
 
@@ -352,7 +352,7 @@ function DrawVerticalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLe
   }
   /* Advance to the next column */
   WorkingScreenPtr += XAdvance * 2;
-  *ScreenPtr = WorkingScreenPtr;
+  ScreenPtr.value = WorkingScreenPtr;
 }
 
 /* Draws a rectangle between the specified endpoints in color Color. */
@@ -432,7 +432,7 @@ function LineDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, 
   if (XDelta == 0) {
     /* Vertical line */
     for (i = 0; i <= YDelta; i++) {
-      *ScreenPtr = col1;
+      ScreenPtr.value = col1;
       ScreenPtr += giImageWidth;
     }
     return;
@@ -440,7 +440,7 @@ function LineDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, 
   if (YDelta == 0) {
     /* Horizontal line */
     for (i = 0; i <= XDelta; i++) {
-      *ScreenPtr = col1;
+      ScreenPtr.value = col1;
       ScreenPtr += XAdvance;
     }
     return;
@@ -448,7 +448,7 @@ function LineDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, 
   if (XDelta == YDelta) {
     /* Diagonal line */
     for (i = 0; i <= XDelta; i++) {
-      *ScreenPtr = col1;
+      ScreenPtr.value = col1;
       ScreenPtr += (XAdvance + giImageWidth);
     }
     return;
@@ -571,32 +571,32 @@ function LineDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, 
    the first pixel of the next run. */
 function DrawHorizontalRun8(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLength: int, Color: int, ScreenWidth: int): void {
   let i: int;
-  let WorkingScreenPtr: Pointer<char> = *ScreenPtr;
+  let WorkingScreenPtr: Pointer<char> = ScreenPtr.value;
   let col2: char = Color >> 8;
   let col1: char = Color & 0x00FF;
 
   for (i = 0; i < RunLength; i++) {
-    *WorkingScreenPtr = col1;
+    WorkingScreenPtr.value = col1;
     WorkingScreenPtr += XAdvance;
   }
   /* Advance to the next scan line */
   WorkingScreenPtr += giImageWidth;
-  *ScreenPtr = WorkingScreenPtr;
+  ScreenPtr.value = WorkingScreenPtr;
 }
 
 /* Draws a vertical run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
 function DrawVerticalRun8(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLength: int, Color: int, ScreenWidth: int): void {
   let i: int;
-  let WorkingScreenPtr: Pointer<char> = *ScreenPtr;
+  let WorkingScreenPtr: Pointer<char> = ScreenPtr.value;
   let col2: char = Color >> 8;
   let col1: char = Color & 0x00FF;
 
   for (i = 0; i < RunLength; i++) {
-    *WorkingScreenPtr = col1;
+    WorkingScreenPtr.value = col1;
     WorkingScreenPtr += giImageWidth;
   }
   /* Advance to the next column */
   WorkingScreenPtr += XAdvance;
-  *ScreenPtr = WorkingScreenPtr;
+  ScreenPtr.value = WorkingScreenPtr;
 }

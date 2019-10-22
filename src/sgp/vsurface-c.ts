@@ -157,7 +157,7 @@ function AddStandardVideoSurface(pVSurfaceDesc: Pointer<VSURFACE_DESC>, puiIndex
   // Set the hVSurface into the node.
   gpVSurfaceTail.value.hVSurface = hVSurface;
   gpVSurfaceTail.value.uiIndex = guiVSurfaceIndex += 2;
-  *puiIndex = gpVSurfaceTail.value.uiIndex;
+  puiIndex.value = gpVSurfaceTail.value.uiIndex;
   Assert(guiVSurfaceIndex < 0xfffffff0); // unlikely that we will ever use 2 billion VSurfaces!
   // We would have to create about 70 VSurfaces per second for 1 year straight to achieve this...
   guiVSurfaceSize++;
@@ -303,9 +303,9 @@ function GetVideoSurfaceDescription(uiIndex: UINT32, usWidth: Pointer<UINT16>, u
 
   CHECKF(GetVideoSurface(addressof(hVSurface), uiIndex));
 
-  *usWidth = hVSurface.value.usWidth;
-  *usHeight = hVSurface.value.usHeight;
-  *ubBitDepth = hVSurface.value.ubBitDepth;
+  usWidth.value = hVSurface.value.usWidth;
+  usHeight.value = hVSurface.value.usHeight;
+  ubBitDepth.value = hVSurface.value.ubBitDepth;
 
   return TRUE;
 }
@@ -314,29 +314,29 @@ function GetVideoSurface(hVSurface: Pointer<HVSURFACE>, uiIndex: UINT32): BOOLEA
   let curr: Pointer<VSURFACE_NODE>;
 
   if (uiIndex == PRIMARY_SURFACE) {
-    *hVSurface = ghPrimary;
+    hVSurface.value = ghPrimary;
     return TRUE;
   }
 
   if (uiIndex == BACKBUFFER) {
-    *hVSurface = ghBackBuffer;
+    hVSurface.value = ghBackBuffer;
     return TRUE;
   }
 
   if (uiIndex == FRAME_BUFFER) {
-    *hVSurface = ghFrameBuffer;
+    hVSurface.value = ghFrameBuffer;
     return TRUE;
   }
 
   if (uiIndex == MOUSE_BUFFER) {
-    *hVSurface = ghMouseBuffer;
+    hVSurface.value = ghMouseBuffer;
     return TRUE;
   }
 
   curr = gpVSurfaceHead;
   while (curr) {
     if (curr.value.uiIndex == uiIndex) {
-      *hVSurface = curr.value.hVSurface;
+      hVSurface.value = curr.value.hVSurface;
       return TRUE;
     }
     curr = curr.value.next;
@@ -993,7 +993,7 @@ function LockVideoSurfaceBuffer(hVSurface: HVSURFACE, pPitch: Pointer<UINT32>): 
 
   DDLockSurface(hVSurface.value.pSurfaceData, NULL, addressof(SurfaceDescription), 0, NULL);
 
-  *pPitch = SurfaceDescription.lPitch;
+  pPitch.value = SurfaceDescription.lPitch;
 
   return SurfaceDescription.lpSurface;
 }
@@ -1325,7 +1325,7 @@ function SetClipList(hVSurface: HVSURFACE, RegionData: Pointer<SGPRect>, usNumRe
 function GetNumRegions(hVSurface: HVSURFACE, puiNumRegions: Pointer<UINT32>): BOOLEAN {
   Assert(hVSurface);
 
-  *puiNumRegions = ListSize(hVSurface.value.RegionList);
+  puiNumRegions.value = ListSize(hVSurface.value.RegionList);
 
   return TRUE;
 }
@@ -2073,7 +2073,7 @@ function MakeVSurfaceFromVObject(uiVObject: UINT32, usSubIndex: UINT16, puiVSurf
 
     if (AddVideoSurface(addressof(hDesc), addressof(uiVSurface))) {
       if (BltVideoObjectFromIndex(uiVSurface, uiVObject, usSubIndex, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL)) {
-        *puiVSurface = uiVSurface;
+        puiVSurface.value = uiVSurface;
         return TRUE;
       } else
         DeleteVideoSurfaceFromIndex(uiVSurface);

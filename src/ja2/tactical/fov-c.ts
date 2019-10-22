@@ -68,60 +68,60 @@ let ViewPath2: UINT8[][] /* [MAXVIEWPATHS][VIEWPATHLENGTH] */ = [
 function BuildSightDir(dir: UINT32, One: Pointer<UINT32>, Two: Pointer<UINT32>, Three: Pointer<UINT32>, Four: Pointer<UINT32>, Five: Pointer<UINT32>): void {
   switch (dir) {
     case NORTH:
-      *One = NORTHWEST;
-      *Two = NORTHEAST;
-      *Three = NORTH;
-      *Four = WEST;
-      *Five = EAST;
+      One.value = NORTHWEST;
+      Two.value = NORTHEAST;
+      Three.value = NORTH;
+      Four.value = WEST;
+      Five.value = EAST;
       break;
     case NORTHEAST:
-      *One = NORTH;
-      *Two = EAST;
-      *Three = NORTHEAST;
-      *Four = NORTHWEST;
-      *Five = SOUTHEAST;
+      One.value = NORTH;
+      Two.value = EAST;
+      Three.value = NORTHEAST;
+      Four.value = NORTHWEST;
+      Five.value = SOUTHEAST;
       break;
     case EAST:
-      *One = NORTHEAST;
-      *Two = SOUTHEAST;
-      *Three = EAST;
-      *Four = NORTH;
-      *Five = SOUTH;
+      One.value = NORTHEAST;
+      Two.value = SOUTHEAST;
+      Three.value = EAST;
+      Four.value = NORTH;
+      Five.value = SOUTH;
       break;
     case SOUTHEAST:
-      *One = EAST;
-      *Two = SOUTH;
-      *Three = SOUTHEAST;
-      *Four = NORTHEAST;
-      *Five = SOUTHWEST;
+      One.value = EAST;
+      Two.value = SOUTH;
+      Three.value = SOUTHEAST;
+      Four.value = NORTHEAST;
+      Five.value = SOUTHWEST;
       break;
     case SOUTH:
-      *One = SOUTHEAST;
-      *Two = SOUTHWEST;
-      *Three = SOUTH;
-      *Four = EAST;
-      *Five = WEST;
+      One.value = SOUTHEAST;
+      Two.value = SOUTHWEST;
+      Three.value = SOUTH;
+      Four.value = EAST;
+      Five.value = WEST;
       break;
     case SOUTHWEST:
-      *One = SOUTH;
-      *Two = WEST;
-      *Three = SOUTHWEST;
-      *Four = SOUTHEAST;
-      *Five = NORTHWEST;
+      One.value = SOUTH;
+      Two.value = WEST;
+      Three.value = SOUTHWEST;
+      Four.value = SOUTHEAST;
+      Five.value = NORTHWEST;
       break;
     case WEST:
-      *One = SOUTHWEST;
-      *Two = NORTHWEST;
-      *Three = WEST;
-      *Four = SOUTH;
-      *Five = NORTH;
+      One.value = SOUTHWEST;
+      Two.value = NORTHWEST;
+      Three.value = WEST;
+      Four.value = SOUTH;
+      Five.value = NORTH;
       break;
     case NORTHWEST:
-      *One = WEST;
-      *Two = NORTH;
-      *Three = NORTHWEST;
-      *Four = SOUTHWEST;
-      *Five = NORTHEAST;
+      One.value = WEST;
+      Two.value = NORTH;
+      Three.value = NORTHWEST;
+      Four.value = SOUTHWEST;
+      Five.value = NORTHEAST;
       break;
   }
 }

@@ -73,7 +73,7 @@ function MapPalette(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, 
       pData = addressof(pDest[(cY * sWidth) + cX]);
 
       // Set!
-      *pData = bBest;
+      pData.value = bBest;
     }
   }
 }

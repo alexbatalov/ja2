@@ -453,7 +453,7 @@ function GetNumberOfWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ
       FileClose(hFile);
     } else {
       // the file doesnt exist
-      *pSizeOfData = 0;
+      pSizeOfData.value = 0;
 
       return TRUE;
     }
@@ -474,7 +474,7 @@ function GetNumberOfWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ
     return FALSE;
   }
 
-  *pSizeOfData = uiNumberOfItems;
+  pSizeOfData.value = uiNumberOfItems;
 
   FileClose(hFile);
 
@@ -1551,9 +1551,9 @@ function GetNumberOfActiveWorldItemsFromTempFile(sMapX: INT16, sMapY: INT16, bMa
       }
       MemFree(pWorldItems);
     }
-    *pNumberOfData = uiNumberOfActive;
+    pNumberOfData.value = uiNumberOfActive;
   } else
-    *pNumberOfData = 0;
+    pNumberOfData.value = 0;
 
   return TRUE;
 }
@@ -2188,7 +2188,7 @@ function NewJA2EncryptedFileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT3
   fRet = FileRead(hFile, pDest, uiBytesToRead, puiBytesRead);
   if (fRet) {
     pMemBlock = pDest;
-    for (uiLoop = 0; uiLoop < *puiBytesRead; uiLoop++) {
+    for (uiLoop = 0; uiLoop < puiBytesRead.value; uiLoop++) {
       ubLastByteForNextLoop = pMemBlock[uiLoop];
       pMemBlock[uiLoop] -= (ubLastByte + pubRotationArray[ubArrayIndex]);
       ubArrayIndex++;
@@ -2298,7 +2298,7 @@ function JA2EncryptedFileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, 
   fRet = FileRead(hFile, pDest, uiBytesToRead, puiBytesRead);
   if (fRet) {
     pMemBlock = pDest;
-    for (uiLoop = 0; uiLoop < *puiBytesRead; uiLoop++) {
+    for (uiLoop = 0; uiLoop < puiBytesRead.value; uiLoop++) {
       ubLastByteForNextLoop = pMemBlock[uiLoop];
       pMemBlock[uiLoop] -= (ubLastByte + ubRotationArray[ubArrayIndex]);
       ubArrayIndex++;

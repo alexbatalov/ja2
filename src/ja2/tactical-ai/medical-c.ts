@@ -284,7 +284,7 @@ function FindBestPatient(pSoldier: Pointer<SOLDIERTYPE>, pfDoClimb: Pointer<BOOL
       CancelAIAction(MercPtrs[pBestPatient.value.ubAutoBandagingMedic], TRUE);
     }
     pBestPatient.value.ubAutoBandagingMedic = pSoldier.value.ubID;
-    *pfDoClimb = FALSE;
+    pfDoClimb.value = FALSE;
     if (CardinalSpacesAway(pSoldier.value.sGridNo, sBestPatientGridNo) == 1) {
       pSoldier.value.usActionData = sBestPatientGridNo;
       return AI_ACTION_GIVE_AID;
@@ -293,7 +293,7 @@ function FindBestPatient(pSoldier: Pointer<SOLDIERTYPE>, pfDoClimb: Pointer<BOOL
       return AI_ACTION_GET_CLOSER;
     }
   } else if (sBestClimbGridNo != NOWHERE) {
-    *pfDoClimb = TRUE;
+    pfDoClimb.value = TRUE;
     pSoldier.value.usActionData = sBestClimbGridNo;
     return AI_ACTION_MOVE_TO_CLIMB;
   } else {

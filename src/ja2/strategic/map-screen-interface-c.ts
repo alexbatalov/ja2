@@ -4489,19 +4489,19 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
 
   // still in transit?
   if (IsCharacterInTransit(pSoldier) == TRUE) {
-    *pbErrorNumber = 8;
+    pbErrorNumber.value = 8;
     return FALSE;
   }
 
   // a POW?
   if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
-    *pbErrorNumber = 5;
+    pbErrorNumber.value = 5;
     return FALSE;
   }
 
   // underground? (can't move strategically, must use tactical traversal )
   if (pSoldier.value.bSectorZ != 0) {
-    *pbErrorNumber = 1;
+    pbErrorNumber.value = 1;
     return FALSE;
   }
 
@@ -4509,19 +4509,19 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
     // empty (needs a driver!)?
     if (GetNumberInVehicle(pSoldier.value.bVehicleID) == 0) {
-      *pbErrorNumber = 32;
+      pbErrorNumber.value = 32;
       return FALSE;
     }
 
     // too damaged?
     if (pSoldier.value.bLife < OKLIFE) {
-      *pbErrorNumber = 47;
+      pbErrorNumber.value = 47;
       return FALSE;
     }
 
     // out of fuel?
     if (!VehicleHasFuel(pSoldier)) {
-      *pbErrorNumber = 42;
+      pbErrorNumber.value = 42;
       return FALSE;
     }
   } else // non-vehicle
@@ -4529,14 +4529,14 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
     // dead?
     if (pSoldier.value.bLife <= 0) {
       swprintf(gsCustomErrorString, pMapErrorString[35], pSoldier.value.name);
-      *pbErrorNumber = -99; // customized error message!
+      pbErrorNumber.value = -99; // customized error message!
       return FALSE;
     }
 
     // too injured?
     if (pSoldier.value.bLife < OKLIFE) {
       swprintf(gsCustomErrorString, pMapErrorString[33], pSoldier.value.name);
-      *pbErrorNumber = -99; // customized error message!
+      pbErrorNumber.value = -99; // customized error message!
       return FALSE;
     }
   }
@@ -4549,26 +4549,26 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
       if ((pSoldier.value.sSectorX == gWorldSectorX) && (pSoldier.value.sSectorY == gWorldSectorY) && (pSoldier.value.bSectorZ == gbWorldSectorZ)) {
         // in combat?
         if (gTacticalStatus.uiFlags & INCOMBAT) {
-          *pbErrorNumber = 11;
+          pbErrorNumber.value = 11;
           return FALSE;
         }
 
         // hostile sector?
         if (gTacticalStatus.fEnemyInSector) {
-          *pbErrorNumber = 2;
+          pbErrorNumber.value = 2;
           return FALSE;
         }
 
         // air raid in loaded sector where character is?
         if (InAirRaid()) {
-          *pbErrorNumber = 10;
+          pbErrorNumber.value = 10;
           return FALSE;
         }
       }
 
       // not necessarily loaded - if there are any hostiles there
       if (NumHostilesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) > 0) {
-        *pbErrorNumber = 2;
+        pbErrorNumber.value = 2;
         return FALSE;
       }
     }
@@ -4586,7 +4586,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
       for (pSoldier2 = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier2++) {
         if (pSoldier2.value.bActive) {
           if (FindObj(pSoldier2, CHALICE) != ITEM_NOT_FOUND) {
-            *pbErrorNumber = 34;
+            pbErrorNumber.value = 34;
             return FALSE;
           }
         }
@@ -4596,7 +4596,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
 
   // on assignment, other than just in a VEHICLE?
   if ((pSoldier.value.bAssignment >= ON_DUTY) && (pSoldier.value.bAssignment != VEHICLE)) {
-    *pbErrorNumber = 3;
+    pbErrorNumber.value = 3;
     return FALSE;
   }
 
@@ -4605,7 +4605,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   if (PlayerSoldierTooTiredToTravel(pSoldier)) {
     // too tired
     swprintf(gsCustomErrorString, pMapErrorString[43], pSoldier.value.name);
-    *pbErrorNumber = -99; // customized error message!
+    pbErrorNumber.value = -99; // customized error message!
     return FALSE;
   }
 
@@ -4613,7 +4613,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   if (AM_A_ROBOT(pSoldier)) {
     // going alone?
     if (((pSoldier.value.bAssignment == VEHICLE) && (!IsRobotControllerInVehicle(pSoldier.value.iVehicleId))) || ((pSoldier.value.bAssignment < ON_DUTY) && (!IsRobotControllerInSquad(pSoldier.value.bAssignment)))) {
-      *pbErrorNumber = 49;
+      pbErrorNumber.value = 49;
       return FALSE;
     }
   }
@@ -4628,7 +4628,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
         swprintf(gsCustomErrorString, "%s %s", pSoldier.value.name, pMapErrorString[7]);
       }
 
-      *pbErrorNumber = -99; // customized error message!
+      pbErrorNumber.value = -99; // customized error message!
       return FALSE;
     }
   }
@@ -4651,7 +4651,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   if (fProblemExists) {
     // inform user this specific merc cannot be moved out of the sector
     swprintf(gsCustomErrorString, pMapErrorString[29], pSoldier.value.name);
-    *pbErrorNumber = -99; // customized error message!
+    pbErrorNumber.value = -99; // customized error message!
     return FALSE;
   }
 

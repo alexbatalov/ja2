@@ -1739,16 +1739,16 @@ function AddSectorToFrontOfMercPath(ppMercPath: Pointer<PathStPtr>, ubSectorX: U
   pNode = MemAlloc(sizeof(PathSt));
 
   pNode.value.uiSectorId = CALCULATE_STRATEGIC_INDEX(ubSectorX, ubSectorY);
-  pNode.value.pNext = *ppMercPath;
+  pNode.value.pNext = ppMercPath.value;
   pNode.value.pPrev = NULL;
   pNode.value.uiEta = GetWorldTotalMin();
   pNode.value.fSpeed = NORMAL_MVT;
 
   // if path wasn't null
-  if (*ppMercPath != NULL) {
+  if (ppMercPath.value != NULL) {
     // hang the previous pointer of the old head to the new head
-    (*ppMercPath).value.pPrev = pNode;
+    (ppMercPath.value).value.pPrev = pNode;
   }
 
-  *ppMercPath = pNode;
+  ppMercPath.value = pNode;
 }

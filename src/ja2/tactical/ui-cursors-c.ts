@@ -42,11 +42,11 @@ function GetMouseRecalcAndShowAPFlags(puiCursorFlags: Pointer<UINT32>, pfShowAPs
   }
 
   if (puiCursorFlags) {
-    (*puiCursorFlags) = uiCursorFlags;
+    (puiCursorFlags.value) = uiCursorFlags;
   }
 
   if (pfShowAPs) {
-    (*pfShowAPs) = fShowAPs;
+    (pfShowAPs.value) = fShowAPs;
   }
 
   return fRecalc;

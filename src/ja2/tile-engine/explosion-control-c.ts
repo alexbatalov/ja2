@@ -448,10 +448,10 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
 
       if (fContinue) {
         // Remove the beast!
-        while ((*ppNextCurrent) != NULL && (*ppNextCurrent).value.usStructureID == pCurrent.value.usStructureID) {
+        while ((ppNextCurrent.value) != NULL && (ppNextCurrent.value).value.usStructureID == pCurrent.value.usStructureID) {
           // the next structure will also be deleted so we had better
           // skip past it!
-          (*ppNextCurrent) = (*ppNextCurrent).value.pNext;
+          (ppNextCurrent.value) = (ppNextCurrent.value).value.pNext;
         }
 
         // Replace with explosion debris if there are any....
@@ -624,10 +624,10 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
                 pAttachedBase = FindBaseStructure(pAttached);
                 if (pAttachedBase) {
                   // Remove the beast!
-                  while ((*ppNextCurrent) != NULL && (*ppNextCurrent).value.usStructureID == pAttachedBase.value.usStructureID) {
+                  while ((ppNextCurrent.value) != NULL && (ppNextCurrent.value).value.usStructureID == pAttachedBase.value.usStructureID) {
                     // the next structure will also be deleted so we had better
                     // skip past it!
-                    (*ppNextCurrent) = (*ppNextCurrent).value.pNext;
+                    (ppNextCurrent.value) = (ppNextCurrent.value).value.pNext;
                   }
 
                   pAttachedNode = FindLevelNodeBasedOnStructure(pAttachedBase.value.sGridNo, pAttachedBase);
@@ -850,7 +850,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
         InvalidateWorldRedundency();
         SetRenderFlags(RENDER_FLAG_FULL);
         // Movement costs!
-        (*pfRecompileMovementCosts) = TRUE;
+        (pfRecompileMovementCosts.value) = TRUE;
 
         {
           // Make secondary explosion if eplosive....
@@ -1503,7 +1503,7 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
                               */
     }
 
-    (*pfMercHit) = TRUE;
+    (pfMercHit.value) = TRUE;
   }
 
   return fRecompileMovementCosts;
@@ -1638,7 +1638,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
   if (Blocking != NOTHING_BLOCKING && !fTravelCostObs) {
     // ATE: Tall things should blaock all
     if (bStructHeight == 4) {
-      (*pubKeepGoing) = FALSE;
+      (pubKeepGoing.value) = FALSE;
     } else {
       // If we are smoke, reduce range variably....
       if (fReduceRay) {
@@ -1662,20 +1662,20 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
           uiRangeReduce = 2;
         }
 
-        (*piMaxRange) -= uiRangeReduce;
+        (piMaxRange.value) -= uiRangeReduce;
       }
 
-      if (uiCurRange <= (*piMaxRange)) {
-        (*pubKeepGoing) = TRUE;
+      if (uiCurRange <= (piMaxRange.value)) {
+        (pubKeepGoing.value) = TRUE;
       } else {
-        (*pubKeepGoing) = FALSE;
+        (pubKeepGoing.value) = FALSE;
       }
     }
   } else {
     if (fTravelCostObs) {
-      (*pubKeepGoing) = FALSE;
+      (pubKeepGoing.value) = FALSE;
     } else {
-      (*pubKeepGoing) = TRUE;
+      (pubKeepGoing.value) = TRUE;
     }
   }
 }

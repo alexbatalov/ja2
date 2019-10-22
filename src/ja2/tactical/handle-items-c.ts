@@ -1506,7 +1506,7 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
   let pStructure: Pointer<STRUCTURE>;
   let pBase: Pointer<STRUCTURE>;
   let sDesiredLevel: INT16;
-  let sNewGridNo: INT16 = *psGridNo;
+  let sNewGridNo: INT16 = psGridNo.value;
   let pNode: Pointer<LEVELNODE>;
   let fForceOnGround: BOOLEAN = FALSE;
   let fObjectInOpenable: BOOLEAN = FALSE;
@@ -1515,11 +1515,11 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
   Assert(pObject.value.ubNumberOfObjects <= MAX_OBJECTS_PER_SLOT);
 
   // ATE: Check if the gridno is OK
-  if ((*psGridNo) == NOWHERE) {
+  if ((psGridNo.value) == NOWHERE) {
     // Display warning.....
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "Error: Item %d was given invalid grid location %d for item pool. Please Report.", pObject.value.usItem, (*psGridNo));
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "Error: Item %d was given invalid grid location %d for item pool. Please Report.", pObject.value.usItem, (psGridNo.value));
 
-    (*psGridNo) = sNewGridNo = gMapInformation.sCenterGridNo;
+    (psGridNo.value) = sNewGridNo = gMapInformation.sCenterGridNo;
 
     // return( NULL );
   }
@@ -1527,7 +1527,7 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
   // CHECK IF THIS ITEM IS IN DEEP WATER....
   // IF SO, CHECK IF IT SINKS...
   // IF SO, DONT'T ADD!
-  bTerrainID = GetTerrainType(*psGridNo);
+  bTerrainID = GetTerrainType(psGridNo.value);
 
   if (bTerrainID == DEEP_WATER || bTerrainID == LOW_WATER || bTerrainID == MED_WATER) {
     if (Item[pObject.value.usItem].fFlags & ITEM_SINKS) {
@@ -1541,7 +1541,7 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
   // On a structure?
   // Locations on roofs without a roof is not possible, so
   // we convert the onroof intention to ground.
-  if (ubLevel && !FlatRoofAboveGridNo(*psGridNo)) {
+  if (ubLevel && !FlatRoofAboveGridNo(psGridNo.value)) {
     ubLevel = 0;
   }
 
@@ -1551,10 +1551,10 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
   }
 
   // Check structure database
-  if (gpWorldLevelData[*psGridNo].pStructureHead && (pObject.value.usItem != OWNERSHIP) && (pObject.value.usItem != ACTION_ITEM)) {
+  if (gpWorldLevelData[psGridNo.value].pStructureHead && (pObject.value.usItem != OWNERSHIP) && (pObject.value.usItem != ACTION_ITEM)) {
     // Something is here, check obstruction in future
     sDesiredLevel = ubLevel ? STRUCTURE_ON_ROOF : STRUCTURE_ON_GROUND;
-    pStructure = FindStructure(*psGridNo, STRUCTURE_BLOCKSMOVES);
+    pStructure = FindStructure(psGridNo.value, STRUCTURE_BLOCKSMOVES);
     while (pStructure) {
       if (!(pStructure.value.fFlags & (STRUCTURE_PERSON | STRUCTURE_CORPSE)) && pStructure.value.sCubeOffset == sDesiredLevel) {
         // If we are going into a raised struct AND we have above level set to -1
@@ -1628,7 +1628,7 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
       // switch items which are not hidden inside objects should be considered buried
       bVisible = BURIED;
       // and they are pressure-triggered unless there is a switch structure there
-      if (FindStructure(*psGridNo, STRUCTURE_SWITCH) != NULL) {
+      if (FindStructure(psGridNo.value, STRUCTURE_SWITCH) != NULL) {
         pObject.value.bDetonatorType = BOMB_SWITCH;
       } else {
         pObject.value.bDetonatorType = BOMB_PRESSURE;
@@ -1649,19 +1649,19 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
     }
   }
 
-  if (*psGridNo != sNewGridNo) {
-    *psGridNo = sNewGridNo;
+  if (psGridNo.value != sNewGridNo) {
+    psGridNo.value = sNewGridNo;
   }
 
   // First add the item to the global list.  This is so the game can keep track
   // of where the items are, for file i/o, etc.
-  iWorldItem = AddItemToWorld(*psGridNo, pObject, ubLevel, usFlags, bRenderZHeightAboveLevel, bVisible);
+  iWorldItem = AddItemToWorld(psGridNo.value, pObject, ubLevel, usFlags, bRenderZHeightAboveLevel, bVisible);
 
   // Check for and existing pool on the object layer
-  if (GetItemPool(*psGridNo, addressof(pItemPool), ubLevel)) {
+  if (GetItemPool(psGridNo.value, addressof(pItemPool), ubLevel)) {
     // Add to exitsing pool
     // Add graphic
-    pNode = AddItemGraphicToWorld(addressof(Item[pObject.value.usItem]), *psGridNo, ubLevel);
+    pNode = AddItemGraphicToWorld(addressof(Item[pObject.value.usItem]), psGridNo.value, ubLevel);
 
     // Set pool head value in levelnode
     pNode.value.pItemPool = pItemPool;
@@ -1689,7 +1689,7 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
     // Set Previous of new one
     pItemPool.value.pPrev = pItemPoolTemp;
   } else {
-    pNode = AddItemGraphicToWorld(addressof(Item[pObject.value.usItem]), *psGridNo, ubLevel);
+    pNode = AddItemGraphicToWorld(addressof(Item[pObject.value.usItem]), psGridNo.value, ubLevel);
 
     // Create new pool
     pItemPool = MemAlloc(sizeof(ITEM_POOL));
@@ -1706,14 +1706,14 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
     pItemPool.value.pLevelNode = pNode;
 
     // Set flag to indicate item pool presence
-    gpWorldLevelData[*psGridNo].uiFlags |= MAPELEMENT_ITEMPOOL_PRESENT;
+    gpWorldLevelData[psGridNo.value].uiFlags |= MAPELEMENT_ITEMPOOL_PRESENT;
   }
 
   // Set visible!
   pItemPool.value.bVisible = bVisible;
 
   // If bbisible is true, render makered world
-  if (bVisible == 1 && GridNoOnScreen((*psGridNo))) {
+  if (bVisible == 1 && GridNoOnScreen((psGridNo.value))) {
     // gpWorldLevelData[*psGridNo].uiFlags|=MAPELEMENT_REDRAW;
     // SetRenderFlags(RENDER_FLAG_MARKED);
     SetRenderFlags(RENDER_FLAG_FULL);
@@ -1721,19 +1721,19 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
 
   // Set flahs timer
   pItemPool.value.bFlashColor = FALSE;
-  pItemPool.value.sGridNo = *psGridNo;
+  pItemPool.value.sGridNo = psGridNo.value;
   pItemPool.value.ubLevel = ubLevel;
   pItemPool.value.usFlags = usFlags;
   pItemPool.value.bVisible = bVisible;
   pItemPool.value.bRenderZHeightAboveLevel = bRenderZHeightAboveLevel;
 
   // ATE: Get head of pool again....
-  if (GetItemPool(*psGridNo, addressof(pItemPool), ubLevel)) {
+  if (GetItemPool(psGridNo.value, addressof(pItemPool), ubLevel)) {
     AdjustItemPoolVisibility(pItemPool);
   }
 
   if (piItemIndex) {
-    *piItemIndex = iWorldItem;
+    piItemIndex.value = iWorldItem;
   }
 
   return addressof(gWorldItems[iWorldItem].o);
@@ -1771,7 +1771,7 @@ function ItemTypeExistsAtLocation(sGridNo: INT16, usItem: UINT16, ubLevel: UINT8
     while (pItemPoolTemp != NULL) {
       if (gWorldItems[pItemPoolTemp.value.iItemIndex].o.usItem == usItem) {
         if (piItemIndex) {
-          *piItemIndex = pItemPoolTemp.value.iItemIndex;
+          piItemIndex.value = pItemPoolTemp.value.iItemIndex;
         }
         return TRUE;
       }
@@ -2261,15 +2261,15 @@ function GetItemPool(usMapPos: UINT16, ppItemPool: Pointer<Pointer<ITEM_POOL>>, 
     pObject = gpWorldLevelData[usMapPos].pOnRoofHead;
   }
 
-  (*ppItemPool) = NULL;
+  (ppItemPool.value) = NULL;
 
   // LOOP THORUGH OBJECT LAYER
   while (pObject != NULL) {
     if (pObject.value.uiFlags & LEVELNODE_ITEM) {
-      (*ppItemPool) = pObject.value.pItemPool;
+      (ppItemPool.value) = pObject.value.pItemPool;
 
       // DEF added the check because pObject->pItemPool was NULL which was causing problems
-      if (*ppItemPool)
+      if (ppItemPool.value)
         return TRUE;
       else
         return FALSE;
@@ -2888,7 +2888,7 @@ function VerifyGiveItem(pSoldier: Pointer<SOLDIERTYPE>, ppTargetSoldier: Pointer
 
     // Look for item in hand....
 
-    (*ppTargetSoldier) = pTSoldier;
+    (ppTargetSoldier.value) = pTSoldier;
 
     return TRUE;
   } else {
@@ -3306,7 +3306,7 @@ function ContinuePastBoobyTrap(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, b
 
   pObj = addressof(gWorldItems[iItemIndex].o);
 
-  (*pfSaidQuote) = FALSE;
+  (pfSaidQuote.value) = FALSE;
 
   if (pObj.value.bTrap > 0) {
     if (pSoldier.value.bTeam == gbPlayerNum) {
@@ -3337,7 +3337,7 @@ function ContinuePastBoobyTrap(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, b
           SetStopTimeQuoteCallback(BoobyTrapDialogueCallBack);
           TacticalCharacterDialogue(pSoldier, QUOTE_BOOBYTRAP_ITEM);
 
-          (*pfSaidQuote) = TRUE;
+          (pfSaidQuote.value) = TRUE;
 
           return FALSE;
         }
@@ -3642,7 +3642,7 @@ function NearbyGroundSeemsWrong(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
               pObj.value.fFlags |= OBJECT_KNOWN_TO_BE_TRAPPED;
             }
 
-            *psProblemGridNo = sNextGridNo;
+            psProblemGridNo.value = sNextGridNo;
             return TRUE;
           }
         }
@@ -3690,7 +3690,7 @@ function NearbyGroundSeemsWrong(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
     */
   }
 
-  *psProblemGridNo = NOWHERE;
+  psProblemGridNo.value = NOWHERE;
   if (fFoundMetal) {
     return TRUE;
   } else {

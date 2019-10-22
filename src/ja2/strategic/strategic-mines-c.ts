@@ -81,7 +81,7 @@ function InitializeMines(): void {
   for (ubMineIndex = 0; ubMineIndex < MAX_NUMBER_OF_MINES; ubMineIndex++) {
     pMineStatus = addressof(gMineStatus[ubMineIndex]);
 
-    memset(pMineStatus, 0, sizeof(*pMineStatus));
+    memset(pMineStatus, 0, sizeof(pMineStatus.value));
 
     pMineStatus.value.ubMineType = gubMineTypes[ubMineIndex];
     pMineStatus.value.uiMaxRemovalRate = guiMinimumMineProduction[ubMineIndex];
@@ -577,8 +577,8 @@ function GetMineIndexForSector(sX: INT16, sY: INT16): INT8 {
 function GetMineSector(ubMineIndex: UINT8, psX: Pointer<INT16>, psY: Pointer<INT16>): void {
   Assert((ubMineIndex >= 0) && (ubMineIndex < MAX_NUMBER_OF_MINES));
 
-  *psX = gMineLocation[ubMineIndex].sSectorX;
-  *psY = gMineLocation[ubMineIndex].sSectorY;
+  psX.value = gMineLocation[ubMineIndex].sSectorX;
+  psY.value = gMineLocation[ubMineIndex].sSectorY;
 }
 
 // get the index of the mine associated with this town

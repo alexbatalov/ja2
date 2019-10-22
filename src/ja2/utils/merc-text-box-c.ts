@@ -373,8 +373,8 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
   pPopUpTextBox.value.sWidth = usWidth;
   pPopUpTextBox.value.sHeight = usHeight;
 
-  *pActualWidth = usWidth;
-  *pActualHeight = usHeight;
+  pActualWidth.value = usWidth;
+  pActualHeight.value = usHeight;
 
   DestRect.iLeft = 0;
   DestRect.iTop = 0;
@@ -528,28 +528,28 @@ function RemoveMercPopupBoxFromIndex(uiId: UINT32): BOOLEAN {
 function GetMercPopupBoxFontColor(ubBackgroundIndex: UINT8, pubFontColor: Pointer<UINT8>, pubFontShadowColor: Pointer<UINT8>): void {
   switch (ubBackgroundIndex) {
     case BASIC_MERC_POPUP_BACKGROUND:
-      *pubFontColor = TEXT_POPUP_COLOR;
-      *pubFontShadowColor = DEFAULT_SHADOW;
+      pubFontColor.value = TEXT_POPUP_COLOR;
+      pubFontShadowColor.value = DEFAULT_SHADOW;
       break;
 
     case WHITE_MERC_POPUP_BACKGROUND:
-      *pubFontColor = 2;
-      *pubFontShadowColor = FONT_MCOLOR_WHITE;
+      pubFontColor.value = 2;
+      pubFontShadowColor.value = FONT_MCOLOR_WHITE;
       break;
 
     case GREY_MERC_POPUP_BACKGROUND:
-      *pubFontColor = 2;
-      *pubFontShadowColor = NO_SHADOW;
+      pubFontColor.value = 2;
+      pubFontShadowColor.value = NO_SHADOW;
       break;
 
     case LAPTOP_POPUP_BACKGROUND:
-      *pubFontColor = TEXT_POPUP_COLOR;
-      *pubFontShadowColor = DEFAULT_SHADOW;
+      pubFontColor.value = TEXT_POPUP_COLOR;
+      pubFontShadowColor.value = DEFAULT_SHADOW;
       break;
 
     default:
-      *pubFontColor = TEXT_POPUP_COLOR;
-      *pubFontShadowColor = DEFAULT_SHADOW;
+      pubFontColor.value = TEXT_POPUP_COLOR;
+      pubFontShadowColor.value = DEFAULT_SHADOW;
       break;
   }
 }

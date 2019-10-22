@@ -730,11 +730,11 @@ function GetScreenXYFromMapXY(sMapX: INT16, sMapY: INT16, psX: Pointer<INT16>, p
   let sXTempOff: INT16 = 1;
   let sYTempOff: INT16 = 1;
   if (fZoomFlag) {
-    *psX = ((sMapX / 2 + sXTempOff) * MAP_GRID_ZOOM_X) + MAP_VIEW_START_X;
-    *psY = ((sMapY / 2 + sYTempOff) * MAP_GRID_ZOOM_Y) + MAP_VIEW_START_Y;
+    psX.value = ((sMapX / 2 + sXTempOff) * MAP_GRID_ZOOM_X) + MAP_VIEW_START_X;
+    psY.value = ((sMapY / 2 + sYTempOff) * MAP_GRID_ZOOM_Y) + MAP_VIEW_START_Y;
   } else {
-    *psX = (sMapX * MAP_GRID_X) + MAP_VIEW_START_X;
-    *psY = (sMapY * MAP_GRID_Y) + MAP_VIEW_START_Y;
+    psX.value = (sMapX * MAP_GRID_X) + MAP_VIEW_START_X;
+    psY.value = (sMapY * MAP_GRID_Y) + MAP_VIEW_START_Y;
   }
 }
 
@@ -742,8 +742,8 @@ function GetScreenXYFromMapXYStationary(sMapX: INT16, sMapY: INT16, psX: Pointer
   let sXTempOff: INT16 = 1;
   let sYTempOff: INT16 = 1;
   //(MAP_VIEW_START_X+((iCount+1)*MAP_GRID_X)*2-iZoomX));
-  *psX = ((sMapX + sXTempOff) * MAP_GRID_X) * 2 - (iZoomX) + MAP_VIEW_START_X;
-  *psY = ((sMapY + sYTempOff) * MAP_GRID_Y) * 2 - (iZoomY) + MAP_VIEW_START_Y;
+  psX.value = ((sMapX + sXTempOff) * MAP_GRID_X) * 2 - (iZoomX) + MAP_VIEW_START_X;
+  psY.value = ((sMapY + sYTempOff) * MAP_GRID_Y) * 2 - (iZoomY) + MAP_VIEW_START_Y;
 }
 
 function ShowTownText(): void {
@@ -3961,11 +3961,11 @@ function AdjustXForLeftMapEdge(wString: STR16, psX: Pointer<INT16>): void {
     // it's ok to cut strings off in zoomed mode
     return;
 
-  sStartingX = *psX - (StringPixLengthArg(MAP_FONT, wcslen(wString), wString) / 2);
+  sStartingX = psX.value - (StringPixLengthArg(MAP_FONT, wcslen(wString), wString) / 2);
   sPastEdge = (MAP_VIEW_START_X + 23) - sStartingX;
 
   if (sPastEdge > 0)
-    *psX += sPastEdge;
+    psX.value += sPastEdge;
 }
 
 function BlitTownGridMarkers(): void {

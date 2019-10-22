@@ -64,10 +64,10 @@ function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): BOOLEAN {
   let sTopLimit: INT16;
   let sBottomLimit: INT16;
 
-  if (*sGridNo < 0)
+  if (sGridNo.value < 0)
     return FALSE; // entry point is non-existant
 
-  ConvertGridNoToXY(*sGridNo, addressof(sXMapPos), addressof(sYMapPos));
+  ConvertGridNoToXY(sGridNo.value, addressof(sXMapPos), addressof(sYMapPos));
 
   sTopLimit = 80;
   sBottomLimit = gsBRY - gsTLY - 40;
@@ -83,7 +83,7 @@ function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): BOOLEAN {
     return FALSE; // already valid
   }
 
-  *sGridNo = MAPROWCOLTOPOS(iNewMapY / 10, iNewMapX / 10);
+  sGridNo.value = MAPROWCOLTOPOS(iNewMapY / 10, iNewMapX / 10);
 
   return TRUE; // modified
 }
@@ -96,7 +96,7 @@ function SaveMapInformation(fp: HWFILE): void {
 }
 
 function LoadMapInformation(hBuffer: Pointer<Pointer<INT8>>): void {
-  LOADDATA(addressof(gMapInformation), *hBuffer, sizeof(MAPCREATE_STRUCT));
+  LOADDATA(addressof(gMapInformation), hBuffer.value, sizeof(MAPCREATE_STRUCT));
   // FileRead( hfile, &gMapInformation, sizeof( MAPCREATE_STRUCT ), &uiBytesRead);
 
   // ATE: OK, do some handling here for basement level scroll restrictions

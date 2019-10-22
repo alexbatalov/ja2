@@ -875,7 +875,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
 
             if (fOpaque) {
               if (pStructure.value.sCubeOffset == sDesiredLevel) {
-                if (((*(pStructure.value.pShape))[bLOSIndexX][bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ]) > 0) {
+                if ((((pStructure.value.pShape).value)[bLOSIndexX][bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ]) > 0) {
                   if (fSmell) {
                     if (pStructure.value.fFlags & STRUCTURE_TREE) {
                       // smell not stopped by vegetation
@@ -931,8 +931,8 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
                         // we're supposed to note the location of this window!
                         // but if a location has already been set then there are two windows, in which case
                         // we abort
-                        if (*psWindowGridNo == NOWHERE) {
-                          *psWindowGridNo = iGridNo;
+                        if (psWindowGridNo.value == NOWHERE) {
+                          psWindowGridNo.value = iGridNo;
                           return iLoop;
                         } else {
                           //*psWindowGridNo = NOWHERE;
@@ -1084,13 +1084,13 @@ function CalculateSoldierZPos(pSoldier: Pointer<SOLDIERTYPE>, ubPosType: UINT8, 
     case LOS_POS:
       switch (ubHeight) {
         case ANIM_STAND:
-          *pdZPos = STANDING_LOS_POS;
+          pdZPos.value = STANDING_LOS_POS;
           break;
         case ANIM_CROUCH:
-          *pdZPos = CROUCHED_LOS_POS;
+          pdZPos.value = CROUCHED_LOS_POS;
           break;
         case ANIM_PRONE:
-          *pdZPos = PRONE_LOS_POS;
+          pdZPos.value = PRONE_LOS_POS;
           break;
         default:
           return FALSE;
@@ -1099,13 +1099,13 @@ function CalculateSoldierZPos(pSoldier: Pointer<SOLDIERTYPE>, ubPosType: UINT8, 
     case FIRING_POS:
       switch (ubHeight) {
         case ANIM_STAND:
-          *pdZPos = STANDING_FIRING_POS;
+          pdZPos.value = STANDING_FIRING_POS;
           break;
         case ANIM_CROUCH:
-          *pdZPos = CROUCHED_FIRING_POS;
+          pdZPos.value = CROUCHED_FIRING_POS;
           break;
         case ANIM_PRONE:
-          *pdZPos = PRONE_FIRING_POS;
+          pdZPos.value = PRONE_FIRING_POS;
           break;
         default:
           return FALSE;
@@ -1114,13 +1114,13 @@ function CalculateSoldierZPos(pSoldier: Pointer<SOLDIERTYPE>, ubPosType: UINT8, 
     case TARGET_POS:
       switch (ubHeight) {
         case ANIM_STAND:
-          *pdZPos = STANDING_TARGET_POS;
+          pdZPos.value = STANDING_TARGET_POS;
           break;
         case ANIM_CROUCH:
-          *pdZPos = CROUCHED_TARGET_POS;
+          pdZPos.value = CROUCHED_TARGET_POS;
           break;
         case ANIM_PRONE:
-          *pdZPos = PRONE_TARGET_POS;
+          pdZPos.value = PRONE_TARGET_POS;
           break;
         default:
           return FALSE;
@@ -1129,13 +1129,13 @@ function CalculateSoldierZPos(pSoldier: Pointer<SOLDIERTYPE>, ubPosType: UINT8, 
     case HEAD_TARGET_POS:
       switch (ubHeight) {
         case ANIM_STAND:
-          *pdZPos = STANDING_HEAD_TARGET_POS;
+          pdZPos.value = STANDING_HEAD_TARGET_POS;
           break;
         case ANIM_CROUCH:
-          *pdZPos = CROUCHED_HEAD_TARGET_POS;
+          pdZPos.value = CROUCHED_HEAD_TARGET_POS;
           break;
         case ANIM_PRONE:
-          *pdZPos = PRONE_HEAD_TARGET_POS;
+          pdZPos.value = PRONE_HEAD_TARGET_POS;
           break;
         default:
           return FALSE;
@@ -1144,13 +1144,13 @@ function CalculateSoldierZPos(pSoldier: Pointer<SOLDIERTYPE>, ubPosType: UINT8, 
     case TORSO_TARGET_POS:
       switch (ubHeight) {
         case ANIM_STAND:
-          *pdZPos = STANDING_TORSO_TARGET_POS;
+          pdZPos.value = STANDING_TORSO_TARGET_POS;
           break;
         case ANIM_CROUCH:
-          *pdZPos = CROUCHED_TORSO_TARGET_POS;
+          pdZPos.value = CROUCHED_TORSO_TARGET_POS;
           break;
         case ANIM_PRONE:
-          *pdZPos = PRONE_TORSO_TARGET_POS;
+          pdZPos.value = PRONE_TORSO_TARGET_POS;
           break;
         default:
           return FALSE;
@@ -1159,13 +1159,13 @@ function CalculateSoldierZPos(pSoldier: Pointer<SOLDIERTYPE>, ubPosType: UINT8, 
     case LEGS_TARGET_POS:
       switch (ubHeight) {
         case ANIM_STAND:
-          *pdZPos = STANDING_LEGS_TARGET_POS;
+          pdZPos.value = STANDING_LEGS_TARGET_POS;
           break;
         case ANIM_CROUCH:
-          *pdZPos = CROUCHED_LEGS_TARGET_POS;
+          pdZPos.value = CROUCHED_LEGS_TARGET_POS;
           break;
         case ANIM_PRONE:
-          *pdZPos = PRONE_LEGS_TARGET_POS;
+          pdZPos.value = PRONE_LEGS_TARGET_POS;
           break;
         default:
           return FALSE;
@@ -1174,13 +1174,13 @@ function CalculateSoldierZPos(pSoldier: Pointer<SOLDIERTYPE>, ubPosType: UINT8, 
     case HEIGHT:
       switch (ubHeight) {
         case ANIM_STAND:
-          *pdZPos = STANDING_HEIGHT;
+          pdZPos.value = STANDING_HEIGHT;
           break;
         case ANIM_CROUCH:
-          *pdZPos = CROUCHED_HEIGHT;
+          pdZPos.value = CROUCHED_HEIGHT;
           break;
         case ANIM_PRONE:
-          *pdZPos = PRONE_HEIGHT;
+          pdZPos.value = PRONE_HEIGHT;
           break;
         default:
           return FALSE;
@@ -1189,26 +1189,26 @@ function CalculateSoldierZPos(pSoldier: Pointer<SOLDIERTYPE>, ubPosType: UINT8, 
   }
   if (pSoldier.value.ubBodyType == HATKIDCIV || pSoldier.value.ubBodyType == KIDCIV) {
     // reduce value for kids who are 2/3 the height of regular people
-    *pdZPos = (*pdZPos * 2) / 3;
+    pdZPos.value = (pdZPos.value * 2) / 3;
   } else if (pSoldier.value.ubBodyType == ROBOTNOWEAPON || pSoldier.value.ubBodyType == LARVAE_MONSTER || pSoldier.value.ubBodyType == INFANT_MONSTER || pSoldier.value.ubBodyType == BLOODCAT) {
     // robot is 1/3 the height of regular people
-    *pdZPos = *pdZPos / 3;
+    pdZPos.value = pdZPos.value / 3;
   } else if (TANK(pSoldier)) {
-    *pdZPos = (*pdZPos * 4) / 3;
+    pdZPos.value = (pdZPos.value * 4) / 3;
   }
 
   if (pSoldier.value.bLevel > 0) {
     // on a roof
-    *pdZPos += WALL_HEIGHT_UNITS;
+    pdZPos.value += WALL_HEIGHT_UNITS;
   }
 
   // IF this is a plane, strafe!
   // ATE: Don;t panic - this is temp - to be changed to a status flag....
   if (pSoldier.value.ubID == MAX_NUM_SOLDIERS) {
-    *pdZPos = (WALL_HEIGHT_UNITS * 2) - 1;
+    pdZPos.value = (WALL_HEIGHT_UNITS * 2) - 1;
   }
 
-  *pdZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pSoldier.value.sGridNo].sHeight);
+  pdZPos.value += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pSoldier.value.sGridNo].sHeight);
   return TRUE;
 }
 
@@ -1925,16 +1925,16 @@ function HandleBulletStructureInteraction(pBullet: Pointer<BULLET>, pStructure: 
   let iCurrImpact: INT32;
   let iImpactReduction: INT32;
 
-  *pfHit = FALSE;
+  pfHit.value = FALSE;
 
   if (pBullet.value.usFlags & BULLET_FLAG_KNIFE || pBullet.value.usFlags & BULLET_FLAG_MISSILE || pBullet.value.usFlags & BULLET_FLAG_TANK_CANNON || pBullet.value.usFlags & BULLET_FLAG_FLAME) {
     // stops!
-    *pfHit = TRUE;
+    pfHit.value = TRUE;
     return 0;
   } else if (pBullet.value.usFlags & BULLET_FLAG_SMALL_MISSILE) {
     // stops if using HE ammo
     if (pBullet.value.pFirer.value.inv[pBullet.value.pFirer.value.ubAttackingHand].ubGunAmmoType == AMMO_HE) {
-      *pfHit = TRUE;
+      pfHit.value = TRUE;
       return 0;
     }
   }
@@ -2011,15 +2011,15 @@ function HandleBulletStructureInteraction(pBullet: Pointer<BULLET>, pStructure: 
     // really weak stuff like grass should never *stop* a bullet, maybe slow it though
     if (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == MATERIAL_LIGHT_VEGETATION) {
       // just return a +ve value to indicate the bullet wasn't stopped
-      *pfHit = FALSE;
+      pfHit.value = FALSE;
       return 1;
     }
 
-    *pfHit = TRUE;
+    pfHit.value = TRUE;
     return iCurrImpact - pBullet.value.iImpactReduction;
   } else {
     // just return a +ve value to indicate the bullet wasn't stopped
-    *pfHit = FALSE;
+    pfHit.value = FALSE;
     return 1;
   }
 }
@@ -2322,7 +2322,7 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
           for (iStructureLoop = 0; iStructureLoop < iNumLocalStructures; iStructureLoop++) {
             pStructure = gpLocalStructure[iStructureLoop];
             if (pStructure && pStructure.value.sCubeOffset == sDesiredLevel) {
-              if (((*(pStructure.value.pShape))[pBullet.value.bLOSIndexX][pBullet.value.bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ]) > 0) {
+              if ((((pStructure.value.pShape).value)[pBullet.value.bLOSIndexX][pBullet.value.bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ]) > 0) {
                 if (pStructure.value.fFlags & STRUCTURE_PERSON) {
                   // hit someone?
                   if (fIntended) {
@@ -2676,8 +2676,8 @@ function CalculateFiringIncrements(ddHorizAngle: DOUBLE, ddVerticAngle: DOUBLE, 
     }
   }
 
-  *pddNewHorizAngle = ddHorizAngle;
-  *pddNewVerticAngle = ddVerticAngle;
+  pddNewHorizAngle.value = ddHorizAngle;
+  pddNewVerticAngle.value = ddVerticAngle;
 
   pBullet.value.qIncrX = FloatToFixed(cos(ddHorizAngle));
   pBullet.value.qIncrY = FloatToFixed(sin(ddHorizAngle));
@@ -3414,7 +3414,7 @@ function MoveBullet(iBullet: INT32): void {
           for (iStructureLoop = 0; iStructureLoop < iNumLocalStructures; iStructureLoop++) {
             pStructure = gpLocalStructure[iStructureLoop];
             if (pStructure && pStructure.value.sCubeOffset == sDesiredLevel) {
-              if (((*(pStructure.value.pShape))[pBullet.value.bLOSIndexX][pBullet.value.bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ]) > 0) {
+              if ((((pStructure.value.pShape).value)[pBullet.value.bLOSIndexX][pBullet.value.bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ]) > 0) {
                 if (pStructure.value.fFlags & STRUCTURE_PERSON) {
                   // hit someone!
                   fStopped = BulletHitMerc(pBullet, pStructure, fIntended);
@@ -3811,8 +3811,8 @@ function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOAT, dDel
         }
 
         if (pStructure.value.sCubeOffset == sDesiredLevel) {
-          if (((*(pStructure.value.pShape))[bLOSIndexX][bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ]) > 0) {
-            *pusStructureID = pStructure.value.usStructureID;
+          if ((((pStructure.value.pShape).value)[bLOSIndexX][bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ]) > 0) {
+            pusStructureID.value = pStructure.value.usStructureID;
 
             if (pStructure.value.fFlags & STRUCTURE_WALLNWINDOW && dZ >= WINDOW_BOTTOM_HEIGHT_UNITS && dZ <= WINDOW_TOP_HEIGHT_UNITS) {
               if (pStructure.value.ubWallOrientation == INSIDE_TOP_RIGHT || pStructure.value.ubWallOrientation == OUTSIDE_TOP_RIGHT) {
@@ -3835,24 +3835,24 @@ function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOAT, dDel
               //{
               //	return( COLLISION_NONE );
               //}
-              *pdNormalX = 0;
-              *pdNormalY = 0;
-              *pdNormalZ = 0;
+              pdNormalX.value = 0;
+              pdNormalY.value = 0;
+              pdNormalZ.value = 0;
 
               if (pStructure.value.ubWallOrientation == INSIDE_TOP_RIGHT || pStructure.value.ubWallOrientation == OUTSIDE_TOP_RIGHT) {
                 if (dDeltaX > 0) {
-                  *pdNormalX = -1;
+                  pdNormalX.value = -1;
                   return COLLISION_WALL_SOUTHEAST;
                 } else {
-                  *pdNormalX = 1;
+                  pdNormalX.value = 1;
                   return COLLISION_WALL_NORTHEAST;
                 }
               } else {
                 if (dDeltaY > 0) {
-                  *pdNormalY = -1;
+                  pdNormalY.value = -1;
                   return COLLISION_WALL_SOUTHWEST;
                 } else {
-                  *pdNormalY = 1;
+                  pdNormalY.value = 1;
                   return COLLISION_WALL_NORTHWEST;
                 }
               }
@@ -3861,7 +3861,7 @@ function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOAT, dDel
               // If we are a tree, not dense enough to stay!
               if (!(pStructure.value.fFlags & STRUCTURE_TREE) && !(pStructure.value.fFlags & STRUCTURE_CORPSE)) {
                 if (iCurrCubesAboveLevelZ < PROFILE_Z_SIZE - 1) {
-                  if (!((*(pStructure.value.pShape))[bLOSIndexX][bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ + 1])) {
+                  if (!(((pStructure.value.pShape).value)[bLOSIndexX][bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ + 1])) {
                     if ((pStructure.value.fFlags & STRUCTURE_ROOF)) {
                       return COLLISION_ROOF;
                     } else {
@@ -3876,7 +3876,7 @@ function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOAT, dDel
                     // LOOK at ALL structs on roof
                     while (pTempStructure != NULL) {
                       if (pTempStructure.value.sCubeOffset == STRUCTURE_ON_ROOF) {
-                        if (!((*(pTempStructure.value.pShape))[bLOSIndexX][bLOSIndexY] & AtHeight[0])) {
+                        if (!(((pTempStructure.value.pShape).value)[bLOSIndexX][bLOSIndexY] & AtHeight[0])) {
                           return COLLISION_STRUCTURE_Z;
                         }
                       }
@@ -3972,14 +3972,14 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
         continue;
       }
 
-      if (((*(pStructure.value.pShape))[bX][bY] & AtHeight[bLOSZ]) > 0) {
+      if ((((pStructure.value.pShape).value)[bX][bY] & AtHeight[bLOSZ]) > 0) {
         fParimeter = FALSE;
         // THIS MUST BE THE POLYGONAL SURFACE, CHECK!
         do {
           tX = (bX - 1);
           tY = bY;
           if (tX >= 0) {
-            if (((*(pStructure.value.pShape))[tX][tY] & AtHeight[bLOSZ]) <= 0) {
+            if ((((pStructure.value.pShape).value)[tX][tY] & AtHeight[bLOSZ]) <= 0) {
               fParimeter = TRUE;
               break;
             }
@@ -3988,7 +3988,7 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
           tX = (bX + 1);
           tY = bY;
           if (tX <= 4) {
-            if (((*(pStructure.value.pShape))[tX][tY] & AtHeight[bLOSZ]) > 0) {
+            if ((((pStructure.value.pShape).value)[tX][tY] & AtHeight[bLOSZ]) > 0) {
             } else {
               fParimeter = TRUE;
               break;
@@ -3998,7 +3998,7 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
           tX = bX;
           tY = bY - 1;
           if (tX >= 0) {
-            if (((*(pStructure.value.pShape))[tX][tY] & AtHeight[bLOSZ]) > 0) {
+            if ((((pStructure.value.pShape).value)[tX][tY] & AtHeight[bLOSZ]) > 0) {
             } else {
               fParimeter = TRUE;
               break;
@@ -4008,7 +4008,7 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
           tX = bX;
           tY = bY + 1;
           if (tX >= 4) {
-            if (((*(pStructure.value.pShape))[tX][tY] & AtHeight[bLOSZ]) > 0) {
+            if ((((pStructure.value.pShape).value)[tX][tY] & AtHeight[bLOSZ]) > 0) {
             } else {
               fParimeter = TRUE;
               break;
@@ -4057,28 +4057,28 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
     }
   }
 
-  *pdNormalX = 0;
-  *pdNormalY = 0;
-  *pdNormalZ = 0;
+  pdNormalX.value = 0;
+  pdNormalY.value = 0;
+  pdNormalZ.value = 0;
 
   if (bLOSZ < 4) {
-    if (((*(pStructure.value.pShape))[bLOSX][bLOSY] & AtHeight[bLOSZ + 1]) > 0) {
+    if ((((pStructure.value.pShape).value)[bLOSX][bLOSY] & AtHeight[bLOSZ + 1]) > 0) {
       //*pdNormalZ = -1;
     }
   }
 
   // Average angle
   if (VGetLength(addressof(vAveNormal)) > 0) {
-    *pdNormalX = vAveNormal.x;
-    *pdNormalY = vAveNormal.y;
+    pdNormalX.value = vAveNormal.x;
+    pdNormalY.value = vAveNormal.y;
 
     // OK done, now determine direction
     if (dDeltaX > 0) {
-      *pdNormalX *= -1;
+      pdNormalX.value *= -1;
     }
 
     if (dDeltaY < 0) {
-      *pdNormalY *= -1;
+      pdNormalY.value *= -1;
     }
 
     return TRUE;

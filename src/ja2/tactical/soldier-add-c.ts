@@ -104,7 +104,7 @@ function FindGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: I
   gubNPCDistLimit = ubSaveNPCDistLimit;
   if (fFound) {
     // Set direction to center of map!
-    *pubDirection = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+    pubDirection.value = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
     return sLowestGridNo;
   } else {
     return NOWHERE;
@@ -192,7 +192,7 @@ function FindGridNoFromSweetSpotThroughPeople(pSoldier: Pointer<SOLDIERTYPE>, sS
   gubNPCDistLimit = ubSaveNPCDistLimit;
   if (fFound) {
     // Set direction to center of map!
-    *pubDirection = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+    pubDirection.value = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
     return sLowestGridNo;
   } else {
     return NOWHERE;
@@ -241,7 +241,7 @@ function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERTYPE>, u
 
   // If we are already at this gridno....
   if (pSoldier.value.sGridNo == sSweetGridNo && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
-    *pubDirection = pSoldier.value.bDirection;
+    pubDirection.value = pSoldier.value.bDirection;
     return sSweetGridNo;
   }
 
@@ -331,7 +331,7 @@ function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERTYPE>, u
   gubNPCDistLimit = ubSaveNPCDistLimit;
   if (fFound) {
     // Set direction we chose...
-    *pubDirection = ubBestDirection;
+    pubDirection.value = ubBestDirection;
 
     return sLowestGridNo;
   } else {
@@ -379,7 +379,7 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
 
   // If we are already at this gridno....
   if (pSoldier.value.sGridNo == sSweetGridNo && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
-    *pubDirection = pSoldier.value.bDirection;
+    pubDirection.value = pSoldier.value.bDirection;
     return sSweetGridNo;
   }
 
@@ -477,7 +477,7 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
   gubNPCDistLimit = ubSaveNPCDistLimit;
   if (fFound) {
     // Set direction we chose...
-    *pubDirection = ubBestDirection;
+    pubDirection.value = ubBestDirection;
 
     return sLowestGridNo;
   } else {
@@ -607,7 +607,7 @@ function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLD
   gubNPCDistLimit = ubSaveNPCDistLimit;
   if (fFound) {
     // Set direction we chose...
-    *pubDirection = ubBestDirection;
+    pubDirection.value = ubBestDirection;
 
     return sLowestGridNo;
   } else {
@@ -664,7 +664,7 @@ function FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDIERTYPE
 
   if (fFound) {
     // Set direction to center of map!
-    *pubDirection = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+    pubDirection.value = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
 
     return sLowestGridNo;
   } else {
@@ -726,7 +726,7 @@ function FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier: Pointer<S
 
   if (fFound) {
     // Set direction to center of map!
-    *pubDirection = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+    pubDirection.value = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
 
     return sLowestGridNo;
   } else {
@@ -846,7 +846,7 @@ function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGri
   } while (!fFound);
 
   // Set direction to center of map!
-  *pubDirection = GetDirectionToGridNoFromGridNo(sGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+  pubDirection.value = GetDirectionToGridNoFromGridNo(sGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
 
   gubNPCAPBudget = ubSaveNPCAPBudget;
   gubNPCDistLimit = ubSaveNPCDistLimit;
@@ -889,7 +889,7 @@ function FindRandomGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDI
   } while (!fFound);
 
   // Set direction to center of map!
-  *pubDirection = GetDirectionToGridNoFromGridNo(sGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+  pubDirection.value = GetDirectionToGridNoFromGridNo(sGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
 
   return sGridNo;
 }

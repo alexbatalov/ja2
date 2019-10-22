@@ -448,18 +448,18 @@ function AdjustImpactByHitLocation(iImpact: INT32, ubHitLocation: UINT8, piNewIm
   switch (ubHitLocation) {
     case AIM_SHOT_HEAD:
       // 1.5x damage from successful hits to the head!
-      *piImpactForCrits = HEAD_DAMAGE_ADJUSTMENT(iImpact);
-      *piNewImpact = *piImpactForCrits;
+      piImpactForCrits.value = HEAD_DAMAGE_ADJUSTMENT(iImpact);
+      piNewImpact.value = piImpactForCrits.value;
       break;
     case AIM_SHOT_LEGS:
       // half damage for determining critical hits
       // quarter actual damage
-      *piImpactForCrits = LEGS_DAMAGE_ADJUSTMENT(iImpact);
-      *piNewImpact = LEGS_DAMAGE_ADJUSTMENT(*piImpactForCrits);
+      piImpactForCrits.value = LEGS_DAMAGE_ADJUSTMENT(iImpact);
+      piNewImpact.value = LEGS_DAMAGE_ADJUSTMENT(piImpactForCrits.value);
       break;
     default:
-      *piImpactForCrits = iImpact;
-      *piNewImpact = iImpact;
+      piImpactForCrits.value = iImpact;
+      piNewImpact.value = iImpact;
       break;
   }
 }
@@ -703,9 +703,9 @@ function GetTargetWorldPositions(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: 
     dTargetZ += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sTargetGridNo].sHeight);
   }
 
-  *pdXPos = dTargetX;
-  *pdYPos = dTargetY;
-  *pdZPos = dTargetZ;
+  pdXPos.value = dTargetX;
+  pdYPos.value = dTargetY;
+  pdZPos.value = dTargetZ;
 }
 
 function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
@@ -2514,7 +2514,7 @@ function ArmourProtection(pTarget: Pointer<SOLDIERTYPE>, ubArmourType: UINT8, pb
 
   if (!AM_A_ROBOT(pTarget)) {
     // check for the bullet hitting a weak spot in the armour
-    iFailure = PreRandom(100) + 1 - *pbStatus;
+    iFailure = PreRandom(100) + 1 - pbStatus.value;
     if (iFailure > 0) {
       iProtection -= iFailure;
       if (iProtection < 0) {
@@ -2557,14 +2557,14 @@ function ArmourProtection(pTarget: Pointer<SOLDIERTYPE>, ubArmourType: UINT8, pb
     }
   } else if (ubAmmoType == AMMO_MONSTER) {
     // creature spit damages armour a lot! an extra 3x for a total of 4x normal
-    *pbStatus -= 3 * (iAppliedProtection * Armour[ubArmourType].ubDegradePercent) / 100;
+    pbStatus.value -= 3 * (iAppliedProtection * Armour[ubArmourType].ubDegradePercent) / 100;
 
     // reduce amount of protection from armour
     iProtection /= 2;
   }
 
   if (!AM_A_ROBOT(pTarget)) {
-    *pbStatus -= (iAppliedProtection * Armour[ubArmourType].ubDegradePercent) / 100;
+    pbStatus.value -= (iAppliedProtection * Armour[ubArmourType].ubDegradePercent) / 100;
   }
 
   // return armour protection
@@ -2690,7 +2690,7 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
     }
   }
 
-  if (pubSpecial && *pubSpecial == FIRE_WEAPON_BLINDED_BY_SPIT_SPECIAL) {
+  if (pubSpecial && pubSpecial.value == FIRE_WEAPON_BLINDED_BY_SPIT_SPECIAL) {
     iImpact = iOrigImpact;
   } else {
     iImpact = iOrigImpact - TotalArmourProtection(pFirer, pTarget, ubHitLocation, iOrigImpact, ubAmmoType);
@@ -2720,7 +2720,7 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
   if (iImpact > 0 && !TANK(pTarget)) {
     if (ubAmmoType == AMMO_SLEEP_DART && sHitBy > 20) {
       if (pubSpecial) {
-        *pubSpecial = FIRE_WEAPON_SLEEP_DART_SPECIAL;
+        pubSpecial.value = FIRE_WEAPON_SLEEP_DART_SPECIAL;
       }
       return iImpact;
     }
@@ -2747,9 +2747,9 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
             // is the blow deadly enough to cause a head explosion?
             if (iImpactForCrits >= pTarget.value.bLife) {
               if (iImpactForCrits > MIN_DAMAGE_FOR_HEAD_EXPLOSION) {
-                *pubSpecial = FIRE_WEAPON_HEAD_EXPLODE_SPECIAL;
+                pubSpecial.value = FIRE_WEAPON_HEAD_EXPLODE_SPECIAL;
               } else if (iImpactForCrits > (MIN_DAMAGE_FOR_HEAD_EXPLOSION / 2) && (PreRandom(MIN_DAMAGE_FOR_HEAD_EXPLOSION / 2) < (iImpactForCrits - MIN_DAMAGE_FOR_HEAD_EXPLOSION / 2))) {
-                *pubSpecial = FIRE_WEAPON_HEAD_EXPLODE_SPECIAL;
+                pubSpecial.value = FIRE_WEAPON_HEAD_EXPLODE_SPECIAL;
               }
             }
           }
@@ -2759,11 +2759,11 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
         // is the damage enough to make us fall over?
         if (pubSpecial && IS_MERC_BODY_TYPE(pTarget) && gAnimControl[pTarget.value.usAnimState].ubEndHeight == ANIM_STAND && pTarget.value.bOverTerrainType != LOW_WATER && pTarget.value.bOverTerrainType != MED_WATER && pTarget.value.bOverTerrainType != DEEP_WATER) {
           if (iImpactForCrits > MIN_DAMAGE_FOR_AUTO_FALL_OVER) {
-            *pubSpecial = FIRE_WEAPON_LEG_FALLDOWN_SPECIAL;
+            pubSpecial.value = FIRE_WEAPON_LEG_FALLDOWN_SPECIAL;
           }
           // else ramping up chance from 1/2 the automatic value onwards
           else if (iImpactForCrits > (MIN_DAMAGE_FOR_AUTO_FALL_OVER / 2) && (PreRandom(MIN_DAMAGE_FOR_AUTO_FALL_OVER / 2) < (iImpactForCrits - MIN_DAMAGE_FOR_AUTO_FALL_OVER / 2))) {
-            *pubSpecial = FIRE_WEAPON_LEG_FALLDOWN_SPECIAL;
+            pubSpecial.value = FIRE_WEAPON_LEG_FALLDOWN_SPECIAL;
           }
         }
         break;
@@ -2787,7 +2787,7 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
           // is the blow deadly enough to cause a chest explosion?
           if (pubSpecial) {
             if (iImpact > MIN_DAMAGE_FOR_BLOWN_AWAY && iImpact >= pTarget.value.bLife) {
-              *pubSpecial = FIRE_WEAPON_CHEST_EXPLODE_SPECIAL;
+              pubSpecial.value = FIRE_WEAPON_CHEST_EXPLODE_SPECIAL;
             }
           }
         }

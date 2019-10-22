@@ -2569,9 +2569,9 @@ function PlayersBetweenTheseSectors(sSource: INT16, sDest: INT16, iCountEnter: P
   let fHelicopterGroup: BOOLEAN = FALSE;
   let ubMercsInGroup: UINT8 = 0;
 
-  *iCountEnter = 0;
-  *iCountExit = 0;
-  *fAboutToArriveEnter = FALSE;
+  iCountEnter.value = 0;
+  iCountExit.value = 0;
+  fAboutToArriveEnter.value = FALSE;
 
   if (gpBattleGroup) {
     // Assert( gfPreBattleInterfaceActive );
@@ -2620,10 +2620,10 @@ function PlayersBetweenTheseSectors(sSource: INT16, sDest: INT16, iCountEnter: P
               ubMercsInGroup--;
             }
 
-            *iCountEnter += ubMercsInGroup;
+            iCountEnter.value += ubMercsInGroup;
 
             if ((curr.value.uiArrivalTime - GetWorldTotalMin() <= ABOUT_TO_ARRIVE_DELAY) || (fMayRetreatFromBattle == TRUE)) {
-              *fAboutToArriveEnter = TRUE;
+              fAboutToArriveEnter.value = TRUE;
             }
           } else if ((SECTOR(curr.value.ubSectorX, curr.value.ubSectorY) == sDest) && (SECTOR(curr.value.ubNextX, curr.value.ubNextY) == sSource) || (fRetreatingFromBattle == TRUE)) {
             // if it's a valid vehicle, but not the helicopter (which can fly empty)
@@ -2634,7 +2634,7 @@ function PlayersBetweenTheseSectors(sSource: INT16, sDest: INT16, iCountEnter: P
               ubMercsInGroup--;
             }
 
-            *iCountExit += ubMercsInGroup;
+            iCountExit.value += ubMercsInGroup;
           }
         }
       }
@@ -2645,7 +2645,7 @@ function PlayersBetweenTheseSectors(sSource: INT16, sDest: INT16, iCountEnter: P
   }
 
   // if there was actually anyone leaving this sector and entering next
-  if (*iCountEnter > 0) {
+  if (iCountEnter.value > 0) {
     return TRUE;
   } else {
     return FALSE;
@@ -2686,22 +2686,22 @@ function GetGroupPosition(ubNextX: Pointer<UINT8>, ubNextY: Pointer<UINT8>, ubPr
 
   // no group
   if (pGroup == NULL) {
-    *ubNextX = 0;
-    *ubNextY = 0;
-    *ubPrevX = 0;
-    *ubPrevY = 0;
-    *uiTraverseTime = 0;
-    *uiArriveTime = 0;
+    ubNextX.value = 0;
+    ubNextY.value = 0;
+    ubPrevX.value = 0;
+    ubPrevY.value = 0;
+    uiTraverseTime.value = 0;
+    uiArriveTime.value = 0;
     return;
   }
 
   // valid group, grab values
-  *ubNextX = pGroup.value.ubNextX;
-  *ubNextY = pGroup.value.ubNextY;
-  *ubPrevX = pGroup.value.ubPrevX;
-  *ubPrevY = pGroup.value.ubPrevY;
-  *uiTraverseTime = pGroup.value.uiTraverseTime;
-  *uiArriveTime = pGroup.value.uiArrivalTime;
+  ubNextX.value = pGroup.value.ubNextX;
+  ubNextY.value = pGroup.value.ubNextY;
+  ubPrevX.value = pGroup.value.ubPrevX;
+  ubPrevY.value = pGroup.value.ubPrevY;
+  uiTraverseTime.value = pGroup.value.uiTraverseTime;
+  uiArriveTime.value = pGroup.value.uiArrivalTime;
 
   return;
 }
@@ -2969,7 +2969,7 @@ function LoadPlayerGroupList(hFile: HWFILE, pGroup: Pointer<Pointer<GROUP>>): BO
   let uiNumBytesRead: UINT32;
   let cnt: UINT32 = 0;
   let sTempID: INT16;
-  let pTempGroup: Pointer<GROUP> = *pGroup;
+  let pTempGroup: Pointer<GROUP> = pGroup.value;
 
   //	pTemp = pGroup;
 

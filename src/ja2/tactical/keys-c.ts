@@ -136,7 +136,7 @@ function KeyExistsInKeyRing(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8, pubP
     if (pSoldier.value.pKeyRing[ubLoop].ubKeyID == ubKeyID || (ubKeyID == ANYKEY)) {
       // found it!
       if (pubPos) {
-        *pubPos = ubLoop;
+        pubPos.value = ubLoop;
       }
       return TRUE;
     }
@@ -629,12 +629,12 @@ function LoadDoorTableFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
   let cnt: INT32;
 
   TrashDoorTable();
-  LOADDATA(addressof(gubNumDoors), *hBuffer, 1);
+  LOADDATA(addressof(gubNumDoors), hBuffer.value, 1);
 
   gubMaxDoors = gubNumDoors;
   DoorTable = MemAlloc(sizeof(DOOR) * gubMaxDoors);
 
-  LOADDATA(DoorTable, *hBuffer, sizeof(DOOR) * gubMaxDoors);
+  LOADDATA(DoorTable, hBuffer.value, sizeof(DOOR) * gubMaxDoors);
 
   // OK, reset perceived values to nothing...
   for (cnt = 0; cnt < gubNumDoors; cnt++) {

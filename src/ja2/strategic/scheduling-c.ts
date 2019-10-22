@@ -270,10 +270,10 @@ function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
     DestroyAllSchedules();
   }
 
-  LOADDATA(addressof(ubNum), *hBuffer, sizeof(UINT8));
+  LOADDATA(addressof(ubNum), hBuffer.value, sizeof(UINT8));
   gubScheduleID = 1;
   while (ubNum) {
-    LOADDATA(addressof(temp), *hBuffer, sizeof(SCHEDULENODE));
+    LOADDATA(addressof(temp), hBuffer.value, sizeof(SCHEDULENODE));
 
     if (gpScheduleList) {
       pSchedule.value.next = MemAlloc(sizeof(SCHEDULENODE));
@@ -913,8 +913,8 @@ function ExtractScheduleEntryAndExitInfo(pSoldier: Pointer<SOLDIERTYPE>, puiEntr
   let fFoundExitTime: BOOLEAN = FALSE;
   let pSchedule: Pointer<SCHEDULENODE>;
 
-  *puiEntryTime = 0;
-  *puiExitTime = 0;
+  puiEntryTime.value = 0;
+  puiExitTime.value = 0;
 
   pSchedule = GetSchedule(pSoldier.value.ubScheduleID);
   if (!pSchedule) {
@@ -927,10 +927,10 @@ function ExtractScheduleEntryAndExitInfo(pSoldier: Pointer<SOLDIERTYPE>, puiEntr
   for (iLoop = 0; iLoop < MAX_SCHEDULE_ACTIONS; iLoop++) {
     if (pSchedule.value.ubAction[iLoop] == SCHEDULE_ACTION_ENTERSECTOR) {
       fFoundEntryTime = TRUE;
-      *puiEntryTime = pSchedule.value.usTime[iLoop];
+      puiEntryTime.value = pSchedule.value.usTime[iLoop];
     } else if (pSchedule.value.ubAction[iLoop] == SCHEDULE_ACTION_LEAVESECTOR) {
       fFoundExitTime = TRUE;
-      *puiExitTime = pSchedule.value.usTime[iLoop];
+      puiExitTime.value = pSchedule.value.usTime[iLoop];
     }
   }
 
@@ -948,8 +948,8 @@ function ExtractScheduleDoorLockAndUnlockInfo(pSoldier: Pointer<SOLDIERTYPE>, pu
   let fFoundClosingTime: BOOLEAN = FALSE;
   let pSchedule: Pointer<SCHEDULENODE>;
 
-  *puiOpeningTime = 0;
-  *puiClosingTime = 0;
+  puiOpeningTime.value = 0;
+  puiClosingTime.value = 0;
 
   pSchedule = GetSchedule(pSoldier.value.ubScheduleID);
   if (!pSchedule) {
@@ -962,10 +962,10 @@ function ExtractScheduleDoorLockAndUnlockInfo(pSoldier: Pointer<SOLDIERTYPE>, pu
   for (iLoop = 0; iLoop < MAX_SCHEDULE_ACTIONS; iLoop++) {
     if (pSchedule.value.ubAction[iLoop] == SCHEDULE_ACTION_UNLOCKDOOR) {
       fFoundOpeningTime = TRUE;
-      *puiOpeningTime = pSchedule.value.usTime[iLoop];
+      puiOpeningTime.value = pSchedule.value.usTime[iLoop];
     } else if (pSchedule.value.ubAction[iLoop] == SCHEDULE_ACTION_LOCKDOOR) {
       fFoundClosingTime = TRUE;
-      *puiClosingTime = pSchedule.value.usTime[iLoop];
+      puiClosingTime.value = pSchedule.value.usTime[iLoop];
     }
   }
 
@@ -980,15 +980,15 @@ function GetEarliestMorningScheduleEvent(pSchedule: Pointer<SCHEDULENODE>, puiTi
   let iLoop: INT32;
   let fFoundTime: BOOLEAN = FALSE;
 
-  *puiTime = 100000;
+  puiTime.value = 100000;
 
   for (iLoop = 0; iLoop < MAX_SCHEDULE_ACTIONS; iLoop++) {
-    if (pSchedule.value.usTime[iLoop] < (12 * 60) && pSchedule.value.usTime[iLoop] < *puiTime) {
-      *puiTime = pSchedule.value.usTime[iLoop];
+    if (pSchedule.value.usTime[iLoop] < (12 * 60) && pSchedule.value.usTime[iLoop] < puiTime.value) {
+      puiTime.value = pSchedule.value.usTime[iLoop];
     }
   }
 
-  if (*puiTime == 100000) {
+  if (puiTime.value == 100000) {
     return FALSE;
   } else {
     return TRUE;

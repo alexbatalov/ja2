@@ -481,7 +481,7 @@ function ShutdownOverhead(): BOOLEAN {
 
 function GetSoldier(ppSoldier: Pointer<Pointer<SOLDIERTYPE>>, usSoldierIndex: UINT16): BOOLEAN {
   // Check range of index given
-  *ppSoldier = NULL;
+  ppSoldier.value = NULL;
 
   if (usSoldierIndex < 0 || usSoldierIndex > TOTAL_SOLDIERS - 1) {
     // Set debug message
@@ -492,7 +492,7 @@ function GetSoldier(ppSoldier: Pointer<Pointer<SOLDIERTYPE>>, usSoldierIndex: UI
   // Does another soldier exist here?
   if (MercPtrs[usSoldierIndex].value.bActive) {
     // Set Existing guy
-    *ppSoldier = MercPtrs[usSoldierIndex];
+    ppSoldier.value = MercPtrs[usSoldierIndex];
     return TRUE;
   } else {
     return FALSE;
@@ -1307,7 +1307,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
   }
 
   // Default to TRUE
-  (*pfKeepMoving) = TRUE;
+  (pfKeepMoving.value) = TRUE;
 
   // Check for good breath....
   // if ( pSoldier->bBreath < OKBREATH && !fInitialMove )
@@ -1370,7 +1370,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
       }
     } else {
       HaltGuyFromNewGridNoBecauseOfNoAPs(pSoldier);
-      (*pfKeepMoving) = FALSE;
+      (pfKeepMoving.value) = FALSE;
     }
 
     return FALSE;
@@ -1398,7 +1398,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
 
       HaltGuyFromNewGridNoBecauseOfNoAPs(pSoldier);
       pSoldier.value.bEndDoorOpenCode = FALSE;
-      (*pfKeepMoving) = FALSE;
+      (pfKeepMoving.value) = FALSE;
       return FALSE;
     }
 
@@ -1409,7 +1409,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("HandleGotoNewGridNo() Failed: Door does not exist"));
       HaltGuyFromNewGridNoBecauseOfNoAPs(pSoldier);
       pSoldier.value.bEndDoorOpenCode = FALSE;
-      (*pfKeepMoving) = FALSE;
+      (pfKeepMoving.value) = FALSE;
       return FALSE;
     }
 
@@ -1422,7 +1422,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
       pSoldier.value.bEndDoorOpenCode = 1;
       pSoldier.value.sEndDoorOpenCodeData = sDoorGridNo;
     }
-    (*pfKeepMoving) = FALSE;
+    (pfKeepMoving.value) = FALSE;
     return FALSE;
   }
 
@@ -1469,7 +1469,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
         EVENT_StopMerc(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection);
       }
 
-      (*pfKeepMoving) = FALSE;
+      (pfKeepMoving.value) = FALSE;
 
       if (sMineGridNo != NOWHERE) {
         LocateGridNo(sMineGridNo);
@@ -1482,7 +1482,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
     } else {
       if (sMineGridNo != NOWHERE) {
         EVENT_StopMerc(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection);
-        (*pfKeepMoving) = FALSE;
+        (pfKeepMoving.value) = FALSE;
 
         gpWorldLevelData[sMineGridNo].uiFlags |= MAPELEMENT_ENEMY_MINE_PRESENT;
 
@@ -1498,11 +1498,11 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
   if (pSoldier.value.fNoAPToFinishMove && !fInitialMove) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("HandleGotoNewGridNo() Failed: No APs to finish move set"));
     pSoldier.value.bEndDoorOpenCode = FALSE;
-    (*pfKeepMoving) = FALSE;
+    (pfKeepMoving.value) = FALSE;
   } else if (pSoldier.value.usPathIndex == pSoldier.value.usPathDataSize && pSoldier.value.usPathDataSize == 0) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("HandleGotoNewGridNo() Failed: No Path"));
     pSoldier.value.bEndDoorOpenCode = FALSE;
-    (*pfKeepMoving) = FALSE;
+    (pfKeepMoving.value) = FALSE;
   }
   // else if ( gTacticalStatus.fEnemySightingOnTheirTurn )
   //{
@@ -1668,7 +1668,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("HandleGotoNewGridNo() Failed: No APs %d %d", sAPCost, pSoldier.value.bActionPoints));
     HaltGuyFromNewGridNoBecauseOfNoAPs(pSoldier);
     pSoldier.value.bEndDoorOpenCode = FALSE;
-    (*pfKeepMoving) = FALSE;
+    (pfKeepMoving.value) = FALSE;
   }
 
   return TRUE;
@@ -1775,7 +1775,7 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
   }
 
   // Default to TRUE
-  (*pfKeepMoving) = TRUE;
+  (pfKeepMoving.value) = TRUE;
 
   pSoldier.value.bTilesMoved++;
   if (pSoldier.value.usAnimState == RUNNING) {
@@ -1806,13 +1806,13 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
 
   // Check if they are out of breath
   if (CheckForBreathCollapse(pSoldier)) {
-    (*pfKeepMoving) = TRUE;
+    (pfKeepMoving.value) = TRUE;
     return FALSE;
   }
 
   // see if a mine gets set off...
   if (SetOffBombsInGridNo(pSoldier.value.ubID, pSoldier.value.sGridNo, FALSE, pSoldier.value.bLevel)) {
-    (*pfKeepMoving) = FALSE;
+    (pfKeepMoving.value) = FALSE;
     EVENT_StopMerc(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection);
     return FALSE;
   }
@@ -1843,7 +1843,7 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
     // Unset no APs value
     AdjustNoAPToFinishMove(pSoldier, TRUE);
 
-    (*pfKeepMoving) = FALSE;
+    (pfKeepMoving.value) = FALSE;
     pSoldier.value.usPendingAnimation = NO_PENDING_ANIMATION;
     pSoldier.value.ubPendingDirection = NO_PENDING_DIRECTION;
 
@@ -1863,13 +1863,13 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
       }
     }
   } else if (pSoldier.value.fNoAPToFinishMove) {
-    (*pfKeepMoving) = FALSE;
+    (pfKeepMoving.value) = FALSE;
   } else if (pSoldier.value.usPathIndex == pSoldier.value.usPathDataSize && pSoldier.value.usPathDataSize == 0) {
-    (*pfKeepMoving) = FALSE;
+    (pfKeepMoving.value) = FALSE;
   } else if (gTacticalStatus.fEnemySightingOnTheirTurn) {
     // Hault guy!
     AdjustNoAPToFinishMove(pSoldier, TRUE);
-    (*pfKeepMoving) = FALSE;
+    (pfKeepMoving.value) = FALSE;
   }
 
   // OK, check for other stuff like mines...
@@ -1896,7 +1896,7 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
         EVENT_StopMerc(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection);
       }
 
-      (*pfKeepMoving) = FALSE;
+      (pfKeepMoving.value) = FALSE;
 
       if (sMineGridNo != NOWHERE) {
         LocateGridNo(sMineGridNo);
@@ -1909,7 +1909,7 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
     } else {
       if (sMineGridNo != NOWHERE) {
         EVENT_StopMerc(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection);
-        (*pfKeepMoving) = FALSE;
+        (pfKeepMoving.value) = FALSE;
 
         gpWorldLevelData[sMineGridNo].uiFlags |= MAPELEMENT_ENEMY_MINE_PRESENT;
 
@@ -3498,12 +3498,12 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
 
   // Set default direction
   if (pubDirection) {
-    *pubDirection = pSoldier.value.bDirection;
+    pubDirection.value = pSoldier.value.bDirection;
   }
 
   // CHECK IF WE WANT TO FORCE GRIDNO TO PERSON
   if (psAdjustedGridNo != NULL) {
-    *psAdjustedGridNo = sGridNo;
+    psAdjustedGridNo.value = sGridNo;
   }
 
   // CHECK IF IT'S THE SAME ONE AS WE'RE ON, IF SO, RETURN THAT!
@@ -3528,7 +3528,7 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
           // To the south!
           sSpot = NewGridNo(sGridNo, DirectionInc(SOUTH));
           if (pubDirection) {
-            (*pubDirection) = GetDirectionFromGridNo(sSpot, pSoldier);
+            (pubDirection.value) = GetDirectionFromGridNo(sSpot, pSoldier);
           }
         }
 
@@ -3536,7 +3536,7 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
           // TO the east!
           sSpot = NewGridNo(sGridNo, DirectionInc(EAST));
           if (pubDirection) {
-            (*pubDirection) = GetDirectionFromGridNo(sSpot, pSoldier);
+            (pubDirection.value) = GetDirectionFromGridNo(sSpot, pSoldier);
           }
         }
       }
@@ -3557,11 +3557,11 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
     if (FindSoldier(sGridNo, addressof(usSoldierIndex), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
       sGridNo = MercPtrs[usSoldierIndex].value.sGridNo;
       if (psAdjustedGridNo != NULL) {
-        *psAdjustedGridNo = sGridNo;
+        psAdjustedGridNo.value = sGridNo;
 
         // Use direction to this guy!
         if (pubDirection) {
-          (*pubDirection) = GetDirectionFromGridNo(sGridNo, pSoldier);
+          (pubDirection.value) = GetDirectionFromGridNo(sGridNo, pSoldier);
         }
       }
     }
@@ -3647,7 +3647,7 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
       {
         // Use direction to the door!
         if (pubDirection) {
-          (*pubDirection) = GetDirectionFromGridNo(sGridNo, pSoldier);
+          (pubDirection.value) = GetDirectionFromGridNo(sGridNo, pSoldier);
         }
       }
       return sSpot;
@@ -3677,13 +3677,13 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
             case OUTSIDE_TOP_LEFT:
             case INSIDE_TOP_LEFT:
 
-              *pubDirection = SOUTH;
+              pubDirection.value = SOUTH;
               break;
 
             case OUTSIDE_TOP_RIGHT:
             case INSIDE_TOP_RIGHT:
 
-              *pubDirection = EAST;
+              pubDirection.value = EAST;
               break;
           }
         }
@@ -3692,7 +3692,7 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
       // Calculate direction if our gridno is different....
       ubDir = GetDirectionToGridNoFromGridNo(sCloseGridNo, sGridNo);
       if (pubDirection) {
-        *pubDirection = ubDir;
+        pubDirection.value = ubDir;
       }
     }
     // if ( psAdjustedGridNo != NULL )
@@ -3741,12 +3741,12 @@ function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
 
   // CHECK IF WE WANT TO FORCE GRIDNO TO PERSON
   if (psAdjustedGridNo != NULL) {
-    *psAdjustedGridNo = sGridNo;
+    psAdjustedGridNo.value = sGridNo;
   }
 
   // CHECK IF IT'S THE SAME ONE AS WE'RE ON, IF SO, RETURN THAT!
   if (pSoldier.value.sGridNo == sGridNo) {
-    *pubDirection = pSoldier.value.bDirection;
+    pubDirection.value = pSoldier.value.bDirection;
     return sGridNo;
   }
 
@@ -3761,7 +3761,7 @@ function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
     if (FindSoldier(sGridNo, addressof(usSoldierIndex), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
       sGridNo = MercPtrs[usSoldierIndex].value.sGridNo;
       if (psAdjustedGridNo != NULL) {
-        *psAdjustedGridNo = sGridNo;
+        psAdjustedGridNo.value = sGridNo;
       }
     }
   }
@@ -3846,7 +3846,7 @@ function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
     // If this spot is our soldier's gridno use that!
     if (sSpot == pSoldier.value.sGridNo) {
       if (pubDirection) {
-        (*pubDirection) = GetDirectionFromGridNo(sGridNo, pSoldier);
+        (pubDirection.value) = GetDirectionFromGridNo(sGridNo, pSoldier);
       }
       //*pubDirection = pSoldier->bDirection;
       return sSpot;
@@ -3876,13 +3876,13 @@ function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
             case OUTSIDE_TOP_LEFT:
             case INSIDE_TOP_LEFT:
 
-              *pubDirection = SOUTH;
+              pubDirection.value = SOUTH;
               break;
 
             case OUTSIDE_TOP_RIGHT:
             case INSIDE_TOP_RIGHT:
 
-              *pubDirection = EAST;
+              pubDirection.value = EAST;
               break;
           }
         }
@@ -3891,7 +3891,7 @@ function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
       // Calculate direction if our gridno is different....
       ubDir = GetDirectionToGridNoFromGridNo(sCloseGridNo, sGridNo);
       if (pubDirection) {
-        *pubDirection = ubDir;
+        pubDirection.value = ubDir;
       }
     }
 
@@ -3958,8 +3958,8 @@ function FindAdjacentPunchTarget(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier:
     if (pTargetSoldier != NULL && ubGuyThere == pTargetSoldier.value.ubID) {
       // We've got a guy here....
       // Who is the one we want......
-      *psAdjustedTargetGridNo = pTargetSoldier.value.sGridNo;
-      *pubDirection = cnt;
+      psAdjustedTargetGridNo.value = pTargetSoldier.value.sGridNo;
+      pubDirection.value = cnt;
       return sSpot;
     }
   }
@@ -5540,7 +5540,7 @@ function ProcessImplicationsOfPCAttack(pSoldier: Pointer<SOLDIERTYPE>, ppTarget:
   let sTargetXPos: INT16;
   let sTargetYPos: INT16;
   let fEnterCombat: BOOLEAN = TRUE;
-  let pTarget: Pointer<SOLDIERTYPE> = *ppTarget;
+  let pTarget: Pointer<SOLDIERTYPE> = ppTarget.value;
 
   if (pTarget.value.fAIFlags & AI_ASLEEP) {
     // waaaaaaaaaaaaake up!
@@ -5656,7 +5656,7 @@ function ProcessImplicationsOfPCAttack(pSoldier: Pointer<SOLDIERTYPE>, ppTarget:
     }
   }
 
-  *ppTarget = pTarget;
+  ppTarget.value = pTarget;
   return fEnterCombat;
 }
 

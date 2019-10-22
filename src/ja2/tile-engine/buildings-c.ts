@@ -12,7 +12,7 @@ function CreateNewBuilding(pubBuilding: Pointer<UINT8>): Pointer<BUILDING> {
   gubNumberOfBuildings++;
   // clear entry
   gBuildings[gubNumberOfBuildings].ubNumClimbSpots = 0;
-  *pubBuilding = gubNumberOfBuildings;
+  pubBuilding.value = gubNumberOfBuildings;
   // return pointer (have to subtract 1 since we just added 1
   return addressof(gBuildings[gubNumberOfBuildings]);
 }

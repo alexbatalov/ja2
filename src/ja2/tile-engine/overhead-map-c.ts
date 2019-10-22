@@ -176,7 +176,7 @@ function GetClosestItemPool(sSweetGridNo: INT16, ppReturnedItemPool: Pointer<Poi
           uiRange = GetRangeInCellCoordsFromGridNoDiff(sSweetGridNo, sGridNo);
 
           if (uiRange < uiLowestRange) {
-            (*ppReturnedItemPool) = pItemPool;
+            (ppReturnedItemPool.value) = pItemPool;
             uiLowestRange = uiRange;
             fFound = TRUE;
           }
@@ -222,7 +222,7 @@ function GetClosestMercInOverheadMap(sSweetGridNo: INT16, ppReturnedSoldier: Poi
           uiRange = GetRangeInCellCoordsFromGridNoDiff(sSweetGridNo, sGridNo);
 
           if (uiRange < uiLowestRange) {
-            (*ppReturnedSoldier) = gpWorldLevelData[sGridNo].pMercHead.value.pSoldier;
+            (ppReturnedSoldier.value) = gpWorldLevelData[sGridNo].pMercHead.value.pSoldier;
             uiLowestRange = uiRange;
             fFound = TRUE;
           }
@@ -1262,11 +1262,11 @@ function MoveOverheadRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): 
 
 function GetOverheadScreenXYFromGridNo(sGridNo: INT16, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
   GetWorldXYAbsoluteScreenXY((CenterX(sGridNo) / CELL_X_SIZE), (CenterY(sGridNo) / CELL_Y_SIZE), psScreenX, psScreenY);
-  *psScreenX /= 5;
-  *psScreenY /= 5;
+  psScreenX.value /= 5;
+  psScreenY.value /= 5;
 
-  *psScreenX += 5;
-  *psScreenY += 5;
+  psScreenX.value += 5;
+  psScreenY.value += 5;
 
   // Subtract the height....
   //*psScreenY -= gpWorldLevelData[ sGridNo ].sHeight / 5;
@@ -1287,15 +1287,15 @@ function GetOverheadMouseGridNo(psGridNo: Pointer<INT16>): BOOLEAN {
     GetFromAbsoluteScreenXYWorldXY(addressof(uiCellX), addressof(uiCellY), sWorldScreenX, sWorldScreenY);
 
     // Get gridNo
-    (*psGridNo) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
+    (psGridNo.value) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
 
     // Adjust for height.....
-    sWorldScreenY = sWorldScreenY + gpWorldLevelData[(*psGridNo)].sHeight;
+    sWorldScreenY = sWorldScreenY + gpWorldLevelData[(psGridNo.value)].sHeight;
 
     GetFromAbsoluteScreenXYWorldXY(addressof(uiCellX), addressof(uiCellY), sWorldScreenX, sWorldScreenY);
 
     // Get gridNo
-    (*psGridNo) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
+    (psGridNo.value) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
 
     return TRUE;
   } else {
@@ -1318,15 +1318,15 @@ function GetOverheadMouseGridNoForFullSoldiersGridNo(psGridNo: Pointer<INT16>): 
     GetFromAbsoluteScreenXYWorldXY(addressof(uiCellX), addressof(uiCellY), sWorldScreenX, sWorldScreenY);
 
     // Get gridNo
-    (*psGridNo) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
+    (psGridNo.value) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
 
     // Adjust for height.....
-    sWorldScreenY = sWorldScreenY + gpWorldLevelData[(*psGridNo)].sHeight;
+    sWorldScreenY = sWorldScreenY + gpWorldLevelData[(psGridNo.value)].sHeight;
 
     GetFromAbsoluteScreenXYWorldXY(addressof(uiCellX), addressof(uiCellY), sWorldScreenX, sWorldScreenY);
 
     // Get gridNo
-    (*psGridNo) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
+    (psGridNo.value) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
 
     return TRUE;
   } else {
@@ -1338,34 +1338,34 @@ function CalculateRestrictedMapCoords(bDirection: INT8, psX1: Pointer<INT16>, ps
   switch (bDirection) {
     case NORTH:
 
-      *psX1 = 0;
-      *psX2 = sEndXS;
-      *psY1 = 0;
-      *psY2 = (abs(NORMAL_MAP_SCREEN_TY - gsTLY) / 5);
+      psX1.value = 0;
+      psX2.value = sEndXS;
+      psY1.value = 0;
+      psY2.value = (abs(NORMAL_MAP_SCREEN_TY - gsTLY) / 5);
       break;
 
     case WEST:
 
-      *psX1 = 0;
-      *psX2 = (abs(-NORMAL_MAP_SCREEN_X - gsTLX) / 5);
-      *psY1 = 0;
-      *psY2 = sEndYS;
+      psX1.value = 0;
+      psX2.value = (abs(-NORMAL_MAP_SCREEN_X - gsTLX) / 5);
+      psY1.value = 0;
+      psY2.value = sEndYS;
       break;
 
     case SOUTH:
 
-      *psX1 = 0;
-      *psX2 = sEndXS;
-      *psY1 = (NORMAL_MAP_SCREEN_HEIGHT - abs(NORMAL_MAP_SCREEN_BY - gsBLY)) / 5;
-      *psY2 = sEndYS;
+      psX1.value = 0;
+      psX2.value = sEndXS;
+      psY1.value = (NORMAL_MAP_SCREEN_HEIGHT - abs(NORMAL_MAP_SCREEN_BY - gsBLY)) / 5;
+      psY2.value = sEndYS;
       break;
 
     case EAST:
 
-      *psX1 = (NORMAL_MAP_SCREEN_WIDTH - abs(NORMAL_MAP_SCREEN_X - gsTRX)) / 5;
-      *psX2 = sEndXS;
-      *psY1 = 0;
-      *psY2 = sEndYS;
+      psX1.value = (NORMAL_MAP_SCREEN_WIDTH - abs(NORMAL_MAP_SCREEN_X - gsTRX)) / 5;
+      psX2.value = sEndXS;
+      psY1.value = 0;
+      psY2.value = sEndYS;
       break;
   }
 }

@@ -547,7 +547,7 @@ function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead
       }
 
       if (puiBytesRead)
-        *puiBytesRead = dwNumBytesRead;
+        puiBytesRead.value = dwNumBytesRead;
     }
   } else {
     // if the database is initialized
@@ -559,7 +559,7 @@ function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead
           // read the data from the library
           fRet = LoadDataFromLibrary(sLibraryID, uiFileNum, pDest, dwNumBytesToRead, addressof(dwNumBytesRead));
           if (puiBytesRead) {
-            *puiBytesRead = dwNumBytesRead;
+            puiBytesRead.value = dwNumBytesRead;
           }
         }
       }
@@ -619,11 +619,11 @@ function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWr
       fRet = FALSE;
 
     if (puiBytesWritten)
-      *puiBytesWritten = dwNumBytesWritten;
+      puiBytesWritten.value = dwNumBytesWritten;
   } else {
     // we cannot write to a library file
     if (puiBytesWritten)
-      *puiBytesWritten = 0;
+      puiBytesWritten.value = 0;
     return FALSE;
   }
 
@@ -665,7 +665,7 @@ function FileLoad(strFilename: STR, pDest: PTR, uiBytesToRead: UINT32, puiBytesR
       fRet = FALSE;
 
     if (puiBytesRead)
-      *puiBytesRead = uiNumBytesRead;
+      puiBytesRead.value = uiNumBytesRead;
 
     CHECKF(uiNumBytesRead == uiBytesToRead);
   } else
@@ -939,9 +939,9 @@ function GetHandleToRealFile(hFile: HWFILE, pfDatabaseFile: Pointer<BOOLEAN>): H
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
     // Get the handle to the real file
     hRealFile = gFileDataBase.RealFiles.pRealFilesOpen[uiFileNum].hRealFileHandle;
-    *pfDatabaseFile = FALSE;
+    pfDatabaseFile.value = FALSE;
   } else {
-    *pfDatabaseFile = TRUE;
+    pfDatabaseFile.value = TRUE;
     hRealFile = hFile;
   }
 

@@ -240,7 +240,7 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTiles
     // almost completely identical functions
     if (ppTileSurfaceFilenames == NULL) {
       GetPrivateProfileString("TileSurface Filenames", gTileSurfaceName[uiLoop], "", cTemp, SGPFILENAME_LEN, INIFile);
-      if (*cTemp != '\0') {
+      if (cTemp.value != '\0') {
         strcpy(TileSurfaceFilenames[uiLoop], cTemp);
         if (AddTileSurface(cTemp, uiLoop, ubTilesetID, TRUE) == FALSE) {
           DestroyTileSurfaces();
@@ -255,14 +255,14 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTiles
       }
     } else {
       GetPrivateProfileString("TileSurface Filenames", gTileSurfaceName[uiLoop], "", cTemp, SGPFILENAME_LEN, INIFile);
-      if (*cTemp != '\0') {
+      if (cTemp.value != '\0') {
         strcpy(TileSurfaceFilenames[uiLoop], cTemp);
         if (AddTileSurface(cTemp, uiLoop, ubTilesetID, TRUE) == FALSE) {
           DestroyTileSurfaces();
           return FALSE;
         }
       } else {
-        if (*(ppTileSurfaceFilenames[uiLoop]) != '\0') {
+        if ((ppTileSurfaceFilenames[uiLoop]).value != '\0') {
           if (AddTileSurface(ppTileSurfaceFilenames[uiLoop], uiLoop, ubTilesetID, FALSE) == FALSE) {
             DestroyTileSurfaces();
             return FALSE;
@@ -3356,10 +3356,10 @@ function LoadMapLights(hBuffer: Pointer<Pointer<INT8>>): void {
   LightReset();
 
   // read in the light colors!
-  LOADDATA(addressof(ubNumColors), *hBuffer, 1);
-  LOADDATA(LColors, *hBuffer, sizeof(SGPPaletteEntry) * ubNumColors);
+  LOADDATA(addressof(ubNumColors), hBuffer.value, 1);
+  LOADDATA(LColors, hBuffer.value, sizeof(SGPPaletteEntry) * ubNumColors);
 
-  LOADDATA(addressof(usNumLights), *hBuffer, 2);
+  LOADDATA(addressof(usNumLights), hBuffer.value, 2);
 
   ubNumColors = 1;
 
@@ -3381,11 +3381,11 @@ function LoadMapLights(hBuffer: Pointer<Pointer<INT8>>): void {
   }
 
   for (cnt = 0; cnt < usNumLights; cnt++) {
-    LOADDATA(addressof(TmpLight), *hBuffer, sizeof(LIGHT_SPRITE));
-    LOADDATA(addressof(ubStrLen), *hBuffer, 1);
+    LOADDATA(addressof(TmpLight), hBuffer.value, sizeof(LIGHT_SPRITE));
+    LOADDATA(addressof(ubStrLen), hBuffer.value, 1);
 
     if (ubStrLen) {
-      LOADDATA(str, *hBuffer, ubStrLen);
+      LOADDATA(str, hBuffer.value, ubStrLen);
     }
 
     str[ubStrLen] = 0;

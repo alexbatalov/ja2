@@ -378,8 +378,8 @@ function OffSetQuestionForFemaleSpecificQuestions(iCurrentOffset: Pointer<INT32>
   }
 
   if (fOffSet) {
-    *iCurrentOffset = IMP_CON_3 - (IMP_QUESTION_1 - 3);
+    iCurrentOffset.value = IMP_CON_3 - (IMP_QUESTION_1 - 3);
 
-    *iCurrentOffset += iExtraOffSet;
+    iCurrentOffset.value += iExtraOffSet;
   }
 }

@@ -1077,7 +1077,7 @@ function GetNextCreditCode(pString: STR16, pSizeOfCode: Pointer<UINT32>): STR16 
     uiSizeOfCode = pzNewCode - pString;
   }
 
-  *pSizeOfCode = uiSizeOfCode;
+  pSizeOfCode.value = uiSizeOfCode;
   return pzNewCode;
 }
 

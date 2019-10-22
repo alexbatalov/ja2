@@ -2969,7 +2969,7 @@ function IsAnimationValidForBodyType(pSoldier: Pointer<SOLDIERTYPE>, usNewState:
 function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState: UINT16, pusSubState: Pointer<UINT16>): BOOLEAN {
   let fSubFound: BOOLEAN = FALSE;
 
-  *pusSubState = usTestState;
+  pusSubState.value = usTestState;
 
   if (pSoldier.value.ubBodyType == QUEENMONSTER) {
     switch (usTestState) {
@@ -2977,7 +2977,7 @@ function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState
       case WALKING:
       case RUNNING:
 
-        *pusSubState = QUEEN_MONSTER_BREATHING;
+        pusSubState.value = QUEEN_MONSTER_BREATHING;
         fSubFound = TRUE;
         break;
     }
@@ -2987,14 +2987,14 @@ function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState
     switch (usTestState) {
       case STANDING:
 
-        *pusSubState = LARVAE_BREATH;
+        pusSubState.value = LARVAE_BREATH;
         fSubFound = TRUE;
         break;
 
       case WALKING:
       case RUNNING:
 
-        *pusSubState = LARVAE_WALK;
+        pusSubState.value = LARVAE_WALK;
         fSubFound = TRUE;
         break;
     }
@@ -3004,13 +3004,13 @@ function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState
     switch (usTestState) {
       case WALKING:
 
-        *pusSubState = CROW_WALK;
+        pusSubState.value = CROW_WALK;
         fSubFound = TRUE;
         break;
 
       case STANDING:
 
-        *pusSubState = CROW_EAT;
+        pusSubState.value = CROW_EAT;
         fSubFound = TRUE;
         break;
     }
@@ -3019,7 +3019,7 @@ function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState
   if (pSoldier.value.ubBodyType == BLOODCAT) {
     switch (usTestState) {
       case RUNNING:
-        *pusSubState = BLOODCAT_RUN;
+        pusSubState.value = BLOODCAT_RUN;
         fSubFound = TRUE;
         break;
     }
@@ -3028,12 +3028,12 @@ function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState
   if (pSoldier.value.ubBodyType == ADULTFEMALEMONSTER || pSoldier.value.ubBodyType == AM_MONSTER || pSoldier.value.ubBodyType == YAF_MONSTER || pSoldier.value.ubBodyType == YAM_MONSTER) {
     switch (usTestState) {
       case WALKING:
-        *pusSubState = ADULTMONSTER_WALKING;
+        pusSubState.value = ADULTMONSTER_WALKING;
         fSubFound = TRUE;
         break;
 
       case RUNNING:
-        *pusSubState = ADULTMONSTER_WALKING;
+        pusSubState.value = ADULTMONSTER_WALKING;
         fSubFound = TRUE;
         break;
     }
@@ -3045,18 +3045,18 @@ function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState
 
         // OK, if they are on the CIV_TEAM, sub for no camera moving
         if (pSoldier.value.bTeam == CIV_TEAM) {
-          *pusSubState = ROBOT_CAMERA_NOT_MOVING;
+          pusSubState.value = ROBOT_CAMERA_NOT_MOVING;
           fSubFound = TRUE;
         }
         break;
 
       case WALKING:
-        *pusSubState = ROBOT_WALK;
+        pusSubState.value = ROBOT_WALK;
         fSubFound = TRUE;
         break;
 
       case RUNNING:
-        *pusSubState = ROBOT_WALK;
+        pusSubState.value = ROBOT_WALK;
         fSubFound = TRUE;
         break;
     }
@@ -3065,18 +3065,18 @@ function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState
   if (IS_CIV_BODY_TYPE(pSoldier)) {
     switch (usTestState) {
       case KNEEL_UP:
-        *pusSubState = END_COWER;
+        pusSubState.value = END_COWER;
         fSubFound = TRUE;
         break;
       case KNEEL_DOWN:
-        *pusSubState = START_COWER;
+        pusSubState.value = START_COWER;
         fSubFound = TRUE;
         break;
 
       case WKAEUP_FROM_SLEEP:
       case GOTO_SLEEP:
       case SLEEPING:
-        *pusSubState = STANDING;
+        pusSubState.value = STANDING;
         fSubFound = TRUE;
         break;
     }

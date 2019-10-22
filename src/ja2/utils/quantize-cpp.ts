@@ -20,9 +20,9 @@ BOOL CQuantizer::ProcessImage(BYTE *pData, int iWidth, int iHeight) {
   pbBits = pData;
   for (i = 0; i < iHeight; i++) {
     for (j = 0; j < iWidth; j++) {
-      b = *pbBits++;
-      g = *pbBits++;
-      r = *pbBits++;
+      b = pbBits++.value;
+      g = pbBits++.value;
+      r = pbBits++.value;
       AddColor(addressof(m_pTree), r, g, b, m_nColorBits, 0, addressof(m_nLeafCount), m_pReducibleNodes);
       while (m_nLeafCount > m_nMaxColors)
         ReduceTree(m_nColorBits, addressof(m_nLeafCount), m_pReducibleNodes);
@@ -67,17 +67,17 @@ void CQuantizer::AddColor(NODE **ppNode, BYTE r, BYTE g, BYTE b, UINT nColorBits
   //
   // If the node doesn't exist, create it.
   //
-  if (*ppNode == NULL)
-    *ppNode = CreateNode(nLevel, nColorBits, pLeafCount, pReducibleNodes);
+  if (ppNode.value == NULL)
+    ppNode.value = CreateNode(nLevel, nColorBits, pLeafCount, pReducibleNodes);
 
   //
   // Update color information if it's a leaf node.
   //
-  if ((*ppNode).value.bIsLeaf) {
-    (*ppNode).value.nPixelCount++;
-    (*ppNode).value.nRedSum += r;
-    (*ppNode).value.nGreenSum += g;
-    (*ppNode).value.nBlueSum += b;
+  if ((ppNode.value).value.bIsLeaf) {
+    (ppNode.value).value.nPixelCount++;
+    (ppNode.value).value.nRedSum += r;
+    (ppNode.value).value.nGreenSum += g;
+    (ppNode.value).value.nBlueSum += b;
   }
 
   //
@@ -86,7 +86,7 @@ void CQuantizer::AddColor(NODE **ppNode, BYTE r, BYTE g, BYTE b, UINT nColorBits
   else {
     int shift = 7 - nLevel;
     int nIndex = (((r & mask[nLevel]) >> shift) << 2) | (((g & mask[nLevel]) >> shift) << 1) | ((b & mask[nLevel]) >> shift);
-    AddColor(addressof((*ppNode).value.pChild[nIndex]), r, g, b, nColorBits, nLevel + 1, pLeafCount, pReducibleNodes);
+    AddColor(addressof((ppNode.value).value.pChild[nIndex]), r, g, b, nColorBits, nLevel + 1, pLeafCount, pReducibleNodes);
   }
 }
 
@@ -98,7 +98,7 @@ NODE *CQuantizer::CreateNode(UINT nLevel, UINT nColorBits, UINT *pLeafCount, NOD
 
   pNode.value.bIsLeaf = (nLevel == nColorBits) ? TRUE : FALSE;
   if (pNode.value.bIsLeaf)
-    (*pLeafCount)++;
+    (pLeafCount.value)++;
   else {
     pNode.value.pNext = pReducibleNodes[nLevel];
     pReducibleNodes[nLevel] = pNode;
@@ -140,25 +140,25 @@ void CQuantizer::ReduceTree(UINT nColorBits, UINT *pLeafCount, NODE **pReducible
   pNode.value.nRedSum = nRedSum;
   pNode.value.nGreenSum = nGreenSum;
   pNode.value.nBlueSum = nBlueSum;
-  *pLeafCount -= (nChildren - 1);
+  pLeafCount.value -= (nChildren - 1);
 }
 
 void CQuantizer::DeleteTree(NODE **ppNode) {
   for (int i = 0; i < 8; i++) {
-    if ((*ppNode).value.pChild[i] != NULL)
-      DeleteTree(addressof((*ppNode).value.pChild[i]));
+    if ((ppNode.value).value.pChild[i] != NULL)
+      DeleteTree(addressof((ppNode.value).value.pChild[i]));
   }
-  HeapFree(GetProcessHeap(), 0, *ppNode);
-  *ppNode = NULL;
+  HeapFree(GetProcessHeap(), 0, ppNode.value);
+  ppNode.value = NULL;
 }
 
 void CQuantizer::GetPaletteColors(NODE *pTree, RGBQUAD *prgb, UINT *pIndex) {
   if (pTree.value.bIsLeaf) {
-    prgb[*pIndex].rgbRed = ((pTree.value.nRedSum) / (pTree.value.nPixelCount));
-    prgb[*pIndex].rgbGreen = ((pTree.value.nGreenSum) / (pTree.value.nPixelCount));
-    prgb[*pIndex].rgbBlue = ((pTree.value.nBlueSum) / (pTree.value.nPixelCount));
-    prgb[*pIndex].rgbReserved = 0;
-    (*pIndex)++;
+    prgb[pIndex.value].rgbRed = ((pTree.value.nRedSum) / (pTree.value.nPixelCount));
+    prgb[pIndex.value].rgbGreen = ((pTree.value.nGreenSum) / (pTree.value.nPixelCount));
+    prgb[pIndex.value].rgbBlue = ((pTree.value.nBlueSum) / (pTree.value.nPixelCount));
+    prgb[pIndex.value].rgbReserved = 0;
+    (pIndex.value)++;
   } else {
     for (int i = 0; i < 8; i++) {
       if (pTree.value.pChild[i] != NULL)

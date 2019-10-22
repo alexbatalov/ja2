@@ -874,7 +874,7 @@ function InitStringInput(pInputString: Pointer<UINT16>, usLength: UINT16, pFilte
     pStringDescriptor.value.usMaxStringLength = usLength;
     pStringDescriptor.value.usStringOffset = 0;
     pStringDescriptor.value.usCurrentStringLength = 0;
-    while ((pStringDescriptor.value.usStringOffset < pStringDescriptor.value.usMaxStringLength) && (*(pStringDescriptor.value.pString + pStringDescriptor.value.usStringOffset) != 0)) {
+    while ((pStringDescriptor.value.usStringOffset < pStringDescriptor.value.usMaxStringLength) && ((pStringDescriptor.value.pString + pStringDescriptor.value.usStringOffset).value != 0)) {
       //
       // Find the last character in the string
       //
@@ -936,9 +936,9 @@ function CharacterIsValid(usCharacter: UINT16, pFilter: Pointer<UINT16>): BOOLEA
   let uiEndIndex: UINT32;
 
   if (pFilter != NULL) {
-    uiEndIndex = *pFilter;
-    for (uiIndex = 1; uiIndex <= *pFilter; uiIndex++) {
-      if (usCharacter == *(pFilter + uiIndex)) {
+    uiEndIndex = pFilter.value;
+    for (uiIndex = 1; uiIndex <= pFilter.value; uiIndex++) {
+      if (usCharacter == (pFilter + uiIndex).value) {
         return TRUE;
       }
     }
@@ -1022,7 +1022,7 @@ function RedirectToString(usInputCharacter: UINT16): void {
           // Ok, we are not at the beginning of the string, so we may proceed
           for (usIndex = gpCurrentStringDescriptor.value.usStringOffset; usIndex <= gpCurrentStringDescriptor.value.usCurrentStringLength; usIndex++) {
             // Shift the characters one at a time
-            *(gpCurrentStringDescriptor.value.pString + usIndex - 1) = *(gpCurrentStringDescriptor.value.pString + usIndex);
+            (gpCurrentStringDescriptor.value.pString + usIndex - 1).value = (gpCurrentStringDescriptor.value.pString + usIndex).value;
           }
           gpCurrentStringDescriptor.value.usStringOffset--;
           gpCurrentStringDescriptor.value.usCurrentStringLength--;
@@ -1034,7 +1034,7 @@ function RedirectToString(usInputCharacter: UINT16): void {
           // Ok we are not at the end of the string, so we may proceed
           for (usIndex = gpCurrentStringDescriptor.value.usStringOffset; usIndex < gpCurrentStringDescriptor.value.usCurrentStringLength; usIndex++) {
             // Shift the characters one at a time
-            *(gpCurrentStringDescriptor.value.pString + usIndex) = *(gpCurrentStringDescriptor.value.pString + usIndex + 1);
+            (gpCurrentStringDescriptor.value.pString + usIndex).value = (gpCurrentStringDescriptor.value.pString + usIndex + 1).value;
           }
           gpCurrentStringDescriptor.value.usCurrentStringLength--;
         }
@@ -1067,10 +1067,10 @@ function RedirectToString(usInputCharacter: UINT16): void {
               // Before we can add a new character we must shift existing ones to for the insert
               for (usIndex = gpCurrentStringDescriptor.value.usCurrentStringLength; usIndex > gpCurrentStringDescriptor.value.usStringOffset; usIndex--) {
                 // Shift the characters one at a time
-                *(gpCurrentStringDescriptor.value.pString + usIndex) = *(gpCurrentStringDescriptor.value.pString + usIndex - 1);
+                (gpCurrentStringDescriptor.value.pString + usIndex).value = (gpCurrentStringDescriptor.value.pString + usIndex - 1).value;
               }
               // Ok now we introduce the new character
-              *(gpCurrentStringDescriptor.value.pString + usIndex) = usInputCharacter;
+              (gpCurrentStringDescriptor.value.pString + usIndex).value = usInputCharacter;
               gpCurrentStringDescriptor.value.usStringOffset++;
               gpCurrentStringDescriptor.value.usCurrentStringLength++;
             }
@@ -1078,13 +1078,13 @@ function RedirectToString(usInputCharacter: UINT16): void {
             // Ok, add character to string (by overwriting)
             if (gpCurrentStringDescriptor.value.usStringOffset < (gpCurrentStringDescriptor.value.usMaxStringLength - 1)) {
               // Ok, we have not exceeded the maximum number of characters yet
-              *(gpCurrentStringDescriptor.value.pString + gpCurrentStringDescriptor.value.usStringOffset) = usInputCharacter;
+              (gpCurrentStringDescriptor.value.pString + gpCurrentStringDescriptor.value.usStringOffset).value = usInputCharacter;
               gpCurrentStringDescriptor.value.usStringOffset++;
             }
             // Did we push back the current string length (i.e. add character to end of string)
             if (gpCurrentStringDescriptor.value.usStringOffset > gpCurrentStringDescriptor.value.usCurrentStringLength) {
               // Add a NULL character
-              *(gpCurrentStringDescriptor.value.pString + gpCurrentStringDescriptor.value.usStringOffset) = 0;
+              (gpCurrentStringDescriptor.value.pString + gpCurrentStringDescriptor.value.usStringOffset).value = 0;
               gpCurrentStringDescriptor.value.usCurrentStringLength++;
             }
           }
@@ -1146,7 +1146,7 @@ function RestoreString(pStringDescriptor: Pointer<StringInput>): void {
 
   pStringDescriptor.value.usStringOffset = 0;
   pStringDescriptor.value.usCurrentStringLength = 0;
-  while ((pStringDescriptor.value.usStringOffset < pStringDescriptor.value.usMaxStringLength) && (*(pStringDescriptor.value.pString + pStringDescriptor.value.usStringOffset) != 0)) {
+  while ((pStringDescriptor.value.usStringOffset < pStringDescriptor.value.usMaxStringLength) && ((pStringDescriptor.value.pString + pStringDescriptor.value.usStringOffset).value != 0)) {
     //
     // Find the last character in the string
     //

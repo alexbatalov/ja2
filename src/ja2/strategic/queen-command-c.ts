@@ -155,13 +155,13 @@ function GetNumberOfMobileEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubN
   Assert(sSectorY >= 1 && sSectorY <= 16);
 
   // Now count the number of mobile groups in the sector.
-  *pubNumTroops = *pubNumElites = *pubNumAdmins = 0;
+  pubNumTroops.value = pubNumElites.value = pubNumAdmins.value = 0;
   pGroup = gpGroupList;
   while (pGroup) {
     if (!pGroup.value.fPlayer && !pGroup.value.fVehicle && pGroup.value.ubSectorX == sSectorX && pGroup.value.ubSectorY == sSectorY) {
-      *pubNumTroops += pGroup.value.pEnemyGroup.value.ubNumTroops;
-      *pubNumElites += pGroup.value.pEnemyGroup.value.ubNumElites;
-      *pubNumAdmins += pGroup.value.pEnemyGroup.value.ubNumAdmins;
+      pubNumTroops.value += pGroup.value.pEnemyGroup.value.ubNumTroops;
+      pubNumElites.value += pGroup.value.pEnemyGroup.value.ubNumElites;
+      pubNumAdmins.value += pGroup.value.pEnemyGroup.value.ubNumAdmins;
     }
     pGroup = pGroup.value.next;
   }
@@ -169,9 +169,9 @@ function GetNumberOfMobileEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubN
   pSector = addressof(SectorInfo[SECTOR(sSectorX, sSectorY)]);
   if (pSector.value.ubGarrisonID == ROADBLOCK) {
     // consider these troops as mobile troops even though they are in a garrison
-    *pubNumAdmins += pSector.value.ubNumAdmins;
-    *pubNumTroops += pSector.value.ubNumTroops;
-    *pubNumElites += pSector.value.ubNumElites;
+    pubNumAdmins.value += pSector.value.ubNumAdmins;
+    pubNumTroops.value += pSector.value.ubNumTroops;
+    pubNumElites.value += pSector.value.ubNumElites;
   }
 }
 
@@ -182,9 +182,9 @@ function GetNumberOfStationaryEnemiesInSector(sSectorX: INT16, sSectorY: INT16, 
   pSector = addressof(SectorInfo[SECTOR(sSectorX, sSectorY)]);
 
   // grab the number of each type in the stationary sector
-  *pubNumAdmins = pSector.value.ubNumAdmins;
-  *pubNumTroops = pSector.value.ubNumTroops;
-  *pubNumElites = pSector.value.ubNumElites;
+  pubNumAdmins.value = pSector.value.ubNumAdmins;
+  pubNumTroops.value = pSector.value.ubNumTroops;
+  pubNumElites.value = pSector.value.ubNumElites;
 }
 
 function GetNumberOfEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubNumAdmins: Pointer<UINT8>, pubNumTroops: Pointer<UINT8>, pubNumElites: Pointer<UINT8>): void {
@@ -196,9 +196,9 @@ function GetNumberOfEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubNumAdmi
 
   GetNumberOfMobileEnemiesInSector(sSectorX, sSectorY, addressof(ubNumAdmins), addressof(ubNumTroops), addressof(ubNumElites));
 
-  *pubNumAdmins += ubNumAdmins;
-  *pubNumTroops += ubNumTroops;
-  *pubNumElites += ubNumElites;
+  pubNumAdmins.value += ubNumAdmins;
+  pubNumTroops.value += ubNumTroops;
+  pubNumElites.value += ubNumElites;
 }
 
 function EndTacticalBattleForEnemy(): void {

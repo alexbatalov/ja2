@@ -15,19 +15,19 @@ let guiLevelNodes: UINT32 = 0;
 
 // LEVEL NODE MANIPLULATION FUNCTIONS
 function CreateLevelNode(ppNode: Pointer<Pointer<LEVELNODE>>): BOOLEAN {
-  *ppNode = MemAlloc(sizeof(LEVELNODE));
-  CHECKF(*ppNode != NULL);
+  ppNode.value = MemAlloc(sizeof(LEVELNODE));
+  CHECKF(ppNode.value != NULL);
 
   // Clear all values
-  memset(*ppNode, 0, sizeof(LEVELNODE));
+  memset(ppNode.value, 0, sizeof(LEVELNODE));
 
   // Set default values
-  (*ppNode).value.ubShadeLevel = LightGetAmbient();
-  (*ppNode).value.ubNaturalShadeLevel = LightGetAmbient();
-  (*ppNode).value.pSoldier = NULL;
-  (*ppNode).value.pNext = NULL;
-  (*ppNode).value.sRelativeX = 0;
-  (*ppNode).value.sRelativeY = 0;
+  (ppNode.value).value.ubShadeLevel = LightGetAmbient();
+  (ppNode.value).value.ubNaturalShadeLevel = LightGetAmbient();
+  (ppNode.value).value.pSoldier = NULL;
+  (ppNode.value).value.pNext = NULL;
+  (ppNode.value).value.sRelativeX = 0;
+  (ppNode.value).value.sRelativeY = 0;
 
   guiLevelNodes++;
 
@@ -82,7 +82,7 @@ function TypeExistsInLevel(pStartNode: Pointer<LEVELNODE>, fType: UINT32, pusInd
       GetTileType(pStartNode.value.usIndex, addressof(fTileType));
 
       if (fTileType == fType) {
-        *pusIndex = pStartNode.value.usIndex;
+        pusIndex.value = pStartNode.value.usIndex;
         return TRUE;
       }
     }
@@ -269,7 +269,7 @@ function TypeRangeExistsInObjectLayer(iMapIndex: UINT32, fStartType: UINT32, fEn
       GetTileType(pOldObject.value.usIndex, addressof(fTileType));
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
-        *pusObjectIndex = pOldObject.value.usIndex;
+        pusObjectIndex.value = pOldObject.value.usIndex;
         return TRUE;
       }
     }
@@ -550,7 +550,7 @@ function TypeRangeExistsInLandLayer(iMapIndex: UINT32, fStartType: UINT32, fEndT
       pLand = pLand.value.pNext;
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
-        *pusLandIndex = pOldLand.value.usIndex;
+        pusLandIndex.value = pOldLand.value.usIndex;
         return TRUE;
       }
     }
@@ -578,7 +578,7 @@ function TypeRangeExistsInLandHead(iMapIndex: UINT32, fStartType: UINT32, fEndTy
     pLand = pLand.value.pNext;
 
     if (fTileType >= fStartType && fTileType <= fEndType) {
-      *pusLandIndex = pOldLand.value.usIndex;
+      pusLandIndex.value = pOldLand.value.usIndex;
       return TRUE;
     }
   }
@@ -606,7 +606,7 @@ function TypeRangeExistsInStructLayer(iMapIndex: UINT32, fStartType: UINT32, fEn
       pStruct = pStruct.value.pNext;
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
-        *pusStructIndex = pOldStruct.value.usIndex;
+        pusStructIndex.value = pOldStruct.value.usIndex;
         return TRUE;
       }
     }
@@ -743,8 +743,8 @@ function RemoveHigherLandLevels(iMapIndex: UINT32, fSrcType: UINT32, puiHigherTy
   let fTileType: UINT32;
   let ubSrcLogHeight: UINT8;
 
-  *pubNumHigherTypes = 0;
-  *puiHigherTypes = NULL;
+  pubNumHigherTypes.value = 0;
+  puiHigherTypes.value = NULL;
 
   // Start at tail and up
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
@@ -772,11 +772,11 @@ function RemoveHigherLandLevels(iMapIndex: UINT32, fSrcType: UINT32, puiHigherTy
       // Remove Item
       SetLandIndex(iMapIndex, pOldLand.value.usIndex, fTileType, TRUE);
 
-      (*pubNumHigherTypes)++;
+      (pubNumHigherTypes.value)++;
 
-      *puiHigherTypes = MemRealloc(*puiHigherTypes, (*pubNumHigherTypes) * sizeof(UINT32));
+      puiHigherTypes.value = MemRealloc(puiHigherTypes.value, (pubNumHigherTypes.value) * sizeof(UINT32));
 
-      (*puiHigherTypes)[(*pubNumHigherTypes) - 1] = fTileType;
+      (puiHigherTypes.value)[(pubNumHigherTypes.value) - 1] = fTileType;
     }
   }
 
@@ -2025,7 +2025,7 @@ function TypeRangeExistsInRoofLayer(iMapIndex: UINT32, fStartType: UINT32, fEndT
       pRoof = pRoof.value.pNext;
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
-        *pusRoofIndex = pOldRoof.value.usIndex;
+        pusRoofIndex.value = pOldRoof.value.usIndex;
         return TRUE;
       }
     }
@@ -2405,7 +2405,7 @@ function AddUIElem(iMapIndex: UINT32, usIndex: UINT16, sRelativeX: INT8, sRelati
   pTopmost.value.sRelativeY = sRelativeY;
 
   if (ppNewNode != NULL) {
-    *ppNewNode = pTopmost;
+    ppNewNode.value = pTopmost;
   }
 
   ResetSpecificLayerOptimizing(TILES_DYNAMIC_TOPMOST);

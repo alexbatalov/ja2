@@ -32,8 +32,8 @@ function AICenterXY(sGridNo: INT16, pdX: Pointer<FLOAT>, pdY: Pointer<FLOAT>): v
   sXPos = sGridNo % WORLD_COLS;
   sYPos = sGridNo / WORLD_COLS;
 
-  *pdX = (sXPos * CELL_X_SIZE + CELL_X_SIZE / 2);
-  *pdY = (sYPos * CELL_Y_SIZE + CELL_Y_SIZE / 2);
+  pdX.value = (sXPos * CELL_X_SIZE + CELL_X_SIZE / 2);
+  pdY.value = (sYPos * CELL_Y_SIZE + CELL_Y_SIZE / 2);
 }
 
 function CalcWorstCTGTForPosition(pSoldier: Pointer<SOLDIERTYPE>, ubOppID: UINT8, sOppGridNo: INT16, bLevel: INT8, iMyAPsLeft: INT32): INT8 {
@@ -370,7 +370,7 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
   // divide by a 100 to make the numbers more managable and avoid 32-bit limit
   iThisScale = max(iMyPosValue, iHisPosValue) / 100;
   iThisScale = (iThisScale * iReductionFactor) / 100;
-  *iTotalScale += iThisScale;
+  iTotalScale.value += iThisScale;
   // this helps to decide the percent improvement later
 
   // POSITIVE COVER VALUE INDICATES THE COVER BENEFITS ME, NEGATIVE RESULT
@@ -555,7 +555,7 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
     pusLastLoc = gsLastKnownOppLoc[pSoldier.value.ubID] + pOpponent.value.ubID;
 
     // if this opponent is unknown personally and publicly
-    if ((*pbPersOL == NOT_HEARD_OR_SEEN) && (*pbPublOL == NOT_HEARD_OR_SEEN)) {
+    if ((pbPersOL.value == NOT_HEARD_OR_SEEN) && (pbPublOL.value == NOT_HEARD_OR_SEEN)) {
       continue; // next merc
     }
 
@@ -565,14 +565,14 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
     }
 
     // if personal knowledge is more up to date or at least equal
-    if ((gubKnowledgeValue[*pbPublOL - OLDEST_HEARD_VALUE][*pbPersOL - OLDEST_HEARD_VALUE] > 0) || (*pbPersOL == *pbPublOL)) {
+    if ((gubKnowledgeValue[pbPublOL.value - OLDEST_HEARD_VALUE][pbPersOL.value - OLDEST_HEARD_VALUE] > 0) || (pbPersOL.value == pbPublOL.value)) {
       // using personal knowledge, obtain opponent's "best guess" gridno
-      sThreatLoc = *pusLastLoc;
-      iThreatCertainty = ThreatPercent[*pbPersOL - OLDEST_HEARD_VALUE];
+      sThreatLoc = pusLastLoc.value;
+      iThreatCertainty = ThreatPercent[pbPersOL.value - OLDEST_HEARD_VALUE];
     } else {
       // using public knowledge, obtain opponent's "best guess" gridno
       sThreatLoc = gsPublicLastKnownOppLoc[pSoldier.value.bTeam][pOpponent.value.ubID];
-      iThreatCertainty = ThreatPercent[*pbPublOL - OLDEST_HEARD_VALUE];
+      iThreatCertainty = ThreatPercent[pbPublOL.value - OLDEST_HEARD_VALUE];
     }
 
     // calculate how far away this threat is (in adjusted pixels)
@@ -842,10 +842,10 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
     // cover values already take the AP cost of getting there into account in
     // a BIG way, so no need to worry about that here, even small improvements
     // are actually very significant once we get our APs back (if we live!)
-    *piPercentBetter = CalcPercentBetter(iCurrentCoverValue, iBestCoverValue, iCurrentScale, iBestCoverScale);
+    piPercentBetter.value = CalcPercentBetter(iCurrentCoverValue, iBestCoverValue, iCurrentScale, iBestCoverScale);
 
     // if best cover value found was at least 5% better than our current cover
-    if (*piPercentBetter >= MIN_PERCENT_BETTER) {
+    if (piPercentBetter.value >= MIN_PERCENT_BETTER) {
       return (sBestCover); // return the gridno of that cover
     }
   }
@@ -909,7 +909,7 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     pbPublOL = addressof(gbPublicOpplist[pSoldier.value.bTeam][pOpponent.value.ubID]);
 
     // if this opponent is unknown personally and publicly
-    if ((*pbPersOL == NOT_HEARD_OR_SEEN) && (*pbPublOL == NOT_HEARD_OR_SEEN)) {
+    if ((pbPersOL.value == NOT_HEARD_OR_SEEN) && (pbPublOL.value == NOT_HEARD_OR_SEEN)) {
       continue; // check next opponent
     }
 
@@ -924,7 +924,7 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     }
 
     // if personal knowledge is more up to date or at least equal
-    if ((gubKnowledgeValue[*pbPublOL - OLDEST_HEARD_VALUE][*pbPersOL - OLDEST_HEARD_VALUE] > 0) || (*pbPersOL == *pbPublOL)) {
+    if ((gubKnowledgeValue[pbPublOL.value - OLDEST_HEARD_VALUE][pbPersOL.value - OLDEST_HEARD_VALUE] > 0) || (pbPersOL.value == pbPublOL.value)) {
       // using personal knowledge, obtain opponent's "best guess" gridno
       sThreatLoc = gsLastKnownOppLoc[pSoldier.value.ubID][pOpponent.value.ubID];
     } else {
@@ -1879,7 +1879,7 @@ function FindNearbyPointOnEdgeOfMap(pSoldier: Pointer<SOLDIERTYPE>, pbDirection:
     }
   }
 
-  *pbDirection = bClosestDirection;
+  pbDirection.value = bClosestDirection;
   return sClosestSpot;
 }
 

@@ -1223,14 +1223,14 @@ function CountNumberOfItemPlacementsInWorld(usItem: UINT16, pusQuantity: Pointer
   let pItemPool: Pointer<ITEM_POOL>;
   let pIPCurr: Pointer<IPListNode>;
   let num: INT16 = 0;
-  *pusQuantity = 0;
+  pusQuantity.value = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
     GetItemPool(pIPCurr.value.sGridNo, addressof(pItemPool), 0);
     while (pItemPool) {
       if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == usItem) {
         num++;
-        *pusQuantity += gWorldItems[pItemPool.value.iItemIndex].o.ubNumberOfObjects;
+        pusQuantity.value += gWorldItems[pItemPool.value.iItemIndex].o.ubNumberOfObjects;
       }
       pItemPool = pItemPool.value.pNext;
     }
@@ -1290,14 +1290,14 @@ function CountNumberOfEditorPlacementsInWorld(usEInfoIndex: UINT16, pusQuantity:
       else
         bFrequency = (FIRST_MAP_PLACED_FREQUENCY + (usEInfoIndex - 4) / 2);
       usNumPlacements = CountNumberOfItemsWithFrequency(eInfo.pusItemIndex[usEInfoIndex], bFrequency);
-      *pusQuantity = usNumPlacements;
+      pusQuantity.value = usNumPlacements;
     } else {
       usNumPlacements = CountNumberOfPressureActionsInWorld();
-      *pusQuantity = usNumPlacements;
+      pusQuantity.value = usNumPlacements;
     }
   } else if (eInfo.uiItemType == TBAR_MODE_ITEM_KEYS) {
     usNumPlacements = CountNumberOfKeysOfTypeInWorld(usEInfoIndex);
-    *pusQuantity = usNumPlacements;
+    pusQuantity.value = usNumPlacements;
   } else {
     usNumPlacements = CountNumberOfItemPlacementsInWorld(eInfo.pusItemIndex[usEInfoIndex], pusQuantity);
   }

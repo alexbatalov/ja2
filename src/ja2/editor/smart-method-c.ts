@@ -4,34 +4,34 @@ let gubWallUIValue: UINT8 = FIRSTWALL;
 let gubBrokenWallUIValue: UINT8 = 0;
 
 function CalcSmartWallDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
-  *pusUseIndex = 0;
-  *pusObjIndex = gubWallUIValue;
+  pusUseIndex.value = 0;
+  pusObjIndex.value = gubWallUIValue;
 }
 
 function CalcSmartDoorDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
-  *pusUseIndex = 4 * (gubDoorUIValue % 2); // open or closed -- odd or even
-  *pusObjIndex = FIRSTDOOR + gubDoorUIValue / 2;
+  pusUseIndex.value = 4 * (gubDoorUIValue % 2); // open or closed -- odd or even
+  pusObjIndex.value = FIRSTDOOR + gubDoorUIValue / 2;
 }
 
 function CalcSmartWindowDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
-  *pusUseIndex = 44 + gubWindowUIValue; // first exterior top right oriented window
-  *pusObjIndex = FIRSTWALL;
+  pusUseIndex.value = 44 + gubWindowUIValue; // first exterior top right oriented window
+  pusObjIndex.value = FIRSTWALL;
 }
 
 function CalcSmartBrokenWallDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
   switch (gubBrokenWallUIValue) {
     case 0:
     case 1:
-      *pusUseIndex = 49 + gubBrokenWallUIValue;
+      pusUseIndex.value = 49 + gubBrokenWallUIValue;
       break;
     case 3:
-      *pusUseIndex = 62;
+      pusUseIndex.value = 62;
       break;
     case 4:
-      *pusUseIndex = 64;
+      pusUseIndex.value = 64;
       break;
   }
-  *pusObjIndex = FIRSTWALL;
+  pusObjIndex.value = FIRSTWALL;
 }
 
 function CalcSmartWindowIndex(usWallOrientation: UINT16): UINT16 {
@@ -117,15 +117,15 @@ function CalcDoorInfoUsingSmartMethod(iMapIndex: UINT32, pusDoorType: Pointer<UI
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
     GetWallOrientation(pWall.value.usIndex, addressof(usWallOrientation));
-    *pusIndex = CalcSmartDoorIndex(usWallOrientation) - 1;
-    *pusDoorType = CalcSmartDoorType();
+    pusIndex.value = CalcSmartDoorIndex(usWallOrientation) - 1;
+    pusDoorType.value = CalcSmartDoorType();
     return TRUE;
   }
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
     GetWallOrientation(pWall.value.usIndex, addressof(usWallOrientation));
-    *pusIndex = CalcSmartDoorIndex(usWallOrientation) - 1;
-    *pusDoorType = CalcSmartDoorType();
+    pusIndex.value = CalcSmartDoorIndex(usWallOrientation) - 1;
+    pusDoorType.value = CalcSmartDoorType();
     return TRUE;
   }
   return FALSE;
@@ -139,27 +139,27 @@ function CalcWindowInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
     GetTileType(pWall.value.usIndex, addressof(uiTileType));
-    *pusWallType = uiTileType;
+    pusWallType.value = uiTileType;
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a window, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
-      *pusWallType = SearchForWallType(iMapIndex);
+      pusWallType.value = SearchForWallType(iMapIndex);
     }
     GetWallOrientation(pWall.value.usIndex, addressof(usWallOrientation));
-    *pusIndex = CalcSmartWindowIndex(usWallOrientation) - 1;
+    pusIndex.value = CalcSmartWindowIndex(usWallOrientation) - 1;
     return TRUE;
   }
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
     GetTileType(pWall.value.usIndex, addressof(uiTileType));
-    *pusWallType = uiTileType;
+    pusWallType.value = uiTileType;
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a window, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
-      *pusWallType = SearchForWallType(iMapIndex);
+      pusWallType.value = SearchForWallType(iMapIndex);
     }
     GetWallOrientation(pWall.value.usIndex, addressof(usWallOrientation));
-    *pusIndex = CalcSmartWindowIndex(usWallOrientation) - 1;
+    pusIndex.value = CalcSmartWindowIndex(usWallOrientation) - 1;
     return TRUE;
   }
   return FALSE;
@@ -172,35 +172,35 @@ function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Poin
 
   if (gubBrokenWallUIValue == 2) // the hole in the wall
   {
-    *pusWallType = 0xffff;
-    *pusIndex = 0xffff; // but it won't draw it.
+    pusWallType.value = 0xffff;
+    pusIndex.value = 0xffff; // but it won't draw it.
     return TRUE;
   }
 
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
     GetTileType(pWall.value.usIndex, addressof(uiTileType));
-    *pusWallType = uiTileType;
+    pusWallType.value = uiTileType;
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a walltype, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
-      *pusWallType = SearchForWallType(iMapIndex);
+      pusWallType.value = SearchForWallType(iMapIndex);
     }
     GetWallOrientation(pWall.value.usIndex, addressof(usWallOrientation));
-    *pusIndex = CalcSmartBrokenWallIndex(usWallOrientation) - 1;
+    pusIndex.value = CalcSmartBrokenWallIndex(usWallOrientation) - 1;
     return TRUE;
   }
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
     GetTileType(pWall.value.usIndex, addressof(uiTileType));
-    *pusWallType = uiTileType;
+    pusWallType.value = uiTileType;
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a walltype, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
-      *pusWallType = SearchForWallType(iMapIndex);
+      pusWallType.value = SearchForWallType(iMapIndex);
     }
     GetWallOrientation(pWall.value.usIndex, addressof(usWallOrientation));
-    *pusIndex = CalcSmartBrokenWallIndex(usWallOrientation) - 1;
+    pusIndex.value = CalcSmartBrokenWallIndex(usWallOrientation) - 1;
     return TRUE;
   }
   return FALSE;

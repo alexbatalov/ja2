@@ -1420,7 +1420,7 @@ function RepairVehicle(iVehicleId: INT32, bRepairPtsLeft: INT8, pfNothingToRepai
   bRepairPtsUsed = (pVehicleSoldier.value.bLife - bOldLife) * VEHICLE_REPAIR_POINTS_DIVISOR;
 
   // ARM: personally, I'd love to know where in Arulco the mechanic gets the PARTS to do this stuff, but hey, it's a game!
-  (*pfNothingToRepair) = !DoesVehicleNeedAnyRepairs(iVehicleId);
+  (pfNothingToRepair.value) = !DoesVehicleNeedAnyRepairs(iVehicleId);
 
   return bRepairPtsUsed;
 }
@@ -1489,7 +1489,7 @@ function AdjustVehicleAPs(pSoldier: Pointer<SOLDIERTYPE>, pubPoints: Pointer<UIN
   let pubDeducations: UINT8 = 0;
   let iCounter: INT32 = 0;
 
-  (*pubPoints) += 35;
+  (pubPoints.value) += 35;
 
   // check for state of critcals
 
@@ -1504,12 +1504,12 @@ function AdjustVehicleAPs(pSoldier: Pointer<SOLDIERTYPE>, pubPoints: Pointer<UIN
   }
 
   // make sure we don't go too far
-  if (pubDeducations > (*pubPoints)) {
-    pubDeducations = (*pubPoints);
+  if (pubDeducations > (pubPoints.value)) {
+    pubDeducations = (pubPoints.value);
   }
 
   // now deduct pts
-  (*pubPoints) -= pubDeducations;
+  (pubPoints.value) -= pubDeducations;
 }
 
 function SaveVehicleInformationToSaveGameFile(hFile: HWFILE): BOOLEAN {

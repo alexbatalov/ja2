@@ -411,14 +411,14 @@ function PhysicsHandleCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID: P
 
       // Check that we are not colliding with structure z
       // if ( *piCollisionID == COLLISION_STRUCTURE_Z || *piCollisionID == COLLISION_ROOF )
-      if (*piCollisionID == COLLISION_STRUCTURE_Z || *piCollisionID == COLLISION_ROOF || *piCollisionID == COLLISION_GROUND) {
+      if (piCollisionID.value == COLLISION_STRUCTURE_Z || piCollisionID.value == COLLISION_ROOF || piCollisionID.value == COLLISION_GROUND) {
         pObject.value.Velocity.z = 0;
 
         // Set us not alive!
         pObject.value.fAlive = FALSE;
       }
 
-      *piCollisionID = COLLISION_NONE;
+      piCollisionID.value = COLLISION_NONE;
     } else {
       // Set position back to before collision
       pObject.value.Position = VSetEqual(addressof(pObject.value.OldPosition));
@@ -642,7 +642,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
     }
   }
 
-  *piCollisionID = iCollisionCode;
+  piCollisionID.value = iCollisionCode;
 
   // If We hit the ground
   if (iCollisionCode > COLLISION_NONE) {
@@ -661,7 +661,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
         ObjectHitWindow(sGridNo, usStructureID, FALSE, TRUE);
       }
-      *piCollisionID = COLLISION_NONE;
+      piCollisionID.value = COLLISION_NONE;
       return FALSE;
     }
 
@@ -1093,7 +1093,7 @@ function FindBestForceForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
   }
 
   if (pdMagForce) {
-    (*pdMagForce) = dForce;
+    (pdMagForce.value) = dForce;
   }
 
   return vForce;
@@ -1287,7 +1287,7 @@ function CalculateObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJECTTYPE>, 
   let sGridNo: INT16;
 
   if (psFinalGridNo) {
-    (*psFinalGridNo) = NOWHERE;
+    (psFinalGridNo.value) = NOWHERE;
   }
 
   // OK, create a physics object....
@@ -1320,7 +1320,7 @@ function CalculateObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJECTTYPE>, 
   dDiffY = (pObject.value.TestTargetPosition.y - vPosition.value.y);
 
   if (psFinalGridNo) {
-    (*psFinalGridNo) = sGridNo;
+    (psFinalGridNo.value) = sGridNo;
   }
 
   return sqrt((dDiffX * dDiffX) + (dDiffY * dDiffY));
@@ -1356,12 +1356,12 @@ function ChanceToGetThroughObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJE
 
     // If NOT from UI, use exact collision position
     if (fFromUI) {
-      (*psNewGridNo) = MAPROWCOLTOPOS((pObject.value.Position.y / CELL_Y_SIZE), (pObject.value.Position.x / CELL_X_SIZE));
+      (psNewGridNo.value) = MAPROWCOLTOPOS((pObject.value.Position.y / CELL_Y_SIZE), (pObject.value.Position.x / CELL_X_SIZE));
     } else {
-      (*psNewGridNo) = MAPROWCOLTOPOS((pObject.value.EndedWithCollisionPosition.y / CELL_Y_SIZE), (pObject.value.EndedWithCollisionPosition.x / CELL_X_SIZE));
+      (psNewGridNo.value) = MAPROWCOLTOPOS((pObject.value.EndedWithCollisionPosition.y / CELL_Y_SIZE), (pObject.value.EndedWithCollisionPosition.x / CELL_X_SIZE));
     }
 
-    (*pbLevel) = GET_OBJECT_LEVEL(pObject.value.EndedWithCollisionPosition.z - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[(*psNewGridNo)].sHeight));
+    (pbLevel.value) = GET_OBJECT_LEVEL(pObject.value.EndedWithCollisionPosition.z - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[(psNewGridNo.value)].sHeight));
   }
 
   PhysicsDeleteObject(pObject);
@@ -1525,8 +1525,8 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
     }
   }
 
-  (*pdMagForce) = dMagForce;
-  (*pdDegrees) = dDegrees;
+  (pdMagForce.value) = dMagForce;
+  (pdDegrees.value) = dDegrees;
 }
 
 function CalculateLaunchItemChanceToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pItem: Pointer<OBJECTTYPE>, sGridNo: INT16, ubLevel: UINT8, sEndZ: INT16, psFinalGridNo: Pointer<INT16>, fArmed: BOOLEAN, pbLevel: Pointer<INT8>, fFromUI: BOOLEAN): BOOLEAN {
@@ -1573,11 +1573,11 @@ function CalculateLaunchItemChanceToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, p
     return FALSE;
   }
 
-  if ((*pbLevel) != ubLevel) {
+  if ((pbLevel.value) != ubLevel) {
     return FALSE;
   }
 
-  if (!fFromUI && (*psFinalGridNo) != sGridNo) {
+  if (!fFromUI && (psFinalGridNo.value) != sGridNo) {
     return FALSE;
   }
 

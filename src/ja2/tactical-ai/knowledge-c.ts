@@ -155,23 +155,23 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
     pbLastLevel = gbLastKnownOppLevel[pSoldier.value.ubID] + pTemp.value.ubID;
 
     // if this guy's been personally heard within last 3 turns
-    if (*pbPersOL < NOT_HEARD_OR_SEEN) {
+    if (pbPersOL.value < NOT_HEARD_OR_SEEN) {
       // calculate how far this noise was, and its relative "importance"
-      iDistAway = SpacesAway(pSoldier.value.sGridNo, *psLastLoc);
-      iNoiseValue = (*pbPersOL) * iDistAway; // always a negative number!
+      iDistAway = SpacesAway(pSoldier.value.sGridNo, psLastLoc.value);
+      iNoiseValue = (pbPersOL.value) * iDistAway; // always a negative number!
 
       if (iNoiseValue > iBestValue) {
         iBestValue = iNoiseValue;
-        sBestGridNo = *psLastLoc;
-        bBestLevel = *pbLastLevel;
+        sBestGridNo = psLastLoc.value;
+        bBestLevel = pbLastLevel.value;
       }
     }
 
     // if this guy's been publicly heard within last 3 turns
-    if (*pbPublOL < NOT_HEARD_OR_SEEN) {
+    if (pbPublOL.value < NOT_HEARD_OR_SEEN) {
       // calculate how far this noise was, and its relative "importance"
       iDistAway = SpacesAway(pSoldier.value.sGridNo, gsPublicLastKnownOppLoc[pSoldier.value.bTeam][pTemp.value.ubID]);
-      iNoiseValue = (*pbPublOL) * iDistAway; // always a negative number!
+      iNoiseValue = (pbPublOL.value) * iDistAway; // always a negative number!
 
       if (iNoiseValue > iBestValue) {
         iBestValue = iNoiseValue;
@@ -202,24 +202,24 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
 
   // if any recent PUBLIC "misc. noise" is also known
   if ((pSoldier.value.bTeam != CIV_TEAM) || (pSoldier.value.ubCivilianGroup == KINGPIN_CIV_GROUP)) {
-    if (*psNoiseGridNo != NOWHERE) {
+    if (psNoiseGridNo.value != NOWHERE) {
       // if we are NOT there (at the noise gridno)
-      if (*pbNoiseLevel != pSoldier.value.bLevel || PythSpacesAway(pSoldier.value.sGridNo, *psNoiseGridNo) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, *psNoiseGridNo, *pbNoiseLevel, 0, MaxDistanceVisible(), FALSE) == 0) {
+      if (pbNoiseLevel.value != pSoldier.value.bLevel || PythSpacesAway(pSoldier.value.sGridNo, psNoiseGridNo.value) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, psNoiseGridNo.value, pbNoiseLevel.value, 0, MaxDistanceVisible(), FALSE) == 0) {
         // calculate how far this noise was, and its relative "importance"
-        iDistAway = SpacesAway(pSoldier.value.sGridNo, *psNoiseGridNo);
-        iNoiseValue = ((*pubNoiseVolume / 2) - 6) * iDistAway;
+        iDistAway = SpacesAway(pSoldier.value.sGridNo, psNoiseGridNo.value);
+        iNoiseValue = ((pubNoiseVolume.value / 2) - 6) * iDistAway;
 
         if (iNoiseValue > iBestValue) {
           iBestValue = iNoiseValue;
-          sBestGridNo = *psNoiseGridNo;
-          bBestLevel = *pbNoiseLevel;
+          sBestGridNo = psNoiseGridNo.value;
+          bBestLevel = pbNoiseLevel.value;
         }
       }
     }
   }
 
   if (sBestGridNo != NOWHERE && pfReachable) {
-    *pfReachable = TRUE;
+    pfReachable.value = TRUE;
 
     // make civs not walk to noises outside their room if on close patrol/onguard
     if (pSoldier.value.bOrders <= CLOSEPATROL && (pSoldier.value.bTeam == CIV_TEAM || pSoldier.value.ubProfile != NO_PROFILE)) {
@@ -229,19 +229,19 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
       // any other combo uses the default of ubRoom == 0, set above
       if (InARoom(pSoldier.value.usPatrolGrid[0], addressof(ubRoom))) {
         if (!InARoom(pSoldier.value.usPatrolGrid[0], addressof(ubNewRoom)) || ubRoom != ubNewRoom) {
-          *pfReachable = FALSE;
+          pfReachable.value = FALSE;
         }
       }
     }
 
-    if (*pfReachable) {
+    if (pfReachable.value) {
       // if there is a climb involved then we should store the location
       // of where we have to climb to instead
       sClimbingGridNo = GetInterveningClimbingLocation(pSoldier, sBestGridNo, bBestLevel, addressof(fClimbingNecessary));
       if (fClimbingNecessary) {
         if (sClimbingGridNo == NOWHERE) {
           // can't investigate!
-          *pfReachable = FALSE;
+          pfReachable.value = FALSE;
         } else {
           sBestGridNo = sClimbingGridNo;
           fClimbingNecessary = TRUE;
@@ -253,11 +253,11 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
   }
 
   if (piRetValue) {
-    *piRetValue = iBestValue;
+    piRetValue.value = iBestValue;
   }
 
   if (pfClimbingNecessary) {
-    *pfClimbingNecessary = fClimbingNecessary;
+    pfClimbingNecessary.value = fClimbingNecessary;
   }
 
   return sBestGridNo;
@@ -303,13 +303,13 @@ function WhatIKnowThatPublicDont(pSoldier: Pointer<SOLDIERTYPE>, ubInSightOnly: 
 
     // if we're only interested in guys currently is sight, and he's not
     if (ubInSightOnly) {
-      if ((*pbPersOL == SEEN_CURRENTLY) && (*pbPublOL != SEEN_CURRENTLY)) {
+      if ((pbPersOL.value == SEEN_CURRENTLY) && (pbPublOL.value != SEEN_CURRENTLY)) {
         // just count the number of them
         ubTotal++;
       }
     } else {
       // add value of personal knowledge compared to public knowledge to total
-      ubTotal += gubKnowledgeValue[*pbPublOL - OLDEST_HEARD_VALUE][*pbPersOL - OLDEST_HEARD_VALUE];
+      ubTotal += gubKnowledgeValue[pbPublOL.value - OLDEST_HEARD_VALUE][pbPersOL.value - OLDEST_HEARD_VALUE];
     }
   }
 

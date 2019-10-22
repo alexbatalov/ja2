@@ -360,7 +360,7 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   let bMineId: INT8;
   let bMiners: BOOLEAN = FALSE;
 
-  (*pubCivHintToUse) = 0;
+  (pubCivHintToUse.value) = 0;
 
   ubCivType = GetCivType(pCiv);
 
@@ -537,7 +537,7 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   // Say hint if availible...
   if (bCivHint != -1) {
     if (ubCivType == CIV_TYPE_ADULT) {
-      (*pubCivHintToUse) = bCivHint;
+      (pubCivHintToUse.value) = bCivHint;
 
       // Set quote as used...
       ConsiderCivilianQuotes(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, TRUE);

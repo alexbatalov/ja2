@@ -4667,7 +4667,7 @@ function GetPaletteRepIndexFromID(aPalRep: PaletteRepID, pubPalIndex: Pointer<UI
   // Check if type exists
   for (cnt = 0; cnt < guiNumReplacements; cnt++) {
     if (COMPARE_PALETTEREP_ID(aPalRep, gpPalRep[cnt].ID)) {
-      *pubPalIndex = cnt;
+      pubPalIndex.value = cnt;
       return TRUE;
     }
   }
@@ -6024,7 +6024,7 @@ function CheckForFullStruct(sGridNo: INT16, pusIndex: Pointer<UINT16>): BOOLEAN 
         // CHECK IF THIS TREE IS FAIRLY ALONE!
         if (FullStructAlone(sGridNo, 2)) {
           // Return true and return index
-          *pusIndex = pOldStruct.value.usIndex;
+          pusIndex.value = pOldStruct.value.usIndex;
           return TRUE;
         } else {
           return FALSE;
@@ -6320,8 +6320,8 @@ function HandleAnimationProfile(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UIN
 function GetAnimProfileFlags(sGridNo: UINT16, usFlags: Pointer<UINT16>, ppTargSoldier: Pointer<Pointer<SOLDIERTYPE>>, pGivenNode: Pointer<LEVELNODE>): Pointer<LEVELNODE> {
   let pNode: Pointer<LEVELNODE>;
 
-  (*ppTargSoldier) = NULL;
-  (*usFlags) = 0;
+  (ppTargSoldier.value) = NULL;
+  (usFlags.value) = 0;
 
   if (pGivenNode == NULL) {
     pNode = gpWorldLevelData[sGridNo].pMercHead;
@@ -6333,8 +6333,8 @@ function GetAnimProfileFlags(sGridNo: UINT16, usFlags: Pointer<UINT16>, ppTargSo
 
   if (pNode != NULL) {
     if (pNode.value.uiFlags & LEVELNODE_MERCPLACEHOLDER) {
-      (*usFlags) = pNode.value.uiAnimHitLocationFlags;
-      (*ppTargSoldier) = pNode.value.pSoldier;
+      (usFlags.value) = pNode.value.uiAnimHitLocationFlags;
+      (ppTargSoldier.value) = pNode.value.pSoldier;
     }
   }
 
@@ -6359,7 +6359,7 @@ function GetProfileFlagsFromGridno(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: 
 
   bProfileID = gAnimSurfaceDatabase[usAnimSurface].bProfile;
 
-  *usFlags = 0;
+  usFlags.value = 0;
 
   // Determine if this animation has a profile
   if (bProfileID != -1) {
@@ -6378,7 +6378,7 @@ function GetProfileFlagsFromGridno(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: 
       // Check if in bounds
       if (!OutOfBounds(pSoldier.value.sGridNo, sGridNo)) {
         if (sGridNo == sTestGridNo) {
-          *usFlags = pProfileTile.value.usTileFlags;
+          usFlags.value = pProfileTile.value.usTileFlags;
           return TRUE;
         }
       }
@@ -7551,15 +7551,15 @@ function GetActualSoldierAnimDims(pSoldier: Pointer<SOLDIERTYPE>, psHeight: Poin
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    *psHeight = 5;
-    *psWidth = 5;
+    psHeight.value = 5;
+    psWidth.value = 5;
 
     return;
   }
 
   if (gAnimSurfaceDatabase[usAnimSurface].hVideoObject == NULL) {
-    *psHeight = 5;
-    *psWidth = 5;
+    psHeight.value = 5;
+    psWidth.value = 5;
     return;
   }
 
@@ -7573,8 +7573,8 @@ function GetActualSoldierAnimDims(pSoldier: Pointer<SOLDIERTYPE>, psHeight: Poin
 
   pTrav = addressof(gAnimSurfaceDatabase[usAnimSurface].hVideoObject.value.pETRLEObject[pSoldier.value.usAniFrame]);
 
-  *psHeight = pTrav.value.usHeight;
-  *psWidth = pTrav.value.usWidth;
+  psHeight.value = pTrav.value.usHeight;
+  psWidth.value = pTrav.value.usWidth;
 }
 
 function GetActualSoldierAnimOffsets(pSoldier: Pointer<SOLDIERTYPE>, sOffsetX: Pointer<INT16>, sOffsetY: Pointer<INT16>): void {
@@ -7584,22 +7584,22 @@ function GetActualSoldierAnimOffsets(pSoldier: Pointer<SOLDIERTYPE>, sOffsetX: P
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    *sOffsetX = 0;
-    *sOffsetY = 0;
+    sOffsetX.value = 0;
+    sOffsetY.value = 0;
 
     return;
   }
 
   if (gAnimSurfaceDatabase[usAnimSurface].hVideoObject == NULL) {
-    *sOffsetX = 0;
-    *sOffsetY = 0;
+    sOffsetX.value = 0;
+    sOffsetY.value = 0;
     return;
   }
 
   pTrav = addressof(gAnimSurfaceDatabase[usAnimSurface].hVideoObject.value.pETRLEObject[pSoldier.value.usAniFrame]);
 
-  *sOffsetX = pTrav.value.sOffsetX;
-  *sOffsetY = pTrav.value.sOffsetY;
+  sOffsetX.value = pTrav.value.sOffsetX;
+  sOffsetY.value = pTrav.value.sOffsetY;
 }
 
 function SetSoldierLocatorOffsets(pSoldier: Pointer<SOLDIERTYPE>): void {

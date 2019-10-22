@@ -401,12 +401,12 @@ function GetNumericStrictValueFromField(ubField: UINT8): INT32 {
   // ensure that nonnumeric values automatically return -1.
   total = 0;
   ptr = str;
-  while (*ptr != '\0') // if char is a valid char...
+  while (ptr.value != '\0') // if char is a valid char...
   {
-    if (*ptr >= '0' && *ptr <= '9') //...make sure it is numeric...
+    if (ptr.value >= '0' && ptr.value <= '9') //...make sure it is numeric...
     {
       // Multiply prev total by 10 and add converted char digit value.
-      total = total * 10 + (*ptr - '0');
+      total = total * 10 + (ptr.value - '0');
     } else //...else the string is invalid.
       return -1;
     ptr++; // point to next char in string.

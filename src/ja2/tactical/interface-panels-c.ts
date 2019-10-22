@@ -1271,14 +1271,14 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
   }
 
   // ATE: Don't do anything if we are in stack popup and are refreshing stuff....
-  if ((InItemStackPopup() || (InKeyRingPopup())) && (*pfDirty) == DIRTYLEVEL1) {
+  if ((InItemStackPopup() || (InKeyRingPopup())) && (pfDirty.value) == DIRTYLEVEL1) {
     return;
   }
 
   if (gfCheckForMouseOverItem) {
     if ((GetJA2Clock() - guiMouseOverItemTime) > 100) {
       if (HandleCompatibleAmmoUI(gpSMCurrentMerc, gbCheckForMouseOverItemPos, TRUE)) {
-        (*pfDirty) = DIRTYLEVEL2;
+        (pfDirty.value) = DIRTYLEVEL2;
       }
 
       gfCheckForMouseOverItem = FALSE;
@@ -1291,7 +1291,7 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
     HandleItemDescriptionBox(pfDirty);
   }
 
-  if (*pfDirty == DIRTYLEVEL2) {
+  if (pfDirty.value == DIRTYLEVEL2) {
     // if ( InItemStackPopup( ) )
     //{
 
@@ -1473,7 +1473,7 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
     mprintf(sFontX + 5, sFontY, "%s", gpSMCurrentMerc.value.name);
   }
 
-  if (*pfDirty != DIRTYLEVEL0) {
+  if (pfDirty.value != DIRTYLEVEL0) {
     // UPdate stats!
     if (gpSMCurrentMerc.value.bLife != 0) {
       if (gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_VEHICLE) {
@@ -1538,9 +1538,9 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
   HandleSoldierFaceFlash(gpSMCurrentMerc, SM_SELMERC_FACE_X, SM_SELMERC_FACE_Y);
 
   // Render items in guy's hand!
-  HandleRenderInvSlots(gpSMCurrentMerc, *pfDirty);
+  HandleRenderInvSlots(gpSMCurrentMerc, pfDirty.value);
 
-  if (gfSMDisableForItems && (*pfDirty) != DIRTYLEVEL0) {
+  if (gfSMDisableForItems && (pfDirty.value) != DIRTYLEVEL0) {
     let pDestBuf: Pointer<UINT8>;
     let uiDestPitchBYTES: UINT32;
     let ClipRect: SGPRect;
@@ -3712,7 +3712,7 @@ function GetPlayerIDFromInterfaceTeamSlot(ubPanelSlot: UINT8, pubID: Pointer<UIN
   }
 
   if (gTeamPanel[ubPanelSlot].fOccupied) {
-    *pubID = gTeamPanel[ubPanelSlot].ubID;
+    pubID.value = gTeamPanel[ubPanelSlot].ubID;
     return TRUE;
   } else {
     return FALSE;

@@ -157,7 +157,7 @@ function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount:
 
   if (pSoldier.value.bMoved) {
     if (pSoldier.value.bActionPoints <= 1 && pubDoneCount) {
-      (*pubDoneCount)++;
+      (pubDoneCount.value)++;
     }
     return FALSE;
   }

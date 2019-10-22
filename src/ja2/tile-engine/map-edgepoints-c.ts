@@ -234,23 +234,23 @@ function CompactEdgepointArray(psArray: Pointer<Pointer<INT16>>, pusMiddleIndex:
   let usArraySize: UINT16;
   let usValidIndex: UINT16 = 0;
 
-  usArraySize = *pusArraySize;
+  usArraySize = pusArraySize.value;
 
   for (i = 0; i < usArraySize; i++) {
-    if ((*psArray)[i] == -1) {
-      (*pusArraySize)--;
-      if (i < *pusMiddleIndex) {
-        (*pusMiddleIndex)--;
+    if ((psArray.value)[i] == -1) {
+      (pusArraySize.value)--;
+      if (i < pusMiddleIndex.value) {
+        (pusMiddleIndex.value)--;
       }
     } else {
       if (usValidIndex != i) {
-        (*psArray)[usValidIndex] = (*psArray)[i];
+        (psArray.value)[usValidIndex] = (psArray.value)[i];
       }
       usValidIndex++;
     }
   }
-  *psArray = MemRealloc(*psArray, *pusArraySize * sizeof(INT16));
-  Assert(*psArray);
+  psArray.value = MemRealloc(psArray.value, pusArraySize.value * sizeof(INT16));
+  Assert(psArray.value);
 }
 
 function InternallyClassifyEdgepoints(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, psArray1: Pointer<Pointer<INT16>>, pusMiddleIndex1: Pointer<UINT16>, pusArraySize1: Pointer<UINT16>, psArray2: Pointer<Pointer<INT16>>, pusMiddleIndex2: Pointer<UINT16>, pusArraySize2: Pointer<UINT16>): void {
@@ -258,17 +258,17 @@ function InternallyClassifyEdgepoints(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   let us1stBenchmarkID: UINT16;
   let us2ndBenchmarkID: UINT16;
   us1stBenchmarkID = us2ndBenchmarkID = 0xffff;
-  if (!(*psArray2)) {
-    *psArray2 = MemAlloc(sizeof(INT16) * 400);
+  if (!(psArray2.value)) {
+    psArray2.value = MemAlloc(sizeof(INT16) * 400);
   }
-  for (i = 0; i < *pusArraySize1; i++) {
-    if (sGridNo == (*psArray1)[i]) {
-      if (i < *pusMiddleIndex1) {
+  for (i = 0; i < pusArraySize1.value; i++) {
+    if (sGridNo == (psArray1.value)[i]) {
+      if (i < pusMiddleIndex1.value) {
         // in the first half of the array
         us1stBenchmarkID = i;
         // find the second benchmark
-        for (i = *pusMiddleIndex1; i < *pusArraySize1; i++) {
-          if (EdgepointsClose(pSoldier, (*psArray1)[us1stBenchmarkID], (*psArray1)[i])) {
+        for (i = pusMiddleIndex1.value; i < pusArraySize1.value; i++) {
+          if (EdgepointsClose(pSoldier, (psArray1.value)[us1stBenchmarkID], (psArray1.value)[i])) {
             us2ndBenchmarkID = i;
             break;
           }
@@ -277,8 +277,8 @@ function InternallyClassifyEdgepoints(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
         // in the second half of the array
         us2ndBenchmarkID = i;
         // find the first benchmark
-        for (i = 0; i < *pusMiddleIndex1; i++) {
-          if (EdgepointsClose(pSoldier, (*psArray1)[us2ndBenchmarkID], (*psArray1)[i])) {
+        for (i = 0; i < pusMiddleIndex1.value; i++) {
+          if (EdgepointsClose(pSoldier, (psArray1.value)[us2ndBenchmarkID], (psArray1.value)[i])) {
             us1stBenchmarkID = i;
             break;
           }
@@ -292,53 +292,53 @@ function InternallyClassifyEdgepoints(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   // use for isolated entry when tactically traversing.
   if (us1stBenchmarkID != 0xffff) {
     for (i = us1stBenchmarkID; i > 0; i--) {
-      if (!EdgepointsClose(pSoldier, (*psArray1)[i], (*psArray1)[i - 1])) {
+      if (!EdgepointsClose(pSoldier, (psArray1.value)[i], (psArray1.value)[i - 1])) {
         // All edgepoints from index 0 to i-1 are rejected.
         while (i) {
           i--;
-          (*psArray2)[*pusArraySize2] = (*psArray1)[i];
-          (*pusMiddleIndex2)++;
-          (*pusArraySize2)++;
-          (*psArray1)[i] = -1;
+          (psArray2.value)[pusArraySize2.value] = (psArray1.value)[i];
+          (pusMiddleIndex2.value)++;
+          (pusArraySize2.value)++;
+          (psArray1.value)[i] = -1;
         }
         break;
       }
     }
-    for (i = us1stBenchmarkID; i < *pusMiddleIndex1 - 1; i++) {
-      if (!EdgepointsClose(pSoldier, (*psArray1)[i], (*psArray1)[i + 1])) {
+    for (i = us1stBenchmarkID; i < pusMiddleIndex1.value - 1; i++) {
+      if (!EdgepointsClose(pSoldier, (psArray1.value)[i], (psArray1.value)[i + 1])) {
         // All edgepoints from index i+1 to 1st middle index are rejected.
-        while (i < *pusMiddleIndex1 - 1) {
+        while (i < pusMiddleIndex1.value - 1) {
           i++;
-          (*psArray2)[*pusArraySize2] = (*psArray1)[i];
-          (*pusMiddleIndex2)++;
-          (*pusArraySize2)++;
-          (*psArray1)[i] = -1;
+          (psArray2.value)[pusArraySize2.value] = (psArray1.value)[i];
+          (pusMiddleIndex2.value)++;
+          (pusArraySize2.value)++;
+          (psArray1.value)[i] = -1;
         }
         break;
       }
     }
   }
   if (us2ndBenchmarkID != 0xffff) {
-    for (i = us2ndBenchmarkID; i > *pusMiddleIndex1; i--) {
-      if (!EdgepointsClose(pSoldier, (*psArray1)[i], (*psArray1)[i - 1])) {
+    for (i = us2ndBenchmarkID; i > pusMiddleIndex1.value; i--) {
+      if (!EdgepointsClose(pSoldier, (psArray1.value)[i], (psArray1.value)[i - 1])) {
         // All edgepoints from 1st middle index  to i-1 are rejected.
-        while (i > *pusMiddleIndex1) {
+        while (i > pusMiddleIndex1.value) {
           i--;
-          (*psArray2)[*pusArraySize2] = (*psArray1)[i];
-          (*pusArraySize2)++;
-          (*psArray1)[i] = -1;
+          (psArray2.value)[pusArraySize2.value] = (psArray1.value)[i];
+          (pusArraySize2.value)++;
+          (psArray1.value)[i] = -1;
         }
         break;
       }
     }
-    for (i = us2ndBenchmarkID; i < *pusArraySize1 - 1; i++) {
-      if (!EdgepointsClose(pSoldier, (*psArray1)[i], (*psArray1)[i + 1])) {
+    for (i = us2ndBenchmarkID; i < pusArraySize1.value - 1; i++) {
+      if (!EdgepointsClose(pSoldier, (psArray1.value)[i], (psArray1.value)[i + 1])) {
         // All edgepoints from index 0 to i-1 are rejected.
-        while (i < *pusArraySize1 - 1) {
+        while (i < pusArraySize1.value - 1) {
           i++;
-          (*psArray2)[(*pusArraySize2)] = (*psArray1)[i];
-          (*pusArraySize2)++;
-          (*psArray1)[i] = -1;
+          (psArray2.value)[(pusArraySize2.value)] = (psArray1.value)[i];
+          (pusArraySize2.value)++;
+          (psArray1.value)[i] = -1;
         }
         break;
       }
@@ -346,7 +346,7 @@ function InternallyClassifyEdgepoints(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   }
   // Now compact the primary array, because some edgepoints have been removed.
   CompactEdgepointArray(psArray1, pusMiddleIndex1, pusArraySize1);
-  (*psArray2) = MemRealloc((*psArray2), *pusArraySize2 * sizeof(INT16));
+  (psArray2.value) = MemRealloc((psArray2.value), pusArraySize2.value * sizeof(INT16));
 }
 
 function ClassifyEdgepoints(): void {
@@ -745,33 +745,33 @@ function SaveMapEdgepoints(fp: HWFILE): void {
 }
 
 function OldLoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): void {
-  LOADDATA(addressof(gus1stNorthEdgepointArraySize), *hBuffer, 2);
-  LOADDATA(addressof(gus1stNorthEdgepointMiddleIndex), *hBuffer, 2);
+  LOADDATA(addressof(gus1stNorthEdgepointArraySize), hBuffer.value, 2);
+  LOADDATA(addressof(gus1stNorthEdgepointMiddleIndex), hBuffer.value, 2);
   if (gus1stNorthEdgepointArraySize) {
     gps1stNorthEdgepointArray = MemAlloc(gus1stNorthEdgepointArraySize * sizeof(INT16));
     Assert(gps1stNorthEdgepointArray);
-    LOADDATA(gps1stNorthEdgepointArray, *hBuffer, gus1stNorthEdgepointArraySize * sizeof(INT16));
+    LOADDATA(gps1stNorthEdgepointArray, hBuffer.value, gus1stNorthEdgepointArraySize * sizeof(INT16));
   }
-  LOADDATA(addressof(gus1stEastEdgepointArraySize), *hBuffer, 2);
-  LOADDATA(addressof(gus1stEastEdgepointMiddleIndex), *hBuffer, 2);
+  LOADDATA(addressof(gus1stEastEdgepointArraySize), hBuffer.value, 2);
+  LOADDATA(addressof(gus1stEastEdgepointMiddleIndex), hBuffer.value, 2);
   if (gus1stEastEdgepointArraySize) {
     gps1stEastEdgepointArray = MemAlloc(gus1stEastEdgepointArraySize * sizeof(INT16));
     Assert(gps1stEastEdgepointArray);
-    LOADDATA(gps1stEastEdgepointArray, *hBuffer, gus1stEastEdgepointArraySize * sizeof(INT16));
+    LOADDATA(gps1stEastEdgepointArray, hBuffer.value, gus1stEastEdgepointArraySize * sizeof(INT16));
   }
-  LOADDATA(addressof(gus1stSouthEdgepointArraySize), *hBuffer, 2);
-  LOADDATA(addressof(gus1stSouthEdgepointMiddleIndex), *hBuffer, 2);
+  LOADDATA(addressof(gus1stSouthEdgepointArraySize), hBuffer.value, 2);
+  LOADDATA(addressof(gus1stSouthEdgepointMiddleIndex), hBuffer.value, 2);
   if (gus1stSouthEdgepointArraySize) {
     gps1stSouthEdgepointArray = MemAlloc(gus1stSouthEdgepointArraySize * sizeof(INT16));
     Assert(gps1stSouthEdgepointArray);
-    LOADDATA(gps1stSouthEdgepointArray, *hBuffer, gus1stSouthEdgepointArraySize * sizeof(INT16));
+    LOADDATA(gps1stSouthEdgepointArray, hBuffer.value, gus1stSouthEdgepointArraySize * sizeof(INT16));
   }
-  LOADDATA(addressof(gus1stWestEdgepointArraySize), *hBuffer, 2);
-  LOADDATA(addressof(gus1stWestEdgepointMiddleIndex), *hBuffer, 2);
+  LOADDATA(addressof(gus1stWestEdgepointArraySize), hBuffer.value, 2);
+  LOADDATA(addressof(gus1stWestEdgepointMiddleIndex), hBuffer.value, 2);
   if (gus1stWestEdgepointArraySize) {
     gps1stWestEdgepointArray = MemAlloc(gus1stWestEdgepointArraySize * sizeof(INT16));
     Assert(gps1stWestEdgepointArray);
-    LOADDATA(gps1stWestEdgepointArray, *hBuffer, gus1stWestEdgepointArraySize * sizeof(INT16));
+    LOADDATA(gps1stWestEdgepointArray, hBuffer.value, gus1stWestEdgepointArraySize * sizeof(INT16));
   }
 }
 
@@ -785,62 +785,62 @@ function LoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
     TrashMapEdgepoints();
     return FALSE;
   }
-  LOADDATA(addressof(gus1stNorthEdgepointArraySize), *hBuffer, 2);
-  LOADDATA(addressof(gus1stNorthEdgepointMiddleIndex), *hBuffer, 2);
+  LOADDATA(addressof(gus1stNorthEdgepointArraySize), hBuffer.value, 2);
+  LOADDATA(addressof(gus1stNorthEdgepointMiddleIndex), hBuffer.value, 2);
   if (gus1stNorthEdgepointArraySize) {
     gps1stNorthEdgepointArray = MemAlloc(gus1stNorthEdgepointArraySize * sizeof(INT16));
     Assert(gps1stNorthEdgepointArray);
-    LOADDATA(gps1stNorthEdgepointArray, *hBuffer, gus1stNorthEdgepointArraySize * sizeof(INT16));
+    LOADDATA(gps1stNorthEdgepointArray, hBuffer.value, gus1stNorthEdgepointArraySize * sizeof(INT16));
   }
-  LOADDATA(addressof(gus1stEastEdgepointArraySize), *hBuffer, 2);
-  LOADDATA(addressof(gus1stEastEdgepointMiddleIndex), *hBuffer, 2);
+  LOADDATA(addressof(gus1stEastEdgepointArraySize), hBuffer.value, 2);
+  LOADDATA(addressof(gus1stEastEdgepointMiddleIndex), hBuffer.value, 2);
   if (gus1stEastEdgepointArraySize) {
     gps1stEastEdgepointArray = MemAlloc(gus1stEastEdgepointArraySize * sizeof(INT16));
     Assert(gps1stEastEdgepointArray);
-    LOADDATA(gps1stEastEdgepointArray, *hBuffer, gus1stEastEdgepointArraySize * sizeof(INT16));
+    LOADDATA(gps1stEastEdgepointArray, hBuffer.value, gus1stEastEdgepointArraySize * sizeof(INT16));
   }
-  LOADDATA(addressof(gus1stSouthEdgepointArraySize), *hBuffer, 2);
-  LOADDATA(addressof(gus1stSouthEdgepointMiddleIndex), *hBuffer, 2);
+  LOADDATA(addressof(gus1stSouthEdgepointArraySize), hBuffer.value, 2);
+  LOADDATA(addressof(gus1stSouthEdgepointMiddleIndex), hBuffer.value, 2);
   if (gus1stSouthEdgepointArraySize) {
     gps1stSouthEdgepointArray = MemAlloc(gus1stSouthEdgepointArraySize * sizeof(INT16));
     Assert(gps1stSouthEdgepointArray);
-    LOADDATA(gps1stSouthEdgepointArray, *hBuffer, gus1stSouthEdgepointArraySize * sizeof(INT16));
+    LOADDATA(gps1stSouthEdgepointArray, hBuffer.value, gus1stSouthEdgepointArraySize * sizeof(INT16));
   }
-  LOADDATA(addressof(gus1stWestEdgepointArraySize), *hBuffer, 2);
-  LOADDATA(addressof(gus1stWestEdgepointMiddleIndex), *hBuffer, 2);
+  LOADDATA(addressof(gus1stWestEdgepointArraySize), hBuffer.value, 2);
+  LOADDATA(addressof(gus1stWestEdgepointMiddleIndex), hBuffer.value, 2);
   if (gus1stWestEdgepointArraySize) {
     gps1stWestEdgepointArray = MemAlloc(gus1stWestEdgepointArraySize * sizeof(INT16));
     Assert(gps1stWestEdgepointArray);
-    LOADDATA(gps1stWestEdgepointArray, *hBuffer, gus1stWestEdgepointArraySize * sizeof(INT16));
+    LOADDATA(gps1stWestEdgepointArray, hBuffer.value, gus1stWestEdgepointArraySize * sizeof(INT16));
   }
 
-  LOADDATA(addressof(gus2ndNorthEdgepointArraySize), *hBuffer, 2);
-  LOADDATA(addressof(gus2ndNorthEdgepointMiddleIndex), *hBuffer, 2);
+  LOADDATA(addressof(gus2ndNorthEdgepointArraySize), hBuffer.value, 2);
+  LOADDATA(addressof(gus2ndNorthEdgepointMiddleIndex), hBuffer.value, 2);
   if (gus2ndNorthEdgepointArraySize) {
     gps2ndNorthEdgepointArray = MemAlloc(gus2ndNorthEdgepointArraySize * sizeof(INT16));
     Assert(gps2ndNorthEdgepointArray);
-    LOADDATA(gps2ndNorthEdgepointArray, *hBuffer, gus2ndNorthEdgepointArraySize * sizeof(INT16));
+    LOADDATA(gps2ndNorthEdgepointArray, hBuffer.value, gus2ndNorthEdgepointArraySize * sizeof(INT16));
   }
-  LOADDATA(addressof(gus2ndEastEdgepointArraySize), *hBuffer, 2);
-  LOADDATA(addressof(gus2ndEastEdgepointMiddleIndex), *hBuffer, 2);
+  LOADDATA(addressof(gus2ndEastEdgepointArraySize), hBuffer.value, 2);
+  LOADDATA(addressof(gus2ndEastEdgepointMiddleIndex), hBuffer.value, 2);
   if (gus2ndEastEdgepointArraySize) {
     gps2ndEastEdgepointArray = MemAlloc(gus2ndEastEdgepointArraySize * sizeof(INT16));
     Assert(gps2ndEastEdgepointArray);
-    LOADDATA(gps2ndEastEdgepointArray, *hBuffer, gus2ndEastEdgepointArraySize * sizeof(INT16));
+    LOADDATA(gps2ndEastEdgepointArray, hBuffer.value, gus2ndEastEdgepointArraySize * sizeof(INT16));
   }
-  LOADDATA(addressof(gus2ndSouthEdgepointArraySize), *hBuffer, 2);
-  LOADDATA(addressof(gus2ndSouthEdgepointMiddleIndex), *hBuffer, 2);
+  LOADDATA(addressof(gus2ndSouthEdgepointArraySize), hBuffer.value, 2);
+  LOADDATA(addressof(gus2ndSouthEdgepointMiddleIndex), hBuffer.value, 2);
   if (gus2ndSouthEdgepointArraySize) {
     gps2ndSouthEdgepointArray = MemAlloc(gus2ndSouthEdgepointArraySize * sizeof(INT16));
     Assert(gps2ndSouthEdgepointArray);
-    LOADDATA(gps2ndSouthEdgepointArray, *hBuffer, gus2ndSouthEdgepointArraySize * sizeof(INT16));
+    LOADDATA(gps2ndSouthEdgepointArray, hBuffer.value, gus2ndSouthEdgepointArraySize * sizeof(INT16));
   }
-  LOADDATA(addressof(gus2ndWestEdgepointArraySize), *hBuffer, 2);
-  LOADDATA(addressof(gus2ndWestEdgepointMiddleIndex), *hBuffer, 2);
+  LOADDATA(addressof(gus2ndWestEdgepointArraySize), hBuffer.value, 2);
+  LOADDATA(addressof(gus2ndWestEdgepointMiddleIndex), hBuffer.value, 2);
   if (gus2ndWestEdgepointArraySize) {
     gps2ndWestEdgepointArray = MemAlloc(gus2ndWestEdgepointArraySize * sizeof(INT16));
     Assert(gps2ndWestEdgepointArray);
-    LOADDATA(gps2ndWestEdgepointArray, *hBuffer, gus2ndWestEdgepointArraySize * sizeof(INT16));
+    LOADDATA(gps2ndWestEdgepointArray, hBuffer.value, gus2ndWestEdgepointArraySize * sizeof(INT16));
   }
   if (gMapInformation.ubMapVersion < 22) {
     // regenerate them.

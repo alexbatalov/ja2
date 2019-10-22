@@ -709,7 +709,7 @@ function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUnconscio
   let sDistToClosestEnemy: INT16 = 1000;
   let sDistToEnemy: INT16;
 
-  *pfChangeLevel = FALSE;
+  pfChangeLevel.value = FALSE;
 
   pubNoiseVolume = addressof(gubPublicNoiseVolume[pSoldier.value.bTeam]);
   pusNoiseGridNo = addressof(gsPublicNoiseGridno[pSoldier.value.bTeam]);
@@ -740,23 +740,23 @@ function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUnconscio
     pbLastLevel = gbLastKnownOppLevel[pSoldier.value.ubID] + pOpp.value.ubID;
 
     // if this opponent is unknown personally and publicly
-    if ((*pbPersOL == NOT_HEARD_OR_SEEN) && (*pbPublOL == NOT_HEARD_OR_SEEN)) {
+    if ((pbPersOL.value == NOT_HEARD_OR_SEEN) && (pbPublOL.value == NOT_HEARD_OR_SEEN)) {
       continue; // next merc
     }
 
     // this is possible if get here from BLACK AI in one of those rare
     // instances when we couldn't get a meaningful shot off at a guy in sight
-    if ((*pbPersOL == SEEN_CURRENTLY) && (pOpp.value.bLife >= OKLIFE)) {
+    if ((pbPersOL.value == SEEN_CURRENTLY) && (pOpp.value.bLife >= OKLIFE)) {
       // don't allow this to return any valid values, this guy remains a
       // serious threat and the last thing we want to do is approach him!
       return NOWHERE;
     }
 
     // if personal knowledge is more up to date or at least equal
-    if ((gubKnowledgeValue[*pbPublOL - OLDEST_HEARD_VALUE][*pbPersOL - OLDEST_HEARD_VALUE] > 0) || (*pbPersOL == *pbPublOL)) {
+    if ((gubKnowledgeValue[pbPublOL.value - OLDEST_HEARD_VALUE][pbPersOL.value - OLDEST_HEARD_VALUE] > 0) || (pbPersOL.value == pbPublOL.value)) {
       // using personal knowledge, obtain opponent's "best guess" gridno
-      sGridNo = *psLastLoc;
-      bLevel = *pbLastLevel;
+      sGridNo = psLastLoc.value;
+      bLevel = pbLastLevel.value;
     } else {
       // using public knowledge, obtain opponent's "best guess" gridno
       sGridNo = gsPublicLastKnownOppLoc[pSoldier.value.bTeam][pOpp.value.ubID];
@@ -824,10 +824,10 @@ function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUnconscio
   }
 
   // if any PUBLIC "misc. noise" was also heard recently
-  if (*pusNoiseGridNo != NOWHERE && *pusNoiseGridNo != sClosestDisturbance) {
+  if (pusNoiseGridNo.value != NOWHERE && pusNoiseGridNo.value != sClosestDisturbance) {
     // test this gridno, too
-    sGridNo = *pusNoiseGridNo;
-    bLevel = *pbNoiseLevel;
+    sGridNo = pusNoiseGridNo.value;
+    bLevel = pbNoiseLevel.value;
 
     // if we are not NEAR the noise gridno...
     if (pSoldier.value.bLevel != bLevel || PythSpacesAway(pSoldier.value.sGridNo, sGridNo) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, bLevel, 0, MaxDistanceVisible(), FALSE) == 0)
@@ -848,11 +848,11 @@ function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUnconscio
       }
     } else {
       // degrade our public noise a bit
-      *pusNoiseGridNo -= 2;
+      pusNoiseGridNo.value -= 2;
     }
   }
 
-  *pfChangeLevel = fClosestClimbingNecessary;
+  pfChangeLevel.value = fClosestClimbingNecessary;
   return sClosestDisturbance;
 }
 
@@ -902,12 +902,12 @@ function ClosestKnownOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<
     psLastLoc = gsLastKnownOppLoc[pSoldier.value.ubID] + pOpp.value.ubID;
 
     // if this opponent is unknown personally and publicly
-    if ((*pbPersOL == NOT_HEARD_OR_SEEN) && (*pbPublOL == NOT_HEARD_OR_SEEN)) {
+    if ((pbPersOL.value == NOT_HEARD_OR_SEEN) && (pbPublOL.value == NOT_HEARD_OR_SEEN)) {
       continue; // next merc
     }
 
     // if personal knowledge is more up to date or at least equal
-    if ((gubKnowledgeValue[*pbPublOL - OLDEST_HEARD_VALUE][*pbPersOL - OLDEST_HEARD_VALUE] > 0) || (*pbPersOL == *pbPublOL)) {
+    if ((gubKnowledgeValue[pbPublOL.value - OLDEST_HEARD_VALUE][pbPersOL.value - OLDEST_HEARD_VALUE] > 0) || (pbPersOL.value == pbPublOL.value)) {
       // using personal knowledge, obtain opponent's "best guess" gridno
       sGridNo = gsLastKnownOppLoc[pSoldier.value.ubID][pOpp.value.ubID];
       bLevel = gbLastKnownOppLevel[pSoldier.value.ubID][pOpp.value.ubID];
@@ -941,10 +941,10 @@ function ClosestKnownOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<
   }
 
   if (psGridNo) {
-    *psGridNo = sClosestOpponent;
+    psGridNo.value = sClosestOpponent;
   }
   if (pbLevel) {
-    *pbLevel = bClosestLevel;
+    pbLevel.value = bClosestLevel;
   }
   return sClosestOpponent;
 }
@@ -984,7 +984,7 @@ function ClosestSeenOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<I
     pbPersOL = pSoldier.value.bOppList + pOpp.value.ubID;
 
     // if this opponent is not seen personally
-    if (*pbPersOL != SEEN_CURRENTLY) {
+    if (pbPersOL.value != SEEN_CURRENTLY) {
       continue; // next merc
     }
 
@@ -1016,10 +1016,10 @@ function ClosestSeenOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<I
   }
 
   if (psGridNo) {
-    *psGridNo = sClosestOpponent;
+    psGridNo.value = sClosestOpponent;
   }
   if (pbLevel) {
-    *pbLevel = bClosestLevel;
+    pbLevel.value = bClosestLevel;
   }
   return sClosestOpponent;
 }
@@ -1069,7 +1069,7 @@ function ClosestPC(pSoldier: Pointer<SOLDIERTYPE>, psDistance: Pointer<INT16>): 
   }
 
   if (psDistance) {
-    *psDistance = sMinDist;
+    psDistance.value = sMinDist;
   }
 
   return sGridNo;
@@ -1116,16 +1116,16 @@ function GetInterveningClimbingLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGri
   if (pSoldier.value.bLevel == bDestLevel) {
     if ((pSoldier.value.bLevel == 0) || (gubBuildingInfo[pSoldier.value.sGridNo] == gubBuildingInfo[sDestGridNo])) {
       // on ground or same building... normal!
-      *pfClimbingNecessary = FALSE;
+      pfClimbingNecessary.value = FALSE;
       return NOWHERE;
     } else {
       // different buildings!
       // yes, pass in same gridno twice... want closest climb-down spot for building we are on!
-      *pfClimbingNecessary = TRUE;
+      pfClimbingNecessary.value = TRUE;
       return FindClosestClimbPointAvailableToAI(pSoldier, pSoldier.value.sGridNo, pSoldier.value.sGridNo, FALSE);
     }
   } else {
-    *pfClimbingNecessary = TRUE;
+    pfClimbingNecessary.value = TRUE;
     // different levels
     if (pSoldier.value.bLevel == 0) {
       // got to go UP onto building
@@ -1145,8 +1145,8 @@ function EstimatePathCostToLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo:
     if ((pSoldier.value.bLevel == 0) || (gubBuildingInfo[pSoldier.value.sGridNo] == gubBuildingInfo[sDestGridNo])) {
       // on ground or same building... normal!
       sPathCost = EstimatePlotPath(pSoldier, sDestGridNo, FALSE, FALSE, FALSE, WALKING, FALSE, FALSE, 0);
-      *pfClimbingNecessary = FALSE;
-      *psClimbGridNo = NOWHERE;
+      pfClimbingNecessary.value = FALSE;
+      psClimbGridNo.value = NOWHERE;
     } else {
       // different buildings!
       // yes, pass in same gridno twice... want closest climb-down spot for building we are on!
@@ -1167,8 +1167,8 @@ function EstimatePathCostToLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo:
             // add in an estimate of getting there after climbing down, *but not on top of roof*
             sPathCost += (AP_MOVEMENT_FLAT + WALKCOST) * PythSpacesAway(sClimbGridNo, sDestGridNo) / 2;
           }
-          *pfClimbingNecessary = TRUE;
-          *psClimbGridNo = sClimbGridNo;
+          pfClimbingNecessary.value = TRUE;
+          psClimbGridNo.value = sClimbGridNo;
         }
       }
     }
@@ -1203,8 +1203,8 @@ function EstimatePathCostToLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo:
           // estimate walk cost
           sPathCost += (AP_MOVEMENT_FLAT + WALKCOST) * PythSpacesAway(sClimbGridNo, sDestGridNo);
         }
-        *pfClimbingNecessary = TRUE;
-        *psClimbGridNo = sClimbGridNo;
+        pfClimbingNecessary.value = TRUE;
+        psClimbGridNo.value = sClimbGridNo;
       }
     }
   }
@@ -1298,7 +1298,7 @@ function ClosestReachableFriendInTrouble(pSoldier: Pointer<SOLDIERTYPE>, pfClimb
     }
   }
 
-  *pfClimbingNecessary = fClosestClimbingNecessary;
+  pfClimbingNecessary.value = fClosestClimbingNecessary;
   return sClosestFriend;
 }
 
@@ -1508,9 +1508,9 @@ function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     pSeenOpp = gbSeenOpponents[pSoldier.value.ubID] + pOpponent.value.ubID;
 
     // if this opponent is unknown to me personally AND unknown to my team, too
-    if ((*pbPersOL == NOT_HEARD_OR_SEEN) && (*pbPublOL == NOT_HEARD_OR_SEEN)) {
+    if ((pbPersOL.value == NOT_HEARD_OR_SEEN) && (pbPublOL.value == NOT_HEARD_OR_SEEN)) {
       // if I have never seen him before anywhere in this sector, either
-      if (!(*pSeenOpp))
+      if (!(pSeenOpp.value))
         continue; // next merc
 
       // have seen him in the past, so he remains something of a threat
@@ -1518,10 +1518,10 @@ function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     } else // decide which opplist is more current
     {
       // if personal knowledge is more up to date or at least equal
-      if ((gubKnowledgeValue[*pbPublOL - OLDEST_HEARD_VALUE][*pbPersOL - OLDEST_HEARD_VALUE] > 0) || (*pbPersOL == *pbPublOL))
-        bMostRecentOpplistValue = *pbPersOL; // use personal
+      if ((gubKnowledgeValue[pbPublOL.value - OLDEST_HEARD_VALUE][pbPersOL.value - OLDEST_HEARD_VALUE] > 0) || (pbPersOL.value == pbPublOL.value))
+        bMostRecentOpplistValue = pbPersOL.value; // use personal
       else
-        bMostRecentOpplistValue = *pbPublOL; // use public
+        bMostRecentOpplistValue = pbPublOL.value; // use public
     }
 
     iPercent = ThreatPercent[bMostRecentOpplistValue - OLDEST_HEARD_VALUE];
@@ -1800,17 +1800,17 @@ function CalcManThreatValue(pEnemy: Pointer<SOLDIERTYPE>, sMyGrid: INT16, ubRedu
 function RoamingRange(pSoldier: Pointer<SOLDIERTYPE>, pusFromGridNo: Pointer<INT16>): INT16 {
   if (CREATURE_OR_BLOODCAT(pSoldier)) {
     if (pSoldier.value.bAlertStatus == STATUS_BLACK) {
-      *pusFromGridNo = pSoldier.value.sGridNo; // from current position!
+      pusFromGridNo.value = pSoldier.value.sGridNo; // from current position!
       return MAX_ROAMING_RANGE;
     }
   }
   if (pSoldier.value.bOrders == POINTPATROL || pSoldier.value.bOrders == RNDPTPATROL) {
     // roam near NEXT PATROL POINT, not from where merc starts out
-    *pusFromGridNo = pSoldier.value.usPatrolGrid[pSoldier.value.bNextPatrolPnt];
+    pusFromGridNo.value = pSoldier.value.usPatrolGrid[pSoldier.value.bNextPatrolPnt];
   } else {
     // roam around where mercs started
     //*pusFromGridNo = pSoldier->sInitialGridNo;
-    *pusFromGridNo = pSoldier.value.usPatrolGrid[0];
+    pusFromGridNo.value = pSoldier.value.usPatrolGrid[0];
   }
 
   switch (pSoldier.value.bOrders) {
@@ -1841,7 +1841,7 @@ function RoamingRange(pSoldier: Pointer<SOLDIERTYPE>, pusFromGridNo: Pointer<INT
         return 30;
       }
     case SEEKENEMY:
-      *pusFromGridNo = pSoldier.value.sGridNo; // from current position!
+      pusFromGridNo.value = pSoldier.value.sGridNo; // from current position!
       return MAX_ROAMING_RANGE;
     default:
       return 0;

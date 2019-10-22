@@ -61,7 +61,7 @@ function AdjustClockToEventStamp(pEvent: Pointer<STRATEGICEVENT>, puiAdjustment:
 
   uiDiff = pEvent.value.uiTimeStamp - guiGameClock;
   guiGameClock += uiDiff;
-  *puiAdjustment -= uiDiff;
+  puiAdjustment.value -= uiDiff;
 
   // Calculate the day, hour, and minutes.
   guiDay = (guiGameClock / NUM_SEC_IN_DAY);

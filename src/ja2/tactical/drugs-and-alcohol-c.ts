@@ -278,7 +278,7 @@ function GetDrugSideEffect(pSoldier: Pointer<SOLDIERTYPE>, ubDrugType: UINT8): I
 
 function HandleAPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, pubPoints: Pointer<UINT8>): void {
   let bDrunkLevel: INT8;
-  let sPoints: INT16 = (*pubPoints);
+  let sPoints: INT16 = (pubPoints.value);
 
   // Are we in a side effect or good effect?
   if (pSoldier.value.bDrugEffect[DRUG_TYPE_ADRENALINE]) {
@@ -304,7 +304,7 @@ function HandleAPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, pubPoints: Poi
     }
   }
 
-  (*pubPoints) = sPoints;
+  (pubPoints.value) = sPoints;
 }
 
 function HandleBPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, psPointReduction: Pointer<INT16>): void {
@@ -313,17 +313,17 @@ function HandleBPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, psPointReducti
   // Are we in a side effect or good effect?
   if (pSoldier.value.bDrugEffect[DRUG_TYPE_ADRENALINE]) {
     // Adjust!
-    (*psPointReduction) -= (pSoldier.value.bDrugEffect[DRUG_TYPE_ADRENALINE] * BP_RATIO_RED_PTS_TO_NORMAL);
+    (psPointReduction.value) -= (pSoldier.value.bDrugEffect[DRUG_TYPE_ADRENALINE] * BP_RATIO_RED_PTS_TO_NORMAL);
   } else if (pSoldier.value.bDrugSideEffect[DRUG_TYPE_ADRENALINE]) {
     // Adjust!
-    (*psPointReduction) += (pSoldier.value.bDrugSideEffect[DRUG_TYPE_ADRENALINE] * BP_RATIO_RED_PTS_TO_NORMAL);
+    (psPointReduction.value) += (pSoldier.value.bDrugSideEffect[DRUG_TYPE_ADRENALINE] * BP_RATIO_RED_PTS_TO_NORMAL);
   }
 
   bDrunkLevel = GetDrunkLevel(pSoldier);
 
   if (bDrunkLevel == HUNGOVER) {
     // Reduce....
-    (*psPointReduction) += HANGOVER_BP_REDUCE;
+    (psPointReduction.value) += HANGOVER_BP_REDUCE;
   }
 }
 

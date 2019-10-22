@@ -128,7 +128,7 @@ let guiRefreshThreadState: UINT32; // THREAD_ON, THREAD_OFF, THREAD_SUSPENDED
 // Dirty rectangle management variables
 //
 
-void (*gpFrameBufferRefreshOverride);
+void (gpFrameBufferRefreshOverride.value);
 let gListOfDirtyRegions: SGPRect[] /* [MAX_DIRTY_REGIONS] */;
 let guiDirtyRegionCount: UINT32;
 let gfForceFullScreenRefresh: BOOLEAN;
@@ -580,9 +580,9 @@ function RestoreVideoManager(): BOOLEAN {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function GetCurrentVideoSettings(usWidth: Pointer<UINT16>, usHeight: Pointer<UINT16>, ubBitDepth: Pointer<UINT8>): void {
-  *usWidth = gusScreenWidth;
-  *usHeight = gusScreenHeight;
-  *ubBitDepth = gubScreenPixelDepth;
+  usWidth.value = gusScreenWidth;
+  usHeight.value = gusScreenHeight;
+  ubBitDepth.value = gubScreenPixelDepth;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1314,7 +1314,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
       // call the override function then we must set the override pointer to NULL
       //
 
-      (*gpFrameBufferRefreshOverride)();
+      (gpFrameBufferRefreshOverride.value)();
       gpFrameBufferRefreshOverride = NULL;
     }
 
@@ -1933,7 +1933,7 @@ function LockPrimarySurface(uiPitch: Pointer<UINT32>): PTR {
     }
   } while (ReturnCode != DD_OK);
 
-  *uiPitch = SurfaceDescription.lPitch;
+  uiPitch.value = SurfaceDescription.lPitch;
   return SurfaceDescription.lpSurface;
 }
 
@@ -1977,7 +1977,7 @@ function LockBackBuffer(uiPitch: Pointer<UINT32>): PTR {
     }
   } while (ReturnCode != DD_OK);
 
-  *uiPitch = SurfaceDescription.lPitch;
+  uiPitch.value = SurfaceDescription.lPitch;
   return SurfaceDescription.lpSurface;
 }
 
@@ -2021,7 +2021,7 @@ function LockFrameBuffer(uiPitch: Pointer<UINT32>): PTR {
     }
   } while (ReturnCode != DD_OK);
 
-  *uiPitch = SurfaceDescription.lPitch;
+  uiPitch.value = SurfaceDescription.lPitch;
 
   return SurfaceDescription.lpSurface;
 }
@@ -2054,7 +2054,7 @@ function LockMouseBuffer(uiPitch: Pointer<UINT32>): PTR {
     return NULL;
   }
 
-  *uiPitch = SurfaceDescription.lPitch;
+  uiPitch.value = SurfaceDescription.lPitch;
 
   return SurfaceDescription.lpSurface;
 }
@@ -2142,9 +2142,9 @@ function GetRGBDistribution(): BOOLEAN {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function GetPrimaryRGBDistributionMasks(RedBitMask: Pointer<UINT32>, GreenBitMask: Pointer<UINT32>, BlueBitMask: Pointer<UINT32>): BOOLEAN {
-  *RedBitMask = gusRedMask;
-  *GreenBitMask = gusGreenMask;
-  *BlueBitMask = gusBlueMask;
+  RedBitMask.value = gusRedMask;
+  GreenBitMask.value = gusGreenMask;
+  BlueBitMask.value = gusBlueMask;
 
   return TRUE;
 }
@@ -2474,7 +2474,7 @@ function SnapshotSmall(): void {
       //	fwrite( &usPixel555, sizeof(UINT16), 1, disk);
       //		fwrite(	(void *)(((UINT8 *)SurfaceDescription.lpSurface) + ( iCountY * 640 * 2) + ( iCountX * 2 ) ), 2 * sizeof( BYTE ), 1, disk );
 
-      *(pDest + (iCountY * 640) + (iCountX)) = *(pVideo + (iCountY * 640) + (iCountX));
+      (pDest + (iCountY * 640) + (iCountX)).value = (pVideo + (iCountY * 640) + (iCountX)).value;
     }
   }
 

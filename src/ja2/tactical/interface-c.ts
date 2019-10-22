@@ -1100,26 +1100,26 @@ function GetSoldierAboveGuyPositions(pSoldier: Pointer<SOLDIERTYPE>, psX: Pointe
 
   if (pSoldier.value.ubProfile != NO_PROFILE) {
     if (fRadio) {
-      *psX = sMercScreenX - (80 / 2) - pSoldier.value.sLocatorOffX;
-      *psY = sMercScreenY - sTextBodyTypeYOffset + sStanceOffset;
+      psX.value = sMercScreenX - (80 / 2) - pSoldier.value.sLocatorOffX;
+      psY.value = sMercScreenY - sTextBodyTypeYOffset + sStanceOffset;
     } else {
-      *psX = sMercScreenX - (80 / 2) - pSoldier.value.sLocatorOffX;
-      *psY = sMercScreenY - sTextBodyTypeYOffset + sStanceOffset;
+      psX.value = sMercScreenX - (80 / 2) - pSoldier.value.sLocatorOffX;
+      psY.value = sMercScreenY - sTextBodyTypeYOffset + sStanceOffset;
 
       // OK, Check if we need to go below....
       // Can do this 1) if displaying damge or 2 ) above screen
 
       // If not a radio position, adjust if we are getting hit, to be lower!
       // If we are getting hit, lower them!
-      if (pSoldier.value.fDisplayDamage || *psY < gsVIEWPORT_WINDOW_START_Y) {
-        *psX = sMercScreenX - (80 / 2) - pSoldier.value.sLocatorOffX;
-        *psY = sMercScreenY;
+      if (pSoldier.value.fDisplayDamage || psY.value < gsVIEWPORT_WINDOW_START_Y) {
+        psX.value = sMercScreenX - (80 / 2) - pSoldier.value.sLocatorOffX;
+        psY.value = sMercScreenY;
       }
     }
   } else {
     // Display Text!
-    *psX = sMercScreenX - (80 / 2) - pSoldier.value.sLocatorOffX;
-    *psY = sMercScreenY - sTextBodyTypeYOffset + sStanceOffset;
+    psX.value = sMercScreenX - (80 / 2) - pSoldier.value.sLocatorOffX;
+    psY.value = sMercScreenY - sTextBodyTypeYOffset + sStanceOffset;
   }
 }
 

@@ -290,7 +290,7 @@ function PalEditScreenHandle(): UINT32 {
 
     guiBackgroundRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, 50, 10, 600, 400);
   } else {
-    (*(GameScreens[GAME_SCREEN].HandleScreen))();
+    ((GameScreens[GAME_SCREEN].HandleScreen).value)();
   }
 
   return PALEDIT_SCREEN;
@@ -485,7 +485,7 @@ function DebugScreenHandle(): UINT32 {
     SetRenderHook(DebugRenderHook);
     SetUIKeyboardHook(DebugKeyboardHook);
   } else {
-    (*(GameScreens[GAME_SCREEN].HandleScreen))();
+    ((GameScreens[GAME_SCREEN].HandleScreen).value)();
   }
 
   return DEBUG_SCREEN;

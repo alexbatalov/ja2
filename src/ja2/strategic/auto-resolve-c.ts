@@ -3749,24 +3749,24 @@ function GetAutoResolveSectorID(): UINT8 {
 // Returns TRUE if a battle is happening or sector is loaded
 function GetCurrentBattleSectorXYZ(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, psSectorZ: Pointer<INT16>): BOOLEAN {
   if (gpAR) {
-    *psSectorX = gpAR.value.ubSectorX;
-    *psSectorY = gpAR.value.ubSectorY;
-    *psSectorZ = 0;
+    psSectorX.value = gpAR.value.ubSectorX;
+    psSectorY.value = gpAR.value.ubSectorY;
+    psSectorZ.value = 0;
     return TRUE;
   } else if (gfPreBattleInterfaceActive) {
-    *psSectorX = gubPBSectorX;
-    *psSectorY = gubPBSectorY;
-    *psSectorZ = gubPBSectorZ;
+    psSectorX.value = gubPBSectorX;
+    psSectorY.value = gubPBSectorY;
+    psSectorZ.value = gubPBSectorZ;
     return TRUE;
   } else if (gfWorldLoaded) {
-    *psSectorX = gWorldSectorX;
-    *psSectorY = gWorldSectorY;
-    *psSectorZ = gbWorldSectorZ;
+    psSectorX.value = gWorldSectorX;
+    psSectorY.value = gWorldSectorY;
+    psSectorZ.value = gbWorldSectorZ;
     return TRUE;
   } else {
-    *psSectorX = 0;
-    *psSectorY = 0;
-    *psSectorZ = -1;
+    psSectorX.value = 0;
+    psSectorY.value = 0;
+    psSectorZ.value = -1;
     return FALSE;
   }
 }
@@ -3774,27 +3774,27 @@ function GetCurrentBattleSectorXYZ(psSectorX: Pointer<INT16>, psSectorY: Pointer
 // Returns TRUE if a battle is happening ONLY
 function GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, psSectorZ: Pointer<INT16>): BOOLEAN {
   if (gpAR) {
-    *psSectorX = gpAR.value.ubSectorX;
-    *psSectorY = gpAR.value.ubSectorY;
-    *psSectorZ = 0;
+    psSectorX.value = gpAR.value.ubSectorX;
+    psSectorY.value = gpAR.value.ubSectorY;
+    psSectorZ.value = 0;
     return TRUE;
   } else if (gfPreBattleInterfaceActive) {
-    *psSectorX = gubPBSectorX;
-    *psSectorY = gubPBSectorY;
-    *psSectorZ = gubPBSectorZ;
+    psSectorX.value = gubPBSectorX;
+    psSectorY.value = gubPBSectorY;
+    psSectorZ.value = gubPBSectorZ;
     return TRUE;
   } else if (gfWorldLoaded) {
-    *psSectorX = gWorldSectorX;
-    *psSectorY = gWorldSectorY;
-    *psSectorZ = gbWorldSectorZ;
+    psSectorX.value = gWorldSectorX;
+    psSectorY.value = gWorldSectorY;
+    psSectorZ.value = gbWorldSectorZ;
     if (gTacticalStatus.fEnemyInSector) {
       return TRUE;
     }
     return FALSE;
   } else {
-    *psSectorX = 0;
-    *psSectorY = 0;
-    *psSectorZ = -1;
+    psSectorX.value = 0;
+    psSectorY.value = 0;
+    psSectorZ.value = -1;
     return FALSE;
   }
 }

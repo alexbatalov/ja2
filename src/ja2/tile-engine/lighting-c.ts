@@ -333,14 +333,14 @@ function LightAddRayNode(iLight: INT32, iX: INT16, iY: INT16, ubLight: UINT8, us
     if ((pLightRayList[iLight] = MemAlloc(sizeof(UINT16))) == NULL)
       return 65535;
 
-    *pLightRayList[iLight] = (LightAddTemplateNode(iLight, iX, iY, ubLight) | usFlags);
+    pLightRayList[iLight].value = (LightAddTemplateNode(iLight, iX, iY, ubLight) | usFlags);
 
     usRaySize[iLight] = 1;
     return 0;
   } else {
     usNumNodes = usRaySize[iLight];
     pLightRayList[iLight] = MemRealloc(pLightRayList[iLight], (usNumNodes + 1) * sizeof(UINT16));
-    *(pLightRayList[iLight] + usNumNodes) = (LightAddTemplateNode(iLight, iX, iY, ubLight) | usFlags);
+    (pLightRayList[iLight] + usNumNodes).value = (LightAddTemplateNode(iLight, iX, iY, ubLight) | usFlags);
     usRaySize[iLight] = usNumNodes + 1;
     return usNumNodes;
   }
@@ -360,7 +360,7 @@ function LightInsertRayNode(iLight: INT32, usIndex: UINT16, iX: INT16, iY: INT16
     if ((pLightRayList[iLight] = MemAlloc(sizeof(UINT16))) == NULL)
       return 65535;
 
-    *pLightRayList[iLight] = (LightAddTemplateNode(iLight, iX, iY, ubLight) | usFlags);
+    pLightRayList[iLight].value = (LightAddTemplateNode(iLight, iX, iY, ubLight) | usFlags);
 
     usRaySize[iLight] = 1;
     return 0;
@@ -372,7 +372,7 @@ function LightInsertRayNode(iLight: INT32, usIndex: UINT16, iX: INT16, iY: INT16
       memmove(pLightRayList[iLight] + usIndex + 1, pLightRayList[iLight] + usIndex, (usRaySize[iLight] - usIndex) * sizeof(UINT16));
     }
 
-    *(pLightRayList[iLight] + usIndex) = (LightAddTemplateNode(iLight, iX, iY, ubLight) | usFlags);
+    (pLightRayList[iLight] + usIndex).value = (LightAddTemplateNode(iLight, iX, iY, ubLight) | usFlags);
     usRaySize[iLight] = usNumNodes + 1;
     return usNumNodes;
   }
@@ -1231,7 +1231,7 @@ function LightFindNextRay(iLight: INT32, usIndex: UINT16): UINT16 {
   let usNodeIndex: UINT16;
 
   usNodeIndex = usIndex;
-  while ((usNodeIndex < usRaySize[iLight]) && !(*(pLightRayList[iLight] + usNodeIndex) & LIGHT_NEW_RAY))
+  while ((usNodeIndex < usRaySize[iLight]) && !((pLightRayList[iLight] + usNodeIndex).value & LIGHT_NEW_RAY))
     usNodeIndex++;
 
   return usNodeIndex;
@@ -1896,7 +1896,7 @@ function LightDraw(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiS
   iOldY = iY;
 
   for (uiCount = 0; uiCount < usRaySize[iLight]; uiCount++) {
-    usNodeIndex = *(pLightRayList[iLight] + uiCount);
+    usNodeIndex = (pLightRayList[iLight] + uiCount).value;
 
     if (!(usNodeIndex & LIGHT_NEW_RAY)) {
       fBlocked = FALSE;
@@ -2103,7 +2103,7 @@ function CalcTranslucentWalls(iX: INT16, iY: INT16): BOOLEAN {
   if (pLightList[0] == NULL)
     return FALSE;
   for (uiCount = 0; uiCount < usRaySize[0]; uiCount++) {
-    usNodeIndex = *(pLightRayList[0] + uiCount);
+    usNodeIndex = (pLightRayList[0] + uiCount).value;
 
     if (!(usNodeIndex & LIGHT_NEW_RAY)) {
       pLight = pLightList[0] + (usNodeIndex & (~LIGHT_BACKLIGHT));
@@ -2197,7 +2197,7 @@ function LightShowRays(iX: INT16, iY: INT16, fReset: BOOLEAN): BOOLEAN {
     return FALSE;
 
   if (uiCount < usRaySize[0]) {
-    usNodeIndex = *(pLightRayList[0] + uiCount);
+    usNodeIndex = (pLightRayList[0] + uiCount).value;
 
     if (!(usNodeIndex & LIGHT_NEW_RAY)) {
       pLight = pLightList[0] + (usNodeIndex & (~LIGHT_BACKLIGHT));
@@ -2290,7 +2290,7 @@ function LightHideRays(iX: INT16, iY: INT16): BOOLEAN {
     return FALSE;
 
   for (uiCount = 0; uiCount < usRaySize[0]; uiCount++) {
-    usNodeIndex = *(pLightRayList[0] + uiCount);
+    usNodeIndex = (pLightRayList[0] + uiCount).value;
 
     if (!(usNodeIndex & LIGHT_NEW_RAY)) {
       pLight = pLightList[0] + (usNodeIndex & (~LIGHT_BACKLIGHT));
@@ -2320,7 +2320,7 @@ function ApplyTranslucencyToWalls(iX: INT16, iY: INT16): BOOLEAN {
     return FALSE;
 
   for (uiCount = 0; uiCount < usRaySize[0]; uiCount++) {
-    usNodeIndex = *(pLightRayList[0] + uiCount);
+    usNodeIndex = (pLightRayList[0] + uiCount).value;
 
     if (!(usNodeIndex & LIGHT_NEW_RAY)) {
       pLight = pLightList[0] + (usNodeIndex & (~LIGHT_BACKLIGHT));
@@ -2447,7 +2447,7 @@ function LightErase(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, ui
   iOldY = iY;
 
   for (uiCount = 0; uiCount < usRaySize[iLight]; uiCount++) {
-    usNodeIndex = *(pLightRayList[iLight] + uiCount);
+    usNodeIndex = (pLightRayList[iLight] + uiCount).value;
     if (!(usNodeIndex & LIGHT_NEW_RAY)) {
       fBlocked = FALSE;
       fOnlyWalls = FALSE;

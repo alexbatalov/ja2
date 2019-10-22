@@ -1172,15 +1172,15 @@ function EnableDisableIndividualInsuranceContractButton(ubMercIDForMercInForm: U
 
   // if the soldiers contract can be extended, enable the button
   if (CanSoldierExtendInsuranceContract(addressof(Menptr[sSoldierID])))
-    EnableButton(*puiAcceptButton);
+    EnableButton(puiAcceptButton.value);
 
   // else the soldier cant extend their insurance contract, disable the button
   else
-    DisableButton(*puiAcceptButton);
+    DisableButton(puiAcceptButton.value);
 
   // if the merc is dead, disable the button
   if (IsMercDead(ubMercIDForMercInForm))
-    DisableButton(*puiAcceptButton);
+    DisableButton(puiAcceptButton.value);
 }
 
 /*

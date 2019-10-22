@@ -134,7 +134,7 @@ function AddStandardVideoObject(pVObjectDesc: Pointer<VOBJECT_DESC>, puiIndex: P
   // Set the hVObject into the node.
   gpVObjectTail.value.hVObject = hVObject;
   gpVObjectTail.value.uiIndex = guiVObjectIndex += 2;
-  *puiIndex = gpVObjectTail.value.uiIndex;
+  puiIndex.value = gpVObjectTail.value.uiIndex;
   Assert(guiVObjectIndex < 0xfffffff0); // unlikely that we will ever use 2 billion vobjects!
   // We would have to create about 70 vobjects per second for 1 year straight to achieve this...
   guiVObjectSize++;
@@ -161,7 +161,7 @@ function GetVideoObject(hVObject: Pointer<HVOBJECT>, uiIndex: UINT32): BOOLEAN {
   curr = gpVObjectHead;
   while (curr) {
     if (curr.value.uiIndex == uiIndex) {
-      *hVObject = curr.value.hVObject;
+      hVObject.value = curr.value.hVObject;
       return TRUE;
     }
     curr = curr.value.next;
@@ -753,11 +753,11 @@ function GetETRLEPixelValue(pDest: Pointer<UINT8>, hVObject: HVOBJECT, usETRLEIn
 
   // Skip past all uninteresting scanlines
   while (usLoopY < usY) {
-    while (*pCurrent != 0) {
-      if (*pCurrent & COMPRESS_TRANSPARENT) {
+    while (pCurrent.value != 0) {
+      if (pCurrent.value & COMPRESS_TRANSPARENT) {
         pCurrent++;
       } else {
-        pCurrent += *pCurrent & COMPRESS_RUN_MASK;
+        pCurrent += pCurrent.value & COMPRESS_RUN_MASK;
       }
     }
     usLoopY++;
@@ -765,11 +765,11 @@ function GetETRLEPixelValue(pDest: Pointer<UINT8>, hVObject: HVOBJECT, usETRLEIn
 
   // Now look in this scanline for the appropriate byte
   do {
-    ubRunLength = *pCurrent & COMPRESS_RUN_MASK;
+    ubRunLength = pCurrent.value & COMPRESS_RUN_MASK;
 
-    if (*pCurrent & COMPRESS_TRANSPARENT) {
+    if (pCurrent.value & COMPRESS_TRANSPARENT) {
       if (usLoopX + ubRunLength >= usX) {
-        *pDest = 0;
+        pDest.value = 0;
         return TRUE;
       } else {
         pCurrent++;
@@ -778,7 +778,7 @@ function GetETRLEPixelValue(pDest: Pointer<UINT8>, hVObject: HVOBJECT, usETRLEIn
       if (usLoopX + ubRunLength >= usX) {
         // skip to the correct byte; skip at least 1 to get past the byte defining the run
         pCurrent += (usX - usLoopX) + 1;
-        *pDest = *pCurrent;
+        pDest.value = pCurrent.value;
         return TRUE;
       } else {
         pCurrent += ubRunLength + 1;
@@ -808,8 +808,8 @@ function GetVideoObjectETRLESubregionProperties(uiVideoObject: UINT32, usIndex: 
 
   CHECKF(GetVideoObjectETRLEProperties(hVObject, addressof(ETRLEObject), usIndex));
 
-  *pusWidth = ETRLEObject.usWidth;
-  *pusHeight = ETRLEObject.usHeight;
+  pusWidth.value = ETRLEObject.usWidth;
+  pusHeight.value = ETRLEObject.usHeight;
 
   return TRUE;
 }
@@ -840,7 +840,7 @@ function GetVideoObjectPalette16BPP(uiVideoObject: INT32, ppPal16: Pointer<Point
 // Get video object
   CHECKF(GetVideoObject(addressof(hVObject), uiVideoObject));
 
-  *ppPal16 = hVObject.value.p16BPPPalette;
+  ppPal16.value = hVObject.value.p16BPPPalette;
 
   return TRUE;
 }
@@ -865,7 +865,7 @@ function CheckFor16BPPRegion(hVObject: HVOBJECT, usRegionIndex: UINT16, ubShadeL
       p16BPPObject = addressof(hVObject.value.p16BPPObject[usLoop]);
       if (p16BPPObject.value.usRegionIndex == usRegionIndex && p16BPPObject.value.ubShadeLevel == ubShadeLevel) {
         if (pusIndex != NULL) {
-          *pusIndex = usLoop;
+          pusIndex.value = usLoop;
         }
         return TRUE;
       }
@@ -934,22 +934,22 @@ function ConvertVObjectRegionTo16BPP(hVObject: HVOBJECT, usRegionIndex: UINT16, 
   uiLen = 0;
   pOutput = p16BPPObject.value.p16BPPData;
   for (uiDataLoop = 0; uiDataLoop < uiDataLength; uiDataLoop++) {
-    bData = *pInput;
+    bData = pInput.value;
     if (bData & 0x80) {
       // transparent
-      *pOutput = *pInput;
+      pOutput.value = pInput.value;
       pOutput++;
       pInput++;
       // uiDataLoop++;
       uiLen += (bData & 0x7f);
     } else if (bData > 0) {
       // nontransparent
-      *pOutput = *pInput;
+      pOutput.value = pInput.value;
       pOutput++;
       pInput++;
       // uiDataLoop++;
       for (ubRunLoop = 0; ubRunLoop < bData; ubRunLoop++) {
-        *(pOutput) = p16BPPPalette[*pInput];
+        (pOutput).value = p16BPPPalette[pInput.value];
         pOutput++;
         pOutput++;
         pInput++;
@@ -958,7 +958,7 @@ function ConvertVObjectRegionTo16BPP(hVObject: HVOBJECT, usRegionIndex: UINT16, 
       uiLen += bData;
     } else {
       // eol
-      *pOutput = *pInput;
+      pOutput.value = pInput.value;
       pOutput++;
       pInput++;
       // uiDataLoop++;

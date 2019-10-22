@@ -448,8 +448,8 @@ function StringNPixLength(string: Pointer<UINT16>, uiMaxCount: UINT32, UseFont: 
   uiCharCount = 0;
   curletter = string;
 
-  while ((*curletter) != '\0' && uiCharCount < uiMaxCount) {
-    transletter = GetIndex(*curletter++);
+  while ((curletter.value) != '\0' && uiCharCount < uiMaxCount) {
+    transletter = GetIndex(curletter++.value);
     Cur += GetWidth(FontObjs[UseFont], transletter);
     uiCharCount++;
   }
@@ -475,8 +475,8 @@ function StringPixLength(string: Pointer<UINT16>, UseFont: INT32): INT16 {
   Cur = 0;
   curletter = string;
 
-  while ((*curletter) != '\0') {
-    transletter = GetIndex(*curletter++);
+  while ((curletter.value) != '\0') {
+    transletter = GetIndex(curletter++.value);
     Cur += GetWidth(FontObjs[UseFont], transletter);
   }
   return Cur;
@@ -572,7 +572,7 @@ function GetIndex(siChar: UINT16): INT16 {
   // search the Translation Table and return the index for the font
   pTrav = pFManager.value.pTranslationTable.value.DynamicArrayOf16BitValues;
   while (ssCount < usNumberOfSymbols) {
-    if (siChar == *pTrav) {
+    if (siChar == pTrav.value) {
       return ssCount;
     }
     ssCount++;
@@ -655,8 +655,8 @@ function mprintf(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[
   // Lock the dest buffer
   pDestBuf = LockVideoSurface(FontDestBuffer, addressof(uiDestPitchBYTES));
 
-  while ((*curletter) != 0) {
-    transletter = GetIndex(*curletter++);
+  while ((curletter.value) != 0) {
+    transletter = GetIndex(curletter++.value);
 
     if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
       destx = x;
@@ -708,8 +708,8 @@ function FindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHei
   xp = ((sWidth - StringPixLength(pStr, iFontIndex))) + sLeft;
   yp = ((sHeight - GetFontHeight(iFontIndex)) / 2) + sTop;
 
-  *psNewX = xp;
-  *psNewY = yp;
+  psNewX.value = xp;
+  psNewY.value = yp;
 }
 
 function FindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, pStr: Pointer<UINT16>, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>): void {
@@ -720,8 +720,8 @@ function FindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHe
   xp = ((sWidth - StringPixLength(pStr, iFontIndex) + 1) / 2) + sLeft;
   yp = ((sHeight - GetFontHeight(iFontIndex)) / 2) + sTop;
 
-  *psNewX = xp;
-  *psNewY = yp;
+  psNewX.value = xp;
+  psNewY.value = yp;
 }
 
 //*****************************************************************************
@@ -756,8 +756,8 @@ function gprintf(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[
   // Lock the dest buffer
   pDestBuf = LockVideoSurface(FontDestBuffer, addressof(uiDestPitchBYTES));
 
-  while ((*curletter) != 0) {
-    transletter = GetIndex(*curletter++);
+  while ((curletter.value) != 0) {
+    transletter = GetIndex(curletter++.value);
 
     if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
       destx = x;
@@ -803,8 +803,8 @@ function gprintfDirty(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args:
   // Lock the dest buffer
   pDestBuf = LockVideoSurface(FontDestBuffer, addressof(uiDestPitchBYTES));
 
-  while ((*curletter) != 0) {
-    transletter = GetIndex(*curletter++);
+  while ((curletter.value) != 0) {
+    transletter = GetIndex(curletter++.value);
 
     if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
       destx = x;
@@ -854,8 +854,8 @@ function gprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, Font
   destx = x;
   desty = y;
 
-  while ((*curletter) != 0) {
-    transletter = GetIndex(*curletter++);
+  while ((curletter.value) != 0) {
+    transletter = GetIndex(curletter++.value);
 
     if (FontDestWrap && BltIsClipped(FontObjs[FontType], destx, desty, transletter, addressof(FontDestRegion))) {
       destx = x;
@@ -894,8 +894,8 @@ function mprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, Font
   destx = x;
   desty = y;
 
-  while ((*curletter) != 0) {
-    transletter = GetIndex(*curletter++);
+  while ((curletter.value) != 0) {
+    transletter = GetIndex(curletter++.value);
 
     if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
       destx = x;
@@ -936,17 +936,17 @@ function mprintf_buffer_coded(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32
 
   usOldForeColor = FontForeground16;
 
-  while ((*curletter) != 0) {
-    if ((*curletter) == 180) {
+  while ((curletter.value) != 0) {
+    if ((curletter.value) == 180) {
       curletter++;
-      SetFontForeground((*curletter));
+      SetFontForeground((curletter.value));
       curletter++;
-    } else if ((*curletter) == 181) {
+    } else if ((curletter.value) == 181) {
       FontForeground16 = usOldForeColor;
       curletter++;
     }
 
-    transletter = GetIndex(*curletter++);
+    transletter = GetIndex(curletter++.value);
 
     if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
       destx = x;
@@ -992,17 +992,17 @@ function mprintf_coded(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args
   // Lock the dest buffer
   pDestBuf = LockVideoSurface(FontDestBuffer, addressof(uiDestPitchBYTES));
 
-  while ((*curletter) != 0) {
-    if ((*curletter) == 180) {
+  while ((curletter.value) != 0) {
+    if ((curletter.value) == 180) {
       curletter++;
-      SetFontForeground((*curletter));
+      SetFontForeground((curletter.value));
       curletter++;
-    } else if ((*curletter) == 181) {
+    } else if ((curletter.value) == 181) {
       FontForeground16 = usOldForeColor;
       curletter++;
     }
 
-    transletter = GetIndex(*curletter++);
+    transletter = GetIndex(curletter++.value);
 
     if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
       destx = x;
@@ -1130,353 +1130,353 @@ function CreateEnglishTransTable(): Pointer<FontTranslationTable> {
   pTable.value.DynamicArrayOf16BitValues = MemAlloc(pTable.value.usNumberOfSymbols * 2);
   temp = pTable.value.DynamicArrayOf16BitValues;
 
-  *temp = 'A';
+  temp.value = 'A';
   temp++;
-  *temp = 'B';
+  temp.value = 'B';
   temp++;
-  *temp = 'C';
+  temp.value = 'C';
   temp++;
-  *temp = 'D';
+  temp.value = 'D';
   temp++;
-  *temp = 'E';
+  temp.value = 'E';
   temp++;
-  *temp = 'F';
+  temp.value = 'F';
   temp++;
-  *temp = 'G';
+  temp.value = 'G';
   temp++;
-  *temp = 'H';
+  temp.value = 'H';
   temp++;
-  *temp = 'I';
+  temp.value = 'I';
   temp++;
-  *temp = 'J';
+  temp.value = 'J';
   temp++;
-  *temp = 'K';
+  temp.value = 'K';
   temp++;
-  *temp = 'L';
+  temp.value = 'L';
   temp++;
-  *temp = 'M';
+  temp.value = 'M';
   temp++;
-  *temp = 'N';
+  temp.value = 'N';
   temp++;
-  *temp = 'O';
+  temp.value = 'O';
   temp++;
-  *temp = 'P';
+  temp.value = 'P';
   temp++;
-  *temp = 'Q';
+  temp.value = 'Q';
   temp++;
-  *temp = 'R';
+  temp.value = 'R';
   temp++;
-  *temp = 'S';
+  temp.value = 'S';
   temp++;
-  *temp = 'T';
+  temp.value = 'T';
   temp++;
-  *temp = 'U';
+  temp.value = 'U';
   temp++;
-  *temp = 'V';
+  temp.value = 'V';
   temp++;
-  *temp = 'W';
+  temp.value = 'W';
   temp++;
-  *temp = 'X';
+  temp.value = 'X';
   temp++;
-  *temp = 'Y';
+  temp.value = 'Y';
   temp++;
-  *temp = 'Z';
+  temp.value = 'Z';
   temp++;
-  *temp = 'a';
+  temp.value = 'a';
   temp++;
-  *temp = 'b';
+  temp.value = 'b';
   temp++;
-  *temp = 'c';
+  temp.value = 'c';
   temp++;
-  *temp = 'd';
+  temp.value = 'd';
   temp++;
-  *temp = 'e';
+  temp.value = 'e';
   temp++;
-  *temp = 'f';
+  temp.value = 'f';
   temp++;
-  *temp = 'g';
+  temp.value = 'g';
   temp++;
-  *temp = 'h';
+  temp.value = 'h';
   temp++;
-  *temp = 'i';
+  temp.value = 'i';
   temp++;
-  *temp = 'j';
+  temp.value = 'j';
   temp++;
-  *temp = 'k';
+  temp.value = 'k';
   temp++;
-  *temp = 'l';
+  temp.value = 'l';
   temp++;
-  *temp = 'm';
+  temp.value = 'm';
   temp++;
-  *temp = 'n';
+  temp.value = 'n';
   temp++;
-  *temp = 'o';
+  temp.value = 'o';
   temp++;
-  *temp = 'p';
+  temp.value = 'p';
   temp++;
-  *temp = 'q';
+  temp.value = 'q';
   temp++;
-  *temp = 'r';
+  temp.value = 'r';
   temp++;
-  *temp = 's';
+  temp.value = 's';
   temp++;
-  *temp = 't';
+  temp.value = 't';
   temp++;
-  *temp = 'u';
+  temp.value = 'u';
   temp++;
-  *temp = 'v';
+  temp.value = 'v';
   temp++;
-  *temp = 'w';
+  temp.value = 'w';
   temp++;
-  *temp = 'x';
+  temp.value = 'x';
   temp++;
-  *temp = 'y';
+  temp.value = 'y';
   temp++;
-  *temp = 'z';
+  temp.value = 'z';
   temp++;
-  *temp = '0';
+  temp.value = '0';
   temp++;
-  *temp = '1';
+  temp.value = '1';
   temp++;
-  *temp = '2';
+  temp.value = '2';
   temp++;
-  *temp = '3';
+  temp.value = '3';
   temp++;
-  *temp = '4';
+  temp.value = '4';
   temp++;
-  *temp = '5';
+  temp.value = '5';
   temp++;
-  *temp = '6';
+  temp.value = '6';
   temp++;
-  *temp = '7';
+  temp.value = '7';
   temp++;
-  *temp = '8';
+  temp.value = '8';
   temp++;
-  *temp = '9';
+  temp.value = '9';
   temp++;
-  *temp = '!';
+  temp.value = '!';
   temp++;
-  *temp = '@';
+  temp.value = '@';
   temp++;
-  *temp = '#';
+  temp.value = '#';
   temp++;
-  *temp = '$';
+  temp.value = '$';
   temp++;
-  *temp = '%';
+  temp.value = '%';
   temp++;
-  *temp = '^';
+  temp.value = '^';
   temp++;
-  *temp = '&';
+  temp.value = '&';
   temp++;
-  *temp = '*';
+  temp.value = '*';
   temp++;
-  *temp = '(';
+  temp.value = '(';
   temp++;
-  *temp = ')';
+  temp.value = ')';
   temp++;
-  *temp = '-';
+  temp.value = '-';
   temp++;
-  *temp = '_';
+  temp.value = '_';
   temp++;
-  *temp = '+';
+  temp.value = '+';
   temp++;
-  *temp = '=';
+  temp.value = '=';
   temp++;
-  *temp = '|';
+  temp.value = '|';
   temp++;
-  *temp = '\\';
+  temp.value = '\\';
   temp++;
-  *temp = '{';
+  temp.value = '{';
   temp++;
-  *temp = '}'; // 80
+  temp.value = '}'; // 80
   temp++;
-  *temp = '[';
+  temp.value = '[';
   temp++;
-  *temp = ']';
+  temp.value = ']';
   temp++;
-  *temp = ':';
+  temp.value = ':';
   temp++;
-  *temp = ';';
+  temp.value = ';';
   temp++;
-  *temp = '"';
+  temp.value = '"';
   temp++;
-  *temp = '\'';
+  temp.value = '\'';
   temp++;
-  *temp = '<';
+  temp.value = '<';
   temp++;
-  *temp = '>';
+  temp.value = '>';
   temp++;
-  *temp = ',';
+  temp.value = ',';
   temp++;
-  *temp = '.';
+  temp.value = '.';
   temp++;
-  *temp = '?';
+  temp.value = '?';
   temp++;
-  *temp = '/';
+  temp.value = '/';
   temp++;
-  *temp = ' '; // 93
+  temp.value = ' '; // 93
   temp++;
 
-  *temp = 196; // "A" umlaut
+  temp.value = 196; // "A" umlaut
   temp++;
-  *temp = 214; // "O" umlaut
+  temp.value = 214; // "O" umlaut
   temp++;
-  *temp = 220; // "U" umlaut
+  temp.value = 220; // "U" umlaut
   temp++;
-  *temp = 228; // "a" umlaut
+  temp.value = 228; // "a" umlaut
   temp++;
-  *temp = 246; // "o" umlaut
+  temp.value = 246; // "o" umlaut
   temp++;
-  *temp = 252; // "u" umlaut
+  temp.value = 252; // "u" umlaut
   temp++;
-  *temp = 223; // double-s that looks like a beta/B  // 100
+  temp.value = 223; // double-s that looks like a beta/B  // 100
   temp++;
   // START OF FUNKY RUSSIAN STUFF
-  *temp = 1101;
+  temp.value = 1101;
   temp++;
-  *temp = 1102;
+  temp.value = 1102;
   temp++;
-  *temp = 1103;
+  temp.value = 1103;
   temp++;
-  *temp = 1104;
+  temp.value = 1104;
   temp++;
-  *temp = 1105;
+  temp.value = 1105;
   temp++;
-  *temp = 1106;
+  temp.value = 1106;
   temp++;
-  *temp = 1107;
+  temp.value = 1107;
   temp++;
-  *temp = 1108;
+  temp.value = 1108;
   temp++;
-  *temp = 1109;
+  temp.value = 1109;
   temp++;
-  *temp = 1110;
+  temp.value = 1110;
   temp++;
-  *temp = 1111;
+  temp.value = 1111;
   temp++;
-  *temp = 1112;
+  temp.value = 1112;
   temp++;
-  *temp = 1113;
+  temp.value = 1113;
   temp++;
-  *temp = 1114;
+  temp.value = 1114;
   temp++;
-  *temp = 1115;
+  temp.value = 1115;
   temp++;
-  *temp = 1116;
+  temp.value = 1116;
   temp++;
-  *temp = 1117;
+  temp.value = 1117;
   temp++;
-  *temp = 1118;
+  temp.value = 1118;
   temp++;
-  *temp = 1119;
+  temp.value = 1119;
   temp++;
-  *temp = 1120;
+  temp.value = 1120;
   temp++;
-  *temp = 1121;
+  temp.value = 1121;
   temp++;
-  *temp = 1122;
+  temp.value = 1122;
   temp++;
-  *temp = 1123;
+  temp.value = 1123;
   temp++;
-  *temp = 1124;
+  temp.value = 1124;
   temp++;
-  *temp = 1125;
+  temp.value = 1125;
   temp++;
-  *temp = 1126;
+  temp.value = 1126;
   temp++;
-  *temp = 1127;
+  temp.value = 1127;
   temp++;
-  *temp = 1128;
+  temp.value = 1128;
   temp++;
-  *temp = 1129;
+  temp.value = 1129;
   temp++;
-  *temp = 1130; // 130
+  temp.value = 1130; // 130
   temp++;
-  *temp = 1131;
+  temp.value = 1131;
   temp++;
-  *temp = 1132;
+  temp.value = 1132;
   temp++;
   // END OF FUNKY RUSSIAN STUFF
-  *temp = 196; // Д
+  temp.value = 196; // Д
   temp++;
-  *temp = 192; // А
+  temp.value = 192; // А
   temp++;
-  *temp = 193; // Б
+  temp.value = 193; // Б
   temp++;
-  *temp = 194; // В
+  temp.value = 194; // В
   temp++;
-  *temp = 199; // З
+  temp.value = 199; // З
   temp++;
-  *temp = 203; // Л
+  temp.value = 203; // Л
   temp++;
-  *temp = 200; // И
+  temp.value = 200; // И
   temp++;
-  *temp = 201; // Й				140
+  temp.value = 201; // Й				140
   temp++;
-  *temp = 202; // К
+  temp.value = 202; // К
   temp++;
-  *temp = 207; // П
+  temp.value = 207; // П
   temp++;
-  *temp = 214; // Ц
+  temp.value = 214; // Ц
   temp++;
-  *temp = 210; // Т
+  temp.value = 210; // Т
   temp++;
-  *temp = 211; // У
+  temp.value = 211; // У
   temp++;
-  *temp = 212; // Ф
+  temp.value = 212; // Ф
   temp++;
-  *temp = 220; // Ь
+  temp.value = 220; // Ь
   temp++;
-  *temp = 217; // Щ
+  temp.value = 217; // Щ
   temp++;
-  *temp = 218; // Ъ
+  temp.value = 218; // Ъ
   temp++;
-  *temp = 219; // Ы				150
+  temp.value = 219; // Ы				150
   temp++;
 
-  *temp = 228; // д
+  temp.value = 228; // д
   temp++;
-  *temp = 224; // а
+  temp.value = 224; // а
   temp++;
-  *temp = 225; // б
+  temp.value = 225; // б
   temp++;
-  *temp = 226; // в
+  temp.value = 226; // в
   temp++;
-  *temp = 231; // з
+  temp.value = 231; // з
   temp++;
-  *temp = 235; // л
+  temp.value = 235; // л
   temp++;
-  *temp = 232; // и
+  temp.value = 232; // и
   temp++;
-  *temp = 233; // й
+  temp.value = 233; // й
   temp++;
-  *temp = 234; // к
+  temp.value = 234; // к
   temp++;
-  *temp = 239; // п				160
+  temp.value = 239; // п				160
   temp++;
-  *temp = 246; // ц
+  temp.value = 246; // ц
   temp++;
-  *temp = 242; // т
+  temp.value = 242; // т
   temp++;
-  *temp = 243; // у
+  temp.value = 243; // у
   temp++;
-  *temp = 244; // ф
+  temp.value = 244; // ф
   temp++;
-  *temp = 252; // ь
+  temp.value = 252; // ь
   temp++;
-  *temp = 249; // щ
+  temp.value = 249; // щ
   temp++;
-  *temp = 250; // ъ
+  temp.value = 250; // ъ
   temp++;
-  *temp = 251; // ы
+  temp.value = 251; // ы
   temp++;
-  *temp = 204; // М
+  temp.value = 204; // М
   temp++;
-  *temp = 206; // О				170
+  temp.value = 206; // О				170
   temp++;
-  *temp = 236; // м
+  temp.value = 236; // м
   temp++;
-  *temp = 238; // о
+  temp.value = 238; // о
   temp++;
 
   return pTable;

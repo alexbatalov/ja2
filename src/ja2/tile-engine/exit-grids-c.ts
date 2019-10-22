@@ -59,7 +59,7 @@ function GetExitGridLevelNode(usMapIndex: UINT16, ppLevelNode: Pointer<Pointer<L
   // Search through object layer for an exitgrid
   while (pShadow) {
     if (pShadow.value.uiFlags & LEVELNODE_EXITGRID) {
-      *ppLevelNode = pShadow;
+      ppLevelNode.value = pShadow;
       return TRUE;
     }
     pShadow = pShadow.value.pNext;
@@ -129,12 +129,12 @@ function LoadExitGrids(hBuffer: Pointer<Pointer<INT8>>): void {
   let usNumSaved: UINT16;
   let usMapIndex: UINT16;
   gfLoadingExitGrids = TRUE;
-  LOADDATA(addressof(usNumSaved), *hBuffer, 2);
+  LOADDATA(addressof(usNumSaved), hBuffer.value, 2);
   // FileRead( hfile, &usNumSaved, 2, NULL);
   for (x = 0; x < usNumSaved; x++) {
-    LOADDATA(addressof(usMapIndex), *hBuffer, 2);
+    LOADDATA(addressof(usMapIndex), hBuffer.value, 2);
     // FileRead( hfile, &usMapIndex, 2, NULL);
-    LOADDATA(addressof(exitGrid), *hBuffer, 5);
+    LOADDATA(addressof(exitGrid), hBuffer.value, 5);
     // FileRead( hfile, &exitGrid, 5, NULL);
     AddExitGridToWorld(usMapIndex, addressof(exitGrid));
   }
@@ -280,7 +280,7 @@ function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIERTYPE>, 
 
   if (fFound) {
     // Set direction to center of map!
-    *pubDirection = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+    pubDirection.value = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
     return sLowestGridNo;
   } else {
     return NOWHERE;

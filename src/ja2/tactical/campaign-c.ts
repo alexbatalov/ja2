@@ -154,7 +154,7 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
     if (pProfile.value.bEvolution == NORMAL_EVOLUTION) // Evolves!
     {
       // if this is improving from a failure, and a successful roll would give us enough to go up a point
-      if ((ubReason == FROM_FAILURE) && ((*psStatGainPtr + 1) >= usSubpointsPerPoint)) {
+      if ((ubReason == FROM_FAILURE) && ((psStatGainPtr.value + 1) >= usSubpointsPerPoint)) {
         // can't improve any more from this statchange, because Ian don't want failures causin increases!
         break;
       }
@@ -162,16 +162,16 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
       if (ubStat != EXPERAMT) {
         // NON-experience level changes, actual usChance depends on bCurrentRating
         // Base usChance is '100 - bCurrentRating'
-        usChance = 100 - (bCurrentRating + (*psStatGainPtr / usSubpointsPerPoint));
+        usChance = 100 - (bCurrentRating + (psStatGainPtr.value / usSubpointsPerPoint));
 
         // prevent training beyond the training cap
-        if ((ubReason == FROM_TRAINING) && (bCurrentRating + (*psStatGainPtr / usSubpointsPerPoint) >= TRAINING_RATING_CAP)) {
+        if ((ubReason == FROM_TRAINING) && (bCurrentRating + (psStatGainPtr.value / usSubpointsPerPoint) >= TRAINING_RATING_CAP)) {
           usChance = 0;
         }
       } else {
         // Experience level changes, actual usChance depends on level
         // Base usChance is '100 - (10 * current level)'
-        usChance = 100 - 10 * (bCurrentRating + (*psStatGainPtr / usSubpointsPerPoint));
+        usChance = 100 - 10 * (bCurrentRating + (psStatGainPtr.value / usSubpointsPerPoint));
       }
 
       // if there IS a usChance, adjust it for high or low wisdom (50 is avg)
@@ -193,7 +193,7 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
       }
 
       if (PreRandom(100) < usChance) {
-        (*psStatGainPtr)++;
+        (psStatGainPtr.value)++;
         sSubPointChange++;
 
         // as long as we're not dealing with exp_level changes (already added above!)
@@ -224,7 +224,7 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
           case WISDOMAMT:
           case STRAMT:
             // Base usChance is 'bCurrentRating - 1', since these must remain at 1-100
-            usChance = bCurrentRating + (*psStatGainPtr / usSubpointsPerPoint) - 1;
+            usChance = bCurrentRating + (psStatGainPtr.value / usSubpointsPerPoint) - 1;
             break;
 
           case MEDICALAMT:
@@ -233,13 +233,13 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
           case MARKAMT:
           case LDRAMT:
             // Base usChance is 'bCurrentRating', these can drop to 0
-            usChance = bCurrentRating + (*psStatGainPtr / usSubpointsPerPoint);
+            usChance = bCurrentRating + (psStatGainPtr.value / usSubpointsPerPoint);
             break;
         }
       } else {
         // Experience level changes, actual usChance depends on level
         // Base usChance is '10 * (current level - 1)'
-        usChance = 10 * (bCurrentRating + (*psStatGainPtr / usSubpointsPerPoint) - 1);
+        usChance = 10 * (bCurrentRating + (psStatGainPtr.value / usSubpointsPerPoint) - 1);
 
         // if there IS a usChance, adjust it for high or low wisdom (50 is avg)
         if (usChance > 0 && fAffectedByWisdom) {
@@ -253,7 +253,7 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
       }
 
       if (PreRandom(100) < usChance) {
-        (*psStatGainPtr)--;
+        (psStatGainPtr.value)--;
         sSubPointChange--;
 
         // as long as we're not dealing with exp_level changes (already added above!)
@@ -457,21 +457,21 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
     }
 
     // update merc profile stat
-    *pbStatPtr += sPtsChanged;
+    pbStatPtr.value += sPtsChanged;
 
     // if this merc is currently on the player's team (DON'T count increases earned outside the player's employ)
     if (pSoldier != NULL) {
       // also note the delta (how much this stat has changed since start of game)
-      *pbStatDeltaPtr += sPtsChanged;
+      pbStatDeltaPtr.value += sPtsChanged;
     }
 
     // reduce gain to the unused subpts only
-    *psStatGainPtr = (*psStatGainPtr) % usSubpointsPerPoint;
+    psStatGainPtr.value = (psStatGainPtr.value) % usSubpointsPerPoint;
 
     // if the guy is employed by player
     if (pSoldier != NULL) {
       // transfer over change to soldiertype structure
-      *pbSoldierStatPtr = *pbStatPtr;
+      pbSoldierStatPtr.value = pbStatPtr.value;
 
       // if it's a level gain, or sometimes for other stats
       // ( except health; not only will it sound silly, but
@@ -495,7 +495,7 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
       fCharacterInfoPanelDirty = TRUE;
 
       // remember what time it changed at, it's displayed in a different color for a while afterwards
-      *puiStatTimerPtr = GetJA2Clock();
+      puiStatTimerPtr.value = GetJA2Clock();
 
       if (fChangeTypeIncrease) {
         pSoldier.value.usValueGoneUp |= usIncreaseValue;
@@ -774,17 +774,17 @@ function ProcessUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Poin
 
     // Calc how many full points worth of stat changes we have accumulated in this stat (positive OR negative!)
     // NOTE: for simplicity, this hopes nobody will go up more than one level at once, which would change the subpoints/pt
-    sPtsChanged = (*psStatGainPtr) / usSubpointsPerPoint;
+    sPtsChanged = (psStatGainPtr.value) / usSubpointsPerPoint;
 
     // gone too high or too low?..handle the fact
-    if ((*pbStatPtr + sPtsChanged) > bMaxStatValue) {
+    if ((pbStatPtr.value + sPtsChanged) > bMaxStatValue) {
       // reduce change to reach max value and reset stat gain ptr
-      sPtsChanged = bMaxStatValue - *pbStatPtr;
-      *psStatGainPtr = 0;
-    } else if ((*pbStatPtr + sPtsChanged) < bMinStatValue) {
+      sPtsChanged = bMaxStatValue - pbStatPtr.value;
+      psStatGainPtr.value = 0;
+    } else if ((pbStatPtr.value + sPtsChanged) < bMinStatValue) {
       // reduce change to reach min value and reset stat gain ptr
-      sPtsChanged = bMinStatValue - *pbStatPtr;
-      *psStatGainPtr = 0;
+      sPtsChanged = bMinStatValue - pbStatPtr.value;
+      psStatGainPtr.value = 0;
     }
 
     // if the stat needs to change

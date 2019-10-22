@@ -39,7 +39,7 @@ function LoadTileSurface(cFilename: Pointer<char>): Pointer<TILE_IMAGERY> {
   cEndOfName = strchr(cStructureFilename, '.');
   if (cEndOfName != NULL) {
     cEndOfName++;
-    *cEndOfName = '\0';
+    cEndOfName.value = '\0';
   } else {
     strcat(cStructureFilename, ".");
   }

@@ -1208,8 +1208,8 @@ function SoundGetMilliSecondPosition(uiSoundID: UINT32, puiTotalMilliseconds: Po
     }
   }
 
-  *puiTotalMilliseconds = 0;
-  *puiCurrentMilliseconds = 0;
+  puiTotalMilliseconds.value = 0;
+  puiCurrentMilliseconds.value = 0;
   return FALSE;
 }
 

@@ -518,10 +518,10 @@ function CalculateNewSliderIncrement(uiSliderID: UINT32, usPos: UINT16): void {
   if (usOldIncrement != pSlider.value.usCurrentIncrement) {
     if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
       // Call the call back for the slider
-      (*(pSlider.value.SliderChangeCallback))(pSlider.value.usNumberOfIncrements - pSlider.value.usCurrentIncrement);
+      ((pSlider.value.SliderChangeCallback).value)(pSlider.value.usNumberOfIncrements - pSlider.value.usCurrentIncrement);
     } else {
       // Call the call back for the slider
-      (*(pSlider.value.SliderChangeCallback))(pSlider.value.usCurrentIncrement);
+      ((pSlider.value.SliderChangeCallback).value)(pSlider.value.usCurrentIncrement);
     }
   }
 }

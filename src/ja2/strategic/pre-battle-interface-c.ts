@@ -686,8 +686,8 @@ function RenderPBHeader(piX: Pointer<INT32>, piWidth: Pointer<INT32>): void {
   x = 130 - width / 2;
   mprintf(x, 4, str);
   InvalidateRegion(0, 0, 231, 12);
-  *piX = x;
-  *piWidth = width;
+  piX.value = x;
+  piWidth.value = width;
 }
 
 function RenderPreBattleInterface(): void {
@@ -1085,8 +1085,8 @@ const enum Enum163 {
 
 function GetSoldierConditionInfo(pSoldier: Pointer<SOLDIERTYPE>, szCondition: Pointer<UINT16>, pubHPPercent: Pointer<UINT8>, pubBPPercent: Pointer<UINT8>): void {
   Assert(pSoldier);
-  *pubHPPercent = (pSoldier.value.bLife * 100 / pSoldier.value.bLifeMax);
-  *pubBPPercent = pSoldier.value.bBreath;
+  pubHPPercent.value = (pSoldier.value.bLife * 100 / pSoldier.value.bLifeMax);
+  pubBPPercent.value = pSoldier.value.bBreath;
   // Go from the worst condition to the best.
   if (!pSoldier.value.bLife) {
     // 0 life

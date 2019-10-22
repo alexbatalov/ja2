@@ -967,7 +967,7 @@ function AddToSelectionList(pNode: Pointer<DisplayList>): void {
   let fDone: BOOLEAN;
 
   fDone = FALSE;
-  for (iIndex = 0; iIndex < (*pNumSelList) && !fDone; iIndex++) {
+  for (iIndex = 0; iIndex < (pNumSelList.value) && !fDone; iIndex++) {
     if (pNode.value.uiObjIndx == pSelList[iIndex].uiObject && pNode.value.uiIndex == pSelList[iIndex].usIndex) {
       fDone = TRUE;
       iUseIndex = iIndex;
@@ -979,12 +979,12 @@ function AddToSelectionList(pNode: Pointer<DisplayList>): void {
     pSelList[iUseIndex].sCount++;
   } else {
     // Wasn't in the list, so add to end (if space available)
-    if ((*pNumSelList) < MAX_SELECTIONS) {
-      pSelList[(*pNumSelList)].uiObject = pNode.value.uiObjIndx;
-      pSelList[(*pNumSelList)].usIndex = pNode.value.uiIndex;
-      pSelList[(*pNumSelList)].sCount = 1;
+    if ((pNumSelList.value) < MAX_SELECTIONS) {
+      pSelList[(pNumSelList.value)].uiObject = pNode.value.uiObjIndx;
+      pSelList[(pNumSelList.value)].usIndex = pNode.value.uiIndex;
+      pSelList[(pNumSelList.value)].sCount = 1;
 
-      (*pNumSelList)++;
+      (pNumSelList.value)++;
     }
   }
 }
@@ -1007,10 +1007,10 @@ function ClearSelectionList(): BOOLEAN {
     pNode = pNode.value.pNext;
   }
 
-  for (iIndex = 0; iIndex < (*pNumSelList); iIndex++)
+  for (iIndex = 0; iIndex < (pNumSelList.value); iIndex++)
     pSelList[iIndex].sCount = 0;
 
-  (*pNumSelList) = 0;
+  (pNumSelList.value) = 0;
   return TRUE;
 }
 
@@ -1027,12 +1027,12 @@ function RemoveFromSelectionList(pNode: Pointer<DisplayList>): BOOLEAN {
   let fRemoved: BOOLEAN;
 
   // Abort if no entries in list (pretend we removed a node)
-  if ((*pNumSelList) <= 0)
+  if ((pNumSelList.value) <= 0)
     return TRUE;
 
   fRemoved = FALSE;
   fDone = FALSE;
-  for (iIndex = 0; iIndex < (*pNumSelList) && !fDone; iIndex++) {
+  for (iIndex = 0; iIndex < (pNumSelList.value) && !fDone; iIndex++) {
     if (pNode.value.uiObjIndx == pSelList[iIndex].uiObject && pNode.value.uiIndex == pSelList[iIndex].usIndex) {
       fDone = TRUE;
       iUseIndex = iIndex;
@@ -1045,10 +1045,10 @@ function RemoveFromSelectionList(pNode: Pointer<DisplayList>): BOOLEAN {
 
     if (pSelList[iUseIndex].sCount <= 0) {
       // Squash the list to remove old entry
-      for (iIndex = iUseIndex; iIndex < ((*pNumSelList) - 1); iIndex++)
+      for (iIndex = iUseIndex; iIndex < ((pNumSelList.value) - 1); iIndex++)
         pSelList[iIndex] = pSelList[iIndex + 1];
 
-      (*pNumSelList)--;
+      (pNumSelList.value)--;
       fRemoved = TRUE;
     }
   }
@@ -1075,14 +1075,14 @@ function GetRandomSelection(): INT32 {
   }
 
   iTotalCounts = 0;
-  for (iIndex = 0; iIndex < (*pNumSelList); iIndex++)
+  for (iIndex = 0; iIndex < (pNumSelList.value); iIndex++)
     iTotalCounts += pSelList[iIndex].sCount;
 
   iRandNum = Random(iTotalCounts);
 
   iSelectedIndex = -1;
   iNextCount = 0;
-  for (iIndex = 0; iIndex < (*pNumSelList) && iSelectedIndex == -1; iIndex++) {
+  for (iIndex = 0; iIndex < (pNumSelList.value) && iSelectedIndex == -1; iIndex++) {
     iNextCount += pSelList[iIndex].sCount;
     if (iRandNum < iNextCount)
       iSelectedIndex = iIndex;
@@ -1101,7 +1101,7 @@ function IsInSelectionList(pNode: Pointer<DisplayList>): BOOLEAN {
   let fFound: BOOLEAN;
 
   fFound = FALSE;
-  for (iIndex = 0; iIndex < (*pNumSelList) && !fFound; iIndex++) {
+  for (iIndex = 0; iIndex < (pNumSelList.value) && !fFound; iIndex++) {
     if (pNode.value.uiObjIndx == pSelList[iIndex].uiObject && pNode.value.uiIndex == pSelList[iIndex].usIndex) {
       fFound = TRUE;
     }
@@ -1124,7 +1124,7 @@ function FindInSelectionList(pNode: Pointer<DisplayList>): INT32 {
 
   fFound = FALSE;
   iUseIndex = -1;
-  for (iIndex = 0; iIndex < (*pNumSelList) && !fFound; iIndex++) {
+  for (iIndex = 0; iIndex < (pNumSelList.value) && !fFound; iIndex++) {
     if (pNode.value.uiObjIndx == pSelList[iIndex].uiObject && pNode.value.uiIndex == pSelList[iIndex].usIndex) {
       fFound = TRUE;
       iUseIndex = iIndex;
@@ -1146,7 +1146,7 @@ function SaveSelectionList(): void {
   for (iIndex = 0; iIndex < MAX_SELECTIONS; iIndex++)
     OldSelList[iIndex] = pSelList[iIndex];
 
-  iOldNumSelList = (*pNumSelList);
+  iOldNumSelList = (pNumSelList.value);
 }
 
 //----------------------------------------------------------------------------------------------
@@ -1160,7 +1160,7 @@ function RestoreSelectionList(): void {
   for (iIndex = 0; iIndex < MAX_SELECTIONS; iIndex++)
     pSelList[iIndex] = OldSelList[iIndex];
 
-  (*pNumSelList) = iOldNumSelList;
+  (pNumSelList.value) = iOldNumSelList;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -1362,7 +1362,7 @@ function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UIN
           pCurNode.value.iY = iCurrY;
           pCurNode.value.iWidth = pETRLEObject.value.usWidth;
           pCurNode.value.iHeight = pETRLEObject.value.usHeight;
-          pCurNode.value.pNext = *pDisplayList;
+          pCurNode.value.pNext = pDisplayList.value;
           pCurNode.value.uiObjIndx = pDisplaySpec.value.uiObjIndx;
 
           if (IsInSelectionList(pCurNode))
@@ -1370,7 +1370,7 @@ function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UIN
           else
             pCurNode.value.fChosen = FALSE;
 
-          *pDisplayList = pCurNode;
+          pDisplayList.value = pCurNode;
         } else
           return FALSE;
 

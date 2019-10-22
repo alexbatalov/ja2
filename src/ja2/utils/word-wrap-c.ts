@@ -27,7 +27,7 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
 
   memset(addressof(FirstWrappedString), 0, sizeof(WRAPPED_STRING));
 
-  *pusLineWidthIfWordIsWiderThenWidth = usLineWidthPixels;
+  pusLineWidthIfWordIsWiderThenWidth.value = usLineWidthPixels;
 
   if (pString == NULL)
     return FALSE;
@@ -136,7 +136,7 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
 
   memset(addressof(FirstWrappedString), 0, sizeof(WRAPPED_STRING));
 
-  *pusLineWidthIfWordIsWiderThenWidth = usLineWidthPixels;
+  pusLineWidthIfWordIsWiderThenWidth.value = usLineWidthPixels;
 
   if (pString == NULL)
     return FALSE;
@@ -285,7 +285,7 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
         // error
         usLineWidthPixels = 1 + WFStringPixLength(addressof(TempString[usCurIndex]), ulFont);
 
-        *pusLineWidthIfWordIsWiderThenWidth = usLineWidthPixels;
+        pusLineWidthIfWordIsWiderThenWidth.value = usLineWidthPixels;
 
         fTheStringIsToLong = TRUE;
 
@@ -948,7 +948,7 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
 
   do {
     // last page is not true, YET!
-    *fOnLastPageFlag = FALSE;
+    fOnLastPageFlag.value = FALSE;
     // each character goes towards building a new word
     if (pString[usSourceCounter] != TEXT_SPACE && pString[usSourceCounter] != 0) {
       zWordString[usDestCounter++] = pString[usSourceCounter];

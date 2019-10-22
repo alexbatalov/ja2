@@ -367,7 +367,7 @@ function GetRandomIndexByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16
   let usObject: UINT16;
   // Get a list of valid object to select from
   usNumInPickList = 0;
-  for (usWhich = 0; usWhich < *pNumSelList; usWhich++) {
+  for (usWhich = 0; usWhich < pNumSelList.value; usWhich++) {
     usObject = pSelList[usWhich].uiObject;
     if ((usObject >= usRangeStart) && (usObject <= usRangeEnd)) {
       usPickList[usNumInPickList] = usObject;
@@ -385,7 +385,7 @@ function GetRandomTypeByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16 
   let uiType: UINT32;
   // Get a list of valid object to select from
   usNumInPickList = 0;
-  for (i = 0; i < *pNumSelList; i++) {
+  for (i = 0; i < pNumSelList.value; i++) {
     usObject = pSelList[i].uiObject;
     if ((usObject >= usRangeStart) && (usObject <= usRangeEnd)) {
       GetTileType(usObject, addressof(uiType));

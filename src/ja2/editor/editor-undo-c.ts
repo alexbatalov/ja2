@@ -80,12 +80,12 @@ let top: Pointer<MapIndexBinaryTree> = NULL;
 
 // Recursively deletes all nodes below the node passed including itself.
 function DeleteTreeNode(node: Pointer<Pointer<MapIndexBinaryTree>>): void {
-  if ((*node).value.left)
-    DeleteTreeNode(addressof((*node).value.left));
-  if ((*node).value.right)
-    DeleteTreeNode(addressof((*node).value.right));
-  MemFree(*node);
-  *node = NULL;
+  if ((node.value).value.left)
+    DeleteTreeNode(addressof((node.value).value.left));
+  if ((node.value).value.right)
+    DeleteTreeNode(addressof((node.value).value.right));
+  MemFree(node.value);
+  node.value = NULL;
 }
 
 // Recursively delete all nodes (from the top down).
@@ -702,13 +702,13 @@ function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex
       if (!tail) {
         // first node in structure list
         tail = pStructure;
-        *tail = *pOldStructure;
+        tail.value = pOldStructure.value;
         tail.value.pPrev = NULL;
         tail.value.pNext = NULL;
       } else {
         // add to the end of the levelnode list
         tail.value.pNext = pStructure;
-        *pStructure = *pOldStructure;
+        pStructure.value = pOldStructure.value;
         pStructure.value.pPrev = tail;
         pStructure.value.pNext = NULL;
         tail = tail.value.pNext;
@@ -746,14 +746,14 @@ function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex
       if (!tail) {
         // first node in levelnode list
         tail = pLevelNode;
-        *tail = *pOldLevelNode;
+        tail.value = pOldLevelNode.value;
         if (!x) // land layer only
           tail.value.pPrevNode = NULL;
         tail.value.pNext = NULL;
       } else {
         // add to the end of the levelnode list
         tail.value.pNext = pLevelNode;
-        *pLevelNode = *pOldLevelNode;
+        pLevelNode.value = pOldLevelNode.value;
         if (!x) // land layer only
           pLevelNode.value.pPrevNode = tail;
         pLevelNode.value.pNext = NULL;
@@ -842,9 +842,9 @@ function SwapMapElementWithWorld(iMapIndex: INT32, pUndoMapElement: Pointer<MAP_
   gpWorldLevelData[iMapIndex].pMercHead = NULL;
 
   // Swap the mapelements
-  TempMapElement = *pCurrentMapElement;
-  *pCurrentMapElement = *pUndoMapElement;
-  *pUndoMapElement = TempMapElement;
+  TempMapElement = pCurrentMapElement.value;
+  pCurrentMapElement.value = pUndoMapElement.value;
+  pUndoMapElement.value = TempMapElement;
 
   return TRUE;
 }

@@ -1349,10 +1349,10 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
   //	UINT8 ubStrategicElites, ubStrategicTroops, ubStrategicAdmins, ubStrategicCreatures;
 
   // make sure the variables are initialized
-  *pubNumElites = 0;
-  *pubNumRegulars = 0;
-  *pubNumAdmins = 0;
-  *pubNumCreatures = 0;
+  pubNumElites.value = 0;
+  pubNumRegulars.value = 0;
+  pubNumAdmins.value = 0;
+  pubNumCreatures.value = 0;
 
   // STEP ONE:  Set up the temp file to read from.
 
@@ -1461,16 +1461,16 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
     // increment the current type of soldier
     switch (tempDetailedPlacement.ubSoldierClass) {
       case SOLDIER_CLASS_ELITE:
-        (*pubNumElites)++;
+        (pubNumElites.value)++;
         break;
       case SOLDIER_CLASS_ARMY:
-        (*pubNumRegulars)++;
+        (pubNumRegulars.value)++;
         break;
       case SOLDIER_CLASS_ADMINISTRATOR:
-        (*pubNumAdmins)++;
+        (pubNumAdmins.value)++;
         break;
       case SOLDIER_CLASS_CREATURE:
-        (*pubNumCreatures)++;
+        (pubNumCreatures.value)++;
         break;
     }
 

@@ -419,7 +419,7 @@ function AttemptToAddSubstring(zDest: STR16, zTemp: STR16, puiStringLength: Poin
   let uiTempStringLength: UINT32;
 
   uiTempStringLength = StringPixLength(zTemp, ITEMDESC_FONT);
-  uiRequiredStringLength = *puiStringLength + uiTempStringLength;
+  uiRequiredStringLength = puiStringLength.value + uiTempStringLength;
   if (zDest[0] != 0) {
     uiRequiredStringLength += StringPixLength(COMMA_AND_SPACE, ITEMDESC_FONT);
   }
@@ -428,7 +428,7 @@ function AttemptToAddSubstring(zDest: STR16, zTemp: STR16, puiStringLength: Poin
       wcscat(zDest, COMMA_AND_SPACE);
     }
     wcscat(zDest, zTemp);
-    *puiStringLength = uiRequiredStringLength;
+    puiStringLength.value = uiRequiredStringLength;
     return TRUE;
   } else {
     wcscat(zDest, DOTDOTDOT);
@@ -1349,13 +1349,13 @@ function HandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8, f
 }
 
 function GetSlotInvXY(ubPos: UINT8, psX: Pointer<INT16>, psY: Pointer<INT16>): void {
-  *psX = gSMInvData[ubPos].sX;
-  *psY = gSMInvData[ubPos].sY;
+  psX.value = gSMInvData[ubPos].sX;
+  psY.value = gSMInvData[ubPos].sY;
 }
 
 function GetSlotInvHeightWidth(ubPos: UINT8, psWidth: Pointer<INT16>, psHeight: Pointer<INT16>): void {
-  *psWidth = gSMInvData[ubPos].sWidth;
-  *psHeight = gSMInvData[ubPos].sHeight;
+  psWidth.value = gSMInvData[ubPos].sWidth;
+  psHeight.value = gSMInvData[ubPos].sHeight;
 }
 
 function HandleNewlyAddedItems(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel: Pointer<BOOLEAN>): void {
@@ -1372,7 +1372,7 @@ function HandleNewlyAddedItems(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel: Poin
   for (cnt = 0; cnt < NUM_INV_SLOTS; cnt++) {
     if (pSoldier.value.bNewItemCount[cnt] == -2) {
       // Stop
-      *fDirtyLevel = DIRTYLEVEL2;
+      fDirtyLevel.value = DIRTYLEVEL2;
       pSoldier.value.bNewItemCount[cnt] = 0;
     }
 
@@ -1640,7 +1640,7 @@ function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, pObject
     SetFontForeground(FONT_MCOLOR_LTGRAY);
 
     // DO HIGHLIGHT
-    if (*pubHighlightCounter) {
+    if (pubHighlightCounter.value) {
       // Set string
       if (ubStatusIndex < RENDER_ITEM_ATTACHMENT1) {
         swprintf(pStr, "%s", ShortItemNames[pObject.value.usItem]);
@@ -1661,14 +1661,14 @@ function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, pObject
       }
     }
 
-    if (*pubHighlightCounter == 2) {
+    if (pubHighlightCounter.value == 2) {
       mprintf(sFontX, sFontY, pStr);
 
       if (fLineSplit) {
         mprintf(sFontX2, sFontY2, pStr2);
       }
-    } else if (*pubHighlightCounter == 1) {
-      *pubHighlightCounter = 0;
+    } else if (pubHighlightCounter.value == 1) {
+      pubHighlightCounter.value = 0;
       gprintfRestore(sFontX, sFontY, pStr);
 
       if (fLineSplit) {
@@ -3035,7 +3035,7 @@ function HandleItemDescriptionBox(pfDirty: Pointer<BOOLEAN>): void {
   if (fItemDescDelete) {
     DeleteItemDescriptionBox();
     fItemDescDelete = FALSE;
-    *pfDirty = DIRTYLEVEL2;
+    pfDirty.value = DIRTYLEVEL2;
   }
 }
 
@@ -4450,7 +4450,7 @@ function LoadTileGraphicForItem(pItem: Pointer<INVTYPE>, puiVo: Pointer<UINT32>)
   sprintf(VObjectDesc.ImageFile, "BIGITEMS\\%s", zName);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiVo)));
 
-  *puiVo = uiVo;
+  puiVo.value = uiVo;
 
   return TRUE;
 }

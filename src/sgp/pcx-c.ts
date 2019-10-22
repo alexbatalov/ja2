@@ -151,10 +151,10 @@ function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer
     if (fTransp == TRUE) {
       for (uiIndex = 0; uiIndex < uiImageSize; uiIndex++) {
         if (ubMode == PCX_NORMAL) {
-          ubCurrentByte = *(pPcxBuffer + uiOffset++);
+          ubCurrentByte = (pPcxBuffer + uiOffset++).value;
           if (ubCurrentByte > 0x0BF) {
             ubRepCount = ubCurrentByte & 0x03F;
-            ubCurrentByte = *(pPcxBuffer + uiOffset++);
+            ubCurrentByte = (pPcxBuffer + uiOffset++).value;
             if (--ubRepCount > 0) {
               ubMode = PCX_RLE;
             }
@@ -165,16 +165,16 @@ function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer
           }
         }
         if (ubCurrentByte != 0) {
-          *(pBuffer + uiIndex) = ubCurrentByte;
+          (pBuffer + uiIndex).value = ubCurrentByte;
         }
       }
     } else {
       for (uiIndex = 0; uiIndex < uiImageSize; uiIndex++) {
         if (ubMode == PCX_NORMAL) {
-          ubCurrentByte = *(pPcxBuffer + uiOffset++);
+          ubCurrentByte = (pPcxBuffer + uiOffset++).value;
           if (ubCurrentByte > 0x0BF) {
             ubRepCount = ubCurrentByte & 0x03F;
-            ubCurrentByte = *(pPcxBuffer + uiOffset++);
+            ubCurrentByte = (pPcxBuffer + uiOffset++).value;
             if (--ubRepCount > 0) {
               ubMode = PCX_RLE;
             }
@@ -184,7 +184,7 @@ function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer
             ubMode = PCX_NORMAL;
           }
         }
-        *(pBuffer + uiIndex) = ubCurrentByte;
+        (pBuffer + uiIndex).value = ubCurrentByte;
       }
     }
   } else {
@@ -215,10 +215,10 @@ function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer
     if (fTransp == TRUE) {
       for (uiIndex = 0; uiIndex < uiImageSize; uiIndex++) {
         if (ubMode == PCX_NORMAL) {
-          ubCurrentByte = *(pPcxBuffer + uiOffset++);
+          ubCurrentByte = (pPcxBuffer + uiOffset++).value;
           if (ubCurrentByte > 0x0BF) {
             ubRepCount = ubCurrentByte & 0x03F;
-            ubCurrentByte = *(pPcxBuffer + uiOffset++);
+            ubCurrentByte = (pPcxBuffer + uiOffset++).value;
             if (--ubRepCount > 0) {
               ubMode = PCX_RLE;
             }
@@ -229,7 +229,7 @@ function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer
           }
         }
         if (ubCurrentByte != 0) {
-          *(pBuffer + (usCurrentY * usBufferWidth) + usCurrentX) = ubCurrentByte;
+          (pBuffer + (usCurrentY * usBufferWidth) + usCurrentX).value = ubCurrentByte;
         }
         usCurrentX++;
         if (usCurrentX > usMaxX) {
@@ -244,10 +244,10 @@ function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer
 
       for (uiIndex = 0; uiIndex < uiImageSize; uiIndex++) {
         if (ubMode == PCX_NORMAL) {
-          ubCurrentByte = *(pPcxBuffer + uiOffset++);
+          ubCurrentByte = (pPcxBuffer + uiOffset++).value;
           if (ubCurrentByte > 0x0BF) {
             ubRepCount = ubCurrentByte & 0x03F;
-            ubCurrentByte = *(pPcxBuffer + uiOffset++);
+            ubCurrentByte = (pPcxBuffer + uiOffset++).value;
             if (--ubRepCount > 0) {
               ubMode = PCX_RLE;
             }
@@ -260,7 +260,7 @@ function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer
 
         if (usCurrentX < usMaxX) {
           // We are within the visible bounds so we write the byte to buffer
-          *(pBuffer + uiCurrentOffset) = ubCurrentByte;
+          (pBuffer + uiCurrentOffset).value = ubCurrentByte;
           uiCurrentOffset++;
           usCurrentX++;
         } else {
@@ -301,9 +301,9 @@ function SetPcxPalette(pCurrentPcxObject: Pointer<PcxObject>, hImage: HIMAGE): B
 
   // Initialize the proper palette entries
   for (Index = 0; Index < 256; Index++) {
-    hImage.value.pPalette[Index].peRed = *(pubPalette + (Index * 3));
-    hImage.value.pPalette[Index].peGreen = *(pubPalette + (Index * 3) + 1);
-    hImage.value.pPalette[Index].peBlue = *(pubPalette + (Index * 3) + 2);
+    hImage.value.pPalette[Index].peRed = (pubPalette + (Index * 3)).value;
+    hImage.value.pPalette[Index].peGreen = (pubPalette + (Index * 3) + 1).value;
+    hImage.value.pPalette[Index].peBlue = (pubPalette + (Index * 3) + 2).value;
     hImage.value.pPalette[Index].peFlags = 0;
   }
 

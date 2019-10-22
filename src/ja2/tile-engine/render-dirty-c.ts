@@ -815,7 +815,7 @@ function ExecuteVideoOverlays(): void {
         // ATE: Wait a frame before executing!
         if (gVideoOverlays[uiCount].fAllocated == 1) {
           // Call Blit Function
-          (*(gVideoOverlays[uiCount].BltCallback))(addressof(gVideoOverlays[uiCount]));
+          ((gVideoOverlays[uiCount].BltCallback).value)(addressof(gVideoOverlays[uiCount]));
         } else if (gVideoOverlays[uiCount].fAllocated == 2) {
           gVideoOverlays[uiCount].fAllocated = 1;
         }
@@ -842,7 +842,7 @@ function ExecuteVideoOverlaysToAlternateBuffer(uiNewDestBuffer: UINT32): void {
         gVideoOverlays[uiCount].uiDestBuff = uiNewDestBuffer;
 
         // Call Blit Function
-        (*(gVideoOverlays[uiCount].BltCallback))(addressof(gVideoOverlays[uiCount]));
+        ((gVideoOverlays[uiCount].BltCallback).value)(addressof(gVideoOverlays[uiCount]));
 
         gVideoOverlays[uiCount].uiDestBuff = uiOldDestBuffer;
       }

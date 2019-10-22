@@ -513,9 +513,9 @@ function SectorSquadIsIn(bSquadValue: INT8, sMapX: Pointer<INT16>, sMapY: Pointe
   for (bCounter = 0; bCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; bCounter++) {
     // if valid soldier, get current sector and return
     if (Squad[bSquadValue][bCounter] != NULL) {
-      *sMapX = Squad[bSquadValue][bCounter].value.sSectorX;
-      *sMapY = Squad[bSquadValue][bCounter].value.sSectorY;
-      *sMapZ = Squad[bSquadValue][bCounter].value.bSectorZ;
+      sMapX.value = Squad[bSquadValue][bCounter].value.sSectorX;
+      sMapY.value = Squad[bSquadValue][bCounter].value.sSectorY;
+      sMapZ.value = Squad[bSquadValue][bCounter].value.bSectorZ;
 
       return TRUE;
     }
@@ -811,12 +811,12 @@ function GetSquadPosition(ubNextX: Pointer<UINT8>, ubNextY: Pointer<UINT8>, ubPr
   // grab the mvt group for this squad and find all this information
 
   if (SquadMovementGroups[ubSquadValue] == 0) {
-    *ubNextX = 0;
-    *ubNextY = 0;
-    *ubPrevX = 0;
-    *ubPrevY = 0;
-    *uiTraverseTime = 0;
-    *uiArriveTime = 0;
+    ubNextX.value = 0;
+    ubNextY.value = 0;
+    ubPrevX.value = 0;
+    ubPrevY.value = 0;
+    uiTraverseTime.value = 0;
+    uiArriveTime.value = 0;
     return;
   }
 
@@ -922,9 +922,9 @@ function GetLocationOfSquad(sX: Pointer<INT16>, sY: Pointer<INT16>, bZ: Pointer<
   for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
     if (Squad[bSquadValue][iCounter]) {
       // valid guy
-      *sX = Squad[bSquadValue][iCounter].value.sSectorX;
-      *sY = Squad[bSquadValue][iCounter].value.sSectorY;
-      *bZ = Squad[bSquadValue][iCounter].value.bSectorZ;
+      sX.value = Squad[bSquadValue][iCounter].value.sSectorX;
+      sY.value = Squad[bSquadValue][iCounter].value.sSectorY;
+      bZ.value = Squad[bSquadValue][iCounter].value.bSectorZ;
     }
   }
 
@@ -1104,15 +1104,15 @@ function IsDeadGuyInThisSquadSlot(bSlotId: INT8, bSquadValue: INT8, bNumberOfDea
   let iCount: INT32 = 0;
 
   // see if we have gone too far?
-  if (bSlotId < *bNumberOfDeadGuysSoFar) {
+  if (bSlotId < bNumberOfDeadGuysSoFar.value) {
     // reset
-    *bNumberOfDeadGuysSoFar = 0;
+    bNumberOfDeadGuysSoFar.value = 0;
   }
 
   for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
     if (sDeadMercs[bSquadValue][iCounter] != -1) {
       // not gone far enough yet
-      if (*bNumberOfDeadGuysSoFar > iCounter) {
+      if (bNumberOfDeadGuysSoFar.value > iCounter) {
         iCount++;
       } else {
         // far enough, start checking

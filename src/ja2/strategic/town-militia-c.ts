@@ -356,8 +356,8 @@ function ServeNextFriendlySectorInTown(sNeighbourX: Pointer<INT16>, sNeighbourY:
         // check if it's "friendly" - not enemy controlled, no enemies in it, no combat in progress
         if (SectorOursAndPeaceful(sMapX, sMapY, 0)) {
           // then that's it!
-          *sNeighbourX = sMapX;
-          *sNeighbourY = sMapY;
+          sNeighbourX.value = sMapX;
+          sNeighbourY.value = sMapY;
 
           fStopLooking = TRUE;
         }

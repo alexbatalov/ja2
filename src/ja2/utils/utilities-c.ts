@@ -113,8 +113,8 @@ function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16
   hFont = GetFontObject(uiFont);
 
   // LOOP FORWARDS AND COUNT
-  while ((*curletter) != 0) {
-    transletter = GetIndex(*curletter);
+  while ((curletter.value) != 0) {
+    transletter = GetIndex(curletter.value);
     Cur += GetWidth(hFont, transletter);
 
     if (Cur > usWidth) {
@@ -122,8 +122,8 @@ function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16
       // Generate second string, and exit upon completion.
       uiHyphenLet = uiLet; // Save the hyphen location as it won't change.
       uiNewLet = uiLet;
-      while ((*curletter) != 0) {
-        if ((*curletter) == 32) {
+      while ((curletter.value) != 0) {
+        if ((curletter.value) == 32) {
           // Split Line!
           fLineSplit = TRUE;
 

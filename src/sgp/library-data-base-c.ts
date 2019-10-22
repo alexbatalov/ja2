@@ -296,7 +296,7 @@ function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData: PTR, u
 
   // if we are trying to read more data then the size of the file, return an error
   if (uiBytesToRead + uiCurPos > uiLength) {
-    *pBytesRead = 0;
+    pBytesRead.value = 0;
     return FALSE;
   }
 
@@ -317,7 +317,7 @@ function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData: PTR, u
 
   //	CloseHandle( hLibraryFile );
 
-  *pBytesRead = uiNumBytesRead;
+  pBytesRead.value = uiNumBytesRead;
 
   return TRUE;
 }
@@ -407,7 +407,7 @@ function GetFileHeaderFromLibrary(sLibraryID: INT16, pstrFileName: STR, pFileHea
   ppFileHeader = bsearch(addressof(sFileNameWithPath), gFileDataBase.pLibraries[sLibraryID].pFileHeader, gFileDataBase.pLibraries[sLibraryID].usNumberOfEntries, sizeof(FileHeaderStruct), CompareFileNames);
 
   if (ppFileHeader) {
-    *pFileHeader = ppFileHeader;
+    pFileHeader.value = ppFileHeader;
     return TRUE;
   } else {
     pFileHeader = NULL;
@@ -612,8 +612,8 @@ function CreateRealFileHandle(hFile: HANDLE): HWFILE {
 }
 
 function GetLibraryAndFileIDFromLibraryFileHandle(hlibFile: HWFILE, pLibraryID: Pointer<INT16>, pFileNum: Pointer<UINT32>): BOOLEAN {
-  *pFileNum = DB_EXTRACT_FILE_ID(hlibFile);
-  *pLibraryID = DB_EXTRACT_LIBRARY(hlibFile);
+  pFileNum.value = DB_EXTRACT_FILE_ID(hlibFile);
+  pLibraryID.value = DB_EXTRACT_LIBRARY(hlibFile);
 
   // TEST: qq
   /*	if( *pLibraryID == LIBRARY_SOUNDS )

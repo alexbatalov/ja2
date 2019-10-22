@@ -168,13 +168,13 @@ let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORLD_DIREC
 ];
 
 function FromCellToScreenCoordinates(sCellX: INT16, sCellY: INT16, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
-  *psScreenX = (2 * sCellX) - (2 * sCellY);
-  *psScreenY = sCellX + sCellY;
+  psScreenX.value = (2 * sCellX) - (2 * sCellY);
+  psScreenY.value = sCellX + sCellY;
 }
 
 function FromScreenToCellCoordinates(sScreenX: INT16, sScreenY: INT16, psCellX: Pointer<INT16>, psCellY: Pointer<INT16>): void {
-  *psCellX = ((sScreenX + (2 * sScreenY)) / 4);
-  *psCellY = ((2 * sScreenY) - sScreenX) / 4;
+  psCellX.value = ((sScreenX + (2 * sScreenY)) / 4);
+  psCellY.value = ((2 * sScreenY) - sScreenX) / 4;
 }
 
 // These two functions take into account that our world is projected and attached
@@ -188,8 +188,8 @@ function FloatFromCellToScreenCoordinates(dCellX: FLOAT, dCellY: FLOAT, pdScreen
   dScreenX = (2 * dCellX) - (2 * dCellY);
   dScreenY = dCellX + dCellY;
 
-  *pdScreenX = dScreenX;
-  *pdScreenY = dScreenY;
+  pdScreenX.value = dScreenX;
+  pdScreenY.value = dScreenY;
 }
 
 function FloatFromScreenToCellCoordinates(dScreenX: FLOAT, dScreenY: FLOAT, pdCellX: Pointer<FLOAT>, pdCellY: Pointer<FLOAT>): void {
@@ -199,8 +199,8 @@ function FloatFromScreenToCellCoordinates(dScreenX: FLOAT, dScreenY: FLOAT, pdCe
   dCellX = ((dScreenX + (2 * dScreenY)) / 4);
   dCellY = ((2 * dScreenY) - dScreenX) / 4;
 
-  *pdCellX = dCellX;
-  *pdCellY = dCellY;
+  pdCellX.value = dCellX;
+  pdCellY.value = dCellY;
 }
 
 function GetMouseXY(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): BOOLEAN {
@@ -208,14 +208,14 @@ function GetMouseXY(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): BOOLEAN
   let sWorldY: INT16;
 
   if (!GetMouseWorldCoords(addressof(sWorldX), addressof(sWorldY))) {
-    (*psMouseX) = 0;
-    (*psMouseY) = 0;
+    (psMouseX.value) = 0;
+    (psMouseY.value) = 0;
     return FALSE;
   }
 
   // Find start block
-  (*psMouseX) = (sWorldX / CELL_X_SIZE);
-  (*psMouseY) = (sWorldY / CELL_Y_SIZE);
+  (psMouseX.value) = (sWorldX / CELL_X_SIZE);
+  (psMouseY.value) = (sWorldY / CELL_Y_SIZE);
 
   return TRUE;
 }
@@ -229,11 +229,11 @@ function GetMouseXYWithRemainder(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT
   }
 
   // Find start block
-  (*psMouseX) = (sWorldX / CELL_X_SIZE);
-  (*psMouseY) = (sWorldY / CELL_Y_SIZE);
+  (psMouseX.value) = (sWorldX / CELL_X_SIZE);
+  (psMouseY.value) = (sWorldY / CELL_Y_SIZE);
 
-  (*psCellX) = sWorldX - ((*psMouseX) * CELL_X_SIZE);
-  (*psCellY) = sWorldY - ((*psMouseY) * CELL_Y_SIZE);
+  (psCellX.value) = sWorldX - ((psMouseX.value) * CELL_X_SIZE);
+  (psCellY.value) = sWorldY - ((psMouseY.value) * CELL_Y_SIZE);
 
   return TRUE;
 }
@@ -248,8 +248,8 @@ function GetMouseWorldCoords(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>)
 
   // Convert mouse screen coords into offset from center
   if (!(gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA)) {
-    *psMouseX = 0;
-    *psMouseY = 0;
+    psMouseX.value = 0;
+    psMouseY.value = 0;
     return FALSE;
   }
 
@@ -269,16 +269,16 @@ function GetMouseWorldCoords(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>)
 
   // check if we are out of bounds..
   if (sStartPointX_W < 0 || sStartPointX_W >= WORLD_COORD_ROWS || sStartPointY_W < 0 || sStartPointY_W >= WORLD_COORD_COLS) {
-    *psMouseX = 0;
-    *psMouseY = 0;
+    psMouseX.value = 0;
+    psMouseY.value = 0;
     return FALSE;
   }
 
   // Determine Start block and render offsets
   // Find start block
   // Add adjustment for render origin as well
-  (*psMouseX) = sStartPointX_W;
-  (*psMouseY) = sStartPointY_W;
+  (psMouseX.value) = sStartPointX_W;
+  (psMouseY.value) = sStartPointY_W;
 
   return TRUE;
 }
@@ -293,8 +293,8 @@ function GetMouseWorldCoordsInCenter(psMouseX: Pointer<INT16>, psMouseY: Pointer
   }
 
   // Now adjust these cell coords into world coords
-  *psMouseX = ((sMouseX)*CELL_X_SIZE) + (CELL_X_SIZE / 2);
-  *psMouseY = ((sMouseY)*CELL_Y_SIZE) + (CELL_Y_SIZE / 2);
+  psMouseX.value = ((sMouseX)*CELL_X_SIZE) + (CELL_X_SIZE / 2);
+  psMouseY.value = ((sMouseY)*CELL_Y_SIZE) + (CELL_Y_SIZE / 2);
 
   return TRUE;
 }
@@ -307,7 +307,7 @@ function GetMouseMapPos(psMapPos: Pointer<INT16>): BOOLEAN {
 
   // Check if this is the same frame as before, return already calculated value if so!
   if (uiOldFrameNumber == guiGameCycleCounter && !guiForceRefreshMousePositionCalculation) {
-    (*psMapPos) = sSameCursorPos;
+    (psMapPos.value) = sSameCursorPos;
 
     if (sSameCursorPos == 0) {
       return FALSE;
@@ -319,12 +319,12 @@ function GetMouseMapPos(psMapPos: Pointer<INT16>): BOOLEAN {
   guiForceRefreshMousePositionCalculation = FALSE;
 
   if (GetMouseXY(addressof(sWorldX), addressof(sWorldY))) {
-    *psMapPos = MAPROWCOLTOPOS(sWorldY, sWorldX);
-    sSameCursorPos = (*psMapPos);
+    psMapPos.value = MAPROWCOLTOPOS(sWorldY, sWorldX);
+    sSameCursorPos = (psMapPos.value);
     return TRUE;
   } else {
-    *psMapPos = 0;
-    sSameCursorPos = (*psMapPos);
+    psMapPos.value = 0;
+    sSameCursorPos = (psMapPos.value);
     return FALSE;
   }
 }
@@ -344,8 +344,8 @@ function ConvertMapPosToWorldTileCenter(usMapPos: UINT16, psXPos: Pointer<INT16>
   sCellX = sWorldX * CELL_X_SIZE;
 
   // Add center tile positions
-  *psXPos = sCellX + (CELL_X_SIZE / 2);
-  *psYPos = sCellY + (CELL_Y_SIZE / 2);
+  psXPos.value = sCellX + (CELL_X_SIZE / 2);
+  psYPos.value = sCellY + (CELL_Y_SIZE / 2);
 
   return TRUE;
 }
@@ -371,8 +371,8 @@ function GetScreenXYWorldCoords(sScreenX: INT16, sScreenY: INT16, psWorldX: Poin
   // Determine Start block and render offsets
   // Find start block
   // Add adjustment for render origin as well
-  (*psWorldX) = sStartPointX_W;
-  (*psWorldY) = sStartPointY_W;
+  (psWorldX.value) = sStartPointX_W;
+  (psWorldY.value) = sStartPointY_W;
 }
 
 function GetScreenXYWorldCell(sScreenX: INT16, sScreenY: INT16, psWorldCellX: Pointer<INT16>, psWorldCellY: Pointer<INT16>): void {
@@ -382,8 +382,8 @@ function GetScreenXYWorldCell(sScreenX: INT16, sScreenY: INT16, psWorldCellX: Po
   GetScreenXYWorldCoords(sScreenX, sScreenY, addressof(sWorldX), addressof(sWorldY));
 
   // Find start block
-  (*psWorldCellX) = (sWorldX / CELL_X_SIZE);
-  (*psWorldCellY) = (sWorldY / CELL_Y_SIZE);
+  (psWorldCellX.value) = (sWorldX / CELL_X_SIZE);
+  (psWorldCellY.value) = (sWorldY / CELL_Y_SIZE);
 }
 
 function GetScreenXYGridNo(sScreenX: INT16, sScreenY: INT16, psMapPos: Pointer<INT16>): void {
@@ -392,7 +392,7 @@ function GetScreenXYGridNo(sScreenX: INT16, sScreenY: INT16, psMapPos: Pointer<I
 
   GetScreenXYWorldCell(sScreenX, sScreenY, addressof(sWorldX), addressof(sWorldY));
 
-  *psMapPos = MAPROWCOLTOPOS(sWorldY, sWorldX);
+  psMapPos.value = MAPROWCOLTOPOS(sWorldY, sWorldX);
 }
 
 function GetWorldXYAbsoluteScreenXY(sWorldCellX: INT32, sWorldCellY: INT32, psWorldScreenX: Pointer<INT16>, psWorldScreenY: Pointer<INT16>): void {
@@ -413,8 +413,8 @@ function GetWorldXYAbsoluteScreenXY(sWorldCellX: INT32, sWorldCellY: INT32, psWo
   sScreenCenterY = sDistToCenterX + sDistToCenterY;
 
   // Subtract screen center
-  *psWorldScreenX = sScreenCenterX + gsCX - gsTLX;
-  *psWorldScreenY = sScreenCenterY + gsCY - gsTLY;
+  psWorldScreenX.value = sScreenCenterX + gsCX - gsTLX;
+  psWorldScreenY.value = sScreenCenterY + gsCY - gsTLY;
 }
 
 function GetFromAbsoluteScreenXYWorldXY(psWorldCellX: Pointer<INT32>, psWorldCellY: Pointer<INT32>, sWorldScreenX: INT16, sWorldScreenY: INT16): void {
@@ -435,8 +435,8 @@ function GetFromAbsoluteScreenXYWorldXY(psWorldCellX: Pointer<INT32>, psWorldCel
   sWorldCenterY = ((2 * sDistToCenterY) - sDistToCenterX) / 4;
 
   // Goto center again
-  *psWorldCellX = sWorldCenterX + gCenterWorldX;
-  *psWorldCellY = sWorldCenterY + gCenterWorldY;
+  psWorldCellX.value = sWorldCenterX + gCenterWorldX;
+  psWorldCellY.value = sWorldCenterY + gCenterWorldY;
 }
 
 // UTILITY FUNTIONS
@@ -507,31 +507,31 @@ function CellXYToScreenXY(sCellX: INT16, sCellY: INT16, sScreenX: Pointer<INT16>
 
   FromCellToScreenCoordinates(sDeltaCellX, sDeltaCellY, addressof(sDeltaScreenX), addressof(sDeltaScreenY));
 
-  *sScreenX = (((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sDeltaScreenX);
-  *sScreenY = (((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sDeltaScreenY);
+  sScreenX.value = (((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sDeltaScreenX);
+  sScreenY.value = (((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sDeltaScreenY);
 
   return TRUE;
 }
 
 function ConvertGridNoToXY(sGridNo: INT16, sXPos: Pointer<INT16>, sYPos: Pointer<INT16>): void {
-  *sYPos = sGridNo / WORLD_COLS;
-  *sXPos = (sGridNo - (*sYPos * WORLD_COLS));
+  sYPos.value = sGridNo / WORLD_COLS;
+  sXPos.value = (sGridNo - (sYPos.value * WORLD_COLS));
 }
 
 function ConvertGridNoToCellXY(sGridNo: INT16, sXPos: Pointer<INT16>, sYPos: Pointer<INT16>): void {
-  *sYPos = (sGridNo / WORLD_COLS);
-  *sXPos = sGridNo - (*sYPos * WORLD_COLS);
+  sYPos.value = (sGridNo / WORLD_COLS);
+  sXPos.value = sGridNo - (sYPos.value * WORLD_COLS);
 
-  *sYPos = (*sYPos * CELL_Y_SIZE);
-  *sXPos = (*sXPos * CELL_X_SIZE);
+  sYPos.value = (sYPos.value * CELL_Y_SIZE);
+  sXPos.value = (sXPos.value * CELL_X_SIZE);
 }
 
 function ConvertGridNoToCenterCellXY(sGridNo: INT16, sXPos: Pointer<INT16>, sYPos: Pointer<INT16>): void {
-  *sYPos = (sGridNo / WORLD_COLS);
-  *sXPos = (sGridNo - (*sYPos * WORLD_COLS));
+  sYPos.value = (sGridNo / WORLD_COLS);
+  sXPos.value = (sGridNo - (sYPos.value * WORLD_COLS));
 
-  *sYPos = (*sYPos * CELL_Y_SIZE) + (CELL_Y_SIZE / 2);
-  *sXPos = (*sXPos * CELL_X_SIZE) + (CELL_X_SIZE / 2);
+  sYPos.value = (sYPos.value * CELL_Y_SIZE) + (CELL_Y_SIZE / 2);
+  sXPos.value = (sXPos.value * CELL_X_SIZE) + (CELL_X_SIZE / 2);
 }
 
 function GetRangeFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): INT32 {
@@ -577,8 +577,8 @@ function IsPointInScreenRect(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>
 
 function IsPointInScreenRectWithRelative(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>, sXRel: Pointer<INT16>, sYRel: Pointer<INT16>): BOOLEAN {
   if ((sXPos >= pRect.value.iLeft) && (sXPos <= pRect.value.iRight) && (sYPos >= pRect.value.iTop) && (sYPos <= pRect.value.iBottom)) {
-    (*sXRel) = pRect.value.iLeft - sXPos;
-    (*sYRel) = sYPos - pRect.value.iTop;
+    (sXRel.value) = pRect.value.iLeft - sXPos;
+    (sYRel.value) = sYPos - pRect.value.iTop;
 
     return TRUE;
   } else {
@@ -691,7 +691,7 @@ function FindHeigherLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStart
   }
 
   if (fFound) {
-    *pbDirection = bMinDirection;
+    pbDirection.value = bMinDirection;
     return TRUE;
   }
 
@@ -730,7 +730,7 @@ function FindLowerLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartin
   }
 
   if (fFound) {
-    *pbDirection = bMinDirection;
+    pbDirection.value = bMinDirection;
     return TRUE;
   }
 
@@ -881,7 +881,7 @@ function GridNoOnEdgeOfMap(sGridNo: INT16, pbDirection: Pointer<INT8>): BOOLEAN 
     if (gubWorldMovementCosts[(sGridNo + DirectionInc(bDir))][bDir][0] == TRAVELCOST_OFF_MAP)
     // if ( !GridNoOnVisibleWorldTile( (INT16) (sGridNo + DirectionInc( bDir ) ) ) )
     {
-      *pbDirection = bDir;
+      pbDirection.value = bDir;
       return TRUE;
     }
   }
@@ -927,7 +927,7 @@ function FindFenceJumpDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
   }
 
   if (fFound) {
-    *pbDirection = bMinDirection;
+    pbDirection.value = bMinDirection;
     return TRUE;
   }
 

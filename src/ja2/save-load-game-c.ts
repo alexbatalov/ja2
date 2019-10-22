@@ -3350,14 +3350,14 @@ function DoesUserHaveEnoughHardDriveSpace(): BOOLEAN {
 function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, pbSectorZ: Pointer<INT8>): void {
   // if the current sector is valid
   if (gfWorldLoaded) {
-    *psSectorX = gWorldSectorX;
-    *psSectorY = gWorldSectorY;
-    *pbSectorZ = gbWorldSectorZ;
+    psSectorX.value = gWorldSectorX;
+    psSectorY.value = gWorldSectorY;
+    pbSectorZ.value = gbWorldSectorZ;
   } else if (iCurrentTacticalSquad != NO_CURRENT_SQUAD && Squad[iCurrentTacticalSquad][0]) {
     if (Squad[iCurrentTacticalSquad][0].value.bAssignment != IN_TRANSIT) {
-      *psSectorX = Squad[iCurrentTacticalSquad][0].value.sSectorX;
-      *psSectorY = Squad[iCurrentTacticalSquad][0].value.sSectorY;
-      *pbSectorZ = Squad[iCurrentTacticalSquad][0].value.bSectorZ;
+      psSectorX.value = Squad[iCurrentTacticalSquad][0].value.sSectorX;
+      psSectorY.value = Squad[iCurrentTacticalSquad][0].value.sSectorY;
+      pbSectorZ.value = Squad[iCurrentTacticalSquad][0].value.bSectorZ;
     }
   } else {
     let sSoldierCnt: INT16;
@@ -3375,9 +3375,9 @@ function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Po
       if (pSoldier.value.bActive) {
         if (pSoldier.value.bAssignment != IN_TRANSIT && !pSoldier.value.fBetweenSectors) {
           // we found an alive, merc that is not moving
-          *psSectorX = pSoldier.value.sSectorX;
-          *psSectorY = pSoldier.value.sSectorY;
-          *pbSectorZ = pSoldier.value.bSectorZ;
+          psSectorX.value = pSoldier.value.sSectorX;
+          psSectorY.value = pSoldier.value.sSectorY;
+          pbSectorZ.value = pSoldier.value.bSectorZ;
           fFoundAMerc = TRUE;
           break;
         }
@@ -3394,9 +3394,9 @@ function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Po
       for (pSoldier = MercPtrs[sSoldierCnt]; sSoldierCnt <= bLastTeamID; sSoldierCnt++, pSoldier++) {
         if (pSoldier.value.bActive) {
           // we found an alive, merc that is not moving
-          *psSectorX = pSoldier.value.sSectorX;
-          *psSectorY = pSoldier.value.sSectorY;
-          *pbSectorZ = pSoldier.value.bSectorZ;
+          psSectorX.value = pSoldier.value.sSectorX;
+          psSectorY.value = pSoldier.value.sSectorY;
+          pbSectorZ.value = pSoldier.value.bSectorZ;
           fFoundAMerc = TRUE;
           break;
         }
@@ -3404,9 +3404,9 @@ function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Po
 
       // if we STILL havent found a merc, give up and use the -1, -1, -1
       if (!fFoundAMerc) {
-        *psSectorX = gWorldSectorX;
-        *psSectorY = gWorldSectorY;
-        *pbSectorZ = gbWorldSectorZ;
+        psSectorX.value = gWorldSectorX;
+        psSectorY.value = gWorldSectorY;
+        pbSectorZ.value = gbWorldSectorZ;
       }
     }
   }

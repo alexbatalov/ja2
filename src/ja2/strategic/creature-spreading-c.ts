@@ -788,10 +788,10 @@ function ChooseCreatureQuestStartDay(): void {
 }
 
 function DeleteDirectiveNode(node: Pointer<Pointer<CREATURE_DIRECTIVE>>): void {
-  if ((*node).value.next)
-    DeleteDirectiveNode(addressof((*node).value.next));
-  MemFree(*node);
-  *node = NULL;
+  if ((node.value).value.next)
+    DeleteDirectiveNode(addressof((node.value).value.next));
+  MemFree(node.value);
+  node.value = NULL;
 }
 
 // Recursively delete all nodes (from the top down).
@@ -929,13 +929,13 @@ function DetermineCreatureTownComposition(ubNumCreatures: UINT8, pubNumYoungMale
   while (i--) {
     iRandom = Random(100);
     if (iRandom < ubYoungMalePercentage)
-      (*pubNumYoungMales)++;
+      (pubNumYoungMales.value)++;
     else if (iRandom < ubYoungFemalePercentage)
-      (*pubNumYoungFemales)++;
+      (pubNumYoungFemales.value)++;
     else if (iRandom < ubAdultMalePercentage)
-      (*pubNumAdultMales)++;
+      (pubNumAdultMales.value)++;
     else
-      (*pubNumAdultFemales)++;
+      (pubNumAdultFemales.value)++;
   }
 }
 
@@ -945,7 +945,7 @@ function DetermineCreatureTownCompositionBasedOnTacticalInformation(pubNumCreatu
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSector = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
-  *pubNumCreatures = 0;
+  pubNumCreatures.value = 0;
   pSector.value.ubNumCreatures = 0;
   pSector.value.ubCreaturesInBattle = 0;
   for (i = gTacticalStatus.Team[CREATURE_TEAM].bFirstID; i <= gTacticalStatus.Team[CREATURE_TEAM].bLastID; i++) {
@@ -953,20 +953,20 @@ function DetermineCreatureTownCompositionBasedOnTacticalInformation(pubNumCreatu
     if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife) {
       switch (pSoldier.value.ubBodyType) {
         case ADULTFEMALEMONSTER:
-          (*pubNumCreatures)++;
-          (*pubNumAdultFemales)++;
+          (pubNumCreatures.value)++;
+          (pubNumAdultFemales.value)++;
           break;
         case AM_MONSTER:
-          (*pubNumCreatures)++;
-          (*pubNumAdultMales)++;
+          (pubNumCreatures.value)++;
+          (pubNumAdultMales.value)++;
           break;
         case YAF_MONSTER:
-          (*pubNumCreatures)++;
-          (*pubNumYoungFemales)++;
+          (pubNumCreatures.value)++;
+          (pubNumYoungFemales.value)++;
           break;
         case YAM_MONSTER:
-          (*pubNumCreatures)++;
-          (*pubNumYoungMales)++;
+          (pubNumCreatures.value)++;
+          (pubNumYoungMales.value)++;
           break;
       }
     }
@@ -1338,37 +1338,37 @@ function GetWarpOutOfMineCodes(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT
   switch (iSwitchValue) {
     case 1: // Drassen
       if (gWorldSectorX == 13 && gWorldSectorY == 6 && gbWorldSectorZ == 3 || gWorldSectorX == 13 && gWorldSectorY == 7 && gbWorldSectorZ == 3 || gWorldSectorX == 13 && gWorldSectorY == 7 && gbWorldSectorZ == 2 || gWorldSectorX == 13 && gWorldSectorY == 6 && gbWorldSectorZ == 2 || gWorldSectorX == 13 && gWorldSectorY == 5 && gbWorldSectorZ == 2 || gWorldSectorX == 13 && gWorldSectorY == 5 && gbWorldSectorZ == 1 || gWorldSectorX == 13 && gWorldSectorY == 4 && gbWorldSectorZ == 1) {
-        *psSectorX = 13;
-        *psSectorY = 4;
-        *pbSectorZ = 0;
-        *psInsertionGridNo = 20700;
+        psSectorX.value = 13;
+        psSectorY.value = 4;
+        pbSectorZ.value = 0;
+        psInsertionGridNo.value = 20700;
         return TRUE;
       }
       break;
     case 3: // Cambria
       if (gWorldSectorX == 8 && gWorldSectorY == 9 && gbWorldSectorZ == 3 || gWorldSectorX == 8 && gWorldSectorY == 8 && gbWorldSectorZ == 3 || gWorldSectorX == 8 && gWorldSectorY == 8 && gbWorldSectorZ == 2 || gWorldSectorX == 9 && gWorldSectorY == 8 && gbWorldSectorZ == 2 || gWorldSectorX == 9 && gWorldSectorY == 8 && gbWorldSectorZ == 1 || gWorldSectorX == 8 && gWorldSectorY == 8 && gbWorldSectorZ == 1) {
-        *psSectorX = 8;
-        *psSectorY = 8;
-        *pbSectorZ = 0;
-        *psInsertionGridNo = 13002;
+        psSectorX.value = 8;
+        psSectorY.value = 8;
+        pbSectorZ.value = 0;
+        psInsertionGridNo.value = 13002;
         return TRUE;
       }
       break;
     case 2: // Alma
       if (gWorldSectorX == 13 && gWorldSectorY == 11 && gbWorldSectorZ == 3 || gWorldSectorX == 13 && gWorldSectorY == 10 && gbWorldSectorZ == 3 || gWorldSectorX == 13 && gWorldSectorY == 10 && gbWorldSectorZ == 2 || gWorldSectorX == 14 && gWorldSectorY == 10 && gbWorldSectorZ == 2 || gWorldSectorX == 14 && gWorldSectorY == 10 && gbWorldSectorZ == 1 || gWorldSectorX == 14 && gWorldSectorY == 9 && gbWorldSectorZ == 1) {
-        *psSectorX = 14;
-        *psSectorY = 9;
-        *pbSectorZ = 0;
-        *psInsertionGridNo = 9085;
+        psSectorX.value = 14;
+        psSectorY.value = 9;
+        pbSectorZ.value = 0;
+        psInsertionGridNo.value = 9085;
         return TRUE;
       }
       break;
     case 4: // Grumm
       if (gWorldSectorX == 4 && gWorldSectorY == 7 && gbWorldSectorZ == 3 || gWorldSectorX == 4 && gWorldSectorY == 8 && gbWorldSectorZ == 3 || gWorldSectorX == 3 && gWorldSectorY == 8 && gbWorldSectorZ == 2 || gWorldSectorX == 3 && gWorldSectorY == 8 && gbWorldSectorZ == 2 || gWorldSectorX == 3 && gWorldSectorY == 9 && gbWorldSectorZ == 2 || gWorldSectorX == 3 && gWorldSectorY == 9 && gbWorldSectorZ == 1 || gWorldSectorX == 3 && gWorldSectorY == 8 && gbWorldSectorZ == 1) {
-        *psSectorX = 3;
-        *psSectorY = 8;
-        *pbSectorZ = 0;
-        *psInsertionGridNo = 9822;
+        psSectorX.value = 3;
+        psSectorY.value = 8;
+        pbSectorZ.value = 0;
+        psInsertionGridNo.value = 9822;
         return TRUE;
       }
       break;

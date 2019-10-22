@@ -2188,8 +2188,8 @@ function GetMercClimbDirection(ubSoldierID: UINT8, pfGoDown: Pointer<BOOLEAN>, p
   let bNewDirection: INT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
-  *pfGoDown = FALSE;
-  *pfGoUp = FALSE;
+  pfGoDown.value = FALSE;
+  pfGoUp.value = FALSE;
 
   if (!GetSoldier(addressof(pSoldier), ubSoldierID)) {
     return;
@@ -2199,14 +2199,14 @@ function GetMercClimbDirection(ubSoldierID: UINT8, pfGoDown: Pointer<BOOLEAN>, p
   if (pSoldier.value.bLevel == 0) {
     // See if we are not in a building!
     if (FindHeigherLevel(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection, addressof(bNewDirection))) {
-      *pfGoUp = TRUE;
+      pfGoUp.value = TRUE;
     }
   }
 
   // IF we are higher...
   if (pSoldier.value.bLevel > 0) {
     if (FindLowerLevel(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection, addressof(bNewDirection))) {
-      *pfGoDown = TRUE;
+      pfGoDown.value = TRUE;
     }
   }
 }
@@ -2275,18 +2275,18 @@ function UIHandleOpenDoorMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 function ToggleHandCursorMode(puiNewEvent: Pointer<UINT32>): void {
   // Toggle modes
   if (gCurrentUIMode == HANDCURSOR_MODE) {
-    *puiNewEvent = A_CHANGE_TO_MOVE;
+    puiNewEvent.value = A_CHANGE_TO_MOVE;
   } else {
-    *puiNewEvent = M_CHANGE_TO_HANDMODE;
+    puiNewEvent.value = M_CHANGE_TO_HANDMODE;
   }
 }
 
 function ToggleTalkCursorMode(puiNewEvent: Pointer<UINT32>): void {
   // Toggle modes
   if (gCurrentUIMode == TALKCURSOR_MODE) {
-    *puiNewEvent = A_CHANGE_TO_MOVE;
+    puiNewEvent.value = A_CHANGE_TO_MOVE;
   } else {
-    *puiNewEvent = T_CHANGE_TO_TALKING;
+    puiNewEvent.value = T_CHANGE_TO_TALKING;
   }
 }
 
@@ -2588,27 +2588,27 @@ function GetCursorMovementFlags(puiCursorFlags: Pointer<UINT32>): void {
 
   // Check if this is the same frame as before, return already calculated value if so!
   if (uiOldFrameNumber == guiGameCycleCounter) {
-    (*puiCursorFlags) = uiSameFrameCursorFlags;
+    (puiCursorFlags.value) = uiSameFrameCursorFlags;
     return;
   }
 
   GetMouseMapPos(addressof(usMapPos));
   ConvertGridNoToXY(usMapPos, addressof(sXPos), addressof(sYPos));
 
-  *puiCursorFlags = 0;
+  puiCursorFlags.value = 0;
 
   if (gusMouseXPos != usOldMouseXPos || gusMouseYPos != usOldMouseYPos) {
-    (*puiCursorFlags) |= MOUSE_MOVING;
+    (puiCursorFlags.value) |= MOUSE_MOVING;
 
     // IF CURSOR WAS PREVIOUSLY STATIONARY, MAKE THE ADDITIONAL CHECK OF GRID POS CHANGE
     if (fStationary && usOldMapPos == usMapPos) {
-      (*puiCursorFlags) |= MOUSE_MOVING_IN_TILE;
+      (puiCursorFlags.value) |= MOUSE_MOVING_IN_TILE;
     } else {
       fStationary = FALSE;
-      (*puiCursorFlags) |= MOUSE_MOVING_NEW_TILE;
+      (puiCursorFlags.value) |= MOUSE_MOVING_NEW_TILE;
     }
   } else {
-    (*puiCursorFlags) |= MOUSE_STATIONARY;
+    (puiCursorFlags.value) |= MOUSE_STATIONARY;
     fStationary = TRUE;
   }
 
@@ -2617,7 +2617,7 @@ function GetCursorMovementFlags(puiCursorFlags: Pointer<UINT32>): void {
   usOldMouseYPos = gusMouseYPos;
 
   uiOldFrameNumber = guiGameCycleCounter;
-  uiSameFrameCursorFlags = (*puiCursorFlags);
+  uiSameFrameCursorFlags = (puiCursorFlags.value);
 }
 
 function HandleUIMovementCursor(pSoldier: Pointer<SOLDIERTYPE>, uiCursorFlags: UINT32, usMapPos: UINT16, uiFlags: UINT32): BOOLEAN {
@@ -3705,8 +3705,8 @@ function GetGridNoScreenXY(sGridNo: INT16, pScreenX: Pointer<INT16>, pScreenY: P
   // Adjust y offset!
   sScreenY += (WORLD_TILE_Y / 2);
 
-  (*pScreenX) = sScreenX;
-  (*pScreenY) = sScreenY;
+  (pScreenX.value) = sScreenX;
+  (pScreenY.value) = sScreenY;
 }
 
 function EndMultiSoldierSelection(fAcknowledge: BOOLEAN): void {
@@ -4079,7 +4079,7 @@ function UIHandleLAEndLockOurTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 function IsValidTalkableNPCFromMouse(pubSoldierID: Pointer<UINT8>, fGive: BOOLEAN, fAllowMercs: BOOLEAN, fCheckCollapsed: BOOLEAN): BOOLEAN {
   // Check if there is a guy here to talk to!
   if (gfUIFullTargetFound) {
-    *pubSoldierID = gusUIFullTargetID;
+    pubSoldierID.value = gusUIFullTargetID;
     return IsValidTalkableNPC(gusUIFullTargetID, fGive, fAllowMercs, fCheckCollapsed);
   }
 
@@ -4577,7 +4577,7 @@ function HandleTacticalUILoseCursorFromOtherScreen(): void {
 
   ErasePath(TRUE);
 
-  (*(GameScreens[GAME_SCREEN].HandleScreen))();
+  ((GameScreens[GAME_SCREEN].HandleScreen).value)();
 
   gfTacticalForceNoCursor = FALSE;
 

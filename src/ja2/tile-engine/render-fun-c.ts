@@ -30,7 +30,7 @@ function SetTileRangeRoomNum(pSelectRegion: Pointer<SGPRect>, ubRoomNum: UINT8):
 function InARoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): BOOLEAN {
   if (gubWorldRoomInfo[sGridNo] != NO_ROOM) {
     if (pubRoomNo) {
-      *pubRoomNo = gubWorldRoomInfo[sGridNo];
+      pubRoomNo.value = gubWorldRoomInfo[sGridNo];
     }
     return TRUE;
   }
@@ -41,7 +41,7 @@ function InARoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): BOOLEAN {
 function InAHiddenRoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): BOOLEAN {
   if (gubWorldRoomInfo[sGridNo] != NO_ROOM) {
     if ((gubWorldRoomHidden[gubWorldRoomInfo[sGridNo]])) {
-      *pubRoomNo = gubWorldRoomInfo[sGridNo];
+      pubRoomNo.value = gubWorldRoomInfo[sGridNo];
       return TRUE;
     }
   }

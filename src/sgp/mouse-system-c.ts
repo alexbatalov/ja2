@@ -474,7 +474,7 @@ function MSYS_UpdateMouseRegion(): void {
       // Force a callbacks to happen on previous region to indicate that
       // the mouse has left the old region
       if (MSYS_PrevRegion.value.uiFlags & MSYS_MOVE_CALLBACK && MSYS_PrevRegion.value.uiFlags & MSYS_REGION_ENABLED)
-        (*(MSYS_PrevRegion.value.MovementCallback))(MSYS_PrevRegion, MSYS_CALLBACK_REASON_LOST_MOUSE);
+        ((MSYS_PrevRegion.value.MovementCallback).value)(MSYS_PrevRegion, MSYS_CALLBACK_REASON_LOST_MOUSE);
     }
   }
 
@@ -496,7 +496,7 @@ function MSYS_UpdateMouseRegion(): void {
           //	b->uiFlags |= BUTTON_DIRTY;
         }
         if (MSYS_CurrRegion.value.uiFlags & MSYS_REGION_ENABLED) {
-          (*(MSYS_CurrRegion.value.MovementCallback))(MSYS_CurrRegion, MSYS_CALLBACK_REASON_GAIN_MOUSE);
+          ((MSYS_CurrRegion.value.MovementCallback).value)(MSYS_CurrRegion, MSYS_CALLBACK_REASON_GAIN_MOUSE);
         }
       }
 
@@ -531,7 +531,7 @@ function MSYS_UpdateMouseRegion(): void {
       MSYS_CurrRegion.value.ButtonState = MSYS_CurrentButtons;
 
       if (MSYS_CurrRegion.value.uiFlags & MSYS_REGION_ENABLED && MSYS_CurrRegion.value.uiFlags & MSYS_MOVE_CALLBACK && MSYS_Action & MSYS_DO_MOVE) {
-        (*(MSYS_CurrRegion.value.MovementCallback))(MSYS_CurrRegion, MSYS_CALLBACK_REASON_MOVE);
+        ((MSYS_CurrRegion.value.MovementCallback).value)(MSYS_CurrRegion, MSYS_CALLBACK_REASON_MOVE);
       }
 
       // ExecuteMouseHelpEndCallBack( MSYS_CurrRegion );
@@ -620,7 +620,7 @@ function MSYS_UpdateMouseRegion(): void {
               }
             }
 
-            (*(MSYS_CurrRegion.value.ButtonCallback))(MSYS_CurrRegion, ButtonReason);
+            ((MSYS_CurrRegion.value.ButtonCallback).value)(MSYS_CurrRegion, ButtonReason);
           }
         }
       }
@@ -644,7 +644,7 @@ function MSYS_UpdateMouseRegion(): void {
       MSYS_CurrRegion.value.RelativeYPos = MSYS_CurrentMY - MSYS_CurrRegion.value.RegionTopLeftY;
 
       if ((MSYS_CurrRegion.value.uiFlags & MSYS_MOVE_CALLBACK) && (MSYS_Action & MSYS_DO_MOVE)) {
-        (*(MSYS_CurrRegion.value.MovementCallback))(MSYS_CurrRegion, MSYS_CALLBACK_REASON_MOVE);
+        ((MSYS_CurrRegion.value.MovementCallback).value)(MSYS_CurrRegion, MSYS_CALLBACK_REASON_MOVE);
       }
 
       MSYS_Action &= (~MSYS_DO_MOVE);

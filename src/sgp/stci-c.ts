@@ -7,7 +7,7 @@ function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   // Check that hImage is valid, and that the file in question exists
   Assert(hImage != NULL);
 
-  TempImage = *hImage;
+  TempImage = hImage.value;
 
   CHECKF(FileExists(TempImage.ImageFile));
 
@@ -52,7 +52,7 @@ function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   TempImage.usWidth = Header.usWidth;
   TempImage.usHeight = Header.usHeight;
   TempImage.ubBitDepth = Header.ubDepth;
-  *hImage = TempImage;
+  hImage.value = TempImage;
 
   return TRUE;
 }

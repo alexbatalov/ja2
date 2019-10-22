@@ -159,7 +159,7 @@ function GetPenaltyForFatigue(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
 }
 
 function ReducePointsForFatigue(pSoldier: Pointer<SOLDIERTYPE>, pusPoints: Pointer<UINT16>): void {
-  *pusPoints -= (*pusPoints * GetPenaltyForFatigue(pSoldier)) / 100;
+  pusPoints.value -= (pusPoints.value * GetPenaltyForFatigue(pSoldier)) / 100;
 }
 
 function GetSkillCheckPenaltyForFatigue(pSoldier: Pointer<SOLDIERTYPE>, iSkill: INT32): INT32 {

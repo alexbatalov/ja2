@@ -269,7 +269,7 @@ function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF
       FileClose(hInput);
       return FALSE;
     }
-    *puiStructureDataSize = uiDataSize;
+    puiStructureDataSize.value = uiDataSize;
   }
   FileClose(hInput);
   return TRUE;
@@ -1098,7 +1098,7 @@ function StructureHeight(pStructure: Pointer<STRUCTURE>): INT8 {
   // loop horizontally on the X and Y planes
   for (ubLoopX = 0; ubLoopX < PROFILE_X_SIZE; ubLoopX++) {
     for (ubLoopY = 0; ubLoopY < PROFILE_Y_SIZE; ubLoopY++) {
-      ubShapeValue = (*pShape)[ubLoopX][ubLoopY];
+      ubShapeValue = (pShape.value)[ubLoopX][ubLoopY];
       // loop DOWN vertically so that we find the tallest point first
       // and don't need to check any below it
       for (bLoopZ = PROFILE_Z_SIZE - 1; bLoopZ > bGreatestHeight; bLoopZ--) {
@@ -1197,7 +1197,7 @@ function StructureBottomLevel(pStructure: Pointer<STRUCTURE>): INT8 {
   // loop horizontally on the X and Y planes
   for (ubLoopX = 0; ubLoopX < PROFILE_X_SIZE; ubLoopX++) {
     for (ubLoopY = 0; ubLoopY < PROFILE_Y_SIZE; ubLoopY++) {
-      ubShapeValue = (*pShape)[ubLoopX][ubLoopY];
+      ubShapeValue = (pShape.value)[ubLoopX][ubLoopY];
       // loop DOWN vertically so that we find the tallest point first
       // and don't need to check any below it
       for (bLoopZ = 0; bLoopZ < bLowestHeight; bLoopZ++) {
@@ -1225,35 +1225,35 @@ function StructureDensity(pStructure: Pointer<STRUCTURE>, pubLevel0: Pointer<UIN
   CHECKF(pubLevel1);
   CHECKF(pubLevel2);
   CHECKF(pubLevel3);
-  *pubLevel0 = 0;
-  *pubLevel1 = 0;
-  *pubLevel2 = 0;
-  *pubLevel3 = 0;
+  pubLevel0.value = 0;
+  pubLevel1.value = 0;
+  pubLevel2.value = 0;
+  pubLevel3.value = 0;
 
   pShape = pStructure.value.pShape;
 
   for (ubLoopX = 0; ubLoopX < PROFILE_X_SIZE; ubLoopX++) {
     for (ubLoopY = 0; ubLoopY < PROFILE_Y_SIZE; ubLoopY++) {
-      ubShapeValue = (*pShape)[ubLoopX][ubLoopY];
+      ubShapeValue = (pShape.value)[ubLoopX][ubLoopY];
       if (ubShapeValue & AtHeight[0]) {
-        (*pubLevel0)++;
+        (pubLevel0.value)++;
       }
       if (ubShapeValue & AtHeight[1]) {
-        (*pubLevel1)++;
+        (pubLevel1.value)++;
       }
       if (ubShapeValue & AtHeight[2]) {
-        (*pubLevel2)++;
+        (pubLevel2.value)++;
       }
       if (ubShapeValue & AtHeight[3]) {
-        (*pubLevel3)++;
+        (pubLevel3.value)++;
       }
     }
   }
   // convert values to percentages!
-  *pubLevel0 *= 4;
-  *pubLevel1 *= 4;
-  *pubLevel2 *= 4;
-  *pubLevel3 *= 4;
+  pubLevel0.value *= 4;
+  pubLevel1.value *= 4;
+  pubLevel2.value *= 4;
+  pubLevel3.value *= 4;
   return TRUE;
 }
 
@@ -1724,8 +1724,8 @@ function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bL
 
   // If no struct, return
   if (pCurrent == NULL) {
-    (*pStructHeight) = StructureHeight(pCurrent);
-    (*ppTallestStructure) = NULL;
+    (pStructHeight.value) = StructureHeight(pCurrent);
+    (ppTallestStructure.value) = NULL;
     return NOTHING_BLOCKING;
   }
 
@@ -1762,8 +1762,8 @@ function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bL
           case OUTSIDE_TOP_LEFT:
           case INSIDE_TOP_LEFT:
 
-            (*pStructHeight) = StructureHeight(pCurrent);
-            (*ppTallestStructure) = pCurrent;
+            (pStructHeight.value) = StructureHeight(pCurrent);
+            (ppTallestStructure.value) = pCurrent;
 
             if (pCurrent.value.fFlags & STRUCTURE_OPEN) {
               return BLOCKING_TOPLEFT_OPEN_WINDOW;
@@ -1775,8 +1775,8 @@ function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bL
           case OUTSIDE_TOP_RIGHT:
           case INSIDE_TOP_RIGHT:
 
-            (*pStructHeight) = StructureHeight(pCurrent);
-            (*ppTallestStructure) = pCurrent;
+            (pStructHeight.value) = StructureHeight(pCurrent);
+            (ppTallestStructure.value) = pCurrent;
 
             if (pCurrent.value.fFlags & STRUCTURE_OPEN) {
               return BLOCKING_TOPRIGHT_OPEN_WINDOW;
@@ -1791,8 +1791,8 @@ function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bL
       if (pCurrent.value.fFlags & STRUCTURE_ANYDOOR) {
         // If we are not opem, we are full blocking!
         if (!(pCurrent.value.fFlags & STRUCTURE_OPEN)) {
-          (*pStructHeight) = StructureHeight(pCurrent);
-          (*ppTallestStructure) = pCurrent;
+          (pStructHeight.value) = StructureHeight(pCurrent);
+          (ppTallestStructure.value) = pCurrent;
           return FULL_BLOCKING;
           break;
         } else {
@@ -1800,16 +1800,16 @@ function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bL
             case OUTSIDE_TOP_LEFT:
             case INSIDE_TOP_LEFT:
 
-              (*pStructHeight) = StructureHeight(pCurrent);
-              (*ppTallestStructure) = pCurrent;
+              (pStructHeight.value) = StructureHeight(pCurrent);
+              (ppTallestStructure.value) = pCurrent;
               return BLOCKING_TOPLEFT_DOOR;
               break;
 
             case OUTSIDE_TOP_RIGHT:
             case INSIDE_TOP_RIGHT:
 
-              (*pStructHeight) = StructureHeight(pCurrent);
-              (*ppTallestStructure) = pCurrent;
+              (pStructHeight.value) = StructureHeight(pCurrent);
+              (ppTallestStructure.value) = pCurrent;
               return BLOCKING_TOPRIGHT_DOOR;
               break;
           }
@@ -1822,17 +1822,17 @@ function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bL
   // OK, here, we default to we've seen a struct, reveal just this one
   if (fOKStructOnLevel) {
     if (fMinimumBlockingFound) {
-      (*pStructHeight) = StructureHeight(pStructure);
-      (*ppTallestStructure) = pStructure;
+      (pStructHeight.value) = StructureHeight(pStructure);
+      (ppTallestStructure.value) = pStructure;
       return BLOCKING_REDUCE_RANGE;
     } else {
-      (*pStructHeight) = StructureHeight(pStructure);
-      (*ppTallestStructure) = pStructure;
+      (pStructHeight.value) = StructureHeight(pStructure);
+      (ppTallestStructure.value) = pStructure;
       return BLOCKING_NEXT_TILE;
     }
   } else {
-    (*pStructHeight) = 0;
-    (*ppTallestStructure) = NULL;
+    (pStructHeight.value) = 0;
+    (ppTallestStructure.value) = NULL;
     return NOTHING_BLOCKING;
   }
 }

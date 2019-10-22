@@ -399,7 +399,7 @@ function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel: Pointe
       GetTileType(pLand.value.usIndex, addressof(fTileType));
 
       if (fTileType == uiNewType) {
-        *pubLevel = level;
+        pubLevel.value = level;
         return TRUE;
       }
     }
@@ -428,7 +428,7 @@ function GetLandLevelDepth(iMapIndex: UINT32): UINT8 {
 function GetSubIndexFromTileIndex(usTileIndex: UINT16, pusSubIndex: Pointer<UINT16>): BOOLEAN {
   let uiType: UINT32 = 0;
   if (GetTileType(usTileIndex, addressof(uiType))) {
-    *pusSubIndex = usTileIndex - gTileTypeStartIndex[uiType] + 1;
+    pusSubIndex.value = usTileIndex - gTileTypeStartIndex[uiType] + 1;
     return TRUE;
   }
   return FALSE;
@@ -439,7 +439,7 @@ function GetTypeSubIndexFromTileIndex(uiCheckType: UINT32, usIndex: UINT16, pusS
 
   CHECKF(uiCheckType < NUMBEROFTILETYPES);
 
-  *pusSubIndex = usIndex - gTileTypeStartIndex[uiCheckType] + 1;
+  pusSubIndex.value = usIndex - gTileTypeStartIndex[uiCheckType] + 1;
 
   return TRUE;
 }
@@ -449,7 +449,7 @@ function GetTypeSubIndexFromTileIndexChar(uiCheckType: UINT32, usIndex: UINT16, 
 
   CHECKF(uiCheckType < NUMBEROFTILETYPES);
 
-  *pubSubIndex = (usIndex - gTileTypeStartIndex[uiCheckType] + 1);
+  pubSubIndex.value = (usIndex - gTileTypeStartIndex[uiCheckType] + 1);
 
   return TRUE;
 }
@@ -459,7 +459,7 @@ function GetTileIndexFromTypeSubIndex(uiCheckType: UINT32, usSubIndex: UINT16, p
 
   CHECKF(uiCheckType < NUMBEROFTILETYPES);
 
-  *pusTileIndex = usSubIndex + gTileTypeStartIndex[uiCheckType] - 1;
+  pusTileIndex.value = usSubIndex + gTileTypeStartIndex[uiCheckType] - 1;
 
   return TRUE;
 }
@@ -482,7 +482,7 @@ function GetTileType(usIndex: UINT16, puiType: Pointer<UINT32>): BOOLEAN {
   // Get tile element
   TileElem = gTileDatabase[usIndex];
 
-  *puiType = TileElem.fType;
+  puiType.value = TileElem.fType;
 
   return TRUE;
 }
@@ -496,13 +496,13 @@ function GetTileFlags(usIndex: UINT16, puiFlags: Pointer<UINT32>): BOOLEAN {
   // Get tile element
   TileElem = gTileDatabase[usIndex];
 
-  *puiFlags = TileElem.uiFlags;
+  puiFlags.value = TileElem.uiFlags;
 
   return TRUE;
 }
 
 function GetTileTypeLogicalHeight(fType: UINT32, pubLogHeight: Pointer<UINT8>): BOOLEAN {
-  *pubLogHeight = gTileTypeLogicalHeight[fType];
+  pubLogHeight.value = gTileTypeLogicalHeight[fType];
 
   return TRUE;
 }
@@ -544,7 +544,7 @@ function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Poin
     GetTileType(pLand.value.usIndex, addressof(fTileType));
 
     if (gTileTypeLogicalHeight[fTileType] > ubSrcLogHeight) {
-      *pubLastLevel = level;
+      pubLastLevel.value = level;
       fFound = TRUE;
     }
 
@@ -578,7 +578,7 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
     GetTileType(pLand.value.usIndex, addressof(fTileType));
 
     if (gTileTypeLogicalHeight[fTileType] < ubSrcLogHeight) {
-      *pubLastLevel = level;
+      pubLastLevel.value = level;
       return TRUE;
     }
 
@@ -608,7 +608,7 @@ function GetWallOrientation(usIndex: UINT16, pusWallOrientation: Pointer<UINT16>
   // Get tile element
   TileElem = gTileDatabase[usIndex];
 
-  *pusWallOrientation = TileElem.usWallOrientation;
+  pusWallOrientation.value = TileElem.usWallOrientation;
 
   return TRUE;
 }
@@ -626,7 +626,7 @@ function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrienta
     GetWallOrientation(pStruct.value.usIndex, addressof(usCheckWallOrient));
 
     if (usCheckWallOrient == usWallOrientation) {
-      *pubLevel = level;
+      pubLevel.value = level;
       return TRUE;
     }
 

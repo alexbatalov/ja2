@@ -956,8 +956,8 @@ function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: Pointer<SOLDIERTYPE>, s
     }
   }
 
-  (*pfChargeTurning) = fAddingTurningCost;
-  (*pfChargeRaise) = fAddingRaiseGunCost;
+  (pfChargeTurning.value) = fAddingTurningCost;
+  (pfChargeRaise.value) = fAddingRaiseGunCost;
 }
 
 function MinAPsToShootOrStab(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurningCost: UINT8): UINT8 {

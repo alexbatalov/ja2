@@ -1990,20 +1990,20 @@ function SpecifyEntryPoint(iMapIndex: UINT32): void {
       return;
   }
   if (!fErasing) {
-    if (*psEntryGridNo >= 0) {
-      AddToUndoList(*psEntryGridNo);
-      RemoveAllTopmostsOfTypeRange(*psEntryGridNo, FIRSTPOINTERS, FIRSTPOINTERS);
+    if (psEntryGridNo.value >= 0) {
+      AddToUndoList(psEntryGridNo.value);
+      RemoveAllTopmostsOfTypeRange(psEntryGridNo.value, FIRSTPOINTERS, FIRSTPOINTERS);
     }
-    *psEntryGridNo = iMapIndex;
+    psEntryGridNo.value = iMapIndex;
     ValidateEntryPointGridNo(psEntryGridNo);
-    AddToUndoList(*psEntryGridNo);
-    AddTopmostToTail(*psEntryGridNo, FIRSTPOINTERS2);
+    AddToUndoList(psEntryGridNo.value);
+    AddTopmostToTail(psEntryGridNo.value, FIRSTPOINTERS2);
   } else {
     let usDummy: UINT16;
     if (TypeExistsInTopmostLayer(iMapIndex, FIRSTPOINTERS, addressof(usDummy))) {
       AddToUndoList(iMapIndex);
       RemoveAllTopmostsOfTypeRange(iMapIndex, FIRSTPOINTERS, FIRSTPOINTERS);
-      *psEntryGridNo = -1;
+      psEntryGridNo.value = -1;
     }
     // restore the drawmode
     iDrawMode += DRAW_MODE_ERASE;

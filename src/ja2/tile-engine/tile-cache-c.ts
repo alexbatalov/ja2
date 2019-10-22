@@ -284,6 +284,6 @@ function GetRootName(pDestStr: Pointer<INT8>, pSrcStr: Pointer<INT8>): void {
   // Now remove extension...
   cEndOfName = strchr(pDestStr, '.');
   if (cEndOfName != NULL) {
-    *cEndOfName = '\0';
+    cEndOfName.value = '\0';
   }
 }

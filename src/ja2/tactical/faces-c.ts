@@ -371,10 +371,10 @@ function GetFaceRelativeCoordinates(pFace: Pointer<FACETYPE>, pusEyesX: Pointer<
     }
   }
 
-  (*pusEyesX) = usEyesX;
-  (*pusEyesY) = usEyesY;
-  (*pusMouthX) = usMouthX;
-  (*pusMouthY) = usMouthY;
+  (pusEyesX.value) = usEyesX;
+  (pusEyesY.value) = usEyesY;
+  (pusMouthX.value) = usMouthX;
+  (pusMouthY.value) = usMouthY;
 }
 
 function SetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UINT32, iFaceIndex: INT32, usFaceX: UINT16, usFaceY: UINT16): void {
@@ -891,8 +891,8 @@ function GetXYForIconPlacement(pFace: Pointer<FACETYPE>, ubIndex: UINT16, sFaceX
   sX = sFaceX + pFace.value.usFaceWidth - usWidth - 1;
   sY = sFaceY + pFace.value.usFaceHeight - usHeight - 1;
 
-  *psX = sX;
-  *psY = sY;
+  psX.value = sX;
+  psY.value = sY;
 }
 
 function GetXYForRightIconPlacement(pFace: Pointer<FACETYPE>, ubIndex: UINT16, sFaceX: INT16, sFaceY: INT16, psX: Pointer<INT16>, psY: Pointer<INT16>, bNumIcons: INT8): void {
@@ -912,8 +912,8 @@ function GetXYForRightIconPlacement(pFace: Pointer<FACETYPE>, ubIndex: UINT16, s
   sX = sFaceX + (usWidth * bNumIcons) + 1;
   sY = sFaceY + pFace.value.usFaceHeight - usHeight - 1;
 
-  *psX = sX;
-  *psY = sY;
+  psX.value = sX;
+  psY.value = sY;
 }
 
 function DoRightIcon(uiRenderBuffer: UINT32, pFace: Pointer<FACETYPE>, sFaceX: INT16, sFaceY: INT16, bNumIcons: INT8, sIconIndex: INT8): void {

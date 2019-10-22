@@ -1270,13 +1270,13 @@ function AddAmmoToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, 
   if (ubShotsLeft > 0) {
     // handle "stray" ammo - add it to the dealer's stray pile
     pubStrayAmmo = addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex].ubStrayAmmo);
-    *pubStrayAmmo += ubShotsLeft;
+    pubStrayAmmo.value += ubShotsLeft;
 
     // if dealer has accumulated enough stray ammo to make another full magazine, convert it!
-    if (*pubStrayAmmo >= ubMagCapacity) {
+    if (pubStrayAmmo.value >= ubMagCapacity) {
       SetSpecialItemInfoToDefaults(addressof(SpclItemInfo));
-      AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, addressof(SpclItemInfo), (*pubStrayAmmo / ubMagCapacity));
-      *pubStrayAmmo = *pubStrayAmmo % ubMagCapacity;
+      AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, addressof(SpclItemInfo), (pubStrayAmmo.value / ubMagCapacity));
+      pubStrayAmmo.value = pubStrayAmmo.value % ubMagCapacity;
     }
     // I know, I know, this is getting pretty anal...  But what the hell, it was easy enough to do.  ARM.
   }
@@ -2151,7 +2151,7 @@ function GetArmsDealerShopHours(ubArmsDealer: UINT8, puiOpeningTime: Pointer<UIN
     return FALSE;
   }
 
-  Assert(*puiOpeningTime < *puiClosingTime);
+  Assert(puiOpeningTime.value < puiClosingTime.value);
 
   return TRUE;
 }

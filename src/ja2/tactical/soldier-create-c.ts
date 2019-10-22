@@ -70,7 +70,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
   let bLastTeamID: UINT8;
   let ubVehicleID: UINT8 = 0;
 
-  *pubID = NOBODY;
+  pubID.value = NOBODY;
 
   // Kris:
   // Huge no no!  See the header file for description of static detailed placements.
@@ -198,7 +198,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
 
       // OK, set ID
       Soldier.ubID = cnt;
-      *pubID = Soldier.ubID;
+      pubID.value = Soldier.ubID;
     }
 
     // LOAD MERC's FACE!
@@ -464,7 +464,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
     // Alrighty then, we are set to create the merc, stuff after here can fail!
     CHECKF(CreateSoldierCommon(Soldier.ubBodyType, MercPtrs[Soldier.ubID], Soldier.ubID, Menptr[Soldier.ubID].usAnimState) != FALSE);
 
-    *pubID = Soldier.ubID;
+    pubID.value = Soldier.ubID;
 
     // The soldiers animation frame gets reset, set
     //		Menptr[ Soldier.ubID ].usAniCode = pCreateStruct->pExistingSoldier->usAniCode;
@@ -497,7 +497,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
     pSoldier.value.sSectorX = SECTORX(ubSectorID);
     pSoldier.value.sSectorY = SECTORY(ubSectorID);
     pSoldier.value.bSectorZ = 0;
-    *pubID = 255;
+    pubID.value = 255;
     return pSoldier;
   }
 }
@@ -2002,33 +2002,33 @@ function RandomizeRelativeLevel(pbRelLevel: Pointer<INT8>, ubSoldierClass: UINT8
   switch (bAdjustedRoll) {
     case 0:
       // bad
-      *pbRelLevel = 0;
+      pbRelLevel.value = 0;
       break;
     case 1:
     case 2:
       // poor
-      *pbRelLevel = 1;
+      pbRelLevel.value = 1;
       break;
     case 3:
     case 4:
     case 5:
     case 6:
       // average
-      *pbRelLevel = 2;
+      pbRelLevel.value = 2;
       break;
     case 7:
     case 8:
       // good
-      *pbRelLevel = 3;
+      pbRelLevel.value = 3;
       break;
     case 9:
       // great
-      *pbRelLevel = 4;
+      pbRelLevel.value = 4;
       break;
 
     default:
       Assert(FALSE);
-      *pbRelLevel = 2;
+      pbRelLevel.value = 2;
       break;
   }
 
@@ -2316,7 +2316,7 @@ function ReduceHighExpLevels(pbExpLevel: Pointer<INT8>): void {
   switch (gGameOptions.ubDifficultyLevel) {
     case DIF_LEVEL_EASY:
       // max level: 6
-      switch (*pbExpLevel) {
+      switch (pbExpLevel.value) {
         case 6:
           ubChanceLvl6 = 25;
           ubChanceLvl5 = 100;
@@ -2337,7 +2337,7 @@ function ReduceHighExpLevels(pbExpLevel: Pointer<INT8>): void {
 
     case DIF_LEVEL_MEDIUM:
       // max level: 7
-      switch (*pbExpLevel) {
+      switch (pbExpLevel.value) {
         case 7:
           ubChanceLvl7 = 25;
           ubChanceLvl6 = 100;
@@ -2355,7 +2355,7 @@ function ReduceHighExpLevels(pbExpLevel: Pointer<INT8>): void {
 
     case DIF_LEVEL_HARD:
       // max level: 8
-      switch (*pbExpLevel) {
+      switch (pbExpLevel.value) {
         case 8:
           ubChanceLvl8 = 25;
           ubChanceLvl7 = 100;
@@ -2371,12 +2371,12 @@ function ReduceHighExpLevels(pbExpLevel: Pointer<INT8>): void {
   ubRoll = Random(100);
 
   if (ubRoll < ubChanceLvl8)
-    *pbExpLevel = 8;
+    pbExpLevel.value = 8;
   else if (ubRoll < ubChanceLvl7)
-    *pbExpLevel = 7;
+    pbExpLevel.value = 7;
   else if (ubRoll < ubChanceLvl6)
-    *pbExpLevel = 6;
+    pbExpLevel.value = 6;
   else if (ubRoll < ubChanceLvl5)
-    *pbExpLevel = 5;
+    pbExpLevel.value = 5;
   // else leave it alone
 }

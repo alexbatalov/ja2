@@ -349,7 +349,7 @@ function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usD
     pSrcTemp = pSrc;
 
     for (cols = 0; cols < uiLineSize; cols++) {
-      *pDestTemp = p16BPPPalette[*pSrcTemp];
+      pDestTemp.value = p16BPPPalette[pSrcTemp.value];
       pDestTemp++;
       pSrcTemp++;
     }
@@ -604,9 +604,9 @@ function ConvertRGBToPaletteEntry(sbStart: UINT8, sbEnd: UINT8, pOldPalette: Poi
   pInitEntry = pPalEntry;
   DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_0, "Converting RGB palette to SGPPaletteEntry");
   for (Index = 0; Index <= (sbEnd - sbStart); Index++) {
-    pPalEntry.value.peRed = *(pOldPalette + (Index * 3));
-    pPalEntry.value.peGreen = *(pOldPalette + (Index * 3) + 1);
-    pPalEntry.value.peBlue = *(pOldPalette + (Index * 3) + 2);
+    pPalEntry.value.peRed = (pOldPalette + (Index * 3)).value;
+    pPalEntry.value.peGreen = (pOldPalette + (Index * 3) + 1).value;
+    pPalEntry.value.peBlue = (pOldPalette + (Index * 3) + 2).value;
     pPalEntry.value.peFlags = 0;
     pPalEntry++;
   }
@@ -649,17 +649,17 @@ function ConvertRGBDistribution565To555(p16BPPData: Pointer<UINT16>, uiNumberOfP
   pPixel = p16BPPData;
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {
     // If the pixel is completely black, don't bother converting it -- DB
-    if (*pPixel != 0) {
+    if (pPixel.value != 0) {
       // we put the 16 pixel bits in the UPPER word of uiPixel, so that we can
       // right shift the blue value (at the bottom) into the LOWER word to protect it
-      Pixel.usHigher = *pPixel;
+      Pixel.usHigher = pPixel.value;
       Pixel.uiValue >>= 5;
       // get rid of the least significant bit of green
       Pixel.usHigher >>= 1;
       // now shift back into the upper word
       Pixel.uiValue <<= 5;
       // and copy back
-      *pPixel = Pixel.usHigher | gusAlphaMask;
+      pPixel.value = Pixel.usHigher | gusAlphaMask;
     }
     pPixel++;
   }
@@ -675,7 +675,7 @@ function ConvertRGBDistribution565To655(p16BPPData: Pointer<UINT16>, uiNumberOfP
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {
     // we put the 16 pixel bits in the UPPER word of uiPixel, so that we can
     // right shift the blue value (at the bottom) into the LOWER word to protect it
-    Pixel.usHigher = *pPixel;
+    Pixel.usHigher = pPixel.value;
     Pixel.uiValue >>= 5;
     // get rid of the least significant bit of green
     Pixel.usHigher >>= 1;
@@ -685,7 +685,7 @@ function ConvertRGBDistribution565To655(p16BPPData: Pointer<UINT16>, uiNumberOfP
     Pixel.usHigher <<= 1;
     // now shift back and copy
     Pixel.uiValue <<= 10;
-    *pPixel = Pixel.usHigher;
+    pPixel.value = Pixel.usHigher;
     pPixel++;
   }
 }
@@ -700,7 +700,7 @@ function ConvertRGBDistribution565To556(p16BPPData: Pointer<UINT16>, uiNumberOfP
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {
     // we put the 16 pixel bits in the UPPER word of uiPixel, so that we can
     // right shift the blue value (at the bottom) into the LOWER word to protect it
-    Pixel.usHigher = *pPixel;
+    Pixel.usHigher = pPixel.value;
     Pixel.uiValue >>= 5;
     // get rid of the least significant bit of green
     Pixel.usHigher >>= 1;
@@ -709,7 +709,7 @@ function ConvertRGBDistribution565To556(p16BPPData: Pointer<UINT16>, uiNumberOfP
     // give blue an extra bit (blank in the least significant spot)
     Pixel.usHigher <<= 1;
     // copy back
-    *pPixel = Pixel.usHigher;
+    pPixel.value = Pixel.usHigher;
     pPixel++;
   }
 }
@@ -725,12 +725,12 @@ function ConvertRGBDistribution565ToAny(p16BPPData: Pointer<UINT16>, uiNumberOfP
   pPixel = p16BPPData;
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {
     // put the 565 RGB 16-bit value into a 32-bit RGB value
-    uiRed = (*pPixel) >> 11;
-    uiGreen = (*pPixel & 0x07E0) >> 5;
-    uiBlue = (*pPixel & 0x001F);
+    uiRed = (pPixel.value) >> 11;
+    uiGreen = (pPixel.value & 0x07E0) >> 5;
+    uiBlue = (pPixel.value & 0x001F);
     uiTemp = FROMRGB(uiRed, uiGreen, uiBlue);
     // then convert the 32-bit RGB value to whatever 16 bit format is used
-    *pPixel = Get16BPPColor(uiTemp);
+    pPixel.value = Get16BPPColor(uiTemp);
     pPixel++;
   }
 }

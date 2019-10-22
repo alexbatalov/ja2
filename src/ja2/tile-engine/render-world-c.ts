@@ -2800,8 +2800,8 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
     }
   }
 
-  (*psTempRenderCenterX) = sTempRenderCenterX;
-  (*psTempRenderCenterY) = sTempRenderCenterY;
+  (psTempRenderCenterX.value) = sTempRenderCenterX;
+  (psTempRenderCenterY.value) = sTempRenderCenterY;
 
   return fAGoodMove;
 }
@@ -5085,8 +5085,8 @@ function CorrectRenderCenter(sRenderX: INT16, sRenderY: INT16, pSNewX: Pointer<I
   sScreenX += ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2);
   sScreenY += ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2);
 
-  *pSNewX = sScreenX;
-  *pSNewY = sScreenY;
+  pSNewX.value = sScreenX;
+  pSNewY.value = sScreenY;
 }
 
 // Blitter Specs

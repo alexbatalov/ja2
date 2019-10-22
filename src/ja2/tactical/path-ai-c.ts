@@ -662,7 +662,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
 
   // setup Q and first path record
 
-  SETLOC(*pQueueHead, iOrigination);
+  SETLOC(pQueueHead.value, iOrigination);
   pQueueHead.value.usCostSoFar = MAXCOST;
   pQueueHead.value.bLevel = iMaxSkipListLevel - 1;
 
@@ -1397,7 +1397,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
 
         iLocY = newLoc / MAPWIDTH;
         iLocX = newLoc % MAPWIDTH;
-        SETLOC(*pNewPtr, newLoc);
+        SETLOC(pNewPtr.value, newLoc);
         pNewPtr.value.usCostSoFar = newTotCost;
         pNewPtr.value.usCostToGo = REMAININGCOST(pNewPtr);
         if (fCopyReachable) {
@@ -2187,7 +2187,7 @@ function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, 
 
     if (piDoorGridNo) {
       // return gridno of door through pointer
-      *piDoorGridNo = iDoorGridNo;
+      piDoorGridNo.value = iDoorGridNo;
     }
 
     if (fReturnPerceivedValue && gpWorldLevelData[iDoorGridNo].ubExtFlags[0] & MAPELEMENT_EXT_DOOR_STATUS_PRESENT) {

@@ -475,8 +475,8 @@ function SortMercArray(): BOOLEAN {
 }
 
 function QsortCompare(pNum1: Pointer<void>, pNum2: Pointer<void>): INT32 {
-  let Num1: UINT8 = *pNum1;
-  let Num2: UINT8 = *pNum2;
+  let Num1: UINT8 = pNum1.value;
+  let Num2: UINT8 = pNum2.value;
 
   switch (gubCurrentSortMode) {
     // Price						INT16	uiWeeklySalary

@@ -27,7 +27,7 @@ let gfHandleStack: BOOLEAN = FALSE;
 function FindSoldierFromMouse(pusSoldierIndex: Pointer<UINT16>, pMercFlags: Pointer<UINT32>): BOOLEAN {
   let sMapPos: INT16;
 
-  *pMercFlags = 0;
+  pMercFlags.value = 0;
 
   if (GetMouseMapPos(addressof(sMapPos))) {
     if (FindSoldier(sMapPos, pusSoldierIndex, pMercFlags, FINDSOLDIERSAMELEVEL(gsInterfaceLevel))) {
@@ -41,7 +41,7 @@ function FindSoldierFromMouse(pusSoldierIndex: Pointer<UINT16>, pMercFlags: Poin
 function SelectiveFindSoldierFromMouse(pusSoldierIndex: Pointer<UINT16>, pMercFlags: Pointer<UINT32>): BOOLEAN {
   let sMapPos: INT16;
 
-  *pMercFlags = 0;
+  pMercFlags.value = 0;
 
   if (GetMouseMapPos(addressof(sMapPos))) {
     if (FindSoldier(sMapPos, pusSoldierIndex, pMercFlags, FINDSOLDIERSAMELEVEL(gsInterfaceLevel))) {
@@ -125,8 +125,8 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
   let fInScreenRect: BOOLEAN = FALSE;
   let fInGridNo: BOOLEAN = FALSE;
 
-  *pusSoldierIndex = NOBODY;
-  *pMercFlags = 0;
+  pusSoldierIndex.value = NOBODY;
+  pMercFlags.value = 0;
 
   if (_KeyDown(SHIFT)) {
     uiFlags = FIND_SOLDIER_GRIDNO;
@@ -299,9 +299,9 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
   }
 
   if (fSoldierFound && ubBestMerc != NOBODY) {
-    *pusSoldierIndex = ubBestMerc;
+    pusSoldierIndex.value = ubBestMerc;
 
-    (*pMercFlags) = GetSoldierFindFlags(ubBestMerc);
+    (pMercFlags.value) = GetSoldierFindFlags(ubBestMerc);
 
     return TRUE;
   } else {
@@ -459,8 +459,8 @@ function GetSoldierAnimDims(pSoldier: Pointer<SOLDIERTYPE>, psHeight: Pointer<IN
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    *psHeight = 5;
-    *psWidth = 5;
+    psHeight.value = 5;
+    psWidth.value = 5;
 
     return;
   }
@@ -473,8 +473,8 @@ function GetSoldierAnimDims(pSoldier: Pointer<SOLDIERTYPE>, psHeight: Pointer<IN
     let i: int = 0;
   }
 
-  *psHeight = pSoldier.value.sBoundingBoxHeight;
-  *psWidth = pSoldier.value.sBoundingBoxWidth;
+  psHeight.value = pSoldier.value.sBoundingBoxHeight;
+  psWidth.value = pSoldier.value.sBoundingBoxWidth;
 }
 
 function GetSoldierAnimOffsets(pSoldier: Pointer<SOLDIERTYPE>, sOffsetX: Pointer<INT16>, sOffsetY: Pointer<INT16>): void {
@@ -483,14 +483,14 @@ function GetSoldierAnimOffsets(pSoldier: Pointer<SOLDIERTYPE>, sOffsetX: Pointer
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    *sOffsetX = 0;
-    *sOffsetY = 0;
+    sOffsetX.value = 0;
+    sOffsetY.value = 0;
 
     return;
   }
 
-  *sOffsetX = pSoldier.value.sBoundingBoxOffsetX;
-  *sOffsetY = pSoldier.value.sBoundingBoxOffsetY;
+  sOffsetX.value = pSoldier.value.sBoundingBoxOffsetX;
+  sOffsetY.value = pSoldier.value.sBoundingBoxOffsetY;
 }
 
 function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
@@ -506,8 +506,8 @@ function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Pointer<
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    *psScreenX = 0;
-    *psScreenY = 0;
+    psScreenX.value = 0;
+    psScreenY.value = 0;
     return;
   }
 
@@ -538,8 +538,8 @@ function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Pointer<
 
   sMercScreenY -= pSoldier.value.sHeightAdjustment;
 
-  *psScreenX = sMercScreenX;
-  *psScreenY = sMercScreenY;
+  psScreenX.value = sMercScreenX;
+  psScreenY.value = sMercScreenY;
 }
 
 // THE TRUE SCREN RECT DOES NOT TAKE THE OFFSETS OF BUDDY INTO ACCOUNT!
@@ -555,8 +555,8 @@ function GetSoldierTRUEScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Poin
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    *psScreenX = 0;
-    *psScreenY = 0;
+    psScreenX.value = 0;
+    psScreenY.value = 0;
     return;
   }
 
@@ -579,8 +579,8 @@ function GetSoldierTRUEScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Poin
 
   sMercScreenY -= pSoldier.value.sHeightAdjustment;
 
-  *psScreenX = sMercScreenX;
-  *psScreenY = sMercScreenY;
+  psScreenX.value = sMercScreenX;
+  psScreenY.value = sMercScreenY;
 }
 
 function GridNoOnScreen(sGridNo: INT16): BOOLEAN {
@@ -630,7 +630,7 @@ function SoldierLocationRelativeToScreen(sGridNo: INT16, usReasonID: UINT16, pbD
   let sDistToCenterY: INT16;
   let sDistToCenterX: INT16;
 
-  *puiScrollFlags = 0;
+  puiScrollFlags.value = 0;
 
   sX = CenterX(sGridNo);
   sY = CenterY(sGridNo);
@@ -655,26 +655,26 @@ function SoldierLocationRelativeToScreen(sGridNo: INT16, usReasonID: UINT16, pbD
 
   // Get direction
   //*pbDirection = atan8( sScreenCenterX, sScreenCenterY, sWorldX, sWorldY );
-  *pbDirection = atan8(gsRenderCenterX, gsRenderCenterY, (sX), (sY));
+  pbDirection.value = atan8(gsRenderCenterX, gsRenderCenterY, (sX), (sY));
 
   // Check values!
   if (sWorldX > (sScreenCenterX + 20)) {
-    (*puiScrollFlags) |= SCROLL_RIGHT;
+    (puiScrollFlags.value) |= SCROLL_RIGHT;
   }
   if (sWorldX < (sScreenCenterX - 20)) {
-    (*puiScrollFlags) |= SCROLL_LEFT;
+    (puiScrollFlags.value) |= SCROLL_LEFT;
   }
   if (sWorldY > (sScreenCenterY + 20)) {
-    (*puiScrollFlags) |= SCROLL_DOWN;
+    (puiScrollFlags.value) |= SCROLL_DOWN;
   }
   if (sWorldY < (sScreenCenterY - 20)) {
-    (*puiScrollFlags) |= SCROLL_UP;
+    (puiScrollFlags.value) |= SCROLL_UP;
   }
 
   // If we are on screen, stop
   if (sWorldX >= gsTopLeftWorldX && sWorldX <= gsBottomRightWorldX && sWorldY >= gsTopLeftWorldY && sWorldY <= (gsBottomRightWorldY + 20)) {
     // CHECK IF WE ARE DONE...
-    if (fCountdown > gScrollSlideInertiaDirection[*pbDirection]) {
+    if (fCountdown > gScrollSlideInertiaDirection[pbDirection.value]) {
       fCountdown = 0;
       return FALSE;
     } else {
@@ -715,13 +715,13 @@ function FindRelativeSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, usFlags: Po
       case ANIM_STAND:
 
         if (dRelPer < .2) {
-          (*usFlags) = TILE_FLAG_HEAD;
+          (usFlags.value) = TILE_FLAG_HEAD;
           return TRUE;
         } else if (dRelPer < .6) {
-          (*usFlags) = TILE_FLAG_MID;
+          (usFlags.value) = TILE_FLAG_MID;
           return TRUE;
         } else {
-          (*usFlags) = TILE_FLAG_FEET;
+          (usFlags.value) = TILE_FLAG_FEET;
           return TRUE;
         }
         break;
@@ -729,13 +729,13 @@ function FindRelativeSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, usFlags: Po
       case ANIM_CROUCH:
 
         if (dRelPer < .2) {
-          (*usFlags) = TILE_FLAG_HEAD;
+          (usFlags.value) = TILE_FLAG_HEAD;
           return TRUE;
         } else if (dRelPer < .7) {
-          (*usFlags) = TILE_FLAG_MID;
+          (usFlags.value) = TILE_FLAG_MID;
           return TRUE;
         } else {
-          (*usFlags) = TILE_FLAG_FEET;
+          (usFlags.value) = TILE_FLAG_FEET;
           return TRUE;
         }
         break;
@@ -798,6 +798,6 @@ function GetGridNoScreenPos(sGridNo: INT16, ubLevel: UINT8, psScreenX: Pointer<I
     sScreenY -= ROOF_LEVEL_HEIGHT;
   }
 
-  *psScreenX = sScreenX;
-  *psScreenY = sScreenY;
+  psScreenX.value = sScreenX;
+  psScreenY.value = sScreenY;
 }

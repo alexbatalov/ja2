@@ -495,7 +495,7 @@ function AddToFDlgList(pList: Pointer<FDLG_LIST>, pInfo: Pointer<GETFILESTRUCT>)
   // Add to start of list
   if (pList == NULL) {
     pNode = MemAlloc(sizeof(FDLG_LIST));
-    pNode.value.FileInfo = *pInfo;
+    pNode.value.FileInfo = pInfo.value;
     pNode.value.pPrev = pNode.value.pNext = NULL;
     return pNode;
   }
@@ -504,7 +504,7 @@ function AddToFDlgList(pList: Pointer<FDLG_LIST>, pInfo: Pointer<GETFILESTRUCT>)
   if (stricmp(pList.value.FileInfo.zFileName, pInfo.value.zFileName) > 0) {
     // pInfo is smaller than pList (i.e. Insert before)
     pNode = MemAlloc(sizeof(FDLG_LIST));
-    pNode.value.FileInfo = *pInfo;
+    pNode.value.FileInfo = pInfo.value;
     pNode.value.pNext = pList;
     pNode.value.pPrev = pList.value.pPrev;
     pList.value.pPrev = pNode;
@@ -518,11 +518,11 @@ function AddToFDlgList(pList: Pointer<FDLG_LIST>, pInfo: Pointer<GETFILESTRUCT>)
 
 function RemoveFromFDlgList(head: Pointer<Pointer<FDLG_LIST>>, node: Pointer<FDLG_LIST>): BOOLEAN {
   let curr: Pointer<FDLG_LIST>;
-  curr = *head;
+  curr = head.value;
   while (curr) {
     if (curr == node) {
-      if (*head == node)
-        *head = (*head).value.pNext;
+      if (head.value == node)
+        head.value = (head.value).value.pNext;
       if (curr.value.pPrev)
         curr.value.pPrev.value.pNext = curr.value.pNext;
       if (curr.value.pNext)

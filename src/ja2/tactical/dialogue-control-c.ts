@@ -1418,7 +1418,7 @@ function DialogueDataFileExistsForProfile(ubCharacterNum: UINT8, usQuoteNum: UIN
   pFilename = GetDialogueDataFilename(ubCharacterNum, usQuoteNum, fWavFile);
 
   if (ppStr) {
-    (*ppStr) = pFilename;
+    (ppStr.value) = pFilename;
   }
 
   return FileExists(pFilename);
@@ -1471,7 +1471,7 @@ function GetDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iDataSize: UINT3
   // get speech if applicable
   if (gGameSettings.fOptions[TOPTION_SPEECH]) {
     // Load it into memory!
-    *puiSoundID = SoundLoadSample(pFilename);
+    puiSoundID.value = SoundLoadSample(pFilename);
   }
 
   return TRUE;

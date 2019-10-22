@@ -2636,7 +2636,7 @@ function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier:
 function HandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCorpse: Pointer<BOOLEAN>): BOOLEAN {
   let fBuddyJustDead: BOOLEAN = FALSE;
 
-  *pfMadeCorpse = FALSE;
+  pfMadeCorpse.value = FALSE;
 
   if (pSoldier.value.bLife == 0 && !(pSoldier.value.uiStatusFlags & SOLDIER_DEAD)) {
     // Cancel services here...
@@ -2743,7 +2743,7 @@ function HandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCorpse: Pointe
     }
 
     if (TurnSoldierIntoCorpse(pSoldier, TRUE, TRUE)) {
-      *pfMadeCorpse = TRUE;
+      pfMadeCorpse.value = TRUE;
     }
 
     // Remove mad as target, one he has died!
@@ -2760,7 +2760,7 @@ function HandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCorpse: Pointe
       }
     }
 
-    if (!(*pfMadeCorpse)) {
+    if (!(pfMadeCorpse.value)) {
       fBuddyJustDead = TRUE;
     }
   }

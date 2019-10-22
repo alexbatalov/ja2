@@ -1461,8 +1461,8 @@ function EvaluateValidMerge(usMerge: UINT16, usItem: UINT16, pusResult: Pointer<
   let iLoop: INT32 = 0;
 
   if (usMerge == usItem && Item[usItem].usItemClass == IC_AMMO) {
-    *pusResult = usItem;
-    *pubType = COMBINE_POINTS;
+    pusResult.value = usItem;
+    pubType.value = COMBINE_POINTS;
     return TRUE;
   }
   // look for the section of the array pertaining to this Merge...
@@ -1487,8 +1487,8 @@ function EvaluateValidMerge(usMerge: UINT16, usItem: UINT16, pusResult: Pointer<
       return FALSE;
     }
   }
-  *pusResult = Merge[iLoop][2];
-  *pubType = Merge[iLoop][3];
+  pusResult.value = Merge[iLoop][2];
+  pubType.value = Merge[iLoop][3];
   return TRUE;
 }
 
@@ -2972,7 +2972,7 @@ function CreateKeyObject(pObj: Pointer<OBJECTTYPE>, ubNumberOfKeys: UINT8, ubKey
 
 function AllocateObject(pObj: Pointer<Pointer<OBJECTTYPE>>): BOOLEAN {
   // create a key object
-  *pObj = MemAlloc(sizeof(OBJECTTYPE));
+  pObj.value = MemAlloc(sizeof(OBJECTTYPE));
   Assert(pObj);
 
   return TRUE;
@@ -4018,14 +4018,14 @@ function ApplyCammo(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, p
   let bPointsToUse: INT8;
   let usTotalKitPoints: UINT16;
 
-  (*pfGoodAPs) = TRUE;
+  (pfGoodAPs.value) = TRUE;
 
   if (pObj.value.usItem != CAMOUFLAGEKIT) {
     return FALSE;
   }
 
   if (!EnoughPoints(pSoldier, AP_CAMOFLAGE, 0, TRUE)) {
-    (*pfGoodAPs) = FALSE;
+    (pfGoodAPs.value) = FALSE;
     return TRUE;
   }
 
@@ -4062,7 +4062,7 @@ function ApplyCanteen(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>,
   let sPointsToUse: INT16;
   let usTotalKitPoints: UINT16;
 
-  (*pfGoodAPs) = TRUE;
+  (pfGoodAPs.value) = TRUE;
 
   if (pObj.value.usItem != CANTEEN) {
     return FALSE;
@@ -4075,7 +4075,7 @@ function ApplyCanteen(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>,
   }
 
   if (!EnoughPoints(pSoldier, AP_DRINK, 0, TRUE)) {
-    (*pfGoodAPs) = FALSE;
+    (pfGoodAPs.value) = FALSE;
     return TRUE;
   }
 
@@ -4103,7 +4103,7 @@ function ApplyElixir(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, 
   let sPointsToUse: INT16;
   let usTotalKitPoints: UINT16;
 
-  (*pfGoodAPs) = TRUE;
+  (pfGoodAPs.value) = TRUE;
 
   if (pObj.value.usItem != JAR_ELIXIR) {
     return FALSE;
@@ -4116,7 +4116,7 @@ function ApplyElixir(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, 
   }
 
   if (!EnoughPoints(pSoldier, AP_CAMOFLAGE, 0, TRUE)) {
-    (*pfGoodAPs) = FALSE;
+    (pfGoodAPs.value) = FALSE;
     return TRUE;
   }
 

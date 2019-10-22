@@ -1006,13 +1006,13 @@ function RenderSpecificHelpScreen(): UINT16 {
 function GetHelpScreenTextPositions(pusPosX: Pointer<UINT16>, pusPosY: Pointer<UINT16>, pusWidth: Pointer<UINT16>): void {
   // if there are buttons
   if (pusPosX != NULL)
-    *pusPosX = 0;
+    pusPosX.value = 0;
 
   if (pusWidth != NULL)
-    *pusWidth = HLP_SCRN__WIDTH_OF_TEXT_BUFFER - 1 * HELP_SCREEN_MARGIN_SIZE; // DEF was 2
+    pusWidth.value = HLP_SCRN__WIDTH_OF_TEXT_BUFFER - 1 * HELP_SCREEN_MARGIN_SIZE; // DEF was 2
 
   if (pusPosY != NULL)
-    *pusPosY = 0;
+    pusPosY.value = 0;
 }
 
 function DisplayCurrentScreenTitleAndFooter(): void {
@@ -1996,10 +1996,10 @@ function CalculateHeightAndPositionForHelpScreenScrollBox(piHeightOfScrollBox: P
   }
 
   if (piHeightOfScrollBox != NULL)
-    *piHeightOfScrollBox = iSizeOfBox;
+    piHeightOfScrollBox.value = iSizeOfBox;
 
   if (piTopOfScrollBox != NULL)
-    *piTopOfScrollBox = iTopPosScrollBox;
+    piTopOfScrollBox.value = iTopPosScrollBox;
 }
 
 function SelectHelpScrollAreaCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {

@@ -1472,7 +1472,7 @@ function CalculateHealingPointsForDoctor(pDoctor: Pointer<SOLDIERTYPE>, pusMaxPt
 
   // calculate normal doctoring rate - what it would be if his stats were "normal" (ignoring drugs, fatigue, equipment condition)
   // and equipment was not a hindrance
-  *pusMaxPts = (pDoctor.value.bMedical * ((pDoctor.value.bDexterity + pDoctor.value.bWisdom) / 2) * (100 + (5 * pDoctor.value.bExpLevel))) / DOCTORING_RATE_DIVISOR;
+  pusMaxPts.value = (pDoctor.value.bMedical * ((pDoctor.value.bDexterity + pDoctor.value.bWisdom) / 2) * (100 + (5 * pDoctor.value.bExpLevel))) / DOCTORING_RATE_DIVISOR;
 
   // adjust for fatigue
   ReducePointsForFatigue(pDoctor, addressof(usHealPts));
@@ -1513,7 +1513,7 @@ function CalculateRepairPointsForRepairman(pSoldier: Pointer<SOLDIERTYPE>, pusMa
 
   // can't repair at all without a toolkit
   if (pSoldier.value.inv[HANDPOS].usItem != TOOLKIT) {
-    *pusMaxPts = 0;
+    pusMaxPts.value = 0;
     return 0;
   }
 
@@ -1522,7 +1522,7 @@ function CalculateRepairPointsForRepairman(pSoldier: Pointer<SOLDIERTYPE>, pusMa
 
   // calculate normal repair rate - what it would be if his stats were "normal" (ignoring drugs, fatigue, equipment condition)
   // and equipment was not a hindrance
-  *pusMaxPts = (pSoldier.value.bMechanical * pSoldier.value.bDexterity * (100 + (5 * pSoldier.value.bExpLevel))) / (REPAIR_RATE_DIVISOR * ASSIGNMENT_UNITS_PER_DAY);
+  pusMaxPts.value = (pSoldier.value.bMechanical * pSoldier.value.bDexterity * (100 + (5 * pSoldier.value.bExpLevel))) / (REPAIR_RATE_DIVISOR * ASSIGNMENT_UNITS_PER_DAY);
 
   // adjust for fatigue
   ReducePointsForFatigue(pSoldier, addressof(usRepairPts));
@@ -2232,33 +2232,33 @@ function DoActualRepair(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, pbStatus
   }
 
   // how many points of damage is the item down by?
-  usDamagePts = 100 - *pbStatus;
+  usDamagePts = 100 - pbStatus.value;
 
   // adjust that by the repair cost adjustment percentage
   usDamagePts = (usDamagePts * sRepairCostAdj) / 100;
 
   // do we have enough pts to fully repair the item?
-  if (*pubRepairPtsLeft >= usDamagePts) {
+  if (pubRepairPtsLeft.value >= usDamagePts) {
     // fix it to 100%
-    *pbStatus = 100;
-    *pubRepairPtsLeft -= usDamagePts;
+    pbStatus.value = 100;
+    pubRepairPtsLeft.value -= usDamagePts;
   } else // not enough, partial fix only, if any at all
   {
     // fix what we can - add pts left adjusted by the repair cost
-    usPtsFixed = (*pubRepairPtsLeft * 100) / sRepairCostAdj;
+    usPtsFixed = (pubRepairPtsLeft.value * 100) / sRepairCostAdj;
 
     // if we have enough to actually fix anything
     // NOTE: a really crappy repairman with only 1 pt/hr CAN'T repair electronics or difficult items!
     if (usPtsFixed > 0) {
-      *pbStatus += usPtsFixed;
+      pbStatus.value += usPtsFixed;
 
       // make sure we don't somehow end up over 100
-      if (*pbStatus > 100) {
-        *pbStatus = 100;
+      if (pbStatus.value > 100) {
+        pbStatus.value = 100;
       }
     }
 
-    *pubRepairPtsLeft = 0;
+    pubRepairPtsLeft.value = 0;
   }
 }
 
@@ -2289,7 +2289,7 @@ function RepairObject(pSoldier: Pointer<SOLDIERTYPE>, pOwner: Pointer<SOLDIERTYP
         }
       }
 
-      if (*pubRepairPtsLeft == 0) {
+      if (pubRepairPtsLeft.value == 0) {
         // we're out of points!
         break;
       }
@@ -2316,7 +2316,7 @@ function RepairObject(pSoldier: Pointer<SOLDIERTYPE>, pOwner: Pointer<SOLDIERTYP
           }
         }
 
-        if (*pubRepairPtsLeft == 0) {
+        if (pubRepairPtsLeft.value == 0) {
           // we're out of points!
           break;
         }
@@ -2771,7 +2771,7 @@ function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERTYPE>, p
   let bOpinionFactor: INT8;
 
   // assume training impossible for max pts
-  *pusMaxPts = 0;
+  pusMaxPts.value = 0;
 
   if (pInstructor == NULL) {
     // no instructor, leave
@@ -2886,14 +2886,14 @@ function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERTYPE>, p
   sTrainingPts = (bTrainerEffSkill - bTraineeSkill) * (bTraineeEffWisdom + (EffectiveWisdom(pInstructor) + EffectiveLeadership(pInstructor)) / 2) / INSTRUCTED_TRAINING_DIVISOR;
 
   // calculate normal training pts - what it would be if his stats were "normal" (ignoring drugs, fatigue)
-  *pusMaxPts = (bTrainerNatSkill - bTraineeSkill) * (bTraineeNatWisdom + (pInstructor.value.bWisdom + pInstructor.value.bLeadership) / 2) / INSTRUCTED_TRAINING_DIVISOR;
+  pusMaxPts.value = (bTrainerNatSkill - bTraineeSkill) * (bTraineeNatWisdom + (pInstructor.value.bWisdom + pInstructor.value.bLeadership) / 2) / INSTRUCTED_TRAINING_DIVISOR;
 
   // put in a minimum (that can be reduced due to instructor being tired?)
-  if (*pusMaxPts == 0) {
+  if (pusMaxPts.value == 0) {
     // we know trainer is better than trainee, make sure they are at least 10 pts better
     if (bTrainerEffSkill > bTraineeSkill + 10) {
       sTrainingPts = 1;
-      *pusMaxPts = 1;
+      pusMaxPts.value = 1;
     }
   }
 
@@ -2906,7 +2906,7 @@ function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERTYPE>, p
   }
 
   // teaching bonus is counted as normal, but gun range bonus is not
-  *pusMaxPts += (((bTrainingBonus + bOpinionFactor) * *pusMaxPts) / 100);
+  pusMaxPts.value += (((bTrainingBonus + bOpinionFactor) * pusMaxPts.value) / 100);
 
   // get special bonus if we're training marksmanship and we're in the gun range sector in Alma
   if ((bTrainStat == MARKSMANSHIP) && fAtGunRange) {
@@ -2928,7 +2928,7 @@ function GetSoldierTrainingPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8,
   let bSkill: INT8 = 0;
 
   // assume training impossible for max pts
-  *pusMaxPts = 0;
+  pusMaxPts.value = 0;
 
   // use NATURAL not EFFECTIVE values here
   switch (bTrainStat) {
@@ -2970,7 +2970,7 @@ function GetSoldierTrainingPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8,
   }
 
   // calculate normal training pts - what it would be if his stats were "normal" (ignoring drugs, fatigue)
-  *pusMaxPts = __max(((pSoldier.value.bWisdom * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
+  pusMaxPts.value = __max(((pSoldier.value.bWisdom * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
 
   // calculate effective training pts
   sTrainingPts = __max(((EffectiveWisdom(pSoldier) * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
@@ -3002,7 +3002,7 @@ function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, 
   let pTrainer: Pointer<SOLDIERTYPE>;
 
   // assume training impossible for max pts
-  *pusMaxPts = 0;
+  pusMaxPts.value = 0;
 
   // use NATURAL not EFFECTIVE values here
   switch (bTrainStat) {
@@ -3044,7 +3044,7 @@ function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, 
   }
 
   // calculate normal training pts - what it would be if his stats were "normal" (ignoring drugs, fatigue)
-  *pusMaxPts = __max(((pSoldier.value.bWisdom * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
+  pusMaxPts.value = __max(((pSoldier.value.bWisdom * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
 
   // calculate effective training pts
   sTrainingPts = __max(((EffectiveWisdom(pSoldier) * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
@@ -3086,7 +3086,7 @@ function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, 
   if (sBestTrainingPts != -1) {
     // add the bonus to what merc can learn on his own
     sTrainingPts += sBestTrainingPts;
-    *pusMaxPts += usBestMaxTrainerPts;
+    pusMaxPts.value += usBestMaxTrainerPts;
   }
 
   return sTrainingPts;
@@ -3192,7 +3192,7 @@ function GetTownTrainPtsForCharacter(pTrainer: Pointer<SOLDIERTYPE>, pusMaxPts: 
   //	UINT8 ubTownId = 0;
 
   // calculate normal training pts - what it would be if his stats were "normal" (ignoring drugs, fatigue)
-  *pusMaxPts = (pTrainer.value.bWisdom + pTrainer.value.bLeadership + (10 * pTrainer.value.bExpLevel)) * TOWN_TRAINING_RATE;
+  pusMaxPts.value = (pTrainer.value.bWisdom + pTrainer.value.bLeadership + (10 * pTrainer.value.bExpLevel)) * TOWN_TRAINING_RATE;
 
   // calculate effective training points (this is hundredths of pts / hour)
   // typical: 300/hr, maximum: 600/hr
@@ -3214,7 +3214,7 @@ function GetTownTrainPtsForCharacter(pTrainer: Pointer<SOLDIERTYPE>, pusMaxPts: 
   // adjust for teaching bonus (a percentage)
   sTotalTrainingPts += ((bTrainingBonus * sTotalTrainingPts) / 100);
   // teach bonus is considered "normal" - it's always there
-  *pusMaxPts += ((bTrainingBonus * *pusMaxPts) / 100);
+  pusMaxPts.value += ((bTrainingBonus * pusMaxPts.value) / 100);
 
   // adjust for fatigue of trainer
   ReducePointsForFatigue(pTrainer, addressof(sTotalTrainingPts));
@@ -7482,13 +7482,13 @@ function RepairRobot(pRobot: Pointer<SOLDIERTYPE>, ubRepairPts: UINT8, pfNothing
 
   // is it "dead" ?
   if (pRobot.value.bLife == 0) {
-    *pfNothingLeftToRepair = TRUE;
+    pfNothingLeftToRepair.value = TRUE;
     return ubPointsUsed;
   }
 
   // is it "unhurt" ?
   if (pRobot.value.bLife == pRobot.value.bLifeMax) {
-    *pfNothingLeftToRepair = TRUE;
+    pfNothingLeftToRepair.value = TRUE;
     return ubPointsUsed;
   }
 
@@ -7503,9 +7503,9 @@ function RepairRobot(pRobot: Pointer<SOLDIERTYPE>, ubRepairPts: UINT8, pfNothing
   }
 
   if (pRobot.value.bLife == pRobot.value.bLifeMax) {
-    *pfNothingLeftToRepair = TRUE;
+    pfNothingLeftToRepair.value = TRUE;
   } else {
-    *pfNothingLeftToRepair = FALSE;
+    pfNothingLeftToRepair.value = FALSE;
   }
 
   return ubPointsUsed;
@@ -9163,7 +9163,7 @@ function RepairItemsOnOthers(pSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: P
       }
     }
 
-    while (*pubRepairPtsLeft > 0) {
+    while (pubRepairPtsLeft.value > 0) {
       bBestPriority = -1;
       pBestOtherSoldier = NULL;
 
@@ -9194,7 +9194,7 @@ function RepairItemsOnOthers(pSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: P
               fSomethingWasRepairedThisPass = TRUE;
             }
           }
-        } while (bPocket != NO_SLOT && *pubRepairPtsLeft > 0);
+        } while (bPocket != NO_SLOT && pubRepairPtsLeft.value > 0);
       } else {
         break;
       }
@@ -9217,8 +9217,8 @@ function UnjamGunsOnSoldier(pOwnerSoldier: Pointer<SOLDIERTYPE>, pRepairSoldier:
   for (bPocket = HANDPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
     // the object a weapon? and jammed?
     if ((Item[pOwnerSoldier.value.inv[bPocket].usItem].usItemClass == IC_GUN) && (pOwnerSoldier.value.inv[bPocket].bGunAmmoStatus < 0)) {
-      if (*pubRepairPtsLeft >= REPAIR_COST_PER_JAM) {
-        *pubRepairPtsLeft -= REPAIR_COST_PER_JAM;
+      if (pubRepairPtsLeft.value >= REPAIR_COST_PER_JAM) {
+        pubRepairPtsLeft.value -= REPAIR_COST_PER_JAM;
 
         pOwnerSoldier.value.inv[bPocket].bGunAmmoStatus *= -1;
 

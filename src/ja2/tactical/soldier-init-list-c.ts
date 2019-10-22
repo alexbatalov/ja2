@@ -192,7 +192,7 @@ function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
   gMapInformation.ubNumIndividuals = 0; // MUST BE CLEARED HERE!!!
 
   for (i = 0; i < ubNumIndividuals; i++) {
-    LOADDATA(addressof(tempBasicPlacement), *hBuffer, sizeof(BASIC_SOLDIERCREATE_STRUCT));
+    LOADDATA(addressof(tempBasicPlacement), hBuffer.value, sizeof(BASIC_SOLDIERCREATE_STRUCT));
     pNode = AddBasicPlacementToSoldierInitList(addressof(tempBasicPlacement));
     pNode.value.ubNodeID = i;
     if (!pNode) {
@@ -202,7 +202,7 @@ function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
     if (tempBasicPlacement.fDetailedPlacement) {
       // Add the static detailed placement information in the same newly created node as the basic placement.
       // read static detailed placement from file
-      LOADDATA(addressof(tempDetailedPlacement), *hBuffer, sizeof(SOLDIERCREATE_STRUCT));
+      LOADDATA(addressof(tempDetailedPlacement), hBuffer.value, sizeof(SOLDIERCREATE_STRUCT));
       // allocate memory for new static detailed placement
       pNode.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
       if (!pNode.value.pDetailedPlacement) {
@@ -750,18 +750,18 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
     }
     // Now, loop through the priority existance and detailed placement section of the list.
     curr = gSoldierInitHead;
-    while (curr && ubMaxNum && *pCurrTotal && *pCurrSlots && curr.value.pDetailedPlacement && curr.value.pBasicPlacement.value.fPriorityExistance) {
+    while (curr && ubMaxNum && pCurrTotal.value && pCurrSlots.value && curr.value.pDetailedPlacement && curr.value.pBasicPlacement.value.fPriorityExistance) {
       if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
         if (curr.value.pBasicPlacement.value.ubSoldierClass == ubCurrClass) {
-          if (*pCurrSlots <= *pCurrTotal || Random(*pCurrSlots) < *pCurrTotal) {
+          if (pCurrSlots.value <= pCurrTotal.value || Random(pCurrSlots.value) < pCurrTotal.value) {
             // found matching team, so add this soldier to the game.
             if (AddPlacementToWorld(curr)) {
-              (*pCurrTotal)--;
+              (pCurrTotal.value)--;
               ubMaxNum--;
             } else
               return;
           }
-          (*pCurrSlots)--;
+          (pCurrSlots.value)--;
           // With the decrementing of the slot vars in this manner, the chances increase so that all slots
           // will be full by the time the end of the list comes up.
         }
@@ -797,18 +797,18 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
     }
     // Now, loop through the priority existance and non detailed placement section of the list.
     curr = mark;
-    while (curr && ubMaxNum && *pCurrTotal && *pCurrSlots && !curr.value.pDetailedPlacement && curr.value.pBasicPlacement.value.fPriorityExistance) {
+    while (curr && ubMaxNum && pCurrTotal.value && pCurrSlots.value && !curr.value.pDetailedPlacement && curr.value.pBasicPlacement.value.fPriorityExistance) {
       if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
         if (curr.value.pBasicPlacement.value.ubSoldierClass == ubCurrClass) {
-          if (*pCurrSlots <= *pCurrTotal || Random(*pCurrSlots) < *pCurrTotal) {
+          if (pCurrSlots.value <= pCurrTotal.value || Random(pCurrSlots.value) < pCurrTotal.value) {
             // found matching team, so add this soldier to the game.
             if (AddPlacementToWorld(curr)) {
-              (*pCurrTotal)--;
+              (pCurrTotal.value)--;
               ubMaxNum--;
             } else
               return;
           }
-          (*pCurrSlots)--;
+          (pCurrSlots.value)--;
           // With the decrementing of the slot vars in this manner, the chances increase so that all slots
           // will be full by the time the end of the list comes up.
         }
@@ -844,18 +844,18 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
     }
     // Now, loop through the priority existance and detailed placement section of the list.
     curr = mark;
-    while (curr && ubMaxNum && *pCurrTotal && *pCurrSlots && curr.value.pDetailedPlacement && !curr.value.pBasicPlacement.value.fPriorityExistance) {
+    while (curr && ubMaxNum && pCurrTotal.value && pCurrSlots.value && curr.value.pDetailedPlacement && !curr.value.pBasicPlacement.value.fPriorityExistance) {
       if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
         if (curr.value.pBasicPlacement.value.ubSoldierClass == ubCurrClass) {
-          if (*pCurrSlots <= *pCurrTotal || Random(*pCurrSlots) < *pCurrTotal) {
+          if (pCurrSlots.value <= pCurrTotal.value || Random(pCurrSlots.value) < pCurrTotal.value) {
             // found matching team, so add this soldier to the game.
             if (AddPlacementToWorld(curr)) {
-              (*pCurrTotal)--;
+              (pCurrTotal.value)--;
               ubMaxNum--;
             } else
               return;
           }
-          (*pCurrSlots)--;
+          (pCurrSlots.value)--;
           // With the decrementing of the slot vars in this manner, the chances increase so that all slots
           // will be full by the time the end of the list comes up.
         }
@@ -923,18 +923,18 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
     }
     // Now, loop through the regular basic placements section of the list.
     curr = mark;
-    while (curr && ubMaxNum && *pCurrTotal && *pCurrSlots) {
+    while (curr && ubMaxNum && pCurrTotal.value && pCurrSlots.value) {
       if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
         if (curr.value.pBasicPlacement.value.ubSoldierClass == ubCurrClass) {
-          if (*pCurrSlots <= *pCurrTotal || Random(*pCurrSlots) < *pCurrTotal) {
+          if (pCurrSlots.value <= pCurrTotal.value || Random(pCurrSlots.value) < pCurrTotal.value) {
             // found matching team, so add this soldier to the game.
             if (AddPlacementToWorld(curr)) {
-              (*pCurrTotal)--;
+              (pCurrTotal.value)--;
               ubMaxNum--;
             } else
               return;
           }
-          (*pCurrSlots)--;
+          (pCurrSlots.value)--;
           // With the decrementing of the slot vars in this manner, the chances increase so that all slots
           // will be full by the time the end of the list comes up.
         }
@@ -1113,10 +1113,10 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
     }
     // Now, loop through the basic placement of the list.
     curr = mark; // mark is the marker where the basic placements start.
-    while (curr && !curr.value.pSoldier && ubMaxNum && *pCurrTotal && *pCurrSlots) {
+    while (curr && !curr.value.pSoldier && ubMaxNum && pCurrTotal.value && pCurrSlots.value) {
       if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM || curr.value.pBasicPlacement.value.bTeam == MILITIA_TEAM) {
         if (curr.value.pBasicPlacement.value.ubSoldierClass == ubCurrClass) {
-          if (*pCurrSlots <= *pCurrTotal || Random(*pCurrSlots) < *pCurrTotal) {
+          if (pCurrSlots.value <= pCurrTotal.value || Random(pCurrSlots.value) < pCurrTotal.value) {
             curr.value.pBasicPlacement.value.bTeam = MILITIA_TEAM;
             curr.value.pBasicPlacement.value.bOrders = STATIONARY;
             switch (ubCurrClass) {
@@ -1132,12 +1132,12 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
             }
             // found matching team, so add this soldier to the game.
             if (AddPlacementToWorld(curr)) {
-              (*pCurrTotal)--;
+              (pCurrTotal.value)--;
               ubMaxNum--;
             } else
               return;
           }
-          (*pCurrSlots)--;
+          (pCurrSlots.value)--;
           // With the decrementing of the slot vars in this manner, the chances increase so that all slots
           // will be full by the time the end of the list comes up.
         }

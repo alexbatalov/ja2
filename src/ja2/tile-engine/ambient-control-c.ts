@@ -195,8 +195,8 @@ function LoadAmbientControlFile(ubAmbientID: UINT8): BOOLEAN {
 }
 
 function GetAmbientDataPtr(ppAmbData: Pointer<Pointer<AMBIENTDATA_STRUCT>>, pusNumData: Pointer<UINT16>): void {
-  *ppAmbData = gAmbData;
-  *pusNumData = gsNumAmbData;
+  ppAmbData.value = gAmbData;
+  pusNumData.value = gsNumAmbData;
 }
 
 function StopAmbients(): void {

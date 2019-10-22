@@ -431,8 +431,8 @@ function GetMapFileName(sMapX: INT16, sMapY: INT16, bSectorZ: INT8, bString: STR
 }
 
 function GetCurrentWorldSector(psMapX: Pointer<INT16>, psMapY: Pointer<INT16>): void {
-  *psMapX = gWorldSectorX;
-  *psMapY = gWorldSectorY;
+  psMapX.value = gWorldSectorX;
+  psMapY.value = gWorldSectorY;
 }
 
 function HandleRPCDescriptionOfSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
@@ -2527,18 +2527,18 @@ function OKForSectorExit(bExitDirection: INT8, usAdditionalData: UINT16, puiTrav
           pGroup = GetGroup(pValidSoldier.value.ubGroupID);
           AssertMsg(pGroup, String("%S is not in a valid group (pSoldier->ubGroupID is %d)", pValidSoldier.value.name, pValidSoldier.value.ubGroupID));
           if (!gbWorldSectorZ) {
-            *puiTraverseTimeInMinutes = GetSectorMvtTimeForGroup(SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY), bExitDirection, pGroup);
+            puiTraverseTimeInMinutes.value = GetSectorMvtTimeForGroup(SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY), bExitDirection, pGroup);
           } else if (gbWorldSectorZ > 1) {
             // We are attempting to traverse in an underground environment.  We need to use a complete different
             // method.  When underground, all sectors are instantly adjacent.
-            *puiTraverseTimeInMinutes = UndergroundTacticalTraversalTime(bExitDirection);
+            puiTraverseTimeInMinutes.value = UndergroundTacticalTraversalTime(bExitDirection);
           }
-          if (*puiTraverseTimeInMinutes == 0xffffffff) {
+          if (puiTraverseTimeInMinutes.value == 0xffffffff) {
             gfInvalidTraversal = TRUE;
             return FALSE;
           }
         } else {
-          *puiTraverseTimeInMinutes = 0; // exit grid travel is instantaneous
+          puiTraverseTimeInMinutes.value = 0; // exit grid travel is instantaneous
         }
       }
     }
@@ -2574,13 +2574,13 @@ function OKForSectorExit(bExitDirection: INT8, usAdditionalData: UINT16, puiTrav
       pGroup = GetGroup(pValidSoldier.value.ubGroupID);
       AssertMsg(pGroup, String("%S is not in a valid group (pSoldier->ubGroupID is %d)", pValidSoldier.value.name, pValidSoldier.value.ubGroupID));
       if (!gbWorldSectorZ) {
-        *puiTraverseTimeInMinutes = GetSectorMvtTimeForGroup(SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY), bExitDirection, pGroup);
+        puiTraverseTimeInMinutes.value = GetSectorMvtTimeForGroup(SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY), bExitDirection, pGroup);
       } else if (gbWorldSectorZ > 0) {
         // We are attempting to traverse in an underground environment.  We need to use a complete different
         // method.  When underground, all sectors are instantly adjacent.
-        *puiTraverseTimeInMinutes = UndergroundTacticalTraversalTime(bExitDirection);
+        puiTraverseTimeInMinutes.value = UndergroundTacticalTraversalTime(bExitDirection);
       }
-      if (*puiTraverseTimeInMinutes == 0xffffffff) {
+      if (puiTraverseTimeInMinutes.value == 0xffffffff) {
         gfInvalidTraversal = TRUE;
         ubReturnVal = FALSE;
       } else {
@@ -2588,7 +2588,7 @@ function OKForSectorExit(bExitDirection: INT8, usAdditionalData: UINT16, puiTrav
       }
     } else {
       ubReturnVal = TRUE;
-      *puiTraverseTimeInMinutes = 0; // exit grid travel is instantaneous
+      puiTraverseTimeInMinutes.value = 0; // exit grid travel is instantaneous
     }
   }
 
@@ -3278,7 +3278,7 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
   let bAdjustedDist: UINT8 = 0;
   let cnt: UINT32;
 
-  *puiNumAttempts = 0;
+  puiNumAttempts.value = 0;
 
   switch (ubInsertionDirection) {
     // OK, we're given a direction on visible map, let's look for the first oone
@@ -3305,8 +3305,8 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
       sGridNo = sOldGridNo;
       sStartGridNo = sOldGridNo;
 
-      while (*puiNumAttempts < MAX_ATTEMPTS) {
-        (*puiNumAttempts)++;
+      while (puiNumAttempts.value < MAX_ATTEMPTS) {
+        (puiNumAttempts.value)++;
         // OK, here we go back one, check for OK destination...
         if ((gTacticalStatus.uiFlags & IGNORE_ALL_OBSTACLES) || (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE))) {
           return sGridNo;
@@ -3356,8 +3356,8 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
       sGridNo = sOldGridNo;
       sStartGridNo = sOldGridNo;
 
-      while (*puiNumAttempts < MAX_ATTEMPTS) {
-        (*puiNumAttempts)++;
+      while (puiNumAttempts.value < MAX_ATTEMPTS) {
+        (puiNumAttempts.value)++;
         // OK, here we go back one, check for OK destination...
         if ((gTacticalStatus.uiFlags & IGNORE_ALL_OBSTACLES) || (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE))) {
           return sGridNo;
@@ -3407,8 +3407,8 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
       sGridNo = sOldGridNo;
       sStartGridNo = sOldGridNo;
 
-      while (*puiNumAttempts < MAX_ATTEMPTS) {
-        (*puiNumAttempts)++;
+      while (puiNumAttempts.value < MAX_ATTEMPTS) {
+        (puiNumAttempts.value)++;
         // OK, here we go back one, check for OK destination...
         if ((gTacticalStatus.uiFlags & IGNORE_ALL_OBSTACLES) || (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE))) {
           return sGridNo;
@@ -3458,8 +3458,8 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
       sGridNo = sOldGridNo;
       sStartGridNo = sOldGridNo;
 
-      while (*puiNumAttempts < MAX_ATTEMPTS) {
-        (*puiNumAttempts)++;
+      while (puiNumAttempts.value < MAX_ATTEMPTS) {
+        (puiNumAttempts.value)++;
         // OK, here we go back one, check for OK destination...
         if ((gTacticalStatus.uiFlags & IGNORE_ALL_OBSTACLES) || (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE))) {
           return sGridNo;
@@ -3489,7 +3489,7 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
   }
 
   // Unhandled exit
-  *puiNumAttempts = 0;
+  puiNumAttempts.value = 0;
 
   return NOWHERE;
 }

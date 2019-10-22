@@ -71,7 +71,7 @@ function CreatePopUpBox(phBoxHandle: Pointer<INT32>, Dimensions: SGPRect, Positi
   }
 
   iCount = iCounter;
-  *phBoxHandle = iCount;
+  phBoxHandle.value = iCount;
 
   pBox = MemAlloc(sizeof(PopUpBo));
   if (pBox == NULL) {
@@ -341,7 +341,7 @@ function AddMonoString(hStringHandle: Pointer<INT32>, pString: STR16): void {
   PopUpBoxList[guiCurrentBox].value.Text[iCounter].value.fHighLightFlag = FALSE;
   PopUpBoxList[guiCurrentBox].value.Text[iCounter].value.fSecondaryShadeFlag = FALSE;
 
-  *hStringHandle = iCounter;
+  hStringHandle.value = iCounter;
 
   PopUpBoxList[guiCurrentBox].value.fUpdated = FALSE;
 
@@ -387,7 +387,7 @@ function AddSecondColumnMonoString(hStringHandle: Pointer<INT32>, pString: STR16
   PopUpBoxList[guiCurrentBox].value.pSecondColumnString[iCounter].value.fShadeFlag = FALSE;
   PopUpBoxList[guiCurrentBox].value.pSecondColumnString[iCounter].value.fHighLightFlag = FALSE;
 
-  *hStringHandle = iCounter;
+  hStringHandle.value = iCounter;
 
   return;
 }
@@ -429,7 +429,7 @@ function AddColorString(hStringHandle: Pointer<INT32>, pString: STR16): void {
   PopUpBoxList[guiCurrentBox].value.Text[iCounter].value.fColorFlag = TRUE;
   PopUpBoxList[guiCurrentBox].value.Text[iCounter].value.pString = pLocalString;
 
-  *hStringHandle = iCounter;
+  hStringHandle.value = iCounter;
 
   PopUpBoxList[guiCurrentBox].value.fUpdated = FALSE;
 
@@ -1034,7 +1034,7 @@ function SetCurrentBox(hBoxHandle: INT32): void {
 }
 
 function GetCurrentBox(hBoxHandle: Pointer<INT32>): void {
-  *hBoxHandle = guiCurrentBox;
+  hBoxHandle.value = guiCurrentBox;
 }
 
 function DisplayBoxes(uiBuffer: UINT32): void {

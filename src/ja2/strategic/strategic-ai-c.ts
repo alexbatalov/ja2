@@ -353,13 +353,13 @@ function GarrisonReinforcementsRequested(iGarrisonID: INT32, pubExtraReinforceme
 
   // Record how many of the reinforcements are additionally provided due to being denied in the past.  This will grow
   // until it is finally excepted or an absolute max is made.
-  *pubExtraReinforcements = (gubGarrisonReinforcementsDenied[iGarrisonID] / (6 - gGameOptions.ubDifficultyLevel));
+  pubExtraReinforcements.value = (gubGarrisonReinforcementsDenied[iGarrisonID] / (6 - gGameOptions.ubDifficultyLevel));
   // Make sure the number of extra reinforcements don't bump the force size past the max of MAX_STRATEGIC_TEAM_SIZE.
-  *pubExtraReinforcements = min(*pubExtraReinforcements, min((*pubExtraReinforcements), MAX_STRATEGIC_TEAM_SIZE - iReinforcementsRequested));
+  pubExtraReinforcements.value = min(pubExtraReinforcements.value, min((pubExtraReinforcements.value), MAX_STRATEGIC_TEAM_SIZE - iReinforcementsRequested));
 
   iReinforcementsRequested = min(MAX_STRATEGIC_TEAM_SIZE, iReinforcementsRequested);
 
-  if (iReinforcementsRequested + *pubExtraReinforcements + iExistingForces > MAX_STRATEGIC_TEAM_SIZE) {
+  if (iReinforcementsRequested + pubExtraReinforcements.value + iExistingForces > MAX_STRATEGIC_TEAM_SIZE) {
     iExistingForces = iExistingForces;
   }
 
@@ -410,8 +410,8 @@ function PlayerForceTooStrong(ubSectorID: UINT8, usOffensePoints: UINT16, pusDef
   ubSectorY = SECTORY(ubSectorID);
   pSector = addressof(SectorInfo[ubSectorID]);
 
-  *pusDefencePoints = pSector.value.ubNumberOfCivsAtLevel[GREEN_MILITIA] * 1 + pSector.value.ubNumberOfCivsAtLevel[REGULAR_MILITIA] * 2 + pSector.value.ubNumberOfCivsAtLevel[ELITE_MILITIA] * 3 + PlayerMercsInSector(ubSectorX, ubSectorY, 0) * 5;
-  if (*pusDefencePoints > usOffensePoints) {
+  pusDefencePoints.value = pSector.value.ubNumberOfCivsAtLevel[GREEN_MILITIA] * 1 + pSector.value.ubNumberOfCivsAtLevel[REGULAR_MILITIA] * 2 + pSector.value.ubNumberOfCivsAtLevel[ELITE_MILITIA] * 3 + PlayerMercsInSector(ubSectorX, ubSectorY, 0) * 5;
+  if (pusDefencePoints.value > usOffensePoints) {
     return TRUE;
   }
   return FALSE;
@@ -825,13 +825,13 @@ function EnemyPermittedToAttackSector(pGroup: Pointer<Pointer<GROUP>>, ubSectorI
 
   pSector = addressof(SectorInfo[ubSectorID]);
   fPermittedToAttack = OkayForEnemyToMoveThroughSector(ubSectorID);
-  if (pGroup && *pGroup && pSector.value.ubGarrisonID != NO_GARRISON) {
+  if (pGroup && pGroup.value && pSector.value.ubGarrisonID != NO_GARRISON) {
     if (gGarrisonGroup[pSector.value.ubGarrisonID].ubPendingGroupID) {
       let pPendingGroup: Pointer<GROUP>;
       pPendingGroup = GetGroup(gGarrisonGroup[pSector.value.ubGarrisonID].ubPendingGroupID);
-      if (pPendingGroup == *pGroup) {
+      if (pPendingGroup == pGroup.value) {
         if (fPermittedToAttack) {
-          if (GroupAtFinalDestination(*pGroup)) {
+          if (GroupAtFinalDestination(pGroup.value)) {
             // High priority reinforcements have arrived.  This overrides most other situations.
             return TRUE;
           }
@@ -1092,16 +1092,16 @@ function ReinforcementsApproved(iGarrisonID: INT32, pusDefencePoints: Pointer<UI
   ubSectorX = SECTORX(gGarrisonGroup[iGarrisonID].ubSectorID);
   ubSectorY = SECTORY(gGarrisonGroup[iGarrisonID].ubSectorID);
 
-  *pusDefencePoints = pSector.value.ubNumberOfCivsAtLevel[GREEN_MILITIA] * 1 + pSector.value.ubNumberOfCivsAtLevel[REGULAR_MILITIA] * 2 + pSector.value.ubNumberOfCivsAtLevel[ELITE_MILITIA] * 3 + PlayerMercsInSector(ubSectorX, ubSectorY, 0) * 4;
+  pusDefencePoints.value = pSector.value.ubNumberOfCivsAtLevel[GREEN_MILITIA] * 1 + pSector.value.ubNumberOfCivsAtLevel[REGULAR_MILITIA] * 2 + pSector.value.ubNumberOfCivsAtLevel[ELITE_MILITIA] * 3 + PlayerMercsInSector(ubSectorX, ubSectorY, 0) * 4;
   usOffensePoints = gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bAdminPercentage * 2 + gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bTroopPercentage * 3 + gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bElitePercentage * 4 + gubGarrisonReinforcementsDenied[iGarrisonID];
   usOffensePoints = usOffensePoints * gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bDesiredPopulation / 100;
 
-  if (usOffensePoints > *pusDefencePoints) {
+  if (usOffensePoints > pusDefencePoints.value) {
     return TRUE;
   }
   // Before returning false, determine if reinforcements have been denied repeatedly.  If so, then
   // we might send an augmented force to take it back.
-  if (gubGarrisonReinforcementsDenied[iGarrisonID] + usOffensePoints > *pusDefencePoints) {
+  if (gubGarrisonReinforcementsDenied[iGarrisonID] + usOffensePoints > pusDefencePoints.value) {
     return TRUE;
   }
   // Reinforcements will have to wait.  For now, increase the reinforcements denied.  The amount increase is 20 percent
@@ -1786,9 +1786,9 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
   ubDstSectorX = SECTORX(gGarrisonGroup[iDstGarrisonID].ubSectorID);
   ubDstSectorY = SECTORY(gGarrisonGroup[iDstGarrisonID].ubSectorID);
 
-  if (pOptionalGroup && *pOptionalGroup) {
+  if (pOptionalGroup && pOptionalGroup.value) {
     // This group will provide the reinforcements
-    pGroup = *pOptionalGroup;
+    pGroup = pOptionalGroup.value;
 
     gGarrisonGroup[iDstGarrisonID].ubPendingGroupID = pGroup.value.ubGroupID;
     ConvertGroupTroopsToComposition(pGroup, gGarrisonGroup[iDstGarrisonID].ubComposition);
@@ -1942,9 +1942,9 @@ function SendReinforcementsForPatrol(iPatrolID: INT32, pOptionalGroup: Pointer<P
   ubDstSectorX = (gPatrolGroup[iPatrolID].ubSectorID[1] % 16) + 1;
   ubDstSectorY = (gPatrolGroup[iPatrolID].ubSectorID[1] / 16) + 1;
 
-  if (pOptionalGroup && *pOptionalGroup) {
+  if (pOptionalGroup && pOptionalGroup.value) {
     // This group will provide the reinforcements
-    pGroup = *pOptionalGroup;
+    pGroup = pOptionalGroup.value;
 
     gPatrolGroup[iPatrolID].ubPendingGroupID = pGroup.value.ubGroupID;
 
@@ -3714,17 +3714,17 @@ function FindGarrisonIndexForGroupIDPending(ubGroupID: UINT8): INT16 {
 }
 
 function TransferGroupToPool(pGroup: Pointer<Pointer<GROUP>>): void {
-  giReinforcementPool += (*pGroup).value.ubGroupSize;
-  RemovePGroup(*pGroup);
-  *pGroup = NULL;
+  giReinforcementPool += (pGroup.value).value.ubGroupSize;
+  RemovePGroup(pGroup.value);
+  pGroup.value = NULL;
 }
 
 // NOTE:  Make sure you call SetEnemyGroupSector() first if the group is between sectors!!  See example in ReassignAIGroup()...
 function SendGroupToPool(pGroup: Pointer<Pointer<GROUP>>): void {
-  if ((*pGroup).value.ubSectorX == 3 && (*pGroup).value.ubSectorY == 16) {
+  if ((pGroup.value).value.ubSectorX == 3 && (pGroup.value).value.ubSectorY == 16) {
     TransferGroupToPool(pGroup);
   } else {
-    (*pGroup).value.ubSectorIDOfLastReassignment = SECTOR((*pGroup).value.ubSectorX, (*pGroup).value.ubSectorY);
+    (pGroup.value).value.ubSectorIDOfLastReassignment = SECTOR((pGroup.value).value.ubSectorX, (pGroup.value).value.ubSectorY);
     MoveSAIGroupToSector(pGroup, SEC_P3, EVASIVE, REINFORCEMENTS);
   }
 }
@@ -3737,15 +3737,15 @@ function ReassignAIGroup(pGroup: Pointer<Pointer<GROUP>>): void {
   let iReloopLastIndex: INT32 = -1;
   let ubSectorID: UINT8;
 
-  ubSectorID = SECTOR((*pGroup).value.ubSectorX, (*pGroup).value.ubSectorY);
+  ubSectorID = SECTOR((pGroup.value).value.ubSectorX, (pGroup.value).value.ubSectorY);
 
-  (*pGroup).value.ubSectorIDOfLastReassignment = ubSectorID;
+  (pGroup.value).value.ubSectorIDOfLastReassignment = ubSectorID;
 
-  ClearPreviousAIGroupAssignment(*pGroup);
+  ClearPreviousAIGroupAssignment(pGroup.value);
 
   // First thing to do, is teleport the group to be AT the sector he is currently moving from.  Otherwise, the
   // strategic pathing can break if the group is between sectors upon reassignment.
-  SetEnemyGroupSector(*pGroup, ubSectorID);
+  SetEnemyGroupSector(pGroup.value, ubSectorID);
 
   if (giRequestPoints <= 0) {
     // we have no request for reinforcements, so send the group to Meduna for reassignment in the pool.
@@ -3920,18 +3920,18 @@ function ClearPreviousAIGroupAssignment(pGroup: Pointer<GROUP>): void {
 }
 
 function CalcNumTroopsBasedOnComposition(pubNumTroops: Pointer<UINT8>, pubNumElites: Pointer<UINT8>, ubTotal: UINT8, iCompositionID: INT32): void {
-  *pubNumTroops = gArmyComp[iCompositionID].bTroopPercentage * ubTotal / 100;
-  *pubNumElites = gArmyComp[iCompositionID].bElitePercentage * ubTotal / 100;
+  pubNumTroops.value = gArmyComp[iCompositionID].bTroopPercentage * ubTotal / 100;
+  pubNumElites.value = gArmyComp[iCompositionID].bElitePercentage * ubTotal / 100;
 
   // Due to low roundoff, it is highly possible that we will be short one soldier.
-  while (*pubNumTroops + *pubNumElites < ubTotal) {
+  while (pubNumTroops.value + pubNumElites.value < ubTotal) {
     if (Chance(gArmyComp[iCompositionID].bTroopPercentage)) {
-      (*pubNumTroops)++;
+      (pubNumTroops.value)++;
     } else {
-      (*pubNumElites)++;
+      (pubNumElites.value)++;
     }
   }
-  Assert(*pubNumTroops + *pubNumElites == ubTotal);
+  Assert(pubNumTroops.value + pubNumElites.value == ubTotal);
 }
 
 function ConvertGroupTroopsToComposition(pGroup: Pointer<GROUP>, iCompositionID: INT32): void {
@@ -4015,12 +4015,12 @@ function MoveSAIGroupToSector(pGroup: Pointer<Pointer<GROUP>>, ubSectorID: UINT8
   ubDstSectorX = SECTORX(ubSectorID);
   ubDstSectorY = SECTORY(ubSectorID);
 
-  if ((*pGroup).value.fBetweenSectors) {
-    SetEnemyGroupSector(*pGroup, SECTOR((*pGroup).value.ubSectorX, (*pGroup).value.ubSectorY));
+  if ((pGroup.value).value.fBetweenSectors) {
+    SetEnemyGroupSector(pGroup.value, SECTOR((pGroup.value).value.ubSectorX, (pGroup.value).value.ubSectorY));
   }
 
-  (*pGroup).value.pEnemyGroup.value.ubIntention = ubIntention;
-  (*pGroup).value.ubMoveType = ONE_WAY;
+  (pGroup.value).value.pEnemyGroup.value.ubIntention = ubIntention;
+  (pGroup.value).value.ubMoveType = ONE_WAY;
 
   if (ubIntention == PURSUIT) {
     // Make sure that the group isn't moving into a garrison sector.  These sectors should be using ASSAULT intentions!
@@ -4030,30 +4030,30 @@ function MoveSAIGroupToSector(pGroup: Pointer<Pointer<GROUP>>, ubSectorID: UINT8
     }
   }
 
-  if ((*pGroup).value.ubSectorX == ubDstSectorX && (*pGroup).value.ubSectorY == ubDstSectorY) {
+  if ((pGroup.value).value.ubSectorX == ubDstSectorX && (pGroup.value).value.ubSectorY == ubDstSectorY) {
     // The destination sector is the current location.  Instead of causing code logic problems,
     // simply process them as if they just arrived.
-    if (EvaluateGroupSituation(*pGroup)) {
+    if (EvaluateGroupSituation(pGroup.value)) {
       // The group was deleted.
-      *pGroup = NULL;
+      pGroup.value = NULL;
       return;
     }
   }
 
   switch (uiMoveCode) {
     case STAGE:
-      MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSectorBeforeEnd((*pGroup).value.ubGroupID, (*pGroup).value.ubSectorX, (*pGroup).value.ubSectorY, ubDstSectorX, ubDstSectorY);
+      MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSectorBeforeEnd((pGroup.value).value.ubGroupID, (pGroup.value).value.ubSectorX, (pGroup.value).value.ubSectorY, ubDstSectorX, ubDstSectorY);
       break;
     case EVASIVE:
-      MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors((*pGroup).value.ubGroupID, (*pGroup).value.ubSectorX, (*pGroup).value.ubSectorY, ubDstSectorX, ubDstSectorY);
+      MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors((pGroup.value).value.ubGroupID, (pGroup.value).value.ubSectorX, (pGroup.value).value.ubSectorY, ubDstSectorX, ubDstSectorY);
       break;
     case DIRECT:
     default:
-      MoveGroupFromSectorToSector((*pGroup).value.ubGroupID, (*pGroup).value.ubSectorX, (*pGroup).value.ubSectorY, ubDstSectorX, ubDstSectorY);
+      MoveGroupFromSectorToSector((pGroup.value).value.ubGroupID, (pGroup.value).value.ubSectorX, (pGroup.value).value.ubSectorY, ubDstSectorX, ubDstSectorY);
       break;
   }
   // Make sure that the group is moving.  If this fails, then the pathing may have failed for some reason.
-  ValidateGroup(*pGroup);
+  ValidateGroup(pGroup.value);
 }
 
 // If there are any enemy groups that will be moving through this sector due, they will have to repath which

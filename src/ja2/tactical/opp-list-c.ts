@@ -1126,7 +1126,7 @@ fprintf(OpplistFile,"ManLooksForMan: changing personalOpplist to %d for guynum %
 #endif
   */
 
-  *pPersOL = SEEN_THIS_TURN;
+  pPersOL.value = SEEN_THIS_TURN;
 
   if ((pSoldier.value.ubCivilianGroup == KINGPIN_CIV_GROUP) && (pOpponent.value.bTeam == gbPlayerNum)) {
     let ubRoom: UINT8;
@@ -1142,14 +1142,14 @@ fprintf(OpplistFile,"ManLooksForMan: changing personalOpplist to %d for guynum %
   }
 
   // if opponent was seen publicly last time
-  if (*pbPublOL == SEEN_CURRENTLY) {
+  if (pbPublOL.value == SEEN_CURRENTLY) {
     // check if I was the only one who was seeing this guy (exlude ourselves)
     // THIS MUST HAPPEN EVEN FOR ENEMIES, TO MAKE THEIR PUBLIC opplist DECAY!
     if (TeamNoLongerSeesMan(pSoldier.value.bTeam, pOpponent, pSoldier.value.ubID, 0)) {
       // don't use UpdatePublic() here, because we're changing to a *lower*
       // opplist value (which UpdatePublic ignores) and we're not updating
       // the lastKnown gridno at all, we're keeping it at its previous value
-      *pbPublOL = SEEN_THIS_TURN;
+      pbPublOL.value = SEEN_THIS_TURN;
 
       // ATE: Set visiblity to 0
       if ((pSoldier.value.bTeam == gbPlayerNum || pSoldier.value.bTeam == MILITIA_TEAM) && !(pOpponent.value.bTeam == gbPlayerNum || pOpponent.value.bTeam == MILITIA_TEAM))
@@ -1301,7 +1301,7 @@ function ManLooksForMan(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDI
   pbPublOL = addressof(gbPublicOpplist[pSoldier.value.bTeam][pOpponent.value.ubID]);
 
   // if soldier is known about (SEEN or HEARD within last few turns)
-  if (*pPersOL || *pbPublOL) {
+  if (pPersOL.value || pbPublOL.value) {
     bAware = TRUE;
 
     // then we look for him full viewing distance in EVERY direction
@@ -1356,7 +1356,7 @@ function ManLooksForMan(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDI
   */
 
   // if soldier seen personally LAST time could not be seen THIS time
-  if (!bSuccess && (*pPersOL == SEEN_CURRENTLY)) {
+  if (!bSuccess && (pPersOL.value == SEEN_CURRENTLY)) {
     HandleManNoLongerSeen(pSoldier, pOpponent, pPersOL, pbPublOL);
   } else {
     if (!bSuccess) {
@@ -2012,13 +2012,13 @@ function UpdatePublic(ubTeam: UINT8, ubID: UINT8, bNewOpplist: INT8, sGridno: IN
   pbPublOL = addressof(gbPublicOpplist[ubTeam][ubID]);
 
   // if new opplist is more up-to-date, or we are just wiping it for some reason
-  if ((gubKnowledgeValue[*pbPublOL - OLDEST_HEARD_VALUE][bNewOpplist - OLDEST_HEARD_VALUE] > 0) || (bNewOpplist == NOT_HEARD_OR_SEEN)) {
+  if ((gubKnowledgeValue[pbPublOL.value - OLDEST_HEARD_VALUE][bNewOpplist - OLDEST_HEARD_VALUE] > 0) || (bNewOpplist == NOT_HEARD_OR_SEEN)) {
     // if this team is becoming aware of a soldier it wasn't previously aware of
-    if ((bNewOpplist != NOT_HEARD_OR_SEEN) && (*pbPublOL == NOT_HEARD_OR_SEEN))
+    if ((bNewOpplist != NOT_HEARD_OR_SEEN) && (pbPublOL.value == NOT_HEARD_OR_SEEN))
       ubTeamMustLookAgain = TRUE;
 
     // change the public opplist *BEFORE* anyone looks again or we'll recurse!
-    *pbPublOL = bNewOpplist;
+    pbPublOL.value = bNewOpplist;
   }
 
   // always update the gridno, no matter what
@@ -2473,17 +2473,17 @@ function RadioSightings(pSoldier: Pointer<SOLDIERTYPE>, ubAbout: UINT8, ubTeamTo
     }
 
     // if we personally don't know a thing about this opponent
-    if (*pPersOL == NOT_HEARD_OR_SEEN) {
+    if (pPersOL.value == NOT_HEARD_OR_SEEN) {
       continue; // skip to the next opponent
     }
 
     // if personal knowledge is NOT more up to date and NOT the same as public
-    if ((!gubKnowledgeValue[*pbPublOL - OLDEST_HEARD_VALUE][*pPersOL - OLDEST_HEARD_VALUE]) && (*pbPublOL != *pPersOL)) {
+    if ((!gubKnowledgeValue[pbPublOL.value - OLDEST_HEARD_VALUE][pPersOL.value - OLDEST_HEARD_VALUE]) && (pbPublOL.value != pPersOL.value)) {
       continue; // skip to the next opponent
     }
 
     // if it's our merc, and he currently sees this opponent
-    if (PTR_OURTEAM && (*pPersOL == SEEN_CURRENTLY) && !((pOpponent.value.bSide == pSoldier.value.bSide) || pOpponent.value.bNeutral)) {
+    if (PTR_OURTEAM && (pPersOL.value == SEEN_CURRENTLY) && !((pOpponent.value.bSide == pSoldier.value.bSide) || pOpponent.value.bNeutral)) {
       // used by QueueDayMessage() to scroll to one of the new enemies
       // scroll to the last guy seen, unless we see a hated guy, then use him!
       if (!sightedHatedOpponent)
@@ -2497,7 +2497,7 @@ function RadioSightings(pSoldier: Pointer<SOLDIERTYPE>, ubAbout: UINT8, ubTeamTo
       if (ubTeamToRadioTo != MILITIA_TEAM) {
         if (!gbShowEnemies && (pOpponent.value.bLife >= OKLIFE)) {
           // if this enemy has not been publicly seen or heard recently
-          if (*pbPublOL == NOT_HEARD_OR_SEEN) {
+          if (pbPublOL.value == NOT_HEARD_OR_SEEN) {
             // chalk up another "unknown" enemy
             unknownEnemies++;
 
@@ -2513,7 +2513,7 @@ function RadioSightings(pSoldier: Pointer<SOLDIERTYPE>, ubAbout: UINT8, ubTeamTo
             }
           } else {
             // if he has publicly not been seen now, or anytime during this turn
-            if ((*pbPublOL != SEEN_CURRENTLY) && (*pbPublOL != SEEN_THIS_TURN)) {
+            if ((pbPublOL.value != SEEN_CURRENTLY) && (pbPublOL.value != SEEN_THIS_TURN)) {
               // chalk up another "revealed" enemy
               revealedEnemies++;
               fContactSeen = TRUE;
@@ -2571,7 +2571,7 @@ function RadioSightings(pSoldier: Pointer<SOLDIERTYPE>, ubAbout: UINT8, ubTeamTo
     // IF WE'RE HERE, OUR PERSONAL INFORMATION IS AT LEAST AS UP-TO-DATE
     // AS THE PUBLIC KNOWLEDGE, SO WE WILL REPLACE THE PUBLIC KNOWLEDGE
 
-    UpdatePublic(ubTeamToRadioTo, pOpponent.value.ubID, *pPersOL, gsLastKnownOppLoc[pSoldier.value.ubID][pOpponent.value.ubID], gbLastKnownOppLevel[pSoldier.value.ubID][pOpponent.value.ubID]);
+    UpdatePublic(ubTeamToRadioTo, pOpponent.value.ubID, pPersOL.value, gsLastKnownOppLoc[pSoldier.value.ubID][pOpponent.value.ubID], gbLastKnownOppLevel[pSoldier.value.ubID][pOpponent.value.ubID]);
   }
 
   // if soldier heard a misc noise more important that his team's public one
@@ -4477,7 +4477,7 @@ function HearNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT8, sGridNo:
         pSoldier.value.bNewOppCnt = 0;
       }
 
-      *ubSeen = TRUE;
+      ubSeen.value = TRUE;
       // RadioSightings() must only be called later on by ProcessNoise() itself
       // because we want the soldier who heard noise the LOUDEST to report it
 
@@ -4733,12 +4733,12 @@ function VerifyAndDecayOpplist(pSoldier: Pointer<SOLDIERTYPE>): void {
       pPersOL = pSoldier.value.bOppList + pOpponent.value.ubID;
 
       // if this opponent is "known" in any way (seen or heard recently)
-      if (*pPersOL != NOT_HEARD_OR_SEEN) {
+      if (pPersOL.value != NOT_HEARD_OR_SEEN) {
         // use both sides actual x,y co-ordinates (neither side's moving)
         ManLooksForMan(pSoldier, pOpponent, VERIFYANDDECAYOPPLIST);
 
         // decay opplist value if necessary
-        DECAY_OPPLIST_VALUE(*pPersOL);
+        DECAY_OPPLIST_VALUE(pPersOL.value);
         /*
 // if opponent was SEEN recently but is NOT visible right now
 if (*pPersOL >= SEEN_THIS_TURN)
@@ -4816,9 +4816,9 @@ function DecayIndividualOpplist(pSoldier: Pointer<SOLDIERTYPE>): void {
       pPersOL = pSoldier.value.bOppList + pOpponent.value.ubID;
 
       // if this opponent is seen currently
-      if (*pPersOL == SEEN_CURRENTLY) {
+      if (pPersOL.value == SEEN_CURRENTLY) {
         // they are NOT visible now!
-        (*pPersOL)++;
+        (pPersOL.value)++;
         if (!CONSIDERED_NEUTRAL(pOpponent, pSoldier) && !CONSIDERED_NEUTRAL(pSoldier, pOpponent) && (pSoldier.value.bSide != pOpponent.value.bSide)) {
           RemoveOneOpponent(pSoldier);
         }
@@ -4864,7 +4864,7 @@ function VerifyPublicOpplistDueToDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
 
       // if this opponent was CURRENTLY SEEN by the deceased (before his
       // untimely demise)
-      if (*pPersOL == SEEN_CURRENTLY) {
+      if (pPersOL.value == SEEN_CURRENTLY) {
         // then we need to know if any teammates ALSO see this opponent, so loop through
         // trying to find ONE witness to the death...
         for (uiTeamMateLoop = 0; uiTeamMateLoop < guiNumMercSlots; uiTeamMateLoop++) {
@@ -4882,7 +4882,7 @@ function VerifyPublicOpplistDueToDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
             pMatePersOL = pTeamMate.value.bOppList + pOpponent.value.ubID;
 
             // test to see if this value is "seen currently"
-            if (*pMatePersOL == SEEN_CURRENTLY) {
+            if (pMatePersOL.value == SEEN_CURRENTLY) {
               // this opponent HAS been verified!
               bOpponentStillSeen = TRUE;
 
@@ -4932,7 +4932,7 @@ function DecayPublicOpplist(bTeam: INT8): void {
       // hang a pointer to the byte holding team's public opplist for this merc
       pbPublOL = addressof(gbPublicOpplist[bTeam][pSoldier.value.ubID]);
 
-      if (*pbPublOL == NOT_HEARD_OR_SEEN) {
+      if (pbPublOL.value == NOT_HEARD_OR_SEEN) {
         continue;
       }
 
@@ -4940,17 +4940,17 @@ function DecayPublicOpplist(bTeam: INT8): void {
       bNoPubliclyKnownOpponents = FALSE;
 
       // if this person has been SEEN recently, but is not currently visible
-      if (*pbPublOL >= SEEN_THIS_TURN) {
-        (*pbPublOL)++; // increment how long it's been
+      if (pbPublOL.value >= SEEN_THIS_TURN) {
+        (pbPublOL.value)++; // increment how long it's been
       } else {
         // if this person has been only HEARD recently
-        if (*pbPublOL <= HEARD_THIS_TURN) {
-          (*pbPublOL)--; // increment how long it's been
+        if (pbPublOL.value <= HEARD_THIS_TURN) {
+          (pbPublOL.value)--; // increment how long it's been
         }
       }
 
       // if it's been longer than the maximum we care to remember
-      if ((*pbPublOL > OLDEST_SEEN_VALUE) || (*pbPublOL < OLDEST_HEARD_VALUE)) {
+      if ((pbPublOL.value > OLDEST_SEEN_VALUE) || (pbPublOL.value < OLDEST_HEARD_VALUE)) {
         // forget about him,
         // and also forget where he was last seen (it's been too long)
         // this is mainly so POINT_PATROL guys don't SEEK_OPPONENTs forever

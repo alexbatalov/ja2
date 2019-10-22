@@ -2430,7 +2430,7 @@ function GetIdOfDepartedMercWithHighestStat(iStat: INT32): INT32 {
     }
 
     // get the id of the grunt
-    cnt = *bCurrentListValue;
+    cnt = bCurrentListValue.value;
 
     // do we need to reset the count?
     if (cnt == -1) {
@@ -2582,7 +2582,7 @@ function GetIdOfDepartedMercWithLowestStat(iStat: INT32): INT32 {
     }
 
     // get the id of the grunt
-    cnt = *bCurrentListValue;
+    cnt = bCurrentListValue.value;
 
     // do we need to reset the count?
     if (cnt == -1) {
@@ -3044,7 +3044,7 @@ function GetAvgStatOfPastTeamStat(iStat: INT32): INT32 {
     }
 
     // get the id of the grunt
-    cnt = *bCurrentListValue;
+    cnt = bCurrentListValue.value;
 
     // do we need to reset the count?
     if (cnt == -1) {
