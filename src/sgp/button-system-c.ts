@@ -619,7 +619,7 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
   strcpy(vo_desc.ImageFile, DEFAULT_GENERIC_BUTTON_OFF);
 
   if ((GenericButtonOffNormal[0] = CreateVideoObject(addressof(vo_desc))) == NULL) {
-    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "Couldn't create VOBJECT for " DEFAULT_GENERIC_BUTTON_OFF);
+    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "Couldn't create VOBJECT for " + DEFAULT_GENERIC_BUTTON_OFF);
     return FALSE;
   }
 
@@ -627,7 +627,7 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
   strcpy(vo_desc.ImageFile, DEFAULT_GENERIC_BUTTON_ON);
 
   if ((GenericButtonOnNormal[0] = CreateVideoObject(addressof(vo_desc))) == NULL) {
-    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "Couldn't create VOBJECT for " DEFAULT_GENERIC_BUTTON_ON);
+    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "Couldn't create VOBJECT for " + DEFAULT_GENERIC_BUTTON_ON);
     return FALSE;
   }
 

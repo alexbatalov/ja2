@@ -1358,7 +1358,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     if (LayerCount > 15) {
       swprintf(gzErrorCatchString,
                "SAVE ABORTED!  Land count too high (%d) for gridno %d."
-               "  Need to fix before map can be saved!  There are %d additional warnings.",
+               + "  Need to fix before map can be saved!  There are %d additional warnings.",
                LayerCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = TRUE;
       FileClose(hfile);
@@ -1393,7 +1393,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     if (ObjectCount > 15) {
       swprintf(gzErrorCatchString,
                "SAVE ABORTED!  Object count too high (%d) for gridno %d."
-               "  Need to fix before map can be saved!  There are %d additional warnings.",
+               + "  Need to fix before map can be saved!  There are %d additional warnings.",
                ObjectCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = TRUE;
       FileClose(hfile);
@@ -1419,7 +1419,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     if (StructCount > 15) {
       swprintf(gzErrorCatchString,
                "SAVE ABORTED!  Struct count too high (%d) for gridno %d."
-               "  Need to fix before map can be saved!  There are %d additional warnings.",
+               + "  Need to fix before map can be saved!  There are %d additional warnings.",
                StructCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = TRUE;
       FileClose(hfile);
@@ -1449,7 +1449,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     if (ShadowCount > 15) {
       swprintf(gzErrorCatchString,
                "SAVE ABORTED!  Shadow count too high (%d) for gridno %d."
-               "  Need to fix before map can be saved!  There are %d additional warnings.",
+               + "  Need to fix before map can be saved!  There are %d additional warnings.",
                ShadowCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = TRUE;
       FileClose(hfile);
@@ -1475,7 +1475,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     if (RoofCount > 15) {
       swprintf(gzErrorCatchString,
                "SAVE ABORTED!  Roof count too high (%d) for gridno %d."
-               "  Need to fix before map can be saved!  There are %d additional warnings.",
+               + "  Need to fix before map can be saved!  There are %d additional warnings.",
                RoofCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = TRUE;
       FileClose(hfile);
@@ -1504,7 +1504,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     if (OnRoofCount > 15) {
       swprintf(gzErrorCatchString,
                "SAVE ABORTED!  OnRoof count too high (%d) for gridno %d."
-               "  Need to fix before map can be saved!  There are %d additional warnings.",
+               + "  Need to fix before map can be saved!  There are %d additional warnings.",
                OnRoofCount, cnt, uiNumWarningsCaught);
       gfErrorCatch = TRUE;
       FileClose(hfile);
