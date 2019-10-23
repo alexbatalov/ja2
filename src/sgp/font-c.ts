@@ -449,7 +449,7 @@ function StringNPixLength(string: Pointer<UINT16>, uiMaxCount: UINT32, UseFont: 
   curletter = string;
 
   while ((curletter.value) != '\0' && uiCharCount < uiMaxCount) {
-    transletter = GetIndex(curletter++.value);
+    transletter = GetIndex((curletter++).value);
     Cur += GetWidth(FontObjs[UseFont], transletter);
     uiCharCount++;
   }
@@ -476,7 +476,7 @@ function StringPixLength(string: Pointer<UINT16>, UseFont: INT32): INT16 {
   curletter = string;
 
   while ((curletter.value) != '\0') {
-    transletter = GetIndex(curletter++.value);
+    transletter = GetIndex((curletter++).value);
     Cur += GetWidth(FontObjs[UseFont], transletter);
   }
   return Cur;
@@ -656,7 +656,7 @@ function mprintf(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[
   pDestBuf = LockVideoSurface(FontDestBuffer, addressof(uiDestPitchBYTES));
 
   while ((curletter.value) != 0) {
-    transletter = GetIndex(curletter++.value);
+    transletter = GetIndex((curletter++).value);
 
     if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
       destx = x;
@@ -757,7 +757,7 @@ function gprintf(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[
   pDestBuf = LockVideoSurface(FontDestBuffer, addressof(uiDestPitchBYTES));
 
   while ((curletter.value) != 0) {
-    transletter = GetIndex(curletter++.value);
+    transletter = GetIndex((curletter++).value);
 
     if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
       destx = x;
@@ -804,7 +804,7 @@ function gprintfDirty(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args:
   pDestBuf = LockVideoSurface(FontDestBuffer, addressof(uiDestPitchBYTES));
 
   while ((curletter.value) != 0) {
-    transletter = GetIndex(curletter++.value);
+    transletter = GetIndex((curletter++).value);
 
     if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
       destx = x;
@@ -855,7 +855,7 @@ function gprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, Font
   desty = y;
 
   while ((curletter.value) != 0) {
-    transletter = GetIndex(curletter++.value);
+    transletter = GetIndex((curletter++).value);
 
     if (FontDestWrap && BltIsClipped(FontObjs[FontType], destx, desty, transletter, addressof(FontDestRegion))) {
       destx = x;
@@ -895,7 +895,7 @@ function mprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, Font
   desty = y;
 
   while ((curletter.value) != 0) {
-    transletter = GetIndex(curletter++.value);
+    transletter = GetIndex((curletter++).value);
 
     if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
       destx = x;
@@ -946,7 +946,7 @@ function mprintf_buffer_coded(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32
       curletter++;
     }
 
-    transletter = GetIndex(curletter++.value);
+    transletter = GetIndex((curletter++).value);
 
     if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
       destx = x;
@@ -1002,7 +1002,7 @@ function mprintf_coded(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args
       curletter++;
     }
 
-    transletter = GetIndex(curletter++.value);
+    transletter = GetIndex((curletter++).value);
 
     if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
       destx = x;

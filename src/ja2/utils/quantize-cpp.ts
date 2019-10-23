@@ -30,9 +30,9 @@ class CQuantizer {
     pbBits = pData;
     for (i = 0; i < iHeight; i++) {
       for (j = 0; j < iWidth; j++) {
-        b = pbBits++.value;
-        g = pbBits++.value;
-        r = pbBits++.value;
+        b = (pbBits++).value;
+        g = (pbBits++).value;
+        r = (pbBits++).value;
         AddColor(addressof(m_pTree), r, g, b, m_nColorBits, 0, addressof(m_nLeafCount), m_pReducibleNodes);
         while (m_nLeafCount > m_nMaxColors)
           ReduceTree(m_nColorBits, addressof(m_nLeafCount), m_pReducibleNodes);
