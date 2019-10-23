@@ -3,8 +3,6 @@ let gfPotentialTeamChangeDuringDeath: BOOLEAN = FALSE;
 const MIN_BLINK_FREQ = 3000;
 const MIN_EXPRESSION_FREQ = 2000;
 
-const SET_PROFILE_GAINS2 = 500, 500, 500, 500, 500, 500, 500, 500, 500;
-
 let gMercProfiles: MERCPROFILESTRUCT[] /* [NUM_PROFILES] */;
 
 let gbSkillTraitBonus: INT8[] /* [NUM_SKILLTRAITS] */ = [
