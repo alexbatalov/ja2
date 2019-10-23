@@ -302,7 +302,7 @@ function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiData
     }
     usIndex = (pCurrent).value.usStructureNumber;
     pDBStructureRef[usIndex].pDBStructure = pCurrent;
-    ppTileArray = MemAlloc(pDBStructureRef[usIndex].pDBStructure.value.ubNumberOfTiles * sizeof(DB_STRUCTURE_TILE *));
+    ppTileArray = MemAlloc(pDBStructureRef[usIndex].pDBStructure.value.ubNumberOfTiles * sizeof(DB_STRUCTURE_TILE /* Pointer<DB_STRUCTURE_TILE> */));
     if (ppTileArray == NULL) {
       // freeing of memory will occur outside of the function
       return FALSE;
@@ -708,9 +708,9 @@ function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStruct
   // there is an easy way to remove an entire object from the world quickly
 
   // NB we add 1 because the 0th element is in fact the reference count!
-  ppStructure = MemAlloc(pDBStructure.value.ubNumberOfTiles * sizeof(STRUCTURE *));
+  ppStructure = MemAlloc(pDBStructure.value.ubNumberOfTiles * sizeof(STRUCTURE /* Pointer<STRUCTURE> */));
   CHECKF(ppStructure);
-  memset(ppStructure, 0, pDBStructure.value.ubNumberOfTiles * sizeof(STRUCTURE *));
+  memset(ppStructure, 0, pDBStructure.value.ubNumberOfTiles * sizeof(STRUCTURE /* Pointer<STRUCTURE> */));
 
   for (ubLoop = BASE_TILE; ubLoop < pDBStructure.value.ubNumberOfTiles; ubLoop++) {
     // for each tile, create the appropriate STRUCTURE struct
@@ -1500,11 +1500,11 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
     // no multi-tile images in this vobject; that's okay... return!
     return TRUE;
   }
-  hVObject.value.ppZStripInfo = MemAlloc(sizeof(ZStripInfo *) * hVObject.value.usNumberOfObjects);
+  hVObject.value.ppZStripInfo = MemAlloc(sizeof(ZStripInfo /* Pointer<ZStripInfo> */) * hVObject.value.usNumberOfObjects);
   if (hVObject.value.ppZStripInfo == NULL) {
     return FALSE;
   }
-  memset(hVObject.value.ppZStripInfo, 0, sizeof(ZStripInfo *) * hVObject.value.usNumberOfObjects);
+  memset(hVObject.value.ppZStripInfo, 0, sizeof(ZStripInfo /* Pointer<ZStripInfo> */) * hVObject.value.usNumberOfObjects);
 
   if (fFromAnimation) {
     // Determine step index for STI

@@ -197,7 +197,7 @@ const ClosedListGet = (pNew) => {
     pClosedHead.value.pNext[0] = pNew.value.pNext[0];
     iClosedListSize--;
     queRequests++;
-    memset(pNew.value.pNext, 0, sizeof(path_t *) * ABSMAX_SKIPLIST_LEVEL);
+    memset(pNew.value.pNext, 0, sizeof(path_t /* Pointer<path_t> */) * ABSMAX_SKIPLIST_LEVEL);
     pNew.value.bLevel = RandomSkipListLevel();
   } else {
     pNew = NULL;
@@ -253,7 +253,7 @@ const SkipListRemoveHead = () => {
 const SkipListInsert = (pNew) => {
   pCurr = pQueueHead;
   uiCost = TOTALCOST(pNew);
-  memset(pUpdate, 0, MAX_SKIPLIST_LEVEL * sizeof(path_t *));
+  memset(pUpdate, 0, MAX_SKIPLIST_LEVEL * sizeof(path_t /* Pointer<path_t> */));
   for (iCurrLevel = bSkipListLevel - 1; iCurrLevel >= 0; iCurrLevel--) {
     pNext = pCurr.value.pNext[iCurrLevel];
     while (pNext) {
@@ -1357,14 +1357,14 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
           if (queRequests < QPOOLNDX) {
             pNewPtr = pathQ + (queRequests);
             queRequests++;
-            memset(pNewPtr.value.pNext, 0, sizeof(path_t *) * ABSMAX_SKIPLIST_LEVEL);
+            memset(pNewPtr.value.pNext, 0, sizeof(path_t /* Pointer<path_t> */) * ABSMAX_SKIPLIST_LEVEL);
             pNewPtr.value.bLevel = RandomSkipListLevel();
           } else if (iClosedListSize > 0) {
             pNewPtr = pClosedHead.value.pNext[0];
             pClosedHead.value.pNext[0] = pNewPtr.value.pNext[0];
             iClosedListSize--;
             queRequests++;
-            memset(pNewPtr.value.pNext, 0, sizeof(path_t *) * ABSMAX_SKIPLIST_LEVEL);
+            memset(pNewPtr.value.pNext, 0, sizeof(path_t /* Pointer<path_t> */) * ABSMAX_SKIPLIST_LEVEL);
             pNewPtr.value.bLevel = RandomSkipListLevel();
           } else {
             pNewPtr = NULL;
@@ -1431,7 +1431,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
         {
           pCurr = pQueueHead;
           uiCost = TOTALCOST(pNewPtr);
-          memset(pUpdate, 0, MAX_SKIPLIST_LEVEL * sizeof(path_t *));
+          memset(pUpdate, 0, MAX_SKIPLIST_LEVEL * sizeof(path_t /* Pointer<path_t> */));
           for (iCurrLevel = bSkipListLevel - 1; iCurrLevel >= 0; iCurrLevel--) {
             pNext = pCurr.value.pNext[iCurrLevel];
             while (pNext) {

@@ -1901,8 +1901,8 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
       SavedSoldierInfo.pKeyRing = NULL;
       SavedSoldierInfo.p8BPPPalette = NULL;
       SavedSoldierInfo.p16BPPPalette = NULL;
-      memset(SavedSoldierInfo.pShades, 0, sizeof(UINT16 *) * NUM_SOLDIER_SHADES);
-      memset(SavedSoldierInfo.pGlowShades, 0, sizeof(UINT16 *) * 20);
+      memset(SavedSoldierInfo.pShades, 0, sizeof(UINT16 /* Pointer<UINT16> */) * NUM_SOLDIER_SHADES);
+      memset(SavedSoldierInfo.pGlowShades, 0, sizeof(UINT16 /* Pointer<UINT16> */) * 20);
       SavedSoldierInfo.pCurrentShade = NULL;
       SavedSoldierInfo.pThrowParams = NULL;
       SavedSoldierInfo.pLevelNode = NULL;
@@ -1912,7 +1912,7 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
       SavedSoldierInfo.pZBackground = NULL;
       SavedSoldierInfo.pForcedShade = NULL;
       SavedSoldierInfo.pMercPath = NULL;
-      memset(SavedSoldierInfo.pEffectShades, 0, sizeof(UINT16 *) * NUM_SOLDIER_EFFECTSHADES);
+      memset(SavedSoldierInfo.pEffectShades, 0, sizeof(UINT16 /* Pointer<UINT16> */) * NUM_SOLDIER_EFFECTSHADES);
 
       // if the soldier wasnt active, dont add them now.  Advance to the next merc
       // if( !SavedSoldierInfo.bActive )

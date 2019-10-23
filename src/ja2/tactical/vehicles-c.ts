@@ -208,7 +208,7 @@ function AddVehicleToList(sMapX: INT16, sMapY: INT16, sGridNo: INT16, ubType: UI
   pVehicleList[iCount].sSectorY = sMapY;
   pVehicleList[iCount].sSectorZ = 0;
   pVehicleList[iCount].sGridNo = sGridNo;
-  memset(pVehicleList[iCount].pPassengers, 0, 10 * sizeof(SOLDIERTYPE *));
+  memset(pVehicleList[iCount].pPassengers, 0, 10 * sizeof(SOLDIERTYPE /* Pointer<SOLDIERTYPE> */));
   pVehicleList[iCount].fValid = TRUE;
   pVehicleList[iCount].ubVehicleType = ubType;
   pVehicleList[iCount].pMercPath = NULL;
