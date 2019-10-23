@@ -8,7 +8,7 @@ function QuantizeImage(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT1
   let sNumColors: INT16;
 
   // FIRST CREATE PALETTE
-  CQuantizer q(255, 6);
+  let q = new CQuantizer(255, 6);
 
   q.ProcessImage(pSrc, sWidth, sHeight);
 

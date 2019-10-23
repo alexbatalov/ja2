@@ -1,177 +1,188 @@
-CQuantizer::CQuantizer(UINT nMaxColors, UINT nColorBits) {
-  m_pTree = NULL;
-  m_nLeafCount = 0;
-  for (int i = 0; i <= nColorBits; i++)
-    m_pReducibleNodes[i] = NULL;
-  m_nMaxColors = nMaxColors;
-  m_nColorBits = nColorBits;
-}
+class CQuantizer {
+  protected m_pTree: Pointer<NODE>;
+  protected m_nLeafCount: UINT;
+  protected m_pReducibleNodes: Pointer<NODE>[] /* [9] */;
+  protected m_nMaxColors: UINT;
+  protected m_nColorBits: UINT;
 
-CQuantizer::~CQuantizer() {
-  if (m_pTree != NULL)
-    DeleteTree(addressof(m_pTree));
-}
+  constructor(nMaxColors: UINT, nColorBits: UINT) {
+    m_pTree = NULL;
+    m_nLeafCount = 0;
+    for (let i: int = 0; i <= nColorBits; i++)
+      m_pReducibleNodes[i] = NULL;
+    m_nMaxColors = nMaxColors;
+    m_nColorBits = nColorBits;
+  }
 
-BOOL CQuantizer::ProcessImage(BYTE *pData, int iWidth, int iHeight) {
-  BYTE *pbBits;
-  BYTE r, g, b;
-  int i, j;
+  dispose(): void {
+    if (m_pTree != NULL)
+      DeleteTree(addressof(m_pTree));
+  }
 
-  pbBits = pData;
-  for (i = 0; i < iHeight; i++) {
-    for (j = 0; j < iWidth; j++) {
-      b = pbBits++.value;
-      g = pbBits++.value;
-      r = pbBits++.value;
-      AddColor(addressof(m_pTree), r, g, b, m_nColorBits, 0, addressof(m_nLeafCount), m_pReducibleNodes);
-      while (m_nLeafCount > m_nMaxColors)
-        ReduceTree(m_nColorBits, addressof(m_nLeafCount), m_pReducibleNodes);
+  ProcessImage(pData: Pointer<BYTE>, iWidth: int, iHeight: int): BOOL {
+    let pbBits: Pointer<BYTE>;
+    let r: BYTE;
+    let g: BYTE;
+    let b: BYTE;
+    let i: int;
+    let j: int;
+
+    pbBits = pData;
+    for (i = 0; i < iHeight; i++) {
+      for (j = 0; j < iWidth; j++) {
+        b = pbBits++.value;
+        g = pbBits++.value;
+        r = pbBits++.value;
+        AddColor(addressof(m_pTree), r, g, b, m_nColorBits, 0, addressof(m_nLeafCount), m_pReducibleNodes);
+        while (m_nLeafCount > m_nMaxColors)
+          ReduceTree(m_nColorBits, addressof(m_nLeafCount), m_pReducibleNodes);
+      }
+      // Padding
+      // pbBits ++;
     }
-    // Padding
-    // pbBits ++;
-  }
-  return TRUE;
-}
-
-int CQuantizer::GetLeftShiftCount(DWORD dwVal) {
-  int nCount = 0;
-  for (int i = 0; i < sizeof(DWORD) * 8; i++) {
-    if (dwVal & 1)
-      nCount++;
-    dwVal >>= 1;
-  }
-  return 8 - nCount;
-}
-
-int CQuantizer::GetRightShiftCount(DWORD dwVal) {
-  for (int i = 0; i < sizeof(DWORD) * 8; i++) {
-    if (dwVal & 1)
-      return i;
-    dwVal >>= 1;
-  }
-  return -1;
-}
-
-void CQuantizer::AddColor(NODE **ppNode, BYTE r, BYTE g, BYTE b, UINT nColorBits, UINT nLevel, UINT *pLeafCount, NODE **pReducibleNodes) {
-  static BYTE mask[8] = {
-    0x80,
-    0x40,
-    0x20,
-    0x10,
-    0x08,
-    0x04,
-    0x02,
-    0x01,
-  };
-
-  //
-  // If the node doesn't exist, create it.
-  //
-  if (ppNode.value == NULL)
-    ppNode.value = CreateNode(nLevel, nColorBits, pLeafCount, pReducibleNodes);
-
-  //
-  // Update color information if it's a leaf node.
-  //
-  if ((ppNode.value).value.bIsLeaf) {
-    (ppNode.value).value.nPixelCount++;
-    (ppNode.value).value.nRedSum += r;
-    (ppNode.value).value.nGreenSum += g;
-    (ppNode.value).value.nBlueSum += b;
+    return TRUE;
   }
 
-  //
-  // Recurse a level deeper if the node is not a leaf.
-  //
-  else {
-    int shift = 7 - nLevel;
-    int nIndex = (((r & mask[nLevel]) >> shift) << 2) | (((g & mask[nLevel]) >> shift) << 1) | ((b & mask[nLevel]) >> shift);
-    AddColor(addressof((ppNode.value).value.pChild[nIndex]), r, g, b, nColorBits, nLevel + 1, pLeafCount, pReducibleNodes);
+  GetLeftShiftCount(dwVal: DWORD): int {
+    let nCount: int = 0;
+    for (let i: int = 0; i < sizeof(DWORD) * 8; i++) {
+      if (dwVal & 1)
+        nCount++;
+      dwVal >>= 1;
+    }
+    return 8 - nCount;
   }
-}
 
-NODE *CQuantizer::CreateNode(UINT nLevel, UINT nColorBits, UINT *pLeafCount, NODE **pReducibleNodes) {
-  NODE *pNode;
-
-  if ((pNode = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(NODE))) == NULL)
-    return NULL;
-
-  pNode.value.bIsLeaf = (nLevel == nColorBits) ? TRUE : FALSE;
-  if (pNode.value.bIsLeaf)
-    (pLeafCount.value)++;
-  else {
-    pNode.value.pNext = pReducibleNodes[nLevel];
-    pReducibleNodes[nLevel] = pNode;
+  GetRightShiftCount(dwVal: DWORD): int {
+    for (let i: int = 0; i < sizeof(DWORD) * 8; i++) {
+      if (dwVal & 1)
+        return i;
+      dwVal >>= 1;
+    }
+    return -1;
   }
-  return pNode;
-}
 
-void CQuantizer::ReduceTree(UINT nColorBits, UINT *pLeafCount, NODE **pReducibleNodes) {
-  //
-  // Find the deepest level containing at least one reducible node.
-  //
-  for (int i = nColorBits - 1; (i > 0) && (pReducibleNodes[i] == NULL); i--)
-    ;
+  AddColor(ppNode: Pointer<Pointer<NODE>>, r: BYTE, g: BYTE, b: BYTE, nColorBits: UINT, nLevel: UINT, pLeafCount: Pointer<UINT>, pReducibleNodes: Pointer<Pointer<NODE>>): void {
+    /* static */ let mask: BYTE[] /* [8] */ = [
+      0x80,
+      0x40,
+      0x20,
+      0x10,
+      0x08,
+      0x04,
+      0x02,
+      0x01,
+    ];
 
-  //
-  // Reduce the node most recently added to the list at level i.
-  //
-  NODE *pNode = pReducibleNodes[i];
-  pReducibleNodes[i] = pNode.value.pNext;
+    //
+    // If the node doesn't exist, create it.
+    //
+    if (ppNode.value == NULL)
+      ppNode.value = CreateNode(nLevel, nColorBits, pLeafCount, pReducibleNodes);
 
-  UINT nRedSum = 0;
-  UINT nGreenSum = 0;
-  UINT nBlueSum = 0;
-  UINT nChildren = 0;
+    //
+    // Update color information if it's a leaf node.
+    //
+    if ((ppNode.value).value.bIsLeaf) {
+      (ppNode.value).value.nPixelCount++;
+      (ppNode.value).value.nRedSum += r;
+      (ppNode.value).value.nGreenSum += g;
+      (ppNode.value).value.nBlueSum += b;
+    }
 
-  for (i = 0; i < 8; i++) {
-    if (pNode.value.pChild[i] != NULL) {
-      nRedSum += pNode.value.pChild[i].value.nRedSum;
-      nGreenSum += pNode.value.pChild[i].value.nGreenSum;
-      nBlueSum += pNode.value.pChild[i].value.nBlueSum;
-      pNode.value.nPixelCount += pNode.value.pChild[i].value.nPixelCount;
-      HeapFree(GetProcessHeap(), 0, pNode.value.pChild[i]);
-      pNode.value.pChild[i] = NULL;
-      nChildren++;
+    //
+    // Recurse a level deeper if the node is not a leaf.
+    //
+    else {
+      let shift: int = 7 - nLevel;
+      let nIndex: int = (((r & mask[nLevel]) >> shift) << 2) | (((g & mask[nLevel]) >> shift) << 1) | ((b & mask[nLevel]) >> shift);
+      AddColor(addressof((ppNode.value).value.pChild[nIndex]), r, g, b, nColorBits, nLevel + 1, pLeafCount, pReducibleNodes);
     }
   }
 
-  pNode.value.bIsLeaf = TRUE;
-  pNode.value.nRedSum = nRedSum;
-  pNode.value.nGreenSum = nGreenSum;
-  pNode.value.nBlueSum = nBlueSum;
-  pLeafCount.value -= (nChildren - 1);
-}
+  CreateNode(nLevel: UINT, nColorBits: UINT, pLeafCount: Pointer<UINT>, pReducibleNodes: Pointer<Pointer<NODE>>): Pointer<NODE> {
+    let pNode: Pointer<NODE>;
 
-void CQuantizer::DeleteTree(NODE **ppNode) {
-  for (int i = 0; i < 8; i++) {
-    if ((ppNode.value).value.pChild[i] != NULL)
-      DeleteTree(addressof((ppNode.value).value.pChild[i]));
+    if ((pNode = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(NODE))) == NULL)
+      return NULL;
+
+    pNode.value.bIsLeaf = (nLevel == nColorBits) ? TRUE : FALSE;
+    if (pNode.value.bIsLeaf)
+      (pLeafCount.value)++;
+    else {
+      pNode.value.pNext = pReducibleNodes[nLevel];
+      pReducibleNodes[nLevel] = pNode;
+    }
+    return pNode;
   }
-  HeapFree(GetProcessHeap(), 0, ppNode.value);
-  ppNode.value = NULL;
-}
 
-void CQuantizer::GetPaletteColors(NODE *pTree, RGBQUAD *prgb, UINT *pIndex) {
-  if (pTree.value.bIsLeaf) {
-    prgb[pIndex.value].rgbRed = ((pTree.value.nRedSum) / (pTree.value.nPixelCount));
-    prgb[pIndex.value].rgbGreen = ((pTree.value.nGreenSum) / (pTree.value.nPixelCount));
-    prgb[pIndex.value].rgbBlue = ((pTree.value.nBlueSum) / (pTree.value.nPixelCount));
-    prgb[pIndex.value].rgbReserved = 0;
-    (pIndex.value)++;
-  } else {
-    for (int i = 0; i < 8; i++) {
-      if (pTree.value.pChild[i] != NULL)
-        GetPaletteColors(pTree.value.pChild[i], prgb, pIndex);
+  ReduceTree(nColorBits: UINT, pLeafCount: Pointer<UINT>, pReducibleNodes: Pointer<Pointer<NODE>>): void {
+    //
+    // Find the deepest level containing at least one reducible node.
+    //
+    for (let i: int = nColorBits - 1; (i > 0) && (pReducibleNodes[i] == NULL); i--)
+      ;
+
+    //
+    // Reduce the node most recently added to the list at level i.
+    //
+    let pNode: Pointer<NODE> = pReducibleNodes[i];
+    pReducibleNodes[i] = pNode.value.pNext;
+
+    let nRedSum: UINT = 0;
+    let nGreenSum: UINT = 0;
+    let nBlueSum: UINT = 0;
+    let nChildren: UINT = 0;
+
+    for (i = 0; i < 8; i++) {
+      if (pNode.value.pChild[i] != NULL) {
+        nRedSum += pNode.value.pChild[i].value.nRedSum;
+        nGreenSum += pNode.value.pChild[i].value.nGreenSum;
+        nBlueSum += pNode.value.pChild[i].value.nBlueSum;
+        pNode.value.nPixelCount += pNode.value.pChild[i].value.nPixelCount;
+        HeapFree(GetProcessHeap(), 0, pNode.value.pChild[i]);
+        pNode.value.pChild[i] = NULL;
+        nChildren++;
+      }
+    }
+
+    pNode.value.bIsLeaf = TRUE;
+    pNode.value.nRedSum = nRedSum;
+    pNode.value.nGreenSum = nGreenSum;
+    pNode.value.nBlueSum = nBlueSum;
+    pLeafCount.value -= (nChildren - 1);
+  }
+
+  DeleteTree(ppNode: Pointer<Pointer<NODE>>): void {
+    for (let i: int = 0; i < 8; i++) {
+      if ((ppNode.value).value.pChild[i] != NULL)
+        DeleteTree(addressof((ppNode.value).value.pChild[i]));
+    }
+    HeapFree(GetProcessHeap(), 0, ppNode.value);
+    ppNode.value = NULL;
+  }
+
+  GetPaletteColors(pTree: Pointer<NODE>, prgb: Pointer<RGBQUAD>, pIndex: Pointer<UINT>): void {
+    if (pTree.value.bIsLeaf) {
+      prgb[pIndex.value].rgbRed = ((pTree.value.nRedSum) / (pTree.value.nPixelCount));
+      prgb[pIndex.value].rgbGreen = ((pTree.value.nGreenSum) / (pTree.value.nPixelCount));
+      prgb[pIndex.value].rgbBlue = ((pTree.value.nBlueSum) / (pTree.value.nPixelCount));
+      prgb[pIndex.value].rgbReserved = 0;
+      (pIndex.value)++;
+    } else {
+      for (let i: int = 0; i < 8; i++) {
+        if (pTree.value.pChild[i] != NULL)
+          GetPaletteColors(pTree.value.pChild[i], prgb, pIndex);
+      }
     }
   }
-}
 
-UINT CQuantizer::GetColorCount() {
-  return m_nLeafCount;
-}
+  GetColorCount(): UINT {
+    return m_nLeafCount;
+  }
 
-void CQuantizer::GetColorTable(RGBQUAD *prgb) {
-  UINT nIndex = 0;
-  GetPaletteColors(m_pTree, prgb, addressof(nIndex));
+  GetColorTable(prgb: Pointer<RGBQUAD>): void {
+    let nIndex: UINT = 0;
+    GetPaletteColors(m_pTree, prgb, addressof(nIndex));
+  }
 }
