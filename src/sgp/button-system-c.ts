@@ -1301,8 +1301,8 @@ function CreateIconButton(Icon: INT16, IconIndex: INT16, GenImg: INT16, xloc: IN
     b.value.UserData[x] = 0;
   b.value.Group = -1;
 
-  b.value.bDefaultStatus = DEFAULT_STATUS_NONE;
-  b.value.bDisabledStyle = DISABLED_STYLE_DEFAULT;
+  b.value.bDefaultStatus = Enum28.DEFAULT_STATUS_NONE;
+  b.value.bDisabledStyle = Enum29.DISABLED_STYLE_DEFAULT;
   // Init text
   b.value.string = NULL;
   b.value.usFont = 0;
@@ -1355,7 +1355,7 @@ function CreateIconButton(Icon: INT16, IconIndex: INT16, GenImg: INT16, xloc: IN
 // Add button to the button list
   ButtonList[ButtonNum] = b;
 
-  SpecifyButtonSoundScheme(b.value.IDNum, BUTTON_SOUND_SCHEME_GENERIC);
+  SpecifyButtonSoundScheme(b.value.IDNum, Enum27.BUTTON_SOUND_SCHEME_GENERIC);
 
   // return this button's slot number
   return ButtonNum;
@@ -1421,8 +1421,8 @@ function CreateTextButton(string: Pointer<UINT16>, uiFont: UINT32, sForeColor: I
   for (x = 0; x < 4; x++)
     b.value.UserData[x] = 0;
   b.value.Group = -1;
-  b.value.bDefaultStatus = DEFAULT_STATUS_NONE;
-  b.value.bDisabledStyle = DISABLED_STYLE_DEFAULT;
+  b.value.bDefaultStatus = Enum28.DEFAULT_STATUS_NONE;
+  b.value.bDisabledStyle = Enum29.DISABLED_STYLE_DEFAULT;
   // Init string
   b.value.usFont = uiFont;
   b.value.fMultiColor = FALSE;
@@ -1474,7 +1474,7 @@ function CreateTextButton(string: Pointer<UINT16>, uiFont: UINT32, sForeColor: I
 // Add this button to the button list
   ButtonList[ButtonNum] = b;
 
-  SpecifyButtonSoundScheme(b.value.IDNum, BUTTON_SOUND_SCHEME_GENERIC);
+  SpecifyButtonSoundScheme(b.value.IDNum, Enum27.BUTTON_SOUND_SCHEME_GENERIC);
 
   // return the slot number
   return ButtonNum;
@@ -1551,7 +1551,7 @@ function CreateHotSpot(xloc: INT16, yloc: INT16, Width: INT16, Height: INT16, Pr
 // Add this button (hotspot) to the button list
   ButtonList[ButtonNum] = b;
 
-  SpecifyButtonSoundScheme(b.value.IDNum, BUTTON_SOUND_SCHEME_GENERIC);
+  SpecifyButtonSoundScheme(b.value.IDNum, Enum27.BUTTON_SOUND_SCHEME_GENERIC);
 
   // return the button slot number
   return ButtonNum;
@@ -1622,8 +1622,8 @@ function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type: INT32,
   }
 
   // shadow style
-  b.value.bDefaultStatus = DEFAULT_STATUS_NONE;
-  b.value.bDisabledStyle = DISABLED_STYLE_DEFAULT;
+  b.value.bDefaultStatus = Enum28.DEFAULT_STATUS_NONE;
+  b.value.bDisabledStyle = Enum29.DISABLED_STYLE_DEFAULT;
 
   b.value.Group = -1;
   // Init string
@@ -1689,7 +1689,7 @@ function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type: INT32,
 // Add this QuickButton to the button list
   ButtonList[ButtonNum] = b;
 
-  SpecifyButtonSoundScheme(b.value.IDNum, BUTTON_SOUND_SCHEME_GENERIC);
+  SpecifyButtonSoundScheme(b.value.IDNum, Enum27.BUTTON_SOUND_SCHEME_GENERIC);
 
   // return the button number (slot)
   return ButtonNum;
@@ -1735,7 +1735,7 @@ function CreateSimpleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, Type: 
 
   ButtonList[ButNum].value.uiFlags |= BUTTON_SELFDELETE_IMAGE;
 
-  SpecifyDisabledButtonStyle(ButNum, DISABLED_STYLE_SHADED);
+  SpecifyDisabledButtonStyle(ButNum, Enum29.DISABLED_STYLE_SHADED);
 
   return ButNum;
 }
@@ -1786,8 +1786,8 @@ function CreateIconAndTextButton(Image: INT32, string: Pointer<UINT16>, uiFont: 
   for (x = 0; x < 4; x++)
     b.value.UserData[x] = 0;
   b.value.Group = -1;
-  b.value.bDefaultStatus = DEFAULT_STATUS_NONE;
-  b.value.bDisabledStyle = DISABLED_STYLE_DEFAULT;
+  b.value.bDefaultStatus = Enum28.DEFAULT_STATUS_NONE;
+  b.value.bDisabledStyle = Enum29.DISABLED_STYLE_DEFAULT;
 
   // Allocate memory for the button's text string...
   b.value.string = NULL;
@@ -1844,7 +1844,7 @@ function CreateIconAndTextButton(Image: INT32, string: Pointer<UINT16>, uiFont: 
 // Add this QuickButton to the button list
   ButtonList[iButtonID] = b;
 
-  SpecifyButtonSoundScheme(b.value.IDNum, BUTTON_SOUND_SCHEME_GENERIC);
+  SpecifyButtonSoundScheme(b.value.IDNum, Enum27.BUTTON_SOUND_SCHEME_GENERIC);
 
   // return the button number (slot)
   return iButtonID;
@@ -2015,7 +2015,7 @@ function SpecifyDisabledButtonStyle(iButtonID: INT32, bStyle: INT8): void {
   b = ButtonList[iButtonID];
   Assert(b);
 
-  Assert(bStyle >= DISABLED_STYLE_NONE && bStyle <= DISABLED_STYLE_SHADED);
+  Assert(bStyle >= Enum29.DISABLED_STYLE_NONE && bStyle <= Enum29.DISABLED_STYLE_SHADED);
 
   b.value.bDisabledStyle = bStyle;
 }
@@ -2502,7 +2502,7 @@ function DrawButton(iButtonID: INT32): BOOLEAN {
 function DrawButtonFromPtr(b: Pointer<GUI_BUTTON>): void {
   Assert(b);
   // Draw the appropriate button according to button type
-  gbDisabledButtonStyle = DISABLED_STYLE_NONE;
+  gbDisabledButtonStyle = Enum29.DISABLED_STYLE_NONE;
   switch (b.value.uiFlags & BUTTON_TYPES) {
     case BUTTON_QUICK:
       DrawQuickButton(b);
@@ -2527,10 +2527,10 @@ function DrawButtonFromPtr(b: Pointer<GUI_BUTTON>): void {
   // If the button is disabled, and a style has been calculated, then
   // draw the style last.
   switch (gbDisabledButtonStyle) {
-    case DISABLED_STYLE_HATCHED:
+    case Enum29.DISABLED_STYLE_HATCHED:
       DrawHatchOnButton(b);
       break;
-    case DISABLED_STYLE_SHADED:
+    case Enum29.DISABLED_STYLE_SHADED:
       DrawShadeOnButton(b);
       break;
   }
@@ -2569,11 +2569,11 @@ function DrawQuickButton(b: Pointer<GUI_BUTTON>): void {
   } else {
     UseImage = ButtonPictures[b.value.ImageNum].OffNormal;
     switch (b.value.bDisabledStyle) {
-      case DISABLED_STYLE_DEFAULT:
-        gbDisabledButtonStyle = b.value.string ? DISABLED_STYLE_SHADED : DISABLED_STYLE_HATCHED;
+      case Enum29.DISABLED_STYLE_DEFAULT:
+        gbDisabledButtonStyle = b.value.string ? Enum29.DISABLED_STYLE_SHADED : Enum29.DISABLED_STYLE_HATCHED;
         break;
-      case DISABLED_STYLE_HATCHED:
-      case DISABLED_STYLE_SHADED:
+      case Enum29.DISABLED_STYLE_HATCHED:
+      case Enum29.DISABLED_STYLE_SHADED:
         gbDisabledButtonStyle = b.value.bDisabledStyle;
         break;
     }
@@ -2614,7 +2614,7 @@ function DrawDefaultOnButton(b: Pointer<GUI_BUTTON>): void {
   let uiDestPitchBYTES: UINT32;
   pDestBuf = LockVideoSurface(ButtonDestBuffer, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
-  if (b.value.bDefaultStatus == DEFAULT_STATUS_DARKBORDER || b.value.bDefaultStatus == DEFAULT_STATUS_WINDOWS95) {
+  if (b.value.bDefaultStatus == Enum28.DEFAULT_STATUS_DARKBORDER || b.value.bDefaultStatus == Enum28.DEFAULT_STATUS_WINDOWS95) {
     // left (one thick)
     LineDraw(TRUE, b.value.Area.RegionTopLeftX - 1, b.value.Area.RegionTopLeftY - 1, b.value.Area.RegionTopLeftX - 1, b.value.Area.RegionBottomRightY + 1, 0, pDestBuf);
     // top (one thick)
@@ -2627,7 +2627,7 @@ function DrawDefaultOnButton(b: Pointer<GUI_BUTTON>): void {
     LineDraw(TRUE, b.value.Area.RegionTopLeftX - 1, b.value.Area.RegionBottomRightY + 1, b.value.Area.RegionBottomRightX + 1, b.value.Area.RegionBottomRightY + 1, 0, pDestBuf);
     InvalidateRegion(b.value.Area.RegionTopLeftX - 1, b.value.Area.RegionTopLeftY - 1, b.value.Area.RegionBottomRightX + 1, b.value.Area.RegionBottomRightY + 1);
   }
-  if (b.value.bDefaultStatus == DEFAULT_STATUS_DOTTEDINTERIOR || b.value.bDefaultStatus == DEFAULT_STATUS_WINDOWS95) {
+  if (b.value.bDefaultStatus == Enum28.DEFAULT_STATUS_DOTTEDINTERIOR || b.value.bDefaultStatus == Enum28.DEFAULT_STATUS_WINDOWS95) {
     // Draw an internal dotted rectangle.
   }
   UnLockVideoSurface(ButtonDestBuffer);
@@ -2697,11 +2697,11 @@ function DrawCheckBoxButton(b: Pointer<GUI_BUTTON>): void {
     else
       UseImage = ButtonPictures[b.value.ImageNum].OffHilite;
     switch (b.value.bDisabledStyle) {
-      case DISABLED_STYLE_DEFAULT:
-        gbDisabledButtonStyle = DISABLED_STYLE_HATCHED;
+      case Enum29.DISABLED_STYLE_DEFAULT:
+        gbDisabledButtonStyle = Enum29.DISABLED_STYLE_HATCHED;
         break;
-      case DISABLED_STYLE_HATCHED:
-      case DISABLED_STYLE_SHADED:
+      case Enum29.DISABLED_STYLE_HATCHED:
+      case Enum29.DISABLED_STYLE_SHADED:
         gbDisabledButtonStyle = b.value.bDisabledStyle;
         break;
     }
@@ -3032,11 +3032,11 @@ function DrawGenericButton(b: Pointer<GUI_BUTTON>): void {
   else {
     BPic = GenericButtonOffNormal[b.value.ImageNum];
     switch (b.value.bDisabledStyle) {
-      case DISABLED_STYLE_DEFAULT:
-        gbDisabledButtonStyle = b.value.string ? DISABLED_STYLE_SHADED : DISABLED_STYLE_HATCHED;
+      case Enum29.DISABLED_STYLE_DEFAULT:
+        gbDisabledButtonStyle = b.value.string ? Enum29.DISABLED_STYLE_SHADED : Enum29.DISABLED_STYLE_HATCHED;
         break;
-      case DISABLED_STYLE_HATCHED:
-      case DISABLED_STYLE_SHADED:
+      case Enum29.DISABLED_STYLE_HATCHED:
+      case Enum29.DISABLED_STYLE_SHADED:
         gbDisabledButtonStyle = b.value.bDisabledStyle;
         break;
     }
@@ -3560,7 +3560,7 @@ function GiveButtonDefaultStatus(iButtonID: INT32, iDefaultStatus: INT32): void 
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   // If new default status added, then this assert may need to be adjusted.
-  AssertMsg(iDefaultStatus >= DEFAULT_STATUS_NONE && iDefaultStatus <= DEFAULT_STATUS_WINDOWS95, String("Illegal button default status of %d", iDefaultStatus));
+  AssertMsg(iDefaultStatus >= Enum28.DEFAULT_STATUS_NONE && iDefaultStatus <= Enum28.DEFAULT_STATUS_WINDOWS95, String("Illegal button default status of %d", iDefaultStatus));
   Assert(b);
 
   if (b.value.bDefaultStatus != iDefaultStatus) {
@@ -3577,7 +3577,7 @@ function RemoveButtonDefaultStatus(iButtonID: INT32): void {
   Assert(b);
 
   if (b.value.bDefaultStatus) {
-    b.value.bDefaultStatus = DEFAULT_STATUS_NONE;
+    b.value.bDefaultStatus = Enum28.DEFAULT_STATUS_NONE;
     b.value.uiFlags |= BUTTON_DIRTY;
   }
 }

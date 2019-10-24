@@ -102,7 +102,7 @@ function MoveRadarScreen(): void {
   // Add new one
 
   // Move based on inventory panel
-  if (gsCurInterfacePanel == SM_PANEL) {
+  if (gsCurInterfacePanel == Enum215.SM_PANEL) {
     gsRadarY = RADAR_WINDOW_TM_Y;
   } else {
     gsRadarY = RADAR_WINDOW_TM_Y;
@@ -228,7 +228,7 @@ function RenderRadarScreen(): void {
 
     // If night time and on surface, darken the radarmap.
     if (NightTime()) {
-      if (guiCurrentScreen == MAP_SCREEN && !iCurrentMapSectorZ || guiCurrentScreen == GAME_SCREEN && !gbWorldSectorZ) {
+      if (guiCurrentScreen == Enum26.MAP_SCREEN && !iCurrentMapSectorZ || guiCurrentScreen == Enum26.GAME_SCREEN && !gbWorldSectorZ) {
         SetObjectHandleShade(gusRadarImage, 1);
       }
     }
@@ -299,8 +299,8 @@ function RenderRadarScreen(): void {
   }
 
   // Cycle fFlash variable
-  if (COUNTERDONE(RADAR_MAP_BLINK)) {
-    RESETCOUNTER(RADAR_MAP_BLINK);
+  if (COUNTERDONE(Enum386.RADAR_MAP_BLINK)) {
+    RESETCOUNTER(Enum386.RADAR_MAP_BLINK);
 
     gfRadarCurrentGuyFlash = !gfRadarCurrentGuyFlash;
   }
@@ -362,7 +362,7 @@ function RenderRadarScreen(): void {
         }
 
         // Don't render crows
-        if (pSoldier.value.ubBodyType == CROW) {
+        if (pSoldier.value.ubBodyType == Enum194.CROW) {
           continue;
         }
 
@@ -512,14 +512,14 @@ function CreateDestroyMouseRegionsForSquadList(): BOOLEAN {
 
     RestoreExternBackgroundRect(538, gsVIEWPORT_END_Y, (640 - 538), (480 - gsVIEWPORT_END_Y));
 
-    for (sCounter = 0; sCounter < NUMBER_OF_SQUADS; sCounter++) {
+    for (sCounter = 0; sCounter < Enum275.NUMBER_OF_SQUADS; sCounter++) {
       // run through list of squads and place appropriatly
-      if (sCounter < NUMBER_OF_SQUADS / 2) {
+      if (sCounter < Enum275.NUMBER_OF_SQUADS / 2) {
         // left half of list
-        MSYS_DefineRegion(addressof(gRadarRegionSquadList[sCounter]), RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y + (sCounter * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (NUMBER_OF_SQUADS / 2)))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2 - 1, (SQUAD_WINDOW_TM_Y + ((sCounter + 1) * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (NUMBER_OF_SQUADS / 2)))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
+        MSYS_DefineRegion(addressof(gRadarRegionSquadList[sCounter]), RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y + (sCounter * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (Enum275.NUMBER_OF_SQUADS / 2)))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2 - 1, (SQUAD_WINDOW_TM_Y + ((sCounter + 1) * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (Enum275.NUMBER_OF_SQUADS / 2)))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
       } else {
         // right half of list
-        MSYS_DefineRegion(addressof(gRadarRegionSquadList[sCounter]), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (SQUAD_WINDOW_TM_Y + ((sCounter - (NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH - 1, (SQUAD_WINDOW_TM_Y + (((sCounter + 1) - (NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
+        MSYS_DefineRegion(addressof(gRadarRegionSquadList[sCounter]), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (SQUAD_WINDOW_TM_Y + ((sCounter - (Enum275.NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH - 1, (SQUAD_WINDOW_TM_Y + (((sCounter + 1) - (Enum275.NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
       }
 
       // set user data
@@ -536,14 +536,14 @@ function CreateDestroyMouseRegionsForSquadList(): BOOLEAN {
   } else if ((fRenderRadarScreen == TRUE) && (fCreated == TRUE)) {
     // destroy regions
 
-    for (sCounter = 0; sCounter < NUMBER_OF_SQUADS; sCounter++) {
+    for (sCounter = 0; sCounter < Enum275.NUMBER_OF_SQUADS; sCounter++) {
       MSYS_RemoveRegion(addressof(gRadarRegionSquadList[sCounter]));
     }
 
     // set fact regions are destroyed
     fCreated = FALSE;
 
-    if (guiCurrentScreen == GAME_SCREEN) {
+    if (guiCurrentScreen == Enum26.GAME_SCREEN) {
       // dirty region
       fInterfacePanelDirty = DIRTYLEVEL2;
 
@@ -577,12 +577,12 @@ function RenderSquadList(): void {
   // set font
   SetFont(SQUAD_FONT);
 
-  for (sCounter = 0; sCounter < NUMBER_OF_SQUADS; sCounter++) {
+  for (sCounter = 0; sCounter < Enum275.NUMBER_OF_SQUADS; sCounter++) {
     // run through list of squads and place appropriatly
-    if (sCounter < NUMBER_OF_SQUADS / 2) {
-      FindFontCenterCoordinates(RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y + (sCounter * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT, addressof(sX), addressof(sY));
+    if (sCounter < Enum275.NUMBER_OF_SQUADS / 2) {
+      FindFontCenterCoordinates(RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y + (sCounter * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT, addressof(sX), addressof(sY));
     } else {
-      FindFontCenterCoordinates(RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (SQUAD_WINDOW_TM_Y + ((sCounter - (NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT, addressof(sX), addressof(sY));
+      FindFontCenterCoordinates(RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (SQUAD_WINDOW_TM_Y + ((sCounter - (Enum275.NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT, addressof(sX), addressof(sY));
     }
 
     // highlight line?
@@ -602,7 +602,7 @@ function RenderSquadList(): void {
 
     SetFontBackground(FONT_BLACK);
 
-    if (sCounter < NUMBER_OF_SQUADS / 2) {
+    if (sCounter < Enum275.NUMBER_OF_SQUADS / 2) {
       sX = RADAR_WINDOW_X + 2;
     } else {
       sX = RADAR_WINDOW_X + (RADAR_WINDOW_WIDTH / 2) - 2;

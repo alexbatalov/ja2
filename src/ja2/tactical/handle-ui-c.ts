@@ -57,80 +57,80 @@ let guiUIInterfaceSwapCursorsTime: UINT32 = 0;
 let gsJumpOverGridNo: INT16 = 0;
 
 let gEvents: UI_EVENT[] /* [NUM_UI_EVENTS] */ = [
-  [ 0, IDLE_MODE, UIHandleIDoNothing, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, IDLE_MODE, UIHandleExit, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleNewMerc, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleNewBadMerc, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleSelectMerc, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleEnterEditMode, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleEnterPalEditMode, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleEndTurn, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleTestHit, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleChangeLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, IDLE_MODE, UIHandleIOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, IDLE_MODE, UIHandleIChangeToIdle, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, IDLE_MODE, UIHandleILoadLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleISoldierDebug, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILOSDebug, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILevelNodeDebug, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleIGotoDemoMode, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILoadFirstLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILoadSecondLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILoadThirdLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILoadFourthLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, DONT_CHANGEMODE, UIHandleILoadFifthLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.IDLE_MODE, UIHandleIDoNothing, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.IDLE_MODE, UIHandleExit, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.DONT_CHANGEMODE, UIHandleNewMerc, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.DONT_CHANGEMODE, UIHandleNewBadMerc, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.MOVE_MODE, UIHandleSelectMerc, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.MOVE_MODE, UIHandleEnterEditMode, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.MOVE_MODE, UIHandleEnterPalEditMode, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.DONT_CHANGEMODE, UIHandleEndTurn, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.DONT_CHANGEMODE, UIHandleTestHit, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.MOVE_MODE, UIHandleChangeLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.IDLE_MODE, UIHandleIOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.IDLE_MODE, UIHandleIChangeToIdle, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.IDLE_MODE, UIHandleILoadLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.DONT_CHANGEMODE, UIHandleISoldierDebug, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.DONT_CHANGEMODE, UIHandleILOSDebug, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.DONT_CHANGEMODE, UIHandleILevelNodeDebug, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.DONT_CHANGEMODE, UIHandleIGotoDemoMode, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.DONT_CHANGEMODE, UIHandleILoadFirstLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.DONT_CHANGEMODE, UIHandleILoadSecondLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.DONT_CHANGEMODE, UIHandleILoadThirdLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.DONT_CHANGEMODE, UIHandleILoadFourthLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.DONT_CHANGEMODE, UIHandleILoadFifthLevel, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
 
-  [ 0, ENEMYS_TURN_MODE, UIHandleIETOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleIETEndTurn, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.ENEMYS_TURN_MODE, UIHandleIETOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.MOVE_MODE, UIHandleIETEndTurn, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
 
-  [ 0, MOVE_MODE, UIHandleMOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, ACTION_MODE, UIHandleMChangeToAction, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, HANDCURSOR_MODE, UIHandleMChangeToHandMode, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleMCycleMovement, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, CONFIRM_MOVE_MODE, UIHandleMCycleMoveAll, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SNAPMOUSE, ADJUST_STANCE_MODE, UIHandleMAdjustStanceMode, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, POPUP_MODE, UIHandlePOPUPMSG, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, ACTION_MODE, UIHandleAOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleAChangeToMove, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, CONFIRM_ACTION_MODE, UIHandleAChangeToConfirmAction, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleAEndAction, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SNAPMOUSE, MENU_MODE, UIHandleMovementMenu, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SNAPMOUSE, MENU_MODE, UIHandlePositionMenu, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, CONFIRM_MOVE_MODE, UIHandleCWait, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleCMoveMerc, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, CONFIRM_MOVE_MODE, UIHandleCOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, MOVE_MODE, UIHandlePADJAdjustStance, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, CONFIRM_ACTION_MODE, UIHandleCAOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, ACTION_MODE, UIHandleCAMercShoot, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, ACTION_MODE, UIHandleCAEndConfirmAction, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, HANDCURSOR_MODE, UIHandleHCOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, GETTINGITEM_MODE, UIHandleHCGettingItem, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, LOOKCURSOR_MODE, UIHandleLCOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, LOOKCURSOR_MODE, UIHandleLCChangeToLook, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleLCLook, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, TALKINGMENU_MODE, UIHandleTATalkingMenu, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, TALKCURSOR_MODE, UIHandleTOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, TALKCURSOR_MODE, UIHandleTChangeToTalking, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, LOCKUI_MODE, UIHandleLUIOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, LOCKUI_MODE, UIHandleLUIBeginLock, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleLUIEndLock, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, OPENDOOR_MENU_MODE, UIHandleOpenDoorMenu, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, LOCKOURTURN_UI_MODE, UIHandleLAOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, LOCKOURTURN_UI_MODE, UIHandleLABeginLockOurTurn, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ UIEVENT_SINGLEEVENT, MOVE_MODE, UIHandleLAEndLockOurTurn, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, EXITSECTORMENU_MODE, UIHandleEXExitSectorMenu, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, RUBBERBAND_MODE, UIHandleRubberBandOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, JUMPOVER_MODE, UIHandleJumpOverOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
-  [ 0, MOVE_MODE, UIHandleJumpOver, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.MOVE_MODE, UIHandleMOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.ACTION_MODE, UIHandleMChangeToAction, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.HANDCURSOR_MODE, UIHandleMChangeToHandMode, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.MOVE_MODE, UIHandleMCycleMovement, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.CONFIRM_MOVE_MODE, UIHandleMCycleMoveAll, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SNAPMOUSE, Enum206.ADJUST_STANCE_MODE, UIHandleMAdjustStanceMode, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.POPUP_MODE, UIHandlePOPUPMSG, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.ACTION_MODE, UIHandleAOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.MOVE_MODE, UIHandleAChangeToMove, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.CONFIRM_ACTION_MODE, UIHandleAChangeToConfirmAction, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.MOVE_MODE, UIHandleAEndAction, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SNAPMOUSE, Enum206.MENU_MODE, UIHandleMovementMenu, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SNAPMOUSE, Enum206.MENU_MODE, UIHandlePositionMenu, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.CONFIRM_MOVE_MODE, UIHandleCWait, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.MOVE_MODE, UIHandleCMoveMerc, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.CONFIRM_MOVE_MODE, UIHandleCOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.MOVE_MODE, UIHandlePADJAdjustStance, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.CONFIRM_ACTION_MODE, UIHandleCAOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.ACTION_MODE, UIHandleCAMercShoot, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.ACTION_MODE, UIHandleCAEndConfirmAction, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.HANDCURSOR_MODE, UIHandleHCOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.GETTINGITEM_MODE, UIHandleHCGettingItem, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.LOOKCURSOR_MODE, UIHandleLCOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.LOOKCURSOR_MODE, UIHandleLCChangeToLook, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.MOVE_MODE, UIHandleLCLook, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.TALKINGMENU_MODE, UIHandleTATalkingMenu, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.TALKCURSOR_MODE, UIHandleTOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.TALKCURSOR_MODE, UIHandleTChangeToTalking, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.LOCKUI_MODE, UIHandleLUIOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.LOCKUI_MODE, UIHandleLUIBeginLock, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.MOVE_MODE, UIHandleLUIEndLock, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.OPENDOOR_MENU_MODE, UIHandleOpenDoorMenu, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.LOCKOURTURN_UI_MODE, UIHandleLAOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.LOCKOURTURN_UI_MODE, UIHandleLABeginLockOurTurn, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ UIEVENT_SINGLEEVENT, Enum206.MOVE_MODE, UIHandleLAEndLockOurTurn, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.EXITSECTORMENU_MODE, UIHandleEXExitSectorMenu, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.RUBBERBAND_MODE, UIHandleRubberBandOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.JUMPOVER_MODE, UIHandleJumpOverOnTerrain, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
+  [ 0, Enum206.MOVE_MODE, UIHandleJumpOver, FALSE, FALSE, 0, [ 0, 0, 0 ] ],
 ];
 
-let gCurrentUIMode: UI_MODE = IDLE_MODE;
-let gOldUIMode: UI_MODE = IDLE_MODE;
-let guiCurrentEvent: UINT32 = I_DO_NOTHING;
-let guiOldEvent: UINT32 = I_DO_NOTHING;
-let guiCurrentUICursor: UINT32 = NO_UICURSOR;
-let guiNewUICursor: UINT32 = NORMAL_SNAPUICURSOR;
-let guiPendingOverrideEvent: UINT32 = I_DO_NOTHING;
+let gCurrentUIMode: UI_MODE = Enum206.IDLE_MODE;
+let gOldUIMode: UI_MODE = Enum206.IDLE_MODE;
+let guiCurrentEvent: UINT32 = Enum207.I_DO_NOTHING;
+let guiOldEvent: UINT32 = Enum207.I_DO_NOTHING;
+let guiCurrentUICursor: UINT32 = Enum210.NO_UICURSOR;
+let guiNewUICursor: UINT32 = Enum210.NORMAL_SNAPUICURSOR;
+let guiPendingOverrideEvent: UINT32 = Enum207.I_DO_NOTHING;
 let gusSavedMouseX: UINT16;
 let gusSavedMouseY: UINT16;
 let gUIKeyboardHook: UIKEYBOARD_HOOK = NULL;
@@ -208,7 +208,7 @@ let gfUIAllMoveOn: BOOLEAN = FALSE; // Sets to all move
 let gfUICanBeginAllMoveCycle: BOOLEAN = FALSE; // GEts set so we know that the next right-click is a move-call inc\stead of a movement cycle through
 
 let gsSelectedGridNo: INT16 = 0;
-let gsSelectedLevel: INT16 = I_GROUND_LEVEL;
+let gsSelectedLevel: INT16 = Enum214.I_GROUND_LEVEL;
 let gsSelectedGuy: INT16 = NO_SOLDIER;
 
 let gfUIDisplayDamage: BOOLEAN = FALSE;
@@ -236,7 +236,7 @@ let gfUIForceReExamineCursorData: BOOLEAN = FALSE;
 
 // MAIN TACTICAL UI HANDLER
 function HandleTacticalUI(): UINT32 {
-  let ReturnVal: UINT32 = GAME_SCREEN;
+  let ReturnVal: UINT32 = Enum26.GAME_SCREEN;
   let uiNewEvent: UINT32;
   let usMapPos: UINT16;
   let pIntTile: Pointer<LEVELNODE>;
@@ -277,7 +277,7 @@ function HandleTacticalUI(): UINT32 {
       gTacticalStatus.ubAttackBusyCount = 0;
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Setting attack busy count to 0 due to ending AI lock"));
 
-      guiPendingOverrideEvent = LU_ENDUILOCK;
+      guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
       UIHandleLUIEndLock(NULL);
     }
   }
@@ -296,7 +296,7 @@ function HandleTacticalUI(): UINT32 {
     pOldIntTile = pIntTile;
   }
 
-  if (guiPendingOverrideEvent == I_DO_NOTHING) {
+  if (guiPendingOverrideEvent == Enum207.I_DO_NOTHING) {
     // When we are here, guiCurrentEvent is set to the last event
     // Within the input gathering phase, it may change
 
@@ -331,11 +331,11 @@ function HandleTacticalUI(): UINT32 {
     }
   } else {
     uiNewEvent = guiPendingOverrideEvent;
-    guiPendingOverrideEvent = I_DO_NOTHING;
+    guiPendingOverrideEvent = Enum207.I_DO_NOTHING;
   }
 
   if (HandleItemPickupMenu()) {
-    uiNewEvent = A_CHANGE_TO_MOVE;
+    uiNewEvent = Enum207.A_CHANGE_TO_MOVE;
   }
 
   // Set Current event to new one!
@@ -369,7 +369,7 @@ function HandleTacticalUI(): UINT32 {
   }
 
   // Restore not scrolling from stance adjust....
-  if (gOldUIMode == ADJUST_STANCE_MODE) {
+  if (gOldUIMode == Enum206.ADJUST_STANCE_MODE) {
     gfIgnoreScrolling = FALSE;
   }
 
@@ -391,7 +391,7 @@ function HandleTacticalUI(): UINT32 {
   gEvents[uiNewEvent].fFirstTime = FALSE;
 
   // Check if UI mode has changed from previous event
-  if (gEvents[uiNewEvent].ChangeToUIMode != gCurrentUIMode && (gEvents[uiNewEvent].ChangeToUIMode != DONT_CHANGEMODE)) {
+  if (gEvents[uiNewEvent].ChangeToUIMode != gCurrentUIMode && (gEvents[uiNewEvent].ChangeToUIMode != Enum206.DONT_CHANGEMODE)) {
     gEvents[uiNewEvent].uiMenuPreviousMode = gCurrentUIMode;
 
     gOldUIMode = gCurrentUIMode;
@@ -400,7 +400,7 @@ function HandleTacticalUI(): UINT32 {
 
     // CHANGE MODE - DO SPECIAL THINGS IF WE ENTER THIS MODE
     switch (gCurrentUIMode) {
-      case ACTION_MODE:
+      case Enum206.ACTION_MODE:
         ErasePath(TRUE);
         break;
     }
@@ -409,7 +409,7 @@ function HandleTacticalUI(): UINT32 {
   // Check if menu event is done and if so set to privious mode
   // This is needed to hook into the interface stuff which sets the fDoneMenu flag
   if (gEvents[uiNewEvent].fDoneMenu == TRUE) {
-    if (gCurrentUIMode == MENU_MODE || gCurrentUIMode == POPUP_MODE || gCurrentUIMode == LOOKCURSOR_MODE) {
+    if (gCurrentUIMode == Enum206.MENU_MODE || gCurrentUIMode == Enum206.POPUP_MODE || gCurrentUIMode == Enum206.LOOKCURSOR_MODE) {
       gCurrentUIMode = gEvents[uiNewEvent].uiMenuPreviousMode;
     }
   }
@@ -422,8 +422,8 @@ function HandleTacticalUI(): UINT32 {
       guiCurrentEvent = guiOldEvent;
     } else {
       // ATE: Check first that some modes are met....
-      if (gCurrentUIMode != HANDCURSOR_MODE && gCurrentUIMode != LOOKCURSOR_MODE && gCurrentUIMode != TALKCURSOR_MODE) {
-        guiCurrentEvent = M_ON_TERRAIN;
+      if (gCurrentUIMode != Enum206.HANDCURSOR_MODE && gCurrentUIMode != Enum206.LOOKCURSOR_MODE && gCurrentUIMode != Enum206.TALKCURSOR_MODE) {
+        guiCurrentEvent = Enum207.M_ON_TERRAIN;
       }
     }
   }
@@ -439,7 +439,7 @@ function HandleTacticalUI(): UINT32 {
   // ATE: Check to reset selected guys....
   if (gTacticalStatus.fAtLeastOneGuyOnMultiSelect) {
     // If not in MOVE_MODE, CONFIRM_MOVE_MODE, RUBBERBAND_MODE, stop....
-    if (gCurrentUIMode != MOVE_MODE && gCurrentUIMode != CONFIRM_MOVE_MODE && gCurrentUIMode != RUBBERBAND_MODE && gCurrentUIMode != ADJUST_STANCE_MODE && gCurrentUIMode != TALKCURSOR_MODE && gCurrentUIMode != LOOKCURSOR_MODE) {
+    if (gCurrentUIMode != Enum206.MOVE_MODE && gCurrentUIMode != Enum206.CONFIRM_MOVE_MODE && gCurrentUIMode != Enum206.RUBBERBAND_MODE && gCurrentUIMode != Enum206.ADJUST_STANCE_MODE && gCurrentUIMode != Enum206.TALKCURSOR_MODE && gCurrentUIMode != Enum206.LOOKCURSOR_MODE) {
       ResetMultiSelection();
     }
   }
@@ -457,7 +457,7 @@ function SetUIMouseCursor(): void {
 
   // Check if we moved from confirm mode on exit arrows
   // If not in move mode, return!
-  if (gCurrentUIMode == MOVE_MODE) {
+  if (gCurrentUIMode == Enum206.MOVE_MODE) {
     if (gfUIConfirmExitArrows) {
       GetCursorMovementFlags(addressof(uiCursorFlags));
 
@@ -470,14 +470,14 @@ function SetUIMouseCursor(): void {
       gfUIDisplayActionPoints = FALSE;
       ErasePath(TRUE);
 
-      if (OKForSectorExit(EAST_STRATEGIC_MOVE, 0, addressof(uiTraverseTimeInMinutes))) {
+      if (OKForSectorExit(Enum186.EAST_STRATEGIC_MOVE, 0, addressof(uiTraverseTimeInMinutes))) {
         if (gfUIConfirmExitArrows) {
-          guiNewUICursor = CONFIRM_EXIT_EAST_UICURSOR;
+          guiNewUICursor = Enum210.CONFIRM_EXIT_EAST_UICURSOR;
         } else {
-          guiNewUICursor = EXIT_EAST_UICURSOR;
+          guiNewUICursor = Enum210.EXIT_EAST_UICURSOR;
         }
       } else {
-        guiNewUICursor = NOEXIT_EAST_UICURSOR;
+        guiNewUICursor = Enum210.NOEXIT_EAST_UICURSOR;
       }
 
       if (gusMouseXPos < 635) {
@@ -489,14 +489,14 @@ function SetUIMouseCursor(): void {
       gfUIDisplayActionPoints = FALSE;
       ErasePath(TRUE);
 
-      if (OKForSectorExit(WEST_STRATEGIC_MOVE, 0, addressof(uiTraverseTimeInMinutes))) {
+      if (OKForSectorExit(Enum186.WEST_STRATEGIC_MOVE, 0, addressof(uiTraverseTimeInMinutes))) {
         if (gfUIConfirmExitArrows) {
-          guiNewUICursor = CONFIRM_EXIT_WEST_UICURSOR;
+          guiNewUICursor = Enum210.CONFIRM_EXIT_WEST_UICURSOR;
         } else {
-          guiNewUICursor = EXIT_WEST_UICURSOR;
+          guiNewUICursor = Enum210.EXIT_WEST_UICURSOR;
         }
       } else {
-        guiNewUICursor = NOEXIT_WEST_UICURSOR;
+        guiNewUICursor = Enum210.NOEXIT_WEST_UICURSOR;
       }
 
       if (gusMouseXPos > 5) {
@@ -508,14 +508,14 @@ function SetUIMouseCursor(): void {
       gfUIDisplayActionPoints = FALSE;
       ErasePath(TRUE);
 
-      if (OKForSectorExit(NORTH_STRATEGIC_MOVE, 0, addressof(uiTraverseTimeInMinutes))) {
+      if (OKForSectorExit(Enum186.NORTH_STRATEGIC_MOVE, 0, addressof(uiTraverseTimeInMinutes))) {
         if (gfUIConfirmExitArrows) {
-          guiNewUICursor = CONFIRM_EXIT_NORTH_UICURSOR;
+          guiNewUICursor = Enum210.CONFIRM_EXIT_NORTH_UICURSOR;
         } else {
-          guiNewUICursor = EXIT_NORTH_UICURSOR;
+          guiNewUICursor = Enum210.EXIT_NORTH_UICURSOR;
         }
       } else {
-        guiNewUICursor = NOEXIT_NORTH_UICURSOR;
+        guiNewUICursor = Enum210.NOEXIT_NORTH_UICURSOR;
       }
 
       if (gusMouseYPos > 5) {
@@ -527,14 +527,14 @@ function SetUIMouseCursor(): void {
       gfUIDisplayActionPoints = FALSE;
       ErasePath(TRUE);
 
-      if (OKForSectorExit(SOUTH_STRATEGIC_MOVE, 0, addressof(uiTraverseTimeInMinutes))) {
+      if (OKForSectorExit(Enum186.SOUTH_STRATEGIC_MOVE, 0, addressof(uiTraverseTimeInMinutes))) {
         if (gfUIConfirmExitArrows) {
-          guiNewUICursor = CONFIRM_EXIT_SOUTH_UICURSOR;
+          guiNewUICursor = Enum210.CONFIRM_EXIT_SOUTH_UICURSOR;
         } else {
-          guiNewUICursor = EXIT_SOUTH_UICURSOR;
+          guiNewUICursor = Enum210.EXIT_SOUTH_UICURSOR;
         }
       } else {
-        guiNewUICursor = NOEXIT_SOUTH_UICURSOR;
+        guiNewUICursor = Enum210.NOEXIT_SOUTH_UICURSOR;
       }
 
       if (gusMouseYPos < 478) {
@@ -547,7 +547,7 @@ function SetUIMouseCursor(): void {
 
         // Adjust where we blit our cursor!
         gsGlobalCursorYOffset = 0;
-        SetCurrentCursorFromDatabase(CURSOR_NORMAL);
+        SetCurrentCursorFromDatabase(Enum317.CURSOR_NORMAL);
       } else {
         if (gfScrollPending || gfScrollInertia) {
         } else {
@@ -571,7 +571,7 @@ function SetUIMouseCursor(): void {
 
         // Adjust where we blit our cursor!
         gsGlobalCursorYOffset = 0;
-        SetCurrentCursorFromDatabase(CURSOR_NORMAL);
+        SetCurrentCursorFromDatabase(Enum317.CURSOR_NORMAL);
 
         gfViewPortAdjustedForSouth = FALSE;
       }
@@ -595,12 +595,12 @@ function SetUIMouseCursor(): void {
 
             if (fOkForExit) {
               if (gfUIConfirmExitArrows) {
-                guiNewUICursor = CONFIRM_EXIT_GRID_UICURSOR;
+                guiNewUICursor = Enum210.CONFIRM_EXIT_GRID_UICURSOR;
               } else {
-                guiNewUICursor = EXIT_GRID_UICURSOR;
+                guiNewUICursor = Enum210.EXIT_GRID_UICURSOR;
               }
             } else {
-              guiNewUICursor = NOEXIT_GRID_UICURSOR;
+              guiNewUICursor = Enum210.NOEXIT_GRID_UICURSOR;
             }
           }
         }
@@ -655,14 +655,14 @@ function EndMenuEvent(uiEvent: UINT32): void {
 // HANDLER FUCNTIONS
 
 function UIHandleIDoNothing(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  guiNewUICursor = NORMAL_SNAPUICURSOR;
+  guiNewUICursor = Enum210.NORMAL_SNAPUICURSOR;
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleExit(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   gfProgramIsRunning = FALSE;
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleNewMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -685,7 +685,7 @@ function UIHandleNewMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     HireMercStruct.sSectorX = gWorldSectorX;
     HireMercStruct.sSectorY = gWorldSectorY;
     HireMercStruct.bSectorZ = gbWorldSectorZ;
-    HireMercStruct.ubInsertionCode = INSERTION_CODE_GRIDNO;
+    HireMercStruct.ubInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
     HireMercStruct.usInsertionData = usMapPos;
     HireMercStruct.fCopyProfileItemsOver = TRUE;
     HireMercStruct.iTotalContractLength = 7;
@@ -708,7 +708,7 @@ function UIHandleNewMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
       SelectSoldier(pSoldier.value.ubID, FALSE, TRUE);
     }
   }
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleNewBadMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -720,7 +720,7 @@ function UIHandleNewBadMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   if (GetMouseMapPos(addressof(usMapPos))) {
     // Are we an OK dest?
     if (!IsLocationSittable(usMapPos, 0)) {
-      return GAME_SCREEN;
+      return Enum26.GAME_SCREEN;
     }
 
     usRandom = Random(10);
@@ -736,15 +736,15 @@ function UIHandleNewBadMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
       if (!gbWorldSectorZ) {
         let pSector: Pointer<SECTORINFO> = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
         switch (pSoldier.value.ubSoldierClass) {
-          case SOLDIER_CLASS_ADMINISTRATOR:
+          case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
             pSector.value.ubNumAdmins++;
             pSector.value.ubAdminsInBattle++;
             break;
-          case SOLDIER_CLASS_ARMY:
+          case Enum262.SOLDIER_CLASS_ARMY:
             pSector.value.ubNumTroops++;
             pSector.value.ubTroopsInBattle++;
             break;
-          case SOLDIER_CLASS_ELITE:
+          case Enum262.SOLDIER_CLASS_ELITE:
             pSector.value.ubNumElites++;
             pSector.value.ubElitesInBattle++;
             break;
@@ -753,15 +753,15 @@ function UIHandleNewBadMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
         let pSector: Pointer<UNDERGROUND_SECTORINFO> = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
         if (pSector) {
           switch (pSoldier.value.ubSoldierClass) {
-            case SOLDIER_CLASS_ADMINISTRATOR:
+            case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
               pSector.value.ubNumAdmins++;
               pSector.value.ubAdminsInBattle++;
               break;
-            case SOLDIER_CLASS_ARMY:
+            case Enum262.SOLDIER_CLASS_ARMY:
               pSector.value.ubNumTroops++;
               pSector.value.ubTroopsInBattle++;
               break;
-            case SOLDIER_CLASS_ELITE:
+            case Enum262.SOLDIER_CLASS_ELITE:
               pSector.value.ubNumElites++;
               pSector.value.ubElitesInBattle++;
               break;
@@ -769,21 +769,21 @@ function UIHandleNewBadMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
         }
       }
 
-      pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+      pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
       pSoldier.value.usStrategicInsertionData = usMapPos;
       UpdateMercInSector(pSoldier, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
       AllTeamsLookForAll(NO_INTERRUPTS);
     }
   }
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleEnterEditMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  return EDIT_SCREEN;
+  return Enum26.EDIT_SCREEN;
 }
 
 function UIHandleEnterPalEditMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  return PALEDIT_SCREEN;
+  return Enum26.PALEDIT_SCREEN;
 }
 
 function UIHandleEndTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -810,7 +810,7 @@ function UIHandleEndTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     EndTurn(gbPlayerNum + 1);
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleTestHit(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -841,7 +841,7 @@ function UIHandleTestHit(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
     EVENT_SoldierGotHit(pSoldier, 1, bDamage, 10, pSoldier.value.bDirection, 320, NOBODY, FIRE_WEAPON_NO_SPECIAL, pSoldier.value.bAimShotLocation, 0, NOWHERE);
   }
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function ChangeInterfaceLevel(sLevel: INT16): void {
@@ -876,7 +876,7 @@ function UIHandleChangeLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     ChangeInterfaceLevel(0);
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleSelectMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -890,11 +890,11 @@ function UIHandleSelectMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
     // If different, display message
     if (CurrentSquad() != iCurrentSquad) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[MSG_SQUAD_ACTIVE], (CurrentSquad() + 1));
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[Enum333.MSG_SQUAD_ACTIVE], (CurrentSquad() + 1));
     }
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -914,7 +914,7 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   /* static */ let fOverItems: BOOLEAN;
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   gUIActionModeChangeDueToMouseOver = FALSE;
@@ -923,8 +923,8 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
     if ((OK_ENTERABLE_VEHICLE(pSoldier))) {
       if (!UIHandleOnMerc(TRUE)) {
-        guiNewUICursor = FLOATING_X_UICURSOR;
-        return GAME_SCREEN;
+        guiNewUICursor = Enum210.FLOATING_X_UICURSOR;
+        return Enum26.GAME_SCREEN;
       }
     }
   }
@@ -940,7 +940,7 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
           // Check timer...
           if ((GetJA2Clock() - uiItemsOverTimer) > 1500) {
             // Change to hand curso mode
-            guiPendingOverrideEvent = M_CHANGE_TO_HANDMODE;
+            guiPendingOverrideEvent = Enum207.M_CHANGE_TO_HANDMODE;
             gsOverItemsGridNo = usMapPos;
             gsOverItemsLevel = gsInterfaceLevel;
             fOverItems = FALSE;
@@ -975,9 +975,9 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
         // ERASE PATH
         ErasePath(TRUE);
 
-        guiNewUICursor = FLOATING_X_UICURSOR;
+        guiNewUICursor = Enum210.FLOATING_X_UICURSOR;
 
-        return GAME_SCREEN;
+        return Enum26.GAME_SCREEN;
       }
     }
 
@@ -1007,13 +1007,13 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
         } else {
           gusSelectedSoldier = NO_SOLDIER;
           // Change UI mode to reflact that we are selected
-          guiPendingOverrideEvent = I_ON_TERRAIN;
+          guiPendingOverrideEvent = Enum207.I_ON_TERRAIN;
         }
       } else if ((UIOKMoveDestination(pSoldier, usMapPos) != 1) && pIntNode == NULL) {
         // ERASE PATH
         ErasePath(TRUE);
 
-        guiNewUICursor = CANNOT_MOVE_UICURSOR;
+        guiNewUICursor = Enum210.CANNOT_MOVE_UICURSOR;
       } else {
         if (!UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier, usMapPos, FALSE, TRUE)) {
           // Are we in combat?
@@ -1035,12 +1035,12 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
       }
     } else {
       // IF GUSSELECTEDSOLDIER != NOSOLDIER
-      guiNewUICursor = NORMAL_SNAPUICURSOR;
+      guiNewUICursor = Enum210.NORMAL_SNAPUICURSOR;
     }
   } else {
     if (ValidQuickExchangePosition()) {
       // Do new cursor!
-      guiNewUICursor = EXCHANGE_PLACES_UICURSOR;
+      guiNewUICursor = Enum210.EXCHANGE_PLACES_UICURSOR;
     }
   }
 
@@ -1051,7 +1051,7 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     }
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleMovementMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -1059,7 +1059,7 @@ function UIHandleMovementMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   // Get soldier
   if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   // Popup Menu
@@ -1068,7 +1068,7 @@ function UIHandleMovementMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     PopupMovementMenu(pUIEvent);
 
     // Change cusror to normal
-    guiNewUICursor = NORMAL_FREEUICURSOR;
+    guiNewUICursor = Enum210.NORMAL_FREEUICURSOR;
   }
 
   // Check for done flag
@@ -1078,24 +1078,24 @@ function UIHandleMovementMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     // Excecute command, if user hit a button
     if (pUIEvent.value.uiParams[1] == TRUE) {
       if (pUIEvent.value.uiParams[2] == MOVEMENT_MENU_LOOK) {
-        guiPendingOverrideEvent = LC_CHANGE_TO_LOOK;
+        guiPendingOverrideEvent = Enum207.LC_CHANGE_TO_LOOK;
       } else if (pUIEvent.value.uiParams[2] == MOVEMENT_MENU_HAND) {
-        guiPendingOverrideEvent = HC_ON_TERRAIN;
+        guiPendingOverrideEvent = Enum207.HC_ON_TERRAIN;
       } else if (pUIEvent.value.uiParams[2] == MOVEMENT_MENU_ACTIONC) {
-        guiPendingOverrideEvent = M_CHANGE_TO_ACTION;
+        guiPendingOverrideEvent = Enum207.M_CHANGE_TO_ACTION;
       } else if (pUIEvent.value.uiParams[2] == MOVEMENT_MENU_TALK) {
-        guiPendingOverrideEvent = T_CHANGE_TO_TALKING;
+        guiPendingOverrideEvent = Enum207.T_CHANGE_TO_TALKING;
       } else {
         // Change stance based on params!
         switch (pUIEvent.value.uiParams[0]) {
           case MOVEMENT_MENU_RUN:
 
-            if (pSoldier.value.usUIMovementMode != WALKING && pSoldier.value.usUIMovementMode != RUNNING) {
+            if (pSoldier.value.usUIMovementMode != Enum193.WALKING && pSoldier.value.usUIMovementMode != Enum193.RUNNING) {
               UIHandleSoldierStanceChange(pSoldier.value.ubID, ANIM_STAND);
               pSoldier.value.fUIMovementFast = 1;
             } else {
               pSoldier.value.fUIMovementFast = 1;
-              pSoldier.value.usUIMovementMode = RUNNING;
+              pSoldier.value.usUIMovementMode = Enum193.RUNNING;
               gfPlotNewMovement = TRUE;
             }
             break;
@@ -1116,18 +1116,18 @@ function UIHandleMovementMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
             break;
         }
 
-        guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+        guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
 
         // pSoldier->usUIMovementMode = (INT8)pUIEvent->uiParams[ 0 ];
       }
     }
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandlePositionMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -1136,11 +1136,11 @@ function UIHandleAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   //	INT16							sTargetXPos, sTargetYPos;
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (gpItemPointer != NULL) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   // Get soldier to determine range
@@ -1159,7 +1159,7 @@ function UIHandleAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
           // No, ok display message IF this is the first time at this gridno
           if (gsOutOfRangeGridNo != MercPtrs[gusUIFullTargetID].value.sGridNo || gubOutOfRangeMerc != gusSelectedSoldier) {
             // Display
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[OUT_OF_RANGE_STRING]);
+            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.OUT_OF_RANGE_STRING]);
 
             // PlayJA2Sample( TARGET_OUT_OF_RANGE, RATE_11025, MIDVOLUME, 1, MIDDLEPAN );
 
@@ -1171,7 +1171,7 @@ function UIHandleAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
       }
     }
 
-    guiNewUICursor = GetProperItemCursor(gusSelectedSoldier, pSoldier.value.inv[HANDPOS].usItem, usMapPos, FALSE);
+    guiNewUICursor = GetProperItemCursor(gusSelectedSoldier, pSoldier.value.inv[Enum261.HANDPOS].usItem, usMapPos, FALSE);
 
     // Show UI ON GUY
     UIHandleOnMerc(FALSE);
@@ -1181,7 +1181,7 @@ function UIHandleAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
       if (gAnimControl[pSoldier.value.usAnimState].uiFlags & ANIM_STATIONARY && pSoldier.value.ubPendingAction == NO_PENDING_ACTION) {
         // Check if we have a shot waiting!
         if (gUITargetShotWaiting) {
-          guiPendingOverrideEvent = CA_MERC_SHOOT;
+          guiPendingOverrideEvent = Enum207.CA_MERC_SHOOT;
         }
 
         if (!gUITargetReady) {
@@ -1200,7 +1200,7 @@ function UIHandleAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     }
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleMChangeToAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -1210,13 +1210,13 @@ function UIHandleMChangeToAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   // guiNewUICursor = CONFIRM_MOVE_UICURSOR;
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleMChangeToHandMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   ErasePath(FALSE);
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleAChangeToMove(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -1228,7 +1228,7 @@ function UIHandleAChangeToMove(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   gfPlotNewMovement = TRUE;
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleCWait(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -1239,7 +1239,7 @@ function UIHandleCWait(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   let pInvTile: Pointer<LEVELNODE>;
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
@@ -1247,8 +1247,8 @@ function UIHandleCWait(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
     if (pInvTile && gpInvTileThatCausedMoveConfirm != pInvTile) {
       // Get out og this mode...
-      guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
-      return GAME_SCREEN;
+      guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
+      return Enum26.GAME_SCREEN;
     }
 
     GetCursorMovementFlags(addressof(uiCursorFlags));
@@ -1264,7 +1264,7 @@ function UIHandleCWait(pUIEvent: Pointer<UI_EVENT>): UINT32 {
         gfUIHandleShowMoveGrid = 2;
       }
 
-      return GAME_SCREEN;
+      return Enum26.GAME_SCREEN;
     }
 
     // Display action points
@@ -1284,7 +1284,7 @@ function UIHandleCWait(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     }
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 // NOTE, ONCE AT THIS FUNCTION, WE HAVE ASSUMED TO HAVE CHECKED FOR ENOUGH APS THROUGH
@@ -1307,7 +1307,7 @@ function UIHandleCMoveMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     gfUIAllMoveOn = FALSE;
 
     if (!GetMouseMapPos(addressof(usMapPos))) {
-      return GAME_SCREEN;
+      return Enum26.GAME_SCREEN;
     }
 
     // ERASE PATH
@@ -1333,7 +1333,7 @@ function UIHandleCMoveMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
           if (fAllMove == 2) {
             pSoldier.value.fUIMovementFast = TRUE;
-            pSoldier.value.usUIMovementMode = RUNNING;
+            pSoldier.value.usUIMovementMode = Enum193.RUNNING;
           } else {
             pSoldier.value.fUIMovementFast = FALSE;
             pSoldier.value.usUIMovementMode = GetMoveStateBasedOnStance(pSoldier, gAnimControl[pSoldier.value.usAnimState].ubEndHeight);
@@ -1349,9 +1349,9 @@ function UIHandleCMoveMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
           //}
           // else
           if (EVENT_InternalGetNewSoldierPath(pSoldier, usMapPos, pSoldier.value.usUIMovementMode, TRUE, FALSE)) {
-            InternalDoMercBattleSound(pSoldier, BATTLE_SOUND_OK1, BATTLE_SND_LOWER_VOLUME);
+            InternalDoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_OK1, BATTLE_SND_LOWER_VOLUME);
           } else {
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[NO_PATH_FOR_MERC], pSoldier.value.name);
+            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.NO_PATH_FOR_MERC], pSoldier.value.name);
           }
 
           pSoldier.value.fUIMovementFast = fOldFastMove;
@@ -1389,11 +1389,11 @@ function UIHandleCMoveMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
             if (pSoldier.value.sGridNo == sDestGridNo) {
               StartInteractiveObject(sIntTileGridNo, pStructure.value.usStructureID, pSoldier, ubDirection);
               InteractWithInteractiveObject(pSoldier, pStructure, ubDirection);
-              return GAME_SCREEN;
+              return Enum26.GAME_SCREEN;
             }
           } else {
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[NO_PATH]);
-            return GAME_SCREEN;
+            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NO_PATH]);
+            return Enum26.GAME_SCREEN;
           }
         }
 
@@ -1425,7 +1425,7 @@ function UIHandleCMoveMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
           { EVENT_InternalGetNewSoldierPath(pSoldier, sDestGridNo, pSoldier.value.usUIMovementMode, TRUE, pSoldier.value.fNoAPToFinishMove); }
 
           if (pSoldier.value.usPathDataSize > 5) {
-            DoMercBattleSound(pSoldier, BATTLE_SOUND_OK1);
+            DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_OK1);
           }
 
           // HANDLE ANY INTERACTIVE OBJECTS HERE!
@@ -1436,21 +1436,21 @@ function UIHandleCMoveMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
       }
     }
   }
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleMCycleMoveAll(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (gfUICanBeginAllMoveCycle) {
     gfUIAllMoveOn = TRUE;
     gfUICanBeginAllMoveCycle = FALSE;
   }
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleMCycleMovement(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -1458,38 +1458,38 @@ function UIHandleMCycleMovement(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   let fGoodMode: BOOLEAN = FALSE;
 
   if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   gfUIAllMoveOn = FALSE;
 
-  if (pSoldier.value.ubBodyType == ROBOTNOWEAPON) {
-    pSoldier.value.usUIMovementMode = WALKING;
+  if (pSoldier.value.ubBodyType == Enum194.ROBOTNOWEAPON) {
+    pSoldier.value.usUIMovementMode = Enum193.WALKING;
     gfPlotNewMovement = TRUE;
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   do {
     // Cycle gmovement state
-    if (pSoldier.value.usUIMovementMode == RUNNING) {
-      pSoldier.value.usUIMovementMode = WALKING;
-      if (IsValidMovementMode(pSoldier, WALKING)) {
+    if (pSoldier.value.usUIMovementMode == Enum193.RUNNING) {
+      pSoldier.value.usUIMovementMode = Enum193.WALKING;
+      if (IsValidMovementMode(pSoldier, Enum193.WALKING)) {
         fGoodMode = TRUE;
       }
-    } else if (pSoldier.value.usUIMovementMode == WALKING) {
-      pSoldier.value.usUIMovementMode = SWATTING;
-      if (IsValidMovementMode(pSoldier, SWATTING)) {
+    } else if (pSoldier.value.usUIMovementMode == Enum193.WALKING) {
+      pSoldier.value.usUIMovementMode = Enum193.SWATTING;
+      if (IsValidMovementMode(pSoldier, Enum193.SWATTING)) {
         fGoodMode = TRUE;
       }
-    } else if (pSoldier.value.usUIMovementMode == SWATTING) {
-      pSoldier.value.usUIMovementMode = CRAWLING;
-      if (IsValidMovementMode(pSoldier, CRAWLING)) {
+    } else if (pSoldier.value.usUIMovementMode == Enum193.SWATTING) {
+      pSoldier.value.usUIMovementMode = Enum193.CRAWLING;
+      if (IsValidMovementMode(pSoldier, Enum193.CRAWLING)) {
         fGoodMode = TRUE;
       }
-    } else if (pSoldier.value.usUIMovementMode == CRAWLING) {
+    } else if (pSoldier.value.usUIMovementMode == Enum193.CRAWLING) {
       pSoldier.value.fUIMovementFast = 1;
-      pSoldier.value.usUIMovementMode = RUNNING;
-      if (IsValidMovementMode(pSoldier, RUNNING)) {
+      pSoldier.value.usUIMovementMode = Enum193.RUNNING;
+      if (IsValidMovementMode(pSoldier, Enum193.RUNNING)) {
         fGoodMode = TRUE;
       }
     }
@@ -1497,11 +1497,11 @@ function UIHandleMCycleMovement(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   gfPlotNewMovement = TRUE;
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleCOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleMAdjustStanceMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -1518,7 +1518,7 @@ function UIHandleMAdjustStanceMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   let bNewDirection: INT8;
 
   // Change cusror to normal
-  guiNewUICursor = NO_UICURSOR;
+  guiNewUICursor = Enum210.NO_UICURSOR;
 
   if (pUIEvent.value.fFirstTime) {
     gusAnchorMouseY = gusMouseYPos;
@@ -1679,7 +1679,7 @@ function UIHandleMAdjustStanceMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   uiOldShowUPDownArrows = guiShowUPDownArrows;
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleAChangeToConfirmAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -1691,7 +1691,7 @@ function UIHandleAChangeToConfirmAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   ResetBurstLocations();
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleCAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -1699,16 +1699,16 @@ function UIHandleCAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   let usMapPos: UINT16;
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-    guiNewUICursor = GetProperItemCursor(gusSelectedSoldier, pSoldier.value.inv[HANDPOS].usItem, usMapPos, TRUE);
+    guiNewUICursor = GetProperItemCursor(gusSelectedSoldier, pSoldier.value.inv[Enum261.HANDPOS].usItem, usMapPos, TRUE);
 
     UIHandleOnMerc(FALSE);
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleMercAttack(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): void {
@@ -1725,7 +1725,7 @@ function UIHandleMercAttack(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Poin
   // get cursor
   ubItemCursor = GetActionModeCursor(pSoldier);
 
-  if (!(gTacticalStatus.uiFlags & INCOMBAT) && pTargetSoldier && Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass & IC_WEAPON) {
+  if (!(gTacticalStatus.uiFlags & INCOMBAT) && pTargetSoldier && Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass & IC_WEAPON) {
     if (NPCFirstDraw(pSoldier, pTargetSoldier)) {
       // go into turnbased for that person
       CancelAIAction(pTargetSoldier, TRUE);
@@ -1738,7 +1738,7 @@ function UIHandleMercAttack(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Poin
 
   // Set aim time to one in UI
   pSoldier.value.bAimTime = (pSoldier.value.bShownAimTime / 2);
-  usItem = pSoldier.value.inv[HANDPOS].usItem;
+  usItem = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
   // ATE: Check if we are targeting an interactive tile, and adjust gridno accordingly...
   pIntNode = GetCurInteractiveTileGridNoAndStructure(addressof(sGridNo), addressof(pStructure));
@@ -1762,16 +1762,16 @@ function UIHandleMercAttack(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Poin
     if (sGridNo == pSoldier.value.sGridNo && ubItemCursor != AIDCURS) {
       // Get orientation....
       switch (pStructure.value.ubWallOrientation) {
-        case OUTSIDE_TOP_LEFT:
-        case INSIDE_TOP_LEFT:
+        case Enum314.OUTSIDE_TOP_LEFT:
+        case Enum314.INSIDE_TOP_LEFT:
 
-          sNewGridNo = NewGridNo(sGridNo, DirectionInc(SOUTH));
+          sNewGridNo = NewGridNo(sGridNo, DirectionInc(Enum245.SOUTH));
           break;
 
-        case OUTSIDE_TOP_RIGHT:
-        case INSIDE_TOP_RIGHT:
+        case Enum314.OUTSIDE_TOP_RIGHT:
+        case Enum314.INSIDE_TOP_RIGHT:
 
-          sNewGridNo = NewGridNo(sGridNo, DirectionInc(EAST));
+          sNewGridNo = NewGridNo(sGridNo, DirectionInc(Enum245.EAST));
           break;
 
         default:
@@ -1808,20 +1808,20 @@ function UIHandleMercAttack(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Poin
     //  guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
   }
 
-  if (pSoldier.value.bWeaponMode == WM_ATTACHED) {
-    iHandleReturn = HandleItem(pSoldier, sTargetGridNo, bTargetLevel, UNDER_GLAUNCHER, TRUE);
+  if (pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED) {
+    iHandleReturn = HandleItem(pSoldier, sTargetGridNo, bTargetLevel, Enum225.UNDER_GLAUNCHER, TRUE);
   } else {
-    iHandleReturn = HandleItem(pSoldier, sTargetGridNo, bTargetLevel, pSoldier.value.inv[HANDPOS].usItem, TRUE);
+    iHandleReturn = HandleItem(pSoldier, sTargetGridNo, bTargetLevel, pSoldier.value.inv[Enum261.HANDPOS].usItem, TRUE);
   }
 
   if (iHandleReturn < 0) {
     if (iHandleReturn == ITEM_HANDLE_RELOADING) {
-      guiNewUICursor = ACTION_TARGET_RELOADING;
+      guiNewUICursor = Enum210.ACTION_TARGET_RELOADING;
       return;
     }
 
     if (iHandleReturn == ITEM_HANDLE_NOROOM) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, pMessageStrings[MSG_CANT_FIRE_HERE]);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, pMessageStrings[Enum333.MSG_CANT_FIRE_HERE]);
       return;
     }
   }
@@ -1849,7 +1849,7 @@ function UIHandleCAMercShoot(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   if (gusSelectedSoldier != NO_SOLDIER) {
     if (!GetMouseMapPos(addressof(usMapPos))) {
-      return GAME_SCREEN;
+      return Enum26.GAME_SCREEN;
     }
 
     // Get soldier
@@ -1862,7 +1862,7 @@ function UIHandleCAMercShoot(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
       if (pTSoldier != NULL) {
         // If this is one of our own guys.....pop up requiester...
-        if ((pTSoldier.value.bTeam == gbPlayerNum || pTSoldier.value.bTeam == MILITIA_TEAM) && Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass != IC_MEDKIT && pSoldier.value.inv[HANDPOS].usItem != GAS_CAN && gTacticalStatus.ubLastRequesterTargetID != pTSoldier.value.ubProfile && (pTSoldier.value.ubID != pSoldier.value.ubID)) {
+        if ((pTSoldier.value.bTeam == gbPlayerNum || pTSoldier.value.bTeam == MILITIA_TEAM) && Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass != IC_MEDKIT && pSoldier.value.inv[Enum261.HANDPOS].usItem != Enum225.GAS_CAN && gTacticalStatus.ubLastRequesterTargetID != pTSoldier.value.ubProfile && (pTSoldier.value.ubID != pSoldier.value.ubID)) {
           let zStr: INT16[] /* [200] */;
 
           gpRequesterMerc = pSoldier;
@@ -1871,9 +1871,9 @@ function UIHandleCAMercShoot(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
           fDidRequester = TRUE;
 
-          swprintf(zStr, TacticalStr[ATTACK_OWN_GUY_PROMPT], pTSoldier.value.name);
+          swprintf(zStr, TacticalStr[Enum335.ATTACK_OWN_GUY_PROMPT], pTSoldier.value.name);
 
-          DoMessageBox(MSG_BOX_BASIC_STYLE, zStr, GAME_SCREEN, MSG_BOX_FLAG_YESNO, AttackRequesterCallback, NULL);
+          DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zStr, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, AttackRequesterCallback, NULL);
         }
       }
 
@@ -1883,7 +1883,7 @@ function UIHandleCAMercShoot(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     }
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleAEndAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -1894,7 +1894,7 @@ function UIHandleAEndAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   // Get gridno at this location
   if (!GetMouseMapPos(addressof(usMapPos))) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
@@ -1911,7 +1911,7 @@ function UIHandleAEndAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
       }
     }
   }
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleCAEndConfirmAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -1921,7 +1921,7 @@ function UIHandleCAEndConfirmAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     HandleEndConfirmCursor(pSoldier);
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleIOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -1929,7 +1929,7 @@ function UIHandleIOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   // Get gridno at this location
   if (!GetMouseMapPos(addressof(usMapPos))) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (!UIHandleOnMerc(TRUE)) {
@@ -1939,14 +1939,14 @@ function UIHandleIOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     //	guiNewUICursor = CANNOT_MOVE_UICURSOR;
     //}
     // else
-    { guiNewUICursor = NORMAL_SNAPUICURSOR; }
+    { guiNewUICursor = Enum210.NORMAL_SNAPUICURSOR; }
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleIChangeToIdle(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandlePADJAdjustStance(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -1976,7 +1976,7 @@ function UIHandlePADJAdjustStance(pUIEvent: Pointer<UI_EVENT>): UINT32 {
       // AdjustNoAPToFinishMove( pSoldier, FALSE );
     }
   }
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function GetAdjustedAnimHeight(ubAnimHeight: UINT8, bChange: INT8): UINT8 {
@@ -2033,15 +2033,15 @@ function HandleObjectHighlighting(): void {
     // If an enemy, and in a given mode, highlight
     if (guiUIFullTargetFlags & ENEMY_MERC) {
       switch (gCurrentUIMode) {
-        case CONFIRM_MOVE_MODE:
-        case MENU_MODE:
+        case Enum206.CONFIRM_MOVE_MODE:
+        case Enum206.MENU_MODE:
 
           break;
 
-        case MOVE_MODE:
-        case CONFIRM_ACTION_MODE:
+        case Enum206.MOVE_MODE:
+        case Enum206.CONFIRM_ACTION_MODE:
         // case ACTION_MODE:
-        case IDLE_MODE:
+        case Enum206.IDLE_MODE:
 
           // Set as selected
           // pSoldier->pCurrentShade = pSoldier->pShades[ 1 ];
@@ -2092,13 +2092,13 @@ function SelectedMercCanAffordAttack(): BOOLEAN {
 
   if (gusSelectedSoldier != NO_SOLDIER) {
     if (!GetMouseMapPos(addressof(usMapPos))) {
-      return GAME_SCREEN;
+      return Enum26.GAME_SCREEN;
     }
 
     // Get soldier
     if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
       // LOOK IN GUY'S HAND TO CHECK LOCATION
-      usInHand = pSoldier.value.inv[HANDPOS].usItem;
+      usInHand = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
       // Get cursor value
       ubItemCursor = GetActionModeCursor(pSoldier);
@@ -2133,7 +2133,7 @@ function SelectedMercCanAffordAttack(): BOOLEAN {
           return TRUE;
         } else {
           // Play curse....
-          DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
+          DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
         }
       }
     }
@@ -2152,7 +2152,7 @@ function SelectedMercCanAffordMove(): BOOLEAN {
   // Get soldier
   if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
     if (!GetMouseMapPos(addressof(usMapPos))) {
-      return GAME_SCREEN;
+      return Enum26.GAME_SCREEN;
     }
 
     // IF WE ARE OVER AN INTERACTIVE TILE, GIVE GRIDNO OF POSITION
@@ -2212,12 +2212,12 @@ function GetMercClimbDirection(ubSoldierID: UINT8, pfGoDown: Pointer<BOOLEAN>, p
 }
 
 function RemoveTacticalCursor(): void {
-  guiNewUICursor = NO_UICURSOR;
+  guiNewUICursor = Enum210.NO_UICURSOR;
   ErasePath(TRUE);
 }
 
 function UIHandlePOPUPMSG(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleHCOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -2225,78 +2225,78 @@ function UIHandleHCOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   // If we are out of breath, no cursor...
   if (pSoldier.value.bBreath < OKBREATH && pSoldier.value.bCollapsed) {
-    guiNewUICursor = INVALID_ACTION_UICURSOR;
+    guiNewUICursor = Enum210.INVALID_ACTION_UICURSOR;
   } else {
     if (gsOverItemsGridNo != NOWHERE && (usMapPos != gsOverItemsGridNo || gsInterfaceLevel != gsOverItemsLevel)) {
       gsOverItemsGridNo = NOWHERE;
-      guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+      guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
     } else {
-      guiNewUICursor = NORMALHANDCURSOR_UICURSOR;
+      guiNewUICursor = Enum210.NORMALHANDCURSOR_UICURSOR;
 
       UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier, usMapPos, TRUE, FALSE);
     }
   }
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleHCGettingItem(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  guiNewUICursor = NORMAL_FREEUICURSOR;
+  guiNewUICursor = Enum210.NORMAL_FREEUICURSOR;
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleTATalkingMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  guiNewUICursor = NORMAL_FREEUICURSOR;
+  guiNewUICursor = Enum210.NORMAL_FREEUICURSOR;
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleEXExitSectorMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  guiNewUICursor = NORMAL_FREEUICURSOR;
+  guiNewUICursor = Enum210.NORMAL_FREEUICURSOR;
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleOpenDoorMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  guiNewUICursor = NORMAL_FREEUICURSOR;
+  guiNewUICursor = Enum210.NORMAL_FREEUICURSOR;
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function ToggleHandCursorMode(puiNewEvent: Pointer<UINT32>): void {
   // Toggle modes
-  if (gCurrentUIMode == HANDCURSOR_MODE) {
-    puiNewEvent.value = A_CHANGE_TO_MOVE;
+  if (gCurrentUIMode == Enum206.HANDCURSOR_MODE) {
+    puiNewEvent.value = Enum207.A_CHANGE_TO_MOVE;
   } else {
-    puiNewEvent.value = M_CHANGE_TO_HANDMODE;
+    puiNewEvent.value = Enum207.M_CHANGE_TO_HANDMODE;
   }
 }
 
 function ToggleTalkCursorMode(puiNewEvent: Pointer<UINT32>): void {
   // Toggle modes
-  if (gCurrentUIMode == TALKCURSOR_MODE) {
-    puiNewEvent.value = A_CHANGE_TO_MOVE;
+  if (gCurrentUIMode == Enum206.TALKCURSOR_MODE) {
+    puiNewEvent.value = Enum207.A_CHANGE_TO_MOVE;
   } else {
-    puiNewEvent.value = T_CHANGE_TO_TALKING;
+    puiNewEvent.value = Enum207.T_CHANGE_TO_TALKING;
   }
 }
 
 function ToggleLookCursorMode(puiNewEvent: Pointer<UINT32>): void {
   // Toggle modes
-  if (gCurrentUIMode == LOOKCURSOR_MODE) {
-    guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+  if (gCurrentUIMode == Enum206.LOOKCURSOR_MODE) {
+    guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
     HandleTacticalUI();
   } else {
-    guiPendingOverrideEvent = LC_CHANGE_TO_LOOK;
+    guiPendingOverrideEvent = Enum207.LC_CHANGE_TO_LOOK;
     HandleTacticalUI();
   }
 }
@@ -2309,7 +2309,7 @@ function UIHandleOnMerc(fMovementMode: BOOLEAN): BOOLEAN {
   let fFoundMerc: BOOLEAN = FALSE;
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   // if ( fMovementMode )
@@ -2344,7 +2344,7 @@ function UIHandleOnMerc(fMovementMode: BOOLEAN): BOOLEAN {
           ErasePath(TRUE);
 
           // Show cursor with highlight on selected merc
-          guiNewUICursor = NO_UICURSOR;
+          guiNewUICursor = Enum210.NO_UICURSOR;
 
           // IF selected, do selection one
           if ((uiMercFlags & SELECTED_MERC)) {
@@ -2379,7 +2379,7 @@ function UIHandleOnMerc(fMovementMode: BOOLEAN): BOOLEAN {
           ErasePath(TRUE);
 
           // Show cursor with highlight on selected merc
-          guiNewUICursor = NO_UICURSOR;
+          guiNewUICursor = Enum210.NO_UICURSOR;
 
           gsSelectedGridNo = pSoldier.value.sGridNo;
           gsSelectedLevel = pSoldier.value.bLevel;
@@ -2398,7 +2398,7 @@ function UIHandleOnMerc(fMovementMode: BOOLEAN): BOOLEAN {
           if (!pSoldier.value.bNeutral && (pSoldier.value.bSide != gbPlayerNum)) {
             gUIActionModeChangeDueToMouseOver = TRUE;
 
-            guiPendingOverrideEvent = M_CHANGE_TO_ACTION;
+            guiPendingOverrideEvent = Enum207.M_CHANGE_TO_ACTION;
             // Return FALSE
             return FALSE;
           } else {
@@ -2406,7 +2406,7 @@ function UIHandleOnMerc(fMovementMode: BOOLEAN): BOOLEAN {
             ErasePath(TRUE);
 
             // Show cursor with highlight on selected merc
-            guiNewUICursor = NO_UICURSOR;
+            guiNewUICursor = Enum210.NO_UICURSOR;
             // Show cursor with highlight
             gfUIHandleSelection = ENEMY_GUY_SELECTION;
             gsSelectedGridNo = pSoldier.value.sGridNo;
@@ -2432,7 +2432,7 @@ function UIHandleOnMerc(fMovementMode: BOOLEAN): BOOLEAN {
 }
 
 function UIHandleILoadLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  return INIT_SCREEN;
+  return Enum26.INIT_SCREEN;
 }
 
 function UIHandleISoldierDebug(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -2443,26 +2443,26 @@ function UIHandleISoldierDebug(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   SetDebugRenderHook(DebugSoldierPage4, 3);
   gCurDebugPage = 1;
 
-  return DEBUG_SCREEN;
+  return Enum26.DEBUG_SCREEN;
 }
 
 function UIHandleILOSDebug(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   SetDebugRenderHook(DebugStructurePage1, 0);
-  return DEBUG_SCREEN;
+  return Enum26.DEBUG_SCREEN;
 }
 
 function UIHandleILevelNodeDebug(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   SetDebugRenderHook(DebugLevelNodePage, 0);
-  return DEBUG_SCREEN;
+  return Enum26.DEBUG_SCREEN;
 }
 
 function UIHandleIETOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   // guiNewUICursor = CANNOT_MOVE_UICURSOR;
-  guiNewUICursor = NO_UICURSOR;
+  guiNewUICursor = Enum210.NO_UICURSOR;
 
   SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleSoldierStanceChange(ubSoldierID: UINT8, bNewStance: INT8): void {
@@ -2476,14 +2476,14 @@ function UIHandleSoldierStanceChange(ubSoldierID: UINT8, bNewStance: INT8): void
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, gzLateLocalizedString[4], pSoldier.value.name);
     } else {
       if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[VEHICLES_NO_STANCE_CHANGE_STR]);
+        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.VEHICLES_NO_STANCE_CHANGE_STR]);
       } else if (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[ROBOT_NO_STANCE_CHANGE_STR]);
+        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.ROBOT_NO_STANCE_CHANGE_STR]);
       } else {
         if (pSoldier.value.bCollapsed) {
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, pMessageStrings[MSG_CANT_CHANGE_STANCE], pSoldier.value.name);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, pMessageStrings[Enum333.MSG_CANT_CHANGE_STANCE], pSoldier.value.name);
         } else {
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[CANNOT_STANCE_CHANGE_STR], pSoldier.value.name);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.CANNOT_STANCE_CHANGE_STR], pSoldier.value.name);
         }
       }
     }
@@ -2518,7 +2518,7 @@ function UIHandleSoldierStanceChange(ubSoldierID: UINT8, bNewStance: INT8): void
       // LOCK VARIBLE FOR NO UPDATE INDEX...
       pSoldier.value.usUIMovementMode = GetMoveStateBasedOnStance(pSoldier, bNewStance);
 
-      if (pSoldier.value.usUIMovementMode == CRAWLING && gAnimControl[pSoldier.value.usAnimState].ubEndHeight != ANIM_PRONE) {
+      if (pSoldier.value.usUIMovementMode == Enum193.CRAWLING && gAnimControl[pSoldier.value.usAnimState].ubEndHeight != ANIM_PRONE) {
         pSoldier.value.usDontUpdateNewGridNoOnMoveAnimChange = LOCKED_NO_NEWGRIDNO;
         pSoldier.value.bPathStored = FALSE;
       } else {
@@ -2541,7 +2541,7 @@ function UIHandleSoldierStanceChange(ubSoldierID: UINT8, bNewStance: INT8): void
 }
 
 function UIHandleIETEndTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleIGotoDemoMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -2550,27 +2550,27 @@ function UIHandleIGotoDemoMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
 function UIHandleILoadFirstLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   gubCurrentScene = 0;
-  return INIT_SCREEN;
+  return Enum26.INIT_SCREEN;
 }
 
 function UIHandleILoadSecondLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   gubCurrentScene = 1;
-  return INIT_SCREEN;
+  return Enum26.INIT_SCREEN;
 }
 
 function UIHandleILoadThirdLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   gubCurrentScene = 2;
-  return INIT_SCREEN;
+  return Enum26.INIT_SCREEN;
 }
 
 function UIHandleILoadFourthLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   gubCurrentScene = 3;
-  return INIT_SCREEN;
+  return Enum26.INIT_SCREEN;
 }
 
 function UIHandleILoadFifthLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   gubCurrentScene = 4;
-  return INIT_SCREEN;
+  return Enum26.INIT_SCREEN;
 }
 
 function GetCursorMovementFlags(puiCursorFlags: Pointer<UINT32>): void {
@@ -2675,7 +2675,7 @@ function HandleUIMovementCursor(pSoldier: Pointer<SOLDIERTYPE>, uiCursorFlags: U
         ErasePath(TRUE);
 
         // Reset counter
-        RESETCOUNTER(PATHFINDCOUNTER);
+        RESETCOUNTER(Enum386.PATHFINDCOUNTER);
 
         gfPlotNewMovement = TRUE;
       }
@@ -2697,9 +2697,9 @@ function HandleUIMovementCursor(pSoldier: Pointer<SOLDIERTYPE>, uiCursorFlags: U
       }
 
       // ONLY DIPSLAY PATH AFTER A DELAY
-      if (COUNTERDONE(PATHFINDCOUNTER)) {
+      if (COUNTERDONE(Enum386.PATHFINDCOUNTER)) {
         // Reset counter
-        RESETCOUNTER(PATHFINDCOUNTER);
+        RESETCOUNTER(Enum386.PATHFINDCOUNTER);
 
         if (gfPlotNewMovement) {
           DrawUIMovementPath(pSoldier, usMapPos, uiFlags);
@@ -2733,13 +2733,13 @@ function HandleUIMovementCursor(pSoldier: Pointer<SOLDIERTYPE>, uiCursorFlags: U
             gUIDisplayActionPointsOffY = 15;
           } else {
             switch (pSoldier.value.usUIMovementMode) {
-              case WALKING:
+              case Enum193.WALKING:
 
                 gUIDisplayActionPointsOffY = 10;
                 gUIDisplayActionPointsOffX = 10;
                 break;
 
-              case RUNNING:
+              case Enum193.RUNNING:
                 gUIDisplayActionPointsOffY = 15;
                 gUIDisplayActionPointsOffX = 21;
                 break;
@@ -2919,7 +2919,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
       let sSpot: INT16;
       let ubGuyThere: UINT8;
 
-      for (cnt = 0; cnt < NUM_WORLD_DIRECTIONS; cnt++) {
+      for (cnt = 0; cnt < Enum245.NUM_WORLD_DIRECTIONS; cnt++) {
         sSpot = NewGridNo(pSoldier.value.sGridNo, DirectionInc(cnt));
 
         // Make sure movement costs are OK....
@@ -3056,7 +3056,7 @@ function UIMouseOnValidAttackLocation(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   }
 
   // LOOK IN GUY'S HAND TO CHECK LOCATION
-  usInHand = pSoldier.value.inv[HANDPOS].usItem;
+  usInHand = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
   // Get cursor value
   ubItemCursor = GetActionModeCursor(pSoldier);
@@ -3152,12 +3152,12 @@ function UIMouseOnValidAttackLocation(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
     // If we are a vehicle...
     if ((pTSoldier.value.uiStatusFlags & (SOLDIER_VEHICLE | SOLDIER_ROBOT))) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[CANNOT_DO_FIRST_AID_STR], pTSoldier.value.name);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.CANNOT_DO_FIRST_AID_STR], pTSoldier.value.name);
       return FALSE;
     }
 
     if (pSoldier.value.bMedical == 0) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, pMessageStrings[MSG_MERC_HAS_NO_MEDSKILL], pSoldier.value.name);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, pMessageStrings[Enum333.MSG_MERC_HAS_NO_MEDSKILL], pSoldier.value.name);
       return FALSE;
     }
 
@@ -3167,7 +3167,7 @@ function UIMouseOnValidAttackLocation(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     }
 
     if (pTSoldier.value.bBleeding == 0 && pTSoldier.value.bLife >= OKLIFE) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[CANNOT_NO_NEED_FIRST_AID_STR], pTSoldier.value.name);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.CANNOT_NO_NEED_FIRST_AID_STR], pTSoldier.value.name);
       return FALSE;
     }
   }
@@ -3182,7 +3182,7 @@ function UIOkForItemPickup(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): BOOL
   sAPCost = GetAPsToPickupItem(pSoldier, sGridNo);
 
   if (sAPCost == 0) {
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[NO_PATH]);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NO_PATH]);
   } else {
     if (GetItemPool(sGridNo, addressof(pItemPool), pSoldier.value.bLevel)) {
       // if ( !ITEMPOOL_VISIBLE( pItemPool ) )
@@ -3238,15 +3238,15 @@ function SetUIbasedOnStance(pSoldier: Pointer<SOLDIERTYPE>, bNewStance: INT8): v
   // Set UI based on our stance!
   switch (bNewStance) {
     case ANIM_STAND:
-      pSoldier.value.usUIMovementMode = WALKING;
+      pSoldier.value.usUIMovementMode = Enum193.WALKING;
       break;
 
     case ANIM_CROUCH:
-      pSoldier.value.usUIMovementMode = SWATTING;
+      pSoldier.value.usUIMovementMode = Enum193.SWATTING;
       break;
 
     case ANIM_PRONE:
-      pSoldier.value.usUIMovementMode = CRAWLING;
+      pSoldier.value.usUIMovementMode = Enum193.CRAWLING;
       break;
   }
 
@@ -3256,24 +3256,24 @@ function SetUIbasedOnStance(pSoldier: Pointer<SOLDIERTYPE>, bNewStance: INT8): v
 function SetMovementModeCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
     if ((OK_ENTERABLE_VEHICLE(pSoldier))) {
-      guiNewUICursor = MOVE_VEHICLE_UICURSOR;
+      guiNewUICursor = Enum210.MOVE_VEHICLE_UICURSOR;
     } else {
       // Change mouse cursor based on type of movement we want to do
       switch (pSoldier.value.usUIMovementMode) {
-        case WALKING:
-          guiNewUICursor = MOVE_WALK_UICURSOR;
+        case Enum193.WALKING:
+          guiNewUICursor = Enum210.MOVE_WALK_UICURSOR;
           break;
 
-        case RUNNING:
-          guiNewUICursor = MOVE_RUN_UICURSOR;
+        case Enum193.RUNNING:
+          guiNewUICursor = Enum210.MOVE_RUN_UICURSOR;
           break;
 
-        case SWATTING:
-          guiNewUICursor = MOVE_SWAT_UICURSOR;
+        case Enum193.SWATTING:
+          guiNewUICursor = Enum210.MOVE_SWAT_UICURSOR;
           break;
 
-        case CRAWLING:
-          guiNewUICursor = MOVE_PRONE_UICURSOR;
+        case Enum193.CRAWLING:
+          guiNewUICursor = Enum210.MOVE_PRONE_UICURSOR;
           break;
       }
     }
@@ -3281,14 +3281,14 @@ function SetMovementModeCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
     if (gfUIAllMoveOn) {
-      guiNewUICursor = ALL_MOVE_REALTIME_UICURSOR;
+      guiNewUICursor = Enum210.ALL_MOVE_REALTIME_UICURSOR;
     } else {
       // if ( pSoldier->fUIMovementFast )
       //{
       //	BeginDisplayTimedCursor( MOVE_RUN_REALTIME_UICURSOR, 300 );
       //}
 
-      guiNewUICursor = MOVE_REALTIME_UICURSOR;
+      guiNewUICursor = Enum210.MOVE_REALTIME_UICURSOR;
     }
   }
 
@@ -3299,47 +3299,47 @@ function SetConfirmMovementModeCursor(pSoldier: Pointer<SOLDIERTYPE>, fFromMove:
   if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
     if (gfUIAllMoveOn) {
       if ((OK_ENTERABLE_VEHICLE(pSoldier))) {
-        guiNewUICursor = ALL_MOVE_VEHICLE_UICURSOR;
+        guiNewUICursor = Enum210.ALL_MOVE_VEHICLE_UICURSOR;
       } else {
         // Change mouse cursor based on type of movement we want to do
         switch (pSoldier.value.usUIMovementMode) {
-          case WALKING:
-            guiNewUICursor = ALL_MOVE_WALK_UICURSOR;
+          case Enum193.WALKING:
+            guiNewUICursor = Enum210.ALL_MOVE_WALK_UICURSOR;
             break;
 
-          case RUNNING:
-            guiNewUICursor = ALL_MOVE_RUN_UICURSOR;
+          case Enum193.RUNNING:
+            guiNewUICursor = Enum210.ALL_MOVE_RUN_UICURSOR;
             break;
 
-          case SWATTING:
-            guiNewUICursor = ALL_MOVE_SWAT_UICURSOR;
+          case Enum193.SWATTING:
+            guiNewUICursor = Enum210.ALL_MOVE_SWAT_UICURSOR;
             break;
 
-          case CRAWLING:
-            guiNewUICursor = ALL_MOVE_PRONE_UICURSOR;
+          case Enum193.CRAWLING:
+            guiNewUICursor = Enum210.ALL_MOVE_PRONE_UICURSOR;
             break;
         }
       }
     } else {
       if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-        guiNewUICursor = CONFIRM_MOVE_VEHICLE_UICURSOR;
+        guiNewUICursor = Enum210.CONFIRM_MOVE_VEHICLE_UICURSOR;
       } else {
         // Change mouse cursor based on type of movement we want to do
         switch (pSoldier.value.usUIMovementMode) {
-          case WALKING:
-            guiNewUICursor = CONFIRM_MOVE_WALK_UICURSOR;
+          case Enum193.WALKING:
+            guiNewUICursor = Enum210.CONFIRM_MOVE_WALK_UICURSOR;
             break;
 
-          case RUNNING:
-            guiNewUICursor = CONFIRM_MOVE_RUN_UICURSOR;
+          case Enum193.RUNNING:
+            guiNewUICursor = Enum210.CONFIRM_MOVE_RUN_UICURSOR;
             break;
 
-          case SWATTING:
-            guiNewUICursor = CONFIRM_MOVE_SWAT_UICURSOR;
+          case Enum193.SWATTING:
+            guiNewUICursor = Enum210.CONFIRM_MOVE_SWAT_UICURSOR;
             break;
 
-          case CRAWLING:
-            guiNewUICursor = CONFIRM_MOVE_PRONE_UICURSOR;
+          case Enum193.CRAWLING:
+            guiNewUICursor = Enum210.CONFIRM_MOVE_PRONE_UICURSOR;
             break;
         }
       }
@@ -3349,16 +3349,16 @@ function SetConfirmMovementModeCursor(pSoldier: Pointer<SOLDIERTYPE>, fFromMove:
   if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
     if (gfUIAllMoveOn) {
       if (gfUIAllMoveOn == 2) {
-        BeginDisplayTimedCursor(MOVE_RUN_REALTIME_UICURSOR, 300);
+        BeginDisplayTimedCursor(Enum210.MOVE_RUN_REALTIME_UICURSOR, 300);
       } else {
-        guiNewUICursor = ALL_MOVE_REALTIME_UICURSOR;
+        guiNewUICursor = Enum210.ALL_MOVE_REALTIME_UICURSOR;
       }
     } else {
-      if (pSoldier.value.fUIMovementFast && pSoldier.value.usAnimState == RUNNING && fFromMove) {
-        BeginDisplayTimedCursor(MOVE_RUN_REALTIME_UICURSOR, 300);
+      if (pSoldier.value.fUIMovementFast && pSoldier.value.usAnimState == Enum193.RUNNING && fFromMove) {
+        BeginDisplayTimedCursor(Enum210.MOVE_RUN_REALTIME_UICURSOR, 300);
       }
 
-      guiNewUICursor = CONFIRM_MOVE_REALTIME_UICURSOR;
+      guiNewUICursor = Enum210.CONFIRM_MOVE_REALTIME_UICURSOR;
     }
   }
 
@@ -3371,11 +3371,11 @@ function UIHandleLCOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   let sXPos: INT16;
   let sYPos: INT16;
 
-  guiNewUICursor = LOOK_UICURSOR;
+  guiNewUICursor = Enum210.LOOK_UICURSOR;
 
   // Get soldier
   if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   gfUIDisplayActionPoints = TRUE;
@@ -3385,7 +3385,7 @@ function UIHandleLCOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   // Get soldier
   if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   GetMouseXY(addressof(sXPos), addressof(sYPos));
@@ -3405,13 +3405,13 @@ function UIHandleLCOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     gfUIDisplayActionPointsInvalid = TRUE;
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleLCChangeToLook(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   ErasePath(TRUE);
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function MakeSoldierTurn(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16): BOOLEAN {
@@ -3440,7 +3440,7 @@ function MakeSoldierTurn(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
     pSoldier.value.bTurningFromUI = TRUE;
 
     // ATE: Hard-code here previous event to ui busy event...
-    guiOldEvent = LA_BEGINUIOURTURNLOCK;
+    guiOldEvent = Enum207.LA_BEGINUIOURTURNLOCK;
 
     return TRUE;
   }
@@ -3456,7 +3456,7 @@ function UIHandleLCLook(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   let pFirstSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   if (!GetMouseXY(addressof(sXPos), addressof(sYPos))) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (gTacticalStatus.fAtLeastOneGuyOnMultiSelect) {
@@ -3472,14 +3472,14 @@ function UIHandleLCLook(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   } else {
     // Get soldier
     if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-      return GAME_SCREEN;
+      return Enum26.GAME_SCREEN;
     }
 
     if (MakeSoldierTurn(pSoldier, sXPos, sYPos)) {
       SetUIBusy(pSoldier.value.ubID);
     }
   }
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleTOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -3493,16 +3493,16 @@ function UIHandleTOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   // Get soldier
   if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (ValidQuickExchangePosition()) {
     // Do new cursor!
-    guiPendingOverrideEvent = M_ON_TERRAIN;
+    guiPendingOverrideEvent = Enum207.M_ON_TERRAIN;
     return UIHandleMOnTerrain(pUIEvent);
   }
 
@@ -3523,27 +3523,27 @@ function UIHandleTOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   // ATE: Check if we have good LOS
   // is he close enough to see that gridno if he turns his head?
-  sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sTargetGridNo, pSoldier.value.bLevel);
+  sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sTargetGridNo, pSoldier.value.bLevel);
 
   if (uiRange <= NPC_TALK_RADIUS) {
     if (fValidTalkableGuy) {
-      guiNewUICursor = TALK_A_UICURSOR;
+      guiNewUICursor = Enum210.TALK_A_UICURSOR;
     } else {
-      guiNewUICursor = TALK_NA_UICURSOR;
+      guiNewUICursor = Enum210.TALK_NA_UICURSOR;
     }
   } else {
     if (fValidTalkableGuy) {
       // guiNewUICursor = TALK_OUT_RANGE_A_UICURSOR;
-      guiNewUICursor = TALK_A_UICURSOR;
+      guiNewUICursor = Enum210.TALK_A_UICURSOR;
     } else {
-      guiNewUICursor = TALK_OUT_RANGE_NA_UICURSOR;
+      guiNewUICursor = Enum210.TALK_OUT_RANGE_NA_UICURSOR;
     }
   }
 
   if (fValidTalkableGuy) {
     if (!SoldierTo3DLocationLineOfSightTest(pSoldier, sTargetGridNo, pSoldier.value.bLevel, 3, sDistVisible, TRUE)) {
       //. ATE: Make range far, so we alternate cursors...
-      guiNewUICursor = TALK_OUT_RANGE_A_UICURSOR;
+      guiNewUICursor = Enum210.TALK_OUT_RANGE_A_UICURSOR;
     }
   }
 
@@ -3568,20 +3568,20 @@ function UIHandleTOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     }
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleTChangeToTalking(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   ErasePath(TRUE);
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleLUIOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   // guiNewUICursor = NO_UICURSOR;
   //	SetCurrentCursorFromDatabase( VIDEO_NO_CURSOR );
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleLUIBeginLock(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -3595,7 +3595,7 @@ function UIHandleLUIBeginLock(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     RemoveTacticalCursor();
     // SetCurrentCursorFromDatabase( VIDEO_NO_CURSOR );
 
-    MSYS_DefineRegion(addressof(gDisableRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, CURSOR_WAIT, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(addressof(gDisableRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_WAIT, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
     // Add region
     MSYS_AddRegion(addressof(gDisableRegion));
 
@@ -3606,7 +3606,7 @@ function UIHandleLUIBeginLock(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     LockPauseState(16);
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleLUIEndLock(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -3626,7 +3626,7 @@ function UIHandleLUIEndLock(pUIEvent: Pointer<UI_EVENT>): UINT32 {
       SetCurrentCursorFromDatabase(gUICursors[guiNewUICursor].usFreeCursorName);
     }
 
-    guiPendingOverrideEvent = M_ON_TERRAIN;
+    guiPendingOverrideEvent = Enum207.M_ON_TERRAIN;
     HandleTacticalUI();
 
     // ATE: Only if NOT in conversation!
@@ -3637,7 +3637,7 @@ function UIHandleLUIEndLock(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     }
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function CheckForDisabledRegionRemove(): void {
@@ -3668,7 +3668,7 @@ function UIHandleLAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   // guiNewUICursor = NO_UICURSOR;
   // SetCurrentCursorFromDatabase( VIDEO_NO_CURSOR );
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function GetGridNoScreenXY(sGridNo: INT16, pScreenX: Pointer<INT16>, pScreenY: Pointer<INT16>): void {
@@ -3734,8 +3734,8 @@ function EndMultiSoldierSelection(fAcknowledge: BOOLEAN): void {
           fSelectedSoldierInBatch = TRUE;
         }
 
-        if (!gGameSettings.fOptions[TOPTION_MUTE_CONFIRMATIONS] && fAcknowledge)
-          InternalDoMercBattleSound(pSoldier, BATTLE_SOUND_ATTN1, BATTLE_SND_LOWER_VOLUME);
+        if (!gGameSettings.fOptions[Enum8.TOPTION_MUTE_CONFIRMATIONS] && fAcknowledge)
+          InternalDoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_ATTN1, BATTLE_SND_LOWER_VOLUME);
 
         if (pSoldier.value.fMercAsleep) {
           PutMercInAwakeState(pSoldier);
@@ -3835,9 +3835,9 @@ function HandleMultiSelectionMove(sDestGridNo: INT16): BOOLEAN {
         pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
 
         if (EVENT_InternalGetNewSoldierPath(pSoldier, sDestGridNo, pSoldier.value.usUIMovementMode, TRUE, pSoldier.value.fNoAPToFinishMove)) {
-          InternalDoMercBattleSound(pSoldier, BATTLE_SOUND_OK1, BATTLE_SND_LOWER_VOLUME);
+          InternalDoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_OK1, BATTLE_SND_LOWER_VOLUME);
         } else {
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[NO_PATH_FOR_MERC], pSoldier.value.name);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.NO_PATH_FOR_MERC], pSoldier.value.name);
         }
 
         fAtLeastOneMultiSelect = TRUE;
@@ -3877,7 +3877,7 @@ function UIHandleRubberBandOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   let aRect: SGPRect;
   let fAtLeastOne: BOOLEAN = FALSE;
 
-  guiNewUICursor = NO_UICURSOR;
+  guiNewUICursor = Enum210.NO_UICURSOR;
   // SetCurrentCursorFromDatabase( VIDEO_NO_CURSOR );
 
   gRubberBandRect.iRight = gusMouseXPos;
@@ -3918,7 +3918,7 @@ function UIHandleRubberBandOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   }
 
   if (!fAtLeastOne) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   // ATE: Now loop through our guys and see if any fit!
@@ -3945,7 +3945,7 @@ function UIHandleRubberBandOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     }
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleJumpOverOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -3954,16 +3954,16 @@ function UIHandleJumpOverOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   // Here, first get map screen
   if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (!IsValidJumpLocation(pSoldier, usMapPos, FALSE)) {
-    guiPendingOverrideEvent = M_ON_TERRAIN;
-    return GAME_SCREEN;
+    guiPendingOverrideEvent = Enum207.M_ON_TERRAIN;
+    return Enum26.GAME_SCREEN;
   }
 
   // Display APs....
@@ -3972,9 +3972,9 @@ function UIHandleJumpOverOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   gfUIDisplayActionPoints = TRUE;
   gfUIDisplayActionPointsCenter = TRUE;
 
-  guiNewUICursor = JUMP_OVER_UICURSOR;
+  guiNewUICursor = Enum210.JUMP_OVER_UICURSOR;
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleJumpOver(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -3984,15 +3984,15 @@ function UIHandleJumpOver(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   // Here, first get map screen
   if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (!IsValidJumpLocation(pSoldier, usMapPos, FALSE)) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   SetUIBusy(pSoldier.value.ubID);
@@ -4009,9 +4009,9 @@ function UIHandleJumpOver(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   pSoldier.value.fTurningUntilDone = TRUE;
   // ATE: Reset flag to go back to prone...
   // pSoldier->fTurningFromPronePosition = TURNING_FROM_PRONE_OFF;
-  pSoldier.value.usPendingAnimation = JUMP_OVER_BLOCKING_PERSON;
+  pSoldier.value.usPendingAnimation = Enum193.JUMP_OVER_BLOCKING_PERSON;
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleLABeginLockOurTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -4028,7 +4028,7 @@ function UIHandleLABeginLockOurTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     // guiNewUICursor = NO_UICURSOR;
     // SetCurrentCursorFromDatabase( VIDEO_NO_CURSOR );
 
-    MSYS_DefineRegion(addressof(gUserTurnRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, CURSOR_WAIT, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(addressof(gUserTurnRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_WAIT, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
     // Add region
     MSYS_AddRegion(addressof(gUserTurnRegion));
 
@@ -4041,7 +4041,7 @@ function UIHandleLABeginLockOurTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     LockPauseState(17);
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function UIHandleLAEndLockOurTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
@@ -4063,7 +4063,7 @@ function UIHandleLAEndLockOurTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
       SetCurrentCursorFromDatabase(gUICursors[guiNewUICursor].usFreeCursorName);
     }
-    guiPendingOverrideEvent = M_ON_TERRAIN;
+    guiPendingOverrideEvent = Enum207.M_ON_TERRAIN;
     HandleTacticalUI();
 
     TurnOffTeamsMuzzleFlashes(gbPlayerNum);
@@ -4073,7 +4073,7 @@ function UIHandleLAEndLockOurTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     UnPauseGame();
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function IsValidTalkableNPCFromMouse(pubSoldierID: Pointer<UINT8>, fGive: BOOLEAN, fAllowMercs: BOOLEAN, fCheckCollapsed: BOOLEAN): BOOLEAN {
@@ -4126,7 +4126,7 @@ function IsValidTalkableNPC(ubSoldierID: UINT8, fGive: BOOLEAN, fAllowMercs: BOO
   }
 
   // Check for EPC...
-  if (pSoldier.value.ubProfile != NO_PROFILE && (gCurrentUIMode == TALKCURSOR_MODE || fGive) && AM_AN_EPC(pSoldier)) {
+  if (pSoldier.value.ubProfile != NO_PROFILE && (gCurrentUIMode == Enum206.TALKCURSOR_MODE || fGive) && AM_AN_EPC(pSoldier)) {
     fValidGuy = TRUE;
   }
 
@@ -4192,12 +4192,12 @@ function HandleTalkInit(): BOOLEAN {
       if (pTSoldier.value.ubID != pSoldier.value.ubID) {
         // ATE: Check if we have good LOS
         // is he close enough to see that gridno if he turns his head?
-        sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, pTSoldier.value.sGridNo, pTSoldier.value.bLevel);
+        sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, pTSoldier.value.sGridNo, pTSoldier.value.bLevel);
 
         // Check LOS!
         if (!SoldierTo3DLocationLineOfSightTest(pSoldier, pTSoldier.value.sGridNo, pTSoldier.value.bLevel, 3, sDistVisible, TRUE)) {
           if (pTSoldier.value.ubProfile != NO_PROFILE) {
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[NO_LOS_TO_TALK_TARGET], pSoldier.value.name, pTSoldier.value.name);
+            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NO_LOS_TO_TALK_TARGET], pSoldier.value.name, pTSoldier.value.name);
           } else {
             ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, gzLateLocalizedString[45], pSoldier.value.name);
           }
@@ -4211,13 +4211,13 @@ function HandleTalkInit(): BOOLEAN {
       }
 
       // If Q on, turn off.....
-      if (guiCurrentScreen == DEBUG_SCREEN) {
+      if (guiCurrentScreen == Enum26.DEBUG_SCREEN) {
         gfExitDebugScreen = TRUE;
       }
 
       // ATE: if our own guy...
       if (pTSoldier.value.bTeam == gbPlayerNum && !AM_AN_EPC(pTSoldier)) {
-        if (pTSoldier.value.ubProfile == DIMITRI) {
+        if (pTSoldier.value.ubProfile == Enum268.DIMITRI) {
           ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, gzLateLocalizedString[32], pTSoldier.value.name);
           return FALSE;
         }
@@ -4225,45 +4225,45 @@ function HandleTalkInit(): BOOLEAN {
         // Randomize quote to use....
 
         // If buddy had a social trait...
-        if (gMercProfiles[pTSoldier.value.ubProfile].bAttitude != ATT_NORMAL) {
+        if (gMercProfiles[pTSoldier.value.ubProfile].bAttitude != Enum271.ATT_NORMAL) {
           ubDiceRoll = Random(3);
         } else {
           ubDiceRoll = Random(2);
         }
 
         // If we are a PC, only use 0
-        if (pTSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__PLAYER_CHARACTER) {
+        if (pTSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__PLAYER_CHARACTER) {
           ubDiceRoll = 0;
         }
 
         switch (ubDiceRoll) {
           case 0:
 
-            ubQuoteNum = QUOTE_NEGATIVE_COMPANY;
+            ubQuoteNum = Enum202.QUOTE_NEGATIVE_COMPANY;
             break;
 
           case 1:
 
             if (QuoteExp_PassingDislike[pTSoldier.value.ubProfile]) {
-              ubQuoteNum = QUOTE_PASSING_DISLIKE;
+              ubQuoteNum = Enum202.QUOTE_PASSING_DISLIKE;
             } else {
-              ubQuoteNum = QUOTE_NEGATIVE_COMPANY;
+              ubQuoteNum = Enum202.QUOTE_NEGATIVE_COMPANY;
             }
             break;
 
           case 2:
 
-            ubQuoteNum = QUOTE_SOCIAL_TRAIT;
+            ubQuoteNum = Enum202.QUOTE_SOCIAL_TRAIT;
             break;
 
           default:
 
-            ubQuoteNum = QUOTE_NEGATIVE_COMPANY;
+            ubQuoteNum = Enum202.QUOTE_NEGATIVE_COMPANY;
             break;
         }
 
-        if (pTSoldier.value.ubProfile == IRA) {
-          ubQuoteNum = QUOTE_PASSING_DISLIKE;
+        if (pTSoldier.value.ubProfile == Enum268.IRA) {
+          ubQuoteNum = Enum202.QUOTE_PASSING_DISLIKE;
         }
 
         TacticalCharacterDialogue(pTSoldier, ubQuoteNum);
@@ -4287,12 +4287,12 @@ function HandleTalkInit(): BOOLEAN {
         sActionGridNo = FindAdjacentGridEx(pSoldier, pTSoldier.value.sGridNo, addressof(ubDirection), NULL, FALSE, TRUE);
 
         if (sActionGridNo == -1) {
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[NO_PATH]);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NO_PATH]);
           return FALSE;
         }
 
         if (UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints) == 0) {
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[NO_PATH]);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NO_PATH]);
           return FALSE;
         }
 
@@ -4311,7 +4311,7 @@ function HandleTalkInit(): BOOLEAN {
         }
 
         // Now walkup to talk....
-        pSoldier.value.ubPendingAction = MERC_TALK;
+        pSoldier.value.ubPendingAction = Enum257.MERC_TALK;
         pSoldier.value.uiPendingActionData1 = pTSoldier.value.ubID;
         pSoldier.value.ubPendingActionAnimCount = 0;
 
@@ -4345,7 +4345,7 @@ function HandleTalkInit(): BOOLEAN {
 function SetUIBusy(ubID: UINT8): void {
   if ((gTacticalStatus.uiFlags & INCOMBAT) && (gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.ubCurrentTeam == gbPlayerNum)) {
     if (gusSelectedSoldier == ubID) {
-      guiPendingOverrideEvent = LA_BEGINUIOURTURNLOCK;
+      guiPendingOverrideEvent = Enum207.LA_BEGINUIOURTURNLOCK;
       HandleTacticalUI();
     }
   }
@@ -4355,7 +4355,7 @@ function UnSetUIBusy(ubID: UINT8): void {
   if ((gTacticalStatus.uiFlags & INCOMBAT) && (gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.ubCurrentTeam == gbPlayerNum)) {
     if (!gTacticalStatus.fUnLockUIAfterHiddenInterrupt) {
       if (gusSelectedSoldier == ubID) {
-        guiPendingOverrideEvent = LA_ENDUIOUTURNLOCK;
+        guiPendingOverrideEvent = Enum207.LA_ENDUIOUTURNLOCK;
         HandleTacticalUI();
 
         // Set grace period...
@@ -4412,14 +4412,14 @@ function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: Pointer<SOLDIERTYPE
       if (fItemsOnlyIfOnIntTiles) {
         if (!OKUseVehicle(pTSoldier.value.ubProfile)) {
           // Set UI CURSOR....
-          guiNewUICursor = CANNOT_MOVE_UICURSOR;
+          guiNewUICursor = Enum210.CANNOT_MOVE_UICURSOR;
 
           gfBeginVehicleCursor = TRUE;
           return 1;
         } else {
           if (GetNumberInVehicle(pTSoldier.value.bVehicleID) == 0) {
             // Set UI CURSOR....
-            guiNewUICursor = ENTER_VEHICLE_UICURSOR;
+            guiNewUICursor = Enum210.ENTER_VEHICLE_UICURSOR;
 
             gfBeginVehicleCursor = TRUE;
             return 1;
@@ -4427,7 +4427,7 @@ function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: Pointer<SOLDIERTYPE
         }
       } else {
         // Set UI CURSOR....
-        guiNewUICursor = ENTER_VEHICLE_UICURSOR;
+        guiNewUICursor = Enum210.ENTER_VEHICLE_UICURSOR;
         return 1;
       }
     }
@@ -4441,9 +4441,9 @@ function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: Pointer<SOLDIERTYPE
 
         // Set UI CURSOR
         if (fUseOKCursor || ((gTacticalStatus.uiFlags & INCOMBAT) && (gTacticalStatus.uiFlags & TURNBASED))) {
-          guiNewUICursor = OKHANDCURSOR_UICURSOR;
+          guiNewUICursor = Enum210.OKHANDCURSOR_UICURSOR;
         } else {
-          guiNewUICursor = NORMALHANDCURSOR_UICURSOR;
+          guiNewUICursor = Enum210.NORMALHANDCURSOR_UICURSOR;
         }
 
         fSetCursor = HandleUIMovementCursor(pSoldier, uiCursorFlags, sActionGridNo, MOVEUI_TARGET_STEAL);
@@ -4505,9 +4505,9 @@ function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: Pointer<SOLDIERTYPE
 
         // Set UI CURSOR
         if (fUseOKCursor || ((gTacticalStatus.uiFlags & INCOMBAT) && (gTacticalStatus.uiFlags & TURNBASED))) {
-          guiNewUICursor = OKHANDCURSOR_UICURSOR;
+          guiNewUICursor = Enum210.OKHANDCURSOR_UICURSOR;
         } else {
-          guiNewUICursor = NORMALHANDCURSOR_UICURSOR;
+          guiNewUICursor = Enum210.NORMALHANDCURSOR_UICURSOR;
         }
 
         fSetCursor = HandleUIMovementCursor(pSoldier, uiCursorFlags, sActionGridNo, MOVEUI_TARGET_ITEMS);
@@ -4577,7 +4577,7 @@ function HandleTacticalUILoseCursorFromOtherScreen(): void {
 
   ErasePath(TRUE);
 
-  ((GameScreens[GAME_SCREEN].HandleScreen).value)();
+  ((GameScreens[Enum26.GAME_SCREEN].HandleScreen).value)();
 
   gfTacticalForceNoCursor = FALSE;
 
@@ -4590,9 +4590,9 @@ function SelectedGuyInBusyAnimation(): BOOLEAN {
   if (gusSelectedSoldier != NOBODY) {
     pSoldier = MercPtrs[gusSelectedSoldier];
 
-    if (pSoldier.value.usAnimState == LOB_ITEM || pSoldier.value.usAnimState == THROW_ITEM || pSoldier.value.usAnimState == PICKUP_ITEM || pSoldier.value.usAnimState == DROP_ITEM || pSoldier.value.usAnimState == OPEN_DOOR || pSoldier.value.usAnimState == OPEN_STRUCT || pSoldier.value.usAnimState == OPEN_STRUCT || pSoldier.value.usAnimState == END_OPEN_DOOR || pSoldier.value.usAnimState == END_OPEN_LOCKED_DOOR || pSoldier.value.usAnimState == ADJACENT_GET_ITEM || pSoldier.value.usAnimState == DROP_ADJACENT_OBJECT ||
+    if (pSoldier.value.usAnimState == Enum193.LOB_ITEM || pSoldier.value.usAnimState == Enum193.THROW_ITEM || pSoldier.value.usAnimState == Enum193.PICKUP_ITEM || pSoldier.value.usAnimState == Enum193.DROP_ITEM || pSoldier.value.usAnimState == Enum193.OPEN_DOOR || pSoldier.value.usAnimState == Enum193.OPEN_STRUCT || pSoldier.value.usAnimState == Enum193.OPEN_STRUCT || pSoldier.value.usAnimState == Enum193.END_OPEN_DOOR || pSoldier.value.usAnimState == Enum193.END_OPEN_LOCKED_DOOR || pSoldier.value.usAnimState == Enum193.ADJACENT_GET_ITEM || pSoldier.value.usAnimState == Enum193.DROP_ADJACENT_OBJECT ||
 
-        pSoldier.value.usAnimState == OPEN_DOOR_CROUCHED || pSoldier.value.usAnimState == BEGIN_OPENSTRUCT_CROUCHED || pSoldier.value.usAnimState == CLOSE_DOOR_CROUCHED || pSoldier.value.usAnimState == OPEN_DOOR_CROUCHED || pSoldier.value.usAnimState == OPEN_STRUCT_CROUCHED || pSoldier.value.usAnimState == END_OPENSTRUCT_CROUCHED || pSoldier.value.usAnimState == END_OPEN_DOOR_CROUCHED || pSoldier.value.usAnimState == END_OPEN_LOCKED_DOOR_CROUCHED || pSoldier.value.usAnimState == END_OPENSTRUCT_LOCKED_CROUCHED || pSoldier.value.usAnimState == BEGIN_OPENSTRUCT) {
+        pSoldier.value.usAnimState == Enum193.OPEN_DOOR_CROUCHED || pSoldier.value.usAnimState == Enum193.BEGIN_OPENSTRUCT_CROUCHED || pSoldier.value.usAnimState == Enum193.CLOSE_DOOR_CROUCHED || pSoldier.value.usAnimState == Enum193.OPEN_DOOR_CROUCHED || pSoldier.value.usAnimState == Enum193.OPEN_STRUCT_CROUCHED || pSoldier.value.usAnimState == Enum193.END_OPENSTRUCT_CROUCHED || pSoldier.value.usAnimState == Enum193.END_OPEN_DOOR_CROUCHED || pSoldier.value.usAnimState == Enum193.END_OPEN_LOCKED_DOOR_CROUCHED || pSoldier.value.usAnimState == Enum193.END_OPENSTRUCT_LOCKED_CROUCHED || pSoldier.value.usAnimState == Enum193.BEGIN_OPENSTRUCT) {
       return TRUE;
     }
   }
@@ -4718,7 +4718,7 @@ function ValidQuickExchangePosition(): BOOLEAN {
         if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
           if (PythSpacesAway(pSoldier.value.sGridNo, pOverSoldier.value.sGridNo) == 1) {
             // Check if we have LOS to them....
-            sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, pOverSoldier.value.sGridNo, pOverSoldier.value.bLevel);
+            sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, pOverSoldier.value.sGridNo, pOverSoldier.value.bLevel);
 
             if (SoldierTo3DLocationLineOfSightTest(pSoldier, pOverSoldier.value.sGridNo, pOverSoldier.value.bLevel, 3, sDistVisible, TRUE)) {
               // ATE:
@@ -4759,10 +4759,10 @@ function IsValidJumpLocation(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fCh
   let sSpot: INT16;
   let sIntSpot: INT16;
   let sDirs: INT16[] /* [4] */ = [
-    NORTH,
-    EAST,
-    SOUTH,
-    WEST,
+    Enum245.NORTH,
+    Enum245.EAST,
+    Enum245.SOUTH,
+    Enum245.WEST,
   ];
   let cnt: INT32;
   let ubGuyThere: UINT8;

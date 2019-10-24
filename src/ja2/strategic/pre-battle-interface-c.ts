@@ -71,14 +71,14 @@ let gfPersistantPBI: BOOLEAN = FALSE;
 // Contains general information about the type of encounter the player is faced with.  This
 // determines whether or not you can autoresolve the battle or even retreat.  This code
 // dictates the header that is used at the top of the PBI.
-let gubEnemyEncounterCode: UINT8 = NO_ENCOUNTER_CODE;
+let gubEnemyEncounterCode: UINT8 = Enum164.NO_ENCOUNTER_CODE;
 
 // The autoresolve during tactical battle option needs more detailed information than the
 // gubEnemyEncounterCode can provide.  The explicit version contains possibly unique codes
 // for reasons not normally used in the PBI.  For example, if we were fighting the enemy
 // in a normal situation, then shot at a civilian, the civilians associated with the victim
 // would turn hostile, which would disable the ability to autoresolve the battle.
-let gubExplicitEnemyEncounterCode: BOOLEAN = NO_ENCOUNTER_CODE;
+let gubExplicitEnemyEncounterCode: BOOLEAN = Enum164.NO_ENCOUNTER_CODE;
 
 // Location of the current battle (determines where the animated icon is blitted) and if the
 // icon is to be blitted.
@@ -124,9 +124,9 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
 
     //	InitializeTacticalStatusAtBattleStart();
     // CJC, Oct 5 98: this is all we should need from InitializeTacticalStatusAtBattleStart()
-    if (gubEnemyEncounterCode != BLOODCAT_AMBUSH_CODE && gubEnemyEncounterCode != ENTERING_BLOODCAT_LAIR_CODE) {
-      if (CheckFact(FACT_FIRST_BATTLE_FOUGHT, 0) == FALSE) {
-        SetFactTrue(FACT_FIRST_BATTLE_BEING_FOUGHT);
+    if (gubEnemyEncounterCode != Enum164.BLOODCAT_AMBUSH_CODE && gubEnemyEncounterCode != Enum164.ENTERING_BLOODCAT_LAIR_CODE) {
+      if (CheckFact(Enum170.FACT_FIRST_BATTLE_FOUGHT, 0) == FALSE) {
+        SetFactTrue(Enum170.FACT_FIRST_BATTLE_BEING_FOUGHT);
       }
     }
 
@@ -134,7 +134,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
     // Searched code and saw that this condition only happens for creatures
     // fixing a bug
     // if( guiCurrentScreen == GAME_SCREEN && pBattleGroup )
-    if (guiCurrentScreen == GAME_SCREEN && (pBattleGroup || fPersistantPBI)) {
+    if (guiCurrentScreen == Enum26.GAME_SCREEN && (pBattleGroup || fPersistantPBI)) {
       gpBattleGroup = pBattleGroup;
       gfEnteringMapScreen = TRUE;
       gfEnteringMapScreenToEnterPreBattleInterface = TRUE;
@@ -174,19 +174,19 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
 
     if (HostileCiviliansPresent()) {
       // There are hostile civilians, so no autoresolve allowed.
-      gubExplicitEnemyEncounterCode = HOSTILE_CIVILIANS_CODE;
+      gubExplicitEnemyEncounterCode = Enum164.HOSTILE_CIVILIANS_CODE;
     } else if (HostileBloodcatsPresent()) {
       // There are bloodcats in the sector, so no autoresolve allowed
-      gubExplicitEnemyEncounterCode = HOSTILE_BLOODCATS_CODE;
+      gubExplicitEnemyEncounterCode = Enum164.HOSTILE_BLOODCATS_CODE;
     } else if (gbWorldSectorZ) {
       // We are underground, so no autoresolve allowed
       pSector = addressof(SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)]);
       if (pSector.value.ubCreaturesInBattle) {
-        gubExplicitEnemyEncounterCode = FIGHTING_CREATURES_CODE;
+        gubExplicitEnemyEncounterCode = Enum164.FIGHTING_CREATURES_CODE;
       } else if (pSector.value.ubAdminsInBattle || pSector.value.ubTroopsInBattle || pSector.value.ubElitesInBattle) {
-        gubExplicitEnemyEncounterCode = ENTERING_ENEMY_SECTOR_CODE;
+        gubExplicitEnemyEncounterCode = Enum164.ENTERING_ENEMY_SECTOR_CODE;
       }
-    } else if (gubEnemyEncounterCode == ENTERING_ENEMY_SECTOR_CODE || gubEnemyEncounterCode == ENEMY_ENCOUNTER_CODE || gubEnemyEncounterCode == ENEMY_AMBUSH_CODE || gubEnemyEncounterCode == ENEMY_INVASION_CODE || gubEnemyEncounterCode == BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == ENTERING_BLOODCAT_LAIR_CODE || gubEnemyEncounterCode == CREATURE_ATTACK_CODE) {
+    } else if (gubEnemyEncounterCode == Enum164.ENTERING_ENEMY_SECTOR_CODE || gubEnemyEncounterCode == Enum164.ENEMY_ENCOUNTER_CODE || gubEnemyEncounterCode == Enum164.ENEMY_AMBUSH_CODE || gubEnemyEncounterCode == Enum164.ENEMY_INVASION_CODE || gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == Enum164.ENTERING_BLOODCAT_LAIR_CODE || gubEnemyEncounterCode == Enum164.CREATURE_ATTACK_CODE) {
       // use same code
       gubExplicitEnemyEncounterCode = gubEnemyEncounterCode;
     } else {
@@ -200,7 +200,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
   RenderMapScreenInterfaceBottom();
 
   // If we are currently in tactical, then set the flag to automatically bring up the mapscreen.
-  if (guiCurrentScreen == GAME_SCREEN) {
+  if (guiCurrentScreen == Enum26.GAME_SCREEN) {
     gfEnteringMapScreen = TRUE;
   }
 
@@ -213,7 +213,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
 
   // Create the panel
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_PREBATTLEPANEL);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_PREBATTLEPANEL);
   if (!AddVideoObject(addressof(VObjectDesc), addressof(uiInterfaceImages)))
     AssertMsg(0, "Failed to load interface\\PreBattlePanel.sti");
 
@@ -227,9 +227,9 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
   iPBButton[1] = QuickCreateButton(iPBButtonImage[1], 98, 54, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, DEFAULT_MOVE_CALLBACK, GoToSectorCallback);
   iPBButton[2] = QuickCreateButton(iPBButtonImage[2], 169, 54, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, DEFAULT_MOVE_CALLBACK, RetreatMercsCallback);
 
-  SpecifyGeneralButtonTextAttributes(iPBButton[0], gpStrategicString[STR_PB_AUTORESOLVE_BTN], BLOCKFONT, FONT_BEIGE, 141);
-  SpecifyGeneralButtonTextAttributes(iPBButton[1], gpStrategicString[STR_PB_GOTOSECTOR_BTN], BLOCKFONT, FONT_BEIGE, 141);
-  SpecifyGeneralButtonTextAttributes(iPBButton[2], gpStrategicString[STR_PB_RETREATMERCS_BTN], BLOCKFONT, FONT_BEIGE, 141);
+  SpecifyGeneralButtonTextAttributes(iPBButton[0], gpStrategicString[Enum365.STR_PB_AUTORESOLVE_BTN], BLOCKFONT, FONT_BEIGE, 141);
+  SpecifyGeneralButtonTextAttributes(iPBButton[1], gpStrategicString[Enum365.STR_PB_GOTOSECTOR_BTN], BLOCKFONT, FONT_BEIGE, 141);
+  SpecifyGeneralButtonTextAttributes(iPBButton[2], gpStrategicString[Enum365.STR_PB_RETREATMERCS_BTN], BLOCKFONT, FONT_BEIGE, 141);
   SpecifyButtonHilitedTextColors(iPBButton[0], FONT_WHITE, FONT_NEARBLACK);
   SpecifyButtonHilitedTextColors(iPBButton[1], FONT_WHITE, FONT_NEARBLACK);
   SpecifyButtonHilitedTextColors(iPBButton[2], FONT_WHITE, FONT_NEARBLACK);
@@ -308,22 +308,22 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
   if (gfPersistantPBI) {
     if (!pBattleGroup) {
       // creature's attacking!
-      gubEnemyEncounterCode = CREATURE_ATTACK_CODE;
+      gubEnemyEncounterCode = Enum164.CREATURE_ATTACK_CODE;
     } else if (gpBattleGroup.value.fPlayer) {
-      if (gubEnemyEncounterCode != BLOODCAT_AMBUSH_CODE && gubEnemyEncounterCode != ENTERING_BLOODCAT_LAIR_CODE) {
+      if (gubEnemyEncounterCode != Enum164.BLOODCAT_AMBUSH_CODE && gubEnemyEncounterCode != Enum164.ENTERING_BLOODCAT_LAIR_CODE) {
         if (ubNumStationaryEnemies) {
-          gubEnemyEncounterCode = ENTERING_ENEMY_SECTOR_CODE;
+          gubEnemyEncounterCode = Enum164.ENTERING_ENEMY_SECTOR_CODE;
         } else {
-          gubEnemyEncounterCode = ENEMY_ENCOUNTER_CODE;
+          gubEnemyEncounterCode = Enum164.ENEMY_ENCOUNTER_CODE;
 
           // Don't consider ambushes until the player has reached 25% (normal) progress
           if (gfHighPotentialForAmbush) {
             if (Chance(90)) {
-              gubEnemyEncounterCode = ENEMY_AMBUSH_CODE;
+              gubEnemyEncounterCode = Enum164.ENEMY_AMBUSH_CODE;
             }
           } else if (gfAutoAmbush && ubNumMobileEnemies > ubNumMercs) {
-            gubEnemyEncounterCode = ENEMY_AMBUSH_CODE;
-          } else if (WhatPlayerKnowsAboutEnemiesInSector(gubPBSectorX, gubPBSectorY) == KNOWS_NOTHING && CurrentPlayerProgressPercentage() >= 30 - gGameOptions.ubDifficultyLevel * 5) {
+            gubEnemyEncounterCode = Enum164.ENEMY_AMBUSH_CODE;
+          } else if (WhatPlayerKnowsAboutEnemiesInSector(gubPBSectorX, gubPBSectorY) == Enum159.KNOWS_NOTHING && CurrentPlayerProgressPercentage() >= 30 - gGameOptions.ubDifficultyLevel * 5) {
             // if the enemy outnumbers the players, then there is a small chance of the enemies ambushing the group
             if (ubNumMobileEnemies > ubNumMercs) {
               let iChance: INT32;
@@ -337,7 +337,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
                   iChance += 20;
                 }
                 if (PreRandom(100) < iChance) {
-                  gubEnemyEncounterCode = ENEMY_AMBUSH_CODE;
+                  gubEnemyEncounterCode = Enum164.ENEMY_AMBUSH_CODE;
                 }
               }
             }
@@ -347,17 +347,17 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
     } else {
       // Are enemies invading a town, or just encountered the player.
       if (GetTownIdForSector(gubPBSectorX, gubPBSectorY)) {
-        gubEnemyEncounterCode = ENEMY_INVASION_CODE;
+        gubEnemyEncounterCode = Enum164.ENEMY_INVASION_CODE;
       } else {
         switch (SECTOR(gubPBSectorX, gubPBSectorY)) {
-          case SEC_D2:
-          case SEC_D15:
-          case SEC_G8:
+          case Enum123.SEC_D2:
+          case Enum123.SEC_D15:
+          case Enum123.SEC_G8:
             // SAM sites not in towns will also be considered to be important
-            gubEnemyEncounterCode = ENEMY_INVASION_CODE;
+            gubEnemyEncounterCode = Enum164.ENEMY_INVASION_CODE;
             break;
           default:
-            gubEnemyEncounterCode = ENEMY_ENCOUNTER_CODE;
+            gubEnemyEncounterCode = Enum164.ENEMY_ENCOUNTER_CODE;
             break;
         }
       }
@@ -373,7 +373,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
 
   gfRenderPBInterface = TRUE;
   giHilitedInvolved = giHilitedUninvolved = -1;
-  MSYS_SetCurrentCursor(CURSOR_NORMAL);
+  MSYS_SetCurrentCursor(Enum317.CURSOR_NORMAL);
   StopTimeCompression();
 
   // hide all visible boxes
@@ -392,7 +392,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
   }
   HideButton(giMapContractButton);
 
-  if (gubEnemyEncounterCode == ENEMY_ENCOUNTER_CODE) {
+  if (gubEnemyEncounterCode == Enum164.ENEMY_ENCOUNTER_CODE) {
     // we know how many enemies are here, so until we leave the sector, we will continue to display the value.
     // the flag will get cleared when time advances after the fEnemyInSector flag is clear.
     pSector = addressof(SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)]);
@@ -405,18 +405,18 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
   // Set up fast help for buttons depending on the state of the button, and disable buttons
   // when necessary.
   if (gfPersistantPBI) {
-    if (gubEnemyEncounterCode == ENTERING_ENEMY_SECTOR_CODE || gubEnemyEncounterCode == ENTERING_BLOODCAT_LAIR_CODE) {
+    if (gubEnemyEncounterCode == Enum164.ENTERING_ENEMY_SECTOR_CODE || gubEnemyEncounterCode == Enum164.ENTERING_BLOODCAT_LAIR_CODE) {
       // Don't allow autoresolve for player initiated invasion battle types
       DisableButton(iPBButton[0]);
-      SetButtonFastHelpText(iPBButton[0], gpStrategicString[STR_PB_DISABLED_AUTORESOLVE_FASTHELP]);
-    } else if (gubEnemyEncounterCode == ENEMY_AMBUSH_CODE || gubEnemyEncounterCode == BLOODCAT_AMBUSH_CODE) {
+      SetButtonFastHelpText(iPBButton[0], gpStrategicString[Enum365.STR_PB_DISABLED_AUTORESOLVE_FASTHELP]);
+    } else if (gubEnemyEncounterCode == Enum164.ENEMY_AMBUSH_CODE || gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE) {
       // Don't allow autoresolve for ambushes
       DisableButton(iPBButton[0]);
       SetButtonFastHelpText(iPBButton[0], gzNonPersistantPBIText[3]);
     } else {
-      SetButtonFastHelpText(iPBButton[0], gpStrategicString[STR_PB_AUTORESOLVE_FASTHELP]);
+      SetButtonFastHelpText(iPBButton[0], gpStrategicString[Enum365.STR_PB_AUTORESOLVE_FASTHELP]);
     }
-    SetButtonFastHelpText(iPBButton[1], gpStrategicString[STR_PB_GOTOSECTOR_FASTHELP]);
+    SetButtonFastHelpText(iPBButton[1], gpStrategicString[Enum365.STR_PB_GOTOSECTOR_FASTHELP]);
     if (gfAutomaticallyStartAutoResolve) {
       DisableButton(iPBButton[1]);
     }
@@ -424,14 +424,14 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
       gfCantRetreatInPBI = FALSE;
       fRetreatAnOption = FALSE;
     }
-    if (gfAutomaticallyStartAutoResolve || !fRetreatAnOption || gubEnemyEncounterCode == ENEMY_AMBUSH_CODE || gubEnemyEncounterCode == BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == CREATURE_ATTACK_CODE) {
+    if (gfAutomaticallyStartAutoResolve || !fRetreatAnOption || gubEnemyEncounterCode == Enum164.ENEMY_AMBUSH_CODE || gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == Enum164.CREATURE_ATTACK_CODE) {
       DisableButton(iPBButton[2]);
       SetButtonFastHelpText(iPBButton[2], gzNonPersistantPBIText[9]);
     } else {
       if (!fUsePluralVersion) {
-        SetButtonFastHelpText(iPBButton[2], gpStrategicString[STR_BP_RETREATSINGLE_FASTHELP]);
+        SetButtonFastHelpText(iPBButton[2], gpStrategicString[Enum365.STR_BP_RETREATSINGLE_FASTHELP]);
       } else {
-        SetButtonFastHelpText(iPBButton[2], gpStrategicString[STR_BP_RETREATPLURAL_FASTHELP]);
+        SetButtonFastHelpText(iPBButton[2], gpStrategicString[Enum365.STR_BP_RETREATPLURAL_FASTHELP]);
       }
     }
   } else {
@@ -442,30 +442,30 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
     SetButtonFastHelpText(iPBButton[2], gzNonPersistantPBIText[0]);
     SetButtonFastHelpText(iPBButton[1], gzNonPersistantPBIText[1]);
     switch (gubExplicitEnemyEncounterCode) {
-      case CREATURE_ATTACK_CODE:
-      case ENEMY_ENCOUNTER_CODE:
-      case ENEMY_INVASION_CODE:
+      case Enum164.CREATURE_ATTACK_CODE:
+      case Enum164.ENEMY_ENCOUNTER_CODE:
+      case Enum164.ENEMY_INVASION_CODE:
         SetButtonFastHelpText(iPBButton[0], gzNonPersistantPBIText[2]);
         break;
-      case ENTERING_ENEMY_SECTOR_CODE:
+      case Enum164.ENTERING_ENEMY_SECTOR_CODE:
         DisableButton(iPBButton[0]);
         SetButtonFastHelpText(iPBButton[0], gzNonPersistantPBIText[3]);
         break;
-      case ENEMY_AMBUSH_CODE:
+      case Enum164.ENEMY_AMBUSH_CODE:
         DisableButton(iPBButton[0]);
         SetButtonFastHelpText(iPBButton[0], gzNonPersistantPBIText[4]);
         break;
-      case FIGHTING_CREATURES_CODE:
+      case Enum164.FIGHTING_CREATURES_CODE:
         DisableButton(iPBButton[0]);
         SetButtonFastHelpText(iPBButton[0], gzNonPersistantPBIText[5]);
         break;
-      case HOSTILE_CIVILIANS_CODE:
+      case Enum164.HOSTILE_CIVILIANS_CODE:
         DisableButton(iPBButton[0]);
         SetButtonFastHelpText(iPBButton[0], gzNonPersistantPBIText[6]);
         break;
-      case HOSTILE_BLOODCATS_CODE:
-      case BLOODCAT_AMBUSH_CODE:
-      case ENTERING_BLOODCAT_LAIR_CODE:
+      case Enum164.HOSTILE_BLOODCATS_CODE:
+      case Enum164.BLOODCAT_AMBUSH_CODE:
+      case Enum164.ENTERING_BLOODCAT_LAIR_CODE:
         DisableButton(iPBButton[0]);
         SetButtonFastHelpText(iPBButton[0], gzNonPersistantPBIText[7]);
         break;
@@ -475,7 +475,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
   // Disable the options button when the auto resolve  screen comes up
   EnableDisAbleMapScreenOptionsButton(FALSE);
 
-  SetMusicMode(MUSIC_TACTICAL_ENEMYPRESENT);
+  SetMusicMode(Enum328.MUSIC_TACTICAL_ENEMYPRESENT);
 
   DoTransitionFromMapscreenToPreBattleInterface();
 }
@@ -657,29 +657,29 @@ function RenderPBHeader(piX: Pointer<INT32>, piWidth: Pointer<INT32>): void {
     swprintf(str, gzNonPersistantPBIText[8]);
   } else
     switch (gubEnemyEncounterCode) {
-      case ENEMY_INVASION_CODE:
-        swprintf(str, gpStrategicString[STR_PB_ENEMYINVASION_HEADER]);
+      case Enum164.ENEMY_INVASION_CODE:
+        swprintf(str, gpStrategicString[Enum365.STR_PB_ENEMYINVASION_HEADER]);
         break;
-      case ENEMY_ENCOUNTER_CODE:
-        swprintf(str, gpStrategicString[STR_PB_ENEMYENCOUNTER_HEADER]);
+      case Enum164.ENEMY_ENCOUNTER_CODE:
+        swprintf(str, gpStrategicString[Enum365.STR_PB_ENEMYENCOUNTER_HEADER]);
         break;
-      case ENEMY_AMBUSH_CODE:
-        swprintf(str, gpStrategicString[STR_PB_ENEMYAMBUSH_HEADER]);
+      case Enum164.ENEMY_AMBUSH_CODE:
+        swprintf(str, gpStrategicString[Enum365.STR_PB_ENEMYAMBUSH_HEADER]);
         gfBlinkHeader = TRUE;
         break;
-      case ENTERING_ENEMY_SECTOR_CODE:
-        swprintf(str, gpStrategicString[STR_PB_ENTERINGENEMYSECTOR_HEADER]);
+      case Enum164.ENTERING_ENEMY_SECTOR_CODE:
+        swprintf(str, gpStrategicString[Enum365.STR_PB_ENTERINGENEMYSECTOR_HEADER]);
         break;
-      case CREATURE_ATTACK_CODE:
-        swprintf(str, gpStrategicString[STR_PB_CREATUREATTACK_HEADER]);
+      case Enum164.CREATURE_ATTACK_CODE:
+        swprintf(str, gpStrategicString[Enum365.STR_PB_CREATUREATTACK_HEADER]);
         gfBlinkHeader = TRUE;
         break;
-      case BLOODCAT_AMBUSH_CODE:
-        swprintf(str, gpStrategicString[STR_PB_BLOODCATAMBUSH_HEADER]);
+      case Enum164.BLOODCAT_AMBUSH_CODE:
+        swprintf(str, gpStrategicString[Enum365.STR_PB_BLOODCATAMBUSH_HEADER]);
         gfBlinkHeader = TRUE;
         break;
-      case ENTERING_BLOODCAT_LAIR_CODE:
-        swprintf(str, gpStrategicString[STR_PB_ENTERINGBLOODCATLAIR_HEADER]);
+      case Enum164.ENTERING_BLOODCAT_LAIR_CODE:
+        swprintf(str, gpStrategicString[Enum365.STR_PB_ENTERINGBLOODCATLAIR_HEADER]);
         break;
     }
   width = StringPixLength(str, FONT10ARIALBOLD);
@@ -738,24 +738,24 @@ function RenderPreBattleInterface(): void {
     gfRenderPBInterface = FALSE;
     GetVideoObject(addressof(hVObject), uiInterfaceImages);
     // main panel
-    BltVideoObject(guiSAVEBUFFER, hVObject, MAINPANEL, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.MAINPANEL, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
     // main title
 
     RenderPBHeader(addressof(x), addressof(width));
     // now draw the title bars up to the text.
     for (i = x - 12; i > 20; i -= 10) {
-      BltVideoObject(guiSAVEBUFFER, hVObject, TITLE_BAR_PIECE, i, 6, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.TITLE_BAR_PIECE, i, 6, VO_BLT_SRCTRANSPARENCY, NULL);
     }
     for (i = x + width + 2; i < 231; i += 10) {
-      BltVideoObject(guiSAVEBUFFER, hVObject, TITLE_BAR_PIECE, i, 6, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.TITLE_BAR_PIECE, i, 6, VO_BLT_SRCTRANSPARENCY, NULL);
     }
 
     y = BOTTOM_Y - ACTUAL_HEIGHT - ROW_HEIGHT * max(guiNumUninvolved, 1);
-    BltVideoObject(guiSAVEBUFFER, hVObject, UNINVOLVED_HEADER, 8, y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.UNINVOLVED_HEADER, 8, y, VO_BLT_SRCTRANSPARENCY, NULL);
 
     SetFont(BLOCKFONT);
     SetFontForeground(FONT_BEIGE);
-    swprintf(str, gpStrategicString[STR_PB_LOCATION]);
+    swprintf(str, gpStrategicString[Enum365.STR_PB_LOCATION]);
     width = StringPixLength(str, BLOCKFONT);
     if (width > 64) {
       SetFont(BLOCKFONTNARROW);
@@ -764,12 +764,12 @@ function RenderPreBattleInterface(): void {
     mprintf(65 - width, 17, str);
 
     SetFont(BLOCKFONT);
-    if (gubEnemyEncounterCode != CREATURE_ATTACK_CODE) {
-      swprintf(str, gpStrategicString[STR_PB_ENEMIES]);
-    } else if (gubEnemyEncounterCode == BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == ENTERING_BLOODCAT_LAIR_CODE) {
-      swprintf(str, gpStrategicString[STR_PB_BLOODCATS]);
+    if (gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE) {
+      swprintf(str, gpStrategicString[Enum365.STR_PB_ENEMIES]);
+    } else if (gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == Enum164.ENTERING_BLOODCAT_LAIR_CODE) {
+      swprintf(str, gpStrategicString[Enum365.STR_PB_BLOODCATS]);
     } else {
-      swprintf(str, gpStrategicString[STR_PB_CREATURES]);
+      swprintf(str, gpStrategicString[Enum365.STR_PB_CREATURES]);
     }
     width = StringPixLength(str, BLOCKFONT);
     if (width > 52) {
@@ -779,7 +779,7 @@ function RenderPreBattleInterface(): void {
     mprintf(54 - width, 38, str);
 
     SetFont(BLOCKFONT);
-    swprintf(str, gpStrategicString[STR_PB_MERCS]);
+    swprintf(str, gpStrategicString[Enum365.STR_PB_MERCS]);
     width = StringPixLength(str, BLOCKFONT);
     if (width > 52) {
       SetFont(BLOCKFONTNARROW);
@@ -788,7 +788,7 @@ function RenderPreBattleInterface(): void {
     mprintf(139 - width, 38, str);
 
     SetFont(BLOCKFONT);
-    swprintf(str, gpStrategicString[STR_PB_MILITIA]);
+    swprintf(str, gpStrategicString[Enum365.STR_PB_MILITIA]);
     width = StringPixLength(str, BLOCKFONT);
     if (width > 52) {
       SetFont(BLOCKFONTNARROW);
@@ -799,12 +799,12 @@ function RenderPreBattleInterface(): void {
     // Draw the bottom columns
     for (i = 0; i < max(guiNumUninvolved, 1); i++) {
       y = BOTTOM_Y - ROW_HEIGHT * (i + 1) + 1;
-      BltVideoObject(guiSAVEBUFFER, hVObject, BOTTOM_COLUMN, 161, y, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.BOTTOM_COLUMN, 161, y, VO_BLT_SRCTRANSPARENCY, NULL);
     }
 
     for (i = 0; i < (21 - max(guiNumUninvolved, 1)); i++) {
       y = TOP_Y + ROW_HEIGHT * i;
-      BltVideoObject(guiSAVEBUFFER, hVObject, TOP_COLUMN, 186, y, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(guiSAVEBUFFER, hVObject, Enum162.TOP_COLUMN, 186, y, VO_BLT_SRCTRANSPARENCY, NULL);
     }
 
     // location
@@ -813,11 +813,11 @@ function RenderPreBattleInterface(): void {
     SetFontShadow(FONT_NEARBLACK);
 
     GetSectorIDString(gubPBSectorX, gubPBSectorY, gubPBSectorZ, pSectorName, TRUE);
-    mprintf(70, 17, "%s %s", gpStrategicString[STR_PB_SECTOR], pSectorName);
+    mprintf(70, 17, "%s %s", gpStrategicString[Enum365.STR_PB_SECTOR], pSectorName);
 
     // enemy
     SetFont(FONT14ARIAL);
-    if (gubEnemyEncounterCode == CREATURE_ATTACK_CODE || gubEnemyEncounterCode == BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == ENTERING_BLOODCAT_LAIR_CODE || WhatPlayerKnowsAboutEnemiesInSector(gubPBSectorX, gubPBSectorY) != KNOWS_HOW_MANY) {
+    if (gubEnemyEncounterCode == Enum164.CREATURE_ATTACK_CODE || gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == Enum164.ENTERING_BLOODCAT_LAIR_CODE || WhatPlayerKnowsAboutEnemiesInSector(gubPBSectorX, gubPBSectorY) != Enum159.KNOWS_HOW_MANY) {
       // don't know how many
       swprintf(str, "?");
       SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)].bLastKnownEnemies = -2;
@@ -888,7 +888,7 @@ function RenderPreBattleInterface(): void {
     // |  NAME  | ASSIGN |  LOC   |  DEST  |  DEP   |
     if (!guiNumUninvolved) {
       SetFontForeground(FONT_YELLOW);
-      wcscpy(str, gpStrategicString[STR_PB_NONE]);
+      wcscpy(str, gpStrategicString[Enum365.STR_PB_NONE]);
       x = 17 + (52 - StringPixLength(str, BLOCKFONT2)) / 2;
       y = BOTTOM_Y - ROW_HEIGHT + 2;
       mprintf(x, y, str);
@@ -960,10 +960,10 @@ function AutoResolveBattleCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
         if (!gfPersistantPBI) {
           return;
         }
-        PlayJA2Sample(EXPLOSION_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+        PlayJA2Sample(Enum330.EXPLOSION_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
         gStrategicStatus.usPlayerKills += NumEnemiesInSector(gubPBSectorX, gubPBSectorY);
         EliminateAllEnemies(gubPBSectorX, gubPBSectorY);
-        SetMusicMode(MUSIC_TACTICAL_VICTORY);
+        SetMusicMode(Enum328.MUSIC_TACTICAL_VICTORY);
         btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
         DrawButton(btn.value.IDNum);
         InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
@@ -972,7 +972,7 @@ function AutoResolveBattleCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
         RefreshScreen(NULL);
         KillPreBattleInterface();
         StopTimeCompression();
-        SetMusicMode(MUSIC_TACTICAL_NOTHING);
+        SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
         return;
       }
       gfEnterAutoResolveMode = TRUE;
@@ -988,10 +988,10 @@ function GoToSectorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         if (!gfPersistantPBI) {
           return;
         }
-        PlayJA2Sample(EXPLOSION_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+        PlayJA2Sample(Enum330.EXPLOSION_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
         gStrategicStatus.usPlayerKills += NumEnemiesInSector(gubPBSectorX, gubPBSectorY);
         EliminateAllEnemies(gubPBSectorX, gubPBSectorY);
-        SetMusicMode(MUSIC_TACTICAL_VICTORY);
+        SetMusicMode(Enum328.MUSIC_TACTICAL_VICTORY);
         btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
         DrawButton(btn.value.IDNum);
         InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
@@ -1000,10 +1000,10 @@ function GoToSectorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         RefreshScreen(NULL);
         KillPreBattleInterface();
         StopTimeCompression();
-        SetMusicMode(MUSIC_TACTICAL_NOTHING);
+        SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
         return;
       }
-      if (gfPersistantPBI && gpBattleGroup && gpBattleGroup.value.fPlayer && gubEnemyEncounterCode != ENEMY_AMBUSH_CODE && gubEnemyEncounterCode != CREATURE_ATTACK_CODE && gubEnemyEncounterCode != BLOODCAT_AMBUSH_CODE) {
+      if (gfPersistantPBI && gpBattleGroup && gpBattleGroup.value.fPlayer && gubEnemyEncounterCode != Enum164.ENEMY_AMBUSH_CODE && gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE && gubEnemyEncounterCode != Enum164.BLOODCAT_AMBUSH_CODE) {
         gfEnterTacticalPlacementGUI = TRUE;
       }
       btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
@@ -1052,7 +1052,7 @@ function RetreatMercsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
 
       // Warp time by 5 minutes so that player can't just go back into the sector he left.
-      WarpGameTime(300, WARPTIME_NO_PROCESSING_OF_EVENTS);
+      WarpGameTime(300, Enum131.WARPTIME_NO_PROCESSING_OF_EVENTS);
       ResetMovementForEnemyGroupsInLocation(gubPBSectorX, gubPBSectorY);
 
       btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
@@ -1066,7 +1066,7 @@ function RetreatMercsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       gpBattleGroup = NULL;
       gfBlitBattleSectorLocator = FALSE;
 
-      SetMusicMode(MUSIC_TACTICAL_NOTHING);
+      SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
     }
   }
 }
@@ -1090,31 +1090,31 @@ function GetSoldierConditionInfo(pSoldier: Pointer<SOLDIERTYPE>, szCondition: Po
   // Go from the worst condition to the best.
   if (!pSoldier.value.bLife) {
     // 0 life
-    swprintf(szCondition, pConditionStrings[COND_DEAD]);
+    swprintf(szCondition, pConditionStrings[Enum163.COND_DEAD]);
   } else if (pSoldier.value.bLife < OKLIFE && pSoldier.value.bBleeding) {
     // life less than OKLIFE and bleeding
-    swprintf(szCondition, pConditionStrings[COND_DYING]);
+    swprintf(szCondition, pConditionStrings[Enum163.COND_DYING]);
   } else if (pSoldier.value.bBreath < OKBREATH && pSoldier.value.bCollapsed) {
     // breath less than OKBREATH
-    swprintf(szCondition, pConditionStrings[COND_UNCONCIOUS]);
+    swprintf(szCondition, pConditionStrings[Enum163.COND_UNCONCIOUS]);
   } else if (pSoldier.value.bBleeding > MIN_BLEEDING_THRESHOLD) {
     // bleeding
-    swprintf(szCondition, pConditionStrings[COND_BLEEDING]);
+    swprintf(szCondition, pConditionStrings[Enum163.COND_BLEEDING]);
   } else if (pSoldier.value.bLife * 100 < pSoldier.value.bLifeMax * 50) {
     // less than 50% life
-    swprintf(szCondition, pConditionStrings[COND_WOUNDED]);
+    swprintf(szCondition, pConditionStrings[Enum163.COND_WOUNDED]);
   } else if (pSoldier.value.bBreath < 50) {
     // breath less than half
-    swprintf(szCondition, pConditionStrings[COND_FATIGUED]);
+    swprintf(szCondition, pConditionStrings[Enum163.COND_FATIGUED]);
   } else if (pSoldier.value.bLife * 100 < pSoldier.value.bLifeMax * 67) {
     // less than 67% life
-    swprintf(szCondition, pConditionStrings[COND_FAIR]);
+    swprintf(szCondition, pConditionStrings[Enum163.COND_FAIR]);
   } else if (pSoldier.value.bLife * 100 < pSoldier.value.bLifeMax * 86) {
     // less than 86% life
-    swprintf(szCondition, pConditionStrings[COND_GOOD]);
+    swprintf(szCondition, pConditionStrings[Enum163.COND_GOOD]);
   } else {
     // 86%+ life
-    swprintf(szCondition, pConditionStrings[COND_EXCELLENT]);
+    swprintf(szCondition, pConditionStrings[Enum163.COND_EXCELLENT]);
   }
 }
 
@@ -1285,34 +1285,34 @@ function CalculateNonPersistantPBIInfo(): void {
     // Either the locator isn't on or the locator info is in a different sector
 
     // Calculated the encounter type
-    gubEnemyEncounterCode = NO_ENCOUNTER_CODE;
-    gubExplicitEnemyEncounterCode = NO_ENCOUNTER_CODE;
+    gubEnemyEncounterCode = Enum164.NO_ENCOUNTER_CODE;
+    gubExplicitEnemyEncounterCode = Enum164.NO_ENCOUNTER_CODE;
     if (HostileCiviliansPresent()) {
       // There are hostile civilians, so no autoresolve allowed.
-      gubExplicitEnemyEncounterCode = HOSTILE_CIVILIANS_CODE;
+      gubExplicitEnemyEncounterCode = Enum164.HOSTILE_CIVILIANS_CODE;
     } else if (HostileBloodcatsPresent()) {
       // There are bloodcats in the sector, so no autoresolve allowed
-      gubExplicitEnemyEncounterCode = HOSTILE_BLOODCATS_CODE;
+      gubExplicitEnemyEncounterCode = Enum164.HOSTILE_BLOODCATS_CODE;
     } else if (gbWorldSectorZ) {
       let pSector: Pointer<UNDERGROUND_SECTORINFO> = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
       Assert(pSector);
       if (pSector.value.ubCreaturesInBattle) {
-        gubExplicitEnemyEncounterCode = FIGHTING_CREATURES_CODE;
+        gubExplicitEnemyEncounterCode = Enum164.FIGHTING_CREATURES_CODE;
       } else if (pSector.value.ubAdminsInBattle || pSector.value.ubTroopsInBattle || pSector.value.ubElitesInBattle) {
-        gubExplicitEnemyEncounterCode = ENTERING_ENEMY_SECTOR_CODE;
-        gubEnemyEncounterCode = ENTERING_ENEMY_SECTOR_CODE;
+        gubExplicitEnemyEncounterCode = Enum164.ENTERING_ENEMY_SECTOR_CODE;
+        gubEnemyEncounterCode = Enum164.ENTERING_ENEMY_SECTOR_CODE;
       }
     } else {
       let pSector: Pointer<SECTORINFO> = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
       Assert(pSector);
       if (pSector.value.ubCreaturesInBattle) {
-        gubExplicitEnemyEncounterCode = FIGHTING_CREATURES_CODE;
+        gubExplicitEnemyEncounterCode = Enum164.FIGHTING_CREATURES_CODE;
       } else if (pSector.value.ubAdminsInBattle || pSector.value.ubTroopsInBattle || pSector.value.ubElitesInBattle) {
-        gubExplicitEnemyEncounterCode = ENTERING_ENEMY_SECTOR_CODE;
-        gubEnemyEncounterCode = ENTERING_ENEMY_SECTOR_CODE;
+        gubExplicitEnemyEncounterCode = Enum164.ENTERING_ENEMY_SECTOR_CODE;
+        gubEnemyEncounterCode = Enum164.ENTERING_ENEMY_SECTOR_CODE;
       }
     }
-    if (gubExplicitEnemyEncounterCode != NO_ENCOUNTER_CODE) {
+    if (gubExplicitEnemyEncounterCode != Enum164.NO_ENCOUNTER_CODE) {
       // Set up the location as well as turning on the blit flag.
       gubPBSectorX = gWorldSectorX;
       gubPBSectorY = gWorldSectorY;
@@ -1381,9 +1381,9 @@ function PutNonSquadMercsInPlayerGroupOnSquads(pGroup: Pointer<GROUP>, fExitVehi
 
     if (pSoldier.value.bActive && pSoldier.value.bLife && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
       // if involved, but off-duty (includes mercs inside vehicles!)
-      if (PlayerMercInvolvedInThisCombat(pSoldier) && (pSoldier.value.bAssignment >= ON_DUTY)) {
+      if (PlayerMercInvolvedInThisCombat(pSoldier) && (pSoldier.value.bAssignment >= Enum117.ON_DUTY)) {
         // if in a vehicle, pull him out
-        if (pSoldier.value.bAssignment == VEHICLE) {
+        if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
           if (fExitVehicles) {
             TakeSoldierOutOfVehicle(pSoldier);
 
@@ -1473,7 +1473,7 @@ function PlayerMercInvolvedInThisCombat(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN
   Assert(pSoldier);
   Assert(pSoldier.value.bActive);
 
-  if (!pSoldier.value.fBetweenSectors && pSoldier.value.bAssignment != IN_TRANSIT && pSoldier.value.bAssignment != ASSIGNMENT_POW && pSoldier.value.bAssignment != ASSIGNMENT_DEAD && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) &&
+  if (!pSoldier.value.fBetweenSectors && pSoldier.value.bAssignment != Enum117.IN_TRANSIT && pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW && pSoldier.value.bAssignment != Enum117.ASSIGNMENT_DEAD && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) &&
       // Robot is involved if it has a valid controller with it, uninvolved otherwise
       (!AM_A_ROBOT(pSoldier) || (pSoldier.value.ubRobotRemoteHolderID != NOBODY)) && !SoldierAboardAirborneHeli(pSoldier)) {
     if (CurrentBattleSectorIs(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ)) {
@@ -1544,48 +1544,48 @@ function LogBattleResults(ubVictoryCode: UINT8): void {
   let sSectorY: INT16;
   let sSectorZ: INT16;
   GetCurrentBattleSectorXYZ(addressof(sSectorX), addressof(sSectorY), addressof(sSectorZ));
-  if (ubVictoryCode == LOG_VICTORY) {
+  if (ubVictoryCode == Enum165.LOG_VICTORY) {
     switch (gubEnemyEncounterCode) {
-      case ENEMY_INVASION_CODE:
-        AddHistoryToPlayersLog(HISTORY_DEFENDEDTOWNSECTOR, 0, GetWorldTotalMin(), sSectorX, sSectorY);
+      case Enum164.ENEMY_INVASION_CODE:
+        AddHistoryToPlayersLog(Enum83.HISTORY_DEFENDEDTOWNSECTOR, 0, GetWorldTotalMin(), sSectorX, sSectorY);
         break;
-      case ENEMY_ENCOUNTER_CODE:
-        AddHistoryToPlayersLog(HISTORY_WONBATTLE, 0, GetWorldTotalMin(), sSectorX, sSectorY);
+      case Enum164.ENEMY_ENCOUNTER_CODE:
+        AddHistoryToPlayersLog(Enum83.HISTORY_WONBATTLE, 0, GetWorldTotalMin(), sSectorX, sSectorY);
         break;
-      case ENEMY_AMBUSH_CODE:
-        AddHistoryToPlayersLog(HISTORY_WIPEDOUTENEMYAMBUSH, 0, GetWorldTotalMin(), sSectorX, sSectorY);
+      case Enum164.ENEMY_AMBUSH_CODE:
+        AddHistoryToPlayersLog(Enum83.HISTORY_WIPEDOUTENEMYAMBUSH, 0, GetWorldTotalMin(), sSectorX, sSectorY);
         break;
-      case ENTERING_ENEMY_SECTOR_CODE:
-        AddHistoryToPlayersLog(HISTORY_SUCCESSFULATTACK, 0, GetWorldTotalMin(), sSectorX, sSectorY);
+      case Enum164.ENTERING_ENEMY_SECTOR_CODE:
+        AddHistoryToPlayersLog(Enum83.HISTORY_SUCCESSFULATTACK, 0, GetWorldTotalMin(), sSectorX, sSectorY);
         break;
-      case CREATURE_ATTACK_CODE:
-        AddHistoryToPlayersLog(HISTORY_CREATURESATTACKED, 0, GetWorldTotalMin(), sSectorX, sSectorY);
+      case Enum164.CREATURE_ATTACK_CODE:
+        AddHistoryToPlayersLog(Enum83.HISTORY_CREATURESATTACKED, 0, GetWorldTotalMin(), sSectorX, sSectorY);
         break;
-      case BLOODCAT_AMBUSH_CODE:
-      case ENTERING_BLOODCAT_LAIR_CODE:
-        AddHistoryToPlayersLog(HISTORY_SLAUGHTEREDBLOODCATS, 0, GetWorldTotalMin(), sSectorX, sSectorY);
+      case Enum164.BLOODCAT_AMBUSH_CODE:
+      case Enum164.ENTERING_BLOODCAT_LAIR_CODE:
+        AddHistoryToPlayersLog(Enum83.HISTORY_SLAUGHTEREDBLOODCATS, 0, GetWorldTotalMin(), sSectorX, sSectorY);
         break;
     }
   } else {
     switch (gubEnemyEncounterCode) {
-      case ENEMY_INVASION_CODE:
-        AddHistoryToPlayersLog(HISTORY_LOSTTOWNSECTOR, 0, GetWorldTotalMin(), sSectorX, sSectorY);
+      case Enum164.ENEMY_INVASION_CODE:
+        AddHistoryToPlayersLog(Enum83.HISTORY_LOSTTOWNSECTOR, 0, GetWorldTotalMin(), sSectorX, sSectorY);
         break;
-      case ENEMY_ENCOUNTER_CODE:
-        AddHistoryToPlayersLog(HISTORY_LOSTBATTLE, 0, GetWorldTotalMin(), sSectorX, sSectorY);
+      case Enum164.ENEMY_ENCOUNTER_CODE:
+        AddHistoryToPlayersLog(Enum83.HISTORY_LOSTBATTLE, 0, GetWorldTotalMin(), sSectorX, sSectorY);
         break;
-      case ENEMY_AMBUSH_CODE:
-        AddHistoryToPlayersLog(HISTORY_FATALAMBUSH, 0, GetWorldTotalMin(), sSectorX, sSectorY);
+      case Enum164.ENEMY_AMBUSH_CODE:
+        AddHistoryToPlayersLog(Enum83.HISTORY_FATALAMBUSH, 0, GetWorldTotalMin(), sSectorX, sSectorY);
         break;
-      case ENTERING_ENEMY_SECTOR_CODE:
-        AddHistoryToPlayersLog(HISTORY_UNSUCCESSFULATTACK, 0, GetWorldTotalMin(), sSectorX, sSectorY);
+      case Enum164.ENTERING_ENEMY_SECTOR_CODE:
+        AddHistoryToPlayersLog(Enum83.HISTORY_UNSUCCESSFULATTACK, 0, GetWorldTotalMin(), sSectorX, sSectorY);
         break;
-      case CREATURE_ATTACK_CODE:
-        AddHistoryToPlayersLog(HISTORY_CREATURESATTACKED, 0, GetWorldTotalMin(), sSectorX, sSectorY);
+      case Enum164.CREATURE_ATTACK_CODE:
+        AddHistoryToPlayersLog(Enum83.HISTORY_CREATURESATTACKED, 0, GetWorldTotalMin(), sSectorX, sSectorY);
         break;
-      case BLOODCAT_AMBUSH_CODE:
-      case ENTERING_BLOODCAT_LAIR_CODE:
-        AddHistoryToPlayersLog(HISTORY_KILLEDBYBLOODCATS, 0, GetWorldTotalMin(), sSectorX, sSectorY);
+      case Enum164.BLOODCAT_AMBUSH_CODE:
+      case Enum164.ENTERING_BLOODCAT_LAIR_CODE:
+        AddHistoryToPlayersLog(Enum83.HISTORY_KILLEDBYBLOODCATS, 0, GetWorldTotalMin(), sSectorX, sSectorY);
         break;
     }
   }

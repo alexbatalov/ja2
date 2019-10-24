@@ -101,7 +101,7 @@ function EnterMercsFiles(): BOOLEAN {
 
   // load the stats box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_STATSBOX);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_STATSBOX);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiStatsBox)));
 
   // load the Portrait box graphic and add it
@@ -117,26 +117,26 @@ function EnterMercsFiles(): BOOLEAN {
   // Prev Box button
   guiButtonImage = LoadButtonImage("LAPTOP\\BigButtons.sti", -1, 0, -1, 1, -1);
 
-  guiPrevButton = CreateIconAndTextButton(guiButtonImage, MercInfo[MERC_FILES_PREVIOUS], FONT12ARIAL, MERC_BUTTON_UP_COLOR, DEFAULT_SHADOW, MERC_BUTTON_DOWN_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, MERC_FILES_PREV_BUTTON_X, MERC_FILES_PREV_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnMercPrevButtonCallback);
+  guiPrevButton = CreateIconAndTextButton(guiButtonImage, MercInfo[Enum341.MERC_FILES_PREVIOUS], FONT12ARIAL, MERC_BUTTON_UP_COLOR, DEFAULT_SHADOW, MERC_BUTTON_DOWN_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, MERC_FILES_PREV_BUTTON_X, MERC_FILES_PREV_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnMercPrevButtonCallback);
 
-  SetButtonCursor(guiPrevButton, CURSOR_LAPTOP_SCREEN);
-  SpecifyDisabledButtonStyle(guiPrevButton, DISABLED_STYLE_SHADED);
+  SetButtonCursor(guiPrevButton, Enum317.CURSOR_LAPTOP_SCREEN);
+  SpecifyDisabledButtonStyle(guiPrevButton, Enum29.DISABLED_STYLE_SHADED);
 
   // Next Button
-  guiNextButton = CreateIconAndTextButton(guiButtonImage, MercInfo[MERC_FILES_NEXT], FONT12ARIAL, MERC_BUTTON_UP_COLOR, DEFAULT_SHADOW, MERC_BUTTON_DOWN_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, MERC_FILES_NEXT_BUTTON_X, MERC_FILES_NEXT_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnMercNextButtonCallback);
+  guiNextButton = CreateIconAndTextButton(guiButtonImage, MercInfo[Enum341.MERC_FILES_NEXT], FONT12ARIAL, MERC_BUTTON_UP_COLOR, DEFAULT_SHADOW, MERC_BUTTON_DOWN_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, MERC_FILES_NEXT_BUTTON_X, MERC_FILES_NEXT_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnMercNextButtonCallback);
 
-  SetButtonCursor(guiNextButton, CURSOR_LAPTOP_SCREEN);
-  SpecifyDisabledButtonStyle(guiNextButton, DISABLED_STYLE_SHADED);
+  SetButtonCursor(guiNextButton, Enum317.CURSOR_LAPTOP_SCREEN);
+  SpecifyDisabledButtonStyle(guiNextButton, Enum29.DISABLED_STYLE_SHADED);
 
   // Hire button
-  guiHireButton = CreateIconAndTextButton(guiButtonImage, MercInfo[MERC_FILES_HIRE], FONT12ARIAL, MERC_BUTTON_UP_COLOR, DEFAULT_SHADOW, MERC_BUTTON_DOWN_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, MERC_FILES_HIRE_BUTTON_X, MERC_FILES_HIRE_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnMercHireButtonCallback);
-  SetButtonCursor(guiHireButton, CURSOR_LAPTOP_SCREEN);
-  SpecifyDisabledButtonStyle(guiHireButton, DISABLED_STYLE_SHADED);
+  guiHireButton = CreateIconAndTextButton(guiButtonImage, MercInfo[Enum341.MERC_FILES_HIRE], FONT12ARIAL, MERC_BUTTON_UP_COLOR, DEFAULT_SHADOW, MERC_BUTTON_DOWN_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, MERC_FILES_HIRE_BUTTON_X, MERC_FILES_HIRE_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnMercHireButtonCallback);
+  SetButtonCursor(guiHireButton, Enum317.CURSOR_LAPTOP_SCREEN);
+  SpecifyDisabledButtonStyle(guiHireButton, Enum29.DISABLED_STYLE_SHADED);
 
   // Back button
-  guiMercBackButton = CreateIconAndTextButton(guiButtonImage, MercInfo[MERC_FILES_HOME], FONT12ARIAL, MERC_BUTTON_UP_COLOR, DEFAULT_SHADOW, MERC_BUTTON_DOWN_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, MERC_FILES_BACK_BUTTON_X, MERC_FILES_BACK_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnMercFilesBackButtonCallback);
-  SetButtonCursor(guiMercBackButton, CURSOR_LAPTOP_SCREEN);
-  SpecifyDisabledButtonStyle(guiMercBackButton, DISABLED_STYLE_SHADED);
+  guiMercBackButton = CreateIconAndTextButton(guiButtonImage, MercInfo[Enum341.MERC_FILES_HOME], FONT12ARIAL, MERC_BUTTON_UP_COLOR, DEFAULT_SHADOW, MERC_BUTTON_DOWN_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, MERC_FILES_BACK_BUTTON_X, MERC_FILES_BACK_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnMercFilesBackButtonCallback);
+  SetButtonCursor(guiMercBackButton, Enum317.CURSOR_LAPTOP_SCREEN);
+  SpecifyDisabledButtonStyle(guiMercBackButton, Enum29.DISABLED_STYLE_SHADED);
 
   //	RenderMercsFiles();
   return TRUE;
@@ -183,7 +183,7 @@ function RenderMercsFiles(): void {
   DrawTextToScreen(gMercProfiles[GetMercIDFromMERCArray(gubCurMercIndex)].zName, MERC_NAME_X, MERC_NAME_Y, 0, MERC_NAME_FONT, MERC_NAME_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Load and display the mercs bio
-  LoadAndDisplayMercBio((GetMercIDFromMERCArray(gubCurMercIndex) - BIFF));
+  LoadAndDisplayMercBio((GetMercIDFromMERCArray(gubCurMercIndex) - Enum268.BIFF));
 
   // Display the mercs statistic
   DisplayMercsStats(GetMercIDFromMERCArray(gubCurMercIndex));
@@ -191,7 +191,7 @@ function RenderMercsFiles(): void {
   // check to see if the merc is dead if so disable the contact button
   if (IsMercDead(GetMercIDFromMERCArray(gubCurMercIndex)))
     DisableButton(guiHireButton);
-  else if ((LaptopSaveInfo.gubPlayersMercAccountStatus != MERC_ACCOUNT_VALID) && (LaptopSaveInfo.gubPlayersMercAccountStatus != MERC_ACCOUNT_SUSPENDED) && (LaptopSaveInfo.gubPlayersMercAccountStatus != MERC_ACCOUNT_VALID_FIRST_WARNING)) {
+  else if ((LaptopSaveInfo.gubPlayersMercAccountStatus != Enum104.MERC_ACCOUNT_VALID) && (LaptopSaveInfo.gubPlayersMercAccountStatus != Enum104.MERC_ACCOUNT_SUSPENDED) && (LaptopSaveInfo.gubPlayersMercAccountStatus != Enum104.MERC_ACCOUNT_VALID_FIRST_WARNING)) {
     // if the players account is suspended, disable the button
     DisableButton(guiHireButton);
   } else
@@ -275,16 +275,16 @@ function BtnMercHireButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
       btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
       // if the players accont is suspended, go back to the main screen and have Speck inform the players
-      if (LaptopSaveInfo.gubPlayersMercAccountStatus == MERC_ACCOUNT_SUSPENDED) {
-        guiCurrentLaptopMode = LAPTOP_MODE_MERC;
-        gusMercVideoSpeckSpeech = SPECK_QUOTE_ALTERNATE_OPENING_5_PLAYER_OWES_SPECK_ACCOUNT_SUSPENDED;
-        gubArrivedFromMercSubSite = MERC_CAME_FROM_HIRE_PAGE;
+      if (LaptopSaveInfo.gubPlayersMercAccountStatus == Enum104.MERC_ACCOUNT_SUSPENDED) {
+        guiCurrentLaptopMode = Enum95.LAPTOP_MODE_MERC;
+        gusMercVideoSpeckSpeech = Enum111.SPECK_QUOTE_ALTERNATE_OPENING_5_PLAYER_OWES_SPECK_ACCOUNT_SUSPENDED;
+        gubArrivedFromMercSubSite = Enum105.MERC_CAME_FROM_HIRE_PAGE;
       }
 
       // else try to hire the merc
       else if (MercFilesHireMerc(GetMercIDFromMERCArray(gubCurMercIndex))) {
-        guiCurrentLaptopMode = LAPTOP_MODE_MERC;
-        gubArrivedFromMercSubSite = MERC_CAME_FROM_HIRE_PAGE;
+        guiCurrentLaptopMode = Enum95.LAPTOP_MODE_MERC;
+        gubArrivedFromMercSubSite = Enum105.MERC_CAME_FROM_HIRE_PAGE;
 
         // start the merc talking
         //				HandlePlayerHiringMerc( GetMercIDFromMERCArray( gubCurMercIndex ) );
@@ -347,16 +347,16 @@ function DisplayMercFace(ubMercID: UINT8): BOOLEAN {
     // Blt face to screen
     BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, MERC_FACE_X, MERC_FACE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
-    DisplayWrappedString(MERC_FACE_X, MERC_FACE_Y + MERC_PORTRAIT_TEXT_OFFSET_Y, MERC_FACE_WIDTH, 2, FONT14ARIAL, 145, MercInfo[MERC_FILES_MERC_IS_DEAD], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DisplayWrappedString(MERC_FACE_X, MERC_FACE_Y + MERC_PORTRAIT_TEXT_OFFSET_Y, MERC_FACE_WIDTH, 2, FONT14ARIAL, 145, MercInfo[Enum341.MERC_FILES_MERC_IS_DEAD], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   }
 
-  else if (ubMercID == FLO && gubFact[FACT_PC_MARRYING_DARYL_IS_FLO]) {
+  else if (ubMercID == Enum268.FLO && gubFact[Enum170.FACT_PC_MARRYING_DARYL_IS_FLO]) {
     ShadowVideoSurfaceRect(FRAME_BUFFER, MERC_FACE_X, MERC_FACE_Y, MERC_FACE_X + MERC_FACE_WIDTH, MERC_FACE_Y + MERC_FACE_HEIGHT);
     DisplayWrappedString(MERC_FACE_X, MERC_FACE_Y + MERC_PORTRAIT_TEXT_OFFSET_Y, MERC_FACE_WIDTH, 2, FONT14ARIAL, 145, pPersonnelDepartedStateStrings[3], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   }
 
   // else if the merc is currently a POW or, the merc was fired as a pow
-  else if (pMerc.value.bMercStatus == MERC_FIRED_AS_A_POW || (pSoldier && pSoldier.value.bAssignment == ASSIGNMENT_POW)) {
+  else if (pMerc.value.bMercStatus == MERC_FIRED_AS_A_POW || (pSoldier && pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
     ShadowVideoSurfaceRect(FRAME_BUFFER, MERC_FACE_X, MERC_FACE_Y, MERC_FACE_X + MERC_FACE_WIDTH, MERC_FACE_Y + MERC_FACE_HEIGHT);
     DisplayWrappedString(MERC_FACE_X, MERC_FACE_Y + MERC_PORTRAIT_TEXT_OFFSET_Y, MERC_FACE_WIDTH, 2, FONT14ARIAL, 145, pPOWStrings[0], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   }
@@ -364,13 +364,13 @@ function DisplayMercFace(ubMercID: UINT8): BOOLEAN {
   // if the merc is hired already, say it
   else if (!IsMercHireable(ubMercID) && pMerc.value.bMercStatus == MERC_HIRED_BUT_NOT_ARRIVED_YET || pMerc.value.bMercStatus > 0) {
     ShadowVideoSurfaceRect(FRAME_BUFFER, MERC_FACE_X, MERC_FACE_Y, MERC_FACE_X + MERC_FACE_WIDTH, MERC_FACE_Y + MERC_FACE_HEIGHT);
-    DisplayWrappedString(MERC_FACE_X, MERC_FACE_Y + MERC_PORTRAIT_TEXT_OFFSET_Y, MERC_FACE_WIDTH, 2, FONT14ARIAL, 145, MercInfo[MERC_FILES_ALREADY_HIRED], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DisplayWrappedString(MERC_FACE_X, MERC_FACE_Y + MERC_PORTRAIT_TEXT_OFFSET_Y, MERC_FACE_WIDTH, 2, FONT14ARIAL, 145, MercInfo[Enum341.MERC_FILES_ALREADY_HIRED], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   }
 
   // if the merc is away on another assignemnt, say the merc is unavailable
   else if (!IsMercHireable(ubMercID)) {
     ShadowVideoSurfaceRect(FRAME_BUFFER, MERC_FACE_X, MERC_FACE_Y, MERC_FACE_X + MERC_FACE_WIDTH, MERC_FACE_Y + MERC_FACE_HEIGHT);
-    DisplayWrappedString(MERC_FACE_X, MERC_FACE_Y + MERC_PORTRAIT_TEXT_OFFSET_Y, MERC_FACE_WIDTH, 2, FONT14ARIAL, 145, MercInfo[MERC_FILES_MERC_UNAVAILABLE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DisplayWrappedString(MERC_FACE_X, MERC_FACE_Y + MERC_PORTRAIT_TEXT_OFFSET_Y, MERC_FACE_WIDTH, 2, FONT14ARIAL, 145, MercInfo[Enum341.MERC_FILES_MERC_UNAVAILABLE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   }
 
   DeleteVideoObjectFromIndex(guiMercFace);
@@ -391,7 +391,7 @@ function LoadAndDisplayMercBio(ubMercID: UINT8): void {
   uiStartLoc = MERC_BIO_SIZE * ubMercID + MERC_BIO_INFO_TEXT_SIZE;
   LoadEncryptedDataFromFile(MERCBIOFILE, sText, uiStartLoc, MERC_BIO_ADD_INFO_TEXT_SIZE);
   if (sText[0] != 0) {
-    DrawTextToScreen(MercInfo[MERC_FILES_ADDITIONAL_INFO], MERC_ADD_BIO_TITLE_X, MERC_ADD_BIO_TITLE_Y, 0, MERC_TITLE_FONT, MERC_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(MercInfo[Enum341.MERC_FILES_ADDITIONAL_INFO], MERC_ADD_BIO_TITLE_X, MERC_ADD_BIO_TITLE_Y, 0, MERC_TITLE_FONT, MERC_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
     DisplayWrappedString(MERC_ADD_BIO_TEXT_X, MERC_ADD_BIO_TEXT_Y, MERC_BIO_WIDTH, 2, MERC_BIO_FONT, MERC_BIO_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   }
 }
@@ -404,66 +404,66 @@ function DisplayMercsStats(ubMercID: UINT8): void {
   usPosY = MERC_HEALTH_Y;
 
   // Health
-  DrawTextToScreen(MercInfo[MERC_FILES_HEALTH], MERC_STATS_FIRST_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(MercInfo[Enum341.MERC_FILES_HEALTH], MERC_STATS_FIRST_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   DrawNumeralsToScreen(gMercProfiles[ubMercID].bLife, 3, MERC_STATS_FIRST_NUM_COL_X, MERC_HEALTH_Y, MERC_STATS_FONT, MERC_DYNAMIC_STATS_COLOR);
   usPosY += MERC_SPACE_BN_LINES;
 
   // Agility
-  DrawTextToScreen(MercInfo[MERC_FILES_AGILITY], MERC_STATS_FIRST_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(MercInfo[Enum341.MERC_FILES_AGILITY], MERC_STATS_FIRST_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   DrawNumeralsToScreen(gMercProfiles[ubMercID].bAgility, 3, MERC_STATS_FIRST_NUM_COL_X, usPosY, MERC_STATS_FONT, MERC_DYNAMIC_STATS_COLOR);
   usPosY += MERC_SPACE_BN_LINES;
 
   // Dexterity
-  DrawTextToScreen(MercInfo[MERC_FILES_DEXTERITY], MERC_STATS_FIRST_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(MercInfo[Enum341.MERC_FILES_DEXTERITY], MERC_STATS_FIRST_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   DrawNumeralsToScreen(gMercProfiles[ubMercID].bDexterity, 3, MERC_STATS_FIRST_NUM_COL_X, usPosY, MERC_STATS_FONT, MERC_DYNAMIC_STATS_COLOR);
   usPosY += MERC_SPACE_BN_LINES;
 
   // Strenght
-  DrawTextToScreen(MercInfo[MERC_FILES_STRENGTH], MERC_STATS_FIRST_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(MercInfo[Enum341.MERC_FILES_STRENGTH], MERC_STATS_FIRST_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   DrawNumeralsToScreen(gMercProfiles[ubMercID].bStrength, 3, MERC_STATS_FIRST_NUM_COL_X, usPosY, MERC_STATS_FONT, MERC_DYNAMIC_STATS_COLOR);
   usPosY += MERC_SPACE_BN_LINES;
 
   // Leadership
-  DrawTextToScreen(MercInfo[MERC_FILES_LEADERSHIP], MERC_STATS_FIRST_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(MercInfo[Enum341.MERC_FILES_LEADERSHIP], MERC_STATS_FIRST_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   DrawNumeralsToScreen(gMercProfiles[ubMercID].bLeadership, 3, MERC_STATS_FIRST_NUM_COL_X, usPosY, MERC_STATS_FONT, MERC_DYNAMIC_STATS_COLOR);
   usPosY += MERC_SPACE_BN_LINES;
 
   // Wisdom
-  DrawTextToScreen(MercInfo[MERC_FILES_WISDOM], MERC_STATS_FIRST_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(MercInfo[Enum341.MERC_FILES_WISDOM], MERC_STATS_FIRST_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   DrawNumeralsToScreen(gMercProfiles[ubMercID].bWisdom, 3, MERC_STATS_FIRST_NUM_COL_X, usPosY, MERC_STATS_FONT, MERC_DYNAMIC_STATS_COLOR);
 
   usPosY = MERC_HEALTH_Y;
 
   // Experience Level
-  DrawTextToScreen(MercInfo[MERC_FILES_EXPLEVEL], MERC_STATS_SECOND_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(MercInfo[Enum341.MERC_FILES_EXPLEVEL], MERC_STATS_SECOND_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   DrawNumeralsToScreen(gMercProfiles[ubMercID].bExpLevel, 3, MERC_STATS_SECOND_NUM_COL_X, usPosY, MERC_STATS_FONT, MERC_DYNAMIC_STATS_COLOR);
   usPosY += MERC_SPACE_BN_LINES;
 
   // Marksmanship
-  DrawTextToScreen(MercInfo[MERC_FILES_MARKSMANSHIP], MERC_STATS_SECOND_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(MercInfo[Enum341.MERC_FILES_MARKSMANSHIP], MERC_STATS_SECOND_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   DrawNumeralsToScreen(gMercProfiles[ubMercID].bMarksmanship, 3, MERC_STATS_SECOND_NUM_COL_X, usPosY, MERC_STATS_FONT, MERC_DYNAMIC_STATS_COLOR);
   usPosY += MERC_SPACE_BN_LINES;
 
   // Mechanical
-  DrawTextToScreen(MercInfo[MERC_FILES_MECHANICAL], MERC_STATS_SECOND_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(MercInfo[Enum341.MERC_FILES_MECHANICAL], MERC_STATS_SECOND_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   DrawNumeralsToScreen(gMercProfiles[ubMercID].bMechanical, 3, MERC_STATS_SECOND_NUM_COL_X, usPosY, MERC_STATS_FONT, MERC_DYNAMIC_STATS_COLOR);
   usPosY += MERC_SPACE_BN_LINES;
 
   // Explosive
-  DrawTextToScreen(MercInfo[MERC_FILES_EXPLOSIVE], MERC_STATS_SECOND_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(MercInfo[Enum341.MERC_FILES_EXPLOSIVE], MERC_STATS_SECOND_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   DrawNumeralsToScreen(gMercProfiles[ubMercID].bExplosive, 3, MERC_STATS_SECOND_NUM_COL_X, usPosY, MERC_STATS_FONT, MERC_DYNAMIC_STATS_COLOR);
   usPosY += MERC_SPACE_BN_LINES;
 
   // Medical
-  DrawTextToScreen(MercInfo[MERC_FILES_MEDICAL], MERC_STATS_SECOND_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(MercInfo[Enum341.MERC_FILES_MEDICAL], MERC_STATS_SECOND_COL_X, usPosY, 0, MERC_STATS_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   DrawNumeralsToScreen(gMercProfiles[ubMercID].bMedical, 3, MERC_STATS_SECOND_NUM_COL_X, usPosY, MERC_STATS_FONT, MERC_DYNAMIC_STATS_COLOR);
   usPosY += MERC_SPACE_BN_LINES;
 
   // Daily Salary
-  DrawTextToScreen(MercInfo[MERC_FILES_SALARY], MERC_STATS_SECOND_COL_X, usPosY, 0, MERC_NAME_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(MercInfo[Enum341.MERC_FILES_SALARY], MERC_STATS_SECOND_COL_X, usPosY, 0, MERC_NAME_FONT, MERC_STATIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
-  usPosX = MERC_STATS_SECOND_COL_X + StringPixLength(MercInfo[MERC_FILES_SALARY], MERC_NAME_FONT) + 1;
-  swprintf(sString, "%d %s", gMercProfiles[ubMercID].sSalary, MercInfo[MERC_FILES_PER_DAY]);
+  usPosX = MERC_STATS_SECOND_COL_X + StringPixLength(MercInfo[Enum341.MERC_FILES_SALARY], MERC_NAME_FONT) + 1;
+  swprintf(sString, "%d %s", gMercProfiles[ubMercID].sSalary, MercInfo[Enum341.MERC_FILES_PER_DAY]);
   DrawTextToScreen(sString, usPosX, usPosY, 95, MERC_NAME_FONT, MERC_DYNAMIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
 }
 
@@ -483,9 +483,9 @@ function MercFilesHireMerc(ubMercID: UINT8): BOOLEAN {
   // if the merc is away, dont hire
   if (!IsMercHireable(ubMercID)) {
     if (gMercProfiles[ubMercID].bMercStatus != MERC_IS_DEAD) {
-      guiCurrentLaptopMode = LAPTOP_MODE_MERC;
-      gusMercVideoSpeckSpeech = SPECK_QUOTE_PLAYER_TRIES_TO_HIRE_ALREADY_HIRED_MERC;
-      gubArrivedFromMercSubSite = MERC_CAME_FROM_HIRE_PAGE;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_MERC;
+      gusMercVideoSpeckSpeech = Enum111.SPECK_QUOTE_PLAYER_TRIES_TO_HIRE_ALREADY_HIRED_MERC;
+      gubArrivedFromMercSubSite = Enum105.MERC_CAME_FROM_HIRE_PAGE;
     }
 
     return FALSE;
@@ -514,7 +514,7 @@ function MercFilesHireMerc(ubMercID: UINT8): BOOLEAN {
   bReturnCode = HireMerc(addressof(HireMercStruct));
   // already have 20 mercs on the team
   if (bReturnCode == MERC_HIRE_OVER_20_MERCS_HIRED) {
-    DoLapTopMessageBox(MSG_BOX_LAPTOP_DEFAULT, MercInfo[MERC_FILES_HIRE_TO_MANY_PEOPLE_WARNING], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+    DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, MercInfo[Enum341.MERC_FILES_HIRE_TO_MANY_PEOPLE_WARNING], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
     return FALSE;
   } else if (bReturnCode == MERC_HIRE_FAILED) {
     // function failed
@@ -534,8 +534,8 @@ function BtnMercFilesBackButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-      guiCurrentLaptopMode = LAPTOP_MODE_MERC;
-      gubArrivedFromMercSubSite = MERC_CAME_FROM_HIRE_PAGE;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_MERC;
+      gubArrivedFromMercSubSite = Enum105.MERC_CAME_FROM_HIRE_PAGE;
 
       InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }

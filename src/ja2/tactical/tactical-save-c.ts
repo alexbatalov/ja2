@@ -171,7 +171,7 @@ function LoadMapTempFilesFromSavedGameFile(hFile: HWFILE): BOOLEAN {
 
   // HACK FOR GABBY
   if ((gTacticalStatus.uiFlags & LOADING_SAVED_GAME) && guiSaveGameVersion < 81) {
-    if (gMercProfiles[GABBY].bMercStatus != MERC_IS_DEAD) {
+    if (gMercProfiles[Enum268.GABBY].bMercStatus != MERC_IS_DEAD) {
       // turn off alternate flags for the sectors he could be in
       // randomly place him in one of the two possible sectors
       SectorInfo[SECTOR(14, MAP_ROW_L)].uiFlags &= ~SF_USE_ALTERNATE_MAP;
@@ -179,12 +179,12 @@ function LoadMapTempFilesFromSavedGameFile(hFile: HWFILE): BOOLEAN {
 
       if (Random(2)) {
         SectorInfo[SECTOR(11, MAP_ROW_H)].uiFlags |= SF_USE_ALTERNATE_MAP;
-        gMercProfiles[GABBY].sSectorX = 11;
-        gMercProfiles[GABBY].sSectorY = MAP_ROW_H;
+        gMercProfiles[Enum268.GABBY].sSectorX = 11;
+        gMercProfiles[Enum268.GABBY].sSectorY = MAP_ROW_H;
       } else {
         SectorInfo[SECTOR(4, MAP_ROW_I)].uiFlags |= SF_USE_ALTERNATE_MAP;
-        gMercProfiles[GABBY].sSectorX = 4;
-        gMercProfiles[GABBY].sSectorY = MAP_ROW_I;
+        gMercProfiles[Enum268.GABBY].sSectorX = 4;
+        gMercProfiles[Enum268.GABBY].sSectorY = MAP_ROW_I;
       }
     }
   }
@@ -706,7 +706,7 @@ function HandleAllReachAbleItemsInTheSector(sSectorX: INT16, sSectorY: INT16, bS
     for (uiCounter = gTacticalStatus.Team[gbPlayerNum].bFirstID; uiCounter < gTacticalStatus.Team[gbPlayerNum].bLastID; uiCounter++) {
       pSoldier = MercPtrs[uiCounter];
       if (pSoldier && pSoldier.value.bActive && pSoldier.value.bLife > 0 && pSoldier.value.sSectorX == sSectorX && pSoldier.value.sSectorY == sSectorY && pSoldier.value.bSectorZ == bSectorZ) {
-        if (FindBestPath(pSoldier, sGridNo2, pSoldier.value.bLevel, WALKING, NO_COPYROUTE, 0)) {
+        if (FindBestPath(pSoldier, sGridNo2, pSoldier.value.bLevel, Enum193.WALKING, NO_COPYROUTE, 0)) {
           fSecondary = TRUE;
           break;
         }
@@ -732,9 +732,9 @@ function HandleAllReachAbleItemsInTheSector(sSectorX: INT16, sSectorY: INT16, bS
     // if the item is trapped then flag it as unreachable, period
     if (gWorldItems[uiCounter].o.bTrap > 0) {
       fReachable = FALSE;
-    } else if (ItemTypeExistsAtLocation(gWorldItems[uiCounter].sGridNo, OWNERSHIP, gWorldItems[uiCounter].ubLevel, NULL)) {
+    } else if (ItemTypeExistsAtLocation(gWorldItems[uiCounter].sGridNo, Enum225.OWNERSHIP, gWorldItems[uiCounter].ubLevel, NULL)) {
       fReachable = FALSE;
-    } else if (gWorldItems[uiCounter].o.usItem == CHALICE) {
+    } else if (gWorldItems[uiCounter].o.usItem == Enum225.CHALICE) {
       fReachable = FALSE;
     } else if (gpWorldLevelData[gWorldItems[uiCounter].sGridNo].uiFlags & MAPELEMENT_REACHABLE) {
       // the gridno itself is reachable so the item is reachable
@@ -744,7 +744,7 @@ function HandleAllReachAbleItemsInTheSector(sSectorX: INT16, sSectorY: INT16, bS
       fReachable = TRUE;
     } else {
       // check the 4 grids around the item, if any is reachable...then the item is reachable
-      for (ubDir = 0; ubDir < NUM_WORLD_DIRECTIONS; ubDir += 2) {
+      for (ubDir = 0; ubDir < Enum245.NUM_WORLD_DIRECTIONS; ubDir += 2) {
         sNewLoc = NewGridNo(gWorldItems[uiCounter].sGridNo, DirectionInc(ubDir));
         if (sNewLoc != gWorldItems[uiCounter].sGridNo) {
           // then it's a valid gridno, so test it
@@ -783,7 +783,7 @@ function LoadCurrentSectorsInformationFromTempItemsFile(): BOOLEAN {
 
     // OK  - this is true except for interrotations - we need that item temp file to be
     // processed!
-    if (GetMeanwhileID() == INTERROGATION) {
+    if (GetMeanwhileID() == Enum160.INTERROGATION) {
       // If there is a file, load in the Items array
       if (DoesTempFileExistsForMap(SF_ITEM_TEMP_FILE_EXISTS, gWorldSectorX, gWorldSectorY, gbWorldSectorZ)) {
         if (!LoadAndAddWorldItemsFromTempFile(gWorldSectorX, gWorldSectorY, gbWorldSectorZ))
@@ -1252,7 +1252,7 @@ function LoadRottingCorpsesFromTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ:
       // ATE: Don't place corpses if
       // a ) in a town and b) indoors
       if (gbWorldSectorZ == 0) {
-        if (bTownId != BLANK_SECTOR) {
+        if (bTownId != Enum135.BLANK_SECTOR) {
           // Are we indoors?
           if (FloorAtGridNo(def.sGridNo)) {
             // OK, finally, check TOC vs game time to see if at least some time has passed
@@ -1337,7 +1337,7 @@ function SaveNPCInformationToProfileStruct(): void {
       }
 
       pProfile.value.fUseProfileInsertionInfo = TRUE;
-      pProfile.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+      pProfile.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
       // if ( gTacticalStatus.uiFlags & LOADING_SAVED_GAME )
       //{
       // if we are saving the game, save the NPC's current location
@@ -1890,15 +1890,15 @@ function SetSectorFlag(sMapX: INT16, sMapY: INT16, bMapZ: UINT8, uiFlagToSet: UI
     // do certain things when particular sectors are visited
     if ((sMapX == TIXA_SECTOR_X) && (sMapY == TIXA_SECTOR_Y)) {
       // Tixa prison (not seen until Tixa visited)
-      SectorInfo[SEC_J9].uiFacilitiesFlags |= SFCF_PRISON;
+      SectorInfo[Enum123.SEC_J9].uiFacilitiesFlags |= SFCF_PRISON;
     }
 
     if ((sMapX == GUN_RANGE_X) && (sMapY == GUN_RANGE_Y) && (bMapZ == GUN_RANGE_Z)) {
       // Alma shooting range (not seen until sector visited)
-      SectorInfo[SEC_H13].uiFacilitiesFlags |= SFCF_GUN_RANGE;
-      SectorInfo[SEC_H14].uiFacilitiesFlags |= SFCF_GUN_RANGE;
-      SectorInfo[SEC_I13].uiFacilitiesFlags |= SFCF_GUN_RANGE;
-      SectorInfo[SEC_I14].uiFacilitiesFlags |= SFCF_GUN_RANGE;
+      SectorInfo[Enum123.SEC_H13].uiFacilitiesFlags |= SFCF_GUN_RANGE;
+      SectorInfo[Enum123.SEC_H14].uiFacilitiesFlags |= SFCF_GUN_RANGE;
+      SectorInfo[Enum123.SEC_I13].uiFacilitiesFlags |= SFCF_GUN_RANGE;
+      SectorInfo[Enum123.SEC_I14].uiFacilitiesFlags |= SFCF_GUN_RANGE;
     }
 
     if (!GetSectorFlagStatus(sMapX, sMapY, bMapZ, SF_ALREADY_VISITED)) {
@@ -1947,10 +1947,10 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
   let sYPos: INT16;
   let uiDeathAnim: UINT32;
   let uiPossibleDeathAnims: UINT32[] /* [] */ = [
-    GENERIC_HIT_DEATH,
-    FALLBACK_HIT_DEATH,
-    PRONE_HIT_DEATH,
-    FLYBACK_HIT_DEATH,
+    Enum193.GENERIC_HIT_DEATH,
+    Enum193.FALLBACK_HIT_DEATH,
+    Enum193.PRONE_HIT_DEATH,
+    Enum193.FLYBACK_HIT_DEATH,
   ];
   const ubNumOfDeaths: UINT8 = 4;
 
@@ -1972,7 +1972,7 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
 
   // go through and and find out how many items there are
   uiNumberOfItems = 0;
-  for (i = 0; i < NUM_INV_SLOTS; i++) {
+  for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
     if (pSoldier.value.inv[i].usItem != 0) {
       // if not a player soldier
       if (pSoldier.value.bTeam != gbPlayerNum) {
@@ -2008,7 +2008,7 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
 
     // loop through all the soldiers items and add them to the world item array
     bCount = 0;
-    for (i = 0; i < NUM_INV_SLOTS; i++) {
+    for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
       if (pSoldier.value.inv[i].usItem != 0) {
         // if the item can be dropped
         if (!(pSoldier.value.inv[i].fFlags & OBJECT_UNDROPPABLE) || pSoldier.value.bTeam == gbPlayerNum) {
@@ -2062,7 +2062,7 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
 
   // if the dead body shot be the result of a Jfk headshot, set it
   if (uiFlags & ADD_DEAD_SOLDIER__USE_JFK_HEADSHOT_CORPSE)
-    uiDeathAnim = JFK_HITDEATH;
+    uiDeathAnim = Enum193.JFK_HITDEATH;
 
   // else chose a random death sequence
   else
@@ -2102,7 +2102,7 @@ function InitExitGameDialogBecauseFileHackDetected(): void {
   let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // do message box and return
-  giErrorMessageBox = DoMessageBox(MSG_BOX_BASIC_STYLE, pAntiHackerString[ANTIHACKERSTR_EXITGAME], GAME_SCREEN, MSG_BOX_FLAG_OK, TempFileLoadErrorMessageReturnCallback, addressof(CenteringRect));
+  giErrorMessageBox = DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pAntiHackerString[Enum332.ANTIHACKERSTR_EXITGAME], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, TempFileLoadErrorMessageReturnCallback, addressof(CenteringRect));
 }
 
 function MercChecksum(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
@@ -2123,7 +2123,7 @@ function MercChecksum(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
   uiChecksum *= (pSoldier.value.bExpLevel + 1);
   uiChecksum += (pSoldier.value.ubProfile + 1);
 
-  for (uiLoop = 0; uiLoop < NUM_INV_SLOTS; uiLoop++) {
+  for (uiLoop = 0; uiLoop < Enum261.NUM_INV_SLOTS; uiLoop++) {
     uiChecksum += pSoldier.value.inv[uiLoop].usItem;
     uiChecksum += pSoldier.value.inv[uiLoop].ubNumberOfObjects;
   }
@@ -2148,7 +2148,7 @@ function ProfileChecksum(pProfile: Pointer<MERCPROFILESTRUCT>): UINT32 {
   // put in some multipliers too!
   uiChecksum *= (pProfile.value.bExpLevel + 1);
 
-  for (uiLoop = 0; uiLoop < NUM_INV_SLOTS; uiLoop++) {
+  for (uiLoop = 0; uiLoop < Enum261.NUM_INV_SLOTS; uiLoop++) {
     uiChecksum += pProfile.value.inv[uiLoop];
     uiChecksum += pProfile.value.bInvNumber[uiLoop];
   }

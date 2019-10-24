@@ -279,7 +279,7 @@ function LoadShortNameItemInfo(ubIndex: UINT16, pNameString: STR16): BOOLEAN {
 function LoadAllItemNames(): void {
   let usLoop: UINT16;
 
-  for (usLoop = 0; usLoop < MAXITEMS; usLoop++) {
+  for (usLoop = 0; usLoop < Enum225.MAXITEMS; usLoop++) {
     LoadItemInfo(usLoop, ItemNames[usLoop], NULL);
 
     // Load short item info
@@ -292,11 +292,11 @@ function LoadAllExternalText(): void {
 }
 
 function GetWeightUnitString(): Pointer<INT16> {
-  if (gGameSettings.fOptions[TOPTION_USE_METRIC_SYSTEM]) // metric
+  if (gGameSettings.fOptions[Enum8.TOPTION_USE_METRIC_SYSTEM]) // metric
   {
-    return pMessageStrings[MSG_KILOGRAM_ABBREVIATION];
+    return pMessageStrings[Enum333.MSG_KILOGRAM_ABBREVIATION];
   } else {
-    return pMessageStrings[MSG_POUND_ABBREVIATION];
+    return pMessageStrings[Enum333.MSG_POUND_ABBREVIATION];
   }
 }
 
@@ -304,7 +304,7 @@ function GetWeightBasedOnMetricOption(uiObjectWeight: UINT32): FLOAT {
   let fWeight: FLOAT = 0.0;
 
   // if the user is smart and wants things displayed in 'metric'
-  if (gGameSettings.fOptions[TOPTION_USE_METRIC_SYSTEM]) // metric
+  if (gGameSettings.fOptions[Enum8.TOPTION_USE_METRIC_SYSTEM]) // metric
   {
     fWeight = uiObjectWeight;
   }

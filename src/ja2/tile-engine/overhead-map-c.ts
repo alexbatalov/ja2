@@ -46,7 +46,7 @@ function InitNewOverheadDB(ubTilesetID: UINT8): void {
   let NumRegions: UINT32;
   let dbSize: UINT32 = 0;
 
-  for (uiLoop = 0; uiLoop < NUMBEROFTILETYPES; uiLoop++) {
+  for (uiLoop = 0; uiLoop < Enum313.NUMBEROFTILETYPES; uiLoop++) {
     // Create video object
 
     // Adjust for BPP
@@ -61,7 +61,7 @@ function InitNewOverheadDB(ubTilesetID: UINT8): void {
 
     if (hVObject == NULL) {
       // TRY loading from default directory
-      FilenameForBPP(gTilesets[GENERIC_1].TileSurfaceFilenames[uiLoop], cFileBPP);
+      FilenameForBPP(gTilesets[Enum316.GENERIC_1].TileSurfaceFilenames[uiLoop], cFileBPP);
       // Adjust for tileset position
       sprintf(cAdjustedFile, "TILESETS\\0\\T\\%s", cFileBPP);
 
@@ -83,7 +83,7 @@ function InitNewOverheadDB(ubTilesetID: UINT8): void {
   }
 
   // NOW LOOP THROUGH AND CREATE DATABASE
-  for (cnt1 = 0; cnt1 < NUMBEROFTILETYPES; cnt1++) {
+  for (cnt1 = 0; cnt1 < Enum313.NUMBEROFTILETYPES; cnt1++) {
     // Get number of regions
     s = gSmTileSurf[cnt1];
 
@@ -125,8 +125,8 @@ function InitNewOverheadDB(ubTilesetID: UINT8): void {
     let sX2: INT16;
     let sY2: INT16;
 
-    CalculateRestrictedMapCoords(NORTH, addressof(sX1), addressof(sY1), addressof(sX2), addressof(gsStartRestrictedY), 640, 320);
-    CalculateRestrictedMapCoords(WEST, addressof(sX1), addressof(sY1), addressof(gsStartRestrictedX), addressof(sY2), 640, 320);
+    CalculateRestrictedMapCoords(Enum245.NORTH, addressof(sX1), addressof(sY1), addressof(sX2), addressof(gsStartRestrictedY), 640, 320);
+    CalculateRestrictedMapCoords(Enum245.WEST, addressof(sX1), addressof(sY1), addressof(gsStartRestrictedX), addressof(sY2), 640, 320);
   }
 
   // Copy over shade tables from main tileset
@@ -136,7 +136,7 @@ function InitNewOverheadDB(ubTilesetID: UINT8): void {
 function DeleteOverheadDB(): void {
   let cnt: INT32;
 
-  for (cnt = 0; cnt < NUMBEROFTILETYPES; cnt++) {
+  for (cnt = 0; cnt < Enum313.NUMBEROFTILETYPES; cnt++) {
     DeleteVideoObject(gSmTileSurf[cnt].vo);
   }
 }
@@ -409,11 +409,11 @@ function GoIntoOverheadMap(): void {
 
   gfInOverheadMap = TRUE;
 
-  MSYS_DefineRegion(addressof(OverheadBackgroundRegion), 0, 0, 640, 360, MSYS_PRIORITY_HIGH, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(OverheadBackgroundRegion), 0, 0, 640, 360, MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Add region
   MSYS_AddRegion(addressof(OverheadBackgroundRegion));
 
-  MSYS_DefineRegion(addressof(OverheadRegion), 0, 0, gsVIEWPORT_END_X, 320, MSYS_PRIORITY_HIGH, CURSOR_NORMAL, MoveOverheadRegionCallback, ClickOverheadRegionCallback);
+  MSYS_DefineRegion(addressof(OverheadRegion), 0, 0, gsVIEWPORT_END_X, 320, MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, MoveOverheadRegionCallback, ClickOverheadRegionCallback);
   // Add region
   MSYS_AddRegion(addressof(OverheadRegion));
 
@@ -440,7 +440,7 @@ function GoIntoOverheadMap(): void {
   if (!gfEditMode) {
     // Make sure we are in team panel mode...
     gfSwitchPanel = TRUE;
-    gbNewPanel = TEAM_PANEL;
+    gbNewPanel = Enum215.TEAM_PANEL;
     gubNewPanelParam = gusSelectedSoldier;
     fInterfacePanelDirty = DIRTYLEVEL2;
 
@@ -664,7 +664,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
 
           pNode = gpWorldLevelData[usTileIndex].pObjectHead;
           while (pNode != NULL) {
-            if (pNode.value.usIndex < NUMBEROFTILES) {
+            if (pNode.value.usIndex < Enum312.NUMBEROFTILES) {
               // Don't render itempools!
               if (!(pNode.value.uiFlags & LEVELNODE_ITEM)) {
                 pTile = addressof(gSmTileDB[pNode.value.usIndex]);
@@ -692,7 +692,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
 
           pNode = gpWorldLevelData[usTileIndex].pShadowHead;
           while (pNode != NULL) {
-            if (pNode.value.usIndex < NUMBEROFTILES) {
+            if (pNode.value.usIndex < Enum312.NUMBEROFTILES) {
               pTile = addressof(gSmTileDB[pNode.value.usIndex]);
               sX = sTempPosX_S;
               sY = sTempPosY_S - sHeight;
@@ -711,7 +711,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
           pNode = gpWorldLevelData[usTileIndex].pStructHead;
 
           while (pNode != NULL) {
-            if (pNode.value.usIndex < NUMBEROFTILES) {
+            if (pNode.value.usIndex < Enum312.NUMBEROFTILES) {
               // Don't render itempools!
               if (!(pNode.value.uiFlags & LEVELNODE_ITEM)) {
                 pTile = addressof(gSmTileDB[pNode.value.usIndex]);
@@ -791,7 +791,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
 
             pNode = gpWorldLevelData[usTileIndex].pRoofHead;
             while (pNode != NULL) {
-              if (pNode.value.usIndex < NUMBEROFTILES) {
+              if (pNode.value.usIndex < Enum312.NUMBEROFTILES) {
                 if (!(pNode.value.uiFlags & LEVELNODE_HIDDEN)) {
                   pTile = addressof(gSmTileDB[pNode.value.usIndex]);
 
@@ -840,16 +840,16 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
 
     // OK, blacken out edges of smaller maps...
     if (gMapInformation.ubRestrictedScrollID != 0) {
-      CalculateRestrictedMapCoords(NORTH, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sY2), sEndXS, sEndYS);
+      CalculateRestrictedMapCoords(Enum245.NORTH, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sY2), sEndXS, sEndYS);
       ColorFillVideoSurfaceArea(FRAME_BUFFER, sX1, sY1, sX2, sY2, Get16BPPColor(FROMRGB(0, 0, 0)));
 
-      CalculateRestrictedMapCoords(WEST, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sY2), sEndXS, sEndYS);
+      CalculateRestrictedMapCoords(Enum245.WEST, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sY2), sEndXS, sEndYS);
       ColorFillVideoSurfaceArea(FRAME_BUFFER, sX1, sY1, sX2, sY2, Get16BPPColor(FROMRGB(0, 0, 0)));
 
-      CalculateRestrictedMapCoords(SOUTH, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sY2), sEndXS, sEndYS);
+      CalculateRestrictedMapCoords(Enum245.SOUTH, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sY2), sEndXS, sEndYS);
       ColorFillVideoSurfaceArea(FRAME_BUFFER, sX1, sY1, sX2, sY2, Get16BPPColor(FROMRGB(0, 0, 0)));
 
-      CalculateRestrictedMapCoords(EAST, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sY2), sEndXS, sEndYS);
+      CalculateRestrictedMapCoords(Enum245.EAST, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sY2), sEndXS, sEndYS);
       ColorFillVideoSurfaceArea(FRAME_BUFFER, sX1, sY1, sX2, sY2, Get16BPPColor(FROMRGB(0, 0, 0)));
     }
 
@@ -1336,7 +1336,7 @@ function GetOverheadMouseGridNoForFullSoldiersGridNo(psGridNo: Pointer<INT16>): 
 
 function CalculateRestrictedMapCoords(bDirection: INT8, psX1: Pointer<INT16>, psY1: Pointer<INT16>, psX2: Pointer<INT16>, psY2: Pointer<INT16>, sEndXS: INT16, sEndYS: INT16): void {
   switch (bDirection) {
-    case NORTH:
+    case Enum245.NORTH:
 
       psX1.value = 0;
       psX2.value = sEndXS;
@@ -1344,7 +1344,7 @@ function CalculateRestrictedMapCoords(bDirection: INT8, psX1: Pointer<INT16>, ps
       psY2.value = (abs(NORMAL_MAP_SCREEN_TY - gsTLY) / 5);
       break;
 
-    case WEST:
+    case Enum245.WEST:
 
       psX1.value = 0;
       psX2.value = (abs(-NORMAL_MAP_SCREEN_X - gsTLX) / 5);
@@ -1352,7 +1352,7 @@ function CalculateRestrictedMapCoords(bDirection: INT8, psX1: Pointer<INT16>, ps
       psY2.value = sEndYS;
       break;
 
-    case SOUTH:
+    case Enum245.SOUTH:
 
       psX1.value = 0;
       psX2.value = sEndXS;
@@ -1360,7 +1360,7 @@ function CalculateRestrictedMapCoords(bDirection: INT8, psX1: Pointer<INT16>, ps
       psY2.value = sEndYS;
       break;
 
-    case EAST:
+    case Enum245.EAST:
 
       psX1.value = (NORMAL_MAP_SCREEN_WIDTH - abs(NORMAL_MAP_SCREEN_X - gsTRX)) / 5;
       psX2.value = sEndXS;
@@ -1379,7 +1379,7 @@ function CopyOverheadDBShadetablesFromTileset(): void {
   let pTileSurf: PTILE_IMAGERY;
 
   // Loop through tileset
-  for (uiLoop = 0; uiLoop < NUMBEROFTILETYPES; uiLoop++) {
+  for (uiLoop = 0; uiLoop < Enum313.NUMBEROFTILETYPES; uiLoop++) {
     pTileSurf = (gTileSurfaceArray[uiLoop]);
 
     gSmTileSurf[uiLoop].vo.value.fFlags |= VOBJECT_FLAG_SHADETABLE_SHARED;

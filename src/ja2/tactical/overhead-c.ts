@@ -605,9 +605,9 @@ function ExecuteOverhead(): BOOLEAN {
     }
   }
 
-  if (COUNTERDONE(TOVERHEAD)) {
+  if (COUNTERDONE(Enum386.TOVERHEAD)) {
     // Reset counter
-    RESETCOUNTER(TOVERHEAD);
+    RESETCOUNTER(Enum386.TOVERHEAD);
 
     // Diagnostic Stuff
     iTimerVal = GetJA2Clock();
@@ -778,7 +778,7 @@ function ExecuteOverhead(): BOOLEAN {
 
             HandlePlacingRoofMarker(pSoldier, pSoldier.value.sGridNo, TRUE, FALSE);
 
-            if (!gGameSettings.fOptions[TOPTION_MERC_ALWAYS_LIGHT_UP]) {
+            if (!gGameSettings.fOptions[Enum8.TOPTION_MERC_ALWAYS_LIGHT_UP]) {
               DeleteSoldierLight(pSoldier);
 
               SetCheckSoldierLightFlag(pSoldier);
@@ -850,7 +850,7 @@ function ExecuteOverhead(): BOOLEAN {
                   HandleAtNewGridNo(pSoldier, addressof(fKeepMoving));
                 }
 
-                if (gTacticalStatus.bBoxingState != NOT_BOXING && (gTacticalStatus.bBoxingState == BOXING_WAITING_FOR_PLAYER || gTacticalStatus.bBoxingState == PRE_BOXING || gTacticalStatus.bBoxingState == BOXING)) {
+                if (gTacticalStatus.bBoxingState != Enum247.NOT_BOXING && (gTacticalStatus.bBoxingState == Enum247.BOXING_WAITING_FOR_PLAYER || gTacticalStatus.bBoxingState == Enum247.PRE_BOXING || gTacticalStatus.bBoxingState == Enum247.BOXING)) {
                   BoxingMovementCheck(pSoldier);
                 }
 
@@ -868,13 +868,13 @@ function ExecuteOverhead(): BOOLEAN {
                   }
 
                   // ATE: Play landing sound.....
-                  if (pSoldier.value.usAnimState == JUMP_OVER_BLOCKING_PERSON) {
+                  if (pSoldier.value.usAnimState == Enum193.JUMP_OVER_BLOCKING_PERSON) {
                     PlaySoldierFootstepSound(pSoldier);
                   }
 
                   // If we are a robot, play stop sound...
                   if (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
-                    PlaySoldierJA2Sample(pSoldier.value.ubID, ROBOT_STOP, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+                    PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.ROBOT_STOP, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
                   }
 
                   // Update to middle if we're on destination
@@ -901,7 +901,7 @@ function ExecuteOverhead(): BOOLEAN {
                     if (pSoldier.value.ubWaitActionToDo == 2) {
                       pSoldier.value.ubWaitActionToDo = 1;
 
-                      if (gubWaitingForAllMercsToExitCode == WAIT_FOR_MERCS_TO_WALKOFF_SCREEN) {
+                      if (gubWaitingForAllMercsToExitCode == Enum238.WAIT_FOR_MERCS_TO_WALKOFF_SCREEN) {
                         // ATE wanted this line here...
                         pSoldier.value.usPathIndex--;
                         AdjustSoldierPathToGoOffEdge(pSoldier, pSoldier.value.sGridNo, pSoldier.value.uiPendingActionData1);
@@ -915,7 +915,7 @@ function ExecuteOverhead(): BOOLEAN {
                       SoldierGotoStationaryStance(pSoldier);
 
                       // If we are at an exit-grid, make disappear.....
-                      if (gubWaitingForAllMercsToExitCode == WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO) {
+                      if (gubWaitingForAllMercsToExitCode == Enum238.WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO) {
                         // Remove!
                         RemoveSoldierFromTacticalSector(pSoldier, TRUE);
                       }
@@ -923,7 +923,7 @@ function ExecuteOverhead(): BOOLEAN {
                   } else if (pSoldier.value.ubPendingAction != NO_PENDING_ACTION) {
                     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("We are inside the IF PENDING Animation with soldier #%d", pSoldier.value.ubID));
 
-                    if (pSoldier.value.ubPendingAction == MERC_OPENDOOR || pSoldier.value.ubPendingAction == MERC_OPENSTRUCT) {
+                    if (pSoldier.value.ubPendingAction == Enum257.MERC_OPENDOOR || pSoldier.value.ubPendingAction == Enum257.MERC_OPENSTRUCT) {
                       sGridNo = pSoldier.value.sPendingActionData2;
                       // usStructureID           = (UINT16)pSoldier->uiPendingActionData1;
                       // pStructure = FindStructureByID( sGridNo, usStructureID );
@@ -943,7 +943,7 @@ function ExecuteOverhead(): BOOLEAN {
                         }
                       }
                     }
-                    if (pSoldier.value.ubPendingAction == MERC_PICKUPITEM) {
+                    if (pSoldier.value.ubPendingAction == Enum257.MERC_PICKUPITEM) {
                       sGridNo = pSoldier.value.sPendingActionData2;
 
                       if (sGridNo == pSoldier.value.sGridNo) {
@@ -970,56 +970,56 @@ function ExecuteOverhead(): BOOLEAN {
                       } else {
                         SoldierGotoStationaryStance(pSoldier);
                       }
-                    } else if (pSoldier.value.ubPendingAction == MERC_PUNCH) {
+                    } else if (pSoldier.value.ubPendingAction == Enum257.MERC_PUNCH) {
                       // for the benefit of the AI
-                      pSoldier.value.bAction = AI_ACTION_KNIFE_STAB;
+                      pSoldier.value.bAction = Enum289.AI_ACTION_KNIFE_STAB;
 
                       EVENT_SoldierBeginPunchAttack(pSoldier, pSoldier.value.sPendingActionData2, pSoldier.value.bPendingActionData3);
                       pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
-                    } else if (pSoldier.value.ubPendingAction == MERC_TALK) {
+                    } else if (pSoldier.value.ubPendingAction == Enum257.MERC_TALK) {
                       PlayerSoldierStartTalking(pSoldier, pSoldier.value.uiPendingActionData1, TRUE);
                       pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
-                    } else if (pSoldier.value.ubPendingAction == MERC_DROPBOMB) {
+                    } else if (pSoldier.value.ubPendingAction == Enum257.MERC_DROPBOMB) {
                       EVENT_SoldierBeginDropBomb(pSoldier);
                       pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
-                    } else if (pSoldier.value.ubPendingAction == MERC_STEAL) {
+                    } else if (pSoldier.value.ubPendingAction == Enum257.MERC_STEAL) {
                       // pSoldier->bDesiredDirection = pSoldier->bPendingActionData3;
                       EVENT_SetSoldierDesiredDirection(pSoldier, pSoldier.value.bPendingActionData3);
 
-                      EVENT_InitNewSoldierAnim(pSoldier, STEAL_ITEM, 0, FALSE);
+                      EVENT_InitNewSoldierAnim(pSoldier, Enum193.STEAL_ITEM, 0, FALSE);
                       pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
-                    } else if (pSoldier.value.ubPendingAction == MERC_KNIFEATTACK) {
+                    } else if (pSoldier.value.ubPendingAction == Enum257.MERC_KNIFEATTACK) {
                       // for the benefit of the AI
-                      pSoldier.value.bAction = AI_ACTION_KNIFE_STAB;
+                      pSoldier.value.bAction = Enum289.AI_ACTION_KNIFE_STAB;
 
                       EVENT_SoldierBeginBladeAttack(pSoldier, pSoldier.value.sPendingActionData2, pSoldier.value.bPendingActionData3);
                       pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
-                    } else if (pSoldier.value.ubPendingAction == MERC_GIVEAID) {
+                    } else if (pSoldier.value.ubPendingAction == Enum257.MERC_GIVEAID) {
                       EVENT_SoldierBeginFirstAid(pSoldier, pSoldier.value.sPendingActionData2, pSoldier.value.bPendingActionData3);
                       pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
-                    } else if (pSoldier.value.ubPendingAction == MERC_REPAIR) {
+                    } else if (pSoldier.value.ubPendingAction == Enum257.MERC_REPAIR) {
                       EVENT_SoldierBeginRepair(pSoldier, pSoldier.value.sPendingActionData2, pSoldier.value.bPendingActionData3);
                       pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
-                    } else if (pSoldier.value.ubPendingAction == MERC_FUEL_VEHICLE) {
+                    } else if (pSoldier.value.ubPendingAction == Enum257.MERC_FUEL_VEHICLE) {
                       EVENT_SoldierBeginRefuel(pSoldier, pSoldier.value.sPendingActionData2, pSoldier.value.bPendingActionData3);
                       pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
-                    } else if (pSoldier.value.ubPendingAction == MERC_RELOADROBOT) {
+                    } else if (pSoldier.value.ubPendingAction == Enum257.MERC_RELOADROBOT) {
                       EVENT_SoldierBeginReloadRobot(pSoldier, pSoldier.value.sPendingActionData2, pSoldier.value.bPendingActionData3, pSoldier.value.uiPendingActionData1);
                       pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
-                    } else if (pSoldier.value.ubPendingAction == MERC_TAKEBLOOD) {
+                    } else if (pSoldier.value.ubPendingAction == Enum257.MERC_TAKEBLOOD) {
                       EVENT_SoldierBeginTakeBlood(pSoldier, pSoldier.value.sPendingActionData2, pSoldier.value.bPendingActionData3);
                       pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
-                    } else if (pSoldier.value.ubPendingAction == MERC_ATTACH_CAN) {
+                    } else if (pSoldier.value.ubPendingAction == Enum257.MERC_ATTACH_CAN) {
                       EVENT_SoldierBeginAttachCan(pSoldier, pSoldier.value.sPendingActionData2, pSoldier.value.bPendingActionData3);
                       pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
-                    } else if (pSoldier.value.ubPendingAction == MERC_ENTER_VEHICLE) {
+                    } else if (pSoldier.value.ubPendingAction == Enum257.MERC_ENTER_VEHICLE) {
                       EVENT_SoldierEnterVehicle(pSoldier, pSoldier.value.sPendingActionData2, pSoldier.value.bPendingActionData3);
                       pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
                       continue;
-                    } else if (pSoldier.value.ubPendingAction == MERC_CUTFFENCE) {
+                    } else if (pSoldier.value.ubPendingAction == Enum257.MERC_CUTFFENCE) {
                       EVENT_SoldierBeginCutFence(pSoldier, pSoldier.value.sPendingActionData2, pSoldier.value.bPendingActionData3);
                       pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
-                    } else if (pSoldier.value.ubPendingAction == MERC_GIVEITEM) {
+                    } else if (pSoldier.value.ubPendingAction == Enum257.MERC_GIVEITEM) {
                       EVENT_SoldierBeginGiveItem(pSoldier);
                       pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
                     }
@@ -1035,7 +1035,7 @@ function ExecuteOverhead(): BOOLEAN {
                     // OK, ADJUST TO STANDING, WE ARE DONE
                     // DO NOTHING IF WE ARE UNCONSCIOUS
                     if (pSoldier.value.bLife >= OKLIFE) {
-                      if (pSoldier.value.ubBodyType == CROW) {
+                      if (pSoldier.value.ubBodyType == Enum194.CROW) {
                         // If we are flying, don't stop!
                         if (pSoldier.value.sHeightAdjustment == 0) {
                           SoldierGotoStationaryStance(pSoldier);
@@ -1055,7 +1055,7 @@ function ExecuteOverhead(): BOOLEAN {
 
                   // if AI moving and waiting to process something at end of
                   // move, have them handled the very next frame
-                  if (pSoldier.value.ubQuoteActionID == QUOTE_ACTION_ID_CHECKFORDEST) {
+                  if (pSoldier.value.ubQuoteActionID == Enum290.QUOTE_ACTION_ID_CHECKFORDEST) {
                     pSoldier.value.fAIFlags |= AI_HANDLE_EVERY_FRAME;
                   }
 
@@ -1112,7 +1112,7 @@ function ExecuteOverhead(): BOOLEAN {
                       EVENT_InternalSetSoldierDestination(pSoldier, pSoldier.value.usPathingData[pSoldier.value.usPathIndex], FALSE, pSoldier.value.usAnimState);
                     }
 
-                    if (gTacticalStatus.bBoxingState != NOT_BOXING && (gTacticalStatus.bBoxingState == BOXING_WAITING_FOR_PLAYER || gTacticalStatus.bBoxingState == PRE_BOXING || gTacticalStatus.bBoxingState == BOXING)) {
+                    if (gTacticalStatus.bBoxingState != Enum247.NOT_BOXING && (gTacticalStatus.bBoxingState == Enum247.BOXING_WAITING_FOR_PLAYER || gTacticalStatus.bBoxingState == Enum247.PRE_BOXING || gTacticalStatus.bBoxingState == Enum247.BOXING)) {
                       BoxingMovementCheck(pSoldier);
                     }
                   }
@@ -1135,7 +1135,7 @@ function ExecuteOverhead(): BOOLEAN {
                 dAngle = gdRadiansForAngle[pSoldier.value.bMovementDirection];
 
                 // For walking, base it on body type!
-                if (pSoldier.value.usAnimState == WALKING) {
+                if (pSoldier.value.usAnimState == Enum193.WALKING) {
                   MoveMerc(pSoldier, gubAnimWalkSpeeds[pSoldier.value.ubBodyType].dMovementChange, dAngle, TRUE);
                 } else {
                   MoveMerc(pSoldier, gAnimControl[pSoldier.value.usAnimState].dMovementChange, dAngle, TRUE);
@@ -1209,29 +1209,29 @@ function ExecuteOverhead(): BOOLEAN {
 
         // OK cheif, do something here....
         switch (gubWaitingForAllMercsToExitCode) {
-          case WAIT_FOR_MERCS_TO_WALKOFF_SCREEN:
+          case Enum238.WAIT_FOR_MERCS_TO_WALKOFF_SCREEN:
 
             if ((gTacticalStatus.ubCurrentTeam == gbPlayerNum)) {
-              guiPendingOverrideEvent = LU_ENDUILOCK;
+              guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
               HandleTacticalUI();
             }
             AllMercsHaveWalkedOffSector();
             break;
 
-          case WAIT_FOR_MERCS_TO_WALKON_SCREEN:
+          case Enum238.WAIT_FOR_MERCS_TO_WALKON_SCREEN:
 
             // OK, unset UI
             if ((gTacticalStatus.ubCurrentTeam == gbPlayerNum)) {
-              guiPendingOverrideEvent = LU_ENDUILOCK;
+              guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
               HandleTacticalUI();
             }
             break;
 
-          case WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO:
+          case Enum238.WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO:
 
             // OK, unset UI
             if ((gTacticalStatus.ubCurrentTeam == gbPlayerNum)) {
-              guiPendingOverrideEvent = LU_ENDUILOCK;
+              guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
               HandleTacticalUI();
             }
             AllMercsWalkedToExitGrid();
@@ -1263,7 +1263,7 @@ function HaltGuyFromNewGridNoBecauseOfNoAPs(pSoldier: Pointer<SOLDIERTYPE>): voi
 
   // Display message if our merc...
   if (pSoldier.value.bTeam == gbPlayerNum && (gTacticalStatus.uiFlags & INCOMBAT)) {
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[GUY_HAS_RUN_OUT_OF_APS_STR], pSoldier.value.name);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.GUY_HAS_RUN_OUT_OF_APS_STR], pSoldier.value.name);
   }
 
   UnSetUIBusy(pSoldier.value.ubID);
@@ -1276,7 +1276,7 @@ function HandleLocateToGuyAsHeWalks(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Our guys if option set,
   if (pSoldier.value.bTeam == gbPlayerNum) {
     // IF tracking on, center on guy....
-    if (gGameSettings.fOptions[TOPTION_TRACKING_MODE]) {
+    if (gGameSettings.fOptions[Enum8.TOPTION_TRACKING_MODE]) {
       LocateSoldier(pSoldier.value.ubID, FALSE);
     }
   } else {
@@ -1389,9 +1389,9 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
     bDirection = pSoldier.value.usPathingData[pSoldier.value.usPathIndex];
 
     // OK, based on the direction, get door gridno
-    if (bDirection == NORTH || bDirection == WEST) {
+    if (bDirection == Enum245.NORTH || bDirection == Enum245.WEST) {
       sDoorGridNo = NewGridNo(pSoldier.value.sGridNo, DirectionInc(pSoldier.value.usPathingData[pSoldier.value.usPathIndex]));
-    } else if (bDirection == SOUTH || bDirection == EAST) {
+    } else if (bDirection == Enum245.SOUTH || bDirection == Enum245.EAST) {
       sDoorGridNo = pSoldier.value.sGridNo;
     } else {
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("HandleGotoNewGridNo() Failed: Open door - invalid approach direction"));
@@ -1477,7 +1477,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
         gsBoobyTrapGridNo = sMineGridNo;
         gpBoobyTrapSoldier = pSoldier;
         SetStopTimeQuoteCallback(MineSpottedDialogueCallBack);
-        TacticalCharacterDialogue(pSoldier, QUOTE_SUSPICIOUS_GROUND);
+        TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_SUSPICIOUS_GROUND);
       }
     } else {
       if (sMineGridNo != NOWHERE) {
@@ -1522,31 +1522,31 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
         let pExplosive: Pointer<EXPLOSIVETYPE> = NULL;
         let bPosOfMask: INT8;
 
-        if (pSoldier.value.inv[HEAD1POS].usItem == GASMASK && pSoldier.value.inv[HEAD1POS].bStatus[0] >= GASMASK_MIN_STATUS) {
-          bPosOfMask = HEAD1POS;
-        } else if (pSoldier.value.inv[HEAD2POS].usItem == GASMASK && pSoldier.value.inv[HEAD2POS].bStatus[0] >= GASMASK_MIN_STATUS) {
-          bPosOfMask = HEAD2POS;
+        if (pSoldier.value.inv[Enum261.HEAD1POS].usItem == Enum225.GASMASK && pSoldier.value.inv[Enum261.HEAD1POS].bStatus[0] >= GASMASK_MIN_STATUS) {
+          bPosOfMask = Enum261.HEAD1POS;
+        } else if (pSoldier.value.inv[Enum261.HEAD2POS].usItem == Enum225.GASMASK && pSoldier.value.inv[Enum261.HEAD2POS].bStatus[0] >= GASMASK_MIN_STATUS) {
+          bPosOfMask = Enum261.HEAD2POS;
         } else {
           bPosOfMask = NO_SLOT;
         }
 
         if (!AM_A_ROBOT(pSoldier)) {
           if (gpWorldLevelData[pSoldier.value.sGridNo].ubExtFlags[pSoldier.value.bLevel] & MAPELEMENT_EXT_TEARGAS) {
-            if (!(pSoldier.value.fHitByGasFlags & HIT_BY_TEARGAS) && bPosOfMask == NO_SLOT) {
+            if (!(pSoldier.value.fHitByGasFlags & Enum264.HIT_BY_TEARGAS) && bPosOfMask == NO_SLOT) {
               // check for gas mask
-              pExplosive = addressof(Explosive[Item[TEARGAS_GRENADE].ubClassIndex]);
+              pExplosive = addressof(Explosive[Item[Enum225.TEARGAS_GRENADE].ubClassIndex]);
             }
           }
           if (gpWorldLevelData[pSoldier.value.sGridNo].ubExtFlags[pSoldier.value.bLevel] & MAPELEMENT_EXT_MUSTARDGAS) {
-            if (!(pSoldier.value.fHitByGasFlags & HIT_BY_MUSTARDGAS) && bPosOfMask == NO_SLOT) {
-              pExplosive = addressof(Explosive[Item[MUSTARD_GRENADE].ubClassIndex]);
+            if (!(pSoldier.value.fHitByGasFlags & Enum264.HIT_BY_MUSTARDGAS) && bPosOfMask == NO_SLOT) {
+              pExplosive = addressof(Explosive[Item[Enum225.MUSTARD_GRENADE].ubClassIndex]);
             }
           }
         }
         if (gpWorldLevelData[pSoldier.value.sGridNo].ubExtFlags[pSoldier.value.bLevel] & MAPELEMENT_EXT_CREATUREGAS) {
-          if (!(pSoldier.value.fHitByGasFlags & HIT_BY_CREATUREGAS)) // gas mask doesn't help vs creaturegas
+          if (!(pSoldier.value.fHitByGasFlags & Enum264.HIT_BY_CREATUREGAS)) // gas mask doesn't help vs creaturegas
           {
-            pExplosive = addressof(Explosive[Item[SMALL_CREATURE_GAS].ubClassIndex]);
+            pExplosive = addressof(Explosive[Item[Enum225.SMALL_CREATURE_GAS].ubClassIndex]);
           }
         }
         if (pExplosive) {
@@ -1558,14 +1558,14 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
       }
 
       if (!fDontContinue) {
-        if ((pSoldier.value.bOverTerrainType == FLAT_FLOOR || pSoldier.value.bOverTerrainType == PAVED_ROAD) && pSoldier.value.bLevel == 0) {
+        if ((pSoldier.value.bOverTerrainType == Enum315.FLAT_FLOOR || pSoldier.value.bOverTerrainType == Enum315.PAVED_ROAD) && pSoldier.value.bLevel == 0) {
           let iMarblesIndex: INT32;
 
-          if (ItemTypeExistsAtLocation(pSoldier.value.sGridNo, MARBLES, 0, addressof(iMarblesIndex))) {
+          if (ItemTypeExistsAtLocation(pSoldier.value.sGridNo, Enum225.MARBLES, 0, addressof(iMarblesIndex))) {
             // Slip on marbles!
-            DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
+            DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
             if (pSoldier.value.bTeam == gbPlayerNum) {
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, Message[STR_SLIPPED_MARBLES], pSoldier.value.name);
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, Message[Enum334.STR_SLIPPED_MARBLES], pSoldier.value.name);
             }
             RemoveItemFromPool(pSoldier.value.sGridNo, iMarblesIndex, 0);
             SoldierCollapse(pSoldier);
@@ -1576,9 +1576,9 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
           }
         }
 
-        if ((pSoldier.value.bBlindedCounter > 0) && (pSoldier.value.usAnimState == RUNNING) && (Random(5) == 0) && OKFallDirection(pSoldier, (pSoldier.value.sGridNo + DirectionInc(pSoldier.value.bDirection)), pSoldier.value.bLevel, pSoldier.value.bDirection, pSoldier.value.usAnimState)) {
+        if ((pSoldier.value.bBlindedCounter > 0) && (pSoldier.value.usAnimState == Enum193.RUNNING) && (Random(5) == 0) && OKFallDirection(pSoldier, (pSoldier.value.sGridNo + DirectionInc(pSoldier.value.bDirection)), pSoldier.value.bLevel, pSoldier.value.bDirection, pSoldier.value.usAnimState)) {
           // 20% chance of falling over!
-          DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
+          DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
           ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[37], pSoldier.value.name);
           SoldierCollapse(pSoldier);
           if (pSoldier.value.bActionPoints > 0) {
@@ -1587,7 +1587,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
           return FALSE;
         } else if ((GetDrunkLevel(pSoldier) == DRUNK) && (Random(5) == 0) && OKFallDirection(pSoldier, (pSoldier.value.sGridNo + DirectionInc(pSoldier.value.bDirection)), pSoldier.value.bLevel, pSoldier.value.bDirection, pSoldier.value.usAnimState)) {
           // 20% chance of falling over!
-          DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
+          DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
           ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[37], pSoldier.value.name);
           SoldierCollapse(pSoldier);
           if (pSoldier.value.bActionPoints > 0) {
@@ -1597,7 +1597,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
         } else
             // ATE; First check for profile
             // Forgetful guy might forget his path
-            if ((pSoldier.value.bTeam == gbPlayerNum) && (pSoldier.value.ubProfile != NO_PROFILE) && gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait == FORGETFUL) {
+            if ((pSoldier.value.bTeam == gbPlayerNum) && (pSoldier.value.ubProfile != NO_PROFILE) && gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait == Enum270.FORGETFUL) {
           if (pSoldier.value.ubNumTilesMovesSinceLastForget < 255) {
             pSoldier.value.ubNumTilesMovesSinceLastForget++;
           }
@@ -1605,7 +1605,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
           if (pSoldier.value.usPathIndex > 2 && (Random(100) == 0) && pSoldier.value.ubNumTilesMovesSinceLastForget > 200) {
             pSoldier.value.ubNumTilesMovesSinceLastForget = 0;
 
-            TacticalCharacterDialogue(pSoldier, QUOTE_PERSONALITY_TRAIT);
+            TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_PERSONALITY_TRAIT);
             EVENT_StopMerc(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection);
             if (pSoldier.value.bActionPoints > 0) {
               pSoldier.value.bActionPoints -= (Random(pSoldier.value.bActionPoints) + 1);
@@ -1621,7 +1621,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
 
     if (!fDontContinue) {
       // Don't apply the first deduction in points...
-      if (usAnimState == CRAWLING && pSoldier.value.fTurningFromPronePosition > 1) {
+      if (usAnimState == Enum193.CRAWLING && pSoldier.value.fTurningFromPronePosition > 1) {
       } else {
         // Adjust AP/Breathing points to move
         DeductPoints(pSoldier, sAPCost, sBPCost);
@@ -1633,10 +1633,10 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
           if (!pSoldier.value.bReverse) {
             pSoldier.value.bReverse = TRUE;
 
-            if (pSoldier.value.ubBodyType == INFANT_MONSTER) {
-              ChangeSoldierState(pSoldier, WALK_BACKWARDS, 1, TRUE);
+            if (pSoldier.value.ubBodyType == Enum194.INFANT_MONSTER) {
+              ChangeSoldierState(pSoldier, Enum193.WALK_BACKWARDS, 1, TRUE);
             } else {
-              ChangeSoldierState(pSoldier, MONSTER_WALK_BACKWARDS, 1, TRUE);
+              ChangeSoldierState(pSoldier, Enum193.MONSTER_WALK_BACKWARDS, 1, TRUE);
             }
           }
         } else {
@@ -1645,11 +1645,11 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
       }
 
       // OK, let's check for monsters....
-      if (pSoldier.value.ubBodyType == BLOODCAT) {
+      if (pSoldier.value.ubBodyType == Enum194.BLOODCAT) {
         if (!ValidCreatureTurn(pSoldier, (pSoldier.value.usPathingData[pSoldier.value.usPathIndex]))) {
           if (!pSoldier.value.bReverse) {
             pSoldier.value.bReverse = TRUE;
-            ChangeSoldierState(pSoldier, BLOODCAT_WALK_BACKWARDS, 1, TRUE);
+            ChangeSoldierState(pSoldier, Enum193.BLOODCAT_WALK_BACKWARDS, 1, TRUE);
           }
         } else {
           pSoldier.value.bReverse = FALSE;
@@ -1678,13 +1678,13 @@ function HandleMaryArrival(pSoldier: Pointer<SOLDIERTYPE>): void {
   let sDist: INT16;
 
   if (!pSoldier) {
-    pSoldier = FindSoldierByProfileID(MARY, TRUE);
+    pSoldier = FindSoldierByProfileID(Enum268.MARY, TRUE);
     if (!pSoldier) {
       return;
     }
   }
 
-  if (CheckFact(FACT_JOHN_ALIVE, 0)) {
+  if (CheckFact(Enum170.FACT_JOHN_ALIVE, 0)) {
     return;
   }
   // new requirements: player close by
@@ -1695,11 +1695,11 @@ function HandleMaryArrival(pSoldier: Pointer<SOLDIERTYPE>): void {
     }
 
     // Mary has arrived
-    SetFactTrue(FACT_MARY_OR_JOHN_ARRIVED);
+    SetFactTrue(Enum170.FACT_MARY_OR_JOHN_ARRIVED);
 
     EVENT_StopMerc(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection);
 
-    TriggerNPCRecord(MARY, 13);
+    TriggerNPCRecord(Enum268.MARY, 13);
   }
 }
 
@@ -1708,7 +1708,7 @@ function HandleJohnArrival(pSoldier: Pointer<SOLDIERTYPE>): void {
   let sDist: INT16;
 
   if (!pSoldier) {
-    pSoldier = FindSoldierByProfileID(JOHN, TRUE);
+    pSoldier = FindSoldierByProfileID(Enum268.JOHN, TRUE);
     if (!pSoldier) {
       return;
     }
@@ -1720,8 +1720,8 @@ function HandleJohnArrival(pSoldier: Pointer<SOLDIERTYPE>): void {
       return;
     }
 
-    if (CheckFact(FACT_MARY_ALIVE, 0)) {
-      pSoldier2 = FindSoldierByProfileID(MARY, FALSE);
+    if (CheckFact(Enum170.FACT_MARY_ALIVE, 0)) {
+      pSoldier2 = FindSoldierByProfileID(Enum268.MARY, FALSE);
       if (pSoldier2) {
         if (PythSpacesAway(pSoldier.value.sGridNo, pSoldier2.value.sGridNo) > 8) {
           // too far away!
@@ -1730,16 +1730,16 @@ function HandleJohnArrival(pSoldier: Pointer<SOLDIERTYPE>): void {
       }
     }
 
-    SetFactTrue(FACT_MARY_OR_JOHN_ARRIVED);
+    SetFactTrue(Enum170.FACT_MARY_OR_JOHN_ARRIVED);
 
     EVENT_StopMerc(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection);
 
     // if Mary is alive/dead
     if (pSoldier2) {
       EVENT_StopMerc(pSoldier2, pSoldier2.value.sGridNo, pSoldier2.value.bDirection);
-      TriggerNPCRecord(JOHN, 13);
+      TriggerNPCRecord(Enum268.JOHN, 13);
     } else {
-      TriggerNPCRecord(JOHN, 12);
+      TriggerNPCRecord(Enum268.JOHN, 12);
     }
   }
 }
@@ -1778,7 +1778,7 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
   (pfKeepMoving.value) = TRUE;
 
   pSoldier.value.bTilesMoved++;
-  if (pSoldier.value.usAnimState == RUNNING) {
+  if (pSoldier.value.usAnimState == Enum193.RUNNING) {
     // count running as double
     pSoldier.value.bTilesMoved++;
   }
@@ -1792,7 +1792,7 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
   }
 
   // Update path if showing path in RT
-  if (gGameSettings.fOptions[TOPTION_ALWAYS_SHOW_MOVEMENT_PATH]) {
+  if (gGameSettings.fOptions[Enum8.TOPTION_ALWAYS_SHOW_MOVEMENT_PATH]) {
     if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
       gfPlotNewMovement = TRUE;
     }
@@ -1800,7 +1800,7 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
 
   // ATE: Put some stuff in here to not handle certain things if we are
   // trversing...
-  if (gubWaitingForAllMercsToExitCode == WAIT_FOR_MERCS_TO_WALKOFF_SCREEN || gubWaitingForAllMercsToExitCode == WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO) {
+  if (gubWaitingForAllMercsToExitCode == Enum238.WAIT_FOR_MERCS_TO_WALKOFF_SCREEN || gubWaitingForAllMercsToExitCode == Enum238.WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO) {
     return TRUE;
   }
 
@@ -1824,7 +1824,7 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     ubVolume = MovementNoise(pSoldier);
     if (ubVolume > 0) {
-      MakeNoise(pSoldier.value.ubID, pSoldier.value.sGridNo, pSoldier.value.bLevel, pSoldier.value.bOverTerrainType, ubVolume, NOISE_MOVEMENT);
+      MakeNoise(pSoldier.value.ubID, pSoldier.value.sGridNo, pSoldier.value.bLevel, pSoldier.value.bOverTerrainType, ubVolume, Enum236.NOISE_MOVEMENT);
       if ((pSoldier.value.uiStatusFlags & SOLDIER_PC) && (pSoldier.value.bStealthMode)) {
         PlayStealthySoldierFootstepSound(pSoldier);
       }
@@ -1904,7 +1904,7 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
         gsBoobyTrapGridNo = sMineGridNo;
         gpBoobyTrapSoldier = pSoldier;
         SetStopTimeQuoteCallback(MineSpottedDialogueCallBack);
-        TacticalCharacterDialogue(pSoldier, QUOTE_SUSPICIOUS_GROUND);
+        TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_SUSPICIOUS_GROUND);
       }
     } else {
       if (sMineGridNo != NOWHERE) {
@@ -1923,46 +1923,46 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
   HandleSystemNewAISituation(pSoldier, FALSE);
 
   if (pSoldier.value.bTeam == gbPlayerNum) {
-    if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
+    if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
       // are we there yet?
       if (pSoldier.value.sSectorX == 13 && pSoldier.value.sSectorY == MAP_ROW_B && pSoldier.value.bSectorZ == 0) {
         switch (pSoldier.value.ubProfile) {
-          case SKYRIDER:
+          case Enum268.SKYRIDER:
             if (PythSpacesAway(pSoldier.value.sGridNo, 8842) < 11) {
               // Skyrider has arrived!
               EVENT_StopMerc(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection);
-              SetFactTrue(FACT_SKYRIDER_CLOSE_TO_CHOPPER);
-              TriggerNPCRecord(SKYRIDER, 15);
+              SetFactTrue(Enum170.FACT_SKYRIDER_CLOSE_TO_CHOPPER);
+              TriggerNPCRecord(Enum268.SKYRIDER, 15);
               SetUpHelicopterForPlayer(13, MAP_ROW_B);
             }
             break;
 
-          case MARY:
+          case Enum268.MARY:
             HandleMaryArrival(pSoldier);
             break;
 
-          case JOHN:
+          case Enum268.JOHN:
             HandleJohnArrival(pSoldier);
             break;
         }
-      } else if (pSoldier.value.ubProfile == MARIA && (pSoldier.value.sSectorX == 6 && pSoldier.value.sSectorY == MAP_ROW_C && pSoldier.value.bSectorZ == 0) && CheckFact(FACT_MARIA_ESCORTED_AT_LEATHER_SHOP, MARIA) == TRUE) {
+      } else if (pSoldier.value.ubProfile == Enum268.MARIA && (pSoldier.value.sSectorX == 6 && pSoldier.value.sSectorY == MAP_ROW_C && pSoldier.value.bSectorZ == 0) && CheckFact(Enum170.FACT_MARIA_ESCORTED_AT_LEATHER_SHOP, Enum268.MARIA) == TRUE) {
         // check that Angel is there!
-        if (NPCInRoom(ANGEL, 2)) // room 2 is leather shop
+        if (NPCInRoom(Enum268.ANGEL, 2)) // room 2 is leather shop
         {
           //	UnRecruitEPC( MARIA );
-          TriggerNPCRecord(ANGEL, 12);
+          TriggerNPCRecord(Enum268.ANGEL, 12);
         }
-      } else if ((pSoldier.value.ubProfile == JOEY) && (pSoldier.value.sSectorX == 8 && pSoldier.value.sSectorY == MAP_ROW_G && pSoldier.value.bSectorZ == 0)) {
+      } else if ((pSoldier.value.ubProfile == Enum268.JOEY) && (pSoldier.value.sSectorX == 8 && pSoldier.value.sSectorY == MAP_ROW_G && pSoldier.value.bSectorZ == 0)) {
         // if Joey walks near Martha then trigger Martha record 7
-        if (CheckFact(FACT_JOEY_NEAR_MARTHA, 0)) {
+        if (CheckFact(Enum170.FACT_JOEY_NEAR_MARTHA, 0)) {
           EVENT_StopMerc(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection);
-          TriggerNPCRecord(JOEY, 9);
+          TriggerNPCRecord(Enum268.JOEY, 9);
         }
       }
     }
     // Drassen stuff for John & Mary
-    else if (gubQuest[QUEST_ESCORT_TOURISTS] == QUESTINPROGRESS && pSoldier.value.sSectorX == 13 && pSoldier.value.sSectorY == MAP_ROW_B && pSoldier.value.bSectorZ == 0) {
-      if (CheckFact(FACT_JOHN_ALIVE, 0)) {
+    else if (gubQuest[Enum169.QUEST_ESCORT_TOURISTS] == QUESTINPROGRESS && pSoldier.value.sSectorX == 13 && pSoldier.value.sSectorY == MAP_ROW_B && pSoldier.value.bSectorZ == 0) {
+      if (CheckFact(Enum170.FACT_JOHN_ALIVE, 0)) {
         HandleJohnArrival(NULL);
       } else {
         HandleMaryArrival(NULL);
@@ -1970,12 +1970,12 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
     }
   } else if (pSoldier.value.bTeam == CIV_TEAM && pSoldier.value.ubProfile != NO_PROFILE && pSoldier.value.bNeutral) {
     switch (pSoldier.value.ubProfile) {
-      case JIM:
-      case JACK:
-      case OLAF:
-      case RAY:
-      case OLGA:
-      case TYRONE: {
+      case Enum268.JIM:
+      case Enum268.JACK:
+      case Enum268.OLAF:
+      case Enum268.RAY:
+      case Enum268.OLGA:
+      case Enum268.TYRONE: {
         let sDesiredMercDist: INT16;
 
         if (ClosestPC(pSoldier, addressof(sDesiredMercDist)) != NOWHERE) {
@@ -2017,7 +2017,7 @@ function SelectNextAvailSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   } else {
     gusSelectedSoldier = NO_SOLDIER;
     // Change UI mode to reflact that we are selected
-    guiPendingOverrideEvent = I_ON_TERRAIN;
+    guiPendingOverrideEvent = Enum207.I_ON_TERRAIN;
   }
 }
 
@@ -2027,7 +2027,7 @@ function InternalSelectSoldier(usSoldierID: UINT16, fAcknowledge: BOOLEAN, fForc
 
   // ARM: can't call SelectSoldier() in mapscreen, that will initialize interface panels!!!
   // ATE: Adjusted conditions a bit ( sometimes were not getting selected )
-  if (guiCurrentScreen == LAPTOP_SCREEN || guiCurrentScreen == MAP_SCREEN) {
+  if (guiCurrentScreen == Enum26.LAPTOP_SCREEN || guiCurrentScreen == Enum26.MAP_SCREEN) {
     return;
   }
 
@@ -2053,7 +2053,7 @@ function InternalSelectSoldier(usSoldierID: UINT16, fAcknowledge: BOOLEAN, fForc
   if (!OK_INTERRUPT_MERC(pSoldier)) {
     // OK, we want to display message that we can't....
     if (fFromUI) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[MERC_IS_UNAVAILABLE_STR], pSoldier.value.name);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.MERC_IS_UNAVAILABLE_STR], pSoldier.value.name);
     }
     return;
   }
@@ -2110,14 +2110,14 @@ function InternalSelectSoldier(usSoldierID: UINT16, fAcknowledge: BOOLEAN, fForc
 
   // PLay ATTN SOUND
   if (fAcknowledge) {
-    if (!gGameSettings.fOptions[TOPTION_MUTE_CONFIRMATIONS])
-      DoMercBattleSound(pSoldier, BATTLE_SOUND_ATTN1);
+    if (!gGameSettings.fOptions[Enum8.TOPTION_MUTE_CONFIRMATIONS])
+      DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_ATTN1);
   }
 
   // Change UI mode to reflact that we are selected
   // NOT if we are locked inthe UI
-  if (gTacticalStatus.ubCurrentTeam == OUR_TEAM && gCurrentUIMode != LOCKUI_MODE && gCurrentUIMode != LOCKOURTURN_UI_MODE) {
-    guiPendingOverrideEvent = M_ON_TERRAIN;
+  if (gTacticalStatus.ubCurrentTeam == OUR_TEAM && gCurrentUIMode != Enum206.LOCKUI_MODE && gCurrentUIMode != Enum206.LOCKOURTURN_UI_MODE) {
+    guiPendingOverrideEvent = Enum207.M_ON_TERRAIN;
   }
 
   ChangeInterfaceLevel(pSoldier.value.bLevel);
@@ -2127,11 +2127,11 @@ function InternalSelectSoldier(usSoldierID: UINT16, fAcknowledge: BOOLEAN, fForc
   }
 
   // possibly say personality quote
-  if ((pSoldier.value.bTeam == gbPlayerNum) && (pSoldier.value.ubProfile != NO_PROFILE && pSoldier.value.ubWhatKindOfMercAmI != MERC_TYPE__PLAYER_CHARACTER) && !(pSoldier.value.usQuoteSaidFlags & SOLDIER_QUOTE_SAID_PERSONALITY)) {
+  if ((pSoldier.value.bTeam == gbPlayerNum) && (pSoldier.value.ubProfile != NO_PROFILE && pSoldier.value.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__PLAYER_CHARACTER) && !(pSoldier.value.usQuoteSaidFlags & SOLDIER_QUOTE_SAID_PERSONALITY)) {
     switch (gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait) {
-      case PSYCHO:
+      case Enum270.PSYCHO:
         if (Random(50) == 0) {
-          TacticalCharacterDialogue(pSoldier, QUOTE_PERSONALITY_TRAIT);
+          TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_PERSONALITY_TRAIT);
           pSoldier.value.usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_PERSONALITY;
         }
         break;
@@ -2317,15 +2317,15 @@ function HandlePlayerTeamMemberDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
         switch (bBuddyIndex) {
           case 0:
             // buddy #1 died!
-            TacticalCharacterDialogue(pTeamSoldier, QUOTE_BUDDY_ONE_KILLED);
+            TacticalCharacterDialogue(pTeamSoldier, Enum202.QUOTE_BUDDY_ONE_KILLED);
             break;
           case 1:
             // buddy #2 died!
-            TacticalCharacterDialogue(pTeamSoldier, QUOTE_BUDDY_TWO_KILLED);
+            TacticalCharacterDialogue(pTeamSoldier, Enum202.QUOTE_BUDDY_TWO_KILLED);
             break;
           case 2:
             // learn to like buddy died!
-            TacticalCharacterDialogue(pTeamSoldier, QUOTE_LEARNED_TO_LIKE_MERC_KILLED);
+            TacticalCharacterDialogue(pTeamSoldier, Enum202.QUOTE_LEARNED_TO_LIKE_MERC_KILLED);
             break;
           default:
             break;
@@ -2335,19 +2335,19 @@ function HandlePlayerTeamMemberDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
 
     // handle stuff for Carmen if Slay is killed
     switch (pSoldier.value.ubProfile) {
-      case SLAY:
-        pTeamSoldier = FindSoldierByProfileID(CARMEN, FALSE);
-        if (pTeamSoldier && pTeamSoldier.value.bAttitude == ATTACKSLAYONLY && ClosestPC(pTeamSoldier, NULL) != NOWHERE) {
+      case Enum268.SLAY:
+        pTeamSoldier = FindSoldierByProfileID(Enum268.CARMEN, FALSE);
+        if (pTeamSoldier && pTeamSoldier.value.bAttitude == Enum242.ATTACKSLAYONLY && ClosestPC(pTeamSoldier, NULL) != NOWHERE) {
           // Carmen now becomes friendly again
-          TriggerNPCRecord(CARMEN, 29);
+          TriggerNPCRecord(Enum268.CARMEN, 29);
         }
         break;
-      case ROBOT:
-        if (CheckFact(FACT_FIRST_ROBOT_DESTROYED, 0) == FALSE) {
-          SetFactTrue(FACT_FIRST_ROBOT_DESTROYED);
-          SetFactFalse(FACT_ROBOT_READY);
+      case Enum268.ROBOT:
+        if (CheckFact(Enum170.FACT_FIRST_ROBOT_DESTROYED, 0) == FALSE) {
+          SetFactTrue(Enum170.FACT_FIRST_ROBOT_DESTROYED);
+          SetFactFalse(Enum170.FACT_ROBOT_READY);
         } else {
-          SetFactTrue(FACT_SECOND_ROBOT_DESTROYED);
+          SetFactTrue(Enum170.FACT_SECOND_ROBOT_DESTROYED);
         }
         break;
     }
@@ -2364,7 +2364,7 @@ function HandlePlayerTeamMemberDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
     } else {
       gusSelectedSoldier = NO_SOLDIER;
       // Change UI mode to reflact that we are selected
-      guiPendingOverrideEvent = I_ON_TERRAIN;
+      guiPendingOverrideEvent = Enum207.I_ON_TERRAIN;
     }
   }
 }
@@ -2389,9 +2389,9 @@ function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
         pKiller = MercPtrs[pSoldierOld.value.ubAttackerID];
       }
       if (pKiller && pKiller.value.bTeam == OUR_TEAM) {
-        AddHistoryToPlayersLog(HISTORY_MERC_KILLED_CHARACTER, pSoldierOld.value.ubProfile, GetWorldTotalMin(), gWorldSectorX, gWorldSectorY);
+        AddHistoryToPlayersLog(Enum83.HISTORY_MERC_KILLED_CHARACTER, pSoldierOld.value.ubProfile, GetWorldTotalMin(), gWorldSectorX, gWorldSectorY);
       } else {
-        AddHistoryToPlayersLog(HISTORY_NPC_KILLED, pSoldierOld.value.ubProfile, GetWorldTotalMin(), gWorldSectorX, gWorldSectorY);
+        AddHistoryToPlayersLog(Enum83.HISTORY_NPC_KILLED, pSoldierOld.value.ubProfile, GetWorldTotalMin(), gWorldSectorX, gWorldSectorY);
       }
     }
   }
@@ -2405,52 +2405,52 @@ function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
     }
 
     switch (pSoldierOld.value.ubProfile) {
-      case BRENDA:
-        SetFactTrue(FACT_BRENDA_DEAD);
+      case Enum268.BRENDA:
+        SetFactTrue(Enum170.FACT_BRENDA_DEAD);
         {
-          pOther = FindSoldierByProfileID(HANS, FALSE);
+          pOther = FindSoldierByProfileID(Enum268.HANS, FALSE);
           if (pOther && pOther.value.bLife >= OKLIFE && pOther.value.bNeutral && (SpacesAway(pSoldierOld.value.sGridNo, pOther.value.sGridNo) <= 12)) {
-            TriggerNPCRecord(HANS, 10);
+            TriggerNPCRecord(Enum268.HANS, 10);
           }
         }
         break;
-      case PABLO:
-        AddFutureDayStrategicEvent(EVENT_SECOND_AIRPORT_ATTENDANT_ARRIVED, 480 + Random(60), 0, 1);
+      case Enum268.PABLO:
+        AddFutureDayStrategicEvent(Enum132.EVENT_SECOND_AIRPORT_ATTENDANT_ARRIVED, 480 + Random(60), 0, 1);
         break;
-      case ROBOT:
-        if (CheckFact(FACT_FIRST_ROBOT_DESTROYED, 0) == FALSE) {
-          SetFactTrue(FACT_FIRST_ROBOT_DESTROYED);
+      case Enum268.ROBOT:
+        if (CheckFact(Enum170.FACT_FIRST_ROBOT_DESTROYED, 0) == FALSE) {
+          SetFactTrue(Enum170.FACT_FIRST_ROBOT_DESTROYED);
         } else {
-          SetFactTrue(FACT_SECOND_ROBOT_DESTROYED);
+          SetFactTrue(Enum170.FACT_SECOND_ROBOT_DESTROYED);
         }
         break;
-      case DRUGGIST:
-      case SLAY:
-      case ANNIE:
-      case CHRIS:
-      case TIFFANY:
-      case T_REX:
+      case Enum268.DRUGGIST:
+      case Enum268.SLAY:
+      case Enum268.ANNIE:
+      case Enum268.CHRIS:
+      case Enum268.TIFFANY:
+      case Enum268.T_REX:
         MakeRemainingTerroristsTougher();
-        if (pSoldierOld.value.ubProfile == DRUGGIST) {
-          pOther = FindSoldierByProfileID(MANNY, 0);
+        if (pSoldierOld.value.ubProfile == Enum268.DRUGGIST) {
+          pOther = FindSoldierByProfileID(Enum268.MANNY, 0);
           if (pOther && pOther.value.bActive && pOther.value.bInSector && pOther.value.bLife >= OKLIFE) {
             // try to make sure he isn't cowering etc
             pOther.value.sNoiseGridno = NOWHERE;
-            pOther.value.bAlertStatus = STATUS_GREEN;
-            TriggerNPCRecord(MANNY, 10);
+            pOther.value.bAlertStatus = Enum243.STATUS_GREEN;
+            TriggerNPCRecord(Enum268.MANNY, 10);
           }
         }
         break;
-      case JIM:
-      case JACK:
-      case OLAF:
-      case RAY:
-      case OLGA:
-      case TYRONE:
+      case Enum268.JIM:
+      case Enum268.JACK:
+      case Enum268.OLAF:
+      case Enum268.RAY:
+      case Enum268.OLGA:
+      case Enum268.TYRONE:
         MakeRemainingAssassinsTougher();
         break;
 
-      case ELDIN:
+      case Enum268.ELDIN:
         // the security guard...  Results in an extra loyalty penalty for Balime (in addition to civilian murder)
 
         /* Delayed loyalty effects elimininated.  Sep.12/98.  ARM
@@ -2459,14 +2459,14 @@ function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
                                         // post the event, 30 minute delay
                                         AddStrategicEvent( EVENT_TOWN_LOYALTY_UPDATE, GetWorldTotalMin() + 30, uiLoyaltyValue );
         */
-        DecrementTownLoyalty(BALIME, LOYALTY_PENALTY_ELDIN_KILLED);
+        DecrementTownLoyalty(Enum135.BALIME, LOYALTY_PENALTY_ELDIN_KILLED);
         break;
-      case JOEY:
+      case Enum268.JOEY:
         // check to see if Martha can see this
-        pOther = FindSoldierByProfileID(MARTHA, FALSE);
+        pOther = FindSoldierByProfileID(Enum268.MARTHA, FALSE);
         if (pOther && (PythSpacesAway(pOther.value.sGridNo, pSoldierOld.value.sGridNo) < 10 || SoldierToSoldierLineOfSightTest(pOther, pSoldierOld, MaxDistanceVisible(), TRUE) != 0)) {
           // Martha has a heart attack and croaks
-          TriggerNPCRecord(MARTHA, 17);
+          TriggerNPCRecord(Enum268.MARTHA, 17);
 
           /* Delayed loyalty effects elimininated.  Sep.12/98.  ARM
                                                   // create the event value, for town CAMBRIA
@@ -2474,7 +2474,7 @@ function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
                                                   // post the event, 30 minute delay
                                                   AddStrategicEvent( EVENT_TOWN_LOYALTY_UPDATE, GetWorldTotalMin() + 30, uiLoyaltyValue );
           */
-          DecrementTownLoyalty(CAMBRIA, LOYALTY_PENALTY_MARTHA_HEART_ATTACK);
+          DecrementTownLoyalty(Enum135.CAMBRIA, LOYALTY_PENALTY_MARTHA_HEART_ATTACK);
         } else // Martha doesn't see it.  She lives, but Joey is found a day or so later anyways
         {
           /*
@@ -2483,42 +2483,42 @@ function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
                                                   // post the event, 30 minute delay
                                                   AddStrategicEvent( EVENT_TOWN_LOYALTY_UPDATE, GetWorldTotalMin() + ( ( 12 + Random(13)) * 60 ), uiLoyaltyValue );
           */
-          DecrementTownLoyalty(CAMBRIA, LOYALTY_PENALTY_JOEY_KILLED);
+          DecrementTownLoyalty(Enum135.CAMBRIA, LOYALTY_PENALTY_JOEY_KILLED);
         }
         break;
-      case DYNAMO:
+      case Enum268.DYNAMO:
         // check to see if dynamo quest is on
-        if (gubQuest[QUEST_FREE_DYNAMO] == QUESTINPROGRESS) {
-          EndQuest(QUEST_FREE_DYNAMO, pSoldierOld.value.sSectorX, pSoldierOld.value.sSectorY);
+        if (gubQuest[Enum169.QUEST_FREE_DYNAMO] == QUESTINPROGRESS) {
+          EndQuest(Enum169.QUEST_FREE_DYNAMO, pSoldierOld.value.sSectorX, pSoldierOld.value.sSectorY);
         }
         break;
-      case KINGPIN:
+      case Enum268.KINGPIN:
         // check to see if Kingpin money quest is on
-        if (gubQuest[QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) {
-          EndQuest(QUEST_KINGPIN_MONEY, pSoldierOld.value.sSectorX, pSoldierOld.value.sSectorY);
-          HandleNPCDoAction(KINGPIN, NPC_ACTION_GRANT_EXPERIENCE_3, 0);
+        if (gubQuest[Enum169.QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) {
+          EndQuest(Enum169.QUEST_KINGPIN_MONEY, pSoldierOld.value.sSectorX, pSoldierOld.value.sSectorY);
+          HandleNPCDoAction(Enum268.KINGPIN, Enum213.NPC_ACTION_GRANT_EXPERIENCE_3, 0);
         }
-        SetFactTrue(FACT_KINGPIN_DEAD);
-        ExecuteStrategicAIAction(STRATEGIC_AI_ACTION_KINGPIN_DEAD, 0, 0);
+        SetFactTrue(Enum170.FACT_KINGPIN_DEAD);
+        ExecuteStrategicAIAction(Enum173.STRATEGIC_AI_ACTION_KINGPIN_DEAD, 0, 0);
         break;
-      case DOREEN:
+      case Enum268.DOREEN:
         // Doreen's dead
-        if (CheckFact(FACT_DOREEN_HAD_CHANGE_OF_HEART, 0)) {
+        if (CheckFact(Enum170.FACT_DOREEN_HAD_CHANGE_OF_HEART, 0)) {
           // tsk tsk, player killed her after getting her to reconsider, lose the bonus for sparing her
-          DecrementTownLoyalty(DRASSEN, LOYALTY_BONUS_CHILDREN_FREED_DOREEN_SPARED);
+          DecrementTownLoyalty(Enum135.DRASSEN, LOYALTY_BONUS_CHILDREN_FREED_DOREEN_SPARED);
         } // then get the points for freeing the kids though killing her
-        IncrementTownLoyalty(DRASSEN, LOYALTY_BONUS_CHILDREN_FREED_DOREEN_KILLED);
+        IncrementTownLoyalty(Enum135.DRASSEN, LOYALTY_BONUS_CHILDREN_FREED_DOREEN_KILLED);
         // set the fact true so we have a universal check for whether the kids can go
-        SetFactTrue(FACT_DOREEN_HAD_CHANGE_OF_HEART);
-        EndQuest(QUEST_FREE_CHILDREN, gWorldSectorX, gWorldSectorY);
-        if (CheckFact(FACT_KIDS_ARE_FREE, 0) == FALSE) {
-          HandleNPCDoAction(DOREEN, NPC_ACTION_FREE_KIDS, 0);
+        SetFactTrue(Enum170.FACT_DOREEN_HAD_CHANGE_OF_HEART);
+        EndQuest(Enum169.QUEST_FREE_CHILDREN, gWorldSectorX, gWorldSectorY);
+        if (CheckFact(Enum170.FACT_KIDS_ARE_FREE, 0) == FALSE) {
+          HandleNPCDoAction(Enum268.DOREEN, Enum213.NPC_ACTION_FREE_KIDS, 0);
         }
         break;
     }
 
     // Are we looking at the queen?
-    if (pSoldierOld.value.ubProfile == QUEEN) {
+    if (pSoldierOld.value.ubProfile == Enum268.QUEEN) {
       if (pSoldierOld.value.ubAttackerID != NOBODY) {
         pKiller = MercPtrs[pSoldierOld.value.ubAttackerID];
       }
@@ -2527,7 +2527,7 @@ function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
     }
 
     // crows/cows are on the civilian team, but none of the following applies to them
-    if ((pSoldierOld.value.ubBodyType != CROW) && (pSoldierOld.value.ubBodyType != COW)) {
+    if ((pSoldierOld.value.ubBodyType != Enum194.CROW) && (pSoldierOld.value.ubBodyType != Enum194.COW)) {
       // If the civilian's killer is known
       if (pSoldierOld.value.ubAttackerID != NOBODY) {
         // handle death of civilian..and if it was intentional
@@ -2550,10 +2550,10 @@ function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
       HandleMurderOfCivilian(pSoldierOld, pSoldierOld.value.fIntendedTarget);
     }
 
-    HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_NATIVE_KILLED, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+    HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_NATIVE_KILLED, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
   } else // enemies and creatures... should any of this stuff not be called if a creature dies?
   {
-    if (pSoldierOld.value.ubBodyType == QUEENMONSTER) {
+    if (pSoldierOld.value.ubBodyType == Enum194.QUEENMONSTER) {
       let pKiller: Pointer<SOLDIERTYPE> = NULL;
 
       if (pSoldierOld.value.ubAttackerID != NOBODY) {
@@ -2565,14 +2565,14 @@ function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
 
     if (pSoldierOld.value.bTeam == ENEMY_TEAM) {
       gTacticalStatus.ubArmyGuysKilled++;
-      TrackEnemiesKilled(ENEMY_KILLED_IN_TACTICAL, pSoldierOld.value.ubSoldierClass);
+      TrackEnemiesKilled(Enum189.ENEMY_KILLED_IN_TACTICAL, pSoldierOld.value.ubSoldierClass);
     }
     // If enemy guy was killed by the player, give morale boost to player's team!
     if (pSoldierOld.value.ubAttackerID != NOBODY && MercPtrs[pSoldierOld.value.ubAttackerID].value.bTeam == gbPlayerNum) {
-      HandleMoraleEvent(MercPtrs[pSoldierOld.value.ubAttackerID], MORALE_KILLED_ENEMY, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+      HandleMoraleEvent(MercPtrs[pSoldierOld.value.ubAttackerID], Enum234.MORALE_KILLED_ENEMY, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
     }
 
-    HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_ENEMY_KILLED, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+    HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_ENEMY_KILLED, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
     CheckForAlertWhenEnemyDies(pSoldierOld);
 
@@ -2581,20 +2581,20 @@ function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
       gTacticalStatus.ubTheChosenOne = NOBODY;
     }
 
-    if (pSoldierOld.value.ubProfile == QUEEN) {
-      HandleMoraleEvent(NULL, MORALE_DEIDRANNA_KILLED, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+    if (pSoldierOld.value.ubProfile == Enum268.QUEEN) {
+      HandleMoraleEvent(NULL, Enum234.MORALE_DEIDRANNA_KILLED, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
       MaximizeLoyaltyForDeidrannaKilled();
-    } else if (pSoldierOld.value.ubBodyType == QUEENMONSTER) {
-      HandleMoraleEvent(NULL, MORALE_MONSTER_QUEEN_KILLED, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+    } else if (pSoldierOld.value.ubBodyType == Enum194.QUEENMONSTER) {
+      HandleMoraleEvent(NULL, Enum234.MORALE_MONSTER_QUEEN_KILLED, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
       IncrementTownLoyaltyEverywhere(LOYALTY_BONUS_KILL_QUEEN_MONSTER);
 
       // Grant experience gain.....
-      HandleNPCDoAction(0, NPC_ACTION_GRANT_EXPERIENCE_5, 0);
+      HandleNPCDoAction(0, Enum213.NPC_ACTION_GRANT_EXPERIENCE_5, 0);
     }
   }
 
   // killing crows/cows is not worth any experience!
-  if ((pSoldierOld.value.ubBodyType != CROW) && (pSoldierOld.value.ubBodyType != COW) && pSoldierOld.value.ubLastDamageReason != TAKE_DAMAGE_BLOODLOSS) {
+  if ((pSoldierOld.value.ubBodyType != Enum194.CROW) && (pSoldierOld.value.ubBodyType != Enum194.COW) && pSoldierOld.value.ubLastDamageReason != TAKE_DAMAGE_BLOODLOSS) {
     let ubAssister: UINT8;
 
     // if it was a kill by a player's merc
@@ -2655,9 +2655,9 @@ function CheckForPotentialAddToBattleIncrement(pSoldier: Pointer<SOLDIERTYPE>): 
     if (pSoldier.value.bTeam == CIV_TEAM) {
       // maybe increment num enemy attacked
       switch (pSoldier.value.ubCivilianGroup) {
-        case REBEL_CIV_GROUP:
-        case KINGPIN_CIV_GROUP:
-        case HICKS_CIV_GROUP:
+        case Enum246.REBEL_CIV_GROUP:
+        case Enum246.KINGPIN_CIV_GROUP:
+        case Enum246.HICKS_CIV_GROUP:
           if (FindObjClass(pSoldier, IC_WEAPON) != NO_SLOT) {
             gTacticalStatus.bNumFoughtInBattle[pSoldier.value.bTeam]++;
           }
@@ -2677,7 +2677,7 @@ function CheckForPotentialAddToBattleIncrement(pSoldier: Pointer<SOLDIERTYPE>): 
 function SetSoldierNonNeutral(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.bNeutral = FALSE;
 
-  if (gTacticalStatus.bBoxingState == NOT_BOXING) {
+  if (gTacticalStatus.bBoxingState == Enum247.NOT_BOXING) {
     // Special code for strategic implications
     CalculateNonPersistantPBIInfo();
   }
@@ -2687,7 +2687,7 @@ function SetSoldierNonNeutral(pSoldier: Pointer<SOLDIERTYPE>): void {
 function SetSoldierNeutral(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.bNeutral = TRUE;
 
-  if (gTacticalStatus.bBoxingState == NOT_BOXING) {
+  if (gTacticalStatus.bBoxingState == Enum247.NOT_BOXING) {
     // Special code for strategic implications
     // search through civ team looking for non-neutral civilian!
     if (!HostileCiviliansPresent()) {
@@ -2696,7 +2696,7 @@ function SetSoldierNeutral(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 function MakeCivHostile(pSoldier: Pointer<SOLDIERTYPE>, bNewSide: INT8): void {
-  if (pSoldier.value.ubBodyType == COW) {
+  if (pSoldier.value.ubBodyType == Enum194.COW) {
     return;
   }
 
@@ -2704,25 +2704,25 @@ function MakeCivHostile(pSoldier: Pointer<SOLDIERTYPE>, bNewSide: INT8): void {
   bNewSide = 1;
 
   switch (pSoldier.value.ubProfile) {
-    case IRA:
-    case DIMITRI:
-    case MIGUEL:
-    case CARLOS:
-    case MADLAB:
-    case DYNAMO:
-    case SHANK:
+    case Enum268.IRA:
+    case Enum268.DIMITRI:
+    case Enum268.MIGUEL:
+    case Enum268.CARLOS:
+    case Enum268.MADLAB:
+    case Enum268.DYNAMO:
+    case Enum268.SHANK:
       // rebels and rebel sympathizers become hostile to player and enemy
       bNewSide = 2;
       break;
-    case MARIA:
-    case ANGEL:
-      if (gubQuest[QUEST_RESCUE_MARIA] == QUESTINPROGRESS || gubQuest[QUEST_RESCUE_MARIA] == QUESTDONE) {
+    case Enum268.MARIA:
+    case Enum268.ANGEL:
+      if (gubQuest[Enum169.QUEST_RESCUE_MARIA] == QUESTINPROGRESS || gubQuest[Enum169.QUEST_RESCUE_MARIA] == QUESTDONE) {
         bNewSide = 2;
       }
       break;
     default:
       switch (pSoldier.value.ubCivilianGroup) {
-        case REBEL_CIV_GROUP:
+        case Enum246.REBEL_CIV_GROUP:
           bNewSide = 2;
           break;
         default:
@@ -2736,25 +2736,25 @@ function MakeCivHostile(pSoldier: Pointer<SOLDIERTYPE>, bNewSide: INT8): void {
     return;
   }
 
-  if (pSoldier.value.ubProfile == CONRAD || pSoldier.value.ubProfile == GENERAL) {
+  if (pSoldier.value.ubProfile == Enum268.CONRAD || pSoldier.value.ubProfile == Enum268.GENERAL) {
     // change to enemy team
     SetSoldierNonNeutral(pSoldier);
     pSoldier.value.bSide = bNewSide;
     pSoldier = ChangeSoldierTeam(pSoldier, ENEMY_TEAM);
   } else {
-    if (pSoldier.value.ubCivilianGroup == KINGPIN_CIV_GROUP) {
+    if (pSoldier.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP) {
       // if Maria is in the sector and escorted, set fact that the escape has
       // been noticed
-      if (gubQuest[QUEST_RESCUE_MARIA] == QUESTINPROGRESS && gTacticalStatus.bBoxingState == NOT_BOXING) {
-        let pMaria: Pointer<SOLDIERTYPE> = FindSoldierByProfileID(MARIA, FALSE);
+      if (gubQuest[Enum169.QUEST_RESCUE_MARIA] == QUESTINPROGRESS && gTacticalStatus.bBoxingState == Enum247.NOT_BOXING) {
+        let pMaria: Pointer<SOLDIERTYPE> = FindSoldierByProfileID(Enum268.MARIA, FALSE);
         if (pMaria && pMaria.value.bActive && pMaria.value.bInSector) {
-          SetFactTrue(FACT_MARIA_ESCAPE_NOTICED);
+          SetFactTrue(Enum170.FACT_MARIA_ESCAPE_NOTICED);
         }
       }
     }
-    if (pSoldier.value.ubProfile == BILLY) {
+    if (pSoldier.value.ubProfile == Enum268.BILLY) {
       // change orders
-      pSoldier.value.bOrders = FARPATROL;
+      pSoldier.value.bOrders = Enum241.FARPATROL;
     }
     if (bNewSide != -1) {
       pSoldier.value.bSide = bNewSide;
@@ -2776,14 +2776,14 @@ function CivilianGroupMembersChangeSidesWithinProximity(pAttacked: Pointer<SOLDI
   let ubFirstProfile: UINT8 = NO_PROFILE;
   let cnt: UINT8;
 
-  if (pAttacked.value.ubCivilianGroup == NON_CIV_GROUP) {
+  if (pAttacked.value.ubCivilianGroup == Enum246.NON_CIV_GROUP) {
     return pAttacked.value.ubProfile;
   }
 
   cnt = gTacticalStatus.Team[CIV_TEAM].bFirstID;
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[CIV_TEAM].bLastID; cnt++, pSoldier++) {
     if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife && pSoldier.value.bNeutral) {
-      if (pSoldier.value.ubCivilianGroup == pAttacked.value.ubCivilianGroup && pSoldier.value.ubBodyType != COW) {
+      if (pSoldier.value.ubCivilianGroup == pAttacked.value.ubCivilianGroup && pSoldier.value.ubBodyType != Enum194.COW) {
         // if in LOS of this guy's attacker
         if ((pAttacked.value.ubAttackerID != NOBODY && pSoldier.value.bOppList[pAttacked.value.ubAttackerID] == SEEN_CURRENTLY) || (PythSpacesAway(pSoldier.value.sGridNo, pAttacked.value.sGridNo) < MaxDistanceVisible()) || (pAttacked.value.ubAttackerID != NOBODY && PythSpacesAway(pSoldier.value.sGridNo, MercPtrs[pAttacked.value.ubAttackerID].value.sGridNo) < MaxDistanceVisible())) {
           MakeCivHostile(pSoldier, 2);
@@ -2809,7 +2809,7 @@ function CivilianGroupMemberChangesSides(pAttacked: Pointer<SOLDIERTYPE>): Point
   let cnt: UINT8;
   let ubFirstProfile: UINT8 = NO_PROFILE;
 
-  if (pAttacked.value.ubCivilianGroup == NON_CIV_GROUP) {
+  if (pAttacked.value.ubCivilianGroup == Enum246.NON_CIV_GROUP) {
     // abort
     return pNewAttacked;
   }
@@ -2850,12 +2850,12 @@ function CivilianGroupMemberChangesSides(pAttacked: Pointer<SOLDIERTYPE>): Point
 
   if (gTacticalStatus.fCivGroupHostile[pNewAttacked.value.ubCivilianGroup] == CIV_GROUP_NEUTRAL) {
     // if the civilian group turning hostile is the Rebels
-    if (pAttacked.value.ubCivilianGroup == REBEL_CIV_GROUP) {
+    if (pAttacked.value.ubCivilianGroup == Enum246.REBEL_CIV_GROUP) {
       // we haven't already reduced the loyalty back when we first set the flag to BECOME hostile
       ReduceLoyaltyForRebelsBetrayed();
     }
 
-    AddStrategicEvent(EVENT_MAKE_CIV_GROUP_HOSTILE_ON_NEXT_SECTOR_ENTRANCE, GetWorldTotalMin() + 300, pNewAttacked.value.ubCivilianGroup);
+    AddStrategicEvent(Enum132.EVENT_MAKE_CIV_GROUP_HOSTILE_ON_NEXT_SECTOR_ENTRANCE, GetWorldTotalMin() + 300, pNewAttacked.value.ubCivilianGroup);
     gTacticalStatus.fCivGroupHostile[pNewAttacked.value.ubCivilianGroup] = CIV_GROUP_WILL_EVENTUALLY_BECOME_HOSTILE;
   }
 
@@ -2874,7 +2874,7 @@ function CivilianGroupChangesSides(ubCivilianGroup: UINT8): void {
   cnt = gTacticalStatus.Team[CIV_TEAM].bFirstID;
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[CIV_TEAM].bLastID; cnt++, pSoldier++) {
     if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife && pSoldier.value.bNeutral) {
-      if (pSoldier.value.ubCivilianGroup == ubCivilianGroup && pSoldier.value.ubBodyType != COW) {
+      if (pSoldier.value.ubCivilianGroup == ubCivilianGroup && pSoldier.value.ubBodyType != Enum194.COW) {
         MakeCivHostile(pSoldier, 2);
         if (pSoldier.value.bOppCnt > 0) {
           AddToShouldBecomeHostileOrSayQuoteList(pSoldier.value.ubID);
@@ -2904,7 +2904,7 @@ function HickCowAttacked(pNastyGuy: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDI
   // now change sides for anyone on the civ team
   cnt = gTacticalStatus.Team[CIV_TEAM].bFirstID;
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[CIV_TEAM].bLastID; cnt++, pSoldier++) {
-    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife && pSoldier.value.bNeutral && pSoldier.value.ubCivilianGroup == HICKS_CIV_GROUP) {
+    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife && pSoldier.value.bNeutral && pSoldier.value.ubCivilianGroup == Enum246.HICKS_CIV_GROUP) {
       if (SoldierToSoldierLineOfSightTest(pSoldier, pNastyGuy, MaxDistanceVisible(), TRUE)) {
         CivilianGroupMemberChangesSides(pSoldier);
         break;
@@ -2984,7 +2984,7 @@ function FindNextActiveAndAliveMerc(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLess
     }
 
     if (fGoodForLessOKLife) {
-      if (pTeamSoldier.value.bLife > 0 && pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector && pTeamSoldier.value.bTeam == gbPlayerNum && pTeamSoldier.value.bAssignment < ON_DUTY && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier.value.bAssignment == pTeamSoldier.value.bAssignment) {
+      if (pTeamSoldier.value.bLife > 0 && pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector && pTeamSoldier.value.bTeam == gbPlayerNum && pTeamSoldier.value.bAssignment < Enum117.ON_DUTY && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier.value.bAssignment == pTeamSoldier.value.bAssignment) {
         return cnt;
       }
     } else {
@@ -3007,7 +3007,7 @@ function FindNextActiveAndAliveMerc(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLess
     }
 
     if (fGoodForLessOKLife) {
-      if (pTeamSoldier.value.bLife > 0 && pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector && pTeamSoldier.value.bTeam == gbPlayerNum && pTeamSoldier.value.bAssignment < ON_DUTY && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier.value.bAssignment == pTeamSoldier.value.bAssignment) {
+      if (pTeamSoldier.value.bLife > 0 && pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector && pTeamSoldier.value.bTeam == gbPlayerNum && pTeamSoldier.value.bAssignment < Enum117.ON_DUTY && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier.value.bAssignment == pTeamSoldier.value.bAssignment) {
         return cnt;
       }
     } else {
@@ -3025,7 +3025,7 @@ function FindNextActiveSquad(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYP
   let cnt: INT32;
   let cnt2: INT32;
 
-  for (cnt = pSoldier.value.bAssignment + 1; cnt < NUMBER_OF_SQUADS; cnt++) {
+  for (cnt = pSoldier.value.bAssignment + 1; cnt < Enum275.NUMBER_OF_SQUADS; cnt++) {
     for (cnt2 = 0; cnt2 < NUMBER_OF_SOLDIERS_PER_SQUAD; cnt2++) {
       if (Squad[cnt][cnt2] != NULL && Squad[cnt][cnt2].value.bInSector && OK_INTERRUPT_MERC(Squad[cnt][cnt2]) && OK_CONTROLLABLE_MERC(Squad[cnt][cnt2]) && !(Squad[cnt][cnt2].value.uiStatusFlags & SOLDIER_VEHICLE)) {
         return Squad[cnt][cnt2];
@@ -3065,7 +3065,7 @@ function FindPrevActiveAndAliveMerc(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLess
 
     if (fGoodForLessOKLife) {
       // Check for bLife > 0
-      if (pTeamSoldier.value.bLife > 0 && pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector && pTeamSoldier.value.bTeam == gbPlayerNum && pTeamSoldier.value.bAssignment < ON_DUTY && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier.value.bAssignment == pTeamSoldier.value.bAssignment) {
+      if (pTeamSoldier.value.bLife > 0 && pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector && pTeamSoldier.value.bTeam == gbPlayerNum && pTeamSoldier.value.bAssignment < Enum117.ON_DUTY && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier.value.bAssignment == pTeamSoldier.value.bAssignment) {
         return cnt;
       }
     } else {
@@ -3087,7 +3087,7 @@ function FindPrevActiveAndAliveMerc(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLess
     }
 
     if (fGoodForLessOKLife) {
-      if (pTeamSoldier.value.bLife > 0 && pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector && pTeamSoldier.value.bTeam == gbPlayerNum && pTeamSoldier.value.bAssignment < ON_DUTY && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier.value.bAssignment == pTeamSoldier.value.bAssignment) {
+      if (pTeamSoldier.value.bLife > 0 && pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector && pTeamSoldier.value.bTeam == gbPlayerNum && pTeamSoldier.value.bAssignment < Enum117.ON_DUTY && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier.value.bAssignment == pTeamSoldier.value.bAssignment) {
         return cnt;
       }
     } else {
@@ -3176,7 +3176,7 @@ function EnterTacticalDemoMode(): UINT32 {
 
   gTacticalStatus.fGoingToEnterDemo = FALSE;
 
-  return INIT_SCREEN;
+  return Enum26.INIT_SCREEN;
 }
 
 function GetSceneFilename(): Pointer<CHAR8> {
@@ -3225,7 +3225,7 @@ function NewOKDestination(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fP
     // opposite directions should be mirrors, so only check 4
     if (pStructureFileRef) {
       // if ANY direction is valid, consider moving here valid
-      for (bLoop = 0; bLoop < NUM_WORLD_DIRECTIONS; bLoop++) {
+      for (bLoop = 0; bLoop < Enum245.NUM_WORLD_DIRECTIONS; bLoop++) {
         // ATE: Only if we have a levelnode...
         if (pCurrSoldier.value.pLevelNode != NULL && pCurrSoldier.value.pLevelNode.value.pStructureData != NULL) {
           usStructureID = pCurrSoldier.value.pLevelNode.value.pStructureData.value.usStructureID;
@@ -3390,7 +3390,7 @@ function FlatRoofAboveGridNo(iMapIndex: INT32): BOOLEAN {
   while (pRoof) {
     if (pRoof.value.usIndex != NO_TILE) {
       GetTileType(pRoof.value.usIndex, addressof(uiTileType));
-      if (uiTileType >= FIRSTROOF && uiTileType <= LASTROOF)
+      if (uiTileType >= Enum313.FIRSTROOF && uiTileType <= LASTROOF)
         return TRUE;
     }
     pRoof = pRoof.value.pNext;
@@ -3476,10 +3476,10 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
   let sFourGrids: INT16[] /* [4] */;
   let sDistance: INT16 = 0;
   let sDirs: INT16[] /* [4] */ = [
-    NORTH,
-    EAST,
-    SOUTH,
-    WEST,
+    Enum245.NORTH,
+    Enum245.EAST,
+    Enum245.SOUTH,
+    Enum245.WEST,
   ];
   let cnt: INT32;
   let sClosest: INT16 = NOWHERE;
@@ -3524,17 +3524,17 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
         // Get orinetation
         ubWallOrientation = pDoor.value.ubWallOrientation;
 
-        if (ubWallOrientation == OUTSIDE_TOP_LEFT || ubWallOrientation == INSIDE_TOP_LEFT) {
+        if (ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT || ubWallOrientation == Enum314.INSIDE_TOP_LEFT) {
           // To the south!
-          sSpot = NewGridNo(sGridNo, DirectionInc(SOUTH));
+          sSpot = NewGridNo(sGridNo, DirectionInc(Enum245.SOUTH));
           if (pubDirection) {
             (pubDirection.value) = GetDirectionFromGridNo(sSpot, pSoldier);
           }
         }
 
-        if (ubWallOrientation == OUTSIDE_TOP_RIGHT || ubWallOrientation == INSIDE_TOP_RIGHT) {
+        if (ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT || ubWallOrientation == Enum314.INSIDE_TOP_RIGHT) {
           // TO the east!
-          sSpot = NewGridNo(sGridNo, DirectionInc(EAST));
+          sSpot = NewGridNo(sGridNo, DirectionInc(Enum245.EAST));
           if (pubDirection) {
             (pubDirection.value) = GetDirectionFromGridNo(sSpot, pSoldier);
           }
@@ -3625,14 +3625,14 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
       ubWallOrientation = pDoor.value.ubWallOrientation;
 
       // Refuse the south and north and west  directions if our orientation is top-right
-      if (ubWallOrientation == OUTSIDE_TOP_RIGHT || ubWallOrientation == INSIDE_TOP_RIGHT) {
-        if (sDirs[cnt] == NORTH || sDirs[cnt] == WEST || sDirs[cnt] == SOUTH)
+      if (ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT || ubWallOrientation == Enum314.INSIDE_TOP_RIGHT) {
+        if (sDirs[cnt] == Enum245.NORTH || sDirs[cnt] == Enum245.WEST || sDirs[cnt] == Enum245.SOUTH)
           continue;
       }
 
       // Refuse the north and west and east directions if our orientation is top-right
-      if (ubWallOrientation == OUTSIDE_TOP_LEFT || ubWallOrientation == INSIDE_TOP_LEFT) {
-        if (sDirs[cnt] == NORTH || sDirs[cnt] == WEST || sDirs[cnt] == EAST)
+      if (ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT || ubWallOrientation == Enum314.INSIDE_TOP_LEFT) {
+        if (sDirs[cnt] == Enum245.NORTH || sDirs[cnt] == Enum245.WEST || sDirs[cnt] == Enum245.EAST)
           continue;
       }
     }
@@ -3674,16 +3674,16 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
         // ATE: Only if we have a valid door!
         if (pDoor) {
           switch (pDoor.value.pDBStructureRef.value.pDBStructure.value.ubWallOrientation) {
-            case OUTSIDE_TOP_LEFT:
-            case INSIDE_TOP_LEFT:
+            case Enum314.OUTSIDE_TOP_LEFT:
+            case Enum314.INSIDE_TOP_LEFT:
 
-              pubDirection.value = SOUTH;
+              pubDirection.value = Enum245.SOUTH;
               break;
 
-            case OUTSIDE_TOP_RIGHT:
-            case INSIDE_TOP_RIGHT:
+            case Enum314.OUTSIDE_TOP_RIGHT:
+            case Enum314.INSIDE_TOP_RIGHT:
 
-              pubDirection.value = EAST;
+              pubDirection.value = Enum245.EAST;
               break;
           }
         }
@@ -3719,10 +3719,10 @@ function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   let sFourGrids: INT16[] /* [4] */;
   let sDistance: INT16 = 0;
   let sDirs: INT16[] /* [4] */ = [
-    NORTH,
-    EAST,
-    SOUTH,
-    WEST,
+    Enum245.NORTH,
+    Enum245.EAST,
+    Enum245.SOUTH,
+    Enum245.WEST,
   ];
   let cnt: INT32;
   let sClosest: INT16 = WORLD_MAX;
@@ -3815,14 +3815,14 @@ function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
       ubWallOrientation = pDoor.value.ubWallOrientation;
 
       // Refuse the south and north and west  directions if our orientation is top-right
-      if (ubWallOrientation == OUTSIDE_TOP_RIGHT || ubWallOrientation == INSIDE_TOP_RIGHT) {
-        if (sDirs[cnt] == NORTH || sDirs[cnt] == WEST || sDirs[cnt] == SOUTH)
+      if (ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT || ubWallOrientation == Enum314.INSIDE_TOP_RIGHT) {
+        if (sDirs[cnt] == Enum245.NORTH || sDirs[cnt] == Enum245.WEST || sDirs[cnt] == Enum245.SOUTH)
           continue;
       }
 
       // Refuse the north and west and east directions if our orientation is top-right
-      if (ubWallOrientation == OUTSIDE_TOP_LEFT || ubWallOrientation == INSIDE_TOP_LEFT) {
-        if (sDirs[cnt] == NORTH || sDirs[cnt] == WEST || sDirs[cnt] == EAST)
+      if (ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT || ubWallOrientation == Enum314.INSIDE_TOP_LEFT) {
+        if (sDirs[cnt] == Enum245.NORTH || sDirs[cnt] == Enum245.WEST || sDirs[cnt] == Enum245.EAST)
           continue;
       }
     }
@@ -3873,16 +3873,16 @@ function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
         // ATE: Only if we have a valid door!
         if (pDoor) {
           switch (pDoor.value.pDBStructureRef.value.pDBStructure.value.ubWallOrientation) {
-            case OUTSIDE_TOP_LEFT:
-            case INSIDE_TOP_LEFT:
+            case Enum314.OUTSIDE_TOP_LEFT:
+            case Enum314.INSIDE_TOP_LEFT:
 
-              pubDirection.value = SOUTH;
+              pubDirection.value = Enum245.SOUTH;
               break;
 
-            case OUTSIDE_TOP_RIGHT:
-            case INSIDE_TOP_RIGHT:
+            case Enum314.OUTSIDE_TOP_RIGHT:
+            case Enum314.INSIDE_TOP_RIGHT:
 
-              pubDirection.value = EAST;
+              pubDirection.value = Enum245.EAST;
               break;
           }
         }
@@ -3944,7 +3944,7 @@ function FindAdjacentPunchTarget(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier:
   let sSpot: INT16;
   let ubGuyThere: UINT8;
 
-  for (cnt = 0; cnt < NUM_WORLD_DIRECTIONS; cnt++) {
+  for (cnt = 0; cnt < Enum245.NUM_WORLD_DIRECTIONS; cnt++) {
     sSpot = NewGridNo(pSoldier.value.sGridNo, DirectionInc(cnt));
 
     if (DoorTravelCost(pSoldier, sSpot, gubWorldMovementCosts[sSpot][cnt][pSoldier.value.bLevel], FALSE, NULL) >= TRAVELCOST_BLOCKED) {
@@ -4019,9 +4019,9 @@ function HandleTeamServices(ubTeamNum: UINT8): void {
       fDone = FALSE;
       // Check for different events!
       // FOR DOING AID
-      if (pTeamSoldier.value.usAnimState == GIVING_AID) {
+      if (pTeamSoldier.value.usAnimState == Enum193.GIVING_AID) {
         // Get medkit info
-        usInHand = pTeamSoldier.value.inv[HANDPOS].usItem;
+        usInHand = pTeamSoldier.value.inv[Enum261.HANDPOS].usItem;
 
         // Get victim pointer
         usSoldierIndex = WhoIsThere2(pTeamSoldier.value.sTargetGridNo, pTeamSoldier.value.bLevel);
@@ -4029,23 +4029,23 @@ function HandleTeamServices(ubTeamNum: UINT8): void {
           pTargetSoldier = MercPtrs[usSoldierIndex];
 
           if (pTargetSoldier.value.ubServiceCount) {
-            usKitPts = TotalPoints(addressof(pTeamSoldier.value.inv[HANDPOS]));
+            usKitPts = TotalPoints(addressof(pTeamSoldier.value.inv[Enum261.HANDPOS]));
 
             uiPointsUsed = SoldierDressWound(pTeamSoldier, pTargetSoldier, usKitPts, usKitPts);
 
             // Determine if they are all banagded
             if (!pTargetSoldier.value.bBleeding && pTargetSoldier.value.bLife >= OKLIFE) {
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[MERC_IS_ALL_BANDAGED_STR], pTargetSoldier.value.name);
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.MERC_IS_ALL_BANDAGED_STR], pTargetSoldier.value.name);
 
               // Cancel all services for this guy!
               ReceivingSoldierCancelServices(pTargetSoldier);
               fDone = TRUE;
             }
 
-            UseKitPoints(addressof(pTeamSoldier.value.inv[HANDPOS]), uiPointsUsed, pTeamSoldier);
+            UseKitPoints(addressof(pTeamSoldier.value.inv[Enum261.HANDPOS]), uiPointsUsed, pTeamSoldier);
 
             // Get new total
-            usKitPts = TotalPoints(addressof(pTeamSoldier.value.inv[HANDPOS]));
+            usKitPts = TotalPoints(addressof(pTeamSoldier.value.inv[Enum261.HANDPOS]));
 
             // WHETHER OR NOT recipient is all bandaged, check if we've used them up!
             if (usKitPts <= 0) // no more bandages
@@ -4054,19 +4054,19 @@ function HandleTeamServices(ubTeamNum: UINT8): void {
                 // don't swap if we're done
                 bSlot = NO_SLOT;
               } else {
-                bSlot = FindObj(pTeamSoldier, FIRSTAIDKIT);
+                bSlot = FindObj(pTeamSoldier, Enum225.FIRSTAIDKIT);
                 if (bSlot == NO_SLOT) {
-                  bSlot = FindObj(pTeamSoldier, MEDICKIT);
+                  bSlot = FindObj(pTeamSoldier, Enum225.MEDICKIT);
                 }
               }
               if (bSlot != NO_SLOT) {
-                SwapObjs(addressof(pTeamSoldier.value.inv[HANDPOS]), addressof(pTeamSoldier.value.inv[bSlot]));
+                SwapObjs(addressof(pTeamSoldier.value.inv[Enum261.HANDPOS]), addressof(pTeamSoldier.value.inv[bSlot]));
               } else {
-                ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[MERC_IS_OUT_OF_BANDAGES_STR], pTeamSoldier.value.name);
+                ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.MERC_IS_OUT_OF_BANDAGES_STR], pTeamSoldier.value.name);
                 GivingSoldierCancelServices(pTeamSoldier);
 
                 if (!gTacticalStatus.fAutoBandageMode) {
-                  DoMercBattleSound(pTeamSoldier, (BATTLE_SOUND_CURSE1));
+                  DoMercBattleSound(pTeamSoldier, (Enum259.BATTLE_SOUND_CURSE1));
                 }
               }
             }
@@ -4089,9 +4089,9 @@ function HandlePlayerServices(pTeamSoldier: Pointer<SOLDIERTYPE>): void {
   if (pTeamSoldier.value.bLife >= OKLIFE && pTeamSoldier.value.bActive) {
     // Check for different events!
     // FOR DOING AID
-    if (pTeamSoldier.value.usAnimState == GIVING_AID) {
+    if (pTeamSoldier.value.usAnimState == Enum193.GIVING_AID) {
       // Get medkit info
-      usInHand = pTeamSoldier.value.inv[HANDPOS].usItem;
+      usInHand = pTeamSoldier.value.inv[Enum261.HANDPOS].usItem;
 
       // Get victim pointer
       usSoldierIndex = WhoIsThere2(pTeamSoldier.value.sTargetGridNo, pTeamSoldier.value.bLevel);
@@ -4100,23 +4100,23 @@ function HandlePlayerServices(pTeamSoldier: Pointer<SOLDIERTYPE>): void {
         pTargetSoldier = MercPtrs[usSoldierIndex];
 
         if (pTargetSoldier.value.ubServiceCount) {
-          usKitPts = TotalPoints(addressof(pTeamSoldier.value.inv[HANDPOS]));
+          usKitPts = TotalPoints(addressof(pTeamSoldier.value.inv[Enum261.HANDPOS]));
 
           uiPointsUsed = SoldierDressWound(pTeamSoldier, pTargetSoldier, usKitPts, usKitPts);
 
           // Determine if they are all banagded
           if (!pTargetSoldier.value.bBleeding && pTargetSoldier.value.bLife >= OKLIFE) {
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[MERC_IS_ALL_BANDAGED_STR], pTargetSoldier.value.name);
+            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.MERC_IS_ALL_BANDAGED_STR], pTargetSoldier.value.name);
 
             // Cancel all services for this guy!
             ReceivingSoldierCancelServices(pTargetSoldier);
             fDone = TRUE;
           }
 
-          UseKitPoints(addressof(pTeamSoldier.value.inv[HANDPOS]), uiPointsUsed, pTeamSoldier);
+          UseKitPoints(addressof(pTeamSoldier.value.inv[Enum261.HANDPOS]), uiPointsUsed, pTeamSoldier);
 
           // Get new total
-          usKitPts = TotalPoints(addressof(pTeamSoldier.value.inv[HANDPOS]));
+          usKitPts = TotalPoints(addressof(pTeamSoldier.value.inv[Enum261.HANDPOS]));
 
           // WHETHER OR NOT recipient is all bandaged, check if we've used them up!
           if (usKitPts <= 0) // no more bandages
@@ -4125,20 +4125,20 @@ function HandlePlayerServices(pTeamSoldier: Pointer<SOLDIERTYPE>): void {
               // don't swap if we're done
               bSlot = NO_SLOT;
             } else {
-              bSlot = FindObj(pTeamSoldier, FIRSTAIDKIT);
+              bSlot = FindObj(pTeamSoldier, Enum225.FIRSTAIDKIT);
               if (bSlot == NO_SLOT) {
-                bSlot = FindObj(pTeamSoldier, MEDICKIT);
+                bSlot = FindObj(pTeamSoldier, Enum225.MEDICKIT);
               }
             }
 
             if (bSlot != NO_SLOT) {
-              SwapObjs(addressof(pTeamSoldier.value.inv[HANDPOS]), addressof(pTeamSoldier.value.inv[bSlot]));
+              SwapObjs(addressof(pTeamSoldier.value.inv[Enum261.HANDPOS]), addressof(pTeamSoldier.value.inv[bSlot]));
             } else {
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[MERC_IS_OUT_OF_BANDAGES_STR], pTeamSoldier.value.name);
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.MERC_IS_OUT_OF_BANDAGES_STR], pTeamSoldier.value.name);
               GivingSoldierCancelServices(pTeamSoldier);
 
               if (!gTacticalStatus.fAutoBandageMode) {
-                DoMercBattleSound(pTeamSoldier, (BATTLE_SOUND_CURSE1));
+                DoMercBattleSound(pTeamSoldier, (Enum259.BATTLE_SOUND_CURSE1));
               }
             }
           }
@@ -4173,7 +4173,7 @@ function CommonEnterCombatModeCode(): void {
   // Loop through all mercs and make go
   for (pSoldier = Menptr, cnt = 0; cnt < TOTAL_SOLDIERS; pSoldier++, cnt++) {
     if (pSoldier.value.bActive) {
-      if (pSoldier.value.bInSector && pSoldier.value.ubBodyType != CROW) {
+      if (pSoldier.value.bInSector && pSoldier.value.ubBodyType != Enum194.CROW) {
         // Set some flags for quotes
         pSoldier.value.usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_IN_SHIT);
         pSoldier.value.usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_MULTIPLE_CREATURES);
@@ -4192,7 +4192,7 @@ function CommonEnterCombatModeCode(): void {
 
         // If guy is sleeping, wake him up!
         if (pSoldier.value.fMercAsleep == TRUE) {
-          ChangeSoldierState(pSoldier, WKAEUP_FROM_SLEEP, 1, TRUE);
+          ChangeSoldierState(pSoldier, Enum193.WKAEUP_FROM_SLEEP, 1, TRUE);
         }
 
         // ATE: Refresh APs
@@ -4226,12 +4226,12 @@ function CommonEnterCombatModeCode(): void {
   SyncStrategicTurnTimes();
 
   // Play tune..
-  PlayJA2Sample(ENDTURN_1, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
+  PlayJA2Sample(Enum330.ENDTURN_1, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
 
   // Say quote.....
 
   // Change music modes
-  SetMusicMode(MUSIC_TACTICAL_BATTLE);
+  SetMusicMode(Enum328.MUSIC_TACTICAL_BATTLE);
 }
 
 function EnterCombatMode(ubStartingTeam: UINT8): void {
@@ -4329,7 +4329,7 @@ function ExitCombatMode(): void {
   // Change music modes
   gfForceMusicToTense = TRUE;
 
-  SetMusicMode(MUSIC_TACTICAL_ENEMYPRESENT);
+  SetMusicMode(Enum328.MUSIC_TACTICAL_ENEMYPRESENT);
 
   BetweenTurnsVisibilityAdjustments();
 
@@ -4363,13 +4363,13 @@ function SetEnemyPresence(): void {
   if (!gTacticalStatus.fEnemyInSector && gTacticalStatus.fVirginSector) {
     // If we have a guy selected, say quote!
     // For now, display ono status message
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[ENEMY_IN_SECTOR_STR]);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.ENEMY_IN_SECTOR_STR]);
 
     // Change music modes..
 
     // If we are just starting game, don't do this!
     if (!DidGameJustStart() && !AreInMeanwhile()) {
-      SetMusicMode(MUSIC_TACTICAL_ENEMYPRESENT);
+      SetMusicMode(Enum328.MUSIC_TACTICAL_ENEMYPRESENT);
     }
 
     // Say quote...
@@ -4430,7 +4430,7 @@ function NobodyAlerted(): BOOLEAN {
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
     if (pSoldier != NULL) {
-      if ((pSoldier.value.bTeam != gbPlayerNum) && (!pSoldier.value.bNeutral) && (pSoldier.value.bLife >= OKLIFE) && (pSoldier.value.bAlertStatus >= STATUS_RED)) {
+      if ((pSoldier.value.bTeam != gbPlayerNum) && (!pSoldier.value.bNeutral) && (pSoldier.value.bLife >= OKLIFE) && (pSoldier.value.bAlertStatus >= Enum243.STATUS_RED)) {
         return FALSE;
       }
     }
@@ -4503,7 +4503,7 @@ function CheckForEndOfCombatMode(fIncrementTurnsNotSeen: BOOLEAN): BOOLEAN {
   }
 
   // if we're boxing NEVER end combat mode
-  if (gTacticalStatus.bBoxingState == BOXING) {
+  if (gTacticalStatus.bBoxingState == Enum247.BOXING) {
     return FALSE;
   }
 
@@ -4576,7 +4576,7 @@ function CheckForEndOfCombatMode(fIncrementTurnsNotSeen: BOOLEAN): BOOLEAN {
 
     // ATE: Are there creatures here? If so, say another quote...
     if (fSayQuote && (gTacticalStatus.uiFlags & IN_CREATURE_LAIR)) {
-      SayQuoteFromAnyBodyInSector(QUOTE_WORRIED_ABOUT_CREATURE_PRESENCE);
+      SayQuoteFromAnyBodyInSector(Enum202.QUOTE_WORRIED_ABOUT_CREATURE_PRESENCE);
     }
     // Are we fighting bloodcats?
     else if (NumBloodcatsInSectorNotDeadOrDying() > 0) {
@@ -4584,7 +4584,7 @@ function CheckForEndOfCombatMode(fIncrementTurnsNotSeen: BOOLEAN): BOOLEAN {
       if (fSayQuote) {
         // Double check by seeing if we have any active enemies in sector!
         if (NumEnemyInSectorNotDeadOrDying() > 0) {
-          SayQuoteFromAnyBodyInSector(QUOTE_WARNING_OUTSTANDING_ENEMY_AFTER_RT);
+          SayQuoteFromAnyBodyInSector(Enum202.QUOTE_WARNING_OUTSTANDING_ENEMY_AFTER_RT);
         }
       }
     }
@@ -4598,7 +4598,7 @@ function CheckForEndOfCombatMode(fIncrementTurnsNotSeen: BOOLEAN): BOOLEAN {
 
     // Begin tense music....
     gfForceMusicToTense = TRUE;
-    SetMusicMode(MUSIC_TACTICAL_ENEMYPRESENT);
+    SetMusicMode(Enum328.MUSIC_TACTICAL_ENEMYPRESENT);
 
     return TRUE;
   }
@@ -4620,7 +4620,7 @@ function CheckForEndOfBattle(fAnEnemyRetreated: BOOLEAN): BOOLEAN {
   let cnt: INT32 = 0;
   let usAnimState: UINT16;
 
-  if (gTacticalStatus.bBoxingState == BOXING) {
+  if (gTacticalStatus.bBoxingState == Enum247.BOXING) {
     // no way are we going to exit boxing prematurely, thank you! :-)
     return FALSE;
   }
@@ -4690,17 +4690,17 @@ function CheckForEndOfBattle(fAnEnemyRetreated: BOOLEAN): BOOLEAN {
       ExitCombatMode();
     }
 
-    HandleMoraleEvent(NULL, MORALE_HEARD_BATTLE_LOST, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
-    HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_BATTLE_LOST, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+    HandleMoraleEvent(NULL, Enum234.MORALE_HEARD_BATTLE_LOST, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+    HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_BATTLE_LOST, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
     // Play death music
-    SetMusicMode(MUSIC_TACTICAL_DEATH);
+    SetMusicMode(Enum328.MUSIC_TACTICAL_DEATH);
     SetCustomizableTimerCallbackAndDelay(10000, DeathNoMessageTimerCallback, FALSE);
 
-    if (CheckFact(FACT_FIRST_BATTLE_BEING_FOUGHT, 0)) {
+    if (CheckFact(Enum170.FACT_FIRST_BATTLE_BEING_FOUGHT, 0)) {
       // this is our first battle... and we lost it!
-      SetFactTrue(FACT_FIRST_BATTLE_FOUGHT);
-      SetFactFalse(FACT_FIRST_BATTLE_BEING_FOUGHT);
+      SetFactTrue(Enum170.FACT_FIRST_BATTLE_FOUGHT);
+      SetFactFalse(Enum170.FACT_FIRST_BATTLE_BEING_FOUGHT);
       SetTheFirstBattleSector((gWorldSectorX + gWorldSectorY * MAP_WORLD_X));
       HandleFirstBattleEndingWhileInTown(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, FALSE);
     }
@@ -4713,14 +4713,14 @@ function CheckForEndOfBattle(fAnEnemyRetreated: BOOLEAN): BOOLEAN {
     // CheckAndHandleUnloadingOfCurrentWorld();
 
     // Whenever returning TRUE, make sure you clear gfBlitBattleSectorLocator;
-    LogBattleResults(LOG_DEFEAT);
+    LogBattleResults(Enum165.LOG_DEFEAT);
     gfBlitBattleSectorLocator = FALSE;
     return TRUE;
   }
 
   // If battle won, do stuff right away!
   if (fBattleWon) {
-    if (gTacticalStatus.bBoxingState == NOT_BOXING) // if boxing don't do any of this stuff
+    if (gTacticalStatus.bBoxingState == Enum247.NOT_BOXING) // if boxing don't do any of this stuff
     {
       gTacticalStatus.fLastBattleWon = TRUE;
 
@@ -4745,7 +4745,7 @@ function CheckForEndOfBattle(fAnEnemyRetreated: BOOLEAN): BOOLEAN {
     // ATE:
     // If we ended battle in any team other than the player's
     // we need to end the UI lock using this method....
-    guiPendingOverrideEvent = LU_ENDUILOCK;
+    guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
     HandleTacticalUI();
 
     if (gTacticalStatus.uiFlags & INCOMBAT) {
@@ -4753,7 +4753,7 @@ function CheckForEndOfBattle(fAnEnemyRetreated: BOOLEAN): BOOLEAN {
       ExitCombatMode();
     }
 
-    if (gTacticalStatus.bBoxingState == NOT_BOXING) // if boxing don't do any of this stuff
+    if (gTacticalStatus.bBoxingState == Enum247.NOT_BOXING) // if boxing don't do any of this stuff
     {
       // Only do some stuff if we actually faught a battle
       if (gTacticalStatus.bNumFoughtInBattle[ENEMY_TEAM] + gTacticalStatus.bNumFoughtInBattle[CREATURE_TEAM] + gTacticalStatus.bNumFoughtInBattle[CIV_TEAM] > 0)
@@ -4768,7 +4768,7 @@ function CheckForEndOfBattle(fAnEnemyRetreated: BOOLEAN): BOOLEAN {
 
                 // If this guy is OKLIFE & not standing, make stand....
                 if (pTeamSoldier.value.bLife >= OKLIFE && !pTeamSoldier.value.bCollapsed) {
-                  if (pTeamSoldier.value.bAssignment < ON_DUTY) {
+                  if (pTeamSoldier.value.bAssignment < Enum117.ON_DUTY) {
                     // Reset some quote flags....
                     pTeamSoldier.value.usQuoteSaidExtFlags &= (~SOLDIER_QUOTE_SAID_BUDDY_1_WITNESSED);
                     pTeamSoldier.value.usQuoteSaidExtFlags &= (~SOLDIER_QUOTE_SAID_BUDDY_2_WITNESSED);
@@ -4796,12 +4796,12 @@ function CheckForEndOfBattle(fAnEnemyRetreated: BOOLEAN): BOOLEAN {
           }
         }
 
-        HandleMoraleEvent(NULL, MORALE_BATTLE_WON, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
-        HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_BATTLE_WON, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+        HandleMoraleEvent(NULL, Enum234.MORALE_BATTLE_WON, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+        HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_BATTLE_WON, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
         // Change music modes
         if (gfLastMercTalkedAboutKillingID == NOBODY || (gfLastMercTalkedAboutKillingID != NOBODY && !(MercPtrs[gfLastMercTalkedAboutKillingID].value.uiStatusFlags & SOLDIER_MONSTER))) {
-          SetMusicMode(MUSIC_TACTICAL_VICTORY);
+          SetMusicMode(Enum328.MUSIC_TACTICAL_VICTORY);
 
           ShouldBeginAutoBandage();
         } else if (gfLastMercTalkedAboutKillingID != NOBODY && (MercPtrs[gfLastMercTalkedAboutKillingID].value.uiStatusFlags & SOLDIER_MONSTER)) {
@@ -4811,20 +4811,20 @@ function CheckForEndOfBattle(fAnEnemyRetreated: BOOLEAN): BOOLEAN {
         // Say battle end quote....
 
         if (fAnEnemyRetreated) {
-          SayQuoteFromAnyBodyInSector(QUOTE_ENEMY_RETREATED);
+          SayQuoteFromAnyBodyInSector(Enum202.QUOTE_ENEMY_RETREATED);
         } else {
           // OK, If we have just finished a battle with creatures........ play killed creature quote...
           //
           if (gfLastMercTalkedAboutKillingID != NOBODY && (MercPtrs[gfLastMercTalkedAboutKillingID].value.uiStatusFlags & SOLDIER_MONSTER)) {
-          } else if (gfLastMercTalkedAboutKillingID != NOBODY && (MercPtrs[gfLastMercTalkedAboutKillingID].value.ubBodyType == BLOODCAT)) {
-            SayBattleSoundFromAnyBodyInSector(BATTLE_SOUND_COOL1);
+          } else if (gfLastMercTalkedAboutKillingID != NOBODY && (MercPtrs[gfLastMercTalkedAboutKillingID].value.ubBodyType == Enum194.BLOODCAT)) {
+            SayBattleSoundFromAnyBodyInSector(Enum259.BATTLE_SOUND_COOL1);
           } else {
-            SayQuoteFromAnyBodyInSector(QUOTE_SECTOR_SAFE);
+            SayQuoteFromAnyBodyInSector(Enum202.QUOTE_SECTOR_SAFE);
           }
         }
       } else {
         // Change to nothing music...
-        SetMusicMode(MUSIC_TACTICAL_NOTHING);
+        SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
         ShouldBeginAutoBandage();
       }
 
@@ -4832,12 +4832,12 @@ function CheckForEndOfBattle(fAnEnemyRetreated: BOOLEAN): BOOLEAN {
       cnt = gTacticalStatus.Team[MILITIA_TEAM].bFirstID;
       for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[MILITIA_TEAM].bLastID; cnt++, pTeamSoldier++) {
         if (pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector) {
-          pTeamSoldier.value.bAlertStatus = STATUS_GREEN;
+          pTeamSoldier.value.bAlertStatus = Enum243.STATUS_GREEN;
           CheckForChangingOrders(pTeamSoldier);
           pTeamSoldier.value.sNoiseGridno = NOWHERE;
           pTeamSoldier.value.ubNoiseVolume = 0;
           pTeamSoldier.value.bNewSituation = FALSE;
-          pTeamSoldier.value.bOrders = STATIONARY;
+          pTeamSoldier.value.bOrders = Enum241.STATIONARY;
           if (pTeamSoldier.value.bLife >= OKLIFE) {
             pTeamSoldier.value.bBleeding = 0;
           }
@@ -4849,7 +4849,7 @@ function CheckForEndOfBattle(fAnEnemyRetreated: BOOLEAN): BOOLEAN {
       cnt = gTacticalStatus.Team[CIV_TEAM].bFirstID;
       for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[CIV_TEAM].bLastID; cnt++, pTeamSoldier++) {
         if (pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector) {
-          pTeamSoldier.value.bAlertStatus = STATUS_GREEN;
+          pTeamSoldier.value.bAlertStatus = Enum243.STATUS_GREEN;
           pTeamSoldier.value.sNoiseGridno = NOWHERE;
           pTeamSoldier.value.ubNoiseVolume = 0;
           pTeamSoldier.value.bNewSituation = FALSE;
@@ -4861,20 +4861,20 @@ function CheckForEndOfBattle(fAnEnemyRetreated: BOOLEAN): BOOLEAN {
 
     fInterfacePanelDirty = DIRTYLEVEL2;
 
-    if (gTacticalStatus.bBoxingState == NOT_BOXING) // if boxing don't do any of this stuff
+    if (gTacticalStatus.bBoxingState == Enum247.NOT_BOXING) // if boxing don't do any of this stuff
     {
-      LogBattleResults(LOG_VICTORY);
+      LogBattleResults(Enum165.LOG_VICTORY);
 
       SetThisSectorAsPlayerControlled(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, TRUE);
       HandleVictoryInNPCSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
-      if (CheckFact(FACT_FIRST_BATTLE_BEING_FOUGHT, 0)) {
+      if (CheckFact(Enum170.FACT_FIRST_BATTLE_BEING_FOUGHT, 0)) {
         // ATE: Need to trigger record for this event .... for NPC scripting
-        TriggerNPCRecord(PACOS, 18);
+        TriggerNPCRecord(Enum268.PACOS, 18);
 
         // this is our first battle... and we won!
-        SetFactTrue(FACT_FIRST_BATTLE_FOUGHT);
-        SetFactTrue(FACT_FIRST_BATTLE_WON);
-        SetFactFalse(FACT_FIRST_BATTLE_BEING_FOUGHT);
+        SetFactTrue(Enum170.FACT_FIRST_BATTLE_FOUGHT);
+        SetFactTrue(Enum170.FACT_FIRST_BATTLE_WON);
+        SetFactFalse(Enum170.FACT_FIRST_BATTLE_BEING_FOUGHT);
         SetTheFirstBattleSector((gWorldSectorX + gWorldSectorY * MAP_WORLD_X));
         HandleFirstBattleEndingWhileInTown(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, FALSE);
       }
@@ -4927,7 +4927,7 @@ function CycleThroughKnownEnemies(): void {
   }
 
   if (!fEnemiesFound) {
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[NO_ENEMIES_IN_SIGHT_STR]);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NO_ENEMIES_IN_SIGHT_STR]);
   }
 
   // If here, we found nobody, but there may be someone behind
@@ -5106,7 +5106,7 @@ function NumBloodcatsInSectorNotDeadOrDying(): UINT8 {
   for (pTeamSoldier = Menptr, cnt = 0; cnt < TOTAL_SOLDIERS; pTeamSoldier++, cnt++) {
     // Kill those not already dead.,...
     if (pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector) {
-      if (pTeamSoldier.value.ubBodyType == BLOODCAT) {
+      if (pTeamSoldier.value.ubBodyType == Enum194.BLOODCAT) {
         // For sure for flag thet they are dead is not set
         if (!(pTeamSoldier.value.uiStatusFlags & SOLDIER_DEAD)) {
           // Also, we want to pick up unconcious guys as NOT being capable,
@@ -5209,7 +5209,7 @@ function CheckForLosingEndOfBattle(): BOOLEAN {
   if ((bNumDead + bNumNotOK) == bNumInBattle || fOnlyEPCsLeft) {
     // Are there militia in sector?
     if (fMilitiaInSector) {
-      if (guiCurrentScreen != AUTORESOLVE_SCREEN) {
+      if (guiCurrentScreen != Enum26.AUTORESOLVE_SCREEN) {
         // if here, check if we should autoresolve.
         // if we have at least one guy unconscious, call below function...
         if (HandlePotentialBringUpAutoresolveToFinishBattle()) {
@@ -5232,7 +5232,7 @@ function CheckForLosingEndOfBattle(): BOOLEAN {
         if (gTacticalStatus.Team[ENEMY_TEAM].bMenInSector > 0) {
           // if( GetWorldDay() > STARTDAY_ALLOW_PLAYER_CAPTURE_FOR_RESCUE && !( gStrategicStatus.uiFlags & STRATEGIC_PLAYER_CAPTURED_FOR_RESCUE ))
           {
-            if (gubQuest[QUEST_HELD_IN_ALMA] == QUESTNOTSTARTED || (gubQuest[QUEST_HELD_IN_ALMA] == QUESTDONE && gubQuest[QUEST_INTERROGATION] == QUESTNOTSTARTED)) {
+            if (gubQuest[Enum169.QUEST_HELD_IN_ALMA] == QUESTNOTSTARTED || (gubQuest[Enum169.QUEST_HELD_IN_ALMA] == QUESTDONE && gubQuest[Enum169.QUEST_INTERROGATION] == QUESTNOTSTARTED)) {
               fDoCapture = TRUE;
               // CJC Dec 1 2002: fix capture sequences
               BeginCaptureSquence();
@@ -5339,16 +5339,16 @@ function CalcSuppressionTolerance(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     bTolerance += (pSoldier.value.bMorale - 50) / 10;
   } else {
     // give +2 for every morale category from normal, for a max change of 4
-    bTolerance += (pSoldier.value.bAIMorale - MORALE_NORMAL) * 2;
+    bTolerance += (pSoldier.value.bAIMorale - Enum244.MORALE_NORMAL) * 2;
   }
 
   if (pSoldier.value.ubProfile != NO_PROFILE) {
     // change tolerance based on attitude
     switch (gMercProfiles[pSoldier.value.ubProfile].bAttitude) {
-      case ATT_AGGRESSIVE:
+      case Enum271.ATT_AGGRESSIVE:
         bTolerance += 2;
         break;
-      case ATT_COWARD:
+      case Enum271.ATT_COWARD:
         bTolerance += -2;
         break;
       default:
@@ -5357,14 +5357,14 @@ function CalcSuppressionTolerance(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   } else {
     // generic NPC/civvie; change tolerance based on attitude
     switch (pSoldier.value.bAttitude) {
-      case BRAVESOLO:
-      case BRAVEAID:
+      case Enum242.BRAVESOLO:
+      case Enum242.BRAVEAID:
         bTolerance += 2;
         break;
-      case AGGRESSIVE:
+      case Enum242.AGGRESSIVE:
         bTolerance += 1;
         break;
-      case DEFENSIVE:
+      case Enum242.DEFENSIVE:
         bTolerance += -1;
         break;
       default:
@@ -5428,7 +5428,7 @@ function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): 
       // morale modifier
       if (ubTotalPointsLost / 2 > pSoldier.value.ubAPsLostToSuppression / 2) {
         for (ubLoop2 = 0; ubLoop2 < (ubTotalPointsLost / 2) - (pSoldier.value.ubAPsLostToSuppression / 2); ubLoop2++) {
-          HandleMoraleEvent(pSoldier, MORALE_SUPPRESSED, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
+          HandleMoraleEvent(pSoldier, Enum234.MORALE_SUPPRESSED, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
         }
       }
 
@@ -5459,7 +5459,7 @@ function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): 
             }
             break;
           default: // standing!
-            if (pSoldier.value.bOverTerrainType == LOW_WATER || pSoldier.value.bOverTerrainType == DEEP_WATER) {
+            if (pSoldier.value.bOverTerrainType == Enum315.LOW_WATER || pSoldier.value.bOverTerrainType == Enum315.DEEP_WATER) {
               // can't change stance here!
               break;
             } else if (ubTotalPointsLost >= (AP_CROUCH + AP_PRONE) && (gAnimControl[pSoldier.value.usAnimState].ubEndHeight != ANIM_PRONE) && IsValidStance(pSoldier, ANIM_PRONE)) {
@@ -5495,7 +5495,7 @@ function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): 
 
           // ATE: For some reason, we forgot #53!
           if (pSoldier.value.ubProfile != 53) {
-            TacticalCharacterDialogue(pSoldier, QUOTE_UNDER_HEAVY_FIRE);
+            TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_UNDER_HEAVY_FIRE);
           }
         }
       }
@@ -5518,7 +5518,7 @@ function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): 
         // AI people will have to have their actions cancelled
         if (!(pSoldier.value.uiStatusFlags & SOLDIER_PC)) {
           CancelAIAction(pSoldier, TRUE);
-          pSoldier.value.bAction = AI_ACTION_CHANGE_STANCE;
+          pSoldier.value.bAction = Enum289.AI_ACTION_CHANGE_STANCE;
           pSoldier.value.usActionData = ubNewStance;
           pSoldier.value.bActionInProgress = TRUE;
         }
@@ -5547,21 +5547,21 @@ function ProcessImplicationsOfPCAttack(pSoldier: Pointer<SOLDIERTYPE>, ppTarget:
     pTarget.value.fAIFlags &= (~AI_ASLEEP);
   }
 
-  if (pTarget.value.ubProfile == PABLO && CheckFact(FACT_PLAYER_FOUND_ITEMS_MISSING, 0)) {
-    SetFactTrue(FACT_PABLO_PUNISHED_BY_PLAYER);
+  if (pTarget.value.ubProfile == Enum268.PABLO && CheckFact(Enum170.FACT_PLAYER_FOUND_ITEMS_MISSING, 0)) {
+    SetFactTrue(Enum170.FACT_PABLO_PUNISHED_BY_PLAYER);
   }
 
-  if (gTacticalStatus.bBoxingState == BOXING) {
+  if (gTacticalStatus.bBoxingState == Enum247.BOXING) {
     // should have a check for "in boxing ring", no?
-    if ((pSoldier.value.usAttackingWeapon != NOTHING && pSoldier.value.usAttackingWeapon != BRASS_KNUCKLES) || !(pSoldier.value.uiStatusFlags & SOLDIER_BOXER)) {
+    if ((pSoldier.value.usAttackingWeapon != NOTHING && pSoldier.value.usAttackingWeapon != Enum225.BRASS_KNUCKLES) || !(pSoldier.value.uiStatusFlags & SOLDIER_BOXER)) {
       // someone's cheating!
       if ((Item[pSoldier.value.usAttackingWeapon].usItemClass == IC_BLADE || Item[pSoldier.value.usAttackingWeapon].usItemClass == IC_PUNCH) && (pTarget.value.uiStatusFlags & SOLDIER_BOXER)) {
         // knife or brass knuckles disqualify the player!
-        BoxingPlayerDisqualified(pSoldier, BAD_ATTACK);
+        BoxingPlayerDisqualified(pSoldier, Enum199.BAD_ATTACK);
       } else {
         // anything else is open war!
         // gTacticalStatus.bBoxingState = NOT_BOXING;
-        SetBoxingState(NOT_BOXING);
+        SetBoxingState(Enum247.NOT_BOXING);
         // if we are attacking a boxer we should set them to neutral (temporarily) so that the rest of the civgroup code works...
         if ((pTarget.value.bTeam == CIV_TEAM) && (pTarget.value.uiStatusFlags & SOLDIER_BOXER)) {
           SetSoldierNeutral(pTarget);
@@ -5575,14 +5575,14 @@ function ProcessImplicationsOfPCAttack(pSoldier: Pointer<SOLDIERTYPE>, ppTarget:
     MilitiaChangesSides();
   }
   // JA2 Gold: fix Slay
-  else if ((pTarget.value.bTeam == CIV_TEAM && pTarget.value.bNeutral) && pTarget.value.ubProfile == SLAY && pTarget.value.bLife >= OKLIFE && CheckFact(155, 0) == FALSE) {
-    TriggerNPCRecord(SLAY, 1);
+  else if ((pTarget.value.bTeam == CIV_TEAM && pTarget.value.bNeutral) && pTarget.value.ubProfile == Enum268.SLAY && pTarget.value.bLife >= OKLIFE && CheckFact(155, 0) == FALSE) {
+    TriggerNPCRecord(Enum268.SLAY, 1);
   } else if ((pTarget.value.bTeam == CIV_TEAM) && (pTarget.value.ubCivilianGroup == 0) && (pTarget.value.bNeutral) && !(pTarget.value.uiStatusFlags & SOLDIER_VEHICLE)) {
-    if (pTarget.value.ubBodyType == COW && gWorldSectorX == 10 && gWorldSectorY == MAP_ROW_F) {
+    if (pTarget.value.ubBodyType == Enum194.COW && gWorldSectorX == 10 && gWorldSectorY == MAP_ROW_F) {
       // hicks could get mad!!!
       HickCowAttacked(pSoldier, pTarget);
-    } else if (pTarget.value.ubProfile == PABLO && pTarget.value.bLife >= OKLIFE && CheckFact(FACT_PABLO_PUNISHED_BY_PLAYER, 0) && !CheckFact(38, 0)) {
-      TriggerNPCRecord(PABLO, 3);
+    } else if (pTarget.value.ubProfile == Enum268.PABLO && pTarget.value.bLife >= OKLIFE && CheckFact(Enum170.FACT_PABLO_PUNISHED_BY_PLAYER, 0) && !CheckFact(38, 0)) {
+      TriggerNPCRecord(Enum268.PABLO, 3);
     } else {
       // regular civ attacked, turn non-neutral
       AddToShouldBecomeHostileOrSayQuoteList(pTarget.value.ubID);
@@ -5593,13 +5593,13 @@ function ProcessImplicationsOfPCAttack(pSoldier: Pointer<SOLDIERTYPE>, ppTarget:
       }
     }
   } else {
-    if (pTarget.value.ubProfile == CARMEN) // Carmen
+    if (pTarget.value.ubProfile == Enum268.CARMEN) // Carmen
     {
       // Special stuff for Carmen the bounty hunter
-      if (pSoldier.value.ubProfile != SLAY) // attacked by someone other than Slay
+      if (pSoldier.value.ubProfile != Enum268.SLAY) // attacked by someone other than Slay
       {
         // change attitude
-        pTarget.value.bAttitude = AGGRESSIVE;
+        pTarget.value.bAttitude = Enum242.AGGRESSIVE;
       }
     }
 
@@ -5615,7 +5615,7 @@ function ProcessImplicationsOfPCAttack(pSoldier: Pointer<SOLDIERTYPE>, ppTarget:
         AddToShouldBecomeHostileOrSayQuoteList(pTarget.value.ubID);
         // TriggerNPCWithIHateYouQuote( pTarget->ubProfile );
       }
-    } else if (pTarget.value.ubCivilianGroup != NON_CIV_GROUP && !(pTarget.value.uiStatusFlags & SOLDIER_BOXER)) {
+    } else if (pTarget.value.ubCivilianGroup != Enum246.NON_CIV_GROUP && !(pTarget.value.uiStatusFlags & SOLDIER_BOXER)) {
       // Firing at a civ in a civ group who isn't hostile... if anyone in that civ group can see this
       // going on they should become hostile.
       CivilianGroupMembersChangeSidesWithinProximity(pTarget);
@@ -5633,16 +5633,16 @@ function ProcessImplicationsOfPCAttack(pSoldier: Pointer<SOLDIERTYPE>, ppTarget:
         // ATE: Depending on personality, fire back.....
 
         // Do we have a gun in a\hand?
-        if (Item[pTarget.value.inv[HANDPOS].usItem].usItemClass == IC_GUN) {
+        if (Item[pTarget.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_GUN) {
           // Toggle burst capable...
           if (!pTarget.value.bDoBurst) {
-            if (IsGunBurstCapable(pTarget, HANDPOS, FALSE)) {
+            if (IsGunBurstCapable(pTarget, Enum261.HANDPOS, FALSE)) {
               ChangeWeaponMode(pTarget);
             }
           }
 
           // Fire back!
-          HandleItem(pTarget, pSoldier.value.sGridNo, pSoldier.value.bLevel, pTarget.value.inv[HANDPOS].usItem, FALSE);
+          HandleItem(pTarget, pSoldier.value.sGridNo, pSoldier.value.bLevel, pTarget.value.inv[Enum261.HANDPOS].usItem, FALSE);
         }
       }
 
@@ -5682,7 +5682,7 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: BOOLEAN, 
   }
 
   if (fCalledByAttacker) {
-    if (pSoldier && Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass & IC_GUN) {
+    if (pSoldier && Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass & IC_GUN) {
       if (pSoldier.value.bBulletsLeft > 0) {
         return pTarget;
       }
@@ -5730,7 +5730,7 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: BOOLEAN, 
   // this is so we DON'T call freeupattacker() which will cancel
   // the AI guy's meanwhile NPC stuff.
   // OK< let's NOT do this if it was the queen attacking....
-  if (AreInMeanwhile() && pSoldier != NULL && pSoldier.value.ubProfile != QUEEN) {
+  if (AreInMeanwhile() && pSoldier != NULL && pSoldier.value.ubProfile != Enum268.QUEEN) {
     return pTarget;
   }
 
@@ -5742,12 +5742,12 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: BOOLEAN, 
 
   if (pSoldier) {
     // reset attacking hand
-    pSoldier.value.ubAttackingHand = HANDPOS;
+    pSoldier.value.ubAttackingHand = Enum261.HANDPOS;
 
     // if there is a valid target, and our attack was noticed
     if (pTarget && (pSoldier.value.uiStatusFlags & SOLDIER_ATTACK_NOTICED)) {
       // stuff that only applies to when we attack
-      if (pTarget.value.ubBodyType != CROW) {
+      if (pTarget.value.ubBodyType != Enum194.CROW) {
         if (pSoldier.value.bTeam == gbPlayerNum) {
           fEnterCombat = ProcessImplicationsOfPCAttack(pSoldier, addressof(pTarget), REASON_NORMAL_ATTACK);
           if (!fEnterCombat) {
@@ -5760,7 +5760,7 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: BOOLEAN, 
 
       // ATE: If we are an animal, etc, don't change to hostile...
       // ( and don't go into combat )
-      if (pTarget.value.ubBodyType == CROW) {
+      if (pTarget.value.ubBodyType == Enum194.CROW) {
         // Loop through our team, make guys who can see this fly away....
         {
           let cnt: UINT32;
@@ -5771,7 +5771,7 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: BOOLEAN, 
 
           for (cnt = gTacticalStatus.Team[ubTeam].bFirstID, pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[ubTeam].bLastID; cnt++, pTeamSoldier++) {
             if (pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector) {
-              if (pTeamSoldier.value.ubBodyType == CROW) {
+              if (pTeamSoldier.value.ubBodyType == Enum194.CROW) {
                 if (pTeamSoldier.value.bOppList[pSoldier.value.ubID] == SEEN_CURRENTLY) {
                   // ZEROTIMECOUNTER( pTeamSoldier->AICounter );
 
@@ -5788,7 +5788,7 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: BOOLEAN, 
         fEnterCombat = FALSE;
       }
 
-      if (gTacticalStatus.bBoxingState == BOXING) {
+      if (gTacticalStatus.bBoxingState == Enum247.BOXING) {
         if (pTarget && pTarget.value.bLife <= 0) {
           // someone has won!
           EndBoxingMatch(pTarget);
@@ -5817,7 +5817,7 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: BOOLEAN, 
 
     if (pSoldier.value.fSayAmmoQuotePending) {
       pSoldier.value.fSayAmmoQuotePending = FALSE;
-      TacticalCharacterDialogue(pSoldier, QUOTE_OUT_OF_AMMO);
+      TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_OUT_OF_AMMO);
     }
 
     if (pSoldier.value.uiStatusFlags & SOLDIER_PC) {
@@ -5856,7 +5856,7 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: BOOLEAN, 
 
     // Display quote!
     if (!AM_AN_EPC(MercPtrs[gTacticalStatus.ubItemsSeenOnAttackSoldier])) {
-      TacticalCharacterDialogueWithSpecialEvent(MercPtrs[gTacticalStatus.ubItemsSeenOnAttackSoldier], (QUOTE_SPOTTED_SOMETHING_ONE + Random(2)), DIALOGUE_SPECIAL_EVENT_SIGNAL_ITEM_LOCATOR_START, gTacticalStatus.usItemsSeenOnAttackGridNo, 0);
+      TacticalCharacterDialogueWithSpecialEvent(MercPtrs[gTacticalStatus.ubItemsSeenOnAttackSoldier], (Enum202.QUOTE_SPOTTED_SOMETHING_ONE + Random(2)), DIALOGUE_SPECIAL_EVENT_SIGNAL_ITEM_LOCATOR_START, gTacticalStatus.usItemsSeenOnAttackGridNo, 0);
     } else {
       // Turn off item lock for locators...
       gTacticalStatus.fLockItemLocators = FALSE;
@@ -5890,9 +5890,9 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: BOOLEAN, 
     EndMuzzleFlash(pSoldier);
   }
 
-  if (pSoldier && pSoldier.value.bWeaponMode == WM_ATTACHED) {
+  if (pSoldier && pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED) {
     // change back to single shot
-    pSoldier.value.bWeaponMode = WM_NORMAL;
+    pSoldier.value.bWeaponMode = Enum265.WM_NORMAL;
   }
 
   // record last target
@@ -6069,7 +6069,7 @@ function RemoveSoldierFromTacticalSector(pSoldier: Pointer<SOLDIERTYPE>, fAdjust
 
   // Select next avialiable guy....
   if (fAdjustSelected) {
-    if (guiCurrentScreen == GAME_SCREEN) {
+    if (guiCurrentScreen == Enum26.GAME_SCREEN) {
       if (gusSelectedSoldier == pSoldier.value.ubID) {
         ubID = FindNextActiveAndAliveMerc(pSoldier, FALSE, FALSE);
 
@@ -6092,10 +6092,10 @@ function RemoveSoldierFromTacticalSector(pSoldier: Pointer<SOLDIERTYPE>, fAdjust
     } else {
       gusSelectedSoldier = NOBODY;
 
-      if (guiCurrentScreen == GAME_SCREEN) {
+      if (guiCurrentScreen == Enum26.GAME_SCREEN) {
         // otherwise, make sure interface is team panel...
         UpdateTeamPanelAssignments();
-        SetCurrentInterfacePanel(TEAM_PANEL);
+        SetCurrentInterfacePanel(Enum215.TEAM_PANEL);
       }
     }
   }
@@ -6103,7 +6103,7 @@ function RemoveSoldierFromTacticalSector(pSoldier: Pointer<SOLDIERTYPE>, fAdjust
 
 function DoneFadeOutDueToDeath(): void {
   // Quit game....
-  InternalLeaveTacticalScreen(MAINMENU_SCREEN);
+  InternalLeaveTacticalScreen(Enum26.MAINMENU_SCREEN);
   // SetPendingNewScreen( MAINMENU_SCREEN );
 }
 
@@ -6165,17 +6165,17 @@ function HandleEndDemoInCreatureLevel(): void {
 
 function DeathTimerCallback(): void {
   if (gTacticalStatus.Team[CREATURE_TEAM].bMenInSector > gTacticalStatus.Team[ENEMY_TEAM].bMenInSector) {
-    DoMessageBox(MSG_BOX_BASIC_STYLE, LargeTacticalStr[LARGESTR_NOONE_LEFT_CAPABLE_OF_BATTLE_AGAINST_CREATURES_STR], GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, LargeTacticalStr[Enum337.LARGESTR_NOONE_LEFT_CAPABLE_OF_BATTLE_AGAINST_CREATURES_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, NULL);
   } else {
-    DoMessageBox(MSG_BOX_BASIC_STYLE, LargeTacticalStr[LARGESTR_NOONE_LEFT_CAPABLE_OF_BATTLE_STR], GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, LargeTacticalStr[Enum337.LARGESTR_NOONE_LEFT_CAPABLE_OF_BATTLE_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, NULL);
   }
 }
 
 function CaptureTimerCallback(): void {
   if (gfSurrendered) {
-    DoMessageBox(MSG_BOX_BASIC_STYLE, LargeTacticalStr[3], GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, LargeTacticalStr[3], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, NULL);
   } else {
-    DoMessageBox(MSG_BOX_BASIC_STYLE, LargeTacticalStr[LARGESTR_HAVE_BEEN_CAPTURED], GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, LargeTacticalStr[Enum337.LARGESTR_HAVE_BEEN_CAPTURED], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, NULL);
   }
   gfSurrendered = FALSE;
 }
@@ -6189,15 +6189,15 @@ function DoPOWPathChecks(): void {
   for (iLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID; iLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; iLoop++) {
     pSoldier = MercPtrs[iLoop];
 
-    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
       // check to see if POW has been freed!
       // this will be true if a path can be made from the POW to either of 3 gridnos
       // 10492 (hallway) or 10482 (outside), or 9381 (outside)
-      if (FindBestPath(pSoldier, 10492, 0, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
+      if (FindBestPath(pSoldier, 10492, 0, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
         // drop out of if
-      } else if (FindBestPath(pSoldier, 10482, 0, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
+      } else if (FindBestPath(pSoldier, 10482, 0, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
         // drop out of if
-      } else if (FindBestPath(pSoldier, 9381, 0, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
+      } else if (FindBestPath(pSoldier, 9381, 0, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
         // drop out of if
       } else {
         continue;
@@ -6206,7 +6206,7 @@ function DoPOWPathChecks(): void {
       // put them on any available squad
       pSoldier.value.bNeutral = FALSE;
       AddCharacterToAnySquad(pSoldier);
-      DoMercBattleSound(pSoldier, BATTLE_SOUND_COOL1);
+      DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_COOL1);
     }
   }
 }
@@ -6265,7 +6265,7 @@ function HostileBloodcatsPresent(): BOOLEAN {
     // KM : Aug 11, 1999 -- Patch fix:  Removed the check for bNeutral.  Bloodcats automatically become hostile
     //		 on site.  Because the check used to be there, it was possible to get into a 2nd battle elsewhere
     //     which is BAD BAD BAD!
-    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife > 0 && pSoldier.value.ubBodyType == BLOODCAT) {
+    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife > 0 && pSoldier.value.ubBodyType == Enum194.BLOODCAT) {
       return TRUE;
     }
   }
@@ -6282,7 +6282,7 @@ function HandleCreatureTenseQuote(): void {
   let uiTime: INT32;
 
   // Check for quote seeing creature attacks....
-  if (gubQuest[QUEST_CREATURES] != QUESTDONE) {
+  if (gubQuest[Enum169.QUEST_CREATURES] != QUESTDONE) {
     if (gTacticalStatus.uiFlags & IN_CREATURE_LAIR) {
       if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
         uiTime = GetJA2Clock();
@@ -6328,7 +6328,7 @@ function DoCreatureTensionQuote(pSoldier: Pointer<SOLDIERTYPE>): void {
   switch (iRandomQuote) {
     case 0:
 
-      iQuoteToUse = QUOTE_SMELLED_CREATURE;
+      iQuoteToUse = Enum202.QUOTE_SMELLED_CREATURE;
       if (!(pSoldier.value.usQuoteSaidFlags & SOLDIER_QUOTE_SAID_SMELLED_CREATURE)) {
         // set flag
         pSoldier.value.usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_SMELLED_CREATURE;
@@ -6339,7 +6339,7 @@ function DoCreatureTensionQuote(pSoldier: Pointer<SOLDIERTYPE>): void {
 
     case 1:
 
-      iQuoteToUse = QUOTE_TRACES_OF_CREATURE_ATTACK;
+      iQuoteToUse = Enum202.QUOTE_TRACES_OF_CREATURE_ATTACK;
       if (!(pSoldier.value.usQuoteSaidFlags & SOLDIER_QUOTE_SAID_SPOTTING_CREATURE_ATTACK)) {
         // set flag
         pSoldier.value.usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_SPOTTING_CREATURE_ATTACK;
@@ -6350,7 +6350,7 @@ function DoCreatureTensionQuote(pSoldier: Pointer<SOLDIERTYPE>): void {
 
     case 2:
 
-      iQuoteToUse = QUOTE_WORRIED_ABOUT_CREATURE_PRESENCE;
+      iQuoteToUse = Enum202.QUOTE_WORRIED_ABOUT_CREATURE_PRESENCE;
       if (!(pSoldier.value.usQuoteSaidFlags & SOLDIER_QUOTE_SAID_WORRIED_ABOUT_CREATURES)) {
         // set flag
         pSoldier.value.usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_WORRIED_ABOUT_CREATURES;

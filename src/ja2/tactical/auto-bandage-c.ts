@@ -38,7 +38,7 @@ function BeginAutoBandage(): void {
 
   // If we are in combat, we con't...
   if ((gTacticalStatus.uiFlags & INCOMBAT) || (NumEnemyInSector() != 0)) {
-    DoMessageBox(MSG_BOX_BASIC_STYLE, Message[STR_SECTOR_NOT_CLEARED], GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_SECTOR_NOT_CLEARED], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
     return;
   }
 
@@ -46,7 +46,7 @@ function BeginAutoBandage(): void {
   // check for anyone needing bandages
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
     // if the soldier isn't active or in sector, we have problems..leave
-    if (!(pSoldier.value.bActive) || !(pSoldier.value.bInSector) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.bAssignment == VEHICLE)) {
+    if (!(pSoldier.value.bActive) || !(pSoldier.value.bInSector) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.bAssignment == Enum117.VEHICLE)) {
       continue;
     }
 
@@ -66,15 +66,15 @@ function BeginAutoBandage(): void {
   }
 
   if (!fFoundAGuy) {
-    DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[AUTOBANDAGE_NOT_NEEDED], GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.AUTOBANDAGE_NOT_NEEDED], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
   } else if (!fFoundAMedKit) {
-    DoMessageBox(MSG_BOX_BASIC_STYLE, gzLateLocalizedString[9], GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[9], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
   } else {
     if (!CanAutoBandage(FALSE)) {
-      DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[CANT_AUTOBANDAGE_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.CANT_AUTOBANDAGE_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
     } else {
       // Confirm if we want to start or not....
-      DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[BEGIN_AUTOBANDAGE_PROMPT_STR], GAME_SCREEN, MSG_BOX_FLAG_YESNO, BeginAutoBandageCallBack, NULL);
+      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.BEGIN_AUTOBANDAGE_PROMPT_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, BeginAutoBandageCallBack, NULL);
     }
   }
 }
@@ -221,9 +221,9 @@ function CreateAutoBandageString(): BOOLEAN {
   }
 
   if (ubDoctors == 1) {
-    uiDoctorNameStringLength += wcslen(Message[STR_IS_APPLYING_FIRST_AID]);
+    uiDoctorNameStringLength += wcslen(Message[Enum334.STR_IS_APPLYING_FIRST_AID]);
   } else {
-    uiDoctorNameStringLength += wcslen(Message[STR_ARE_APPLYING_FIRST_AID]);
+    uiDoctorNameStringLength += wcslen(Message[Enum334.STR_ARE_APPLYING_FIRST_AID]);
   }
 
   sAutoBandageString = MemRealloc(sAutoBandageString, uiDoctorNameStringLength * sizeof(CHAR16));
@@ -232,7 +232,7 @@ function CreateAutoBandageString(): BOOLEAN {
   }
 
   if (ubDoctors == 1) {
-    swprintf(sAutoBandageString, Message[STR_IS_APPLYING_FIRST_AID], MercPtrs[ubDoctor[0]].value.name);
+    swprintf(sAutoBandageString, Message[Enum334.STR_IS_APPLYING_FIRST_AID], MercPtrs[ubDoctor[0]].value.name);
   } else {
     // make a temporary string to hold most of the doctors names joined by commas
     sTemp = MemAlloc(uiDoctorNameStringLength * sizeof(CHAR16));
@@ -251,7 +251,7 @@ function CreateAutoBandageString(): BOOLEAN {
         }
       }
     }
-    swprintf(sAutoBandageString, Message[STR_ARE_APPLYING_FIRST_AID], sTemp, MercPtrs[ubDoctor[ubDoctors - 1]].value.name);
+    swprintf(sAutoBandageString, Message[Enum334.STR_ARE_APPLYING_FIRST_AID], sTemp, MercPtrs[ubDoctor[ubDoctors - 1]].value.name);
     MemFree(sTemp);
   }
   return TRUE;
@@ -298,7 +298,7 @@ function AutoBandage(fStart: BOOLEAN): void {
     ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "Begin auto bandage.");
 
     if (CreateAutoBandageString()) {
-      giBoxId = PrepareMercPopupBox(-1, DIALOG_MERC_POPUP_BACKGROUND, DIALOG_MERC_POPUP_BORDER, sAutoBandageString, 200, 40, 10, 30, addressof(gusTextBoxWidth), addressof(gusTextBoxHeight));
+      giBoxId = PrepareMercPopupBox(-1, Enum324.DIALOG_MERC_POPUP_BACKGROUND, Enum325.DIALOG_MERC_POPUP_BORDER, sAutoBandageString, 200, 40, 10, 30, addressof(gusTextBoxWidth), addressof(gusTextBoxHeight));
     }
 
     aRect.iTop = 0;
@@ -311,7 +311,7 @@ function AutoBandage(fStart: BOOLEAN): void {
     gsY = ((((aRect.iBottom - aRect.iTop) - gusTextBoxHeight) / 2) + aRect.iTop);
 
     // build a mask
-    MSYS_DefineRegion(addressof(gAutoBandageRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(addressof(gAutoBandageRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
     gfBeginningAutoBandage = TRUE;
   } else {
@@ -325,7 +325,7 @@ function AutoBandage(fStart: BOOLEAN): void {
         ActionDone(pSoldier);
         if (pSoldier.value.bSlotItemTakenFrom != NO_SLOT) {
           // swap our old hand item back to the main hand
-          SwapObjs(addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[pSoldier.value.bSlotItemTakenFrom]));
+          SwapObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), addressof(pSoldier.value.inv[pSoldier.value.bSlotItemTakenFrom]));
         }
 
         // ATE: Mkae everyone stand up!
@@ -342,13 +342,13 @@ function AutoBandage(fStart: BOOLEAN): void {
       ActionDone(MercPtrs[ubLoop]);
 
       // If anyone is still doing aid animation, stop!
-      if (MercPtrs[ubLoop].value.usAnimState == GIVING_AID) {
+      if (MercPtrs[ubLoop].value.usAnimState == Enum193.GIVING_AID) {
         SoldierGotoStationaryStance(MercPtrs[ubLoop]);
       }
     }
 
     // UnLock UI!
-    guiPendingOverrideEvent = LU_ENDUILOCK;
+    guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
     HandleTacticalUI();
 
     UnPauseGame();
@@ -356,7 +356,7 @@ function AutoBandage(fStart: BOOLEAN): void {
     // SetGameTimeCompressionLevel( TIME_COMPRESS_X1 );
 
     // Warp game time by the amount of time it took to autobandage.
-    WarpGameTime(guiAutoBandageSeconds, WARPTIME_NO_PROCESSING_OF_EVENTS);
+    WarpGameTime(guiAutoBandageSeconds, Enum131.WARPTIME_NO_PROCESSING_OF_EVENTS);
 
     DestroyTerminateAutoBandageButton();
 

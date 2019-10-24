@@ -46,11 +46,11 @@ function RenderTacticalInterface(): void {
   DegradeNewlyAddedItems();
 
   switch (gsCurInterfacePanel) {
-    case SM_PANEL:
+    case Enum215.SM_PANEL:
       RenderSMPanel(addressof(fInterfacePanelDirty));
       break;
 
-    case TEAM_PANEL:
+    case Enum215.TEAM_PANEL:
       RenderTEAMPanel(fInterfacePanelDirty);
       break;
   }
@@ -79,11 +79,11 @@ function RenderTacticalInterfaceWhileScrolling(): void {
   RenderButtons();
 
   switch (gsCurInterfacePanel) {
-    case SM_PANEL:
+    case Enum215.SM_PANEL:
       RenderSMPanel(addressof(fInterfacePanelDirty));
       break;
 
-    case TEAM_PANEL:
+    case Enum215.TEAM_PANEL:
       RenderTEAMPanel(fInterfacePanelDirty);
       break;
   }
@@ -114,13 +114,13 @@ function SetUpInterface(): void {
     GetSoldier(addressof(pSoldier), gusSelectedSoldier);
   }
 
-  if (gCurrentUIMode == OPENDOOR_MENU_MODE) {
+  if (gCurrentUIMode == Enum206.OPENDOOR_MENU_MODE) {
     HandleOpenDoorMenu();
   }
 
   HandleTalkingMenu();
 
-  if (gCurrentUIMode == EXITSECTORMENU_MODE) {
+  if (gCurrentUIMode == Enum206.EXITSECTORMENU_MODE) {
     HandleSectorExitMenu();
   }
 
@@ -133,11 +133,11 @@ function SetUpInterface(): void {
 
   if (gfUIHandleSelection == NONSELECTED_GUY_SELECTION) {
     if (gsSelectedLevel > 0) {
-      AddRoofToHead(gsSelectedGridNo, GOODRING1);
+      AddRoofToHead(gsSelectedGridNo, Enum312.GOODRING1);
       gpWorldLevelData[gsSelectedGridNo].pRoofHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
       gpWorldLevelData[gsSelectedGridNo].pRoofHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
     } else {
-      AddObjectToHead(gsSelectedGridNo, GOODRING1);
+      AddObjectToHead(gsSelectedGridNo, Enum312.GOODRING1);
       gpWorldLevelData[gsSelectedGridNo].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
       gpWorldLevelData[gsSelectedGridNo].pObjectHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
     }
@@ -146,12 +146,12 @@ function SetUpInterface(): void {
   if (gfUIHandleSelection == SELECTED_GUY_SELECTION) {
     if (gsSelectedLevel > 0) {
       // AddRoofToHead( gsSelectedGridNo, SELRING1 );
-      AddRoofToHead(gsSelectedGridNo, FIRSTPOINTERS2);
+      AddRoofToHead(gsSelectedGridNo, Enum312.FIRSTPOINTERS2);
       gpWorldLevelData[gsSelectedGridNo].pRoofHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
       gpWorldLevelData[gsSelectedGridNo].pRoofHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
     } else {
       // AddObjectToHead( gsSelectedGridNo, SELRING1 );
-      AddObjectToHead(gsSelectedGridNo, FIRSTPOINTERS2);
+      AddObjectToHead(gsSelectedGridNo, Enum312.FIRSTPOINTERS2);
       gpWorldLevelData[gsSelectedGridNo].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
       gpWorldLevelData[gsSelectedGridNo].pObjectHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
     }
@@ -159,11 +159,11 @@ function SetUpInterface(): void {
 
   if (gfUIHandleSelection == ENEMY_GUY_SELECTION) {
     if (gsSelectedLevel > 0) {
-      AddRoofToHead(gsSelectedGridNo, FIRSTPOINTERS2);
+      AddRoofToHead(gsSelectedGridNo, Enum312.FIRSTPOINTERS2);
       gpWorldLevelData[gsSelectedGridNo].pRoofHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
       gpWorldLevelData[gsSelectedGridNo].pRoofHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
     } else {
-      AddObjectToHead(gsSelectedGridNo, FIRSTPOINTERS2);
+      AddObjectToHead(gsSelectedGridNo, Enum312.FIRSTPOINTERS2);
       gpWorldLevelData[gsSelectedGridNo].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
       gpWorldLevelData[gsSelectedGridNo].pObjectHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
     }
@@ -173,16 +173,16 @@ function SetUpInterface(): void {
     if (gusSelectedSoldier != NOBODY) {
       if (MercPtrs[gusSelectedSoldier].value.sGridNo != gsUIHandleShowMoveGridLocation) {
         if (gfUIHandleShowMoveGrid == 2) {
-          AddTopmostToHead(gsUIHandleShowMoveGridLocation, GetSnapCursorIndex(FIRSTPOINTERS4));
+          AddTopmostToHead(gsUIHandleShowMoveGridLocation, GetSnapCursorIndex(Enum312.FIRSTPOINTERS4));
           gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
           gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
         } else {
           if (MercPtrs[gusSelectedSoldier].value.bStealthMode) {
-            AddTopmostToHead(gsUIHandleShowMoveGridLocation, GetSnapCursorIndex(FIRSTPOINTERS9));
+            AddTopmostToHead(gsUIHandleShowMoveGridLocation, GetSnapCursorIndex(Enum312.FIRSTPOINTERS9));
             gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
             gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
           } else {
-            AddTopmostToHead(gsUIHandleShowMoveGridLocation, GetSnapCursorIndex(FIRSTPOINTERS2));
+            AddTopmostToHead(gsUIHandleShowMoveGridLocation, GetSnapCursorIndex(Enum312.FIRSTPOINTERS2));
             gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
             gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
           }
@@ -223,22 +223,22 @@ function ResetInterface(): void {
 
   if (gfUIHandleSelection) {
     if (gsSelectedLevel > 0) {
-      RemoveRoof(gsSelectedGridNo, GOODRING1);
-      RemoveRoof(gsSelectedGridNo, FIRSTPOINTERS2);
+      RemoveRoof(gsSelectedGridNo, Enum312.GOODRING1);
+      RemoveRoof(gsSelectedGridNo, Enum312.FIRSTPOINTERS2);
     } else {
-      RemoveObject(gsSelectedGridNo, FIRSTPOINTERS2);
-      RemoveObject(gsSelectedGridNo, GOODRING1);
+      RemoveObject(gsSelectedGridNo, Enum312.FIRSTPOINTERS2);
+      RemoveObject(gsSelectedGridNo, Enum312.GOODRING1);
     }
   }
 
   if (gfUIHandleShowMoveGrid) {
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS4);
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS9);
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS2);
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS13);
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS15);
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS19);
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS20);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS4);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS9);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS2);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS13);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS15);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS19);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS20);
   }
 
   if (fInterfacePanelDirty) {
@@ -393,11 +393,11 @@ function RenderTopmostTacticalInterface(): void {
     fInterfacePanelDirty = DIRTYLEVEL2;
 
     switch (gsCurInterfacePanel) {
-      case SM_PANEL:
+      case Enum215.SM_PANEL:
         RenderSMPanel(addressof(fInterfacePanelDirty));
         break;
 
-      case TEAM_PANEL:
+      case Enum215.TEAM_PANEL:
         RenderTEAMPanel(fInterfacePanelDirty);
         break;
     }
@@ -517,7 +517,7 @@ function RenderTopmostTacticalInterface(): void {
           GetSoldierScreenPos(pSoldier, addressof(sMercScreenX), addressof(sMercScreenY));
           GetSoldierAnimOffsets(pSoldier, addressof(sOffsetX), addressof(sOffsetY));
 
-          if (pSoldier.value.ubBodyType == QUEENMONSTER) {
+          if (pSoldier.value.ubBodyType == Enum194.QUEENMONSTER) {
             sDamageX = sMercScreenX + pSoldier.value.sDamageX - pSoldier.value.sBoundingBoxOffsetX;
             sDamageY = sMercScreenY + pSoldier.value.sDamageY - pSoldier.value.sBoundingBoxOffsetY;
 
@@ -630,14 +630,14 @@ function RenderTopmostTacticalInterface(): void {
   }
 
   // Check if we should render item selection window
-  if (gCurrentUIMode == GETTINGITEM_MODE) {
+  if (gCurrentUIMode == Enum206.GETTINGITEM_MODE) {
     SetItemPickupMenuDirty(DIRTYLEVEL2);
     // Handle item pickup will return true if it's been closed
     RenderItemPickupMenu();
   }
 
   // Check if we should render item selection window
-  if (gCurrentUIMode == OPENDOOR_MENU_MODE) {
+  if (gCurrentUIMode == Enum206.OPENDOOR_MENU_MODE) {
     RenderOpenDoorMenu();
   }
 
@@ -715,7 +715,7 @@ function LockTacticalInterface(): void {
   // 1) create a mouse region over the entrie interface panel
   // 2) set flag for use in tactical to indicate we are locked
   if (!(guiTacticalInterfaceFlags & INTERFACE_LOCKEDLEVEL1)) {
-    MSYS_DefineRegion(addressof(gLockPanelOverlayRegion), 0, gsVIEWPORT_WINDOW_END_Y, 640, 480, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(addressof(gLockPanelOverlayRegion), 0, gsVIEWPORT_WINDOW_END_Y, 640, 480, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
     // Add region
     MSYS_AddRegion(addressof(gLockPanelOverlayRegion));
 
@@ -772,7 +772,7 @@ function ResetInterfaceAndUI(): void {
   }
 
   // Set UI back to movement...
-  guiPendingOverrideEvent = M_ON_TERRAIN;
+  guiPendingOverrideEvent = Enum207.M_ON_TERRAIN;
   HandleTacticalUI();
 }
 

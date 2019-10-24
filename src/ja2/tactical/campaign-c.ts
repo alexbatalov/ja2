@@ -15,7 +15,7 @@ function StatChange(pSoldier: Pointer<SOLDIERTYPE>, ubStat: UINT8, usNumChances:
   if ((pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT))
     return;
 
-  if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+  if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
     ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, "ERROR: StatChange: %s improving stats while POW! ubStat %d", pSoldier.value.name, ubStat);
     return;
   }
@@ -59,11 +59,11 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
 
   Assert(pProfile != NULL);
 
-  if (pProfile.value.bEvolution == NO_EVOLUTION)
+  if (pProfile.value.bEvolution == Enum274.NO_EVOLUTION)
     return; // No change possible, quit right away
 
   // if this is a Reverse-Evolving merc who attempting to train
-  if ((ubReason == FROM_TRAINING) && (pProfile.value.bEvolution == DEVOLVE))
+  if ((ubReason == FROM_TRAINING) && (pProfile.value.bEvolution == Enum274.DEVOLVE))
     return; // he doesn't get any benefit, but isn't penalized either
 
   if (usNumChances == 0)
@@ -151,7 +151,7 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
 
   // loop once for each chance to improve
   for (uiCnt = 0; uiCnt < usNumChances; uiCnt++) {
-    if (pProfile.value.bEvolution == NORMAL_EVOLUTION) // Evolves!
+    if (pProfile.value.bEvolution == Enum274.NORMAL_EVOLUTION) // Evolves!
     {
       // if this is improving from a failure, and a successful roll would give us enough to go up a point
       if ((ubReason == FROM_FAILURE) && ((psStatGainPtr.value + 1) >= usSubpointsPerPoint)) {
@@ -482,7 +482,7 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
       {
         // Pipe up with "I'm getting better at this!"
         TacticalCharacterDialogueWithSpecialEventEx(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DISPLAY_STAT_CHANGE, fChangeTypeIncrease, sPtsChanged, ubStat);
-        TacticalCharacterDialogue(pSoldier, QUOTE_EXPERIENCE_GAIN);
+        TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_EXPERIENCE_GAIN);
       } else {
         let wTempString: CHAR16[] /* [128] */;
 
@@ -534,21 +534,21 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
       // if the guy is employed by player
       if (pSoldier != NULL) {
         switch (pSoldier.value.ubWhatKindOfMercAmI) {
-          case MERC_TYPE__AIM_MERC:
+          case Enum260.MERC_TYPE__AIM_MERC:
             // A.I.M.
             pSoldier.value.fContractPriceHasIncreased = TRUE;
             fChangeSalary = TRUE;
             break;
 
-          case MERC_TYPE__MERC:
+          case Enum260.MERC_TYPE__MERC:
             // M.E.R.C.
             ubMercMercIdValue = pSoldier.value.ubProfile;
 
             // Biff's profile id ( 40 ) is the base
-            ubMercMercIdValue -= BIFF;
+            ubMercMercIdValue -= Enum268.BIFF;
 
             // offset for the 2 profiles of Larry (we only have one email for Larry..but 2 profile entries
-            if (ubMercMercIdValue >= (LARRY_DRUNK - BIFF)) {
+            if (ubMercMercIdValue >= (Enum268.LARRY_DRUNK - Enum268.BIFF)) {
               ubMercMercIdValue--;
             }
 
@@ -559,7 +559,7 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
             //	DEF: 03/06/99 Now sets an event that will be processed later in the day
             //						ubEmailOffset = MERC_UP_LEVEL_BIFF + MERC_UP_LEVEL_LENGTH_BIFF * ( ubMercMercIdValue );
             //						AddEmail( ubEmailOffset, MERC_UP_LEVEL_LENGTH_BIFF, SPECK_FROM_MERC, GetWorldTotalMin() );
-            AddStrategicEvent(EVENT_MERC_MERC_WENT_UP_LEVEL_EMAIL_DELAY, GetWorldTotalMin() + 60 + Random(60), ubMercMercIdValue);
+            AddStrategicEvent(Enum132.EVENT_MERC_MERC_WENT_UP_LEVEL_EMAIL_DELAY, GetWorldTotalMin() + 60 + Random(60), ubMercMercIdValue);
 
             fChangeSalary = TRUE;
             break;
@@ -631,7 +631,7 @@ function ProcessUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Poin
       return;
 
     // ignore POWs - shouldn't ever be getting this far
-    if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+    if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
       return;
     }
   } else {
@@ -966,13 +966,13 @@ function HandleUnhiredMercDeaths(iProfileID: INT32): void {
 
   // how many in total can be killed like this depends on player's difficulty setting
   switch (gGameOptions.ubDifficultyLevel) {
-    case DIF_LEVEL_EASY:
+    case Enum9.DIF_LEVEL_EASY:
       ubMaxDeaths = 1;
       break;
-    case DIF_LEVEL_MEDIUM:
+    case Enum9.DIF_LEVEL_MEDIUM:
       ubMaxDeaths = 2;
       break;
-    case DIF_LEVEL_HARD:
+    case Enum9.DIF_LEVEL_HARD:
       ubMaxDeaths = 3;
       break;
     default:
@@ -990,19 +990,19 @@ function HandleUnhiredMercDeaths(iProfileID: INT32): void {
   sChance = 10 - pProfile.value.bExpLevel;
 
   switch (pProfile.value.bPersonalityTrait) {
-    case FORGETFUL:
-    case NERVOUS:
-    case PSYCHO:
+    case Enum270.FORGETFUL:
+    case Enum270.NERVOUS:
+    case Enum270.PSYCHO:
       // these guys are somewhat more likely to get killed (they have "problems")
       sChance += 2;
       break;
   }
 
   // stealthy guys are slightly less likely to get killed (they're careful)
-  if (pProfile.value.bSkillTrait == STEALTHY) {
+  if (pProfile.value.bSkillTrait == Enum269.STEALTHY) {
     sChance -= 1;
   }
-  if (pProfile.value.bSkillTrait2 == STEALTHY) {
+  if (pProfile.value.bSkillTrait2 == Enum269.STEALTHY) {
     sChance -= 1;
   }
 
@@ -1015,9 +1015,9 @@ function HandleUnhiredMercDeaths(iProfileID: INT32): void {
     gStrategicStatus.ubUnhiredMercDeaths++;
 
     // send an email as long as the merc is from aim
-    if (iProfileID < BIFF) {
+    if (iProfileID < Enum268.BIFF) {
       // send an email to the player telling the player that a merc died
-      AddEmailWithSpecialData(MERC_DIED_ON_OTHER_ASSIGNMENT, MERC_DIED_ON_OTHER_ASSIGNMENT_LENGTH, AIM_SITE, GetWorldTotalMin(), 0, iProfileID);
+      AddEmailWithSpecialData(MERC_DIED_ON_OTHER_ASSIGNMENT, MERC_DIED_ON_OTHER_ASSIGNMENT_LENGTH, Enum75.AIM_SITE, GetWorldTotalMin(), 0, iProfileID);
     }
   }
 }
@@ -1061,13 +1061,13 @@ function CurrentPlayerProgressPercentage(): UINT8 {
 
   // kills per point depends on difficulty, and should match the ratios of starting enemy populations (730/1050/1500)
   switch (gGameOptions.ubDifficultyLevel) {
-    case DIF_LEVEL_EASY:
+    case Enum9.DIF_LEVEL_EASY:
       ubKillsPerPoint = 7;
       break;
-    case DIF_LEVEL_MEDIUM:
+    case Enum9.DIF_LEVEL_MEDIUM:
       ubKillsPerPoint = 10;
       break;
-    case DIF_LEVEL_HARD:
+    case Enum9.DIF_LEVEL_HARD:
       ubKillsPerPoint = 15;
       break;
     default:
@@ -1121,13 +1121,13 @@ function HourlyProgressUpdate(): void {
 
     // at 50% make Mike available to the strategic AI
     if (ubCurrentProgress >= 50 && gStrategicStatus.ubHighestProgress < 50) {
-      SetFactTrue(FACT_MIKE_AVAILABLE_TO_ARMY);
+      SetFactTrue(Enum170.FACT_MIKE_AVAILABLE_TO_ARMY);
     }
 
     // at 70% add Iggy to the world
     if (ubCurrentProgress >= 70 && gStrategicStatus.ubHighestProgress < 70) {
-      gMercProfiles[IGGY].sSectorX = 5;
-      gMercProfiles[IGGY].sSectorY = MAP_ROW_C;
+      gMercProfiles[Enum268.IGGY].sSectorX = 5;
+      gMercProfiles[Enum268.IGGY].sSectorY = MAP_ROW_C;
     }
 
     gStrategicStatus.ubHighestProgress = ubCurrentProgress;
@@ -1142,22 +1142,22 @@ function AwardExperienceBonusToActiveSquad(ubExpBonusType: UINT8): void {
   let ubGuynum: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
-  Assert(ubExpBonusType < NUM_EXP_BONUS_TYPES);
+  Assert(ubExpBonusType < Enum200.NUM_EXP_BONUS_TYPES);
 
   switch (ubExpBonusType) {
-    case EXP_BONUS_MINIMUM:
+    case Enum200.EXP_BONUS_MINIMUM:
       usXPs = 25;
       break;
-    case EXP_BONUS_SMALL:
+    case Enum200.EXP_BONUS_SMALL:
       usXPs = 50;
       break;
-    case EXP_BONUS_AVERAGE:
+    case Enum200.EXP_BONUS_AVERAGE:
       usXPs = 100;
       break;
-    case EXP_BONUS_LARGE:
+    case Enum200.EXP_BONUS_LARGE:
       usXPs = 200;
       break;
-    case EXP_BONUS_MAXIMUM:
+    case Enum200.EXP_BONUS_MAXIMUM:
       usXPs = 400;
       break;
   }
@@ -1223,5 +1223,5 @@ function MERCMercWentUpALevelSendEmail(ubMercMercIdValue: UINT8): void {
   let ubEmailOffset: UINT8 = 0;
 
   ubEmailOffset = MERC_UP_LEVEL_BIFF + MERC_UP_LEVEL_LENGTH_BIFF * (ubMercMercIdValue);
-  AddEmail(ubEmailOffset, MERC_UP_LEVEL_LENGTH_BIFF, SPECK_FROM_MERC, GetWorldTotalMin());
+  AddEmail(ubEmailOffset, MERC_UP_LEVEL_LENGTH_BIFF, Enum75.SPECK_FROM_MERC, GetWorldTotalMin());
 }

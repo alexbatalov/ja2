@@ -72,7 +72,7 @@ function NewLightEffect(sGridNo: INT16, bType: INT8): INT32 {
   pLight.value.uiTimeOfLastUpdate = GetWorldTotalSeconds();
 
   switch (bType) {
-    case LIGHT_FLARE_MARK_1:
+    case Enum305.LIGHT_FLARE_MARK_1:
 
       ubDuration = 6;
       ubStartRadius = 6;

@@ -288,7 +288,7 @@ function HandleTextEvent(uiKey: UINT32): void {
 function ProcessPlayerInputActivationString(): void {
   // prcess string to see if it matches activation string
   if (((wcscmp(pPlayerActivationString, "XEP624") == 0) || (wcscmp(pPlayerActivationString, "xep624") == 0)) && (LaptopSaveInfo.fIMPCompletedFlag == FALSE) && (LaptopSaveInfo.gfNewGameLaptop < 2)) {
-    iCurrentImpPage = IMP_MAIN_PAGE;
+    iCurrentImpPage = Enum71.IMP_MAIN_PAGE;
   }
   /*
           else if( ( wcscmp(pPlayerActivationString, L"90210") == 0 ) && ( LaptopSaveInfo.fIMPCompletedFlag == FALSE ) )
@@ -298,9 +298,9 @@ function ProcessPlayerInputActivationString(): void {
   */
   else {
     if (((wcscmp(pPlayerActivationString, "XEP624") != 0) && (wcscmp(pPlayerActivationString, "xep624") != 0))) {
-      DoLapTopMessageBox(MSG_BOX_IMP_STYLE, pImpPopUpStrings[0], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+      DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[0], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
     } else if (LaptopSaveInfo.fIMPCompletedFlag == TRUE) {
-      DoLapTopMessageBox(MSG_BOX_IMP_STYLE, pImpPopUpStrings[6], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+      DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[6], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
     }
   }
   return;
@@ -318,7 +318,7 @@ function CreateIMPHomePageButtons(): void {
 
   giIMPHomePageButton[0] = CreateIconAndTextButton(giIMPHomePageButtonImage[0], pImpButtonText[0], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (286 - 106), LAPTOP_SCREEN_WEB_UL_Y + (248 - 48), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPAboutUsCallback);
 
-  SetButtonCursor(giIMPHomePageButton[0], CURSOR_WWW);
+  SetButtonCursor(giIMPHomePageButton[0], Enum317.CURSOR_WWW);
 
   return;
 }
@@ -343,7 +343,7 @@ function BtnIMPAboutUsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      iCurrentImpPage = IMP_ABOUT_US;
+      iCurrentImpPage = Enum71.IMP_ABOUT_US;
       fButtonPendingFlag = TRUE;
     }
   }

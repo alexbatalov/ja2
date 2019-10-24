@@ -129,8 +129,8 @@ function CreateIMPPersonalityFinishButtons(): void {
     */
   giIMPPersonalityFinishButton[1] = CreateIconAndTextButton(giIMPPersonalityFinishButtonImage[1], pImpButtonText[10], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (276), LAPTOP_SCREEN_WEB_UL_Y + (224), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPersonalityFinishNoCallback);
 
-  SetButtonCursor(giIMPPersonalityFinishButton[0], CURSOR_WWW);
-  SetButtonCursor(giIMPPersonalityFinishButton[1], CURSOR_WWW);
+  SetButtonCursor(giIMPPersonalityFinishButton[0], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPPersonalityFinishButton[1], Enum317.CURSOR_WWW);
 
   return;
 }
@@ -221,7 +221,7 @@ function CreatePersonalityFinishOkButton(): void {
   giIMPPersonalityFinishButtonImage[0] = LoadButtonImage("LAPTOP\\button_5.sti", -1, 0, -1, 1, -1);
   giIMPPersonalityFinishButton[0] = CreateIconAndTextButton(giIMPPersonalityFinishButtonImage[0], pImpButtonText[24], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (186), LAPTOP_SCREEN_WEB_UL_Y + (224), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPersonalityFinishOkCallback);
 
-  SetButtonCursor(giIMPPersonalityFinishButton[0], CURSOR_WWW);
+  SetButtonCursor(giIMPPersonalityFinishButton[0], Enum317.CURSOR_WWW);
 
   return;
 }
@@ -250,7 +250,7 @@ function BtnIMPPersonalityFinishOkCallback(btn: Pointer<GUI_BUTTON>, reason: INT
 
       // button pending, wait a frame
       fButtonPendingFlag = TRUE;
-      iCurrentImpPage = IMP_MAIN_PAGE;
+      iCurrentImpPage = Enum71.IMP_MAIN_PAGE;
     }
   }
 }

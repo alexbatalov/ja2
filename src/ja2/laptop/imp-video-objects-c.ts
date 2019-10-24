@@ -95,7 +95,7 @@ function LoadIMPSymbol(): BOOLEAN {
   let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_IMPSYMBOL);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_IMPSYMBOL);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiIMPSYMBOL)));
 
   return TRUE;

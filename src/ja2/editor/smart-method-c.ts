@@ -1,6 +1,6 @@
 let gubDoorUIValue: UINT8 = 0;
 let gubWindowUIValue: UINT8 = 0;
-let gubWallUIValue: UINT8 = FIRSTWALL;
+let gubWallUIValue: UINT8 = Enum313.FIRSTWALL;
 let gubBrokenWallUIValue: UINT8 = 0;
 
 function CalcSmartWallDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
@@ -10,12 +10,12 @@ function CalcSmartWallDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer
 
 function CalcSmartDoorDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
   pusUseIndex.value = 4 * (gubDoorUIValue % 2); // open or closed -- odd or even
-  pusObjIndex.value = FIRSTDOOR + gubDoorUIValue / 2;
+  pusObjIndex.value = Enum313.FIRSTDOOR + gubDoorUIValue / 2;
 }
 
 function CalcSmartWindowDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
   pusUseIndex.value = 44 + gubWindowUIValue; // first exterior top right oriented window
-  pusObjIndex.value = FIRSTWALL;
+  pusObjIndex.value = Enum313.FIRSTWALL;
 }
 
 function CalcSmartBrokenWallDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
@@ -31,7 +31,7 @@ function CalcSmartBrokenWallDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: P
       pusUseIndex.value = 64;
       break;
   }
-  pusObjIndex.value = FIRSTWALL;
+  pusObjIndex.value = Enum313.FIRSTWALL;
 }
 
 function CalcSmartWindowIndex(usWallOrientation: UINT16): UINT16 {
@@ -48,7 +48,7 @@ function CalcSmartDoorIndex(usWallOrientation: UINT16): UINT16 {
 }
 
 function CalcSmartDoorType(): UINT16 {
-  return (FIRSTDOOR + gubDoorUIValue / 2);
+  return (Enum313.FIRSTDOOR + gubDoorUIValue / 2);
 }
 
 function CalcSmartBrokenWallIndex(usWallOrientation: UINT16): UINT16 {
@@ -80,7 +80,7 @@ function IncSmartWallUIValue(): void {
 }
 
 function DecSmartWallUIValue(): void {
-  gubWallUIValue -= gubWallUIValue > FIRSTWALL ? 1 : -3;
+  gubWallUIValue -= gubWallUIValue > Enum313.FIRSTWALL ? 1 : -3;
 }
 
 function IncSmartDoorUIValue(): void {
@@ -140,7 +140,7 @@ function CalcWindowInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<
   if (pWall) {
     GetTileType(pWall.value.usIndex, addressof(uiTileType));
     pusWallType.value = uiTileType;
-    if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
+    if (uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a window, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
       pusWallType.value = SearchForWallType(iMapIndex);
@@ -153,7 +153,7 @@ function CalcWindowInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<
   if (pWall) {
     GetTileType(pWall.value.usIndex, addressof(uiTileType));
     pusWallType.value = uiTileType;
-    if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
+    if (uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a window, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
       pusWallType.value = SearchForWallType(iMapIndex);
@@ -181,7 +181,7 @@ function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Poin
   if (pWall) {
     GetTileType(pWall.value.usIndex, addressof(uiTileType));
     pusWallType.value = uiTileType;
-    if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
+    if (uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a walltype, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
       pusWallType.value = SearchForWallType(iMapIndex);
@@ -194,7 +194,7 @@ function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Poin
   if (pWall) {
     GetTileType(pWall.value.usIndex, addressof(uiTileType));
     pusWallType.value = uiTileType;
-    if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
+    if (uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a walltype, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
       pusWallType.value = SearchForWallType(iMapIndex);
@@ -255,21 +255,21 @@ function PasteSmartWall(iMapIndex: UINT32): void {
       usWallType = GetVerticalWallType(iMapIndex - WORLD_COLS);
       if (usWallType == gubWallUIValue) {
         if (FloorAtGridNo(iMapIndex + 1))
-          BuildWallPiece(iMapIndex, EXTERIOR_RIGHT, gubWallUIValue);
+          BuildWallPiece(iMapIndex, Enum61.EXTERIOR_RIGHT, gubWallUIValue);
         else
-          BuildWallPiece(iMapIndex, INTERIOR_RIGHT, gubWallUIValue);
+          BuildWallPiece(iMapIndex, Enum61.INTERIOR_RIGHT, gubWallUIValue);
         return;
       }
       usWallType = GetHorizontalWallType(iMapIndex - WORLD_COLS);
       if (usWallType == gubWallUIValue) {
         if (FloorAtGridNo(iMapIndex + 1)) {
-          BuildWallPiece(iMapIndex, EXTERIOR_RIGHT, gubWallUIValue);
+          BuildWallPiece(iMapIndex, Enum61.EXTERIOR_RIGHT, gubWallUIValue);
           if (!GetHorizontalWall(iMapIndex - WORLD_COLS + 1))
-            ChangeVerticalWall(iMapIndex, INTERIOR_EXTENDED);
+            ChangeVerticalWall(iMapIndex, Enum60.INTERIOR_EXTENDED);
         } else {
-          BuildWallPiece(iMapIndex, INTERIOR_RIGHT, gubWallUIValue);
+          BuildWallPiece(iMapIndex, Enum61.INTERIOR_RIGHT, gubWallUIValue);
           if (!GetHorizontalWall(iMapIndex - WORLD_COLS + 1))
-            ChangeVerticalWall(iMapIndex, EXTERIOR_EXTENDED);
+            ChangeVerticalWall(iMapIndex, Enum60.EXTERIOR_EXTENDED);
         }
       }
     }
@@ -282,9 +282,9 @@ function PasteSmartWall(iMapIndex: UINT32): void {
       usWallType = GetHorizontalWallType(iMapIndex - 1);
       if (usWallType == gubWallUIValue) {
         if (FloorAtGridNo(iMapIndex + WORLD_COLS))
-          BuildWallPiece(iMapIndex, EXTERIOR_BOTTOM, gubWallUIValue);
+          BuildWallPiece(iMapIndex, Enum61.EXTERIOR_BOTTOM, gubWallUIValue);
         else
-          BuildWallPiece(iMapIndex, INTERIOR_BOTTOM, gubWallUIValue);
+          BuildWallPiece(iMapIndex, Enum61.INTERIOR_BOTTOM, gubWallUIValue);
       }
     }
     return;
@@ -292,40 +292,40 @@ function PasteSmartWall(iMapIndex: UINT32): void {
   //*D* See above documentation
   // Evaluate left adjacent tile
   if (usWallType = GetVerticalWallType(iMapIndex - 1))
-    usNumH[usWallType - FIRSTWALL]++;
+    usNumH[usWallType - Enum313.FIRSTWALL]++;
   if (usWallType = GetHorizontalWallType(iMapIndex - 1))
-    usNumH[usWallType - FIRSTWALL]++;
+    usNumH[usWallType - Enum313.FIRSTWALL]++;
   // Evaluate right adjacent tile
   if (usWallType = GetHorizontalWallType(iMapIndex + 1))
-    usNumH[usWallType - FIRSTWALL]++;
+    usNumH[usWallType - Enum313.FIRSTWALL]++;
   // Evaluate upper adjacent tile
   if (usWallType = GetVerticalWallType(iMapIndex - WORLD_COLS))
-    usNumV[usWallType - FIRSTWALL]++;
+    usNumV[usWallType - Enum313.FIRSTWALL]++;
   if (usWallType = GetHorizontalWallType(iMapIndex - WORLD_COLS))
-    usNumV[usWallType - FIRSTWALL]++;
+    usNumV[usWallType - Enum313.FIRSTWALL]++;
   // Evaluate lower adjacent tile
   if (usWallType = GetVerticalWallType(iMapIndex + WORLD_COLS))
-    usNumV[usWallType - FIRSTWALL]++;
+    usNumV[usWallType - Enum313.FIRSTWALL]++;
   //*E* See above documentation
-  if (usNumV[gubWallUIValue - FIRSTWALL] | usNumH[gubWallUIValue - FIRSTWALL]) {
-    if (usNumV[gubWallUIValue - FIRSTWALL] >= usNumH[gubWallUIValue - FIRSTWALL]) {
+  if (usNumV[gubWallUIValue - Enum313.FIRSTWALL] | usNumH[gubWallUIValue - Enum313.FIRSTWALL]) {
+    if (usNumV[gubWallUIValue - Enum313.FIRSTWALL] >= usNumH[gubWallUIValue - Enum313.FIRSTWALL]) {
       if (FloorAtGridNo(iMapIndex + 1)) {
         // inside
-        BuildWallPiece(iMapIndex, EXTERIOR_RIGHT, gubWallUIValue);
+        BuildWallPiece(iMapIndex, Enum61.EXTERIOR_RIGHT, gubWallUIValue);
         // Change to extended piece if it is a new top right corner to cover the end part.
         if (GetHorizontalWall(iMapIndex - WORLD_COLS) && !GetHorizontalWall(iMapIndex - WORLD_COLS + 1) && !GetVerticalWall(iMapIndex - WORLD_COLS))
-          ChangeVerticalWall(iMapIndex, INTERIOR_EXTENDED);
+          ChangeVerticalWall(iMapIndex, Enum60.INTERIOR_EXTENDED);
         else if (GetHorizontalWall(iMapIndex - WORLD_COLS) && !GetHorizontalWall(iMapIndex - WORLD_COLS - 1) && !GetVerticalWall(iMapIndex - WORLD_COLS - 1)) {
-          ChangeVerticalWall(iMapIndex, INTERIOR_EXTENDED);
+          ChangeVerticalWall(iMapIndex, Enum60.INTERIOR_EXTENDED);
           EraseHorizontalWall(iMapIndex - WORLD_COLS);
         }
       } else {
         // outside
-        BuildWallPiece(iMapIndex, INTERIOR_RIGHT, gubWallUIValue);
+        BuildWallPiece(iMapIndex, Enum61.INTERIOR_RIGHT, gubWallUIValue);
         if (GetHorizontalWall(iMapIndex - WORLD_COLS) && !GetHorizontalWall(iMapIndex - WORLD_COLS + 1) && !GetVerticalWall(iMapIndex - WORLD_COLS))
-          ChangeVerticalWall(iMapIndex, EXTERIOR_EXTENDED);
+          ChangeVerticalWall(iMapIndex, Enum60.EXTERIOR_EXTENDED);
         else if (GetHorizontalWall(iMapIndex - WORLD_COLS) && !GetHorizontalWall(iMapIndex - WORLD_COLS - 1) && !GetVerticalWall(iMapIndex - WORLD_COLS - 1)) {
-          ChangeVerticalWall(iMapIndex, EXTERIOR_EXTENDED);
+          ChangeVerticalWall(iMapIndex, Enum60.EXTERIOR_EXTENDED);
           EraseHorizontalWall(iMapIndex - WORLD_COLS);
         }
       }
@@ -334,22 +334,22 @@ function PasteSmartWall(iMapIndex: UINT32): void {
         EraseVerticalWall(iMapIndex - 1);
       if (FloorAtGridNo(iMapIndex + WORLD_COLS)) {
         // inside
-        BuildWallPiece(iMapIndex, EXTERIOR_BOTTOM, gubWallUIValue);
+        BuildWallPiece(iMapIndex, Enum61.EXTERIOR_BOTTOM, gubWallUIValue);
         if (GetVerticalWall(iMapIndex + WORLD_COLS))
-          ChangeVerticalWall(iMapIndex + WORLD_COLS, INTERIOR_EXTENDED);
+          ChangeVerticalWall(iMapIndex + WORLD_COLS, Enum60.INTERIOR_EXTENDED);
         if (GetVerticalWall(iMapIndex + WORLD_COLS - 1) && !GetVerticalWall(iMapIndex - 1))
-          ChangeVerticalWall(iMapIndex + WORLD_COLS - 1, INTERIOR_EXTENDED);
+          ChangeVerticalWall(iMapIndex + WORLD_COLS - 1, Enum60.INTERIOR_EXTENDED);
         else if (GetVerticalWall(iMapIndex - 1) && !GetVerticalWall(iMapIndex + WORLD_COLS - 1) && FloorAtGridNo(iMapIndex))
-          ChangeVerticalWall(iMapIndex - 1, INTERIOR_BOTTOMEND);
+          ChangeVerticalWall(iMapIndex - 1, Enum60.INTERIOR_BOTTOMEND);
       } else {
         // outside
-        BuildWallPiece(iMapIndex, INTERIOR_BOTTOM, gubWallUIValue);
+        BuildWallPiece(iMapIndex, Enum61.INTERIOR_BOTTOM, gubWallUIValue);
         if (GetVerticalWall(iMapIndex + WORLD_COLS))
-          ChangeVerticalWall(iMapIndex + WORLD_COLS, EXTERIOR_EXTENDED);
+          ChangeVerticalWall(iMapIndex + WORLD_COLS, Enum60.EXTERIOR_EXTENDED);
         if (GetVerticalWall(iMapIndex + WORLD_COLS - 1) && !GetVerticalWall(iMapIndex - 1))
-          ChangeVerticalWall(iMapIndex + WORLD_COLS - 1, EXTERIOR_EXTENDED);
+          ChangeVerticalWall(iMapIndex + WORLD_COLS - 1, Enum60.EXTERIOR_EXTENDED);
         else if (GetVerticalWall(iMapIndex - 1) && !GetVerticalWall(iMapIndex + WORLD_COLS - 1) && FloorAtGridNo(iMapIndex))
-          ChangeVerticalWall(iMapIndex - 1, EXTERIOR_BOTTOMEND);
+          ChangeVerticalWall(iMapIndex - 1, Enum60.EXTERIOR_BOTTOMEND);
       }
     }
     return;
@@ -361,20 +361,20 @@ function PasteSmartWall(iMapIndex: UINT32): void {
       EraseHorizontalWall(iMapIndex + WORLD_COLS);
     if (FloorAtGridNo(iMapIndex + 1)) {
       // inside
-      BuildWallPiece(iMapIndex + WORLD_COLS, EXTERIOR_RIGHT, gubWallUIValue);
-      BuildWallPiece(iMapIndex, EXTERIOR_RIGHT, gubWallUIValue);
+      BuildWallPiece(iMapIndex + WORLD_COLS, Enum61.EXTERIOR_RIGHT, gubWallUIValue);
+      BuildWallPiece(iMapIndex, Enum61.EXTERIOR_RIGHT, gubWallUIValue);
       if (!GetVerticalWall(iMapIndex + WORLD_COLS * 2) && FloorAtGridNo(iMapIndex + WORLD_COLS * 2 + 1))
-        ChangeVerticalWall(iMapIndex + WORLD_COLS, INTERIOR_BOTTOMEND);
+        ChangeVerticalWall(iMapIndex + WORLD_COLS, Enum60.INTERIOR_BOTTOMEND);
       else // override the damn other smoothing.
-        ChangeVerticalWall(iMapIndex + WORLD_COLS, INTERIOR_R);
+        ChangeVerticalWall(iMapIndex + WORLD_COLS, Enum60.INTERIOR_R);
     } else {
       // outside
-      BuildWallPiece(iMapIndex + WORLD_COLS, INTERIOR_RIGHT, gubWallUIValue);
-      BuildWallPiece(iMapIndex, INTERIOR_RIGHT, gubWallUIValue);
+      BuildWallPiece(iMapIndex + WORLD_COLS, Enum61.INTERIOR_RIGHT, gubWallUIValue);
+      BuildWallPiece(iMapIndex, Enum61.INTERIOR_RIGHT, gubWallUIValue);
       if (!GetVerticalWall(iMapIndex + WORLD_COLS * 2) && !FloorAtGridNo(iMapIndex + WORLD_COLS * 2 + 1))
-        ChangeVerticalWall(iMapIndex + WORLD_COLS, EXTERIOR_BOTTOMEND);
+        ChangeVerticalWall(iMapIndex + WORLD_COLS, Enum60.EXTERIOR_BOTTOMEND);
       else // override the damn other smoothing.
-        ChangeVerticalWall(iMapIndex + WORLD_COLS, EXTERIOR_R);
+        ChangeVerticalWall(iMapIndex + WORLD_COLS, Enum60.EXTERIOR_R);
     }
     return;
   }
@@ -382,31 +382,31 @@ function PasteSmartWall(iMapIndex: UINT32): void {
   if (usWallType == gubWallUIValue) {
     if (FloorAtGridNo(iMapIndex + WORLD_COLS)) {
       // inside
-      BuildWallPiece(iMapIndex + 1, EXTERIOR_BOTTOM, gubWallUIValue);
-      BuildWallPiece(iMapIndex, EXTERIOR_BOTTOM, gubWallUIValue);
+      BuildWallPiece(iMapIndex + 1, Enum61.EXTERIOR_BOTTOM, gubWallUIValue);
+      BuildWallPiece(iMapIndex, Enum61.EXTERIOR_BOTTOM, gubWallUIValue);
       if (!GetVerticalWall(iMapIndex - WORLD_COLS + 1)) {
         EraseVerticalWall(iMapIndex + 1);
-        ChangeVerticalWall(iMapIndex + WORLD_COLS + 1, INTERIOR_EXTENDED);
+        ChangeVerticalWall(iMapIndex + WORLD_COLS + 1, Enum60.INTERIOR_EXTENDED);
       }
       if (!GetVerticalWall(iMapIndex + WORLD_COLS + 1)) {
         if (!GetHorizontalWall(iMapIndex - WORLD_COLS + 1) && !GetVerticalWall(iMapIndex - WORLD_COLS + 1) && GetHorizontalWall(iMapIndex - WORLD_COLS + 2))
-          ChangeVerticalWall(iMapIndex + 1, INTERIOR_EXTENDED);
+          ChangeVerticalWall(iMapIndex + 1, Enum60.INTERIOR_EXTENDED);
         else
-          ChangeVerticalWall(iMapIndex + 1, INTERIOR_BOTTOMEND);
+          ChangeVerticalWall(iMapIndex + 1, Enum60.INTERIOR_BOTTOMEND);
       }
     } else {
       // outside
-      BuildWallPiece(iMapIndex + 1, INTERIOR_BOTTOM, gubWallUIValue);
-      BuildWallPiece(iMapIndex, INTERIOR_BOTTOM, gubWallUIValue);
+      BuildWallPiece(iMapIndex + 1, Enum61.INTERIOR_BOTTOM, gubWallUIValue);
+      BuildWallPiece(iMapIndex, Enum61.INTERIOR_BOTTOM, gubWallUIValue);
       if (!GetVerticalWall(iMapIndex - WORLD_COLS + 1)) {
         EraseVerticalWall(iMapIndex + 1);
-        ChangeVerticalWall(iMapIndex + WORLD_COLS + 1, EXTERIOR_EXTENDED);
+        ChangeVerticalWall(iMapIndex + WORLD_COLS + 1, Enum60.EXTERIOR_EXTENDED);
       }
       if (!GetVerticalWall(iMapIndex + WORLD_COLS + 1)) {
         if (!GetHorizontalWall(iMapIndex - WORLD_COLS + 1) && !GetVerticalWall(iMapIndex - WORLD_COLS + 1) && GetHorizontalWall(iMapIndex - WORLD_COLS + 2))
-          ChangeVerticalWall(iMapIndex + 1, EXTERIOR_EXTENDED);
+          ChangeVerticalWall(iMapIndex + 1, Enum60.EXTERIOR_EXTENDED);
         else
-          ChangeVerticalWall(iMapIndex + 1, EXTERIOR_BOTTOMEND);
+          ChangeVerticalWall(iMapIndex + 1, Enum60.EXTERIOR_BOTTOMEND);
       }
     }
     return;
@@ -452,7 +452,7 @@ function PasteSmartWindow(iMapIndex: UINT32): void {
   if (pWall) {
     GetTileType(pWall.value.usIndex, addressof(uiTileType));
     usWallType = uiTileType;
-    if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
+    if (uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a window, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
       usWallType = SearchForWallType(iMapIndex);
@@ -469,7 +469,7 @@ function PasteSmartWindow(iMapIndex: UINT32): void {
   if (pWall) {
     GetTileType(pWall.value.usIndex, addressof(uiTileType));
     usWallType = uiTileType;
-    if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
+    if (uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a window, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
       usWallType = SearchForWallType(iMapIndex);
@@ -496,7 +496,7 @@ function PasteSmartBrokenWall(iMapIndex: UINT32): void {
   if (pWall) {
     GetTileType(pWall.value.usIndex, addressof(uiTileType));
     usWallType = uiTileType;
-    if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
+    if (uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR) {
       usWallType = SearchForWallType(iMapIndex);
     }
     GetWallOrientation(pWall.value.usIndex, addressof(usWallOrientation));
@@ -514,7 +514,7 @@ function PasteSmartBrokenWall(iMapIndex: UINT32): void {
   if (pWall) {
     GetTileType(pWall.value.usIndex, addressof(uiTileType));
     usWallType = uiTileType;
-    if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
+    if (uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR) {
       // We want to be able to replace doors with a window, however, the doors do not
       // contain the wall type, so we have to search for the nearest wall to extract it.
       usWallType = SearchForWallType(iMapIndex);

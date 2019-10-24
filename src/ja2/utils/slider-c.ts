@@ -117,7 +117,7 @@ function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPosY: UIN
   AssertMsg(gfSliderInited, "Trying to Add a Slider Bar when the Slider System was never inited");
 
   // checks
-  if (ubStyle >= NUM_SLIDER_STYLES)
+  if (ubStyle >= Enum329.NUM_SLIDER_STYLES)
     return -1;
 
   pNewSlider = MemAlloc(sizeof(SLIDER));
@@ -154,7 +154,7 @@ function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPosY: UIN
 
   // Add the last one, the width will be whatever is left over
   switch (ubStyle) {
-    case SLIDER_VERTICAL_STEEL:
+    case Enum329.SLIDER_VERTICAL_STEEL:
 
       pNewSlider.value.uiFlags |= SLIDER_VERTICAL;
       pNewSlider.value.usWidth = STEEL_SLIDER_WIDTH;
@@ -166,7 +166,7 @@ function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPosY: UIN
       MSYS_SetRegionUserData(addressof(pNewSlider.value.ScrollAreaMouseRegion), 1, pNewSlider.value.uiSliderID);
       break;
 
-    case SLIDER_DEFAULT_STYLE:
+    case Enum329.SLIDER_DEFAULT_STYLE:
     default:
 
       pNewSlider.value.uiFlags |= SLIDER_HORIZONTAL;

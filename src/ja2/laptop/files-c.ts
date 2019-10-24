@@ -140,7 +140,7 @@ function GameInitFiles(): void {
   ClearFilesList();
 
   // add background check by RIS
-  AddFilesToPlayersLog(ENRICO_BACKGROUND, 0, 255, NULL, NULL);
+  AddFilesToPlayersLog(Enum78.ENRICO_BACKGROUND, 0, 255, NULL, NULL);
 }
 
 function EnterFiles(): void {
@@ -679,7 +679,7 @@ function DisplayFormattedText(): BOOLEAN {
 
   iLength = ubFileRecordsLength[pFilesList.value.ubCode];
 
-  if (pFilesList.value.ubFormat < ENRICO_BACKGROUND) {
+  if (pFilesList.value.ubFormat < Enum78.ENRICO_BACKGROUND) {
     LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", sString, FILE_STRING_SIZE * (iOffSet)*2, FILE_STRING_SIZE * iLength * 2);
   }
 
@@ -1051,8 +1051,8 @@ function CreateButtonsForFilesPage(): void {
   giFilesPageButtonsImage[1] = LoadButtonImage("LAPTOP\\arrows.sti", -1, 6, -1, 7, -1);
   giFilesPageButtons[1] = QuickCreateButton(giFilesPageButtonsImage[1], NEXT_FILE_PAGE_BUTTON_X, NEXT_FILE_PAGE_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnNextFilePageCallback);
 
-  SetButtonCursor(giFilesPageButtons[0], CURSOR_LAPTOP_SCREEN);
-  SetButtonCursor(giFilesPageButtons[1], CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(giFilesPageButtons[0], Enum317.CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(giFilesPageButtons[1], Enum317.CURSOR_LAPTOP_SCREEN);
 
   return;
 }
@@ -1300,7 +1300,7 @@ function CheckForUnreadFiles(): void {
 
   // if the old flag and the new flag arent the same, either create or destory the fast help region
   if (fNewFilesInFileViewer != fStatusOfNewFileFlag) {
-    CreateFileAndNewEmailIconFastHelpText(LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE, !fNewFilesInFileViewer);
+    CreateFileAndNewEmailIconFastHelpText(Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE, !fNewFilesInFileViewer);
   }
 }
 

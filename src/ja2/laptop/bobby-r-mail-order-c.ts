@@ -279,7 +279,7 @@ function EnterBobbyRMailOrder(): BOOLEAN {
   gfDrawConfirmOrderGrpahic = FALSE;
   gfDestroyConfirmGrphiArea = FALSE;
   gfCanAcceptOrder = TRUE;
-  gubDropDownAction = BR_DROP_DOWN_NO_ACTION;
+  gubDropDownAction = Enum69.BR_DROP_DOWN_NO_ACTION;
 
   // load the Order Grid graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -298,7 +298,7 @@ function EnterBobbyRMailOrder(): BOOLEAN {
 
   // load the delivery speed graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_CONFIRMORDER);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_CONFIRMORDER);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiConfirmGraphic)));
 
   // load the delivery speed graphic and add it
@@ -329,18 +329,18 @@ function EnterBobbyRMailOrder(): BOOLEAN {
 
   // Clear Order button
   guiBobbyRClearOrderImage = LoadButtonImage("LAPTOP\\EraseOrderButton.sti", -1, 0, -1, 1, -1);
-  guiBobbyRClearOrder = CreateIconAndTextButton(guiBobbyRClearOrderImage, BobbyROrderFormText[BOBBYR_CLEAR_ORDER], BOBBYR_ORDER_TITLE_TEXT_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, BOBBYR_GUNS_SHADOW_COLOR, BOBBYR_GUNS_TEXT_COLOR_OFF, BOBBYR_GUNS_SHADOW_COLOR, TEXT_CJUSTIFIED, BOBBYR_CLEAR_ORDER_X, BOBBYR_CLEAR_ORDER_Y + 4, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnBobbyRClearOrderCallback);
-  SetButtonCursor(guiBobbyRClearOrder, CURSOR_LAPTOP_SCREEN);
-  SpecifyDisabledButtonStyle(guiBobbyRClearOrder, DISABLED_STYLE_NONE);
+  guiBobbyRClearOrder = CreateIconAndTextButton(guiBobbyRClearOrderImage, BobbyROrderFormText[Enum349.BOBBYR_CLEAR_ORDER], BOBBYR_ORDER_TITLE_TEXT_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, BOBBYR_GUNS_SHADOW_COLOR, BOBBYR_GUNS_TEXT_COLOR_OFF, BOBBYR_GUNS_SHADOW_COLOR, TEXT_CJUSTIFIED, BOBBYR_CLEAR_ORDER_X, BOBBYR_CLEAR_ORDER_Y + 4, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnBobbyRClearOrderCallback);
+  SetButtonCursor(guiBobbyRClearOrder, Enum317.CURSOR_LAPTOP_SCREEN);
+  SpecifyDisabledButtonStyle(guiBobbyRClearOrder, Enum29.DISABLED_STYLE_NONE);
   SpecifyButtonTextOffsets(guiBobbyRClearOrder, 39, 10, TRUE);
 
   // Accept Order button
   guiBobbyRAcceptOrderImage = LoadButtonImage("LAPTOP\\AcceptOrderButton.sti", 2, 0, -1, 1, -1);
-  guiBobbyRAcceptOrder = CreateIconAndTextButton(guiBobbyRAcceptOrderImage, BobbyROrderFormText[BOBBYR_ACCEPT_ORDER], BOBBYR_ORDER_TITLE_TEXT_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, BOBBYR_GUNS_SHADOW_COLOR, BOBBYR_GUNS_TEXT_COLOR_OFF, BOBBYR_GUNS_SHADOW_COLOR, TEXT_CJUSTIFIED, BOBBYR_ACCEPT_ORDER_X, BOBBYR_ACCEPT_ORDER_Y + 4, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnBobbyRAcceptOrderCallback);
-  SetButtonCursor(guiBobbyRAcceptOrder, CURSOR_LAPTOP_SCREEN);
+  guiBobbyRAcceptOrder = CreateIconAndTextButton(guiBobbyRAcceptOrderImage, BobbyROrderFormText[Enum349.BOBBYR_ACCEPT_ORDER], BOBBYR_ORDER_TITLE_TEXT_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, BOBBYR_GUNS_SHADOW_COLOR, BOBBYR_GUNS_TEXT_COLOR_OFF, BOBBYR_GUNS_SHADOW_COLOR, TEXT_CJUSTIFIED, BOBBYR_ACCEPT_ORDER_X, BOBBYR_ACCEPT_ORDER_Y + 4, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnBobbyRAcceptOrderCallback);
+  SetButtonCursor(guiBobbyRAcceptOrder, Enum317.CURSOR_LAPTOP_SCREEN);
   SpecifyButtonTextOffsets(guiBobbyRAcceptOrder, 43, 24, TRUE);
 
-  SpecifyDisabledButtonStyle(guiBobbyRAcceptOrder, DISABLED_STYLE_SHADED);
+  SpecifyDisabledButtonStyle(guiBobbyRAcceptOrder, Enum29.DISABLED_STYLE_SHADED);
 
   if (gbSelectedCity == -1)
     DisableButton(guiBobbyRAcceptOrder);
@@ -352,35 +352,35 @@ function EnterBobbyRMailOrder(): BOOLEAN {
   }
 
   guiBobbyRBackImage = LoadButtonImage("LAPTOP\\CatalogueButton.sti", -1, 0, -1, 1, -1);
-  guiBobbyRBack = CreateIconAndTextButton(guiBobbyRBackImage, BobbyROrderFormText[BOBBYR_BACK], BOBBYR_GUNS_BUTTON_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, BOBBYR_GUNS_SHADOW_COLOR, BOBBYR_GUNS_TEXT_COLOR_OFF, BOBBYR_GUNS_SHADOW_COLOR, TEXT_CJUSTIFIED, BOBBYR_BACK_BUTTON_X, BOBBYR_BACK_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnBobbyRBackCallback);
-  SetButtonCursor(guiBobbyRBack, CURSOR_LAPTOP_SCREEN);
+  guiBobbyRBack = CreateIconAndTextButton(guiBobbyRBackImage, BobbyROrderFormText[Enum349.BOBBYR_BACK], BOBBYR_GUNS_BUTTON_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, BOBBYR_GUNS_SHADOW_COLOR, BOBBYR_GUNS_TEXT_COLOR_OFF, BOBBYR_GUNS_SHADOW_COLOR, TEXT_CJUSTIFIED, BOBBYR_BACK_BUTTON_X, BOBBYR_BACK_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnBobbyRBackCallback);
+  SetButtonCursor(guiBobbyRBack, Enum317.CURSOR_LAPTOP_SCREEN);
 
   guiBobbyRHomeImage = UseLoadedButtonImage(guiBobbyRBackImage, -1, 0, -1, 1, -1);
-  guiBobbyRHome = CreateIconAndTextButton(guiBobbyRHomeImage, BobbyROrderFormText[BOBBYR_HOME], BOBBYR_GUNS_BUTTON_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, BOBBYR_GUNS_SHADOW_COLOR, BOBBYR_GUNS_TEXT_COLOR_OFF, BOBBYR_GUNS_SHADOW_COLOR, TEXT_CJUSTIFIED, BOBBYR_HOME_BUTTON_X, BOBBYR_HOME_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnBobbyRHomeCallback);
-  SetButtonCursor(guiBobbyRHome, CURSOR_LAPTOP_SCREEN);
+  guiBobbyRHome = CreateIconAndTextButton(guiBobbyRHomeImage, BobbyROrderFormText[Enum349.BOBBYR_HOME], BOBBYR_GUNS_BUTTON_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, BOBBYR_GUNS_SHADOW_COLOR, BOBBYR_GUNS_TEXT_COLOR_OFF, BOBBYR_GUNS_SHADOW_COLOR, TEXT_CJUSTIFIED, BOBBYR_HOME_BUTTON_X, BOBBYR_HOME_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnBobbyRHomeCallback);
+  SetButtonCursor(guiBobbyRHome, Enum317.CURSOR_LAPTOP_SCREEN);
 
   giBobbyRGotoShipmentPageImage = UseLoadedButtonImage(guiBobbyRBackImage, -1, 0, -1, 1, -1);
-  guiBobbyRGotoShipmentPage = CreateIconAndTextButton(giBobbyRGotoShipmentPageImage, BobbyROrderFormText[BOBBYR_GOTOSHIPMENT_PAGE], BOBBYR_GUNS_BUTTON_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, BOBBYR_GUNS_SHADOW_COLOR, BOBBYR_GUNS_TEXT_COLOR_OFF, BOBBYR_GUNS_SHADOW_COLOR, TEXT_CJUSTIFIED, BOBBYR_SHIPMENT_BUTTON_X, BOBBYR_SHIPMENT_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnBobbyRGotoShipmentPageCallback);
-  SetButtonCursor(guiBobbyRGotoShipmentPage, CURSOR_LAPTOP_SCREEN);
+  guiBobbyRGotoShipmentPage = CreateIconAndTextButton(giBobbyRGotoShipmentPageImage, BobbyROrderFormText[Enum349.BOBBYR_GOTOSHIPMENT_PAGE], BOBBYR_GUNS_BUTTON_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, BOBBYR_GUNS_SHADOW_COLOR, BOBBYR_GUNS_TEXT_COLOR_OFF, BOBBYR_GUNS_SHADOW_COLOR, TEXT_CJUSTIFIED, BOBBYR_SHIPMENT_BUTTON_X, BOBBYR_SHIPMENT_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnBobbyRGotoShipmentPageCallback);
+  SetButtonCursor(guiBobbyRGotoShipmentPage, Enum317.CURSOR_LAPTOP_SCREEN);
 
   for (i = 0; i < 3; i++) {
-    MSYS_DefineRegion(addressof(gSelectedShippingSpeedRegion[i]), gShippingSpeedAreas[i * 2], gShippingSpeedAreas[i * 2 + 1], (gShippingSpeedAreas[i * 2] + SHIPPING_SPEED_LIGHT_WIDTH), (gShippingSpeedAreas[i * 2 + 1] + SHIPPING_SPEED_LIGHT_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectShippingSpeedRegionCallBack);
+    MSYS_DefineRegion(addressof(gSelectedShippingSpeedRegion[i]), gShippingSpeedAreas[i * 2], gShippingSpeedAreas[i * 2 + 1], (gShippingSpeedAreas[i * 2] + SHIPPING_SPEED_LIGHT_WIDTH), (gShippingSpeedAreas[i * 2 + 1] + SHIPPING_SPEED_LIGHT_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectShippingSpeedRegionCallBack);
     MSYS_AddRegion(addressof(gSelectedShippingSpeedRegion[i]));
     MSYS_SetRegionUserData(addressof(gSelectedShippingSpeedRegion[i]), 0, i);
   }
 
   // confirmorder mouse region, occupies the entrie screen and is present only when the confirm order graphic
   // s on screen.  When user clicks anywhere the graphic disappears
-  MSYS_DefineRegion(addressof(gSelectedConfirmOrderRegion), LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH + 1, CURSOR_WWW, MSYS_NO_CALLBACK, SelectConfirmOrderRegionCallBack);
+  MSYS_DefineRegion(addressof(gSelectedConfirmOrderRegion), LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectConfirmOrderRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedConfirmOrderRegion));
   MSYS_DisableRegion(addressof(gSelectedConfirmOrderRegion));
 
   // click on the shipping location to activate the drop down menu
-  MSYS_DefineRegion(addressof(gSelectedActivateCityDroDownRegion), BOBBYR_SHIPPING_LOC_AREA_L_X, BOBBYR_SHIPPING_LOC_AREA_T_Y, BOBBYR_SHIPPING_LOC_AREA_R_X, BOBBYR_SHIPPING_LOC_AREA_B_Y, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectActivateCityDroDownRegionCallBack);
+  MSYS_DefineRegion(addressof(gSelectedActivateCityDroDownRegion), BOBBYR_SHIPPING_LOC_AREA_L_X, BOBBYR_SHIPPING_LOC_AREA_T_Y, BOBBYR_SHIPPING_LOC_AREA_R_X, BOBBYR_SHIPPING_LOC_AREA_B_Y, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectActivateCityDroDownRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedActivateCityDroDownRegion));
 
   // click anywhere on the screen to close the window( only when the drop down window is active)
-  MSYS_DefineRegion(addressof(gSelectedCloseDropDownRegion), LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH - 1, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectCloseDroDownRegionCallBack);
+  MSYS_DefineRegion(addressof(gSelectedCloseDropDownRegion), LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH - 1, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectCloseDroDownRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedCloseDropDownRegion));
   MSYS_DisableRegion(addressof(gSelectedCloseDropDownRegion));
 
@@ -440,8 +440,8 @@ function ExitBobbyRMailOrder(): void {
   MSYS_RemoveRegion(addressof(gSelectedCloseDropDownRegion));
 
   // if the drop down box is active, destroy it
-  gubDropDownAction = BR_DROP_DOWN_DESTROY;
-  CreateDestroyBobbyRDropDown(BR_DROP_DOWN_DESTROY);
+  gubDropDownAction = Enum69.BR_DROP_DOWN_DESTROY;
+  CreateDestroyBobbyRDropDown(Enum69.BR_DROP_DOWN_DESTROY);
 }
 
 function HandleBobbyRMailOrder(): void {
@@ -471,13 +471,13 @@ function HandleBobbyRMailOrder(): void {
     gfCanAcceptOrder = TRUE;
   }
 
-  if (gubDropDownAction != BR_DROP_DOWN_NO_ACTION) {
+  if (gubDropDownAction != Enum69.BR_DROP_DOWN_NO_ACTION) {
     CreateDestroyBobbyRDropDown(gubDropDownAction);
 
-    if (gubDropDownAction == BR_DROP_DOWN_CREATE)
-      gubDropDownAction = BR_DROP_DOWN_DISPLAY;
+    if (gubDropDownAction == Enum69.BR_DROP_DOWN_CREATE)
+      gubDropDownAction = Enum69.BR_DROP_DOWN_DISPLAY;
     else
-      gubDropDownAction = BR_DROP_DOWN_NO_ACTION;
+      gubDropDownAction = Enum69.BR_DROP_DOWN_NO_ACTION;
   }
 }
 
@@ -512,7 +512,7 @@ function RenderBobbyRMailOrder(): void {
   //
 
   // Output the title
-  DrawTextToScreen(BobbyROrderFormText[BOBBYR_ORDER_FORM], BOBBYR_ORDER_FORM_TITLE_X, BOBBYR_ORDER_FORM_TITLE_Y, BOBBYR_ORDER_FORM_TITLE_WIDTH, BOBBYR_ORDER_TITLE_TEXT_FONT, BOBBYR_ORDER_TITLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_ORDER_FORM], BOBBYR_ORDER_FORM_TITLE_X, BOBBYR_ORDER_FORM_TITLE_Y, BOBBYR_ORDER_FORM_TITLE_WIDTH, BOBBYR_ORDER_TITLE_TEXT_FONT, BOBBYR_ORDER_TITLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   /*
           //Output the qty
@@ -540,24 +540,24 @@ function RenderBobbyRMailOrder(): void {
   */
 
   // Output the shipping location
-  DrawTextToScreen(BobbyROrderFormText[BOBBYR_SHIPPING_LOCATION], BOBBYR_SHIPPING_LOCATION_TEXT_X, BOBBYR_SHIPPING_LOCATION_TEXT_Y, 0, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_SHIPPING_LOCATION], BOBBYR_SHIPPING_LOCATION_TEXT_X, BOBBYR_SHIPPING_LOCATION_TEXT_Y, 0, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Output the shiupping speed
-  DrawTextToScreen(BobbyROrderFormText[BOBBYR_SHIPPING_SPEED], BOBBYR_SHIPPING_SPEED_X, BOBBYR_SHIPPING_SPEED_Y, 0, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_SHIPPING_SPEED], BOBBYR_SHIPPING_SPEED_X, BOBBYR_SHIPPING_SPEED_Y, 0, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Create a string for the weight ( %s ) ( where %s is the weight string, either kg or lbs )
-  swprintf(sTemp, BobbyROrderFormText[BOBBYR_COST], GetWeightUnitString());
+  swprintf(sTemp, BobbyROrderFormText[Enum349.BOBBYR_COST], GetWeightUnitString());
 
   // Output the cost
   DrawTextToScreen(sTemp, BOBBYR_SHIPPING_COST_X, BOBBYR_SHIPPING_SPEED_Y, 0, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Output the overnight, business days, standard service
   usPosY = BOBBYR_OVERNIGHT_EXPRESS_Y;
-  DrawTextToScreen(BobbyROrderFormText[BOBBYR_OVERNIGHT_EXPRESS], BOBBYR_SHIPPING_SPEED_X, usPosY, 0, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_OVERNIGHT_EXPRESS], BOBBYR_SHIPPING_SPEED_X, usPosY, 0, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   usPosY += BOBBYR_GRID_ROW_OFFSET;
-  DrawTextToScreen(BobbyROrderFormText[BOBBYR_BUSINESS_DAYS], BOBBYR_SHIPPING_SPEED_X, usPosY, 0, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_BUSINESS_DAYS], BOBBYR_SHIPPING_SPEED_X, usPosY, 0, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   usPosY += BOBBYR_GRID_ROW_OFFSET;
-  DrawTextToScreen(BobbyROrderFormText[BOBBYR_STANDARD_SERVICE], BOBBYR_SHIPPING_SPEED_X, usPosY, 0, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_STANDARD_SERVICE], BOBBYR_SHIPPING_SPEED_X, usPosY, 0, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   //	DisplayPurchasedItems();
   DisplayPurchasedItems(TRUE, BOBBYR_ORDERGRID_X, BOBBYR_ORDERGRID_Y, BobbyRayPurchases, FALSE, -1);
@@ -567,11 +567,11 @@ function RenderBobbyRMailOrder(): void {
   DisplayShippingLocationCity();
 
   // Display the 'used' text at the bottom of the screen
-  DrawTextToScreen(BobbyROrderFormText[BOBBYR_USED_TEXT], BOBBYR_USED_WARNING_X, BOBBYR_USED_WARNING_Y + 1, 0, BOBBYR_DISCLAIMER_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED | TEXT_SHADOWED);
+  DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_USED_TEXT], BOBBYR_USED_WARNING_X, BOBBYR_USED_WARNING_Y + 1, 0, BOBBYR_DISCLAIMER_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED | TEXT_SHADOWED);
 
   // Display the minimum weight disclaimer at the bottom of the page
   usHeight = GetFontHeight(BOBBYR_DISCLAIMER_FONT) + 2;
-  swprintf(sTemp, "%s %2.1f %s.", BobbyROrderFormText[BOBBYR_MINIMUM_WEIGHT], GetWeightBasedOnMetricOption(MIN_SHIPPING_WEIGHT) / 10.0, GetWeightUnitString());
+  swprintf(sTemp, "%s %2.1f %s.", BobbyROrderFormText[Enum349.BOBBYR_MINIMUM_WEIGHT], GetWeightBasedOnMetricOption(MIN_SHIPPING_WEIGHT) / 10.0, GetWeightUnitString());
   DrawTextToScreen(sTemp, BOBBYR_USED_WARNING_X, (BOBBYR_USED_WARNING_Y + usHeight + 1), 0, BOBBYR_DISCLAIMER_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED | TEXT_SHADOWED);
 
   // Calculate and display the total package weight
@@ -597,7 +597,7 @@ function BtnBobbyRClearOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
     gubCityAtTopOfList = 0;
 
     // Get rid of the city drop dowm, if it is being displayed
-    gubDropDownAction = BR_DROP_DOWN_DESTROY;
+    gubDropDownAction = Enum69.BR_DROP_DOWN_DESTROY;
 
     // disable the accept order button
     DisableButton(guiBobbyRAcceptOrder);
@@ -621,18 +621,18 @@ function BtnBobbyRAcceptOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
     if (guiSubTotal && gfCanAcceptOrder) {
       // if the player doesnt have enough money
       if (LaptopSaveInfo.iCurrentBalance < giGrandTotal) {
-        DoLapTopMessageBox(MSG_BOX_LAPTOP_DEFAULT, BobbyROrderFormText[BOBBYR_CANT_AFFORD_PURCHASE], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, BobbyROrderFormText[Enum349.BOBBYR_CANT_AFFORD_PURCHASE], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
       } else {
         let zTemp: wchar_t[] /* [128] */;
 
         // if the city is Drassen, and the airport sector is player controlled
-        if (gbSelectedCity == BR_DRASSEN && !StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(SEC_B13)].fEnemyControlled) {
+        if (gbSelectedCity == Enum70.BR_DRASSEN && !StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(Enum123.SEC_B13)].fEnemyControlled) {
           // Quick hack to bypass the confirmation box
           ConfirmBobbyRPurchaseMessageBoxCallBack(MSG_BOX_RETURN_YES);
         } else {
           // else pop up a confirmation box
-          swprintf(zTemp, BobbyROrderFormText[BOBBYR_CONFIRM_DEST], BobbyROrderLocations[gbSelectedCity].psCityLoc.value);
-          DoLapTopMessageBox(MSG_BOX_LAPTOP_DEFAULT, zTemp, LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmBobbyRPurchaseMessageBoxCallBack);
+          swprintf(zTemp, BobbyROrderFormText[Enum349.BOBBYR_CONFIRM_DEST], BobbyROrderLocations[gbSelectedCity].psCityLoc.value);
+          DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, zTemp, Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmBobbyRPurchaseMessageBoxCallBack);
         }
 
         /*				//if the shipment is going to Drassen, add the inventory
@@ -759,27 +759,27 @@ function DisplayPurchasedItems(fCalledFromOrderPage: BOOLEAN, usGridX: UINT16, u
   let iSubTotal: INT32;
 
   // Output the qty
-  DrawTextToScreen(BobbyROrderFormText[BOBBYR_QTY], (usGridX + BOBBYR_GRID_FIRST_COLUMN_X), (usGridY + BOBBYR_GRID_FIRST_COLUMN_Y - BOBBYR_GRID_TITLE_OFFSET), BOBBYR_GRID_FIRST_COLUMN_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_QTY], (usGridX + BOBBYR_GRID_FIRST_COLUMN_X), (usGridY + BOBBYR_GRID_FIRST_COLUMN_Y - BOBBYR_GRID_TITLE_OFFSET), BOBBYR_GRID_FIRST_COLUMN_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Create a string for the weight ( %s ) ( where %s is the weight string, either kg or lbs )
-  swprintf(sTemp, BobbyROrderFormText[BOBBYR_WEIGHT], GetWeightUnitString());
+  swprintf(sTemp, BobbyROrderFormText[Enum349.BOBBYR_WEIGHT], GetWeightUnitString());
 
   // Output the Weight
   DisplayWrappedString((usGridX + BOBBYR_GRID_SECOND_COLUMN_X), (usGridY + BOBBYR_GRID_SECOND_COLUMN_Y - 30), BOBBYR_GRID_SECOND_COLUMN_WIDTH, 2, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, sTemp, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Output the name
-  DrawTextToScreen(BobbyROrderFormText[BOBBYR_NAME], (usGridX + BOBBYR_GRID_THIRD_COLUMN_X), (usGridY + BOBBYR_GRID_THIRD_COLUMN_Y - BOBBYR_GRID_TITLE_OFFSET), BOBBYR_GRID_THIRD_COLUMN_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_NAME], (usGridX + BOBBYR_GRID_THIRD_COLUMN_X), (usGridY + BOBBYR_GRID_THIRD_COLUMN_Y - BOBBYR_GRID_TITLE_OFFSET), BOBBYR_GRID_THIRD_COLUMN_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Output the unit price
-  DisplayWrappedString((usGridX + BOBBYR_GRID_FOURTH_COLUMN_X), (usGridY + BOBBYR_GRID_FOURTH_COLUMN_Y - 30), BOBBYR_GRID_FOURTH_COLUMN_WIDTH, 2, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, BobbyROrderFormText[BOBBYR_UNIT_PRICE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString((usGridX + BOBBYR_GRID_FOURTH_COLUMN_X), (usGridY + BOBBYR_GRID_FOURTH_COLUMN_Y - 30), BOBBYR_GRID_FOURTH_COLUMN_WIDTH, 2, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, BobbyROrderFormText[Enum349.BOBBYR_UNIT_PRICE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Output the total
-  DrawTextToScreen(BobbyROrderFormText[BOBBYR_TOTAL], (usGridX + BOBBYR_GRID_FIFTH_COLUMN_X), (usGridY + BOBBYR_GRID_FIFTH_COLUMN_Y - BOBBYR_GRID_TITLE_OFFSET), BOBBYR_GRID_FIFTH_COLUMN_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_TOTAL], (usGridX + BOBBYR_GRID_FIFTH_COLUMN_X), (usGridY + BOBBYR_GRID_FIFTH_COLUMN_Y - BOBBYR_GRID_TITLE_OFFSET), BOBBYR_GRID_FIFTH_COLUMN_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Output the sub total, shipping and handling, and the grand total
-  DrawTextToScreen(BobbyROrderFormText[BOBBYR_SUB_TOTAL], (usGridX + BOBBYR_SUBTOTAL_X), (usGridY + BOBBYR_SUBTOTAL_Y), BOBBYR_SUBTOTAL_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
-  DrawTextToScreen(BobbyROrderFormText[BOBBYR_S_H], (usGridX + BOBBYR_SUBTOTAL_X), (usGridY + BOBBYR_SHIPPING_N_HANDLE_Y), BOBBYR_SUBTOTAL_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
-  DrawTextToScreen(BobbyROrderFormText[BOBBYR_GRAND_TOTAL], (usGridX + BOBBYR_SUBTOTAL_X), (usGridY + BOBBYR_GRAND_TOTAL_Y), BOBBYR_SUBTOTAL_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+  DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_SUB_TOTAL], (usGridX + BOBBYR_SUBTOTAL_X), (usGridY + BOBBYR_SUBTOTAL_Y), BOBBYR_SUBTOTAL_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+  DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_S_H], (usGridX + BOBBYR_SUBTOTAL_X), (usGridY + BOBBYR_SHIPPING_N_HANDLE_Y), BOBBYR_SUBTOTAL_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+  DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_GRAND_TOTAL], (usGridX + BOBBYR_SUBTOTAL_X), (usGridY + BOBBYR_GRAND_TOTAL_Y), BOBBYR_SUBTOTAL_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
 
   if (fJustDisplayTitles) {
     return;
@@ -970,7 +970,7 @@ function BtnBobbyRHomeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    guiCurrentLaptopMode = LAPTOP_MODE_BOBBY_R;
+    guiCurrentLaptopMode = Enum95.LAPTOP_MODE_BOBBY_R;
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
@@ -1021,7 +1021,7 @@ function SelectConfirmOrderRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReaso
     gubSelectedLight = 0;
 
     // Goto The homepage
-    guiCurrentLaptopMode = LAPTOP_MODE_BOBBY_R;
+    guiCurrentLaptopMode = Enum95.LAPTOP_MODE_BOBBY_R;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     // Remove the items for Boby Rqys Inventory
     RemovePurchasedItemsFromBobbyRayInventory();
@@ -1039,10 +1039,10 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): BOOLEAN {
   /* static */ let fMouseRegionsCreated: BOOLEAN = FALSE;
 
   switch (ubDropDownAction) {
-    case BR_DROP_DOWN_NO_ACTION: {
+    case Enum69.BR_DROP_DOWN_NO_ACTION: {
     } break;
 
-    case BR_DROP_DOWN_CREATE: {
+    case Enum69.BR_DROP_DOWN_CREATE: {
       let i: UINT8;
       let usPosX: UINT16;
       let usPosY: UINT16;
@@ -1051,7 +1051,7 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): BOOLEAN {
       let usFontHeight: UINT16 = GetFontHeight(BOBBYR_DROPDOWN_FONT);
 
       if (fMouseRegionsCreated) {
-        gubDropDownAction = BR_DROP_DOWN_DESTROY;
+        gubDropDownAction = Enum69.BR_DROP_DOWN_DESTROY;
 
         break;
       }
@@ -1060,7 +1060,7 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): BOOLEAN {
       usPosX = BOBBYR_CITY_START_LOCATION_X;
       usPosY = BOBBYR_CITY_START_LOCATION_Y;
       for (i = 0; i < BOBBYR_NUM_DISPLAYED_CITIES; i++) {
-        MSYS_DefineRegion(addressof(gSelectedDropDownRegion[i]), usPosX, (usPosY + 4), (usPosX + BOBBYR_DROP_DOWN_WIDTH - 6), (usPosY + usFontHeight + 7), MSYS_PRIORITY_HIGH, CURSOR_WWW, SelectDropDownMovementCallBack, SelectDropDownRegionCallBack);
+        MSYS_DefineRegion(addressof(gSelectedDropDownRegion[i]), usPosX, (usPosY + 4), (usPosX + BOBBYR_DROP_DOWN_WIDTH - 6), (usPosY + usFontHeight + 7), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, SelectDropDownMovementCallBack, SelectDropDownRegionCallBack);
         MSYS_AddRegion(addressof(gSelectedDropDownRegion[i]));
         MSYS_SetRegionUserData(addressof(gSelectedDropDownRegion[i]), 0, i);
 
@@ -1074,7 +1074,7 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): BOOLEAN {
       usPosX = BOBBYR_SCROLL_UP_ARROW_X;
       usPosY = BOBBYR_SCROLL_UP_ARROW_Y;
       for (i = 0; i < 2; i++) {
-        MSYS_DefineRegion(addressof(gSelectedUpDownArrowOnScrollAreaRegion[i]), usPosX, usPosY, (usPosX + BOBBYR_SCROLL_ARROW_WIDTH), (usPosY + BOBBYR_SCROLL_ARROW_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectUpDownArrowOnScrollAreaRegionCallBack);
+        MSYS_DefineRegion(addressof(gSelectedUpDownArrowOnScrollAreaRegion[i]), usPosX, usPosY, (usPosX + BOBBYR_SCROLL_ARROW_WIDTH), (usPosY + BOBBYR_SCROLL_ARROW_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectUpDownArrowOnScrollAreaRegionCallBack);
         MSYS_AddRegion(addressof(gSelectedUpDownArrowOnScrollAreaRegion[i]));
         MSYS_SetRegionUserData(addressof(gSelectedUpDownArrowOnScrollAreaRegion[i]), 0, i);
         usPosX = BOBBYR_SCROLL_DOWN_ARROW_X;
@@ -1086,13 +1086,13 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): BOOLEAN {
       usPosY = BOBBYR_SCROLL_UP_ARROW_Y + BOBBYR_SCROLL_ARROW_HEIGHT;
       usHeight = BOBBYR_SCROLL_AREA_HEIGHT_MINUS_ARROWS / BOBBYR_ORDER_NUM_SHIPPING_CITIES;
       for (i = 0; i < BOBBYR_ORDER_NUM_SHIPPING_CITIES - 1; i++) {
-        MSYS_DefineRegion(addressof(gSelectedScrollAreaDropDownRegion[i]), usPosX, usPosY, (usPosX + BOBBYR_SCROLL_ARROW_WIDTH), (usPosY + usHeight), MSYS_PRIORITY_HIGH + 1, CURSOR_LAPTOP_SCREEN, SelectScrollAreaDropDownMovementCallBack, SelectScrollAreaDropDownRegionCallBack);
+        MSYS_DefineRegion(addressof(gSelectedScrollAreaDropDownRegion[i]), usPosX, usPosY, (usPosX + BOBBYR_SCROLL_ARROW_WIDTH), (usPosY + usHeight), MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_LAPTOP_SCREEN, SelectScrollAreaDropDownMovementCallBack, SelectScrollAreaDropDownRegionCallBack);
         MSYS_AddRegion(addressof(gSelectedScrollAreaDropDownRegion[i]));
         MSYS_SetRegionUserData(addressof(gSelectedScrollAreaDropDownRegion[i]), 0, i);
         usPosY += usHeight;
       }
       // put the last one down to cover the remaining area
-      MSYS_DefineRegion(addressof(gSelectedScrollAreaDropDownRegion[i]), usPosX, usPosY, (usPosX + BOBBYR_SCROLL_ARROW_WIDTH), BOBBYR_SCROLL_DOWN_ARROW_Y, MSYS_PRIORITY_HIGH + 1, CURSOR_LAPTOP_SCREEN, SelectScrollAreaDropDownMovementCallBack, SelectScrollAreaDropDownRegionCallBack);
+      MSYS_DefineRegion(addressof(gSelectedScrollAreaDropDownRegion[i]), usPosX, usPosY, (usPosX + BOBBYR_SCROLL_ARROW_WIDTH), BOBBYR_SCROLL_DOWN_ARROW_Y, MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_LAPTOP_SCREEN, SelectScrollAreaDropDownMovementCallBack, SelectScrollAreaDropDownRegionCallBack);
       MSYS_AddRegion(addressof(gSelectedScrollAreaDropDownRegion[i]));
       MSYS_SetRegionUserData(addressof(gSelectedScrollAreaDropDownRegion[i]), 0, i);
 
@@ -1109,7 +1109,7 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): BOOLEAN {
       //			}
     } break;
 
-    case BR_DROP_DOWN_DESTROY: {
+    case Enum69.BR_DROP_DOWN_DESTROY: {
       let i: UINT8;
 
       if (!fMouseRegionsCreated)
@@ -1130,7 +1130,7 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): BOOLEAN {
       ColorFillVideoSurfaceArea(FRAME_BUFFER, BOBBYR_SHIPPING_LOC_AREA_L_X, BOBBYR_SHIPPING_LOC_AREA_T_Y, BOBBYR_SHIPPING_LOC_AREA_L_X + 175, BOBBYR_SHIPPING_LOC_AREA_T_Y + BOBBYR_DROP_DOWN_HEIGHT, Get16BPPColor(FROMRGB(0, 0, 0)));
 
       if (gbSelectedCity == -1)
-        DrawTextToScreen(BobbyROrderFormText[BOBBYR_SELECT_DEST], BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, BOBBYR_SHIPPING_LOC_AREA_T_Y + 3, 0, BOBBYR_DROPDOWN_FONT, BOBBYR_ORDER_DROP_DOWN_SELEC_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+        DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_SELECT_DEST], BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, BOBBYR_SHIPPING_LOC_AREA_T_Y + 3, 0, BOBBYR_DROPDOWN_FONT, BOBBYR_ORDER_DROP_DOWN_SELEC_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
       else
         DrawTextToScreen((BobbyROrderLocations[gbSelectedCity].psCityLoc).value, BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, BOBBYR_SHIPPING_LOC_AREA_T_Y + 3, 0, BOBBYR_DROPDOWN_FONT, BOBBYR_ORDER_DROP_DOWN_SELEC_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
@@ -1148,10 +1148,10 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): BOOLEAN {
 
       gfReDrawBobbyOrder = TRUE;
       fMouseRegionsCreated = FALSE;
-      gubDropDownAction = BR_DROP_DOWN_NO_ACTION;
+      gubDropDownAction = Enum69.BR_DROP_DOWN_NO_ACTION;
     } break;
 
-    case BR_DROP_DOWN_DISPLAY: {
+    case Enum69.BR_DROP_DOWN_DISPLAY: {
       let i: UINT8;
       let usPosY: UINT16;
       let usPosX: UINT16;
@@ -1248,14 +1248,14 @@ function SelectDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
 
     DrawSelectedCity(gbSelectedCity);
 
-    gubDropDownAction = BR_DROP_DOWN_DESTROY;
+    gubDropDownAction = Enum69.BR_DROP_DOWN_DESTROY;
   }
 }
 
 function SelectActivateCityDroDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gubDropDownAction = BR_DROP_DOWN_CREATE;
+    gubDropDownAction = Enum69.BR_DROP_DOWN_CREATE;
   }
 }
 
@@ -1268,7 +1268,7 @@ function SelectDropDownMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: 
 
     gbSelectedCity = MSYS_GetRegionUserData(pRegion, 0) + gubCityAtTopOfList;
 
-    gubDropDownAction = BR_DROP_DOWN_DISPLAY;
+    gubDropDownAction = Enum69.BR_DROP_DOWN_DISPLAY;
 
     InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
   }
@@ -1324,13 +1324,13 @@ function DisplayShippingLocationCity(): void {
 
   // if there is no city selected
   if (gbSelectedCity == -1)
-    DrawTextToScreen(BobbyROrderFormText[BOBBYR_SELECT_DEST], BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, BOBBYR_SHIPPING_LOC_AREA_T_Y + 3, 0, BOBBYR_DROPDOWN_FONT, BOBBYR_ORDER_DROP_DOWN_SELEC_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_SELECT_DEST], BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, BOBBYR_SHIPPING_LOC_AREA_T_Y + 3, 0, BOBBYR_DROPDOWN_FONT, BOBBYR_ORDER_DROP_DOWN_SELEC_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   else
     DrawTextToScreen((BobbyROrderLocations[gbSelectedCity].psCityLoc).value, BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, BOBBYR_SHIPPING_LOC_AREA_T_Y + 3, 0, BOBBYR_DROPDOWN_FONT, BOBBYR_ORDER_DROP_DOWN_SELEC_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   DisplayShippingCosts(TRUE, 0, BOBBYR_ORDERGRID_X, BOBBYR_ORDERGRID_Y, -1);
 
-  if (gubDropDownAction == BR_DROP_DOWN_DISPLAY)
+  if (gubDropDownAction == Enum69.BR_DROP_DOWN_DISPLAY)
     return;
 
   // Display the shipping cost
@@ -1368,7 +1368,7 @@ function DisplayShippingLocationCity(): void {
 function SelectCloseDroDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gubDropDownAction = BR_DROP_DOWN_DESTROY;
+    gubDropDownAction = Enum69.BR_DROP_DOWN_DESTROY;
   }
 }
 
@@ -1416,7 +1416,7 @@ function IsAnythingPurchasedFromBobbyRayPage(): BOOLEAN {
 function SelectTitleLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    guiCurrentLaptopMode = LAPTOP_MODE_BOBBY_R;
+    guiCurrentLaptopMode = Enum95.LAPTOP_MODE_BOBBY_R;
   }
 }
 
@@ -1437,7 +1437,7 @@ function SelectScrollAreaDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, 
         gubCityAtTopOfList++;
     }
 
-    gubDropDownAction = BR_DROP_DOWN_DISPLAY;
+    gubDropDownAction = Enum69.BR_DROP_DOWN_DISPLAY;
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
     let ubCityNum: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -1455,7 +1455,7 @@ function SelectScrollAreaDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, 
         gubCityAtTopOfList++;
     }
 
-    gubDropDownAction = BR_DROP_DOWN_DISPLAY;
+    gubDropDownAction = Enum69.BR_DROP_DOWN_DISPLAY;
 
     InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
   }
@@ -1483,7 +1483,7 @@ function SelectScrollAreaDropDownMovementCallBack(pRegion: Pointer<MOUSE_REGION>
           gubCityAtTopOfList = gbSelectedCity - BOBBYR_NUM_DISPLAYED_CITIES + 1;
       }
 
-      gubDropDownAction = BR_DROP_DOWN_DISPLAY;
+      gubDropDownAction = Enum69.BR_DROP_DOWN_DISPLAY;
 
       InvalidateRegion(pRegion.value.RegionTopLeftX, pRegion.value.RegionTopLeftY, pRegion.value.RegionBottomRightX, pRegion.value.RegionBottomRightY);
     }
@@ -1513,7 +1513,7 @@ function SelectUpDownArrowOnScrollAreaRegionCallBack(pRegion: Pointer<MOUSE_REGI
       }
     }
 
-    gubDropDownAction = BR_DROP_DOWN_DISPLAY;
+    gubDropDownAction = Enum69.BR_DROP_DOWN_DISPLAY;
   }
 }
 
@@ -1652,7 +1652,7 @@ function CalculateOrderDelay(ubSelectedService: UINT8): INT8 {
     bDaysAhead = 0;
   }
 
-  if (gMercProfiles[SAL].bLife == 0) {
+  if (gMercProfiles[Enum268.SAL].bLife == 0) {
     // Sal is dead, so Pablo is dead, so the airport is badly run
     // CJC comment: this seems really extreme!! maybe delay by 1 day randomly but that's it!
     bDaysAhead += Random(5) + 1;
@@ -1663,7 +1663,7 @@ function CalculateOrderDelay(ubSelectedService: UINT8): INT8 {
 
 function PurchaseBobbyOrder(): void {
   // if the shipment is going to Drassen, add the inventory
-  if (gbSelectedCity == BR_DRASSEN || gbSelectedCity == BR_MEDUNA) {
+  if (gbSelectedCity == Enum70.BR_DRASSEN || gbSelectedCity == Enum70.BR_MEDUNA) {
     //					BobbyRayOrderStruct *pBobbyRayPurchase;
     //					UINT32	uiResetTimeSec;
     //		UINT8	i, ubCount;
@@ -1727,13 +1727,13 @@ function PurchaseBobbyOrder(): void {
   }
 
   // Add the transaction to the finance page
-  AddTransactionToPlayersBook(BOBBYR_PURCHASE, 0, GetWorldTotalMin(), -giGrandTotal);
+  AddTransactionToPlayersBook(Enum80.BOBBYR_PURCHASE, 0, GetWorldTotalMin(), -giGrandTotal);
 
   // display the confirm order graphic
   gfDrawConfirmOrderGrpahic = TRUE;
 
   // Get rid of the city drop dowm, if it is being displayed
-  gubDropDownAction = BR_DROP_DOWN_DESTROY;
+  gubDropDownAction = Enum69.BR_DROP_DOWN_DESTROY;
 
   MSYS_EnableRegion(addressof(gSelectedConfirmOrderRegion));
   gfRemoveItemsFromStock = TRUE;
@@ -1771,7 +1771,7 @@ function AddJohnsGunShipment(): void {
 
   // want to add two guns (Automags, AUTOMAG_III), and four clips of ammo.
 
-  Temp[0].usItemIndex = AUTOMAG_III;
+  Temp[0].usItemIndex = Enum225.AUTOMAG_III;
   Temp[0].ubNumberPurchased = 2;
   Temp[0].bItemQuality = 100;
   Temp[0].usBobbyItemIndex = 0; // does this get used anywhere???
@@ -1779,7 +1779,7 @@ function AddJohnsGunShipment(): void {
 
   //	memcpy( &(LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray[ cnt ].BobbyRayPurchase[0]), &Temp, sizeof(BobbyRayPurchaseStruct) );
 
-  Temp[1].usItemIndex = CLIP762N_5_AP;
+  Temp[1].usItemIndex = Enum225.CLIP762N_5_AP;
   Temp[1].ubNumberPurchased = 2;
   Temp[1].bItemQuality = 5;
   Temp[1].usBobbyItemIndex = 0; // does this get used anywhere???
@@ -1799,7 +1799,7 @@ function AddJohnsGunShipment(): void {
   //	AddFutureDayStrategicEvent( EVENT_BOBBYRAY_PURCHASE, (8 + Random(4) ) * 60, cnt, bDaysAhead );
 
   // add the delivery	( weight is not needed as it will not be displayed )
-  AddNewBobbyRShipment(Temp, BR_DRASSEN, bDaysAhead, FALSE, 0);
+  AddNewBobbyRShipment(Temp, Enum70.BR_DRASSEN, bDaysAhead, FALSE, 0);
 }
 
 function ConfirmBobbyRPurchaseMessageBoxCallBack(bExitValue: UINT8): void {
@@ -1817,7 +1817,7 @@ function EnterInitBobbyRayOrder(): void {
   gubCityAtTopOfList = 0;
 
   // Get rid of the city drop dowm, if it is being displayed
-  gubDropDownAction = BR_DROP_DOWN_DESTROY;
+  gubDropDownAction = Enum69.BR_DROP_DOWN_DESTROY;
 
   // disable the accept order button
   DisableButton(guiBobbyRAcceptOrder);
@@ -1845,7 +1845,7 @@ function DisplayPackageWeight(): void {
   //	FLOAT			fWeight = (FLOAT)(uiTotalWeight / 10.0);
 
   // Display the 'Package Weight' text
-  DrawTextToScreen(BobbyROrderFormText[BOBBYR_PACKAGE_WEIGHT], BOBBYR_PACKAXGE_WEIGHT_X + 8, BOBBYR_PACKAXGE_WEIGHT_Y + 4, BOBBYR_PACKAXGE_WEIGHT_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_PACKAGE_WEIGHT], BOBBYR_PACKAXGE_WEIGHT_X + 8, BOBBYR_PACKAXGE_WEIGHT_Y + 4, BOBBYR_PACKAXGE_WEIGHT_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Display the weight
   //	swprintf( zTemp, L"%3.1f %s", fWeight, pMessageStrings[ MSG_KILOGRAM_ABBREVIATION ] );
@@ -1860,7 +1860,7 @@ function BtnBobbyRGotoShipmentPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    guiCurrentLaptopMode = LAPTOP_MODE_BOBBYR_SHIPMENTS;
+    guiCurrentLaptopMode = Enum95.LAPTOP_MODE_BOBBYR_SHIPMENTS;
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
@@ -1878,7 +1878,7 @@ function CreateBobbyRayOrderTitle(): BOOLEAN {
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyRayTitle)));
 
   // the link to home page from the title
-  MSYS_DefineRegion(addressof(gSelectedTitleLinkRegion), BOBBYR_BOBBY_RAY_TITLE_X, BOBBYR_BOBBY_RAY_TITLE_Y, (BOBBYR_BOBBY_RAY_TITLE_X + BOBBYR_BOBBY_RAY_TITLE_WIDTH), (BOBBYR_BOBBY_RAY_TITLE_Y + BOBBYR_BOBBY_RAY_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectTitleLinkRegionCallBack);
+  MSYS_DefineRegion(addressof(gSelectedTitleLinkRegion), BOBBYR_BOBBY_RAY_TITLE_X, BOBBYR_BOBBY_RAY_TITLE_Y, (BOBBYR_BOBBY_RAY_TITLE_X + BOBBYR_BOBBY_RAY_TITLE_WIDTH), (BOBBYR_BOBBY_RAY_TITLE_Y + BOBBYR_BOBBY_RAY_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectTitleLinkRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedTitleLinkRegion));
 
   return TRUE;
@@ -1969,7 +1969,7 @@ function AddNewBobbyRShipment(pPurchaseStruct: Pointer<BobbyRayPurchaseStruct>, 
     bDaysAhead = ubDeliveryMethod;
 
   // AddStrategicEvent( EVENT_BOBBYRAY_PURCHASE, uiResetTimeSec, cnt);
-  AddFutureDayStrategicEvent(EVENT_BOBBYRAY_PURCHASE, (8 + Random(4)) * 60, iFoundSpot, bDaysAhead);
+  AddFutureDayStrategicEvent(Enum132.EVENT_BOBBYRAY_PURCHASE, (8 + Random(4)) * 60, iFoundSpot, bDaysAhead);
 
   return TRUE;
 }

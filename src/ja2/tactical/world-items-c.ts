@@ -104,7 +104,7 @@ function FindPanicBombsAndTriggers(): void {
     if (gWorldBombs[uiBombIndex].fExists) {
       pObj = addressof(gWorldItems[gWorldBombs[uiBombIndex].iItemIndex].o);
       if (pObj.value.bFrequency == PANIC_FREQUENCY || pObj.value.bFrequency == PANIC_FREQUENCY_2 || pObj.value.bFrequency == PANIC_FREQUENCY_3) {
-        if (pObj.value.usItem == SWITCH) {
+        if (pObj.value.usItem == Enum225.SWITCH) {
           sGridNo = gWorldItems[gWorldBombs[uiBombIndex].iItemIndex].sGridNo;
           switch (pObj.value.bFrequency) {
             case PANIC_FREQUENCY:
@@ -127,13 +127,13 @@ function FindPanicBombsAndTriggers(): void {
           pSwitch = FindStructure(sGridNo, STRUCTURE_SWITCH);
           if (pSwitch) {
             switch (pSwitch.value.ubWallOrientation) {
-              case INSIDE_TOP_LEFT:
-              case OUTSIDE_TOP_LEFT:
-                sGridNo += DirectionInc(SOUTH);
+              case Enum314.INSIDE_TOP_LEFT:
+              case Enum314.OUTSIDE_TOP_LEFT:
+                sGridNo += DirectionInc(Enum245.SOUTH);
                 break;
-              case INSIDE_TOP_RIGHT:
-              case OUTSIDE_TOP_RIGHT:
-                sGridNo += DirectionInc(EAST);
+              case Enum314.INSIDE_TOP_RIGHT:
+              case Enum314.OUTSIDE_TOP_RIGHT:
+                sGridNo += DirectionInc(Enum245.EAST);
                 break;
               default:
                 break;
@@ -305,7 +305,7 @@ function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
       // Add all of the items to the world indirectly through AddItemToPool, but only if the chance
       // associated with them succeed.
       LOADDATA(addressof(dummyItem), hBuffer.value, sizeof(WORLDITEM));
-      if (dummyItem.o.usItem == OWNERSHIP) {
+      if (dummyItem.o.usItem == Enum225.OWNERSHIP) {
         dummyItem.ubNonExistChance = 0;
       }
       if (gfEditMode || dummyItem.ubNonExistChance <= PreRandom(100)) {
@@ -353,17 +353,17 @@ function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
             }
           }
         }
-        if (dummyItem.o.usItem == ACTION_ITEM && gfLoadPitsWithoutArming) {
+        if (dummyItem.o.usItem == Enum225.ACTION_ITEM && gfLoadPitsWithoutArming) {
           // if we are loading a pit, they are typically loaded without being armed.
-          if (dummyItem.o.bActionValue == ACTION_ITEM_SMALL_PIT || dummyItem.o.bActionValue == ACTION_ITEM_LARGE_PIT) {
+          if (dummyItem.o.bActionValue == Enum191.ACTION_ITEM_SMALL_PIT || dummyItem.o.bActionValue == Enum191.ACTION_ITEM_LARGE_PIT) {
             dummyItem.usFlags &= ~WORLD_ITEM_ARMED_BOMB;
             dummyItem.bVisible = BURIED;
             dummyItem.o.bDetonatorType = 0;
           }
         }
 
-        else if (dummyItem.bVisible == HIDDEN_ITEM && dummyItem.o.bTrap > 0 && (dummyItem.o.usItem == MINE || dummyItem.o.usItem == TRIP_FLARE || dummyItem.o.usItem == TRIP_KLAXON)) {
-          ArmBomb(addressof(dummyItem.o), BOMB_PRESSURE);
+        else if (dummyItem.bVisible == HIDDEN_ITEM && dummyItem.o.bTrap > 0 && (dummyItem.o.usItem == Enum225.MINE || dummyItem.o.usItem == Enum225.TRIP_FLARE || dummyItem.o.usItem == Enum225.TRIP_KLAXON)) {
+          ArmBomb(addressof(dummyItem.o), Enum224.BOMB_PRESSURE);
           dummyItem.usFlags |= WORLD_ITEM_ARMED_BOMB;
           // this is coming from the map so the enemy must know about it.
           gpWorldLevelData[dummyItem.sGridNo].uiFlags |= MAPELEMENT_ENEMY_MINE_PRESENT;
@@ -397,7 +397,7 @@ function DeleteWorldItemsBelongingToTerroristsWhoAreNotThere(): void {
   {
     for (uiLoop = 0; uiLoop < guiNumWorldItems; uiLoop++) {
       // loop through all items, look for ownership
-      if (gWorldItems[uiLoop].fExists && gWorldItems[uiLoop].o.usItem == OWNERSHIP) {
+      if (gWorldItems[uiLoop].fExists && gWorldItems[uiLoop].o.usItem == Enum225.OWNERSHIP) {
         // if owner is a terrorist
         if (IsProfileATerrorist(gWorldItems[uiLoop].o.ubOwnerProfile)) {
           // and they were not set in the current sector
@@ -426,12 +426,12 @@ function DeleteWorldItemsBelongingToQueenIfThere(): void {
   let ubLevel: UINT8;
   let bSlot: INT8;
 
-  if (gMercProfiles[QUEEN].sSectorX == gWorldSectorX && gMercProfiles[QUEEN].sSectorY == gWorldSectorY && gMercProfiles[QUEEN].bSectorZ == gbWorldSectorZ) {
+  if (gMercProfiles[Enum268.QUEEN].sSectorX == gWorldSectorX && gMercProfiles[Enum268.QUEEN].sSectorY == gWorldSectorY && gMercProfiles[Enum268.QUEEN].bSectorZ == gbWorldSectorZ) {
     for (uiLoop = 0; uiLoop < guiNumWorldItems; uiLoop++) {
       // loop through all items, look for ownership
-      if (gWorldItems[uiLoop].fExists && gWorldItems[uiLoop].o.usItem == OWNERSHIP) {
+      if (gWorldItems[uiLoop].fExists && gWorldItems[uiLoop].o.usItem == Enum225.OWNERSHIP) {
         // if owner is the Queen
-        if (gWorldItems[uiLoop].o.ubOwnerProfile == QUEEN) {
+        if (gWorldItems[uiLoop].o.ubOwnerProfile == Enum268.QUEEN) {
           // then all items in this location should be deleted
           sGridNo = gWorldItems[uiLoop].sGridNo;
           ubLevel = gWorldItems[uiLoop].ubLevel;
@@ -440,21 +440,21 @@ function DeleteWorldItemsBelongingToQueenIfThere(): void {
             if (gWorldItems[uiLoop2].fExists && gWorldItems[uiLoop2].sGridNo == sGridNo && gWorldItems[uiLoop2].ubLevel == ubLevel) {
               // upgrade equipment
               switch (gWorldItems[uiLoop2].o.usItem) {
-                case AUTO_ROCKET_RIFLE:
-                  bSlot = FindObjectInSoldierProfile(QUEEN, ROCKET_RIFLE);
+                case Enum225.AUTO_ROCKET_RIFLE:
+                  bSlot = FindObjectInSoldierProfile(Enum268.QUEEN, Enum225.ROCKET_RIFLE);
                   if (bSlot != NO_SLOT) {
                     // give her auto rifle
-                    gMercProfiles[QUEEN].inv[bSlot] = AUTO_ROCKET_RIFLE;
+                    gMercProfiles[Enum268.QUEEN].inv[bSlot] = Enum225.AUTO_ROCKET_RIFLE;
                   }
                   break;
-                case SPECTRA_HELMET_18:
-                  gMercProfiles[QUEEN].inv[HELMETPOS] = SPECTRA_HELMET_18;
+                case Enum225.SPECTRA_HELMET_18:
+                  gMercProfiles[Enum268.QUEEN].inv[Enum261.HELMETPOS] = Enum225.SPECTRA_HELMET_18;
                   break;
-                case SPECTRA_VEST_18:
-                  gMercProfiles[QUEEN].inv[VESTPOS] = SPECTRA_VEST_18;
+                case Enum225.SPECTRA_VEST_18:
+                  gMercProfiles[Enum268.QUEEN].inv[Enum261.VESTPOS] = Enum225.SPECTRA_VEST_18;
                   break;
-                case SPECTRA_LEGGINGS_18:
-                  gMercProfiles[QUEEN].inv[LEGPOS] = SPECTRA_LEGGINGS_18;
+                case Enum225.SPECTRA_LEGGINGS_18:
+                  gMercProfiles[Enum268.QUEEN].inv[Enum261.LEGPOS] = Enum225.SPECTRA_LEGGINGS_18;
                   break;
                 default:
                   break;

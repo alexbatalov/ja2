@@ -36,275 +36,275 @@ const enum Enum233 {
 let ubHeliScripts: UINT8[][] /* [NUM_HELI_STATES][MAX_HELI_SCRIPT] */ = [
   // HELI_APPROACH
   [
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
 
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
 
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
 
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
 
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
 
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_GOTO_MOVETO,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_GOTO_MOVETO,
   ],
 
   // MOVE TO
   [
-    HELI_SHOW_HELI,
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_MOVEY,
+    Enum233.HELI_SHOW_HELI,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
 
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
 
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
 
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
 
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
 
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_MOVEY,
-    HELI_GOTO_BEGINDROP,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_MOVEY,
+    Enum233.HELI_GOTO_BEGINDROP,
   ],
 
   // HELI_BEGIN_DROP
   [
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
 
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
 
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
 
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
 
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
 
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_MOVE_DOWN,
-    HELI_GOTO_DROP,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_MOVE_DOWN,
+    Enum233.HELI_GOTO_DROP,
   ],
 
   // Heli Begin Drop
   [
-    HELI_MOVESMALL_UP,
-    HELI_MOVESMALL_UP,
-    HELI_MOVESMALL_UP,
-    HELI_MOVESMALL_UP,
-    HELI_MOVESMALL_UP,
+    Enum233.HELI_MOVESMALL_UP,
+    Enum233.HELI_MOVESMALL_UP,
+    Enum233.HELI_MOVESMALL_UP,
+    Enum233.HELI_MOVESMALL_UP,
+    Enum233.HELI_MOVESMALL_UP,
 
-    HELI_MOVESMALL_DOWN,
-    HELI_MOVESMALL_DOWN,
-    HELI_MOVESMALL_DOWN,
-    HELI_MOVESMALL_DOWN,
-    HELI_MOVESMALL_DOWN,
+    Enum233.HELI_MOVESMALL_DOWN,
+    Enum233.HELI_MOVESMALL_DOWN,
+    Enum233.HELI_MOVESMALL_DOWN,
+    Enum233.HELI_MOVESMALL_DOWN,
+    Enum233.HELI_MOVESMALL_DOWN,
 
-    HELI_MOVESMALL_UP,
-    HELI_MOVESMALL_UP,
-    HELI_MOVESMALL_UP,
-    HELI_MOVESMALL_UP,
-    HELI_MOVESMALL_UP,
+    Enum233.HELI_MOVESMALL_UP,
+    Enum233.HELI_MOVESMALL_UP,
+    Enum233.HELI_MOVESMALL_UP,
+    Enum233.HELI_MOVESMALL_UP,
+    Enum233.HELI_MOVESMALL_UP,
 
-    HELI_MOVESMALL_DOWN,
-    HELI_MOVESMALL_DOWN,
-    HELI_MOVESMALL_DOWN,
-    HELI_MOVESMALL_DOWN,
-    HELI_MOVESMALL_DOWN,
+    Enum233.HELI_MOVESMALL_DOWN,
+    Enum233.HELI_MOVESMALL_DOWN,
+    Enum233.HELI_MOVESMALL_DOWN,
+    Enum233.HELI_MOVESMALL_DOWN,
+    Enum233.HELI_MOVESMALL_DOWN,
 
-    HELI_MOVESMALL_UP,
-    HELI_MOVESMALL_UP,
-    HELI_MOVESMALL_UP,
-    HELI_MOVESMALL_UP,
-    HELI_MOVESMALL_UP,
+    Enum233.HELI_MOVESMALL_UP,
+    Enum233.HELI_MOVESMALL_UP,
+    Enum233.HELI_MOVESMALL_UP,
+    Enum233.HELI_MOVESMALL_UP,
+    Enum233.HELI_MOVESMALL_UP,
 
-    HELI_MOVESMALL_DOWN,
-    HELI_MOVESMALL_DOWN,
-    HELI_MOVESMALL_DOWN,
-    HELI_MOVESMALL_DOWN,
-    HELI_GOTO_DROP,
+    Enum233.HELI_MOVESMALL_DOWN,
+    Enum233.HELI_MOVESMALL_DOWN,
+    Enum233.HELI_MOVESMALL_DOWN,
+    Enum233.HELI_MOVESMALL_DOWN,
+    Enum233.HELI_GOTO_DROP,
   ],
 
   // HELI END DROP
   [
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
 
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
 
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
 
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
 
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
 
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_MOVE_UP,
-    HELI_GOTO_MOVEAWAY,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_MOVE_UP,
+    Enum233.HELI_GOTO_MOVEAWAY,
   ],
 
   // MOVE AWAY
   [
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
 
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
 
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
 
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
 
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
 
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_MOVELARGERY,
-    HELI_GOTO_EXIT,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_MOVELARGERY,
+    Enum233.HELI_GOTO_EXIT,
   ],
 
   // HELI EXIT
   [
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
 
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
 
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
 
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
 
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
 
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_REST,
-    HELI_DONE,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_REST,
+    Enum233.HELI_DONE,
   ],
 ];
 
@@ -380,18 +380,18 @@ function StartHelicopterRun(sGridNoSweetSpot: INT16): void {
   gbExitCount = 0;
   gbHeliRound = 1;
 
-  gubHeliState = HELI_APPROACH;
+  gubHeliState = Enum232.HELI_APPROACH;
   guiHeliLastUpdate = GetJA2Clock();
 
   // Start sound
-  uiSoundSample = PlayJA2Sample(HELI_1, RATE_11025, 0, 10000, MIDDLEPAN);
+  uiSoundSample = PlayJA2Sample(Enum330.HELI_1, RATE_11025, 0, 10000, MIDDLEPAN);
   fFadingHeliIn = TRUE;
 
   gfHandleHeli = TRUE;
 
   gfFirstGuyDown = TRUE;
 
-  guiPendingOverrideEvent = LU_BEGINUILOCK;
+  guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
 }
 
 function HandleHeliDrop(): void {
@@ -403,21 +403,21 @@ function HandleHeliDrop(): void {
   let AniParams: ANITILE_PARAMS;
 
   if (gfHandleHeli) {
-    if (gCurrentUIMode != LOCKUI_MODE) {
-      guiPendingOverrideEvent = LU_BEGINUILOCK;
+    if (gCurrentUIMode != Enum206.LOCKUI_MODE) {
+      guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
     }
 
     if (_KeyDown(ESC)) {
       // Loop through all mercs not yet placed
       for (cnt = gbCurDrop; cnt < gbNumHeliSeatsOccupied; cnt++) {
         // Add merc to sector
-        MercPtrs[gusHeliSeats[cnt]].value.ubStrategicInsertionCode = INSERTION_CODE_NORTH;
+        MercPtrs[gusHeliSeats[cnt]].value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_NORTH;
         UpdateMercInSector(MercPtrs[gusHeliSeats[cnt]], 9, 1, 0);
 
         // Check for merc arrives quotes...
         HandleMercArrivesQuotes(MercPtrs[gusHeliSeats[cnt]]);
 
-        ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, TacticalStr[MERC_HAS_ARRIVED_STR], MercPtrs[gusHeliSeats[cnt]].value.name);
+        ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, TacticalStr[Enum335.MERC_HAS_ARRIVED_STR], MercPtrs[gusHeliSeats[cnt]].value.name);
       }
 
       // Remove heli
@@ -441,7 +441,7 @@ function HandleHeliDrop(): void {
 
       // guiCurrentEvent = LU_ENDUILOCK;
       // gCurrentUIMode  = LOCKUI_MODE;
-      guiPendingOverrideEvent = LU_ENDUILOCK;
+      guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
       // UIHandleLUIEndLock( NULL );
 
       HandleFirstHeliDropOfGame();
@@ -479,7 +479,7 @@ function HandleHeliDrop(): void {
             gfHandleHeli = FALSE;
             gfIgnoreScrolling = FALSE;
             gbNumHeliSeatsOccupied = 0;
-            guiPendingOverrideEvent = LU_ENDUILOCK;
+            guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
             UnLockPauseState();
             UnPauseGame();
 
@@ -492,7 +492,7 @@ function HandleHeliDrop(): void {
           gfHandleHeli = FALSE;
           gfIgnoreScrolling = FALSE;
           gbNumHeliSeatsOccupied = 0;
-          guiPendingOverrideEvent = LU_ENDUILOCK;
+          guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
           UnLockPauseState();
           UnPauseGame();
 
@@ -509,7 +509,7 @@ function HandleHeliDrop(): void {
       ubScriptCode = ubHeliScripts[gubHeliState][gsHeliScript];
 
       // Switch on mode...
-      if (gubHeliState == HELI_DROP) {
+      if (gubHeliState == Enum232.HELI_DROP) {
         if (!gfIngagedInDrop) {
           let bEndVal: INT8;
 
@@ -523,10 +523,10 @@ function HandleHeliDrop(): void {
           if (gbCurDrop < bEndVal) {
             // sWorldX = CenterX( gsGridNoSweetSpot );
             // sWorldY = CenterY( gsGridNoSweetSpot );
-            EVENT_InitNewSoldierAnim(MercPtrs[gusHeliSeats[gbCurDrop]], HELIDROP, 0, FALSE);
+            EVENT_InitNewSoldierAnim(MercPtrs[gusHeliSeats[gbCurDrop]], Enum193.HELIDROP, 0, FALSE);
 
             // Change insertion code
-            MercPtrs[gusHeliSeats[gbCurDrop]].value.ubStrategicInsertionCode = INSERTION_CODE_NORTH;
+            MercPtrs[gusHeliSeats[gbCurDrop]].value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_NORTH;
 
             UpdateMercInSector(MercPtrs[gusHeliSeats[gbCurDrop]], 9, 1, 0);
             // EVENT_SetSoldierPosition( MercPtrs[ gusHeliSeats[ gbCurDrop ] ], sWorldX, sWorldY );
@@ -536,7 +536,7 @@ function HandleHeliDrop(): void {
               gfFirstGuyDown = FALSE;
               SetCurrentSquad(MercPtrs[gusHeliSeats[gbCurDrop]].value.bAssignment, TRUE);
             }
-            ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, TacticalStr[MERC_HAS_ARRIVED_STR], MercPtrs[gusHeliSeats[gbCurDrop]].value.name);
+            ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, TacticalStr[Enum335.MERC_HAS_ARRIVED_STR], MercPtrs[gusHeliSeats[gbCurDrop]].value.name);
 
             gbCurDrop++;
 
@@ -550,7 +550,7 @@ function HandleHeliDrop(): void {
               if (gbExitCount == 1) {
                 // Goto leave
                 gsHeliScript = -1;
-                gubHeliState = HELI_ENDDROP;
+                gubHeliState = Enum232.HELI_ENDDROP;
               }
             }
           }
@@ -558,51 +558,51 @@ function HandleHeliDrop(): void {
       }
 
       switch (ubScriptCode) {
-        case HELI_REST:
+        case Enum233.HELI_REST:
 
           break;
 
-        case HELI_MOVE_DOWN:
+        case Enum233.HELI_MOVE_DOWN:
 
           gdHeliZPos -= 1;
           gpHeli.value.pLevelNode.value.sRelativeZ = gdHeliZPos;
           break;
 
-        case HELI_MOVE_UP:
+        case Enum233.HELI_MOVE_UP:
 
           gdHeliZPos += 1;
           gpHeli.value.pLevelNode.value.sRelativeZ = gdHeliZPos;
           break;
 
-        case HELI_MOVESMALL_DOWN:
+        case Enum233.HELI_MOVESMALL_DOWN:
 
           gdHeliZPos -= 0.25;
           gpHeli.value.pLevelNode.value.sRelativeZ = gdHeliZPos;
           break;
 
-        case HELI_MOVESMALL_UP:
+        case Enum233.HELI_MOVESMALL_UP:
 
           gdHeliZPos += 0.25;
           gpHeli.value.pLevelNode.value.sRelativeZ = gdHeliZPos;
           break;
 
-        case HELI_MOVEY:
+        case Enum233.HELI_MOVEY:
 
           gpHeli.value.sRelativeY += 4;
           break;
 
-        case HELI_MOVELARGERY:
+        case Enum233.HELI_MOVELARGERY:
 
           gpHeli.value.sRelativeY += 6;
           break;
 
-        case HELI_GOTO_BEGINDROP:
+        case Enum233.HELI_GOTO_BEGINDROP:
 
           gsHeliScript = -1;
-          gubHeliState = HELI_BEGINDROP;
+          gubHeliState = Enum232.HELI_BEGINDROP;
           break;
 
-        case HELI_SHOW_HELI:
+        case Enum233.HELI_SHOW_HELI:
 
           // Start animation
           memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
@@ -619,30 +619,30 @@ function HandleHeliDrop(): void {
           gpHeli = CreateAnimationTile(addressof(AniParams));
           break;
 
-        case HELI_GOTO_DROP:
+        case Enum233.HELI_GOTO_DROP:
 
           // Goto drop animation
           gdHeliZPos -= 0.25;
           gpHeli.value.pLevelNode.value.sRelativeZ = gdHeliZPos;
           gsHeliScript = -1;
-          gubHeliState = HELI_DROP;
+          gubHeliState = Enum232.HELI_DROP;
           break;
 
-        case HELI_GOTO_MOVETO:
+        case Enum233.HELI_GOTO_MOVETO:
 
           // Goto drop animation
           gsHeliScript = -1;
-          gubHeliState = HELI_MOVETO;
+          gubHeliState = Enum232.HELI_MOVETO;
           break;
 
-        case HELI_GOTO_MOVEAWAY:
+        case Enum233.HELI_GOTO_MOVEAWAY:
 
           // Goto drop animation
           gsHeliScript = -1;
-          gubHeliState = HELI_MOVEAWAY;
+          gubHeliState = Enum232.HELI_MOVEAWAY;
           break;
 
-        case HELI_GOTO_EXIT:
+        case Enum233.HELI_GOTO_EXIT:
 
           if (gbCurDrop < gbNumHeliSeatsOccupied) {
             // Start another run......
@@ -656,7 +656,7 @@ function HandleHeliDrop(): void {
             gdHeliZPos = 0;
             gsHeliScript = 0;
             gbExitCount = 0;
-            gubHeliState = HELI_APPROACH;
+            gubHeliState = Enum232.HELI_APPROACH;
             gbHeliRound++;
 
             // Ahh, but still delete the heli!
@@ -665,7 +665,7 @@ function HandleHeliDrop(): void {
           } else {
             // Goto drop animation
             gsHeliScript = -1;
-            gubHeliState = HELI_EXIT;
+            gubHeliState = Enum232.HELI_EXIT;
 
             // Delete helicopter image!
             DeleteAniTile(gpHeli);
@@ -677,7 +677,7 @@ function HandleHeliDrop(): void {
           }
           break;
 
-        case HELI_DONE:
+        case Enum233.HELI_DONE:
 
           // End
           fFadingHeliOut = TRUE;
@@ -709,10 +709,10 @@ function HandleFirstHeliDropOfGame(): void {
     CallAvailableEnemiesTo(gsGridNoSweetSpot);
 
     // Say quote.....
-    SayQuoteFromAnyBodyInSector(QUOTE_ENEMY_PRESENCE);
+    SayQuoteFromAnyBodyInSector(Enum202.QUOTE_ENEMY_PRESENCE);
 
     // Start music
-    SetMusicMode(MUSIC_TACTICAL_ENEMYPRESENT);
+    SetMusicMode(Enum328.MUSIC_TACTICAL_ENEMYPRESENT);
 
     gfFirstHeliRun = FALSE;
   }

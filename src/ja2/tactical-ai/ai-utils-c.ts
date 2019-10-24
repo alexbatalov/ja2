@@ -7,36 +7,36 @@
 // RoamingRange - point patrol stuff
 
 let Urgency: UINT8[][] /* [NUM_STATUS_STATES][NUM_MORALE_STATES] */ = [
-  [ URGENCY_LOW, URGENCY_LOW, URGENCY_LOW, URGENCY_LOW, URGENCY_LOW ], // green
-  [ URGENCY_HIGH, URGENCY_MED, URGENCY_MED, URGENCY_LOW, URGENCY_LOW ], // yellow
-  [ URGENCY_HIGH, URGENCY_MED, URGENCY_MED, URGENCY_MED, URGENCY_MED ], // red
-  [ URGENCY_HIGH, URGENCY_HIGH, URGENCY_HIGH, URGENCY_MED, URGENCY_MED ], // black
+  [ Enum292.URGENCY_LOW, Enum292.URGENCY_LOW, Enum292.URGENCY_LOW, Enum292.URGENCY_LOW, Enum292.URGENCY_LOW ], // green
+  [ Enum292.URGENCY_HIGH, Enum292.URGENCY_MED, Enum292.URGENCY_MED, Enum292.URGENCY_LOW, Enum292.URGENCY_LOW ], // yellow
+  [ Enum292.URGENCY_HIGH, Enum292.URGENCY_MED, Enum292.URGENCY_MED, Enum292.URGENCY_MED, Enum292.URGENCY_MED ], // red
+  [ Enum292.URGENCY_HIGH, Enum292.URGENCY_HIGH, Enum292.URGENCY_HIGH, Enum292.URGENCY_MED, Enum292.URGENCY_MED ], // black
 ];
 
 let MovementMode: UINT16[][] /* [LAST_MOVEMENT_ACTION + 1][NUM_URGENCY_STATES] */ = [
-  [ WALKING, WALKING, WALKING ], // AI_ACTION_NONE
+  [ Enum193.WALKING, Enum193.WALKING, Enum193.WALKING ], // AI_ACTION_NONE
 
-  [ WALKING, WALKING, WALKING ], // AI_ACTION_RANDOM_PATROL
-  [ WALKING, RUNNING, RUNNING ], // AI_ACTION_SEEK_FRIEND
-  [ WALKING, RUNNING, RUNNING ], // AI_ACTION_SEEK_OPPONENT
-  [ RUNNING, RUNNING, RUNNING ], // AI_ACTION_TAKE_COVER
-  [ WALKING, RUNNING, RUNNING ], // AI_ACTION_GET_CLOSER
+  [ Enum193.WALKING, Enum193.WALKING, Enum193.WALKING ], // AI_ACTION_RANDOM_PATROL
+  [ Enum193.WALKING, Enum193.RUNNING, Enum193.RUNNING ], // AI_ACTION_SEEK_FRIEND
+  [ Enum193.WALKING, Enum193.RUNNING, Enum193.RUNNING ], // AI_ACTION_SEEK_OPPONENT
+  [ Enum193.RUNNING, Enum193.RUNNING, Enum193.RUNNING ], // AI_ACTION_TAKE_COVER
+  [ Enum193.WALKING, Enum193.RUNNING, Enum193.RUNNING ], // AI_ACTION_GET_CLOSER
 
-  [ WALKING, WALKING, WALKING ], // AI_ACTION_POINT_PATROL,
-  [ WALKING, RUNNING, RUNNING ], // AI_ACTION_LEAVE_WATER_GAS,
-  [ WALKING, SWATTING, RUNNING ], // AI_ACTION_SEEK_NOISE,
-  [ RUNNING, RUNNING, RUNNING ], // AI_ACTION_ESCORTED_MOVE,
-  [ WALKING, RUNNING, RUNNING ], // AI_ACTION_RUN_AWAY,
+  [ Enum193.WALKING, Enum193.WALKING, Enum193.WALKING ], // AI_ACTION_POINT_PATROL,
+  [ Enum193.WALKING, Enum193.RUNNING, Enum193.RUNNING ], // AI_ACTION_LEAVE_WATER_GAS,
+  [ Enum193.WALKING, Enum193.SWATTING, Enum193.RUNNING ], // AI_ACTION_SEEK_NOISE,
+  [ Enum193.RUNNING, Enum193.RUNNING, Enum193.RUNNING ], // AI_ACTION_ESCORTED_MOVE,
+  [ Enum193.WALKING, Enum193.RUNNING, Enum193.RUNNING ], // AI_ACTION_RUN_AWAY,
 
-  [ RUNNING, RUNNING, RUNNING ], // AI_ACTION_KNIFE_MOVE
-  [ WALKING, WALKING, WALKING ], // AI_ACTION_APPROACH_MERC
-  [ RUNNING, RUNNING, RUNNING ], // AI_ACTION_TRACK
-  [ RUNNING, RUNNING, RUNNING ], // AI_ACTION_EAT
-  [ WALKING, RUNNING, SWATTING ], // AI_ACTION_PICKUP_ITEM
+  [ Enum193.RUNNING, Enum193.RUNNING, Enum193.RUNNING ], // AI_ACTION_KNIFE_MOVE
+  [ Enum193.WALKING, Enum193.WALKING, Enum193.WALKING ], // AI_ACTION_APPROACH_MERC
+  [ Enum193.RUNNING, Enum193.RUNNING, Enum193.RUNNING ], // AI_ACTION_TRACK
+  [ Enum193.RUNNING, Enum193.RUNNING, Enum193.RUNNING ], // AI_ACTION_EAT
+  [ Enum193.WALKING, Enum193.RUNNING, Enum193.SWATTING ], // AI_ACTION_PICKUP_ITEM
 
-  [ WALKING, WALKING, WALKING ], // AI_ACTION_SCHEDULE_MOVE
-  [ WALKING, WALKING, WALKING ], // AI_ACTION_WALK
-  [ RUNNING, RUNNING, RUNNING ], // AI_ACTION_MOVE_TO_CLIMB
+  [ Enum193.WALKING, Enum193.WALKING, Enum193.WALKING ], // AI_ACTION_SCHEDULE_MOVE
+  [ Enum193.WALKING, Enum193.WALKING, Enum193.WALKING ], // AI_ACTION_WALK
+  [ Enum193.RUNNING, Enum193.RUNNING, Enum193.RUNNING ], // AI_ACTION_MOVE_TO_CLIMB
 ];
 
 function OKToAttack(pSoldier: Pointer<SOLDIERTYPE>, target: int): INT8 {
@@ -54,19 +54,19 @@ function OKToAttack(pSoldier: Pointer<SOLDIERTYPE>, target: int): INT8 {
 
   // JUST PUT THIS IN ON JULY 13 TO TRY AND FIX OUT-OF-AMMO SITUATIONS
 
-  if (Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass == IC_GUN) {
-    if (pSoldier.value.inv[HANDPOS].usItem == TANK_CANNON) {
+  if (Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_GUN) {
+    if (pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.TANK_CANNON) {
       // look for another tank shell ELSEWHERE IN INVENTORY
-      if (FindLaunchable(pSoldier, TANK_CANNON) == NO_SLOT)
+      if (FindLaunchable(pSoldier, Enum225.TANK_CANNON) == NO_SLOT)
       // if ( !ItemHasAttachments( &(pSoldier->inv[HANDPOS]) ) )
       {
         return NOSHOOT_NOLOAD;
       }
-    } else if (pSoldier.value.inv[HANDPOS].ubGunShotsLeft == 0) {
+    } else if (pSoldier.value.inv[Enum261.HANDPOS].ubGunShotsLeft == 0) {
       return NOSHOOT_NOAMMO;
     }
-  } else if (Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass == IC_LAUNCHER) {
-    if (FindLaunchable(pSoldier, pSoldier.value.inv[HANDPOS].usItem) == NO_SLOT)
+  } else if (Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_LAUNCHER) {
+    if (FindLaunchable(pSoldier, pSoldier.value.inv[Enum261.HANDPOS].usItem) == NO_SLOT)
     // if ( !ItemHasAttachments( &(pSoldier->inv[HANDPOS]) ) )
     {
       return NOSHOOT_NOLOAD;
@@ -81,7 +81,7 @@ function ConsiderProne(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let bOpponentLevel: INT8;
   let iRange: INT32;
 
-  if (pSoldier.value.bAIMorale >= MORALE_NORMAL) {
+  if (pSoldier.value.bAIMorale >= Enum244.MORALE_NORMAL) {
     return FALSE;
   }
   // We don't want to go prone if there is a nearby enemy
@@ -173,19 +173,19 @@ function ShootingStanceChange(pSoldier: Pointer<SOLDIERTYPE>, pAttack: Pointer<A
         if (!InternalIsValidStance(pSoldier, bDesiredDirection, ANIM_STAND)) {
           continue;
         }
-        pSoldier.value.usAnimState = STANDING;
+        pSoldier.value.usAnimState = Enum193.STANDING;
         break;
       case 1:
         if (!InternalIsValidStance(pSoldier, bDesiredDirection, ANIM_CROUCH)) {
           continue;
         }
-        pSoldier.value.usAnimState = CROUCHING;
+        pSoldier.value.usAnimState = Enum193.CROUCHING;
         break;
       default:
         if (!InternalIsValidStance(pSoldier, bDesiredDirection, ANIM_PRONE)) {
           continue;
         }
-        pSoldier.value.usAnimState = PRONE;
+        pSoldier.value.usAnimState = Enum193.PRONE;
         break;
     }
 
@@ -194,7 +194,7 @@ function ShootingStanceChange(pSoldier: Pointer<SOLDIERTYPE>, pAttack: Pointer<A
       uiStanceBonus = 0;
       // artificially augment "chance of damage" to reflect penalty to be shot at various stances
       switch (pSoldier.value.usAnimState) {
-        case CROUCHING:
+        case Enum193.CROUCHING:
           if (iRange > POINT_BLANK_RANGE + 10 * (AIM_PENALTY_TARGET_CROUCHED / 3)) {
             uiStanceBonus = AIM_BONUS_CROUCHING;
           } else if (iRange > POINT_BLANK_RANGE) {
@@ -202,7 +202,7 @@ function ShootingStanceChange(pSoldier: Pointer<SOLDIERTYPE>, pAttack: Pointer<A
             uiStanceBonus = 3 * ((iRange - POINT_BLANK_RANGE) / CELL_X_SIZE); // penalty -3%/tile
           }
           break;
-        case PRONE:
+        case Enum193.PRONE:
           if (iRange <= MIN_PRONE_RANGE) {
             // HATE being prone this close!
             uiChanceOfDamage = 0;
@@ -243,22 +243,22 @@ function ShootingStanceChange(pSoldier: Pointer<SOLDIERTYPE>, pAttack: Pointer<A
 
 function DetermineMovementMode(pSoldier: Pointer<SOLDIERTYPE>, bAction: INT8): UINT16 {
   if (pSoldier.value.fUIMovementFast) {
-    return RUNNING;
+    return Enum193.RUNNING;
   } else if (CREATURE_OR_BLOODCAT(pSoldier)) {
-    if (pSoldier.value.bAlertStatus == STATUS_GREEN) {
-      return WALKING;
+    if (pSoldier.value.bAlertStatus == Enum243.STATUS_GREEN) {
+      return Enum193.WALKING;
     } else {
-      return RUNNING;
+      return Enum193.RUNNING;
     }
-  } else if (pSoldier.value.ubBodyType == COW || pSoldier.value.ubBodyType == CROW) {
-    return WALKING;
+  } else if (pSoldier.value.ubBodyType == Enum194.COW || pSoldier.value.ubBodyType == Enum194.CROW) {
+    return Enum193.WALKING;
   } else {
-    if ((pSoldier.value.fAIFlags & AI_CAUTIOUS) && (MovementMode[bAction][Urgency[pSoldier.value.bAlertStatus][pSoldier.value.bAIMorale]] == RUNNING)) {
-      return WALKING;
-    } else if (bAction == AI_ACTION_SEEK_NOISE && pSoldier.value.bTeam == CIV_TEAM && !IS_MERC_BODY_TYPE(pSoldier)) {
-      return WALKING;
-    } else if ((pSoldier.value.ubBodyType == HATKIDCIV || pSoldier.value.ubBodyType == KIDCIV) && (pSoldier.value.bAlertStatus == STATUS_GREEN) && Random(10) == 0) {
-      return KID_SKIPPING;
+    if ((pSoldier.value.fAIFlags & AI_CAUTIOUS) && (MovementMode[bAction][Urgency[pSoldier.value.bAlertStatus][pSoldier.value.bAIMorale]] == Enum193.RUNNING)) {
+      return Enum193.WALKING;
+    } else if (bAction == Enum289.AI_ACTION_SEEK_NOISE && pSoldier.value.bTeam == CIV_TEAM && !IS_MERC_BODY_TYPE(pSoldier)) {
+      return Enum193.WALKING;
+    } else if ((pSoldier.value.ubBodyType == Enum194.HATKIDCIV || pSoldier.value.ubBodyType == Enum194.KIDCIV) && (pSoldier.value.bAlertStatus == Enum243.STATUS_GREEN) && Random(10) == 0) {
+      return Enum193.KID_SKIPPING;
     } else {
       return MovementMode[bAction][Urgency[pSoldier.value.bAlertStatus][pSoldier.value.bAIMorale]];
     }
@@ -270,15 +270,15 @@ function NewDest(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16): void {
   // pSoldier->sDestination = usGridNo;
   let fSet: BOOLEAN = FALSE;
 
-  if (IS_MERC_BODY_TYPE(pSoldier) && pSoldier.value.bAction == AI_ACTION_TAKE_COVER && (pSoldier.value.bOrders == DEFENSIVE || pSoldier.value.bOrders == CUNNINGSOLO || pSoldier.value.bOrders == CUNNINGAID) && (SoldierDifficultyLevel(pSoldier) >= 2)) {
+  if (IS_MERC_BODY_TYPE(pSoldier) && pSoldier.value.bAction == Enum289.AI_ACTION_TAKE_COVER && (pSoldier.value.bOrders == Enum242.DEFENSIVE || pSoldier.value.bOrders == Enum242.CUNNINGSOLO || pSoldier.value.bOrders == Enum242.CUNNINGAID) && (SoldierDifficultyLevel(pSoldier) >= 2)) {
     let usMovementMode: UINT16;
 
     // getting real movement anim for someone who is going to take cover, not just considering
-    usMovementMode = MovementMode[AI_ACTION_TAKE_COVER][Urgency[pSoldier.value.bAlertStatus][pSoldier.value.bAIMorale]];
-    if (usMovementMode != SWATTING) {
+    usMovementMode = MovementMode[Enum289.AI_ACTION_TAKE_COVER][Urgency[pSoldier.value.bAlertStatus][pSoldier.value.bAIMorale]];
+    if (usMovementMode != Enum193.SWATTING) {
       // really want to look at path, see how far we could get on path while swatting
-      if (EnoughPoints(pSoldier, RecalculatePathCost(pSoldier, SWATTING), 0, FALSE) || (pSoldier.value.bLastAction == AI_ACTION_TAKE_COVER && pSoldier.value.usUIMovementMode == SWATTING)) {
-        pSoldier.value.usUIMovementMode = SWATTING;
+      if (EnoughPoints(pSoldier, RecalculatePathCost(pSoldier, Enum193.SWATTING), 0, FALSE) || (pSoldier.value.bLastAction == Enum289.AI_ACTION_TAKE_COVER && pSoldier.value.usUIMovementMode == Enum193.SWATTING)) {
+        pSoldier.value.usUIMovementMode = Enum193.SWATTING;
       } else {
         pSoldier.value.usUIMovementMode = usMovementMode;
       }
@@ -287,7 +287,7 @@ function NewDest(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16): void {
     }
     fSet = TRUE;
   } else {
-    if (pSoldier.value.bTeam == ENEMY_TEAM && pSoldier.value.bAlertStatus == STATUS_RED) {
+    if (pSoldier.value.bTeam == ENEMY_TEAM && pSoldier.value.bAlertStatus == Enum243.STATUS_RED) {
       switch (pSoldier.value.bAction) {
         /*
         case AI_ACTION_MOVE_TO_CLIMB:
@@ -299,7 +299,7 @@ function NewDest(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16): void {
           if (PreRandom(5 - SoldierDifficultyLevel(pSoldier)) == 0) {
             let sClosestNoise: INT16 = MostImportantNoiseHeard(pSoldier, NULL, NULL, NULL);
             if (sClosestNoise != NOWHERE && PythSpacesAway(pSoldier.value.sGridNo, sClosestNoise) < MaxDistanceVisible() + 10) {
-              pSoldier.value.usUIMovementMode = SWATTING;
+              pSoldier.value.usUIMovementMode = Enum193.SWATTING;
               fSet = TRUE;
             }
           }
@@ -314,8 +314,8 @@ function NewDest(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16): void {
       fSet = TRUE;
     }
 
-    if (pSoldier.value.usUIMovementMode == SWATTING && !IS_MERC_BODY_TYPE(pSoldier)) {
-      pSoldier.value.usUIMovementMode = WALKING;
+    if (pSoldier.value.usUIMovementMode == Enum193.SWATTING && !IS_MERC_BODY_TYPE(pSoldier)) {
+      pSoldier.value.usUIMovementMode = Enum193.WALKING;
     }
   }
 
@@ -332,80 +332,80 @@ function IsActionAffordable(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // NumMessage("AffordableAction - Guy#",pSoldier->ubID);
 
   switch (pSoldier.value.bAction) {
-    case AI_ACTION_NONE: // maintain current position & facing
+    case Enum289.AI_ACTION_NONE: // maintain current position & facing
       // no cost for doing nothing!
       break;
 
-    case AI_ACTION_CHANGE_FACING: // turn to face another direction
+    case Enum289.AI_ACTION_CHANGE_FACING: // turn to face another direction
       bMinPointsNeeded = GetAPsToLook(pSoldier);
       break;
 
-    case AI_ACTION_RANDOM_PATROL: // move towards a particular location
-    case AI_ACTION_SEEK_FRIEND: // move towards friend in trouble
-    case AI_ACTION_SEEK_OPPONENT: // move towards a reported opponent
-    case AI_ACTION_TAKE_COVER: // run for nearest cover from threat
-    case AI_ACTION_GET_CLOSER: // move closer to a strategic location
-    case AI_ACTION_POINT_PATROL: // move towards next patrol point
-    case AI_ACTION_LEAVE_WATER_GAS: // seek nearest spot of ungassed land
-    case AI_ACTION_SEEK_NOISE: // seek most important noise heard
-    case AI_ACTION_ESCORTED_MOVE: // go where told to by escortPlayer
-    case AI_ACTION_RUN_AWAY: // run away from nearby opponent(s)
-    case AI_ACTION_APPROACH_MERC:
-    case AI_ACTION_TRACK:
-    case AI_ACTION_EAT:
-    case AI_ACTION_SCHEDULE_MOVE:
-    case AI_ACTION_WALK:
-    case AI_ACTION_MOVE_TO_CLIMB:
+    case Enum289.AI_ACTION_RANDOM_PATROL: // move towards a particular location
+    case Enum289.AI_ACTION_SEEK_FRIEND: // move towards friend in trouble
+    case Enum289.AI_ACTION_SEEK_OPPONENT: // move towards a reported opponent
+    case Enum289.AI_ACTION_TAKE_COVER: // run for nearest cover from threat
+    case Enum289.AI_ACTION_GET_CLOSER: // move closer to a strategic location
+    case Enum289.AI_ACTION_POINT_PATROL: // move towards next patrol point
+    case Enum289.AI_ACTION_LEAVE_WATER_GAS: // seek nearest spot of ungassed land
+    case Enum289.AI_ACTION_SEEK_NOISE: // seek most important noise heard
+    case Enum289.AI_ACTION_ESCORTED_MOVE: // go where told to by escortPlayer
+    case Enum289.AI_ACTION_RUN_AWAY: // run away from nearby opponent(s)
+    case Enum289.AI_ACTION_APPROACH_MERC:
+    case Enum289.AI_ACTION_TRACK:
+    case Enum289.AI_ACTION_EAT:
+    case Enum289.AI_ACTION_SCHEDULE_MOVE:
+    case Enum289.AI_ACTION_WALK:
+    case Enum289.AI_ACTION_MOVE_TO_CLIMB:
       // for movement, must have enough APs to move at least 1 tile's worth
       bMinPointsNeeded = MinPtsToMove(pSoldier);
       break;
 
-    case AI_ACTION_PICKUP_ITEM: // grab things lying on the ground
+    case Enum289.AI_ACTION_PICKUP_ITEM: // grab things lying on the ground
       bMinPointsNeeded = __max(MinPtsToMove(pSoldier), AP_PICKUP_ITEM);
       break;
 
-    case AI_ACTION_OPEN_OR_CLOSE_DOOR:
-    case AI_ACTION_UNLOCK_DOOR:
-    case AI_ACTION_LOCK_DOOR:
+    case Enum289.AI_ACTION_OPEN_OR_CLOSE_DOOR:
+    case Enum289.AI_ACTION_UNLOCK_DOOR:
+    case Enum289.AI_ACTION_LOCK_DOOR:
       bMinPointsNeeded = MinPtsToMove(pSoldier);
       break;
 
-    case AI_ACTION_DROP_ITEM:
+    case Enum289.AI_ACTION_DROP_ITEM:
       bMinPointsNeeded = AP_PICKUP_ITEM;
       break;
 
-    case AI_ACTION_FIRE_GUN: // shoot at nearby opponent
-    case AI_ACTION_TOSS_PROJECTILE: // throw grenade at/near opponent(s)
-    case AI_ACTION_KNIFE_MOVE: // preparing to stab adjacent opponent
-    case AI_ACTION_THROW_KNIFE:
+    case Enum289.AI_ACTION_FIRE_GUN: // shoot at nearby opponent
+    case Enum289.AI_ACTION_TOSS_PROJECTILE: // throw grenade at/near opponent(s)
+    case Enum289.AI_ACTION_KNIFE_MOVE: // preparing to stab adjacent opponent
+    case Enum289.AI_ACTION_THROW_KNIFE:
       // only FIRE_GUN currently actually pays extra turning costs!
       bMinPointsNeeded = MinAPsToAttack(pSoldier, pSoldier.value.usActionData, ADDTURNCOST);
 
       break;
 
-    case AI_ACTION_PULL_TRIGGER: // activate an adjacent panic trigger
+    case Enum289.AI_ACTION_PULL_TRIGGER: // activate an adjacent panic trigger
       bMinPointsNeeded = AP_PULL_TRIGGER;
       break;
 
-    case AI_ACTION_USE_DETONATOR: // grab detonator and set off bomb(s)
+    case Enum289.AI_ACTION_USE_DETONATOR: // grab detonator and set off bomb(s)
       bMinPointsNeeded = AP_USE_REMOTE;
       break;
 
-    case AI_ACTION_YELLOW_ALERT: // tell friends opponent(s) heard
-    case AI_ACTION_RED_ALERT: // tell friends opponent(s) seen
-    case AI_ACTION_CREATURE_CALL: // for now
+    case Enum289.AI_ACTION_YELLOW_ALERT: // tell friends opponent(s) heard
+    case Enum289.AI_ACTION_RED_ALERT: // tell friends opponent(s) seen
+    case Enum289.AI_ACTION_CREATURE_CALL: // for now
       bMinPointsNeeded = AP_RADIO;
       break;
 
-    case AI_ACTION_CHANGE_STANCE: // crouch
+    case Enum289.AI_ACTION_CHANGE_STANCE: // crouch
       bMinPointsNeeded = AP_CROUCH;
       break;
 
-    case AI_ACTION_GIVE_AID: // help injured/dying friend
+    case Enum289.AI_ACTION_GIVE_AID: // help injured/dying friend
       bMinPointsNeeded = 0;
       break;
 
-    case AI_ACTION_CLIMB_ROOF:
+    case Enum289.AI_ACTION_CLIMB_ROOF:
       if (pSoldier.value.bLevel == 0) {
         bMinPointsNeeded = AP_CLIMBROOF;
       } else {
@@ -413,12 +413,12 @@ function IsActionAffordable(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
       }
       break;
 
-    case AI_ACTION_COWER:
-    case AI_ACTION_STOP_COWERING:
-    case AI_ACTION_LOWER_GUN:
-    case AI_ACTION_END_COWER_AND_MOVE:
-    case AI_ACTION_TRAVERSE_DOWN:
-    case AI_ACTION_OFFER_SURRENDER:
+    case Enum289.AI_ACTION_COWER:
+    case Enum289.AI_ACTION_STOP_COWERING:
+    case Enum289.AI_ACTION_LOWER_GUN:
+    case Enum289.AI_ACTION_END_COWER_AND_MOVE:
+    case Enum289.AI_ACTION_TRAVERSE_DOWN:
+    case Enum289.AI_ACTION_OFFER_SURRENDER:
       bMinPointsNeeded = 0;
       break;
 
@@ -592,7 +592,7 @@ function RandDestWithinRange(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 
   usMaxDist = RoamingRange(pSoldier, addressof(usOrigin));
 
-  if (pSoldier.value.bOrders <= CLOSEPATROL && (pSoldier.value.bTeam == CIV_TEAM || pSoldier.value.ubProfile != NO_PROFILE)) {
+  if (pSoldier.value.bOrders <= Enum241.CLOSEPATROL && (pSoldier.value.bTeam == CIV_TEAM || pSoldier.value.ubProfile != NO_PROFILE)) {
     // any other combo uses the default of ubRoom == 0, set above
     if (!InARoom(pSoldier.value.usPatrolGrid[0], addressof(ubRoom))) {
       ubRoom = 0;
@@ -618,7 +618,7 @@ function RandDestWithinRange(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     sYRange = sMaxUp + sMaxDown + 1;
   }
 
-  if (pSoldier.value.ubBodyType == LARVAE_MONSTER) {
+  if (pSoldier.value.ubBodyType == Enum194.LARVAE_MONSTER) {
     // only crawl 1 tile, within our roaming range
     while ((ubTriesLeft--) && !fFound) {
       sXOffset = Random(3) - 1; // generates -1 to +1
@@ -893,7 +893,7 @@ function ClosestKnownOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<
     }
 
     // Special stuff for Carmen the bounty hunter
-    if (pSoldier.value.bAttitude == ATTACKSLAYONLY && pOpp.value.ubProfile != 64) {
+    if (pSoldier.value.bAttitude == Enum242.ATTACKSLAYONLY && pOpp.value.ubProfile != 64) {
       continue; // next opponent
     }
 
@@ -977,7 +977,7 @@ function ClosestSeenOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<I
     }
 
     // Special stuff for Carmen the bounty hunter
-    if (pSoldier.value.bAttitude == ATTACKSLAYONLY && pOpp.value.ubProfile != 64) {
+    if (pSoldier.value.bAttitude == Enum242.ATTACKSLAYONLY && pOpp.value.ubProfile != 64) {
       continue; // next opponent
     }
 
@@ -1144,7 +1144,7 @@ function EstimatePathCostToLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo:
   if (pSoldier.value.bLevel == bDestLevel) {
     if ((pSoldier.value.bLevel == 0) || (gubBuildingInfo[pSoldier.value.sGridNo] == gubBuildingInfo[sDestGridNo])) {
       // on ground or same building... normal!
-      sPathCost = EstimatePlotPath(pSoldier, sDestGridNo, FALSE, FALSE, FALSE, WALKING, FALSE, FALSE, 0);
+      sPathCost = EstimatePlotPath(pSoldier, sDestGridNo, FALSE, FALSE, FALSE, Enum193.WALKING, FALSE, FALSE, 0);
       pfClimbingNecessary.value = FALSE;
       psClimbGridNo.value = NOWHERE;
     } else {
@@ -1154,7 +1154,7 @@ function EstimatePathCostToLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo:
       if (sClimbGridNo == NOWHERE) {
         sPathCost = 0;
       } else {
-        sPathCost = PlotPath(pSoldier, sClimbGridNo, FALSE, FALSE, FALSE, WALKING, FALSE, FALSE, 0);
+        sPathCost = PlotPath(pSoldier, sClimbGridNo, FALSE, FALSE, FALSE, Enum193.WALKING, FALSE, FALSE, 0);
         if (sPathCost != 0) {
           // add in cost of climbing down
           if (fAddCostAfterClimbingUp) {
@@ -1185,7 +1185,7 @@ function EstimatePathCostToLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo:
     if (sClimbGridNo == NOWHERE) {
       sPathCost = 0;
     } else {
-      sPathCost = PlotPath(pSoldier, sClimbGridNo, FALSE, FALSE, FALSE, WALKING, FALSE, FALSE, 0);
+      sPathCost = PlotPath(pSoldier, sClimbGridNo, FALSE, FALSE, FALSE, Enum193.WALKING, FALSE, FALSE, 0);
       if (sPathCost != 0) {
         // add in the cost of climbing up or down
         if (pSoldier.value.bLevel == 0) {
@@ -1361,7 +1361,7 @@ function InWaterGasOrSmoke(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): BOOL
   }
 
   // tear/mustard gas
-  if ((gpWorldLevelData[sGridNo].ubExtFlags[pSoldier.value.bLevel] & (MAPELEMENT_EXT_TEARGAS | MAPELEMENT_EXT_MUSTARDGAS)) && (pSoldier.value.inv[HEAD1POS].usItem != GASMASK && pSoldier.value.inv[HEAD2POS].usItem != GASMASK)) {
+  if ((gpWorldLevelData[sGridNo].ubExtFlags[pSoldier.value.bLevel] & (MAPELEMENT_EXT_TEARGAS | MAPELEMENT_EXT_MUSTARDGAS)) && (pSoldier.value.inv[Enum261.HEAD1POS].usItem != Enum225.GASMASK && pSoldier.value.inv[Enum261.HEAD2POS].usItem != Enum225.GASMASK)) {
     return TRUE;
   }
 
@@ -1375,7 +1375,7 @@ function InGasOrSmoke(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): BOOLEAN {
   }
 
   // tear/mustard gas
-  if ((gpWorldLevelData[sGridNo].ubExtFlags[pSoldier.value.bLevel] & (MAPELEMENT_EXT_TEARGAS | MAPELEMENT_EXT_MUSTARDGAS)) && (pSoldier.value.inv[HEAD1POS].usItem != GASMASK && pSoldier.value.inv[HEAD2POS].usItem != GASMASK)) {
+  if ((gpWorldLevelData[sGridNo].ubExtFlags[pSoldier.value.bLevel] & (MAPELEMENT_EXT_TEARGAS | MAPELEMENT_EXT_MUSTARDGAS)) && (pSoldier.value.inv[Enum261.HEAD1POS].usItem != Enum225.GASMASK && pSoldier.value.inv[Enum261.HEAD2POS].usItem != Enum225.GASMASK)) {
     return TRUE;
   }
 
@@ -1388,7 +1388,7 @@ function InWaterOrGas(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): INT16 {
   }
 
   // tear/mustard gas
-  if ((gpWorldLevelData[sGridNo].ubExtFlags[pSoldier.value.bLevel] & (MAPELEMENT_EXT_TEARGAS | MAPELEMENT_EXT_MUSTARDGAS)) && (pSoldier.value.inv[HEAD1POS].usItem != GASMASK && pSoldier.value.inv[HEAD2POS].usItem != GASMASK)) {
+  if ((gpWorldLevelData[sGridNo].ubExtFlags[pSoldier.value.bLevel] & (MAPELEMENT_EXT_TEARGAS | MAPELEMENT_EXT_MUSTARDGAS)) && (pSoldier.value.inv[Enum261.HEAD1POS].usItem != Enum225.GASMASK && pSoldier.value.inv[Enum261.HEAD2POS].usItem != Enum225.GASMASK)) {
     return TRUE;
   }
 
@@ -1397,7 +1397,7 @@ function InWaterOrGas(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): INT16 {
 
 function InGas(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): BOOLEAN {
   // tear/mustard gas
-  if ((gpWorldLevelData[sGridNo].ubExtFlags[pSoldier.value.bLevel] & (MAPELEMENT_EXT_TEARGAS | MAPELEMENT_EXT_MUSTARDGAS)) && (pSoldier.value.inv[HEAD1POS].usItem != GASMASK && pSoldier.value.inv[HEAD2POS].usItem != GASMASK)) {
+  if ((gpWorldLevelData[sGridNo].ubExtFlags[pSoldier.value.bLevel] & (MAPELEMENT_EXT_TEARGAS | MAPELEMENT_EXT_MUSTARDGAS)) && (pSoldier.value.inv[Enum261.HEAD1POS].usItem != Enum225.GASMASK && pSoldier.value.inv[Enum261.HEAD2POS].usItem != Enum225.GASMASK)) {
     return TRUE;
   }
 
@@ -1408,20 +1408,20 @@ function WearGasMaskIfAvailable(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let bSlot: INT8;
   let bNewSlot: INT8;
 
-  bSlot = FindObj(pSoldier, GASMASK);
+  bSlot = FindObj(pSoldier, Enum225.GASMASK);
   if (bSlot == NO_SLOT) {
     return FALSE;
   }
-  if (bSlot == HEAD1POS || bSlot == HEAD2POS) {
+  if (bSlot == Enum261.HEAD1POS || bSlot == Enum261.HEAD2POS) {
     return FALSE;
   }
-  if (pSoldier.value.inv[HEAD1POS].usItem == NOTHING) {
-    bNewSlot = HEAD1POS;
-  } else if (pSoldier.value.inv[HEAD2POS].usItem == NOTHING) {
-    bNewSlot = HEAD2POS;
+  if (pSoldier.value.inv[Enum261.HEAD1POS].usItem == NOTHING) {
+    bNewSlot = Enum261.HEAD1POS;
+  } else if (pSoldier.value.inv[Enum261.HEAD2POS].usItem == NOTHING) {
+    bNewSlot = Enum261.HEAD2POS;
   } else {
     // screw it, going in position 1 anyhow
-    bNewSlot = HEAD1POS;
+    bNewSlot = Enum261.HEAD1POS;
   }
 
   RearrangePocket(pSoldier, bSlot, bNewSlot, TRUE);
@@ -1478,7 +1478,7 @@ function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // if army guy has NO weapons left then panic!
   if (pSoldier.value.bTeam == ENEMY_TEAM) {
     if (FindAIUsableObjClass(pSoldier, IC_WEAPON) == NO_SLOT) {
-      return MORALE_HOPELESS;
+      return Enum244.MORALE_HOPELESS;
     }
   }
 
@@ -1499,7 +1499,7 @@ function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       continue; // next merc
 
     // Special stuff for Carmen the bounty hunter
-    if (pSoldier.value.bAttitude == ATTACKSLAYONLY && pOpponent.value.ubProfile != 64) {
+    if (pSoldier.value.bAttitude == Enum242.ATTACKSLAYONLY && pOpponent.value.ubProfile != 64) {
       continue; // next opponent
     }
 
@@ -1552,7 +1552,7 @@ function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
       // WE CAN'T AFFORD TO CONSIDER THE ENEMY OF MY ENEMY MY FRIEND, HERE!
       // ONLY IF WE ARE ACTUALLY OFFICIALLY CO-OPERATING TOGETHER (SAME SIDE)
-      if (pFriend.value.bNeutral && !(pSoldier.value.ubCivilianGroup != NON_CIV_GROUP && pSoldier.value.ubCivilianGroup == pFriend.value.ubCivilianGroup)) {
+      if (pFriend.value.bNeutral && !(pSoldier.value.ubCivilianGroup != Enum246.NON_CIV_GROUP && pSoldier.value.ubCivilianGroup == pFriend.value.ubCivilianGroup)) {
         continue; // next merc
       }
 
@@ -1606,37 +1606,37 @@ function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   }
 
   if (sMorale <= 25) // odds 1:4 or worse
-    bMoraleCategory = MORALE_HOPELESS;
+    bMoraleCategory = Enum244.MORALE_HOPELESS;
   else if (sMorale <= 50) // odds between 1:4 and 1:2
-    bMoraleCategory = MORALE_WORRIED;
+    bMoraleCategory = Enum244.MORALE_WORRIED;
   else if (sMorale <= 150) // odds between 1:2 and 3:2
-    bMoraleCategory = MORALE_NORMAL;
+    bMoraleCategory = Enum244.MORALE_NORMAL;
   else if (sMorale <= 300) // odds between 3:2 and 3:1
-    bMoraleCategory = MORALE_CONFIDENT;
+    bMoraleCategory = Enum244.MORALE_CONFIDENT;
   else // odds better than 3:1
-    bMoraleCategory = MORALE_FEARLESS;
+    bMoraleCategory = Enum244.MORALE_FEARLESS;
 
   switch (pSoldier.value.bAttitude) {
-    case DEFENSIVE:
+    case Enum242.DEFENSIVE:
       bMoraleCategory--;
       break;
-    case BRAVESOLO:
+    case Enum242.BRAVESOLO:
       bMoraleCategory += 2;
       break;
-    case BRAVEAID:
+    case Enum242.BRAVEAID:
       bMoraleCategory += 2;
       break;
-    case CUNNINGSOLO:
+    case Enum242.CUNNINGSOLO:
       break;
-    case CUNNINGAID:
+    case Enum242.CUNNINGAID:
       break;
-    case AGGRESSIVE:
+    case Enum242.AGGRESSIVE:
       bMoraleCategory++;
       break;
   }
 
   // make idiot administrators much more aggressive
-  if (pSoldier.value.ubSoldierClass == SOLDIER_CLASS_ADMINISTRATOR) {
+  if (pSoldier.value.ubSoldierClass == Enum262.SOLDIER_CLASS_ADMINISTRATOR) {
     bMoraleCategory += 2;
   }
 
@@ -1671,11 +1671,11 @@ function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     bMoraleCategory++;
 
   // if adjustments made it outside the allowed limits
-  if (bMoraleCategory < MORALE_HOPELESS)
-    bMoraleCategory = MORALE_HOPELESS;
+  if (bMoraleCategory < Enum244.MORALE_HOPELESS)
+    bMoraleCategory = Enum244.MORALE_HOPELESS;
   else {
-    if (bMoraleCategory > MORALE_FEARLESS)
-      bMoraleCategory = MORALE_FEARLESS;
+    if (bMoraleCategory > Enum244.MORALE_FEARLESS)
+      bMoraleCategory = Enum244.MORALE_FEARLESS;
   }
 
   // if only 1/4 of side left, reduce morale
@@ -1690,8 +1690,8 @@ function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   */
 
   // brave guys never get hopeless, at worst they get worried
-  if (bMoraleCategory == MORALE_HOPELESS && (pSoldier.value.bAttitude == BRAVESOLO || pSoldier.value.bAttitude == BRAVEAID))
-    bMoraleCategory = MORALE_WORRIED;
+  if (bMoraleCategory == Enum244.MORALE_HOPELESS && (pSoldier.value.bAttitude == Enum242.BRAVESOLO || pSoldier.value.bAttitude == Enum242.BRAVEAID))
+    bMoraleCategory = Enum244.MORALE_WORRIED;
 
   return bMoraleCategory;
 }
@@ -1708,7 +1708,7 @@ function CalcManThreatValue(pEnemy: Pointer<SOLDIERTYPE>, sMyGrid: INT16, ubRedu
   }
 
   // in boxing mode, let only a boxer be considered a threat.
-  if ((gTacticalStatus.bBoxingState == BOXING) && !(pEnemy.value.uiStatusFlags & SOLDIER_BOXER)) {
+  if ((gTacticalStatus.bBoxingState == Enum247.BOXING) && !(pEnemy.value.uiStatusFlags & SOLDIER_BOXER)) {
     iThreatValue = -999;
     return iThreatValue;
   }
@@ -1733,16 +1733,16 @@ function CalcManThreatValue(pEnemy: Pointer<SOLDIERTYPE>, sMyGrid: INT16, ubRedu
     // ADD 1/10 of man's current health (0-10)
     iThreatValue += (pEnemy.value.bLife / 10);
 
-    if (pEnemy.value.bAssignment < ON_DUTY) {
+    if (pEnemy.value.bAssignment < Enum117.ON_DUTY) {
       // ADD 1/4 of man's protection percentage (0-25)
       iThreatValue += ArmourPercent(pEnemy) / 4;
 
       // ADD 1/5 of man's marksmanship skill (0-20)
       iThreatValue += (pEnemy.value.bMarksmanship / 5);
 
-      if (Item[pEnemy.value.inv[HANDPOS].usItem].usItemClass & IC_WEAPON) {
+      if (Item[pEnemy.value.inv[Enum261.HANDPOS].usItem].usItemClass & IC_WEAPON) {
         // ADD the deadliness of the item(weapon) he's holding (0-50)
-        iThreatValue += Weapon[pEnemy.value.inv[HANDPOS].usItem].ubDeadliness;
+        iThreatValue += Weapon[pEnemy.value.inv[Enum261.HANDPOS].usItem].ubDeadliness;
       }
     }
 
@@ -1799,12 +1799,12 @@ function CalcManThreatValue(pEnemy: Pointer<SOLDIERTYPE>, sMyGrid: INT16, ubRedu
 
 function RoamingRange(pSoldier: Pointer<SOLDIERTYPE>, pusFromGridNo: Pointer<INT16>): INT16 {
   if (CREATURE_OR_BLOODCAT(pSoldier)) {
-    if (pSoldier.value.bAlertStatus == STATUS_BLACK) {
+    if (pSoldier.value.bAlertStatus == Enum243.STATUS_BLACK) {
       pusFromGridNo.value = pSoldier.value.sGridNo; // from current position!
       return MAX_ROAMING_RANGE;
     }
   }
-  if (pSoldier.value.bOrders == POINTPATROL || pSoldier.value.bOrders == RNDPTPATROL) {
+  if (pSoldier.value.bOrders == Enum241.POINTPATROL || pSoldier.value.bOrders == Enum241.RNDPTPATROL) {
     // roam near NEXT PATROL POINT, not from where merc starts out
     pusFromGridNo.value = pSoldier.value.usPatrolGrid[pSoldier.value.bNextPatrolPnt];
   } else {
@@ -1815,32 +1815,32 @@ function RoamingRange(pSoldier: Pointer<SOLDIERTYPE>, pusFromGridNo: Pointer<INT
 
   switch (pSoldier.value.bOrders) {
     // JA2 GOLD: give non-NPCs a 5 tile roam range for cover in combat when being shot at
-    case STATIONARY:
-      if (pSoldier.value.ubProfile != NO_PROFILE || (pSoldier.value.bAlertStatus < STATUS_BLACK && !(pSoldier.value.bUnderFire))) {
+    case Enum241.STATIONARY:
+      if (pSoldier.value.ubProfile != NO_PROFILE || (pSoldier.value.bAlertStatus < Enum243.STATUS_BLACK && !(pSoldier.value.bUnderFire))) {
         return 0;
       } else {
         return 5;
       }
-    case ONGUARD:
+    case Enum241.ONGUARD:
       return 5;
-    case CLOSEPATROL:
+    case Enum241.CLOSEPATROL:
       return 15;
-    case RNDPTPATROL:
-    case POINTPATROL:
+    case Enum241.RNDPTPATROL:
+    case Enum241.POINTPATROL:
       return (10); // from nextPatrolGrid, not whereIWas
-    case FARPATROL:
-      if (pSoldier.value.bAlertStatus < STATUS_RED) {
+    case Enum241.FARPATROL:
+      if (pSoldier.value.bAlertStatus < Enum243.STATUS_RED) {
         return 25;
       } else {
         return 50;
       }
-    case ONCALL:
-      if (pSoldier.value.bAlertStatus < STATUS_RED) {
+    case Enum241.ONCALL:
+      if (pSoldier.value.bAlertStatus < Enum243.STATUS_RED) {
         return 10;
       } else {
         return 30;
       }
-    case SEEKENEMY:
+    case Enum241.SEEKENEMY:
       pusFromGridNo.value = pSoldier.value.sGridNo; // from current position!
       return MAX_ROAMING_RANGE;
     default:
@@ -1856,7 +1856,7 @@ function RearrangePocket(pSoldier: Pointer<SOLDIERTYPE>, bPocket1: INT8, bPocket
 function FindBetterSpotForItem(pSoldier: Pointer<SOLDIERTYPE>, bSlot: INT8): BOOLEAN {
   // looks for a place in the slots to put an item in a hand or armour
   // position, and moves it there.
-  if (bSlot >= BIGPOCK1POS) {
+  if (bSlot >= Enum261.BIGPOCK1POS) {
     return FALSE;
   }
   if (pSoldier.value.inv[bSlot].usItem == NOTHING) {
@@ -1866,34 +1866,34 @@ function FindBetterSpotForItem(pSoldier: Pointer<SOLDIERTYPE>, bSlot: INT8): BOO
 
   if (Item[pSoldier.value.inv[bSlot].usItem].ubPerPocket == 0) {
     // then we're looking for a big pocket
-    bSlot = FindEmptySlotWithin(pSoldier, BIGPOCK1POS, BIGPOCK4POS);
+    bSlot = FindEmptySlotWithin(pSoldier, Enum261.BIGPOCK1POS, Enum261.BIGPOCK4POS);
   } else {
     // try a small pocket first
-    bSlot = FindEmptySlotWithin(pSoldier, SMALLPOCK1POS, SMALLPOCK8POS);
+    bSlot = FindEmptySlotWithin(pSoldier, Enum261.SMALLPOCK1POS, Enum261.SMALLPOCK8POS);
     if (bSlot == NO_SLOT) {
-      bSlot = FindEmptySlotWithin(pSoldier, BIGPOCK1POS, BIGPOCK4POS);
+      bSlot = FindEmptySlotWithin(pSoldier, Enum261.BIGPOCK1POS, Enum261.BIGPOCK4POS);
     }
   }
   if (bSlot == NO_SLOT) {
     return FALSE;
   }
-  RearrangePocket(pSoldier, HANDPOS, bSlot, FOREVER);
+  RearrangePocket(pSoldier, Enum261.HANDPOS, bSlot, FOREVER);
   return TRUE;
 }
 
 function GetTraversalQuoteActionID(bDirection: INT8): UINT8 {
   switch (bDirection) {
-    case NORTHEAST: // east
-      return QUOTE_ACTION_ID_TRAVERSE_EAST;
+    case Enum245.NORTHEAST: // east
+      return Enum290.QUOTE_ACTION_ID_TRAVERSE_EAST;
 
-    case SOUTHEAST: // south
-      return QUOTE_ACTION_ID_TRAVERSE_SOUTH;
+    case Enum245.SOUTHEAST: // south
+      return Enum290.QUOTE_ACTION_ID_TRAVERSE_SOUTH;
 
-    case SOUTHWEST: // west
-      return QUOTE_ACTION_ID_TRAVERSE_WEST;
+    case Enum245.SOUTHWEST: // west
+      return Enum290.QUOTE_ACTION_ID_TRAVERSE_WEST;
 
-    case NORTHWEST: // north
-      return QUOTE_ACTION_ID_TRAVERSE_NORTH;
+    case Enum245.NORTHWEST: // north
+      return Enum290.QUOTE_ACTION_ID_TRAVERSE_NORTH;
 
     default:
       return 0;
@@ -1910,28 +1910,28 @@ function SoldierDifficultyLevel(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   bDifficultyBase = 1 + (CalcDifficultyModifier(pSoldier.value.ubSoldierClass) / 34);
 
   switch (pSoldier.value.ubSoldierClass) {
-    case SOLDIER_CLASS_ADMINISTRATOR:
+    case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
       bDifficulty = bDifficultyBase - 1;
       break;
 
-    case SOLDIER_CLASS_ARMY:
+    case Enum262.SOLDIER_CLASS_ARMY:
       bDifficulty = bDifficultyBase;
       break;
 
-    case SOLDIER_CLASS_ELITE:
+    case Enum262.SOLDIER_CLASS_ELITE:
       bDifficulty = bDifficultyBase + 1;
       break;
 
     // hard code militia;
-    case SOLDIER_CLASS_GREEN_MILITIA:
+    case Enum262.SOLDIER_CLASS_GREEN_MILITIA:
       bDifficulty = 2;
       break;
 
-    case SOLDIER_CLASS_REG_MILITIA:
+    case Enum262.SOLDIER_CLASS_REG_MILITIA:
       bDifficulty = 3;
       break;
 
-    case SOLDIER_CLASS_ELITE_MILITIA:
+    case Enum262.SOLDIER_CLASS_ELITE_MILITIA:
       bDifficulty = 4;
       break;
 
@@ -1966,10 +1966,10 @@ function ValidCreatureTurn(pCreature: Pointer<SOLDIERTYPE>, bNewDirection: INT8)
 
     do {
       bTempDir += bDirChange;
-      if (bTempDir < NORTH) {
-        bTempDir = NORTHWEST;
-      } else if (bTempDir > NORTHWEST) {
-        bTempDir = NORTH;
+      if (bTempDir < Enum245.NORTH) {
+        bTempDir = Enum245.NORTHWEST;
+      } else if (bTempDir > Enum245.NORTHWEST) {
+        bTempDir = Enum245.NORTH;
       }
       if (!InternalIsValidStance(pCreature, bTempDir, ANIM_STAND)) {
         fFound = FALSE;
@@ -1996,23 +1996,23 @@ function RangeChangeDesire(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 
   iRangeFactorMultiplier = pSoldier.value.bAIMorale - 1;
   switch (pSoldier.value.bAttitude) {
-    case DEFENSIVE:
+    case Enum242.DEFENSIVE:
       iRangeFactorMultiplier += -1;
       break;
-    case BRAVESOLO:
+    case Enum242.BRAVESOLO:
       iRangeFactorMultiplier += 2;
       break;
-    case BRAVEAID:
+    case Enum242.BRAVEAID:
       iRangeFactorMultiplier += 2;
       break;
-    case CUNNINGSOLO:
+    case Enum242.CUNNINGSOLO:
       iRangeFactorMultiplier += 0;
       break;
-    case CUNNINGAID:
+    case Enum242.CUNNINGAID:
       iRangeFactorMultiplier += 0;
       break;
-    case ATTACKSLAYONLY:
-    case AGGRESSIVE:
+    case Enum242.ATTACKSLAYONLY:
+    case Enum242.AGGRESSIVE:
       iRangeFactorMultiplier += 1;
       break;
   }

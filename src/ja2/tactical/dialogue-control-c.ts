@@ -62,8 +62,8 @@ let gubMercValidPrecedentQuoteID: UINT8[] /* [NUMBER_VALID_MERC_PRECEDENT_QUOTES
 ];
 
 let gusStopTimeQuoteList: UINT16[] /* [] */ = [
-  QUOTE_BOOBYTRAP_ITEM,
-  QUOTE_SUSPICIOUS_GROUND,
+  Enum202.QUOTE_BOOBYTRAP_ITEM,
+  Enum202.QUOTE_SUSPICIOUS_GROUND,
 ];
 
 let gubNumStopTimeQuotes: UINT8 = 2;
@@ -177,7 +177,7 @@ function InitalizeStaticExternalNPCFaces(): void {
 
   fExternFacesLoaded = TRUE;
 
-  for (iCounter = 0; iCounter < NUMBER_OF_EXTERNAL_NPC_FACES; iCounter++) {
+  for (iCounter = 0; iCounter < Enum203.NUMBER_OF_EXTERNAL_NPC_FACES; iCounter++) {
     uiExternalStaticNPCFaces[iCounter] = InitFace((uiExternalFaceProfileIds[iCounter]), NOBODY, FACE_FORCE_SMALL);
   }
 
@@ -194,7 +194,7 @@ function ShutdownStaticExternalNPCFaces(): void {
   fExternFacesLoaded = FALSE;
 
   // remove all external npc faces
-  for (iCounter = 0; iCounter < NUMBER_OF_EXTERNAL_NPC_FACES; iCounter++) {
+  for (iCounter = 0; iCounter < Enum203.NUMBER_OF_EXTERNAL_NPC_FACES; iCounter++) {
     DeleteFace(uiExternalStaticNPCFaces[iCounter]);
   }
 }
@@ -345,14 +345,14 @@ function HandleDialogue(): void {
     UnPauseGame();
 
     // if we're exiting boxing with the UI lock set then DON'T OVERRIDE THIS!
-    if (!(gTacticalStatus.bBoxingState == WON_ROUND || gTacticalStatus.bBoxingState == LOST_ROUND || gTacticalStatus.bBoxingState == DISQUALIFIED) && !(gTacticalStatus.uiFlags & IGNORE_ENGAGED_IN_CONV_UI_UNLOCK)) {
-      guiPendingOverrideEvent = LU_ENDUILOCK;
+    if (!(gTacticalStatus.bBoxingState == Enum247.WON_ROUND || gTacticalStatus.bBoxingState == Enum247.LOST_ROUND || gTacticalStatus.bBoxingState == Enum247.DISQUALIFIED) && !(gTacticalStatus.uiFlags & IGNORE_ENGAGED_IN_CONV_UI_UNLOCK)) {
+      guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
       HandleTacticalUI();
 
       // ATE: If this is NOT the player's turn.. engage AI UI lock!
       if (gTacticalStatus.ubCurrentTeam != gbPlayerNum) {
         // Setup locked UI
-        guiPendingOverrideEvent = LU_BEGINUILOCK;
+        guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
         HandleTacticalUI();
       }
     }
@@ -364,9 +364,9 @@ function HandleDialogue(): void {
     // Are we in here because of the dialogue system up?
     if (!gfInTalkPanel) {
       // ATE: NOT if we have a message box pending....
-      if (guiPendingScreen != MSG_BOX_SCREEN && guiCurrentScreen != MSG_BOX_SCREEN) {
+      if (guiPendingScreen != Enum26.MSG_BOX_SCREEN && guiCurrentScreen != Enum26.MSG_BOX_SCREEN) {
         // No, so we should lock the UI!
-        guiPendingOverrideEvent = LU_BEGINUILOCK;
+        guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
         HandleTacticalUI();
       }
     }
@@ -383,7 +383,7 @@ function HandleDialogue(): void {
       //    CHANGE FROM TEAM TO INV INTERFACE
 
       // Where are we and where did this face once exist?
-      if (guiScreenIDUsedWhenUICreated == GAME_SCREEN && guiCurrentScreen == MAP_SCREEN) {
+      if (guiScreenIDUsedWhenUICreated == Enum26.GAME_SCREEN && guiCurrentScreen == Enum26.MAP_SCREEN) {
         // GO FROM GAMESCREEN TO MAPSCREEN
         // REMOVE OLD UI
         // Set face inactive!
@@ -417,7 +417,7 @@ function HandleDialogue(): void {
         }
 
         guiScreenIDUsedWhenUICreated = guiCurrentScreen;
-      } else if (guiScreenIDUsedWhenUICreated == MAP_SCREEN && guiCurrentScreen == GAME_SCREEN) {
+      } else if (guiScreenIDUsedWhenUICreated == Enum26.MAP_SCREEN && guiCurrentScreen == Enum26.GAME_SCREEN) {
         HandleTacticalSpeechUI(gubCurrentTalkingID, gpCurrentTalkingFace.value.iID);
         guiScreenIDUsedWhenUICreated = guiCurrentScreen;
       }
@@ -470,13 +470,13 @@ function HandleDialogue(): void {
       let sPlayerGridNo: INT16;
       let ubPlayerID: UINT8;
 
-      pMike = FindSoldierByProfileID(MIKE, FALSE);
+      pMike = FindSoldierByProfileID(Enum268.MIKE, FALSE);
       if (pMike) {
         sPlayerGridNo = ClosestPC(pMike, NULL);
         if (sPlayerGridNo != NOWHERE) {
           ubPlayerID = WhoIsThere2(sPlayerGridNo, 0);
           if (ubPlayerID != NOBODY) {
-            InitiateConversation(pMike, MercPtrs[ubPlayerID], NPC_INITIAL_QUOTE, 0);
+            InitiateConversation(pMike, MercPtrs[ubPlayerID], Enum296.NPC_INITIAL_QUOTE, 0);
             gMercProfiles[pMike.value.ubProfile].ubMiscFlags2 |= PROFILE_MISC_FLAG2_SAID_FIRSTSEEN_QUOTE;
             // JA2Gold: special hack value of 2 to prevent dialogue from coming up more than once
             gfMikeShouldSayHi = 2;
@@ -592,13 +592,13 @@ function HandleDialogue(): void {
     // locking or unlocking?
     if (QItem.value.uiSpecialEventData) {
       switch (QItem.value.uiSpecialEventData2) {
-        case (MAP_SCREEN):
+        case (Enum26.MAP_SCREEN):
           fLockOutMapScreenInterface = TRUE;
           break;
       }
     } else {
       switch (QItem.value.uiSpecialEventData2) {
-        case (MAP_SCREEN):
+        case (Enum26.MAP_SCREEN):
           fLockOutMapScreenInterface = FALSE;
           break;
       }
@@ -685,16 +685,16 @@ function HandleDialogue(): void {
       iReason = QItem.value.uiSpecialEventData;
 
       switch (iReason) {
-        case (UPDATE_BOX_REASON_ADDSOLDIER):
+        case (Enum204.UPDATE_BOX_REASON_ADDSOLDIER):
           pUpdateSoldier = addressof(Menptr[QItem.value.uiSpecialEventData2]);
           if (pUpdateSoldier.value.bActive == TRUE) {
             AddSoldierToUpdateBox(pUpdateSoldier);
           }
           break;
-        case (UPDATE_BOX_REASON_SET_REASON):
+        case (Enum204.UPDATE_BOX_REASON_SET_REASON):
           SetSoldierUpdateBoxReason(QItem.value.uiSpecialEventData2);
           break;
-        case (UPDATE_BOX_REASON_SHOW_BOX):
+        case (Enum204.UPDATE_BOX_REASON_SHOW_BOX):
           ShowUpdateBox();
           break;
       }
@@ -722,24 +722,24 @@ function HandleDialogue(): void {
 
       switch (QItem.value.uiSpecialEventData) {
         case (0):
-          swprintf(zText, SkiMessageBoxText[SKI_SHORT_FUNDS_TEXT], zMoney);
+          swprintf(zText, SkiMessageBoxText[Enum370.SKI_SHORT_FUNDS_TEXT], zMoney);
 
           // popup a message stating the player doesnt have enough money
-          DoSkiMessageBox(MSG_BOX_BASIC_STYLE, zText, SHOPKEEPER_SCREEN, MSG_BOX_FLAG_OK, ConfirmDontHaveEnoughForTheDealerMessageBoxCallBack);
+          DoSkiMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_OK, ConfirmDontHaveEnoughForTheDealerMessageBoxCallBack);
           break;
         case (1):
           // if the player is trading items
-          swprintf(zText, SkiMessageBoxText[SKI_QUESTION_TO_DEDUCT_MONEY_FROM_PLAYERS_ACCOUNT_TO_COVER_DIFFERENCE], zMoney);
+          swprintf(zText, SkiMessageBoxText[Enum370.SKI_QUESTION_TO_DEDUCT_MONEY_FROM_PLAYERS_ACCOUNT_TO_COVER_DIFFERENCE], zMoney);
 
           // ask them if we should deduct money out the players account to cover the difference
-          DoSkiMessageBox(MSG_BOX_BASIC_STYLE, zText, SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmToDeductMoneyFromPlayersAccountMessageBoxCallBack);
+          DoSkiMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmToDeductMoneyFromPlayersAccountMessageBoxCallBack);
 
           break;
         case (2):
-          swprintf(zText, SkiMessageBoxText[SKI_QUESTION_TO_DEDUCT_MONEY_FROM_PLAYERS_ACCOUNT_TO_COVER_COST], zMoney);
+          swprintf(zText, SkiMessageBoxText[Enum370.SKI_QUESTION_TO_DEDUCT_MONEY_FROM_PLAYERS_ACCOUNT_TO_COVER_COST], zMoney);
 
           // ask them if we should deduct money out the players account to cover the difference
-          DoSkiMessageBox(MSG_BOX_BASIC_STYLE, zText, SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmToDeductMoneyFromPlayersAccountMessageBoxCallBack);
+          DoSkiMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmToDeductMoneyFromPlayersAccountMessageBoxCallBack);
           break;
         case (3):
           // this means a dialogue event is in progress
@@ -755,12 +755,12 @@ function HandleDialogue(): void {
           break;
 
         case (6):
-          if (guiCurrentScreen == SHOPKEEPER_SCREEN) {
+          if (guiCurrentScreen == Enum26.SHOPKEEPER_SCREEN) {
             DisableButton(guiSKI_TransactionButton);
           }
           break;
         case (7):
-          if (guiCurrentScreen == SHOPKEEPER_SCREEN) {
+          if (guiCurrentScreen == Enum26.SHOPKEEPER_SCREEN) {
             EnableButton(guiSKI_TransactionButton);
           }
           break;
@@ -770,7 +770,7 @@ function HandleDialogue(): void {
     if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_EXIT_MAP_SCREEN) {
       // select sector
       ChangeSelectedMapSector(QItem.value.uiSpecialEventData, QItem.value.uiSpecialEventData2, QItem.value.uiSpecialEventData3);
-      RequestTriggerExitFromMapscreen(MAP_EXIT_TO_TACTICAL);
+      RequestTriggerExitFromMapscreen(Enum144.MAP_EXIT_TO_TACTICAL);
     } else if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_DISPLAY_STAT_CHANGE) {
       // grab soldier ptr from profile ID
       pSoldier = FindSoldierByProfileID(QItem.value.ubCharacterNum, FALSE);
@@ -919,10 +919,10 @@ function DelayedTacticalCharacterDialogue(pSoldier: Pointer<SOLDIERTYPE>, usQuot
     return FALSE;
   }
 
-  if (pSoldier.value.bLife < OKLIFE && usQuoteNum != QUOTE_SERIOUSLY_WOUNDED)
+  if (pSoldier.value.bLife < OKLIFE && usQuoteNum != Enum202.QUOTE_SERIOUSLY_WOUNDED)
     return FALSE;
 
-  if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+  if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
     return FALSE;
   }
 
@@ -934,7 +934,7 @@ function TacticalCharacterDialogueWithSpecialEvent(pSoldier: Pointer<SOLDIERTYPE
     return FALSE;
   }
 
-  if (uiFlag != DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND && uiData1 != BATTLE_SOUND_DIE1) {
+  if (uiFlag != DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND && uiData1 != Enum259.BATTLE_SOUND_DIE1) {
     if (pSoldier.value.bLife < CONSCIOUSNESS)
       return FALSE;
 
@@ -950,7 +950,7 @@ function TacticalCharacterDialogueWithSpecialEventEx(pSoldier: Pointer<SOLDIERTY
     return FALSE;
   }
 
-  if (uiFlag != DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND && uiData1 != BATTLE_SOUND_DIE1) {
+  if (uiFlag != DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND && uiData1 != Enum259.BATTLE_SOUND_DIE1) {
     if (pSoldier.value.bLife < CONSCIOUSNESS)
       return FALSE;
 
@@ -961,10 +961,10 @@ function TacticalCharacterDialogueWithSpecialEventEx(pSoldier: Pointer<SOLDIERTY
       return FALSE;
     }
 
-    if (pSoldier.value.bLife < OKLIFE && usQuoteNum != QUOTE_SERIOUSLY_WOUNDED)
+    if (pSoldier.value.bLife < OKLIFE && usQuoteNum != Enum202.QUOTE_SERIOUSLY_WOUNDED)
       return FALSE;
 
-    if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+    if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
       return FALSE;
     }
   }
@@ -984,7 +984,7 @@ function TacticalCharacterDialogue(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: U
   if (pSoldier.value.bLife < CONSCIOUSNESS)
     return FALSE;
 
-  if (pSoldier.value.bLife < OKLIFE && usQuoteNum != QUOTE_SERIOUSLY_WOUNDED)
+  if (pSoldier.value.bLife < OKLIFE && usQuoteNum != Enum202.QUOTE_SERIOUSLY_WOUNDED)
     return FALSE;
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_GASSED)
@@ -994,7 +994,7 @@ function TacticalCharacterDialogue(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: U
     return FALSE;
   }
 
-  if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+  if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
     return FALSE;
   }
 
@@ -1016,12 +1016,12 @@ function TacticalCharacterDialogue(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: U
     return FALSE;
 
   // Check for logging of me too bleeds...
-  if (usQuoteNum == QUOTE_STARTING_TO_BLEED) {
+  if (usQuoteNum == Enum202.QUOTE_STARTING_TO_BLEED) {
     if (gubLogForMeTooBleeds) {
       // If we are greater than one...
       if (gubLogForMeTooBleeds > 1) {
         // Replace with me too....
-        usQuoteNum = QUOTE_ME_TOO;
+        usQuoteNum = Enum202.QUOTE_ME_TOO;
       }
       gubLogForMeTooBleeds++;
     }
@@ -1215,18 +1215,18 @@ function ExecuteCharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFa
       return FALSE;
     }
 
-    if (pSoldier.value.bLife < OKLIFE && usQuoteNum != QUOTE_SERIOUSLY_WOUNDED) {
+    if (pSoldier.value.bLife < OKLIFE && usQuoteNum != Enum202.QUOTE_SERIOUSLY_WOUNDED) {
       return FALSE;
     }
 
-    if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+    if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
       return FALSE;
     }
 
     // sleeping guys don't talk.. go to standby to talk
     if (pSoldier.value.fMercAsleep == TRUE) {
       // check if the soldier was compaining about lack of sleep and was alseep, if so, leave them alone
-      if ((usQuoteNum == QUOTE_NEED_SLEEP) || (usQuoteNum == QUOTE_OUT_OF_BREATH)) {
+      if ((usQuoteNum == Enum202.QUOTE_NEED_SLEEP) || (usQuoteNum == Enum202.QUOTE_OUT_OF_BREATH)) {
         // leave them alone
         return TRUE;
       }
@@ -1303,7 +1303,7 @@ function ExecuteCharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFa
 
 function CreateTalkingUI(bUIHandlerID: INT8, iFaceIndex: INT32, ubCharacterNum: UINT8, pSoldier: Pointer<SOLDIERTYPE>, zQuoteStr: Pointer<INT16>): void {
   // Show text, if on
-  if (gGameSettings.fOptions[TOPTION_SUBTITLES] || !gFacesData[iFaceIndex].fValidSpeech) {
+  if (gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES] || !gFacesData[iFaceIndex].fValidSpeech) {
     switch (bUIHandlerID) {
       case DIALOGUE_TACTICAL_UI:
 
@@ -1333,7 +1333,7 @@ function CreateTalkingUI(bUIHandlerID: INT8, iFaceIndex: INT32, ubCharacterNum: 
     }
   }
 
-  if (gGameSettings.fOptions[TOPTION_SPEECH]) {
+  if (gGameSettings.fOptions[Enum8.TOPTION_SPEECH]) {
     switch (bUIHandlerID) {
       case DIALOGUE_TACTICAL_UI:
 
@@ -1469,7 +1469,7 @@ function GetDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iDataSize: UINT3
   //#endif
 
   // get speech if applicable
-  if (gGameSettings.fOptions[TOPTION_SPEECH]) {
+  if (gGameSettings.fOptions[Enum8.TOPTION_SPEECH]) {
     // Load it into memory!
     puiSoundID.value = SoundLoadSample(pFilename);
   }
@@ -1482,7 +1482,7 @@ function HandleTacticalNPCTextUI(ubCharacterNum: UINT8, zQuoteStr: Pointer<INT16
   let zText: INT16[] /* [QUOTE_MESSAGE_SIZE] */;
 
   // Setup dialogue text box
-  if (guiCurrentScreen != MAP_SCREEN) {
+  if (guiCurrentScreen != Enum26.MAP_SCREEN) {
     gTalkPanel.fRenderSubTitlesNow = TRUE;
     gTalkPanel.fSetupSubTitles = TRUE;
   }
@@ -1499,7 +1499,7 @@ function DisplayTextForExternalNPC(ubCharacterNum: UINT8, zQuoteStr: STR16): voi
   let sLeft: INT16;
 
   // Setup dialogue text box
-  if (guiCurrentScreen != MAP_SCREEN) {
+  if (guiCurrentScreen != Enum26.MAP_SCREEN) {
     gTalkPanel.fRenderSubTitlesNow = TRUE;
     gTalkPanel.fSetupSubTitles = TRUE;
   }
@@ -1509,7 +1509,7 @@ function DisplayTextForExternalNPC(ubCharacterNum: UINT8, zQuoteStr: STR16): voi
   swprintf(zText, "%s: \"%s\"", gMercProfiles[ubCharacterNum].zNickname, zQuoteStr);
   MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, "%s", zText);
 
-  if (guiCurrentScreen == MAP_SCREEN) {
+  if (guiCurrentScreen == Enum26.MAP_SCREEN) {
     sLeft = (gsExternPanelXPosition + 97);
     gsTopPosition = gsExternPanelYPosition;
   } else {
@@ -1566,7 +1566,7 @@ function ExecuteTacticalTextBox(sLeftPosition: INT16, pString: STR16): void {
   // Prepare text box
   SET_USE_WINFONTS(TRUE);
   SET_WINFONT(giSubTitleWinFont);
-  iDialogueBox = PrepareMercPopupBox(iDialogueBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, pString, DIALOGUE_DEFAULT_SUBTITLE_WIDTH, 0, 0, 0, addressof(gusSubtitleBoxWidth), addressof(gusSubtitleBoxHeight));
+  iDialogueBox = PrepareMercPopupBox(iDialogueBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, pString, DIALOGUE_DEFAULT_SUBTITLE_WIDTH, 0, 0, 0, addressof(gusSubtitleBoxWidth), addressof(gusSubtitleBoxHeight));
   SET_USE_WINFONTS(FALSE);
 
   VideoOverlayDesc.sLeft = sLeftPosition;
@@ -1582,7 +1582,7 @@ function ExecuteTacticalTextBox(sLeftPosition: INT16, pString: STR16): void {
   gsTopPosition = 20;
 
   // Define main region
-  MSYS_DefineRegion(addressof(gTextBoxMouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, TextOverlayClickCallback);
+  MSYS_DefineRegion(addressof(gTextBoxMouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, TextOverlayClickCallback);
   // Add region
   MSYS_AddRegion(addressof(gTextBoxMouseRegion));
 
@@ -1603,7 +1603,7 @@ function HandleExternNPCSpeechFace(iIndex: INT32): void {
   // Set flag to say WE control when to set inactive!
   gFacesData[iFaceIndex].uiFlags |= FACE_INACTIVE_HANDLED_ELSEWHERE;
 
-  if (guiCurrentScreen != MAP_SCREEN) {
+  if (guiCurrentScreen != Enum26.MAP_SCREEN) {
     // Setup video overlay!
     VideoOverlayDesc.sLeft = 10;
     VideoOverlayDesc.sTop = 20;
@@ -1635,7 +1635,7 @@ function HandleExternNPCSpeechFace(iIndex: INT32): void {
     fExternFaceBoxRegionCreated = TRUE;
 
     // Define main region
-    MSYS_DefineRegion(addressof(gFacePopupMouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, FaceOverlayClickCallback);
+    MSYS_DefineRegion(addressof(gFacePopupMouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, FaceOverlayClickCallback);
     // Add region
     MSYS_AddRegion(addressof(gFacePopupMouseRegion));
   }
@@ -1663,7 +1663,7 @@ function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void 
     fDoExternPanel = TRUE;
   } else {
     // If we are not an active face!
-    if (guiCurrentScreen != MAP_SCREEN) {
+    if (guiCurrentScreen != Enum26.MAP_SCREEN) {
       fDoExternPanel = TRUE;
     }
   }
@@ -1676,7 +1676,7 @@ function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void 
     gFacesData[iFaceIndex].uiFlags |= (FACE_INACTIVE_HANDLED_ELSEWHERE | FACE_MAKEACTIVE_ONCE_DONE);
 
     // IF we are in tactical and this soldier is on the current squad
-    if ((guiCurrentScreen == GAME_SCREEN) && (pSoldier != NULL) && (pSoldier.value.bAssignment == iCurrentTacticalSquad)) {
+    if ((guiCurrentScreen == Enum26.GAME_SCREEN) && (pSoldier != NULL) && (pSoldier.value.bAssignment == iCurrentTacticalSquad)) {
       // Make the interface panel dirty..
       // This will dirty the panel next frame...
       gfRerenderInterfaceFromHelpText = TRUE;
@@ -1701,13 +1701,13 @@ function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void 
       fExternFaceBoxRegionCreated = TRUE;
 
       // Define main region
-      MSYS_DefineRegion(addressof(gFacePopupMouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, FaceOverlayClickCallback);
+      MSYS_DefineRegion(addressof(gFacePopupMouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, FaceOverlayClickCallback);
       // Add region
       MSYS_AddRegion(addressof(gFacePopupMouseRegion));
     }
 
     gfFacePanelActive = TRUE;
-  } else if (guiCurrentScreen == MAP_SCREEN) {
+  } else if (guiCurrentScreen == Enum26.MAP_SCREEN) {
     // Are we in mapscreen?
     // If so, set current guy active to talk.....
     if (pSoldier != NULL) {
@@ -1717,7 +1717,7 @@ function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void 
 }
 
 function HandleDialogueEnd(pFace: Pointer<FACETYPE>): void {
-  if (gGameSettings.fOptions[TOPTION_SPEECH]) {
+  if (gGameSettings.fOptions[Enum8.TOPTION_SPEECH]) {
     if (pFace != gpCurrentTalkingFace) {
       // ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"HandleDialogueEnd() face mismatch." );
       return;
@@ -1759,7 +1759,7 @@ function HandleDialogueEnd(pFace: Pointer<FACETYPE>): void {
     }
   }
 
-  if (gGameSettings.fOptions[TOPTION_SUBTITLES] || !pFace.value.fValidSpeech) {
+  if (gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES] || !pFace.value.fValidSpeech) {
     switch (gbUIHandlerID) {
       case DIALOGUE_TACTICAL_UI:
       case DIALOGUE_EXTERNAL_NPC_UI:
@@ -1911,10 +1911,10 @@ function SayQuoteFromAnyBodyInSector(usQuoteNum: UINT16): void {
     if (OK_INSECTOR_MERC(pTeamSoldier) && !AM_AN_EPC(pTeamSoldier) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_GASSED) && !(AM_A_ROBOT(pTeamSoldier)) && !pTeamSoldier.value.fMercAsleep) {
       if (gTacticalStatus.bNumFoughtInBattle[ENEMY_TEAM] == 0) {
         // quotes referring to Deidranna's men so we skip quote if there were no army guys fought
-        if ((usQuoteNum == QUOTE_SECTOR_SAFE) && (pTeamSoldier.value.ubProfile == IRA || pTeamSoldier.value.ubProfile == MIGUEL || pTeamSoldier.value.ubProfile == SHANK)) {
+        if ((usQuoteNum == Enum202.QUOTE_SECTOR_SAFE) && (pTeamSoldier.value.ubProfile == Enum268.IRA || pTeamSoldier.value.ubProfile == Enum268.MIGUEL || pTeamSoldier.value.ubProfile == Enum268.SHANK)) {
           continue;
         }
-        if ((usQuoteNum == QUOTE_ENEMY_PRESENCE) && (pTeamSoldier.value.ubProfile == IRA || pTeamSoldier.value.ubProfile == DIMITRI || pTeamSoldier.value.ubProfile == DYNAMO || pTeamSoldier.value.ubProfile == SHANK)) {
+        if ((usQuoteNum == Enum202.QUOTE_ENEMY_PRESENCE) && (pTeamSoldier.value.ubProfile == Enum268.IRA || pTeamSoldier.value.ubProfile == Enum268.DIMITRI || pTeamSoldier.value.ubProfile == Enum268.DYNAMO || pTeamSoldier.value.ubProfile == Enum268.SHANK)) {
           continue;
         }
       }
@@ -1929,7 +1929,7 @@ function SayQuoteFromAnyBodyInSector(usQuoteNum: UINT16): void {
     ubChosenMerc = Random(ubNumMercs);
 
     // If we are air raid, AND red exists somewhere...
-    if (usQuoteNum == QUOTE_AIR_RAID) {
+    if (usQuoteNum == Enum202.QUOTE_AIR_RAID) {
       for (cnt = 0; cnt < ubNumMercs; cnt++) {
         if (ubMercsInSector[cnt] == 11) {
           ubChosenMerc = cnt;
@@ -1970,7 +1970,7 @@ function SayQuoteFromAnyBodyInThisSector(sSectorX: INT16, sSectorY: INT16, bSect
     ubChosenMerc = Random(ubNumMercs);
 
     // If we are air raid, AND red exists somewhere...
-    if (usQuoteNum == QUOTE_AIR_RAID) {
+    if (usQuoteNum == Enum202.QUOTE_AIR_RAID) {
       for (cnt = 0; cnt < ubNumMercs; cnt++) {
         if (ubMercsInSector[cnt] == 11) {
           ubChosenMerc = cnt;
@@ -2012,7 +2012,7 @@ function SayQuoteFromNearbyMercInSector(sGridNo: INT16, bDistance: INT8, usQuote
     ubChosenMerc = Random(ubNumMercs);
 
     if (usQuoteNum == 66) {
-      SetFactTrue(FACT_PLAYER_FOUND_ITEMS_MISSING);
+      SetFactTrue(Enum170.FACT_PLAYER_FOUND_ITEMS_MISSING);
     }
     TacticalCharacterDialogue(MercPtrs[ubMercsInSector[ubChosenMerc]], usQuoteNum);
   }
@@ -2035,11 +2035,11 @@ function SayQuote58FromNearbyMercInSector(sGridNo: INT16, bDistance: INT8, usQuo
     // Add guy if he's a candidate...
     if (OK_INSECTOR_MERC(pTeamSoldier) && PythSpacesAway(sGridNo, pTeamSoldier.value.sGridNo) < bDistance && !AM_AN_EPC(pTeamSoldier) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_GASSED) && !(AM_A_ROBOT(pTeamSoldier)) && !pTeamSoldier.value.fMercAsleep && SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, 0, 0, MaxDistanceVisible(), TRUE)) {
       // ATE: This is to check gedner for this quote...
-      if (QuoteExp_GenderCode[pTeamSoldier.value.ubProfile] == 0 && bSex == FEMALE) {
+      if (QuoteExp_GenderCode[pTeamSoldier.value.ubProfile] == 0 && bSex == Enum272.FEMALE) {
         continue;
       }
 
-      if (QuoteExp_GenderCode[pTeamSoldier.value.ubProfile] == 1 && bSex == MALE) {
+      if (QuoteExp_GenderCode[pTeamSoldier.value.ubProfile] == 1 && bSex == Enum272.MALE) {
         continue;
       }
 

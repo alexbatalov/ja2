@@ -125,12 +125,12 @@ function CreateIMPFinishButtons(): void {
 
   SpecifyButtonIcon(giIMPFinishButton[5], guiSMALLSILHOUETTE, 0, 33, 23, FALSE);
 
-  SetButtonCursor(giIMPFinishButton[0], CURSOR_WWW);
-  SetButtonCursor(giIMPFinishButton[1], CURSOR_WWW);
-  SetButtonCursor(giIMPFinishButton[2], CURSOR_WWW);
-  SetButtonCursor(giIMPFinishButton[3], CURSOR_WWW);
-  SetButtonCursor(giIMPFinishButton[4], CURSOR_WWW);
-  SetButtonCursor(giIMPFinishButton[5], CURSOR_WWW);
+  SetButtonCursor(giIMPFinishButton[0], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPFinishButton[1], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPFinishButton[2], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPFinishButton[3], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPFinishButton[4], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPFinishButton[5], Enum317.CURSOR_WWW);
 
   return;
 }
@@ -175,7 +175,7 @@ function BtnIMPFinishStartOverCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      DoLapTopMessageBox(MSG_BOX_IMP_STYLE, pImpPopUpStrings[1], LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, FinishMessageBoxCallBack);
+      DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[1], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, FinishMessageBoxCallBack);
     }
   }
 }
@@ -191,7 +191,7 @@ function BtnIMPFinishDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      iCurrentImpPage = IMP_CONFIRM;
+      iCurrentImpPage = Enum71.IMP_CONFIRM;
       CreateACharacterFromPlayerEnteredStats();
       fButtonPendingFlag = TRUE;
       iCurrentProfileMode = 0;
@@ -261,7 +261,7 @@ function BtnIMPFinishAttributesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      iCurrentImpPage = IMP_ATTRIBUTE_PAGE;
+      iCurrentImpPage = Enum71.IMP_ATTRIBUTE_PAGE;
       fButtonPendingFlag = TRUE;
       SpecifyButtonText(giIMPFinishButton[2], pImpButtonText[2]);
     }
@@ -478,7 +478,7 @@ function DestroyCharacterPortrait(): void {
 function FinishMessageBoxCallBack(bExitValue: UINT8): void {
   // yes, so start over, else stay here and do nothing for now
   if (bExitValue == MSG_BOX_RETURN_YES) {
-    iCurrentImpPage = IMP_HOME_PAGE;
+    iCurrentImpPage = Enum71.IMP_HOME_PAGE;
     fButtonPendingFlag = TRUE;
     iCurrentProfileMode = 0;
     fFinishedCharGeneration = FALSE;

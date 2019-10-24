@@ -160,26 +160,26 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
   // Laptop button record nums
   //	HELP_SCREEN_LAPTOP,
   [
-    HLP_TXT_LAPTOP_BUTTON_1,
-    HLP_TXT_LAPTOP_BUTTON_2,
-    HLP_TXT_LAPTOP_BUTTON_3,
-    HLP_TXT_LAPTOP_BUTTON_4,
-    HLP_TXT_LAPTOP_BUTTON_5,
-    HLP_TXT_LAPTOP_BUTTON_6,
-    HLP_TXT_LAPTOP_BUTTON_7,
-    HLP_TXT_LAPTOP_BUTTON_8,
+    Enum18.HLP_TXT_LAPTOP_BUTTON_1,
+    Enum18.HLP_TXT_LAPTOP_BUTTON_2,
+    Enum18.HLP_TXT_LAPTOP_BUTTON_3,
+    Enum18.HLP_TXT_LAPTOP_BUTTON_4,
+    Enum18.HLP_TXT_LAPTOP_BUTTON_5,
+    Enum18.HLP_TXT_LAPTOP_BUTTON_6,
+    Enum18.HLP_TXT_LAPTOP_BUTTON_7,
+    Enum18.HLP_TXT_LAPTOP_BUTTON_8,
   ],
 
   //	HELP_SCREEN_MAPSCREEN,
   [
-    HLP_TXT_WELCOM_TO_ARULCO_BUTTON_1,
-    HLP_TXT_WELCOM_TO_ARULCO_BUTTON_2,
-    HLP_TXT_WELCOM_TO_ARULCO_BUTTON_3,
-    HLP_TXT_WELCOM_TO_ARULCO_BUTTON_4,
-    HLP_TXT_WELCOM_TO_ARULCO_BUTTON_5,
-    HLP_TXT_WELCOM_TO_ARULCO_BUTTON_6,
-    HLP_TXT_WELCOM_TO_ARULCO_BUTTON_7,
-    HLP_TXT_WELCOM_TO_ARULCO_BUTTON_8,
+    Enum18.HLP_TXT_WELCOM_TO_ARULCO_BUTTON_1,
+    Enum18.HLP_TXT_WELCOM_TO_ARULCO_BUTTON_2,
+    Enum18.HLP_TXT_WELCOM_TO_ARULCO_BUTTON_3,
+    Enum18.HLP_TXT_WELCOM_TO_ARULCO_BUTTON_4,
+    Enum18.HLP_TXT_WELCOM_TO_ARULCO_BUTTON_5,
+    Enum18.HLP_TXT_WELCOM_TO_ARULCO_BUTTON_6,
+    Enum18.HLP_TXT_WELCOM_TO_ARULCO_BUTTON_7,
+    Enum18.HLP_TXT_WELCOM_TO_ARULCO_BUTTON_8,
   ],
 
   //	HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED,
@@ -220,12 +220,12 @@ let gHelpScreenBtnTextRecordNum: HELP_SCREEN_BTN_TEXT_RECORD[] /* [HELP_SCREEN_N
 
   //	HELP_SCREEN_TACTICAL,
   [
-    HLP_TXT_TACTICAL_BUTTON_1,
-    HLP_TXT_TACTICAL_BUTTON_2,
-    HLP_TXT_TACTICAL_BUTTON_3,
-    HLP_TXT_TACTICAL_BUTTON_4,
-    HLP_TXT_TACTICAL_BUTTON_5,
-    HLP_TXT_TACTICAL_BUTTON_6,
+    Enum18.HLP_TXT_TACTICAL_BUTTON_1,
+    Enum18.HLP_TXT_TACTICAL_BUTTON_2,
+    Enum18.HLP_TXT_TACTICAL_BUTTON_3,
+    Enum18.HLP_TXT_TACTICAL_BUTTON_4,
+    Enum18.HLP_TXT_TACTICAL_BUTTON_5,
+    Enum18.HLP_TXT_TACTICAL_BUTTON_6,
     -1,
     -1,
   ],
@@ -361,7 +361,7 @@ HELP_SCREEN_SHOULD_COME_UP:
   // Record which screen it is
 
   // if its mapscreen
-  if (ubScreenID == HELP_SCREEN_MAPSCREEN) {
+  if (ubScreenID == Enum17.HELP_SCREEN_MAPSCREEN) {
     // determine which screen it is ( is any mercs hired, did game just start )
     gHelpScreen.bCurrentHelpScreen = HelpScreenDetermineWhichMapScreenHelpToShow();
   } else {
@@ -396,12 +396,12 @@ function HelpScreenHandler(): void {
   HandleHelpScreen();
 
   // if the help screen is dirty, re-render it
-  if (gHelpScreen.ubHelpScreenDirty != HLP_SCRN_DRTY_LVL_NOT_DIRTY) {
+  if (gHelpScreen.ubHelpScreenDirty != Enum10.HLP_SCRN_DRTY_LVL_NOT_DIRTY) {
     // temp
     //		gHelpScreen.ubHelpScreenDirty = HLP_SCRN_DRTY_LVL_REFRESH_ALL;
 
     RenderHelpScreen();
-    gHelpScreen.ubHelpScreenDirty = HLP_SCRN_DRTY_LVL_NOT_DIRTY;
+    gHelpScreen.ubHelpScreenDirty = Enum10.HLP_SCRN_DRTY_LVL_NOT_DIRTY;
   }
 
   // render buttons marked dirty
@@ -465,7 +465,7 @@ function EnterHelpScreen(): BOOLEAN {
   giExitBtnImage = LoadButtonImage("INTERFACE\\HelpScreen.sti", -1, 0, 4, 2, 6);
 
   guiHelpScreenExitBtn = CreateIconAndTextButton(giExitBtnImage, "", HELP_SCREEN_BTN_FONT, HELP_SCREEN_BTN_FONT_ON_COLOR, DEFAULT_SHADOW, HELP_SCREEN_BTN_FONT_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, BtnHelpScreenExitCallback);
-  SetButtonFastHelpText(guiHelpScreenExitBtn, gzHelpScreenText[HLP_SCRN_TXT__EXIT_SCREEN]);
+  SetButtonFastHelpText(guiHelpScreenExitBtn, gzHelpScreenText[Enum377.HLP_SCRN_TXT__EXIT_SCREEN]);
   SetButtonCursor(guiHelpScreenExitBtn, gHelpScreen.usCursor);
 
   // Create the buttons needed for the screen
@@ -514,7 +514,7 @@ function EnterHelpScreen(): BOOLEAN {
   CreateHelpScreenTextBuffer();
 
   // make sure we redraw everything
-  gHelpScreen.ubHelpScreenDirty = HLP_SCRN_DRTY_LVL_REFRESH_ALL;
+  gHelpScreen.ubHelpScreenDirty = Enum10.HLP_SCRN_DRTY_LVL_REFRESH_ALL;
 
   // mark it that we have been in since we enter the current screen
   gHelpScreen.fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen = TRUE;
@@ -579,7 +579,7 @@ function RenderHelpScreen(): void {
     RestoreExternBackgroundRect(gHelpScreen.usScreenLocX, gHelpScreen.usScreenLocY, gHelpScreen.usScreenWidth, gHelpScreen.usScreenHeight);
   }
 
-  if (gHelpScreen.ubHelpScreenDirty == HLP_SCRN_DRTY_LVL_REFRESH_ALL) {
+  if (gHelpScreen.ubHelpScreenDirty == Enum10.HLP_SCRN_DRTY_LVL_REFRESH_ALL) {
     // Display the helpscreen background
     DrawHelpScreenBackGround();
 
@@ -597,7 +597,7 @@ function RenderHelpScreen(): void {
   }
 
   // render the text buffer to the screen
-  if (gHelpScreen.ubHelpScreenDirty >= HLP_SCRN_DRTY_LVL_REFRESH_TEXT) {
+  if (gHelpScreen.ubHelpScreenDirty >= Enum10.HLP_SCRN_DRTY_LVL_REFRESH_TEXT) {
     RenderTextBufferToScreen();
   }
 }
@@ -700,35 +700,35 @@ function SetSizeAndPropertiesOfHelpScreen(): void {
 
     gHelpScreen.bCurrentHelpScreenActiveSubPage = 0;
 
-    gHelpScreen.usCursor = CURSOR_NORMAL;
+    gHelpScreen.usCursor = Enum317.CURSOR_NORMAL;
   }
 
   switch (gHelpScreen.bCurrentHelpScreen) {
-    case HELP_SCREEN_LAPTOP:
-      gHelpScreen.bNumberOfButtons = HLP_SCRN_LPTP_NUM_PAGES;
-      gHelpScreen.usCursor = CURSOR_LAPTOP_SCREEN;
+    case Enum17.HELP_SCREEN_LAPTOP:
+      gHelpScreen.bNumberOfButtons = Enum13.HLP_SCRN_LPTP_NUM_PAGES;
+      gHelpScreen.usCursor = Enum317.CURSOR_LAPTOP_SCREEN;
 
       // center the screen inside the laptop screen
       gHelpScreen.usScreenLocX = LAPTOP_SCREEN_UL_X + (LAPTOP_SCREEN_WIDTH - gHelpScreen.usScreenWidth) / 2;
       gHelpScreen.usScreenLocY = LAPTOP_SCREEN_UL_Y + (LAPTOP_SCREEN_HEIGHT - gHelpScreen.usScreenHeight) / 2;
 
       break;
-    case HELP_SCREEN_MAPSCREEN:
-      gHelpScreen.bNumberOfButtons = HLP_SCRN_NUM_MPSCRN_BTNS;
+    case Enum17.HELP_SCREEN_MAPSCREEN:
+      gHelpScreen.bNumberOfButtons = Enum12.HLP_SCRN_NUM_MPSCRN_BTNS;
 
       // calc the center position based on the current panel thats being displayed
       gHelpScreen.usScreenLocY = (gsVIEWPORT_END_Y - gHelpScreen.usScreenHeight) / 2;
       break;
-    case HELP_SCREEN_TACTICAL:
-      gHelpScreen.bNumberOfButtons = HLP_SCRN_NUM_TACTICAL_PAGES;
+    case Enum17.HELP_SCREEN_TACTICAL:
+      gHelpScreen.bNumberOfButtons = Enum16.HLP_SCRN_NUM_TACTICAL_PAGES;
 
       // calc the center position based on the current panel thats being displayed
       gHelpScreen.usScreenLocY = (gsVIEWPORT_END_Y - gHelpScreen.usScreenHeight) / 2;
       break;
 
-    case HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED:
-    case HELP_SCREEN_MAPSCREEN_NOT_IN_ARULCO:
-    case HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY:
+    case Enum17.HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED:
+    case Enum17.HELP_SCREEN_MAPSCREEN_NOT_IN_ARULCO:
+    case Enum17.HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY:
       gHelpScreen.usScreenWidth = HELP_SCREEN_SMALL_LOC_WIDTH;
       gHelpScreen.usScreenHeight = HELP_SCREEN_SMALL_LOC_HEIGHT;
 
@@ -742,8 +742,8 @@ function SetSizeAndPropertiesOfHelpScreen(): void {
       gHelpScreen.bCurrentHelpScreenActiveSubPage = 0;
       break;
 
-    case HELP_SCREEN_OPTIONS:
-    case HELP_SCREEN_LOAD_GAME:
+    case Enum17.HELP_SCREEN_OPTIONS:
+    case Enum17.HELP_SCREEN_LOAD_GAME:
       break;
 
     default:
@@ -893,28 +893,28 @@ function GetHelpScreenUserInput(): void {
 function HelpScreenSpecialExitCode(): void {
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreen) {
-    case HELP_SCREEN_LAPTOP:
+    case Enum17.HELP_SCREEN_LAPTOP:
       fReDrawScreenFlag = TRUE;
       break;
 
-    case HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED:
-    case HELP_SCREEN_MAPSCREEN_NOT_IN_ARULCO:
-    case HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY:
-    case HELP_SCREEN_MAPSCREEN:
+    case Enum17.HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED:
+    case Enum17.HELP_SCREEN_MAPSCREEN_NOT_IN_ARULCO:
+    case Enum17.HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY:
+    case Enum17.HELP_SCREEN_MAPSCREEN:
       fCharacterInfoPanelDirty = TRUE;
       fTeamPanelDirty = TRUE;
       fMapScreenBottomDirty = TRUE;
       fMapPanelDirty = TRUE;
       break;
 
-    case HELP_SCREEN_TACTICAL:
+    case Enum17.HELP_SCREEN_TACTICAL:
       fInterfacePanelDirty = DIRTYLEVEL2;
       SetRenderFlags(RENDER_FLAG_FULL);
       break;
 
-    case HELP_SCREEN_OPTIONS:
+    case Enum17.HELP_SCREEN_OPTIONS:
       break;
-    case HELP_SCREEN_LOAD_GAME:
+    case Enum17.HELP_SCREEN_LOAD_GAME:
       break;
 
     default:
@@ -930,26 +930,26 @@ function PrepareToExitHelpScreen(): void {
 function SpecialHandlerCode(): void {
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreen) {
-    case HELP_SCREEN_LAPTOP:
+    case Enum17.HELP_SCREEN_LAPTOP:
       PrintDate();
       PrintBalance();
       PrintNumberOnTeam();
       break;
-    case HELP_SCREEN_MAPSCREEN:
+    case Enum17.HELP_SCREEN_MAPSCREEN:
       break;
-    case HELP_SCREEN_TACTICAL:
+    case Enum17.HELP_SCREEN_TACTICAL:
       break;
 
-    case HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED:
+    case Enum17.HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED:
       break;
-    case HELP_SCREEN_MAPSCREEN_NOT_IN_ARULCO:
+    case Enum17.HELP_SCREEN_MAPSCREEN_NOT_IN_ARULCO:
       break;
-    case HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY:
+    case Enum17.HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY:
       break;
       break;
-    case HELP_SCREEN_OPTIONS:
+    case Enum17.HELP_SCREEN_OPTIONS:
       break;
-    case HELP_SCREEN_LOAD_GAME:
+    case Enum17.HELP_SCREEN_LOAD_GAME:
       break;
 
     default:
@@ -968,27 +968,27 @@ function RenderSpecificHelpScreen(): UINT16 {
 
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreen) {
-    case HELP_SCREEN_LAPTOP:
+    case Enum17.HELP_SCREEN_LAPTOP:
       usNumVerticalPixelsDisplayed = RenderLaptopHelpScreen();
       break;
-    case HELP_SCREEN_MAPSCREEN:
+    case Enum17.HELP_SCREEN_MAPSCREEN:
       usNumVerticalPixelsDisplayed = RenderMapScreenHelpScreen();
       break;
-    case HELP_SCREEN_TACTICAL:
+    case Enum17.HELP_SCREEN_TACTICAL:
       usNumVerticalPixelsDisplayed = RenderTacticalHelpScreen();
       break;
-    case HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED:
+    case Enum17.HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED:
       usNumVerticalPixelsDisplayed = RenderMapScreenNoOneHiredYetHelpScreen();
       break;
-    case HELP_SCREEN_MAPSCREEN_NOT_IN_ARULCO:
+    case Enum17.HELP_SCREEN_MAPSCREEN_NOT_IN_ARULCO:
       usNumVerticalPixelsDisplayed = RenderMapScreenNotYetInArulcoHelpScreen();
       break;
-    case HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY:
+    case Enum17.HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY:
       usNumVerticalPixelsDisplayed = RenderMapScreenSectorInventoryHelpScreen();
       break;
-    case HELP_SCREEN_OPTIONS:
+    case Enum17.HELP_SCREEN_OPTIONS:
       break;
-    case HELP_SCREEN_LOAD_GAME:
+    case Enum17.HELP_SCREEN_LOAD_GAME:
       break;
 
     default:
@@ -1026,27 +1026,27 @@ function DisplayCurrentScreenTitleAndFooter(): void {
 
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreen) {
-    case HELP_SCREEN_LAPTOP:
-      iStartLoc = HELPSCREEN_RECORD_SIZE * HLP_TXT_LAPTOP_TITLE;
+    case Enum17.HELP_SCREEN_LAPTOP:
+      iStartLoc = HELPSCREEN_RECORD_SIZE * Enum18.HLP_TXT_LAPTOP_TITLE;
       break;
-    case HELP_SCREEN_MAPSCREEN:
-      iStartLoc = HELPSCREEN_RECORD_SIZE * HLP_TXT_WELCOM_TO_ARULCO_TITLE;
+    case Enum17.HELP_SCREEN_MAPSCREEN:
+      iStartLoc = HELPSCREEN_RECORD_SIZE * Enum18.HLP_TXT_WELCOM_TO_ARULCO_TITLE;
       break;
-    case HELP_SCREEN_TACTICAL:
-      iStartLoc = HELPSCREEN_RECORD_SIZE * HLP_TXT_TACTICAL_TITLE;
+    case Enum17.HELP_SCREEN_TACTICAL:
+      iStartLoc = HELPSCREEN_RECORD_SIZE * Enum18.HLP_TXT_TACTICAL_TITLE;
       break;
-    case HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED:
-      iStartLoc = HELPSCREEN_RECORD_SIZE * HLP_TXT_MPSCRN_NO_1_HIRED_YET_TITLE;
+    case Enum17.HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED:
+      iStartLoc = HELPSCREEN_RECORD_SIZE * Enum18.HLP_TXT_MPSCRN_NO_1_HIRED_YET_TITLE;
       break;
-    case HELP_SCREEN_MAPSCREEN_NOT_IN_ARULCO:
-      iStartLoc = HELPSCREEN_RECORD_SIZE * HLP_TXT_MPSCRN_NOT_IN_ARULCO_TITLE;
+    case Enum17.HELP_SCREEN_MAPSCREEN_NOT_IN_ARULCO:
+      iStartLoc = HELPSCREEN_RECORD_SIZE * Enum18.HLP_TXT_MPSCRN_NOT_IN_ARULCO_TITLE;
       break;
-    case HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY:
-      iStartLoc = HELPSCREEN_RECORD_SIZE * HLP_TXT_SECTOR_INVTRY_TITLE;
+    case Enum17.HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY:
+      iStartLoc = HELPSCREEN_RECORD_SIZE * Enum18.HLP_TXT_SECTOR_INVTRY_TITLE;
       break;
-    case HELP_SCREEN_OPTIONS:
+    case Enum17.HELP_SCREEN_OPTIONS:
       break;
-    case HELP_SCREEN_LOAD_GAME:
+    case Enum17.HELP_SCREEN_LOAD_GAME:
       break;
 
     default:
@@ -1076,7 +1076,7 @@ function DisplayCurrentScreenTitleAndFooter(): void {
   }
 
   // Display the '( press H to get help... )'
-  iStartLoc = HELPSCREEN_RECORD_SIZE * HLP_TXT_CONSTANT_SUBTITLE;
+  iStartLoc = HELPSCREEN_RECORD_SIZE * Enum18.HLP_TXT_CONSTANT_SUBTITLE;
   LoadEncryptedDataFromFile(HELPSCREEN_FILE, zText, iStartLoc, HELPSCREEN_RECORD_SIZE);
 
   usPosX = gHelpScreen.usLeftMarginPosX;
@@ -1089,7 +1089,7 @@ function DisplayCurrentScreenTitleAndFooter(): void {
 
   if (!gHelpScreen.fForceHelpScreenToComeUp) {
     // calc location for the ' [ x ] Dont display again...'
-    iStartLoc = HELPSCREEN_RECORD_SIZE * HLP_TXT_CONSTANT_FOOTER;
+    iStartLoc = HELPSCREEN_RECORD_SIZE * Enum18.HLP_TXT_CONSTANT_FOOTER;
     LoadEncryptedDataFromFile(HELPSCREEN_FILE, zText, iStartLoc, HELPSCREEN_RECORD_SIZE);
 
     usPosX = gHelpScreen.usLeftMarginPosX + HELP_SCREEN_SHOW_HELP_AGAIN_REGION_TEXT_OFFSET_X;
@@ -1161,7 +1161,7 @@ function ChangeToHelpScreenSubPage(bNewPage: INT8): void {
   }
 
   // refresh the screen
-  gHelpScreen.ubHelpScreenDirty = HLP_SCRN_DRTY_LVL_REFRESH_TEXT;
+  gHelpScreen.ubHelpScreenDirty = Enum10.HLP_SCRN_DRTY_LVL_REFRESH_TEXT;
 
   //'undepress' all the buttons
   for (i = 0; i < gHelpScreen.bNumberOfButtons; i++) {
@@ -1290,11 +1290,11 @@ function RenderLaptopHelpScreen(): UINT16 {
 
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreenActiveSubPage) {
-    case HLP_SCRN_LPTP_OVERVIEW:
+    case Enum13.HLP_SCRN_LPTP_OVERVIEW:
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 2; ubCnt++) {
         // Display the text, and get the number of pixels it used to display it
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_LAPTOP_OVERVIEW_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_LAPTOP_OVERVIEW_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1314,41 +1314,41 @@ function RenderLaptopHelpScreen(): UINT16 {
       */
       break;
 
-    case HLP_SCRN_LPTP_EMAIL:
+    case Enum13.HLP_SCRN_LPTP_EMAIL:
 
       // Display the first paragraph
-      usTotalNumberOfVerticalPixels = GetAndDisplayHelpScreenText(HLP_TXT_LAPTOP_EMAIL_P1, usPosX, usPosY, usWidth);
+      usTotalNumberOfVerticalPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_LAPTOP_EMAIL_P1, usPosX, usPosY, usWidth);
       break;
 
-    case HLP_SCRN_LPTP_WEB:
+    case Enum13.HLP_SCRN_LPTP_WEB:
 
       // Display the first paragraph
-      usTotalNumberOfVerticalPixels = GetAndDisplayHelpScreenText(HLP_TXT_LAPTOP_WEB_P1, usPosX, usPosY, usWidth);
-
-      break;
-
-    case HLP_SCRN_LPTP_FILES:
-
-      // Display the first paragraph
-      usTotalNumberOfVerticalPixels = GetAndDisplayHelpScreenText(HLP_TXT_LAPTOP_FILES_P1, usPosX, usPosY, usWidth);
-      break;
-
-    case HLP_SCRN_LPTP_HISTORY:
-      // Display the first paragraph
-      usTotalNumberOfVerticalPixels = GetAndDisplayHelpScreenText(HLP_TXT_LAPTOP_HISTORY_P1, usPosX, usPosY, usWidth);
+      usTotalNumberOfVerticalPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_LAPTOP_WEB_P1, usPosX, usPosY, usWidth);
 
       break;
 
-    case HLP_SCRN_LPTP_PERSONNEL:
+    case Enum13.HLP_SCRN_LPTP_FILES:
 
       // Display the first paragraph
-      usTotalNumberOfVerticalPixels = GetAndDisplayHelpScreenText(HLP_TXT_LAPTOP_PERSONNEL_P1, usPosX, usPosY, usWidth);
+      usTotalNumberOfVerticalPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_LAPTOP_FILES_P1, usPosX, usPosY, usWidth);
       break;
 
-    case HLP_SCRN_LPTP_FINANCIAL:
+    case Enum13.HLP_SCRN_LPTP_HISTORY:
+      // Display the first paragraph
+      usTotalNumberOfVerticalPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_LAPTOP_HISTORY_P1, usPosX, usPosY, usWidth);
+
+      break;
+
+    case Enum13.HLP_SCRN_LPTP_PERSONNEL:
+
+      // Display the first paragraph
+      usTotalNumberOfVerticalPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_LAPTOP_PERSONNEL_P1, usPosX, usPosY, usWidth);
+      break;
+
+    case Enum13.HLP_SCRN_LPTP_FINANCIAL:
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 2; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_FINANCES_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_FINANCES_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1359,10 +1359,10 @@ function RenderLaptopHelpScreen(): UINT16 {
 
       break;
 
-    case HLP_SCRN_LPTP_MERC_STATS:
+    case Enum13.HLP_SCRN_LPTP_MERC_STATS:
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 15; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_MERC_STATS_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_MERC_STATS_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1395,11 +1395,11 @@ function RenderMapScreenNoOneHiredYetHelpScreen(): UINT16 {
 
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreenActiveSubPage) {
-    case HLP_SCRN_NO_ONE_HIRED:
+    case Enum14.HLP_SCRN_NO_ONE_HIRED:
 
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 2; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_MPSCRN_NO_1_HIRED_YET_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_MPSCRN_NO_1_HIRED_YET_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1432,11 +1432,11 @@ function RenderMapScreenNotYetInArulcoHelpScreen(): UINT16 {
 
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreenActiveSubPage) {
-    case HLP_SCRN_NOT_IN_ARULCO:
+    case Enum15.HLP_SCRN_NOT_IN_ARULCO:
 
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 3; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_MPSCRN_NOT_IN_ARULCO_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_MPSCRN_NOT_IN_ARULCO_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1468,11 +1468,11 @@ function RenderMapScreenSectorInventoryHelpScreen(): UINT16 {
 
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreenActiveSubPage) {
-    case HLP_SCRN_MPSCRN_SCTR_OVERVIEW:
+    case Enum11.HLP_SCRN_MPSCRN_SCTR_OVERVIEW:
 
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 2; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_SECTOR_INVTRY_OVERVIEW_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_SECTOR_INVTRY_OVERVIEW_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1505,11 +1505,11 @@ function RenderTacticalHelpScreen(): UINT16 {
 
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreenActiveSubPage) {
-    case HLP_SCRN_TACTICAL_OVERVIEW:
+    case Enum16.HLP_SCRN_TACTICAL_OVERVIEW:
 
       // Display all the paragraph
       for (ubCnt = 0; ubCnt < 4; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_TACTICAL_OVERVIEW_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_TACTICAL_OVERVIEW_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1519,10 +1519,10 @@ function RenderTacticalHelpScreen(): UINT16 {
       }
       break;
 
-    case HLP_SCRN_TACTICAL_MOVEMENT:
+    case Enum16.HLP_SCRN_TACTICAL_MOVEMENT:
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 4; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_TACTICAL_MOVEMENT_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_TACTICAL_MOVEMENT_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1532,10 +1532,10 @@ function RenderTacticalHelpScreen(): UINT16 {
       }
       break;
 
-    case HLP_SCRN_TACTICAL_SIGHT:
+    case Enum16.HLP_SCRN_TACTICAL_SIGHT:
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 4; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_TACTICAL_SIGHT_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_TACTICAL_SIGHT_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1546,10 +1546,10 @@ function RenderTacticalHelpScreen(): UINT16 {
 
       break;
 
-    case HLP_SCRN_TACTICAL_ATTACKING:
+    case Enum16.HLP_SCRN_TACTICAL_ATTACKING:
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 3; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_TACTICAL_ATTACKING_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_TACTICAL_ATTACKING_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1559,11 +1559,11 @@ function RenderTacticalHelpScreen(): UINT16 {
       }
       break;
 
-    case HLP_SCRN_TACTICAL_ITEMS:
+    case Enum16.HLP_SCRN_TACTICAL_ITEMS:
 
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 4; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_TACTICAL_ITEMS_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_TACTICAL_ITEMS_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1574,10 +1574,10 @@ function RenderTacticalHelpScreen(): UINT16 {
 
       break;
 
-    case HLP_SCRN_TACTICAL_KEYBOARD:
+    case Enum16.HLP_SCRN_TACTICAL_KEYBOARD:
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 8; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_TACTICAL_KEYBOARD_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_TACTICAL_KEYBOARD_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1609,11 +1609,11 @@ function RenderMapScreenHelpScreen(): UINT16 {
 
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreenActiveSubPage) {
-    case HLP_SCRN_MPSCRN_OVERVIEW:
+    case Enum12.HLP_SCRN_MPSCRN_OVERVIEW:
 
       // Display all the paragraph
       for (ubCnt = 0; ubCnt < 3; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_WELCOM_TO_ARULCO_OVERVIEW_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_WELCOM_TO_ARULCO_OVERVIEW_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1623,11 +1623,11 @@ function RenderMapScreenHelpScreen(): UINT16 {
       }
       break;
 
-    case HLP_SCRN_MPSCRN_ASSIGNMENTS:
+    case Enum12.HLP_SCRN_MPSCRN_ASSIGNMENTS:
 
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 4; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_WELCOM_TO_ARULCO_ASSNMNT_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_WELCOM_TO_ARULCO_ASSNMNT_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1637,10 +1637,10 @@ function RenderMapScreenHelpScreen(): UINT16 {
       }
       break;
 
-    case HLP_SCRN_MPSCRN_DESTINATIONS:
+    case Enum12.HLP_SCRN_MPSCRN_DESTINATIONS:
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 5; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_WELCOM_TO_ARULCO_DSTINATION_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_WELCOM_TO_ARULCO_DSTINATION_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1651,11 +1651,11 @@ function RenderMapScreenHelpScreen(): UINT16 {
 
       break;
 
-    case HLP_SCRN_MPSCRN_MAP:
+    case Enum12.HLP_SCRN_MPSCRN_MAP:
 
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 3; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_WELCOM_TO_ARULCO_MAP_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_WELCOM_TO_ARULCO_MAP_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1665,11 +1665,11 @@ function RenderMapScreenHelpScreen(): UINT16 {
       }
       break;
 
-    case HLP_SCRN_MPSCRN_MILITIA:
+    case Enum12.HLP_SCRN_MPSCRN_MILITIA:
 
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 3; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_WELCOM_TO_ARULCO_MILITIA_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_WELCOM_TO_ARULCO_MILITIA_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1680,11 +1680,11 @@ function RenderMapScreenHelpScreen(): UINT16 {
 
       break;
 
-    case HLP_SCRN_MPSCRN_AIRSPACE:
+    case Enum12.HLP_SCRN_MPSCRN_AIRSPACE:
 
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 2; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_WELCOM_TO_ARULCO_AIRSPACE_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_WELCOM_TO_ARULCO_AIRSPACE_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1694,11 +1694,11 @@ function RenderMapScreenHelpScreen(): UINT16 {
       }
       break;
 
-    case HLP_SCRN_MPSCRN_ITEMS:
+    case Enum12.HLP_SCRN_MPSCRN_ITEMS:
 
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 1; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_WELCOM_TO_ARULCO_ITEMS_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_WELCOM_TO_ARULCO_ITEMS_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1708,10 +1708,10 @@ function RenderMapScreenHelpScreen(): UINT16 {
       }
       break;
 
-    case HLP_SCRN_MPSCRN_KEYBOARD:
+    case Enum12.HLP_SCRN_MPSCRN_KEYBOARD:
       // Display all the paragraphs
       for (ubCnt = 0; ubCnt < 4; ubCnt++) {
-        usNumVertPixels = GetAndDisplayHelpScreenText(HLP_TXT_WELCOM_TO_ARULCO_KEYBOARD_P1 + ubCnt, usPosX, usPosY, usWidth);
+        usNumVertPixels = GetAndDisplayHelpScreenText(Enum18.HLP_TXT_WELCOM_TO_ARULCO_KEYBOARD_P1 + ubCnt, usPosX, usPosY, usWidth);
 
         // move the next text down by the right amount
         usPosY = usPosY + usNumVertPixels + usFontHeight;
@@ -1745,18 +1745,18 @@ function RefreshAllHelpScreenButtons(): void {
 
 function HelpScreenDetermineWhichMapScreenHelpToShow(): INT8 {
   if (fShowMapInventoryPool) {
-    return HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY;
+    return Enum17.HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY;
   }
 
   if (AnyMercsHired() == FALSE) {
-    return HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED;
+    return Enum17.HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED;
   }
 
   if (gTacticalStatus.fDidGameJustStart) {
-    return HELP_SCREEN_MAPSCREEN_NOT_IN_ARULCO;
+    return Enum17.HELP_SCREEN_MAPSCREEN_NOT_IN_ARULCO;
   }
 
-  return HELP_SCREEN_MAPSCREEN;
+  return Enum17.HELP_SCREEN_MAPSCREEN;
 }
 
 function CreateHelpScreenTextBuffer(): BOOLEAN {
@@ -1867,7 +1867,7 @@ function ChangeTopLineInTextBufferByAmount(iAmouontToMove: INT32): void {
 
   //	RenderCurrentHelpScreenTextToBuffer();
 
-  gHelpScreen.ubHelpScreenDirty = HLP_SCRN_DRTY_LVL_REFRESH_TEXT;
+  gHelpScreen.ubHelpScreenDirty = Enum10.HLP_SCRN_DRTY_LVL_REFRESH_TEXT;
 }
 
 function DisplayHelpScreenTextBufferScrollBox(): void {

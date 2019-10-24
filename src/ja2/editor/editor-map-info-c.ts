@@ -1,4 +1,4 @@
-let gbDefaultLightType: INT8 = PRIMETIME_LIGHT;
+let gbDefaultLightType: INT8 = Enum39.PRIMETIME_LIGHT;
 
 let gEditorLightColor: SGPPaletteEntry;
 
@@ -7,7 +7,7 @@ let gfEditorForceShadeTableRebuild: BOOLEAN = FALSE;
 function SetupTextInputForMapInfo(): void {
   let str: UINT16[] /* [10] */;
 
-  InitTextInputModeWithScheme(DEFAULT_SCHEME);
+  InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
 
   AddUserInputField(NULL); // just so we can use short cut keys while not typing.
 
@@ -33,7 +33,7 @@ function SetupTextInputForMapInfo(): void {
 
   // exit grid input fields
   swprintf(str, "%c%d", gExitGrid.ubGotoSectorY + 'A' - 1, gExitGrid.ubGotoSectorX);
-  AddTextInputField(338, 363, 30, 18, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_EXCLUSIVE_COORDINATE);
+  AddTextInputField(338, 363, 30, 18, MSYS_PRIORITY_NORMAL, str, 3, Enum383.INPUTTYPE_EXCLUSIVE_COORDINATE);
   swprintf(str, "%d", gExitGrid.ubGotoSectorZ);
   AddTextInputField(338, 383, 30, 18, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT);
   swprintf(str, "%d", gExitGrid.usGridNo);
@@ -175,7 +175,7 @@ function ExtractAndUpdateMapInfo(): void {
 function ApplyNewExitGridValuesToTextFields(): BOOLEAN {
   let str: UINT16[] /* [10] */;
   // exit grid input fields
-  if (iCurrentTaskbar != TASK_MAPINFO)
+  if (iCurrentTaskbar != Enum36.TASK_MAPINFO)
     return FALSE;
   swprintf(str, "%c%d", gExitGrid.ubGotoSectorY + 'A' - 1, gExitGrid.ubGotoSectorX);
   SetInputFieldStringWith16BitString(7, str);
@@ -208,7 +208,7 @@ function LocateNextExitGrid(): void {
 }
 
 function ChangeLightDefault(bLightType: INT8): void {
-  UnclickEditorButton(MAPINFO_PRIMETIME_LIGHT + gbDefaultLightType);
+  UnclickEditorButton(Enum32.MAPINFO_PRIMETIME_LIGHT + gbDefaultLightType);
   gbDefaultLightType = bLightType;
-  ClickEditorButton(MAPINFO_PRIMETIME_LIGHT + gbDefaultLightType);
+  ClickEditorButton(Enum32.MAPINFO_PRIMETIME_LIGHT + gbDefaultLightType);
 }

@@ -22,7 +22,7 @@ let gzFilename: UINT16[] /* [31] */;
 
 let FileList: Pointer<FDLG_LIST> = NULL;
 
-let iFDlgState: INT32 = DIALOG_NONE;
+let iFDlgState: INT32 = Enum50.DIALOG_NONE;
 let gfDestroyFDlg: BOOLEAN = FALSE;
 let iFileDlgButtons: INT32[] /* [7] */;
 
@@ -64,7 +64,7 @@ function LoadSaveScreenShutdown(): UINT32 {
 
 function LoadSaveScreenEntry(): void {
   fEnteringLoadSaveScreen = FALSE;
-  gbCurrentFileIOStatus = IOSTATUS_NONE;
+  gbCurrentFileIOStatus = Enum51.IOSTATUS_NONE;
 
   gfReadOnly = FALSE;
   gfFileExists = FALSE;
@@ -93,7 +93,7 @@ function LoadSaveScreenEntry(): void {
     GetFileClose(addressof(FileInfo));
   }
 
-  swprintf(zOrigName, "%s Map (*.dat)", iCurrentAction == ACTION_SAVE_MAP ? "Save" : "Load");
+  swprintf(zOrigName, "%s Map (*.dat)", iCurrentAction == Enum37.ACTION_SAVE_MAP ? "Save" : "Load");
 
   swprintf(gzFilename, "%S", gubFilename);
 
@@ -101,7 +101,7 @@ function LoadSaveScreenEntry(): void {
 
   if (!iTotalFiles) {
     gfNoFiles = TRUE;
-    if (iCurrentAction == ACTION_LOAD_MAP)
+    if (iCurrentAction == Enum37.ACTION_LOAD_MAP)
       DisableButton(iFileDlgButtons[0]);
   }
 
@@ -118,7 +118,7 @@ function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
     fEnteringLoadSaveScreen = TRUE;
     RemoveFileDialog();
     MarkWorldDirty();
-    return gfMessageBoxResult ? LOADSAVE_SCREEN : EDIT_SCREEN;
+    return gfMessageBoxResult ? Enum26.LOADSAVE_SCREEN : Enum26.EDIT_SCREEN;
   }
   if (gfDeleteFile) {
     if (gfMessageBoxResult) {
@@ -154,7 +154,7 @@ function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
         iTotalFiles--;
         if (!iTotalFiles) {
           gfNoFiles = TRUE;
-          if (iCurrentAction == ACTION_LOAD_MAP)
+          if (iCurrentAction == Enum37.ACTION_LOAD_MAP)
             DisableButton(iFileDlgButtons[0]);
         }
         if (iCurrFileShown >= iTotalFiles)
@@ -168,32 +168,32 @@ function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
     MarkWorldDirty();
     RenderWorld();
     gfDeleteFile = FALSE;
-    iFDlgState = DIALOG_NONE;
-    return LOADSAVE_SCREEN;
+    iFDlgState = Enum50.DIALOG_NONE;
+    return Enum26.LOADSAVE_SCREEN;
   }
   if (gfLoadError) {
     fEnteringLoadSaveScreen = TRUE;
-    return gfMessageBoxResult ? LOADSAVE_SCREEN : EDIT_SCREEN;
+    return gfMessageBoxResult ? Enum26.LOADSAVE_SCREEN : Enum26.EDIT_SCREEN;
   }
   if (gfReadOnly) {
     // file is readonly.  Result will determine if the file dialog stays up.
     fEnteringLoadSaveScreen = TRUE;
     RemoveFileDialog();
-    return gfMessageBoxResult ? LOADSAVE_SCREEN : EDIT_SCREEN;
+    return gfMessageBoxResult ? Enum26.LOADSAVE_SCREEN : Enum26.EDIT_SCREEN;
   }
   if (gfFileExists) {
     if (gfMessageBoxResult) {
       // okay to overwrite file
       RemoveFileDialog();
-      gbCurrentFileIOStatus = INITIATE_MAP_SAVE;
-      return LOADSAVE_SCREEN;
+      gbCurrentFileIOStatus = Enum51.INITIATE_MAP_SAVE;
+      return Enum26.LOADSAVE_SCREEN;
     }
     fEnteringLoadSaveScreen = TRUE;
     RemoveFileDialog();
-    return EDIT_SCREEN;
+    return Enum26.EDIT_SCREEN;
   }
   Assert(0);
-  return LOADSAVE_SCREEN;
+  return Enum26.LOADSAVE_SCREEN;
 }
 
 function LoadSaveScreenHandle(): UINT32 {
@@ -209,7 +209,7 @@ function LoadSaveScreenHandle(): UINT32 {
   {
     let uiScreen: UINT32;
     uiScreen = ProcessFileIO();
-    if (uiScreen == EDIT_SCREEN && gbCurrentFileIOStatus == LOADING_MAP)
+    if (uiScreen == Enum26.EDIT_SCREEN && gbCurrentFileIOStatus == Enum51.LOADING_MAP)
       RemoveProgressBar(0);
     return uiScreen;
   }
@@ -217,7 +217,7 @@ function LoadSaveScreenHandle(): UINT32 {
   if (gubMessageBoxStatus) {
     if (MessageBoxHandled())
       return ProcessLoadSaveScreenMessageBoxResult();
-    return LOADSAVE_SCREEN;
+    return Enum26.LOADSAVE_SCREEN;
   }
 
   // handle all key input.
@@ -262,11 +262,11 @@ function LoadSaveScreenHandle(): UINT32 {
   EndFrameBufferRender();
 
   switch (iFDlgState) {
-    case DIALOG_CANCEL:
+    case Enum50.DIALOG_CANCEL:
       RemoveFileDialog();
       fEnteringLoadSaveScreen = TRUE;
-      return EDIT_SCREEN;
-    case DIALOG_DELETE:
+      return Enum26.EDIT_SCREEN;
+    case Enum50.DIALOG_DELETE:
       sprintf(gszCurrFilename, "MAPS\\%S", gzFilename);
       if (GetFileFirst(gszCurrFilename, addressof(FileInfo))) {
         let str: UINT16[] /* [40] */;
@@ -278,13 +278,13 @@ function LoadSaveScreenHandle(): UINT32 {
         gfDeleteFile = TRUE;
         CreateMessageBox(str);
       }
-      return LOADSAVE_SCREEN;
-    case DIALOG_SAVE:
+      return Enum26.LOADSAVE_SCREEN;
+    case Enum50.DIALOG_SAVE:
       if (!ExtractFilenameFromFields()) {
         CreateMessageBox(" Illegal filename.  Try another filename? ");
         gfIllegalName = TRUE;
-        iFDlgState = DIALOG_NONE;
-        return LOADSAVE_SCREEN;
+        iFDlgState = Enum50.DIALOG_NONE;
+        return Enum26.LOADSAVE_SCREEN;
       }
       sprintf(gszCurrFilename, "MAPS\\%S", gzFilename);
       if (FileExists(gszCurrFilename)) {
@@ -299,34 +299,34 @@ function LoadSaveScreenHandle(): UINT32 {
           CreateMessageBox(" File is read only!  Choose a different name? ");
         else
           CreateMessageBox(" File exists, Overwrite? ");
-        return LOADSAVE_SCREEN;
+        return Enum26.LOADSAVE_SCREEN;
       }
       RemoveFileDialog();
-      gbCurrentFileIOStatus = INITIATE_MAP_SAVE;
-      return LOADSAVE_SCREEN;
-    case DIALOG_LOAD:
+      gbCurrentFileIOStatus = Enum51.INITIATE_MAP_SAVE;
+      return Enum26.LOADSAVE_SCREEN;
+    case Enum50.DIALOG_LOAD:
       if (!ExtractFilenameFromFields()) {
         CreateMessageBox(" Illegal filename.  Try another filename? ");
         gfIllegalName = TRUE;
-        iFDlgState = DIALOG_NONE;
-        return LOADSAVE_SCREEN;
+        iFDlgState = Enum50.DIALOG_NONE;
+        return Enum26.LOADSAVE_SCREEN;
       }
       RemoveFileDialog();
       CreateProgressBar(0, 118, 183, 522, 202);
       DefineProgressBarPanel(0, 65, 79, 94, 100, 155, 540, 235);
       swprintf(zOrigName, "Loading map:  %s", gzFilename);
       SetProgressBarTitle(0, zOrigName, BLOCKFONT2, FONT_RED, FONT_NEARBLACK);
-      gbCurrentFileIOStatus = INITIATE_MAP_LOAD;
-      return LOADSAVE_SCREEN;
+      gbCurrentFileIOStatus = Enum51.INITIATE_MAP_LOAD;
+      return Enum26.LOADSAVE_SCREEN;
     default:
-      iFDlgState = DIALOG_NONE;
+      iFDlgState = Enum50.DIALOG_NONE;
   }
-  iFDlgState = DIALOG_NONE;
-  return LOADSAVE_SCREEN;
+  iFDlgState = Enum50.DIALOG_NONE;
+  return Enum26.LOADSAVE_SCREEN;
 }
 
 function CreateFileDialog(zTitle: Pointer<UINT16>): void {
-  iFDlgState = DIALOG_NONE;
+  iFDlgState = Enum50.DIALOG_NONE;
 
   DisableEditorTaskbar();
 
@@ -345,10 +345,10 @@ function CreateFileDialog(zTitle: Pointer<UINT16>): void {
   // Title button
   iFileDlgButtons[5] = CreateTextButton(zTitle, HUGEFONT, FONT_LTKHAKI, FONT_DKKHAKI, BUTTON_USE_DEFAULT, 179, 39, 281, 30, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH - 2, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   DisableButton(iFileDlgButtons[5]);
-  SpecifyDisabledButtonStyle(iFileDlgButtons[5], DISABLED_STYLE_NONE);
+  SpecifyDisabledButtonStyle(iFileDlgButtons[5], Enum29.DISABLED_STYLE_NONE);
 
   iFileDlgButtons[6] = -1;
-  if (iCurrentAction == ACTION_SAVE_MAP) {
+  if (iCurrentAction == Enum37.ACTION_SAVE_MAP) {
     // checkboxes
     // The update world info checkbox
     iFileDlgButtons[6] = CreateCheckBoxButton(183, 229, "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, UpdateWorldInfoCallback);
@@ -357,9 +357,9 @@ function CreateFileDialog(zTitle: Pointer<UINT16>): void {
   }
 
   // Add the text input fields
-  InitTextInputModeWithScheme(DEFAULT_SCHEME);
+  InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
   // field 1 (filename)
-  AddTextInputField(/*233*/ 183, 195, 190, 20, MSYS_PRIORITY_HIGH, gzFilename, 30, INPUTTYPE_EXCLUSIVE_DOSFILENAME);
+  AddTextInputField(/*233*/ 183, 195, 190, 20, MSYS_PRIORITY_HIGH, gzFilename, 30, Enum383.INPUTTYPE_EXCLUSIVE_DOSFILENAME);
   // field 2 -- user field that allows mouse/key interaction with the filename list
   AddUserInputField(FileDialogModeCallback);
 }
@@ -480,7 +480,7 @@ function SelectFileDialogYPos(usRelativeYPos: UINT16): void {
       if (iCurrClickTime - iLastClickTime < 400 && x == iLastFileClicked) {
         // Considered a double click, so activate load/save this filename.
         gfDestroyFDlg = TRUE;
-        iFDlgState = iCurrentAction == ACTION_SAVE_MAP ? DIALOG_SAVE : DIALOG_LOAD;
+        iFDlgState = iCurrentAction == Enum37.ACTION_SAVE_MAP ? Enum50.DIALOG_SAVE : Enum50.DIALOG_LOAD;
       }
       iLastClickTime = iCurrClickTime;
       iLastFileClicked = x;
@@ -581,14 +581,14 @@ function HandleMainKeyEvents(pEvent: Pointer<InputAtom>): void {
     pEvent.value.usParam = ESC;
   switch (pEvent.value.usParam) {
     case ENTER:
-      if (gfNoFiles && iCurrentAction == ACTION_LOAD_MAP)
+      if (gfNoFiles && iCurrentAction == Enum37.ACTION_LOAD_MAP)
         break;
       gfDestroyFDlg = TRUE;
-      iFDlgState = iCurrentAction == ACTION_SAVE_MAP ? DIALOG_SAVE : DIALOG_LOAD;
+      iFDlgState = iCurrentAction == Enum37.ACTION_SAVE_MAP ? Enum50.DIALOG_SAVE : Enum50.DIALOG_LOAD;
       break;
     case ESC:
       gfDestroyFDlg = TRUE;
-      iFDlgState = DIALOG_CANCEL;
+      iFDlgState = Enum50.DIALOG_CANCEL;
       break;
     case PGUP:
       if (iTopFileShown > 7) {
@@ -631,7 +631,7 @@ function HandleMainKeyEvents(pEvent: Pointer<InputAtom>): void {
       iCurrFileShown = iTotalFiles - 1;
       break;
     case DEL:
-      iFDlgState = DIALOG_DELETE;
+      iFDlgState = Enum50.DIALOG_DELETE;
       break;
     default:
       // This case handles jumping the file list to display the file with the letter pressed.
@@ -689,7 +689,7 @@ function InitErrorCatchDialog(): void {
   let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // do message box and return
-  giErrorCatchMessageBox = DoMessageBox(MSG_BOX_BASIC_STYLE, gzErrorCatchString, EDIT_SCREEN, MSG_BOX_FLAG_OK, NULL, addressof(CenteringRect));
+  giErrorCatchMessageBox = DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzErrorCatchString, Enum26.EDIT_SCREEN, MSG_BOX_FLAG_OK, NULL, addressof(CenteringRect));
   gfErrorCatch = FALSE;
 }
 
@@ -702,7 +702,7 @@ function ProcessFileIO(): UINT32 {
   let usStartY: INT16;
   let ubNewFilename: UINT8[] /* [50] */;
   switch (gbCurrentFileIOStatus) {
-    case INITIATE_MAP_SAVE: // draw save message
+    case Enum51.INITIATE_MAP_SAVE: // draw save message
       StartFrameBufferRender();
       SaveFontSettings();
       SetFont(HUGEFONT);
@@ -716,9 +716,9 @@ function ProcessFileIO(): UINT32 {
 
       InvalidateScreen();
       EndFrameBufferRender();
-      gbCurrentFileIOStatus = SAVING_MAP;
-      return LOADSAVE_SCREEN;
-    case SAVING_MAP: // save map
+      gbCurrentFileIOStatus = Enum51.SAVING_MAP;
+      return Enum26.LOADSAVE_SCREEN;
+    case Enum51.SAVING_MAP: // save map
       sprintf(ubNewFilename, "%S", gzFilename);
       RaiseWorldLand();
       if (gfShowPits)
@@ -727,9 +727,9 @@ function ProcessFileIO(): UINT32 {
       if (!SaveWorld(ubNewFilename)) {
         if (gfErrorCatch) {
           InitErrorCatchDialog();
-          return EDIT_SCREEN;
+          return Enum26.EDIT_SCREEN;
         }
-        return ERROR_SCREEN;
+        return Enum26.ERROR_SCREEN;
       }
       if (gfShowPits)
         AddAllPits();
@@ -739,27 +739,27 @@ function ProcessFileIO(): UINT32 {
       if (gfGlobalSummaryExists)
         UpdateSectorSummary(gzFilename, gfUpdateSummaryInfo);
 
-      iCurrentAction = ACTION_NULL;
-      gbCurrentFileIOStatus = IOSTATUS_NONE;
+      iCurrentAction = Enum37.ACTION_NULL;
+      gbCurrentFileIOStatus = Enum51.IOSTATUS_NONE;
       gfRenderWorld = TRUE;
       gfRenderTaskbar = TRUE;
       fEnteringLoadSaveScreen = TRUE;
       RestoreFontSettings();
       if (gfErrorCatch) {
         InitErrorCatchDialog();
-        return EDIT_SCREEN;
+        return Enum26.EDIT_SCREEN;
       }
       if (gMapInformation.ubMapVersion != gubMinorMapVersion)
         ScreenMsg(FONT_MCOLOR_RED, MSG_ERROR, "Map data has just been corrupted!!!  What did you just do?  KM : 0");
-      return EDIT_SCREEN;
-    case INITIATE_MAP_LOAD: // draw load message
+      return Enum26.EDIT_SCREEN;
+    case Enum51.INITIATE_MAP_LOAD: // draw load message
       SaveFontSettings();
-      gbCurrentFileIOStatus = LOADING_MAP;
-      if (gfEditMode && iCurrentTaskbar == TASK_MERCS)
-        IndicateSelectedMerc(SELECT_NO_MERC);
+      gbCurrentFileIOStatus = Enum51.LOADING_MAP;
+      if (gfEditMode && iCurrentTaskbar == Enum36.TASK_MERCS)
+        IndicateSelectedMerc(Enum43.SELECT_NO_MERC);
       SpecifyItemToEdit(NULL, -1);
-      return LOADSAVE_SCREEN;
-    case LOADING_MAP: // load map
+      return Enum26.LOADSAVE_SCREEN;
+    case Enum51.LOADING_MAP: // load map
       DisableUndo();
       sprintf(ubNewFilename, "%S", gzFilename);
 
@@ -768,13 +768,13 @@ function ProcessFileIO(): UINT32 {
       if (!LoadWorld(ubNewFilename)) {
         // Want to override crash, so user can do something else.
         EnableUndo();
-        SetPendingNewScreen(LOADSAVE_SCREEN);
-        gbCurrentFileIOStatus = IOSTATUS_NONE;
+        SetPendingNewScreen(Enum26.LOADSAVE_SCREEN);
+        gbCurrentFileIOStatus = Enum51.IOSTATUS_NONE;
         gfGlobalError = FALSE;
         gfLoadError = TRUE;
         // RemoveButton( iTempButton );
         CreateMessageBox(" Error loading file.  Try another filename?");
-        return LOADSAVE_SCREEN;
+        return Enum26.LOADSAVE_SCREEN;
       }
       SetGlobalSectorValues(gzFilename);
 
@@ -789,8 +789,8 @@ function ProcessFileIO(): UINT32 {
       AddSoldierInitListTeamToWorld(CREATURE_TEAM, 255);
       AddSoldierInitListTeamToWorld(MILITIA_TEAM, 255);
       AddSoldierInitListTeamToWorld(CIV_TEAM, 255);
-      iCurrentAction = ACTION_NULL;
-      gbCurrentFileIOStatus = IOSTATUS_NONE;
+      iCurrentAction = Enum37.ACTION_NULL;
+      gbCurrentFileIOStatus = Enum51.IOSTATUS_NONE;
       if (!gfCaves && !gfBasement) {
         gusLightLevel = 12;
         if (ubAmbientLightLevel != 4) {
@@ -808,7 +808,7 @@ function ProcessFileIO(): UINT32 {
       EnableUndo();
       RemoveAllFromUndoList();
       SetEditorSmoothingMode(gMapInformation.ubEditorSmoothingType);
-      if (gMapInformation.ubEditorSmoothingType == SMOOTHING_CAVES)
+      if (gMapInformation.ubEditorSmoothingType == Enum231.SMOOTHING_CAVES)
         AnalyseCaveMapForStructureInfo();
 
       AddLockedDoorCursors();
@@ -824,7 +824,7 @@ function ProcessFileIO(): UINT32 {
       if (gfShowPits)
         AddAllPits();
 
-      if (iCurrentTaskbar == TASK_MAPINFO) {
+      if (iCurrentTaskbar == Enum36.TASK_MAPINFO) {
         // We have to temporarily remove the current textinput mode,
         // update the disabled text field values, then restore the current
         // text input fields.
@@ -832,10 +832,10 @@ function ProcessFileIO(): UINT32 {
         UpdateMapInfoFields();
         RestoreSavedTextInputMode();
       }
-      return EDIT_SCREEN;
+      return Enum26.EDIT_SCREEN;
   }
-  gbCurrentFileIOStatus = IOSTATUS_NONE;
-  return LOADSAVE_SCREEN;
+  gbCurrentFileIOStatus = Enum51.IOSTATUS_NONE;
+  return Enum26.LOADSAVE_SCREEN;
 }
 
 // LOADSCREEN
@@ -848,14 +848,14 @@ function FDlgNamesCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
 function FDlgOkCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     gfDestroyFDlg = TRUE;
-    iFDlgState = iCurrentAction == ACTION_SAVE_MAP ? DIALOG_SAVE : DIALOG_LOAD;
+    iFDlgState = iCurrentAction == Enum37.ACTION_SAVE_MAP ? Enum50.DIALOG_SAVE : Enum50.DIALOG_LOAD;
   }
 }
 
 function FDlgCancelCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     gfDestroyFDlg = TRUE;
-    iFDlgState = DIALOG_CANCEL;
+    iFDlgState = Enum50.DIALOG_CANCEL;
   }
 }
 
@@ -918,12 +918,12 @@ function ExternalLoadMap(szFilename: Pointer<UINT16>): BOOLEAN {
   wcscpy(gzFilename, szFilename);
   if (!ValidFilename())
     return FALSE;
-  gbCurrentFileIOStatus = INITIATE_MAP_LOAD;
+  gbCurrentFileIOStatus = Enum51.INITIATE_MAP_LOAD;
   ProcessFileIO(); // always returns loadsave_screen and changes iostatus to loading_map.
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
   RefreshScreen(NULL);
-  if (ProcessFileIO() == EDIT_SCREEN)
+  if (ProcessFileIO() == Enum26.EDIT_SCREEN)
     return TRUE;
   return FALSE;
 }
@@ -935,13 +935,13 @@ function ExternalSaveMap(szFilename: Pointer<UINT16>): BOOLEAN {
   wcscpy(gzFilename, szFilename);
   if (!ValidFilename())
     return FALSE;
-  gbCurrentFileIOStatus = INITIATE_MAP_SAVE;
-  if (ProcessFileIO() == ERROR_SCREEN)
+  gbCurrentFileIOStatus = Enum51.INITIATE_MAP_SAVE;
+  if (ProcessFileIO() == Enum26.ERROR_SCREEN)
     return FALSE;
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
   RefreshScreen(NULL);
-  if (ProcessFileIO() == EDIT_SCREEN)
+  if (ProcessFileIO() == Enum26.EDIT_SCREEN)
     return TRUE;
   return FALSE;
 }

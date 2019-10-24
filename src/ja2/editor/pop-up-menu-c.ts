@@ -19,14 +19,14 @@ let fWaitingForLButtonRelease: BOOLEAN = FALSE;
 // in different ways in each instance.
 function GetPopupMenuString(ubIndex: UINT8): Pointer<INT16> {
   switch (gPopup.ubPopupMenuID) {
-    case CHANGETSET_POPUP: // tile sets
+    case Enum53.CHANGETSET_POPUP: // tile sets
       return gTilesets[ubIndex].zName;
-    case OWNERSHIPGROUP_POPUP: // civilian groups
-    case CHANGECIVGROUP_POPUP: // civilian groups
+    case Enum53.OWNERSHIPGROUP_POPUP: // civilian groups
+    case Enum53.CHANGECIVGROUP_POPUP: // civilian groups
       return gszCivGroupNames[ubIndex];
-    case SCHEDULEACTION_POPUP: // setting scheduling actions
+    case Enum53.SCHEDULEACTION_POPUP: // setting scheduling actions
       return gszScheduleActions[ubIndex];
-    case ACTIONITEM_POPUP:
+    case Enum53.ACTIONITEM_POPUP:
       return gszActionItemDesc[ubIndex];
     default:
       return 0;
@@ -94,18 +94,18 @@ function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirection: UINT
 
   // Decipher the popupMenuID
   switch (ubPopupMenuID) {
-    case CHANGETSET_POPUP: // change tileset
-      gPopup.ubNumEntries = NUM_TILESETS;
+    case Enum53.CHANGETSET_POPUP: // change tileset
+      gPopup.ubNumEntries = Enum316.NUM_TILESETS;
       break;
-    case OWNERSHIPGROUP_POPUP:
-    case CHANGECIVGROUP_POPUP:
-      gPopup.ubNumEntries = NUM_CIV_GROUPS;
+    case Enum53.OWNERSHIPGROUP_POPUP:
+    case Enum53.CHANGECIVGROUP_POPUP:
+      gPopup.ubNumEntries = Enum246.NUM_CIV_GROUPS;
       break;
-    case SCHEDULEACTION_POPUP:
-      gPopup.ubNumEntries = NUM_SCHEDULE_ACTIONS;
+    case Enum53.SCHEDULEACTION_POPUP:
+      gPopup.ubNumEntries = Enum171.NUM_SCHEDULE_ACTIONS;
       break;
-    case ACTIONITEM_POPUP:
-      gPopup.ubNumEntries = NUM_ACTIONITEMS;
+    case Enum53.ACTIONITEM_POPUP:
+      gPopup.ubNumEntries = Enum49.NUM_ACTIONITEMS;
       break;
     default:
       return;
@@ -187,7 +187,7 @@ function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirection: UINT
       gPopup.usBottom = usY + usMenuHeight + 1;
       break;
   }
-  MSYS_DefineRegion(addressof(popupRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(popupRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
   RenderPopupMenu();
 }
@@ -376,21 +376,21 @@ function PopupMenuHandle(): void {
 
 function ProcessPopupMenuSelection(): void {
   switch (gPopup.ubPopupMenuID) {
-    case CHANGETSET_POPUP:
+    case Enum53.CHANGETSET_POPUP:
       // change the tileset here.
       ReloadTileset((gPopup.ubSelectedIndex - 1));
       InitJA2SelectionWindow();
       break;
-    case CHANGECIVGROUP_POPUP:
+    case Enum53.CHANGECIVGROUP_POPUP:
       ChangeCivGroup((gPopup.ubSelectedIndex - 1));
       break;
-    case SCHEDULEACTION_POPUP:
+    case Enum53.SCHEDULEACTION_POPUP:
       UpdateScheduleAction((gPopup.ubSelectedIndex - 1));
       break;
-    case ACTIONITEM_POPUP:
+    case Enum53.ACTIONITEM_POPUP:
       UpdateActionItem((gPopup.ubSelectedIndex - 1));
       break;
-    case OWNERSHIPGROUP_POPUP:
+    case Enum53.OWNERSHIPGROUP_POPUP:
       SetOwnershipGroup((gPopup.ubSelectedIndex - 1));
       break;
   }

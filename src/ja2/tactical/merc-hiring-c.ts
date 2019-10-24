@@ -55,7 +55,7 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
 
       // make an objecttype
       memset(addressof(Object), 0, sizeof(OBJECTTYPE));
-      Object.usItem = LETTER;
+      Object.usItem = Enum225.LETTER;
       Object.ubNumberOfObjects = 1;
       Object.bStatus[0] = 100;
       // Give it
@@ -66,7 +66,7 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
     // Set insertion for first time in chopper
 
     // ATE: Insert for demo , not using the heli sequence....
-    pHireMerc.value.ubInsertionCode = INSERTION_CODE_CHOPPER;
+    pHireMerc.value.ubInsertionCode = Enum175.INSERTION_CODE_CHOPPER;
   }
 
   // record how long the merc will be gone for
@@ -82,10 +82,10 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
 
   // Set assignment
   // ATE: If first time, make ON_DUTY, otherwise GUARD
-  if ((pSoldier.value.bAssignment != IN_TRANSIT)) {
+  if ((pSoldier.value.bAssignment != Enum117.IN_TRANSIT)) {
     SetTimeOfAssignmentChangeForMerc(pSoldier);
   }
-  ChangeSoldiersAssignment(pSoldier, IN_TRANSIT);
+  ChangeSoldiersAssignment(pSoldier, Enum117.IN_TRANSIT);
 
   // set the contract length
   pSoldier.value.iTotalContractLength = pHireMerc.value.iTotalContractLength;
@@ -108,7 +108,7 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
 
 // ATE: Insert for demo , not using the heli sequence....
     // Set insertion for first time in chopper
-    pHireMerc.value.ubInsertionCode = INSERTION_CODE_CHOPPER;
+    pHireMerc.value.ubInsertionCode = Enum175.INSERTION_CODE_CHOPPER;
 
     // set when the merc's contract is finished
     pSoldier.value.iEndofContractTime = GetMidnightOfFutureDayInMinutes(pSoldier.value.iTotalContractLength) + (GetHourWhenContractDone(pSoldier) * 60);
@@ -123,7 +123,7 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
 
   // if we are trying to hire a merc that should arrive later, put the merc in the queue
   if (pHireMerc.value.uiTimeTillMercArrives != 0) {
-    AddStrategicEvent(EVENT_DELAYED_HIRING_OF_MERC, pHireMerc.value.uiTimeTillMercArrives, pSoldier.value.ubID);
+    AddStrategicEvent(Enum132.EVENT_DELAYED_HIRING_OF_MERC, pHireMerc.value.uiTimeTillMercArrives, pSoldier.value.ubID);
 
     // specify that the merc is hired but hasnt arrived yet
     pMerc.value.bMercStatus = MERC_HIRED_BUT_NOT_ARRIVED_YET;
@@ -131,19 +131,19 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
 
   // if the merc is an AIM merc
   if (ubCurrentSoldier < 40) {
-    pSoldier.value.ubWhatKindOfMercAmI = MERC_TYPE__AIM_MERC;
+    pSoldier.value.ubWhatKindOfMercAmI = Enum260.MERC_TYPE__AIM_MERC;
     // determine how much the contract is, and remember what type of contract he got
     if (pHireMerc.value.iTotalContractLength == 1) {
       // pSoldier->iTotalContractCharge = gMercProfiles[ pSoldier->ubProfile ].sSalary;
-      pSoldier.value.bTypeOfLastContract = CONTRACT_EXTEND_1_DAY;
+      pSoldier.value.bTypeOfLastContract = Enum161.CONTRACT_EXTEND_1_DAY;
       pSoldier.value.iTimeCanSignElsewhere = GetWorldTotalMin();
     } else if (pHireMerc.value.iTotalContractLength == 7) {
       // pSoldier->iTotalContractCharge = gMercProfiles[ pSoldier->ubProfile ].uiWeeklySalary;
-      pSoldier.value.bTypeOfLastContract = CONTRACT_EXTEND_1_WEEK;
+      pSoldier.value.bTypeOfLastContract = Enum161.CONTRACT_EXTEND_1_WEEK;
       pSoldier.value.iTimeCanSignElsewhere = GetWorldTotalMin();
     } else if (pHireMerc.value.iTotalContractLength == 14) {
       // pSoldier->iTotalContractCharge = gMercProfiles[ pSoldier->ubProfile ].uiBiWeeklySalary;
-      pSoldier.value.bTypeOfLastContract = CONTRACT_EXTEND_2_WEEK;
+      pSoldier.value.bTypeOfLastContract = Enum161.CONTRACT_EXTEND_2_WEEK;
       // These luck fellows need to stay the whole duration!
       pSoldier.value.iTimeCanSignElsewhere = pSoldier.value.iEndofContractTime;
     }
@@ -153,7 +153,7 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   }
   // if the merc is from M.E.R.C.
   else if ((ubCurrentSoldier >= 40) && (ubCurrentSoldier <= 50)) {
-    pSoldier.value.ubWhatKindOfMercAmI = MERC_TYPE__MERC;
+    pSoldier.value.ubWhatKindOfMercAmI = Enum260.MERC_TYPE__MERC;
     // pSoldier->iTotalContractCharge = -1;
 
     gMercProfiles[pSoldier.value.ubProfile].iMercMercContractLength = 1;
@@ -161,16 +161,16 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
     // Set starting conditions for the merc
     pSoldier.value.iStartContractTime = GetWorldDay();
 
-    AddHistoryToPlayersLog(HISTORY_HIRED_MERC_FROM_MERC, ubCurrentSoldier, GetWorldTotalMin(), -1, -1);
+    AddHistoryToPlayersLog(Enum83.HISTORY_HIRED_MERC_FROM_MERC, ubCurrentSoldier, GetWorldTotalMin(), -1, -1);
   }
   // If the merc is from IMP, (ie a player character)
   else if ((ubCurrentSoldier >= 51) && (ubCurrentSoldier < 57)) {
-    pSoldier.value.ubWhatKindOfMercAmI = MERC_TYPE__PLAYER_CHARACTER;
+    pSoldier.value.ubWhatKindOfMercAmI = Enum260.MERC_TYPE__PLAYER_CHARACTER;
     // pSoldier->iTotalContractCharge = -1;
   }
   // else its a NPC merc
   else {
-    pSoldier.value.ubWhatKindOfMercAmI = MERC_TYPE__NPC;
+    pSoldier.value.ubWhatKindOfMercAmI = Enum260.MERC_TYPE__NPC;
     // pSoldier->iTotalContractCharge = -1;
   }
 
@@ -220,28 +220,28 @@ function MercArrivesCallback(ubSoldierID: UINT8): void {
     // OK, If this sector is currently loaded, and guy does not have CHOPPER insertion code....
     // ( which means we are at beginning of game if so )
     // Setup chopper....
-    if (pSoldier.value.ubStrategicInsertionCode != INSERTION_CODE_CHOPPER && pSoldier.value.sSectorX == 9 && pSoldier.value.sSectorY == 1) {
+    if (pSoldier.value.ubStrategicInsertionCode != Enum175.INSERTION_CODE_CHOPPER && pSoldier.value.sSectorX == 9 && pSoldier.value.sSectorY == 1) {
       gfTacticalDoHeliRun = TRUE;
 
       // OK, If we are in mapscreen, get out...
-      if (guiCurrentScreen == MAP_SCREEN) {
+      if (guiCurrentScreen == Enum26.MAP_SCREEN) {
         // ATE: Make sure the current one is selected!
         ChangeSelectedMapSector(gWorldSectorX, gWorldSectorY, 0);
 
-        RequestTriggerExitFromMapscreen(MAP_EXIT_TO_TACTICAL);
+        RequestTriggerExitFromMapscreen(Enum144.MAP_EXIT_TO_TACTICAL);
       }
 
-      pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_CHOPPER;
+      pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_CHOPPER;
     }
 
     UpdateMercInSector(pSoldier, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
   } else {
     // OK, otherwise, set them in north area, so once we load again, they are here.
-    pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_NORTH;
+    pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_NORTH;
   }
 
-  if (pSoldier.value.ubStrategicInsertionCode != INSERTION_CODE_CHOPPER) {
-    ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, TacticalStr[MERC_HAS_ARRIVED_STR], pSoldier.value.name);
+  if (pSoldier.value.ubStrategicInsertionCode != Enum175.INSERTION_CODE_CHOPPER) {
+    ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, TacticalStr[Enum335.MERC_HAS_ARRIVED_STR], pSoldier.value.name);
 
     // ATE: He's going to say something, now that they've arrived...
     if (gTacticalStatus.bMercArrivingQuoteBeingUsed == FALSE && !gfFirstHeliRun) {
@@ -252,7 +252,7 @@ function MercArrivesCallback(ubSoldierID: UINT8): void {
       gsSectorLocatorY = pSoldier.value.sSectorY;
 
       TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_MINESECTOREVENT, 2, 0);
-      TacticalCharacterDialogue(pSoldier, QUOTE_MERC_REACHED_DESTINATION);
+      TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_MERC_REACHED_DESTINATION);
       TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_MINESECTOREVENT, 3, 0);
       TacticalCharacterDialogueWithSpecialEventEx(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_UNSET_ARRIVES_FLAG, 0, 0, 0);
     }
@@ -275,7 +275,7 @@ function MercArrivesCallback(ubSoldierID: UINT8): void {
       uiTimeOfPost = 540 + Random(660);
 
       if (GetWorldMinutesInDay() < uiTimeOfPost) {
-        AddSameDayStrategicEvent(EVENT_MERC_COMPLAIN_EQUIPMENT, uiTimeOfPost, pSoldier.value.ubProfile);
+        AddSameDayStrategicEvent(Enum132.EVENT_MERC_COMPLAIN_EQUIPMENT, uiTimeOfPost, pSoldier.value.ubProfile);
       }
     }
   }
@@ -341,11 +341,11 @@ function HandleMercArrivesQuotes(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
   // If we are approaching with helicopter, don't say any ( yet )
-  if (pSoldier.value.ubStrategicInsertionCode != INSERTION_CODE_CHOPPER) {
+  if (pSoldier.value.ubStrategicInsertionCode != Enum175.INSERTION_CODE_CHOPPER) {
     // Player-generated characters issue a comment about arriving in Omerta.
-    if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__PLAYER_CHARACTER) {
-      if (gubQuest[QUEST_DELIVER_LETTER] == QUESTINPROGRESS) {
-        TacticalCharacterDialogue(pSoldier, QUOTE_PC_DROPPED_OMERTA);
+    if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__PLAYER_CHARACTER) {
+      if (gubQuest[Enum169.QUEST_DELIVER_LETTER] == QUESTINPROGRESS) {
+        TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_PC_DROPPED_OMERTA);
       }
     }
 
@@ -355,16 +355,16 @@ function HandleMercArrivesQuotes(pSoldier: Pointer<SOLDIERTYPE>): void {
     // loop though all the mercs
     for (pTeamSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pTeamSoldier++) {
       if (pTeamSoldier.value.bActive) {
-        if (pTeamSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
+        if (pTeamSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
           bHated = WhichHated(pTeamSoldier.value.ubProfile, pSoldier.value.ubProfile);
           if (bHated != -1) {
             // hates the merc who has arrived and is going to gripe about it!
             switch (bHated) {
               case 0:
-                TacticalCharacterDialogue(pTeamSoldier, QUOTE_HATED_1_ARRIVES);
+                TacticalCharacterDialogue(pTeamSoldier, Enum202.QUOTE_HATED_1_ARRIVES);
                 break;
               case 1:
-                TacticalCharacterDialogue(pTeamSoldier, QUOTE_HATED_2_ARRIVES);
+                TacticalCharacterDialogue(pTeamSoldier, Enum202.QUOTE_HATED_2_ARRIVES);
                 break;
               default:
                 break;
@@ -416,7 +416,7 @@ function UpdateAnyInTransitMercsWithGlobalArrivalSector(): void {
   // look for all mercs on the same team,
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
     if (pSoldier.value.bActive) {
-      if (pSoldier.value.bAssignment == IN_TRANSIT) {
+      if (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) {
         if (pSoldier.value.fUseLandingZoneForArrival) {
           pSoldier.value.sSectorX = gsMercArriveSectorX;
           pSoldier.value.sSectorY = gsMercArriveSectorY;

@@ -58,7 +58,7 @@ function FullPatientCheck(pPatient: Pointer<SOLDIERTYPE>): BOOLEAN {
         // can this guy path to the patient?
         if (pSoldier.value.bLevel == 0) {
           // do a regular path check
-          if (FindBestPath(pSoldier, pPatient.value.sGridNo, 0, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
+          if (FindBestPath(pSoldier, pPatient.value.sGridNo, 0, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
             return TRUE;
           }
         } else {
@@ -133,7 +133,7 @@ function CanCharacterAutoBandageTeammate(pSoldier: Pointer<SOLDIERTYPE>): BOOLEA
 // can this soldier autobandage others in sector
 {
   // if the soldier isn't active or in sector, we have problems..leave
-  if (!(pSoldier.value.bActive) || !(pSoldier.value.bInSector) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.bAssignment == VEHICLE)) {
+  if (!(pSoldier.value.bActive) || !(pSoldier.value.bInSector) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.bAssignment == Enum117.VEHICLE)) {
     return FALSE;
   }
 
@@ -148,7 +148,7 @@ function CanCharacterAutoBandageTeammate(pSoldier: Pointer<SOLDIERTYPE>): BOOLEA
 // can this soldier autobandage others in sector
 function CanCharacterBeAutoBandagedByTeammate(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // if the soldier isn't active or in sector, we have problems..leave
-  if (!(pSoldier.value.bActive) || !(pSoldier.value.bInSector) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.bAssignment == VEHICLE)) {
+  if (!(pSoldier.value.bActive) || !(pSoldier.value.bInSector) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.bAssignment == Enum117.VEHICLE)) {
     return FALSE;
   }
 
@@ -207,7 +207,7 @@ function FindBestPatient(pSoldier: Pointer<SOLDIERTYPE>, pfDoClimb: Pointer<BOOL
           sAdjacentGridNo = FindAdjacentGridEx(pSoldier, sPatientGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), FALSE, FALSE);
           if (sAdjacentGridNo == -1 && gAnimControl[pPatient.value.usAnimState].ubEndHeight == ANIM_PRONE) {
             // prone; could be the base tile is inaccessible but the rest isn't...
-            for (cnt2 = 0; cnt2 < NUM_WORLD_DIRECTIONS; cnt2++) {
+            for (cnt2 = 0; cnt2 < Enum245.NUM_WORLD_DIRECTIONS; cnt2++) {
               sPatientGridNo = pPatient.value.sGridNo + DirectionInc(cnt2);
               if (WhoIsThere2(sPatientGridNo, pPatient.value.bLevel) == pPatient.value.ubID) {
                 // patient is also here, try this location
@@ -223,7 +223,7 @@ function FindBestPatient(pSoldier: Pointer<SOLDIERTYPE>, pfDoClimb: Pointer<BOOL
             if (sAdjacentGridNo == pSoldier.value.sGridNo) {
               sPathCost = 1;
             } else {
-              sPathCost = PlotPath(pSoldier, sAdjacentGridNo, FALSE, FALSE, FALSE, RUNNING, FALSE, FALSE, 0);
+              sPathCost = PlotPath(pSoldier, sAdjacentGridNo, FALSE, FALSE, FALSE, Enum193.RUNNING, FALSE, FALSE, 0);
             }
 
             if (sPathCost != 0) {
@@ -238,7 +238,7 @@ function FindBestPatient(pSoldier: Pointer<SOLDIERTYPE>, pfDoClimb: Pointer<BOOL
                   if (sOtherAdjacentGridNo == pOtherMedic.value.sGridNo) {
                     sOtherMedicPathCost = 1;
                   } else {
-                    sOtherMedicPathCost = PlotPath(pOtherMedic, sOtherAdjacentGridNo, FALSE, FALSE, FALSE, RUNNING, FALSE, FALSE, 0);
+                    sOtherMedicPathCost = PlotPath(pOtherMedic, sOtherAdjacentGridNo, FALSE, FALSE, FALSE, Enum193.RUNNING, FALSE, FALSE, 0);
                   }
 
                   if (sPathCost >= sOtherMedicPathCost) {
@@ -287,17 +287,17 @@ function FindBestPatient(pSoldier: Pointer<SOLDIERTYPE>, pfDoClimb: Pointer<BOOL
     pfDoClimb.value = FALSE;
     if (CardinalSpacesAway(pSoldier.value.sGridNo, sBestPatientGridNo) == 1) {
       pSoldier.value.usActionData = sBestPatientGridNo;
-      return AI_ACTION_GIVE_AID;
+      return Enum289.AI_ACTION_GIVE_AID;
     } else {
       pSoldier.value.usActionData = sBestAdjGridNo;
-      return AI_ACTION_GET_CLOSER;
+      return Enum289.AI_ACTION_GET_CLOSER;
     }
   } else if (sBestClimbGridNo != NOWHERE) {
     pfDoClimb.value = TRUE;
     pSoldier.value.usActionData = sBestClimbGridNo;
-    return AI_ACTION_MOVE_TO_CLIMB;
+    return Enum289.AI_ACTION_MOVE_TO_CLIMB;
   } else {
-    return AI_ACTION_NONE;
+    return Enum289.AI_ACTION_NONE;
   }
 }
 
@@ -307,22 +307,22 @@ function DecideAutoBandage(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
   if (pSoldier.value.bMedical == 0 || pSoldier.value.ubServicePartner != NOBODY) {
     // don't/can't make decision
-    return AI_ACTION_NONE;
+    return Enum289.AI_ACTION_NONE;
   }
 
   bSlot = FindObjClass(pSoldier, IC_MEDKIT);
   if (bSlot == NO_SLOT) {
     // no medical kit!
-    return AI_ACTION_NONE;
+    return Enum289.AI_ACTION_NONE;
   }
 
   if (pSoldier.value.bBleeding) {
     // heal self first!
     pSoldier.value.usActionData = pSoldier.value.sGridNo;
-    if (bSlot != HANDPOS) {
+    if (bSlot != Enum261.HANDPOS) {
       pSoldier.value.bSlotItemTakenFrom = bSlot;
 
-      SwapObjs(addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[bSlot]));
+      SwapObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), addressof(pSoldier.value.inv[bSlot]));
       /*
       memset( &TempObj, 0, sizeof( OBJECTTYPE ) );
       // move the med kit out to temp obj
@@ -333,21 +333,21 @@ function DecideAutoBandage(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       AutoPlaceObject( pSoldier, &TempObj, FALSE );
       */
     }
-    return AI_ACTION_GIVE_AID;
+    return Enum289.AI_ACTION_GIVE_AID;
   }
 
   //	pSoldier->usActionData = FindClosestPatient( pSoldier );
   pSoldier.value.bAction = FindBestPatient(pSoldier, addressof(fDoClimb));
-  if (pSoldier.value.bAction != AI_ACTION_NONE) {
-    pSoldier.value.usUIMovementMode = RUNNING;
-    if (bSlot != HANDPOS) {
+  if (pSoldier.value.bAction != Enum289.AI_ACTION_NONE) {
+    pSoldier.value.usUIMovementMode = Enum193.RUNNING;
+    if (bSlot != Enum261.HANDPOS) {
       pSoldier.value.bSlotItemTakenFrom = bSlot;
 
-      SwapObjs(addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[bSlot]));
+      SwapObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), addressof(pSoldier.value.inv[bSlot]));
     }
     return pSoldier.value.bAction;
   }
 
   // do nothing
-  return AI_ACTION_NONE;
+  return Enum289.AI_ACTION_NONE;
 }

@@ -237,7 +237,7 @@ function ScrollString(): void {
   // might have pop up text timer
   HandleLastQuotePopUpTimer();
 
-  if (guiCurrentScreen == MAP_SCREEN) {
+  if (guiCurrentScreen == Enum26.MAP_SCREEN) {
     return;
   }
 
@@ -332,7 +332,7 @@ function ScrollString(): void {
       }
 
       // check if new meesage we have not seen since mapscreen..if so, beep
-      if ((fOkToBeepNewMessage == TRUE) && (gpDisplayList[MAX_LINE_COUNT - 2] == NULL) && ((guiCurrentScreen == GAME_SCREEN) || (guiCurrentScreen == MAP_SCREEN)) && (gfFacePanelActive == FALSE)) {
+      if ((fOkToBeepNewMessage == TRUE) && (gpDisplayList[MAX_LINE_COUNT - 2] == NULL) && ((guiCurrentScreen == Enum26.GAME_SCREEN) || (guiCurrentScreen == Enum26.MAP_SCREEN)) && (gfFacePanelActive == FALSE)) {
         PlayNewMessageSound();
       }
     }
@@ -436,7 +436,7 @@ function ScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, ...args:
   //	if( ( ubPriority != MSG_DEBUG ) && ( ubPriority != MSG_TESTVERSION ) )
   { MapScreenMessage(usColor, ubPriority, DestString); }
 
-  if (guiCurrentScreen == MAP_SCREEN) {
+  if (guiCurrentScreen == Enum26.MAP_SCREEN) {
     PlayNewMessageSound();
   } else {
     fOkToBeepNewMessage = TRUE;
@@ -502,7 +502,7 @@ function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, 
   let fNewString: BOOLEAN = FALSE;
   let usLineWidthIfWordIsWiderThenWidth: UINT16 = 0;
 
-  if (giTimeCompressMode > TIME_COMPRESS_X1) {
+  if (giTimeCompressMode > Enum130.TIME_COMPRESS_X1) {
     return;
   }
 

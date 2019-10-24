@@ -88,7 +88,7 @@ let gubYoungMalesAttackingTown: UINT8 = 0;
 let gubYoungFemalesAttackingTown: UINT8 = 0;
 let gubAdultMalesAttackingTown: UINT8 = 0;
 let gubAdultFemalesAttackingTown: UINT8 = 0;
-let gubCreatureBattleCode: UINT8 = CREATURE_BATTLE_CODE_NONE;
+let gubCreatureBattleCode: UINT8 = Enum129.CREATURE_BATTLE_CODE_NONE;
 let gubSectorIDOfCreatureAttack: UINT8 = 0;
 
 function NewDirective(ubSectorID: UINT8, ubSectorZ: UINT8, ubCreatureHabitat: UINT8): Pointer<CREATURE_DIRECTIVE> {
@@ -115,86 +115,86 @@ function InitLairDrassen(): void {
   let curr: Pointer<CREATURE_DIRECTIVE>;
   giLairID = 1;
   // initialize the linked list of lairs
-  lair = NewDirective(SEC_F13, 3, QUEEN_LAIR);
+  lair = NewDirective(Enum123.SEC_F13, 3, Enum128.QUEEN_LAIR);
   curr = lair;
   if (!curr.value.pLevel.value.ubNumCreatures) {
     curr.value.pLevel.value.ubNumCreatures = 1; // for the queen.
   }
-  curr.value.next = NewDirective(SEC_G13, 3, LAIR);
+  curr.value.next = NewDirective(Enum123.SEC_G13, 3, Enum128.LAIR);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_G13, 2, LAIR_ENTRANCE);
+  curr.value.next = NewDirective(Enum123.SEC_G13, 2, Enum128.LAIR_ENTRANCE);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_F13, 2, INNER_MINE);
+  curr.value.next = NewDirective(Enum123.SEC_F13, 2, Enum128.INNER_MINE);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_E13, 2, INNER_MINE);
+  curr.value.next = NewDirective(Enum123.SEC_E13, 2, Enum128.INNER_MINE);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_E13, 1, OUTER_MINE);
+  curr.value.next = NewDirective(Enum123.SEC_E13, 1, Enum128.OUTER_MINE);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_D13, 1, MINE_EXIT);
+  curr.value.next = NewDirective(Enum123.SEC_D13, 1, Enum128.MINE_EXIT);
 }
 
 function InitLairCambria(): void {
   let curr: Pointer<CREATURE_DIRECTIVE>;
   giLairID = 2;
   // initialize the linked list of lairs
-  lair = NewDirective(SEC_J8, 3, QUEEN_LAIR);
+  lair = NewDirective(Enum123.SEC_J8, 3, Enum128.QUEEN_LAIR);
   curr = lair;
   if (!curr.value.pLevel.value.ubNumCreatures) {
     curr.value.pLevel.value.ubNumCreatures = 1; // for the queen.
   }
-  curr.value.next = NewDirective(SEC_I8, 3, LAIR);
+  curr.value.next = NewDirective(Enum123.SEC_I8, 3, Enum128.LAIR);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_H8, 3, LAIR);
+  curr.value.next = NewDirective(Enum123.SEC_H8, 3, Enum128.LAIR);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_H8, 2, LAIR_ENTRANCE);
+  curr.value.next = NewDirective(Enum123.SEC_H8, 2, Enum128.LAIR_ENTRANCE);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_H9, 2, INNER_MINE);
+  curr.value.next = NewDirective(Enum123.SEC_H9, 2, Enum128.INNER_MINE);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_H9, 1, OUTER_MINE);
+  curr.value.next = NewDirective(Enum123.SEC_H9, 1, Enum128.OUTER_MINE);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_H8, 1, MINE_EXIT);
+  curr.value.next = NewDirective(Enum123.SEC_H8, 1, Enum128.MINE_EXIT);
 }
 
 function InitLairAlma(): void {
   let curr: Pointer<CREATURE_DIRECTIVE>;
   giLairID = 3;
   // initialize the linked list of lairs
-  lair = NewDirective(SEC_K13, 3, QUEEN_LAIR);
+  lair = NewDirective(Enum123.SEC_K13, 3, Enum128.QUEEN_LAIR);
   curr = lair;
   if (!curr.value.pLevel.value.ubNumCreatures) {
     curr.value.pLevel.value.ubNumCreatures = 1; // for the queen.
   }
-  curr.value.next = NewDirective(SEC_J13, 3, LAIR);
+  curr.value.next = NewDirective(Enum123.SEC_J13, 3, Enum128.LAIR);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_J13, 2, LAIR_ENTRANCE);
+  curr.value.next = NewDirective(Enum123.SEC_J13, 2, Enum128.LAIR_ENTRANCE);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_J14, 2, INNER_MINE);
+  curr.value.next = NewDirective(Enum123.SEC_J14, 2, Enum128.INNER_MINE);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_J14, 1, OUTER_MINE);
+  curr.value.next = NewDirective(Enum123.SEC_J14, 1, Enum128.OUTER_MINE);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_I14, 1, MINE_EXIT);
+  curr.value.next = NewDirective(Enum123.SEC_I14, 1, Enum128.MINE_EXIT);
 }
 
 function InitLairGrumm(): void {
   let curr: Pointer<CREATURE_DIRECTIVE>;
   giLairID = 4;
   // initialize the linked list of lairs
-  lair = NewDirective(SEC_G4, 3, QUEEN_LAIR);
+  lair = NewDirective(Enum123.SEC_G4, 3, Enum128.QUEEN_LAIR);
   curr = lair;
   if (!curr.value.pLevel.value.ubNumCreatures) {
     curr.value.pLevel.value.ubNumCreatures = 1; // for the queen.
   }
-  curr.value.next = NewDirective(SEC_H4, 3, LAIR);
+  curr.value.next = NewDirective(Enum123.SEC_H4, 3, Enum128.LAIR);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_H4, 2, LAIR_ENTRANCE);
+  curr.value.next = NewDirective(Enum123.SEC_H4, 2, Enum128.LAIR_ENTRANCE);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_H3, 2, INNER_MINE);
+  curr.value.next = NewDirective(Enum123.SEC_H3, 2, Enum128.INNER_MINE);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_I3, 2, INNER_MINE);
+  curr.value.next = NewDirective(Enum123.SEC_I3, 2, Enum128.INNER_MINE);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_I3, 1, OUTER_MINE);
+  curr.value.next = NewDirective(Enum123.SEC_I3, 1, Enum128.OUTER_MINE);
   curr = curr.value.next;
-  curr.value.next = NewDirective(SEC_H3, 1, MINE_EXIT);
+  curr.value.next = NewDirective(Enum123.SEC_H3, 1, Enum128.MINE_EXIT);
 }
 
 function InitCreatureQuest(): void {
@@ -220,13 +220,13 @@ function InitCreatureQuest(): void {
 
   giHabitatedDistance = 0;
   switch (gGameOptions.ubDifficultyLevel) {
-    case DIF_LEVEL_EASY:
+    case Enum9.DIF_LEVEL_EASY:
       giPopulationModifier = EASY_POPULATION_MODIFIER;
       break;
-    case DIF_LEVEL_MEDIUM:
+    case Enum9.DIF_LEVEL_MEDIUM:
       giPopulationModifier = NORMAL_POPULATION_MODIFIER;
       break;
-    case DIF_LEVEL_HARD:
+    case Enum9.DIF_LEVEL_HARD:
       giPopulationModifier = HARD_POPULATION_MODIFIER;
       break;
   }
@@ -238,19 +238,19 @@ function InitCreatureQuest(): void {
   // Default them all to infectible
   memset(fMineInfectible, 1, sizeof(BOOLEAN) * 4);
 
-  if (gMineStatus[DRASSEN_MINE].fAttackedHeadMiner || gMineStatus[DRASSEN_MINE].uiOreRunningOutPoint || StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(SEC_D13)].fEnemyControlled) {
+  if (gMineStatus[Enum174.DRASSEN_MINE].fAttackedHeadMiner || gMineStatus[Enum174.DRASSEN_MINE].uiOreRunningOutPoint || StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(Enum123.SEC_D13)].fEnemyControlled) {
     // If head miner was attacked, ore will/has run out, or enemy controlled
     fMineInfectible[0] = FALSE;
   }
-  if (gMineStatus[CAMBRIA_MINE].fAttackedHeadMiner || gMineStatus[CAMBRIA_MINE].uiOreRunningOutPoint || StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(SEC_H8)].fEnemyControlled) {
+  if (gMineStatus[Enum174.CAMBRIA_MINE].fAttackedHeadMiner || gMineStatus[Enum174.CAMBRIA_MINE].uiOreRunningOutPoint || StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(Enum123.SEC_H8)].fEnemyControlled) {
     // If head miner was attacked, ore will/has run out, or enemy controlled
     fMineInfectible[1] = FALSE;
   }
-  if (gMineStatus[ALMA_MINE].fAttackedHeadMiner || gMineStatus[ALMA_MINE].uiOreRunningOutPoint || StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(SEC_I14)].fEnemyControlled) {
+  if (gMineStatus[Enum174.ALMA_MINE].fAttackedHeadMiner || gMineStatus[Enum174.ALMA_MINE].uiOreRunningOutPoint || StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(Enum123.SEC_I14)].fEnemyControlled) {
     // If head miner was attacked, ore will/has run out, or enemy controlled
     fMineInfectible[2] = FALSE;
   }
-  if (gMineStatus[GRUMM_MINE].fAttackedHeadMiner || gMineStatus[GRUMM_MINE].uiOreRunningOutPoint || StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(SEC_H3)].fEnemyControlled) {
+  if (gMineStatus[Enum174.GRUMM_MINE].fAttackedHeadMiner || gMineStatus[Enum174.GRUMM_MINE].uiOreRunningOutPoint || StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(Enum123.SEC_H3)].fEnemyControlled) {
     // If head miner was attacked, ore will/has run out, or enemy controlled
     fMineInfectible[3] = FALSE;
   }
@@ -303,24 +303,24 @@ function InitCreatureQuest(): void {
 
   // Now determine how often we will spread the creatures.
   switch (gGameOptions.ubDifficultyLevel) {
-    case DIF_LEVEL_EASY:
+    case Enum9.DIF_LEVEL_EASY:
       i = EASY_QUEEN_INIT_BONUS_SPREADS;
-      AddPeriodStrategicEvent(EVENT_CREATURE_SPREAD, EASY_SPREAD_TIME_IN_MINUTES, 0);
+      AddPeriodStrategicEvent(Enum132.EVENT_CREATURE_SPREAD, EASY_SPREAD_TIME_IN_MINUTES, 0);
       break;
-    case DIF_LEVEL_MEDIUM:
+    case Enum9.DIF_LEVEL_MEDIUM:
       i = NORMAL_QUEEN_INIT_BONUS_SPREADS;
-      AddPeriodStrategicEvent(EVENT_CREATURE_SPREAD, NORMAL_SPREAD_TIME_IN_MINUTES, 0);
+      AddPeriodStrategicEvent(Enum132.EVENT_CREATURE_SPREAD, NORMAL_SPREAD_TIME_IN_MINUTES, 0);
       break;
-    case DIF_LEVEL_HARD:
+    case Enum9.DIF_LEVEL_HARD:
       i = HARD_QUEEN_INIT_BONUS_SPREADS;
-      AddPeriodStrategicEvent(EVENT_CREATURE_SPREAD, HARD_SPREAD_TIME_IN_MINUTES, 0);
+      AddPeriodStrategicEvent(Enum132.EVENT_CREATURE_SPREAD, HARD_SPREAD_TIME_IN_MINUTES, 0);
       break;
   }
 
   // Set things up so that the creatures can plan attacks on helpless miners and civilians while
   // they are sleeping.  They do their planning at 10PM every day, and decide to attack sometime
   // during the night.
-  AddEveryDayStrategicEvent(EVENT_CREATURE_NIGHT_PLANNING, 1320, 0);
+  AddEveryDayStrategicEvent(Enum132.EVENT_CREATURE_NIGHT_PLANNING, 1320, 0);
 
   // Got to give the queen some early protection, so do some creature spreading.
   while (i--) {
@@ -367,32 +367,32 @@ function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): 
   } else if (giHabitatedDistance > iDistance) {
     // we are within the "safe" habitated area of the creature's area of influence.  The chance of
     // increasing the population inside this sector depends on how deep we are within the sector.
-    if (node.value.pLevel.value.ubNumCreatures < MAX_STRATEGIC_TEAM_SIZE || node.value.pLevel.value.ubNumCreatures < 32 && node.value.pLevel.value.ubCreatureHabitat == QUEEN_LAIR) {
+    if (node.value.pLevel.value.ubNumCreatures < MAX_STRATEGIC_TEAM_SIZE || node.value.pLevel.value.ubNumCreatures < 32 && node.value.pLevel.value.ubCreatureHabitat == Enum128.QUEEN_LAIR) {
       // there is ALWAYS a chance to habitate an interior sector, though the chances are slim for
       // highly occupied sectors.  This chance is modified by the type of area we are in.
       let iAbsoluteMaxPopulation: INT32;
       let iMaxPopulation: INT32 = -1;
       let iChanceToPopulate: INT32;
       switch (node.value.pLevel.value.ubCreatureHabitat) {
-        case QUEEN_LAIR: // Defend the queen bonus
+        case Enum128.QUEEN_LAIR: // Defend the queen bonus
           iAbsoluteMaxPopulation = 32;
           break;
-        case LAIR: // Smaller defend the queen bonus
+        case Enum128.LAIR: // Smaller defend the queen bonus
           iAbsoluteMaxPopulation = 18;
           break;
-        case LAIR_ENTRANCE: // Smallest defend the queen bonus
+        case Enum128.LAIR_ENTRANCE: // Smallest defend the queen bonus
           iAbsoluteMaxPopulation = 15;
           break;
-        case INNER_MINE: // neg bonus -- actually promotes expansion over population, and decrease max pop here.
+        case Enum128.INNER_MINE: // neg bonus -- actually promotes expansion over population, and decrease max pop here.
           iAbsoluteMaxPopulation = 12;
           break;
-        case OUTER_MINE: // neg bonus -- actually promotes expansion over population, and decrease max pop here.
+        case Enum128.OUTER_MINE: // neg bonus -- actually promotes expansion over population, and decrease max pop here.
           iAbsoluteMaxPopulation = 10;
           break;
-        case FEEDING_GROUNDS: // get free food bonus!  yummy humans :)
+        case Enum128.FEEDING_GROUNDS: // get free food bonus!  yummy humans :)
           iAbsoluteMaxPopulation = 15;
           break;
-        case MINE_EXIT: // close access to humans (don't want to overwhelm them)
+        case Enum128.MINE_EXIT: // close access to humans (don't want to overwhelm them)
           iAbsoluteMaxPopulation = 10;
           break;
         default:
@@ -401,13 +401,13 @@ function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): 
       }
 
       switch (gGameOptions.ubDifficultyLevel) {
-        case DIF_LEVEL_EASY: // 50%
+        case Enum9.DIF_LEVEL_EASY: // 50%
           iAbsoluteMaxPopulation /= 2; // Half
           break;
-        case DIF_LEVEL_MEDIUM: // 80%
+        case Enum9.DIF_LEVEL_MEDIUM: // 80%
           iAbsoluteMaxPopulation = iAbsoluteMaxPopulation * 4 / 5;
           break;
-        case DIF_LEVEL_HARD: // 100%
+        case Enum9.DIF_LEVEL_HARD: // 100%
           break;
       }
 
@@ -449,13 +449,13 @@ function SpreadCreatures(): void {
 
   // queen just produced a litter of creature larvae.  Let's do some spreading now.
   switch (gGameOptions.ubDifficultyLevel) {
-    case DIF_LEVEL_EASY:
+    case Enum9.DIF_LEVEL_EASY:
       usNewCreatures = (EASY_QUEEN_REPRODUCTION_BASE + Random(1 + EASY_QUEEN_REPRODUCTION_BONUS));
       break;
-    case DIF_LEVEL_MEDIUM:
+    case Enum9.DIF_LEVEL_MEDIUM:
       usNewCreatures = (NORMAL_QUEEN_REPRODUCTION_BASE + Random(1 + NORMAL_QUEEN_REPRODUCTION_BONUS));
       break;
-    case DIF_LEVEL_HARD:
+    case Enum9.DIF_LEVEL_HARD:
       usNewCreatures = (HARD_QUEEN_REPRODUCTION_BASE + Random(1 + HARD_QUEEN_REPRODUCTION_BONUS));
       break;
   }
@@ -480,26 +480,26 @@ function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, 
   let ubCurrSlot: UINT8 = 0;
 
   switch (gsCreatureInsertionCode) {
-    case INSERTION_CODE_NORTH:
-      bDesiredDirection = SOUTHEAST;
+    case Enum175.INSERTION_CODE_NORTH:
+      bDesiredDirection = Enum245.SOUTHEAST;
       break;
-    case INSERTION_CODE_EAST:
-      bDesiredDirection = SOUTHWEST;
+    case Enum175.INSERTION_CODE_EAST:
+      bDesiredDirection = Enum245.SOUTHWEST;
       break;
-    case INSERTION_CODE_SOUTH:
-      bDesiredDirection = NORTHWEST;
+    case Enum175.INSERTION_CODE_SOUTH:
+      bDesiredDirection = Enum245.NORTHWEST;
       break;
-    case INSERTION_CODE_WEST:
-      bDesiredDirection = NORTHEAST;
+    case Enum175.INSERTION_CODE_WEST:
+      bDesiredDirection = Enum245.NORTHEAST;
       break;
-    case INSERTION_CODE_GRIDNO:
+    case Enum175.INSERTION_CODE_GRIDNO:
       break;
     default:
       AssertMsg(0, "Illegal direction passed to AddCreaturesToBattle()");
       break;
   }
 
-  if (gsCreatureInsertionCode != INSERTION_CODE_GRIDNO) {
+  if (gsCreatureInsertionCode != Enum175.INSERTION_CODE_GRIDNO) {
     ChooseMapEdgepoints(addressof(MapEdgepointInfo), gsCreatureInsertionCode, (ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales));
     ubCurrSlot = 0;
   }
@@ -507,16 +507,16 @@ function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, 
     iRandom = Random(ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales);
     if (ubNumYoungMales && iRandom < ubNumYoungMales) {
       ubNumYoungMales--;
-      pSoldier = TacticalCreateCreature(YAM_MONSTER);
+      pSoldier = TacticalCreateCreature(Enum194.YAM_MONSTER);
     } else if (ubNumYoungFemales && iRandom < (ubNumYoungMales + ubNumYoungFemales)) {
       ubNumYoungFemales--;
-      pSoldier = TacticalCreateCreature(YAF_MONSTER);
+      pSoldier = TacticalCreateCreature(Enum194.YAF_MONSTER);
     } else if (ubNumAdultMales && iRandom < (ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales)) {
       ubNumAdultMales--;
-      pSoldier = TacticalCreateCreature(AM_MONSTER);
+      pSoldier = TacticalCreateCreature(Enum194.AM_MONSTER);
     } else if (ubNumAdultFemales && iRandom < (ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales)) {
       ubNumAdultFemales--;
-      pSoldier = TacticalCreateCreature(ADULTFEMALEMONSTER);
+      pSoldier = TacticalCreateCreature(Enum194.ADULTFEMALEMONSTER);
     } else {
       gsCreatureInsertionCode = 0;
       gsCreatureInsertionGridNo = 0;
@@ -525,7 +525,7 @@ function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, 
       gubYoungFemalesAttackingTown = 0;
       gubAdultMalesAttackingTown = 0;
       gubAdultFemalesAttackingTown = 0;
-      gubCreatureBattleCode = CREATURE_BATTLE_CODE_NONE;
+      gubCreatureBattleCode = Enum129.CREATURE_BATTLE_CODE_NONE;
       gubSectorIDOfCreatureAttack = 0;
       AllTeamsLookForAll(FALSE);
 
@@ -534,9 +534,9 @@ function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, 
     }
     pSoldier.value.ubInsertionDirection = bDesiredDirection;
     // Setup the position
-    pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+    pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
     pSoldier.value.bHunting = TRUE;
-    if (gsCreatureInsertionCode != INSERTION_CODE_GRIDNO) {
+    if (gsCreatureInsertionCode != Enum175.INSERTION_CODE_GRIDNO) {
       if (ubCurrSlot < MapEdgepointInfo.ubNumPoints) {
         // using an edgepoint
         pSoldier.value.usStrategicInsertionData = MapEdgepointInfo.sGridNo[ubCurrSlot++];
@@ -556,7 +556,7 @@ function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, 
   gubYoungFemalesAttackingTown = 0;
   gubAdultMalesAttackingTown = 0;
   gubAdultFemalesAttackingTown = 0;
-  gubCreatureBattleCode = CREATURE_BATTLE_CODE_NONE;
+  gubCreatureBattleCode = Enum129.CREATURE_BATTLE_CODE_NONE;
   gubSectorIDOfCreatureAttack = 0;
   AllTeamsLookForAll(FALSE);
 }
@@ -571,47 +571,47 @@ function ChooseTownSectorToAttack(ubSectorID: UINT8, fOverrideTest: BOOLEAN): vo
   if (!fOverrideTest) {
     iRandom = PreRandom(100);
     switch (ubSectorID) {
-      case SEC_D13: // DRASSEN
+      case Enum123.SEC_D13: // DRASSEN
         if (iRandom < 45)
-          ubSectorID = SEC_D13;
+          ubSectorID = Enum123.SEC_D13;
         else if (iRandom < 70)
-          ubSectorID = SEC_C13;
+          ubSectorID = Enum123.SEC_C13;
         else
-          ubSectorID = SEC_B13;
+          ubSectorID = Enum123.SEC_B13;
         break;
-      case SEC_H3: // GRUMM
+      case Enum123.SEC_H3: // GRUMM
         if (iRandom < 35)
-          ubSectorID = SEC_H3;
+          ubSectorID = Enum123.SEC_H3;
         else if (iRandom < 55)
-          ubSectorID = SEC_H2;
+          ubSectorID = Enum123.SEC_H2;
         else if (iRandom < 70)
-          ubSectorID = SEC_G2;
+          ubSectorID = Enum123.SEC_G2;
         else if (iRandom < 85)
-          ubSectorID = SEC_H1;
+          ubSectorID = Enum123.SEC_H1;
         else
-          ubSectorID = SEC_G1;
+          ubSectorID = Enum123.SEC_G1;
         break;
-      case SEC_H8: // CAMBRIA
+      case Enum123.SEC_H8: // CAMBRIA
         if (iRandom < 35)
-          ubSectorID = SEC_H8;
+          ubSectorID = Enum123.SEC_H8;
         else if (iRandom < 55)
-          ubSectorID = SEC_G8;
+          ubSectorID = Enum123.SEC_G8;
         else if (iRandom < 70)
-          ubSectorID = SEC_F8;
+          ubSectorID = Enum123.SEC_F8;
         else if (iRandom < 85)
-          ubSectorID = SEC_G9;
+          ubSectorID = Enum123.SEC_G9;
         else
-          ubSectorID = SEC_F9;
+          ubSectorID = Enum123.SEC_F9;
         break;
-      case SEC_I14: // ALMA
+      case Enum123.SEC_I14: // ALMA
         if (iRandom < 45)
-          ubSectorID = SEC_I14;
+          ubSectorID = Enum123.SEC_I14;
         else if (iRandom < 65)
-          ubSectorID = SEC_I13;
+          ubSectorID = Enum123.SEC_I13;
         else if (iRandom < 85)
-          ubSectorID = SEC_H14;
+          ubSectorID = Enum123.SEC_H14;
         else
-          ubSectorID = SEC_H13;
+          ubSectorID = Enum123.SEC_H13;
         break;
       default:
         Assert(0);
@@ -619,60 +619,60 @@ function ChooseTownSectorToAttack(ubSectorID: UINT8, fOverrideTest: BOOLEAN): vo
     }
   }
   switch (ubSectorID) {
-    case SEC_D13: // DRASSEN
-      gsCreatureInsertionCode = INSERTION_CODE_GRIDNO;
+    case Enum123.SEC_D13: // DRASSEN
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
       gsCreatureInsertionGridNo = 20703;
       break;
-    case SEC_C13:
-      gsCreatureInsertionCode = INSERTION_CODE_SOUTH;
+    case Enum123.SEC_C13:
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_SOUTH;
       break;
-    case SEC_B13:
-      gsCreatureInsertionCode = INSERTION_CODE_SOUTH;
+    case Enum123.SEC_B13:
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_SOUTH;
       break;
-    case SEC_H3: // GRUMM
-      gsCreatureInsertionCode = INSERTION_CODE_GRIDNO;
+    case Enum123.SEC_H3: // GRUMM
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
       gsCreatureInsertionGridNo = 10303;
       break;
-    case SEC_H2:
-      gsCreatureInsertionCode = INSERTION_CODE_EAST;
+    case Enum123.SEC_H2:
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_EAST;
       break;
-    case SEC_G2:
-      gsCreatureInsertionCode = INSERTION_CODE_SOUTH;
+    case Enum123.SEC_G2:
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_SOUTH;
       break;
-    case SEC_H1:
-      gsCreatureInsertionCode = INSERTION_CODE_EAST;
+    case Enum123.SEC_H1:
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_EAST;
       break;
-    case SEC_G1:
-      gsCreatureInsertionCode = INSERTION_CODE_SOUTH;
+    case Enum123.SEC_G1:
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_SOUTH;
       break;
-    case SEC_H8: // CAMBRIA
-      gsCreatureInsertionCode = INSERTION_CODE_GRIDNO;
+    case Enum123.SEC_H8: // CAMBRIA
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
       gsCreatureInsertionGridNo = 13005;
       break;
-    case SEC_G8:
-      gsCreatureInsertionCode = INSERTION_CODE_SOUTH;
+    case Enum123.SEC_G8:
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_SOUTH;
       break;
-    case SEC_F8:
-      gsCreatureInsertionCode = INSERTION_CODE_SOUTH;
+    case Enum123.SEC_F8:
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_SOUTH;
       break;
-    case SEC_G9:
-      gsCreatureInsertionCode = INSERTION_CODE_WEST;
+    case Enum123.SEC_G9:
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_WEST;
       break;
-    case SEC_F9:
-      gsCreatureInsertionCode = INSERTION_CODE_SOUTH;
+    case Enum123.SEC_F9:
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_SOUTH;
       break;
-    case SEC_I14: // ALMA
-      gsCreatureInsertionCode = INSERTION_CODE_GRIDNO;
+    case Enum123.SEC_I14: // ALMA
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
       gsCreatureInsertionGridNo = 9726;
       break;
-    case SEC_I13:
-      gsCreatureInsertionCode = INSERTION_CODE_EAST;
+    case Enum123.SEC_I13:
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_EAST;
       break;
-    case SEC_H14:
-      gsCreatureInsertionCode = INSERTION_CODE_SOUTH;
+    case Enum123.SEC_H14:
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_SOUTH;
       break;
-    case SEC_H13:
-      gsCreatureInsertionCode = INSERTION_CODE_EAST;
+    case Enum123.SEC_H13:
+      gsCreatureInsertionCode = Enum175.INSERTION_CODE_EAST;
       break;
     default:
       return;
@@ -688,11 +688,11 @@ function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: BOOLEAN): void {
 
   if (gfWorldLoaded && gTacticalStatus.fEnemyInSector) {
     // Battle currently in progress, repost the event
-    AddStrategicEvent(EVENT_CREATURE_ATTACK, GetWorldTotalMin() + Random(10), ubSectorID);
+    AddStrategicEvent(Enum132.EVENT_CREATURE_ATTACK, GetWorldTotalMin() + Random(10), ubSectorID);
     return;
   }
 
-  gubCreatureBattleCode = CREATURE_BATTLE_CODE_NONE;
+  gubCreatureBattleCode = Enum129.CREATURE_BATTLE_CODE_NONE;
 
   ubSectorX = ((ubSectorID % 16) + 1);
   ubSectorY = ((ubSectorID / 16) + 1);
@@ -728,17 +728,17 @@ function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: BOOLEAN): void {
     if (ubSectorX == gWorldSectorX && ubSectorY == gWorldSectorY && !gbWorldSectorZ) {
       // This is the currently loaded sector.  All we have to do is change the music and insert
       // the creatures tactically.
-      if (guiCurrentScreen == GAME_SCREEN) {
-        gubCreatureBattleCode = CREATURE_BATTLE_CODE_TACTICALLYADD;
+      if (guiCurrentScreen == Enum26.GAME_SCREEN) {
+        gubCreatureBattleCode = Enum129.CREATURE_BATTLE_CODE_TACTICALLYADD;
       } else {
-        gubCreatureBattleCode = CREATURE_BATTLE_CODE_PREBATTLEINTERFACE;
+        gubCreatureBattleCode = Enum129.CREATURE_BATTLE_CODE_PREBATTLEINTERFACE;
       }
     } else {
-      gubCreatureBattleCode = CREATURE_BATTLE_CODE_PREBATTLEINTERFACE;
+      gubCreatureBattleCode = Enum129.CREATURE_BATTLE_CODE_PREBATTLEINTERFACE;
     }
   } else if (CountAllMilitiaInSector(ubSectorX, ubSectorY)) {
     // we have militia in the sector
-    gubCreatureBattleCode = CREATURE_BATTLE_CODE_AUTORESOLVE;
+    gubCreatureBattleCode = Enum129.CREATURE_BATTLE_CODE_AUTORESOLVE;
   } else if (!StrategicMap[ubSectorX + MAP_WORLD_X * ubSectorY].fEnemyControlled) {
     // player controlled sector -- eat some civilians
     AdjustLoyaltyForCivsEatenByMonsters(ubSectorX, ubSectorY, gubNumCreaturesAttackingTown);
@@ -751,14 +751,14 @@ function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: BOOLEAN): void {
 
   SectorInfo[ubSectorID].ubDayOfLastCreatureAttack = GetWorldDay();
   switch (gubCreatureBattleCode) {
-    case CREATURE_BATTLE_CODE_PREBATTLEINTERFACE:
+    case Enum129.CREATURE_BATTLE_CODE_PREBATTLEINTERFACE:
       InitPreBattleInterface(NULL, TRUE);
       break;
-    case CREATURE_BATTLE_CODE_AUTORESOLVE:
+    case Enum129.CREATURE_BATTLE_CODE_AUTORESOLVE:
       gfAutomaticallyStartAutoResolve = TRUE;
       InitPreBattleInterface(NULL, TRUE);
       break;
-    case CREATURE_BATTLE_CODE_TACTICALLYADD:
+    case Enum129.CREATURE_BATTLE_CODE_TACTICALLYADD:
       PrepareCreaturesForBattle();
       break;
   }
@@ -775,13 +775,13 @@ function ChooseCreatureQuestStartDay(): void {
   // Post the event.  Once it becomes due, it will setup the queen monster's location, and
   // begin spreading and attacking towns from there.
   switch (gGameOptions.ubDifficultyLevel) {
-    case DIF_LEVEL_EASY:
+    case Enum9.DIF_LEVEL_EASY:
       // AddPeriodStrategicEvent( EVENT_BEGIN_CREATURE_QUEST, (EASY_QUEEN_START_DAY + Random( 1 + EASY_QUEEN_START_BONUS )) * 1440 , 0 );
       break;
-    case DIF_LEVEL_MEDIUM:
+    case Enum9.DIF_LEVEL_MEDIUM:
       // AddPeriodStrategicEvent( EVENT_BEGIN_CREATURE_QUEST, (NORMAL_QUEEN_START_DAY + Random( 1 + NORMAL_QUEEN_START_BONUS )) * 1440, 0 );
       break;
-    case DIF_LEVEL_HARD:
+    case Enum9.DIF_LEVEL_HARD:
       // AddPeriodStrategicEvent( EVENT_BEGIN_CREATURE_QUEST, (HARD_QUEEN_START_DAY + Random( 1 + HARD_QUEEN_START_BONUS )) * 1440, 0 );
       break;
   }
@@ -805,7 +805,7 @@ function ClearCreatureQuest(): void {
   // This will remove all of the underground sector information and reinitialize it.
   // The only part that doesn't get added are the queen's lair.
   BuildUndergroundSectorInfoList();
-  DeleteAllStrategicEventsOfType(EVENT_BEGIN_CREATURE_QUEST);
+  DeleteAllStrategicEventsOfType(Enum132.EVENT_BEGIN_CREATURE_QUEST);
   DeleteCreatureDirectives();
 }
 
@@ -858,42 +858,42 @@ function CreaturesInUndergroundSector(ubSectorID: UINT8, ubSectorZ: UINT8): UINT
 }
 
 function MineClearOfMonsters(ubMineIndex: UINT8): BOOLEAN {
-  Assert((ubMineIndex >= 0) && (ubMineIndex < MAX_NUMBER_OF_MINES));
+  Assert((ubMineIndex >= 0) && (ubMineIndex < Enum179.MAX_NUMBER_OF_MINES));
 
   if (!gMineStatus[ubMineIndex].fPrevInvadedByMonsters) {
     switch (ubMineIndex) {
-      case MINE_GRUMM:
-        if (CreaturesInUndergroundSector(SEC_H3, 1))
+      case Enum179.MINE_GRUMM:
+        if (CreaturesInUndergroundSector(Enum123.SEC_H3, 1))
           return FALSE;
-        if (CreaturesInUndergroundSector(SEC_I3, 1))
+        if (CreaturesInUndergroundSector(Enum123.SEC_I3, 1))
           return FALSE;
-        if (CreaturesInUndergroundSector(SEC_I3, 2))
+        if (CreaturesInUndergroundSector(Enum123.SEC_I3, 2))
           return FALSE;
-        if (CreaturesInUndergroundSector(SEC_H3, 2))
+        if (CreaturesInUndergroundSector(Enum123.SEC_H3, 2))
           return FALSE;
-        if (CreaturesInUndergroundSector(SEC_H4, 2))
-          return FALSE;
-        break;
-      case MINE_CAMBRIA:
-        if (CreaturesInUndergroundSector(SEC_H8, 1))
-          return FALSE;
-        if (CreaturesInUndergroundSector(SEC_H9, 1))
+        if (CreaturesInUndergroundSector(Enum123.SEC_H4, 2))
           return FALSE;
         break;
-      case MINE_ALMA:
-        if (CreaturesInUndergroundSector(SEC_I14, 1))
+      case Enum179.MINE_CAMBRIA:
+        if (CreaturesInUndergroundSector(Enum123.SEC_H8, 1))
           return FALSE;
-        if (CreaturesInUndergroundSector(SEC_J14, 1))
-          return FALSE;
-        break;
-      case MINE_DRASSEN:
-        if (CreaturesInUndergroundSector(SEC_D13, 1))
-          return FALSE;
-        if (CreaturesInUndergroundSector(SEC_E13, 1))
+        if (CreaturesInUndergroundSector(Enum123.SEC_H9, 1))
           return FALSE;
         break;
-      case MINE_CHITZENA:
-      case MINE_SAN_MONA:
+      case Enum179.MINE_ALMA:
+        if (CreaturesInUndergroundSector(Enum123.SEC_I14, 1))
+          return FALSE;
+        if (CreaturesInUndergroundSector(Enum123.SEC_J14, 1))
+          return FALSE;
+        break;
+      case Enum179.MINE_DRASSEN:
+        if (CreaturesInUndergroundSector(Enum123.SEC_D13, 1))
+          return FALSE;
+        if (CreaturesInUndergroundSector(Enum123.SEC_E13, 1))
+          return FALSE;
+        break;
+      case Enum179.MINE_CHITZENA:
+      case Enum179.MINE_SAN_MONA:
         // these are never attacked
         break;
 
@@ -952,19 +952,19 @@ function DetermineCreatureTownCompositionBasedOnTacticalInformation(pubNumCreatu
     pSoldier = MercPtrs[i];
     if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife) {
       switch (pSoldier.value.ubBodyType) {
-        case ADULTFEMALEMONSTER:
+        case Enum194.ADULTFEMALEMONSTER:
           (pubNumCreatures.value)++;
           (pubNumAdultFemales.value)++;
           break;
-        case AM_MONSTER:
+        case Enum194.AM_MONSTER:
           (pubNumCreatures.value)++;
           (pubNumAdultMales.value)++;
           break;
-        case YAF_MONSTER:
+        case Enum194.YAF_MONSTER:
           (pubNumCreatures.value)++;
           (pubNumYoungFemales.value)++;
           break;
-        case YAM_MONSTER:
+        case Enum194.YAM_MONSTER:
           (pubNumCreatures.value)++;
           (pubNumYoungMales.value)++;
           break;
@@ -1024,13 +1024,13 @@ function PrepareCreaturesForBattle(): BOOLEAN {
   } else {
     // creatures are attacking a town sector
     gfUseCreatureMusic = TRUE;
-    SetMusicMode(MUSIC_TACTICAL_NOTHING);
-    ubCreatureHabitat = MINE_EXIT;
+    SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
+    ubCreatureHabitat = Enum128.MINE_EXIT;
     ubNumCreatures = gubNumCreaturesAttackingTown;
   }
 
   switch (ubCreatureHabitat) {
-    case QUEEN_LAIR:
+    case Enum128.QUEEN_LAIR:
       fQueen = TRUE;
       ubLarvaePercentage = 20;
       ubInfantPercentage = 40;
@@ -1039,7 +1039,7 @@ function PrepareCreaturesForBattle(): BOOLEAN {
       ubAdultMalePercentage = 30;
       ubAdultFemalePercentage = 10;
       break;
-    case LAIR:
+    case Enum128.LAIR:
       fQueen = FALSE;
       ubLarvaePercentage = 15;
       ubInfantPercentage = 35;
@@ -1048,7 +1048,7 @@ function PrepareCreaturesForBattle(): BOOLEAN {
       ubAdultMalePercentage = 25;
       ubAdultFemalePercentage = 10;
       break;
-    case LAIR_ENTRANCE:
+    case Enum128.LAIR_ENTRANCE:
       fQueen = FALSE;
       ubLarvaePercentage = 0;
       ubInfantPercentage = 15;
@@ -1057,7 +1057,7 @@ function PrepareCreaturesForBattle(): BOOLEAN {
       ubAdultMalePercentage = 35;
       ubAdultFemalePercentage = 10;
       break;
-    case INNER_MINE:
+    case Enum128.INNER_MINE:
       fQueen = FALSE;
       ubLarvaePercentage = 0;
       ubInfantPercentage = 0;
@@ -1066,8 +1066,8 @@ function PrepareCreaturesForBattle(): BOOLEAN {
       ubAdultMalePercentage = 10;
       ubAdultFemalePercentage = 30;
       break;
-    case OUTER_MINE:
-    case MINE_EXIT:
+    case Enum128.OUTER_MINE:
+    case Enum128.MINE_EXIT:
       fQueen = FALSE;
       ubLarvaePercentage = 0;
       ubInfantPercentage = 0;
@@ -1127,14 +1127,14 @@ function PrepareCreaturesForBattle(): BOOLEAN {
   }
 
   switch (gubCreatureBattleCode) {
-    case CREATURE_BATTLE_CODE_NONE: // in the mines
+    case Enum129.CREATURE_BATTLE_CODE_NONE: // in the mines
       AddSoldierInitListCreatures(fQueen, ubNumLarvae, ubNumInfants, ubNumYoungMales, ubNumYoungFemales, ubNumAdultMales, ubNumAdultFemales);
       break;
-    case CREATURE_BATTLE_CODE_TACTICALLYADD: // creature attacking a town sector
-    case CREATURE_BATTLE_CODE_PREBATTLEINTERFACE:
+    case Enum129.CREATURE_BATTLE_CODE_TACTICALLYADD: // creature attacking a town sector
+    case Enum129.CREATURE_BATTLE_CODE_PREBATTLEINTERFACE:
       AddCreaturesToBattle(ubNumYoungMales, ubNumYoungFemales, ubNumAdultMales, ubNumAdultFemales);
       break;
-    case CREATURE_BATTLE_CODE_AUTORESOLVE:
+    case Enum129.CREATURE_BATTLE_CODE_AUTORESOLVE:
       return FALSE;
   }
   return TRUE;
@@ -1143,25 +1143,25 @@ function PrepareCreaturesForBattle(): BOOLEAN {
 function CreatureNightPlanning(): void {
   // Check the populations of the mine exits, and factor a chance for them to attack at night.
   let ubNumCreatures: UINT8;
-  ubNumCreatures = CreaturesInUndergroundSector(SEC_H3, 1);
+  ubNumCreatures = CreaturesInUndergroundSector(Enum123.SEC_H3, 1);
   if (ubNumCreatures > 1 && ubNumCreatures * 10 > PreRandom(100)) {
     // 10% chance for each creature to decide it's time to attack.
-    AddStrategicEvent(EVENT_CREATURE_ATTACK, GetWorldTotalMin() + 1 + PreRandom(429), SEC_H3);
+    AddStrategicEvent(Enum132.EVENT_CREATURE_ATTACK, GetWorldTotalMin() + 1 + PreRandom(429), Enum123.SEC_H3);
   }
-  ubNumCreatures = CreaturesInUndergroundSector(SEC_D13, 1);
+  ubNumCreatures = CreaturesInUndergroundSector(Enum123.SEC_D13, 1);
   if (ubNumCreatures > 1 && ubNumCreatures * 10 > PreRandom(100)) {
     // 10% chance for each creature to decide it's time to attack.
-    AddStrategicEvent(EVENT_CREATURE_ATTACK, GetWorldTotalMin() + 1 + PreRandom(429), SEC_D13);
+    AddStrategicEvent(Enum132.EVENT_CREATURE_ATTACK, GetWorldTotalMin() + 1 + PreRandom(429), Enum123.SEC_D13);
   }
-  ubNumCreatures = CreaturesInUndergroundSector(SEC_I14, 1);
+  ubNumCreatures = CreaturesInUndergroundSector(Enum123.SEC_I14, 1);
   if (ubNumCreatures > 1 && ubNumCreatures * 10 > PreRandom(100)) {
     // 10% chance for each creature to decide it's time to attack.
-    AddStrategicEvent(EVENT_CREATURE_ATTACK, GetWorldTotalMin() + 1 + PreRandom(429), SEC_I14);
+    AddStrategicEvent(Enum132.EVENT_CREATURE_ATTACK, GetWorldTotalMin() + 1 + PreRandom(429), Enum123.SEC_I14);
   }
-  ubNumCreatures = CreaturesInUndergroundSector(SEC_H8, 1);
+  ubNumCreatures = CreaturesInUndergroundSector(Enum123.SEC_H8, 1);
   if (ubNumCreatures > 1 && ubNumCreatures * 10 > PreRandom(100)) {
     // 10% chance for each creature to decide it's time to attack.
-    AddStrategicEvent(EVENT_CREATURE_ATTACK, GetWorldTotalMin() + 1 + PreRandom(429), SEC_H8);
+    AddStrategicEvent(Enum132.EVENT_CREATURE_ATTACK, GetWorldTotalMin() + 1 + PreRandom(429), Enum123.SEC_H8);
   }
 }
 
@@ -1173,16 +1173,16 @@ function CheckConditionsForTriggeringCreatureQuest(sSectorX: INT16, sSectorY: IN
     return; // Creature quest already begun
 
   // Count the number of "infectible mines" the player occupies
-  if (!StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(SEC_D13)].fEnemyControlled) {
+  if (!StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(Enum123.SEC_D13)].fEnemyControlled) {
     ubValidMines++;
   }
-  if (!StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(SEC_H8)].fEnemyControlled) {
+  if (!StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(Enum123.SEC_H8)].fEnemyControlled) {
     ubValidMines++;
   }
-  if (!StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(SEC_I14)].fEnemyControlled) {
+  if (!StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(Enum123.SEC_I14)].fEnemyControlled) {
     ubValidMines++;
   }
-  if (!StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(SEC_H3)].fEnemyControlled) {
+  if (!StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(Enum123.SEC_H3)].fEnemyControlled) {
     ubValidMines++;
   }
 
@@ -1274,7 +1274,7 @@ function LoadCreatureDirectives(hFile: HWFILE, uiSavedGameVersion: UINT32): BOOL
 }
 
 function ForceCreaturesToAvoidMineTemporarily(ubMineIndex: UINT8): void {
-  gMineStatus[MINE_GRUMM].usValidDayCreaturesCanInfest = (GetWorldDay() + 2);
+  gMineStatus[Enum179.MINE_GRUMM].usValidDayCreaturesCanInfest = (GetWorldDay() + 2);
 }
 
 function PlayerGroupIsInACreatureInfestedMine(): BOOLEAN {

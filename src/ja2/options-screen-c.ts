@@ -103,8 +103,8 @@ let gfRedrawOptionsScreen: BOOLEAN = TRUE;
 let gzSavedGameName: CHAR8[] /* [128] */;
 let gfEnteredFromMapScreen: BOOLEAN = FALSE;
 
-let guiOptionsScreen: UINT32 = OPTIONS_SCREEN;
-let guiPreviousOptionScreen: UINT32 = OPTIONS_SCREEN;
+let guiOptionsScreen: UINT32 = Enum26.OPTIONS_SCREEN;
+let guiPreviousOptionScreen: UINT32 = Enum26.OPTIONS_SCREEN;
 
 let gfExitOptionsDueToMessageBox: BOOLEAN = FALSE;
 let gfExitOptionsAfterMessageBox: BOOLEAN = FALSE;
@@ -242,7 +242,7 @@ function EnterOptionsScreen(): BOOLEAN {
   // Stop ambients...
   StopAmbients();
 
-  guiOptionsScreen = OPTIONS_SCREEN;
+  guiOptionsScreen = Enum26.OPTIONS_SCREEN;
 
   // Init the slider bar;
   InitSlider();
@@ -262,31 +262,31 @@ function EnterOptionsScreen(): BOOLEAN {
 
   // load button, title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_OPTIONHEADER);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_OPTIONHEADER);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiOptionsAddOnImages)));
 
   // Save game button
   giOptionsButtonImages = LoadButtonImage("INTERFACE\\OptionScreenAddons.sti", -1, 2, -1, 3, -1);
-  guiOptGotoSaveGameBtn = CreateIconAndTextButton(giOptionsButtonImages, zOptionsText[OPT_SAVE_GAME], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, OPT_SAVE_BTN_X, OPT_SAVE_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnOptGotoSaveGameCallback);
-  SpecifyDisabledButtonStyle(guiOptGotoSaveGameBtn, DISABLED_STYLE_HATCHED);
-  if (guiPreviousOptionScreen == MAINMENU_SCREEN || !CanGameBeSaved()) {
+  guiOptGotoSaveGameBtn = CreateIconAndTextButton(giOptionsButtonImages, zOptionsText[Enum372.OPT_SAVE_GAME], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, OPT_SAVE_BTN_X, OPT_SAVE_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnOptGotoSaveGameCallback);
+  SpecifyDisabledButtonStyle(guiOptGotoSaveGameBtn, Enum29.DISABLED_STYLE_HATCHED);
+  if (guiPreviousOptionScreen == Enum26.MAINMENU_SCREEN || !CanGameBeSaved()) {
     DisableButton(guiOptGotoSaveGameBtn);
   }
 
   // Load game button
   giGotoLoadBtnImage = UseLoadedButtonImage(giOptionsButtonImages, -1, 2, -1, 3, -1);
-  guiOptGotoLoadGameBtn = CreateIconAndTextButton(giGotoLoadBtnImage, zOptionsText[OPT_LOAD_GAME], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, OPT_LOAD_BTN_X, OPT_LOAD_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnOptGotoLoadGameCallback);
+  guiOptGotoLoadGameBtn = CreateIconAndTextButton(giGotoLoadBtnImage, zOptionsText[Enum372.OPT_LOAD_GAME], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, OPT_LOAD_BTN_X, OPT_LOAD_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnOptGotoLoadGameCallback);
   //	SpecifyDisabledButtonStyle( guiBobbyRAcceptOrder, DISABLED_STYLE_SHADED );
 
   // Quit to main menu button
   giQuitBtnImage = UseLoadedButtonImage(giOptionsButtonImages, -1, 2, -1, 3, -1);
-  guiQuitButton = CreateIconAndTextButton(giQuitBtnImage, zOptionsText[OPT_MAIN_MENU], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, OPT_QUIT_BTN_X, OPT_QUIT_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnOptQuitCallback);
-  SpecifyDisabledButtonStyle(guiQuitButton, DISABLED_STYLE_HATCHED);
+  guiQuitButton = CreateIconAndTextButton(giQuitBtnImage, zOptionsText[Enum372.OPT_MAIN_MENU], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, OPT_QUIT_BTN_X, OPT_QUIT_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnOptQuitCallback);
+  SpecifyDisabledButtonStyle(guiQuitButton, Enum29.DISABLED_STYLE_HATCHED);
   //	DisableButton( guiQuitButton );
 
   // Done button
   giDoneBtnImage = UseLoadedButtonImage(giOptionsButtonImages, -1, 2, -1, 3, -1);
-  guiDoneButton = CreateIconAndTextButton(giDoneBtnImage, zOptionsText[OPT_DONE], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, OPT_DONE_BTN_X, OPT_DONE_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnDoneCallback);
+  guiDoneButton = CreateIconAndTextButton(giDoneBtnImage, zOptionsText[Enum372.OPT_DONE], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, OPT_DONE_BTN_X, OPT_DONE_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnDoneCallback);
   //	SpecifyDisabledButtonStyle( guiBobbyRAcceptOrder, DISABLED_STYLE_SHADED );
 
   //
@@ -299,7 +299,7 @@ function EnterOptionsScreen(): BOOLEAN {
   gubFirstColOfOptions = OPT_FIRST_COLUMN_TOGGLE_CUT_OFF;
   for (cnt = 0; cnt < gubFirstColOfOptions; cnt++) {
     // if this is the blood and gore option, and we are to hide the option
-    if (cnt == TOPTION_BLOOD_N_GORE && gfHideBloodAndGoreOption) {
+    if (cnt == Enum8.TOPTION_BLOOD_N_GORE && gfHideBloodAndGoreOption) {
       gubFirstColOfOptions++;
 
       // advance to the next
@@ -318,12 +318,12 @@ function EnterOptionsScreen(): BOOLEAN {
       usTextWidth = OPT_TOGGLE_BOX_TEXT_WIDTH;
 
       // Create mouse regions for the option toggle text
-      MSYS_DefineRegion(addressof(gSelectedOptionTextRegion[cnt]), OPT_TOGGLE_BOX_FIRST_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_FIRST_COL_TEXT_X + usTextWidth), (usPosY + usTextHeight * ubNumLines), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
+      MSYS_DefineRegion(addressof(gSelectedOptionTextRegion[cnt]), OPT_TOGGLE_BOX_FIRST_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_FIRST_COL_TEXT_X + usTextWidth), (usPosY + usTextHeight * ubNumLines), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
       MSYS_AddRegion(addressof(gSelectedOptionTextRegion[cnt]));
       MSYS_SetRegionUserData(addressof(gSelectedOptionTextRegion[cnt]), 0, cnt);
     } else {
       // Create mouse regions for the option toggle text
-      MSYS_DefineRegion(addressof(gSelectedOptionTextRegion[cnt]), OPT_TOGGLE_BOX_FIRST_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_FIRST_COL_TEXT_X + usTextWidth), (usPosY + usTextHeight), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
+      MSYS_DefineRegion(addressof(gSelectedOptionTextRegion[cnt]), OPT_TOGGLE_BOX_FIRST_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_FIRST_COL_TEXT_X + usTextWidth), (usPosY + usTextHeight), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
       MSYS_AddRegion(addressof(gSelectedOptionTextRegion[cnt]));
       MSYS_SetRegionUserData(addressof(gSelectedOptionTextRegion[cnt]), 0, cnt);
     }
@@ -336,7 +336,7 @@ function EnterOptionsScreen(): BOOLEAN {
 
   // Create the 2nd column of check boxes
   usPosY = OPT_TOGGLE_BOX_FIRST_COLUMN_START_Y;
-  for (cnt = gubFirstColOfOptions; cnt < NUM_GAME_OPTIONS; cnt++) {
+  for (cnt = gubFirstColOfOptions; cnt < Enum8.NUM_GAME_OPTIONS; cnt++) {
     // Check box to toggle tracking mode
     guiOptionsToggles[cnt] = CreateCheckBoxButton(OPT_TOGGLE_BOX_SECOND_COLUMN_X, usPosY, "INTERFACE\\OptionsCheckBoxes.sti", MSYS_PRIORITY_HIGH + 10, BtnOptionsTogglesCallback);
     MSYS_SetBtnUserData(guiOptionsToggles[cnt], 0, cnt);
@@ -353,11 +353,11 @@ function EnterOptionsScreen(): BOOLEAN {
 
       usTextWidth = OPT_TOGGLE_BOX_TEXT_WIDTH;
 
-      MSYS_DefineRegion(addressof(gSelectedOptionTextRegion[cnt]), OPT_TOGGLE_BOX_SECOND_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_SECOND_TEXT_X + usTextWidth), (usPosY + usTextHeight * ubNumLines), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
+      MSYS_DefineRegion(addressof(gSelectedOptionTextRegion[cnt]), OPT_TOGGLE_BOX_SECOND_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_SECOND_TEXT_X + usTextWidth), (usPosY + usTextHeight * ubNumLines), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
       MSYS_AddRegion(addressof(gSelectedOptionTextRegion[cnt]));
       MSYS_SetRegionUserData(addressof(gSelectedOptionTextRegion[cnt]), 0, cnt);
     } else {
-      MSYS_DefineRegion(addressof(gSelectedOptionTextRegion[cnt]), OPT_TOGGLE_BOX_SECOND_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_SECOND_TEXT_X + usTextWidth), (usPosY + usTextHeight), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
+      MSYS_DefineRegion(addressof(gSelectedOptionTextRegion[cnt]), OPT_TOGGLE_BOX_SECOND_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_SECOND_TEXT_X + usTextWidth), (usPosY + usTextHeight), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
       MSYS_AddRegion(addressof(gSelectedOptionTextRegion[cnt]));
       MSYS_SetRegionUserData(addressof(gSelectedOptionTextRegion[cnt]), 0, cnt);
     }
@@ -369,24 +369,24 @@ function EnterOptionsScreen(): BOOLEAN {
   }
 
   // Create a mouse region so when the user leaves a togglebox text region we can detect it then unselect the region
-  MSYS_DefineRegion(addressof(gSelectedToggleBoxAreaRegion), 0, 0, 640, 480, MSYS_PRIORITY_NORMAL, CURSOR_NORMAL, SelectedToggleBoxAreaRegionMovementCallBack, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(gSelectedToggleBoxAreaRegion), 0, 0, 640, 480, MSYS_PRIORITY_NORMAL, Enum317.CURSOR_NORMAL, SelectedToggleBoxAreaRegionMovementCallBack, MSYS_NO_CALLBACK);
   MSYS_AddRegion(addressof(gSelectedToggleBoxAreaRegion));
 
   // Render the scene before adding the slider boxes
   RenderOptionsScreen();
 
   // Add a slider bar for the Sound Effects
-  guiSoundEffectsSliderID = AddSlider(SLIDER_VERTICAL_STEEL, CURSOR_NORMAL, OPT_SOUND_EFFECTS_SLIDER_X, OPT_SOUND_EFFECTS_SLIDER_Y, OPT_SLIDER_BAR_SIZE, 127, MSYS_PRIORITY_HIGH, SoundFXSliderChangeCallBack, 0);
+  guiSoundEffectsSliderID = AddSlider(Enum329.SLIDER_VERTICAL_STEEL, Enum317.CURSOR_NORMAL, OPT_SOUND_EFFECTS_SLIDER_X, OPT_SOUND_EFFECTS_SLIDER_Y, OPT_SLIDER_BAR_SIZE, 127, MSYS_PRIORITY_HIGH, SoundFXSliderChangeCallBack, 0);
   AssertMsg(guiSoundEffectsSliderID, "Failed to AddSlider");
   SetSliderValue(guiSoundEffectsSliderID, GetSoundEffectsVolume());
 
   // Add a slider bar for the Speech
-  guiSpeechSliderID = AddSlider(SLIDER_VERTICAL_STEEL, CURSOR_NORMAL, OPT_SPEECH_SLIDER_X, OPT_SPEECH_SLIDER_Y, OPT_SLIDER_BAR_SIZE, 127, MSYS_PRIORITY_HIGH, SpeechSliderChangeCallBack, 0);
+  guiSpeechSliderID = AddSlider(Enum329.SLIDER_VERTICAL_STEEL, Enum317.CURSOR_NORMAL, OPT_SPEECH_SLIDER_X, OPT_SPEECH_SLIDER_Y, OPT_SLIDER_BAR_SIZE, 127, MSYS_PRIORITY_HIGH, SpeechSliderChangeCallBack, 0);
   AssertMsg(guiSpeechSliderID, "Failed to AddSlider");
   SetSliderValue(guiSpeechSliderID, GetSpeechVolume());
 
   // Add a slider bar for the Music
-  guiMusicSliderID = AddSlider(SLIDER_VERTICAL_STEEL, CURSOR_NORMAL, OPT_MUSIC_SLIDER_X, OPT_MUSIC_SLIDER_Y, OPT_SLIDER_BAR_SIZE, 127, MSYS_PRIORITY_HIGH, MusicSliderChangeCallBack, 0);
+  guiMusicSliderID = AddSlider(Enum329.SLIDER_VERTICAL_STEEL, Enum317.CURSOR_NORMAL, OPT_MUSIC_SLIDER_X, OPT_MUSIC_SLIDER_Y, OPT_SLIDER_BAR_SIZE, 127, MSYS_PRIORITY_HIGH, MusicSliderChangeCallBack, 0);
   AssertMsg(guiMusicSliderID, "Failed to AddSlider");
   SetSliderValue(guiMusicSliderID, MusicGetVolume());
 
@@ -405,12 +405,12 @@ function EnterOptionsScreen(): BOOLEAN {
   gbHighLightedOptionText = -1;
 
   // get the status of the tree top option
-  gfSettingOfTreeTopStatusOnEnterOfOptionScreen = gGameSettings.fOptions[TOPTION_TOGGLE_TREE_TOPS];
+  gfSettingOfTreeTopStatusOnEnterOfOptionScreen = gGameSettings.fOptions[Enum8.TOPTION_TOGGLE_TREE_TOPS];
 
   // Get the status of the item glow option
-  gfSettingOfItemGlowStatusOnEnterOfOptionScreen = gGameSettings.fOptions[TOPTION_GLOW_ITEMS];
+  gfSettingOfItemGlowStatusOnEnterOfOptionScreen = gGameSettings.fOptions[Enum8.TOPTION_GLOW_ITEMS];
 
-  gfSettingOfDontAnimateSmoke = gGameSettings.fOptions[TOPTION_ANIMATE_SMOKE];
+  gfSettingOfDontAnimateSmoke = gGameSettings.fOptions[Enum8.TOPTION_ANIMATE_SMOKE];
   return TRUE;
 }
 
@@ -434,7 +434,7 @@ function ExitOptionsScreen(): void {
   // Create the clock mouse region
   CreateMouseRegionForPauseOfClock(CLOCK_REGION_START_X, CLOCK_REGION_START_Y);
 
-  if (guiOptionsScreen == GAME_SCREEN)
+  if (guiOptionsScreen == Enum26.GAME_SCREEN)
     EnterTacticalScreen();
 
   RemoveButton(guiOptGotoSaveGameBtn);
@@ -451,9 +451,9 @@ function ExitOptionsScreen(): void {
   DeleteVideoObjectFromIndex(guiOptionsAddOnImages);
 
   // Remove the toggle buttons
-  for (cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
+  for (cnt = 0; cnt < Enum8.NUM_GAME_OPTIONS; cnt++) {
     // if this is the blood and gore option, and we are to hide the option
-    if (cnt == TOPTION_BLOOD_N_GORE && gfHideBloodAndGoreOption) {
+    if (cnt == Enum8.TOPTION_BLOOD_N_GORE && gfHideBloodAndGoreOption) {
       // advance to the next
       continue;
     }
@@ -479,16 +479,16 @@ function ExitOptionsScreen(): void {
   }
 
   // if the user changed the  TREE TOP option, AND a world is loaded
-  if (gfSettingOfTreeTopStatusOnEnterOfOptionScreen != gGameSettings.fOptions[TOPTION_TOGGLE_TREE_TOPS] && gfWorldLoaded) {
+  if (gfSettingOfTreeTopStatusOnEnterOfOptionScreen != gGameSettings.fOptions[Enum8.TOPTION_TOGGLE_TREE_TOPS] && gfWorldLoaded) {
     SetTreeTopStateForMap();
   }
 
   // if the user has changed the item glow option AND a world is loaded
-  if (gfSettingOfItemGlowStatusOnEnterOfOptionScreen != gGameSettings.fOptions[TOPTION_GLOW_ITEMS] && gfWorldLoaded) {
-    ToggleItemGlow(gGameSettings.fOptions[TOPTION_GLOW_ITEMS]);
+  if (gfSettingOfItemGlowStatusOnEnterOfOptionScreen != gGameSettings.fOptions[Enum8.TOPTION_GLOW_ITEMS] && gfWorldLoaded) {
+    ToggleItemGlow(gGameSettings.fOptions[Enum8.TOPTION_GLOW_ITEMS]);
   }
 
-  if (gfSettingOfDontAnimateSmoke != gGameSettings.fOptions[TOPTION_ANIMATE_SMOKE] && gfWorldLoaded) {
+  if (gfSettingOfDontAnimateSmoke != gGameSettings.fOptions[Enum8.TOPTION_ANIMATE_SMOKE] && gfWorldLoaded) {
     UpdateSmokeEffectGraphics();
   }
 }
@@ -523,7 +523,7 @@ function RenderOptionsScreen(): void {
   // Display the First column of toggles
   for (cnt = 0; cnt < gubFirstColOfOptions; cnt++) {
     // if this is the blood and gore option, and we are to hide the option
-    if (cnt == TOPTION_BLOOD_N_GORE && gfHideBloodAndGoreOption) {
+    if (cnt == Enum8.TOPTION_BLOOD_N_GORE && gfHideBloodAndGoreOption) {
       // advance to the next
       continue;
     }
@@ -541,7 +541,7 @@ function RenderOptionsScreen(): void {
 
   usPosY = OPT_TOGGLE_BOX_SECOND_COLUMN_START_Y + OPT_TOGGLE_TEXT_OFFSET_Y;
   // Display the 2nd column of toggles
-  for (cnt = gubFirstColOfOptions; cnt < NUM_GAME_OPTIONS; cnt++) {
+  for (cnt = gubFirstColOfOptions; cnt < Enum8.NUM_GAME_OPTIONS; cnt++) {
     usWidth = StringPixLength(zOptionsToggleText[cnt], OPT_MAIN_FONT);
 
     // if the string is going to wrap, move the string up a bit
@@ -558,13 +558,13 @@ function RenderOptionsScreen(): void {
   //
 
   // Display the Sound Fx text
-  DisplayWrappedString(OPT_SOUND_FX_TEXT_X, OPT_SOUND_FX_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_MAIN_COLOR, zOptionsText[OPT_SOUND_FX], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(OPT_SOUND_FX_TEXT_X, OPT_SOUND_FX_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_MAIN_COLOR, zOptionsText[Enum372.OPT_SOUND_FX], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Display the Speech text
-  DisplayWrappedString(OPT_SPEECH_TEXT_X, OPT_SPEECH_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_MAIN_COLOR, zOptionsText[OPT_SPEECH], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(OPT_SPEECH_TEXT_X, OPT_SPEECH_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_MAIN_COLOR, zOptionsText[Enum372.OPT_SPEECH], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Display the Music text
-  DisplayWrappedString(OPT_MUSIC_TEXT_X, OPT_MUSIC_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_MAIN_COLOR, zOptionsText[OPT_MUSIC], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(OPT_MUSIC_TEXT_X, OPT_MUSIC_TEXT_Y, OPT_SLIDER_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_MAIN_COLOR, zOptionsText[Enum372.OPT_MUSIC], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   InvalidateRegion(OPTIONS__TOP_LEFT_X, OPTIONS__TOP_LEFT_Y, OPTIONS__BOTTOM_RIGHT_X, OPTIONS__BOTTOM_RIGHT_Y);
 }
@@ -609,7 +609,7 @@ function GetOptionsScreenUserInput(): void {
         case 'S':
           // if the save game button isnt disabled
           if (ButtonList[guiOptGotoSaveGameBtn].value.uiFlags & BUTTON_ENABLED) {
-            SetOptionsExitScreen(SAVE_LOAD_SCREEN);
+            SetOptionsExitScreen(Enum26.SAVE_LOAD_SCREEN);
             gfSaveGame = TRUE;
           }
           break;
@@ -617,7 +617,7 @@ function GetOptionsScreenUserInput(): void {
         // Enter the Load game screen
         case 'l':
         case 'L':
-          SetOptionsExitScreen(SAVE_LOAD_SCREEN);
+          SetOptionsExitScreen(Enum26.SAVE_LOAD_SCREEN);
           gfSaveGame = FALSE;
           break;
       }
@@ -638,7 +638,7 @@ function BtnOptGotoSaveGameCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-    SetOptionsExitScreen(SAVE_LOAD_SCREEN);
+    SetOptionsExitScreen(Enum26.SAVE_LOAD_SCREEN);
     gfSaveGame = TRUE;
 
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
@@ -657,7 +657,7 @@ function BtnOptGotoLoadGameCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-    SetOptionsExitScreen(SAVE_LOAD_SCREEN);
+    SetOptionsExitScreen(Enum26.SAVE_LOAD_SCREEN);
     gfSaveGame = FALSE;
 
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
@@ -677,7 +677,7 @@ function BtnOptQuitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // Confirm the Exit to the main menu screen
-    DoOptionsMessageBox(MSG_BOX_BASIC_STYLE, zOptionsText[OPT_RETURN_TO_MAIN], OPTIONS_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmQuitToMainMenuMessageBoxCallBack);
+    DoOptionsMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zOptionsText[Enum372.OPT_RETURN_TO_MAIN], Enum26.OPTIONS_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmQuitToMainMenuMessageBoxCallBack);
 
     ///		SetOptionsExitScreen( MAINMENU_SCREEN );
 
@@ -755,15 +755,15 @@ function HandleOptionToggle(ubButton: UINT8, fState: BOOLEAN, fDown: BOOLEAN, fP
       DrawCheckBoxButtonOff(guiOptionsToggles[ubButton]);
 
     // check to see if the user is unselecting either the spech or subtitles toggle
-    if (ubButton == TOPTION_SPEECH || ubButton == TOPTION_SUBTITLES) {
+    if (ubButton == Enum8.TOPTION_SPEECH || ubButton == Enum8.TOPTION_SUBTITLES) {
       // make sure that at least of of the toggles is still enabled
-      if (!(ButtonList[guiOptionsToggles[TOPTION_SPEECH]].value.uiFlags & BUTTON_CLICKED_ON)) {
-        if (!(ButtonList[guiOptionsToggles[TOPTION_SUBTITLES]].value.uiFlags & BUTTON_CLICKED_ON)) {
+      if (!(ButtonList[guiOptionsToggles[Enum8.TOPTION_SPEECH]].value.uiFlags & BUTTON_CLICKED_ON)) {
+        if (!(ButtonList[guiOptionsToggles[Enum8.TOPTION_SUBTITLES]].value.uiFlags & BUTTON_CLICKED_ON)) {
           gGameSettings.fOptions[ubButton] = TRUE;
           ButtonList[guiOptionsToggles[ubButton]].value.uiFlags |= BUTTON_CLICKED_ON;
 
           // Confirm the Exit to the main menu screen
-          DoOptionsMessageBox(MSG_BOX_BASIC_STYLE, zOptionsText[OPT_NEED_AT_LEAST_SPEECH_OR_SUBTITLE_OPTION_ON], OPTIONS_SCREEN, MSG_BOX_FLAG_OK, NULL);
+          DoOptionsMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zOptionsText[Enum372.OPT_NEED_AT_LEAST_SPEECH_OR_SUBTITLE_OPTION_ON], Enum26.OPTIONS_SCREEN, MSG_BOX_FLAG_OK, NULL);
           gfExitOptionsDueToMessageBox = FALSE;
         }
       }
@@ -777,10 +777,10 @@ function HandleOptionToggle(ubButton: UINT8, fState: BOOLEAN, fDown: BOOLEAN, fP
   if (fPlaySound) {
     if (fDown) {
       //				case BTN_SND_CLICK_OFF:
-      PlayJA2Sample(BIG_SWITCH3_IN, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
+      PlayJA2Sample(Enum330.BIG_SWITCH3_IN, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
     } else {
       //		case BTN_SND_CLICK_ON:
-      PlayJA2Sample(BIG_SWITCH3_OUT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
+      PlayJA2Sample(Enum330.BIG_SWITCH3_OUT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
     }
   }
 }
@@ -830,7 +830,7 @@ function ConfirmQuitToMainMenuMessageBoxCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_YES) {
     gfEnteredFromMapScreen = FALSE;
     gfExitOptionsAfterMessageBox = TRUE;
-    SetOptionsExitScreen(MAINMENU_SCREEN);
+    SetOptionsExitScreen(Enum26.MAINMENU_SCREEN);
 
     // We want to reinitialize the game
     ReStartingGame();
@@ -843,7 +843,7 @@ function ConfirmQuitToMainMenuMessageBoxCallBack(bExitValue: UINT8): void {
 function SetOptionsScreenToggleBoxes(): void {
   let cnt: UINT8;
 
-  for (cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
+  for (cnt = 0; cnt < Enum8.NUM_GAME_OPTIONS; cnt++) {
     if (gGameSettings.fOptions[cnt])
       ButtonList[guiOptionsToggles[cnt]].value.uiFlags |= BUTTON_CLICKED_ON;
     else
@@ -854,7 +854,7 @@ function SetOptionsScreenToggleBoxes(): void {
 function GetOptionsScreenToggleBoxes(): void {
   let cnt: UINT8;
 
-  for (cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
+  for (cnt = 0; cnt < Enum8.NUM_GAME_OPTIONS; cnt++) {
     if (ButtonList[guiOptionsToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON)
       gGameSettings.fOptions[cnt] = TRUE;
     else
@@ -938,8 +938,8 @@ function HandleHighLightedText(fHighLight: BOOLEAN): void {
     fHighLight = FALSE;
 
   // if the user has the mouse in one of the checkboxes
-  for (ubCnt = 0; ubCnt < NUM_GAME_OPTIONS; ubCnt++) {
-    if (ubCnt == TOPTION_BLOOD_N_GORE && gfHideBloodAndGoreOption) {
+  for (ubCnt = 0; ubCnt < Enum8.NUM_GAME_OPTIONS; ubCnt++) {
+    if (ubCnt == Enum8.TOPTION_BLOOD_N_GORE && gfHideBloodAndGoreOption) {
       // advance to the next
       continue;
     }
@@ -965,7 +965,7 @@ function HandleHighLightedText(fHighLight: BOOLEAN): void {
 
   // If we are to hide the blood and gore option, and we are to highlight an option past the blood and gore option
   // reduce the highlight number by 1
-  if (bHighLight >= TOPTION_BLOOD_N_GORE && gfHideBloodAndGoreOption) {
+  if (bHighLight >= Enum8.TOPTION_BLOOD_N_GORE && gfHideBloodAndGoreOption) {
     bHighLight--;
   }
 
@@ -980,7 +980,7 @@ function HandleHighLightedText(fHighLight: BOOLEAN): void {
 
     // If we are to hide the blood and gore option, and we are to highlight an option past the blood and gore option
     // reduce the highlight number by 1
-    if (bHighLight >= TOPTION_BLOOD_N_GORE && gfHideBloodAndGoreOption) {
+    if (bHighLight >= Enum8.TOPTION_BLOOD_N_GORE && gfHideBloodAndGoreOption) {
       bHighLight++;
     }
 
@@ -1009,7 +1009,7 @@ function SelectedToggleBoxAreaRegionMovementCallBack(pRegion: Pointer<MOUSE_REGI
     let ubCnt: UINT8;
 
     // loop through all the toggle box's and remove the in area flag
-    for (ubCnt = 0; ubCnt < NUM_GAME_OPTIONS; ubCnt++) {
+    for (ubCnt = 0; ubCnt < Enum8.NUM_GAME_OPTIONS; ubCnt++) {
       ButtonList[guiOptionsToggles[ubCnt]].value.Area.uiFlags &= ~MSYS_MOUSE_IN_AREA;
     }
 

@@ -22,7 +22,7 @@ function CaveAtGridNo(iMapIndex: INT32): BOOLEAN {
 }
 
 function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
-  let usType: UINT16 = FIRSTWALL;
+  let usType: UINT16 = Enum313.FIRSTWALL;
   let usIndex: UINT16;
   let usTileIndex: UINT16;
 
@@ -62,7 +62,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0xd1:
     case 0xe1:
     case 0xf1:
-      usType = SECONDWALL;
+      usType = Enum313.SECONDWALL;
       usIndex = 1 + Random(4);
       break;
     case 0x02:
@@ -81,7 +81,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0xd2:
     case 0xe2:
     case 0xf2:
-      usType = SECONDWALL;
+      usType = Enum313.SECONDWALL;
       usIndex = 5 + Random(4);
       break;
     case 0x03:
@@ -110,7 +110,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0xd4:
     case 0xe4:
     case 0xf4:
-      usType = SECONDWALL;
+      usType = Enum313.SECONDWALL;
       usIndex = 9 + Random(4);
       break;
     case 0x05:
@@ -163,7 +163,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0xd8:
     case 0xe8:
     case 0xf8:
-      usType = SECONDWALL;
+      usType = Enum313.SECONDWALL;
       usIndex = 13 + Random(4);
       break;
     case 0x09:
@@ -426,7 +426,7 @@ function AddCave(iMapIndex: INT32, usIndex: UINT16): void {
   if (iMapIndex < 0 || iMapIndex >= NOWHERE)
     return;
   // First toast any existing wall (caves)
-  RemoveAllStructsOfTypeRange(iMapIndex, FIRSTWALL, LASTWALL);
+  RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTWALL, LASTWALL);
   // Now, add this piece
   if (!AddWallToStructLayer(iMapIndex, usIndex, TRUE))
     return;
@@ -557,7 +557,7 @@ function PickAWallPiece(usWallPieceType: UINT16): UINT16 {
   let usVariants: UINT16;
   let usVariantChosen: UINT16;
   let usWallPieceChosen: UINT16 = 0;
-  if (usWallPieceType >= 0 || usWallPieceType < NUM_WALL_TYPES) {
+  if (usWallPieceType >= 0 || usWallPieceType < Enum60.NUM_WALL_TYPES) {
     usVariants = gbWallTileLUT[usWallPieceType][0];
     usVariantChosen = (rand() % usVariants) + 1;
     usWallPieceChosen = gbWallTileLUT[usWallPieceType][usVariantChosen];
@@ -584,7 +584,7 @@ function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType: UINT1
     usWallType = SearchForWallType(iMapIndex);
   }
   switch (ubWallPiece) {
-    case EXTERIOR_TOP:
+    case Enum61.EXTERIOR_TOP:
       iMapIndex -= WORLD_COLS;
       // exterior bottom left corner generated
       if (!gfBasement && GetVerticalWall(iMapIndex - 1) && !GetVerticalWall(iMapIndex + WORLD_COLS - 1)) {
@@ -598,82 +598,82 @@ function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType: UINT1
       {
         // Special case where placing the new wall will generate a corner to the right, so replace
         // the vertical piece with a bottomend.
-        sIndex = PickAWallPiece(EXTERIOR_BOTTOMEND);
+        sIndex = PickAWallPiece(Enum60.EXTERIOR_BOTTOMEND);
         AddToUndoList(iMapIndex);
         GetTileIndexFromTypeSubIndex(usWallType, sIndex, addressof(usTileIndex));
         ReplaceStructIndex(iMapIndex, pStruct.value.usIndex, usTileIndex);
       }
-      ubWallClass = EXTERIOR_L;
+      ubWallClass = Enum60.EXTERIOR_L;
       if (!gfBasement) {
         // All exterior_l walls have shadows.
         GetTileIndexFromTypeSubIndex(usWallType, EXTERIOR_L_SHADOW_INDEX, addressof(usTileIndex));
         AddExclusiveShadow(iMapIndex, usTileIndex);
       }
       break;
-    case EXTERIOR_BOTTOM:
-      ubWallClass = INTERIOR_L;
+    case Enum61.EXTERIOR_BOTTOM:
+      ubWallClass = Enum60.INTERIOR_L;
       if ((pStruct = GetVerticalWall(iMapIndex + WORLD_COLS - 1)) && !GetVerticalWall(iMapIndex - 1)) {
-        sIndex = PickAWallPiece(INTERIOR_EXTENDED);
+        sIndex = PickAWallPiece(Enum60.INTERIOR_EXTENDED);
         AddToUndoList(iMapIndex + WORLD_COLS - 1);
         GetTileIndexFromTypeSubIndex(usWallType, sIndex, addressof(usTileIndex));
         ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct.value.usIndex, usTileIndex);
       }
       break;
-    case EXTERIOR_LEFT:
+    case Enum61.EXTERIOR_LEFT:
       iMapIndex--;
-      ubWallClass = EXTERIOR_R;
+      ubWallClass = Enum60.EXTERIOR_R;
       if (GetHorizontalWall(iMapIndex)) {
         // Special case where placing the new wall will generate a corner.  This piece
         // becomes an exterior bottomend, but nothing else is effected.
-        ubWallClass = EXTERIOR_BOTTOMEND;
+        ubWallClass = Enum60.EXTERIOR_BOTTOMEND;
       }
       if (GetHorizontalWall(iMapIndex - WORLD_COLS + 1)) {
-        if (ubWallClass == EXTERIOR_BOTTOMEND)
-          ubWallClass = EXTERIOR_EXTENDED_BOTTOMEND;
+        if (ubWallClass == Enum60.EXTERIOR_BOTTOMEND)
+          ubWallClass = Enum60.EXTERIOR_EXTENDED_BOTTOMEND;
         else
-          ubWallClass = EXTERIOR_EXTENDED;
+          ubWallClass = Enum60.EXTERIOR_EXTENDED;
       }
       break;
-    case EXTERIOR_RIGHT:
-      ubWallClass = INTERIOR_R;
+    case Enum61.EXTERIOR_RIGHT:
+      ubWallClass = Enum60.INTERIOR_R;
       if (GetHorizontalWall(iMapIndex - WORLD_COLS + 1) && !GetHorizontalWall(iMapIndex - WORLD_COLS)) {
-        ubWallClass = INTERIOR_EXTENDED;
+        ubWallClass = Enum60.INTERIOR_EXTENDED;
       } else if (GetHorizontalWall(iMapIndex) && !GetVerticalWall(iMapIndex + WORLD_COLS)) {
-        ubWallClass = INTERIOR_BOTTOMEND;
+        ubWallClass = Enum60.INTERIOR_BOTTOMEND;
       }
       break;
-    case INTERIOR_TOP:
+    case Enum61.INTERIOR_TOP:
       iMapIndex -= WORLD_COLS;
-      ubWallClass = INTERIOR_L;
+      ubWallClass = Enum60.INTERIOR_L;
       // check for a lower left corner.
       if (pStruct = GetVerticalWall(iMapIndex + WORLD_COLS - 1)) {
         // Replace the piece with an extended piece.
-        sIndex = PickAWallPiece(INTERIOR_EXTENDED);
+        sIndex = PickAWallPiece(Enum60.INTERIOR_EXTENDED);
         AddToUndoList(iMapIndex + WORLD_COLS - 1);
         GetTileIndexFromTypeSubIndex(usWallType, sIndex, addressof(usTileIndex));
         ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct.value.usIndex, usTileIndex);
         // NOTE:  Not yet checking for interior extended bottomend!
       }
       if (pStruct = GetVerticalWall(iMapIndex)) {
-        sIndex = PickAWallPiece(INTERIOR_BOTTOMEND);
+        sIndex = PickAWallPiece(Enum60.INTERIOR_BOTTOMEND);
         AddToUndoList(iMapIndex);
         GetTileIndexFromTypeSubIndex(usWallType, sIndex, addressof(usTileIndex));
         ReplaceStructIndex(iMapIndex, pStruct.value.usIndex, usTileIndex);
       }
       break;
-    case INTERIOR_BOTTOM:
-      ubWallClass = EXTERIOR_L;
+    case Enum61.INTERIOR_BOTTOM:
+      ubWallClass = Enum60.EXTERIOR_L;
       if (pStruct = GetVerticalWall(iMapIndex)) // right corner
       {
         // Special case where placing the new wall will generate a corner to the right, so replace
         // the vertical piece with a bottomend.
-        sIndex = PickAWallPiece(EXTERIOR_BOTTOMEND);
+        sIndex = PickAWallPiece(Enum60.EXTERIOR_BOTTOMEND);
         AddToUndoList(iMapIndex);
         GetTileIndexFromTypeSubIndex(usWallType, sIndex, addressof(usTileIndex));
         ReplaceStructIndex(iMapIndex, pStruct.value.usIndex, usTileIndex);
       }
       if ((pStruct = GetVerticalWall(iMapIndex + WORLD_COLS - 1)) && !GetVerticalWall(iMapIndex - 1)) {
-        sIndex = PickAWallPiece(EXTERIOR_EXTENDED);
+        sIndex = PickAWallPiece(Enum60.EXTERIOR_EXTENDED);
         AddToUndoList(iMapIndex + WORLD_COLS - 1);
         GetTileIndexFromTypeSubIndex(usWallType, sIndex, addressof(usTileIndex));
         ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct.value.usIndex, usTileIndex);
@@ -684,11 +684,11 @@ function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType: UINT1
         AddExclusiveShadow(iMapIndex, usTileIndex);
       }
       break;
-    case INTERIOR_LEFT:
+    case Enum61.INTERIOR_LEFT:
       iMapIndex--;
-      ubWallClass = INTERIOR_R;
+      ubWallClass = Enum60.INTERIOR_R;
       if (GetHorizontalWall(iMapIndex)) {
-        ubWallClass = INTERIOR_BOTTOMEND;
+        ubWallClass = Enum60.INTERIOR_BOTTOMEND;
       }
       if (!gfBasement && GetHorizontalWall(iMapIndex + 1)) {
         AddToUndoList(iMapIndex);
@@ -696,24 +696,24 @@ function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType: UINT1
         AddExclusiveShadow(iMapIndex, usTileIndex);
       }
       if (GetHorizontalWall(iMapIndex - WORLD_COLS + 1)) {
-        if (ubWallClass == INTERIOR_BOTTOMEND)
-          ubWallClass = INTERIOR_EXTENDED_BOTTOMEND;
+        if (ubWallClass == Enum60.INTERIOR_BOTTOMEND)
+          ubWallClass = Enum60.INTERIOR_EXTENDED_BOTTOMEND;
         else
-          ubWallClass = INTERIOR_EXTENDED;
+          ubWallClass = Enum60.INTERIOR_EXTENDED;
       }
       break;
-    case INTERIOR_RIGHT:
-      ubWallClass = EXTERIOR_R;
+    case Enum61.INTERIOR_RIGHT:
+      ubWallClass = Enum60.EXTERIOR_R;
       if (GetHorizontalWall(iMapIndex)) {
         // Special case where placing the new wall will generate a corner.  This piece
         // becomes an exterior bottomend, but nothing else is effected.
-        ubWallClass = EXTERIOR_BOTTOMEND;
+        ubWallClass = Enum60.EXTERIOR_BOTTOMEND;
       }
       if (GetHorizontalWall(iMapIndex - WORLD_COLS + 1)) {
-        if (ubWallClass == EXTERIOR_BOTTOMEND)
-          ubWallClass = EXTERIOR_EXTENDED_BOTTOMEND;
+        if (ubWallClass == Enum60.EXTERIOR_BOTTOMEND)
+          ubWallClass = Enum60.EXTERIOR_EXTENDED_BOTTOMEND;
         else
-          ubWallClass = EXTERIOR_EXTENDED;
+          ubWallClass = Enum60.EXTERIOR_EXTENDED;
       }
       if (!gfBasement && GetHorizontalWall(iMapIndex + 1) && !GetHorizontalWall(iMapIndex) && !FloorAtGridNo(iMapIndex + WORLD_COLS)) {
         GetTileIndexFromTypeSubIndex(usWallType, INTERIOR_BOTTOMEND_SHADOW_INDEX, addressof(usTileIndex));
@@ -827,36 +827,36 @@ function RebuildRoof(iMapIndex: UINT32, usRoofType: UINT16): void {
 
 function BulldozeNature(iMapIndex: UINT32): void {
   AddToUndoList(iMapIndex);
-  RemoveAllStructsOfTypeRange(iMapIndex, FIRSTISTRUCT, LASTISTRUCT);
-  RemoveAllShadowsOfTypeRange(iMapIndex, FIRSTCLIFFSHADOW, LASTCLIFFSHADOW);
-  RemoveAllStructsOfTypeRange(iMapIndex, FIRSTOSTRUCT, LASTOSTRUCT); // outside objects.
-  RemoveAllShadowsOfTypeRange(iMapIndex, FIRSTSHADOW, LASTSHADOW);
-  RemoveAllStructsOfTypeRange(iMapIndex, FIRSTROAD, LASTROAD);
-  RemoveAllObjectsOfTypeRange(iMapIndex, DEBRISROCKS, LASTDEBRIS);
-  RemoveAllObjectsOfTypeRange(iMapIndex, ANOTHERDEBRIS, ANOTHERDEBRIS);
+  RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTISTRUCT, LASTISTRUCT);
+  RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.FIRSTCLIFFSHADOW, LASTCLIFFSHADOW);
+  RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTOSTRUCT, LASTOSTRUCT); // outside objects.
+  RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.FIRSTSHADOW, LASTSHADOW);
+  RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTROAD, LASTROAD);
+  RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.DEBRISROCKS, LASTDEBRIS);
+  RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.ANOTHERDEBRIS, Enum313.ANOTHERDEBRIS);
 }
 
 function EraseRoof(iMapIndex: UINT32): void {
   AddToUndoList(iMapIndex);
-  RemoveAllRoofsOfTypeRange(iMapIndex, FIRSTTEXTURE, LASTITEM);
-  RemoveAllOnRoofsOfTypeRange(iMapIndex, FIRSTTEXTURE, LASTITEM);
-  RemoveAllShadowsOfTypeRange(iMapIndex, FIRSTROOF, LASTSLANTROOF);
+  RemoveAllRoofsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, LASTITEM);
+  RemoveAllOnRoofsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, LASTITEM);
+  RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.FIRSTROOF, LASTSLANTROOF);
 }
 
 function EraseFloor(iMapIndex: UINT32): void {
   AddToUndoList(iMapIndex);
-  RemoveAllLandsOfTypeRange(iMapIndex, FIRSTFLOOR, LASTFLOOR);
+  RemoveAllLandsOfTypeRange(iMapIndex, Enum313.FIRSTFLOOR, LASTFLOOR);
 }
 
 function EraseWalls(iMapIndex: UINT32): void {
   AddToUndoList(iMapIndex);
-  RemoveAllStructsOfTypeRange(iMapIndex, FIRSTTEXTURE, LASTITEM);
-  RemoveAllShadowsOfTypeRange(iMapIndex, FIRSTWALL, LASTWALL);
-  RemoveAllShadowsOfTypeRange(iMapIndex, FIRSTDOORSHADOW, LASTDOORSHADOW);
-  RemoveAllObjectsOfTypeRange(iMapIndex, DEBRISROCKS, LASTDEBRIS);
-  RemoveAllTopmostsOfTypeRange(iMapIndex, WIREFRAMES, WIREFRAMES);
-  RemoveAllObjectsOfTypeRange(iMapIndex, DEBRIS2MISC, DEBRIS2MISC);
-  RemoveAllObjectsOfTypeRange(iMapIndex, ANOTHERDEBRIS, ANOTHERDEBRIS);
+  RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, LASTITEM);
+  RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.FIRSTWALL, LASTWALL);
+  RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.FIRSTDOORSHADOW, LASTDOORSHADOW);
+  RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.DEBRISROCKS, LASTDEBRIS);
+  RemoveAllTopmostsOfTypeRange(iMapIndex, Enum313.WIREFRAMES, Enum313.WIREFRAMES);
+  RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.DEBRIS2MISC, Enum313.DEBRIS2MISC);
+  RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.ANOTHERDEBRIS, Enum313.ANOTHERDEBRIS);
 }
 
 function EraseBuilding(iMapIndex: UINT32): void {
@@ -884,12 +884,12 @@ function EraseFloorOwnedBuildingPieces(iMapIndex: UINT32): void {
   while (pStruct != NULL) {
     if (pStruct.value.usIndex != NO_TILE) {
       GetTileType(pStruct.value.usIndex, addressof(uiTileType));
-      if (uiTileType >= FIRSTWALL && uiTileType <= LASTWALL || uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
+      if (uiTileType >= Enum313.FIRSTWALL && uiTileType <= LASTWALL || uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR) {
         GetWallOrientation(pStruct.value.usIndex, addressof(usWallOrientation));
-        if (usWallOrientation == INSIDE_TOP_RIGHT || usWallOrientation == OUTSIDE_TOP_RIGHT) {
+        if (usWallOrientation == Enum314.INSIDE_TOP_RIGHT || usWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
           AddToUndoList(iMapIndex - 1);
           RemoveStruct(iMapIndex - 1, pStruct.value.usIndex);
-          RemoveAllShadowsOfTypeRange(iMapIndex - 1, FIRSTWALL, LASTWALL);
+          RemoveAllShadowsOfTypeRange(iMapIndex - 1, Enum313.FIRSTWALL, LASTWALL);
           break; // otherwise, it'll crash because pStruct is toast.
         }
       }
@@ -901,12 +901,12 @@ function EraseFloorOwnedBuildingPieces(iMapIndex: UINT32): void {
   while (pStruct != NULL) {
     if (pStruct.value.usIndex != NO_TILE) {
       GetTileType(pStruct.value.usIndex, addressof(uiTileType));
-      if (uiTileType >= FIRSTWALL && uiTileType <= LASTWALL || uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR) {
+      if (uiTileType >= Enum313.FIRSTWALL && uiTileType <= LASTWALL || uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR) {
         GetWallOrientation(pStruct.value.usIndex, addressof(usWallOrientation));
-        if (usWallOrientation == INSIDE_TOP_LEFT || usWallOrientation == OUTSIDE_TOP_LEFT) {
+        if (usWallOrientation == Enum314.INSIDE_TOP_LEFT || usWallOrientation == Enum314.OUTSIDE_TOP_LEFT) {
           AddToUndoList(iMapIndex - WORLD_COLS);
           RemoveStruct(iMapIndex - WORLD_COLS, pStruct.value.usIndex);
-          RemoveAllShadowsOfTypeRange(iMapIndex - WORLD_COLS, FIRSTWALL, LASTWALL);
+          RemoveAllShadowsOfTypeRange(iMapIndex - WORLD_COLS, Enum313.FIRSTWALL, LASTWALL);
           break; // otherwise, it'll crash because pStruct is toast.
         }
       }
@@ -941,7 +941,7 @@ function RemoveCaveSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
     for (x = left; x <= right; x++) {
       iMapIndex = y * WORLD_COLS + x;
       AddToUndoList(iMapIndex);
-      RemoveAllStructsOfTypeRange(iMapIndex, FIRSTWALL, LASTWALL);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTWALL, LASTWALL);
     }
   // Past 2:  Go around outside perimeter and smooth each piece
   for (y = top - 1; y <= bottom + 1; y++)
@@ -955,7 +955,7 @@ function RemoveCaveSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
           AddCave(iMapIndex, usIndex);
         else {
           // change piece to stalagmite...
-          RemoveAllStructsOfTypeRange(iMapIndex, FIRSTWALL, LASTWALL);
+          RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTWALL, LASTWALL);
         }
       }
     }
@@ -998,7 +998,7 @@ function AddCaveSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
             AddCave(uiMapIndex, usIndex);
           else {
             // change piece to stalagmite...
-            RemoveAllStructsOfTypeRange(uiMapIndex, FIRSTWALL, LASTWALL);
+            RemoveAllStructsOfTypeRange(uiMapIndex, Enum313.FIRSTWALL, LASTWALL);
           }
         }
       }
@@ -1047,29 +1047,29 @@ function RemoveBuildingSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
       if (y == top) {
         fFloor = FloorAtGridNo(iMapIndex - WORLD_COLS);
         if (gfBasement && !fFloor || !gfBasement && fFloor && !GetHorizontalWall(iMapIndex - WORLD_COLS))
-          BuildWallPiece(iMapIndex, EXTERIOR_TOP, 0);
+          BuildWallPiece(iMapIndex, Enum61.EXTERIOR_TOP, 0);
       }
       if (y == bottom) {
         fFloor = FloorAtGridNo(iMapIndex + WORLD_COLS);
         if (gfBasement && !fFloor || !gfBasement && fFloor && !GetHorizontalWall(iMapIndex))
-          BuildWallPiece(iMapIndex, EXTERIOR_BOTTOM, 0);
+          BuildWallPiece(iMapIndex, Enum61.EXTERIOR_BOTTOM, 0);
       }
       if (x == left) {
         fFloor = FloorAtGridNo(iMapIndex - 1);
         if (gfBasement && !fFloor || !gfBasement && fFloor && !GetVerticalWall(iMapIndex - 1))
-          BuildWallPiece(iMapIndex, EXTERIOR_LEFT, 0);
+          BuildWallPiece(iMapIndex, Enum61.EXTERIOR_LEFT, 0);
       }
       if (x == right) {
         fFloor = FloorAtGridNo(iMapIndex + 1);
         if (gfBasement && !fFloor || !gfBasement && fFloor && !GetVerticalWall(iMapIndex))
-          BuildWallPiece(iMapIndex, EXTERIOR_RIGHT, 0);
+          BuildWallPiece(iMapIndex, Enum61.EXTERIOR_RIGHT, 0);
       }
     }
   // 3RD PASS:  Go around the outside of the region, and rebuild the roof.
   if (gfBasement) {
-    usFloorType = GetRandomIndexByRange(FIRSTFLOOR, LASTFLOOR);
+    usFloorType = GetRandomIndexByRange(Enum313.FIRSTFLOOR, LASTFLOOR);
     if (usFloorType == 0xffff)
-      usFloorType = FIRSTFLOOR;
+      usFloorType = Enum313.FIRSTFLOOR;
     for (y = top; y <= bottom; y++)
       for (x = left; x <= right; x++) {
         iMapIndex = y * WORLD_COLS + x;
@@ -1112,8 +1112,8 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
   // Special case scenario:
   // If the user selects a floor without walls, then it is implied that the user wishes to
   // change the floor for say a kitchen which might have a different floor type.
-  usWallType = GetRandomIndexByRange(FIRSTWALL, LASTWALL);
-  usFloorType = GetRandomIndexByRange(FIRSTFLOOR, LASTFLOOR);
+  usWallType = GetRandomIndexByRange(Enum313.FIRSTWALL, LASTWALL);
+  usFloorType = GetRandomIndexByRange(Enum313.FIRSTFLOOR, LASTFLOOR);
   if (usWallType == 0xffff && usFloorType != 0xffff) {
     // allow user to place floors
     for (y = top; y <= bottom; y++)
@@ -1144,7 +1144,7 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
         pFloor = gpWorldLevelData[iMapIndex].pLandHead;
         while (pFloor) {
           GetTileType(pFloor.value.usIndex, addressof(uiTileType));
-          if (uiTileType >= FIRSTFLOOR && uiTileType <= LASTFLOOR) {
+          if (uiTileType >= Enum313.FIRSTFLOOR && uiTileType <= LASTFLOOR) {
             usFloorType = uiTileType;
             break;
           }
@@ -1163,16 +1163,16 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
     // if( gfBasement )
     //	return;
     // Get materials via selection window method.
-    usWallType = GetRandomIndexByRange(FIRSTWALL, LASTWALL);
-    usFloorType = GetRandomIndexByRange(FIRSTFLOOR, LASTFLOOR);
-    usRoofType = GetRandomIndexByRange(FIRSTROOF, LASTROOF);
+    usWallType = GetRandomIndexByRange(Enum313.FIRSTWALL, LASTWALL);
+    usFloorType = GetRandomIndexByRange(Enum313.FIRSTFLOOR, LASTFLOOR);
+    usRoofType = GetRandomIndexByRange(Enum313.FIRSTROOF, LASTROOF);
     if (usRoofType == 0xffff) {
-      usRoofType = GetRandomIndexByRange(FIRSTSLANTROOF, LASTSLANTROOF);
+      usRoofType = GetRandomIndexByRange(Enum313.FIRSTSLANTROOF, LASTSLANTROOF);
       if (usRoofType != 0xffff) {
         if (!gfBasement)
           fSlantRoof = TRUE;
         else
-          usRoofType = FIRSTROOF;
+          usRoofType = Enum313.FIRSTROOF;
       }
     }
     if (usWallType == 0xffff)
@@ -1223,22 +1223,22 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
         if (y == top && !GetHorizontalWall(iMapIndex - WORLD_COLS)) {
           fFloor = FloorAtGridNo(iMapIndex - WORLD_COLS);
           if (gfBasement == fFloor)
-            BuildWallPiece(iMapIndex, INTERIOR_TOP, usWallType);
+            BuildWallPiece(iMapIndex, Enum61.INTERIOR_TOP, usWallType);
         }
         if (y == bottom && !GetHorizontalWall(iMapIndex)) {
           fFloor = FloorAtGridNo(iMapIndex + WORLD_COLS);
           if (gfBasement == fFloor)
-            BuildWallPiece(iMapIndex, INTERIOR_BOTTOM, usWallType);
+            BuildWallPiece(iMapIndex, Enum61.INTERIOR_BOTTOM, usWallType);
         }
         if (x == left && !GetVerticalWall(iMapIndex - 1)) {
           fFloor = FloorAtGridNo(iMapIndex - 1);
           if (gfBasement == fFloor)
-            BuildWallPiece(iMapIndex, INTERIOR_LEFT, usWallType);
+            BuildWallPiece(iMapIndex, Enum61.INTERIOR_LEFT, usWallType);
         }
         if (x == right && !GetVerticalWall(iMapIndex)) {
           fFloor = FloorAtGridNo(iMapIndex + 1);
           if (gfBasement == fFloor)
-            BuildWallPiece(iMapIndex, INTERIOR_RIGHT, usWallType);
+            BuildWallPiece(iMapIndex, Enum61.INTERIOR_RIGHT, usWallType);
         }
       }
     }
@@ -1274,7 +1274,7 @@ function AnalyseCaveMapForStructureInfo(): void {
     while (pStruct) {
       if (pStruct.value.usIndex != NO_TILE) {
         GetTileType(pStruct.value.usIndex, addressof(uiTileType));
-        if (uiTileType == FIRSTWALL) {
+        if (uiTileType == Enum313.FIRSTWALL) {
           let usSubIndex: UINT16;
           GetSubIndexFromTileIndex(pStruct.value.usIndex, addressof(usSubIndex));
           if (usSubIndex >= 60 && usSubIndex <= 65) {

@@ -121,7 +121,7 @@ function ScheduleAirRaid(pAirRaidDef: Pointer<AIR_RAID_DEFINITION>): void {
   // Copy definiaiotn structure into global struct....
   memcpy(addressof(gAirRaidDef), pAirRaidDef, sizeof(AIR_RAID_DEFINITION));
 
-  AddSameDayStrategicEvent(EVENT_BEGIN_AIR_RAID, (GetWorldMinutesInDay() + pAirRaidDef.value.ubNumMinsFromCurrentTime), 0);
+  AddSameDayStrategicEvent(Enum132.EVENT_BEGIN_AIR_RAID, (GetWorldMinutesInDay() + pAirRaidDef.value.ubNumMinsFromCurrentTime), 0);
 
   gfAirRaidScheduled = TRUE;
 }
@@ -151,7 +151,7 @@ function BeginAirRaid(): BOOLEAN {
   // Do we have any guys in here...
   for (cnt = 0, pSoldier = MercPtrs[cnt]; cnt < 20; cnt++, pSoldier++) {
     if (pSoldier.value.bActive) {
-      if (pSoldier.value.sSectorX == gAirRaidDef.sSectorX && pSoldier.value.sSectorY == gAirRaidDef.sSectorY && pSoldier.value.bSectorZ == gAirRaidDef.sSectorZ && !pSoldier.value.fBetweenSectors && pSoldier.value.bLife && pSoldier.value.bAssignment != IN_TRANSIT) {
+      if (pSoldier.value.sSectorX == gAirRaidDef.sSectorX && pSoldier.value.sSectorY == gAirRaidDef.sSectorY && pSoldier.value.bSectorZ == gAirRaidDef.sSectorZ && !pSoldier.value.fBetweenSectors && pSoldier.value.bLife && pSoldier.value.bAssignment != Enum117.IN_TRANSIT) {
         fOK = TRUE;
       }
     }
@@ -168,15 +168,15 @@ function BeginAirRaid(): BOOLEAN {
 
   ChangeSelectedMapSector(gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, gAirRaidDef.sSectorZ);
 
-  if (gAirRaidDef.sSectorX != gWorldSectorX || gAirRaidDef.sSectorY != gWorldSectorY || gAirRaidDef.sSectorZ != gbWorldSectorZ || guiCurrentScreen == MAP_SCREEN) {
+  if (gAirRaidDef.sSectorX != gWorldSectorX || gAirRaidDef.sSectorY != gWorldSectorY || gAirRaidDef.sSectorZ != gbWorldSectorZ || guiCurrentScreen == Enum26.MAP_SCREEN) {
     // sector not loaded
     // Set flag for handling raid....
-    gubAirRaidMode = AIR_RAID_TRYING_TO_START;
+    gubAirRaidMode = Enum192.AIR_RAID_TRYING_TO_START;
     gfQuoteSaid = TRUE;
-    SayQuoteFromAnyBodyInThisSector(gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, gAirRaidDef.sSectorZ, QUOTE_AIR_RAID);
+    SayQuoteFromAnyBodyInThisSector(gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, gAirRaidDef.sSectorZ, Enum202.QUOTE_AIR_RAID);
     SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_EXIT_MAP_SCREEN, gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, gAirRaidDef.sSectorZ, 0, 0);
   } else {
-    gubAirRaidMode = AIR_RAID_TRYING_TO_START;
+    gubAirRaidMode = Enum192.AIR_RAID_TRYING_TO_START;
     gfQuoteSaid = FALSE;
   }
 
@@ -196,8 +196,8 @@ function BeginAirRaid(): BOOLEAN {
   gpRaidSoldier.value.bSide = 1;
   gpRaidSoldier.value.ubID = MAX_NUM_SOLDIERS - 1;
   gpRaidSoldier.value.ubAttackerID = NOBODY;
-  gpRaidSoldier.value.usAttackingWeapon = HK21E;
-  gpRaidSoldier.value.inv[HANDPOS].usItem = HK21E;
+  gpRaidSoldier.value.usAttackingWeapon = Enum225.HK21E;
+  gpRaidSoldier.value.inv[Enum261.HANDPOS].usItem = Enum225.HK21E;
 
   // Determine how many dives this one will be....
   gbMaxDives = (gAirRaidDef.bIntensity + Random(gAirRaidDef.bIntensity - 1));
@@ -293,23 +293,23 @@ function TryToStartRaid(): void {
   // Cannot be traversing.....
 
   // Ok, go...
-  gubAirRaidMode = AIR_RAID_START;
+  gubAirRaidMode = Enum192.AIR_RAID_START;
 }
 
 function AirRaidStart(): void {
   // Begin ambient sound....
-  guiSoundSample = PlayJA2Sample(S_RAID_AMBIENT, RATE_11025, 0, 10000, MIDDLEPAN);
+  guiSoundSample = PlayJA2Sample(Enum330.S_RAID_AMBIENT, RATE_11025, 0, 10000, MIDDLEPAN);
 
   gfFadingRaidIn = TRUE;
 
   // Setup start time....
   RESETTIMECOUNTER(giTimerAirRaidQuote, AIR_RAID_SAY_QUOTE_TIME);
 
-  gubAirRaidMode = AIR_RAID_LOOK_FOR_DIVE;
+  gubAirRaidMode = Enum192.AIR_RAID_LOOK_FOR_DIVE;
 
   // If we are not in combat, change music mode...
   if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
-    SetMusicMode(MUSIC_TACTICAL_BATTLE);
+    SetMusicMode(Enum328.MUSIC_TACTICAL_BATTLE);
   }
 }
 
@@ -334,7 +334,7 @@ function AirRaidLookForDive(): void {
     gfQuoteSaid = TRUE;
 
     // Someone in group say quote...
-    SayQuoteFromAnyBodyInSector(QUOTE_AIR_RAID);
+    SayQuoteFromAnyBodyInSector(Enum202.QUOTE_AIR_RAID);
 
     // Update timer
     RESETTIMECOUNTER(giTimerAirRaidDiveStarted, AIR_RAID_DIVE_INTERVAL);
@@ -342,7 +342,7 @@ function AirRaidLookForDive(): void {
     giNumTurnsSinceLastDive = 0;
 
     // Do morale hit on our guys
-    HandleMoraleEvent(NULL, MORALE_AIRSTRIKE, gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, gAirRaidDef.sSectorZ);
+    HandleMoraleEvent(NULL, Enum234.MORALE_AIRSTRIKE, gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, gAirRaidDef.sSectorZ);
   }
 
   // If NOT in combat....
@@ -367,18 +367,18 @@ function AirRaidLookForDive(): void {
     // If we are are beginning game, only to gun dives..
     if (gAirRaidDef.uiFlags & AIR_RAID_BEGINNING_GAME) {
       if (gbNumDives == 0) {
-        gubAirRaidMode = AIR_RAID_BEGIN_DIVE;
+        gubAirRaidMode = Enum192.AIR_RAID_BEGIN_DIVE;
       } else if (gbNumDives == 1) {
-        gubAirRaidMode = AIR_RAID_BEGIN_BOMBING;
+        gubAirRaidMode = Enum192.AIR_RAID_BEGIN_BOMBING;
       } else {
-        gubAirRaidMode = AIR_RAID_BEGIN_DIVE;
+        gubAirRaidMode = Enum192.AIR_RAID_BEGIN_DIVE;
       }
     } else {
       // Randomly do dive...
       if (Random(2)) {
-        gubAirRaidMode = AIR_RAID_BEGIN_DIVE;
+        gubAirRaidMode = Enum192.AIR_RAID_BEGIN_DIVE;
       } else {
-        gubAirRaidMode = AIR_RAID_BEGIN_BOMBING;
+        gubAirRaidMode = Enum192.AIR_RAID_BEGIN_BOMBING;
       }
     }
     gbNumDives++;
@@ -396,7 +396,7 @@ function AirRaidLookForDive(): void {
   // End if we have made desired # of dives...
   if (gbNumDives == gbMaxDives) {
     // Air raid is over....
-    gubAirRaidMode = AIR_RAID_START_END;
+    gubAirRaidMode = Enum192.AIR_RAID_START_END;
   }
 }
 
@@ -411,10 +411,10 @@ function BeginBombing(): void {
 
   if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
     // Start diving sound...
-    PlayJA2Sample(S_RAID_WHISTLE, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+    PlayJA2Sample(Enum330.S_RAID_WHISTLE, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
   }
 
-  gubAirRaidMode = AIR_RAID_BOMBING;
+  gubAirRaidMode = Enum192.AIR_RAID_BOMBING;
 
   // Pick location...
   gsDiveTargetLocation = PickLocationNearAnyMercInSector();
@@ -453,9 +453,9 @@ function BeginDive(): void {
   let iSoundStartDelay: UINT32;
 
   // Start diving sound...
-  PlayJA2Sample(S_RAID_DIVE, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+  PlayJA2Sample(Enum330.S_RAID_DIVE, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
 
-  gubAirRaidMode = AIR_RAID_DIVING;
+  gubAirRaidMode = Enum192.AIR_RAID_DIVING;
 
   // Increment attacker bust count....
   gTacticalStatus.ubAttackBusyCount++;
@@ -531,7 +531,7 @@ function DoDive(): void {
     if (gAirRaidDef.uiFlags & AIR_RAID_CAN_RANDOMIZE_TEASE_DIVES) {
       if (Random(10) == 0) {
         // Finish....
-        gubAirRaidMode = AIR_RAID_END_DIVE;
+        gubAirRaidMode = Enum192.AIR_RAID_END_DIVE;
         return;
       }
     }
@@ -549,7 +549,7 @@ function DoDive(): void {
     // If sRange
     if (sRange < 3) {
       // Finish....
-      gubAirRaidMode = AIR_RAID_END_DIVE;
+      gubAirRaidMode = Enum192.AIR_RAID_END_DIVE;
       return;
     }
 
@@ -688,7 +688,7 @@ function DoBombing(): void {
     if (gAirRaidDef.uiFlags & AIR_RAID_CAN_RANDOMIZE_TEASE_DIVES) {
       if (Random(10) == 0) {
         // Finish....
-        gubAirRaidMode = AIR_RAID_END_BOMBING;
+        gubAirRaidMode = Enum192.AIR_RAID_END_BOMBING;
         return;
       }
     }
@@ -706,7 +706,7 @@ function DoBombing(): void {
     // If sRange
     if (sRange < 3) {
       // Finish....
-      gubAirRaidMode = AIR_RAID_END_BOMBING;
+      gubAirRaidMode = Enum192.AIR_RAID_END_BOMBING;
       return;
     }
 
@@ -758,9 +758,9 @@ function DoBombing(): void {
             //}
 
             if (Random(2)) {
-              usItem = HAND_GRENADE;
+              usItem = Enum225.HAND_GRENADE;
             } else {
-              usItem = RDX;
+              usItem = Enum225.RDX;
             }
 
             // Pick random gridno....
@@ -835,47 +835,47 @@ function HandleAirRaid(): void {
             if (iVol == 0) {
               gfFadingRaidOut = FALSE;
 
-              gubAirRaidMode = AIR_RAID_END;
+              gubAirRaidMode = Enum192.AIR_RAID_END;
             }
           }
         } else {
           gfFadingRaidOut = FALSE;
-          gubAirRaidMode = AIR_RAID_END;
+          gubAirRaidMode = Enum192.AIR_RAID_END;
         }
       }
 
       switch (gubAirRaidMode) {
-        case AIR_RAID_TRYING_TO_START:
+        case Enum192.AIR_RAID_TRYING_TO_START:
 
           TryToStartRaid();
           break;
 
-        case AIR_RAID_START:
+        case Enum192.AIR_RAID_START:
 
           AirRaidStart();
           break;
 
-        case AIR_RAID_LOOK_FOR_DIVE:
+        case Enum192.AIR_RAID_LOOK_FOR_DIVE:
 
           AirRaidLookForDive();
           break;
 
-        case AIR_RAID_START_END:
+        case Enum192.AIR_RAID_START_END:
 
           AirRaidStartEnding();
           break;
 
-        case AIR_RAID_END:
+        case Enum192.AIR_RAID_END:
 
           EndAirRaid();
           break;
 
-        case AIR_RAID_BEGIN_DIVE:
+        case Enum192.AIR_RAID_BEGIN_DIVE:
 
           BeginDive();
           break;
 
-        case AIR_RAID_DIVING:
+        case Enum192.AIR_RAID_DIVING:
 
           // If in combat, check if we have reached our max...
           if ((gTacticalStatus.uiFlags & INCOMBAT)) {
@@ -887,7 +887,7 @@ function HandleAirRaid(): void {
           }
           break;
 
-        case AIR_RAID_END_DIVE:
+        case Enum192.AIR_RAID_END_DIVE:
 
           giNumTurnsSinceLastDive = 0;
           RESETTIMECOUNTER(giTimerAirRaidDiveStarted, AIR_RAID_DIVE_INTERVAL);
@@ -898,10 +898,10 @@ function HandleAirRaid(): void {
             DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Tried to free up attacker AIR RAID ENDING DIVE, attack count now %d", gTacticalStatus.ubAttackBusyCount));
           }
 
-          gubAirRaidMode = AIR_RAID_LOOK_FOR_DIVE;
+          gubAirRaidMode = Enum192.AIR_RAID_LOOK_FOR_DIVE;
           break;
 
-        case AIR_RAID_END_BOMBING:
+        case Enum192.AIR_RAID_END_BOMBING:
 
           RESETTIMECOUNTER(giTimerAirRaidDiveStarted, AIR_RAID_DIVE_INTERVAL);
           giNumTurnsSinceLastDive = 0;
@@ -912,14 +912,14 @@ function HandleAirRaid(): void {
             DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Tried to free up attacker AIR RAID ENDING DIVE, attack count now %d", gTacticalStatus.ubAttackBusyCount));
           }
 
-          gubAirRaidMode = AIR_RAID_LOOK_FOR_DIVE;
+          gubAirRaidMode = Enum192.AIR_RAID_LOOK_FOR_DIVE;
           break;
 
-        case AIR_RAID_BEGIN_BOMBING:
+        case Enum192.AIR_RAID_BEGIN_BOMBING:
           BeginBombing();
           break;
 
-        case AIR_RAID_BOMBING:
+        case Enum192.AIR_RAID_BOMBING:
           DoBombing();
           break;
       }
@@ -967,20 +967,20 @@ function HandleAirRaidEndTurn(ubTeam: UINT8): BOOLEAN {
   gTacticalStatus.ubAttackBusyCount++;
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Starting attack AIR RAID, attack count now %d", gTacticalStatus.ubAttackBusyCount));
 
-  AddTopMessage(AIR_RAID_TURN_MESSAGE, TacticalStr[AIR_RAID_TURN_STR]);
+  AddTopMessage(Enum216.AIR_RAID_TURN_MESSAGE, TacticalStr[Enum335.AIR_RAID_TURN_STR]);
 
   // OK, handle some sound effects, depending on the mode we are in...
   if ((gTacticalStatus.uiFlags & INCOMBAT)) {
     switch (gubAirRaidMode) {
-      case AIR_RAID_BOMBING:
+      case Enum192.AIR_RAID_BOMBING:
 
         // Start diving sound...
-        PlayJA2Sample(S_RAID_TB_BOMB, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+        PlayJA2Sample(Enum330.S_RAID_TB_BOMB, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
         break;
 
-      case AIR_RAID_BEGIN_DIVE:
+      case Enum192.AIR_RAID_BEGIN_DIVE:
 
-        PlayJA2Sample(S_RAID_TB_DIVE, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+        PlayJA2Sample(Enum330.S_RAID_TB_DIVE, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
         break;
     }
   }
@@ -1111,7 +1111,7 @@ function EndAirRaid(): void {
 
   // Change music back...
   if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
-    SetMusicMode(MUSIC_TACTICAL_NOTHING);
+    SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
 
     if (!gTacticalStatus.Team[ENEMY_TEAM].bTeamActive && !gTacticalStatus.Team[CREATURE_TEAM].bTeamActive) {
       let pTeamSoldier: Pointer<SOLDIERTYPE>;
@@ -1121,7 +1121,7 @@ function EndAirRaid(): void {
       cnt = gTacticalStatus.Team[MILITIA_TEAM].bFirstID;
       for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[MILITIA_TEAM].bLastID; cnt++, pTeamSoldier++) {
         if (pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector) {
-          pTeamSoldier.value.bAlertStatus = STATUS_GREEN;
+          pTeamSoldier.value.bAlertStatus = Enum243.STATUS_GREEN;
         }
       }
       gTacticalStatus.Team[MILITIA_TEAM].bAwareOfOpposition = FALSE;
@@ -1130,7 +1130,7 @@ function EndAirRaid(): void {
       // Loop through all civs and restore them to peaceful status
       for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[CIV_TEAM].bLastID; cnt++, pTeamSoldier++) {
         if (pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector) {
-          pTeamSoldier.value.bAlertStatus = STATUS_GREEN;
+          pTeamSoldier.value.bAlertStatus = Enum243.STATUS_GREEN;
         }
       }
       gTacticalStatus.Team[CIV_TEAM].bAwareOfOpposition = FALSE;

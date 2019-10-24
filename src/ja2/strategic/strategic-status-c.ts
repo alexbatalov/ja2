@@ -132,9 +132,9 @@ function UpdateLastDayOfPlayerActivity(usDay: UINT16): void {
 }
 
 function LackOfProgressTolerance(): UINT8 {
-  if (gGameOptions.ubDifficultyLevel >= DIF_LEVEL_HARD) {
+  if (gGameOptions.ubDifficultyLevel >= Enum9.DIF_LEVEL_HARD) {
     // give an EXTRA day over normal
-    return 7 - DIF_LEVEL_MEDIUM + gStrategicStatus.ubHighestProgress / 42;
+    return 7 - Enum9.DIF_LEVEL_MEDIUM + gStrategicStatus.ubHighestProgress / 42;
   } else {
     return 6 - gGameOptions.ubDifficultyLevel + gStrategicStatus.ubHighestProgress / 42;
   }
@@ -147,37 +147,37 @@ function HandleEnricoEmail(): void {
 
   // if creatures have attacked a mine (doesn't care if they're still there or not at the moment)
   if (HasAnyMineBeenAttackedByMonsters() && !(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_CREATURES)) {
-    AddEmail(ENRICO_CREATURES, ENRICO_CREATURES_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
+    AddEmail(ENRICO_CREATURES, ENRICO_CREATURES_LENGTH, Enum75.MAIL_ENRICO, GetWorldTotalMin());
     gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_CREATURES;
     return; // avoid any other E-mail at the same time
   }
 
   if ((ubCurrentProgress >= SOME_PROGRESS_THRESHOLD) && !(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_SOME_PROGRESS)) {
-    AddEmail(ENRICO_PROG_20, ENRICO_PROG_20_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
+    AddEmail(ENRICO_PROG_20, ENRICO_PROG_20_LENGTH, Enum75.MAIL_ENRICO, GetWorldTotalMin());
     gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_SOME_PROGRESS;
     return; // avoid any setback E-mail at the same time
   }
 
   if ((ubCurrentProgress >= ABOUT_HALFWAY_THRESHOLD) && !(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_ABOUT_HALFWAY)) {
-    AddEmail(ENRICO_PROG_55, ENRICO_PROG_55_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
+    AddEmail(ENRICO_PROG_55, ENRICO_PROG_55_LENGTH, Enum75.MAIL_ENRICO, GetWorldTotalMin());
     gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_ABOUT_HALFWAY;
     return; // avoid any setback E-mail at the same time
   }
 
   if ((ubCurrentProgress >= NEARLY_DONE_THRESHOLD) && !(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_NEARLY_DONE)) {
-    AddEmail(ENRICO_PROG_80, ENRICO_PROG_80_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
+    AddEmail(ENRICO_PROG_80, ENRICO_PROG_80_LENGTH, Enum75.MAIL_ENRICO, GetWorldTotalMin());
     gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_NEARLY_DONE;
     return; // avoid any setback E-mail at the same time
   }
 
   // test for a major setback OR a second minor setback
   if ((((ubHighestProgress - ubCurrentProgress) >= MAJOR_SETBACK_THRESHOLD) || (((ubHighestProgress - ubCurrentProgress) >= MINOR_SETBACK_THRESHOLD) && (gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_FLAG_SETBACK_OVER))) && !(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_MAJOR_SETBACK)) {
-    AddEmail(ENRICO_SETBACK, ENRICO_SETBACK_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
+    AddEmail(ENRICO_SETBACK, ENRICO_SETBACK_LENGTH, Enum75.MAIL_ENRICO, GetWorldTotalMin());
     gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_MAJOR_SETBACK;
   } else
       // test for a first minor setback
       if (((ubHighestProgress - ubCurrentProgress) >= MINOR_SETBACK_THRESHOLD) && !(gStrategicStatus.usEnricoEmailFlags & (ENRICO_EMAIL_SENT_MINOR_SETBACK | ENRICO_EMAIL_SENT_MAJOR_SETBACK))) {
-    AddEmail(ENRICO_SETBACK_2, ENRICO_SETBACK_2_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
+    AddEmail(ENRICO_SETBACK_2, ENRICO_SETBACK_2_LENGTH, Enum75.MAIL_ENRICO, GetWorldTotalMin());
     gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_MINOR_SETBACK;
   } else
       // if player is back at his maximum progress after having suffered a minor setback
@@ -218,20 +218,20 @@ function HandleEnricoEmail(): void {
       if (bComplaint != 0) {
         switch (bComplaint) {
           case 3:
-            AddEmail(LACK_PLAYER_PROGRESS_3, LACK_PLAYER_PROGRESS_3_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
+            AddEmail(LACK_PLAYER_PROGRESS_3, LACK_PLAYER_PROGRESS_3_LENGTH, Enum75.MAIL_ENRICO, GetWorldTotalMin());
             gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_LACK_PROGRESS3;
             break;
           case 2:
-            AddEmail(LACK_PLAYER_PROGRESS_2, LACK_PLAYER_PROGRESS_2_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
+            AddEmail(LACK_PLAYER_PROGRESS_2, LACK_PLAYER_PROGRESS_2_LENGTH, Enum75.MAIL_ENRICO, GetWorldTotalMin());
             gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_LACK_PROGRESS2;
             break;
           default:
-            AddEmail(LACK_PLAYER_PROGRESS_1, LACK_PLAYER_PROGRESS_1_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
+            AddEmail(LACK_PLAYER_PROGRESS_1, LACK_PLAYER_PROGRESS_1_LENGTH, Enum75.MAIL_ENRICO, GetWorldTotalMin());
             gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_SENT_LACK_PROGRESS1;
             break;
         }
 
-        AddHistoryToPlayersLog(HISTORY_ENRICO_COMPLAINED, 0, GetWorldTotalMin(), -1, -1);
+        AddHistoryToPlayersLog(Enum83.HISTORY_ENRICO_COMPLAINED, 0, GetWorldTotalMin(), -1, -1);
       }
 
       // penalize loyalty!
@@ -263,8 +263,8 @@ function TrackEnemiesKilled(ubKilledHow: UINT8, ubSoldierClass: UINT8): void {
 
   gStrategicStatus.usEnemiesKilled[ubKilledHow][bRankIndex]++;
 
-  if (ubKilledHow != ENEMY_KILLED_TOTAL) {
-    gStrategicStatus.usEnemiesKilled[ENEMY_KILLED_TOTAL][bRankIndex]++;
+  if (ubKilledHow != Enum189.ENEMY_KILLED_TOTAL) {
+    gStrategicStatus.usEnemiesKilled[Enum189.ENEMY_KILLED_TOTAL][bRankIndex]++;
   }
 }
 
@@ -273,13 +273,13 @@ function SoldierClassToRankIndex(ubSoldierClass: UINT8): INT8 {
 
   // the soldier class defines are not in natural ascending order, elite comes before army!
   switch (ubSoldierClass) {
-    case SOLDIER_CLASS_ADMINISTRATOR:
+    case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
       bRankIndex = 0;
       break;
-    case SOLDIER_CLASS_ELITE:
+    case Enum262.SOLDIER_CLASS_ELITE:
       bRankIndex = 2;
       break;
-    case SOLDIER_CLASS_ARMY:
+    case Enum262.SOLDIER_CLASS_ARMY:
       bRankIndex = 1;
       break;
 
@@ -294,17 +294,17 @@ function SoldierClassToRankIndex(ubSoldierClass: UINT8): INT8 {
 function RankIndexToSoldierClass(ubRankIndex: UINT8): UINT8 {
   let ubSoldierClass: UINT8 = 0;
 
-  Assert(ubRankIndex < NUM_ENEMY_RANKS);
+  Assert(ubRankIndex < Enum188.NUM_ENEMY_RANKS);
 
   switch (ubRankIndex) {
     case 0:
-      ubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
+      ubSoldierClass = Enum262.SOLDIER_CLASS_ADMINISTRATOR;
       break;
     case 1:
-      ubSoldierClass = SOLDIER_CLASS_ARMY;
+      ubSoldierClass = Enum262.SOLDIER_CLASS_ARMY;
       break;
     case 2:
-      ubSoldierClass = SOLDIER_CLASS_ELITE;
+      ubSoldierClass = Enum262.SOLDIER_CLASS_ELITE;
       break;
   }
 

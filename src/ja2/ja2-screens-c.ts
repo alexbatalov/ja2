@@ -34,9 +34,9 @@ function DisplayFrameRate(): void {
   // Increment frame count
   uiFrameCount++;
 
-  if (COUNTERDONE(FPSCOUNTER)) {
+  if (COUNTERDONE(Enum386.FPSCOUNTER)) {
     // Reset counter
-    RESETCOUNTER(FPSCOUNTER);
+    RESETCOUNTER(Enum386.FPSCOUNTER);
 
     uiFPS = uiFrameCount;
     uiFrameCount = 0;
@@ -98,7 +98,7 @@ function SavingScreenInitialize(): UINT32 {
   return TRUE;
 }
 function SavingScreenHandle(): UINT32 {
-  return SAVING_SCREEN;
+  return Enum26.SAVING_SCREEN;
 }
 function SavingScreenShutdown(): UINT32 {
   return TRUE;
@@ -108,7 +108,7 @@ function LoadingScreenInitialize(): UINT32 {
   return TRUE;
 }
 function LoadingScreenHandle(): UINT32 {
-  return LOADING_SCREEN;
+  return Enum26.LOADING_SCREEN;
 }
 function LoadingScreenShutdown(): UINT32 {
   return TRUE;
@@ -161,7 +161,7 @@ function ErrorScreenHandle(): UINT32 {
     }
   }
 
-  return ERROR_SCREEN;
+  return Enum26.ERROR_SCREEN;
 }
 
 function ErrorScreenShutdown(): UINT32 {
@@ -184,7 +184,7 @@ function InitScreenHandle(): UINT32 {
       ubCurrentScreen = 0;
     } else {
       SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
-      return INTRO_SCREEN;
+      return Enum26.INTRO_SCREEN;
     }
 // #else
 //     ubCurrentScreen = 0;
@@ -220,7 +220,7 @@ function InitScreenHandle(): UINT32 {
 
     // mprintf( 10, 420, zVersionLabel );
 
-    mprintf(10, 430, "%s: %s (%S)", pMessageStrings[MSG_VERSION], zVersionLabel, czVersionNumber);
+    mprintf(10, 430, "%s: %s (%S)", pMessageStrings[Enum333.MSG_VERSION], zVersionLabel, czVersionNumber);
 
     if (gfDontUseDDBlits) {
       mprintf(10, 440, "Using software blitters");
@@ -234,7 +234,7 @@ function InitScreenHandle(): UINT32 {
 
     SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
 
-    return INIT_SCREEN;
+    return Enum26.INIT_SCREEN;
   }
 
   if (ubCurrentScreen == 1) {
@@ -245,21 +245,21 @@ function InitScreenHandle(): UINT32 {
   if (ubCurrentScreen == 2) {
     InitMainMenu();
     ubCurrentScreen = 3;
-    return INIT_SCREEN;
+    return Enum26.INIT_SCREEN;
   }
 
   // Let one frame pass....
   if (ubCurrentScreen == 3) {
     ubCurrentScreen = 4;
     SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
-    return INIT_SCREEN;
+    return Enum26.INIT_SCREEN;
   }
 
   if (ubCurrentScreen == 4) {
     SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
     InitNewGame(FALSE);
   }
-  return INIT_SCREEN;
+  return Enum26.INIT_SCREEN;
 }
 
 function InitScreenShutdown(): UINT32 {
@@ -279,7 +279,7 @@ function PalEditScreenHandle(): UINT32 {
     FreeBackgroundRect(guiBackgroundRect);
     SetRenderHook(NULL);
     SetUIKeyboardHook(NULL);
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (FirstTime) {
@@ -290,10 +290,10 @@ function PalEditScreenHandle(): UINT32 {
 
     guiBackgroundRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, 50, 10, 600, 400);
   } else {
-    ((GameScreens[GAME_SCREEN].HandleScreen).value)();
+    ((GameScreens[Enum26.GAME_SCREEN].HandleScreen).value)();
   }
 
-  return PALEDIT_SCREEN;
+  return Enum26.PALEDIT_SCREEN;
 }
 
 function PalEditScreenShutdown(): UINT32 {
@@ -462,7 +462,7 @@ function CheckForAndExitTacticalDebug(): BOOLEAN {
 }
 
 function ExitDebugScreen(): void {
-  if (guiCurrentScreen == DEBUG_SCREEN) {
+  if (guiCurrentScreen == Enum26.DEBUG_SCREEN) {
     gfExitDebugScreen = TRUE;
   }
 
@@ -471,7 +471,7 @@ function ExitDebugScreen(): void {
 
 function DebugScreenHandle(): UINT32 {
   if (CheckForAndExitTacticalDebug()) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (gfInitRect) {
@@ -485,10 +485,10 @@ function DebugScreenHandle(): UINT32 {
     SetRenderHook(DebugRenderHook);
     SetUIKeyboardHook(DebugKeyboardHook);
   } else {
-    ((GameScreens[GAME_SCREEN].HandleScreen).value)();
+    ((GameScreens[Enum26.GAME_SCREEN].HandleScreen).value)();
   }
 
-  return DEBUG_SCREEN;
+  return Enum26.DEBUG_SCREEN;
 }
 
 function DebugScreenShutdown(): UINT32 {
@@ -595,7 +595,7 @@ function SexScreenHandle(): UINT32 {
 
     uiTimeOfLastUpdate = GetJA2Clock();
 
-    return SEX_SCREEN;
+    return Enum26.SEX_SCREEN;
   }
 
   // Update frame
@@ -629,9 +629,9 @@ function SexScreenHandle(): UINT32 {
 
       // Advance time...
       // Chris.... do this based on stats?
-      WarpGameTime(((5 + Random(20)) * NUM_SEC_IN_MIN), WARPTIME_NO_PROCESSING_OF_EVENTS);
+      WarpGameTime(((5 + Random(20)) * NUM_SEC_IN_MIN), Enum131.WARPTIME_NO_PROCESSING_OF_EVENTS);
 
-      return GAME_SCREEN;
+      return Enum26.GAME_SCREEN;
     }
   }
 
@@ -650,7 +650,7 @@ function SexScreenHandle(): UINT32 {
 
   InvalidateRegion(sX, sY, (sX + pTrav.value.usWidth), (sY + pTrav.value.usHeight));
 
-  return SEX_SCREEN;
+  return Enum26.SEX_SCREEN;
 }
 
 function SexScreenShutdown(): UINT32 {
@@ -703,7 +703,7 @@ function DoneFadeOutForDemoExitScreen(): void {
 
 function DemoExitScreenHandle(): UINT32 {
   gfProgramIsRunning = FALSE;
-  return DEMO_EXIT_SCREEN;
+  return Enum26.DEMO_EXIT_SCREEN;
 }
 
 function DemoExitScreenShutdown(): UINT32 {

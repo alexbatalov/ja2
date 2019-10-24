@@ -3265,7 +3265,7 @@ const enum Enum312 {
   NUMBEROFTILES,
 }
 
-const BLUEFLAG_GRAPHIC = FIRSTSWITCHES21;
+const BLUEFLAG_GRAPHIC = Enum312.FIRSTSWITCHES21;
 
 // Defines for tile type identification
 const enum Enum313 {
@@ -3468,30 +3468,30 @@ const enum Enum313 {
 
 //==========================================================================
 // Quick defines for finding last type entry in tile types
-const LASTTEXTURE = (DEEPWATERTEXTURE - 1);
-const LASTBANKS = (FIRSTCLIFFSHADOW - 1);
-const LASTCLIFFHANG = (FIRSTCLIFF - 1);
-const LASTCLIFFSHADOW = (FIRSTOSTRUCT - 1);
-const LASTOSTRUCT = (THIRDFULLSTRUCT - 1);
-const LASTSHADOW = (FIRSTWALL - 1);
-const LASTWALL = (FIRSTDOOR - 1);
-const LASTDOOR = (FIRSTDOORSHADOW - 1);
-const LASTDOORSHADOW = (SLANTROOFCEILING - 1);
-const LASTDECORATIONS = (FIRSTWALLDECAL - 1);
-const LASTWALLDECAL = (FIRSTFLOOR - 1);
-const LASTFLOOR = (FIRSTROOF - 1);
-const LASTROOF = (FIRSTSLANTROOF - 1);
-const LASTSLANTROOF = (FIRSTONROOF - 1);
-const LASTMOCKFLOOR = (FIRSTISTRUCT - 1);
-const LASTISTRUCT = (FIRSTROAD - 1);
-const LASTROAD = (DEBRISROCKS - 1);
-const LASTDEBRIS = (ANIOSTRUCT - 1);
-const LASTITEM = (WINDOWSHATTER - 1);
+const LASTTEXTURE = (Enum313.DEEPWATERTEXTURE - 1);
+const LASTBANKS = (Enum313.FIRSTCLIFFSHADOW - 1);
+const LASTCLIFFHANG = (Enum313.FIRSTCLIFF - 1);
+const LASTCLIFFSHADOW = (Enum313.FIRSTOSTRUCT - 1);
+const LASTOSTRUCT = (Enum313.THIRDFULLSTRUCT - 1);
+const LASTSHADOW = (Enum313.FIRSTWALL - 1);
+const LASTWALL = (Enum313.FIRSTDOOR - 1);
+const LASTDOOR = (Enum313.FIRSTDOORSHADOW - 1);
+const LASTDOORSHADOW = (Enum313.SLANTROOFCEILING - 1);
+const LASTDECORATIONS = (Enum313.FIRSTWALLDECAL - 1);
+const LASTWALLDECAL = (Enum313.FIRSTFLOOR - 1);
+const LASTFLOOR = (Enum313.FIRSTROOF - 1);
+const LASTROOF = (Enum313.FIRSTSLANTROOF - 1);
+const LASTSLANTROOF = (Enum313.FIRSTONROOF - 1);
+const LASTMOCKFLOOR = (Enum313.FIRSTISTRUCT - 1);
+const LASTISTRUCT = (Enum313.FIRSTROAD - 1);
+const LASTROAD = (Enum313.DEBRISROCKS - 1);
+const LASTDEBRIS = (Enum313.ANIOSTRUCT - 1);
+const LASTITEM = (Enum313.WINDOWSHATTER - 1);
 //#define LASTDEBRIS				(FOOTPRINTS - 1)
-const LASTFOOTPRINTS = (FIRSTPOINTERS - 1);
-const LASTPOINTERS = (SELRING - 1);
-const LASTUIELEM = (WIREFRAMES - 1); // Change this entry if adding new types to the end
-const LASTTIELSETELEM = (GUNS - 1);
+const LASTFOOTPRINTS = (Enum313.FIRSTPOINTERS - 1);
+const LASTPOINTERS = (Enum313.SELRING - 1);
+const LASTUIELEM = (Enum313.WIREFRAMES - 1); // Change this entry if adding new types to the end
+const LASTTIELSETELEM = (Enum313.GUNS - 1);
 
 //===========================================================================
 

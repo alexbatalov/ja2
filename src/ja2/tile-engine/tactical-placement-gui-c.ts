@@ -17,7 +17,7 @@ const enum Enum310 {
 }
 let iTPButtons: UINT32[] /* [NUM_TP_BUTTONS] */;
 
-let gubDefaultButton: UINT8 = CLEAR_BUTTON;
+let gubDefaultButton: UINT8 = Enum310.CLEAR_BUTTON;
 let gfTacticalPlacementGUIActive: BOOLEAN = FALSE;
 let gfTacticalPlacementFirstTime: BOOLEAN = FALSE;
 let gfEnterTacticalPlacementGUI: BOOLEAN = FALSE;
@@ -72,44 +72,44 @@ function InitTacticalPlacementGUI(): void {
     AssertMsg(0, "Failed to load Interface\\panels.sti");
   }
 
-  giOverheadButtonImages[DONE_BUTTON] = LoadButtonImage("Interface\\OverheadUIButtons.sti", -1, 0, -1, 1, -1);
-  if (giOverheadButtonImages[DONE_BUTTON] == -1) {
+  giOverheadButtonImages[Enum310.DONE_BUTTON] = LoadButtonImage("Interface\\OverheadUIButtons.sti", -1, 0, -1, 1, -1);
+  if (giOverheadButtonImages[Enum310.DONE_BUTTON] == -1) {
     AssertMsg(0, "Failed to load Interface\\OverheadUIButtons.sti");
   }
-  giOverheadButtonImages[SPREAD_BUTTON] = UseLoadedButtonImage(giOverheadButtonImages[DONE_BUTTON], -1, 0, -1, 1, -1);
-  giOverheadButtonImages[GROUP_BUTTON] = UseLoadedButtonImage(giOverheadButtonImages[DONE_BUTTON], -1, 0, -1, 1, -1);
-  giOverheadButtonImages[CLEAR_BUTTON] = UseLoadedButtonImage(giOverheadButtonImages[DONE_BUTTON], -1, 0, -1, 1, -1);
+  giOverheadButtonImages[Enum310.SPREAD_BUTTON] = UseLoadedButtonImage(giOverheadButtonImages[Enum310.DONE_BUTTON], -1, 0, -1, 1, -1);
+  giOverheadButtonImages[Enum310.GROUP_BUTTON] = UseLoadedButtonImage(giOverheadButtonImages[Enum310.DONE_BUTTON], -1, 0, -1, 1, -1);
+  giOverheadButtonImages[Enum310.CLEAR_BUTTON] = UseLoadedButtonImage(giOverheadButtonImages[Enum310.DONE_BUTTON], -1, 0, -1, 1, -1);
 
   // Create the buttons which provide automatic placements.
-  iTPButtons[CLEAR_BUTTON] = QuickCreateButton(giOverheadButtonImages[CLEAR_BUTTON], 11, 332, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, ClearPlacementsCallback);
-  SpecifyGeneralButtonTextAttributes(iTPButtons[CLEAR_BUTTON], gpStrategicString[STR_TP_CLEAR], BLOCKFONT, FONT_BEIGE, 141);
-  SetButtonFastHelpText(iTPButtons[CLEAR_BUTTON], gpStrategicString[STR_TP_CLEARHELP]);
-  SetBtnHelpEndCallback(iTPButtons[CLEAR_BUTTON], FastHelpRemoved2Callback);
-  iTPButtons[SPREAD_BUTTON] = QuickCreateButton(giOverheadButtonImages[SPREAD_BUTTON], 11, 367, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SpreadPlacementsCallback);
-  SpecifyGeneralButtonTextAttributes(iTPButtons[SPREAD_BUTTON], gpStrategicString[STR_TP_SPREAD], BLOCKFONT, FONT_BEIGE, 141);
-  SetButtonFastHelpText(iTPButtons[SPREAD_BUTTON], gpStrategicString[STR_TP_SPREADHELP]);
-  SetBtnHelpEndCallback(iTPButtons[SPREAD_BUTTON], FastHelpRemovedCallback);
-  iTPButtons[GROUP_BUTTON] = QuickCreateButton(giOverheadButtonImages[GROUP_BUTTON], 11, 402, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, GroupPlacementsCallback);
-  SpecifyGeneralButtonTextAttributes(iTPButtons[GROUP_BUTTON], gpStrategicString[STR_TP_GROUP], BLOCKFONT, FONT_BEIGE, 141);
-  SetButtonFastHelpText(iTPButtons[GROUP_BUTTON], gpStrategicString[STR_TP_GROUPHELP]);
-  SetBtnHelpEndCallback(iTPButtons[GROUP_BUTTON], FastHelpRemovedCallback);
-  iTPButtons[DONE_BUTTON] = QuickCreateButton(giOverheadButtonImages[DONE_BUTTON], 11, 437, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoneOverheadPlacementClickCallback);
-  SpecifyGeneralButtonTextAttributes(iTPButtons[DONE_BUTTON], gpStrategicString[STR_TP_DONE], BLOCKFONT, FONT_BEIGE, 141);
-  SetButtonFastHelpText(iTPButtons[DONE_BUTTON], gpStrategicString[STR_TP_DONEHELP]);
-  SetBtnHelpEndCallback(iTPButtons[DONE_BUTTON], FastHelpRemovedCallback);
-  AllowDisabledButtonFastHelp(iTPButtons[DONE_BUTTON], TRUE);
+  iTPButtons[Enum310.CLEAR_BUTTON] = QuickCreateButton(giOverheadButtonImages[Enum310.CLEAR_BUTTON], 11, 332, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, ClearPlacementsCallback);
+  SpecifyGeneralButtonTextAttributes(iTPButtons[Enum310.CLEAR_BUTTON], gpStrategicString[Enum365.STR_TP_CLEAR], BLOCKFONT, FONT_BEIGE, 141);
+  SetButtonFastHelpText(iTPButtons[Enum310.CLEAR_BUTTON], gpStrategicString[Enum365.STR_TP_CLEARHELP]);
+  SetBtnHelpEndCallback(iTPButtons[Enum310.CLEAR_BUTTON], FastHelpRemoved2Callback);
+  iTPButtons[Enum310.SPREAD_BUTTON] = QuickCreateButton(giOverheadButtonImages[Enum310.SPREAD_BUTTON], 11, 367, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SpreadPlacementsCallback);
+  SpecifyGeneralButtonTextAttributes(iTPButtons[Enum310.SPREAD_BUTTON], gpStrategicString[Enum365.STR_TP_SPREAD], BLOCKFONT, FONT_BEIGE, 141);
+  SetButtonFastHelpText(iTPButtons[Enum310.SPREAD_BUTTON], gpStrategicString[Enum365.STR_TP_SPREADHELP]);
+  SetBtnHelpEndCallback(iTPButtons[Enum310.SPREAD_BUTTON], FastHelpRemovedCallback);
+  iTPButtons[Enum310.GROUP_BUTTON] = QuickCreateButton(giOverheadButtonImages[Enum310.GROUP_BUTTON], 11, 402, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, GroupPlacementsCallback);
+  SpecifyGeneralButtonTextAttributes(iTPButtons[Enum310.GROUP_BUTTON], gpStrategicString[Enum365.STR_TP_GROUP], BLOCKFONT, FONT_BEIGE, 141);
+  SetButtonFastHelpText(iTPButtons[Enum310.GROUP_BUTTON], gpStrategicString[Enum365.STR_TP_GROUPHELP]);
+  SetBtnHelpEndCallback(iTPButtons[Enum310.GROUP_BUTTON], FastHelpRemovedCallback);
+  iTPButtons[Enum310.DONE_BUTTON] = QuickCreateButton(giOverheadButtonImages[Enum310.DONE_BUTTON], 11, 437, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoneOverheadPlacementClickCallback);
+  SpecifyGeneralButtonTextAttributes(iTPButtons[Enum310.DONE_BUTTON], gpStrategicString[Enum365.STR_TP_DONE], BLOCKFONT, FONT_BEIGE, 141);
+  SetButtonFastHelpText(iTPButtons[Enum310.DONE_BUTTON], gpStrategicString[Enum365.STR_TP_DONEHELP]);
+  SetBtnHelpEndCallback(iTPButtons[Enum310.DONE_BUTTON], FastHelpRemovedCallback);
+  AllowDisabledButtonFastHelp(iTPButtons[Enum310.DONE_BUTTON], TRUE);
 
-  SpecifyButtonHilitedTextColors(iTPButtons[CLEAR_BUTTON], FONT_WHITE, FONT_NEARBLACK);
-  SpecifyButtonHilitedTextColors(iTPButtons[SPREAD_BUTTON], FONT_WHITE, FONT_NEARBLACK);
-  SpecifyButtonHilitedTextColors(iTPButtons[GROUP_BUTTON], FONT_WHITE, FONT_NEARBLACK);
-  SpecifyButtonHilitedTextColors(iTPButtons[DONE_BUTTON], FONT_WHITE, FONT_NEARBLACK);
+  SpecifyButtonHilitedTextColors(iTPButtons[Enum310.CLEAR_BUTTON], FONT_WHITE, FONT_NEARBLACK);
+  SpecifyButtonHilitedTextColors(iTPButtons[Enum310.SPREAD_BUTTON], FONT_WHITE, FONT_NEARBLACK);
+  SpecifyButtonHilitedTextColors(iTPButtons[Enum310.GROUP_BUTTON], FONT_WHITE, FONT_NEARBLACK);
+  SpecifyButtonHilitedTextColors(iTPButtons[Enum310.DONE_BUTTON], FONT_WHITE, FONT_NEARBLACK);
 
   // First pass:  Count the number of mercs that are going to be placed by the player.
   //             This determines the size of the array we will allocate.
   giPlacements = 0;
   for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
     if (MercPtrs[i].value.bActive && !MercPtrs[i].value.fBetweenSectors && MercPtrs[i].value.sSectorX == gpBattleGroup.value.ubSectorX && MercPtrs[i].value.sSectorY == gpBattleGroup.value.ubSectorY && !(MercPtrs[i].value.uiStatusFlags & (SOLDIER_VEHICLE)) && // ATE Ignore vehicles
-        MercPtrs[i].value.bAssignment != ASSIGNMENT_POW && MercPtrs[i].value.bAssignment != IN_TRANSIT && !MercPtrs[i].value.bSectorZ) {
+        MercPtrs[i].value.bAssignment != Enum117.ASSIGNMENT_POW && MercPtrs[i].value.bAssignment != Enum117.IN_TRANSIT && !MercPtrs[i].value.bSectorZ) {
       giPlacements++;
     }
   }
@@ -119,7 +119,7 @@ function InitTacticalPlacementGUI(): void {
   // Second pass:  Assign the mercs to their respective slots.
   giPlacements = 0;
   for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
-    if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife && !MercPtrs[i].value.fBetweenSectors && MercPtrs[i].value.sSectorX == gpBattleGroup.value.ubSectorX && MercPtrs[i].value.sSectorY == gpBattleGroup.value.ubSectorY && MercPtrs[i].value.bAssignment != ASSIGNMENT_POW && MercPtrs[i].value.bAssignment != IN_TRANSIT && !(MercPtrs[i].value.uiStatusFlags & (SOLDIER_VEHICLE)) && // ATE Ignore vehicles
+    if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife && !MercPtrs[i].value.fBetweenSectors && MercPtrs[i].value.sSectorX == gpBattleGroup.value.ubSectorX && MercPtrs[i].value.sSectorY == gpBattleGroup.value.ubSectorY && MercPtrs[i].value.bAssignment != Enum117.ASSIGNMENT_POW && MercPtrs[i].value.bAssignment != Enum117.IN_TRANSIT && !(MercPtrs[i].value.uiStatusFlags & (SOLDIER_VEHICLE)) && // ATE Ignore vehicles
         !MercPtrs[i].value.bSectorZ) {
       // ATE: If we are in a vehicle - remove ourselves from it!
       // if ( MercPtrs[ i ]->uiStatusFlags & ( SOLDIER_DRIVER | SOLDIER_PASSENGER ) )
@@ -127,23 +127,23 @@ function InitTacticalPlacementGUI(): void {
       //	RemoveSoldierFromVehicle( MercPtrs[ i ], MercPtrs[ i ]->bVehicleID );
       //}
 
-      if (MercPtrs[i].value.ubStrategicInsertionCode == INSERTION_CODE_PRIMARY_EDGEINDEX || MercPtrs[i].value.ubStrategicInsertionCode == INSERTION_CODE_SECONDARY_EDGEINDEX) {
+      if (MercPtrs[i].value.ubStrategicInsertionCode == Enum175.INSERTION_CODE_PRIMARY_EDGEINDEX || MercPtrs[i].value.ubStrategicInsertionCode == Enum175.INSERTION_CODE_SECONDARY_EDGEINDEX) {
         MercPtrs[i].value.ubStrategicInsertionCode = MercPtrs[i].value.usStrategicInsertionData;
       }
       gMercPlacement[giPlacements].pSoldier = MercPtrs[i];
       gMercPlacement[giPlacements].ubStrategicInsertionCode = MercPtrs[i].value.ubStrategicInsertionCode;
       gMercPlacement[giPlacements].fPlaced = FALSE;
       switch (MercPtrs[i].value.ubStrategicInsertionCode) {
-        case INSERTION_CODE_NORTH:
+        case Enum175.INSERTION_CODE_NORTH:
           gfNorth = TRUE;
           break;
-        case INSERTION_CODE_EAST:
+        case Enum175.INSERTION_CODE_EAST:
           gfEast = TRUE;
           break;
-        case INSERTION_CODE_SOUTH:
+        case Enum175.INSERTION_CODE_SOUTH:
           gfSouth = TRUE;
           break;
-        case INSERTION_CODE_WEST:
+        case Enum175.INSERTION_CODE_WEST:
           gfWest = TRUE;
           break;
       }
@@ -176,14 +176,14 @@ function InitTacticalPlacementGUI(): void {
 
   PlaceMercs();
 
-  if (gubDefaultButton == GROUP_BUTTON) {
-    ButtonList[iTPButtons[GROUP_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+  if (gubDefaultButton == Enum310.GROUP_BUTTON) {
+    ButtonList[iTPButtons[Enum310.GROUP_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
     for (i = 0; i < giPlacements; i++) {
       // go from the currently selected soldier to the end
       if (!gMercPlacement[i].fPlaced) {
         // Found an unplaced merc.  Select him.
         gbSelectedMercID = i;
-        if (gubDefaultButton == GROUP_BUTTON)
+        if (gubDefaultButton == Enum310.GROUP_BUTTON)
           gubSelectedGroupID = gMercPlacement[i].pSoldier.value.ubGroupID;
         gfTacticalPlacementGUIDirty = TRUE;
         SetCursorMerc(i);
@@ -270,7 +270,7 @@ function RenderTacticalPlacementGUI(): void {
 
     GetSectorIDString(gubPBSectorX, gubPBSectorY, gubPBSectorZ, str, TRUE);
 
-    mprintf(120, 335, "%s %s -- %s...", gpStrategicString[STR_TP_SECTOR], str, gpStrategicString[STR_TP_CHOOSEENTRYPOSITIONS]);
+    mprintf(120, 335, "%s %s -- %s...", gpStrategicString[Enum365.STR_TP_SECTOR], str, gpStrategicString[Enum365.STR_TP_CHOOSEENTRYPOSITIONS]);
 
     // Shade out the part of the tactical map that isn't considered placable.
     BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, 320, 640, 160);
@@ -297,16 +297,16 @@ function RenderTacticalPlacementGUI(): void {
       gTPClipRect.iRight = 636;
       gTPClipRect.iBottom = 320;
       switch (gMercPlacement[gbCursorMercID].ubStrategicInsertionCode) {
-        case INSERTION_CODE_NORTH:
+        case Enum175.INSERTION_CODE_NORTH:
           gTPClipRect.iTop = 30;
           break;
-        case INSERTION_CODE_EAST:
+        case Enum175.INSERTION_CODE_EAST:
           gTPClipRect.iRight = 610;
           break;
-        case INSERTION_CODE_SOUTH:
+        case Enum175.INSERTION_CODE_SOUTH:
           gTPClipRect.iBottom = 290;
           break;
-        case INSERTION_CODE_WEST:
+        case Enum175.INSERTION_CODE_WEST:
           gTPClipRect.iLeft = 30;
           break;
       }
@@ -323,9 +323,9 @@ function RenderTacticalPlacementGUI(): void {
     xp = 95 + (i / 2) * 54;
     yp = (i % 2) ? 422 : 371;
     // NAME
-    if (gubDefaultButton == GROUP_BUTTON && gMercPlacement[i].pSoldier.value.ubGroupID == gubSelectedGroupID || gubDefaultButton != GROUP_BUTTON && i == gbSelectedMercID) {
+    if (gubDefaultButton == Enum310.GROUP_BUTTON && gMercPlacement[i].pSoldier.value.ubGroupID == gubSelectedGroupID || gubDefaultButton != Enum310.GROUP_BUTTON && i == gbSelectedMercID) {
       ubColor = FONT_YELLOW;
-    } else if (gubDefaultButton == GROUP_BUTTON && gMercPlacement[i].pSoldier.value.ubGroupID == gubHilightedGroupID || gubDefaultButton != GROUP_BUTTON && i == gbHilightedMercID) {
+    } else if (gubDefaultButton == Enum310.GROUP_BUTTON && gMercPlacement[i].pSoldier.value.ubGroupID == gubHilightedGroupID || gubDefaultButton != Enum310.GROUP_BUTTON && i == gbHilightedMercID) {
       ubColor = FONT_WHITE;
     } else {
       ubColor = FONT_GRAY3;
@@ -356,17 +356,17 @@ function EnsureDoneButtonStatus(): void {
   // BOOLEAN fChanged = FALSE;
   for (i = 0; i < giPlacements; i++) {
     if (!gMercPlacement[i].fPlaced) {
-      if (ButtonList[iTPButtons[DONE_BUTTON]].value.uiFlags & BUTTON_ENABLED) {
-        DisableButton(iTPButtons[DONE_BUTTON]);
-        SetButtonFastHelpText(iTPButtons[DONE_BUTTON], gpStrategicString[STR_TP_DISABLED_DONEHELP]);
+      if (ButtonList[iTPButtons[Enum310.DONE_BUTTON]].value.uiFlags & BUTTON_ENABLED) {
+        DisableButton(iTPButtons[Enum310.DONE_BUTTON]);
+        SetButtonFastHelpText(iTPButtons[Enum310.DONE_BUTTON], gpStrategicString[Enum365.STR_TP_DISABLED_DONEHELP]);
       }
       return;
     }
   }
-  if (!(ButtonList[iTPButtons[DONE_BUTTON]].value.uiFlags & BUTTON_ENABLED)) {
+  if (!(ButtonList[iTPButtons[Enum310.DONE_BUTTON]].value.uiFlags & BUTTON_ENABLED)) {
     // only enable it when it is disabled, otherwise the button will stay down!
-    EnableButton(iTPButtons[DONE_BUTTON]);
-    SetButtonFastHelpText(iTPButtons[DONE_BUTTON], gpStrategicString[STR_TP_DONEHELP]);
+    EnableButton(iTPButtons[Enum310.DONE_BUTTON]);
+    SetButtonFastHelpText(iTPButtons[Enum310.DONE_BUTTON], gpStrategicString[Enum365.STR_TP_DONEHELP]);
   }
 }
 
@@ -387,18 +387,18 @@ function TacticalPlacementHandle(): void {
     if (InputEvent.usEvent == KEY_DOWN) {
       switch (InputEvent.usParam) {
         case ENTER:
-          if (ButtonList[iTPButtons[DONE_BUTTON]].value.uiFlags & BUTTON_ENABLED) {
+          if (ButtonList[iTPButtons[Enum310.DONE_BUTTON]].value.uiFlags & BUTTON_ENABLED) {
             KillTacticalPlacementGUI();
           }
           break;
         case 'c':
-          ClearPlacementsCallback(ButtonList[iTPButtons[CLEAR_BUTTON]], MSYS_CALLBACK_REASON_LBUTTON_UP);
+          ClearPlacementsCallback(ButtonList[iTPButtons[Enum310.CLEAR_BUTTON]], MSYS_CALLBACK_REASON_LBUTTON_UP);
           break;
         case 'g':
-          GroupPlacementsCallback(ButtonList[iTPButtons[GROUP_BUTTON]], MSYS_CALLBACK_REASON_LBUTTON_UP);
+          GroupPlacementsCallback(ButtonList[iTPButtons[Enum310.GROUP_BUTTON]], MSYS_CALLBACK_REASON_LBUTTON_UP);
           break;
         case 's':
-          SpreadPlacementsCallback(ButtonList[iTPButtons[SPREAD_BUTTON]], MSYS_CALLBACK_REASON_LBUTTON_UP);
+          SpreadPlacementsCallback(ButtonList[iTPButtons[Enum310.SPREAD_BUTTON]], MSYS_CALLBACK_REASON_LBUTTON_UP);
           break;
         case 'x':
           if (InputEvent.usKeyState & ALT_DOWN) {
@@ -411,38 +411,38 @@ function TacticalPlacementHandle(): void {
   gfValidCursor = FALSE;
   if (gbSelectedMercID != -1 && gusMouseYPos < 320) {
     switch (gMercPlacement[gbCursorMercID].ubStrategicInsertionCode) {
-      case INSERTION_CODE_NORTH:
+      case Enum175.INSERTION_CODE_NORTH:
         if (gusMouseYPos <= 40)
           gfValidCursor = TRUE;
         break;
-      case INSERTION_CODE_EAST:
+      case Enum175.INSERTION_CODE_EAST:
         if (gusMouseXPos >= 600)
           gfValidCursor = TRUE;
         break;
-      case INSERTION_CODE_SOUTH:
+      case Enum175.INSERTION_CODE_SOUTH:
         if (gusMouseYPos >= 280)
           gfValidCursor = TRUE;
         break;
-      case INSERTION_CODE_WEST:
+      case Enum175.INSERTION_CODE_WEST:
         if (gusMouseXPos <= 40)
           gfValidCursor = TRUE;
         break;
     }
-    if (gubDefaultButton == GROUP_BUTTON) {
+    if (gubDefaultButton == Enum310.GROUP_BUTTON) {
       if (gfValidCursor) {
-        SetCurrentCursorFromDatabase(CURSOR_PLACEGROUP);
+        SetCurrentCursorFromDatabase(Enum317.CURSOR_PLACEGROUP);
       } else {
-        SetCurrentCursorFromDatabase(CURSOR_DPLACEGROUP);
+        SetCurrentCursorFromDatabase(Enum317.CURSOR_DPLACEGROUP);
       }
     } else {
       if (gfValidCursor) {
-        SetCurrentCursorFromDatabase(CURSOR_PLACEMERC);
+        SetCurrentCursorFromDatabase(Enum317.CURSOR_PLACEMERC);
       } else {
-        SetCurrentCursorFromDatabase(CURSOR_DPLACEMERC);
+        SetCurrentCursorFromDatabase(Enum317.CURSOR_DPLACEMERC);
       }
     }
   } else {
-    SetCurrentCursorFromDatabase(CURSOR_NORMAL);
+    SetCurrentCursorFromDatabase(Enum317.CURSOR_NORMAL);
   }
   if (gfKillTacticalGUI == 1) {
     KillTacticalPlacementGUI();
@@ -470,7 +470,7 @@ function KillTacticalPlacementGUI(): void {
   DeleteVideoObjectFromIndex(giOverheadPanelImage);
   DeleteVideoObjectFromIndex(giMercPanelImage);
   // Delete buttons
-  for (i = 0; i < NUM_TP_BUTTONS; i++) {
+  for (i = 0; i < Enum310.NUM_TP_BUTTONS; i++) {
     UnloadButtonImage(giOverheadButtonImages[i]);
     RemoveButton(iTPButtons[i]);
   }
@@ -480,8 +480,8 @@ function KillTacticalPlacementGUI(): void {
     MSYS_RemoveRegion(addressof(gMercPlacement[i].region));
   }
 
-  if (gsCurInterfacePanel < 0 || gsCurInterfacePanel >= NUM_UI_PANELS)
-    gsCurInterfacePanel = TEAM_PANEL;
+  if (gsCurInterfacePanel < 0 || gsCurInterfacePanel >= Enum215.NUM_UI_PANELS)
+    gsCurInterfacePanel = Enum215.TEAM_PANEL;
 
   SetCurrentInterfacePanel(gsCurInterfacePanel);
 
@@ -489,7 +489,7 @@ function KillTacticalPlacementGUI(): void {
   KillOverheadMap();
   // Recreate the tactical panel.
   MSYS_EnableRegion(addressof(gRadarRegion));
-  SetCurrentInterfacePanel(TEAM_PANEL);
+  SetCurrentInterfacePanel(Enum215.TEAM_PANEL);
   // Initialize the rest of the map (AI, enemies, civs, etc.)
 
   for (i = 0; i < giPlacements; i++) {
@@ -506,7 +506,7 @@ function ChooseRandomEdgepoints(): void {
     if (!(gMercPlacement[i].pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
       gMercPlacement[i].pSoldier.value.usStrategicInsertionData = ChooseMapEdgepoint(gMercPlacement[i].ubStrategicInsertionCode);
       if (gMercPlacement[i].pSoldier.value.usStrategicInsertionData != NOWHERE) {
-        gMercPlacement[i].pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+        gMercPlacement[i].pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
       } else {
         if (gMercPlacement[i].pSoldier.value.usStrategicInsertionData < 0 || gMercPlacement[i].pSoldier.value.usStrategicInsertionData > WORLD_MAX) {
           i = i;
@@ -523,10 +523,10 @@ function ChooseRandomEdgepoints(): void {
 function PlaceMercs(): void {
   let i: INT32;
   switch (gubDefaultButton) {
-    case SPREAD_BUTTON: // Place mercs randomly along their side using map edgepoints.
+    case Enum310.SPREAD_BUTTON: // Place mercs randomly along their side using map edgepoints.
       ChooseRandomEdgepoints();
       break;
-    case CLEAR_BUTTON:
+    case Enum310.CLEAR_BUTTON:
       for (i = 0; i < giPlacements; i++) {
         PickUpMercPiece(i);
       }
@@ -549,9 +549,9 @@ function DoneOverheadPlacementClickCallback(btn: Pointer<GUI_BUTTON>, reason: IN
 
 function SpreadPlacementsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gubDefaultButton = SPREAD_BUTTON;
-    ButtonList[iTPButtons[GROUP_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iTPButtons[GROUP_BUTTON]].value.uiFlags |= BUTTON_DIRTY;
+    gubDefaultButton = Enum310.SPREAD_BUTTON;
+    ButtonList[iTPButtons[Enum310.GROUP_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iTPButtons[Enum310.GROUP_BUTTON]].value.uiFlags |= BUTTON_DIRTY;
     PlaceMercs();
     gubSelectedGroupID = 0;
     gbSelectedMercID = -1;
@@ -561,14 +561,14 @@ function SpreadPlacementsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
 
 function GroupPlacementsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (gubDefaultButton == GROUP_BUTTON) {
+    if (gubDefaultButton == Enum310.GROUP_BUTTON) {
       btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
       btn.value.uiFlags |= BUTTON_DIRTY;
-      gubDefaultButton = CLEAR_BUTTON;
+      gubDefaultButton = Enum310.CLEAR_BUTTON;
       gubSelectedGroupID = 0;
     } else {
       btn.value.uiFlags |= BUTTON_CLICKED_ON | BUTTON_DIRTY;
-      gubDefaultButton = GROUP_BUTTON;
+      gubDefaultButton = Enum310.GROUP_BUTTON;
       gbSelectedMercID = 0;
       SetCursorMerc(gbSelectedMercID);
       gubSelectedGroupID = gMercPlacement[gbSelectedMercID].pSoldier.value.ubGroupID;
@@ -578,9 +578,9 @@ function GroupPlacementsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 
 function ClearPlacementsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[iTPButtons[GROUP_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iTPButtons[GROUP_BUTTON]].value.uiFlags |= BUTTON_DIRTY;
-    gubDefaultButton = CLEAR_BUTTON;
+    ButtonList[iTPButtons[Enum310.GROUP_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iTPButtons[Enum310.GROUP_BUTTON]].value.uiFlags |= BUTTON_DIRTY;
+    gubDefaultButton = Enum310.CLEAR_BUTTON;
     PlaceMercs();
   }
 }
@@ -592,7 +592,7 @@ function MercMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
       if (addressof(gMercPlacement[i].region == reg)) {
         if (gbHilightedMercID != i) {
           gbHilightedMercID = i;
-          if (gubDefaultButton == GROUP_BUTTON)
+          if (gubDefaultButton == Enum310.GROUP_BUTTON)
             gubHilightedGroupID = gMercPlacement[i].pSoldier.value.ubGroupID;
           SetCursorMerc(i);
           gpTacticalPlacementHilightedSoldier = gMercPlacement[i].pSoldier;
@@ -611,7 +611,7 @@ function MercClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
         if (gbSelectedMercID != i) {
           gbSelectedMercID = i;
           gpTacticalPlacementSelectedSoldier = gMercPlacement[i].pSoldier;
-          if (gubDefaultButton == GROUP_BUTTON) {
+          if (gubDefaultButton == Enum310.GROUP_BUTTON) {
             gubSelectedGroupID = gpTacticalPlacementSelectedSoldier.value.ubGroupID;
           }
         }
@@ -630,7 +630,7 @@ function SelectNextUnplacedUnit(): void {
     if (!gMercPlacement[i].fPlaced) {
       // Found an unplaced merc.  Select him.
       gbSelectedMercID = i;
-      if (gubDefaultButton == GROUP_BUTTON)
+      if (gubDefaultButton == Enum310.GROUP_BUTTON)
         gubSelectedGroupID = gMercPlacement[i].pSoldier.value.ubGroupID;
       gfTacticalPlacementGUIDirty = TRUE;
       SetCursorMerc(i);
@@ -643,7 +643,7 @@ function SelectNextUnplacedUnit(): void {
     if (!gMercPlacement[i].fPlaced) {
       // Found an unplaced merc.  Select him.
       gbSelectedMercID = i;
-      if (gubDefaultButton == GROUP_BUTTON)
+      if (gubDefaultButton == Enum310.GROUP_BUTTON)
         gubSelectedGroupID = gMercPlacement[i].pSoldier.value.ubGroupID;
       gfTacticalPlacementGUIDirty = TRUE;
       SetCursorMerc(i);
@@ -675,7 +675,7 @@ function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, 
           // we have clicked within a valid part of the map.
           BeginMapEdgepointSearch();
 
-          if (gubDefaultButton == GROUP_BUTTON) {
+          if (gubDefaultButton == Enum310.GROUP_BUTTON) {
             // We are placing a whole group.
             for (i = 0; i < giPlacements; i++) {
               // Find locations of each member of the group, but don't place them yet.  If
@@ -693,7 +693,7 @@ function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, 
               // One or more of the mercs in the group didn't get gridno assignments, so we
               // report an error.
               for (i = 0; i < giPlacements; i++) {
-                gMercPlacement[i].pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+                gMercPlacement[i].pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
                 if (gMercPlacement[i].pSoldier.value.ubGroupID == gubSelectedGroupID) {
                   PutDownMercPiece(i);
                 }
@@ -703,7 +703,7 @@ function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, 
             // This is a single merc placement.  If valid, then place him, else report error.
             gMercPlacement[gbSelectedMercID].pSoldier.value.usStrategicInsertionData = SearchForClosestPrimaryMapEdgepoint(sGridNo, gMercPlacement[gbSelectedMercID].ubStrategicInsertionCode);
             if (gMercPlacement[gbSelectedMercID].pSoldier.value.usStrategicInsertionData != NOWHERE) {
-              gMercPlacement[gbSelectedMercID].pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+              gMercPlacement[gbSelectedMercID].pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
               PutDownMercPiece(gbSelectedMercID);
             } else {
               fInvalidArea = TRUE;
@@ -721,7 +721,7 @@ function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, 
           if (fInvalidArea) {
             // Report error due to invalid placement.
             let CenterRect: SGPRect = [ 220, 120, 420, 200 ];
-            DoMessageBox(MSG_BOX_BASIC_STYLE, gpStrategicString[STR_TP_INACCESSIBLE_MESSAGE], guiCurrentScreen, MSG_BOX_FLAG_OK | MSG_BOX_FLAG_USE_CENTERING_RECT, DialogRemoved, addressof(CenterRect));
+            DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gpStrategicString[Enum365.STR_TP_INACCESSIBLE_MESSAGE], guiCurrentScreen, MSG_BOX_FLAG_OK | MSG_BOX_FLAG_USE_CENTERING_RECT, DialogRemoved, addressof(CenterRect));
           } else {
             // Placement successful, so select the next unplaced unit (single or group).
             SelectNextUnplacedUnit();
@@ -732,7 +732,7 @@ function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, 
       // not a valid cursor location...
       if (gbCursorMercID != -1) {
         let CenterRect: SGPRect = [ 220, 120, 420, 200 ];
-        DoMessageBox(MSG_BOX_BASIC_STYLE, gpStrategicString[STR_TP_INVALID_MESSAGE], guiCurrentScreen, MSG_BOX_FLAG_OK | MSG_BOX_FLAG_USE_CENTERING_RECT, DialogRemoved, addressof(CenterRect));
+        DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gpStrategicString[Enum365.STR_TP_INVALID_MESSAGE], guiCurrentScreen, MSG_BOX_FLAG_OK | MSG_BOX_FLAG_USE_CENTERING_RECT, DialogRemoved, addressof(CenterRect));
       }
     }
   }
@@ -755,19 +755,19 @@ function PutDownMercPiece(iPlacement: INT32): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   pSoldier = gMercPlacement[iPlacement].pSoldier;
   switch (pSoldier.value.ubStrategicInsertionCode) {
-    case INSERTION_CODE_NORTH:
+    case Enum175.INSERTION_CODE_NORTH:
       pSoldier.value.sInsertionGridNo = gMapInformation.sNorthGridNo;
       break;
-    case INSERTION_CODE_SOUTH:
+    case Enum175.INSERTION_CODE_SOUTH:
       pSoldier.value.sInsertionGridNo = gMapInformation.sSouthGridNo;
       break;
-    case INSERTION_CODE_EAST:
+    case Enum175.INSERTION_CODE_EAST:
       pSoldier.value.sInsertionGridNo = gMapInformation.sEastGridNo;
       break;
-    case INSERTION_CODE_WEST:
+    case Enum175.INSERTION_CODE_WEST:
       pSoldier.value.sInsertionGridNo = gMapInformation.sWestGridNo;
       break;
-    case INSERTION_CODE_GRIDNO:
+    case Enum175.INSERTION_CODE_GRIDNO:
       pSoldier.value.sInsertionGridNo = pSoldier.value.usStrategicInsertionData;
       break;
     default:

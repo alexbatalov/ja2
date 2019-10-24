@@ -148,7 +148,7 @@ function CreateTileDatabase(): void {
   let TileElement: TILE_ELEMENT;
 
   // Loop through all surfaces and tiles and build database
-  for (cnt1 = 0; cnt1 < NUMBEROFTILETYPES; cnt1++) {
+  for (cnt1 = 0; cnt1 < Enum313.NUMBEROFTILETYPES; cnt1++) {
     // Get number of regions
     TileSurf = gTileSurfaceArray[cnt1];
 
@@ -202,7 +202,7 @@ function CreateTileDatabase(): void {
 
         TileElement.fType = TileSurf.value.fType;
         TileElement.ubTerrainID = TileSurf.value.ubTerrainID;
-        TileElement.usWallOrientation = NO_ORIENTATION;
+        TileElement.usWallOrientation = Enum314.NO_ORIENTATION;
 
         if (TileSurf.value.pAuxData != NULL) {
           if (TileSurf.value.pAuxData[cnt2].fFlags & AUX_FULL_TILE) {
@@ -276,8 +276,8 @@ function CreateTileDatabase(): void {
 
   // Calculate mem usgae
   gSurfaceMemUsage = guiMemTotal - gSurfaceMemUsage;
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Database Sizes: %d vs %d", gTileDatabaseSize, NUMBEROFTILES));
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Database Types: %d", NUMBEROFTILETYPES));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Database Sizes: %d vs %d", gTileDatabaseSize, Enum312.NUMBEROFTILES));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Database Types: %d", Enum313.NUMBEROFTILETYPES));
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Database Item Mem:		%d", gTileDatabaseSize * sizeof(TILE_ELEMENT)));
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Database Item Total Mem:		%d", gSurfaceMemUsage));
 }
@@ -285,7 +285,7 @@ function CreateTileDatabase(): void {
 function DeallocateTileDatabase(): void {
   let cnt: INT32;
 
-  for (cnt = 0; cnt < NUMBEROFTILES; cnt++) {
+  for (cnt = 0; cnt < Enum312.NUMBEROFTILES; cnt++) {
     // Check if an existing set of animated tiles are in place, remove if found
     if (gTileDatabase[cnt].pAnimData != NULL) {
       FreeAnimTileData(addressof(gTileDatabase[cnt]));
@@ -377,7 +377,7 @@ function SetLandIndexWithRadius(iMapIndex: INT32, usIndex: UINT16, uiNewType: UI
           }
         }
 
-        if (fDoPaste && ((uiNewType >= FIRSTFLOOR && uiNewType <= LASTFLOOR) || ((uiNewType < FIRSTFLOOR || uiNewType > LASTFLOOR) && !TypeRangeExistsInLandLayer(iNewIndex, FIRSTFLOOR, LASTFLOOR, addressof(Dummy))))) {
+        if (fDoPaste && ((uiNewType >= Enum313.FIRSTFLOOR && uiNewType <= LASTFLOOR) || ((uiNewType < Enum313.FIRSTFLOOR || uiNewType > LASTFLOOR) && !TypeRangeExistsInLandLayer(iNewIndex, Enum313.FIRSTFLOOR, LASTFLOOR, addressof(Dummy))))) {
           SetLandIndex(iNewIndex, usIndex, uiNewType, FALSE);
         }
       }
@@ -437,7 +437,7 @@ function GetSubIndexFromTileIndex(usTileIndex: UINT16, pusSubIndex: Pointer<UINT
 function GetTypeSubIndexFromTileIndex(uiCheckType: UINT32, usIndex: UINT16, pusSubIndex: Pointer<UINT16>): BOOLEAN {
   // Tile database is zero-based, Type indecies are 1-based!
 
-  CHECKF(uiCheckType < NUMBEROFTILETYPES);
+  CHECKF(uiCheckType < Enum313.NUMBEROFTILETYPES);
 
   pusSubIndex.value = usIndex - gTileTypeStartIndex[uiCheckType] + 1;
 
@@ -447,7 +447,7 @@ function GetTypeSubIndexFromTileIndex(uiCheckType: UINT32, usIndex: UINT16, pusS
 function GetTypeSubIndexFromTileIndexChar(uiCheckType: UINT32, usIndex: UINT16, pubSubIndex: Pointer<UINT8>): BOOLEAN {
   // Tile database is zero-based, Type indecies are 1-based!
 
-  CHECKF(uiCheckType < NUMBEROFTILETYPES);
+  CHECKF(uiCheckType < Enum313.NUMBEROFTILETYPES);
 
   pubSubIndex.value = (usIndex - gTileTypeStartIndex[uiCheckType] + 1);
 
@@ -457,7 +457,7 @@ function GetTypeSubIndexFromTileIndexChar(uiCheckType: UINT32, usIndex: UINT16, 
 function GetTileIndexFromTypeSubIndex(uiCheckType: UINT32, usSubIndex: UINT16, pusTileIndex: Pointer<UINT16>): BOOLEAN {
   // Tile database is zero-based, Type indecies are 1-based!
 
-  CHECKF(uiCheckType < NUMBEROFTILETYPES);
+  CHECKF(uiCheckType < Enum313.NUMBEROFTILETYPES);
 
   pusTileIndex.value = usSubIndex + gTileTypeStartIndex[uiCheckType] - 1;
 
@@ -491,7 +491,7 @@ function GetTileFlags(usIndex: UINT16, puiFlags: Pointer<UINT32>): BOOLEAN {
   let TileElem: TILE_ELEMENT;
 
   CHECKF(usIndex != NO_TILE);
-  CHECKF(usIndex < NUMBEROFTILES);
+  CHECKF(usIndex < Enum312.NUMBEROFTILES);
 
   // Get tile element
   TileElem = gTileDatabase[usIndex];
@@ -647,33 +647,33 @@ function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrienta
 function CalculateWallOrientationsAtGridNo(iMapIndex: INT32): UINT8 {
   let usCheckWallOrientation: UINT16 = 0;
   let pStruct: Pointer<LEVELNODE> = NULL;
-  let ubFinalWallOrientation: UINT8 = NO_ORIENTATION;
+  let ubFinalWallOrientation: UINT8 = Enum314.NO_ORIENTATION;
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
   // Traverse all of the pStructs
   while (pStruct != NULL) {
     GetWallOrientation(pStruct.value.usIndex, addressof(usCheckWallOrientation));
-    if (ubFinalWallOrientation == NO_ORIENTATION) {
+    if (ubFinalWallOrientation == Enum314.NO_ORIENTATION) {
       // Get the first valid orientation.
       ubFinalWallOrientation = usCheckWallOrientation;
     } else
       switch (ubFinalWallOrientation) {
         // If the first valid orientation has the key counterpart orientation,
         // return the special corner orientations.
-        case INSIDE_TOP_LEFT:
-          if (usCheckWallOrientation == INSIDE_TOP_RIGHT)
-            return INSIDE_BOTTOM_CORNER;
+        case Enum314.INSIDE_TOP_LEFT:
+          if (usCheckWallOrientation == Enum314.INSIDE_TOP_RIGHT)
+            return Enum314.INSIDE_BOTTOM_CORNER;
           break;
-        case INSIDE_TOP_RIGHT:
-          if (usCheckWallOrientation == INSIDE_TOP_LEFT)
-            return INSIDE_BOTTOM_CORNER;
+        case Enum314.INSIDE_TOP_RIGHT:
+          if (usCheckWallOrientation == Enum314.INSIDE_TOP_LEFT)
+            return Enum314.INSIDE_BOTTOM_CORNER;
           break;
-        case OUTSIDE_TOP_LEFT:
-          if (usCheckWallOrientation == OUTSIDE_TOP_RIGHT)
-            return OUTSIDE_BOTTOM_CORNER;
+        case Enum314.OUTSIDE_TOP_LEFT:
+          if (usCheckWallOrientation == Enum314.OUTSIDE_TOP_RIGHT)
+            return Enum314.OUTSIDE_BOTTOM_CORNER;
           break;
-        case OUTSIDE_TOP_RIGHT:
-          if (usCheckWallOrientation == OUTSIDE_TOP_LEFT)
-            return OUTSIDE_BOTTOM_CORNER;
+        case Enum314.OUTSIDE_TOP_RIGHT:
+          if (usCheckWallOrientation == Enum314.OUTSIDE_TOP_LEFT)
+            return Enum314.OUTSIDE_BOTTOM_CORNER;
           break;
       }
     // Advance to next

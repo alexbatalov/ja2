@@ -85,7 +85,7 @@ function HandleBulletSpecialFlags(iBulletIndex: INT32): void {
         strcpy(AniParams.zCachedFile, "TILECACHE\\SPIT2.STI");
       } else if (pBullet.value.usFlags & (BULLET_FLAG_KNIFE)) {
         strcpy(AniParams.zCachedFile, "TILECACHE\\KNIFING.STI");
-        pBullet.value.ubItemStatus = pBullet.value.pFirer.value.inv[HANDPOS].bStatus[0];
+        pBullet.value.ubItemStatus = pBullet.value.pFirer.value.inv[Enum261.HANDPOS].bStatus[0];
       }
 
       // Get direction to use for this guy....
@@ -144,7 +144,7 @@ function RemoveBullet(iBullet: INT32): void {
 }
 
 function LocateBullet(iBulletIndex: INT32): void {
-  if (gGameSettings.fOptions[TOPTION_SHOW_MISSES]) {
+  if (gGameSettings.fOptions[Enum8.TOPTION_SHOW_MISSES]) {
     // Check if a bad guy fired!
     if (gBullets[iBulletIndex].ubFirerID != NOBODY) {
       if (MercPtrs[gBullets[iBulletIndex].ubFirerID].value.bSide == gbPlayerNum) {
@@ -184,8 +184,8 @@ function UpdateBullets(): void {
 
           if (gBullets[uiCount].usFlags & (BULLET_FLAG_CREATURE_SPIT | BULLET_FLAG_KNIFE | BULLET_FLAG_MISSILE | BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_TANK_CANNON | BULLET_FLAG_FLAME)) {
           } else {
-            RemoveStruct(gBullets[uiCount].sGridNo, BULLETTILE1);
-            RemoveStruct(gBullets[uiCount].sGridNo, BULLETTILE2);
+            RemoveStruct(gBullets[uiCount].sGridNo, Enum312.BULLETTILE1);
+            RemoveStruct(gBullets[uiCount].sGridNo, Enum312.BULLETTILE2);
           }
         }
 
@@ -219,7 +219,7 @@ function UpdateBullets(): void {
           // Are we a missle?
           else if (gBullets[uiCount].usFlags & (BULLET_FLAG_MISSILE | BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_TANK_CANNON | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT)) {
           } else {
-            pNode = AddStructToTail(gBullets[uiCount].sGridNo, BULLETTILE1);
+            pNode = AddStructToTail(gBullets[uiCount].sGridNo, Enum312.BULLETTILE1);
             pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
             pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
             pNode.value.uiFlags |= (LEVELNODE_USEABSOLUTEPOS | LEVELNODE_IGNOREHEIGHT);
@@ -228,7 +228,7 @@ function UpdateBullets(): void {
             pNode.value.sRelativeZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(gBullets[uiCount].qCurrZ));
 
             // Display shadow
-            pNode = AddStructToTail(gBullets[uiCount].sGridNo, BULLETTILE2);
+            pNode = AddStructToTail(gBullets[uiCount].sGridNo, Enum312.BULLETTILE2);
             pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
             pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
             pNode.value.uiFlags |= (LEVELNODE_USEABSOLUTEPOS | LEVELNODE_IGNOREHEIGHT);
@@ -378,8 +378,8 @@ function LoadBulletStructureFromSavedGameFile(hFile: HWFILE): BOOLEAN {
 function StopBullet(iBullet: INT32): void {
   gBullets[iBullet].usFlags |= BULLET_STOPPED;
 
-  RemoveStruct(gBullets[iBullet].sGridNo, BULLETTILE1);
-  RemoveStruct(gBullets[iBullet].sGridNo, BULLETTILE2);
+  RemoveStruct(gBullets[iBullet].sGridNo, Enum312.BULLETTILE1);
+  RemoveStruct(gBullets[iBullet].sGridNo, Enum312.BULLETTILE2);
 }
 
 function DeleteAllBullets(): void {

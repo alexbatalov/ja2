@@ -140,7 +140,7 @@ function InitTownLoyalty(): void {
   let ubTown: UINT8 = 0;
 
   // set up town loyalty table
-  for (ubTown = FIRST_TOWN; ubTown < NUM_TOWNS; ubTown++) {
+  for (ubTown = FIRST_TOWN; ubTown < Enum135.NUM_TOWNS; ubTown++) {
     gTownLoyalty[ubTown].ubRating = 0;
     gTownLoyalty[ubTown].sChange = 0;
     gTownLoyalty[ubTown].fStarted = FALSE;
@@ -152,7 +152,7 @@ function InitTownLoyalty(): void {
 }
 
 function StartTownLoyaltyIfFirstTime(bTownId: INT8): void {
-  Assert((bTownId >= FIRST_TOWN) && (bTownId < NUM_TOWNS));
+  Assert((bTownId >= FIRST_TOWN) && (bTownId < Enum135.NUM_TOWNS));
 
   // if loyalty tracking hasn't yet been started for this town, and the town does use loyalty
   if (!gTownLoyalty[bTownId].fStarted && gfTownUsesLoyalty[bTownId]) {
@@ -160,9 +160,9 @@ function StartTownLoyaltyIfFirstTime(bTownId: INT8): void {
     gTownLoyalty[bTownId].ubRating = gubTownRebelSentiment[bTownId];
 
     // if player hasn't made contact with Miguel yet, or the rebels hate the player
-    if (!CheckFact(FACT_MIGUEL_READ_LETTER, 0) || CheckFact(FACT_REBELS_HATE_PLAYER, 0)) {
+    if (!CheckFact(Enum170.FACT_MIGUEL_READ_LETTER, 0) || CheckFact(Enum170.FACT_REBELS_HATE_PLAYER, 0)) {
       // if town is Omerta
-      if (bTownId == OMERTA) {
+      if (bTownId == Enum135.OMERTA) {
         // start loyalty there at 0, since rebels distrust the player until Miguel receives the letter
         gTownLoyalty[bTownId].ubRating = 0;
       } else {
@@ -180,7 +180,7 @@ function StartTownLoyaltyIfFirstTime(bTownId: INT8): void {
 
 // set a specified town's loyalty rating (ignores previous loyalty value - probably NOT what you want)
 function SetTownLoyalty(bTownId: INT8, ubNewLoyaltyRating: UINT8): void {
-  Assert((bTownId >= FIRST_TOWN) && (bTownId < NUM_TOWNS));
+  Assert((bTownId >= FIRST_TOWN) && (bTownId < Enum135.NUM_TOWNS));
 
   // if the town does use loyalty
   if (gfTownUsesLoyalty[bTownId]) {
@@ -199,7 +199,7 @@ function IncrementTownLoyalty(bTownId: INT8, uiLoyaltyIncrease: UINT32): void {
   let uiRemainingIncrement: UINT32;
   let sThisIncrement: INT16;
 
-  Assert((bTownId >= FIRST_TOWN) && (bTownId < NUM_TOWNS));
+  Assert((bTownId >= FIRST_TOWN) && (bTownId < Enum135.NUM_TOWNS));
 
   // doesn't affect towns where player hasn't established a "presence" yet
   if (!gTownLoyalty[bTownId].fStarted) {
@@ -233,7 +233,7 @@ function DecrementTownLoyalty(bTownId: INT8, uiLoyaltyDecrease: UINT32): void {
   let uiRemainingDecrement: UINT32;
   let sThisDecrement: INT16;
 
-  Assert((bTownId >= FIRST_TOWN) && (bTownId < NUM_TOWNS));
+  Assert((bTownId >= FIRST_TOWN) && (bTownId < Enum135.NUM_TOWNS));
 
   // doesn't affect towns where player hasn't established a "presence" yet
   if (!gTownLoyalty[bTownId].fStarted) {
@@ -268,7 +268,7 @@ function UpdateTownLoyaltyRating(bTownId: INT8): void {
   let sRatingChange: INT16 = 0;
   let ubMaxLoyalty: UINT8 = 0;
 
-  Assert((bTownId >= FIRST_TOWN) && (bTownId < NUM_TOWNS));
+  Assert((bTownId >= FIRST_TOWN) && (bTownId < Enum135.NUM_TOWNS));
 
   // remember previous loyalty value
   ubOldLoyaltyRating = gTownLoyalty[bTownId].ubRating;
@@ -278,7 +278,7 @@ function UpdateTownLoyaltyRating(bTownId: INT8): void {
   // if loyalty is ready to increase
   if (sRatingChange > 0) {
     // if the town is Omerta, and the rebels are/will become hostile
-    if ((bTownId == OMERTA) && (gTacticalStatus.fCivGroupHostile[REBEL_CIV_GROUP] != CIV_GROUP_NEUTRAL)) {
+    if ((bTownId == Enum135.OMERTA) && (gTacticalStatus.fCivGroupHostile[Enum246.REBEL_CIV_GROUP] != CIV_GROUP_NEUTRAL)) {
       // maximum loyalty is much less than normal
       ubMaxLoyalty = HOSTILE_OMERTA_LOYALTY_RATING;
     } else {
@@ -567,7 +567,7 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
   }
 
   // ignore murder of non-civilians!
-  if ((pSoldier.value.bTeam != CIV_TEAM) || (pSoldier.value.ubBodyType == CROW)) {
+  if ((pSoldier.value.bTeam != CIV_TEAM) || (pSoldier.value.ubBodyType == Enum194.CROW)) {
     return;
   }
 
@@ -580,13 +580,13 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
   }
 
   // if civilian belongs to a civilian group
-  if (pSoldier.value.ubCivilianGroup != NON_CIV_GROUP) {
+  if (pSoldier.value.ubCivilianGroup != Enum246.NON_CIV_GROUP) {
     // and it's one that is hostile to the player's cause
     switch (pSoldier.value.ubCivilianGroup) {
-      case KINGPIN_CIV_GROUP:
-      case ALMA_MILITARY_CIV_GROUP:
-      case HICKS_CIV_GROUP:
-      case WARDEN_CIV_GROUP:
+      case Enum246.KINGPIN_CIV_GROUP:
+      case Enum246.ALMA_MILITARY_CIV_GROUP:
+      case Enum246.HICKS_CIV_GROUP:
+      case Enum246.WARDEN_CIV_GROUP:
         return;
     }
   }
@@ -599,14 +599,14 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
     let pKiller: Pointer<SOLDIERTYPE> = MercPtrs[pSoldier.value.ubAttackerID];
 
     // apply morale penalty for killing a civilian!
-    HandleMoraleEvent(pKiller, MORALE_KILLED_CIVILIAN, pKiller.value.sSectorX, pKiller.value.sSectorY, pKiller.value.bSectorZ);
+    HandleMoraleEvent(pKiller, Enum234.MORALE_KILLED_CIVILIAN, pKiller.value.sSectorX, pKiller.value.sSectorY, pKiller.value.bSectorZ);
   }
 
   // get town id
   bTownId = GetTownIdForSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
 
   // if civilian is NOT in a town
-  if (bTownId == BLANK_SECTOR) {
+  if (bTownId == Enum135.BLANK_SECTOR) {
     return;
   }
 
@@ -615,9 +615,9 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
     return;
   }
 
-  if ((pSoldier.value.ubBodyType >= FATCIV) && (pSoldier.value.ubBodyType <= COW)) {
+  if ((pSoldier.value.ubBodyType >= Enum194.FATCIV) && (pSoldier.value.ubBodyType <= Enum194.COW)) {
     // adjust value for killer and type
-    iLoyaltyChange = uiPercentLoyaltyDecreaseForCivMurder[pSoldier.value.ubBodyType - FATCIV];
+    iLoyaltyChange = uiPercentLoyaltyDecreaseForCivMurder[pSoldier.value.ubBodyType - Enum194.FATCIV];
   } else {
     iLoyaltyChange = BASIC_COST_FOR_CIV_MURDER;
   }
@@ -722,7 +722,7 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
 
     case MILITIA_TEAM:
       // the rebels did it... check if are they on our side
-      if (CheckFact(FACT_REBELS_HATE_PLAYER, 0) == FALSE) {
+      if (CheckFact(Enum170.FACT_REBELS_HATE_PLAYER, 0) == FALSE) {
         // on our side, penalty
         iLoyaltyChange *= REDUCTION_FOR_MURDER_BY_REBEL;
         iLoyaltyChange /= 100;
@@ -737,7 +737,7 @@ function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BO
 
     case CREATURE_TEAM:
       // killed by a monster - make sure it was one
-      if ((Menptr[pSoldier.value.ubAttackerID].ubBodyType >= ADULTFEMALEMONSTER) && (Menptr[pSoldier.value.ubAttackerID].ubBodyType <= QUEENMONSTER)) {
+      if ((Menptr[pSoldier.value.ubAttackerID].ubBodyType >= Enum194.ADULTFEMALEMONSTER) && (Menptr[pSoldier.value.ubAttackerID].ubBodyType <= Enum194.QUEENMONSTER)) {
         // increase for the extreme horror of being killed by a monster
         iLoyaltyChange *= MULTIPLIER_FOR_MURDER_BY_MONSTER;
 
@@ -863,9 +863,9 @@ function HandleLoyaltyForDemolitionOfBuilding(pSoldier: Pointer<SOLDIERTYPE>, sP
   } else if (pSoldier.value.bTeam == ENEMY_TEAM) {
     // enemy damaged sector, it's their fault
     IncrementTownLoyalty(bTownId, sLoyaltyValue);
-  } else if (pSoldier.value.ubCivilianGroup == REBEL_CIV_GROUP) {
+  } else if (pSoldier.value.ubCivilianGroup == Enum246.REBEL_CIV_GROUP) {
     // the rebels did it...are they on our side
-    if (CheckFact(FACT_REBELS_HATE_PLAYER, 0) == FALSE) {
+    if (CheckFact(Enum170.FACT_REBELS_HATE_PLAYER, 0) == FALSE) {
       sLoyaltyValue /= DIVISOR_FOR_REBEL_BUILDING_DMG;
 
       // decrement loyalty value for rebels on our side dmging town
@@ -1016,7 +1016,7 @@ function BuildListOfTownSectors(): void {
   let usSector: UINT16;
 
   // initialize
-  memset(pTownNamesList, BLANK_SECTOR, sizeof(pTownNamesList));
+  memset(pTownNamesList, Enum135.BLANK_SECTOR, sizeof(pTownNamesList));
   memset(pTownLocationsList, 0xFF, sizeof(pTownLocationsList));
 
   // run through list
@@ -1024,7 +1024,7 @@ function BuildListOfTownSectors(): void {
     for (iCounterY = 0; iCounterY < MAP_WORLD_Y; iCounterY++) {
       usSector = iCounterX + iCounterY * MAP_WORLD_X;
 
-      if ((StrategicMap[usSector].bNameId >= FIRST_TOWN) && (StrategicMap[usSector].bNameId < NUM_TOWNS)) {
+      if ((StrategicMap[usSector].bNameId >= FIRST_TOWN) && (StrategicMap[usSector].bNameId < Enum135.NUM_TOWNS)) {
         pTownNamesList[iCounter] = StrategicMap[usSector].bNameId;
         pTownLocationsList[iCounter] = usSector;
 
@@ -1039,7 +1039,7 @@ function ReadInDistancesBetweenTowns(): void {
 
   hFileHandle = FileOpen("BinaryData\\TownDistances.dat", FILE_ACCESS_READ, FALSE);
 
-  FileRead(hFileHandle, addressof(iTownDistances), (sizeof(INT32) * NUM_TOWNS * NUM_TOWNS), NULL);
+  FileRead(hFileHandle, addressof(iTownDistances), (sizeof(INT32) * Enum135.NUM_TOWNS * Enum135.NUM_TOWNS), NULL);
 
   // close file
   FileClose(hFileHandle);
@@ -1106,8 +1106,8 @@ function SaveStrategicTownLoyaltyToSaveGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesWritten: UINT32;
 
   // Save the Town Loyalty
-  FileWrite(hFile, gTownLoyalty, sizeof(TOWN_LOYALTY) * NUM_TOWNS, addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(TOWN_LOYALTY) * NUM_TOWNS) {
+  FileWrite(hFile, gTownLoyalty, sizeof(TOWN_LOYALTY) * Enum135.NUM_TOWNS, addressof(uiNumBytesWritten));
+  if (uiNumBytesWritten != sizeof(TOWN_LOYALTY) * Enum135.NUM_TOWNS) {
     return FALSE;
   }
 
@@ -1118,8 +1118,8 @@ function LoadStrategicTownLoyaltyFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesRead: UINT32;
 
   // Restore the Town Loyalty
-  FileRead(hFile, gTownLoyalty, sizeof(TOWN_LOYALTY) * NUM_TOWNS, addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(TOWN_LOYALTY) * NUM_TOWNS) {
+  FileRead(hFile, gTownLoyalty, sizeof(TOWN_LOYALTY) * Enum135.NUM_TOWNS, addressof(uiNumBytesRead));
+  if (uiNumBytesRead != sizeof(TOWN_LOYALTY) * Enum135.NUM_TOWNS) {
     return FALSE;
   }
 
@@ -1130,8 +1130,8 @@ function ReduceLoyaltyForRebelsBetrayed(): void {
   let bTownId: INT8;
 
   // reduce loyalty to player all across Arulco
-  for (bTownId = FIRST_TOWN; bTownId < NUM_TOWNS; bTownId++) {
-    if (bTownId == OMERTA) {
+  for (bTownId = FIRST_TOWN; bTownId < Enum135.NUM_TOWNS; bTownId++) {
+    if (bTownId == Enum135.OMERTA) {
       // if not already really low
       if (gTownLoyalty[bTownId].ubRating > HOSTILE_OMERTA_LOYALTY_RATING) {
         // loyalty in Omerta tanks big time, and will stay low permanently since this becomes its maximum
@@ -1152,7 +1152,7 @@ function GetNumberOfWholeTownsUnderControl(): INT32 {
   // run through the list of towns..if the entire town is under player control, then increment the number of towns under player control
 
   // make sure that each town is one for which loyalty matters
-  for (bTownId = FIRST_TOWN; bTownId < NUM_TOWNS; bTownId++) {
+  for (bTownId = FIRST_TOWN; bTownId < Enum135.NUM_TOWNS; bTownId++) {
     if (IsTownUnderCompleteControlByPlayer(bTownId) && gfTownUsesLoyalty[bTownId]) {
       iNumber++;
     }
@@ -1166,7 +1166,7 @@ function GetNumberOfWholeTownsUnderControlButExcludeCity(bCityToExclude: INT8): 
   let bTownId: INT8 = 0;
 
   // run through the list of towns..if the entire town is under player control, then increment the number of towns under player control
-  for (bTownId = FIRST_TOWN; bTownId < NUM_TOWNS; bTownId++) {
+  for (bTownId = FIRST_TOWN; bTownId < Enum135.NUM_TOWNS; bTownId++) {
     if (IsTownUnderCompleteControlByPlayer(bTownId) && (bCityToExclude != bTownId) && gfTownUsesLoyalty[bTownId]) {
       iNumber++;
     }
@@ -1207,13 +1207,13 @@ function AdjustLoyaltyForCivsEatenByMonsters(sSectorX: INT16, sSectorY: INT16, u
   bTownId = GetTownIdForSector(sSectorX, sSectorY);
 
   // if NOT in a town
-  if (bTownId == BLANK_SECTOR) {
+  if (bTownId == Enum135.BLANK_SECTOR) {
     return;
   }
 
   // Report this to player
   GetSectorIDString(sSectorX, sSectorY, 0, pSectorString, TRUE);
-  swprintf(str, gpStrategicString[STR_DIALOG_CREATURES_KILL_CIVILIANS], ubHowMany, pSectorString);
+  swprintf(str, gpStrategicString[Enum365.STR_DIALOG_CREATURES_KILL_CIVILIANS], ubHowMany, pSectorString);
   DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
 
   // use same formula as if it were a civilian "murder" in tactical!!!
@@ -1225,7 +1225,7 @@ function AdjustLoyaltyForCivsEatenByMonsters(sSectorX: INT16, sSectorY: INT16, u
 function IncrementTownLoyaltyEverywhere(uiLoyaltyIncrease: UINT32): void {
   let bTownId: INT8;
 
-  for (bTownId = FIRST_TOWN; bTownId < NUM_TOWNS; bTownId++) {
+  for (bTownId = FIRST_TOWN; bTownId < Enum135.NUM_TOWNS; bTownId++) {
     IncrementTownLoyalty(bTownId, uiLoyaltyIncrease);
   }
 }
@@ -1233,7 +1233,7 @@ function IncrementTownLoyaltyEverywhere(uiLoyaltyIncrease: UINT32): void {
 function DecrementTownLoyaltyEverywhere(uiLoyaltyDecrease: UINT32): void {
   let bTownId: INT8;
 
-  for (bTownId = FIRST_TOWN; bTownId < NUM_TOWNS; bTownId++) {
+  for (bTownId = FIRST_TOWN; bTownId < Enum135.NUM_TOWNS; bTownId++) {
     DecrementTownLoyalty(bTownId, uiLoyaltyDecrease);
   }
 }
@@ -1248,7 +1248,7 @@ function HandleGlobalLoyaltyEvent(ubEventType: UINT8, sSectorX: INT16, sSectorY:
   }
 
   // should other towns ignore events occuring in this town?
-  if (bTownId == SAN_MONA) {
+  if (bTownId == Enum135.SAN_MONA) {
     return;
   }
 
@@ -1256,48 +1256,48 @@ function HandleGlobalLoyaltyEvent(ubEventType: UINT8, sSectorX: INT16, sSectorY:
   // these are ->hundredths<- of loyalty points, so choose appropriate values accordingly!
   // the closer a town is to the event, the more pronounced the effect upon that town is
   switch (ubEventType) {
-    case GLOBAL_LOYALTY_BATTLE_WON:
+    case Enum190.GLOBAL_LOYALTY_BATTLE_WON:
       CheckConditionsForTriggeringCreatureQuest(sSectorX, sSectorY, bSectorZ);
       iLoyaltyChange = 500;
       break;
-    case GLOBAL_LOYALTY_QUEEN_BATTLE_WON:
+    case Enum190.GLOBAL_LOYALTY_QUEEN_BATTLE_WON:
       CheckConditionsForTriggeringCreatureQuest(sSectorX, sSectorY, bSectorZ);
       iLoyaltyChange = 1000;
       break;
-    case GLOBAL_LOYALTY_BATTLE_LOST:
+    case Enum190.GLOBAL_LOYALTY_BATTLE_LOST:
       iLoyaltyChange = -750;
       break;
-    case GLOBAL_LOYALTY_ENEMY_KILLED:
+    case Enum190.GLOBAL_LOYALTY_ENEMY_KILLED:
       iLoyaltyChange = 50;
       break;
-    case GLOBAL_LOYALTY_NATIVE_KILLED:
+    case Enum190.GLOBAL_LOYALTY_NATIVE_KILLED:
       // note that there is special code (much more severe) for murdering civilians in the currently loaded sector.
       // this event is intended more for processing militia casualties, and the like
       iLoyaltyChange = -50;
       break;
-    case GLOBAL_LOYALTY_ABANDON_MILITIA:
+    case Enum190.GLOBAL_LOYALTY_ABANDON_MILITIA:
       // it doesn't matter how many of them are being abandoned
       iLoyaltyChange = -750;
       break;
-    case GLOBAL_LOYALTY_GAIN_TOWN_SECTOR:
+    case Enum190.GLOBAL_LOYALTY_GAIN_TOWN_SECTOR:
       iLoyaltyChange = 500;
       break;
-    case GLOBAL_LOYALTY_LOSE_TOWN_SECTOR:
+    case Enum190.GLOBAL_LOYALTY_LOSE_TOWN_SECTOR:
       iLoyaltyChange = -1000;
       break;
-    case GLOBAL_LOYALTY_LIBERATE_WHOLE_TOWN:
+    case Enum190.GLOBAL_LOYALTY_LIBERATE_WHOLE_TOWN:
       iLoyaltyChange = 1000;
       break;
-    case GLOBAL_LOYALTY_GAIN_MINE:
+    case Enum190.GLOBAL_LOYALTY_GAIN_MINE:
       iLoyaltyChange = 1000;
       break;
-    case GLOBAL_LOYALTY_LOSE_MINE:
+    case Enum190.GLOBAL_LOYALTY_LOSE_MINE:
       iLoyaltyChange = -1500;
       break;
-    case GLOBAL_LOYALTY_GAIN_SAM:
+    case Enum190.GLOBAL_LOYALTY_GAIN_SAM:
       iLoyaltyChange = 250;
       break;
-    case GLOBAL_LOYALTY_LOSE_SAM:
+    case Enum190.GLOBAL_LOYALTY_LOSE_SAM:
       iLoyaltyChange = -250;
       break;
 
@@ -1320,7 +1320,7 @@ function AffectAllTownsLoyaltyByDistanceFrom(iLoyaltyChange: INT32, sSectorX: IN
   let iDistanceAdjustedLoyalty: INT32;
 
   // preset shortest distances to high values prior to searching for a minimum
-  for (bTownId = FIRST_TOWN; bTownId < NUM_TOWNS; bTownId++) {
+  for (bTownId = FIRST_TOWN; bTownId < Enum135.NUM_TOWNS; bTownId++) {
     iShortestDistance[bTownId] = 999999;
   }
 
@@ -1350,7 +1350,7 @@ function AffectAllTownsLoyaltyByDistanceFrom(iLoyaltyChange: INT32, sSectorX: IN
   // must always remove that temporary group!
   RemoveGroup(ubTempGroupId);
 
-  for (bTownId = FIRST_TOWN; bTownId < NUM_TOWNS; bTownId++) {
+  for (bTownId = FIRST_TOWN; bTownId < Enum135.NUM_TOWNS; bTownId++) {
     // doesn't affect towns where player hasn't established a "presence" yet
     if (!gTownLoyalty[bTownId].fStarted) {
       continue;
@@ -1402,16 +1402,16 @@ function CheckIfEntireTownHasBeenLiberated(bTownId: INT8, sSectorX: INT16, sSect
   if (!gTownLoyalty[bTownId].fLiberatedAlready && IsTownUnderCompleteControlByPlayer(bTownId)) {
     if (MilitiaTrainingAllowedInSector(sSectorX, sSectorY, 0)) {
       // give a loyalty bonus
-      HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_LIBERATE_WHOLE_TOWN, sSectorX, sSectorY, 0);
+      HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_LIBERATE_WHOLE_TOWN, sSectorX, sSectorY, 0);
 
       // set fact is has been lib'ed and set history event
-      AddHistoryToPlayersLog(HISTORY_LIBERATED_TOWN, bTownId, GetWorldTotalMin(), sSectorX, sSectorY);
+      AddHistoryToPlayersLog(Enum83.HISTORY_LIBERATED_TOWN, bTownId, GetWorldTotalMin(), sSectorX, sSectorY);
 
       HandleMeanWhileEventPostingForTownLiberation(bTownId);
     }
 
     // even taking over non-trainable "towns" like Orta/Tixa for the first time should count as "player activity"
-    if (gGameOptions.ubDifficultyLevel >= DIF_LEVEL_HARD) {
+    if (gGameOptions.ubDifficultyLevel >= Enum9.DIF_LEVEL_HARD) {
       UpdateLastDayOfPlayerActivity((GetWorldDay() + 4));
     } else {
       UpdateLastDayOfPlayerActivity((GetWorldDay() + 2));
@@ -1435,43 +1435,43 @@ function CheckIfEntireTownHasBeenLost(bTownId: INT8, sSectorX: INT16, sSectorY: 
 
 function HandleLoyaltyChangeForNPCAction(ubNPCProfileId: UINT8): void {
   switch (ubNPCProfileId) {
-    case MIGUEL:
+    case Enum268.MIGUEL:
       // Omerta loyalty increases when Miguel receives letter from Enrico
-      IncrementTownLoyalty(OMERTA, LOYALTY_BONUS_MIGUEL_READS_LETTER);
+      IncrementTownLoyalty(Enum135.OMERTA, LOYALTY_BONUS_MIGUEL_READS_LETTER);
       break;
 
-    case DOREEN:
+    case Enum268.DOREEN:
       // having freed the child labourers... she is releasing them herself!
-      IncrementTownLoyalty(DRASSEN, LOYALTY_BONUS_CHILDREN_FREED_DOREEN_SPARED);
+      IncrementTownLoyalty(Enum135.DRASSEN, LOYALTY_BONUS_CHILDREN_FREED_DOREEN_SPARED);
       break;
 
-    case MARTHA:
+    case Enum268.MARTHA:
       // if Joey is still alive
-      if (gMercProfiles[JOEY].bMercStatus != MERC_IS_DEAD) {
-        IncrementTownLoyalty(CAMBRIA, LOYALTY_BONUS_MARTHA_WHEN_JOEY_RESCUED);
+      if (gMercProfiles[Enum268.JOEY].bMercStatus != MERC_IS_DEAD) {
+        IncrementTownLoyalty(Enum135.CAMBRIA, LOYALTY_BONUS_MARTHA_WHEN_JOEY_RESCUED);
       }
       break;
 
-    case KEITH:
+    case Enum268.KEITH:
       // Hillbilly problem solved
-      IncrementTownLoyalty(CAMBRIA, LOYALTY_BONUS_KEITH_WHEN_HILLBILLY_SOLVED);
+      IncrementTownLoyalty(Enum135.CAMBRIA, LOYALTY_BONUS_KEITH_WHEN_HILLBILLY_SOLVED);
       break;
 
-    case YANNI:
+    case Enum268.YANNI:
       // Chalice of Chance returned to Chitzena
-      IncrementTownLoyalty(CHITZENA, LOYALTY_BONUS_YANNI_WHEN_CHALICE_RETURNED_LOCAL);
+      IncrementTownLoyalty(Enum135.CHITZENA, LOYALTY_BONUS_YANNI_WHEN_CHALICE_RETURNED_LOCAL);
       // NOTE: This affects Chitzena,too, a second time, so first value is discounted for it
       IncrementTownLoyaltyEverywhere(LOYALTY_BONUS_YANNI_WHEN_CHALICE_RETURNED_GLOBAL);
       break;
 
-    case AUNTIE:
+    case Enum268.AUNTIE:
       // Bloodcats killed
-      IncrementTownLoyalty(ALMA, LOYALTY_BONUS_AUNTIE_WHEN_BLOODCATS_KILLED);
+      IncrementTownLoyalty(Enum135.ALMA, LOYALTY_BONUS_AUNTIE_WHEN_BLOODCATS_KILLED);
       break;
 
-    case MATT:
+    case Enum268.MATT:
       // Brother Dynamo freed
-      IncrementTownLoyalty(ALMA, LOYALTY_BONUS_MATT_WHEN_DYNAMO_FREED);
+      IncrementTownLoyalty(Enum135.ALMA, LOYALTY_BONUS_MATT_WHEN_DYNAMO_FREED);
       break;
   }
 }
@@ -1538,17 +1538,17 @@ function EnemyStrength(): UINT32 {
 function HandleLoyaltyImplicationsOfMercRetreat(bRetreatCode: INT8, sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
   if (CountAllMilitiaInSector(sSectorX, sSectorY)) {
     // Big morale penalty!
-    HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_ABANDON_MILITIA, sSectorX, sSectorY, sSectorZ);
+    HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_ABANDON_MILITIA, sSectorX, sSectorY, sSectorZ);
   }
 
   // Standard retreat penalty
   if (bRetreatCode == RETREAT_TACTICAL_TRAVERSAL) {
     // if not worse than 2:1 odds, then penalize morale
     if (gTacticalStatus.fEnemyInSector && (PlayerStrength() * 2 >= EnemyStrength())) {
-      HandleMoraleEvent(NULL, MORALE_RAN_AWAY, sSectorX, sSectorY, sSectorZ);
+      HandleMoraleEvent(NULL, Enum234.MORALE_RAN_AWAY, sSectorX, sSectorY, sSectorZ);
     }
   } else {
-    HandleMoraleEvent(NULL, MORALE_RAN_AWAY, sSectorX, sSectorY, sSectorZ);
+    HandleMoraleEvent(NULL, Enum234.MORALE_RAN_AWAY, sSectorX, sSectorY, sSectorZ);
   }
 }
 
@@ -1556,7 +1556,7 @@ function MaximizeLoyaltyForDeidrannaKilled(): void {
   let bTownId: INT8;
 
   // max out loyalty to player all across Arulco
-  for (bTownId = FIRST_TOWN; bTownId < NUM_TOWNS; bTownId++) {
+  for (bTownId = FIRST_TOWN; bTownId < Enum135.NUM_TOWNS; bTownId++) {
     // it's possible one of the towns still has creature problems, but it's too much of a pain to worry about it now
     SetTownLoyalty(bTownId, 100);
   }

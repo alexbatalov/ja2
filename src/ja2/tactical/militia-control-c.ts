@@ -39,9 +39,9 @@ function PrepareMilitiaForTactical(): void {
     return;
 
   pSector = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
-  ubGreen = pSector.value.ubNumberOfCivsAtLevel[GREEN_MILITIA];
-  ubRegs = pSector.value.ubNumberOfCivsAtLevel[REGULAR_MILITIA];
-  ubElites = pSector.value.ubNumberOfCivsAtLevel[ELITE_MILITIA];
+  ubGreen = pSector.value.ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA];
+  ubRegs = pSector.value.ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA];
+  ubElites = pSector.value.ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA];
   AddSoldierInitListMilitia(ubGreen, ubRegs, ubElites);
   /*
   for( i = gTacticalStatus.Team[ MILITIA_TEAM ].bFirstID; i <= gTacticalStatus.Team[ MILITIA_TEAM ].bLastID; i++ )
@@ -76,10 +76,10 @@ function HandleMilitiaPromotions(): void {
           if (ubPromotions == 2) {
             gbGreenToElitePromotions++;
             gbMilitiaPromotions++;
-          } else if (pTeamSoldier.value.ubSoldierClass == SOLDIER_CLASS_GREEN_MILITIA) {
+          } else if (pTeamSoldier.value.ubSoldierClass == Enum262.SOLDIER_CLASS_GREEN_MILITIA) {
             gbGreenToRegPromotions++;
             gbMilitiaPromotions++;
-          } else if (pTeamSoldier.value.ubSoldierClass == SOLDIER_CLASS_REG_MILITIA) {
+          } else if (pTeamSoldier.value.ubSoldierClass == Enum262.SOLDIER_CLASS_REG_MILITIA) {
             gbRegToElitePromotions++;
             gbMilitiaPromotions++;
           }

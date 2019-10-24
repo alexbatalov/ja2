@@ -41,18 +41,18 @@ function ChangeO3SectorStatue(fFromExplosion: BOOLEAN): void {
   ApplyMapChangesToMapTempFile(TRUE);
   // Remove it!
   // Get index for it...
-  GetTileIndexFromTypeSubIndex(EIGHTOSTRUCT, (5), addressof(usTileIndex));
+  GetTileIndexFromTypeSubIndex(Enum313.EIGHTOSTRUCT, (5), addressof(usTileIndex));
   RemoveStruct(13830, usTileIndex);
 
   // Add new one...
   if (fFromExplosion) {
     // Use damaged peice
-    GetTileIndexFromTypeSubIndex(EIGHTOSTRUCT, (7), addressof(usTileIndex));
+    GetTileIndexFromTypeSubIndex(Enum313.EIGHTOSTRUCT, (7), addressof(usTileIndex));
   } else {
-    GetTileIndexFromTypeSubIndex(EIGHTOSTRUCT, (8), addressof(usTileIndex));
+    GetTileIndexFromTypeSubIndex(Enum313.EIGHTOSTRUCT, (8), addressof(usTileIndex));
     // Play sound...
 
-    PlayJA2Sample(OPEN_STATUE, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+    PlayJA2Sample(Enum330.OPEN_STATUE, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
   }
   AddStructToHead(13830, usTileIndex);
 
@@ -106,10 +106,10 @@ function HandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
   let ubKillerSoldierID: UINT8 = NOBODY;
 
   // Start victory music here...
-  SetMusicMode(MUSIC_TACTICAL_VICTORY);
+  SetMusicMode(Enum328.MUSIC_TACTICAL_VICTORY);
 
   if (pKillerSoldier) {
-    TacticalCharacterDialogue(pKillerSoldier, QUOTE_KILLING_DEIDRANNA);
+    TacticalCharacterDialogue(pKillerSoldier, Enum202.QUOTE_KILLING_DEIDRANNA);
     ubKillerSoldierID = pKillerSoldier.value.ubID;
   }
 
@@ -123,10 +123,10 @@ function HandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
       if (OK_INSECTOR_MERC(pTeamSoldier) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_GASSED) && !AM_AN_EPC(pTeamSoldier)) {
         if (QuoteExp_WitnessDeidrannaDeath[pTeamSoldier.value.ubProfile]) {
           // Can we see location?
-          sDistVisible = DistanceVisible(pTeamSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, bLevel);
+          sDistVisible = DistanceVisible(pTeamSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sGridNo, bLevel);
 
           if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, bLevel, 3, sDistVisible, TRUE)) {
-            TacticalCharacterDialogue(pTeamSoldier, QUOTE_KILLING_DEIDRANNA);
+            TacticalCharacterDialogue(pTeamSoldier, Enum202.QUOTE_KILLING_DEIDRANNA);
           }
         }
       }
@@ -134,9 +134,9 @@ function HandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
   }
 
   // Set fact that she is dead!
-  SetFactTrue(FACT_QUEEN_DEAD);
+  SetFactTrue(Enum170.FACT_QUEEN_DEAD);
 
-  ExecuteStrategicAIAction(STRATEGIC_AI_ACTION_QUEEN_DEAD, 0, 0);
+  ExecuteStrategicAIAction(Enum173.STRATEGIC_AI_ACTION_QUEEN_DEAD, 0, 0);
 
   // AFTER LAST ONE IS DONE - PUT SPECIAL EVENT ON QUEUE TO BEGIN FADE< ETC
   SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_MULTIPURPOSE, MULTIPURPOSE_SPECIAL_EVENT_DONE_KILLING_DEIDRANNA, 0, 0, 0, 0);
@@ -179,10 +179,10 @@ function DoneFadeOutKilledQueen(): void {
       pSoldier.value.bSectorZ = 0;
 
       // Set gridno
-      pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+      pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
       pSoldier.value.usStrategicInsertionData = 5687;
       // Set direction to face....
-      pSoldier.value.ubInsertionDirection = 100 + NORTHWEST;
+      pSoldier.value.ubInsertionDirection = 100 + Enum245.NORTHWEST;
     }
   }
 
@@ -208,12 +208,12 @@ function DoneFadeOutKilledQueen(): void {
   // Set enemy presence to false
   gTacticalStatus.fEnemyInSector = FALSE;
 
-  SetMusicMode(MUSIC_TACTICAL_VICTORY);
+  SetMusicMode(Enum328.MUSIC_TACTICAL_VICTORY);
 
-  HandleMoraleEvent(NULL, MORALE_QUEEN_BATTLE_WON, 3, MAP_ROW_P, 0);
-  HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_QUEEN_BATTLE_WON, 3, MAP_ROW_P, 0);
+  HandleMoraleEvent(NULL, Enum234.MORALE_QUEEN_BATTLE_WON, 3, MAP_ROW_P, 0);
+  HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_QUEEN_BATTLE_WON, 3, MAP_ROW_P, 0);
 
-  SetMusicMode(MUSIC_TACTICAL_VICTORY);
+  SetMusicMode(Enum328.MUSIC_TACTICAL_VICTORY);
 
   SetThisSectorAsPlayerControlled(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, TRUE);
 
@@ -221,18 +221,18 @@ function DoneFadeOutKilledQueen(): void {
   gbWorldSectorZ = 1;
 
   // Clear out dudes.......
-  SectorInfo[SEC_P3].ubNumAdmins = 0;
-  SectorInfo[SEC_P3].ubNumTroops = 0;
-  SectorInfo[SEC_P3].ubNumElites = 0;
-  SectorInfo[SEC_P3].ubAdminsInBattle = 0;
-  SectorInfo[SEC_P3].ubTroopsInBattle = 0;
-  SectorInfo[SEC_P3].ubElitesInBattle = 0;
+  SectorInfo[Enum123.SEC_P3].ubNumAdmins = 0;
+  SectorInfo[Enum123.SEC_P3].ubNumTroops = 0;
+  SectorInfo[Enum123.SEC_P3].ubNumElites = 0;
+  SectorInfo[Enum123.SEC_P3].ubAdminsInBattle = 0;
+  SectorInfo[Enum123.SEC_P3].ubTroopsInBattle = 0;
+  SectorInfo[Enum123.SEC_P3].ubElitesInBattle = 0;
 
   // ATE: GEt rid of elliot in P3...
-  gMercProfiles[ELLIOT].sSectorX = 1;
+  gMercProfiles[Enum268.ELLIOT].sSectorX = 1;
 
-  ChangeNpcToDifferentSector(DEREK, 3, MAP_ROW_P, 0);
-  ChangeNpcToDifferentSector(OLIVER, 3, MAP_ROW_P, 0);
+  ChangeNpcToDifferentSector(Enum268.DEREK, 3, MAP_ROW_P, 0);
+  ChangeNpcToDifferentSector(Enum268.OLIVER, 3, MAP_ROW_P, 0);
 
   // OK, insertion data found, enter sector!
   SetCurrentWorldSector(3, MAP_ROW_P, 0);
@@ -268,7 +268,7 @@ function EndQueenDeathEndgameBeginEndCimenatic(): void {
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
     // Are we in this sector, On the current squad?
     if (pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE && !AM_AN_EPC(pSoldier)) {
-      TacticalCharacterDialogue(pSoldier, QUOTE_END_GAME_COMMENT);
+      TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_END_GAME_COMMENT);
     }
   }
 
@@ -293,10 +293,10 @@ function DoneFadeOutEndCinematic(): void {
   // For now, just quit the freaken game...
   //	InternalLeaveTacticalScreen( MAINMENU_SCREEN );
 
-  InternalLeaveTacticalScreen(INTRO_SCREEN);
+  InternalLeaveTacticalScreen(Enum26.INTRO_SCREEN);
   //	guiCurrentScreen = INTRO_SCREEN;
 
-  SetIntroType(INTRO_ENDING);
+  SetIntroType(Enum21.INTRO_ENDING);
 }
 
 // OK, end death UI - fade to smaker....
@@ -357,10 +357,10 @@ function HandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
   let ubKillerSoldierID: UINT8 = NOBODY;
 
   // Start victory music here...
-  SetMusicMode(MUSIC_TACTICAL_VICTORY);
+  SetMusicMode(Enum328.MUSIC_TACTICAL_VICTORY);
 
   if (pKillerSoldier) {
-    TacticalCharacterDialogue(pKillerSoldier, QUOTE_KILLING_QUEEN);
+    TacticalCharacterDialogue(pKillerSoldier, Enum202.QUOTE_KILLING_QUEEN);
     ubKillerSoldierID = pKillerSoldier.value.ubID;
   }
 
@@ -374,10 +374,10 @@ function HandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
       if (OK_INSECTOR_MERC(pTeamSoldier) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_GASSED) && !AM_AN_EPC(pTeamSoldier)) {
         if (QuoteExp_WitnessQueenBugDeath[pTeamSoldier.value.ubProfile]) {
           // Can we see location?
-          sDistVisible = DistanceVisible(pTeamSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, bLevel);
+          sDistVisible = DistanceVisible(pTeamSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sGridNo, bLevel);
 
           if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, bLevel, 3, sDistVisible, TRUE)) {
-            TacticalCharacterDialogue(pTeamSoldier, QUOTE_KILLING_QUEEN);
+            TacticalCharacterDialogue(pTeamSoldier, Enum202.QUOTE_KILLING_QUEEN);
           }
         }
       }
@@ -385,7 +385,7 @@ function HandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
   }
 
   // Set fact that she is dead!
-  if (CheckFact(FACT_QUEEN_DEAD, 0)) {
+  if (CheckFact(Enum170.FACT_QUEEN_DEAD, 0)) {
     EndQueenDeathEndgameBeginEndCimenatic();
   } else {
     // Unset flags...

@@ -320,7 +320,7 @@ function WinMain(hInstance: HINSTANCE, hPrevInstance: HINSTANCE, pCommandLine: L
 
 // FIXME: Language-specific code
 // #ifdef ENGLISH
-  SetIntroType(INTRO_SPLASH);
+  SetIntroType(Enum21.INTRO_SPLASH);
 // #endif
 
   gfApplicationActive = TRUE;

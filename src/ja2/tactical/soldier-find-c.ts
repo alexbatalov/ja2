@@ -70,7 +70,7 @@ function GetSoldierFindFlags(ubID: UINT16): UINT32 {
       // It's our own merc
       MercFlags |= OWNED_MERC;
 
-      if (pSoldier.value.bAssignment < ON_DUTY) {
+      if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
         MercFlags |= ONDUTY_MERC;
       }
     }
@@ -196,10 +196,10 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
           }
 
           // ATE: If we are an enemy....
-          if (!gGameSettings.fOptions[TOPTION_SMART_CURSOR]) {
+          if (!gGameSettings.fOptions[Enum8.TOPTION_SMART_CURSOR]) {
             if (pSoldier.value.ubID >= gTacticalStatus.Team[gbPlayerNum].bFirstID && pSoldier.value.ubID <= gTacticalStatus.Team[gbPlayerNum].bLastID) {
               // ATE: NOT if we are in action or comfirm action mode
-              if (gCurrentUIMode != ACTION_MODE && gCurrentUIMode != CONFIRM_ACTION_MODE || gUIActionModeChangeDueToMouseOver) {
+              if (gCurrentUIMode != Enum206.ACTION_MODE && gCurrentUIMode != Enum206.CONFIRM_ACTION_MODE || gUIActionModeChangeDueToMouseOver) {
                 fInScreenRect = FALSE;
               }
             }
@@ -209,7 +209,7 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
           // Check if this is the selected guy....
           if (pSoldier.value.ubID == gusSelectedSoldier) {
             // Are we in action mode...
-            if (gCurrentUIMode == ACTION_MODE || gCurrentUIMode == CONFIRM_ACTION_MODE) {
+            if (gCurrentUIMode == Enum206.ACTION_MODE || gCurrentUIMode == Enum206.CONFIRM_ACTION_MODE) {
               // Are we in medic mode?
               if (GetActionModeCursor(pSoldier) != AIDCURS) {
                 fInScreenRect = FALSE;

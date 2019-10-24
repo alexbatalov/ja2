@@ -33,30 +33,30 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
   usStandardMapPos = BOBBYR_SHIPPING_DEST_GRIDNO;
 
   // if the delivery is for meduna, drop the items off there instead
-  if (gpNewBobbyrShipments[ubOrderID].fActive && gpNewBobbyrShipments[ubOrderID].ubDeliveryLoc == BR_MEDUNA) {
+  if (gpNewBobbyrShipments[ubOrderID].fActive && gpNewBobbyrShipments[ubOrderID].ubDeliveryLoc == Enum70.BR_MEDUNA) {
     DropOffItemsInMeduna(ubOrderID);
     return;
   }
 
-  if (CheckFact(FACT_NEXT_PACKAGE_CAN_BE_LOST, 0)) {
-    SetFactFalse(FACT_NEXT_PACKAGE_CAN_BE_LOST);
+  if (CheckFact(Enum170.FACT_NEXT_PACKAGE_CAN_BE_LOST, 0)) {
+    SetFactFalse(Enum170.FACT_NEXT_PACKAGE_CAN_BE_LOST);
     if (Random(100) < 50) {
       // lose the whole shipment!
       gpNewBobbyrShipments[ubOrderID].fActive = FALSE;
-      SetFactTrue(FACT_LAST_SHIPMENT_CRASHED);
+      SetFactTrue(Enum170.FACT_LAST_SHIPMENT_CRASHED);
       return;
     }
-  } else if (CheckFact(FACT_NEXT_PACKAGE_CAN_BE_DELAYED, 0)) {
+  } else if (CheckFact(Enum170.FACT_NEXT_PACKAGE_CAN_BE_DELAYED, 0)) {
     // shipment went to wrong airport... reroute all items to a temporary
     // gridno to represent the other airport (and damage them)
-    SetFactTrue(FACT_LAST_SHIPMENT_WENT_TO_WRONG_AIRPORT);
+    SetFactTrue(Enum170.FACT_LAST_SHIPMENT_WENT_TO_WRONG_AIRPORT);
     usStandardMapPos = LOST_SHIPMENT_GRIDNO;
-    SetFactFalse(FACT_NEXT_PACKAGE_CAN_BE_DELAYED);
-  } else if ((gTownLoyalty[DRASSEN].ubRating < 20) || StrategicMap[CALCULATE_STRATEGIC_INDEX(13, MAP_ROW_B)].fEnemyControlled) {
+    SetFactFalse(Enum170.FACT_NEXT_PACKAGE_CAN_BE_DELAYED);
+  } else if ((gTownLoyalty[Enum135.DRASSEN].ubRating < 20) || StrategicMap[CALCULATE_STRATEGIC_INDEX(13, MAP_ROW_B)].fEnemyControlled) {
     // loss of the whole shipment
     gpNewBobbyrShipments[ubOrderID].fActive = FALSE;
 
-    SetFactTrue(FACT_AGENTS_PREVENTED_SHIPMENT);
+    SetFactTrue(Enum170.FACT_AGENTS_PREVENTED_SHIPMENT);
     return;
   }
 
@@ -70,7 +70,7 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
     usNumberOfItems += gpNewBobbyrShipments[ubOrderID].BobbyRayPurchase[i].ubNumberPurchased;
 
     // if any items are AutoMags
-    if (gpNewBobbyrShipments[ubOrderID].BobbyRayPurchase[i].usItemIndex == AUTOMAG_III) {
+    if (gpNewBobbyrShipments[ubOrderID].BobbyRayPurchase[i].usItemIndex == Enum225.AUTOMAG_III) {
       // This shipment is from John Kulba, dont add an email from bobby ray
       fThisShipmentIsFromJohnKulba = TRUE;
     }
@@ -101,9 +101,9 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
   }
 
   // check for potential theft
-  if (CheckFact(FACT_PABLO_WONT_STEAL, 0)) {
+  if (CheckFact(Enum170.FACT_PABLO_WONT_STEAL, 0)) {
     uiChanceOfTheft = 0;
-  } else if (CheckFact(FACT_PABLOS_BRIBED, 0)) {
+  } else if (CheckFact(Enum170.FACT_PABLOS_BRIBED, 0)) {
     // Since Pacos has some money, reduce record of # of shipments since last bribed...
     ubShipmentsSinceNoBribes /= 2;
     uiChanceOfTheft = 0;
@@ -238,34 +238,34 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
   }
 
   if (fPablosStoleSomething) {
-    SetFactTrue(FACT_PABLOS_STOLE_FROM_LATEST_SHIPMENT);
+    SetFactTrue(Enum170.FACT_PABLOS_STOLE_FROM_LATEST_SHIPMENT);
   } else {
-    SetFactFalse(FACT_PABLOS_STOLE_FROM_LATEST_SHIPMENT);
+    SetFactFalse(Enum170.FACT_PABLOS_STOLE_FROM_LATEST_SHIPMENT);
   }
 
-  SetFactFalse(FACT_LARGE_SIZED_OLD_SHIPMENT_WAITING);
+  SetFactFalse(Enum170.FACT_LARGE_SIZED_OLD_SHIPMENT_WAITING);
 
-  if (CheckFact(FACT_NEXT_PACKAGE_CAN_BE_DELAYED, 0)) {
-    SetFactFalse(FACT_MEDIUM_SIZED_SHIPMENT_WAITING);
-    SetFactFalse(FACT_LARGE_SIZED_SHIPMENT_WAITING);
-    SetFactFalse(FACT_REALLY_NEW_BOBBYRAY_SHIPMENT_WAITING);
+  if (CheckFact(Enum170.FACT_NEXT_PACKAGE_CAN_BE_DELAYED, 0)) {
+    SetFactFalse(Enum170.FACT_MEDIUM_SIZED_SHIPMENT_WAITING);
+    SetFactFalse(Enum170.FACT_LARGE_SIZED_SHIPMENT_WAITING);
+    SetFactFalse(Enum170.FACT_REALLY_NEW_BOBBYRAY_SHIPMENT_WAITING);
   } else {
     if (usNumberOfItems - uiStolenCount <= 5) {
-      SetFactFalse(FACT_MEDIUM_SIZED_SHIPMENT_WAITING);
-      SetFactFalse(FACT_LARGE_SIZED_SHIPMENT_WAITING);
+      SetFactFalse(Enum170.FACT_MEDIUM_SIZED_SHIPMENT_WAITING);
+      SetFactFalse(Enum170.FACT_LARGE_SIZED_SHIPMENT_WAITING);
     } else if (usNumberOfItems - uiStolenCount <= 15) {
-      SetFactTrue(FACT_MEDIUM_SIZED_SHIPMENT_WAITING);
-      SetFactFalse(FACT_LARGE_SIZED_SHIPMENT_WAITING);
+      SetFactTrue(Enum170.FACT_MEDIUM_SIZED_SHIPMENT_WAITING);
+      SetFactFalse(Enum170.FACT_LARGE_SIZED_SHIPMENT_WAITING);
     } else {
-      SetFactFalse(FACT_MEDIUM_SIZED_SHIPMENT_WAITING);
-      SetFactTrue(FACT_LARGE_SIZED_SHIPMENT_WAITING);
+      SetFactFalse(Enum170.FACT_MEDIUM_SIZED_SHIPMENT_WAITING);
+      SetFactTrue(Enum170.FACT_LARGE_SIZED_SHIPMENT_WAITING);
     }
 
     // this shipment isn't old yet...
-    SetFactTrue(FACT_REALLY_NEW_BOBBYRAY_SHIPMENT_WAITING);
+    SetFactTrue(Enum170.FACT_REALLY_NEW_BOBBYRAY_SHIPMENT_WAITING);
 
     // set up even to make shipment "old"
-    AddSameDayStrategicEvent(EVENT_SET_BY_NPC_SYSTEM, GetWorldMinutesInDay() + 120, FACT_REALLY_NEW_BOBBYRAY_SHIPMENT_WAITING);
+    AddSameDayStrategicEvent(Enum132.EVENT_SET_BY_NPC_SYSTEM, GetWorldMinutesInDay() + 120, Enum170.FACT_REALLY_NEW_BOBBYRAY_SHIPMENT_WAITING);
   }
 
   // We have received the shipment so fActice becomes fALSE
@@ -277,12 +277,12 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
   // if the shipment is NOT from John Kulba, send an email
   if (!fThisShipmentIsFromJohnKulba) {
     // Add an email from Bobby r telling the user the shipment 'Should' be there
-    AddEmail(BOBBYR_SHIPMENT_ARRIVED, BOBBYR_SHIPMENT_ARRIVED_LENGTH, BOBBY_R, GetWorldTotalMin());
+    AddEmail(BOBBYR_SHIPMENT_ARRIVED, BOBBYR_SHIPMENT_ARRIVED_LENGTH, Enum75.BOBBY_R, GetWorldTotalMin());
   } else {
     // if the shipment is from John Kulba
 
     // Add an email from kulba telling the user the shipment is there
-    AddEmail(JOHN_KULBA_GIFT_IN_DRASSEN, JOHN_KULBA_GIFT_IN_DRASSEN_LENGTH, JOHN_KULBA, GetWorldTotalMin());
+    AddEmail(JOHN_KULBA_GIFT_IN_DRASSEN, JOHN_KULBA_GIFT_IN_DRASSEN_LENGTH, Enum75.JOHN_KULBA, GetWorldTotalMin());
   }
 }
 
@@ -297,14 +297,14 @@ function HandleDelayedItemsArrival(uiReason: UINT32): void {
   let ubLoop: UINT8;
   let Object: OBJECTTYPE;
 
-  if (uiReason == NPC_SYSTEM_EVENT_ACTION_PARAM_BONUS + NPC_ACTION_RETURN_STOLEN_SHIPMENT_ITEMS) {
-    if (gMercProfiles[PABLO].bMercStatus == MERC_IS_DEAD) {
+  if (uiReason == NPC_SYSTEM_EVENT_ACTION_PARAM_BONUS + Enum213.NPC_ACTION_RETURN_STOLEN_SHIPMENT_ITEMS) {
+    if (gMercProfiles[Enum268.PABLO].bMercStatus == MERC_IS_DEAD) {
       // nothing arrives then!
       return;
     }
     // update some facts...
-    SetFactTrue(FACT_PABLO_RETURNED_GOODS);
-    SetFactFalse(FACT_PABLO_PUNISHED_BY_PLAYER);
+    SetFactTrue(Enum170.FACT_PABLO_RETURNED_GOODS);
+    SetFactFalse(Enum170.FACT_PABLO_PUNISHED_BY_PLAYER);
     sStartGridNo = PABLOS_STOLEN_DEST_GRIDNO;
 
     // add random items
@@ -313,25 +313,25 @@ function HandleDelayedItemsArrival(uiReason: UINT32): void {
       switch (Random(10)) {
         case 0:
           // 1 in 10 chance of a badly damaged gas mask
-          CreateItem(GASMASK, (20 + Random(10)), addressof(Object));
+          CreateItem(Enum225.GASMASK, (20 + Random(10)), addressof(Object));
           break;
         case 1:
         case 2:
           // 2 in 10 chance of a battered Desert Eagle
-          CreateItem(DESERTEAGLE, (40 + Random(10)), addressof(Object));
+          CreateItem(Enum225.DESERTEAGLE, (40 + Random(10)), addressof(Object));
           break;
         case 3:
         case 4:
         case 5:
           // 3 in 10 chance of a stun grenade
-          CreateItem(STUN_GRENADE, (70 + Random(10)), addressof(Object));
+          CreateItem(Enum225.STUN_GRENADE, (70 + Random(10)), addressof(Object));
           break;
         case 6:
         case 7:
         case 8:
         case 9:
           // 4 in 10 chance of two 38s!
-          CreateItems(SW38, (90 + Random(10)), 2, addressof(Object));
+          CreateItems(Enum225.SW38, (90 + Random(10)), 2, addressof(Object));
           break;
       }
       if ((gWorldSectorX == BOBBYR_SHIPPING_DEST_SECTOR_X) && (gWorldSectorY == BOBBYR_SHIPPING_DEST_SECTOR_Y) && (gbWorldSectorZ == BOBBYR_SHIPPING_DEST_SECTOR_Z)) {
@@ -340,7 +340,7 @@ function HandleDelayedItemsArrival(uiReason: UINT32): void {
         AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, BOBBYR_SHIPPING_DEST_GRIDNO, 1, addressof(Object), 0, 0, 0, -1, FALSE);
       }
     }
-  } else if (uiReason == FACT_PACKAGE_DAMAGED) {
+  } else if (uiReason == Enum170.FACT_PACKAGE_DAMAGED) {
     sStartGridNo = LOST_SHIPMENT_GRIDNO;
   } else {
     return;
@@ -383,23 +383,23 @@ function AddSecondAirportAttendant(): void {
 function SetPabloToUnbribed(): void {
   if (guiPabloExtraDaysBribed > 0) {
     // set new event for later on, because the player gave Pablo more money!
-    AddFutureDayStrategicEvent(EVENT_SET_BY_NPC_SYSTEM, GetWorldMinutesInDay(), FACT_PABLOS_BRIBED, guiPabloExtraDaysBribed);
+    AddFutureDayStrategicEvent(Enum132.EVENT_SET_BY_NPC_SYSTEM, GetWorldMinutesInDay(), Enum170.FACT_PABLOS_BRIBED, guiPabloExtraDaysBribed);
     guiPabloExtraDaysBribed = 0;
   } else {
-    SetFactFalse(FACT_PABLOS_BRIBED);
+    SetFactFalse(Enum170.FACT_PABLOS_BRIBED);
   }
 }
 
 function HandlePossiblyDamagedPackage(): void {
   if (Random(100) < 70) {
-    SetFactTrue(FACT_PACKAGE_DAMAGED);
-    HandleDelayedItemsArrival(FACT_PACKAGE_DAMAGED);
+    SetFactTrue(Enum170.FACT_PACKAGE_DAMAGED);
+    HandleDelayedItemsArrival(Enum170.FACT_PACKAGE_DAMAGED);
   } else {
     // shipment lost forever!
-    SetFactTrue(FACT_PACKAGE_LOST_PERMANENTLY);
+    SetFactTrue(Enum170.FACT_PACKAGE_LOST_PERMANENTLY);
   }
   // whatever happened, the shipment is no longer delayed
-  SetFactFalse(FACT_SHIPMENT_DELAYED_24_HOURS);
+  SetFactFalse(Enum170.FACT_SHIPMENT_DELAYED_24_HOURS);
 }
 
 function CheckForKingpinsMoneyMissing(fFirstCheck: BOOLEAN): void {
@@ -412,27 +412,27 @@ function CheckForKingpinsMoneyMissing(fFirstCheck: BOOLEAN): void {
 
   for (uiLoop = 0; uiLoop < guiNumWorldItems; uiLoop++) {
     // loop through all items, look for ownership
-    if (gWorldItems[uiLoop].fExists && gWorldItems[uiLoop].o.usItem == MONEY) {
+    if (gWorldItems[uiLoop].fExists && gWorldItems[uiLoop].o.usItem == Enum225.MONEY) {
       uiTotalCash += gWorldItems[uiLoop].o.uiMoneyAmount;
     }
   }
 
   // This function should be called every time sector D5/B1 is unloaded!
   if (fFirstCheck) {
-    if (CheckFact(FACT_KINGPIN_WILL_LEARN_OF_MONEY_GONE, 0) == TRUE) {
+    if (CheckFact(Enum170.FACT_KINGPIN_WILL_LEARN_OF_MONEY_GONE, 0) == TRUE) {
       // unnecessary
       return;
     }
 
     if (uiTotalCash < 30000) {
       // add history log here
-      AddHistoryToPlayersLog(HISTORY_FOUND_MONEY, 0, GetWorldTotalMin(), gWorldSectorX, gWorldSectorY);
+      AddHistoryToPlayersLog(Enum83.HISTORY_FOUND_MONEY, 0, GetWorldTotalMin(), gWorldSectorX, gWorldSectorY);
 
-      SetFactTrue(FACT_KINGPIN_WILL_LEARN_OF_MONEY_GONE);
+      SetFactTrue(Enum170.FACT_KINGPIN_WILL_LEARN_OF_MONEY_GONE);
     }
   }
 
-  if (CheckFact(FACT_KINGPIN_DEAD, 0) == TRUE) {
+  if (CheckFact(Enum170.FACT_KINGPIN_DEAD, 0) == TRUE) {
     return;
   }
 
@@ -447,146 +447,146 @@ function CheckForKingpinsMoneyMissing(fFirstCheck: BOOLEAN): void {
 
   if (fKingpinWillDiscover) {
     // set event for next day to check for real
-    AddFutureDayStrategicEvent(EVENT_SET_BY_NPC_SYSTEM, Random(120), FACT_KINGPIN_KNOWS_MONEY_GONE, 1);
+    AddFutureDayStrategicEvent(Enum132.EVENT_SET_BY_NPC_SYSTEM, Random(120), Enum170.FACT_KINGPIN_KNOWS_MONEY_GONE, 1);
 
     // the sector is unloaded NOW so set Kingpin's balance and remove the cash
-    gMercProfiles[KINGPIN].iBalance = -(30000 - uiTotalCash);
+    gMercProfiles[Enum268.KINGPIN].iBalance = -(30000 - uiTotalCash);
     // remove all money from map
     for (uiLoop = 0; uiLoop < guiNumWorldItems; uiLoop++) {
       // loop through all items, look for ownership
-      if (gWorldItems[uiLoop].fExists && gWorldItems[uiLoop].o.usItem == MONEY) {
+      if (gWorldItems[uiLoop].fExists && gWorldItems[uiLoop].o.usItem == Enum225.MONEY) {
         // remove!
         gWorldItems[uiLoop].fExists = FALSE;
       }
     }
   } else if (fKingpinDiscovers) {
     // ok start things up here!
-    SetFactTrue(FACT_KINGPIN_KNOWS_MONEY_GONE);
+    SetFactTrue(Enum170.FACT_KINGPIN_KNOWS_MONEY_GONE);
 
     // set event 2 days from now that if the player has not given Kingpin his money back,
     // he sends email to the player
-    AddFutureDayStrategicEvent(EVENT_SET_BY_NPC_SYSTEM, Random(120), FACT_KINGPIN_KNOWS_MONEY_GONE, 2);
+    AddFutureDayStrategicEvent(Enum132.EVENT_SET_BY_NPC_SYSTEM, Random(120), Enum170.FACT_KINGPIN_KNOWS_MONEY_GONE, 2);
   }
 }
 
 function HandleNPCSystemEvent(uiEvent: UINT32): void {
   if (uiEvent < NPC_SYSTEM_EVENT_ACTION_PARAM_BONUS) {
     switch (uiEvent) {
-      case FACT_PABLOS_BRIBED:
+      case Enum170.FACT_PABLOS_BRIBED:
         // set Pacos to unbribed
         SetPabloToUnbribed();
         break;
 
-      case FACT_REALLY_NEW_BOBBYRAY_SHIPMENT_WAITING:
+      case Enum170.FACT_REALLY_NEW_BOBBYRAY_SHIPMENT_WAITING:
         // the shipment is no longer really new
-        SetFactFalse(FACT_REALLY_NEW_BOBBYRAY_SHIPMENT_WAITING);
-        if (CheckFact(FACT_LARGE_SIZED_SHIPMENT_WAITING, 0)) {
+        SetFactFalse(Enum170.FACT_REALLY_NEW_BOBBYRAY_SHIPMENT_WAITING);
+        if (CheckFact(Enum170.FACT_LARGE_SIZED_SHIPMENT_WAITING, 0)) {
           // set "really heavy old shipment" fact
-          SetFactTrue(FACT_LARGE_SIZED_OLD_SHIPMENT_WAITING);
+          SetFactTrue(Enum170.FACT_LARGE_SIZED_OLD_SHIPMENT_WAITING);
         }
         break;
 
-      case FACT_SHIPMENT_DELAYED_24_HOURS:
-      case FACT_24_HOURS_SINCE_DOCTOR_TALKED_TO:
-      case FACT_24_HOURS_SINCE_JOEY_RESCUED:
+      case Enum170.FACT_SHIPMENT_DELAYED_24_HOURS:
+      case Enum170.FACT_24_HOURS_SINCE_DOCTOR_TALKED_TO:
+      case Enum170.FACT_24_HOURS_SINCE_JOEY_RESCUED:
         SetFactTrue(uiEvent);
         break;
 
-      case FACT_KINGPIN_KNOWS_MONEY_GONE:
+      case Enum170.FACT_KINGPIN_KNOWS_MONEY_GONE:
         // more generally events for kingpin quest
-        if (CheckFact(FACT_KINGPIN_KNOWS_MONEY_GONE, 0) == FALSE) {
+        if (CheckFact(Enum170.FACT_KINGPIN_KNOWS_MONEY_GONE, 0) == FALSE) {
           // check for real whether to start quest
           CheckForKingpinsMoneyMissing(FALSE);
-        } else if (CheckFact(FACT_KINGPIN_DEAD, 0) == FALSE) {
-          if (gubQuest[QUEST_KINGPIN_MONEY] == QUESTNOTSTARTED) {
+        } else if (CheckFact(Enum170.FACT_KINGPIN_DEAD, 0) == FALSE) {
+          if (gubQuest[Enum169.QUEST_KINGPIN_MONEY] == QUESTNOTSTARTED) {
             // KP knows money is gone, hasn't told player, if this event is called then the 2
             // days are up... send email
-            AddEmail(KING_PIN_LETTER, KING_PIN_LETTER_LENGTH, KING_PIN, GetWorldTotalMin());
-            StartQuest(QUEST_KINGPIN_MONEY, 5, MAP_ROW_D);
+            AddEmail(KING_PIN_LETTER, KING_PIN_LETTER_LENGTH, Enum75.KING_PIN, GetWorldTotalMin());
+            StartQuest(Enum169.QUEST_KINGPIN_MONEY, 5, MAP_ROW_D);
             // add event to send terrorists two days from now
-            AddFutureDayStrategicEvent(EVENT_SET_BY_NPC_SYSTEM, Random(120), FACT_KINGPIN_KNOWS_MONEY_GONE, 2);
-          } else if (gubQuest[QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) {
+            AddFutureDayStrategicEvent(Enum132.EVENT_SET_BY_NPC_SYSTEM, Random(120), Enum170.FACT_KINGPIN_KNOWS_MONEY_GONE, 2);
+          } else if (gubQuest[Enum169.QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) {
             // knows money gone, quest is still in progress
             // event indicates Kingpin can start to send terrorists
-            SetFactTrue(FACT_KINGPIN_CAN_SEND_ASSASSINS);
-            gMercProfiles[SPIKE].sSectorX = 5;
-            gMercProfiles[SPIKE].sSectorY = MAP_ROW_C;
-            gTacticalStatus.fCivGroupHostile[KINGPIN_CIV_GROUP] = CIV_GROUP_WILL_BECOME_HOSTILE;
+            SetFactTrue(Enum170.FACT_KINGPIN_CAN_SEND_ASSASSINS);
+            gMercProfiles[Enum268.SPIKE].sSectorX = 5;
+            gMercProfiles[Enum268.SPIKE].sSectorY = MAP_ROW_C;
+            gTacticalStatus.fCivGroupHostile[Enum246.KINGPIN_CIV_GROUP] = CIV_GROUP_WILL_BECOME_HOSTILE;
           }
         }
         break;
     }
   } else {
     switch (uiEvent - NPC_SYSTEM_EVENT_ACTION_PARAM_BONUS) {
-      case NPC_ACTION_RETURN_STOLEN_SHIPMENT_ITEMS:
+      case Enum213.NPC_ACTION_RETURN_STOLEN_SHIPMENT_ITEMS:
         HandleDelayedItemsArrival(uiEvent);
         break;
-      case NPC_ACTION_SET_RANDOM_PACKAGE_DAMAGE_TIMER:
+      case Enum213.NPC_ACTION_SET_RANDOM_PACKAGE_DAMAGE_TIMER:
         HandlePossiblyDamagedPackage();
         break;
-      case NPC_ACTION_ENABLE_CAMBRIA_DOCTOR_BONUS:
-        SetFactTrue(FACT_WILLIS_HEARD_ABOUT_JOEY_RESCUE);
+      case Enum213.NPC_ACTION_ENABLE_CAMBRIA_DOCTOR_BONUS:
+        SetFactTrue(Enum170.FACT_WILLIS_HEARD_ABOUT_JOEY_RESCUE);
         break;
-      case NPC_ACTION_TRIGGER_END_OF_FOOD_QUEST:
-        if (gMercProfiles[FATHER].bMercStatus != MERC_IS_DEAD) {
-          EndQuest(QUEST_FOOD_ROUTE, 10, MAP_ROW_A);
-          SetFactTrue(FACT_FOOD_QUEST_OVER);
+      case Enum213.NPC_ACTION_TRIGGER_END_OF_FOOD_QUEST:
+        if (gMercProfiles[Enum268.FATHER].bMercStatus != MERC_IS_DEAD) {
+          EndQuest(Enum169.QUEST_FOOD_ROUTE, 10, MAP_ROW_A);
+          SetFactTrue(Enum170.FACT_FOOD_QUEST_OVER);
         }
         break;
-      case NPC_ACTION_DELAYED_MAKE_BRENDA_LEAVE:
+      case Enum213.NPC_ACTION_DELAYED_MAKE_BRENDA_LEAVE:
         // IC:
         // TriggerNPCRecord( 85, 9 );
-        SetFactTrue(FACT_BRENDA_PATIENCE_TIMER_EXPIRED);
+        SetFactTrue(Enum170.FACT_BRENDA_PATIENCE_TIMER_EXPIRED);
         break;
-      case NPC_ACTION_SET_DELAY_TILL_GIRLS_AVAILABLE:
-        HandleNPCDoAction(107, NPC_ACTION_SET_GIRLS_AVAILABLE, 0);
+      case Enum213.NPC_ACTION_SET_DELAY_TILL_GIRLS_AVAILABLE:
+        HandleNPCDoAction(107, Enum213.NPC_ACTION_SET_GIRLS_AVAILABLE, 0);
         break;
 
-      case NPC_ACTION_READY_ROBOT: {
-        if (CheckFact(FACT_FIRST_ROBOT_DESTROYED, 0)) {
+      case Enum213.NPC_ACTION_READY_ROBOT: {
+        if (CheckFact(Enum170.FACT_FIRST_ROBOT_DESTROYED, 0)) {
           // second robot ready
-          SetFactTrue(FACT_ROBOT_READY_SECOND_TIME);
+          SetFactTrue(Enum170.FACT_ROBOT_READY_SECOND_TIME);
           // resurrect robot
-          gMercProfiles[ROBOT].bLife = gMercProfiles[ROBOT].bLifeMax;
-          gMercProfiles[ROBOT].bMercStatus = MERC_OK;
+          gMercProfiles[Enum268.ROBOT].bLife = gMercProfiles[Enum268.ROBOT].bLifeMax;
+          gMercProfiles[Enum268.ROBOT].bMercStatus = MERC_OK;
         } else {
           // first robot ready
-          SetFactTrue(FACT_ROBOT_READY);
+          SetFactTrue(Enum170.FACT_ROBOT_READY);
         }
 
-        gMercProfiles[ROBOT].sSectorX = gMercProfiles[MADLAB].sSectorX;
-        gMercProfiles[ROBOT].sSectorY = gMercProfiles[MADLAB].sSectorY;
-        gMercProfiles[ROBOT].bSectorZ = gMercProfiles[MADLAB].bSectorZ;
+        gMercProfiles[Enum268.ROBOT].sSectorX = gMercProfiles[Enum268.MADLAB].sSectorX;
+        gMercProfiles[Enum268.ROBOT].sSectorY = gMercProfiles[Enum268.MADLAB].sSectorY;
+        gMercProfiles[Enum268.ROBOT].bSectorZ = gMercProfiles[Enum268.MADLAB].bSectorZ;
       } break;
 
-      case NPC_ACTION_ADD_JOEY_TO_WORLD:
+      case Enum213.NPC_ACTION_ADD_JOEY_TO_WORLD:
         // If Joey is not dead, escorted, or already delivered
-        if (gMercProfiles[JOEY].bMercStatus != MERC_IS_DEAD && !CheckFact(FACT_JOEY_ESCORTED, 0) && gMercProfiles[JOEY].sSectorX == 4 && gMercProfiles[JOEY].sSectorY == MAP_ROW_D && gMercProfiles[JOEY].bSectorZ == 1) {
+        if (gMercProfiles[Enum268.JOEY].bMercStatus != MERC_IS_DEAD && !CheckFact(Enum170.FACT_JOEY_ESCORTED, 0) && gMercProfiles[Enum268.JOEY].sSectorX == 4 && gMercProfiles[Enum268.JOEY].sSectorY == MAP_ROW_D && gMercProfiles[Enum268.JOEY].bSectorZ == 1) {
           let pJoey: Pointer<SOLDIERTYPE>;
 
-          pJoey = FindSoldierByProfileID(JOEY, FALSE);
+          pJoey = FindSoldierByProfileID(Enum268.JOEY, FALSE);
           if (pJoey) {
             // he's in the currently loaded sector...delay this an hour!
-            AddSameDayStrategicEvent(EVENT_SET_BY_NPC_SYSTEM, GetWorldMinutesInDay() + 60, NPC_SYSTEM_EVENT_ACTION_PARAM_BONUS + NPC_ACTION_ADD_JOEY_TO_WORLD);
+            AddSameDayStrategicEvent(Enum132.EVENT_SET_BY_NPC_SYSTEM, GetWorldMinutesInDay() + 60, NPC_SYSTEM_EVENT_ACTION_PARAM_BONUS + Enum213.NPC_ACTION_ADD_JOEY_TO_WORLD);
           } else {
             // move Joey from caves to San Mona
-            gMercProfiles[JOEY].sSectorX = 5;
-            gMercProfiles[JOEY].sSectorY = MAP_ROW_C;
-            gMercProfiles[JOEY].bSectorZ = 0;
+            gMercProfiles[Enum268.JOEY].sSectorX = 5;
+            gMercProfiles[Enum268.JOEY].sSectorY = MAP_ROW_C;
+            gMercProfiles[Enum268.JOEY].bSectorZ = 0;
           }
         }
         break;
 
-      case NPC_ACTION_SEND_ENRICO_MIGUEL_EMAIL:
-        AddEmail(ENRICO_MIGUEL, ENRICO_MIGUEL_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
+      case Enum213.NPC_ACTION_SEND_ENRICO_MIGUEL_EMAIL:
+        AddEmail(ENRICO_MIGUEL, ENRICO_MIGUEL_LENGTH, Enum75.MAIL_ENRICO, GetWorldTotalMin());
         break;
 
-      case NPC_ACTION_TIMER_FOR_VEHICLE:
-        SetFactTrue(FACT_OK_USE_HUMMER);
+      case Enum213.NPC_ACTION_TIMER_FOR_VEHICLE:
+        SetFactTrue(Enum170.FACT_OK_USE_HUMMER);
         break;
 
-      case NPC_ACTION_FREE_KIDS:
-        SetFactTrue(FACT_KIDS_ARE_FREE);
+      case Enum213.NPC_ACTION_FREE_KIDS:
+        SetFactTrue(Enum170.FACT_KIDS_ARE_FREE);
         break;
 
       default:
@@ -607,63 +607,63 @@ function HandleEarlyMorningEvents(): void {
     gMercProfiles[cnt].ubMiscFlags2 &= (~PROFILE_MISC_FLAG2_BANDAGED_TODAY);
   }
   // reset Father Walker's drunkenness level!
-  gMercProfiles[FATHER].bNPCData = Random(4);
+  gMercProfiles[Enum268.FATHER].bNPCData = Random(4);
   // set Walker's location
   if (Random(2)) {
     // move the father to the other sector, provided neither are loaded
     if (!((gWorldSectorX == 13) && ((gWorldSectorY == MAP_ROW_C) || gWorldSectorY == MAP_ROW_D) && (gbWorldSectorZ == 0))) {
-      gMercProfiles[FATHER].sSectorX = 13;
+      gMercProfiles[Enum268.FATHER].sSectorX = 13;
       // swap his location
-      if (gMercProfiles[FATHER].sSectorY == MAP_ROW_C) {
-        gMercProfiles[FATHER].sSectorY = MAP_ROW_D;
+      if (gMercProfiles[Enum268.FATHER].sSectorY == MAP_ROW_C) {
+        gMercProfiles[Enum268.FATHER].sSectorY = MAP_ROW_D;
       } else {
-        gMercProfiles[FATHER].sSectorY = MAP_ROW_C;
+        gMercProfiles[Enum268.FATHER].sSectorY = MAP_ROW_C;
       }
     }
   }
 
-  if (gMercProfiles[TONY].ubLastDateSpokenTo > 0 && !(gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_C && gbWorldSectorZ == 0)) {
+  if (gMercProfiles[Enum268.TONY].ubLastDateSpokenTo > 0 && !(gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_C && gbWorldSectorZ == 0)) {
     // San Mona C5 is not loaded so make Tony possibly not available
     if (Random(4)) {
       // Tony IS available
-      SetFactFalse(FACT_TONY_NOT_AVAILABLE);
-      gMercProfiles[TONY].sSectorX = 5;
-      gMercProfiles[TONY].sSectorY = MAP_ROW_C;
+      SetFactFalse(Enum170.FACT_TONY_NOT_AVAILABLE);
+      gMercProfiles[Enum268.TONY].sSectorX = 5;
+      gMercProfiles[Enum268.TONY].sSectorY = MAP_ROW_C;
     } else {
       // Tony is NOT available
-      SetFactTrue(FACT_TONY_NOT_AVAILABLE);
-      gMercProfiles[TONY].sSectorX = 0;
-      gMercProfiles[TONY].sSectorY = 0;
+      SetFactTrue(Enum170.FACT_TONY_NOT_AVAILABLE);
+      gMercProfiles[Enum268.TONY].sSectorX = 0;
+      gMercProfiles[Enum268.TONY].sSectorY = 0;
     }
   }
 
-  if (gMercProfiles[DEVIN].ubLastDateSpokenTo == 0) {
+  if (gMercProfiles[Enum268.DEVIN].ubLastDateSpokenTo == 0) {
     // Does Devin move?
-    gMercProfiles[DEVIN].bNPCData++;
-    if (gMercProfiles[DEVIN].bNPCData > 3) {
-      if (!((gWorldSectorX == gMercProfiles[DEVIN].sSectorX) && (gWorldSectorY == gMercProfiles[DEVIN].sSectorY) && (gbWorldSectorZ == 0))) {
+    gMercProfiles[Enum268.DEVIN].bNPCData++;
+    if (gMercProfiles[Enum268.DEVIN].bNPCData > 3) {
+      if (!((gWorldSectorX == gMercProfiles[Enum268.DEVIN].sSectorX) && (gWorldSectorY == gMercProfiles[Enum268.DEVIN].sSectorY) && (gbWorldSectorZ == 0))) {
         // ok, Devin's sector not loaded, so time to move!
         // might be same sector as before, if so, oh well!
         switch (Random(5)) {
           case 0:
-            gMercProfiles[DEVIN].sSectorX = 9;
-            gMercProfiles[DEVIN].sSectorY = MAP_ROW_G;
+            gMercProfiles[Enum268.DEVIN].sSectorX = 9;
+            gMercProfiles[Enum268.DEVIN].sSectorY = MAP_ROW_G;
             break;
           case 1:
-            gMercProfiles[DEVIN].sSectorX = 13;
-            gMercProfiles[DEVIN].sSectorY = MAP_ROW_D;
+            gMercProfiles[Enum268.DEVIN].sSectorX = 13;
+            gMercProfiles[Enum268.DEVIN].sSectorY = MAP_ROW_D;
             break;
           case 2:
-            gMercProfiles[DEVIN].sSectorX = 5;
-            gMercProfiles[DEVIN].sSectorY = MAP_ROW_C;
+            gMercProfiles[Enum268.DEVIN].sSectorX = 5;
+            gMercProfiles[Enum268.DEVIN].sSectorY = MAP_ROW_C;
             break;
           case 3:
-            gMercProfiles[DEVIN].sSectorX = 2;
-            gMercProfiles[DEVIN].sSectorY = MAP_ROW_H;
+            gMercProfiles[Enum268.DEVIN].sSectorX = 2;
+            gMercProfiles[Enum268.DEVIN].sSectorY = MAP_ROW_H;
             break;
           case 4:
-            gMercProfiles[DEVIN].sSectorX = 6;
-            gMercProfiles[DEVIN].sSectorY = MAP_ROW_C;
+            gMercProfiles[Enum268.DEVIN].sSectorX = 6;
+            gMercProfiles[Enum268.DEVIN].sSectorY = MAP_ROW_C;
             break;
         }
       }
@@ -674,114 +674,114 @@ function HandleEarlyMorningEvents(): void {
 
   // stop moving the truck if Hamous is dead!!
   // stop moving them if the player has the truck or Hamous is hired!
-  if (gMercProfiles[HAMOUS].bLife > 0 && FindSoldierByProfileID(HAMOUS, TRUE) == NULL && FindSoldierByProfileID(PROF_ICECREAM, TRUE) == NULL && (!((gWorldSectorX == gMercProfiles[HAMOUS].sSectorX) && (gWorldSectorY == gMercProfiles[HAMOUS].sSectorY) && (gbWorldSectorZ == 0)))) {
+  if (gMercProfiles[Enum268.HAMOUS].bLife > 0 && FindSoldierByProfileID(Enum268.HAMOUS, TRUE) == NULL && FindSoldierByProfileID(Enum268.PROF_ICECREAM, TRUE) == NULL && (!((gWorldSectorX == gMercProfiles[Enum268.HAMOUS].sSectorX) && (gWorldSectorY == gMercProfiles[Enum268.HAMOUS].sSectorY) && (gbWorldSectorZ == 0)))) {
     // ok, HAMOUS's sector not loaded, so time to move!
     // might be same sector as before, if so, oh well!
     switch (Random(5)) {
       case 0:
-        gMercProfiles[HAMOUS].sSectorX = 6;
-        gMercProfiles[HAMOUS].sSectorY = MAP_ROW_G;
-        gMercProfiles[PROF_ICECREAM].sSectorX = 6;
-        gMercProfiles[PROF_ICECREAM].sSectorY = MAP_ROW_G;
+        gMercProfiles[Enum268.HAMOUS].sSectorX = 6;
+        gMercProfiles[Enum268.HAMOUS].sSectorY = MAP_ROW_G;
+        gMercProfiles[Enum268.PROF_ICECREAM].sSectorX = 6;
+        gMercProfiles[Enum268.PROF_ICECREAM].sSectorY = MAP_ROW_G;
         break;
       case 1:
-        gMercProfiles[HAMOUS].sSectorX = 12;
-        gMercProfiles[HAMOUS].sSectorY = MAP_ROW_F;
-        gMercProfiles[PROF_ICECREAM].sSectorX = 12;
-        gMercProfiles[PROF_ICECREAM].sSectorY = MAP_ROW_F;
+        gMercProfiles[Enum268.HAMOUS].sSectorX = 12;
+        gMercProfiles[Enum268.HAMOUS].sSectorY = MAP_ROW_F;
+        gMercProfiles[Enum268.PROF_ICECREAM].sSectorX = 12;
+        gMercProfiles[Enum268.PROF_ICECREAM].sSectorY = MAP_ROW_F;
         break;
       case 2:
-        gMercProfiles[HAMOUS].sSectorX = 7;
-        gMercProfiles[HAMOUS].sSectorY = MAP_ROW_D;
-        gMercProfiles[PROF_ICECREAM].sSectorX = 7;
-        gMercProfiles[PROF_ICECREAM].sSectorY = MAP_ROW_D;
+        gMercProfiles[Enum268.HAMOUS].sSectorX = 7;
+        gMercProfiles[Enum268.HAMOUS].sSectorY = MAP_ROW_D;
+        gMercProfiles[Enum268.PROF_ICECREAM].sSectorX = 7;
+        gMercProfiles[Enum268.PROF_ICECREAM].sSectorY = MAP_ROW_D;
         break;
       case 3:
-        gMercProfiles[HAMOUS].sSectorX = 3;
-        gMercProfiles[HAMOUS].sSectorY = MAP_ROW_D;
-        gMercProfiles[PROF_ICECREAM].sSectorX = 3;
-        gMercProfiles[PROF_ICECREAM].sSectorY = MAP_ROW_D;
+        gMercProfiles[Enum268.HAMOUS].sSectorX = 3;
+        gMercProfiles[Enum268.HAMOUS].sSectorY = MAP_ROW_D;
+        gMercProfiles[Enum268.PROF_ICECREAM].sSectorX = 3;
+        gMercProfiles[Enum268.PROF_ICECREAM].sSectorY = MAP_ROW_D;
         break;
       case 4:
-        gMercProfiles[HAMOUS].sSectorX = 9;
-        gMercProfiles[HAMOUS].sSectorY = MAP_ROW_D;
-        gMercProfiles[PROF_ICECREAM].sSectorX = 9;
-        gMercProfiles[PROF_ICECREAM].sSectorY = MAP_ROW_D;
+        gMercProfiles[Enum268.HAMOUS].sSectorX = 9;
+        gMercProfiles[Enum268.HAMOUS].sSectorY = MAP_ROW_D;
+        gMercProfiles[Enum268.PROF_ICECREAM].sSectorX = 9;
+        gMercProfiles[Enum268.PROF_ICECREAM].sSectorY = MAP_ROW_D;
         break;
     }
   }
 
   // Does Rat take off?
-  if (gMercProfiles[RAT].bNPCData != 0) {
-    gMercProfiles[RAT].sSectorX = 0;
-    gMercProfiles[RAT].sSectorY = 0;
-    gMercProfiles[RAT].bSectorZ = 0;
+  if (gMercProfiles[Enum268.RAT].bNPCData != 0) {
+    gMercProfiles[Enum268.RAT].sSectorX = 0;
+    gMercProfiles[Enum268.RAT].sSectorY = 0;
+    gMercProfiles[Enum268.RAT].bSectorZ = 0;
   }
 
   // Empty money from pockets of Vince 69, Willis 80, and Jenny 132
-  SetMoneyInSoldierProfile(VINCE, 0);
-  SetMoneyInSoldierProfile(STEVE, 0); // Steven Willis
-  SetMoneyInSoldierProfile(JENNY, 0);
+  SetMoneyInSoldierProfile(Enum268.VINCE, 0);
+  SetMoneyInSoldierProfile(Enum268.STEVE, 0); // Steven Willis
+  SetMoneyInSoldierProfile(Enum268.JENNY, 0);
 
   // Vince is no longer expecting money
-  SetFactFalse(FACT_VINCE_EXPECTING_MONEY);
+  SetFactFalse(Enum170.FACT_VINCE_EXPECTING_MONEY);
 
   // Reset Darren's balance and money
-  gMercProfiles[DARREN].iBalance = 0;
-  SetMoneyInSoldierProfile(DARREN, 15000);
+  gMercProfiles[Enum268.DARREN].iBalance = 0;
+  SetMoneyInSoldierProfile(Enum268.DARREN, 15000);
 
   // set Carmen to be placed on the map in case he moved and is waiting off screen
-  if (gMercProfiles[CARMEN].ubMiscFlags2 & PROFILE_MISC_FLAG2_DONT_ADD_TO_SECTOR) {
-    gMercProfiles[CARMEN].ubMiscFlags2 &= ~(PROFILE_MISC_FLAG2_DONT_ADD_TO_SECTOR);
+  if (gMercProfiles[Enum268.CARMEN].ubMiscFlags2 & PROFILE_MISC_FLAG2_DONT_ADD_TO_SECTOR) {
+    gMercProfiles[Enum268.CARMEN].ubMiscFlags2 &= ~(PROFILE_MISC_FLAG2_DONT_ADD_TO_SECTOR);
     // move Carmen to C13
-    gMercProfiles[CARMEN].sSectorX = 13;
-    gMercProfiles[CARMEN].sSectorY = MAP_ROW_C;
-    gMercProfiles[CARMEN].bSectorZ = 0;
+    gMercProfiles[Enum268.CARMEN].sSectorX = 13;
+    gMercProfiles[Enum268.CARMEN].sSectorY = MAP_ROW_C;
+    gMercProfiles[Enum268.CARMEN].bSectorZ = 0;
 
     // we should also reset # of terrorist heads and give him cash
-    if (gMercProfiles[CARMEN].bNPCData2 > 0) {
-      if (gMercProfiles[CARMEN].uiMoney < 10000) {
+    if (gMercProfiles[Enum268.CARMEN].bNPCData2 > 0) {
+      if (gMercProfiles[Enum268.CARMEN].uiMoney < 10000) {
         uiAmount = 0;
       } else {
-        uiAmount = gMercProfiles[CARMEN].uiMoney;
+        uiAmount = gMercProfiles[Enum268.CARMEN].uiMoney;
       }
-      uiAmount += 10000 * gMercProfiles[CARMEN].bNPCData2;
-      SetMoneyInSoldierProfile(CARMEN, uiAmount);
-      gMercProfiles[CARMEN].bNPCData2 = 0;
+      uiAmount += 10000 * gMercProfiles[Enum268.CARMEN].bNPCData2;
+      SetMoneyInSoldierProfile(Enum268.CARMEN, uiAmount);
+      gMercProfiles[Enum268.CARMEN].bNPCData2 = 0;
 
-      for (cnt = HEAD_1; cnt <= HEAD_7; cnt++) {
-        RemoveObjectFromSoldierProfile(CARMEN, cnt);
+      for (cnt = Enum225.HEAD_1; cnt <= Enum225.HEAD_7; cnt++) {
+        RemoveObjectFromSoldierProfile(Enum268.CARMEN, cnt);
       }
     }
   } else {
     // randomize where he'll be today... so long as his sector's not loaded
 
-    if (gMercProfiles[CARMEN].sSectorX != gWorldSectorX || gMercProfiles[CARMEN].sSectorY != gWorldSectorY) {
+    if (gMercProfiles[Enum268.CARMEN].sSectorX != gWorldSectorX || gMercProfiles[Enum268.CARMEN].sSectorY != gWorldSectorY) {
       switch (Random(3)) {
         case 0:
-          gMercProfiles[CARMEN].sSectorX = 5;
-          gMercProfiles[CARMEN].sSectorY = MAP_ROW_C;
+          gMercProfiles[Enum268.CARMEN].sSectorX = 5;
+          gMercProfiles[Enum268.CARMEN].sSectorY = MAP_ROW_C;
           break;
         case 1:
-          gMercProfiles[CARMEN].sSectorX = 13;
-          gMercProfiles[CARMEN].sSectorY = MAP_ROW_C;
+          gMercProfiles[Enum268.CARMEN].sSectorX = 13;
+          gMercProfiles[Enum268.CARMEN].sSectorY = MAP_ROW_C;
           break;
         case 2:
-          gMercProfiles[CARMEN].sSectorX = 9;
-          gMercProfiles[CARMEN].sSectorY = MAP_ROW_G;
+          gMercProfiles[Enum268.CARMEN].sSectorX = 9;
+          gMercProfiles[Enum268.CARMEN].sSectorY = MAP_ROW_G;
           break;
       }
       // he should have $5000... unless the player forgot to meet him
-      if (gMercProfiles[CARMEN].uiMoney < 5000) {
-        SetMoneyInSoldierProfile(CARMEN, 5000);
+      if (gMercProfiles[Enum268.CARMEN].uiMoney < 5000) {
+        SetMoneyInSoldierProfile(Enum268.CARMEN, 5000);
       }
     }
   }
 
   if (PreRandom(3) == 0) {
-    SetFactTrue(FACT_DAVE_HAS_GAS);
+    SetFactTrue(Enum170.FACT_DAVE_HAS_GAS);
   } else {
-    SetFactFalse(FACT_DAVE_HAS_GAS);
+    SetFactFalse(Enum170.FACT_DAVE_HAS_GAS);
   }
 
   if (gWorldSectorX == HOSPITAL_SECTOR_X && gWorldSectorY == HOSPITAL_SECTOR_Y && gbWorldSectorZ == HOSPITAL_SECTOR_Z) {
@@ -791,7 +791,7 @@ function HandleEarlyMorningEvents(): void {
 
 function MakeCivGroupHostileOnNextSectorEntrance(ubCivGroup: UINT8): void {
   // if it's the rebels that will become hostile, reduce town loyalties NOW, not later
-  if (ubCivGroup == REBEL_CIV_GROUP && gTacticalStatus.fCivGroupHostile[ubCivGroup] == CIV_GROUP_NEUTRAL) {
+  if (ubCivGroup == Enum246.REBEL_CIV_GROUP && gTacticalStatus.fCivGroupHostile[ubCivGroup] == CIV_GROUP_NEUTRAL) {
     ReduceLoyaltyForRebelsBetrayed();
   }
 
@@ -812,13 +812,13 @@ function CheckForMissingHospitalSupplies(): void {
 
   for (uiLoop = 0; uiLoop < guiNumWorldItems; uiLoop++) {
     // loop through all items, look for ownership
-    if (gWorldItems[uiLoop].fExists && gWorldItems[uiLoop].o.usItem == OWNERSHIP && gWorldItems[uiLoop].o.ubOwnerCivGroup == DOCTORS_CIV_GROUP) {
+    if (gWorldItems[uiLoop].fExists && gWorldItems[uiLoop].o.usItem == Enum225.OWNERSHIP && gWorldItems[uiLoop].o.ubOwnerCivGroup == Enum246.DOCTORS_CIV_GROUP) {
       GetItemPool(gWorldItems[uiLoop].sGridNo, addressof(pItemPool), 0);
       while (pItemPool) {
         pObj = addressof(gWorldItems[pItemPool.value.iItemIndex].o);
 
         if (pObj.value.bStatus[0] > 60) {
-          if (pObj.value.usItem == FIRSTAIDKIT || pObj.value.usItem == MEDICKIT || pObj.value.usItem == REGEN_BOOSTER || pObj.value.usItem == ADRENALINE_BOOSTER) {
+          if (pObj.value.usItem == Enum225.FIRSTAIDKIT || pObj.value.usItem == Enum225.MEDICKIT || pObj.value.usItem == Enum225.REGEN_BOOSTER || pObj.value.usItem == Enum225.ADRENALINE_BOOSTER) {
             ubMedicalObjects++;
           }
         }
@@ -828,25 +828,25 @@ function CheckForMissingHospitalSupplies(): void {
     }
   }
 
-  if (CheckFact(FACT_PLAYER_STOLE_MEDICAL_SUPPLIES_AGAIN, 0) == TRUE) {
+  if (CheckFact(Enum170.FACT_PLAYER_STOLE_MEDICAL_SUPPLIES_AGAIN, 0) == TRUE) {
     // player returning stuff!  if back to full then can operate
     if (ubMedicalObjects >= gubCambriaMedicalObjects) {
-      SetFactFalse(FACT_PLAYER_STOLE_MEDICAL_SUPPLIES_AGAIN);
-      SetFactFalse(FACT_PLAYER_STOLE_MEDICAL_SUPPLIES);
+      SetFactFalse(Enum170.FACT_PLAYER_STOLE_MEDICAL_SUPPLIES_AGAIN);
+      SetFactFalse(Enum170.FACT_PLAYER_STOLE_MEDICAL_SUPPLIES);
       return;
     }
   }
 
   if (ubMedicalObjects < gubCambriaMedicalObjects) {
     // player's stolen something!
-    if (CheckFact(FACT_PLAYER_STOLE_MEDICAL_SUPPLIES, 0) == FALSE) {
-      SetFactTrue(FACT_PLAYER_STOLE_MEDICAL_SUPPLIES);
+    if (CheckFact(Enum170.FACT_PLAYER_STOLE_MEDICAL_SUPPLIES, 0) == FALSE) {
+      SetFactTrue(Enum170.FACT_PLAYER_STOLE_MEDICAL_SUPPLIES);
     }
 
     // if only 1/5 or less left, give up the ghost
     if (ubMedicalObjects * 5 <= gubCambriaMedicalObjects) {
       // run out!
-      SetFactTrue(FACT_PLAYER_STOLE_MEDICAL_SUPPLIES_AGAIN);
+      SetFactTrue(Enum170.FACT_PLAYER_STOLE_MEDICAL_SUPPLIES_AGAIN);
     }
   }
 }
@@ -937,5 +937,5 @@ function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
   gpNewBobbyrShipments[ubOrderNum].fActive = FALSE;
 
   // Add an email from kulba telling the user the shipment is there
-  AddEmail(BOBBY_R_MEDUNA_SHIPMENT, BOBBY_R_MEDUNA_SHIPMENT_LENGTH, BOBBY_R, GetWorldTotalMin());
+  AddEmail(BOBBY_R_MEDUNA_SHIPMENT, BOBBY_R_MEDUNA_SHIPMENT_LENGTH, Enum75.BOBBY_R, GetWorldTotalMin());
 }

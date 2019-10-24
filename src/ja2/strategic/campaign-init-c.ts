@@ -25,33 +25,33 @@ function InitKnowFacilitiesFlags(): void {
   let pSector: Pointer<SECTORINFO>;
 
   // Cambria hospital
-  pSector = addressof(SectorInfo[SEC_G8]);
+  pSector = addressof(SectorInfo[Enum123.SEC_G8]);
   pSector.value.uiFacilitiesFlags |= SFCF_HOSPITAL;
-  pSector = addressof(SectorInfo[SEC_F8]);
+  pSector = addressof(SectorInfo[Enum123.SEC_F8]);
   pSector.value.uiFacilitiesFlags |= SFCF_HOSPITAL;
-  pSector = addressof(SectorInfo[SEC_G9]);
+  pSector = addressof(SectorInfo[Enum123.SEC_G9]);
   pSector.value.uiFacilitiesFlags |= SFCF_HOSPITAL;
-  pSector = addressof(SectorInfo[SEC_F9]);
+  pSector = addressof(SectorInfo[Enum123.SEC_F9]);
   pSector.value.uiFacilitiesFlags |= SFCF_HOSPITAL;
 
   // Drassen airport
-  pSector = addressof(SectorInfo[SEC_B13]);
+  pSector = addressof(SectorInfo[Enum123.SEC_B13]);
   pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
-  pSector = addressof(SectorInfo[SEC_C13]);
+  pSector = addressof(SectorInfo[Enum123.SEC_C13]);
   pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
-  pSector = addressof(SectorInfo[SEC_D13]);
+  pSector = addressof(SectorInfo[Enum123.SEC_D13]);
   pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
 
   // Meduna airport & military complex
-  pSector = addressof(SectorInfo[SEC_N3]);
+  pSector = addressof(SectorInfo[Enum123.SEC_N3]);
   pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
-  pSector = addressof(SectorInfo[SEC_N4]);
+  pSector = addressof(SectorInfo[Enum123.SEC_N4]);
   pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
-  pSector = addressof(SectorInfo[SEC_N5]);
+  pSector = addressof(SectorInfo[Enum123.SEC_N5]);
   pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
-  pSector = addressof(SectorInfo[SEC_O3]);
+  pSector = addressof(SectorInfo[Enum123.SEC_O3]);
   pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
-  pSector = addressof(SectorInfo[SEC_O4]);
+  pSector = addressof(SectorInfo[Enum123.SEC_O4]);
   pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
 
   return;
@@ -61,28 +61,28 @@ function InitMiningLocations(): void {
   let pSector: Pointer<SECTORINFO>;
   // Set up mining sites
 
-  pSector = addressof(SectorInfo[SEC_D4]);
+  pSector = addressof(SectorInfo[Enum123.SEC_D4]);
   pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 33;
 
-  pSector = addressof(SectorInfo[SEC_D13]);
+  pSector = addressof(SectorInfo[Enum123.SEC_D13]);
   pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 41;
 
-  pSector = addressof(SectorInfo[SEC_B2]);
+  pSector = addressof(SectorInfo[Enum123.SEC_B2]);
   pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 20;
 
-  pSector = addressof(SectorInfo[SEC_H8]);
+  pSector = addressof(SectorInfo[Enum123.SEC_H8]);
   pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 64;
 
-  pSector = addressof(SectorInfo[SEC_I14]);
+  pSector = addressof(SectorInfo[Enum123.SEC_I14]);
   pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 80;
 
   // Grumm
-  pSector = addressof(SectorInfo[SEC_H3]);
+  pSector = addressof(SectorInfo[Enum123.SEC_H3]);
   pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 100;
 }
@@ -92,26 +92,26 @@ function GeneratePatrolGroups(): void {
   let pGroup: Pointer<GROUP>;
   let ubNumTroops: UINT8;
   ubNumTroops = (3 + gGameOptions.ubDifficultyLevel + Random(3));
-  pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_C7, 0, ubNumTroops, 0);
+  pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_C7, 0, ubNumTroops, 0);
   pGroup.value.ubTransportationMask = CAR;
   AddWaypointToPGroup(pGroup, 8, 3); // C8
   AddWaypointToPGroup(pGroup, 7, 3); // C7
 
   ubNumTroops = (3 + gGameOptions.ubDifficultyLevel + Random(3));
-  pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_D9, 0, ubNumTroops, 0);
+  pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_D9, 0, ubNumTroops, 0);
   AddWaypointToPGroup(pGroup, 9, 5); // E9
   AddWaypointToPGroup(pGroup, 9, 4); // D9
   pGroup.value.ubTransportationMask = TRUCK;
 
   ubNumTroops = (3 + gGameOptions.ubDifficultyLevel + Random(3));
-  pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_B9, 0, ubNumTroops, 0);
+  pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_B9, 0, ubNumTroops, 0);
   AddWaypointToPGroup(pGroup, 12, 2); // B12
   AddWaypointToPGroup(pGroup, 9, 2); // B9
   pGroup.value.ubTransportationMask = FOOT;
 
   ubNumTroops = (3 + gGameOptions.ubDifficultyLevel + Random(3));
-  pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_A14, 0, ubNumTroops, 0);
-  pGroup.value.ubMoveType = ENDTOEND_FORWARDS;
+  pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_A14, 0, ubNumTroops, 0);
+  pGroup.value.ubMoveType = Enum185.ENDTOEND_FORWARDS;
   AddWaypointToPGroup(pGroup, 13, 1); // A13
   AddWaypointToPGroup(pGroup, 15, 1); // A15
   AddWaypointToPGroup(pGroup, 15, 5); // E15
@@ -121,13 +121,13 @@ function GeneratePatrolGroups(): void {
   pGroup.value.ubTransportationMask = TRACKED;
 
   ubNumTroops = (5 + gGameOptions.ubDifficultyLevel * 2 + Random(4));
-  pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_N6, 0, ubNumTroops, 0);
+  pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_N6, 0, ubNumTroops, 0);
   AddWaypointToPGroup(pGroup, 9, 14); // N9
   AddWaypointToPGroup(pGroup, 6, 14); // N6
   pGroup.value.ubTransportationMask = CAR;
 
   ubNumTroops = (5 + gGameOptions.ubDifficultyLevel * 2 + Random(4));
-  pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_N10, 0, ubNumTroops, 0);
+  pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_N10, 0, ubNumTroops, 0);
   AddWaypointToPGroup(pGroup, 10, 11); // K10
   AddWaypointToPGroup(pGroup, 10, 14); // N10
   pGroup.value.ubTransportationMask = CAR;
@@ -171,13 +171,13 @@ function BuildUndergroundSectorInfoList(): void {
   // J9
   curr = NewUndergroundNode(9, 10, 1);
   switch (gGameOptions.ubDifficultyLevel) {
-    case DIF_LEVEL_EASY:
+    case Enum9.DIF_LEVEL_EASY:
       curr.value.ubNumTroops = 8;
       break;
-    case DIF_LEVEL_MEDIUM:
+    case Enum9.DIF_LEVEL_MEDIUM:
       curr.value.ubNumTroops = 11;
       break;
-    case DIF_LEVEL_HARD:
+    case Enum9.DIF_LEVEL_HARD:
       curr.value.ubNumTroops = 15;
       break;
   }
@@ -199,13 +199,13 @@ function BuildUndergroundSectorInfoList(): void {
   // P3
   curr = NewUndergroundNode(3, 16, 1);
   switch (gGameOptions.ubDifficultyLevel) {
-    case DIF_LEVEL_EASY:
+    case Enum9.DIF_LEVEL_EASY:
       curr.value.ubNumElites = (8 + Random(3));
       break;
-    case DIF_LEVEL_MEDIUM:
+    case Enum9.DIF_LEVEL_MEDIUM:
       curr.value.ubNumElites = (10 + Random(5));
       break;
-    case DIF_LEVEL_HARD:
+    case Enum9.DIF_LEVEL_HARD:
       curr.value.ubNumElites = (14 + Random(6));
       break;
   }

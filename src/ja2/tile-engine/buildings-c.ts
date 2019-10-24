@@ -53,7 +53,7 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
   RoofReachableTest(sDesiredSpot, ubBuildingID);
 
   // From sGridNo, search until we find a spot that isn't part of the building
-  bDirection = NORTHWEST;
+  bDirection = Enum245.NORTHWEST;
   sTempGridNo = sDesiredSpot;
   // using diagonal directions to hopefully prevent picking a
   // spot that
@@ -71,13 +71,13 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
   sStartGridNo = sTempGridNo;
 
   sCurrGridNo = sStartGridNo;
-  sVeryTemporaryGridNo = NewGridNo(sCurrGridNo, DirectionInc(EAST));
+  sVeryTemporaryGridNo = NewGridNo(sCurrGridNo, DirectionInc(Enum245.EAST));
   if (gpWorldLevelData[sVeryTemporaryGridNo].uiFlags & MAPELEMENT_REACHABLE) {
     // go north first
-    bDirection = NORTH;
+    bDirection = Enum245.NORTH;
   } else {
     // go that way (east)
-    bDirection = EAST;
+    bDirection = Enum245.EAST;
   }
 
   gpWorldLevelData[sStartGridNo].ubExtFlags[0] |= MAPELEMENT_EXT_ROOFCODE_VISITED;
@@ -155,28 +155,28 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
       fFoundWall = FALSE;
 
       switch (bDirection) {
-        case NORTH:
+        case Enum245.NORTH:
           sWallGridNo = sCurrGridNo;
-          bDesiredOrientation = OUTSIDE_TOP_RIGHT;
+          bDesiredOrientation = Enum314.OUTSIDE_TOP_RIGHT;
           break;
-        case EAST:
+        case Enum245.EAST:
           sWallGridNo = sCurrGridNo;
-          bDesiredOrientation = OUTSIDE_TOP_LEFT;
+          bDesiredOrientation = Enum314.OUTSIDE_TOP_LEFT;
           break;
-        case SOUTH:
+        case Enum245.SOUTH:
           sWallGridNo = (sCurrGridNo + DirectionInc(gTwoCDirection[bDirection]));
-          bDesiredOrientation = OUTSIDE_TOP_RIGHT;
+          bDesiredOrientation = Enum314.OUTSIDE_TOP_RIGHT;
           break;
-        case WEST:
+        case Enum245.WEST:
           sWallGridNo = (sCurrGridNo + DirectionInc(gTwoCDirection[bDirection]));
-          bDesiredOrientation = OUTSIDE_TOP_LEFT;
+          bDesiredOrientation = Enum314.OUTSIDE_TOP_LEFT;
           break;
         default:
           // what the heck?
           return NULL;
       }
 
-      if (bDesiredOrientation == OUTSIDE_TOP_LEFT) {
+      if (bDesiredOrientation == Enum314.OUTSIDE_TOP_LEFT) {
         if (WallExistsOfTopLeftOrientation(sWallGridNo)) {
           fFoundWall = TRUE;
         }

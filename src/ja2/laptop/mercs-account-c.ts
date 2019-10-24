@@ -58,7 +58,7 @@ function EnterMercsAccount(): BOOLEAN {
 
   // load the Arrow graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_ORDERGRID);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_ORDERGRID);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMercOrderGrid)));
 
   // load the Arrow graphic and add it
@@ -68,13 +68,13 @@ function EnterMercsAccount(): BOOLEAN {
 
   guiMercAuthorizeButtonImage = LoadButtonImage("LAPTOP\\BigButtons.sti", -1, 0, -1, 1, -1);
 
-  guiMercAuthorizeBoxButton = CreateIconAndTextButton(guiMercAuthorizeButtonImage, MercAccountText[MERC_ACCOUNT_AUTHORIZE], FONT12ARIAL, MERC_BUTTON_UP_COLOR, DEFAULT_SHADOW, MERC_BUTTON_DOWN_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, MERC_AC_AUTHORIZE_BUTTON_X, MERC_AC_AUTHORIZE_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnMercAuthorizeButtonCallback);
-  SetButtonCursor(guiMercAuthorizeBoxButton, CURSOR_LAPTOP_SCREEN);
-  SpecifyDisabledButtonStyle(guiMercAuthorizeBoxButton, DISABLED_STYLE_SHADED);
+  guiMercAuthorizeBoxButton = CreateIconAndTextButton(guiMercAuthorizeButtonImage, MercAccountText[Enum340.MERC_ACCOUNT_AUTHORIZE], FONT12ARIAL, MERC_BUTTON_UP_COLOR, DEFAULT_SHADOW, MERC_BUTTON_DOWN_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, MERC_AC_AUTHORIZE_BUTTON_X, MERC_AC_AUTHORIZE_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnMercAuthorizeButtonCallback);
+  SetButtonCursor(guiMercAuthorizeBoxButton, Enum317.CURSOR_LAPTOP_SCREEN);
+  SpecifyDisabledButtonStyle(guiMercAuthorizeBoxButton, Enum29.DISABLED_STYLE_SHADED);
 
-  guiMercBackBoxButton = CreateIconAndTextButton(guiMercAuthorizeButtonImage, MercAccountText[MERC_ACCOUNT_HOME], FONT12ARIAL, MERC_BUTTON_UP_COLOR, DEFAULT_SHADOW, MERC_BUTTON_DOWN_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, MERC_AC_CANCEL_BUTTON_X, MERC_AC_CANCEL_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnMercBackButtonCallback);
-  SetButtonCursor(guiMercBackBoxButton, CURSOR_LAPTOP_SCREEN);
-  SpecifyDisabledButtonStyle(guiMercBackBoxButton, DISABLED_STYLE_SHADED);
+  guiMercBackBoxButton = CreateIconAndTextButton(guiMercAuthorizeButtonImage, MercAccountText[Enum340.MERC_ACCOUNT_HOME], FONT12ARIAL, MERC_BUTTON_UP_COLOR, DEFAULT_SHADOW, MERC_BUTTON_DOWN_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, MERC_AC_CANCEL_BUTTON_X, MERC_AC_CANCEL_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnMercBackButtonCallback);
+  SetButtonCursor(guiMercBackBoxButton, Enum317.CURSOR_LAPTOP_SCREEN);
+  SpecifyDisabledButtonStyle(guiMercBackBoxButton, Enum29.DISABLED_STYLE_SHADED);
 
   //	RenderMercsAccount();
 
@@ -100,7 +100,7 @@ function HandleMercsAccount(): void {
   if (gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning) {
     gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning = FALSE;
 
-    DoLapTopMessageBox(MSG_BOX_BLUE_ON_GREY, "Transfer failed.  No funds available.", LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+    DoLapTopMessageBox(Enum24.MSG_BOX_BLUE_ON_GREY, "Transfer failed.  No funds available.", Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
   }
 }
 
@@ -119,15 +119,15 @@ function RenderMercsAccount(): void {
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_AC_ACCOUNT_NUMBER_X, MERC_AC_ACCOUNT_NUMBER_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Display Players account number
-  swprintf(sText, "%s %05d", MercAccountText[MERC_ACCOUNT_ACCOUNT], LaptopSaveInfo.guiPlayersMercAccountNumber);
+  swprintf(sText, "%s %05d", MercAccountText[Enum340.MERC_ACCOUNT_ACCOUNT], LaptopSaveInfo.guiPlayersMercAccountNumber);
   DrawTextToScreen(sText, MERC_AC_ACCOUNT_NUMBER_TEXT_X, MERC_AC_ACCOUNT_NUMBER_TEXT_Y, 0, MERC_ACCOUNT_TEXT_FONT, MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Display the order grid titles
-  DrawTextToScreen(MercAccountText[MERC_ACCOUNT_MERC], MERC_AC_FIRST_COLUMN_X, MERC_AC_MERC_TITLE_Y, MERC_AC_FIRST_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT, MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DrawTextToScreen(MercAccountText[MERC_ACCOUNT_DAYS], MERC_AC_SECOND_COLUMN_X, MERC_AC_MERC_TITLE_Y, MERC_AC_SECOND_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT, MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DrawTextToScreen(MercAccountText[MERC_ACCOUNT_RATE], MERC_AC_THIRD_COLUMN_X, MERC_AC_MERC_TITLE_Y, MERC_AC_THIRD_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT, MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DrawTextToScreen(MercAccountText[MERC_ACCOUNT_CHARGE], MERC_AC_FOURTH_COLUMN_X, MERC_AC_MERC_TITLE_Y, MERC_AC_FOURTH_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT, MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DrawTextToScreen(MercAccountText[MERC_ACCOUNT_TOTAL], MERC_AC_THIRD_COLUMN_X, MERC_AC_TOTAL_COST_Y, MERC_AC_THIRD_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT, MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(MercAccountText[Enum340.MERC_ACCOUNT_MERC], MERC_AC_FIRST_COLUMN_X, MERC_AC_MERC_TITLE_Y, MERC_AC_FIRST_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT, MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(MercAccountText[Enum340.MERC_ACCOUNT_DAYS], MERC_AC_SECOND_COLUMN_X, MERC_AC_MERC_TITLE_Y, MERC_AC_SECOND_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT, MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(MercAccountText[Enum340.MERC_ACCOUNT_RATE], MERC_AC_THIRD_COLUMN_X, MERC_AC_MERC_TITLE_Y, MERC_AC_THIRD_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT, MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(MercAccountText[Enum340.MERC_ACCOUNT_CHARGE], MERC_AC_FOURTH_COLUMN_X, MERC_AC_MERC_TITLE_Y, MERC_AC_FOURTH_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT, MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(MercAccountText[Enum340.MERC_ACCOUNT_TOTAL], MERC_AC_THIRD_COLUMN_X, MERC_AC_TOTAL_COST_Y, MERC_AC_THIRD_COLUMN_WIDTH, MERC_ACCOUNT_TEXT_FONT, MERC_ACCOUNT_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   DisplayHiredMercs();
 
@@ -159,9 +159,9 @@ function BtnMercAuthorizeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
       InsertDollarSignInToString(wzDollarAmount);
 
       // create the string to show to the user
-      swprintf(wzAuthorizeString, MercAccountText[MERC_ACCOUNT_AUTHORIZE_CONFIRMATION], wzDollarAmount);
+      swprintf(wzAuthorizeString, MercAccountText[Enum340.MERC_ACCOUNT_AUTHORIZE_CONFIRMATION], wzDollarAmount);
 
-      DoLapTopMessageBox(MSG_BOX_BLUE_ON_GREY, wzAuthorizeString, LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, MercAuthorizePaymentMessageBoxCallBack);
+      DoLapTopMessageBox(Enum24.MSG_BOX_BLUE_ON_GREY, wzAuthorizeString, Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, MercAuthorizePaymentMessageBoxCallBack);
 
       InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
@@ -181,8 +181,8 @@ function BtnMercBackButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-      guiCurrentLaptopMode = LAPTOP_MODE_MERC;
-      gubArrivedFromMercSubSite = MERC_CAME_FROM_ACCOUNTS_PAGE;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_MERC;
+      gubArrivedFromMercSubSite = Enum105.MERC_CAME_FROM_ACCOUNTS_PAGE;
 
       InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
@@ -286,30 +286,30 @@ function SettleMercAccounts(): void {
   }
 
   // add the transaction to the finance page
-  AddTransactionToPlayersBook(PAY_SPECK_FOR_MERC, GetMercIDFromMERCArray(gubCurMercIndex), GetWorldTotalMin(), -iPartialPayment);
-  AddHistoryToPlayersLog(HISTORY_SETTLED_ACCOUNTS_AT_MERC, GetMercIDFromMERCArray(gubCurMercIndex), GetWorldTotalMin(), -1, -1);
+  AddTransactionToPlayersBook(Enum80.PAY_SPECK_FOR_MERC, GetMercIDFromMERCArray(gubCurMercIndex), GetWorldTotalMin(), -iPartialPayment);
+  AddHistoryToPlayersLog(Enum83.HISTORY_SETTLED_ACCOUNTS_AT_MERC, GetMercIDFromMERCArray(gubCurMercIndex), GetWorldTotalMin(), -1, -1);
 
   // Increment the amount of money paid to speck
   LaptopSaveInfo.uiTotalMoneyPaidToSpeck += iPartialPayment;
 
   // If the player only made a partial payment
   if (iPartialPayment != giMercTotalContractCharge)
-    gusMercVideoSpeckSpeech = SPECK_QUOTE_PLAYER_MAKES_PARTIAL_PAYMENT;
+    gusMercVideoSpeckSpeech = Enum111.SPECK_QUOTE_PLAYER_MAKES_PARTIAL_PAYMENT;
   else {
-    gusMercVideoSpeckSpeech = SPECK_QUOTE_PLAYER_MAKES_FULL_PAYMENT;
+    gusMercVideoSpeckSpeech = Enum111.SPECK_QUOTE_PLAYER_MAKES_FULL_PAYMENT;
 
     // if the merc's account was in suspense, re-enable it
     // CJC Dec 1 2002: an invalid account become valid again.
     // if( LaptopSaveInfo.gubPlayersMercAccountStatus != MERC_ACCOUNT_INVALID )
-    LaptopSaveInfo.gubPlayersMercAccountStatus = MERC_ACCOUNT_VALID;
+    LaptopSaveInfo.gubPlayersMercAccountStatus = Enum104.MERC_ACCOUNT_VALID;
 
     // Since the player has paid, make sure speck wont complain about the lack of payment
     LaptopSaveInfo.uiSpeckQuoteFlags &= ~SPECK_QUOTE__SENT_EMAIL_ABOUT_LACK_OF_PAYMENT;
   }
 
   // Go to the merc homepage to say the quote
-  guiCurrentLaptopMode = LAPTOP_MODE_MERC;
-  gubArrivedFromMercSubSite = MERC_CAME_FROM_ACCOUNTS_PAGE;
+  guiCurrentLaptopMode = Enum95.LAPTOP_MODE_MERC;
+  gubArrivedFromMercSubSite = Enum105.MERC_CAME_FROM_ACCOUNTS_PAGE;
 
   /*
 

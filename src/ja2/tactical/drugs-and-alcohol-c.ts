@@ -31,15 +31,15 @@ const HANGOVER_AP_REDUCE = 5;
 const HANGOVER_BP_REDUCE = 200;
 
 function GetDrugType(usItem: UINT16): UINT8 {
-  if (usItem == ADRENALINE_BOOSTER) {
+  if (usItem == Enum225.ADRENALINE_BOOSTER) {
     return DRUG_TYPE_ADRENALINE;
   }
 
-  if (usItem == REGEN_BOOSTER) {
+  if (usItem == Enum225.REGEN_BOOSTER) {
     return DRUG_TYPE_REGENERATION;
   }
 
-  if (usItem == ALCOHOL || usItem == WINE || usItem == BEER) {
+  if (usItem == Enum225.ALCOHOL || usItem == Enum225.WINE || usItem == Enum225.BEER) {
     return DRUG_TYPE_ALCOHOL;
   }
 
@@ -64,10 +64,10 @@ function ApplyDrugs(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>
   }
 
   // do switch for Larry!!
-  if (pSoldier.value.ubProfile == LARRY_NORMAL) {
+  if (pSoldier.value.ubProfile == Enum268.LARRY_NORMAL) {
     pSoldier = SwapLarrysProfiles(pSoldier);
-  } else if (pSoldier.value.ubProfile == LARRY_DRUNK) {
-    gMercProfiles[LARRY_DRUNK].bNPCData = 0;
+  } else if (pSoldier.value.ubProfile == Enum268.LARRY_DRUNK) {
+    gMercProfiles[Enum268.LARRY_DRUNK].bNPCData = 0;
   }
 
   if (ubDrugType < NUM_COMPLEX_DRUGS) {
@@ -97,9 +97,9 @@ function ApplyDrugs(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>
 
     if (ubDrugType == DRUG_TYPE_ALCOHOL) {
       // ATE: use kit points...
-      if (usItem == ALCOHOL) {
+      if (usItem == Enum225.ALCOHOL) {
         ubKitPoints = 10;
-      } else if (usItem == WINE) {
+      } else if (usItem == Enum225.WINE) {
         ubKitPoints = 20;
       } else {
         ubKitPoints = 100;
@@ -166,9 +166,9 @@ function ApplyDrugs(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>
   }
 
   if (ubDrugType == DRUG_TYPE_ALCOHOL) {
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[MSG_DRANK_SOME], pSoldier.value.name, ShortItemNames[usItem]);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[Enum333.MSG_DRANK_SOME], pSoldier.value.name, ShortItemNames[usItem]);
   } else {
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[MSG_MERC_TOOK_DRUG], pSoldier.value.name);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[Enum333.MSG_MERC_TOOK_DRUG], pSoldier.value.name);
   }
 
   // Dirty panel
@@ -219,9 +219,9 @@ function HandleEndTurnDrugAdjustments(pSoldier: Pointer<SOLDIERTYPE>): void {
         for (cnt2 = 0; cnt2 < iNumLoops; cnt2++) {
           // OK, give a much BIGGER morale downer
           if (cnt == DRUG_TYPE_ALCOHOL) {
-            HandleMoraleEvent(pSoldier, MORALE_ALCOHOL_CRASH, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
+            HandleMoraleEvent(pSoldier, Enum234.MORALE_ALCOHOL_CRASH, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
           } else {
-            HandleMoraleEvent(pSoldier, MORALE_DRUGS_CRASH, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
+            HandleMoraleEvent(pSoldier, Enum234.MORALE_DRUGS_CRASH, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
           }
         }
       }

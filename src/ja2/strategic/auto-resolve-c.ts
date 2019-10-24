@@ -304,17 +304,17 @@ function EliminateAllEnemies(ubSectorX: UINT8, ubSectorY: UINT8): void {
   if (!gpAR) {
     GetNumberOfEnemiesInSector(ubSectorX, ubSectorY, addressof(ubNumEnemies[0]), addressof(ubNumEnemies[1]), addressof(ubNumEnemies[2]));
 
-    for (ubRankIndex = 0; ubRankIndex < NUM_ENEMY_RANKS; ubRankIndex++) {
+    for (ubRankIndex = 0; ubRankIndex < Enum188.NUM_ENEMY_RANKS; ubRankIndex++) {
       for (i = 0; i < ubNumEnemies[ubRankIndex]; i++) {
-        HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_ENEMY_KILLED, ubSectorX, ubSectorY, 0);
-        TrackEnemiesKilled(ENEMY_KILLED_IN_AUTO_RESOLVE, RankIndexToSoldierClass(ubRankIndex));
+        HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_ENEMY_KILLED, ubSectorX, ubSectorY, 0);
+        TrackEnemiesKilled(Enum189.ENEMY_KILLED_IN_AUTO_RESOLVE, RankIndexToSoldierClass(ubRankIndex));
       }
     }
 
-    HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_BATTLE_WON, ubSectorX, ubSectorY, 0);
+    HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_BATTLE_WON, ubSectorX, ubSectorY, 0);
   }
 
-  if (!gpAR || gpAR.value.ubBattleStatus != BATTLE_IN_PROGRESS) {
+  if (!gpAR || gpAR.value.ubBattleStatus != Enum120.BATTLE_IN_PROGRESS) {
     // Remove the defend force here.
     pSector.value.ubNumTroops = 0;
     pSector.value.ubNumElites = 0;
@@ -443,7 +443,7 @@ function DoTransitionFromPreBattleInterfaceToAutoResolve(): void {
 
 function EnterAutoResolveMode(ubSectorX: UINT8, ubSectorY: UINT8): void {
   // Set up mapscreen for removal
-  SetPendingNewScreen(AUTORESOLVE_SCREEN);
+  SetPendingNewScreen(Enum26.AUTORESOLVE_SCREEN);
   CreateDestroyMapInvButton();
   RenderButtons();
 
@@ -468,7 +468,7 @@ function EnterAutoResolveMode(ubSectorX: UINT8, ubSectorY: UINT8): void {
   gpAR.value.fEnteringAutoResolve = TRUE;
   gpAR.value.ubSectorX = ubSectorX;
   gpAR.value.ubSectorY = ubSectorY;
-  gpAR.value.ubBattleStatus = BATTLE_IN_PROGRESS;
+  gpAR.value.ubBattleStatus = Enum120.BATTLE_IN_PROGRESS;
   gpAR.value.uiTimeSlice = 1000;
   gpAR.value.uiTotalElapsedBattleTimeInMilliseconds = 0;
   gpAR.value.fSound = TRUE;
@@ -477,13 +477,13 @@ function EnterAutoResolveMode(ubSectorX: UINT8, ubSectorY: UINT8): void {
 
   // Determine who gets the defensive advantage
   switch (gubEnemyEncounterCode) {
-    case ENEMY_ENCOUNTER_CODE:
+    case Enum164.ENEMY_ENCOUNTER_CODE:
       gpAR.value.ubPlayerDefenceAdvantage = 21; // Skewed to the player's advantage for convenience purposes.
       break;
-    case ENEMY_INVASION_CODE:
+    case Enum164.ENEMY_INVASION_CODE:
       gpAR.value.ubPlayerDefenceAdvantage = 0;
       break;
-    case CREATURE_ATTACK_CODE:
+    case Enum164.CREATURE_ATTACK_CODE:
       gpAR.value.ubPlayerDefenceAdvantage = 0;
       break;
     default:
@@ -506,7 +506,7 @@ function AutoResolveScreenHandle(): UINT32 {
 
   if (!gpAR) {
     gfEnteringMapScreen = TRUE;
-    return MAP_SCREEN;
+    return Enum26.MAP_SCREEN;
   }
   if (gpAR.value.fEnteringAutoResolve) {
     let pDestBuf: Pointer<UINT8>;
@@ -538,11 +538,11 @@ function AutoResolveScreenHandle(): UINT32 {
   if (gpAR.value.fExitAutoResolve) {
     gfEnteringMapScreen = TRUE;
     RemoveAutoResolveInterface(TRUE);
-    return MAP_SCREEN;
+    return Enum26.MAP_SCREEN;
   }
   if (gpAR.value.fPendingSurrender) {
     gpAR.value.uiPrevTime = gpAR.value.uiCurrTime = GetJA2Clock();
-  } else if (gpAR.value.ubBattleStatus == BATTLE_IN_PROGRESS && !gpAR.value.fExpanding) {
+  } else if (gpAR.value.ubBattleStatus == Enum120.BATTLE_IN_PROGRESS && !gpAR.value.fExpanding) {
     ProcessBattleFrame();
   }
   HandleAutoResolveInput();
@@ -553,7 +553,7 @@ function AutoResolveScreenHandle(): UINT32 {
   RenderButtonsFastHelp();
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
-  return AUTORESOLVE_SCREEN;
+  return Enum26.AUTORESOLVE_SCREEN;
 }
 
 function RefreshMerc(pSoldier: Pointer<SOLDIERTYPE>): void {
@@ -580,7 +580,7 @@ function AssociateEnemiesWithStrategicGroups(): void {
   let ubNumAdminsInGroup: UINT8;
   let i: INT32;
 
-  if (gubEnemyEncounterCode == CREATURE_ATTACK_CODE)
+  if (gubEnemyEncounterCode == Enum164.CREATURE_ATTACK_CODE)
     return;
 
   pSector = addressof(SectorInfo[SECTOR(gpAR.value.ubSectorX, gpAR.value.ubSectorY)]);
@@ -740,7 +740,7 @@ function CalculateSoldierCells(fReset: BOOLEAN): void {
         Assert(index >= 0 && index < gpAR.value.ubEnemies);
         gpEnemies[index].xp = (gpAR.value.sCenterStartX + 141 + 55 * x);
         gpEnemies[index].yp = iStartY + y * 47;
-        if (gubEnemyEncounterCode != CREATURE_ATTACK_CODE) {
+        if (gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE) {
           if (index < gpAR.value.ubElites)
             gpEnemies[index].uiFlags = CELL_ELITE;
           else if (index < gpAR.value.ubElites + gpAR.value.ubTroops)
@@ -765,19 +765,19 @@ function RenderSoldierCell(pCell: Pointer<SOLDIERCELL>): void {
   let x: UINT8;
   if (pCell.value.uiFlags & CELL_MERC) {
     ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell.value.xp + 36, pCell.value.yp + 2, pCell.value.xp + 44, pCell.value.yp + 30, 0);
-    BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iPanelImages, MERC_PANEL, pCell.value.xp, pCell.value.yp, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iPanelImages, Enum121.MERC_PANEL, pCell.value.xp, pCell.value.yp, VO_BLT_SRCTRANSPARENCY, NULL);
     RenderSoldierCellBars(pCell);
     x = 0;
   } else {
-    BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iPanelImages, OTHER_PANEL, pCell.value.xp, pCell.value.yp, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iPanelImages, Enum121.OTHER_PANEL, pCell.value.xp, pCell.value.yp, VO_BLT_SRCTRANSPARENCY, NULL);
     x = 6;
   }
   if (!pCell.value.pSoldier.value.bLife) {
     SetObjectHandleShade(pCell.value.uiVObjectID, 0);
     if (!(pCell.value.uiFlags & CELL_CREATURE))
-      BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iFaces, HUMAN_SKULL, pCell.value.xp + 3 + x, pCell.value.yp + 3, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iFaces, Enum122.HUMAN_SKULL, pCell.value.xp + 3 + x, pCell.value.yp + 3, VO_BLT_SRCTRANSPARENCY, NULL);
     else
-      BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iFaces, CREATURE_SKULL, pCell.value.xp + 3 + x, pCell.value.yp + 3, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.value.iFaces, Enum122.CREATURE_SKULL, pCell.value.xp + 3 + x, pCell.value.yp + 3, VO_BLT_SRCTRANSPARENCY, NULL);
   } else {
     if (pCell.value.uiFlags & CELL_HITBYATTACKER) {
       ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell.value.xp + 3 + x, pCell.value.yp + 3, pCell.value.xp + 33 + x, pCell.value.yp + 29, 65535);
@@ -895,40 +895,40 @@ function BuildInterfaceBuffer(): void {
   // Blit the back panels...
   for (y = DestRect.iTop; y < DestRect.iBottom; y += 40) {
     for (x = DestRect.iLeft; x < DestRect.iRight; x += 50) {
-      BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, C_TEXTURE, x, y, VO_BLT_SRCTRANSPARENCY, 0);
+      BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.C_TEXTURE, x, y, VO_BLT_SRCTRANSPARENCY, 0);
     }
   }
   // Blit the left and right edges
   for (y = DestRect.iTop; y < DestRect.iBottom; y += 40) {
     x = DestRect.iLeft;
-    BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, L_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, 0);
+    BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.L_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, 0);
     x = DestRect.iRight - 3;
-    BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, R_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, 0);
+    BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.R_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, 0);
   }
   // Blit the top and bottom edges
   for (x = DestRect.iLeft; x < DestRect.iRight; x += 50) {
     y = DestRect.iTop;
-    BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, T_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, 0);
+    BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.T_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, 0);
     y = DestRect.iBottom - 3;
-    BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, B_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, 0);
+    BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.B_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, 0);
   }
   // Blit the 4 corners
-  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, TL_BORDER, DestRect.iLeft, DestRect.iTop, VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, TR_BORDER, DestRect.iRight - 10, DestRect.iTop, VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, BL_BORDER, DestRect.iLeft, DestRect.iBottom - 9, VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, BR_BORDER, DestRect.iRight - 10, DestRect.iBottom - 9, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.TL_BORDER, DestRect.iLeft, DestRect.iTop, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.TR_BORDER, DestRect.iRight - 10, DestRect.iTop, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.BL_BORDER, DestRect.iLeft, DestRect.iBottom - 9, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.BR_BORDER, DestRect.iRight - 10, DestRect.iBottom - 9, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Blit the center pieces
   x = gpAR.value.sCenterStartX - gpAR.value.Rect.iLeft;
   y = 0;
   // Top
-  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, TOP_MIDDLE, x, y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.TOP_MIDDLE, x, y, VO_BLT_SRCTRANSPARENCY, NULL);
   // Middle
   for (y = 40; y < gpAR.value.sHeight - 40; y += 40) {
-    BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, AUTO_MIDDLE, x, y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.AUTO_MIDDLE, x, y, VO_BLT_SRCTRANSPARENCY, NULL);
   }
   y = gpAR.value.sHeight - 40;
-  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, BOT_MIDDLE, x, y, VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.BOT_MIDDLE, x, y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   SetClippingRect(addressof(ClipRect));
 }
@@ -950,7 +950,7 @@ function ExpandWindow(): void {
     gpAR.value.ExRect.iBottom = ORIG_BOTTOM;
     gpAR.value.uiStartExpanding = GetJA2Clock();
     gpAR.value.uiEndExpanding = gpAR.value.uiStartExpanding + 333;
-    for (i = 0; i < DONEWIN_BUTTON; i++)
+    for (i = 0; i < Enum119.DONEWIN_BUTTON; i++)
       HideButton(gpAR.value.iButton[i]);
   } else {
     // Restore the previous area
@@ -1063,7 +1063,7 @@ function VirtualSoldierDressWound(pSoldier: Pointer<SOLDIERTYPE>, pVictim: Point
   if (!uiPossible)
     return 0;
 
-  if (pSoldier.value.inv[0].usItem == MEDICKIT) // using the GOOD medic stuff
+  if (pSoldier.value.inv[0].usItem == Enum225.MEDICKIT) // using the GOOD medic stuff
     uiPossible += (uiPossible / 2); // add extra 50 %
 
   uiActual = uiPossible; // start by assuming maximum possible
@@ -1088,7 +1088,7 @@ function VirtualSoldierDressWound(pSoldier: Pointer<SOLDIERTYPE>, pVictim: Point
     uiActual = uiDeficiency; // reduce actual not to waste anything
 
   // now make sure we HAVE that much
-  if (pKit.value.usItem == MEDICKIT) {
+  if (pKit.value.usItem == Enum225.MEDICKIT) {
     uiMedcost = uiActual / 2; // cost is only half
     if (uiMedcost == 0 && uiActual > 0)
       uiMedcost = 1;
@@ -1159,7 +1159,7 @@ function VirtualSoldierDressWound(pSoldier: Pointer<SOLDIERTYPE>, pVictim: Point
   // usedAPs equals (actionPts) * (%of possible points actually used)
   uiUsedAPs = (uiActual * uiAvailAPs) / uiPossible;
 
-  if (pSoldier.value.inv[0].usItem == MEDICKIT) // using the GOOD medic stuff
+  if (pSoldier.value.inv[0].usItem == Enum225.MEDICKIT) // using the GOOD medic stuff
     uiUsedAPs = (uiUsedAPs * 2) / 3; // reverse 50% bonus by taking 2/3rds
 
   if (uiActual / 2)
@@ -1291,18 +1291,18 @@ function RenderAutoResolve(): void {
     return;
   } else if (gpAR.value.fShowInterface) {
     // After expanding the window, we now show the interface
-    if (gpAR.value.ubBattleStatus == BATTLE_IN_PROGRESS && !gpAR.value.fPendingSurrender) {
-      for (i = 0; i < DONEWIN_BUTTON; i++)
+    if (gpAR.value.ubBattleStatus == Enum120.BATTLE_IN_PROGRESS && !gpAR.value.fPendingSurrender) {
+      for (i = 0; i < Enum119.DONEWIN_BUTTON; i++)
         ShowButton(gpAR.value.iButton[i]);
-      HideButton(gpAR.value.iButton[BANDAGE_BUTTON]);
-      HideButton(gpAR.value.iButton[YES_BUTTON]);
-      HideButton(gpAR.value.iButton[NO_BUTTON]);
+      HideButton(gpAR.value.iButton[Enum119.BANDAGE_BUTTON]);
+      HideButton(gpAR.value.iButton[Enum119.YES_BUTTON]);
+      HideButton(gpAR.value.iButton[Enum119.NO_BUTTON]);
       gpAR.value.fShowInterface = FALSE;
-    } else if (gpAR.value.ubBattleStatus == BATTLE_VICTORY) {
-      ShowButton(gpAR.value.iButton[DONEWIN_BUTTON]);
-      ShowButton(gpAR.value.iButton[BANDAGE_BUTTON]);
+    } else if (gpAR.value.ubBattleStatus == Enum120.BATTLE_VICTORY) {
+      ShowButton(gpAR.value.iButton[Enum119.DONEWIN_BUTTON]);
+      ShowButton(gpAR.value.iButton[Enum119.BANDAGE_BUTTON]);
     } else {
-      ShowButton(gpAR.value.iButton[DONELOSE_BUTTON]);
+      ShowButton(gpAR.value.iButton[Enum119.DONELOSE_BUTTON]);
     }
   }
 
@@ -1346,12 +1346,12 @@ function RenderAutoResolve(): void {
   SetFontShadow(FONT_NEARBLACK);
 
   switch (gubEnemyEncounterCode) {
-    case ENEMY_ENCOUNTER_CODE:
-      swprintf(str, gpStrategicString[STR_AR_ENCOUNTER_HEADER]);
+    case Enum164.ENEMY_ENCOUNTER_CODE:
+      swprintf(str, gpStrategicString[Enum365.STR_AR_ENCOUNTER_HEADER]);
       break;
-    case ENEMY_INVASION_CODE:
-    case CREATURE_ATTACK_CODE:
-      swprintf(str, gpStrategicString[STR_AR_DEFEND_HEADER]);
+    case Enum164.ENEMY_INVASION_CODE:
+    case Enum164.CREATURE_ATTACK_CODE:
+      swprintf(str, gpStrategicString[Enum365.STR_AR_DEFEND_HEADER]);
       break;
   }
 
@@ -1387,73 +1387,73 @@ function RenderAutoResolve(): void {
   mprintf(xp, yp, str);
 
   if (gpAR.value.fPendingSurrender) {
-    DisplayWrappedString((gpAR.value.sCenterStartX + 16), (230 + gpAR.value.bVerticalOffset), 108, 2, FONT10ARIAL, FONT_YELLOW, gpStrategicString[STR_ENEMY_SURRENDER_OFFER], FONT_BLACK, FALSE, LEFT_JUSTIFIED);
+    DisplayWrappedString((gpAR.value.sCenterStartX + 16), (230 + gpAR.value.bVerticalOffset), 108, 2, FONT10ARIAL, FONT_YELLOW, gpStrategicString[Enum365.STR_ENEMY_SURRENDER_OFFER], FONT_BLACK, FALSE, LEFT_JUSTIFIED);
   }
 
-  if (gpAR.value.ubBattleStatus != BATTLE_IN_PROGRESS) {
+  if (gpAR.value.ubBattleStatus != Enum120.BATTLE_IN_PROGRESS) {
     // Handle merc morale, Global loyalty, and change of sector control
     if (!gpAR.value.fMoraleEventsHandled) {
       gpAR.value.uiTotalElapsedBattleTimeInMilliseconds *= 3;
       gpAR.value.fMoraleEventsHandled = TRUE;
-      if (CheckFact(FACT_FIRST_BATTLE_FOUGHT, 0) == FALSE) {
+      if (CheckFact(Enum170.FACT_FIRST_BATTLE_FOUGHT, 0) == FALSE) {
         // this was the first battle against the army
-        SetFactTrue(FACT_FIRST_BATTLE_FOUGHT);
-        if (gpAR.value.ubBattleStatus == BATTLE_VICTORY) {
-          SetFactTrue(FACT_FIRST_BATTLE_WON);
+        SetFactTrue(Enum170.FACT_FIRST_BATTLE_FOUGHT);
+        if (gpAR.value.ubBattleStatus == Enum120.BATTLE_VICTORY) {
+          SetFactTrue(Enum170.FACT_FIRST_BATTLE_WON);
         }
         SetTheFirstBattleSector((gpAR.value.ubSectorX + gpAR.value.ubSectorY * MAP_WORLD_X));
         HandleFirstBattleEndingWhileInTown(gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0, TRUE);
       }
 
       switch (gpAR.value.ubBattleStatus) {
-        case BATTLE_VICTORY:
-          HandleMoraleEvent(NULL, MORALE_BATTLE_WON, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
-          HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_BATTLE_WON, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
+        case Enum120.BATTLE_VICTORY:
+          HandleMoraleEvent(NULL, Enum234.MORALE_BATTLE_WON, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
+          HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_BATTLE_WON, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
 
           SectorInfo[SECTOR(gpAR.value.ubSectorX, gpAR.value.ubSectorY)].bLastKnownEnemies = 0;
           SetThisSectorAsPlayerControlled(gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0, TRUE);
 
-          SetMusicMode(MUSIC_TACTICAL_VICTORY);
-          LogBattleResults(LOG_VICTORY);
+          SetMusicMode(Enum328.MUSIC_TACTICAL_VICTORY);
+          LogBattleResults(Enum165.LOG_VICTORY);
           break;
 
-        case BATTLE_SURRENDERED:
-        case BATTLE_CAPTURED:
+        case Enum120.BATTLE_SURRENDERED:
+        case Enum120.BATTLE_CAPTURED:
           for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
             if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife && !(MercPtrs[i].value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(MercPtrs[i])) {
               // Merc is active and alive, and not a vehicle or robot
               if (PlayerMercInvolvedInThisCombat(MercPtrs[i])) {
                 // This morale event is PER INDIVIDUAL SOLDIER
-                HandleMoraleEvent(MercPtrs[i], MORALE_MERC_CAPTURED, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
+                HandleMoraleEvent(MercPtrs[i], Enum234.MORALE_MERC_CAPTURED, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
               }
             }
           }
-          HandleMoraleEvent(NULL, MORALE_HEARD_BATTLE_LOST, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
-          HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_BATTLE_LOST, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
+          HandleMoraleEvent(NULL, Enum234.MORALE_HEARD_BATTLE_LOST, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
+          HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_BATTLE_LOST, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
 
-          SetMusicMode(MUSIC_TACTICAL_DEATH);
+          SetMusicMode(Enum328.MUSIC_TACTICAL_DEATH);
           gsEnemyGainedControlOfSectorID = SECTOR(gpAR.value.ubSectorX, gpAR.value.ubSectorY);
           break;
-        case BATTLE_DEFEAT:
-          HandleMoraleEvent(NULL, MORALE_HEARD_BATTLE_LOST, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
-          HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_BATTLE_LOST, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
-          if (gubEnemyEncounterCode != CREATURE_ATTACK_CODE) {
+        case Enum120.BATTLE_DEFEAT:
+          HandleMoraleEvent(NULL, Enum234.MORALE_HEARD_BATTLE_LOST, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
+          HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_BATTLE_LOST, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
+          if (gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE) {
             gsEnemyGainedControlOfSectorID = SECTOR(gpAR.value.ubSectorX, gpAR.value.ubSectorY);
           } else {
             gsEnemyGainedControlOfSectorID = SECTOR(gpAR.value.ubSectorX, gpAR.value.ubSectorY);
             gsCiviliansEatenByMonsters = gpAR.value.ubAliveEnemies;
           }
-          SetMusicMode(MUSIC_TACTICAL_DEATH);
-          LogBattleResults(LOG_DEFEAT);
+          SetMusicMode(Enum328.MUSIC_TACTICAL_DEATH);
+          LogBattleResults(Enum165.LOG_DEFEAT);
           break;
 
-        case BATTLE_RETREAT:
+        case Enum120.BATTLE_RETREAT:
 
           // Tack on 5 minutes for retreat.
           gpAR.value.uiTotalElapsedBattleTimeInMilliseconds += 300000;
 
           HandleLoyaltyImplicationsOfMercRetreat(RETREAT_AUTORESOLVE, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
-          if (gubEnemyEncounterCode != CREATURE_ATTACK_CODE) {
+          if (gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE) {
             gsEnemyGainedControlOfSectorID = SECTOR(gpAR.value.ubSectorX, gpAR.value.ubSectorY);
           } else if (gpAR.value.ubAliveEnemies) {
             gsEnemyGainedControlOfSectorID = SECTOR(gpAR.value.ubSectorX, gpAR.value.ubSectorY);
@@ -1464,27 +1464,27 @@ function RenderAutoResolve(): void {
     }
     // Render the end battle condition.
     switch (gpAR.value.ubBattleStatus) {
-      case BATTLE_VICTORY:
+      case Enum120.BATTLE_VICTORY:
         SetFontForeground(FONT_LTGREEN);
-        swprintf(str, gpStrategicString[STR_AR_OVER_VICTORY]);
+        swprintf(str, gpStrategicString[Enum365.STR_AR_OVER_VICTORY]);
         break;
-      case BATTLE_SURRENDERED:
-      case BATTLE_CAPTURED:
-        if (gpAR.value.ubBattleStatus == BATTLE_SURRENDERED) {
-          swprintf(str, gpStrategicString[STR_AR_OVER_SURRENDERED]);
+      case Enum120.BATTLE_SURRENDERED:
+      case Enum120.BATTLE_CAPTURED:
+        if (gpAR.value.ubBattleStatus == Enum120.BATTLE_SURRENDERED) {
+          swprintf(str, gpStrategicString[Enum365.STR_AR_OVER_SURRENDERED]);
         } else {
-          DisplayWrappedString((gpAR.value.sCenterStartX + 16), 310, 108, 2, FONT10ARIAL, FONT_YELLOW, gpStrategicString[STR_ENEMY_CAPTURED], FONT_BLACK, FALSE, LEFT_JUSTIFIED);
-          swprintf(str, gpStrategicString[STR_AR_OVER_CAPTURED]);
+          DisplayWrappedString((gpAR.value.sCenterStartX + 16), 310, 108, 2, FONT10ARIAL, FONT_YELLOW, gpStrategicString[Enum365.STR_ENEMY_CAPTURED], FONT_BLACK, FALSE, LEFT_JUSTIFIED);
+          swprintf(str, gpStrategicString[Enum365.STR_AR_OVER_CAPTURED]);
         }
         SetFontForeground(FONT_RED);
         break;
-      case BATTLE_DEFEAT:
+      case Enum120.BATTLE_DEFEAT:
         SetFontForeground(FONT_RED);
-        swprintf(str, gpStrategicString[STR_AR_OVER_DEFEAT]);
+        swprintf(str, gpStrategicString[Enum365.STR_AR_OVER_DEFEAT]);
         break;
-      case BATTLE_RETREAT:
+      case Enum120.BATTLE_RETREAT:
         SetFontForeground(FONT_YELLOW);
-        swprintf(str, gpStrategicString[STR_AR_OVER_RETREATED]);
+        swprintf(str, gpStrategicString[Enum365.STR_AR_OVER_RETREATED]);
         break;
     }
     // Render the results of the battle.
@@ -1498,7 +1498,7 @@ function RenderAutoResolve(): void {
 
     // Render the total battle time elapsed.
     SetFont(FONT10ARIAL);
-    swprintf(str, "%s:  %dm %02ds", gpStrategicString[STR_AR_TIME_ELAPSED], gpAR.value.uiTotalElapsedBattleTimeInMilliseconds / 60000, (gpAR.value.uiTotalElapsedBattleTimeInMilliseconds % 60000) / 1000);
+    swprintf(str, "%s:  %dm %02ds", gpStrategicString[Enum365.STR_AR_TIME_ELAPSED], gpAR.value.uiTotalElapsedBattleTimeInMilliseconds / 60000, (gpAR.value.uiTotalElapsedBattleTimeInMilliseconds % 60000) / 1000);
     xp = gpAR.value.sCenterStartX + 70 - StringPixLength(str, FONT10ARIAL) / 2;
     yp = 290 + gpAR.value.bVerticalOffset;
     SetFontForeground(FONT_YELLOW);
@@ -1546,21 +1546,21 @@ function CreateAutoResolveInterface(): void {
   gpAR->iButtonImage[ RETREAT_BUTTON ]	= UseLoadedButtonImage( gpAR->iButtonImage[ PAUSE_BUTTON ], -1, 12, -1, 13, -1 );
   gpAR->iButtonImage[ DONE_BUTTON ]			= UseLoadedButtonImage( gpAR->iButtonImage[ PAUSE_BUTTON ], -1, 14, -1, 15, -1 );
   */
-  gpAR.value.iButtonImage[PAUSE_BUTTON] = LoadButtonImage("Interface\\AutoBtns.sti", -1, 0, -1, 7, -1);
-  if (gpAR.value.iButtonImage[PAUSE_BUTTON] == -1) {
+  gpAR.value.iButtonImage[Enum119.PAUSE_BUTTON] = LoadButtonImage("Interface\\AutoBtns.sti", -1, 0, -1, 7, -1);
+  if (gpAR.value.iButtonImage[Enum119.PAUSE_BUTTON] == -1) {
     AssertMsg(0, "Failed to load Interface\\AutoBtns.sti");
   }
 
   // Have the other buttons hook into the first button containing the images.
-  gpAR.value.iButtonImage[PLAY_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[PAUSE_BUTTON], -1, 1, -1, 8, -1);
-  gpAR.value.iButtonImage[FAST_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[PAUSE_BUTTON], -1, 2, -1, 9, -1);
-  gpAR.value.iButtonImage[FINISH_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[PAUSE_BUTTON], -1, 3, -1, 10, -1);
-  gpAR.value.iButtonImage[YES_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[PAUSE_BUTTON], -1, 4, -1, 11, -1);
-  gpAR.value.iButtonImage[NO_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[PAUSE_BUTTON], -1, 5, -1, 12, -1);
-  gpAR.value.iButtonImage[BANDAGE_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[PAUSE_BUTTON], -1, 6, -1, 13, -1);
-  gpAR.value.iButtonImage[RETREAT_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[PAUSE_BUTTON], -1, 14, -1, 15, -1);
-  gpAR.value.iButtonImage[DONEWIN_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[PAUSE_BUTTON], -1, 14, -1, 15, -1);
-  gpAR.value.iButtonImage[DONELOSE_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[PAUSE_BUTTON], -1, 16, -1, 17, -1);
+  gpAR.value.iButtonImage[Enum119.PLAY_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[Enum119.PAUSE_BUTTON], -1, 1, -1, 8, -1);
+  gpAR.value.iButtonImage[Enum119.FAST_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[Enum119.PAUSE_BUTTON], -1, 2, -1, 9, -1);
+  gpAR.value.iButtonImage[Enum119.FINISH_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[Enum119.PAUSE_BUTTON], -1, 3, -1, 10, -1);
+  gpAR.value.iButtonImage[Enum119.YES_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[Enum119.PAUSE_BUTTON], -1, 4, -1, 11, -1);
+  gpAR.value.iButtonImage[Enum119.NO_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[Enum119.PAUSE_BUTTON], -1, 5, -1, 12, -1);
+  gpAR.value.iButtonImage[Enum119.BANDAGE_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[Enum119.PAUSE_BUTTON], -1, 6, -1, 13, -1);
+  gpAR.value.iButtonImage[Enum119.RETREAT_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[Enum119.PAUSE_BUTTON], -1, 14, -1, 15, -1);
+  gpAR.value.iButtonImage[Enum119.DONEWIN_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[Enum119.PAUSE_BUTTON], -1, 14, -1, 15, -1);
+  gpAR.value.iButtonImage[Enum119.DONELOSE_BUTTON] = UseLoadedButtonImage(gpAR.value.iButtonImage[Enum119.PAUSE_BUTTON], -1, 16, -1, 17, -1);
 
   // Load the generic faces for civs and enemies
   sprintf(VObjectDesc.ImageFile, "Interface\\SmFaces.sti");
@@ -1596,9 +1596,9 @@ function CreateAutoResolveInterface(): void {
     }
   }
 
-  ubEliteMilitia = MilitiaInSectorOfRank(gpAR.value.ubSectorX, gpAR.value.ubSectorY, ELITE_MILITIA);
-  ubRegMilitia = MilitiaInSectorOfRank(gpAR.value.ubSectorX, gpAR.value.ubSectorY, REGULAR_MILITIA);
-  ubGreenMilitia = MilitiaInSectorOfRank(gpAR.value.ubSectorX, gpAR.value.ubSectorY, GREEN_MILITIA);
+  ubEliteMilitia = MilitiaInSectorOfRank(gpAR.value.ubSectorX, gpAR.value.ubSectorY, Enum126.ELITE_MILITIA);
+  ubRegMilitia = MilitiaInSectorOfRank(gpAR.value.ubSectorX, gpAR.value.ubSectorY, Enum126.REGULAR_MILITIA);
+  ubGreenMilitia = MilitiaInSectorOfRank(gpAR.value.ubSectorX, gpAR.value.ubSectorY, Enum126.GREEN_MILITIA);
   while (ubEliteMilitia + ubRegMilitia + ubGreenMilitia < gpAR.value.ubCivs) {
     switch (PreRandom(3)) {
       case 0:
@@ -1617,25 +1617,25 @@ function CreateAutoResolveInterface(): void {
     ResetMortarsOnTeamCount();
 
     if (i < ubEliteMilitia) {
-      gpCivs[i].pSoldier = TacticalCreateMilitia(SOLDIER_CLASS_ELITE_MILITIA);
-      if (gpCivs[i].pSoldier.value.ubBodyType == REGFEMALE) {
-        gpCivs[i].usIndex = MILITIA3F_FACE;
+      gpCivs[i].pSoldier = TacticalCreateMilitia(Enum262.SOLDIER_CLASS_ELITE_MILITIA);
+      if (gpCivs[i].pSoldier.value.ubBodyType == Enum194.REGFEMALE) {
+        gpCivs[i].usIndex = Enum122.MILITIA3F_FACE;
       } else {
-        gpCivs[i].usIndex = MILITIA3_FACE;
+        gpCivs[i].usIndex = Enum122.MILITIA3_FACE;
       }
     } else if (i < ubRegMilitia + ubEliteMilitia) {
-      gpCivs[i].pSoldier = TacticalCreateMilitia(SOLDIER_CLASS_REG_MILITIA);
-      if (gpCivs[i].pSoldier.value.ubBodyType == REGFEMALE) {
-        gpCivs[i].usIndex = MILITIA2F_FACE;
+      gpCivs[i].pSoldier = TacticalCreateMilitia(Enum262.SOLDIER_CLASS_REG_MILITIA);
+      if (gpCivs[i].pSoldier.value.ubBodyType == Enum194.REGFEMALE) {
+        gpCivs[i].usIndex = Enum122.MILITIA2F_FACE;
       } else {
-        gpCivs[i].usIndex = MILITIA2_FACE;
+        gpCivs[i].usIndex = Enum122.MILITIA2_FACE;
       }
     } else if (i < ubGreenMilitia + ubRegMilitia + ubEliteMilitia) {
-      gpCivs[i].pSoldier = TacticalCreateMilitia(SOLDIER_CLASS_GREEN_MILITIA);
-      if (gpCivs[i].pSoldier.value.ubBodyType == REGFEMALE) {
-        gpCivs[i].usIndex = MILITIA1F_FACE;
+      gpCivs[i].pSoldier = TacticalCreateMilitia(Enum262.SOLDIER_CLASS_GREEN_MILITIA);
+      if (gpCivs[i].pSoldier.value.ubBodyType == Enum194.REGFEMALE) {
+        gpCivs[i].usIndex = Enum122.MILITIA1F_FACE;
       } else {
-        gpCivs[i].usIndex = MILITIA1_FACE;
+        gpCivs[i].usIndex = Enum122.MILITIA1_FACE;
       }
     } else {
       AssertMsg(0, "Attempting to illegally create a militia soldier.");
@@ -1646,70 +1646,70 @@ function CreateAutoResolveInterface(): void {
     gpCivs[i].uiVObjectID = gpAR.value.iFaces;
     gpCivs[i].pSoldier.value.sSectorX = gpAR.value.ubSectorX;
     gpCivs[i].pSoldier.value.sSectorY = gpAR.value.ubSectorY;
-    swprintf(gpCivs[i].pSoldier.value.name, gpStrategicString[STR_AR_MILITIA_NAME]);
+    swprintf(gpCivs[i].pSoldier.value.name, gpStrategicString[Enum365.STR_AR_MILITIA_NAME]);
   }
-  if (gubEnemyEncounterCode != CREATURE_ATTACK_CODE) {
+  if (gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE) {
     for (i = 0, index = 0; i < gpAR.value.ubElites; i++, index++) {
       gpEnemies[index].pSoldier = TacticalCreateEliteEnemy();
       gpEnemies[index].uiVObjectID = gpAR.value.iFaces;
-      if (gpEnemies[i].pSoldier.value.ubBodyType == REGFEMALE) {
-        gpEnemies[index].usIndex = ELITEF_FACE;
+      if (gpEnemies[i].pSoldier.value.ubBodyType == Enum194.REGFEMALE) {
+        gpEnemies[index].usIndex = Enum122.ELITEF_FACE;
       } else {
-        gpEnemies[index].usIndex = ELITE_FACE;
+        gpEnemies[index].usIndex = Enum122.ELITE_FACE;
       }
       gpEnemies[index].pSoldier.value.sSectorX = gpAR.value.ubSectorX;
       gpEnemies[index].pSoldier.value.sSectorY = gpAR.value.ubSectorY;
-      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[STR_AR_ELITE_NAME]);
+      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[Enum365.STR_AR_ELITE_NAME]);
     }
     for (i = 0; i < gpAR.value.ubTroops; i++, index++) {
       gpEnemies[index].pSoldier = TacticalCreateArmyTroop();
       gpEnemies[index].uiVObjectID = gpAR.value.iFaces;
-      gpEnemies[index].usIndex = TROOP_FACE;
+      gpEnemies[index].usIndex = Enum122.TROOP_FACE;
       gpEnemies[index].pSoldier.value.sSectorX = gpAR.value.ubSectorX;
       gpEnemies[index].pSoldier.value.sSectorY = gpAR.value.ubSectorY;
-      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[STR_AR_TROOP_NAME]);
+      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[Enum365.STR_AR_TROOP_NAME]);
     }
     for (i = 0; i < gpAR.value.ubAdmins; i++, index++) {
       gpEnemies[index].pSoldier = TacticalCreateAdministrator();
       gpEnemies[index].uiVObjectID = gpAR.value.iFaces;
-      gpEnemies[index].usIndex = ADMIN_FACE;
+      gpEnemies[index].usIndex = Enum122.ADMIN_FACE;
       gpEnemies[index].pSoldier.value.sSectorX = gpAR.value.ubSectorX;
       gpEnemies[index].pSoldier.value.sSectorY = gpAR.value.ubSectorY;
-      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[STR_AR_ADMINISTRATOR_NAME]);
+      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[Enum365.STR_AR_ADMINISTRATOR_NAME]);
     }
     AssociateEnemiesWithStrategicGroups();
   } else {
     for (i = 0, index = 0; i < gpAR.value.ubAFCreatures; i++, index++) {
-      gpEnemies[index].pSoldier = TacticalCreateCreature(ADULTFEMALEMONSTER);
+      gpEnemies[index].pSoldier = TacticalCreateCreature(Enum194.ADULTFEMALEMONSTER);
       gpEnemies[index].uiVObjectID = gpAR.value.iFaces;
-      gpEnemies[index].usIndex = AF_CREATURE_FACE;
+      gpEnemies[index].usIndex = Enum122.AF_CREATURE_FACE;
       gpEnemies[index].pSoldier.value.sSectorX = gpAR.value.ubSectorX;
       gpEnemies[index].pSoldier.value.sSectorY = gpAR.value.ubSectorY;
-      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[STR_AR_CREATURE_NAME]);
+      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[Enum365.STR_AR_CREATURE_NAME]);
     }
     for (i = 0; i < gpAR.value.ubAMCreatures; i++, index++) {
-      gpEnemies[index].pSoldier = TacticalCreateCreature(AM_MONSTER);
+      gpEnemies[index].pSoldier = TacticalCreateCreature(Enum194.AM_MONSTER);
       gpEnemies[index].uiVObjectID = gpAR.value.iFaces;
-      gpEnemies[index].usIndex = AM_CREATURE_FACE;
+      gpEnemies[index].usIndex = Enum122.AM_CREATURE_FACE;
       gpEnemies[index].pSoldier.value.sSectorX = gpAR.value.ubSectorX;
       gpEnemies[index].pSoldier.value.sSectorY = gpAR.value.ubSectorY;
-      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[STR_AR_CREATURE_NAME]);
+      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[Enum365.STR_AR_CREATURE_NAME]);
     }
     for (i = 0; i < gpAR.value.ubYFCreatures; i++, index++) {
-      gpEnemies[index].pSoldier = TacticalCreateCreature(YAF_MONSTER);
+      gpEnemies[index].pSoldier = TacticalCreateCreature(Enum194.YAF_MONSTER);
       gpEnemies[index].uiVObjectID = gpAR.value.iFaces;
-      gpEnemies[index].usIndex = YF_CREATURE_FACE;
+      gpEnemies[index].usIndex = Enum122.YF_CREATURE_FACE;
       gpEnemies[index].pSoldier.value.sSectorX = gpAR.value.ubSectorX;
       gpEnemies[index].pSoldier.value.sSectorY = gpAR.value.ubSectorY;
-      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[STR_AR_CREATURE_NAME]);
+      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[Enum365.STR_AR_CREATURE_NAME]);
     }
     for (i = 0; i < gpAR.value.ubYMCreatures; i++, index++) {
-      gpEnemies[index].pSoldier = TacticalCreateCreature(YAM_MONSTER);
+      gpEnemies[index].pSoldier = TacticalCreateCreature(Enum194.YAM_MONSTER);
       gpEnemies[index].uiVObjectID = gpAR.value.iFaces;
-      gpEnemies[index].usIndex = YM_CREATURE_FACE;
+      gpEnemies[index].usIndex = Enum122.YM_CREATURE_FACE;
       gpEnemies[index].pSoldier.value.sSectorX = gpAR.value.ubSectorX;
       gpEnemies[index].pSoldier.value.sSectorY = gpAR.value.ubSectorY;
-      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[STR_AR_CREATURE_NAME]);
+      swprintf(gpEnemies[index].pSoldier.value.name, gpStrategicString[Enum365.STR_AR_CREATURE_NAME]);
     }
   }
 
@@ -1729,32 +1729,32 @@ function CreateAutoResolveInterface(): void {
   gpAR.value.bVerticalOffset = 240 - gpAR.value.sHeight / 2 > 120 ? -40 : 0;
 
   // Create the buttons -- subject to relocation
-  gpAR.value.iButton[PLAY_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[PLAY_BUTTON], (gpAR.value.sCenterStartX + 11), (240 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, PlayButtonCallback);
-  gpAR.value.iButton[FAST_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[FAST_BUTTON], (gpAR.value.sCenterStartX + 51), (240 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, FastButtonCallback);
-  gpAR.value.iButton[FINISH_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[FINISH_BUTTON], (gpAR.value.sCenterStartX + 91), (240 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, FinishButtonCallback);
-  gpAR.value.iButton[PAUSE_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[PAUSE_BUTTON], (gpAR.value.sCenterStartX + 11), (274 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, PauseButtonCallback);
+  gpAR.value.iButton[Enum119.PLAY_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.PLAY_BUTTON], (gpAR.value.sCenterStartX + 11), (240 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, PlayButtonCallback);
+  gpAR.value.iButton[Enum119.FAST_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.FAST_BUTTON], (gpAR.value.sCenterStartX + 51), (240 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, FastButtonCallback);
+  gpAR.value.iButton[Enum119.FINISH_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.FINISH_BUTTON], (gpAR.value.sCenterStartX + 91), (240 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, FinishButtonCallback);
+  gpAR.value.iButton[Enum119.PAUSE_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.PAUSE_BUTTON], (gpAR.value.sCenterStartX + 11), (274 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, PauseButtonCallback);
 
-  gpAR.value.iButton[RETREAT_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[RETREAT_BUTTON], (gpAR.value.sCenterStartX + 51), (274 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, RetreatButtonCallback);
+  gpAR.value.iButton[Enum119.RETREAT_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.RETREAT_BUTTON], (gpAR.value.sCenterStartX + 51), (274 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, RetreatButtonCallback);
   if (!gpAR.value.ubMercs) {
-    DisableButton(gpAR.value.iButton[RETREAT_BUTTON]);
+    DisableButton(gpAR.value.iButton[Enum119.RETREAT_BUTTON]);
   }
-  SpecifyGeneralButtonTextAttributes(gpAR.value.iButton[RETREAT_BUTTON], gpStrategicString[STR_AR_RETREAT_BUTTON], BLOCKFONT2, 169, FONT_NEARBLACK);
+  SpecifyGeneralButtonTextAttributes(gpAR.value.iButton[Enum119.RETREAT_BUTTON], gpStrategicString[Enum365.STR_AR_RETREAT_BUTTON], BLOCKFONT2, 169, FONT_NEARBLACK);
 
-  gpAR.value.iButton[BANDAGE_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[BANDAGE_BUTTON], (gpAR.value.sCenterStartX + 11), (245 + gpAR.value.bVerticalOffset), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BandageButtonCallback);
+  gpAR.value.iButton[Enum119.BANDAGE_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.BANDAGE_BUTTON], (gpAR.value.sCenterStartX + 11), (245 + gpAR.value.bVerticalOffset), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BandageButtonCallback);
 
-  gpAR.value.iButton[DONEWIN_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[DONEWIN_BUTTON], (gpAR.value.sCenterStartX + 51), (245 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoneButtonCallback);
-  SpecifyGeneralButtonTextAttributes(gpAR.value.iButton[DONEWIN_BUTTON], gpStrategicString[STR_AR_DONE_BUTTON], BLOCKFONT2, 169, FONT_NEARBLACK);
+  gpAR.value.iButton[Enum119.DONEWIN_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.DONEWIN_BUTTON], (gpAR.value.sCenterStartX + 51), (245 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoneButtonCallback);
+  SpecifyGeneralButtonTextAttributes(gpAR.value.iButton[Enum119.DONEWIN_BUTTON], gpStrategicString[Enum365.STR_AR_DONE_BUTTON], BLOCKFONT2, 169, FONT_NEARBLACK);
 
-  gpAR.value.iButton[DONELOSE_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[DONELOSE_BUTTON], (gpAR.value.sCenterStartX + 25), (245 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoneButtonCallback);
-  SpecifyGeneralButtonTextAttributes(gpAR.value.iButton[DONELOSE_BUTTON], gpStrategicString[STR_AR_DONE_BUTTON], BLOCKFONT2, 169, FONT_NEARBLACK);
-  gpAR.value.iButton[YES_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[YES_BUTTON], (gpAR.value.sCenterStartX + 21), (257 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, AcceptSurrenderCallback);
-  gpAR.value.iButton[NO_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[NO_BUTTON], (gpAR.value.sCenterStartX + 81), (257 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, RejectSurrenderCallback);
-  HideButton(gpAR.value.iButton[YES_BUTTON]);
-  HideButton(gpAR.value.iButton[NO_BUTTON]);
-  HideButton(gpAR.value.iButton[DONEWIN_BUTTON]);
-  HideButton(gpAR.value.iButton[DONELOSE_BUTTON]);
-  HideButton(gpAR.value.iButton[BANDAGE_BUTTON]);
-  ButtonList[gpAR.value.iButton[PLAY_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+  gpAR.value.iButton[Enum119.DONELOSE_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.DONELOSE_BUTTON], (gpAR.value.sCenterStartX + 25), (245 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoneButtonCallback);
+  SpecifyGeneralButtonTextAttributes(gpAR.value.iButton[Enum119.DONELOSE_BUTTON], gpStrategicString[Enum365.STR_AR_DONE_BUTTON], BLOCKFONT2, 169, FONT_NEARBLACK);
+  gpAR.value.iButton[Enum119.YES_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.YES_BUTTON], (gpAR.value.sCenterStartX + 21), (257 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, AcceptSurrenderCallback);
+  gpAR.value.iButton[Enum119.NO_BUTTON] = QuickCreateButton(gpAR.value.iButtonImage[Enum119.NO_BUTTON], (gpAR.value.sCenterStartX + 81), (257 + gpAR.value.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, RejectSurrenderCallback);
+  HideButton(gpAR.value.iButton[Enum119.YES_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.NO_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.DONEWIN_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.DONELOSE_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.BANDAGE_BUTTON]);
+  ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
 }
 
 function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
@@ -1780,7 +1780,7 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
     for (i = 0; i < gpAR.value.ubMercs; i++) {
       if (gpMercs[i].pSoldier.value.bBleeding && gpMercs[i].pSoldier.value.bLife) {
         // ARM: only one event is needed regardless of how many are bleeding
-        AddStrategicEvent(EVENT_BANDAGE_BLEEDING_MERCS, GetWorldTotalMin() + 1, 0);
+        AddStrategicEvent(Enum132.EVENT_BANDAGE_BLEEDING_MERCS, GetWorldTotalMin() + 1, 0);
         break;
       }
     }
@@ -1801,20 +1801,20 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
 
           // now remove character from a squad
           RemoveCharacterFromSquads(gpMercs[i].pSoldier);
-          ChangeSoldiersAssignment(gpMercs[i].pSoldier, ASSIGNMENT_DEAD);
+          ChangeSoldiersAssignment(gpMercs[i].pSoldier, Enum117.ASSIGNMENT_DEAD);
 
           AddDeadSoldierToUnLoadedSector(gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0, gpMercs[i].pSoldier, RandomGridNo(), ADD_DEAD_SOLDIER_TO_SWEETSPOT);
-        } else if (gpAR.value.ubBattleStatus == BATTLE_SURRENDERED || gpAR.value.ubBattleStatus == BATTLE_CAPTURED) {
+        } else if (gpAR.value.ubBattleStatus == Enum120.BATTLE_SURRENDERED || gpAR.value.ubBattleStatus == Enum120.BATTLE_CAPTURED) {
           EnemyCapturesPlayerSoldier(gpMercs[i].pSoldier);
-        } else if (gpAR.value.ubBattleStatus == BATTLE_VICTORY) {
+        } else if (gpAR.value.ubBattleStatus == Enum120.BATTLE_VICTORY) {
           // merc is alive, so group them at the center gridno.
-          gpMercs[i].pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_CENTER;
+          gpMercs[i].pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_CENTER;
         }
         gMercProfiles[gpMercs[i].pSoldier.value.ubProfile].usBattlesFought++;
       }
     }
     for (i = 0; i < gpAR.value.iNumMercFaces; i++) {
-      if (gpAR.value.ubBattleStatus == BATTLE_VICTORY && gpMercs[i].pSoldier.value.bLife >= OKLIFE) {
+      if (gpAR.value.ubBattleStatus == Enum120.BATTLE_VICTORY && gpMercs[i].pSoldier.value.bLife >= OKLIFE) {
         if (gpMercs[i].pSoldier.value.ubGroupID != ubCurrentGroupID) {
           ubCurrentGroupID = gpMercs[i].pSoldier.value.ubGroupID;
 
@@ -1828,7 +1828,7 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
     }
 
     // End capture squence....
-    if (gpAR.value.ubBattleStatus == BATTLE_SURRENDERED || gpAR.value.ubBattleStatus == BATTLE_CAPTURED) {
+    if (gpAR.value.ubBattleStatus == Enum120.BATTLE_SURRENDERED || gpAR.value.ubBattleStatus == Enum120.BATTLE_CAPTURED) {
       EndCaptureSequence();
     }
   }
@@ -1852,14 +1852,14 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
     if (gpCivs[i].pSoldier) {
       ubCurrentRank = 255;
       switch (gpCivs[i].pSoldier.value.ubSoldierClass) {
-        case SOLDIER_CLASS_GREEN_MILITIA:
-          ubCurrentRank = GREEN_MILITIA;
+        case Enum262.SOLDIER_CLASS_GREEN_MILITIA:
+          ubCurrentRank = Enum126.GREEN_MILITIA;
           break;
-        case SOLDIER_CLASS_REG_MILITIA:
-          ubCurrentRank = REGULAR_MILITIA;
+        case Enum262.SOLDIER_CLASS_REG_MILITIA:
+          ubCurrentRank = Enum126.REGULAR_MILITIA;
           break;
-        case SOLDIER_CLASS_ELITE_MILITIA:
-          ubCurrentRank = ELITE_MILITIA;
+        case Enum262.SOLDIER_CLASS_ELITE_MILITIA:
+          ubCurrentRank = Enum126.ELITE_MILITIA;
           break;
         default:
           break;
@@ -1867,20 +1867,20 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
       if (fDeleteForGood && gpCivs[i].pSoldier.value.bLife < OKLIFE / 2) {
         AddDeadSoldierToUnLoadedSector(gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0, gpCivs[i].pSoldier, RandomGridNo(), ADD_DEAD_SOLDIER_TO_SWEETSPOT);
         StrategicRemoveMilitiaFromSector(gpAR.value.ubSectorX, gpAR.value.ubSectorY, ubCurrentRank, 1);
-        HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_NATIVE_KILLED, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
+        HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_NATIVE_KILLED, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
       } else {
         let ubPromotions: UINT8;
         // this will check for promotions and handle them for you
-        if (fDeleteForGood && (gpCivs[i].pSoldier.value.ubMilitiaKills > 0) && (ubCurrentRank < ELITE_MILITIA)) {
+        if (fDeleteForGood && (gpCivs[i].pSoldier.value.ubMilitiaKills > 0) && (ubCurrentRank < Enum126.ELITE_MILITIA)) {
           ubPromotions = CheckOneMilitiaForPromotion(gpAR.value.ubSectorX, gpAR.value.ubSectorY, ubCurrentRank, gpCivs[i].pSoldier.value.ubMilitiaKills);
           if (ubPromotions) {
             if (ubPromotions == 2) {
               gbGreenToElitePromotions++;
               gbMilitiaPromotions++;
-            } else if (gpCivs[i].pSoldier.value.ubSoldierClass == SOLDIER_CLASS_GREEN_MILITIA) {
+            } else if (gpCivs[i].pSoldier.value.ubSoldierClass == Enum262.SOLDIER_CLASS_GREEN_MILITIA) {
               gbGreenToRegPromotions++;
               gbMilitiaPromotions++;
-            } else if (gpCivs[i].pSoldier.value.ubSoldierClass == SOLDIER_CLASS_REG_MILITIA) {
+            } else if (gpCivs[i].pSoldier.value.ubSoldierClass == Enum262.SOLDIER_CLASS_REG_MILITIA) {
               gbRegToElitePromotions++;
               gbMilitiaPromotions++;
             }
@@ -1896,8 +1896,8 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
   for (i = 0; i < 32; i++) {
     if (gpEnemies[i].pSoldier) {
       if (fDeleteForGood && gpEnemies[i].pSoldier.value.bLife < OKLIFE) {
-        TrackEnemiesKilled(ENEMY_KILLED_IN_AUTO_RESOLVE, gpEnemies[i].pSoldier.value.ubSoldierClass);
-        HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_ENEMY_KILLED, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
+        TrackEnemiesKilled(Enum189.ENEMY_KILLED_IN_AUTO_RESOLVE, gpEnemies[i].pSoldier.value.ubSoldierClass);
+        HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_ENEMY_KILLED, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
         ProcessQueenCmdImplicationsOfDeath(gpEnemies[i].pSoldier);
         AddDeadSoldierToUnLoadedSector(gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0, gpEnemies[i].pSoldier, RandomGridNo(), ADD_DEAD_SOLDIER_TO_SWEETSPOT);
       }
@@ -1908,7 +1908,7 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
   // knew they existed.
   if (fDeleteForGood) {
     // Warp the game time accordingly
-    if (gpAR.value.ubBattleStatus == BATTLE_VICTORY) {
+    if (gpAR.value.ubBattleStatus == Enum120.BATTLE_VICTORY) {
       // Get rid of any extra enemies that could be here.  It is possible for the number of total enemies to exceed 32, but
       // autoresolve can only process 32.  We basically cheat by eliminating the rest of them.
       EliminateAllEnemies(gpAR.value.ubSectorX, gpAR.value.ubSectorY);
@@ -1925,14 +1925,14 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
     }
   }
 
-  for (i = 0; i < NUM_AR_BUTTONS; i++) {
+  for (i = 0; i < Enum119.NUM_AR_BUTTONS; i++) {
     UnloadButtonImage(gpAR.value.iButtonImage[i]);
     RemoveButton(gpAR.value.iButton[i]);
   }
   if (fDeleteForGood) {
     // Warp the game time accordingly
 
-    WarpGameTime(gpAR.value.uiTotalElapsedBattleTimeInMilliseconds / 1000, WARPTIME_NO_PROCESSING_OF_EVENTS);
+    WarpGameTime(gpAR.value.uiTotalElapsedBattleTimeInMilliseconds / 1000, Enum131.WARPTIME_NO_PROCESSING_OF_EVENTS);
 
     // Deallocate all of the global memory.
     // Everything internal to them, should have already been deleted.
@@ -1954,7 +1954,7 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
 
   gpBattleGroup = NULL;
 
-  if (gubEnemyEncounterCode == CREATURE_ATTACK_CODE) {
+  if (gubEnemyEncounterCode == Enum164.CREATURE_ATTACK_CODE) {
     gubNumCreaturesAttackingTown = 0;
     gubSectorIDOfCreatureAttack = 0;
   }
@@ -1963,18 +1963,18 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
 
 function PauseButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[gpAR.value.iButton[PLAY_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[gpAR.value.iButton[FAST_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[gpAR.value.iButton[FINISH_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.FAST_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.FINISH_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
     gpAR.value.fPaused = TRUE;
   }
 }
 
 function PlayButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[gpAR.value.iButton[PAUSE_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[gpAR.value.iButton[FAST_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[gpAR.value.iButton[FINISH_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.PAUSE_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.FAST_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.FINISH_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
     gpAR.value.uiTimeSlice = 1000 * gpAR.value.ubTimeModifierPercentage / 100;
     gpAR.value.fPaused = FALSE;
   }
@@ -1982,9 +1982,9 @@ function PlayButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function FastButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[gpAR.value.iButton[PAUSE_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[gpAR.value.iButton[PLAY_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[gpAR.value.iButton[FINISH_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.PAUSE_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.FINISH_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
     gpAR.value.uiTimeSlice = 4000;
     gpAR.value.fPaused = FALSE;
   }
@@ -1992,13 +1992,13 @@ function FastButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function FinishButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[gpAR.value.iButton[PAUSE_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[gpAR.value.iButton[PLAY_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[gpAR.value.iButton[FAST_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.PAUSE_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.FAST_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
     gpAR.value.uiTimeSlice = 0xffffffff;
     gpAR.value.fSound = FALSE;
     gpAR.value.fPaused = FALSE;
-    PlayJA2StreamingSample(AUTORESOLVE_FINISHFX, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+    PlayJA2StreamingSample(Enum330.AUTORESOLVE_FINISHFX, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
   }
 }
 
@@ -2050,8 +2050,8 @@ function DetermineBandageButtonState(): void {
     }
   }
   if (!fFound) {
-    DisableButton(gpAR.value.iButton[BANDAGE_BUTTON]);
-    SetButtonFastHelpText(gpAR.value.iButton[BANDAGE_BUTTON], gzLateLocalizedString[11]);
+    DisableButton(gpAR.value.iButton[Enum119.BANDAGE_BUTTON]);
+    SetButtonFastHelpText(gpAR.value.iButton[Enum119.BANDAGE_BUTTON], gzLateLocalizedString[11]);
     return;
   }
 
@@ -2064,8 +2064,8 @@ function DetermineBandageButtonState(): void {
   }
   if (!fFound) {
     // No doctors
-    DisableButton(gpAR.value.iButton[BANDAGE_BUTTON]);
-    SetButtonFastHelpText(gpAR.value.iButton[BANDAGE_BUTTON], gzLateLocalizedString[8]);
+    DisableButton(gpAR.value.iButton[Enum119.BANDAGE_BUTTON]);
+    SetButtonFastHelpText(gpAR.value.iButton[Enum119.BANDAGE_BUTTON], gzLateLocalizedString[8]);
     return;
   }
 
@@ -2073,14 +2073,14 @@ function DetermineBandageButtonState(): void {
   pKit = FindMedicalKit();
   if (!pKit) {
     // No kits
-    DisableButton(gpAR.value.iButton[BANDAGE_BUTTON]);
-    SetButtonFastHelpText(gpAR.value.iButton[BANDAGE_BUTTON], gzLateLocalizedString[9]);
+    DisableButton(gpAR.value.iButton[Enum119.BANDAGE_BUTTON]);
+    SetButtonFastHelpText(gpAR.value.iButton[Enum119.BANDAGE_BUTTON], gzLateLocalizedString[9]);
     return;
   }
 
   // Allow bandaging.
-  EnableButton(gpAR.value.iButton[BANDAGE_BUTTON]);
-  SetButtonFastHelpText(gpAR.value.iButton[BANDAGE_BUTTON], gzLateLocalizedString[12]);
+  EnableButton(gpAR.value.iButton[Enum119.BANDAGE_BUTTON]);
+  SetButtonFastHelpText(gpAR.value.iButton[Enum119.BANDAGE_BUTTON], gzLateLocalizedString[12]);
 }
 
 function BandageButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -2191,7 +2191,7 @@ function CalculateAutoResolveInfo(): void {
   Assert(gpAR.value.ubSectorX >= 1 && gpAR.value.ubSectorX <= 16);
   Assert(gpAR.value.ubSectorY >= 1 && gpAR.value.ubSectorY <= 16);
 
-  if (gubEnemyEncounterCode != CREATURE_ATTACK_CODE) {
+  if (gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE) {
     GetNumberOfEnemiesInSector(gpAR.value.ubSectorX, gpAR.value.ubSectorY, addressof(gpAR.value.ubAdmins), addressof(gpAR.value.ubTroops), addressof(gpAR.value.ubElites));
     gpAR.value.ubEnemies = min(gpAR.value.ubAdmins + gpAR.value.ubTroops + gpAR.value.ubElites, 32);
   } else {
@@ -2243,7 +2243,7 @@ function ResetAutoResolveInterface(): void {
 
   RemoveAutoResolveInterface(FALSE);
 
-  gpAR.value.ubBattleStatus = BATTLE_IN_PROGRESS;
+  gpAR.value.ubBattleStatus = Enum120.BATTLE_IN_PROGRESS;
 
   if (!gpAR.value.ubCivs && !gpAR.value.ubMercs)
     gpAR.value.ubCivs = 1;
@@ -2451,13 +2451,13 @@ function HandleAutoResolveInput(): void {
         case SPACE:
           gpAR.value.fPaused ^= TRUE;
           if (gpAR.value.fPaused) {
-            ButtonList[gpAR.value.iButton[PAUSE_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
-            ButtonList[gpAR.value.iButton[PLAY_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-            ButtonList[gpAR.value.iButton[FAST_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-            ButtonList[gpAR.value.iButton[FINISH_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+            ButtonList[gpAR.value.iButton[Enum119.PAUSE_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+            ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+            ButtonList[gpAR.value.iButton[Enum119.FAST_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+            ButtonList[gpAR.value.iButton[Enum119.FINISH_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
           } else {
-            ButtonList[gpAR.value.iButton[PAUSE_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-            ButtonList[gpAR.value.iButton[PLAY_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+            ButtonList[gpAR.value.iButton[Enum119.PAUSE_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+            ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
           }
           break;
         case 'x':
@@ -2534,25 +2534,25 @@ function RenderSoldierCellHealth(pCell: Pointer<SOLDIERCELL>): void {
   }
 
   // Draw the retreating text, if applicable
-  if (pCell.value.uiFlags & CELL_RETREATED && gpAR.value.ubBattleStatus != BATTLE_VICTORY) {
+  if (pCell.value.uiFlags & CELL_RETREATED && gpAR.value.ubBattleStatus != Enum120.BATTLE_VICTORY) {
     usColor = FONT_LTGREEN;
-    swprintf(str, gpStrategicString[STR_AR_MERC_RETREATED]);
+    swprintf(str, gpStrategicString[Enum365.STR_AR_MERC_RETREATED]);
     pStr = str;
-  } else if (pCell.value.uiFlags & CELL_RETREATING && gpAR.value.ubBattleStatus == BATTLE_IN_PROGRESS) {
+  } else if (pCell.value.uiFlags & CELL_RETREATING && gpAR.value.ubBattleStatus == Enum120.BATTLE_IN_PROGRESS) {
     if (pCell.value.pSoldier.value.bLife >= OKLIFE) {
       // Retreating is shared with the status string.  Alternate between the
       // two every 450 milliseconds
       if (GetJA2Clock() % 900 < 450) {
         // override the health string with the retreating string.
         usColor = FONT_LTRED;
-        swprintf(str, gpStrategicString[STR_AR_MERC_RETREATING]);
+        swprintf(str, gpStrategicString[Enum365.STR_AR_MERC_RETREATING]);
         pStr = str;
       }
     }
-  } else if (pCell.value.uiFlags & CELL_SHOWRETREATTEXT && gpAR.value.ubBattleStatus == BATTLE_IN_PROGRESS) {
+  } else if (pCell.value.uiFlags & CELL_SHOWRETREATTEXT && gpAR.value.ubBattleStatus == Enum120.BATTLE_IN_PROGRESS) {
     if (pCell.value.pSoldier.value.bLife >= OKLIFE) {
       SetFontForeground(FONT_YELLOW);
-      swprintf(str, gpStrategicString[STR_AR_MERC_RETREAT]);
+      swprintf(str, gpStrategicString[Enum365.STR_AR_MERC_RETREAT]);
       xp = pCell.value.xp + 25 - StringPixLength(pStr, SMALLCOMPFONT) / 2;
       yp = pCell.value.yp + 12;
       mprintf(xp, yp, str);
@@ -2904,11 +2904,11 @@ function FireAShot(pAttacker: Pointer<SOLDIERCELL>): BOOLEAN {
   pSoldier = pAttacker.value.pSoldier;
 
   if (pAttacker.value.uiFlags & CELL_MALECREATURE) {
-    PlayAutoResolveSample(ACR_SPIT, RATE_11025, 50, 1, MIDDLEPAN);
-    pAttacker.value.bWeaponSlot = SECONDHANDPOS;
+    PlayAutoResolveSample(Enum330.ACR_SPIT, RATE_11025, 50, 1, MIDDLEPAN);
+    pAttacker.value.bWeaponSlot = Enum261.SECONDHANDPOS;
     return TRUE;
   }
-  for (i = 0; i < NUM_INV_SLOTS; i++) {
+  for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
     pItem = addressof(pSoldier.value.inv[i]);
 
     if (Item[pItem.value.usItem].usItemClass == IC_GUN) {
@@ -2942,7 +2942,7 @@ function FireAShot(pAttacker: Pointer<SOLDIERCELL>): BOOLEAN {
 
 function AttackerHasKnife(pAttacker: Pointer<SOLDIERCELL>): BOOLEAN {
   let i: INT32;
-  for (i = 0; i < NUM_INV_SLOTS; i++) {
+  for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
     if (Item[pAttacker.value.pSoldier.value.inv[i].usItem].usItemClass == IC_BLADE) {
       pAttacker.value.bWeaponSlot = i;
       return TRUE;
@@ -2955,7 +2955,7 @@ function AttackerHasKnife(pAttacker: Pointer<SOLDIERCELL>): BOOLEAN {
 function TargetHasLoadedGun(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let i: INT32;
   let pItem: Pointer<OBJECTTYPE>;
-  for (i = 0; i < NUM_INV_SLOTS; i++) {
+  for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
     pItem = addressof(pSoldier.value.inv[i]);
     if (Item[pItem.value.usItem].usItemClass == IC_GUN) {
       if (gpAR.value.fUnlimitedAmmo) {
@@ -2998,7 +2998,7 @@ function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERC
   else
     usDefence = (950 + PreRandom(50));
   if (pAttacker.value.uiFlags & CELL_FEMALECREATURE) {
-    pAttacker.value.bWeaponSlot = HANDPOS;
+    pAttacker.value.bWeaponSlot = Enum261.HANDPOS;
     fMelee = TRUE;
     fClaw = TRUE;
   } else if (!FireAShot(pAttacker)) {
@@ -3036,15 +3036,15 @@ function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERC
       pTarget.value.uiFlags |= CELL_DODGEDATTACK | CELL_DIRTY;
       if (fMelee) {
         if (fKnife)
-          PlayAutoResolveSample(MISS_KNIFE, RATE_11025, 50, 1, MIDDLEPAN);
+          PlayAutoResolveSample(Enum330.MISS_KNIFE, RATE_11025, 50, 1, MIDDLEPAN);
         else if (fClaw) {
           if (Chance(50)) {
-            PlayAutoResolveSample(ACR_SWIPE, RATE_11025, 50, 1, MIDDLEPAN);
+            PlayAutoResolveSample(Enum330.ACR_SWIPE, RATE_11025, 50, 1, MIDDLEPAN);
           } else {
-            PlayAutoResolveSample(ACR_LUNGE, RATE_11025, 50, 1, MIDDLEPAN);
+            PlayAutoResolveSample(Enum330.ACR_LUNGE, RATE_11025, 50, 1, MIDDLEPAN);
           }
         } else
-          PlayAutoResolveSample(SWOOSH_1 + PreRandom(6), RATE_11025, 50, 1, MIDDLEPAN);
+          PlayAutoResolveSample(Enum330.SWOOSH_1 + PreRandom(6), RATE_11025, 50, 1, MIDDLEPAN);
         if (pTarget.value.uiFlags & CELL_MERC)
           // AGILITY GAIN: Target "dodged" an attack
           StatChange(pTarget.value.pSoldier, AGILAMT, 5, FALSE);
@@ -3074,7 +3074,7 @@ function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERC
   } else {
     let pItem: Pointer<OBJECTTYPE>;
     let tempItem: OBJECTTYPE;
-    PlayAutoResolveSample((BULLET_IMPACT_1 + PreRandom(3)), RATE_11025, 50, 1, MIDDLEPAN);
+    PlayAutoResolveSample((Enum330.BULLET_IMPACT_1 + PreRandom(3)), RATE_11025, 50, 1, MIDDLEPAN);
     if (!pTarget.value.pSoldier.value.bLife) {
       // Soldier already dead (can't kill him again!)
       return;
@@ -3090,13 +3090,13 @@ function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERC
         pAttacker.value.pSoldier.value.usAttackingWeapon = pAttacker.value.pSoldier.value.inv[pAttacker.value.bWeaponSlot].usItem;
     }
 
-    if (pAttacker.value.bWeaponSlot != HANDPOS) {
+    if (pAttacker.value.bWeaponSlot != Enum261.HANDPOS) {
       // switch items
-      memcpy(addressof(tempItem), addressof(pAttacker.value.pSoldier.value.inv[HANDPOS]), sizeof(OBJECTTYPE));
-      memcpy(addressof(pAttacker.value.pSoldier.value.inv[HANDPOS]), addressof(pAttacker.value.pSoldier.value.inv[pAttacker.value.bWeaponSlot]), sizeof(OBJECTTYPE));
+      memcpy(addressof(tempItem), addressof(pAttacker.value.pSoldier.value.inv[Enum261.HANDPOS]), sizeof(OBJECTTYPE));
+      memcpy(addressof(pAttacker.value.pSoldier.value.inv[Enum261.HANDPOS]), addressof(pAttacker.value.pSoldier.value.inv[pAttacker.value.bWeaponSlot]), sizeof(OBJECTTYPE));
       iImpact = HTHImpact(pAttacker.value.pSoldier, pTarget.value.pSoldier, ubAccuracy, (fKnife | fClaw));
-      memcpy(addressof(pAttacker.value.pSoldier.value.inv[pAttacker.value.bWeaponSlot]), addressof(pAttacker.value.pSoldier.value.inv[HANDPOS]), sizeof(OBJECTTYPE));
-      memcpy(addressof(pAttacker.value.pSoldier.value.inv[HANDPOS]), addressof(tempItem), sizeof(OBJECTTYPE));
+      memcpy(addressof(pAttacker.value.pSoldier.value.inv[pAttacker.value.bWeaponSlot]), addressof(pAttacker.value.pSoldier.value.inv[Enum261.HANDPOS]), sizeof(OBJECTTYPE));
+      memcpy(addressof(pAttacker.value.pSoldier.value.inv[Enum261.HANDPOS]), addressof(tempItem), sizeof(OBJECTTYPE));
     } else {
       iImpact = HTHImpact(pAttacker.value.pSoldier, pTarget.value.pSoldier, ubAccuracy, (fKnife || fClaw));
     }
@@ -3117,11 +3117,11 @@ function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERC
     }
     if (pTarget.value.pSoldier.value.bLife >= CONSCIOUSNESS || pTarget.value.uiFlags & CELL_CREATURE) {
       if (gpAR.value.fSound)
-        DoMercBattleSound(pTarget.value.pSoldier, (BATTLE_SOUND_HIT1 + PreRandom(2)));
+        DoMercBattleSound(pTarget.value.pSoldier, (Enum259.BATTLE_SOUND_HIT1 + PreRandom(2)));
     }
     if (!(pTarget.value.uiFlags & CELL_CREATURE) && iNewLife < OKLIFE && pTarget.value.pSoldier.value.bLife >= OKLIFE) {
       // the hit caused the merc to fall.  Play the falling sound
-      PlayAutoResolveSample(FALL_1, RATE_11025, 50, 1, MIDDLEPAN);
+      PlayAutoResolveSample(Enum330.FALL_1, RATE_11025, 50, 1, MIDDLEPAN);
       pTarget.value.uiFlags &= ~CELL_RETREATING;
     }
     if (iNewLife <= 0) {
@@ -3134,8 +3134,8 @@ function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERC
         pAttacker.value.pSoldier.value.ubMilitiaKills += 2;
       }
       if (pTarget.value.uiFlags & CELL_MERC && gpAR.value.fSound) {
-        PlayAutoResolveSample(DOORCR_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
-        PlayAutoResolveSample(HEADCR_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+        PlayAutoResolveSample(Enum330.DOORCR_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+        PlayAutoResolveSample(Enum330.HEADCR_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
       }
     }
     // Adjust the soldiers stats based on the damage.
@@ -3186,18 +3186,18 @@ function TargetHitCallback(pTarget: Pointer<SOLDIERCELL>, index: INT32): void {
 
   // creatures get damage reduction bonuses
   switch (pTarget.value.pSoldier.value.ubBodyType) {
-    case LARVAE_MONSTER:
-    case INFANT_MONSTER:
+    case Enum194.LARVAE_MONSTER:
+    case Enum194.INFANT_MONSTER:
       break;
-    case YAF_MONSTER:
-    case YAM_MONSTER:
+    case Enum194.YAF_MONSTER:
+    case Enum194.YAM_MONSTER:
       pTarget.value.usHitDamage[index] = (pTarget.value.usHitDamage[index] + 2) / 4;
       break;
-    case ADULTFEMALEMONSTER:
-    case AM_MONSTER:
+    case Enum194.ADULTFEMALEMONSTER:
+    case Enum194.AM_MONSTER:
       pTarget.value.usHitDamage[index] = (pTarget.value.usHitDamage[index] + 3) / 6;
       break;
-    case QUEENMONSTER:
+    case Enum194.QUEENMONSTER:
       pTarget.value.usHitDamage[index] = (pTarget.value.usHitDamage[index] + 4) / 8;
       break;
   }
@@ -3208,7 +3208,7 @@ function TargetHitCallback(pTarget: Pointer<SOLDIERCELL>, index: INT32): void {
     if (pTarget.value.uiFlags & CELL_MERC)
       // AGILITY GAIN: Target "dodged" an attack
       StatChange(pTarget.value.pSoldier, AGILAMT, 5, FALSE);
-    PlayAutoResolveSample(MISS_1 + PreRandom(8), RATE_11025, 50, 1, MIDDLEPAN);
+    PlayAutoResolveSample(Enum330.MISS_1 + PreRandom(8), RATE_11025, 50, 1, MIDDLEPAN);
     return;
   }
 
@@ -3226,15 +3226,15 @@ function TargetHitCallback(pTarget: Pointer<SOLDIERCELL>, index: INT32): void {
   }
 
   // bullet hit -- play an impact sound and a merc hit sound
-  PlayAutoResolveSample((BULLET_IMPACT_1 + PreRandom(3)), RATE_11025, 50, 1, MIDDLEPAN);
+  PlayAutoResolveSample((Enum330.BULLET_IMPACT_1 + PreRandom(3)), RATE_11025, 50, 1, MIDDLEPAN);
 
   if (pTarget.value.pSoldier.value.bLife >= CONSCIOUSNESS) {
     if (gpAR.value.fSound)
-      DoMercBattleSound(pTarget.value.pSoldier, (BATTLE_SOUND_HIT1 + PreRandom(2)));
+      DoMercBattleSound(pTarget.value.pSoldier, (Enum259.BATTLE_SOUND_HIT1 + PreRandom(2)));
   }
   if (iNewLife < OKLIFE && pTarget.value.pSoldier.value.bLife >= OKLIFE) {
     // the hit caused the merc to fall.  Play the falling sound
-    PlayAutoResolveSample(FALL_1, RATE_11025, 50, 1, MIDDLEPAN);
+    PlayAutoResolveSample(Enum330.FALL_1, RATE_11025, 50, 1, MIDDLEPAN);
     pTarget.value.uiFlags &= ~CELL_RETREATING;
   }
   if (iNewLife <= 0) {
@@ -3259,7 +3259,7 @@ function TargetHitCallback(pTarget: Pointer<SOLDIERCELL>, index: INT32): void {
           gStrategicStatus.usPlayerKills++;
           // EXPERIENCE CLASS GAIN:  Earned a kill
           StatChange(pKiller.value.pSoldier, EXPERAMT, (10 * pTarget.value.pSoldier.value.bLevel), FALSE);
-          HandleMoraleEvent(pKiller.value.pSoldier, MORALE_KILLED_ENEMY, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
+          HandleMoraleEvent(pKiller.value.pSoldier, Enum234.MORALE_KILLED_ENEMY, gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0);
         } else if (pKiller.value.uiFlags & CELL_MILITIA)
           pKiller.value.pSoldier.value.ubMilitiaKills += 2;
       }
@@ -3280,21 +3280,21 @@ function TargetHitCallback(pTarget: Pointer<SOLDIERCELL>, index: INT32): void {
       }
     }
     if (pTarget.value.uiFlags & CELL_MERC && gpAR.value.fSound) {
-      PlayAutoResolveSample(DOORCR_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
-      PlayAutoResolveSample(HEADCR_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+      PlayAutoResolveSample(Enum330.DOORCR_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+      PlayAutoResolveSample(Enum330.HEADCR_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
     }
     if (iNewLife < -60 && !(pTarget.value.uiFlags & CELL_CREATURE)) {
       // High damage death
       if (gpAR.value.fSound) {
         if (PreRandom(3))
-          PlayAutoResolveSample(BODY_SPLAT_1, RATE_11025, 50, 1, MIDDLEPAN);
+          PlayAutoResolveSample(Enum330.BODY_SPLAT_1, RATE_11025, 50, 1, MIDDLEPAN);
         else
-          PlayAutoResolveSample(HEADSPLAT_1, RATE_11025, 50, 1, MIDDLEPAN);
+          PlayAutoResolveSample(Enum330.HEADSPLAT_1, RATE_11025, 50, 1, MIDDLEPAN);
       }
     } else {
       // Normal death
       if (gpAR.value.fSound) {
-        DoMercBattleSound(pTarget.value.pSoldier, BATTLE_SOUND_DIE1);
+        DoMercBattleSound(pTarget.value.pSoldier, Enum259.BATTLE_SOUND_DIE1);
       }
     }
   }
@@ -3345,7 +3345,7 @@ function IsBattleOver(): BOOLEAN {
   let iNumInvolvedMercs: INT32 = 0;
   let iNumMercsRetreated: INT32 = 0;
   let fOnlyEPCsLeft: BOOLEAN = TRUE;
-  if (gpAR.value.ubBattleStatus != BATTLE_IN_PROGRESS)
+  if (gpAR.value.ubBattleStatus != Enum120.BATTLE_IN_PROGRESS)
     return TRUE;
   for (i = 0; i < gpAR.value.ubMercs; i++) {
     if (!(gpMercs[i].uiFlags & CELL_RETREATED) && gpMercs[i].pSoldier.value.bLife) {
@@ -3368,7 +3368,7 @@ function IsBattleOver(): BOOLEAN {
       gpAR.value.pRobotCell.value.usAttack = 0;
       if (iNumInvolvedMercs == 1 && !gpAR.value.ubAliveCivs) {
         // Robot is the only one left in battle, so instantly kill him.
-        DoMercBattleSound(pRobot, BATTLE_SOUND_DIE1);
+        DoMercBattleSound(pRobot, Enum259.BATTLE_SOUND_DIE1);
         pRobot.value.bLife = 0;
         gpAR.value.ubAliveMercs--;
         iNumInvolvedMercs = 0;
@@ -3377,7 +3377,7 @@ function IsBattleOver(): BOOLEAN {
   }
   if (!gpAR.value.ubAliveCivs && !iNumInvolvedMercs && iNumMercsRetreated) {
     // RETREATED
-    gpAR.value.ubBattleStatus = BATTLE_RETREAT;
+    gpAR.value.ubBattleStatus = Enum120.BATTLE_RETREAT;
 
     // wake everyone up
     WakeUpAllMercsInSectorUnderAttack();
@@ -3389,7 +3389,7 @@ function IsBattleOver(): BOOLEAN {
       // Kill the EPCs.
       for (i = 0; i < gpAR.value.ubMercs; i++) {
         if (gpMercs[i].uiFlags & CELL_EPC) {
-          DoMercBattleSound(gpMercs[i].pSoldier, BATTLE_SOUND_DIE1);
+          DoMercBattleSound(gpMercs[i].pSoldier, Enum259.BATTLE_SOUND_DIE1);
           gpMercs[i].pSoldier.value.bLife = 0;
           gpAR.value.ubAliveMercs--;
         }
@@ -3397,18 +3397,18 @@ function IsBattleOver(): BOOLEAN {
     }
     for (i = 0; i < gpAR.value.ubEnemies; i++) {
       if (gpEnemies[i].pSoldier.value.bLife) {
-        if (gubEnemyEncounterCode != CREATURE_ATTACK_CODE) {
-          DoMercBattleSound(gpEnemies[i].pSoldier, BATTLE_SOUND_LAUGH1);
+        if (gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE) {
+          DoMercBattleSound(gpEnemies[i].pSoldier, Enum259.BATTLE_SOUND_LAUGH1);
         } else {
-          PlayJA2Sample(ACR_EATFLESH, RATE_11025, 50, 1, MIDDLEPAN);
+          PlayJA2Sample(Enum330.ACR_EATFLESH, RATE_11025, 50, 1, MIDDLEPAN);
         }
         break;
       }
     }
-    gpAR.value.ubBattleStatus = BATTLE_DEFEAT;
+    gpAR.value.ubBattleStatus = Enum120.BATTLE_DEFEAT;
   } else if (!gpAR.value.ubAliveEnemies) {
     // VICTORY
-    gpAR.value.ubBattleStatus = BATTLE_VICTORY;
+    gpAR.value.ubBattleStatus = Enum120.BATTLE_VICTORY;
   } else {
     return FALSE;
   }
@@ -3479,7 +3479,7 @@ function AttemptPlayerCapture(): BOOLEAN {
   } else if (PreRandom(100) < 25) {
     BeginCaptureSquence();
 
-    gpAR.value.ubBattleStatus = BATTLE_CAPTURED;
+    gpAR.value.ubBattleStatus = Enum120.BATTLE_CAPTURED;
     gpAR.value.fRenderAutoResolve = TRUE;
     SetupDoneInterface();
   }
@@ -3490,18 +3490,18 @@ function SetupDoneInterface(): void {
   let i: INT32;
   gpAR.value.fRenderAutoResolve = TRUE;
 
-  HideButton(gpAR.value.iButton[PAUSE_BUTTON]);
-  HideButton(gpAR.value.iButton[PLAY_BUTTON]);
-  HideButton(gpAR.value.iButton[FAST_BUTTON]);
-  HideButton(gpAR.value.iButton[FINISH_BUTTON]);
-  HideButton(gpAR.value.iButton[RETREAT_BUTTON]);
-  HideButton(gpAR.value.iButton[YES_BUTTON]);
-  HideButton(gpAR.value.iButton[NO_BUTTON]);
-  if (gpAR.value.ubBattleStatus == BATTLE_VICTORY && gpAR.value.ubAliveMercs) {
-    ShowButton(gpAR.value.iButton[DONEWIN_BUTTON]);
-    ShowButton(gpAR.value.iButton[BANDAGE_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.PAUSE_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.PLAY_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.FAST_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.FINISH_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.RETREAT_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.YES_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.NO_BUTTON]);
+  if (gpAR.value.ubBattleStatus == Enum120.BATTLE_VICTORY && gpAR.value.ubAliveMercs) {
+    ShowButton(gpAR.value.iButton[Enum119.DONEWIN_BUTTON]);
+    ShowButton(gpAR.value.iButton[Enum119.BANDAGE_BUTTON]);
   } else {
-    ShowButton(gpAR.value.iButton[DONELOSE_BUTTON]);
+    ShowButton(gpAR.value.iButton[Enum119.DONELOSE_BUTTON]);
   }
   DetermineBandageButtonState();
   for (i = 0; i < gpAR.value.ubMercs; i++) {
@@ -3511,31 +3511,31 @@ function SetupDoneInterface(): void {
 }
 
 function SetupSurrenderInterface(): void {
-  HideButton(gpAR.value.iButton[PAUSE_BUTTON]);
-  HideButton(gpAR.value.iButton[PLAY_BUTTON]);
-  HideButton(gpAR.value.iButton[FAST_BUTTON]);
-  HideButton(gpAR.value.iButton[FINISH_BUTTON]);
-  HideButton(gpAR.value.iButton[RETREAT_BUTTON]);
-  HideButton(gpAR.value.iButton[BANDAGE_BUTTON]);
-  HideButton(gpAR.value.iButton[DONEWIN_BUTTON]);
-  HideButton(gpAR.value.iButton[DONELOSE_BUTTON]);
-  ShowButton(gpAR.value.iButton[YES_BUTTON]);
-  ShowButton(gpAR.value.iButton[NO_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.PAUSE_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.PLAY_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.FAST_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.FINISH_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.RETREAT_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.BANDAGE_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.DONEWIN_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.DONELOSE_BUTTON]);
+  ShowButton(gpAR.value.iButton[Enum119.YES_BUTTON]);
+  ShowButton(gpAR.value.iButton[Enum119.NO_BUTTON]);
   gpAR.value.fRenderAutoResolve = TRUE;
   gpAR.value.fPendingSurrender = TRUE;
 }
 
 function HideSurrenderInterface(): void {
-  HideButton(gpAR.value.iButton[PAUSE_BUTTON]);
-  HideButton(gpAR.value.iButton[PLAY_BUTTON]);
-  HideButton(gpAR.value.iButton[FAST_BUTTON]);
-  HideButton(gpAR.value.iButton[FINISH_BUTTON]);
-  HideButton(gpAR.value.iButton[RETREAT_BUTTON]);
-  HideButton(gpAR.value.iButton[BANDAGE_BUTTON]);
-  HideButton(gpAR.value.iButton[DONEWIN_BUTTON]);
-  HideButton(gpAR.value.iButton[DONELOSE_BUTTON]);
-  HideButton(gpAR.value.iButton[YES_BUTTON]);
-  HideButton(gpAR.value.iButton[NO_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.PAUSE_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.PLAY_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.FAST_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.FINISH_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.RETREAT_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.BANDAGE_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.DONEWIN_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.DONELOSE_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.YES_BUTTON]);
+  HideButton(gpAR.value.iButton[Enum119.NO_BUTTON]);
   gpAR.value.fPendingSurrender = FALSE;
   gpAR.value.fRenderAutoResolve = TRUE;
 }
@@ -3544,7 +3544,7 @@ function AcceptSurrenderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     BeginCaptureSquence();
 
-    gpAR.value.ubBattleStatus = BATTLE_SURRENDERED;
+    gpAR.value.ubBattleStatus = Enum120.BATTLE_SURRENDERED;
     gpAR.value.fPendingSurrender = FALSE;
     SetupDoneInterface();
   }
@@ -3606,7 +3606,7 @@ function ProcessBattleFrame(): void {
 
   while (iTimeSlice > 0) {
     uiSlice = min(iTimeSlice, 1000);
-    if (gpAR.value.ubBattleStatus == BATTLE_IN_PROGRESS)
+    if (gpAR.value.ubBattleStatus == Enum120.BATTLE_IN_PROGRESS)
       gpAR.value.uiTotalElapsedBattleTimeInMilliseconds += uiSlice;
 
     // Now process each of the players
@@ -3632,7 +3632,7 @@ function ProcessBattleFrame(): void {
         return;
       }
     CONTINUE_BATTLE:
-      if (IsBattleOver() || gubEnemyEncounterCode != CREATURE_ATTACK_CODE && AttemptPlayerCapture())
+      if (IsBattleOver() || gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE && AttemptPlayerCapture())
         return;
 
       iRandom = PreRandom(iTotal);
@@ -3715,7 +3715,7 @@ function ProcessBattleFrame(): void {
         if (pAttacker.value.usAttack) {
           pTarget = ChooseTarget(pAttacker);
           if (pAttacker.value.uiFlags & CELL_CREATURE && PreRandom(100) < 7)
-            PlayAutoResolveSample(ACR_SMELL_THREAT + PreRandom(2), RATE_11025, 50, 1, MIDDLEPAN);
+            PlayAutoResolveSample(Enum330.ACR_SMELL_THREAT + PreRandom(2), RATE_11025, 50, 1, MIDDLEPAN);
           else
             AttackTarget(pAttacker, pTarget);
           ResetNextAttackCounter(pAttacker);

@@ -68,7 +68,7 @@ function AdjustClockToEventStamp(pEvent: Pointer<STRATEGICEVENT>, puiAdjustment:
   guiHour = (guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR;
   guiMin = (guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN;
 
-  swprintf(WORLDTIMESTR, "%s %d, %02d:%02d", gpGameClockString[STR_GAMECLOCK_DAY_NAME], guiDay, guiHour, guiMin);
+  swprintf(WORLDTIMESTR, "%s %d, %02d:%02d", gpGameClockString[Enum366.STR_GAMECLOCK_DAY_NAME], guiDay, guiHour, guiMin);
 }
 
 // If there are any events pending, they are processed, until the time limit is reached, or
@@ -92,11 +92,11 @@ function ProcessPendingGameEvents(uiAdjustment: UINT32, ubWarpCode: UINT8): void
     // Update the time by the difference, but ONLY if the event comes after the current time.
     // In the beginning of the game, series of events are created that are placed in the list
     // BEFORE the start time.  Those events will be processed without influencing the actual time.
-    if (curr.value.uiTimeStamp > guiGameClock && ubWarpCode != WARPTIME_PROCESS_TARGET_TIME_FIRST) {
+    if (curr.value.uiTimeStamp > guiGameClock && ubWarpCode != Enum131.WARPTIME_PROCESS_TARGET_TIME_FIRST) {
       AdjustClockToEventStamp(curr, addressof(uiAdjustment));
     }
     // Process the event
-    if (ubWarpCode != WARPTIME_PROCESS_TARGET_TIME_FIRST) {
+    if (ubWarpCode != Enum131.WARPTIME_PROCESS_TARGET_TIME_FIRST) {
       fDeleteEvent = ExecuteStrategicEvent(curr);
     } else if (curr.value.uiTimeStamp == guiGameClock + uiAdjustment) {
       // if we are warping to the target time to process that event first,
@@ -127,16 +127,16 @@ function ProcessPendingGameEvents(uiAdjustment: UINT32, ubWarpCode: UINT8): void
     if (fDeleteEvent) {
       // Determine if event node is a special event requiring reposting
       switch (curr.value.ubEventType) {
-        case RANGED_EVENT:
-          AddAdvancedStrategicEvent(ENDRANGED_EVENT, curr.value.ubCallbackID, curr.value.uiTimeStamp + curr.value.uiTimeOffset, curr.value.uiParam);
+        case Enum133.RANGED_EVENT:
+          AddAdvancedStrategicEvent(Enum133.ENDRANGED_EVENT, curr.value.ubCallbackID, curr.value.uiTimeStamp + curr.value.uiTimeOffset, curr.value.uiParam);
           break;
-        case PERIODIC_EVENT:
-          pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, curr.value.ubCallbackID, curr.value.uiTimeStamp + curr.value.uiTimeOffset, curr.value.uiParam);
+        case Enum133.PERIODIC_EVENT:
+          pEvent = AddAdvancedStrategicEvent(Enum133.PERIODIC_EVENT, curr.value.ubCallbackID, curr.value.uiTimeStamp + curr.value.uiTimeOffset, curr.value.uiParam);
           if (pEvent)
             pEvent.value.uiTimeOffset = curr.value.uiTimeOffset;
           break;
-        case EVERYDAY_EVENT:
-          AddAdvancedStrategicEvent(EVERYDAY_EVENT, curr.value.ubCallbackID, curr.value.uiTimeStamp + NUM_SEC_IN_DAY, curr.value.uiParam);
+        case Enum133.EVERYDAY_EVENT:
+          AddAdvancedStrategicEvent(Enum133.EVERYDAY_EVENT, curr.value.ubCallbackID, curr.value.uiTimeStamp + NUM_SEC_IN_DAY, curr.value.uiParam);
           break;
       }
       if (curr == gpEventList) {
@@ -247,20 +247,20 @@ function AddAdvancedStrategicEvent(ubEventType: UINT8, ubCallbackID: UINT8, uiTi
 }
 
 function AddStrategicEvent(ubCallbackID: UINT8, uiMinStamp: UINT32, uiParam: UINT32): BOOLEAN {
-  if (AddAdvancedStrategicEvent(ONETIME_EVENT, ubCallbackID, uiMinStamp * 60, uiParam))
+  if (AddAdvancedStrategicEvent(Enum133.ONETIME_EVENT, ubCallbackID, uiMinStamp * 60, uiParam))
     return TRUE;
   return FALSE;
 }
 
 function AddStrategicEventUsingSeconds(ubCallbackID: UINT8, uiSecondStamp: UINT32, uiParam: UINT32): BOOLEAN {
-  if (AddAdvancedStrategicEvent(ONETIME_EVENT, ubCallbackID, uiSecondStamp, uiParam))
+  if (AddAdvancedStrategicEvent(Enum133.ONETIME_EVENT, ubCallbackID, uiSecondStamp, uiParam))
     return TRUE;
   return FALSE;
 }
 
 function AddRangedStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiLengthMin: UINT32, uiParam: UINT32): BOOLEAN {
   let pEvent: Pointer<STRATEGICEVENT>;
-  pEvent = AddAdvancedStrategicEvent(RANGED_EVENT, ubCallbackID, uiStartMin * 60, uiParam);
+  pEvent = AddAdvancedStrategicEvent(Enum133.RANGED_EVENT, ubCallbackID, uiStartMin * 60, uiParam);
   if (pEvent) {
     pEvent.value.uiTimeOffset = uiLengthMin * 60;
     return TRUE;
@@ -278,7 +278,7 @@ function AddFutureDayRangedStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT3
 
 function AddRangedStrategicEventUsingSeconds(ubCallbackID: UINT8, uiStartSeconds: UINT32, uiLengthSeconds: UINT32, uiParam: UINT32): BOOLEAN {
   let pEvent: Pointer<STRATEGICEVENT>;
-  pEvent = AddAdvancedStrategicEvent(RANGED_EVENT, ubCallbackID, uiStartSeconds, uiParam);
+  pEvent = AddAdvancedStrategicEvent(Enum133.RANGED_EVENT, ubCallbackID, uiStartSeconds, uiParam);
   if (pEvent) {
     pEvent.value.uiTimeOffset = uiLengthSeconds;
     return TRUE;
@@ -295,13 +295,13 @@ function AddFutureDayRangedStrategicEventUsingSeconds(ubCallbackID: UINT8, uiSta
 }
 
 function AddEveryDayStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiParam: UINT32): BOOLEAN {
-  if (AddAdvancedStrategicEvent(EVERYDAY_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiStartMin * 60, uiParam))
+  if (AddAdvancedStrategicEvent(Enum133.EVERYDAY_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiStartMin * 60, uiParam))
     return TRUE;
   return FALSE;
 }
 
 function AddEveryDayStrategicEventUsingSeconds(ubCallbackID: UINT8, uiStartSeconds: UINT32, uiParam: UINT32): BOOLEAN {
-  if (AddAdvancedStrategicEvent(EVERYDAY_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiStartSeconds, uiParam))
+  if (AddAdvancedStrategicEvent(Enum133.EVERYDAY_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiStartSeconds, uiParam))
     return TRUE;
   return FALSE;
 }
@@ -310,7 +310,7 @@ function AddEveryDayStrategicEventUsingSeconds(ubCallbackID: UINT8, uiStartSecon
 // Event will get processed automatically once every X minutes.
 function AddPeriodStrategicEvent(ubCallbackID: UINT8, uiOnceEveryXMinutes: UINT32, uiParam: UINT32): BOOLEAN {
   let pEvent: Pointer<STRATEGICEVENT>;
-  pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOnceEveryXMinutes * 60, uiParam);
+  pEvent = AddAdvancedStrategicEvent(Enum133.PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOnceEveryXMinutes * 60, uiParam);
   if (pEvent) {
     pEvent.value.uiTimeOffset = uiOnceEveryXMinutes * 60;
     return TRUE;
@@ -320,7 +320,7 @@ function AddPeriodStrategicEvent(ubCallbackID: UINT8, uiOnceEveryXMinutes: UINT3
 
 function AddPeriodStrategicEventUsingSeconds(ubCallbackID: UINT8, uiOnceEveryXSeconds: UINT32, uiParam: UINT32): BOOLEAN {
   let pEvent: Pointer<STRATEGICEVENT>;
-  pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOnceEveryXSeconds, uiParam);
+  pEvent = AddAdvancedStrategicEvent(Enum133.PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOnceEveryXSeconds, uiParam);
   if (pEvent) {
     pEvent.value.uiTimeOffset = uiOnceEveryXSeconds;
     return TRUE;
@@ -330,7 +330,7 @@ function AddPeriodStrategicEventUsingSeconds(ubCallbackID: UINT8, uiOnceEveryXSe
 
 function AddPeriodStrategicEventWithOffset(ubCallbackID: UINT8, uiOnceEveryXMinutes: UINT32, uiOffsetFromCurrent: UINT32, uiParam: UINT32): BOOLEAN {
   let pEvent: Pointer<STRATEGICEVENT>;
-  pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOffsetFromCurrent * 60, uiParam);
+  pEvent = AddAdvancedStrategicEvent(Enum133.PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOffsetFromCurrent * 60, uiParam);
   if (pEvent) {
     pEvent.value.uiTimeOffset = uiOnceEveryXMinutes * 60;
     return TRUE;
@@ -340,7 +340,7 @@ function AddPeriodStrategicEventWithOffset(ubCallbackID: UINT8, uiOnceEveryXMinu
 
 function AddPeriodStrategicEventUsingSecondsWithOffset(ubCallbackID: UINT8, uiOnceEveryXSeconds: UINT32, uiOffsetFromCurrent: UINT32, uiParam: UINT32): BOOLEAN {
   let pEvent: Pointer<STRATEGICEVENT>;
-  pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOffsetFromCurrent, uiParam);
+  pEvent = AddAdvancedStrategicEvent(Enum133.PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOffsetFromCurrent, uiParam);
   if (pEvent) {
     pEvent.value.uiTimeOffset = uiOnceEveryXSeconds;
     return TRUE;

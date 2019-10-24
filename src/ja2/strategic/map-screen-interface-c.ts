@@ -144,7 +144,7 @@ let MovePosition: SGPPoint = [ 450, 100 ];
 // which lines are selected? .. for assigning groups of mercs to the same thing
 let fSelectedListOfMercsForMapScreen: BOOLEAN[] /* [MAX_CHARACTER_COUNT] */;
 let fResetTimerForFirstEntryIntoMapScreen: BOOLEAN = FALSE;
-let iReasonForSoldierUpDate: INT32 = NO_REASON_FOR_UPDATE;
+let iReasonForSoldierUpDate: INT32 = Enum154.NO_REASON_FOR_UPDATE;
 
 // sam and mine icons
 let guiSAMICON: UINT32;
@@ -365,7 +365,7 @@ function ResetAssignmentsForMercsTrainingUnpaidSectorsInSelectedList(bAssignment
       continue;
     }
 
-    if (pSoldier.value.bAssignment == TRAIN_TOWN) {
+    if (pSoldier.value.bAssignment == Enum117.TRAIN_TOWN) {
       if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == FALSE) {
         ResumeOldAssignment(pSoldier);
       }
@@ -390,7 +390,7 @@ function ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(sSectorX: INT
       continue;
     }
 
-    if (pSoldier.value.bAssignment == TRAIN_TOWN) {
+    if (pSoldier.value.bAssignment == Enum117.TRAIN_TOWN) {
       if ((pSoldier.value.sSectorX == sSectorX) && (pSoldier.value.sSectorY == sSectorY) && (pSoldier.value.bSectorZ == 0)) {
         ResumeOldAssignment(pSoldier);
       }
@@ -436,7 +436,7 @@ function DeselectSelectedListMercsWhoCantMoveWithThisGuy(pSoldier: Pointer<SOLDI
         // However, different vehicles CAN plot together, since they all travel at the same rates now
 
         // if anchor guy is IN a vehicle
-        if (pSoldier.value.bAssignment == VEHICLE) {
+        if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
           if (!CanSoldierMoveWithVehicleId(pSoldier2, pSoldier.value.iVehicleId)) {
             // reset entry for selected list
             ResetEntryForSelectedList(iCounter);
@@ -450,7 +450,7 @@ function DeselectSelectedListMercsWhoCantMoveWithThisGuy(pSoldier: Pointer<SOLDI
           }
         }
         // if this guy is IN a vehicle
-        else if (pSoldier2.value.bAssignment == VEHICLE) {
+        else if (pSoldier2.value.bAssignment == Enum117.VEHICLE) {
           if (!CanSoldierMoveWithVehicleId(pSoldier, pSoldier2.value.iVehicleId)) {
             // reset entry for selected list
             ResetEntryForSelectedList(iCounter);
@@ -464,7 +464,7 @@ function DeselectSelectedListMercsWhoCantMoveWithThisGuy(pSoldier: Pointer<SOLDI
           }
         }
         // reject those not a squad (vehicle handled above)
-        else if (pSoldier2.value.bAssignment >= ON_DUTY) {
+        else if (pSoldier2.value.bAssignment >= Enum117.ON_DUTY) {
           ResetEntryForSelectedList(iCounter);
         } else {
           // reject those not in the same sector
@@ -497,7 +497,7 @@ function SelectUnselectedMercsWhoMustMoveWithThisGuy(): void {
         pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
         // if on a squad or in a vehicle
-        if ((pSoldier.value.bAssignment < ON_DUTY) || (pSoldier.value.bAssignment == VEHICLE)) {
+        if ((pSoldier.value.bAssignment < Enum117.ON_DUTY) || (pSoldier.value.bAssignment == Enum117.VEHICLE)) {
           // and a member of that squad or vehicle is selected
           if (AnyMercInSameSquadOrVehicleIsSelected(pSoldier)) {
             // then also select this guy
@@ -522,23 +522,23 @@ function AnyMercInSameSquadOrVehicleIsSelected(pSoldier: Pointer<SOLDIERTYPE>): 
         // if they have the same assignment
         if (pSoldier.value.bAssignment == pSoldier2.value.bAssignment) {
           // same squad?
-          if (pSoldier.value.bAssignment < ON_DUTY) {
+          if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
             return TRUE;
           }
 
           // same vehicle?
-          if ((pSoldier.value.bAssignment == VEHICLE) && (pSoldier.value.iVehicleId == pSoldier2.value.iVehicleId)) {
+          if ((pSoldier.value.bAssignment == Enum117.VEHICLE) && (pSoldier.value.iVehicleId == pSoldier2.value.iVehicleId)) {
             return TRUE;
           }
         }
 
         // target guy is in a vehicle, and this guy IS that vehicle
-        if ((pSoldier.value.bAssignment == VEHICLE) && (pSoldier2.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.value.iVehicleId == pSoldier2.value.bVehicleID)) {
+        if ((pSoldier.value.bAssignment == Enum117.VEHICLE) && (pSoldier2.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.value.iVehicleId == pSoldier2.value.bVehicleID)) {
           return TRUE;
         }
 
         // this guy is in a vehicle, and the target guy IS that vehicle
-        if ((pSoldier2.value.bAssignment == VEHICLE) && (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier2.value.iVehicleId == pSoldier.value.bVehicleID)) {
+        if ((pSoldier2.value.bAssignment == Enum117.VEHICLE) && (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier2.value.iVehicleId == pSoldier.value.bVehicleID)) {
           return TRUE;
         }
       }
@@ -919,7 +919,7 @@ function CheckAndUpdateBasedOnContractTimes(): void {
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if (gCharactersList[iCounter].fValid == TRUE) {
       // what kind of merc
-      if (Menptr[gCharactersList[iCounter].usSolID].ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
+      if (Menptr[gCharactersList[iCounter].usSolID].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
         // amount of time left on contract
         iTimeRemaining = Menptr[gCharactersList[iCounter].usSolID].iEndofContractTime - GetWorldTotalMin();
         if (iTimeRemaining > 60 * 24) {
@@ -946,7 +946,7 @@ function CheckAndUpdateBasedOnContractTimes(): void {
             fCharacterInfoPanelDirty = TRUE;
           }
         }
-      } else if (Menptr[gCharactersList[iCounter].usSolID].ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
+      } else if (Menptr[gCharactersList[iCounter].usSolID].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
         iTimeRemaining = Menptr[gCharactersList[iCounter].usSolID].iTotalContractLength;
 
         if (iTimeRemaining != iOldContractTimes[iCounter]) {
@@ -1093,7 +1093,7 @@ function HandleLeavingOfEquipmentInCurrentSector(uiMercId: UINT32): void {
 
   if (Menptr[uiMercId].sSectorX != gWorldSectorX || Menptr[uiMercId].sSectorY != gWorldSectorY || Menptr[uiMercId].bSectorZ != gbWorldSectorZ) {
     // ATE: Use insertion gridno if not nowhere and insertion is gridno
-    if (Menptr[uiMercId].ubStrategicInsertionCode == INSERTION_CODE_GRIDNO && Menptr[uiMercId].usStrategicInsertionData != NOWHERE) {
+    if (Menptr[uiMercId].ubStrategicInsertionCode == Enum175.INSERTION_CODE_GRIDNO && Menptr[uiMercId].usStrategicInsertionData != NOWHERE) {
       sGridNo = Menptr[uiMercId].usStrategicInsertionData;
     } else {
       // Set flag for item...
@@ -1116,7 +1116,7 @@ function HandleLeavingOfEquipmentInCurrentSector(uiMercId: UINT32): void {
     }
   }
 
-  for (iCounter = 0; iCounter < NUM_INV_SLOTS; iCounter++) {
+  for (iCounter = 0; iCounter < Enum261.NUM_INV_SLOTS; iCounter++) {
     // slot found,
     // check if actual item
     if (Menptr[uiMercId].inv[iCounter].ubNumberOfObjects > 0) {
@@ -1138,7 +1138,7 @@ function HandleMercLeavingEquipmentInOmerta(uiMercId: UINT32): void {
   // stash the items into a linked list hanging of a free "leave item list" slot
   if ((iSlotIndex = SetUpDropItemListForMerc(uiMercId)) != -1) {
     // post event to drop it there 6 hours later
-    AddStrategicEvent(EVENT_MERC_LEAVE_EQUIP_IN_OMERTA, GetWorldTotalMin() + (6 * 60), iSlotIndex);
+    AddStrategicEvent(Enum132.EVENT_MERC_LEAVE_EQUIP_IN_OMERTA, GetWorldTotalMin() + (6 * 60), iSlotIndex);
   } else {
     // otherwise there's no free slots left (shouldn't ever happen)
     AssertMsg(FALSE, "HandleMercLeavingEquipmentInOmerta: No more free slots, equipment lost");
@@ -1151,7 +1151,7 @@ function HandleMercLeavingEquipmentInDrassen(uiMercId: UINT32): void {
   // stash the items into a linked list hanging of a free "leave item list" slot
   if ((iSlotIndex = SetUpDropItemListForMerc(uiMercId)) != -1) {
     // post event to drop it there 6 hours later
-    AddStrategicEvent(EVENT_MERC_LEAVE_EQUIP_IN_DRASSEN, GetWorldTotalMin() + (6 * 60), iSlotIndex);
+    AddStrategicEvent(Enum132.EVENT_MERC_LEAVE_EQUIP_IN_DRASSEN, GetWorldTotalMin() + (6 * 60), iSlotIndex);
   } else {
     // otherwise there's no free slots left (shouldn't ever happen)
     AssertMsg(FALSE, "HandleMercLeavingEquipmentInDrassen: No more free slots, equipment lost");
@@ -1320,7 +1320,7 @@ function SetUpDropItemListForMerc(uiMercId: UINT32): INT32 {
     return -1;
   }
 
-  for (iCounter = 0; iCounter < NUM_INV_SLOTS; iCounter++) {
+  for (iCounter = 0; iCounter < Enum261.NUM_INV_SLOTS; iCounter++) {
     // slot found,
     // check if actual item
     if (Menptr[uiMercId].inv[iCounter].ubNumberOfObjects > 0) {
@@ -1536,7 +1536,7 @@ function UpdateCharRegionHelpText(): void {
     pSoldier = MercPtrs[gCharactersList[bSelectedInfoChar].usSolID];
 
     // health/energy/morale
-    if (pSoldier.value.bAssignment != ASSIGNMENT_POW) {
+    if (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) {
       if (pSoldier.value.bLife != 0) {
         if (AM_A_ROBOT(MercPtrs[gCharactersList[bSelectedInfoChar].usSolID])) {
           // robot (condition only)
@@ -1625,7 +1625,7 @@ function UpdateMapScreenAssignmentPositions(): void {
   // set the position of the pop up boxes
   let pPoint: SGPPoint;
 
-  if (guiCurrentScreen != MAP_SCREEN) {
+  if (guiCurrentScreen != Enum26.MAP_SCREEN) {
     return;
   }
 
@@ -1657,9 +1657,9 @@ function UpdateMapScreenAssignmentPositions(): void {
 
   AssignmentPosition.iY = giBoxY;
 
-  AttributePosition.iY = TrainPosition.iY = AssignmentPosition.iY + (GetFontHeight(MAP_SCREEN_FONT) + 2) * ASSIGN_MENU_TRAIN;
+  AttributePosition.iY = TrainPosition.iY = AssignmentPosition.iY + (GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_TRAIN;
 
-  VehiclePosition.iY = AssignmentPosition.iY + (GetFontHeight(MAP_SCREEN_FONT) + 2) * ASSIGN_MENU_VEHICLE;
+  VehiclePosition.iY = AssignmentPosition.iY + (GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_VEHICLE;
   SquadPosition.iY = AssignmentPosition.iY;
 
   if (fShowAssignmentMenu) {
@@ -1677,14 +1677,14 @@ function UpdateMapScreenAssignmentPositions(): void {
   if (fShowAttributeMenu) {
     GetBoxPosition(ghAttributeBox, addressof(pPoint));
 
-    pPoint.iY = giBoxY + (GetFontHeight(MAP_SCREEN_FONT) + 2) * ASSIGN_MENU_TRAIN;
+    pPoint.iY = giBoxY + (GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_TRAIN;
 
     SetBoxPosition(ghAttributeBox, pPoint);
   }
 
   if (fShowRepairMenu) {
     GetBoxPosition(ghRepairBox, addressof(pPoint));
-    pPoint.iY = giBoxY + (GetFontHeight(MAP_SCREEN_FONT) + 2) * ASSIGN_MENU_REPAIR;
+    pPoint.iY = giBoxY + (GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_REPAIR;
 
     SetBoxPosition(ghRepairBox, pPoint);
   }
@@ -1829,7 +1829,7 @@ function MapscreenCanPassItemToCharNum(iNewCharSlot: INT32): BOOLEAN {
       }
 
       // if in vehicles, make sure it's the same one
-      if ((pNewSoldier.value.bAssignment == VEHICLE) && (pNewSoldier.value.iVehicleId != pOldSoldier.value.iVehicleId)) {
+      if ((pNewSoldier.value.bAssignment == Enum117.VEHICLE) && (pNewSoldier.value.iVehicleId != pOldSoldier.value.iVehicleId)) {
         return FALSE;
       }
     }
@@ -1910,7 +1910,7 @@ function GoToPrevCharacterInList(): void {
 function HandleMinerEvent(bMinerNumber: UINT8, sSectorX: INT16, sSectorY: INT16, sQuoteNumber: INT16, fForceMapscreen: BOOLEAN): void {
   let fFromMapscreen: BOOLEAN = FALSE;
 
-  if (guiCurrentScreen == MAP_SCREEN) {
+  if (guiCurrentScreen == Enum26.MAP_SCREEN) {
     fFromMapscreen = TRUE;
   } else {
     // if transition to mapscreen is required
@@ -1935,9 +1935,9 @@ function HandleMinerEvent(bMinerNumber: UINT8, sSectorX: INT16, sSectorY: INT16,
     fMapPanelDirty = TRUE;
 
     // post dialogue events for miners to say this quote and flash the sector where his mine is
-    CharacterDialogueWithSpecialEvent(uiExternalFaceProfileIds[bMinerNumber], sQuoteNumber, bMinerNumber, DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE, DIALOGUE_SPECIAL_EVENT_MINESECTOREVENT, START_RED_SECTOR_LOCATOR, 1);
+    CharacterDialogueWithSpecialEvent(uiExternalFaceProfileIds[bMinerNumber], sQuoteNumber, bMinerNumber, DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE, DIALOGUE_SPECIAL_EVENT_MINESECTOREVENT, Enum155.START_RED_SECTOR_LOCATOR, 1);
     CharacterDialogue(uiExternalFaceProfileIds[bMinerNumber], sQuoteNumber, uiExternalStaticNPCFaces[bMinerNumber], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
-    CharacterDialogueWithSpecialEvent(uiExternalFaceProfileIds[bMinerNumber], sQuoteNumber, bMinerNumber, DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE, DIALOGUE_SPECIAL_EVENT_MINESECTOREVENT, STOP_RED_SECTOR_LOCATOR, 1);
+    CharacterDialogueWithSpecialEvent(uiExternalFaceProfileIds[bMinerNumber], sQuoteNumber, bMinerNumber, DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE, DIALOGUE_SPECIAL_EVENT_MINESECTOREVENT, Enum155.STOP_RED_SECTOR_LOCATOR, 1);
   } else // stay in tactical
   {
     // no need to to highlight mine sector
@@ -1948,16 +1948,16 @@ function HandleMinerEvent(bMinerNumber: UINT8, sSectorX: INT16, sSectorY: INT16,
 function SetUpAnimationOfMineSectors(iEvent: INT32): void {
   // set up the animation of mine sectors
   switch (iEvent) {
-    case START_RED_SECTOR_LOCATOR:
-      gubBlitSectorLocatorCode = LOCATOR_COLOR_RED;
+    case Enum155.START_RED_SECTOR_LOCATOR:
+      gubBlitSectorLocatorCode = Enum156.LOCATOR_COLOR_RED;
       break;
 
-    case START_YELLOW_SECTOR_LOCATOR:
-      gubBlitSectorLocatorCode = LOCATOR_COLOR_YELLOW;
+    case Enum155.START_YELLOW_SECTOR_LOCATOR:
+      gubBlitSectorLocatorCode = Enum156.LOCATOR_COLOR_YELLOW;
       break;
 
-    case STOP_RED_SECTOR_LOCATOR:
-    case STOP_YELLOW_SECTOR_LOCATOR:
+    case Enum155.STOP_RED_SECTOR_LOCATOR:
+    case Enum155.STOP_YELLOW_SECTOR_LOCATOR:
       TurnOffSectorLocator();
       break;
   }
@@ -2438,7 +2438,7 @@ function HowManyMovingSoldiersInVehicle(iVehicleId: INT32): INT32 {
 
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
     // is he in the right vehicle
-    if ((pSoldierMovingList[iCounter].value.bAssignment == VEHICLE) && (pSoldierMovingList[iCounter].value.iVehicleId == iVehicleId)) {
+    if ((pSoldierMovingList[iCounter].value.bAssignment == Enum117.VEHICLE) && (pSoldierMovingList[iCounter].value.iVehicleId == iVehicleId)) {
       // if he moving?
       if (fSoldierIsMoving[iCounter]) {
         // ok, another one in the vehicle that is going to move
@@ -2497,7 +2497,7 @@ function AddSquadToMovingLists(iSquadNumber: INT32): void {
     return;
   }
 
-  for (iCounter = 0; iCounter < NUMBER_OF_SQUADS; iCounter++) {
+  for (iCounter = 0; iCounter < Enum275.NUMBER_OF_SQUADS; iCounter++) {
     if (iSquadMovingList[iCounter] == iSquadNumber) {
       // found
       return;
@@ -2523,7 +2523,7 @@ function AddVehicleToMovingLists(iVehicleId: INT32): void {
     return;
   }
 
-  for (iCounter = 0; iCounter < NUMBER_OF_SQUADS; iCounter++) {
+  for (iCounter = 0; iCounter < Enum275.NUMBER_OF_SQUADS; iCounter++) {
     if (iVehicleMovingList[iCounter] == iVehicleId) {
       // found
       return;
@@ -2556,7 +2556,7 @@ function InitializeMovingLists(): void {
   }
 
   // init the squads
-  for (iCounter = 0; iCounter < NUMBER_OF_SQUADS; iCounter++) {
+  for (iCounter = 0; iCounter < Enum275.NUMBER_OF_SQUADS; iCounter++) {
     // reset squad value
     iSquadMovingList[iCounter] = -1;
     // turn it off
@@ -2564,7 +2564,7 @@ function InitializeMovingLists(): void {
   }
 
   // init the vehicles
-  for (iCounter = 0; iCounter < NUMBER_OF_SQUADS; iCounter++) {
+  for (iCounter = 0; iCounter < Enum275.NUMBER_OF_SQUADS; iCounter++) {
     // reset squad value
     iVehicleMovingList[iCounter] = -1;
     // turn it off
@@ -2585,14 +2585,14 @@ function IsAnythingSelectedForMoving(): BOOLEAN {
   }
 
   // init the squads
-  for (iCounter = 0; iCounter < NUMBER_OF_SQUADS; iCounter++) {
+  for (iCounter = 0; iCounter < Enum275.NUMBER_OF_SQUADS; iCounter++) {
     if ((iSquadMovingList[iCounter] != -1) && fSquadIsMoving[iCounter]) {
       return TRUE;
     }
   }
 
   // init the vehicles
-  for (iCounter = 0; iCounter < NUMBER_OF_SQUADS; iCounter++) {
+  for (iCounter = 0; iCounter < Enum275.NUMBER_OF_SQUADS; iCounter++) {
     if ((iVehicleMovingList[iCounter] != -1) && fVehicleIsMoving[iCounter]) {
       return TRUE;
     }
@@ -2644,7 +2644,7 @@ function SetUpMovingListsForSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: I
     if (gCharactersList[iCounter].fValid) {
       pSoldier = MercPtrs[gCharactersList[iCounter].usSolID];
 
-      if ((pSoldier.value.bActive) && (pSoldier.value.bAssignment != IN_TRANSIT) && (pSoldier.value.bAssignment != ASSIGNMENT_POW) && (pSoldier.value.sSectorX == sSectorX) && (pSoldier.value.sSectorY == sSectorY) && (pSoldier.value.bSectorZ == sSectorZ)) {
+      if ((pSoldier.value.bActive) && (pSoldier.value.bAssignment != Enum117.IN_TRANSIT) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) && (pSoldier.value.sSectorX == sSectorX) && (pSoldier.value.sSectorY == sSectorY) && (pSoldier.value.bSectorZ == sSectorZ)) {
         if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
           // vehicle
           // if it can move (can't be empty)
@@ -2655,12 +2655,12 @@ function SetUpMovingListsForSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: I
         } else // soldier
         {
           // alive, not aboard Skyrider (airborne or not!)
-          if ((pSoldier.value.bLife >= OKLIFE) && ((pSoldier.value.bAssignment != VEHICLE) || (pSoldier.value.iVehicleId != iHelicopterVehicleId))) {
+          if ((pSoldier.value.bLife >= OKLIFE) && ((pSoldier.value.bAssignment != Enum117.VEHICLE) || (pSoldier.value.iVehicleId != iHelicopterVehicleId))) {
             // add soldier
             AddSoldierToMovingLists(pSoldier);
 
             // if on a squad,
-            if (pSoldier.value.bAssignment < ON_DUTY) {
+            if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
               // add squad (duplicates ok, they're ignored inside the function)
               AddSquadToMovingLists(pSoldier.value.bAssignment);
             }
@@ -2805,7 +2805,7 @@ function AddStringsToMoveBox(): void {
 
     // now add all the grunts in it
     for (iCountB = 0; iCountB < giNumberOfSoldiersInSectorMoving; iCountB++) {
-      if ((pSoldierMovingList[iCountB].value.bAssignment == VEHICLE) && (pSoldierMovingList[iCountB].value.iVehicleId == iVehicleMovingList[iCount])) {
+      if ((pSoldierMovingList[iCountB].value.bAssignment == Enum117.VEHICLE) && (pSoldierMovingList[iCountB].value.iVehicleId == iVehicleMovingList[iCount])) {
         // add mercs in vehicles
         if (IsSoldierSelectedForMovement(pSoldierMovingList[iCountB]) == TRUE) {
           swprintf(sString, "   *%s*", pSoldierMovingList[iCountB].value.name);
@@ -2822,7 +2822,7 @@ function AddStringsToMoveBox(): void {
   // add "other" soldiers heading, once, if there are any
   for (iCount = 0; iCount < giNumberOfSoldiersInSectorMoving; iCount++) {
     // not on duty, not in a vehicle
-    if ((pSoldierMovingList[iCount].value.bAssignment >= ON_DUTY) && (pSoldierMovingList[iCount].value.bAssignment != VEHICLE)) {
+    if ((pSoldierMovingList[iCount].value.bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCount].value.bAssignment != Enum117.VEHICLE)) {
       if (fFirstOne) {
         // add OTHER header line
         if (AllOtherSoldiersInListAreSelected()) {
@@ -2916,7 +2916,7 @@ function BuildMouseRegionsForMoveBox(): void {
 
       // set user defines
       MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
-      MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, SQUAD_REGION);
+      MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, Enum145.SQUAD_REGION);
       MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, iCount);
       iCounter++;
 
@@ -2926,7 +2926,7 @@ function BuildMouseRegionsForMoveBox(): void {
 
           // set user defines
           MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
-          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, SOLDIER_REGION);
+          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, Enum145.SOLDIER_REGION);
           MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, iCountB);
           iCounter++;
         }
@@ -2939,17 +2939,17 @@ function BuildMouseRegionsForMoveBox(): void {
 
       // set user defines
       MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
-      MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, VEHICLE_REGION);
+      MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, Enum145.VEHICLE_REGION);
       MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, iCount);
       iCounter++;
 
       for (iCountB = 0; iCountB < giNumberOfSoldiersInSectorMoving; iCountB++) {
-        if ((pSoldierMovingList[iCountB].value.bAssignment == VEHICLE) && (pSoldierMovingList[iCountB].value.iVehicleId == iVehicleMovingList[iCount])) {
+        if ((pSoldierMovingList[iCountB].value.bAssignment == Enum117.VEHICLE) && (pSoldierMovingList[iCountB].value.iVehicleId == iVehicleMovingList[iCount])) {
           MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
           // set user defines
           MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
-          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, SOLDIER_REGION);
+          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, Enum145.SOLDIER_REGION);
           MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, iCountB);
           iCounter++;
         }
@@ -2959,14 +2959,14 @@ function BuildMouseRegionsForMoveBox(): void {
     // define regions for "other" soldiers
     for (iCount = 0; iCount < giNumberOfSoldiersInSectorMoving; iCount++) {
       // this guy is not in a squad or vehicle
-      if ((pSoldierMovingList[iCount].value.bAssignment >= ON_DUTY) && (pSoldierMovingList[iCount].value.bAssignment != VEHICLE)) {
+      if ((pSoldierMovingList[iCount].value.bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCount].value.bAssignment != Enum117.VEHICLE)) {
         // this line gets place only once...
         if (!fDefinedOtherRegion) {
           MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
           // set user defines
           MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
-          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, OTHER_REGION);
+          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, Enum145.OTHER_REGION);
           MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, 0);
           iCounter++;
 
@@ -2977,7 +2977,7 @@ function BuildMouseRegionsForMoveBox(): void {
 
         // set user defines
         MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
-        MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, SOLDIER_REGION);
+        MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, Enum145.SOLDIER_REGION);
         MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, iCount);
         iCounter++;
       }
@@ -2994,7 +2994,7 @@ function BuildMouseRegionsForMoveBox(): void {
 
     // set user defines
     MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
-    MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, DONE_REGION);
+    MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, Enum145.DONE_REGION);
     MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, 0);
     iCounter++;
   } else {
@@ -3008,7 +3008,7 @@ function BuildMouseRegionsForMoveBox(): void {
 
   // set user defines
   MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
-  MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, CANCEL_REGION);
+  MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, Enum145.CANCEL_REGION);
   MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, 0);
   iCounter++;
 }
@@ -3064,7 +3064,7 @@ function MoveMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
     } else {
       giDblClickTimersForMoveBoxMouseRegions[iMoveBoxLine] = iClickTime;
 
-      if (iRegionType == SQUAD_REGION) {
+      if (iRegionType == Enum145.SQUAD_REGION) {
         // is the squad moving
         if (fSquadIsMoving[iListIndex] == TRUE) {
           // squad stays
@@ -3073,7 +3073,7 @@ function MoveMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
           // squad goes
           SelectSquadForMovement(iSquadMovingList[iListIndex]);
         }
-      } else if (iRegionType == VEHICLE_REGION) {
+      } else if (iRegionType == Enum145.VEHICLE_REGION) {
         // is the vehicle moving
         if (fVehicleIsMoving[iListIndex] == TRUE) {
           // vehicle stays
@@ -3082,7 +3082,7 @@ function MoveMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
           // vehicle goes
           SelectVehicleForMovement(iVehicleMovingList[iListIndex], AND_ALL_ON_BOARD);
         }
-      } else if (iRegionType == OTHER_REGION) {
+      } else if (iRegionType == Enum145.OTHER_REGION) {
         if (AllOtherSoldiersInListAreSelected() == TRUE) {
           // deselect all others in the list
           DeselectAllOtherSoldiersInList();
@@ -3090,7 +3090,7 @@ function MoveMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
           // select all others in the list
           SelectAllOtherSoldiersInList();
         }
-      } else if (iRegionType == SOLDIER_REGION) {
+      } else if (iRegionType == Enum145.SOLDIER_REGION) {
         pSoldier = pSoldierMovingList[iListIndex];
 
         if (pSoldier.value.fBetweenSectors) {
@@ -3104,7 +3104,7 @@ function MoveMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
         if (IsSoldierSelectedForMovement(pSoldier)) {
           // change him to NOT move instead
 
-          if (pSoldier.value.bAssignment == VEHICLE) {
+          if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
             // if he's the only one left moving in the vehicle, deselect whole vehicle
             if (HowManyMovingSoldiersInVehicle(pSoldier.value.iVehicleId) == 1) {
               // whole vehicle stays
@@ -3113,7 +3113,7 @@ function MoveMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
               // soldier is staying behind
               DeselectSoldierForMovement(pSoldier);
             }
-          } else if (pSoldier.value.bAssignment < ON_DUTY) {
+          } else if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
             // if he's the only one left moving in the squad, deselect whole squad
             if (HowManyMovingSoldiersInSquad(pSoldier.value.bAssignment) == 1) {
               // whole squad stays
@@ -3133,7 +3133,7 @@ function MoveMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
             // change him to move instead
             SelectSoldierForMovement(pSoldier);
 
-            if (pSoldier.value.bAssignment < ON_DUTY) {
+            if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
               // if everyone in the squad is now selected, select the squad itself
               if (AllSoldiersInSquadSelected(pSoldier.value.bAssignment)) {
                 SelectSquadForMovement(pSoldier.value.bAssignment);
@@ -3148,13 +3148,13 @@ function MoveMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
             */
           }
         }
-      } else if (iRegionType == DONE_REGION) {
+      } else if (iRegionType == Enum145.DONE_REGION) {
         // is something selected?
         if (IsAnythingSelectedForMoving()) {
           HandleMoveoutOfSectorMovementTroops();
           return;
         }
-      } else if (iRegionType == CANCEL_REGION) {
+      } else if (iRegionType == Enum145.CANCEL_REGION) {
         fShowMapScreenMovementList = FALSE;
         return;
       } else {
@@ -3198,7 +3198,7 @@ function SelectAllOtherSoldiersInList(): void {
   let fSomeCantMove: BOOLEAN = FALSE;
 
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
-    if ((pSoldierMovingList[iCounter].value.bAssignment >= ON_DUTY) && (pSoldierMovingList[iCounter].value.bAssignment != VEHICLE)) {
+    if ((pSoldierMovingList[iCounter].value.bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCounter].value.bAssignment != Enum117.VEHICLE)) {
       if (CanMoveBoxSoldierMoveStrategically(pSoldierMovingList[iCounter], FALSE)) {
         fSoldierIsMoving[iCounter] = TRUE;
       } else {
@@ -3217,7 +3217,7 @@ function DeselectAllOtherSoldiersInList(): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
-    if ((pSoldierMovingList[iCounter].value.bAssignment >= ON_DUTY) && (pSoldierMovingList[iCounter].value.bAssignment != VEHICLE)) {
+    if ((pSoldierMovingList[iCounter].value.bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCounter].value.bAssignment != Enum117.VEHICLE)) {
       fSoldierIsMoving[iCounter] = FALSE;
     }
   }
@@ -3238,7 +3238,7 @@ function HandleMoveoutOfSectorMovementTroops(): void {
     fCheckForCompatibleSquad = FALSE;
 
     // if he is on a valid squad
-    if (pSoldier.value.bAssignment < ON_DUTY) {
+    if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
       // if he and his squad are parting ways (soldier is staying behind, but squad is leaving, or vice versa)
       if (fSoldierIsMoving[iCounter] != IsSquadSelectedForMovement(pSoldier.value.bAssignment)) {
         // split the guy from his squad to any other compatible squad
@@ -3246,7 +3246,7 @@ function HandleMoveoutOfSectorMovementTroops(): void {
       }
     }
     // if in a vehicle
-    else if (pSoldier.value.bAssignment == VEHICLE) {
+    else if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
       // if he and his vehicle are parting ways (soldier is staying behind, but vehicle is leaving, or vice versa)
       if (fSoldierIsMoving[iCounter] != IsVehicleSelectedForMovement(pSoldier.value.iVehicleId)) {
         // split the guy from his vehicle to any other compatible squad
@@ -3375,7 +3375,7 @@ function AllOtherSoldiersInListAreSelected(): BOOLEAN {
   let iCount: INT32 = 0;
 
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
-    if ((pSoldierMovingList[iCounter].value.bAssignment >= ON_DUTY) && (pSoldierMovingList[iCounter].value.bAssignment >= VEHICLE)) {
+    if ((pSoldierMovingList[iCounter].value.bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCounter].value.bAssignment >= Enum117.VEHICLE)) {
       if (fSoldierIsMoving[iCounter] == FALSE) {
         return FALSE;
       }
@@ -3421,7 +3421,7 @@ function FindSquadThatSoldierCanJoin(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bCounter: INT8 = 0;
 
   // run through the list of squads
-  for (bCounter = 0; bCounter < NUMBER_OF_SQUADS; bCounter++) {
+  for (bCounter = 0; bCounter < Enum275.NUMBER_OF_SQUADS; bCounter++) {
     // is this squad in this sector
     if (IsThisSquadInThisSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ, bCounter)) {
       // does it have room?
@@ -3552,17 +3552,17 @@ function AddSoldierToWaitingListQueue(pSoldier: Pointer<SOLDIERTYPE>): void {
   // get soldier profile
   iSoldierId = pSoldier.value.ubID;
 
-  SpecialCharacterDialogueEvent(DIALOGUE_ADD_EVENT_FOR_SOLDIER_UPDATE_BOX, UPDATE_BOX_REASON_ADDSOLDIER, iSoldierId, 0, 0, 0);
+  SpecialCharacterDialogueEvent(DIALOGUE_ADD_EVENT_FOR_SOLDIER_UPDATE_BOX, Enum204.UPDATE_BOX_REASON_ADDSOLDIER, iSoldierId, 0, 0, 0);
   return;
 }
 
 function AddReasonToWaitingListQueue(iReason: INT32): void {
-  SpecialCharacterDialogueEvent(DIALOGUE_ADD_EVENT_FOR_SOLDIER_UPDATE_BOX, UPDATE_BOX_REASON_SET_REASON, iReason, 0, 0, 0);
+  SpecialCharacterDialogueEvent(DIALOGUE_ADD_EVENT_FOR_SOLDIER_UPDATE_BOX, Enum204.UPDATE_BOX_REASON_SET_REASON, iReason, 0, 0, 0);
   return;
 }
 
 function AddDisplayBoxToWaitingQueue(): void {
-  SpecialCharacterDialogueEvent(DIALOGUE_ADD_EVENT_FOR_SOLDIER_UPDATE_BOX, UPDATE_BOX_REASON_SHOW_BOX, 0, 0, 0, 0);
+  SpecialCharacterDialogueEvent(DIALOGUE_ADD_EVENT_FOR_SOLDIER_UPDATE_BOX, Enum204.UPDATE_BOX_REASON_SHOW_BOX, 0, 0, 0, 0);
 
   return;
 }
@@ -4043,7 +4043,7 @@ function UpdateButtonsDuringCharacterDialoguePicture(): void {
 }
 
 function UpdateButtonsDuringCharacterDialogueSubTitles(): void {
-  if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) && (gGameSettings.fOptions[TOPTION_SUBTITLES])) {
+  if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) && (gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES])) {
     UnMarkButtonDirty(giMapContractButton);
   }
 
@@ -4178,7 +4178,7 @@ function UpdateHelpTextForMapScreenMercIcons(): void {
     SetRegionFastHelpText(addressof(gDepositIconRegion), "");
   } else {
     // if merc is an AIM merc
-    if (Menptr[gCharactersList[bSelectedInfoChar].usSolID].ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
+    if (Menptr[gCharactersList[bSelectedInfoChar].usSolID].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
       SetRegionFastHelpText(addressof(gContractIconRegion), zMarksMapScreenText[22]);
     } else {
       SetRegionFastHelpText(addressof(gContractIconRegion), "");
@@ -4294,7 +4294,7 @@ function HandleTimeCompressWithTeamJackedInAndGearedToGo(): BOOLEAN {
   gubPBSectorX = 9;
   gubPBSectorY = 1;
   gubPBSectorZ = 0;
-  gubEnemyEncounterCode = ENTERING_ENEMY_SECTOR_CODE;
+  gubEnemyEncounterCode = Enum164.ENTERING_ENEMY_SECTOR_CODE;
 
   InitHelicopterEntranceByMercs();
 
@@ -4303,7 +4303,7 @@ function HandleTimeCompressWithTeamJackedInAndGearedToGo(): BOOLEAN {
   SetUpShutDownMapScreenHelpTextScreenMask();
 
   // Add e-mail message
-  AddEmail(ENRICO_CONGRATS, ENRICO_CONGRATS_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
+  AddEmail(ENRICO_CONGRATS, ENRICO_CONGRATS_LENGTH, Enum75.MAIL_ENRICO, GetWorldTotalMin());
 
   return TRUE;
 }
@@ -4401,7 +4401,7 @@ function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT16, sSe
   }
 
   if (fContested && bTownId) {
-    if (bTownId == SAN_MONA) {
+    if (bTownId == Enum135.SAN_MONA) {
       // San Mona isn't important.
       return TRUE;
     }
@@ -4415,7 +4415,7 @@ function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT16, sSe
   // get the strategic sector value
   sSector = sSectorX + MAP_WORLD_X * sSectorY;
 
-  if (StrategicMap[sSector].bNameId == BLANK_SECTOR) {
+  if (StrategicMap[sSector].bNameId == Enum135.BLANK_SECTOR) {
     return FALSE;
   }
 
@@ -4494,7 +4494,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   }
 
   // a POW?
-  if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+  if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
     pbErrorNumber.value = 5;
     return FALSE;
   }
@@ -4575,7 +4575,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   }
 
   // if in L12 museum, and the museum alarm went off, and Eldin still around?
-  if ((pSoldier.value.sSectorX == 12) && (pSoldier.value.sSectorY == MAP_ROW_L) && (pSoldier.value.bSectorZ == 0) && (!pSoldier.value.fBetweenSectors) && gMercProfiles[ELDIN].bMercStatus != MERC_IS_DEAD) {
+  if ((pSoldier.value.sSectorX == 12) && (pSoldier.value.sSectorY == MAP_ROW_L) && (pSoldier.value.bSectorZ == 0) && (!pSoldier.value.fBetweenSectors) && gMercProfiles[Enum268.ELDIN].bMercStatus != MERC_IS_DEAD) {
     let ubRoom: UINT8;
     let cnt: UINT8;
     let pSoldier2: Pointer<SOLDIERTYPE>;
@@ -4585,7 +4585,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
 
       for (pSoldier2 = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier2++) {
         if (pSoldier2.value.bActive) {
-          if (FindObj(pSoldier2, CHALICE) != ITEM_NOT_FOUND) {
+          if (FindObj(pSoldier2, Enum225.CHALICE) != ITEM_NOT_FOUND) {
             pbErrorNumber.value = 34;
             return FALSE;
           }
@@ -4595,7 +4595,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   }
 
   // on assignment, other than just in a VEHICLE?
-  if ((pSoldier.value.bAssignment >= ON_DUTY) && (pSoldier.value.bAssignment != VEHICLE)) {
+  if ((pSoldier.value.bAssignment >= Enum117.ON_DUTY) && (pSoldier.value.bAssignment != Enum117.VEHICLE)) {
     pbErrorNumber.value = 3;
     return FALSE;
   }
@@ -4612,17 +4612,17 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   // a robot?
   if (AM_A_ROBOT(pSoldier)) {
     // going alone?
-    if (((pSoldier.value.bAssignment == VEHICLE) && (!IsRobotControllerInVehicle(pSoldier.value.iVehicleId))) || ((pSoldier.value.bAssignment < ON_DUTY) && (!IsRobotControllerInSquad(pSoldier.value.bAssignment)))) {
+    if (((pSoldier.value.bAssignment == Enum117.VEHICLE) && (!IsRobotControllerInVehicle(pSoldier.value.iVehicleId))) || ((pSoldier.value.bAssignment < Enum117.ON_DUTY) && (!IsRobotControllerInSquad(pSoldier.value.bAssignment)))) {
       pbErrorNumber.value = 49;
       return FALSE;
     }
   }
   // an Escorted NPC?
-  else if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
+  else if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     // going alone?
-    if (((pSoldier.value.bAssignment == VEHICLE) && (GetNumberOfNonEPCsInVehicle(pSoldier.value.iVehicleId) == 0)) || ((pSoldier.value.bAssignment < ON_DUTY) && (NumberOfNonEPCsInSquad(pSoldier.value.bAssignment) == 0))) {
+    if (((pSoldier.value.bAssignment == Enum117.VEHICLE) && (GetNumberOfNonEPCsInVehicle(pSoldier.value.iVehicleId) == 0)) || ((pSoldier.value.bAssignment < Enum117.ON_DUTY) && (NumberOfNonEPCsInSquad(pSoldier.value.bAssignment) == 0))) {
       // are they male or female
-      if (gMercProfiles[pSoldier.value.ubProfile].bSex == MALE) {
+      if (gMercProfiles[pSoldier.value.ubProfile].bSex == Enum272.MALE) {
         swprintf(gsCustomErrorString, "%s %s", pSoldier.value.name, pMapErrorString[6]);
       } else {
         swprintf(gsCustomErrorString, "%s %s", pSoldier.value.name, pMapErrorString[7]);
@@ -4638,10 +4638,10 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
 
   // find out if this particular character can't move for some reason
   switch (pSoldier.value.ubProfile) {
-    case (MARIA):
+    case (Enum268.MARIA):
       // Maria can't move if she's in sector C5
       sSector = SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
-      if (sSector == SEC_C5) {
+      if (sSector == Enum123.SEC_C5) {
         // can't move at this time
         fProblemExists = TRUE;
       }
@@ -4677,7 +4677,7 @@ function CanEntireMovementGroupMercIsInMove(pSoldier: Pointer<SOLDIERTYPE>, pbEr
   if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
     // IS a vehicle - use vehicle's group
     ubGroup = pVehicleList[pSoldier.value.bVehicleID].ubMovementGroup;
-  } else if (pSoldier.value.bAssignment == VEHICLE) {
+  } else if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
     // IN a vehicle - use vehicle's group
     ubGroup = pVehicleList[pSoldier.value.iVehicleId].ubMovementGroup;
   } else {
@@ -4706,7 +4706,7 @@ function CanEntireMovementGroupMercIsInMove(pSoldier: Pointer<SOLDIERTYPE>, pbEr
       if (pCurrentSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
         // IS a vehicle
         ubCurrentGroup = pVehicleList[pCurrentSoldier.value.bVehicleID].ubMovementGroup;
-      } else if (pCurrentSoldier.value.bAssignment == VEHICLE) {
+      } else if (pCurrentSoldier.value.bAssignment == Enum117.VEHICLE) {
         // IN a vehicle
         ubCurrentGroup = pVehicleList[pCurrentSoldier.value.iVehicleId].ubMovementGroup;
       } else {
@@ -4731,9 +4731,9 @@ function CanEntireMovementGroupMercIsInMove(pSoldier: Pointer<SOLDIERTYPE>, pbEr
 function ReportMapScreenMovementError(bErrorNumber: INT8): void {
   if (bErrorNumber == -99) {
     // - 99 is a special message # indicating a customized message
-    DoMapMessageBox(MSG_BOX_BASIC_STYLE, gsCustomErrorString, MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
+    DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gsCustomErrorString, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
   } else {
-    DoMapMessageBox(MSG_BOX_BASIC_STYLE, pMapErrorString[bErrorNumber], MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
+    DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapErrorString[bErrorNumber], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
   }
 }
 
@@ -4767,7 +4767,7 @@ function RequestIncreaseInTimeCompression(): void {
                     StartTimeCompression();
     */
     // ARM Change: start over at 5x compression
-    SetGameTimeCompressionLevel(TIME_COMPRESS_5MINS);
+    SetGameTimeCompressionLevel(Enum130.TIME_COMPRESS_5MINS);
   }
 }
 
@@ -4801,7 +4801,7 @@ function CanSoldierMoveWithVehicleId(pSoldier: Pointer<SOLDIERTYPE>, iVehicle1Id
   Assert(iVehicle1Id != -1);
 
   // if soldier is IN a vehicle
-  if (pSoldier.value.bAssignment == VEHICLE) {
+  if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
     iVehicle2Id = pSoldier.value.iVehicleId;
   } else
       // if soldier IS a vehicle
@@ -4991,7 +4991,7 @@ function TurnOnSectorLocator(ubProfileID: UINT8): void {
     gsSectorLocatorY = pSoldier.value.sSectorY;
   } else {
     // if it's Skyrider (when he's not on our team), and his chopper has been setup
-    if ((ubProfileID == SKYRIDER) && fSkyRiderSetUp) {
+    if ((ubProfileID == Enum268.SKYRIDER) && fSkyRiderSetUp) {
       // if helicopter position is being shown, don't do this, too, cause the helicopter icon is on top and it looks
       // like crap.  I tried moving the heli icon blit to before, but that screws up it's blitting.
       if (!fShowAircraftFlag) {
@@ -5007,11 +5007,11 @@ function TurnOnSectorLocator(ubProfileID: UINT8): void {
       gsSectorLocatorY = gMercProfiles[ubProfileID].sSectorY;
     }
   }
-  gubBlitSectorLocatorCode = LOCATOR_COLOR_YELLOW;
+  gubBlitSectorLocatorCode = Enum156.LOCATOR_COLOR_YELLOW;
 }
 
 function TurnOffSectorLocator(): void {
-  gubBlitSectorLocatorCode = LOCATOR_COLOR_NONE;
+  gubBlitSectorLocatorCode = Enum156.LOCATOR_COLOR_NONE;
   fMapPanelDirty = TRUE;
 }
 
@@ -5043,11 +5043,11 @@ function HandleBlitOfSectorLocatorIcon(sSectorX: INT16, sSectorY: INT16, sSector
 
   switch (ubLocatorID) {
     // grab zoomed out icon
-    case LOCATOR_COLOR_RED:
+    case Enum156.LOCATOR_COLOR_RED:
       ubBaseFrame = 0;
       ubFrame = (ubFrame % 13);
       break;
-    case LOCATOR_COLOR_YELLOW:
+    case Enum156.LOCATOR_COLOR_YELLOW:
       ubBaseFrame = 13;
       ubFrame = (13 + (ubFrame % 13));
       break;
@@ -5101,11 +5101,11 @@ function CheckIfSalaryIncreasedAndSayQuote(pSoldier: Pointer<SOLDIERTYPE>, fTrig
     if (fTriggerContractMenu) {
       // have him say so first - post the dialogue event with the contract menu event
       SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_ENTER_MAPSCREEN, 0, 0, 0, 0, 0);
-      HandleImportantMercQuote(pSoldier, QUOTE_MERC_GONE_UP_IN_PRICE);
+      HandleImportantMercQuote(pSoldier, Enum202.QUOTE_MERC_GONE_UP_IN_PRICE);
       TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_SHOW_CONTRACT_MENU, 0, 0);
     } else {
       // now post the dialogue event and the contratc menu event
-      HandleImportantMercQuote(pSoldier, QUOTE_MERC_GONE_UP_IN_PRICE);
+      HandleImportantMercQuote(pSoldier, Enum202.QUOTE_MERC_GONE_UP_IN_PRICE);
     }
 
     pSoldier.value.fContractPriceHasIncreased = FALSE;

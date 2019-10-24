@@ -578,7 +578,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
     if (!(pInventoryPoolList[(iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT) + iCounter].usFlags & WORLD_ITEM_REACHABLE)) {
       if (pInventoryPoolList[(iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT) + iCounter].o.usItem != NOTHING) {
         // not reachable
-        DoMapMessageBox(MSG_BOX_BASIC_STYLE, gzLateLocalizedString[38], MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[38], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
         return;
       }
     }
@@ -587,7 +587,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
 
     // valid character?
     if (gCharactersList[bSelectedInfoChar].fValid == FALSE) {
-      DoMapMessageBox(MSG_BOX_BASIC_STYLE, pMapInventoryErrorString[1], MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+      DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapInventoryErrorString[1], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
       return;
     }
 
@@ -600,7 +600,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
         } else {
           swprintf(sString, pMapInventoryErrorString[5], Menptr[gCharactersList[bSelectedInfoChar].usSolID].name);
         }
-        DoMapMessageBox(MSG_BOX_BASIC_STYLE, sString, MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, sString, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
         return;
       }
     }
@@ -614,7 +614,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
       // if in battle inform player they will have to do this in tactical
       //			if( ( ( gTacticalStatus.fEnemyInSector ) ||( ( sSelMapX == gWorldSectorX ) && ( sSelMapY == gWorldSectorY ) && ( iCurrentMapSectorZ == gbWorldSectorZ ) && ( gTacticalStatus.uiFlags & INCOMBAT ) ) ) )
       if (!CanPlayerUseSectorInventory(addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]))) {
-        DoMapMessageBox(MSG_BOX_BASIC_STYLE, pMapInventoryErrorString[3], MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapInventoryErrorString[3], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
         return;
       }
 
@@ -642,7 +642,7 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
       // if in battle inform player they will have to do this in tactical
       //			if( ( gTacticalStatus.fEnemyInSector ) ||( ( sSelMapX == gWorldSectorX ) && ( sSelMapY == gWorldSectorY ) && ( iCurrentMapSectorZ == gbWorldSectorZ ) && ( gTacticalStatus.uiFlags & INCOMBAT ) ) )
       if (!CanPlayerUseSectorInventory(addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]))) {
-        DoMapMessageBox(MSG_BOX_BASIC_STYLE, pMapInventoryErrorString[4], MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapInventoryErrorString[4], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
         return;
       }
 
@@ -822,7 +822,7 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
       */
 
       // TEST!!  If the item exists, and is NOT VALID, report it
-      if (pTotalSectorList[iCounter].fExists && pTotalSectorList[iCounter].o.usItem > MAXITEMS) {
+      if (pTotalSectorList[iCounter].fExists && pTotalSectorList[iCounter].o.usItem > Enum225.MAXITEMS) {
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "The %d item in the list is NOT valid. Please send save.  DF 1.", iCounter);
       }
 
@@ -1152,7 +1152,7 @@ function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemP
     ubNumberToDrop = pItemPtr.value.ubNumberOfObjects;
 
     if (pItemPtr.value.usItem == pInventorySlot.value.usItem) {
-      if (pItemPtr.value.usItem == MONEY) {
+      if (pItemPtr.value.usItem == Enum225.MONEY) {
         // always allow money to be combined!
         // average out the status values using a weighted average...
         pInventorySlot.value.bStatus[0] = ((pInventorySlot.value.bMoneyStatus * pInventorySlot.value.uiMoneyAmount + pItemPtr.value.bMoneyStatus * pItemPtr.value.uiMoneyAmount) / (pInventorySlot.value.uiMoneyAmount + pItemPtr.value.uiMoneyAmount));
@@ -1189,7 +1189,7 @@ function AutoPlaceObjectInInventoryStash(pItemPtr: Pointer<OBJECTTYPE>): BOOLEAN
   // placement in an empty slot
   ubNumberToDrop = pItemPtr.value.ubNumberOfObjects;
 
-  ubSlotLimit = ItemSlotLimit(pItemPtr.value.usItem, BIGPOCK1POS);
+  ubSlotLimit = ItemSlotLimit(pItemPtr.value.usItem, Enum261.BIGPOCK1POS);
 
   if (ubNumberToDrop > ubSlotLimit && ubSlotLimit != 0) {
     // drop as many as possible into pocket
@@ -1598,7 +1598,7 @@ function HandleMapSectorInventory(): void {
 
 // CJC look here to add/remove checks for the sector inventory
 function IsMapScreenWorldItemVisibleInMapInventory(pWorldItem: Pointer<WORLDITEM>): BOOLEAN {
-  if (pWorldItem.value.bVisible == 1 && pWorldItem.value.fExists && pWorldItem.value.o.usItem != SWITCH && pWorldItem.value.o.usItem != ACTION_ITEM && pWorldItem.value.o.bTrap <= 0) {
+  if (pWorldItem.value.bVisible == 1 && pWorldItem.value.fExists && pWorldItem.value.o.usItem != Enum225.SWITCH && pWorldItem.value.o.usItem != Enum225.ACTION_ITEM && pWorldItem.value.o.bTrap <= 0) {
     return TRUE;
   }
 

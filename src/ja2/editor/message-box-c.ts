@@ -8,7 +8,7 @@ let iMsgBoxCancel: INT32;
 let MsgBoxRect: SGPRect;
 
 let gfMessageBoxResult: BOOLEAN = FALSE;
-let gubMessageBoxStatus: UINT8 = MESSAGEBOX_NONE;
+let gubMessageBoxStatus: UINT8 = Enum52.MESSAGEBOX_NONE;
 
 function CreateMessageBox(wzString: Pointer<UINT16>): void {
   let sPixLen: INT16;
@@ -27,7 +27,7 @@ function CreateMessageBox(wzString: Pointer<UINT16>): void {
   // Fake button for background w/ text
   iMsgBoxBgrnd = CreateTextButton(wzString, gpLargeFontType1, FONT_LTKHAKI, FONT_DKKHAKI, BUTTON_USE_DEFAULT, sStartX, sStartY, sPixLen, 96, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   DisableButton(iMsgBoxBgrnd);
-  SpecifyDisabledButtonStyle(iMsgBoxBgrnd, DISABLED_STYLE_NONE);
+  SpecifyDisabledButtonStyle(iMsgBoxBgrnd, Enum29.DISABLED_STYLE_NONE);
 
   iMsgBoxOkImg = LoadButtonImage("EDITOR//ok.sti", 0, 1, 2, 3, 4);
   iMsgBoxCancelImg = LoadButtonImage("EDITOR//cancel.sti", 0, 1, 2, 3, 4);
@@ -43,7 +43,7 @@ function CreateMessageBox(wzString: Pointer<UINT16>): void {
 
   RestrictMouseCursor(addressof(MsgBoxRect));
 
-  gubMessageBoxStatus = MESSAGEBOX_WAIT;
+  gubMessageBoxStatus = Enum52.MESSAGEBOX_WAIT;
 }
 
 function MessageBoxHandled(): BOOLEAN {
@@ -55,20 +55,20 @@ function MessageBoxHandled(): BOOLEAN {
         case ENTER:
         case 'y':
         case 'Y':
-          gubMessageBoxStatus = MESSAGEBOX_DONE;
+          gubMessageBoxStatus = Enum52.MESSAGEBOX_DONE;
           gfMessageBoxResult = TRUE;
           break;
         case ESC:
         case 'n':
         case 'N':
-          gubMessageBoxStatus = MESSAGEBOX_DONE;
+          gubMessageBoxStatus = Enum52.MESSAGEBOX_DONE;
           gfMessageBoxResult = FALSE;
           break;
       }
     }
   }
 
-  if (gubMessageBoxStatus == MESSAGEBOX_DONE) {
+  if (gubMessageBoxStatus == Enum52.MESSAGEBOX_DONE) {
     while (DequeueEvent(addressof(DummyEvent)))
       continue;
   }
@@ -77,7 +77,7 @@ function MessageBoxHandled(): BOOLEAN {
   //	InvalidateScreen( );
   //	ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
-  return gubMessageBoxStatus == MESSAGEBOX_DONE;
+  return gubMessageBoxStatus == Enum52.MESSAGEBOX_DONE;
 }
 
 function RemoveMessageBox(): void {
@@ -87,7 +87,7 @@ function RemoveMessageBox(): void {
   RemoveButton(iMsgBoxBgrnd);
   UnloadButtonImage(iMsgBoxOkImg);
   UnloadButtonImage(iMsgBoxCancelImg);
-  gubMessageBoxStatus = MESSAGEBOX_NONE;
+  gubMessageBoxStatus = Enum52.MESSAGEBOX_NONE;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -98,7 +98,7 @@ function MsgBoxOkClkCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     butn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gubMessageBoxStatus = MESSAGEBOX_DONE;
+    gubMessageBoxStatus = Enum52.MESSAGEBOX_DONE;
     gfMessageBoxResult = TRUE;
   }
 }
@@ -107,7 +107,7 @@ function MsgBoxCnclClkCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     butn.value.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gubMessageBoxStatus = MESSAGEBOX_DONE;
+    gubMessageBoxStatus = Enum52.MESSAGEBOX_DONE;
     gfMessageBoxResult = FALSE;
   }
 }

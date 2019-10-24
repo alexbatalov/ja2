@@ -223,7 +223,7 @@ let gfUserHasRequestedToLeave: BOOLEAN = FALSE;
 
 let gfRenderScreenOnNextLoop: BOOLEAN = FALSE;
 
-let gubSkiDirtyLevel: UINT8 = SKI_DIRTY_LEVEL0;
+let gubSkiDirtyLevel: UINT8 = Enum253.SKI_DIRTY_LEVEL0;
 let giSKIMessageBox: INT32 = -1;
 
 let gbSelectedArmsDealerID: INT8 = -1; // Contains the enum value for the currently selected arms dealer
@@ -315,7 +315,7 @@ const enum Enum250 {
   SKI_ATM_DISPLAY_PLAYERS_BALANCE,
 }
 
-let gubCurrentSkiAtmMode: UINT8 = SKI_ATM_DISABLED_MODE;
+let gubCurrentSkiAtmMode: UINT8 = Enum250.SKI_ATM_DISABLED_MODE;
 
 // Enums for possible evaluation results
 const enum Enum251 {
@@ -431,18 +431,18 @@ function ShopKeeperScreenHandle(): UINT32 {
       gfSKIScreenExit = TRUE;
       EnterTacticalScreen();
 
-      return SHOPKEEPER_SCREEN;
+      return Enum26.SHOPKEEPER_SCREEN;
     } else {
       gfSKIScreenEntry = FALSE;
       gfSKIScreenExit = FALSE;
     }
-    gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+    gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
     gfRenderScreenOnNextLoop = TRUE;
     InvalidateRegion(0, 0, 640, 480);
   }
 
   if (gfRenderScreenOnNextLoop)
-    gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+    gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 
   RestoreBackgroundRects();
 
@@ -457,16 +457,16 @@ function ShopKeeperScreenHandle(): UINT32 {
 
   HandleShopKeeperInterface();
 
-  if (gubSkiDirtyLevel == SKI_DIRTY_LEVEL2) {
+  if (gubSkiDirtyLevel == Enum253.SKI_DIRTY_LEVEL2) {
     RenderShopKeeperInterface();
 
     fInterfacePanelDirty = DIRTYLEVEL2;
 
-    gubSkiDirtyLevel = SKI_DIRTY_LEVEL0;
-  } else if (gubSkiDirtyLevel == SKI_DIRTY_LEVEL1) {
+    gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL0;
+  } else if (gubSkiDirtyLevel == Enum253.SKI_DIRTY_LEVEL1) {
     fInterfacePanelDirty = DIRTYLEVEL2;
 
-    gubSkiDirtyLevel = SKI_DIRTY_LEVEL0;
+    gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL0;
   }
 
   // render buttons marked dirty
@@ -492,12 +492,12 @@ function ShopKeeperScreenHandle(): UINT32 {
   if (gfDisplayNoRoomMsg) {
     // tell player there's not enough room in the player's offer area
     // ARM: message is delayed because we need the mouse restriction to be in place BEFORE it comes up so it gets lifted/restored
-    DoSkiMessageBox(MSG_BOX_BASIC_STYLE, SKI_Text[SKI_TEXT_NO_MORE_ROOM_IN_PLAYER_OFFER_AREA], SHOPKEEPER_SCREEN, MSG_BOX_FLAG_OK, NULL);
+    DoSkiMessageBox(Enum24.MSG_BOX_BASIC_STYLE, SKI_Text[Enum367.SKI_TEXT_NO_MORE_ROOM_IN_PLAYER_OFFER_AREA], Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_OK, NULL);
 
     gfDisplayNoRoomMsg = FALSE;
   }
 
-  return SHOPKEEPER_SCREEN;
+  return Enum26.SHOPKEEPER_SCREEN;
 }
 
 function ShopKeeperScreenShutdown(): UINT32 {
@@ -533,7 +533,7 @@ function EnterShopKeeperInterface(): BOOLEAN {
   EmptyBackgroundRects();
 
   if (gfExitSKIDueToMessageBox) {
-    gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+    gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
     gfExitSKIDueToMessageBox = FALSE;
   }
 
@@ -541,7 +541,7 @@ function EnterShopKeeperInterface(): BOOLEAN {
   Assert(gpTempDealersInventory == NULL);
 
   // Reinitialize the team panel to be the SM panel
-  SetCurrentInterfacePanel(SM_PANEL);
+  SetCurrentInterfacePanel(Enum215.SM_PANEL);
   SetCurrentTacticalPanelCurrentMerc(gusSelectedSoldier);
   SetSMPanelCurrentMerc(gusSelectedSoldier);
 
@@ -597,11 +597,11 @@ function EnterShopKeeperInterface(): BOOLEAN {
 
   // Page up button for the merchant inventory
   guiSKI_InvPageUpButton = QuickCreateButton(guiSKI_InvPageUpButtonImage, SKI_PAGE_UP_ARROWS_X, SKI_PAGE_UP_ARROWS_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, BtnSKI_InvPageUpButtonCallback);
-  SpecifyDisabledButtonStyle(guiSKI_InvPageUpButton, DISABLED_STYLE_HATCHED);
+  SpecifyDisabledButtonStyle(guiSKI_InvPageUpButton, Enum29.DISABLED_STYLE_HATCHED);
 
   // Page down button for the merchant inventory
   guiSKI_InvPageDownButton = QuickCreateButton(guiSKI_InvPageDownButtonImage, SKI_PAGE_DOWN_ARROWS_X, SKI_PAGE_DOWN_ARROWS_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, BtnSKI_InvPageDownButtonCallback);
-  SpecifyDisabledButtonStyle(guiSKI_InvPageDownButton, DISABLED_STYLE_HATCHED);
+  SpecifyDisabledButtonStyle(guiSKI_InvPageDownButton, Enum29.DISABLED_STYLE_HATCHED);
 
   // Evaluate:
   //	guiSKI_EvaluateButtonImage = LoadButtonImage("INTERFACE\\TradeButtons.sti", -1,0,-1,1,-1 );
@@ -622,22 +622,22 @@ function EnterShopKeeperInterface(): BOOLEAN {
   */
 
   // Transaction button
-  guiSKI_TransactionButton = CreateIconAndTextButton(guiSKI_TransactionButtonImage, SKI_Text[SKI_TEXT_TRANSACTION], SKI_BUTTON_FONT, SKI_BUTTON_COLOR, DEFAULT_SHADOW, SKI_BUTTON_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SKI_TRANSACTION_BUTTON_X, SKI_TRANSACTION_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnSKI_TransactionButtonCallback);
-  SpecifyDisabledButtonStyle(guiSKI_TransactionButton, DISABLED_STYLE_HATCHED);
+  guiSKI_TransactionButton = CreateIconAndTextButton(guiSKI_TransactionButtonImage, SKI_Text[Enum367.SKI_TEXT_TRANSACTION], SKI_BUTTON_FONT, SKI_BUTTON_COLOR, DEFAULT_SHADOW, SKI_BUTTON_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SKI_TRANSACTION_BUTTON_X, SKI_TRANSACTION_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnSKI_TransactionButtonCallback);
+  SpecifyDisabledButtonStyle(guiSKI_TransactionButton, Enum29.DISABLED_STYLE_HATCHED);
 
   // if the dealer repairs, use the repair fast help text for the transaction button
-  if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS)
-    SetButtonFastHelpText(guiSKI_TransactionButton, SkiMessageBoxText[SKI_REPAIR_TRANSACTION_BUTTON_HELP_TEXT]);
+  if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS)
+    SetButtonFastHelpText(guiSKI_TransactionButton, SkiMessageBoxText[Enum370.SKI_REPAIR_TRANSACTION_BUTTON_HELP_TEXT]);
   else
-    SetButtonFastHelpText(guiSKI_TransactionButton, SkiMessageBoxText[SKI_TRANSACTION_BUTTON_HELP_TEXT]);
+    SetButtonFastHelpText(guiSKI_TransactionButton, SkiMessageBoxText[Enum370.SKI_TRANSACTION_BUTTON_HELP_TEXT]);
 
   // Done button
-  guiSKI_DoneButton = CreateIconAndTextButton(guiSKI_DoneButtonImage, SKI_Text[SKI_TEXT_DONE], SKI_BUTTON_FONT, SKI_BUTTON_COLOR, DEFAULT_SHADOW, SKI_BUTTON_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SKI_DONE_BUTTON_X, SKI_DONE_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 10, DEFAULT_MOVE_CALLBACK, BtnSKI_DoneButtonCallback);
-  SpecifyDisabledButtonStyle(guiSKI_DoneButton, DISABLED_STYLE_HATCHED);
-  SetButtonFastHelpText(guiSKI_DoneButton, SkiMessageBoxText[SKI_DONE_BUTTON_HELP_TEXT]);
+  guiSKI_DoneButton = CreateIconAndTextButton(guiSKI_DoneButtonImage, SKI_Text[Enum367.SKI_TEXT_DONE], SKI_BUTTON_FONT, SKI_BUTTON_COLOR, DEFAULT_SHADOW, SKI_BUTTON_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SKI_DONE_BUTTON_X, SKI_DONE_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 10, DEFAULT_MOVE_CALLBACK, BtnSKI_DoneButtonCallback);
+  SpecifyDisabledButtonStyle(guiSKI_DoneButton, Enum29.DISABLED_STYLE_HATCHED);
+  SetButtonFastHelpText(guiSKI_DoneButton, SkiMessageBoxText[Enum370.SKI_DONE_BUTTON_HELP_TEXT]);
 
   // Blanket the entire screen
-  MSYS_DefineRegion(addressof(gSKI_EntireScreenMouseRegions), 0, 0, 639, 339, MSYS_PRIORITY_HIGH - 2, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(gSKI_EntireScreenMouseRegions), 0, 0, 639, 339, MSYS_PRIORITY_HIGH - 2, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   MSYS_AddRegion(addressof(gSKI_EntireScreenMouseRegions));
 
   /*
@@ -652,14 +652,14 @@ function EnterShopKeeperInterface(): BOOLEAN {
   CreateSkiInventorySlotMouseRegions();
 
   // Create the mouse region to limit the movement of the item cursos
-  MSYS_DefineRegion(addressof(gSkiInventoryMovementAreaMouseRegions), SKI_ITEM_MOVEMENT_AREA_X, SKI_ITEM_MOVEMENT_AREA_Y, (SKI_ITEM_MOVEMENT_AREA_X + SKI_ITEM_MOVEMENT_AREA_WIDTH), (SKI_ITEM_MOVEMENT_AREA_Y + SKI_ITEM_MOVEMENT_AREA_HEIGHT), MSYS_PRIORITY_HIGH - 1, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK); // SelectSkiInventoryMovementAreaRegionCallBack
+  MSYS_DefineRegion(addressof(gSkiInventoryMovementAreaMouseRegions), SKI_ITEM_MOVEMENT_AREA_X, SKI_ITEM_MOVEMENT_AREA_Y, (SKI_ITEM_MOVEMENT_AREA_X + SKI_ITEM_MOVEMENT_AREA_WIDTH), (SKI_ITEM_MOVEMENT_AREA_Y + SKI_ITEM_MOVEMENT_AREA_HEIGHT), MSYS_PRIORITY_HIGH - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK); // SelectSkiInventoryMovementAreaRegionCallBack
   MSYS_AddRegion(addressof(gSkiInventoryMovementAreaMouseRegions));
 
   // Disable the region that limits the movement of the cursor with the item
   MSYS_DisableRegion(addressof(gSkiInventoryMovementAreaMouseRegions));
 
   // Create the mouse region for the shopkeeper's face
-  MSYS_DefineRegion(addressof(gArmsDealersFaceMouseRegions), SKI_FACE_X, SKI_FACE_Y, (SKI_FACE_X + SKI_FACE_WIDTH), (SKI_FACE_Y + SKI_FACE_HEIGHT), MSYS_PRIORITY_HIGH - 1, CURSOR_NORMAL, MSYS_NO_CALLBACK, SelectArmsDealersFaceRegionCallBack);
+  MSYS_DefineRegion(addressof(gArmsDealersFaceMouseRegions), SKI_FACE_X, SKI_FACE_Y, (SKI_FACE_X + SKI_FACE_WIDTH), (SKI_FACE_Y + SKI_FACE_HEIGHT), MSYS_PRIORITY_HIGH - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, SelectArmsDealersFaceRegionCallBack);
   MSYS_AddRegion(addressof(gArmsDealersFaceMouseRegions));
 
   // Create the atm button
@@ -669,7 +669,7 @@ function EnterShopKeeperInterface(): BOOLEAN {
   memset(ArmsDealerOfferArea, 0, sizeof(INVENTORY_IN_SLOT) * SKI_NUM_TRADING_INV_SLOTS);
   memset(PlayersOfferArea, 0, sizeof(INVENTORY_IN_SLOT) * SKI_NUM_TRADING_INV_SLOTS);
 
-  if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+  if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
     HandlePossibleRepairDelays();
   }
 
@@ -699,7 +699,7 @@ function EnterShopKeeperInterface(): BOOLEAN {
   // Reset
   gfRemindedPlayerToPickUpHisStuff = FALSE;
   gfUserHasRequestedToLeave = FALSE;
-  gubCurrentSkiAtmMode = SKI_ATM_DISABLED_MODE;
+  gubCurrentSkiAtmMode = Enum250.SKI_ATM_DISABLED_MODE;
   gfDisplayNoRoomMsg = FALSE;
 
   // Disable the map radar region
@@ -713,7 +713,7 @@ function EnterShopKeeperInterface(): BOOLEAN {
 
     // if this is NOT a repair dealer or he is is but there is enough space in the player's offer area
     // (you can't be out of space if it isn't a repairman, only they can fill it up with repaired items!)
-    if ((ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != ARMS_DEALER_REPAIRS) || (CountNumberOfItemsInThePlayersOfferArea() < SKI_NUM_ARMS_DEALERS_INV_SLOTS)) {
+    if ((ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != Enum198.ARMS_DEALER_REPAIRS) || (CountNumberOfItemsInThePlayersOfferArea() < SKI_NUM_ARMS_DEALERS_INV_SLOTS)) {
       // if we're supposed to store the original pocket #, but that pocket still holds more of these
       if ((bSlotNum != -1) && (gpSMCurrentMerc.value.inv[bSlotNum].ubNumberOfObjects > 0)) {
         // then we can't store the pocket #, because our system can't return stacked objects
@@ -747,7 +747,7 @@ function EnterShopKeeperInterface(): BOOLEAN {
   pShopKeeperItemDescObject = NULL;
 
   // Region to allow the user to drop items to the ground
-  MSYS_DefineRegion(addressof(gArmsDealersDropItemToGroundMouseRegions), SKI_DROP_ITEM_TO_GROUND_START_X, SKI_DROP_ITEM_TO_GROUND_START_Y, 639, 339, MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectArmsDealersDropItemToGroundMovementRegionCallBack, SelectArmsDealersDropItemToGroundRegionCallBack);
+  MSYS_DefineRegion(addressof(gArmsDealersDropItemToGroundMouseRegions), SKI_DROP_ITEM_TO_GROUND_START_X, SKI_DROP_ITEM_TO_GROUND_START_Y, 639, 339, MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectArmsDealersDropItemToGroundMovementRegionCallBack, SelectArmsDealersDropItemToGroundRegionCallBack);
   //						 CURSOR_NORMAL, MSYS_NO_CALLBACK, SelectArmsDealersDropItemToGroundRegionCallBack );
   MSYS_AddRegion(addressof(gArmsDealersDropItemToGroundMouseRegions));
 
@@ -893,7 +893,7 @@ function HandleShopKeeperInterface(): void {
     return;
   }
 
-  if (gubSkiDirtyLevel == SKI_DIRTY_LEVEL2) {
+  if (gubSkiDirtyLevel == Enum253.SKI_DIRTY_LEVEL2) {
     fInterfacePanelDirty = DIRTYLEVEL2;
   }
 
@@ -958,7 +958,7 @@ function HandleShopKeeperInterface(): void {
   // if the merc is talking and there is an item currently being highlighted
   // ( this gets rid of the item burning through the dealers text box )
   if (gfIsTheShopKeeperTalking)
-    if (gpHighLightedItemObject != NULL || gubSkiDirtyLevel != SKI_DIRTY_LEVEL0)
+    if (gpHighLightedItemObject != NULL || gubSkiDirtyLevel != Enum253.SKI_DIRTY_LEVEL0)
       RenderMercPopUpBoxFromIndex(giPopUpBoxId, gusPositionOfSubTitlesX, SKI_POSITION_SUBTITLES_Y, FRAME_BUFFER);
 
   // if we are to display the drop item to ground text
@@ -989,22 +989,22 @@ function RenderShopKeeperInterface(): BOOLEAN {
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, SKI_MAIN_BACKGROUND_X, SKI_MAIN_BACKGROUND_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Display the Title
-  DrawTextToScreen(SKI_Text[SKI_TEXT_MERCHADISE_IN_STOCK], SKI_MAIN_TITLE_X, SKI_MAIN_TITLE_Y, SKI_MAIN_TITLE_WIDTH, SKI_TITLE_FONT, SKI_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(SKI_Text[Enum367.SKI_TEXT_MERCHADISE_IN_STOCK], SKI_MAIN_TITLE_X, SKI_MAIN_TITLE_Y, SKI_MAIN_TITLE_WIDTH, SKI_TITLE_FONT, SKI_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // if the dealer repairs
-  if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+  if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
     // Display the Repair cost text
-    DisplayWrappedString(SKI_TOTAL_COST_X, SKI_TOTAL_COST_Y, SKI_TOTAL_COST_WIDTH, 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SKI_Text[SKI_TEXT_REPAIR_COST], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DisplayWrappedString(SKI_TOTAL_COST_X, SKI_TOTAL_COST_Y, SKI_TOTAL_COST_WIDTH, 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SKI_Text[Enum367.SKI_TEXT_REPAIR_COST], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   } else {
     // Display the Total cost text
-    DisplayWrappedString(SKI_TOTAL_COST_X, SKI_TOTAL_COST_Y, SKI_TOTAL_COST_WIDTH, 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SKI_Text[SKI_TEXT_TOTAL_COST], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DisplayWrappedString(SKI_TOTAL_COST_X, SKI_TOTAL_COST_Y, SKI_TOTAL_COST_WIDTH, 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SKI_Text[Enum367.SKI_TEXT_TOTAL_COST], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   }
 
   // Display the total value text
-  DisplayWrappedString(SKI_TOTAL_VALUE_X, SKI_TOTAL_VALUE_Y, SKI_TOTAL_VALUE_WIDTH, 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SKI_Text[SKI_TEXT_TOTAL_VALUE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(SKI_TOTAL_VALUE_X, SKI_TOTAL_VALUE_Y, SKI_TOTAL_VALUE_WIDTH, 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SKI_Text[Enum367.SKI_TEXT_TOTAL_VALUE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Display the players current balance text
-  DisplayWrappedString(SKI_PLAYERS_CURRENT_BALANCE_X, SKI_PLAYERS_CURRENT_BALANCE_Y, SKI_PLAYERS_CURRENT_BALANCE_WIDTH, 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SkiMessageBoxText[SKI_PLAYERS_CURRENT_BALANCE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(SKI_PLAYERS_CURRENT_BALANCE_X, SKI_PLAYERS_CURRENT_BALANCE_Y, SKI_PLAYERS_CURRENT_BALANCE_WIDTH, 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SkiMessageBoxText[Enum370.SKI_PLAYERS_CURRENT_BALANCE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Display the players current balance value
   swprintf(zMoney, "%d", LaptopSaveInfo.iCurrentBalance);
@@ -1129,7 +1129,7 @@ function GetShopKeeperInterfaceUserInput(): void {
 
           LocateSoldier(ubID, DONTSETLOCATOR);
           // refresh background for player slots (in case item values change due to Flo's discount)
-          gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+          gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
         } break;
       }
     }
@@ -1146,7 +1146,7 @@ function BtnSKI_InvPageUpButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
 
     if (gSelectArmsDealerInfo.ubCurrentPage > 1) {
       gSelectArmsDealerInfo.ubCurrentPage--;
-      gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+      gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
       EnableDisableDealersInventoryPageButtons();
     }
 
@@ -1164,7 +1164,7 @@ function BtnSKI_InvPageDownButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT3
 
     if (gSelectArmsDealerInfo.ubCurrentPage < gSelectArmsDealerInfo.ubNumberOfPages) {
       gSelectArmsDealerInfo.ubCurrentPage++;
-      gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+      gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
       EnableDisableDealersInventoryPageButtons();
     }
 
@@ -1239,18 +1239,18 @@ function CreateSkiInventorySlotMouseRegions(): void {
     usPosX = SKI_ARMS_DEALERS_INV_START_X;
 
     for (x = 0; x < SKI_NUM_ARMS_DEALERS_INV_COLS; x++) {
-      MSYS_DefineRegion(addressof(gDealersInventoryMouseRegions[ubCnt]), usPosX, usPosY, (usPosX + SKI_INV_SLOT_WIDTH), (usPosY + SKI_INV_SLOT_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectDealersInventoryMovementRegionCallBack, SelectDealersInventoryRegionCallBack);
+      MSYS_DefineRegion(addressof(gDealersInventoryMouseRegions[ubCnt]), usPosX, usPosY, (usPosX + SKI_INV_SLOT_WIDTH), (usPosY + SKI_INV_SLOT_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectDealersInventoryMovementRegionCallBack, SelectDealersInventoryRegionCallBack);
       MSYS_AddRegion(addressof(gDealersInventoryMouseRegions[ubCnt]));
       MSYS_SetRegionUserData(addressof(gDealersInventoryMouseRegions[ubCnt]), 0, ubCnt);
-      MSYS_SetRegionUserData(addressof(gDealersInventoryMouseRegions[ubCnt]), 1, ARMS_DEALER_INVENTORY);
+      MSYS_SetRegionUserData(addressof(gDealersInventoryMouseRegions[ubCnt]), 1, Enum252.ARMS_DEALER_INVENTORY);
 
       // if the dealer repairs
-      if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+      if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
         // Small Faces
-        MSYS_DefineRegion(addressof(gRepairmanInventorySmallFaceMouseRegions[ubCnt]), (usPosX + SKI_SMALL_FACE_OFFSET_X), (usPosY), (usPosX + SKI_SMALL_FACE_OFFSET_X + SKI_SMALL_FACE_WIDTH), (usPosY + SKI_SMALL_FACE_HEIGHT), MSYS_PRIORITY_HIGH + 1, CURSOR_NORMAL, NULL, NULL);
+        MSYS_DefineRegion(addressof(gRepairmanInventorySmallFaceMouseRegions[ubCnt]), (usPosX + SKI_SMALL_FACE_OFFSET_X), (usPosY), (usPosX + SKI_SMALL_FACE_OFFSET_X + SKI_SMALL_FACE_WIDTH), (usPosY + SKI_SMALL_FACE_HEIGHT), MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_NORMAL, NULL, NULL);
         MSYS_AddRegion(addressof(gRepairmanInventorySmallFaceMouseRegions[ubCnt]));
         MSYS_SetRegionUserData(addressof(gRepairmanInventorySmallFaceMouseRegions[ubCnt]), 0, ubCnt);
-        MSYS_SetRegionUserData(addressof(gRepairmanInventorySmallFaceMouseRegions[ubCnt]), 1, ARMS_DEALER_INVENTORY);
+        MSYS_SetRegionUserData(addressof(gRepairmanInventorySmallFaceMouseRegions[ubCnt]), 1, Enum252.ARMS_DEALER_INVENTORY);
       }
 
       usPosX += SKI_INV_OFFSET_X;
@@ -1266,17 +1266,17 @@ function CreateSkiInventorySlotMouseRegions(): void {
     usPosX = SKI_ARMS_DEALERS_TRADING_INV_X;
 
     for (x = 0; x < SKI_NUM_TRADING_INV_COLS; x++) {
-      MSYS_DefineRegion(addressof(gDealersOfferSlotsMouseRegions[ubCnt]), usPosX, usPosY, (usPosX + SKI_INV_SLOT_WIDTH), (usPosY + SKI_INV_SLOT_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectDealersOfferSlotsMovementRegionCallBack, SelectDealersOfferSlotsRegionCallBack);
+      MSYS_DefineRegion(addressof(gDealersOfferSlotsMouseRegions[ubCnt]), usPosX, usPosY, (usPosX + SKI_INV_SLOT_WIDTH), (usPosY + SKI_INV_SLOT_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectDealersOfferSlotsMovementRegionCallBack, SelectDealersOfferSlotsRegionCallBack);
       MSYS_AddRegion(addressof(gDealersOfferSlotsMouseRegions[ubCnt]));
       MSYS_SetRegionUserData(addressof(gDealersOfferSlotsMouseRegions[ubCnt]), 0, ubCnt);
 
       // if the dealer repairs
-      if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+      if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
         // Small Faces
-        MSYS_DefineRegion(addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt]), (usPosX + SKI_SMALL_FACE_OFFSET_X), (usPosY), (usPosX + SKI_SMALL_FACE_OFFSET_X + SKI_SMALL_FACE_WIDTH), (usPosY + SKI_SMALL_FACE_HEIGHT), MSYS_PRIORITY_HIGH + 1, CURSOR_NORMAL, SelectDealersOfferSlotsMovementRegionCallBack, SelectDealersOfferSlotsRegionCallBack);
+        MSYS_DefineRegion(addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt]), (usPosX + SKI_SMALL_FACE_OFFSET_X), (usPosY), (usPosX + SKI_SMALL_FACE_OFFSET_X + SKI_SMALL_FACE_WIDTH), (usPosY + SKI_SMALL_FACE_HEIGHT), MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_NORMAL, SelectDealersOfferSlotsMovementRegionCallBack, SelectDealersOfferSlotsRegionCallBack);
         MSYS_AddRegion(addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt]));
         MSYS_SetRegionUserData(addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt]), 0, ubCnt);
-        MSYS_SetRegionUserData(addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt]), 1, ARMS_DEALER_OFFER_AREA);
+        MSYS_SetRegionUserData(addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt]), 1, Enum252.ARMS_DEALER_OFFER_AREA);
       }
 
       usPosX += SKI_INV_OFFSET_X;
@@ -1293,7 +1293,7 @@ function CreateSkiInventorySlotMouseRegions(): void {
 
     for (x = 0; x < SKI_NUM_TRADING_INV_COLS; x++) {
       // Trading Slots
-      MSYS_DefineRegion(addressof(gPlayersOfferSlotsMouseRegions[ubCnt]), usPosX, usPosY, (usPosX + SKI_INV_SLOT_WIDTH), (usPosY + SKI_INV_SLOT_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectPlayersOfferSlotsMovementRegionCallBack, SelectPlayersOfferSlotsRegionCallBack);
+      MSYS_DefineRegion(addressof(gPlayersOfferSlotsMouseRegions[ubCnt]), usPosX, usPosY, (usPosX + SKI_INV_SLOT_WIDTH), (usPosY + SKI_INV_SLOT_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, SelectPlayersOfferSlotsMovementRegionCallBack, SelectPlayersOfferSlotsRegionCallBack);
       MSYS_AddRegion(addressof(gPlayersOfferSlotsMouseRegions[ubCnt]));
       MSYS_SetRegionUserData(addressof(gPlayersOfferSlotsMouseRegions[ubCnt]), 0, ubCnt);
       /*
@@ -1304,10 +1304,10 @@ function CreateSkiInventorySlotMouseRegions(): void {
                               }
       */
       // Small Faces
-      MSYS_DefineRegion(addressof(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt]), (usPosX + SKI_SMALL_FACE_OFFSET_X), (usPosY), (usPosX + SKI_SMALL_FACE_OFFSET_X + SKI_SMALL_FACE_WIDTH), (usPosY + SKI_SMALL_FACE_HEIGHT), MSYS_PRIORITY_HIGH + 1, CURSOR_NORMAL, SelectPlayersOfferSlotsMovementRegionCallBack, SelectPlayersOfferSlotsRegionCallBack);
+      MSYS_DefineRegion(addressof(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt]), (usPosX + SKI_SMALL_FACE_OFFSET_X), (usPosY), (usPosX + SKI_SMALL_FACE_OFFSET_X + SKI_SMALL_FACE_WIDTH), (usPosY + SKI_SMALL_FACE_HEIGHT), MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_NORMAL, SelectPlayersOfferSlotsMovementRegionCallBack, SelectPlayersOfferSlotsRegionCallBack);
       MSYS_AddRegion(addressof(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt]));
       MSYS_SetRegionUserData(addressof(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt]), 0, ubCnt);
-      MSYS_SetRegionUserData(addressof(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt]), 1, PLAYERS_OFFER_AREA);
+      MSYS_SetRegionUserData(addressof(gPlayersOfferSlotsSmallFaceMouseRegions[ubCnt]), 1, Enum252.PLAYERS_OFFER_AREA);
 
       usPosX += SKI_INV_OFFSET_X;
       ubCnt++;
@@ -1323,7 +1323,7 @@ function DestroySkiInventorySlotMouseRegions(): void {
     MSYS_RemoveRegion(addressof(gDealersInventoryMouseRegions[i]));
 
     // if the dealer repairs
-    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
       MSYS_RemoveRegion(addressof(gRepairmanInventorySmallFaceMouseRegions[i]));
     }
   }
@@ -1332,7 +1332,7 @@ function DestroySkiInventorySlotMouseRegions(): void {
     MSYS_RemoveRegion(addressof(gDealersOfferSlotsMouseRegions[i]));
 
     // if the dealer repairs
-    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
       MSYS_RemoveRegion(addressof(gDealersOfferSlotsSmallFaceMouseRegions[i]));
     }
 
@@ -1363,7 +1363,7 @@ function SelectDealersInventoryRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iR
       // If the item type has not already been placed
       if (!(gpTempDealersInventory[ubSelectedInvSlot].uiFlags & ARMS_INV_ITEM_SELECTED)) {
         // if the dealer repairs
-        if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+        if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
           // ignore left clicks on items under repair.  Fully repaired items are moved out to player's slots automatically
         } else // not a repairman
         {
@@ -1375,7 +1375,7 @@ function SelectDealersInventoryRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iR
             gpTempDealersInventory[ubSelectedInvSlot].uiFlags |= ARMS_INV_ITEM_SELECTED;
 
             // Specify the location the items went to
-            gpTempDealersInventory[ubSelectedInvSlot].ubLocationOfObject = ARMS_DEALER_OFFER_AREA;
+            gpTempDealersInventory[ubSelectedInvSlot].ubLocationOfObject = Enum252.ARMS_DEALER_OFFER_AREA;
             gpTempDealersInventory[ubSelectedInvSlot].bSlotIdInOtherLocation = ubLocation;
 
             // if the shift key is being pressed, remove them all
@@ -1385,7 +1385,7 @@ function SelectDealersInventoryRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iR
               gpTempDealersInventory[ubSelectedInvSlot].ItemObject.ubNumberOfObjects--;
             }
 
-            gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+            gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
           }
         }
       } else // some of this item are already in dealer's offer area
@@ -1404,7 +1404,7 @@ function SelectDealersInventoryRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iR
         // Increase the number in dealer's offer area
         ArmsDealerOfferArea[gpTempDealersInventory[ubSelectedInvSlot].bSlotIdInOtherLocation].ItemObject.ubNumberOfObjects += ubNumToMove;
 
-        gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+        gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
       }
     }
   }
@@ -1424,7 +1424,7 @@ function SelectDealersInventoryRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iR
     // DEF:
     // bring up the item description box
     if (!InItemDescriptionBox()) {
-      InitShopKeeperItemDescBox(addressof(gpTempDealersInventory[ubSelectedInvSlot].ItemObject), ubSelectedInvSlot, ARMS_DEALER_INVENTORY);
+      InitShopKeeperItemDescBox(addressof(gpTempDealersInventory[ubSelectedInvSlot].ItemObject), ubSelectedInvSlot, Enum252.ARMS_DEALER_INVENTORY);
     } else {
       DeleteItemDescriptionBox();
     }
@@ -1481,7 +1481,7 @@ function SelectDealersInventoryMovementRegionCallBack(pRegion: Pointer<MOUSE_REG
       return;
 
     gpHighLightedItemObject = NULL;
-    gubSkiDirtyLevel = SKI_DIRTY_LEVEL1; // ddd
+    gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL1; // ddd
     HandleCompatibleAmmoUI(gpSMCurrentMerc, -1, FALSE);
   }
 }
@@ -1503,7 +1503,7 @@ function SelectDealersOfferSlotsMovementRegionCallBack(pRegion: Pointer<MOUSE_RE
       return;
 
     gpHighLightedItemObject = NULL;
-    gubSkiDirtyLevel = SKI_DIRTY_LEVEL1; // ddd
+    gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL1; // ddd
     HandleCompatibleAmmoUI(gpSMCurrentMerc, -1, FALSE);
   }
 }
@@ -1525,7 +1525,7 @@ function SelectPlayersOfferSlotsMovementRegionCallBack(pRegion: Pointer<MOUSE_RE
       return;
 
     gpHighLightedItemObject = NULL;
-    gubSkiDirtyLevel = SKI_DIRTY_LEVEL1; // ddd
+    gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL1; // ddd
     HandleCompatibleAmmoUI(gpSMCurrentMerc, -1, FALSE);
   }
 }
@@ -1539,13 +1539,13 @@ function SelectDealersOfferSlotsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, i
     // if there is something here
     if (ArmsDealerOfferArea[ubSelectedInvSlot].fActive) {
       // if the dealer repairs
-      if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+      if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
         // return item to player
         RemoveRepairItemFromDealersOfferArea(ubSelectedInvSlot);
       } else {
         // bring up the item description box
         if (!InItemDescriptionBox()) {
-          InitShopKeeperItemDescBox(addressof(ArmsDealerOfferArea[ubSelectedInvSlot].ItemObject), ubSelectedInvSlot, ARMS_DEALER_OFFER_AREA);
+          InitShopKeeperItemDescBox(addressof(ArmsDealerOfferArea[ubSelectedInvSlot].ItemObject), ubSelectedInvSlot, Enum252.ARMS_DEALER_OFFER_AREA);
         } else {
           DeleteItemDescriptionBox();
         }
@@ -1562,12 +1562,12 @@ function SelectDealersOfferSlotsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, i
     // if there is something here
     if (ArmsDealerOfferArea[ubSelectedInvSlot].fActive) {
       // if this is a repair dealer
-      if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+      if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
         // if we don't have an item, pick one up
         if (gMoveingItem.sItemIndex == 0) {
           // if the dealer is a repair dealer, allow the player to pick up the item
-          if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
-            BeginSkiItemPointer(ARMS_DEALER_OFFER_AREA, ubSelectedInvSlot, FALSE);
+          if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
+            BeginSkiItemPointer(Enum252.ARMS_DEALER_OFFER_AREA, ubSelectedInvSlot, FALSE);
           }
         } else {
           // swap what is in the cursor with what is in the player offer slot
@@ -1593,7 +1593,7 @@ function SelectDealersOfferSlotsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, i
           gpItemPointer = addressof(gMoveingItem.ItemObject);
           SetSkiCursor(EXTERN_CURSOR);
 
-          gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+          gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
         }
       } else // non-repairman
       {
@@ -1607,23 +1607,23 @@ function SelectDealersOfferSlotsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, i
           gpTempDealersInventory[ArmsDealerOfferArea[ubSelectedInvSlot].bSlotIdInOtherLocation].ItemObject.ubNumberOfObjects++;
         }
 
-        gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+        gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
       }
     } else // empty slot
     {
       // if the cursor has something in it
       if (gMoveingItem.sItemIndex > 0) {
         // we'd better talking to a repairman, cursor is locked out of this area while full for non-repairmen!
-        Assert(ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS);
+        Assert(ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS);
 
         // Drop the item into the current slot
-        AddInventoryToSkiLocation(addressof(gMoveingItem), ubSelectedInvSlot, ARMS_DEALER_OFFER_AREA);
+        AddInventoryToSkiLocation(addressof(gMoveingItem), ubSelectedInvSlot, Enum252.ARMS_DEALER_OFFER_AREA);
 
         // Reset the cursor
-        SetSkiCursor(CURSOR_NORMAL);
+        SetSkiCursor(Enum317.CURSOR_NORMAL);
 
         // refresh the screen
-        gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+        gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
       }
     }
   }
@@ -1643,7 +1643,7 @@ function SelectPlayersOfferSlotsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, i
         return;
 
       // pick it up into the cursor
-      BeginSkiItemPointer(PLAYERS_OFFER_AREA, ubSelectedInvSlot, FALSE);
+      BeginSkiItemPointer(Enum252.PLAYERS_OFFER_AREA, ubSelectedInvSlot, FALSE);
     } else // we have something in the cursor
     {
       // Drop the item into the current slot
@@ -1685,7 +1685,7 @@ function SelectPlayersOfferSlotsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, i
         // if the item has already been evaluated, or has just been purchased
         if ((gMoveingItem.uiFlags & ARMS_INV_PLAYERS_ITEM_HAS_BEEN_EVALUATED) || (gMoveingItem.uiFlags & ARMS_INV_JUST_PURCHASED)) {
           // place the item that is in the player's hand into this player offer area slot
-          bAddedToSlotID = AddInventoryToSkiLocation(addressof(gMoveingItem), ubSelectedInvSlot, PLAYERS_OFFER_AREA);
+          bAddedToSlotID = AddInventoryToSkiLocation(addressof(gMoveingItem), ubSelectedInvSlot, Enum252.PLAYERS_OFFER_AREA);
           Assert(bAddedToSlotID != -1);
         } else {
           // this splits complex items for repairs.  Also puts things into the first free POA slot
@@ -1693,11 +1693,11 @@ function SelectPlayersOfferSlotsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, i
         }
 
         // Reset the cursor
-        SetSkiCursor(CURSOR_NORMAL);
+        SetSkiCursor(Enum317.CURSOR_NORMAL);
       }
 
       // Dirty the interface
-      gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+      gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
     }
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) // MSYS_CALLBACK_REASON_LBUTTON_UP)
   {
@@ -1719,7 +1719,7 @@ function SelectPlayersOfferSlotsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, i
                               }
       */
     }
-    gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+    gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
   }
 }
 
@@ -1737,7 +1737,7 @@ function EnterShopKeeperInterfaceScreen(ubArmsDealer: UINT8): void {
     gfSKIScreenExit = TRUE;
   }
 
-  LeaveTacticalScreen(SHOPKEEPER_SCREEN);
+  LeaveTacticalScreen(Enum26.SHOPKEEPER_SCREEN);
 }
 
 function InitializeShopKeeper(fResetPage: BOOLEAN): void {
@@ -1819,7 +1819,7 @@ function DisplayArmsDealerCurrentInventoryPage(): void {
 
   // if there is any inventory
   if (gpTempDealersInventory != NULL) {
-    if (gubSkiDirtyLevel != SKI_DIRTY_LEVEL0) {
+    if (gubSkiDirtyLevel != Enum253.SKI_DIRTY_LEVEL0) {
       // Calculate the item that is at the top of the list
       CalculateFirstItemIndexOnPage();
 
@@ -1830,7 +1830,7 @@ function DisplayArmsDealerCurrentInventoryPage(): void {
       RestoreExternBackgroundRect(SKI_ARMS_DEALERS_INV_START_X, SKI_ARMS_DEALERS_INV_START_Y, 370, 107);
 
       // Display the current inventory page
-      DrawTextToScreen(SKI_Text[SKI_TEXT_PAGE], SKI_PAGE_X, (SKI_PAGE_Y + 3), SKI_PAGE_WIDTH, SKI_LABEL_FONT, SKI_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(SKI_Text[Enum367.SKI_TEXT_PAGE], SKI_PAGE_X, (SKI_PAGE_Y + 3), SKI_PAGE_WIDTH, SKI_LABEL_FONT, SKI_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
       // Display the Current Page number
       uiFontHeight = GetFontHeight(SKI_LABEL_FONT);
@@ -1847,7 +1847,7 @@ function DisplayArmsDealerCurrentInventoryPage(): void {
           fDisplayHatchOnItem = TRUE;
         }
         // if the dealer repairs
-        else if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+        else if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
           // if the item is damaged
           if (ArmsDealerInfo[gbSelectedArmsDealerID].uiFlags & ARMS_INV_ITEM_NOT_REPAIRED_YET)
             fDisplayHatchOnItem = TRUE;
@@ -1864,14 +1864,14 @@ function DisplayArmsDealerCurrentInventoryPage(): void {
         }
 
         // Display the inventory slot
-        DisplayInvSlot(usCnt, gpTempDealersInventory[usCnt].sItemIndex, usPosX, usPosY, addressof(gpTempDealersInventory[usCnt].ItemObject), fDisplayHatchOnItem, ARMS_DEALER_INVENTORY);
+        DisplayInvSlot(usCnt, gpTempDealersInventory[usCnt].sItemIndex, usPosX, usPosY, addressof(gpTempDealersInventory[usCnt].ItemObject), fDisplayHatchOnItem, Enum252.ARMS_DEALER_INVENTORY);
 
-        if (gubSkiDirtyLevel == SKI_DIRTY_LEVEL2) {
-          SetSkiRegionHelpText(addressof(gpTempDealersInventory[usCnt]), addressof(gDealersInventoryMouseRegions[sItemCount]), ARMS_DEALER_INVENTORY);
+        if (gubSkiDirtyLevel == Enum253.SKI_DIRTY_LEVEL2) {
+          SetSkiRegionHelpText(addressof(gpTempDealersInventory[usCnt]), addressof(gDealersInventoryMouseRegions[sItemCount]), Enum252.ARMS_DEALER_INVENTORY);
 
           // if the dealer repairs
-          if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
-            SetSkiFaceRegionHelpText(addressof(gpTempDealersInventory[usCnt]), addressof(gRepairmanInventorySmallFaceMouseRegions[sItemCount]), ARMS_DEALER_INVENTORY);
+          if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
+            SetSkiFaceRegionHelpText(addressof(gpTempDealersInventory[usCnt]), addressof(gRepairmanInventorySmallFaceMouseRegions[sItemCount]), Enum252.ARMS_DEALER_INVENTORY);
           }
         }
 
@@ -1888,14 +1888,14 @@ function DisplayArmsDealerCurrentInventoryPage(): void {
     }
   }
 
-  if (gubSkiDirtyLevel == SKI_DIRTY_LEVEL2) {
+  if (gubSkiDirtyLevel == Enum253.SKI_DIRTY_LEVEL2) {
     // This handles the remaining (empty) slots, resetting Fast Help text, and hatching out disabled ones
     while (sItemCount < SKI_NUM_ARMS_DEALERS_INV_SLOTS) {
-      SetSkiRegionHelpText(NULL, addressof(gDealersInventoryMouseRegions[sItemCount]), ARMS_DEALER_INVENTORY);
+      SetSkiRegionHelpText(NULL, addressof(gDealersInventoryMouseRegions[sItemCount]), Enum252.ARMS_DEALER_INVENTORY);
 
       // if the dealer repairs
-      if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
-        SetSkiFaceRegionHelpText(NULL, addressof(gRepairmanInventorySmallFaceMouseRegions[sItemCount]), ARMS_DEALER_INVENTORY);
+      if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
+        SetSkiFaceRegionHelpText(NULL, addressof(gRepairmanInventorySmallFaceMouseRegions[sItemCount]), Enum252.ARMS_DEALER_INVENTORY);
       }
 
       // hatch it out if region is disabled
@@ -1934,7 +1934,7 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
   let fPrintRepaired: BOOLEAN = FALSE;
 
   // if the item is not highlighted, and we are not rerendering the screen
-  if (!(fHighlighted || gubSkiDirtyLevel != SKI_DIRTY_LEVEL0))
+  if (!(fHighlighted || gubSkiDirtyLevel != Enum253.SKI_DIRTY_LEVEL0))
     return 0;
 
   //
@@ -1965,7 +1965,7 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
   DrawItemUIBarEx(pItemObject, 0, (usPosX + 2), (usPosY + 2 + 20), 2, 20, Get16BPPColor(FROMRGB(140, 136, 119)), Get16BPPColor(FROMRGB(140, 136, 119)), TRUE, guiRENDERBUFFER); // guiSAVEBUFFER
 
   // Display the Items Cost
-  if (ubItemArea == PLAYERS_OFFER_AREA) {
+  if (ubItemArea == Enum252.PLAYERS_OFFER_AREA) {
     // if the item has value
     if (PlayersOfferArea[ubSlotNum].uiFlags & ARMS_INV_PLAYERS_ITEM_HAS_VALUE) {
       uiItemCost = PlayersOfferArea[ubSlotNum].uiItemPrice;
@@ -1982,8 +1982,8 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
     if (PlayersOfferArea[ubSlotNum].uiFlags & ARMS_INV_ITEM_REPAIRED) {
       fPrintRepaired = TRUE;
     }
-  } else if (ubItemArea == ARMS_DEALER_INVENTORY) {
-    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != ARMS_DEALER_REPAIRS) {
+  } else if (ubItemArea == Enum252.ARMS_DEALER_INVENTORY) {
+    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != Enum198.ARMS_DEALER_REPAIRS) {
       if (fHatchedOut && pItemObject.value.ubNumberOfObjects == 0) {
         uiItemCost = 0;
       } else {
@@ -2014,7 +2014,7 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
     }
   } else // DEALER'S OFFER AREA
   {
-    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
       // if the dealer repairs, there is an item here, therefore display the items owner's face
       fDisplayMercFace = TRUE;
       ubMercID = ArmsDealerOfferArea[ubSlotNum].ubIdOfMercWhoOwnsTheItem;
@@ -2035,7 +2035,7 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
   // if the there is more then 1 or if the item is stackable and some of it has been bought and only 1 remains
   //	if( pItemObject->ubNumberOfObjects > 1 || Item[ usItemIndex ].usItemClass == IC_AMMO )
   //	if( pItemObject->ubNumberOfObjects > 1 || Item[ usItemIndex ].ubPerPocket > 1 )
-  if ((pItemObject.value.ubNumberOfObjects > 1) || ((pItemObject.value.ubNumberOfObjects == 1) && DealerItemIsSafeToStack(usItemIndex) && (ubItemArea == ARMS_DEALER_INVENTORY) && (gpTempDealersInventory[ubSlotNum].uiFlags & ARMS_INV_ITEM_SELECTED))) {
+  if ((pItemObject.value.ubNumberOfObjects > 1) || ((pItemObject.value.ubNumberOfObjects == 1) && DealerItemIsSafeToStack(usItemIndex) && (ubItemArea == Enum252.ARMS_DEALER_INVENTORY) && (gpTempDealersInventory[ubSlotNum].uiFlags & ARMS_INV_ITEM_SELECTED))) {
     swprintf(zTemp, "x%d", pItemObject.value.ubNumberOfObjects);
     DrawTextToScreen(zTemp, (usPosX + SKI_ITEM_NUMBER_TEXT_OFFSET_X), (usPosY + SKI_ITEM_NUMBER_TEXT_OFFSET_Y), SKI_ITEM_NUMBER_TEXT_WIDTH, SKIT_NUMBER_FONT, SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
   }
@@ -2061,11 +2061,11 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
 
   // Display 'JAMMED' if it's jammed
   if (pItemObject.value.bGunAmmoStatus < 0) {
-    swprintf(zTemp, TacticalStr[JAMMED_ITEM_STR]);
+    swprintf(zTemp, TacticalStr[Enum335.JAMMED_ITEM_STR]);
     VarFindFontCenterCoordinates(usPosX, usPosY, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT, TINYFONT1, addressof(sCenX), addressof(sCenY), zTemp);
     DrawTextToScreen(zTemp, sCenX, sCenY, SKI_INV_SLOT_WIDTH, TINYFONT1, FONT_RED, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   } else if (fPrintRepaired) {
-    swprintf(zTemp, SKI_Text[SKI_TEXT_REPAIRED]);
+    swprintf(zTemp, SKI_Text[Enum367.SKI_TEXT_REPAIRED]);
     VarFindFontCenterCoordinates(usPosX, usPosY, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT, TINYFONT1, addressof(sCenX), addressof(sCenY), zTemp);
     DrawTextToScreen(zTemp, sCenX, sCenY, SKI_INV_SLOT_WIDTH, TINYFONT1, FONT_RED, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   }
@@ -2105,7 +2105,7 @@ function DetermineArmsDealersSellingInventory(): BOOLEAN {
   guiNextFreeInvSlot = 0;
 
   // loop through the dealer's permanent inventory items, adding them all to the temp inventory list
-  for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
+  for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
     // if the arms dealer has some of the inventory
     if (gArmsDealersInventory[gbSelectedArmsDealerID][usItemIndex].ubTotalItems > 0) {
       // if there are any items in perfect condition
@@ -2142,7 +2142,7 @@ function DetermineArmsDealersSellingInventory(): BOOLEAN {
           if (fAddSpecialItem) {
             let ubOwner: UINT8;
 
-            if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != ARMS_DEALER_REPAIRS) {
+            if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != Enum198.ARMS_DEALER_REPAIRS) {
               // no merc is the owner
               ubOwner = NO_PROFILE;
             } else {
@@ -2160,7 +2160,7 @@ function DetermineArmsDealersSellingInventory(): BOOLEAN {
   // if more than one item is in inventory
   if (guiNextFreeInvSlot > 1) {
     // repairmen sort differently from merchants
-    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
       // sort this list by object category, and by ascending price within each category
       qsort(gpTempDealersInventory, guiNextFreeInvSlot, sizeof(INVENTORY_IN_SLOT), RepairmanItemQsortCompare);
     } else {
@@ -2253,7 +2253,7 @@ function RepairIsDone(usItemIndex: UINT16, ubElement: UINT8): BOOLEAN {
 
   // max condition of all permanent attachments on it
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (RepairItem.ItemObject.usAttachItem[ubCnt] != NONE) {
+    if (RepairItem.ItemObject.usAttachItem[ubCnt] != Enum225.NONE) {
       /* ARM: Can now repair with removeable attachments still attached...
                               // If the attachment is a permanent one
                               if ( Item[ RepairItem.ItemObject.usAttachItem[ ubCnt ] ].fFlags & ITEM_INSEPARABLE )
@@ -2267,7 +2267,7 @@ function RepairIsDone(usItemIndex: UINT16, ubElement: UINT8): BOOLEAN {
 
   // if the item is imprinted (by anyone, even player's mercs), and it's Fredo repairing it
   if (/*( gArmsDealersInventory[ gbSelectedArmsDealerID ][ usItemIndex ].SpecialItem[ ubElement ].Info.ubImprintID == (NO_PROFILE + 1) ) && */
-      (gbSelectedArmsDealerID == ARMS_DEALER_FREDO)) {
+      (gbSelectedArmsDealerID == Enum197.ARMS_DEALER_FREDO)) {
     // then reset the imprinting!
     RepairItem.ItemObject.ubImprintID = NO_PROFILE;
   }
@@ -2332,7 +2332,7 @@ function CalcShopKeeperItemPrice(fDealerSelling: BOOLEAN, fUnitPriceOnly: BOOLEA
       uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, usItemID, fDealerSelling) * ItemConditionModifier(usItemID, pItemObject.value.bGunStatus) * dModifier);
 
       // if any ammo is loaded
-      if (pItemObject.value.usGunAmmoItem != NONE) {
+      if (pItemObject.value.usGunAmmoItem != Enum225.NONE) {
         // if it's regular ammo
         if (Item[pItemObject.value.usGunAmmoItem].usItemClass == IC_AMMO) {
           // add value of its remaining ammo
@@ -2377,14 +2377,14 @@ function CalcShopKeeperItemPrice(fDealerSelling: BOOLEAN, fUnitPriceOnly: BOOLEA
 
   // loop through any attachments and add in their price
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pItemObject.value.usAttachItem[ubCnt] != NONE) {
+    if (pItemObject.value.usAttachItem[ubCnt] != Enum225.NONE) {
       // add value of this particular attachment
       uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject.value.usAttachItem[ubCnt], fDealerSelling) * ItemConditionModifier(pItemObject.value.usAttachItem[ubCnt], pItemObject.value.bAttachStatus[ubCnt]) * dModifier);
     }
   }
 
   // if Flo is doing the dealin' and wheelin'
-  if (gpSMCurrentMerc.value.ubProfile == FLO) {
+  if (gpSMCurrentMerc.value.ubProfile == Enum268.FLO) {
     // if it's a GUN or AMMO (but not Launchers, and all attachments and payload is included)
     switch (Item[usItemID].usItemClass) {
       case IC_GUN:
@@ -2470,7 +2470,7 @@ function DisplayArmsDealerOfferArea(): void {
   usPosX = SKI_ARMS_DEALERS_TRADING_INV_X;
   usPosY = SKI_ARMS_DEALERS_TRADING_INV_Y;
 
-  if (gubSkiDirtyLevel != SKI_DIRTY_LEVEL0) {
+  if (gubSkiDirtyLevel != Enum253.SKI_DIRTY_LEVEL0) {
     // Restore the area before blitting the new data on
     RestoreExternBackgroundRect(usPosX, usPosY, SKI_ARMS_DEALERS_TRADING_INV_WIDTH, SKI_ARMS_DEALERS_TRADING_INV_HEIGHT);
   }
@@ -2490,7 +2490,7 @@ function DisplayArmsDealerOfferArea(): void {
         fDisplayHatchOnItem = FALSE;
 
       // Display the inventory slot
-      uiTotalCost += DisplayInvSlot(sCnt, ArmsDealerOfferArea[sCnt].sItemIndex, usPosX, usPosY, addressof(ArmsDealerOfferArea[sCnt].ItemObject), fDisplayHatchOnItem, ARMS_DEALER_OFFER_AREA);
+      uiTotalCost += DisplayInvSlot(sCnt, ArmsDealerOfferArea[sCnt].sItemIndex, usPosX, usPosY, addressof(ArmsDealerOfferArea[sCnt].ItemObject), fDisplayHatchOnItem, Enum252.ARMS_DEALER_OFFER_AREA);
     } else // empty
     {
       // hatch it out if region is disabled
@@ -2510,7 +2510,7 @@ function DisplayArmsDealerOfferArea(): void {
     }
   }
 
-  if (gubSkiDirtyLevel == SKI_DIRTY_LEVEL2) {
+  if (gubSkiDirtyLevel == Enum253.SKI_DIRTY_LEVEL2) {
     //
     // Display the Total cost text and number
     //
@@ -2547,10 +2547,10 @@ function AddItemToArmsDealerOfferArea(pInvSlot: Pointer<INVENTORY_IN_SLOT>, bSlo
       ArmsDealerOfferArea[bCnt].ubIdOfMercWhoOwnsTheItem = pInvSlot.value.ubIdOfMercWhoOwnsTheItem;
       ArmsDealerOfferArea[bCnt].fActive = TRUE;
 
-      SetSkiRegionHelpText(addressof(ArmsDealerOfferArea[bCnt]), addressof(gDealersOfferSlotsMouseRegions[bCnt]), ARMS_DEALER_OFFER_AREA);
-      SetSkiFaceRegionHelpText(addressof(ArmsDealerOfferArea[bCnt]), addressof(gDealersOfferSlotsSmallFaceMouseRegions[bCnt]), ARMS_DEALER_OFFER_AREA);
+      SetSkiRegionHelpText(addressof(ArmsDealerOfferArea[bCnt]), addressof(gDealersOfferSlotsMouseRegions[bCnt]), Enum252.ARMS_DEALER_OFFER_AREA);
+      SetSkiFaceRegionHelpText(addressof(ArmsDealerOfferArea[bCnt]), addressof(gDealersOfferSlotsSmallFaceMouseRegions[bCnt]), Enum252.ARMS_DEALER_OFFER_AREA);
 
-      gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+      gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
       return bCnt;
     }
   }
@@ -2606,7 +2606,7 @@ function SetSkiFaceRegionHelpText(pInv: Pointer<INVENTORY_IN_SLOT>, pRegion: Poi
   if ((pInv != NULL) && (pInv.value.ubIdOfMercWhoOwnsTheItem != NO_PROFILE)) {
     BuildItemHelpTextString(zTempText, pInv, ubScreenArea);
     // add who owns it
-    swprintf(zHelpText, "%s%s %s", gMercProfiles[pInv.value.ubIdOfMercWhoOwnsTheItem].zNickname, pMessageStrings[MSG_DASH_S], zTempText);
+    swprintf(zHelpText, "%s%s %s", gMercProfiles[pInv.value.ubIdOfMercWhoOwnsTheItem].zNickname, pMessageStrings[Enum333.MSG_DASH_S], zTempText);
   } else {
     zHelpText[0] = '\0';
   }
@@ -2616,7 +2616,7 @@ function SetSkiFaceRegionHelpText(pInv: Pointer<INVENTORY_IN_SLOT>, pRegion: Poi
 }
 
 function SkiHelpTextDoneCallBack(): void {
-  gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+  gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 }
 
 function AddItemToPlayersOfferArea(ubProfileID: UINT8, pInvSlot: Pointer<INVENTORY_IN_SLOT>, bSlotIdInOtherLocation: INT8): INT8 {
@@ -2643,8 +2643,8 @@ function AddItemToPlayersOfferArea(ubProfileID: UINT8, pInvSlot: Pointer<INVENTO
 
       IfMercOwnedCopyItemToMercInv(addressof(PlayersOfferArea[bCnt]));
 
-      SetSkiRegionHelpText(addressof(PlayersOfferArea[bCnt]), addressof(gPlayersOfferSlotsMouseRegions[bCnt]), PLAYERS_OFFER_AREA);
-      SetSkiFaceRegionHelpText(addressof(PlayersOfferArea[bCnt]), addressof(gPlayersOfferSlotsSmallFaceMouseRegions[bCnt]), PLAYERS_OFFER_AREA);
+      SetSkiRegionHelpText(addressof(PlayersOfferArea[bCnt]), addressof(gPlayersOfferSlotsMouseRegions[bCnt]), Enum252.PLAYERS_OFFER_AREA);
+      SetSkiFaceRegionHelpText(addressof(PlayersOfferArea[bCnt]), addressof(gPlayersOfferSlotsSmallFaceMouseRegions[bCnt]), Enum252.PLAYERS_OFFER_AREA);
 
       // if the item we are adding is money
       if (Item[PlayersOfferArea[bCnt].sItemIndex].usItemClass == IC_MONEY) {
@@ -2652,7 +2652,7 @@ function AddItemToPlayersOfferArea(ubProfileID: UINT8, pInvSlot: Pointer<INVENTO
         PlayersOfferArea[bCnt].uiFlags |= ARMS_INV_PLAYERS_ITEM_HAS_VALUE;
         PlayersOfferArea[bCnt].uiItemPrice = PlayersOfferArea[bCnt].ItemObject.uiMoneyAmount;
       }
-      gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+      gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 
       return bCnt;
     }
@@ -2675,7 +2675,7 @@ function RemoveItemFromPlayersOfferArea(bSlot: INT8): BOOLEAN {
 
   // Dirty
   fInterfacePanelDirty = DIRTYLEVEL2;
-  gubSkiDirtyLevel = SKI_DIRTY_LEVEL1;
+  gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL1;
   return TRUE;
 }
 
@@ -2691,7 +2691,7 @@ function DisplayPlayersOfferArea(): void {
   usPosX = SKI_PLAYERS_TRADING_INV_X;
   usPosY = SKI_PLAYERS_TRADING_INV_Y;
 
-  if (gubSkiDirtyLevel == SKI_DIRTY_LEVEL2) {
+  if (gubSkiDirtyLevel == Enum253.SKI_DIRTY_LEVEL2) {
     // Restore the area before blitting the new data on
     RestoreExternBackgroundRect(SKI_PLAYERS_TRADING_INV_X, SKI_PLAYERS_TRADING_INV_Y, SKI_PLAYERS_TRADING_INV_WIDTH, SKI_PLAYERS_TRADING_INV_HEIGHT);
   }
@@ -2717,7 +2717,7 @@ function DisplayPlayersOfferArea(): void {
       } else // not money
       {
         // if non-repairman
-        if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != ARMS_DEALER_REPAIRS) {
+        if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != Enum198.ARMS_DEALER_REPAIRS) {
           // don't evaluate anything he wouldn't buy!
           if (WillShopKeeperRejectObjectsFromPlayer(gbSelectedArmsDealerID, sCnt) == FALSE) {
             // skip purchased items!
@@ -2733,7 +2733,7 @@ function DisplayPlayersOfferArea(): void {
       //			fDisplayHatchOnItem = ( PlayersOfferArea[ sCnt ].uiFlags & ( ARMS_INV_PLAYERS_ITEM_HAS_BEEN_EVALUATED | ARMS_INV_JUST_PURCHASED ) ) == 0;
 
       // Display the inventory slot
-      DisplayInvSlot(sCnt, PlayersOfferArea[sCnt].sItemIndex, usPosX, usPosY, addressof(PlayersOfferArea[sCnt].ItemObject), fDisplayHatchOnItem, PLAYERS_OFFER_AREA);
+      DisplayInvSlot(sCnt, PlayersOfferArea[sCnt].sItemIndex, usPosX, usPosY, addressof(PlayersOfferArea[sCnt].ItemObject), fDisplayHatchOnItem, Enum252.PLAYERS_OFFER_AREA);
 
       if (PlayersOfferArea[sCnt].uiFlags & ARMS_INV_PLAYERS_ITEM_HAS_VALUE)
         uiTotalCost += PlayersOfferArea[sCnt].uiItemPrice;
@@ -2749,7 +2749,7 @@ function DisplayPlayersOfferArea(): void {
     }
   }
 
-  if (gubSkiDirtyLevel == SKI_DIRTY_LEVEL2) {
+  if (gubSkiDirtyLevel == Enum253.SKI_DIRTY_LEVEL2) {
     //
     // Display the Total value text and number
     //
@@ -2804,7 +2804,7 @@ function CalculateTotalArmsDealerCost(): UINT32 {
   for (uiCnt = 0; uiCnt < SKI_NUM_TRADING_INV_SLOTS; uiCnt++) {
     if (ArmsDealerOfferArea[uiCnt].fActive) {
       // if the dealer repairs
-      if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS)
+      if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS)
         uiTotal += CalculateObjectItemRepairCost(gbSelectedArmsDealerID, addressof(ArmsDealerOfferArea[uiCnt].ItemObject));
       else
         uiTotal += CalcShopKeeperItemPrice(DEALER_SELLING, FALSE, ArmsDealerOfferArea[uiCnt].sItemIndex, ArmsDealerInfo[gbSelectedArmsDealerID].dSellModifier, addressof(ArmsDealerOfferArea[uiCnt].ItemObject));
@@ -2844,7 +2844,7 @@ function PerformTransaction(uiMoneyFromPlayersAccount: UINT32): void {
   // handle bribing... if the player is giving the dealer money, without buying anything
   if (IsMoneyTheOnlyItemInThePlayersOfferArea() && CountNumberOfItemsInTheArmsDealersOfferArea() == 0) {
     // accept/refuse money (varies by dealer according to ACCEPTS_GIFTS flag)
-    StartShopKeeperTalking(SK_QUOTES_DEALER_OFFERED_MONEY_AS_A_GIFT);
+    StartShopKeeperTalking(Enum254.SK_QUOTES_DEALER_OFFERED_MONEY_AS_A_GIFT);
 
     // if the arms dealer is the kind of person who accepts gifts
     if (ArmsDealerInfo[gbSelectedArmsDealerID].uiFlags & ARMS_DEALER_ACCEPTS_GIFTS) {
@@ -2856,7 +2856,7 @@ function PerformTransaction(uiMoneyFromPlayersAccount: UINT32): void {
   } else // not a bribe
   {
     // if the dealer is not a repairman
-    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != ARMS_DEALER_REPAIRS) {
+    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != Enum198.ARMS_DEALER_REPAIRS) {
       uiAvailablePlayerOfferSlots = (SKI_NUM_TRADING_INV_SLOTS - CountNumberOfValuelessItemsInThePlayersOfferArea());
 
       // always reserve an empty slot for change.  We can't tell for sure whether player is getting change because that
@@ -2868,7 +2868,7 @@ function PerformTransaction(uiMoneyFromPlayersAccount: UINT32): void {
       // if there is NOT enough room in the players offer area
       if (CountNumberOfItemsInTheArmsDealersOfferArea() > uiAvailablePlayerOfferSlots) {
         // tell player there's not enough room in the player's offer area
-        DoSkiMessageBox(MSG_BOX_BASIC_STYLE, SKI_Text[SKI_TEXT_NO_MORE_ROOM_IN_PLAYER_OFFER_AREA], SHOPKEEPER_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoSkiMessageBox(Enum24.MSG_BOX_BASIC_STYLE, SKI_Text[Enum367.SKI_TEXT_NO_MORE_ROOM_IN_PLAYER_OFFER_AREA], Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_OK, NULL);
 
         return;
       }
@@ -2908,7 +2908,7 @@ function PerformTransaction(uiMoneyFromPlayersAccount: UINT32): void {
     Assert(uiPlayersTotalMoneyValue >= uiArmsDealersItemsCost);
 
     // if the dealer repairs
-    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
       // Make sure there is enough money in the Player's offer area to cover the repair charge
       if ((uiMoneyFromPlayersAccount + uiMoneyInPlayersOfferArea) >= uiArmsDealersItemsCost) {
         // Move all the players evaluated items to the dealer ( For a repairman, this means just: get rid of the money )
@@ -2924,10 +2924,10 @@ function PerformTransaction(uiMoneyFromPlayersAccount: UINT32): void {
             GivePlayerSomeChange(iChangeToGiveToPlayer);
 
             if (uiArmsDealersItemsCost > 0) {
-              StartShopKeeperTalking(SK_QUOTES_PLAYER_HAS_TOO_MUCH_MONEY_FOR_TRANSACTION);
+              StartShopKeeperTalking(Enum254.SK_QUOTES_PLAYER_HAS_TOO_MUCH_MONEY_FOR_TRANSACTION);
             }
           } else
-            StartShopKeeperTalking(SK_QUOTES_PLAYER_HAS_EXACTLY_ENOUGH_MONEY_FOR_TRANSACTION);
+            StartShopKeeperTalking(Enum254.SK_QUOTES_PLAYER_HAS_EXACTLY_ENOUGH_MONEY_FOR_TRANSACTION);
         }
 
         // move the offered items to the repairman's inventory
@@ -2944,13 +2944,13 @@ function PerformTransaction(uiMoneyFromPlayersAccount: UINT32): void {
       iChangeToGiveToPlayer = CalculateTotalPlayersValue() - uiArmsDealersItemsCost;
 
       // if the arms dealer buys stuff
-      if ((ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_BUYS_ONLY) || (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_BUYS_SELLS)) {
+      if ((ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_BUYS_ONLY) || (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_BUYS_SELLS)) {
         // but the dealer can't afford this transaction
         if (iChangeToGiveToPlayer > gArmsDealerStatus[gbSelectedArmsDealerID].uiArmsDealersCash) {
           // HACK HACK HACK: We forgot to write/record quote 27 for Jake, so he ALWAYS must have enough money!
-          if (gbSelectedArmsDealerID != ARMS_DEALER_JAKE) {
+          if (gbSelectedArmsDealerID != Enum197.ARMS_DEALER_JAKE) {
             // no deal - dealer can't afford it
-            StartShopKeeperTalking(SK_QUOTES_CANT_AFFORD_TO_BUY_OR_TOO_MUCH_TO_REPAIR);
+            StartShopKeeperTalking(Enum254.SK_QUOTES_CANT_AFFORD_TO_BUY_OR_TOO_MUCH_TO_REPAIR);
             gfResetShopKeepIdleQuote = TRUE;
 
             return;
@@ -2978,20 +2978,20 @@ function PerformTransaction(uiMoneyFromPlayersAccount: UINT32): void {
           */
 
           if (uiArmsDealersItemsCost == 0) {
-            StartShopKeeperTalking(SK_QUOTES_PLAYER_HAS_EXACTLY_ENOUGH_MONEY_FOR_TRANSACTION);
+            StartShopKeeperTalking(Enum254.SK_QUOTES_PLAYER_HAS_EXACTLY_ENOUGH_MONEY_FOR_TRANSACTION);
           } else {
-            StartShopKeeperTalking(SK_QUOTES_PLAYER_HAS_TOO_MUCH_MONEY_FOR_TRANSACTION);
+            StartShopKeeperTalking(Enum254.SK_QUOTES_PLAYER_HAS_TOO_MUCH_MONEY_FOR_TRANSACTION);
           }
         } else if (iChangeToGiveToPlayer == 0)
-          StartShopKeeperTalking(SK_QUOTES_PLAYER_HAS_EXACTLY_ENOUGH_MONEY_FOR_TRANSACTION);
+          StartShopKeeperTalking(Enum254.SK_QUOTES_PLAYER_HAS_EXACTLY_ENOUGH_MONEY_FOR_TRANSACTION);
       }
 
       // if the arms dealer is tony
-      if (gbSelectedArmsDealerID == ARMS_DEALER_TONY)
+      if (gbSelectedArmsDealerID == Enum197.ARMS_DEALER_TONY)
         gfHavePurchasedItemsFromTony = TRUE;
 
       // if the arms dealer is Howard( 125), set fact 222
-      if (gbSelectedArmsDealerID == ARMS_DEALER_HOWARD)
+      if (gbSelectedArmsDealerID == Enum197.ARMS_DEALER_HOWARD)
         SetFactTrue(222);
     }
 
@@ -3001,7 +3001,7 @@ function PerformTransaction(uiMoneyFromPlayersAccount: UINT32): void {
     }
 
     // Redraw the screen
-    gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+    gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 
     gfDoneBusinessThisSession = TRUE;
 
@@ -3030,7 +3030,7 @@ function MoveAllArmsDealersItemsInOfferAreaToPlayersOfferArea(): void {
         PlayersOfferArea[bSlotID].uiFlags |= ARMS_INV_JUST_PURCHASED;
 
         // if the player has just purchased a VIDEO_CAMERA from Franz Hinkle
-        if ((gbSelectedArmsDealerID == ARMS_DEALER_FRANZ) && (ArmsDealerOfferArea[uiCnt].sItemIndex == VIDEO_CAMERA)) {
+        if ((gbSelectedArmsDealerID == Enum197.ARMS_DEALER_FRANZ) && (ArmsDealerOfferArea[uiCnt].sItemIndex == Enum225.VIDEO_CAMERA)) {
           // set a special flag
           gArmsDealerStatus[gbSelectedArmsDealerID].ubSpecificDealerFlags |= ARMS_DEALER_FLAG__FRANZ_HAS_SOLD_VIDEO_CAMERA_TO_PLAYER;
         }
@@ -3090,7 +3090,7 @@ function MovePlayerOfferedItemsOfValueToArmsDealersInventory(): void {
           gArmsDealerStatus[gbSelectedArmsDealerID].uiArmsDealersCash += PlayersOfferArea[uiCnt].ItemObject.uiMoneyAmount;
         } else {
           // if the dealer doesn't strictly buy items from the player, give the item to the dealer
-          if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != ARMS_DEALER_BUYS_ONLY) {
+          if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != Enum198.ARMS_DEALER_BUYS_ONLY) {
             // item cease to be merc-owned during this operation
             AddObjectToArmsDealerInventory(gbSelectedArmsDealerID, addressof(PlayersOfferArea[uiCnt].ItemObject));
           }
@@ -3118,13 +3118,13 @@ function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDealerFirs
   */
 
   switch (ubSource) {
-    case ARMS_DEALER_INVENTORY:
+    case Enum252.ARMS_DEALER_INVENTORY:
       // Should never get in here
       Assert(0);
       return;
       break;
 
-    case ARMS_DEALER_OFFER_AREA:
+    case Enum252.ARMS_DEALER_OFFER_AREA:
       // Get the item from the slot.
       memcpy(addressof(gMoveingItem), addressof(ArmsDealerOfferArea[bSlotNum]), sizeof(INVENTORY_IN_SLOT));
       IfMercOwnedRemoveItemFromMercInv(addressof(gMoveingItem));
@@ -3152,7 +3152,7 @@ function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDealerFirs
 
       break;
 
-    case PLAYERS_OFFER_AREA:
+    case Enum252.PLAYERS_OFFER_AREA:
       // Get the item from the slot.
       memcpy(addressof(gMoveingItem), addressof(PlayersOfferArea[bSlotNum]), sizeof(INVENTORY_IN_SLOT));
 
@@ -3193,9 +3193,9 @@ function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDealerFirs
 
       break;
 
-    case PLAYERS_INVENTORY:
+    case Enum252.PLAYERS_INVENTORY:
       // better be a valid merc pocket index, or -1
-      Assert((bSlotNum >= -1) && (bSlotNum < NUM_INV_SLOTS));
+      Assert((bSlotNum >= -1) && (bSlotNum < Enum261.NUM_INV_SLOTS));
 
       // if we're supposed to store the original pocket #, but that pocket still holds more of these
       if ((bSlotNum != -1) && (gpSMCurrentMerc.value.inv[bSlotNum].ubNumberOfObjects > 0)) {
@@ -3209,7 +3209,7 @@ function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDealerFirs
       // way, and so has no possibility of entering the dealer's inventory (where complex items aren't permitted).
       if (fOfferToDealerFirst && OfferObjectToDealer(gpItemPointer, gpSMCurrentMerc.value.ubProfile, bSlotNum)) {
         // Reset the cursor
-        SetSkiCursor(CURSOR_NORMAL);
+        SetSkiCursor(Enum317.CURSOR_NORMAL);
       } else // not supposed to offer it, or dealer has no more room
       {
         // store the current contents of the cursor in a temporary object structure.
@@ -3262,14 +3262,14 @@ function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDealerFirs
 
     DisableAllDealersInventorySlots();
 
-    if (ubSource != ARMS_DEALER_OFFER_AREA) {
+    if (ubSource != Enum252.ARMS_DEALER_OFFER_AREA) {
       DisableAllDealersOfferSlots();
     }
 
     gfResetShopKeepIdleQuote = TRUE;
   }
 
-  gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+  gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 }
 
 function RestrictSkiMouseCursor(): void {
@@ -3325,7 +3325,7 @@ function SetSkiCursor(usCursor: UINT16): void {
       MSYS_ChangeRegionCursor(addressof(gDealersOfferSlotsMouseRegions[ubCnt]), usCursor);
 
       // if the dealer repairs
-      if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+      if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
         MSYS_ChangeRegionCursor(addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt]), usCursor);
       }
     }
@@ -3364,7 +3364,7 @@ function SetSkiCursor(usCursor: UINT16): void {
       MSYS_ChangeRegionCursor(addressof(gDealersOfferSlotsMouseRegions[ubCnt]), usCursor);
 
       // if the dealer repairs
-      if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+      if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
         MSYS_ChangeRegionCursor(addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubCnt]), usCursor);
       }
     }
@@ -3396,29 +3396,29 @@ function SetSkiCursor(usCursor: UINT16): void {
   SetCurrentCursorFromDatabase(usCursor);
 
   // make sure disabled slot hatching gets updated when items picked up / dropped
-  gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+  gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 }
 
 function AddInventoryToSkiLocation(pInv: Pointer<INVENTORY_IN_SLOT>, ubSpotLocation: UINT8, ubWhere: UINT8): INT8 {
   let bSlotAddedTo: INT8 = -1;
 
   switch (ubWhere) {
-    case ARMS_DEALER_INVENTORY:
-    case PLAYERS_INVENTORY:
+    case Enum252.ARMS_DEALER_INVENTORY:
+    case Enum252.PLAYERS_INVENTORY:
       // not used this way
       Assert(0);
       return bSlotAddedTo;
       break;
 
-    case ARMS_DEALER_OFFER_AREA:
+    case Enum252.ARMS_DEALER_OFFER_AREA:
 
       // If we can add the item into the slot that was clicked on
       if (ArmsDealerOfferArea[ubSpotLocation].fActive == FALSE) {
         memcpy(addressof(ArmsDealerOfferArea[ubSpotLocation]), pInv, sizeof(INVENTORY_IN_SLOT));
         IfMercOwnedCopyItemToMercInv(pInv);
 
-        SetSkiRegionHelpText(addressof(ArmsDealerOfferArea[ubSpotLocation]), addressof(gDealersOfferSlotsMouseRegions[ubSpotLocation]), ARMS_DEALER_OFFER_AREA);
-        SetSkiFaceRegionHelpText(addressof(ArmsDealerOfferArea[ubSpotLocation]), addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubSpotLocation]), ARMS_DEALER_OFFER_AREA);
+        SetSkiRegionHelpText(addressof(ArmsDealerOfferArea[ubSpotLocation]), addressof(gDealersOfferSlotsMouseRegions[ubSpotLocation]), Enum252.ARMS_DEALER_OFFER_AREA);
+        SetSkiFaceRegionHelpText(addressof(ArmsDealerOfferArea[ubSpotLocation]), addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubSpotLocation]), Enum252.ARMS_DEALER_OFFER_AREA);
 
         bSlotAddedTo = ubSpotLocation;
       } else {
@@ -3426,7 +3426,7 @@ function AddInventoryToSkiLocation(pInv: Pointer<INVENTORY_IN_SLOT>, ubSpotLocat
       }
       break;
 
-    case PLAYERS_OFFER_AREA:
+    case Enum252.PLAYERS_OFFER_AREA:
 
       // If we can add the item into the slot that was clicked on
       if (PlayersOfferArea[ubSpotLocation].fActive == FALSE) {
@@ -3441,8 +3441,8 @@ function AddInventoryToSkiLocation(pInv: Pointer<INVENTORY_IN_SLOT>, ubSpotLocat
           PlayersOfferArea[ubSpotLocation].uiItemPrice = PlayersOfferArea[ubSpotLocation].ItemObject.uiMoneyAmount;
         }
 
-        SetSkiRegionHelpText(addressof(PlayersOfferArea[ubSpotLocation]), addressof(gPlayersOfferSlotsMouseRegions[ubSpotLocation]), PLAYERS_OFFER_AREA);
-        SetSkiFaceRegionHelpText(addressof(PlayersOfferArea[ubSpotLocation]), addressof(gPlayersOfferSlotsSmallFaceMouseRegions[ubSpotLocation]), PLAYERS_OFFER_AREA);
+        SetSkiRegionHelpText(addressof(PlayersOfferArea[ubSpotLocation]), addressof(gPlayersOfferSlotsMouseRegions[ubSpotLocation]), Enum252.PLAYERS_OFFER_AREA);
+        SetSkiFaceRegionHelpText(addressof(PlayersOfferArea[ubSpotLocation]), addressof(gPlayersOfferSlotsSmallFaceMouseRegions[ubSpotLocation]), Enum252.PLAYERS_OFFER_AREA);
 
         bSlotAddedTo = ubSpotLocation;
       }
@@ -3460,7 +3460,7 @@ function AddInventoryToSkiLocation(pInv: Pointer<INVENTORY_IN_SLOT>, ubSpotLocat
   }
 
   // Redraw the screen
-  gubSkiDirtyLevel = SKI_DIRTY_LEVEL1;
+  gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL1;
   gfResetShopKeepIdleQuote = TRUE;
   fInterfacePanelDirty = DIRTYLEVEL2;
 
@@ -3514,7 +3514,7 @@ function HandleShopKeeperDialog(ubInit: UINT8): void {
 
   if (ubInit == 1) {
     // special: if it's Arnie, and we have stuff in for repairs, but it's not fixed yet, use a different opening quote!
-    if ((gbSelectedArmsDealerID == ARMS_DEALER_ARNIE) && RepairmanIsFixingItemsButNoneAreDoneYet(ARNIE)) {
+    if ((gbSelectedArmsDealerID == Enum197.ARMS_DEALER_ARNIE) && RepairmanIsFixingItemsButNoneAreDoneYet(Enum268.ARNIE)) {
       bSpeech = ARNIE_QUOTE_NOT_REPAIRED_YET;
     }
     // if repairs were delayed
@@ -3525,7 +3525,7 @@ function HandleShopKeeperDialog(ubInit: UINT8): void {
       // treat this as having done business - the player WAS here for a good reason, and it's the dealers fault...
       gfDoneBusinessThisSession = TRUE;
     } else {
-      bSpeech = SK_QUOTES_PLAYER_FIRST_ENTERS_SKI;
+      bSpeech = Enum254.SK_QUOTES_PLAYER_FIRST_ENTERS_SKI;
     }
     return;
   }
@@ -3562,10 +3562,10 @@ function HandleShopKeeperDialog(ubInit: UINT8): void {
         // first check if one of the situation warrants one of the more precise quotes
 
         // if the dealer repairs
-        if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+        if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
           // if there are items in the arms dealer's offer area (must be awaiting repairs)
           if (CountNumberOfItemsInTheArmsDealersOfferArea() > 0) {
-            sRandomQuoteToUse = SK_QUOTES_RANDOM_QUOTE_WHILE_ITEMS_CHOSEN_TO_SELL_OR_REPAIR;
+            sRandomQuoteToUse = Enum254.SK_QUOTES_RANDOM_QUOTE_WHILE_ITEMS_CHOSEN_TO_SELL_OR_REPAIR;
           }
         } else // non-repairman
         {
@@ -3573,9 +3573,9 @@ function HandleShopKeeperDialog(ubInit: UINT8): void {
           if ((CalculateTotalPlayersValue() - CalculateHowMuchMoneyIsInPlayersOfferArea()) > 0) {
             // if the player has also selected some items for purchase
             if (CountNumberOfItemsInTheArmsDealersOfferArea() > 0) {
-              sRandomQuoteToUse = SK_QUOTES_RANDOM_QUOTE_WHILE_ITEMS_CHOSEN_TO_TRADE;
+              sRandomQuoteToUse = Enum254.SK_QUOTES_RANDOM_QUOTE_WHILE_ITEMS_CHOSEN_TO_TRADE;
             } else {
-              sRandomQuoteToUse = SK_QUOTES_RANDOM_QUOTE_WHILE_ITEMS_CHOSEN_TO_SELL_OR_REPAIR;
+              sRandomQuoteToUse = Enum254.SK_QUOTES_RANDOM_QUOTE_WHILE_ITEMS_CHOSEN_TO_SELL_OR_REPAIR;
             }
           }
         }
@@ -3583,13 +3583,13 @@ function HandleShopKeeperDialog(ubInit: UINT8): void {
         // if neither of the more precise quotes fit, or 33 percent of the time anyways
         if ((sRandomQuoteToUse == -1) || Chance(33)) {
           if (Chance(50))
-            sRandomQuoteToUse = SK_QUOTES_RANDOM_QUOTE_WHILE_PLAYER_DECIDING_1;
+            sRandomQuoteToUse = Enum254.SK_QUOTES_RANDOM_QUOTE_WHILE_PLAYER_DECIDING_1;
           else
-            sRandomQuoteToUse = SK_QUOTES_RANDOM_QUOTE_WHILE_PLAYER_DECIDING_2;
+            sRandomQuoteToUse = Enum254.SK_QUOTES_RANDOM_QUOTE_WHILE_PLAYER_DECIDING_2;
         }
 
         Assert(sRandomQuoteToUse != -1);
-        Assert(sRandomQuoteToUse < NUM_COMMON_SK_QUOTES);
+        Assert(sRandomQuoteToUse < Enum254.NUM_COMMON_SK_QUOTES);
 
         if (!gfCommonQuoteUsedThisSession[sRandomQuoteToUse]) {
           StartShopKeeperTalking(sRandomQuoteToUse);
@@ -3677,13 +3677,13 @@ function InitShopKeeperSubTitledText(pString: STR16): void {
   swprintf(gsShopKeeperTalkingText, "\"%s\"", pString);
 
   // Now setup the popup box
-  if (gGameSettings.fOptions[TOPTION_SUBTITLES]) {
+  if (gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES]) {
     let usActualWidth: UINT16 = 0;
     let usActualHeight: UINT16 = 0;
 
     SET_USE_WINFONTS(TRUE);
     SET_WINFONT(giSubTitleWinFont);
-    giPopUpBoxId = PrepareMercPopupBox(giPopUpBoxId, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, gsShopKeeperTalkingText, 300, 0, 0, 0, addressof(usActualWidth), addressof(usActualHeight));
+    giPopUpBoxId = PrepareMercPopupBox(giPopUpBoxId, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gsShopKeeperTalkingText, 300, 0, 0, 0, addressof(usActualWidth), addressof(usActualHeight));
     SET_USE_WINFONTS(FALSE);
 
     //		gusPositionOfSubTitlesX = ( 640 - usActualWidth ) / 2 ;
@@ -3694,12 +3694,12 @@ function InitShopKeeperSubTitledText(pString: STR16): void {
 
     // check to make sure the region is not already initialized
     if (!(gShopKeeperSubTitleMouseRegion.uiFlags & MSYS_REGION_EXISTS)) {
-      MSYS_DefineRegion(addressof(gShopKeeperSubTitleMouseRegion), gusPositionOfSubTitlesX, SKI_POSITION_SUBTITLES_Y, (gusPositionOfSubTitlesX + usActualWidth), (SKI_POSITION_SUBTITLES_Y + usActualHeight), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, MSYS_NO_CALLBACK, ShopKeeperSubTitleRegionCallBack);
+      MSYS_DefineRegion(addressof(gShopKeeperSubTitleMouseRegion), gusPositionOfSubTitlesX, SKI_POSITION_SUBTITLES_Y, (gusPositionOfSubTitlesX + usActualWidth), (SKI_POSITION_SUBTITLES_Y + usActualHeight), MSYS_PRIORITY_HIGH, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, ShopKeeperSubTitleRegionCallBack);
       MSYS_AddRegion(addressof(gShopKeeperSubTitleMouseRegion));
     }
 
     // redraw the screen
-    gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+    gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
   }
 }
 
@@ -3709,10 +3709,10 @@ function RemoveShopKeeperSubTitledText(): void {
 
   if (RemoveMercPopupBoxFromIndex(giPopUpBoxId)) {
     giPopUpBoxId = -1;
-    gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+    gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 
     // Get rid of the subtitles region
-    if (gGameSettings.fOptions[TOPTION_SUBTITLES])
+    if (gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES])
       MSYS_RemoveRegion(addressof(gShopKeeperSubTitleMouseRegion));
   }
 }
@@ -3765,7 +3765,7 @@ function ShutUpShopKeeper(): void {
   ShutupaYoFace(giShopKeeperFaceIndex);
   gfIsTheShopKeeperTalking = FALSE;
 
-  gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+  gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 }
 
 function CountNumberOfValuelessItemsInThePlayersOfferArea(): UINT8 {
@@ -3864,10 +3864,10 @@ function CreateSkiAtmButtons(): void {
   usPosX = SKI_ATM_BUTTON_X;
   usPosY = SKI_ATM_BUTTON_Y;
   ubCount = 0;
-  for (ubCnt = SKI_ATM_1; ubCnt <= SKI_ATM_9; ubCnt++) {
+  for (ubCnt = Enum368.SKI_ATM_1; ubCnt <= Enum368.SKI_ATM_9; ubCnt++) {
     guiSKI_AtmButton[ubCnt] = CreateIconAndTextButton(guiSKI_AtmNumButtonImage, SkiAtmText[ubCnt], SKI_ATM_BUTTON_FONT, SKI_ATM_BUTTON_COLOR, NO_SHADOW, SKI_ATM_BUTTON_COLOR, NO_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, DEFAULT_MOVE_CALLBACK, BtnSKI_AtmButtonCallback);
 
-    SpecifyDisabledButtonStyle(guiSKI_AtmButton[ubCnt], DISABLED_STYLE_SHADED);
+    SpecifyDisabledButtonStyle(guiSKI_AtmButton[ubCnt], Enum29.DISABLED_STYLE_SHADED);
 
     MSYS_SetBtnUserData(guiSKI_AtmButton[ubCnt], 0, ubCnt);
     ubCount++;
@@ -3882,18 +3882,18 @@ function CreateSkiAtmButtons(): void {
 
   // Create the zero button
   usPosX = SKI_ATM_BUTTON_X;
-  guiSKI_AtmButton[SKI_ATM_0] = CreateIconAndTextButton(guiSKI_AtmOkButtonImage, SkiAtmText[SKI_ATM_0], SKI_ATM_BUTTON_FONT, SKI_ATM_BUTTON_COLOR, NO_SHADOW, SKI_ATM_BUTTON_COLOR, NO_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, DEFAULT_MOVE_CALLBACK, BtnSKI_AtmButtonCallback);
-  MSYS_SetBtnUserData(guiSKI_AtmButton[SKI_ATM_0], 0, SKI_ATM_0);
+  guiSKI_AtmButton[Enum368.SKI_ATM_0] = CreateIconAndTextButton(guiSKI_AtmOkButtonImage, SkiAtmText[Enum368.SKI_ATM_0], SKI_ATM_BUTTON_FONT, SKI_ATM_BUTTON_COLOR, NO_SHADOW, SKI_ATM_BUTTON_COLOR, NO_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, DEFAULT_MOVE_CALLBACK, BtnSKI_AtmButtonCallback);
+  MSYS_SetBtnUserData(guiSKI_AtmButton[Enum368.SKI_ATM_0], 0, Enum368.SKI_ATM_0);
 
   // Create the ok button
   usPosX = SKI_ATM_BUTTON_X + SKI_ATM_NUM_BUTTON_WIDTH + 8;
-  guiSKI_AtmButton[SKI_ATM_OK] = CreateIconAndTextButton(guiSKI_AtmOkButtonImage, SkiAtmText[SKI_ATM_OK], SKI_ATM_BUTTON_FONT, SKI_ATM_BUTTON_COLOR, NO_SHADOW, SKI_ATM_BUTTON_COLOR, NO_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, DEFAULT_MOVE_CALLBACK, BtnSKI_AtmButtonCallback);
-  MSYS_SetBtnUserData(guiSKI_AtmButton[SKI_ATM_OK], 0, SKI_ATM_OK);
+  guiSKI_AtmButton[Enum368.SKI_ATM_OK] = CreateIconAndTextButton(guiSKI_AtmOkButtonImage, SkiAtmText[Enum368.SKI_ATM_OK], SKI_ATM_BUTTON_FONT, SKI_ATM_BUTTON_COLOR, NO_SHADOW, SKI_ATM_BUTTON_COLOR, NO_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, DEFAULT_MOVE_CALLBACK, BtnSKI_AtmButtonCallback);
+  MSYS_SetBtnUserData(guiSKI_AtmButton[Enum368.SKI_ATM_OK], 0, Enum368.SKI_ATM_OK);
 
   // Create the side menu text buttons
   usPosX = SKI_ATM_BUTTON_X + SKI_ATM_SIDE_MENU_PANEL_START_X;
   usPosY = SKI_ATM_BUTTON_Y;
-  for (ubCnt = SKI_ATM_TAKE; ubCnt <= SKI_ATM_CLEAR; ubCnt++) {
+  for (ubCnt = Enum368.SKI_ATM_TAKE; ubCnt <= Enum368.SKI_ATM_CLEAR; ubCnt++) {
     guiSKI_AtmButton[ubCnt] = CreateIconAndTextButton(guiSKI_AtmSideMenuButtonImage, SkiAtmText[ubCnt], SKI_ATM_BUTTON_FONT, SKI_ATM_BUTTON_COLOR, NO_SHADOW, SKI_ATM_BUTTON_COLOR, NO_SHADOW, TEXT_CJUSTIFIED, usPosX, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 2, DEFAULT_MOVE_CALLBACK, BtnSKI_AtmButtonCallback);
 
     MSYS_SetBtnUserData(guiSKI_AtmButton[ubCnt], 0, ubCnt);
@@ -3915,7 +3915,7 @@ function RemoveSkiAtmButtons(): void {
   UnloadButtonImage(guiSKI_AtmSideMenuButtonImage);
 
   // Remove the atm buttons
-  for (ubCnt = 0; ubCnt < NUM_SKI_ATM_BUTTONS; ubCnt++) {
+  for (ubCnt = 0; ubCnt < Enum368.NUM_SKI_ATM_BUTTONS; ubCnt++) {
     RemoveButton(guiSKI_AtmButton[ubCnt]);
   }
 }
@@ -3950,42 +3950,42 @@ function HandleSkiAtmPanel(): void {
 function HandleSkiAtmPanelInput(ubButtonPress: UINT8): void {
   // switch on the current mode
   switch (ubButtonPress) {
-    case SKI_ATM_1:
-    case SKI_ATM_2:
-    case SKI_ATM_3:
-    case SKI_ATM_4:
-    case SKI_ATM_5:
-    case SKI_ATM_6:
-    case SKI_ATM_7:
-    case SKI_ATM_8:
-    case SKI_ATM_9:
-    case SKI_ATM_0:
+    case Enum368.SKI_ATM_1:
+    case Enum368.SKI_ATM_2:
+    case Enum368.SKI_ATM_3:
+    case Enum368.SKI_ATM_4:
+    case Enum368.SKI_ATM_5:
+    case Enum368.SKI_ATM_6:
+    case Enum368.SKI_ATM_7:
+    case Enum368.SKI_ATM_8:
+    case Enum368.SKI_ATM_9:
+    case Enum368.SKI_ATM_0:
 
       AddNumberToSkiAtm(ubButtonPress);
       break;
 
-    case SKI_ATM_OK: {
+    case Enum368.SKI_ATM_OK: {
       HandleAtmOK();
       break;
     }
 
-    case SKI_ATM_TAKE:
-      gubCurrentSkiAtmMode = SKI_ATM_TAKE_MODE;
+    case Enum368.SKI_ATM_TAKE:
+      gubCurrentSkiAtmMode = Enum250.SKI_ATM_TAKE_MODE;
       EnableDisableSkiAtmButtons();
       break;
 
-    case SKI_ATM_GIVE:
-      gubCurrentSkiAtmMode = SKI_ATM_GIVE_MODE;
+    case Enum368.SKI_ATM_GIVE:
+      gubCurrentSkiAtmMode = Enum250.SKI_ATM_GIVE_MODE;
       EnableDisableSkiAtmButtons();
       break;
 
-    case SKI_ATM_CANCEL:
+    case Enum368.SKI_ATM_CANCEL:
       memset(gzSkiAtmTransferString, 0, 32);
-      gubCurrentSkiAtmMode = SKI_ATM_DISABLED_MODE;
+      gubCurrentSkiAtmMode = Enum250.SKI_ATM_DISABLED_MODE;
       EnableDisableSkiAtmButtons();
       break;
 
-    case SKI_ATM_CLEAR:
+    case Enum368.SKI_ATM_CLEAR:
       memset(gzSkiAtmTransferString, 0, 32);
       break;
 
@@ -4005,17 +4005,17 @@ function HandleAtmOK(): void {
     return;
 
   // if we are in an error mode
-  if (gubCurrentSkiAtmMode == SKI_ATM_ERR_TAKE_MODE)
-    gubCurrentSkiAtmMode = SKI_ATM_TAKE_MODE;
-  else if (gubCurrentSkiAtmMode == SKI_ATM_ERR_GIVE_MODE)
-    gubCurrentSkiAtmMode = SKI_ATM_GIVE_MODE;
+  if (gubCurrentSkiAtmMode == Enum250.SKI_ATM_ERR_TAKE_MODE)
+    gubCurrentSkiAtmMode = Enum250.SKI_ATM_TAKE_MODE;
+  else if (gubCurrentSkiAtmMode == Enum250.SKI_ATM_ERR_GIVE_MODE)
+    gubCurrentSkiAtmMode = Enum250.SKI_ATM_GIVE_MODE;
 
   // if we are in either the give or take mode, exit
-  if (gubCurrentSkiAtmMode != SKI_ATM_TAKE_MODE && gubCurrentSkiAtmMode != SKI_ATM_GIVE_MODE)
+  if (gubCurrentSkiAtmMode != Enum250.SKI_ATM_TAKE_MODE && gubCurrentSkiAtmMode != Enum250.SKI_ATM_GIVE_MODE)
     return;
 
   // if we are taking money
-  if (gubCurrentSkiAtmMode == SKI_ATM_TAKE_MODE) {
+  if (gubCurrentSkiAtmMode == Enum250.SKI_ATM_TAKE_MODE) {
     // are we trying to take more then the merc has
     if (iAmountToTransfer > GetFundsOnMerc(gpSMCurrentMerc)) {
       let uiFundsOnCurrentMerc: UINT32 = GetFundsOnMerc(gpSMCurrentMerc);
@@ -4027,14 +4027,14 @@ function HandleAtmOK(): void {
         swprintf(gzSkiAtmTransferString, "%d", uiFundsOnCurrentMerc);
       }
 
-      gubCurrentSkiAtmMode = SKI_ATM_ERR_TAKE_MODE;
+      gubCurrentSkiAtmMode = Enum250.SKI_ATM_ERR_TAKE_MODE;
       HandleCurrentModeText(gubCurrentSkiAtmMode);
     } else {
       TransferFundsFromMercToBank(gpSMCurrentMerc, iAmountToTransfer);
 
       fOkToClear = TRUE;
     }
-  } else if (gubCurrentSkiAtmMode == SKI_ATM_GIVE_MODE) {
+  } else if (gubCurrentSkiAtmMode == Enum250.SKI_ATM_GIVE_MODE) {
     // are we tring to take more then we have?
     if (iAmountToTransfer > LaptopSaveInfo.iCurrentBalance) {
       if (LaptopSaveInfo.iCurrentBalance == 0)
@@ -4044,7 +4044,7 @@ function HandleAtmOK(): void {
         swprintf(gzSkiAtmTransferString, "%d", LaptopSaveInfo.iCurrentBalance);
       }
 
-      gubCurrentSkiAtmMode = SKI_ATM_ERR_GIVE_MODE;
+      gubCurrentSkiAtmMode = Enum250.SKI_ATM_ERR_GIVE_MODE;
       HandleCurrentModeText(gubCurrentSkiAtmMode);
     } else {
       TransferFundsFromBankToMerc(gpSMCurrentMerc, iAmountToTransfer);
@@ -4054,34 +4054,34 @@ function HandleAtmOK(): void {
   }
 
   if (fOkToClear) {
-    gubCurrentSkiAtmMode = SKI_ATM_DISABLED_MODE;
+    gubCurrentSkiAtmMode = Enum250.SKI_ATM_DISABLED_MODE;
     EnableDisableSkiAtmButtons();
     memset(gzSkiAtmTransferString, 0, 32);
   }
 
   // Redraw the screen
-  gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+  gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 }
 
 function AddNumberToSkiAtm(ubNumber: UINT8): void {
   let zTemp: CHAR16[] /* [16] */;
 
   // make sure to durt the panel
-  gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+  gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 
   // if the mode is an error mode
-  if (gubCurrentSkiAtmMode == SKI_ATM_ERR_TAKE_MODE) {
-    gubCurrentSkiAtmMode = SKI_ATM_TAKE_MODE;
+  if (gubCurrentSkiAtmMode == Enum250.SKI_ATM_ERR_TAKE_MODE) {
+    gubCurrentSkiAtmMode = Enum250.SKI_ATM_TAKE_MODE;
     HandleCurrentModeText(gubCurrentSkiAtmMode);
   }
   // else if the mode was
-  else if (gubCurrentSkiAtmMode == SKI_ATM_ERR_GIVE_MODE) {
-    gubCurrentSkiAtmMode = SKI_ATM_GIVE_MODE;
+  else if (gubCurrentSkiAtmMode == Enum250.SKI_ATM_ERR_GIVE_MODE) {
+    gubCurrentSkiAtmMode = Enum250.SKI_ATM_GIVE_MODE;
     HandleCurrentModeText(gubCurrentSkiAtmMode);
   }
 
   // if we are not in the correct mode, return
-  if (gubCurrentSkiAtmMode != SKI_ATM_TAKE_MODE && gubCurrentSkiAtmMode != SKI_ATM_GIVE_MODE)
+  if (gubCurrentSkiAtmMode != Enum250.SKI_ATM_TAKE_MODE && gubCurrentSkiAtmMode != Enum250.SKI_ATM_GIVE_MODE)
     return;
 
   // make sure we arent going over the numbers max size
@@ -4089,7 +4089,7 @@ function AddNumberToSkiAtm(ubNumber: UINT8): void {
     return;
 
   // if its the first number being added and the number is a zero
-  if (gzSkiAtmTransferString[0] == '\0' && ubNumber == SKI_ATM_0)
+  if (gzSkiAtmTransferString[0] == '\0' && ubNumber == Enum368.SKI_ATM_0)
     return;
 
   swprintf(zTemp, "%d", ubNumber);
@@ -4129,43 +4129,43 @@ function EnableDisableSkiAtmButtons(): void {
   let ubCnt: UINT8;
 
   switch (gubCurrentSkiAtmMode) {
-    case SKI_ATM_DISABLED_MODE:
+    case Enum250.SKI_ATM_DISABLED_MODE:
 
       // Disable number positions
-      for (ubCnt = SKI_ATM_0; ubCnt <= SKI_ATM_9; ubCnt++)
+      for (ubCnt = Enum368.SKI_ATM_0; ubCnt <= Enum368.SKI_ATM_9; ubCnt++)
         DisableButton(guiSKI_AtmButton[ubCnt]);
 
-      DisableButton(guiSKI_AtmButton[SKI_ATM_OK]);
-      DisableButton(guiSKI_AtmButton[SKI_ATM_CANCEL]);
-      DisableButton(guiSKI_AtmButton[SKI_ATM_CLEAR]);
+      DisableButton(guiSKI_AtmButton[Enum368.SKI_ATM_OK]);
+      DisableButton(guiSKI_AtmButton[Enum368.SKI_ATM_CANCEL]);
+      DisableButton(guiSKI_AtmButton[Enum368.SKI_ATM_CLEAR]);
 
-      EnableButton(guiSKI_AtmButton[SKI_ATM_TAKE]);
-      EnableButton(guiSKI_AtmButton[SKI_ATM_GIVE]);
+      EnableButton(guiSKI_AtmButton[Enum368.SKI_ATM_TAKE]);
+      EnableButton(guiSKI_AtmButton[Enum368.SKI_ATM_GIVE]);
 
       break;
 
-    case SKI_ATM_TAKE_MODE:
+    case Enum250.SKI_ATM_TAKE_MODE:
 
       // Make sure the numbers are not disbaled
-      for (ubCnt = SKI_ATM_0; ubCnt <= SKI_ATM_9; ubCnt++)
+      for (ubCnt = Enum368.SKI_ATM_0; ubCnt <= Enum368.SKI_ATM_9; ubCnt++)
         EnableButton(guiSKI_AtmButton[ubCnt]);
 
       // enable other
-      EnableButton(guiSKI_AtmButton[SKI_ATM_OK]);
-      EnableButton(guiSKI_AtmButton[SKI_ATM_CANCEL]);
-      EnableButton(guiSKI_AtmButton[SKI_ATM_CLEAR]);
+      EnableButton(guiSKI_AtmButton[Enum368.SKI_ATM_OK]);
+      EnableButton(guiSKI_AtmButton[Enum368.SKI_ATM_CANCEL]);
+      EnableButton(guiSKI_AtmButton[Enum368.SKI_ATM_CLEAR]);
 
       break;
 
-    case SKI_ATM_GIVE_MODE:
+    case Enum250.SKI_ATM_GIVE_MODE:
 
       // Make sure the numbers are not disbaled
-      for (ubCnt = SKI_ATM_0; ubCnt <= SKI_ATM_9; ubCnt++)
+      for (ubCnt = Enum368.SKI_ATM_0; ubCnt <= Enum368.SKI_ATM_9; ubCnt++)
         EnableButton(guiSKI_AtmButton[ubCnt]);
 
-      EnableButton(guiSKI_AtmButton[SKI_ATM_OK]);
-      EnableButton(guiSKI_AtmButton[SKI_ATM_CANCEL]);
-      EnableButton(guiSKI_AtmButton[SKI_ATM_CLEAR]);
+      EnableButton(guiSKI_AtmButton[Enum368.SKI_ATM_OK]);
+      EnableButton(guiSKI_AtmButton[Enum368.SKI_ATM_CANCEL]);
+      EnableButton(guiSKI_AtmButton[Enum368.SKI_ATM_CLEAR]);
 
       break;
 
@@ -4189,7 +4189,7 @@ function HandleCurrentModeText(ubMode: UINT8): void {
     ubDisplayMode = ubMode;
   } else {
     // if the current mode is an error mode
-    if (ubLastMode != SKI_ATM_ERR_TAKE_MODE && ubLastMode != SKI_ATM_ERR_GIVE_MODE) {
+    if (ubLastMode != Enum250.SKI_ATM_ERR_TAKE_MODE && ubLastMode != Enum250.SKI_ATM_ERR_GIVE_MODE) {
       // has the timer gone off?
       if ((uiCurTime - uiLastTime) > DELAY_PER_MODE_CHANGE_IN_ATM) {
         // display the players current balance
@@ -4197,7 +4197,7 @@ function HandleCurrentModeText(ubMode: UINT8): void {
         // if the modes are the same, change to display the players balance
         if (ubLastMode == ubMode)
           if (ubMode == ubDisplayMode)
-            ubMode = SKI_ATM_DISPLAY_PLAYERS_BALANCE;
+            ubMode = Enum250.SKI_ATM_DISPLAY_PLAYERS_BALANCE;
 
         ubDisplayMode = ubMode;
 
@@ -4208,51 +4208,51 @@ function HandleCurrentModeText(ubMode: UINT8): void {
   }
 
   // if the current mode is an error mode
-  if (ubLastMode == SKI_ATM_ERR_TAKE_MODE || ubLastMode == SKI_ATM_ERR_GIVE_MODE) {
+  if (ubLastMode == Enum250.SKI_ATM_ERR_TAKE_MODE || ubLastMode == Enum250.SKI_ATM_ERR_GIVE_MODE) {
     // if it is time to get rid of the error message
     if ((uiCurTime - uiLastTime) > DELAY_PER_MODE_CHANGE_IN_ATM) {
-      if (ubLastMode == SKI_ATM_ERR_TAKE_MODE) {
-        ubLastMode = SKI_ATM_TAKE_MODE;
+      if (ubLastMode == Enum250.SKI_ATM_ERR_TAKE_MODE) {
+        ubLastMode = Enum250.SKI_ATM_TAKE_MODE;
         gubCurrentSkiAtmMode = ubLastMode;
       } else {
-        ubLastMode = SKI_ATM_GIVE_MODE;
+        ubLastMode = Enum250.SKI_ATM_GIVE_MODE;
         gubCurrentSkiAtmMode = ubLastMode;
       }
     }
   }
 
   switch (ubMode) {
-    case SKI_ATM_DISABLED_MODE:
-      wcscpy(zTemp, gzSkiAtmText[SKI_ATM_MODE_TEXT_SELECT_MODE]);
+    case Enum250.SKI_ATM_DISABLED_MODE:
+      wcscpy(zTemp, gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_SELECT_MODE]);
       break;
 
-    case SKI_ATM_TAKE_MODE:
+    case Enum250.SKI_ATM_TAKE_MODE:
       // if the player has selected any money yet
       if (gzSkiAtmTransferString[0] == '\0')
-        wcscpy(zTemp, gzSkiAtmText[SKI_ATM_MODE_TEXT_ENTER_AMOUNT]);
+        wcscpy(zTemp, gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_ENTER_AMOUNT]);
       else
-        wcscpy(zTemp, gzSkiAtmText[SKI_ATM_MODE_TEXT_SELECT_FROM_MERC]);
+        wcscpy(zTemp, gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_SELECT_FROM_MERC]);
       break;
 
-    case SKI_ATM_GIVE_MODE:
+    case Enum250.SKI_ATM_GIVE_MODE:
       // if the player has selected any money yet
       if (gzSkiAtmTransferString[0] == '\0')
-        wcscpy(zTemp, gzSkiAtmText[SKI_ATM_MODE_TEXT_ENTER_AMOUNT]);
+        wcscpy(zTemp, gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_ENTER_AMOUNT]);
       else
-        wcscpy(zTemp, gzSkiAtmText[SKI_ATM_MODE_TEXT_SELECT_TO_MERC]);
+        wcscpy(zTemp, gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_SELECT_TO_MERC]);
       break;
 
-    case SKI_ATM_ERR_TAKE_MODE:
-    case SKI_ATM_ERR_GIVE_MODE:
-      wcscpy(zTemp, gzSkiAtmText[SKI_ATM_MODE_TEXT_SELECT_INUSUFFICIENT_FUNDS]);
+    case Enum250.SKI_ATM_ERR_TAKE_MODE:
+    case Enum250.SKI_ATM_ERR_GIVE_MODE:
+      wcscpy(zTemp, gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_SELECT_INUSUFFICIENT_FUNDS]);
       break;
 
-    case SKI_ATM_DISPLAY_PLAYERS_BALANCE:
+    case Enum250.SKI_ATM_DISPLAY_PLAYERS_BALANCE:
       swprintf(zMoney, "%d", LaptopSaveInfo.iCurrentBalance);
       InsertCommasForDollarFigure(zMoney);
       InsertDollarSignInToString(zMoney);
 
-      swprintf(zTemp, "%s: %s", gzSkiAtmText[SKI_ATM_MODE_TEXT_BALANCE], zMoney);
+      swprintf(zTemp, "%s: %s", gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_BALANCE], zMoney);
       break;
   }
 
@@ -4264,25 +4264,25 @@ function HandleCurrentModeText(ubMode: UINT8): void {
 
 function ToggleSkiAtmButtons(): void {
   switch (gubCurrentSkiAtmMode) {
-    case SKI_ATM_DISABLED_MODE:
-      ButtonList[guiSKI_AtmButton[SKI_ATM_TAKE]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-      ButtonList[guiSKI_AtmButton[SKI_ATM_GIVE]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-      ButtonList[guiSKI_AtmButton[SKI_ATM_CANCEL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    case Enum250.SKI_ATM_DISABLED_MODE:
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_TAKE]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_GIVE]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_CANCEL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
       break;
-    case SKI_ATM_TAKE_MODE:
-    case SKI_ATM_ERR_TAKE_MODE:
-      ButtonList[guiSKI_AtmButton[SKI_ATM_GIVE]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-      ButtonList[guiSKI_AtmButton[SKI_ATM_CANCEL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    case Enum250.SKI_ATM_TAKE_MODE:
+    case Enum250.SKI_ATM_ERR_TAKE_MODE:
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_GIVE]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_CANCEL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
 
-      ButtonList[guiSKI_AtmButton[SKI_ATM_TAKE]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_TAKE]].value.uiFlags |= BUTTON_CLICKED_ON;
       break;
 
-    case SKI_ATM_GIVE_MODE:
-    case SKI_ATM_ERR_GIVE_MODE:
-      ButtonList[guiSKI_AtmButton[SKI_ATM_TAKE]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-      ButtonList[guiSKI_AtmButton[SKI_ATM_CANCEL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    case Enum250.SKI_ATM_GIVE_MODE:
+    case Enum250.SKI_ATM_ERR_GIVE_MODE:
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_TAKE]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_CANCEL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
 
-      ButtonList[guiSKI_AtmButton[SKI_ATM_GIVE]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_GIVE]].value.uiFlags |= BUTTON_CLICKED_ON;
       break;
   }
 }
@@ -4325,13 +4325,13 @@ function EnableDisableEvaluateAndTransactionButtons(): void {
           fItemEvaluated = TRUE;
 
         // else if it is not a repair dealer, and the item is money
-        else if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != ARMS_DEALER_REPAIRS && Item[PlayersOfferArea[ubCnt].sItemIndex].usItemClass == IC_MONEY)
+        else if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != Enum198.ARMS_DEALER_REPAIRS && Item[PlayersOfferArea[ubCnt].sItemIndex].usItemClass == IC_MONEY)
           fItemEvaluated = TRUE;
       }
     }
 
     // if the dealer is a repair dealer
-    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
       // if there is an item here, the item has to have been evaluated
       if (ArmsDealerOfferArea[ubCnt].fActive) {
         fItemEvaluated = TRUE;
@@ -4367,7 +4367,7 @@ function EnableDisableEvaluateAndTransactionButtons(): void {
     */
 
     // If its a repair dealer, and there is no items in the Dealer Offer area,
-    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS && CountNumberOfItemsInTheArmsDealersOfferArea() == 0 && uiPlayersOfferAreaTotalMoney < uiArmsDealerTotalCost)
+    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS && CountNumberOfItemsInTheArmsDealersOfferArea() == 0 && uiPlayersOfferAreaTotalMoney < uiArmsDealerTotalCost)
       DisableButton(guiSKI_TransactionButton);
   }
   // else if there is
@@ -4527,7 +4527,7 @@ function RemoveRepairItemFromDealersOfferArea(bSlot: INT8): BOOLEAN {
 
   // Dirty
   fInterfacePanelDirty = DIRTYLEVEL2;
-  gubSkiDirtyLevel = SKI_DIRTY_LEVEL1;
+  gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL1;
   return TRUE;
 }
 
@@ -4535,9 +4535,9 @@ function GetInvSlotOfUnfullMoneyInMercInventory(pSoldier: Pointer<SOLDIERTYPE>):
   let ubCnt: UINT8;
 
   // loop through the soldier's inventory
-  for (ubCnt = 0; ubCnt < NUM_INV_SLOTS; ubCnt++) {
+  for (ubCnt = 0; ubCnt < Enum261.NUM_INV_SLOTS; ubCnt++) {
     // Look for MONEY only, not Gold or Silver!!!  And look for a slot not already full
-    if ((pSoldier.value.inv[ubCnt].usItem == MONEY) && (pSoldier.value.inv[ubCnt].uiMoneyAmount < MoneySlotLimit(ubCnt))) {
+    if ((pSoldier.value.inv[ubCnt].usItem == Enum225.MONEY) && (pSoldier.value.inv[ubCnt].uiMoneyAmount < MoneySlotLimit(ubCnt))) {
       return ubCnt;
     }
   }
@@ -4552,7 +4552,7 @@ function ClearArmsDealerOfferSlot(ubSlotToClear: INT32): void {
   SetRegionFastHelpText(addressof(gDealersOfferSlotsMouseRegions[ubSlotToClear]), "");
 
   // if the dealer repairs
-  if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+  if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
     SetRegionFastHelpText(addressof(gDealersOfferSlotsSmallFaceMouseRegions[ubSlotToClear]), "");
   }
 }
@@ -4570,7 +4570,7 @@ function ClearPlayersOfferSlot(ubSlotToClear: INT32): void {
 }
 
 function EvaluateItemAddedToPlayersOfferArea(bSlotID: INT8, fFirstOne: BOOLEAN): void {
-  let uiEvalResult: UINT32 = EVAL_RESULT_NORMAL;
+  let uiEvalResult: UINT32 = Enum251.EVAL_RESULT_NORMAL;
   let fRocketRifleWasEvaluated: BOOLEAN = FALSE;
   let ubNumberOfItemsAddedToRepairDuringThisEvaluation: UINT8 = 0;
 
@@ -4588,15 +4588,15 @@ function EvaluateItemAddedToPlayersOfferArea(bSlotID: INT8, fFirstOne: BOOLEAN):
 
   // say "Hmm... Let's see" once per trading session to start evaluation
   // SPECIAL: Devin doesn't have this quote (he's the only one)
-  if (!gfDealerHasSaidTheEvaluateQuoteOnceThisSession && (gbSelectedArmsDealerID != ARMS_DEALER_DEVIN)) {
+  if (!gfDealerHasSaidTheEvaluateQuoteOnceThisSession && (gbSelectedArmsDealerID != Enum197.ARMS_DEALER_DEVIN)) {
     gfDealerHasSaidTheEvaluateQuoteOnceThisSession = TRUE;
-    StartShopKeeperTalking(SK_QUOTES_PLAYER_REQUESTED_EVALUATION);
+    StartShopKeeperTalking(Enum254.SK_QUOTES_PLAYER_REQUESTED_EVALUATION);
   }
 
   // Can this particular kind of item be sold/repaired here
   if (WillShopKeeperRejectObjectsFromPlayer(gbSelectedArmsDealerID, bSlotID) == FALSE) {
     // if the dealer repairs
-    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
       let uiNumberOfItemsInForRepairs: UINT32 = CountTotalItemsRepairDealerHasInForRepairs(gbSelectedArmsDealerID);
       let uiNumberOfItemsAlreadyEvaluated: UINT32 = CountNumberOfItemsInTheArmsDealersOfferArea();
 
@@ -4607,7 +4607,7 @@ function EvaluateItemAddedToPlayersOfferArea(bSlotID: INT8, fFirstOne: BOOLEAN):
       if ((uiNumberOfItemsAlreadyEvaluated + ubNumberOfItemsAddedToRepairDuringThisEvaluation + uiNumberOfItemsInForRepairs) > SKI_MAX_AMOUNT_OF_ITEMS_DEALER_CAN_REPAIR_AT_A_TIME) {
         if (!gfAlreadySaidTooMuchToRepair) {
           // Start the dealer talking
-          StartShopKeeperTalking(SK_QUOTES_CANT_AFFORD_TO_BUY_OR_TOO_MUCH_TO_REPAIR);
+          StartShopKeeperTalking(Enum254.SK_QUOTES_CANT_AFFORD_TO_BUY_OR_TOO_MUCH_TO_REPAIR);
           gfAlreadySaidTooMuchToRepair = TRUE;
         }
         return;
@@ -4643,23 +4643,23 @@ function EvaluateItemAddedToPlayersOfferArea(bSlotID: INT8, fFirstOne: BOOLEAN):
           // check if the item is really badly damaged
           if (Item[ArmsDealerOfferArea[bSlotAddedTo].sItemIndex].usItemClass != IC_AMMO) {
             if (ArmsDealerOfferArea[bSlotAddedTo].ItemObject.bStatus[0] < REALLY_BADLY_DAMAGED_THRESHOLD) {
-              uiEvalResult = EVAL_RESULT_OK_BUT_REALLY_DAMAGED;
+              uiEvalResult = Enum251.EVAL_RESULT_OK_BUT_REALLY_DAMAGED;
             }
           }
 
           // check if it's the first time a rocket rifle is being submitted to Fredo
-          if (fRocketRifleWasEvaluated && (gbSelectedArmsDealerID == ARMS_DEALER_FREDO)) {
+          if (fRocketRifleWasEvaluated && (gbSelectedArmsDealerID == Enum197.ARMS_DEALER_FREDO)) {
             // if he hasn't yet said his quote
             if (!(gArmsDealerStatus[gbSelectedArmsDealerID].ubSpecificDealerFlags & ARMS_DEALER_FLAG__FREDO_HAS_SAID_ROCKET_RIFLE_QUOTE)) {
               // use this special evaluation result instead (has a unique quote)
-              uiEvalResult = EVAL_RESULT_ROCKET_RIFLE;
+              uiEvalResult = Enum251.EVAL_RESULT_ROCKET_RIFLE;
             }
           }
         } else {
           return;
         }
       } else {
-        uiEvalResult = EVAL_RESULT_NOT_DAMAGED;
+        uiEvalResult = Enum251.EVAL_RESULT_NOT_DAMAGED;
       }
     } else // not a repairman
     {
@@ -4667,15 +4667,15 @@ function EvaluateItemAddedToPlayersOfferArea(bSlotID: INT8, fFirstOne: BOOLEAN):
     }
   } else // dealer doesn't handle this type of object
   {
-    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
       // only otherwise repairable items count as actual rejections
       if (Item[PlayersOfferArea[bSlotID].sItemIndex].fFlags & ITEM_REPAIRABLE) {
-        uiEvalResult = EVAL_RESULT_DONT_HANDLE;
+        uiEvalResult = Enum251.EVAL_RESULT_DONT_HANDLE;
       } else {
-        uiEvalResult = EVAL_RESULT_NON_REPAIRABLE;
+        uiEvalResult = Enum251.EVAL_RESULT_NON_REPAIRABLE;
       }
     } else {
-      uiEvalResult = EVAL_RESULT_DONT_HANDLE;
+      uiEvalResult = Enum251.EVAL_RESULT_DONT_HANDLE;
     }
   }
 
@@ -4689,36 +4689,36 @@ function EvaluateItemAddedToPlayersOfferArea(bSlotID: INT8, fFirstOne: BOOLEAN):
     let ubChanceToSayNormalQuote: UINT8;
 
     switch (uiEvalResult) {
-      case EVAL_RESULT_DONT_HANDLE:
-        if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_SELLS_ONLY) {
+      case Enum251.EVAL_RESULT_DONT_HANDLE:
+        if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_SELLS_ONLY) {
           // then he doesn't have quotes 17, 19, or 20, always use 4.  Devin doesn't have 18 either,
           // while the text of 18 seems wrong for Sam & Howard if offered something they should consider valuable.
           sQuoteNum = SK_QUOTES_NOT_INTERESTED_IN_THIS_ITEM;
         } else {
           // he accepts items, but not this one
-          sQuoteNum = SK_QUOTES_DURING_EVALUATION_STUFF_REJECTED;
+          sQuoteNum = Enum254.SK_QUOTES_DURING_EVALUATION_STUFF_REJECTED;
         }
         break;
 
-      case EVAL_RESULT_NON_REPAIRABLE:
+      case Enum251.EVAL_RESULT_NON_REPAIRABLE:
         // use quote 4 for this situation...  It's a bit weird but better than "that looks fine / ain't broke"
         sQuoteNum = SK_QUOTES_NOT_INTERESTED_IN_THIS_ITEM;
         break;
 
-      case EVAL_RESULT_NOT_DAMAGED:
-      case EVAL_RESULT_WORTHLESS:
-        sQuoteNum = SK_QUOTES_EVALUATION_RESULT_VALUE_OF_ZERO;
+      case Enum251.EVAL_RESULT_NOT_DAMAGED:
+      case Enum251.EVAL_RESULT_WORTHLESS:
+        sQuoteNum = Enum254.SK_QUOTES_EVALUATION_RESULT_VALUE_OF_ZERO;
         break;
 
-      case EVAL_RESULT_OK_BUT_REALLY_DAMAGED:
-        sQuoteNum = SK_QUOTES_EVALUATION_RESULT_SOME_REALLY_DAMAGED_ITEMS;
+      case Enum251.EVAL_RESULT_OK_BUT_REALLY_DAMAGED:
+        sQuoteNum = Enum254.SK_QUOTES_EVALUATION_RESULT_SOME_REALLY_DAMAGED_ITEMS;
         break;
 
-      case EVAL_RESULT_ROCKET_RIFLE:
+      case Enum251.EVAL_RESULT_ROCKET_RIFLE:
         sQuoteNum = FREDO_QUOTE_CAN_RESET_IMPRINTING;
         break;
 
-      case EVAL_RESULT_NORMAL:
+      case Enum251.EVAL_RESULT_NORMAL:
         // if it has been a long time since saying the last quote
         if (guiLastTimeDealerSaidNormalEvaluationQuote == 0)
           ubChanceToSayNormalQuote = 100;
@@ -4732,7 +4732,7 @@ function EvaluateItemAddedToPlayersOfferArea(bSlotID: INT8, fFirstOne: BOOLEAN):
           ubChanceToSayNormalQuote = 0;
 
         if (Chance(ubChanceToSayNormalQuote)) {
-          sQuoteNum = SK_QUOTES_EVALUATION_RESULT_NORMAL;
+          sQuoteNum = Enum254.SK_QUOTES_EVALUATION_RESULT_NORMAL;
         }
         break;
 
@@ -4750,7 +4750,7 @@ function EvaluateItemAddedToPlayersOfferArea(bSlotID: INT8, fFirstOne: BOOLEAN):
           gfEvalResultQuoteSaid[uiEvalResult] = TRUE;
 
           // if it's the normal result
-          if (uiEvalResult == EVAL_RESULT_NORMAL) {
+          if (uiEvalResult == Enum251.EVAL_RESULT_NORMAL) {
             // set new time of last usage
             guiLastTimeDealerSaidNormalEvaluationQuote = GetJA2Clock();
           }
@@ -4781,7 +4781,7 @@ function DoSkiMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: 
 function ConfirmDontHaveEnoughForTheDealerMessageBoxCallBack(bExitValue: UINT8): void {
   // simply redraw the panel
   if (bExitValue == MSG_BOX_RETURN_OK) {
-    gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+    gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
   }
 
   // done, re-enable calls to PerformTransaction()
@@ -4800,13 +4800,13 @@ function ConfirmToDeductMoneyFromPlayersAccountMessageBoxCallBack(bExitValue: UI
     // Perform the transaction with the extra money from the players account
     PerformTransaction(iMoneyToDeduct);
 
-    AddTransactionToPlayersBook(PURCHASED_ITEM_FROM_DEALER, ArmsDealerInfo[gbSelectedArmsDealerID].ubShopKeeperID, GetWorldTotalMin(), -iMoneyToDeduct);
+    AddTransactionToPlayersBook(Enum80.PURCHASED_ITEM_FROM_DEALER, ArmsDealerInfo[gbSelectedArmsDealerID].ubShopKeeperID, GetWorldTotalMin(), -iMoneyToDeduct);
   }
 
   // done, re-enable calls to PerformTransaction()
   gfPerformTransactionInProgress = FALSE;
 
-  gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+  gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 }
 
 // run through what the player has on the table and see if the shop keep will aceept it or not
@@ -4855,7 +4855,7 @@ function CanShopkeeperOverrideDialogue(): BOOLEAN {
 
   // if the quote he is currently saying is unimportant (fluff),
   // then shut him up & allow the override
-  if (giShopKeepDialogueEventinProgress < SK_QUOTES_PLAYER_REQUESTED_EVALUATION) {
+  if (giShopKeepDialogueEventinProgress < Enum254.SK_QUOTES_PLAYER_REQUESTED_EVALUATION) {
     // shutup the shop keep and do this quote
     ShutUpShopKeeper();
     return TRUE;
@@ -4940,7 +4940,7 @@ function HandleCheckIfEnoughOnTheTable(): void {
     if (iRand > CHANCE_FOR_SHOPKEEPER_IDLE_QUOTE) {
       // is there enough on the table
       if ((uiArmsDealersItemsCost > uiPlayersOfferAreaValue) && (uiPlayersOfferAreaValue)) {
-        StartShopKeeperTalking(SK_QUOTES_EVAULATION_PLAYER_DOESNT_HAVE_ENOUGH_VALUE);
+        StartShopKeeperTalking(Enum254.SK_QUOTES_EVAULATION_PLAYER_DOESNT_HAVE_ENOUGH_VALUE);
       }
     }
 
@@ -4955,7 +4955,7 @@ function InitShopKeeperItemDescBox(pObject: Pointer<OBJECTTYPE>, ubPocket: UINT8
   let sPosY: INT16;
 
   switch (ubFromLocation) {
-    case ARMS_DEALER_INVENTORY: {
+    case Enum252.ARMS_DEALER_INVENTORY: {
       let ubSelectedInvSlot: UINT8 = ubPocket - gSelectArmsDealerInfo.ubFirstItemIndexOnPage;
 
       sPosX = SKI_ARMS_DEALERS_INV_START_X + (SKI_INV_OFFSET_X * (ubSelectedInvSlot % SKI_NUM_ARMS_DEALERS_INV_COLS) - (358 / 2)) + SKI_INV_SLOT_WIDTH / 2;
@@ -4980,7 +4980,7 @@ function InitShopKeeperItemDescBox(pObject: Pointer<OBJECTTYPE>, ubPocket: UINT8
           sPosX = 160;
     } break;
 
-    case ARMS_DEALER_OFFER_AREA: {
+    case Enum252.ARMS_DEALER_OFFER_AREA: {
       sPosX = SKI_ARMS_DEALERS_TRADING_INV_X + (SKI_INV_OFFSET_X * (ubPocket % (SKI_NUM_TRADING_INV_SLOTS / 2)) - (358 / 2)) + SKI_INV_SLOT_WIDTH / 2;
 
       sPosY = SKI_ARMS_DEALERS_TRADING_INV_Y + ((SKI_INV_OFFSET_Y * ubPocket / (SKI_NUM_TRADING_INV_SLOTS / 2)) + 1) - (128 / 2) + SKI_INV_SLOT_HEIGHT / 2;
@@ -5068,7 +5068,7 @@ function DeleteShopKeeperItemDescBox(): void {
   let iCnt: INT32;
 
   pShopKeeperItemDescObject = NULL;
-  gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+  gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 
   // Redraw the face
   gFacesData[giShopKeeperFaceIndex].uiFlags |= FACE_REDRAW_WHOLE_FACE_NEXT_FRAME;
@@ -5123,7 +5123,7 @@ function OfferObjectToDealer(pComplexObject: Pointer<OBJECTTYPE>, ubOwnerProfile
   let fFirstOne: BOOLEAN = TRUE;
   let fSuccess: BOOLEAN = FALSE;
 
-  if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != ARMS_DEALER_REPAIRS) {
+  if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != Enum198.ARMS_DEALER_REPAIRS) {
     // if not actually doing repairs, there's no need to split objects up at all
     if (!AddObjectForEvaluation(pComplexObject, ubOwnerProfileId, bOwnerSlotId, TRUE)) {
       gfDisplayNoRoomMsg = TRUE;
@@ -5179,7 +5179,7 @@ function OfferObjectToDealer(pComplexObject: Pointer<OBJECTTYPE>, ubOwnerProfile
     // we have room, so move them all to the appropriate slots
     for (ubSubObject = 0; ubSubObject < MAX_SUBOBJECTS_PER_OBJECT; ubSubObject++) {
       // if there is something stored there
-      if (gSubObject[ubSubObject].usItem != NONE) {
+      if (gSubObject[ubSubObject].usItem != Enum225.NONE) {
         // if it's the main item itself (always in the very first subobject), and it has no other subobjects
         if ((ubSubObject == 0) && (ubTotalSubObjects == 1)) {
           // store its owner merc as the owner, and store the correct slot
@@ -5230,9 +5230,9 @@ function SplitComplexObjectIntoSubObjects(pComplexObject: Pointer<OBJECTTYPE>): 
     // strip off any loaded ammo/payload
     if (Item[pComplexObject.value.usItem].usItemClass == IC_GUN) {
       // Exception: don't do this with rocket launchers, their "shots left" are fake and this screws 'em up!
-      if (pComplexObject.value.usItem != ROCKET_LAUNCHER) {
+      if (pComplexObject.value.usItem != Enum225.ROCKET_LAUNCHER) {
         pNextObj.value.ubGunShotsLeft = 0;
-        pNextObj.value.usGunAmmoItem = NONE;
+        pNextObj.value.usGunAmmoItem = Enum225.NONE;
       }
 
       /* gunAmmoStatus is currently not being used that way, it's strictly used as a jammed/unjammed, and so should never be 0
@@ -5266,7 +5266,7 @@ function SplitComplexObjectIntoSubObjects(pComplexObject: Pointer<OBJECTTYPE>): 
     // if it's a gun
     if (Item[pComplexObject.value.usItem].usItemClass == IC_GUN) {
       // and it has ammo/payload
-      if (pComplexObject.value.usGunAmmoItem != NONE) {
+      if (pComplexObject.value.usGunAmmoItem != Enum225.NONE) {
         // if it's bullets
         if (Item[pComplexObject.value.usGunAmmoItem].usItemClass == IC_AMMO) {
           // and there are some left
@@ -5316,7 +5316,7 @@ function SplitComplexObjectIntoSubObjects(pComplexObject: Pointer<OBJECTTYPE>): 
     Assert(Item[pComplexObject.value.usItem].usItemClass != IC_GUN);
 
     for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-      Assert(pComplexObject.value.usAttachItem[ubCnt] == NONE);
+      Assert(pComplexObject.value.usAttachItem[ubCnt] == Enum225.NONE);
     }
 
     // make each item in the stack into a separate subobject
@@ -5342,7 +5342,7 @@ function CountSubObjectsInObject(pComplexObject: Pointer<OBJECTTYPE>, pubTotalSu
   // check every subobject and count it as either repairable or non-
   for (ubSubObject = 0; ubSubObject < MAX_SUBOBJECTS_PER_OBJECT; ubSubObject++) {
     // if there is something stored there
-    if (gSubObject[ubSubObject].usItem != NONE) {
+    if (gSubObject[ubSubObject].usItem != Enum225.NONE) {
       (pubTotalSubObjects.value)++;
 
       // is it in need of fixing, and also repairable by this dealer?
@@ -5367,7 +5367,7 @@ function AddObjectForEvaluation(pObject: Pointer<OBJECTTYPE>, ubOwnerProfileId: 
   memcpy(addressof(InvSlot.ItemObject), pObject, sizeof(OBJECTTYPE));
 
   InvSlot.sItemIndex = pObject.value.usItem;
-  InvSlot.ubLocationOfObject = PLAYERS_INVENTORY;
+  InvSlot.ubLocationOfObject = Enum252.PLAYERS_INVENTORY;
   InvSlot.ubIdOfMercWhoOwnsTheItem = ubOwnerProfileId;
 
   // Add the item to the Players Offer Area
@@ -5443,7 +5443,7 @@ function IfMercOwnedCopyItemToMercInv(pInv: Pointer<INVENTORY_IN_SLOT>): void {
   // if the item picked up was in a previous location, and that location is on a merc's inventory
   if ((pInv.value.bSlotIdInOtherLocation != -1) && (pInv.value.ubIdOfMercWhoOwnsTheItem != NO_PROFILE)) {
     // then it better be a valid slot #
-    Assert(pInv.value.bSlotIdInOtherLocation < NUM_INV_SLOTS);
+    Assert(pInv.value.bSlotIdInOtherLocation < Enum261.NUM_INV_SLOTS);
     // and it better have a valid merc who owned it
     Assert(pInv.value.ubIdOfMercWhoOwnsTheItem != NO_PROFILE);
 
@@ -5469,7 +5469,7 @@ function IfMercOwnedRemoveItemFromMercInv2(ubOwnerProfileId: UINT8, bOwnerSlotId
   // if this item was in a previous location, and that location is on a merc's inventory
   if ((bOwnerSlotId != -1) && (ubOwnerProfileId != NO_PROFILE)) {
     // then it better be a valid slot #
-    Assert(bOwnerSlotId < NUM_INV_SLOTS);
+    Assert(bOwnerSlotId < Enum261.NUM_INV_SLOTS);
     // and it better have a valid merc who owned it
     Assert(ubOwnerProfileId != NO_PROFILE);
 
@@ -5582,7 +5582,7 @@ function CanMercInteractWithSelectedShopkeeper(pSoldier: Pointer<SOLDIERTYPE>): 
     bDestLevel = pShopkeeper.value.bLevel;
 
     // is he close enough to see that gridno if he turns his head?
-    sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sDestGridNo, bDestLevel);
+    sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sDestGridNo, bDestLevel);
 
     // If he has LOS...
     if (SoldierTo3DLocationLineOfSightTest(pSoldier, sDestGridNo, bDestLevel, 3, sDistVisible, TRUE)) {
@@ -5609,7 +5609,7 @@ function ExitSKIRequested(): void {
       fPlayerOwnedStuffOnTable = TRUE;
     }
 
-    if ((ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) && AreThereItemsInTheArmsDealersOfferArea()) {
+    if ((ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) && AreThereItemsInTheArmsDealersOfferArea()) {
       fPlayerOwnedStuffOnTable = TRUE;
     }
 
@@ -5617,7 +5617,7 @@ function ExitSKIRequested(): void {
     if (fPlayerOwnedStuffOnTable) {
       // remind player to pick them up
       ShutUpShopKeeper();
-      StartShopKeeperTalking(SK_QUOTES_PRESSED_DONE_STILL_HAS_STUFF_IN_OFFER_AREA);
+      StartShopKeeperTalking(Enum254.SK_QUOTES_PRESSED_DONE_STILL_HAS_STUFF_IN_OFFER_AREA);
       gfRemindedPlayerToPickUpHisStuff = TRUE;
       return;
     } else {
@@ -5635,9 +5635,9 @@ function ExitSKIRequested(): void {
     let usQuoteNum: UINT16;
 
     if (gfDoneBusinessThisSession)
-      usQuoteNum = SK_QUOTES_PRESSES_DONE_HAS_AT_LEAST_1_TRANSACTION;
+      usQuoteNum = Enum254.SK_QUOTES_PRESSES_DONE_HAS_AT_LEAST_1_TRANSACTION;
     else
-      usQuoteNum = SK_QUOTES_PRESSED_DONE_HASNT_MADE_TRANSACTION;
+      usQuoteNum = Enum254.SK_QUOTES_PRESSED_DONE_HASNT_MADE_TRANSACTION;
 
     StartShopKeeperTalking(usQuoteNum);
 
@@ -5650,7 +5650,7 @@ function ResetAllQuoteSaidFlags(): void {
   let uiCnt: UINT8;
 
   // reset flags for quotes said
-  for (uiCnt = 0; uiCnt < NUM_EVAL_RESULTS; uiCnt++) {
+  for (uiCnt = 0; uiCnt < Enum251.NUM_EVAL_RESULTS; uiCnt++) {
     gfEvalResultQuoteSaid[uiCnt] = FALSE;
   }
 
@@ -5684,7 +5684,7 @@ function DealWithItemsStillOnTheTable(): void {
   }
 
   // if the dealer repairs
-  if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+  if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
     // loop through the arms dealers' offer area and return any items there to the player
     for (ubCnt = 0; ubCnt < SKI_NUM_TRADING_INV_SLOTS; ubCnt++) {
       // if there is an item here, give it back somehow
@@ -5715,12 +5715,12 @@ function GivePlayerSomeChange(uiAmount: UINT32): void {
 
   CreateMoney(uiAmount, addressof(MoneyInvSlot.ItemObject));
   MoneyInvSlot.sItemIndex = MoneyInvSlot.ItemObject.usItem;
-  MoneyInvSlot.ubLocationOfObject = PLAYERS_INVENTORY;
+  MoneyInvSlot.ubLocationOfObject = Enum252.PLAYERS_INVENTORY;
   MoneyInvSlot.ubIdOfMercWhoOwnsTheItem = NO_PROFILE;
 
   AddItemToPlayersOfferArea(NO_PROFILE, addressof(MoneyInvSlot), -1);
 
-  if ((gbSelectedArmsDealerID == ARMS_DEALER_JAKE) && (gArmsDealerStatus[gbSelectedArmsDealerID].uiArmsDealersCash < uiAmount)) {
+  if ((gbSelectedArmsDealerID == Enum197.ARMS_DEALER_JAKE) && (gArmsDealerStatus[gbSelectedArmsDealerID].uiArmsDealersCash < uiAmount)) {
     // HACK HACK HACK: We forgot to write/record quote 27 for Jake, so he ALWAYS must have enough money!
     gArmsDealerStatus[gbSelectedArmsDealerID].uiArmsDealersCash += (uiAmount - gArmsDealerStatus[gbSelectedArmsDealerID].uiArmsDealersCash);
   }
@@ -5742,10 +5742,10 @@ function DealerGetsBribed(ubProfileId: UINT8, uiMoneyAmount: UINT32): void {
   }
 
   switch (ubProfileId) {
-    case FRANK:
+    case Enum268.FRANK:
       fBribable = TRUE;
       uiMinBribe = 10; // This should match the handling of a bribe submitted outside the SKI, using the GIVE system
-      usFact = FACT_FRANK_HAS_BEEN_BRIBED;
+      usFact = Enum170.FACT_FRANK_HAS_BEEN_BRIBED;
       break;
   }
 
@@ -5763,7 +5763,7 @@ function HandlePossibleRepairDelays(): void {
   gfStartWithRepairsDelayedQuote = FALSE;
 
   // if it's Fredo or Perko
-  if ((gbSelectedArmsDealerID == ARMS_DEALER_FREDO) || (gbSelectedArmsDealerID == ARMS_DEALER_PERKO)) {
+  if ((gbSelectedArmsDealerID == Enum197.ARMS_DEALER_FREDO) || (gbSelectedArmsDealerID == Enum197.ARMS_DEALER_PERKO)) {
     // because the quotes are so specific, we'll only use them once per game per repairman
     if (!gArmsDealerStatus[gbSelectedArmsDealerID].fRepairDelayBeenUsed) {
       // and it's been a while since the player last dealt with this repairman (within SKI that is)
@@ -5806,7 +5806,7 @@ function RepairmanFixingAnyItemsThatShouldBeDoneNow(puiHoursSinceOldestItemRepai
   puiHoursSinceOldestItemRepaired.value = 0;
 
   // loop through the dealers inventory and check if there are only unrepaired items
-  for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
+  for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
     pDealerItem = addressof(gArmsDealersInventory[gbSelectedArmsDealerID][usItemIndex]);
 
     // if there is some items in stock
@@ -5856,7 +5856,7 @@ function DelayRepairsInProgressBy(uiMinutesDelayed: UINT32): void {
     return;
 
   // loop through the dealers inventory and check if there are only unrepaired items
-  for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
+  for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
     pDealerItem = addressof(gArmsDealersInventory[gbSelectedArmsDealerID][usItemIndex]);
 
     // if there is some items in stock
@@ -5898,10 +5898,10 @@ function SelectArmsDealersDropItemToGroundRegionCallBack(pRegion: Pointer<MOUSE_
       ShopkeeperAddItemToPool(pDropSoldier.value.sGridNo, addressof(gMoveingItem.ItemObject), VISIBLE, pDropSoldier.value.bLevel, 0, 0);
 
       // Reset the cursor
-      SetSkiCursor(CURSOR_NORMAL);
+      SetSkiCursor(Enum317.CURSOR_NORMAL);
 
       // refresh the screen
-      gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+      gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
     }
   }
 }
@@ -5909,12 +5909,12 @@ function SelectArmsDealersDropItemToGroundRegionCallBack(pRegion: Pointer<MOUSE_
 function SelectArmsDealersDropItemToGroundMovementRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     gfSkiDisplayDropItemToGroundText = FALSE;
-    gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+    gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     if (CanTheDropItemToGroundStringBeDisplayed()) {
       gfSkiDisplayDropItemToGroundText = TRUE;
     } else {
-      gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+      gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
       gfSkiDisplayDropItemToGroundText = FALSE;
     }
   } else if (iReason & MSYS_CALLBACK_REASON_MOVE) {
@@ -5933,19 +5933,19 @@ function DisplayTheSkiDropItemToGroundString(): void {
   let usHeight: UINT16;
 
   // get the height of the displayed text
-  usHeight = DisplayWrappedString(SKI_DROP_ITEM_TO_GROUND_START_X, SKI_DROP_ITEM_TO_GROUND_TEXT_START_Y, (640 - SKI_DROP_ITEM_TO_GROUND_START_X), 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SKI_Text[SKI_TEXT_DROP_ITEM_TO_GROUND], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT);
+  usHeight = DisplayWrappedString(SKI_DROP_ITEM_TO_GROUND_START_X, SKI_DROP_ITEM_TO_GROUND_TEXT_START_Y, (640 - SKI_DROP_ITEM_TO_GROUND_START_X), 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SKI_Text[Enum367.SKI_TEXT_DROP_ITEM_TO_GROUND], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT);
 
   // display the 'drop item to ground' text
-  DisplayWrappedString(SKI_DROP_ITEM_TO_GROUND_START_X, (SKI_DROP_ITEM_TO_GROUND_TEXT_START_Y - usHeight), (640 - SKI_DROP_ITEM_TO_GROUND_START_X), 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SKI_Text[SKI_TEXT_DROP_ITEM_TO_GROUND], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED | INVALIDATE_TEXT);
+  DisplayWrappedString(SKI_DROP_ITEM_TO_GROUND_START_X, (SKI_DROP_ITEM_TO_GROUND_TEXT_START_Y - usHeight), (640 - SKI_DROP_ITEM_TO_GROUND_START_X), 2, SKI_LABEL_FONT, SKI_TITLE_COLOR, SKI_Text[Enum367.SKI_TEXT_DROP_ITEM_TO_GROUND], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED | INVALIDATE_TEXT);
 }
 
 function EvaluateInvSlot(pInvSlot: Pointer<INVENTORY_IN_SLOT>): UINT32 {
-  let uiEvalResult: UINT32 = EVAL_RESULT_NORMAL;
+  let uiEvalResult: UINT32 = Enum251.EVAL_RESULT_NORMAL;
   let dPriceModifier: FLOAT;
   let uiBuyingPrice: UINT32;
 
   // if the dealer is Micky
-  if (gbSelectedArmsDealerID == ARMS_DEALER_MICKY) {
+  if (gbSelectedArmsDealerID == Enum197.ARMS_DEALER_MICKY) {
     let sSoldierID: INT16;
     sSoldierID = GetSoldierIDFromMercID(ArmsDealerInfo[gbSelectedArmsDealerID].ubShopKeeperID);
     if ((sSoldierID != -1) && (GetDrunkLevel(addressof(Menptr[sSoldierID])) == DRUNK)) {
@@ -5968,7 +5968,7 @@ function EvaluateInvSlot(pInvSlot: Pointer<INVENTORY_IN_SLOT>): UINT32 {
     // check if the item is really badly damaged
     if (Item[pInvSlot.value.sItemIndex].usItemClass != IC_AMMO) {
       if (pInvSlot.value.ItemObject.bStatus[0] < REALLY_BADLY_DAMAGED_THRESHOLD) {
-        uiEvalResult = EVAL_RESULT_OK_BUT_REALLY_DAMAGED;
+        uiEvalResult = Enum251.EVAL_RESULT_OK_BUT_REALLY_DAMAGED;
       }
     }
 
@@ -5976,7 +5976,7 @@ function EvaluateInvSlot(pInvSlot: Pointer<INVENTORY_IN_SLOT>): UINT32 {
     pInvSlot.value.uiFlags |= ARMS_INV_PLAYERS_ITEM_HAS_VALUE;
   } else {
     // he normally buys this, but it's in such bad shape that he won't, it's worthless (different quote)
-    uiEvalResult = EVAL_RESULT_WORTHLESS;
+    uiEvalResult = Enum251.EVAL_RESULT_WORTHLESS;
 
     pInvSlot.value.uiFlags &= ~ARMS_INV_PLAYERS_ITEM_HAS_VALUE;
   }
@@ -6005,7 +6005,7 @@ function BuildRepairTimeString(sString: wchar_t[] /* [] */, uiTimeInMinutesToFix
   // show up to 1.5 hrs in minutes
   if (uiTimeInMinutesToFixItem <= 90) {
     // show minutes
-    swprintf(sString, SKI_Text[SKI_TEXT_MINUTES], uiTimeInMinutesToFixItem);
+    swprintf(sString, SKI_Text[Enum367.SKI_TEXT_MINUTES], uiTimeInMinutesToFixItem);
   } else {
     // show hours
 
@@ -6013,9 +6013,9 @@ function BuildRepairTimeString(sString: wchar_t[] /* [] */, uiTimeInMinutesToFix
     usNumberOfHoursToFixItem = ((uiTimeInMinutesToFixItem + 45) / 60);
 
     if (usNumberOfHoursToFixItem > 1) {
-      swprintf(sString, SKI_Text[SKI_TEXT_PLURAL_HOURS], usNumberOfHoursToFixItem);
+      swprintf(sString, SKI_Text[Enum367.SKI_TEXT_PLURAL_HOURS], usNumberOfHoursToFixItem);
     } else {
-      wcscpy(sString, SKI_Text[SKI_TEXT_ONE_HOUR]);
+      wcscpy(sString, SKI_Text[Enum367.SKI_TEXT_ONE_HOUR]);
     }
   }
 }
@@ -6069,7 +6069,7 @@ function BuildItemHelpTextString(sString: wchar_t[] /* [] */, pInv: Pointer<INVE
     GetHelpTextForItem(zHelpText, addressof(pInv.value.ItemObject), NULL);
 
     // add repair time for items in a repairman's offer area
-    if ((ubScreenArea == ARMS_DEALER_OFFER_AREA) && (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS)) {
+    if ((ubScreenArea == Enum252.ARMS_DEALER_OFFER_AREA) && (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS)) {
       BuildRepairTimeString(zRepairTime, CalculateObjectItemRepairTime(gbSelectedArmsDealerID, addressof(pInv.value.ItemObject)));
       swprintf(sString, "%s\n(%s: %s)", zHelpText, gzLateLocalizedString[44], zRepairTime);
     } else {
@@ -6087,7 +6087,7 @@ function DisableAllDealersInventorySlots(): void {
     MSYS_DisableRegion(addressof(gDealersInventoryMouseRegions[iCnt]));
 
     // if the dealer repairs
-    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
       MSYS_DisableRegion(addressof(gRepairmanInventorySmallFaceMouseRegions[iCnt]));
     }
   }
@@ -6100,7 +6100,7 @@ function EnableAllDealersInventorySlots(): void {
     MSYS_EnableRegion(addressof(gDealersInventoryMouseRegions[iCnt]));
 
     // if the dealer repairs
-    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
       MSYS_EnableRegion(addressof(gRepairmanInventorySmallFaceMouseRegions[iCnt]));
     }
   }
@@ -6113,7 +6113,7 @@ function DisableAllDealersOfferSlots(): void {
     MSYS_DisableRegion(addressof(gDealersOfferSlotsMouseRegions[iCnt]));
 
     // if the dealer repairs
-    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
       MSYS_DisableRegion(addressof(gDealersOfferSlotsSmallFaceMouseRegions[iCnt]));
     }
   }
@@ -6126,7 +6126,7 @@ function EnableAllDealersOfferSlots(): void {
     MSYS_EnableRegion(addressof(gDealersOfferSlotsMouseRegions[iCnt]));
 
     // if the dealer repairs
-    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS) {
+    if (ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS) {
       MSYS_EnableRegion(addressof(gDealersOfferSlotsSmallFaceMouseRegions[iCnt]));
     }
   }

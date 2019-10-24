@@ -107,7 +107,7 @@ function EnterTacticalScreen(): void {
   SetPositionSndsActive();
 
   // Set pending screen
-  SetPendingNewScreen(GAME_SCREEN);
+  SetPendingNewScreen(Enum26.GAME_SCREEN);
 
   // Set as active...
   gTacticalStatus.uiFlags |= ACTIVE;
@@ -128,7 +128,7 @@ function EnterTacticalScreen(): void {
     }
   } else {
     // otherwise, make sure interface is team panel...
-    SetCurrentInterfacePanel(TEAM_PANEL);
+    SetCurrentInterfacePanel(Enum215.TEAM_PANEL);
   }
 
   if (!gfTacticalPlacementGUIActive) {
@@ -146,8 +146,8 @@ function EnterTacticalScreen(): void {
   // Init interface ( ALWAYS TO TEAM PANEL.  DEF changed it to go back to the previous panel )
   if (!gfTacticalPlacementGUIActive) {
     // make sure the gsCurInterfacePanel is valid
-    if (gsCurInterfacePanel < 0 || gsCurInterfacePanel >= NUM_UI_PANELS)
-      gsCurInterfacePanel = TEAM_PANEL;
+    if (gsCurInterfacePanel < 0 || gsCurInterfacePanel >= Enum215.NUM_UI_PANELS)
+      gsCurInterfacePanel = Enum215.TEAM_PANEL;
 
     SetCurrentInterfacePanel(gsCurInterfacePanel);
   }
@@ -229,12 +229,12 @@ function InternalLeaveTacticalScreen(uiNewScreen: UINT32): void {
   // ATE: Disable messages....
   DisableScrollMessages();
 
-  if (uiNewScreen == MAINMENU_SCREEN) {
+  if (uiNewScreen == Enum26.MAINMENU_SCREEN) {
     // We want to reinitialize the game
     ReStartingGame();
   }
 
-  if (uiNewScreen != MAP_SCREEN) {
+  if (uiNewScreen != Enum26.MAP_SCREEN) {
     StopAnyCurrentlyTalkingSpeech();
   }
 
@@ -248,20 +248,20 @@ function InternalLeaveTacticalScreen(uiNewScreen: UINT32): void {
 }
 
 function MainGameScreenHandle(): UINT32 {
-  let uiNewScreen: UINT32 = GAME_SCREEN;
+  let uiNewScreen: UINT32 = Enum26.GAME_SCREEN;
   let fEnterDemoMode: BOOLEAN = FALSE;
 
   // DO NOT MOVE THIS FUNCTION CALL!!!
   // This determines if the help screen should be active
   //	if( ( !gfTacticalDoHeliRun && !gfFirstHeliRun ) && ShouldTheHelpScreenComeUp( HELP_SCREEN_TACTICAL, FALSE ) )
-  if (!gfPreBattleInterfaceActive && ShouldTheHelpScreenComeUp(HELP_SCREEN_TACTICAL, FALSE)) {
+  if (!gfPreBattleInterfaceActive && ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_TACTICAL, FALSE)) {
     // handle the help screen
     HelpScreenHandler();
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (HandleAutoBandage()) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (gfBeginEndTurn) {
@@ -309,9 +309,9 @@ function MainGameScreenHandle(): UINT32 {
   if (gfFailedToSaveGameWhenInsideAMessageBox) {
     gfFailedToSaveGameWhenInsideAMessageBox = FALSE;
 
-    DoMessageBox(MSG_BOX_BASIC_STYLE, zSaveLoadText[SLG_SAVE_GAME_ERROR], GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zSaveLoadText[Enum371.SLG_SAVE_GAME_ERROR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
 
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   // Check if we are in bar animation...
@@ -320,7 +320,7 @@ function MainGameScreenHandle(): UINT32 {
 
     EndFrameBufferRender();
 
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (gfTacticalIsModal) {
@@ -329,7 +329,7 @@ function MainGameScreenHandle(): UINT32 {
     } else {
       HandleModalTactical();
 
-      return GAME_SCREEN;
+      return Enum26.GAME_SCREEN;
     }
   }
 
@@ -374,7 +374,7 @@ function MainGameScreenHandle(): UINT32 {
     StartHelicopterRun(gMapInformation.sNorthGridNo);
 
     // Update clock by one so that our DidGameJustStatrt() returns now false for things like LAPTOP, etc...
-    SetGameTimeCompressionLevel(TIME_COMPRESS_X1);
+    SetGameTimeCompressionLevel(Enum130.TIME_COMPRESS_X1);
     // UpdateClock( 1 );
 
     gfTacticalDoHeliRun = FALSE;
@@ -383,7 +383,7 @@ function MainGameScreenHandle(): UINT32 {
 
   if (InOverheadMap()) {
     HandleOverheadMap();
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
   if (!ARE_IN_FADE_IN()) {
@@ -413,12 +413,12 @@ function MainGameScreenHandle(): UINT32 {
   }
 
   if (HandleFadeOutCallback()) {
-    return GAME_SCREEN;
+    return Enum26.GAME_SCREEN;
   }
 
-  if (guiCurrentScreen != MSG_BOX_SCREEN) {
-    if (HandleBeginFadeOut(GAME_SCREEN)) {
-      return GAME_SCREEN;
+  if (guiCurrentScreen != Enum26.MSG_BOX_SCREEN) {
+    if (HandleBeginFadeOut(Enum26.GAME_SCREEN)) {
+      return Enum26.GAME_SCREEN;
     }
   }
 
@@ -462,13 +462,13 @@ function MainGameScreenHandle(): UINT32 {
     else if (gfIntendOnEnteringEditor) {
       OutputDebugString("Aborting normal game mode and entering editor mode...\n");
       SetPendingNewScreen(0xffff); // NO_SCREEN
-      return EDIT_SCREEN;
+      return Enum26.EDIT_SCREEN;
     }
     else if (!gfEnteringMapScreen) {
       gfEnteringMapScreen = TRUE;
     }
 
-    if (uiNewScreen != GAME_SCREEN) {
+    if (uiNewScreen != Enum26.GAME_SCREEN) {
       return uiNewScreen;
     }
 
@@ -533,8 +533,8 @@ function MainGameScreenHandle(): UINT32 {
       gfPlayAttnAfterMapLoad = FALSE;
 
       if (gusSelectedSoldier != NOBODY) {
-        if (!gGameSettings.fOptions[TOPTION_MUTE_CONFIRMATIONS])
-          DoMercBattleSound(MercPtrs[gusSelectedSoldier], BATTLE_SOUND_ATTN1);
+        if (!gGameSettings.fOptions[Enum8.TOPTION_MUTE_CONFIRMATIONS])
+          DoMercBattleSound(MercPtrs[gusSelectedSoldier], Enum259.BATTLE_SOUND_ATTN1);
       }
     }
 
@@ -566,8 +566,8 @@ function MainGameScreenHandle(): UINT32 {
     fInterfacePanelDirty = DIRTYLEVEL2;
   }
 
-  if (HandleBeginFadeIn(GAME_SCREEN)) {
-    guiTacticalLeaveScreenID = FADE_SCREEN;
+  if (HandleBeginFadeIn(Enum26.GAME_SCREEN)) {
+    guiTacticalLeaveScreenID = Enum26.FADE_SCREEN;
   }
 
   if (guiTacticalLeaveScreen) {
@@ -587,7 +587,7 @@ function MainGameScreenHandle(): UINT32 {
     gfEnteringMapScreen++;
   }
 
-  return GAME_SCREEN;
+  return Enum26.GAME_SCREEN;
 }
 
 function SetRenderHook(pRenderOverride: RENDER_HOOK): void {
@@ -640,7 +640,7 @@ function EnterMapScreen(): void {
   // ATE: These flags well get set later on in mapscreen....
   // SetTacticalInterfaceFlags( INTERFACE_MAPSCREEN );
   // fInterfacePanelDirty = DIRTYLEVEL2;
-  LeaveTacticalScreen(MAP_SCREEN);
+  LeaveTacticalScreen(Enum26.MAP_SCREEN);
 }
 
 function UpdateTeamPanelAssignments(): void {
@@ -730,7 +730,7 @@ function InitHelicopterEntranceByMercs(): void {
     let AirRaidDef: AIR_RAID_DEFINITION;
 
     // Update clock ahead from STARTING_TIME to make mercs arrive!
-    WarpGameTime(FIRST_ARRIVAL_DELAY, WARPTIME_PROCESS_EVENTS_NORMALLY);
+    WarpGameTime(FIRST_ARRIVAL_DELAY, Enum131.WARPTIME_PROCESS_EVENTS_NORMALLY);
 
     AirRaidDef.sSectorX = 9;
     AirRaidDef.sSectorY = 1;

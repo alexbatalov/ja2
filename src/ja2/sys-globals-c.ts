@@ -16,7 +16,7 @@ function SET_ERROR(String: Pointer<char>, ...args: any[]): BOOLEAN {
   vsprintf(gubErrorText, String, ArgPtr);
   va_end(ArgPtr);
 
-  SetPendingNewScreen(ERROR_SCREEN);
+  SetPendingNewScreen(Enum26.ERROR_SCREEN);
 
   gfGlobalError = TRUE;
 

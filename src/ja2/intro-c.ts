@@ -8,7 +8,7 @@ const enum Enum19 {
 let gfIntroScreenEntry: BOOLEAN;
 let gfIntroScreenExit: BOOLEAN;
 
-let guiIntroExitScreen: UINT32 = INTRO_SCREEN;
+let guiIntroExitScreen: UINT32 = Enum26.INTRO_SCREEN;
 
 let gpSmackFlic: Pointer<SMKFLIC> = NULL;
 
@@ -108,10 +108,10 @@ function EnterIntroScreen(): BOOLEAN {
   SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
 
   // Don't play music....
-  SetMusicMode(MUSIC_NONE);
+  SetMusicMode(Enum328.MUSIC_NONE);
 
   // if the library doesnt exist, exit
-  if (!IsLibraryOpened(LIBRARY_INTRO)) {
+  if (!IsLibraryOpened(Enum30.LIBRARY_INTRO)) {
     PrepareToExitIntroScreen();
     return TRUE;
   }
@@ -125,7 +125,7 @@ function EnterIntroScreen(): BOOLEAN {
   if (iFirstVideoID != -1) {
     StartPlayingIntroFlic(iFirstVideoID);
 
-    guiIntroExitScreen = INTRO_SCREEN;
+    guiIntroExitScreen = Enum26.INTRO_SCREEN;
   }
 
   // Got no intro video, exit
@@ -221,21 +221,21 @@ function GetIntroScreenUserInput(): void {
 
 function PrepareToExitIntroScreen(): void {
   // if its the intro at the begining of the game
-  if (gbIntroScreenMode == INTRO_BEGINING) {
+  if (gbIntroScreenMode == Enum21.INTRO_BEGINING) {
     // go to the init screen
-    guiIntroExitScreen = INIT_SCREEN;
-  } else if (gbIntroScreenMode == INTRO_SPLASH) {
+    guiIntroExitScreen = Enum26.INIT_SCREEN;
+  } else if (gbIntroScreenMode == Enum21.INTRO_SPLASH) {
     // display a logo when exiting
     DisplaySirtechSplashScreen();
 
     gfDoneWithSplashScreen = TRUE;
-    guiIntroExitScreen = INIT_SCREEN;
+    guiIntroExitScreen = Enum26.INIT_SCREEN;
   } else {
     // We want to reinitialize the game
     ReStartingGame();
 
     //		guiIntroExitScreen = MAINMENU_SCREEN;
-    guiIntroExitScreen = CREDIT_SCREEN;
+    guiIntroExitScreen = Enum26.CREDIT_SCREEN;
   }
 
   gfIntroScreenExit = TRUE;
@@ -247,21 +247,21 @@ function GetNextIntroVideo(uiCurrentVideo: UINT32): INT32 {
   // switch on whether it is the beginging or the end game video
   switch (gbIntroScreenMode) {
     // the video at the begining of the game
-    case INTRO_BEGINING: {
+    case Enum21.INTRO_BEGINING: {
       switch (uiCurrentVideo) {
         case SMKINTRO_FIRST_VIDEO:
-          iStringToUse = SMKINTRO_REBEL_CRDT;
+          iStringToUse = Enum20.SMKINTRO_REBEL_CRDT;
           break;
-        case SMKINTRO_REBEL_CRDT:
-          iStringToUse = SMKINTRO_OMERTA;
+        case Enum20.SMKINTRO_REBEL_CRDT:
+          iStringToUse = Enum20.SMKINTRO_OMERTA;
           break;
-        case SMKINTRO_OMERTA:
-          iStringToUse = SMKINTRO_PRAGUE_CRDT;
+        case Enum20.SMKINTRO_OMERTA:
+          iStringToUse = Enum20.SMKINTRO_PRAGUE_CRDT;
           break;
-        case SMKINTRO_PRAGUE_CRDT:
-          iStringToUse = SMKINTRO_PRAGUE;
+        case Enum20.SMKINTRO_PRAGUE_CRDT:
+          iStringToUse = Enum20.SMKINTRO_PRAGUE;
           break;
-        case SMKINTRO_PRAGUE:
+        case Enum20.SMKINTRO_PRAGUE:
           iStringToUse = -1;
           break;
           //				case SMKINTRO_LAST_INTRO:
@@ -271,37 +271,37 @@ function GetNextIntroVideo(uiCurrentVideo: UINT32): INT32 {
     } break;
 
     // end game
-    case INTRO_ENDING: {
+    case Enum21.INTRO_ENDING: {
       switch (uiCurrentVideo) {
         case SMKINTRO_FIRST_VIDEO:
           // if Miguel is dead, play the flic with out him in it
-          if (gMercProfiles[MIGUEL].bMercStatus == MERC_IS_DEAD)
-            iStringToUse = SMKINTRO_END_END_SPEECH_NO_MIGUEL;
+          if (gMercProfiles[Enum268.MIGUEL].bMercStatus == MERC_IS_DEAD)
+            iStringToUse = Enum20.SMKINTRO_END_END_SPEECH_NO_MIGUEL;
           else
-            iStringToUse = SMKINTRO_END_END_SPEECH_MIGUEL;
+            iStringToUse = Enum20.SMKINTRO_END_END_SPEECH_MIGUEL;
           break;
 
-        case SMKINTRO_END_END_SPEECH_MIGUEL:
-        case SMKINTRO_END_END_SPEECH_NO_MIGUEL:
-          iStringToUse = SMKINTRO_END_HELI_FLYBY;
+        case Enum20.SMKINTRO_END_END_SPEECH_MIGUEL:
+        case Enum20.SMKINTRO_END_END_SPEECH_NO_MIGUEL:
+          iStringToUse = Enum20.SMKINTRO_END_HELI_FLYBY;
           break;
 
         // if SkyRider is dead, play the flic without him
-        case SMKINTRO_END_HELI_FLYBY:
-          if (gMercProfiles[SKYRIDER].bMercStatus == MERC_IS_DEAD)
-            iStringToUse = SMKINTRO_END_NOSKYRIDER_HELICOPTER;
+        case Enum20.SMKINTRO_END_HELI_FLYBY:
+          if (gMercProfiles[Enum268.SKYRIDER].bMercStatus == MERC_IS_DEAD)
+            iStringToUse = Enum20.SMKINTRO_END_NOSKYRIDER_HELICOPTER;
           else
-            iStringToUse = SMKINTRO_END_SKYRIDER_HELICOPTER;
+            iStringToUse = Enum20.SMKINTRO_END_SKYRIDER_HELICOPTER;
           break;
       }
     } break;
 
-    case INTRO_SPLASH:
+    case Enum21.INTRO_SPLASH:
       switch (uiCurrentVideo) {
         case SMKINTRO_FIRST_VIDEO:
-          iStringToUse = SMKINTRO_SPLASH_SCREEN;
+          iStringToUse = Enum20.SMKINTRO_SPLASH_SCREEN;
           break;
-        case SMKINTRO_SPLASH_SCREEN:
+        case Enum20.SMKINTRO_SPLASH_SCREEN:
           // iStringToUse = SMKINTRO_SPLASH_TALONSOFT;
           break;
       }
@@ -321,18 +321,18 @@ function StartPlayingIntroFlic(iIndexOfFlicToPlay: INT32): void {
     } else {
       // do a check
 
-      DoScreenIndependantMessageBox(gzIntroScreen[INTRO_TXT__CANT_FIND_INTRO], MSG_BOX_FLAG_OK, CDromEjectionErrorMessageBoxCallBack);
+      DoScreenIndependantMessageBox(gzIntroScreen[Enum19.INTRO_TXT__CANT_FIND_INTRO], MSG_BOX_FLAG_OK, CDromEjectionErrorMessageBoxCallBack);
     }
   }
 }
 
 function SetIntroType(bIntroType: INT8): void {
-  if (bIntroType == INTRO_BEGINING) {
-    gbIntroScreenMode = INTRO_BEGINING;
-  } else if (bIntroType == INTRO_ENDING) {
-    gbIntroScreenMode = INTRO_ENDING;
-  } else if (bIntroType == INTRO_SPLASH) {
-    gbIntroScreenMode = INTRO_SPLASH;
+  if (bIntroType == Enum21.INTRO_BEGINING) {
+    gbIntroScreenMode = Enum21.INTRO_BEGINING;
+  } else if (bIntroType == Enum21.INTRO_ENDING) {
+    gbIntroScreenMode = Enum21.INTRO_ENDING;
+  } else if (bIntroType == Enum21.INTRO_SPLASH) {
+    gbIntroScreenMode = Enum21.INTRO_SPLASH;
   }
 }
 

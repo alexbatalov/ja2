@@ -723,7 +723,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
     if (fContinuousTurnNeeded) {
       if (trailTreeNdx < 2) {
         iLastDir = s.value.bDirection;
-      } else if (trailTree[pCurrPtr.value.sPathNdx].fFlags & STEP_BACKWARDS) {
+      } else if (trailTree[pCurrPtr.value.sPathNdx].fFlags & Enum248.STEP_BACKWARDS) {
         iLastDir = gOppositeDirection[trailTree[pCurrPtr.value.sPathNdx].stepDir];
       } else {
         iLastDir = trailTree[pCurrPtr.value.sPathNdx].stepDir;
@@ -899,11 +899,11 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
               break;
             case TRAVELCOST_DOOR_CLOSED_N:
               fDoorIsObstacleIfClosed = TRUE;
-              iDoorGridNo = newLoc + dirDelta[NORTH];
+              iDoorGridNo = newLoc + dirDelta[Enum245.NORTH];
               break;
             case TRAVELCOST_DOOR_CLOSED_W:
               fDoorIsObstacleIfClosed = TRUE;
-              iDoorGridNo = newLoc + dirDelta[WEST];
+              iDoorGridNo = newLoc + dirDelta[Enum245.WEST];
               break;
             case TRAVELCOST_DOOR_OPEN_HERE:
               fDoorIsObstacleIfClosed = FALSE;
@@ -911,59 +911,59 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
               break;
             case TRAVELCOST_DOOR_OPEN_N:
               fDoorIsObstacleIfClosed = FALSE;
-              iDoorGridNo = newLoc + dirDelta[NORTH];
+              iDoorGridNo = newLoc + dirDelta[Enum245.NORTH];
               break;
             case TRAVELCOST_DOOR_OPEN_NE:
               fDoorIsObstacleIfClosed = FALSE;
-              iDoorGridNo = newLoc + dirDelta[NORTHEAST];
+              iDoorGridNo = newLoc + dirDelta[Enum245.NORTHEAST];
               break;
             case TRAVELCOST_DOOR_OPEN_E:
               fDoorIsObstacleIfClosed = FALSE;
-              iDoorGridNo = newLoc + dirDelta[EAST];
+              iDoorGridNo = newLoc + dirDelta[Enum245.EAST];
               break;
             case TRAVELCOST_DOOR_OPEN_SE:
               fDoorIsObstacleIfClosed = FALSE;
-              iDoorGridNo = newLoc + dirDelta[SOUTHEAST];
+              iDoorGridNo = newLoc + dirDelta[Enum245.SOUTHEAST];
               break;
             case TRAVELCOST_DOOR_OPEN_S:
               fDoorIsObstacleIfClosed = FALSE;
-              iDoorGridNo = newLoc + dirDelta[SOUTH];
+              iDoorGridNo = newLoc + dirDelta[Enum245.SOUTH];
               break;
             case TRAVELCOST_DOOR_OPEN_SW:
               fDoorIsObstacleIfClosed = FALSE;
-              iDoorGridNo = newLoc + dirDelta[SOUTHWEST];
+              iDoorGridNo = newLoc + dirDelta[Enum245.SOUTHWEST];
               break;
             case TRAVELCOST_DOOR_OPEN_W:
               fDoorIsObstacleIfClosed = FALSE;
-              iDoorGridNo = newLoc + dirDelta[WEST];
+              iDoorGridNo = newLoc + dirDelta[Enum245.WEST];
               break;
             case TRAVELCOST_DOOR_OPEN_NW:
               fDoorIsObstacleIfClosed = FALSE;
-              iDoorGridNo = newLoc + dirDelta[NORTHWEST];
+              iDoorGridNo = newLoc + dirDelta[Enum245.NORTHWEST];
               break;
             case TRAVELCOST_DOOR_OPEN_N_N:
               fDoorIsObstacleIfClosed = FALSE;
-              iDoorGridNo = newLoc + dirDelta[NORTH] + dirDelta[NORTH];
+              iDoorGridNo = newLoc + dirDelta[Enum245.NORTH] + dirDelta[Enum245.NORTH];
               break;
             case TRAVELCOST_DOOR_OPEN_NW_N:
               fDoorIsObstacleIfClosed = FALSE;
-              iDoorGridNo = newLoc + dirDelta[NORTHWEST] + dirDelta[NORTH];
+              iDoorGridNo = newLoc + dirDelta[Enum245.NORTHWEST] + dirDelta[Enum245.NORTH];
               break;
             case TRAVELCOST_DOOR_OPEN_NE_N:
               fDoorIsObstacleIfClosed = FALSE;
-              iDoorGridNo = newLoc + dirDelta[NORTHEAST] + dirDelta[NORTH];
+              iDoorGridNo = newLoc + dirDelta[Enum245.NORTHEAST] + dirDelta[Enum245.NORTH];
               break;
             case TRAVELCOST_DOOR_OPEN_W_W:
               fDoorIsObstacleIfClosed = FALSE;
-              iDoorGridNo = newLoc + dirDelta[WEST] + dirDelta[WEST];
+              iDoorGridNo = newLoc + dirDelta[Enum245.WEST] + dirDelta[Enum245.WEST];
               break;
             case TRAVELCOST_DOOR_OPEN_SW_W:
               fDoorIsObstacleIfClosed = FALSE;
-              iDoorGridNo = newLoc + dirDelta[SOUTHWEST] + dirDelta[WEST];
+              iDoorGridNo = newLoc + dirDelta[Enum245.SOUTHWEST] + dirDelta[Enum245.WEST];
               break;
             case TRAVELCOST_DOOR_OPEN_NW_W:
               fDoorIsObstacleIfClosed = FALSE;
-              iDoorGridNo = newLoc + dirDelta[NORTHWEST] + dirDelta[WEST];
+              iDoorGridNo = newLoc + dirDelta[Enum245.NORTHWEST] + dirDelta[Enum245.WEST];
               break;
             default:
               break;
@@ -1195,52 +1195,52 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
 
         // ATE: if water, force to be walking always!
         if (nextCost == TRAVELCOST_SHORE || nextCost == TRAVELCOST_KNEEDEEP || nextCost == TRAVELCOST_DEEPWATER) {
-          usMovementModeToUseForAPs = WALKING;
+          usMovementModeToUseForAPs = Enum193.WALKING;
         }
 
         // adjust AP cost for movement mode
         switch (usMovementModeToUseForAPs) {
-          case RUNNING:
-          case ADULTMONSTER_WALKING:
+          case Enum193.RUNNING:
+          case Enum193.ADULTMONSTER_WALKING:
             // save on casting
             ubAPCost = ubAPCost * 10 / ((RUNDIVISOR * 10));
             // ubAPCost = (INT16)(DOUBLE)( (sTileCost / RUNDIVISOR) );	break;
             break;
-          case WALKING:
-          case ROBOT_WALK:
+          case Enum193.WALKING:
+          case Enum193.ROBOT_WALK:
             ubAPCost = (ubAPCost + WALKCOST);
             break;
-          case SWATTING:
+          case Enum193.SWATTING:
             ubAPCost = (ubAPCost + SWATCOST);
             break;
-          case CRAWLING:
+          case Enum193.CRAWLING:
             ubAPCost = (ubAPCost + CRAWLCOST);
             break;
         }
 
         if (nextCost == TRAVELCOST_FENCE) {
           switch (usMovementModeToUseForAPs) {
-            case RUNNING:
-            case WALKING:
+            case Enum193.RUNNING:
+            case Enum193.WALKING:
               // Here pessimistically assume the path will continue after hopping the fence
               ubAPCost += AP_CROUCH;
               break;
 
-            case SWATTING:
+            case Enum193.SWATTING:
 
               // Add cost to stand once there BEFORE jumping....
               ubAPCost += AP_CROUCH;
               break;
 
-            case CRAWLING:
+            case Enum193.CRAWLING:
 
               // Can't do it here.....
               goto("NEXTDIR");
           }
         } else if (nextCost == TRAVELCOST_NOT_STANDING) {
           switch (usMovementModeToUseForAPs) {
-            case RUNNING:
-            case WALKING:
+            case Enum193.RUNNING:
+            case Enum193.WALKING:
               // charge crouch APs for ducking head!
               ubAPCost += AP_CROUCH;
               break;
@@ -1381,7 +1381,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
         trailTree[trailTreeNdx].nextLink = sCurPathNdx;
         trailTree[trailTreeNdx].stepDir = iCnt;
         if (bLoopState == LOOPING_REVERSE) {
-          trailTree[trailTreeNdx].fFlags = STEP_BACKWARDS;
+          trailTree[trailTreeNdx].fFlags = Enum248.STEP_BACKWARDS;
         } else {
           trailTree[trailTreeNdx].fFlags = 0;
         }
@@ -1561,7 +1561,7 @@ function GlobalReachableTest(sStartGridNo: INT16): void {
   }
 
   ReconfigurePathAI(ABSMAX_SKIPLIST_LEVEL, ABSMAX_TRAIL_TREE, ABSMAX_PATHQ);
-  FindBestPath(addressof(s), NOWHERE, 0, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+  FindBestPath(addressof(s), NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
   RestorePathAIToDefaults();
 }
 
@@ -1575,7 +1575,7 @@ function LocalReachableTest(sStartGridNo: INT16, bRadius: INT8): void {
   s.sGridNo = sStartGridNo;
 
   // if we are moving on the gorund level
-  if (gsInterfaceLevel == I_ROOF_LEVEL) {
+  if (gsInterfaceLevel == Enum214.I_ROOF_LEVEL) {
     s.bLevel = 1;
   } else {
     s.bLevel = 0;
@@ -1596,7 +1596,7 @@ function LocalReachableTest(sStartGridNo: INT16, bRadius: INT8): void {
   // set the dist limit
   gubNPCDistLimit = bRadius;
   // make the function call
-  FindBestPath(addressof(s), NOWHERE, s.bLevel, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+  FindBestPath(addressof(s), NOWHERE, s.bLevel, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
   // reset dist limit
   gubNPCDistLimit = 0;
 }
@@ -1616,10 +1616,10 @@ function GlobalItemsReachableTest(sStartGridNo1: INT16, sStartGridNo2: INT16): v
   }
 
   ReconfigurePathAI(ABSMAX_SKIPLIST_LEVEL, ABSMAX_TRAIL_TREE, ABSMAX_PATHQ);
-  FindBestPath(addressof(s), NOWHERE, 0, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+  FindBestPath(addressof(s), NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
   if (sStartGridNo2 != NOWHERE) {
     s.sGridNo = sStartGridNo2;
-    FindBestPath(addressof(s), NOWHERE, 0, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+    FindBestPath(addressof(s), NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
   }
   RestorePathAIToDefaults();
 }
@@ -1635,7 +1635,7 @@ function RoofReachableTest(sStartGridNo: INT16, ubBuildingID: UINT8): void {
   gubBuildingInfoToSet = ubBuildingID;
 
   ReconfigurePathAI(ABSMAX_SKIPLIST_LEVEL, ABSMAX_TRAIL_TREE, ABSMAX_PATHQ);
-  FindBestPath(addressof(s), NOWHERE, 1, WALKING, COPYREACHABLE, 0);
+  FindBestPath(addressof(s), NOWHERE, 1, Enum193.WALKING, COPYREACHABLE, 0);
   RestorePathAIToDefaults();
 
   // set start position to reachable since path code sets it unreachable
@@ -1656,13 +1656,13 @@ function ErasePath(bEraseOldOne: char): void {
   if (gfUIHandleShowMoveGrid) {
     gfUIHandleShowMoveGrid = FALSE;
 
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS4);
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS9);
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS2);
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS13);
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS15);
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS19);
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS20);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS4);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS9);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS2);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS13);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS15);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS19);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS20);
   }
 
   if (!gusPathShown) {
@@ -1680,9 +1680,9 @@ function ErasePath(bEraseOldOne: char): void {
   for (iCnt = 0; iCnt < giPlotCnt; iCnt++) {
     // Grid[PlottedPath[cnt]].fstep = 0;
 
-    RemoveAllObjectsOfTypeRange(guiPlottedPath[iCnt], FOOTPRINTS, FOOTPRINTS);
+    RemoveAllObjectsOfTypeRange(guiPlottedPath[iCnt], Enum313.FOOTPRINTS, Enum313.FOOTPRINTS);
 
-    RemoveAllOnRoofsOfTypeRange(guiPlottedPath[iCnt], FOOTPRINTS, FOOTPRINTS);
+    RemoveAllOnRoofsOfTypeRange(guiPlottedPath[iCnt], Enum313.FOOTPRINTS, Enum313.FOOTPRINTS);
 
     // RemoveAllObjectsOfTypeRange( guiPlottedPath[iCnt], FIRSTPOINTERS, FIRSTPOINTERS );
   }
@@ -1742,7 +1742,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
   if (gfRecalculatingExistingPathCost || FindBestPath(pSold, sDestGridno, pSold.value.bLevel, usMovementMode, bCopyRoute, 0)) {
     // if soldier would be STARTING to run then he pays a penalty since it takes time to
     // run full speed
-    if (pSold.value.usAnimState != RUNNING) {
+    if (pSold.value.usAnimState != Enum193.RUNNING) {
       // for estimation purposes, always pay penalty
       sPointsRun = AP_START_RUN_COST;
     }
@@ -1753,7 +1753,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
     // We should reduce points for starting to run if first tile is a fence...
     sTestGridno = NewGridNo(pSold.value.sGridNo, DirectionInc(guiPathingData[0]));
     if (gubWorldMovementCosts[sTestGridno][guiPathingData[0]][pSold.value.bLevel] == TRAVELCOST_FENCE) {
-      if (usMovementMode == RUNNING && pSold.value.usAnimState != RUNNING) {
+      if (usMovementMode == Enum193.RUNNING && pSold.value.usAnimState != Enum193.RUNNING) {
         sPoints -= AP_START_RUN_COST;
       }
     }
@@ -1802,8 +1802,8 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
       usMovementModeToUseForAPs = usMovementMode;
 
       // ATE - MAKE MOVEMENT ALWAYS WALK IF IN WATER
-      if (gpWorldLevelData[sTempGrid].ubTerrainID == DEEP_WATER || gpWorldLevelData[sTempGrid].ubTerrainID == MED_WATER || gpWorldLevelData[sTempGrid].ubTerrainID == LOW_WATER) {
-        usMovementModeToUseForAPs = WALKING;
+      if (gpWorldLevelData[sTempGrid].ubTerrainID == Enum315.DEEP_WATER || gpWorldLevelData[sTempGrid].ubTerrainID == Enum315.MED_WATER || gpWorldLevelData[sTempGrid].ubTerrainID == Enum315.LOW_WATER) {
+        usMovementModeToUseForAPs = Enum193.WALKING;
       }
 
       if (bIgnoreNextCost) {
@@ -1818,8 +1818,8 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
           // If we are changeing stance ( either before or after getting there....
           // We need to reflect that...
           switch (usMovementModeToUseForAPs) {
-            case RUNNING:
-            case WALKING:
+            case Enum193.RUNNING:
+            case Enum193.WALKING:
 
               // Add here cost to go from crouch to stand AFTER fence hop....
               // Since it's AFTER.. make sure we will be moving after jump...
@@ -1827,7 +1827,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
                 sExtraCostStand += AP_CROUCH;
 
                 // ATE: if running, charge extra point to srart again
-                if (usMovementModeToUseForAPs == RUNNING) {
+                if (usMovementModeToUseForAPs == Enum193.RUNNING) {
                   sExtraCostStand++;
                 }
 
@@ -1835,14 +1835,14 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
               }
               break;
 
-            case SWATTING:
+            case Enum193.SWATTING:
 
               // Add cost to stand once there BEFORE....
               sExtraCostSwat += AP_CROUCH;
               sPoints += sExtraCostSwat;
               break;
 
-            case CRAWLING:
+            case Enum193.CRAWLING:
 
               // Can't do it here.....
               break;
@@ -1852,8 +1852,8 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
 
           if (sSwitchValue == TRAVELCOST_NOT_STANDING) {
             switch (usMovementModeToUseForAPs) {
-              case RUNNING:
-              case WALKING:
+              case Enum193.RUNNING:
+              case Enum193.WALKING:
                 // charge crouch APs for ducking head!
                 sExtraCostStand += AP_CROUCH;
                 break;
@@ -1865,16 +1865,16 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
 
           // so, then we must modify it for other movement styles and accumulate
           switch (usMovementModeToUseForAPs) {
-            case RUNNING:
+            case Enum193.RUNNING:
               sPoints += ((sTileCost / RUNDIVISOR)) + sExtraCostStand;
               break;
-            case WALKING:
+            case Enum193.WALKING:
               sPoints += (sTileCost + WALKCOST) + sExtraCostStand;
               break;
-            case SWATTING:
+            case Enum193.SWATTING:
               sPoints += (sTileCost + SWATCOST) + sExtraCostSwat;
               break;
-            case CRAWLING:
+            case Enum193.CRAWLING:
               sPoints += (sTileCost + CRAWLCOST) + sExtraCostCrawl;
               break;
             default:
@@ -1952,7 +1952,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
             }
           }
 
-          GetTileIndexFromTypeSubIndex(FOOTPRINTS, usTileNum, addressof(usTileIndex));
+          GetTileIndexFromTypeSubIndex(Enum313.FOOTPRINTS, usTileNum, addressof(usTileIndex));
 
           // Adjust based on what mode we are in...
           if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
@@ -1998,7 +1998,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
           // this is a LEAVING footstep which is always the second set of 8
           usTileNum += 8;
 
-          GetTileIndexFromTypeSubIndex(FOOTPRINTS, usTileNum, addressof(usTileIndex));
+          GetTileIndexFromTypeSubIndex(Enum313.FOOTPRINTS, usTileNum, addressof(usTileIndex));
 
           // Adjust based on what mode we are in...
           if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
@@ -2048,7 +2048,7 @@ function UIPlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute:
     return 0;
   }
 
-  if (gGameSettings.fOptions[TOPTION_ALWAYS_SHOW_MOVEMENT_PATH]) {
+  if (gGameSettings.fOptions[Enum8.TOPTION_ALWAYS_SHOW_MOVEMENT_PATH]) {
     bPlot = TRUE;
   }
 
@@ -2108,12 +2108,12 @@ function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, 
         break;
       case TRAVELCOST_DOOR_CLOSED_N:
         fDoorIsObstacleIfClosed = TRUE;
-        iDoorGridNo = iGridNo + dirDelta[NORTH];
+        iDoorGridNo = iGridNo + dirDelta[Enum245.NORTH];
         ubReplacementCost = TRAVELCOST_DOOR;
         break;
       case TRAVELCOST_DOOR_CLOSED_W:
         fDoorIsObstacleIfClosed = TRUE;
-        iDoorGridNo = iGridNo + dirDelta[WEST];
+        iDoorGridNo = iGridNo + dirDelta[Enum245.WEST];
         ubReplacementCost = TRAVELCOST_DOOR;
         break;
       case TRAVELCOST_DOOR_OPEN_HERE:
@@ -2122,59 +2122,59 @@ function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, 
         break;
       case TRAVELCOST_DOOR_OPEN_N:
         fDoorIsObstacleIfClosed = FALSE;
-        iDoorGridNo = iGridNo + dirDelta[NORTH];
+        iDoorGridNo = iGridNo + dirDelta[Enum245.NORTH];
         break;
       case TRAVELCOST_DOOR_OPEN_NE:
         fDoorIsObstacleIfClosed = FALSE;
-        iDoorGridNo = iGridNo + dirDelta[NORTHEAST];
+        iDoorGridNo = iGridNo + dirDelta[Enum245.NORTHEAST];
         break;
       case TRAVELCOST_DOOR_OPEN_E:
         fDoorIsObstacleIfClosed = FALSE;
-        iDoorGridNo = iGridNo + dirDelta[EAST];
+        iDoorGridNo = iGridNo + dirDelta[Enum245.EAST];
         break;
       case TRAVELCOST_DOOR_OPEN_SE:
         fDoorIsObstacleIfClosed = FALSE;
-        iDoorGridNo = iGridNo + dirDelta[SOUTHEAST];
+        iDoorGridNo = iGridNo + dirDelta[Enum245.SOUTHEAST];
         break;
       case TRAVELCOST_DOOR_OPEN_S:
         fDoorIsObstacleIfClosed = FALSE;
-        iDoorGridNo = iGridNo + dirDelta[SOUTH];
+        iDoorGridNo = iGridNo + dirDelta[Enum245.SOUTH];
         break;
       case TRAVELCOST_DOOR_OPEN_SW:
         fDoorIsObstacleIfClosed = FALSE;
-        iDoorGridNo = iGridNo + dirDelta[SOUTHWEST];
+        iDoorGridNo = iGridNo + dirDelta[Enum245.SOUTHWEST];
         break;
       case TRAVELCOST_DOOR_OPEN_W:
         fDoorIsObstacleIfClosed = FALSE;
-        iDoorGridNo = iGridNo + dirDelta[WEST];
+        iDoorGridNo = iGridNo + dirDelta[Enum245.WEST];
         break;
       case TRAVELCOST_DOOR_OPEN_NW:
         fDoorIsObstacleIfClosed = FALSE;
-        iDoorGridNo = iGridNo + dirDelta[NORTHWEST];
+        iDoorGridNo = iGridNo + dirDelta[Enum245.NORTHWEST];
         break;
       case TRAVELCOST_DOOR_OPEN_N_N:
         fDoorIsObstacleIfClosed = FALSE;
-        iDoorGridNo = iGridNo + dirDelta[NORTH] + dirDelta[NORTH];
+        iDoorGridNo = iGridNo + dirDelta[Enum245.NORTH] + dirDelta[Enum245.NORTH];
         break;
       case TRAVELCOST_DOOR_OPEN_NW_N:
         fDoorIsObstacleIfClosed = FALSE;
-        iDoorGridNo = iGridNo + dirDelta[NORTHWEST] + dirDelta[NORTH];
+        iDoorGridNo = iGridNo + dirDelta[Enum245.NORTHWEST] + dirDelta[Enum245.NORTH];
         break;
       case TRAVELCOST_DOOR_OPEN_NE_N:
         fDoorIsObstacleIfClosed = FALSE;
-        iDoorGridNo = iGridNo + dirDelta[NORTHEAST] + dirDelta[NORTH];
+        iDoorGridNo = iGridNo + dirDelta[Enum245.NORTHEAST] + dirDelta[Enum245.NORTH];
         break;
       case TRAVELCOST_DOOR_OPEN_W_W:
         fDoorIsObstacleIfClosed = FALSE;
-        iDoorGridNo = iGridNo + dirDelta[WEST] + dirDelta[WEST];
+        iDoorGridNo = iGridNo + dirDelta[Enum245.WEST] + dirDelta[Enum245.WEST];
         break;
       case TRAVELCOST_DOOR_OPEN_SW_W:
         fDoorIsObstacleIfClosed = FALSE;
-        iDoorGridNo = iGridNo + dirDelta[SOUTHWEST] + dirDelta[WEST];
+        iDoorGridNo = iGridNo + dirDelta[Enum245.SOUTHWEST] + dirDelta[Enum245.WEST];
         break;
       case TRAVELCOST_DOOR_OPEN_NW_W:
         fDoorIsObstacleIfClosed = FALSE;
-        iDoorGridNo = iGridNo + dirDelta[NORTHWEST] + dirDelta[WEST];
+        iDoorGridNo = iGridNo + dirDelta[Enum245.NORTHWEST] + dirDelta[Enum245.WEST];
         break;
       default:
         break;

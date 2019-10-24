@@ -197,7 +197,7 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
   gsFadeCount = 0;
   gbFadeType = bType;
 
-  SetPendingNewScreen(FADE_SCREEN);
+  SetPendingNewScreen(Enum26.FADE_SCREEN);
 }
 
 function FadeScreenInit(): UINT32 {
@@ -209,7 +209,7 @@ function FadeScreenHandle(): UINT32 {
 
   if (!gfFadeInitialized) {
     SET_ERROR("Fade Screen called but not intialized ");
-    return ERROR_SCREEN;
+    return Enum26.ERROR_SCREEN;
   }
 
   // ATE: Remove cursor
@@ -258,7 +258,7 @@ function FadeScreenHandle(): UINT32 {
     }
   }
 
-  return FADE_SCREEN;
+  return Enum26.FADE_SCREEN;
 }
 
 function FadeScreenShutdown(): UINT32 {

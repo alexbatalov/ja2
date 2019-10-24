@@ -180,19 +180,19 @@ function UndergroundTacticalTraversalTime(bExitDirection: INT8): UINT32 {
   // We are attempting to traverse in an underground environment.  We need to use a complete different
   // method.  When underground, all sectors are instantly adjacent.
   switch (bExitDirection) {
-    case NORTH_STRATEGIC_MOVE:
+    case Enum186.NORTH_STRATEGIC_MOVE:
       if (gMapInformation.sNorthGridNo != -1)
         return 0;
       break;
-    case EAST_STRATEGIC_MOVE:
+    case Enum186.EAST_STRATEGIC_MOVE:
       if (gMapInformation.sEastGridNo != -1)
         return 0;
       break;
-    case SOUTH_STRATEGIC_MOVE:
+    case Enum186.SOUTH_STRATEGIC_MOVE:
       if (gMapInformation.sSouthGridNo != -1)
         return 0;
       break;
-    case WEST_STRATEGIC_MOVE:
+    case Enum186.WEST_STRATEGIC_MOVE:
       if (gMapInformation.sWestGridNo != -1)
         return 0;
       break;
@@ -213,7 +213,7 @@ function BeginLoadScreen(): void {
 
   SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
 
-  if (guiCurrentScreen == MAP_SCREEN && !(gTacticalStatus.uiFlags & LOADING_SAVED_GAME) && !AreInMeanwhile()) {
+  if (guiCurrentScreen == Enum26.MAP_SCREEN && !(gTacticalStatus.uiFlags & LOADING_SAVED_GAME) && !AreInMeanwhile()) {
     DstRect.iLeft = 0;
     DstRect.iTop = 0;
     DstRect.iRight = 640;
@@ -524,7 +524,7 @@ function SetCurrentWorldSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN
     // Note, the flag will return TRUE only if enemies were added.  The game may wish to
     // do something else in a case where no enemies are present.
 
-    SetPendingNewScreen(GAME_SCREEN);
+    SetPendingNewScreen(Enum26.GAME_SCREEN);
     if (!NumEnemyInSector()) {
       PrepareEnemyForSectorBattle();
     }
@@ -545,7 +545,7 @@ function SetCurrentWorldSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN
   }
 
   if (gWorldSectorX && gWorldSectorY && gbWorldSectorZ != -1) {
-    HandleDefiniteUnloadingOfWorld(ABOUT_TO_LOAD_NEW_MAP);
+    HandleDefiniteUnloadingOfWorld(Enum176.ABOUT_TO_LOAD_NEW_MAP);
   }
 
   // make this the currently loaded sector
@@ -600,7 +600,7 @@ function SetCurrentWorldSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN
   }
 
   if (fChangeMusic) {
-    SetMusicMode(MUSIC_MAIN_MENU);
+    SetMusicMode(Enum328.MUSIC_MAIN_MENU);
   }
 
   // ATE: Do this stuff earlier!
@@ -649,11 +649,11 @@ function SetCurrentWorldSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN
     return FALSE;
 
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
-    if ((gubMusicMode != MUSIC_TACTICAL_ENEMYPRESENT && gubMusicMode != MUSIC_TACTICAL_BATTLE) || (!NumHostilesInSector(sMapX, sMapY, bMapZ) && gubMusicMode == MUSIC_TACTICAL_ENEMYPRESENT)) {
+    if ((gubMusicMode != Enum328.MUSIC_TACTICAL_ENEMYPRESENT && gubMusicMode != Enum328.MUSIC_TACTICAL_BATTLE) || (!NumHostilesInSector(sMapX, sMapY, bMapZ) && gubMusicMode == Enum328.MUSIC_TACTICAL_ENEMYPRESENT)) {
       // ATE; Fade FA.T....
       SetMusicFadeSpeed(5);
 
-      SetMusicMode(MUSIC_TACTICAL_NOTHING);
+      SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
     }
 
     // ATE: Check what sector we are in, to show description if we have an RPC.....
@@ -753,10 +753,10 @@ function PrepareLoadedSector(): void {
   // if we are loading a 'pristine' map ( ie, not loading a saved game )
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     if (!AreReloadingFromMeanwhile()) {
-      SetPendingNewScreen(GAME_SCREEN);
+      SetPendingNewScreen(Enum26.GAME_SCREEN);
 
       // Make interface the team panel always...
-      SetCurrentInterfacePanel(TEAM_PANEL);
+      SetCurrentInterfacePanel(Enum215.TEAM_PANEL);
     }
 
     // Check to see if civilians should be added.  Always add civs to maps unless they are
@@ -794,7 +794,7 @@ function PrepareLoadedSector(): void {
     }
     AddProfilesNotUsingProfileInsertionData();
 
-    if (!AreInMeanwhile() || GetMeanwhileID() == INTERROGATION) {
+    if (!AreInMeanwhile() || GetMeanwhileID() == Enum160.INTERROGATION) {
       fEnemyPresenceInThisSector = PrepareEnemyForSectorBattle();
     }
 
@@ -819,7 +819,7 @@ function PrepareLoadedSector(): void {
     PostSchedules();
   }
 
-  if (gubEnemyEncounterCode == ENEMY_AMBUSH_CODE || gubEnemyEncounterCode == BLOODCAT_AMBUSH_CODE) {
+  if (gubEnemyEncounterCode == Enum164.ENEMY_AMBUSH_CODE || gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE) {
     if (gMapInformation.sCenterGridNo != -1) {
       CallAvailableEnemiesTo(gMapInformation.sCenterGridNo);
     } else {
@@ -859,27 +859,27 @@ function HandleQuestCodeOnSectorEntry(sNewSectorX: INT16, sNewSectorY: INT16, bN
   let cnt: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
-  if (CheckFact(FACT_ALL_TERRORISTS_KILLED, 0)) {
+  if (CheckFact(Enum170.FACT_ALL_TERRORISTS_KILLED, 0)) {
     // end terrorist quest
-    EndQuest(QUEST_KILL_TERRORISTS, gMercProfiles[CARMEN].sSectorX, gMercProfiles[CARMEN].sSectorY);
+    EndQuest(Enum169.QUEST_KILL_TERRORISTS, gMercProfiles[Enum268.CARMEN].sSectorX, gMercProfiles[Enum268.CARMEN].sSectorY);
     // remove Carmen
-    gMercProfiles[CARMEN].sSectorX = 0;
-    gMercProfiles[CARMEN].sSectorY = 0;
-    gMercProfiles[CARMEN].bSectorZ = 0;
+    gMercProfiles[Enum268.CARMEN].sSectorX = 0;
+    gMercProfiles[Enum268.CARMEN].sSectorY = 0;
+    gMercProfiles[Enum268.CARMEN].bSectorZ = 0;
   }
 
   // are we in a mine sector, on the surface?
   if (IsThereAMineInThisSector(sNewSectorX, sNewSectorY) && (bNewSectorZ == 0)) {
-    if (CheckFact(FACT_MINERS_PLACED, 0) == FALSE) {
+    if (CheckFact(Enum170.FACT_MINERS_PLACED, 0) == FALSE) {
       // SET HEAD MINER LOCATIONS
 
       ubThisMine = GetMineIndexForSector(sNewSectorX, sNewSectorY);
 
-      if (ubThisMine != MINE_SAN_MONA) // San Mona is abandoned
+      if (ubThisMine != Enum179.MINE_SAN_MONA) // San Mona is abandoned
       {
         ubMinersPlaced = 0;
 
-        if (ubThisMine != MINE_ALMA) {
+        if (ubThisMine != Enum179.MINE_ALMA) {
           // Fred Morris is always in the first mine sector we enter, unless that's Alma (then he's randomized, too)
           gMercProfiles[106].sSectorX = sNewSectorX;
           gMercProfiles[106].sSectorY = sNewSectorY;
@@ -892,8 +892,8 @@ function HandleQuestCodeOnSectorEntry(sNewSectorX: INT16, sNewSectorY: INT16, bN
         }
 
         // assign the remaining (3) miners randomly
-        for (ubMine = 0; ubMine < MAX_NUMBER_OF_MINES; ubMine++) {
-          if (ubMine == ubThisMine || ubMine == MINE_ALMA || ubMine == MINE_SAN_MONA) {
+        for (ubMine = 0; ubMine < Enum179.MAX_NUMBER_OF_MINES; ubMine++) {
+          if (ubMine == ubThisMine || ubMine == Enum179.MINE_ALMA || ubMine == Enum179.MINE_SAN_MONA) {
             // Alma always has Matt as a miner, and we have assigned Fred to the current mine
             // and San Mona is abandoned
             continue;
@@ -916,19 +916,19 @@ function HandleQuestCodeOnSectorEntry(sNewSectorX: INT16, sNewSectorY: INT16, bN
           }
         }
 
-        SetFactTrue(FACT_MINERS_PLACED);
+        SetFactTrue(Enum170.FACT_MINERS_PLACED);
       }
     }
   }
 
-  if (CheckFact(FACT_ROBOT_RECRUITED_AND_MOVED, 0) == FALSE) {
+  if (CheckFact(Enum170.FACT_ROBOT_RECRUITED_AND_MOVED, 0) == FALSE) {
     let pRobot: Pointer<SOLDIERTYPE>;
-    pRobot = FindSoldierByProfileID(ROBOT, TRUE);
+    pRobot = FindSoldierByProfileID(Enum268.ROBOT, TRUE);
     if (pRobot) {
       // robot is on our team and we have changed sectors, so we can
       // replace the robot-under-construction in Madlab's sector
-      RemoveGraphicFromTempFile(gsRobotGridNo, SEVENTHISTRUCT1, gMercProfiles[MADLAB].sSectorX, gMercProfiles[MADLAB].sSectorY, gMercProfiles[MADLAB].bSectorZ);
-      SetFactTrue(FACT_ROBOT_RECRUITED_AND_MOVED);
+      RemoveGraphicFromTempFile(gsRobotGridNo, Enum312.SEVENTHISTRUCT1, gMercProfiles[Enum268.MADLAB].sSectorX, gMercProfiles[Enum268.MADLAB].sSectorY, gMercProfiles[Enum268.MADLAB].bSectorZ);
+      SetFactTrue(Enum170.FACT_ROBOT_RECRUITED_AND_MOVED);
     }
   }
 
@@ -938,13 +938,13 @@ function HandleQuestCodeOnSectorEntry(sNewSectorX: INT16, sNewSectorY: INT16, bN
 
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
     if (pSoldier.value.bActive) {
-      if (FindObj(pSoldier, CHALICE) != ITEM_NOT_FOUND) {
-        SetFactTrue(FACT_CHALICE_STOLEN);
+      if (FindObj(pSoldier, Enum225.CHALICE) != ITEM_NOT_FOUND) {
+        SetFactTrue(Enum170.FACT_CHALICE_STOLEN);
       }
     }
   }
 
-  if ((gubQuest[QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) && CheckFact(FACT_KINGPIN_CAN_SEND_ASSASSINS, 0) && (GetTownIdForSector(sNewSectorX, sNewSectorY) != BLANK_SECTOR) && Random(10 + GetNumberOfMilitiaInSector(sNewSectorX, sNewSectorY, bNewSectorZ)) < 3) {
+  if ((gubQuest[Enum169.QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) && CheckFact(Enum170.FACT_KINGPIN_CAN_SEND_ASSASSINS, 0) && (GetTownIdForSector(sNewSectorX, sNewSectorY) != Enum135.BLANK_SECTOR) && Random(10 + GetNumberOfMilitiaInSector(sNewSectorX, sNewSectorY, bNewSectorZ)) < 3) {
     DecideOnAssassin();
   }
 
@@ -957,12 +957,12 @@ function HandleQuestCodeOnSectorEntry(sNewSectorX: INT16, sNewSectorY: INT16, bN
           }
           */
 
-  if (sNewSectorX == 6 && sNewSectorY == MAP_ROW_C && gubQuest[QUEST_RESCUE_MARIA] == QUESTDONE) {
+  if (sNewSectorX == 6 && sNewSectorY == MAP_ROW_C && gubQuest[Enum169.QUEST_RESCUE_MARIA] == QUESTDONE) {
     // make sure Maria and Angel are gone
-    gMercProfiles[MARIA].sSectorX = 0;
-    gMercProfiles[ANGEL].sSectorY = 0;
-    gMercProfiles[MARIA].sSectorX = 0;
-    gMercProfiles[ANGEL].sSectorY = 0;
+    gMercProfiles[Enum268.MARIA].sSectorX = 0;
+    gMercProfiles[Enum268.ANGEL].sSectorY = 0;
+    gMercProfiles[Enum268.MARIA].sSectorX = 0;
+    gMercProfiles[Enum268.ANGEL].sSectorY = 0;
   }
 
   if (sNewSectorX == 5 && sNewSectorY == MAP_ROW_D) {
@@ -973,8 +973,8 @@ function HandleQuestCodeOnSectorEntry(sNewSectorX: INT16, sNewSectorY: INT16, bN
 
   if (sNewSectorX == 3 && sNewSectorY == MAP_ROW_P) {
     // heal up Elliot if he's been hurt
-    if (gMercProfiles[ELLIOT].bLife < gMercProfiles[ELLIOT].bLifeMax) {
-      gMercProfiles[ELLIOT].bLife = gMercProfiles[ELLIOT].bLifeMax;
+    if (gMercProfiles[Enum268.ELLIOT].bLife < gMercProfiles[Enum268.ELLIOT].bLifeMax) {
+      gMercProfiles[Enum268.ELLIOT].bLife = gMercProfiles[Enum268.ELLIOT].bLifeMax;
     }
   }
 
@@ -986,10 +986,10 @@ function HandleQuestCodeOnSectorExit(sOldSectorX: INT16, sOldSectorY: INT16, bOl
     CheckForKingpinsMoneyMissing(TRUE);
   }
 
-  if (sOldSectorX == 13 && sOldSectorY == MAP_ROW_H && bOldSectorZ == 0 && CheckFact(FACT_CONRAD_SHOULD_GO, 0)) {
+  if (sOldSectorX == 13 && sOldSectorY == MAP_ROW_H && bOldSectorZ == 0 && CheckFact(Enum170.FACT_CONRAD_SHOULD_GO, 0)) {
     // remove Conrad from the map
-    gMercProfiles[CONRAD].sSectorX = 0;
-    gMercProfiles[CONRAD].sSectorY = 0;
+    gMercProfiles[Enum268.CONRAD].sSectorX = 0;
+    gMercProfiles[Enum268.CONRAD].sSectorY = 0;
   }
 
   if (sOldSectorX == HOSPITAL_SECTOR_X && sOldSectorY == HOSPITAL_SECTOR_Y && bOldSectorZ == HOSPITAL_SECTOR_Z) {
@@ -997,7 +997,7 @@ function HandleQuestCodeOnSectorExit(sOldSectorX: INT16, sOldSectorY: INT16, bOl
   }
 
   // reset the state of the museum alarm for Eldin's quotes
-  SetFactFalse(FACT_MUSEUM_ALARM_WENT_OFF);
+  SetFactFalse(Enum170.FACT_MUSEUM_ALARM_WENT_OFF);
 }
 
 function EnterSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
@@ -1083,7 +1083,7 @@ function EnterSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN 
   // RemoveProgressBar( 0 );
 
   if (gfEnterTacticalPlacementGUI) {
-    SetPendingNewScreen(GAME_SCREEN);
+    SetPendingNewScreen(Enum26.GAME_SCREEN);
     InitTacticalPlacementGUI();
   } else {
     PrepareLoadedSector();
@@ -1107,7 +1107,7 @@ function UpdateMercsInSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): 
   RemoveAllPlayersFromSlot();
 
   // Remove tactical interface stuff
-  guiPendingOverrideEvent = I_CHANGE_TO_IDLE;
+  guiPendingOverrideEvent = Enum207.I_CHANGE_TO_IDLE;
 
   // If we are in this function during the loading of a sector
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
@@ -1138,11 +1138,11 @@ function UpdateMercsInSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): 
 
       if (pSoldier.value.bActive) {
         if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
-          if (gMapInformation.sCenterGridNo != -1 && gfBlitBattleSectorLocator && (gubEnemyEncounterCode == ENEMY_AMBUSH_CODE || gubEnemyEncounterCode == BLOODCAT_AMBUSH_CODE) && pSoldier.value.bTeam != CIV_TEAM) {
-            pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+          if (gMapInformation.sCenterGridNo != -1 && gfBlitBattleSectorLocator && (gubEnemyEncounterCode == Enum164.ENEMY_AMBUSH_CODE || gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE) && pSoldier.value.bTeam != CIV_TEAM) {
+            pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
             pSoldier.value.usStrategicInsertionData = gMapInformation.sCenterGridNo;
           } else if (gfOverrideInsertionWithExitGrid) {
-            pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+            pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
             pSoldier.value.usStrategicInsertionData = gExitGrid.usGridNo;
           }
         }
@@ -1153,13 +1153,13 @@ function UpdateMercsInSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): 
           UpdateMercInSector(pSoldier, sSectorX, sSectorY, bSectorZ);
 
           if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
-            if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+            if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
               if (!fPOWSquadSet) {
                 fPOWSquadSet = TRUE;
 
                 // ATE: If we are in i13 - pop up message!
                 if (sSectorY == MAP_ROW_I && sSectorX == 13) {
-                  DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[POW_MERCS_ARE_HERE], GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+                  DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.POW_MERCS_ARE_HERE], Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
                 } else {
                   AddCharacterToUniqueSquad(pSoldier);
                   ubPOWSquad = pSoldier.value.bAssignment;
@@ -1172,12 +1172,12 @@ function UpdateMercsInSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): 
               }
 
               // ATE: Call actions based on what POW we are on...
-              if (gubQuest[QUEST_HELD_IN_ALMA] == QUESTINPROGRESS) {
+              if (gubQuest[Enum169.QUEST_HELD_IN_ALMA] == QUESTINPROGRESS) {
                 // Complete quest
-                EndQuest(QUEST_HELD_IN_ALMA, sSectorX, sSectorY);
+                EndQuest(Enum169.QUEST_HELD_IN_ALMA, sSectorX, sSectorY);
 
                 // Do action
-                HandleNPCDoAction(0, NPC_ACTION_GRANT_EXPERIENCE_3, 0);
+                HandleNPCDoAction(0, Enum213.NPC_ACTION_GRANT_EXPERIENCE_3, 0);
               }
             }
           }
@@ -1199,7 +1199,7 @@ function UpdateMercsInSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): 
 function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
   let fError: BOOLEAN = FALSE;
   if (pSoldier.value.uiStatusFlags & SOLDIER_IS_TACTICALLY_VALID) {
-    pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+    pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
   }
   // OK, determine entrence direction and get sweetspot
   // Only if we are an OK guy to control....
@@ -1207,9 +1207,9 @@ function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT16, sSe
   if (pSoldier.value.bActive) // This was in the if, removed by DEF:  pSoldier->bLife >= OKLIFE &&
   {
     // If we are not in transit...
-    if (pSoldier.value.bAssignment != IN_TRANSIT) {
+    if (pSoldier.value.bAssignment != Enum117.IN_TRANSIT) {
       // CHECK UBINSERTION CODE..
-      if (pSoldier.value.ubStrategicInsertionCode == INSERTION_CODE_PRIMARY_EDGEINDEX || pSoldier.value.ubStrategicInsertionCode == INSERTION_CODE_SECONDARY_EDGEINDEX) {
+      if (pSoldier.value.ubStrategicInsertionCode == Enum175.INSERTION_CODE_PRIMARY_EDGEINDEX || pSoldier.value.ubStrategicInsertionCode == Enum175.INSERTION_CODE_SECONDARY_EDGEINDEX) {
         if (!fUsingEdgePointsForStrategicEntry) {
           // If we are not supposed to use this now, pick something better...
           pSoldier.value.ubStrategicInsertionCode = pSoldier.value.usStrategicInsertionData;
@@ -1220,41 +1220,41 @@ function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT16, sSe
 
       if (pSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags3 & PROFILE_MISC_FLAG3_PERMANENT_INSERTION_CODE) {
         // override orders
-        pSoldier.value.bOrders = STATIONARY;
+        pSoldier.value.bOrders = Enum241.STATIONARY;
       }
 
       // Use insertion direction from loaded map!
       switch (pSoldier.value.ubStrategicInsertionCode) {
-        case INSERTION_CODE_NORTH:
+        case Enum175.INSERTION_CODE_NORTH:
           pSoldier.value.sInsertionGridNo = gMapInformation.sNorthGridNo;
           if (!gfEditMode && gMapInformation.sNorthGridNo == -1)
             fError = TRUE;
           break;
-        case INSERTION_CODE_SOUTH:
+        case Enum175.INSERTION_CODE_SOUTH:
           pSoldier.value.sInsertionGridNo = gMapInformation.sSouthGridNo;
           if (!gfEditMode && gMapInformation.sSouthGridNo == -1)
             fError = TRUE;
           break;
-        case INSERTION_CODE_EAST:
+        case Enum175.INSERTION_CODE_EAST:
           pSoldier.value.sInsertionGridNo = gMapInformation.sEastGridNo;
           if (!gfEditMode && gMapInformation.sEastGridNo == -1)
             fError = TRUE;
           break;
-        case INSERTION_CODE_WEST:
+        case Enum175.INSERTION_CODE_WEST:
           pSoldier.value.sInsertionGridNo = gMapInformation.sWestGridNo;
           if (!gfEditMode && gMapInformation.sWestGridNo == -1)
             fError = TRUE;
           break;
-        case INSERTION_CODE_CENTER:
+        case Enum175.INSERTION_CODE_CENTER:
           pSoldier.value.sInsertionGridNo = gMapInformation.sCenterGridNo;
           if (!gfEditMode && gMapInformation.sCenterGridNo == -1)
             fError = TRUE;
           break;
-        case INSERTION_CODE_GRIDNO:
+        case Enum175.INSERTION_CODE_GRIDNO:
           pSoldier.value.sInsertionGridNo = pSoldier.value.usStrategicInsertionData;
           break;
 
-        case INSERTION_CODE_PRIMARY_EDGEINDEX:
+        case Enum175.INSERTION_CODE_PRIMARY_EDGEINDEX:
           pSoldier.value.sInsertionGridNo = SearchForClosestPrimaryMapEdgepoint(pSoldier.value.sPendingActionData2, pSoldier.value.usStrategicInsertionData);
           if (pSoldier.value.sInsertionGridNo == NOWHERE) {
             ScreenMsg(FONT_RED, MSG_ERROR, "Main edgepoint search failed for %s -- substituting entrypoint.", pSoldier.value.name);
@@ -1262,7 +1262,7 @@ function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT16, sSe
             goto("MAPEDGEPOINT_SEARCH_FAILED");
           }
           break;
-        case INSERTION_CODE_SECONDARY_EDGEINDEX:
+        case Enum175.INSERTION_CODE_SECONDARY_EDGEINDEX:
           pSoldier.value.sInsertionGridNo = SearchForClosestSecondaryMapEdgepoint(pSoldier.value.sPendingActionData2, pSoldier.value.usStrategicInsertionData);
           if (pSoldier.value.sInsertionGridNo == NOWHERE) {
             ScreenMsg(FONT_RED, MSG_ERROR, "Isolated edgepont search failed for %s -- substituting entrypoint.", pSoldier.value.name);
@@ -1271,17 +1271,17 @@ function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT16, sSe
           }
           break;
 
-        case INSERTION_CODE_ARRIVING_GAME:
+        case Enum175.INSERTION_CODE_ARRIVING_GAME:
           // Are we in Omerta!
           if (sSectorX == gWorldSectorX && gWorldSectorX == 9 && sSectorY == gWorldSectorY && gWorldSectorY == 1 && bSectorZ == gbWorldSectorZ && gbWorldSectorZ == 0) {
             // Try another location and walk into map
             pSoldier.value.sInsertionGridNo = 4379;
           } else {
-            pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_NORTH;
+            pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_NORTH;
             pSoldier.value.sInsertionGridNo = gMapInformation.sNorthGridNo;
           }
           break;
-        case INSERTION_CODE_CHOPPER:
+        case Enum175.INSERTION_CODE_CHOPPER:
           // Try another location and walk into map
           // Add merc to chopper....
           // pSoldier->sInsertionGridNo = 4058;
@@ -1324,19 +1324,19 @@ function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT16, sSe
         }
         pSoldier.value.sInsertionGridNo = sGridNo;
         switch (pSoldier.value.ubStrategicInsertionCode) {
-          case INSERTION_CODE_NORTH:
+          case Enum175.INSERTION_CODE_NORTH:
             ScreenMsg(FONT_RED, MSG_BETAVERSION, "Sector %s doesn't have a north entrypoint -- substituting  %s entrypoint for %s.", szSector, szEntry, pSoldier.value.name);
             break;
-          case INSERTION_CODE_EAST:
+          case Enum175.INSERTION_CODE_EAST:
             ScreenMsg(FONT_RED, MSG_BETAVERSION, "Sector %s doesn't have a east entrypoint -- substituting  %s entrypoint for %s.", szSector, szEntry, pSoldier.value.name);
             break;
-          case INSERTION_CODE_SOUTH:
+          case Enum175.INSERTION_CODE_SOUTH:
             ScreenMsg(FONT_RED, MSG_BETAVERSION, "Sector %s doesn't have a south entrypoint -- substituting  %s entrypoint for %s.", szSector, szEntry, pSoldier.value.name);
             break;
-          case INSERTION_CODE_WEST:
+          case Enum175.INSERTION_CODE_WEST:
             ScreenMsg(FONT_RED, MSG_BETAVERSION, "Sector %s doesn't have a west entrypoint -- substituting  %s entrypoint for %s.", szSector, szEntry, pSoldier.value.name);
             break;
-          case INSERTION_CODE_CENTER:
+          case Enum175.INSERTION_CODE_CENTER:
             ScreenMsg(FONT_RED, MSG_BETAVERSION, "Sector %s doesn't have a center entrypoint -- substituting  %s entrypoint for %s.", szSector, szEntry, pSoldier.value.name);
             break;
         }
@@ -1353,18 +1353,18 @@ function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT16, sSe
 }
 
 function InitializeStrategicMapSectorTownNames(): void {
-  StrategicMap[2 + 2 * MAP_WORLD_X].bNameId = StrategicMap[2 + 1 * MAP_WORLD_X].bNameId = CHITZENA;
-  StrategicMap[5 + 3 * MAP_WORLD_X].bNameId = StrategicMap[6 + 3 * MAP_WORLD_X].bNameId = StrategicMap[5 + 4 * MAP_WORLD_X].bNameId = StrategicMap[4 + 4 * MAP_WORLD_X].bNameId = SAN_MONA;
-  StrategicMap[9 + 1 * MAP_WORLD_X].bNameId = StrategicMap[10 + 1 * MAP_WORLD_X].bNameId = OMERTA;
-  StrategicMap[13 + 2 * MAP_WORLD_X].bNameId = StrategicMap[13 + 3 * MAP_WORLD_X].bNameId = StrategicMap[13 + 4 * MAP_WORLD_X].bNameId = DRASSEN;
-  StrategicMap[1 + 7 * MAP_WORLD_X].bNameId = StrategicMap[1 + 8 * MAP_WORLD_X].bNameId = StrategicMap[2 + 7 * MAP_WORLD_X].bNameId = StrategicMap[2 + 8 * MAP_WORLD_X].bNameId = StrategicMap[3 + 8 * MAP_WORLD_X].bNameId = GRUMM;
-  StrategicMap[6 + 9 * MAP_WORLD_X].bNameId = ESTONI;
-  StrategicMap[9 + 10 * MAP_WORLD_X].bNameId = TIXA;
-  StrategicMap[8 + 6 * MAP_WORLD_X].bNameId = StrategicMap[9 + 6 * MAP_WORLD_X].bNameId = StrategicMap[8 + 7 * MAP_WORLD_X].bNameId = StrategicMap[9 + 7 * MAP_WORLD_X].bNameId = StrategicMap[8 + 8 * MAP_WORLD_X].bNameId = CAMBRIA;
-  StrategicMap[13 + 9 * MAP_WORLD_X].bNameId = StrategicMap[14 + 9 * MAP_WORLD_X].bNameId = StrategicMap[13 + 8 * MAP_WORLD_X].bNameId = StrategicMap[14 + 8 * MAP_WORLD_X].bNameId = ALMA;
-  StrategicMap[4 + 11 * MAP_WORLD_X].bNameId = ORTA;
-  StrategicMap[11 + 12 * MAP_WORLD_X].bNameId = StrategicMap[12 + 12 * MAP_WORLD_X].bNameId = BALIME;
-  StrategicMap[3 + 14 * MAP_WORLD_X].bNameId = StrategicMap[4 + 14 * MAP_WORLD_X].bNameId = StrategicMap[5 + 14 * MAP_WORLD_X].bNameId = StrategicMap[3 + 15 * MAP_WORLD_X].bNameId = StrategicMap[4 + 15 * MAP_WORLD_X].bNameId = StrategicMap[3 + 16 * MAP_WORLD_X].bNameId = MEDUNA;
+  StrategicMap[2 + 2 * MAP_WORLD_X].bNameId = StrategicMap[2 + 1 * MAP_WORLD_X].bNameId = Enum135.CHITZENA;
+  StrategicMap[5 + 3 * MAP_WORLD_X].bNameId = StrategicMap[6 + 3 * MAP_WORLD_X].bNameId = StrategicMap[5 + 4 * MAP_WORLD_X].bNameId = StrategicMap[4 + 4 * MAP_WORLD_X].bNameId = Enum135.SAN_MONA;
+  StrategicMap[9 + 1 * MAP_WORLD_X].bNameId = StrategicMap[10 + 1 * MAP_WORLD_X].bNameId = Enum135.OMERTA;
+  StrategicMap[13 + 2 * MAP_WORLD_X].bNameId = StrategicMap[13 + 3 * MAP_WORLD_X].bNameId = StrategicMap[13 + 4 * MAP_WORLD_X].bNameId = Enum135.DRASSEN;
+  StrategicMap[1 + 7 * MAP_WORLD_X].bNameId = StrategicMap[1 + 8 * MAP_WORLD_X].bNameId = StrategicMap[2 + 7 * MAP_WORLD_X].bNameId = StrategicMap[2 + 8 * MAP_WORLD_X].bNameId = StrategicMap[3 + 8 * MAP_WORLD_X].bNameId = Enum135.GRUMM;
+  StrategicMap[6 + 9 * MAP_WORLD_X].bNameId = Enum135.ESTONI;
+  StrategicMap[9 + 10 * MAP_WORLD_X].bNameId = Enum135.TIXA;
+  StrategicMap[8 + 6 * MAP_WORLD_X].bNameId = StrategicMap[9 + 6 * MAP_WORLD_X].bNameId = StrategicMap[8 + 7 * MAP_WORLD_X].bNameId = StrategicMap[9 + 7 * MAP_WORLD_X].bNameId = StrategicMap[8 + 8 * MAP_WORLD_X].bNameId = Enum135.CAMBRIA;
+  StrategicMap[13 + 9 * MAP_WORLD_X].bNameId = StrategicMap[14 + 9 * MAP_WORLD_X].bNameId = StrategicMap[13 + 8 * MAP_WORLD_X].bNameId = StrategicMap[14 + 8 * MAP_WORLD_X].bNameId = Enum135.ALMA;
+  StrategicMap[4 + 11 * MAP_WORLD_X].bNameId = Enum135.ORTA;
+  StrategicMap[11 + 12 * MAP_WORLD_X].bNameId = StrategicMap[12 + 12 * MAP_WORLD_X].bNameId = Enum135.BALIME;
+  StrategicMap[3 + 14 * MAP_WORLD_X].bNameId = StrategicMap[4 + 14 * MAP_WORLD_X].bNameId = StrategicMap[5 + 14 * MAP_WORLD_X].bNameId = StrategicMap[3 + 15 * MAP_WORLD_X].bNameId = StrategicMap[4 + 15 * MAP_WORLD_X].bNameId = StrategicMap[3 + 16 * MAP_WORLD_X].bNameId = Enum135.MEDUNA;
   // StrategicMap[3+16*MAP_WORLD_X].bNameId=PALACE;
   return;
 }
@@ -1388,23 +1388,23 @@ function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, zSt
         swprintf(zString, "%c%d: %s %s", 'A' + sSectorY - 1, sSectorX, pTownNames[GetTownAssociatedWithMine(bMineIndex)], pwMineStrings[0]);
       } else
         switch (SECTOR(sSectorX, sSectorY)) {
-          case SEC_A10:
-            swprintf(zString, "A10: %s", pLandTypeStrings[REBEL_HIDEOUT]);
+          case Enum123.SEC_A10:
+            swprintf(zString, "A10: %s", pLandTypeStrings[Enum127.REBEL_HIDEOUT]);
             break;
-          case SEC_J9:
-            swprintf(zString, "J9: %s", pLandTypeStrings[TIXA_DUNGEON]);
+          case Enum123.SEC_J9:
+            swprintf(zString, "J9: %s", pLandTypeStrings[Enum127.TIXA_DUNGEON]);
             break;
-          case SEC_K4:
-            swprintf(zString, "K4: %s", pLandTypeStrings[ORTA_BASEMENT]);
+          case Enum123.SEC_K4:
+            swprintf(zString, "K4: %s", pLandTypeStrings[Enum127.ORTA_BASEMENT]);
             break;
-          case SEC_O3:
-            swprintf(zString, "O3: %s", pLandTypeStrings[TUNNEL]);
+          case Enum123.SEC_O3:
+            swprintf(zString, "O3: %s", pLandTypeStrings[Enum127.TUNNEL]);
             break;
-          case SEC_P3:
-            swprintf(zString, "P3: %s", pLandTypeStrings[SHELTER]);
+          case Enum123.SEC_P3:
+            swprintf(zString, "P3: %s", pLandTypeStrings[Enum127.SHELTER]);
             break;
           default:
-            swprintf(zString, "%c%d: %s", 'A' + sSectorY - 1, sSectorX, pLandTypeStrings[CREATURE_LAIR]);
+            swprintf(zString, "%c%d: %s", 'A' + sSectorY - 1, sSectorX, pLandTypeStrings[Enum127.CREATURE_LAIR]);
             break;
         }
     } else {
@@ -1418,33 +1418,33 @@ function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, zSt
     ubLandType = pSector.value.ubTraversability[4];
     swprintf(zString, "%c%d: ", 'A' + sSectorY - 1, sSectorX);
 
-    if (bTownNameID == BLANK_SECTOR) {
+    if (bTownNameID == Enum135.BLANK_SECTOR) {
       // OK, build string id like J11
       // are we dealing with the unfound towns?
       switch (ubSectorID) {
-        case SEC_D2: // Chitzena SAM
-          if (!fSamSiteFound[SAM_SITE_ONE])
-            wcscat(zString, pLandTypeStrings[TROPICS]);
+        case Enum123.SEC_D2: // Chitzena SAM
+          if (!fSamSiteFound[Enum138.SAM_SITE_ONE])
+            wcscat(zString, pLandTypeStrings[Enum127.TROPICS]);
           else if (fDetailed)
-            wcscat(zString, pLandTypeStrings[TROPICS_SAM_SITE]);
+            wcscat(zString, pLandTypeStrings[Enum127.TROPICS_SAM_SITE]);
           else
-            wcscat(zString, pLandTypeStrings[SAM_SITE]);
+            wcscat(zString, pLandTypeStrings[Enum127.SAM_SITE]);
           break;
-        case SEC_D15: // Drassen SAM
-          if (!fSamSiteFound[SAM_SITE_TWO])
-            wcscat(zString, pLandTypeStrings[SPARSE]);
+        case Enum123.SEC_D15: // Drassen SAM
+          if (!fSamSiteFound[Enum138.SAM_SITE_TWO])
+            wcscat(zString, pLandTypeStrings[Enum127.SPARSE]);
           else if (fDetailed)
-            wcscat(zString, pLandTypeStrings[SPARSE_SAM_SITE]);
+            wcscat(zString, pLandTypeStrings[Enum127.SPARSE_SAM_SITE]);
           else
-            wcscat(zString, pLandTypeStrings[SAM_SITE]);
+            wcscat(zString, pLandTypeStrings[Enum127.SAM_SITE]);
           break;
-        case SEC_I8: // Cambria SAM
-          if (!fSamSiteFound[SAM_SITE_THREE])
-            wcscat(zString, pLandTypeStrings[SAND]);
+        case Enum123.SEC_I8: // Cambria SAM
+          if (!fSamSiteFound[Enum138.SAM_SITE_THREE])
+            wcscat(zString, pLandTypeStrings[Enum127.SAND]);
           else if (fDetailed)
-            wcscat(zString, pLandTypeStrings[SAND_SAM_SITE]);
+            wcscat(zString, pLandTypeStrings[Enum127.SAND_SAM_SITE]);
           else
-            wcscat(zString, pLandTypeStrings[SAM_SITE]);
+            wcscat(zString, pLandTypeStrings[Enum127.SAM_SITE]);
           break;
         default:
           wcscat(zString, pLandTypeStrings[ubLandType]);
@@ -1452,55 +1452,55 @@ function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, zSt
       }
     } else {
       switch (ubSectorID) {
-        case SEC_B13:
+        case Enum123.SEC_B13:
           if (fDetailed)
-            wcscat(zString, pLandTypeStrings[DRASSEN_AIRPORT_SITE]);
+            wcscat(zString, pLandTypeStrings[Enum127.DRASSEN_AIRPORT_SITE]);
           else
-            wcscat(zString, pTownNames[DRASSEN]);
+            wcscat(zString, pTownNames[Enum135.DRASSEN]);
           break;
-        case SEC_F8:
+        case Enum123.SEC_F8:
           if (fDetailed)
-            wcscat(zString, pLandTypeStrings[CAMBRIA_HOSPITAL_SITE]);
+            wcscat(zString, pLandTypeStrings[Enum127.CAMBRIA_HOSPITAL_SITE]);
           else
-            wcscat(zString, pTownNames[CAMBRIA]);
+            wcscat(zString, pTownNames[Enum135.CAMBRIA]);
           break;
-        case SEC_J9: // Tixa
+        case Enum123.SEC_J9: // Tixa
           if (!fFoundTixa)
-            wcscat(zString, pLandTypeStrings[SAND]);
+            wcscat(zString, pLandTypeStrings[Enum127.SAND]);
           else
-            wcscat(zString, pTownNames[TIXA]);
+            wcscat(zString, pTownNames[Enum135.TIXA]);
           break;
-        case SEC_K4: // Orta
+        case Enum123.SEC_K4: // Orta
           if (!fFoundOrta)
-            wcscat(zString, pLandTypeStrings[SWAMP]);
+            wcscat(zString, pLandTypeStrings[Enum127.SWAMP]);
           else
-            wcscat(zString, pTownNames[ORTA]);
+            wcscat(zString, pTownNames[Enum135.ORTA]);
           break;
-        case SEC_N3:
+        case Enum123.SEC_N3:
           if (fDetailed)
-            wcscat(zString, pLandTypeStrings[MEDUNA_AIRPORT_SITE]);
+            wcscat(zString, pLandTypeStrings[Enum127.MEDUNA_AIRPORT_SITE]);
           else
-            wcscat(zString, pTownNames[MEDUNA]);
+            wcscat(zString, pTownNames[Enum135.MEDUNA]);
           break;
         default:
-          if (ubSectorID == SEC_N4 && fSamSiteFound[SAM_SITE_FOUR]) {
+          if (ubSectorID == Enum123.SEC_N4 && fSamSiteFound[Enum138.SAM_SITE_FOUR]) {
             // Meduna's SAM site
             if (fDetailed)
-              wcscat(zString, pLandTypeStrings[MEDUNA_SAM_SITE]);
+              wcscat(zString, pLandTypeStrings[Enum127.MEDUNA_SAM_SITE]);
             else
-              wcscat(zString, pLandTypeStrings[SAM_SITE]);
+              wcscat(zString, pLandTypeStrings[Enum127.SAM_SITE]);
           } else {
             // All other towns that are known since beginning of the game.
             wcscat(zString, pTownNames[bTownNameID]);
             if (fDetailed) {
               switch (ubSectorID) {
                 // Append the word, "mine" for town sectors containing a mine.
-                case SEC_B2:
-                case SEC_D4:
-                case SEC_D13:
-                case SEC_H3:
-                case SEC_H8:
-                case SEC_I14:
+                case Enum123.SEC_B2:
+                case Enum123.SEC_D4:
+                case Enum123.SEC_D13:
+                case Enum123.SEC_H3:
+                case Enum123.SEC_H8:
+                case Enum123.SEC_I14:
                   wcscat(zString, " "); // space
                   wcscat(zString, pwMineStrings[0]); // then "Mine"
                   break;
@@ -1526,31 +1526,31 @@ function SetInsertionDataFromAdjacentMoveDirection(pSoldier: Pointer<SOLDIERTYPE
         AssertMsg(0, String("No valid Exit grid can be found when one was expected: SetInsertionDataFromAdjacentMoveDirection."));
       }
       ubDirection = 255;
-      pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+      pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
       pSoldier.value.usStrategicInsertionData = ExitGrid.usGridNo;
       pSoldier.value.bUseExitGridForReentryDirection = TRUE;
       break;
 
-    case NORTH:
-      ubDirection = NORTH_STRATEGIC_MOVE;
-      pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_SOUTH;
+    case Enum245.NORTH:
+      ubDirection = Enum186.NORTH_STRATEGIC_MOVE;
+      pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_SOUTH;
       break;
-    case SOUTH:
-      ubDirection = SOUTH_STRATEGIC_MOVE;
-      pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_NORTH;
+    case Enum245.SOUTH:
+      ubDirection = Enum186.SOUTH_STRATEGIC_MOVE;
+      pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_NORTH;
       break;
-    case EAST:
-      ubDirection = EAST_STRATEGIC_MOVE;
-      pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_WEST;
+    case Enum245.EAST:
+      ubDirection = Enum186.EAST_STRATEGIC_MOVE;
+      pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_WEST;
       break;
-    case WEST:
-      ubDirection = WEST_STRATEGIC_MOVE;
-      pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_EAST;
+    case Enum245.WEST:
+      ubDirection = Enum186.WEST_STRATEGIC_MOVE;
+      pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_EAST;
       break;
     default:
 // Wrong direction given!
-      ubDirection = EAST_STRATEGIC_MOVE;
-      pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_WEST;
+      ubDirection = Enum186.EAST_STRATEGIC_MOVE;
+      pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_WEST;
   }
 
   return ubDirection;
@@ -1568,21 +1568,21 @@ function GetInsertionDataFromAdjacentMoveDirection(ubTacticalDirection: UINT8, s
       ubDirection = 255;
       break;
 
-    case NORTH:
-      ubDirection = NORTH_STRATEGIC_MOVE;
+    case Enum245.NORTH:
+      ubDirection = Enum186.NORTH_STRATEGIC_MOVE;
       break;
-    case SOUTH:
-      ubDirection = SOUTH_STRATEGIC_MOVE;
+    case Enum245.SOUTH:
+      ubDirection = Enum186.SOUTH_STRATEGIC_MOVE;
       break;
-    case EAST:
-      ubDirection = EAST_STRATEGIC_MOVE;
+    case Enum245.EAST:
+      ubDirection = Enum186.EAST_STRATEGIC_MOVE;
       break;
-    case WEST:
-      ubDirection = WEST_STRATEGIC_MOVE;
+    case Enum245.WEST:
+      ubDirection = Enum186.WEST_STRATEGIC_MOVE;
       break;
     default:
 // Wrong direction given!
-      ubDirection = EAST_STRATEGIC_MOVE;
+      ubDirection = Enum186.EAST_STRATEGIC_MOVE;
   }
 
   return ubDirection;
@@ -1600,21 +1600,21 @@ function GetStrategicInsertionDataFromAdjacentMoveDirection(ubTacticalDirection:
       ubDirection = 255;
       break;
 
-    case NORTH:
-      ubDirection = INSERTION_CODE_SOUTH;
+    case Enum245.NORTH:
+      ubDirection = Enum175.INSERTION_CODE_SOUTH;
       break;
-    case SOUTH:
-      ubDirection = INSERTION_CODE_NORTH;
+    case Enum245.SOUTH:
+      ubDirection = Enum175.INSERTION_CODE_NORTH;
       break;
-    case EAST:
-      ubDirection = INSERTION_CODE_WEST;
+    case Enum245.EAST:
+      ubDirection = Enum175.INSERTION_CODE_WEST;
       break;
-    case WEST:
-      ubDirection = INSERTION_CODE_EAST;
+    case Enum245.WEST:
+      ubDirection = Enum175.INSERTION_CODE_EAST;
       break;
     default:
 // Wrong direction given!
-      ubDirection = EAST_STRATEGIC_MOVE;
+      ubDirection = Enum186.EAST_STRATEGIC_MOVE;
   }
 
   return ubDirection;
@@ -1635,7 +1635,7 @@ function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: UINT8, s
   // ATE: moved this towards top...
   gubPreferredInitialSelectedGuy = gusSelectedSoldier;
 
-  if (ubJumpCode == JUMP_ALL_LOAD_NEW || ubJumpCode == JUMP_ALL_NO_LOAD) {
+  if (ubJumpCode == Enum177.JUMP_ALL_LOAD_NEW || ubJumpCode == Enum177.JUMP_ALL_NO_LOAD) {
     // TODO: Check flags to see if we can jump!
     // Move controllable mercs!
     cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
@@ -1654,7 +1654,7 @@ function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: UINT8, s
         break;
       }
     }
-  } else if ((ubJumpCode == JUMP_SINGLE_LOAD_NEW || ubJumpCode == JUMP_SINGLE_NO_LOAD)) {
+  } else if ((ubJumpCode == Enum177.JUMP_SINGLE_LOAD_NEW || ubJumpCode == Enum177.JUMP_SINGLE_NO_LOAD)) {
     // Use selected soldier...
     // This guy should always be 1 ) selected and 2 ) close enough to exit sector to leave
     if (gusSelectedSoldier != NOBODY) {
@@ -1666,14 +1666,14 @@ function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: UINT8, s
     bPrevAssignment = pValidSoldier.value.bAssignment;
     ubPrevGroupID = pValidSoldier.value.ubGroupID;
 
-    if (ubJumpCode == JUMP_SINGLE_NO_LOAD) {
+    if (ubJumpCode == Enum177.JUMP_SINGLE_NO_LOAD) {
       // handle soldier moving by themselves
       HandleSoldierLeavingSectorByThemSelf(pValidSoldier);
     } else {
       // now add char to a squad all their own
       AddCharacterToUniqueSquad(pValidSoldier);
     }
-    if (!pValidSoldier.value.ubNumTraversalsAllowedToMerge && bPrevAssignment < ON_DUTY) {
+    if (!pValidSoldier.value.ubNumTraversalsAllowedToMerge && bPrevAssignment < Enum117.ON_DUTY) {
       let pPlayer: Pointer<PLAYERGROUP>;
       pValidSoldier.value.ubDesiredSquadAssignment = bPrevAssignment;
       pValidSoldier.value.ubNumTraversalsAllowedToMerge = 2;
@@ -1769,7 +1769,7 @@ function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: UINT8, s
             AssertMsg(0, String("Failed to get good exit location for adjacentmove"));
           }
 
-          EVENT_GetNewSoldierPath(curr.value.pSoldier, sGridNo, WALKING);
+          EVENT_GetNewSoldierPath(curr.value.pSoldier, sGridNo, Enum193.WALKING);
         } else {
           // Here, get closest location for exit grid....
           sGridNo = FindGridNoFromSweetSpotCloseToExitGrid(curr.value.pSoldier, sAdditionalData, 10, addressof(ubDirection));
@@ -1787,7 +1787,7 @@ function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: UINT8, s
 
           // Set buddy go!
           gfPlotPathToExitGrid = TRUE;
-          EVENT_GetNewSoldierPath(curr.value.pSoldier, sGridNo, WALKING);
+          EVENT_GetNewSoldierPath(curr.value.pSoldier, sGridNo, Enum193.WALKING);
           gfPlotPathToExitGrid = FALSE;
         }
         ubNum++;
@@ -1812,14 +1812,14 @@ function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: UINT8, s
     // OK, setup TacticalOverhead polling system that will notify us once everybody
     // has made it to our destination.
     if (ubTacticalDirection != 255) {
-      SetActionToDoOnceMercsGetToLocation(WAIT_FOR_MERCS_TO_WALKOFF_SCREEN, ubNum, ubJumpCode, 0, 0);
+      SetActionToDoOnceMercsGetToLocation(Enum238.WAIT_FOR_MERCS_TO_WALKOFF_SCREEN, ubNum, ubJumpCode, 0, 0);
     } else {
       // Add new wait action here...
-      SetActionToDoOnceMercsGetToLocation(WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO, ubNum, ubJumpCode, 0, 0);
+      SetActionToDoOnceMercsGetToLocation(Enum238.WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO, ubNum, ubJumpCode, 0, 0);
     }
 
     // Lock UI!
-    guiPendingOverrideEvent = LU_BEGINUILOCK;
+    guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
     HandleTacticalUI();
   }
 }
@@ -1829,7 +1829,7 @@ function HandleSoldierLeavingSectorByThemSelf(pSoldier: Pointer<SOLDIERTYPE>): v
   // if soldier in a squad, set the fact they want to return here
   let ubGroupId: UINT8;
 
-  if (pSoldier.value.bAssignment < ON_DUTY) {
+  if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
     RemoveCharacterFromSquads(pSoldier);
 
     // are they in a group?..remove from group
@@ -1840,7 +1840,7 @@ function HandleSoldierLeavingSectorByThemSelf(pSoldier: Pointer<SOLDIERTYPE>): v
     }
   } else {
     // otherwise, they are on thier own, not in a squad, simply remove mvt group
-    if (pSoldier.value.ubGroupID && pSoldier.value.bAssignment != VEHICLE) {
+    if (pSoldier.value.ubGroupID && pSoldier.value.bAssignment != Enum117.VEHICLE) {
       // Can only remove groups if they aren't persistant (not in a squad or vehicle)
       // delete group
       RemoveGroup(pSoldier.value.ubGroupID);
@@ -1866,7 +1866,7 @@ function AllMercsWalkedToExitGrid(): void {
 
   HandlePotentialMoraleHitForSkimmingSectors(gpAdjacentGroup);
 
-  if (gubAdjacentJumpCode == JUMP_ALL_NO_LOAD || gubAdjacentJumpCode == JUMP_SINGLE_NO_LOAD) {
+  if (gubAdjacentJumpCode == Enum177.JUMP_ALL_NO_LOAD || gubAdjacentJumpCode == Enum177.JUMP_SINGLE_NO_LOAD) {
     Assert(gpAdjacentGroup);
     pPlayer = gpAdjacentGroup.value.pPlayerList;
     pPlayer = gpAdjacentGroup.value.pPlayerList;
@@ -1924,7 +1924,7 @@ function AllMercsWalkedToExitGrid(): void {
   if (!PlayerMercsInSector(gsAdjacentSectorX, gsAdjacentSectorY, gbAdjacentSectorZ)) {
     HandleLoyaltyImplicationsOfMercRetreat(RETREAT_TACTICAL_TRAVERSAL, gsAdjacentSectorX, gsAdjacentSectorY, gbAdjacentSectorZ);
   }
-  if (gubAdjacentJumpCode == JUMP_ALL_NO_LOAD || gubAdjacentJumpCode == JUMP_SINGLE_NO_LOAD) {
+  if (gubAdjacentJumpCode == Enum177.JUMP_ALL_NO_LOAD || gubAdjacentJumpCode == Enum177.JUMP_SINGLE_NO_LOAD) {
     gfTacticalTraversal = FALSE;
     gpTacticalTraversalGroup = NULL;
     gpTacticalTraversalChosenSoldier = NULL;
@@ -2149,16 +2149,16 @@ function SetupTacticalTraversalInformation(): void {
 
       // Get 'mirror', depending on what direction...
       switch (gubTacticalDirection) {
-        case NORTH:
+        case Enum245.NORTH:
           sScreenY = 1520;
           break;
-        case SOUTH:
+        case Enum245.SOUTH:
           sScreenY = 0;
           break;
-        case EAST:
+        case Enum245.EAST:
           sScreenX = 0;
           break;
-        case WEST:
+        case Enum245.WEST:
           sScreenX = 3160;
           break;
       }
@@ -2175,14 +2175,14 @@ function SetupTacticalTraversalInformation(): void {
 
       pSoldier.value.ubStrategicInsertionCode = CalcMapEdgepointClassInsertionCode(pSoldier.value.sPreTraversalGridNo);
 
-      if (gubAdjacentJumpCode == JUMP_SINGLE_LOAD_NEW || gubAdjacentJumpCode == JUMP_ALL_LOAD_NEW) {
+      if (gubAdjacentJumpCode == Enum177.JUMP_SINGLE_LOAD_NEW || gubAdjacentJumpCode == Enum177.JUMP_ALL_LOAD_NEW) {
         fUsingEdgePointsForStrategicEntry = TRUE;
       }
     }
 
     pPlayer = pPlayer.value.next;
   }
-  if (gubAdjacentJumpCode == JUMP_ALL_NO_LOAD || gubAdjacentJumpCode == JUMP_SINGLE_NO_LOAD) {
+  if (gubAdjacentJumpCode == Enum177.JUMP_ALL_NO_LOAD || gubAdjacentJumpCode == Enum177.JUMP_SINGLE_NO_LOAD) {
     gfTacticalTraversal = FALSE;
     gpTacticalTraversalGroup = NULL;
     gpTacticalTraversalChosenSoldier = NULL;
@@ -2219,7 +2219,7 @@ function AllMercsHaveWalkedOffSector(): void {
   SetupTacticalTraversalInformation();
 
   // ATE: Added here: donot load another screen if we were told not to....
-  if ((gubAdjacentJumpCode == JUMP_ALL_NO_LOAD || gubAdjacentJumpCode == JUMP_SINGLE_NO_LOAD)) {
+  if ((gubAdjacentJumpCode == Enum177.JUMP_ALL_NO_LOAD || gubAdjacentJumpCode == Enum177.JUMP_SINGLE_NO_LOAD)) {
     // Case 1:  Group is leaving sector, but there are other mercs in sector and player wants to stay, or
     //         there are other mercs in sector while a battle is in progress.
     pPlayer = gpAdjacentGroup.value.pPlayerList;
@@ -2240,7 +2240,7 @@ function AllMercsHaveWalkedOffSector(): void {
 
       if (guiAdjacentTraverseTime > 5) {
         // Because this final group is retreating, simulate extra time to retreat, so they can't immediately come back.
-        WarpGameTime(300, WARPTIME_NO_PROCESSING_OF_EVENTS);
+        WarpGameTime(300, Enum131.WARPTIME_NO_PROCESSING_OF_EVENTS);
       }
     }
     if (guiAdjacentTraverseTime <= 5) {
@@ -2248,11 +2248,11 @@ function AllMercsHaveWalkedOffSector(): void {
       if (!gbAdjacentSectorZ) {
         let uiWarpTime: UINT32;
         uiWarpTime = (GetWorldTotalMin() + 5) * 60 - GetWorldTotalSeconds();
-        WarpGameTime(uiWarpTime, WARPTIME_PROCESS_TARGET_TIME_FIRST);
+        WarpGameTime(uiWarpTime, Enum131.WARPTIME_PROCESS_TARGET_TIME_FIRST);
       } else if (gbAdjacentSectorZ > 0) {
         let uiWarpTime: UINT32;
         uiWarpTime = (GetWorldTotalMin() + 1) * 60 - GetWorldTotalSeconds();
-        WarpGameTime(uiWarpTime, WARPTIME_PROCESS_TARGET_TIME_FIRST);
+        WarpGameTime(uiWarpTime, Enum131.WARPTIME_PROCESS_TARGET_TIME_FIRST);
       }
 
       // Because we are actually loading the new map, and we are physically traversing, we don't want
@@ -2268,7 +2268,7 @@ function AllMercsHaveWalkedOffSector(): void {
 
       // ATE; Fade FAST....
       SetMusicFadeSpeed(5);
-      SetMusicMode(MUSIC_TACTICAL_NOTHING);
+      SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
     }
   }
 }
@@ -2277,7 +2277,7 @@ function DoneFadeOutExitGridSector(): void {
   SetCurrentWorldSector(gsAdjacentSectorX, gsAdjacentSectorY, gbAdjacentSectorZ);
   if (gfTacticalTraversal && gpTacticalTraversalGroup && gpTacticalTraversalChosenSoldier) {
     if (gTacticalStatus.fEnemyInSector) {
-      TacticalCharacterDialogueWithSpecialEvent(gpTacticalTraversalChosenSoldier, QUOTE_ENEMY_PRESENCE, 0, 0, 0);
+      TacticalCharacterDialogueWithSpecialEvent(gpTacticalTraversalChosenSoldier, Enum202.QUOTE_ENEMY_PRESENCE, 0, 0, 0);
     }
   }
   gfTacticalTraversal = FALSE;
@@ -2293,7 +2293,7 @@ function DoneFadeOutAdjacentSector(): void {
   ubDirection = GetStrategicInsertionDataFromAdjacentMoveDirection(gubTacticalDirection, gsAdditionalData);
   if (gfTacticalTraversal && gpTacticalTraversalGroup && gpTacticalTraversalChosenSoldier) {
     if (gTacticalStatus.fEnemyInSector) {
-      TacticalCharacterDialogueWithSpecialEvent(gpTacticalTraversalChosenSoldier, QUOTE_ENEMY_PRESENCE, 0, 0, 0);
+      TacticalCharacterDialogueWithSpecialEvent(gpTacticalTraversalChosenSoldier, Enum202.QUOTE_ENEMY_PRESENCE, 0, 0, 0);
     }
   }
   gfTacticalTraversal = FALSE;
@@ -2338,7 +2338,7 @@ function DoneFadeOutAdjacentSector(): void {
             sWorldY = CenterY(sGridNo);
             EVENT_SetSoldierPosition(curr.value.pSoldier, sWorldX, sWorldY);
             if (sGridNo != sOldGridNo) {
-              EVENT_GetNewSoldierPath(curr.value.pSoldier, sOldGridNo, WALKING);
+              EVENT_GetNewSoldierPath(curr.value.pSoldier, sOldGridNo, Enum193.WALKING);
             }
             ubNum++;
           }
@@ -2347,8 +2347,8 @@ function DoneFadeOutAdjacentSector(): void {
       }
       curr = curr.value.next;
     }
-    SetActionToDoOnceMercsGetToLocation(WAIT_FOR_MERCS_TO_WALKON_SCREEN, ubNum, 0, 0, 0);
-    guiPendingOverrideEvent = LU_BEGINUILOCK;
+    SetActionToDoOnceMercsGetToLocation(Enum238.WAIT_FOR_MERCS_TO_WALKON_SCREEN, ubNum, 0, 0, 0);
+    guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
     HandleTacticalUI();
 
     // Unset flag here.....
@@ -2382,7 +2382,7 @@ function SoldierOKForSectorExit(pSoldier: Pointer<SOLDIERTYPE>, bExitDirection: 
 
   // Check direction
   switch (bExitDirection) {
-    case EAST_STRATEGIC_MOVE:
+    case Enum186.EAST_STRATEGIC_MOVE:
 
       if (sWorldX < ((gsTRX - gsTLX) - CHECK_DIR_X_DELTA)) {
         // NOT OK, return FALSE
@@ -2390,7 +2390,7 @@ function SoldierOKForSectorExit(pSoldier: Pointer<SOLDIERTYPE>, bExitDirection: 
       }
       break;
 
-    case WEST_STRATEGIC_MOVE:
+    case Enum186.WEST_STRATEGIC_MOVE:
 
       if (sWorldX > CHECK_DIR_X_DELTA) {
         // NOT OK, return FALSE
@@ -2398,7 +2398,7 @@ function SoldierOKForSectorExit(pSoldier: Pointer<SOLDIERTYPE>, bExitDirection: 
       }
       break;
 
-    case SOUTH_STRATEGIC_MOVE:
+    case Enum186.SOUTH_STRATEGIC_MOVE:
 
       if (sWorldY < ((gsBLY - gsTRY) - CHECK_DIR_Y_DELTA)) {
         // NOT OK, return FALSE
@@ -2406,7 +2406,7 @@ function SoldierOKForSectorExit(pSoldier: Pointer<SOLDIERTYPE>, bExitDirection: 
       }
       break;
 
-    case NORTH_STRATEGIC_MOVE:
+    case Enum186.NORTH_STRATEGIC_MOVE:
 
       if (sWorldY > CHECK_DIR_Y_DELTA) {
         // NOT OK, return FALSE
@@ -2631,27 +2631,27 @@ function SetupNewStrategicGame(): void {
   //.............................................
   BuildDayLightLevels();
   // Check for quests each morning
-  AddEveryDayStrategicEvent(EVENT_CHECKFORQUESTS, QUEST_CHECK_EVENT_TIME, 0);
+  AddEveryDayStrategicEvent(Enum132.EVENT_CHECKFORQUESTS, QUEST_CHECK_EVENT_TIME, 0);
   // Some things get updated in the very early morning
-  AddEveryDayStrategicEvent(EVENT_DAILY_EARLY_MORNING_EVENTS, EARLY_MORNING_TIME, 0);
+  AddEveryDayStrategicEvent(Enum132.EVENT_DAILY_EARLY_MORNING_EVENTS, EARLY_MORNING_TIME, 0);
   // Daily Update BobbyRay Inventory
-  AddEveryDayStrategicEvent(EVENT_DAILY_UPDATE_BOBBY_RAY_INVENTORY, BOBBYRAY_UPDATE_TIME, 0);
+  AddEveryDayStrategicEvent(Enum132.EVENT_DAILY_UPDATE_BOBBY_RAY_INVENTORY, BOBBYRAY_UPDATE_TIME, 0);
   // Daily Update of the M.E.R.C. site.
-  AddEveryDayStrategicEvent(EVENT_DAILY_UPDATE_OF_MERC_SITE, 0, 0);
+  AddEveryDayStrategicEvent(Enum132.EVENT_DAILY_UPDATE_OF_MERC_SITE, 0, 0);
   // Daily update of insured mercs
-  AddEveryDayStrategicEvent(EVENT_HANDLE_INSURED_MERCS, INSURANCE_UPDATE_TIME, 0);
+  AddEveryDayStrategicEvent(Enum132.EVENT_HANDLE_INSURED_MERCS, INSURANCE_UPDATE_TIME, 0);
   // Daily update of mercs
-  AddEveryDayStrategicEvent(EVENT_MERC_DAILY_UPDATE, 0, 0);
+  AddEveryDayStrategicEvent(Enum132.EVENT_MERC_DAILY_UPDATE, 0, 0);
   // Daily mine production processing events
-  AddEveryDayStrategicEvent(EVENT_SETUP_MINE_INCOME, 0, 0);
+  AddEveryDayStrategicEvent(Enum132.EVENT_SETUP_MINE_INCOME, 0, 0);
   // Daily merc reputation processing events
-  AddEveryDayStrategicEvent(EVENT_SETUP_TOWN_OPINION, 0, 0);
+  AddEveryDayStrategicEvent(Enum132.EVENT_SETUP_TOWN_OPINION, 0, 0);
   // Daily checks for E-mail from Enrico
-  AddEveryDayStrategicEvent(EVENT_ENRICO_MAIL, ENRICO_MAIL_TIME, 0);
+  AddEveryDayStrategicEvent(Enum132.EVENT_ENRICO_MAIL, ENRICO_MAIL_TIME, 0);
 
   // Hourly update of all sorts of things
-  AddPeriodStrategicEvent(EVENT_HOURLY_UPDATE, 60, 0);
-  AddPeriodStrategicEvent(EVENT_QUARTER_HOUR_UPDATE, 15, 0);
+  AddPeriodStrategicEvent(Enum132.EVENT_HOURLY_UPDATE, 60, 0);
+  AddPeriodStrategicEvent(Enum132.EVENT_QUARTER_HOUR_UPDATE, 15, 0);
 
   // Clear any possible battle locator
   gfBlitBattleSectorLocator = FALSE;
@@ -2696,7 +2696,7 @@ function CanGoToTacticalInSector(sX: INT16, sY: INT16, ubZ: UINT8): BOOLEAN {
   // look for all living, fighting mercs on player's team.  Robot and EPCs qualify!
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
     // ARM: now allows loading of sector with all mercs below OKLIFE as long as they're alive
-    if ((pSoldier.value.bActive && pSoldier.value.bLife) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.value.bAssignment != IN_TRANSIT) && (pSoldier.value.bAssignment != ASSIGNMENT_POW) && (pSoldier.value.bAssignment != ASSIGNMENT_DEAD) && !SoldierAboardAirborneHeli(pSoldier)) {
+    if ((pSoldier.value.bActive && pSoldier.value.bLife) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.value.bAssignment != Enum117.IN_TRANSIT) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_DEAD) && !SoldierAboardAirborneHeli(pSoldier)) {
       if (!pSoldier.value.fBetweenSectors && pSoldier.value.sSectorX == sX && pSoldier.value.sSectorY == sY && pSoldier.value.bSectorZ == ubZ) {
         return TRUE;
       }
@@ -2927,7 +2927,7 @@ function PickGridNoNearestEdge(pSoldier: Pointer<SOLDIERTYPE>, ubTacticalDirecti
   let cnt: UINT32;
 
   switch (ubTacticalDirection) {
-    case EAST:
+    case Enum245.EAST:
 
       sGridNo = pSoldier.value.sGridNo;
       sStartGridNo = pSoldier.value.sGridNo;
@@ -2951,7 +2951,7 @@ function PickGridNoNearestEdge(pSoldier: Pointer<SOLDIERTYPE>, ubTacticalDirecti
 
       do {
         // OK, here we go back one, check for OK destination...
-        if (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
+        if (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
           return sGridNo;
         }
 
@@ -2978,7 +2978,7 @@ function PickGridNoNearestEdge(pSoldier: Pointer<SOLDIERTYPE>, ubTacticalDirecti
 
       break;
 
-    case WEST:
+    case Enum245.WEST:
 
       sGridNo = pSoldier.value.sGridNo;
       sStartGridNo = pSoldier.value.sGridNo;
@@ -3002,7 +3002,7 @@ function PickGridNoNearestEdge(pSoldier: Pointer<SOLDIERTYPE>, ubTacticalDirecti
 
       do {
         // OK, here we go back one, check for OK destination...
-        if (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
+        if (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
           return sGridNo;
         }
 
@@ -3029,7 +3029,7 @@ function PickGridNoNearestEdge(pSoldier: Pointer<SOLDIERTYPE>, ubTacticalDirecti
 
       break;
 
-    case NORTH:
+    case Enum245.NORTH:
 
       sGridNo = pSoldier.value.sGridNo;
       sStartGridNo = pSoldier.value.sGridNo;
@@ -3053,7 +3053,7 @@ function PickGridNoNearestEdge(pSoldier: Pointer<SOLDIERTYPE>, ubTacticalDirecti
 
       do {
         // OK, here we go back one, check for OK destination...
-        if (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
+        if (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
           return sGridNo;
         }
 
@@ -3080,7 +3080,7 @@ function PickGridNoNearestEdge(pSoldier: Pointer<SOLDIERTYPE>, ubTacticalDirecti
 
       break;
 
-    case SOUTH:
+    case Enum245.SOUTH:
 
       sGridNo = pSoldier.value.sGridNo;
       sStartGridNo = pSoldier.value.sGridNo;
@@ -3104,7 +3104,7 @@ function PickGridNoNearestEdge(pSoldier: Pointer<SOLDIERTYPE>, ubTacticalDirecti
 
       do {
         // OK, here we go back one, check for OK destination...
-        if (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
+        if (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
           return sGridNo;
         }
 
@@ -3161,107 +3161,107 @@ function AdjustSoldierPathToGoOffEdge(pSoldier: Pointer<SOLDIERTYPE>, sEndGridNo
   }
 
   switch (ubTacticalDirection) {
-    case EAST:
+    case Enum245.EAST:
 
-      sNewGridNo = NewGridNo(sEndGridNo, DirectionInc(NORTHEAST));
+      sNewGridNo = NewGridNo(sEndGridNo, DirectionInc(Enum245.NORTHEAST));
 
       if (OutOfBounds(sEndGridNo, sNewGridNo)) {
         return;
       }
 
-      pSoldier.value.usPathingData[pSoldier.value.usPathDataSize] = NORTHEAST;
+      pSoldier.value.usPathingData[pSoldier.value.usPathDataSize] = Enum245.NORTHEAST;
       pSoldier.value.usPathDataSize++;
       pSoldier.value.sFinalDestination = sNewGridNo;
       pSoldier.value.usActionData = sNewGridNo;
 
-      sTempGridNo = NewGridNo(sNewGridNo, DirectionInc(NORTHEAST));
+      sTempGridNo = NewGridNo(sNewGridNo, DirectionInc(Enum245.NORTHEAST));
 
       if (OutOfBounds(sNewGridNo, sTempGridNo)) {
         return;
       }
       sNewGridNo = sTempGridNo;
 
-      pSoldier.value.usPathingData[pSoldier.value.usPathDataSize] = NORTHEAST;
+      pSoldier.value.usPathingData[pSoldier.value.usPathDataSize] = Enum245.NORTHEAST;
       pSoldier.value.usPathDataSize++;
       pSoldier.value.sFinalDestination = sNewGridNo;
       pSoldier.value.usActionData = sNewGridNo;
 
       break;
 
-    case WEST:
+    case Enum245.WEST:
 
-      sNewGridNo = NewGridNo(sEndGridNo, DirectionInc(SOUTHWEST));
+      sNewGridNo = NewGridNo(sEndGridNo, DirectionInc(Enum245.SOUTHWEST));
 
       if (OutOfBounds(sEndGridNo, sNewGridNo)) {
         return;
       }
 
-      pSoldier.value.usPathingData[pSoldier.value.usPathDataSize] = SOUTHWEST;
+      pSoldier.value.usPathingData[pSoldier.value.usPathDataSize] = Enum245.SOUTHWEST;
       pSoldier.value.usPathDataSize++;
       pSoldier.value.sFinalDestination = sNewGridNo;
       pSoldier.value.usActionData = sNewGridNo;
 
-      sTempGridNo = NewGridNo(sNewGridNo, DirectionInc(SOUTHWEST));
+      sTempGridNo = NewGridNo(sNewGridNo, DirectionInc(Enum245.SOUTHWEST));
 
       if (OutOfBounds(sNewGridNo, sTempGridNo)) {
         return;
       }
       sNewGridNo = sTempGridNo;
 
-      pSoldier.value.usPathingData[pSoldier.value.usPathDataSize] = SOUTHWEST;
+      pSoldier.value.usPathingData[pSoldier.value.usPathDataSize] = Enum245.SOUTHWEST;
       pSoldier.value.usPathDataSize++;
       pSoldier.value.sFinalDestination = sNewGridNo;
       pSoldier.value.usActionData = sNewGridNo;
       break;
 
-    case NORTH:
+    case Enum245.NORTH:
 
-      sNewGridNo = NewGridNo(sEndGridNo, DirectionInc(NORTHWEST));
+      sNewGridNo = NewGridNo(sEndGridNo, DirectionInc(Enum245.NORTHWEST));
 
       if (OutOfBounds(sEndGridNo, sNewGridNo)) {
         return;
       }
 
-      pSoldier.value.usPathingData[pSoldier.value.usPathDataSize] = NORTHWEST;
+      pSoldier.value.usPathingData[pSoldier.value.usPathDataSize] = Enum245.NORTHWEST;
       pSoldier.value.usPathDataSize++;
       pSoldier.value.sFinalDestination = sNewGridNo;
       pSoldier.value.usActionData = sNewGridNo;
 
-      sTempGridNo = NewGridNo(sNewGridNo, DirectionInc(NORTHWEST));
+      sTempGridNo = NewGridNo(sNewGridNo, DirectionInc(Enum245.NORTHWEST));
 
       if (OutOfBounds(sNewGridNo, sTempGridNo)) {
         return;
       }
       sNewGridNo = sTempGridNo;
 
-      pSoldier.value.usPathingData[pSoldier.value.usPathDataSize] = NORTHWEST;
+      pSoldier.value.usPathingData[pSoldier.value.usPathDataSize] = Enum245.NORTHWEST;
       pSoldier.value.usPathDataSize++;
       pSoldier.value.sFinalDestination = sNewGridNo;
       pSoldier.value.usActionData = sNewGridNo;
 
       break;
 
-    case SOUTH:
+    case Enum245.SOUTH:
 
-      sNewGridNo = NewGridNo(sEndGridNo, DirectionInc(SOUTHEAST));
+      sNewGridNo = NewGridNo(sEndGridNo, DirectionInc(Enum245.SOUTHEAST));
 
       if (OutOfBounds(sEndGridNo, sNewGridNo)) {
         return;
       }
 
-      pSoldier.value.usPathingData[pSoldier.value.usPathDataSize] = SOUTHEAST;
+      pSoldier.value.usPathingData[pSoldier.value.usPathDataSize] = Enum245.SOUTHEAST;
       pSoldier.value.usPathDataSize++;
       pSoldier.value.sFinalDestination = sNewGridNo;
       pSoldier.value.usActionData = sNewGridNo;
 
-      sTempGridNo = NewGridNo(sNewGridNo, DirectionInc(SOUTHEAST));
+      sTempGridNo = NewGridNo(sNewGridNo, DirectionInc(Enum245.SOUTHEAST));
 
       if (OutOfBounds(sNewGridNo, sTempGridNo)) {
         return;
       }
       sNewGridNo = sTempGridNo;
 
-      pSoldier.value.usPathingData[pSoldier.value.usPathDataSize] = SOUTHEAST;
+      pSoldier.value.usPathingData[pSoldier.value.usPathDataSize] = Enum245.SOUTHEAST;
       pSoldier.value.usPathDataSize++;
       pSoldier.value.sFinalDestination = sNewGridNo;
       pSoldier.value.usActionData = sNewGridNo;
@@ -3283,7 +3283,7 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
   switch (ubInsertionDirection) {
     // OK, we're given a direction on visible map, let's look for the first oone
     // we find that is just on the start of visible map...
-    case INSERTION_CODE_WEST:
+    case Enum175.INSERTION_CODE_WEST:
 
       sGridNo = pSoldier.value.sGridNo;
       sStartGridNo = pSoldier.value.sGridNo;
@@ -3308,7 +3308,7 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
       while (puiNumAttempts.value < MAX_ATTEMPTS) {
         (puiNumAttempts.value)++;
         // OK, here we go back one, check for OK destination...
-        if ((gTacticalStatus.uiFlags & IGNORE_ALL_OBSTACLES) || (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE))) {
+        if ((gTacticalStatus.uiFlags & IGNORE_ALL_OBSTACLES) || (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE))) {
           return sGridNo;
         }
 
@@ -3334,7 +3334,7 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
       }
       return NOWHERE;
 
-    case INSERTION_CODE_EAST:
+    case Enum175.INSERTION_CODE_EAST:
 
       sGridNo = pSoldier.value.sGridNo;
       sStartGridNo = pSoldier.value.sGridNo;
@@ -3359,7 +3359,7 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
       while (puiNumAttempts.value < MAX_ATTEMPTS) {
         (puiNumAttempts.value)++;
         // OK, here we go back one, check for OK destination...
-        if ((gTacticalStatus.uiFlags & IGNORE_ALL_OBSTACLES) || (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE))) {
+        if ((gTacticalStatus.uiFlags & IGNORE_ALL_OBSTACLES) || (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE))) {
           return sGridNo;
         }
 
@@ -3385,7 +3385,7 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
       }
       return NOWHERE;
 
-    case INSERTION_CODE_NORTH:
+    case Enum175.INSERTION_CODE_NORTH:
 
       sGridNo = pSoldier.value.sGridNo;
       sStartGridNo = pSoldier.value.sGridNo;
@@ -3410,7 +3410,7 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
       while (puiNumAttempts.value < MAX_ATTEMPTS) {
         (puiNumAttempts.value)++;
         // OK, here we go back one, check for OK destination...
-        if ((gTacticalStatus.uiFlags & IGNORE_ALL_OBSTACLES) || (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE))) {
+        if ((gTacticalStatus.uiFlags & IGNORE_ALL_OBSTACLES) || (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE))) {
           return sGridNo;
         }
 
@@ -3436,7 +3436,7 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
       }
       return NOWHERE;
 
-    case INSERTION_CODE_SOUTH:
+    case Enum175.INSERTION_CODE_SOUTH:
 
       sGridNo = pSoldier.value.sGridNo;
       sStartGridNo = pSoldier.value.sGridNo;
@@ -3461,7 +3461,7 @@ function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection
       while (puiNumAttempts.value < MAX_ATTEMPTS) {
         (puiNumAttempts.value)++;
         // OK, here we go back one, check for OK destination...
-        if ((gTacticalStatus.uiFlags & IGNORE_ALL_OBSTACLES) || (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE))) {
+        if ((gTacticalStatus.uiFlags & IGNORE_ALL_OBSTACLES) || (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel) && FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE))) {
           return sGridNo;
         }
 
@@ -3517,7 +3517,7 @@ function HandleSlayDailyEvent(): void {
   }
 
   // valid soldier?
-  if ((pSoldier.value.bActive == FALSE) || (pSoldier.value.bLife == 0) || (pSoldier.value.bAssignment == IN_TRANSIT) || (pSoldier.value.bAssignment == ASSIGNMENT_POW)) {
+  if ((pSoldier.value.bActive == FALSE) || (pSoldier.value.bLife == 0) || (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
     // no
     return;
   }
@@ -3526,13 +3526,13 @@ function HandleSlayDailyEvent(): void {
   // he may decide to leave randomly while asleep...
   // if the user hasnt renewed yet, and is still leaving today
   if ((pSoldier.value.iEndofContractTime / 1440) <= GetWorldDay()) {
-    pSoldier.value.ubLeaveHistoryCode = HISTORY_SLAY_MYSTERIOUSLY_LEFT;
+    pSoldier.value.ubLeaveHistoryCode = Enum83.HISTORY_SLAY_MYSTERIOUSLY_LEFT;
     TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_CONTRACT_ENDING_NO_ASK_EQUIP, 0, 0);
   }
 }
 
 function IsSectorDesert(sSectorX: INT16, sSectorY: INT16): BOOLEAN {
-  if (SectorInfo[SECTOR(sSectorX, sSectorY)].ubTraversability[THROUGH_STRATEGIC_MOVE] == SAND) {
+  if (SectorInfo[SECTOR(sSectorX, sSectorY)].ubTraversability[Enum186.THROUGH_STRATEGIC_MOVE] == Enum127.SAND) {
     // desert
     return TRUE;
   } else {
@@ -3564,7 +3564,7 @@ function HandleDefiniteUnloadingOfWorld(ubUnloadCode: UINT8): BOOLEAN {
     gTacticalStatus.uiFlags &= ~INCOMBAT;
   }
 
-  if (ubUnloadCode == ABOUT_TO_LOAD_NEW_MAP) {
+  if (ubUnloadCode == Enum176.ABOUT_TO_LOAD_NEW_MAP) {
     // if we arent loading a saved game
     if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
       // Save the current sectors Item list to a temporary file, if its not the first time in
@@ -3573,7 +3573,7 @@ function HandleDefiniteUnloadingOfWorld(ubUnloadCode: UINT8): BOOLEAN {
       // Update any mercs currently in sector, their profile info...
       UpdateSoldierPointerDataIntoProfile(FALSE);
     }
-  } else if (ubUnloadCode == ABOUT_TO_TRASH_WORLD) {
+  } else if (ubUnloadCode == Enum176.ABOUT_TO_TRASH_WORLD) {
     // Save the current sectors open temp files to the disk
     if (!SaveCurrentSectorsInformationToTempItemFile()) {
       ScreenMsg(FONT_MCOLOR_WHITE, MSG_TESTVERSION, "ERROR in SaveCurrentSectorsInformationToTempItemFile()");
@@ -3618,8 +3618,8 @@ function HandlePotentialBringUpAutoresolveToFinishBattle(): BOOLEAN {
               gubPBSectorZ = gbWorldSectorZ;
               gfBlitBattleSectorLocator = TRUE;
               gfTransferTacticalOppositionToAutoResolve = TRUE;
-              if (gubEnemyEncounterCode != CREATURE_ATTACK_CODE) {
-                gubEnemyEncounterCode = ENEMY_INVASION_CODE; // has to be, if militia are here.
+              if (gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE) {
+                gubEnemyEncounterCode = Enum164.ENEMY_INVASION_CODE; // has to be, if militia are here.
               } else {
                 // DoScreenIndependantMessageBox( gzLateLocalizedString[ 39 ], MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback );
               }
@@ -3652,7 +3652,7 @@ function CheckAndHandleUnloadingOfCurrentWorld(): BOOLEAN {
 
   GetCurrentBattleSectorXYZ(addressof(sBattleSectorX), addressof(sBattleSectorY), addressof(sBattleSectorZ));
 
-  if (guiCurrentScreen == AUTORESOLVE_SCREEN) {
+  if (guiCurrentScreen == Enum26.AUTORESOLVE_SCREEN) {
     // The user has decided to let the game autoresolve the current battle.
     if (gWorldSectorX == sBattleSectorX && gWorldSectorY == sBattleSectorY && gbWorldSectorZ == sBattleSectorZ) {
       for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
@@ -3692,13 +3692,13 @@ function CheckAndHandleUnloadingOfCurrentWorld(): BOOLEAN {
 
   // ATE: Change cursor to wait cursor for duration of frame.....
   // save old cursor ID....
-  SetCurrentCursorFromDatabase(CURSOR_WAIT_NODELAY);
+  SetCurrentCursorFromDatabase(Enum317.CURSOR_WAIT_NODELAY);
   RefreshScreen(NULL);
 
   // JA2Gold: Leaving sector, so get rid of ambients!
   DeleteAllAmbients();
 
-  if (guiCurrentScreen == GAME_SCREEN) {
+  if (guiCurrentScreen == Enum26.GAME_SCREEN) {
     if (!gfTacticalTraversal) {
       // if we are in tactical and don't intend on going to another sector immediately, then
       gfEnteringMapScreen = TRUE;
@@ -3709,11 +3709,11 @@ function CheckAndHandleUnloadingOfCurrentWorld(): BOOLEAN {
   }
 
   // We have passed all the checks and can Trash the world.
-  if (!HandleDefiniteUnloadingOfWorld(ABOUT_TO_TRASH_WORLD)) {
+  if (!HandleDefiniteUnloadingOfWorld(Enum176.ABOUT_TO_TRASH_WORLD)) {
     return FALSE;
   }
 
-  if (guiCurrentScreen == AUTORESOLVE_SCREEN) {
+  if (guiCurrentScreen == Enum26.AUTORESOLVE_SCREEN) {
     if (gWorldSectorX == sBattleSectorX && gWorldSectorY == sBattleSectorY && gbWorldSectorZ == sBattleSectorZ) {
       // Yes, this is and looks like a hack.  The conditions of this if statement doesn't work inside
       // TrashWorld() or more specifically, TacticalRemoveSoldier() from within TrashWorld().  Because
@@ -3722,9 +3722,9 @@ function CheckAndHandleUnloadingOfCurrentWorld(): BOOLEAN {
       // screen, it'll delete the soldiers in the loaded world properly, then later on, once autoresolve is
       // complete, it'll delete the autoresolve soldiers properly.  As you can now see, the above if conditions
       // don't change throughout this whole process which makes it necessary to do it this way.
-      guiCurrentScreen = MAP_SCREEN;
+      guiCurrentScreen = Enum26.MAP_SCREEN;
       TrashWorld();
-      guiCurrentScreen = AUTORESOLVE_SCREEN;
+      guiCurrentScreen = Enum26.AUTORESOLVE_SCREEN;
     }
   } else {
     TrashWorld();
@@ -3772,11 +3772,11 @@ function SetupProfileInsertionDataForSoldier(pSoldier: Pointer<SOLDIERTYPE>): vo
 
     if (pSoldier.value.ubQuoteRecord && pSoldier.value.ubQuoteActionID) {
       // if moving to traverse
-      if (pSoldier.value.ubQuoteActionID >= QUOTE_ACTION_ID_TRAVERSE_EAST && pSoldier.value.ubQuoteActionID <= QUOTE_ACTION_ID_TRAVERSE_NORTH) {
+      if (pSoldier.value.ubQuoteActionID >= Enum290.QUOTE_ACTION_ID_TRAVERSE_EAST && pSoldier.value.ubQuoteActionID <= Enum290.QUOTE_ACTION_ID_TRAVERSE_NORTH) {
         // Handle traversal.  This NPC's sector will NOT already be set correctly, so we have to call for that too
         HandleNPCChangesForTacticalTraversal(pSoldier);
         gMercProfiles[pSoldier.value.ubProfile].fUseProfileInsertionInfo = FALSE;
-        if (pSoldier.value.ubProfile != NO_PROFILE && NPCHasUnusedRecordWithGivenApproach(pSoldier.value.ubProfile, APPROACH_DONE_TRAVERSAL)) {
+        if (pSoldier.value.ubProfile != NO_PROFILE && NPCHasUnusedRecordWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_DONE_TRAVERSAL)) {
           gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags3 |= PROFILE_MISC_FLAG3_HANDLE_DONE_TRAVERSAL;
         }
       } else {
@@ -3789,7 +3789,7 @@ function SetupProfileInsertionDataForSoldier(pSoldier: Pointer<SOLDIERTYPE>): vo
         }
 
         gMercProfiles[pSoldier.value.ubProfile].fUseProfileInsertionInfo = TRUE;
-        gMercProfiles[pSoldier.value.ubProfile].ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+        gMercProfiles[pSoldier.value.ubProfile].ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
         gMercProfiles[pSoldier.value.ubProfile].ubQuoteActionID = pSoldier.value.ubQuoteActionID;
         gMercProfiles[pSoldier.value.ubProfile].ubQuoteRecord = pSoldier.value.ubQuoteActionID;
       }

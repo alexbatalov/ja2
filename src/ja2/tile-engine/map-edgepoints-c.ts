@@ -358,28 +358,28 @@ function ClassifyEdgepoints(): void {
 
   // north
   if (gMapInformation.sNorthGridNo != -1) {
-    sGridNo = FindNearestEdgepointOnSpecifiedEdge(gMapInformation.sNorthGridNo, NORTH_EDGEPOINT_SEARCH);
+    sGridNo = FindNearestEdgepointOnSpecifiedEdge(gMapInformation.sNorthGridNo, Enum291.NORTH_EDGEPOINT_SEARCH);
     if (sGridNo != NOWHERE) {
       InternallyClassifyEdgepoints(addressof(Soldier), sGridNo, addressof(gps1stNorthEdgepointArray), addressof(gus1stNorthEdgepointMiddleIndex), addressof(gus1stNorthEdgepointArraySize), addressof(gps2ndNorthEdgepointArray), addressof(gus2ndNorthEdgepointMiddleIndex), addressof(gus2ndNorthEdgepointArraySize));
     }
   }
   // east
   if (gMapInformation.sEastGridNo != -1) {
-    sGridNo = FindNearestEdgepointOnSpecifiedEdge(gMapInformation.sEastGridNo, EAST_EDGEPOINT_SEARCH);
+    sGridNo = FindNearestEdgepointOnSpecifiedEdge(gMapInformation.sEastGridNo, Enum291.EAST_EDGEPOINT_SEARCH);
     if (sGridNo != NOWHERE) {
       InternallyClassifyEdgepoints(addressof(Soldier), sGridNo, addressof(gps1stEastEdgepointArray), addressof(gus1stEastEdgepointMiddleIndex), addressof(gus1stEastEdgepointArraySize), addressof(gps2ndEastEdgepointArray), addressof(gus2ndEastEdgepointMiddleIndex), addressof(gus2ndEastEdgepointArraySize));
     }
   }
   // south
   if (gMapInformation.sSouthGridNo != -1) {
-    sGridNo = FindNearestEdgepointOnSpecifiedEdge(gMapInformation.sSouthGridNo, SOUTH_EDGEPOINT_SEARCH);
+    sGridNo = FindNearestEdgepointOnSpecifiedEdge(gMapInformation.sSouthGridNo, Enum291.SOUTH_EDGEPOINT_SEARCH);
     if (sGridNo != NOWHERE) {
       InternallyClassifyEdgepoints(addressof(Soldier), sGridNo, addressof(gps1stSouthEdgepointArray), addressof(gus1stSouthEdgepointMiddleIndex), addressof(gus1stSouthEdgepointArraySize), addressof(gps2ndSouthEdgepointArray), addressof(gus2ndSouthEdgepointMiddleIndex), addressof(gus2ndSouthEdgepointArraySize));
     }
   }
   // west
   if (gMapInformation.sWestGridNo != -1) {
-    sGridNo = FindNearestEdgepointOnSpecifiedEdge(gMapInformation.sWestGridNo, WEST_EDGEPOINT_SEARCH);
+    sGridNo = FindNearestEdgepointOnSpecifiedEdge(gMapInformation.sWestGridNo, Enum291.WEST_EDGEPOINT_SEARCH);
     if (sGridNo != NOWHERE) {
       InternallyClassifyEdgepoints(addressof(Soldier), sGridNo, addressof(gps1stWestEdgepointArray), addressof(gus1stWestEdgepointMiddleIndex), addressof(gus1stWestEdgepointArraySize), addressof(gps2ndWestEdgepointArray), addressof(gus2ndWestEdgepointMiddleIndex), addressof(gus2ndWestEdgepointArraySize));
     }
@@ -859,19 +859,19 @@ function ChooseMapEdgepoint(ubStrategicInsertionCode: UINT8): UINT16 {
   // First validate and get access to the correct array based on strategic direction.
   // We will use the selected array to choose insertion gridno's.
   switch (ubStrategicInsertionCode) {
-    case INSERTION_CODE_NORTH:
+    case Enum175.INSERTION_CODE_NORTH:
       psArray = gps1stNorthEdgepointArray;
       usArraySize = gus1stNorthEdgepointArraySize;
       break;
-    case INSERTION_CODE_EAST:
+    case Enum175.INSERTION_CODE_EAST:
       psArray = gps1stEastEdgepointArray;
       usArraySize = gus1stEastEdgepointArraySize;
       break;
-    case INSERTION_CODE_SOUTH:
+    case Enum175.INSERTION_CODE_SOUTH:
       psArray = gps1stSouthEdgepointArray;
       usArraySize = gus1stSouthEdgepointArraySize;
       break;
-    case INSERTION_CODE_WEST:
+    case Enum175.INSERTION_CODE_WEST:
       psArray = gps1stWestEdgepointArray;
       usArraySize = gus1stWestEdgepointArraySize;
       break;
@@ -897,19 +897,19 @@ function ChooseMapEdgepoints(pMapEdgepointInfo: Pointer<MAPEDGEPOINTINFO>, ubStr
   // First validate and get access to the correct array based on strategic direction.
   // We will use the selected array to choose insertion gridno's.
   switch (ubStrategicInsertionCode) {
-    case INSERTION_CODE_NORTH:
+    case Enum175.INSERTION_CODE_NORTH:
       psArray = gps1stNorthEdgepointArray;
       usArraySize = gus1stNorthEdgepointArraySize;
       break;
-    case INSERTION_CODE_EAST:
+    case Enum175.INSERTION_CODE_EAST:
       psArray = gps1stEastEdgepointArray;
       usArraySize = gus1stEastEdgepointArraySize;
       break;
-    case INSERTION_CODE_SOUTH:
+    case Enum175.INSERTION_CODE_SOUTH:
       psArray = gps1stSouthEdgepointArray;
       usArraySize = gus1stSouthEdgepointArraySize;
       break;
-    case INSERTION_CODE_WEST:
+    case Enum175.INSERTION_CODE_WEST:
       psArray = gps1stWestEdgepointArray;
       usArraySize = gus1stWestEdgepointArraySize;
       break;
@@ -929,7 +929,7 @@ function ChooseMapEdgepoints(pMapEdgepointInfo: Pointer<MAPEDGEPOINTINFO>, ubStr
   memcpy(psTempArray, psArray, sizeof(INT16) * usArraySize);
   psArray = psTempArray;
   for (i = 0; i < usArraySize; i++) {
-    if (GetTerrainType(psArray[i]) == MED_WATER || GetTerrainType(psArray[i]) == DEEP_WATER) {
+    if (GetTerrainType(psArray[i]) == Enum315.MED_WATER || GetTerrainType(psArray[i]) == Enum315.DEEP_WATER) {
       if (i == usArraySize - 1) {
         // just axe it and we're done.
         psArray[i] = 0;
@@ -1024,25 +1024,25 @@ function SearchForClosestPrimaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UI
     AssertMsg(0, "All closest map edgepoints have been reserved.  We should only have 20 soldiers maximum...");
   }
   switch (ubInsertionCode) {
-    case INSERTION_CODE_NORTH:
+    case Enum175.INSERTION_CODE_NORTH:
       psArray = gps1stNorthEdgepointArray;
       usArraySize = gus1stNorthEdgepointArraySize;
       if (!usArraySize)
         AssertMsg(0, String("Sector %c%d level %d doesn't have any north mapedgepoints. LC:1", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ));
       break;
-    case INSERTION_CODE_EAST:
+    case Enum175.INSERTION_CODE_EAST:
       psArray = gps1stEastEdgepointArray;
       usArraySize = gus1stEastEdgepointArraySize;
       if (!usArraySize)
         AssertMsg(0, String("Sector %c%d level %d doesn't have any east mapedgepoints. LC:1", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ));
       break;
-    case INSERTION_CODE_SOUTH:
+    case Enum175.INSERTION_CODE_SOUTH:
       psArray = gps1stSouthEdgepointArray;
       usArraySize = gus1stSouthEdgepointArraySize;
       if (!usArraySize)
         AssertMsg(0, String("Sector %c%d level %d doesn't have any south mapedgepoints. LC:1", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ));
       break;
-    case INSERTION_CODE_WEST:
+    case Enum175.INSERTION_CODE_WEST:
       psArray = gps1stWestEdgepointArray;
       usArraySize = gus1stWestEdgepointArraySize;
       if (!usArraySize)
@@ -1146,25 +1146,25 @@ function SearchForClosestSecondaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: 
     AssertMsg(0, "All closest map edgepoints have been reserved.  We should only have 20 soldiers maximum...");
   }
   switch (ubInsertionCode) {
-    case INSERTION_CODE_NORTH:
+    case Enum175.INSERTION_CODE_NORTH:
       psArray = gps2ndNorthEdgepointArray;
       usArraySize = gus2ndNorthEdgepointArraySize;
       if (!usArraySize)
         AssertMsg(0, String("Sector %c%d level %d doesn't have any isolated north mapedgepoints. KM:1", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ));
       break;
-    case INSERTION_CODE_EAST:
+    case Enum175.INSERTION_CODE_EAST:
       psArray = gps2ndEastEdgepointArray;
       usArraySize = gus2ndEastEdgepointArraySize;
       if (!usArraySize)
         AssertMsg(0, String("Sector %c%d level %d doesn't have any isolated east mapedgepoints. KM:1", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ));
       break;
-    case INSERTION_CODE_SOUTH:
+    case Enum175.INSERTION_CODE_SOUTH:
       psArray = gps2ndSouthEdgepointArray;
       usArraySize = gus2ndSouthEdgepointArraySize;
       if (!usArraySize)
         AssertMsg(0, String("Sector %c%d level %d doesn't have any isolated south mapedgepoints. KM:1", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ));
       break;
-    case INSERTION_CODE_WEST:
+    case Enum175.INSERTION_CODE_WEST:
       psArray = gps2ndWestEdgepointArray;
       usArraySize = gus2ndWestEdgepointArraySize;
       if (!usArraySize)
@@ -1293,7 +1293,7 @@ function VerifyEdgepoint(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint: INT16): BOO
     }
   }
 
-  FindBestPath(pSoldier, NOWHERE, pSoldier.value.bLevel, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+  FindBestPath(pSoldier, NOWHERE, pSoldier.value.bLevel, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
 
   // Turn off the "reachable" flag for the current location
   // so we don't consider it
@@ -1364,7 +1364,7 @@ function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEd
     }
   }
 
-  if (FindBestPath(pSoldier, sEdgepoint2, pSoldier.value.bLevel, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE)) {
+  if (FindBestPath(pSoldier, sEdgepoint2, pSoldier.value.bLevel, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE)) {
     return TRUE;
   }
   return FALSE;
@@ -1391,29 +1391,29 @@ function CalcMapEdgepointClassInsertionCode(sGridNo: INT16): UINT8 {
 
   if (gMapInformation.sIsolatedGridNo == -1) {
     // If the map has no isolated area, then all edgepoints are primary.
-    return INSERTION_CODE_PRIMARY_EDGEINDEX;
+    return Enum175.INSERTION_CODE_PRIMARY_EDGEINDEX;
   }
 
   switch (gubTacticalDirection) {
-    case NORTH:
+    case Enum245.NORTH:
       psEdgepointArray1 = gps1stNorthEdgepointArray;
       iEdgepointArraySize1 = gus1stNorthEdgepointArraySize;
       psEdgepointArray2 = gps2ndNorthEdgepointArray;
       iEdgepointArraySize2 = gus2ndNorthEdgepointArraySize;
       break;
-    case EAST:
+    case Enum245.EAST:
       psEdgepointArray1 = gps1stEastEdgepointArray;
       iEdgepointArraySize1 = gus1stEastEdgepointArraySize;
       psEdgepointArray2 = gps2ndEastEdgepointArray;
       iEdgepointArraySize2 = gus2ndEastEdgepointArraySize;
       break;
-    case SOUTH:
+    case Enum245.SOUTH:
       psEdgepointArray1 = gps1stSouthEdgepointArray;
       iEdgepointArraySize1 = gus1stSouthEdgepointArraySize;
       psEdgepointArray2 = gps2ndSouthEdgepointArray;
       iEdgepointArraySize2 = gus2ndSouthEdgepointArraySize;
       break;
-    case WEST:
+    case Enum245.WEST:
       psEdgepointArray1 = gps1stWestEdgepointArray;
       iEdgepointArraySize1 = gus1stWestEdgepointArraySize;
       psEdgepointArray2 = gps2ndWestEdgepointArray;
@@ -1421,7 +1421,7 @@ function CalcMapEdgepointClassInsertionCode(sGridNo: INT16): UINT8 {
       break;
     default:
       // WTF???
-      return INSERTION_CODE_PRIMARY_EDGEINDEX;
+      return Enum175.INSERTION_CODE_PRIMARY_EDGEINDEX;
   }
 
   // Do a 2D search to find the closest map edgepoint and
@@ -1444,21 +1444,21 @@ function CalcMapEdgepointClassInsertionCode(sGridNo: INT16): UINT8 {
   // set the distance limit of the square region
   gubNPCDistLimit = 15;
 
-  if (!sClosestDist1 || FindBestPath(addressof(Soldier), sClosestSpot1, 0, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
+  if (!sClosestDist1 || FindBestPath(addressof(Soldier), sClosestSpot1, 0, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
     fPrimaryValid = TRUE;
   }
-  if (!sClosestDist2 || FindBestPath(addressof(Soldier), sClosestSpot2, 0, WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
+  if (!sClosestDist2 || FindBestPath(addressof(Soldier), sClosestSpot2, 0, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
     fSecondaryValid = TRUE;
   }
 
   if (fPrimaryValid == fSecondaryValid) {
     if (sClosestDist2 < sClosestDist1) {
-      return INSERTION_CODE_SECONDARY_EDGEINDEX;
+      return Enum175.INSERTION_CODE_SECONDARY_EDGEINDEX;
     }
-    return INSERTION_CODE_PRIMARY_EDGEINDEX;
+    return Enum175.INSERTION_CODE_PRIMARY_EDGEINDEX;
   }
   if (fPrimaryValid) {
-    return INSERTION_CODE_PRIMARY_EDGEINDEX;
+    return Enum175.INSERTION_CODE_PRIMARY_EDGEINDEX;
   }
-  return INSERTION_CODE_SECONDARY_EDGEINDEX;
+  return Enum175.INSERTION_CODE_SECONDARY_EDGEINDEX;
 }

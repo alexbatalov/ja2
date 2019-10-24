@@ -117,7 +117,7 @@ function AddTransactionToPlayersBook(ubCode: UINT8, ubSecondCode: UINT8, uiDate:
   //
   // If this transaction is for the hiring/extending of a mercs contract
   //
-  if (ubCode == HIRED_MERC || ubCode == IMP_PROFILE || ubCode == PAYMENT_TO_NPC || ubCode == EXTENDED_CONTRACT_BY_1_DAY || ubCode == EXTENDED_CONTRACT_BY_1_WEEK || ubCode == EXTENDED_CONTRACT_BY_2_WEEKS) {
+  if (ubCode == Enum80.HIRED_MERC || ubCode == Enum80.IMP_PROFILE || ubCode == Enum80.PAYMENT_TO_NPC || ubCode == Enum80.EXTENDED_CONTRACT_BY_1_DAY || ubCode == Enum80.EXTENDED_CONTRACT_BY_1_WEEK || ubCode == Enum80.EXTENDED_CONTRACT_BY_2_WEEKS) {
     gMercProfiles[ubSecondCode].uiTotalCostToDate += -iAmount;
   }
 
@@ -1036,27 +1036,27 @@ function ProcessAndEnterAFinacialRecord(ubCode: UINT8, uiDate: UINT32, iAmount: 
 }
 
 function CreateFinanceButtons(): void {
-  giFinanceButtonImage[PREV_PAGE_BUTTON] = LoadButtonImage("LAPTOP\\arrows.sti", -1, 0, -1, 1, -1);
-  giFinanceButton[PREV_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[PREV_PAGE_BUTTON], PREV_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnFinanceDisplayPrevPageCallBack);
+  giFinanceButtonImage[Enum79.PREV_PAGE_BUTTON] = LoadButtonImage("LAPTOP\\arrows.sti", -1, 0, -1, 1, -1);
+  giFinanceButton[Enum79.PREV_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[Enum79.PREV_PAGE_BUTTON], PREV_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnFinanceDisplayPrevPageCallBack);
 
-  giFinanceButtonImage[NEXT_PAGE_BUTTON] = UseLoadedButtonImage(giFinanceButtonImage[PREV_PAGE_BUTTON], -1, 6, -1, 7, -1);
-  giFinanceButton[NEXT_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[NEXT_PAGE_BUTTON], NEXT_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnFinanceDisplayNextPageCallBack);
+  giFinanceButtonImage[Enum79.NEXT_PAGE_BUTTON] = UseLoadedButtonImage(giFinanceButtonImage[Enum79.PREV_PAGE_BUTTON], -1, 6, -1, 7, -1);
+  giFinanceButton[Enum79.NEXT_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[Enum79.NEXT_PAGE_BUTTON], NEXT_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnFinanceDisplayNextPageCallBack);
 
   // button to go to the first page
-  giFinanceButtonImage[FIRST_PAGE_BUTTON] = UseLoadedButtonImage(giFinanceButtonImage[PREV_PAGE_BUTTON], -1, 3, -1, 4, -1);
-  giFinanceButton[FIRST_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[FIRST_PAGE_BUTTON], FIRST_PAGE_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnFinanceFirstLastPageCallBack);
+  giFinanceButtonImage[Enum79.FIRST_PAGE_BUTTON] = UseLoadedButtonImage(giFinanceButtonImage[Enum79.PREV_PAGE_BUTTON], -1, 3, -1, 4, -1);
+  giFinanceButton[Enum79.FIRST_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[Enum79.FIRST_PAGE_BUTTON], FIRST_PAGE_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnFinanceFirstLastPageCallBack);
 
-  MSYS_SetBtnUserData(giFinanceButton[FIRST_PAGE_BUTTON], 0, 0);
+  MSYS_SetBtnUserData(giFinanceButton[Enum79.FIRST_PAGE_BUTTON], 0, 0);
 
   // button to go to the last page
-  giFinanceButtonImage[LAST_PAGE_BUTTON] = UseLoadedButtonImage(giFinanceButtonImage[PREV_PAGE_BUTTON], -1, 9, -1, 10, -1);
-  giFinanceButton[LAST_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[LAST_PAGE_BUTTON], LAST_PAGE_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnFinanceFirstLastPageCallBack);
-  MSYS_SetBtnUserData(giFinanceButton[LAST_PAGE_BUTTON], 0, 1);
+  giFinanceButtonImage[Enum79.LAST_PAGE_BUTTON] = UseLoadedButtonImage(giFinanceButtonImage[Enum79.PREV_PAGE_BUTTON], -1, 9, -1, 10, -1);
+  giFinanceButton[Enum79.LAST_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[Enum79.LAST_PAGE_BUTTON], LAST_PAGE_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnFinanceFirstLastPageCallBack);
+  MSYS_SetBtnUserData(giFinanceButton[Enum79.LAST_PAGE_BUTTON], 0, 1);
 
-  SetButtonCursor(giFinanceButton[0], CURSOR_LAPTOP_SCREEN);
-  SetButtonCursor(giFinanceButton[1], CURSOR_LAPTOP_SCREEN);
-  SetButtonCursor(giFinanceButton[2], CURSOR_LAPTOP_SCREEN);
-  SetButtonCursor(giFinanceButton[3], CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(giFinanceButton[0], Enum317.CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(giFinanceButton[1], Enum317.CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(giFinanceButton[2], Enum317.CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(giFinanceButton[3], Enum317.CURSOR_LAPTOP_SCREEN);
   return;
 }
 
@@ -1169,116 +1169,116 @@ function IncrementCurrentPageFinancialDisplay(): void {
 
 function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): void {
   switch (pFinance.value.ubCode) {
-    case ACCRUED_INTEREST:
-      swprintf(pString, "%s", pTransactionText[ACCRUED_INTEREST]);
+    case Enum80.ACCRUED_INTEREST:
+      swprintf(pString, "%s", pTransactionText[Enum80.ACCRUED_INTEREST]);
       break;
 
-    case ANONYMOUS_DEPOSIT:
-      swprintf(pString, "%s", pTransactionText[ANONYMOUS_DEPOSIT]);
+    case Enum80.ANONYMOUS_DEPOSIT:
+      swprintf(pString, "%s", pTransactionText[Enum80.ANONYMOUS_DEPOSIT]);
       break;
 
-    case TRANSACTION_FEE:
-      swprintf(pString, "%s", pTransactionText[TRANSACTION_FEE]);
+    case Enum80.TRANSACTION_FEE:
+      swprintf(pString, "%s", pTransactionText[Enum80.TRANSACTION_FEE]);
       break;
 
-    case HIRED_MERC:
-      swprintf(pString, pMessageStrings[MSG_HIRED_MERC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+    case Enum80.HIRED_MERC:
+      swprintf(pString, pMessageStrings[Enum333.MSG_HIRED_MERC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
-    case BOBBYR_PURCHASE:
-      swprintf(pString, "%s", pTransactionText[BOBBYR_PURCHASE]);
+    case Enum80.BOBBYR_PURCHASE:
+      swprintf(pString, "%s", pTransactionText[Enum80.BOBBYR_PURCHASE]);
       break;
 
-    case PAY_SPECK_FOR_MERC:
-      swprintf(pString, "%s", pTransactionText[PAY_SPECK_FOR_MERC], gMercProfiles[pFinance.value.ubSecondCode].zName);
+    case Enum80.PAY_SPECK_FOR_MERC:
+      swprintf(pString, "%s", pTransactionText[Enum80.PAY_SPECK_FOR_MERC], gMercProfiles[pFinance.value.ubSecondCode].zName);
       break;
 
-    case MEDICAL_DEPOSIT:
-      swprintf(pString, pTransactionText[MEDICAL_DEPOSIT], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+    case Enum80.MEDICAL_DEPOSIT:
+      swprintf(pString, pTransactionText[Enum80.MEDICAL_DEPOSIT], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
-    case IMP_PROFILE:
-      swprintf(pString, "%s", pTransactionText[IMP_PROFILE]);
+    case Enum80.IMP_PROFILE:
+      swprintf(pString, "%s", pTransactionText[Enum80.IMP_PROFILE]);
       break;
 
-    case PURCHASED_INSURANCE:
-      swprintf(pString, pTransactionText[PURCHASED_INSURANCE], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+    case Enum80.PURCHASED_INSURANCE:
+      swprintf(pString, pTransactionText[Enum80.PURCHASED_INSURANCE], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
-    case REDUCED_INSURANCE:
-      swprintf(pString, pTransactionText[REDUCED_INSURANCE], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+    case Enum80.REDUCED_INSURANCE:
+      swprintf(pString, pTransactionText[Enum80.REDUCED_INSURANCE], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
-    case EXTENDED_INSURANCE:
-      swprintf(pString, pTransactionText[EXTENDED_INSURANCE], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+    case Enum80.EXTENDED_INSURANCE:
+      swprintf(pString, pTransactionText[Enum80.EXTENDED_INSURANCE], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
-    case CANCELLED_INSURANCE:
-      swprintf(pString, pTransactionText[CANCELLED_INSURANCE], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+    case Enum80.CANCELLED_INSURANCE:
+      swprintf(pString, pTransactionText[Enum80.CANCELLED_INSURANCE], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
-    case INSURANCE_PAYOUT:
-      swprintf(pString, pTransactionText[INSURANCE_PAYOUT], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+    case Enum80.INSURANCE_PAYOUT:
+      swprintf(pString, pTransactionText[Enum80.INSURANCE_PAYOUT], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
-    case EXTENDED_CONTRACT_BY_1_DAY:
+    case Enum80.EXTENDED_CONTRACT_BY_1_DAY:
       swprintf(pString, pTransactionAlternateText[1], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
-    case EXTENDED_CONTRACT_BY_1_WEEK:
+    case Enum80.EXTENDED_CONTRACT_BY_1_WEEK:
       swprintf(pString, pTransactionAlternateText[2], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
-    case EXTENDED_CONTRACT_BY_2_WEEKS:
+    case Enum80.EXTENDED_CONTRACT_BY_2_WEEKS:
       swprintf(pString, pTransactionAlternateText[3], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
-    case DEPOSIT_FROM_GOLD_MINE:
-    case DEPOSIT_FROM_SILVER_MINE:
+    case Enum80.DEPOSIT_FROM_GOLD_MINE:
+    case Enum80.DEPOSIT_FROM_SILVER_MINE:
       swprintf(pString, pTransactionText[16]);
       break;
 
-    case PURCHASED_FLOWERS:
-      swprintf(pString, "%s", pTransactionText[PURCHASED_FLOWERS]);
+    case Enum80.PURCHASED_FLOWERS:
+      swprintf(pString, "%s", pTransactionText[Enum80.PURCHASED_FLOWERS]);
       break;
 
-    case FULL_MEDICAL_REFUND:
-      swprintf(pString, pTransactionText[FULL_MEDICAL_REFUND], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+    case Enum80.FULL_MEDICAL_REFUND:
+      swprintf(pString, pTransactionText[Enum80.FULL_MEDICAL_REFUND], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
-    case PARTIAL_MEDICAL_REFUND:
-      swprintf(pString, pTransactionText[PARTIAL_MEDICAL_REFUND], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+    case Enum80.PARTIAL_MEDICAL_REFUND:
+      swprintf(pString, pTransactionText[Enum80.PARTIAL_MEDICAL_REFUND], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
-    case NO_MEDICAL_REFUND:
-      swprintf(pString, pTransactionText[NO_MEDICAL_REFUND], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+    case Enum80.NO_MEDICAL_REFUND:
+      swprintf(pString, pTransactionText[Enum80.NO_MEDICAL_REFUND], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
-    case TRANSFER_FUNDS_TO_MERC:
-      swprintf(pString, pTransactionText[TRANSFER_FUNDS_TO_MERC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+    case Enum80.TRANSFER_FUNDS_TO_MERC:
+      swprintf(pString, pTransactionText[Enum80.TRANSFER_FUNDS_TO_MERC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
-    case TRANSFER_FUNDS_FROM_MERC:
-      swprintf(pString, pTransactionText[TRANSFER_FUNDS_FROM_MERC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+    case Enum80.TRANSFER_FUNDS_FROM_MERC:
+      swprintf(pString, pTransactionText[Enum80.TRANSFER_FUNDS_FROM_MERC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
-    case PAYMENT_TO_NPC:
-      swprintf(pString, pTransactionText[PAYMENT_TO_NPC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+    case Enum80.PAYMENT_TO_NPC:
+      swprintf(pString, pTransactionText[Enum80.PAYMENT_TO_NPC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
-    case (TRAIN_TOWN_MILITIA): {
+    case (Enum80.TRAIN_TOWN_MILITIA): {
       let str: UINT16[] /* [128] */;
       let ubSectorX: UINT8;
       let ubSectorY: UINT8;
       ubSectorX = SECTORX(pFinance.value.ubSecondCode);
       ubSectorY = SECTORY(pFinance.value.ubSecondCode);
       GetSectorIDString(ubSectorX, ubSectorY, 0, str, TRUE);
-      swprintf(pString, pTransactionText[TRAIN_TOWN_MILITIA], str);
+      swprintf(pString, pTransactionText[Enum80.TRAIN_TOWN_MILITIA], str);
     } break;
 
-    case (PURCHASED_ITEM_FROM_DEALER):
-      swprintf(pString, pTransactionText[PURCHASED_ITEM_FROM_DEALER], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+    case (Enum80.PURCHASED_ITEM_FROM_DEALER):
+      swprintf(pString, pTransactionText[Enum80.PURCHASED_ITEM_FROM_DEALER], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
 
-    case (MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT):
-      swprintf(pString, pTransactionText[MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+    case (Enum80.MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT):
+      swprintf(pString, pTransactionText[Enum80.MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
       break;
   }
 }
@@ -1945,7 +1945,7 @@ function GetPreviousDaysIncome(): INT32 {
       fOkToIncrement = TRUE;
     }
 
-    if ((fOkToIncrement) && ((ubCode == DEPOSIT_FROM_GOLD_MINE) || (ubCode == DEPOSIT_FROM_SILVER_MINE))) {
+    if ((fOkToIncrement) && ((ubCode == Enum80.DEPOSIT_FROM_GOLD_MINE) || (ubCode == Enum80.DEPOSIT_FROM_SILVER_MINE))) {
       // increment total
       iTotalPreviousIncome += iAmount;
     }
@@ -2026,7 +2026,7 @@ function GetTodaysDaysIncome(): INT32 {
       fOkToIncrement = TRUE;
     }
 
-    if ((fOkToIncrement) && ((ubCode == DEPOSIT_FROM_GOLD_MINE) || (ubCode == DEPOSIT_FROM_SILVER_MINE))) {
+    if ((fOkToIncrement) && ((ubCode == Enum80.DEPOSIT_FROM_GOLD_MINE) || (ubCode == Enum80.DEPOSIT_FROM_SILVER_MINE))) {
       // increment total
       iTotalIncome += iAmount;
       fOkToIncrement = FALSE;
@@ -2054,12 +2054,12 @@ function SetFinanceButtonStates(): void {
 
   if (iCurrentPage == 0) {
     // first page, disable left buttons
-    DisableButton(giFinanceButton[PREV_PAGE_BUTTON]);
-    DisableButton(giFinanceButton[FIRST_PAGE_BUTTON]);
+    DisableButton(giFinanceButton[Enum79.PREV_PAGE_BUTTON]);
+    DisableButton(giFinanceButton[Enum79.FIRST_PAGE_BUTTON]);
   } else {
     // enable buttons
-    EnableButton(giFinanceButton[PREV_PAGE_BUTTON]);
-    EnableButton(giFinanceButton[FIRST_PAGE_BUTTON]);
+    EnableButton(giFinanceButton[Enum79.PREV_PAGE_BUTTON]);
+    EnableButton(giFinanceButton[Enum79.FIRST_PAGE_BUTTON]);
   }
 
   if (LoadNextPage()) {
@@ -2067,11 +2067,11 @@ function SetFinanceButtonStates(): void {
     LoadPreviousPage();
 
     // enable buttons
-    EnableButton(giFinanceButton[NEXT_PAGE_BUTTON]);
-    EnableButton(giFinanceButton[LAST_PAGE_BUTTON]);
+    EnableButton(giFinanceButton[Enum79.NEXT_PAGE_BUTTON]);
+    EnableButton(giFinanceButton[Enum79.LAST_PAGE_BUTTON]);
   } else {
-    DisableButton(giFinanceButton[NEXT_PAGE_BUTTON]);
-    DisableButton(giFinanceButton[LAST_PAGE_BUTTON]);
+    DisableButton(giFinanceButton[Enum79.NEXT_PAGE_BUTTON]);
+    DisableButton(giFinanceButton[Enum79.LAST_PAGE_BUTTON]);
   }
 }
 
@@ -2140,7 +2140,7 @@ function GetTodaysOtherDeposits(): INT32 {
       fOkToIncrement = TRUE;
     }
 
-    if ((fOkToIncrement) && ((ubCode != DEPOSIT_FROM_GOLD_MINE) && (ubCode != DEPOSIT_FROM_SILVER_MINE))) {
+    if ((fOkToIncrement) && ((ubCode != Enum80.DEPOSIT_FROM_GOLD_MINE) && (ubCode != Enum80.DEPOSIT_FROM_SILVER_MINE))) {
       if (iAmount > 0) {
         // increment total
         iTotalIncome += iAmount;
@@ -2233,7 +2233,7 @@ function GetYesterdaysOtherDeposits(): INT32 {
       fOkToIncrement = TRUE;
     }
 
-    if ((fOkToIncrement) && ((ubCode != DEPOSIT_FROM_GOLD_MINE) && (ubCode != DEPOSIT_FROM_SILVER_MINE))) {
+    if ((fOkToIncrement) && ((ubCode != Enum80.DEPOSIT_FROM_GOLD_MINE) && (ubCode != Enum80.DEPOSIT_FROM_SILVER_MINE))) {
       if (iAmount > 0) {
         // increment total
         iTotalPreviousIncome += iAmount;

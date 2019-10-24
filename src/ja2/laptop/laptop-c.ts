@@ -166,7 +166,7 @@ const LAPTOP__NEW_EMAIL_ICON_Y = LAPTOP__NEW_FILE_ICON_Y;
 // Mode values
 let guiCurrentLaptopMode: UINT32;
 let guiPreviousLaptopMode: UINT32;
-let guiCurrentWWWMode: UINT32 = LAPTOP_MODE_NONE;
+let guiCurrentWWWMode: UINT32 = Enum95.LAPTOP_MODE_NONE;
 let giCurrentSubPage: INT32;
 let guiCurrentLapTopCursor: UINT32;
 let guiPreviousLapTopCursor: UINT32;
@@ -226,7 +226,7 @@ let fShowBookmarkInfo: BOOLEAN = FALSE;
 let gfTemporaryDisablingOfLoadPendingFlag: BOOLEAN = FALSE;
 
 // GLOBAL FOR WHICH SCREEN TO EXIT TO FOR LAPTOP
-let guiExitScreen: UINT32 = MAP_SCREEN;
+let guiExitScreen: UINT32 = Enum26.MAP_SCREEN;
 
 let gLaptopRegion: MOUSE_REGION;
 // Laptop screen graphic handle
@@ -351,11 +351,11 @@ let gNewMailIconRegion: MOUSE_REGION;
 let gNewFileIconRegion: MOUSE_REGION;
 
 // highlighted mouse region
-let giHighLightRegion: INT32 = NO_REGION;
+let giHighLightRegion: INT32 = Enum92.NO_REGION;
 
 // highlighted regions
-let giCurrentRegion: INT32 = NO_REGION;
-let giOldRegion: INT32 = NO_REGION;
+let giCurrentRegion: INT32 = Enum92.NO_REGION;
+let giOldRegion: INT32 = Enum92.NO_REGION;
 
 // used for global variables that need to be saved
 let LaptopSaveInfo: LaptopSaveInfoStruct;
@@ -377,14 +377,14 @@ function HandleLapTopCursorUpDate(): void {
   if (guiPreviousLapTopCursor == guiCurrentLapTopCursor)
     return;
   switch (guiCurrentLapTopCursor) {
-    case LAPTOP_PANEL_CURSOR:
-      MSYS_SetCurrentCursor(CURSOR_NORMAL);
+    case Enum97.LAPTOP_PANEL_CURSOR:
+      MSYS_SetCurrentCursor(Enum317.CURSOR_NORMAL);
       break;
-    case LAPTOP_SCREEN_CURSOR:
-      MSYS_SetCurrentCursor(CURSOR_LAPTOP_SCREEN);
+    case Enum97.LAPTOP_SCREEN_CURSOR:
+      MSYS_SetCurrentCursor(Enum317.CURSOR_LAPTOP_SCREEN);
       break;
-    case LAPTOP_WWW_CURSOR:
-      MSYS_SetCurrentCursor(CURSOR_WWW);
+    case Enum97.LAPTOP_WWW_CURSOR:
+      MSYS_SetCurrentCursor(Enum317.CURSOR_WWW);
       break;
   }
   guiPreviousLapTopCursor = guiCurrentLapTopCursor;
@@ -440,11 +440,11 @@ function LaptopScreenInit(): UINT32 {
   LaptopSaveInfo.sLastHiredMerc.fHaveDisplayedPopUpInLaptop = FALSE;
 
   // Initialize all vars
-  guiCurrentLaptopMode = LAPTOP_MODE_EMAIL;
-  guiPreviousLaptopMode = LAPTOP_MODE_NONE;
-  guiCurrentWWWMode = LAPTOP_MODE_NONE;
-  guiCurrentSidePanel = FIRST_SIDE_PANEL;
-  guiPreviousSidePanel = FIRST_SIDE_PANEL;
+  guiCurrentLaptopMode = Enum95.LAPTOP_MODE_EMAIL;
+  guiPreviousLaptopMode = Enum95.LAPTOP_MODE_NONE;
+  guiCurrentWWWMode = Enum95.LAPTOP_MODE_NONE;
+  guiCurrentSidePanel = Enum96.FIRST_SIDE_PANEL;
+  guiPreviousSidePanel = Enum96.FIRST_SIDE_PANEL;
 
   gfSideBarFlag = FALSE;
   gfShowBookmarks = FALSE;
@@ -476,7 +476,7 @@ function LaptopScreenInit(): UINT32 {
   GameInitPersonnel();
 
   // init program states
-  memset(addressof(gLaptopProgramStates), LAPTOP_PROGRAM_MINIMIZED, sizeof(gLaptopProgramStates));
+  memset(addressof(gLaptopProgramStates), Enum94.LAPTOP_PROGRAM_MINIMIZED, sizeof(gLaptopProgramStates));
 
   gfAtLeastOneMercWasHired = FALSE;
 
@@ -554,7 +554,7 @@ function EnterLaptop(): INT32 {
   StopAnyCurrentlyTalkingSpeech();
 
   // Don't play music....
-  SetMusicMode(MUSIC_LAPTOP);
+  SetMusicMode(Enum328.MUSIC_LAPTOP);
 
   // Stop ambients...
   StopAmbients();
@@ -565,7 +565,7 @@ function EnterLaptop(): INT32 {
     giRainDelayInternetSite = -1;
 
     // lower the volume
-    guiRainLoop = PlayJA2Ambient(RAIN_1, LOWVOLUME, 0);
+    guiRainLoop = PlayJA2Ambient(Enum331.RAIN_1, LOWVOLUME, 0);
   }
 
   // open the laptop library
@@ -586,12 +586,12 @@ function EnterLaptop(): INT32 {
   fReDrawNewMailFlag = TRUE;
 
   // setup basic cursors
-  guiCurrentLapTopCursor = LAPTOP_PANEL_CURSOR;
-  guiPreviousLapTopCursor = LAPTOP_NO_CURSOR;
+  guiCurrentLapTopCursor = Enum97.LAPTOP_PANEL_CURSOR;
+  guiPreviousLapTopCursor = Enum97.LAPTOP_NO_CURSOR;
 
   // sub page
   giCurrentSubPage = 0;
-  giCurrentRegion = EMAIL_REGION;
+  giCurrentRegion = Enum92.EMAIL_REGION;
 
   // load the laptop graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -625,14 +625,14 @@ function EnterLaptop(): INT32 {
   // load background
   LoadDesktopBackground();
 
-  guiCurrentLaptopMode = LAPTOP_MODE_NONE;
+  guiCurrentLaptopMode = Enum95.LAPTOP_MODE_NONE;
   // MSYS_SetCurrentCursor(CURSOR_NORMAL);
 
-  guiCurrentLaptopMode = LAPTOP_MODE_NONE;
-  guiPreviousLaptopMode = LAPTOP_MODE_NONE;
-  guiCurrentWWWMode = LAPTOP_MODE_NONE;
-  guiCurrentSidePanel = FIRST_SIDE_PANEL;
-  guiPreviousSidePanel = FIRST_SIDE_PANEL;
+  guiCurrentLaptopMode = Enum95.LAPTOP_MODE_NONE;
+  guiPreviousLaptopMode = Enum95.LAPTOP_MODE_NONE;
+  guiCurrentWWWMode = Enum95.LAPTOP_MODE_NONE;
+  guiCurrentSidePanel = Enum96.FIRST_SIDE_PANEL;
+  guiPreviousSidePanel = Enum96.FIRST_SIDE_PANEL;
   gfSideBarFlag = FALSE;
   CreateLapTopMouseRegions();
   RenderLapTopImage();
@@ -651,7 +651,7 @@ function EnterLaptop(): INT32 {
   memset(addressof(LaptopSaveInfo.fVisitedBookmarkAlready), 0, sizeof(LaptopSaveInfo.fVisitedBookmarkAlready));
 
   // init program states
-  memset(addressof(gLaptopProgramStates), LAPTOP_PROGRAM_MINIMIZED, sizeof(gLaptopProgramStates));
+  memset(addressof(gLaptopProgramStates), Enum94.LAPTOP_PROGRAM_MINIMIZED, sizeof(gLaptopProgramStates));
 
   // turn the power on
   fPowerLightOn = TRUE;
@@ -671,7 +671,7 @@ function EnterLaptop(): INT32 {
 
   gfShowBookmarks = FALSE;
   LoadBookmark();
-  SetBookMark(AIM_BOOKMARK);
+  SetBookMark(Enum98.AIM_BOOKMARK);
   LoadLoadPending();
 
   DrawDeskTopBackground();
@@ -698,10 +698,10 @@ function ExitLaptop(): void {
   }
 
   if (DidGameJustStart()) {
-    SetMusicMode(MUSIC_LAPTOP);
+    SetMusicMode(Enum328.MUSIC_LAPTOP);
   } else {
     // Restore to old stuff...
-    SetMusicMode(MUSIC_RESTORE);
+    SetMusicMode(Enum328.MUSIC_RESTORE);
   }
 
   // Start ambients...
@@ -710,7 +710,7 @@ function ExitLaptop(): void {
   // if its raining, start the rain showers
   if (IsItRaining()) {
     // Raise the volume to where it was
-    guiRainLoop = PlayJA2Ambient(RAIN_1, MIDVOLUME, 0);
+    guiRainLoop = PlayJA2Ambient(Enum331.RAIN_1, MIDVOLUME, 0);
   }
 
   // release cursor
@@ -812,135 +812,135 @@ function RenderLaptop(): void {
   }
 
   switch (guiCurrentLaptopMode) {
-    case (LAPTOP_MODE_NONE):
+    case (Enum95.LAPTOP_MODE_NONE):
       DrawDeskTopBackground();
       break;
-    case LAPTOP_MODE_AIM:
+    case Enum95.LAPTOP_MODE_AIM:
       RenderAIM();
       break;
-    case LAPTOP_MODE_AIM_MEMBERS:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS:
       RenderAIMMembers();
       break;
-    case LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX:
       RenderAimFacialIndex();
       break;
-    case LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES:
       RenderAimSort();
       break;
-    case LAPTOP_MODE_AIM_MEMBERS_ARCHIVES:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS_ARCHIVES:
       RenderAimArchives();
       break;
-    case LAPTOP_MODE_AIM_POLICIES:
+    case Enum95.LAPTOP_MODE_AIM_POLICIES:
       RenderAimPolicies();
       break;
-    case LAPTOP_MODE_AIM_LINKS:
+    case Enum95.LAPTOP_MODE_AIM_LINKS:
       RenderAimLinks();
       break;
-    case LAPTOP_MODE_AIM_HISTORY:
+    case Enum95.LAPTOP_MODE_AIM_HISTORY:
       RenderAimHistory();
       break;
-    case LAPTOP_MODE_MERC:
+    case Enum95.LAPTOP_MODE_MERC:
       RenderMercs();
       break;
-    case LAPTOP_MODE_MERC_FILES:
+    case Enum95.LAPTOP_MODE_MERC_FILES:
       RenderMercsFiles();
       break;
-    case LAPTOP_MODE_MERC_ACCOUNT:
+    case Enum95.LAPTOP_MODE_MERC_ACCOUNT:
       RenderMercsAccount();
       break;
-    case LAPTOP_MODE_MERC_NO_ACCOUNT:
+    case Enum95.LAPTOP_MODE_MERC_NO_ACCOUNT:
       RenderMercsNoAccount();
       break;
 
-    case LAPTOP_MODE_BOBBY_R:
+    case Enum95.LAPTOP_MODE_BOBBY_R:
       RenderBobbyR();
       break;
 
-    case LAPTOP_MODE_BOBBY_R_GUNS:
+    case Enum95.LAPTOP_MODE_BOBBY_R_GUNS:
       RenderBobbyRGuns();
       break;
-    case LAPTOP_MODE_BOBBY_R_AMMO:
+    case Enum95.LAPTOP_MODE_BOBBY_R_AMMO:
       RenderBobbyRAmmo();
       break;
-    case LAPTOP_MODE_BOBBY_R_ARMOR:
+    case Enum95.LAPTOP_MODE_BOBBY_R_ARMOR:
       RenderBobbyRArmour();
       break;
-    case LAPTOP_MODE_BOBBY_R_MISC:
+    case Enum95.LAPTOP_MODE_BOBBY_R_MISC:
       RenderBobbyRMisc();
       break;
-    case LAPTOP_MODE_BOBBY_R_USED:
+    case Enum95.LAPTOP_MODE_BOBBY_R_USED:
       RenderBobbyRUsed();
       break;
-    case LAPTOP_MODE_BOBBY_R_MAILORDER:
+    case Enum95.LAPTOP_MODE_BOBBY_R_MAILORDER:
       RenderBobbyRMailOrder();
       break;
-    case LAPTOP_MODE_CHAR_PROFILE:
+    case Enum95.LAPTOP_MODE_CHAR_PROFILE:
       RenderCharProfile();
       break;
-    case LAPTOP_MODE_FLORIST:
+    case Enum95.LAPTOP_MODE_FLORIST:
       RenderFlorist();
       break;
-    case LAPTOP_MODE_FLORIST_FLOWER_GALLERY:
+    case Enum95.LAPTOP_MODE_FLORIST_FLOWER_GALLERY:
       RenderFloristGallery();
       break;
-    case LAPTOP_MODE_FLORIST_ORDERFORM:
+    case Enum95.LAPTOP_MODE_FLORIST_ORDERFORM:
       RenderFloristOrderForm();
       break;
-    case LAPTOP_MODE_FLORIST_CARD_GALLERY:
+    case Enum95.LAPTOP_MODE_FLORIST_CARD_GALLERY:
       RenderFloristCards();
       break;
 
-    case LAPTOP_MODE_INSURANCE:
+    case Enum95.LAPTOP_MODE_INSURANCE:
       RenderInsurance();
       break;
 
-    case LAPTOP_MODE_INSURANCE_INFO:
+    case Enum95.LAPTOP_MODE_INSURANCE_INFO:
       RenderInsuranceInfo();
       break;
 
-    case LAPTOP_MODE_INSURANCE_CONTRACT:
+    case Enum95.LAPTOP_MODE_INSURANCE_CONTRACT:
       RenderInsuranceContract();
       break;
 
-    case LAPTOP_MODE_INSURANCE_COMMENTS:
+    case Enum95.LAPTOP_MODE_INSURANCE_COMMENTS:
       RenderInsuranceComments();
       break;
 
-    case LAPTOP_MODE_FUNERAL:
+    case Enum95.LAPTOP_MODE_FUNERAL:
       RenderFuneral();
       break;
-    case LAPTOP_MODE_SIRTECH:
+    case Enum95.LAPTOP_MODE_SIRTECH:
       RenderSirTech();
       break;
-    case LAPTOP_MODE_FINANCES:
+    case Enum95.LAPTOP_MODE_FINANCES:
       RenderFinances();
       break;
-    case LAPTOP_MODE_PERSONNEL:
+    case Enum95.LAPTOP_MODE_PERSONNEL:
       RenderPersonnel();
       break;
-    case LAPTOP_MODE_HISTORY:
+    case Enum95.LAPTOP_MODE_HISTORY:
       RenderHistory();
       break;
-    case LAPTOP_MODE_FILES:
+    case Enum95.LAPTOP_MODE_FILES:
       RenderFiles();
       break;
-    case LAPTOP_MODE_EMAIL:
+    case Enum95.LAPTOP_MODE_EMAIL:
       RenderEmail();
       break;
-    case (LAPTOP_MODE_WWW):
+    case (Enum95.LAPTOP_MODE_WWW):
       DrawDeskTopBackground();
       RenderWWWProgramTitleBar();
       break;
-    case (LAPTOP_MODE_BROKEN_LINK):
+    case (Enum95.LAPTOP_MODE_BROKEN_LINK):
       RenderBrokenLink();
       break;
 
-    case LAPTOP_MODE_BOBBYR_SHIPMENTS:
+    case Enum95.LAPTOP_MODE_BOBBYR_SHIPMENTS:
       RenderBobbyRShipments();
       break;
   }
 
-  if (guiCurrentLaptopMode >= LAPTOP_MODE_WWW) {
+  if (guiCurrentLaptopMode >= Enum95.LAPTOP_MODE_WWW) {
     // render program bar for www program
     RenderWWWProgramTitleBar();
   }
@@ -967,8 +967,8 @@ function EnterNewLaptopMode(): void {
 
   // handle maximizing of programs
   switch (guiCurrentLaptopMode) {
-    case (LAPTOP_MODE_EMAIL):
-      if (gLaptopProgramStates[LAPTOP_PROGRAM_MAILER] == LAPTOP_PROGRAM_MINIMIZED) {
+    case (Enum95.LAPTOP_MODE_EMAIL):
+      if (gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_MAILER] == Enum94.LAPTOP_PROGRAM_MINIMIZED) {
         // minized, maximized
         if (fMaximizingProgram == FALSE) {
           fInitTitle = TRUE;
@@ -976,14 +976,14 @@ function EnterNewLaptopMode(): void {
           ExitLaptopMode(guiPreviousLaptopMode);
         }
         fMaximizingProgram = TRUE;
-        bProgramBeingMaximized = LAPTOP_PROGRAM_MAILER;
-        gLaptopProgramStates[LAPTOP_PROGRAM_MAILER] = LAPTOP_PROGRAM_OPEN;
+        bProgramBeingMaximized = Enum93.LAPTOP_PROGRAM_MAILER;
+        gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_MAILER] = Enum94.LAPTOP_PROGRAM_OPEN;
 
         return;
       }
       break;
-    case (LAPTOP_MODE_FILES):
-      if (gLaptopProgramStates[LAPTOP_PROGRAM_FILES] == LAPTOP_PROGRAM_MINIMIZED) {
+    case (Enum95.LAPTOP_MODE_FILES):
+      if (gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_FILES] == Enum94.LAPTOP_PROGRAM_MINIMIZED) {
         // minized, maximized
         if (fMaximizingProgram == FALSE) {
           fInitTitle = TRUE;
@@ -993,13 +993,13 @@ function EnterNewLaptopMode(): void {
 
         // minized, maximized
         fMaximizingProgram = TRUE;
-        bProgramBeingMaximized = LAPTOP_PROGRAM_FILES;
-        gLaptopProgramStates[LAPTOP_PROGRAM_FILES] = LAPTOP_PROGRAM_OPEN;
+        bProgramBeingMaximized = Enum93.LAPTOP_PROGRAM_FILES;
+        gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_FILES] = Enum94.LAPTOP_PROGRAM_OPEN;
         return;
       }
       break;
-    case (LAPTOP_MODE_PERSONNEL):
-      if (gLaptopProgramStates[LAPTOP_PROGRAM_PERSONNEL] == LAPTOP_PROGRAM_MINIMIZED) {
+    case (Enum95.LAPTOP_MODE_PERSONNEL):
+      if (gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_PERSONNEL] == Enum94.LAPTOP_PROGRAM_MINIMIZED) {
         // minized, maximized
         if (fMaximizingProgram == FALSE) {
           fInitTitle = TRUE;
@@ -1009,13 +1009,13 @@ function EnterNewLaptopMode(): void {
 
         // minized, maximized
         fMaximizingProgram = TRUE;
-        bProgramBeingMaximized = LAPTOP_PROGRAM_PERSONNEL;
-        gLaptopProgramStates[LAPTOP_PROGRAM_PERSONNEL] = LAPTOP_PROGRAM_OPEN;
+        bProgramBeingMaximized = Enum93.LAPTOP_PROGRAM_PERSONNEL;
+        gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_PERSONNEL] = Enum94.LAPTOP_PROGRAM_OPEN;
         return;
       }
       break;
-    case (LAPTOP_MODE_FINANCES):
-      if (gLaptopProgramStates[LAPTOP_PROGRAM_FINANCES] == LAPTOP_PROGRAM_MINIMIZED) {
+    case (Enum95.LAPTOP_MODE_FINANCES):
+      if (gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_FINANCES] == Enum94.LAPTOP_PROGRAM_MINIMIZED) {
         // minized, maximized
         if (fMaximizingProgram == FALSE) {
           fInitTitle = TRUE;
@@ -1025,13 +1025,13 @@ function EnterNewLaptopMode(): void {
 
         // minized, maximized
         fMaximizingProgram = TRUE;
-        bProgramBeingMaximized = LAPTOP_PROGRAM_FINANCES;
-        gLaptopProgramStates[LAPTOP_PROGRAM_FINANCES] = LAPTOP_PROGRAM_OPEN;
+        bProgramBeingMaximized = Enum93.LAPTOP_PROGRAM_FINANCES;
+        gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_FINANCES] = Enum94.LAPTOP_PROGRAM_OPEN;
         return;
       }
       break;
-    case (LAPTOP_MODE_HISTORY):
-      if (gLaptopProgramStates[LAPTOP_PROGRAM_HISTORY] == LAPTOP_PROGRAM_MINIMIZED) {
+    case (Enum95.LAPTOP_MODE_HISTORY):
+      if (gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_HISTORY] == Enum94.LAPTOP_PROGRAM_MINIMIZED) {
         // minized, maximized
         if (fMaximizingProgram == FALSE) {
           fInitTitle = TRUE;
@@ -1040,16 +1040,16 @@ function EnterNewLaptopMode(): void {
         }
         // minized, maximized
         fMaximizingProgram = TRUE;
-        bProgramBeingMaximized = LAPTOP_PROGRAM_HISTORY;
-        gLaptopProgramStates[LAPTOP_PROGRAM_HISTORY] = LAPTOP_PROGRAM_OPEN;
+        bProgramBeingMaximized = Enum93.LAPTOP_PROGRAM_HISTORY;
+        gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_HISTORY] = Enum94.LAPTOP_PROGRAM_OPEN;
         return;
       }
       break;
-    case (LAPTOP_MODE_NONE):
+    case (Enum95.LAPTOP_MODE_NONE):
       // do nothing
       break;
     default:
-      if (gLaptopProgramStates[LAPTOP_PROGRAM_WEB_BROWSER] == LAPTOP_PROGRAM_MINIMIZED) {
+      if (gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_WEB_BROWSER] == Enum94.LAPTOP_PROGRAM_MINIMIZED) {
         // minized, maximized
         if (fMaximizingProgram == FALSE) {
           fInitTitle = TRUE;
@@ -1058,8 +1058,8 @@ function EnterNewLaptopMode(): void {
         }
         // minized, maximized
         fMaximizingProgram = TRUE;
-        bProgramBeingMaximized = LAPTOP_PROGRAM_WEB_BROWSER;
-        gLaptopProgramStates[LAPTOP_PROGRAM_WEB_BROWSER] = LAPTOP_PROGRAM_OPEN;
+        bProgramBeingMaximized = Enum93.LAPTOP_PROGRAM_WEB_BROWSER;
+        gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_WEB_BROWSER] = Enum94.LAPTOP_PROGRAM_OPEN;
         return;
       }
       break;
@@ -1084,15 +1084,15 @@ function EnterNewLaptopMode(): void {
     }
   }
 
-  if ((guiCurrentWWWMode == LAPTOP_MODE_NONE) && (guiCurrentLaptopMode >= LAPTOP_MODE_WWW)) {
+  if ((guiCurrentWWWMode == Enum95.LAPTOP_MODE_NONE) && (guiCurrentLaptopMode >= Enum95.LAPTOP_MODE_WWW)) {
     RenderLapTopImage();
-    giCurrentRegion = WWW_REGION;
+    giCurrentRegion = Enum92.WWW_REGION;
     RestoreOldRegion(giOldRegion);
-    guiCurrentLaptopMode = LAPTOP_MODE_WWW;
+    guiCurrentLaptopMode = Enum95.LAPTOP_MODE_WWW;
     HighLightRegion(giCurrentRegion);
   } else {
-    if (guiCurrentLaptopMode > LAPTOP_MODE_WWW) {
-      if (guiPreviousLaptopMode < LAPTOP_MODE_WWW)
+    if (guiCurrentLaptopMode > Enum95.LAPTOP_MODE_WWW) {
+      if (guiPreviousLaptopMode < Enum95.LAPTOP_MODE_WWW)
         guiCurrentLaptopMode = guiCurrentWWWMode;
       else {
         guiCurrentWWWMode = guiCurrentLaptopMode;
@@ -1101,137 +1101,137 @@ function EnterNewLaptopMode(): void {
     }
   }
 
-  if (guiCurrentLaptopMode >= LAPTOP_MODE_WWW) {
+  if (guiCurrentLaptopMode >= Enum95.LAPTOP_MODE_WWW) {
     RenderWWWProgramTitleBar();
   }
 
-  if ((guiCurrentLaptopMode >= LAPTOP_MODE_WWW) && (guiPreviousLaptopMode >= LAPTOP_MODE_WWW)) {
+  if ((guiCurrentLaptopMode >= Enum95.LAPTOP_MODE_WWW) && (guiPreviousLaptopMode >= Enum95.LAPTOP_MODE_WWW)) {
     gfShowBookmarks = FALSE;
   }
 
   // Initialize the new mode.
   switch (guiCurrentLaptopMode) {
-    case LAPTOP_MODE_AIM:
+    case Enum95.LAPTOP_MODE_AIM:
       EnterAIM();
       break;
-    case LAPTOP_MODE_AIM_MEMBERS:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS:
       EnterAIMMembers();
       break;
-    case LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX:
       EnterAimFacialIndex();
       break;
-    case LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES:
       EnterAimSort();
       break;
 
-    case LAPTOP_MODE_AIM_MEMBERS_ARCHIVES:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS_ARCHIVES:
       EnterAimArchives();
       break;
-    case LAPTOP_MODE_AIM_POLICIES:
+    case Enum95.LAPTOP_MODE_AIM_POLICIES:
       EnterAimPolicies();
       break;
-    case LAPTOP_MODE_AIM_LINKS:
+    case Enum95.LAPTOP_MODE_AIM_LINKS:
       EnterAimLinks();
       break;
-    case LAPTOP_MODE_AIM_HISTORY:
+    case Enum95.LAPTOP_MODE_AIM_HISTORY:
       EnterAimHistory();
       break;
 
-    case LAPTOP_MODE_MERC:
+    case Enum95.LAPTOP_MODE_MERC:
       EnterMercs();
       break;
-    case LAPTOP_MODE_MERC_FILES:
+    case Enum95.LAPTOP_MODE_MERC_FILES:
       EnterMercsFiles();
       break;
-    case LAPTOP_MODE_MERC_ACCOUNT:
+    case Enum95.LAPTOP_MODE_MERC_ACCOUNT:
       EnterMercsAccount();
       break;
-    case LAPTOP_MODE_MERC_NO_ACCOUNT:
+    case Enum95.LAPTOP_MODE_MERC_NO_ACCOUNT:
       EnterMercsNoAccount();
       break;
 
-    case LAPTOP_MODE_BOBBY_R:
+    case Enum95.LAPTOP_MODE_BOBBY_R:
       EnterBobbyR();
       break;
-    case LAPTOP_MODE_BOBBY_R_GUNS:
+    case Enum95.LAPTOP_MODE_BOBBY_R_GUNS:
       EnterBobbyRGuns();
       break;
-    case LAPTOP_MODE_BOBBY_R_AMMO:
+    case Enum95.LAPTOP_MODE_BOBBY_R_AMMO:
       EnterBobbyRAmmo();
       break;
-    case LAPTOP_MODE_BOBBY_R_ARMOR:
+    case Enum95.LAPTOP_MODE_BOBBY_R_ARMOR:
       EnterBobbyRArmour();
       break;
-    case LAPTOP_MODE_BOBBY_R_MISC:
+    case Enum95.LAPTOP_MODE_BOBBY_R_MISC:
       EnterBobbyRMisc();
       break;
-    case LAPTOP_MODE_BOBBY_R_USED:
+    case Enum95.LAPTOP_MODE_BOBBY_R_USED:
       EnterBobbyRUsed();
       break;
-    case LAPTOP_MODE_BOBBY_R_MAILORDER:
+    case Enum95.LAPTOP_MODE_BOBBY_R_MAILORDER:
       EnterBobbyRMailOrder();
       break;
-    case LAPTOP_MODE_CHAR_PROFILE:
+    case Enum95.LAPTOP_MODE_CHAR_PROFILE:
       EnterCharProfile();
       break;
 
-    case LAPTOP_MODE_FLORIST:
+    case Enum95.LAPTOP_MODE_FLORIST:
       EnterFlorist();
       break;
-    case LAPTOP_MODE_FLORIST_FLOWER_GALLERY:
+    case Enum95.LAPTOP_MODE_FLORIST_FLOWER_GALLERY:
       EnterFloristGallery();
       break;
-    case LAPTOP_MODE_FLORIST_ORDERFORM:
+    case Enum95.LAPTOP_MODE_FLORIST_ORDERFORM:
       EnterFloristOrderForm();
       break;
-    case LAPTOP_MODE_FLORIST_CARD_GALLERY:
+    case Enum95.LAPTOP_MODE_FLORIST_CARD_GALLERY:
       EnterFloristCards();
       break;
 
-    case LAPTOP_MODE_INSURANCE:
+    case Enum95.LAPTOP_MODE_INSURANCE:
       EnterInsurance();
       break;
-    case LAPTOP_MODE_INSURANCE_INFO:
+    case Enum95.LAPTOP_MODE_INSURANCE_INFO:
       EnterInsuranceInfo();
       break;
-    case LAPTOP_MODE_INSURANCE_CONTRACT:
+    case Enum95.LAPTOP_MODE_INSURANCE_CONTRACT:
       EnterInsuranceContract();
       break;
-    case LAPTOP_MODE_INSURANCE_COMMENTS:
+    case Enum95.LAPTOP_MODE_INSURANCE_COMMENTS:
       EnterInsuranceComments();
       break;
 
-    case LAPTOP_MODE_FUNERAL:
+    case Enum95.LAPTOP_MODE_FUNERAL:
       EnterFuneral();
       break;
-    case LAPTOP_MODE_SIRTECH:
+    case Enum95.LAPTOP_MODE_SIRTECH:
       EnterSirTech();
       break;
-    case LAPTOP_MODE_FINANCES:
+    case Enum95.LAPTOP_MODE_FINANCES:
       EnterFinances();
       break;
-    case LAPTOP_MODE_PERSONNEL:
+    case Enum95.LAPTOP_MODE_PERSONNEL:
       EnterPersonnel();
       break;
-    case LAPTOP_MODE_HISTORY:
+    case Enum95.LAPTOP_MODE_HISTORY:
       EnterHistory();
       break;
-    case LAPTOP_MODE_FILES:
+    case Enum95.LAPTOP_MODE_FILES:
       EnterFiles();
       break;
-    case LAPTOP_MODE_EMAIL:
+    case Enum95.LAPTOP_MODE_EMAIL:
       EnterEmail();
       break;
-    case LAPTOP_MODE_BROKEN_LINK:
+    case Enum95.LAPTOP_MODE_BROKEN_LINK:
       EnterBrokenLink();
       break;
-    case LAPTOP_MODE_BOBBYR_SHIPMENTS:
+    case Enum95.LAPTOP_MODE_BOBBYR_SHIPMENTS:
       EnterBobbyRShipments();
       break;
   }
 
   // first time using webbrowser in this laptop session
-  if ((fFirstTimeInLaptop == TRUE) && (guiCurrentLaptopMode >= LAPTOP_MODE_WWW)) {
+  if ((fFirstTimeInLaptop == TRUE) && (guiCurrentLaptopMode >= Enum95.LAPTOP_MODE_WWW)) {
     // show bookmarks
     gfShowBookmarks = TRUE;
 
@@ -1260,125 +1260,125 @@ function HandleLapTopHandles(): void {
   }
 
   switch (guiCurrentLaptopMode) {
-    case LAPTOP_MODE_AIM:
+    case Enum95.LAPTOP_MODE_AIM:
 
       HandleAIM();
       break;
-    case LAPTOP_MODE_AIM_MEMBERS:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS:
       HandleAIMMembers();
       break;
-    case LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX:
       HandleAimFacialIndex();
       break;
-    case LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES:
       HandleAimSort();
       break;
-    case LAPTOP_MODE_AIM_MEMBERS_ARCHIVES:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS_ARCHIVES:
       HandleAimArchives();
       break;
-    case LAPTOP_MODE_AIM_POLICIES:
+    case Enum95.LAPTOP_MODE_AIM_POLICIES:
       HandleAimPolicies();
       break;
-    case LAPTOP_MODE_AIM_LINKS:
+    case Enum95.LAPTOP_MODE_AIM_LINKS:
       HandleAimLinks();
       break;
-    case LAPTOP_MODE_AIM_HISTORY:
+    case Enum95.LAPTOP_MODE_AIM_HISTORY:
       HandleAimHistory();
       break;
 
-    case LAPTOP_MODE_MERC:
+    case Enum95.LAPTOP_MODE_MERC:
       HandleMercs();
       break;
-    case LAPTOP_MODE_MERC_FILES:
+    case Enum95.LAPTOP_MODE_MERC_FILES:
       HandleMercsFiles();
       break;
-    case LAPTOP_MODE_MERC_ACCOUNT:
+    case Enum95.LAPTOP_MODE_MERC_ACCOUNT:
       HandleMercsAccount();
       break;
-    case LAPTOP_MODE_MERC_NO_ACCOUNT:
+    case Enum95.LAPTOP_MODE_MERC_NO_ACCOUNT:
       HandleMercsNoAccount();
       break;
 
-    case LAPTOP_MODE_BOBBY_R:
+    case Enum95.LAPTOP_MODE_BOBBY_R:
       HandleBobbyR();
       break;
-    case LAPTOP_MODE_BOBBY_R_GUNS:
+    case Enum95.LAPTOP_MODE_BOBBY_R_GUNS:
       HandleBobbyRGuns();
       break;
-    case LAPTOP_MODE_BOBBY_R_AMMO:
+    case Enum95.LAPTOP_MODE_BOBBY_R_AMMO:
       HandleBobbyRAmmo();
       break;
-    case LAPTOP_MODE_BOBBY_R_ARMOR:
+    case Enum95.LAPTOP_MODE_BOBBY_R_ARMOR:
       HandleBobbyRArmour();
       break;
-    case LAPTOP_MODE_BOBBY_R_MISC:
+    case Enum95.LAPTOP_MODE_BOBBY_R_MISC:
       HandleBobbyRMisc();
       break;
-    case LAPTOP_MODE_BOBBY_R_USED:
+    case Enum95.LAPTOP_MODE_BOBBY_R_USED:
       HandleBobbyRUsed();
       break;
-    case LAPTOP_MODE_BOBBY_R_MAILORDER:
+    case Enum95.LAPTOP_MODE_BOBBY_R_MAILORDER:
       HandleBobbyRMailOrder();
       break;
 
-    case LAPTOP_MODE_CHAR_PROFILE:
+    case Enum95.LAPTOP_MODE_CHAR_PROFILE:
       HandleCharProfile();
       break;
-    case LAPTOP_MODE_FLORIST:
+    case Enum95.LAPTOP_MODE_FLORIST:
       HandleFlorist();
       break;
-    case LAPTOP_MODE_FLORIST_FLOWER_GALLERY:
+    case Enum95.LAPTOP_MODE_FLORIST_FLOWER_GALLERY:
       HandleFloristGallery();
       break;
-    case LAPTOP_MODE_FLORIST_ORDERFORM:
+    case Enum95.LAPTOP_MODE_FLORIST_ORDERFORM:
       HandleFloristOrderForm();
       break;
-    case LAPTOP_MODE_FLORIST_CARD_GALLERY:
+    case Enum95.LAPTOP_MODE_FLORIST_CARD_GALLERY:
       HandleFloristCards();
       break;
 
-    case LAPTOP_MODE_INSURANCE:
+    case Enum95.LAPTOP_MODE_INSURANCE:
       HandleInsurance();
       break;
 
-    case LAPTOP_MODE_INSURANCE_INFO:
+    case Enum95.LAPTOP_MODE_INSURANCE_INFO:
       HandleInsuranceInfo();
       break;
 
-    case LAPTOP_MODE_INSURANCE_CONTRACT:
+    case Enum95.LAPTOP_MODE_INSURANCE_CONTRACT:
       HandleInsuranceContract();
       break;
-    case LAPTOP_MODE_INSURANCE_COMMENTS:
+    case Enum95.LAPTOP_MODE_INSURANCE_COMMENTS:
       HandleInsuranceComments();
       break;
 
-    case LAPTOP_MODE_FUNERAL:
+    case Enum95.LAPTOP_MODE_FUNERAL:
       HandleFuneral();
       break;
-    case LAPTOP_MODE_SIRTECH:
+    case Enum95.LAPTOP_MODE_SIRTECH:
       HandleSirTech();
       break;
-    case LAPTOP_MODE_FINANCES:
+    case Enum95.LAPTOP_MODE_FINANCES:
       HandleFinances();
       break;
-    case LAPTOP_MODE_PERSONNEL:
+    case Enum95.LAPTOP_MODE_PERSONNEL:
       HandlePersonnel();
       break;
-    case LAPTOP_MODE_HISTORY:
+    case Enum95.LAPTOP_MODE_HISTORY:
       HandleHistory();
       break;
-    case LAPTOP_MODE_FILES:
+    case Enum95.LAPTOP_MODE_FILES:
       HandleFiles();
       break;
-    case LAPTOP_MODE_EMAIL:
+    case Enum95.LAPTOP_MODE_EMAIL:
       HandleEmail();
       break;
 
-    case LAPTOP_MODE_BROKEN_LINK:
+    case Enum95.LAPTOP_MODE_BROKEN_LINK:
       HandleBrokenLink();
       break;
 
-    case LAPTOP_MODE_BOBBYR_SHIPMENTS:
+    case Enum95.LAPTOP_MODE_BOBBYR_SHIPMENTS:
       HandleBobbyRShipments();
       break;
   }
@@ -1499,10 +1499,10 @@ function LaptopScreenHandle(): UINT32 {
   // DO NOT MOVE THIS FUNCTION CALL!!!
 
   // This determines if the help screen should be active
-  if (ShouldTheHelpScreenComeUp(HELP_SCREEN_LAPTOP, FALSE)) {
+  if (ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_LAPTOP, FALSE)) {
     // handle the help screen
     HelpScreenHandler();
-    return LAPTOP_SCREEN;
+    return Enum26.LAPTOP_SCREEN;
   }
 
   RestoreBackgroundRects();
@@ -1524,12 +1524,12 @@ function LaptopScreenHandle(): UINT32 {
   CheckIfNewWWWW();
 
   if (guiCurrentLaptopMode != guiPreviousLaptopMode) {
-    if (guiCurrentLaptopMode <= LAPTOP_MODE_WWW) {
+    if (guiCurrentLaptopMode <= Enum95.LAPTOP_MODE_WWW) {
       fLoadPendingFlag = FALSE;
     }
 
     if ((fMaximizingProgram == FALSE) && (fMinizingProgram == FALSE)) {
-      if (guiCurrentLaptopMode <= LAPTOP_MODE_WWW) {
+      if (guiCurrentLaptopMode <= Enum95.LAPTOP_MODE_WWW) {
         EnterNewLaptopMode();
         if ((fMaximizingProgram == FALSE) && (fMinizingProgram == FALSE)) {
           guiPreviousLaptopMode = guiCurrentLaptopMode;
@@ -1670,7 +1670,7 @@ function LaptopScreenHandle(): UINT32 {
   ExecuteBaseDirtyRectQueue();
   ResetInterface();
   EndFrameBufferRender();
-  return LAPTOP_SCREEN;
+  return Enum26.LAPTOP_SCREEN;
 }
 
 function RenderLaptopPanel(): UINT32 {
@@ -1681,128 +1681,128 @@ function ExitLaptopMode(uiMode: UINT32): UINT32 {
   // Deallocate the previous mode that you were in.
 
   switch (uiMode) {
-    case LAPTOP_MODE_AIM:
+    case Enum95.LAPTOP_MODE_AIM:
       ExitAIM();
       break;
-    case LAPTOP_MODE_AIM_MEMBERS:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS:
       ExitAIMMembers();
       break;
-    case LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX:
       ExitAimFacialIndex();
       break;
-    case LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES:
       ExitAimSort();
       break;
-    case LAPTOP_MODE_AIM_MEMBERS_ARCHIVES:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS_ARCHIVES:
       ExitAimArchives();
       break;
-    case LAPTOP_MODE_AIM_POLICIES:
+    case Enum95.LAPTOP_MODE_AIM_POLICIES:
       ExitAimPolicies();
       break;
-    case LAPTOP_MODE_AIM_LINKS:
+    case Enum95.LAPTOP_MODE_AIM_LINKS:
       ExitAimLinks();
       break;
-    case LAPTOP_MODE_AIM_HISTORY:
+    case Enum95.LAPTOP_MODE_AIM_HISTORY:
       ExitAimHistory();
       break;
 
-    case LAPTOP_MODE_MERC:
+    case Enum95.LAPTOP_MODE_MERC:
       ExitMercs();
       break;
-    case LAPTOP_MODE_MERC_FILES:
+    case Enum95.LAPTOP_MODE_MERC_FILES:
       ExitMercsFiles();
       break;
-    case LAPTOP_MODE_MERC_ACCOUNT:
+    case Enum95.LAPTOP_MODE_MERC_ACCOUNT:
       ExitMercsAccount();
       break;
-    case LAPTOP_MODE_MERC_NO_ACCOUNT:
+    case Enum95.LAPTOP_MODE_MERC_NO_ACCOUNT:
       ExitMercsNoAccount();
       break;
 
-    case LAPTOP_MODE_BOBBY_R:
+    case Enum95.LAPTOP_MODE_BOBBY_R:
       ExitBobbyR();
       break;
-    case LAPTOP_MODE_BOBBY_R_GUNS:
+    case Enum95.LAPTOP_MODE_BOBBY_R_GUNS:
       ExitBobbyRGuns();
       break;
-    case LAPTOP_MODE_BOBBY_R_AMMO:
+    case Enum95.LAPTOP_MODE_BOBBY_R_AMMO:
       ExitBobbyRAmmo();
       break;
-    case LAPTOP_MODE_BOBBY_R_ARMOR:
+    case Enum95.LAPTOP_MODE_BOBBY_R_ARMOR:
       ExitBobbyRArmour();
       break;
-    case LAPTOP_MODE_BOBBY_R_MISC:
+    case Enum95.LAPTOP_MODE_BOBBY_R_MISC:
       ExitBobbyRMisc();
       break;
-    case LAPTOP_MODE_BOBBY_R_USED:
+    case Enum95.LAPTOP_MODE_BOBBY_R_USED:
       ExitBobbyRUsed();
       break;
-    case LAPTOP_MODE_BOBBY_R_MAILORDER:
+    case Enum95.LAPTOP_MODE_BOBBY_R_MAILORDER:
       ExitBobbyRMailOrder();
       break;
 
-    case LAPTOP_MODE_CHAR_PROFILE:
+    case Enum95.LAPTOP_MODE_CHAR_PROFILE:
       ExitCharProfile();
       break;
-    case LAPTOP_MODE_FLORIST:
+    case Enum95.LAPTOP_MODE_FLORIST:
       ExitFlorist();
       break;
-    case LAPTOP_MODE_FLORIST_FLOWER_GALLERY:
+    case Enum95.LAPTOP_MODE_FLORIST_FLOWER_GALLERY:
       ExitFloristGallery();
       break;
-    case LAPTOP_MODE_FLORIST_ORDERFORM:
+    case Enum95.LAPTOP_MODE_FLORIST_ORDERFORM:
       ExitFloristOrderForm();
       break;
-    case LAPTOP_MODE_FLORIST_CARD_GALLERY:
+    case Enum95.LAPTOP_MODE_FLORIST_CARD_GALLERY:
       ExitFloristCards();
       break;
 
-    case LAPTOP_MODE_INSURANCE:
+    case Enum95.LAPTOP_MODE_INSURANCE:
       ExitInsurance();
       break;
 
-    case LAPTOP_MODE_INSURANCE_INFO:
+    case Enum95.LAPTOP_MODE_INSURANCE_INFO:
       ExitInsuranceInfo();
       break;
 
-    case LAPTOP_MODE_INSURANCE_CONTRACT:
+    case Enum95.LAPTOP_MODE_INSURANCE_CONTRACT:
       ExitInsuranceContract();
       break;
-    case LAPTOP_MODE_INSURANCE_COMMENTS:
+    case Enum95.LAPTOP_MODE_INSURANCE_COMMENTS:
       ExitInsuranceComments();
       break;
 
-    case LAPTOP_MODE_FUNERAL:
+    case Enum95.LAPTOP_MODE_FUNERAL:
       ExitFuneral();
       break;
-    case LAPTOP_MODE_SIRTECH:
+    case Enum95.LAPTOP_MODE_SIRTECH:
       ExitSirTech();
       break;
-    case LAPTOP_MODE_FINANCES:
+    case Enum95.LAPTOP_MODE_FINANCES:
       ExitFinances();
       break;
-    case LAPTOP_MODE_PERSONNEL:
+    case Enum95.LAPTOP_MODE_PERSONNEL:
       ExitPersonnel();
       break;
-    case LAPTOP_MODE_HISTORY:
+    case Enum95.LAPTOP_MODE_HISTORY:
       ExitHistory();
       break;
-    case LAPTOP_MODE_FILES:
+    case Enum95.LAPTOP_MODE_FILES:
       ExitFiles();
       break;
-    case LAPTOP_MODE_EMAIL:
+    case Enum95.LAPTOP_MODE_EMAIL:
       ExitEmail();
       break;
-    case LAPTOP_MODE_BROKEN_LINK:
+    case Enum95.LAPTOP_MODE_BROKEN_LINK:
       ExitBrokenLink();
       break;
 
-    case LAPTOP_MODE_BOBBYR_SHIPMENTS:
+    case Enum95.LAPTOP_MODE_BOBBYR_SHIPMENTS:
       ExitBobbyRShipments();
       break;
   }
 
-  if ((uiMode != LAPTOP_MODE_NONE) && (uiMode < LAPTOP_MODE_WWW)) {
+  if ((uiMode != Enum95.LAPTOP_MODE_NONE) && (uiMode < Enum95.LAPTOP_MODE_WWW)) {
     CreateDestroyMinimizeButtonForCurrentMode();
   }
   return TRUE;
@@ -1821,7 +1821,7 @@ function CreateLaptopButtons(): UINT32 {
 
   gLaptopButtonImage[0] = LoadButtonImage("LAPTOP\\buttonsforlaptop.sti", -1, 0, -1, 8, -1);
   gLaptopButton[0] = QuickCreateButton(gLaptopButtonImage[0], 29, 66, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, EmailRegionButtonCallback);
-  CreateLaptopButtonHelpText(gLaptopButton[0], LAPTOP_BN_HLP_TXT_VIEW_EMAIL);
+  CreateLaptopButtonHelpText(gLaptopButton[0], Enum376.LAPTOP_BN_HLP_TXT_VIEW_EMAIL);
 
   SpecifyButtonText(gLaptopButton[0], pLaptopIcons[0]);
   SpecifyButtonFont(gLaptopButton[0], FONT10ARIAL);
@@ -1831,7 +1831,7 @@ function CreateLaptopButtons(): UINT32 {
 
   gLaptopButtonImage[1] = LoadButtonImage("LAPTOP\\buttonsforlaptop.sti", -1, 1, -1, 9, -1);
   gLaptopButton[1] = QuickCreateButton(gLaptopButtonImage[1], 29, 98, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, WWWRegionButtonCallback);
-  CreateLaptopButtonHelpText(gLaptopButton[1], LAPTOP_BN_HLP_TXT_BROWSE_VARIOUS_WEB_SITES);
+  CreateLaptopButtonHelpText(gLaptopButton[1], Enum376.LAPTOP_BN_HLP_TXT_BROWSE_VARIOUS_WEB_SITES);
 
   SpecifyButtonText(gLaptopButton[1], pLaptopIcons[1]);
   SpecifyButtonFont(gLaptopButton[1], FONT10ARIAL);
@@ -1841,7 +1841,7 @@ function CreateLaptopButtons(): UINT32 {
 
   gLaptopButtonImage[2] = LoadButtonImage("LAPTOP\\buttonsforlaptop.sti", -1, 2, -1, 10, -1);
   gLaptopButton[2] = QuickCreateButton(gLaptopButtonImage[2], 29, 130, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, FilesRegionButtonCallback);
-  CreateLaptopButtonHelpText(gLaptopButton[2], LAPTOP_BN_HLP_TXT_VIEW_FILES_AND_EMAIL_ATTACHMENTS);
+  CreateLaptopButtonHelpText(gLaptopButton[2], Enum376.LAPTOP_BN_HLP_TXT_VIEW_FILES_AND_EMAIL_ATTACHMENTS);
 
   SpecifyButtonText(gLaptopButton[2], pLaptopIcons[5]);
   SpecifyButtonFont(gLaptopButton[2], FONT10ARIAL);
@@ -1851,7 +1851,7 @@ function CreateLaptopButtons(): UINT32 {
 
   gLaptopButtonImage[3] = LoadButtonImage("LAPTOP\\buttonsforlaptop.sti", -1, 3, -1, 11, -1);
   gLaptopButton[3] = QuickCreateButton(gLaptopButtonImage[3], 29, 194, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, PersonnelRegionButtonCallback);
-  CreateLaptopButtonHelpText(gLaptopButton[3], LAPTOP_BN_HLP_TXT_VIEW_TEAM_INFO);
+  CreateLaptopButtonHelpText(gLaptopButton[3], Enum376.LAPTOP_BN_HLP_TXT_VIEW_TEAM_INFO);
 
   SpecifyButtonText(gLaptopButton[3], pLaptopIcons[3]);
   SpecifyButtonFont(gLaptopButton[3], FONT10ARIAL);
@@ -1861,7 +1861,7 @@ function CreateLaptopButtons(): UINT32 {
 
   gLaptopButtonImage[4] = LoadButtonImage("LAPTOP\\buttonsforlaptop.sti", -1, 4, -1, 12, -1);
   gLaptopButton[4] = QuickCreateButton(gLaptopButtonImage[4], 29, 162, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, HistoryRegionButtonCallback);
-  CreateLaptopButtonHelpText(gLaptopButton[4], LAPTOP_BN_HLP_TXT_READ_LOG_OF_EVENTS);
+  CreateLaptopButtonHelpText(gLaptopButton[4], Enum376.LAPTOP_BN_HLP_TXT_READ_LOG_OF_EVENTS);
 
   SpecifyButtonText(gLaptopButton[4], pLaptopIcons[4]);
   SpecifyButtonFont(gLaptopButton[4], FONT10ARIAL);
@@ -1871,7 +1871,7 @@ function CreateLaptopButtons(): UINT32 {
 
   gLaptopButtonImage[5] = LoadButtonImage("LAPTOP\\buttonsforlaptop.sti", -1, 5, -1, 13, -1);
   gLaptopButton[5] = QuickCreateButton(gLaptopButtonImage[5], 29, 226 + 15, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, FinancialRegionButtonCallback);
-  CreateLaptopButtonHelpText(gLaptopButton[5], LAPTOP_BN_HLP_TXT_VIEW_FINANCIAL_SUMMARY_AND_HISTORY);
+  CreateLaptopButtonHelpText(gLaptopButton[5], Enum376.LAPTOP_BN_HLP_TXT_VIEW_FINANCIAL_SUMMARY_AND_HISTORY);
 
   SpecifyButtonText(gLaptopButton[5], pLaptopIcons[2]);
   SpecifyButtonFont(gLaptopButton[5], FONT10ARIAL);
@@ -1882,7 +1882,7 @@ function CreateLaptopButtons(): UINT32 {
   gLaptopButtonImage[6] = LoadButtonImage("LAPTOP\\buttonsforlaptop.sti", -1, 6, -1, 14, -1);
   gLaptopButton[6] = QuickCreateButton(gLaptopButtonImage[6], 29, 371 + 7, // DEF: was 19
                                        BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnOnCallback);
-  CreateLaptopButtonHelpText(gLaptopButton[6], LAPTOP_BN_HLP_TXT_CLOSE_LAPTOP);
+  CreateLaptopButtonHelpText(gLaptopButton[6], Enum376.LAPTOP_BN_HLP_TXT_CLOSE_LAPTOP);
 
   SpecifyButtonText(gLaptopButton[6], pLaptopIcons[6]);
   SpecifyButtonFont(gLaptopButton[6], FONT10ARIAL);
@@ -1891,13 +1891,13 @@ function CreateLaptopButtons(): UINT32 {
   SpecifyButtonDownTextColors(gLaptopButton[6], 2, 0);
 
   // define the cursor
-  SetButtonCursor(gLaptopButton[0], CURSOR_LAPTOP_SCREEN);
-  SetButtonCursor(gLaptopButton[1], CURSOR_LAPTOP_SCREEN);
-  SetButtonCursor(gLaptopButton[2], CURSOR_LAPTOP_SCREEN);
-  SetButtonCursor(gLaptopButton[3], CURSOR_LAPTOP_SCREEN);
-  SetButtonCursor(gLaptopButton[4], CURSOR_LAPTOP_SCREEN);
-  SetButtonCursor(gLaptopButton[5], CURSOR_LAPTOP_SCREEN);
-  SetButtonCursor(gLaptopButton[6], CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(gLaptopButton[0], Enum317.CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(gLaptopButton[1], Enum317.CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(gLaptopButton[2], Enum317.CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(gLaptopButton[3], Enum317.CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(gLaptopButton[4], Enum317.CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(gLaptopButton[5], Enum317.CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(gLaptopButton[6], Enum317.CURSOR_LAPTOP_SCREEN);
 
   return TRUE;
 }
@@ -1950,7 +1950,7 @@ function LeaveLapTopScreen(): BOOLEAN {
     // set new screen
     // if( ( LaptopSaveInfo.gfNewGameLaptop != TRUE ) || !( AnyMercsHired() ) )
     //	{
-    SetLaptopExitScreen(MAP_SCREEN);
+    SetLaptopExitScreen(Enum26.MAP_SCREEN);
     //}
     // if( ( LaptopSaveInfo.gfNewGameLaptop )&&( AnyMercsHired() ) )
     //{
@@ -2093,7 +2093,7 @@ function HandleExit(): BOOLEAN {
   if (LaptopSaveInfo.gfNewGameLaptop != 0) {
     // Set an event to send this email ( day 2 8:00-12:00 )
     if ((LaptopSaveInfo.fIMPCompletedFlag == FALSE) && (LaptopSaveInfo.fSentImpWarningAlready == FALSE)) {
-      AddFutureDayStrategicEvent(EVENT_HAVENT_MADE_IMP_CHARACTER_EMAIL, (8 + Random(4)) * 60, 0, 1);
+      AddFutureDayStrategicEvent(Enum132.EVENT_HAVENT_MADE_IMP_CHARACTER_EMAIL, (8 + Random(4)) * 60, 0, 1);
 
       /*
        Moved to an event that gets triggered the next day: HaventMadeImpMercEmailCallBack()
@@ -2122,7 +2122,7 @@ function CreateLapTopMouseRegions(): BOOLEAN {
   // define regions
 
   // the entire laptop display region
-  MSYS_DefineRegion(addressof(gLapTopScreenRegion), (LaptopScreenRect.iLeft), (LaptopScreenRect.iTop), (LaptopScreenRect.iRight), (LaptopScreenRect.iBottom), MSYS_PRIORITY_NORMAL + 1, CURSOR_LAPTOP_SCREEN, ScreenRegionMvtCallback, LapTopScreenCallBack);
+  MSYS_DefineRegion(addressof(gLapTopScreenRegion), (LaptopScreenRect.iLeft), (LaptopScreenRect.iTop), (LaptopScreenRect.iRight), (LaptopScreenRect.iBottom), MSYS_PRIORITY_NORMAL + 1, Enum317.CURSOR_LAPTOP_SCREEN, ScreenRegionMvtCallback, LapTopScreenCallBack);
 
   // MSYS_AddRegion(&gLapTopScreenRegion);
   return TRUE;
@@ -2144,16 +2144,16 @@ function FinancialRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      if (giCurrentRegion != FINANCIAL_REGION)
+      if (giCurrentRegion != Enum92.FINANCIAL_REGION)
         giOldRegion = giCurrentRegion;
-      giCurrentRegion = FINANCIAL_REGION;
+      giCurrentRegion = Enum92.FINANCIAL_REGION;
       if (gfShowBookmarks) {
         gfShowBookmarks = FALSE;
         fReDrawScreenFlag = TRUE;
       }
-      guiCurrentLaptopMode = LAPTOP_MODE_FINANCES;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FINANCES;
 
-      UpdateListToReflectNewProgramOpened(LAPTOP_PROGRAM_FINANCES);
+      UpdateListToReflectNewProgramOpened(Enum93.LAPTOP_PROGRAM_FINANCES);
     }
   }
 }
@@ -2169,10 +2169,10 @@ function PersonnelRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
-      if (giCurrentRegion != PERSONNEL_REGION)
+      if (giCurrentRegion != Enum92.PERSONNEL_REGION)
         giOldRegion = giCurrentRegion;
-      giCurrentRegion = PERSONNEL_REGION;
-      guiCurrentLaptopMode = LAPTOP_MODE_PERSONNEL;
+      giCurrentRegion = Enum92.PERSONNEL_REGION;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_PERSONNEL;
       if (gfShowBookmarks) {
         gfShowBookmarks = FALSE;
         fReDrawScreenFlag = TRUE;
@@ -2181,7 +2181,7 @@ function PersonnelRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
       HighLightRegion(giCurrentRegion);
       gfShowBookmarks = FALSE;
 
-      UpdateListToReflectNewProgramOpened(LAPTOP_PROGRAM_PERSONNEL);
+      UpdateListToReflectNewProgramOpened(Enum93.LAPTOP_PROGRAM_PERSONNEL);
     }
   }
 }
@@ -2197,7 +2197,7 @@ function EmailRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       // set old region
-      if (giCurrentRegion != EMAIL_REGION)
+      if (giCurrentRegion != Enum92.EMAIL_REGION)
         giOldRegion = giCurrentRegion;
 
       // stop showing WWW bookmarks
@@ -2206,15 +2206,15 @@ function EmailRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
       }
 
       // set current highlight region
-      giCurrentRegion = EMAIL_REGION;
+      giCurrentRegion = Enum92.EMAIL_REGION;
 
       // restore old region
       RestoreOldRegion(giOldRegion);
 
       // set up current mode
-      guiCurrentLaptopMode = LAPTOP_MODE_EMAIL;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_EMAIL;
 
-      UpdateListToReflectNewProgramOpened(LAPTOP_PROGRAM_MAILER);
+      UpdateListToReflectNewProgramOpened(Enum93.LAPTOP_PROGRAM_MAILER);
 
       // highlight current region
       HighLightRegion(giCurrentRegion);
@@ -2238,13 +2238,13 @@ function WWWRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      if (giCurrentRegion != WWW_REGION)
+      if (giCurrentRegion != Enum92.WWW_REGION)
         giOldRegion = giCurrentRegion;
       if (!fNewWWW)
         fNewWWWDisplay = FALSE;
 
       // reset show bookmarks
-      if (guiCurrentLaptopMode < LAPTOP_MODE_WWW) {
+      if (guiCurrentLaptopMode < Enum95.LAPTOP_MODE_WWW) {
         gfShowBookmarks = FALSE;
         fShowBookmarkInfo = TRUE;
       } else {
@@ -2262,7 +2262,7 @@ function WWWRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
         fNewWWWDisplay = TRUE;
 
         // make sure program is maximized
-        if (gLaptopProgramStates[LAPTOP_PROGRAM_WEB_BROWSER] == LAPTOP_PROGRAM_OPEN) {
+        if (gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_WEB_BROWSER] == Enum94.LAPTOP_PROGRAM_OPEN) {
           // re render laptop region
           RenderLapTopImage();
 
@@ -2270,13 +2270,13 @@ function WWWRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
           DrawDeskTopBackground();
         }
       }
-      giCurrentRegion = WWW_REGION;
+      giCurrentRegion = Enum92.WWW_REGION;
       RestoreOldRegion(giOldRegion);
-      if (guiCurrentWWWMode != LAPTOP_MODE_NONE)
+      if (guiCurrentWWWMode != Enum95.LAPTOP_MODE_NONE)
         guiCurrentLaptopMode = guiCurrentWWWMode;
       else
-        guiCurrentLaptopMode = LAPTOP_MODE_WWW;
-      UpdateListToReflectNewProgramOpened(LAPTOP_PROGRAM_WEB_BROWSER);
+        guiCurrentLaptopMode = Enum95.LAPTOP_MODE_WWW;
+      UpdateListToReflectNewProgramOpened(Enum93.LAPTOP_PROGRAM_WEB_BROWSER);
       HighLightRegion(giCurrentRegion);
       fReDrawScreenFlag = TRUE;
     }
@@ -2285,17 +2285,17 @@ function WWWRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       // nothing yet
 
-      if (giCurrentRegion != WWW_REGION)
+      if (giCurrentRegion != Enum92.WWW_REGION)
         giOldRegion = giCurrentRegion;
 
-      giCurrentRegion = WWW_REGION;
+      giCurrentRegion = Enum92.WWW_REGION;
 
       RestoreOldRegion(giOldRegion);
 
-      if (guiCurrentWWWMode != LAPTOP_MODE_NONE)
+      if (guiCurrentWWWMode != Enum95.LAPTOP_MODE_NONE)
         guiCurrentLaptopMode = guiCurrentWWWMode;
       else
-        guiCurrentLaptopMode = LAPTOP_MODE_WWW;
+        guiCurrentLaptopMode = Enum95.LAPTOP_MODE_WWW;
 
       HighLightRegion(giCurrentRegion);
 
@@ -2315,7 +2315,7 @@ function HistoryRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       // if not in history, update to the fact
-      if (giCurrentRegion != HISTORY_REGION)
+      if (giCurrentRegion != Enum92.HISTORY_REGION)
         giOldRegion = giCurrentRegion;
       if (gfShowBookmarks) {
         // stop showing WWW bookmarks
@@ -2323,18 +2323,18 @@ function HistoryRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
       }
 
       // current region is history
-      giCurrentRegion = HISTORY_REGION;
+      giCurrentRegion = Enum92.HISTORY_REGION;
 
       // restore old region area
       RestoreOldRegion(giOldRegion);
 
       // set mode to history
-      guiCurrentLaptopMode = LAPTOP_MODE_HISTORY;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_HISTORY;
 
       // hightlight current icon
       HighLightRegion(giCurrentRegion);
 
-      UpdateListToReflectNewProgramOpened(LAPTOP_PROGRAM_HISTORY);
+      UpdateListToReflectNewProgramOpened(Enum93.LAPTOP_PROGRAM_HISTORY);
 
       gfShowBookmarks = FALSE;
 
@@ -2354,7 +2354,7 @@ function FilesRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       // reset old region
-      if (giCurrentRegion != FILES_REGION)
+      if (giCurrentRegion != Enum92.FILES_REGION)
         giOldRegion = giCurrentRegion;
 
       // stop showing WWW bookmarks
@@ -2364,7 +2364,7 @@ function FilesRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
       }
 
       // set new region
-      giCurrentRegion = FILES_REGION;
+      giCurrentRegion = Enum92.FILES_REGION;
 
       // restore old highlight region
       RestoreOldRegion(giOldRegion);
@@ -2372,9 +2372,9 @@ function FilesRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
       // highlight new region
       HighLightRegion(giCurrentRegion);
 
-      guiCurrentLaptopMode = LAPTOP_MODE_FILES;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FILES;
 
-      UpdateListToReflectNewProgramOpened(LAPTOP_PROGRAM_FILES);
+      UpdateListToReflectNewProgramOpened(Enum93.LAPTOP_PROGRAM_FILES);
 
       // redraw screen
       fReDrawScreenFlag = TRUE;
@@ -2384,19 +2384,19 @@ function FilesRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 
 function HandleLapTopScreenMouseUi(): void {
   if (gEmailRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
-    giHighLightRegion = EMAIL_REGION;
+    giHighLightRegion = Enum92.EMAIL_REGION;
   } else if (gPersonnelRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
-    giHighLightRegion = PERSONNEL_REGION;
+    giHighLightRegion = Enum92.PERSONNEL_REGION;
   } else if (gFinancialRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
-    giHighLightRegion = FINANCIAL_REGION;
+    giHighLightRegion = Enum92.FINANCIAL_REGION;
   } else if (gWWWRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
-    giHighLightRegion = WWW_REGION;
+    giHighLightRegion = Enum92.WWW_REGION;
   } else if (gFilesRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
-    giHighLightRegion = FILES_REGION;
+    giHighLightRegion = Enum92.FILES_REGION;
   } else if (gHistoryRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
-    giHighLightRegion = HISTORY_REGION;
+    giHighLightRegion = Enum92.HISTORY_REGION;
   } else
-    giHighLightRegion = NO_REGION;
+    giHighLightRegion = Enum92.NO_REGION;
   DrawHighLightRegionBox();
 }
 
@@ -2526,7 +2526,7 @@ function CheckIfMouseLeaveScreen(): void {
   let MousePos: POINT;
   GetCursorPos(addressof(MousePos));
   if ((MousePos.x > LAPTOP_SCREEN_LR_X) || (MousePos.x < LAPTOP_UL_X) || (MousePos.y < LAPTOP_UL_Y) || (MousePos.y > LAPTOP_SCREEN_LR_Y)) {
-    guiCurrentLapTopCursor = LAPTOP_PANEL_CURSOR;
+    guiCurrentLapTopCursor = Enum97.LAPTOP_PANEL_CURSOR;
   }
 }
 function ScreenRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
@@ -2553,7 +2553,7 @@ function DrawButtonText(): void {
   if (fErrorFlag)
     DrawTextOnErrorButton();
   switch (guiCurrentLaptopMode) {
-    case LAPTOP_MODE_EMAIL:
+    case Enum95.LAPTOP_MODE_EMAIL:
       DisplayEmailHeaders();
       break;
   }
@@ -2715,8 +2715,8 @@ function DisplayBookMarks(): void {
     SetFontForeground(FONT_BLACK);
     SetFontBackground(FONT_BLACK);
   }
-  FindFontCenterCoordinates(BOOK_X + 3, (BOOK_TOP_Y + 2 + (iCounter * (BOOK_HEIGHT + 6)) + 6), BOOK_WIDTH - 3, BOOK_HEIGHT + 6, pBookMarkStrings[CANCEL_STRING], BOOK_FONT, addressof(sX), addressof(sY));
-  mprintf(sX, sY, pBookMarkStrings[CANCEL_STRING]);
+  FindFontCenterCoordinates(BOOK_X + 3, (BOOK_TOP_Y + 2 + (iCounter * (BOOK_HEIGHT + 6)) + 6), BOOK_WIDTH - 3, BOOK_HEIGHT + 6, pBookMarkStrings[Enum98.CANCEL_STRING], BOOK_FONT, addressof(sX), addressof(sY));
+  mprintf(sX, sY, pBookMarkStrings[Enum98.CANCEL_STRING]);
   iCounter++;
 
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
@@ -2802,7 +2802,7 @@ function CreateBookMarkMouseRegions(): void {
   let iCounter: INT32 = 0;
   // creates regions based on number of entries
   while (LaptopSaveInfo.iBookMarkList[iCounter] != -1) {
-    MSYS_DefineRegion(addressof(gBookmarkMouseRegions[iCounter]), BOOK_X, (BOOK_TOP_Y + ((iCounter + 1) * (BOOK_HEIGHT + 6)) + 6), BOOK_X + BOOK_WIDTH, (BOOK_TOP_Y + ((iCounter + 2) * (BOOK_HEIGHT + 6)) + 6), MSYS_PRIORITY_HIGHEST - 2, CURSOR_LAPTOP_SCREEN, BookmarkMvtCallBack, BookmarkCallBack);
+    MSYS_DefineRegion(addressof(gBookmarkMouseRegions[iCounter]), BOOK_X, (BOOK_TOP_Y + ((iCounter + 1) * (BOOK_HEIGHT + 6)) + 6), BOOK_X + BOOK_WIDTH, (BOOK_TOP_Y + ((iCounter + 2) * (BOOK_HEIGHT + 6)) + 6), MSYS_PRIORITY_HIGHEST - 2, Enum317.CURSOR_LAPTOP_SCREEN, BookmarkMvtCallBack, BookmarkCallBack);
     // MSYS_AddRegion(&gBookmarkMouseRegions[iCounter]);
     MSYS_SetRegionUserData(addressof(gBookmarkMouseRegions[iCounter]), 0, iCounter);
     MSYS_SetRegionUserData(addressof(gBookmarkMouseRegions[iCounter]), 1, 0);
@@ -2814,10 +2814,10 @@ function CreateBookMarkMouseRegions(): void {
   }
   // now add one more
   // for the cancel button
-  MSYS_DefineRegion(addressof(gBookmarkMouseRegions[iCounter]), BOOK_X, (BOOK_TOP_Y + ((iCounter + 1) * (BOOK_HEIGHT + 6)) + 6), BOOK_X + BOOK_WIDTH, (BOOK_TOP_Y + ((iCounter + 2) * (BOOK_HEIGHT + 6)) + 6), MSYS_PRIORITY_HIGHEST - 2, CURSOR_LAPTOP_SCREEN, BookmarkMvtCallBack, BookmarkCallBack);
+  MSYS_DefineRegion(addressof(gBookmarkMouseRegions[iCounter]), BOOK_X, (BOOK_TOP_Y + ((iCounter + 1) * (BOOK_HEIGHT + 6)) + 6), BOOK_X + BOOK_WIDTH, (BOOK_TOP_Y + ((iCounter + 2) * (BOOK_HEIGHT + 6)) + 6), MSYS_PRIORITY_HIGHEST - 2, Enum317.CURSOR_LAPTOP_SCREEN, BookmarkMvtCallBack, BookmarkCallBack);
   // MSYS_AddRegion(&gBookmarkMouseRegions[iCounter]);
   MSYS_SetRegionUserData(addressof(gBookmarkMouseRegions[iCounter]), 0, iCounter);
-  MSYS_SetRegionUserData(addressof(gBookmarkMouseRegions[iCounter]), 1, CANCEL_STRING);
+  MSYS_SetRegionUserData(addressof(gBookmarkMouseRegions[iCounter]), 1, Enum98.CANCEL_STRING);
 }
 
 function DeleteBookmarkRegions(): void {
@@ -2861,7 +2861,7 @@ function BookmarkCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void 
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iCount = MSYS_GetRegionUserData(pRegion, 0);
-    if (MSYS_GetRegionUserData(pRegion, 1) == CANCEL_STRING) {
+    if (MSYS_GetRegionUserData(pRegion, 1) == Enum98.CANCEL_STRING) {
       gfShowBookmarks = FALSE;
       fReDrawScreenFlag = TRUE;
     }
@@ -2880,7 +2880,7 @@ function GoToWebPage(iPageId: INT32): void {
   // if it is raining, popup a warning first saying connection time may be slow
   if (IsItRaining()) {
     if (giRainDelayInternetSite == -1) {
-      DoLapTopMessageBox(MSG_BOX_LAPTOP_DEFAULT, pErrorStrings[4], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, InternetRainDelayMessageBoxCallBack);
+      DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, pErrorStrings[4], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, InternetRainDelayMessageBoxCallBack);
       giRainDelayInternetSite = iPageId;
       return;
     }
@@ -2888,14 +2888,14 @@ function GoToWebPage(iPageId: INT32): void {
     giRainDelayInternetSite = -1;
 
   switch (iPageId) {
-    case AIM_BOOKMARK:
-      guiCurrentWWWMode = LAPTOP_MODE_AIM;
-      guiCurrentLaptopMode = LAPTOP_MODE_AIM;
+    case Enum98.AIM_BOOKMARK:
+      guiCurrentWWWMode = Enum95.LAPTOP_MODE_AIM;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM;
 
       // do we have to have a World Wide Wait
-      if (LaptopSaveInfo.fVisitedBookmarkAlready[AIM_BOOKMARK] == FALSE) {
+      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.AIM_BOOKMARK] == FALSE) {
         // reset flag and set load pending flag
-        LaptopSaveInfo.fVisitedBookmarkAlready[AIM_BOOKMARK] = TRUE;
+        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.AIM_BOOKMARK] = TRUE;
         fLoadPendingFlag = TRUE;
       } else {
         // fast reload
@@ -2903,14 +2903,14 @@ function GoToWebPage(iPageId: INT32): void {
         fFastLoadFlag = TRUE;
       }
       break;
-    case BOBBYR_BOOKMARK:
-      guiCurrentWWWMode = LAPTOP_MODE_BOBBY_R;
-      guiCurrentLaptopMode = LAPTOP_MODE_BOBBY_R;
+    case Enum98.BOBBYR_BOOKMARK:
+      guiCurrentWWWMode = Enum95.LAPTOP_MODE_BOBBY_R;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_BOBBY_R;
 
       // do we have to have a World Wide Wait
-      if (LaptopSaveInfo.fVisitedBookmarkAlready[BOBBYR_BOOKMARK] == FALSE) {
+      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.BOBBYR_BOOKMARK] == FALSE) {
         // reset flag and set load pending flag
-        LaptopSaveInfo.fVisitedBookmarkAlready[BOBBYR_BOOKMARK] = TRUE;
+        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.BOBBYR_BOOKMARK] = TRUE;
         fLoadPendingFlag = TRUE;
       } else {
         // fast reload
@@ -2918,52 +2918,37 @@ function GoToWebPage(iPageId: INT32): void {
         fFastLoadFlag = TRUE;
       }
       break;
-    case (IMP_BOOKMARK):
-      guiCurrentWWWMode = LAPTOP_MODE_CHAR_PROFILE;
-      guiCurrentLaptopMode = LAPTOP_MODE_CHAR_PROFILE;
+    case (Enum98.IMP_BOOKMARK):
+      guiCurrentWWWMode = Enum95.LAPTOP_MODE_CHAR_PROFILE;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_CHAR_PROFILE;
 
       // do we have to have a World Wide Wait
-      if (LaptopSaveInfo.fVisitedBookmarkAlready[IMP_BOOKMARK] == FALSE) {
+      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.IMP_BOOKMARK] == FALSE) {
         // reset flag and set load pending flag
-        LaptopSaveInfo.fVisitedBookmarkAlready[IMP_BOOKMARK] = TRUE;
+        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.IMP_BOOKMARK] = TRUE;
         fLoadPendingFlag = TRUE;
       } else {
         // fast reload
         fLoadPendingFlag = TRUE;
         fFastLoadFlag = TRUE;
       }
-      iCurrentImpPage = IMP_HOME_PAGE;
+      iCurrentImpPage = Enum71.IMP_HOME_PAGE;
       break;
-    case (MERC_BOOKMARK):
+    case (Enum98.MERC_BOOKMARK):
 
       // if the mercs server has gone down, but hasnt come up yet
       if (LaptopSaveInfo.fMercSiteHasGoneDownYet == TRUE && LaptopSaveInfo.fFirstVisitSinceServerWentDown == FALSE) {
-        guiCurrentWWWMode = LAPTOP_MODE_BROKEN_LINK;
-        guiCurrentLaptopMode = LAPTOP_MODE_BROKEN_LINK;
+        guiCurrentWWWMode = Enum95.LAPTOP_MODE_BROKEN_LINK;
+        guiCurrentLaptopMode = Enum95.LAPTOP_MODE_BROKEN_LINK;
       } else {
-        guiCurrentWWWMode = LAPTOP_MODE_MERC;
-        guiCurrentLaptopMode = LAPTOP_MODE_MERC;
+        guiCurrentWWWMode = Enum95.LAPTOP_MODE_MERC;
+        guiCurrentLaptopMode = Enum95.LAPTOP_MODE_MERC;
       }
 
       // do we have to have a World Wide Wait
-      if (LaptopSaveInfo.fVisitedBookmarkAlready[MERC_BOOKMARK] == FALSE) {
+      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.MERC_BOOKMARK] == FALSE) {
         // reset flag and set load pending flag
-        LaptopSaveInfo.fVisitedBookmarkAlready[MERC_BOOKMARK] = TRUE;
-        fLoadPendingFlag = TRUE;
-      } else {
-        // fast reload
-        fLoadPendingFlag = TRUE;
-        fFastLoadFlag = TRUE;
-      }
-      break;
-    case (FUNERAL_BOOKMARK):
-      guiCurrentWWWMode = LAPTOP_MODE_FUNERAL;
-      guiCurrentLaptopMode = LAPTOP_MODE_FUNERAL;
-
-      // do we have to have a World Wide Wait
-      if (LaptopSaveInfo.fVisitedBookmarkAlready[FUNERAL_BOOKMARK] == FALSE) {
-        // reset flag and set load pending flag
-        LaptopSaveInfo.fVisitedBookmarkAlready[FUNERAL_BOOKMARK] = TRUE;
+        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.MERC_BOOKMARK] = TRUE;
         fLoadPendingFlag = TRUE;
       } else {
         // fast reload
@@ -2971,14 +2956,29 @@ function GoToWebPage(iPageId: INT32): void {
         fFastLoadFlag = TRUE;
       }
       break;
-    case (FLORIST_BOOKMARK):
-      guiCurrentWWWMode = LAPTOP_MODE_FLORIST;
-      guiCurrentLaptopMode = LAPTOP_MODE_FLORIST;
+    case (Enum98.FUNERAL_BOOKMARK):
+      guiCurrentWWWMode = Enum95.LAPTOP_MODE_FUNERAL;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FUNERAL;
 
       // do we have to have a World Wide Wait
-      if (LaptopSaveInfo.fVisitedBookmarkAlready[FLORIST_BOOKMARK] == FALSE) {
+      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.FUNERAL_BOOKMARK] == FALSE) {
         // reset flag and set load pending flag
-        LaptopSaveInfo.fVisitedBookmarkAlready[FLORIST_BOOKMARK] = TRUE;
+        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.FUNERAL_BOOKMARK] = TRUE;
+        fLoadPendingFlag = TRUE;
+      } else {
+        // fast reload
+        fLoadPendingFlag = TRUE;
+        fFastLoadFlag = TRUE;
+      }
+      break;
+    case (Enum98.FLORIST_BOOKMARK):
+      guiCurrentWWWMode = Enum95.LAPTOP_MODE_FLORIST;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FLORIST;
+
+      // do we have to have a World Wide Wait
+      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.FLORIST_BOOKMARK] == FALSE) {
+        // reset flag and set load pending flag
+        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.FLORIST_BOOKMARK] = TRUE;
         fLoadPendingFlag = TRUE;
       } else {
         // fast reload
@@ -2987,14 +2987,14 @@ function GoToWebPage(iPageId: INT32): void {
       }
       break;
 
-    case (INSURANCE_BOOKMARK):
-      guiCurrentWWWMode = LAPTOP_MODE_INSURANCE;
-      guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE;
+    case (Enum98.INSURANCE_BOOKMARK):
+      guiCurrentWWWMode = Enum95.LAPTOP_MODE_INSURANCE;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_INSURANCE;
 
       // do we have to have a World Wide Wait
-      if (LaptopSaveInfo.fVisitedBookmarkAlready[INSURANCE_BOOKMARK] == FALSE) {
+      if (LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.INSURANCE_BOOKMARK] == FALSE) {
         // reset flag and set load pending flag
-        LaptopSaveInfo.fVisitedBookmarkAlready[INSURANCE_BOOKMARK] = TRUE;
+        LaptopSaveInfo.fVisitedBookmarkAlready[Enum98.INSURANCE_BOOKMARK] = TRUE;
         fLoadPendingFlag = TRUE;
       } else {
         // fast reload
@@ -3064,7 +3064,7 @@ function DisplayLoadPending(): BOOLEAN {
     }
 
     // if we are connecting the MERC site, and the MERC site hasnt yet moved to their new site, have the sloooww wait
-    else if (guiCurrentLaptopMode == LAPTOP_MODE_MERC && !LaptopSaveInfo.fMercSiteHasGoneDownYet) {
+    else if (guiCurrentLaptopMode == Enum95.LAPTOP_MODE_MERC && !LaptopSaveInfo.fMercSiteHasGoneDownYet) {
       iUnitTime = LONG_UNIT_TIME;
     } else {
       iUnitTime = UNIT_TIME;
@@ -3218,10 +3218,10 @@ function CreateDestroyErrorButton(): void {
     giErrorButton[0] = QuickCreateButton(giErrorButtonImage[0], ERROR_X + ERROR_BTN_X, ERROR_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, BtnGenericMouseMoveButtonCallback, BtnErrorCallback);
 
     // define the cursor
-    SetButtonCursor(giErrorButton[0], CURSOR_LAPTOP_SCREEN);
+    SetButtonCursor(giErrorButton[0], Enum317.CURSOR_LAPTOP_SCREEN);
 
     // define the screen mask
-    MSYS_DefineRegion(addressof(pScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
+    MSYS_DefineRegion(addressof(pScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
 
     // add region
     MSYS_AddRegion(addressof(pScreenMask));
@@ -3333,11 +3333,11 @@ function PostButtonRendering(): void {
   // this function is in place to allow for post button rendering
 
   switch (guiCurrentLaptopMode) {
-    case LAPTOP_MODE_AIM:
+    case Enum95.LAPTOP_MODE_AIM:
       //	    RenderCharProfilePostButton( );
       break;
 
-    case LAPTOP_MODE_AIM_MEMBERS:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS:
       RenderAIMMembersTopLevel();
       break;
   }
@@ -3347,7 +3347,7 @@ function PostButtonRendering(): void {
 function ShouldNewMailBeDisplayed(): void {
   let fReDraw: BOOLEAN = FALSE;
   switch (guiCurrentLaptopMode) {
-    case LAPTOP_MODE_AIM_MEMBERS:
+    case Enum95.LAPTOP_MODE_AIM_MEMBERS:
       fReDraw = DisableNewMailMessage();
       break;
   }
@@ -3401,7 +3401,7 @@ function DisplayPlayersBalanceToDate(): void {
 function CheckIfNewWWWW(): void {
   // if no www mode, set new www flag..until new www mode that is not 0
 
-  if (guiCurrentWWWMode == LAPTOP_MODE_NONE) {
+  if (guiCurrentWWWMode == Enum95.LAPTOP_MODE_NONE) {
     fNewWWW = TRUE;
   } else {
     fNewWWW = FALSE;
@@ -3751,7 +3751,7 @@ function HandleSlidingTitleBar(): void {
 
   if (fMaximizingProgram) {
     switch (bProgramBeingMaximized) {
-      case (LAPTOP_PROGRAM_MAILER):
+      case (Enum93.LAPTOP_PROGRAM_MAILER):
         fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(TRUE, fInitTitle, 29, 66, 29 + 20);
         if (fMaximizingProgram == FALSE) {
           RemoveTitleBarMaximizeGraphics();
@@ -3761,7 +3761,7 @@ function HandleSlidingTitleBar(): void {
           fPausedReDrawScreenFlag = TRUE;
         }
         break;
-      case (LAPTOP_PROGRAM_FILES):
+      case (Enum93.LAPTOP_PROGRAM_FILES):
         fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(TRUE, fInitTitle, 29, 120, 29 + 20);
         if (fMaximizingProgram == FALSE) {
           RemoveTitleBarMaximizeGraphics();
@@ -3771,7 +3771,7 @@ function HandleSlidingTitleBar(): void {
           fPausedReDrawScreenFlag = TRUE;
         }
         break;
-      case (LAPTOP_PROGRAM_FINANCES):
+      case (Enum93.LAPTOP_PROGRAM_FINANCES):
         fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(TRUE, fInitTitle, 29, 226, 29 + 20);
         if (fMaximizingProgram == FALSE) {
           RemoveTitleBarMaximizeGraphics();
@@ -3781,7 +3781,7 @@ function HandleSlidingTitleBar(): void {
           fPausedReDrawScreenFlag = TRUE;
         }
         break;
-      case (LAPTOP_PROGRAM_PERSONNEL):
+      case (Enum93.LAPTOP_PROGRAM_PERSONNEL):
         fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(TRUE, fInitTitle, 29, 194, 29 + 20);
         if (fMaximizingProgram == FALSE) {
           RemoveTitleBarMaximizeGraphics();
@@ -3791,7 +3791,7 @@ function HandleSlidingTitleBar(): void {
           fPausedReDrawScreenFlag = TRUE;
         }
         break;
-      case (LAPTOP_PROGRAM_HISTORY):
+      case (Enum93.LAPTOP_PROGRAM_HISTORY):
         fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(TRUE, fInitTitle, 29, 162, 29 + 20);
         if (fMaximizingProgram == FALSE) {
           RemoveTitleBarMaximizeGraphics();
@@ -3801,7 +3801,7 @@ function HandleSlidingTitleBar(): void {
           fPausedReDrawScreenFlag = TRUE;
         }
         break;
-      case (LAPTOP_PROGRAM_WEB_BROWSER):
+      case (Enum93.LAPTOP_PROGRAM_WEB_BROWSER):
         fMaximizingProgram = !DisplayTitleBarMaximizeGraphic(TRUE, fInitTitle, 29, 99, 29 + 20);
         if (fMaximizingProgram == FALSE) {
           RemoveTitleBarMaximizeGraphics();
@@ -3817,7 +3817,7 @@ function HandleSlidingTitleBar(): void {
   } else {
     // minimizing
     switch (bProgramBeingMaximized) {
-      case (LAPTOP_PROGRAM_MAILER):
+      case (Enum93.LAPTOP_PROGRAM_MAILER):
         fMinizingProgram = !DisplayTitleBarMaximizeGraphic(FALSE, fInitTitle, 29, 66, 29 + 20);
         if (fMinizingProgram == FALSE) {
           RemoveTitleBarMaximizeGraphics();
@@ -3826,7 +3826,7 @@ function HandleSlidingTitleBar(): void {
           fPausedReDrawScreenFlag = TRUE;
         }
         break;
-      case (LAPTOP_PROGRAM_FILES):
+      case (Enum93.LAPTOP_PROGRAM_FILES):
         fMinizingProgram = !DisplayTitleBarMaximizeGraphic(FALSE, fInitTitle, 29, 130, 29 + 20);
         if (fMinizingProgram == FALSE) {
           RemoveTitleBarMaximizeGraphics();
@@ -3835,7 +3835,7 @@ function HandleSlidingTitleBar(): void {
           fPausedReDrawScreenFlag = TRUE;
         }
         break;
-      case (LAPTOP_PROGRAM_FINANCES):
+      case (Enum93.LAPTOP_PROGRAM_FINANCES):
         fMinizingProgram = !DisplayTitleBarMaximizeGraphic(FALSE, fInitTitle, 29, 226, 29 + 20);
         if (fMinizingProgram == FALSE) {
           RemoveTitleBarMaximizeGraphics();
@@ -3844,7 +3844,7 @@ function HandleSlidingTitleBar(): void {
           fPausedReDrawScreenFlag = TRUE;
         }
         break;
-      case (LAPTOP_PROGRAM_PERSONNEL):
+      case (Enum93.LAPTOP_PROGRAM_PERSONNEL):
         fMinizingProgram = !DisplayTitleBarMaximizeGraphic(FALSE, fInitTitle, 29, 194, 29 + 20);
         if (fMinizingProgram == FALSE) {
           RemoveTitleBarMaximizeGraphics();
@@ -3853,7 +3853,7 @@ function HandleSlidingTitleBar(): void {
           fPausedReDrawScreenFlag = TRUE;
         }
         break;
-      case (LAPTOP_PROGRAM_HISTORY):
+      case (Enum93.LAPTOP_PROGRAM_HISTORY):
         fMinizingProgram = !DisplayTitleBarMaximizeGraphic(FALSE, fInitTitle, 29, 162, 29 + 20);
         if (fMinizingProgram == FALSE) {
           RemoveTitleBarMaximizeGraphics();
@@ -3862,7 +3862,7 @@ function HandleSlidingTitleBar(): void {
           fPausedReDrawScreenFlag = TRUE;
         }
         break;
-      case (LAPTOP_PROGRAM_WEB_BROWSER):
+      case (Enum93.LAPTOP_PROGRAM_WEB_BROWSER):
         fMinizingProgram = !DisplayTitleBarMaximizeGraphic(FALSE, fInitTitle, 29, 99, 29 + 20);
         if (fMinizingProgram == FALSE) {
           RemoveTitleBarMaximizeGraphics();
@@ -3981,11 +3981,11 @@ function CreateDestroyMinimizeButtonForCurrentMode(): void {
   // check to see if created, if so, do nothing
 
   // check current mode
-  if ((guiCurrentLaptopMode == LAPTOP_MODE_NONE) && (guiPreviousLaptopMode != LAPTOP_MODE_NONE)) {
+  if ((guiCurrentLaptopMode == Enum95.LAPTOP_MODE_NONE) && (guiPreviousLaptopMode != Enum95.LAPTOP_MODE_NONE)) {
     fCreateMinimizeButton = FALSE;
-  } else if ((guiCurrentLaptopMode != LAPTOP_MODE_NONE)) {
+  } else if ((guiCurrentLaptopMode != Enum95.LAPTOP_MODE_NONE)) {
     fCreateMinimizeButton = TRUE;
-  } else if ((guiPreviousLaptopMode != LAPTOP_MODE_NONE)) {
+  } else if ((guiPreviousLaptopMode != Enum95.LAPTOP_MODE_NONE)) {
     fCreateMinimizeButton = FALSE;
   }
 
@@ -4016,7 +4016,7 @@ function CreateMinimizeButtonForCurrentMode(): void {
   gLaptopMinButtonImage[0] = LoadButtonImage("LAPTOP\\x.sti", -1, 0, -1, 1, -1);
   gLaptopMinButton[0] = QuickCreateButton(gLaptopMinButtonImage[0], 590, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, LaptopMinimizeProgramButtonCallback);
 
-  SetButtonCursor(gLaptopMinButton[0], CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(gLaptopMinButton[0], Enum317.CURSOR_LAPTOP_SCREEN);
   return;
 }
 
@@ -4038,46 +4038,46 @@ function LaptopMinimizeProgramButtonCallback(btn: Pointer<GUI_BUTTON>, reason: I
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       switch (guiCurrentLaptopMode) {
-        case (LAPTOP_MODE_EMAIL):
-          gLaptopProgramStates[LAPTOP_PROGRAM_MAILER] = LAPTOP_PROGRAM_MINIMIZED;
+        case (Enum95.LAPTOP_MODE_EMAIL):
+          gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_MAILER] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[0], guiTITLEBARICONS, 0);
           SetCurrentToLastProgramOpened();
           fMinizingProgram = TRUE;
           fInitTitle = TRUE;
           break;
-        case (LAPTOP_MODE_FILES):
-          gLaptopProgramStates[LAPTOP_PROGRAM_FILES] = LAPTOP_PROGRAM_MINIMIZED;
+        case (Enum95.LAPTOP_MODE_FILES):
+          gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_FILES] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[5], guiTITLEBARICONS, 2);
           SetCurrentToLastProgramOpened();
           fMinizingProgram = TRUE;
           fInitTitle = TRUE;
           break;
-        case (LAPTOP_MODE_FINANCES):
-          gLaptopProgramStates[LAPTOP_PROGRAM_FINANCES] = LAPTOP_PROGRAM_MINIMIZED;
+        case (Enum95.LAPTOP_MODE_FINANCES):
+          gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_FINANCES] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[2], guiTITLEBARICONS, 5);
           SetCurrentToLastProgramOpened();
           fMinizingProgram = TRUE;
           fInitTitle = TRUE;
           break;
-        case (LAPTOP_MODE_HISTORY):
-          gLaptopProgramStates[LAPTOP_PROGRAM_HISTORY] = LAPTOP_PROGRAM_MINIMIZED;
+        case (Enum95.LAPTOP_MODE_HISTORY):
+          gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_HISTORY] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[4], guiTITLEBARICONS, 4);
           SetCurrentToLastProgramOpened();
           fMinizingProgram = TRUE;
           fInitTitle = TRUE;
           break;
-        case (LAPTOP_MODE_PERSONNEL):
-          gLaptopProgramStates[LAPTOP_PROGRAM_PERSONNEL] = LAPTOP_PROGRAM_MINIMIZED;
+        case (Enum95.LAPTOP_MODE_PERSONNEL):
+          gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_PERSONNEL] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[3], guiTITLEBARICONS, 3);
           SetCurrentToLastProgramOpened();
           fMinizingProgram = TRUE;
           fInitTitle = TRUE;
           break;
-        case (LAPTOP_MODE_NONE):
+        case (Enum95.LAPTOP_MODE_NONE):
           // nothing
           break;
         default:
-          gLaptopProgramStates[LAPTOP_PROGRAM_WEB_BROWSER] = LAPTOP_PROGRAM_MINIMIZED;
+          gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_WEB_BROWSER] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
           InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[7], guiTITLEBARICONS, 1);
           SetCurrentToLastProgramOpened();
           gfShowBookmarks = FALSE;
@@ -4096,7 +4096,7 @@ function FindLastProgramStillOpen(): INT32 {
 
   // returns ID of last program open and not minimized
   for (iCounter = 0; iCounter < 6; iCounter++) {
-    if (gLaptopProgramStates[iCounter] != LAPTOP_PROGRAM_MINIMIZED) {
+    if (gLaptopProgramStates[iCounter] != Enum94.LAPTOP_PROGRAM_MINIMIZED) {
       if (gLaptopProgramQueueList[iCounter] < iLowestValue) {
         iLowestValue = gLaptopProgramQueueList[iCounter];
         iLowestValueProgram = iCounter;
@@ -4135,30 +4135,30 @@ function InitLaptopOpenQueue(): void {
 }
 
 function SetCurrentToLastProgramOpened(): void {
-  guiCurrentLaptopMode = LAPTOP_MODE_NONE;
+  guiCurrentLaptopMode = Enum95.LAPTOP_MODE_NONE;
 
   switch (FindLastProgramStillOpen()) {
-    case (LAPTOP_PROGRAM_HISTORY):
-      guiCurrentLaptopMode = LAPTOP_MODE_HISTORY;
+    case (Enum93.LAPTOP_PROGRAM_HISTORY):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_HISTORY;
       break;
-    case (LAPTOP_PROGRAM_MAILER):
-      guiCurrentLaptopMode = LAPTOP_MODE_EMAIL;
+    case (Enum93.LAPTOP_PROGRAM_MAILER):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_EMAIL;
       break;
-    case (LAPTOP_PROGRAM_PERSONNEL):
-      guiCurrentLaptopMode = LAPTOP_MODE_PERSONNEL;
+    case (Enum93.LAPTOP_PROGRAM_PERSONNEL):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_PERSONNEL;
       break;
-    case (LAPTOP_PROGRAM_FINANCES):
-      guiCurrentLaptopMode = LAPTOP_MODE_FINANCES;
+    case (Enum93.LAPTOP_PROGRAM_FINANCES):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FINANCES;
       break;
-    case (LAPTOP_PROGRAM_FILES):
-      guiCurrentLaptopMode = LAPTOP_MODE_FILES;
+    case (Enum93.LAPTOP_PROGRAM_FILES):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FILES;
       break;
-    case (LAPTOP_PROGRAM_WEB_BROWSER):
+    case (Enum93.LAPTOP_PROGRAM_WEB_BROWSER):
       // last www mode
       if (guiCurrentWWWMode != 0) {
         guiCurrentLaptopMode = guiCurrentWWWMode;
       } else {
-        guiCurrentLaptopMode = LAPTOP_MODE_WWW;
+        guiCurrentLaptopMode = Enum95.LAPTOP_MODE_WWW;
       }
       // gfShowBookmarks = TRUE;
       fShowBookmarkInfo = TRUE;
@@ -4170,27 +4170,27 @@ function BlitTitleBarIcons(): void {
   let hHandle: HVOBJECT;
   // will blit the icons for the title bar of the program we are in
   switch (guiCurrentLaptopMode) {
-    case (LAPTOP_MODE_HISTORY):
+    case (Enum95.LAPTOP_MODE_HISTORY):
       GetVideoObject(addressof(hHandle), guiTITLEBARICONS);
       BltVideoObject(FRAME_BUFFER, hHandle, 4, LAPTOP_TITLE_ICONS_X, LAPTOP_TITLE_ICONS_Y, VO_BLT_SRCTRANSPARENCY, NULL);
       break;
-    case (LAPTOP_MODE_EMAIL):
+    case (Enum95.LAPTOP_MODE_EMAIL):
       GetVideoObject(addressof(hHandle), guiTITLEBARICONS);
       BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_TITLE_ICONS_X, LAPTOP_TITLE_ICONS_Y, VO_BLT_SRCTRANSPARENCY, NULL);
       break;
-    case (LAPTOP_MODE_PERSONNEL):
+    case (Enum95.LAPTOP_MODE_PERSONNEL):
       GetVideoObject(addressof(hHandle), guiTITLEBARICONS);
       BltVideoObject(FRAME_BUFFER, hHandle, 3, LAPTOP_TITLE_ICONS_X, LAPTOP_TITLE_ICONS_Y, VO_BLT_SRCTRANSPARENCY, NULL);
       break;
-    case (LAPTOP_MODE_FINANCES):
+    case (Enum95.LAPTOP_MODE_FINANCES):
       GetVideoObject(addressof(hHandle), guiTITLEBARICONS);
       BltVideoObject(FRAME_BUFFER, hHandle, 5, LAPTOP_TITLE_ICONS_X, LAPTOP_TITLE_ICONS_Y, VO_BLT_SRCTRANSPARENCY, NULL);
       break;
-    case (LAPTOP_MODE_FILES):
+    case (Enum95.LAPTOP_MODE_FILES):
       GetVideoObject(addressof(hHandle), guiTITLEBARICONS);
       BltVideoObject(FRAME_BUFFER, hHandle, 2, LAPTOP_TITLE_ICONS_X, LAPTOP_TITLE_ICONS_Y, VO_BLT_SRCTRANSPARENCY, NULL);
       break;
-    case (LAPTOP_MODE_NONE):
+    case (Enum95.LAPTOP_MODE_NONE):
       // do nothing
       break;
     default:
@@ -4234,7 +4234,7 @@ function LoadDesktopBackground(): BOOLEAN {
   let vs_desc: VSURFACE_DESC;
 
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
-  GetMLGFilename(vs_desc.ImageFile, MLG_DESKTOP);
+  GetMLGFilename(vs_desc.ImageFile, Enum326.MLG_DESKTOP);
   CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiDESKTOP)));
 
   return TRUE;
@@ -4403,7 +4403,7 @@ function HandleKeyBoardShortCutsForLapTop(usEvent: UINT16, usParam: UINT32, usKe
       if ((usKeyState & ALT_DOWN))
         LaptopSaveInfo.fBobbyRSiteCanBeAccessed = TRUE;
       else if (usKeyState & CTRL_DOWN) {
-        guiCurrentLaptopMode = LAPTOP_MODE_BROKEN_LINK;
+        guiCurrentLaptopMode = Enum95.LAPTOP_MODE_BROKEN_LINK;
       }
     }
   }
@@ -4415,13 +4415,13 @@ function HandleKeyBoardShortCutsForLapTop(usEvent: UINT16, usParam: UINT32, usKe
     // LeaveLapTopScreen( );
   }
       if ((usEvent == KEY_DOWN) && ((usParam == 'h') || (usParam == 'H'))) {
-    ShouldTheHelpScreenComeUp(HELP_SCREEN_LAPTOP, TRUE);
+    ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_LAPTOP, TRUE);
   }
 
   // adding money
   else if ((usEvent == KEY_DOWN) && (usParam == '=')) {
     if (CHEATER_CHEAT_LEVEL()) {
-      AddTransactionToPlayersBook(ANONYMOUS_DEPOSIT, 0, GetWorldTotalMin(), 100000);
+      AddTransactionToPlayersBook(Enum80.ANONYMOUS_DEPOSIT, 0, GetWorldTotalMin(), 100000);
       MarkButtonsDirty();
     }
   }
@@ -4429,7 +4429,7 @@ function HandleKeyBoardShortCutsForLapTop(usEvent: UINT16, usParam: UINT32, usKe
   // subtracting money
   else if ((usEvent == KEY_DOWN) && (usParam == '-')) {
     if (CHEATER_CHEAT_LEVEL()) {
-      AddTransactionToPlayersBook(ANONYMOUS_DEPOSIT, 0, GetWorldTotalMin(), -10000);
+      AddTransactionToPlayersBook(Enum80.ANONYMOUS_DEPOSIT, 0, GetWorldTotalMin(), -10000);
       MarkButtonsDirty();
     }
   }
@@ -4466,12 +4466,12 @@ function RenderWWWProgramTitleBar(): BOOLEAN {
 
   // no page loaded yet, do not handle yet
 
-  if (guiCurrentLaptopMode == LAPTOP_MODE_WWW) {
+  if (guiCurrentLaptopMode == Enum95.LAPTOP_MODE_WWW) {
     mprintf(140, 33, pWebTitle[0]);
   }
 
   else {
-    iIndex = guiCurrentLaptopMode - LAPTOP_MODE_WWW - 1;
+    iIndex = guiCurrentLaptopMode - Enum95.LAPTOP_MODE_WWW - 1;
 
     swprintf(sString, "%s  -  %s", pWebTitle[0], pWebPagesTitles[iIndex]);
     mprintf(140, 33, sString);
@@ -4487,7 +4487,7 @@ function RenderWWWProgramTitleBar(): BOOLEAN {
 
 function HandleDefaultWebpageForLaptop(): void {
   // go to first page in bookmark list
-  if (guiCurrentLaptopMode == LAPTOP_MODE_WWW) {
+  if (guiCurrentLaptopMode == Enum95.LAPTOP_MODE_WWW) {
     // if valid entry go there
     if (LaptopSaveInfo.iBookMarkList[0] != -1) {
       GoToWebPage(LaptopSaveInfo.iBookMarkList[0]);
@@ -4500,7 +4500,7 @@ function HandleDefaultWebpageForLaptop(): void {
 function CreateMinimizeRegionsForLaptopProgramIcons(): void {
   // will create the minizing region to lie over the icon for this particular laptop program
 
-  MSYS_DefineRegion(addressof(gLapTopProgramMinIcon), LAPTOP_PROGRAM_ICON_X, LAPTOP_PROGRAM_ICON_Y, LAPTOP_PROGRAM_ICON_X + LAPTOP_PROGRAM_ICON_WIDTH, LAPTOP_PROGRAM_ICON_Y + LAPTOP_PROGRAM_ICON_HEIGHT, MSYS_PRIORITY_NORMAL + 1, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LaptopProgramIconMinimizeCallback);
+  MSYS_DefineRegion(addressof(gLapTopProgramMinIcon), LAPTOP_PROGRAM_ICON_X, LAPTOP_PROGRAM_ICON_Y, LAPTOP_PROGRAM_ICON_X + LAPTOP_PROGRAM_ICON_WIDTH, LAPTOP_PROGRAM_ICON_Y + LAPTOP_PROGRAM_ICON_HEIGHT, MSYS_PRIORITY_NORMAL + 1, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LaptopProgramIconMinimizeCallback);
 
   return;
 }
@@ -4518,46 +4518,46 @@ function LaptopProgramIconMinimizeCallback(pRegion: Pointer<MOUSE_REGION>, iReas
   // callback handler for the minize region that is attatched to the laptop program icon
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     switch (guiCurrentLaptopMode) {
-      case (LAPTOP_MODE_EMAIL):
-        gLaptopProgramStates[LAPTOP_PROGRAM_MAILER] = LAPTOP_PROGRAM_MINIMIZED;
+      case (Enum95.LAPTOP_MODE_EMAIL):
+        gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_MAILER] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
         InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[0], guiTITLEBARICONS, 0);
         SetCurrentToLastProgramOpened();
         fMinizingProgram = TRUE;
         fInitTitle = TRUE;
         break;
-      case (LAPTOP_MODE_FILES):
-        gLaptopProgramStates[LAPTOP_PROGRAM_FILES] = LAPTOP_PROGRAM_MINIMIZED;
+      case (Enum95.LAPTOP_MODE_FILES):
+        gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_FILES] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
         InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[5], guiTITLEBARICONS, 2);
         SetCurrentToLastProgramOpened();
         fMinizingProgram = TRUE;
         fInitTitle = TRUE;
         break;
-      case (LAPTOP_MODE_FINANCES):
-        gLaptopProgramStates[LAPTOP_PROGRAM_FINANCES] = LAPTOP_PROGRAM_MINIMIZED;
+      case (Enum95.LAPTOP_MODE_FINANCES):
+        gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_FINANCES] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
         InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[2], guiTITLEBARICONS, 5);
         SetCurrentToLastProgramOpened();
         fMinizingProgram = TRUE;
         fInitTitle = TRUE;
         break;
-      case (LAPTOP_MODE_HISTORY):
-        gLaptopProgramStates[LAPTOP_PROGRAM_HISTORY] = LAPTOP_PROGRAM_MINIMIZED;
+      case (Enum95.LAPTOP_MODE_HISTORY):
+        gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_HISTORY] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
         InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[4], guiTITLEBARICONS, 4);
         SetCurrentToLastProgramOpened();
         fMinizingProgram = TRUE;
         fInitTitle = TRUE;
         break;
-      case (LAPTOP_MODE_PERSONNEL):
-        gLaptopProgramStates[LAPTOP_PROGRAM_PERSONNEL] = LAPTOP_PROGRAM_MINIMIZED;
+      case (Enum95.LAPTOP_MODE_PERSONNEL):
+        gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_PERSONNEL] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
         InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pLaptopIcons[3], guiTITLEBARICONS, 3);
         SetCurrentToLastProgramOpened();
         fMinizingProgram = TRUE;
         fInitTitle = TRUE;
         break;
-      case (LAPTOP_MODE_NONE):
+      case (Enum95.LAPTOP_MODE_NONE):
         // nothing
         break;
       default:
-        gLaptopProgramStates[LAPTOP_PROGRAM_WEB_BROWSER] = LAPTOP_PROGRAM_MINIMIZED;
+        gLaptopProgramStates[Enum93.LAPTOP_PROGRAM_WEB_BROWSER] = Enum94.LAPTOP_PROGRAM_MINIMIZED;
         InitTitleBarMaximizeGraphics(guiTITLEBARLAPTOP, pWebTitle[0], guiTITLEBARICONS, 1);
         SetCurrentToLastProgramOpened();
         gfShowBookmarks = FALSE;
@@ -4578,7 +4578,7 @@ function DisplayProgramBoundingBox(fMarkButtons: BOOLEAN): void {
   BltVideoObject(FRAME_BUFFER, hHandle, 1, 25, 23, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // no laptop mode, no border around the program
-  if (guiCurrentLaptopMode != LAPTOP_MODE_NONE) {
+  if (guiCurrentLaptopMode != Enum95.LAPTOP_MODE_NONE) {
     GetVideoObject(addressof(hHandle), guiLaptopBACKGROUND);
     BltVideoObject(FRAME_BUFFER, hHandle, 0, 108, 23, VO_BLT_SRCTRANSPARENCY, NULL);
   }
@@ -4609,11 +4609,11 @@ function CreateDestroyMouseRegionForNewMailIcon(): void {
 
   if (fCreated == FALSE) {
     fCreated = TRUE;
-    MSYS_DefineRegion(addressof(gNewMailIconRegion), LAPTOP__NEW_EMAIL_ICON_X, LAPTOP__NEW_EMAIL_ICON_Y + 5, LAPTOP__NEW_EMAIL_ICON_X + 16, LAPTOP__NEW_EMAIL_ICON_Y + 16, MSYS_PRIORITY_HIGHEST - 3, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewEmailIconCallback);
-    CreateFileAndNewEmailIconFastHelpText(LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL, (fUnReadMailFlag == 0));
+    MSYS_DefineRegion(addressof(gNewMailIconRegion), LAPTOP__NEW_EMAIL_ICON_X, LAPTOP__NEW_EMAIL_ICON_Y + 5, LAPTOP__NEW_EMAIL_ICON_X + 16, LAPTOP__NEW_EMAIL_ICON_Y + 16, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewEmailIconCallback);
+    CreateFileAndNewEmailIconFastHelpText(Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL, (fUnReadMailFlag == 0));
 
-    MSYS_DefineRegion(addressof(gNewFileIconRegion), LAPTOP__NEW_FILE_ICON_X, LAPTOP__NEW_FILE_ICON_Y + 5, LAPTOP__NEW_FILE_ICON_X + 16, LAPTOP__NEW_FILE_ICON_Y + 16, MSYS_PRIORITY_HIGHEST - 3, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewFileIconCallback);
-    CreateFileAndNewEmailIconFastHelpText(LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE, (fNewFilesInFileViewer == 0));
+    MSYS_DefineRegion(addressof(gNewFileIconRegion), LAPTOP__NEW_FILE_ICON_X, LAPTOP__NEW_FILE_ICON_Y + 5, LAPTOP__NEW_FILE_ICON_X + 16, LAPTOP__NEW_FILE_ICON_Y + 16, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewFileIconCallback);
+    CreateFileAndNewEmailIconFastHelpText(Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE, (fNewFilesInFileViewer == 0));
   } else {
     fCreated = FALSE;
     MSYS_RemoveRegion(addressof(gNewMailIconRegion));
@@ -4625,7 +4625,7 @@ function NewEmailIconCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fUnReadMailFlag) {
       fOpenMostRecentUnReadFlag = TRUE;
-      guiCurrentLaptopMode = LAPTOP_MODE_EMAIL;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_EMAIL;
     }
   }
 }
@@ -4634,7 +4634,7 @@ function NewFileIconCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fNewFilesInFileViewer) {
       fEnteredFileViewerFromNewFileIcon = TRUE;
-      guiCurrentLaptopMode = LAPTOP_MODE_FILES;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FILES;
     }
   }
 }
@@ -4642,7 +4642,7 @@ function NewFileIconCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
 function HandleWWWSubSites(): void {
   // check to see if WW Wait is needed for a sub site within the Web Browser
 
-  if ((guiCurrentLaptopMode == guiPreviousLaptopMode) || (guiCurrentLaptopMode < LAPTOP_MODE_WWW) || (fLoadPendingFlag == TRUE) || (fDoneLoadPending == TRUE) || (guiPreviousLaptopMode < LAPTOP_MODE_WWW)) {
+  if ((guiCurrentLaptopMode == guiPreviousLaptopMode) || (guiCurrentLaptopMode < Enum95.LAPTOP_MODE_WWW) || (fLoadPendingFlag == TRUE) || (fDoneLoadPending == TRUE) || (guiPreviousLaptopMode < Enum95.LAPTOP_MODE_WWW)) {
     // no go, leave
     return;
   }
@@ -4651,21 +4651,21 @@ function HandleWWWSubSites(): void {
   fConnectingToSubPage = TRUE;
 
   // fast or slow load?
-  if (gfWWWaitSubSitesVisitedFlags[guiCurrentLaptopMode - (LAPTOP_MODE_WWW + 1)] == TRUE) {
+  if (gfWWWaitSubSitesVisitedFlags[guiCurrentLaptopMode - (Enum95.LAPTOP_MODE_WWW + 1)] == TRUE) {
     fFastLoadFlag = TRUE;
   }
 
   // set fact we were here
-  gfWWWaitSubSitesVisitedFlags[guiCurrentLaptopMode - (LAPTOP_MODE_WWW + 1)] = TRUE;
+  gfWWWaitSubSitesVisitedFlags[guiCurrentLaptopMode - (Enum95.LAPTOP_MODE_WWW + 1)] = TRUE;
 
   // Dont show the dlownload screen when switching between these pages
-  if ((guiCurrentLaptopMode == LAPTOP_MODE_AIM_MEMBERS) && (guiPreviousLaptopMode == LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX) || (guiCurrentLaptopMode == LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX) && (guiPreviousLaptopMode == LAPTOP_MODE_AIM_MEMBERS)) {
+  if ((guiCurrentLaptopMode == Enum95.LAPTOP_MODE_AIM_MEMBERS) && (guiPreviousLaptopMode == Enum95.LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX) || (guiCurrentLaptopMode == Enum95.LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX) && (guiPreviousLaptopMode == Enum95.LAPTOP_MODE_AIM_MEMBERS)) {
     fFastLoadFlag = FALSE;
     fLoadPendingFlag = FALSE;
 
     // set fact we were here
-    gfWWWaitSubSitesVisitedFlags[LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX - (LAPTOP_MODE_WWW + 1)] = TRUE;
-    gfWWWaitSubSitesVisitedFlags[LAPTOP_MODE_AIM_MEMBERS - (LAPTOP_MODE_WWW + 1)] = TRUE;
+    gfWWWaitSubSitesVisitedFlags[Enum95.LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX - (Enum95.LAPTOP_MODE_WWW + 1)] = TRUE;
+    gfWWWaitSubSitesVisitedFlags[Enum95.LAPTOP_MODE_AIM_MEMBERS - (Enum95.LAPTOP_MODE_WWW + 1)] = TRUE;
   }
 
   return;
@@ -4673,7 +4673,7 @@ function HandleWWWSubSites(): void {
 
 function UpdateStatusOfDisplayingBookMarks(): void {
   // this function will disable showing of bookmarks if in process of download or if we miniming web browser
-  if ((fLoadPendingFlag == TRUE) || (guiCurrentLaptopMode < LAPTOP_MODE_WWW)) {
+  if ((fLoadPendingFlag == TRUE) || (guiCurrentLaptopMode < Enum95.LAPTOP_MODE_WWW)) {
     gfShowBookmarks = FALSE;
   }
 
@@ -4684,18 +4684,18 @@ function InitalizeSubSitesList(): void {
   let iCounter: INT32 = 0;
 
   // init all subsites list to not visited
-  for (iCounter = LAPTOP_MODE_WWW + 1; iCounter <= LAPTOP_MODE_SIRTECH; iCounter++) {
-    gfWWWaitSubSitesVisitedFlags[iCounter - (LAPTOP_MODE_WWW + 1)] = FALSE;
+  for (iCounter = Enum95.LAPTOP_MODE_WWW + 1; iCounter <= Enum95.LAPTOP_MODE_SIRTECH; iCounter++) {
+    gfWWWaitSubSitesVisitedFlags[iCounter - (Enum95.LAPTOP_MODE_WWW + 1)] = FALSE;
   }
   return;
 }
 
 function SetSubSiteAsVisted(): void {
   // sets a www sub site as visited
-  if (guiCurrentLaptopMode <= LAPTOP_MODE_WWW) {
+  if (guiCurrentLaptopMode <= Enum95.LAPTOP_MODE_WWW) {
     // not at a web page yet
   } else {
-    gfWWWaitSubSitesVisitedFlags[guiCurrentLaptopMode - (LAPTOP_MODE_WWW + 1)] = TRUE;
+    gfWWWaitSubSitesVisitedFlags[guiCurrentLaptopMode - (Enum95.LAPTOP_MODE_WWW + 1)] = TRUE;
   }
 }
 
@@ -4708,29 +4708,29 @@ function HandleShiftAltTabKeyInLaptop(): void {
   }
 
   switch (guiCurrentLaptopMode) {
-    case (LAPTOP_MODE_FINANCES):
-      guiCurrentLaptopMode = LAPTOP_MODE_PERSONNEL;
+    case (Enum95.LAPTOP_MODE_FINANCES):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_PERSONNEL;
       break;
-    case (LAPTOP_MODE_PERSONNEL):
-      guiCurrentLaptopMode = LAPTOP_MODE_HISTORY;
+    case (Enum95.LAPTOP_MODE_PERSONNEL):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_HISTORY;
       break;
-    case (LAPTOP_MODE_HISTORY):
-      guiCurrentLaptopMode = LAPTOP_MODE_FILES;
+    case (Enum95.LAPTOP_MODE_HISTORY):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FILES;
       break;
-    case (LAPTOP_MODE_EMAIL):
-      guiCurrentLaptopMode = LAPTOP_MODE_FINANCES;
+    case (Enum95.LAPTOP_MODE_EMAIL):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FINANCES;
       break;
-    case (LAPTOP_MODE_FILES):
-      guiCurrentLaptopMode = LAPTOP_MODE_WWW;
+    case (Enum95.LAPTOP_MODE_FILES):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_WWW;
       break;
-    case (LAPTOP_MODE_NONE):
-      guiCurrentLaptopMode = LAPTOP_MODE_FINANCES;
+    case (Enum95.LAPTOP_MODE_NONE):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FINANCES;
       break;
-    case (LAPTOP_MODE_WWW):
-      guiCurrentLaptopMode = LAPTOP_MODE_EMAIL;
+    case (Enum95.LAPTOP_MODE_WWW):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_EMAIL;
       break;
     default:
-      guiCurrentLaptopMode = LAPTOP_MODE_EMAIL;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_EMAIL;
       break;
   }
 
@@ -4747,27 +4747,27 @@ function HandleAltTabKeyInLaptop(): void {
   }
 
   switch (guiCurrentLaptopMode) {
-    case (LAPTOP_MODE_FINANCES):
-      guiCurrentLaptopMode = LAPTOP_MODE_EMAIL;
+    case (Enum95.LAPTOP_MODE_FINANCES):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_EMAIL;
       break;
-    case (LAPTOP_MODE_PERSONNEL):
-      guiCurrentLaptopMode = LAPTOP_MODE_FINANCES;
+    case (Enum95.LAPTOP_MODE_PERSONNEL):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FINANCES;
       break;
 
-    case (LAPTOP_MODE_HISTORY):
-      guiCurrentLaptopMode = LAPTOP_MODE_PERSONNEL;
+    case (Enum95.LAPTOP_MODE_HISTORY):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_PERSONNEL;
       break;
-    case (LAPTOP_MODE_EMAIL):
-      guiCurrentLaptopMode = LAPTOP_MODE_WWW;
+    case (Enum95.LAPTOP_MODE_EMAIL):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_WWW;
       break;
-    case (LAPTOP_MODE_FILES):
-      guiCurrentLaptopMode = LAPTOP_MODE_HISTORY;
+    case (Enum95.LAPTOP_MODE_FILES):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_HISTORY;
       break;
-    case (LAPTOP_MODE_NONE):
-      guiCurrentLaptopMode = LAPTOP_MODE_EMAIL;
+    case (Enum95.LAPTOP_MODE_NONE):
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_EMAIL;
       break;
     default:
-      guiCurrentLaptopMode = LAPTOP_MODE_FILES;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FILES;
       break;
   }
 
@@ -4849,7 +4849,7 @@ function HandleWebBookMarkNotifyTimer(): void {
   fOldShowBookMarkInfo = FALSE;
 
   // if current mode is too low, then reset
-  if (guiCurrentLaptopMode < LAPTOP_MODE_WWW) {
+  if (guiCurrentLaptopMode < Enum95.LAPTOP_MODE_WWW) {
     fShowBookmarkInfo = FALSE;
   }
 
@@ -5048,18 +5048,18 @@ function InternetRainDelayMessageBoxCallBack(bExitValue: UINT8): void {
 }
 
 function CreateBookMarkHelpText(pRegion: Pointer<MOUSE_REGION>, uiBookMarkID: UINT32): void {
-  SetRegionFastHelpText(pRegion, gzLaptopHelpText[BOOKMARK_TEXT_ASSOCIATION_OF_INTERNATION_MERCENARIES + uiBookMarkID]);
+  SetRegionFastHelpText(pRegion, gzLaptopHelpText[Enum376.BOOKMARK_TEXT_ASSOCIATION_OF_INTERNATION_MERCENARIES + uiBookMarkID]);
 }
 
 function CreateFileAndNewEmailIconFastHelpText(uiHelpTextID: UINT32, fClearHelpText: BOOLEAN): void {
   let pRegion: Pointer<MOUSE_REGION>;
 
   switch (uiHelpTextID) {
-    case LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL:
+    case Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL:
       pRegion = addressof(gNewMailIconRegion);
       break;
 
-    case LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE:
+    case Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE:
       pRegion = addressof(gNewFileIconRegion);
       break;
 

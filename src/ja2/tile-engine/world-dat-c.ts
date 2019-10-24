@@ -24,7 +24,7 @@ function InitEngineTilesets(): void {
   //	fread( &ubNumSets, sizeof( ubNumSets ), 1, hfile );
   FileRead(hfile, addressof(ubNumSets), sizeof(ubNumSets), addressof(uiNumBytesRead));
   // CHECK
-  if (ubNumSets != NUM_TILESETS) {
+  if (ubNumSets != Enum316.NUM_TILESETS) {
     // Report error
     SET_ERROR("Number of tilesets in code does not match data file");
     return;
@@ -35,14 +35,14 @@ function InitEngineTilesets(): void {
   FileRead(hfile, addressof(uiNumFiles), sizeof(uiNumFiles), addressof(uiNumBytesRead));
 
   // COMPARE
-  if (uiNumFiles != NUMBEROFTILETYPES) {
+  if (uiNumFiles != Enum313.NUMBEROFTILETYPES) {
     // Report error
     SET_ERROR("Number of tilesets slots in code does not match data file");
     return;
   }
 
   // Loop through each tileset, load name then files
-  for (cnt = 0; cnt < NUM_TILESETS; cnt++) {
+  for (cnt = 0; cnt < Enum316.NUM_TILESETS; cnt++) {
     // Read name
     //		fread( &zName, sizeof( zName ), 1, hfile );
     FileRead(hfile, addressof(zName), sizeof(zName), addressof(uiNumBytesRead));
@@ -69,92 +69,92 @@ function InitEngineTilesets(): void {
   FileClose(hfile);
 
   // SET CALLBACK FUNTIONS!!!!!!!!!!!!!
-  gTilesets[CAVES_1].MovementCostFnc = SetTilesetTwoTerrainValues;
-  gTilesets[AIRSTRIP].MovementCostFnc = SetTilesetThreeTerrainValues;
-  gTilesets[DEAD_AIRSTRIP].MovementCostFnc = SetTilesetThreeTerrainValues;
-  gTilesets[TEMP_14].MovementCostFnc = SetTilesetThreeTerrainValues;
-  gTilesets[TEMP_18].MovementCostFnc = SetTilesetThreeTerrainValues;
-  gTilesets[TEMP_19].MovementCostFnc = SetTilesetThreeTerrainValues;
-  gTilesets[TEMP_26].MovementCostFnc = SetTilesetThreeTerrainValues;
-  gTilesets[TEMP_27].MovementCostFnc = SetTilesetThreeTerrainValues;
-  gTilesets[TEMP_28].MovementCostFnc = SetTilesetThreeTerrainValues;
-  gTilesets[TEMP_29].MovementCostFnc = SetTilesetThreeTerrainValues;
+  gTilesets[Enum316.CAVES_1].MovementCostFnc = SetTilesetTwoTerrainValues;
+  gTilesets[Enum316.AIRSTRIP].MovementCostFnc = SetTilesetThreeTerrainValues;
+  gTilesets[Enum316.DEAD_AIRSTRIP].MovementCostFnc = SetTilesetThreeTerrainValues;
+  gTilesets[Enum316.TEMP_14].MovementCostFnc = SetTilesetThreeTerrainValues;
+  gTilesets[Enum316.TEMP_18].MovementCostFnc = SetTilesetThreeTerrainValues;
+  gTilesets[Enum316.TEMP_19].MovementCostFnc = SetTilesetThreeTerrainValues;
+  gTilesets[Enum316.TEMP_26].MovementCostFnc = SetTilesetThreeTerrainValues;
+  gTilesets[Enum316.TEMP_27].MovementCostFnc = SetTilesetThreeTerrainValues;
+  gTilesets[Enum316.TEMP_28].MovementCostFnc = SetTilesetThreeTerrainValues;
+  gTilesets[Enum316.TEMP_29].MovementCostFnc = SetTilesetThreeTerrainValues;
 
-  gTilesets[TROPICAL_1].MovementCostFnc = SetTilesetFourTerrainValues;
-  gTilesets[TEMP_20].MovementCostFnc = SetTilesetFourTerrainValues;
+  gTilesets[Enum316.TROPICAL_1].MovementCostFnc = SetTilesetFourTerrainValues;
+  gTilesets[Enum316.TEMP_20].MovementCostFnc = SetTilesetFourTerrainValues;
 }
 
 function SetTilesetOneTerrainValues(): void {
   // FIRST TEXUTRES
-  gTileSurfaceArray[FIRSTTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[SECONDTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[THIRDTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FOURTHTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FIFTHTEXTURE].value.ubTerrainID = LOW_GRASS;
-  gTileSurfaceArray[SIXTHTEXTURE].value.ubTerrainID = LOW_GRASS;
-  gTileSurfaceArray[SEVENTHTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[REGWATERTEXTURE].value.ubTerrainID = LOW_WATER;
-  gTileSurfaceArray[DEEPWATERTEXTURE].value.ubTerrainID = DEEP_WATER;
+  gTileSurfaceArray[Enum313.FIRSTTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.SECONDTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.THIRDTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.FOURTHTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.FIFTHTEXTURE].value.ubTerrainID = Enum315.LOW_GRASS;
+  gTileSurfaceArray[Enum313.SIXTHTEXTURE].value.ubTerrainID = Enum315.LOW_GRASS;
+  gTileSurfaceArray[Enum313.SEVENTHTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.REGWATERTEXTURE].value.ubTerrainID = Enum315.LOW_WATER;
+  gTileSurfaceArray[Enum313.DEEPWATERTEXTURE].value.ubTerrainID = Enum315.DEEP_WATER;
 
   // NOW ROADS
-  gTileSurfaceArray[FIRSTROAD].value.ubTerrainID = DIRT_ROAD;
-  gTileSurfaceArray[ROADPIECES].value.ubTerrainID = DIRT_ROAD;
+  gTileSurfaceArray[Enum313.FIRSTROAD].value.ubTerrainID = Enum315.DIRT_ROAD;
+  gTileSurfaceArray[Enum313.ROADPIECES].value.ubTerrainID = Enum315.DIRT_ROAD;
 
   // NOW FLOORS
-  gTileSurfaceArray[FIRSTFLOOR].value.ubTerrainID = FLAT_FLOOR;
-  gTileSurfaceArray[SECONDFLOOR].value.ubTerrainID = FLAT_FLOOR;
-  gTileSurfaceArray[THIRDFLOOR].value.ubTerrainID = FLAT_FLOOR;
-  gTileSurfaceArray[FOURTHFLOOR].value.ubTerrainID = FLAT_FLOOR;
+  gTileSurfaceArray[Enum313.FIRSTFLOOR].value.ubTerrainID = Enum315.FLAT_FLOOR;
+  gTileSurfaceArray[Enum313.SECONDFLOOR].value.ubTerrainID = Enum315.FLAT_FLOOR;
+  gTileSurfaceArray[Enum313.THIRDFLOOR].value.ubTerrainID = Enum315.FLAT_FLOOR;
+  gTileSurfaceArray[Enum313.FOURTHFLOOR].value.ubTerrainID = Enum315.FLAT_FLOOR;
 
   // NOW ANY TERRAIN MODIFYING DEBRIS
 }
 
 function SetTilesetTwoTerrainValues(): void {
   // FIRST TEXUTRES
-  gTileSurfaceArray[FIRSTTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[SECONDTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[THIRDTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FOURTHTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FIFTHTEXTURE].value.ubTerrainID = LOW_GRASS;
-  gTileSurfaceArray[SIXTHTEXTURE].value.ubTerrainID = LOW_GRASS;
-  gTileSurfaceArray[SEVENTHTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[REGWATERTEXTURE].value.ubTerrainID = LOW_WATER;
-  gTileSurfaceArray[DEEPWATERTEXTURE].value.ubTerrainID = DEEP_WATER;
+  gTileSurfaceArray[Enum313.FIRSTTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.SECONDTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.THIRDTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.FOURTHTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.FIFTHTEXTURE].value.ubTerrainID = Enum315.LOW_GRASS;
+  gTileSurfaceArray[Enum313.SIXTHTEXTURE].value.ubTerrainID = Enum315.LOW_GRASS;
+  gTileSurfaceArray[Enum313.SEVENTHTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.REGWATERTEXTURE].value.ubTerrainID = Enum315.LOW_WATER;
+  gTileSurfaceArray[Enum313.DEEPWATERTEXTURE].value.ubTerrainID = Enum315.DEEP_WATER;
 
   // NOW ROADS
-  gTileSurfaceArray[FIRSTROAD].value.ubTerrainID = DIRT_ROAD;
-  gTileSurfaceArray[ROADPIECES].value.ubTerrainID = DIRT_ROAD;
+  gTileSurfaceArray[Enum313.FIRSTROAD].value.ubTerrainID = Enum315.DIRT_ROAD;
+  gTileSurfaceArray[Enum313.ROADPIECES].value.ubTerrainID = Enum315.DIRT_ROAD;
 
   // NOW FLOORS
-  gTileSurfaceArray[FIRSTFLOOR].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[SECONDFLOOR].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[THIRDFLOOR].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FOURTHFLOOR].value.ubTerrainID = FLAT_GROUND;
+  gTileSurfaceArray[Enum313.FIRSTFLOOR].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.SECONDFLOOR].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.THIRDFLOOR].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.FOURTHFLOOR].value.ubTerrainID = Enum315.FLAT_GROUND;
 }
 
 function SetTilesetThreeTerrainValues(): void {
   // DIFFERENCE FROM #1 IS THAT ROADS ARE PAVED
 
   // FIRST TEXUTRES
-  gTileSurfaceArray[FIRSTTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[SECONDTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[THIRDTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FOURTHTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FIFTHTEXTURE].value.ubTerrainID = LOW_GRASS;
-  gTileSurfaceArray[SIXTHTEXTURE].value.ubTerrainID = LOW_GRASS;
-  gTileSurfaceArray[SEVENTHTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[REGWATERTEXTURE].value.ubTerrainID = LOW_WATER;
-  gTileSurfaceArray[DEEPWATERTEXTURE].value.ubTerrainID = DEEP_WATER;
+  gTileSurfaceArray[Enum313.FIRSTTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.SECONDTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.THIRDTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.FOURTHTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.FIFTHTEXTURE].value.ubTerrainID = Enum315.LOW_GRASS;
+  gTileSurfaceArray[Enum313.SIXTHTEXTURE].value.ubTerrainID = Enum315.LOW_GRASS;
+  gTileSurfaceArray[Enum313.SEVENTHTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.REGWATERTEXTURE].value.ubTerrainID = Enum315.LOW_WATER;
+  gTileSurfaceArray[Enum313.DEEPWATERTEXTURE].value.ubTerrainID = Enum315.DEEP_WATER;
 
   // NOW ROADS
-  gTileSurfaceArray[FIRSTROAD].value.ubTerrainID = PAVED_ROAD;
-  gTileSurfaceArray[ROADPIECES].value.ubTerrainID = PAVED_ROAD;
+  gTileSurfaceArray[Enum313.FIRSTROAD].value.ubTerrainID = Enum315.PAVED_ROAD;
+  gTileSurfaceArray[Enum313.ROADPIECES].value.ubTerrainID = Enum315.PAVED_ROAD;
 
   // NOW FLOORS
-  gTileSurfaceArray[FIRSTFLOOR].value.ubTerrainID = FLAT_FLOOR;
-  gTileSurfaceArray[SECONDFLOOR].value.ubTerrainID = FLAT_FLOOR;
-  gTileSurfaceArray[THIRDFLOOR].value.ubTerrainID = FLAT_FLOOR;
-  gTileSurfaceArray[FOURTHFLOOR].value.ubTerrainID = FLAT_FLOOR;
+  gTileSurfaceArray[Enum313.FIRSTFLOOR].value.ubTerrainID = Enum315.FLAT_FLOOR;
+  gTileSurfaceArray[Enum313.SECONDFLOOR].value.ubTerrainID = Enum315.FLAT_FLOOR;
+  gTileSurfaceArray[Enum313.THIRDFLOOR].value.ubTerrainID = Enum315.FLAT_FLOOR;
+  gTileSurfaceArray[Enum313.FOURTHFLOOR].value.ubTerrainID = Enum315.FLAT_FLOOR;
 
   // NOW ANY TERRAIN MODIFYING DEBRIS
 }
@@ -163,25 +163,25 @@ function SetTilesetFourTerrainValues(): void {
   // DIFFERENCE FROM #1 IS THAT FLOOR2 IS NOT FLAT_FLOOR BUT FLAT_GROUND
 
   // FIRST TEXUTRES
-  gTileSurfaceArray[FIRSTTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[SECONDTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[THIRDTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FOURTHTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[FIFTHTEXTURE].value.ubTerrainID = LOW_GRASS;
-  gTileSurfaceArray[SIXTHTEXTURE].value.ubTerrainID = LOW_GRASS;
-  gTileSurfaceArray[SEVENTHTEXTURE].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[REGWATERTEXTURE].value.ubTerrainID = LOW_WATER;
-  gTileSurfaceArray[DEEPWATERTEXTURE].value.ubTerrainID = DEEP_WATER;
+  gTileSurfaceArray[Enum313.FIRSTTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.SECONDTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.THIRDTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.FOURTHTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.FIFTHTEXTURE].value.ubTerrainID = Enum315.LOW_GRASS;
+  gTileSurfaceArray[Enum313.SIXTHTEXTURE].value.ubTerrainID = Enum315.LOW_GRASS;
+  gTileSurfaceArray[Enum313.SEVENTHTEXTURE].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.REGWATERTEXTURE].value.ubTerrainID = Enum315.LOW_WATER;
+  gTileSurfaceArray[Enum313.DEEPWATERTEXTURE].value.ubTerrainID = Enum315.DEEP_WATER;
 
   // NOW ROADS
-  gTileSurfaceArray[FIRSTROAD].value.ubTerrainID = DIRT_ROAD;
-  gTileSurfaceArray[ROADPIECES].value.ubTerrainID = DIRT_ROAD;
+  gTileSurfaceArray[Enum313.FIRSTROAD].value.ubTerrainID = Enum315.DIRT_ROAD;
+  gTileSurfaceArray[Enum313.ROADPIECES].value.ubTerrainID = Enum315.DIRT_ROAD;
 
   // NOW FLOORS
-  gTileSurfaceArray[FIRSTFLOOR].value.ubTerrainID = FLAT_FLOOR;
-  gTileSurfaceArray[SECONDFLOOR].value.ubTerrainID = FLAT_GROUND;
-  gTileSurfaceArray[THIRDFLOOR].value.ubTerrainID = FLAT_FLOOR;
-  gTileSurfaceArray[FOURTHFLOOR].value.ubTerrainID = FLAT_FLOOR;
+  gTileSurfaceArray[Enum313.FIRSTFLOOR].value.ubTerrainID = Enum315.FLAT_FLOOR;
+  gTileSurfaceArray[Enum313.SECONDFLOOR].value.ubTerrainID = Enum315.FLAT_GROUND;
+  gTileSurfaceArray[Enum313.THIRDFLOOR].value.ubTerrainID = Enum315.FLAT_FLOOR;
+  gTileSurfaceArray[Enum313.FOURTHFLOOR].value.ubTerrainID = Enum315.FLAT_FLOOR;
 
   // NOW ANY TERRAIN MODIFYING DEBRIS
 }

@@ -53,8 +53,8 @@ function CreateAttributeFinishButtons(): void {
   */
   giIMPAttributeFinishButton[1] = CreateIconAndTextButton(giIMPAttributeFinishButtonImage[1], pImpButtonText[21], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (130), LAPTOP_SCREEN_WEB_UL_Y + (264), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPAttributeFinishNoCallback);
 
-  SetButtonCursor(giIMPAttributeFinishButton[0], CURSOR_WWW);
-  SetButtonCursor(giIMPAttributeFinishButton[1], CURSOR_WWW);
+  SetButtonCursor(giIMPAttributeFinishButton[0], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPAttributeFinishButton[1], Enum317.CURSOR_WWW);
 
   return;
 }
@@ -84,13 +84,13 @@ function BtnIMPAttributeFinishYesCallback(btn: Pointer<GUI_BUTTON>, reason: INT3
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       // gone far enough
-      iCurrentImpPage = IMP_MAIN_PAGE;
+      iCurrentImpPage = Enum71.IMP_MAIN_PAGE;
       if (iCurrentProfileMode < 3) {
         iCurrentProfileMode = 3;
       }
       // if we are already done, leave
       if (iCurrentProfileMode == 5) {
-        iCurrentImpPage = IMP_FINISH;
+        iCurrentImpPage = Enum71.IMP_FINISH;
       }
 
       // SET ATTRIBUTES NOW
@@ -111,7 +111,7 @@ function BtnIMPAttributeFinishNoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       // if no, return to attribute
-      iCurrentImpPage = IMP_ATTRIBUTE_PAGE;
+      iCurrentImpPage = Enum71.IMP_ATTRIBUTE_PAGE;
       fReturnStatus = TRUE;
       fButtonPendingFlag = TRUE;
     }

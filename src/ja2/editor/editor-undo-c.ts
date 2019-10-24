@@ -536,14 +536,14 @@ function ExecuteUndoList(): BOOLEAN {
     // The new cursor system is somehow interfering with the undo stuff.  When
     // an undo is called, the item is erased, but a cursor is added!  I'm quickly
     // hacking around this by erasing all cursors here.
-    RemoveAllTopmostsOfTypeRange(iUndoMapIndex, FIRSTPOINTERS, FIRSTPOINTERS);
+    RemoveAllTopmostsOfTypeRange(iUndoMapIndex, Enum313.FIRSTPOINTERS, Enum313.FIRSTPOINTERS);
 
     if (fExitGrid && !ExitGridAtGridNo(iUndoMapIndex)) {
       // An exitgrid has been removed, so get rid of the associated indicator.
-      RemoveTopmost(iUndoMapIndex, FIRSTPOINTERS8);
+      RemoveTopmost(iUndoMapIndex, Enum312.FIRSTPOINTERS8);
     } else if (!fExitGrid && ExitGridAtGridNo(iUndoMapIndex)) {
       // An exitgrid has been added, so add the associated indicator
-      AddTopmostToTail(iUndoMapIndex, FIRSTPOINTERS8);
+      AddTopmostToTail(iUndoMapIndex, Enum312.FIRSTPOINTERS8);
     }
   }
 

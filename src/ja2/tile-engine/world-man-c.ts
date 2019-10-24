@@ -78,7 +78,7 @@ function TypeExistsInLevel(pStartNode: Pointer<LEVELNODE>, fType: UINT32, pusInd
 
   // Look through all objects and Search for type
   while (pStartNode != NULL) {
-    if (pStartNode.value.usIndex != NO_TILE && pStartNode.value.usIndex < NUMBEROFTILES) {
+    if (pStartNode.value.usIndex != NO_TILE && pStartNode.value.usIndex < Enum312.NUMBEROFTILES) {
       GetTileType(pStartNode.value.usIndex, addressof(fTileType));
 
       if (fTileType == fType) {
@@ -265,7 +265,7 @@ function TypeRangeExistsInObjectLayer(iMapIndex: UINT32, fStartType: UINT32, fEn
     pOldObject = pObject;
     pObject = pObject.value.pNext;
 
-    if (pOldObject.value.usIndex != NO_TILE && pOldObject.value.usIndex < NUMBEROFTILES) {
+    if (pOldObject.value.usIndex != NO_TILE && pOldObject.value.usIndex < Enum312.NUMBEROFTILES) {
       GetTileType(pOldObject.value.usIndex, addressof(fTileType));
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
@@ -319,7 +319,7 @@ function RemoveAllObjectsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEnd
     pOldObject = pObject;
     pObject = pObject.value.pNext;
 
-    if (pOldObject.value.usIndex != NO_TILE && pOldObject.value.usIndex < NUMBEROFTILES) {
+    if (pOldObject.value.usIndex != NO_TILE && pOldObject.value.usIndex < Enum312.NUMBEROFTILES) {
       GetTileType(pOldObject.value.usIndex, addressof(fTileType));
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
@@ -384,7 +384,7 @@ function AddLandToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   pNextLand.value.usIndex = usIndex;
   pNextLand.value.ubShadeLevel = LightGetAmbient();
 
-  if (usIndex < NUMBEROFTILES) {
+  if (usIndex < Enum312.NUMBEROFTILES) {
     // Get tile element
     TileElem = gTileDatabase[usIndex];
 
@@ -464,7 +464,7 @@ function AdjustForFullTile(iMapIndex: UINT32): BOOLEAN {
   // Look through all Lands and remove index if found
 
   while (pLand != NULL) {
-    if (pLand.value.usIndex < NUMBEROFTILES) {
+    if (pLand.value.usIndex < Enum312.NUMBEROFTILES) {
       // If this is a full tile, set new full tile
       TileElem = gTileDatabase[pLand.value.usIndex];
 
@@ -846,7 +846,7 @@ function AddStructToTailCommon(iMapIndex: UINT32, usIndex: UINT16, fAddStructDBI
     CHECKF(CreateLevelNode(addressof(pNextStruct)) != FALSE);
 
     if (fAddStructDBInfo) {
-      if (usIndex < NUMBEROFTILES) {
+      if (usIndex < Enum312.NUMBEROFTILES) {
         if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
           if (AddStructureToWorld(iMapIndex, 0, gTileDatabase[usIndex].pDBStructureRef, pNextStruct) == FALSE) {
             MemFree(pNextStruct);
@@ -874,7 +874,7 @@ function AddStructToTailCommon(iMapIndex: UINT32, usIndex: UINT16, fAddStructDBI
     CHECKN(CreateLevelNode(addressof(pNextStruct)) != FALSE);
 
     if (fAddStructDBInfo) {
-      if (usIndex < NUMBEROFTILES) {
+      if (usIndex < Enum312.NUMBEROFTILES) {
         if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
           if (AddStructureToWorld(iMapIndex, 0, gTileDatabase[usIndex].pDBStructureRef, pNextStruct) == FALSE) {
             MemFree(pNextStruct);
@@ -893,7 +893,7 @@ function AddStructToTailCommon(iMapIndex: UINT32, usIndex: UINT16, fAddStructDBI
   }
 
   // Check flags for tiledat and set a shadow if we have a buddy
-  if (usIndex < NUMBEROFTILES) {
+  if (usIndex < Enum312.NUMBEROFTILES) {
     if (!GridNoIndoors(iMapIndex) && gTileDatabase[usIndex].uiFlags & HAS_SHADOW_BUDDY && gTileDatabase[usIndex].sBuddyNum != -1) {
       AddShadowToHead(iMapIndex, gTileDatabase[usIndex].sBuddyNum);
       gpWorldLevelData[iMapIndex].pShadowHead.value.uiFlags |= LEVELNODE_BUDDYSHADOW;
@@ -933,7 +933,7 @@ function AddStructToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
   CHECKF(CreateLevelNode(addressof(pNextStruct)) != FALSE);
 
-  if (usIndex < NUMBEROFTILES) {
+  if (usIndex < Enum312.NUMBEROFTILES) {
     if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
       if (AddStructureToWorld(iMapIndex, 0, gTileDatabase[usIndex].pDBStructureRef, pNextStruct) == FALSE) {
         MemFree(pNextStruct);
@@ -951,7 +951,7 @@ function AddStructToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
   SetWorldFlagsFromNewNode(iMapIndex, pNextStruct.value.usIndex);
 
-  if (usIndex < NUMBEROFTILES) {
+  if (usIndex < Enum312.NUMBEROFTILES) {
     // Check flags for tiledat and set a shadow if we have a buddy
     if (!GridNoIndoors(iMapIndex) && gTileDatabase[usIndex].uiFlags & HAS_SHADOW_BUDDY && gTileDatabase[usIndex].sBuddyNum != -1) {
       AddShadowToHead(iMapIndex, gTileDatabase[usIndex].sBuddyNum);
@@ -1018,7 +1018,7 @@ function InsertStructIndex(iMapIndex: UINT32, usIndex: UINT16, ubLevel: UINT8): 
     return FALSE;
   }
 
-  if (usIndex < NUMBEROFTILES) {
+  if (usIndex < Enum312.NUMBEROFTILES) {
     if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
       if (AddStructureToWorld(iMapIndex, 0, gTileDatabase[usIndex].pDBStructureRef, pNextStruct) == FALSE) {
         MemFree(pNextStruct);
@@ -1084,7 +1084,7 @@ function RemoveStructFromTailCommon(iMapIndex: UINT32, fRemoveStructDBInfo: BOOL
       MemFree(pStruct);
       guiLevelNodes--;
 
-      if (usIndex < NUMBEROFTILES) {
+      if (usIndex < Enum312.NUMBEROFTILES) {
         // Check flags for tiledat and set a shadow if we have a buddy
         if (!GridNoIndoors(iMapIndex) && gTileDatabase[usIndex].uiFlags & HAS_SHADOW_BUDDY && gTileDatabase[usIndex].sBuddyNum != -1) {
           RemoveShadow(iMapIndex, gTileDatabase[usIndex].sBuddyNum);
@@ -1135,7 +1135,7 @@ function RemoveStruct(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
       // If we have to, make sure to remove this node when we reload the map from a saved game
       RemoveStructFromMapTempFile(iMapIndex, usIndex);
 
-      if (usIndex < NUMBEROFTILES) {
+      if (usIndex < Enum312.NUMBEROFTILES) {
         // Check flags for tiledat and set a shadow if we have a buddy
         if (!GridNoIndoors(iMapIndex) && gTileDatabase[usIndex].uiFlags & HAS_SHADOW_BUDDY && gTileDatabase[usIndex].sBuddyNum != -1) {
           RemoveShadow(iMapIndex, gTileDatabase[usIndex].sBuddyNum);
@@ -1185,7 +1185,7 @@ function RemoveStructFromLevelNode(iMapIndex: UINT32, pNode: Pointer<LEVELNODE>)
       // If we have to, make sure to remove this node when we reload the map from a saved game
       RemoveStructFromMapTempFile(iMapIndex, usIndex);
 
-      if (pNode.value.usIndex < NUMBEROFTILES) {
+      if (pNode.value.usIndex < Enum312.NUMBEROFTILES) {
         // Check flags for tiledat and set a shadow if we have a buddy
         if (!GridNoIndoors(iMapIndex) && gTileDatabase[usIndex].uiFlags & HAS_SHADOW_BUDDY && gTileDatabase[usIndex].sBuddyNum != -1) {
           RemoveShadow(iMapIndex, gTileDatabase[usIndex].sBuddyNum);
@@ -1230,7 +1230,7 @@ function RemoveAllStructsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEnd
         usIndex = pOldStruct.value.usIndex;
 
         // Remove Item
-        if (usIndex < NUMBEROFTILES) {
+        if (usIndex < Enum312.NUMBEROFTILES) {
           RemoveStruct(iMapIndex, pOldStruct.value.usIndex);
           fRetVal = TRUE;
           if (!GridNoIndoors(iMapIndex) && gTileDatabase[usIndex].uiFlags & HAS_SHADOW_BUDDY && gTileDatabase[usIndex].sBuddyNum != -1) {
@@ -1294,7 +1294,7 @@ function AddWallToStructLayer(iMapIndex: INT32, usIndex: UINT16, fReplace: BOOLE
     // New case -- If placing a new wall which is at right angles to the current wall, then
     // we insert it.
     if (usCheckWallOrient > usWallOrientation) {
-      if ((usWallOrientation == INSIDE_TOP_RIGHT || usWallOrientation == OUTSIDE_TOP_RIGHT) && (usCheckWallOrient == INSIDE_TOP_LEFT || usCheckWallOrient == OUTSIDE_TOP_LEFT) || (usWallOrientation == INSIDE_TOP_LEFT || usWallOrientation == OUTSIDE_TOP_LEFT) && (usCheckWallOrient == INSIDE_TOP_RIGHT || usCheckWallOrient == OUTSIDE_TOP_RIGHT)) {
+      if ((usWallOrientation == Enum314.INSIDE_TOP_RIGHT || usWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) && (usCheckWallOrient == Enum314.INSIDE_TOP_LEFT || usCheckWallOrient == Enum314.OUTSIDE_TOP_LEFT) || (usWallOrientation == Enum314.INSIDE_TOP_LEFT || usWallOrientation == Enum314.OUTSIDE_TOP_LEFT) && (usCheckWallOrient == Enum314.INSIDE_TOP_RIGHT || usCheckWallOrient == Enum314.OUTSIDE_TOP_RIGHT)) {
         fInsertFound = TRUE;
       }
     }
@@ -1302,7 +1302,7 @@ function AddWallToStructLayer(iMapIndex: INT32, usIndex: UINT16, fReplace: BOOLE
     GetTileType(pStruct.value.usIndex, addressof(uiCheckType));
 
     //		if ( uiCheckType >= FIRSTFLOOR && uiCheckType <= LASTFLOOR )
-    if (uiCheckType >= FIRSTROOF && uiCheckType <= LASTROOF) {
+    if (uiCheckType >= Enum313.FIRSTROOF && uiCheckType <= LASTROOF) {
       fRoofFound = TRUE;
       ubRoofLevel = ubLevel;
     }
@@ -1314,7 +1314,7 @@ function AddWallToStructLayer(iMapIndex: INT32, usIndex: UINT16, fReplace: BOOLE
     // New check -- we want to check for walls being parallel to each other.  If so, then
     // we we want to replace it.  This is because of an existing problem with say, INSIDE_TOP_LEFT
     // and OUTSIDE_TOP_LEFT walls coexisting.
-    if ((usWallOrientation == INSIDE_TOP_RIGHT || usWallOrientation == OUTSIDE_TOP_RIGHT) && (usCheckWallOrient == INSIDE_TOP_RIGHT || usCheckWallOrient == OUTSIDE_TOP_RIGHT) || (usWallOrientation == INSIDE_TOP_LEFT || usWallOrientation == OUTSIDE_TOP_LEFT) && (usCheckWallOrient == INSIDE_TOP_LEFT || usCheckWallOrient == OUTSIDE_TOP_LEFT)) {
+    if ((usWallOrientation == Enum314.INSIDE_TOP_RIGHT || usWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) && (usCheckWallOrient == Enum314.INSIDE_TOP_RIGHT || usCheckWallOrient == Enum314.OUTSIDE_TOP_RIGHT) || (usWallOrientation == Enum314.INSIDE_TOP_LEFT || usWallOrientation == Enum314.OUTSIDE_TOP_LEFT) && (usCheckWallOrient == Enum314.INSIDE_TOP_LEFT || usCheckWallOrient == Enum314.OUTSIDE_TOP_LEFT)) {
       // Same, if replace, replace here
       if (fReplace) {
         return ReplaceStructIndex(iMapIndex, pStruct.value.usIndex, usIndex);
@@ -1726,7 +1726,7 @@ function AddMercStructureInfoFromAnimSurface(sGridNo: INT16, pSoldier: Pointer<S
 
   // Now check if we are multi-tiled!
   if (pStructureFileRef != NULL) {
-    if (pSoldier.value.ubBodyType == QUEENMONSTER) {
+    if (pSoldier.value.ubBodyType == Enum194.QUEENMONSTER) {
       // Queen uses onely one direction....
       fReturn = AddStructureToWorld(sGridNo, pSoldier.value.bLevel, addressof(pStructureFileRef.value.pDBStructureRef[0]), pSoldier.value.pLevelNode);
     } else {
@@ -1891,7 +1891,7 @@ function AddRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE> {
   if (pRoof == NULL) {
     CHECKF(CreateLevelNode(addressof(pRoof)) != FALSE);
 
-    if (usIndex < NUMBEROFTILES) {
+    if (usIndex < Enum312.NUMBEROFTILES) {
       if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
         if (AddStructureToWorld(iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pRoof) == FALSE) {
           MemFree(pRoof);
@@ -1910,7 +1910,7 @@ function AddRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE> {
       if (pRoof.value.pNext == NULL) {
         CHECKF(CreateLevelNode(addressof(pNextRoof)) != FALSE);
 
-        if (usIndex < NUMBEROFTILES) {
+        if (usIndex < Enum312.NUMBEROFTILES) {
           if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
             if (AddStructureToWorld(iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pNextRoof) == FALSE) {
               MemFree(pNextRoof);
@@ -1944,7 +1944,7 @@ function AddRoofToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
   CHECKF(CreateLevelNode(addressof(pNextRoof)) != FALSE);
 
-  if (usIndex < NUMBEROFTILES) {
+  if (usIndex < Enum312.NUMBEROFTILES) {
     if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
       if (AddStructureToWorld(iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pNextRoof) == FALSE) {
         MemFree(pNextRoof);
@@ -2164,7 +2164,7 @@ function AddOnRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE>
   if (pOnRoof == NULL) {
     CHECKF(CreateLevelNode(addressof(pOnRoof)) != FALSE);
 
-    if (usIndex < NUMBEROFTILES) {
+    if (usIndex < Enum312.NUMBEROFTILES) {
       if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
         if (AddStructureToWorld(iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pOnRoof) == FALSE) {
           MemFree(pOnRoof);
@@ -2184,7 +2184,7 @@ function AddOnRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE>
       if (pOnRoof.value.pNext == NULL) {
         CHECKF(CreateLevelNode(addressof(pNextOnRoof)) != FALSE);
 
-        if (usIndex < NUMBEROFTILES) {
+        if (usIndex < Enum312.NUMBEROFTILES) {
           if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
             if (AddStructureToWorld(iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pNextOnRoof) == FALSE) {
               MemFree(pNextOnRoof);
@@ -2216,7 +2216,7 @@ function AddOnRoofToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   pOnRoof = gpWorldLevelData[iMapIndex].pOnRoofHead;
 
   CHECKF(CreateLevelNode(addressof(pNextOnRoof)) != FALSE);
-  if (usIndex < NUMBEROFTILES) {
+  if (usIndex < Enum312.NUMBEROFTILES) {
     if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
       if (AddStructureToWorld(iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pNextOnRoof) == FALSE) {
         MemFree(pNextOnRoof);
@@ -2522,7 +2522,7 @@ function RemoveAllTopmostsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEn
     pOldTopmost = pTopmost;
     pTopmost = pTopmost.value.pNext;
 
-    if (pOldTopmost.value.usIndex != NO_TILE && pOldTopmost.value.usIndex < NUMBEROFTILES) {
+    if (pOldTopmost.value.usIndex != NO_TILE && pOldTopmost.value.usIndex < Enum312.NUMBEROFTILES) {
       GetTileType(pOldTopmost.value.usIndex, addressof(fTileType));
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
@@ -2694,7 +2694,7 @@ function Water(sGridNo: INT16): BOOLEAN {
   }
 
   pMapElement = addressof(gpWorldLevelData[sGridNo]);
-  if (pMapElement.value.ubTerrainID == LOW_WATER || pMapElement.value.ubTerrainID == MED_WATER || pMapElement.value.ubTerrainID == DEEP_WATER) {
+  if (pMapElement.value.ubTerrainID == Enum315.LOW_WATER || pMapElement.value.ubTerrainID == Enum315.MED_WATER || pMapElement.value.ubTerrainID == Enum315.DEEP_WATER) {
     // check for a bridge!  otherwise...
     return TRUE;
   } else {
@@ -2706,7 +2706,7 @@ function DeepWater(sGridNo: INT16): BOOLEAN {
   let pMapElement: Pointer<MAP_ELEMENT>;
 
   pMapElement = addressof(gpWorldLevelData[sGridNo]);
-  if (pMapElement.value.ubTerrainID == DEEP_WATER) {
+  if (pMapElement.value.ubTerrainID == Enum315.DEEP_WATER) {
     // check for a bridge!  otherwise...
     return TRUE;
   } else {
@@ -2813,11 +2813,11 @@ function FindShadow(sGridNo: INT16, usStructIndex: UINT16): Pointer<LEVELNODE> {
   let pLevelNode: Pointer<LEVELNODE>;
   let usShadowIndex: UINT16;
 
-  if (usStructIndex < FIRSTOSTRUCT1 || usStructIndex >= FIRSTSHADOW1) {
+  if (usStructIndex < Enum312.FIRSTOSTRUCT1 || usStructIndex >= Enum312.FIRSTSHADOW1) {
     return NULL;
   }
 
-  usShadowIndex = usStructIndex - FIRSTOSTRUCT1 + FIRSTSHADOW1;
+  usShadowIndex = usStructIndex - Enum312.FIRSTOSTRUCT1 + Enum312.FIRSTSHADOW1;
 
   pLevelNode = gpWorldLevelData[sGridNo].pShadowHead;
   while (pLevelNode != NULL) {
@@ -2924,7 +2924,7 @@ function RemoveWallLevelnodeFlags(sGridNo: UINT16, uiFlags: UINT32): void {
 }
 
 function SetTreeTopStateForMap(): void {
-  if (!gGameSettings.fOptions[TOPTION_TOGGLE_TREE_TOPS]) {
+  if (!gGameSettings.fOptions[Enum8.TOPTION_TOGGLE_TREE_TOPS]) {
     WorldHideTrees();
     gTacticalStatus.uiFlags |= NOHIDE_REDUNDENCY;
   } else {

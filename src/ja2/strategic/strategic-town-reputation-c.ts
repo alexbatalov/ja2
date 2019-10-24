@@ -39,7 +39,7 @@ function PostEventsForSpreadOfTownOpinion(): void {
 
 function GetTownOpinionOfMerc(ubProfileId: UINT8, ubTownId: UINT8): UINT8 {
   Assert(ubProfileId < FIRST_NPC);
-  Assert(ubTownId < NUM_TOWNS);
+  Assert(ubTownId < Enum135.NUM_TOWNS);
 
   // return amount
   return gMercProfiles[ubProfileId].bMercTownReputation[ubTownId];
@@ -51,7 +51,7 @@ function GetTownOpinionOfMercForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubTownId
     return 0;
   }
 
-  Assert(ubTownId < NUM_TOWNS);
+  Assert(ubTownId < Enum135.NUM_TOWNS);
 
   // pass on to
   return GetTownOpinionOfMerc(pSoldier.value.ubProfile, ubTownId);
@@ -59,7 +59,7 @@ function GetTownOpinionOfMercForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubTownId
 
 function UpdateTownOpinionOfThisMerc(ubProfileId: UINT8, ubTownId: UINT8, bAmount: INT8): void {
   Assert(ubProfileId < FIRST_NPC);
-  Assert(ubTownId < NUM_TOWNS);
+  Assert(ubTownId < Enum135.NUM_TOWNS);
 
   // check if opinion would be affected too greatly
   if (gMercProfiles[ubProfileId].bMercTownReputation[ubTownId] + bAmount > MAX_TOWN_OPINION) {
@@ -80,7 +80,7 @@ function UpdateTownOpinionOfThisMercForSoldier(pSoldier: Pointer<SOLDIERTYPE>, u
     return;
   }
 
-  Assert(ubTownId < NUM_TOWNS);
+  Assert(ubTownId < Enum135.NUM_TOWNS);
 
   // pass this on to the profile based function
   UpdateTownOpinionOfThisMerc(pSoldier.value.ubProfile, ubTownId, bAmount);
@@ -108,8 +108,8 @@ function HandleSpreadOfTownOpinionForMerc(ubProfileId: UINT8): void {
 
   Assert(ubProfileId < FIRST_NPC);
 
-  for (iCounterA = FIRST_TOWN; iCounterA < NUM_TOWNS; iCounterA++) {
-    for (iCounterB = iCounterA; iCounterB < NUM_TOWNS; iCounterB++) {
+  for (iCounterA = FIRST_TOWN; iCounterA < Enum135.NUM_TOWNS; iCounterA++) {
+    for (iCounterB = iCounterA; iCounterB < Enum135.NUM_TOWNS; iCounterB++) {
       if (iCounterA != iCounterB) {
         bOpinionOfTownA = GetTownOpinionOfMerc(ubProfileId, iCounterA);
         bOpinionOfTownB = GetTownOpinionOfMerc(ubProfileId, iCounterB);

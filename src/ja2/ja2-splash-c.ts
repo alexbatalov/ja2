@@ -23,7 +23,7 @@ function InitJA2SplashScreen(): void {
   }
 
   // Initialize the file database
-  InitializeFileDatabase(gGameLibaries, NUMBER_OF_LIBRARIES);
+  InitializeFileDatabase(gGameLibaries, Enum30.NUMBER_OF_LIBRARIES);
 
 // FIXME: Language-specific code
 // #ifdef ENGLISH

@@ -616,23 +616,23 @@ function DrawMap(): UINT32 {
           if (fShowAircraftFlag && !iCurrentMapSectorZ) {
             if (!StrategicMap[cnt + cnt2 * WORLD_MAP_X].fEnemyAirControlled) {
               // sector not visited, not air controlled
-              ShadeMapElem(cnt, cnt2, MAP_SHADE_DK_GREEN);
+              ShadeMapElem(cnt, cnt2, Enum157.MAP_SHADE_DK_GREEN);
             } else {
               // sector not visited, controlled and air not
-              ShadeMapElem(cnt, cnt2, MAP_SHADE_DK_RED);
+              ShadeMapElem(cnt, cnt2, Enum157.MAP_SHADE_DK_RED);
             }
           } else {
             // not visited
-            ShadeMapElem(cnt, cnt2, MAP_SHADE_BLACK);
+            ShadeMapElem(cnt, cnt2, Enum157.MAP_SHADE_BLACK);
           }
         } else {
           if (fShowAircraftFlag && !iCurrentMapSectorZ) {
             if (!StrategicMap[cnt + cnt2 * WORLD_MAP_X].fEnemyAirControlled) {
               // sector visited and air controlled
-              ShadeMapElem(cnt, cnt2, MAP_SHADE_LT_GREEN);
+              ShadeMapElem(cnt, cnt2, Enum157.MAP_SHADE_LT_GREEN);
             } else {
               // sector visited but not air controlled
-              ShadeMapElem(cnt, cnt2, MAP_SHADE_LT_RED);
+              ShadeMapElem(cnt, cnt2, Enum157.MAP_SHADE_LT_RED);
             }
           }
         }
@@ -657,14 +657,14 @@ function DrawMap(): UINT32 {
     ShowSAMSitesOnStrategicMap();
 
     // draw mine icons
-    for (iCounter = 0; iCounter < MAX_NUMBER_OF_MINES; iCounter++) {
+    for (iCounter = 0; iCounter < Enum179.MAX_NUMBER_OF_MINES; iCounter++) {
       BlitMineIcon(gMineLocation[iCounter].sSectorX, gMineLocation[iCounter].sSectorY);
     }
 
     // if mine details filter is set
     if (fShowMineFlag) {
       // show mine name/production text
-      for (iCounter = 0; iCounter < MAX_NUMBER_OF_MINES; iCounter++) {
+      for (iCounter = 0; iCounter < Enum179.MAX_NUMBER_OF_MINES; iCounter++) {
         BlitMineText(gMineLocation[iCounter].sSectorX, gMineLocation[iCounter].sSectorY);
       }
     }
@@ -759,9 +759,9 @@ function ShowTownText(): void {
   SetFont(MAP_FONT);
   SetFontBackground(FONT_MCOLOR_BLACK);
 
-  for (bTown = FIRST_TOWN; bTown < NUM_TOWNS; bTown++) {
+  for (bTown = FIRST_TOWN; bTown < Enum135.NUM_TOWNS; bTown++) {
     // skip Orta/Tixa until found
-    if (((fFoundOrta != FALSE) || (bTown != ORTA)) && ((bTown != TIXA) || (fFoundTixa != FALSE))) {
+    if (((fFoundOrta != FALSE) || (bTown != Enum135.ORTA)) && ((bTown != Enum135.TIXA) || (fFoundTixa != FALSE))) {
       swprintf(sString, "%s", pTownNames[bTown]);
 
       fLoyaltyTooLowToTrainMilitia = FALSE;
@@ -853,7 +853,7 @@ function ShowOnDutyTeam(sMapX: INT16, sMapY: INT16): INT32 {
   while (gCharactersList[ubCounter].fValid) {
     pSoldier = MercPtrs[gCharactersList[ubCounter].usSolID];
 
-    if (!(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.value.sSectorX == sMapX) && (pSoldier.value.sSectorY == sMapY) && (pSoldier.value.bSectorZ == iCurrentMapSectorZ) && ((pSoldier.value.bAssignment < ON_DUTY) || ((pSoldier.value.bAssignment == VEHICLE) && (pSoldier.value.iVehicleId != iHelicopterVehicleId))) && (pSoldier.value.bLife > 0) && (!PlayerIDGroupInMotion(pSoldier.value.ubGroupID))) {
+    if (!(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.value.sSectorX == sMapX) && (pSoldier.value.sSectorY == sMapY) && (pSoldier.value.bSectorZ == iCurrentMapSectorZ) && ((pSoldier.value.bAssignment < Enum117.ON_DUTY) || ((pSoldier.value.bAssignment == Enum117.VEHICLE) && (pSoldier.value.iVehicleId != iHelicopterVehicleId))) && (pSoldier.value.bLife > 0) && (!PlayerIDGroupInMotion(pSoldier.value.ubGroupID))) {
       DrawMapBoxIcon(hIconHandle, SMALL_YELLOW_BOX, sMapX, sMapY, ubIconPosition);
       ubIconPosition++;
     }
@@ -880,9 +880,9 @@ function ShowAssignedTeam(sMapX: INT16, sMapY: INT16, iCount: INT32): INT32 {
 
     // given number of on duty members, find number of assigned chars
     // start at beginning of list, look for people who are in sector and assigned
-    if (!(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.value.sSectorX == sMapX) && (pSoldier.value.sSectorY == sMapY) && (pSoldier.value.bSectorZ == iCurrentMapSectorZ) && (pSoldier.value.bAssignment >= ON_DUTY) && (pSoldier.value.bAssignment != VEHICLE) && (pSoldier.value.bAssignment != IN_TRANSIT) && (pSoldier.value.bAssignment != ASSIGNMENT_POW) && (pSoldier.value.bLife > 0) && (!PlayerIDGroupInMotion(pSoldier.value.ubGroupID))) {
+    if (!(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.value.sSectorX == sMapX) && (pSoldier.value.sSectorY == sMapY) && (pSoldier.value.bSectorZ == iCurrentMapSectorZ) && (pSoldier.value.bAssignment >= Enum117.ON_DUTY) && (pSoldier.value.bAssignment != Enum117.VEHICLE) && (pSoldier.value.bAssignment != Enum117.IN_TRANSIT) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) && (pSoldier.value.bLife > 0) && (!PlayerIDGroupInMotion(pSoldier.value.ubGroupID))) {
       // skip mercs inside the helicopter if we're showing airspace level - they show up inside chopper icon instead
-      if (!fShowAircraftFlag || (pSoldier.value.bAssignment != VEHICLE) || (pSoldier.value.iVehicleId != iHelicopterVehicleId)) {
+      if (!fShowAircraftFlag || (pSoldier.value.bAssignment != Enum117.VEHICLE) || (pSoldier.value.iVehicleId != iHelicopterVehicleId)) {
         DrawMapBoxIcon(hIconHandle, SMALL_DULL_YELLOW_BOX, sMapX, sMapY, ubIconPosition);
         ubIconPosition++;
       }
@@ -1062,7 +1062,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): BOOLEAN {
     clip.iRight = clip.iLeft + (2 * MAP_GRID_X);
     clip.iBottom = clip.iTop + (2 * MAP_GRID_Y);
 
-    if (iColor != MAP_SHADE_BLACK) {
+    if (iColor != Enum157.MAP_SHADE_BLACK) {
       // airspace
       /*
                               if( sMapX == 1 )
@@ -1082,12 +1082,12 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): BOOLEAN {
     }
 
     switch (iColor) {
-      case (MAP_SHADE_BLACK):
+      case (Enum157.MAP_SHADE_BLACK):
         // simply shade darker
         ShadowVideoSurfaceRect(guiSAVEBUFFER, sScreenX, sScreenY, sScreenX + MAP_GRID_X - 1, sScreenY + MAP_GRID_Y - 1);
         break;
 
-      case (MAP_SHADE_LT_GREEN):
+      case (Enum157.MAP_SHADE_LT_GREEN):
         // grab video surface and set palette
         CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
 
@@ -1110,7 +1110,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): BOOLEAN {
         UnLockVideoSurface(guiSAVEBUFFER);
         break;
 
-      case (MAP_SHADE_DK_GREEN):
+      case (Enum157.MAP_SHADE_DK_GREEN):
         // grab video surface and set palette
         CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
         hSrcVSurface.value.p16BPPPalette = pMapDKGreenPalette;
@@ -1132,7 +1132,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): BOOLEAN {
         UnLockVideoSurface(guiSAVEBUFFER);
         break;
 
-      case (MAP_SHADE_LT_RED):
+      case (Enum157.MAP_SHADE_LT_RED):
         // grab video surface and set palette
         CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
         hSrcVSurface.value.p16BPPPalette = pMapLTRedPalette;
@@ -1154,7 +1154,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): BOOLEAN {
         UnLockVideoSurface(guiSAVEBUFFER);
         break;
 
-      case (MAP_SHADE_DK_RED):
+      case (Enum157.MAP_SHADE_DK_RED):
         // grab video surface and set palette
         CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
         hSrcVSurface.value.p16BPPPalette = pMapDKRedPalette;
@@ -1220,7 +1220,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): BOOLEAN 
     sScreenX = iX;
     sScreenY = iY;
 
-    if (iColor == MAP_SHADE_BLACK) {
+    if (iColor == Enum157.MAP_SHADE_BLACK) {
       clip.iLeft = sScreenX + 1;
       clip.iRight = sScreenX + MAP_GRID_X * 2 - 1;
       clip.iTop = sScreenY;
@@ -1260,7 +1260,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): BOOLEAN 
     }
 
     switch (iColor) {
-      case (MAP_SHADE_BLACK):
+      case (Enum157.MAP_SHADE_BLACK):
         // simply shade darker
         if (iCurrentMapSectorZ > 0) {
           ShadowVideoSurfaceRect(guiSAVEBUFFER, clip.iLeft, clip.iTop, clip.iRight, clip.iBottom);
@@ -1268,7 +1268,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): BOOLEAN 
         ShadowVideoSurfaceRect(guiSAVEBUFFER, clip.iLeft, clip.iTop, clip.iRight, clip.iBottom);
         break;
 
-      case (MAP_SHADE_LT_GREEN):
+      case (Enum157.MAP_SHADE_LT_GREEN):
         // grab video surface and set palette
         CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
         hSrcVSurface.value.p16BPPPalette = pMapLTGreenPalette;
@@ -1287,7 +1287,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): BOOLEAN 
 
         break;
 
-      case (MAP_SHADE_DK_GREEN):
+      case (Enum157.MAP_SHADE_DK_GREEN):
         // grab video surface and set palette
         CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
         hSrcVSurface.value.p16BPPPalette = pMapDKGreenPalette;
@@ -1306,7 +1306,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): BOOLEAN 
 
         break;
 
-      case (MAP_SHADE_LT_RED):
+      case (Enum157.MAP_SHADE_LT_RED):
         // grab video surface and set palette
         CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
         hSrcVSurface.value.p16BPPPalette = pMapLTRedPalette;
@@ -1325,7 +1325,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): BOOLEAN 
 
         break;
 
-      case (MAP_SHADE_DK_RED):
+      case (Enum157.MAP_SHADE_DK_RED):
         // grab video surface and set palette
         CHECKF(GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP));
         hSrcVSurface.value.p16BPPPalette = pMapDKRedPalette;
@@ -1404,13 +1404,13 @@ function PlotPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: I
   }
 
   // is the character in transit?..then leave
-  if (pCharacter.value.bAssignment == IN_TRANSIT) {
+  if (pCharacter.value.bAssignment == Enum117.IN_TRANSIT) {
     // leave
     return;
   }
 
   if (pCharacter.value.bSectorZ != 0) {
-    if (pCharacter.value.bAssignment >= ON_DUTY) {
+    if (pCharacter.value.bAssignment >= Enum117.ON_DUTY) {
       // not on the surface, character won't move until they reach surface..info player of this fact
       MapScreenMessage(FONT_MCOLOR_DKRED, MSG_INTERFACE, "%s %s", pCharacter.value.name, gsUndergroundString[0]);
     } else // squad
@@ -1420,7 +1420,7 @@ function PlotPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: I
     return;
   }
 
-  if ((pCharacter.value.bAssignment == VEHICLE) || (pCharacter.value.uiStatusFlags & SOLDIER_VEHICLE)) {
+  if ((pCharacter.value.bAssignment == Enum117.VEHICLE) || (pCharacter.value.uiStatusFlags & SOLDIER_VEHICLE)) {
     SetUpMvtGroupForVehicle(pCharacter);
   }
 
@@ -1435,7 +1435,7 @@ function PlotPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: I
   pCharacter.value.pMercPath = MoveToBeginningOfPathList(pCharacter.value.pMercPath);
 
   // check if in vehicle, if so, copy path to vehicle
-  if ((pCharacter.value.bAssignment == VEHICLE) || (pCharacter.value.uiStatusFlags & SOLDIER_VEHICLE)) {
+  if ((pCharacter.value.bAssignment == Enum117.VEHICLE) || (pCharacter.value.uiStatusFlags & SOLDIER_VEHICLE)) {
     MoveCharactersPathToVehicle(pCharacter);
   } else {
     CopyPathToCharactersSquadIfInOne(pCharacter);
@@ -1469,7 +1469,7 @@ function ClearPathAfterThisSectorForCharacter(pCharacter: Pointer<SOLDIERTYPE>, 
 
   if (!iOrigLength) {
     // no previous path, nothing to do
-    return ABORT_PLOTTING;
+    return Enum158.ABORT_PLOTTING;
   }
 
   // if we're clearing everything beyond the current sector, that's quite different.  Since we're basically cancelling
@@ -1479,7 +1479,7 @@ function ClearPathAfterThisSectorForCharacter(pCharacter: Pointer<SOLDIERTYPE>, 
     EndConfirmMapMoveMode();
 
     CancelPathsOfAllSelectedCharacters();
-    return PATH_CLEARED;
+    return Enum158.PATH_CLEARED;
   } else // click not in the current sector
   {
     // if the clicked sector is along current route, this will repath only as far as it.  If not, the entire path will
@@ -1490,7 +1490,7 @@ function ClearPathAfterThisSectorForCharacter(pCharacter: Pointer<SOLDIERTYPE>, 
       pVehicle = addressof(pVehicleList[pCharacter.value.bVehicleID]);
     }
     // or in a vehicle
-    else if (pCharacter.value.bAssignment == VEHICLE) {
+    else if (pCharacter.value.bAssignment == Enum117.VEHICLE) {
       pVehicle = addressof(pVehicleList[pCharacter.value.iVehicleId]);
     } else {
       // foot soldier
@@ -1506,10 +1506,10 @@ function ClearPathAfterThisSectorForCharacter(pCharacter: Pointer<SOLDIERTYPE>, 
     if (GetLengthOfMercPath(pCharacter) < iOrigLength) {
       CopyPathToAllSelectedCharacters(pCharacter.value.pMercPath);
       // path WAS actually shortened
-      return PATH_SHORTENED;
+      return Enum158.PATH_SHORTENED;
     } else {
       // same path as before - it's not any shorter
-      return ABORT_PLOTTING;
+      return Enum158.ABORT_PLOTTING;
     }
   }
 }
@@ -1525,7 +1525,7 @@ function CancelPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>): void {
   //	GroupReversingDirectionsBetweenSectors( GetGroup( pCharacter->ubGroupID ), ( UINT8 )( pCharacter->sSectorX ), ( UINT8 )( pCharacter->sSectorY ), FALSE );
 
   // if he's in a vehicle, clear out the vehicle, too
-  if (pCharacter.value.bAssignment == VEHICLE) {
+  if (pCharacter.value.bAssignment == Enum117.VEHICLE) {
     CancelPathForVehicle(addressof(pVehicleList[pCharacter.value.iVehicleId]), TRUE);
   } else {
     // display "travel route canceled" message
@@ -1721,7 +1721,7 @@ function ClearPathAfterThisSectorForHelicopter(sX: INT16, sY: INT16): UINT32 {
   // clear out helicopter path list, after and including this sector
   if (iHelicopterVehicleId == -1 || !CanHelicopterFly()) {
     // abort plotting, shouldn't even be here
-    return ABORT_PLOTTING;
+    return Enum158.ABORT_PLOTTING;
   }
 
   pVehicle = addressof(pVehicleList[iHelicopterVehicleId]);
@@ -1729,7 +1729,7 @@ function ClearPathAfterThisSectorForHelicopter(sX: INT16, sY: INT16): UINT32 {
   iOrigLength = GetLengthOfPath(pVehicle.value.pMercPath);
   if (!iOrigLength) {
     // no previous path, nothing to do, and we didn't shorten it
-    return ABORT_PLOTTING;
+    return Enum158.ABORT_PLOTTING;
   }
 
   // are we clearing everything beyond the helicopter's CURRENT sector?
@@ -1738,7 +1738,7 @@ function ClearPathAfterThisSectorForHelicopter(sX: INT16, sY: INT16): UINT32 {
     EndConfirmMapMoveMode();
 
     CancelPathForVehicle(pVehicle, FALSE);
-    return PATH_CLEARED;
+    return Enum158.PATH_CLEARED;
   } else // click not in the current sector
   {
     // if the clicked sector is along current route, this will repath only as far as it.  If not, the entire path will
@@ -1747,10 +1747,10 @@ function ClearPathAfterThisSectorForHelicopter(sX: INT16, sY: INT16): UINT32 {
 
     if (GetLengthOfPath(pVehicle.value.pMercPath) < iOrigLength) {
       // really shortened!
-      return PATH_SHORTENED;
+      return Enum158.PATH_SHORTENED;
     } else {
       // same path as before - it's not any shorter
-      return ABORT_PLOTTING;
+      return Enum158.ABORT_PLOTTING;
     }
   }
 }
@@ -3990,7 +3990,7 @@ function BlitTownGridMarkers(): void {
   // go through list of towns and place on screen
   while (pTownNamesList[iCounter] != 0) {
     // skip Orta/Tixa until found
-    if (((fFoundOrta != FALSE) || (pTownNamesList[iCounter] != ORTA)) && ((pTownNamesList[iCounter] != TIXA) || (fFoundTixa != FALSE))) {
+    if (((fFoundOrta != FALSE) || (pTownNamesList[iCounter] != Enum135.ORTA)) && ((pTownNamesList[iCounter] != Enum135.TIXA) || (fFoundTixa != FALSE))) {
       if (fZoomFlag) {
         GetScreenXYFromMapXYStationary((pTownLocationsList[iCounter] % MAP_WORLD_X), (pTownLocationsList[iCounter] / MAP_WORLD_X), addressof(sScreenX), addressof(sScreenY));
         sScreenX -= MAP_GRID_X - 1;
@@ -4007,19 +4007,19 @@ function BlitTownGridMarkers(): void {
         sScreenX += 2;
       }
 
-      if (StrategicMap[pTownLocationsList[iCounter] - MAP_WORLD_X].bNameId == BLANK_SECTOR) {
+      if (StrategicMap[pTownLocationsList[iCounter] - MAP_WORLD_X].bNameId == Enum135.BLANK_SECTOR) {
         LineDraw(TRUE, sScreenX - 1, sScreenY - 1, sScreenX + sWidth - 1, sScreenY - 1, usColor, pDestBuf);
       }
 
-      if ((StrategicMap[pTownLocationsList[iCounter] + MAP_WORLD_X].bNameId == BLANK_SECTOR) /* || ( StrategicMap[ pTownLocationsList[ iCounter ] + MAP_WORLD_X ].bNameId == PALACE ) */) {
+      if ((StrategicMap[pTownLocationsList[iCounter] + MAP_WORLD_X].bNameId == Enum135.BLANK_SECTOR) /* || ( StrategicMap[ pTownLocationsList[ iCounter ] + MAP_WORLD_X ].bNameId == PALACE ) */) {
         LineDraw(TRUE, sScreenX - 1, sScreenY + sHeight - 1, sScreenX + sWidth - 1, sScreenY + sHeight - 1, usColor, pDestBuf);
       }
 
-      if (StrategicMap[pTownLocationsList[iCounter] - 1].bNameId == BLANK_SECTOR) {
+      if (StrategicMap[pTownLocationsList[iCounter] - 1].bNameId == Enum135.BLANK_SECTOR) {
         LineDraw(TRUE, sScreenX - 2, sScreenY - 1, sScreenX - 2, sScreenY + sHeight - 1, usColor, pDestBuf);
       }
 
-      if (StrategicMap[pTownLocationsList[iCounter] + 1].bNameId == BLANK_SECTOR) {
+      if (StrategicMap[pTownLocationsList[iCounter] + 1].bNameId == Enum135.BLANK_SECTOR) {
         LineDraw(TRUE, sScreenX + sWidth - 1, sScreenY - 1, sScreenX + sWidth - 1, sScreenY + sHeight - 1, usColor, pDestBuf);
       }
     }
@@ -4055,7 +4055,7 @@ function BlitMineGridMarkers(): void {
   // clip to view region
   ClipBlitsToMapViewRegionForRectangleAndABit(uiDestPitchBYTES);
 
-  for (iCounter = 0; iCounter < MAX_NUMBER_OF_MINES; iCounter++) {
+  for (iCounter = 0; iCounter < Enum179.MAX_NUMBER_OF_MINES; iCounter++) {
     if (fZoomFlag) {
       GetScreenXYFromMapXYStationary((gMineLocation[iCounter].sSectorX), (gMineLocation[iCounter].sSectorY), addressof(sScreenX), addressof(sScreenY));
       sScreenX -= MAP_GRID_X;
@@ -4174,13 +4174,13 @@ function PickUpATownPersonFromSector(ubType: UINT8, sX: INT16, sY: INT16): BOOLE
 
   // otherwise pick this guy up
   switch (ubType) {
-    case (GREEN_MILITIA):
+    case (Enum126.GREEN_MILITIA):
       sGreensOnCursor++;
       break;
-    case (REGULAR_MILITIA):
+    case (Enum126.REGULAR_MILITIA):
       sRegularsOnCursor++;
       break;
-    case (ELITE_MILITIA):
+    case (Enum126.ELITE_MILITIA):
       sElitesOnCursor++;
       break;
   }
@@ -4199,7 +4199,7 @@ function DropAPersonInASector(ubType: UINT8, sX: INT16, sY: INT16): BOOLEAN {
     return FALSE;
   }
 
-  if (SectorInfo[SECTOR(sX, sY)].ubNumberOfCivsAtLevel[GREEN_MILITIA] + SectorInfo[SECTOR(sX, sY)].ubNumberOfCivsAtLevel[REGULAR_MILITIA] + SectorInfo[SECTOR(sX, sY)].ubNumberOfCivsAtLevel[ELITE_MILITIA] >= MAX_ALLOWABLE_MILITIA_PER_SECTOR) {
+  if (SectorInfo[SECTOR(sX, sY)].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] + SectorInfo[SECTOR(sX, sY)].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] + SectorInfo[SECTOR(sX, sY)].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA] >= MAX_ALLOWABLE_MILITIA_PER_SECTOR) {
     return FALSE;
   }
 
@@ -4213,7 +4213,7 @@ function DropAPersonInASector(ubType: UINT8, sX: INT16, sY: INT16): BOOLEAN {
 
   // drop the guy into this sector
   switch (ubType) {
-    case (GREEN_MILITIA):
+    case (Enum126.GREEN_MILITIA):
 
       if (!sGreensOnCursor) {
         return FALSE;
@@ -4221,13 +4221,13 @@ function DropAPersonInASector(ubType: UINT8, sX: INT16, sY: INT16): BOOLEAN {
 
       sGreensOnCursor--;
       break;
-    case (REGULAR_MILITIA):
+    case (Enum126.REGULAR_MILITIA):
       if (!sRegularsOnCursor) {
         return FALSE;
       }
       sRegularsOnCursor--;
       break;
-    case (ELITE_MILITIA):
+    case (Enum126.ELITE_MILITIA):
       if (!sElitesOnCursor) {
         return FALSE;
       }
@@ -4412,9 +4412,9 @@ function RenderIconsPerSectorForSelectedTown(): void {
     }
 
     // get number of each
-    iNumberOfGreens = SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[GREEN_MILITIA];
-    iNumberOfRegulars = SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[REGULAR_MILITIA];
-    iNumberOfElites = SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[ELITE_MILITIA];
+    iNumberOfGreens = SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA];
+    iNumberOfRegulars = SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA];
+    iNumberOfElites = SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA];
 
     // get total
     iTotalNumberOfTroops = iNumberOfGreens + iNumberOfRegulars + iNumberOfElites;
@@ -4424,7 +4424,7 @@ function RenderIconsPerSectorForSelectedTown(): void {
     swprintf(sString, "%d", iTotalNumberOfTroops);
     FindFontRightCoordinates((MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + ((iCounter % MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_WIDTH)), (MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + ((iCounter / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT)), MILITIA_BOX_BOX_WIDTH, 0, sString, FONT10ARIAL, addressof(sX), addressof(sY));
 
-    if (StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sCurrentSectorValue)].bNameId != BLANK_SECTOR && !StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sCurrentSectorValue)].fEnemyControlled) {
+    if (StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sCurrentSectorValue)].bNameId != Enum135.BLANK_SECTOR && !StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sCurrentSectorValue)].fEnemyControlled) {
       if (sSectorMilitiaMapSector != iCounter) {
         mprintf(sX, (sY + MILITIA_BOX_BOX_HEIGHT - 5), sString);
       } else {
@@ -4640,9 +4640,9 @@ function SetMilitiaMapButtonsText(): void {
   sBaseSectorValue = GetBaseSectorForCurrentTown();
   sGlobalMapSector = sBaseSectorValue + ((sSectorMilitiaMapSector % MILITIA_BOX_ROWS) + (sSectorMilitiaMapSector / MILITIA_BOX_ROWS) * (16));
 
-  iNumberOfGreens = SectorInfo[sGlobalMapSector].ubNumberOfCivsAtLevel[GREEN_MILITIA];
-  iNumberOfRegulars = SectorInfo[sGlobalMapSector].ubNumberOfCivsAtLevel[REGULAR_MILITIA];
-  iNumberOfElites = SectorInfo[sGlobalMapSector].ubNumberOfCivsAtLevel[ELITE_MILITIA];
+  iNumberOfGreens = SectorInfo[sGlobalMapSector].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA];
+  iNumberOfRegulars = SectorInfo[sGlobalMapSector].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA];
+  iNumberOfElites = SectorInfo[sGlobalMapSector].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA];
 
   // the greens in this sector
   swprintf(sString, "%d", iNumberOfGreens);
@@ -4747,7 +4747,7 @@ function IsThisMilitiaTownSectorAllowable(sSectorIndexValue: INT16): BOOLEAN {
   sSectorY = SECTORY(sGlobalMapSector);
 
   // is this in fact part of a town?
-  if (StrategicMap[CALCULATE_STRATEGIC_INDEX(sSectorX, sSectorY)].bNameId == BLANK_SECTOR) {
+  if (StrategicMap[CALCULATE_STRATEGIC_INDEX(sSectorX, sSectorY)].bNameId == Enum135.BLANK_SECTOR) {
     return FALSE;
   }
 
@@ -4799,28 +4799,28 @@ function HandleShutDownOfMilitiaPanelIfPeopleOnTheCursor(sTownValue: INT16): voi
       if (SectorOursAndPeaceful((pTownLocationsList[iCounter] % MAP_WORLD_X), (pTownLocationsList[iCounter] / MAP_WORLD_X), 0)) {
         iCount = 0;
         iNumberThatCanFitInSector = MAX_ALLOWABLE_MILITIA_PER_SECTOR;
-        iNumberThatCanFitInSector -= SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[GREEN_MILITIA];
-        iNumberThatCanFitInSector -= SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[REGULAR_MILITIA];
-        iNumberThatCanFitInSector -= SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[ELITE_MILITIA];
+        iNumberThatCanFitInSector -= SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA];
+        iNumberThatCanFitInSector -= SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA];
+        iNumberThatCanFitInSector -= SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA];
 
         while ((iCount < iNumberThatCanFitInSector) && ((sGreensOnCursor) || (sRegularsOnCursor) || (sElitesOnCursor))) {
           // green
           if ((iCount + 1 <= iNumberThatCanFitInSector) && (sGreensOnCursor)) {
-            SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[GREEN_MILITIA]++;
+            SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA]++;
             iCount++;
             sGreensOnCursor--;
           }
 
           // regular
           if ((iCount + 1 <= iNumberThatCanFitInSector) && (sRegularsOnCursor)) {
-            SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[REGULAR_MILITIA]++;
+            SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA]++;
             iCount++;
             sRegularsOnCursor--;
           }
 
           // elite
           if ((iCount + 1 <= iNumberThatCanFitInSector) && (sElitesOnCursor)) {
-            SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[ELITE_MILITIA]++;
+            SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA]++;
             iCount++;
             sElitesOnCursor--;
           }
@@ -4844,9 +4844,9 @@ function HandleShutDownOfMilitiaPanelIfPeopleOnTheCursor(sTownValue: INT16): voi
       }
 
       if (fLastOne) {
-        SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[GREEN_MILITIA] += (sGreensOnCursor % iNumberUnderControl);
-        SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[REGULAR_MILITIA] += (sRegularsOnCursor % iNumberUnderControl);
-        SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[ELITE_MILITIA] += (sElitesOnCursor % iNumberUnderControl);
+        SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] += (sGreensOnCursor % iNumberUnderControl);
+        SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] += (sRegularsOnCursor % iNumberUnderControl);
+        SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA] += (sElitesOnCursor % iNumberUnderControl);
       }
     }
 
@@ -4905,9 +4905,9 @@ function HandleEveningOutOfTroopsAmongstSectors(): void {
 
     if (!StrategicMap[CALCULATE_STRATEGIC_INDEX(sSectorX, sSectorY)].fEnemyControlled) {
       // get number of each
-      iNumberOfGreens += SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[GREEN_MILITIA];
-      iNumberOfRegulars += SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[REGULAR_MILITIA];
-      iNumberOfElites += SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[ELITE_MILITIA];
+      iNumberOfGreens += SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA];
+      iNumberOfRegulars += SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA];
+      iNumberOfElites += SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA];
     }
   }
 
@@ -4939,26 +4939,26 @@ function HandleEveningOutOfTroopsAmongstSectors(): void {
         sSector = SECTOR(sSectorX, sSectorY);
 
         // distribute here
-        SectorInfo[sSector].ubNumberOfCivsAtLevel[GREEN_MILITIA] = (iNumberOfGreens / iNumberUnderControl);
-        SectorInfo[sSector].ubNumberOfCivsAtLevel[REGULAR_MILITIA] = (iNumberOfRegulars / iNumberUnderControl);
-        SectorInfo[sSector].ubNumberOfCivsAtLevel[ELITE_MILITIA] = (iNumberOfElites / iNumberUnderControl);
+        SectorInfo[sSector].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] = (iNumberOfGreens / iNumberUnderControl);
+        SectorInfo[sSector].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] = (iNumberOfRegulars / iNumberUnderControl);
+        SectorInfo[sSector].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA] = (iNumberOfElites / iNumberUnderControl);
         sTotalSoFar = ((iNumberOfGreens / iNumberUnderControl) + (iNumberOfRegulars / iNumberUnderControl) + (iNumberOfElites / iNumberUnderControl));
 
         // add leftovers that weren't included in the div operation
         if ((iNumberLeftOverGreen) && (sTotalSoFar < MAX_ALLOWABLE_MILITIA_PER_SECTOR)) {
-          SectorInfo[sSector].ubNumberOfCivsAtLevel[GREEN_MILITIA]++;
+          SectorInfo[sSector].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA]++;
           sTotalSoFar++;
           iNumberLeftOverGreen--;
         }
 
         if ((iNumberLeftOverRegular) && (sTotalSoFar < MAX_ALLOWABLE_MILITIA_PER_SECTOR)) {
-          SectorInfo[sSector].ubNumberOfCivsAtLevel[REGULAR_MILITIA]++;
+          SectorInfo[sSector].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA]++;
           sTotalSoFar++;
           iNumberLeftOverRegular--;
         }
 
         if ((iNumberLeftOverElite) && (sTotalSoFar < MAX_ALLOWABLE_MILITIA_PER_SECTOR)) {
-          SectorInfo[sSector].ubNumberOfCivsAtLevel[ELITE_MILITIA]++;
+          SectorInfo[sSector].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA]++;
           sTotalSoFar++;
           iNumberLeftOverElite--;
         }
@@ -5078,7 +5078,7 @@ function RenderShadingForUnControlledSectors(): void {
     // grab current sector value
     sCurrentSectorValue = sBaseSectorValue + ((iCounter % MILITIA_BOX_ROWS) + (iCounter / MILITIA_BOX_ROWS) * (16));
 
-    if ((StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sCurrentSectorValue)].bNameId != BLANK_SECTOR) && ((StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sCurrentSectorValue)].fEnemyControlled) || (NumHostilesInSector(SECTORX(sCurrentSectorValue), SECTORY(sCurrentSectorValue), 0)))) {
+    if ((StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sCurrentSectorValue)].bNameId != Enum135.BLANK_SECTOR) && ((StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sCurrentSectorValue)].fEnemyControlled) || (NumHostilesInSector(SECTORX(sCurrentSectorValue), SECTORY(sCurrentSectorValue), 0)))) {
       // shade this sector, not under our control
       sX = MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + ((iCounter % MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_WIDTH);
       sY = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + ((iCounter / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT);
@@ -5115,9 +5115,9 @@ function DrawTownMilitiaForcesOnMap(): void {
       sSectorY = GET_Y_FROM_STRATEGIC_INDEX(pTownLocationsList[iCounter]);
 
       // get number of each
-      iNumberOfGreens = SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[GREEN_MILITIA];
-      iNumberOfRegulars = SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[REGULAR_MILITIA];
-      iNumberOfElites = SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[ELITE_MILITIA];
+      iNumberOfGreens = SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA];
+      iNumberOfRegulars = SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA];
+      iNumberOfElites = SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA];
 
       // set the total for loop upper bound
       iTotalNumberOfTroops = iNumberOfGreens + iNumberOfRegulars + iNumberOfElites;
@@ -5154,9 +5154,9 @@ function DrawTownMilitiaForcesOnMap(): void {
 
     if (!StrategicMap[CALCULATE_STRATEGIC_INDEX(sSectorX, sSectorY)].fEnemyControlled) {
       // get number of each
-      iNumberOfGreens = SectorInfo[pSamList[iCounter]].ubNumberOfCivsAtLevel[GREEN_MILITIA];
-      iNumberOfRegulars = SectorInfo[pSamList[iCounter]].ubNumberOfCivsAtLevel[REGULAR_MILITIA];
-      iNumberOfElites = SectorInfo[pSamList[iCounter]].ubNumberOfCivsAtLevel[ELITE_MILITIA];
+      iNumberOfGreens = SectorInfo[pSamList[iCounter]].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA];
+      iNumberOfRegulars = SectorInfo[pSamList[iCounter]].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA];
+      iNumberOfElites = SectorInfo[pSamList[iCounter]].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA];
 
       // ste the total for loop upper bound
       iTotalNumberOfTroops = iNumberOfGreens + iNumberOfRegulars + iNumberOfElites;
@@ -5206,9 +5206,9 @@ function CheckAndUpdateStatesOfSelectedMilitiaSectorButtons(): void {
   sBaseSectorValue = GetBaseSectorForCurrentTown();
   sGlobalMapSector = sBaseSectorValue + ((sSectorMilitiaMapSector % MILITIA_BOX_ROWS) + (sSectorMilitiaMapSector / MILITIA_BOX_ROWS) * (16));
 
-  iNumberOfGreens = SectorInfo[sGlobalMapSector].ubNumberOfCivsAtLevel[GREEN_MILITIA] + sGreensOnCursor;
-  iNumberOfRegulars = SectorInfo[sGlobalMapSector].ubNumberOfCivsAtLevel[REGULAR_MILITIA] + sRegularsOnCursor;
-  iNumberOfElites = SectorInfo[sGlobalMapSector].ubNumberOfCivsAtLevel[ELITE_MILITIA] + sElitesOnCursor;
+  iNumberOfGreens = SectorInfo[sGlobalMapSector].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] + sGreensOnCursor;
+  iNumberOfRegulars = SectorInfo[sGlobalMapSector].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] + sRegularsOnCursor;
+  iNumberOfElites = SectorInfo[sGlobalMapSector].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA] + sElitesOnCursor;
 
   if ((sGreensOnCursor > 0) || (sRegularsOnCursor > 0) || (sElitesOnCursor > 0)) {
     DisableButton(giMapMilitiaButton[4]); // DONE
@@ -5311,7 +5311,7 @@ function GetNumberOfMilitiaInSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: 
   let iNumberInSector: INT32 = 0;
 
   if (!bSectorZ) {
-    iNumberInSector = SectorInfo[SECTOR(sSectorX, sSectorY)].ubNumberOfCivsAtLevel[GREEN_MILITIA] + SectorInfo[SECTOR(sSectorX, sSectorY)].ubNumberOfCivsAtLevel[REGULAR_MILITIA] + SectorInfo[SECTOR(sSectorX, sSectorY)].ubNumberOfCivsAtLevel[ELITE_MILITIA];
+    iNumberInSector = SectorInfo[SECTOR(sSectorX, sSectorY)].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] + SectorInfo[SECTOR(sSectorX, sSectorY)].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] + SectorInfo[SECTOR(sSectorX, sSectorY)].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA];
   }
 
   return iNumberInSector;
@@ -5342,17 +5342,17 @@ function WhatPlayerKnowsAboutEnemiesInSector(sSectorX: INT16, sSectorY: INT16): 
     // if the enemies are stationary (i.e. mercs attacking a garrison)
     if (NumStationaryEnemiesInSector(sSectorX, sSectorY) > 0) {
       // inside a garrison - hide their # (show question mark) to match what the PBI is showing
-      return KNOWS_THEYRE_THERE;
+      return Enum159.KNOWS_THEYRE_THERE;
     } else {
       // other situations - show exactly how many there are
-      return KNOWS_HOW_MANY;
+      return Enum159.KNOWS_HOW_MANY;
     }
   }
 
   // if the player has visited the sector during this game
   if (GetSectorFlagStatus(sSectorX, sSectorY, 0, SF_ALREADY_VISITED) == TRUE) {
     // then he always knows about any enemy presence for the remainder of the game, but not exact numbers
-    return KNOWS_THEYRE_THERE;
+    return Enum159.KNOWS_THEYRE_THERE;
   }
 
   // if Skyrider noticed the enemis in the sector recently
@@ -5360,7 +5360,7 @@ function WhatPlayerKnowsAboutEnemiesInSector(sSectorX: INT16, sSectorY: INT16): 
     // and Skyrider is still in this sector, flying
     if (IsSkyriderIsFlyingInSector(sSectorX, sSectorY)) {
       // player remains aware of them as long as Skyrider remains in the sector
-      return KNOWS_THEYRE_THERE;
+      return Enum159.KNOWS_THEYRE_THERE;
     } else {
       // Skyrider is gone, reset the flag that he noticed enemies here
       SectorInfo[SECTOR(sSectorX, sSectorY)].uiFlags &= ~SF_SKYRIDER_NOTICED_ENEMIES_HERE;
@@ -5368,7 +5368,7 @@ function WhatPlayerKnowsAboutEnemiesInSector(sSectorX: INT16, sSectorY: INT16): 
   }
 
   // no information available
-  return KNOWS_NOTHING;
+  return Enum159.KNOWS_NOTHING;
 }
 
 function CanMercsScoutThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
@@ -5396,12 +5396,12 @@ function CanMercsScoutThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT
     }
 
     // POWs, dead guys, guys in transit, sleeping, and really hurt guys can't scout!
-    if ((pSoldier.value.bAssignment == IN_TRANSIT) || (pSoldier.value.bAssignment == ASSIGNMENT_POW) || (pSoldier.value.bAssignment == ASSIGNMENT_DEAD) || (pSoldier.value.fMercAsleep == TRUE) || (pSoldier.value.bLife < OKLIFE)) {
+    if ((pSoldier.value.bAssignment == Enum117.IN_TRANSIT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD) || (pSoldier.value.fMercAsleep == TRUE) || (pSoldier.value.bLife < OKLIFE)) {
       continue;
     }
 
     // don't count mercs aboard Skyrider
-    if ((pSoldier.value.bAssignment == VEHICLE) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
+    if ((pSoldier.value.bAssignment == Enum117.VEHICLE) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       continue;
     }
 
@@ -5443,16 +5443,16 @@ function HandleShowingOfEnemyForcesInSector(sSectorX: INT16, sSectorY: INT16, bS
   }
 
   switch (WhatPlayerKnowsAboutEnemiesInSector(sSectorX, sSectorY)) {
-    case KNOWS_NOTHING:
+    case Enum159.KNOWS_NOTHING:
       // display nothing
       break;
 
-    case KNOWS_THEYRE_THERE:
+    case Enum159.KNOWS_THEYRE_THERE:
       // display a question mark
       ShowUncertainNumberEnemiesInSector(sSectorX, sSectorY);
       break;
 
-    case KNOWS_HOW_MANY:
+    case Enum159.KNOWS_HOW_MANY:
       // display individual icons for each enemy, starting at the received icon position index
       ShowEnemiesInSector(sSectorX, sSectorY, sNumberOfEnemies, ubIconPosition);
       break;
@@ -5501,7 +5501,7 @@ function ShowSAMSitesOnStrategicMap(): void {
     BlitSAMGridMarkers();
   }
 
-  for (iCounter = 0; iCounter < NUMBER_OF_SAM_SITES; iCounter++) {
+  for (iCounter = 0; iCounter < Enum138.NUMBER_OF_SAM_SITES; iCounter++) {
     // has the sam site here been found?
     if (!fSamSiteFound[iCounter]) {
       continue;
@@ -5542,7 +5542,7 @@ function ShowSAMSitesOnStrategicMap(): void {
         sY += 16;
       }
 
-      wcscpy(wString, pLandTypeStrings[SAM_SITE]);
+      wcscpy(wString, pLandTypeStrings[Enum127.SAM_SITE]);
 
       // we're CENTERING the first string AROUND sX, so calculate the starting X value
       sX -= StringPixLength(wString, MAP_FONT) / 2;
@@ -5592,7 +5592,7 @@ function BlitSAMGridMarkers(): void {
   // clip to view region
   ClipBlitsToMapViewRegionForRectangleAndABit(uiDestPitchBYTES);
 
-  for (iCounter = 0; iCounter < NUMBER_OF_SAM_SITES; iCounter++) {
+  for (iCounter = 0; iCounter < Enum138.NUMBER_OF_SAM_SITES; iCounter++) {
     // has the sam site here been found?
     if (!fSamSiteFound[iCounter]) {
       continue;
@@ -5635,7 +5635,7 @@ function CanMilitiaAutoDistribute(): BOOLEAN {
   let iTotalTroopsInTown: INT32 = 0;
 
   // can't auto-distribute if we don't have a town selected (this excludes SAM sites)
-  if (sSelectedMilitiaTown == BLANK_SECTOR)
+  if (sSelectedMilitiaTown == Enum135.BLANK_SECTOR)
     return FALSE;
 
   // can't auto-distribute if we don't control any sectors in the the town
@@ -5660,7 +5660,7 @@ function CanMilitiaAutoDistribute(): BOOLEAN {
 
     if (!StrategicMap[CALCULATE_STRATEGIC_INDEX(sSectorX, sSectorY)].fEnemyControlled) {
       // get number of each
-      iTotalTroopsInTown += SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[GREEN_MILITIA] + SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[REGULAR_MILITIA] + SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[ELITE_MILITIA];
+      iTotalTroopsInTown += SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] + SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] + SectorInfo[sCurrentSectorValue].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA];
     }
   }
 

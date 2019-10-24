@@ -88,7 +88,7 @@ let gusCivQuoteBoxHeight: UINT16;
 function CopyNumEntriesIntoQuoteStruct(): void {
   let cnt: INT32;
 
-  for (cnt = 0; cnt < NUM_CIV_QUOTES; cnt++) {
+  for (cnt = 0; cnt < Enum201.NUM_CIV_QUOTES; cnt++) {
     gCivQuotes[cnt].ubNumEntries = gubNumEntries[cnt];
   }
 }
@@ -100,7 +100,7 @@ function GetCivQuoteText(ubCivQuoteID: UINT8, ubEntryID: UINT8, zQuote: Pointer<
   if (ubCivQuoteID == CIV_QUOTE_HINT) {
     if (gbWorldSectorZ > 0) {
       // sprintf( zFileName, "NPCData\\miners.edt" );
-      sprintf(zFileName, "NPCDATA\\CIV%02d.edt", CIV_QUOTE_MINERS_NOT_FOR_PLAYER);
+      sprintf(zFileName, "NPCDATA\\CIV%02d.edt", Enum201.CIV_QUOTE_MINERS_NOT_FOR_PLAYER);
     } else {
       sprintf(zFileName, "NPCData\\%c%d.edt", 'A' + (gWorldSectorY - 1), gWorldSectorX);
     }
@@ -171,8 +171,8 @@ function ShutDownQuoteBox(fForce: BOOLEAN): void {
     gCivQuoteData.bActive = FALSE;
 
     // do we need to do anything at the end of the civ quote?
-    if (gCivQuoteData.pCiv && gCivQuoteData.pCiv.value.bAction == AI_ACTION_OFFER_SURRENDER) {
-      DoMessageBox(MSG_BOX_BASIC_STYLE, Message[STR_SURRENDER], GAME_SCREEN, MSG_BOX_FLAG_YESNO, SurrenderMessageBoxCallBack, NULL);
+    if (gCivQuoteData.pCiv && gCivQuoteData.pCiv.value.bAction == Enum289.AI_ACTION_OFFER_SURRENDER) {
+      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_SURRENDER], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, SurrenderMessageBoxCallBack, NULL);
     }
   }
 }
@@ -196,7 +196,7 @@ function GetCivType(pCiv: Pointer<SOLDIERTYPE>): INT8 {
   // 1 ) check sector....
   if (gWorldSectorX == 10 && gWorldSectorY == 6 && gbWorldSectorZ == 0) {
     // 2 ) the only female....
-    if (pCiv.value.ubCivilianGroup == 0 && pCiv.value.bTeam != gbPlayerNum && pCiv.value.ubBodyType == REGFEMALE) {
+    if (pCiv.value.ubCivilianGroup == 0 && pCiv.value.bTeam != gbPlayerNum && pCiv.value.ubBodyType == Enum194.REGFEMALE) {
       // She's a ho!
       return CIV_TYPE_MARRIED_PC;
     }
@@ -212,31 +212,31 @@ function GetCivType(pCiv: Pointer<SOLDIERTYPE>): INT8 {
   }
 
   switch (pCiv.value.ubBodyType) {
-    case REGMALE:
-    case BIGMALE:
-    case STOCKYMALE:
-    case REGFEMALE:
-    case FATCIV:
-    case MANCIV:
-    case MINICIV:
-    case DRESSCIV:
-    case CRIPPLECIV:
+    case Enum194.REGMALE:
+    case Enum194.BIGMALE:
+    case Enum194.STOCKYMALE:
+    case Enum194.REGFEMALE:
+    case Enum194.FATCIV:
+    case Enum194.MANCIV:
+    case Enum194.MINICIV:
+    case Enum194.DRESSCIV:
+    case Enum194.CRIPPLECIV:
 
       return CIV_TYPE_ADULT;
       break;
 
-    case ADULTFEMALEMONSTER:
-    case AM_MONSTER:
-    case YAF_MONSTER:
-    case YAM_MONSTER:
-    case LARVAE_MONSTER:
-    case INFANT_MONSTER:
-    case QUEENMONSTER:
+    case Enum194.ADULTFEMALEMONSTER:
+    case Enum194.AM_MONSTER:
+    case Enum194.YAF_MONSTER:
+    case Enum194.YAM_MONSTER:
+    case Enum194.LARVAE_MONSTER:
+    case Enum194.INFANT_MONSTER:
+    case Enum194.QUEENMONSTER:
 
       return CIV_TYPE_NA;
 
-    case HATKIDCIV:
-    case KIDCIV:
+    case Enum194.HATKIDCIV:
+    case Enum194.KIDCIV:
 
       return CIV_TYPE_KID;
 
@@ -298,7 +298,7 @@ function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, ubEntryI
   // Prepare text box
   SET_USE_WINFONTS(TRUE);
   SET_WINFONT(giSubTitleWinFont);
-  gCivQuoteData.iDialogueBox = PrepareMercPopupBox(gCivQuoteData.iDialogueBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, gzCivQuote, DIALOGUE_DEFAULT_WIDTH, 0, 0, 0, addressof(gusCivQuoteBoxWidth), addressof(gusCivQuoteBoxHeight));
+  gCivQuoteData.iDialogueBox = PrepareMercPopupBox(gCivQuoteData.iDialogueBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gzCivQuote, DIALOGUE_DEFAULT_WIDTH, 0, 0, 0, addressof(gusCivQuoteBoxWidth), addressof(gusCivQuoteBoxHeight));
   SET_USE_WINFONTS(FALSE);
 
   // OK, find center for box......
@@ -338,7 +338,7 @@ function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, ubEntryI
   gCivQuoteData.iVideoOverlay = RegisterVideoOverlay(0, addressof(VideoOverlayDesc));
 
   // Define main region
-  MSYS_DefineRegion(addressof(gCivQuoteData.MouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, QuoteOverlayClickCallback);
+  MSYS_DefineRegion(addressof(gCivQuoteData.MouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, QuoteOverlayClickCallback);
   // Add region
   MSYS_AddRegion(addressof(gCivQuoteData.MouseRegion));
 
@@ -368,20 +368,20 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
     // Determine what type of quote to say...
     // Are are we going to attack?
 
-    if (pCiv.value.bAction == AI_ACTION_TOSS_PROJECTILE || pCiv.value.bAction == AI_ACTION_FIRE_GUN || pCiv.value.bAction == AI_ACTION_FIRE_GUN || pCiv.value.bAction == AI_ACTION_KNIFE_MOVE) {
-      return CIV_QUOTE_ENEMY_THREAT;
-    } else if (pCiv.value.bAction == AI_ACTION_OFFER_SURRENDER) {
-      return CIV_QUOTE_ENEMY_OFFER_SURRENDER;
+    if (pCiv.value.bAction == Enum289.AI_ACTION_TOSS_PROJECTILE || pCiv.value.bAction == Enum289.AI_ACTION_FIRE_GUN || pCiv.value.bAction == Enum289.AI_ACTION_FIRE_GUN || pCiv.value.bAction == Enum289.AI_ACTION_KNIFE_MOVE) {
+      return Enum201.CIV_QUOTE_ENEMY_THREAT;
+    } else if (pCiv.value.bAction == Enum289.AI_ACTION_OFFER_SURRENDER) {
+      return Enum201.CIV_QUOTE_ENEMY_OFFER_SURRENDER;
     }
     // Hurt?
     else if (pCiv.value.bLife < 30) {
-      return CIV_QUOTE_ENEMY_HURT;
+      return Enum201.CIV_QUOTE_ENEMY_HURT;
     }
     // elite?
-    else if (pCiv.value.ubSoldierClass == SOLDIER_CLASS_ELITE) {
-      return CIV_QUOTE_ENEMY_ELITE;
+    else if (pCiv.value.ubSoldierClass == Enum262.SOLDIER_CLASS_ELITE) {
+      return Enum201.CIV_QUOTE_ENEMY_ELITE;
     } else {
-      return CIV_QUOTE_ENEMY_ADMIN;
+      return Enum201.CIV_QUOTE_ENEMY_ADMIN;
     }
   }
 
@@ -391,99 +391,99 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
 
   // If a married PC...
   if (ubCivType == CIV_TYPE_MARRIED_PC) {
-    return CIV_QUOTE_PC_MARRIED;
+    return Enum201.CIV_QUOTE_PC_MARRIED;
   }
 
   // CIV GROUPS FIRST!
   // Hicks.....
-  if (pCiv.value.ubCivilianGroup == HICKS_CIV_GROUP) {
+  if (pCiv.value.ubCivilianGroup == Enum246.HICKS_CIV_GROUP) {
     // Are they friendly?
     // if ( gTacticalStatus.fCivGroupHostile[ HICKS_CIV_GROUP ] < CIV_GROUP_WILL_BECOME_HOSTILE )
     if (pCiv.value.bNeutral) {
-      return CIV_QUOTE_HICKS_FRIENDLY;
+      return Enum201.CIV_QUOTE_HICKS_FRIENDLY;
     } else {
-      return CIV_QUOTE_HICKS_ENEMIES;
+      return Enum201.CIV_QUOTE_HICKS_ENEMIES;
     }
   }
 
   // Goons.....
-  if (pCiv.value.ubCivilianGroup == KINGPIN_CIV_GROUP) {
+  if (pCiv.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP) {
     // Are they friendly?
     // if ( gTacticalStatus.fCivGroupHostile[ KINGPIN_CIV_GROUP ] < CIV_GROUP_WILL_BECOME_HOSTILE )
     if (pCiv.value.bNeutral) {
-      return CIV_QUOTE_GOONS_FRIENDLY;
+      return Enum201.CIV_QUOTE_GOONS_FRIENDLY;
     } else {
-      return CIV_QUOTE_GOONS_ENEMIES;
+      return Enum201.CIV_QUOTE_GOONS_ENEMIES;
     }
   }
 
   // ATE: Cowering people take precedence....
   if ((pCiv.value.uiStatusFlags & SOLDIER_COWERING) || (pCiv.value.bTeam == CIV_TEAM && (gTacticalStatus.uiFlags & INCOMBAT))) {
     if (ubCivType == CIV_TYPE_ADULT) {
-      return CIV_QUOTE_ADULTS_COWER;
+      return Enum201.CIV_QUOTE_ADULTS_COWER;
     } else {
-      return CIV_QUOTE_KIDS_COWER;
+      return Enum201.CIV_QUOTE_KIDS_COWER;
     }
   }
 
   // Kid slaves...
-  if (pCiv.value.ubCivilianGroup == FACTORY_KIDS_GROUP) {
+  if (pCiv.value.ubCivilianGroup == Enum246.FACTORY_KIDS_GROUP) {
     // Check fact.....
-    if (CheckFact(FACT_DOREEN_HAD_CHANGE_OF_HEART, 0) || !CheckFact(FACT_DOREEN_ALIVE, 0)) {
-      return CIV_QUOTE_KID_SLAVES_FREE;
+    if (CheckFact(Enum170.FACT_DOREEN_HAD_CHANGE_OF_HEART, 0) || !CheckFact(Enum170.FACT_DOREEN_ALIVE, 0)) {
+      return Enum201.CIV_QUOTE_KID_SLAVES_FREE;
     } else {
-      return CIV_QUOTE_KID_SLAVES;
+      return Enum201.CIV_QUOTE_KID_SLAVES;
     }
   }
 
   // BEGGERS
-  if (pCiv.value.ubCivilianGroup == BEGGARS_CIV_GROUP) {
+  if (pCiv.value.ubCivilianGroup == Enum246.BEGGARS_CIV_GROUP) {
     // Check if we are in a town...
-    if (bTownId != BLANK_SECTOR && gbWorldSectorZ == 0) {
-      if (bTownId == SAN_MONA && ubCivType == CIV_TYPE_ADULT) {
-        return CIV_QUOTE_SAN_MONA_BEGGERS;
+    if (bTownId != Enum135.BLANK_SECTOR && gbWorldSectorZ == 0) {
+      if (bTownId == Enum135.SAN_MONA && ubCivType == CIV_TYPE_ADULT) {
+        return Enum201.CIV_QUOTE_SAN_MONA_BEGGERS;
       }
     }
 
     // DO normal beggers...
     if (ubCivType == CIV_TYPE_ADULT) {
-      return CIV_QUOTE_ADULTS_BEGGING;
+      return Enum201.CIV_QUOTE_ADULTS_BEGGING;
     } else {
-      return CIV_QUOTE_KIDS_BEGGING;
+      return Enum201.CIV_QUOTE_KIDS_BEGGING;
     }
   }
 
   // REBELS
-  if (pCiv.value.ubCivilianGroup == REBEL_CIV_GROUP) {
+  if (pCiv.value.ubCivilianGroup == Enum246.REBEL_CIV_GROUP) {
     // DO normal beggers...
     if (ubCivType == CIV_TYPE_ADULT) {
-      return CIV_QUOTE_ADULTS_REBELS;
+      return Enum201.CIV_QUOTE_ADULTS_REBELS;
     } else {
-      return CIV_QUOTE_KIDS_REBELS;
+      return Enum201.CIV_QUOTE_KIDS_REBELS;
     }
   }
 
   // Do miltitia...
   if (pCiv.value.bTeam == MILITIA_TEAM) {
     // Different types....
-    if (pCiv.value.ubSoldierClass == SOLDIER_CLASS_GREEN_MILITIA) {
-      return CIV_QUOTE_GREEN_MILITIA;
+    if (pCiv.value.ubSoldierClass == Enum262.SOLDIER_CLASS_GREEN_MILITIA) {
+      return Enum201.CIV_QUOTE_GREEN_MILITIA;
     }
-    if (pCiv.value.ubSoldierClass == SOLDIER_CLASS_REG_MILITIA) {
-      return CIV_QUOTE_MEDIUM_MILITIA;
+    if (pCiv.value.ubSoldierClass == Enum262.SOLDIER_CLASS_REG_MILITIA) {
+      return Enum201.CIV_QUOTE_MEDIUM_MILITIA;
     }
-    if (pCiv.value.ubSoldierClass == SOLDIER_CLASS_ELITE_MILITIA) {
-      return CIV_QUOTE_ELITE_MILITIA;
+    if (pCiv.value.ubSoldierClass == Enum262.SOLDIER_CLASS_ELITE_MILITIA) {
+      return Enum201.CIV_QUOTE_ELITE_MILITIA;
     }
   }
 
   // If we are in medunna, and queen is dead, use these...
-  if (bTownId == MEDUNA && CheckFact(FACT_QUEEN_DEAD, 0)) {
-    return CIV_QUOTE_DEIDRANNA_DEAD;
+  if (bTownId == Enum135.MEDUNA && CheckFact(Enum170.FACT_QUEEN_DEAD, 0)) {
+    return Enum201.CIV_QUOTE_DEIDRANNA_DEAD;
   }
 
   // if in a town
-  if ((bTownId != BLANK_SECTOR) && (gbWorldSectorZ == 0) && gfTownUsesLoyalty[bTownId]) {
+  if ((bTownId != Enum135.BLANK_SECTOR) && (gbWorldSectorZ == 0) && gfTownUsesLoyalty[bTownId]) {
     // Check loyalty special quotes.....
     // EXTREMELY LOW TOWN LOYALTY...
     if (gTownLoyalty[bTownId].ubRating < EXTREAMLY_LOW_TOWN_LOYALTY) {
@@ -504,7 +504,7 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   }
 
   // ATE: check miners......
-  if (pCiv.value.ubSoldierClass == SOLDIER_CLASS_MINER) {
+  if (pCiv.value.ubSoldierClass == Enum262.SOLDIER_CLASS_MINER) {
     bMiners = TRUE;
 
     // If not a civ hint available...
@@ -518,9 +518,9 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
       bMineId = GetIdOfMineForSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
       if (PlayerControlsMine(bMineId)) {
-        return CIV_QUOTE_MINERS_FOR_PLAYER;
+        return Enum201.CIV_QUOTE_MINERS_FOR_PLAYER;
       } else {
-        return CIV_QUOTE_MINERS_NOT_FOR_PLAYER;
+        return Enum201.CIV_QUOTE_MINERS_NOT_FOR_PLAYER;
       }
     }
   }
@@ -549,25 +549,25 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
 
   if (bCivLowLoyalty) {
     if (ubCivType == CIV_TYPE_ADULT) {
-      return CIV_QUOTE_ADULTS_EXTREMLY_LOW_LOYALTY;
+      return Enum201.CIV_QUOTE_ADULTS_EXTREMLY_LOW_LOYALTY;
     } else {
-      return CIV_QUOTE_KIDS_EXTREMLY_LOW_LOYALTY;
+      return Enum201.CIV_QUOTE_KIDS_EXTREMLY_LOW_LOYALTY;
     }
   }
 
   if (bCivHighLoyalty) {
     if (ubCivType == CIV_TYPE_ADULT) {
-      return CIV_QUOTE_ADULTS_HIGH_LOYALTY;
+      return Enum201.CIV_QUOTE_ADULTS_HIGH_LOYALTY;
     } else {
-      return CIV_QUOTE_KIDS_HIGH_LOYALTY;
+      return Enum201.CIV_QUOTE_KIDS_HIGH_LOYALTY;
     }
   }
 
   // All purpose quote here....
   if (ubCivType == CIV_TYPE_ADULT) {
-    return CIV_QUOTE_ADULTS_ALL_PURPOSE;
+    return Enum201.CIV_QUOTE_ADULTS_ALL_PURPOSE;
   } else {
-    return CIV_QUOTE_KIDS_ALL_PURPOSE;
+    return Enum201.CIV_QUOTE_KIDS_ALL_PURPOSE;
   }
 }
 

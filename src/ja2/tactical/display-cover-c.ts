@@ -71,7 +71,7 @@ function DisplayCoverOfSelectedGridNo(): void {
         // if it is the first time in here
 
         // pop up a message to say we are in the display cover routine
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, zNewTacticalMessages[TCTL_MSG__DISPLAY_COVER]);
+        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, zNewTacticalMessages[Enum320.TCTL_MSG__DISPLAY_COVER]);
 
         // increment the display cover counter ( just seeing how many times people use it )
         // gJa25SaveStruct.uiDisplayCoverCounter++;
@@ -96,7 +96,7 @@ function DisplayCoverOfSelectedGridNo(): void {
 function AddCoverTileToEachGridNo(): void {
   let uiCntX: UINT32;
   let uiCntY: UINT32;
-  let fRoof: BOOLEAN = (gsInterfaceLevel != I_GROUND_LEVEL);
+  let fRoof: BOOLEAN = (gsInterfaceLevel != Enum214.I_GROUND_LEVEL);
 
   // loop through all the gridnos
   for (uiCntY = 0; uiCntY < DC_MAX_COVER_RANGE; uiCntY++) {
@@ -105,27 +105,27 @@ function AddCoverTileToEachGridNo(): void {
       if (gCoverRadius[uiCntX][uiCntY].bCover != -1) {
         // if the tile provides 80-100% cover
         if (gCoverRadius[uiCntX][uiCntY].bCover <= 100 && gCoverRadius[uiCntX][uiCntY].bCover > 80) {
-          AddCoverObjectToWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_5, fRoof);
+          AddCoverObjectToWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_5, fRoof);
         }
 
         // else if the tile provides 60-80% cover
         else if (gCoverRadius[uiCntX][uiCntY].bCover <= 80 && gCoverRadius[uiCntX][uiCntY].bCover > 60) {
-          AddCoverObjectToWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_4, fRoof);
+          AddCoverObjectToWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_4, fRoof);
         }
 
         // else if the tile provides 40-60% cover
         else if (gCoverRadius[uiCntX][uiCntY].bCover <= 60 && gCoverRadius[uiCntX][uiCntY].bCover > 40) {
-          AddCoverObjectToWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_3, fRoof);
+          AddCoverObjectToWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_3, fRoof);
         }
 
         // else if the tile provides 20-40% cover
         else if (gCoverRadius[uiCntX][uiCntY].bCover <= 40 && gCoverRadius[uiCntX][uiCntY].bCover > 20) {
-          AddCoverObjectToWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_2, fRoof);
+          AddCoverObjectToWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_2, fRoof);
         }
 
         // else if the tile provides 0-20% cover
         else if (gCoverRadius[uiCntX][uiCntY].bCover <= 20 && gCoverRadius[uiCntX][uiCntY].bCover >= 0) {
-          AddCoverObjectToWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_1, fRoof);
+          AddCoverObjectToWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_1, fRoof);
         }
 
         // should never get in here
@@ -140,7 +140,7 @@ function AddCoverTileToEachGridNo(): void {
 function RemoveCoverOfSelectedGridNo(): void {
   let uiCntX: UINT32;
   let uiCntY: UINT32;
-  let fRoof: BOOLEAN = (gsInterfaceLevel != I_GROUND_LEVEL);
+  let fRoof: BOOLEAN = (gsInterfaceLevel != Enum214.I_GROUND_LEVEL);
 
   if (gsLastCoverGridNo == NOWHERE) {
     return;
@@ -155,27 +155,27 @@ function RemoveCoverOfSelectedGridNo(): void {
 
         // if the tile provides 80-100% cover
         if (gCoverRadius[uiCntX][uiCntY].bCover <= 100 && gCoverRadius[uiCntX][uiCntY].bCover > 80) {
-          RemoveCoverObjectFromWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_5, fRoof);
+          RemoveCoverObjectFromWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_5, fRoof);
         }
 
         // else if the tile provides 60-80% cover
         else if (gCoverRadius[uiCntX][uiCntY].bCover <= 80 && gCoverRadius[uiCntX][uiCntY].bCover > 60) {
-          RemoveCoverObjectFromWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_4, fRoof);
+          RemoveCoverObjectFromWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_4, fRoof);
         }
 
         // else if the tile provides 40-60% cover
         else if (gCoverRadius[uiCntX][uiCntY].bCover <= 60 && gCoverRadius[uiCntX][uiCntY].bCover > 40) {
-          RemoveCoverObjectFromWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_3, fRoof);
+          RemoveCoverObjectFromWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_3, fRoof);
         }
 
         // else if the tile provides 20-40% cover
         else if (gCoverRadius[uiCntX][uiCntY].bCover <= 40 && gCoverRadius[uiCntX][uiCntY].bCover > 20) {
-          RemoveCoverObjectFromWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_2, fRoof);
+          RemoveCoverObjectFromWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_2, fRoof);
         }
 
         // else if the tile provides 0-20% cover
         else if (gCoverRadius[uiCntX][uiCntY].bCover <= 20 && gCoverRadius[uiCntX][uiCntY].bCover >= 0) {
-          RemoveCoverObjectFromWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_1, fRoof);
+          RemoveCoverObjectFromWorld(gCoverRadius[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_1, fRoof);
         }
 
         // should never get in here
@@ -266,7 +266,7 @@ function CalculateCoverInRadiusAroundGridno(sTargetGridNo: INT16, bSearchRange: 
       }
 
       // if we are to display cover for the roofs, and there is a roof above us
-      if (gsInterfaceLevel == I_ROOF_LEVEL && !FlatRoofAboveGridNo(sGridNo)) {
+      if (gsInterfaceLevel == Enum214.I_ROOF_LEVEL && !FlatRoofAboveGridNo(sGridNo)) {
         continue;
       }
 
@@ -338,7 +338,7 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE
     }
 
     usRange = GetRangeInCellCoordsFromGridNoDiff(pOpponent.value.sGridNo, sTargetGridNo);
-    usSightLimit = DistanceVisible(pOpponent, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sTargetGridNo, pSoldier.value.bLevel);
+    usSightLimit = DistanceVisible(pOpponent, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sTargetGridNo, pSoldier.value.bLevel);
 
     if (usRange > (usSightLimit * CELL_X_SIZE)) {
       continue;
@@ -353,9 +353,9 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE
     //	iBulletGetThrough = CalcChanceToHitGun( pOpponent, sTargetGridNo, AP_MAX_AIM_ATTACK, AIM_SHOT_TORSO );
 
     if (WeaponInHand(pOpponent)) {
-      usMaxRange = GunRange(addressof(pOpponent.value.inv[HANDPOS]));
+      usMaxRange = GunRange(addressof(pOpponent.value.inv[Enum261.HANDPOS]));
     } else {
-      usMaxRange = Weapon[GLOCK_18].usRange;
+      usMaxRange = Weapon[Enum225.GLOCK_18].usRange;
     }
 
     iBulletGetThrough = __min(__max((((((usMaxRange - usRange) / (usMaxRange)) + .3) * 100)), 0), 100);
@@ -433,20 +433,20 @@ function GetCurrentMercForDisplayCoverStance(): INT8 {
   pSoldier = GetCurrentMercForDisplayCover();
 
   switch (pSoldier.value.usUIMovementMode) {
-    case PRONE:
-    case CRAWLING:
+    case Enum193.PRONE:
+    case Enum193.CRAWLING:
       bStance = ANIM_PRONE;
       break;
 
-    case KNEEL_DOWN:
-    case SWATTING:
-    case CROUCHING:
+    case Enum193.KNEEL_DOWN:
+    case Enum193.SWATTING:
+    case Enum193.CROUCHING:
       bStance = ANIM_CROUCH;
       break;
 
-    case WALKING:
-    case RUNNING:
-    case STANDING:
+    case Enum193.WALKING:
+    case Enum193.RUNNING:
+    case Enum193.STANDING:
       bStance = ANIM_STAND;
       break;
 
@@ -474,19 +474,19 @@ function DisplayRangeToTarget(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT
   // if the soldier has a weapon in hand,
   if (WeaponInHand(pSoldier)) {
     // display a string with the weapons range, then range to target
-    swprintf(zOutputString, zNewTacticalMessages[TCTL_MSG__RANGE_TO_TARGET_AND_GUN_RANGE], Weapon[pSoldier.value.inv[HANDPOS].usItem].usRange / 10, usRange);
+    swprintf(zOutputString, zNewTacticalMessages[Enum320.TCTL_MSG__RANGE_TO_TARGET_AND_GUN_RANGE], Weapon[pSoldier.value.inv[Enum261.HANDPOS].usItem].usRange / 10, usRange);
   } else {
     // display a string with the range to target
-    swprintf(zOutputString, zNewTacticalMessages[TCTL_MSG__RANGE_TO_TARGET], usRange);
+    swprintf(zOutputString, zNewTacticalMessages[Enum320.TCTL_MSG__RANGE_TO_TARGET], usRange);
   }
 
   // Display the msg
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, zOutputString);
 
   // if the target is out of the mercs gun range or knife
-  if (!InRange(pSoldier, sTargetGridNo) && (Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass == IC_GUN || Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass == IC_THROWING_KNIFE)) {
+  if (!InRange(pSoldier, sTargetGridNo) && (Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_GUN || Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_THROWING_KNIFE)) {
     // Display a warning saying so
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[OUT_OF_RANGE_STRING]);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.OUT_OF_RANGE_STRING]);
   }
 
   // increment the display gun range counter ( just seeing how many times people use it )
@@ -514,7 +514,7 @@ function DisplayGridNoVisibleToSoldierGrid(): void {
         RemoveVisibleGridNoAtSelectedGridNo();
       } else {
         // pop up a message to say we are in the display cover routine
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, zNewTacticalMessages[TCTL_MSG__LOS]);
+        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, zNewTacticalMessages[Enum320.TCTL_MSG__LOS]);
         // increment the display LOS counter ( just seeing how many times people use it )
         // gJa25SaveStruct.uiDisplayLosCounter++;
       }
@@ -646,23 +646,23 @@ function AddVisibleToSoldierToEachGridNo(): void {
       sGridNo = gVisibleToSoldierStruct[uiCntX][uiCntY].sGridNo;
 
       // if the soldier can easily see this gridno.  Can see all 3 positions
-      if (bVisibleToSoldier == DC__SEE_3_STANCE) {
-        AddCoverObjectToWorld(sGridNo, SPECIALTILE_COVER_5, fRoof);
+      if (bVisibleToSoldier == Enum205.DC__SEE_3_STANCE) {
+        AddCoverObjectToWorld(sGridNo, Enum312.SPECIALTILE_COVER_5, fRoof);
       }
 
       // cant see a thing
-      else if (bVisibleToSoldier == DC__SEE_NO_STANCES) {
-        AddCoverObjectToWorld(gVisibleToSoldierStruct[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_1, fRoof);
+      else if (bVisibleToSoldier == Enum205.DC__SEE_NO_STANCES) {
+        AddCoverObjectToWorld(gVisibleToSoldierStruct[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_1, fRoof);
       }
 
       // can only see prone
-      else if (bVisibleToSoldier == DC__SEE_1_STANCE) {
-        AddCoverObjectToWorld(gVisibleToSoldierStruct[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_2, fRoof);
+      else if (bVisibleToSoldier == Enum205.DC__SEE_1_STANCE) {
+        AddCoverObjectToWorld(gVisibleToSoldierStruct[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_2, fRoof);
       }
 
       // can see crouch or prone
-      else if (bVisibleToSoldier == DC__SEE_2_STANCE) {
-        AddCoverObjectToWorld(gVisibleToSoldierStruct[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_3, fRoof);
+      else if (bVisibleToSoldier == Enum205.DC__SEE_2_STANCE) {
+        AddCoverObjectToWorld(gVisibleToSoldierStruct[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_3, fRoof);
       }
 
       else {
@@ -692,23 +692,23 @@ function RemoveVisibleGridNoAtSelectedGridNo(): void {
       sGridNo = gVisibleToSoldierStruct[uiCntX][uiCntY].sGridNo;
 
       // if there is a valid cover at this gridno
-      if (bVisibleToSoldier == DC__SEE_3_STANCE) {
-        RemoveCoverObjectFromWorld(gVisibleToSoldierStruct[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_5, fRoof);
+      if (bVisibleToSoldier == Enum205.DC__SEE_3_STANCE) {
+        RemoveCoverObjectFromWorld(gVisibleToSoldierStruct[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_5, fRoof);
       }
 
       // cant see a thing
-      else if (bVisibleToSoldier == DC__SEE_NO_STANCES) {
-        RemoveCoverObjectFromWorld(gVisibleToSoldierStruct[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_1, fRoof);
+      else if (bVisibleToSoldier == Enum205.DC__SEE_NO_STANCES) {
+        RemoveCoverObjectFromWorld(gVisibleToSoldierStruct[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_1, fRoof);
       }
 
       // can only see prone
-      else if (bVisibleToSoldier == DC__SEE_1_STANCE) {
-        RemoveCoverObjectFromWorld(gVisibleToSoldierStruct[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_2, fRoof);
+      else if (bVisibleToSoldier == Enum205.DC__SEE_1_STANCE) {
+        RemoveCoverObjectFromWorld(gVisibleToSoldierStruct[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_2, fRoof);
       }
 
       // can see crouch or prone
-      else if (bVisibleToSoldier == DC__SEE_2_STANCE) {
-        RemoveCoverObjectFromWorld(gVisibleToSoldierStruct[uiCntX][uiCntY].sGridNo, SPECIALTILE_COVER_3, fRoof);
+      else if (bVisibleToSoldier == Enum205.DC__SEE_2_STANCE) {
+        RemoveCoverObjectFromWorld(gVisibleToSoldierStruct[uiCntX][uiCntY].sGridNo, Enum312.SPECIALTILE_COVER_3, fRoof);
       }
 
       else {
@@ -749,7 +749,7 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo
     }
   }
 
-  usSightLimit = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sTargetGridNo, fRoof);
+  usSightLimit = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sTargetGridNo, fRoof);
 
   //
   // Prone

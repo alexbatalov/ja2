@@ -142,7 +142,7 @@ function InsertIntoAIList(ubID: UINT8, bPriority: INT8): BOOLEAN {
 }
 
 function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount: Pointer<UINT8>, fDoRandomChecks: BOOLEAN): BOOLEAN {
-  if ((gTacticalStatus.bBoxingState == BOXING) && !(pSoldier.value.uiStatusFlags & SOLDIER_BOXER)) {
+  if ((gTacticalStatus.bBoxingState == Enum247.BOXING) && !(pSoldier.value.uiStatusFlags & SOLDIER_BOXER)) {
     return FALSE;
   }
 
@@ -168,14 +168,14 @@ function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount:
   // if we are dealing with the civ team and this person
   // hasn't heard any gunfire, handle only 1 time in 10
   if (PTR_CIVILIAN) {
-    if (pSoldier.value.ubBodyType == CROW || pSoldier.value.ubBodyType == COW) {
+    if (pSoldier.value.ubBodyType == Enum194.CROW || pSoldier.value.ubBodyType == Enum194.COW) {
       // don't handle cows and crows in TB!
       return FALSE;
     }
 
     // if someone in a civ group is neutral but the civ group is non-neutral, should be handled all the time
-    if (pSoldier.value.bNeutral && (pSoldier.value.ubCivilianGroup == NON_CIV_GROUP || gTacticalStatus.fCivGroupHostile[pSoldier.value.ubCivilianGroup] == CIV_GROUP_NEUTRAL)) {
-      if (pSoldier.value.bAlertStatus < STATUS_RED) {
+    if (pSoldier.value.bNeutral && (pSoldier.value.ubCivilianGroup == Enum246.NON_CIV_GROUP || gTacticalStatus.fCivGroupHostile[pSoldier.value.ubCivilianGroup] == CIV_GROUP_NEUTRAL)) {
+      if (pSoldier.value.bAlertStatus < Enum243.STATUS_RED) {
         // unalerted, barely handle
         if (fDoRandomChecks && PreRandom(10) && !(pSoldier.value.ubQuoteRecord)) {
           return FALSE;
@@ -196,7 +196,7 @@ function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount:
             // never handle
             return FALSE;
           }
-        } else if (pSoldier.value.ubBodyType == COW || pSoldier.value.ubBodyType == CRIPPLECIV) {
+        } else if (pSoldier.value.ubBodyType == Enum194.COW || pSoldier.value.ubBodyType == Enum194.CRIPPLECIV) {
           // don't handle much
           if (fDoRandomChecks && PreRandom(3)) {
             return FALSE;
@@ -208,7 +208,7 @@ function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount:
     // reset last action if cowering
 
     if (pSoldier.value.uiStatusFlags & SOLDIER_COWERING) {
-      pSoldier.value.bLastAction = AI_ACTION_NONE;
+      pSoldier.value.bLastAction = Enum289.AI_ACTION_NONE;
     }
   }
 

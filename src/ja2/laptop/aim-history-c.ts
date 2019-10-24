@@ -129,7 +129,7 @@ function RenderAimHistory(): void {
   DisplayAimSlogan();
   DisplayAimCopyright();
 
-  DrawTextToScreen(AimHistoryText[AIM_HISTORY_TITLE], AIM_HISTORY_TEXT_X, AIM_HISTORY_TEXT_Y, AIM_HISTORY_TEXT_WIDTH, AIM_HISTORY_TITLE_FONT, AIM_HISTORY_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimHistoryText[Enum359.AIM_HISTORY_TITLE], AIM_HISTORY_TEXT_X, AIM_HISTORY_TEXT_Y, AIM_HISTORY_TEXT_WIDTH, AIM_HISTORY_TITLE_FONT, AIM_HISTORY_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   switch (gubCurPageNum) {
     // History Page TOC
@@ -139,41 +139,41 @@ function RenderAimHistory(): void {
 
     // Load and Display the begining
     case 1:
-      DisplayAimHistoryParagraph(IN_THE_BEGINNING, 2);
+      DisplayAimHistoryParagraph(Enum64.IN_THE_BEGINNING, 2);
       break;
 
     // Load and Display the island of metavira
     case 2:
-      DisplayAimHistoryParagraph(THE_ISLAND_METAVIRA, 2);
+      DisplayAimHistoryParagraph(Enum64.THE_ISLAND_METAVIRA, 2);
       break;
 
     // Load and Display the gus tarballs
     case 3:
-      DisplayAimHistoryParagraph(GUS_TARBALLS, 2);
+      DisplayAimHistoryParagraph(Enum64.GUS_TARBALLS, 2);
       break;
 
     // Load and Display the founder
     case 4:
-      DisplayAimHistoryParagraph(WORD_FROM_FOUNDER, 1);
+      DisplayAimHistoryParagraph(Enum64.WORD_FROM_FOUNDER, 1);
 
       // display coloniel Mohanned...
       usPosY = AIM_HISTORY_PARAGRAPH_Y + (GetFontHeight(AIM_HISTORY_TEXT_FONT) + 2) * 5 + LAPTOP_SCREEN_WEB_DELTA_Y;
-      uiStartLoc = AIM_HISTORY_LINE_SIZE * COLONEL_MOHANNED;
+      uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum64.COLONEL_MOHANNED;
       LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
       DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, 210 + LAPTOP_SCREEN_WEB_DELTA_Y, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT, AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
       break;
 
     // Load and Display the incorporation
     case 5:
-      DisplayAimHistoryParagraph(INCORPORATION, 2);
+      DisplayAimHistoryParagraph(Enum64.INCORPORATION, 2);
 
       // display dunn and bradbord...
-      uiStartLoc = AIM_HISTORY_LINE_SIZE * DUNN_AND_BRADROAD;
+      uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum64.DUNN_AND_BRADROAD;
       LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
       DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, 270 + LAPTOP_SCREEN_WEB_DELTA_Y, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT, AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
 
       // AIM_HISTORY_PARAGRAPH_Y
-      uiStartLoc = AIM_HISTORY_LINE_SIZE * INCORPORATION_3;
+      uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum64.INCORPORATION_3;
       LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
       DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, 290 + LAPTOP_SCREEN_WEB_DELTA_Y, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT, AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
       break;
@@ -209,8 +209,8 @@ function InitAimHistoryMenuBar(): BOOLEAN {
     //		SetButtonCursor(guiHistoryMenuButton[i], CURSOR_WWW);
     //		MSYS_SetBtnUserData( guiHistoryMenuButton[i], 0, i+1);
 
-    guiHistoryMenuButton[i] = CreateIconAndTextButton(guiHistoryMenuButtonImage, AimHistoryText[i + AIM_HISTORY_PREVIOUS], FONT10ARIAL, AIM_BUTTON_ON_COLOR, DEFAULT_SHADOW, AIM_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, usPosX, AIM_HISTORY_MENU_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnHistoryMenuButtonCallback);
-    SetButtonCursor(guiHistoryMenuButton[i], CURSOR_WWW);
+    guiHistoryMenuButton[i] = CreateIconAndTextButton(guiHistoryMenuButtonImage, AimHistoryText[i + Enum359.AIM_HISTORY_PREVIOUS], FONT10ARIAL, AIM_BUTTON_ON_COLOR, DEFAULT_SHADOW, AIM_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, usPosX, AIM_HISTORY_MENU_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnHistoryMenuButtonCallback);
+    SetButtonCursor(guiHistoryMenuButton[i], Enum317.CURSOR_WWW);
     MSYS_SetBtnUserData(guiHistoryMenuButton[i], 0, i + 1);
 
     usPosX += AIM_HISTORY_GAP_X;
@@ -250,11 +250,11 @@ function SelectHistoryMenuButtonsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, 
 
       // Home Page
       else if (rValue == 2) {
-        guiCurrentLaptopMode = LAPTOP_MODE_AIM;
+        guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM;
       }
       // Company policies
       else if (rValue == 3) {
-        guiCurrentLaptopMode = LAPTOP_MODE_AIM_POLICIES;
+        guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM_POLICIES;
       }
       // Next Page
       else if (rValue == 4) {
@@ -322,11 +322,11 @@ function InitTocMenu(): BOOLEAN {
   let uiStartLoc: UINT32 = 0;
   let sText: wchar_t[] /* [400] */;
   let ubLocInFile: UINT8[] /* [] */ = [
-    IN_THE_BEGINNING,
-    THE_ISLAND_METAVIRA,
-    GUS_TARBALLS,
-    WORD_FROM_FOUNDER,
-    INCORPORATION,
+    Enum64.IN_THE_BEGINNING,
+    Enum64.THE_ISLAND_METAVIRA,
+    Enum64.GUS_TARBALLS,
+    Enum64.WORD_FROM_FOUNDER,
+    Enum64.INCORPORATION,
   ];
 
   let hContentButtonHandle: HVOBJECT;
@@ -344,7 +344,7 @@ function InitTocMenu(): BOOLEAN {
     // if the mouse regions havent been inited, init them
     if (!gfInToc) {
       // Mouse region for the history toc buttons
-      MSYS_DefineRegion(addressof(gSelectedHistoryTocMenuRegion[i]), AIM_HISTORY_TOC_X, usPosY, (AIM_HISTORY_TOC_X + AIM_CONTENTBUTTON_WIDTH), (usPosY + AIM_CONTENTBUTTON_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectHistoryTocMenuRegionCallBack);
+      MSYS_DefineRegion(addressof(gSelectedHistoryTocMenuRegion[i]), AIM_HISTORY_TOC_X, usPosY, (AIM_HISTORY_TOC_X + AIM_CONTENTBUTTON_WIDTH), (usPosY + AIM_CONTENTBUTTON_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectHistoryTocMenuRegionCallBack);
       MSYS_AddRegion(addressof(gSelectedHistoryTocMenuRegion[i]));
       MSYS_SetRegionUserData(addressof(gSelectedHistoryTocMenuRegion[i]), 0, i + 1);
     }
@@ -415,11 +415,11 @@ function BtnHistoryMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
 
       // Home Page
       else if (ubRetValue == 2) {
-        guiCurrentLaptopMode = LAPTOP_MODE_AIM;
+        guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM;
       }
       // Company policies
       else if (ubRetValue == 3) {
-        guiCurrentLaptopMode = LAPTOP_MODE_AIM_MEMBERS_ARCHIVES;
+        guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM_MEMBERS_ARCHIVES;
       }
       // Next Page
       else if (ubRetValue == 4) {

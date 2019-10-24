@@ -103,7 +103,7 @@ function EffectiveExpLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   iEffExpLevel = iEffExpLevel + iExpModifier[bDrunkLevel];
 
   if (pSoldier.value.ubProfile != NO_PROFILE) {
-    if ((gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait == CLAUSTROPHOBIC) && pSoldier.value.bActive && pSoldier.value.bInSector && gbWorldSectorZ > 0) {
+    if ((gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait == Enum270.CLAUSTROPHOBIC) && pSoldier.value.bActive && pSoldier.value.bInSector && gbWorldSectorZ > 0) {
       // claustrophobic!
       iEffExpLevel--;
     }
@@ -182,8 +182,8 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
   iReportChance = -1;
 
   switch (bReason) {
-    case LOCKPICKING_CHECK:
-    case ELECTRONIC_LOCKPICKING_CHECK:
+    case Enum255.LOCKPICKING_CHECK:
+    case Enum255.ELECTRONIC_LOCKPICKING_CHECK:
 
       fForceDamnSound = TRUE;
 
@@ -197,41 +197,41 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
       iSkill = iSkill * (EffectiveDexterity(pSoldier) + 100) / 200;
       // factor in experience
       iSkill = iSkill + EffectiveExpLevel(pSoldier) * 3;
-      if (HAS_SKILL_TRAIT(pSoldier, LOCKPICKING)) {
+      if (HAS_SKILL_TRAIT(pSoldier, Enum269.LOCKPICKING)) {
         // if we specialize in picking locks...
-        iSkill += gbSkillTraitBonus[LOCKPICKING] * NUM_SKILL_TRAITS(pSoldier, LOCKPICKING);
+        iSkill += gbSkillTraitBonus[Enum269.LOCKPICKING] * NUM_SKILL_TRAITS(pSoldier, Enum269.LOCKPICKING);
       }
-      if (bReason == ELECTRONIC_LOCKPICKING_CHECK && !(HAS_SKILL_TRAIT(pSoldier, ELECTRONICS))) {
+      if (bReason == Enum255.ELECTRONIC_LOCKPICKING_CHECK && !(HAS_SKILL_TRAIT(pSoldier, Enum269.ELECTRONICS))) {
         // if we are unfamiliar with electronics...
         iSkill /= 2;
       }
       // adjust chance based on status of kit
-      bSlot = FindObj(pSoldier, LOCKSMITHKIT);
+      bSlot = FindObj(pSoldier, Enum225.LOCKSMITHKIT);
       if (bSlot == NO_SLOT) {
         // this should never happen, but might as well check...
         iSkill = 0;
       }
       iSkill = iSkill * pSoldier.value.inv[bSlot].bStatus[0] / 100;
       break;
-    case ATTACHING_DETONATOR_CHECK:
-    case ATTACHING_REMOTE_DETONATOR_CHECK:
+    case Enum255.ATTACHING_DETONATOR_CHECK:
+    case Enum255.ATTACHING_REMOTE_DETONATOR_CHECK:
       iSkill = EffectiveExplosive(pSoldier);
       if (iSkill == 0) {
         break;
       }
       iSkill = (iSkill * 3 + EffectiveDexterity(pSoldier)) / 4;
-      if (bReason == ATTACHING_REMOTE_DETONATOR_CHECK && !(HAS_SKILL_TRAIT(pSoldier, ELECTRONICS))) {
+      if (bReason == Enum255.ATTACHING_REMOTE_DETONATOR_CHECK && !(HAS_SKILL_TRAIT(pSoldier, Enum269.ELECTRONICS))) {
         iSkill /= 2;
       }
       break;
-    case PLANTING_BOMB_CHECK:
-    case PLANTING_REMOTE_BOMB_CHECK:
+    case Enum255.PLANTING_BOMB_CHECK:
+    case Enum255.PLANTING_REMOTE_BOMB_CHECK:
       iSkill = EffectiveExplosive(pSoldier) * 7;
       iSkill += EffectiveWisdom(pSoldier) * 2;
       iSkill += EffectiveExpLevel(pSoldier) * 10;
       iSkill = iSkill / 10; // bring the value down to a percentage
 
-      if (bReason == PLANTING_REMOTE_BOMB_CHECK && !(HAS_SKILL_TRAIT(pSoldier, ELECTRONICS))) {
+      if (bReason == Enum255.PLANTING_REMOTE_BOMB_CHECK && !(HAS_SKILL_TRAIT(pSoldier, Enum269.ELECTRONICS))) {
         // deduct only a bit...
         iSkill = (iSkill * 3) / 4;
       }
@@ -243,7 +243,7 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
       iSkill = (iSkill + 100 * (iSkill / 25)) / (iSkill / 25 + 1);
       break;
 
-    case DISARM_TRAP_CHECK:
+    case Enum255.DISARM_TRAP_CHECK:
 
       fForceDamnSound = TRUE;
 
@@ -258,7 +258,7 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
       iSkill -= (100 - EffectiveWisdom(pSoldier)) / 5;
       break;
 
-    case DISARM_ELECTRONIC_TRAP_CHECK:
+    case Enum255.DISARM_ELECTRONIC_TRAP_CHECK:
 
       fForceDamnSound = TRUE;
 
@@ -272,33 +272,33 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
       // penalty based on poor wisdom
       iSkill -= (100 - EffectiveWisdom(pSoldier)) / 5;
 
-      if (!(HAS_SKILL_TRAIT(pSoldier, ELECTRONICS))) {
+      if (!(HAS_SKILL_TRAIT(pSoldier, Enum269.ELECTRONICS))) {
         iSkill = (iSkill * 3) / 4;
       }
       break;
 
-    case OPEN_WITH_CROWBAR:
+    case Enum255.OPEN_WITH_CROWBAR:
       // Add for crowbar...
       iSkill = EffectiveStrength(pSoldier) + 20;
       fForceDamnSound = TRUE;
       break;
 
-    case SMASH_DOOR_CHECK:
+    case Enum255.SMASH_DOOR_CHECK:
       iSkill = EffectiveStrength(pSoldier);
       break;
-    case UNJAM_GUN_CHECK:
+    case Enum255.UNJAM_GUN_CHECK:
       iSkill = 30 + EffectiveMechanical(pSoldier) / 2;
       break;
-    case NOTICE_DART_CHECK:
+    case Enum255.NOTICE_DART_CHECK:
       // only a max of ~20% chance
       iSkill = EffectiveWisdom(pSoldier) / 10 + EffectiveExpLevel(pSoldier);
       break;
-    case LIE_TO_QUEEN_CHECK:
+    case Enum255.LIE_TO_QUEEN_CHECK:
       // competitive check vs the queen's wisdom and leadership... poor guy!
-      iSkill = 50 * (EffectiveWisdom(pSoldier) + EffectiveLeadership(pSoldier)) / (gMercProfiles[QUEEN].bWisdom + gMercProfiles[QUEEN].bLeadership);
+      iSkill = 50 * (EffectiveWisdom(pSoldier) + EffectiveLeadership(pSoldier)) / (gMercProfiles[Enum268.QUEEN].bWisdom + gMercProfiles[Enum268.QUEEN].bLeadership);
       break;
-    case ATTACHING_SPECIAL_ITEM_CHECK:
-    case ATTACHING_SPECIAL_ELECTRONIC_ITEM_CHECK:
+    case Enum255.ATTACHING_SPECIAL_ITEM_CHECK:
+    case Enum255.ATTACHING_SPECIAL_ELECTRONIC_ITEM_CHECK:
       iSkill = EffectiveMechanical(pSoldier);
       if (iSkill == 0) {
         break;
@@ -309,7 +309,7 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
       iSkill = iSkill * (EffectiveDexterity(pSoldier) + 100) / 200;
       // factor in experience
       iSkill = iSkill + EffectiveExpLevel(pSoldier) * 3;
-      if (bReason == ATTACHING_SPECIAL_ELECTRONIC_ITEM_CHECK && !(HAS_SKILL_TRAIT(pSoldier, ELECTRONICS))) {
+      if (bReason == Enum255.ATTACHING_SPECIAL_ELECTRONIC_ITEM_CHECK && !(HAS_SKILL_TRAIT(pSoldier, Enum269.ELECTRONICS))) {
         // if we are unfamiliar with electronics...
         iSkill /= 2;
       }
@@ -324,14 +324,14 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
   iChance = iSkill + bChanceMod;
 
   switch (bReason) {
-    case LOCKPICKING_CHECK:
-    case ELECTRONIC_LOCKPICKING_CHECK:
-    case DISARM_TRAP_CHECK:
-    case DISARM_ELECTRONIC_TRAP_CHECK:
-    case OPEN_WITH_CROWBAR:
-    case SMASH_DOOR_CHECK:
-    case ATTACHING_SPECIAL_ITEM_CHECK:
-    case ATTACHING_SPECIAL_ELECTRONIC_ITEM_CHECK:
+    case Enum255.LOCKPICKING_CHECK:
+    case Enum255.ELECTRONIC_LOCKPICKING_CHECK:
+    case Enum255.DISARM_TRAP_CHECK:
+    case Enum255.DISARM_ELECTRONIC_TRAP_CHECK:
+    case Enum255.OPEN_WITH_CROWBAR:
+    case Enum255.SMASH_DOOR_CHECK:
+    case Enum255.ATTACHING_SPECIAL_ITEM_CHECK:
+    case Enum255.ATTACHING_SPECIAL_ELECTRONIC_ITEM_CHECK:
       // for lockpicking and smashing locks, if the chance isn't reasonable
       // we set it to 0 so they can never get through the door if they aren't
       // good enough
@@ -361,7 +361,7 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
           // do we realize that we just can't do this?
           if ((100 - (pSoldier.value.ubSkillCheckAttempts - 2) * 20) < EffectiveWisdom(pSoldier)) {
             // say "I can't do this" quote
-            TacticalCharacterDialogue(pSoldier, QUOTE_DEFINITE_CANT_DO);
+            TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_DEFINITE_CANT_DO);
             return iMadeItBy;
           }
         }
@@ -374,13 +374,13 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
 
     if (fForceDamnSound || Random(100) < 40) {
       switch (bReason) {
-        case UNJAM_GUN_CHECK:
-        case NOTICE_DART_CHECK:
-        case LIE_TO_QUEEN_CHECK:
+        case Enum255.UNJAM_GUN_CHECK:
+        case Enum255.NOTICE_DART_CHECK:
+        case Enum255.LIE_TO_QUEEN_CHECK:
           // silent check
           break;
         default:
-          DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
+          DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
           break;
       }
     }
@@ -398,15 +398,15 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
             switch (bBuddyIndex) {
               case 0:
                 // buddy #1 did something good!
-                TacticalCharacterDialogue(pTeamSoldier, QUOTE_BUDDY_1_GOOD);
+                TacticalCharacterDialogue(pTeamSoldier, Enum202.QUOTE_BUDDY_1_GOOD);
                 break;
               case 1:
                 // buddy #2 did something good!
-                TacticalCharacterDialogue(pTeamSoldier, QUOTE_BUDDY_2_GOOD);
+                TacticalCharacterDialogue(pTeamSoldier, Enum202.QUOTE_BUDDY_2_GOOD);
                 break;
               case 2:
                 // learn to like buddy did something good!
-                TacticalCharacterDialogue(pTeamSoldier, QUOTE_LEARNED_TO_LIKE_WITNESSED);
+                TacticalCharacterDialogue(pTeamSoldier, Enum202.QUOTE_LEARNED_TO_LIKE_WITNESSED);
                 break;
               default:
                 break;

@@ -85,7 +85,7 @@ function AddExitGridToWorld(iMapIndex: INT32, pExitGrid: Pointer<EXITGRID>): voi
   }
 
   // Add levelnode
-  AddShadowToHead(iMapIndex, MOCKFLOOR1);
+  AddShadowToHead(iMapIndex, Enum312.MOCKFLOOR1);
   // Get new node
   pShadow = gpWorldLevelData[iMapIndex].pShadowHead;
 
@@ -101,8 +101,8 @@ function AddExitGridToWorld(iMapIndex: INT32, pExitGrid: Pointer<EXITGRID>): voi
 
 function RemoveExitGridFromWorld(iMapIndex: INT32): void {
   let usDummy: UINT16;
-  if (TypeExistsInShadowLayer(iMapIndex, MOCKFLOOR, addressof(usDummy))) {
-    RemoveAllShadowsOfTypeRange(iMapIndex, MOCKFLOOR, MOCKFLOOR);
+  if (TypeExistsInShadowLayer(iMapIndex, Enum313.MOCKFLOOR, addressof(usDummy))) {
+    RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.MOCKFLOOR, Enum313.MOCKFLOOR);
   }
 }
 
@@ -148,12 +148,12 @@ function AttemptToChangeFloorLevel(bRelativeZLevel: INT8): void {
     return;
   // Check if on ground level -- if so, can't go up!
   if (bRelativeZLevel == -1 && !gbWorldSectorZ) {
-    ScreenMsg(FONT_DKYELLOW, MSG_INTERFACE, pMessageStrings[MSG_CANT_GO_UP], ubLookForLevel);
+    ScreenMsg(FONT_DKYELLOW, MSG_INTERFACE, pMessageStrings[Enum333.MSG_CANT_GO_UP], ubLookForLevel);
     return;
   }
   // Check if on bottom level -- if so, can't go down!
   if (bRelativeZLevel == 1 && gbWorldSectorZ == 3) {
-    ScreenMsg(FONT_DKYELLOW, MSG_INTERFACE, pMessageStrings[MSG_CANT_GO_DOWN], ubLookForLevel);
+    ScreenMsg(FONT_DKYELLOW, MSG_INTERFACE, pMessageStrings[Enum333.MSG_CANT_GO_DOWN], ubLookForLevel);
     return;
   }
   ubLookForLevel = (gbWorldSectorZ + bRelativeZLevel);
@@ -166,9 +166,9 @@ function AttemptToChangeFloorLevel(bRelativeZLevel: INT8): void {
         // to the new sector.
         MoveAllGroupsInCurrentSectorToSector(gWorldSectorX, gWorldSectorY, ubLookForLevel);
         if (ubLookForLevel)
-          ScreenMsg(FONT_YELLOW, MSG_INTERFACE, pMessageStrings[MSG_ENTERING_LEVEL], ubLookForLevel);
+          ScreenMsg(FONT_YELLOW, MSG_INTERFACE, pMessageStrings[Enum333.MSG_ENTERING_LEVEL], ubLookForLevel);
         else
-          ScreenMsg(FONT_YELLOW, MSG_INTERFACE, pMessageStrings[MSG_LEAVING_BASEMENT]);
+          ScreenMsg(FONT_YELLOW, MSG_INTERFACE, pMessageStrings[Enum333.MSG_LEAVING_BASEMENT]);
 
         SetCurrentWorldSector(gWorldSectorX, gWorldSectorY, ubLookForLevel);
         gfOverrideInsertionWithExitGrid = FALSE;
@@ -243,7 +243,7 @@ function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIERTYPE>, 
 
   // Now, find out which of these gridnos are reachable
   //(use the fake soldier and the pathing settings)
-  FindBestPath(addressof(soldier), NOWHERE, 0, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+  FindBestPath(addressof(soldier), NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
 
   uiLowestRange = 999999;
 

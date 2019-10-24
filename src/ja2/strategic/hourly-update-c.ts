@@ -69,17 +69,17 @@ function HourlyQuestUpdate(): void {
 
   // brothel
   if (uiHour == 4) {
-    SetFactFalse(FACT_BROTHEL_OPEN);
+    SetFactFalse(Enum170.FACT_BROTHEL_OPEN);
   } else if (uiHour == 20) {
-    SetFactTrue(FACT_BROTHEL_OPEN);
+    SetFactTrue(Enum170.FACT_BROTHEL_OPEN);
   }
 
   // bar/nightclub
   if (uiHour == 15) {
     let ubLoop: UINT8;
 
-    SetFactTrue(FACT_CLUB_OPEN);
-    SetFactFalse(FACT_PAST_CLUB_CLOSING_AND_PLAYER_WARNED);
+    SetFactTrue(Enum170.FACT_CLUB_OPEN);
+    SetFactFalse(Enum170.FACT_PAST_CLUB_CLOSING_AND_PLAYER_WARNED);
 
     // reset boxes fought
     for (ubLoop = 0; ubLoop < NUM_BOXERS; ubLoop++) {
@@ -97,26 +97,26 @@ function HourlyQuestUpdate(): void {
       gfBoxersResting = TRUE;
     }
   } else if (uiHour == 2) {
-    SetFactFalse(FACT_CLUB_OPEN);
+    SetFactFalse(Enum170.FACT_CLUB_OPEN);
   }
 
   // museum
   if (uiHour == 9) {
-    SetFactTrue(FACT_MUSEUM_OPEN);
+    SetFactTrue(Enum170.FACT_MUSEUM_OPEN);
   } else if (uiHour == 18) {
-    SetFactFalse(FACT_MUSEUM_OPEN);
+    SetFactFalse(Enum170.FACT_MUSEUM_OPEN);
   }
 }
 
 const BAR_TEMPTATION = 4;
 const NUM_LARRY_ITEMS = 6;
 let LarryItems: UINT16[][] /* [NUM_LARRY_ITEMS][3] */ = [
-  [ ADRENALINE_BOOSTER, 5, 100 ],
-  [ ALCOHOL, BAR_TEMPTATION, 25 ],
-  [ MEDICKIT, 4, 10 ],
-  [ WINE, 3, 50 ],
-  [ REGEN_BOOSTER, 3, 100 ],
-  [ BEER, 2, 100 ],
+  [ Enum225.ADRENALINE_BOOSTER, 5, 100 ],
+  [ Enum225.ALCOHOL, BAR_TEMPTATION, 25 ],
+  [ Enum225.MEDICKIT, 4, 10 ],
+  [ Enum225.WINE, 3, 50 ],
+  [ Enum225.REGEN_BOOSTER, 3, 100 ],
+  [ Enum225.BEER, 2, 100 ],
 ];
 
 const LARRY_FALLS_OFF_WAGON = 8;
@@ -130,18 +130,18 @@ function HourlyLarryUpdate(): void {
   let usCashAmount: UINT16;
   let fBar: BOOLEAN = FALSE;
 
-  pSoldier = FindSoldierByProfileID(LARRY_NORMAL, TRUE);
+  pSoldier = FindSoldierByProfileID(Enum268.LARRY_NORMAL, TRUE);
   if (!pSoldier) {
-    pSoldier = FindSoldierByProfileID(LARRY_DRUNK, TRUE);
+    pSoldier = FindSoldierByProfileID(Enum268.LARRY_DRUNK, TRUE);
   }
   if (pSoldier) {
-    if (pSoldier.value.bAssignment >= ON_DUTY) {
+    if (pSoldier.value.bAssignment >= Enum117.ON_DUTY) {
       return;
     }
     if (pSoldier.value.fBetweenSectors) {
       return;
     }
-    if (pSoldier.value.bActive && pSoldier.value.bInSector && (gTacticalStatus.fEnemyInSector || guiCurrentScreen == GAME_SCREEN)) {
+    if (pSoldier.value.bActive && pSoldier.value.bInSector && (gTacticalStatus.fEnemyInSector || guiCurrentScreen == Enum26.GAME_SCREEN)) {
       return;
     }
 
@@ -156,7 +156,7 @@ function HourlyLarryUpdate(): void {
 
     // check to see if we're in a bar sector, if we are, we have access to alcohol
     // which may be better than anything we've got...
-    if (usTemptation < BAR_TEMPTATION && GetCurrentBalance() >= Item[ALCOHOL].usPrice) {
+    if (usTemptation < BAR_TEMPTATION && GetCurrentBalance() >= Item[Enum225.ALCOHOL].usPrice) {
       if (pSoldier.value.bSectorZ == 0 && ((pSoldier.value.sSectorX == 13 && pSoldier.value.sSectorY == MAP_ROW_B) || (pSoldier.value.sSectorX == 13 && pSoldier.value.sSectorY == MAP_ROW_C) || (pSoldier.value.sSectorX == 5 && pSoldier.value.sSectorY == MAP_ROW_C) || (pSoldier.value.sSectorX == 6 && pSoldier.value.sSectorY == MAP_ROW_C) || (pSoldier.value.sSectorX == 5 && pSoldier.value.sSectorY == MAP_ROW_D) || (pSoldier.value.sSectorX == 2 && pSoldier.value.sSectorY == MAP_ROW_H))) {
         // in a bar!
         fBar = TRUE;
@@ -165,18 +165,18 @@ function HourlyLarryUpdate(): void {
     }
 
     if (usTemptation > 0) {
-      if (pSoldier.value.ubProfile == LARRY_NORMAL) {
-        gMercProfiles[LARRY_NORMAL].bNPCData += Random(usTemptation);
-        if (gMercProfiles[LARRY_NORMAL].bNPCData >= LARRY_FALLS_OFF_WAGON) {
+      if (pSoldier.value.ubProfile == Enum268.LARRY_NORMAL) {
+        gMercProfiles[Enum268.LARRY_NORMAL].bNPCData += Random(usTemptation);
+        if (gMercProfiles[Enum268.LARRY_NORMAL].bNPCData >= LARRY_FALLS_OFF_WAGON) {
           if (fBar) {
             // take $ from player's account
-            usCashAmount = Item[ALCOHOL].usPrice;
-            AddTransactionToPlayersBook(TRANSFER_FUNDS_TO_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), -(usCashAmount));
+            usCashAmount = Item[Enum225.ALCOHOL].usPrice;
+            AddTransactionToPlayersBook(Enum80.TRANSFER_FUNDS_TO_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), -(usCashAmount));
             // give Larry some booze and set slot etc values appropriately
-            bBoozeSlot = FindEmptySlotWithin(pSoldier, HANDPOS, SMALLPOCK8POS);
+            bBoozeSlot = FindEmptySlotWithin(pSoldier, Enum261.HANDPOS, Enum261.SMALLPOCK8POS);
             if (bBoozeSlot != NO_SLOT) {
               // give Larry booze here
-              CreateItem(ALCOHOL, 100, addressof(pSoldier.value.inv[bBoozeSlot]));
+              CreateItem(Enum225.ALCOHOL, 100, addressof(pSoldier.value.inv[bBoozeSlot]));
             }
             bSlot = bBoozeSlot;
             bLarryItemLoop = 1;
@@ -190,19 +190,19 @@ function HourlyLarryUpdate(): void {
       } else {
         // NB store all drunkenness info in LARRY_NORMAL profile (to use same values)
         // so long as he keeps consuming, keep number above level at which he cracked
-        gMercProfiles[LARRY_NORMAL].bNPCData = __max(gMercProfiles[LARRY_NORMAL].bNPCData, LARRY_FALLS_OFF_WAGON);
-        gMercProfiles[LARRY_NORMAL].bNPCData += Random(usTemptation);
+        gMercProfiles[Enum268.LARRY_NORMAL].bNPCData = __max(gMercProfiles[Enum268.LARRY_NORMAL].bNPCData, LARRY_FALLS_OFF_WAGON);
+        gMercProfiles[Enum268.LARRY_NORMAL].bNPCData += Random(usTemptation);
         // allow value to keep going up to 24 (about 2 days since we subtract Random( 2 ) when he has no access )
-        gMercProfiles[LARRY_NORMAL].bNPCData = __min(gMercProfiles[LARRY_NORMAL].bNPCData, 24);
+        gMercProfiles[Enum268.LARRY_NORMAL].bNPCData = __min(gMercProfiles[Enum268.LARRY_NORMAL].bNPCData, 24);
         if (fBar) {
           // take $ from player's account
-          usCashAmount = Item[ALCOHOL].usPrice;
-          AddTransactionToPlayersBook(TRANSFER_FUNDS_TO_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), -(usCashAmount));
+          usCashAmount = Item[Enum225.ALCOHOL].usPrice;
+          AddTransactionToPlayersBook(Enum80.TRANSFER_FUNDS_TO_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), -(usCashAmount));
           // give Larry some booze and set slot etc values appropriately
-          bBoozeSlot = FindEmptySlotWithin(pSoldier, HANDPOS, SMALLPOCK8POS);
+          bBoozeSlot = FindEmptySlotWithin(pSoldier, Enum261.HANDPOS, Enum261.SMALLPOCK8POS);
           if (bBoozeSlot != NO_SLOT) {
             // give Larry booze here
-            CreateItem(ALCOHOL, 100, addressof(pSoldier.value.inv[bBoozeSlot]));
+            CreateItem(Enum225.ALCOHOL, 100, addressof(pSoldier.value.inv[bBoozeSlot]));
           }
           bSlot = bBoozeSlot;
           bLarryItemLoop = 1;
@@ -212,9 +212,9 @@ function HourlyLarryUpdate(): void {
           UseKitPoints(addressof(pSoldier.value.inv[bSlot]), LarryItems[bLarryItemLoop][2], pSoldier);
         }
       }
-    } else if (pSoldier.value.ubProfile == LARRY_DRUNK) {
-      gMercProfiles[LARRY_NORMAL].bNPCData -= Random(2);
-      if (gMercProfiles[LARRY_NORMAL].bNPCData <= 0) {
+    } else if (pSoldier.value.ubProfile == Enum268.LARRY_DRUNK) {
+      gMercProfiles[Enum268.LARRY_NORMAL].bNPCData -= Random(2);
+      if (gMercProfiles[Enum268.LARRY_NORMAL].bNPCData <= 0) {
         // goes sober!
         SwapLarrysProfiles(pSoldier);
       }
@@ -224,7 +224,7 @@ function HourlyLarryUpdate(): void {
 
 function HourlyCheckIfSlayAloneSoHeCanLeave(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
-  pSoldier = FindSoldierByProfileID(SLAY, TRUE);
+  pSoldier = FindSoldierByProfileID(Enum268.SLAY, TRUE);
   if (!pSoldier) {
     return;
   }
@@ -236,7 +236,7 @@ function HourlyCheckIfSlayAloneSoHeCanLeave(): void {
   }
   if (PlayerMercsInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) == 1) {
     if (Chance(15)) {
-      pSoldier.value.ubLeaveHistoryCode = HISTORY_SLAY_MYSTERIOUSLY_LEFT;
+      pSoldier.value.ubLeaveHistoryCode = Enum83.HISTORY_SLAY_MYSTERIOUSLY_LEFT;
       TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_CONTRACT_ENDING_NO_ASK_EQUIP, 0, 0);
     }
   }

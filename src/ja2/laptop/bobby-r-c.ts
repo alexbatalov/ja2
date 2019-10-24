@@ -133,11 +133,11 @@ UINT8		gubNumUsedPages;
 let guiLastBobbyRayPage: UINT32;
 
 let gubBobbyRPages: UINT8[] /* [] */ = [
-  LAPTOP_MODE_BOBBY_R_USED,
-  LAPTOP_MODE_BOBBY_R_MISC,
-  LAPTOP_MODE_BOBBY_R_GUNS,
-  LAPTOP_MODE_BOBBY_R_AMMO,
-  LAPTOP_MODE_BOBBY_R_ARMOR,
+  Enum95.LAPTOP_MODE_BOBBY_R_USED,
+  Enum95.LAPTOP_MODE_BOBBY_R_MISC,
+  Enum95.LAPTOP_MODE_BOBBY_R_GUNS,
+  Enum95.LAPTOP_MODE_BOBBY_R_AMMO,
+  Enum95.LAPTOP_MODE_BOBBY_R_ARMOR,
 ];
 
 // Bobby's Sign menu mouse regions
@@ -168,7 +168,7 @@ function EnterBobbyR(): BOOLEAN {
 
   // load the Bobbyname graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_BOBBYNAME);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_BOBBYNAME);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyName)));
 
   // load the plaque graphic and add it
@@ -188,7 +188,7 @@ function EnterBobbyR(): BOOLEAN {
 
   // load the Store Plaque graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_STOREPLAQUE);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_STOREPLAQUE);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiStorePlaque)));
 
   // load the Handle graphic and add it
@@ -208,10 +208,10 @@ function EnterBobbyR(): BOOLEAN {
       MSYS_DisableRegion(addressof(gSelectedBobbiesSignMenuRegion[i]));
     }
 
-    LaptopSaveInfo.ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction = BOBBYR_BEEN_TO_SITE_ONCE;
+    LaptopSaveInfo.ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction = Enum99.BOBBYR_BEEN_TO_SITE_ONCE;
   }
 
-  SetBookMark(BOBBYR_BOOKMARK);
+  SetBookMark(Enum98.BOBBYR_BOOKMARK);
   HandleBobbyRUnderConstructionAni(TRUE);
 
   RenderBobbyR();
@@ -235,7 +235,7 @@ function ExitBobbyR(): void {
 
   RemoveBobbiesMouseRegion(BOBBIES_NUMBER_SIGNS, gSelectedBobbiesSignMenuRegion);
 
-  guiLastBobbyRayPage = LAPTOP_MODE_BOBBY_R;
+  guiLastBobbyRayPage = Enum95.LAPTOP_MODE_BOBBY_R;
 }
 
 function HandleBobbyR(): void {
@@ -287,30 +287,30 @@ function RenderBobbyR(): void {
   if (LaptopSaveInfo.fBobbyRSiteCanBeAccessed) {
     // Bobbys first sentence
     //	ShadowText( FRAME_BUFFER, BobbyRaysFrontText[BOBBYR_ADVERTISMENT_1], BOBBIES_SENTENCE_FONT, BOBBIES_FIRST_SENTENCE_X, BOBBIES_FIRST_SENTENCE_Y );
-    DrawTextToScreen(BobbyRaysFrontText[BOBBYR_ADVERTISMENT_1], BOBBIES_FIRST_SENTENCE_X, BOBBIES_FIRST_SENTENCE_Y, BOBBIES_FIRST_SENTENCE_WIDTH, BOBBIES_SENTENCE_FONT, BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED | TEXT_SHADOWED);
+    DrawTextToScreen(BobbyRaysFrontText[Enum351.BOBBYR_ADVERTISMENT_1], BOBBIES_FIRST_SENTENCE_X, BOBBIES_FIRST_SENTENCE_Y, BOBBIES_FIRST_SENTENCE_WIDTH, BOBBIES_SENTENCE_FONT, BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED | TEXT_SHADOWED);
 
     // Bobbys second sentence
-    DrawTextToScreen(BobbyRaysFrontText[BOBBYR_ADVERTISMENT_2], BOBBIES_2ND_SENTENCE_X, BOBBIES_2ND_SENTENCE_Y, BOBBIES_2ND_SENTENCE_WIDTH, BOBBIES_SENTENCE_FONT, BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED | TEXT_SHADOWED);
+    DrawTextToScreen(BobbyRaysFrontText[Enum351.BOBBYR_ADVERTISMENT_2], BOBBIES_2ND_SENTENCE_X, BOBBIES_2ND_SENTENCE_Y, BOBBIES_2ND_SENTENCE_WIDTH, BOBBIES_SENTENCE_FONT, BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED | TEXT_SHADOWED);
     SetFontShadow(DEFAULT_SHADOW);
   }
 
   SetFontShadow(BOBBIES_SIGN_BACKGROUNDCOLOR);
   // Text on the Used Sign
-  DisplayWrappedString(BOBBIES_USED_SIGN_X, BOBBIES_USED_SIGN_TEXT_OFFSET, BOBBIES_USED_SIGN_WIDTH - 5, 2, BOBBIES_SIGN_FONT, BOBBIES_SIGN_COLOR, BobbyRaysFrontText[BOBBYR_USED], BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(BOBBIES_USED_SIGN_X, BOBBIES_USED_SIGN_TEXT_OFFSET, BOBBIES_USED_SIGN_WIDTH - 5, 2, BOBBIES_SIGN_FONT, BOBBIES_SIGN_COLOR, BobbyRaysFrontText[Enum351.BOBBYR_USED], BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED);
   // Text on the Misc Sign
-  DisplayWrappedString(BOBBIES_MISC_SIGN_X, BOBBIES_MISC_SIGN_TEXT_OFFSET, BOBBIES_MISC_SIGN_WIDTH, 2, BOBBIES_SIGN_FONT, BOBBIES_SIGN_COLOR, BobbyRaysFrontText[BOBBYR_MISC], BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(BOBBIES_MISC_SIGN_X, BOBBIES_MISC_SIGN_TEXT_OFFSET, BOBBIES_MISC_SIGN_WIDTH, 2, BOBBIES_SIGN_FONT, BOBBIES_SIGN_COLOR, BobbyRaysFrontText[Enum351.BOBBYR_MISC], BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED);
   // Text on the Guns Sign
-  DisplayWrappedString(BOBBIES_GUNS_SIGN_X, BOBBIES_GUNS_SIGN_TEXT_OFFSET, BOBBIES_GUNS_SIGN_WIDTH, 2, BOBBIES_SIGN_FONT, BOBBIES_SIGN_COLOR, BobbyRaysFrontText[BOBBYR_GUNS], BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(BOBBIES_GUNS_SIGN_X, BOBBIES_GUNS_SIGN_TEXT_OFFSET, BOBBIES_GUNS_SIGN_WIDTH, 2, BOBBIES_SIGN_FONT, BOBBIES_SIGN_COLOR, BobbyRaysFrontText[Enum351.BOBBYR_GUNS], BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED);
   // Text on the Ammo Sign
-  DisplayWrappedString(BOBBIES_AMMO_SIGN_X, BOBBIES_AMMO_SIGN_TEXT_OFFSET, BOBBIES_AMMO_SIGN_WIDTH, 2, BOBBIES_SIGN_FONT, BOBBIES_SIGN_COLOR, BobbyRaysFrontText[BOBBYR_AMMO], BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(BOBBIES_AMMO_SIGN_X, BOBBIES_AMMO_SIGN_TEXT_OFFSET, BOBBIES_AMMO_SIGN_WIDTH, 2, BOBBIES_SIGN_FONT, BOBBIES_SIGN_COLOR, BobbyRaysFrontText[Enum351.BOBBYR_AMMO], BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED);
   // Text on the Armour Sign
-  DisplayWrappedString(BOBBIES_ARMOUR_SIGN_X, BOBBIES_ARMOUR_SIGN_TEXT_OFFSET, BOBBIES_ARMOUR_SIGN_WIDTH, 2, BOBBIES_SIGN_FONT, BOBBIES_SIGN_COLOR, BobbyRaysFrontText[BOBBYR_ARMOR], BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(BOBBIES_ARMOUR_SIGN_X, BOBBIES_ARMOUR_SIGN_TEXT_OFFSET, BOBBIES_ARMOUR_SIGN_WIDTH, 2, BOBBIES_SIGN_FONT, BOBBIES_SIGN_COLOR, BobbyRaysFrontText[Enum351.BOBBYR_ARMOR], BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED);
   SetFontShadow(DEFAULT_SHADOW);
 
   if (LaptopSaveInfo.fBobbyRSiteCanBeAccessed) {
     // Bobbys Third sentence
     SetFontShadow(BOBBIES_SENTENCE_BACKGROUNDCOLOR);
-    DrawTextToScreen(BobbyRaysFrontText[BOBBYR_ADVERTISMENT_3], BOBBIES_3RD_SENTENCE_X, BOBBIES_3RD_SENTENCE_Y, BOBBIES_3RD_SENTENCE_WIDTH, BOBBIES_SENTENCE_FONT, BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED | TEXT_SHADOWED);
+    DrawTextToScreen(BobbyRaysFrontText[Enum351.BOBBYR_ADVERTISMENT_3], BOBBIES_3RD_SENTENCE_X, BOBBIES_3RD_SENTENCE_Y, BOBBIES_3RD_SENTENCE_WIDTH, BOBBIES_SENTENCE_FONT, BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED | TEXT_SHADOWED);
     SetFontShadow(DEFAULT_SHADOW);
   }
 
@@ -368,7 +368,7 @@ function InitBobbiesMouseRegion(ubNumerRegions: UINT8, usMouseRegionPosArray: Po
 
   for (i = 0; i < ubNumerRegions; i++) {
     // Mouse region for the toc buttons
-    MSYS_DefineRegion(addressof(MouseRegion[i]), usMouseRegionPosArray[ubCount], usMouseRegionPosArray[ubCount + 1], usMouseRegionPosArray[ubCount + 2], usMouseRegionPosArray[ubCount + 3], MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectBobbiesSignMenuRegionCallBack);
+    MSYS_DefineRegion(addressof(MouseRegion[i]), usMouseRegionPosArray[ubCount], usMouseRegionPosArray[ubCount + 1], usMouseRegionPosArray[ubCount + 2], usMouseRegionPosArray[ubCount + 3], MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectBobbiesSignMenuRegionCallBack);
     MSYS_AddRegion(addressof(MouseRegion[i]));
     MSYS_SetRegionUserData(addressof(MouseRegion[i]), 0, gubBobbyRPages[i]);
 
@@ -444,7 +444,7 @@ function HandleBobbyRUnderConstructionAni(fReset: BOOLEAN): void {
 
     BltVideoObject(FRAME_BUFFER, hPixHandle, usCount, BOBBYR_UNDERCONSTRUCTION_X, BOBBYR_UNDERCONSTRUCTION1_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
-    DrawTextToScreen(BobbyRaysFrontText[BOBBYR_UNDER_CONSTRUCTION], BOBBYR_UNDER_CONSTRUCTION_TEXT_X, BOBBYR_UNDER_CONSTRUCTION_TEXT_Y, BOBBYR_UNDER_CONSTRUCTION_TEXT_WIDTH, FONT16ARIAL, BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED | INVALIDATE_TEXT);
+    DrawTextToScreen(BobbyRaysFrontText[Enum351.BOBBYR_UNDER_CONSTRUCTION], BOBBYR_UNDER_CONSTRUCTION_TEXT_X, BOBBYR_UNDER_CONSTRUCTION_TEXT_Y, BOBBYR_UNDER_CONSTRUCTION_TEXT_WIDTH, FONT16ARIAL, BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, FALSE, CENTER_JUSTIFIED | INVALIDATE_TEXT);
 
     InvalidateRegion(BOBBYR_UNDERCONSTRUCTION_X, BOBBYR_UNDERCONSTRUCTION_Y, BOBBYR_UNDERCONSTRUCTION_X + BOBBYR_UNDERCONSTRUCTION_WIDTH, BOBBYR_UNDERCONSTRUCTION_Y + BOBBYR_UNDERCONSTRUCTION_HEIGHT);
     InvalidateRegion(BOBBYR_UNDERCONSTRUCTION_X, BOBBYR_UNDERCONSTRUCTION1_Y, BOBBYR_UNDERCONSTRUCTION_X + BOBBYR_UNDERCONSTRUCTION_WIDTH, BOBBYR_UNDERCONSTRUCTION1_Y + BOBBYR_UNDERCONSTRUCTION_HEIGHT);
@@ -476,12 +476,12 @@ function InitBobbyRayNewInventory(): BOOLEAN {
   let i: UINT16;
   let usBobbyrIndex: UINT16 = 0;
 
-  memset(LaptopSaveInfo.BobbyRayInventory, 0, sizeof(STORE_INVENTORY) * MAXITEMS);
+  memset(LaptopSaveInfo.BobbyRayInventory, 0, sizeof(STORE_INVENTORY) * Enum225.MAXITEMS);
 
   // add all the NEW items he can ever sell into his possible inventory list, for now in order by item #
-  for (i = 0; i < MAXITEMS; i++) {
+  for (i = 0; i < Enum225.MAXITEMS; i++) {
     // if Bobby Ray sells this, it can be sold, and it's allowed into this game (some depend on e.g. gun-nut option)
-    if ((StoreInventory[i][BOBBY_RAY_NEW] != 0) && !(Item[i].fFlags & ITEM_NOT_BUYABLE) && ItemIsLegal(i)) {
+    if ((StoreInventory[i][Enum112.BOBBY_RAY_NEW] != 0) && !(Item[i].fFlags & ITEM_NOT_BUYABLE) && ItemIsLegal(i)) {
       LaptopSaveInfo.BobbyRayInventory[usBobbyrIndex].usItemIndex = i;
       usBobbyrIndex++;
     }
@@ -493,7 +493,7 @@ function InitBobbyRayNewInventory(): BOOLEAN {
   }
 
   // remember how many entries in the list are valid
-  LaptopSaveInfo.usInventoryListLength[BOBBY_RAY_NEW] = usBobbyrIndex;
+  LaptopSaveInfo.usInventoryListLength[Enum112.BOBBY_RAY_NEW] = usBobbyrIndex;
   // also mark the end of the list of valid item entries
   LaptopSaveInfo.BobbyRayInventory[usBobbyrIndex].usItemIndex = BOBBYR_NO_ITEMS;
 
@@ -504,13 +504,13 @@ function InitBobbyRayUsedInventory(): BOOLEAN {
   let i: UINT16;
   let usBobbyrIndex: UINT16 = 0;
 
-  memset(LaptopSaveInfo.BobbyRayUsedInventory, 0, sizeof(STORE_INVENTORY) * MAXITEMS);
+  memset(LaptopSaveInfo.BobbyRayUsedInventory, 0, sizeof(STORE_INVENTORY) * Enum225.MAXITEMS);
 
   // add all the NEW items he can ever sell into his possible inventory list, for now in order by item #
-  for (i = 0; i < MAXITEMS; i++) {
+  for (i = 0; i < Enum225.MAXITEMS; i++) {
     // if Bobby Ray sells this, it can be sold, and it's allowed into this game (some depend on e.g. gun-nut option)
-    if ((StoreInventory[i][BOBBY_RAY_USED] != 0) && !(Item[i].fFlags & ITEM_NOT_BUYABLE) && ItemIsLegal(i)) {
-      if ((StoreInventory[i][BOBBY_RAY_USED] != 0) && !(Item[i].fFlags & ITEM_NOT_BUYABLE) && ItemIsLegal(i))
+    if ((StoreInventory[i][Enum112.BOBBY_RAY_USED] != 0) && !(Item[i].fFlags & ITEM_NOT_BUYABLE) && ItemIsLegal(i)) {
+      if ((StoreInventory[i][Enum112.BOBBY_RAY_USED] != 0) && !(Item[i].fFlags & ITEM_NOT_BUYABLE) && ItemIsLegal(i))
         // in case his store inventory list is wrong, make sure this category of item can be sold used
         if (CanDealerItemBeSoldUsed(i)) {
           LaptopSaveInfo.BobbyRayUsedInventory[usBobbyrIndex].usItemIndex = i;
@@ -525,7 +525,7 @@ function InitBobbyRayUsedInventory(): BOOLEAN {
   }
 
   // remember how many entries in the list are valid
-  LaptopSaveInfo.usInventoryListLength[BOBBY_RAY_USED] = usBobbyrIndex;
+  LaptopSaveInfo.usInventoryListLength[Enum112.BOBBY_RAY_USED] = usBobbyrIndex;
   // also mark the end of the list of valid item entries
   LaptopSaveInfo.BobbyRayUsedInventory[usBobbyrIndex].usItemIndex = BOBBYR_NO_ITEMS;
 
@@ -538,29 +538,29 @@ function DailyUpdateOfBobbyRaysNewInventory(): void {
   let fPrevElig: BOOLEAN;
 
   // simulate other buyers by reducing the current quantity on hand
-  SimulateBobbyRayCustomer(LaptopSaveInfo.BobbyRayInventory, BOBBY_RAY_NEW);
+  SimulateBobbyRayCustomer(LaptopSaveInfo.BobbyRayInventory, Enum112.BOBBY_RAY_NEW);
 
   // loop through all items BR can stock to see what needs reordering
-  for (i = 0; i < LaptopSaveInfo.usInventoryListLength[BOBBY_RAY_NEW]; i++) {
+  for (i = 0; i < LaptopSaveInfo.usInventoryListLength[Enum112.BOBBY_RAY_NEW]; i++) {
     // the index is NOT the item #, get that from the table
     usItemIndex = LaptopSaveInfo.BobbyRayInventory[i].usItemIndex;
 
-    Assert(usItemIndex < MAXITEMS);
+    Assert(usItemIndex < Enum225.MAXITEMS);
 
     // make sure this item is still sellable in the latest version of the store inventory
-    if (StoreInventory[usItemIndex][BOBBY_RAY_NEW] == 0) {
+    if (StoreInventory[usItemIndex][Enum112.BOBBY_RAY_NEW] == 0) {
       continue;
     }
 
     // if the item isn't already on order
     if (LaptopSaveInfo.BobbyRayInventory[i].ubQtyOnOrder == 0) {
       // if the qty on hand is half the desired amount or fewer
-      if (LaptopSaveInfo.BobbyRayInventory[i].ubQtyOnHand <= (StoreInventory[usItemIndex][BOBBY_RAY_NEW] / 2)) {
+      if (LaptopSaveInfo.BobbyRayInventory[i].ubQtyOnHand <= (StoreInventory[usItemIndex][Enum112.BOBBY_RAY_NEW] / 2)) {
         // remember value of the "previously eligible" flag
         fPrevElig = LaptopSaveInfo.BobbyRayInventory[i].fPreviouslyEligible;
 
         // determine if any can/should be ordered, and how many
-        LaptopSaveInfo.BobbyRayInventory[i].ubQtyOnOrder = HowManyBRItemsToOrder(usItemIndex, LaptopSaveInfo.BobbyRayInventory[i].ubQtyOnHand, BOBBY_RAY_NEW);
+        LaptopSaveInfo.BobbyRayInventory[i].ubQtyOnOrder = HowManyBRItemsToOrder(usItemIndex, LaptopSaveInfo.BobbyRayInventory[i].ubQtyOnHand, Enum112.BOBBY_RAY_NEW);
 
         // if he found some to buy
         if (LaptopSaveInfo.BobbyRayInventory[i].ubQtyOnOrder > 0) {
@@ -584,19 +584,19 @@ function DailyUpdateOfBobbyRaysUsedInventory(): void {
   let fPrevElig: BOOLEAN;
 
   // simulate other buyers by reducing the current quantity on hand
-  SimulateBobbyRayCustomer(LaptopSaveInfo.BobbyRayUsedInventory, BOBBY_RAY_USED);
+  SimulateBobbyRayCustomer(LaptopSaveInfo.BobbyRayUsedInventory, Enum112.BOBBY_RAY_USED);
 
-  for (i = 0; i < LaptopSaveInfo.usInventoryListLength[BOBBY_RAY_USED]; i++) {
+  for (i = 0; i < LaptopSaveInfo.usInventoryListLength[Enum112.BOBBY_RAY_USED]; i++) {
     // if the used item isn't already on order
     if (LaptopSaveInfo.BobbyRayUsedInventory[i].ubQtyOnOrder == 0) {
       // if we don't have ANY
       if (LaptopSaveInfo.BobbyRayUsedInventory[i].ubQtyOnHand == 0) {
         // the index is NOT the item #, get that from the table
         usItemIndex = LaptopSaveInfo.BobbyRayUsedInventory[i].usItemIndex;
-        Assert(usItemIndex < MAXITEMS);
+        Assert(usItemIndex < Enum225.MAXITEMS);
 
         // make sure this item is still sellable in the latest version of the store inventory
-        if (StoreInventory[usItemIndex][BOBBY_RAY_USED] == 0) {
+        if (StoreInventory[usItemIndex][Enum112.BOBBY_RAY_USED] == 0) {
           continue;
         }
 
@@ -604,7 +604,7 @@ function DailyUpdateOfBobbyRaysUsedInventory(): void {
         fPrevElig = LaptopSaveInfo.BobbyRayUsedInventory[i].fPreviouslyEligible;
 
         // determine if any can/should be ordered, and how many
-        LaptopSaveInfo.BobbyRayUsedInventory[i].ubQtyOnOrder = HowManyBRItemsToOrder(usItemIndex, LaptopSaveInfo.BobbyRayUsedInventory[i].ubQtyOnHand, BOBBY_RAY_USED);
+        LaptopSaveInfo.BobbyRayUsedInventory[i].ubQtyOnOrder = HowManyBRItemsToOrder(usItemIndex, LaptopSaveInfo.BobbyRayUsedInventory[i].ubQtyOnHand, Enum112.BOBBY_RAY_USED);
 
         // if he found some to buy
         if (LaptopSaveInfo.BobbyRayUsedInventory[i].ubQtyOnOrder > 0) {
@@ -626,14 +626,14 @@ function DailyUpdateOfBobbyRaysUsedInventory(): void {
 function HowManyBRItemsToOrder(usItemIndex: UINT16, ubCurrentlyOnHand: UINT8, ubBobbyRayNewUsed: UINT8): UINT8 {
   let ubItemsOrdered: UINT8 = 0;
 
-  Assert(usItemIndex < MAXITEMS);
+  Assert(usItemIndex < Enum225.MAXITEMS);
   // formulas below will fail if there are more items already in stock than optimal
   Assert(ubCurrentlyOnHand <= StoreInventory[usItemIndex][ubBobbyRayNewUsed]);
-  Assert(ubBobbyRayNewUsed < BOBBY_RAY_LISTS);
+  Assert(ubBobbyRayNewUsed < Enum112.BOBBY_RAY_LISTS);
 
   // decide if he can get stock for this item (items are reordered an entire batch at a time)
   if (ItemTransactionOccurs(-1, usItemIndex, DEALER_BUYING, ubBobbyRayNewUsed)) {
-    if (ubBobbyRayNewUsed == BOBBY_RAY_NEW) {
+    if (ubBobbyRayNewUsed == Enum112.BOBBY_RAY_NEW) {
       ubItemsOrdered = HowManyItemsToReorder(StoreInventory[usItemIndex][ubBobbyRayNewUsed], ubCurrentlyOnHand);
     } else {
       // Since these are used items we only should order 1 of each type
@@ -653,7 +653,7 @@ function OrderBobbyRItem(usItemIndex: UINT16): void {
   // add the new item to the queue.  The new item will arrive in 'uiArrivalTime' minutes.
   uiArrivalTime = BOBBY_R_NEW_PURCHASE_ARRIVAL_TIME + Random(BOBBY_R_NEW_PURCHASE_ARRIVAL_TIME / 2);
   uiArrivalTime += GetWorldTotalMin();
-  AddStrategicEvent(EVENT_UPDATE_BOBBY_RAY_INVENTORY, uiArrivalTime, usItemIndex);
+  AddStrategicEvent(Enum132.EVENT_UPDATE_BOBBY_RAY_INVENTORY, uiArrivalTime, usItemIndex);
 }
 
 function AddFreshBobbyRayInventory(usItemIndex: UINT16): void {
@@ -665,11 +665,11 @@ function AddFreshBobbyRayInventory(usItemIndex: UINT16): void {
   if (usItemIndex >= BOBBY_R_USED_PURCHASE_OFFSET) {
     usItemIndex -= BOBBY_R_USED_PURCHASE_OFFSET;
     pInventoryArray = LaptopSaveInfo.BobbyRayUsedInventory;
-    fUsed = BOBBY_RAY_USED;
+    fUsed = Enum112.BOBBY_RAY_USED;
     ubItemQuality = 20 + Random(60);
   } else {
     pInventoryArray = LaptopSaveInfo.BobbyRayInventory;
-    fUsed = BOBBY_RAY_NEW;
+    fUsed = Enum112.BOBBY_RAY_NEW;
     ubItemQuality = 100;
   }
 
@@ -719,10 +719,10 @@ function CancelAllPendingBRPurchaseOrders(): void {
   let i: INT16;
 
   // remove all the BR-Order events off the event queue
-  DeleteAllStrategicEventsOfType(EVENT_UPDATE_BOBBY_RAY_INVENTORY);
+  DeleteAllStrategicEventsOfType(Enum132.EVENT_UPDATE_BOBBY_RAY_INVENTORY);
 
   // zero out all the quantities on order
-  for (i = 0; i < MAXITEMS; i++) {
+  for (i = 0; i < Enum225.MAXITEMS; i++) {
     LaptopSaveInfo.BobbyRayInventory[i].ubQtyOnOrder = 0;
     LaptopSaveInfo.BobbyRayUsedInventory[i].ubQtyOnOrder = 0;
   }

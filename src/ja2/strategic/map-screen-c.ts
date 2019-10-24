@@ -3,7 +3,7 @@
 const MAX_SORT_METHODS = 6;
 
 // Cursors
-const SCREEN_CURSOR = CURSOR_NORMAL;
+const SCREEN_CURSOR = Enum317.CURSOR_NORMAL;
 
 // Fonts
 const CHAR_FONT = () => BLOCKFONT2(); // COMPFONT
@@ -857,7 +857,7 @@ function RenderHandPosItem(): void {
   SetFontForeground(CHAR_INFO_PANEL_BLOCK_COLOR);
   SetFontBackground(FONT_BLACK);
 
-  INVRenderItem(guiSAVEBUFFER, pSoldier, addressof(pSoldier.value.inv[HANDPOS]), SOLDIER_HAND_X, SOLDIER_HAND_Y, 58, 23, DIRTYLEVEL2, NULL, 0, FALSE, 0);
+  INVRenderItem(guiSAVEBUFFER, pSoldier, addressof(pSoldier.value.inv[Enum261.HANDPOS]), SOLDIER_HAND_X, SOLDIER_HAND_Y, 58, 23, DIRTYLEVEL2, NULL, 0, FALSE, 0);
 }
 
 function RenderIconsForUpperLeftCornerPiece(bCharNumber: INT8): void {
@@ -866,7 +866,7 @@ function RenderIconsForUpperLeftCornerPiece(bCharNumber: INT8): void {
   GetVideoObject(addressof(hHandle), guiULICONS);
 
   // if merc is an AIM merc
-  if (Menptr[gCharactersList[bCharNumber].usSolID].ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
+  if (Menptr[gCharactersList[bCharNumber].usSolID].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
     // finite contract length icon
     BltVideoObject(guiSAVEBUFFER, hHandle, 0, CHAR_ICON_X, CHAR_ICON_CONTRACT_Y, VO_BLT_SRCTRANSPARENCY, NULL);
   }
@@ -938,7 +938,7 @@ function DrawCharBars(): void {
     }
 
     // skip POWs, dead guys
-    if ((pSoldier.value.bLife == 0) || (pSoldier.value.bAssignment == ASSIGNMENT_DEAD) || (pSoldier.value.bAssignment == ASSIGNMENT_POW)) {
+    if ((pSoldier.value.bLife == 0) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
       return;
     }
 
@@ -1160,7 +1160,7 @@ function DrawCharHealth(sCharNum: INT16): void {
 
   pSoldier = addressof(Menptr[gCharactersList[sCharNum].usSolID]);
 
-  if (pSoldier.value.bAssignment != ASSIGNMENT_POW) {
+  if (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) {
     // find starting X coordinate by centering all 3 substrings together, then print them separately (different colors)!
     swprintf(sString, "%d/%d", pSoldier.value.bLife, pSoldier.value.bLifeMax);
     FindFontCenterCoordinates(CHAR_HP_X, CHAR_HP_Y, CHAR_HP_WID, CHAR_HP_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
@@ -1276,7 +1276,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   DrawString(sString, usX, usY, CHAR_FONT);
 
   // Assignment
-  if (pSoldier.value.bAssignment == VEHICLE) {
+  if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
     // show vehicle type
     wcscpy(sString, pShortVehicleStrings[pVehicleList[pSoldier.value.iVehicleId].ubVehicleType]);
   } else {
@@ -1289,15 +1289,15 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   // second assignment line
 
   // train self / teammate / by other ?
-  if ((pSoldier.value.bAssignment == TRAIN_SELF) || (pSoldier.value.bAssignment == TRAIN_TEAMMATE) || (pSoldier.value.bAssignment == TRAIN_BY_OTHER)) {
+  if ((pSoldier.value.bAssignment == Enum117.TRAIN_SELF) || (pSoldier.value.bAssignment == Enum117.TRAIN_TEAMMATE) || (pSoldier.value.bAssignment == Enum117.TRAIN_BY_OTHER)) {
     wcscpy(sString, pAttributeMenuStrings[pSoldier.value.bTrainStat]);
   }
   // train town?
-  else if (pSoldier.value.bAssignment == TRAIN_TOWN) {
+  else if (pSoldier.value.bAssignment == Enum117.TRAIN_TOWN) {
     wcscpy(sString, pTownNames[GetTownIdForSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY)]);
   }
   // repairing?
-  else if (pSoldier.value.bAssignment == REPAIR) {
+  else if (pSoldier.value.bAssignment == Enum117.REPAIR) {
     if (pSoldier.value.fFixingRobot) {
       // robot
       wcscpy(sString, pRepairStrings[3]);
@@ -1318,7 +1318,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     }
   }
   // in transit?
-  else if (pSoldier.value.bAssignment == IN_TRANSIT) {
+  else if (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) {
     // show ETA
     ConvertMinTimeToETADayHourMinString(pSoldier.value.uiTimeSoldierWillArrive, sString);
   }
@@ -1353,17 +1353,17 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
 
   // dead?
   if (pSoldier.value.bLife <= 0) {
-    swprintf(sString, "%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+    swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
   }
   // what kind of merc
-  else if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC || pSoldier.value.ubProfile == SLAY) {
+  else if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC || pSoldier.value.ubProfile == Enum268.SLAY) {
     let dTimeLeft: FLOAT = 0.0;
 
     // amount of time left on contract
     iTimeRemaining = pSoldier.value.iEndofContractTime - GetWorldTotalMin();
 
     // if the merc is in transit
-    if (pSoldier.value.bAssignment == IN_TRANSIT) {
+    if (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) {
       // and if the ttime left on the cotract is greater then the contract time
       if (iTimeRemaining > (pSoldier.value.iTotalContractLength * NUM_MIN_IN_DAY)) {
         iTimeRemaining = (pSoldier.value.iTotalContractLength * NUM_MIN_IN_DAY);
@@ -1380,7 +1380,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
         SetFontForeground(FONT_LTGREEN);
       }
 
-      swprintf(sString, "%.1f%s/%d%s", dTimeLeft, gpStrategicString[STR_PB_DAYS_ABBREVIATION], pSoldier.value.iTotalContractLength, gpStrategicString[STR_PB_DAYS_ABBREVIATION]);
+      swprintf(sString, "%.1f%s/%d%s", dTimeLeft, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION], pSoldier.value.iTotalContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
     } else {
       // less than a day, display hours left in red
       if (iTimeRemaining > 5) {
@@ -1401,14 +1401,14 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
         SetFontForeground(FONT_RED);
       }
 
-      swprintf(sString, "%d%s/%d%s", iTimeRemaining, gpStrategicString[STR_PB_HOURS_ABBREVIATION], pSoldier.value.iTotalContractLength, gpStrategicString[STR_PB_DAYS_ABBREVIATION]);
+      swprintf(sString, "%d%s/%d%s", iTimeRemaining, gpStrategicString[Enum365.STR_PB_HOURS_ABBREVIATION], pSoldier.value.iTotalContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
     }
-  } else if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
+  } else if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
     let iBeenHiredFor: INT32 = (GetWorldTotalMin() / NUM_MIN_IN_DAY) - pSoldier.value.iStartContractTime;
 
-    swprintf(sString, "%d%s/%d%s", gMercProfiles[pSoldier.value.ubProfile].iMercMercContractLength, gpStrategicString[STR_PB_DAYS_ABBREVIATION], iBeenHiredFor, gpStrategicString[STR_PB_DAYS_ABBREVIATION]);
+    swprintf(sString, "%d%s/%d%s", gMercProfiles[pSoldier.value.ubProfile].iMercMercContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION], iBeenHiredFor, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
   } else {
-    swprintf(sString, "%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+    swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
   }
 
   // set font stuff
@@ -1420,12 +1420,12 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   DrawString(sString, usX, usY, CHAR_FONT);
 
   // salary
-  if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
+  if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
     // daily rate
-    if (pSoldier.value.bTypeOfLastContract == CONTRACT_EXTEND_2_WEEK) {
+    if (pSoldier.value.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
       iDailyCost = (gMercProfiles[pSoldier.value.ubProfile].uiBiWeeklySalary / 14);
     }
-    if (pSoldier.value.bTypeOfLastContract == CONTRACT_EXTEND_1_WEEK) {
+    if (pSoldier.value.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
       iDailyCost = (gMercProfiles[pSoldier.value.ubProfile].uiWeeklySalary / 7);
     } else {
       iDailyCost = gMercProfiles[pSoldier.value.ubProfile].sSalary;
@@ -1465,7 +1465,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   */
 
   // morale
-  if (pSoldier.value.bAssignment != ASSIGNMENT_POW) {
+  if (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) {
     if (pSoldier.value.bLife != 0) {
       GetMoraleString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString);
     } else {
@@ -1497,7 +1497,7 @@ function CharacterIsInTransitAndHasItemPickedUp(bCharacterNumber: INT8): BOOLEAN
   }
 
   // character in transit?
-  if (Menptr[gCharactersList[bCharacterNumber].usSolID].bAssignment != IN_TRANSIT) {
+  if (Menptr[gCharactersList[bCharacterNumber].usSolID].bAssignment != Enum117.IN_TRANSIT) {
     // nope
     return FALSE;
   }
@@ -1554,7 +1554,7 @@ function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
 
   if (fPlotForHelicopter == FALSE) {
     // plotting for a character...
-    if (Menptr[gCharactersList[bSelectedDestChar].usSolID].bAssignment == VEHICLE) {
+    if (Menptr[gCharactersList[bSelectedDestChar].usSolID].bAssignment == Enum117.VEHICLE) {
       ubGroupId = pVehicleList[Menptr[gCharactersList[bSelectedDestChar].usSolID].iVehicleId].ubMovementGroup;
       pGroup = GetGroup(ubGroupId);
 
@@ -2005,7 +2005,7 @@ function DisplayCharacterList(): void {
       // in current sector?
       else if ((Menptr[gCharactersList[sCount].usSolID].sSectorX == sSelMapX) && (Menptr[gCharactersList[sCount].usSolID].sSectorY == sSelMapY) && (Menptr[gCharactersList[sCount].usSolID].bSectorZ == iCurrentMapSectorZ)) {
         // mobile ?
-        if ((Menptr[gCharactersList[sCount].usSolID].bAssignment < ON_DUTY) || (Menptr[gCharactersList[sCount].usSolID].bAssignment == VEHICLE))
+        if ((Menptr[gCharactersList[sCount].usSolID].bAssignment < Enum117.ON_DUTY) || (Menptr[gCharactersList[sCount].usSolID].bAssignment == Enum117.VEHICLE))
           ubForegroundColor = FONT_YELLOW;
         else
           ubForegroundColor = FONT_MAP_DKYELLOW;
@@ -2096,7 +2096,7 @@ function MapScreenHandle(): UINT32 {
   if (ShouldTheHelpScreenComeUp(HelpScreenDetermineWhichMapScreenHelpToShow(), FALSE)) {
     // handle the help screen
     HelpScreenHandler();
-    return MAP_SCREEN;
+    return Enum26.MAP_SCREEN;
   }
 
   // shaded screen, leave
@@ -2112,7 +2112,7 @@ function MapScreenHandle(): UINT32 {
       // define our progress bar
       // CreateProgressBar( 0, 118, 183, 522, 202 );
     }
-    return MAP_SCREEN;
+    return Enum26.MAP_SCREEN;
   }
 
   //	if ( (fInMapMode == FALSE ) && ( fMapExitDueToMessageBox == FALSE ) )
@@ -2148,12 +2148,12 @@ function MapScreenHandle(): UINT32 {
     MoveToEndOfMapScreenMessageList();
 
     // if the current time compression mode is something legal in mapscreen, keep it
-    if ((giTimeCompressMode >= TIME_COMPRESS_5MINS) && (giTimeCompressMode <= TIME_COMPRESS_60MINS)) {
+    if ((giTimeCompressMode >= Enum130.TIME_COMPRESS_5MINS) && (giTimeCompressMode <= Enum130.TIME_COMPRESS_60MINS)) {
       // leave the current time compression mode set, but DO stop it
       StopTimeCompression();
     } else {
       // set compressed mode to X0 (which also stops time compression)
-      SetGameTimeCompressionLevel(TIME_COMPRESS_X0);
+      SetGameTimeCompressionLevel(Enum130.TIME_COMPRESS_X0);
     }
 
     // disable video overlay for tactical scroll messages
@@ -2402,7 +2402,7 @@ function MapScreenHandle(): UINT32 {
 
     MSYS_DefineRegion(addressof(gMPanelRegion), INV_REGION_X, INV_REGION_Y, INV_REGION_X + INV_REGION_WIDTH, INV_REGION_Y + INV_REGION_HEIGHT, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, InvmaskRegionBtnCallBack);
     // screen mask for animated cursors
-    MSYS_DefineRegion(addressof(gMapScreenMaskRegion), 0, 0, 640, 480, MSYS_PRIORITY_LOW, CURSOR_NORMAL, MSYS_NO_CALLBACK, MapScreenMarkRegionBtnCallback);
+    MSYS_DefineRegion(addressof(gMapScreenMaskRegion), 0, 0, 640, 480, MSYS_PRIORITY_LOW, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MapScreenMarkRegionBtnCallback);
 
     // set help text for item glow region
     SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[0]);
@@ -2465,7 +2465,7 @@ function MapScreenHandle(): UINT32 {
       RenderTeamRegionBackground();
 
       // now do the warning box
-      DoMapMessageBox(MSG_BOX_BASIC_STYLE, pMapErrorString[4], MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
+      DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapErrorString[4], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
     }
 
     fFirstTimeInMapScreen = FALSE;
@@ -2502,11 +2502,11 @@ function MapScreenHandle(): UINT32 {
     if (HandleFadeOutCallback()) {
       // force mapscreen to be reinitialized even though we're already in it
       EndMapScreen(TRUE);
-      return MAP_SCREEN;
+      return Enum26.MAP_SCREEN;
     }
 
-    if (HandleBeginFadeOut(MAP_SCREEN)) {
-      return MAP_SCREEN;
+    if (HandleBeginFadeOut(Enum26.MAP_SCREEN)) {
+      return Enum26.MAP_SCREEN;
     }
   }
 
@@ -2537,8 +2537,8 @@ function MapScreenHandle(): UINT32 {
   if (gfFirstMapscreenFrame == FALSE) {
     // Handle Interface
     uiNewScreen = HandleMapUI();
-    if (uiNewScreen != MAP_SCREEN) {
-      return MAP_SCREEN;
+    if (uiNewScreen != Enum26.MAP_SCREEN) {
+      return Enum26.MAP_SCREEN;
     }
   }
 
@@ -2649,7 +2649,7 @@ function MapScreenHandle(): UINT32 {
   BlitBackgroundToSaveBuffer();
 
   if (fLeavingMapScreen == TRUE) {
-    return MAP_SCREEN;
+    return Enum26.MAP_SCREEN;
   }
 
   if (fDisableDueToBattleRoster == FALSE) {
@@ -2818,7 +2818,7 @@ function MapScreenHandle(): UINT32 {
 
   if (fShowDescriptionFlag == TRUE) {
     // unmark done button
-    if (gpItemDescObject.value.usItem == MONEY) {
+    if (gpItemDescObject.value.usItem == Enum225.MONEY) {
       MapscreenMarkButtonsDirty();
     }
 
@@ -2947,7 +2947,7 @@ function MapScreenHandle(): UINT32 {
       EndMapScreen(TRUE);
     }
 
-    if (HandleBeginFadeIn(MAP_SCREEN)) {
+    if (HandleBeginFadeIn(Enum26.MAP_SCREEN)) {
     }
   }
 
@@ -2971,7 +2971,7 @@ function MapScreenHandle(): UINT32 {
     HandleExitsFromMapScreen();
   }
 
-  return MAP_SCREEN;
+  return Enum26.MAP_SCREEN;
 }
 
 function DrawString(pString: STR16, uiX: UINT16, uiY: UINT16, uiFont: UINT32): void {
@@ -3215,7 +3215,7 @@ function RenderMapCursorsIndexesAnims(): void {
   HandleAnimationOfSectors();
 
   if (gfBlitBattleSectorLocator) {
-    HandleBlitOfSectorLocatorIcon(gubPBSectorX, gubPBSectorY, gubPBSectorZ, LOCATOR_COLOR_RED);
+    HandleBlitOfSectorLocatorIcon(gubPBSectorX, gubPBSectorY, gubPBSectorZ, Enum156.LOCATOR_COLOR_RED);
   }
 
   fDrawCursors = CanDrawSectorCursor();
@@ -3312,7 +3312,7 @@ function RenderMapCursorsIndexesAnims(): void {
 }
 
 function HandleMapUI(): UINT32 {
-  let uiNewEvent: UINT32 = MAP_EVENT_NONE;
+  let uiNewEvent: UINT32 = Enum134.MAP_EVENT_NONE;
   let sMapX: INT16 = 0;
   let sMapY: INT16 = 0;
   let bMapZ: INT8 = 0;
@@ -3322,7 +3322,7 @@ function HandleMapUI(): UINT32 {
   let pNode: PathStPtr = NULL;
   let fVehicle: BOOLEAN = FALSE;
   let MousePos: POINT;
-  let uiNewScreen: UINT32 = MAP_SCREEN;
+  let uiNewScreen: UINT32 = Enum26.MAP_SCREEN;
   let fWasAlreadySelected: BOOLEAN;
 
   // Get Input from keyboard
@@ -3336,10 +3336,10 @@ function HandleMapUI(): UINT32 {
 
   // Switch on event
   switch (uiNewEvent) {
-    case MAP_EVENT_NONE:
+    case Enum134.MAP_EVENT_NONE:
       break;
 
-    case MAP_EVENT_PLOT_PATH:
+    case Enum134.MAP_EVENT_PLOT_PATH:
       GetMouseMapXY(addressof(sMapX), addressof(sMapY));
 
       /*
@@ -3388,7 +3388,7 @@ function HandleMapUI(): UINT32 {
 
         // SetFontDestBuffer( FRAME_BUFFER, 0, 0, 640, 480, FALSE );
 
-        if ((IsTheCursorAllowedToHighLightThisSector(sMapX, sMapY) == TRUE) && (SectorInfo[(SECTOR(sMapX, sMapY))].ubTraversability[THROUGH_STRATEGIC_MOVE] != GROUNDBARRIER)) {
+        if ((IsTheCursorAllowedToHighLightThisSector(sMapX, sMapY) == TRUE) && (SectorInfo[(SECTOR(sMapX, sMapY))].ubTraversability[Enum186.THROUGH_STRATEGIC_MOVE] != Enum127.GROUNDBARRIER)) {
           // Can we get go there?  (NULL temp character path)
           if (GetLengthOfPath(pTempCharacterPath) > 0) {
             PlotPathForCharacter(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID]), sMapX, sMapY, FALSE);
@@ -3407,7 +3407,7 @@ function HandleMapUI(): UINT32 {
       }
       break;
 
-    case MAP_EVENT_CANCEL_PATH:
+    case Enum134.MAP_EVENT_CANCEL_PATH:
       CancelOrShortenPlottedPath();
       break;
 
@@ -3433,7 +3433,7 @@ function HandleMapUI(): UINT32 {
                               break;
       */
 
-    case MAP_EVENT_CLICK_SECTOR:
+    case Enum134.MAP_EVENT_CLICK_SECTOR:
 
       // Get Current mouse position
       if (GetMouseMapXY(addressof(sMapX), addressof(sMapY))) {
@@ -3451,7 +3451,7 @@ function HandleMapUI(): UINT32 {
         // not zoomed out, make sure this is a valid sector
         if (IsTheCursorAllowedToHighLightThisSector(sMapX, sMapY) == FALSE) {
           // do nothing, return
-          return MAP_SCREEN;
+          return Enum26.MAP_SCREEN;
         }
 
         // while item in hand
@@ -3477,7 +3477,7 @@ function HandleMapUI(): UINT32 {
             CreateDestroyMapInventoryPoolButtons(TRUE);
           }
 
-          return MAP_SCREEN;
+          return Enum26.MAP_SCREEN;
         }
 
         // don't permit other click handling while item is in cursor (entering PBI would permit item teleports, etc.)
@@ -3485,7 +3485,7 @@ function HandleMapUI(): UINT32 {
 
         // this doesn't change selected sector
         if (gfInChangeArrivalSectorMode) {
-          if (SectorInfo[(SECTOR(sMapX, sMapY))].ubTraversability[THROUGH_STRATEGIC_MOVE] != GROUNDBARRIER) {
+          if (SectorInfo[(SECTOR(sMapX, sMapY))].ubTraversability[Enum186.THROUGH_STRATEGIC_MOVE] != Enum127.GROUNDBARRIER) {
             // if it's not enemy air controlled
             if (StrategicMap[CALCULATE_STRATEGIC_INDEX(sMapX, sMapY)].fEnemyAirControlled == FALSE) {
               let sMsgString: CHAR16[] /* [128] */;
@@ -3518,7 +3518,7 @@ function HandleMapUI(): UINT32 {
             }
           }
 
-          return MAP_SCREEN;
+          return Enum26.MAP_SCREEN;
         } else // not already changing arrival sector
         {
           if (CanMoveBullseyeAndClickedOnIt(sMapX, sMapY)) {
@@ -3530,7 +3530,7 @@ function HandleMapUI(): UINT32 {
               StartChangeSectorArrivalMode();
             }
 
-            return MAP_SCREEN;
+            return Enum26.MAP_SCREEN;
           }
         }
 
@@ -3552,14 +3552,14 @@ function HandleMapUI(): UINT32 {
           fShowMapInventoryPool = TRUE;
           CreateDestroyMapInventoryPoolButtons(TRUE);
 
-          return MAP_SCREEN;
+          return Enum26.MAP_SCREEN;
         }
 
         if (gfBlitBattleSectorLocator && sMapX == gubPBSectorX && sMapY == gubPBSectorY && iCurrentMapSectorZ == gubPBSectorZ) {
           // Bring up a non-persistant version of mapscreen if the user clicks on the sector where a
           // battle is taking place.
           InitPreBattleInterface(NULL, FALSE);
-          return MAP_SCREEN;
+          return Enum26.MAP_SCREEN;
         }
 
         // if we're in airspace mode
@@ -3570,7 +3570,7 @@ function HandleMapUI(): UINT32 {
             // NOTE: The helicopter icon is NOT necessarily directly over the helicopter's current sector!!!
             if ((iCurrentMapSectorZ == 0) && CheckForClickOverHelicopterIcon(sMapX, sMapY) == TRUE) {
               RequestGiveSkyriderNewDestination();
-              return MAP_SCREEN;
+              return Enum26.MAP_SCREEN;
             }
           }
         } else // not in airspace mode
@@ -3592,8 +3592,8 @@ function HandleMapUI(): UINT32 {
                 SetUpMovingListsForSector(sMapX, sMapY, iCurrentMapSectorZ);
               } else {
                 // no strategic movement is possible from underground sectors
-                DoMapMessageBox(MSG_BOX_BASIC_STYLE, pMapErrorString[1], MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
-                return MAP_SCREEN;
+                DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapErrorString[1], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
+                return Enum26.MAP_SCREEN;
               }
             }
           }
@@ -3759,7 +3759,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             fTeamPanelDirty = TRUE;
             fCharacterInfoPanelDirty = TRUE;
           } else {
-            RequestTriggerExitFromMapscreen(MAP_EXIT_TO_TACTICAL);
+            RequestTriggerExitFromMapscreen(Enum144.MAP_EXIT_TO_TACTICAL);
           }
           break; // end of ESC
 
@@ -4029,7 +4029,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
               AbortMovementPlottingMode();
             }
 
-            ShouldTheHelpScreenComeUp(HELP_SCREEN_MAPSCREEN, TRUE);
+            ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_MAPSCREEN, TRUE);
           }
 
           //					fShowMapScreenHelpText = TRUE;
@@ -4045,16 +4045,16 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
         case 'l':
           if (fAlt) {
             // although we're not actually going anywhere, we must still be in a state where this is permitted
-            if (AllowedToExitFromMapscreenTo(MAP_EXIT_TO_LOAD)) {
+            if (AllowedToExitFromMapscreenTo(Enum144.MAP_EXIT_TO_LOAD)) {
               DoQuickLoad();
             }
           } else if (fCtrl) {
             // go to LOAD screen
             gfSaveGame = FALSE;
-            RequestTriggerExitFromMapscreen(MAP_EXIT_TO_LOAD);
+            RequestTriggerExitFromMapscreen(Enum144.MAP_EXIT_TO_LOAD);
           } else {
             // go to LAPTOP
-            RequestTriggerExitFromMapscreen(MAP_EXIT_TO_LAPTOP);
+            RequestTriggerExitFromMapscreen(Enum144.MAP_EXIT_TO_LAPTOP);
           }
           break;
         case 'm':
@@ -4072,7 +4072,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             // toggle if Orta & Tixa have been found
           } else {
             // go to OPTIONS screen
-            RequestTriggerExitFromMapscreen(MAP_EXIT_TO_OPTIONS);
+            RequestTriggerExitFromMapscreen(Enum144.MAP_EXIT_TO_OPTIONS);
           }
           break;
 
@@ -4091,20 +4091,20 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
         case 's':
           if (fAlt) {
             // although we're not actually going anywhere, we must still be in a state where this is permitted
-            if (AllowedToExitFromMapscreenTo(MAP_EXIT_TO_SAVE)) {
+            if (AllowedToExitFromMapscreenTo(Enum144.MAP_EXIT_TO_SAVE)) {
               // if the game CAN be saved
               if (CanGameBeSaved()) {
                 guiPreviousOptionScreen = guiCurrentScreen;
                 DoQuickSave();
               } else {
                 // Display a message saying the player cant save now
-                DoMapMessageBox(MSG_BOX_BASIC_STYLE, zNewTacticalMessages[TCTL_MSG__IRON_MAN_CANT_SAVE_NOW], MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+                DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zNewTacticalMessages[Enum320.TCTL_MSG__IRON_MAN_CANT_SAVE_NOW], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
               }
             }
           } else if (fCtrl) {
             // go to SAVE screen
             gfSaveGame = TRUE;
-            RequestTriggerExitFromMapscreen(MAP_EXIT_TO_SAVE);
+            RequestTriggerExitFromMapscreen(Enum144.MAP_EXIT_TO_SAVE);
           }
           break;
         case 't':
@@ -4467,9 +4467,9 @@ function EndMapScreen(fDuringFade: BOOLEAN): void {
   SetAllAutoFacesInactive();
   if (fLapTop) {
     StopAnyCurrentlyTalkingSpeech();
-    guiCurrentScreen = LAPTOP_SCREEN;
+    guiCurrentScreen = Enum26.LAPTOP_SCREEN;
   } else {
-    guiCurrentScreen = GAME_SCREEN;
+    guiCurrentScreen = Enum26.GAME_SCREEN;
 
     // remove the progress bar
     RemoveProgressBar(0);
@@ -4479,9 +4479,9 @@ function EndMapScreen(fDuringFade: BOOLEAN): void {
   }
 
   // if going to tactical next
-  if (guiPendingScreen == GAME_SCREEN) {
+  if (guiPendingScreen == Enum26.GAME_SCREEN) {
     // set compressed mode to Normal (X1)
-    SetGameTimeCompressionLevel(TIME_COMPRESS_X1);
+    SetGameTimeCompressionLevel(Enum130.TIME_COMPRESS_X1);
   } else // going to another screen (options, laptop, save/load)
   {
     StopTimeCompression();
@@ -4650,7 +4650,7 @@ function PollLeftButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
     if (gMapViewRegion.ButtonState & MSYS_LEFT_BUTTON) {
       if (!fLBBeenPressedInMapView) {
         fLBBeenPressedInMapView = TRUE;
-        RESETCOUNTER(LMOUSECLICK_DELAY_COUNTER);
+        RESETCOUNTER(Enum386.LMOUSECLICK_DELAY_COUNTER);
 
         gfAllowSkyriderTooFarQuote = FALSE;
       }
@@ -4658,7 +4658,7 @@ function PollLeftButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
     {
       if (fLBBeenPressedInMapView) {
         fLBBeenPressedInMapView = FALSE;
-        RESETCOUNTER(LMOUSECLICK_DELAY_COUNTER);
+        RESETCOUNTER(Enum386.LMOUSECLICK_DELAY_COUNTER);
 
         // if we are showing help text in mapscreen
         if (fShowMapScreenHelpText) {
@@ -4714,14 +4714,14 @@ function PollLeftButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
             gfAllowSkyriderTooFarQuote = TRUE;
 
             // draw new map route
-            puiNewEvent.value = MAP_EVENT_PLOT_PATH;
+            puiNewEvent.value = Enum134.MAP_EVENT_PLOT_PATH;
           }
         } else // not plotting movement
         {
           // if not plotting a path
           if ((fEndPlotting == FALSE) && (fJustFinishedPlotting == FALSE)) {
             // make this sector selected / trigger movement box / start helicopter plotting / changing arrival sector
-            puiNewEvent.value = MAP_EVENT_CLICK_SECTOR;
+            puiNewEvent.value = Enum134.MAP_EVENT_CLICK_SECTOR;
           }
 
           fEndPlotting = FALSE;
@@ -4747,13 +4747,13 @@ function PollRightButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
     if (gMapViewRegion.ButtonState & MSYS_RIGHT_BUTTON) {
       if (!fRBBeenPressedInMapView) {
         fRBBeenPressedInMapView = TRUE;
-        RESETCOUNTER(RMOUSECLICK_DELAY_COUNTER);
+        RESETCOUNTER(Enum386.RMOUSECLICK_DELAY_COUNTER);
       }
     } else // R-button is NOT down at the moment
     {
       if (fRBBeenPressedInMapView) {
         fRBBeenPressedInMapView = FALSE;
-        RESETCOUNTER(RMOUSECLICK_DELAY_COUNTER);
+        RESETCOUNTER(Enum386.RMOUSECLICK_DELAY_COUNTER);
 
         // if we are showing help text in mapscreen
         if (fShowMapScreenHelpText) {
@@ -4789,7 +4789,7 @@ function PollRightButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
 
         if ((bSelectedDestChar != -1) || (fPlotForHelicopter == TRUE)) {
           // cancel/shorten the path
-          puiNewEvent.value = MAP_EVENT_CANCEL_PATH;
+          puiNewEvent.value = Enum134.MAP_EVENT_CANCEL_PATH;
         } else {
           if (GetMouseMapXY(addressof(sMapX), addressof(sMapY))) {
             /*
@@ -5189,7 +5189,7 @@ function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
       }
 
       // !!! ATTACHING/MERGING ITEMS IN MAP SCREEN IS NOT SUPPORTED !!!
-      if (uiHandPos == HANDPOS || uiHandPos == SECONDHANDPOS || uiHandPos == HELMETPOS || uiHandPos == VESTPOS || uiHandPos == LEGPOS) {
+      if (uiHandPos == Enum261.HANDPOS || uiHandPos == Enum261.SECONDHANDPOS || uiHandPos == Enum261.HELMETPOS || uiHandPos == Enum261.VESTPOS || uiHandPos == Enum261.LEGPOS) {
         // if ( ValidAttachmentClass( usNewItemIndex, usOldItemIndex ) )
         if (ValidAttachment(usNewItemIndex, usOldItemIndex)) {
           // it's an attempt to attach; bring up the inventory panel
@@ -5253,7 +5253,7 @@ function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
 
         // if item came from another merc
         if (gpItemPointerSoldier != pSoldier) {
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[MSG_ITEM_PASSED_TO_MERC], ShortItemNames[usNewItemIndex], pSoldier.value.name);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[Enum333.MSG_ITEM_PASSED_TO_MERC], ShortItemNames[usNewItemIndex], pSoldier.value.name);
         }
       }
     }
@@ -5360,8 +5360,8 @@ function MAPBeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, uiKeySlot: U
 function MAPEndItemPointer(): void {
   if (gpItemPointer != NULL) {
     gpItemPointer = NULL;
-    MSYS_ChangeRegionCursor(addressof(gMPanelRegion), CURSOR_NORMAL);
-    MSYS_SetCurrentCursor(CURSOR_NORMAL);
+    MSYS_ChangeRegionCursor(addressof(gMPanelRegion), Enum317.CURSOR_NORMAL);
+    MSYS_SetCurrentCursor(Enum317.CURSOR_NORMAL);
     fMapInventoryItem = FALSE;
     fTeamPanelDirty = TRUE;
 
@@ -5475,30 +5475,30 @@ function SetUpCursorForStrategicMap(): void {
     if (fPlotForHelicopter == FALSE) {
       if (bSelectedDestChar == -1) {
         // no plot mode, reset cursor to normal
-        ChangeMapScreenMaskCursor(CURSOR_NORMAL);
+        ChangeMapScreenMaskCursor(Enum317.CURSOR_NORMAL);
       } else // yes - by character
       {
         // set cursor based on foot or vehicle
-        if ((Menptr[gCharactersList[bSelectedDestChar].usSolID].bAssignment != VEHICLE) && !(Menptr[gCharactersList[bSelectedDestChar].usSolID].uiStatusFlags & SOLDIER_VEHICLE)) {
-          ChangeMapScreenMaskCursor(CURSOR_STRATEGIC_FOOT);
+        if ((Menptr[gCharactersList[bSelectedDestChar].usSolID].bAssignment != Enum117.VEHICLE) && !(Menptr[gCharactersList[bSelectedDestChar].usSolID].uiStatusFlags & SOLDIER_VEHICLE)) {
+          ChangeMapScreenMaskCursor(Enum317.CURSOR_STRATEGIC_FOOT);
         } else {
-          ChangeMapScreenMaskCursor(CURSOR_STRATEGIC_VEHICLE);
+          ChangeMapScreenMaskCursor(Enum317.CURSOR_STRATEGIC_VEHICLE);
         }
       }
     } else // yes - by helicopter
     {
       // set cursor to chopper
-      ChangeMapScreenMaskCursor(CURSOR_CHOPPER);
+      ChangeMapScreenMaskCursor(Enum317.CURSOR_CHOPPER);
     }
   } else {
     // set cursor to bullseye
-    ChangeMapScreenMaskCursor(CURSOR_STRATEGIC_BULLSEYE);
+    ChangeMapScreenMaskCursor(Enum317.CURSOR_STRATEGIC_BULLSEYE);
   }
 }
 
 function HandleAnimatedCursorsForMapScreen(): void {
-  if (COUNTERDONE(CURSORCOUNTER)) {
-    RESETCOUNTER(CURSORCOUNTER);
+  if (COUNTERDONE(Enum386.CURSORCOUNTER)) {
+    RESETCOUNTER(Enum386.CURSORCOUNTER);
     UpdateAnimatedCursorFrames(gMapScreenMaskRegion.Cursor);
     SetCurrentCursorFromDatabase(gMapScreenMaskRegion.Cursor);
   }
@@ -5541,7 +5541,7 @@ function AbortMovementPlottingMode(): void {
   MapScreenMessage(FONT_MCOLOR_LTYELLOW, MSG_MAP_UI_POSITION_MIDDLE, pMapPlotStrings[2]);
 
   // reset cursors
-  ChangeMapScreenMaskCursor(CURSOR_NORMAL);
+  ChangeMapScreenMaskCursor(Enum317.CURSOR_NORMAL);
   SetUpCursorForStrategicMap();
 
   // restore glow region
@@ -5764,7 +5764,7 @@ function TeamListInfoRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
       fPlotForHelicopter = FALSE;
 
       // if not dead or POW, select his sector
-      if ((pSoldier.value.bLife > 0) && (pSoldier.value.bAssignment != ASSIGNMENT_POW)) {
+      if ((pSoldier.value.bLife > 0) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW)) {
         ChangeSelectedMapSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
       }
 
@@ -5810,7 +5810,7 @@ function TeamListInfoRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
       fPlotForHelicopter = FALSE;
 
       // if not dead or POW, select his sector
-      if ((pSoldier.value.bLife > 0) && (pSoldier.value.bAssignment != ASSIGNMENT_POW)) {
+      if ((pSoldier.value.bLife > 0) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW)) {
         ChangeSelectedMapSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
       }
 
@@ -5879,7 +5879,7 @@ function TeamListAssignmentRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iRe
 
       // if alive (dead guys keep going, use remove menu instead),
       // and it's between sectors and it can be reassigned (non-vehicles)
-      if ((pSoldier.value.bAssignment != ASSIGNMENT_DEAD) && (pSoldier.value.bLife > 0) && (pSoldier.value.fBetweenSectors) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
+      if ((pSoldier.value.bAssignment != Enum117.ASSIGNMENT_DEAD) && (pSoldier.value.bLife > 0) && (pSoldier.value.fBetweenSectors) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
         // can't reassign mercs while between sectors
         DoScreenIndependantMessageBox(pMapErrorString[41], MSG_BOX_FLAG_OK, NULL);
         return;
@@ -5910,7 +5910,7 @@ function TeamListAssignmentRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iRe
 
         fShowAssignmentMenu = TRUE;
 
-        if ((pSoldier.value.bLife == 0) || (pSoldier.value.bAssignment == ASSIGNMENT_POW)) {
+        if ((pSoldier.value.bLife == 0) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
           fShowRemoveMenu = TRUE;
         }
       } else {
@@ -6009,7 +6009,7 @@ function TeamListDestinationRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iR
         MakeMapModesSuitableForDestPlotting(iValue);
 
         // check if person is in a vehicle
-        if (Menptr[gCharactersList[iValue].usSolID].bAssignment == VEHICLE) {
+        if (Menptr[gCharactersList[iValue].usSolID].bAssignment == Enum117.VEHICLE) {
           // if he's in the helicopter
           if (Menptr[gCharactersList[iValue].usSolID].iVehicleId == iHelicopterVehicleId) {
             TurnOnAirSpaceMode();
@@ -6705,41 +6705,41 @@ function HandleShadingOfLinesForContractMenu(): void {
   pSoldier = addressof(Menptr[gCharactersList[bSelectedContractChar].usSolID]);
 
   // is guy in AIM? and well enough to talk and make such decisions?
-  if ((pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) && (pSoldier.value.bLife >= OKLIFE)) {
+  if ((pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) && (pSoldier.value.bLife >= OKLIFE)) {
     pProfile = addressof(gMercProfiles[pSoldier.value.ubProfile]);
 
     // one day
     if (pProfile.value.sSalary > LaptopSaveInfo.iCurrentBalance) {
-      ShadeStringInBox(ghContractBox, CONTRACT_MENU_DAY);
+      ShadeStringInBox(ghContractBox, Enum152.CONTRACT_MENU_DAY);
     } else {
-      UnShadeStringInBox(ghContractBox, CONTRACT_MENU_DAY);
+      UnShadeStringInBox(ghContractBox, Enum152.CONTRACT_MENU_DAY);
     }
 
     // one week
     if ((pProfile.value.uiWeeklySalary) > LaptopSaveInfo.iCurrentBalance) {
-      ShadeStringInBox(ghContractBox, CONTRACT_MENU_WEEK);
+      ShadeStringInBox(ghContractBox, Enum152.CONTRACT_MENU_WEEK);
     } else {
-      UnShadeStringInBox(ghContractBox, CONTRACT_MENU_WEEK);
+      UnShadeStringInBox(ghContractBox, Enum152.CONTRACT_MENU_WEEK);
     }
 
     // two weeks
     if ((pProfile.value.uiBiWeeklySalary) > LaptopSaveInfo.iCurrentBalance) {
-      ShadeStringInBox(ghContractBox, CONTRACT_MENU_TWO_WEEKS);
+      ShadeStringInBox(ghContractBox, Enum152.CONTRACT_MENU_TWO_WEEKS);
     } else {
-      UnShadeStringInBox(ghContractBox, CONTRACT_MENU_TWO_WEEKS);
+      UnShadeStringInBox(ghContractBox, Enum152.CONTRACT_MENU_TWO_WEEKS);
     }
   } else {
     // can't extend contract duration
-    ShadeStringInBox(ghContractBox, CONTRACT_MENU_DAY);
-    ShadeStringInBox(ghContractBox, CONTRACT_MENU_WEEK);
-    ShadeStringInBox(ghContractBox, CONTRACT_MENU_TWO_WEEKS);
+    ShadeStringInBox(ghContractBox, Enum152.CONTRACT_MENU_DAY);
+    ShadeStringInBox(ghContractBox, Enum152.CONTRACT_MENU_WEEK);
+    ShadeStringInBox(ghContractBox, Enum152.CONTRACT_MENU_TWO_WEEKS);
   }
 
   // if THIS soldier is involved in a fight (dismissing in a hostile sector IS ok...)
   if ((gTacticalStatus.uiFlags & INCOMBAT) && pSoldier.value.bInSector) {
-    ShadeStringInBox(ghContractBox, CONTRACT_MENU_TERMINATE);
+    ShadeStringInBox(ghContractBox, Enum152.CONTRACT_MENU_TERMINATE);
   } else {
-    UnShadeStringInBox(ghContractBox, CONTRACT_MENU_TERMINATE);
+    UnShadeStringInBox(ghContractBox, Enum152.CONTRACT_MENU_TERMINATE);
   }
 }
 
@@ -6850,7 +6850,7 @@ function EnableDisableTeamListRegionsAndHelpText(): void {
         MSYS_EnableRegion(addressof(gTeamListAssignmentRegion[bCharNum]));
 
         // POW or dead ?
-        if ((Menptr[gCharactersList[bCharNum].usSolID].bAssignment == ASSIGNMENT_POW) || (Menptr[gCharactersList[bCharNum].usSolID].bLife == 0)) {
+        if ((Menptr[gCharactersList[bCharNum].usSolID].bAssignment == Enum117.ASSIGNMENT_POW) || (Menptr[gCharactersList[bCharNum].usSolID].bLife == 0)) {
           // "Remove Merc"
           SetRegionFastHelpText(addressof(gTeamListAssignmentRegion[bCharNum]), pRemoveMercStrings[0]);
 
@@ -7047,8 +7047,8 @@ function CheckIfClickOnLastSectorInPath(sX: INT16, sY: INT16): BOOLEAN {
       // clicked on last sector, reset plotting mode
 
       // if he's IN a vehicle or IS a vehicle
-      if ((Menptr[gCharactersList[bSelectedDestChar].usSolID].bAssignment == VEHICLE) || (Menptr[gCharactersList[bSelectedDestChar].usSolID].uiStatusFlags & SOLDIER_VEHICLE)) {
-        if (Menptr[gCharactersList[bSelectedDestChar].usSolID].bAssignment == VEHICLE) {
+      if ((Menptr[gCharactersList[bSelectedDestChar].usSolID].bAssignment == Enum117.VEHICLE) || (Menptr[gCharactersList[bSelectedDestChar].usSolID].uiStatusFlags & SOLDIER_VEHICLE)) {
+        if (Menptr[gCharactersList[bSelectedDestChar].usSolID].bAssignment == Enum117.VEHICLE) {
           // IN a vehicle
           iVehicleId = Menptr[gCharactersList[bSelectedDestChar].usSolID].iVehicleId;
         } else {
@@ -7114,8 +7114,8 @@ function RebuildWayPointsForAllSelectedCharsGroups(): void {
       pSoldier = MercPtrs[gCharactersList[iCounter].usSolID];
 
       // if he's IN a vehicle or IS a vehicle
-      if ((pSoldier.value.bAssignment == VEHICLE) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
-        if (pSoldier.value.bAssignment == VEHICLE) {
+      if ((pSoldier.value.bAssignment == Enum117.VEHICLE) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
+        if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
           // IN a vehicle
           iVehicleId = pSoldier.value.iVehicleId;
         } else {
@@ -7165,7 +7165,7 @@ function UpdateCursorIfInLastSector(): void {
         // c heck if we are in the last sector of the characters path?
         if (sMapX + (sMapY * MAP_WORLD_X) == GetLastSectorIdInCharactersPath((addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID])))) {
           // set cursor to checkmark
-          ChangeMapScreenMaskCursor(CURSOR_CHECKMARK);
+          ChangeMapScreenMaskCursor(Enum317.CURSOR_CHECKMARK);
         } else if (fCheckCursorWasSet) {
           // reset to walking guy/vehicle
           SetUpCursorForStrategicMap();
@@ -7176,7 +7176,7 @@ function UpdateCursorIfInLastSector(): void {
       if (fPlotForHelicopter) {
         if (sMapX + (sMapY * MAP_WORLD_X) == GetLastSectorOfHelicoptersPath()) {
           // set cursor to checkmark
-          ChangeMapScreenMaskCursor(CURSOR_CHECKMARK);
+          ChangeMapScreenMaskCursor(Enum317.CURSOR_CHECKMARK);
         } else if (fCheckCursorWasSet) {
           // reset to walking guy/vehicle
           SetUpCursorForStrategicMap();
@@ -7310,7 +7310,7 @@ function UpDateStatusOfContractBox(): void {
   if (fShowContractMenu == TRUE) {
     ForceUpDateOfBox(ghContractBox);
 
-    if ((Menptr[gCharactersList[bSelectedInfoChar].usSolID].bLife == 0) || (Menptr[gCharactersList[bSelectedInfoChar].usSolID].bAssignment == ASSIGNMENT_POW)) {
+    if ((Menptr[gCharactersList[bSelectedInfoChar].usSolID].bLife == 0) || (Menptr[gCharactersList[bSelectedInfoChar].usSolID].bAssignment == Enum117.ASSIGNMENT_POW)) {
       ForceUpDateOfBox(ghRemoveMercAssignBox);
     }
   }
@@ -7332,8 +7332,8 @@ function TrashItemMessageBoxCallBack(bExitValue: UINT8): void {
     DestroyTheItemInCursor();
 
     // reset cursor
-    MSYS_ChangeRegionCursor(addressof(gSMPanelRegion), CURSOR_NORMAL);
-    SetCurrentCursorFromDatabase(CURSOR_NORMAL);
+    MSYS_ChangeRegionCursor(addressof(gSMPanelRegion), Enum317.CURSOR_NORMAL);
+    SetCurrentCursorFromDatabase(Enum317.CURSOR_NORMAL);
 
     HandleButtonStatesWhileMapInventoryActive();
   }
@@ -7351,9 +7351,9 @@ function TrashCanBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
     if (gpItemPointer != NULL) {
       // set up for mapscreen
       if (gpItemPointer.value.ubMission) {
-        DoMapMessageBox(MSG_BOX_BASIC_STYLE, pTrashItemText[1], MAP_SCREEN, MSG_BOX_FLAG_YESNO, TrashItemMessageBoxCallBack);
+        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pTrashItemText[1], Enum26.MAP_SCREEN, MSG_BOX_FLAG_YESNO, TrashItemMessageBoxCallBack);
       } else {
-        DoMapMessageBox(MSG_BOX_BASIC_STYLE, pTrashItemText[0], MAP_SCREEN, MSG_BOX_FLAG_YESNO, TrashItemMessageBoxCallBack);
+        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pTrashItemText[0], Enum26.MAP_SCREEN, MSG_BOX_FLAG_YESNO, TrashItemMessageBoxCallBack);
       }
     }
   }
@@ -7370,7 +7370,7 @@ function TrashCanMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
 }
 
 function MapInvDoneButtonfastHelpCall(): void {
-  SetPendingNewScreen(LAPTOP_SCREEN);
+  SetPendingNewScreen(Enum26.LAPTOP_SCREEN);
 }
 
 function UpdateStatusOfMapSortButtons(): void {
@@ -8067,19 +8067,19 @@ function TellPlayerWhyHeCantCompressTime(): void {
   if (PauseStateLocked()) {
   } else if (gfAtLeastOneMercWasHired == FALSE) {
     // no mercs hired, ever
-    DoMapMessageBox(MSG_BOX_BASIC_STYLE, pMapScreenJustStartedHelpText[0], MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
+    DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapScreenJustStartedHelpText[0], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
   } else if (!AnyUsableRealMercenariesOnTeam()) {
     // no usable mercs left on team
-    DoMapMessageBox(MSG_BOX_BASIC_STYLE, pMapErrorString[39], MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
+    DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapErrorString[39], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
   } else if (ActiveTimedBombExists()) {
     // can't time compress when a bomb is about to go off!
-    DoMapMessageBox(MSG_BOX_BASIC_STYLE, gzLateLocalizedString[2], MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
+    DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[2], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
   } else if (gfContractRenewalSquenceOn) {
   } else if (fDisableMapInterfaceDueToBattle) {
   } else if (fDisableDueToBattleRoster) {
   } else if (fMapInventoryItem) {
   } else if (fShowMapInventoryPool) {
-    DoMapMessageBox(MSG_BOX_BASIC_STYLE, gzLateLocalizedString[55], MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
+    DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[55], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
   }
   // ARM: THIS TEST SHOULD BE THE LAST ONE, BECAUSE IT ACTUALLY RESULTS IN SOMETHING HAPPENING NOW.
   // KM:  Except if we are in a creature lair and haven't loaded the sector yet (no battle yet)
@@ -8089,13 +8089,13 @@ function TellPlayerWhyHeCantCompressTime(): void {
       let pSectorString: UINT16[] /* [128] */;
       GetSectorIDString(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, pSectorString, TRUE);
       swprintf(str, gzLateLocalizedString[27], pSectorString);
-      DoMapMessageBox(MSG_BOX_BASIC_STYLE, str, MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
+      DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, str, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
     } else {
       // The NEW non-persistant PBI is used instead of a dialog box explaining why we can't compress time.
       InitPreBattleInterface(NULL, FALSE);
     }
   } else if (PlayerGroupIsInACreatureInfestedMine()) {
-    DoMapMessageBox(MSG_BOX_BASIC_STYLE, gzLateLocalizedString[28], MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
+    DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[28], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
   }
 }
 
@@ -8145,7 +8145,7 @@ function AddTeamPanelSortButtonsForMapScreen(): void {
     4,
   ]; // sleep image is out or order (last)
 
-  GetMLGFilename(filename, MLG_GOLDPIECEBUTTONS);
+  GetMLGFilename(filename, Enum326.MLG_GOLDPIECEBUTTONS);
 
   for (iCounter = 0; iCounter < MAX_SORT_METHODS; iCounter++) {
     giMapSortButtonImage[iCounter] = LoadButtonImage(filename, -1, iImageIndex[iCounter], -1, iImageIndex[iCounter] + 6, -1);
@@ -8237,7 +8237,7 @@ function SortListOfMercsInTeamPanel(fRetainSelectedMercs: BOOLEAN): void {
             // same assignment
 
             // if it's in a vehicle
-            if (Menptr[gCharactersList[iCounterA].usSolID].bAssignment == VEHICLE) {
+            if (Menptr[gCharactersList[iCounterA].usSolID].bAssignment == Enum117.VEHICLE) {
               // then also compare vehicle IDs
               if ((Menptr[gCharactersList[iCounterA].usSolID].iVehicleId > Menptr[gCharactersList[iCounter].usSolID].iVehicleId) && (iCounterA < iCounter)) {
                 SwapCharactersInList(iCounter, iCounterA);
@@ -8479,14 +8479,14 @@ function DisplayIconsForMercsAsleep(): void {
 function CheckForAndRenderNewMailOverlay(): void {
   if (fNewMailFlag) {
     if (GetJA2Clock() % 1000 < 667) {
-      if (ButtonList[guiMapBottomExitButtons[MAP_EXIT_TO_LAPTOP]].value.uiFlags & BUTTON_CLICKED_ON) {
+      if (ButtonList[guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_LAPTOP]].value.uiFlags & BUTTON_CLICKED_ON) {
         // button is down, so offset the icon
         BltVideoObjectFromIndex(FRAME_BUFFER, guiNewMailIcons, 1, 465, 418, VO_BLT_SRCTRANSPARENCY, NULL);
         InvalidateRegion(465, 418, 480, 428);
       } else {
         // button is up, so draw the icon normally
         BltVideoObjectFromIndex(FRAME_BUFFER, guiNewMailIcons, 0, 464, 417, VO_BLT_SRCTRANSPARENCY, NULL);
-        if (!(ButtonList[guiMapBottomExitButtons[MAP_EXIT_TO_LAPTOP]].value.uiFlags & BUTTON_ENABLED)) {
+        if (!(ButtonList[guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_LAPTOP]].value.uiFlags & BUTTON_ENABLED)) {
           let uiDestPitchBYTES: UINT32;
           let pDestBuf: Pointer<UINT8>;
           let area: SGPRect = [ 463, 417, 477, 425 ];
@@ -8499,7 +8499,7 @@ function CheckForAndRenderNewMailOverlay(): void {
       }
     } else {
       // The blink is now off, so mark the button dirty so that it'll render next frame.
-      MarkAButtonDirty(guiMapBottomExitButtons[MAP_EXIT_TO_LAPTOP]);
+      MarkAButtonDirty(guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_LAPTOP]);
     }
   }
 }
@@ -8553,7 +8553,7 @@ function MapCharacterHasAccessibleInventory(bCharNumber: INT8): BOOLEAN {
 
   pSoldier = MercPtrs[gCharactersList[bCharNumber].usSolID];
 
-  if ((pSoldier.value.bAssignment == IN_TRANSIT) || (pSoldier.value.bAssignment == ASSIGNMENT_POW) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (AM_A_ROBOT(pSoldier)) || (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) || (pSoldier.value.bLife < OKLIFE)) {
+  if ((pSoldier.value.bAssignment == Enum117.IN_TRANSIT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (AM_A_ROBOT(pSoldier)) || (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) || (pSoldier.value.bLife < OKLIFE)) {
     return FALSE;
   }
 
@@ -8661,7 +8661,7 @@ function CanExtendContractForCharSlot(bCharNumber: INT8): BOOLEAN {
   Assert(pSoldier.value.bActive);
 
   // if a vehicle, in transit, or a POW
-  if ((pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.bAssignment == IN_TRANSIT) || (pSoldier.value.bAssignment == ASSIGNMENT_POW)) {
+  if ((pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
     // can't extend contracts at this time
     return FALSE;
   }
@@ -8692,13 +8692,13 @@ function CanChangeSleepStatusForSoldier(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN
   Assert(pSoldier.value.bActive);
 
   // if a vehicle, robot, in transit, or a POW
-  if ((pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || AM_A_ROBOT(pSoldier) || (pSoldier.value.bAssignment == IN_TRANSIT) || (pSoldier.value.bAssignment == ASSIGNMENT_POW)) {
+  if ((pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || AM_A_ROBOT(pSoldier) || (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
     // can't change the sleep status of such mercs
     return FALSE;
   }
 
   // if dead
-  if ((pSoldier.value.bLife <= 0) || (pSoldier.value.bAssignment == ASSIGNMENT_DEAD)) {
+  if ((pSoldier.value.bLife <= 0) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD)) {
     return FALSE;
   }
 
@@ -8710,12 +8710,12 @@ function ChangeMapScreenMaskCursor(usCursor: UINT16): void {
   MSYS_SetCurrentCursor(usCursor);
   MSYS_ChangeRegionCursor(addressof(gMapScreenMaskRegion), usCursor);
 
-  if (usCursor == CURSOR_CHECKMARK)
+  if (usCursor == Enum317.CURSOR_CHECKMARK)
     fCheckCursorWasSet = TRUE;
   else
     fCheckCursorWasSet = FALSE;
 
-  if (usCursor == CURSOR_NORMAL) {
+  if (usCursor == Enum317.CURSOR_NORMAL) {
     if (!InItemStackPopup()) {
       // cancel mouse restriction
       FreeMouseCursor();
@@ -8769,16 +8769,16 @@ function CancelOrShortenPlottedPath(): void {
   }
 
   switch (uiReturnValue) {
-    case ABORT_PLOTTING:
+    case Enum158.ABORT_PLOTTING:
       AbortMovementPlottingMode();
       break;
 
-    case PATH_CLEARED: // movement was canceled
+    case Enum158.PATH_CLEARED: // movement was canceled
       // message was already issued when path was cleared
       DestinationPlottingCompleted();
       break;
 
-    case PATH_SHORTENED: // route was shortened but isn't completely gone
+    case Enum158.PATH_SHORTENED: // route was shortened but isn't completely gone
       // display "route shortened" message
       MapScreenMessage(FONT_MCOLOR_LTYELLOW, MSG_MAP_UI_POSITION_MIDDLE, pMapPlotStrings[4]);
       break;
@@ -8824,7 +8824,7 @@ function HandleCtrlOrShiftInTeamPanel(bCharNumber: INT8): BOOLEAN {
 }
 
 function GetContractExpiryTime(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
-  if ((pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) || (pSoldier.value.ubProfile == SLAY)) {
+  if ((pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) || (pSoldier.value.ubProfile == Enum268.SLAY)) {
     return pSoldier.value.iEndofContractTime;
   } else {
     // never - really high number
@@ -8901,7 +8901,7 @@ function CopyPathToAllSelectedCharacters(pPath: PathStPtr): void {
       if (GetSoldierMercPathPtr(pSoldier) != pPath) {
         if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
           pVehicleList[pSoldier.value.bVehicleID].pMercPath = CopyPaths(pPath, pVehicleList[pSoldier.value.bVehicleID].pMercPath);
-        } else if (pSoldier.value.bAssignment == VEHICLE) {
+        } else if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
           pVehicleList[pSoldier.value.iVehicleId].pMercPath = CopyPaths(pPath, pVehicleList[pSoldier.value.iVehicleId].pMercPath);
         } else {
           pSoldier.value.pMercPath = CopyPaths(pPath, pSoldier.value.pMercPath);
@@ -8927,7 +8927,7 @@ function CancelPathsOfAllSelectedCharacters(): void {
       // and he has a route set
       if (GetLengthOfMercPath(pSoldier) > 0) {
         // if he's in the chopper, but player can't redirect it
-        if ((pSoldier.value.bAssignment == VEHICLE) && (pSoldier.value.iVehicleId == iHelicopterVehicleId) && (CanHelicopterFly() == FALSE)) {
+        if ((pSoldier.value.bAssignment == Enum117.VEHICLE) && (pSoldier.value.iVehicleId == iHelicopterVehicleId) && (CanHelicopterFly() == FALSE)) {
           if (!fSkyriderMsgShown) {
             // explain
             ExplainWhySkyriderCantFly();
@@ -8994,7 +8994,7 @@ function CalcLocationValueForChar(iCounter: INT32): INT16 {
   pSoldier = MercPtrs[gCharactersList[iCounter].usSolID];
 
   // don't reveal location of POWs!
-  if (pSoldier.value.bAssignment != ASSIGNMENT_POW) {
+  if (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) {
     sLocValue = SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
     // underground: add 1000 per sublevel
     sLocValue += 1000 * (pSoldier.value.bSectorZ);
@@ -9023,7 +9023,7 @@ function MakeMapModesSuitableForDestPlotting(bCharNumber: INT8): void {
 
     TurnOnShowTeamsMode();
 
-    if ((pSoldier.value.bAssignment == VEHICLE) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
+    if ((pSoldier.value.bAssignment == Enum117.VEHICLE) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       if (fShowAircraftFlag == FALSE) {
         // turn on airspace mode automatically
         ToggleAirspaceMode();
@@ -9063,12 +9063,12 @@ function AnyMovableCharsInOrBetweenThisSector(sSectorX: INT16, sSectorY: INT16, 
     }
 
     // POWs, dead guys, guys in transit can't move
-    if ((pSoldier.value.bAssignment == IN_TRANSIT) || (pSoldier.value.bAssignment == ASSIGNMENT_POW) || (pSoldier.value.bAssignment == ASSIGNMENT_DEAD) || (pSoldier.value.bLife == 0)) {
+    if ((pSoldier.value.bAssignment == Enum117.IN_TRANSIT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD) || (pSoldier.value.bLife == 0)) {
       continue;
     }
 
     // don't count mercs aboard Skyrider
-    if ((pSoldier.value.bAssignment == VEHICLE) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
+    if ((pSoldier.value.bAssignment == Enum117.VEHICLE) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       continue;
     }
 
@@ -9093,7 +9093,7 @@ function RequestGiveSkyriderNewDestination(): BOOLEAN {
   if (CanHelicopterFly() == TRUE) {
     // if not warned already, and chopper empty, but mercs are in this sector
     if (!gfSkyriderEmptyHelpGiven && (GetNumberOfPassengersInHelicopter() == 0) && (PlayerMercsInHelicopterSector() > 0)) {
-      DoMapMessageBox(MSG_BOX_BASIC_STYLE, pSkyriderText[6], MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
+      DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pSkyriderText[6], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
       gfSkyriderEmptyHelpGiven = TRUE;
       return FALSE;
     }
@@ -9111,7 +9111,7 @@ function RequestGiveSkyriderNewDestination(): BOOLEAN {
     gpHelicopterPreviousMercPath = CopyPaths(pVehicleList[iHelicopterVehicleId].pMercPath, gpHelicopterPreviousMercPath);
 
     // affects Skyrider's dialogue
-    SetFactTrue(FACT_SKYRIDER_USED_IN_MAPSCREEN);
+    SetFactTrue(Enum170.FACT_SKYRIDER_USED_IN_MAPSCREEN);
 
     return TRUE;
   } else // not allowed to reroute the chopper right now
@@ -9125,7 +9125,7 @@ function RequestGiveSkyriderNewDestination(): BOOLEAN {
 
 function ExplainWhySkyriderCantFly(): void {
   // do we owe him money?
-  if (gMercProfiles[SKYRIDER].iBalance < 0) {
+  if (gMercProfiles[Enum268.SKYRIDER].iBalance < 0) {
     // overdue cash
     SkyRiderTalk(OWED_MONEY_TO_SKYRIDER);
     return;
@@ -9146,7 +9146,7 @@ function ExplainWhySkyriderCantFly(): void {
   }
 
   // Drassen too disloyal to wanna help player?
-  if (CheckFact(FACT_LOYALTY_LOW, SKYRIDER)) {
+  if (CheckFact(Enum170.FACT_LOYALTY_LOW, Enum268.SKYRIDER)) {
     SkyRiderTalk(DOESNT_WANT_TO_FLY);
     return;
   }
@@ -9173,7 +9173,7 @@ function HandleNewDestConfirmation(sMapX: INT16, sMapY: INT16): void {
   // if moving the chopper itself, or moving a character aboard the chopper
   if (fPlotForHelicopter) {
     // if there are no enemies in destination sector, or we don't know
-    if ((NumEnemiesInSector(sMapX, sMapY) == 0) || (WhatPlayerKnowsAboutEnemiesInSector(sMapX, sMapY) == KNOWS_NOTHING)) {
+    if ((NumEnemiesInSector(sMapX, sMapY) == 0) || (WhatPlayerKnowsAboutEnemiesInSector(sMapX, sMapY) == Enum159.KNOWS_NOTHING)) {
       // no problem
 
       // get current player progress
@@ -9239,7 +9239,7 @@ function RandomAwakeSelectedMercConfirmsStrategicMove(): void {
     // select that merc so that when he speaks we're showing his portrait and not someone else
     ChangeSelectedInfoChar(ubSelectedMercIndex[ubChosenMerc], FALSE);
 
-    DoMercBattleSound(MercPtrs[ubSelectedMercID[ubChosenMerc]], (Random(2) ? BATTLE_SOUND_OK1 : BATTLE_SOUND_OK2));
+    DoMercBattleSound(MercPtrs[ubSelectedMercID[ubChosenMerc]], (Random(2) ? Enum259.BATTLE_SOUND_OK1 : Enum259.BATTLE_SOUND_OK2));
     // TacticalCharacterDialogue( MercPtrs[ ubSelectedMercID[ ubChosenMerc ] ], ubQuoteNum );
   }
 }
@@ -9269,9 +9269,9 @@ function HandleMilitiaRedistributionClick(): void {
   // if on the surface
   if (iCurrentMapSectorZ == 0) {
     bTownId = GetTownIdForSector(sSelMapX, sSelMapY);
-    fTownStillHidden = ((bTownId == TIXA) && !fFoundTixa) || ((bTownId == ORTA) && !fFoundOrta);
+    fTownStillHidden = ((bTownId == Enum135.TIXA) && !fFoundTixa) || ((bTownId == Enum135.ORTA) && !fFoundOrta);
 
-    if ((bTownId != BLANK_SECTOR) && !fTownStillHidden) {
+    if ((bTownId != Enum135.BLANK_SECTOR) && !fTownStillHidden) {
       if (MilitiaTrainingAllowedInSector(sSelMapX, sSelMapY, iCurrentMapSectorZ)) {
         if (fShowTownInfo == TRUE) {
           fShowTownInfo = FALSE;
@@ -9362,7 +9362,7 @@ function WakeUpAnySleepingSelectedMercsOnFootOrDriving(): void {
       // if asleep
       if (pSoldier.value.fMercAsleep) {
         // and on foot or driving
-        if ((pSoldier.value.bAssignment < ON_DUTY) || ((pSoldier.value.bAssignment == VEHICLE) && SoldierMustDriveVehicle(pSoldier, pSoldier.value.iVehicleId, FALSE))) {
+        if ((pSoldier.value.bAssignment < Enum117.ON_DUTY) || ((pSoldier.value.bAssignment == Enum117.VEHICLE) && SoldierMustDriveVehicle(pSoldier, pSoldier.value.iVehicleId, FALSE))) {
           // we should be guaranteed that he CAN wake up to get this far, so report errors, but don't force it
           fSuccess = SetMercAwake(pSoldier, TRUE, FALSE);
           Assert(fSuccess);
@@ -9403,7 +9403,7 @@ function HandlePostAutoresolveMessages(): void {
 }
 
 function GetMapscreenMercAssignmentString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */): void {
-  if (pSoldier.value.bAssignment != VEHICLE) {
+  if (pSoldier.value.bAssignment != Enum117.VEHICLE) {
     wcscpy(sString, pAssignmentStrings[pSoldier.value.bAssignment]);
   } else {
     wcscpy(sString, pShortVehicleStrings[pVehicleList[pSoldier.value.iVehicleId].ubVehicleType]);
@@ -9413,11 +9413,11 @@ function GetMapscreenMercAssignmentString(pSoldier: Pointer<SOLDIERTYPE>, sStrin
 function GetMapscreenMercLocationString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */): void {
   let pTempString: wchar_t[] /* [32] */;
 
-  if (pSoldier.value.bAssignment == IN_TRANSIT) {
+  if (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) {
     // show blank
     wcscpy(sString, "--");
   } else {
-    if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+    if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
       // POW - location unknown
       swprintf(sString, "%s", pPOWStrings[1]);
     } else {
@@ -9443,11 +9443,11 @@ function GetMapscreenMercDestinationString(pSoldier: Pointer<SOLDIERTYPE>, sStri
   wcscpy(sString, "");
 
   // if dead or POW - has no destination (no longer part of a group, for that matter)
-  if ((pSoldier.value.bAssignment == ASSIGNMENT_DEAD) || (pSoldier.value.bAssignment == ASSIGNMENT_POW) || (pSoldier.value.bLife == 0)) {
+  if ((pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) || (pSoldier.value.bLife == 0)) {
     return;
   }
 
-  if (pSoldier.value.bAssignment == IN_TRANSIT) {
+  if (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) {
     // show the sector he'll be arriving in
     iSectorX = gsMercArriveSectorX;
     iSectorY = gsMercArriveSectorY;
@@ -9482,13 +9482,13 @@ function GetMapscreenMercDepartureString(pSoldier: Pointer<SOLDIERTYPE>, sString
   let iDaysRemaining: INT32 = 0;
   let iHoursRemaining: INT32 = 0;
 
-  if ((pSoldier.value.ubWhatKindOfMercAmI != MERC_TYPE__AIM_MERC && pSoldier.value.ubProfile != SLAY) || pSoldier.value.bLife == 0) {
-    swprintf(sString, "%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+  if ((pSoldier.value.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__AIM_MERC && pSoldier.value.ubProfile != Enum268.SLAY) || pSoldier.value.bLife == 0) {
+    swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
   } else {
     iMinsRemaining = pSoldier.value.iEndofContractTime - GetWorldTotalMin();
 
     // if the merc is in transit
-    if (pSoldier.value.bAssignment == IN_TRANSIT) {
+    if (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) {
       // and if the time left on the cotract is greater then the contract time
       if (iMinsRemaining > (pSoldier.value.iTotalContractLength * NUM_MIN_IN_DAY)) {
         iMinsRemaining = (pSoldier.value.iTotalContractLength * NUM_MIN_IN_DAY);
@@ -9501,7 +9501,7 @@ function GetMapscreenMercDepartureString(pSoldier: Pointer<SOLDIERTYPE>, sString
 
       pubFontColor.value = FONT_LTGREEN;
 
-      swprintf(sString, "%d%s", iDaysRemaining, gpStrategicString[STR_PB_DAYS_ABBREVIATION]);
+      swprintf(sString, "%d%s", iDaysRemaining, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
     } else // less than 3 days
     {
       if (iMinsRemaining > 5) {
@@ -9517,7 +9517,7 @@ function GetMapscreenMercDepartureString(pSoldier: Pointer<SOLDIERTYPE>, sString
         pubFontColor.value = FONT_RED;
       }
 
-      swprintf(sString, "%d%s", iHoursRemaining, gpStrategicString[STR_PB_HOURS_ABBREVIATION]);
+      swprintf(sString, "%d%s", iHoursRemaining, gpStrategicString[Enum365.STR_PB_HOURS_ABBREVIATION]);
     }
   }
 }
@@ -9601,10 +9601,10 @@ function RestorePreviousPaths(): void {
         if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
           ppMovePath = addressof(pVehicleList[pSoldier.value.bVehicleID].pMercPath);
           ubGroupId = pVehicleList[pSoldier.value.bVehicleID].ubMovementGroup;
-        } else if (pSoldier.value.bAssignment == VEHICLE) {
+        } else if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
           ppMovePath = addressof(pVehicleList[pSoldier.value.iVehicleId].pMercPath);
           ubGroupId = pVehicleList[pSoldier.value.iVehicleId].ubMovementGroup;
-        } else if (pSoldier.value.bAssignment < ON_DUTY) {
+        } else if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
           ppMovePath = addressof(pSoldier.value.pMercPath);
           ubGroupId = pSoldier.value.ubGroupID;
         } else {
@@ -9831,7 +9831,7 @@ function MapscreenMarkButtonsDirty(): void {
     // if the attribute assignment menu is showing
     if (fShowAttributeMenu) {
       // don't redraw the town button, it would wipe out a chunk of the attribute menu
-      UnMarkButtonDirty(giMapBorderButtons[MAP_BORDER_TOWN_BTN]);
+      UnMarkButtonDirty(giMapBorderButtons[Enum141.MAP_BORDER_TOWN_BTN]);
     }
   }
 }

@@ -46,7 +46,7 @@ function BloodcatsPresent(): BOOLEAN {
   for (iLoop = gTacticalStatus.Team[CREATURE_TEAM].bFirstID; iLoop <= gTacticalStatus.Team[CREATURE_TEAM].bLastID; iLoop++) {
     pSoldier = MercPtrs[iLoop];
 
-    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife > 0 && pSoldier.value.ubBodyType == BLOODCAT) {
+    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife > 0 && pSoldier.value.ubBodyType == Enum194.BLOODCAT) {
       return TRUE;
     }
   }
@@ -74,7 +74,7 @@ function StartPlayerTeamTurn(fDoBattleSnd: BOOLEAN, fEnteringCombatMode: BOOLEAN
   if (gTacticalStatus.uiFlags & TURNBASED) {
     // Are we in combat already?
     if (gTacticalStatus.uiFlags & INCOMBAT) {
-      PlayJA2Sample(ENDTURN_1, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
+      PlayJA2Sample(Enum330.ENDTURN_1, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
     }
 
     // Remove deadlock message
@@ -107,7 +107,7 @@ function StartPlayerTeamTurn(fDoBattleSnd: BOOLEAN, fEnteringCombatMode: BOOLEAN
 
           if (fDoBattleSnd) {
             // Say ATTENTION SOUND...
-            DoMercBattleSound(MercPtrs[gusSelectedSoldier], BATTLE_SOUND_ATTN1);
+            DoMercBattleSound(MercPtrs[gusSelectedSoldier], Enum259.BATTLE_SOUND_ATTN1);
           }
 
           if (gsInterfaceLevel == 1) {
@@ -131,7 +131,7 @@ function StartPlayerTeamTurn(fDoBattleSnd: BOOLEAN, fEnteringCombatMode: BOOLEAN
     }
   }
   // Signal UI done enemy's turn
-  guiPendingOverrideEvent = LU_ENDUILOCK;
+  guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
 
   // ATE: Reset killed on attack variable.. this is because sometimes timing is such
   /// that a baddie can die and still maintain it's attacker ID
@@ -148,7 +148,7 @@ function FreezeInterfaceForEnemyTurn(): void {
   ErasePath(TRUE);
 
   // Setup locked UI
-  guiPendingOverrideEvent = LU_BEGINUILOCK;
+  guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
 
   // Remove any UI messages!
   if (giUIMessageOverlay != -1) {
@@ -302,7 +302,7 @@ function BeginTeamTurn(ubTeam: UINT8): void {
         }
       }
 
-      if (gTacticalStatus.bBoxingState == LOST_ROUND || gTacticalStatus.bBoxingState == WON_ROUND || gTacticalStatus.bBoxingState == DISQUALIFIED) {
+      if (gTacticalStatus.bBoxingState == Enum247.LOST_ROUND || gTacticalStatus.bBoxingState == Enum247.WON_ROUND || gTacticalStatus.bBoxingState == Enum247.DISQUALIFIED) {
         // we have no business being in here any more!
         return;
       }
@@ -325,9 +325,9 @@ function BeginTeamTurn(ubTeam: UINT8): void {
           // Dirty panel interface!
           fInterfacePanelDirty = DIRTYLEVEL2;
           if (ubTeam == CREATURE_TEAM && BloodcatsPresent()) {
-            AddTopMessage(COMPUTER_TURN_MESSAGE, Message[STR_BLOODCATS_TURN]);
+            AddTopMessage(Enum216.COMPUTER_TURN_MESSAGE, Message[Enum334.STR_BLOODCATS_TURN]);
           } else {
-            AddTopMessage(COMPUTER_TURN_MESSAGE, TeamTurnString[ubTeam]);
+            AddTopMessage(Enum216.COMPUTER_TURN_MESSAGE, TeamTurnString[ubTeam]);
           }
           StartNPCAI(MercPtrs[ubID]);
           return;
@@ -355,7 +355,7 @@ function DisplayHiddenInterrupt(pSoldier: Pointer<SOLDIERTYPE>): void {
     SlideTo(NOWHERE, pSoldier.value.ubID, NOBODY, SETLOCATOR);
   }
 
-  guiPendingOverrideEvent = LU_BEGINUILOCK;
+  guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
 
   // Dirty panel interface!
   fInterfacePanelDirty = DIRTYLEVEL2;
@@ -373,9 +373,9 @@ function DisplayHiddenInterrupt(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   // get rid of any old overlay message
   if (pSoldier.value.bTeam == MILITIA_TEAM) {
-    AddTopMessage(MILITIA_INTERRUPT_MESSAGE, Message[STR_INTERRUPT]);
+    AddTopMessage(Enum216.MILITIA_INTERRUPT_MESSAGE, Message[Enum334.STR_INTERRUPT]);
   } else {
-    AddTopMessage(COMPUTER_INTERRUPT_MESSAGE, Message[STR_INTERRUPT]);
+    AddTopMessage(Enum216.COMPUTER_INTERRUPT_MESSAGE, Message[Enum334.STR_INTERRUPT]);
   }
 
   gfHiddenInterrupt = FALSE;
@@ -407,13 +407,13 @@ function DisplayHiddenTurnbased(pActingSoldier: Pointer<SOLDIERTYPE>): void {
   pActingSoldier.value.fTurnInProgress = TRUE;
   gTacticalStatus.uiTimeSinceMercAIStart = GetJA2Clock();
 
-  if (gTacticalStatus.ubTopMessageType != COMPUTER_TURN_MESSAGE) {
+  if (gTacticalStatus.ubTopMessageType != Enum216.COMPUTER_TURN_MESSAGE) {
     // Dirty panel interface!
     fInterfacePanelDirty = DIRTYLEVEL2;
     if (gTacticalStatus.ubCurrentTeam == CREATURE_TEAM && BloodcatsPresent()) {
-      AddTopMessage(COMPUTER_TURN_MESSAGE, Message[STR_BLOODCATS_TURN]);
+      AddTopMessage(Enum216.COMPUTER_TURN_MESSAGE, Message[Enum334.STR_BLOODCATS_TURN]);
     } else {
-      AddTopMessage(COMPUTER_TURN_MESSAGE, TeamTurnString[gTacticalStatus.ubCurrentTeam]);
+      AddTopMessage(Enum216.COMPUTER_TURN_MESSAGE, TeamTurnString[gTacticalStatus.ubCurrentTeam]);
     }
   }
 
@@ -491,10 +491,10 @@ function StartInterrupt(): void {
       }
     }
 
-    wcscpy(sTemp, Message[STR_INTERRUPT_FOR]);
+    wcscpy(sTemp, Message[Enum334.STR_INTERRUPT_FOR]);
 
     // build string in separate loop here, want to linearly process squads...
-    for (iSquad = 0; iSquad < NUMBER_OF_SQUADS; iSquad++) {
+    for (iSquad = 0; iSquad < Enum275.NUMBER_OF_SQUADS; iSquad++) {
       for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
         pTempSoldier = Squad[iSquad][iCounter];
         if (pTempSoldier && pTempSoldier.value.bActive && pTempSoldier.value.bInSector && !pTempSoldier.value.bMoved) {
@@ -537,13 +537,13 @@ function StartInterrupt(): void {
     gTacticalStatus.ubCurrentTeam = pSoldier.value.bTeam;
 
     // Signal UI done enemy's turn
-    guiPendingOverrideEvent = LU_ENDUILOCK;
+    guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
     HandleTacticalUI();
 
     InitPlayerUIBar(TRUE);
     // AddTopMessage( PLAYER_INTERRUPT_MESSAGE, Message[STR_INTERRUPT] );
 
-    PlayJA2Sample(ENDTURN_1, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
+    PlayJA2Sample(Enum330.ENDTURN_1, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
 
     // report any close call quotes for us here
     for (iCounter = gTacticalStatus.Team[gbPlayerNum].bFirstID; iCounter <= gTacticalStatus.Team[gbPlayerNum].bLastID; iCounter++) {
@@ -551,7 +551,7 @@ function StartInterrupt(): void {
         if (MercPtrs[iCounter].value.fCloseCall) {
           if (MercPtrs[iCounter].value.bNumHitsThisTurn == 0 && !(MercPtrs[iCounter].value.usQuoteSaidExtFlags & SOLDIER_QUOTE_SAID_EXT_CLOSE_CALL) && Random(3) == 0) {
             // say close call quote!
-            TacticalCharacterDialogue(MercPtrs[iCounter], QUOTE_CLOSE_CALL);
+            TacticalCharacterDialogue(MercPtrs[iCounter], Enum202.QUOTE_CLOSE_CALL);
             MercPtrs[iCounter].value.usQuoteSaidExtFlags |= SOLDIER_QUOTE_SAID_EXT_CLOSE_CALL;
           }
           MercPtrs[iCounter].value.fCloseCall = FALSE;
@@ -712,7 +712,7 @@ function EndInterrupt(fMarkInterruptOccurred: BOOLEAN): void {
         gfHiddenInterrupt = FALSE;
 
         // If we can continue a move, do so!
-        if (MercPtrs[gusSelectedSoldier].value.fNoAPToFinishMove && pSoldier.value.ubReasonCantFinishMove != REASON_STOPPED_SIGHT) {
+        if (MercPtrs[gusSelectedSoldier].value.fNoAPToFinishMove && pSoldier.value.ubReasonCantFinishMove != Enum263.REASON_STOPPED_SIGHT) {
           // Continue
           AdjustNoAPToFinishMove(MercPtrs[gusSelectedSoldier], FALSE);
 
@@ -734,14 +734,14 @@ function EndInterrupt(fMarkInterruptOccurred: BOOLEAN): void {
         /// ATE: This used to be ablow so it would get done for
         // both hidden interrupts as well - NOT good because
         // hidden interrupts should leave it locked if it was already...
-        guiPendingOverrideEvent = LU_ENDUILOCK;
+        guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
         HandleTacticalUI();
 
         if (gusSelectedSoldier != NO_SOLDIER) {
           SlideTo(NOWHERE, gusSelectedSoldier, NOBODY, SETLOCATOR);
 
           // Say ATTENTION SOUND...
-          DoMercBattleSound(MercPtrs[gusSelectedSoldier], BATTLE_SOUND_ATTN1);
+          DoMercBattleSound(MercPtrs[gusSelectedSoldier], Enum259.BATTLE_SOUND_ATTN1);
 
           if (gsInterfaceLevel == 1) {
             gTacticalStatus.uiFlags |= SHOW_ALL_ROOFS;
@@ -802,25 +802,25 @@ function EndInterrupt(fMarkInterruptOccurred: BOOLEAN): void {
       if (fFound) {
         // back to the computer!
         if (gTacticalStatus.ubCurrentTeam == CREATURE_TEAM && BloodcatsPresent()) {
-          AddTopMessage(COMPUTER_TURN_MESSAGE, Message[STR_BLOODCATS_TURN]);
+          AddTopMessage(Enum216.COMPUTER_TURN_MESSAGE, Message[Enum334.STR_BLOODCATS_TURN]);
         } else {
-          AddTopMessage(COMPUTER_TURN_MESSAGE, TeamTurnString[gTacticalStatus.ubCurrentTeam]);
+          AddTopMessage(Enum216.COMPUTER_TURN_MESSAGE, TeamTurnString[gTacticalStatus.ubCurrentTeam]);
         }
 
         // Signal UI done enemy's turn
-        guiPendingOverrideEvent = LU_BEGINUILOCK;
+        guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
 
         ClearIntList();
       } else {
         // back to the computer!
         if (gTacticalStatus.ubCurrentTeam == CREATURE_TEAM && BloodcatsPresent()) {
-          AddTopMessage(COMPUTER_TURN_MESSAGE, Message[STR_BLOODCATS_TURN]);
+          AddTopMessage(Enum216.COMPUTER_TURN_MESSAGE, Message[Enum334.STR_BLOODCATS_TURN]);
         } else {
-          AddTopMessage(COMPUTER_TURN_MESSAGE, TeamTurnString[gTacticalStatus.ubCurrentTeam]);
+          AddTopMessage(Enum216.COMPUTER_TURN_MESSAGE, TeamTurnString[gTacticalStatus.ubCurrentTeam]);
         }
 
         // Signal UI done enemy's turn
-        guiPendingOverrideEvent = LU_BEGINUILOCK;
+        guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
 
         // must clear int list before ending turn
         ClearIntList();
@@ -903,7 +903,7 @@ function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, ubOppone
       // CJC, July 9 1998
       // NO ONE EVER interrupts his own team
       // return( FALSE );
-    } else if (gTacticalStatus.bBoxingState != NOT_BOXING) {
+    } else if (gTacticalStatus.bBoxingState != Enum247.NOT_BOXING) {
       // while anything to do with boxing is going on, skip interrupts!
       return FALSE;
     }
@@ -954,7 +954,7 @@ function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, ubOppone
   }
 
   // don't let mercs on assignment get interrupts
-  if (pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bAssignment >= ON_DUTY) {
+  if (pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bAssignment >= Enum117.ON_DUTY) {
     return FALSE;
   }
 
@@ -1114,10 +1114,10 @@ function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT
 
     // this soldier is moving, so give them a bonus for crawling or swatting at long distances
     if (!gbSeenOpponents[ubOpponentID][pSoldier.value.ubID]) {
-      if (pSoldier.value.usAnimState == SWATTING && ubDistance > (MaxDistanceVisible() / 2)) // more than 1/2 sight distance
+      if (pSoldier.value.usAnimState == Enum193.SWATTING && ubDistance > (MaxDistanceVisible() / 2)) // more than 1/2 sight distance
       {
         bPoints++;
-      } else if (pSoldier.value.usAnimState == CRAWLING && ubDistance > (MaxDistanceVisible() / 4)) // more than 1/4 sight distance
+      } else if (pSoldier.value.usAnimState == Enum193.CRAWLING && ubDistance > (MaxDistanceVisible() / 4)) // more than 1/4 sight distance
       {
         bPoints += ubDistance / STRAIGHT;
       }
@@ -1125,7 +1125,7 @@ function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT
   }
 
   // whether active or not, penalize people who are running
-  if (pSoldier.value.usAnimState == RUNNING && !gbSeenOpponents[pSoldier.value.ubID][ubOpponentID]) {
+  if (pSoldier.value.usAnimState == Enum193.RUNNING && !gbSeenOpponents[pSoldier.value.ubID][ubOpponentID]) {
     bPoints -= 2;
   }
 
@@ -1134,11 +1134,11 @@ function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT
     bPoints -= 2;
   }
 
-  if (HAS_SKILL_TRAIT(pSoldier, NIGHTOPS)) {
+  if (HAS_SKILL_TRAIT(pSoldier, Enum269.NIGHTOPS)) {
     bLightLevel = LightTrueLevel(pSoldier.value.sGridNo, pSoldier.value.bLevel);
     if (bLightLevel > NORMAL_LIGHTLEVEL_DAY + 3) {
       // it's dark, give a bonus for interrupts
-      bPoints += 1 * NUM_SKILL_TRAITS(pSoldier, NIGHTOPS);
+      bPoints += 1 * NUM_SKILL_TRAITS(pSoldier, Enum269.NIGHTOPS);
     }
   }
 
@@ -1147,7 +1147,7 @@ function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT
   // CJC note: this will affect friendly AI as well...
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_PC) {
-    if (pSoldier.value.bAssignment >= ON_DUTY) {
+    if (pSoldier.value.bAssignment >= Enum117.ON_DUTY) {
       // make sure don't get interrupts!
       bPoints = -10;
     }
@@ -1580,7 +1580,7 @@ function LoadTeamTurnsFromTheSavedGameFile(hFile: HWFILE): BOOLEAN {
 function NPCFirstDraw(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // if attacking an NPC check to see who draws first!
 
-  if (pTargetSoldier.value.ubProfile != NO_PROFILE && pTargetSoldier.value.ubProfile != SLAY && pTargetSoldier.value.bNeutral && pTargetSoldier.value.bOppList[pSoldier.value.ubID] == SEEN_CURRENTLY && (FindAIUsableObjClass(pTargetSoldier, IC_WEAPON) != NO_SLOT)) {
+  if (pTargetSoldier.value.ubProfile != NO_PROFILE && pTargetSoldier.value.ubProfile != Enum268.SLAY && pTargetSoldier.value.bNeutral && pTargetSoldier.value.bOppList[pSoldier.value.ubID] == SEEN_CURRENTLY && (FindAIUsableObjClass(pTargetSoldier, IC_WEAPON) != NO_SLOT)) {
     let ubLargerHalf: UINT8;
     let ubSmallerHalf: UINT8;
     let ubTargetLargerHalf: UINT8;
@@ -1594,7 +1594,7 @@ function NPCFirstDraw(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SO
 
     ubTargetSmallerHalf = EffectiveExpLevel(pTargetSoldier) / 2;
     ubTargetLargerHalf = EffectiveExpLevel(pTargetSoldier) - ubTargetSmallerHalf;
-    if (gMercProfiles[pTargetSoldier.value.ubProfile].bApproached & gbFirstApproachFlags[APPROACH_THREATEN - 1]) {
+    if (gMercProfiles[pTargetSoldier.value.ubProfile].bApproached & gbFirstApproachFlags[Enum296.APPROACH_THREATEN - 1]) {
       // gains 1 to 2 points
       ubTargetSmallerHalf += 1;
       ubTargetLargerHalf += 1;

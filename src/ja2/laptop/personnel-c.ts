@@ -151,7 +151,7 @@ const enum Enum109 {
   PRSNL_EMPLOYMENT,
   PRSNL_INV,
 }
-let gubPersonnelInfoState: UINT8 = PRSNL_STATS;
+let gubPersonnelInfoState: UINT8 = Enum109.PRSNL_STATS;
 
 // enums for the pPersonnelScreenStrings[]
 const enum Enum110 {
@@ -372,7 +372,7 @@ function ExitPersonnel(): void {
   CreateDestroyATMButton();
 
   //	fShowInventory = FALSE;
-  gubPersonnelInfoState = PRSNL_STATS;
+  gubPersonnelInfoState = Enum109.PRSNL_STATS;
 
   CreateDestroyPersonnelInventoryScrollButtons();
 
@@ -608,9 +608,9 @@ function RenderPersonnelStats(iId: INT32, iSlot: INT32): void {
   // for(iCounter=0; iCounter <PERS_COUNT; iCounter++)
   // mprintf((INT16)(pPersonnelScreenPoints[iCounter].x+(iSlot*IMAGE_BOX_WIDTH)),pPersonnelScreenPoints[iCounter].y,pPersonnelScreenStrings[iCounter]);
 
-  if (gubPersonnelInfoState == PERSONNEL_STAT_BTN) {
+  if (gubPersonnelInfoState == Enum108.PERSONNEL_STAT_BTN) {
     DisplayCharStats(iId, iSlot);
-  } else if (gubPersonnelInfoState == PERSONNEL_EMPLOYMENT_BTN) {
+  } else if (gubPersonnelInfoState == Enum108.PERSONNEL_EMPLOYMENT_BTN) {
     DisplayEmploymentinformation(iId, iSlot);
   }
 }
@@ -832,8 +832,8 @@ function CreatePersonnelButtons(): void {
                                                                           BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)RightFFButtonCallBack);
 */
   // set up cursors
-  SetButtonCursor(giPersonnelButton[0], CURSOR_LAPTOP_SCREEN);
-  SetButtonCursor(giPersonnelButton[1], CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(giPersonnelButton[0], Enum317.CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(giPersonnelButton[1], Enum317.CURSOR_LAPTOP_SCREEN);
   // SetButtonCursor(giPersonnelButton[2], CURSOR_LAPTOP_SCREEN);
   // SetButtonCursor(giPersonnelButton[3], CURSOR_LAPTOP_SCREEN);
 
@@ -973,13 +973,13 @@ function DisplayCharName(iId: INT32, iSlot: INT32): void {
     return;
   }
 
-  if (Menptr[iId].bAssignment == ASSIGNMENT_POW) {
-  } else if (Menptr[iId].bAssignment == IN_TRANSIT) {
+  if (Menptr[iId].bAssignment == Enum117.ASSIGNMENT_POW) {
+  } else if (Menptr[iId].bAssignment == Enum117.IN_TRANSIT) {
   } else {
     // name of town, if any
     bTownId = GetTownIdForSector(Menptr[iId].sSectorX, Menptr[iId].sSectorY);
 
-    if (bTownId != BLANK_SECTOR) {
+    if (bTownId != Enum135.BLANK_SECTOR) {
       swprintf(sTownName, "%s", pTownNames[bTownId]);
     }
   }
@@ -1078,7 +1078,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
     switch (iCounter) {
       case 0:
         // health
-        if (Menptr[iId].bAssignment != ASSIGNMENT_POW) {
+        if (Menptr[iId].bAssignment != Enum117.ASSIGNMENT_POW) {
           if (gMercProfiles[Menptr[iId].ubProfile].bLifeDelta > 0) {
             swprintf(sString, "( %+d )", gMercProfiles[Menptr[iId].ubProfile].bLifeDelta);
             FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
@@ -1093,7 +1093,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, pPOWStrings[1]);
         }
 
-        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_HEALTH]);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_HEALTH]);
         FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
@@ -1110,7 +1110,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, "%d", Menptr[iId].bAgility);
           //}
         } else {
-          swprintf(sString, "%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+          swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
         mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
@@ -1130,7 +1130,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, "%d", Menptr[iId].bDexterity);
           //}
         } else {
-          swprintf(sString, "%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+          swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
         mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
@@ -1150,7 +1150,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, "%d", Menptr[iId].bStrength);
           //}
         } else {
-          swprintf(sString, "%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+          swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
         mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
@@ -1170,7 +1170,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, "%d", Menptr[iId].bLeadership);
           //}
         } else {
-          swprintf(sString, "%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+          swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
         mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
@@ -1190,7 +1190,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, "%d", Menptr[iId].bWisdom);
           //}
         } else {
-          swprintf(sString, "%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+          swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
         mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
@@ -1210,7 +1210,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, "%d", Menptr[iId].bExpLevel);
           //}
         } else {
-          swprintf(sString, "%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+          swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
         mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
@@ -1230,7 +1230,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, "%d", Menptr[iId].bMarksmanship);
           //}
         } else {
-          swprintf(sString, "%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+          swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
         mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
@@ -1250,7 +1250,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, "%d", Menptr[iId].bMechanical);
           //}
         } else {
-          swprintf(sString, "%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+          swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
         mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
@@ -1270,7 +1270,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, "%d", Menptr[iId].bExplosive);
           //}
         } else {
-          swprintf(sString, "%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+          swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
         mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
@@ -1290,7 +1290,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, "%d", Menptr[iId].bMedical);
           //}
         } else {
-          swprintf(sString, "%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+          swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
         mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
@@ -1300,21 +1300,21 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
 
       case 14:
         // kills
-        mprintf((pPersonnelScreenPoints[21].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[21].y, pPersonnelScreenStrings[PRSNL_TXT_KILLS]);
+        mprintf((pPersonnelScreenPoints[21].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[21].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_KILLS]);
         swprintf(sString, "%d", gMercProfiles[Menptr[iId].ubProfile].usKills);
         FindFontRightCoordinates((pPersonnelScreenPoints[21].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
         mprintf(sX, pPersonnelScreenPoints[21].y, sString);
         break;
       case 15:
         // assists
-        mprintf((pPersonnelScreenPoints[22].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[22].y, pPersonnelScreenStrings[PRSNL_TXT_ASSISTS]);
+        mprintf((pPersonnelScreenPoints[22].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[22].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_ASSISTS]);
         swprintf(sString, "%d", gMercProfiles[Menptr[iId].ubProfile].usAssists);
         FindFontRightCoordinates((pPersonnelScreenPoints[22].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
         mprintf(sX, pPersonnelScreenPoints[22].y, sString);
         break;
       case 16:
         // shots/hits
-        mprintf((pPersonnelScreenPoints[23].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[23].y, pPersonnelScreenStrings[PRSNL_TXT_HIT_PERCENTAGE]);
+        mprintf((pPersonnelScreenPoints[23].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[23].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_HIT_PERCENTAGE]);
         uiHits = gMercProfiles[Menptr[iId].ubProfile].usShotsHit;
         uiHits *= 100;
 
@@ -1333,14 +1333,14 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
         break;
       case 17:
         // battles
-        mprintf((pPersonnelScreenPoints[24].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[24].y, pPersonnelScreenStrings[PRSNL_TXT_BATTLES]);
+        mprintf((pPersonnelScreenPoints[24].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[24].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_BATTLES]);
         swprintf(sString, "%d", gMercProfiles[Menptr[iId].ubProfile].usBattlesFought);
         FindFontRightCoordinates((pPersonnelScreenPoints[24].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
         mprintf(sX, pPersonnelScreenPoints[24].y, sString);
         break;
       case 18:
         // wounds
-        mprintf((pPersonnelScreenPoints[25].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[25].y, pPersonnelScreenStrings[PRSNL_TXT_TIMES_WOUNDED]);
+        mprintf((pPersonnelScreenPoints[25].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[25].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_TIMES_WOUNDED]);
         swprintf(sString, "%d", gMercProfiles[Menptr[iId].ubProfile].usTimesWounded);
         FindFontRightCoordinates((pPersonnelScreenPoints[25].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
         mprintf(sX, pPersonnelScreenPoints[25].y, sString);
@@ -1353,13 +1353,13 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
         let bScreenLocIndex: INT8 = 19; // if you change the '19', change it below in the if statement
 
         // Display the 'Skills' text
-        mprintf((pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[bScreenLocIndex].y, pPersonnelScreenStrings[PRSNL_TXT_SKILLS]);
+        mprintf((pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[bScreenLocIndex].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_SKILLS]);
 
         // KM: April 16, 1999
         // Added support for the German version, which has potential string overrun problems.  For example, the text "Skills:" can
         // overlap "NightOps (Expert)" because the German strings are much longer.  In these cases, I ensure that the right
         // justification of the traits don't overlap.  If it would, I move it over to the right.
-        iWidth = StringPixLength(pPersonnelScreenStrings[PRSNL_TXT_SKILLS], PERS_FONT);
+        iWidth = StringPixLength(pPersonnelScreenStrings[Enum110.PRSNL_TXT_SKILLS], PERS_FONT);
         iMinimumX = iWidth + pPersonnelScreenPoints[bScreenLocIndex].x + iSlot * TEXT_BOX_WIDTH + 2;
 
         if (!fAmIaRobot) {
@@ -1367,8 +1367,8 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           let bSkill2: INT8 = gMercProfiles[Menptr[iId].ubProfile].bSkillTrait2;
 
           // if the 2 skills are the same, add the '(expert)' at the end
-          if (bSkill1 == bSkill2 && bSkill1 != NO_SKILLTRAIT) {
-            swprintf(sString, "%s %s", gzMercSkillText[bSkill1], gzMercSkillText[NUM_SKILLTRAITS]);
+          if (bSkill1 == bSkill2 && bSkill1 != Enum269.NO_SKILLTRAIT) {
+            swprintf(sString, "%s %s", gzMercSkillText[bSkill1], gzMercSkillText[Enum269.NUM_SKILLTRAITS]);
 
             FindFontRightCoordinates((pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
 
@@ -1382,7 +1382,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
             mprintf(sX, pPersonnelScreenPoints[bScreenLocIndex].y, sString);
           } else {
             // Display the first skill
-            if (bSkill1 != NO_SKILLTRAIT) {
+            if (bSkill1 != Enum269.NO_SKILLTRAIT) {
               swprintf(sString, "%s", gzMercSkillText[bSkill1]);
 
               FindFontRightCoordinates((pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
@@ -1397,7 +1397,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
             }
 
             // Display the second skill
-            if (bSkill2 != NO_SKILLTRAIT) {
+            if (bSkill2 != Enum269.NO_SKILLTRAIT) {
               swprintf(sString, "%s", gzMercSkillText[bSkill2]);
 
               FindFontRightCoordinates((pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
@@ -1413,14 +1413,14 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
 
             // if no skill was displayed
             if (bScreenLocIndex == 19) {
-              swprintf(sString, "%s", pPersonnelScreenStrings[PRSNL_TXT_NOSKILLS]);
+              swprintf(sString, "%s", pPersonnelScreenStrings[Enum110.PRSNL_TXT_NOSKILLS]);
 
               FindFontRightCoordinates((pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
               mprintf(sX, pPersonnelScreenPoints[bScreenLocIndex].y, sString);
             }
           }
         } else {
-          swprintf(sString, "%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+          swprintf(sString, "%s", gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
       } break;
         /*
@@ -1632,7 +1632,7 @@ function CreateDestroyMouseRegionsForPersonnelPortraits(): void {
   if ((fCreated == FALSE) && (fCreatePersonnelPortraitMouseRegions == TRUE)) {
     // create regions
     for (sCounter = 0; sCounter < PERSONNEL_PORTRAIT_NUMBER; sCounter++) {
-      MSYS_DefineRegion(addressof(gPortraitMouseRegions[sCounter]), (SMALL_PORTRAIT_START_X + (sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), ((SMALL_PORTRAIT_START_X) + ((sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH) + SMALL_PORTRAIT_WIDTH), (SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORTRAIT_HEIGHT), MSYS_PRIORITY_HIGHEST, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelPortraitCallback);
+      MSYS_DefineRegion(addressof(gPortraitMouseRegions[sCounter]), (SMALL_PORTRAIT_START_X + (sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), ((SMALL_PORTRAIT_START_X) + ((sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH) + SMALL_PORTRAIT_WIDTH), (SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORTRAIT_HEIGHT), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelPortraitCallback);
       MSYS_SetRegionUserData(addressof(gPortraitMouseRegions[sCounter]), 0, sCounter);
       MSYS_AddRegion(addressof(gPortraitMouseRegions[sCounter]));
     }
@@ -1705,7 +1705,7 @@ function DisplayPicturesOfCurrentTeam(): BOOLEAN {
 
       if (Menptr[iId + iCnt].bLife <= 0) {
         // if the merc is dead, display it
-        DrawTextToScreen(AimPopUpText[AIM_MEMBER_DEAD], (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORT_HEIGHT / 2), SMALL_PORTRAIT_WIDTH_NO_BORDERS, FONT10ARIAL, 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DrawTextToScreen(AimPopUpText[Enum357.AIM_MEMBER_DEAD], (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORT_HEIGHT / 2), SMALL_PORTRAIT_WIDTH_NO_BORDERS, FONT10ARIAL, 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
       }
 
       DeleteVideoObjectFromIndex(guiFACE);
@@ -1746,8 +1746,8 @@ function PersonnelPortraitCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
     }
 
     // if the selected merc is valid, and they are a POW, change to the inventory display
-    if (iCurrentPersonSelectedId != -1 && Menptr[GetIdOfThisSlot(iCurrentPersonSelectedId)].bAssignment == ASSIGNMENT_POW && gubPersonnelInfoState == PERSONNEL_INV_BTN) {
-      gubPersonnelInfoState = PERSONNEL_STAT_BTN;
+    if (iCurrentPersonSelectedId != -1 && Menptr[GetIdOfThisSlot(iCurrentPersonSelectedId)].bAssignment == Enum117.ASSIGNMENT_POW && gubPersonnelInfoState == Enum108.PERSONNEL_INV_BTN) {
+      gubPersonnelInfoState = Enum108.PERSONNEL_STAT_BTN;
     }
 
     if (iOldPortraitId != iPortraitId) {
@@ -1767,10 +1767,10 @@ function PersonnelPortraitCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
       // if the user is rigt clicking on the same face
       if (iCurrentPersonSelectedId == iPortraitId) {
         // increment the info page when the user right clicks
-        if (gubPersonnelInfoState < PERSONNEL_NUM_BTN - 1)
+        if (gubPersonnelInfoState < Enum108.PERSONNEL_NUM_BTN - 1)
           gubPersonnelInfoState++;
         else
-          gubPersonnelInfoState = PERSONNEL_STAT_BTN;
+          gubPersonnelInfoState = Enum108.PERSONNEL_STAT_BTN;
       }
 
       iCurrentPersonSelectedId = iPortraitId;
@@ -1780,8 +1780,8 @@ function PersonnelPortraitCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
       guiSliderPosition = 0;
 
       // if the selected merc is valid, and they are a POW, change to the inventory display
-      if (iCurrentPersonSelectedId != -1 && Menptr[GetIdOfThisSlot(iCurrentPersonSelectedId)].bAssignment == ASSIGNMENT_POW && gubPersonnelInfoState == PERSONNEL_INV_BTN) {
-        gubPersonnelInfoState = PERSONNEL_STAT_BTN;
+      if (iCurrentPersonSelectedId != -1 && Menptr[GetIdOfThisSlot(iCurrentPersonSelectedId)].bAssignment == Enum117.ASSIGNMENT_POW && gubPersonnelInfoState == Enum108.PERSONNEL_INV_BTN) {
+        gubPersonnelInfoState = Enum108.PERSONNEL_STAT_BTN;
       }
     }
   }
@@ -1801,7 +1801,7 @@ function DisplayFaceOfDisplayedMerc(): void {
       DisplayCharName(GetIdOfThisSlot(iCurrentPersonSelectedId), 0);
 
       //			if( fShowInventory == TRUE )
-      if (gubPersonnelInfoState == PRSNL_INV) {
+      if (gubPersonnelInfoState == Enum109.PRSNL_INV) {
         return;
       }
 
@@ -1811,7 +1811,7 @@ function DisplayFaceOfDisplayedMerc(): void {
       DisplayDepartedCharName(GetIdOfPastMercInSlot(iCurrentPersonSelectedId), 0, GetTheStateOfDepartedMerc(GetIdOfPastMercInSlot(iCurrentPersonSelectedId)));
 
       //			if( fShowInventory == TRUE )
-      if (gubPersonnelInfoState == PRSNL_INV) {
+      if (gubPersonnelInfoState == Enum109.PRSNL_INV) {
         return;
       }
 
@@ -1825,7 +1825,7 @@ function DisplayFaceOfDisplayedMerc(): void {
 function DisplayInventoryForSelectedChar(): void {
   // display the inventory for this merc
   //	if( fShowInventory == FALSE )
-  if (gubPersonnelInfoState != PRSNL_INV) {
+  if (gubPersonnelInfoState != Enum109.PRSNL_INV) {
     return;
   }
 
@@ -1878,12 +1878,12 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
     return;
   }
 
-  for (ubCounter = 0; ubCounter < NUM_INV_SLOTS; ubCounter++) {
+  for (ubCounter = 0; ubCounter < Enum261.NUM_INV_SLOTS; ubCounter++) {
     PosX = 397 + 3;
     PosY = 200 + 8 + (ubItemCount * (29));
 
     // if the character is a robot, only display the inv for the hand pos
-    if (pSoldier.value.ubProfile == ROBOT && ubCounter != HANDPOS) {
+    if (pSoldier.value.ubProfile == Enum268.ROBOT && ubCounter != Enum261.HANDPOS) {
       continue;
     }
 
@@ -1975,7 +1975,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
     }
 
     if (ubItemCount == NUMBER_OF_INVENTORY_PERSONNEL) {
-      ubCounter = NUM_INV_SLOTS;
+      ubCounter = Enum261.NUM_INV_SLOTS;
     }
   }
 
@@ -2059,7 +2059,7 @@ function InventoryDownButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 // decide which buttons can and can't be accessed based on what the current item is
 function EnableDisableInventoryScrollButtons(): void {
   //	if( fShowInventory == FALSE )
-  if (gubPersonnelInfoState != PRSNL_INV) {
+  if (gubPersonnelInfoState != Enum109.PRSNL_INV) {
     return;
   }
 
@@ -2095,7 +2095,7 @@ function GetNumberOfInventoryItemsOnCurrentMerc(): INT32 {
 
   pSoldier = addressof(Menptr[iId]);
 
-  for (ubCounter = 0; ubCounter < NUM_INV_SLOTS; ubCounter++) {
+  for (ubCounter = 0; ubCounter < Enum261.NUM_INV_SLOTS; ubCounter++) {
     if ((pSoldier.value.inv[ubCounter].ubNumberOfObjects) && (pSoldier.value.inv[ubCounter].usItem)) {
       ubCount++;
     }
@@ -2108,7 +2108,7 @@ function CreateDestroyPersonnelInventoryScrollButtons(): void {
   /* static */ let fCreated: BOOLEAN = FALSE;
 
   //	if( ( fShowInventory == TRUE ) && ( fCreated == FALSE ) )
-  if ((gubPersonnelInfoState == PRSNL_INV) && (fCreated == FALSE)) {
+  if ((gubPersonnelInfoState == Enum109.PRSNL_INV) && (fCreated == FALSE)) {
     // create buttons
     giPersonnelInventoryButtonsImages[0] = LoadButtonImage("LAPTOP\\personnel_inventory.sti", -1, 1, -1, 2, -1);
     giPersonnelInventoryButtons[0] = QuickCreateButton(giPersonnelInventoryButtonsImages[0], 176 + 397, 2 + 200, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, InventoryUpButtonCallback);
@@ -2117,15 +2117,15 @@ function CreateDestroyPersonnelInventoryScrollButtons(): void {
     giPersonnelInventoryButtons[1] = QuickCreateButton(giPersonnelInventoryButtonsImages[1], 397 + 176, 200 + 223, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, InventoryDownButtonCallback);
 
     // set up cursors for these buttons
-    SetButtonCursor(giPersonnelInventoryButtons[0], CURSOR_LAPTOP_SCREEN);
-    SetButtonCursor(giPersonnelInventoryButtons[1], CURSOR_LAPTOP_SCREEN);
+    SetButtonCursor(giPersonnelInventoryButtons[0], Enum317.CURSOR_LAPTOP_SCREEN);
+    SetButtonCursor(giPersonnelInventoryButtons[1], Enum317.CURSOR_LAPTOP_SCREEN);
 
-    MSYS_DefineRegion(addressof(gMouseScrollPersonnelINV), X_OF_PERSONNEL_SCROLL_REGION, Y_OF_PERSONNEL_SCROLL_REGION, X_OF_PERSONNEL_SCROLL_REGION + X_SIZE_OF_PERSONNEL_SCROLL_REGION, Y_OF_PERSONNEL_SCROLL_REGION + Y_SIZE_OF_PERSONNEL_SCROLL_REGION, MSYS_PRIORITY_HIGHEST - 3, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, HandleSliderBarClickCallback);
+    MSYS_DefineRegion(addressof(gMouseScrollPersonnelINV), X_OF_PERSONNEL_SCROLL_REGION, Y_OF_PERSONNEL_SCROLL_REGION, X_OF_PERSONNEL_SCROLL_REGION + X_SIZE_OF_PERSONNEL_SCROLL_REGION, Y_OF_PERSONNEL_SCROLL_REGION + Y_SIZE_OF_PERSONNEL_SCROLL_REGION, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, HandleSliderBarClickCallback);
 
     fCreated = TRUE;
   }
   //	else if( ( fCreated == TRUE ) && ( fShowInventory == FALSE ) )
-  else if ((fCreated == TRUE) && (gubPersonnelInfoState != PERSONNEL_INV_BTN)) {
+  else if ((fCreated == TRUE) && (gubPersonnelInfoState != Enum108.PERSONNEL_INV_BTN)) {
     // destroy buttons
     RemoveButton(giPersonnelInventoryButtons[0]);
     UnloadButtonImage(giPersonnelInventoryButtonsImages[0]);
@@ -2208,18 +2208,18 @@ function GetTotalDailyCostOfCurrentTeam(): INT32 {
 
     if ((pSoldier.value.bActive) && (pSoldier.value.bLife > 0)) {
       // valid soldier, get cost
-      if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
+      if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
         // daily rate
-        if (pSoldier.value.bTypeOfLastContract == CONTRACT_EXTEND_2_WEEK) {
+        if (pSoldier.value.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
           // 2 week contract
           iCostOfTeam += gMercProfiles[pSoldier.value.ubProfile].uiBiWeeklySalary / 14;
-        } else if (pSoldier.value.bTypeOfLastContract == CONTRACT_EXTEND_1_WEEK) {
+        } else if (pSoldier.value.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
           // 1 week contract
           iCostOfTeam += gMercProfiles[pSoldier.value.ubProfile].uiWeeklySalary / 7;
         } else {
           iCostOfTeam += gMercProfiles[pSoldier.value.ubProfile].sSalary;
         }
-      } else if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
+      } else if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
         // MERC Merc
         iCostOfTeam += gMercProfiles[pSoldier.value.ubProfile].sSalary;
       } else {
@@ -2252,18 +2252,18 @@ function GetLowestDailyCostOfCurrentTeam(): INT32 {
 
     if ((pSoldier.value.bActive) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.value.bLife > 0)) {
       // valid soldier, get cost
-      if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
+      if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
         // daily rate
-        if (pSoldier.value.bTypeOfLastContract == CONTRACT_EXTEND_2_WEEK) {
+        if (pSoldier.value.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
           // 2 week contract
           iCost = gMercProfiles[pSoldier.value.ubProfile].uiBiWeeklySalary / 14;
-        } else if (pSoldier.value.bTypeOfLastContract == CONTRACT_EXTEND_1_WEEK) {
+        } else if (pSoldier.value.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
           // 1 week contract
           iCost = gMercProfiles[pSoldier.value.ubProfile].uiWeeklySalary / 7;
         } else {
           iCost = gMercProfiles[pSoldier.value.ubProfile].sSalary;
         }
-      } else if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
+      } else if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
         // MERC Merc
         iCost = gMercProfiles[pSoldier.value.ubProfile].sSalary;
       } else {
@@ -2306,18 +2306,18 @@ function GetHighestDailyCostOfCurrentTeam(): INT32 {
 
     if ((pSoldier.value.bActive) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.value.bLife > 0)) {
       // valid soldier, get cost
-      if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
+      if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
         // daily rate
-        if (pSoldier.value.bTypeOfLastContract == CONTRACT_EXTEND_2_WEEK) {
+        if (pSoldier.value.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
           // 2 week contract
           iCost = gMercProfiles[pSoldier.value.ubProfile].uiBiWeeklySalary / 14;
-        } else if (pSoldier.value.bTypeOfLastContract == CONTRACT_EXTEND_1_WEEK) {
+        } else if (pSoldier.value.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
           // 1 week contract
           iCost = gMercProfiles[pSoldier.value.ubProfile].uiWeeklySalary / 7;
         } else {
           iCost = gMercProfiles[pSoldier.value.ubProfile].sSalary;
         }
-      } else if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
+      } else if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
         // MERC Merc
         iCost = gMercProfiles[pSoldier.value.ubProfile].sSalary;
       } else {
@@ -2446,7 +2446,7 @@ function GetIdOfDepartedMercWithHighestStat(iStat: INT32): INT32 {
 
         // if the soldier is a pow, dont use the health cause it aint known
         pSoldier = FindSoldierByProfileID(cnt, FALSE);
-        if (pSoldier && pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+        if (pSoldier && pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
           continue;
         }
 
@@ -2597,7 +2597,7 @@ function GetIdOfDepartedMercWithLowestStat(iStat: INT32): INT32 {
         // health
 
         pSoldier = FindSoldierByProfileID(cnt, FALSE);
-        if (pSoldier && pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+        if (pSoldier && pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
           continue;
         }
 
@@ -2704,7 +2704,7 @@ function GetIdOfMercWithHighestStat(iStat: INT32): INT32 {
       switch (iStat) {
         case 0:
           // health
-          if (pTeamSoldier.value.bAssignment == ASSIGNMENT_POW) {
+          if (pTeamSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
             continue;
           }
 
@@ -2811,7 +2811,7 @@ function GetIdOfMercWithLowestStat(iStat: INT32): INT32 {
         case 0:
           // health
 
-          if (pTeamSoldier.value.bAssignment == ASSIGNMENT_POW) {
+          if (pTeamSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
             continue;
           }
 
@@ -2920,7 +2920,7 @@ function GetAvgStatOfCurrentTeamStat(iStat: INT32): INT32 {
           // health
 
           // if this is a pow, dont count his stats
-          if (pTeamSoldier.value.bAssignment == ASSIGNMENT_POW) {
+          if (pTeamSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
             bNumberOfPows++;
             continue;
           }
@@ -3668,11 +3668,11 @@ function CreateDestroyCurrentDepartedMouseRegions(): void {
 
   if ((fCreateRegionsForPastCurrentToggle == TRUE) && (fCreated == FALSE)) {
     // not created, create
-    MSYS_DefineRegion(addressof(gTogglePastCurrentTeam[0]), PERS_TOGGLE_CUR_DEPART_X, PERS_TOGGLE_CUR_Y, PERS_TOGGLE_CUR_DEPART_X + PERS_TOGGLE_CUR_DEPART_WIDTH, PERS_TOGGLE_CUR_Y + PERS_TOGGLE_CUR_DEPART_HEIGHT, MSYS_PRIORITY_HIGHEST - 3, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelCurrentTeamCallback);
+    MSYS_DefineRegion(addressof(gTogglePastCurrentTeam[0]), PERS_TOGGLE_CUR_DEPART_X, PERS_TOGGLE_CUR_Y, PERS_TOGGLE_CUR_DEPART_X + PERS_TOGGLE_CUR_DEPART_WIDTH, PERS_TOGGLE_CUR_Y + PERS_TOGGLE_CUR_DEPART_HEIGHT, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelCurrentTeamCallback);
 
     MSYS_AddRegion(addressof(gTogglePastCurrentTeam[0]));
 
-    MSYS_DefineRegion(addressof(gTogglePastCurrentTeam[1]), PERS_TOGGLE_CUR_DEPART_X, PERS_TOGGLE_DEPART_Y, PERS_TOGGLE_CUR_DEPART_X + PERS_TOGGLE_CUR_DEPART_WIDTH, PERS_TOGGLE_DEPART_Y + PERS_TOGGLE_CUR_DEPART_HEIGHT, MSYS_PRIORITY_HIGHEST - 3, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelDepartedTeamCallback);
+    MSYS_DefineRegion(addressof(gTogglePastCurrentTeam[1]), PERS_TOGGLE_CUR_DEPART_X, PERS_TOGGLE_DEPART_Y, PERS_TOGGLE_CUR_DEPART_X + PERS_TOGGLE_CUR_DEPART_WIDTH, PERS_TOGGLE_DEPART_Y + PERS_TOGGLE_CUR_DEPART_HEIGHT, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelDepartedTeamCallback);
 
     MSYS_AddRegion(addressof(gTogglePastCurrentTeam[1]));
 
@@ -3721,7 +3721,7 @@ function PersonnelDepartedTeamCallback(pRegion: Pointer<MOUSE_REGION>, iReason: 
       }
 
       // Switch the panel on the right to be the stat panel
-      gubPersonnelInfoState = PERSONNEL_STAT_BTN;
+      gubPersonnelInfoState = Enum108.PERSONNEL_STAT_BTN;
     }
 
     fReDrawScreenFlag = TRUE;
@@ -3742,8 +3742,8 @@ function CreateDestroyButtonsForDepartedTeamList(): void {
     giPersonnelButton[5] = QuickCreateButton(giPersonnelButtonImage[5], PERS_DEPARTED_UP_X, PERS_DEPARTED_DOWN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, DepartedDownCallBack);
 
     // set up cursors for these buttons
-    SetButtonCursor(giPersonnelButton[4], CURSOR_LAPTOP_SCREEN);
-    SetButtonCursor(giPersonnelButton[5], CURSOR_LAPTOP_SCREEN);
+    SetButtonCursor(giPersonnelButton[4], Enum317.CURSOR_LAPTOP_SCREEN);
+    SetButtonCursor(giPersonnelButton[5], Enum317.CURSOR_LAPTOP_SCREEN);
 
     fCreated = TRUE;
   } else if ((fCurrentTeamMode == TRUE) && (fCreated == TRUE)) {
@@ -4102,21 +4102,21 @@ function DisplayDepartedCharStats(iId: INT32, iSlot: INT32, iState: INT32): void
 
       case 14:
         // kills
-        mprintf((pPersonnelScreenPoints[21].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[21].y, pPersonnelScreenStrings[PRSNL_TXT_KILLS]);
+        mprintf((pPersonnelScreenPoints[21].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[21].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_KILLS]);
         swprintf(sString, "%d", gMercProfiles[iId].usKills);
         FindFontRightCoordinates((pPersonnelScreenPoints[21].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
         mprintf(sX, pPersonnelScreenPoints[21].y, sString);
         break;
       case 15:
         // assists
-        mprintf((pPersonnelScreenPoints[22].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[22].y, pPersonnelScreenStrings[PRSNL_TXT_ASSISTS]);
+        mprintf((pPersonnelScreenPoints[22].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[22].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_ASSISTS]);
         swprintf(sString, "%d", gMercProfiles[iId].usAssists);
         FindFontRightCoordinates((pPersonnelScreenPoints[22].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
         mprintf(sX, pPersonnelScreenPoints[22].y, sString);
         break;
       case 16:
         // shots/hits
-        mprintf((pPersonnelScreenPoints[23].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[23].y, pPersonnelScreenStrings[PRSNL_TXT_HIT_PERCENTAGE]);
+        mprintf((pPersonnelScreenPoints[23].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[23].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_HIT_PERCENTAGE]);
         uiHits = gMercProfiles[iId].usShotsHit;
         uiHits *= 100;
 
@@ -4135,14 +4135,14 @@ function DisplayDepartedCharStats(iId: INT32, iSlot: INT32, iState: INT32): void
         break;
       case 17:
         // battles
-        mprintf((pPersonnelScreenPoints[24].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[24].y, pPersonnelScreenStrings[PRSNL_TXT_BATTLES]);
+        mprintf((pPersonnelScreenPoints[24].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[24].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_BATTLES]);
         swprintf(sString, "%d", gMercProfiles[iId].usBattlesFought);
         FindFontRightCoordinates((pPersonnelScreenPoints[24].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
         mprintf(sX, pPersonnelScreenPoints[24].y, sString);
         break;
       case 18:
         // wounds
-        mprintf((pPersonnelScreenPoints[25].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[25].y, pPersonnelScreenStrings[PRSNL_TXT_TIMES_WOUNDED]);
+        mprintf((pPersonnelScreenPoints[25].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[25].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_TIMES_WOUNDED]);
         swprintf(sString, "%d", gMercProfiles[iId].usTimesWounded);
         FindFontRightCoordinates((pPersonnelScreenPoints[25].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
         mprintf(sX, pPersonnelScreenPoints[25].y, sString);
@@ -4204,33 +4204,33 @@ function DisplayDepartedCharName(iId: INT32, iSlot: INT32, iState: INT32): void 
   // state
   if (gMercProfiles[iId].ubMiscFlags2 & PROFILE_MISC_FLAG2_MARRIED_TO_HICKS) {
     // displaye 'married'
-    swprintf(sString, "%s", pPersonnelDepartedStateStrings[DEPARTED_MARRIED]);
-  } else if (iState == DEPARTED_DEAD) {
-    swprintf(sString, "%s", pPersonnelDepartedStateStrings[DEPARTED_DEAD]);
+    swprintf(sString, "%s", pPersonnelDepartedStateStrings[Enum106.DEPARTED_MARRIED]);
+  } else if (iState == Enum106.DEPARTED_DEAD) {
+    swprintf(sString, "%s", pPersonnelDepartedStateStrings[Enum106.DEPARTED_DEAD]);
   }
 
   // if the merc is an AIM merc
-  else if (iId < BIFF) {
+  else if (iId < Enum268.BIFF) {
     // if dismissed
-    if (iState == DEPARTED_FIRED)
-      swprintf(sString, "%s", pPersonnelDepartedStateStrings[DEPARTED_FIRED]);
+    if (iState == Enum106.DEPARTED_FIRED)
+      swprintf(sString, "%s", pPersonnelDepartedStateStrings[Enum106.DEPARTED_FIRED]);
     else
-      swprintf(sString, "%s", pPersonnelDepartedStateStrings[DEPARTED_CONTRACT_EXPIRED]);
+      swprintf(sString, "%s", pPersonnelDepartedStateStrings[Enum106.DEPARTED_CONTRACT_EXPIRED]);
   }
 
   // else if its a MERC merc
-  else if (iId >= BIFF && iId <= BUBBA) {
-    if (iState == DEPARTED_FIRED)
-      swprintf(sString, "%s", pPersonnelDepartedStateStrings[DEPARTED_FIRED]);
+  else if (iId >= Enum268.BIFF && iId <= Enum268.BUBBA) {
+    if (iState == Enum106.DEPARTED_FIRED)
+      swprintf(sString, "%s", pPersonnelDepartedStateStrings[Enum106.DEPARTED_FIRED]);
     else
-      swprintf(sString, "%s", pPersonnelDepartedStateStrings[DEPARTED_QUIT]);
+      swprintf(sString, "%s", pPersonnelDepartedStateStrings[Enum106.DEPARTED_QUIT]);
   }
   // must be a RPC
   else {
-    if (iState == DEPARTED_FIRED)
-      swprintf(sString, "%s", pPersonnelDepartedStateStrings[DEPARTED_FIRED]);
+    if (iState == Enum106.DEPARTED_FIRED)
+      swprintf(sString, "%s", pPersonnelDepartedStateStrings[Enum106.DEPARTED_FIRED]);
     else
-      swprintf(sString, "%s", pPersonnelDepartedStateStrings[DEPARTED_QUIT]);
+      swprintf(sString, "%s", pPersonnelDepartedStateStrings[Enum106.DEPARTED_QUIT]);
   }
 
   //	swprintf( sString, L"%s", pPersonnelDepartedStateStrings[ iState ] );
@@ -4254,19 +4254,19 @@ function GetTheStateOfDepartedMerc(iId: INT32): INT32 {
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
     if (LaptopSaveInfo.ubDeadCharactersList[iCounter] == iId) {
-      return DEPARTED_DEAD;
+      return Enum106.DEPARTED_DEAD;
     }
   }
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
     if (LaptopSaveInfo.ubLeftCharactersList[iCounter] == iId) {
-      return DEPARTED_FIRED;
+      return Enum106.DEPARTED_FIRED;
     }
   }
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
     if (LaptopSaveInfo.ubOtherCharactersList[iCounter] == iId) {
-      return DEPARTED_OTHER;
+      return Enum106.DEPARTED_OTHER;
     }
   }
 
@@ -4541,34 +4541,34 @@ function CreateDestroyStartATMButton(): void {
     SetButtonCursor(giPersonnelATMStartButton[ 0 ], CURSOR_LAPTOP_SCREEN);
 */
     // the stats button
-    giPersonnelATMStartButtonImage[PERSONNEL_STAT_BTN] = LoadButtonImage("LAPTOP\\AtmButtons.sti", -1, 2, -1, 3, -1);
-    giPersonnelATMStartButton[PERSONNEL_STAT_BTN] = QuickCreateButton(giPersonnelATMStartButtonImage[PERSONNEL_STAT_BTN], 519, 80, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CALLBACK, PersonnelStatStartButtonCallback);
+    giPersonnelATMStartButtonImage[Enum108.PERSONNEL_STAT_BTN] = LoadButtonImage("LAPTOP\\AtmButtons.sti", -1, 2, -1, 3, -1);
+    giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN] = QuickCreateButton(giPersonnelATMStartButtonImage[Enum108.PERSONNEL_STAT_BTN], 519, 80, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CALLBACK, PersonnelStatStartButtonCallback);
 
     // set text and what not
-    SpecifyButtonText(giPersonnelATMStartButton[PERSONNEL_STAT_BTN], gsAtmStartButtonText[1]);
-    SpecifyButtonUpTextColors(giPersonnelATMStartButton[PERSONNEL_STAT_BTN], FONT_BLACK, FONT_BLACK);
-    SpecifyButtonFont(giPersonnelATMStartButton[PERSONNEL_STAT_BTN], PERS_FONT);
-    SetButtonCursor(giPersonnelATMStartButton[PERSONNEL_STAT_BTN], CURSOR_LAPTOP_SCREEN);
+    SpecifyButtonText(giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN], gsAtmStartButtonText[1]);
+    SpecifyButtonUpTextColors(giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN], FONT_BLACK, FONT_BLACK);
+    SpecifyButtonFont(giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN], PERS_FONT);
+    SetButtonCursor(giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN], Enum317.CURSOR_LAPTOP_SCREEN);
 
     // the Employment selection button
-    giPersonnelATMStartButtonImage[PERSONNEL_EMPLOYMENT_BTN] = LoadButtonImage("LAPTOP\\AtmButtons.sti", -1, 2, -1, 3, -1);
-    giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN] = QuickCreateButton(giPersonnelATMStartButtonImage[PERSONNEL_EMPLOYMENT_BTN], 519, 110, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CALLBACK, EmployementInfoButtonCallback);
+    giPersonnelATMStartButtonImage[Enum108.PERSONNEL_EMPLOYMENT_BTN] = LoadButtonImage("LAPTOP\\AtmButtons.sti", -1, 2, -1, 3, -1);
+    giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN] = QuickCreateButton(giPersonnelATMStartButtonImage[Enum108.PERSONNEL_EMPLOYMENT_BTN], 519, 110, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CALLBACK, EmployementInfoButtonCallback);
 
     // set text and what not
-    SpecifyButtonText(giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN], gsAtmStartButtonText[3]);
-    SpecifyButtonUpTextColors(giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN], FONT_BLACK, FONT_BLACK);
-    SpecifyButtonFont(giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN], PERS_FONT);
-    SetButtonCursor(giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN], CURSOR_LAPTOP_SCREEN);
+    SpecifyButtonText(giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN], gsAtmStartButtonText[3]);
+    SpecifyButtonUpTextColors(giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN], FONT_BLACK, FONT_BLACK);
+    SpecifyButtonFont(giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN], PERS_FONT);
+    SetButtonCursor(giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN], Enum317.CURSOR_LAPTOP_SCREEN);
 
     // the inventory selection button
-    giPersonnelATMStartButtonImage[PERSONNEL_INV_BTN] = LoadButtonImage("LAPTOP\\AtmButtons.sti", -1, 2, -1, 3, -1);
-    giPersonnelATMStartButton[PERSONNEL_INV_BTN] = QuickCreateButton(giPersonnelATMStartButtonImage[PERSONNEL_INV_BTN], 519, 140, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CALLBACK, PersonnelINVStartButtonCallback);
+    giPersonnelATMStartButtonImage[Enum108.PERSONNEL_INV_BTN] = LoadButtonImage("LAPTOP\\AtmButtons.sti", -1, 2, -1, 3, -1);
+    giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN] = QuickCreateButton(giPersonnelATMStartButtonImage[Enum108.PERSONNEL_INV_BTN], 519, 140, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CALLBACK, PersonnelINVStartButtonCallback);
 
     // set text and what not
-    SpecifyButtonText(giPersonnelATMStartButton[PERSONNEL_INV_BTN], gsAtmStartButtonText[2]);
-    SpecifyButtonUpTextColors(giPersonnelATMStartButton[PERSONNEL_INV_BTN], FONT_BLACK, FONT_BLACK);
-    SpecifyButtonFont(giPersonnelATMStartButton[PERSONNEL_INV_BTN], PERS_FONT);
-    SetButtonCursor(giPersonnelATMStartButton[PERSONNEL_INV_BTN], CURSOR_LAPTOP_SCREEN);
+    SpecifyButtonText(giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN], gsAtmStartButtonText[2]);
+    SpecifyButtonUpTextColors(giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN], FONT_BLACK, FONT_BLACK);
+    SpecifyButtonFont(giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN], PERS_FONT);
+    SetButtonCursor(giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN], Enum317.CURSOR_LAPTOP_SCREEN);
 
     fCreated = TRUE;
   } else if ((fCreated == TRUE) && (fShowAtmPanelStartButton == FALSE)) {
@@ -4577,12 +4577,12 @@ function CreateDestroyStartATMButton(): void {
     RemoveButton( giPersonnelATMStartButton[ 0 ] );
     UnloadButtonImage( giPersonnelATMStartButtonImage[ 0 ] );
     */
-    RemoveButton(giPersonnelATMStartButton[PERSONNEL_STAT_BTN]);
-    UnloadButtonImage(giPersonnelATMStartButtonImage[PERSONNEL_STAT_BTN]);
-    RemoveButton(giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN]);
-    UnloadButtonImage(giPersonnelATMStartButtonImage[PERSONNEL_EMPLOYMENT_BTN]);
-    RemoveButton(giPersonnelATMStartButton[PERSONNEL_INV_BTN]);
-    UnloadButtonImage(giPersonnelATMStartButtonImage[PERSONNEL_INV_BTN]);
+    RemoveButton(giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]);
+    UnloadButtonImage(giPersonnelATMStartButtonImage[Enum108.PERSONNEL_STAT_BTN]);
+    RemoveButton(giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]);
+    UnloadButtonImage(giPersonnelATMStartButtonImage[Enum108.PERSONNEL_EMPLOYMENT_BTN]);
+    RemoveButton(giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]);
+    UnloadButtonImage(giPersonnelATMStartButtonImage[Enum108.PERSONNEL_INV_BTN]);
 
     fCreated = FALSE;
   }
@@ -4806,10 +4806,10 @@ function PersonnelINVStartButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fReDrawScreenFlag = TRUE;
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
-    ButtonList[giPersonnelATMStartButton[PERSONNEL_STAT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
-    ButtonList[giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
     //		fShowInventory = TRUE;
-    gubPersonnelInfoState = PRSNL_INV;
+    gubPersonnelInfoState = Enum109.PRSNL_INV;
   }
 }
 
@@ -4820,10 +4820,10 @@ function PersonnelStatStartButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT3
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fReDrawScreenFlag = TRUE;
     btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    ButtonList[giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
-    ButtonList[giPersonnelATMStartButton[PERSONNEL_INV_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
     //		fShowInventory = FALSE;
-    gubPersonnelInfoState = PRSNL_STATS;
+    gubPersonnelInfoState = Enum109.PRSNL_STATS;
   }
 }
 
@@ -4834,9 +4834,9 @@ function EmployementInfoButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fReDrawScreenFlag = TRUE;
     btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    ButtonList[giPersonnelATMStartButton[PERSONNEL_INV_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
-    ButtonList[giPersonnelATMStartButton[PERSONNEL_STAT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
-    gubPersonnelInfoState = PRSNL_EMPLOYMENT;
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    gubPersonnelInfoState = Enum109.PRSNL_EMPLOYMENT;
   }
 }
 
@@ -4858,15 +4858,15 @@ function ATMOther2ButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
 
     switch (iValue) {
-      case (DEPOSIT_ATM):
+      case (Enum107.DEPOSIT_ATM):
         fATMFlags = 2;
         fReDrawScreenFlag = TRUE;
-        ButtonList[giPersonnelATMSideButton[WIDTHDRAWL_ATM]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+        ButtonList[giPersonnelATMSideButton[Enum107.WIDTHDRAWL_ATM]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
         break;
-      case (WIDTHDRAWL_ATM):
+      case (Enum107.WIDTHDRAWL_ATM):
         fATMFlags = 3;
         fReDrawScreenFlag = TRUE;
-        ButtonList[giPersonnelATMSideButton[DEPOSIT_ATM]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+        ButtonList[giPersonnelATMSideButton[Enum107.DEPOSIT_ATM]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
         break;
     }
   }
@@ -4901,7 +4901,7 @@ function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
           pSoldier = MercPtrs[iId];
 
           switch (iValue) {
-            case (OK_ATM):
+            case (Enum107.OK_ATM):
               if (fATMFlags == 0) {
                 fATMFlags = 1;
                 fReDrawScreenFlag = TRUE;
@@ -4957,29 +4957,29 @@ function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
                 fReDrawScreenFlag = TRUE;
               }
               break;
-            case (DEPOSIT_ATM):
+            case (Enum107.DEPOSIT_ATM):
               fATMFlags = 2;
               fReDrawScreenFlag = TRUE;
 
               break;
-            case (WIDTHDRAWL_ATM):
+            case (Enum107.WIDTHDRAWL_ATM):
               fATMFlags = 3;
               fReDrawScreenFlag = TRUE;
               break;
-            case (CANCEL_ATM):
+            case (Enum107.CANCEL_ATM):
               if (sTransferString[0] != 0) {
                 sTransferString[0] = 0;
               } else if (fATMFlags != 0) {
                 fATMFlags = 0;
-                ButtonList[giPersonnelATMSideButton[WIDTHDRAWL_ATM]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
-                ButtonList[giPersonnelATMSideButton[DEPOSIT_ATM]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+                ButtonList[giPersonnelATMSideButton[Enum107.WIDTHDRAWL_ATM]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+                ButtonList[giPersonnelATMSideButton[Enum107.DEPOSIT_ATM]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
               } else {
                 fShowAtmPanel = FALSE;
                 fShowAtmPanelStartButton = TRUE;
               }
               fReDrawScreenFlag = TRUE;
               break;
-            case (CLEAR_ATM):
+            case (Enum107.CLEAR_ATM):
               sTransferString[0] = 0;
               fReDrawScreenFlag = TRUE;
               break;
@@ -5072,8 +5072,8 @@ function HandleStateOfATMButtons(): void {
       DisableButton(iNumberPadButtons[iCounter]);
     }
 
-    for (iCounter = 0; iCounter < NUMBER_ATM_BUTTONS; iCounter++) {
-      if ((iCounter != DEPOSIT_ATM) && (iCounter != WIDTHDRAWL_ATM) && (iCounter != CANCEL_ATM)) {
+    for (iCounter = 0; iCounter < Enum107.NUMBER_ATM_BUTTONS; iCounter++) {
+      if ((iCounter != Enum107.DEPOSIT_ATM) && (iCounter != Enum107.WIDTHDRAWL_ATM) && (iCounter != Enum107.CANCEL_ATM)) {
         DisableButton(giPersonnelATMSideButton[iCounter]);
       }
     }
@@ -5082,7 +5082,7 @@ function HandleStateOfATMButtons(): void {
       EnableButton(iNumberPadButtons[iCounter]);
     }
 
-    for (iCounter = 0; iCounter < NUMBER_ATM_BUTTONS; iCounter++) {
+    for (iCounter = 0; iCounter < Enum107.NUMBER_ATM_BUTTONS; iCounter++) {
       EnableButton(giPersonnelATMSideButton[iCounter]);
     }
   }
@@ -5099,7 +5099,7 @@ function GetFundsOnMerc(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   }
 
   // run through grunts pockets and count all the spare change
-  for (iCurrentPocket = 0; iCurrentPocket < NUM_INV_SLOTS; iCurrentPocket++) {
+  for (iCurrentPocket = 0; iCurrentPocket < Enum261.NUM_INV_SLOTS; iCurrentPocket++) {
     if (Item[pSoldier.value.inv[iCurrentPocket].usItem].usItemClass == IC_MONEY) {
       iCurrentAmount += pSoldier.value.inv[iCurrentPocket].uiMoneyAmount;
     }
@@ -5120,7 +5120,7 @@ function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBal
   }
 
   // run through grunts pockets and count all the spare change
-  for (iCurrentPocket = 0; iCurrentPocket < NUM_INV_SLOTS; iCurrentPocket++) {
+  for (iCurrentPocket = 0; iCurrentPocket < Enum261.NUM_INV_SLOTS; iCurrentPocket++) {
     if (Item[pSoldier.value.inv[iCurrentPocket].usItem].usItemClass == IC_MONEY) {
       // is there more left to go, or does this pocket finish it off?
       if (pSoldier.value.inv[iCurrentPocket].uiMoneyAmount > iAmountLeftToTake) {
@@ -5138,11 +5138,11 @@ function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBal
 
   if (iAmountLeftToTake != 0) {
     // something wrong
-    AddTransactionToPlayersBook(TRANSFER_FUNDS_FROM_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), (iCurrentBalance - iAmountLeftToTake));
+    AddTransactionToPlayersBook(Enum80.TRANSFER_FUNDS_FROM_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), (iCurrentBalance - iAmountLeftToTake));
     return FALSE;
   } else {
     // everything ok
-    AddTransactionToPlayersBook(TRANSFER_FUNDS_FROM_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), (iCurrentBalance));
+    AddTransactionToPlayersBook(Enum80.TRANSFER_FUNDS_FROM_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), (iCurrentBalance));
     return TRUE;
   }
 }
@@ -5170,7 +5170,7 @@ function TransferFundsFromBankToMerc(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBal
   memset(addressof(pMoneyObject), 0, sizeof(OBJECTTYPE));
 
   // set up money object
-  pMoneyObject.usItem = MONEY;
+  pMoneyObject.usItem = Enum225.MONEY;
   pMoneyObject.ubNumberOfObjects = 1;
   pMoneyObject.bMoneyStatus = 100;
   pMoneyObject.bStatus[0] = 100;
@@ -5179,7 +5179,7 @@ function TransferFundsFromBankToMerc(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBal
   // now auto place money object
   if (AutoPlaceObject(pSoldier, addressof(pMoneyObject), TRUE) == TRUE) {
     // now place transaction
-    AddTransactionToPlayersBook(TRANSFER_FUNDS_TO_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), -(iCurrentBalance));
+    AddTransactionToPlayersBook(Enum80.TRANSFER_FUNDS_TO_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), -(iCurrentBalance));
   } else {
     // error, notify player that merc doesn't have the spce for this much cash
   }
@@ -5232,18 +5232,18 @@ function UpDateStateOfStartButton(): void {
   }
 
   //	if( fShowInventory == TRUE )
-  if (gubPersonnelInfoState == PRSNL_INV) {
-    ButtonList[giPersonnelATMStartButton[PERSONNEL_INV_BTN]].value.uiFlags |= BUTTON_CLICKED_ON;
-    ButtonList[giPersonnelATMStartButton[PERSONNEL_STAT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
-    ButtonList[giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
-  } else if (gubPersonnelInfoState == PRSNL_STATS) {
-    ButtonList[giPersonnelATMStartButton[PERSONNEL_INV_BTN]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[giPersonnelATMStartButton[PERSONNEL_STAT_BTN]].value.uiFlags |= BUTTON_CLICKED_ON;
-    ButtonList[giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+  if (gubPersonnelInfoState == Enum109.PRSNL_INV) {
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+  } else if (gubPersonnelInfoState == Enum109.PRSNL_STATS) {
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
   } else {
-    ButtonList[giPersonnelATMStartButton[PERSONNEL_STAT_BTN]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[giPersonnelATMStartButton[PERSONNEL_INV_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
-    ButtonList[giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags |= BUTTON_CLICKED_ON;
   }
 
   // if in current mercs and the currently selected guy is valid, enable button, else disable it
@@ -5251,21 +5251,21 @@ function UpDateStateOfStartButton(): void {
     // is the current guy valid
     if (GetNumberOfMercsDeadOrAliveOnPlayersTeam() > 0) {
       // EnableButton( giPersonnelATMStartButton[ 0 ] );
-      EnableButton(giPersonnelATMStartButton[PERSONNEL_STAT_BTN]);
-      EnableButton(giPersonnelATMStartButton[PERSONNEL_INV_BTN]);
-      EnableButton(giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN]);
+      EnableButton(giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]);
+      EnableButton(giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]);
+      EnableButton(giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]);
 
       iId = GetIdOfThisSlot(iCurrentPersonSelectedId);
 
       if (iId != -1) {
-        if (Menptr[iId].bAssignment == ASSIGNMENT_POW) {
+        if (Menptr[iId].bAssignment == Enum117.ASSIGNMENT_POW) {
           // DisableButton( giPersonnelATMStartButton[ 0 ] );
-          DisableButton(giPersonnelATMStartButton[PERSONNEL_INV_BTN]);
+          DisableButton(giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]);
 
           //					if( fShowInventory == TRUE )
-          if (gubPersonnelInfoState == PRSNL_INV) {
+          if (gubPersonnelInfoState == Enum109.PRSNL_INV) {
             //						fShowInventory = FALSE;
-            gubPersonnelInfoState = PRSNL_STATS;
+            gubPersonnelInfoState = Enum109.PRSNL_STATS;
 
             fPausedReDrawScreenFlag = TRUE;
           }
@@ -5279,16 +5279,16 @@ function UpDateStateOfStartButton(): void {
     } else {
       // not valid, disable
       // DisableButton( giPersonnelATMStartButton[ 0 ] );
-      DisableButton(giPersonnelATMStartButton[PERSONNEL_STAT_BTN]);
-      DisableButton(giPersonnelATMStartButton[PERSONNEL_INV_BTN]);
-      DisableButton(giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN]);
+      DisableButton(giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]);
+      DisableButton(giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]);
+      DisableButton(giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]);
     }
   } else {
     // disable button
     // DisableButton( giPersonnelATMStartButton[ 0 ] );
-    EnableButton(giPersonnelATMStartButton[PERSONNEL_STAT_BTN]);
-    DisableButton(giPersonnelATMStartButton[PERSONNEL_INV_BTN]);
-    DisableButton(giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN]);
+    EnableButton(giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]);
+    DisableButton(giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]);
+    DisableButton(giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]);
   }
 }
 
@@ -5430,7 +5430,7 @@ function HandleTimedAtmModes(): void {
 }
 
 function IsPastMercDead(iId: INT32): BOOLEAN {
-  if (GetTheStateOfDepartedMerc(GetIdOfPastMercInSlot(iId)) == DEPARTED_DEAD) {
+  if (GetTheStateOfDepartedMerc(GetIdOfPastMercInSlot(iId)) == Enum106.DEPARTED_DEAD) {
     return TRUE;
   } else {
     return FALSE;
@@ -5438,7 +5438,7 @@ function IsPastMercDead(iId: INT32): BOOLEAN {
 }
 
 function IsPastMercFired(iId: INT32): BOOLEAN {
-  if (GetTheStateOfDepartedMerc(GetIdOfPastMercInSlot(iId)) == DEPARTED_FIRED) {
+  if (GetTheStateOfDepartedMerc(GetIdOfPastMercInSlot(iId)) == Enum106.DEPARTED_FIRED) {
     return TRUE;
   } else {
     return FALSE;
@@ -5446,7 +5446,7 @@ function IsPastMercFired(iId: INT32): BOOLEAN {
 }
 
 function IsPastMercOther(iId: INT32): BOOLEAN {
-  if (GetTheStateOfDepartedMerc(GetIdOfPastMercInSlot(iId)) == DEPARTED_OTHER) {
+  if (GetTheStateOfDepartedMerc(GetIdOfPastMercInSlot(iId)) == Enum106.DEPARTED_OTHER) {
     return TRUE;
   } else {
     return FALSE;
@@ -5475,11 +5475,11 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
         let uiTimeUnderThisDisplayAsHours: UINT32 = 24 * 60;
         let uiMinutesInDay: UINT32 = 24 * 60;
 
-        if (Menptr[iId].ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC || Menptr[iId].ubProfile == SLAY) {
+        if (Menptr[iId].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC || Menptr[iId].ubProfile == Enum268.SLAY) {
           let iTimeLeftOnContract: INT32 = CalcTimeLeftOnMercContract(addressof(Menptr[iId]));
 
           // if the merc is in transit
-          if (Menptr[iId].bAssignment == IN_TRANSIT) {
+          if (Menptr[iId].bAssignment == Enum117.IN_TRANSIT) {
             // and if the ttime left on the cotract is greater then the contract time
             if (iTimeLeftOnContract > (Menptr[iId].iTotalContractLength * uiMinutesInDay)) {
               iTimeLeftOnContract = (Menptr[iId].iTotalContractLength * uiMinutesInDay);
@@ -5487,24 +5487,24 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
           }
           // if there is going to be a both days and hours left on the contract
           if (iTimeLeftOnContract / uiMinutesInDay) {
-            swprintf(sString, "%d%s %d%s / %d%s", (iTimeLeftOnContract / uiMinutesInDay), gpStrategicString[STR_PB_DAYS_ABBREVIATION], (iTimeLeftOnContract % uiMinutesInDay) / 60, gpStrategicString[STR_PB_HOURS_ABBREVIATION], Menptr[iId].iTotalContractLength, gpStrategicString[STR_PB_DAYS_ABBREVIATION]);
-            mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_CURRENT_CONTRACT]);
+            swprintf(sString, "%d%s %d%s / %d%s", (iTimeLeftOnContract / uiMinutesInDay), gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION], (iTimeLeftOnContract % uiMinutesInDay) / 60, gpStrategicString[Enum365.STR_PB_HOURS_ABBREVIATION], Menptr[iId].iTotalContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
+            mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_CURRENT_CONTRACT]);
           }
 
           // else there is under a day left
           else {
             // DEF: removed 2/7/99
-            swprintf(sString, "%d%s / %d%s", (iTimeLeftOnContract % uiMinutesInDay) / 60, gpStrategicString[STR_PB_HOURS_ABBREVIATION], Menptr[iId].iTotalContractLength, gpStrategicString[STR_PB_DAYS_ABBREVIATION]);
-            mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_CURRENT_CONTRACT]);
+            swprintf(sString, "%d%s / %d%s", (iTimeLeftOnContract % uiMinutesInDay) / 60, gpStrategicString[Enum365.STR_PB_HOURS_ABBREVIATION], Menptr[iId].iTotalContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
+            mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_CURRENT_CONTRACT]);
           }
-        } else if (Menptr[iId].ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
+        } else if (Menptr[iId].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
           //					swprintf(sString, L"%d%s / %d%s",Menptr[iId].iTotalContractLength, gpStrategicString[ STR_PB_DAYS_ABBREVIATION ], ( GetWorldTotalMin( ) -Menptr[iId].iStartContractTime ) / ( 24 * 60 ), gpStrategicString[ STR_PB_DAYS_ABBREVIATION ] );
 
-          wcscpy(sString, gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
-          mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_CURRENT_CONTRACT]);
+          wcscpy(sString, gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+          mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_CURRENT_CONTRACT]);
         } else {
-          wcscpy(sString, gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
-          mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_CURRENT_CONTRACT]);
+          wcscpy(sString, gpStrategicString[Enum365.STR_PB_NOTAPPLICABLE_ABBREVIATION]);
+          mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_CURRENT_CONTRACT]);
         }
 
         FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
@@ -5516,11 +5516,11 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
       case 1:
 
         // total contract time served
-        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_TOTAL_SERVICE]);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_TOTAL_SERVICE]);
 
         //./DEF 2/4/99: total service days used to be calced as 'days -1'
 
-        swprintf(sString, "%d %s", gMercProfiles[Menptr[iId].ubProfile].usTotalDaysServed, gpStrategicString[STR_PB_DAYS_ABBREVIATION]);
+        swprintf(sString, "%d %s", gMercProfiles[Menptr[iId].ubProfile].usTotalDaysServed, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
 
         FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
@@ -5580,7 +5580,7 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
                                  }
                                  else
         */
-        { swprintf(sStringA, "%s", pPersonnelScreenStrings[PRSNL_TXT_TOTAL_COST]); }
+        { swprintf(sStringA, "%s", pPersonnelScreenStrings[Enum110.PRSNL_TXT_TOTAL_COST]); }
 
         FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
         mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, sStringA);
@@ -5588,15 +5588,15 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
         // print contract cost
         mprintf((sX), pPersonnelScreenPoints[iCounter].y, sString);
 
-        if (Menptr[iId].ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
+        if (Menptr[iId].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
           // daily rate
-          if (Menptr[iId].bTypeOfLastContract == CONTRACT_EXTEND_2_WEEK) {
+          if (Menptr[iId].bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
             // 2 week contract
             swprintf(sStringA, "%d", gMercProfiles[Menptr[iId].ubProfile].uiBiWeeklySalary / 14);
             InsertCommasForDollarFigure(sStringA);
             InsertDollarSignInToString(sStringA);
             swprintf(sString, "%s", sStringA);
-          } else if (Menptr[iId].bTypeOfLastContract == CONTRACT_EXTEND_1_WEEK) {
+          } else if (Menptr[iId].bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
             // 1 week contract
             swprintf(sStringA, "%d", gMercProfiles[Menptr[iId].ubProfile].uiWeeklySalary / 7);
             InsertCommasForDollarFigure(sStringA);
@@ -5608,7 +5608,7 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
             InsertDollarSignInToString(sStringA);
             swprintf(sString, "%s", sStringA);
           }
-        } else if (Menptr[iId].ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
+        } else if (Menptr[iId].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
           // DEF: 99/2/7
           //				 swprintf( sStringA, L"%d", gMercProfiles[Menptr[ iId ].ubProfile].sSalary * Menptr[ iId ].iTotalContractLength);
           swprintf(sStringA, "%d", gMercProfiles[Menptr[iId].ubProfile].sSalary);
@@ -5634,7 +5634,7 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
 
         // now print daily rate
         mprintf((sX), pPersonnelScreenPoints[iCounter + 1].y, sString);
-        mprintf((pPersonnelScreenPoints[iCounter + 1].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter + 1].y, pPersonnelScreenStrings[PRSNL_TXT_DAILY_COST]);
+        mprintf((pPersonnelScreenPoints[iCounter + 1].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter + 1].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_DAILY_COST]);
 
         break;
 
@@ -5642,8 +5642,8 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
         // medical deposit
 
         // if its a merc merc, display the salary oweing
-        if (Menptr[iId].ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
-          mprintf((pPersonnelScreenPoints[iCounter - 1].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter - 1].y, pPersonnelScreenStrings[PRSNL_TXT_UNPAID_AMOUNT]);
+        if (Menptr[iId].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
+          mprintf((pPersonnelScreenPoints[iCounter - 1].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter - 1].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_UNPAID_AMOUNT]);
 
           swprintf(sString, "%d", gMercProfiles[Menptr[iId].ubProfile].sSalary * gMercProfiles[Menptr[iId].ubProfile].iMercMercContractLength);
           InsertCommasForDollarFigure(sString);
@@ -5652,7 +5652,7 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
           FindFontRightCoordinates((pPersonnelScreenPoints[iCounter - 1].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, addressof(sX), addressof(sY));
           mprintf(sX, pPersonnelScreenPoints[iCounter - 1].y, sString);
         } else {
-          mprintf((pPersonnelScreenPoints[iCounter - 1].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter - 1].y, pPersonnelScreenStrings[PRSNL_TXT_MED_DEPOSIT]);
+          mprintf((pPersonnelScreenPoints[iCounter - 1].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter - 1].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_MED_DEPOSIT]);
 
           swprintf(sString, "%d", gMercProfiles[Menptr[iId].ubProfile].sMedicalDepositAmount);
 
@@ -5676,16 +5676,16 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
 function CalcTimeLeftOnMercContract(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   let iTimeLeftOnContract: INT32 = -1;
 
-  if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
+  if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
     iTimeLeftOnContract = pSoldier.value.iEndofContractTime - GetWorldTotalMin();
 
     if (iTimeLeftOnContract < 0)
       iTimeLeftOnContract = 0;
-  } else if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
+  } else if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
     iTimeLeftOnContract = gMercProfiles[pSoldier.value.ubProfile].iMercMercContractLength;
   }
 
-  else if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__PLAYER_CHARACTER) {
+  else if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__PLAYER_CHARACTER) {
     iTimeLeftOnContract = pSoldier.value.iTotalContractLength;
   }
 

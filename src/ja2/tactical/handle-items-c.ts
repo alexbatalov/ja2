@@ -44,7 +44,7 @@ function HandleCheckForBadChangeToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pTa
       gTacticalStatus.sCantGetThroughSoldierGridNo = pSoldier.value.sGridNo;
 
       // PLay quote
-      TacticalCharacterDialogue(pSoldier, QUOTE_NO_LINE_OF_FIRE);
+      TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_NO_LINE_OF_FIRE);
       return FALSE;
     } else {
       // Is this a different case?
@@ -53,7 +53,7 @@ function HandleCheckForBadChangeToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pTa
         gTacticalStatus.sCantGetThroughGridNo = sTargetGridNo;
         gTacticalStatus.ubCantGetThroughID = pSoldier.value.ubID;
 
-        TacticalCharacterDialogue(pSoldier, QUOTE_NO_LINE_OF_FIRE);
+        TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_NO_LINE_OF_FIRE);
         return FALSE;
       }
     }
@@ -117,28 +117,28 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     return ITEM_HANDLE_UNCONSCIOUS;
   }
 
-  if (HandItemWorks(pSoldier, HANDPOS) == FALSE) {
+  if (HandItemWorks(pSoldier, Enum261.HANDPOS) == FALSE) {
     return ITEM_HANDLE_BROKEN;
   }
 
-  if (fFromUI && pSoldier.value.bTeam == gbPlayerNum && pTargetSoldier && (pTargetSoldier.value.bTeam == gbPlayerNum || pTargetSoldier.value.bNeutral) && pTargetSoldier.value.ubBodyType != CROW && Item[usHandItem].usItemClass != IC_MEDKIT) {
+  if (fFromUI && pSoldier.value.bTeam == gbPlayerNum && pTargetSoldier && (pTargetSoldier.value.bTeam == gbPlayerNum || pTargetSoldier.value.bNeutral) && pTargetSoldier.value.ubBodyType != Enum194.CROW && Item[usHandItem].usItemClass != IC_MEDKIT) {
     if (pSoldier.value.ubProfile != NO_PROFILE) {
       // nice mercs won't shoot other nice guys or neutral civilians
       if ((gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags3 & PROFILE_MISC_FLAG3_GOODGUY) && ((pTargetSoldier.value.ubProfile == NO_PROFILE && pTargetSoldier.value.bNeutral) || gMercProfiles[pTargetSoldier.value.ubProfile].ubMiscFlags3 & PROFILE_MISC_FLAG3_GOODGUY)) {
-        TacticalCharacterDialogue(pSoldier, QUOTE_REFUSING_ORDER);
+        TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_REFUSING_ORDER);
         return ITEM_HANDLE_REFUSAL;
       }
       if (pTargetSoldier.value.ubProfile != NO_PROFILE) {
         // buddies won't shoot each other
         if (WhichBuddy(pSoldier.value.ubProfile, pTargetSoldier.value.ubProfile) != -1) {
-          TacticalCharacterDialogue(pSoldier, QUOTE_REFUSING_ORDER);
+          TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_REFUSING_ORDER);
           return ITEM_HANDLE_REFUSAL;
         }
       }
 
       // any recruited rebel will refuse to fire on another rebel or neutral nameless civ
-      if (pSoldier.value.ubCivilianGroup == REBEL_CIV_GROUP && (pTargetSoldier.value.ubCivilianGroup == REBEL_CIV_GROUP || (pTargetSoldier.value.bNeutral && pTargetSoldier.value.ubProfile == NO_PROFILE && pTargetSoldier.value.ubCivilianGroup == NON_CIV_GROUP && pTargetSoldier.value.ubBodyType != CROW))) {
-        TacticalCharacterDialogue(pSoldier, QUOTE_REFUSING_ORDER);
+      if (pSoldier.value.ubCivilianGroup == Enum246.REBEL_CIV_GROUP && (pTargetSoldier.value.ubCivilianGroup == Enum246.REBEL_CIV_GROUP || (pTargetSoldier.value.bNeutral && pTargetSoldier.value.ubProfile == NO_PROFILE && pTargetSoldier.value.ubCivilianGroup == Enum246.NON_CIV_GROUP && pTargetSoldier.value.ubBodyType != Enum194.CROW))) {
+        TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_REFUSING_ORDER);
         return ITEM_HANDLE_REFUSAL;
       }
     }
@@ -147,7 +147,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
   // Check HAND ITEM
   if (Item[usHandItem].usItemClass == IC_GUN || Item[usHandItem].usItemClass == IC_THROWING_KNIFE) {
     // WEAPONS
-    if (usHandItem == ROCKET_RIFLE || usHandItem == AUTO_ROCKET_RIFLE) {
+    if (usHandItem == Enum225.ROCKET_RIFLE || usHandItem == Enum225.AUTO_ROCKET_RIFLE) {
       // check imprint ID
       // NB not-imprinted value is NO_PROFILE
       // imprinted value is profile for mercs & NPCs and NO_PROFILE + 1 for generic dudes
@@ -159,16 +159,16 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
 
             // this could be an NPC (Krott)
             if (pSoldier.value.bTeam == gbPlayerNum) {
-              PlayJA2Sample(RG_ID_IMPRINTED, RATE_11025, HIGHVOLUME, 1, MIDDLE);
+              PlayJA2Sample(Enum330.RG_ID_IMPRINTED, RATE_11025, HIGHVOLUME, 1, MIDDLE);
 
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "\"%s\"", TacticalStr[GUN_GOT_FINGERPRINT]);
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "\"%s\"", TacticalStr[Enum335.GUN_GOT_FINGERPRINT]);
 
               return ITEM_HANDLE_BROKEN;
             }
           } else {
             // access denied!
             if (pSoldier.value.bTeam == gbPlayerNum) {
-              PlayJA2Sample(RG_ID_INVALID, RATE_11025, HIGHVOLUME, 1, MIDDLE);
+              PlayJA2Sample(Enum330.RG_ID_INVALID, RATE_11025, HIGHVOLUME, 1, MIDDLE);
 
               // if (Random( 100 ) < (UINT32) pSoldier->bWisdom)
               //{
@@ -197,7 +197,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     // IF we are not a throwing knife, check for ammo, reloading...
     if (Item[usHandItem].usItemClass != IC_THROWING_KNIFE) {
       // CHECK FOR AMMO!
-      if (!EnoughAmmo(pSoldier, fFromUI, HANDPOS)) {
+      if (!EnoughAmmo(pSoldier, fFromUI, Enum261.HANDPOS)) {
         // ATE: Reflect that we need to reset for bursting
         pSoldier.value.fDoSpread = FALSE;
         return ITEM_HANDLE_NOAMMO;
@@ -251,9 +251,9 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
 
     // If this is a player guy, show message about no APS
     if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
-      if ((pSoldier.value.ubProfile != NO_PROFILE) && (gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait == PSYCHO)) {
+      if ((pSoldier.value.ubProfile != NO_PROFILE) && (gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait == Enum270.PSYCHO)) {
         // psychos might possibly switch to burst if they can
-        if (!pSoldier.value.bDoBurst && IsGunBurstCapable(pSoldier, HANDPOS, FALSE)) {
+        if (!pSoldier.value.bDoBurst && IsGunBurstCapable(pSoldier, Enum261.HANDPOS, FALSE)) {
           // chance of firing burst if we have points... chance decreasing when ordered to do aimed shot
 
           // temporarily set burst to true to calculate action points
@@ -265,9 +265,9 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
           if (EnoughPoints(pSoldier, sAPCost, 0, FALSE)) {
             // we have enough points to do this burst, roll the dice and see if we want to change
             if (Random(3 + pSoldier.value.bAimTime) == 0) {
-              DoMercBattleSound(pSoldier, BATTLE_SOUND_LAUGH1);
+              DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_LAUGH1);
               pSoldier.value.bDoBurst = TRUE;
-              pSoldier.value.bWeaponMode = WM_BURST;
+              pSoldier.value.bWeaponMode = Enum265.WM_BURST;
 
               ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[26], pSoldier.value.name);
             }
@@ -298,8 +298,8 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
         }
 
         // ATE: Here to make cursor go back to move after LAW shot...
-        if (fFromUI && usHandItem == ROCKET_LAUNCHER) {
-          guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+        if (fFromUI && usHandItem == Enum225.ROCKET_LAUNCHER) {
+          guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
         }
       } else {
         let ubDirection: UINT8;
@@ -350,7 +350,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     let sGotLocation: INT16 = NOWHERE;
     let fGotAdjacent: BOOLEAN = FALSE;
 
-    for (sCnt = 0; sCnt < NUM_WORLD_DIRECTIONS; sCnt++) {
+    for (sCnt = 0; sCnt < Enum245.NUM_WORLD_DIRECTIONS; sCnt++) {
       sSpot = NewGridNo(pSoldier.value.sGridNo, DirectionInc(sCnt));
 
       // Make sure movement costs are OK....
@@ -390,7 +390,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       // CHECK IF WE ARE AT THIS GRIDNO NOW
       if (pSoldier.value.sGridNo != sGotLocation && fGotAdjacent) {
         // SEND PENDING ACTION
-        pSoldier.value.ubPendingAction = MERC_PUNCH;
+        pSoldier.value.ubPendingAction = Enum257.MERC_PUNCH;
         pSoldier.value.sPendingActionData2 = sAdjustedGridNo;
         pSoldier.value.bPendingActionData3 = ubDirection;
         pSoldier.value.ubPendingActionAnimCount = 0;
@@ -398,7 +398,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
         // WALK UP TO DEST FIRST
         EVENT_InternalGetNewSoldierPath(pSoldier, sGotLocation, pSoldier.value.usUIMovementMode, FALSE, TRUE);
       } else {
-        pSoldier.value.bAction = AI_ACTION_KNIFE_STAB;
+        pSoldier.value.bAction = Enum289.AI_ACTION_KNIFE_STAB;
         EVENT_SoldierBeginPunchAttack(pSoldier, sAdjustedGridNo, ubDirection);
       }
 
@@ -451,7 +451,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       // CHECK IF WE ARE AT THIS GRIDNO NOW
       if (pSoldier.value.sGridNo != sActionGridNo) {
         // SEND PENDING ACTION
-        pSoldier.value.ubPendingAction = MERC_GIVEAID;
+        pSoldier.value.ubPendingAction = Enum257.MERC_GIVEAID;
 
         if (fHadToUseCursorPos) {
           pSoldier.value.sPendingActionData2 = usMapPos;
@@ -472,7 +472,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       }
 
       if (fFromUI) {
-        guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+        guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
       }
 
       return ITEM_HANDLE_OK;
@@ -481,7 +481,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     }
   }
 
-  if (usHandItem == WIRECUTTERS) {
+  if (usHandItem == Enum225.WIRECUTTERS) {
     // See if we can get there to stab
     sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), TRUE, FALSE);
     if (sActionGridNo != -1) {
@@ -493,7 +493,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
         // CHECK IF WE ARE AT THIS GRIDNO NOW
         if (pSoldier.value.sGridNo != sActionGridNo) {
           // SEND PENDING ACTION
-          pSoldier.value.ubPendingAction = MERC_CUTFFENCE;
+          pSoldier.value.ubPendingAction = Enum257.MERC_CUTFFENCE;
           pSoldier.value.sPendingActionData2 = sAdjustedGridNo;
           pSoldier.value.bPendingActionData3 = ubDirection;
           pSoldier.value.ubPendingActionAnimCount = 0;
@@ -508,7 +508,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
         SetUIBusy(pSoldier.value.ubID);
 
         if (fFromUI) {
-          guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+          guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
         }
 
         return ITEM_HANDLE_OK;
@@ -520,7 +520,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     }
   }
 
-  if (usHandItem == TOOLKIT) {
+  if (usHandItem == Enum225.TOOLKIT) {
     let ubMercID: UINT8;
     let fVehicle: BOOLEAN = FALSE;
     let sVehicleGridNo: INT16 = -1;
@@ -553,7 +553,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
         // CHECK IF WE ARE AT THIS GRIDNO NOW
         if (pSoldier.value.sGridNo != sActionGridNo) {
           // SEND PENDING ACTION
-          pSoldier.value.ubPendingAction = MERC_REPAIR;
+          pSoldier.value.ubPendingAction = Enum257.MERC_REPAIR;
           pSoldier.value.sPendingActionData2 = sAdjustedGridNo;
 
           if (fVehicle) {
@@ -573,7 +573,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
         SetUIBusy(pSoldier.value.ubID);
 
         if (fFromUI) {
-          guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+          guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
         }
 
         return ITEM_HANDLE_OK;
@@ -585,7 +585,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     }
   }
 
-  if (usHandItem == GAS_CAN) {
+  if (usHandItem == Enum225.GAS_CAN) {
     let ubMercID: UINT8;
     let sVehicleGridNo: INT16 = -1;
 
@@ -615,7 +615,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
         // CHECK IF WE ARE AT THIS GRIDNO NOW
         if (pSoldier.value.sGridNo != sActionGridNo) {
           // SEND PENDING ACTION
-          pSoldier.value.ubPendingAction = MERC_FUEL_VEHICLE;
+          pSoldier.value.ubPendingAction = Enum257.MERC_FUEL_VEHICLE;
           pSoldier.value.sPendingActionData2 = sAdjustedGridNo;
 
           pSoldier.value.sPendingActionData2 = sVehicleGridNo;
@@ -632,7 +632,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
         SetUIBusy(pSoldier.value.ubID);
 
         if (fFromUI) {
-          guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+          guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
         }
 
         return ITEM_HANDLE_OK;
@@ -644,7 +644,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     }
   }
 
-  if (usHandItem == JAR) {
+  if (usHandItem == Enum225.JAR) {
     sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), TRUE, FALSE);
 
     if (sActionGridNo != -1) {
@@ -656,7 +656,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
         // CHECK IF WE ARE AT THIS GRIDNO NOW
         if (pSoldier.value.sGridNo != sActionGridNo) {
           // SEND PENDING ACTION
-          pSoldier.value.ubPendingAction = MERC_TAKEBLOOD;
+          pSoldier.value.ubPendingAction = Enum257.MERC_TAKEBLOOD;
           pSoldier.value.sPendingActionData2 = sAdjustedGridNo;
           pSoldier.value.bPendingActionData3 = ubDirection;
           pSoldier.value.ubPendingActionAnimCount = 0;
@@ -671,7 +671,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
         SetUIBusy(pSoldier.value.ubID);
 
         if (fFromUI) {
-          guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+          guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
         }
 
         return ITEM_HANDLE_OK;
@@ -683,7 +683,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     }
   }
 
-  if (usHandItem == STRING_TIED_TO_TIN_CAN) {
+  if (usHandItem == Enum225.STRING_TIED_TO_TIN_CAN) {
     let pStructure: Pointer<STRUCTURE>;
     let pIntTile: Pointer<LEVELNODE>;
 
@@ -703,7 +703,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
           // CHECK IF WE ARE AT THIS GRIDNO NOW
           if (pSoldier.value.sGridNo != sActionGridNo) {
             // SEND PENDING ACTION
-            pSoldier.value.ubPendingAction = MERC_ATTACH_CAN;
+            pSoldier.value.ubPendingAction = Enum257.MERC_ATTACH_CAN;
             pSoldier.value.sPendingActionData2 = usGridNo;
             pSoldier.value.bPendingActionData3 = ubDirection;
             pSoldier.value.ubPendingActionAnimCount = 0;
@@ -718,7 +718,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
           SetUIBusy(pSoldier.value.ubID);
 
           if (fFromUI) {
-            guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+            guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
           }
 
           return ITEM_HANDLE_OK;
@@ -739,8 +739,8 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
 
     if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
       DeductPoints(pSoldier, sAPCost, 0);
-      if (usHandItem == XRAY_DEVICE) {
-        PlayJA2Sample(USE_X_RAY_MACHINE, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+      if (usHandItem == Enum225.XRAY_DEVICE) {
+        PlayJA2Sample(Enum330.USE_X_RAY_MACHINE, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
 
         ActivateXRayDevice(pSoldier);
         return ITEM_HANDLE_OK;
@@ -752,7 +752,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
         EVENT_SoldierBeginUseDetonator(pSoldier);
 
         if (fFromUI) {
-          guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+          guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
         }
 
         // Now start anim....
@@ -771,7 +771,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
   // Check for a bomb like a mine, that uses a pressure detonator
   if (Item[usHandItem].ubCursor == INVALIDCURS) {
     // Found detonator...
-    if (FindAttachment(addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), DETONATOR) != ITEM_NOT_FOUND || FindAttachment(addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), REMDETONATOR) != ITEM_NOT_FOUND) {
+    if (FindAttachment(addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), Enum225.DETONATOR) != ITEM_NOT_FOUND || FindAttachment(addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), Enum225.REMDETONATOR) != ITEM_NOT_FOUND) {
       fDropBomb = TRUE;
     }
   }
@@ -782,7 +782,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
 
     if (pSoldier.value.sGridNo != usGridNo) {
       // SEND PENDING ACTION
-      pSoldier.value.ubPendingAction = MERC_DROPBOMB;
+      pSoldier.value.ubPendingAction = Enum257.MERC_DROPBOMB;
       pSoldier.value.ubPendingActionAnimCount = 0;
 
       // WALK UP TO DEST FIRST
@@ -795,7 +795,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     SetUIBusy(pSoldier.value.ubID);
 
     if (fFromUI) {
-      guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+      guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
     }
 
     return ITEM_HANDLE_OK;
@@ -804,7 +804,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
   // USING THE BLADE
   if (Item[usHandItem].usItemClass == IC_BLADE) {
     // See if we can get there to stab
-    if (pSoldier.value.ubBodyType == BLOODCAT) {
+    if (pSoldier.value.ubBodyType == Enum194.BLOODCAT) {
       sActionGridNo = FindNextToAdjacentGridEx(pSoldier, usGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), TRUE, FALSE);
     } else if (CREATURE_OR_BLOODCAT(pSoldier) && PythSpacesAway(pSoldier.value.sGridNo, usGridNo) > 1) {
       sActionGridNo = FindNextToAdjacentGridEx(pSoldier, usGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), TRUE, FALSE);
@@ -821,7 +821,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       // CHECK IF WE ARE AT THIS GRIDNO NOW
       if (pSoldier.value.sGridNo != sActionGridNo) {
         // SEND PENDING ACTION
-        pSoldier.value.ubPendingAction = MERC_KNIFEATTACK;
+        pSoldier.value.ubPendingAction = Enum257.MERC_KNIFEATTACK;
         pSoldier.value.sPendingActionData2 = sAdjustedGridNo;
         pSoldier.value.bPendingActionData3 = ubDirection;
         pSoldier.value.ubPendingActionAnimCount = 0;
@@ -830,7 +830,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
         EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.value.usUIMovementMode, FALSE, TRUE);
       } else {
         // for the benefit of the AI
-        pSoldier.value.bAction = AI_ACTION_KNIFE_STAB;
+        pSoldier.value.bAction = Enum289.AI_ACTION_KNIFE_STAB;
         EVENT_SoldierBeginBladeAttack(pSoldier, sAdjustedGridNo, ubDirection);
       }
 
@@ -838,7 +838,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       SetUIBusy(pSoldier.value.ubID);
 
       if (fFromUI) {
-        guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+        guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
         gfResetUIMovementOptimization = TRUE;
       }
 
@@ -861,10 +861,10 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
 
     DeductPoints(pSoldier, sAPCost, 0);
 
-    EVENT_InitNewSoldierAnim(pSoldier, QUEEN_SWIPE, 0, FALSE);
+    EVENT_InitNewSoldierAnim(pSoldier, Enum193.QUEEN_SWIPE, 0, FALSE);
 
     // FireWeapon( pSoldier, sTargetGridNo );
-    pSoldier.value.bAction = AI_ACTION_KNIFE_STAB;
+    pSoldier.value.bAction = Enum289.AI_ACTION_KNIFE_STAB;
 
     return ITEM_HANDLE_OK;
   }
@@ -883,7 +883,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     sAPCost = MinAPsToAttack(pSoldier, sTargetGridNo, TRUE);
 
     // Check if these is room to place mortar!
-    if (usHandItem == MORTAR) {
+    if (usHandItem == Enum225.MORTAR) {
       ubDirection = GetDirectionFromGridNo(sTargetGridNo, pSoldier);
 
       // Get new gridno!
@@ -894,7 +894,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       }
 
       pSoldier.value.fDontChargeAPsForStanceChange = TRUE;
-    } else if (usHandItem == GLAUNCHER || usHandItem == UNDER_GLAUNCHER) {
+    } else if (usHandItem == Enum225.GLAUNCHER || usHandItem == Enum225.UNDER_GLAUNCHER) {
       GetAPChargeForShootOrStabWRTGunRaises(pSoldier, sTargetGridNo, TRUE, addressof(fAddingTurningCost), addressof(fAddingRaiseGunCost));
 
       // If we are standing and are asked to turn AND raise gun, ignore raise gun...
@@ -912,7 +912,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
 
     // If this is a player guy, show message about no APS
     if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
-      pSoldier.value.ubAttackingHand = HANDPOS;
+      pSoldier.value.ubAttackingHand = Enum261.HANDPOS;
       pSoldier.value.usAttackingWeapon = usHandItem;
       pSoldier.value.bTargetLevel = bLevel;
 
@@ -947,11 +947,11 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
   // CHECK FOR BOMB....
   if (Item[usHandItem].ubCursor == INVALIDCURS) {
     // Found detonator...
-    if (FindAttachment(addressof(pSoldier.value.inv[usHandItem]), DETONATOR) != ITEM_NOT_FOUND || FindAttachment(addressof(pSoldier.value.inv[usHandItem]), REMDETONATOR)) {
+    if (FindAttachment(addressof(pSoldier.value.inv[usHandItem]), Enum225.DETONATOR) != ITEM_NOT_FOUND || FindAttachment(addressof(pSoldier.value.inv[usHandItem]), Enum225.REMDETONATOR)) {
       StartBombMessageBox(pSoldier, usGridNo);
 
       if (fFromUI) {
-        guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+        guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
       }
 
       return ITEM_HANDLE_OK;
@@ -963,22 +963,22 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
 
 function HandleSoldierDropBomb(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
   // Does this have detonator that needs info?
-  if (FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), DETONATOR) != ITEM_NOT_FOUND || FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), REMDETONATOR) != ITEM_NOT_FOUND) {
+  if (FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.DETONATOR) != ITEM_NOT_FOUND || FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.REMDETONATOR) != ITEM_NOT_FOUND) {
     StartBombMessageBox(pSoldier, sGridNo);
   } else {
     // We have something... all we do is place...
-    if (ArmBomb(addressof(pSoldier.value.inv[HANDPOS]), 0)) {
+    if (ArmBomb(addressof(pSoldier.value.inv[Enum261.HANDPOS]), 0)) {
       // EXPLOSIVES GAIN (25):  Place a bomb, or buried and armed a mine
       StatChange(pSoldier, EXPLODEAMT, 25, FALSE);
 
-      pSoldier.value.inv[HANDPOS].bTrap = __min(10, (EffectiveExplosive(pSoldier) / 20) + (EffectiveExpLevel(pSoldier) / 3));
-      pSoldier.value.inv[HANDPOS].ubBombOwner = pSoldier.value.ubID + 2;
+      pSoldier.value.inv[Enum261.HANDPOS].bTrap = __min(10, (EffectiveExplosive(pSoldier) / 20) + (EffectiveExpLevel(pSoldier) / 3));
+      pSoldier.value.inv[Enum261.HANDPOS].ubBombOwner = pSoldier.value.ubID + 2;
 
       // we now know there is something nasty here
       gpWorldLevelData[sGridNo].uiFlags |= MAPELEMENT_PLAYER_MINE_PRESENT;
 
-      AddItemToPool(sGridNo, addressof(pSoldier.value.inv[HANDPOS]), BURIED, pSoldier.value.bLevel, WORLD_ITEM_ARMED_BOMB, 0);
-      DeleteObj(addressof(pSoldier.value.inv[HANDPOS]));
+      AddItemToPool(sGridNo, addressof(pSoldier.value.inv[Enum261.HANDPOS]), BURIED, pSoldier.value.bLevel, WORLD_ITEM_ARMED_BOMB, 0);
+      DeleteObj(addressof(pSoldier.value.inv[Enum261.HANDPOS]));
     }
   }
 }
@@ -991,7 +991,7 @@ function SoldierHandleDropItem(pSoldier: Pointer<SOLDIERTYPE>): void {
   // LOOK IN PANDING DATA FOR ITEM TO DROP, AND LOCATION
   if (pSoldier.value.pTempObject != NULL) {
     if (pSoldier.value.bVisible != -1) {
-      PlayJA2Sample(THROW_IMPACT_2, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+      PlayJA2Sample(Enum330.THROW_IMPACT_2, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
     }
 
     AddItemToPool(pSoldier.value.sGridNo, pSoldier.value.pTempObject, 1, pSoldier.value.bLevel, 0, -1);
@@ -1027,9 +1027,9 @@ function HandleSoldierThrowItem(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16):
 
         // Draw item depending on distance from buddy
         if (GetRangeFromGridNoDiff(sGridNo, pSoldier.value.sGridNo) < MIN_LOB_RANGE) {
-          pSoldier.value.usPendingAnimation = LOB_ITEM;
+          pSoldier.value.usPendingAnimation = Enum193.LOB_ITEM;
         } else {
-          pSoldier.value.usPendingAnimation = THROW_ITEM;
+          pSoldier.value.usPendingAnimation = Enum193.THROW_ITEM;
         }
       }
       break;
@@ -1052,7 +1052,7 @@ function HandleSoldierThrowItem(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16):
         ubDirection = GetDirectionFromGridNo(sGridNo, pSoldier);
         EVENT_SetSoldierDesiredDirection(pSoldier, ubDirection);
 
-        ChangeSoldierState(pSoldier, THROW_ITEM, 0, FALSE);
+        ChangeSoldierState(pSoldier, Enum193.THROW_ITEM, 0, FALSE);
       }
   }
 }
@@ -1069,7 +1069,7 @@ function SoldierGiveItem(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer
   sActionGridNo = FindAdjacentGridEx(pSoldier, pTargetSoldier.value.sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), TRUE, FALSE);
   if (sActionGridNo != -1) {
     // SEND PENDING ACTION
-    pSoldier.value.ubPendingAction = MERC_GIVEITEM;
+    pSoldier.value.ubPendingAction = Enum257.MERC_GIVEITEM;
 
     pSoldier.value.bPendingActionData5 = bInvPos;
     // Copy temp object
@@ -1123,7 +1123,7 @@ function SoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sG
   sActionGridNo = AdjustGridNoForItemPlacement(pSoldier, sGridNo);
 
   // SET PENDING ACTIONS!
-  pSoldier.value.ubPendingAction = MERC_PICKUPITEM;
+  pSoldier.value.ubPendingAction = Enum257.MERC_PICKUPITEM;
   pSoldier.value.uiPendingActionData1 = iItemIndex;
   pSoldier.value.sPendingActionData2 = sActionGridNo;
   pSoldier.value.uiPendingActionData4 = sGridNo;
@@ -1142,7 +1142,7 @@ function SoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sG
 
       // Say it only if we don;t have to go too far!
       if (pSoldier.value.usPathDataSize > 5) {
-        DoMercBattleSound(pSoldier, BATTLE_SOUND_OK1);
+        DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_OK1);
       }
     } else {
       EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.value.usUIMovementMode, FALSE, TRUE);
@@ -1164,7 +1164,7 @@ function HandleAutoPlaceFail(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, 
 
       // If we are a merc, say DAMN quote....
       if (pSoldier.value.bTeam == gbPlayerNum) {
-        DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
+        DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
       }
     }
   }
@@ -1211,11 +1211,11 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
               fShouldSayCoolQuote = TRUE;
             }
 
-            if (Object.usItem == SWITCH) {
+            if (Object.usItem == Enum225.SWITCH) {
               // ask about activating the switch!
               bTempFrequency = Object.bFrequency;
               gpTempSoldier = pSoldier;
-              DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[ACTIVATE_SWITCH_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, SwitchMessageBoxCallBack, NULL);
+              DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.ACTIVATE_SWITCH_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, SwitchMessageBoxCallBack, NULL);
               pItemPool = pItemPool.value.pNext;
             } else {
               if (!AutoPlaceObject(pSoldier, addressof(Object), TRUE)) {
@@ -1285,11 +1285,11 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
           fShouldSayCoolQuote = TRUE;
         }
 
-        if (Object.usItem == SWITCH) {
+        if (Object.usItem == Enum225.SWITCH) {
           // handle switch
           bTempFrequency = Object.bFrequency;
           gpTempSoldier = pSoldier;
-          DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[ACTIVATE_SWITCH_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, SwitchMessageBoxCallBack, NULL);
+          DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.ACTIVATE_SWITCH_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, SwitchMessageBoxCallBack, NULL);
         } else {
           /*
                                                   // handle theft.. will return true if theft has failed ( if soldier was caught )
@@ -1323,7 +1323,7 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
   // OK, check if potentially a good candidate for cool quote
   if (fShouldSayCoolQuote && pSoldier.value.bTeam == gbPlayerNum) {
     // Do we have this quote..?
-    if (QuoteExp_GotGunOrUsedGun[pSoldier.value.ubProfile] == QUOTE_FOUND_SOMETHING_SPECIAL) {
+    if (QuoteExp_GotGunOrUsedGun[pSoldier.value.ubProfile] == Enum202.QUOTE_FOUND_SOMETHING_SPECIAL) {
       // Have we not said it today?
       if (!(pSoldier.value.usQuoteSaidFlags & SOLDIER_QUOTE_SAID_FOUND_SOMETHING_NICE)) {
         // set flag
@@ -1331,7 +1331,7 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
 
         // Say it....
         // We've found something!
-        TacticalCharacterDialogue(pSoldier, QUOTE_FOUND_SOMETHING_SPECIAL);
+        TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_FOUND_SOMETHING_SPECIAL);
 
         fDidSayCoolQuote = TRUE;
       }
@@ -1340,7 +1340,7 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
 
   // Aknowledge....
   if (pSoldier.value.bTeam == OUR_TEAM && !fDidSayCoolQuote && !fSaidBoobyTrapQuote) {
-    DoMercBattleSound(pSoldier, BATTLE_SOUND_GOTIT);
+    DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_GOTIT);
   }
 
   // OK partner......look for any hidden items!
@@ -1349,7 +1349,7 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
     StatChange(pSoldier, WISDOMAMT, 5, FALSE);
 
     // We've found something!
-    TacticalCharacterDialogue(pSoldier, (QUOTE_SPOTTED_SOMETHING_ONE + Random(2)));
+    TacticalCharacterDialogue(pSoldier, (Enum202.QUOTE_SPOTTED_SOMETHING_ONE + Random(2)));
   }
 
   gpTempSoldier = pSoldier;
@@ -1381,7 +1381,7 @@ function HandleSoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
         gfDisarmingBuriedBomb = TRUE;
         gbTrapDifficulty = gWorldItems[iItemIndex].o.bTrap;
 
-        DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[DISARM_TRAP_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack, NULL);
+        DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.DISARM_TRAP_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack, NULL);
       } else {
         // OK, only hidden items exist...
         if (pSoldier.value.bTeam == gbPlayerNum && DoesItemPoolContainAllHiddenItems(pItemPool)) {
@@ -1391,10 +1391,10 @@ function HandleSoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
             StatChange(pSoldier, WISDOMAMT, 5, FALSE);
 
             // We've found something!
-            TacticalCharacterDialogue(pSoldier, (QUOTE_SPOTTED_SOMETHING_ONE + Random(2)));
+            TacticalCharacterDialogue(pSoldier, (Enum202.QUOTE_SPOTTED_SOMETHING_ONE + Random(2)));
           } else {
             // Say NOTHING quote...
-            DoMercBattleSound(pSoldier, BATTLE_SOUND_NOTHING);
+            DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_NOTHING);
           }
         } else {
           // If only one good item exists....
@@ -1411,9 +1411,9 @@ function HandleSoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
 
               InitializeItemPickupMenu(pSoldier, sGridNo, pItemPool, 0, 0, bZLevel);
 
-              guiPendingOverrideEvent = G_GETTINGITEM;
+              guiPendingOverrideEvent = Enum207.G_GETTINGITEM;
             } else {
-              DoMercBattleSound(pSoldier, BATTLE_SOUND_NOTHING);
+              DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_NOTHING);
             }
           }
         }
@@ -1421,7 +1421,7 @@ function HandleSoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
     }
   } else {
     // Say NOTHING quote...
-    DoMercBattleSound(pSoldier, BATTLE_SOUND_NOTHING);
+    DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_NOTHING);
   }
 }
 
@@ -1529,7 +1529,7 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
   // IF SO, DONT'T ADD!
   bTerrainID = GetTerrainType(psGridNo.value);
 
-  if (bTerrainID == DEEP_WATER || bTerrainID == LOW_WATER || bTerrainID == MED_WATER) {
+  if (bTerrainID == Enum315.DEEP_WATER || bTerrainID == Enum315.LOW_WATER || bTerrainID == Enum315.MED_WATER) {
     if (Item[pObject.value.usItem].fFlags & ITEM_SINKS) {
       return NULL;
     }
@@ -1551,7 +1551,7 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
   }
 
   // Check structure database
-  if (gpWorldLevelData[psGridNo.value].pStructureHead && (pObject.value.usItem != OWNERSHIP) && (pObject.value.usItem != ACTION_ITEM)) {
+  if (gpWorldLevelData[psGridNo.value].pStructureHead && (pObject.value.usItem != Enum225.OWNERSHIP) && (pObject.value.usItem != Enum225.ACTION_ITEM)) {
     // Something is here, check obstruction in future
     sDesiredLevel = ubLevel ? STRUCTURE_ON_ROOF : STRUCTURE_ON_GROUND;
     pStructure = FindStructure(psGridNo.value, STRUCTURE_BLOCKSMOVES);
@@ -1623,24 +1623,24 @@ function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECT
     }
   }
 
-  if (pObject.value.usItem == SWITCH && !fObjectInOpenable) {
+  if (pObject.value.usItem == Enum225.SWITCH && !fObjectInOpenable) {
     if (bVisible != -2) {
       // switch items which are not hidden inside objects should be considered buried
       bVisible = BURIED;
       // and they are pressure-triggered unless there is a switch structure there
       if (FindStructure(psGridNo.value, STRUCTURE_SWITCH) != NULL) {
-        pObject.value.bDetonatorType = BOMB_SWITCH;
+        pObject.value.bDetonatorType = Enum224.BOMB_SWITCH;
       } else {
-        pObject.value.bDetonatorType = BOMB_PRESSURE;
+        pObject.value.bDetonatorType = Enum224.BOMB_PRESSURE;
       }
     } else {
       // else they are manually controlled
-      pObject.value.bDetonatorType = BOMB_SWITCH;
+      pObject.value.bDetonatorType = Enum224.BOMB_SWITCH;
     }
-  } else if (pObject.value.usItem == ACTION_ITEM) {
+  } else if (pObject.value.usItem == Enum225.ACTION_ITEM) {
     switch (pObject.value.bActionValue) {
-      case ACTION_ITEM_SMALL_PIT:
-      case ACTION_ITEM_LARGE_PIT:
+      case Enum191.ACTION_ITEM_SMALL_PIT:
+      case Enum191.ACTION_ITEM_LARGE_PIT:
         // mark as known about by civs and creatures
         gpWorldLevelData[sNewGridNo].uiFlags |= MAPELEMENT_ENEMY_MINE_PRESENT;
         break;
@@ -1858,7 +1858,7 @@ function LookForHiddenItems(sGridNo: INT16, ubLevel: INT8, fSetLocator: BOOLEAN,
 
     // LOOP THROUGH LIST TO FIND NODE WE WANT
     while (pItemPool != NULL) {
-      if (gWorldItems[pItemPool.value.iItemIndex].bVisible == HIDDEN_ITEM && gWorldItems[pItemPool.value.iItemIndex].o.usItem != OWNERSHIP) {
+      if (gWorldItems[pItemPool.value.iItemIndex].bVisible == HIDDEN_ITEM && gWorldItems[pItemPool.value.iItemIndex].o.usItem != Enum225.OWNERSHIP) {
         fFound = TRUE;
 
         gWorldItems[pItemPool.value.iItemIndex].bVisible = INVISIBLE;
@@ -1966,7 +1966,7 @@ function LoopLevelNodeForShowThroughFlag(pNode: Pointer<LEVELNODE>, sGridNo: INT
         pNode.value.uiFlags |= LEVELNODE_SHOW_THROUGH;
       }
 
-      if (gGameSettings.fOptions[TOPTION_GLOW_ITEMS]) {
+      if (gGameSettings.fOptions[Enum8.TOPTION_GLOW_ITEMS]) {
         pNode.value.uiFlags |= LEVELNODE_DYNAMIC;
       }
     }
@@ -1999,14 +1999,14 @@ function SetItemPoolVisibilityOn(pItemPool: Pointer<ITEM_POOL>, bAllGreaterThan:
 
     // Update each item...
     if (bVisibleValue != VISIBLE) {
-      if (gWorldItems[pItemPoolTemp.value.iItemIndex].o.usItem == ACTION_ITEM) {
+      if (gWorldItems[pItemPoolTemp.value.iItemIndex].o.usItem == Enum225.ACTION_ITEM) {
         // NEVER MAKE VISIBLE!
         pItemPoolTemp = pItemPoolTemp.value.pNext;
         continue;
       }
 
       // If we have reached a visible value we should not modify, ignore...
-      if (bVisibleValue >= bAllGreaterThan && gWorldItems[pItemPoolTemp.value.iItemIndex].o.usItem != OWNERSHIP) {
+      if (bVisibleValue >= bAllGreaterThan && gWorldItems[pItemPoolTemp.value.iItemIndex].o.usItem != Enum225.OWNERSHIP) {
         // Update the world value
         gWorldItems[pItemPoolTemp.value.iItemIndex].bVisible = VISIBLE;
 
@@ -2527,7 +2527,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
     } else {
       SetFontForeground(FONT_MCOLOR_DKGRAY);
     }
-    swprintf(pStr, TacticalStr[ITEMPOOL_POPUP_PREV_STR]);
+    swprintf(pStr, TacticalStr[Enum335.ITEMPOOL_POPUP_PREV_STR]);
     gprintfdirty(sFontX, sY, pStr);
     mprintf(sFontX, sY, pStr);
     sY += GetFontHeight(SMALLFONT1) - 2;
@@ -2576,7 +2576,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
       } else {
         SetFontForeground(FONT_MCOLOR_DKGRAY);
       }
-      swprintf(pStr, TacticalStr[ITEMPOOL_POPUP_MORE_STR]);
+      swprintf(pStr, TacticalStr[Enum335.ITEMPOOL_POPUP_MORE_STR]);
       gprintfdirty(sFontX, sY, pStr);
       mprintf(sFontX, sY, pStr);
     }
@@ -2711,8 +2711,8 @@ function HandleFlashingItems(): void {
   let pLocator: Pointer<ITEM_POOL_LOCATOR>;
   let fDoLocator: BOOLEAN = FALSE;
 
-  if (COUNTERDONE(CYCLERENDERITEMCOLOR)) {
-    RESETCOUNTER(CYCLERENDERITEMCOLOR);
+  if (COUNTERDONE(Enum386.CYCLERENDERITEMCOLOR)) {
+    RESETCOUNTER(Enum386.CYCLERENDERITEMCOLOR);
 
     for (cnt = 0; cnt < guiNumFlashItemSlots; cnt++) {
       pLocator = addressof(FlashItemSlots[cnt]);
@@ -2896,7 +2896,7 @@ function VerifyGiveItem(pSoldier: Pointer<SOLDIERTYPE>, ppTargetSoldier: Pointer
       AddItemToPool(pSoldier.value.sGridNo, pSoldier.value.pTempObject, 1, pSoldier.value.bLevel, 0, -1);
 
       // Place it on the ground!
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[ITEM_HAS_BEEN_PLACED_ON_GROUND_STR], ShortItemNames[pSoldier.value.pTempObject.value.usItem]);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.ITEM_HAS_BEEN_PLACED_ON_GROUND_STR], ShortItemNames[pSoldier.value.pTempObject.value.usItem]);
 
       // OK, disengage buddy
       pSoldier.value.uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
@@ -2970,8 +2970,8 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
       }
       */
 
-      if (NPCHasUnusedRecordWithGivenApproach(pTSoldier.value.ubProfile, APPROACH_BUYSELL)) {
-        TriggerNPCWithGivenApproach(pTSoldier.value.ubProfile, APPROACH_BUYSELL, TRUE);
+      if (NPCHasUnusedRecordWithGivenApproach(pTSoldier.value.ubProfile, Enum296.APPROACH_BUYSELL)) {
+        TriggerNPCWithGivenApproach(pTSoldier.value.ubProfile, Enum296.APPROACH_BUYSELL, TRUE);
         return;
       }
       // now also check for buy/sell lines (Oct 13)
@@ -3039,7 +3039,7 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
 
         // We could not place it!
         // Drop it on the ground?
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[ITEM_HAS_BEEN_PLACED_ON_GROUND_STR], ShortItemNames[usItemNum]);
+        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.ITEM_HAS_BEEN_PLACED_ON_GROUND_STR], ShortItemNames[usItemNum]);
 
         // OK, disengage buddy
         pSoldier.value.uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
@@ -3052,8 +3052,8 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
         }
 
         // OK, it's given, display message!
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[ITEM_HAS_BEEN_GIVEN_TO_STR], ShortItemNames[usItemNum], pTSoldier.value.name);
-        if (usItemNum == MONEY) {
+        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.ITEM_HAS_BEEN_GIVEN_TO_STR], ShortItemNames[usItemNum], pTSoldier.value.name);
+        if (usItemNum == Enum225.MONEY) {
           // are we giving money to an NPC, to whom we owe money?
           if (pTSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pTSoldier.value.ubProfile].iBalance < 0) {
             gMercProfiles[pTSoldier.value.ubProfile].iBalance += TempObject.uiMoneyAmount;
@@ -3062,10 +3062,10 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
               gMercProfiles[pTSoldier.value.ubProfile].iBalance = 0;
 
               // report the payment and set facts to indicate people not being owed money
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[GUY_HAS_BEEN_PAID_IN_FULL_STR], pTSoldier.value.name);
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.GUY_HAS_BEEN_PAID_IN_FULL_STR], pTSoldier.value.name);
             } else {
               // report the payment
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[GUY_STILL_OWED_STR], pTSoldier.value.name, -gMercProfiles[pTSoldier.value.ubProfile].iBalance);
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.GUY_STILL_OWED_STR], pTSoldier.value.name, -gMercProfiles[pTSoldier.value.ubProfile].iBalance);
             }
           }
         }
@@ -3078,7 +3078,7 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
       }
 
       // Now intiate conv
-      InitiateConversation(pTSoldier, pSoldier, APPROACH_GIVINGITEM, addressof(TempObject));
+      InitiateConversation(pTSoldier, pSoldier, Enum296.APPROACH_GIVINGITEM, addressof(TempObject));
     }
   }
 
@@ -3136,9 +3136,9 @@ function StartBombMessageBox(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): vo
 
   gpTempSoldier = pSoldier;
   gsTempGridno = sGridNo;
-  if (pSoldier.value.inv[HANDPOS].usItem == REMOTEBOMBTRIGGER) {
-    DoMessageBox(MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[CHOOSE_BOMB_FREQUENCY_STR], GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
-  } else if (pSoldier.value.inv[HANDPOS].usItem == REMOTETRIGGER) {
+  if (pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.REMOTEBOMBTRIGGER) {
+    DoMessageBox(Enum24.MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[Enum335.CHOOSE_BOMB_FREQUENCY_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
+  } else if (pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.REMOTETRIGGER) {
     // ATE ignore the commented-out code and add stuff to open the secret passage here
     /*
     switch( pSoldier->inv[HANDPOS].ubLocationID )
@@ -3149,39 +3149,39 @@ function StartBombMessageBox(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): vo
     */
 
     // PLay sound....
-    PlayJA2Sample(USE_STATUE_REMOTE, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+    PlayJA2Sample(Enum330.USE_STATUE_REMOTE, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
 
     // Check what sector we are in....
     if (gWorldSectorX == 3 && gWorldSectorY == MAP_ROW_O && gbWorldSectorZ == 0) {
       if (InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && ubRoom == 4) {
-        DoMercBattleSound(pSoldier, BATTLE_SOUND_OK1);
+        DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_OK1);
 
         // Open statue
         ChangeO3SectorStatue(FALSE);
       } else {
-        DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
+        DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
       }
     } else {
-      DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
+      DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
     }
-  } else if (FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), DETONATOR) != ITEM_NOT_FOUND) {
-    DoMessageBox(MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[CHOOSE_TIMER_STR], GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
-  } else if (FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), REMDETONATOR) != ITEM_NOT_FOUND) {
-    DoMessageBox(MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[CHOOSE_REMOTE_FREQUENCY_STR], GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
+  } else if (FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.DETONATOR) != ITEM_NOT_FOUND) {
+    DoMessageBox(Enum24.MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[Enum335.CHOOSE_TIMER_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
+  } else if (FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.REMDETONATOR) != ITEM_NOT_FOUND) {
+    DoMessageBox(Enum24.MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[Enum335.CHOOSE_REMOTE_FREQUENCY_STR], Enum26.GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
   }
 }
 
 function BombMessageBoxCallBack(ubExitValue: UINT8): void {
   if (gpTempSoldier) {
-    if (gpTempSoldier.value.inv[HANDPOS].usItem == REMOTEBOMBTRIGGER) {
+    if (gpTempSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.REMOTEBOMBTRIGGER) {
       SetOffBombsByFrequency(gpTempSoldier.value.ubID, ubExitValue);
     } else {
       let iResult: INT32;
 
-      if (FindAttachment(addressof(gpTempSoldier.value.inv[HANDPOS]), REMDETONATOR) != ITEM_NOT_FOUND) {
-        iResult = SkillCheck(gpTempSoldier, PLANTING_REMOTE_BOMB_CHECK, 0);
+      if (FindAttachment(addressof(gpTempSoldier.value.inv[Enum261.HANDPOS]), Enum225.REMDETONATOR) != ITEM_NOT_FOUND) {
+        iResult = SkillCheck(gpTempSoldier, Enum255.PLANTING_REMOTE_BOMB_CHECK, 0);
       } else {
-        iResult = SkillCheck(gpTempSoldier, PLANTING_BOMB_CHECK, 0);
+        iResult = SkillCheck(gpTempSoldier, Enum255.PLANTING_BOMB_CHECK, 0);
       }
 
       if (iResult >= 0) {
@@ -3203,19 +3203,19 @@ function BombMessageBoxCallBack(ubExitValue: UINT8): void {
           // and continue
         } else {
           // OOPS! ... BOOM!
-          IgniteExplosion(NOBODY, gpTempSoldier.value.sX, gpTempSoldier.value.sY, (gpWorldLevelData[gpTempSoldier.value.sGridNo].sHeight), gpTempSoldier.value.sGridNo, gpTempSoldier.value.inv[HANDPOS].usItem, gpTempSoldier.value.bLevel);
+          IgniteExplosion(NOBODY, gpTempSoldier.value.sX, gpTempSoldier.value.sY, (gpWorldLevelData[gpTempSoldier.value.sGridNo].sHeight), gpTempSoldier.value.sGridNo, gpTempSoldier.value.inv[Enum261.HANDPOS].usItem, gpTempSoldier.value.bLevel);
           return;
         }
       }
 
-      if (ArmBomb(addressof(gpTempSoldier.value.inv[HANDPOS]), ubExitValue)) {
-        gpTempSoldier.value.inv[HANDPOS].bTrap = __min(10, (EffectiveExplosive(gpTempSoldier) / 20) + (EffectiveExpLevel(gpTempSoldier) / 3));
+      if (ArmBomb(addressof(gpTempSoldier.value.inv[Enum261.HANDPOS]), ubExitValue)) {
+        gpTempSoldier.value.inv[Enum261.HANDPOS].bTrap = __min(10, (EffectiveExplosive(gpTempSoldier) / 20) + (EffectiveExpLevel(gpTempSoldier) / 3));
         // HACK IMMINENT!
         // value of 1 is stored in maps for SIDE of bomb owner... when we want to use IDs!
         // so we add 2 to all owner IDs passed through here and subtract 2 later
-        gpTempSoldier.value.inv[HANDPOS].ubBombOwner = gpTempSoldier.value.ubID + 2;
-        AddItemToPool(gsTempGridno, addressof(gpTempSoldier.value.inv[HANDPOS]), 1, gpTempSoldier.value.bLevel, WORLD_ITEM_ARMED_BOMB, 0);
-        DeleteObj(addressof(gpTempSoldier.value.inv[HANDPOS]));
+        gpTempSoldier.value.inv[Enum261.HANDPOS].ubBombOwner = gpTempSoldier.value.ubID + 2;
+        AddItemToPool(gsTempGridno, addressof(gpTempSoldier.value.inv[Enum261.HANDPOS]), 1, gpTempSoldier.value.bLevel, WORLD_ITEM_ARMED_BOMB, 0);
+        DeleteObj(addressof(gpTempSoldier.value.inv[Enum261.HANDPOS]));
       }
     }
   }
@@ -3231,7 +3231,7 @@ function HandItemWorks(pSoldier: Pointer<SOLDIERTYPE>, bSlot: INT8): BOOLEAN {
   // if the item can be damaged, than we must check that it's in good enough
   // shape to be usable, and doesn't break during use.
   // Exception: land mines.  You can bury them broken, they just won't blow!
-  if ((Item[pObj.value.usItem].fFlags & ITEM_DAMAGEABLE) && (pObj.value.usItem != MINE) && (Item[pObj.value.usItem].usItemClass != IC_MEDKIT) && pObj.value.usItem != GAS_CAN) {
+  if ((Item[pObj.value.usItem].fFlags & ITEM_DAMAGEABLE) && (pObj.value.usItem != Enum225.MINE) && (Item[pObj.value.usItem].usItemClass != IC_MEDKIT) && pObj.value.usItem != Enum225.GAS_CAN) {
     // if it's still usable, check whether it breaks
     if (pObj.value.bStatus[0] >= USABLE) {
       // if a dice roll is greater than the item's status
@@ -3250,18 +3250,18 @@ function HandItemWorks(pSoldier: Pointer<SOLDIERTYPE>, bSlot: INT8): BOOLEAN {
 
     if (!fItemWorks && pSoldier.value.bTeam == gbPlayerNum) {
       // merc says "This thing doesn't work!"
-      TacticalCharacterDialogue(pSoldier, QUOTE_USELESS_ITEM);
+      TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_USELESS_ITEM);
       if (fItemJustBroke) {
         DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
       }
     }
   }
 
-  if (fItemWorks && bSlot == HANDPOS && Item[pObj.value.usItem].usItemClass == IC_GUN) {
+  if (fItemWorks && bSlot == Enum261.HANDPOS && Item[pObj.value.usItem].usItemClass == IC_GUN) {
     // are we using two guns at once?
-    if (Item[pSoldier.value.inv[SECONDHANDPOS].usItem].usItemClass == IC_GUN && pSoldier.value.inv[SECONDHANDPOS].bGunStatus >= USABLE && pSoldier.value.inv[SECONDHANDPOS].ubGunShotsLeft > 0) {
+    if (Item[pSoldier.value.inv[Enum261.SECONDHANDPOS].usItem].usItemClass == IC_GUN && pSoldier.value.inv[Enum261.SECONDHANDPOS].bGunStatus >= USABLE && pSoldier.value.inv[Enum261.SECONDHANDPOS].ubGunShotsLeft > 0) {
       // check the second gun for breakage, and if IT breaks, return false
-      return HandItemWorks(pSoldier, SECONDHANDPOS);
+      return HandItemWorks(pSoldier, Enum261.SECONDHANDPOS);
     }
   }
 
@@ -3272,7 +3272,7 @@ function SetOffBoobyTrapInMapScreen(pSoldier: Pointer<SOLDIERTYPE>, pObject: Poi
   let ubPtsDmg: UINT8 = 0;
 
   // check if trapped item is an explosive, if so then up the amount of dmg
-  if ((pObject.value.usItem == TNT) || (pObject.value.usItem == RDX)) {
+  if ((pObject.value.usItem == Enum225.TNT) || (pObject.value.usItem == Enum225.RDX)) {
     // for explosive
     ubPtsDmg = 0;
   } else {
@@ -3284,7 +3284,7 @@ function SetOffBoobyTrapInMapScreen(pSoldier: Pointer<SOLDIERTYPE>, pObject: Poi
   SoldierTakeDamage(pSoldier, 0, ubPtsDmg, ubPtsDmg, TAKE_DAMAGE_EXPLOSION, NOBODY, NOWHERE, 0, TRUE);
 
   // play the sound
-  PlayJA2Sample(EXPLOSION_1, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
+  PlayJA2Sample(Enum330.EXPLOSION_1, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
 }
 
 function SetOffBoobyTrap(pItemPool: Pointer<ITEM_POOL>): void {
@@ -3293,7 +3293,7 @@ function SetOffBoobyTrap(pItemPool: Pointer<ITEM_POOL>): void {
     let sY: INT16;
     sX = CenterX(pItemPool.value.sGridNo);
     sY = CenterY(pItemPool.value.sGridNo);
-    IgniteExplosion(NOBODY, sX, sY, (gpWorldLevelData[pItemPool.value.sGridNo].sHeight + pItemPool.value.bRenderZHeightAboveLevel), pItemPool.value.sGridNo, MINI_GRENADE, 0);
+    IgniteExplosion(NOBODY, sX, sY, (gpWorldLevelData[pItemPool.value.sGridNo].sHeight + pItemPool.value.bRenderZHeightAboveLevel), pItemPool.value.sGridNo, Enum225.MINI_GRENADE, 0);
     RemoveItemFromPool(pItemPool.value.sGridNo, pItemPool.value.iItemIndex, pItemPool.value.ubLevel);
   }
 }
@@ -3335,7 +3335,7 @@ function ContinuePastBoobyTrap(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, b
 
           // And make the call for the dialogue
           SetStopTimeQuoteCallback(BoobyTrapDialogueCallBack);
-          TacticalCharacterDialogue(pSoldier, QUOTE_BOOBYTRAP_ITEM);
+          TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_BOOBYTRAP_ITEM);
 
           (pfSaidQuote.value) = TRUE;
 
@@ -3353,9 +3353,9 @@ function ContinuePastBoobyTrap(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, b
         gbTrapDifficulty = pObj.value.bTrap;
 
         if (fInStrategic) {
-          DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[DISARM_BOOBYTRAP_PROMPT], MAP_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack, NULL);
+          DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.DISARM_BOOBYTRAP_PROMPT], Enum26.MAP_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack, NULL);
         } else {
-          DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[DISARM_BOOBYTRAP_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack, NULL);
+          DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.DISARM_BOOBYTRAP_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack, NULL);
         }
       } else {
         // oops!
@@ -3375,9 +3375,9 @@ function BoobyTrapDialogueCallBack(): void {
 
   // now prompt the user...
   if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) {
-    DoScreenIndependantMessageBox(TacticalStr[DISARM_BOOBYTRAP_PROMPT], MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack);
+    DoScreenIndependantMessageBox(TacticalStr[Enum335.DISARM_BOOBYTRAP_PROMPT], MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack);
   } else {
-    DoScreenIndependantMessageBox(TacticalStr[DISARM_BOOBYTRAP_PROMPT], MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack);
+    DoScreenIndependantMessageBox(TacticalStr[Enum335.DISARM_BOOBYTRAP_PROMPT], MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack);
   }
 }
 
@@ -3395,7 +3395,7 @@ function BoobyTrapMessageBoxCallBack(ubExitValue: UINT8): void {
     let iCheckResult: INT32;
     let Object: OBJECTTYPE;
 
-    iCheckResult = SkillCheck(gpBoobyTrapSoldier, DISARM_TRAP_CHECK, 0);
+    iCheckResult = SkillCheck(gpBoobyTrapSoldier, Enum255.DISARM_TRAP_CHECK, 0);
 
     if (iCheckResult >= 0) {
       // get the item
@@ -3410,16 +3410,16 @@ function BoobyTrapMessageBoxCallBack(ubExitValue: UINT8): void {
         // disarmed a boobytrap!
         StatChange(gpBoobyTrapSoldier, EXPLODEAMT, (6 * gbTrapDifficulty), FALSE);
         // have merc say this is good
-        DoMercBattleSound(gpBoobyTrapSoldier, BATTLE_SOUND_COOL1);
+        DoMercBattleSound(gpBoobyTrapSoldier, Enum259.BATTLE_SOUND_COOL1);
       }
 
       if (gfDisarmingBuriedBomb) {
-        if (Object.usItem == SWITCH) {
+        if (Object.usItem == Enum225.SWITCH) {
           // give the player a remote trigger instead
-          CreateItem(REMOTEBOMBTRIGGER, (1 + Random(9)), addressof(Object));
-        } else if (Object.usItem == ACTION_ITEM && Object.bActionValue != ACTION_ITEM_BLOW_UP) {
+          CreateItem(Enum225.REMOTEBOMBTRIGGER, (1 + Random(9)), addressof(Object));
+        } else if (Object.usItem == Enum225.ACTION_ITEM && Object.bActionValue != Enum191.ACTION_ITEM_BLOW_UP) {
           // give the player a detonator instead
-          CreateItem(DETONATOR, (1 + Random(9)), addressof(Object));
+          CreateItem(Enum225.DETONATOR, (1 + Random(9)), addressof(Object));
         } else {
           // switch action item to the real item type
           CreateItem(Object.usBombItem, Object.bBombStatus, addressof(Object));
@@ -3450,7 +3450,7 @@ function BoobyTrapMessageBoxCallBack(ubExitValue: UINT8): void {
       // oops! trap goes off
       StatChange(gpBoobyTrapSoldier, EXPLODEAMT, (3 * gbTrapDifficulty), FROM_FAILURE);
 
-      DoMercBattleSound(gpBoobyTrapSoldier, BATTLE_SOUND_CURSE1);
+      DoMercBattleSound(gpBoobyTrapSoldier, Enum259.BATTLE_SOUND_CURSE1);
 
       if (gfDisarmingBuriedBomb) {
         SetOffBombsInGridNo(gpBoobyTrapSoldier.value.ubID, gsBoobyTrapGridNo, TRUE, gbBoobyTrapLevel);
@@ -3460,7 +3460,7 @@ function BoobyTrapMessageBoxCallBack(ubExitValue: UINT8): void {
     }
   } else {
     if (gfDisarmingBuriedBomb) {
-      DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[REMOVE_BLUE_FLAG_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, RemoveBlueFlagDialogueCallBack, NULL);
+      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.REMOVE_BLUE_FLAG_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, RemoveBlueFlagDialogueCallBack, NULL);
     }
     // otherwise do nothing
   }
@@ -3481,25 +3481,25 @@ function BoobyTrapInMapScreenMessageBoxCallBack(ubExitValue: UINT8): void {
     let iCheckResult: INT32;
     let Object: OBJECTTYPE;
 
-    iCheckResult = SkillCheck(gpBoobyTrapSoldier, DISARM_TRAP_CHECK, 0);
+    iCheckResult = SkillCheck(gpBoobyTrapSoldier, Enum255.DISARM_TRAP_CHECK, 0);
 
     if (iCheckResult >= 0) {
       // disarmed a boobytrap!
       StatChange(gpBoobyTrapSoldier, EXPLODEAMT, (6 * gbTrapDifficulty), FALSE);
 
       // have merc say this is good
-      DoMercBattleSound(gpBoobyTrapSoldier, BATTLE_SOUND_COOL1);
+      DoMercBattleSound(gpBoobyTrapSoldier, Enum259.BATTLE_SOUND_COOL1);
 
       // get the item
       memcpy(addressof(Object), gpItemPointer, sizeof(OBJECTTYPE));
 
       if (gfDisarmingBuriedBomb) {
-        if (Object.usItem == SWITCH) {
+        if (Object.usItem == Enum225.SWITCH) {
           // give the player a remote trigger instead
-          CreateItem(REMOTEBOMBTRIGGER, (1 + Random(9)), addressof(Object));
-        } else if (Object.usItem == ACTION_ITEM && Object.bActionValue != ACTION_ITEM_BLOW_UP) {
+          CreateItem(Enum225.REMOTEBOMBTRIGGER, (1 + Random(9)), addressof(Object));
+        } else if (Object.usItem == Enum225.ACTION_ITEM && Object.bActionValue != Enum191.ACTION_ITEM_BLOW_UP) {
           // give the player a detonator instead
-          CreateItem(DETONATOR, (1 + Random(9)), addressof(Object));
+          CreateItem(Enum225.DETONATOR, (1 + Random(9)), addressof(Object));
         } else {
           // switch action item to the real item type
           CreateItem(Object.usBombItem, Object.bBombStatus, addressof(Object));
@@ -3521,7 +3521,7 @@ function BoobyTrapInMapScreenMessageBoxCallBack(ubExitValue: UINT8): void {
       // oops! trap goes off
       StatChange(gpBoobyTrapSoldier, EXPLODEAMT, (3 * gbTrapDifficulty), FROM_FAILURE);
 
-      DoMercBattleSound(gpBoobyTrapSoldier, BATTLE_SOUND_CURSE1);
+      DoMercBattleSound(gpBoobyTrapSoldier, Enum259.BATTLE_SOUND_CURSE1);
 
       if (gfDisarmingBuriedBomb) {
         SetOffBombsInGridNo(gpBoobyTrapSoldier.value.ubID, gsBoobyTrapGridNo, TRUE, gbBoobyTrapLevel);
@@ -3531,7 +3531,7 @@ function BoobyTrapInMapScreenMessageBoxCallBack(ubExitValue: UINT8): void {
     }
   } else {
     if (gfDisarmingBuriedBomb) {
-      DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[REMOVE_BLUE_FLAG_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, RemoveBlueFlagDialogueCallBack, NULL);
+      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.REMOVE_BLUE_FLAG_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, RemoveBlueFlagDialogueCallBack, NULL);
     }
     // otherwise do nothing
   }
@@ -3562,7 +3562,7 @@ function NearbyGroundSeemsWrong(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
 
   ubDetectLevel = 0;
 
-  if (FindObj(pSoldier, METALDETECTOR) != NO_SLOT) {
+  if (FindObj(pSoldier, Enum225.METALDETECTOR) != NO_SLOT) {
     fMining = TRUE;
   } else {
     fMining = FALSE;
@@ -3627,7 +3627,7 @@ function NearbyGroundSeemsWrong(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
     for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
       if (gWorldBombs[uiWorldBombIndex].fExists && gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].sGridNo == sNextGridNo) {
         pObj = addressof(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
-        if (pObj.value.bDetonatorType == BOMB_PRESSURE && !(pObj.value.fFlags & OBJECT_KNOWN_TO_BE_TRAPPED) && (!(pObj.value.fFlags & OBJECT_DISABLED_BOMB))) {
+        if (pObj.value.bDetonatorType == Enum224.BOMB_PRESSURE && !(pObj.value.fFlags & OBJECT_KNOWN_TO_BE_TRAPPED) && (!(pObj.value.fFlags & OBJECT_DISABLED_BOMB))) {
           if (fMining && pObj.value.bTrap <= 10) {
             // add blue flag
             AddBlueFlag(sNextGridNo, pSoldier.value.bLevel);
@@ -3706,17 +3706,17 @@ function MineSpottedDialogueCallBack(): void {
 
   GetItemPool(gsBoobyTrapGridNo, addressof(pItemPool), gbBoobyTrapLevel);
 
-  guiPendingOverrideEvent = LU_BEGINUILOCK;
+  guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
 
   // play a locator at the location of the mine
   SetItemPoolLocatorWithCallback(pItemPool, MineSpottedLocatorCallback);
 }
 
 function MineSpottedLocatorCallback(): void {
-  guiPendingOverrideEvent = LU_ENDUILOCK;
+  guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
 
   // now ask the player if he wants to place a blue flag.
-  DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[PLACE_BLUE_FLAG_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, MineSpottedMessageBoxCallBack, NULL);
+  DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.PLACE_BLUE_FLAG_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, MineSpottedMessageBoxCallBack, NULL);
 }
 
 function MineSpottedMessageBoxCallBack(ubExitValue: UINT8): void {
@@ -3768,21 +3768,21 @@ function MakeNPCGrumpyForMinorOffense(pSoldier: Pointer<SOLDIERTYPE>, pOffending
   CancelAIAction(pSoldier, TRUE);
 
   switch (pSoldier.value.ubProfile) {
-    case FREDO:
-    case FRANZ:
-    case HERVE:
-    case PETER:
-    case ALBERTO:
-    case CARLO:
-    case MANNY:
-    case GABBY:
-    case ARNIE:
-    case HOWARD:
-    case SAM:
-    case FATHER:
-    case TINA:
-    case ARMAND:
-    case WALTER:
+    case Enum268.FREDO:
+    case Enum268.FRANZ:
+    case Enum268.HERVE:
+    case Enum268.PETER:
+    case Enum268.ALBERTO:
+    case Enum268.CARLO:
+    case Enum268.MANNY:
+    case Enum268.GABBY:
+    case Enum268.ARNIE:
+    case Enum268.HOWARD:
+    case Enum268.SAM:
+    case Enum268.FATHER:
+    case Enum268.TINA:
+    case Enum268.ARMAND:
+    case Enum268.WALTER:
       gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags3 |= PROFILE_MISC_FLAG3_NPC_PISSED_OFF;
       TriggerNPCWithIHateYouQuote(pSoldier.value.ubProfile);
       break;
@@ -3793,14 +3793,14 @@ function MakeNPCGrumpyForMinorOffense(pSoldier: Pointer<SOLDIERTYPE>, pOffending
   }
 
   if (pOffendingSoldier) {
-    pSoldier.value.bNextAction = AI_ACTION_CHANGE_FACING;
+    pSoldier.value.bNextAction = Enum289.AI_ACTION_CHANGE_FACING;
     pSoldier.value.usNextActionData = atan8(pSoldier.value.sX, pSoldier.value.sY, pOffendingSoldier.value.sX, pOffendingSoldier.value.sY);
   }
 }
 
 function TestPotentialOwner(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife >= OKLIFE) {
-    if (SoldierToSoldierLineOfSightTest(pSoldier, gpTempSoldier, DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, 0, gpTempSoldier.value.sGridNo, gpTempSoldier.value.bLevel), TRUE)) {
+    if (SoldierToSoldierLineOfSightTest(pSoldier, gpTempSoldier, DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, 0, gpTempSoldier.value.sGridNo, gpTempSoldier.value.bLevel), TRUE)) {
       MakeNPCGrumpyForMinorOffense(pSoldier, gpTempSoldier);
     }
   }
@@ -3817,7 +3817,7 @@ function CheckForPickedOwnership(): void {
   GetItemPool(gsTempGridno, addressof(pItemPool), gpTempSoldier.value.bLevel);
 
   while (pItemPool) {
-    if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == OWNERSHIP) {
+    if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == Enum225.OWNERSHIP) {
       if (gWorldItems[pItemPool.value.iItemIndex].o.ubOwnerProfile != NO_PROFILE) {
         ubProfile = gWorldItems[pItemPool.value.iItemIndex].o.ubOwnerProfile;
         pSoldier = FindSoldierByProfileID(ubProfile, FALSE);
@@ -3825,9 +3825,9 @@ function CheckForPickedOwnership(): void {
           TestPotentialOwner(pSoldier);
         }
       }
-      if (gWorldItems[pItemPool.value.iItemIndex].o.ubOwnerCivGroup != NON_CIV_GROUP) {
+      if (gWorldItems[pItemPool.value.iItemIndex].o.ubOwnerCivGroup != Enum246.NON_CIV_GROUP) {
         ubCivGroup = gWorldItems[pItemPool.value.iItemIndex].o.ubOwnerCivGroup;
-        if (ubCivGroup == HICKS_CIV_GROUP && CheckFact(FACT_HICKS_MARRIED_PLAYER_MERC, 0)) {
+        if (ubCivGroup == Enum246.HICKS_CIV_GROUP && CheckFact(Enum170.FACT_HICKS_MARRIED_PLAYER_MERC, 0)) {
           // skip because hicks appeased
           pItemPool = pItemPool.value.pNext;
           continue;
@@ -3878,9 +3878,9 @@ function ToggleItemGlow(fOn: BOOLEAN): void {
   }
 
   if (!fOn) {
-    gGameSettings.fOptions[TOPTION_GLOW_ITEMS] = FALSE;
+    gGameSettings.fOptions[Enum8.TOPTION_GLOW_ITEMS] = FALSE;
   } else {
-    gGameSettings.fOptions[TOPTION_GLOW_ITEMS] = TRUE;
+    gGameSettings.fOptions[Enum8.TOPTION_GLOW_ITEMS] = TRUE;
   }
 
   SetRenderFlags(RENDER_FLAG_FULL);
@@ -3911,7 +3911,7 @@ function ContinuePastBoobyTrapInMapScreen(pObject: Pointer<OBJECTTYPE>, pSoldier
 
           // And make the call for the dialogue
           SetStopTimeQuoteCallback(BoobyTrapDialogueCallBack);
-          TacticalCharacterDialogue(pSoldier, QUOTE_BOOBYTRAP_ITEM);
+          TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_BOOBYTRAP_ITEM);
 
           return FALSE;
         }
@@ -3921,7 +3921,7 @@ function ContinuePastBoobyTrapInMapScreen(pObject: Pointer<OBJECTTYPE>, pSoldier
         // have the computer ask us if we want to proceed
         gpBoobyTrapSoldier = pSoldier;
         gbTrapDifficulty = pObject.value.bTrap;
-        DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[DISARM_BOOBYTRAP_PROMPT], MAP_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack, NULL);
+        DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.DISARM_BOOBYTRAP_PROMPT], Enum26.MAP_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack, NULL);
       } else {
         // oops!
         SetOffBoobyTrapInMapScreen(pSoldier, pObject);
@@ -4004,7 +4004,7 @@ function FindNearestAvailableGridNoForItem(sSweetGridNo: INT16, ubRadius: INT8):
 
   // Now, find out which of these gridnos are reachable
   //(use the fake soldier and the pathing settings)
-  FindBestPath(addressof(soldier), NOWHERE, 0, WALKING, COPYREACHABLE, 0);
+  FindBestPath(addressof(soldier), NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, 0);
 
   uiLowestRange = 999999;
 
@@ -4036,7 +4036,7 @@ function FindNearestAvailableGridNoForItem(sSweetGridNo: INT16, ubRadius: INT8):
 }
 
 function CanPlayerUseRocketRifle(pSoldier: Pointer<SOLDIERTYPE>, fDisplay: BOOLEAN): BOOLEAN {
-  if (pSoldier.value.inv[pSoldier.value.ubAttackingHand].usItem == ROCKET_RIFLE || pSoldier.value.inv[pSoldier.value.ubAttackingHand].usItem == AUTO_ROCKET_RIFLE) {
+  if (pSoldier.value.inv[pSoldier.value.ubAttackingHand].usItem == Enum225.ROCKET_RIFLE || pSoldier.value.inv[pSoldier.value.ubAttackingHand].usItem == Enum225.AUTO_ROCKET_RIFLE) {
     // check imprint ID
     // NB not-imprinted value is NO_PROFILE
     // imprinted value is profile for mercs & NPCs and NO_PROFILE + 1 for generic dudes
@@ -4046,10 +4046,10 @@ function CanPlayerUseRocketRifle(pSoldier: Pointer<SOLDIERTYPE>, fDisplay: BOOLE
         if (pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubImprintID != NO_PROFILE) {
           // access denied!
           if (pSoldier.value.bTeam == gbPlayerNum) {
-            PlayJA2Sample(RG_ID_INVALID, RATE_11025, HIGHVOLUME, 1, MIDDLE);
+            PlayJA2Sample(Enum330.RG_ID_INVALID, RATE_11025, HIGHVOLUME, 1, MIDDLE);
 
             if (fDisplay) {
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, "\"%s\"", TacticalStr[GUN_NOGOOD_FINGERPRINT]);
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, "\"%s\"", TacticalStr[Enum335.GUN_NOGOOD_FINGERPRINT]);
             }
           }
           return FALSE;

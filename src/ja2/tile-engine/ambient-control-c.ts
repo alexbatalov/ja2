@@ -1,7 +1,7 @@
 let gAmbData: AMBIENTDATA_STRUCT[] /* [MAX_AMBIENT_SOUNDS] */;
 let gsNumAmbData: INT16 = 0;
 
-let gubCurrentSteadyStateAmbience: UINT8 = SSA_NONE;
+let gubCurrentSteadyStateAmbience: UINT8 = Enum301.SSA_NONE;
 let gubCurrentSteadyStateSound: UINT8 = 0;
 let guiCurrentSteadyStateSoundHandle: UINT32 = NO_SAMPLE;
 let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIENCES] */ = [
@@ -207,7 +207,7 @@ function HandleNewSectorAmbience(ubAmbientID: UINT8): void {
   // OK, we could have just loaded a sector, erase all ambient sounds from queue, shutdown all ambient groupings
   SoundStopAllRandom();
 
-  DeleteAllStrategicEventsOfType(EVENT_AMBIENT);
+  DeleteAllStrategicEventsOfType(Enum132.EVENT_AMBIENT);
 
   if (!gfBasement && !gfCaves) {
     if (LoadAmbientControlFile(ubAmbientID)) {
@@ -222,7 +222,7 @@ function HandleNewSectorAmbience(ubAmbientID: UINT8): void {
 function DeleteAllAmbients(): void {
   // JA2Gold: it seems that ambient sounds don't get unloaded when we exit a sector!?
   SoundStopAllRandom();
-  DeleteAllStrategicEventsOfType(EVENT_AMBIENT);
+  DeleteAllStrategicEventsOfType(Enum132.EVENT_AMBIENT);
 }
 
 function SetupNewAmbientSound(uiAmbientID: UINT32): UINT32 {

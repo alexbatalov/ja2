@@ -146,7 +146,7 @@ function EnterInsuranceContract(): BOOLEAN {
 
   usPosX = INS_CTRCT_BOTTOM_LINK_RED_BAR_X;
   for (i = 0; i < 2; i++) {
-    MSYS_DefineRegion(addressof(gSelectedInsuranceContractLinkRegion[i]), usPosX, INS_CTRCT_BOTTON_LINK_RED_BAR_Y - 37, (usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH), INS_CTRCT_BOTTON_LINK_RED_BAR_Y + 2, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceContractRegionCallBack);
+    MSYS_DefineRegion(addressof(gSelectedInsuranceContractLinkRegion[i]), usPosX, INS_CTRCT_BOTTON_LINK_RED_BAR_Y - 37, (usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH), INS_CTRCT_BOTTON_LINK_RED_BAR_Y + 2, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceContractRegionCallBack);
     MSYS_AddRegion(addressof(gSelectedInsuranceContractLinkRegion[i]));
     MSYS_SetRegionUserData(addressof(gSelectedInsuranceContractLinkRegion[i]), 0, i);
 
@@ -155,14 +155,14 @@ function EnterInsuranceContract(): BOOLEAN {
 
   // left arrow
   guiInsContractPrevButtonImage = LoadButtonImage("LAPTOP\\InsLeftButton.sti", 2, 0, -1, 1, -1);
-  guiInsContractPrevBackButton = CreateIconAndTextButton(guiInsContractPrevButtonImage, InsContractText[INS_CONTRACT_PREVIOUS], INS_FONT_BIG, INS_FONT_COLOR, INS_FONT_SHADOW, INS_FONT_COLOR, INS_FONT_SHADOW, TEXT_CJUSTIFIED, INS_INFO_LEFT_ARROW_BUTTON_X, INS_INFO_LEFT_ARROW_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnInsContractPrevButtonCallback);
-  SetButtonCursor(guiInsContractPrevBackButton, CURSOR_WWW);
+  guiInsContractPrevBackButton = CreateIconAndTextButton(guiInsContractPrevButtonImage, InsContractText[Enum338.INS_CONTRACT_PREVIOUS], INS_FONT_BIG, INS_FONT_COLOR, INS_FONT_SHADOW, INS_FONT_COLOR, INS_FONT_SHADOW, TEXT_CJUSTIFIED, INS_INFO_LEFT_ARROW_BUTTON_X, INS_INFO_LEFT_ARROW_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnInsContractPrevButtonCallback);
+  SetButtonCursor(guiInsContractPrevBackButton, Enum317.CURSOR_WWW);
   SpecifyButtonTextOffsets(guiInsContractPrevBackButton, 17, 16, FALSE);
 
   // Right arrow
   guiInsContractNextButtonImage = LoadButtonImage("LAPTOP\\InsRightButton.sti", 2, 0, -1, 1, -1);
-  guiInsContractNextBackButton = CreateIconAndTextButton(guiInsContractNextButtonImage, InsContractText[INS_CONTRACT_NEXT], INS_FONT_BIG, INS_FONT_COLOR, INS_FONT_SHADOW, INS_FONT_COLOR, INS_FONT_SHADOW, TEXT_CJUSTIFIED, INS_INFO_RIGHT_ARROW_BUTTON_X, INS_INFO_RIGHT_ARROW_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnInsContractNextButtonCallBack);
-  SetButtonCursor(guiInsContractNextBackButton, CURSOR_WWW);
+  guiInsContractNextBackButton = CreateIconAndTextButton(guiInsContractNextButtonImage, InsContractText[Enum338.INS_CONTRACT_NEXT], INS_FONT_BIG, INS_FONT_COLOR, INS_FONT_SHADOW, INS_FONT_COLOR, INS_FONT_SHADOW, TEXT_CJUSTIFIED, INS_INFO_RIGHT_ARROW_BUTTON_X, INS_INFO_RIGHT_ARROW_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnInsContractNextButtonCallBack);
+  SetButtonCursor(guiInsContractNextBackButton, Enum317.CURSOR_WWW);
   SpecifyButtonTextOffsets(guiInsContractNextBackButton, 18, 16, FALSE);
 
   // create the new set of buttons
@@ -242,18 +242,18 @@ function RenderInsuranceContract(): void {
 
   // Display the red bar under the link at the bottom.  and the text
   DisplaySmallRedLineWithShadow(usPosX, INS_CTRCT_BOTTON_LINK_RED_BAR_Y, (usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH), INS_CTRCT_BOTTON_LINK_RED_BAR_Y);
-  swprintf(sText, "%s", pMessageStrings[MSG_HOMEPAGE]);
+  swprintf(sText, "%s", pMessageStrings[Enum333.MSG_HOMEPAGE]);
   DisplayWrappedString(usPosX, INS_CTRCT_BOTTON_LINK_Y + 18, INS_CTRCT_BOTTOM_LINK_RED_WIDTH, 2, INS_FONT_MED, INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   usPosX += INS_CTRCT_BOTTOM_LINK_RED_BAR_OFFSET;
 
   // Display the red bar under the link at the bottom.  and the text
   DisplaySmallRedLineWithShadow(usPosX, INS_CTRCT_BOTTON_LINK_RED_BAR_Y, (usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH), INS_CTRCT_BOTTON_LINK_RED_BAR_Y);
-  GetInsuranceText(INS_SNGL_HOW_DOES_INS_WORK, sText);
+  GetInsuranceText(Enum90.INS_SNGL_HOW_DOES_INS_WORK, sText);
   DisplayWrappedString(usPosX, INS_CTRCT_BOTTON_LINK_Y + 12, INS_CTRCT_BOTTOM_LINK_RED_WIDTH, 2, INS_FONT_MED, INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Display the title slogan
-  GetInsuranceText(INS_SNGL_ENTERING_REVIEWING_CLAIM, sText);
+  GetInsuranceText(Enum90.INS_SNGL_ENTERING_REVIEWING_CLAIM, sText);
   DrawTextToScreen(sText, LAPTOP_SCREEN_UL_X, INS_CTRCT_TITLE_Y, LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X, INS_FONT_BIG, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Get and display the insurance bullet
@@ -261,7 +261,7 @@ function RenderInsuranceContract(): void {
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CTRCT_FIRST_BULLET_TEXT_X, INS_CTRCT_FIRST_BULLET_TEXT_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Display the first instruction sentence
-  GetInsuranceText(INS_MLTI_TO_PURCHASE_INSURANCE, sText);
+  GetInsuranceText(Enum90.INS_MLTI_TO_PURCHASE_INSURANCE, sText);
   DisplayWrappedString(INS_CTRCT_FIRST_BULLET_TEXT_X + INSURANCE_BULLET_TEXT_OFFSET_X, INS_CTRCT_FIRST_BULLET_TEXT_Y, INS_CTRCT_INTSRUCTION_TEXT_WIDTH, 2, INS_FONT_MED, INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Get and display the insurance bullet
@@ -269,7 +269,7 @@ function RenderInsuranceContract(): void {
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CTRCT_FIRST_BULLET_TEXT_X, INS_CTRCT_SECOND_BULLET_TEXT_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Display the second instruction sentence
-  GetInsuranceText(INS_MLTI_ONCE_SATISFIED_CLICK_ACCEPT, sText);
+  GetInsuranceText(Enum90.INS_MLTI_ONCE_SATISFIED_CLICK_ACCEPT, sText);
   DisplayWrappedString(INS_CTRCT_FIRST_BULLET_TEXT_X + INSURANCE_BULLET_TEXT_OFFSET_X, INS_CTRCT_SECOND_BULLET_TEXT_Y, INS_CTRCT_INTSRUCTION_TEXT_WIDTH, 2, INS_FONT_MED, INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Display the red bar under the instruction text
@@ -294,12 +294,12 @@ function RenderInsuranceContract(): void {
     // if there where AIM mercs ( on short contract )
     if (AreAnyAimMercsOnTeam()) {
       // Display Error Message, all aim mercs are on short contract
-      GetInsuranceText(INS_MLTI_ALL_AIM_MERCS_ON_SHORT_CONTRACT, sText);
-      DoLapTopMessageBox(MSG_BOX_RED_ON_WHITE, sText, LAPTOP_SCREEN, MSG_BOX_FLAG_OK, InsContractNoMercsPopupCallBack);
+      GetInsuranceText(Enum90.INS_MLTI_ALL_AIM_MERCS_ON_SHORT_CONTRACT, sText);
+      DoLapTopMessageBox(Enum24.MSG_BOX_RED_ON_WHITE, sText, Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, InsContractNoMercsPopupCallBack);
     } else {
       // Display Error Message, no valid mercs
-      GetInsuranceText(INS_MLTI_NO_QUALIFIED_MERCS, sText);
-      DoLapTopMessageBox(MSG_BOX_RED_ON_WHITE, sText, LAPTOP_SCREEN, MSG_BOX_FLAG_OK, InsContractNoMercsPopupCallBack);
+      GetInsuranceText(Enum90.INS_MLTI_NO_QUALIFIED_MERCS, sText);
+      DoLapTopMessageBox(Enum24.MSG_BOX_RED_ON_WHITE, sText, Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, InsContractNoMercsPopupCallBack);
     }
   }
 
@@ -435,10 +435,10 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
     // if the merc has a contract
     if (pSoldier.value.usLifeInsurance) {
       // Display the contract text
-      GetInsuranceText(INS_SNGL_DEAD_WITH_CONTRACT, sText);
+      GetInsuranceText(Enum90.INS_SNGL_DEAD_WITH_CONTRACT, sText);
     } else {
       // Display the contract text
-      GetInsuranceText(INS_SNGL_DEAD_NO_CONTRACT, sText);
+      GetInsuranceText(Enum90.INS_SNGL_DEAD_NO_CONTRACT, sText);
     }
     DisplayWrappedString((usPosX + INS_CTRCT_OG_HAS_CONTRACT_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_OG_HAS_CONTRACT_OFFSET_Y, INS_CTRCT_CONTRACT_STATUS_TEXT_WIDTH, 2, INS_FONT_SMALL, INS_FONT_COLOR_RED, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   } else {
@@ -447,16 +447,16 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
       // if the soldier can extend their insurance
       if (CanSoldierExtendInsuranceContract(pSoldier)) {
         // Display the contract text
-        GetInsuranceText(INS_SNGL_PARTIALLY_INSURED, sText);
+        GetInsuranceText(Enum90.INS_SNGL_PARTIALLY_INSURED, sText);
         fDisplayMercContractStateTextColorInRed = TRUE;
       } else {
         // Display the contract text
-        GetInsuranceText(INS_SNGL_CONTRACT, sText);
+        GetInsuranceText(Enum90.INS_SNGL_CONTRACT, sText);
         fDisplayMercContractStateTextColorInRed = FALSE;
       }
     } else {
       // Display the contract text
-      GetInsuranceText(INS_SNGL_NOCONTRACT, sText);
+      GetInsuranceText(Enum90.INS_SNGL_NOCONTRACT, sText);
       fDisplayMercContractStateTextColorInRed = TRUE;
     }
     if (fDisplayMercContractStateTextColorInRed)
@@ -466,11 +466,11 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
   }
 
   // Display the Emplyment contract text
-  GetInsuranceText(INS_SNGL_EMPLOYMENT_CONTRACT, sText);
+  GetInsuranceText(Enum90.INS_SNGL_EMPLOYMENT_CONTRACT, sText);
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_EMPLYMNT_CNTRCT_TEXT_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_EMPLYMNT_CNTRCT_TEXT_OFFSET_Y, INS_CTRCT_ORDER_GRID_WIDTH, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Display the merc contract Length text
-  GetInsuranceText(INS_SNGL_LENGTH, sText);
+  GetInsuranceText(Enum90.INS_SNGL_LENGTH, sText);
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_LENGTH_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_LENGTH_OFFSET_Y, 0, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Display the mercs contract length
@@ -478,26 +478,26 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_OG_BOX_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_LENGTH_OFFSET_Y, INS_CTRCT_OG_BOX_WIDTH, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
 
   // Display the days remaining for the emplyment contract text
-  GetInsuranceText(INS_SNGL_DAYS_REMAINING, sText);
+  GetInsuranceText(Enum90.INS_SNGL_DAYS_REMAINING, sText);
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_LENGTH_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_DAYS_REMAINING_OFFSET_Y, 0, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // display the amount of time the merc has left on their Regular contract
   if (IsMercDead(ubMercID))
-    swprintf(sText, "%s", pMessageStrings[MSG_LOWERCASE_NA]);
+    swprintf(sText, "%s", pMessageStrings[Enum333.MSG_LOWERCASE_NA]);
   else
     swprintf(sText, "%d", GetTimeRemainingOnSoldiersContract(pSoldier));
 
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_OG_BOX_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_DAYS_REMAINING_OFFSET_Y, INS_CTRCT_OG_BOX_WIDTH, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
 
   // Display the Insurqance contract
-  GetInsuranceText(INS_SNGL_INSURANCE_CONTRACT, sText);
+  GetInsuranceText(Enum90.INS_SNGL_INSURANCE_CONTRACT, sText);
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_EMPLYMNT_CNTRCT_TEXT_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_INSURANCE_CNTRCT_OFFSET_Y, INS_CTRCT_ORDER_GRID_WIDTH, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
-  GetInsuranceText(INS_SNGL_LENGTH, sText);
+  GetInsuranceText(Enum90.INS_SNGL_LENGTH, sText);
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_LENGTH_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_LENGTH_OFFSET_Y + 54, 0, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Display the insurance days remaining text
-  GetInsuranceText(INS_SNGL_DAYS_REMAINING, sText);
+  GetInsuranceText(Enum90.INS_SNGL_DAYS_REMAINING, sText);
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_LENGTH_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_DAYS_REMAINING_OFFSET_Y + 54, 0, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   //
@@ -506,7 +506,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
 
   // if the soldier has insurance, disply the length of time the merc has left
   if (IsMercDead(ubMercID))
-    swprintf(sText, "%s", pMessageStrings[MSG_LOWERCASE_NA]);
+    swprintf(sText, "%s", pMessageStrings[Enum333.MSG_LOWERCASE_NA]);
 
   else if (pSoldier.value.usLifeInsurance != 0)
     swprintf(sText, "%d", GetTimeRemainingOnSoldiersInsuranceContract(pSoldier));
@@ -534,7 +534,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
     Assert(0);
   } else {
     // Display the premium owing text
-    GetInsuranceText(INS_SNGL_PREMIUM_OWING, sText);
+    GetInsuranceText(Enum90.INS_SNGL_PREMIUM_OWING, sText);
     DrawTextToScreen(sText, (usPosX + INS_CTRCT_EMPLYMNT_CNTRCT_TEXT_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_PREMIUM_OWING_OFFSET_Y, INS_CTRCT_ORDER_GRID_WIDTH, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
     // display the amount of refund
@@ -720,9 +720,9 @@ function SelectInsuranceContractRegionCallBack(pRegion: Pointer<MOUSE_REGION>, i
     let uiInsuranceLink: UINT32 = MSYS_GetRegionUserData(pRegion, 0);
 
     if (uiInsuranceLink == 0)
-      guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_INSURANCE;
     else if (uiInsuranceLink == 1)
-      guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE_INFO;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_INSURANCE_INFO;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
@@ -771,22 +771,22 @@ function CreateDestroyInsuranceContractFormButtons(fCreate: BOOLEAN): void {
 
     if (gubNumberofDisplayedInsuranceGrids >= 1) {
       // the accept button for form 1
-      guiInsuranceAcceptClearForm1Button = CreateIconAndTextButton(guiInsuranceAcceptClearForm1ButtonImage, InsContractText[INS_CONTRACT_ACCEPT], INS_FONT_MED, INS_FONT_BTN_COLOR, INS_FONT_BTN_SHADOW_COLOR, INS_FONT_BTN_COLOR, INS_FONT_BTN_SHADOW_COLOR, TEXT_CJUSTIFIED, INS_CTRCT_ORDER_GRID1_X + INS_CTRCT_ACCEPT_BTN_X, INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_ACCEPT_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnInsuranceAcceptClearForm1ButtonCallback);
-      SetButtonCursor(guiInsuranceAcceptClearForm1Button, CURSOR_LAPTOP_SCREEN);
+      guiInsuranceAcceptClearForm1Button = CreateIconAndTextButton(guiInsuranceAcceptClearForm1ButtonImage, InsContractText[Enum338.INS_CONTRACT_ACCEPT], INS_FONT_MED, INS_FONT_BTN_COLOR, INS_FONT_BTN_SHADOW_COLOR, INS_FONT_BTN_COLOR, INS_FONT_BTN_SHADOW_COLOR, TEXT_CJUSTIFIED, INS_CTRCT_ORDER_GRID1_X + INS_CTRCT_ACCEPT_BTN_X, INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_ACCEPT_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnInsuranceAcceptClearForm1ButtonCallback);
+      SetButtonCursor(guiInsuranceAcceptClearForm1Button, Enum317.CURSOR_LAPTOP_SCREEN);
       MSYS_SetBtnUserData(guiInsuranceAcceptClearForm1Button, 0, 0);
     }
 
     if (gubNumberofDisplayedInsuranceGrids >= 2) {
       // the accept button for form 2
-      guiInsuranceAcceptClearForm2Button = CreateIconAndTextButton(guiInsuranceAcceptClearForm1ButtonImage, InsContractText[INS_CONTRACT_ACCEPT], INS_FONT_MED, INS_FONT_BTN_COLOR, INS_FONT_BTN_SHADOW_COLOR, INS_FONT_BTN_COLOR, INS_FONT_BTN_SHADOW_COLOR, TEXT_CJUSTIFIED, INS_CTRCT_ORDER_GRID2_X + INS_CTRCT_ACCEPT_BTN_X, INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_ACCEPT_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnInsuranceAcceptClearForm2ButtonCallback);
-      SetButtonCursor(guiInsuranceAcceptClearForm2Button, CURSOR_LAPTOP_SCREEN);
+      guiInsuranceAcceptClearForm2Button = CreateIconAndTextButton(guiInsuranceAcceptClearForm1ButtonImage, InsContractText[Enum338.INS_CONTRACT_ACCEPT], INS_FONT_MED, INS_FONT_BTN_COLOR, INS_FONT_BTN_SHADOW_COLOR, INS_FONT_BTN_COLOR, INS_FONT_BTN_SHADOW_COLOR, TEXT_CJUSTIFIED, INS_CTRCT_ORDER_GRID2_X + INS_CTRCT_ACCEPT_BTN_X, INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_ACCEPT_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnInsuranceAcceptClearForm2ButtonCallback);
+      SetButtonCursor(guiInsuranceAcceptClearForm2Button, Enum317.CURSOR_LAPTOP_SCREEN);
       MSYS_SetBtnUserData(guiInsuranceAcceptClearForm2Button, 0, 0);
     }
 
     if (gubNumberofDisplayedInsuranceGrids >= 3) {
       // the accept button for form 3
-      guiInsuranceAcceptClearForm3Button = CreateIconAndTextButton(guiInsuranceAcceptClearForm1ButtonImage, InsContractText[INS_CONTRACT_ACCEPT], INS_FONT_MED, INS_FONT_BTN_COLOR, INS_FONT_BTN_SHADOW_COLOR, INS_FONT_BTN_COLOR, INS_FONT_BTN_SHADOW_COLOR, TEXT_CJUSTIFIED, INS_CTRCT_ORDER_GRID3_X + INS_CTRCT_ACCEPT_BTN_X, INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_ACCEPT_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnInsuranceAcceptClearForm3ButtonCallback);
-      SetButtonCursor(guiInsuranceAcceptClearForm3Button, CURSOR_LAPTOP_SCREEN);
+      guiInsuranceAcceptClearForm3Button = CreateIconAndTextButton(guiInsuranceAcceptClearForm1ButtonImage, InsContractText[Enum338.INS_CONTRACT_ACCEPT], INS_FONT_MED, INS_FONT_BTN_COLOR, INS_FONT_BTN_SHADOW_COLOR, INS_FONT_BTN_COLOR, INS_FONT_BTN_SHADOW_COLOR, TEXT_CJUSTIFIED, INS_CTRCT_ORDER_GRID3_X + INS_CTRCT_ACCEPT_BTN_X, INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_ACCEPT_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnInsuranceAcceptClearForm3ButtonCallback);
+      SetButtonCursor(guiInsuranceAcceptClearForm3Button, Enum317.CURSOR_LAPTOP_SCREEN);
       MSYS_SetBtnUserData(guiInsuranceAcceptClearForm3Button, 0, 0);
     }
 
@@ -882,7 +882,7 @@ function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8): INT32 
   }
 
   // If the merc is currently being held captive, get out
-  if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+  if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
     return 0;
   }
 
@@ -952,7 +952,7 @@ function DiffFromNormRatio(sThisValue: INT16, sNormalValue: INT16): FLOAT {
 function InsContractNoMercsPopupCallBack(bExitValue: UINT8): void {
   // yes, so start over, else stay here and do nothing for now
   if (bExitValue == MSG_BOX_RETURN_OK) {
-    guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE;
+    guiCurrentLaptopMode = Enum95.LAPTOP_MODE_INSURANCE;
   }
 
   return;
@@ -1042,10 +1042,10 @@ function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // if the death was suspicious, or he's already been investigated twice or more
   if (pProfile.value.ubSuspiciousDeath || (gStrategicStatus.ubInsuranceInvestigationsCnt >= 2)) {
     // fraud suspected, claim will be investigated first
-    AddStrategicEvent(EVENT_INSURANCE_INVESTIGATION_STARTED, uiTimeInMinutes, ubPayoutID);
+    AddStrategicEvent(Enum132.EVENT_INSURANCE_INVESTIGATION_STARTED, uiTimeInMinutes, ubPayoutID);
   } else {
     // is ok, make a prompt payment
-    AddStrategicEvent(EVENT_PAY_LIFE_INSURANCE_FOR_DEAD_MERC, uiTimeInMinutes, ubPayoutID);
+    AddStrategicEvent(Enum132.EVENT_PAY_LIFE_INSURANCE_FOR_DEAD_MERC, uiTimeInMinutes, ubPayoutID);
   }
 
   LaptopSaveInfo.ubNumberLifeInsurancePayoutUsed++;
@@ -1059,10 +1059,10 @@ function StartInsuranceInvestigation(ubPayoutID: UINT8): void {
   // send an email telling player an investigation is taking place
   if (gStrategicStatus.ubInsuranceInvestigationsCnt == 0) {
     // first offense
-    AddEmailWithSpecialData(INSUR_SUSPIC, INSUR_SUSPIC_LENGTH, INSURANCE_COMPANY, GetWorldTotalMin(), LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].iPayOutPrice, LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID);
+    AddEmailWithSpecialData(INSUR_SUSPIC, INSUR_SUSPIC_LENGTH, Enum75.INSURANCE_COMPANY, GetWorldTotalMin(), LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].iPayOutPrice, LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID);
   } else {
     // subsequent offense
-    AddEmailWithSpecialData(INSUR_SUSPIC_2, INSUR_SUSPIC_2_LENGTH, INSURANCE_COMPANY, GetWorldTotalMin(), LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].iPayOutPrice, LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID);
+    AddEmailWithSpecialData(INSUR_SUSPIC_2, INSUR_SUSPIC_2_LENGTH, Enum75.INSURANCE_COMPANY, GetWorldTotalMin(), LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].iPayOutPrice, LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID);
   }
 
   if (gMercProfiles[LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID].ubSuspiciousDeath == VERY_SUSPICIOUS_DEATH) {
@@ -1074,7 +1074,7 @@ function StartInsuranceInvestigation(ubPayoutID: UINT8): void {
   }
 
   // post an event to end the investigation that many days in the future (at 4pm)
-  AddStrategicEvent(EVENT_INSURANCE_INVESTIGATION_OVER, GetMidnightOfFutureDayInMinutes(ubDays) + 16 * 60, ubPayoutID);
+  AddStrategicEvent(Enum132.EVENT_INSURANCE_INVESTIGATION_OVER, GetMidnightOfFutureDayInMinutes(ubDays) + 16 * 60, ubPayoutID);
 
   // increment counter of all investigations
   gStrategicStatus.ubInsuranceInvestigationsCnt++;
@@ -1084,9 +1084,9 @@ function EndInsuranceInvestigation(ubPayoutID: UINT8): void {
   // send an email telling player the investigation is over
   if (gMercProfiles[LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID].ubSuspiciousDeath == VERY_SUSPICIOUS_DEATH) {
     // fraud, no payout!
-    AddEmailWithSpecialData(INSUR_1HOUR_FRAUD, INSUR_1HOUR_FRAUD_LENGTH, INSURANCE_COMPANY, GetWorldTotalMin(), LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].iPayOutPrice, LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID);
+    AddEmailWithSpecialData(INSUR_1HOUR_FRAUD, INSUR_1HOUR_FRAUD_LENGTH, Enum75.INSURANCE_COMPANY, GetWorldTotalMin(), LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].iPayOutPrice, LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID);
   } else {
-    AddEmailWithSpecialData(INSUR_INVEST_OVER, INSUR_INVEST_OVER_LENGTH, INSURANCE_COMPANY, GetWorldTotalMin(), LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].iPayOutPrice, LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID);
+    AddEmailWithSpecialData(INSUR_INVEST_OVER, INSUR_INVEST_OVER_LENGTH, Enum75.INSURANCE_COMPANY, GetWorldTotalMin(), LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].iPayOutPrice, LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID);
 
     // only now make a payment (immediately)
     InsuranceContractPayLifeInsuranceForDeadMerc(ubPayoutID);
@@ -1103,15 +1103,15 @@ function InsuranceContractPayLifeInsuranceForDeadMerc(ubPayoutID: UINT8): void {
   }
 
   // add transaction to players account
-  AddTransactionToPlayersBook(INSURANCE_PAYOUT, LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID, GetWorldTotalMin(), LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].iPayOutPrice);
+  AddTransactionToPlayersBook(Enum80.INSURANCE_PAYOUT, LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID, GetWorldTotalMin(), LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].iPayOutPrice);
 
   // add to the history log the fact that the we paid the insurance claim
-  AddHistoryToPlayersLog(HISTORY_INSURANCE_CLAIM_PAYOUT, LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID, GetWorldTotalMin(), -1, -1);
+  AddHistoryToPlayersLog(Enum83.HISTORY_INSURANCE_CLAIM_PAYOUT, LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID, GetWorldTotalMin(), -1, -1);
 
   // if there WASNT an investigation
   if (gMercProfiles[LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID].ubSuspiciousDeath == 0) {
     // Add an email telling the user that he received an insurance payment
-    AddEmailWithSpecialData(INSUR_PAYMENT, INSUR_PAYMENT_LENGTH, INSURANCE_COMPANY, GetWorldTotalMin(), LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].iPayOutPrice, LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID);
+    AddEmailWithSpecialData(INSUR_PAYMENT, INSUR_PAYMENT_LENGTH, Enum75.INSURANCE_COMPANY, GetWorldTotalMin(), LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].iPayOutPrice, LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID);
   }
 
   LaptopSaveInfo.ubNumberLifeInsurancePayoutUsed--;
@@ -1130,14 +1130,14 @@ function InsuranceContractEndGameShutDown(): void {
 
 function MercIsInsurable(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // only A.I.M. mercs currently on player's team
-  if ((pSoldier.value.bActive) && (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC)) {
+  if ((pSoldier.value.bActive) && (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC)) {
     // with more than one day left on their employment contract are eligible for insurance
     // the second part is because the insurance doesn't pay for any working day already started at time of death
     //		if( ( (pSoldier->iEndofContractTime - GetWorldTotalMin()) > 24 * 60) || pSoldier->usLifeInsurance )
     if (CanSoldierExtendInsuranceContract(pSoldier) || pSoldier.value.usLifeInsurance) {
       // who aren't currently being held POW
       // POWs are also uninsurable - if already insured, that insurance IS valid but no new contracts or extension allowed
-      if (pSoldier.value.bAssignment != ASSIGNMENT_POW) {
+      if (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) {
         return TRUE;
       }
     }
@@ -1269,7 +1269,7 @@ function PurchaseOrExtendInsuranceForSoldier(pSoldier: Pointer<SOLDIERTYPE>, uiI
   if (pSoldier.value.usLifeInsurance) {
     // if the player is extending the contract
     if (iAmountOfMoneyTransfer > 0)
-      AddTransactionToPlayersBook(EXTENDED_INSURANCE, pSoldier.value.ubProfile, GetWorldTotalMin(), -(iAmountOfMoneyTransfer));
+      AddTransactionToPlayersBook(Enum80.EXTENDED_INSURANCE, pSoldier.value.ubProfile, GetWorldTotalMin(), -(iAmountOfMoneyTransfer));
     else
       Assert(0);
   } else {
@@ -1277,19 +1277,19 @@ function PurchaseOrExtendInsuranceForSoldier(pSoldier: Pointer<SOLDIERTYPE>, uiI
     if (LaptopSaveInfo.iCurrentBalance < iAmountOfMoneyTransfer) {
       let sText: wchar_t[] /* [800] */;
 
-      GetInsuranceText(INS_MLTI_NOT_ENOUGH_FUNDS, sText);
-      if (guiCurrentScreen == LAPTOP_SCREEN)
-        DoLapTopMessageBox(MSG_BOX_RED_ON_WHITE, sText, LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+      GetInsuranceText(Enum90.INS_MLTI_NOT_ENOUGH_FUNDS, sText);
+      if (guiCurrentScreen == Enum26.LAPTOP_SCREEN)
+        DoLapTopMessageBox(Enum24.MSG_BOX_RED_ON_WHITE, sText, Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
       else
-        DoMapMessageBox(MSG_BOX_RED_ON_WHITE, sText, MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoMapMessageBox(Enum24.MSG_BOX_RED_ON_WHITE, sText, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
     } else {
       // else if the player has enought to cover the bill, let him
 
       // the player just purchased life insurance
-      AddTransactionToPlayersBook(PURCHASED_INSURANCE, pSoldier.value.ubProfile, GetWorldTotalMin(), -(iAmountOfMoneyTransfer));
+      AddTransactionToPlayersBook(Enum80.PURCHASED_INSURANCE, pSoldier.value.ubProfile, GetWorldTotalMin(), -(iAmountOfMoneyTransfer));
 
       // add an entry in the history page for the purchasing of life insurance
-      AddHistoryToPlayersLog(HISTORY_PURCHASED_INSURANCE, pSoldier.value.ubProfile, GetWorldTotalMin(), -1, -1);
+      AddHistoryToPlayersLog(Enum83.HISTORY_PURCHASED_INSURANCE, pSoldier.value.ubProfile, GetWorldTotalMin(), -1, -1);
 
       // Set that we have life insurance
       pSoldier.value.usLifeInsurance = 1;
@@ -1356,7 +1356,7 @@ function CalcStartDayOfInsurance(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   let uiDayToStartInsurance: UINT32 = 0;
 
   // if the soldier was just hired ( in transit ), and the game didnt just start
-  if (pSoldier.value.bAssignment == IN_TRANSIT && !DidGameJustStart()) {
+  if (pSoldier.value.bAssignment == Enum117.IN_TRANSIT && !DidGameJustStart()) {
     uiDayToStartInsurance = GetWorldDay();
   } else {
     // Get tomorows date ( and convert it to days )
@@ -1375,7 +1375,7 @@ function AreAnyAimMercsOnTeam(): BOOLEAN {
     pSoldier = addressof(Menptr[GetSoldierIDFromMercID(sNextMercID)]);
 
     // check to see if any of the mercs are AIM mercs
-    if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
+    if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
       fIsThereAnyAimMercs = TRUE;
     }
   }

@@ -14,23 +14,23 @@ function LoadWeaponIfNeeded(pSoldier: Pointer<SOLDIERTYPE>): void {
   let usInHand: UINT16;
   let bPayloadPocket: INT8;
 
-  usInHand = pSoldier.value.inv[HANDPOS].usItem;
+  usInHand = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
   // if he's got a MORTAR in his hand, make sure he has a MORTARSHELL avail.
-  if (usInHand == MORTAR) {
-    bPayloadPocket = FindObj(pSoldier, MORTAR_SHELL);
+  if (usInHand == Enum225.MORTAR) {
+    bPayloadPocket = FindObj(pSoldier, Enum225.MORTAR_SHELL);
     if (bPayloadPocket == NO_SLOT) {
       return; // no shells, can't fire the MORTAR
     }
   }
   // if he's got a GL in his hand, make sure he has some type of GRENADE avail.
-  else if (usInHand == GLAUNCHER) {
+  else if (usInHand == Enum225.GLAUNCHER) {
     bPayloadPocket = FindGLGrenade(pSoldier);
     if (bPayloadPocket == NO_SLOT) {
       return; // no grenades, can't fire the GLAUNCHER
     }
-  } else if (usInHand == TANK_CANNON) {
-    bPayloadPocket = FindLaunchable(pSoldier, TANK_CANNON);
+  } else if (usInHand == Enum225.TANK_CANNON) {
+    bPayloadPocket = FindLaunchable(pSoldier, Enum225.TANK_CANNON);
     if (bPayloadPocket == NO_SLOT) {
       return;
     }
@@ -40,8 +40,8 @@ function LoadWeaponIfNeeded(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 
   // remove payload from its pocket, and add it as the hand weapon's first attachment
-  pSoldier.value.inv[HANDPOS].usAttachItem[0] = pSoldier.value.inv[bPayloadPocket].usItem;
-  pSoldier.value.inv[HANDPOS].bAttachStatus[0] = pSoldier.value.inv[bPayloadPocket].bStatus[0];
+  pSoldier.value.inv[Enum261.HANDPOS].usAttachItem[0] = pSoldier.value.inv[bPayloadPocket].usItem;
+  pSoldier.value.inv[Enum261.HANDPOS].bAttachStatus[0] = pSoldier.value.inv[bPayloadPocket].bStatus[0];
 
   if (TANK(pSoldier)) {
     // don't remove ammo
@@ -78,9 +78,9 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
 
   ubBestChanceToHit = ubBestAimTime = ubChanceToHit = 0;
 
-  pSoldier.value.usAttackingWeapon = pSoldier.value.inv[HANDPOS].usItem;
+  pSoldier.value.usAttackingWeapon = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
-  ubBurstAPs = CalcAPsToBurst(CalcActionPoints(pSoldier), addressof(pSoldier.value.inv[HANDPOS]));
+  ubBurstAPs = CalcAPsToBurst(CalcActionPoints(pSoldier), addressof(pSoldier.value.inv[Enum261.HANDPOS]));
 
   InitAttackType(pBestShot); // set all structure fields to defaults
 
@@ -104,7 +104,7 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
       continue; // next opponent
 
     // Special stuff for Carmen the bounty hunter
-    if (pSoldier.value.bAttitude == ATTACKSLAYONLY && pOpponent.value.ubProfile != SLAY)
+    if (pSoldier.value.bAttitude == Enum242.ATTACKSLAYONLY && pOpponent.value.ubProfile != Enum268.SLAY)
       continue; // next opponent
 
     // calculate minimum action points required to shoot at this opponent
@@ -129,7 +129,7 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
     if (ubChanceToGetThrough == 0)
       continue; // next opponent
 
-    if ((pSoldier.value.uiStatusFlags & SOLDIER_MONSTER) && (pSoldier.value.ubBodyType != QUEENMONSTER)) {
+    if ((pSoldier.value.uiStatusFlags & SOLDIER_MONSTER) && (pSoldier.value.ubBodyType != Enum194.QUEENMONSTER)) {
       let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
       let usAnimSurface: UINT16;
 
@@ -219,7 +219,7 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
       continue; // next opponent
 
     // really limit knife throwing so it doesn't look wrong
-    if (Item[pSoldier.value.usAttackingWeapon].usItemClass == IC_THROWING_KNIFE && (ubChanceToReallyHit < 30 || (PythSpacesAway(pSoldier.value.sGridNo, pOpponent.value.sGridNo) > CalcMaxTossRange(pSoldier, THROWING_KNIFE, FALSE) / 2)))
+    if (Item[pSoldier.value.usAttackingWeapon].usItemClass == IC_THROWING_KNIFE && (ubChanceToReallyHit < 30 || (PythSpacesAway(pSoldier.value.sGridNo, pOpponent.value.sGridNo) > CalcMaxTossRange(pSoldier, Enum225.THROWING_KNIFE, FALSE) / 2)))
       continue; // don't bother... next opponent
 
     // calculate this opponent's threat value (factor in my cover from him)
@@ -236,7 +236,7 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
     // NumMessage("SHOT AttackValue = ",iAttackValue / 1000);
 
     // special stuff for assassins to ignore militia more
-    if (pSoldier.value.ubProfile >= JIM && pSoldier.value.ubProfile <= TYRONE && pOpponent.value.bTeam == MILITIA_TEAM) {
+    if (pSoldier.value.ubProfile >= Enum268.JIM && pSoldier.value.ubProfile <= Enum268.TYRONE && pOpponent.value.bTeam == MILITIA_TEAM) {
       iAttackValue /= 2;
     }
 
@@ -289,7 +289,7 @@ function CloseEnoughForGrenadeToss(sGridNo: INT16, sGridNo2: INT16): BOOLEAN {
   if (sGridNo == sGridNo2) {
     // checking the same space; if there is a closed door next to location in ANY direction then forget it
     // (could be the player closed a door on us)
-    for (bDirection = 0; bDirection < NUM_WORLD_DIRECTIONS; bDirection++) {
+    for (bDirection = 0; bDirection < Enum245.NUM_WORLD_DIRECTIONS; bDirection++) {
       sTempGridNo = NewGridNo(sGridNo, DirectionInc(bDirection));
       ubMovementCost = gubWorldMovementCosts[sTempGridNo][bDirection][0];
       if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
@@ -384,7 +384,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
   let ubDiff: UINT8;
   let bEndLevel: INT8;
 
-  usInHand = pSoldier.value.inv[HANDPOS].usItem;
+  usInHand = pSoldier.value.inv[Enum261.HANDPOS].usItem;
   usGrenade = NOTHING;
 
   if (EXPLOSIVE_GUN(usInHand)) {
@@ -394,15 +394,15 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
   }
 
   // if he's got a MORTAR in his hand, make sure he has a MORTARSHELL avail.
-  if (usInHand == MORTAR) {
-    bPayloadPocket = FindObj(pSoldier, MORTAR_SHELL);
+  if (usInHand == Enum225.MORTAR) {
+    bPayloadPocket = FindObj(pSoldier, Enum225.MORTAR_SHELL);
     if (bPayloadPocket == NO_SLOT) {
       return; // no shells, can't fire the MORTAR
     }
-    ubSafetyMargin = Explosive[Item[MORTAR_SHELL].ubClassIndex].ubRadius;
+    ubSafetyMargin = Explosive[Item[Enum225.MORTAR_SHELL].ubClassIndex].ubRadius;
   }
   // if he's got a GL in his hand, make sure he has some type of GRENADE avail.
-  else if (usInHand == GLAUNCHER) {
+  else if (usInHand == Enum225.GLAUNCHER) {
     // use up pocket 2 first, they get left as drop items
     bPayloadPocket = FindGLGrenade(pSoldier);
     if (bPayloadPocket == NO_SLOT) {
@@ -410,24 +410,24 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
     }
     ubSafetyMargin = Explosive[Item[pSoldier.value.inv[bPayloadPocket].usItem].ubClassIndex].ubRadius;
     usGrenade = pSoldier.value.inv[bPayloadPocket].usItem;
-  } else if (usInHand == ROCKET_LAUNCHER) {
+  } else if (usInHand == Enum225.ROCKET_LAUNCHER) {
     // put in hand
-    bPayloadPocket = HANDPOS;
+    bPayloadPocket = Enum261.HANDPOS;
     // as C1
-    ubSafetyMargin = Explosive[Item[C1].ubClassIndex].ubRadius;
-  } else if (usInHand == TANK_CANNON) {
-    bPayloadPocket = FindObj(pSoldier, TANK_SHELL);
+    ubSafetyMargin = Explosive[Item[Enum225.C1].ubClassIndex].ubRadius;
+  } else if (usInHand == Enum225.TANK_CANNON) {
+    bPayloadPocket = FindObj(pSoldier, Enum225.TANK_SHELL);
     if (bPayloadPocket == NO_SLOT) {
       return; // no grenades, can't fire the GLAUNCHER
     }
-    ubSafetyMargin = Explosive[Item[TANK_SHELL].ubClassIndex].ubRadius;
+    ubSafetyMargin = Explosive[Item[Enum225.TANK_SHELL].ubClassIndex].ubRadius;
   } else {
     // else it's a plain old grenade, now in his hand
-    bPayloadPocket = HANDPOS;
+    bPayloadPocket = Enum261.HANDPOS;
     ubSafetyMargin = Explosive[Item[pSoldier.value.inv[bPayloadPocket].usItem].ubClassIndex].ubRadius;
     usGrenade = pSoldier.value.inv[bPayloadPocket].usItem;
 
-    if (usGrenade == BREAK_LIGHT) {
+    if (usGrenade == Enum225.BREAK_LIGHT) {
       // JA2Gold: light isn't as nasty as explosives
       ubSafetyMargin /= 2;
     }
@@ -492,13 +492,13 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
     }
 
     // Special stuff for Carmen the bounty hunter
-    if (pSoldier.value.bAttitude == ATTACKSLAYONLY && pOpponent.value.ubProfile != 64) {
+    if (pSoldier.value.bAttitude == Enum242.ATTACKSLAYONLY && pOpponent.value.ubProfile != 64) {
       continue; // next opponent
     }
 
     bPersOL = pSoldier.value.bOppList[pOpponent.value.ubID];
 
-    if ((usInHand == MORTAR) || (usInHand == GLAUNCHER)) {
+    if ((usInHand == Enum225.MORTAR) || (usInHand == Enum225.GLAUNCHER)) {
       bPublOL = gbPublicOpplist[pSoldier.value.bTeam][pOpponent.value.ubID];
       // allow long range firing, where target doesn't PERSONALLY see opponent
       if ((bPersOL != SEEN_CURRENTLY) && (bPublOL != SEEN_CURRENTLY)) {
@@ -566,7 +566,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
         if (!CloseEnoughForGrenadeToss(pOpponent.value.sGridNo, gsLastKnownOppLoc[pSoldier.value.ubID][pOpponent.value.ubID])) {
           continue;
         }
-        if (usGrenade != BREAK_LIGHT && !pSoldier.value.bUnderFire && pSoldier.value.bShock == 0) {
+        if (usGrenade != Enum225.BREAK_LIGHT && !pSoldier.value.bUnderFire && pSoldier.value.bShock == 0) {
           continue;
         }
         sOpponentTile[ubOpponentCnt] = gsLastKnownOppLoc[pSoldier.value.ubID][pOpponent.value.ubID];
@@ -588,7 +588,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
   // NumMessage("ubOpponentCnt = ",ubOpponentCnt);
 
   // this is try to minimize enemies wasting their (limited) toss attacks, with the exception of break lights
-  if (usGrenade != BREAK_LIGHT) {
+  if (usGrenade != Enum225.BREAK_LIGHT) {
     switch (ubDiff) {
       case 0:
       case 1:
@@ -656,20 +656,20 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
         // if considering a gas/smoke grenade, check to see if there is such stuff already there!
         if (usGrenade) {
           switch (usGrenade) {
-            case SMOKE_GRENADE:
-            case GL_SMOKE_GRENADE:
+            case Enum225.SMOKE_GRENADE:
+            case Enum225.GL_SMOKE_GRENADE:
               // skip smoke
               if (gpWorldLevelData[sGridNo].ubExtFlags[bOpponentLevel[ubLoop]] & MAPELEMENT_EXT_SMOKE) {
                 continue;
               }
               break;
-            case TEARGAS_GRENADE:
+            case Enum225.TEARGAS_GRENADE:
               // skip tear and mustard gas
               if (gpWorldLevelData[sGridNo].ubExtFlags[bOpponentLevel[ubLoop]] & (MAPELEMENT_EXT_TEARGAS | MAPELEMENT_EXT_MUSTARDGAS)) {
                 continue;
               }
               break;
-            case MUSTARD_GRENADE:
+            case Enum225.MUSTARD_GRENADE:
               // skip mustard gas
               if (gpWorldLevelData[sGridNo].ubExtFlags[bOpponentLevel[ubLoop]] & MAPELEMENT_EXT_MUSTARDGAS) {
                 continue;
@@ -753,7 +753,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
               ubOppsInRange++;
               if (usOppDist < 2) {
                 ubOppsAdjacent++;
-                if (ubOppsAdjacent > 1 || usGrenade == BREAK_LIGHT) {
+                if (ubOppsAdjacent > 1 || usGrenade == Enum225.BREAK_LIGHT) {
                   fSkipLocation = FALSE;
                   // add to exclusion list so we don't consider it again
                 }
@@ -763,7 +763,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
         }
 
         // JA2Gold
-        if (gGameOptions.ubDifficultyLevel == DIF_LEVEL_EASY) {
+        if (gGameOptions.ubDifficultyLevel == Enum9.DIF_LEVEL_EASY) {
           if (fSkipLocation) {
             continue;
           }
@@ -794,7 +794,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
             continue; // next gridno
           }
         } else {
-          ubChanceToGetThrough = 100 * CalculateLaunchItemChanceToGetThrough(pSoldier, addressof(pSoldier.value.inv[HANDPOS]), sGridNo, bOpponentLevel[ubLoop], 0, addressof(sEndGridNo), TRUE, addressof(bEndLevel), FALSE); // NumMessage("Chance to get through = ",ubChanceToGetThrough);
+          ubChanceToGetThrough = 100 * CalculateLaunchItemChanceToGetThrough(pSoldier, addressof(pSoldier.value.inv[Enum261.HANDPOS]), sGridNo, bOpponentLevel[ubLoop], 0, addressof(sEndGridNo), TRUE, addressof(bEndLevel), FALSE); // NumMessage("Chance to get through = ",ubChanceToGetThrough);
           // if we can't possibly get through all the cover
           if (ubChanceToGetThrough == 0) {
             if (bEndLevel == bOpponentLevel[ubLoop] && ubSafetyMargin > 1) {
@@ -818,7 +818,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
 
         // this is try to minimize enemies wasting their (few) mortar shells or LAWs
         // they won't use them on less than 2 targets as long as half life left
-        if ((usInHand == MORTAR || usInHand == ROCKET_LAUNCHER) && (ubOppsInRange < 2) && (pSoldier.value.bLife > (pSoldier.value.bLifeMax / 2))) {
+        if ((usInHand == Enum225.MORTAR || usInHand == Enum225.ROCKET_LAUNCHER) && (ubOppsInRange < 2) && (pSoldier.value.bLife > (pSoldier.value.bLifeMax / 2))) {
           continue; // next gridno
         }
 
@@ -842,7 +842,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
 
         // mortars are inherently quite inaccurate, don't get proximity bonus
         // rockets can go right past people too so...
-        if (usInHand != MORTAR && EXPLOSIVE_GUN(usInHand)) {
+        if (usInHand != Enum225.MORTAR && EXPLOSIVE_GUN(usInHand)) {
           // special 50% to Hit bonus: this reflects that even if a tossed item
           // misses by a bit, it's still likely to affect the intended target(s)
           ubChanceToHit += (ubChanceToHit / 2);
@@ -930,12 +930,12 @@ function CalcBestStab(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKT
 
   InitAttackType(pBestStab); // set all structure fields to defaults
 
-  pSoldier.value.usAttackingWeapon = pSoldier.value.inv[HANDPOS].usItem;
+  pSoldier.value.usAttackingWeapon = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
   // temporarily make this guy run so we get a proper AP cost value
   // from CalcTotalAPsToAttack
   usTrueMovementMode = pSoldier.value.usUIMovementMode;
-  pSoldier.value.usUIMovementMode = RUNNING;
+  pSoldier.value.usUIMovementMode = Enum193.RUNNING;
 
   // determine which attack against which target has the greatest attack value
 
@@ -959,7 +959,7 @@ function CalcBestStab(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKT
       continue; // next merc
 
     // Special stuff for Carmen the bounty hunter
-    if (pSoldier.value.bAttitude == ATTACKSLAYONLY && pOpponent.value.ubProfile != 64)
+    if (pSoldier.value.bAttitude == Enum242.ATTACKSLAYONLY && pOpponent.value.ubProfile != 64)
       continue; // next opponent
 
     // calculate minimum action points required to stab at this opponent
@@ -1123,7 +1123,7 @@ function CalcTentacleAttack(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<A
 
   InitAttackType(pBestStab); // set all structure fields to defaults
 
-  pSoldier.value.usAttackingWeapon = pSoldier.value.inv[HANDPOS].usItem;
+  pSoldier.value.usAttackingWeapon = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
   // determine which attack against which target has the greatest attack value
 
@@ -1147,7 +1147,7 @@ function CalcTentacleAttack(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<A
       continue; // next merc
 
     // if this opponent is outside the range of our tentacles
-    if (GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, pOpponent.value.sGridNo) > Weapon[CREATURE_QUEEN_TENTACLES].usRange) {
+    if (GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, pOpponent.value.sGridNo) > Weapon[Enum225.CREATURE_QUEEN_TENTACLES].usRange) {
       continue; // next merc
     }
 
@@ -1283,7 +1283,7 @@ function EstimateShotDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<S
           */
 
   if (Item[pSoldier.value.inv[pSoldier.value.ubAttackingHand].usItem].usItemClass & IC_THROWING_KNIFE) {
-    ubAmmoType = AMMO_KNIFE;
+    ubAmmoType = Enum286.AMMO_KNIFE;
   } else {
     ubAmmoType = pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubGunAmmoType;
   }
@@ -1291,7 +1291,7 @@ function EstimateShotDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<S
   // calculate distance to target, obtain his gun's maximum range rating
 
   iRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, pOpponent.value.sGridNo);
-  iMaxRange = Weapon[pSoldier.value.inv[HANDPOS].usItem].usRange;
+  iMaxRange = Weapon[pSoldier.value.inv[Enum261.HANDPOS].usItem].usRange;
 
   // bullet loses speed and penetrating power, 50% loss per maximum range
   iPowerLost = ((50 * iRange) / iMaxRange);
@@ -1299,34 +1299,34 @@ function EstimateShotDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<S
   // up to 50% extra impact for making particularly accurate successful shots
   ubBonus = ubChanceToHit / 4; // /4 is really /2 and /2 again
 
-  iDamage = (Weapon[pSoldier.value.inv[HANDPOS].usItem].ubImpact * (100 - iPowerLost + ubBonus)) / 100;
+  iDamage = (Weapon[pSoldier.value.inv[Enum261.HANDPOS].usItem].ubImpact * (100 - iPowerLost + ubBonus)) / 100;
 
   // NumMessage("Pre-protection damage: ",damage);
 
   // if opponent is wearing a helmet
-  if (pOpponent.value.inv[HELMETPOS].usItem) {
-    iHeadProt += Armour[Item[pOpponent.value.inv[HELMETPOS].usItem].ubClassIndex].ubProtection * pOpponent.value.inv[HELMETPOS].bStatus[0] / 100;
+  if (pOpponent.value.inv[Enum261.HELMETPOS].usItem) {
+    iHeadProt += Armour[Item[pOpponent.value.inv[Enum261.HELMETPOS].usItem].ubClassIndex].ubProtection * pOpponent.value.inv[Enum261.HELMETPOS].bStatus[0] / 100;
   }
 
   // if opponent is wearing a protective vest
-  if (ubAmmoType != AMMO_MONSTER && ubAmmoType != AMMO_KNIFE) {
+  if (ubAmmoType != Enum286.AMMO_MONSTER && ubAmmoType != Enum286.AMMO_KNIFE) {
     // monster spit and knives ignore kevlar vests
-    if (pOpponent.value.inv[VESTPOS].usItem) {
-      iTorsoProt += Armour[Item[pOpponent.value.inv[VESTPOS].usItem].ubClassIndex].ubProtection * pOpponent.value.inv[VESTPOS].bStatus[0] / 100;
+    if (pOpponent.value.inv[Enum261.VESTPOS].usItem) {
+      iTorsoProt += Armour[Item[pOpponent.value.inv[Enum261.VESTPOS].usItem].ubClassIndex].ubProtection * pOpponent.value.inv[Enum261.VESTPOS].bStatus[0] / 100;
     }
   }
 
   // check for ceramic plates; these do affect monster spit
-  bPlatePos = FindAttachment(addressof(pOpponent.value.inv[VESTPOS]), CERAMIC_PLATES);
+  bPlatePos = FindAttachment(addressof(pOpponent.value.inv[Enum261.VESTPOS]), Enum225.CERAMIC_PLATES);
   if (bPlatePos != -1) {
-    iTorsoProt += Armour[Item[pOpponent.value.inv[VESTPOS].usAttachItem[bPlatePos]].ubClassIndex].ubProtection * pOpponent.value.inv[VESTPOS].bAttachStatus[bPlatePos] / 100;
+    iTorsoProt += Armour[Item[pOpponent.value.inv[Enum261.VESTPOS].usAttachItem[bPlatePos]].ubClassIndex].ubProtection * pOpponent.value.inv[Enum261.VESTPOS].bAttachStatus[bPlatePos] / 100;
   }
 
   // if opponent is wearing armoured leggings (LEGPOS)
-  if (ubAmmoType != AMMO_MONSTER && ubAmmoType != AMMO_KNIFE) {
+  if (ubAmmoType != Enum286.AMMO_MONSTER && ubAmmoType != Enum286.AMMO_KNIFE) {
     // monster spit and knives ignore kevlar leggings
-    if (pOpponent.value.inv[LEGPOS].usItem) {
-      iLegProt += Armour[Item[pOpponent.value.inv[LEGPOS].usItem].ubClassIndex].ubProtection * pOpponent.value.inv[LEGPOS].bStatus[0] / 100;
+    if (pOpponent.value.inv[Enum261.LEGPOS].usItem) {
+      iLegProt += Armour[Item[pOpponent.value.inv[Enum261.LEGPOS].usItem].ubClassIndex].ubProtection * pOpponent.value.inv[Enum261.LEGPOS].bStatus[0] / 100;
     }
   }
 
@@ -1335,13 +1335,13 @@ function EstimateShotDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<S
 
   iTotalProt = ((15 * iHeadProt) + (75 * iTorsoProt) + 5 * iLegProt) / 100;
   switch (ubAmmoType) {
-    case AMMO_HP:
+    case Enum286.AMMO_HP:
       iTotalProt = AMMO_ARMOUR_ADJUSTMENT_HP(iTotalProt);
       break;
-    case AMMO_AP:
+    case Enum286.AMMO_AP:
       iTotalProt = AMMO_ARMOUR_ADJUSTMENT_AP(iTotalProt);
       break;
-    case AMMO_SUPER_AP:
+    case Enum286.AMMO_SUPER_AP:
       iTotalProt = AMMO_ARMOUR_ADJUSTMENT_SAP(iTotalProt);
       break;
     default:
@@ -1351,24 +1351,24 @@ function EstimateShotDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<S
   iDamage -= iTotalProt;
   // NumMessage("After-protection damage: ",damage);
 
-  if (ubAmmoType == AMMO_HP) {
+  if (ubAmmoType == Enum286.AMMO_HP) {
     // increase after-armour damage
     iDamage = AMMO_DAMAGE_ADJUSTMENT_HP(iDamage);
   }
 
-  if (ubAmmoType == AMMO_MONSTER) {
+  if (ubAmmoType == Enum286.AMMO_MONSTER) {
     // cheat and emphasize shots
     // iDamage = (iDamage * 15) / 10;
     switch (pSoldier.value.inv[pSoldier.value.ubAttackingHand].usItem) {
       // explosive damage is 100-200% that of the rated, so multiply by 3/2s here
-      case CREATURE_QUEEN_SPIT:
-        iDamage += (3 * Explosive[Item[LARGE_CREATURE_GAS].ubClassIndex].ubDamage * NumMercsCloseTo(pOpponent.value.sGridNo, Explosive[Item[LARGE_CREATURE_GAS].ubClassIndex].ubRadius)) / 2;
+      case Enum225.CREATURE_QUEEN_SPIT:
+        iDamage += (3 * Explosive[Item[Enum225.LARGE_CREATURE_GAS].ubClassIndex].ubDamage * NumMercsCloseTo(pOpponent.value.sGridNo, Explosive[Item[Enum225.LARGE_CREATURE_GAS].ubClassIndex].ubRadius)) / 2;
         break;
-      case CREATURE_OLD_MALE_SPIT:
-        iDamage += (3 * Explosive[Item[SMALL_CREATURE_GAS].ubClassIndex].ubDamage * NumMercsCloseTo(pOpponent.value.sGridNo, Explosive[Item[SMALL_CREATURE_GAS].ubClassIndex].ubRadius)) / 2;
+      case Enum225.CREATURE_OLD_MALE_SPIT:
+        iDamage += (3 * Explosive[Item[Enum225.SMALL_CREATURE_GAS].ubClassIndex].ubDamage * NumMercsCloseTo(pOpponent.value.sGridNo, Explosive[Item[Enum225.SMALL_CREATURE_GAS].ubClassIndex].ubRadius)) / 2;
         break;
       default:
-        iDamage += (3 * Explosive[Item[VERY_SMALL_CREATURE_GAS].ubClassIndex].ubDamage * NumMercsCloseTo(pOpponent.value.sGridNo, Explosive[Item[VERY_SMALL_CREATURE_GAS].ubClassIndex].ubRadius)) / 2;
+        iDamage += (3 * Explosive[Item[Enum225.VERY_SMALL_CREATURE_GAS].ubClassIndex].ubDamage * NumMercsCloseTo(pOpponent.value.sGridNo, Explosive[Item[Enum225.VERY_SMALL_CREATURE_GAS].ubClassIndex].ubRadius)) / 2;
         break;
     }
   }
@@ -1388,14 +1388,14 @@ function EstimateThrowDamage(pSoldier: Pointer<SOLDIERTYPE>, ubItemPos: UINT8, p
   let bSlot: INT8;
 
   switch (pSoldier.value.inv[ubItemPos].usItem) {
-    case GL_SMOKE_GRENADE:
-    case SMOKE_GRENADE:
+    case Enum225.GL_SMOKE_GRENADE:
+    case Enum225.SMOKE_GRENADE:
       // Don't want to value throwing smoke very much.  This value is based relative
       // to the value for knocking somebody down, which was giving values that were
       // too high
       return 5;
-    case ROCKET_LAUNCHER:
-      ubExplosiveIndex = Item[C1].ubClassIndex;
+    case Enum225.ROCKET_LAUNCHER:
+      ubExplosiveIndex = Item[Enum225.C1].ubClassIndex;
       break;
     default:
       ubExplosiveIndex = Item[pSoldier.value.inv[ubItemPos].usItem].ubClassIndex;
@@ -1403,20 +1403,20 @@ function EstimateThrowDamage(pSoldier: Pointer<SOLDIERTYPE>, ubItemPos: UINT8, p
   }
 
   // JA2Gold: added
-  if (pSoldier.value.inv[ubItemPos].usItem == BREAK_LIGHT) {
+  if (pSoldier.value.inv[ubItemPos].usItem == Enum225.BREAK_LIGHT) {
     return 5 * (LightTrueLevel(pOpponent.value.sGridNo, pOpponent.value.bLevel) - NORMAL_LIGHTLEVEL_DAY);
   }
 
   iExplosDamage = ((Explosive[ubExplosiveIndex].ubDamage) * 3) / 2;
   iBreathDamage = ((Explosive[ubExplosiveIndex].ubStunDamage) * 5) / 4;
 
-  if (Explosive[ubExplosiveIndex].ubType == EXPLOSV_TEARGAS || Explosive[ubExplosiveIndex].ubType == EXPLOSV_MUSTGAS) {
+  if (Explosive[ubExplosiveIndex].ubType == Enum287.EXPLOSV_TEARGAS || Explosive[ubExplosiveIndex].ubType == Enum287.EXPLOSV_MUSTGAS) {
     // if target gridno is outdoors (where tear gas lasts only 1-2 turns)
-    if (gpWorldLevelData[sGridno].ubTerrainID != FLAT_FLOOR)
+    if (gpWorldLevelData[sGridno].ubTerrainID != Enum315.FLAT_FLOOR)
       iBreathDamage /= 2; // reduce effective breath damage by 1/2
 
-    bSlot = FindObj(pOpponent, GASMASK);
-    if (bSlot == HEAD1POS || bSlot == HEAD2POS) {
+    bSlot = FindObj(pOpponent, Enum225.GASMASK);
+    if (bSlot == Enum261.HEAD1POS || bSlot == Enum261.HEAD2POS) {
       // take condition of the gas mask into account - it could be leaking
       iBreathDamage = (iBreathDamage * (100 - pOpponent.value.inv[bSlot].bStatus[0])) / 100;
       // NumMessage("damage after GAS MASK: ",iBreathDamage);
@@ -1464,14 +1464,14 @@ function EstimateStabDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<S
 
   let usItem: UINT16;
 
-  usItem = pSoldier.value.inv[HANDPOS].usItem;
+  usItem = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
   if (fBladeAttack) {
     iImpact = Weapon[pSoldier.value.usAttackingWeapon].ubImpact;
     iImpact += EffectiveStrength(pSoldier) / 20; // 0 to 5 for strength, adjusted by damage taken
   } else {
     // NB martial artists don't get a bonus for using brass knuckles!
-    if (pSoldier.value.usAttackingWeapon && !(HAS_SKILL_TRAIT(pSoldier, MARTIALARTS))) {
+    if (pSoldier.value.usAttackingWeapon && !(HAS_SKILL_TRAIT(pSoldier, Enum269.MARTIALARTS))) {
       iImpact = Weapon[pSoldier.value.usAttackingWeapon].ubImpact;
     } else {
       // base HTH damage
@@ -1489,11 +1489,11 @@ function EstimateStabDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<S
 
   if (!fBladeAttack) {
     // add bonuses for hand-to-hand and martial arts
-    if (HAS_SKILL_TRAIT(pSoldier, MARTIALARTS)) {
-      iImpact = iImpact * (100 + gbSkillTraitBonus[MARTIALARTS] * NUM_SKILL_TRAITS(pSoldier, MARTIALARTS)) / 100;
+    if (HAS_SKILL_TRAIT(pSoldier, Enum269.MARTIALARTS)) {
+      iImpact = iImpact * (100 + gbSkillTraitBonus[Enum269.MARTIALARTS] * NUM_SKILL_TRAITS(pSoldier, Enum269.MARTIALARTS)) / 100;
     }
-    if (HAS_SKILL_TRAIT(pSoldier, HANDTOHAND)) {
-      iImpact = iImpact * (100 + gbSkillTraitBonus[HANDTOHAND] * NUM_SKILL_TRAITS(pSoldier, HANDTOHAND)) / 100;
+    if (HAS_SKILL_TRAIT(pSoldier, Enum269.HANDTOHAND)) {
+      iImpact = iImpact * (100 + gbSkillTraitBonus[Enum269.HANDTOHAND] * NUM_SKILL_TRAITS(pSoldier, Enum269.HANDTOHAND)) / 100;
     }
     // Here, if we're doing a bare-fisted attack,
     // we want to pay attention just to wounds inflicted
@@ -1511,10 +1511,10 @@ function TryToReload(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bSlot: INT8;
   let pWeapon: Pointer<WEAPONTYPE>;
 
-  pWeapon = addressof(Weapon[pSoldier.value.inv[HANDPOS].usItem]);
+  pWeapon = addressof(Weapon[pSoldier.value.inv[Enum261.HANDPOS].usItem]);
   bSlot = FindAmmo(pSoldier, pWeapon.value.ubCalibre, pWeapon.value.ubMagSize, NO_SLOT);
   if (bSlot != NO_SLOT) {
-    if (ReloadGun(pSoldier, addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[bSlot]))) {
+    if (ReloadGun(pSoldier, addressof(pSoldier.value.inv[Enum261.HANDPOS]), addressof(pSoldier.value.inv[bSlot]))) {
       return TRUE;
     }
   }
@@ -1568,13 +1568,13 @@ function CanNPCAttack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     // look for another weapon
     bWeaponIn = FindAIUsableObjClass(pSoldier, IC_WEAPON);
     if (bWeaponIn != NO_SLOT) {
-      RearrangePocket(pSoldier, HANDPOS, bWeaponIn, FOREVER);
+      RearrangePocket(pSoldier, Enum261.HANDPOS, bWeaponIn, FOREVER);
       // look for another weapon if this one is 1-handed
-      if ((Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass == IC_GUN) && !(Item[pSoldier.value.inv[HANDPOS].usItem].fFlags & ITEM_TWO_HANDED)) {
+      if ((Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_GUN) && !(Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].fFlags & ITEM_TWO_HANDED)) {
         // look for another pistol/SMG if available
-        bWeaponIn = FindAIUsableObjClassWithin(pSoldier, IC_WEAPON, BIGPOCK1POS, SMALLPOCK8POS);
+        bWeaponIn = FindAIUsableObjClassWithin(pSoldier, IC_WEAPON, Enum261.BIGPOCK1POS, Enum261.SMALLPOCK8POS);
         if (bWeaponIn != NO_SLOT && (Item[pSoldier.value.inv[bWeaponIn].usItem].usItemClass == IC_GUN) && !(Item[pSoldier.value.inv[bWeaponIn].usItem].fFlags & ITEM_TWO_HANDED)) {
-          RearrangePocket(pSoldier, SECONDHANDPOS, bWeaponIn, FOREVER);
+          RearrangePocket(pSoldier, Enum261.SECONDHANDPOS, bWeaponIn, FOREVER);
         }
       }
       // might need to reload
@@ -1589,19 +1589,19 @@ function CheckIfTossPossible(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer
   let ubMinAPcost: UINT8;
 
   if (TANK(pSoldier)) {
-    pBestThrow.value.bWeaponIn = FindObj(pSoldier, TANK_CANNON);
+    pBestThrow.value.bWeaponIn = FindObj(pSoldier, Enum225.TANK_CANNON);
   } else {
     pBestThrow.value.bWeaponIn = FindAIUsableObjClass(pSoldier, IC_LAUNCHER);
 
     if (pBestThrow.value.bWeaponIn == NO_SLOT) {
       // Consider rocket launcher/cannon
-      pBestThrow.value.bWeaponIn = FindObj(pSoldier, ROCKET_LAUNCHER);
+      pBestThrow.value.bWeaponIn = FindObj(pSoldier, Enum225.ROCKET_LAUNCHER);
       if (pBestThrow.value.bWeaponIn == NO_SLOT) {
         // no rocket launcher, consider grenades
         pBestThrow.value.bWeaponIn = FindThrowableGrenade(pSoldier);
       } else {
         // Have rocket launcher... maybe have grenades as well.  which one to use?
-        if (pSoldier.value.bAIMorale > MORALE_WORRIED && PreRandom(2)) {
+        if (pSoldier.value.bAIMorale > Enum244.MORALE_WORRIED && PreRandom(2)) {
           pBestThrow.value.bWeaponIn = FindThrowableGrenade(pSoldier);
         }
       }
@@ -1611,8 +1611,8 @@ function CheckIfTossPossible(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer
   // if the soldier does have a tossable item somewhere
   if (pBestThrow.value.bWeaponIn != NO_SLOT) {
     // if it's in his holster, swap it into his hand temporarily
-    if (pBestThrow.value.bWeaponIn != HANDPOS) {
-      RearrangePocket(pSoldier, HANDPOS, pBestThrow.value.bWeaponIn, TEMPORARILY);
+    if (pBestThrow.value.bWeaponIn != Enum261.HANDPOS) {
+      RearrangePocket(pSoldier, Enum261.HANDPOS, pBestThrow.value.bWeaponIn, TEMPORARILY);
     }
 
     // get the minimum cost to attack with this tossable item
@@ -1625,8 +1625,8 @@ function CheckIfTossPossible(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer
     }
 
     // if it was in his holster, swap it back into his holster for now
-    if (pBestThrow.value.bWeaponIn != HANDPOS) {
-      RearrangePocket(pSoldier, HANDPOS, pBestThrow.value.bWeaponIn, TEMPORARILY);
+    if (pBestThrow.value.bWeaponIn != Enum261.HANDPOS) {
+      RearrangePocket(pSoldier, Enum261.HANDPOS, pBestThrow.value.bWeaponIn, TEMPORARILY);
     }
   }
 }
@@ -1920,14 +1920,14 @@ function AdvanceToFiringRange(pSoldier: Pointer<SOLDIERTYPE>, sClosestOpponent: 
   if (bAttackCost >= pSoldier.value.bActionPoints) {
     // probably want to go as far as possible!
     // return( NOWHERE );
-    return GoAsFarAsPossibleTowards(pSoldier, sClosestOpponent, AI_ACTION_SEEK_OPPONENT);
+    return GoAsFarAsPossibleTowards(pSoldier, sClosestOpponent, Enum289.AI_ACTION_SEEK_OPPONENT);
   }
 
   bTrueActionPoints = pSoldier.value.bActionPoints;
 
   pSoldier.value.bActionPoints -= bAttackCost;
 
-  usActionData = GoAsFarAsPossibleTowards(pSoldier, sClosestOpponent, AI_ACTION_SEEK_OPPONENT);
+  usActionData = GoAsFarAsPossibleTowards(pSoldier, sClosestOpponent, Enum289.AI_ACTION_SEEK_OPPONENT);
 
   pSoldier.value.bActionPoints = bTrueActionPoints;
 

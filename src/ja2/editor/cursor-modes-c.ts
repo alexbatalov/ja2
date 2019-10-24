@@ -3,10 +3,10 @@ let fAnchored: BOOLEAN = FALSE;
 let gfBrushEnabled: BOOLEAN = TRUE;
 let gusSelectionWidth: UINT16 = 1;
 let gusPreserveSelectionWidth: UINT16 = 1;
-let gusSelectionType: UINT16 = SMALLSELECTION;
+let gusSelectionType: UINT16 = Enum33.SMALLSELECTION;
 let gusSelectionDensity: UINT16 = 2;
-let gusSavedSelectionType: UINT16 = SMALLSELECTION;
-let gusSavedBuildingSelectionType: UINT16 = AREASELECTION;
+let gusSavedSelectionType: UINT16 = Enum33.SMALLSELECTION;
+let gusSavedBuildingSelectionType: UINT16 = Enum33.AREASELECTION;
 let sGridX: INT16;
 let sGridY: INT16;
 let sBadMarker: INT16 = -1;
@@ -76,7 +76,7 @@ function RemoveCursors(): void {
         iMapIndex += ROOF_OFFSET;
       pNode = gpWorldLevelData[iMapIndex].pTopmostHead;
       while (pNode) {
-        if (pNode.value.usIndex == FIRSTPOINTERS1 || pNode.value.usIndex == FIRSTPOINTERS5) {
+        if (pNode.value.usIndex == Enum312.FIRSTPOINTERS1 || pNode.value.usIndex == Enum312.FIRSTPOINTERS5) {
           RemoveTopmost(iMapIndex, pNode.value.usIndex);
           break;
         }
@@ -94,7 +94,7 @@ function RemoveBadMarker(): void {
     return;
   pNode = gpWorldLevelData[sBadMarker].pTopmostHead;
   while (pNode) {
-    if (pNode.value.usIndex == BADMARKER1) {
+    if (pNode.value.usIndex == Enum312.BADMARKER1) {
       RemoveTopmost(sBadMarker, pNode.value.usIndex);
       sBadMarker = -1;
       break;
@@ -122,14 +122,14 @@ function UpdateCursorAreas(): void {
       DrawBuildingLayout(iMapIndex);
     } else
       switch (gusSelectionType) {
-        case SMALLSELECTION:
+        case Enum33.SMALLSELECTION:
           gSelectRegion.iLeft = gSelectRegion.iRight = sGridX;
           gSelectRegion.iTop = gSelectRegion.iBottom = sGridY;
           fValidCursor = TRUE;
           break;
-        case MEDIUMSELECTION:
-        case LARGESELECTION:
-        case XLARGESELECTION:
+        case Enum33.MEDIUMSELECTION:
+        case Enum33.LARGESELECTION:
+        case Enum33.XLARGESELECTION:
           // The mouse mode value reflects the size of the cursor.
           gSelectRegion.iTop = sGridY - gusSelectionType;
           gSelectRegion.iBottom = sGridY + gusSelectionType;
@@ -138,44 +138,44 @@ function UpdateCursorAreas(): void {
           ValidateSelectionRegionBoundaries();
           fValidCursor = TRUE;
           break;
-        case LINESELECTION:
+        case Enum33.LINESELECTION:
           fValidCursor = HandleAreaSelection();
           ForceAreaSelectionWidth();
           ValidateSelectionRegionBoundaries();
           break;
-        case AREASELECTION:
+        case Enum33.AREASELECTION:
           fValidCursor = HandleAreaSelection();
           break;
       }
   }
   // Draw all of the area cursors here.
   if (fValidCursor) {
-    if (iDrawMode == DRAW_MODE_ENEMY || iDrawMode == DRAW_MODE_CREATURE || iDrawMode == DRAW_MODE_REBEL || iDrawMode == DRAW_MODE_CIVILIAN || iDrawMode == DRAW_MODE_SCHEDULEACTION) {
+    if (iDrawMode == Enum38.DRAW_MODE_ENEMY || iDrawMode == Enum38.DRAW_MODE_CREATURE || iDrawMode == Enum38.DRAW_MODE_REBEL || iDrawMode == Enum38.DRAW_MODE_CIVILIAN || iDrawMode == Enum38.DRAW_MODE_SCHEDULEACTION) {
       iMapIndex = gSelectRegion.iTop * WORLD_COLS + gSelectRegion.iLeft;
-      if (!IsLocationSittable(iMapIndex, gfRoofPlacement) && iDrawMode != DRAW_MODE_SCHEDULEACTION || !IsLocationSittableExcludingPeople(iMapIndex, gfRoofPlacement) && iDrawMode == DRAW_MODE_SCHEDULEACTION) {
+      if (!IsLocationSittable(iMapIndex, gfRoofPlacement) && iDrawMode != Enum38.DRAW_MODE_SCHEDULEACTION || !IsLocationSittableExcludingPeople(iMapIndex, gfRoofPlacement) && iDrawMode == Enum38.DRAW_MODE_SCHEDULEACTION) {
         if (sBadMarker != iMapIndex) {
           RemoveBadMarker();
           if (gfRoofPlacement && FlatRoofAboveGridNo(iMapIndex)) {
-            AddTopmostToTail(iMapIndex + ROOF_OFFSET, BADMARKER1);
+            AddTopmostToTail(iMapIndex + ROOF_OFFSET, Enum312.BADMARKER1);
             sBadMarker = (iMapIndex + ROOF_OFFSET);
           } else {
-            AddTopmostToTail((iMapIndex), BADMARKER1);
+            AddTopmostToTail((iMapIndex), Enum312.BADMARKER1);
             sBadMarker = (iMapIndex);
           }
         }
       } else {
         RemoveBadMarker();
         if (gfRoofPlacement && FlatRoofAboveGridNo(iMapIndex)) {
-          AddTopmostToTail(iMapIndex + ROOF_OFFSET, FIRSTPOINTERS5);
+          AddTopmostToTail(iMapIndex + ROOF_OFFSET, Enum312.FIRSTPOINTERS5);
           gfUsingOffset = TRUE;
         } else
-          AddTopmostToTail(iMapIndex, FIRSTPOINTERS1);
+          AddTopmostToTail(iMapIndex, Enum312.FIRSTPOINTERS1);
       }
     } else
       for (y = gSelectRegion.iTop; y <= gSelectRegion.iBottom; y++) {
         for (x = gSelectRegion.iLeft; x <= gSelectRegion.iRight; x++) {
           iMapIndex = y * WORLD_COLS + x;
-          AddTopmostToTail(iMapIndex, FIRSTPOINTERS1);
+          AddTopmostToTail(iMapIndex, Enum312.FIRSTPOINTERS1);
         }
       }
   }
@@ -279,10 +279,10 @@ function EnsureSelectionType(): void {
 
   // At time of writing, the only drawing mode supporting right mouse button
   // area selections is the cave drawing mode.
-  gfAllowRightButtonSelections = (iDrawMode == DRAW_MODE_CAVES);
+  gfAllowRightButtonSelections = (iDrawMode == Enum38.DRAW_MODE_CAVES);
 
   // if we are erasing, we have more flexibility with the drawing modes.
-  if (iDrawMode >= DRAW_MODE_ERASE) {
+  if (iDrawMode >= Enum38.DRAW_MODE_ERASE) {
     // erase modes supporting any cursor mode
     gusSavedSelectionType = gusSelectionType;
     gusSelectionWidth = gusPreserveSelectionWidth;
@@ -290,33 +290,33 @@ function EnsureSelectionType(): void {
   } else
     switch (iDrawMode) {
       // regular modes
-      case DRAW_MODE_SAW_ROOM:
-      case DRAW_MODE_ROOM:
-      case DRAW_MODE_CAVES:
+      case Enum38.DRAW_MODE_SAW_ROOM:
+      case Enum38.DRAW_MODE_ROOM:
+      case Enum38.DRAW_MODE_CAVES:
         gusSavedBuildingSelectionType = gusSelectionType;
         gusSelectionWidth = gusPreserveSelectionWidth;
         gfBrushEnabled = TRUE;
         break;
-      case DRAW_MODE_SLANTED_ROOF:
-        gusSelectionType = LINESELECTION;
+      case Enum38.DRAW_MODE_SLANTED_ROOF:
+        gusSelectionType = Enum33.LINESELECTION;
         gusSelectionWidth = 8;
         gfBrushEnabled = FALSE;
         break;
-      case DRAW_MODE_EXITGRID:
-      case DRAW_MODE_ROOMNUM:
-      case DRAW_MODE_FLOORS:
-      case DRAW_MODE_GROUND:
-      case DRAW_MODE_OSTRUCTS:
-      case DRAW_MODE_OSTRUCTS1:
-      case DRAW_MODE_OSTRUCTS2:
-      case DRAW_MODE_DEBRIS:
+      case Enum38.DRAW_MODE_EXITGRID:
+      case Enum38.DRAW_MODE_ROOMNUM:
+      case Enum38.DRAW_MODE_FLOORS:
+      case Enum38.DRAW_MODE_GROUND:
+      case Enum38.DRAW_MODE_OSTRUCTS:
+      case Enum38.DRAW_MODE_OSTRUCTS1:
+      case Enum38.DRAW_MODE_OSTRUCTS2:
+      case Enum38.DRAW_MODE_DEBRIS:
         // supports all modes
         gusSavedSelectionType = gusSelectionType;
         gusSelectionWidth = gusPreserveSelectionWidth;
         gfBrushEnabled = TRUE;
         break;
       default:
-        gusSelectionType = SMALLSELECTION;
+        gusSelectionType = Enum33.SMALLSELECTION;
         gusSelectionWidth = gusPreserveSelectionWidth;
         gfBrushEnabled = FALSE;
         break;
@@ -324,13 +324,13 @@ function EnsureSelectionType(): void {
 
   if (gfBrushEnabled != fPrevBrushEnabledState) {
     if (gfBrushEnabled) {
-      EnableEditorButton(TERRAIN_CYCLE_BRUSHSIZE);
-      EnableEditorButton(BUILDING_CYCLE_BRUSHSIZE);
-      EnableEditorButton(MAPINFO_CYCLE_BRUSHSIZE);
+      EnableEditorButton(Enum32.TERRAIN_CYCLE_BRUSHSIZE);
+      EnableEditorButton(Enum32.BUILDING_CYCLE_BRUSHSIZE);
+      EnableEditorButton(Enum32.MAPINFO_CYCLE_BRUSHSIZE);
     } else {
-      DisableEditorButton(TERRAIN_CYCLE_BRUSHSIZE);
-      DisableEditorButton(BUILDING_CYCLE_BRUSHSIZE);
-      DisableEditorButton(MAPINFO_CYCLE_BRUSHSIZE);
+      DisableEditorButton(Enum32.TERRAIN_CYCLE_BRUSHSIZE);
+      DisableEditorButton(Enum32.BUILDING_CYCLE_BRUSHSIZE);
+      DisableEditorButton(Enum32.MAPINFO_CYCLE_BRUSHSIZE);
     }
   }
 }
@@ -348,14 +348,14 @@ function DrawBuildingLayout(iMapIndex: INT32): void {
       fAdd = TRUE;
       pNode = gpWorldLevelData[iMapIndex].pTopmostHead;
       while (pNode) {
-        if (pNode.value.usIndex == FIRSTPOINTERS1) {
+        if (pNode.value.usIndex == Enum312.FIRSTPOINTERS1) {
           fAdd = FALSE;
           break;
         }
         pNode = pNode.value.pNext;
       }
       if (fAdd)
-        AddTopmostToTail(iMapIndex, FIRSTPOINTERS1);
+        AddTopmostToTail(iMapIndex, Enum312.FIRSTPOINTERS1);
     }
     curr = curr.value.next;
   }
@@ -371,7 +371,7 @@ function RemoveBuildingLayout(): void {
   while (curr) {
     iMapIndex = curr.value.sGridNo + iOffset;
     if (iMapIndex > 0 && iMapIndex < WORLD_MAX)
-      RemoveTopmost(iMapIndex, FIRSTPOINTERS1);
+      RemoveTopmost(iMapIndex, Enum312.FIRSTPOINTERS1);
     curr = curr.value.next;
   }
 }

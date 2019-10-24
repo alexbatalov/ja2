@@ -119,8 +119,8 @@ function CreateConfirmButtons(): void {
   giIMPConfirmButtonImage[1] = LoadButtonImage("LAPTOP\\button_2.sti", -1, 0, -1, 1, -1);
   giIMPConfirmButton[1] = CreateIconAndTextButton(giIMPConfirmButtonImage[1], pImpButtonText[17], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (136), LAPTOP_SCREEN_WEB_UL_Y + (314), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPConfirmNo);
 
-  SetButtonCursor(giIMPConfirmButton[0], CURSOR_WWW);
-  SetButtonCursor(giIMPConfirmButton[1], CURSOR_WWW);
+  SetButtonCursor(giIMPConfirmButton[0], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPConfirmButton[1], Enum317.CURSOR_WWW);
 
   return;
 }
@@ -162,7 +162,7 @@ function AddCharacterToPlayersTeam(): BOOLEAN {
   // indefinite contract length
   HireMercStruct.iTotalContractLength = -1;
 
-  HireMercStruct.ubInsertionCode = INSERTION_CODE_ARRIVING_GAME;
+  HireMercStruct.ubInsertionCode = Enum175.INSERTION_CODE_ARRIVING_GAME;
   HireMercStruct.uiTimeTillMercArrives = GetMercArrivalTimeOfDay();
 
   SetProfileFaceData(HireMercStruct.ubProfileID, (200 + iPortraitNumber), uiEyeXPositions[iPortraitNumber], uiEyeYPositions[iPortraitNumber], uiMouthXPositions[iPortraitNumber], uiMouthYPositions[iPortraitNumber]);
@@ -201,19 +201,19 @@ function BtnIMPConfirmYes(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       LaptopSaveInfo.fIMPCompletedFlag = TRUE;
 
       // charge the player
-      AddTransactionToPlayersBook(IMP_PROFILE, (PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId), GetWorldTotalMin(), -(COST_OF_PROFILE));
-      AddHistoryToPlayersLog(HISTORY_CHARACTER_GENERATED, 0, GetWorldTotalMin(), -1, -1);
+      AddTransactionToPlayersBook(Enum80.IMP_PROFILE, (PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId), GetWorldTotalMin(), -(COST_OF_PROFILE));
+      AddHistoryToPlayersLog(Enum83.HISTORY_CHARACTER_GENERATED, 0, GetWorldTotalMin(), -1, -1);
       AddCharacterToPlayersTeam();
 
       // write the created imp merc
       WriteOutCurrentImpCharacter((PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId));
 
       fButtonPendingFlag = TRUE;
-      iCurrentImpPage = IMP_HOME_PAGE;
+      iCurrentImpPage = Enum71.IMP_HOME_PAGE;
 
       // send email notice
       // AddEmail(IMP_EMAIL_PROFILE_RESULTS, IMP_EMAIL_PROFILE_RESULTS_LENGTH, IMP_PROFILE_RESULTS, GetWorldTotalMin( ) );
-      AddFutureDayStrategicEvent(EVENT_DAY2_ADD_EMAIL_FROM_IMP, 60 * 7, 0, 2);
+      AddFutureDayStrategicEvent(Enum132.EVENT_DAY2_ADD_EMAIL_FROM_IMP, 60 * 7, 0, 2);
       // RenderCharProfile( );
 
       ResetCharacterStats();
@@ -237,7 +237,7 @@ function BtnIMPConfirmNo(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     btn.value.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      iCurrentImpPage = IMP_FINISH;
+      iCurrentImpPage = Enum71.IMP_FINISH;
 
       /*
 
@@ -305,76 +305,76 @@ function GiveItemsToPC(ubProfileId: UINT8): void {
   // STANDARD EQUIPMENT
 
   // kevlar vest, leggings, & helmet
-  MakeProfileInvItemThisSlot(pProfile, VESTPOS, FLAK_JACKET, 100, 1);
+  MakeProfileInvItemThisSlot(pProfile, Enum261.VESTPOS, Enum225.FLAK_JACKET, 100, 1);
   if (PreRandom(100) < pProfile.value.bWisdom) {
-    MakeProfileInvItemThisSlot(pProfile, HELMETPOS, STEEL_HELMET, 100, 1);
+    MakeProfileInvItemThisSlot(pProfile, Enum261.HELMETPOS, Enum225.STEEL_HELMET, 100, 1);
   }
 
   // canteen
-  MakeProfileInvItemThisSlot(pProfile, SMALLPOCK4POS, CANTEEN, 100, 1);
+  MakeProfileInvItemThisSlot(pProfile, Enum261.SMALLPOCK4POS, Enum225.CANTEEN, 100, 1);
 
   if (pProfile.value.bMarksmanship >= 80) {
     // good shooters get a better & matching ammo
-    MakeProfileInvItemThisSlot(pProfile, HANDPOS, MP5K, 100, 1);
-    MakeProfileInvItemThisSlot(pProfile, SMALLPOCK1POS, CLIP9_30, 100, 2);
+    MakeProfileInvItemThisSlot(pProfile, Enum261.HANDPOS, Enum225.MP5K, 100, 1);
+    MakeProfileInvItemThisSlot(pProfile, Enum261.SMALLPOCK1POS, Enum225.CLIP9_30, 100, 2);
   } else {
     // Automatic pistol, with matching ammo
-    MakeProfileInvItemThisSlot(pProfile, HANDPOS, BERETTA_93R, 100, 1);
-    MakeProfileInvItemThisSlot(pProfile, SMALLPOCK1POS, CLIP9_15, 100, 3);
+    MakeProfileInvItemThisSlot(pProfile, Enum261.HANDPOS, Enum225.BERETTA_93R, 100, 1);
+    MakeProfileInvItemThisSlot(pProfile, Enum261.SMALLPOCK1POS, Enum225.CLIP9_15, 100, 3);
   }
 
   // OPTIONAL EQUIPMENT: depends on skills & special skills
 
   if (pProfile.value.bMedical >= 60) {
     // strong medics get full medic kit
-    MakeProfileInvItemAnySlot(pProfile, MEDICKIT, 100, 1);
+    MakeProfileInvItemAnySlot(pProfile, Enum225.MEDICKIT, 100, 1);
   } else if (pProfile.value.bMedical >= 30) {
     // passable medics get first aid kit
-    MakeProfileInvItemAnySlot(pProfile, FIRSTAIDKIT, 100, 1);
+    MakeProfileInvItemAnySlot(pProfile, Enum225.FIRSTAIDKIT, 100, 1);
   }
 
   if (pProfile.value.bMechanical >= 50) {
     // mechanics get toolkit
-    MakeProfileInvItemAnySlot(pProfile, TOOLKIT, 100, 1);
+    MakeProfileInvItemAnySlot(pProfile, Enum225.TOOLKIT, 100, 1);
   }
 
   if (pProfile.value.bExplosive >= 50) {
     // loonies get TNT & Detonator
-    MakeProfileInvItemAnySlot(pProfile, TNT, 100, 1);
-    MakeProfileInvItemAnySlot(pProfile, DETONATOR, 100, 1);
+    MakeProfileInvItemAnySlot(pProfile, Enum225.TNT, 100, 1);
+    MakeProfileInvItemAnySlot(pProfile, Enum225.DETONATOR, 100, 1);
   }
 
   // check for special skills
-  if (PROFILE_HAS_SKILL_TRAIT(pProfile, LOCKPICKING) && (iMechanical)) {
-    MakeProfileInvItemAnySlot(pProfile, LOCKSMITHKIT, 100, 1);
+  if (PROFILE_HAS_SKILL_TRAIT(pProfile, Enum269.LOCKPICKING) && (iMechanical)) {
+    MakeProfileInvItemAnySlot(pProfile, Enum225.LOCKSMITHKIT, 100, 1);
   }
 
-  if (PROFILE_HAS_SKILL_TRAIT(pProfile, HANDTOHAND)) {
-    MakeProfileInvItemAnySlot(pProfile, BRASS_KNUCKLES, 100, 1);
+  if (PROFILE_HAS_SKILL_TRAIT(pProfile, Enum269.HANDTOHAND)) {
+    MakeProfileInvItemAnySlot(pProfile, Enum225.BRASS_KNUCKLES, 100, 1);
   }
 
-  if (PROFILE_HAS_SKILL_TRAIT(pProfile, ELECTRONICS) && (iMechanical)) {
-    MakeProfileInvItemAnySlot(pProfile, METALDETECTOR, 100, 1);
+  if (PROFILE_HAS_SKILL_TRAIT(pProfile, Enum269.ELECTRONICS) && (iMechanical)) {
+    MakeProfileInvItemAnySlot(pProfile, Enum225.METALDETECTOR, 100, 1);
   }
 
-  if (PROFILE_HAS_SKILL_TRAIT(pProfile, NIGHTOPS)) {
-    MakeProfileInvItemAnySlot(pProfile, BREAK_LIGHT, 100, 2);
+  if (PROFILE_HAS_SKILL_TRAIT(pProfile, Enum269.NIGHTOPS)) {
+    MakeProfileInvItemAnySlot(pProfile, Enum225.BREAK_LIGHT, 100, 2);
   }
 
-  if (PROFILE_HAS_SKILL_TRAIT(pProfile, THROWING)) {
-    MakeProfileInvItemAnySlot(pProfile, THROWING_KNIFE, 100, 1);
+  if (PROFILE_HAS_SKILL_TRAIT(pProfile, Enum269.THROWING)) {
+    MakeProfileInvItemAnySlot(pProfile, Enum225.THROWING_KNIFE, 100, 1);
   }
 
-  if (PROFILE_HAS_SKILL_TRAIT(pProfile, STEALTHY)) {
-    MakeProfileInvItemAnySlot(pProfile, SILENCER, 100, 1);
+  if (PROFILE_HAS_SKILL_TRAIT(pProfile, Enum269.STEALTHY)) {
+    MakeProfileInvItemAnySlot(pProfile, Enum225.SILENCER, 100, 1);
   }
 
-  if (PROFILE_HAS_SKILL_TRAIT(pProfile, KNIFING)) {
-    MakeProfileInvItemAnySlot(pProfile, COMBAT_KNIFE, 100, 1);
+  if (PROFILE_HAS_SKILL_TRAIT(pProfile, Enum269.KNIFING)) {
+    MakeProfileInvItemAnySlot(pProfile, Enum225.COMBAT_KNIFE, 100, 1);
   }
 
-  if (PROFILE_HAS_SKILL_TRAIT(pProfile, CAMOUFLAGED)) {
-    MakeProfileInvItemAnySlot(pProfile, CAMOUFLAGEKIT, 100, 1);
+  if (PROFILE_HAS_SKILL_TRAIT(pProfile, Enum269.CAMOUFLAGED)) {
+    MakeProfileInvItemAnySlot(pProfile, Enum225.CAMOUFLAGEKIT, 100, 1);
   }
 }
 
@@ -404,16 +404,16 @@ function FirstFreeBigEnoughPocket(pProfile: Pointer<MERCPROFILESTRUCT>, usItem: 
   // if it fits into a small pocket
   if (Item[usItem].ubPerPocket != 0) {
     // check small pockets first
-    for (uiPos = SMALLPOCK1POS; uiPos <= SMALLPOCK8POS; uiPos++) {
-      if (pProfile.value.inv[uiPos] == NONE) {
+    for (uiPos = Enum261.SMALLPOCK1POS; uiPos <= Enum261.SMALLPOCK8POS; uiPos++) {
+      if (pProfile.value.inv[uiPos] == Enum225.NONE) {
         return uiPos;
       }
     }
   }
 
   // check large pockets
-  for (uiPos = BIGPOCK1POS; uiPos <= BIGPOCK4POS; uiPos++) {
-    if (pProfile.value.inv[uiPos] == NONE) {
+  for (uiPos = Enum261.BIGPOCK1POS; uiPos <= Enum261.BIGPOCK4POS; uiPos++) {
+    if (pProfile.value.inv[uiPos] == Enum225.NONE) {
       return uiPos;
     }
   }
@@ -488,13 +488,13 @@ function LoadInCurrentImpCharacter(): void {
 
   // charge the player
   // is the character male?
-  fCharacterIsMale = (gMercProfiles[iProfileId].bSex == MALE);
+  fCharacterIsMale = (gMercProfiles[iProfileId].bSex == Enum272.MALE);
   fLoadingCharacterForPreviousImpProfile = TRUE;
-  AddTransactionToPlayersBook(IMP_PROFILE, 0, GetWorldTotalMin(), -(COST_OF_PROFILE));
-  AddHistoryToPlayersLog(HISTORY_CHARACTER_GENERATED, 0, GetWorldTotalMin(), -1, -1);
+  AddTransactionToPlayersBook(Enum80.IMP_PROFILE, 0, GetWorldTotalMin(), -(COST_OF_PROFILE));
+  AddHistoryToPlayersLog(Enum83.HISTORY_CHARACTER_GENERATED, 0, GetWorldTotalMin(), -1, -1);
   LaptopSaveInfo.iVoiceId = iProfileId - PLAYER_GENERATED_CHARACTER_ID;
   AddCharacterToPlayersTeam();
-  AddFutureDayStrategicEvent(EVENT_DAY2_ADD_EMAIL_FROM_IMP, 60 * 7, 0, 2);
+  AddFutureDayStrategicEvent(Enum132.EVENT_DAY2_ADD_EMAIL_FROM_IMP, 60 * 7, 0, 2);
   LaptopSaveInfo.fIMPCompletedFlag = TRUE;
   fPausedReDrawScreenFlag = TRUE;
   fLoadingCharacterForPreviousImpProfile = FALSE;
@@ -504,7 +504,7 @@ function LoadInCurrentImpCharacter(): void {
 
 function ResetIMPCharactersEyesAndMouthOffsets(ubMercProfileID: UINT8): void {
   // ATE: Check boundary conditions!
-  if (((gMercProfiles[ubMercProfileID].ubFaceIndex - 200) > 16) || (ubMercProfileID >= PROF_HUMMER)) {
+  if (((gMercProfiles[ubMercProfileID].ubFaceIndex - 200) > 16) || (ubMercProfileID >= Enum268.PROF_HUMMER)) {
     return;
   }
 

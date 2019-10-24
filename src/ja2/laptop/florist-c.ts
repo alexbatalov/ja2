@@ -61,7 +61,7 @@ function GameInitFlorist(): void {
 function EnterFlorist(): BOOLEAN {
   let VObjectDesc: VOBJECT_DESC;
 
-  SetBookMark(FLORIST_BOOKMARK);
+  SetBookMark(Enum98.FLORIST_BOOKMARK);
 
   InitFloristDefaults();
 
@@ -72,8 +72,8 @@ function EnterFlorist(): BOOLEAN {
 
   guiGalleryButtonImage = LoadButtonImage("LAPTOP\\FloristButtons.sti", -1, 0, -1, 1, -1);
 
-  guiGalleryButton = CreateIconAndTextButton(guiGalleryButtonImage, sFloristText[FLORIST_GALLERY], FLORIST_BUTTON_TEXT_FONT, FLORIST_BUTTON_TEXT_UP_COLOR, FLORIST_BUTTON_TEXT_SHADOW_COLOR, FLORIST_BUTTON_TEXT_DOWN_COLOR, FLORIST_BUTTON_TEXT_SHADOW_COLOR, TEXT_CJUSTIFIED, FLORIST_GALLERY_BUTTON_X, FLORIST_GALLERY_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnGalleryButtonCallback);
-  SetButtonCursor(guiGalleryButton, CURSOR_WWW);
+  guiGalleryButton = CreateIconAndTextButton(guiGalleryButtonImage, sFloristText[Enum345.FLORIST_GALLERY], FLORIST_BUTTON_TEXT_FONT, FLORIST_BUTTON_TEXT_UP_COLOR, FLORIST_BUTTON_TEXT_SHADOW_COLOR, FLORIST_BUTTON_TEXT_DOWN_COLOR, FLORIST_BUTTON_TEXT_SHADOW_COLOR, TEXT_CJUSTIFIED, FLORIST_GALLERY_BUTTON_X, FLORIST_GALLERY_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnGalleryButtonCallback);
+  SetButtonCursor(guiGalleryButton, Enum317.CURSOR_WWW);
 
   // reset the currently selected card
   gbCurrentlySelectedCard = -1;
@@ -117,13 +117,13 @@ function RenderFlorist(): void {
   DisplayFloristDefaults();
 
   // compnay info
-  DisplayWrappedString(FLORIST_COMPANY_INFO_TEXT_X, FLORIST_COMPANY_INFO_LINE_1_Y, FLORIST_COMPANY_INFO_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT, FLORIST_SENTENCE_COLOR, sFloristText[FLORIST_DROP_ANYWHERE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DisplayWrappedString(FLORIST_COMPANY_INFO_TEXT_X, FLORIST_COMPANY_INFO_LINE_2_Y, FLORIST_COMPANY_INFO_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT, FLORIST_SENTENCE_COLOR, sFloristText[FLORIST_PHONE_NUMBER], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DisplayWrappedString(FLORIST_COMPANY_INFO_TEXT_X, FLORIST_COMPANY_INFO_LINE_3_Y, FLORIST_COMPANY_INFO_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT, FLORIST_SENTENCE_COLOR, sFloristText[FLORIST_STREET_ADDRESS], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-  DisplayWrappedString(FLORIST_COMPANY_INFO_TEXT_X, FLORIST_COMPANY_INFO_LINE_4_Y, FLORIST_COMPANY_INFO_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT, FLORIST_SENTENCE_COLOR, sFloristText[FLORIST_WWW_ADDRESS], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(FLORIST_COMPANY_INFO_TEXT_X, FLORIST_COMPANY_INFO_LINE_1_Y, FLORIST_COMPANY_INFO_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT, FLORIST_SENTENCE_COLOR, sFloristText[Enum345.FLORIST_DROP_ANYWHERE], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(FLORIST_COMPANY_INFO_TEXT_X, FLORIST_COMPANY_INFO_LINE_2_Y, FLORIST_COMPANY_INFO_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT, FLORIST_SENTENCE_COLOR, sFloristText[Enum345.FLORIST_PHONE_NUMBER], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(FLORIST_COMPANY_INFO_TEXT_X, FLORIST_COMPANY_INFO_LINE_3_Y, FLORIST_COMPANY_INFO_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT, FLORIST_SENTENCE_COLOR, sFloristText[Enum345.FLORIST_STREET_ADDRESS], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(FLORIST_COMPANY_INFO_TEXT_X, FLORIST_COMPANY_INFO_LINE_4_Y, FLORIST_COMPANY_INFO_TEXT_WIDTH, 2, FLORIST_SENTENCE_FONT, FLORIST_SENTENCE_COLOR, sFloristText[Enum345.FLORIST_WWW_ADDRESS], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   usPosY = FLORIST_FIRST_BULLET_Y;
-  ubTextCounter = FLORIST_ADVERTISEMENT_1;
+  ubTextCounter = Enum345.FLORIST_ADVERTISEMENT_1;
   for (i = 0; i < FLORIST_NUMBER_OF_BULLETS; i++) {
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FLORIST_FIRST_BULLET_X, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
 
@@ -150,19 +150,19 @@ function InitFloristDefaults(): BOOLEAN {
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFloristBackground)));
 
   // if its the first page
-  if (guiCurrentLaptopMode == LAPTOP_MODE_FLORIST) {
+  if (guiCurrentLaptopMode == Enum95.LAPTOP_MODE_FLORIST) {
     // load the small title graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    GetMLGFilename(VObjectDesc.ImageFile, MLG_LARGEFLORISTSYMBOL);
+    GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_LARGEFLORISTSYMBOL);
     CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLargeTitleSymbol)));
   } else {
     // load the leaf back graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    GetMLGFilename(VObjectDesc.ImageFile, MLG_SMALLFLORISTSYMBOL);
+    GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_SMALLFLORISTSYMBOL);
     CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSmallTitleSymbol)));
 
     // flower title homepage link
-    MSYS_DefineRegion(addressof(gSelectedFloristTitleHomeLinkRegion), FLORIST_SMALL_TITLE_X, FLORIST_SMALL_TITLE_Y, (FLORIST_SMALL_TITLE_X + FLORIST_SMALL_TITLE_WIDTH), (FLORIST_SMALL_TITLE_Y + FLORIST_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristTitleHomeLinkRegionCallBack);
+    MSYS_DefineRegion(addressof(gSelectedFloristTitleHomeLinkRegion), FLORIST_SMALL_TITLE_X, FLORIST_SMALL_TITLE_Y, (FLORIST_SMALL_TITLE_X + FLORIST_SMALL_TITLE_WIDTH), (FLORIST_SMALL_TITLE_Y + FLORIST_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristTitleHomeLinkRegionCallBack);
     MSYS_AddRegion(addressof(gSelectedFloristTitleHomeLinkRegion));
   }
 
@@ -175,7 +175,7 @@ function DisplayFloristDefaults(): void {
   WebPageTileBackground(4, 4, FLORIST_BACKGROUND_WIDTH, FLORIST_BACKGROUND_HEIGHT, guiFloristBackground);
 
   // if its the first page
-  if (guiCurrentLaptopMode == LAPTOP_MODE_FLORIST) {
+  if (guiCurrentLaptopMode == Enum95.LAPTOP_MODE_FLORIST) {
     gfHomePageActive = TRUE;
     GetVideoObject(addressof(hPixHandle), guiLargeTitleSymbol);
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FLORIST_BIG_TITLE_X, FLORIST_BIG_TITLE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -210,7 +210,7 @@ function BtnGalleryButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-      guiCurrentLaptopMode = LAPTOP_MODE_FLORIST_FLOWER_GALLERY;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FLORIST_FLOWER_GALLERY;
 
       InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }
@@ -224,7 +224,7 @@ function BtnGalleryButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
 function SelectFloristTitleHomeLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    guiCurrentLaptopMode = LAPTOP_MODE_FLORIST;
+    guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FLORIST;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }

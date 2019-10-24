@@ -26,7 +26,7 @@ const CLOCK_FONT = () => COMPFONT();
 
 // These contain all of the information about the game time, rate of time, etc.
 // All of these get saved and loaded.
-let giTimeCompressMode: INT32 = TIME_COMPRESS_X0;
+let giTimeCompressMode: INT32 = Enum130.TIME_COMPRESS_X0;
 let gubClockResolution: UINT8 = 1;
 let gfGamePaused: BOOLEAN = TRUE;
 let gfTimeInterrupt: BOOLEAN = FALSE;
@@ -132,7 +132,7 @@ function AdvanceClock(ubWarpCode: UINT8): void {
     }
   }
 
-  if (ubWarpCode != WARPTIME_NO_PROCESSING_OF_EVENTS) {
+  if (ubWarpCode != Enum131.WARPTIME_NO_PROCESSING_OF_EVENTS) {
     guiTimeOfLastEventQuery = guiGameClock;
     // First of all, events are posted for movements, pending attacks, equipment arrivals, etc.  This time
     // adjustment using time compression can possibly pass one or more events in a single pass.  So, this list
@@ -166,7 +166,7 @@ function AdvanceClock(ubWarpCode: UINT8): void {
   guiHour = (guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR;
   guiMin = (guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN;
 
-  swprintf(WORLDTIMESTR, "%s %d, %02d:%02d", gpGameClockString[STR_GAMECLOCK_DAY_NAME], guiDay, guiHour, guiMin);
+  swprintf(WORLDTIMESTR, "%s %d, %02d:%02d", gpGameClockString[Enum366.STR_GAMECLOCK_DAY_NAME], guiDay, guiHour, guiMin);
 
   if (gfResetAllPlayerKnowsEnemiesFlags && !gTacticalStatus.fEnemyInSector) {
     ClearAnySectorsFlashingNumberOfEnemies();
@@ -183,7 +183,7 @@ function AdvanceToNextDay(): void {
 
   uiTomorrowTimeInSec = (guiDay + 1) * NUM_SEC_IN_DAY + 8 * NUM_SEC_IN_HOUR + 15 * NUM_SEC_IN_MIN;
   uiDiff = uiTomorrowTimeInSec - guiGameClock;
-  WarpGameTime(uiDiff, WARPTIME_PROCESS_EVENTS_NORMALLY);
+  WarpGameTime(uiDiff, Enum131.WARPTIME_PROCESS_EVENTS_NORMALLY);
 
   ForecastDayEvents();
 }
@@ -239,7 +239,7 @@ function ToggleSuperCompression(): void {
 
   if (fSuperCompression) {
     uiOldTimeCompressMode = giTimeCompressMode;
-    giTimeCompressMode = TIME_SUPER_COMPRESS;
+    giTimeCompressMode = Enum130.TIME_SUPER_COMPRESS;
     guiGameSecondsPerRealSecond = giTimeCompressSpeeds[giTimeCompressMode] * SECONDS_PER_COMPRESSION;
 
     // ScreenMsg( MSG_FONT_YELLOW, MSG_INTERFACE, L"Time compression ON."  );
@@ -261,7 +261,7 @@ function DidGameJustStart(): BOOLEAN {
 function StopTimeCompression(): void {
   if (gfTimeCompressionOn) {
     // change the clock resolution to no time passage, but don't actually change the compress mode (remember it)
-    SetClockResolutionToCompressMode(TIME_COMPRESS_X0);
+    SetClockResolutionToCompressMode(Enum130.TIME_COMPRESS_X0);
   }
 }
 
@@ -285,7 +285,7 @@ function StartTimeCompression(): void {
     }
 
     // if no compression mode is set, increase it first
-    if (giTimeCompressMode <= TIME_COMPRESS_X1) {
+    if (giTimeCompressMode <= Enum130.TIME_COMPRESS_X1) {
       IncreaseGameTimeCompressionRate();
     }
 
@@ -304,7 +304,7 @@ function StartTimeCompression(): void {
 
 // returns FALSE if time isn't currently being compressed for ANY reason (various pauses, etc.)
 function IsTimeBeingCompressed(): BOOLEAN {
-  if (!gfTimeCompressionOn || (giTimeCompressMode == TIME_COMPRESS_X0) || gfGamePaused)
+  if (!gfTimeCompressionOn || (giTimeCompressMode == Enum130.TIME_COMPRESS_X0) || gfGamePaused)
     return FALSE;
   else
     return TRUE;
@@ -317,7 +317,7 @@ function IsTimeCompressionOn(): BOOLEAN {
 
 function IncreaseGameTimeCompressionRate(): void {
   // if not already at maximum time compression rate
-  if (giTimeCompressMode < TIME_COMPRESS_60MINS) {
+  if (giTimeCompressMode < Enum130.TIME_COMPRESS_60MINS) {
     // check that we can
     if (!AllowedToTimeCompress()) {
       // not allowed to compress time
@@ -328,7 +328,7 @@ function IncreaseGameTimeCompressionRate(): void {
     giTimeCompressMode++;
 
     // in map screen, we wanna have to skip over x1 compression and go straight to 5x
-    if ((guiCurrentScreen == MAP_SCREEN) && (giTimeCompressMode == TIME_COMPRESS_X1)) {
+    if ((guiCurrentScreen == Enum26.MAP_SCREEN) && (giTimeCompressMode == Enum130.TIME_COMPRESS_X1)) {
       giTimeCompressMode++;
     }
 
@@ -338,7 +338,7 @@ function IncreaseGameTimeCompressionRate(): void {
 
 function DecreaseGameTimeCompressionRate(): void {
   // if not already at minimum time compression rate
-  if (giTimeCompressMode > TIME_COMPRESS_X0) {
+  if (giTimeCompressMode > Enum130.TIME_COMPRESS_X0) {
     // check that we can
     if (!AllowedToTimeCompress()) {
       // not allowed to compress time
@@ -349,7 +349,7 @@ function DecreaseGameTimeCompressionRate(): void {
     giTimeCompressMode--;
 
     // in map screen, we wanna have to skip over x1 compression and go straight to 5x
-    if ((guiCurrentScreen == MAP_SCREEN) && (giTimeCompressMode == TIME_COMPRESS_X1)) {
+    if ((guiCurrentScreen == Enum26.MAP_SCREEN) && (giTimeCompressMode == Enum130.TIME_COMPRESS_X1)) {
       giTimeCompressMode--;
     }
 
@@ -358,22 +358,22 @@ function DecreaseGameTimeCompressionRate(): void {
 }
 
 function SetGameTimeCompressionLevel(uiCompressionRate: UINT32): void {
-  Assert(uiCompressionRate < NUM_TIME_COMPRESS_SPEEDS);
+  Assert(uiCompressionRate < Enum130.NUM_TIME_COMPRESS_SPEEDS);
 
-  if (guiCurrentScreen == GAME_SCREEN) {
-    if (uiCompressionRate != TIME_COMPRESS_X1) {
-      uiCompressionRate = TIME_COMPRESS_X1;
+  if (guiCurrentScreen == Enum26.GAME_SCREEN) {
+    if (uiCompressionRate != Enum130.TIME_COMPRESS_X1) {
+      uiCompressionRate = Enum130.TIME_COMPRESS_X1;
     }
   }
 
-  if (guiCurrentScreen == MAP_SCREEN) {
-    if (uiCompressionRate == TIME_COMPRESS_X1) {
-      uiCompressionRate = TIME_COMPRESS_X0;
+  if (guiCurrentScreen == Enum26.MAP_SCREEN) {
+    if (uiCompressionRate == Enum130.TIME_COMPRESS_X1) {
+      uiCompressionRate = Enum130.TIME_COMPRESS_X0;
     }
   }
 
   // if we're attempting time compression
-  if (uiCompressionRate >= TIME_COMPRESS_5MINS) {
+  if (uiCompressionRate >= Enum130.TIME_COMPRESS_5MINS) {
     // check that we can
     if (!AllowedToTimeCompress()) {
       // not allowed to compress time
@@ -398,7 +398,7 @@ function SetClockResolutionToCompressMode(iCompressMode: INT32): void {
   }
 
   // if the compress mode is X0 or X1
-  if (iCompressMode <= TIME_COMPRESS_X1) {
+  if (iCompressMode <= Enum130.TIME_COMPRESS_X1) {
     gfTimeCompressionOn = FALSE;
   } else {
     gfTimeCompressionOn = TRUE;
@@ -411,7 +411,7 @@ function SetClockResolutionToCompressMode(iCompressMode: INT32): void {
 }
 
 function SetGameHoursPerSecond(uiGameHoursPerSecond: UINT32): void {
-  giTimeCompressMode = NOT_USING_TIME_COMPRESSION;
+  giTimeCompressMode = Enum130.NOT_USING_TIME_COMPRESSION;
   guiGameSecondsPerRealSecond = uiGameHoursPerSecond * 3600;
   if (uiGameHoursPerSecond == 1) {
     SetClockResolutionPerSecond(60);
@@ -421,13 +421,13 @@ function SetGameHoursPerSecond(uiGameHoursPerSecond: UINT32): void {
 }
 
 function SetGameMinutesPerSecond(uiGameMinutesPerSecond: UINT32): void {
-  giTimeCompressMode = NOT_USING_TIME_COMPRESSION;
+  giTimeCompressMode = Enum130.NOT_USING_TIME_COMPRESSION;
   guiGameSecondsPerRealSecond = uiGameMinutesPerSecond * 60;
   SetClockResolutionPerSecond(uiGameMinutesPerSecond);
 }
 
 function SetGameSecondsPerSecond(uiGameSecondsPerSecond: UINT32): void {
-  giTimeCompressMode = NOT_USING_TIME_COMPRESSION;
+  giTimeCompressMode = Enum130.NOT_USING_TIME_COMPRESSION;
   guiGameSecondsPerRealSecond = uiGameSecondsPerSecond;
   //	SetClockResolutionPerSecond( (UINT8)(guiGameSecondsPerRealSecond / 60) );
   if (guiGameSecondsPerRealSecond == 0) {
@@ -538,7 +538,7 @@ function UpdateClock(): void {
   // check game state for pause screen masks
   CreateDestroyScreenMaskForPauseGame();
 
-  if (guiCurrentScreen != GAME_SCREEN && guiCurrentScreen != MAP_SCREEN && guiCurrentScreen != GAME_SCREEN)
+  if (guiCurrentScreen != Enum26.GAME_SCREEN && guiCurrentScreen != Enum26.MAP_SCREEN && guiCurrentScreen != Enum26.GAME_SCREEN)
   {
     uiLastSecondTime = GetJA2Clock();
     gfTimeInterruptPause = FALSE;
@@ -567,7 +567,7 @@ function UpdateClock(): void {
   if (uiThousandthsOfThisSecondProcessed >= 1000 && gubClockResolution == 1) {
     uiLastSecondTime = uiNewTime;
     guiTimesThisSecondProcessed = uiLastTimeProcessed = 0;
-    AdvanceClock(WARPTIME_PROCESS_EVENTS_NORMALLY);
+    AdvanceClock(Enum131.WARPTIME_PROCESS_EVENTS_NORMALLY);
   } else if (gubClockResolution > 1) {
     if (gubClockResolution != ubLastResolution) {
       // guiTimesThisSecondProcessed = guiTimesThisSecondProcessed * ubLastResolution / gubClockResolution % gubClockResolution;
@@ -584,7 +584,7 @@ function UpdateClock(): void {
 
       uiAmountToAdvanceTime = uiNewTimeProcessed - uiLastTimeProcessed;
 
-      WarpGameTime(uiNewTimeProcessed - uiLastTimeProcessed, WARPTIME_PROCESS_EVENTS_NORMALLY);
+      WarpGameTime(uiNewTimeProcessed - uiLastTimeProcessed, Enum131.WARPTIME_PROCESS_EVENTS_NORMALLY);
       if (uiNewTimeProcessed < guiGameSecondsPerRealSecond) {
         // Processed the same real second
         uiLastTimeProcessed = uiNewTimeProcessed;
@@ -813,8 +813,8 @@ function HandlePlayerPauseUnPauseOfGame(): void {
   // check if the game is paused BY THE PLAYER or not and reverse
   if (gfGamePaused && gfPauseDueToPlayerGamePause) {
     // If in game screen...
-    if (guiCurrentScreen == GAME_SCREEN) {
-      if (giTimeCompressMode == TIME_COMPRESS_X0) {
+    if (guiCurrentScreen == Enum26.GAME_SCREEN) {
+      if (giTimeCompressMode == Enum130.TIME_COMPRESS_X0) {
         giTimeCompressMode++;
       }
 
@@ -874,7 +874,7 @@ function CreateDestroyScreenMaskForPauseGame(): void {
     // UnMarkButtonsDirty( );
 
     // now create the pop up box to say the game is paused
-    iPausedPopUpBox = PrepareMercPopupBox(iPausedPopUpBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, pPausedGameText[0], 300, 0, 0, 0, addressof(usPausedActualWidth), addressof(usPausedActualHeight));
+    iPausedPopUpBox = PrepareMercPopupBox(iPausedPopUpBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, pPausedGameText[0], 300, 0, 0, 0, addressof(usPausedActualWidth), addressof(usPausedActualHeight));
   }
 }
 

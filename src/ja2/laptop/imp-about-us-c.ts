@@ -55,7 +55,7 @@ function CreateIMPAboutUsButtons(): void {
 
   giIMPAboutUsButton[0] = CreateIconAndTextButton(giIMPAboutUsButtonImage[0], pImpButtonText[6], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 216, LAPTOP_SCREEN_WEB_UL_Y + (360), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPBackCallback);
 
-  SetButtonCursor(giIMPAboutUsButton[0], CURSOR_WWW);
+  SetButtonCursor(giIMPAboutUsButton[0], Enum317.CURSOR_WWW);
 
   return;
 }
@@ -80,7 +80,7 @@ function BtnIMPBackCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      iCurrentImpPage = IMP_HOME_PAGE;
+      iCurrentImpPage = Enum71.IMP_HOME_PAGE;
     }
   }
 }

@@ -221,32 +221,32 @@ let gbCorpseValidForDecapitation: BOOLEAN[] /* [NUM_CORPSES] */ = [
 
 let gDecapitatedCorpse: INT8[] /* [NUM_CORPSES] */ = [
   0,
-  SMERC_JFK,
-  SMERC_JFK,
-  SMERC_JFK,
-  SMERC_JFK,
-  SMERC_JFK,
-  SMERC_JFK,
-  SMERC_JFK,
-  SMERC_JFK,
+  Enum249.SMERC_JFK,
+  Enum249.SMERC_JFK,
+  Enum249.SMERC_JFK,
+  Enum249.SMERC_JFK,
+  Enum249.SMERC_JFK,
+  Enum249.SMERC_JFK,
+  Enum249.SMERC_JFK,
+  Enum249.SMERC_JFK,
 
-  MMERC_JFK,
-  MMERC_JFK,
-  MMERC_JFK,
-  MMERC_JFK,
-  MMERC_JFK,
-  MMERC_JFK,
-  MMERC_JFK,
-  MMERC_JFK,
+  Enum249.MMERC_JFK,
+  Enum249.MMERC_JFK,
+  Enum249.MMERC_JFK,
+  Enum249.MMERC_JFK,
+  Enum249.MMERC_JFK,
+  Enum249.MMERC_JFK,
+  Enum249.MMERC_JFK,
+  Enum249.MMERC_JFK,
 
-  FMERC_JFK,
-  FMERC_JFK,
-  FMERC_JFK,
-  FMERC_JFK,
-  FMERC_JFK,
-  FMERC_JFK,
-  FMERC_JFK,
-  FMERC_JFK,
+  Enum249.FMERC_JFK,
+  Enum249.FMERC_JFK,
+  Enum249.FMERC_JFK,
+  Enum249.FMERC_JFK,
+  Enum249.FMERC_JFK,
+  Enum249.FMERC_JFK,
+  Enum249.FMERC_JFK,
+  Enum249.FMERC_JFK,
 
   // Civs....
   0,
@@ -315,15 +315,15 @@ function GetCorpseStructIndex(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>, fF
   let bDirection: INT8;
 
   switch (pCorpseDef.value.ubType) {
-    case QUEEN_MONSTER_DEAD:
-    case BURNT_DEAD:
-    case EXPLODE_DEAD:
+    case Enum249.QUEEN_MONSTER_DEAD:
+    case Enum249.BURNT_DEAD:
+    case Enum249.EXPLODE_DEAD:
 
       bDirection = 0;
       break;
 
-    case ICECREAM_DEAD:
-    case HUMMER_DEAD:
+    case Enum249.ICECREAM_DEAD:
+    case Enum249.HUMMER_DEAD:
 
       // OK , these have 2 directions....
       bDirection = gb2DirectionsFrom8[pCorpseDef.value.bDirection];
@@ -332,12 +332,12 @@ function GetCorpseStructIndex(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>, fF
       }
       break;
 
-    case SMERC_FALL:
-    case SMERC_FALLF:
-    case MMERC_FALL:
-    case MMERC_FALLF:
-    case FMERC_FALL:
-    case FMERC_FALLF:
+    case Enum249.SMERC_FALL:
+    case Enum249.SMERC_FALLF:
+    case Enum249.MMERC_FALL:
+    case Enum249.MMERC_FALLF:
+    case Enum249.FMERC_FALL:
+    case Enum249.FMERC_FALLF:
 
       // OK , these have 4 directions....
       bDirection = gb4DirectionsFrom8[pCorpseDef.value.bDirection];
@@ -379,7 +379,7 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
     return -1;
   }
 
-  if (pCorpseDef.value.ubType == NO_CORPSE) {
+  if (pCorpseDef.value.ubType == Enum249.NO_CORPSE) {
     return -1;
   }
 
@@ -395,22 +395,22 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
 
   // If we are a soecial type...
   switch (pCorpseDef.value.ubType) {
-    case SMERC_FALL:
-    case SMERC_FALLF:
-    case MMERC_FALL:
-    case MMERC_FALLF:
-    case FMERC_FALL:
-    case FMERC_FALLF:
+    case Enum249.SMERC_FALL:
+    case Enum249.SMERC_FALLF:
+    case Enum249.MMERC_FALL:
+    case Enum249.MMERC_FALLF:
+    case Enum249.FMERC_FALL:
+    case Enum249.FMERC_FALLF:
 
       uiDirectionUseFlag = ANITILE_USE_4DIRECTION_FOR_START_FRAME;
   }
 
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     // OK, AS WE ADD, CHECK FOR TOD AND DECAY APPROPRIATELY
-    if (((GetWorldTotalMin() - pCorpse.value.def.uiTimeOfDeath) > DELAY_UNTIL_ROTTING) && (pCorpse.value.def.ubType < ROTTING_STAGE2)) {
-      if (pCorpse.value.def.ubType <= FMERC_FALLF) {
+    if (((GetWorldTotalMin() - pCorpse.value.def.uiTimeOfDeath) > DELAY_UNTIL_ROTTING) && (pCorpse.value.def.ubType < Enum249.ROTTING_STAGE2)) {
+      if (pCorpse.value.def.ubType <= Enum249.FMERC_FALLF) {
         // Rott!
-        pCorpse.value.def.ubType = ROTTING_STAGE2;
+        pCorpse.value.def.ubType = Enum249.ROTTING_STAGE2;
       }
     }
 
@@ -439,7 +439,7 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
   AniParams.sZ = pCorpse.value.def.sHeightAdjustment;
   AniParams.uiUserData3 = pCorpse.value.def.bDirection;
 
-  if (!gGameSettings.fOptions[TOPTION_BLOOD_N_GORE]) {
+  if (!gGameSettings.fOptions[Enum8.TOPTION_BLOOD_N_GORE]) {
     strcpy(AniParams.zCachedFile, zNoBloodCorpseFilenames[pCorpse.value.def.ubType]);
   } else {
     strcpy(AniParams.zCachedFile, zCorpseFilenames[pCorpse.value.def.ubType]);
@@ -575,7 +575,7 @@ function CreateCorpsePalette(pCorpse: Pointer<ROTTING_CORPSE>): BOOLEAN {
   bBodyTypePalette = GetBodyTypePaletteSubstitutionCode(NULL, pCorpse.value.def.ubBodyType, zColFilename);
 
   // If this corpse has cammo,
-  if (pCorpse.value.def.ubType == ROTTING_STAGE2) {
+  if (pCorpse.value.def.ubType == Enum249.ROTTING_STAGE2) {
     bBodyTypePalette = 0;
   } else if (pCorpse.value.def.usFlags & ROTTING_CORPSE_USE_CAMMO_PALETTE) {
     strcpy(zColFilename, "ANIMS\\camo.COL");
@@ -665,14 +665,14 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
   if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
     Corpse.usFlags |= ROTTING_CORPSE_VEHICLE;
 
-    if (pSoldier.value.ubBodyType != ICECREAMTRUCK && pSoldier.value.ubBodyType != HUMVEE) {
+    if (pSoldier.value.ubBodyType != Enum194.ICECREAMTRUCK && pSoldier.value.ubBodyType != Enum194.HUMVEE) {
       Corpse.bDirection = 7;
     } else {
       Corpse.bDirection = gb2DirectionsFrom8[Corpse.bDirection];
     }
   }
 
-  if (ubType == QUEEN_MONSTER_DEAD || ubType == BURNT_DEAD || ubType == EXPLODE_DEAD) {
+  if (ubType == Enum249.QUEEN_MONSTER_DEAD || ubType == Enum249.BURNT_DEAD || ubType == Enum249.EXPLODE_DEAD) {
     Corpse.bDirection = 7;
   }
 
@@ -686,33 +686,33 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
   Corpse.uiTimeOfDeath = GetWorldTotalMin();
 
   // If corpse is not valid. make items visible
-  if (ubType == NO_CORPSE && pSoldier.value.bTeam != gbPlayerNum) {
+  if (ubType == Enum249.NO_CORPSE && pSoldier.value.bTeam != gbPlayerNum) {
     usItemFlags &= (~WORLD_ITEM_DONTRENDER);
   }
 
   // ATE: If the queen is killed, she should
   // make items visible because it ruins end sequence....
-  if (pSoldier.value.ubProfile == QUEEN || pSoldier.value.bTeam == gbPlayerNum) {
+  if (pSoldier.value.ubProfile == Enum268.QUEEN || pSoldier.value.bTeam == gbPlayerNum) {
     bVisible = 1;
   }
 
   // Not for a robot...
   if (AM_A_ROBOT(pSoldier)) {
-  } else if (ubType == QUEEN_MONSTER_DEAD) {
+  } else if (ubType == Enum249.QUEEN_MONSTER_DEAD) {
     gTacticalStatus.fLockItemLocators = FALSE;
 
-    ubNumGoo = 6 - (gGameOptions.ubDifficultyLevel - DIF_LEVEL_EASY);
+    ubNumGoo = 6 - (gGameOptions.ubDifficultyLevel - Enum9.DIF_LEVEL_EASY);
 
     sNewGridNo = pSoldier.value.sGridNo + (WORLD_COLS * 2);
 
     for (cnt = 0; cnt < ubNumGoo; cnt++) {
-      CreateItem(JAR_QUEEN_CREATURE_BLOOD, 100, addressof(ItemObject));
+      CreateItem(Enum225.JAR_QUEEN_CREATURE_BLOOD, 100, addressof(ItemObject));
 
       AddItemToPool(sNewGridNo, addressof(ItemObject), bVisible, pSoldier.value.bLevel, usItemFlags, -1);
     }
   } else {
     // OK, Place what objects this guy was carrying on the ground!
-    for (cnt = 0; cnt < NUM_INV_SLOTS; cnt++) {
+    for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
       pObj = addressof(pSoldier.value.inv[cnt]);
 
       if (pObj.value.usItem != NOTHING) {
@@ -745,7 +745,7 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
       RemoveSoldierFromGridNo(pSoldier);
     }
 
-    if (ubType == NO_CORPSE) {
+    if (ubType == Enum249.NO_CORPSE) {
       return TRUE;
     }
 
@@ -755,7 +755,7 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
     // Add corpse!
     iCorpseID = AddRottingCorpse(addressof(Corpse));
   } else {
-    if (ubType == NO_CORPSE) {
+    if (ubType == Enum249.NO_CORPSE) {
       return TRUE;
     }
 
@@ -786,7 +786,7 @@ function FindNearestRottingCorpse(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 
     if (pCorpse.value.fActivated) {
       // Check rotting state
-      if (pCorpse.value.def.ubType == ROTTING_STAGE2) {
+      if (pCorpse.value.def.ubType == Enum249.ROTTING_STAGE2) {
         uiRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, pCorpse.value.def.sGridNo);
 
         if (uiRange < uiLowestRange) {
@@ -802,7 +802,7 @@ function FindNearestRottingCorpse(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 
 function AddCrowToCorpse(pCorpse: Pointer<ROTTING_CORPSE>): void {
   let MercCreateStruct: SOLDIERCREATE_STRUCT;
-  let bBodyType: INT8 = CROW;
+  let bBodyType: INT8 = Enum194.CROW;
   let iNewIndex: UINT8;
   let sGridNo: INT16;
   let ubDirection: UINT8;
@@ -821,7 +821,7 @@ function AddCrowToCorpse(pCorpse: Pointer<ROTTING_CORPSE>): void {
   MercCreateStruct.sSectorY = gWorldSectorY;
   MercCreateStruct.bSectorZ = gbWorldSectorZ;
   MercCreateStruct.bBodyType = bBodyType;
-  MercCreateStruct.bDirection = SOUTH;
+  MercCreateStruct.bDirection = Enum245.SOUTH;
   MercCreateStruct.bTeam = CIV_TEAM;
   MercCreateStruct.sInsertionGridNo = pCorpse.value.def.sGridNo;
   RandomizeNewSoldierStats(addressof(MercCreateStruct));
@@ -832,7 +832,7 @@ function AddCrowToCorpse(pCorpse: Pointer<ROTTING_CORPSE>): void {
     sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pCorpse.value.def.sGridNo, 2, addressof(ubDirection));
 
     if (sGridNo != NOWHERE) {
-      pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+      pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
       pSoldier.value.usStrategicInsertionData = sGridNo;
 
       pSoldier.value.sInsertionGridNo = sGridNo;
@@ -882,7 +882,7 @@ function HandleCrowFlyAway(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   // Change to fly animation
   sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pSoldier.value.sGridNo, 5, addressof(ubDirection));
-  pSoldier.value.usUIMovementMode = CROW_FLY;
+  pSoldier.value.usUIMovementMode = Enum193.CROW_FLY;
   SendGetNewSoldierPathEvent(pSoldier, sGridNo, pSoldier.value.usUIMovementMode);
 }
 
@@ -913,7 +913,7 @@ function HandleRottingCorpses(): void {
 
     for (bLoop = gTacticalStatus.Team[CIV_TEAM].bFirstID, pSoldier = MercPtrs[bLoop]; bLoop <= gTacticalStatus.Team[CIV_TEAM].bLastID; bLoop++, pSoldier++) {
       if (pSoldier.value.bActive && pSoldier.value.bInSector && (pSoldier.value.bLife >= OKLIFE) && !(pSoldier.value.uiStatusFlags & SOLDIER_GASSED)) {
-        if (pSoldier.value.ubBodyType == CROW) {
+        if (pSoldier.value.ubBodyType == Enum194.CROW) {
           bNumCrows++;
         }
       }
@@ -947,7 +947,7 @@ function HandleRottingCorpses(): void {
 
     if (pCorpse.value.fActivated) {
       if (!(pCorpse.value.def.usFlags & ROTTING_CORPSE_VEHICLE)) {
-        if (pCorpse.value.def.ubType == ROTTING_STAGE2) {
+        if (pCorpse.value.def.ubType == Enum249.ROTTING_STAGE2) {
           if (GridNoOnScreen(pCorpse.value.def.sGridNo)) {
             return;
           }
@@ -990,7 +990,7 @@ function AllMercsOnTeamLookForCorpse(pCorpse: Pointer<ROTTING_CORPSE>, bTeam: IN
     // ATE: Ok, lets check for some basic things here!
     if (pSoldier.value.bLife >= OKLIFE && pSoldier.value.sGridNo != NOWHERE && pSoldier.value.bActive && pSoldier.value.bInSector) {
       // is he close enough to see that gridno if he turns his head?
-      sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, pCorpse.value.def.bLevel);
+      sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sGridNo, pCorpse.value.def.bLevel);
 
       if (PythSpacesAway(pSoldier.value.sGridNo, sGridNo) <= sDistVisible) {
         // and we can trace a line of sight to his x,y coordinates?
@@ -1038,17 +1038,17 @@ function MercLooksForCorpses(pSoldier: Pointer<SOLDIERTYPE>): void {
       }
 
       // Has this corpse rotted enough?
-      if (pCorpse.value.def.ubType == ROTTING_STAGE2) {
+      if (pCorpse.value.def.ubType == Enum249.ROTTING_STAGE2) {
         sGridNo = pCorpse.value.def.sGridNo;
 
         // is he close enough to see that gridno if he turns his head?
-        sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, pCorpse.value.def.bLevel);
+        sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sGridNo, pCorpse.value.def.bLevel);
 
         if (PythSpacesAway(pSoldier.value.sGridNo, sGridNo) <= sDistVisible) {
           // and we can trace a line of sight to his x,y coordinates?
           // (taking into account we are definitely aware of this guy now)
           if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, pCorpse.value.def.bLevel, 3, sDistVisible, TRUE)) {
-            TacticalCharacterDialogue(pSoldier, QUOTE_HEADSHOT);
+            TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_HEADSHOT);
 
             pSoldier.value.usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_ROTTINGCORPSE;
 
@@ -1193,7 +1193,7 @@ function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
   }
 
   // PLay a sound....
-  PlayJA2Sample((BODY_EXPLODE_1), RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
+  PlayJA2Sample((Enum330.BODY_EXPLODE_1), RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
 }
 
 function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINITION>, ubRadius: INT8): INT16 {
@@ -1260,7 +1260,7 @@ function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINI
 
   // Now, find out which of these gridnos are reachable
   //(use the fake soldier and the pathing settings)
-  FindBestPath(addressof(soldier), NOWHERE, 0, WALKING, COPYREACHABLE, 0);
+  FindBestPath(addressof(soldier), NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, 0);
 
   uiLowestRange = 999999;
 
@@ -1351,7 +1351,7 @@ function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel
   let Object: OBJECTTYPE;
   let pCorpse: Pointer<ROTTING_CORPSE>;
   let CorpseDef: ROTTING_CORPSE_DEFINITION;
-  let usHeadIndex: UINT16 = HEAD_1;
+  let usHeadIndex: UINT16 = Enum225.HEAD_1;
 
   pCorpse = GetCorpseAtGridNo(sGridNo, bLevel);
 
@@ -1381,27 +1381,27 @@ function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel
     // Pick the head based on profile type...
     switch (pCorpse.value.def.ubProfile) {
       case 83:
-        usHeadIndex = HEAD_2;
+        usHeadIndex = Enum225.HEAD_2;
         break;
 
       case 111:
-        usHeadIndex = HEAD_3;
+        usHeadIndex = Enum225.HEAD_3;
         break;
 
       case 64:
-        usHeadIndex = HEAD_4;
+        usHeadIndex = Enum225.HEAD_4;
         break;
 
       case 112:
-        usHeadIndex = HEAD_5;
+        usHeadIndex = Enum225.HEAD_5;
         break;
 
       case 82:
-        usHeadIndex = HEAD_6;
+        usHeadIndex = Enum225.HEAD_6;
         break;
 
       case 110:
-        usHeadIndex = HEAD_7;
+        usHeadIndex = Enum225.HEAD_7;
         break;
     }
 
@@ -1421,24 +1421,24 @@ function GetBloodFromCorpse(pSoldier: Pointer<SOLDIERTYPE>): void {
   // OK, get corpse
   pCorpse = addressof(gRottingCorpse[pSoldier.value.uiPendingActionData4]);
 
-  bObjSlot = FindObj(pSoldier, JAR);
+  bObjSlot = FindObj(pSoldier, Enum225.JAR);
 
   // What kind of corpse ami I?
   switch (pCorpse.value.def.ubType) {
-    case ADULTMONSTER_DEAD:
-    case INFANTMONSTER_DEAD:
+    case Enum249.ADULTMONSTER_DEAD:
+    case Enum249.INFANTMONSTER_DEAD:
 
       // Can get creature blood....
-      CreateItem(JAR_CREATURE_BLOOD, 100, addressof(Object));
+      CreateItem(Enum225.JAR_CREATURE_BLOOD, 100, addressof(Object));
       break;
 
-    case QUEEN_MONSTER_DEAD:
-      CreateItem(JAR_QUEEN_CREATURE_BLOOD, 100, addressof(Object));
+    case Enum249.QUEEN_MONSTER_DEAD:
+      CreateItem(Enum225.JAR_QUEEN_CREATURE_BLOOD, 100, addressof(Object));
       break;
 
     default:
 
-      CreateItem(JAR_HUMAN_BLOOD, 100, addressof(Object));
+      CreateItem(Enum225.JAR_HUMAN_BLOOD, 100, addressof(Object));
       break;
   }
 
@@ -1451,7 +1451,7 @@ function ReduceAmmoDroppedByNonPlayerSoldiers(pSoldier: Pointer<SOLDIERTYPE>, iI
   let pObj: Pointer<OBJECTTYPE>;
 
   Assert(pSoldier);
-  Assert((iInvSlot >= 0) && (iInvSlot < NUM_INV_SLOTS));
+  Assert((iInvSlot >= 0) && (iInvSlot < Enum261.NUM_INV_SLOTS));
 
   pObj = addressof(pSoldier.value.inv[iInvSlot]);
 
@@ -1483,7 +1483,7 @@ function LookForAndMayCommentOnSeeingCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGri
     return;
   }
 
-  if (pCorpse.value.def.ubType != ROTTING_STAGE2) {
+  if (pCorpse.value.def.ubType != Enum249.ROTTING_STAGE2) {
     return;
   }
 
@@ -1495,7 +1495,7 @@ function LookForAndMayCommentOnSeeingCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGri
   // Check tolerance
   if (pSoldier.value.bCorpseQuoteTolerance <= bToleranceThreshold) {
     // Say quote...
-    TacticalCharacterDialogue(pSoldier, QUOTE_HEADSHOT);
+    TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_HEADSHOT);
 
     BeginMultiPurposeLocator(sGridNo, ubLevel, FALSE);
 

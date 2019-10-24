@@ -5,7 +5,7 @@ function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // AddCharacterToDeadList( pSoldier );
 
   // If in a vehicle, remove them!
-  if ((pSoldier.value.bAssignment == VEHICLE) && (pSoldier.value.iVehicleId != -1)) {
+  if ((pSoldier.value.bAssignment == Enum117.VEHICLE) && (pSoldier.value.iVehicleId != -1)) {
     // remove from vehicle
     TakeSoldierOutOfVehicle(pSoldier);
   }
@@ -13,22 +13,22 @@ function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // if not in mapscreen
   if (!(guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
     // ATE; At least make them dead!
-    if ((pSoldier.value.bAssignment != ASSIGNMENT_DEAD)) {
+    if ((pSoldier.value.bAssignment != Enum117.ASSIGNMENT_DEAD)) {
       SetTimeOfAssignmentChangeForMerc(pSoldier);
     }
 
-    ChangeSoldiersAssignment(pSoldier, ASSIGNMENT_DEAD);
-  } else if ((pSoldier.value.bLife == 0) && (pSoldier.value.bAssignment != ASSIGNMENT_DEAD)) {
+    ChangeSoldiersAssignment(pSoldier, Enum117.ASSIGNMENT_DEAD);
+  } else if ((pSoldier.value.bLife == 0) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_DEAD)) {
     // died in mapscreen
 
     fReDrawFace = TRUE;
 
     // dead
-    if ((pSoldier.value.bAssignment != ASSIGNMENT_DEAD)) {
+    if ((pSoldier.value.bAssignment != Enum117.ASSIGNMENT_DEAD)) {
       SetTimeOfAssignmentChangeForMerc(pSoldier);
     }
 
-    ChangeSoldiersAssignment(pSoldier, ASSIGNMENT_DEAD);
+    ChangeSoldiersAssignment(pSoldier, Enum117.ASSIGNMENT_DEAD);
 
     // s et breath and breath max to 0
     pSoldier.value.bBreath = pSoldier.value.bBreathMax = 0;
@@ -73,15 +73,15 @@ function HandleSoldierDeadComments(pSoldier: Pointer<SOLDIERTYPE>): void {
       switch (bBuddyIndex) {
         case 0:
           // buddy #1 died!
-          TacticalCharacterDialogue(pTeamSoldier, QUOTE_BUDDY_ONE_KILLED);
+          TacticalCharacterDialogue(pTeamSoldier, Enum202.QUOTE_BUDDY_ONE_KILLED);
           break;
         case 1:
           // buddy #2 died!
-          TacticalCharacterDialogue(pTeamSoldier, QUOTE_BUDDY_TWO_KILLED);
+          TacticalCharacterDialogue(pTeamSoldier, Enum202.QUOTE_BUDDY_TWO_KILLED);
           break;
         case 2:
           // learn to like buddy died!
-          TacticalCharacterDialogue(pTeamSoldier, QUOTE_LEARNED_TO_LIKE_MERC_KILLED);
+          TacticalCharacterDialogue(pTeamSoldier, Enum202.QUOTE_LEARNED_TO_LIKE_MERC_KILLED);
           break;
         default:
           break;

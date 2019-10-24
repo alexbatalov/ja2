@@ -9,10 +9,10 @@ let gfPlotToAvoidPlayerInfuencedSectors: BOOLEAN = FALSE;
 // UINT16 gusEndPlotGridNo;
 
 let ubFromMapDirToInsertionCode: UINT8[] /* [] */ = [
-  INSERTION_CODE_SOUTH, // NORTH_STRATEGIC_MOVE
-  INSERTION_CODE_WEST, // EAST_STRATEGIC_MOVE
-  INSERTION_CODE_NORTH, // SOUTH_STRATEGIC_MOVE
-  INSERTION_CODE_EAST // WEST_STRATEGIC_MOVE
+  Enum175.INSERTION_CODE_SOUTH, // NORTH_STRATEGIC_MOVE
+  Enum175.INSERTION_CODE_WEST, // EAST_STRATEGIC_MOVE
+  Enum175.INSERTION_CODE_NORTH, // SOUTH_STRATEGIC_MOVE
+  Enum175.INSERTION_CODE_EAST // WEST_STRATEGIC_MOVE
 ];
 
 // Globals
@@ -286,7 +286,7 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
       if (fTacticalTraversal) {
         // if it's the first sector only (no cost yet)
         if (curCost == 0 && (newLoc == sDestination)) {
-          if (GetTraversability((SECTOR(curLoc % 18, curLoc / 18)), (SECTOR(newLoc % 18, newLoc / 18))) != GROUNDBARRIER) {
+          if (GetTraversability((SECTOR(curLoc % 18, curLoc / 18)), (SECTOR(newLoc % 18, newLoc / 18))) != Enum127.GROUNDBARRIER) {
             nextCost = 0;
           }
         }
@@ -414,16 +414,16 @@ function BuildAStrategicPath(pPath: PathStPtr, iStartSectorNum: INT16, iEndSecto
   iPathLength = (FindStratPath((iStartSectorNum), (iEndSectorNum), sMvtGroupNumber, fTacticalTraversal));
   while (iPathLength > iCount) {
     switch (gusMapPathingData[iCount]) {
-      case (NORTH):
+      case (Enum245.NORTH):
         iDelta = NORTH_MOVE;
         break;
-      case (SOUTH):
+      case (Enum245.SOUTH):
         iDelta = SOUTH_MOVE;
         break;
-      case (EAST):
+      case (Enum245.EAST):
         iDelta = EAST_MOVE;
         break;
-      case (WEST):
+      case (Enum245.WEST):
         iDelta = WEST_MOVE;
         break;
     }
@@ -1324,7 +1324,7 @@ function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: INT16):
 
   // KRIS!  Added this because it was possible to plot a new course to the same destination, and the
   //       group would add new arrival events without removing the existing one(s).
-  DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, sMvtGroup);
+  DeleteStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, sMvtGroup);
 
   RemoveGroupWaypoints(sMvtGroup);
 
@@ -1587,7 +1587,7 @@ function GetSoldierMercPathPtr(pSoldier: Pointer<SOLDIERTYPE>): PathStPtr {
   Assert(pSoldier);
 
   // IN a vehicle?
-  if (pSoldier.value.bAssignment == VEHICLE) {
+  if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
     pMercPath = pVehicleList[pSoldier.value.iVehicleId].pMercPath;
   }
   // IS a vehicle?
@@ -1629,7 +1629,7 @@ function GetSoldierGroupId(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   let ubGroupId: UINT8 = 0;
 
   // IN a vehicle?
-  if (pSoldier.value.bAssignment == VEHICLE) {
+  if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
     ubGroupId = pVehicleList[pSoldier.value.iVehicleId].ubMovementGroup;
   }
   // IS a vehicle?
@@ -1691,7 +1691,7 @@ function ClearPathForSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
     pVehicle = addressof(pVehicleList[pSoldier.value.bVehicleID]);
   }
   // or in a vehicle
-  else if (pSoldier.value.bAssignment == VEHICLE) {
+  else if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
     pVehicle = addressof(pVehicleList[pSoldier.value.iVehicleId]);
   }
 

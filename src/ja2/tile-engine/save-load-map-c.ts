@@ -113,9 +113,9 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
     // Switch on the type that should either be added or removed from the map
     switch (pMap.value.ubType) {
       // If we are adding to the map
-      case SLM_LAND:
+      case Enum307.SLM_LAND:
         break;
-      case SLM_OBJECT:
+      case Enum307.SLM_OBJECT:
         GetTileIndexFromTypeSubIndex(pMap.value.usImageType, pMap.value.usSubImageIndex, addressof(usIndex));
 
         AddObjectFromMapTempFileToMap(pMap.value.usGridNo, usIndex);
@@ -127,7 +127,7 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
         uiNumberOfElementsSavedBackToFile++;
 
         break;
-      case SLM_STRUCT:
+      case Enum307.SLM_STRUCT:
         GetTileIndexFromTypeSubIndex(pMap.value.usImageType, pMap.value.usSubImageIndex, addressof(usIndex));
 
         AddStructFromMapTempFileToMap(pMap.value.usGridNo, usIndex);
@@ -138,30 +138,30 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
         // Since the element is being saved back to the temp file, increment the #
         uiNumberOfElementsSavedBackToFile++;
         break;
-      case SLM_SHADOW:
+      case Enum307.SLM_SHADOW:
         break;
-      case SLM_MERC:
+      case Enum307.SLM_MERC:
         break;
-      case SLM_ROOF:
+      case Enum307.SLM_ROOF:
         break;
-      case SLM_ONROOF:
+      case Enum307.SLM_ONROOF:
         break;
-      case SLM_TOPMOST:
+      case Enum307.SLM_TOPMOST:
         break;
 
       // Remove objects out of the world
-      case SLM_REMOVE_LAND:
+      case Enum307.SLM_REMOVE_LAND:
         break;
-      case SLM_REMOVE_OBJECT:
+      case Enum307.SLM_REMOVE_OBJECT:
         break;
-      case SLM_REMOVE_STRUCT:
+      case Enum307.SLM_REMOVE_STRUCT:
 
         // ATE: OK, dor doors, the usIndex can be varied, opened, closed, etc
         // we MUSTR delete ANY door type on this gridno
         // Since we can only have one door per gridno, we're safe to do so.....
-        if (pMap.value.usImageType >= FIRSTDOOR && pMap.value.usImageType <= FOURTHDOOR) {
+        if (pMap.value.usImageType >= Enum313.FIRSTDOOR && pMap.value.usImageType <= Enum313.FOURTHDOOR) {
           // Remove ANY door...
-          RemoveAllStructsOfTypeRange(pMap.value.usGridNo, FIRSTDOOR, FOURTHDOOR);
+          RemoveAllStructsOfTypeRange(pMap.value.usGridNo, Enum313.FIRSTDOOR, Enum313.FOURTHDOOR);
         } else {
           GetTileIndexFromTypeSubIndex(pMap.value.usImageType, pMap.value.usSubImageIndex, addressof(usIndex));
           RemoveSavedStructFromMap(pMap.value.usGridNo, usIndex);
@@ -173,26 +173,26 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
         // Since the element is being saved back to the temp file, increment the #
         uiNumberOfElementsSavedBackToFile++;
         break;
-      case SLM_REMOVE_SHADOW:
+      case Enum307.SLM_REMOVE_SHADOW:
         break;
-      case SLM_REMOVE_MERC:
+      case Enum307.SLM_REMOVE_MERC:
         break;
-      case SLM_REMOVE_ROOF:
+      case Enum307.SLM_REMOVE_ROOF:
         break;
-      case SLM_REMOVE_ONROOF:
+      case Enum307.SLM_REMOVE_ONROOF:
         break;
-      case SLM_REMOVE_TOPMOST:
+      case Enum307.SLM_REMOVE_TOPMOST:
         break;
 
-      case SLM_BLOOD_SMELL:
+      case Enum307.SLM_BLOOD_SMELL:
         AddBloodOrSmellFromMapTempFileToMap(pMap);
         break;
 
-      case SLM_DAMAGED_STRUCT:
+      case Enum307.SLM_DAMAGED_STRUCT:
         DamageStructsFromMapTempFile(pMap);
         break;
 
-      case SLM_EXIT_GRIDS: {
+      case Enum307.SLM_EXIT_GRIDS: {
         let ExitGrid: EXITGRID;
         gfLoadingExitGrids = TRUE;
         ExitGrid.usGridNo = pMap.value.usSubImageIndex;
@@ -210,11 +210,11 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
         uiNumberOfElementsSavedBackToFile++;
       } break;
 
-      case SLM_OPENABLE_STRUCT:
+      case Enum307.SLM_OPENABLE_STRUCT:
         SetOpenableStructStatusFromMapTempFile(pMap.value.usGridNo, pMap.value.usImageType);
         break;
 
-      case SLM_WINDOW_HIT:
+      case Enum307.SLM_WINDOW_HIT:
         if (ModifyWindowStatus(pMap.value.usGridNo)) {
           // Save this struct back to the temp file
           SaveModifiedMapStructToMapTempFile(pMap, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
@@ -265,7 +265,7 @@ function AddStructToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
   Map.usImageType = uiType;
   Map.usSubImageIndex = usSubIndex;
 
-  Map.ubType = SLM_STRUCT;
+  Map.ubType = Enum307.SLM_STRUCT;
 
   SaveModifiedMapStructToMapTempFile(addressof(Map), gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 }
@@ -295,7 +295,7 @@ function AddObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
   Map.usImageType = uiType;
   Map.usSubImageIndex = usSubIndex;
 
-  Map.ubType = SLM_OBJECT;
+  Map.ubType = Enum307.SLM_OBJECT;
 
   SaveModifiedMapStructToMapTempFile(addressof(Map), gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 }
@@ -325,7 +325,7 @@ function AddRemoveObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void
   Map.usImageType = uiType;
   Map.usSubImageIndex = usSubIndex;
 
-  Map.ubType = SLM_REMOVE_OBJECT;
+  Map.ubType = Enum307.SLM_REMOVE_OBJECT;
 
   SaveModifiedMapStructToMapTempFile(addressof(Map), gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 }
@@ -351,7 +351,7 @@ function RemoveStructFromMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void 
   Map.usImageType = uiType;
   Map.usSubImageIndex = usSubIndex;
 
-  Map.ubType = SLM_REMOVE_STRUCT;
+  Map.ubType = Enum307.SLM_REMOVE_STRUCT;
 
   SaveModifiedMapStructToMapTempFile(addressof(Map), gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 }
@@ -382,7 +382,7 @@ function SaveBloodSmellAndRevealedStatesFromMapToTempFile(): void {
       Map.usImageType = gpWorldLevelData[cnt].ubBloodInfo;
       Map.usSubImageIndex = gpWorldLevelData[cnt].ubSmellInfo;
 
-      Map.ubType = SLM_BLOOD_SMELL;
+      Map.ubType = Enum307.SLM_BLOOD_SMELL;
 
       // Save the change to the map file
       SaveModifiedMapStructToMapTempFile(addressof(Map), gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
@@ -419,7 +419,7 @@ function SaveBloodSmellAndRevealedStatesFromMapToTempFile(): void {
           Map.usImageType = StructureFlagToType(pCurrent.value.fFlags);
           Map.usSubImageIndex = pCurrent.value.ubHitPoints;
 
-          Map.ubType = SLM_DAMAGED_STRUCT;
+          Map.ubType = Enum307.SLM_DAMAGED_STRUCT;
           Map.ubExtra = pCurrent.value.ubWallOrientation | ubLevel;
 
           // Save the change to the map file
@@ -451,7 +451,7 @@ function AddBloodOrSmellFromMapTempFileToMap(pMap: Pointer<MODIFY_MAP>): void {
   gpWorldLevelData[pMap.value.usGridNo].ubBloodInfo = pMap.value.usImageType;
 
   // if the blood and gore option IS set, add blood
-  if (gGameSettings.fOptions[TOPTION_BLOOD_N_GORE]) {
+  if (gGameSettings.fOptions[Enum8.TOPTION_BLOOD_N_GORE]) {
     // Update graphics for both levels...
     gpWorldLevelData[pMap.value.usGridNo].uiFlags |= MAPELEMENT_REEVALUATEBLOOD;
     UpdateBloodGraphics(pMap.value.usGridNo, 0);
@@ -639,7 +639,7 @@ function AddStructToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSe
   Map.usImageType = uiType;
   Map.usSubImageIndex = usSubIndex;
 
-  Map.ubType = SLM_STRUCT;
+  Map.ubType = Enum307.SLM_STRUCT;
 
   SaveModifiedMapStructToMapTempFile(addressof(Map), sSectorX, sSectorY, ubSectorZ);
 }
@@ -662,7 +662,7 @@ function AddObjectToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSe
   Map.usImageType = uiType;
   Map.usSubImageIndex = usSubIndex;
 
-  Map.ubType = SLM_OBJECT;
+  Map.ubType = Enum307.SLM_OBJECT;
 
   SaveModifiedMapStructToMapTempFile(addressof(Map), sSectorX, sSectorY, ubSectorZ);
 }
@@ -685,7 +685,7 @@ function RemoveStructFromUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16
   Map.usImageType = uiType;
   Map.usSubImageIndex = usSubIndex;
 
-  Map.ubType = SLM_REMOVE_STRUCT;
+  Map.ubType = Enum307.SLM_REMOVE_STRUCT;
 
   SaveModifiedMapStructToMapTempFile(addressof(Map), sSectorX, sSectorY, ubSectorZ);
 }
@@ -708,7 +708,7 @@ function AddRemoveObjectToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT1
   Map.usImageType = uiType;
   Map.usSubImageIndex = usSubIndex;
 
-  Map.ubType = SLM_REMOVE_OBJECT;
+  Map.ubType = Enum307.SLM_REMOVE_OBJECT;
 
   SaveModifiedMapStructToMapTempFile(addressof(Map), sSectorX, sSectorY, ubSectorZ);
 }
@@ -733,7 +733,7 @@ function AddExitGridToMapTempFile(usGridNo: UINT16, pExitGrid: Pointer<EXITGRID>
   Map.usSubImageIndex = pExitGrid.value.usGridNo;
 
   Map.ubExtra = pExitGrid.value.ubGotoSectorZ;
-  Map.ubType = SLM_EXIT_GRIDS;
+  Map.ubType = Enum307.SLM_EXIT_GRIDS;
 
   SaveModifiedMapStructToMapTempFile(addressof(Map), sSectorX, sSectorY, ubSectorZ);
 }
@@ -826,7 +826,7 @@ function AddOpenableStructStatusToMapTempFile(uiMapIndex: UINT32, fOpened: BOOLE
   Map.usGridNo = uiMapIndex;
   Map.usImageType = fOpened;
 
-  Map.ubType = SLM_OPENABLE_STRUCT;
+  Map.ubType = Enum307.SLM_OPENABLE_STRUCT;
 
   SaveModifiedMapStructToMapTempFile(addressof(Map), gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 }
@@ -837,7 +837,7 @@ function AddWindowHitToMapTempFile(uiMapIndex: UINT32): void {
   memset(addressof(Map), 0, sizeof(MODIFY_MAP));
 
   Map.usGridNo = uiMapIndex;
-  Map.ubType = SLM_WINDOW_HIT;
+  Map.ubType = Enum307.SLM_WINDOW_HIT;
 
   SaveModifiedMapStructToMapTempFile(addressof(Map), gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 }
@@ -964,7 +964,7 @@ function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, usSecto
     pMap = addressof(pTempArrayOfMaps[cnt]);
 
     // if this element is of the same type
-    if (pMap.value.ubType == SLM_OPENABLE_STRUCT) {
+    if (pMap.value.ubType == Enum307.SLM_OPENABLE_STRUCT) {
       // if its on the same gridno
       if (pMap.value.usGridNo == usGridNo) {
         // Change to the desired settings

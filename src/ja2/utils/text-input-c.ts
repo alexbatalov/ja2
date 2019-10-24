@@ -63,7 +63,7 @@ let gpActive: Pointer<TEXTINPUTNODE> = NULL;
 // Saving current mode
 let pSavedHead: Pointer<TEXTINPUTNODE> = NULL;
 let pSavedColors: Pointer<TextInputColors> = NULL;
-let gusTextInputCursor: UINT16 = CURSOR_IBEAM;
+let gusTextInputCursor: UINT16 = Enum317.CURSOR_IBEAM;
 
 // Saves the current text input mode by pushing it onto our stack, then starts a new
 // one.
@@ -134,7 +134,7 @@ function InitTextInputMode(): void {
 function InitTextInputModeWithScheme(ubSchemeID: UINT8): void {
   InitTextInputMode();
   switch (ubSchemeID) {
-    case DEFAULT_SCHEME: // yellow boxes with black text, with bluish bevelling
+    case Enum384.DEFAULT_SCHEME: // yellow boxes with black text, with bluish bevelling
       SetTextInputFont(FONT12POINT1);
       Set16BPPTextFieldColor(Get16BPPColor(FROMRGB(250, 240, 188)));
       SetBevelColors(Get16BPPColor(FROMRGB(136, 138, 135)), Get16BPPColor(FROMRGB(24, 61, 81)));
@@ -211,7 +211,7 @@ function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: IN
   // Setup the information for the node
   pNode.value.usInputType = usInputType; // setup the filter type
   // All 24hourclock inputtypes have 6 characters.  01:23 (null terminated)
-  if (usInputType == INPUTTYPE_EXCLUSIVE_24HOURCLOCK)
+  if (usInputType == Enum383.INPUTTYPE_EXCLUSIVE_24HOURCLOCK)
     ubMaxChars = 6;
   // Allocate and copy the string.
   pNode.value.szString = MemAlloc((ubMaxChars + 1) * sizeof(UINT16));
@@ -611,7 +611,7 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
   if (Event.value.usParam == ESC)
     return FALSE;
   if (Event.value.usParam == ENTER) {
-    PlayJA2Sample(REMOVING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
+    PlayJA2Sample(Enum330.REMOVING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
     return FALSE;
   }
   if (Event.value.usKeyState & ALT_DOWN || Event.value.usKeyState & CTRL_DOWN && Event.value.usParam != DEL)
@@ -720,24 +720,24 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
       // CTRL+DEL will delete the entire text field, regardless of hilighting.
       // DEL will either delete the selected text, or the character to the right
       // of the cursor if applicable.
-      PlayJA2Sample(ENTERING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
+      PlayJA2Sample(Enum330.ENTERING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
       if (Event.value.usKeyState & CTRL_DOWN) {
         gubStartHilite = 0;
         gubEndHilite = gpActive.value.ubStrLen;
         gfHiliteMode = TRUE;
         DeleteHilitedText();
       } else if (gfHiliteMode)
-        PlayJA2Sample(ENTERING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
+        PlayJA2Sample(Enum330.ENTERING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
       else
         RemoveChar(gubCursorPos);
       break;
     case BACKSPACE:
       // Will delete the selected text, or the character to the left of the cursor if applicable.
       if (gfHiliteMode) {
-        PlayJA2Sample(ENTERING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
+        PlayJA2Sample(Enum330.ENTERING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
         DeleteHilitedText();
       } else if (gubCursorPos > 0) {
-        PlayJA2Sample(ENTERING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
+        PlayJA2Sample(Enum330.ENTERING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
         RemoveChar(--gubCursorPos);
       }
       break;
@@ -800,7 +800,7 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
 
 function HandleExclusiveInput(uiKey: UINT32): void {
   switch (gpActive.value.usInputType) {
-    case INPUTTYPE_EXCLUSIVE_DOSFILENAME: // dos file names
+    case Enum383.INPUTTYPE_EXCLUSIVE_DOSFILENAME: // dos file names
       if (uiKey >= 'A' && uiKey <= 'Z' || uiKey >= 'a' && uiKey <= 'z' || uiKey >= '0' && uiKey <= '9' || uiKey == '_' || uiKey == '.') {
         if (!gubCursorPos && uiKey >= '0' && uiKey <= '9') {
           // can't begin a new filename with a number
@@ -809,7 +809,7 @@ function HandleExclusiveInput(uiKey: UINT32): void {
         AddChar(uiKey);
       }
       break;
-    case INPUTTYPE_EXCLUSIVE_COORDINATE: // coordinates such as a9, z78, etc.
+    case Enum383.INPUTTYPE_EXCLUSIVE_COORDINATE: // coordinates such as a9, z78, etc.
       if (!gubCursorPos) // first char is an lower case alpha
       {
         if (uiKey >= 'a' && uiKey <= 'z')
@@ -822,7 +822,7 @@ function HandleExclusiveInput(uiKey: UINT32): void {
           AddChar(uiKey);
       }
       break;
-    case INPUTTYPE_EXCLUSIVE_24HOURCLOCK:
+    case Enum383.INPUTTYPE_EXCLUSIVE_24HOURCLOCK:
       if (!gubCursorPos) {
         if (uiKey >= '0' && uiKey <= '2')
           AddChar(uiKey);
@@ -855,7 +855,7 @@ function HandleExclusiveInput(uiKey: UINT32): void {
 }
 
 function AddChar(uiKey: UINT32): void {
-  PlayJA2Sample(ENTERING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
+  PlayJA2Sample(Enum330.ENTERING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
   if (gpActive.value.ubStrLen >= gpActive.value.ubMaxChars) {
     // max length reached.  Just replace the last character with new one.
     gpActive.value.ubStrLen = gpActive.value.ubMaxChars;
@@ -1395,7 +1395,7 @@ function GetExclusive24HourTimeValueFromField(ubField: UINT8): UINT16 {
   curr = gpTextInputHead;
   while (curr) {
     if (curr.value.ubID == ubField) {
-      if (curr.value.usInputType != INPUTTYPE_EXCLUSIVE_24HOURCLOCK)
+      if (curr.value.usInputType != Enum383.INPUTTYPE_EXCLUSIVE_24HOURCLOCK)
         return 0xffff; // illegal!
       // First validate the hours 00-23
       if (curr.value.szString[0] == '2' && curr.value.szString[1] >= '0' && // 20-23

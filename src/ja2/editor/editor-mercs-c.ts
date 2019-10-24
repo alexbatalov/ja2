@@ -69,7 +69,7 @@ let gfSingleAction: BOOLEAN = FALSE;
 let gfUseScheduleData2: BOOLEAN = FALSE;
 let gubCurrentScheduleActionIndex: UINT8 = 0;
 let gCurrSchedule: SCHEDULENODE;
-let gubScheduleInstructions: UINT8 = SCHEDULE_INSTRUCTIONS_NONE;
+let gubScheduleInstructions: UINT8 = Enum40.SCHEDULE_INSTRUCTIONS_NONE;
 
 // array which keeps track of which item is in which slot.  This is dependant on the selected merc, so
 // these temp values must be updated when different mercs are selected, and reset when a merc detailed
@@ -88,15 +88,15 @@ let gpMercSlotItem: Pointer<OBJECTTYPE>[] /* [9] */ = [
 // Because we only support these nine slots, they aren't continuous values, so this array helps
 // processing functions by referring to this array to get the appropriate slot.
 let gbMercSlotTypes: INT8[] /* [9] */ = [
-  HELMETPOS,
-  VESTPOS,
-  LEGPOS,
-  HANDPOS,
-  SECONDHANDPOS,
-  BIGPOCK1POS,
-  BIGPOCK2POS,
-  BIGPOCK3POS,
-  BIGPOCK4POS,
+  Enum261.HELMETPOS,
+  Enum261.VESTPOS,
+  Enum261.LEGPOS,
+  Enum261.HANDPOS,
+  Enum261.SECONDHANDPOS,
+  Enum261.BIGPOCK1POS,
+  Enum261.BIGPOCK2POS,
+  Enum261.BIGPOCK3POS,
+  Enum261.BIGPOCK4POS,
 ];
 // returns the usItem index of specified slot in the currently selected merc.
 const GetSelectedMercSlotItemIndex = (x) => (gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[x]].usItem);
@@ -113,16 +113,16 @@ let gsSelectedMercID: INT16;
 let gsSelectedMercGridNo: INT16;
 let gpSelected: Pointer<SOLDIERINITNODE>;
 
-let gubCurrMercMode: UINT8 = MERC_TEAMMODE;
-let gubPrevMercMode: UINT8 = MERC_NOMODE;
-let gubLastDetailedMercMode: UINT8 = MERC_GENERALMODE;
-let gbDefaultOrders: INT8 = STATIONARY;
-let gbDefaultAttitude: INT8 = DEFENSIVE;
+let gubCurrMercMode: UINT8 = Enum42.MERC_TEAMMODE;
+let gubPrevMercMode: UINT8 = Enum42.MERC_NOMODE;
+let gubLastDetailedMercMode: UINT8 = Enum42.MERC_GENERALMODE;
+let gbDefaultOrders: INT8 = Enum241.STATIONARY;
+let gbDefaultAttitude: INT8 = Enum242.DEFENSIVE;
 let gbDefaultRelativeEquipmentLevel: INT8 = 2;
 let gbDefaultRelativeAttributeLevel: INT8 = 2;
-let gbDefaultDirection: INT8 = NORTHWEST;
-let gubSoldierClass: INT8 = SOLDIER_CLASS_ARMY;
-let gubCivGroup: UINT8 = NON_CIV_GROUP;
+let gbDefaultDirection: INT8 = Enum245.NORTHWEST;
+let gubSoldierClass: INT8 = Enum262.SOLDIER_CLASS_ARMY;
+let gubCivGroup: UINT8 = Enum246.NON_CIV_GROUP;
 
 let pTempSoldier: Pointer<SOLDIERTYPE>;
 let gfRoofPlacement: BOOLEAN;
@@ -249,53 +249,53 @@ const MAX_CIVTYPES = 18;
 //#define MAX_CIVRANDOMTYPES		11
 let bEnemyArray: INT8[] /* [MAX_ENEMYTYPES] */ = [
   RANDOM,
-  REGMALE,
-  BIGMALE,
-  STOCKYMALE,
-  REGFEMALE,
-  TANK_NW,
-  TANK_NE,
+  Enum194.REGMALE,
+  Enum194.BIGMALE,
+  Enum194.STOCKYMALE,
+  Enum194.REGFEMALE,
+  Enum194.TANK_NW,
+  Enum194.TANK_NE,
 ];
 let bCreatureArray: INT8[] /* [MAX_CREATURETYPES] */ = [
-  BLOODCAT,
-  LARVAE_MONSTER,
-  INFANT_MONSTER,
-  YAF_MONSTER,
-  YAM_MONSTER,
-  ADULTFEMALEMONSTER,
-  AM_MONSTER,
-  QUEENMONSTER,
+  Enum194.BLOODCAT,
+  Enum194.LARVAE_MONSTER,
+  Enum194.INFANT_MONSTER,
+  Enum194.YAF_MONSTER,
+  Enum194.YAM_MONSTER,
+  Enum194.ADULTFEMALEMONSTER,
+  Enum194.AM_MONSTER,
+  Enum194.QUEENMONSTER,
 ];
 let bRebelArray: INT8[] /* [MAX_REBELTYPES] */ = [
   RANDOM,
-  FATCIV,
-  MANCIV,
-  REGMALE,
-  BIGMALE,
-  STOCKYMALE,
-  REGFEMALE,
+  Enum194.FATCIV,
+  Enum194.MANCIV,
+  Enum194.REGMALE,
+  Enum194.BIGMALE,
+  Enum194.STOCKYMALE,
+  Enum194.REGFEMALE,
 ];
 let bCivArray: INT8[] /* [MAX_CIVTYPES] */ = [
   RANDOM,
-  FATCIV,
-  MANCIV,
-  MINICIV,
-  DRESSCIV,
-  HATKIDCIV,
-  KIDCIV,
-  REGMALE,
-  BIGMALE,
-  STOCKYMALE,
-  REGFEMALE,
-  HUMVEE,
-  ELDORADO,
-  ICECREAMTRUCK,
-  JEEP,
-  CRIPPLECIV,
-  ROBOTNOWEAPON,
-  COW,
+  Enum194.FATCIV,
+  Enum194.MANCIV,
+  Enum194.MINICIV,
+  Enum194.DRESSCIV,
+  Enum194.HATKIDCIV,
+  Enum194.KIDCIV,
+  Enum194.REGMALE,
+  Enum194.BIGMALE,
+  Enum194.STOCKYMALE,
+  Enum194.REGFEMALE,
+  Enum194.HUMVEE,
+  Enum194.ELDORADO,
+  Enum194.ICECREAMTRUCK,
+  Enum194.JEEP,
+  Enum194.CRIPPLECIV,
+  Enum194.ROBOTNOWEAPON,
+  Enum194.COW,
 ];
-let gbCurrCreature: INT8 = BLOODCAT;
+let gbCurrCreature: INT8 = Enum194.BLOODCAT;
 
 let gfSaveBuffer: BOOLEAN = FALSE;
 let gSaveBufferBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
@@ -471,26 +471,26 @@ function AddMercToWorld(iMapIndex: INT32): void {
 
   // calculate specific information based on the team.
   switch (iDrawMode) {
-    case DRAW_MODE_ENEMY:
+    case Enum38.DRAW_MODE_ENEMY:
       gTempBasicPlacement.bTeam = ENEMY_TEAM;
       gTempBasicPlacement.bBodyType = RANDOM;
       gTempBasicPlacement.ubSoldierClass = gubSoldierClass;
       break;
-    case DRAW_MODE_CREATURE:
+    case Enum38.DRAW_MODE_CREATURE:
       gTempBasicPlacement.bTeam = CREATURE_TEAM;
       gTempBasicPlacement.bBodyType = gbCurrCreature;
       break;
-    case DRAW_MODE_REBEL:
+    case Enum38.DRAW_MODE_REBEL:
       gTempBasicPlacement.bTeam = MILITIA_TEAM;
       gTempBasicPlacement.bBodyType = RANDOM;
       break;
-    case DRAW_MODE_CIVILIAN:
+    case Enum38.DRAW_MODE_CIVILIAN:
       gTempBasicPlacement.bTeam = CIV_TEAM;
       gTempBasicPlacement.bBodyType = RANDOM;
       gTempBasicPlacement.ubCivilianGroup = gubCivGroup;
       if (giCurrentTilesetID == 1) // caves
       {
-        gTempBasicPlacement.ubSoldierClass = SOLDIER_CLASS_MINER;
+        gTempBasicPlacement.ubSoldierClass = Enum262.SOLDIER_CLASS_MINER;
       }
       break;
   }
@@ -570,7 +570,7 @@ function HandleRightClickOnMerc(iMapIndex: INT32): void {
     }
   } else if (gsSelectedMercID != -1 && IsLocationSittable(iMapIndex, gfRoofPlacement)) // We want to move the selected merc to this new location.
   {
-    RemoveAllObjectsOfTypeRange(gsSelectedMercGridNo, CONFIRMMOVE, CONFIRMMOVE);
+    RemoveAllObjectsOfTypeRange(gsSelectedMercGridNo, Enum313.CONFIRMMOVE, Enum313.CONFIRMMOVE);
     EVENT_SetSoldierPosition(gpSelected.value.pSoldier, (sCellX + 5), (sCellY + 5));
     if (gfRoofPlacement && FlatRoofAboveGridNo(iMapIndex)) {
       gpSelected.value.pBasicPlacement.value.fOnRoof = TRUE;
@@ -587,7 +587,7 @@ function HandleRightClickOnMerc(iMapIndex: INT32): void {
     gpSelected.value.pBasicPlacement.value.usStartingGridNo = gsSelectedMercGridNo;
     if (gpSelected.value.pDetailedPlacement)
       gpSelected.value.pDetailedPlacement.value.sInsertionGridNo = gsSelectedMercGridNo;
-    AddObjectToHead(gsSelectedMercGridNo, CONFIRMMOVE1);
+    AddObjectToHead(gsSelectedMercGridNo, Enum312.CONFIRMMOVE1);
   }
 }
 
@@ -1045,7 +1045,7 @@ function MercsSetColorsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 function MercsSetBodyTypeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfRenderMercInfo = TRUE;
-    if (btn.value.IDNum == iEditorButton[MERCS_BODYTYPE_DOWN])
+    if (btn.value.IDNum == iEditorButton[Enum32.MERCS_BODYTYPE_DOWN])
       ChangeBodyType(1); // next
     else
       ChangeBodyType(-1); // previous
@@ -1056,7 +1056,7 @@ function EditMercDecDifficultyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.value.uiFlags |= BUTTON_CLICKED_ON;
 
-    iEditorToolbarState = TBAR_MODE_DEC_DIFF;
+    iEditorToolbarState = Enum35.TBAR_MODE_DEC_DIFF;
   }
 }
 
@@ -1064,7 +1064,7 @@ function EditMercIncDifficultyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.value.uiFlags |= BUTTON_CLICKED_ON;
 
-    iEditorToolbarState = TBAR_MODE_INC_DIFF;
+    iEditorToolbarState = Enum35.TBAR_MODE_INC_DIFF;
   }
 }
 
@@ -1374,18 +1374,18 @@ function IndicateSelectedMerc(sID: INT16): void {
   // first remove the cursor of the previous merc.
   // NOTE:  It doesn't matter what the value is, even if a merc isn't selected.
   // There is no need to validate the gridNo value, because it is always valid.
-  RemoveAllObjectsOfTypeRange(gsSelectedMercGridNo, CONFIRMMOVE, CONFIRMMOVE);
+  RemoveAllObjectsOfTypeRange(gsSelectedMercGridNo, Enum313.CONFIRMMOVE, Enum313.CONFIRMMOVE);
 
   // This is very important, because clearing the merc editing mode actually,
   // updates the edited merc.  If this call isn't here, it is possible to update the
   // newly selected merc with the wrong information.
-  SetMercEditingMode(MERC_NOMODE);
+  SetMercEditingMode(Enum42.MERC_NOMODE);
 
   bTeam = -1;
 
   // determine selection method
   switch (sID) {
-    case SELECT_NEXT_MERC:
+    case Enum43.SELECT_NEXT_MERC:
       prev = gpSelected;
       if (gsSelectedMercID == -1 || !gpSelected) {
         // if no merc selected, then select the first one in list.
@@ -1403,7 +1403,7 @@ function IndicateSelectedMerc(sID: INT16): void {
       if (!gpSelected) // list is empty
       {
         SetMercEditability(TRUE);
-        SetMercEditingMode(MERC_TEAMMODE);
+        SetMercEditingMode(Enum42.MERC_TEAMMODE);
         return;
       }
       while (gpSelected != prev) {
@@ -1419,23 +1419,23 @@ function IndicateSelectedMerc(sID: INT16): void {
       }
       // we have a valid merc now.
       break;
-    case SELECT_NO_MERC:
+    case Enum43.SELECT_NO_MERC:
       SetMercEditability(TRUE);
       gpSelected = NULL;
       gsSelectedMercID = -1;
       gsSelectedGridNo = 0;
-      SetMercEditingMode(MERC_TEAMMODE);
+      SetMercEditingMode(Enum42.MERC_TEAMMODE);
       return; // we already deselected the previous merc.
-    case SELECT_NEXT_ENEMY:
+    case Enum43.SELECT_NEXT_ENEMY:
       bTeam = ENEMY_TEAM;
       break;
-    case SELECT_NEXT_CREATURE:
+    case Enum43.SELECT_NEXT_CREATURE:
       bTeam = CREATURE_TEAM;
       break;
-    case SELECT_NEXT_REBEL:
+    case Enum43.SELECT_NEXT_REBEL:
       bTeam = MILITIA_TEAM;
       break;
-    case SELECT_NEXT_CIV:
+    case Enum43.SELECT_NEXT_CIV:
       bTeam = CIV_TEAM;
       break;
     default:
@@ -1445,7 +1445,7 @@ function IndicateSelectedMerc(sID: INT16): void {
         gsSelectedMercID = -1;
         gsSelectedGridNo = 0;
         SetMercEditability(TRUE);
-        SetMercEditingMode(MERC_TEAMMODE);
+        SetMercEditingMode(Enum42.MERC_TEAMMODE);
         return; // Invalid merc ID.
       }
       break;
@@ -1469,7 +1469,7 @@ function IndicateSelectedMerc(sID: INT16): void {
     if (!gpSelected) // list is empty
     {
       SetMercEditability(TRUE);
-      SetMercEditingMode(MERC_TEAMMODE);
+      SetMercEditingMode(Enum42.MERC_TEAMMODE);
       return;
     }
     while (gpSelected != prev) {
@@ -1489,7 +1489,7 @@ function IndicateSelectedMerc(sID: INT16): void {
       // we have cycled through the list already, so choose the same guy (if he is on the desired team)...
       if (!gpSelected.value.pSoldier || gpSelected.value.pSoldier.value.bVisible != 1 || gpSelected.value.pSoldier.value.bTeam != bTeam) {
         SetMercEditability(TRUE);
-        SetMercEditingMode(MERC_TEAMMODE);
+        SetMercEditingMode(Enum42.MERC_TEAMMODE);
         return;
       }
     }
@@ -1499,11 +1499,11 @@ function IndicateSelectedMerc(sID: INT16): void {
     gsSelectedMercGridNo = gpSelected.value.pSoldier.value.sGridNo;
   else {
     SetMercEditability(TRUE);
-    SetMercEditingMode(MERC_TEAMMODE);
+    SetMercEditingMode(Enum42.MERC_TEAMMODE);
     return;
   }
   gsSelectedMercID = gpSelected.value.pSoldier.value.ubID;
-  AddObjectToHead(gsSelectedMercGridNo, CONFIRMMOVE1);
+  AddObjectToHead(gsSelectedMercGridNo, Enum312.CONFIRMMOVE1);
 
   // If the merc has a valid profile, then turn off editability
   if (gpSelected.value.pDetailedPlacement)
@@ -1524,33 +1524,33 @@ function IndicateSelectedMerc(sID: INT16): void {
   // Whatever the case, we want to update the gui to press the appropriate buttons
   // depending on the merc's attributes.
   // Click the appropriate team button
-  UnclickEditorButton(MERCS_ENEMY);
-  UnclickEditorButton(MERCS_CREATURE);
-  UnclickEditorButton(MERCS_REBEL);
-  UnclickEditorButton(MERCS_CIVILIAN);
+  UnclickEditorButton(Enum32.MERCS_ENEMY);
+  UnclickEditorButton(Enum32.MERCS_CREATURE);
+  UnclickEditorButton(Enum32.MERCS_REBEL);
+  UnclickEditorButton(Enum32.MERCS_CIVILIAN);
   switch (gpSelected.value.pSoldier.value.bTeam) {
     case ENEMY_TEAM:
-      ClickEditorButton(MERCS_ENEMY);
-      iDrawMode = DRAW_MODE_ENEMY;
+      ClickEditorButton(Enum32.MERCS_ENEMY);
+      iDrawMode = Enum38.DRAW_MODE_ENEMY;
       break;
     case CREATURE_TEAM:
-      ClickEditorButton(MERCS_CREATURE);
-      iDrawMode = DRAW_MODE_CREATURE;
+      ClickEditorButton(Enum32.MERCS_CREATURE);
+      iDrawMode = Enum38.DRAW_MODE_CREATURE;
       break;
     case MILITIA_TEAM:
-      ClickEditorButton(MERCS_REBEL);
-      iDrawMode = DRAW_MODE_REBEL;
+      ClickEditorButton(Enum32.MERCS_REBEL);
+      iDrawMode = Enum38.DRAW_MODE_REBEL;
       break;
     case CIV_TEAM:
-      ClickEditorButton(MERCS_CIVILIAN);
-      iDrawMode = DRAW_MODE_CIVILIAN;
+      ClickEditorButton(Enum32.MERCS_CIVILIAN);
+      iDrawMode = Enum38.DRAW_MODE_CIVILIAN;
       break;
   }
   // Update the editing mode
   if (gpSelected.value.pDetailedPlacement)
     SetMercEditingMode(gubLastDetailedMercMode);
   else
-    SetMercEditingMode(MERC_BASICMODE);
+    SetMercEditingMode(Enum42.MERC_BASICMODE);
   // Determine which team button to press.
   gfRenderMercInfo = TRUE;
   // These calls will set the proper button states, even though it redundantly
@@ -1559,19 +1559,19 @@ function IndicateSelectedMerc(sID: INT16): void {
   SetMercAttitude(gpSelected.value.pSoldier.value.bAttitude);
   SetMercDirection(gpSelected.value.pSoldier.value.bDirection);
   if (gpSelected.value.pBasicPlacement.value.fPriorityExistance)
-    ClickEditorButton(MERCS_PRIORITYEXISTANCE_CHECKBOX);
+    ClickEditorButton(Enum32.MERCS_PRIORITYEXISTANCE_CHECKBOX);
   else
-    UnclickEditorButton(MERCS_PRIORITYEXISTANCE_CHECKBOX);
+    UnclickEditorButton(Enum32.MERCS_PRIORITYEXISTANCE_CHECKBOX);
   if (gpSelected.value.pBasicPlacement.value.fHasKeys)
-    ClickEditorButton(MERCS_HASKEYS_CHECKBOX);
+    ClickEditorButton(Enum32.MERCS_HASKEYS_CHECKBOX);
   else
-    UnclickEditorButton(MERCS_HASKEYS_CHECKBOX);
+    UnclickEditorButton(Enum32.MERCS_HASKEYS_CHECKBOX);
   if (gpSelected.value.pSoldier.value.ubProfile == NO_PROFILE) {
     SetMercRelativeEquipment(gpSelected.value.pBasicPlacement.value.bRelativeEquipmentLevel);
     SetMercRelativeAttributes(gpSelected.value.pBasicPlacement.value.bRelativeAttributeLevel);
     SetEnemyColorCode(gpSelected.value.pBasicPlacement.value.ubSoldierClass);
   }
-  if (iDrawMode == DRAW_MODE_CIVILIAN) {
+  if (iDrawMode == Enum38.DRAW_MODE_CIVILIAN) {
     ChangeCivGroup(gpSelected.value.pSoldier.value.ubCivilianGroup);
   }
 }
@@ -1584,7 +1584,7 @@ function DeleteSelectedMerc(): void {
     gfRenderWorld = TRUE;
     if (TextInputMode())
       KillTextInputMode();
-    IndicateSelectedMerc(SELECT_NO_MERC);
+    IndicateSelectedMerc(Enum43.SELECT_NO_MERC);
   }
 }
 
@@ -1592,7 +1592,7 @@ function SetupTextInputForMercProfile(): void {
   let str: UINT16[] /* [4] */;
   let sNum: INT16;
 
-  InitTextInputModeWithScheme(DEFAULT_SCHEME);
+  InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
 
   sNum = gpSelected.value.pDetailedPlacement.value.ubProfile;
   if (sNum == NO_PROFILE)
@@ -1605,7 +1605,7 @@ function SetupTextInputForMercProfile(): void {
 function SetupTextInputForMercAttributes(): void {
   let str: UINT16[] /* [4] */;
 
-  InitTextInputModeWithScheme(DEFAULT_SCHEME);
+  InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
 
   CalcStringForValue(str, gpSelected.value.pDetailedPlacement.value.bExpLevel, 100);
   AddTextInputField(200, 365, 20, 15, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT);
@@ -1710,7 +1710,7 @@ function ExtractAndUpdateMercProfile(): void {
     gpSelected.value.pDetailedPlacement.value.ubProfile = sNum;
     gpSelected.value.pDetailedPlacement.value.fCopyProfileItemsOver = TRUE;
     gpSelected.value.pBasicPlacement.value.fPriorityExistance = TRUE;
-    ClickEditorButton(MERCS_PRIORITYEXISTANCE_CHECKBOX);
+    ClickEditorButton(Enum32.MERCS_PRIORITYEXISTANCE_CHECKBOX);
     SetMercEditability(FALSE);
   } else
     return;
@@ -1722,15 +1722,15 @@ function ExtractAndUpdateMercProfile(): void {
 }
 
 function SetupTextInputForMercSchedule(): void {
-  InitTextInputModeWithScheme(DEFAULT_SCHEME);
+  InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
   AddUserInputField(NULL);
-  AddTextInputField(268, 373, 36, 16, MSYS_PRIORITY_NORMAL, "", 6, INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
+  AddTextInputField(268, 373, 36, 16, MSYS_PRIORITY_NORMAL, "", 6, Enum383.INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
   SetExclusive24HourTimeValue(1, gCurrSchedule.usTime[0]);
-  AddTextInputField(268, 394, 36, 16, MSYS_PRIORITY_NORMAL, "", 6, INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
+  AddTextInputField(268, 394, 36, 16, MSYS_PRIORITY_NORMAL, "", 6, Enum383.INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
   SetExclusive24HourTimeValue(2, gCurrSchedule.usTime[1]);
-  AddTextInputField(268, 415, 36, 16, MSYS_PRIORITY_NORMAL, "", 6, INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
+  AddTextInputField(268, 415, 36, 16, MSYS_PRIORITY_NORMAL, "", 6, Enum383.INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
   SetExclusive24HourTimeValue(3, gCurrSchedule.usTime[2]);
-  AddTextInputField(268, 436, 36, 16, MSYS_PRIORITY_NORMAL, "", 6, INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
+  AddTextInputField(268, 436, 36, 16, MSYS_PRIORITY_NORMAL, "", 6, Enum383.INPUTTYPE_EXCLUSIVE_24HOURCLOCK);
   SetExclusive24HourTimeValue(4, gCurrSchedule.usTime[3]);
 }
 
@@ -1745,7 +1745,7 @@ function ExtractAndUpdateMercSchedule(): void {
   // memset( &gScheduleNode, 0, sizeof( SCHEDULENODE ) );
   for (i = 0; i < 4; i++) {
     gCurrSchedule.usTime[i] = GetExclusive24HourTimeValueFromField((i + 1));
-    gCurrSchedule.ubAction[i] = MSYS_GetBtnUserData(ButtonList[iEditorButton[MERCS_SCHEDULE_ACTION1 + i]], 0);
+    gCurrSchedule.ubAction[i] = MSYS_GetBtnUserData(ButtonList[iEditorButton[Enum32.MERCS_SCHEDULE_ACTION1 + i]], 0);
     if (gCurrSchedule.ubAction[i])
       fValidSchedule = TRUE;
   }
@@ -1757,8 +1757,8 @@ function ExtractAndUpdateMercSchedule(): void {
       if (SortSchedule(addressof(gCurrSchedule)))
         fScheduleNeedsUpdate = TRUE;
       CopyScheduleToList(addressof(gCurrSchedule), gpSelected);
-      ShowEditorButton(MERCS_GLOWSCHEDULE);
-      HideEditorButton(MERCS_SCHEDULE);
+      ShowEditorButton(Enum32.MERCS_GLOWSCHEDULE);
+      HideEditorButton(Enum32.MERCS_SCHEDULE);
     }
   } else {
     let pSchedule: Pointer<SCHEDULENODE>;
@@ -1766,8 +1766,8 @@ function ExtractAndUpdateMercSchedule(): void {
     if (!pSchedule) {
       gpSelected.value.pSoldier.value.ubScheduleID = 0;
       gpSelected.value.pDetailedPlacement.value.ubScheduleID = 0;
-      HideEditorButton(MERCS_GLOWSCHEDULE);
-      ShowEditorButton(MERCS_SCHEDULE);
+      HideEditorButton(Enum32.MERCS_GLOWSCHEDULE);
+      ShowEditorButton(Enum32.MERCS_SCHEDULE);
       return;
     }
     if (fValidSchedule) {
@@ -1783,8 +1783,8 @@ function ExtractAndUpdateMercSchedule(): void {
       DeleteSchedule(pSchedule.value.ubScheduleID);
       gpSelected.value.pSoldier.value.ubScheduleID = 0;
       gpSelected.value.pDetailedPlacement.value.ubScheduleID = 0;
-      HideEditorButton(MERCS_GLOWSCHEDULE);
-      ShowEditorButton(MERCS_SCHEDULE);
+      HideEditorButton(Enum32.MERCS_GLOWSCHEDULE);
+      ShowEditorButton(Enum32.MERCS_SCHEDULE);
     }
   }
   if (fScheduleNeedsUpdate) {
@@ -1800,13 +1800,13 @@ function ExtractCurrentMercModeInfo(fKillTextInputMode: BOOLEAN): void {
     return;
   // Extract and update mercs via text fields if applicable
   switch (gubCurrMercMode) {
-    case MERC_ATTRIBUTEMODE:
+    case Enum42.MERC_ATTRIBUTEMODE:
       ExtractAndUpdateMercAttributes();
       break;
-    case MERC_PROFILEMODE:
+    case Enum42.MERC_PROFILEMODE:
       ExtractAndUpdateMercProfile();
       break;
-    case MERC_SCHEDULEMODE:
+    case Enum42.MERC_SCHEDULEMODE:
       ExtractAndUpdateMercSchedule();
       break;
     default:
@@ -1892,29 +1892,29 @@ function ChangeBodyType(bOffset: INT8): void //+1 or -1 only
     // Set the flags based on the bodytype
     gpSelected.value.pSoldier.value.uiStatusFlags &= ~(SOLDIER_VEHICLE | SOLDIER_ROBOT | SOLDIER_ANIMAL | SOLDIER_MONSTER);
     switch (gpSelected.value.pSoldier.value.ubBodyType) {
-      case ADULTFEMALEMONSTER:
-      case AM_MONSTER:
-      case YAF_MONSTER:
-      case YAM_MONSTER:
-      case LARVAE_MONSTER:
-      case INFANT_MONSTER:
-      case QUEENMONSTER:
+      case Enum194.ADULTFEMALEMONSTER:
+      case Enum194.AM_MONSTER:
+      case Enum194.YAF_MONSTER:
+      case Enum194.YAM_MONSTER:
+      case Enum194.LARVAE_MONSTER:
+      case Enum194.INFANT_MONSTER:
+      case Enum194.QUEENMONSTER:
         gpSelected.value.pSoldier.value.uiStatusFlags |= SOLDIER_MONSTER;
         break;
-      case BLOODCAT:
-      case COW:
-      case CROW:
+      case Enum194.BLOODCAT:
+      case Enum194.COW:
+      case Enum194.CROW:
         gpSelected.value.pSoldier.value.uiStatusFlags |= SOLDIER_ANIMAL;
         break;
-      case ROBOTNOWEAPON:
+      case Enum194.ROBOTNOWEAPON:
         gpSelected.value.pSoldier.value.uiStatusFlags |= SOLDIER_ROBOT;
         break;
-      case HUMVEE:
-      case ELDORADO:
-      case ICECREAMTRUCK:
-      case JEEP:
-      case TANK_NW:
-      case TANK_NE:
+      case Enum194.HUMVEE:
+      case Enum194.ELDORADO:
+      case Enum194.ICECREAMTRUCK:
+      case Enum194.JEEP:
+      case Enum194.TANK_NW:
+      case Enum194.TANK_NE:
         gpSelected.value.pSoldier.value.uiStatusFlags |= SOLDIER_VEHICLE;
         break;
     }
@@ -1939,19 +1939,19 @@ function SetMercEditability(fEditable: BOOLEAN): void {
   gfCanEditMercs = fEditable;
   if (gfCanEditMercs) {
     // enable buttons to allow editing
-    EnableEditorButtons(MERCS_EQUIPMENT_BAD, MERCS_ATTRIBUTES_GREAT);
+    EnableEditorButtons(Enum32.MERCS_EQUIPMENT_BAD, Enum32.MERCS_ATTRIBUTES_GREAT);
     EnableEditorButtons(FIRST_MERCS_COLORMODE_BUTTON, LAST_MERCS_COLORMODE_BUTTON);
     if (gpSelected && gpSelected.value.pDetailedPlacement && !gpSelected.value.pDetailedPlacement.value.fVisible)
-      UnclickEditorButton(MERCS_TOGGLECOLOR_BUTTON);
-    EnableEditorButton(MERCS_PRIORITYEXISTANCE_CHECKBOX);
-    EnableEditorButton(MERCS_CIVILIAN_GROUP);
+      UnclickEditorButton(Enum32.MERCS_TOGGLECOLOR_BUTTON);
+    EnableEditorButton(Enum32.MERCS_PRIORITYEXISTANCE_CHECKBOX);
+    EnableEditorButton(Enum32.MERCS_CIVILIAN_GROUP);
   } else {
     // disable buttons to prevent editing
-    DisableEditorButtons(MERCS_EQUIPMENT_BAD, MERCS_ATTRIBUTES_GREAT);
+    DisableEditorButtons(Enum32.MERCS_EQUIPMENT_BAD, Enum32.MERCS_ATTRIBUTES_GREAT);
     DisableEditorButtons(FIRST_MERCS_COLORMODE_BUTTON, LAST_MERCS_COLORMODE_BUTTON);
-    ClickEditorButton(MERCS_TOGGLECOLOR_BUTTON);
-    DisableEditorButton(MERCS_PRIORITYEXISTANCE_CHECKBOX);
-    DisableEditorButton(MERCS_CIVILIAN_GROUP);
+    ClickEditorButton(Enum32.MERCS_TOGGLECOLOR_BUTTON);
+    DisableEditorButton(Enum32.MERCS_PRIORITYEXISTANCE_CHECKBOX);
+    DisableEditorButton(Enum32.MERCS_CIVILIAN_GROUP);
   }
 }
 
@@ -1963,27 +1963,27 @@ function SetMercEditability(fEditable: BOOLEAN): void {
 function SpecifyEntryPoint(iMapIndex: UINT32): void {
   let psEntryGridNo: Pointer<INT16>;
   let fErasing: BOOLEAN = FALSE;
-  if (iDrawMode >= DRAW_MODE_ERASE) {
-    iDrawMode -= DRAW_MODE_ERASE;
+  if (iDrawMode >= Enum38.DRAW_MODE_ERASE) {
+    iDrawMode -= Enum38.DRAW_MODE_ERASE;
     fErasing = TRUE;
   }
   switch (iDrawMode) {
-    case DRAW_MODE_NORTHPOINT:
+    case Enum38.DRAW_MODE_NORTHPOINT:
       psEntryGridNo = addressof(gMapInformation.sNorthGridNo);
       break;
-    case DRAW_MODE_WESTPOINT:
+    case Enum38.DRAW_MODE_WESTPOINT:
       psEntryGridNo = addressof(gMapInformation.sWestGridNo);
       break;
-    case DRAW_MODE_EASTPOINT:
+    case Enum38.DRAW_MODE_EASTPOINT:
       psEntryGridNo = addressof(gMapInformation.sEastGridNo);
       break;
-    case DRAW_MODE_SOUTHPOINT:
+    case Enum38.DRAW_MODE_SOUTHPOINT:
       psEntryGridNo = addressof(gMapInformation.sSouthGridNo);
       break;
-    case DRAW_MODE_CENTERPOINT:
+    case Enum38.DRAW_MODE_CENTERPOINT:
       psEntryGridNo = addressof(gMapInformation.sCenterGridNo);
       break;
-    case DRAW_MODE_ISOLATEDPOINT:
+    case Enum38.DRAW_MODE_ISOLATEDPOINT:
       psEntryGridNo = addressof(gMapInformation.sIsolatedGridNo);
       break;
     default:
@@ -1992,21 +1992,21 @@ function SpecifyEntryPoint(iMapIndex: UINT32): void {
   if (!fErasing) {
     if (psEntryGridNo.value >= 0) {
       AddToUndoList(psEntryGridNo.value);
-      RemoveAllTopmostsOfTypeRange(psEntryGridNo.value, FIRSTPOINTERS, FIRSTPOINTERS);
+      RemoveAllTopmostsOfTypeRange(psEntryGridNo.value, Enum313.FIRSTPOINTERS, Enum313.FIRSTPOINTERS);
     }
     psEntryGridNo.value = iMapIndex;
     ValidateEntryPointGridNo(psEntryGridNo);
     AddToUndoList(psEntryGridNo.value);
-    AddTopmostToTail(psEntryGridNo.value, FIRSTPOINTERS2);
+    AddTopmostToTail(psEntryGridNo.value, Enum312.FIRSTPOINTERS2);
   } else {
     let usDummy: UINT16;
-    if (TypeExistsInTopmostLayer(iMapIndex, FIRSTPOINTERS, addressof(usDummy))) {
+    if (TypeExistsInTopmostLayer(iMapIndex, Enum313.FIRSTPOINTERS, addressof(usDummy))) {
       AddToUndoList(iMapIndex);
-      RemoveAllTopmostsOfTypeRange(iMapIndex, FIRSTPOINTERS, FIRSTPOINTERS);
+      RemoveAllTopmostsOfTypeRange(iMapIndex, Enum313.FIRSTPOINTERS, Enum313.FIRSTPOINTERS);
       psEntryGridNo.value = -1;
     }
     // restore the drawmode
-    iDrawMode += DRAW_MODE_ERASE;
+    iDrawMode += Enum38.DRAW_MODE_ERASE;
   }
 }
 
@@ -2015,7 +2015,7 @@ function SetMercEditingMode(ubNewMode: UINT8): void {
   gfRenderTaskbar = TRUE;
 
   // set up the new mode values.
-  if (gubCurrMercMode >= MERC_GENERALMODE)
+  if (gubCurrMercMode >= Enum42.MERC_GENERALMODE)
     gubLastDetailedMercMode = gubCurrMercMode;
 
   // Depending on the mode we were just in, we may want to extract and update the
@@ -2027,179 +2027,179 @@ function SetMercEditingMode(ubNewMode: UINT8): void {
   gubCurrMercMode = ubNewMode;
 
   // Hide all of the merc buttons except the team buttons which are static.
-  HideEditorButtons(FIRST_MERCS_BASICMODE_BUTTON, LAST_MERCS_BUTTON);
+  HideEditorButtons(FIRST_MERCS_BASICMODE_BUTTON, Enum32.LAST_MERCS_BUTTON);
 
   switch (gubPrevMercMode) {
-    case MERC_GETITEMMODE:
-      EnableEditorButtons(TAB_TERRAIN, TAB_OPTIONS);
+    case Enum42.MERC_GETITEMMODE:
+      EnableEditorButtons(Enum32.TAB_TERRAIN, Enum32.TAB_OPTIONS);
       HideEditorButtons(FIRST_MERCS_GETITEM_BUTTON, LAST_MERCS_GETITEM_BUTTON);
       AddNewItemToSelectedMercsInventory(TRUE);
       break;
-    case MERC_INVENTORYMODE:
+    case Enum42.MERC_INVENTORYMODE:
       HideItemStatsPanel();
-      DisableEditorRegion(MERC_REGION_ID);
+      DisableEditorRegion(Enum45.MERC_REGION_ID);
       break;
-    case MERC_GENERALMODE:
-      EnableEditorButton(MERCS_APPEARANCE);
+    case Enum42.MERC_GENERALMODE:
+      EnableEditorButton(Enum32.MERCS_APPEARANCE);
       break;
-    case MERC_SCHEDULEMODE:
+    case Enum42.MERC_SCHEDULEMODE:
       // ClearCurrentSchedule();
       break;
   }
 
   // If we leave the merc tab, then we want to update editable fields such as
   // attributes, which was just handled above, then turn everything off, and exit.
-  if (ubNewMode == MERC_NOMODE) {
-    HideEditorButtons(FIRST_MERCS_BUTTON, LAST_MERCS_TEAMMODE_BUTTON);
-    HideEditorButtons(MERCS_SCHEDULE, MERCS_GLOWSCHEDULE);
+  if (ubNewMode == Enum42.MERC_NOMODE) {
+    HideEditorButtons(Enum32.FIRST_MERCS_BUTTON, LAST_MERCS_TEAMMODE_BUTTON);
+    HideEditorButtons(Enum32.MERCS_SCHEDULE, Enum32.MERCS_GLOWSCHEDULE);
     return;
   }
-  if (gubPrevMercMode == MERC_NOMODE || gubPrevMercMode == MERC_GETITEMMODE) {
-    ShowEditorButtons(FIRST_MERCS_BUTTON, LAST_MERCS_TEAMMODE_BUTTON);
+  if (gubPrevMercMode == Enum42.MERC_NOMODE || gubPrevMercMode == Enum42.MERC_GETITEMMODE) {
+    ShowEditorButtons(Enum32.FIRST_MERCS_BUTTON, LAST_MERCS_TEAMMODE_BUTTON);
   }
 
   // Release the currently selected merc if you just selected a new team.
-  if (gsSelectedMercID != -1 && ubNewMode == MERC_TEAMMODE) {
+  if (gsSelectedMercID != -1 && ubNewMode == Enum42.MERC_TEAMMODE) {
     // attempt to weed out conditions where we select a team that matches the currently
     // selected merc.  We don't want to deselect him in this case.
-    if (gpSelected.value.pSoldier.value.bTeam == ENEMY_TEAM && iDrawMode == DRAW_MODE_ENEMY || gpSelected.value.pSoldier.value.bTeam == CREATURE_TEAM && iDrawMode == DRAW_MODE_CREATURE || gpSelected.value.pSoldier.value.bTeam == MILITIA_TEAM && iDrawMode == DRAW_MODE_REBEL || gpSelected.value.pSoldier.value.bTeam == CIV_TEAM && iDrawMode == DRAW_MODE_CIVILIAN) {
+    if (gpSelected.value.pSoldier.value.bTeam == ENEMY_TEAM && iDrawMode == Enum38.DRAW_MODE_ENEMY || gpSelected.value.pSoldier.value.bTeam == CREATURE_TEAM && iDrawMode == Enum38.DRAW_MODE_CREATURE || gpSelected.value.pSoldier.value.bTeam == MILITIA_TEAM && iDrawMode == Enum38.DRAW_MODE_REBEL || gpSelected.value.pSoldier.value.bTeam == CIV_TEAM && iDrawMode == Enum38.DRAW_MODE_CIVILIAN) {
       // Same team, so don't deselect merc.  Instead, keep the previous editing mode
       // because we are still editing this merc.
       gubCurrMercMode = gubPrevMercMode;
       // if we don't have a detailed placement, auto set to basic mode.
       if (!gpSelected.value.pDetailedPlacement)
-        gubCurrMercMode = MERC_BASICMODE;
+        gubCurrMercMode = Enum42.MERC_BASICMODE;
     } else {
       // Different teams, so deselect the current merc and the detailed checkbox if applicable.
-      IndicateSelectedMerc(SELECT_NO_MERC);
-      ShowEditorButtons(FIRST_MERCS_BUTTON, LAST_MERCS_TEAMMODE_BUTTON);
-      UnclickEditorButton(MERCS_DETAILEDCHECKBOX);
+      IndicateSelectedMerc(Enum43.SELECT_NO_MERC);
+      ShowEditorButtons(Enum32.FIRST_MERCS_BUTTON, LAST_MERCS_TEAMMODE_BUTTON);
+      UnclickEditorButton(Enum32.MERCS_DETAILEDCHECKBOX);
     }
   }
 
-  ShowButton(iEditorButton[MERCS_NEXT]);
+  ShowButton(iEditorButton[Enum32.MERCS_NEXT]);
   if (gsSelectedMercID != -1)
-    ShowButton(iEditorButton[MERCS_DELETE]);
+    ShowButton(iEditorButton[Enum32.MERCS_DELETE]);
 
-  if (gubCurrMercMode > MERC_TEAMMODE) {
+  if (gubCurrMercMode > Enum42.MERC_TEAMMODE) {
     // Add the basic buttons if applicable.
     ShowEditorButtons(FIRST_MERCS_BASICMODE_BUTTON, LAST_MERCS_BASICMODE_BUTTON);
   }
-  if (gubCurrMercMode > MERC_BASICMODE) {
+  if (gubCurrMercMode > Enum42.MERC_BASICMODE) {
     // Add the detailed buttons if applicable.
-    ClickEditorButton(MERCS_DETAILEDCHECKBOX);
+    ClickEditorButton(Enum32.MERCS_DETAILEDCHECKBOX);
     ShowEditorButtons(FIRST_MERCS_PRIORITYMODE_BUTTON, LAST_MERCS_PRIORITYMODE_BUTTON);
   } else
-    UnclickEditorButton(MERCS_DETAILEDCHECKBOX);
+    UnclickEditorButton(Enum32.MERCS_DETAILEDCHECKBOX);
   // Now we are setting up the button states for the new mode, as well as show the
   // applicable buttons for the detailed placement modes.
-  if (gubCurrMercMode == MERC_APPEARANCEMODE && iDrawMode == DRAW_MODE_CREATURE || gubCurrMercMode == MERC_SCHEDULEMODE && iDrawMode != DRAW_MODE_CIVILIAN) {
-    gubCurrMercMode = MERC_GENERALMODE;
+  if (gubCurrMercMode == Enum42.MERC_APPEARANCEMODE && iDrawMode == Enum38.DRAW_MODE_CREATURE || gubCurrMercMode == Enum42.MERC_SCHEDULEMODE && iDrawMode != Enum38.DRAW_MODE_CIVILIAN) {
+    gubCurrMercMode = Enum42.MERC_GENERALMODE;
   }
   switch (gubCurrMercMode) {
-    case MERC_GETITEMMODE:
-      DisableEditorButtons(TAB_TERRAIN, TAB_OPTIONS);
-      EnableEditorButton(TAB_MERCS);
-      HideEditorButtons(FIRST_MERCS_BUTTON, LAST_MERCS_TEAMMODE_BUTTON);
-      HideEditorButtons(MERCS_SCHEDULE, MERCS_GLOWSCHEDULE);
+    case Enum42.MERC_GETITEMMODE:
+      DisableEditorButtons(Enum32.TAB_TERRAIN, Enum32.TAB_OPTIONS);
+      EnableEditorButton(Enum32.TAB_MERCS);
+      HideEditorButtons(Enum32.FIRST_MERCS_BUTTON, LAST_MERCS_TEAMMODE_BUTTON);
+      HideEditorButtons(Enum32.MERCS_SCHEDULE, Enum32.MERCS_GLOWSCHEDULE);
       ShowEditorButtons(FIRST_MERCS_GETITEM_BUTTON, LAST_MERCS_GETITEM_BUTTON);
       InitEditorItemsInfo(eInfo.uiItemType);
-      ClickEditorButton(ITEMS_WEAPONS + eInfo.uiItemType - TBAR_MODE_ITEM_WEAPONS);
+      ClickEditorButton(Enum32.ITEMS_WEAPONS + eInfo.uiItemType - Enum35.TBAR_MODE_ITEM_WEAPONS);
       break;
-    case MERC_INVENTORYMODE:
+    case Enum42.MERC_INVENTORYMODE:
       UpdateMercItemSlots();
       ShowItemStatsPanel();
       if (gbCurrSelect == -1)
         SpecifyItemToEdit(NULL, -1);
       else
         SpecifyItemToEdit(gpMercSlotItem[gbCurrSelect], -1);
-      HideEditorButtons(MERCS_DELETE, MERCS_NEXT);
+      HideEditorButtons(Enum32.MERCS_DELETE, Enum32.MERCS_NEXT);
       ShowEditorButtons(FIRST_MERCS_INVENTORY_BUTTON, LAST_MERCS_INVENTORY_BUTTON);
-      EnableEditorRegion(MERC_REGION_ID);
+      EnableEditorRegion(Enum45.MERC_REGION_ID);
       UnclickEditorButtons(FIRST_MERCS_PRIORITYMODE_BUTTON, LAST_MERCS_PRIORITYMODE_BUTTON);
-      ClickEditorButton(MERCS_INVENTORY);
+      ClickEditorButton(Enum32.MERCS_INVENTORY);
       break;
-    case MERC_BASICMODE:
+    case Enum42.MERC_BASICMODE:
       ShowEditorButtons(FIRST_MERCS_GENERAL_BUTTON, LAST_MERCS_GENERAL_BUTTON);
-      if (iDrawMode == DRAW_MODE_CREATURE) {
+      if (iDrawMode == Enum38.DRAW_MODE_CREATURE) {
         // Set up alternate general mode.  This one doesn't allow you to specify relative attributes
         // but requires you to specify a body type.
         HideEditorButtons(FIRST_MERCS_REL_EQUIPMENT_BUTTON, LAST_MERCS_REL_EQUIPMENT_BUTTON);
         ShowEditorButtons(FIRST_MERCS_BODYTYPE_BUTTON, LAST_MERCS_BODYTYPE_BUTTON);
       }
-      if (iDrawMode != DRAW_MODE_ENEMY)
+      if (iDrawMode != Enum38.DRAW_MODE_ENEMY)
         HideEditorButtons(FIRST_MERCS_COLORCODE_BUTTON, LAST_MERCS_COLORCODE_BUTTON);
-      if (iDrawMode == DRAW_MODE_CIVILIAN)
-        ShowEditorButton(MERCS_CIVILIAN_GROUP);
+      if (iDrawMode == Enum38.DRAW_MODE_CIVILIAN)
+        ShowEditorButton(Enum32.MERCS_CIVILIAN_GROUP);
       break;
-    case MERC_GENERALMODE:
+    case Enum42.MERC_GENERALMODE:
       ShowEditorButtons(FIRST_MERCS_GENERAL_BUTTON, LAST_MERCS_GENERAL_BUTTON);
       UnclickEditorButtons(FIRST_MERCS_PRIORITYMODE_BUTTON, LAST_MERCS_PRIORITYMODE_BUTTON);
-      ClickEditorButton(MERCS_GENERAL);
-      if (iDrawMode == DRAW_MODE_CREATURE) {
+      ClickEditorButton(Enum32.MERCS_GENERAL);
+      if (iDrawMode == Enum38.DRAW_MODE_CREATURE) {
         // Set up alternate general mode.  This one doesn't allow you to specify relative equipment
         // but requires you to specify a body type.
         HideEditorButtons(FIRST_MERCS_REL_EQUIPMENT_BUTTON, LAST_MERCS_REL_EQUIPMENT_BUTTON);
         ShowEditorButtons(FIRST_MERCS_BODYTYPE_BUTTON, LAST_MERCS_BODYTYPE_BUTTON);
-        DisableEditorButton(MERCS_APPEARANCE);
+        DisableEditorButton(Enum32.MERCS_APPEARANCE);
       }
-      if (iDrawMode != DRAW_MODE_ENEMY)
+      if (iDrawMode != Enum38.DRAW_MODE_ENEMY)
         HideEditorButtons(FIRST_MERCS_COLORCODE_BUTTON, LAST_MERCS_COLORCODE_BUTTON);
-      if (iDrawMode == DRAW_MODE_CIVILIAN)
-        ShowEditorButton(MERCS_CIVILIAN_GROUP);
+      if (iDrawMode == Enum38.DRAW_MODE_CIVILIAN)
+        ShowEditorButton(Enum32.MERCS_CIVILIAN_GROUP);
       break;
-    case MERC_ATTRIBUTEMODE:
+    case Enum42.MERC_ATTRIBUTEMODE:
       UnclickEditorButtons(FIRST_MERCS_PRIORITYMODE_BUTTON, LAST_MERCS_PRIORITYMODE_BUTTON);
-      ClickEditorButton(MERCS_ATTRIBUTES);
+      ClickEditorButton(Enum32.MERCS_ATTRIBUTES);
       SetupTextInputForMercAttributes();
       break;
-    case MERC_APPEARANCEMODE:
+    case Enum42.MERC_APPEARANCEMODE:
       ShowEditorButtons(FIRST_MERCS_COLORMODE_BUTTON, LAST_MERCS_COLORMODE_BUTTON);
       UnclickEditorButtons(FIRST_MERCS_PRIORITYMODE_BUTTON, LAST_MERCS_PRIORITYMODE_BUTTON);
-      ClickEditorButton(MERCS_APPEARANCE);
+      ClickEditorButton(Enum32.MERCS_APPEARANCE);
       if (gfCanEditMercs && gpSelected && gpSelected.value.pDetailedPlacement) {
         if (!gpSelected.value.pDetailedPlacement.value.fVisible) {
-          UnclickEditorButton(MERCS_TOGGLECOLOR_BUTTON);
+          UnclickEditorButton(Enum32.MERCS_TOGGLECOLOR_BUTTON);
           DisableEditorButtons(FIRST_MERCS_COLOR_BUTTON, LAST_MERCS_COLOR_BUTTON);
         } else {
-          ClickEditorButton(MERCS_TOGGLECOLOR_BUTTON);
+          ClickEditorButton(Enum32.MERCS_TOGGLECOLOR_BUTTON);
           EnableEditorButtons(FIRST_MERCS_COLOR_BUTTON, LAST_MERCS_COLOR_BUTTON);
         }
       }
       break;
-    case MERC_PROFILEMODE:
+    case Enum42.MERC_PROFILEMODE:
       UnclickEditorButtons(FIRST_MERCS_PRIORITYMODE_BUTTON, LAST_MERCS_PRIORITYMODE_BUTTON);
-      ClickEditorButton(MERCS_PROFILE);
+      ClickEditorButton(Enum32.MERCS_PROFILE);
       SetupTextInputForMercProfile();
       break;
-    case MERC_SCHEDULEMODE:
-      ShowEditorButtons(MERCS_SCHEDULE_ACTION1, MERCS_SCHEDULE_VARIANCE4);
-      ShowEditorButton(MERCS_SCHEDULE_CLEAR);
+    case Enum42.MERC_SCHEDULEMODE:
+      ShowEditorButtons(Enum32.MERCS_SCHEDULE_ACTION1, Enum32.MERCS_SCHEDULE_VARIANCE4);
+      ShowEditorButton(Enum32.MERCS_SCHEDULE_CLEAR);
       UnclickEditorButtons(FIRST_MERCS_PRIORITYMODE_BUTTON, LAST_MERCS_PRIORITYMODE_BUTTON);
-      ClickEditorButton(MERCS_SCHEDULE);
+      ClickEditorButton(Enum32.MERCS_SCHEDULE);
       SetupTextInputForMercSchedule();
       UpdateScheduleInfo();
       DetermineScheduleEditability();
   }
   // Show or hide the schedule buttons
-  if (gpSelected && gubCurrMercMode != MERC_GETITEMMODE) {
+  if (gpSelected && gubCurrMercMode != Enum42.MERC_GETITEMMODE) {
     if (gpSelected.value.pDetailedPlacement && gpSelected.value.pDetailedPlacement.value.ubScheduleID) {
-      HideEditorButton(MERCS_SCHEDULE);
-      ShowEditorButton(MERCS_GLOWSCHEDULE);
+      HideEditorButton(Enum32.MERCS_SCHEDULE);
+      ShowEditorButton(Enum32.MERCS_GLOWSCHEDULE);
     } else {
-      HideEditorButton(MERCS_GLOWSCHEDULE);
+      HideEditorButton(Enum32.MERCS_GLOWSCHEDULE);
       if (gpSelected.value.pDetailedPlacement) {
-        ShowEditorButton(MERCS_SCHEDULE);
+        ShowEditorButton(Enum32.MERCS_SCHEDULE);
         if (gpSelected.value.pSoldier.value.bTeam == CIV_TEAM)
-          EnableEditorButton(MERCS_SCHEDULE);
+          EnableEditorButton(Enum32.MERCS_SCHEDULE);
         else
-          DisableEditorButton(MERCS_SCHEDULE);
+          DisableEditorButton(Enum32.MERCS_SCHEDULE);
       } else {
-        HideEditorButton(MERCS_SCHEDULE);
+        HideEditorButton(Enum32.MERCS_SCHEDULE);
       }
     }
   } else {
-    HideEditorButtons(MERCS_SCHEDULE, MERCS_GLOWSCHEDULE);
+    HideEditorButtons(Enum32.MERCS_SCHEDULE, Enum32.MERCS_GLOWSCHEDULE);
   }
 }
 
@@ -2209,85 +2209,85 @@ function DisplayBodyTypeInfo(): void {
     case RANDOM:
       swprintf(str, "Random");
       break;
-    case REGMALE:
+    case Enum194.REGMALE:
       swprintf(str, "Reg Male");
       break;
-    case BIGMALE:
+    case Enum194.BIGMALE:
       swprintf(str, "Big Male");
       break;
-    case STOCKYMALE:
+    case Enum194.STOCKYMALE:
       swprintf(str, "Stocky Male");
       break;
-    case REGFEMALE:
+    case Enum194.REGFEMALE:
       swprintf(str, "Reg Female");
       break;
-    case TANK_NE:
+    case Enum194.TANK_NE:
       swprintf(str, "NE Tank");
       break;
-    case TANK_NW:
+    case Enum194.TANK_NW:
       swprintf(str, "NW Tank");
       break;
-    case FATCIV:
+    case Enum194.FATCIV:
       swprintf(str, "Fat Civilian");
       break;
-    case MANCIV:
+    case Enum194.MANCIV:
       swprintf(str, "M Civilian");
       break;
-    case MINICIV:
+    case Enum194.MINICIV:
       swprintf(str, "Miniskirt");
       break;
-    case DRESSCIV:
+    case Enum194.DRESSCIV:
       swprintf(str, "F Civilian");
       break;
-    case HATKIDCIV:
+    case Enum194.HATKIDCIV:
       swprintf(str, "Kid w/ Hat");
       break;
-    case HUMVEE:
+    case Enum194.HUMVEE:
       swprintf(str, "Humvee");
       break;
-    case ELDORADO:
+    case Enum194.ELDORADO:
       swprintf(str, "Eldorado");
       break;
-    case ICECREAMTRUCK:
+    case Enum194.ICECREAMTRUCK:
       swprintf(str, "Icecream Truck");
       break;
-    case JEEP:
+    case Enum194.JEEP:
       swprintf(str, "Jeep");
       break;
-    case KIDCIV:
+    case Enum194.KIDCIV:
       swprintf(str, "Kid Civilian");
       break;
-    case COW:
+    case Enum194.COW:
       swprintf(str, "Domestic Cow");
       break;
-    case CRIPPLECIV:
+    case Enum194.CRIPPLECIV:
       swprintf(str, "Cripple");
       break;
-    case ROBOTNOWEAPON:
+    case Enum194.ROBOTNOWEAPON:
       swprintf(str, "Unarmed Robot");
       break;
-    case LARVAE_MONSTER:
+    case Enum194.LARVAE_MONSTER:
       swprintf(str, "Larvae");
       break;
-    case INFANT_MONSTER:
+    case Enum194.INFANT_MONSTER:
       swprintf(str, "Infant");
       break;
-    case YAF_MONSTER:
+    case Enum194.YAF_MONSTER:
       swprintf(str, "Yng F Monster");
       break;
-    case YAM_MONSTER:
+    case Enum194.YAM_MONSTER:
       swprintf(str, "Yng M Monster");
       break;
-    case ADULTFEMALEMONSTER:
+    case Enum194.ADULTFEMALEMONSTER:
       swprintf(str, "Adt F Monster");
       break;
-    case AM_MONSTER:
+    case Enum194.AM_MONSTER:
       swprintf(str, "Adt M Monster");
       break;
-    case QUEENMONSTER:
+    case Enum194.QUEENMONSTER:
       swprintf(str, "Queen Monster");
       break;
-    case BLOODCAT:
+    case Enum194.BLOODCAT:
       swprintf(str, "Bloodcat");
       break;
   }
@@ -2303,17 +2303,17 @@ function UpdateMercsInfo(): void {
   gfRenderMercInfo = FALSE;
 
   switch (gubCurrMercMode) {
-    case MERC_GETITEMMODE:
+    case Enum42.MERC_GETITEMMODE:
       RenderEditorItemsInfo();
       break;
-    case MERC_INVENTORYMODE:
+    case Enum42.MERC_INVENTORYMODE:
       if (gfMercGetItem)
-        SetMercEditingMode(MERC_GETITEMMODE);
+        SetMercEditingMode(Enum42.MERC_GETITEMMODE);
       else
         RenderMercInventoryPanel();
       break;
-    case MERC_BASICMODE:
-    case MERC_GENERALMODE:
+    case Enum42.MERC_BASICMODE:
+    case Enum42.MERC_GENERALMODE:
       BltVideoObjectFromIndex(FRAME_BUFFER, guiExclamation, 0, 188, 362, VO_BLT_SRCTRANSPARENCY, NULL);
       BltVideoObjectFromIndex(FRAME_BUFFER, guiKeyImage, 0, 186, 387, VO_BLT_SRCTRANSPARENCY, NULL);
       SetFont(SMALLCOMPFONT);
@@ -2321,7 +2321,7 @@ function UpdateMercsInfo(): void {
       SetFontShadow(FONT_NEARBLACK);
       mprintf(240, 363, " --=ORDERS=-- ");
       mprintf(240, 419, "--=ATTITUDE=--");
-      if (iDrawMode == DRAW_MODE_CREATURE) {
+      if (iDrawMode == Enum38.DRAW_MODE_CREATURE) {
         DisplayBodyTypeInfo();
         SetFont(SMALLCOMPFONT);
         SetFontForeground(FONT_LTBLUE);
@@ -2335,7 +2335,7 @@ function UpdateMercsInfo(): void {
         mprintf(530, 363, "RELATIVE");
         mprintf(530, 371, "ATTRIBUTES");
       }
-      if (iDrawMode == DRAW_MODE_ENEMY) {
+      if (iDrawMode == Enum38.DRAW_MODE_ENEMY) {
         SetFont(FONT10ARIAL);
         SetFontForeground(FONT_YELLOW);
         mprintf(590, 411, "Army");
@@ -2343,7 +2343,7 @@ function UpdateMercsInfo(): void {
         mprintf(590, 439, "Elite");
       }
       break;
-    case MERC_ATTRIBUTEMODE:
+    case Enum42.MERC_ATTRIBUTEMODE:
       SetFont(FONT10ARIAL);
       SetFontForeground(FONT_YELLOW);
       SetFontShadow(FONT_NEARBLACK);
@@ -2361,7 +2361,7 @@ function UpdateMercsInfo(): void {
       mprintf(425, 445, "Mechanical");
       mprintf(525, 370, "Morale");
       break;
-    case MERC_APPEARANCEMODE:
+    case Enum42.MERC_APPEARANCEMODE:
       SetFont(FONT10ARIAL);
       if (gpSelected.value.pDetailedPlacement.value.fVisible || gpSelected.value.pDetailedPlacement.value.ubProfile != NO_PROFILE)
         SetFontForeground(FONT_YELLOW);
@@ -2391,7 +2391,7 @@ function UpdateMercsInfo(): void {
       }
       DisplayBodyTypeInfo();
       break;
-    case MERC_PROFILEMODE:
+    case Enum42.MERC_PROFILEMODE:
       SetFont(FONT10ARIAL);
       SetFontForeground(FONT_YELLOW);
       SetFontShadow(FONT_NEARBLACK);
@@ -2411,33 +2411,33 @@ function UpdateMercsInfo(): void {
         }
       }
       break;
-    case MERC_SCHEDULEMODE:
+    case Enum42.MERC_SCHEDULEMODE:
       SetFont(FONT10ARIAL);
       SetFontForeground(FONT_WHITE);
       SetFontShadow(FONT_NEARBLACK);
       switch (gpSelected.value.pSoldier.value.bOrders) {
-        case STATIONARY:
+        case Enum241.STATIONARY:
           mprintf(430, 363, "STATIONARY");
           break;
-        case ONCALL:
+        case Enum241.ONCALL:
           mprintf(430, 363, "ON CALL");
           break;
-        case ONGUARD:
+        case Enum241.ONGUARD:
           mprintf(430, 363, "ON GUARD");
           break;
-        case SEEKENEMY:
+        case Enum241.SEEKENEMY:
           mprintf(430, 363, "SEEK ENEMY");
           break;
-        case CLOSEPATROL:
+        case Enum241.CLOSEPATROL:
           mprintf(430, 363, "CLOSE PATROL");
           break;
-        case FARPATROL:
+        case Enum241.FARPATROL:
           mprintf(430, 363, "FAR PATROL");
           break;
-        case POINTPATROL:
+        case Enum241.POINTPATROL:
           mprintf(430, 363, "POINT PATROL");
           break;
-        case RNDPTPATROL:
+        case Enum241.RNDPTPATROL:
           mprintf(430, 363, "RND PT PATROL");
           break;
       }
@@ -2456,30 +2456,30 @@ function UpdateMercsInfo(): void {
         let keyword: UINT16[] /* [10] */ = "";
         ColorFillVideoSurfaceArea(FRAME_BUFFER, 431, 388, 590, 450, Get16BPPColor(FROMRGB(32, 45, 72)));
         switch (gCurrSchedule.ubAction[gubCurrentScheduleActionIndex]) {
-          case SCHEDULE_ACTION_LOCKDOOR:
+          case Enum171.SCHEDULE_ACTION_LOCKDOOR:
             swprintf(keyword, "lock");
             break;
-          case SCHEDULE_ACTION_UNLOCKDOOR:
+          case Enum171.SCHEDULE_ACTION_UNLOCKDOOR:
             swprintf(keyword, "unlock");
             break;
-          case SCHEDULE_ACTION_OPENDOOR:
+          case Enum171.SCHEDULE_ACTION_OPENDOOR:
             swprintf(keyword, "open");
             break;
-          case SCHEDULE_ACTION_CLOSEDOOR:
+          case Enum171.SCHEDULE_ACTION_CLOSEDOOR:
             swprintf(keyword, "close");
             break;
         }
         switch (gubScheduleInstructions) {
-          case SCHEDULE_INSTRUCTIONS_DOOR1:
+          case Enum40.SCHEDULE_INSTRUCTIONS_DOOR1:
             swprintf(str, "Click on the gridno adjacent to the door that you wish to %s.", keyword);
             break;
-          case SCHEDULE_INSTRUCTIONS_DOOR2:
+          case Enum40.SCHEDULE_INSTRUCTIONS_DOOR2:
             swprintf(str, "Click on the gridno where you wish to move after you %s the door.", keyword);
             break;
-          case SCHEDULE_INSTRUCTIONS_GRIDNO:
+          case Enum40.SCHEDULE_INSTRUCTIONS_GRIDNO:
             swprintf(str, "Click on the gridno where you wish to move to.");
             break;
-          case SCHEDULE_INSTRUCTIONS_SLEEP:
+          case Enum40.SCHEDULE_INSTRUCTIONS_SLEEP:
             swprintf(str, "Click on the gridno where you wish to sleep at.  Person will automatically return to original position after waking up.");
           default:
             return;
@@ -2769,14 +2769,14 @@ function RenderMercInventoryPanel(): void {
 // will set the rendering flag, and getitem flag if the user wishes to choose an item.
 function HandleMercInventoryPanel(sX: INT16, sY: INT16, bEvent: INT8): void {
   let x: INT8;
-  if (!gfCanEditMercs && bEvent == GUI_RCLICK_EVENT) {
+  if (!gfCanEditMercs && bEvent == Enum44.GUI_RCLICK_EVENT) {
     // if we are dealing with a profile merc, we can't allow editing
     // of items, but we can look at them.  So, treat all right clicks
     // as if they were left clicks.
-    bEvent = GUI_LCLICK_EVENT;
+    bEvent = Enum44.GUI_LCLICK_EVENT;
   }
   switch (bEvent) {
-    case GUI_MOVE_EVENT:
+    case Enum44.GUI_MOVE_EVENT:
       // user is moving the mouse around the panel, so determine which slot
       // needs to be hilighted yellow.
       for (x = 0; x < 9; x++) {
@@ -2794,8 +2794,8 @@ function HandleMercInventoryPanel(sX: INT16, sY: INT16, bEvent: INT8): void {
         gfRenderMercInfo = TRUE;
       }
       break;
-    case GUI_LCLICK_EVENT:
-    case GUI_RCLICK_EVENT:
+    case Enum44.GUI_LCLICK_EVENT:
+    case Enum44.GUI_RCLICK_EVENT:
       // The user has clicked in the inventory panel.  Determine if he clicked in
       // a slot.  Left click selects the slot for editing, right clicking enables
       // the user to choose an item for that slot.
@@ -2804,10 +2804,10 @@ function HandleMercInventoryPanel(sX: INT16, sY: INT16, bEvent: INT8): void {
           if (gbCurrSelect != x) // only if it isn't the same slot.
           {
             gfRenderMercInfo = TRUE;
-            if (bEvent == GUI_LCLICK_EVENT)
+            if (bEvent == Enum44.GUI_LCLICK_EVENT)
               SpecifyItemToEdit(gpMercSlotItem[x], -1);
           }
-          if (bEvent == GUI_RCLICK_EVENT) // user r-clicked, so enable item choosing
+          if (bEvent == Enum44.GUI_RCLICK_EVENT) // user r-clicked, so enable item choosing
             gfMercGetItem = TRUE;
           gbCurrSelect = x;
           return;
@@ -2825,7 +2825,7 @@ function UpdateMercItemSlots(): void {
     }
   } else {
     if (gpSelected.value.pDetailedPlacement.value.ubProfile != NO_PROFILE) {
-      memcpy(gpSelected.value.pDetailedPlacement.value.Inv, gpSelected.value.pSoldier.value.inv, sizeof(OBJECTTYPE) * NUM_INV_SLOTS);
+      memcpy(gpSelected.value.pDetailedPlacement.value.Inv, gpSelected.value.pSoldier.value.inv, sizeof(OBJECTTYPE) * Enum261.NUM_INV_SLOTS);
     }
     for (x = 0; x < 9; x++) {
       // Set the curr select and the addnewitem function will handle the rest, including rebuilding
@@ -2848,9 +2848,9 @@ function SetDroppableCheckboxesBasedOnMercsInventory(): void {
       pItem = addressof(gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[i]]);
       if (pItem.value.fFlags & OBJECT_UNDROPPABLE) {
         // check box is clear
-        UnclickEditorButton(MERCS_HEAD_SLOT + i);
+        UnclickEditorButton(Enum32.MERCS_HEAD_SLOT + i);
       } else {
-        ClickEditorButton(MERCS_HEAD_SLOT + i);
+        ClickEditorButton(Enum32.MERCS_HEAD_SLOT + i);
       }
     }
   }
@@ -2862,39 +2862,39 @@ function SetEnemyColorCode(ubColorCode: UINT8): void {
 
   UnclickEditorButtons(FIRST_MERCS_COLORCODE_BUTTON, LAST_MERCS_COLORCODE_BUTTON);
   switch (ubColorCode) {
-    case SOLDIER_CLASS_ARMY:
-      gpSelected.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ARMY;
-      gubSoldierClass = SOLDIER_CLASS_ARMY;
+    case Enum262.SOLDIER_CLASS_ARMY:
+      gpSelected.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ARMY;
+      gubSoldierClass = Enum262.SOLDIER_CLASS_ARMY;
       if (gpSelected.value.pDetailedPlacement)
-        gpSelected.value.pDetailedPlacement.value.ubSoldierClass = SOLDIER_CLASS_ARMY;
+        gpSelected.value.pDetailedPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ARMY;
       SET_PALETTEREP_ID(gpSelected.value.pSoldier.value.VestPal, "REDVEST");
       SET_PALETTEREP_ID(gpSelected.value.pSoldier.value.PantsPal, "GREENPANTS");
-      ClickEditorButton(MERCS_ARMY_CODE);
+      ClickEditorButton(Enum32.MERCS_ARMY_CODE);
       break;
-    case SOLDIER_CLASS_ADMINISTRATOR:
-      gpSelected.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
-      gubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
+    case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
+      gpSelected.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ADMINISTRATOR;
+      gubSoldierClass = Enum262.SOLDIER_CLASS_ADMINISTRATOR;
       if (gpSelected.value.pDetailedPlacement)
-        gpSelected.value.pDetailedPlacement.value.ubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
-      ClickEditorButton(MERCS_ADMIN_CODE);
+        gpSelected.value.pDetailedPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ADMINISTRATOR;
+      ClickEditorButton(Enum32.MERCS_ADMIN_CODE);
       SET_PALETTEREP_ID(gpSelected.value.pSoldier.value.VestPal, "BLUEVEST");
       SET_PALETTEREP_ID(gpSelected.value.pSoldier.value.PantsPal, "BLUEPANTS");
       break;
-    case SOLDIER_CLASS_ELITE:
-      gpSelected.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE;
-      gubSoldierClass = SOLDIER_CLASS_ELITE;
+    case Enum262.SOLDIER_CLASS_ELITE:
+      gpSelected.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ELITE;
+      gubSoldierClass = Enum262.SOLDIER_CLASS_ELITE;
       if (gpSelected.value.pDetailedPlacement)
-        gpSelected.value.pDetailedPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE;
+        gpSelected.value.pDetailedPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ELITE;
       SET_PALETTEREP_ID(gpSelected.value.pSoldier.value.VestPal, "BLACKSHIRT");
       SET_PALETTEREP_ID(gpSelected.value.pSoldier.value.PantsPal, "BLACKPANTS");
-      ClickEditorButton(MERCS_ELITE_CODE);
+      ClickEditorButton(Enum32.MERCS_ELITE_CODE);
       break;
-    case SOLDIER_CLASS_MINER:
+    case Enum262.SOLDIER_CLASS_MINER:
       // will probably never get called
-      gpSelected.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE;
-      gubSoldierClass = SOLDIER_CLASS_MINER;
+      gpSelected.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ELITE;
+      gubSoldierClass = Enum262.SOLDIER_CLASS_MINER;
       if (gpSelected.value.pDetailedPlacement)
-        gpSelected.value.pDetailedPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE;
+        gpSelected.value.pDetailedPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ELITE;
       SET_PALETTEREP_ID(gpSelected.value.pSoldier.value.VestPal, "greyVEST");
       SET_PALETTEREP_ID(gpSelected.value.pSoldier.value.PantsPal, "BEIGEPANTS");
       break;
@@ -2926,7 +2926,7 @@ function SetEnemyDroppableStatus(uiSlot: UINT32, fDroppable: BOOLEAN): void {
 }
 
 function ChangeCivGroup(ubNewCivGroup: UINT8): void {
-  Assert(ubNewCivGroup < NUM_CIV_GROUPS);
+  Assert(ubNewCivGroup < Enum246.NUM_CIV_GROUPS);
   if (gubCivGroup == ubNewCivGroup)
     return;
   gubCivGroup = ubNewCivGroup;
@@ -2937,7 +2937,7 @@ function ChangeCivGroup(ubNewCivGroup: UINT8): void {
     gpSelected.value.pSoldier.value.ubCivilianGroup = gubCivGroup;
   }
   // Adjust the text on the button
-  SpecifyButtonText(iEditorButton[MERCS_CIVILIAN_GROUP], gszCivGroupNames[gubCivGroup]);
+  SpecifyButtonText(iEditorButton[Enum32.MERCS_CIVILIAN_GROUP], gszCivGroupNames[gubCivGroup]);
 }
 
 function RenderMercStrings(): void {
@@ -3012,7 +3012,7 @@ function RenderMercStrings(): void {
         }
         sYPos += 10;
       }
-      if (curr.value.pBasicPlacement.value.bOrders == RNDPTPATROL || curr.value.pBasicPlacement.value.bOrders == POINTPATROL) {
+      if (curr.value.pBasicPlacement.value.bOrders == Enum241.RNDPTPATROL || curr.value.pBasicPlacement.value.bOrders == Enum241.POINTPATROL) {
         // make sure the placement has at least one waypoint.
         if (!curr.value.pBasicPlacement.value.bPatrolCnt) {
           if (GetJA2Clock() % 1000 < 500)
@@ -3043,7 +3043,7 @@ function RenderMercStrings(): void {
     }
     curr = curr.value.next;
   }
-  if (gubCurrMercMode == MERC_SCHEDULEMODE) {
+  if (gubCurrMercMode == Enum42.MERC_SCHEDULEMODE) {
     RenderCurrentSchedule();
   }
 }
@@ -3063,56 +3063,56 @@ function SetMercTeamVisibility(bTeam: INT8, fVisible: BOOLEAN): void {
     curr = curr.value.next;
   }
   if (gpSelected && gpSelected.value.pSoldier && gpSelected.value.pSoldier.value.bTeam == bTeam && !fVisible) {
-    IndicateSelectedMerc(SELECT_NO_MERC);
+    IndicateSelectedMerc(Enum43.SELECT_NO_MERC);
   }
 }
 
 function DetermineScheduleEditability(): void {
   let i: INT32;
-  EnableEditorButtons(MERCS_SCHEDULE_ACTION1, MERCS_SCHEDULE_DATA4B);
+  EnableEditorButtons(Enum32.MERCS_SCHEDULE_ACTION1, Enum32.MERCS_SCHEDULE_DATA4B);
   EnableTextFields(1, 4);
   for (i = 0; i < 4; i++) {
     switch (gCurrSchedule.ubAction[i]) {
-      case SCHEDULE_ACTION_NONE:
-      case SCHEDULE_ACTION_LEAVESECTOR:
-        EnableEditorButton(MERCS_SCHEDULE_ACTION1 + i);
-        EnableEditorButton(MERCS_SCHEDULE_VARIANCE1 + i);
-        HideEditorButton(MERCS_SCHEDULE_DATA1A + i);
-        HideEditorButton(MERCS_SCHEDULE_DATA1B + i);
+      case Enum171.SCHEDULE_ACTION_NONE:
+      case Enum171.SCHEDULE_ACTION_LEAVESECTOR:
+        EnableEditorButton(Enum32.MERCS_SCHEDULE_ACTION1 + i);
+        EnableEditorButton(Enum32.MERCS_SCHEDULE_VARIANCE1 + i);
+        HideEditorButton(Enum32.MERCS_SCHEDULE_DATA1A + i);
+        HideEditorButton(Enum32.MERCS_SCHEDULE_DATA1B + i);
         break;
-      case SCHEDULE_ACTION_LOCKDOOR:
-      case SCHEDULE_ACTION_UNLOCKDOOR:
-      case SCHEDULE_ACTION_OPENDOOR:
-      case SCHEDULE_ACTION_CLOSEDOOR:
-        EnableEditorButton(MERCS_SCHEDULE_ACTION1 + i);
-        EnableEditorButton(MERCS_SCHEDULE_VARIANCE1 + i);
-        ShowEditorButton(MERCS_SCHEDULE_DATA1A + i);
-        ShowEditorButton(MERCS_SCHEDULE_DATA1B + i);
-        EnableEditorButton(MERCS_SCHEDULE_DATA1A + i);
-        EnableEditorButton(MERCS_SCHEDULE_DATA1B + i);
+      case Enum171.SCHEDULE_ACTION_LOCKDOOR:
+      case Enum171.SCHEDULE_ACTION_UNLOCKDOOR:
+      case Enum171.SCHEDULE_ACTION_OPENDOOR:
+      case Enum171.SCHEDULE_ACTION_CLOSEDOOR:
+        EnableEditorButton(Enum32.MERCS_SCHEDULE_ACTION1 + i);
+        EnableEditorButton(Enum32.MERCS_SCHEDULE_VARIANCE1 + i);
+        ShowEditorButton(Enum32.MERCS_SCHEDULE_DATA1A + i);
+        ShowEditorButton(Enum32.MERCS_SCHEDULE_DATA1B + i);
+        EnableEditorButton(Enum32.MERCS_SCHEDULE_DATA1A + i);
+        EnableEditorButton(Enum32.MERCS_SCHEDULE_DATA1B + i);
         break;
-      case SCHEDULE_ACTION_GRIDNO:
-      case SCHEDULE_ACTION_ENTERSECTOR:
-      case SCHEDULE_ACTION_SLEEP:
-        EnableEditorButton(MERCS_SCHEDULE_ACTION1 + i);
-        EnableEditorButton(MERCS_SCHEDULE_VARIANCE1 + i);
-        ShowEditorButton(MERCS_SCHEDULE_DATA1A + i);
-        HideEditorButton(MERCS_SCHEDULE_DATA1B + i);
-        EnableEditorButton(MERCS_SCHEDULE_DATA1A + i);
+      case Enum171.SCHEDULE_ACTION_GRIDNO:
+      case Enum171.SCHEDULE_ACTION_ENTERSECTOR:
+      case Enum171.SCHEDULE_ACTION_SLEEP:
+        EnableEditorButton(Enum32.MERCS_SCHEDULE_ACTION1 + i);
+        EnableEditorButton(Enum32.MERCS_SCHEDULE_VARIANCE1 + i);
+        ShowEditorButton(Enum32.MERCS_SCHEDULE_DATA1A + i);
+        HideEditorButton(Enum32.MERCS_SCHEDULE_DATA1B + i);
+        EnableEditorButton(Enum32.MERCS_SCHEDULE_DATA1A + i);
         break;
-      case SCHEDULE_ACTION_STAYINSECTOR:
+      case Enum171.SCHEDULE_ACTION_STAYINSECTOR:
         DisableTextField((i + 1));
-        EnableEditorButton(MERCS_SCHEDULE_ACTION1 + i);
-        DisableEditorButton(MERCS_SCHEDULE_VARIANCE1 + i);
-        HideEditorButton(MERCS_SCHEDULE_DATA1A + i);
-        HideEditorButton(MERCS_SCHEDULE_DATA1B + i);
+        EnableEditorButton(Enum32.MERCS_SCHEDULE_ACTION1 + i);
+        DisableEditorButton(Enum32.MERCS_SCHEDULE_VARIANCE1 + i);
+        HideEditorButton(Enum32.MERCS_SCHEDULE_DATA1A + i);
+        HideEditorButton(Enum32.MERCS_SCHEDULE_DATA1B + i);
         break;
     }
   }
 }
 
 function CancelCurrentScheduleAction(): void {
-  UpdateScheduleAction(SCHEDULE_ACTION_NONE);
+  UpdateScheduleAction(Enum171.SCHEDULE_ACTION_NONE);
   DetermineScheduleEditability();
 }
 
@@ -3123,93 +3123,93 @@ function RegisterCurrentScheduleAction(iMapIndex: INT32): void {
   if (gfUseScheduleData2) {
     if (gfSingleAction)
       return;
-    iDrawMode = DRAW_MODE_PLAYER + gpSelected.value.pBasicPlacement.value.bTeam;
+    iDrawMode = Enum38.DRAW_MODE_PLAYER + gpSelected.value.pBasicPlacement.value.bTeam;
     gCurrSchedule.usData2[gubCurrentScheduleActionIndex] = iMapIndex;
-    SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_DATA1B + gubCurrentScheduleActionIndex], str);
+    SpecifyButtonText(iEditorButton[Enum32.MERCS_SCHEDULE_DATA1B + gubCurrentScheduleActionIndex], str);
     DetermineScheduleEditability();
-    gubScheduleInstructions = SCHEDULE_INSTRUCTIONS_NONE;
+    gubScheduleInstructions = Enum40.SCHEDULE_INSTRUCTIONS_NONE;
     gfRenderTaskbar = TRUE;
     gfUseScheduleData2 = FALSE;
   } else {
     switch (gCurrSchedule.ubAction[gubCurrentScheduleActionIndex]) {
-      case SCHEDULE_ACTION_LOCKDOOR:
-      case SCHEDULE_ACTION_UNLOCKDOOR:
-      case SCHEDULE_ACTION_OPENDOOR:
-      case SCHEDULE_ACTION_CLOSEDOOR:
+      case Enum171.SCHEDULE_ACTION_LOCKDOOR:
+      case Enum171.SCHEDULE_ACTION_UNLOCKDOOR:
+      case Enum171.SCHEDULE_ACTION_OPENDOOR:
+      case Enum171.SCHEDULE_ACTION_CLOSEDOOR:
         if (gfSingleAction) {
           gfSingleAction = FALSE;
-          gubScheduleInstructions = SCHEDULE_INSTRUCTIONS_NONE;
+          gubScheduleInstructions = Enum40.SCHEDULE_INSTRUCTIONS_NONE;
           gfRenderTaskbar = TRUE;
           DetermineScheduleEditability();
           break;
         }
-        DisableEditorButton(MERCS_SCHEDULE_DATA1A + gubCurrentScheduleActionIndex);
-        EnableEditorButton(MERCS_SCHEDULE_DATA1B + gubCurrentScheduleActionIndex);
+        DisableEditorButton(Enum32.MERCS_SCHEDULE_DATA1A + gubCurrentScheduleActionIndex);
+        EnableEditorButton(Enum32.MERCS_SCHEDULE_DATA1B + gubCurrentScheduleActionIndex);
         gfUseScheduleData2 = TRUE;
-        iDrawMode = DRAW_MODE_SCHEDULEACTION;
-        gubScheduleInstructions = SCHEDULE_INSTRUCTIONS_DOOR2;
+        iDrawMode = Enum38.DRAW_MODE_SCHEDULEACTION;
+        gubScheduleInstructions = Enum40.SCHEDULE_INSTRUCTIONS_DOOR2;
         gfRenderTaskbar = TRUE;
         break;
-      case SCHEDULE_ACTION_GRIDNO:
-      case SCHEDULE_ACTION_ENTERSECTOR:
-      case SCHEDULE_ACTION_SLEEP:
-        iDrawMode = DRAW_MODE_PLAYER + gpSelected.value.pBasicPlacement.value.bTeam;
+      case Enum171.SCHEDULE_ACTION_GRIDNO:
+      case Enum171.SCHEDULE_ACTION_ENTERSECTOR:
+      case Enum171.SCHEDULE_ACTION_SLEEP:
+        iDrawMode = Enum38.DRAW_MODE_PLAYER + gpSelected.value.pBasicPlacement.value.bTeam;
         DetermineScheduleEditability();
-        gubScheduleInstructions = SCHEDULE_INSTRUCTIONS_NONE;
+        gubScheduleInstructions = Enum40.SCHEDULE_INSTRUCTIONS_NONE;
         gfRenderTaskbar = TRUE;
         break;
-      case SCHEDULE_ACTION_LEAVESECTOR:
-      case SCHEDULE_ACTION_STAYINSECTOR:
-      case SCHEDULE_ACTION_NONE:
+      case Enum171.SCHEDULE_ACTION_LEAVESECTOR:
+      case Enum171.SCHEDULE_ACTION_STAYINSECTOR:
+      case Enum171.SCHEDULE_ACTION_NONE:
         break;
     }
     gCurrSchedule.usData1[gubCurrentScheduleActionIndex] = iMapIndex;
-    SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_DATA1A + gubCurrentScheduleActionIndex], str);
+    SpecifyButtonText(iEditorButton[Enum32.MERCS_SCHEDULE_DATA1A + gubCurrentScheduleActionIndex], str);
   }
 }
 
 function StartScheduleAction(): void {
   switch (gCurrSchedule.ubAction[gubCurrentScheduleActionIndex]) {
-    case SCHEDULE_ACTION_NONE:
-      EnableEditorButtons(MERCS_SCHEDULE_ACTION1, MERCS_SCHEDULE_DATA4B);
+    case Enum171.SCHEDULE_ACTION_NONE:
+      EnableEditorButtons(Enum32.MERCS_SCHEDULE_ACTION1, Enum32.MERCS_SCHEDULE_DATA4B);
       EnableTextFields(1, 4);
-      gubScheduleInstructions = SCHEDULE_INSTRUCTIONS_NONE;
+      gubScheduleInstructions = Enum40.SCHEDULE_INSTRUCTIONS_NONE;
       gfRenderTaskbar = TRUE;
       gCurrSchedule.usData1[gubCurrentScheduleActionIndex] = 0xffff;
       gCurrSchedule.usData2[gubCurrentScheduleActionIndex] = 0xffff;
       break;
-    case SCHEDULE_ACTION_LOCKDOOR:
-    case SCHEDULE_ACTION_UNLOCKDOOR:
-    case SCHEDULE_ACTION_OPENDOOR:
-    case SCHEDULE_ACTION_CLOSEDOOR:
+    case Enum171.SCHEDULE_ACTION_LOCKDOOR:
+    case Enum171.SCHEDULE_ACTION_UNLOCKDOOR:
+    case Enum171.SCHEDULE_ACTION_OPENDOOR:
+    case Enum171.SCHEDULE_ACTION_CLOSEDOOR:
       // First disable everything -- its easier that way.
-      ShowEditorButton(MERCS_SCHEDULE_DATA1A + gubCurrentScheduleActionIndex);
-      ShowEditorButton(MERCS_SCHEDULE_DATA1B + gubCurrentScheduleActionIndex);
-      DisableEditorButtons(MERCS_SCHEDULE_ACTION1, MERCS_SCHEDULE_DATA4B);
+      ShowEditorButton(Enum32.MERCS_SCHEDULE_DATA1A + gubCurrentScheduleActionIndex);
+      ShowEditorButton(Enum32.MERCS_SCHEDULE_DATA1B + gubCurrentScheduleActionIndex);
+      DisableEditorButtons(Enum32.MERCS_SCHEDULE_ACTION1, Enum32.MERCS_SCHEDULE_DATA4B);
       DisableTextFields(1, 4);
-      EnableEditorButton(MERCS_SCHEDULE_DATA1A + gubCurrentScheduleActionIndex);
+      EnableEditorButton(Enum32.MERCS_SCHEDULE_DATA1A + gubCurrentScheduleActionIndex);
       gfUseScheduleData2 = FALSE;
-      iDrawMode = DRAW_MODE_SCHEDULEACTION;
-      gubScheduleInstructions = SCHEDULE_INSTRUCTIONS_DOOR1;
+      iDrawMode = Enum38.DRAW_MODE_SCHEDULEACTION;
+      gubScheduleInstructions = Enum40.SCHEDULE_INSTRUCTIONS_DOOR1;
       gfRenderTaskbar = TRUE;
       break;
-    case SCHEDULE_ACTION_GRIDNO:
-    case SCHEDULE_ACTION_ENTERSECTOR:
-    case SCHEDULE_ACTION_SLEEP:
-      ShowEditorButton(MERCS_SCHEDULE_DATA1A + gubCurrentScheduleActionIndex);
-      HideEditorButton(MERCS_SCHEDULE_DATA1B + gubCurrentScheduleActionIndex);
-      DisableEditorButtons(MERCS_SCHEDULE_ACTION1, MERCS_SCHEDULE_DATA4B);
+    case Enum171.SCHEDULE_ACTION_GRIDNO:
+    case Enum171.SCHEDULE_ACTION_ENTERSECTOR:
+    case Enum171.SCHEDULE_ACTION_SLEEP:
+      ShowEditorButton(Enum32.MERCS_SCHEDULE_DATA1A + gubCurrentScheduleActionIndex);
+      HideEditorButton(Enum32.MERCS_SCHEDULE_DATA1B + gubCurrentScheduleActionIndex);
+      DisableEditorButtons(Enum32.MERCS_SCHEDULE_ACTION1, Enum32.MERCS_SCHEDULE_DATA4B);
       DisableTextFields(1, 4);
-      EnableEditorButton(MERCS_SCHEDULE_DATA1A + gubCurrentScheduleActionIndex);
+      EnableEditorButton(Enum32.MERCS_SCHEDULE_DATA1A + gubCurrentScheduleActionIndex);
       gfUseScheduleData2 = FALSE;
-      iDrawMode = DRAW_MODE_SCHEDULEACTION;
-      gubScheduleInstructions = SCHEDULE_INSTRUCTIONS_GRIDNO;
+      iDrawMode = Enum38.DRAW_MODE_SCHEDULEACTION;
+      gubScheduleInstructions = Enum40.SCHEDULE_INSTRUCTIONS_GRIDNO;
       gfRenderTaskbar = TRUE;
       gCurrSchedule.usData2[gubCurrentScheduleActionIndex] = 0xffff;
       break;
-    case SCHEDULE_ACTION_LEAVESECTOR:
-    case SCHEDULE_ACTION_STAYINSECTOR:
-      gubScheduleInstructions = SCHEDULE_INSTRUCTIONS_NONE;
+    case Enum171.SCHEDULE_ACTION_LEAVESECTOR:
+    case Enum171.SCHEDULE_ACTION_STAYINSECTOR:
+      gubScheduleInstructions = Enum40.SCHEDULE_INSTRUCTIONS_NONE;
       gfRenderTaskbar = TRUE;
       gCurrSchedule.usData1[gubCurrentScheduleActionIndex] = 0xffff;
       gCurrSchedule.usData2[gubCurrentScheduleActionIndex] = 0xffff;
@@ -3220,8 +3220,8 @@ function StartScheduleAction(): void {
 
 function UpdateScheduleAction(ubNewAction: UINT8): void {
   gCurrSchedule.ubAction[gubCurrentScheduleActionIndex] = ubNewAction;
-  SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_ACTION1 + gubCurrentScheduleActionIndex], gszScheduleActions[ubNewAction]);
-  MSYS_SetBtnUserData(iEditorButton[MERCS_SCHEDULE_ACTION1 + gubCurrentScheduleActionIndex], 0, ubNewAction);
+  SpecifyButtonText(iEditorButton[Enum32.MERCS_SCHEDULE_ACTION1 + gubCurrentScheduleActionIndex], gszScheduleActions[ubNewAction]);
+  MSYS_SetBtnUserData(iEditorButton[Enum32.MERCS_SCHEDULE_ACTION1 + gubCurrentScheduleActionIndex], 0, ubNewAction);
   // Now, based on this action, disable the other buttons
   StartScheduleAction();
   gfSingleAction = FALSE;
@@ -3267,18 +3267,18 @@ function ClearCurrentSchedule(): void {
   let i: UINT8;
   memset(addressof(gCurrSchedule), 0, sizeof(SCHEDULENODE));
   for (i = 0; i < 4; i++) {
-    MSYS_SetBtnUserData(iEditorButton[MERCS_SCHEDULE_ACTION1 + i], 0, 0);
-    SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_ACTION1 + i], "No action");
+    MSYS_SetBtnUserData(iEditorButton[Enum32.MERCS_SCHEDULE_ACTION1 + i], 0, 0);
+    SpecifyButtonText(iEditorButton[Enum32.MERCS_SCHEDULE_ACTION1 + i], "No action");
     gCurrSchedule.usTime[i] = 0xffff;
     SetExclusive24HourTimeValue((i + 1), gCurrSchedule.usTime[i]); // blanks the field
     gCurrSchedule.usData1[i] = 0xffff;
-    SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_DATA1A + i], "");
+    SpecifyButtonText(iEditorButton[Enum32.MERCS_SCHEDULE_DATA1A + i], "");
     gCurrSchedule.usData2[i] = 0xffff;
-    SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_DATA1B + i], "");
+    SpecifyButtonText(iEditorButton[Enum32.MERCS_SCHEDULE_DATA1B + i], "");
   }
   // Remove the variance stuff
   gCurrSchedule.usFlags = 0;
-  UnclickEditorButtons(MERCS_SCHEDULE_VARIANCE1, MERCS_SCHEDULE_VARIANCE4);
+  UnclickEditorButtons(Enum32.MERCS_SCHEDULE_VARIANCE1, Enum32.MERCS_SCHEDULE_VARIANCE4);
 
   gubCurrentScheduleActionIndex = 0;
   DetermineScheduleEditability();
@@ -3348,32 +3348,32 @@ function UpdateScheduleInfo(): void {
     }
     for (i = 0; i < 4; i++) {
       // Update the text and buttons
-      MSYS_SetBtnUserData(iEditorButton[MERCS_SCHEDULE_ACTION1 + i], 0, pSchedule.value.ubAction[i]);
-      SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_ACTION1 + i], gszScheduleActions[pSchedule.value.ubAction[i]]);
+      MSYS_SetBtnUserData(iEditorButton[Enum32.MERCS_SCHEDULE_ACTION1 + i], 0, pSchedule.value.ubAction[i]);
+      SpecifyButtonText(iEditorButton[Enum32.MERCS_SCHEDULE_ACTION1 + i], gszScheduleActions[pSchedule.value.ubAction[i]]);
       swprintf(str, "");
       if (pSchedule.value.usData1[i] != 0xffff)
         swprintf(str, "%d", pSchedule.value.usData1[i]);
-      SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_DATA1A + i], str);
+      SpecifyButtonText(iEditorButton[Enum32.MERCS_SCHEDULE_DATA1A + i], str);
       swprintf(str, "");
       if (pSchedule.value.usData2[i] != 0xffff)
         swprintf(str, "%d", pSchedule.value.usData2[i]);
-      SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_DATA1B + i], str);
-      if (gubCurrMercMode == MERC_SCHEDULEMODE) {
+      SpecifyButtonText(iEditorButton[Enum32.MERCS_SCHEDULE_DATA1B + i], str);
+      if (gubCurrMercMode == Enum42.MERC_SCHEDULEMODE) {
         // Update the text input fields too!
         SetExclusive24HourTimeValue((i + 1), pSchedule.value.usTime[i]);
       }
     }
 
     // Check or uncheck the checkbox buttons based on the schedule's status.
-    UnclickEditorButtons(MERCS_SCHEDULE_VARIANCE1, MERCS_SCHEDULE_VARIANCE4);
+    UnclickEditorButtons(Enum32.MERCS_SCHEDULE_VARIANCE1, Enum32.MERCS_SCHEDULE_VARIANCE4);
     if (pSchedule.value.usFlags & SCHEDULE_FLAGS_VARIANCE1)
-      ClickEditorButton(MERCS_SCHEDULE_VARIANCE1);
+      ClickEditorButton(Enum32.MERCS_SCHEDULE_VARIANCE1);
     if (pSchedule.value.usFlags & SCHEDULE_FLAGS_VARIANCE2)
-      ClickEditorButton(MERCS_SCHEDULE_VARIANCE2);
+      ClickEditorButton(Enum32.MERCS_SCHEDULE_VARIANCE2);
     if (pSchedule.value.usFlags & SCHEDULE_FLAGS_VARIANCE3)
-      ClickEditorButton(MERCS_SCHEDULE_VARIANCE3);
+      ClickEditorButton(Enum32.MERCS_SCHEDULE_VARIANCE3);
     if (pSchedule.value.usFlags & SCHEDULE_FLAGS_VARIANCE4)
-      ClickEditorButton(MERCS_SCHEDULE_VARIANCE4);
+      ClickEditorButton(Enum32.MERCS_SCHEDULE_VARIANCE4);
 
     // Copy the schedule over to the current global schedule used for editing purposes.
     memcpy(addressof(gCurrSchedule), pSchedule, sizeof(SCHEDULENODE));
@@ -3415,26 +3415,26 @@ function PasteMercPlacement(iMapIndex: INT32): void {
 
   // calculate specific information based on the team.
   switch (iDrawMode) {
-    case DRAW_MODE_ENEMY:
+    case Enum38.DRAW_MODE_ENEMY:
       gTempBasicPlacement.bTeam = ENEMY_TEAM;
       gTempBasicPlacement.bBodyType = RANDOM;
       gTempBasicPlacement.ubSoldierClass = gubSoldierClass;
       break;
-    case DRAW_MODE_CREATURE:
+    case Enum38.DRAW_MODE_CREATURE:
       gTempBasicPlacement.bTeam = CREATURE_TEAM;
       gTempBasicPlacement.bBodyType = gbCurrCreature;
       break;
-    case DRAW_MODE_REBEL:
+    case Enum38.DRAW_MODE_REBEL:
       gTempBasicPlacement.bTeam = MILITIA_TEAM;
       gTempBasicPlacement.bBodyType = RANDOM;
       break;
-    case DRAW_MODE_CIVILIAN:
+    case Enum38.DRAW_MODE_CIVILIAN:
       gTempBasicPlacement.bTeam = CIV_TEAM;
       gTempBasicPlacement.bBodyType = RANDOM;
       gTempBasicPlacement.ubCivilianGroup = gubCivGroup;
       if (giCurrentTilesetID == 1) // caves
       {
-        gTempBasicPlacement.ubSoldierClass = SOLDIER_CLASS_MINER;
+        gTempBasicPlacement.ubSoldierClass = Enum262.SOLDIER_CLASS_MINER;
       }
       break;
   }

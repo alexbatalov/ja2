@@ -80,10 +80,10 @@ function CreateACharacterFromPlayerEnteredStats(): void {
   // gender
   if (fCharacterIsMale == TRUE) {
     // male
-    gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSex = MALE;
+    gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSex = Enum272.MALE;
   } else {
     // female
-    gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSex = FEMALE;
+    gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSex = Enum272.FEMALE;
   }
 
   // attributes
@@ -121,12 +121,12 @@ function CreateACharacterFromPlayerEnteredStats(): void {
 function DoesCharacterHaveAnAttitude(): BOOLEAN {
   // simply checks if caracter has an attitude other than normal
   switch (iAttitude) {
-    case ATT_LONER:
-    case ATT_PESSIMIST:
-    case ATT_ARROGANT:
-    case ATT_BIG_SHOT:
-    case ATT_ASSHOLE:
-    case ATT_COWARD:
+    case Enum271.ATT_LONER:
+    case Enum271.ATT_PESSIMIST:
+    case Enum271.ATT_ARROGANT:
+    case Enum271.ATT_BIG_SHOT:
+    case Enum271.ATT_ASSHOLE:
+    case Enum271.ATT_COWARD:
       return TRUE;
     default:
       return FALSE;
@@ -161,7 +161,7 @@ function CreatePlayerAttitude(): void {
   let iHighestHits: INT32 = 0;
   let iNumAttitudesWithHighestHits: INT32 = 0;
 
-  iAttitude = ATT_NORMAL;
+  iAttitude = Enum271.ATT_NORMAL;
 
   if (iLastElementInAttitudeList == 0) {
     return;
@@ -173,7 +173,7 @@ function CreatePlayerAttitude(): void {
   }
 
   // find highest # of hits for any attitude
-  for (iCounter = 0; iCounter < NUM_ATTITUDES; iCounter++) {
+  for (iCounter = 0; iCounter < Enum271.NUM_ATTITUDES; iCounter++) {
     if (iAttitudeHits[iCounter]) {
       if (iAttitudeHits[iCounter] > iHighestHits) {
         iHighestHits = __max(iHighestHits, iAttitudeHits[iCounter]);
@@ -188,7 +188,7 @@ function CreatePlayerAttitude(): void {
   iDiceValue = Random(iNumAttitudesWithHighestHits + 1);
 
   // find attitude
-  for (iCounter = 0; iCounter < NUM_ATTITUDES; iCounter++) {
+  for (iCounter = 0; iCounter < Enum271.NUM_ATTITUDES; iCounter++) {
     if (iAttitudeHits[iCounter] == iHighestHits) {
       if (iCounter2 == iDiceValue) {
         // this is it!
@@ -297,10 +297,10 @@ function ValidateSkillsList(): void {
   pProfile = addressof(gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId]);
   if (pProfile.value.bMechanical == 0) {
     // without mechanical, electronics is useless
-    iIndex = FindSkillInSkillsList(ELECTRONICS);
+    iIndex = FindSkillInSkillsList(Enum269.ELECTRONICS);
     while (iIndex != -1) {
       RemoveSkillFromSkillsList(iIndex);
-      iIndex = FindSkillInSkillsList(ELECTRONICS);
+      iIndex = FindSkillInSkillsList(Enum269.ELECTRONICS);
     }
   }
 
@@ -308,30 +308,30 @@ function ValidateSkillsList(): void {
   iValue = pProfile.value.bMechanical;
   iValue = (iValue * pProfile.value.bWisdom) / 100;
   iValue = (iValue * pProfile.value.bDexterity) / 100;
-  if (iValue + gbSkillTraitBonus[LOCKPICKING] < 50) {
+  if (iValue + gbSkillTraitBonus[Enum269.LOCKPICKING] < 50) {
     // not good enough for lockpicking!
 
     // so is lockpicking
-    iIndex = FindSkillInSkillsList(LOCKPICKING);
+    iIndex = FindSkillInSkillsList(Enum269.LOCKPICKING);
     while (iIndex != -1) {
       RemoveSkillFromSkillsList(iIndex);
-      iIndex = FindSkillInSkillsList(LOCKPICKING);
+      iIndex = FindSkillInSkillsList(Enum269.LOCKPICKING);
     }
   }
 
   if (pProfile.value.bMarksmanship == 0) {
     // without marksmanship, the following traits are useless:
     // auto weapons, heavy weapons
-    iIndex = FindSkillInSkillsList(AUTO_WEAPS);
+    iIndex = FindSkillInSkillsList(Enum269.AUTO_WEAPS);
     while (iIndex != -1) {
       RemoveSkillFromSkillsList(iIndex);
-      iIndex = FindSkillInSkillsList(AUTO_WEAPS);
+      iIndex = FindSkillInSkillsList(Enum269.AUTO_WEAPS);
     }
     // so is lockpicking
-    iIndex = FindSkillInSkillsList(HEAVY_WEAPS);
+    iIndex = FindSkillInSkillsList(Enum269.HEAVY_WEAPS);
     while (iIndex != -1) {
       RemoveSkillFromSkillsList(iIndex);
-      iIndex = FindSkillInSkillsList(HEAVY_WEAPS);
+      iIndex = FindSkillInSkillsList(Enum269.HEAVY_WEAPS);
     }
   }
 }
@@ -357,12 +357,12 @@ function CreatePlayerSkills(): void {
   // allow expert level for generated merc so you CAN have two of the same
   // but there is no such thing as expert level for electronics
 
-  while (iSkillA == iSkillB && (iSkillB == ELECTRONICS || iSkillB == AMBIDEXT)) {
+  while (iSkillA == iSkillB && (iSkillB == Enum269.ELECTRONICS || iSkillB == Enum269.AMBIDEXT)) {
     // remove electronics as an option and roll again
     RemoveSkillFromSkillsList(iDiceValue);
     if (iLastElementInSkillsList == 0) {
       // ok, only one trait!
-      iSkillB = NO_SKILLTRAIT;
+      iSkillB = Enum269.NO_SKILLTRAIT;
       break;
     } else {
       iDiceValue = Random(iLastElementInSkillsList);
@@ -400,7 +400,7 @@ function AddAPersonalityToPersonalityList(bPersonlity: INT8): void {
 
   // BUT we can manage this for PSYCHO okay
 
-  if (bPersonlity != PSYCHO) {
+  if (bPersonlity != Enum270.PSYCHO) {
     return;
   }
 
@@ -420,9 +420,9 @@ function CreatePlayerPersonality(): void {
   // only psycho is available since we have no quotes
   // SO if the array is not empty, give them psycho!
   if (iLastElementInPersonalityList == 0) {
-    iPersonality = NO_PERSONALITYTRAIT;
+    iPersonality = Enum270.NO_PERSONALITYTRAIT;
   } else {
-    iPersonality = PSYCHO;
+    iPersonality = Enum270.PSYCHO;
   }
 
   /*
@@ -570,68 +570,68 @@ function SetMercSkinAndHairColors(): void {
 
   switch (iPortraitNumber) {
     case (0):
-      sSkinColor = BLACKSKIN;
-      sHairColor = BROWNHEAD;
+      sSkinColor = Enum387.BLACKSKIN;
+      sHairColor = Enum388.BROWNHEAD;
       break;
     case (1):
-      sSkinColor = TANSKIN;
-      sHairColor = BROWNHEAD;
+      sSkinColor = Enum387.TANSKIN;
+      sHairColor = Enum388.BROWNHEAD;
       break;
     case (2):
-      sSkinColor = TANSKIN;
-      sHairColor = BROWNHEAD;
+      sSkinColor = Enum387.TANSKIN;
+      sHairColor = Enum388.BROWNHEAD;
       break;
     case (3):
-      sSkinColor = DARKSKIN;
-      sHairColor = BROWNHEAD;
+      sSkinColor = Enum387.DARKSKIN;
+      sHairColor = Enum388.BROWNHEAD;
       break;
     case (4):
-      sSkinColor = TANSKIN;
-      sHairColor = BROWNHEAD;
+      sSkinColor = Enum387.TANSKIN;
+      sHairColor = Enum388.BROWNHEAD;
       break;
     case (5):
-      sSkinColor = DARKSKIN;
-      sHairColor = BLACKHEAD;
+      sSkinColor = Enum387.DARKSKIN;
+      sHairColor = Enum388.BLACKHEAD;
       break;
     case (6):
-      sSkinColor = TANSKIN;
-      sHairColor = BROWNHEAD;
+      sSkinColor = Enum387.TANSKIN;
+      sHairColor = Enum388.BROWNHEAD;
       break;
     case (7):
-      sSkinColor = TANSKIN;
-      sHairColor = BROWNHEAD;
+      sSkinColor = Enum387.TANSKIN;
+      sHairColor = Enum388.BROWNHEAD;
       break;
     case (8):
-      sSkinColor = TANSKIN;
-      sHairColor = BROWNHEAD;
+      sSkinColor = Enum387.TANSKIN;
+      sHairColor = Enum388.BROWNHEAD;
       break;
     case (9):
-      sSkinColor = PINKSKIN;
-      sHairColor = BROWNHEAD;
+      sSkinColor = Enum387.PINKSKIN;
+      sHairColor = Enum388.BROWNHEAD;
       break;
     case (10):
-      sSkinColor = TANSKIN;
-      sHairColor = BLACKHEAD;
+      sSkinColor = Enum387.TANSKIN;
+      sHairColor = Enum388.BLACKHEAD;
       break;
     case (11):
-      sSkinColor = TANSKIN;
-      sHairColor = BLACKHEAD;
+      sSkinColor = Enum387.TANSKIN;
+      sHairColor = Enum388.BLACKHEAD;
       break;
     case (12):
-      sSkinColor = PINKSKIN;
-      sHairColor = BROWNHEAD;
+      sSkinColor = Enum387.PINKSKIN;
+      sHairColor = Enum388.BROWNHEAD;
       break;
     case (13):
-      sSkinColor = BLACKSKIN;
-      sHairColor = BROWNHEAD;
+      sSkinColor = Enum387.BLACKSKIN;
+      sHairColor = Enum388.BROWNHEAD;
       break;
     case (14):
-      sSkinColor = TANSKIN;
-      sHairColor = REDHEAD;
+      sSkinColor = Enum387.TANSKIN;
+      sHairColor = Enum388.REDHEAD;
       break;
     case (15):
-      sSkinColor = TANSKIN;
-      sHairColor = BLONDHEAD;
+      sSkinColor = Enum387.TANSKIN;
+      sHairColor = Enum388.BLONDHEAD;
       break;
   }
 
@@ -653,26 +653,26 @@ function HandleMercStatsForChangesInFace(): void {
     // male
     // big or regular
     if (ShouldThisMercHaveABigBody()) {
-      gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].ubBodyType = BIGMALE;
+      gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].ubBodyType = Enum194.BIGMALE;
 
-      if (iSkillA == MARTIALARTS) {
-        iSkillA = HANDTOHAND;
+      if (iSkillA == Enum269.MARTIALARTS) {
+        iSkillA = Enum269.HANDTOHAND;
       }
-      if (iSkillB == MARTIALARTS) {
-        iSkillB = HANDTOHAND;
+      if (iSkillB == Enum269.MARTIALARTS) {
+        iSkillB = Enum269.HANDTOHAND;
       }
     } else {
-      gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].ubBodyType = REGMALE;
+      gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].ubBodyType = Enum194.REGMALE;
     }
   } else {
     // female
-    gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].ubBodyType = REGFEMALE;
+    gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].ubBodyType = Enum194.REGFEMALE;
 
-    if (iSkillA == MARTIALARTS) {
-      iSkillA = HANDTOHAND;
+    if (iSkillA == Enum269.MARTIALARTS) {
+      iSkillA = Enum269.HANDTOHAND;
     }
-    if (iSkillB == MARTIALARTS) {
-      iSkillB = HANDTOHAND;
+    if (iSkillB == Enum269.MARTIALARTS) {
+      iSkillB = Enum269.HANDTOHAND;
     }
   }
 

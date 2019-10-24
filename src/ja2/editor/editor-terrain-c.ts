@@ -28,7 +28,7 @@ function ResetTerrainTileWeights(): void {
 function HideTerrainTileButtons(): void {
   let x: INT8;
   if (gfShowTerrainTileButtons) {
-    for (x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
+    for (x = Enum45.BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
       DisableEditorRegion(x);
     }
     gfShowTerrainTileButtons = FALSE;
@@ -38,7 +38,7 @@ function HideTerrainTileButtons(): void {
 function ShowTerrainTileButtons(): void {
   let x: INT8;
   if (!gfShowTerrainTileButtons) {
-    for (x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
+    for (x = Enum45.BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
       EnableEditorRegion(x);
     }
     gfShowTerrainTileButtons = TRUE;
@@ -115,7 +115,7 @@ function TerrainTileButtonRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT
       }
     } else if (TerrainTileDrawMode == TERRAIN_TILES_BACKGROUND) {
       TerrainBackgroundTile = TerrainTileSelected;
-      iEditorToolbarState = TBAR_MODE_SET_BGRND;
+      iEditorToolbarState = Enum35.TBAR_MODE_SET_BGRND;
     }
   }
   if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
@@ -123,7 +123,7 @@ function TerrainTileButtonRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT
     TerrainTileSelected = MSYS_GetRegionUserData(reg, 0);
     if (TerrainTileDrawMode == TERRAIN_TILES_FOREGROUND) {
       TerrainForegroundTile = TerrainTileSelected;
-      iEditorToolbarState = TBAR_MODE_DRAW;
+      iEditorToolbarState = Enum35.TBAR_MODE_DRAW;
       if (ubTerrainTileButtonWeight[TerrainTileSelected]) {
         ubTerrainTileButtonWeight[TerrainTileSelected]--;
         usTotalWeight--;

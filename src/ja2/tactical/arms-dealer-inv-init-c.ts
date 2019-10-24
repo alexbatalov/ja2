@@ -1,28 +1,28 @@
 // This table controls the order items appear in inventory at BR's and dealers, and which kinds of items are sold used
 let DealerItemSortInfo: ITEM_SORT_ENTRY[] /* [] */ = [
   //  item class					weapon class	sold used?
-  [ IC_GUN, HANDGUNCLASS, TRUE ],
-  [ IC_GUN, SHOTGUNCLASS, TRUE ],
-  [ IC_GUN, SMGCLASS, TRUE ],
-  [ IC_GUN, RIFLECLASS, TRUE ],
-  [ IC_GUN, MGCLASS, FALSE ],
-  [ IC_LAUNCHER, NOGUNCLASS, FALSE ],
-  [ IC_AMMO, NOGUNCLASS, FALSE ],
-  [ IC_GRENADE, NOGUNCLASS, FALSE ],
-  [ IC_BOMB, NOGUNCLASS, FALSE ],
-  [ IC_BLADE, NOGUNCLASS, FALSE ],
-  [ IC_THROWING_KNIFE, NOGUNCLASS, FALSE ],
-  [ IC_PUNCH, NOGUNCLASS, FALSE ],
-  [ IC_ARMOUR, NOGUNCLASS, TRUE ],
-  [ IC_FACE, NOGUNCLASS, TRUE ],
-  [ IC_MEDKIT, NOGUNCLASS, FALSE ],
-  [ IC_KIT, NOGUNCLASS, FALSE ],
-  [ IC_MISC, NOGUNCLASS, TRUE ],
-  [ IC_THROWN, NOGUNCLASS, FALSE ],
-  [ IC_KEY, NOGUNCLASS, FALSE ],
+  [ IC_GUN, Enum282.HANDGUNCLASS, TRUE ],
+  [ IC_GUN, Enum282.SHOTGUNCLASS, TRUE ],
+  [ IC_GUN, Enum282.SMGCLASS, TRUE ],
+  [ IC_GUN, Enum282.RIFLECLASS, TRUE ],
+  [ IC_GUN, Enum282.MGCLASS, FALSE ],
+  [ IC_LAUNCHER, Enum282.NOGUNCLASS, FALSE ],
+  [ IC_AMMO, Enum282.NOGUNCLASS, FALSE ],
+  [ IC_GRENADE, Enum282.NOGUNCLASS, FALSE ],
+  [ IC_BOMB, Enum282.NOGUNCLASS, FALSE ],
+  [ IC_BLADE, Enum282.NOGUNCLASS, FALSE ],
+  [ IC_THROWING_KNIFE, Enum282.NOGUNCLASS, FALSE ],
+  [ IC_PUNCH, Enum282.NOGUNCLASS, FALSE ],
+  [ IC_ARMOUR, Enum282.NOGUNCLASS, TRUE ],
+  [ IC_FACE, Enum282.NOGUNCLASS, TRUE ],
+  [ IC_MEDKIT, Enum282.NOGUNCLASS, FALSE ],
+  [ IC_KIT, Enum282.NOGUNCLASS, FALSE ],
+  [ IC_MISC, Enum282.NOGUNCLASS, TRUE ],
+  [ IC_THROWN, Enum282.NOGUNCLASS, FALSE ],
+  [ IC_KEY, Enum282.NOGUNCLASS, FALSE ],
 
   // marks end of list
-  [ IC_NONE, NOGUNCLASS, FALSE ],
+  [ IC_NONE, Enum282.NOGUNCLASS, FALSE ],
 ];
 
 //
@@ -38,147 +38,147 @@ let DealerItemSortInfo: ITEM_SORT_ENTRY[] /* [] */ = [
 
 let gTonyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
   // Rare guns/ammo that Tony will buy although he won't ever sell them
-  [ ROCKET_RIFLE, 0 ],
-  [ AUTO_ROCKET_RIFLE, 0 ],
-  [ AUTOMAG_III, 0 ],
+  [ Enum225.ROCKET_RIFLE, 0 ],
+  [ Enum225.AUTO_ROCKET_RIFLE, 0 ],
+  [ Enum225.AUTOMAG_III, 0 ],
   //	{ FLAMETHROWER,					0 },
 
   // Weapons
-  [ GLOCK_17, 1 ], /* Glock 17        */
-  [ GLOCK_18, 1 ], /* Glock 18        */
-  [ BERETTA_92F, 1 ], /* Beretta 92F     */
-  [ BERETTA_93R, 1 ], /* Beretta 93R     */
-  [ SW38, 1 ], /* .38 S&W Special */
-  [ BARRACUDA, 1 ], /* .357 Barracuda  */
-  [ DESERTEAGLE, 1 ], /* .357 DesertEagle*/
-  [ M1911, 1 ], /* .45 M1911			 */
-  [ MP5K, 1 ], /* H&K MP5K      	 */
-  [ MAC10, 1 ], /* .45 MAC-10	     */
+  [ Enum225.GLOCK_17, 1 ], /* Glock 17        */
+  [ Enum225.GLOCK_18, 1 ], /* Glock 18        */
+  [ Enum225.BERETTA_92F, 1 ], /* Beretta 92F     */
+  [ Enum225.BERETTA_93R, 1 ], /* Beretta 93R     */
+  [ Enum225.SW38, 1 ], /* .38 S&W Special */
+  [ Enum225.BARRACUDA, 1 ], /* .357 Barracuda  */
+  [ Enum225.DESERTEAGLE, 1 ], /* .357 DesertEagle*/
+  [ Enum225.M1911, 1 ], /* .45 M1911			 */
+  [ Enum225.MP5K, 1 ], /* H&K MP5K      	 */
+  [ Enum225.MAC10, 1 ], /* .45 MAC-10	     */
 
-  [ THOMPSON, 1 ], /* Thompson M1A1   */
-  [ COMMANDO, 1 ], /* Colt Commando   */
-  [ MP53, 1 ], /* H&K MP53		 		 */
-  [ AKSU74, 1 ], /* AKSU-74         */
-  [ TYPE85, 1 ], /* Type-85         */
-  [ SKS, 1 ], /* SKS             */
-  [ DRAGUNOV, 1 ], /* Dragunov        */
-  [ M24, 1 ], /* M24             */
-  [ AUG, 1 ], /* Steyr AUG       */
+  [ Enum225.THOMPSON, 1 ], /* Thompson M1A1   */
+  [ Enum225.COMMANDO, 1 ], /* Colt Commando   */
+  [ Enum225.MP53, 1 ], /* H&K MP53		 		 */
+  [ Enum225.AKSU74, 1 ], /* AKSU-74         */
+  [ Enum225.TYPE85, 1 ], /* Type-85         */
+  [ Enum225.SKS, 1 ], /* SKS             */
+  [ Enum225.DRAGUNOV, 1 ], /* Dragunov        */
+  [ Enum225.M24, 1 ], /* M24             */
+  [ Enum225.AUG, 1 ], /* Steyr AUG       */
 
-  [ G41, 1 ], /* H&K G41         */
-  [ MINI14, 1 ], /* Ruger Mini-14   */
-  [ C7, 1 ], /* C-7             */
-  [ FAMAS, 1 ], /* FA-MAS          */
-  [ AK74, 1 ], /* AK-74           */
-  [ AKM, 1 ], /* AKM             */
-  [ M14, 1 ], /* M-14            */
-  [ G3A3, 1 ], /* H&K G3A3        */
-  [ FNFAL, 1 ], /* FN-FAL          */
+  [ Enum225.G41, 1 ], /* H&K G41         */
+  [ Enum225.MINI14, 1 ], /* Ruger Mini-14   */
+  [ Enum225.C7, 1 ], /* C-7             */
+  [ Enum225.FAMAS, 1 ], /* FA-MAS          */
+  [ Enum225.AK74, 1 ], /* AK-74           */
+  [ Enum225.AKM, 1 ], /* AKM             */
+  [ Enum225.M14, 1 ], /* M-14            */
+  [ Enum225.G3A3, 1 ], /* H&K G3A3        */
+  [ Enum225.FNFAL, 1 ], /* FN-FAL          */
 
-  [ MINIMI, 1 ],
-  [ RPK74, 1 ],
-  [ HK21E, 1 ],
+  [ Enum225.MINIMI, 1 ],
+  [ Enum225.RPK74, 1 ],
+  [ Enum225.HK21E, 1 ],
 
-  [ M870, 1 ], /* Remington M870  */
-  [ SPAS15, 1 ], /* SPAS-15         */
+  [ Enum225.M870, 1 ], /* Remington M870  */
+  [ Enum225.SPAS15, 1 ], /* SPAS-15         */
 
-  [ GLAUNCHER, 1 ], /* grenade launcher*/
-  [ UNDER_GLAUNCHER, 1 ], /* underslung g.l. */
-  [ ROCKET_LAUNCHER, 1 ], /* rocket Launcher */
-  [ MORTAR, 1 ],
+  [ Enum225.GLAUNCHER, 1 ], /* grenade launcher*/
+  [ Enum225.UNDER_GLAUNCHER, 1 ], /* underslung g.l. */
+  [ Enum225.ROCKET_LAUNCHER, 1 ], /* rocket Launcher */
+  [ Enum225.MORTAR, 1 ],
 
   // SAP guns
-  [ G11, 1 ],
-  [ CAWS, 1 ],
-  [ P90, 1 ],
+  [ Enum225.G11, 1 ],
+  [ Enum225.CAWS, 1 ],
+  [ Enum225.P90, 1 ],
 
-  [ DART_GUN, 1 ],
+  [ Enum225.DART_GUN, 1 ],
 
   // Ammo
-  [ CLIP9_15, 8 ],
-  [ CLIP9_30, 6 ],
-  [ CLIP9_15_AP, 3 ], /* CLIP9_15_AP */
-  [ CLIP9_30_AP, 3 ], /* CLIP9_30_AP */
-  [ CLIP9_15_HP, 3 ], /* CLIP9_15_HP */
-  [ CLIP9_30_HP, 3 ], /* CLIP9_30_HP */
+  [ Enum225.CLIP9_15, 8 ],
+  [ Enum225.CLIP9_30, 6 ],
+  [ Enum225.CLIP9_15_AP, 3 ], /* CLIP9_15_AP */
+  [ Enum225.CLIP9_30_AP, 3 ], /* CLIP9_30_AP */
+  [ Enum225.CLIP9_15_HP, 3 ], /* CLIP9_15_HP */
+  [ Enum225.CLIP9_30_HP, 3 ], /* CLIP9_30_HP */
 
-  [ CLIP38_6, 10 ], /* CLIP38_6 */
-  [ CLIP38_6_AP, 5 ], /* CLIP38_6_AP */
-  [ CLIP38_6_HP, 5 ], /* CLIP38_6_HP */
+  [ Enum225.CLIP38_6, 10 ], /* CLIP38_6 */
+  [ Enum225.CLIP38_6_AP, 5 ], /* CLIP38_6_AP */
+  [ Enum225.CLIP38_6_HP, 5 ], /* CLIP38_6_HP */
 
-  [ CLIP45_7, 6 ],
+  [ Enum225.CLIP45_7, 6 ],
   /* CLIP45_7 */ // 70
 
-  [ CLIP45_30, 8 ], /* CLIP45_30 */
-  [ CLIP45_7_AP, 3 ], /* CLIP45_7_AP */
-  [ CLIP45_30_AP, 3 ], /* CLIP45_30_AP */
-  [ CLIP45_7_HP, 3 ], /* CLIP45_7_HP */
-  [ CLIP45_30_HP, 3 ], /* CLIP45_30_HP */
+  [ Enum225.CLIP45_30, 8 ], /* CLIP45_30 */
+  [ Enum225.CLIP45_7_AP, 3 ], /* CLIP45_7_AP */
+  [ Enum225.CLIP45_30_AP, 3 ], /* CLIP45_30_AP */
+  [ Enum225.CLIP45_7_HP, 3 ], /* CLIP45_7_HP */
+  [ Enum225.CLIP45_30_HP, 3 ], /* CLIP45_30_HP */
 
-  [ CLIP357_6, 6 ], /* CLIP357_6 */
-  [ CLIP357_9, 5 ], /* CLIP357_9 */
-  [ CLIP357_6_AP, 3 ], /* CLIP357_6_AP */
-  [ CLIP357_9_AP, 3 ], /* CLIP357_9_AP */
-  [ CLIP357_6_HP, 3 ],
+  [ Enum225.CLIP357_6, 6 ], /* CLIP357_6 */
+  [ Enum225.CLIP357_9, 5 ], /* CLIP357_9 */
+  [ Enum225.CLIP357_6_AP, 3 ], /* CLIP357_6_AP */
+  [ Enum225.CLIP357_9_AP, 3 ], /* CLIP357_9_AP */
+  [ Enum225.CLIP357_6_HP, 3 ],
   /* CLIP357_6_HP */ // 80
-  [ CLIP357_9_HP, 3 ], /* CLIP357_9_HP */
+  [ Enum225.CLIP357_9_HP, 3 ], /* CLIP357_9_HP */
 
-  [ CLIP545_30_AP, 6 ], /* CLIP545_30_AP */
-  [ CLIP545_30_HP, 3 ], /* CLIP545_30_HP */
+  [ Enum225.CLIP545_30_AP, 6 ], /* CLIP545_30_AP */
+  [ Enum225.CLIP545_30_HP, 3 ], /* CLIP545_30_HP */
 
-  [ CLIP556_30_AP, 6 ], /* CLIP556_30_AP */
-  [ CLIP556_30_HP, 3 ], /* CLIP556_30_HP */
+  [ Enum225.CLIP556_30_AP, 6 ], /* CLIP556_30_AP */
+  [ Enum225.CLIP556_30_HP, 3 ], /* CLIP556_30_HP */
 
-  [ CLIP762W_10_AP, 6 ], /* CLIP762W_10_AP */
-  [ CLIP762W_30_AP, 5 ], /* CLIP762W_30_AP */
-  [ CLIP762W_10_HP, 3 ], /* CLIP762W_10_HP */
-  [ CLIP762W_30_HP, 3 ], /* CLIP762W_30_HP */
+  [ Enum225.CLIP762W_10_AP, 6 ], /* CLIP762W_10_AP */
+  [ Enum225.CLIP762W_30_AP, 5 ], /* CLIP762W_30_AP */
+  [ Enum225.CLIP762W_10_HP, 3 ], /* CLIP762W_10_HP */
+  [ Enum225.CLIP762W_30_HP, 3 ], /* CLIP762W_30_HP */
 
-  [ CLIP762N_5_AP, 8 ],
+  [ Enum225.CLIP762N_5_AP, 8 ],
   /* CLIP762N_5_AP */ // 90
-  [ CLIP762N_20_AP, 5 ], /* CLIP762N_20_AP */
-  [ CLIP762N_5_HP, 3 ], /* CLIP762N_5_HP */
-  [ CLIP762N_20_HP, 3 ], /* CLIP762N_20_HP */
+  [ Enum225.CLIP762N_20_AP, 5 ], /* CLIP762N_20_AP */
+  [ Enum225.CLIP762N_5_HP, 3 ], /* CLIP762N_5_HP */
+  [ Enum225.CLIP762N_20_HP, 3 ], /* CLIP762N_20_HP */
 
-  [ CLIP47_50_SAP, 5 ], /* CLIP47_50_SAP */
+  [ Enum225.CLIP47_50_SAP, 5 ], /* CLIP47_50_SAP */
 
-  [ CLIP57_50_AP, 6 ], /* CLIP57_50_AP */
-  [ CLIP57_50_HP, 3 ], /* CLIP57_50_HP */
+  [ Enum225.CLIP57_50_AP, 6 ], /* CLIP57_50_AP */
+  [ Enum225.CLIP57_50_HP, 3 ], /* CLIP57_50_HP */
 
-  [ CLIP12G_7, 9 ], /* CLIP12G_7 */
-  [ CLIP12G_7_BUCKSHOT, 9 ], /* CLIP12G_7_BUCKSHOT */
+  [ Enum225.CLIP12G_7, 9 ], /* CLIP12G_7 */
+  [ Enum225.CLIP12G_7_BUCKSHOT, 9 ], /* CLIP12G_7_BUCKSHOT */
 
-  [ CLIPCAWS_10_SAP, 5 ], /* CLIPCAWS_10_SAP */
-  [ CLIPCAWS_10_FLECH, 3 ],
+  [ Enum225.CLIPCAWS_10_SAP, 5 ], /* CLIPCAWS_10_SAP */
+  [ Enum225.CLIPCAWS_10_FLECH, 3 ],
   /* CLIPCAWS_10_FLECH */ // 100
 
-  [ CLIPROCKET_AP, 3 ],
-  [ CLIPROCKET_HE, 1 ],
-  [ CLIPROCKET_HEAT, 1 ],
+  [ Enum225.CLIPROCKET_AP, 3 ],
+  [ Enum225.CLIPROCKET_HE, 1 ],
+  [ Enum225.CLIPROCKET_HEAT, 1 ],
 
-  [ CLIPDART_SLEEP, 5 ],
+  [ Enum225.CLIPDART_SLEEP, 5 ],
 
   //	{ CLIPFLAME,						5	},
 
   // "launchables" (New! From McCain!) - these are basically ammo
-  [ GL_HE_GRENADE, 2 ],
-  [ GL_TEARGAS_GRENADE, 2 ],
-  [ GL_STUN_GRENADE, 2 ],
-  [ GL_SMOKE_GRENADE, 2 ],
-  [ MORTAR_SHELL, 1 ],
+  [ Enum225.GL_HE_GRENADE, 2 ],
+  [ Enum225.GL_TEARGAS_GRENADE, 2 ],
+  [ Enum225.GL_STUN_GRENADE, 2 ],
+  [ Enum225.GL_SMOKE_GRENADE, 2 ],
+  [ Enum225.MORTAR_SHELL, 1 ],
 
   // knives
-  [ COMBAT_KNIFE, 3 ],
-  [ THROWING_KNIFE, 6 ],
-  [ BRASS_KNUCKLES, 1 ],
-  [ MACHETE, 1 ],
+  [ Enum225.COMBAT_KNIFE, 3 ],
+  [ Enum225.THROWING_KNIFE, 6 ],
+  [ Enum225.BRASS_KNUCKLES, 1 ],
+  [ Enum225.MACHETE, 1 ],
 
   // attachments
-  [ SILENCER, 3 ],
-  [ SNIPERSCOPE, 3 ],
-  [ LASERSCOPE, 1 ],
-  [ BIPOD, 3 ],
-  [ DUCKBILL, 2 ],
+  [ Enum225.SILENCER, 3 ],
+  [ Enum225.SNIPERSCOPE, 3 ],
+  [ Enum225.LASERSCOPE, 1 ],
+  [ Enum225.BIPOD, 3 ],
+  [ Enum225.DUCKBILL, 2 ],
 
   /*
           // grenades
@@ -197,47 +197,47 @@ let gTonyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 // Devin		( Explosives )
 //
 let gDevinInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ STUN_GRENADE, 3 ],
-  [ TEARGAS_GRENADE, 3 ],
-  [ MUSTARD_GRENADE, 2 ],
-  [ MINI_GRENADE, 3 ],
-  [ HAND_GRENADE, 2 ],
-  [ SMOKE_GRENADE, 3 ],
+  [ Enum225.STUN_GRENADE, 3 ],
+  [ Enum225.TEARGAS_GRENADE, 3 ],
+  [ Enum225.MUSTARD_GRENADE, 2 ],
+  [ Enum225.MINI_GRENADE, 3 ],
+  [ Enum225.HAND_GRENADE, 2 ],
+  [ Enum225.SMOKE_GRENADE, 3 ],
 
-  [ GL_HE_GRENADE, 2 ],
-  [ GL_TEARGAS_GRENADE, 2 ],
-  [ GL_STUN_GRENADE, 2 ],
-  [ GL_SMOKE_GRENADE, 2 ],
-  [ MORTAR_SHELL, 1 ],
+  [ Enum225.GL_HE_GRENADE, 2 ],
+  [ Enum225.GL_TEARGAS_GRENADE, 2 ],
+  [ Enum225.GL_STUN_GRENADE, 2 ],
+  [ Enum225.GL_SMOKE_GRENADE, 2 ],
+  [ Enum225.MORTAR_SHELL, 1 ],
 
-  [ CLIPROCKET_AP, 1 ],
-  [ CLIPROCKET_HE, 1 ],
-  [ CLIPROCKET_HEAT, 1 ],
+  [ Enum225.CLIPROCKET_AP, 1 ],
+  [ Enum225.CLIPROCKET_HE, 1 ],
+  [ Enum225.CLIPROCKET_HEAT, 1 ],
 
-  [ DETONATOR, 10 ],
-  [ REMDETONATOR, 5 ],
-  [ REMOTEBOMBTRIGGER, 5 ],
+  [ Enum225.DETONATOR, 10 ],
+  [ Enum225.REMDETONATOR, 5 ],
+  [ Enum225.REMOTEBOMBTRIGGER, 5 ],
 
-  [ MINE, 6 ],
-  [ RDX, 5 ],
-  [ TNT, 5 ],
-  [ C1, 4 ],
-  [ HMX, 3 ],
-  [ C4, 2 ],
+  [ Enum225.MINE, 6 ],
+  [ Enum225.RDX, 5 ],
+  [ Enum225.TNT, 5 ],
+  [ Enum225.C1, 4 ],
+  [ Enum225.HMX, 3 ],
+  [ Enum225.C4, 2 ],
 
-  [ SHAPED_CHARGE, 5 ],
+  [ Enum225.SHAPED_CHARGE, 5 ],
 
   //	{	TRIP_FLARE,								2 },
   //	{	TRIP_KLAXON,							2 },
 
-  [ GLAUNCHER, 1 ], /* grenade launcher*/
-  [ UNDER_GLAUNCHER, 1 ], /* underslung g.l. */
-  [ ROCKET_LAUNCHER, 1 ], /* rocket Launcher */
-  [ MORTAR, 1 ],
+  [ Enum225.GLAUNCHER, 1 ], /* grenade launcher*/
+  [ Enum225.UNDER_GLAUNCHER, 1 ], /* underslung g.l. */
+  [ Enum225.ROCKET_LAUNCHER, 1 ], /* rocket Launcher */
+  [ Enum225.MORTAR, 1 ],
 
-  [ METALDETECTOR, 2 ],
-  [ WIRECUTTERS, 1 ],
-  [ DUCT_TAPE, 1 ],
+  [ Enum225.METALDETECTOR, 2 ],
+  [ Enum225.WIRECUTTERS, 1 ],
+  [ Enum225.DUCT_TAPE, 1 ],
 
   [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
 ];
@@ -246,33 +246,33 @@ let gDevinInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 // Franz	(Expensive pawn shop )
 //
 let gFranzInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ NIGHTGOGGLES, 3 ],
+  [ Enum225.NIGHTGOGGLES, 3 ],
 
-  [ LASERSCOPE, 3 ],
-  [ METALDETECTOR, 2 ],
-  [ EXTENDEDEAR, 2 ],
+  [ Enum225.LASERSCOPE, 3 ],
+  [ Enum225.METALDETECTOR, 2 ],
+  [ Enum225.EXTENDEDEAR, 2 ],
 
-  [ DART_GUN, 1 ],
+  [ Enum225.DART_GUN, 1 ],
 
-  [ KEVLAR_VEST, 1 ],
-  [ KEVLAR_LEGGINGS, 1 ],
-  [ KEVLAR_HELMET, 1 ],
-  [ KEVLAR2_VEST, 1 ],
-  [ SPECTRA_VEST, 1 ],
-  [ SPECTRA_LEGGINGS, 1 ],
-  [ SPECTRA_HELMET, 1 ],
+  [ Enum225.KEVLAR_VEST, 1 ],
+  [ Enum225.KEVLAR_LEGGINGS, 1 ],
+  [ Enum225.KEVLAR_HELMET, 1 ],
+  [ Enum225.KEVLAR2_VEST, 1 ],
+  [ Enum225.SPECTRA_VEST, 1 ],
+  [ Enum225.SPECTRA_LEGGINGS, 1 ],
+  [ Enum225.SPECTRA_HELMET, 1 ],
 
-  [ CERAMIC_PLATES, 1 ],
+  [ Enum225.CERAMIC_PLATES, 1 ],
 
-  [ CAMOUFLAGEKIT, 1 ],
+  [ Enum225.CAMOUFLAGEKIT, 1 ],
 
-  [ VIDEO_CAMERA, 1 ], // for robot quest
+  [ Enum225.VIDEO_CAMERA, 1 ], // for robot quest
 
-  [ LAME_BOY, 1 ],
-  [ FUMBLE_PAK, 1 ],
+  [ Enum225.LAME_BOY, 1 ],
+  [ Enum225.FUMBLE_PAK, 1 ],
 
-  [ GOLDWATCH, 1 ],
-  [ GOLFCLUBS, 1 ],
+  [ Enum225.GOLDWATCH, 1 ],
+  [ Enum225.GOLFCLUBS, 1 ],
 
   [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
 ];
@@ -281,31 +281,31 @@ let gFranzInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 // Keith		( Cheap Pawn Shop )
 //
 let gKeithInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ FIRSTAIDKIT, 5 ],
+  [ Enum225.FIRSTAIDKIT, 5 ],
 
   // WARNING: Keith must not carry any guns, it would conflict with his story/quest
 
-  [ COMBAT_KNIFE, 2 ],
-  [ THROWING_KNIFE, 3 ],
-  [ BRASS_KNUCKLES, 1 ],
-  [ MACHETE, 1 ],
+  [ Enum225.COMBAT_KNIFE, 2 ],
+  [ Enum225.THROWING_KNIFE, 3 ],
+  [ Enum225.BRASS_KNUCKLES, 1 ],
+  [ Enum225.MACHETE, 1 ],
 
-  [ SUNGOGGLES, 3 ],
-  [ FLAK_JACKET, 2 ],
-  [ STEEL_HELMET, 3 ],
-  [ LEATHER_JACKET, 1 ],
+  [ Enum225.SUNGOGGLES, 3 ],
+  [ Enum225.FLAK_JACKET, 2 ],
+  [ Enum225.STEEL_HELMET, 3 ],
+  [ Enum225.LEATHER_JACKET, 1 ],
 
-  [ CANTEEN, 5 ],
-  [ CROWBAR, 1 ],
-  [ JAR, 6 ],
+  [ Enum225.CANTEEN, 5 ],
+  [ Enum225.CROWBAR, 1 ],
+  [ Enum225.JAR, 6 ],
 
-  [ TOOLKIT, 1 ],
-  [ GASMASK, 1 ],
+  [ Enum225.TOOLKIT, 1 ],
+  [ Enum225.GASMASK, 1 ],
 
-  [ SILVER_PLATTER, 1 ],
+  [ Enum225.SILVER_PLATTER, 1 ],
 
-  [ WALKMAN, 1 ],
-  [ PORTABLETV, 1 ],
+  [ Enum225.WALKMAN, 1 ],
+  [ Enum225.PORTABLETV, 1 ],
 
   [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
 ];
@@ -314,37 +314,37 @@ let gKeithInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 // Sam		( Hardware )
 //
 let gSamInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ FIRSTAIDKIT, 3 ],
+  [ Enum225.FIRSTAIDKIT, 3 ],
 
-  [ LOCKSMITHKIT, 4 ],
-  [ TOOLKIT, 3 ],
+  [ Enum225.LOCKSMITHKIT, 4 ],
+  [ Enum225.TOOLKIT, 3 ],
 
-  [ CANTEEN, 5 ],
+  [ Enum225.CANTEEN, 5 ],
 
-  [ CROWBAR, 3 ],
-  [ WIRECUTTERS, 3 ],
+  [ Enum225.CROWBAR, 3 ],
+  [ Enum225.WIRECUTTERS, 3 ],
 
-  [ DUCKBILL, 3 ],
-  [ JAR, 12 ],
-  [ BREAK_LIGHT, 12 ], // flares
+  [ Enum225.DUCKBILL, 3 ],
+  [ Enum225.JAR, 12 ],
+  [ Enum225.BREAK_LIGHT, 12 ], // flares
 
-  [ METALDETECTOR, 1 ],
+  [ Enum225.METALDETECTOR, 1 ],
 
-  [ VIDEO_CAMERA, 1 ],
+  [ Enum225.VIDEO_CAMERA, 1 ],
 
-  [ QUICK_GLUE, 3 ],
-  [ COPPER_WIRE, 5 ],
-  [ BATTERIES, 10 ],
+  [ Enum225.QUICK_GLUE, 3 ],
+  [ Enum225.COPPER_WIRE, 5 ],
+  [ Enum225.BATTERIES, 10 ],
 
-  [ CLIP9_15, 5 ],
-  [ CLIP9_30, 5 ],
-  [ CLIP38_6, 5 ],
-  [ CLIP45_7, 5 ],
-  [ CLIP45_30, 5 ],
-  [ CLIP357_6, 5 ],
-  [ CLIP357_9, 5 ],
-  [ CLIP12G_7, 9 ],
-  [ CLIP12G_7_BUCKSHOT, 9 ],
+  [ Enum225.CLIP9_15, 5 ],
+  [ Enum225.CLIP9_30, 5 ],
+  [ Enum225.CLIP38_6, 5 ],
+  [ Enum225.CLIP45_7, 5 ],
+  [ Enum225.CLIP45_30, 5 ],
+  [ Enum225.CLIP357_6, 5 ],
+  [ Enum225.CLIP357_9, 5 ],
+  [ Enum225.CLIP12G_7, 9 ],
+  [ Enum225.CLIP12G_7_BUCKSHOT, 9 ],
 
   [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
 ];
@@ -353,64 +353,64 @@ let gSamInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 // Jake			( Junk )
 //
 let gJakeInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ FIRSTAIDKIT, 4 ],
-  [ MEDICKIT, 3 ],
+  [ Enum225.FIRSTAIDKIT, 4 ],
+  [ Enum225.MEDICKIT, 3 ],
 
-  [ SW38, 1 ],
-  [ CLIP38_6, 5 ],
+  [ Enum225.SW38, 1 ],
+  [ Enum225.CLIP38_6, 5 ],
 
-  [ JAR, 3 ],
-  [ CANTEEN, 2 ],
-  [ BEER, 6 ],
+  [ Enum225.JAR, 3 ],
+  [ Enum225.CANTEEN, 2 ],
+  [ Enum225.BEER, 6 ],
 
-  [ CROWBAR, 1 ],
-  [ WIRECUTTERS, 1 ],
+  [ Enum225.CROWBAR, 1 ],
+  [ Enum225.WIRECUTTERS, 1 ],
 
-  [ COMBAT_KNIFE, 1 ],
-  [ THROWING_KNIFE, 1 ],
-  [ BRASS_KNUCKLES, 1 ],
-  [ MACHETE, 1 ],
+  [ Enum225.COMBAT_KNIFE, 1 ],
+  [ Enum225.THROWING_KNIFE, 1 ],
+  [ Enum225.BRASS_KNUCKLES, 1 ],
+  [ Enum225.MACHETE, 1 ],
 
-  [ BREAK_LIGHT, 5 ], // flares
+  [ Enum225.BREAK_LIGHT, 5 ], // flares
 
-  [ BIPOD, 1 ],
+  [ Enum225.BIPOD, 1 ],
 
-  [ TSHIRT, 6 ],
-  [ CIGARS, 3 ],
-  [ PORNOS, 1 ],
+  [ Enum225.TSHIRT, 6 ],
+  [ Enum225.CIGARS, 3 ],
+  [ Enum225.PORNOS, 1 ],
 
-  [ LOCKSMITHKIT, 1 ],
+  [ Enum225.LOCKSMITHKIT, 1 ],
 
   // "new" items, presumed unsafe for demo
-  [ TSHIRT_DEIDRANNA, 2 ],
-  [ XRAY_BULB, 1 ],
+  [ Enum225.TSHIRT_DEIDRANNA, 2 ],
+  [ Enum225.XRAY_BULB, 1 ],
 
   // additional stuff possible in real game
-  [ GLOCK_17, 1 ], /* Glock 17        */
-  [ GLOCK_18, 1 ], /* Glock 18        */
-  [ BERETTA_92F, 1 ], /* Beretta 92F     */
-  [ BERETTA_93R, 1 ], /* Beretta 93R     */
-  [ BARRACUDA, 1 ], /* .357 Barracuda  */
-  [ DESERTEAGLE, 1 ], /* .357 DesertEagle*/
-  [ M1911, 1 ], /* .45 M1911			 */
+  [ Enum225.GLOCK_17, 1 ], /* Glock 17        */
+  [ Enum225.GLOCK_18, 1 ], /* Glock 18        */
+  [ Enum225.BERETTA_92F, 1 ], /* Beretta 92F     */
+  [ Enum225.BERETTA_93R, 1 ], /* Beretta 93R     */
+  [ Enum225.BARRACUDA, 1 ], /* .357 Barracuda  */
+  [ Enum225.DESERTEAGLE, 1 ], /* .357 DesertEagle*/
+  [ Enum225.M1911, 1 ], /* .45 M1911			 */
 
-  [ DISCARDED_LAW, 1 ],
+  [ Enum225.DISCARDED_LAW, 1 ],
 
-  [ STEEL_HELMET, 1 ],
+  [ Enum225.STEEL_HELMET, 1 ],
 
-  [ TOOLKIT, 1 ],
+  [ Enum225.TOOLKIT, 1 ],
 
-  [ WINE, 1 ],
-  [ ALCOHOL, 1 ],
+  [ Enum225.WINE, 1 ],
+  [ Enum225.ALCOHOL, 1 ],
 
-  [ GOLDWATCH, 1 ],
-  [ GOLFCLUBS, 1 ],
-  [ WALKMAN, 1 ],
-  [ PORTABLETV, 1 ],
+  [ Enum225.GOLDWATCH, 1 ],
+  [ Enum225.GOLFCLUBS, 1 ],
+  [ Enum225.WALKMAN, 1 ],
+  [ Enum225.PORTABLETV, 1 ],
 
   // stuff a real pawn shop wouldn't have, but it does make him a bit more useful
-  [ COMPOUND18, 1 ],
-  [ CERAMIC_PLATES, 1 ],
+  [ Enum225.COMPOUND18, 1 ],
+  [ Enum225.CERAMIC_PLATES, 1 ],
 
   [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
 ];
@@ -419,17 +419,17 @@ let gJakeInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 // Howard		( Pharmaceuticals )
 //
 let gHowardInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ FIRSTAIDKIT, 10 ],
-  [ MEDICKIT, 5 ],
-  [ ADRENALINE_BOOSTER, 5 ],
-  [ REGEN_BOOSTER, 5 ],
+  [ Enum225.FIRSTAIDKIT, 10 ],
+  [ Enum225.MEDICKIT, 5 ],
+  [ Enum225.ADRENALINE_BOOSTER, 5 ],
+  [ Enum225.REGEN_BOOSTER, 5 ],
 
-  [ ALCOHOL, 3 ],
-  [ COMBAT_KNIFE, 2 ],
+  [ Enum225.ALCOHOL, 3 ],
+  [ Enum225.COMBAT_KNIFE, 2 ],
 
-  [ CLIPDART_SLEEP, 5 ],
+  [ Enum225.CLIPDART_SLEEP, 5 ],
 
-  [ CHEWING_GUM, 3 ],
+  [ Enum225.CHEWING_GUM, 3 ],
 
   [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
 ];
@@ -438,17 +438,17 @@ let gHowardInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 // Gabby			( Creature parts and Blood )
 //
 let gGabbyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ JAR, 12 ],
-  [ JAR_ELIXIR, 3 ],
+  [ Enum225.JAR, 12 ],
+  [ Enum225.JAR_ELIXIR, 3 ],
   // buys these, but can't supply them (player is the only source)
-  [ JAR_CREATURE_BLOOD, 0 ],
-  [ JAR_QUEEN_CREATURE_BLOOD, 0 ],
-  [ BLOODCAT_CLAWS, 0 ],
-  [ BLOODCAT_TEETH, 0 ],
-  [ BLOODCAT_PELT, 0 ],
-  [ CREATURE_PART_CLAWS, 0 ],
-  [ CREATURE_PART_FLESH, 0 ],
-  [ CREATURE_PART_ORGAN, 0 ],
+  [ Enum225.JAR_CREATURE_BLOOD, 0 ],
+  [ Enum225.JAR_QUEEN_CREATURE_BLOOD, 0 ],
+  [ Enum225.BLOODCAT_CLAWS, 0 ],
+  [ Enum225.BLOODCAT_TEETH, 0 ],
+  [ Enum225.BLOODCAT_PELT, 0 ],
+  [ Enum225.CREATURE_PART_CLAWS, 0 ],
+  [ Enum225.CREATURE_PART_FLESH, 0 ],
+  [ Enum225.CREATURE_PART_ORGAN, 0 ],
 
   [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
 ];
@@ -457,9 +457,9 @@ let gGabbyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 // Frank  ( Alcohol )
 //
 let gFrankInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ BEER, 12 ],
-  [ WINE, 6 ],
-  [ ALCOHOL, 9 ],
+  [ Enum225.BEER, 12 ],
+  [ Enum225.WINE, 6 ],
+  [ Enum225.ALCOHOL, 9 ],
 
   [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
 ];
@@ -468,9 +468,9 @@ let gFrankInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 // Elgin  ( Alcohol )
 //
 let gElginInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ BEER, 12 ],
-  [ WINE, 6 ],
-  [ ALCOHOL, 9 ],
+  [ Enum225.BEER, 12 ],
+  [ Enum225.WINE, 6 ],
+  [ Enum225.ALCOHOL, 9 ],
 
   [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
 ];
@@ -479,9 +479,9 @@ let gElginInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 // Manny  ( Alcohol )
 //
 let gMannyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ BEER, 12 ],
-  [ WINE, 6 ],
-  [ ALCOHOL, 9 ],
+  [ Enum225.BEER, 12 ],
+  [ Enum225.WINE, 6 ],
+  [ Enum225.ALCOHOL, 9 ],
 
   [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
 ];
@@ -490,9 +490,9 @@ let gMannyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 // Herve Santos		( Alcohol )
 //
 let gHerveInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ BEER, 12 ],
-  [ WINE, 6 ],
-  [ ALCOHOL, 9 ],
+  [ Enum225.BEER, 12 ],
+  [ Enum225.WINE, 6 ],
+  [ Enum225.ALCOHOL, 9 ],
 
   [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
 ];
@@ -501,9 +501,9 @@ let gHerveInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 // Peter Santos ( Alcohol )
 //
 let gPeterInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ BEER, 12 ],
-  [ WINE, 6 ],
-  [ ALCOHOL, 9 ],
+  [ Enum225.BEER, 12 ],
+  [ Enum225.WINE, 6 ],
+  [ Enum225.ALCOHOL, 9 ],
 
   [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
 ];
@@ -512,9 +512,9 @@ let gPeterInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 // Alberto Santos		( Alcohol )
 //
 let gAlbertoInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ BEER, 12 ],
-  [ WINE, 6 ],
-  [ ALCOHOL, 9 ],
+  [ Enum225.BEER, 12 ],
+  [ Enum225.WINE, 6 ],
+  [ Enum225.ALCOHOL, 9 ],
 
   [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
 ];
@@ -523,9 +523,9 @@ let gAlbertoInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 // Carlo Santos		( Alcohol )
 //
 let gCarloInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
-  [ BEER, 12 ],
-  [ WINE, 6 ],
-  [ ALCOHOL, 9 ],
+  [ Enum225.BEER, 12 ],
+  [ Enum225.WINE, 6 ],
+  [ Enum225.ALCOHOL, 9 ],
 
   [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
 ];
@@ -536,13 +536,13 @@ let gCarloInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 
 let gMickyInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
   // ONLY BUYS THIS STUFF, DOESN'T SELL IT
-  [ BLOODCAT_CLAWS, 0 ],
-  [ BLOODCAT_TEETH, 0 ],
-  [ BLOODCAT_PELT, 0 ],
-  [ CREATURE_PART_CLAWS, 0 ],
-  [ CREATURE_PART_FLESH, 0 ],
-  [ CREATURE_PART_ORGAN, 0 ],
-  [ JAR_QUEEN_CREATURE_BLOOD, 0 ],
+  [ Enum225.BLOODCAT_CLAWS, 0 ],
+  [ Enum225.BLOODCAT_TEETH, 0 ],
+  [ Enum225.BLOODCAT_PELT, 0 ],
+  [ Enum225.CREATURE_PART_CLAWS, 0 ],
+  [ Enum225.CREATURE_PART_FLESH, 0 ],
+  [ Enum225.CREATURE_PART_ORGAN, 0 ],
+  [ Enum225.JAR_QUEEN_CREATURE_BLOOD, 0 ],
 
   [ LAST_DEALER_ITEM, NO_DEALER_ITEM ], // Last One
 ];
@@ -578,79 +578,79 @@ let gFredoInventory: DEALER_POSSIBLE_INV[] /* [] */ = [
 
 function GetDealersMaxItemAmount(ubDealerID: UINT8, usItemIndex: UINT16): INT8 {
   switch (ubDealerID) {
-    case ARMS_DEALER_TONY:
+    case Enum197.ARMS_DEALER_TONY:
       return GetMaxItemAmount(gTonyInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_FRANK:
+    case Enum197.ARMS_DEALER_FRANK:
       return GetMaxItemAmount(gFrankInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_MICKY:
+    case Enum197.ARMS_DEALER_MICKY:
       return GetMaxItemAmount(gMickyInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_ARNIE:
+    case Enum197.ARMS_DEALER_ARNIE:
       return GetMaxItemAmount(gArnieInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_PERKO:
+    case Enum197.ARMS_DEALER_PERKO:
       return GetMaxItemAmount(gPerkoInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_KEITH:
+    case Enum197.ARMS_DEALER_KEITH:
       return GetMaxItemAmount(gKeithInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_BAR_BRO_1:
+    case Enum197.ARMS_DEALER_BAR_BRO_1:
       return GetMaxItemAmount(gHerveInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_BAR_BRO_2:
+    case Enum197.ARMS_DEALER_BAR_BRO_2:
       return GetMaxItemAmount(gPeterInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_BAR_BRO_3:
+    case Enum197.ARMS_DEALER_BAR_BRO_3:
       return GetMaxItemAmount(gAlbertoInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_BAR_BRO_4:
+    case Enum197.ARMS_DEALER_BAR_BRO_4:
       return GetMaxItemAmount(gCarloInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_JAKE:
+    case Enum197.ARMS_DEALER_JAKE:
       return GetMaxItemAmount(gJakeInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_FRANZ:
+    case Enum197.ARMS_DEALER_FRANZ:
       return GetMaxItemAmount(gFranzInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_HOWARD:
+    case Enum197.ARMS_DEALER_HOWARD:
       return GetMaxItemAmount(gHowardInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_SAM:
+    case Enum197.ARMS_DEALER_SAM:
       return GetMaxItemAmount(gSamInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_FREDO:
+    case Enum197.ARMS_DEALER_FREDO:
       return GetMaxItemAmount(gFredoInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_GABBY:
+    case Enum197.ARMS_DEALER_GABBY:
       return GetMaxItemAmount(gGabbyInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_DEVIN:
+    case Enum197.ARMS_DEALER_DEVIN:
       return GetMaxItemAmount(gDevinInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_ELGIN:
+    case Enum197.ARMS_DEALER_ELGIN:
       return GetMaxItemAmount(gElginInventory, usItemIndex);
       break;
 
-    case ARMS_DEALER_MANNY:
+    case Enum197.ARMS_DEALER_MANNY:
       return GetMaxItemAmount(gMannyInventory, usItemIndex);
       break;
 
@@ -679,79 +679,79 @@ function GetMaxItemAmount(pInv: Pointer<DEALER_POSSIBLE_INV>, usItemIndex: UINT1
 
 function GetPointerToDealersPossibleInventory(ubArmsDealerID: UINT8): Pointer<DEALER_POSSIBLE_INV> {
   switch (ubArmsDealerID) {
-    case ARMS_DEALER_TONY:
+    case Enum197.ARMS_DEALER_TONY:
       return gTonyInventory;
       break;
 
-    case ARMS_DEALER_FRANK:
+    case Enum197.ARMS_DEALER_FRANK:
       return gFrankInventory;
       break;
 
-    case ARMS_DEALER_MICKY:
+    case Enum197.ARMS_DEALER_MICKY:
       return gMickyInventory;
       break;
 
-    case ARMS_DEALER_ARNIE:
+    case Enum197.ARMS_DEALER_ARNIE:
       return gArnieInventory;
       break;
 
-    case ARMS_DEALER_PERKO:
+    case Enum197.ARMS_DEALER_PERKO:
       return gPerkoInventory;
       break;
 
-    case ARMS_DEALER_KEITH:
+    case Enum197.ARMS_DEALER_KEITH:
       return gKeithInventory;
       break;
 
-    case ARMS_DEALER_BAR_BRO_1:
+    case Enum197.ARMS_DEALER_BAR_BRO_1:
       return gHerveInventory;
       break;
 
-    case ARMS_DEALER_BAR_BRO_2:
+    case Enum197.ARMS_DEALER_BAR_BRO_2:
       return gPeterInventory;
       break;
 
-    case ARMS_DEALER_BAR_BRO_3:
+    case Enum197.ARMS_DEALER_BAR_BRO_3:
       return gAlbertoInventory;
       break;
 
-    case ARMS_DEALER_BAR_BRO_4:
+    case Enum197.ARMS_DEALER_BAR_BRO_4:
       return gCarloInventory;
       break;
 
-    case ARMS_DEALER_JAKE:
+    case Enum197.ARMS_DEALER_JAKE:
       return gJakeInventory;
       break;
 
-    case ARMS_DEALER_FRANZ:
+    case Enum197.ARMS_DEALER_FRANZ:
       return gFranzInventory;
       break;
 
-    case ARMS_DEALER_HOWARD:
+    case Enum197.ARMS_DEALER_HOWARD:
       return gHowardInventory;
       break;
 
-    case ARMS_DEALER_SAM:
+    case Enum197.ARMS_DEALER_SAM:
       return gSamInventory;
       break;
 
-    case ARMS_DEALER_FREDO:
+    case Enum197.ARMS_DEALER_FREDO:
       return gFredoInventory;
       break;
 
-    case ARMS_DEALER_GABBY:
+    case Enum197.ARMS_DEALER_GABBY:
       return gGabbyInventory;
       break;
 
-    case ARMS_DEALER_DEVIN:
+    case Enum197.ARMS_DEALER_DEVIN:
       return gDevinInventory;
       break;
 
-    case ARMS_DEALER_ELGIN:
+    case Enum197.ARMS_DEALER_ELGIN:
       return gElginInventory;
       break;
 
-    case ARMS_DEALER_MANNY:
+    case Enum197.ARMS_DEALER_MANNY:
       return gMannyInventory;
       break;
 
@@ -787,38 +787,38 @@ function GetCurrentSuitabilityForItem(bArmsDealer: INT8, usItemIndex: UINT16): U
 
   // the following staple items are always deemed highly suitable regardless of player's progress:
   switch (usItemIndex) {
-    case CLIP38_6:
-    case CLIP9_15:
-    case CLIP9_30:
-    case CLIP357_6:
-    case CLIP357_9:
-    case CLIP45_7:
-    case CLIP45_30:
-    case CLIP12G_7:
-    case CLIP12G_7_BUCKSHOT:
-    case CLIP545_30_HP:
-    case CLIP556_30_HP:
-    case CLIP762W_10_HP:
-    case CLIP762W_30_HP:
-    case CLIP762N_5_HP:
-    case CLIP762N_20_HP:
+    case Enum225.CLIP38_6:
+    case Enum225.CLIP9_15:
+    case Enum225.CLIP9_30:
+    case Enum225.CLIP357_6:
+    case Enum225.CLIP357_9:
+    case Enum225.CLIP45_7:
+    case Enum225.CLIP45_30:
+    case Enum225.CLIP12G_7:
+    case Enum225.CLIP12G_7_BUCKSHOT:
+    case Enum225.CLIP545_30_HP:
+    case Enum225.CLIP556_30_HP:
+    case Enum225.CLIP762W_10_HP:
+    case Enum225.CLIP762W_30_HP:
+    case Enum225.CLIP762N_5_HP:
+    case Enum225.CLIP762N_20_HP:
 
-    case FIRSTAIDKIT:
-    case MEDICKIT:
-    case TOOLKIT:
-    case LOCKSMITHKIT:
+    case Enum225.FIRSTAIDKIT:
+    case Enum225.MEDICKIT:
+    case Enum225.TOOLKIT:
+    case Enum225.LOCKSMITHKIT:
 
-    case CANTEEN:
-    case CROWBAR:
-    case JAR:
-    case JAR_ELIXIR:
-    case JAR_CREATURE_BLOOD:
+    case Enum225.CANTEEN:
+    case Enum225.CROWBAR:
+    case Enum225.JAR:
+    case Enum225.JAR_ELIXIR:
+    case Enum225.JAR_CREATURE_BLOOD:
 
       return ITEM_SUITABILITY_ALWAYS;
   }
 
   // If it's not BobbyRay, Tony, or Devin
-  if ((bArmsDealer != -1) && (bArmsDealer != ARMS_DEALER_TONY) && (bArmsDealer != ARMS_DEALER_DEVIN)) {
+  if ((bArmsDealer != -1) && (bArmsDealer != Enum197.ARMS_DEALER_TONY) && (bArmsDealer != Enum197.ARMS_DEALER_DEVIN)) {
     // all the other dealers have very limited inventories, so their suitability remains constant at all times in game
     return ITEM_SUITABILITY_HIGH;
   }
@@ -829,10 +829,10 @@ function GetCurrentSuitabilityForItem(bArmsDealer: INT8, usItemIndex: UINT16): U
   ubMaxCoolness = (HighestPlayerProgressPercentage() / 10) + 1;
 
   // Tony has the better stuff sooner (than Bobby R's)
-  if (bArmsDealer == ARMS_DEALER_TONY) {
+  if (bArmsDealer == Enum197.ARMS_DEALER_TONY) {
     ubMinCoolness += 1;
     ubMaxCoolness += 1;
-  } else if (bArmsDealer == ARMS_DEALER_DEVIN) {
+  } else if (bArmsDealer == Enum197.ARMS_DEALER_DEVIN) {
     // almost everything Devin sells is pretty cool (4+), so gotta apply a minimum or he'd have nothing early on
     if (ubMinCoolness < 3) {
       ubMinCoolness = 3;
@@ -1166,7 +1166,7 @@ function GetDealerItemCategoryNumber(usItemIndex: UINT16): UINT8 {
 
   uiItemClass = Item[usItemIndex].usItemClass;
 
-  if (usItemIndex < MAX_WEAPONS) {
+  if (usItemIndex < Enum225.MAX_WEAPONS) {
     ubWeaponClass = Weapon[usItemIndex].ubWeaponClass;
   } else {
     // not a weapon, so no weapon class, this won't be needed

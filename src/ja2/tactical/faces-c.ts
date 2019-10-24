@@ -171,16 +171,16 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
     }
 
     // ATE: Check for profile - if elliot , use special face :)
-    if (usMercProfileID == ELLIOT) {
-      if (gMercProfiles[ELLIOT].bNPCData > 3 && gMercProfiles[ELLIOT].bNPCData < 7) {
+    if (usMercProfileID == Enum268.ELLIOT) {
+      if (gMercProfiles[Enum268.ELLIOT].bNPCData > 3 && gMercProfiles[Enum268.ELLIOT].bNPCData < 7) {
         sprintf(VObjectDesc.ImageFile, "FACES\\b%02da.sti", iFaceFileID);
-      } else if (gMercProfiles[ELLIOT].bNPCData > 6 && gMercProfiles[ELLIOT].bNPCData < 10) {
+      } else if (gMercProfiles[Enum268.ELLIOT].bNPCData > 6 && gMercProfiles[Enum268.ELLIOT].bNPCData < 10) {
         sprintf(VObjectDesc.ImageFile, "FACES\\b%02db.sti", iFaceFileID);
-      } else if (gMercProfiles[ELLIOT].bNPCData > 9 && gMercProfiles[ELLIOT].bNPCData < 13) {
+      } else if (gMercProfiles[Enum268.ELLIOT].bNPCData > 9 && gMercProfiles[Enum268.ELLIOT].bNPCData < 13) {
         sprintf(VObjectDesc.ImageFile, "FACES\\b%02dc.sti", iFaceFileID);
-      } else if (gMercProfiles[ELLIOT].bNPCData > 12 && gMercProfiles[ELLIOT].bNPCData < 16) {
+      } else if (gMercProfiles[Enum268.ELLIOT].bNPCData > 12 && gMercProfiles[Enum268.ELLIOT].bNPCData < 16) {
         sprintf(VObjectDesc.ImageFile, "FACES\\b%02dd.sti", iFaceFileID);
-      } else if (gMercProfiles[ELLIOT].bNPCData == 17) {
+      } else if (gMercProfiles[Enum268.ELLIOT].bNPCData == 17) {
         sprintf(VObjectDesc.ImageFile, "FACES\\b%02de.sti", iFaceFileID);
       }
     }
@@ -519,7 +519,7 @@ function SetAutoFaceInActive(iFaceIndex: INT32): void {
       pSoldier = MercPtrs[pFace.value.ubSoldierID];
 
       // IF we are in tactical
-      if (pSoldier.value.bAssignment == iCurrentTacticalSquad && guiCurrentScreen == GAME_SCREEN) {
+      if (pSoldier.value.bAssignment == iCurrentTacticalSquad && guiCurrentScreen == Enum26.GAME_SCREEN) {
         // Make the interfac panel dirty..
         // This will dirty the panel next frame...
         gfRerenderInterfaceFromHelpText = TRUE;
@@ -570,7 +570,7 @@ function BlinkAutoFace(iFaceIndex: INT32): void {
 
     // CHECK IF BUDDY IS DEAD, UNCONSCIOUS, ASLEEP, OR POW!
     if (pFace.value.ubSoldierID != NOBODY) {
-      if ((MercPtrs[pFace.value.ubSoldierID].value.bLife < OKLIFE) || (MercPtrs[pFace.value.ubSoldierID].value.fMercAsleep == TRUE) || (MercPtrs[pFace.value.ubSoldierID].value.bAssignment == ASSIGNMENT_POW)) {
+      if ((MercPtrs[pFace.value.ubSoldierID].value.bLife < OKLIFE) || (MercPtrs[pFace.value.ubSoldierID].value.fMercAsleep == TRUE) || (MercPtrs[pFace.value.ubSoldierID].value.bAssignment == Enum117.ASSIGNMENT_POW)) {
         return;
       }
     }
@@ -656,7 +656,7 @@ function HandleFaceHilights(pFace: Pointer<FACETYPE>, uiBuffer: UINT32, sFaceX: 
   iFaceIndex = pFace.value.iID;
 
   if (!gFacesData[iFaceIndex].fDisabled) {
-    if (pFace.value.uiAutoDisplayBuffer == FRAME_BUFFER && guiCurrentScreen == GAME_SCREEN) {
+    if (pFace.value.uiAutoDisplayBuffer == FRAME_BUFFER && guiCurrentScreen == Enum26.GAME_SCREEN) {
       // If we are highlighted, do this now!
       if ((pFace.value.uiFlags & FACE_SHOW_WHITE_HILIGHT)) {
         // Lock buffer
@@ -1033,7 +1033,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
         UnLockVideoSurface(uiRenderBuffer);
       }
 
-      if (MercPtrs[pFace.value.ubSoldierID].value.bInSector && (((gTacticalStatus.ubCurrentTeam != OUR_TEAM) || !OK_INTERRUPT_MERC(MercPtrs[pFace.value.ubSoldierID])) && !gfHiddenInterrupt) || ((gfSMDisableForItems && !gfInItemPickupMenu) && gusSMCurrentMerc == pFace.value.ubSoldierID && gsCurInterfacePanel == SM_PANEL)) {
+      if (MercPtrs[pFace.value.ubSoldierID].value.bInSector && (((gTacticalStatus.ubCurrentTeam != OUR_TEAM) || !OK_INTERRUPT_MERC(MercPtrs[pFace.value.ubSoldierID])) && !gfHiddenInterrupt) || ((gfSMDisableForItems && !gfInItemPickupMenu) && gusSMCurrentMerc == pFace.value.ubSoldierID && gsCurInterfacePanel == Enum215.SM_PANEL)) {
         // Blit hatch!
         BltVideoObjectFromIndex(uiRenderBuffer, guiHATCH, 0, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
       }
@@ -1094,7 +1094,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
     }
 
     switch (pSoldier.value.bAssignment) {
-      case DOCTOR:
+      case Enum117.DOCTOR:
 
         sIconIndex = 1;
         fDoIcon = TRUE;
@@ -1107,7 +1107,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
         usMaximumPts = (usMaximumPts + 5) / 10;
         break;
 
-      case PATIENT:
+      case Enum117.PATIENT:
 
         sIconIndex = 2;
         fDoIcon = TRUE;
@@ -1118,10 +1118,10 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
         fShowMaximum = TRUE;
         break;
 
-      case TRAIN_SELF:
-      case TRAIN_TOWN:
-      case TRAIN_TEAMMATE:
-      case TRAIN_BY_OTHER:
+      case Enum117.TRAIN_SELF:
+      case Enum117.TRAIN_TOWN:
+      case Enum117.TRAIN_TEAMMATE:
+      case Enum117.TRAIN_BY_OTHER:
         sIconIndex = 3;
         fDoIcon = TRUE;
         fShowNumber = TRUE;
@@ -1132,25 +1132,25 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
         }
 
         switch (MercPtrs[pFace.value.ubSoldierID].value.bAssignment) {
-          case (TRAIN_SELF):
+          case (Enum117.TRAIN_SELF):
             sPtsAvailable = GetSoldierTrainingPts(MercPtrs[pFace.value.ubSoldierID], MercPtrs[pFace.value.ubSoldierID].value.bTrainStat, fAtGunRange, addressof(usMaximumPts));
             break;
-          case (TRAIN_BY_OTHER):
+          case (Enum117.TRAIN_BY_OTHER):
             sPtsAvailable = GetSoldierStudentPts(MercPtrs[pFace.value.ubSoldierID], MercPtrs[pFace.value.ubSoldierID].value.bTrainStat, fAtGunRange, addressof(usMaximumPts));
             break;
-          case (TRAIN_TOWN):
+          case (Enum117.TRAIN_TOWN):
             sPtsAvailable = GetTownTrainPtsForCharacter(MercPtrs[pFace.value.ubSoldierID], addressof(usMaximumPts));
             // divide both amounts by 10 to make the displayed numbers a little more user-palatable (smaller)
             sPtsAvailable = (sPtsAvailable + 5) / 10;
             usMaximumPts = (usMaximumPts + 5) / 10;
             break;
-          case (TRAIN_TEAMMATE):
+          case (Enum117.TRAIN_TEAMMATE):
             sPtsAvailable = GetBonusTrainingPtsDueToInstructor(MercPtrs[pFace.value.ubSoldierID], NULL, MercPtrs[pFace.value.ubSoldierID].value.bTrainStat, fAtGunRange, addressof(usMaximumPts));
             break;
         }
         break;
 
-      case REPAIR:
+      case Enum117.REPAIR:
 
         sIconIndex = 0;
         fDoIcon = TRUE;
@@ -1208,7 +1208,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
       }
     }
   } else {
-    if (pFace.value.ubCharacterNum == FATHER || pFace.value.ubCharacterNum == MICKY) {
+    if (pFace.value.ubCharacterNum == Enum268.FATHER || pFace.value.ubCharacterNum == Enum268.MICKY) {
       if (gMercProfiles[pFace.value.ubCharacterNum].bNPCData >= 5) {
         DoRightIcon(uiRenderBuffer, pFace, sFaceX, sFaceY, 0, 8);
       }
@@ -1595,7 +1595,7 @@ function HandleAutoFaces(): void {
           fRerender = TRUE;
         }
 
-        if (fInterfacePanelDirty == DIRTYLEVEL2 && guiCurrentScreen == GAME_SCREEN) {
+        if (fInterfacePanelDirty == DIRTYLEVEL2 && guiCurrentScreen == Enum26.GAME_SCREEN) {
           fRerender = TRUE;
         }
 
@@ -1678,7 +1678,7 @@ function SetFaceTalking(iFaceIndex: INT32, zSoundFile: Pointer<CHAR8>, zTextStri
   }
 
   // Play sample
-  if (gGameSettings.fOptions[TOPTION_SPEECH])
+  if (gGameSettings.fOptions[Enum8.TOPTION_SPEECH])
     pFace.value.uiSoundID = PlayJA2GapSample(zSoundFile, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN, addressof(pFace.value.GapList));
   else
     pFace.value.uiSoundID = SOUND_ERROR;
@@ -1772,7 +1772,7 @@ function SetupFinalTalkingDelay(pFace: Pointer<FACETYPE>): void {
 
   pFace.value.uiTalkingTimer = GetJA2Clock();
 
-  if (gGameSettings.fOptions[TOPTION_SUBTITLES]) {
+  if (gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES]) {
     // pFace->uiTalkingDuration = FINAL_TALKING_DURATION;
     pFace.value.uiTalkingDuration = 300;
   } else {
@@ -1791,9 +1791,9 @@ function SetupFinalTalkingDelay(pFace: Pointer<FACETYPE>): void {
   }
 
   // Setup flag to wait for advance ( because we have no text! )
-  if (gGameSettings.fOptions[TOPTION_KEY_ADVANCE_SPEECH] && (pFace.value.uiFlags & FACE_POTENTIAL_KEYWAIT)) {
+  if (gGameSettings.fOptions[Enum8.TOPTION_KEY_ADVANCE_SPEECH] && (pFace.value.uiFlags & FACE_POTENTIAL_KEYWAIT)) {
     // Check if we have had valid speech!
-    if (!pFace.value.fValidSpeech || gGameSettings.fOptions[TOPTION_SUBTITLES]) {
+    if (!pFace.value.fValidSpeech || gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES]) {
       // Set false!
       pFace.value.fFinishTalking = FALSE;
       // Set waiting for advance to true!

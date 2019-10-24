@@ -217,25 +217,25 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
             } else {
               // Add preserved placements as long as they don't exceed the actual population.
               switch (curr.value.pBasicPlacement.value.ubSoldierClass) {
-                case SOLDIER_CLASS_ELITE:
+                case Enum262.SOLDIER_CLASS_ELITE:
                   ubNumElites++;
                   if (ubNumElites < ubStrategicElites) {
                     AddPlacementToWorld(curr);
                   }
                   break;
-                case SOLDIER_CLASS_ARMY:
+                case Enum262.SOLDIER_CLASS_ARMY:
                   ubNumTroops++;
                   if (ubNumTroops < ubStrategicTroops) {
                     AddPlacementToWorld(curr);
                   }
                   break;
-                case SOLDIER_CLASS_ADMINISTRATOR:
+                case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
                   ubNumAdmins++;
                   if (ubNumAdmins < ubStrategicAdmins) {
                     AddPlacementToWorld(curr);
                   }
                   break;
-                case SOLDIER_CLASS_CREATURE:
+                case Enum262.SOLDIER_CLASS_CREATURE:
                   ubNumCreatures++;
                   if (ubNumCreatures < ubStrategicCreatures) {
                     AddPlacementToWorld(curr);
@@ -385,7 +385,7 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
           sprintf(curr.value.pDetailedPlacement.value.MiscPal, pSoldier.value.MiscPal);
 
           // copy soldier's inventory
-          memcpy(curr.value.pDetailedPlacement.value.Inv, pSoldier.value.inv, sizeof(OBJECTTYPE) * NUM_INV_SLOTS);
+          memcpy(curr.value.pDetailedPlacement.value.Inv, pSoldier.value.inv, sizeof(OBJECTTYPE) * Enum261.NUM_INV_SLOTS);
         }
 
         // DONE, now increment the counter, so we know how many there are.
@@ -762,25 +762,25 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
 
           // Add preserved placements as long as they don't exceed the actual population.
           switch (curr.value.pBasicPlacement.value.ubSoldierClass) {
-            case SOLDIER_CLASS_ELITE:
+            case Enum262.SOLDIER_CLASS_ELITE:
               ubNumElites++;
               if (ubNumElites <= ubStrategicElites) {
                 // def:								AddPlacementToWorld( curr );
               }
               break;
-            case SOLDIER_CLASS_ARMY:
+            case Enum262.SOLDIER_CLASS_ARMY:
               ubNumTroops++;
               if (ubNumTroops <= ubStrategicTroops) {
                 // def:								AddPlacementToWorld( curr );
               }
               break;
-            case SOLDIER_CLASS_ADMINISTRATOR:
+            case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
               ubNumAdmins++;
               if (ubNumAdmins <= ubStrategicAdmins) {
                 // def:								AddPlacementToWorld( curr );
               }
               break;
-            case SOLDIER_CLASS_CREATURE:
+            case Enum262.SOLDIER_CLASS_CREATURE:
               ubNumCreatures++;
               if (ubNumCreatures <= ubStrategicCreatures) {
                 // def:								AddPlacementToWorld( curr );
@@ -1185,7 +1185,7 @@ function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT
             sprintf(curr.value.pDetailedPlacement.value.MiscPal, pSoldier.value.MiscPal);
 
             // copy soldier's inventory
-            memcpy(curr.value.pDetailedPlacement.value.Inv, pSoldier.value.inv, sizeof(OBJECTTYPE) * NUM_INV_SLOTS);
+            memcpy(curr.value.pDetailedPlacement.value.Inv, pSoldier.value.inv, sizeof(OBJECTTYPE) * Enum261.NUM_INV_SLOTS);
           }
         }
 
@@ -1460,16 +1460,16 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
 
     // increment the current type of soldier
     switch (tempDetailedPlacement.ubSoldierClass) {
-      case SOLDIER_CLASS_ELITE:
+      case Enum262.SOLDIER_CLASS_ELITE:
         (pubNumElites.value)++;
         break;
-      case SOLDIER_CLASS_ARMY:
+      case Enum262.SOLDIER_CLASS_ARMY:
         (pubNumRegulars.value)++;
         break;
-      case SOLDIER_CLASS_ADMINISTRATOR:
+      case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
         (pubNumAdmins.value)++;
         break;
-      case SOLDIER_CLASS_CREATURE:
+      case Enum262.SOLDIER_CLASS_CREATURE:
         (pubNumCreatures.value)++;
         break;
     }

@@ -205,14 +205,14 @@ function DecayBloodAndSmells(uiTime: UINT32): void {
   // period between checks, in game seconds
   switch (giTimeCompressMode) {
     // in time compression, let this happen every 5 REAL seconds
-    case TIME_COMPRESS_5MINS: // rate of 300 seconds per real second
+    case Enum130.TIME_COMPRESS_5MINS: // rate of 300 seconds per real second
       uiCheckTime = 5 * 300;
       break;
-    case TIME_COMPRESS_30MINS: // rate of 1800 seconds per real second
+    case Enum130.TIME_COMPRESS_30MINS: // rate of 1800 seconds per real second
       uiCheckTime = 5 * 1800;
       break;
-    case TIME_COMPRESS_60MINS: // rate of 3600 seconds per real second
-    case TIME_SUPER_COMPRESS: // should not be used but just in frigging case...
+    case Enum130.TIME_COMPRESS_60MINS: // rate of 3600 seconds per real second
+    case Enum130.TIME_SUPER_COMPRESS: // should not be used but just in frigging case...
       uiCheckTime = 5 * 3600;
       break;
     default: // not compressing
@@ -303,7 +303,7 @@ function InternalDropBlood(sGridNo: INT16, bLevel: INT8, ubType: UINT8, ubStreng
    */
 
   // If we are in water...
-  if (GetTerrainType(sGridNo) == DEEP_WATER || GetTerrainType(sGridNo) == LOW_WATER || GetTerrainType(sGridNo) == MED_WATER) {
+  if (GetTerrainType(sGridNo) == Enum315.DEEP_WATER || GetTerrainType(sGridNo) == Enum315.LOW_WATER || GetTerrainType(sGridNo) == Enum315.MED_WATER) {
     return;
   }
 
@@ -412,7 +412,7 @@ function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
   pMapElement = addressof(gpWorldLevelData[sGridNo]);
 
   // CHECK FOR BLOOD OPTION
-  if (!gGameSettings.fOptions[TOPTION_BLOOD_N_GORE]) {
+  if (!gGameSettings.fOptions[Enum8.TOPTION_BLOOD_N_GORE]) {
     return;
   }
 
@@ -425,7 +425,7 @@ function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
       bValue = BLOOD_FLOOR_STRENGTH(pMapElement.value.ubBloodInfo);
 
       // OK, remove tile graphic if one exists....
-      if (TypeRangeExistsInObjectLayer(sGridNo, HUMANBLOOD, CREATUREBLOOD, addressof(usIndex))) {
+      if (TypeRangeExistsInObjectLayer(sGridNo, Enum313.HUMANBLOOD, Enum313.CREATUREBLOOD, addressof(usIndex))) {
         // This has been removed and it is handled by the ubBloodInfo level when restoring a saved game.
         // Set a flag indicating that the following changes are to go the the maps temp file
         // ApplyMapChangesToMapTempFile( TRUE );
@@ -442,9 +442,9 @@ function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
         usIndex = ((Random(4) * 4) + ubBloodGraphicLUT[bValue]);
 
         if (BLOOD_FLOOR_TYPE(pMapElement.value.ubSmellInfo) == 0) {
-          GetTileIndexFromTypeSubIndex(HUMANBLOOD, (usIndex + 1), addressof(usNewIndex));
+          GetTileIndexFromTypeSubIndex(Enum313.HUMANBLOOD, (usIndex + 1), addressof(usNewIndex));
         } else {
-          GetTileIndexFromTypeSubIndex(CREATUREBLOOD, (usIndex + 1), addressof(usNewIndex));
+          GetTileIndexFromTypeSubIndex(Enum313.CREATUREBLOOD, (usIndex + 1), addressof(usNewIndex));
         }
 
         // This has been removed and it is handled by the ubBloodInfo level when restoring a saved game.

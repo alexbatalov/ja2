@@ -18,18 +18,18 @@ function HandleStrategicTurn(): void {
   let uiCheckTime: UINT32;
 
   // OK, DO THIS CHECK EVERY ONCE AND A WHILE...
-  if (COUNTERDONE(STRATEGIC_OVERHEAD)) {
-    RESETCOUNTER(STRATEGIC_OVERHEAD);
+  if (COUNTERDONE(Enum386.STRATEGIC_OVERHEAD)) {
+    RESETCOUNTER(Enum386.STRATEGIC_OVERHEAD);
 
     // if the game is paused, or we're in mapscreen and time is not being compressed
-    if ((GamePaused() == TRUE) || ((guiCurrentScreen == MAP_SCREEN) && !IsTimeBeingCompressed())) {
+    if ((GamePaused() == TRUE) || ((guiCurrentScreen == Enum26.MAP_SCREEN) && !IsTimeBeingCompressed())) {
       // don't do any of this
       return;
     }
 
     // Kris -- What to do?
-    if (giTimeCompressMode == NOT_USING_TIME_COMPRESSION) {
-      SetGameTimeCompressionLevel(TIME_COMPRESS_X1);
+    if (giTimeCompressMode == Enum130.NOT_USING_TIME_COMPRESSION) {
+      SetGameTimeCompressionLevel(Enum130.TIME_COMPRESS_X1);
     }
 
     uiTime = GetJA2Clock();
@@ -38,7 +38,7 @@ function HandleStrategicTurn(): void {
     if ((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT)) {
       guiLastTacticalRealTime = uiTime;
     } else {
-      if (giTimeCompressMode == TIME_COMPRESS_X1 || giTimeCompressMode == 0) {
+      if (giTimeCompressMode == Enum130.TIME_COMPRESS_X1 || giTimeCompressMode == 0) {
         uiCheckTime = NUM_REAL_SEC_PER_TACTICAL_TURN;
       } else {
         // OK, if we have compressed time...., adjust our check value to be faster....

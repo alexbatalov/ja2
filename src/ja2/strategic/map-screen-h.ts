@@ -19,5 +19,5 @@ const enum Enum135 {
   NUM_TOWNS,
 }
 
-const FIRST_TOWN = OMERTA;
+const FIRST_TOWN = Enum135.OMERTA;
 //#define PALACE			NUM_TOWNS

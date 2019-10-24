@@ -16,7 +16,7 @@ let EditorRegion: MOUSE_REGION;
 
 function EnableEditorRegion(bRegionID: INT8): void {
   switch (bRegionID) {
-    case BASE_TERRAIN_TILE_REGION_ID:
+    case Enum45.BASE_TERRAIN_TILE_REGION_ID:
     case 1:
     case 2:
     case 3:
@@ -27,10 +27,10 @@ function EnableEditorRegion(bRegionID: INT8): void {
     case 8:
       MSYS_EnableRegion(addressof(TerrainTileButtonRegion[bRegionID]));
       break;
-    case ITEM_REGION_ID:
+    case Enum45.ITEM_REGION_ID:
       MSYS_EnableRegion(addressof(ItemsRegion));
       break;
-    case MERC_REGION_ID:
+    case Enum45.MERC_REGION_ID:
       MSYS_EnableRegion(addressof(MercRegion));
       break;
   }
@@ -38,7 +38,7 @@ function EnableEditorRegion(bRegionID: INT8): void {
 
 function DisableEditorRegion(bRegionID: INT8): void {
   switch (bRegionID) {
-    case BASE_TERRAIN_TILE_REGION_ID:
+    case Enum45.BASE_TERRAIN_TILE_REGION_ID:
     case 1:
     case 2:
     case 3:
@@ -48,10 +48,10 @@ function DisableEditorRegion(bRegionID: INT8): void {
     case 7:
       MSYS_DisableRegion(addressof(TerrainTileButtonRegion[bRegionID]));
       break;
-    case ITEM_REGION_ID:
+    case Enum45.ITEM_REGION_ID:
       MSYS_DisableRegion(addressof(ItemsRegion));
       break;
-    case MERC_REGION_ID:
+    case Enum45.MERC_REGION_ID:
       MSYS_DisableRegion(addressof(MercRegion));
       break;
   }
@@ -60,7 +60,7 @@ function DisableEditorRegion(bRegionID: INT8): void {
 function RemoveEditorRegions(): void {
   let x: INT32;
   MSYS_RemoveRegion(addressof(EditorRegion));
-  for (x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
+  for (x = Enum45.BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
     MSYS_RemoveRegion(addressof(TerrainTileButtonRegion[x]));
   }
   MSYS_RemoveRegion(addressof(ItemsRegion));
@@ -168,23 +168,23 @@ function DeleteEditorBuffers(): void {
 
 function ShowEditorToolbar(iNewTaskMode: INT32): void {
   switch (iNewTaskMode) {
-    case TASK_TERRAIN:
-      ShowEditorButtons(FIRST_TERRAIN_BUTTON, LAST_TERRAIN_BUTTON);
+    case Enum36.TASK_TERRAIN:
+      ShowEditorButtons(Enum32.FIRST_TERRAIN_BUTTON, Enum32.LAST_TERRAIN_BUTTON);
       break;
-    case TASK_BUILDINGS:
-      ShowEditorButtons(FIRST_BUILDINGS_BUTTON, LAST_BUILDINGS_BUTTON);
+    case Enum36.TASK_BUILDINGS:
+      ShowEditorButtons(Enum32.FIRST_BUILDINGS_BUTTON, Enum32.LAST_BUILDINGS_BUTTON);
       break;
-    case TASK_ITEMS:
-      ShowEditorButtons(FIRST_ITEMS_BUTTON, LAST_ITEMS_BUTTON);
+    case Enum36.TASK_ITEMS:
+      ShowEditorButtons(Enum32.FIRST_ITEMS_BUTTON, Enum32.LAST_ITEMS_BUTTON);
       break;
-    case TASK_MERCS:
+    case Enum36.TASK_MERCS:
       ShowEditorButtons(FIRST_MERCS_TEAMMODE_BUTTON, LAST_MERCS_TEAMMODE_BUTTON);
       break;
-    case TASK_MAPINFO:
-      ShowEditorButtons(FIRST_MAPINFO_BUTTON, LAST_MAPINFO_BUTTON);
+    case Enum36.TASK_MAPINFO:
+      ShowEditorButtons(Enum32.FIRST_MAPINFO_BUTTON, Enum32.LAST_MAPINFO_BUTTON);
       break;
-    case TASK_OPTIONS:
-      ShowEditorButtons(FIRST_OPTIONS_BUTTON, LAST_OPTIONS_BUTTON);
+    case Enum36.TASK_OPTIONS:
+      ShowEditorButtons(Enum32.FIRST_OPTIONS_BUTTON, Enum32.LAST_OPTIONS_BUTTON);
       break;
     default:
       return;
@@ -196,29 +196,29 @@ function HideEditorToolbar(iOldTaskMode: INT32): void {
   let iStart: INT32;
   let iEnd: INT32;
   switch (iOldTaskMode) {
-    case TASK_TERRAIN:
-      iStart = FIRST_TERRAIN_BUTTON;
-      iEnd = LAST_TERRAIN_BUTTON;
+    case Enum36.TASK_TERRAIN:
+      iStart = Enum32.FIRST_TERRAIN_BUTTON;
+      iEnd = Enum32.LAST_TERRAIN_BUTTON;
       break;
-    case TASK_BUILDINGS:
-      iStart = FIRST_BUILDINGS_BUTTON;
-      iEnd = LAST_BUILDINGS_BUTTON;
+    case Enum36.TASK_BUILDINGS:
+      iStart = Enum32.FIRST_BUILDINGS_BUTTON;
+      iEnd = Enum32.LAST_BUILDINGS_BUTTON;
       break;
-    case TASK_ITEMS:
-      iStart = FIRST_ITEMS_BUTTON;
-      iEnd = LAST_ITEMS_BUTTON;
+    case Enum36.TASK_ITEMS:
+      iStart = Enum32.FIRST_ITEMS_BUTTON;
+      iEnd = Enum32.LAST_ITEMS_BUTTON;
       break;
-    case TASK_MERCS:
-      iStart = FIRST_MERCS_BUTTON;
-      iEnd = LAST_MERCS_BUTTON;
+    case Enum36.TASK_MERCS:
+      iStart = Enum32.FIRST_MERCS_BUTTON;
+      iEnd = Enum32.LAST_MERCS_BUTTON;
       break;
-    case TASK_MAPINFO:
-      iStart = FIRST_MAPINFO_BUTTON;
-      iEnd = LAST_MAPINFO_BUTTON;
+    case Enum36.TASK_MAPINFO:
+      iStart = Enum32.FIRST_MAPINFO_BUTTON;
+      iEnd = Enum32.LAST_MAPINFO_BUTTON;
       break;
-    case TASK_OPTIONS:
-      iStart = FIRST_OPTIONS_BUTTON;
-      iEnd = LAST_OPTIONS_BUTTON;
+    case Enum36.TASK_OPTIONS:
+      iStart = Enum32.FIRST_OPTIONS_BUTTON;
+      iEnd = Enum32.LAST_OPTIONS_BUTTON;
       break;
     default:
       return;
@@ -242,7 +242,7 @@ function DeleteEditorTaskbar(): void {
 
   iOldTaskMode = iCurrentTaskbar;
 
-  for (x = 0; x < NUMBER_EDITOR_BUTTONS; x++)
+  for (x = 0; x < Enum32.NUMBER_EDITOR_BUTTONS; x++)
     RemoveButton(iEditorButton[x]);
 
   RemoveEditorRegions();
@@ -261,100 +261,100 @@ function DoTaskbar(): void {
 
   // Special code when exiting previous editor tab
   switch (iCurrentTaskbar) {
-    case TASK_TERRAIN:
-      UnclickEditorButton(TAB_TERRAIN);
+    case Enum36.TASK_TERRAIN:
+      UnclickEditorButton(Enum32.TAB_TERRAIN);
       HideTerrainTileButtons();
       break;
-    case TASK_BUILDINGS:
-      UnclickEditorButton(TAB_BUILDINGS);
+    case Enum36.TASK_BUILDINGS:
+      UnclickEditorButton(Enum32.TAB_BUILDINGS);
       KillTextInputMode();
       break;
-    case TASK_ITEMS:
-      UnclickEditorButton(TAB_ITEMS);
+    case Enum36.TASK_ITEMS:
+      UnclickEditorButton(Enum32.TAB_ITEMS);
       HideItemStatsPanel();
       if (eInfo.fActive)
         ClearEditorItemsInfo();
       gfShowPits = FALSE;
       RemoveAllPits();
       break;
-    case TASK_MERCS:
-      UnclickEditorButton(TAB_MERCS);
-      IndicateSelectedMerc(SELECT_NO_MERC);
-      SetMercEditingMode(MERC_NOMODE);
+    case Enum36.TASK_MERCS:
+      UnclickEditorButton(Enum32.TAB_MERCS);
+      IndicateSelectedMerc(Enum43.SELECT_NO_MERC);
+      SetMercEditingMode(Enum42.MERC_NOMODE);
       break;
-    case TASK_MAPINFO:
-      UnclickEditorButton(TAB_MAPINFO);
+    case Enum36.TASK_MAPINFO:
+      UnclickEditorButton(Enum32.TAB_MAPINFO);
       ExtractAndUpdateMapInfo();
       KillTextInputMode();
       HideExitGrids();
       break;
-    case TASK_OPTIONS:
-      UnclickEditorButton(TAB_OPTIONS);
+    case Enum36.TASK_OPTIONS:
+      UnclickEditorButton(Enum32.TAB_OPTIONS);
       break;
   }
 
   // Setup the new tab mode
   iCurrentTaskbar = iTaskMode;
   ShowEditorToolbar(iTaskMode);
-  iTaskMode = TASK_NONE;
+  iTaskMode = Enum36.TASK_NONE;
 
   // Special code when entering a new editor tab
   switch (iCurrentTaskbar) {
-    case TASK_MERCS:
-      ClickEditorButton(TAB_MERCS);
-      ClickEditorButton(MERCS_ENEMY);
-      iDrawMode = DRAW_MODE_ENEMY;
-      SetMercEditingMode(MERC_TEAMMODE);
+    case Enum36.TASK_MERCS:
+      ClickEditorButton(Enum32.TAB_MERCS);
+      ClickEditorButton(Enum32.MERCS_ENEMY);
+      iDrawMode = Enum38.DRAW_MODE_ENEMY;
+      SetMercEditingMode(Enum42.MERC_TEAMMODE);
       fBuildingShowRoofs = FALSE;
       UpdateRoofsView();
       break;
-    case TASK_TERRAIN:
-      ClickEditorButton(TAB_TERRAIN);
+    case Enum36.TASK_TERRAIN:
+      ClickEditorButton(Enum32.TAB_TERRAIN);
       ShowTerrainTileButtons();
-      SetEditorTerrainTaskbarMode(TERRAIN_FGROUND_TEXTURES);
+      SetEditorTerrainTaskbarMode(Enum32.TERRAIN_FGROUND_TEXTURES);
       break;
-    case TASK_BUILDINGS:
-      ClickEditorButton(TAB_BUILDINGS);
+    case Enum36.TASK_BUILDINGS:
+      ClickEditorButton(Enum32.TAB_BUILDINGS);
       if (fBuildingShowRoofs)
-        ClickEditorButton(BUILDING_TOGGLE_ROOF_VIEW);
+        ClickEditorButton(Enum32.BUILDING_TOGGLE_ROOF_VIEW);
       if (fBuildingShowWalls)
-        ClickEditorButton(BUILDING_TOGGLE_WALL_VIEW);
+        ClickEditorButton(Enum32.BUILDING_TOGGLE_WALL_VIEW);
       if (fBuildingShowRoomInfo)
-        ClickEditorButton(BUILDING_TOGGLE_INFO_VIEW);
+        ClickEditorButton(Enum32.BUILDING_TOGGLE_INFO_VIEW);
       if (gfCaves) {
-        ClickEditorButton(BUILDING_CAVE_DRAWING);
-        iDrawMode = DRAW_MODE_CAVES;
+        ClickEditorButton(Enum32.BUILDING_CAVE_DRAWING);
+        iDrawMode = Enum38.DRAW_MODE_CAVES;
       } else {
-        ClickEditorButton(BUILDING_NEW_ROOM);
-        iDrawMode = DRAW_MODE_ROOM;
+        ClickEditorButton(Enum32.BUILDING_NEW_ROOM);
+        iDrawMode = Enum38.DRAW_MODE_ROOM;
       }
       TerrainTileDrawMode = TERRAIN_TILES_BRETS_STRANGEMODE;
       SetEditorSmoothingMode(gMapInformation.ubEditorSmoothingType);
       gusSelectionType = gusSavedBuildingSelectionType;
       SetupTextInputForBuildings();
       break;
-    case TASK_ITEMS:
+    case Enum36.TASK_ITEMS:
       SetFont(FONT10ARIAL);
       SetFontForeground(FONT_YELLOW);
-      ClickEditorButton(TAB_ITEMS);
-      ClickEditorButton(ITEMS_WEAPONS + eInfo.uiItemType - TBAR_MODE_ITEM_WEAPONS);
+      ClickEditorButton(Enum32.TAB_ITEMS);
+      ClickEditorButton(Enum32.ITEMS_WEAPONS + eInfo.uiItemType - Enum35.TBAR_MODE_ITEM_WEAPONS);
       InitEditorItemsInfo(eInfo.uiItemType);
       ShowItemStatsPanel();
       gfShowPits = TRUE;
       AddAllPits();
-      iDrawMode = DRAW_MODE_PLACE_ITEM;
+      iDrawMode = Enum38.DRAW_MODE_PLACE_ITEM;
       break;
-    case TASK_MAPINFO:
-      ClickEditorButton(TAB_MAPINFO);
+    case Enum36.TASK_MAPINFO:
+      ClickEditorButton(Enum32.TAB_MAPINFO);
       if (gfFakeLights)
-        ClickEditorButton(MAPINFO_TOGGLE_FAKE_LIGHTS);
-      ClickEditorButton(MAPINFO_ADD_LIGHT1_SOURCE);
-      iDrawMode = DRAW_MODE_LIGHT;
+        ClickEditorButton(Enum32.MAPINFO_TOGGLE_FAKE_LIGHTS);
+      ClickEditorButton(Enum32.MAPINFO_ADD_LIGHT1_SOURCE);
+      iDrawMode = Enum38.DRAW_MODE_LIGHT;
       TerrainTileDrawMode = TERRAIN_TILES_BRETS_STRANGEMODE;
       SetupTextInputForMapInfo();
       break;
-    case TASK_OPTIONS:
-      ClickEditorButton(TAB_OPTIONS);
+    case Enum36.TASK_OPTIONS:
+      ClickEditorButton(Enum32.TAB_OPTIONS);
       TerrainTileDrawMode = TERRAIN_TILES_NODRAW;
       break;
   }
@@ -363,23 +363,23 @@ function DoTaskbar(): void {
 // Disables the task bar, but leaves it on screen. Used when a selection window is up.
 function DisableEditorTaskbar(): void {
   let x: INT32;
-  for (x = 0; x < NUMBER_EDITOR_BUTTONS; x++)
+  for (x = 0; x < Enum32.NUMBER_EDITOR_BUTTONS; x++)
     DisableButton(iEditorButton[x]);
 }
 
 function EnableEditorTaskbar(): void {
   let x: INT32;
 
-  for (x = 0; x < NUMBER_EDITOR_BUTTONS; x++)
+  for (x = 0; x < Enum32.NUMBER_EDITOR_BUTTONS; x++)
     EnableButton(iEditorButton[x]);
   // Keep permanent buttons disabled.
-  DisableButton(iEditorButton[MERCS_1]);
-  DisableButton(iEditorButton[MAPINFO_LIGHT_PANEL]);
-  DisableButton(iEditorButton[MAPINFO_RADIO_PANEL]);
-  DisableButton(iEditorButton[ITEMSTATS_PANEL]);
-  DisableButton(iEditorButton[MERCS_PLAYERTOGGLE]);
-  DisableButton(iEditorButton[MERCS_PLAYER]);
-  if (iCurrentTaskbar == TASK_ITEMS)
+  DisableButton(iEditorButton[Enum32.MERCS_1]);
+  DisableButton(iEditorButton[Enum32.MAPINFO_LIGHT_PANEL]);
+  DisableButton(iEditorButton[Enum32.MAPINFO_RADIO_PANEL]);
+  DisableButton(iEditorButton[Enum32.ITEMSTATS_PANEL]);
+  DisableButton(iEditorButton[Enum32.MERCS_PLAYERTOGGLE]);
+  DisableButton(iEditorButton[Enum32.MERCS_PLAYER]);
+  if (iCurrentTaskbar == Enum36.TASK_ITEMS)
     DetermineItemsScrolling();
 }
 
@@ -466,7 +466,7 @@ function DrawEditorInfoBox(str: Pointer<UINT16>, uiFont: UINT32, x: UINT16, y: U
 
 function ClickEditorButton(iEditorButtonID: INT32): void {
   let butn: Pointer<GUI_BUTTON>;
-  if (iEditorButtonID < 0 || iEditorButtonID >= NUMBER_EDITOR_BUTTONS)
+  if (iEditorButtonID < 0 || iEditorButtonID >= Enum32.NUMBER_EDITOR_BUTTONS)
     return;
   if (iEditorButton[iEditorButtonID] != -1) {
     butn = ButtonList[iEditorButton[iEditorButtonID]];
@@ -477,7 +477,7 @@ function ClickEditorButton(iEditorButtonID: INT32): void {
 
 function UnclickEditorButton(iEditorButtonID: INT32): void {
   let butn: Pointer<GUI_BUTTON>;
-  if (iEditorButtonID < 0 || iEditorButtonID >= NUMBER_EDITOR_BUTTONS)
+  if (iEditorButtonID < 0 || iEditorButtonID >= Enum32.NUMBER_EDITOR_BUTTONS)
     return;
   if (iEditorButton[iEditorButtonID] != -1) {
     butn = ButtonList[iEditorButton[iEditorButtonID]];
@@ -618,7 +618,7 @@ function RenderMapEntryPointsAndLights(): void {
 }
 
 function BuildTriggerName(pItem: Pointer<OBJECTTYPE>, szItemName: Pointer<UINT16>): void {
-  if (pItem.value.usItem == SWITCH) {
+  if (pItem.value.usItem == Enum225.SWITCH) {
     if (pItem.value.bFrequency == PANIC_FREQUENCY)
       swprintf(szItemName, "Panic Trigger1");
     else if (pItem.value.bFrequency == PANIC_FREQUENCY_2)
@@ -629,7 +629,7 @@ function BuildTriggerName(pItem: Pointer<OBJECTTYPE>, szItemName: Pointer<UINT16
       swprintf(szItemName, "Trigger%d", pItem.value.bFrequency - 50);
   } else {
     // action item
-    if (pItem.value.bDetonatorType == BOMB_PRESSURE)
+    if (pItem.value.bDetonatorType == Enum224.BOMB_PRESSURE)
       swprintf(szItemName, "Pressure Action");
     else if (pItem.value.bFrequency == PANIC_FREQUENCY)
       swprintf(szItemName, "Panic Action1");
@@ -665,19 +665,19 @@ function RenderDoorLockInfo(): void {
       SetFontForeground(FONT_RED);
       SetFontShadow(FONT_NEARBLACK);
       switch (DoorTable[i].ubTrapID) {
-        case EXPLOSION:
+        case Enum227.EXPLOSION:
           swprintf(str, "Explosion Trap");
           break;
-        case ELECTRIC:
+        case Enum227.ELECTRIC:
           swprintf(str, "Electric Trap");
           break;
-        case SIREN:
+        case Enum227.SIREN:
           swprintf(str, "Siren Trap");
           break;
-        case SILENT_ALARM:
+        case Enum227.SILENT_ALARM:
           swprintf(str, "Silent Alarm");
           break;
-        case SUPER_ELECTRIC:
+        case Enum227.SUPER_ELECTRIC:
           swprintf(str, "Super Electric Trap");
           break;
       }
@@ -729,7 +729,7 @@ function RenderSelectedItemBlownUp(): void {
   SetFont(FONT10ARIAL);
   SetFontForeground(FONT_YELLOW);
   SetFontShadow(FONT_NEARBLACK);
-  if (gpItem.value.usItem == ACTION_ITEM || gpItem.value.usItem == SWITCH) {
+  if (gpItem.value.usItem == Enum225.ACTION_ITEM || gpItem.value.usItem == Enum225.SWITCH) {
     BuildTriggerName(gpItem, szItemName);
   } else if (Item[gpItem.value.usItem].usItemClass == IC_KEY) {
     swprintf(szItemName, "%S", LockTable[gpItem.value.ubKeyID].ubEditorName);
@@ -740,7 +740,7 @@ function RenderSelectedItemBlownUp(): void {
   yp -= 10;
   mprintf(xp, yp, szItemName);
 
-  if (gpItem.value.usItem == ACTION_ITEM) {
+  if (gpItem.value.usItem == Enum225.ACTION_ITEM) {
     let pStr: Pointer<UINT16>;
     pStr = GetActionItemName(gpItem);
     xp = sScreenX - (StringPixLength(pStr, FONT10ARIALBOLD) - 40) / 2;
@@ -791,36 +791,36 @@ function RenderEditorInfo(): void {
   mprintfEditor((50 - StringPixLength(FPSText, FONT12POINT1) / 2), 463, FPSText);
 
   switch (iCurrentTaskbar) {
-    case TASK_OPTIONS:
+    case Enum36.TASK_OPTIONS:
       if (!gfWorldLoaded || giCurrentTilesetID < 0)
         mprintf(260, 445, "No map currently loaded.");
       else
         mprintf(260, 445, "File:  %S, Current Tileset:  %s", gubFilename, gTilesets[giCurrentTilesetID].zName);
       break;
-    case TASK_TERRAIN:
-      if (gusSelectionType == LINESELECTION)
-        swprintf(wszSelType[LINESELECTION], "Width: %d", gusSelectionWidth);
+    case Enum36.TASK_TERRAIN:
+      if (gusSelectionType == Enum33.LINESELECTION)
+        swprintf(wszSelType[Enum33.LINESELECTION], "Width: %d", gusSelectionWidth);
       DrawEditorInfoBox(wszSelType[gusSelectionType], FONT12POINT1, 220, 430, 60, 30);
       swprintf(FPSText, "%d%%", gusSelectionDensity);
       DrawEditorInfoBox(FPSText, FONT12POINT1, 310, 430, 40, 30);
       break;
-    case TASK_ITEMS:
+    case Enum36.TASK_ITEMS:
       RenderEditorItemsInfo();
       UpdateItemStatsPanel();
       break;
-    case TASK_BUILDINGS:
+    case Enum36.TASK_BUILDINGS:
       UpdateBuildingsInfo();
-      if (gusSelectionType == LINESELECTION)
-        swprintf(wszSelType[LINESELECTION], "Width: %d", gusSelectionWidth);
+      if (gusSelectionType == Enum33.LINESELECTION)
+        swprintf(wszSelType[Enum33.LINESELECTION], "Width: %d", gusSelectionWidth);
       DrawEditorInfoBox(wszSelType[gusSelectionType], FONT12POINT1, 530, 430, 60, 30);
       break;
-    case TASK_MERCS:
+    case Enum36.TASK_MERCS:
       UpdateMercsInfo();
       break;
-    case TASK_MAPINFO:
+    case Enum36.TASK_MAPINFO:
       UpdateMapInfo();
-      if (gusSelectionType == LINESELECTION)
-        swprintf(wszSelType[LINESELECTION], "Width: %d", gusSelectionWidth);
+      if (gusSelectionType == Enum33.LINESELECTION)
+        swprintf(wszSelType[Enum33.LINESELECTION], "Width: %d", gusSelectionWidth);
       DrawEditorInfoBox(wszSelType[gusSelectionType], FONT12POINT1, 440, 430, 60, 30);
       break;
   }
@@ -840,7 +840,7 @@ function ProcessEditorRendering(): void {
     gfRenderMercInfo = TRUE;
   }
   if (gfRenderDrawingMode) {
-    if (iCurrentTaskbar == TASK_BUILDINGS || iCurrentTaskbar == TASK_TERRAIN || iCurrentTaskbar == TASK_ITEMS) {
+    if (iCurrentTaskbar == Enum36.TASK_BUILDINGS || iCurrentTaskbar == Enum36.TASK_TERRAIN || iCurrentTaskbar == Enum36.TASK_ITEMS) {
       ShowCurrentDrawingMode();
       gfRenderDrawingMode = FALSE;
     }
@@ -863,9 +863,9 @@ function ProcessEditorRendering(): void {
   if (!gfSummaryWindowActive && !gfGotoGridNoUI && !InOverheadMap()) {
     if (gpItem && gsItemGridNo != -1)
       RenderSelectedItemBlownUp();
-    if (iCurrentTaskbar == TASK_MAPINFO)
+    if (iCurrentTaskbar == Enum36.TASK_MAPINFO)
       RenderMapEntryPointsAndLights();
-    if (iDrawMode == DRAW_MODE_PLACE_ITEM && eInfo.uiItemType == TBAR_MODE_ITEM_KEYS || iDrawMode == DRAW_MODE_DOORKEYS)
+    if (iDrawMode == Enum38.DRAW_MODE_PLACE_ITEM && eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_KEYS || iDrawMode == Enum38.DRAW_MODE_DOORKEYS)
       RenderDoorLockInfo();
   }
 

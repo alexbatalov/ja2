@@ -28,14 +28,14 @@ function InitializeGame(): BOOLEAN {
   if (!InitializeFonts()) {
     // Send debug message and quit
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "COULD NOT INUT FONT SYSTEM...");
-    return ERROR_SCREEN;
+    return Enum26.ERROR_SCREEN;
   }
 
   // Deletes all the Temp files in the Maps\Temp directory
   InitTacticalSave(TRUE);
 
   // Initialize Game Screens.
-  for (uiIndex = 0; uiIndex < MAX_SCREENS; uiIndex++) {
+  for (uiIndex = 0; uiIndex < Enum26.MAX_SCREENS; uiIndex++) {
     if (((GameScreens[uiIndex].InitializeScreen).value)() == FALSE) {
       // Failed to initialize one of the screens.
       return FALSE;
@@ -54,7 +54,7 @@ function InitializeGame(): BOOLEAN {
   // preload mapscreen graphics
   HandlePreloadOfMapGraphics();
 
-  guiCurrentScreen = INIT_SCREEN;
+  guiCurrentScreen = Enum26.INIT_SCREEN;
 
   return TRUE;
 }
@@ -117,13 +117,13 @@ function GameLoop(): void {
   }
 
   if (gfGlobalError) {
-    guiCurrentScreen = ERROR_SCREEN;
+    guiCurrentScreen = Enum26.ERROR_SCREEN;
   }
 
   // if we are to check for free space on the hard drive
   if (gubCheckForFreeSpaceOnHardDriveCount < DONT_CHECK_FOR_FREE_SPACE) {
     // only if we are in a screen that can get this check
-    if (guiCurrentScreen == MAP_SCREEN || guiCurrentScreen == GAME_SCREEN || guiCurrentScreen == SAVE_LOAD_SCREEN) {
+    if (guiCurrentScreen == Enum26.MAP_SCREEN || guiCurrentScreen == Enum26.GAME_SCREEN || guiCurrentScreen == Enum26.SAVE_LOAD_SCREEN) {
       if (gubCheckForFreeSpaceOnHardDriveCount < 1) {
         gubCheckForFreeSpaceOnHardDriveCount++;
       } else {
@@ -141,12 +141,12 @@ function GameLoop(): void {
 
           swprintf(zSpaceOnDrive, "%.2f", uiSpaceOnDrive / BYTESINMEGABYTE);
 
-          swprintf(zText, pMessageStrings[MSG_LOWDISKSPACE_WARNING], zSpaceOnDrive, zSizeNeeded);
+          swprintf(zText, pMessageStrings[Enum333.MSG_LOWDISKSPACE_WARNING], zSpaceOnDrive, zSizeNeeded);
 
-          if (guiPreviousOptionScreen == MAP_SCREEN)
-            DoMapMessageBox(MSG_BOX_BASIC_STYLE, zText, MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+          if (guiPreviousOptionScreen == Enum26.MAP_SCREEN)
+            DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
           else
-            DoMessageBox(MSG_BOX_BASIC_STYLE, zText, GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+            DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
         }
         gubCheckForFreeSpaceOnHardDriveCount = DONT_CHECK_FOR_FREE_SPACE;
       }
@@ -155,19 +155,19 @@ function GameLoop(): void {
 
   // ATE: Force to be in message box screen!
   if (gfInMsgBox) {
-    guiPendingScreen = MSG_BOX_SCREEN;
+    guiPendingScreen = Enum26.MSG_BOX_SCREEN;
   }
 
   if (guiPendingScreen != NO_PENDING_SCREEN) {
     // Based on active screen, deinit!
     if (guiPendingScreen != guiCurrentScreen) {
       switch (guiCurrentScreen) {
-        case MAP_SCREEN:
-          if (guiPendingScreen != MSG_BOX_SCREEN) {
+        case Enum26.MAP_SCREEN:
+          if (guiPendingScreen != Enum26.MSG_BOX_SCREEN) {
             EndMapScreen(FALSE);
           }
           break;
-        case LAPTOP_SCREEN:
+        case Enum26.LAPTOP_SCREEN:
           ExitLaptop();
           break;
       }
@@ -211,7 +211,7 @@ function SetPendingNewScreen(uiNewScreen: UINT32): void {
 // Gets called when the screen changes, place any needed in code in here
 function HandleNewScreenChange(uiNewScreen: UINT32, uiOldScreen: UINT32): void {
   // if we are not going into the message box screen, and we didnt just come from it
-  if ((uiNewScreen != MSG_BOX_SCREEN && uiOldScreen != MSG_BOX_SCREEN)) {
+  if ((uiNewScreen != Enum26.MSG_BOX_SCREEN && uiOldScreen != Enum26.MSG_BOX_SCREEN)) {
     // reset the help screen
     NewScreenSoResetHelpScreen();
   }
@@ -223,37 +223,37 @@ function HandleShortCutExitState(): void {
   // use YES/NO Pop up box, settup for particular screen
   let pCenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
 
-  if (guiCurrentScreen == ERROR_SCREEN) {
+  if (guiCurrentScreen == Enum26.ERROR_SCREEN) {
     // an assert failure, don't bring up the box!
     gfProgramIsRunning = FALSE;
     return;
   }
 
-  if (guiCurrentScreen == AUTORESOLVE_SCREEN) {
-    DoMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_EXITGAME], guiCurrentScreen, (MSG_BOX_FLAG_YESNO | MSG_BOX_FLAG_USE_CENTERING_RECT), EndGameMessageBoxCallBack, addressof(pCenteringRect));
+  if (guiCurrentScreen == Enum26.AUTORESOLVE_SCREEN) {
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMessageStrings[Enum333.MSG_EXITGAME], guiCurrentScreen, (MSG_BOX_FLAG_YESNO | MSG_BOX_FLAG_USE_CENTERING_RECT), EndGameMessageBoxCallBack, addressof(pCenteringRect));
     return;
   }
 
   /// which screen are we in?
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
     // set up for mapscreen
-    DoMapMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_EXITGAME], MAP_SCREEN, MSG_BOX_FLAG_YESNO, EndGameMessageBoxCallBack);
-  } else if (guiCurrentScreen == LAPTOP_SCREEN) {
+    DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMessageStrings[Enum333.MSG_EXITGAME], Enum26.MAP_SCREEN, MSG_BOX_FLAG_YESNO, EndGameMessageBoxCallBack);
+  } else if (guiCurrentScreen == Enum26.LAPTOP_SCREEN) {
     // set up for laptop
-    DoLapTopSystemMessageBox(MSG_BOX_LAPTOP_DEFAULT, pMessageStrings[MSG_EXITGAME], LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, EndGameMessageBoxCallBack);
-  } else if (guiCurrentScreen == SHOPKEEPER_SCREEN) {
-    DoSkiMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_EXITGAME], SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO, EndGameMessageBoxCallBack);
+    DoLapTopSystemMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, pMessageStrings[Enum333.MSG_EXITGAME], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, EndGameMessageBoxCallBack);
+  } else if (guiCurrentScreen == Enum26.SHOPKEEPER_SCREEN) {
+    DoSkiMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMessageStrings[Enum333.MSG_EXITGAME], Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO, EndGameMessageBoxCallBack);
   } else {
     // check if error or editor
 
-    if ((guiCurrentScreen == ERROR_SCREEN) || (guiCurrentScreen == EDIT_SCREEN) || (guiCurrentScreen == DEBUG_SCREEN)) {
+    if ((guiCurrentScreen == Enum26.ERROR_SCREEN) || (guiCurrentScreen == Enum26.EDIT_SCREEN) || (guiCurrentScreen == Enum26.DEBUG_SCREEN)) {
       // then don't prompt
       gfProgramIsRunning = FALSE;
       return;
     }
 
     // set up for all otherscreens
-    DoMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_EXITGAME], guiCurrentScreen, (MSG_BOX_FLAG_YESNO | MSG_BOX_FLAG_USE_CENTERING_RECT), EndGameMessageBoxCallBack, addressof(pCenteringRect));
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMessageStrings[Enum333.MSG_EXITGAME], guiCurrentScreen, (MSG_BOX_FLAG_YESNO | MSG_BOX_FLAG_USE_CENTERING_RECT), EndGameMessageBoxCallBack, addressof(pCenteringRect));
   }
 }
 

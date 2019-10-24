@@ -136,9 +136,9 @@ function CreateIMPVoicesButtons(): void {
 */
   giIMPVoicesButton[2] = CreateIconAndTextButton(giIMPVoicesButtonImage[2], pImpButtonText[11], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (187), LAPTOP_SCREEN_WEB_UL_Y + (330), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPVoicesDoneCallback);
 
-  SetButtonCursor(giIMPVoicesButton[0], CURSOR_WWW);
-  SetButtonCursor(giIMPVoicesButton[1], CURSOR_WWW);
-  SetButtonCursor(giIMPVoicesButton[2], CURSOR_WWW);
+  SetButtonCursor(giIMPVoicesButton[0], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPVoicesButton[1], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPVoicesButton[2], Enum317.CURSOR_WWW);
 }
 
 function DestroyIMPVoicesButtons(): void {
@@ -223,11 +223,11 @@ function BtnIMPVoicesDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // go to main page
-      iCurrentImpPage = IMP_MAIN_PAGE;
+      iCurrentImpPage = Enum71.IMP_MAIN_PAGE;
 
       // if we are already done, leave
       if (iCurrentProfileMode == 5) {
-        iCurrentImpPage = IMP_FINISH;
+        iCurrentImpPage = Enum71.IMP_FINISH;
       }
 
       // current mode now is voice
@@ -236,7 +236,7 @@ function BtnIMPVoicesDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
       } else if (iCurrentProfileMode == 4) {
         // all done profiling
         iCurrentProfileMode = 5;
-        iCurrentImpPage = IMP_FINISH;
+        iCurrentImpPage = Enum71.IMP_FINISH;
       }
 
       // set voice id, to grab character slot

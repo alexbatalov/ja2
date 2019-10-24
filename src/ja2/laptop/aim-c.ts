@@ -1,12 +1,12 @@
 let AimMercArray: UINT8[] /* [MAX_NUMBER_MERCS] */;
 
 let gCurrentAimPage: UINT8[] /* [NUM_AIM_SCREENS] */ = [
-  LAPTOP_MODE_AIM,
-  LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES,
-  LAPTOP_MODE_AIM_MEMBERS_ARCHIVES,
-  LAPTOP_MODE_AIM_POLICIES,
-  LAPTOP_MODE_AIM_HISTORY,
-  LAPTOP_MODE_AIM_LINKS,
+  Enum95.LAPTOP_MODE_AIM,
+  Enum95.LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES,
+  Enum95.LAPTOP_MODE_AIM_MEMBERS_ARCHIVES,
+  Enum95.LAPTOP_MODE_AIM_POLICIES,
+  Enum95.LAPTOP_MODE_AIM_HISTORY,
+  Enum95.LAPTOP_MODE_AIM_LINKS,
 ];
 
 //
@@ -165,7 +165,7 @@ function EnterAIM(): BOOLEAN {
   let VObjectDesc: VOBJECT_DESC;
 
   gubWarningTimer = 0;
-  gubCurrentAdvertisment = AIM_AD_WARNING_BOX;
+  gubCurrentAdvertisment = Enum62.AIM_AD_WARNING_BOX;
   LaptopInitAim();
 
   InitAimDefaults();
@@ -187,12 +187,12 @@ function EnterAIM(): BOOLEAN {
 
   // load the History graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_HISTORY);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_HISTORY);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiHistory)));
 
   // load the Wanring graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_WARNING);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_WARNING);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiWarning)));
 
   // load the flower advertisment and add it
@@ -202,44 +202,44 @@ function EnterAIM(): BOOLEAN {
 
   // load the your ad advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_YOURAD13);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_YOURAD13);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAdForAdsImages)));
 
   // load the insurance advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_INSURANCEAD10);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_INSURANCEAD10);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceAdImages)));
 
   // load the funeral advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_FUNERALAD9);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_FUNERALAD9);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFuneralAdImages)));
 
   // load the funeral advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_BOBBYRAYAD21);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_BOBBYRAYAD21);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyRAdImages)));
 
   //** Mouse Regions **
 
   // Mouse region for the MebershipCard
-  MSYS_DefineRegion(addressof(gSelectedMemberCardRegion), MEMBERCARD_X, MEMBERCARD_Y, (MEMBERCARD_X + LINK_SIZE_X), (MEMBERCARD_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectMemberCardRegionCallBack);
+  MSYS_DefineRegion(addressof(gSelectedMemberCardRegion), MEMBERCARD_X, MEMBERCARD_Y, (MEMBERCARD_X + LINK_SIZE_X), (MEMBERCARD_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectMemberCardRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedMemberCardRegion));
 
   // Mouse region for the Policies
-  MSYS_DefineRegion(addressof(gSelectedPoliciesRegion), POLICIES_X, POLICIES_Y, (POLICIES_X + LINK_SIZE_X), (POLICIES_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectPoliciesRegionCallBack);
+  MSYS_DefineRegion(addressof(gSelectedPoliciesRegion), POLICIES_X, POLICIES_Y, (POLICIES_X + LINK_SIZE_X), (POLICIES_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectPoliciesRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedPoliciesRegion));
 
   // Mouse region for the History
-  MSYS_DefineRegion(addressof(gSelectedHistoryRegion), HISTORY_X, HISTORY_Y, (HISTORY_X + LINK_SIZE_X), (HISTORY_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectHistoryRegionCallBack);
+  MSYS_DefineRegion(addressof(gSelectedHistoryRegion), HISTORY_X, HISTORY_Y, (HISTORY_X + LINK_SIZE_X), (HISTORY_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectHistoryRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedHistoryRegion));
 
   // Mouse region for the Links
-  MSYS_DefineRegion(addressof(gSelectedLinksRegion), LINKS_X, LINKS_Y, (LINKS_X + LINK_SIZE_X), (LINKS_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectLinksRegionCallBack);
+  MSYS_DefineRegion(addressof(gSelectedLinksRegion), LINKS_X, LINKS_Y, (LINKS_X + LINK_SIZE_X), (LINKS_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectLinksRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedLinksRegion));
 
   // Mouse region for the Links
-  MSYS_DefineRegion(addressof(gSelectedBannerRegion), AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectBannerRegionCallBack);
+  MSYS_DefineRegion(addressof(gSelectedBannerRegion), AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectBannerRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedBannerRegion));
 
   // disable the region because only certain banners will be 'clickable'
@@ -316,13 +316,13 @@ function RenderAIM(): void {
 
   // Draw text under boxes
   // members
-  DrawTextToScreen(AimBottomMenuText[AIM_MEMBERS], MEMBERCARD_X, MEMBERS_TEXT_Y, LINK_SIZE_X, FONT12ARIAL, AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimBottomMenuText[Enum363.AIM_MEMBERS], MEMBERCARD_X, MEMBERS_TEXT_Y, LINK_SIZE_X, FONT12ARIAL, AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   // Policies
-  DrawTextToScreen(AimBottomMenuText[AIM_POLICIES], POLICIES_X, POLICIES_TEXT_Y, LINK_SIZE_X, FONT12ARIAL, AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimBottomMenuText[Enum363.AIM_POLICIES], POLICIES_X, POLICIES_TEXT_Y, LINK_SIZE_X, FONT12ARIAL, AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   // History
-  DrawTextToScreen(AimBottomMenuText[AIM_HISTORY], HISTORY_X, HISTORY_TEXT_Y, LINK_SIZE_X, FONT12ARIAL, AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimBottomMenuText[Enum363.AIM_HISTORY], HISTORY_X, HISTORY_TEXT_Y, LINK_SIZE_X, FONT12ARIAL, AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   // Links
-  DrawTextToScreen(AimBottomMenuText[AIM_LINKS], LINKS_X, LINK_TEXT_Y, LINK_SIZE_X, FONT12ARIAL, AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimBottomMenuText[Enum363.AIM_LINKS], LINKS_X, LINK_TEXT_Y, LINK_SIZE_X, FONT12ARIAL, AIM_FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   HandleAdAndWarningArea(gfInitAdArea, TRUE);
 
@@ -335,7 +335,7 @@ function SelectMemberCardRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason:
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (!fFirstTimeIn)
-      guiCurrentLaptopMode = LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
@@ -343,7 +343,7 @@ function SelectMemberCardRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason:
 function SelectPoliciesRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    guiCurrentLaptopMode = LAPTOP_MODE_AIM_POLICIES;
+    guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM_POLICIES;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
@@ -351,7 +351,7 @@ function SelectPoliciesRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
 function SelectHistoryRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    guiCurrentLaptopMode = LAPTOP_MODE_AIM_HISTORY;
+    guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM_HISTORY;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
@@ -359,7 +359,7 @@ function SelectHistoryRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: IN
 function SelectLinksRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    guiCurrentLaptopMode = LAPTOP_MODE_AIM_LINKS;
+    guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM_LINKS;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
@@ -374,11 +374,11 @@ function InitAimDefaults(): BOOLEAN {
 
   // load the Aim Symbol graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_AIMSYMBOL);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_AIMSYMBOL);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAimSymbol)));
 
   // Mouse region for the Links
-  MSYS_DefineRegion(addressof(gSelectedAimLogo), AIM_SYMBOL_X, AIM_SYMBOL_Y, AIM_SYMBOL_X + AIM_SYMBOL_WIDTH, AIM_SYMBOL_Y + AIM_SYMBOL_HEIGHT, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectAimLogoRegionCallBack);
+  MSYS_DefineRegion(addressof(gSelectedAimLogo), AIM_SYMBOL_X, AIM_SYMBOL_Y, AIM_SYMBOL_X + AIM_SYMBOL_WIDTH, AIM_SYMBOL_Y + AIM_SYMBOL_HEIGHT, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectAimLogoRegionCallBack);
   MSYS_AddRegion(addressof(gSelectedAimLogo));
 
   return TRUE;
@@ -423,7 +423,7 @@ function DrawAimDefaults(): BOOLEAN {
 function SelectAimLogoRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    guiCurrentLaptopMode = LAPTOP_MODE_AIM;
+    guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
@@ -444,15 +444,15 @@ function DisplayAimCopyright(): BOOLEAN {
 
   // Load and Display the copyright notice
 
-  uiStartLoc = AIM_HISTORY_LINE_SIZE * AIM_COPYRIGHT_1;
+  uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum63.AIM_COPYRIGHT_1;
   LoadEncryptedDataFromFile(AIMHISTORYFILE, sSlogan, uiStartLoc, AIM_HISTORY_LINE_SIZE);
   DrawTextToScreen(sSlogan, AIM_COPYRIGHT_X, AIM_COPYRIGHT_Y, AIM_COPYRIGHT_WIDTH, AIM_COPYRIGHT_FONT, FONT_MCOLOR_DKWHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
-  uiStartLoc = AIM_HISTORY_LINE_SIZE * AIM_COPYRIGHT_2;
+  uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum63.AIM_COPYRIGHT_2;
   LoadEncryptedDataFromFile(AIMHISTORYFILE, sSlogan, uiStartLoc, AIM_HISTORY_LINE_SIZE);
   DrawTextToScreen(sSlogan, AIM_COPYRIGHT_X, AIM_COPYRIGHT_Y + AIM_COPYRIGHT_GAP, AIM_COPYRIGHT_WIDTH, AIM_COPYRIGHT_FONT, FONT_MCOLOR_DKWHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
-  uiStartLoc = AIM_HISTORY_LINE_SIZE * AIM_COPYRIGHT_3;
+  uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum63.AIM_COPYRIGHT_3;
   LoadEncryptedDataFromFile(AIMHISTORYFILE, sSlogan, uiStartLoc, AIM_HISTORY_LINE_SIZE);
   DrawTextToScreen(sSlogan, AIM_COPYRIGHT_X, AIM_COPYRIGHT_Y + AIM_COPYRIGHT_GAP * 2, AIM_COPYRIGHT_WIDTH, AIM_COPYRIGHT_FONT, FONT_MCOLOR_DKWHITE, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
@@ -469,7 +469,7 @@ function InitAimMenuBar(): BOOLEAN {
   usPosX = BOTTOM_BUTTON_START_X;
   for (i = 0; i < BOTTOM_BUTTON_AMOUNT; i++) {
     guiBottomButtons[i] = CreateIconAndTextButton(guiBottomButtonImage, AimBottomMenuText[i], FONT10ARIAL, AIM_BUTTON_ON_COLOR, DEFAULT_SHADOW, AIM_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, usPosX, BOTTOM_BUTTON_START_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnAimBottomButtonsCallback);
-    SetButtonCursor(guiBottomButtons[i], CURSOR_LAPTOP_SCREEN);
+    SetButtonCursor(guiBottomButtons[i], Enum317.CURSOR_LAPTOP_SCREEN);
 
     MSYS_SetBtnUserData(guiBottomButtons[i], 0, gCurrentAimPage[i]);
     MSYS_SetBtnUserData(guiBottomButtons[i], 1, i);
@@ -537,9 +537,9 @@ function HandleAdAndWarningArea(fInit: BOOLEAN, fRedraw: BOOLEAN): void {
   /* static */ let ubPreviousAdvertisment: UINT8;
 
   if (fInit)
-    gubCurrentAdvertisment = AIM_AD_WARNING_BOX;
+    gubCurrentAdvertisment = Enum62.AIM_AD_WARNING_BOX;
   else {
-    if (ubPreviousAdvertisment == AIM_AD_DONE) {
+    if (ubPreviousAdvertisment == Enum62.AIM_AD_DONE) {
       gubCurrentAdvertisment = GetNextAimAd(gubCurrentAdvertisment);
 
       fInit = TRUE;
@@ -593,38 +593,38 @@ function HandleAdAndWarningArea(fInit: BOOLEAN, fRedraw: BOOLEAN): void {
       */
     }
 
-    if (gubCurrentAdvertisment >= AIM_AD_LAST_AD) {
-      gubCurrentAdvertisment = AIM_AD_WARNING_BOX;
+    if (gubCurrentAdvertisment >= Enum62.AIM_AD_LAST_AD) {
+      gubCurrentAdvertisment = Enum62.AIM_AD_WARNING_BOX;
     }
   }
 
   switch (gubCurrentAdvertisment) {
-    case AIM_AD_WARNING_BOX:
+    case Enum62.AIM_AD_WARNING_BOX:
       MSYS_DisableRegion(addressof(gSelectedBannerRegion));
       ubPreviousAdvertisment = DrawWarningBox(fInit, fRedraw);
       break;
 
-    case AIM_AD_FLOWER_SHOP:
+    case Enum62.AIM_AD_FLOWER_SHOP:
       ubPreviousAdvertisment = DisplayFlowerAd(fInit, fRedraw);
       break;
 
-    case AIM_AD_FOR_ADS:
+    case Enum62.AIM_AD_FOR_ADS:
       // disable the region because only certain banners will be 'clickable'
       MSYS_DisableRegion(addressof(gSelectedBannerRegion));
       ubPreviousAdvertisment = DisplayAd(fInit, fRedraw, AIM_AD_FOR_ADS_DELAY, AIM_AD_FOR_ADS__NUM_SUBIMAGES, guiAdForAdsImages);
       break;
 
-    case AIM_AD_INSURANCE_AD:
+    case Enum62.AIM_AD_INSURANCE_AD:
       MSYS_EnableRegion(addressof(gSelectedBannerRegion));
       ubPreviousAdvertisment = DisplayAd(fInit, fRedraw, AIM_AD_INSURANCE_AD_DELAY, AIM_AD_INSURANCE_AD__NUM_SUBIMAGES, guiInsuranceAdImages);
       break;
 
-    case AIM_AD_FUNERAL_ADS:
+    case Enum62.AIM_AD_FUNERAL_ADS:
       MSYS_EnableRegion(addressof(gSelectedBannerRegion));
       ubPreviousAdvertisment = DisplayAd(fInit, fRedraw, AIM_AD_FUNERAL_AD_DELAY, AIM_AD_FUNERAL_AD__NUM_SUBIMAGES, guiFuneralAdImages);
       break;
 
-    case AIM_AD_BOBBY_RAY_AD:
+    case Enum62.AIM_AD_BOBBY_RAY_AD:
       MSYS_EnableRegion(addressof(gSelectedBannerRegion));
       //			ubPreviousAdvertisment = DisplayAd( fInit, fRedraw, AIM_AD_BOBBYR_AD_DELAY, AIM_AD_BOBBYR_AD__NUM_SUBIMAGES, guiBobbyRAdImages );
       ubPreviousAdvertisment = DisplayBobbyRAd(fInit, fRedraw);
@@ -658,11 +658,11 @@ function DisplayFlowerAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
         fReDrawNewMailFlag = TRUE;
 
         // Display Aim Warning Text
-        DisplayWrappedString(AIM_WARNING_TEXT_X, AIM_WARNING_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, FONT14ARIAL, FONT_GREEN, AimScreenText[AIM_INFO_6], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DisplayWrappedString(AIM_WARNING_TEXT_X, AIM_WARNING_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, FONT14ARIAL, FONT_GREEN, AimScreenText[Enum362.AIM_INFO_6], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
         // Display Aim Warning Text
         SetFontShadow(FONT_MCOLOR_WHITE);
-        DisplayWrappedString(AIM_WARNING_TEXT_X, AIM_FLOWER_LINK_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, FONT12ARIAL, 2, AimScreenText[AIM_INFO_7], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DisplayWrappedString(AIM_WARNING_TEXT_X, AIM_FLOWER_LINK_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, FONT12ARIAL, 2, AimScreenText[Enum362.AIM_INFO_7], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
         SetFontShadow(DEFAULT_SHADOW);
 
         InvalidateRegion(AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y);
@@ -672,9 +672,9 @@ function DisplayFlowerAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
 
       ubCount++;
       if (ubCount > 40) {
-        return AIM_AD_DONE;
+        return Enum62.AIM_AD_DONE;
       } else
-        return AIM_AD_NOT_DONE;
+        return Enum62.AIM_AD_NOT_DONE;
     } else {
       GetVideoObject(addressof(hAdHandle), guiFlowerAdvertisement);
       BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -688,7 +688,7 @@ function DisplayFlowerAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
     uiLastTime = GetJA2Clock();
     InvalidateRegion(AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y);
   }
-  return AIM_AD_NOT_DONE;
+  return Enum62.AIM_AD_NOT_DONE;
 }
 
 function DrawWarningBox(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
@@ -706,7 +706,7 @@ function DrawWarningBox(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
     GetVideoObject(addressof(hWarningHandle), guiWarning);
     BltVideoObject(FRAME_BUFFER, hWarningHandle, 0, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
-    uiStartLoc = AIM_HISTORY_LINE_SIZE * AIM_WARNING_1;
+    uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum63.AIM_WARNING_1;
     LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
 
     // Display Aim Warning Text
@@ -722,23 +722,23 @@ function DrawWarningBox(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
   }
 
   if ((uiCurTime - uiLastTime) > AIM_WARNING_TIME)
-    return AIM_AD_DONE;
+    return Enum62.AIM_AD_DONE;
   else {
-    return AIM_AD_NOT_DONE;
+    return Enum62.AIM_AD_NOT_DONE;
   }
 }
 
 function SelectBannerRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (gubCurrentAdvertisment == AIM_AD_FLOWER_SHOP)
-      GoToWebPage(FLORIST_BOOKMARK);
-    else if (gubCurrentAdvertisment == AIM_AD_INSURANCE_AD)
-      GoToWebPage(INSURANCE_BOOKMARK);
-    else if (gubCurrentAdvertisment == AIM_AD_FUNERAL_ADS)
-      GoToWebPage(FUNERAL_BOOKMARK);
-    else if (gubCurrentAdvertisment == AIM_AD_BOBBY_RAY_AD)
-      GoToWebPage(BOBBYR_BOOKMARK);
+    if (gubCurrentAdvertisment == Enum62.AIM_AD_FLOWER_SHOP)
+      GoToWebPage(Enum98.FLORIST_BOOKMARK);
+    else if (gubCurrentAdvertisment == Enum62.AIM_AD_INSURANCE_AD)
+      GoToWebPage(Enum98.INSURANCE_BOOKMARK);
+    else if (gubCurrentAdvertisment == Enum62.AIM_AD_FUNERAL_ADS)
+      GoToWebPage(Enum98.FUNERAL_BOOKMARK);
+    else if (gubCurrentAdvertisment == Enum62.AIM_AD_BOBBY_RAY_AD)
+      GoToWebPage(Enum98.BOBBYR_BOOKMARK);
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
@@ -780,7 +780,7 @@ function DisplayAd(fInit: BOOLEAN, fRedraw: BOOLEAN, usDelay: UINT16, usNumberOf
         ubSubImage++;
       }
 
-      ubRetVal = AIM_AD_NOT_DONE;
+      ubRetVal = Enum62.AIM_AD_NOT_DONE;
     } else if (ubSubImage == usNumberOfSubImages - 1) {
       if (ubCount == 0 || fRedraw) {
         // Blit the ad
@@ -798,7 +798,7 @@ function DisplayAd(fInit: BOOLEAN, fRedraw: BOOLEAN, usDelay: UINT16, usNumberOf
       // display first frame longer then rest
       ubCount++;
       if (ubCount > 12) {
-        ubRetVal = AIM_AD_DONE;
+        ubRetVal = Enum62.AIM_AD_DONE;
       }
     } else {
       GetVideoObject(addressof(hAdHandle), uiAdImageIdentifier);
@@ -821,35 +821,35 @@ function DisplayAd(fInit: BOOLEAN, fRedraw: BOOLEAN, usDelay: UINT16, usNumberOf
 
 function HandleTextOnAimAdd(ubCurSubImage: UINT8): void {
   switch (gubCurrentAdvertisment) {
-    case AIM_AD_WARNING_BOX:
+    case Enum62.AIM_AD_WARNING_BOX:
       break;
 
-    case AIM_AD_FLOWER_SHOP:
+    case Enum62.AIM_AD_FLOWER_SHOP:
       break;
 
-    case AIM_AD_FOR_ADS:
+    case Enum62.AIM_AD_FOR_ADS:
       break;
 
-    case AIM_AD_INSURANCE_AD:
+    case Enum62.AIM_AD_INSURANCE_AD:
       break;
 
-    case AIM_AD_FUNERAL_ADS:
+    case Enum62.AIM_AD_FUNERAL_ADS:
       break;
 
-    case AIM_AD_BOBBY_RAY_AD:
+    case Enum62.AIM_AD_BOBBY_RAY_AD:
 
       // if the subimage is the first couple
       if (ubCurSubImage <= AIM_AD_BOBBYR_AD_NUM_DUCK_SUBIMAGES) {
         // Display Aim Warning Text
         SetFontShadow(2);
-        DisplayWrappedString(AIM_BOBBYR1_LINK_TEXT_X, AIM_BOBBYR1_LINK_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, BOBBYR_UNDER_CONSTRUCTION_AD_FONT, BOBBYR_UNDER_CONSTRUCTION_AD_COLOR, AimScreenText[AIM_BOBBYR_ADD1], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED | INVALIDATE_TEXT);
+        DisplayWrappedString(AIM_BOBBYR1_LINK_TEXT_X, AIM_BOBBYR1_LINK_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, BOBBYR_UNDER_CONSTRUCTION_AD_FONT, BOBBYR_UNDER_CONSTRUCTION_AD_COLOR, AimScreenText[Enum362.AIM_BOBBYR_ADD1], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED | INVALIDATE_TEXT);
         SetFontShadow(DEFAULT_SHADOW);
       }
 
       else if (ubCurSubImage >= AIM_AD_BOBBYR_AD__NUM_SUBIMAGES - 5) {
         // Display Aim Warning Text
         SetFontShadow(2);
-        DisplayWrappedString(AIM_BOBBYR2_LINK_TEXT_X, AIM_BOBBYR2_LINK_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, BOBBYR_UNDER_CONSTRUCTION_AD_FONT, BOBBYR_UNDER_CONSTRUCTION_AD_COLOR, AimScreenText[AIM_BOBBYR_ADD2], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED | INVALIDATE_TEXT);
+        DisplayWrappedString(AIM_BOBBYR2_LINK_TEXT_X, AIM_BOBBYR2_LINK_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, BOBBYR_UNDER_CONSTRUCTION_AD_FONT, BOBBYR_UNDER_CONSTRUCTION_AD_COLOR, AimScreenText[Enum362.AIM_BOBBYR_ADD2], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED | INVALIDATE_TEXT);
         SetFontShadow(DEFAULT_SHADOW);
       }
       /*
@@ -904,7 +904,7 @@ function DisplayBobbyRAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
         else
           ubSubImage = AIM_AD_BOBBYR_AD_NUM_DUCK_SUBIMAGES + 1;
       }
-      ubRetVal = AIM_AD_NOT_DONE;
+      ubRetVal = Enum62.AIM_AD_NOT_DONE;
     }
 
     else {
@@ -917,7 +917,7 @@ function DisplayBobbyRAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
         // display last frame longer then rest
         ubCount++;
         if (ubCount > 12) {
-          ubRetVal = AIM_AD_DONE;
+          ubRetVal = Enum62.AIM_AD_DONE;
         }
 
         ubSubImage = AIM_AD_BOBBYR_AD__NUM_SUBIMAGES - 1;
@@ -1020,26 +1020,26 @@ function GetNextAimAd(ubCurrentAd: UINT8): UINT8 {
   let uiDay: UINT32 = GetWorldDay();
   let fSkip: BOOLEAN = FALSE;
 
-  if (ubCurrentAd == AIM_AD_WARNING_BOX) {
+  if (ubCurrentAd == Enum62.AIM_AD_WARNING_BOX) {
     if (uiDay < AIM_AD_BOBBYR_AD_STARTS) {
       // if the player has NOT ever been to drassen
       if (!LaptopSaveInfo.fBobbyRSiteCanBeAccessed) {
-        ubNextAd = AIM_AD_FOR_ADS;
+        ubNextAd = Enum62.AIM_AD_FOR_ADS;
       } else {
-        ubNextAd = AIM_AD_BOBBY_RAY_AD;
+        ubNextAd = Enum62.AIM_AD_BOBBY_RAY_AD;
       }
     }
 
     else if (uiDay < AIM_AD_DAY_FUNERAL_AD_STARTS)
-      ubNextAd = AIM_AD_FUNERAL_ADS;
+      ubNextAd = Enum62.AIM_AD_FUNERAL_ADS;
 
     else if (uiDay < AIM_AD_DAY_FLOWER_AD_STARTS)
-      ubNextAd = AIM_AD_FLOWER_SHOP;
+      ubNextAd = Enum62.AIM_AD_FLOWER_SHOP;
 
     else // if( uiDay < AIM_AD_DAY_INSURANCE_AD_STARTS )
-      ubNextAd = AIM_AD_INSURANCE_AD;
+      ubNextAd = Enum62.AIM_AD_INSURANCE_AD;
   } else {
-    ubNextAd = AIM_AD_WARNING_BOX;
+    ubNextAd = Enum62.AIM_AD_WARNING_BOX;
   }
 
   return ubNextAd;

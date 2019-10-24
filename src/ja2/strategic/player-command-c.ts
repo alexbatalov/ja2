@@ -90,9 +90,9 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
       LaptopSaveInfo.fBobbyRSiteCanBeAccessed = TRUE;
 
       // If the player has been to Bobbyr when it was down, and we havent already sent email, send him an email
-      if (LaptopSaveInfo.ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction == BOBBYR_BEEN_TO_SITE_ONCE && LaptopSaveInfo.ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction != BOBBYR_ALREADY_SENT_EMAIL) {
-        AddEmail(BOBBYR_NOW_OPEN, BOBBYR_NOW_OPEN_LENGTH, BOBBY_R, GetWorldTotalMin());
-        LaptopSaveInfo.ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction = BOBBYR_ALREADY_SENT_EMAIL;
+      if (LaptopSaveInfo.ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction == Enum99.BOBBYR_BEEN_TO_SITE_ONCE && LaptopSaveInfo.ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction != Enum99.BOBBYR_ALREADY_SENT_EMAIL) {
+        AddEmail(BOBBYR_NOW_OPEN, BOBBYR_NOW_OPEN_LENGTH, Enum75.BOBBY_R, GetWorldTotalMin());
+        LaptopSaveInfo.ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction = Enum99.BOBBYR_ALREADY_SENT_EMAIL;
       }
     }
 
@@ -104,7 +104,7 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
     bTownId = StrategicMap[usMapSector].bNameId;
 
     // check if there's a town in the sector
-    if ((bTownId >= FIRST_TOWN) && (bTownId < NUM_TOWNS)) {
+    if ((bTownId >= FIRST_TOWN) && (bTownId < Enum135.NUM_TOWNS)) {
       // yes, start tracking (& displaying) this town's loyalty if not already doing so
       StartTownLoyaltyIfFirstTime(bTownId);
     }
@@ -112,13 +112,13 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
     // if player took control away from enemy
     if (fWasEnemyControlled && fContested) {
       // and it's a town
-      if ((bTownId >= FIRST_TOWN) && (bTownId < NUM_TOWNS)) {
+      if ((bTownId >= FIRST_TOWN) && (bTownId < Enum135.NUM_TOWNS)) {
         // don't do these for takeovers of Omerta sectors at the beginning of the game
-        if ((bTownId != OMERTA) || (GetWorldDay() != 1)) {
+        if ((bTownId != Enum135.OMERTA) || (GetWorldDay() != 1)) {
           ubSectorID = SECTOR(sMapX, sMapY);
-          if (!bMapZ && ubSectorID != SEC_J9 && ubSectorID != SEC_K4) {
-            HandleMoraleEvent(NULL, MORALE_TOWN_LIBERATED, sMapX, sMapY, bMapZ);
-            HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_GAIN_TOWN_SECTOR, sMapX, sMapY, bMapZ);
+          if (!bMapZ && ubSectorID != Enum123.SEC_J9 && ubSectorID != Enum123.SEC_K4) {
+            HandleMoraleEvent(NULL, Enum234.MORALE_TOWN_LIBERATED, sMapX, sMapY, bMapZ);
+            HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_GAIN_TOWN_SECTOR, sMapX, sMapY, bMapZ);
 
             // liberation by definition requires that the place was enemy controlled in the first place
             CheckIfEntireTownHasBeenLiberated(bTownId, sMapX, sMapY);
@@ -129,8 +129,8 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
       // if it's a mine that's still worth something
       if (IsThereAMineInThisSector(sMapX, sMapY)) {
         if (GetTotalLeftInMine(GetMineIndexForSector(sMapX, sMapY)) > 0) {
-          HandleMoraleEvent(NULL, MORALE_MINE_LIBERATED, sMapX, sMapY, bMapZ);
-          HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_GAIN_MINE, sMapX, sMapY, bMapZ);
+          HandleMoraleEvent(NULL, Enum234.MORALE_MINE_LIBERATED, sMapX, sMapY, bMapZ);
+          HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_GAIN_MINE, sMapX, sMapY, bMapZ);
         }
       }
 
@@ -141,8 +141,8 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
           HandleMeanWhileEventPostingForSAMLiberation(GetSAMIdFromSector(sMapX, sMapY, bMapZ));
         }
 
-        HandleMoraleEvent(NULL, MORALE_SAM_SITE_LIBERATED, sMapX, sMapY, bMapZ);
-        HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_GAIN_SAM, sMapX, sMapY, bMapZ);
+        HandleMoraleEvent(NULL, Enum234.MORALE_SAM_SITE_LIBERATED, sMapX, sMapY, bMapZ);
+        HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_GAIN_SAM, sMapX, sMapY, bMapZ);
 
         // if Skyrider has been delivered to chopper, and already mentioned Drassen SAM site, but not used this quote yet
         if (IsHelicopterPilotAvailable() && (guiHelicopterSkyriderTalkState >= 1) && (!gfSkyriderSaidCongratsOnTakingSAM)) {
@@ -152,7 +152,7 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
 
         if (!SectorInfo[SECTOR(sMapX, sMapY)].fSurfaceWasEverPlayerControlled) {
           // grant grace period
-          if (gGameOptions.ubDifficultyLevel >= DIF_LEVEL_HARD) {
+          if (gGameOptions.ubDifficultyLevel >= Enum9.DIF_LEVEL_HARD) {
             UpdateLastDayOfPlayerActivity((GetWorldDay() + 2));
           } else {
             UpdateLastDayOfPlayerActivity((GetWorldDay() + 1));
@@ -235,11 +235,11 @@ function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8,
       SectorInfo[SECTOR(sMapX, sMapY)].fPlayer[bMapZ] = FALSE;
 
       // and it's a town
-      if ((bTownId >= FIRST_TOWN) && (bTownId < NUM_TOWNS)) {
+      if ((bTownId >= FIRST_TOWN) && (bTownId < Enum135.NUM_TOWNS)) {
         ubSectorID = SECTOR(sMapX, sMapY);
-        if (!bMapZ && ubSectorID != SEC_J9 && ubSectorID != SEC_K4) {
-          HandleMoraleEvent(NULL, MORALE_TOWN_LOST, sMapX, sMapY, bMapZ);
-          HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_LOSE_TOWN_SECTOR, sMapX, sMapY, bMapZ);
+        if (!bMapZ && ubSectorID != Enum123.SEC_J9 && ubSectorID != Enum123.SEC_K4) {
+          HandleMoraleEvent(NULL, Enum234.MORALE_TOWN_LOST, sMapX, sMapY, bMapZ);
+          HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_LOSE_TOWN_SECTOR, sMapX, sMapY, bMapZ);
 
           CheckIfEntireTownHasBeenLost(bTownId, sMapX, sMapY);
         }
@@ -250,15 +250,15 @@ function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8,
         // if it isn't empty
         if (GetTotalLeftInMine(GetMineIndexForSector(sMapX, sMapY)) > 0) {
           QueenHasRegainedMineSector(GetMineIndexForSector(sMapX, sMapY));
-          HandleMoraleEvent(NULL, MORALE_MINE_LOST, sMapX, sMapY, bMapZ);
-          HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_LOSE_MINE, sMapX, sMapY, bMapZ);
+          HandleMoraleEvent(NULL, Enum234.MORALE_MINE_LOST, sMapX, sMapY, bMapZ);
+          HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_LOSE_MINE, sMapX, sMapY, bMapZ);
         }
       }
 
       // if it's a SAM site sector
       if (IsThisSectorASAMSector(sMapX, sMapY, bMapZ)) {
-        HandleMoraleEvent(NULL, MORALE_SAM_SITE_LOST, sMapX, sMapY, bMapZ);
-        HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_LOSE_SAM, sMapX, sMapY, bMapZ);
+        HandleMoraleEvent(NULL, Enum234.MORALE_SAM_SITE_LOST, sMapX, sMapY, bMapZ);
+        HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_LOSE_SAM, sMapX, sMapY, bMapZ);
       }
 
       // if it's a helicopter refueling site sector

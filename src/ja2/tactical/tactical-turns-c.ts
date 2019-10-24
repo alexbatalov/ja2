@@ -11,7 +11,7 @@ function HandleRPCDescription(): void {
   }
 
   // ATE: postpone if we are not in tactical
-  if (guiCurrentScreen != GAME_SCREEN) {
+  if (guiCurrentScreen != Enum26.GAME_SCREEN) {
     return;
   }
 
@@ -49,7 +49,7 @@ function HandleRPCDescription(): void {
       // Add guy if he's a candidate...
       if (RPC_RECRUITED(pTeamSoldier)) {
         if (pTeamSoldier.value.bLife >= OKLIFE && pTeamSoldier.value.bActive && pTeamSoldier.value.sSectorX == gTacticalStatus.bGuideDescriptionSectorX && pTeamSoldier.value.sSectorY == gTacticalStatus.bGuideDescriptionSectorY && pTeamSoldier.value.bSectorZ == gbWorldSectorZ && !pTeamSoldier.value.fBetweenSectors) {
-          if (pTeamSoldier.value.ubProfile == IRA || pTeamSoldier.value.ubProfile == MIGUEL || pTeamSoldier.value.ubProfile == CARLOS || pTeamSoldier.value.ubProfile == DIMITRI) {
+          if (pTeamSoldier.value.ubProfile == Enum268.IRA || pTeamSoldier.value.ubProfile == Enum268.MIGUEL || pTeamSoldier.value.ubProfile == Enum268.CARLOS || pTeamSoldier.value.ubProfile == Enum268.DIMITRI) {
             ubMercsInSector[ubNumMercs] = cnt2;
             ubNumMercs++;
           }

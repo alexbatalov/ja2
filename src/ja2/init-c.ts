@@ -20,7 +20,7 @@ function InitializeJA2(): UINT32 {
 
   // Init animation system
   if (!InitAnimationSystem()) {
-    return ERROR_SCREEN;
+    return Enum26.ERROR_SCREEN;
   }
 
   // Init lighting system
@@ -30,7 +30,7 @@ function InitializeJA2(): UINT32 {
   InitalizeDialogueControl();
 
   if (!InitStrategicEngine()) {
-    return ERROR_SCREEN;
+    return Enum26.ERROR_SCREEN;
   }
 
   // needs to be called here to init the SectorInfo struct
@@ -38,7 +38,7 @@ function InitializeJA2(): UINT32 {
 
   // Init tactical engine
   if (!InitTacticalEngine()) {
-    return ERROR_SCREEN;
+    return Enum26.ERROR_SCREEN;
   }
 
   // Init timer system
@@ -53,12 +53,12 @@ function InitializeJA2(): UINT32 {
 
   // Init Event Manager
   if (!InitializeEventManager()) {
-    return ERROR_SCREEN;
+    return Enum26.ERROR_SCREEN;
   }
 
   // Initailize World
   if (!InitializeWorld()) {
-    return ERROR_SCREEN;
+    return Enum26.ERROR_SCREEN;
   }
 
   InitTileCache();
@@ -70,7 +70,7 @@ function InitializeJA2(): UINT32 {
 
   DetermineRGBDistributionSettings();
 
-  return INIT_SCREEN;
+  return Enum26.INIT_SCREEN;
 }
 
 function ShutdownJA2(): void {
@@ -93,7 +93,7 @@ function ShutdownJA2(): void {
   ShutdownDialogueControl();
 
   // Shutdown Screens
-  for (uiIndex = 0; uiIndex < MAX_SCREENS; uiIndex++) {
+  for (uiIndex = 0; uiIndex < Enum26.MAX_SCREENS; uiIndex++) {
     ((GameScreens[uiIndex].ShutdownScreen).value)();
   }
 

@@ -20,32 +20,32 @@ let ArmsDealerInfo: ARMS_DEALER_INFO[] /* [NUM_ARMS_DEALERS] */ = [
   // Price			Price							Of											Cash
   // Modifier	Modifier					Dealer
 
-  /* Tony  */ [ 0.75, 1.25, TONY, ARMS_DEALER_BUYS_SELLS, 15000, ARMS_DEALER_SOME_USED_ITEMS | ARMS_DEALER_GIVES_CHANGE ],
-  /* Franz Hinkle */ [ 1.0, 1.5, FRANZ, ARMS_DEALER_BUYS_SELLS, 5000, ARMS_DEALER_SOME_USED_ITEMS | ARMS_DEALER_GIVES_CHANGE ],
-  /* Keith Hemps */ [ 0.75, 1.0, KEITH, ARMS_DEALER_BUYS_SELLS, 1500, ARMS_DEALER_ONLY_USED_ITEMS | ARMS_DEALER_GIVES_CHANGE ],
-  /* Jake Cameron */ [ 0.8, 1.1, JAKE, ARMS_DEALER_BUYS_SELLS, 2500, ARMS_DEALER_ONLY_USED_ITEMS | ARMS_DEALER_GIVES_CHANGE ],
-  /* Gabby Mulnick*/ [ 1.0, 1.0, GABBY, ARMS_DEALER_BUYS_SELLS, 3000, ARMS_DEALER_GIVES_CHANGE ],
+  /* Tony  */ [ 0.75, 1.25, Enum268.TONY, Enum198.ARMS_DEALER_BUYS_SELLS, 15000, ARMS_DEALER_SOME_USED_ITEMS | ARMS_DEALER_GIVES_CHANGE ],
+  /* Franz Hinkle */ [ 1.0, 1.5, Enum268.FRANZ, Enum198.ARMS_DEALER_BUYS_SELLS, 5000, ARMS_DEALER_SOME_USED_ITEMS | ARMS_DEALER_GIVES_CHANGE ],
+  /* Keith Hemps */ [ 0.75, 1.0, Enum268.KEITH, Enum198.ARMS_DEALER_BUYS_SELLS, 1500, ARMS_DEALER_ONLY_USED_ITEMS | ARMS_DEALER_GIVES_CHANGE ],
+  /* Jake Cameron */ [ 0.8, 1.1, Enum268.JAKE, Enum198.ARMS_DEALER_BUYS_SELLS, 2500, ARMS_DEALER_ONLY_USED_ITEMS | ARMS_DEALER_GIVES_CHANGE ],
+  /* Gabby Mulnick*/ [ 1.0, 1.0, Enum268.GABBY, Enum198.ARMS_DEALER_BUYS_SELLS, 3000, ARMS_DEALER_GIVES_CHANGE ],
 
-  /* Devin Connell*/ [ 0.75, 1.25, DEVIN, ARMS_DEALER_SELLS_ONLY, 5000, ARMS_DEALER_GIVES_CHANGE ],
-  /* Howard Filmore*/ [ 1.0, 1.0, HOWARD, ARMS_DEALER_SELLS_ONLY, 3000, ARMS_DEALER_GIVES_CHANGE ],
-  /* Sam Rozen */ [ 1.0, 1.0, SAM, ARMS_DEALER_SELLS_ONLY, 3000, ARMS_DEALER_GIVES_CHANGE ],
-  /* Frank */ [ 1.0, 1.0, FRANK, ARMS_DEALER_SELLS_ONLY, 500, ARMS_DEALER_ACCEPTS_GIFTS ],
+  /* Devin Connell*/ [ 0.75, 1.25, Enum268.DEVIN, Enum198.ARMS_DEALER_SELLS_ONLY, 5000, ARMS_DEALER_GIVES_CHANGE ],
+  /* Howard Filmore*/ [ 1.0, 1.0, Enum268.HOWARD, Enum198.ARMS_DEALER_SELLS_ONLY, 3000, ARMS_DEALER_GIVES_CHANGE ],
+  /* Sam Rozen */ [ 1.0, 1.0, Enum268.SAM, Enum198.ARMS_DEALER_SELLS_ONLY, 3000, ARMS_DEALER_GIVES_CHANGE ],
+  /* Frank */ [ 1.0, 1.0, Enum268.FRANK, Enum198.ARMS_DEALER_SELLS_ONLY, 500, ARMS_DEALER_ACCEPTS_GIFTS ],
 
-  /* Bar Bro 1 */ [ 1.0, 1.0, HERVE, ARMS_DEALER_SELLS_ONLY, 250, ARMS_DEALER_ACCEPTS_GIFTS ],
-  /* Bar Bro 2 */ [ 1.0, 1.0, PETER, ARMS_DEALER_SELLS_ONLY, 250, ARMS_DEALER_ACCEPTS_GIFTS ],
-  /* Bar Bro 3 */ [ 1.0, 1.0, ALBERTO, ARMS_DEALER_SELLS_ONLY, 250, ARMS_DEALER_ACCEPTS_GIFTS ],
-  /* Bar Bro 4 */ [ 1.0, 1.0, CARLO, ARMS_DEALER_SELLS_ONLY, 250, ARMS_DEALER_ACCEPTS_GIFTS ],
+  /* Bar Bro 1 */ [ 1.0, 1.0, Enum268.HERVE, Enum198.ARMS_DEALER_SELLS_ONLY, 250, ARMS_DEALER_ACCEPTS_GIFTS ],
+  /* Bar Bro 2 */ [ 1.0, 1.0, Enum268.PETER, Enum198.ARMS_DEALER_SELLS_ONLY, 250, ARMS_DEALER_ACCEPTS_GIFTS ],
+  /* Bar Bro 3 */ [ 1.0, 1.0, Enum268.ALBERTO, Enum198.ARMS_DEALER_SELLS_ONLY, 250, ARMS_DEALER_ACCEPTS_GIFTS ],
+  /* Bar Bro 4 */ [ 1.0, 1.0, Enum268.CARLO, Enum198.ARMS_DEALER_SELLS_ONLY, 250, ARMS_DEALER_ACCEPTS_GIFTS ],
 
-  /* Micky O'Brien*/ [ 1.0, 1.4, MICKY, ARMS_DEALER_BUYS_ONLY, 10000, ARMS_DEALER_HAS_NO_INVENTORY | ARMS_DEALER_GIVES_CHANGE ],
+  /* Micky O'Brien*/ [ 1.0, 1.4, Enum268.MICKY, Enum198.ARMS_DEALER_BUYS_ONLY, 10000, ARMS_DEALER_HAS_NO_INVENTORY | ARMS_DEALER_GIVES_CHANGE ],
 
   // Repair	Repair
   // Speed		Cost
-  /* Arnie Brunzwell*/ [ 0.1, 0.8, ARNIE, ARMS_DEALER_REPAIRS, 1500, ARMS_DEALER_HAS_NO_INVENTORY | ARMS_DEALER_GIVES_CHANGE ],
-  /* Fredo */ [ 0.6, 0.6, FREDO, ARMS_DEALER_REPAIRS, 1000, ARMS_DEALER_HAS_NO_INVENTORY | ARMS_DEALER_GIVES_CHANGE ],
-  /* Perko */ [ 1.0, 0.4, PERKO, ARMS_DEALER_REPAIRS, 1000, ARMS_DEALER_HAS_NO_INVENTORY | ARMS_DEALER_GIVES_CHANGE ],
+  /* Arnie Brunzwell*/ [ 0.1, 0.8, Enum268.ARNIE, Enum198.ARMS_DEALER_REPAIRS, 1500, ARMS_DEALER_HAS_NO_INVENTORY | ARMS_DEALER_GIVES_CHANGE ],
+  /* Fredo */ [ 0.6, 0.6, Enum268.FREDO, Enum198.ARMS_DEALER_REPAIRS, 1000, ARMS_DEALER_HAS_NO_INVENTORY | ARMS_DEALER_GIVES_CHANGE ],
+  /* Perko */ [ 1.0, 0.4, Enum268.PERKO, Enum198.ARMS_DEALER_REPAIRS, 1000, ARMS_DEALER_HAS_NO_INVENTORY | ARMS_DEALER_GIVES_CHANGE ],
 
-  /* Elgin */ [ 1.0, 1.0, DRUGGIST, ARMS_DEALER_SELLS_ONLY, 500, ARMS_DEALER_ACCEPTS_GIFTS ],
-  /* Manny */ [ 1.0, 1.0, MANNY, ARMS_DEALER_SELLS_ONLY, 500, ARMS_DEALER_ACCEPTS_GIFTS ],
+  /* Elgin */ [ 1.0, 1.0, Enum268.DRUGGIST, Enum198.ARMS_DEALER_SELLS_ONLY, 500, ARMS_DEALER_ACCEPTS_GIFTS ],
+  /* Manny */ [ 1.0, 1.0, Enum268.MANNY, Enum198.ARMS_DEALER_SELLS_ONLY, 500, ARMS_DEALER_ACCEPTS_GIFTS ],
 ];
 
 // THESE GET SAVED/RESTORED/RESET
@@ -64,7 +64,7 @@ function InitAllArmsDealers(): void {
   memset(gArmsDealersInventory, 0, sizeof(gArmsDealersInventory));
 
   // Initialize the initial status & inventory for each of the arms dealers
-  for (ubArmsDealer = 0; ubArmsDealer < NUM_ARMS_DEALERS; ubArmsDealer++) {
+  for (ubArmsDealer = 0; ubArmsDealer < Enum197.NUM_ARMS_DEALERS; ubArmsDealer++) {
     InitializeOneArmsDealer(ubArmsDealer);
   }
 
@@ -77,7 +77,7 @@ function InitializeOneArmsDealer(ubArmsDealer: UINT8): void {
   let ubNumItems: UINT8 = 0;
 
   memset(addressof(gArmsDealerStatus[ubArmsDealer]), 0, sizeof(ARMS_DEALER_STATUS));
-  memset(addressof(gArmsDealersInventory[ubArmsDealer]), 0, sizeof(DEALER_ITEM_HEADER) * MAXITEMS);
+  memset(addressof(gArmsDealersInventory[ubArmsDealer]), 0, sizeof(DEALER_ITEM_HEADER) * Enum225.MAXITEMS);
 
   // Reset the arms dealers cash on hand to the default initial value
   gArmsDealerStatus[ubArmsDealer].uiArmsDealersCash = ArmsDealerInfo[ubArmsDealer].iInitialCash;
@@ -88,7 +88,7 @@ function InitializeOneArmsDealer(ubArmsDealer: UINT8): void {
   }
 
   // loop through all the item types
-  for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
+  for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
     // Can the item be sold by the arms dealer
     if (CanDealerTransactItem(ubArmsDealer, usItemIndex, FALSE)) {
       // Setup an initial amount for the items (treat items as new, how many are used isn't known yet)
@@ -107,9 +107,9 @@ function ShutDownArmsDealers(): void {
   let usItemIndex: UINT16;
 
   // loop through all the dealers
-  for (ubArmsDealer = 0; ubArmsDealer < NUM_ARMS_DEALERS; ubArmsDealer++) {
+  for (ubArmsDealer = 0; ubArmsDealer < Enum197.NUM_ARMS_DEALERS; ubArmsDealer++) {
     // loop through all the item types
-    for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
+    for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
       if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced > 0) {
         FreeSpecialItemArray(addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex]));
       }
@@ -133,9 +133,9 @@ function SaveArmsDealerInventoryToSaveGameFile(hFile: HWFILE): BOOLEAN {
   }
 
   // loop through all the dealers inventories
-  for (ubArmsDealer = 0; ubArmsDealer < NUM_ARMS_DEALERS; ubArmsDealer++) {
+  for (ubArmsDealer = 0; ubArmsDealer < Enum197.NUM_ARMS_DEALERS; ubArmsDealer++) {
     // loop through this dealer's individual items
-    for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
+    for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
       // if there are any special item elements allocated for this item, save them
       if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced > 0) {
         if (!FileWrite(hFile, addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[0]), sizeof(DEALER_SPECIAL_ITEM) * gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced, addressof(uiNumBytesWritten))) {
@@ -177,9 +177,9 @@ function LoadArmsDealerInventoryFromSavedGameFile(hFile: HWFILE, fIncludesElgin:
   }
 
   // loop through all the dealers inventories
-  for (ubArmsDealer = 0; ubArmsDealer < NUM_ARMS_DEALERS; ubArmsDealer++) {
+  for (ubArmsDealer = 0; ubArmsDealer < Enum197.NUM_ARMS_DEALERS; ubArmsDealer++) {
     // loop through this dealer's individual items
-    for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
+    for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
       // if there are any elements allocated for this item, load them
       if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced > 0) {
         // Allocate memory for the inventory
@@ -219,7 +219,7 @@ function SimulateArmsDealerCustomer(): void {
   let SpclItemInfo: SPECIAL_ITEM_INFO;
 
   // loop through all the arms dealers
-  for (ubArmsDealer = 0; ubArmsDealer < NUM_ARMS_DEALERS; ubArmsDealer++) {
+  for (ubArmsDealer = 0; ubArmsDealer < Enum197.NUM_ARMS_DEALERS; ubArmsDealer++) {
     if (gArmsDealerStatus[ubArmsDealer].fOutOfBusiness)
       continue;
 
@@ -228,11 +228,11 @@ function SimulateArmsDealerCustomer(): void {
       continue;
 
     // loop through all items of the same type
-    for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
+    for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
       // if there are some of these in stock
       if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems > 0) {
         // first, try to sell all the new (perfect) ones
-        if (usItemIndex == JAR_ELIXIR) {
+        if (usItemIndex == Enum225.JAR_ELIXIR) {
           // only allow selling of standard # of items so those converted from blood given by player will be available
           ubItemsSold = HowManyItemsAreSold(ubArmsDealer, usItemIndex, __min(3, gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems), FALSE);
         } else {
@@ -271,7 +271,7 @@ function DailyCheckOnItemQuantities(): void {
   let ubReorderDays: UINT8;
 
   // loop through all the arms dealers
-  for (ubArmsDealer = 0; ubArmsDealer < NUM_ARMS_DEALERS; ubArmsDealer++) {
+  for (ubArmsDealer = 0; ubArmsDealer < Enum197.NUM_ARMS_DEALERS; ubArmsDealer++) {
     if (gArmsDealerStatus[ubArmsDealer].fOutOfBusiness)
       continue;
 
@@ -283,7 +283,7 @@ function DailyCheckOnItemQuantities(): void {
       continue;
 
     // loop through all items of the same type
-    for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
+    for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
       // if the dealer can sell the item type
       if (CanDealerTransactItem(ubArmsDealer, usItemIndex, FALSE)) {
         // if there are no items on order
@@ -306,7 +306,7 @@ function DailyCheckOnItemQuantities(): void {
                 // This is just a way to reward the player right away for making progress without the reordering lag...
                 ArmsDealerGetsFreshStock(ubArmsDealer, usItemIndex, ubNumItems);
               } else {
-                if ((ubArmsDealer == ARMS_DEALER_TONY) || (ubArmsDealer == ARMS_DEALER_DEVIN)) {
+                if ((ubArmsDealer == Enum197.ARMS_DEALER_TONY) || (ubArmsDealer == Enum197.ARMS_DEALER_DEVIN)) {
                   // the stuff Tony and Devin sell is imported, so it takes longer to arrive (for game balance)
                   ubReorderDays = (2 + Random(2)); // 2-3 days
                 } else {
@@ -343,7 +343,7 @@ function ConvertCreatureBloodToElixir(): void {
   let ubAmountToConvert: UINT8;
   let SpclItemInfo: SPECIAL_ITEM_INFO;
 
-  ubBloodAvailable = gArmsDealersInventory[ARMS_DEALER_GABBY][JAR_CREATURE_BLOOD].ubTotalItems;
+  ubBloodAvailable = gArmsDealersInventory[Enum197.ARMS_DEALER_GABBY][Enum225.JAR_CREATURE_BLOOD].ubTotalItems;
   if (ubBloodAvailable) {
     // start converting blood into elixir!
     // ubAmountToConvert = (UINT8) __min( 5 + Random( 3 ), ubBloodAvailable );
@@ -353,39 +353,39 @@ function ConvertCreatureBloodToElixir(): void {
     SetSpecialItemInfoToDefaults(addressof(SpclItemInfo));
 
     // Now remove that many NEW ones (condition 100) of that item
-    RemoveItemFromArmsDealerInventory(ARMS_DEALER_GABBY, JAR_CREATURE_BLOOD, addressof(SpclItemInfo), ubAmountToConvert);
+    RemoveItemFromArmsDealerInventory(Enum197.ARMS_DEALER_GABBY, Enum225.JAR_CREATURE_BLOOD, addressof(SpclItemInfo), ubAmountToConvert);
 
-    ArmsDealerGetsFreshStock(ARMS_DEALER_GABBY, JAR_ELIXIR, ubAmountToConvert);
+    ArmsDealerGetsFreshStock(Enum197.ARMS_DEALER_GABBY, Enum225.JAR_ELIXIR, ubAmountToConvert);
   }
 }
 
 function AdjustCertainDealersInventory(): BOOLEAN {
   // Adjust Tony's items (this restocks *instantly* 1/day, doesn't use the reorder system)
-  GuaranteeAtLeastOneItemOfType(ARMS_DEALER_TONY, ARMS_DEALER_BIG_GUNS);
-  LimitArmsDealersInventory(ARMS_DEALER_TONY, ARMS_DEALER_BIG_GUNS, 2);
-  LimitArmsDealersInventory(ARMS_DEALER_TONY, ARMS_DEALER_HANDGUNCLASS, 3);
-  LimitArmsDealersInventory(ARMS_DEALER_TONY, ARMS_DEALER_AMMO, 8);
+  GuaranteeAtLeastOneItemOfType(Enum197.ARMS_DEALER_TONY, ARMS_DEALER_BIG_GUNS);
+  LimitArmsDealersInventory(Enum197.ARMS_DEALER_TONY, ARMS_DEALER_BIG_GUNS, 2);
+  LimitArmsDealersInventory(Enum197.ARMS_DEALER_TONY, ARMS_DEALER_HANDGUNCLASS, 3);
+  LimitArmsDealersInventory(Enum197.ARMS_DEALER_TONY, ARMS_DEALER_AMMO, 8);
 
   // Adjust all bartenders' alcohol levels to a minimum
-  GuaranteeMinimumAlcohol(ARMS_DEALER_FRANK);
-  GuaranteeMinimumAlcohol(ARMS_DEALER_BAR_BRO_1);
-  GuaranteeMinimumAlcohol(ARMS_DEALER_BAR_BRO_2);
-  GuaranteeMinimumAlcohol(ARMS_DEALER_BAR_BRO_3);
-  GuaranteeMinimumAlcohol(ARMS_DEALER_BAR_BRO_4);
-  GuaranteeMinimumAlcohol(ARMS_DEALER_ELGIN);
-  GuaranteeMinimumAlcohol(ARMS_DEALER_MANNY);
+  GuaranteeMinimumAlcohol(Enum197.ARMS_DEALER_FRANK);
+  GuaranteeMinimumAlcohol(Enum197.ARMS_DEALER_BAR_BRO_1);
+  GuaranteeMinimumAlcohol(Enum197.ARMS_DEALER_BAR_BRO_2);
+  GuaranteeMinimumAlcohol(Enum197.ARMS_DEALER_BAR_BRO_3);
+  GuaranteeMinimumAlcohol(Enum197.ARMS_DEALER_BAR_BRO_4);
+  GuaranteeMinimumAlcohol(Enum197.ARMS_DEALER_ELGIN);
+  GuaranteeMinimumAlcohol(Enum197.ARMS_DEALER_MANNY);
 
   // make sure Sam (hardware guy) has at least one empty jar
-  GuaranteeAtLeastXItemsOfIndex(ARMS_DEALER_SAM, JAR, 1);
+  GuaranteeAtLeastXItemsOfIndex(Enum197.ARMS_DEALER_SAM, Enum225.JAR, 1);
 
-  if (CheckFact(FACT_ESTONI_REFUELLING_POSSIBLE, 0)) {
+  if (CheckFact(Enum170.FACT_ESTONI_REFUELLING_POSSIBLE, 0)) {
     // gas is restocked regularly, unlike most items
-    GuaranteeAtLeastXItemsOfIndex(ARMS_DEALER_JAKE, GAS_CAN, (4 + Random(3)));
+    GuaranteeAtLeastXItemsOfIndex(Enum197.ARMS_DEALER_JAKE, Enum225.GAS_CAN, (4 + Random(3)));
   }
 
   // If the player hasn't bought a video camera from Franz yet, make sure Franz has one to sell
-  if (!(gArmsDealerStatus[ARMS_DEALER_FRANZ].ubSpecificDealerFlags & ARMS_DEALER_FLAG__FRANZ_HAS_SOLD_VIDEO_CAMERA_TO_PLAYER)) {
-    GuaranteeAtLeastXItemsOfIndex(ARMS_DEALER_FRANZ, VIDEO_CAMERA, 1);
+  if (!(gArmsDealerStatus[Enum197.ARMS_DEALER_FRANZ].ubSpecificDealerFlags & ARMS_DEALER_FLAG__FRANZ_HAS_SOLD_VIDEO_CAMERA_TO_PLAYER)) {
+    GuaranteeAtLeastXItemsOfIndex(Enum197.ARMS_DEALER_FRANZ, Enum225.VIDEO_CAMERA, 1);
   }
 
   return TRUE;
@@ -410,7 +410,7 @@ function LimitArmsDealersInventory(ubArmsDealer: UINT8, uiDealerItemType: UINT32
     return;
 
   // loop through all items of the same class and count the number in stock
-  for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
+  for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
     // if there is some items in stock
     if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems > 0) {
       // if the item is of the same dealer item type
@@ -530,7 +530,7 @@ function GuaranteeAtLeastOneItemOfType(ubArmsDealer: UINT8, uiDealerItemType: UI
     return;
 
   // loop through all items of the same type
-  for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
+  for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
     // if the item is of the same dealer item type
     if (uiDealerItemType & GetArmsDealerItemTypeFromItemNumber(usItemIndex)) {
       // if there are any of these in stock
@@ -606,28 +606,28 @@ function GetArmsDealerItemTypeFromItemNumber(usItem: UINT16): UINT32 {
 
     case IC_GUN:
       switch (Weapon[Item[usItem].ubClassIndex].ubWeaponClass) {
-        case HANDGUNCLASS:
+        case Enum282.HANDGUNCLASS:
           return ARMS_DEALER_HANDGUNCLASS;
           break;
-        case RIFLECLASS:
+        case Enum282.RIFLECLASS:
           if (ItemIsARocketRifle(usItem))
             return ARMS_DEALER_ROCKET_RIFLE;
           else
             return ARMS_DEALER_RIFLECLASS;
           break;
-        case SHOTGUNCLASS:
+        case Enum282.SHOTGUNCLASS:
           return ARMS_DEALER_SHOTGUNCLASS;
           break;
-        case SMGCLASS:
+        case Enum282.SMGCLASS:
           return ARMS_DEALER_SMGCLASS;
           break;
-        case MGCLASS:
+        case Enum282.MGCLASS:
           return ARMS_DEALER_MGCLASS;
           break;
-        case MONSTERCLASS:
+        case Enum282.MONSTERCLASS:
           return 0;
           break;
-        case KNIFECLASS:
+        case Enum282.KNIFECLASS:
           return ARMS_DEALER_KNIFECLASS;
           break;
       }
@@ -657,42 +657,42 @@ function GetArmsDealerItemTypeFromItemNumber(usItem: UINT16): UINT32 {
     case IC_MISC: {
       // switch on the type of item
       switch (usItem) {
-        case BEER:
-        case WINE:
-        case ALCOHOL:
+        case Enum225.BEER:
+        case Enum225.WINE:
+        case Enum225.ALCOHOL:
           return ARMS_DEALER_ALCOHOL;
           break;
 
-        case METALDETECTOR:
-        case LASERSCOPE:
+        case Enum225.METALDETECTOR:
+        case Enum225.LASERSCOPE:
           //				case REMDETONATOR:
           return ARMS_DEALER_ELECTRONICS;
           break;
 
-        case CANTEEN:
-        case CROWBAR:
-        case WIRECUTTERS:
+        case Enum225.CANTEEN:
+        case Enum225.CROWBAR:
+        case Enum225.WIRECUTTERS:
           return ARMS_DEALER_HARDWARE;
           break;
 
-        case ADRENALINE_BOOSTER:
-        case REGEN_BOOSTER:
-        case SYRINGE_3:
-        case SYRINGE_4:
-        case SYRINGE_5:
+        case Enum225.ADRENALINE_BOOSTER:
+        case Enum225.REGEN_BOOSTER:
+        case Enum225.SYRINGE_3:
+        case Enum225.SYRINGE_4:
+        case Enum225.SYRINGE_5:
           return ARMS_DEALER_MEDICAL;
           break;
 
-        case SILENCER:
-        case SNIPERSCOPE:
-        case BIPOD:
-        case DUCKBILL:
+        case Enum225.SILENCER:
+        case Enum225.SNIPERSCOPE:
+        case Enum225.BIPOD:
+        case Enum225.DUCKBILL:
           return ARMS_DEALER_ATTACHMENTS;
           break;
 
-        case DETONATOR:
-        case REMDETONATOR:
-        case REMOTEBOMBTRIGGER:
+        case Enum225.DETONATOR:
+        case Enum225.REMDETONATOR:
+        case Enum225.REMOTEBOMBTRIGGER:
           return ARMS_DEALER_DETONATORS;
           break;
 
@@ -705,9 +705,9 @@ function GetArmsDealerItemTypeFromItemNumber(usItem: UINT16): UINT32 {
       break;
     case IC_FACE:
       switch (usItem) {
-        case EXTENDEDEAR:
-        case NIGHTGOGGLES:
-        case ROBOT_REMOTE_CONTROL:
+        case Enum225.EXTENDEDEAR:
+        case Enum225.NIGHTGOGGLES:
+        case Enum225.ROBOT_REMOTE_CONTROL:
           return ARMS_DEALER_ELECTRONICS;
           break;
 
@@ -752,12 +752,12 @@ function IsMercADealer(ubMercID: UINT8): BOOLEAN {
   let cnt: UINT8;
 
   // Manny is not actually a valid dealer unless a particular event sets that fact
-  if ((ubMercID == MANNY) && !CheckFact(FACT_MANNY_IS_BARTENDER, 0)) {
+  if ((ubMercID == Enum268.MANNY) && !CheckFact(Enum170.FACT_MANNY_IS_BARTENDER, 0)) {
     return FALSE;
   }
 
   // loop through the list of arms dealers
-  for (cnt = 0; cnt < NUM_ARMS_DEALERS; cnt++) {
+  for (cnt = 0; cnt < Enum197.NUM_ARMS_DEALERS; cnt++) {
     if (ArmsDealerInfo[cnt].ubShopKeeperID == ubMercID)
       return TRUE;
   }
@@ -768,7 +768,7 @@ function GetArmsDealerIDFromMercID(ubMercID: UINT8): INT8 {
   let cnt: INT8;
 
   // loop through the list of arms dealers
-  for (cnt = 0; cnt < NUM_ARMS_DEALERS; cnt++) {
+  for (cnt = 0; cnt < Enum197.NUM_ARMS_DEALERS; cnt++) {
     if (ArmsDealerInfo[cnt].ubShopKeeperID == ubMercID)
       return cnt;
   }
@@ -781,7 +781,7 @@ function GetTypeOfArmsDealer(ubDealerID: UINT8): UINT8 {
 }
 
 function DoesDealerDoRepairs(ubArmsDealer: UINT8): BOOLEAN {
-  if (ArmsDealerInfo[ubArmsDealer].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS)
+  if (ArmsDealerInfo[ubArmsDealer].ubTypeOfArmsDealer == Enum198.ARMS_DEALER_REPAIRS)
     return TRUE;
   else
     return FALSE;
@@ -824,7 +824,7 @@ function RepairmanIsFixingItemsButNoneAreDoneYet(ubProfileID: UINT8): BOOLEAN {
     return FALSE;
 
   // loop through the dealers inventory and check if there are only unrepaired items
-  for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
+  for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
     // if there is some items in stock
     if (gArmsDealersInventory[bArmsDealer][usItemIndex].ubTotalItems) {
       // loop through the array of items
@@ -868,25 +868,25 @@ function GetTimeToFixItemBeingRepaired(ubArmsDealer: UINT8, usItemIndex: UINT16,
 
 function CanDealerTransactItem(ubArmsDealer: UINT8, usItemIndex: UINT16, fPurchaseFromPlayer: BOOLEAN): BOOLEAN {
   switch (ArmsDealerInfo[ubArmsDealer].ubTypeOfArmsDealer) {
-    case ARMS_DEALER_SELLS_ONLY:
+    case Enum198.ARMS_DEALER_SELLS_ONLY:
       if (fPurchaseFromPlayer) {
         // this dealer only sells stuff to player, so he can't buy anything from him
         return FALSE;
       }
       break;
 
-    case ARMS_DEALER_BUYS_ONLY:
+    case Enum198.ARMS_DEALER_BUYS_ONLY:
       if (!fPurchaseFromPlayer) {
         // this dealer only buys stuff from player, so he can't sell anything to him
         return FALSE;
       }
       break;
 
-    case ARMS_DEALER_BUYS_SELLS:
+    case Enum198.ARMS_DEALER_BUYS_SELLS:
       switch (ubArmsDealer) {
-        case ARMS_DEALER_JAKE:
-        case ARMS_DEALER_KEITH:
-        case ARMS_DEALER_FRANZ:
+        case Enum197.ARMS_DEALER_JAKE:
+        case Enum197.ARMS_DEALER_KEITH:
+        case Enum197.ARMS_DEALER_FRANZ:
           if (fPurchaseFromPlayer) {
             // these guys will buy nearly anything from the player, regardless of what they carry for sale!
             return CalcValueOfItemToDealer(ubArmsDealer, usItemIndex, FALSE) > 0;
@@ -900,7 +900,7 @@ function CanDealerTransactItem(ubArmsDealer: UINT8, usItemIndex: UINT16, fPurcha
       }
       break;
 
-    case ARMS_DEALER_REPAIRS:
+    case Enum198.ARMS_DEALER_REPAIRS:
       // repairmen don't have a complete list of what they'll repair in their inventory,
       // so we must check the item's properties instead.
       return CanDealerRepairItem(ubArmsDealer, usItemIndex);
@@ -924,15 +924,15 @@ function CanDealerRepairItem(ubArmsDealer: UINT8, usItemIndex: UINT16): BOOLEAN 
   }
 
   switch (ubArmsDealer) {
-    case ARMS_DEALER_ARNIE:
-    case ARMS_DEALER_PERKO:
+    case Enum197.ARMS_DEALER_ARNIE:
+    case Enum197.ARMS_DEALER_PERKO:
       // repairs ANYTHING non-electronic
       if (!(uiFlags & ITEM_ELECTRONIC)) {
         return TRUE;
       }
       break;
 
-    case ARMS_DEALER_FREDO:
+    case Enum197.ARMS_DEALER_FREDO:
       // repairs ONLY electronics
       if (uiFlags & ITEM_ELECTRONIC) {
         return TRUE;
@@ -1054,14 +1054,14 @@ function DetermineDealerItemCondition(ubArmsDealer: UINT8, usItemIndex: UINT16):
 
 function ItemContainsLiquid(usItemIndex: UINT16): BOOLEAN {
   switch (usItemIndex) {
-    case CANTEEN:
-    case BEER:
-    case ALCOHOL:
-    case JAR_HUMAN_BLOOD:
-    case JAR_CREATURE_BLOOD:
-    case JAR_QUEEN_CREATURE_BLOOD:
-    case JAR_ELIXIR:
-    case GAS_CAN:
+    case Enum225.CANTEEN:
+    case Enum225.BEER:
+    case Enum225.ALCOHOL:
+    case Enum225.JAR_HUMAN_BLOOD:
+    case Enum225.JAR_CREATURE_BLOOD:
+    case Enum225.JAR_QUEEN_CREATURE_BLOOD:
+    case Enum225.JAR_ELIXIR:
+    case Enum225.GAS_CAN:
       return TRUE;
   }
 
@@ -1089,7 +1089,7 @@ function CountDistinctItemsInArmsDealersInventory(ubArmsDealer: UINT8): UINT32 {
   let uiNumOfItems: UINT32 = 0;
   let usItemIndex: UINT16;
 
-  for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
+  for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
     // if there are any items
     if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems > 0) {
       // if there are any items in perfect condition
@@ -1139,7 +1139,7 @@ function CountTotalItemsRepairDealerHasInForRepairs(ubArmsDealer: UINT8): UINT16
     return 0;
 
   // loop through the dealers inventory and count the number of items in for repairs
-  for (usItemIndex = 0; usItemIndex < MAXITEMS; usItemIndex++) {
+  for (usItemIndex = 0; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
     usHowManyInForRepairs += CountSpecificItemsRepairDealerHasInForRepairs(ubArmsDealer, usItemIndex);
   }
 
@@ -1184,7 +1184,7 @@ function AddObjectToArmsDealerInventory(ubArmsDealer: UINT8, pObject: Pointer<OB
       AddItemToArmsDealerInventory(ubArmsDealer, pObject.value.usItem, addressof(SpclItemInfo), 1);
 
       // if any GunAmmoItem is specified
-      if (pObject.value.usGunAmmoItem != NONE) {
+      if (pObject.value.usGunAmmoItem != Enum225.NONE) {
         // if it's regular ammo
         if (Item[pObject.value.usGunAmmoItem].usItemClass == IC_AMMO) {
           // and there are some remaining
@@ -1226,7 +1226,7 @@ function AddObjectToArmsDealerInventory(ubArmsDealer: UINT8, pObject: Pointer<OB
 
   // loop through any detachable attachments and add them as seperate items
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pObject.value.usAttachItem[ubCnt] != NONE) {
+    if (pObject.value.usAttachItem[ubCnt] != Enum225.NONE) {
       // ARM: Note: this is only used for selling, not repairs, so attachmentes are seperated when sold to a dealer
       // If the attachment is detachable
       if (!(Item[pObject.value.usAttachItem[ubCnt]].fFlags & ITEM_INSEPARABLE)) {
@@ -1515,7 +1515,7 @@ function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): BOOLEAN {
 
   // loop through all the items in the dealer's inventory, and drop them all where the dealer was set up.
 
-  for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
+  for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
     // if the dealer has any items of this type
     if (gArmsDealersInventory[bArmsDealer][usItemIndex].ubTotalItems > 0) {
       // if he has any perfect items of this time
@@ -1523,7 +1523,7 @@ function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): BOOLEAN {
         // drop all the perfect items first
 
         // drop stackable items like ammo in stacks of whatever will fit into a large pocket instead of one at a time
-        ubHowManyMaxAtATime = ItemSlotLimit(usItemIndex, BIGPOCK1POS);
+        ubHowManyMaxAtATime = ItemSlotLimit(usItemIndex, Enum261.BIGPOCK1POS);
         if (ubHowManyMaxAtATime < 1) {
           ubHowManyMaxAtATime = 1;
         }
@@ -1604,7 +1604,7 @@ function MakeObjectOutOfDealerItems(usItemIndex: UINT16, pSpclItemInfo: Pointer<
 
   // add any attachments we've been storing
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pSpclItemInfo.value.usAttachment[ubCnt] != NONE) {
+    if (pSpclItemInfo.value.usAttachment[ubCnt] != Enum225.NONE) {
       // store what it is, and its condition
       pObject.value.usAttachItem[ubCnt] = pSpclItemInfo.value.usAttachment[ubCnt];
       pObject.value.bAttachStatus[ubCnt] = pSpclItemInfo.value.bAttachmentStatus[ubCnt];
@@ -1655,7 +1655,7 @@ function GiveObjectToArmsDealerForRepair(ubArmsDealer: UINT8, pObject: Pointer<O
   //		e) If a gun, stripped of any non-ammo-class GunAmmoItems, and bullets
   if (Item[pObject.value.usItem].usItemClass == IC_GUN) {
     // if any GunAmmoItem is specified
-    if (pObject.value.usGunAmmoItem != NONE) {
+    if (pObject.value.usGunAmmoItem != Enum225.NONE) {
       // it better be regular ammo, and empty
       Assert(Item[pObject.value.usGunAmmoItem].usItemClass == IC_AMMO);
       Assert(pObject.value.ubGunShotsLeft == 0);
@@ -1714,7 +1714,7 @@ function WhenWillRepairmanBeAllDoneRepairing(ubArmsDealer: UINT8): UINT32 {
   uiWhenFree = GetWorldTotalMin();
 
   // loop through the dealers inventory
-  for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
+  for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
     // if there is some items in stock
     if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems > 0) {
       for (ubElement = 0; ubElement < gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced; ubElement++) {
@@ -1743,7 +1743,7 @@ function CalculateSpecialItemRepairTime(ubArmsDealer: UINT8, usItemIndex: UINT16
 
   // add time to repair any attachments on it
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pSpclItemInfo.value.usAttachment[ubCnt] != NONE) {
+    if (pSpclItemInfo.value.usAttachment[ubCnt] != Enum225.NONE) {
       // if damaged and repairable
       if ((pSpclItemInfo.value.bAttachmentStatus[ubCnt] < 100) && CanDealerRepairItem(ubArmsDealer, pSpclItemInfo.value.usAttachment[ubCnt])) {
         uiRepairTime += CalculateSimpleItemRepairTime(ubArmsDealer, pSpclItemInfo.value.usAttachment[ubCnt], pSpclItemInfo.value.bAttachmentStatus[ubCnt]);
@@ -1762,7 +1762,7 @@ function CalculateObjectItemRepairTime(ubArmsDealer: UINT8, pItemObject: Pointer
 
   // add time to repair any attachments on it
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pItemObject.value.usAttachItem[ubCnt] != NONE) {
+    if (pItemObject.value.usAttachItem[ubCnt] != Enum225.NONE) {
       // if damaged and repairable
       if ((pItemObject.value.bAttachStatus[ubCnt] < 100) && CanDealerRepairItem(ubArmsDealer, pItemObject.value.usAttachItem[ubCnt])) {
         uiRepairTime += CalculateSimpleItemRepairTime(ubArmsDealer, pItemObject.value.usAttachItem[ubCnt], pItemObject.value.bAttachStatus[ubCnt]);
@@ -1791,7 +1791,7 @@ function CalculateSimpleItemRepairTime(ubArmsDealer: UINT8, usItemIndex: UINT16,
   // repairs on electronic items take twice as long if the guy doesn't have the skill
   // for dealers, this means anyone but Fredo the Electronics guy takes twice as long (but doesn't charge double)
   // (Mind you, current he's the ONLY one who CAN repair Electronics at all!  Oh well.)
-  if ((Item[usItemIndex].fFlags & ITEM_ELECTRONIC) && (ubArmsDealer != ARMS_DEALER_FREDO)) {
+  if ((Item[usItemIndex].fFlags & ITEM_ELECTRONIC) && (ubArmsDealer != Enum197.ARMS_DEALER_FREDO)) {
     uiTimeToRepair *= 2;
   }
 
@@ -1811,7 +1811,7 @@ function CalculateSpecialItemRepairCost(ubArmsDealer: UINT8, usItemIndex: UINT16
 
   // add cost of repairing any attachments on it
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pSpclItemInfo.value.usAttachment[ubCnt] != NONE) {
+    if (pSpclItemInfo.value.usAttachment[ubCnt] != Enum225.NONE) {
       // if damaged and repairable
       if ((pSpclItemInfo.value.bAttachmentStatus[ubCnt] < 100) && CanDealerRepairItem(ubArmsDealer, pSpclItemInfo.value.usAttachment[ubCnt])) {
         uiRepairCost += CalculateSimpleItemRepairCost(ubArmsDealer, pSpclItemInfo.value.usAttachment[ubCnt], pSpclItemInfo.value.bAttachmentStatus[ubCnt]);
@@ -1830,7 +1830,7 @@ function CalculateObjectItemRepairCost(ubArmsDealer: UINT8, pItemObject: Pointer
 
   // add cost of repairing any attachments on it
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pItemObject.value.usAttachItem[ubCnt] != NONE) {
+    if (pItemObject.value.usAttachItem[ubCnt] != Enum225.NONE) {
       // if damaged and repairable
       if ((pItemObject.value.bAttachStatus[ubCnt] < 100) && CanDealerRepairItem(ubArmsDealer, pItemObject.value.usAttachItem[ubCnt])) {
         uiRepairCost += CalculateSimpleItemRepairCost(ubArmsDealer, pItemObject.value.usAttachItem[ubCnt], pItemObject.value.bAttachStatus[ubCnt]);
@@ -1893,7 +1893,7 @@ function SetSpecialItemInfoToDefaults(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>)
   pSpclItemInfo.value.ubImprintID = NO_PROFILE;
 
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    pSpclItemInfo.value.usAttachment[ubCnt] = NONE;
+    pSpclItemInfo.value.usAttachment[ubCnt] = Enum225.NONE;
     pSpclItemInfo.value.bAttachmentStatus[ubCnt] = 0;
   }
 }
@@ -1919,12 +1919,12 @@ function SetSpecialItemInfoFromObject(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>,
   }
 
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pObject.value.usAttachItem[ubCnt] != NONE) {
+    if (pObject.value.usAttachItem[ubCnt] != Enum225.NONE) {
       // store what it is
       pSpclItemInfo.value.usAttachment[ubCnt] = pObject.value.usAttachItem[ubCnt];
       pSpclItemInfo.value.bAttachmentStatus[ubCnt] = pObject.value.bAttachStatus[ubCnt];
     } else {
-      pSpclItemInfo.value.usAttachment[ubCnt] = NONE;
+      pSpclItemInfo.value.usAttachment[ubCnt] = Enum225.NONE;
       pSpclItemInfo.value.bAttachmentStatus[ubCnt] = 0;
     }
   }
@@ -1945,7 +1945,7 @@ function IsItemInfoSpecial(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): BOOLEAN {
 
   // having an attachment makes an item special
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pSpclItemInfo.value.usAttachment[ubCnt] != NONE) {
+    if (pSpclItemInfo.value.usAttachment[ubCnt] != Enum225.NONE) {
       return TRUE;
     }
   }
@@ -1994,13 +1994,13 @@ function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16, fDeal
 
   // figure out the price class this dealer prefers
   switch (ubArmsDealer) {
-    case ARMS_DEALER_JAKE:
+    case Enum197.ARMS_DEALER_JAKE:
       ubDealerPriceClass = PRICE_CLASS_JUNK;
       break;
-    case ARMS_DEALER_KEITH:
+    case Enum197.ARMS_DEALER_KEITH:
       ubDealerPriceClass = PRICE_CLASS_CHEAP;
       break;
-    case ARMS_DEALER_FRANZ:
+    case Enum197.ARMS_DEALER_FRANZ:
       ubDealerPriceClass = PRICE_CLASS_EXPENSIVE;
       break;
 
@@ -2016,13 +2016,13 @@ function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16, fDeal
   // the rest of this function applies only to the "general" dealers ( Jake, Keith, and Franz )
 
   // Micky & Gabby specialize in creature parts & such, the others don't buy these at all (exception: jars)
-  if ((usItemIndex != JAR) && (DoesItemAppearInDealerInventoryList(ARMS_DEALER_MICKY, usItemIndex, TRUE) || DoesItemAppearInDealerInventoryList(ARMS_DEALER_GABBY, usItemIndex, TRUE))) {
+  if ((usItemIndex != Enum225.JAR) && (DoesItemAppearInDealerInventoryList(Enum197.ARMS_DEALER_MICKY, usItemIndex, TRUE) || DoesItemAppearInDealerInventoryList(Enum197.ARMS_DEALER_GABBY, usItemIndex, TRUE))) {
     return 0;
   }
 
-  if ((ubArmsDealer == ARMS_DEALER_KEITH) && (Item[usItemIndex].usItemClass & (IC_GUN | IC_LAUNCHER))) {
+  if ((ubArmsDealer == Enum197.ARMS_DEALER_KEITH) && (Item[usItemIndex].usItemClass & (IC_GUN | IC_LAUNCHER))) {
     // Keith won't buy guns until the Hillbillies are vanquished
-    if (CheckFact(FACT_HILLBILLIES_KILLED, KEITH) == FALSE) {
+    if (CheckFact(Enum170.FACT_HILLBILLIES_KILLED, Enum268.KEITH) == FALSE) {
       return 0;
     }
   }
@@ -2049,14 +2049,14 @@ function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16, fDeal
   // if it's out of their preferred price class
   if (ubDealerPriceClass != ubItemPriceClass) {
     // exception: Gas (Jake's)
-    if (usItemIndex != GAS_CAN) {
+    if (usItemIndex != Enum225.GAS_CAN) {
       // they pay only 1/3 of true value!
       usValueToThisDealer /= 3;
     }
   }
 
   // Tony specializes in guns, weapons, and ammo, so make others pay much less for that kind of stuff
-  if (DoesItemAppearInDealerInventoryList(ARMS_DEALER_TONY, usItemIndex, TRUE)) {
+  if (DoesItemAppearInDealerInventoryList(Enum197.ARMS_DEALER_TONY, usItemIndex, TRUE)) {
     // others pay only 1/2 of that value!
     usValueToThisDealer /= 2;
   }
@@ -2078,10 +2078,10 @@ function LoadIncompleteArmsDealersStatus(hFile: HWFILE, fIncludesElgin: BOOLEAN,
 
   if (!fIncludesElgin) {
     // read 2 fewer element without Elgin or Manny in there...
-    uiDealersSaved = NUM_ARMS_DEALERS - 2;
+    uiDealersSaved = Enum197.NUM_ARMS_DEALERS - 2;
   } else {
     // read one fewer element without Elgin in there...
-    uiDealersSaved = NUM_ARMS_DEALERS - 1;
+    uiDealersSaved = Enum197.NUM_ARMS_DEALERS - 1;
   }
 
   // read in all other dealer's status
@@ -2090,18 +2090,18 @@ function LoadIncompleteArmsDealersStatus(hFile: HWFILE, fIncludesElgin: BOOLEAN,
   }
 
   // read in all other dealer's inventory
-  if (!FileRead(hFile, gArmsDealersInventory, uiDealersSaved * sizeof(DEALER_ITEM_HEADER) * MAXITEMS, addressof(uiNumBytesRead))) {
+  if (!FileRead(hFile, gArmsDealersInventory, uiDealersSaved * sizeof(DEALER_ITEM_HEADER) * Enum225.MAXITEMS, addressof(uiNumBytesRead))) {
     return FALSE;
   }
 
   if (!fIncludesElgin) {
     // initialize Elgin now...
-    InitializeOneArmsDealer(ARMS_DEALER_ELGIN);
+    InitializeOneArmsDealer(Enum197.ARMS_DEALER_ELGIN);
   }
 
   if (!fIncludesManny) {
     // initialize Manny now...
-    InitializeOneArmsDealer(ARMS_DEALER_MANNY);
+    InitializeOneArmsDealer(Enum197.ARMS_DEALER_MANNY);
   }
 
   return TRUE;
@@ -2126,13 +2126,13 @@ function DealerItemIsSafeToStack(usItemIndex: UINT16): BOOLEAN {
 }
 
 function GuaranteeMinimumAlcohol(ubArmsDealer: UINT8): void {
-  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, BEER, (GetDealersMaxItemAmount(ubArmsDealer, BEER) / 3));
-  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, WINE, (GetDealersMaxItemAmount(ubArmsDealer, WINE) / 3));
-  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, ALCOHOL, (GetDealersMaxItemAmount(ubArmsDealer, ALCOHOL) / 3));
+  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, Enum225.BEER, (GetDealersMaxItemAmount(ubArmsDealer, Enum225.BEER) / 3));
+  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, Enum225.WINE, (GetDealersMaxItemAmount(ubArmsDealer, Enum225.WINE) / 3));
+  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, Enum225.ALCOHOL, (GetDealersMaxItemAmount(ubArmsDealer, Enum225.ALCOHOL) / 3));
 }
 
 function ItemIsARocketRifle(sItemIndex: INT16): BOOLEAN {
-  if ((sItemIndex == ROCKET_RIFLE) || (sItemIndex == AUTO_ROCKET_RIFLE)) {
+  if ((sItemIndex == Enum225.ROCKET_RIFLE) || (sItemIndex == Enum225.AUTO_ROCKET_RIFLE)) {
     return TRUE;
   } else {
     return FALSE;

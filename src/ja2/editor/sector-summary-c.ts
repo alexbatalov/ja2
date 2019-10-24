@@ -18,7 +18,7 @@ let gszVersionType: UINT16[][] /* [5][10] */ = [
   "Beta",
   "Release",
 ];
-const GLOBAL_SUMMARY_STATE = RELEASE;
+const GLOBAL_SUMMARY_STATE = Enum55.RELEASE;
 
 // Regular masks
 const GROUND_LEVEL_MASK = 0x01;
@@ -99,7 +99,7 @@ const enum Enum56 {
   ITEMMODE_REAL,
   ITEMMODE_ENEMY,
 }
-let gubSummaryItemMode: UINT8 = ITEMMODE_SCIFI;
+let gubSummaryItemMode: UINT8 = Enum56.ITEMMODE_SCIFI;
 
 let gfItemDetailsMode: BOOLEAN = FALSE;
 
@@ -200,71 +200,71 @@ function CreateSummaryWindow(): void {
   if (gfWorldLoaded)
     gfMapFileDirty = TRUE;
   // Create all of the buttons here
-  iSummaryButton[SUMMARY_BACKGROUND] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 0, 0, 640, 360, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
-  SpecifyDisabledButtonStyle(iSummaryButton[SUMMARY_BACKGROUND], DISABLED_STYLE_NONE);
-  DisableButton(iSummaryButton[SUMMARY_BACKGROUND]);
+  iSummaryButton[Enum58.SUMMARY_BACKGROUND] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 0, 0, 640, 360, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
+  SpecifyDisabledButtonStyle(iSummaryButton[Enum58.SUMMARY_BACKGROUND], Enum29.DISABLED_STYLE_NONE);
+  DisableButton(iSummaryButton[Enum58.SUMMARY_BACKGROUND]);
 
-  iSummaryButton[SUMMARY_OKAY] = CreateTextButton("Okay", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 585, 325, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryOkayCallback);
+  iSummaryButton[Enum58.SUMMARY_OKAY] = CreateTextButton("Okay", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 585, 325, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryOkayCallback);
   // GiveButtonDefaultStatus( iSummaryButton[ SUMMARY_OKAY ], DEFAULT_STATUS_WINDOWS95 );
 
-  iSummaryButton[SUMMARY_GRIDCHECKBOX] = CreateCheckBoxButton(MAP_LEFT, (MAP_BOTTOM + 5), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleGridCallback);
-  ButtonList[iSummaryButton[SUMMARY_GRIDCHECKBOX]].value.uiFlags |= BUTTON_CLICKED_ON;
+  iSummaryButton[Enum58.SUMMARY_GRIDCHECKBOX] = CreateCheckBoxButton(MAP_LEFT, (MAP_BOTTOM + 5), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleGridCallback);
+  ButtonList[iSummaryButton[Enum58.SUMMARY_GRIDCHECKBOX]].value.uiFlags |= BUTTON_CLICKED_ON;
   gfRenderGrid = TRUE;
 
-  iSummaryButton[SUMMARY_PROGRESSCHECKBOX] = CreateCheckBoxButton((MAP_LEFT + 50), (MAP_BOTTOM + 5), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleProgressCallback);
-  ButtonList[iSummaryButton[SUMMARY_PROGRESSCHECKBOX]].value.uiFlags |= BUTTON_CLICKED_ON;
+  iSummaryButton[Enum58.SUMMARY_PROGRESSCHECKBOX] = CreateCheckBoxButton((MAP_LEFT + 50), (MAP_BOTTOM + 5), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleProgressCallback);
+  ButtonList[iSummaryButton[Enum58.SUMMARY_PROGRESSCHECKBOX]].value.uiFlags |= BUTTON_CLICKED_ON;
   gfRenderProgress = TRUE;
 
-  iSummaryButton[SUMMARY_ALL] = CreateTextButton("A", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 110, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
+  iSummaryButton[Enum58.SUMMARY_ALL] = CreateTextButton("A", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 110, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
   if (giCurrentViewLevel == ALL_LEVELS_MASK || giCurrentViewLevel == ALTERNATE_LEVELS_MASK)
-    ButtonList[iSummaryButton[SUMMARY_ALL]].value.uiFlags |= BUTTON_CLICKED_ON;
-  iSummaryButton[SUMMARY_G] = CreateTextButton("G", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 128, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
+    ButtonList[iSummaryButton[Enum58.SUMMARY_ALL]].value.uiFlags |= BUTTON_CLICKED_ON;
+  iSummaryButton[Enum58.SUMMARY_G] = CreateTextButton("G", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 128, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
   if (giCurrentViewLevel == GROUND_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_GROUND_MASK)
-    ButtonList[iSummaryButton[SUMMARY_G]].value.uiFlags |= BUTTON_CLICKED_ON;
-  iSummaryButton[SUMMARY_B1] = CreateTextButton("B1", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 146, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
+    ButtonList[iSummaryButton[Enum58.SUMMARY_G]].value.uiFlags |= BUTTON_CLICKED_ON;
+  iSummaryButton[Enum58.SUMMARY_B1] = CreateTextButton("B1", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 146, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
   if (giCurrentViewLevel == BASEMENT1_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B1_MASK)
-    ButtonList[iSummaryButton[SUMMARY_B1]].value.uiFlags |= BUTTON_CLICKED_ON;
-  iSummaryButton[SUMMARY_B2] = CreateTextButton("B2", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 164, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
+    ButtonList[iSummaryButton[Enum58.SUMMARY_B1]].value.uiFlags |= BUTTON_CLICKED_ON;
+  iSummaryButton[Enum58.SUMMARY_B2] = CreateTextButton("B2", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 164, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
   if (giCurrentViewLevel == BASEMENT2_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B2_MASK)
-    ButtonList[iSummaryButton[SUMMARY_B2]].value.uiFlags |= BUTTON_CLICKED_ON;
-  iSummaryButton[SUMMARY_B3] = CreateTextButton("B3", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 182, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
+    ButtonList[iSummaryButton[Enum58.SUMMARY_B2]].value.uiFlags |= BUTTON_CLICKED_ON;
+  iSummaryButton[Enum58.SUMMARY_B3] = CreateTextButton("B3", SMALLCOMPFONT, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 182, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryToggleLevelCallback);
   if (giCurrentViewLevel == BASEMENT3_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B3_MASK)
-    ButtonList[iSummaryButton[SUMMARY_B3]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_B3]].value.uiFlags |= BUTTON_CLICKED_ON;
 
-  iSummaryButton[SUMMARY_ALTERNATE] = CreateCheckBoxButton(MAP_LEFT, (MAP_BOTTOM + 25), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleAlternateCallback);
+  iSummaryButton[Enum58.SUMMARY_ALTERNATE] = CreateCheckBoxButton(MAP_LEFT, (MAP_BOTTOM + 25), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleAlternateCallback);
   if (gfAlternateMaps)
-    ButtonList[iSummaryButton[SUMMARY_ALTERNATE]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_ALTERNATE]].value.uiFlags |= BUTTON_CLICKED_ON;
 
-  iSummaryButton[SUMMARY_LOAD] = CreateTextButton("LOAD", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryLoadMapCallback);
-  iSummaryButton[SUMMARY_SAVE] = CreateTextButton("SAVE", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 55, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummarySaveMapCallback);
-  iSummaryButton[SUMMARY_OVERRIDE] = CreateCheckBoxButton((MAP_LEFT + 110), (MAP_BOTTOM + 59), "EDITOR\\smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryOverrideCallback);
+  iSummaryButton[Enum58.SUMMARY_LOAD] = CreateTextButton("LOAD", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryLoadMapCallback);
+  iSummaryButton[Enum58.SUMMARY_SAVE] = CreateTextButton("SAVE", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 55, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummarySaveMapCallback);
+  iSummaryButton[Enum58.SUMMARY_OVERRIDE] = CreateCheckBoxButton((MAP_LEFT + 110), (MAP_BOTTOM + 59), "EDITOR\\smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryOverrideCallback);
 
-  iSummaryButton[SUMMARY_UPDATE] = CreateTextButton("Update", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 255, 15, 40, 16, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryUpdateCallback);
+  iSummaryButton[Enum58.SUMMARY_UPDATE] = CreateTextButton("Update", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 255, 15, 40, 16, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryUpdateCallback);
 
-  iSummaryButton[SUMMARY_REAL] = CreateCheckBoxButton(350, 47, "EDITOR\\radiobutton.sti", MSYS_PRIORITY_HIGH, SummaryRealCallback);
-  iSummaryButton[SUMMARY_SCIFI] = CreateCheckBoxButton(376, 47, "EDITOR\\radiobutton.sti", MSYS_PRIORITY_HIGH, SummarySciFiCallback);
-  iSummaryButton[SUMMARY_ENEMY] = CreateCheckBoxButton(350, 60, "EDITOR\\radiobutton.sti", MSYS_PRIORITY_HIGH, SummaryEnemyCallback);
+  iSummaryButton[Enum58.SUMMARY_REAL] = CreateCheckBoxButton(350, 47, "EDITOR\\radiobutton.sti", MSYS_PRIORITY_HIGH, SummaryRealCallback);
+  iSummaryButton[Enum58.SUMMARY_SCIFI] = CreateCheckBoxButton(376, 47, "EDITOR\\radiobutton.sti", MSYS_PRIORITY_HIGH, SummarySciFiCallback);
+  iSummaryButton[Enum58.SUMMARY_ENEMY] = CreateCheckBoxButton(350, 60, "EDITOR\\radiobutton.sti", MSYS_PRIORITY_HIGH, SummaryEnemyCallback);
 
   // SetButtonFastHelpText( iSummaryButton[ SUMMARY_SCIFI ], L"Display items that appear in SciFi mode." );
   // SetButtonFastHelpText( iSummaryButton[ SUMMARY_REAL ], L"Display items that appear in Realistic mode." );
   switch (gubSummaryItemMode) {
-    case ITEMMODE_SCIFI:
-      ButtonList[iSummaryButton[SUMMARY_SCIFI]].value.uiFlags |= BUTTON_CLICKED_ON;
+    case Enum56.ITEMMODE_SCIFI:
+      ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].value.uiFlags |= BUTTON_CLICKED_ON;
       break;
-    case ITEMMODE_REAL:
-      ButtonList[iSummaryButton[SUMMARY_REAL]].value.uiFlags |= BUTTON_CLICKED_ON;
+    case Enum56.ITEMMODE_REAL:
+      ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].value.uiFlags |= BUTTON_CLICKED_ON;
       break;
-    case ITEMMODE_ENEMY:
-      ButtonList[iSummaryButton[SUMMARY_ENEMY]].value.uiFlags |= BUTTON_CLICKED_ON;
+    case Enum56.ITEMMODE_ENEMY:
+      ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags |= BUTTON_CLICKED_ON;
       break;
   }
 
   // Init the textinput field.
-  InitTextInputModeWithScheme(DEFAULT_SCHEME);
+  InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
   AddUserInputField(NULL); // just so we can use short cut keys while not typing.
-  AddTextInputField(MAP_LEFT + 112, MAP_BOTTOM + 75, 100, 18, MSYS_PRIORITY_HIGH, "", 20, INPUTTYPE_EXCLUSIVE_DOSFILENAME);
+  AddTextInputField(MAP_LEFT + 112, MAP_BOTTOM + 75, 100, 18, MSYS_PRIORITY_HIGH, "", 20, Enum383.INPUTTYPE_EXCLUSIVE_DOSFILENAME);
 
-  for (i = 1; i < NUM_SUMMARY_BUTTONS; i++)
+  for (i = 1; i < Enum58.NUM_SUMMARY_BUTTONS; i++)
     HideButton(iSummaryButton[i]);
 
   MSYS_DefineRegion(addressof(MapRegion), MAP_LEFT, MAP_TOP, MAP_RIGHT, MAP_BOTTOM, MSYS_PRIORITY_HIGH, 0, MapMoveCallback, MapClickCallback);
@@ -278,20 +278,20 @@ function CreateSummaryWindow(): void {
   if (!gfWorldLoaded) {
     gfConfirmExitFirst = FALSE;
     ReleaseSummaryWindow();
-    DisableButton(iSummaryButton[SUMMARY_OKAY]);
-    DisableButton(iSummaryButton[SUMMARY_SAVE]);
+    DisableButton(iSummaryButton[Enum58.SUMMARY_OKAY]);
+    DisableButton(iSummaryButton[Enum58.SUMMARY_SAVE]);
   }
   if (gfAutoLoadA9) {
     gfAutoLoadA9++;
     gsSelSectorX = 9;
     gsSelSectorY = 1;
     gpCurrentSectorSummary = gpSectorSummary[8][0][0];
-    ButtonList[iSummaryButton[SUMMARY_LOAD]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_LOAD]].value.uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
 function AutoLoadMap(): void {
-  SummaryLoadMapCallback(ButtonList[iSummaryButton[SUMMARY_LOAD]], MSYS_CALLBACK_REASON_LBUTTON_UP);
+  SummaryLoadMapCallback(ButtonList[iSummaryButton[Enum58.SUMMARY_LOAD]], MSYS_CALLBACK_REASON_LBUTTON_UP);
   if (gfWorldLoaded)
     DestroySummaryWindow();
   gfAutoLoadA9 = FALSE;
@@ -306,13 +306,13 @@ function ReleaseSummaryWindow(): void {
   uiCurrTimer = GetJA2Clock();
   if (!gfWorldLoaded || uiCurrTimer - giInitTimer < 400) {
     // make window persistant
-    for (i = 1; i < NUM_SUMMARY_BUTTONS; i++)
+    for (i = 1; i < Enum58.NUM_SUMMARY_BUTTONS; i++)
       ShowButton(iSummaryButton[i]);
-    HideButton(iSummaryButton[SUMMARY_UPDATE]);
-    HideButton(iSummaryButton[SUMMARY_OVERRIDE]);
-    HideButton(iSummaryButton[SUMMARY_REAL]);
-    HideButton(iSummaryButton[SUMMARY_SCIFI]);
-    HideButton(iSummaryButton[SUMMARY_ENEMY]);
+    HideButton(iSummaryButton[Enum58.SUMMARY_UPDATE]);
+    HideButton(iSummaryButton[Enum58.SUMMARY_OVERRIDE]);
+    HideButton(iSummaryButton[Enum58.SUMMARY_REAL]);
+    HideButton(iSummaryButton[Enum58.SUMMARY_SCIFI]);
+    HideButton(iSummaryButton[Enum58.SUMMARY_ENEMY]);
     MSYS_EnableRegion(addressof(MapRegion));
     gfPersistantSummary = TRUE;
     gfOverrideDirty = TRUE;
@@ -326,7 +326,7 @@ function DestroySummaryWindow(): void {
   let i: INT32;
   if (!gfSummaryWindowActive)
     return;
-  for (i = 0; i < NUM_SUMMARY_BUTTONS; i++) {
+  for (i = 0; i < Enum58.NUM_SUMMARY_BUTTONS; i++) {
     RemoveButton(iSummaryButton[i]);
   }
 
@@ -546,19 +546,19 @@ function RenderItemDetails(): void {
   mprintf(364, 62, "Enemy");
   yp = 20;
   xp = 5;
-  if (gubSummaryItemMode != ITEMMODE_ENEMY && gpWorldItemsSummaryArray) {
+  if (gubSummaryItemMode != Enum56.ITEMMODE_ENEMY && gpWorldItemsSummaryArray) {
     memset(uiTriggerQuantity, 0, 32);
     memset(uiActionQuantity, 0, 32);
     memset(uiTriggerExistChance, 0, 32);
     memset(uiActionExistChance, 0, 32);
-    for (index = 1; index < MAXITEMS; index++) {
+    for (index = 1; index < Enum225.MAXITEMS; index++) {
       uiQuantity = 0;
       uiExistChance = 0;
       uiStatus = 0;
       for (i = 0; i < gusWorldItemsSummaryArraySize; i++) {
-        if (index == SWITCH || index == ACTION_ITEM) {
+        if (index == Enum225.SWITCH || index == Enum225.ACTION_ITEM) {
           if (gpWorldItemsSummaryArray[i].o.usItem == index) {
-            if (gubSummaryItemMode == ITEMMODE_SCIFI && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_REALISTIC_ONLY) || gubSummaryItemMode == ITEMMODE_REAL && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_SCIFI_ONLY)) {
+            if (gubSummaryItemMode == Enum56.ITEMMODE_SCIFI && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_REALISTIC_ONLY) || gubSummaryItemMode == Enum56.ITEMMODE_REAL && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_SCIFI_ONLY)) {
               pItem = addressof(gpWorldItemsSummaryArray[i].o);
               if (!pItem.value.bFrequency)
                 bFreqIndex = 7;
@@ -578,7 +578,7 @@ function RenderItemDetails(): void {
                 bFreqIndex = 6;
               else
                 continue;
-              if (index == SWITCH) {
+              if (index == Enum225.SWITCH) {
                 uiTriggerQuantity[bFreqIndex]++;
                 uiTriggerExistChance[bFreqIndex] += 100 - gpWorldItemsSummaryArray[i].ubNonExistChance;
               } else {
@@ -590,7 +590,7 @@ function RenderItemDetails(): void {
           continue;
         }
         if (gpWorldItemsSummaryArray[i].o.usItem == index) {
-          if (gubSummaryItemMode == ITEMMODE_SCIFI && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_REALISTIC_ONLY) || gubSummaryItemMode == ITEMMODE_REAL && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_SCIFI_ONLY)) {
+          if (gubSummaryItemMode == Enum56.ITEMMODE_SCIFI && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_REALISTIC_ONLY) || gubSummaryItemMode == Enum56.ITEMMODE_REAL && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_SCIFI_ONLY)) {
             pItem = addressof(gpWorldItemsSummaryArray[i].o);
             uiExistChance += (100 - gpWorldItemsSummaryArray[i].ubNonExistChance) * pItem.value.ubNumberOfObjects;
             uiStatus += pItem.value.bStatus[0];
@@ -678,7 +678,7 @@ function RenderItemDetails(): void {
         }
       }
     }
-  } else if (gubSummaryItemMode == ITEMMODE_ENEMY) {
+  } else if (gubSummaryItemMode == Enum56.ITEMMODE_ENEMY) {
     SetFontForeground(FONT_YELLOW);
     mprintf(xp, yp, "PRIORITY ENEMY DROPPED ITEMS");
     yp += 10;
@@ -689,7 +689,7 @@ function RenderItemDetails(): void {
       mprintf(xp, yp, "None");
       yp += 10;
     } else
-      for (index = 1; index < MAXITEMS; index++) {
+      for (index = 1; index < Enum225.MAXITEMS; index++) {
         uiQuantity = 0;
         uiExistChance = 0;
         uiStatus = 0;
@@ -748,7 +748,7 @@ function RenderItemDetails(): void {
       mprintf(xp, yp, "None");
       yp += 10;
     }
-    for (index = 1; index < MAXITEMS; index++) {
+    for (index = 1; index < Enum225.MAXITEMS; index++) {
       uiQuantity = 0;
       uiExistChance = 0;
       uiStatus = 0;
@@ -808,11 +808,11 @@ function RenderSummaryWindow(): void {
   if (gfRenderSummary) {
     gfRenderSummary = FALSE;
     gfRenderMap = TRUE;
-    for (i = 1; i < NUM_SUMMARY_BUTTONS; i++) {
+    for (i = 1; i < Enum58.NUM_SUMMARY_BUTTONS; i++) {
       MarkAButtonDirty(iSummaryButton[i]);
     }
 
-    DrawButton(iSummaryButton[SUMMARY_BACKGROUND]);
+    DrawButton(iSummaryButton[Enum58.SUMMARY_BACKGROUND]);
     InvalidateRegion(0, 0, 640, 360);
 
     SetFont(BLOCKFONT2);
@@ -835,7 +835,7 @@ function RenderSummaryWindow(): void {
       let str: UINT16[] /* [100] */;
       let fSectorSummaryExists: BOOLEAN = FALSE;
       if (gusNumEntriesWithOutdatedOrNoSummaryInfo && !gfOutdatedDenied) {
-        DisableButton(iSummaryButton[SUMMARY_LOAD]);
+        DisableButton(iSummaryButton[Enum58.SUMMARY_LOAD]);
         SetFontForeground(FONT_YELLOW);
         mprintf(10, 20, "You currently have %d outdated maps.", gusNumEntriesWithOutdatedOrNoSummaryInfo);
         mprintf(10, 30, "The more maps that need to be updated, the longer it takes.  It'll take ");
@@ -844,7 +844,7 @@ function RenderSummaryWindow(): void {
         SetFontForeground(FONT_LTRED);
         mprintf(10, 65, "Do you wish to regenerate info for ALL these maps at this time (y/n)?");
       } else if (!gsSelSectorX && !gsSectorX || gfTempFile) {
-        DisableButton(iSummaryButton[SUMMARY_LOAD]);
+        DisableButton(iSummaryButton[Enum58.SUMMARY_LOAD]);
         SetFontForeground(FONT_LTRED);
         mprintf(10, 20, "There is no sector currently selected.");
         if (gfTempFile) {
@@ -971,7 +971,7 @@ function RenderSummaryWindow(): void {
               break;
           }
         } else {
-          DisableButton(iSummaryButton[SUMMARY_LOAD]);
+          DisableButton(iSummaryButton[Enum58.SUMMARY_LOAD]);
         }
         if (fSectorSummaryExists) {
           switch (giCurrLevel) {
@@ -1001,12 +1001,12 @@ function RenderSummaryWindow(): void {
               break;
           }
           swprintf(gszDisplayName, gszFilename);
-          EnableButton(iSummaryButton[SUMMARY_LOAD]);
+          EnableButton(iSummaryButton[Enum58.SUMMARY_LOAD]);
           if (gpCurrentSectorSummary) {
             if (gpCurrentSectorSummary.value.ubSummaryVersion < GLOBAL_SUMMARY_VERSION)
-              ShowButton(iSummaryButton[SUMMARY_UPDATE]);
+              ShowButton(iSummaryButton[Enum58.SUMMARY_UPDATE]);
             else
-              HideButton(iSummaryButton[SUMMARY_UPDATE]);
+              HideButton(iSummaryButton[Enum58.SUMMARY_UPDATE]);
             if (!gfAlternateMaps)
               SetFontForeground(FONT_YELLOW);
             else
@@ -1020,9 +1020,9 @@ function RenderSummaryWindow(): void {
               RenderItemDetails();
             } else {
               mprintf(10, 20, "Summary Information for sector %s:", str);
-              HideButton(iSummaryButton[SUMMARY_REAL]);
-              HideButton(iSummaryButton[SUMMARY_SCIFI]);
-              HideButton(iSummaryButton[SUMMARY_ENEMY]);
+              HideButton(iSummaryButton[Enum58.SUMMARY_REAL]);
+              HideButton(iSummaryButton[Enum58.SUMMARY_SCIFI]);
+              HideButton(iSummaryButton[Enum58.SUMMARY_ENEMY]);
               RenderSectorInformation();
             }
           } else {
@@ -1034,7 +1034,7 @@ function RenderSummaryWindow(): void {
               mprintf(10, 20, "Summary Information for sector %s", str);
               mprintf(10, 30, "does not exist.");
             }
-            ShowButton(iSummaryButton[SUMMARY_UPDATE]);
+            ShowButton(iSummaryButton[Enum58.SUMMARY_UPDATE]);
           }
         } else {
           if (!gfAlternateMaps)
@@ -1078,12 +1078,12 @@ function RenderSummaryWindow(): void {
               break;
           }
           swprintf(gszDisplayName, gszFilename);
-          DisableButton(iSummaryButton[SUMMARY_LOAD]);
+          DisableButton(iSummaryButton[Enum58.SUMMARY_LOAD]);
         }
       SPECIALCASE_LABEL:
         if (gfOverrideDirty && gfPersistantSummary)
           CalculateOverrideStatus();
-        if (gubOverrideStatus == INACTIVE) {
+        if (gubOverrideStatus == Enum57.INACTIVE) {
           if (!gfAlternateMaps)
             SetFontForeground(FONT_LTKHAKI);
           else
@@ -1096,7 +1096,7 @@ function RenderSummaryWindow(): void {
           else
             SetFontForeground(FONT_LTBLUE);
           mprintf(MAP_LEFT + 110, MAP_BOTTOM + 46, "FILE:  %s", gszDisplayName);
-          if (gubOverrideStatus == READONLY) {
+          if (gubOverrideStatus == Enum57.READONLY) {
             SetFontForeground((gfOverride ? FONT_YELLOW : FONT_LTRED));
             mprintf(MAP_LEFT + 124, MAP_BOTTOM + 61, "Override READONLY");
           } else {
@@ -1438,36 +1438,36 @@ function SummaryToggleAlternateCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
 
 function SummarySciFiCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[iSummaryButton[SUMMARY_SCIFI]].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
-    ButtonList[iSummaryButton[SUMMARY_REAL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[SUMMARY_REAL]].value.uiFlags |= BUTTON_DIRTY;
-    ButtonList[iSummaryButton[SUMMARY_ENEMY]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[SUMMARY_ENEMY]].value.uiFlags |= BUTTON_DIRTY;
-    gubSummaryItemMode = ITEMMODE_SCIFI;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags |= BUTTON_DIRTY;
+    gubSummaryItemMode = Enum56.ITEMMODE_SCIFI;
     gfRenderSummary = TRUE;
   }
 }
 
 function SummaryRealCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[iSummaryButton[SUMMARY_SCIFI]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[SUMMARY_SCIFI]].value.uiFlags |= BUTTON_DIRTY;
-    ButtonList[iSummaryButton[SUMMARY_REAL]].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
-    ButtonList[iSummaryButton[SUMMARY_ENEMY]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[SUMMARY_ENEMY]].value.uiFlags |= BUTTON_DIRTY;
-    gubSummaryItemMode = ITEMMODE_REAL;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags |= BUTTON_DIRTY;
+    gubSummaryItemMode = Enum56.ITEMMODE_REAL;
     gfRenderSummary = TRUE;
   }
 }
 
 function SummaryEnemyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[iSummaryButton[SUMMARY_SCIFI]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[SUMMARY_SCIFI]].value.uiFlags |= BUTTON_DIRTY;
-    ButtonList[iSummaryButton[SUMMARY_REAL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[SUMMARY_REAL]].value.uiFlags |= BUTTON_DIRTY;
-    ButtonList[iSummaryButton[SUMMARY_ENEMY]].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
-    gubSummaryItemMode = ITEMMODE_ENEMY;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    gubSummaryItemMode = Enum56.ITEMMODE_ENEMY;
     gfRenderSummary = TRUE;
   }
 }
@@ -1745,22 +1745,22 @@ function SummaryToggleLevelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
     if (GetActiveFieldID() == 1)
       SelectNextField();
     gfRenderSummary = TRUE;
-    for (i = SUMMARY_ALL; i <= SUMMARY_B3; i++) {
+    for (i = Enum58.SUMMARY_ALL; i <= Enum58.SUMMARY_B3; i++) {
       if (btn.value.IDNum == iSummaryButton[i]) {
         switch (i) {
-          case SUMMARY_ALL:
+          case Enum58.SUMMARY_ALL:
             giCurrentViewLevel = ALL_LEVELS_MASK;
             break;
-          case SUMMARY_G:
+          case Enum58.SUMMARY_G:
             giCurrentViewLevel = GROUND_LEVEL_MASK;
             break;
-          case SUMMARY_B1:
+          case Enum58.SUMMARY_B1:
             giCurrentViewLevel = BASEMENT1_LEVEL_MASK;
             break;
-          case SUMMARY_B2:
+          case Enum58.SUMMARY_B2:
             giCurrentViewLevel = BASEMENT2_LEVEL_MASK;
             break;
-          case SUMMARY_B3:
+          case Enum58.SUMMARY_B3:
             giCurrentViewLevel = BASEMENT3_LEVEL_MASK;
             break;
         }
@@ -1795,7 +1795,7 @@ function SummaryLoadMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     SetProgressBarMsgAttributes(0, SMALLCOMPFONT, FONT_BLACK, FONT_BLACK);
 
     if (ExternalLoadMap(gszDisplayName)) {
-      EnableButton(iSummaryButton[SUMMARY_OKAY]);
+      EnableButton(iSummaryButton[Enum58.SUMMARY_OKAY]);
       gsSectorX = gsSelSectorX;
       gsSectorY = gsSelSectorY;
       gfOverrideDirty = TRUE;
@@ -1828,8 +1828,8 @@ function SummaryLoadMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 function SummarySaveMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfRenderSummary = TRUE;
-    if (gubOverrideStatus == INACTIVE || gfOverride == TRUE) {
-      if (gubOverrideStatus == READONLY) {
+    if (gubOverrideStatus == Enum57.INACTIVE || gfOverride == TRUE) {
+      if (gubOverrideStatus == Enum57.READONLY) {
         let filename: UINT8[] /* [40] */;
         sprintf(filename, "MAPS\\%S", gszDisplayName);
         FileClearAttributes(filename);
@@ -1851,9 +1851,9 @@ function SummaryOverrideCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
     gfOverride ^= TRUE;
     gfRenderSummary = TRUE;
     if (gfOverride)
-      EnableButton(iSummaryButton[SUMMARY_SAVE]);
+      EnableButton(iSummaryButton[Enum58.SUMMARY_SAVE]);
     else
-      DisableButton(iSummaryButton[SUMMARY_SAVE]);
+      DisableButton(iSummaryButton[Enum58.SUMMARY_SAVE]);
   }
 }
 
@@ -1878,21 +1878,21 @@ function CalculateOverrideStatus(): void {
   if (GetFileFirst(szFilename, addressof(FileInfo))) {
     if (gfWorldLoaded) {
       if (FileInfo.uiFileAttribs & (FILE_IS_READONLY | FILE_IS_SYSTEM))
-        gubOverrideStatus = READONLY;
+        gubOverrideStatus = Enum57.READONLY;
       else
-        gubOverrideStatus = OVERWRITE;
-      ShowButton(iSummaryButton[SUMMARY_OVERRIDE]);
-      ButtonList[iSummaryButton[SUMMARY_OVERRIDE]].value.uiFlags &= (~BUTTON_CLICKED_ON);
+        gubOverrideStatus = Enum57.OVERWRITE;
+      ShowButton(iSummaryButton[Enum58.SUMMARY_OVERRIDE]);
+      ButtonList[iSummaryButton[Enum58.SUMMARY_OVERRIDE]].value.uiFlags &= (~BUTTON_CLICKED_ON);
       GetFileClose(addressof(FileInfo));
-      DisableButton(iSummaryButton[SUMMARY_SAVE]);
+      DisableButton(iSummaryButton[Enum58.SUMMARY_SAVE]);
     }
     if (gfTempFile)
-      EnableButton(iSummaryButton[SUMMARY_LOAD]);
+      EnableButton(iSummaryButton[Enum58.SUMMARY_LOAD]);
   } else {
-    gubOverrideStatus = INACTIVE;
-    HideButton(iSummaryButton[SUMMARY_OVERRIDE]);
+    gubOverrideStatus = Enum57.INACTIVE;
+    HideButton(iSummaryButton[Enum58.SUMMARY_OVERRIDE]);
     if (gfWorldLoaded)
-      EnableButton(iSummaryButton[SUMMARY_SAVE]);
+      EnableButton(iSummaryButton[Enum58.SUMMARY_SAVE]);
   }
 }
 
@@ -2141,7 +2141,7 @@ function SummaryNewGroundLevelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
     gfPendingBasement = FALSE;
     gfPendingCaves = FALSE;
     if (gfWorldLoaded) {
-      iCurrentAction = ACTION_NEW_MAP;
+      iCurrentAction = Enum37.ACTION_NEW_MAP;
     } else {
       CreateNewMap();
     }
@@ -2358,11 +2358,11 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
   let pSF: Pointer<SUMMARYFILE>;
   // Create one huge assed button
   gfMajorUpdate = TRUE;
-  iSummaryButton[SUMMARY_BACKGROUND] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 0, 0, 640, 480, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
-  SpecifyDisabledButtonStyle(iSummaryButton[SUMMARY_BACKGROUND], DISABLED_STYLE_NONE);
-  DisableButton(iSummaryButton[SUMMARY_BACKGROUND]);
+  iSummaryButton[Enum58.SUMMARY_BACKGROUND] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 0, 0, 640, 480, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
+  SpecifyDisabledButtonStyle(iSummaryButton[Enum58.SUMMARY_BACKGROUND], Enum29.DISABLED_STYLE_NONE);
+  DisableButton(iSummaryButton[Enum58.SUMMARY_BACKGROUND]);
   // Draw it
-  DrawButton(iSummaryButton[SUMMARY_BACKGROUND]);
+  DrawButton(iSummaryButton[Enum58.SUMMARY_BACKGROUND]);
   InvalidateRegion(0, 0, 640, 480);
   SetFont(HUGEFONT);
   SetFontForeground(FONT_RED);
@@ -2459,7 +2459,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
   gfUpdatingNow = FALSE;
   InvalidateScreen();
 
-  RemoveButton(iSummaryButton[SUMMARY_BACKGROUND]);
+  RemoveButton(iSummaryButton[Enum58.SUMMARY_BACKGROUND]);
   gfMajorUpdate = FALSE;
   gfMustForceUpdateAllMaps = FALSE;
   gusNumberOfMapsToBeForceUpdated = 0;
@@ -2500,7 +2500,7 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
     // Don't have one, so generate them
     if (gpCurrentSectorSummary.value.ubSummaryVersion == GLOBAL_SUMMARY_VERSION)
       gusNumEntriesWithOutdatedOrNoSummaryInfo++;
-    SummaryUpdateCallback(ButtonList[iSummaryButton[SUMMARY_UPDATE]], MSYS_CALLBACK_REASON_LBUTTON_UP);
+    SummaryUpdateCallback(ButtonList[iSummaryButton[Enum58.SUMMARY_UPDATE]], MSYS_CALLBACK_REASON_LBUTTON_UP);
     gpCurrentSectorSummary = gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][giCurrLevel];
   }
   // Open the original map for the sector
@@ -2533,9 +2533,9 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
     return;
   }
   // Passed the gauntlet, so now allocate memory for it, and load all the world items into this array.
-  ShowButton(iSummaryButton[SUMMARY_SCIFI]);
-  ShowButton(iSummaryButton[SUMMARY_REAL]);
-  ShowButton(iSummaryButton[SUMMARY_ENEMY]);
+  ShowButton(iSummaryButton[Enum58.SUMMARY_SCIFI]);
+  ShowButton(iSummaryButton[Enum58.SUMMARY_REAL]);
+  ShowButton(iSummaryButton[Enum58.SUMMARY_ENEMY]);
   gpWorldItemsSummaryArray = MemAlloc(sizeof(WORLDITEM) * uiNumItems);
   gusWorldItemsSummaryArraySize = gpCurrentSectorSummary.value.usNumItems;
   FileRead(hfile, gpWorldItemsSummaryArray, sizeof(WORLDITEM) * uiNumItems, addressof(uiNumBytesRead));

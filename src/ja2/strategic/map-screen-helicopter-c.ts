@@ -194,7 +194,7 @@ function HandleHeliEnteringSector(sX: INT16, sY: INT16): BOOLEAN {
   // any baddies?
   if (ubNumEnemies > 0) {
     // if the player didn't know about these prior to the chopper's arrival
-    if (WhatPlayerKnowsAboutEnemiesInSector(sX, sY) == KNOWS_NOTHING) {
+    if (WhatPlayerKnowsAboutEnemiesInSector(sX, sY) == Enum159.KNOWS_NOTHING) {
       // but Skyrider notices them
       if (DoesSkyriderNoticeEnemiesInSector(ubNumEnemies) == TRUE) {
         // if just passing through (different quotes are used below if it's his final destination)
@@ -315,7 +315,7 @@ function FindLocationOfClosestRefuelSite(fMustBeAvailable: BOOLEAN): INT32 {
   let iClosestLocation: INT32 = -1;
 
   // find shortest distance to refuel site
-  for (iCounter = 0; iCounter < NUMBER_OF_REFUEL_SITES; iCounter++) {
+  for (iCounter = 0; iCounter < Enum137.NUMBER_OF_REFUEL_SITES; iCounter++) {
     // if this refuelling site is available
     if ((fRefuelingSiteAvailable[iCounter]) || (fMustBeAvailable == FALSE)) {
       // find if sector is under control, find distance from heli to it
@@ -389,7 +389,7 @@ function GetCostOfPassageForHelicopter(sX: INT16, sY: INT16): INT32 {
 
 function SkyriderDestroyed(): void {
   // remove any arrival events for the helicopter's group
-  DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, pVehicleList[iHelicopterVehicleId].ubMovementGroup);
+  DeleteStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pVehicleList[iHelicopterVehicleId].ubMovementGroup);
 
   // kill eveyone on board
   KillAllInVehicle(iHelicopterVehicleId);
@@ -397,7 +397,7 @@ function SkyriderDestroyed(): void {
   // kill skyrider
   fSkyRiderAvailable = FALSE;
   SoldierSkyRider.bLife = 0;
-  gMercProfiles[SKYRIDER].bLife = 0;
+  gMercProfiles[Enum268.SKYRIDER].bLife = 0;
 
   // heli no longer available
   fHelicopterAvailable = FALSE;
@@ -406,7 +406,7 @@ function SkyriderDestroyed(): void {
   fHelicopterDestroyed = TRUE;
 
   // zero out balance due
-  gMercProfiles[SKYRIDER].iBalance = 0;
+  gMercProfiles[Enum268.SKYRIDER].iBalance = 0;
   //	iTotalHeliDistanceSinceRefuel = 0;
   iTotalAccumulatedCostByPlayer = 0;
 
@@ -462,12 +462,12 @@ function IsHelicopterPilotAvailable(): BOOLEAN {
   }
 
   // owe any money to skyrider?
-  if (gMercProfiles[SKYRIDER].iBalance < 0) {
+  if (gMercProfiles[Enum268.SKYRIDER].iBalance < 0) {
     return FALSE;
   }
 
   // Drassen too disloyal to wanna help player?
-  if (CheckFact(FACT_LOYALTY_LOW, SKYRIDER)) {
+  if (CheckFact(Enum170.FACT_LOYALTY_LOW, Enum268.SKYRIDER)) {
     return FALSE;
   }
 
@@ -516,7 +516,7 @@ function StartHoverTime(): void {
   uiStartHoverTime = GetWorldTotalMin();
 
   // post event..to call handle hover
-  AddStrategicEvent(EVENT_HELICOPTER_HOVER_TOO_LONG, GetWorldTotalMin() + TIME_DELAY_FOR_HOVER_WAIT, 0);
+  AddStrategicEvent(Enum132.EVENT_HELICOPTER_HOVER_TOO_LONG, GetWorldTotalMin() + TIME_DELAY_FOR_HOVER_WAIT, 0);
 
   return;
 }
@@ -525,7 +525,7 @@ function HandleHeliHoverLong(): void {
   // post message about hovering too long
   if (fHoveringHelicopter) {
     // proper event, post next one
-    AddStrategicEvent(EVENT_HELICOPTER_HOVER_WAY_TOO_LONG, uiStartHoverTime + TIME_DELAY_FOR_HOVER_WAIT_TOO_LONG, 0);
+    AddStrategicEvent(Enum132.EVENT_HELICOPTER_HOVER_WAY_TOO_LONG, uiStartHoverTime + TIME_DELAY_FOR_HOVER_WAIT_TOO_LONG, 0);
 
     // inform player
     HeliCharacterDialogue(pSkyRider, HOVERING_A_WHILE);
@@ -655,7 +655,7 @@ function HeliCharacterDialogue(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: UINT1
   // ARM: we could just return, but since various flags are often being set it's safer to honk so it gets fixed right!
   Assert(fSkyRiderAvailable);
 
-  return CharacterDialogue(SKYRIDER, usQuoteNum, uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
+  return CharacterDialogue(Enum268.SKYRIDER, usQuoteNum, uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
 }
 
 function GetNumberOfPassengersInHelicopter(): INT32 {
@@ -671,7 +671,7 @@ function GetNumberOfPassengersInHelicopter(): INT32 {
 function IsRefuelSiteInSector(sMapX: INT16, sMapY: INT16): BOOLEAN {
   let iCounter: INT32 = 0;
 
-  for (iCounter = 0; iCounter < NUMBER_OF_REFUEL_SITES; iCounter++) {
+  for (iCounter = 0; iCounter < Enum137.NUMBER_OF_REFUEL_SITES; iCounter++) {
     if ((ubRefuelList[iCounter][0] == sMapX) && (ubRefuelList[iCounter][1] == sMapY)) {
       return TRUE;
     }
@@ -686,9 +686,9 @@ function UpdateRefuelSiteAvailability(): void {
   // Generally, only Drassen is initially available for refuelling
   // Estoni must first be captured (although player may already have it when he gets Skyrider!)
 
-  for (iCounter = 0; iCounter < NUMBER_OF_REFUEL_SITES; iCounter++) {
+  for (iCounter = 0; iCounter < Enum137.NUMBER_OF_REFUEL_SITES; iCounter++) {
     // if enemy controlled sector (ground OR air, don't want to fly into enemy air territory)
-    if ((StrategicMap[CALCULATE_STRATEGIC_INDEX(ubRefuelList[iCounter][0], ubRefuelList[iCounter][1])].fEnemyControlled == TRUE) || (StrategicMap[CALCULATE_STRATEGIC_INDEX(ubRefuelList[iCounter][0], ubRefuelList[iCounter][1])].fEnemyAirControlled == TRUE) || ((iCounter == ESTONI_REFUELING_SITE) && (CheckFact(FACT_ESTONI_REFUELLING_POSSIBLE, 0) == FALSE))) {
+    if ((StrategicMap[CALCULATE_STRATEGIC_INDEX(ubRefuelList[iCounter][0], ubRefuelList[iCounter][1])].fEnemyControlled == TRUE) || (StrategicMap[CALCULATE_STRATEGIC_INDEX(ubRefuelList[iCounter][0], ubRefuelList[iCounter][1])].fEnemyAirControlled == TRUE) || ((iCounter == Enum137.ESTONI_REFUELING_SITE) && (CheckFact(Enum170.FACT_ESTONI_REFUELLING_POSSIBLE, 0) == FALSE))) {
       // mark refueling site as unavailable
       fRefuelingSiteAvailable[iCounter] = FALSE;
     } else {
@@ -711,12 +711,12 @@ function SetUpHelicopterForPlayer(sX: INT16, sY: INT16): void {
     fHelicopterAvailable = TRUE;
     fSkyRiderAvailable = TRUE;
 
-    iHelicopterVehicleId = AddVehicleToList(sX, sY, 0, HELICOPTER);
+    iHelicopterVehicleId = AddVehicleToList(sX, sY, 0, Enum279.HELICOPTER);
 
     Assert(iHelicopterVehicleId != -1);
 
     memset(addressof(SoldierSkyRider), 0, sizeof(SOLDIERTYPE));
-    SoldierSkyRider.ubProfile = SKYRIDER;
+    SoldierSkyRider.ubProfile = Enum268.SKYRIDER;
     SoldierSkyRider.bLife = 80;
 
     pSkyRider = addressof(SoldierSkyRider);
@@ -727,7 +727,7 @@ function SetUpHelicopterForPlayer(sX: INT16, sY: INT16): void {
 
     fSkyRiderSetUp = TRUE;
 
-    gMercProfiles[SKYRIDER].fUseProfileInsertionInfo = FALSE;
+    gMercProfiles[Enum268.SKYRIDER].fUseProfileInsertionInfo = FALSE;
   }
 
   return;
@@ -758,7 +758,7 @@ function MoveAllInHelicopterToFootMovementGroup(): UINT8 {
 
     if (pSoldier != NULL) {
       // better really be in there!
-      Assert(pSoldier.value.bAssignment == VEHICLE);
+      Assert(pSoldier.value.bAssignment == Enum117.VEHICLE);
       Assert(pSoldier.value.iVehicleId == iHelicopterVehicleId);
 
       fAnyoneAboard = TRUE;
@@ -804,19 +804,19 @@ function HandleSkyRiderMonologueEvent(uiEventCode: UINT32, uiSpecialCode: UINT32
   TurnOnAirSpaceMode();
 
   switch (uiEventCode) {
-    case (SKYRIDER_MONOLOGUE_EVENT_DRASSEN_SAM_SITE):
+    case (Enum136.SKYRIDER_MONOLOGUE_EVENT_DRASSEN_SAM_SITE):
       SetExternMapscreenSpeechPanelXY(DEFAULT_EXTERN_PANEL_X_POS, 117);
       HandleSkyRiderMonologueAboutDrassenSAMSite(uiSpecialCode);
       break;
-    case SKYRIDER_MONOLOGUE_EVENT_CAMBRIA_HOSPITAL:
+    case Enum136.SKYRIDER_MONOLOGUE_EVENT_CAMBRIA_HOSPITAL:
       SetExternMapscreenSpeechPanelXY(DEFAULT_EXTERN_PANEL_X_POS, 172);
       HandleSkyRiderMonologueAboutCambriaHospital(uiSpecialCode);
       break;
-    case (SKYRIDER_MONOLOGUE_EVENT_OTHER_SAM_SITES):
+    case (Enum136.SKYRIDER_MONOLOGUE_EVENT_OTHER_SAM_SITES):
       SetExternMapscreenSpeechPanelXY(335, DEFAULT_EXTERN_PANEL_Y_POS);
       HandleSkyRiderMonologueAboutOtherSAMSites(uiSpecialCode);
       break;
-    case (SKYRIDER_MONOLOGUE_EVENT_ESTONI_REFUEL):
+    case (Enum136.SKYRIDER_MONOLOGUE_EVENT_ESTONI_REFUEL):
       SetExternMapscreenSpeechPanelXY(DEFAULT_EXTERN_PANEL_X_POS, DEFAULT_EXTERN_PANEL_Y_POS);
       HandleSkyRiderMonologueAboutEstoniRefuel(uiSpecialCode);
       break;
@@ -831,11 +831,11 @@ function HandleSkyRiderMonologueAboutEstoniRefuel(uiSpecialCode: UINT32): void {
 
   switch (uiSpecialCode) {
     case (0):
-      CharacterDialogueWithSpecialEvent(SKYRIDER, SPIEL_ABOUT_ESTONI_AIRSPACE, uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE, DIALOGUE_SPECIAL_EVENT_SKYRIDERMAPSCREENEVENT, SKYRIDER_MONOLOGUE_EVENT_ESTONI_REFUEL, 1);
+      CharacterDialogueWithSpecialEvent(Enum268.SKYRIDER, SPIEL_ABOUT_ESTONI_AIRSPACE, uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE, DIALOGUE_SPECIAL_EVENT_SKYRIDERMAPSCREENEVENT, Enum136.SKYRIDER_MONOLOGUE_EVENT_ESTONI_REFUEL, 1);
       // if special event data 2 is true, then do dialogue, else this is just a trigger for an event
-      CharacterDialogue(SKYRIDER, SPIEL_ABOUT_ESTONI_AIRSPACE, uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
+      CharacterDialogue(Enum268.SKYRIDER, SPIEL_ABOUT_ESTONI_AIRSPACE, uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
 
-      CharacterDialogueWithSpecialEvent(SKYRIDER, SPIEL_ABOUT_ESTONI_AIRSPACE, uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE, DIALOGUE_SPECIAL_EVENT_SKYRIDERMAPSCREENEVENT, SKYRIDER_MONOLOGUE_EVENT_ESTONI_REFUEL, 2);
+      CharacterDialogueWithSpecialEvent(Enum268.SKYRIDER, SPIEL_ABOUT_ESTONI_AIRSPACE, uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE, DIALOGUE_SPECIAL_EVENT_SKYRIDERMAPSCREENEVENT, Enum136.SKYRIDER_MONOLOGUE_EVENT_ESTONI_REFUEL, 2);
       break;
 
     case (1):
@@ -857,26 +857,26 @@ function HandleSkyRiderMonologueAboutDrassenSAMSite(uiSpecialCode: UINT32): void
       // gubCurrentTalkingID = SKYRIDER;
 
       // if special event data 2 is true, then do dialogue, else this is just a trigger for an event
-      CharacterDialogue(SKYRIDER, MENTION_DRASSEN_SAM_SITE, uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
-      CharacterDialogueWithSpecialEvent(SKYRIDER, MENTION_DRASSEN_SAM_SITE, uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, TRUE, DIALOGUE_SPECIAL_EVENT_SKYRIDERMAPSCREENEVENT, SKYRIDER_MONOLOGUE_EVENT_DRASSEN_SAM_SITE, 1);
+      CharacterDialogue(Enum268.SKYRIDER, MENTION_DRASSEN_SAM_SITE, uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
+      CharacterDialogueWithSpecialEvent(Enum268.SKYRIDER, MENTION_DRASSEN_SAM_SITE, uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, TRUE, DIALOGUE_SPECIAL_EVENT_SKYRIDERMAPSCREENEVENT, Enum136.SKYRIDER_MONOLOGUE_EVENT_DRASSEN_SAM_SITE, 1);
 
       if (SAMSitesUnderPlayerControl(SAM_2_X, SAM_2_Y) == FALSE) {
-        CharacterDialogue(SKYRIDER, SECOND_HALF_OF_MENTION_DRASSEN_SAM_SITE, uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
+        CharacterDialogue(Enum268.SKYRIDER, SECOND_HALF_OF_MENTION_DRASSEN_SAM_SITE, uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
       } else {
         // Ian says don't use the SAM site quote unless player has tried flying already
-        if (CheckFact(FACT_SKYRIDER_USED_IN_MAPSCREEN, SKYRIDER)) {
-          CharacterDialogue(SKYRIDER, SAM_SITE_TAKEN, uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
+        if (CheckFact(Enum170.FACT_SKYRIDER_USED_IN_MAPSCREEN, Enum268.SKYRIDER)) {
+          CharacterDialogue(Enum268.SKYRIDER, SAM_SITE_TAKEN, uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
           gfSkyriderSaidCongratsOnTakingSAM = TRUE;
         }
       }
 
-      CharacterDialogueWithSpecialEvent(SKYRIDER, MENTION_DRASSEN_SAM_SITE, uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, TRUE, DIALOGUE_SPECIAL_EVENT_SKYRIDERMAPSCREENEVENT, SKYRIDER_MONOLOGUE_EVENT_DRASSEN_SAM_SITE, 2);
+      CharacterDialogueWithSpecialEvent(Enum268.SKYRIDER, MENTION_DRASSEN_SAM_SITE, uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, TRUE, DIALOGUE_SPECIAL_EVENT_SKYRIDERMAPSCREENEVENT, Enum136.SKYRIDER_MONOLOGUE_EVENT_DRASSEN_SAM_SITE, 2);
       break;
 
     case (1):
       // highlight Drassen SAM site sector
       fShowDrassenSAMHighLight = TRUE;
-      SetSAMSiteAsFound(SAM_SITE_TWO);
+      SetSAMSiteAsFound(Enum138.SAM_SITE_TWO);
       break;
 
     case (2):
@@ -893,8 +893,8 @@ function HandleSkyRiderMonologueAboutCambriaHospital(uiSpecialCode: UINT32): voi
       // gubCurrentTalkingID = SKYRIDER;
 
       // if special event data 2 is true, then do dialogue, else this is just a trigger for an event
-      CharacterDialogue(SKYRIDER, MENTION_HOSPITAL_IN_CAMBRIA, uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
-      CharacterDialogueWithSpecialEvent(SKYRIDER, MENTION_HOSPITAL_IN_CAMBRIA, uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, TRUE, DIALOGUE_SPECIAL_EVENT_SKYRIDERMAPSCREENEVENT, SKYRIDER_MONOLOGUE_EVENT_CAMBRIA_HOSPITAL, 1);
+      CharacterDialogue(Enum268.SKYRIDER, MENTION_HOSPITAL_IN_CAMBRIA, uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
+      CharacterDialogueWithSpecialEvent(Enum268.SKYRIDER, MENTION_HOSPITAL_IN_CAMBRIA, uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, TRUE, DIALOGUE_SPECIAL_EVENT_SKYRIDERMAPSCREENEVENT, Enum136.SKYRIDER_MONOLOGUE_EVENT_CAMBRIA_HOSPITAL, 1);
 
       // highlight Drassen hospital sector
       fShowCambriaHospitalHighLight = TRUE;
@@ -913,15 +913,15 @@ function HandleSkyRiderMonologueAboutOtherSAMSites(uiSpecialCode: UINT32): void 
   switch (uiSpecialCode) {
     case (0):
       // do quote 21
-      gpCurrentTalkingFace = addressof(gFacesData[uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE]]);
-      gubCurrentTalkingID = SKYRIDER;
+      gpCurrentTalkingFace = addressof(gFacesData[uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE]]);
+      gubCurrentTalkingID = Enum268.SKYRIDER;
 
       // if special event data 2 is true, then do dialogue, else this is just a trigger for an event
-      CharacterDialogue(SKYRIDER, SPIEL_ABOUT_OTHER_SAM_SITES, uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
-      CharacterDialogueWithSpecialEvent(SKYRIDER, SPIEL_ABOUT_OTHER_SAM_SITES, uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE, DIALOGUE_SPECIAL_EVENT_SKYRIDERMAPSCREENEVENT, SKYRIDER_MONOLOGUE_EVENT_OTHER_SAM_SITES, 1);
+      CharacterDialogue(Enum268.SKYRIDER, SPIEL_ABOUT_OTHER_SAM_SITES, uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
+      CharacterDialogueWithSpecialEvent(Enum268.SKYRIDER, SPIEL_ABOUT_OTHER_SAM_SITES, uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE, DIALOGUE_SPECIAL_EVENT_SKYRIDERMAPSCREENEVENT, Enum136.SKYRIDER_MONOLOGUE_EVENT_OTHER_SAM_SITES, 1);
 
-      CharacterDialogue(SKYRIDER, SECOND_HALF_OF_SPIEL_ABOUT_OTHER_SAM_SITES, uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
-      CharacterDialogueWithSpecialEvent(SKYRIDER, SPIEL_ABOUT_OTHER_SAM_SITES, uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE, DIALOGUE_SPECIAL_EVENT_SKYRIDERMAPSCREENEVENT, SKYRIDER_MONOLOGUE_EVENT_OTHER_SAM_SITES, 2);
+      CharacterDialogue(Enum268.SKYRIDER, SECOND_HALF_OF_SPIEL_ABOUT_OTHER_SAM_SITES, uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE);
+      CharacterDialogueWithSpecialEvent(Enum268.SKYRIDER, SPIEL_ABOUT_OTHER_SAM_SITES, uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE], DIALOGUE_EXTERNAL_NPC_UI, FALSE, FALSE, DIALOGUE_SPECIAL_EVENT_SKYRIDERMAPSCREENEVENT, Enum136.SKYRIDER_MONOLOGUE_EVENT_OTHER_SAM_SITES, 2);
 
       break;
 
@@ -929,9 +929,9 @@ function HandleSkyRiderMonologueAboutOtherSAMSites(uiSpecialCode: UINT32): void 
       // highlight other SAMs
       fShowOtherSAMHighLight = TRUE;
       // reveal other 3 SAM sites
-      SetSAMSiteAsFound(SAM_SITE_ONE);
-      SetSAMSiteAsFound(SAM_SITE_THREE);
-      SetSAMSiteAsFound(SAM_SITE_FOUR);
+      SetSAMSiteAsFound(Enum138.SAM_SITE_ONE);
+      SetSAMSiteAsFound(Enum138.SAM_SITE_THREE);
+      SetSAMSiteAsFound(Enum138.SAM_SITE_FOUR);
       break;
 
     case (2):
@@ -945,25 +945,25 @@ function CheckAndHandleSkyriderMonologues(): void {
   // wait at least this many days between Skyrider monologues
   if ((GetWorldTotalMin() - guiTimeOfLastSkyriderMonologue) >= (MIN_DAYS_BETWEEN_SKYRIDER_MONOLOGUES * 24 * 60)) {
     if (guiHelicopterSkyriderTalkState == 0) {
-      HandleSkyRiderMonologueEvent(SKYRIDER_MONOLOGUE_EVENT_DRASSEN_SAM_SITE, 0);
+      HandleSkyRiderMonologueEvent(Enum136.SKYRIDER_MONOLOGUE_EVENT_DRASSEN_SAM_SITE, 0);
       guiHelicopterSkyriderTalkState = 1;
     } else if (guiHelicopterSkyriderTalkState == 1) {
       // if enemy still controls the Cambria hospital sector
       if (StrategicMap[CALCULATE_STRATEGIC_INDEX(HOSPITAL_SECTOR_X, HOSPITAL_SECTOR_Y)].fEnemyControlled) {
-        HandleSkyRiderMonologueEvent(SKYRIDER_MONOLOGUE_EVENT_CAMBRIA_HOSPITAL, 0);
+        HandleSkyRiderMonologueEvent(Enum136.SKYRIDER_MONOLOGUE_EVENT_CAMBRIA_HOSPITAL, 0);
       }
       // advance state even if player already has Cambria's hospital sector!!!
       guiHelicopterSkyriderTalkState = 2;
     } else if (guiHelicopterSkyriderTalkState == 2) {
       // wait until player has taken over a SAM site before saying this and advancing state
       if (gfSkyriderSaidCongratsOnTakingSAM) {
-        HandleSkyRiderMonologueEvent(SKYRIDER_MONOLOGUE_EVENT_OTHER_SAM_SITES, 0);
+        HandleSkyRiderMonologueEvent(Enum136.SKYRIDER_MONOLOGUE_EVENT_OTHER_SAM_SITES, 0);
         guiHelicopterSkyriderTalkState = 3;
       }
     } else if (guiHelicopterSkyriderTalkState == 3) {
       // wait until Estoni refuelling site becomes available
-      if (fRefuelingSiteAvailable[ESTONI_REFUELING_SITE]) {
-        HandleSkyRiderMonologueEvent(SKYRIDER_MONOLOGUE_EVENT_ESTONI_REFUEL, 0);
+      if (fRefuelingSiteAvailable[Enum137.ESTONI_REFUELING_SITE]) {
+        HandleSkyRiderMonologueEvent(Enum136.SKYRIDER_MONOLOGUE_EVENT_ESTONI_REFUEL, 0);
         guiHelicopterSkyriderTalkState = 4;
       }
     }
@@ -984,7 +984,7 @@ function HandleAnimationOfSectors(): void {
   if (fShowDrassenSAMHighLight) {
     fOldShowDrassenSAMHighLight = TRUE;
     // Drassen's SAM site is #3
-    HandleBlitOfSectorLocatorIcon(SAM_2_X, SAM_2_Y, 0, LOCATOR_COLOR_RED);
+    HandleBlitOfSectorLocatorIcon(SAM_2_X, SAM_2_Y, 0, Enum156.LOCATOR_COLOR_RED);
     fSkipSpeakersLocator = TRUE;
   } else if (fOldShowDrassenSAMHighLight) {
     fOldShowDrassenSAMHighLight = FALSE;
@@ -994,7 +994,7 @@ function HandleAnimationOfSectors(): void {
   // Cambria hospital
   if (fShowCambriaHospitalHighLight) {
     fOldShowCambriaHospitalHighLight = TRUE;
-    HandleBlitOfSectorLocatorIcon(HOSPITAL_SECTOR_X, HOSPITAL_SECTOR_Y, 0, LOCATOR_COLOR_RED);
+    HandleBlitOfSectorLocatorIcon(HOSPITAL_SECTOR_X, HOSPITAL_SECTOR_Y, 0, Enum156.LOCATOR_COLOR_RED);
     fSkipSpeakersLocator = TRUE;
   } else if (fOldShowCambriaHospitalHighLight) {
     fOldShowCambriaHospitalHighLight = FALSE;
@@ -1004,9 +1004,9 @@ function HandleAnimationOfSectors(): void {
   // show other SAM sites
   if (fShowOtherSAMHighLight) {
     fOldShowOtherSAMHighLight = TRUE;
-    HandleBlitOfSectorLocatorIcon(SAM_1_X, SAM_1_Y, 0, LOCATOR_COLOR_RED);
-    HandleBlitOfSectorLocatorIcon(SAM_3_X, SAM_3_Y, 0, LOCATOR_COLOR_RED);
-    HandleBlitOfSectorLocatorIcon(SAM_4_X, SAM_4_Y, 0, LOCATOR_COLOR_RED);
+    HandleBlitOfSectorLocatorIcon(SAM_1_X, SAM_1_Y, 0, Enum156.LOCATOR_COLOR_RED);
+    HandleBlitOfSectorLocatorIcon(SAM_3_X, SAM_3_Y, 0, Enum156.LOCATOR_COLOR_RED);
+    HandleBlitOfSectorLocatorIcon(SAM_4_X, SAM_4_Y, 0, Enum156.LOCATOR_COLOR_RED);
     fSkipSpeakersLocator = TRUE;
   } else if (fOldShowOtherSAMHighLight) {
     fOldShowOtherSAMHighLight = FALSE;
@@ -1016,7 +1016,7 @@ function HandleAnimationOfSectors(): void {
   // show Estoni site
   if (fShowEstoniRefuelHighLight) {
     fOldShowEstoniRefuelHighLight = TRUE;
-    HandleBlitOfSectorLocatorIcon(ubRefuelList[ESTONI_REFUELING_SITE][0], ubRefuelList[ESTONI_REFUELING_SITE][1], 0, LOCATOR_COLOR_RED);
+    HandleBlitOfSectorLocatorIcon(ubRefuelList[Enum137.ESTONI_REFUELING_SITE][0], ubRefuelList[Enum137.ESTONI_REFUELING_SITE][1], 0, Enum156.LOCATOR_COLOR_RED);
     fSkipSpeakersLocator = TRUE;
   } else if (fOldShowEstoniRefuelHighLight) {
     fOldShowEstoniRefuelHighLight = FALSE;
@@ -1026,11 +1026,11 @@ function HandleAnimationOfSectors(): void {
   // don't show sector locator over the speaker's sector if he is talking about another sector - it's confusing
   if (!fSkipSpeakersLocator) {
     switch (gubBlitSectorLocatorCode) {
-      case LOCATOR_COLOR_RED: // normal one used for mines (will now be overriden with yellow)
-        HandleBlitOfSectorLocatorIcon(gsSectorLocatorX, gsSectorLocatorY, 0, LOCATOR_COLOR_RED);
+      case Enum156.LOCATOR_COLOR_RED: // normal one used for mines (will now be overriden with yellow)
+        HandleBlitOfSectorLocatorIcon(gsSectorLocatorX, gsSectorLocatorY, 0, Enum156.LOCATOR_COLOR_RED);
         break;
-      case LOCATOR_COLOR_YELLOW: // used for all other dialogues
-        HandleBlitOfSectorLocatorIcon(gsSectorLocatorX, gsSectorLocatorY, 0, LOCATOR_COLOR_YELLOW);
+      case Enum156.LOCATOR_COLOR_YELLOW: // used for all other dialogues
+        HandleBlitOfSectorLocatorIcon(gsSectorLocatorX, gsSectorLocatorY, 0, Enum156.LOCATOR_COLOR_YELLOW);
         break;
     }
   }
@@ -1250,7 +1250,7 @@ function HandleHelicopterOnGroundGraphic(): void {
     return;
   }
 
-  for (ubSite = 0; ubSite < NUMBER_OF_REFUEL_SITES; ubSite++) {
+  for (ubSite = 0; ubSite < Enum137.NUMBER_OF_REFUEL_SITES; ubSite++) {
     // is this refueling site sector the loaded sector ?
     if ((ubRefuelList[ubSite][0] == gWorldSectorX) && (ubRefuelList[ubSite][1] == gWorldSectorY)) {
       // YES, so find out if the chopper is landed here
@@ -1260,18 +1260,18 @@ function HandleHelicopterOnGroundGraphic(): void {
         // ATE: Add skyridder too
         // ATE: only if hired......
         if (fHelicopterAvailable) {
-          gMercProfiles[SKYRIDER].sSectorX = gWorldSectorX;
-          gMercProfiles[SKYRIDER].sSectorY = gWorldSectorY;
+          gMercProfiles[Enum268.SKYRIDER].sSectorX = gWorldSectorX;
+          gMercProfiles[Enum268.SKYRIDER].sSectorY = gWorldSectorY;
         }
       } else {
         AddHelicopterToMaps(FALSE, ubSite);
         // ATE: Remove skyridder....
         if (fHelicopterAvailable) {
-          gMercProfiles[SKYRIDER].sSectorX = 0;
-          gMercProfiles[SKYRIDER].sSectorY = 0;
+          gMercProfiles[Enum268.SKYRIDER].sSectorX = 0;
+          gMercProfiles[Enum268.SKYRIDER].sSectorY = 0;
 
           // see if we can find him and remove him if so....
-          pSoldier = FindSoldierByProfileID(SKYRIDER, FALSE);
+          pSoldier = FindSoldierByProfileID(Enum268.SKYRIDER, FALSE);
 
           // ATE: Don't do this if buddy is on our team!
           if (pSoldier != NULL && pSoldier.value.bTeam != gbPlayerNum) {
@@ -1298,7 +1298,7 @@ function HandleHelicopterOnGroundSkyriderProfile(): void {
     return;
   }
 
-  for (ubSite = 0; ubSite < NUMBER_OF_REFUEL_SITES; ubSite++) {
+  for (ubSite = 0; ubSite < Enum137.NUMBER_OF_REFUEL_SITES; ubSite++) {
     // is this refueling site sector the loaded sector ?
     if ((ubRefuelList[ubSite][0] == gWorldSectorX) && (ubRefuelList[ubSite][1] == gWorldSectorY)) {
       // YES, so find out if the chopper is landed here
@@ -1306,17 +1306,17 @@ function HandleHelicopterOnGroundSkyriderProfile(): void {
         // ATE: Add skyridder too
         // ATE: only if hired......
         if (fHelicopterAvailable) {
-          gMercProfiles[SKYRIDER].sSectorX = gWorldSectorX;
-          gMercProfiles[SKYRIDER].sSectorY = gWorldSectorY;
+          gMercProfiles[Enum268.SKYRIDER].sSectorX = gWorldSectorX;
+          gMercProfiles[Enum268.SKYRIDER].sSectorY = gWorldSectorY;
         }
       } else {
         // ATE: Remove skyridder....
         if (fHelicopterAvailable) {
-          gMercProfiles[SKYRIDER].sSectorX = 0;
-          gMercProfiles[SKYRIDER].sSectorY = 0;
+          gMercProfiles[Enum268.SKYRIDER].sSectorX = 0;
+          gMercProfiles[Enum268.SKYRIDER].sSectorY = 0;
 
           // see if we can find him and remove him if so....
-          pSoldier = FindSoldierByProfileID(SKYRIDER, FALSE);
+          pSoldier = FindSoldierByProfileID(Enum268.SKYRIDER, FALSE);
 
           // ATE: Don't do this if buddy is on our team!
           if (pSoldier != NULL && pSoldier.value.bTeam != gbPlayerNum) {
@@ -1343,7 +1343,7 @@ function IsHelicopterOnGroundAtRefuelingSite(ubRefuelingSite: UINT8): BOOLEAN {
   // if we haven't even met SkyRider
   if (!fSkyRiderSetUp) {
     // then it's always at Drassen
-    if (ubRefuelingSite == DRASSEN_REFUELING_SITE) {
+    if (ubRefuelingSite == Enum137.DRASSEN_REFUELING_SITE) {
       return TRUE;
     } else {
       return FALSE;
@@ -1490,7 +1490,7 @@ function HandleSAMSiteAttackOfHelicopterInSector(sSectorX: INT16, sSectorY: INT1
       } else {
         // otherwise it's handled in the callback
         // remove any arrival events for the helicopter's group
-        DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, pVehicleList[iHelicopterVehicleId].ubMovementGroup);
+        DeleteStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pVehicleList[iHelicopterVehicleId].ubMovementGroup);
       }
 
       // special return code indicating heli was destroyed
@@ -1556,10 +1556,10 @@ function AddHelicopterToMaps(fAdd: BOOLEAN, ubSite: UINT8): void {
   // find out what slot it is by which site
   if (ubSite == 0) {
     // drassen
-    sOStruct = FIRSTOSTRUCT1;
+    sOStruct = Enum312.FIRSTOSTRUCT1;
   } else {
     // estoni
-    sOStruct = FOURTHOSTRUCT1;
+    sOStruct = Enum312.FOURTHOSTRUCT1;
   }
 
   // are we adding or taking away
@@ -1759,21 +1759,21 @@ function PaySkyriderBill(): void {
     if (LaptopSaveInfo.iCurrentBalance >= iTotalAccumulatedCostByPlayer) {
       // no problem, pay the man
       // add the transaction
-      AddTransactionToPlayersBook(PAYMENT_TO_NPC, SKYRIDER, GetWorldTotalMin(), -iTotalAccumulatedCostByPlayer);
+      AddTransactionToPlayersBook(Enum80.PAYMENT_TO_NPC, Enum268.SKYRIDER, GetWorldTotalMin(), -iTotalAccumulatedCostByPlayer);
       ScreenMsg(FONT_MCOLOR_DKRED, MSG_INTERFACE, pSkyriderText[0], iTotalAccumulatedCostByPlayer);
     } else {
       // money owed
       if (LaptopSaveInfo.iCurrentBalance > 0) {
         ScreenMsg(FONT_MCOLOR_DKRED, MSG_INTERFACE, pSkyriderText[0], LaptopSaveInfo.iCurrentBalance);
-        gMercProfiles[SKYRIDER].iBalance = LaptopSaveInfo.iCurrentBalance - iTotalAccumulatedCostByPlayer;
+        gMercProfiles[Enum268.SKYRIDER].iBalance = LaptopSaveInfo.iCurrentBalance - iTotalAccumulatedCostByPlayer;
         // add the transaction
-        AddTransactionToPlayersBook(PAYMENT_TO_NPC, SKYRIDER, GetWorldTotalMin(), -LaptopSaveInfo.iCurrentBalance);
+        AddTransactionToPlayersBook(Enum80.PAYMENT_TO_NPC, Enum268.SKYRIDER, GetWorldTotalMin(), -LaptopSaveInfo.iCurrentBalance);
       } else {
-        gMercProfiles[SKYRIDER].iBalance = -iTotalAccumulatedCostByPlayer;
+        gMercProfiles[Enum268.SKYRIDER].iBalance = -iTotalAccumulatedCostByPlayer;
       }
 
       HeliCharacterDialogue(pSkyRider, OWED_MONEY_TO_SKYRIDER);
-      ScreenMsg(FONT_MCOLOR_DKRED, MSG_INTERFACE, pSkyriderText[1], -gMercProfiles[SKYRIDER].iBalance);
+      ScreenMsg(FONT_MCOLOR_DKRED, MSG_INTERFACE, pSkyriderText[1], -gMercProfiles[Enum268.SKYRIDER].iBalance);
 
       // kick everyone out! (we know we're in a safe sector if we're paying)
       MoveAllInHelicopterToFootMovementGroup();
@@ -1789,21 +1789,21 @@ function PayOffSkyriderDebtIfAny(): void {
   let iAmountOwed: INT32;
   let iPayAmount: INT32;
 
-  iAmountOwed = -gMercProfiles[SKYRIDER].iBalance;
+  iAmountOwed = -gMercProfiles[Enum268.SKYRIDER].iBalance;
 
   // if we owe him anything, and have any money
   if ((iAmountOwed > 0) && (LaptopSaveInfo.iCurrentBalance > 0)) {
     iPayAmount = min(iAmountOwed, LaptopSaveInfo.iCurrentBalance);
 
     // pay the man what we can
-    gMercProfiles[SKYRIDER].iBalance += iPayAmount;
+    gMercProfiles[Enum268.SKYRIDER].iBalance += iPayAmount;
     // add the transaction
-    AddTransactionToPlayersBook(PAYMENT_TO_NPC, SKYRIDER, GetWorldTotalMin(), -iPayAmount);
+    AddTransactionToPlayersBook(Enum80.PAYMENT_TO_NPC, Enum268.SKYRIDER, GetWorldTotalMin(), -iPayAmount);
     // tell player
     ScreenMsg(FONT_MCOLOR_DKRED, MSG_INTERFACE, pSkyriderText[0], iPayAmount);
 
     // now whaddawe owe?
-    iAmountOwed = -gMercProfiles[SKYRIDER].iBalance;
+    iAmountOwed = -gMercProfiles[Enum268.SKYRIDER].iBalance;
 
     // if it wasn't enough
     if (iAmountOwed > 0) {
@@ -1845,7 +1845,7 @@ function SoldierAboardAirborneHeli(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   Assert(pSoldier);
 
   // if not in a vehicle, or not aboard the helicopter
-  if ((pSoldier.value.bAssignment != VEHICLE) || (pSoldier.value.iVehicleId != iHelicopterVehicleId)) {
+  if ((pSoldier.value.bAssignment != Enum117.VEHICLE) || (pSoldier.value.iVehicleId != iHelicopterVehicleId)) {
     return FALSE;
   }
 

@@ -239,7 +239,7 @@ let gfCreditsScreenEntry: BOOLEAN = TRUE;
 let gfCreditsScreenExit: BOOLEAN = FALSE;
 let guiCreditsExitScreen: UINT32;
 
-let gubCreditScreenRenderFlags: UINT8 = CRDT_RENDER_ALL;
+let gubCreditScreenRenderFlags: UINT8 = Enum1.CRDT_RENDER_ALL;
 
 let gCrdtRootNode: Pointer<CRDT_NODE> = NULL;
 let gCrdtLastAddedNode: Pointer<CRDT_NODE> = NULL;
@@ -299,7 +299,7 @@ function CreditScreenHandle(): UINT32 {
       gfCreditsScreenEntry = FALSE;
       gfCreditsScreenExit = FALSE;
     }
-    gubCreditScreenRenderFlags = CRDT_RENDER_ALL;
+    gubCreditScreenRenderFlags = Enum1.CRDT_RENDER_ALL;
   }
 
   GetCreditScreenUserInput();
@@ -359,7 +359,7 @@ function EnterCreditsScreen(): BOOLEAN {
   // Initialize the root credit node
   InitCreditNode();
 
-  guiCreditsExitScreen = CREDIT_SCREEN;
+  guiCreditsExitScreen = Enum26.CREDIT_SCREEN;
   gfCrdtHaveRenderedFirstFrameToSaveBuffer = FALSE;
 
   guiCreditScreenActiveFont = FONT12ARIAL;
@@ -381,9 +381,9 @@ function EnterCreditsScreen(): BOOLEAN {
   guiGapBetweenCreditNodes = CRDT_SPACE_BN_NODES;
   guiGapTillReadNextCredit = CRDT_SPACE_BN_NODES;
 
-  for (uiCnt = 0; uiCnt < NUM_PEOPLE_IN_CREDITS; uiCnt++) {
+  for (uiCnt = 0; uiCnt < Enum382.NUM_PEOPLE_IN_CREDITS; uiCnt++) {
     // Make a mouse region
-    MSYS_DefineRegion(addressof(gCrdtMouseRegions[uiCnt]), gCreditFaces[uiCnt].sX, gCreditFaces[uiCnt].sY, (gCreditFaces[uiCnt].sX + gCreditFaces[uiCnt].sWidth), (gCreditFaces[uiCnt].sY + gCreditFaces[uiCnt].sHeight), MSYS_PRIORITY_NORMAL, CURSOR_WWW, SelectCreditFaceMovementRegionCallBack, SelectCreditFaceRegionCallBack);
+    MSYS_DefineRegion(addressof(gCrdtMouseRegions[uiCnt]), gCreditFaces[uiCnt].sX, gCreditFaces[uiCnt].sY, (gCreditFaces[uiCnt].sX + gCreditFaces[uiCnt].sWidth), (gCreditFaces[uiCnt].sY + gCreditFaces[uiCnt].sHeight), MSYS_PRIORITY_NORMAL, Enum317.CURSOR_WWW, SelectCreditFaceMovementRegionCallBack, SelectCreditFaceRegionCallBack);
 
     // Add region
     MSYS_AddRegion(addressof(gCrdtMouseRegions[uiCnt]));
@@ -425,7 +425,7 @@ function ExitCreditScreen(): BOOLEAN {
   // ShutDown Credit link list
   ShutDownCreditList();
 
-  for (uiCnt = 0; uiCnt < NUM_PEOPLE_IN_CREDITS; uiCnt++) {
+  for (uiCnt = 0; uiCnt < Enum382.NUM_PEOPLE_IN_CREDITS; uiCnt++) {
     MSYS_RemoveRegion(addressof(gCrdtMouseRegions[uiCnt]));
   }
 
@@ -442,9 +442,9 @@ function ExitCreditScreen(): BOOLEAN {
 function HandleCreditScreen(): void {
   //	UINT32	uiTime = GetJA2Clock();
 
-  if (gubCreditScreenRenderFlags == CRDT_RENDER_ALL) {
+  if (gubCreditScreenRenderFlags == Enum1.CRDT_RENDER_ALL) {
     RenderCreditScreen();
-    gubCreditScreenRenderFlags = CRDT_RENDER_NONE;
+    gubCreditScreenRenderFlags = Enum1.CRDT_RENDER_NONE;
   }
 
   // Handle the Credit linked list
@@ -457,7 +457,7 @@ function HandleCreditScreen(): void {
   if (gCrdtLastAddedNode == NULL || (CRDT_START_POS_Y - (gCrdtLastAddedNode.value.sPosY + gCrdtLastAddedNode.value.sHeightOfString - 16)) >= guiGapTillReadNextCredit) {
     // if there are no more credits in the file
     if (!GetNextCreditFromTextFile() && gCrdtLastAddedNode == NULL) {
-      SetCreditsExitScreen(MAINMENU_SCREEN);
+      SetCreditsExitScreen(Enum26.MAINMENU_SCREEN);
     }
   }
 
@@ -503,7 +503,7 @@ function GetCreditScreenUserInput(): void {
       switch (Event.usParam) {
         case ESC:
           // Exit out of the screen
-          SetCreditsExitScreen(MAINMENU_SCREEN);
+          SetCreditsExitScreen(Enum26.MAINMENU_SCREEN);
           break;
       }
     }
@@ -577,7 +577,7 @@ function DeleteNode(pNodeToDelete: Pointer<CRDT_NODE>): BOOLEAN {
   }
 
   // if the node had something to display, delete a surface for it
-  if (pTempNode.value.uiType == CRDT_NODE_DEFAULT) {
+  if (pTempNode.value.uiType == Enum2.CRDT_NODE_DEFAULT) {
     DeleteVideoSurfaceFromIndex(pTempNode.value.uiVideoSurfaceImage);
     pTempNode.value.uiVideoSurfaceImage = 0;
   }
@@ -598,7 +598,7 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN
   let uiColorToUse: UINT8;
 
   // if
-  if (uiType == CRDT_NODE_NONE) {
+  if (uiType == Enum2.CRDT_NODE_NONE) {
     // Assert( 0 );
     return TRUE;
   }
@@ -661,7 +661,7 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN
   //	pNodeToAdd->uiLastTime = GetJA2Clock();
 
   // if the node can have something to display, Create a surface for it
-  if (pNodeToAdd.value.uiType == CRDT_NODE_DEFAULT) {
+  if (pNodeToAdd.value.uiType == Enum2.CRDT_NODE_DEFAULT) {
     let vs_desc: VSURFACE_DESC;
 
     // Create a background video surface to blt the face onto
@@ -762,7 +762,7 @@ function HandleCurrentCreditNode(pCurrent: Pointer<CRDT_NODE>): void {
   // switch on the type of node
   switch (pCurrent.value.uiType) {
       // new codes:
-    case CRDT_NODE_DEFAULT:
+    case Enum2.CRDT_NODE_DEFAULT:
       HandleNode_Default(pCurrent);
       break;
 
@@ -870,7 +870,7 @@ function GetNextCreditFromTextFile(): BOOLEAN {
   if (zOriginalString[0] != CRDT_START_CODE) {
     // copy the string
     wcscpy(zString, zOriginalString);
-    uiNodeType = CRDT_NODE_DEFAULT;
+    uiNodeType = Enum2.CRDT_NODE_DEFAULT;
   } else {
     let uiSizeOfCodes: UINT32 = 0;
     let uiSizeOfSubCode: UINT32 = 0;
@@ -896,7 +896,7 @@ function GetNextCreditFromTextFile(): BOOLEAN {
     // if the string is the same size as the codes
     if (wcslen(zOriginalString) == uiSizeOfCodes) {
       // there is no string, just codes
-      uiNodeType = CRDT_NODE_NONE;
+      uiNodeType = Enum2.CRDT_NODE_NONE;
     }
 
     // else there is a string aswell
@@ -904,7 +904,7 @@ function GetNextCreditFromTextFile(): BOOLEAN {
       // copy the main string
       wcscpy(zString, addressof(zOriginalString[uiSizeOfCodes]));
 
-      uiNodeType = CRDT_NODE_DEFAULT;
+      uiNodeType = Enum2.CRDT_NODE_DEFAULT;
     }
 
     // get rid of the start code delimeter
@@ -930,7 +930,7 @@ function GetNextCreditFromTextFile(): BOOLEAN {
     }
   }
 
-  if (uiNodeType != CRDT_NODE_NONE) {
+  if (uiNodeType != Enum2.CRDT_NODE_NONE) {
     // add the node to the list
     AddCreditNode(uiNodeType, uiFlags, zString);
   }
@@ -955,7 +955,7 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
     //		guiCrdtDelayBetweenNodes = uiNewDelay;
     guiGapBetweenCreditNodes = uiNewDelay;
 
-    return CRDT_NODE_NONE;
+    return Enum2.CRDT_NODE_NONE;
   }
 
   // if the code is to change the delay between sections strings
@@ -968,7 +968,7 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
     //		guiCrdtDelayBetweenCreditSection = uiNewDelay;
     guiGapBetweenCreditSections = uiNewDelay;
 
-    return CRDT_NODE_NONE;
+    return Enum2.CRDT_NODE_NONE;
   }
 
   else if (pzCode[0] == CRDT_SCROLL_SPEED) {
@@ -979,7 +979,7 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
 
     guiCrdtNodeScrollSpeed = uiScrollSpeed;
 
-    return CRDT_NODE_NONE;
+    return Enum2.CRDT_NODE_NONE;
   }
 
   else if (pzCode[0] == CRDT_FONT_JUSTIFICATION) {
@@ -1003,21 +1003,21 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
         Assert(0);
     }
 
-    return CRDT_NODE_NONE;
+    return Enum2.CRDT_NODE_NONE;
   }
 
   else if (pzCode[0] == CRDT_TITLE_FONT_COLOR) {
     // Get the new color for the title
     swscanf(addressof(pzCode[1]), "%d%*s", addressof(gubCreditScreenTitleColor));
 
-    return CRDT_NODE_NONE;
+    return Enum2.CRDT_NODE_NONE;
   }
 
   else if (pzCode[0] == CRDT_ACTIVE_FONT_COLOR) {
     // Get the new color for the active text
     swscanf(addressof(pzCode[1]), "%d%*s", addressof(gubCreditScreenActiveColor));
 
-    return CRDT_NODE_NONE;
+    return Enum2.CRDT_NODE_NONE;
   }
 
   // else its the title code
@@ -1040,7 +1040,7 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
     Assert(0);
   }
 
-  return CRDT_NODE_NONE;
+  return Enum2.CRDT_NODE_NONE;
 }
 
 function CountNumberOfCreditNodes(): UINT32 {
@@ -1116,7 +1116,7 @@ function SelectCreditFaceMovementRegionCallBack(pRegion: Pointer<MOUSE_REGION>, 
 function InitCreditEyeBlinking(): void {
   let ubCnt: UINT8;
 
-  for (ubCnt = 0; ubCnt < NUM_PEOPLE_IN_CREDITS; ubCnt++) {
+  for (ubCnt = 0; ubCnt < Enum382.NUM_PEOPLE_IN_CREDITS; ubCnt++) {
     gCreditFaces[ubCnt].uiLastBlinkTime = GetJA2Clock() + Random(gCreditFaces[ubCnt].sBlinkFreq * 2);
   }
 }
@@ -1127,7 +1127,7 @@ function HandleCreditEyeBlinking(): void {
 
   GetVideoObject(addressof(hPixHandle), guiCreditFaces);
 
-  for (ubCnt = 0; ubCnt < NUM_PEOPLE_IN_CREDITS; ubCnt++) {
+  for (ubCnt = 0; ubCnt < Enum382.NUM_PEOPLE_IN_CREDITS; ubCnt++) {
     if ((GetJA2Clock() - gCreditFaces[ubCnt].uiLastBlinkTime) > gCreditFaces[ubCnt].sBlinkFreq) {
       BltVideoObject(FRAME_BUFFER, hPixHandle, (ubCnt * 3), gCreditFaces[ubCnt].sEyeX, gCreditFaces[ubCnt].sEyeY, VO_BLT_SRCTRANSPARENCY, NULL);
       InvalidateRegion(gCreditFaces[ubCnt].sEyeX, gCreditFaces[ubCnt].sEyeY, gCreditFaces[ubCnt].sEyeX + CRDT_EYE_WIDTH, gCreditFaces[ubCnt].sEyeY + CRDT_EYE_HEIGHT);

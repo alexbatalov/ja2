@@ -185,33 +185,33 @@ let gfDisplayStrategicAILogs: BOOLEAN = FALSE;
 let gOrigArmyComp: ARMY_COMPOSITION[] /* [NUM_ARMY_COMPOSITIONS] */ = [
   // COMPOSITION					PRIORITY	ELITE%	TROOP%	ADMIN 	DESIRED#	START#		PADDING
   //																							START%
-  [ QUEEN_DEFENCE, 100, 100, 0, 0, 32, 32, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ MEDUNA_DEFENCE, 95, 55, 45, 0, 16, 20, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ MEDUNA_SAMSITE, 96, 65, 35, 0, 20, 20, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ LEVEL1_DEFENCE, 40, 20, 80, 0, 12, 20, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ LEVEL2_DEFENCE, 30, 10, 90, 0, 10, 20, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ LEVEL3_DEFENCE, 20, 5, 95, 0, 8, 20, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ ORTA_DEFENCE, 90, 50, 50, 0, 18, 19, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ EAST_GRUMM_DEFENCE, 80, 20, 80, 0, 15, 15, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ WEST_GRUMM_DEFENCE, 70, 0, 100, 40, 15, 15, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ GRUMM_MINE, 85, 25, 75, 45, 15, 15, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ OMERTA_WELCOME_WAGON, 0, 0, 100, 0, 0, 3, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ BALIME_DEFENCE, 60, 45, 55, 20, 10, 4, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ TIXA_PRISON, 80, 10, 90, 15, 15, 15, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ TIXA_SAMSITE, 85, 10, 90, 0, 12, 12, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ ALMA_DEFENCE, 74, 15, 85, 0, 11, 20, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ ALMA_MINE, 80, 20, 80, 45, 15, 20, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ CAMBRIA_DEFENCE, 50, 0, 100, 30, 10, 6, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ CAMBRIA_MINE, 60, 15, 90, 40, 11, 6, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ CHITZENA_DEFENCE, 30, 0, 100, 75, 12, 10, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ CHITZENA_MINE, 40, 0, 100, 75, 10, 10, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ CHITZENA_SAMSITE, 75, 10, 90, 0, 9, 9, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ DRASSEN_AIRPORT, 30, 0, 100, 85, 12, 10, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ DRASSEN_DEFENCE, 20, 0, 100, 80, 10, 8, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ DRASSEN_MINE, 35, 0, 100, 75, 11, 9, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ DRASSEN_SAMSITE, 50, 0, 100, 0, 10, 10, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ ROADBLOCK, 20, 2, 98, 0, 8, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SANMONA_SMALL, 0, 0, 0, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.QUEEN_DEFENCE, 100, 100, 0, 0, 32, 32, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.MEDUNA_DEFENCE, 95, 55, 45, 0, 16, 20, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.MEDUNA_SAMSITE, 96, 65, 35, 0, 20, 20, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.LEVEL1_DEFENCE, 40, 20, 80, 0, 12, 20, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.LEVEL2_DEFENCE, 30, 10, 90, 0, 10, 20, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.LEVEL3_DEFENCE, 20, 5, 95, 0, 8, 20, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.ORTA_DEFENCE, 90, 50, 50, 0, 18, 19, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.EAST_GRUMM_DEFENCE, 80, 20, 80, 0, 15, 15, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.WEST_GRUMM_DEFENCE, 70, 0, 100, 40, 15, 15, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.GRUMM_MINE, 85, 25, 75, 45, 15, 15, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.OMERTA_WELCOME_WAGON, 0, 0, 100, 0, 0, 3, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.BALIME_DEFENCE, 60, 45, 55, 20, 10, 4, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.TIXA_PRISON, 80, 10, 90, 15, 15, 15, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.TIXA_SAMSITE, 85, 10, 90, 0, 12, 12, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.ALMA_DEFENCE, 74, 15, 85, 0, 11, 20, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.ALMA_MINE, 80, 20, 80, 45, 15, 20, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.CAMBRIA_DEFENCE, 50, 0, 100, 30, 10, 6, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.CAMBRIA_MINE, 60, 15, 90, 40, 11, 6, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.CHITZENA_DEFENCE, 30, 0, 100, 75, 12, 10, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.CHITZENA_MINE, 40, 0, 100, 75, 10, 10, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.CHITZENA_SAMSITE, 75, 10, 90, 0, 9, 9, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.DRASSEN_AIRPORT, 30, 0, 100, 85, 12, 10, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.DRASSEN_DEFENCE, 20, 0, 100, 80, 10, 8, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.DRASSEN_MINE, 35, 0, 100, 75, 11, 9, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.DRASSEN_SAMSITE, 50, 0, 100, 0, 10, 10, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.ROADBLOCK, 20, 2, 98, 0, 8, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum174.SANMONA_SMALL, 0, 0, 0, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
 ];
 
 // Patrol definitions
@@ -221,40 +221,40 @@ let gOrigArmyComp: ARMY_COMPOSITION[] /* [NUM_ARMY_COMPOSITIONS] */ = [
 let gOrigPatrolGroup: PATROL_GROUP[] /* [] */ = [
   // SIZE	PRIORITY	POINT1		POINT2		POINT3		POINT4		MOD 		GROUPID	WEIGHT	PENDING
   //																												DAY100									GROUP ID
-  [ 8, 40, [ SEC_B1, SEC_C1, SEC_C3, SEC_A3 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 6, 35, [ SEC_B4, SEC_B7, SEC_C7, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 6, 25, [ SEC_A8, SEC_B8, SEC_B9, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 6, 30, [ SEC_B10, SEC_B12, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 7, 45, [ SEC_A11, SEC_A14, SEC_D14, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 8, 40, [ Enum123.SEC_B1, Enum123.SEC_C1, Enum123.SEC_C3, Enum123.SEC_A3 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 6, 35, [ Enum123.SEC_B4, Enum123.SEC_B7, Enum123.SEC_C7, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 6, 25, [ Enum123.SEC_A8, Enum123.SEC_B8, Enum123.SEC_B9, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 6, 30, [ Enum123.SEC_B10, Enum123.SEC_B12, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 7, 45, [ Enum123.SEC_A11, Enum123.SEC_A14, Enum123.SEC_D14, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 5
-  [ 6, 50, [ SEC_C8, SEC_C9, SEC_D9, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 12, 55, [ SEC_D3, SEC_G3, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 10, 50, [ SEC_D6, SEC_D7, SEC_F7, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 10, 55, [ SEC_E8, SEC_E11, SEC_F11, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 10, 60, [ SEC_E12, SEC_E15, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 6, 50, [ Enum123.SEC_C8, Enum123.SEC_C9, Enum123.SEC_D9, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 12, 55, [ Enum123.SEC_D3, Enum123.SEC_G3, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 10, 50, [ Enum123.SEC_D6, Enum123.SEC_D7, Enum123.SEC_F7, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 10, 55, [ Enum123.SEC_E8, Enum123.SEC_E11, Enum123.SEC_F11, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 10, 60, [ Enum123.SEC_E12, Enum123.SEC_E15, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 10
-  [ 12, 60, [ SEC_G4, SEC_G7, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 12, 65, [ SEC_G10, SEC_G12, SEC_F12, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 12, 65, [ SEC_G13, SEC_G15, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 10, 65, [ SEC_H15, SEC_J15, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 14, 65, [ SEC_H12, SEC_J12, SEC_J13, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 12, 60, [ Enum123.SEC_G4, Enum123.SEC_G7, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 12, 65, [ Enum123.SEC_G10, Enum123.SEC_G12, Enum123.SEC_F12, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 12, 65, [ Enum123.SEC_G13, Enum123.SEC_G15, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 10, 65, [ Enum123.SEC_H15, Enum123.SEC_J15, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 14, 65, [ Enum123.SEC_H12, Enum123.SEC_J12, Enum123.SEC_J13, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 15
-  [ 13, 70, [ SEC_H9, SEC_I9, SEC_I10, SEC_J10 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 11, 70, [ SEC_K11, SEC_K14, SEC_J14, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 12, 75, [ SEC_J2, SEC_K2, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 12, 80, [ SEC_I3, SEC_J3, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 12, 80, [ SEC_J6, SEC_K6, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 13, 70, [ Enum123.SEC_H9, Enum123.SEC_I9, Enum123.SEC_I10, Enum123.SEC_J10 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 11, 70, [ Enum123.SEC_K11, Enum123.SEC_K14, Enum123.SEC_J14, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 12, 75, [ Enum123.SEC_J2, Enum123.SEC_K2, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 12, 80, [ Enum123.SEC_I3, Enum123.SEC_J3, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 12, 80, [ Enum123.SEC_J6, Enum123.SEC_K6, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 20
-  [ 13, 85, [ SEC_K7, SEC_K10, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 12, 90, [ SEC_L10, SEC_M10, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 12, 90, [ SEC_N9, SEC_N10, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 12, 80, [ SEC_L7, SEC_L8, SEC_M8, SEC_M9 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 14, 80, [ SEC_H4, SEC_H5, SEC_I5, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 13, 85, [ Enum123.SEC_K7, Enum123.SEC_K10, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 12, 90, [ Enum123.SEC_L10, Enum123.SEC_M10, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 12, 90, [ Enum123.SEC_N9, Enum123.SEC_N10, 0, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 12, 80, [ Enum123.SEC_L7, Enum123.SEC_L8, Enum123.SEC_M8, Enum123.SEC_M9 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 14, 80, [ Enum123.SEC_H4, Enum123.SEC_H5, Enum123.SEC_I5, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 25
-  [ 7, 40, [ SEC_D4, SEC_E4, SEC_E5, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 7, 50, [ SEC_C10, SEC_C11, SEC_D11, SEC_D12 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 8, 40, [ SEC_A15, SEC_C15, SEC_C16, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ 12, 30, [ SEC_L13, SEC_M13, SEC_M14, SEC_L14 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 7, 40, [ Enum123.SEC_D4, Enum123.SEC_E4, Enum123.SEC_E5, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 7, 50, [ Enum123.SEC_C10, Enum123.SEC_C11, Enum123.SEC_D11, Enum123.SEC_D12 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 8, 40, [ Enum123.SEC_A15, Enum123.SEC_C15, Enum123.SEC_C16, 0 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ 12, 30, [ Enum123.SEC_L13, Enum123.SEC_M13, Enum123.SEC_M14, Enum123.SEC_L14 ], -1, 0, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 29
 ];
 const PATROL_GROUPS = 29;
@@ -262,74 +262,74 @@ const PATROL_GROUPS = 29;
 let gOrigGarrisonGroup: GARRISON_GROUP[] /* [] */ = [
   // SECTOR	MILITARY								WEIGHT	UNUSED
   //				COMPOSITION											GROUP ID
-  [ SEC_P3, QUEEN_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_O3, MEDUNA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_O4, MEDUNA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_N3, MEDUNA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_N4, MEDUNA_SAMSITE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_P3, Enum174.QUEEN_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_O3, Enum174.MEDUNA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_O4, Enum174.MEDUNA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_N3, Enum174.MEDUNA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_N4, Enum174.MEDUNA_SAMSITE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 5
-  [ SEC_N5, MEDUNA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_M3, LEVEL1_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_M4, LEVEL1_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_M5, LEVEL1_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_N6, LEVEL1_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_N5, Enum174.MEDUNA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_M3, Enum174.LEVEL1_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_M4, Enum174.LEVEL1_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_M5, Enum174.LEVEL1_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_N6, Enum174.LEVEL1_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 10
-  [ SEC_M2, LEVEL2_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_L3, LEVEL2_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_L4, LEVEL2_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_L5, LEVEL2_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_M6, LEVEL2_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_M2, Enum174.LEVEL2_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_L3, Enum174.LEVEL2_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_L4, Enum174.LEVEL2_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_L5, Enum174.LEVEL2_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_M6, Enum174.LEVEL2_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 15
-  [ SEC_N7, LEVEL1_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_L2, LEVEL3_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_K3, LEVEL3_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_K5, LEVEL3_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_L6, LEVEL3_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_N7, Enum174.LEVEL1_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_L2, Enum174.LEVEL3_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_K3, Enum174.LEVEL3_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_K5, Enum174.LEVEL3_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_L6, Enum174.LEVEL3_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 20
-  [ SEC_M7, LEVEL3_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_N8, LEVEL3_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_K4, ORTA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_G1, WEST_GRUMM_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_G2, EAST_GRUMM_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_M7, Enum174.LEVEL3_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_N8, Enum174.LEVEL3_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_K4, Enum174.ORTA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_G1, Enum174.WEST_GRUMM_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_G2, Enum174.EAST_GRUMM_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 25
-  [ SEC_H1, WEST_GRUMM_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_H2, EAST_GRUMM_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_H3, GRUMM_MINE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_A9, OMERTA_WELCOME_WAGON, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_L11, BALIME_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_H1, Enum174.WEST_GRUMM_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_H2, Enum174.EAST_GRUMM_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_H3, Enum174.GRUMM_MINE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_A9, Enum174.OMERTA_WELCOME_WAGON, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_L11, Enum174.BALIME_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 30
-  [ SEC_L12, BALIME_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_J9, TIXA_PRISON, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_I8, TIXA_SAMSITE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_H13, ALMA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_H14, ALMA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_L12, Enum174.BALIME_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_J9, Enum174.TIXA_PRISON, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_I8, Enum174.TIXA_SAMSITE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_H13, Enum174.ALMA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_H14, Enum174.ALMA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 35
-  [ SEC_I13, ALMA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_I14, ALMA_MINE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_F8, CAMBRIA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_F9, CAMBRIA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_G8, CAMBRIA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_I13, Enum174.ALMA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_I14, Enum174.ALMA_MINE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_F8, Enum174.CAMBRIA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_F9, Enum174.CAMBRIA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_G8, Enum174.CAMBRIA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 40
-  [ SEC_G9, CAMBRIA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_H8, CAMBRIA_MINE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_A2, CHITZENA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_B2, CHITZENA_MINE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_D2, CHITZENA_SAMSITE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_G9, Enum174.CAMBRIA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_H8, Enum174.CAMBRIA_MINE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_A2, Enum174.CHITZENA_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_B2, Enum174.CHITZENA_MINE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_D2, Enum174.CHITZENA_SAMSITE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 45
-  [ SEC_B13, DRASSEN_AIRPORT, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_C13, DRASSEN_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_D13, DRASSEN_MINE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_D15, DRASSEN_SAMSITE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_G12, ROADBLOCK, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_B13, Enum174.DRASSEN_AIRPORT, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_C13, Enum174.DRASSEN_DEFENCE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_D13, Enum174.DRASSEN_MINE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_D15, Enum174.DRASSEN_SAMSITE, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_G12, Enum174.ROADBLOCK, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 50
-  [ SEC_M10, ROADBLOCK, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_G6, ROADBLOCK, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_C9, ROADBLOCK, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_K10, ROADBLOCK, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_G7, ROADBLOCK, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_M10, Enum174.ROADBLOCK, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_G6, Enum174.ROADBLOCK, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_C9, Enum174.ROADBLOCK, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_K10, Enum174.ROADBLOCK, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_G7, Enum174.ROADBLOCK, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 55
-  [ SEC_G3, ROADBLOCK, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
-  [ SEC_C5, SANMONA_SMALL, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_G3, Enum174.ROADBLOCK, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
+  [ Enum123.SEC_C5, Enum174.SANMONA_SMALL, 0, 0, [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ],
   // 57
 ];
 
@@ -385,11 +385,11 @@ function ReinforcementsAvailable(iGarrisonID: INT32): INT32 {
   iReinforcementsAvailable -= gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bDesiredPopulation;
 
   switch (gGarrisonGroup[iGarrisonID].ubComposition) {
-    case LEVEL1_DEFENCE:
-    case LEVEL2_DEFENCE:
-    case LEVEL3_DEFENCE:
-    case ALMA_DEFENCE:
-    case ALMA_MINE:
+    case Enum174.LEVEL1_DEFENCE:
+    case Enum174.LEVEL2_DEFENCE:
+    case Enum174.LEVEL3_DEFENCE:
+    case Enum174.ALMA_DEFENCE:
+    case Enum174.ALMA_MINE:
       // Legal spawning locations
       break;
     default:
@@ -410,7 +410,7 @@ function PlayerForceTooStrong(ubSectorID: UINT8, usOffensePoints: UINT16, pusDef
   ubSectorY = SECTORY(ubSectorID);
   pSector = addressof(SectorInfo[ubSectorID]);
 
-  pusDefencePoints.value = pSector.value.ubNumberOfCivsAtLevel[GREEN_MILITIA] * 1 + pSector.value.ubNumberOfCivsAtLevel[REGULAR_MILITIA] * 2 + pSector.value.ubNumberOfCivsAtLevel[ELITE_MILITIA] * 3 + PlayerMercsInSector(ubSectorX, ubSectorY, 0) * 5;
+  pusDefencePoints.value = pSector.value.ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] * 1 + pSector.value.ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] * 2 + pSector.value.ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA] * 3 + PlayerMercsInSector(ubSectorX, ubSectorY, 0) * 5;
   if (pusDefencePoints.value > usOffensePoints) {
     return TRUE;
   }
@@ -430,12 +430,12 @@ function RequestAttackOnSector(ubSectorID: UINT8, usDefencePoints: UINT16): void
 function AdjacentSectorIsImportantAndUndefended(ubSectorID: UINT8): BOOLEAN {
   let pSector: Pointer<SECTORINFO>;
   switch (ubSectorID) {
-    case SEC_A9:
-    case SEC_A10: // Omerta
-    case SEC_C5:
-    case SEC_C6:
-    case SEC_D5: // San Mona
-    case SEC_I6: // Estoni
+    case Enum123.SEC_A9:
+    case Enum123.SEC_A10: // Omerta
+    case Enum123.SEC_C5:
+    case Enum123.SEC_C6:
+    case Enum123.SEC_D5: // San Mona
+    case Enum123.SEC_I6: // Estoni
       // These sectors aren't important.
       return FALSE;
   }
@@ -443,7 +443,7 @@ function AdjacentSectorIsImportantAndUndefended(ubSectorID: UINT8): BOOLEAN {
   if (pSector.value.ubNumTroops || pSector.value.ubNumElites || pSector.value.ubNumAdmins) {
     return FALSE;
   }
-  if (pSector.value.ubTraversability[4] == TOWN) {
+  if (pSector.value.ubTraversability[4] == Enum127.TOWN) {
     if (!PlayerSectorDefended(ubSectorID)) {
       return TRUE;
     }
@@ -466,7 +466,7 @@ function ValidateGroup(pGroup: Pointer<GROUP>): void {
     }
   }
   if (!pGroup.value.ubNextX || !pGroup.value.ubNextY) {
-    if (!pGroup.value.fPlayer && pGroup.value.pEnemyGroup.value.ubIntention != STAGING && pGroup.value.pEnemyGroup.value.ubIntention != REINFORCEMENTS) {
+    if (!pGroup.value.fPlayer && pGroup.value.pEnemyGroup.value.ubIntention != Enum184.STAGING && pGroup.value.pEnemyGroup.value.ubIntention != Enum184.REINFORCEMENTS) {
       if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
         ClearPreviousAIGroupAssignment(pGroup);
         ReassignAIGroup(addressof(pGroup));
@@ -519,7 +519,7 @@ function InitStrategicAI(): void {
   gfUseAlternateQueenPosition = FALSE;
 
   switch (gGameOptions.ubDifficultyLevel) {
-    case DIF_LEVEL_EASY:
+    case Enum9.DIF_LEVEL_EASY:
       giReinforcementPool = EASY_QUEENS_POOL_OF_TROOPS;
       giForcePercentage = EASY_INITIAL_GARRISON_PERCENTAGES;
       giArmyAlertness = EASY_ENEMY_STARTING_ALERT_LEVEL;
@@ -527,25 +527,25 @@ function InitStrategicAI(): void {
       gubMinEnemyGroupSize = EASY_MIN_ENEMY_GROUP_SIZE;
       gubHoursGracePeriod = EASY_GRACE_PERIOD_IN_HOURS;
       // 475 is 7:55am in minutes since midnight, the time the game starts on day 1
-      AddStrategicEvent(EVENT_EVALUATE_QUEEN_SITUATION, 475 + EASY_TIME_EVALUATE_IN_MINUTES + Random(EASY_TIME_EVALUATE_VARIANCE), 0);
+      AddStrategicEvent(Enum132.EVENT_EVALUATE_QUEEN_SITUATION, 475 + EASY_TIME_EVALUATE_IN_MINUTES + Random(EASY_TIME_EVALUATE_VARIANCE), 0);
       break;
-    case DIF_LEVEL_MEDIUM:
+    case Enum9.DIF_LEVEL_MEDIUM:
       giReinforcementPool = NORMAL_QUEENS_POOL_OF_TROOPS;
       giForcePercentage = NORMAL_INITIAL_GARRISON_PERCENTAGES;
       giArmyAlertness = NORMAL_ENEMY_STARTING_ALERT_LEVEL;
       giArmyAlertnessDecay = NORMAL_ENEMY_STARTING_ALERT_DECAY;
       gubMinEnemyGroupSize = NORMAL_MIN_ENEMY_GROUP_SIZE;
       gubHoursGracePeriod = NORMAL_GRACE_PERIOD_IN_HOURS;
-      AddStrategicEvent(EVENT_EVALUATE_QUEEN_SITUATION, 475 + NORMAL_TIME_EVALUATE_IN_MINUTES + Random(NORMAL_TIME_EVALUATE_VARIANCE), 0);
+      AddStrategicEvent(Enum132.EVENT_EVALUATE_QUEEN_SITUATION, 475 + NORMAL_TIME_EVALUATE_IN_MINUTES + Random(NORMAL_TIME_EVALUATE_VARIANCE), 0);
       break;
-    case DIF_LEVEL_HARD:
+    case Enum9.DIF_LEVEL_HARD:
       giReinforcementPool = HARD_QUEENS_POOL_OF_TROOPS;
       giForcePercentage = HARD_INITIAL_GARRISON_PERCENTAGES;
       giArmyAlertness = HARD_ENEMY_STARTING_ALERT_LEVEL;
       giArmyAlertnessDecay = HARD_ENEMY_STARTING_ALERT_DECAY;
       gubMinEnemyGroupSize = HARD_MIN_ENEMY_GROUP_SIZE;
       gubHoursGracePeriod = HARD_GRACE_PERIOD_IN_HOURS;
-      AddStrategicEvent(EVENT_EVALUATE_QUEEN_SITUATION, 475 + HARD_TIME_EVALUATE_IN_MINUTES + Random(HARD_TIME_EVALUATE_VARIANCE), 0);
+      AddStrategicEvent(Enum132.EVENT_EVALUATE_QUEEN_SITUATION, 475 + HARD_TIME_EVALUATE_IN_MINUTES + Random(HARD_TIME_EVALUATE_VARIANCE), 0);
       break;
   }
 
@@ -560,15 +560,15 @@ function InitStrategicAI(): void {
 
   // Eliminate more perimeter defenses on the easier levels.
   switch (gGameOptions.ubDifficultyLevel) {
-    case DIF_LEVEL_EASY:
-      gArmyComp[LEVEL2_DEFENCE].bDesiredPopulation = 0;
-      gArmyComp[LEVEL2_DEFENCE].bStartPopulation = 0;
-      gArmyComp[LEVEL3_DEFENCE].bDesiredPopulation = 0;
-      gArmyComp[LEVEL3_DEFENCE].bStartPopulation = 0;
+    case Enum9.DIF_LEVEL_EASY:
+      gArmyComp[Enum174.LEVEL2_DEFENCE].bDesiredPopulation = 0;
+      gArmyComp[Enum174.LEVEL2_DEFENCE].bStartPopulation = 0;
+      gArmyComp[Enum174.LEVEL3_DEFENCE].bDesiredPopulation = 0;
+      gArmyComp[Enum174.LEVEL3_DEFENCE].bStartPopulation = 0;
       break;
-    case DIF_LEVEL_MEDIUM:
-      gArmyComp[LEVEL3_DEFENCE].bDesiredPopulation = 0;
-      gArmyComp[LEVEL3_DEFENCE].bStartPopulation = 0;
+    case Enum9.DIF_LEVEL_MEDIUM:
+      gArmyComp[Enum174.LEVEL3_DEFENCE].bDesiredPopulation = 0;
+      gArmyComp[Enum174.LEVEL3_DEFENCE].bStartPopulation = 0;
       break;
   }
   // initialize the patrol group definitions
@@ -598,8 +598,8 @@ function InitStrategicAI(): void {
   if (giForcePercentage != 100) {
     // The initial force sizes are being modified, so go through each of the army compositions
     // and adjust them accordingly.
-    for (i = 0; i < NUM_ARMY_COMPOSITIONS; i++) {
-      if (i != QUEEN_DEFENCE) {
+    for (i = 0; i < Enum174.NUM_ARMY_COMPOSITIONS; i++) {
+      if (i != Enum174.QUEEN_DEFENCE) {
         gArmyComp[i].bDesiredPopulation = min(MAX_STRATEGIC_TEAM_SIZE, (gArmyComp[i].bDesiredPopulation * giForcePercentage / 100));
         if (gArmyComp[i].bStartPopulation != MAX_STRATEGIC_TEAM_SIZE) {
           // if the value is MAX_STRATEGIC_TEAM_SIZE, then that means the particular sector is a spawning location.
@@ -629,20 +629,20 @@ function InitStrategicAI(): void {
     iAdminChance = gArmyComp[gGarrisonGroup[i].ubComposition].bAdminPercentage;
 
     switch (gGarrisonGroup[i].ubComposition) {
-      case ROADBLOCK:
+      case Enum174.ROADBLOCK:
         pSector.value.uiFlags |= SF_ENEMY_AMBUSH_LOCATION;
         if (Chance(20))
           iStartPop = gArmyComp[gGarrisonGroup[i].ubComposition].bDesiredPopulation;
         else
           iStartPop = 0;
         break;
-      case SANMONA_SMALL:
+      case Enum174.SANMONA_SMALL:
         iStartPop = 0; // not appropriate until Kingpin is killed.
         break;
     }
 
     if (iStartPop) {
-      if (gGarrisonGroup[i].ubSectorID != SEC_P3) {
+      if (gGarrisonGroup[i].ubSectorID != Enum123.SEC_P3) {
         // if population is less than maximum
         if (iStartPop != MAX_STRATEGIC_TEAM_SIZE) {
           // then vary it a bit (+/- 25%)
@@ -668,19 +668,19 @@ function InitStrategicAI(): void {
           }
         }
       switch (gGarrisonGroup[i].ubComposition) {
-        case CAMBRIA_DEFENCE:
-        case CAMBRIA_MINE:
-        case ALMA_MINE:
-        case GRUMM_MINE:
+        case Enum174.CAMBRIA_DEFENCE:
+        case Enum174.CAMBRIA_MINE:
+        case Enum174.ALMA_MINE:
+        case Enum174.GRUMM_MINE:
           // Fill up extra start slots with troops
           pSector.value.ubNumTroops = (iStartPop -= pSector.value.ubNumAdmins);
           break;
-        case DRASSEN_AIRPORT:
-        case DRASSEN_DEFENCE:
-        case DRASSEN_MINE:
+        case Enum174.DRASSEN_AIRPORT:
+        case Enum174.DRASSEN_DEFENCE:
+        case Enum174.DRASSEN_MINE:
           pSector.value.ubNumAdmins = max(5, pSector.value.ubNumAdmins);
           break;
-        case TIXA_PRISON:
+        case Enum174.TIXA_PRISON:
           pSector.value.ubNumAdmins = max(8, pSector.value.ubNumAdmins);
           break;
       }
@@ -710,7 +710,7 @@ function InitStrategicAI(): void {
 
     // Now post an event which allows them to check adjacent sectors periodically.
     // Spread them out so that they process at different times.
-    AddPeriodStrategicEventWithOffset(EVENT_CHECK_ENEMY_CONTROLLED_SECTOR, 140 - 20 * gGameOptions.ubDifficultyLevel + Random(4), 475 + i, gGarrisonGroup[i].ubSectorID);
+    AddPeriodStrategicEventWithOffset(Enum132.EVENT_CHECK_ENEMY_CONTROLLED_SECTOR, 140 - 20 * gGameOptions.ubDifficultyLevel + Random(4), 475 + i, gGarrisonGroup[i].ubSectorID);
   }
   // Now, initialize each of the patrol groups
   for (i = 0; i < giPatrolArraySize; i++) {
@@ -735,8 +735,8 @@ function InitStrategicAI(): void {
         pGroup.value.pEnemyGroup.value.ubNumTroops = 0;
       }
       gPatrolGroup[i].ubGroupID = pGroup.value.ubGroupID;
-      pGroup.value.pEnemyGroup.value.ubIntention = PATROL;
-      pGroup.value.ubMoveType = ENDTOEND_FORWARDS;
+      pGroup.value.pEnemyGroup.value.ubIntention = Enum184.PATROL;
+      pGroup.value.ubMoveType = Enum185.ENDTOEND_FORWARDS;
       AddWaypointIDToPGroup(pGroup, gPatrolGroup[i].ubSectorID[0]);
       AddWaypointIDToPGroup(pGroup, gPatrolGroup[i].ubSectorID[1]);
       if (gPatrolGroup[i].ubSectorID[2]) {
@@ -759,29 +759,29 @@ function InitStrategicAI(): void {
   }
 
   // Setup the flags for the four sam sites.
-  SectorInfo[SEC_D2].uiFlags |= SF_SAM_SITE;
-  SectorInfo[SEC_D15].uiFlags |= SF_SAM_SITE;
-  SectorInfo[SEC_I8].uiFlags |= SF_SAM_SITE;
-  SectorInfo[SEC_N4].uiFlags |= SF_SAM_SITE;
+  SectorInfo[Enum123.SEC_D2].uiFlags |= SF_SAM_SITE;
+  SectorInfo[Enum123.SEC_D15].uiFlags |= SF_SAM_SITE;
+  SectorInfo[Enum123.SEC_I8].uiFlags |= SF_SAM_SITE;
+  SectorInfo[Enum123.SEC_N4].uiFlags |= SF_SAM_SITE;
 
   // final thing to do is choose 1 cache map out of 5 possible maps.  Simply select the sector randomly,
   // set up the flags to use the alternate map, then place 8-12 regular troops there (no ai though).
   // changing MAX_STRATEGIC_TEAM_SIZE may require changes to to the defending force here.
   switch (Random(5)) {
     case 0:
-      pSector = addressof(SectorInfo[SEC_E11]);
+      pSector = addressof(SectorInfo[Enum123.SEC_E11]);
       break;
     case 1:
-      pSector = addressof(SectorInfo[SEC_H5]);
+      pSector = addressof(SectorInfo[Enum123.SEC_H5]);
       break;
     case 2:
-      pSector = addressof(SectorInfo[SEC_H10]);
+      pSector = addressof(SectorInfo[Enum123.SEC_H10]);
       break;
     case 3:
-      pSector = addressof(SectorInfo[SEC_J12]);
+      pSector = addressof(SectorInfo[Enum123.SEC_J12]);
       break;
     case 4:
-      pSector = addressof(SectorInfo[SEC_M9]);
+      pSector = addressof(SectorInfo[Enum123.SEC_M9]);
       break;
   }
   pSector.value.uiFlags |= SF_USE_ALTERNATE_MAP;
@@ -807,7 +807,7 @@ function KillStrategicAI(): void {
     MemFree(gubGarrisonReinforcementsDenied);
     gubGarrisonReinforcementsDenied = NULL;
   }
-  DeleteAllStrategicEventsOfType(EVENT_EVALUATE_QUEEN_SITUATION);
+  DeleteAllStrategicEventsOfType(Enum132.EVENT_EVALUATE_QUEEN_SITUATION);
 }
 
 function OkayForEnemyToMoveThroughSector(ubSectorID: UINT8): BOOLEAN {
@@ -847,37 +847,37 @@ function EnemyPermittedToAttackSector(pGroup: Pointer<Pointer<GROUP>>, ubSectorI
   }
   // If Hill-billies are alive, then enemy won't attack the sector.
   switch (ubSectorID) {
-    case SEC_F10:
+    case Enum123.SEC_F10:
       // Hill-billy farm -- not until hill billies are dead.
       if (CheckFact(273, FALSE))
         return FALSE;
       break;
-    case SEC_A9:
-    case SEC_A10:
+    case Enum123.SEC_A9:
+    case Enum123.SEC_A10:
       // Omerta -- not until Day 2 at 7:45AM.
       if (GetWorldTotalMin() < 3345)
         return FALSE;
       break;
-    case SEC_B13:
-    case SEC_C13:
-    case SEC_D13:
+    case Enum123.SEC_B13:
+    case Enum123.SEC_C13:
+    case Enum123.SEC_D13:
       // Drassen -- not until Day 3 at 6:30AM.
       if (GetWorldTotalMin() < 4710)
         return FALSE;
       break;
-    case SEC_C5:
-    case SEC_C6:
-    case SEC_D5:
+    case Enum123.SEC_C5:
+    case Enum123.SEC_C6:
+    case Enum123.SEC_D5:
       // San Mona -- not until Kingpin is dead.
-      if (CheckFact(FACT_KINGPIN_DEAD, 0) == FALSE)
+      if (CheckFact(Enum170.FACT_KINGPIN_DEAD, 0) == FALSE)
         return FALSE;
-    case SEC_G1:
-      if (PlayerSectorDefended(SEC_G2) && (PlayerSectorDefended(SEC_H1) || PlayerSectorDefended(SEC_H2))) {
+    case Enum123.SEC_G1:
+      if (PlayerSectorDefended(Enum123.SEC_G2) && (PlayerSectorDefended(Enum123.SEC_H1) || PlayerSectorDefended(Enum123.SEC_H2))) {
         return FALSE;
       }
       break;
-    case SEC_H2:
-      if (PlayerSectorDefended(SEC_H2) && (PlayerSectorDefended(SEC_G1) || PlayerSectorDefended(SEC_G2))) {
+    case Enum123.SEC_H2:
+      if (PlayerSectorDefended(Enum123.SEC_H2) && (PlayerSectorDefended(Enum123.SEC_G1) || PlayerSectorDefended(Enum123.SEC_G2))) {
         return FALSE;
       }
       break;
@@ -898,9 +898,9 @@ function HandlePlayerGroupNoticedByPatrolGroup(pPlayerGroup: Pointer<GROUP>, pEn
   }
   // For now, automatically attack.
   if (pPlayerGroup.value.ubNextX) {
-    MoveSAIGroupToSector(addressof(pEnemyGroup), SECTOR(pPlayerGroup.value.ubNextX, pPlayerGroup.value.ubNextY), DIRECT, PURSUIT);
+    MoveSAIGroupToSector(addressof(pEnemyGroup), SECTOR(pPlayerGroup.value.ubNextX, pPlayerGroup.value.ubNextY), Enum172.DIRECT, Enum184.PURSUIT);
   } else {
-    MoveSAIGroupToSector(addressof(pEnemyGroup), SECTOR(pPlayerGroup.value.ubSectorX, pPlayerGroup.value.ubSectorY), DIRECT, PURSUIT);
+    MoveSAIGroupToSector(addressof(pEnemyGroup), SECTOR(pPlayerGroup.value.ubSectorX, pPlayerGroup.value.ubSectorY), Enum172.DIRECT, Enum184.PURSUIT);
   }
   return TRUE;
 }
@@ -933,7 +933,7 @@ function HandlePlayerGroupNoticedByGarrison(pPlayerGroup: Pointer<GROUP>, ubSect
 
       ConvertGroupTroopsToComposition(pGroup, gGarrisonGroup[pSector.value.ubGarrisonID].ubComposition);
 
-      MoveSAIGroupToSector(addressof(pGroup), SECTOR(pPlayerGroup.value.ubSectorX, pPlayerGroup.value.ubSectorY), DIRECT, REINFORCEMENTS);
+      MoveSAIGroupToSector(addressof(pGroup), SECTOR(pPlayerGroup.value.ubSectorX, pPlayerGroup.value.ubSectorY), Enum172.DIRECT, Enum184.REINFORCEMENTS);
 
       RemoveSoldiersFromGarrisonBasedOnComposition(pSector.value.ubGarrisonID, pGroup.value.ubGroupSize);
 
@@ -955,7 +955,7 @@ function HandleMilitiaNoticedByPatrolGroup(ubSectorID: UINT8, pEnemyGroup: Point
     return FALSE;
   }
 
-  MoveSAIGroupToSector(addressof(pEnemyGroup), SECTOR(ubSectorX, ubSectorY), DIRECT, REINFORCEMENTS);
+  MoveSAIGroupToSector(addressof(pEnemyGroup), SECTOR(ubSectorX, ubSectorY), Enum172.DIRECT, Enum184.REINFORCEMENTS);
 
   return FALSE;
 }
@@ -1040,7 +1040,7 @@ function HandleEmptySectorNoticedByPatrolGroup(pGroup: Pointer<GROUP>, ubEmptySe
   ClearPreviousAIGroupAssignment(pGroup);
 
   gGarrisonGroup[ubGarrisonID].ubPendingGroupID = pGroup.value.ubGroupID;
-  MoveSAIGroupToSector(addressof(pGroup), SECTOR(ubSectorX, ubSectorY), DIRECT, REINFORCEMENTS);
+  MoveSAIGroupToSector(addressof(pGroup), SECTOR(ubSectorX, ubSectorY), Enum172.DIRECT, Enum184.REINFORCEMENTS);
 
   return TRUE;
 }
@@ -1078,7 +1078,7 @@ function HandleEmptySectorNoticedByGarrison(ubGarrisonSectorID: UINT8, ubEmptySe
     ConvertGroupTroopsToComposition(pGroup, gGarrisonGroup[ubDstGarrisonID].ubComposition);
     RemoveSoldiersFromGarrisonBasedOnComposition(ubSrcGarrisonID, pGroup.value.ubGroupSize);
     gGarrisonGroup[ubDstGarrisonID].ubPendingGroupID = pGroup.value.ubGroupID;
-    MoveSAIGroupToSector(addressof(pGroup), ubEmptySectorID, DIRECT, REINFORCEMENTS);
+    MoveSAIGroupToSector(addressof(pGroup), ubEmptySectorID, Enum172.DIRECT, Enum184.REINFORCEMENTS);
   }
 }
 
@@ -1092,7 +1092,7 @@ function ReinforcementsApproved(iGarrisonID: INT32, pusDefencePoints: Pointer<UI
   ubSectorX = SECTORX(gGarrisonGroup[iGarrisonID].ubSectorID);
   ubSectorY = SECTORY(gGarrisonGroup[iGarrisonID].ubSectorID);
 
-  pusDefencePoints.value = pSector.value.ubNumberOfCivsAtLevel[GREEN_MILITIA] * 1 + pSector.value.ubNumberOfCivsAtLevel[REGULAR_MILITIA] * 2 + pSector.value.ubNumberOfCivsAtLevel[ELITE_MILITIA] * 3 + PlayerMercsInSector(ubSectorX, ubSectorY, 0) * 4;
+  pusDefencePoints.value = pSector.value.ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] * 1 + pSector.value.ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] * 2 + pSector.value.ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA] * 3 + PlayerMercsInSector(ubSectorX, ubSectorY, 0) * 4;
   usOffensePoints = gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bAdminPercentage * 2 + gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bTroopPercentage * 3 + gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bElitePercentage * 4 + gubGarrisonReinforcementsDenied[iGarrisonID];
   usOffensePoints = usOffensePoints * gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bDesiredPopulation / 100;
 
@@ -1127,18 +1127,18 @@ function EvaluateGroupSituation(pGroup: Pointer<GROUP>): BOOLEAN {
     return FALSE;
   }
   Assert(!pGroup.value.fPlayer);
-  if (pGroup.value.pEnemyGroup.value.ubIntention == PURSUIT) {
+  if (pGroup.value.pEnemyGroup.value.ubIntention == Enum184.PURSUIT) {
     // Lost the player group that he was going to attack.  Return to original position.
     ReassignAIGroup(addressof(pGroup));
     return TRUE;
-  } else if (pGroup.value.pEnemyGroup.value.ubIntention == REINFORCEMENTS) {
+  } else if (pGroup.value.pEnemyGroup.value.ubIntention == Enum184.REINFORCEMENTS) {
     // The group has arrived at the location where he is supposed to reinforce.
     // Step 1 -- Check for matching garrison location
     for (i = 0; i < giGarrisonArraySize; i++) {
       if (gGarrisonGroup[i].ubSectorID == SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY) && gGarrisonGroup[i].ubPendingGroupID == pGroup.value.ubGroupID) {
         pSector = addressof(SectorInfo[SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY)]);
 
-        if (gGarrisonGroup[i].ubSectorID != SEC_P3) {
+        if (gGarrisonGroup[i].ubSectorID != Enum123.SEC_P3) {
           EliminateSurplusTroopsForGarrison(pGroup, pSector);
           pSector.value.ubNumAdmins = (pSector.value.ubNumAdmins + pGroup.value.pEnemyGroup.value.ubNumAdmins);
           pSector.value.ubNumTroops = (pSector.value.ubNumTroops + pGroup.value.pEnemyGroup.value.ubNumTroops);
@@ -1211,8 +1211,8 @@ function EvaluateGroupSituation(pGroup: Pointer<GROUP>): BOOLEAN {
         } else {
           // the reinforcements have become the new patrol group (even if same group)
           gPatrolGroup[i].ubGroupID = pGroup.value.ubGroupID;
-          pGroup.value.pEnemyGroup.value.ubIntention = PATROL;
-          pGroup.value.ubMoveType = ENDTOEND_FORWARDS;
+          pGroup.value.pEnemyGroup.value.ubIntention = Enum184.PATROL;
+          pGroup.value.ubMoveType = Enum185.ENDTOEND_FORWARDS;
           RemovePGroupWaypoints(pGroup);
           AddWaypointIDToPGroup(pGroup, gPatrolGroup[i].ubSectorID[0]);
           AddWaypointIDToPGroup(pGroup, gPatrolGroup[i].ubSectorID[1]);
@@ -1233,7 +1233,7 @@ function EvaluateGroupSituation(pGroup: Pointer<GROUP>): BOOLEAN {
     }
   } else {
     // This is a floating group at his final destination...
-    if (pGroup.value.pEnemyGroup.value.ubIntention != STAGING && pGroup.value.pEnemyGroup.value.ubIntention != REINFORCEMENTS) {
+    if (pGroup.value.pEnemyGroup.value.ubIntention != Enum184.STAGING && pGroup.value.pEnemyGroup.value.ubIntention != Enum184.REINFORCEMENTS) {
       ReassignAIGroup(addressof(pGroup));
       return TRUE;
     }
@@ -1430,7 +1430,7 @@ function CheckEnemyControlledSector(ubSectorID: UINT8): void {
             }
             // RequestHighPriorityStagingGroupReinforcements( pGroup );
           } else if (SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY) != gGarrisonGroup[pSector.value.ubGarrisonID].ubSectorID) {
-            MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[pSector.value.ubGarrisonID].ubSectorID, DIRECT, pGroup.value.pEnemyGroup.value.ubIntention);
+            MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[pSector.value.ubGarrisonID].ubSectorID, Enum172.DIRECT, pGroup.value.pEnemyGroup.value.ubIntention);
           }
         }
         // else the group is on route to stage hopefully...
@@ -1644,20 +1644,20 @@ function ChooseSuitableGarrisonToProvideReinforcements(iDstGarrisonID: INT32, iR
   // service from Alma, due to it's proximity and Alma's purpose as a forward military base.
   ubSectorID = gGarrisonGroup[iDstGarrisonID].ubSectorID;
   switch (ubSectorID) {
-    case SEC_B13:
-    case SEC_C13:
-    case SEC_D13:
-    case SEC_D15: // Drassen + nearby SAM site
-    case SEC_F8:
-    case SEC_F9:
-    case SEC_G8:
-    case SEC_G9:
-    case SEC_H8: // Cambria
+    case Enum123.SEC_B13:
+    case Enum123.SEC_C13:
+    case Enum123.SEC_D13:
+    case Enum123.SEC_D15: // Drassen + nearby SAM site
+    case Enum123.SEC_F8:
+    case Enum123.SEC_F9:
+    case Enum123.SEC_G8:
+    case Enum123.SEC_G9:
+    case Enum123.SEC_H8: // Cambria
       // reinforcements will be primarily sent from Alma whenever possible.
 
       // find which the first sector that contains Alma soldiers.
       for (i = 0; i < giGarrisonArraySize; i++) {
-        if (gGarrisonGroup[i].ubComposition == ALMA_DEFENCE)
+        if (gGarrisonGroup[i].ubComposition == Enum174.ALMA_DEFENCE)
           break;
       }
       iSrcGarrisonID = i;
@@ -1758,7 +1758,7 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
 
   ValidateWeights(8);
 
-  if (gGarrisonGroup[iDstGarrisonID].ubSectorID == SEC_B13 || gGarrisonGroup[iDstGarrisonID].ubSectorID == SEC_C13 || gGarrisonGroup[iDstGarrisonID].ubSectorID == SEC_D13) {
+  if (gGarrisonGroup[iDstGarrisonID].ubSectorID == Enum123.SEC_B13 || gGarrisonGroup[iDstGarrisonID].ubSectorID == Enum123.SEC_C13 || gGarrisonGroup[iDstGarrisonID].ubSectorID == Enum123.SEC_D13) {
     pSector = NULL;
   }
   pSector = addressof(SectorInfo[gGarrisonGroup[iDstGarrisonID].ubSectorID]);
@@ -1792,7 +1792,7 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
 
     gGarrisonGroup[iDstGarrisonID].ubPendingGroupID = pGroup.value.ubGroupID;
     ConvertGroupTroopsToComposition(pGroup, gGarrisonGroup[iDstGarrisonID].ubComposition);
-    MoveSAIGroupToSector(pOptionalGroup, gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, REINFORCEMENTS);
+    MoveSAIGroupToSector(pOptionalGroup, gGarrisonGroup[iDstGarrisonID].ubSectorID, Enum172.STAGE, Enum184.REINFORCEMENTS);
 
     ValidateWeights(10);
 
@@ -1837,19 +1837,19 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
       }
     }
 
-    pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_P3, 0, iReinforcementsApproved, 0);
+    pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_P3, 0, iReinforcementsApproved, 0);
     ConvertGroupTroopsToComposition(pGroup, gGarrisonGroup[iDstGarrisonID].ubComposition);
     pGroup.value.ubOriginalSector = SECTOR(ubDstSectorX, ubDstSectorY);
     giReinforcementPool -= iReinforcementsApproved;
-    pGroup.value.ubMoveType = ONE_WAY;
+    pGroup.value.ubMoveType = Enum185.ONE_WAY;
     gGarrisonGroup[iDstGarrisonID].ubPendingGroupID = pGroup.value.ubGroupID;
 
     ubGroupSize = (pGroup.value.pEnemyGroup.value.ubNumTroops + pGroup.value.pEnemyGroup.value.ubNumElites + pGroup.value.pEnemyGroup.value.ubNumAdmins);
 
     if (ubNumExtraReinforcements) {
-      MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, STAGING);
+      MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iDstGarrisonID].ubSectorID, Enum172.STAGE, Enum184.STAGING);
     } else {
-      MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, REINFORCEMENTS);
+      MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iDstGarrisonID].ubSectorID, Enum172.STAGE, Enum184.REINFORCEMENTS);
     }
     ValidateWeights(14);
     return;
@@ -1899,16 +1899,16 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
       ConvertGroupTroopsToComposition(pGroup, gGarrisonGroup[iDstGarrisonID].ubComposition);
       RemoveSoldiersFromGarrisonBasedOnComposition(iSrcGarrisonID, pGroup.value.ubGroupSize);
       pGroup.value.ubOriginalSector = SECTOR(ubDstSectorX, ubDstSectorY);
-      pGroup.value.ubMoveType = ONE_WAY;
+      pGroup.value.ubMoveType = Enum185.ONE_WAY;
       gGarrisonGroup[iDstGarrisonID].ubPendingGroupID = pGroup.value.ubGroupID;
       ubGroupSize = (pGroup.value.pEnemyGroup.value.ubNumTroops + pGroup.value.pEnemyGroup.value.ubNumElites + pGroup.value.pEnemyGroup.value.ubNumAdmins);
 
       if (ubNumExtraReinforcements) {
         pGroup.value.pEnemyGroup.value.ubPendingReinforcements = ubNumExtraReinforcements;
 
-        MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, STAGING);
+        MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iDstGarrisonID].ubSectorID, Enum172.STAGE, Enum184.STAGING);
       } else {
-        MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, REINFORCEMENTS);
+        MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iDstGarrisonID].ubSectorID, Enum172.STAGE, Enum184.REINFORCEMENTS);
       }
 
       ValidateWeights(19);
@@ -1948,7 +1948,7 @@ function SendReinforcementsForPatrol(iPatrolID: INT32, pOptionalGroup: Pointer<P
 
     gPatrolGroup[iPatrolID].ubPendingGroupID = pGroup.value.ubGroupID;
 
-    MoveSAIGroupToSector(pOptionalGroup, gPatrolGroup[iPatrolID].ubSectorID[1], EVASIVE, REINFORCEMENTS);
+    MoveSAIGroupToSector(pOptionalGroup, gPatrolGroup[iPatrolID].ubSectorID[1], Enum172.EVASIVE, Enum184.REINFORCEMENTS);
 
     ValidateWeights(22);
     return;
@@ -1960,13 +1960,13 @@ function SendReinforcementsForPatrol(iPatrolID: INT32, pOptionalGroup: Pointer<P
     if (!iReinforcementsApproved) {
       iReinforcementsApproved = iReinforcementsApproved;
     }
-    pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_P3, 0, iReinforcementsApproved, 0);
+    pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_P3, 0, iReinforcementsApproved, 0);
     pGroup.value.ubOriginalSector = SECTOR(ubDstSectorX, ubDstSectorY);
     giReinforcementPool -= iReinforcementsApproved;
 
     gPatrolGroup[iPatrolID].ubPendingGroupID = pGroup.value.ubGroupID;
 
-    MoveSAIGroupToSector(addressof(pGroup), gPatrolGroup[iPatrolID].ubSectorID[1], EVASIVE, REINFORCEMENTS);
+    MoveSAIGroupToSector(addressof(pGroup), gPatrolGroup[iPatrolID].ubSectorID[1], Enum172.EVASIVE, Enum184.REINFORCEMENTS);
 
     ValidateWeights(23);
     return;
@@ -1993,7 +1993,7 @@ function SendReinforcementsForPatrol(iPatrolID: INT32, pOptionalGroup: Pointer<P
 
             RemoveSoldiersFromGarrisonBasedOnComposition(iSrcGarrisonID, pGroup.value.ubGroupSize);
 
-            MoveSAIGroupToSector(addressof(pGroup), gPatrolGroup[iPatrolID].ubSectorID[1], EVASIVE, REINFORCEMENTS);
+            MoveSAIGroupToSector(addressof(pGroup), gPatrolGroup[iPatrolID].ubSectorID[1], Enum172.EVASIVE, Enum184.REINFORCEMENTS);
 
             ValidateWeights(24);
 
@@ -2027,13 +2027,13 @@ function EvaluateQueenSituation(): void {
   uiOffset = max(100 - giRequestPoints, 0);
   uiOffset = uiOffset + Random(uiOffset * 4);
   switch (gGameOptions.ubDifficultyLevel) {
-    case DIF_LEVEL_EASY:
+    case Enum9.DIF_LEVEL_EASY:
       uiOffset += EASY_TIME_EVALUATE_IN_MINUTES + Random(EASY_TIME_EVALUATE_VARIANCE);
       break;
-    case DIF_LEVEL_MEDIUM:
+    case Enum9.DIF_LEVEL_MEDIUM:
       uiOffset += NORMAL_TIME_EVALUATE_IN_MINUTES + Random(NORMAL_TIME_EVALUATE_VARIANCE);
       break;
-    case DIF_LEVEL_HARD:
+    case Enum9.DIF_LEVEL_HARD:
       uiOffset += HARD_TIME_EVALUATE_IN_MINUTES + Random(HARD_TIME_EVALUATE_VARIANCE);
       break;
   }
@@ -2042,12 +2042,12 @@ function EvaluateQueenSituation(): void {
     // Queen has run out of reinforcements.  Simulate recruiting and training new troops
     uiOffset *= 10;
     giReinforcementPool += 30;
-    AddStrategicEvent(EVENT_EVALUATE_QUEEN_SITUATION, GetWorldTotalMin() + uiOffset, 0);
+    AddStrategicEvent(Enum132.EVENT_EVALUATE_QUEEN_SITUATION, GetWorldTotalMin() + uiOffset, 0);
     return;
   }
 
   // Re-post the event
-  AddStrategicEvent(EVENT_EVALUATE_QUEEN_SITUATION, GetWorldTotalMin() + uiOffset, 0);
+  AddStrategicEvent(Enum132.EVENT_EVALUATE_QUEEN_SITUATION, GetWorldTotalMin() + uiOffset, 0);
 
   // if the queen hasn't been alerted to player's presence yet
   if (!gfQueenAIAwake) {
@@ -2186,10 +2186,10 @@ function SaveStrategicAI(hFile: HWFILE): BOOLEAN {
   if (uiNumBytesWritten != SAI_PADDING_BYTES)
     return FALSE;
   // Save the army composition (which does get modified)
-  FileWrite(hFile, gArmyComp, NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION))
+  FileWrite(hFile, gArmyComp, Enum174.NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION), addressof(uiNumBytesWritten));
+  if (uiNumBytesWritten != Enum174.NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION))
     return FALSE;
-  i = SAVED_ARMY_COMPOSITIONS - NUM_ARMY_COMPOSITIONS;
+  i = SAVED_ARMY_COMPOSITIONS - Enum174.NUM_ARMY_COMPOSITIONS;
   while (i--) {
     FileWrite(hFile, addressof(gTempArmyComp), sizeof(ARMY_COMPOSITION), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(ARMY_COMPOSITION))
@@ -2304,10 +2304,10 @@ function LoadStrategicAI(hFile: HWFILE): BOOLEAN {
   if (uiNumBytesRead != SAI_PADDING_BYTES)
     return FALSE;
   // Restore the army composition
-  FileRead(hFile, gArmyComp, NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION))
+  FileRead(hFile, gArmyComp, Enum174.NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION), addressof(uiNumBytesRead));
+  if (uiNumBytesRead != Enum174.NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION))
     return FALSE;
-  i = SAVED_ARMY_COMPOSITIONS - NUM_ARMY_COMPOSITIONS;
+  i = SAVED_ARMY_COMPOSITIONS - Enum174.NUM_ARMY_COMPOSITIONS;
   while (i--) {
     FileRead(hFile, addressof(gTempArmyComp), sizeof(ARMY_COMPOSITION), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(ARMY_COMPOSITION))
@@ -2373,7 +2373,7 @@ function LoadStrategicAI(hFile: HWFILE): BOOLEAN {
     // Reinitialize the costs since they have changed.
 
     // Recreate the compositions
-    memcpy(gArmyComp, gOrigArmyComp, NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION));
+    memcpy(gArmyComp, gOrigArmyComp, Enum174.NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION));
     EvolveQueenPriorityPhase(TRUE);
 
     // Recreate the patrol desired sizes
@@ -2417,10 +2417,10 @@ function LoadStrategicAI(hFile: HWFILE): BOOLEAN {
     InitBloodCatSectors();
     // This info is used to clean up the two new codes inserted into the
     // middle of the enumeration for battle codes.
-    if (gubEnemyEncounterCode > CREATURE_ATTACK_CODE) {
+    if (gubEnemyEncounterCode > Enum164.CREATURE_ATTACK_CODE) {
       gubEnemyEncounterCode += 2;
     }
-    if (gubExplicitEnemyEncounterCode > CREATURE_ATTACK_CODE) {
+    if (gubExplicitEnemyEncounterCode > Enum164.CREATURE_ATTACK_CODE) {
       gubExplicitEnemyEncounterCode += 2;
     }
   }
@@ -2462,33 +2462,33 @@ function LoadStrategicAI(hFile: HWFILE): BOOLEAN {
   if (ubSAIVersion < 18) {
     // adjust down the number of bloodcats based on difficulty in the two special bloodcat levels
     switch (gGameOptions.ubDifficultyLevel) {
-      case DIF_LEVEL_EASY: // 50%
-        SectorInfo[SEC_I16].bBloodCatPlacements = 14;
-        SectorInfo[SEC_N5].bBloodCatPlacements = 13;
-        SectorInfo[SEC_I16].bBloodCats = 14;
-        SectorInfo[SEC_N5].bBloodCats = 13;
+      case Enum9.DIF_LEVEL_EASY: // 50%
+        SectorInfo[Enum123.SEC_I16].bBloodCatPlacements = 14;
+        SectorInfo[Enum123.SEC_N5].bBloodCatPlacements = 13;
+        SectorInfo[Enum123.SEC_I16].bBloodCats = 14;
+        SectorInfo[Enum123.SEC_N5].bBloodCats = 13;
         break;
-      case DIF_LEVEL_MEDIUM: // 75%
-        SectorInfo[SEC_I16].bBloodCatPlacements = 19;
-        SectorInfo[SEC_N5].bBloodCatPlacements = 18;
-        SectorInfo[SEC_I16].bBloodCats = 19;
-        SectorInfo[SEC_N5].bBloodCats = 18;
-      case DIF_LEVEL_HARD: // 100%
-        SectorInfo[SEC_I16].bBloodCatPlacements = 26;
-        SectorInfo[SEC_N5].bBloodCatPlacements = 25;
-        SectorInfo[SEC_I16].bBloodCats = 26;
-        SectorInfo[SEC_N5].bBloodCats = 25;
+      case Enum9.DIF_LEVEL_MEDIUM: // 75%
+        SectorInfo[Enum123.SEC_I16].bBloodCatPlacements = 19;
+        SectorInfo[Enum123.SEC_N5].bBloodCatPlacements = 18;
+        SectorInfo[Enum123.SEC_I16].bBloodCats = 19;
+        SectorInfo[Enum123.SEC_N5].bBloodCats = 18;
+      case Enum9.DIF_LEVEL_HARD: // 100%
+        SectorInfo[Enum123.SEC_I16].bBloodCatPlacements = 26;
+        SectorInfo[Enum123.SEC_N5].bBloodCatPlacements = 25;
+        SectorInfo[Enum123.SEC_I16].bBloodCats = 26;
+        SectorInfo[Enum123.SEC_N5].bBloodCats = 25;
         break;
     }
   }
   if (ubSAIVersion < 19) {
     // Clear the garrison in C5
-    gArmyComp[gGarrisonGroup[SectorInfo[SEC_C5].ubGarrisonID].ubComposition].bPriority = 0;
-    gArmyComp[gGarrisonGroup[SectorInfo[SEC_C5].ubGarrisonID].ubComposition].bDesiredPopulation = 0;
+    gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_C5].ubGarrisonID].ubComposition].bPriority = 0;
+    gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_C5].ubGarrisonID].ubComposition].bDesiredPopulation = 0;
   }
   if (ubSAIVersion < 20) {
-    gArmyComp[QUEEN_DEFENCE].bDesiredPopulation = 32;
-    SectorInfo[SEC_P3].ubNumElites = 32;
+    gArmyComp[Enum174.QUEEN_DEFENCE].bDesiredPopulation = 32;
+    SectorInfo[Enum123.SEC_P3].ubNumElites = 32;
   }
   if (ubSAIVersion < 21) {
     pGroup = gpGroupList;
@@ -2500,37 +2500,37 @@ function LoadStrategicAI(hFile: HWFILE): BOOLEAN {
   if (ubSAIVersion < 22) {
     // adjust down the number of bloodcats based on difficulty in the two special bloodcat levels
     switch (gGameOptions.ubDifficultyLevel) {
-      case DIF_LEVEL_EASY: // 50%
-        SectorInfo[SEC_N5].bBloodCatPlacements = 8;
-        SectorInfo[SEC_N5].bBloodCats = 10;
+      case Enum9.DIF_LEVEL_EASY: // 50%
+        SectorInfo[Enum123.SEC_N5].bBloodCatPlacements = 8;
+        SectorInfo[Enum123.SEC_N5].bBloodCats = 10;
         break;
-      case DIF_LEVEL_MEDIUM: // 75%
-        SectorInfo[SEC_N5].bBloodCatPlacements = 8;
-        SectorInfo[SEC_N5].bBloodCats = 10;
-      case DIF_LEVEL_HARD: // 100%
-        SectorInfo[SEC_N5].bBloodCatPlacements = 8;
-        SectorInfo[SEC_N5].bBloodCats = 10;
+      case Enum9.DIF_LEVEL_MEDIUM: // 75%
+        SectorInfo[Enum123.SEC_N5].bBloodCatPlacements = 8;
+        SectorInfo[Enum123.SEC_N5].bBloodCats = 10;
+      case Enum9.DIF_LEVEL_HARD: // 100%
+        SectorInfo[Enum123.SEC_N5].bBloodCatPlacements = 8;
+        SectorInfo[Enum123.SEC_N5].bBloodCats = 10;
         break;
     }
   }
   if (ubSAIVersion < 23) {
     if (gWorldSectorX != 3 || gWorldSectorY != 16 || !gbWorldSectorZ) {
-      SectorInfo[SEC_P3].ubNumElites = 32;
+      SectorInfo[Enum123.SEC_P3].ubNumElites = 32;
     }
   }
   if (ubSAIVersion < 24) {
     // If the queen has escaped to the basement, do not use the profile insertion info
     // when we finally go down there, otherwise she will end up in the wrong spot, possibly inside
     // the walls.
-    if (!gubFact[FACT_QUEEN_DEAD] && gMercProfiles[QUEEN].bSectorZ == 1)
+    if (!gubFact[Enum170.FACT_QUEEN_DEAD] && gMercProfiles[Enum268.QUEEN].bSectorZ == 1)
       if (gbWorldSectorZ != 1 || gWorldSectorX != 16 || gWorldSectorY != 3) {
         // We aren't in the basement sector
-        gMercProfiles[QUEEN].fUseProfileInsertionInfo = FALSE;
+        gMercProfiles[Enum268.QUEEN].fUseProfileInsertionInfo = FALSE;
       } else {
         // We are in the basement sector, relocate queen to proper position.
         let i: INT32;
         for (i = gTacticalStatus.Team[CIV_TEAM].bFirstID; i <= gTacticalStatus.Team[CIV_TEAM].bLastID; i++) {
-          if (MercPtrs[i].value.ubProfile == QUEEN) {
+          if (MercPtrs[i].value.ubProfile == Enum268.QUEEN) {
             // Found queen, relocate her to 16866
             BumpAnyExistingMerc(16866);
             TeleportSoldier(MercPtrs[i], 16866, TRUE);
@@ -2540,8 +2540,8 @@ function LoadStrategicAI(hFile: HWFILE): BOOLEAN {
       }
   }
   if (ubSAIVersion < 25) {
-    if (gubFact[FACT_SKYRIDER_CLOSE_TO_CHOPPER]) {
-      gMercProfiles[SKYRIDER].fUseProfileInsertionInfo = FALSE;
+    if (gubFact[Enum170.FACT_SKYRIDER_CLOSE_TO_CHOPPER]) {
+      gMercProfiles[Enum268.SKYRIDER].fUseProfileInsertionInfo = FALSE;
     }
   }
 
@@ -2549,10 +2549,10 @@ function LoadStrategicAI(hFile: HWFILE): BOOLEAN {
   if (ubSAIVersion < 26) {
     let i: INT32;
     for (i = 0; i < 255; i++) {
-      if (SectorInfo[i].ubNumberOfCivsAtLevel[GREEN_MILITIA] + SectorInfo[i].ubNumberOfCivsAtLevel[REGULAR_MILITIA] + SectorInfo[i].ubNumberOfCivsAtLevel[ELITE_MILITIA] > 20) {
-        SectorInfo[i].ubNumberOfCivsAtLevel[GREEN_MILITIA] = 0;
-        SectorInfo[i].ubNumberOfCivsAtLevel[REGULAR_MILITIA] = 20;
-        SectorInfo[i].ubNumberOfCivsAtLevel[ELITE_MILITIA] = 0;
+      if (SectorInfo[i].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] + SectorInfo[i].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] + SectorInfo[i].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA] > 20) {
+        SectorInfo[i].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] = 0;
+        SectorInfo[i].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] = 20;
+        SectorInfo[i].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA] = 0;
       }
     }
   }
@@ -2562,7 +2562,7 @@ function LoadStrategicAI(hFile: HWFILE): BOOLEAN {
   //		 If captured and interrogated, the player would find no soldiers defending the sector.  This changes the composition
   //     so that it will always be there, and adds the soldiers accordingly if the sector isn't loaded when the update is made.
   if (ubSAIVersion < 27) {
-    if (gGameOptions.ubDifficultyLevel == DIF_LEVEL_EASY) {
+    if (gGameOptions.ubDifficultyLevel == Enum9.DIF_LEVEL_EASY) {
       if (gWorldSectorX != 7 || gWorldSectorY != 14 || gbWorldSectorZ) {
         let cnt: INT32;
         let iRandom: INT32;
@@ -2575,8 +2575,8 @@ function LoadStrategicAI(hFile: HWFILE): BOOLEAN {
         let pSector: Pointer<SECTORINFO> = NULL;
 
         // Change the garrison composition to LEVEL1_DEFENCE from LEVEL2_DEFENCE
-        pSector = addressof(SectorInfo[SEC_N7]);
-        gGarrisonGroup[pSector.value.ubGarrisonID].ubComposition = LEVEL1_DEFENCE;
+        pSector = addressof(SectorInfo[Enum123.SEC_N7]);
+        gGarrisonGroup[pSector.value.ubGarrisonID].ubComposition = Enum174.LEVEL1_DEFENCE;
 
         iStartPop = gArmyComp[gGarrisonGroup[pSector.value.ubGarrisonID].ubComposition].bStartPopulation;
         iDesiredPop = gArmyComp[gGarrisonGroup[pSector.value.ubGarrisonID].ubComposition].bDesiredPopulation;
@@ -2698,8 +2698,8 @@ function EvolveQueenPriorityPhase(fForceChange: BOOLEAN): void {
   // are controlled by her, the desired number will be increased as well as the priority.  On the other
   // hand, if she doesn't own those sectors, the values will be decreased instead.  All values are based off of
   // the originals.
-  memset(ubOwned, 0, NUM_ARMY_COMPOSITIONS);
-  memset(ubTotal, 0, NUM_ARMY_COMPOSITIONS);
+  memset(ubOwned, 0, Enum174.NUM_ARMY_COMPOSITIONS);
+  memset(ubTotal, 0, Enum174.NUM_ARMY_COMPOSITIONS);
 
   // Record the values required to calculate the percentage of each composition type that the queen controls.
   for (i = 0; i < giGarrisonArraySize; i++) {
@@ -2711,16 +2711,16 @@ function EvolveQueenPriorityPhase(fForceChange: BOOLEAN): void {
   }
 
   // Go through the *majority* of compositions and modify the priority/desired values.
-  for (i = 0; i < NUM_ARMY_COMPOSITIONS; i++) {
+  for (i = 0; i < Enum174.NUM_ARMY_COMPOSITIONS; i++) {
     switch (i) {
-      case QUEEN_DEFENCE:
-      case MEDUNA_DEFENCE:
-      case MEDUNA_SAMSITE:
-      case LEVEL1_DEFENCE:
-      case LEVEL2_DEFENCE:
-      case LEVEL3_DEFENCE:
-      case OMERTA_WELCOME_WAGON:
-      case ROADBLOCK:
+      case Enum174.QUEEN_DEFENCE:
+      case Enum174.MEDUNA_DEFENCE:
+      case Enum174.MEDUNA_SAMSITE:
+      case Enum174.LEVEL1_DEFENCE:
+      case Enum174.LEVEL2_DEFENCE:
+      case Enum174.LEVEL3_DEFENCE:
+      case Enum174.OMERTA_WELCOME_WAGON:
+      case Enum174.ROADBLOCK:
         // case SANMONA_SMALL:
         // don't consider these compositions
         continue;
@@ -2771,14 +2771,14 @@ function EvolveQueenPriorityPhase(fForceChange: BOOLEAN): void {
       // If the queen still owns the town by more than 65% (iFactor >= 15), then upgrade troops to elites in those sectors.
       index = gGarrisonGroup[i].ubComposition;
       switch (index) {
-        case QUEEN_DEFENCE:
-        case MEDUNA_DEFENCE:
-        case MEDUNA_SAMSITE:
-        case LEVEL1_DEFENCE:
-        case LEVEL2_DEFENCE:
-        case LEVEL3_DEFENCE:
-        case OMERTA_WELCOME_WAGON:
-        case ROADBLOCK:
+        case Enum174.QUEEN_DEFENCE:
+        case Enum174.MEDUNA_DEFENCE:
+        case Enum174.MEDUNA_SAMSITE:
+        case Enum174.LEVEL1_DEFENCE:
+        case Enum174.LEVEL2_DEFENCE:
+        case Enum174.LEVEL3_DEFENCE:
+        case Enum174.OMERTA_WELCOME_WAGON:
+        case Enum174.ROADBLOCK:
           // case SANMONA_SMALL:
           // don't consider these compositions
           continue;
@@ -2826,15 +2826,15 @@ function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, sSector
   let ubSectorID: UINT8;
   let ubNumSoldiers: UINT8;
   switch (usActionCode) {
-    case STRATEGIC_AI_ACTION_WAKE_QUEEN:
+    case Enum173.STRATEGIC_AI_ACTION_WAKE_QUEEN:
       WakeUpQueen();
       break;
 
-    case STRATEGIC_AI_ACTION_QUEEN_DEAD:
+    case Enum173.STRATEGIC_AI_ACTION_QUEEN_DEAD:
       gfQueenAIAwake = FALSE;
       break;
 
-    case STRATEGIC_AI_ACTION_KINGPIN_DEAD:
+    case Enum173.STRATEGIC_AI_ACTION_KINGPIN_DEAD:
       // Immediate send a small garrison to C5 (to discourage access to Tony the dealer)
       /*
       for( i = 0; i < giGarrisonArraySize; i++ )
@@ -2852,41 +2852,41 @@ function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, sSector
       }
       */
       break;
-    case NPC_ACTION_SEND_SOLDIERS_TO_DRASSEN:
+    case Enum213.NPC_ACTION_SEND_SOLDIERS_TO_DRASSEN:
       // Send 6, 9, or 12 troops (based on difficulty) one of the Drassen sectors.  If nobody is there when they arrive,
       // those troops will get reassigned.
 
       if (Chance(50)) {
-        ubSectorID = SEC_D13;
+        ubSectorID = Enum123.SEC_D13;
       } else if (Chance(60)) {
-        ubSectorID = SEC_B13;
+        ubSectorID = Enum123.SEC_B13;
       } else {
-        ubSectorID = SEC_C13;
+        ubSectorID = Enum123.SEC_C13;
       }
       ubNumSoldiers = (3 + gGameOptions.ubDifficultyLevel * 3);
-      pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_P3, 0, ubNumSoldiers, 0);
+      pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_P3, 0, ubNumSoldiers, 0);
 
       if (!gGarrisonGroup[SectorInfo[ubSectorID].ubGarrisonID].ubPendingGroupID) {
-        pGroup.value.pEnemyGroup.value.ubIntention = STAGE;
+        pGroup.value.pEnemyGroup.value.ubIntention = Enum172.STAGE;
         gGarrisonGroup[SectorInfo[ubSectorID].ubGarrisonID].ubPendingGroupID = pGroup.value.ubGroupID;
       } else {
         // this should never happen (but if it did, then this is the best way to deal with it).
-        pGroup.value.pEnemyGroup.value.ubIntention = PURSUIT;
+        pGroup.value.pEnemyGroup.value.ubIntention = Enum184.PURSUIT;
       }
       giReinforcementPool -= ubNumSoldiers;
       giReinforcementPool = max(giReinforcementPool, 0);
 
-      MoveSAIGroupToSector(addressof(pGroup), ubSectorID, EVASIVE, pGroup.value.pEnemyGroup.value.ubIntention);
+      MoveSAIGroupToSector(addressof(pGroup), ubSectorID, Enum172.EVASIVE, pGroup.value.pEnemyGroup.value.ubIntention);
 
       break;
-    case NPC_ACTION_SEND_SOLDIERS_TO_BATTLE_LOCATION:
+    case Enum213.NPC_ACTION_SEND_SOLDIERS_TO_BATTLE_LOCATION:
 
       // Send 4, 8, or 12 troops (based on difficulty) to the location of the first battle.  If nobody is there when they arrive,
       // those troops will get reassigned.
       ubSectorID = STRATEGIC_INDEX_TO_SECTOR_INFO(sWorldSectorLocationOfFirstBattle);
       pSector = addressof(SectorInfo[ubSectorID]);
       ubNumSoldiers = (gGameOptions.ubDifficultyLevel * 4);
-      pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_P3, 0, ubNumSoldiers, 0);
+      pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_P3, 0, ubNumSoldiers, 0);
       giReinforcementPool -= ubNumSoldiers;
       giReinforcementPool = max(giReinforcementPool, 0);
 
@@ -2902,41 +2902,41 @@ function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, sSector
             if (!gGarrisonGroup[pSector.value.ubGarrisonID].ubPendingGroupID) {
               // the garrison doesn't have reinforcements already on route.
               gGarrisonGroup[pSector.value.ubGarrisonID].ubPendingGroupID = pGroup.value.ubGroupID;
-              MoveSAIGroupToSector(addressof(pGroup), ubSectorID, STAGE, REINFORCEMENTS);
+              MoveSAIGroupToSector(addressof(pGroup), ubSectorID, Enum172.STAGE, Enum184.REINFORCEMENTS);
               break;
             }
           }
         }
       } else {
-        MoveSAIGroupToSector(addressof(pGroup), ubSectorID, EVASIVE, PURSUIT);
+        MoveSAIGroupToSector(addressof(pGroup), ubSectorID, Enum172.EVASIVE, Enum184.PURSUIT);
       }
 
       break;
-    case NPC_ACTION_SEND_SOLDIERS_TO_OMERTA:
+    case Enum213.NPC_ACTION_SEND_SOLDIERS_TO_OMERTA:
       ubNumSoldiers = (gGameOptions.ubDifficultyLevel * 6); // 6, 12, or 18 based on difficulty.
-      pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_P3, 0, ubNumSoldiers, (ubNumSoldiers / 7)); // add 1 elite to normal, and 2 for hard
+      pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_P3, 0, ubNumSoldiers, (ubNumSoldiers / 7)); // add 1 elite to normal, and 2 for hard
       ubNumSoldiers = (ubNumSoldiers + ubNumSoldiers / 7);
       giReinforcementPool -= ubNumSoldiers;
       giReinforcementPool = max(giReinforcementPool, 0);
       if (PlayerMercsInSector(9, 1, 1) && !PlayerMercsInSector(10, 1, 1) && !PlayerMercsInSector(10, 1, 2)) {
         // send to A9 (if mercs in A9, but not in A10 or A10 basement)
-        ubSectorID = SEC_A9;
+        ubSectorID = Enum123.SEC_A9;
       } else {
         // send to A10
-        ubSectorID = SEC_A10;
+        ubSectorID = Enum123.SEC_A10;
       }
 
-      MoveSAIGroupToSector(addressof(pGroup), ubSectorID, EVASIVE, PURSUIT);
+      MoveSAIGroupToSector(addressof(pGroup), ubSectorID, Enum172.EVASIVE, Enum184.PURSUIT);
 
       ValidateGroup(pGroup);
       break;
-    case NPC_ACTION_SEND_TROOPS_TO_SAM:
+    case Enum213.NPC_ACTION_SEND_TROOPS_TO_SAM:
       ubSectorID = SECTOR(sSectorX, sSectorY);
       ubNumSoldiers = (3 + gGameOptions.ubDifficultyLevel + HighestPlayerProgressPercentage() / 15);
       giReinforcementPool -= ubNumSoldiers;
       giReinforcementPool = max(giReinforcementPool, 0);
-      pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_P3, 0, 0, ubNumSoldiers);
-      MoveSAIGroupToSector(addressof(pGroup), ubSectorID, STAGE, REINFORCEMENTS);
+      pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_P3, 0, 0, ubNumSoldiers);
+      MoveSAIGroupToSector(addressof(pGroup), ubSectorID, Enum172.STAGE, Enum184.REINFORCEMENTS);
 
       if (gGarrisonGroup[SectorInfo[ubSectorID].ubGarrisonID].ubPendingGroupID) {
         // Clear the pending group's assignment.
@@ -2945,7 +2945,7 @@ function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, sSector
         ClearPreviousAIGroupAssignment(pPendingGroup);
       }
       // Assign the elite squad to attack the SAM site
-      pGroup.value.pEnemyGroup.value.ubIntention = REINFORCEMENTS;
+      pGroup.value.pEnemyGroup.value.ubIntention = Enum184.REINFORCEMENTS;
       gGarrisonGroup[SectorInfo[ubSectorID].ubGarrisonID].ubPendingGroupID = pGroup.value.ubGroupID;
 
       if (pPendingGroup) {
@@ -2954,20 +2954,20 @@ function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, sSector
       }
 
       break;
-    case NPC_ACTION_ADD_MORE_ELITES:
+    case Enum213.NPC_ACTION_ADD_MORE_ELITES:
       gfExtraElites = TRUE;
       EvolveQueenPriorityPhase(TRUE);
       break;
-    case NPC_ACTION_GIVE_KNOWLEDGE_OF_ALL_MERCS:
+    case Enum213.NPC_ACTION_GIVE_KNOWLEDGE_OF_ALL_MERCS:
       // temporarily make the queen's forces more aware (high alert)
       switch (gGameOptions.ubDifficultyLevel) {
-        case DIF_LEVEL_EASY:
+        case Enum9.DIF_LEVEL_EASY:
           gubNumAwareBattles = EASY_NUM_AWARE_BATTLES;
           break;
-        case DIF_LEVEL_MEDIUM:
+        case Enum9.DIF_LEVEL_MEDIUM:
           gubNumAwareBattles = NORMAL_NUM_AWARE_BATTLES;
           break;
-        case DIF_LEVEL_HARD:
+        case Enum9.DIF_LEVEL_HARD:
           gubNumAwareBattles = HARD_NUM_AWARE_BATTLES;
           break;
       }
@@ -3152,73 +3152,73 @@ function StrategicHandleQueenLosingControlOfSector(sSectorX: INT16, sSectorY: IN
   // For the purposes of a town being lost, we shall check to see if the queen wishes to investigate quickly after
   // losing.  This is done in town sectors when the character first takes it.
   switch (ubSectorID) {
-    case SEC_B13:
-    case SEC_C13:
-    case SEC_D13:
+    case Enum123.SEC_B13:
+    case Enum123.SEC_C13:
+    case Enum123.SEC_D13:
       // Drassen
-      SectorInfo[SEC_B13].ubInvestigativeState++;
-      SectorInfo[SEC_C13].ubInvestigativeState++;
-      SectorInfo[SEC_D13].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_B13].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_C13].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_D13].ubInvestigativeState++;
       break;
-    case SEC_A2:
-    case SEC_B2:
+    case Enum123.SEC_A2:
+    case Enum123.SEC_B2:
       // Chitzena
-      SectorInfo[SEC_A2].ubInvestigativeState++;
-      SectorInfo[SEC_B2].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_A2].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_B2].ubInvestigativeState++;
       break;
-    case SEC_G1:
-    case SEC_G2:
-    case SEC_H1:
-    case SEC_H2:
-    case SEC_H3:
+    case Enum123.SEC_G1:
+    case Enum123.SEC_G2:
+    case Enum123.SEC_H1:
+    case Enum123.SEC_H2:
+    case Enum123.SEC_H3:
       // Grumm
-      SectorInfo[SEC_G1].ubInvestigativeState++;
-      SectorInfo[SEC_G2].ubInvestigativeState++;
-      SectorInfo[SEC_H1].ubInvestigativeState++;
-      SectorInfo[SEC_H2].ubInvestigativeState++;
-      SectorInfo[SEC_H3].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_G1].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_G2].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_H1].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_H2].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_H3].ubInvestigativeState++;
       break;
-    case SEC_F8:
-    case SEC_F9:
-    case SEC_G8:
-    case SEC_G9:
-    case SEC_H8:
+    case Enum123.SEC_F8:
+    case Enum123.SEC_F9:
+    case Enum123.SEC_G8:
+    case Enum123.SEC_G9:
+    case Enum123.SEC_H8:
       // Cambria
-      SectorInfo[SEC_F8].ubInvestigativeState++;
-      SectorInfo[SEC_F9].ubInvestigativeState++;
-      SectorInfo[SEC_G8].ubInvestigativeState++;
-      SectorInfo[SEC_G9].ubInvestigativeState++;
-      SectorInfo[SEC_H8].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_F8].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_F9].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_G8].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_G9].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_H8].ubInvestigativeState++;
       break;
-    case SEC_H13:
-    case SEC_H14:
-    case SEC_I13:
-    case SEC_I14:
+    case Enum123.SEC_H13:
+    case Enum123.SEC_H14:
+    case Enum123.SEC_I13:
+    case Enum123.SEC_I14:
       // Alma
-      SectorInfo[SEC_H13].ubInvestigativeState++;
-      SectorInfo[SEC_H14].ubInvestigativeState++;
-      SectorInfo[SEC_I13].ubInvestigativeState++;
-      SectorInfo[SEC_I14].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_H13].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_H14].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_I13].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_I14].ubInvestigativeState++;
       break;
-    case SEC_L11:
-    case SEC_L12:
+    case Enum123.SEC_L11:
+    case Enum123.SEC_L12:
       // Balime
-      SectorInfo[SEC_L11].ubInvestigativeState++;
-      SectorInfo[SEC_L12].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_L11].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_L12].ubInvestigativeState++;
       break;
-    case SEC_N3:
-    case SEC_N4:
-    case SEC_N5:
-    case SEC_O3:
-    case SEC_O4:
-    case SEC_P3:
+    case Enum123.SEC_N3:
+    case Enum123.SEC_N4:
+    case Enum123.SEC_N5:
+    case Enum123.SEC_O3:
+    case Enum123.SEC_O4:
+    case Enum123.SEC_P3:
       // Meduna
-      SectorInfo[SEC_N3].ubInvestigativeState++;
-      SectorInfo[SEC_N4].ubInvestigativeState++;
-      SectorInfo[SEC_N5].ubInvestigativeState++;
-      SectorInfo[SEC_O3].ubInvestigativeState++;
-      SectorInfo[SEC_O4].ubInvestigativeState++;
-      SectorInfo[SEC_P3].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_N3].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_N4].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_N5].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_O3].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_O4].ubInvestigativeState++;
+      SectorInfo[Enum123.SEC_P3].ubInvestigativeState++;
       break;
     default:
       return;
@@ -3337,7 +3337,7 @@ function RequestHighPriorityGarrisonReinforcements(iGarrisonID: INT32, ubSoldier
       gGarrisonGroup[iGarrisonID].ubPendingGroupID = pNewGroup.value.ubGroupID;
       RecalculatePatrolWeight(iBestIndex);
 
-      MoveSAIGroupToSector(addressof(pNewGroup), gGarrisonGroup[iGarrisonID].ubSectorID, EVASIVE, REINFORCEMENTS);
+      MoveSAIGroupToSector(addressof(pNewGroup), gGarrisonGroup[iGarrisonID].ubSectorID, Enum172.EVASIVE, Enum184.REINFORCEMENTS);
     } else {
       // Send the whole group and kill it's patrol assignment.
       gPatrolGroup[iBestIndex].ubGroupID = 0;
@@ -3348,19 +3348,19 @@ function RequestHighPriorityGarrisonReinforcements(iGarrisonID: INT32, ubSoldier
       // don't work if this is the case.  Teleporting them to their previous sector is the best and easiest way to deal with this.
       SetEnemyGroupSector(pGroup, SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY));
 
-      MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iGarrisonID].ubSectorID, EVASIVE, REINFORCEMENTS);
+      MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iGarrisonID].ubSectorID, Enum172.EVASIVE, Enum184.REINFORCEMENTS);
       ValidateGroup(pGroup);
     }
   } else {
     // There are no groups that have enough troops.  Send a new force from the palace instead.
-    pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_P3, 0, ubSoldiersRequested, 0);
-    pGroup.value.ubMoveType = ONE_WAY;
-    pGroup.value.pEnemyGroup.value.ubIntention = REINFORCEMENTS;
+    pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_P3, 0, ubSoldiersRequested, 0);
+    pGroup.value.ubMoveType = Enum185.ONE_WAY;
+    pGroup.value.pEnemyGroup.value.ubIntention = Enum184.REINFORCEMENTS;
     gGarrisonGroup[iGarrisonID].ubPendingGroupID = pGroup.value.ubGroupID;
     pGroup.value.ubOriginalSector = SECTOR(ubDstSectorX, ubDstSectorY);
     giReinforcementPool -= ubSoldiersRequested;
 
-    MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iGarrisonID].ubSectorID, EVASIVE, REINFORCEMENTS);
+    MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iGarrisonID].ubSectorID, Enum172.EVASIVE, Enum184.REINFORCEMENTS);
     ValidateGroup(pGroup);
   }
 }
@@ -3384,22 +3384,22 @@ function MassFortifyTowns(): void {
     ubNumTroops = pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites;
     ubDesiredTroops = gArmyComp[gGarrisonGroup[i].ubComposition].bDesiredPopulation;
     if (ubNumTroops < ubDesiredTroops) {
-      if (!gGarrisonGroup[i].ubPendingGroupID && gGarrisonGroup[i].ubComposition != ROADBLOCK && EnemyPermittedToAttackSector(NULL, gGarrisonGroup[i].ubSectorID)) {
+      if (!gGarrisonGroup[i].ubPendingGroupID && gGarrisonGroup[i].ubComposition != Enum174.ROADBLOCK && EnemyPermittedToAttackSector(NULL, gGarrisonGroup[i].ubSectorID)) {
         RequestHighPriorityGarrisonReinforcements(i, (ubDesiredTroops - ubNumTroops));
       }
     }
   }
   // Convert the garrison sitting in Omerta (if alive), and reassign them
-  pSector = addressof(SectorInfo[SEC_A9]);
+  pSector = addressof(SectorInfo[Enum123.SEC_A9]);
   if (pSector.value.ubNumTroops) {
-    pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_A9, 0, pSector.value.ubNumTroops, 0);
+    pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_A9, 0, pSector.value.ubNumTroops, 0);
     Assert(pGroup);
     pSector.value.ubNumTroops = 0;
-    pGroup.value.pEnemyGroup.value.ubIntention = PATROL;
-    pGroup.value.ubMoveType = ONE_WAY;
+    pGroup.value.pEnemyGroup.value.ubIntention = Enum184.PATROL;
+    pGroup.value.ubMoveType = Enum185.ONE_WAY;
     ReassignAIGroup(addressof(pGroup));
     ValidateGroup(pGroup);
-    RecalculateSectorWeight(SEC_A9);
+    RecalculateSectorWeight(Enum123.SEC_A9);
   }
 }
 
@@ -3430,27 +3430,27 @@ function RenderAIViewerGarrisonInfo(x: INT32, y: INT32, pSector: Pointer<SECTORI
 
 function StrategicHandleMineThatRanOut(ubSectorID: UINT8): void {
   switch (ubSectorID) {
-    case SEC_B2:
-      gArmyComp[gGarrisonGroup[SectorInfo[SEC_A2].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[SEC_B2].ubGarrisonID].ubComposition].bPriority /= 4;
+    case Enum123.SEC_B2:
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_A2].ubGarrisonID].ubComposition].bPriority /= 4;
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_B2].ubGarrisonID].ubComposition].bPriority /= 4;
       break;
-    case SEC_D13:
-      gArmyComp[gGarrisonGroup[SectorInfo[SEC_B13].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[SEC_C13].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[SEC_D13].ubGarrisonID].ubComposition].bPriority /= 4;
+    case Enum123.SEC_D13:
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_B13].ubGarrisonID].ubComposition].bPriority /= 4;
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_C13].ubGarrisonID].ubComposition].bPriority /= 4;
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_D13].ubGarrisonID].ubComposition].bPriority /= 4;
       break;
-    case SEC_H8:
-      gArmyComp[gGarrisonGroup[SectorInfo[SEC_F8].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[SEC_F9].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[SEC_G8].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[SEC_G9].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[SEC_H8].ubGarrisonID].ubComposition].bPriority /= 4;
+    case Enum123.SEC_H8:
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_F8].ubGarrisonID].ubComposition].bPriority /= 4;
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_F9].ubGarrisonID].ubComposition].bPriority /= 4;
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_G8].ubGarrisonID].ubComposition].bPriority /= 4;
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_G9].ubGarrisonID].ubComposition].bPriority /= 4;
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_H8].ubGarrisonID].ubComposition].bPriority /= 4;
       break;
-    case SEC_I14:
-      gArmyComp[gGarrisonGroup[SectorInfo[SEC_H13].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[SEC_H14].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[SEC_I13].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[SEC_I14].ubGarrisonID].ubComposition].bPriority /= 4;
+    case Enum123.SEC_I14:
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_H13].ubGarrisonID].ubComposition].bPriority /= 4;
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_H14].ubGarrisonID].ubComposition].bPriority /= 4;
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_I13].ubGarrisonID].ubComposition].bPriority /= 4;
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_I14].ubGarrisonID].ubComposition].bPriority /= 4;
       break;
   }
 }
@@ -3637,7 +3637,7 @@ function UpgradeAdminsToTroops(): void {
       // if there are any admins currently in this group
       if (pGroup.value.pEnemyGroup.value.ubNumAdmins > 0) {
         // if it's a patrol group
-        if (pGroup.value.pEnemyGroup.value.ubIntention == PATROL) {
+        if (pGroup.value.pEnemyGroup.value.ubIntention == Enum184.PATROL) {
           sPatrolIndex = FindPatrolGroupIndexForGroupID(pGroup.value.ubGroupID);
           Assert(sPatrolIndex != -1);
 
@@ -3725,7 +3725,7 @@ function SendGroupToPool(pGroup: Pointer<Pointer<GROUP>>): void {
     TransferGroupToPool(pGroup);
   } else {
     (pGroup.value).value.ubSectorIDOfLastReassignment = SECTOR((pGroup.value).value.ubSectorX, (pGroup.value).value.ubSectorY);
-    MoveSAIGroupToSector(pGroup, SEC_P3, EVASIVE, REINFORCEMENTS);
+    MoveSAIGroupToSector(pGroup, Enum123.SEC_P3, Enum172.EVASIVE, Enum184.REINFORCEMENTS);
   }
 }
 
@@ -3848,13 +3848,13 @@ function TagSAIGroupWithGracePeriod(pGroup: Pointer<GROUP>): void {
     iPatrolID = FindPatrolGroupIndexForGroupID(pGroup.value.ubGroupID);
     if (iPatrolID != -1) {
       switch (gGameOptions.ubDifficultyLevel) {
-        case DIF_LEVEL_EASY:
+        case Enum9.DIF_LEVEL_EASY:
           gPatrolGroup[iPatrolID].bFillPermittedAfterDayMod100 = ((GetWorldDay() + EASY_PATROL_GRACE_PERIOD_IN_DAYS) % 100);
           break;
-        case DIF_LEVEL_MEDIUM:
+        case Enum9.DIF_LEVEL_MEDIUM:
           gPatrolGroup[iPatrolID].bFillPermittedAfterDayMod100 = ((GetWorldDay() + NORMAL_PATROL_GRACE_PERIOD_IN_DAYS) % 100);
           break;
-        case DIF_LEVEL_HARD:
+        case Enum9.DIF_LEVEL_HARD:
           gPatrolGroup[iPatrolID].bFillPermittedAfterDayMod100 = ((GetWorldDay() + HARD_PATROL_GRACE_PERIOD_IN_DAYS) % 100);
           break;
       }
@@ -4020,9 +4020,9 @@ function MoveSAIGroupToSector(pGroup: Pointer<Pointer<GROUP>>, ubSectorID: UINT8
   }
 
   (pGroup.value).value.pEnemyGroup.value.ubIntention = ubIntention;
-  (pGroup.value).value.ubMoveType = ONE_WAY;
+  (pGroup.value).value.ubMoveType = Enum185.ONE_WAY;
 
-  if (ubIntention == PURSUIT) {
+  if (ubIntention == Enum184.PURSUIT) {
     // Make sure that the group isn't moving into a garrison sector.  These sectors should be using ASSAULT intentions!
     if (SectorInfo[ubSectorID].ubGarrisonID != NO_GARRISON) {
       // Good place for a breakpoint.
@@ -4041,13 +4041,13 @@ function MoveSAIGroupToSector(pGroup: Pointer<Pointer<GROUP>>, ubSectorID: UINT8
   }
 
   switch (uiMoveCode) {
-    case STAGE:
+    case Enum172.STAGE:
       MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSectorBeforeEnd((pGroup.value).value.ubGroupID, (pGroup.value).value.ubSectorX, (pGroup.value).value.ubSectorY, ubDstSectorX, ubDstSectorY);
       break;
-    case EVASIVE:
+    case Enum172.EVASIVE:
       MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors((pGroup.value).value.ubGroupID, (pGroup.value).value.ubSectorX, (pGroup.value).value.ubSectorY, ubDstSectorX, ubDstSectorY);
       break;
-    case DIRECT:
+    case Enum172.DIRECT:
     default:
       MoveGroupFromSectorToSector((pGroup.value).value.ubGroupID, (pGroup.value).value.ubSectorX, (pGroup.value).value.ubSectorY, ubDstSectorX, ubDstSectorY);
       break;
@@ -4065,7 +4065,7 @@ function RedirectEnemyGroupsMovingThroughSector(ubSectorX: UINT8, ubSectorY: UIN
   let ubDestSectorID: UINT8;
   pGroup = gpGroupList;
   while (pGroup) {
-    if (!pGroup.value.fPlayer && pGroup.value.ubMoveType == ONE_WAY) {
+    if (!pGroup.value.fPlayer && pGroup.value.ubMoveType == Enum185.ONE_WAY) {
       // check the waypoint list
       if (GroupWillMoveThroughSector(pGroup, ubSectorX, ubSectorY)) {
         // extract the group's destination.
@@ -4073,7 +4073,7 @@ function RedirectEnemyGroupsMovingThroughSector(ubSectorX: UINT8, ubSectorY: UIN
         Assert(pWaypoint);
         ubDestSectorID = SECTOR(pWaypoint.value.x, pWaypoint.value.y);
         SetEnemyGroupSector(pGroup, SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY));
-        MoveSAIGroupToSector(addressof(pGroup), ubDestSectorID, EVASIVE, pGroup.value.pEnemyGroup.value.ubIntention);
+        MoveSAIGroupToSector(addressof(pGroup), ubDestSectorID, Enum172.EVASIVE, pGroup.value.pEnemyGroup.value.ubIntention);
         ubNumGroupsRedirected++;
       }
     }
@@ -4097,13 +4097,13 @@ function ReinitializeUnvisitedGarrisons(): void {
   let iAdminChance: INT32;
 
   // Recreate the compositions
-  memcpy(gArmyComp, gOrigArmyComp, NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION));
+  memcpy(gArmyComp, gOrigArmyComp, Enum174.NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION));
   EvolveQueenPriorityPhase(TRUE);
 
   // Go through each unvisited sector and recreate the garrison forces based on
   // the desired population.
   for (i = 0; i < giGarrisonArraySize; i++) {
-    if (gGarrisonGroup[i].ubComposition >= LEVEL1_DEFENCE && gGarrisonGroup[i].ubComposition <= LEVEL3_DEFENCE) {
+    if (gGarrisonGroup[i].ubComposition >= Enum174.LEVEL1_DEFENCE && gGarrisonGroup[i].ubComposition <= Enum174.LEVEL3_DEFENCE) {
       // These 3 compositions make up the perimeter around Meduna.  The existance of these are based on the
       // difficulty level, and we don't want to reset these anyways, due to the fact that many of the reinforcements
       // come from these sectors, and it could potentially add upwards of 150 extra troops which would seriously

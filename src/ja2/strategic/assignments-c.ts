@@ -32,7 +32,7 @@ const enum Enum116 {
   NUM_REPAIR_PASS_TYPES,
 }
 
-const FINAL_REPAIR_PASS = REPAIR_POCKETS;
+const FINAL_REPAIR_PASS = Enum116.REPAIR_POCKETS;
 
 interface REPAIR_PASS_SLOTS_TYPE {
   ubChoices: UINT8; // how many valid choices there are in this pass
@@ -41,9 +41,9 @@ interface REPAIR_PASS_SLOTS_TYPE {
 
 let gRepairPassSlotList: REPAIR_PASS_SLOTS_TYPE[] /* [NUM_REPAIR_PASS_TYPES] */ = [
   // pass					# choices												slots repaired in this pass
-  [ /* hands and armor */ 5, [ HANDPOS, SECONDHANDPOS, VESTPOS, HELMETPOS, LEGPOS, -1, -1, -1, -1, -1, -1, -1 ] ],
-  [ /* headgear */ 2, [ HEAD1POS, HEAD2POS, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ] ],
-  [ /* pockets */ 12, [ BIGPOCK1POS, BIGPOCK2POS, BIGPOCK3POS, BIGPOCK4POS, SMALLPOCK1POS, SMALLPOCK2POS, SMALLPOCK3POS, SMALLPOCK4POS, SMALLPOCK5POS, SMALLPOCK6POS, SMALLPOCK7POS, SMALLPOCK8POS ] ],
+  [ /* hands and armor */ 5, [ Enum261.HANDPOS, Enum261.SECONDHANDPOS, Enum261.VESTPOS, Enum261.HELMETPOS, Enum261.LEGPOS, -1, -1, -1, -1, -1, -1, -1 ] ],
+  [ /* headgear */ 2, [ Enum261.HEAD1POS, Enum261.HEAD2POS, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ] ],
+  [ /* pockets */ 12, [ Enum261.BIGPOCK1POS, Enum261.BIGPOCK2POS, Enum261.BIGPOCK3POS, Enum261.BIGPOCK4POS, Enum261.SMALLPOCK1POS, Enum261.SMALLPOCK2POS, Enum261.SMALLPOCK3POS, Enum261.SMALLPOCK4POS, Enum261.SMALLPOCK5POS, Enum261.SMALLPOCK6POS, Enum261.SMALLPOCK7POS, Enum261.SMALLPOCK8POS ] ],
 ];
 
 // PopUp Box Handles
@@ -233,8 +233,8 @@ function ChangeSoldiersAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: I
   pSoldier.value.fFixingRobot = FALSE;
   pSoldier.value.bVehicleUnderRepairID = -1;
 
-  if ((bAssignment == DOCTOR) || (bAssignment == PATIENT) || (bAssignment == ASSIGNMENT_HOSPITAL)) {
-    AddStrategicEvent(EVENT_BANDAGE_BLEEDING_MERCS, GetWorldTotalMin() + 1, 0);
+  if ((bAssignment == Enum117.DOCTOR) || (bAssignment == Enum117.PATIENT) || (bAssignment == Enum117.ASSIGNMENT_HOSPITAL)) {
+    AddStrategicEvent(Enum132.EVENT_BANDAGE_BLEEDING_MERCS, GetWorldTotalMin() + 1, 0);
   }
 
   // update character info, and the team panel
@@ -321,13 +321,13 @@ function CanCharacterDoctorButDoesntHaveMedKit(pSoldier: Pointer<SOLDIERTYPE>): 
     return FALSE;
   }
 
-  if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
+  if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     // epcs can't do this
     return FALSE;
   }
 
   // check in helicopter in hostile sector
-  if (pSoldier.value.bAssignment == VEHICLE) {
+  if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
     if ((iHelicopterVehicleId != -1) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       // enemies in sector
       if (NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY) > 0) {
@@ -354,7 +354,7 @@ function CanCharacterDoctor(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   }
 
   // find med kit
-  for (bPocket = HANDPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
+  for (bPocket = Enum261.HANDPOS; bPocket <= Enum261.SMALLPOCK8POS; bPocket++) {
     // doctoring is allowed using either type of med kit (but first aid kit halves doctoring effectiveness)
     if (IsMedicalKitItem(addressof(pSoldier.value.inv[bPocket]))) {
       fFoundMedKit = TRUE;
@@ -435,7 +435,7 @@ function DoesCharacterHaveAnyItemsToRepair(pSoldier: Pointer<SOLDIERTYPE>, bHigh
   let ubPassType: UINT8;
 
   // check for jams
-  for (bPocket = HELMETPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
+  for (bPocket = Enum261.HELMETPOS; bPocket <= Enum261.SMALLPOCK8POS; bPocket++) {
     ubItemsInPocket = pSoldier.value.inv[bPocket].ubNumberOfObjects;
     // unjam any jammed weapons
     // run through pocket and repair
@@ -448,7 +448,7 @@ function DoesCharacterHaveAnyItemsToRepair(pSoldier: Pointer<SOLDIERTYPE>, bHigh
   }
 
   // now check for items to repair
-  for (bPocket = HELMETPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
+  for (bPocket = Enum261.HELMETPOS; bPocket <= Enum261.SMALLPOCK8POS; bPocket++) {
     pObj = addressof(pSoldier.value.inv[bPocket]);
 
     ubItemsInPocket = pObj.value.ubNumberOfObjects;
@@ -481,7 +481,7 @@ function DoesCharacterHaveAnyItemsToRepair(pSoldier: Pointer<SOLDIERTYPE>, bHigh
       if (CanCharacterRepairAnotherSoldiersStuff(pSoldier, pOtherSoldier)) {
         // okay, seems like a candidate!  Check if he has anything that needs unjamming or repairs
 
-        for (bPocket = HANDPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
+        for (bPocket = Enum261.HANDPOS; bPocket <= Enum261.SMALLPOCK8POS; bPocket++) {
           // the object a weapon? and jammed?
           if ((Item[pOtherSoldier.value.inv[bPocket].usItem].usItemClass == IC_GUN) && (pOtherSoldier.value.inv[bPocket].bGunAmmoStatus < 0)) {
             return TRUE;
@@ -489,7 +489,7 @@ function DoesCharacterHaveAnyItemsToRepair(pSoldier: Pointer<SOLDIERTYPE>, bHigh
         }
 
         // repair everyone's hands and armor slots first, then headgear, and pockets last
-        for (ubPassType = REPAIR_HANDS_AND_ARMOR; ubPassType <= bHighestPass; ubPassType++) {
+        for (ubPassType = Enum116.REPAIR_HANDS_AND_ARMOR; ubPassType <= bHighestPass; ubPassType++) {
           bPocket = FindRepairableItemOnOtherSoldier(pOtherSoldier, ubPassType);
           if (bPocket != NO_SLOT) {
             return TRUE;
@@ -529,13 +529,13 @@ function BasicCanCharacterRepair(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     return FALSE;
   }
 
-  if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
+  if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     // epcs can't do this
     return FALSE;
   }
 
   // check in helicopter in hostile sector
-  if (pSoldier.value.bAssignment == VEHICLE) {
+  if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
     if ((iHelicopterVehicleId != -1) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       // enemies in sector
       if (NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY) > 0) {
@@ -553,7 +553,7 @@ function CanCharacterRepairButDoesntHaveARepairkit(pSoldier: Pointer<SOLDIERTYPE
   }
 
   // make sure he actually doesn't have a toolkit
-  if (FindObj(pSoldier, TOOLKIT) != NO_SLOT) {
+  if (FindObj(pSoldier, Enum225.TOOLKIT) != NO_SLOT) {
     return FALSE;
   }
 
@@ -575,7 +575,7 @@ function CanCharacterRepair(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   }
 
   // make sure he has a toolkit
-  if (FindObj(pSoldier, TOOLKIT) == NO_SLOT) {
+  if (FindObj(pSoldier, Enum225.TOOLKIT) == NO_SLOT) {
     return FALSE;
   }
 
@@ -602,7 +602,7 @@ function CanCharacterPatient(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     return FALSE;
   }
 
-  if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+  if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
     return FALSE;
   }
 
@@ -623,7 +623,7 @@ function CanCharacterPatient(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   }
 
   // check in helicopter in hostile sector
-  if (pSoldier.value.bAssignment == VEHICLE) {
+  if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
     if ((iHelicopterVehicleId != -1) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       // enemies in sector
       if (NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY) > 0) {
@@ -657,7 +657,7 @@ function BasicCanCharacterTrainMilitia(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN 
   }
 
   // is there a town in the character's current sector?
-  if (StrategicMap[CALCULATE_STRATEGIC_INDEX(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].bNameId == BLANK_SECTOR) {
+  if (StrategicMap[CALCULATE_STRATEGIC_INDEX(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].bNameId == Enum135.BLANK_SECTOR) {
     fSamSitePresent = IsThisSectorASAMSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
 
     // check if sam site
@@ -672,7 +672,7 @@ function BasicCanCharacterTrainMilitia(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN 
   }
 
   // check in helicopter in hostile sector
-  if (pSoldier.value.bAssignment == VEHICLE) {
+  if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
     if ((iHelicopterVehicleId != -1) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       // enemies in sector
       if (NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY) > 0) {
@@ -691,7 +691,7 @@ function BasicCanCharacterTrainMilitia(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN 
     return FALSE;
   }
 
-  if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
+  if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     // epcs can't do this
     return FALSE;
   }
@@ -740,7 +740,7 @@ function DoesSectorMercIsInHaveSufficientLoyaltyToTrainMilitia(pSoldier: Pointer
   bTownId = GetTownIdForSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
 
   // is there a town really here
-  if (bTownId == BLANK_SECTOR) {
+  if (bTownId == Enum135.BLANK_SECTOR) {
     fSamSitePresent = IsThisSectorASAMSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
 
     // if there is a sam site here
@@ -767,7 +767,7 @@ function CountMilitiaTrainersInSoldiersSector(pSoldier: Pointer<SOLDIERTYPE>): I
   for (bLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID; bLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; bLoop++) {
     pOtherSoldier = MercPtrs[bLoop];
     if (pSoldier != pOtherSoldier && pOtherSoldier.value.bActive && pOtherSoldier.value.bLife >= OKLIFE && pOtherSoldier.value.sSectorX == pSoldier.value.sSectorX && pOtherSoldier.value.sSectorY == pSoldier.value.sSectorY && pSoldier.value.bSectorZ == pOtherSoldier.value.bSectorZ) {
-      if (pOtherSoldier.value.bAssignment == TRAIN_TOWN) {
+      if (pOtherSoldier.value.bAssignment == Enum117.TRAIN_TOWN) {
         bCount++;
       }
     }
@@ -786,7 +786,7 @@ function IsMilitiaTrainableFromSoldiersSectorMaxed(pSoldier: Pointer<SOLDIERTYPE
   bTownId = GetTownIdForSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
 
   // is there a town really here
-  if (bTownId == BLANK_SECTOR) {
+  if (bTownId == Enum135.BLANK_SECTOR) {
     fSamSitePresent = IsThisSectorASAMSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
 
     // if there is a sam site here
@@ -828,7 +828,7 @@ function CanCharacterTrainStat(pSoldier: Pointer<SOLDIERTYPE>, bStat: INT8, fTra
   }
 
   // check in helicopter in hostile sector
-  if (pSoldier.value.bAssignment == VEHICLE) {
+  if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
     if ((iHelicopterVehicleId != -1) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       // enemies in sector
       if (NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY) > 0) {
@@ -837,14 +837,14 @@ function CanCharacterTrainStat(pSoldier: Pointer<SOLDIERTYPE>, bStat: INT8, fTra
     }
   }
 
-  if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
+  if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     // epcs can't do this
     return FALSE;
   }
 
   // check stat values, 0 means no chance in hell
   switch (bStat) {
-    case (STRENGTH):
+    case (Enum118.STRENGTH):
       // strength
       if ((pSoldier.value.bStrength == 0) || ((pSoldier.value.bStrength < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
         return FALSE;
@@ -852,7 +852,7 @@ function CanCharacterTrainStat(pSoldier: Pointer<SOLDIERTYPE>, bStat: INT8, fTra
         return FALSE;
       }
       break;
-    case (DEXTERITY):
+    case (Enum118.DEXTERITY):
       // dexterity
       if ((pSoldier.value.bDexterity == 0) || ((pSoldier.value.bDexterity < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
         return FALSE;
@@ -860,7 +860,7 @@ function CanCharacterTrainStat(pSoldier: Pointer<SOLDIERTYPE>, bStat: INT8, fTra
         return FALSE;
       }
       break;
-    case (AGILITY):
+    case (Enum118.AGILITY):
       // agility
       if ((pSoldier.value.bAgility == 0) || ((pSoldier.value.bAgility < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
         return FALSE;
@@ -869,7 +869,7 @@ function CanCharacterTrainStat(pSoldier: Pointer<SOLDIERTYPE>, bStat: INT8, fTra
       }
 
       break;
-    case (HEALTH):
+    case (Enum118.HEALTH):
       // wisdom
       if ((pSoldier.value.bLifeMax == 0) || ((pSoldier.value.bLifeMax < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
         return FALSE;
@@ -878,7 +878,7 @@ function CanCharacterTrainStat(pSoldier: Pointer<SOLDIERTYPE>, bStat: INT8, fTra
       }
 
       break;
-    case (MARKSMANSHIP):
+    case (Enum118.MARKSMANSHIP):
       // marksmanship
       if ((pSoldier.value.bMarksmanship == 0) || ((pSoldier.value.bMarksmanship < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
         return FALSE;
@@ -887,7 +887,7 @@ function CanCharacterTrainStat(pSoldier: Pointer<SOLDIERTYPE>, bStat: INT8, fTra
       }
 
       break;
-    case (MEDICAL):
+    case (Enum118.MEDICAL):
       // medical
       if ((pSoldier.value.bMedical == 0) || ((pSoldier.value.bMedical < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
         return FALSE;
@@ -896,7 +896,7 @@ function CanCharacterTrainStat(pSoldier: Pointer<SOLDIERTYPE>, bStat: INT8, fTra
       }
 
       break;
-    case (MECHANICAL):
+    case (Enum118.MECHANICAL):
       // mechanical
       if ((pSoldier.value.bMechanical == 0) || ((pSoldier.value.bMechanical < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
         return FALSE;
@@ -904,7 +904,7 @@ function CanCharacterTrainStat(pSoldier: Pointer<SOLDIERTYPE>, bStat: INT8, fTra
         return FALSE;
       }
       break;
-    case (LEADERSHIP):
+    case (Enum118.LEADERSHIP):
       // leadership
       if ((pSoldier.value.bLeadership == 0) || ((pSoldier.value.bLeadership < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
         return FALSE;
@@ -912,7 +912,7 @@ function CanCharacterTrainStat(pSoldier: Pointer<SOLDIERTYPE>, bStat: INT8, fTra
         return FALSE;
       }
       break;
-    case (EXPLOSIVE_ASSIGN):
+    case (Enum118.EXPLOSIVE_ASSIGN):
       // explosives
       if ((pSoldier.value.bExplosive == 0) || ((pSoldier.value.bExplosive < MIN_RATING_TO_TEACH) && (fTrainTeammate))) {
         return FALSE;
@@ -951,7 +951,7 @@ function CanCharacterOnDuty(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   }
 
   // check in helicopter in hostile sector
-  if (pSoldier.value.bAssignment == VEHICLE) {
+  if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
     if ((iHelicopterVehicleId != -1) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       // enemies in sector
       if (NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY) > 0) {
@@ -1015,7 +1015,7 @@ function CanCharacterPractise(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   }
 
   // check in helicopter in hostile sector
-  if (pSoldier.value.bAssignment == VEHICLE) {
+  if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
     if ((iHelicopterVehicleId != -1) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       // enemies in sector
       if (NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY) > 0) {
@@ -1024,7 +1024,7 @@ function CanCharacterPractise(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     }
   }
 
-  if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
+  if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     // epcs can't do this
     return FALSE;
   }
@@ -1089,14 +1089,14 @@ function CanCharacterSleep(pSoldier: Pointer<SOLDIERTYPE>, fExplainWhyNot: BOOLE
   }
 
   // POW?
-  if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+  if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
     return FALSE;
   }
 
   // traveling?
   if (pSoldier.value.fBetweenSectors) {
     // if walking
-    if (pSoldier.value.bAssignment != VEHICLE) {
+    if (pSoldier.value.bAssignment != Enum117.VEHICLE) {
       // can't sleep while walking or driving a vehicle
       if (fExplainWhyNot) {
         // on the move, can't sleep
@@ -1126,7 +1126,7 @@ function CanCharacterSleep(pSoldier: Pointer<SOLDIERTYPE>, fExplainWhyNot: BOOLE
       // if he's in the loaded sector, and it's hostile or in combat
       if (pSoldier.value.bInSector && ((gTacticalStatus.uiFlags & INCOMBAT) || gTacticalStatus.fEnemyInSector)) {
         if (fExplainWhyNot) {
-          DoScreenIndependantMessageBox(Message[STR_SECTOR_NOT_CLEARED], MSG_BOX_FLAG_OK, NULL);
+          DoScreenIndependantMessageBox(Message[Enum334.STR_SECTOR_NOT_CLEARED], MSG_BOX_FLAG_OK, NULL);
         }
 
         return FALSE;
@@ -1135,7 +1135,7 @@ function CanCharacterSleep(pSoldier: Pointer<SOLDIERTYPE>, fExplainWhyNot: BOOLE
       // on surface, and enemies are in the sector
       if ((pSoldier.value.bSectorZ == 0) && (NumEnemiesInAnySector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) > 0)) {
         if (fExplainWhyNot) {
-          DoScreenIndependantMessageBox(Message[STR_SECTOR_NOT_CLEARED], MSG_BOX_FLAG_OK, NULL);
+          DoScreenIndependantMessageBox(Message[Enum334.STR_SECTOR_NOT_CLEARED], MSG_BOX_FLAG_OK, NULL);
         }
 
         return FALSE;
@@ -1210,7 +1210,7 @@ function CanCharacterVehicle(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   }
 
   // check in helicopter in hostile sector
-  if (pSoldier.value.bAssignment == VEHICLE) {
+  if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
     if ((iHelicopterVehicleId != -1) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
       // enemies in sector
       if (NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY) > 0) {
@@ -1245,7 +1245,7 @@ function CanCharacterSquad(pSoldier: Pointer<SOLDIERTYPE>, bSquadValue: INT8): I
   let sY: INT16;
   let sZ: INT16;
 
-  Assert(bSquadValue < ON_DUTY);
+  Assert(bSquadValue < Enum117.ON_DUTY);
 
   if (pSoldier.value.bAssignment == bSquadValue) {
     return CHARACTER_CANT_JOIN_SQUAD_ALREADY_IN_IT;
@@ -1262,7 +1262,7 @@ function CanCharacterSquad(pSoldier: Pointer<SOLDIERTYPE>, bSquadValue: INT8): I
     return CHARACTER_CANT_JOIN_SQUAD;
   }
 
-  if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+  if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
     // not allowed to be put on a squad
     return CHARACTER_CANT_JOIN_SQUAD;
   }
@@ -1316,7 +1316,7 @@ function IsCharacterInTransit(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   }
 
   // check if character is currently in transit
-  if (pSoldier.value.bAssignment == IN_TRANSIT) {
+  if (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) {
     // yep
     return TRUE;
   }
@@ -1443,7 +1443,7 @@ function AnyDoctorWhoCanHealThisPatient(pPatient: Pointer<SOLDIERTYPE>, fThisHou
   // go through list of characters, find all who are patients/doctors healable by this doctor
   for (cnt = 0, pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
     // doctor?
-    if ((pTeamSoldier.value.bActive) && (pTeamSoldier.value.bAssignment == DOCTOR)) {
+    if ((pTeamSoldier.value.bActive) && (pTeamSoldier.value.bAssignment == Enum117.DOCTOR)) {
       if (CanSoldierBeHealedByDoctor(pPatient, pTeamSoldier, FALSE, fThisHour, FALSE, FALSE) == TRUE) {
         // found one
         return pTeamSoldier;
@@ -1486,7 +1486,7 @@ function CalculateHealingPointsForDoctor(pDoctor: Pointer<SOLDIERTYPE>, pusMaxPt
   }
 
   // get the type of medkit being used
-  bMedFactor = IsMedicalKitItem(addressof(pDoctor.value.inv[HANDPOS]));
+  bMedFactor = IsMedicalKitItem(addressof(pDoctor.value.inv[Enum261.HANDPOS]));
 
   if (bMedFactor != 0) {
     // no med kit left?
@@ -1512,7 +1512,7 @@ function CalculateRepairPointsForRepairman(pSoldier: Pointer<SOLDIERTYPE>, pusMa
   }
 
   // can't repair at all without a toolkit
-  if (pSoldier.value.inv[HANDPOS].usItem != TOOLKIT) {
+  if (pSoldier.value.inv[Enum261.HANDPOS].usItem != Enum225.TOOLKIT) {
     pusMaxPts.value = 0;
     return 0;
   }
@@ -1553,8 +1553,8 @@ function ToolKitPoints(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
   let ubPocket: UINT8;
 
   // add up kit points
-  for (ubPocket = HANDPOS; ubPocket <= SMALLPOCK8POS; ubPocket++) {
-    if (pSoldier.value.inv[ubPocket].usItem == TOOLKIT) {
+  for (ubPocket = Enum261.HANDPOS; ubPocket <= Enum261.SMALLPOCK8POS; ubPocket++) {
+    if (pSoldier.value.inv[ubPocket].usItem == Enum225.TOOLKIT) {
       usKitpts += TotalPoints(addressof(pSoldier.value.inv[ubPocket]));
     }
   }
@@ -1567,7 +1567,7 @@ function TotalMedicalKitPoints(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
   let usKitpts: UINT16 = 0;
 
   // add up kit points of all medkits
-  for (ubPocket = HANDPOS; ubPocket <= SMALLPOCK8POS; ubPocket++) {
+  for (ubPocket = Enum261.HANDPOS; ubPocket <= Enum261.SMALLPOCK8POS; ubPocket++) {
     // NOTE: Here, we don't care whether these are MEDICAL BAGS or FIRST AID KITS!
     if (IsMedicalKitItem(addressof(pSoldier.value.inv[ubPocket]))) {
       usKitpts += TotalPoints(addressof(pSoldier.value.inv[ubPocket]));
@@ -1592,7 +1592,7 @@ function HandleDoctorsInSector(sX: INT16, sY: INT16, bZ: INT8): void {
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
     if (pTeamSoldier.value.bActive) {
       if ((pTeamSoldier.value.sSectorX == sX) && (pTeamSoldier.value.sSectorY == sY) && (pTeamSoldier.value.bSectorZ == bZ)) {
-        if ((pTeamSoldier.value.bAssignment == DOCTOR) && (pTeamSoldier.value.fMercAsleep == FALSE)) {
+        if ((pTeamSoldier.value.bAssignment == Enum117.DOCTOR) && (pTeamSoldier.value.fMercAsleep == FALSE)) {
           MakeSureMedKitIsInHand(pTeamSoldier);
           // character is in sector, check if can doctor, if so...heal people
           if (CanCharacterDoctor(pTeamSoldier) && EnoughTimeOnAssignment(pTeamSoldier)) {
@@ -1631,7 +1631,7 @@ function UpdatePatientsWhoAreDoneHealing(): void {
     // active soldier?
     if (pTeamSoldier.value.bActive) {
       // patient who doesn't need healing
-      if ((pTeamSoldier.value.bAssignment == PATIENT) && (pTeamSoldier.value.bLife == pTeamSoldier.value.bLifeMax)) {
+      if ((pTeamSoldier.value.bAssignment == Enum117.PATIENT) && (pTeamSoldier.value.bLife == pTeamSoldier.value.bLifeMax)) {
         AssignmentDone(pTeamSoldier, TRUE, TRUE);
       }
     }
@@ -1726,12 +1726,12 @@ function HealCharacters(pDoctor: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16, bZ:
     // try again, but skip the med kit check!
     if (GetNumberThatCanBeDoctored(pDoctor, HEALABLE_EVER, TRUE, FALSE) > 0) {
       // he could doctor somebody, but can't because he doesn't have a med kit!
-      AssignmentAborted(pDoctor, NO_MORE_MED_KITS);
+      AssignmentAborted(pDoctor, Enum113.NO_MORE_MED_KITS);
     }
     // try again, but skip the skill check!
     else if (GetNumberThatCanBeDoctored(pDoctor, HEALABLE_EVER, FALSE, TRUE) > 0) {
       // he could doctor somebody, but can't because he doesn't have enough skill!
-      AssignmentAborted(pDoctor, INSUF_DOCTOR_SKILL);
+      AssignmentAborted(pDoctor, Enum113.INSUF_DOCTOR_SKILL);
     } else {
       // all patients should now be healed - truly DONE!
       AssignmentDone(pDoctor, TRUE, TRUE);
@@ -1806,7 +1806,7 @@ function CanSoldierBeHealedByDoctor(pSoldier: Pointer<SOLDIERTYPE>, pDoctor: Poi
   }
 
   // must be a patient or a doctor
-  if ((pSoldier.value.bAssignment != PATIENT) && (pSoldier.value.bAssignment != DOCTOR) && (fIgnoreAssignment == FALSE)) {
+  if ((pSoldier.value.bAssignment != Enum117.PATIENT) && (pSoldier.value.bAssignment != Enum117.DOCTOR) && (fIgnoreAssignment == FALSE)) {
     return FALSE;
   }
 
@@ -1835,7 +1835,7 @@ function CanSoldierBeHealedByDoctor(pSoldier: Pointer<SOLDIERTYPE>, pDoctor: Poi
     return FALSE;
   }
 
-  if (!fSkipKitCheck && (FindObj(pDoctor, MEDICKIT) == NO_SLOT)) {
+  if (!fSkipKitCheck && (FindObj(pDoctor, Enum225.MEDICKIT) == NO_SLOT)) {
     // no medical kit to use!
     return FALSE;
   }
@@ -1930,7 +1930,7 @@ function HealPatient(pPatient: Pointer<SOLDIERTYPE>, pDoctor: Pointer<SOLDIERTYP
 
     // go through doctor's pockets and heal, starting at with his in-hand item
     // the healing pts are based on what type of medkit is in his hand, so we HAVE to start there first!
-    for (bPocket = HANDPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
+    for (bPocket = Enum261.HANDPOS; bPocket <= Enum261.SMALLPOCK8POS; bPocket++) {
       bMedFactor = IsMedicalKitItem(addressof(pDoctor.value.inv[bPocket]));
       if (bMedFactor > 0) {
         // ok, we have med kit in this pocket, use it
@@ -1967,7 +1967,7 @@ function HealPatient(pPatient: Pointer<SOLDIERTYPE>, pDoctor: Pointer<SOLDIERTYP
 
     // go through doctor's pockets and heal, starting at with his in-hand item
     // the healing pts are based on what type of medkit is in his hand, so we HAVE to start there first!
-    for (bPocket = HANDPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
+    for (bPocket = Enum261.HANDPOS; bPocket <= Enum261.SMALLPOCK8POS; bPocket++) {
       bMedFactor = IsMedicalKitItem(addressof(pDoctor.value.inv[bPocket]));
       if (bMedFactor > 0) {
         // ok, we have med kit in this pocket, use it  (use only half if it's worth double)
@@ -2028,7 +2028,7 @@ function CheckForAndHandleHospitalPatients(): void {
   // go through list of characters, find all who are on this assignment
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
     if (pTeamSoldier.value.bActive) {
-      if (pTeamSoldier.value.bAssignment == ASSIGNMENT_HOSPITAL) {
+      if (pTeamSoldier.value.bAssignment == Enum117.ASSIGNMENT_HOSPITAL) {
         if ((pTeamSoldier.value.sSectorX == HOSPITAL_SECTOR_X) && (pTeamSoldier.value.sSectorY == HOSPITAL_SECTOR_Y) && (pTeamSoldier.value.bSectorZ == 0)) {
           // heal this character
           HealHospitalPatient(pTeamSoldier, HOSPITAL_HEALING_RATE);
@@ -2107,7 +2107,7 @@ function HandleRepairmenInSector(sX: INT16, sY: INT16, bZ: INT8): void {
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
     if (pTeamSoldier.value.bActive) {
       if ((pTeamSoldier.value.sSectorX == sX) && (pTeamSoldier.value.sSectorY == sY) && (pTeamSoldier.value.bSectorZ == bZ)) {
-        if ((pTeamSoldier.value.bAssignment == REPAIR) && (pTeamSoldier.value.fMercAsleep == FALSE)) {
+        if ((pTeamSoldier.value.bAssignment == Enum117.REPAIR) && (pTeamSoldier.value.fMercAsleep == FALSE)) {
           MakeSureToolKitIsInHand(pTeamSoldier);
           // character is in sector, check if can repair
           if (CanCharacterRepair(pTeamSoldier) && (EnoughTimeOnAssignment(pTeamSoldier))) {
@@ -2185,7 +2185,7 @@ function FindRepairableItemOnOtherSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubPass
   let bSlotToCheck: INT8;
   let pObj: Pointer<OBJECTTYPE>;
 
-  Assert(ubPassType < NUM_REPAIR_PASS_TYPES);
+  Assert(ubPassType < Enum116.NUM_REPAIR_PASS_TYPES);
 
   pPassList = addressof(gRepairPassSlotList[ubPassType]);
 
@@ -2227,7 +2227,7 @@ function DoActualRepair(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, pbStatus
   }
 
   // repairs on electronic items take twice as long if the guy doesn't have the skill
-  if ((Item[usItem].fFlags & ITEM_ELECTRONIC) && (!(HAS_SKILL_TRAIT(pSoldier, ELECTRONICS)))) {
+  if ((Item[usItem].fFlags & ITEM_ELECTRONIC) && (!(HAS_SKILL_TRAIT(pSoldier, Enum269.ELECTRONICS)))) {
     sRepairCostAdj *= 2;
   }
 
@@ -2282,7 +2282,7 @@ function RepairObject(pSoldier: Pointer<SOLDIERTYPE>, pOwner: Pointer<SOLDIERTYP
       if (pObj.value.bStatus[ubLoop] == 100) {
         // report it as fixed
         if (pSoldier == pOwner) {
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_REPAIRED], pSoldier.value.name, ItemNames[pObj.value.usItem]);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_REPAIRED], pSoldier.value.name, ItemNames[pObj.value.usItem]);
         } else {
           // NOTE: may need to be changed for localized versions
           ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[35], pSoldier.value.name, pOwner.value.name, ItemNames[pObj.value.usItem]);
@@ -2309,7 +2309,7 @@ function RepairObject(pSoldier: Pointer<SOLDIERTYPE>, pOwner: Pointer<SOLDIERTYP
         if (pObj.value.bAttachStatus[ubLoop] == 100) {
           // report it as fixed
           if (pSoldier == pOwner) {
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_REPAIRED], pSoldier.value.name, ItemNames[pObj.value.usAttachItem[ubLoop]]);
+            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_REPAIRED], pSoldier.value.name, ItemNames[pObj.value.usAttachItem[ubLoop]]);
           } else {
             // NOTE: may need to be changed for localized versions
             ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[35], pSoldier.value.name, pOwner.value.name, ItemNames[pObj.value.usAttachItem[ubLoop]]);
@@ -2368,7 +2368,7 @@ function HandleRepairBySoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
       ubRepairPtsLeft /= 2;
       ubInitialRepairPts /= 2;
 
-      if (!(HAS_SKILL_TRAIT(pSoldier, ELECTRONICS))) {
+      if (!(HAS_SKILL_TRAIT(pSoldier, Enum269.ELECTRONICS))) {
         ubRepairPtsLeft /= 2;
         ubInitialRepairPts /= 2;
       }
@@ -2382,11 +2382,11 @@ function HandleRepairBySoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
     // repair items on self
     for (bLoop = 0; bLoop < 2; bLoop++) {
       if (bLoop == 0) {
-        bLoopStart = SECONDHANDPOS;
-        bLoopEnd = SMALLPOCK8POS;
+        bLoopStart = Enum261.SECONDHANDPOS;
+        bLoopEnd = Enum261.SMALLPOCK8POS;
       } else {
-        bLoopStart = HELMETPOS;
-        bLoopEnd = HEAD2POS;
+        bLoopStart = Enum261.HELMETPOS;
+        bLoopEnd = Enum261.HEAD2POS;
       }
 
       // now repair objects running from left hand to small pocket
@@ -2426,7 +2426,7 @@ function HandleRepairBySoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
     if ((Random(100)) < (ubRepairPtsUsed * 5)) // CJC: added a x5 as this wasn't going down anywhere fast enough
     {
       // kit item damaged/depleted, burn up points of toolkit..which is in right hand
-      UseKitPoints(addressof(pSoldier.value.inv[HANDPOS]), 1, pSoldier);
+      UseKitPoints(addressof(pSoldier.value.inv[Enum261.HANDPOS]), 1, pSoldier);
     }
   }
 
@@ -2439,12 +2439,12 @@ function HandleRepairBySoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
     // if nothing got repaired, there's a problem
     if (ubRepairPtsUsed == 0) {
       // see if not having a toolkit is the problem
-      if (FindObj(pSoldier, TOOLKIT) == NO_SLOT) {
+      if (FindObj(pSoldier, Enum225.TOOLKIT) == NO_SLOT) {
         // he could (maybe) repair something, but can't because he doesn't have a tool kit!
-        AssignmentAborted(pSoldier, NO_MORE_TOOL_KITS);
+        AssignmentAborted(pSoldier, Enum113.NO_MORE_TOOL_KITS);
       } else {
         // he can't repair anything because he doesn't have enough skill!
-        AssignmentAborted(pSoldier, INSUF_REPAIR_SKILL);
+        AssignmentAborted(pSoldier, Enum113.INSUF_REPAIR_SKILL);
       }
     }
   }
@@ -2473,7 +2473,7 @@ function HandleRestAndFatigueInSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): 
 
   // go through list of characters, find all sleepers in sector
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
-    if ((pTeamSoldier.value.bActive) && (pSoldier.value.bAssignment != ASSIGNMENT_POW)) {
+    if ((pTeamSoldier.value.bActive) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW)) {
       if ((pTeamSoldier.value.sSectorX == sMapX) && (pTeamSoldier.value.sSectorY == sMapY) && (pTeamSoldier.value.bSectorZ == bMapZ)) {
       }
     }
@@ -2548,7 +2548,7 @@ function FatigueCharacter(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 
   // POW?
-  if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+  if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
     return;
   }
 
@@ -2561,7 +2561,7 @@ function FatigueCharacter(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   // KM: Added encumbrance calculation to soldiers moving on foot.  Anything above 100% will increase
   //    rate of fatigue.  200% encumbrance will cause soldiers to tire twice as quickly.
-  if (pSoldier.value.fBetweenSectors && pSoldier.value.bAssignment != VEHICLE) {
+  if (pSoldier.value.fBetweenSectors && pSoldier.value.bAssignment != Enum117.VEHICLE) {
     // Soldier is on foot and travelling.  Factor encumbrance into fatigue rate.
     iPercentEncumbrance = CalculateCarriedWeight(pSoldier);
     if (iPercentEncumbrance > 100) {
@@ -2639,14 +2639,14 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
   // sort them from highest to lowest if some form of trainer degradation formula was to be used for multiple trainers.
 
   // for each trainable stat
-  for (ubStat = 0; ubStat < NUM_TRAINABLE_STATS; ubStat++) {
+  for (ubStat = 0; ubStat < Enum118.NUM_TRAINABLE_STATS; ubStat++) {
     sBestTrainingPts = -1;
 
     // search team for active instructors in this sector
     for (uiCnt = 0, pTrainer = MercPtrs[uiCnt]; uiCnt <= gTacticalStatus.Team[MercPtrs[0].value.bTeam].bLastID; uiCnt++, pTrainer++) {
       if (pTrainer.value.bActive && (pTrainer.value.sSectorX == sMapX) && (pTrainer.value.sSectorY == sMapY) && (pTrainer.value.bSectorZ == bZ)) {
         // if he's training teammates in this stat
-        if ((pTrainer.value.bAssignment == TRAIN_TEAMMATE) && (pTrainer.value.bTrainStat == ubStat) && (EnoughTimeOnAssignment(pTrainer)) && (pTrainer.value.fMercAsleep == FALSE)) {
+        if ((pTrainer.value.bAssignment == Enum117.TRAIN_TEAMMATE) && (pTrainer.value.bTrainStat == ubStat) && (EnoughTimeOnAssignment(pTrainer)) && (pTrainer.value.fMercAsleep == FALSE)) {
           sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, NULL, ubStat, fAtGunRange, addressof(usMaxPts));
 
           // if he's the best trainer so far for this stat
@@ -2665,13 +2665,13 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
     // see if this merc is active and in the same sector
     if ((pStudent.value.bActive) && (pStudent.value.sSectorX == sMapX) && (pStudent.value.sSectorY == sMapY) && (pStudent.value.bSectorZ == bZ)) {
       // if he's training himself (alone, or by others), then he's a student
-      if ((pStudent.value.bAssignment == TRAIN_SELF) || (pStudent.value.bAssignment == TRAIN_BY_OTHER)) {
+      if ((pStudent.value.bAssignment == Enum117.TRAIN_SELF) || (pStudent.value.bAssignment == Enum117.TRAIN_BY_OTHER)) {
         if (EnoughTimeOnAssignment(pStudent) && (pStudent.value.fMercAsleep == FALSE)) {
           // figure out how much the grunt can learn in one training period
           sTotalTrainingPts = GetSoldierTrainingPts(pStudent, pStudent.value.bTrainStat, fAtGunRange, addressof(usMaxPts));
 
           // if he's getting help
-          if (pStudent.value.bAssignment == TRAIN_BY_OTHER) {
+          if (pStudent.value.bAssignment == Enum117.TRAIN_BY_OTHER) {
             // grab the pointer to the (potential) trainer for this stat
             pTrainer = pStatTrainerList[pStudent.value.bTrainStat];
 
@@ -2702,7 +2702,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
   }
 
   // check if we're doing a sector where militia can be trained
-  if (((StrategicMap[sMapX + (sMapY * MAP_WORLD_X)].bNameId != BLANK_SECTOR) || (fSamSiteInSector == TRUE)) && (bZ == 0)) {
+  if (((StrategicMap[sMapX + (sMapY * MAP_WORLD_X)].bNameId != Enum135.BLANK_SECTOR) || (fSamSiteInSector == TRUE)) && (bZ == 0)) {
     // init town trainer list
     memset(TownTrainer, 0, sizeof(TownTrainer));
     ubTownTrainers = 0;
@@ -2710,7 +2710,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
     // build list of all the town trainers in this sector and their training pts
     for (uiCnt = 0, pTrainer = MercPtrs[uiCnt]; uiCnt <= gTacticalStatus.Team[MercPtrs[0].value.bTeam].bLastID; uiCnt++, pTrainer++) {
       if (pTrainer.value.bActive && (pTrainer.value.sSectorX == sMapX) && (pTrainer.value.sSectorY == sMapY) && (pTrainer.value.bSectorZ == bZ)) {
-        if ((pTrainer.value.bAssignment == TRAIN_TOWN) && (EnoughTimeOnAssignment(pTrainer)) && (pTrainer.value.fMercAsleep == FALSE)) {
+        if ((pTrainer.value.bAssignment == Enum117.TRAIN_TOWN) && (EnoughTimeOnAssignment(pTrainer)) && (pTrainer.value.fMercAsleep == FALSE)) {
           sTownTrainingPts = GetTownTrainPtsForCharacter(pTrainer, addressof(usMaxPts));
 
           // if he's actually worth anything
@@ -2779,39 +2779,39 @@ function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERTYPE>, p
   }
 
   switch (bTrainStat) {
-    case (STRENGTH):
+    case (Enum118.STRENGTH):
       bTrainerEffSkill = EffectiveStrength(pInstructor);
       bTrainerNatSkill = pInstructor.value.bStrength;
       break;
-    case (DEXTERITY):
+    case (Enum118.DEXTERITY):
       bTrainerEffSkill = EffectiveDexterity(pInstructor);
       bTrainerNatSkill = pInstructor.value.bDexterity;
       break;
-    case (AGILITY):
+    case (Enum118.AGILITY):
       bTrainerEffSkill = EffectiveAgility(pInstructor);
       bTrainerNatSkill = pInstructor.value.bAgility;
       break;
-    case (HEALTH):
+    case (Enum118.HEALTH):
       bTrainerEffSkill = pInstructor.value.bLifeMax;
       bTrainerNatSkill = pInstructor.value.bLifeMax;
       break;
-    case (LEADERSHIP):
+    case (Enum118.LEADERSHIP):
       bTrainerEffSkill = EffectiveLeadership(pInstructor);
       bTrainerNatSkill = pInstructor.value.bLeadership;
       break;
-    case (MARKSMANSHIP):
+    case (Enum118.MARKSMANSHIP):
       bTrainerEffSkill = EffectiveMarksmanship(pInstructor);
       bTrainerNatSkill = pInstructor.value.bMarksmanship;
       break;
-    case (EXPLOSIVE_ASSIGN):
+    case (Enum118.EXPLOSIVE_ASSIGN):
       bTrainerEffSkill = EffectiveExplosive(pInstructor);
       bTrainerNatSkill = pInstructor.value.bExplosive;
       break;
-    case (MEDICAL):
+    case (Enum118.MEDICAL):
       bTrainerEffSkill = EffectiveMedical(pInstructor);
       bTrainerNatSkill = pInstructor.value.bMedical;
       break;
-    case (MECHANICAL):
+    case (Enum118.MECHANICAL):
       bTrainerEffSkill = EffectiveMechanical(pInstructor);
       bTrainerNatSkill = pInstructor.value.bMechanical;
       break;
@@ -2834,31 +2834,31 @@ function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERTYPE>, p
 
     // for trainee's stat skill, must use the natural value, not the effective one, to avoid drunks training beyond cap
     switch (bTrainStat) {
-      case (STRENGTH):
+      case (Enum118.STRENGTH):
         bTraineeSkill = pStudent.value.bStrength;
         break;
-      case (DEXTERITY):
+      case (Enum118.DEXTERITY):
         bTraineeSkill = pStudent.value.bDexterity;
         break;
-      case (AGILITY):
+      case (Enum118.AGILITY):
         bTraineeSkill = pStudent.value.bAgility;
         break;
-      case (HEALTH):
+      case (Enum118.HEALTH):
         bTraineeSkill = pStudent.value.bLifeMax;
         break;
-      case (LEADERSHIP):
+      case (Enum118.LEADERSHIP):
         bTraineeSkill = pStudent.value.bLeadership;
         break;
-      case (MARKSMANSHIP):
+      case (Enum118.MARKSMANSHIP):
         bTraineeSkill = pStudent.value.bMarksmanship;
         break;
-      case (EXPLOSIVE_ASSIGN):
+      case (Enum118.EXPLOSIVE_ASSIGN):
         bTraineeSkill = pStudent.value.bExplosive;
         break;
-      case (MEDICAL):
+      case (Enum118.MEDICAL):
         bTraineeSkill = pStudent.value.bMedical;
         break;
-      case (MECHANICAL):
+      case (Enum118.MECHANICAL):
         bTraineeSkill = pStudent.value.bMechanical;
         break;
       // NOTE: Wisdom can't be trained!
@@ -2898,10 +2898,10 @@ function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERTYPE>, p
   }
 
   // check for teaching skill bonuses
-  if (gMercProfiles[pInstructor.value.ubProfile].bSkillTrait == TEACHING) {
+  if (gMercProfiles[pInstructor.value.ubProfile].bSkillTrait == Enum269.TEACHING) {
     bTrainingBonus += TEACH_BONUS_TO_TRAIN;
   }
-  if (gMercProfiles[pInstructor.value.ubProfile].bSkillTrait2 == TEACHING) {
+  if (gMercProfiles[pInstructor.value.ubProfile].bSkillTrait2 == Enum269.TEACHING) {
     bTrainingBonus += TEACH_BONUS_TO_TRAIN;
   }
 
@@ -2909,7 +2909,7 @@ function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERTYPE>, p
   pusMaxPts.value += (((bTrainingBonus + bOpinionFactor) * pusMaxPts.value) / 100);
 
   // get special bonus if we're training marksmanship and we're in the gun range sector in Alma
-  if ((bTrainStat == MARKSMANSHIP) && fAtGunRange) {
+  if ((bTrainStat == Enum118.MARKSMANSHIP) && fAtGunRange) {
     bTrainingBonus += GUN_RANGE_TRAINING_BONUS;
   }
 
@@ -2932,31 +2932,31 @@ function GetSoldierTrainingPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8,
 
   // use NATURAL not EFFECTIVE values here
   switch (bTrainStat) {
-    case (STRENGTH):
+    case (Enum118.STRENGTH):
       bSkill = pSoldier.value.bStrength;
       break;
-    case (DEXTERITY):
+    case (Enum118.DEXTERITY):
       bSkill = pSoldier.value.bDexterity;
       break;
-    case (AGILITY):
+    case (Enum118.AGILITY):
       bSkill = pSoldier.value.bAgility;
       break;
-    case (HEALTH):
+    case (Enum118.HEALTH):
       bSkill = pSoldier.value.bLifeMax;
       break;
-    case (LEADERSHIP):
+    case (Enum118.LEADERSHIP):
       bSkill = pSoldier.value.bLeadership;
       break;
-    case (MARKSMANSHIP):
+    case (Enum118.MARKSMANSHIP):
       bSkill = pSoldier.value.bMarksmanship;
       break;
-    case (EXPLOSIVE_ASSIGN):
+    case (Enum118.EXPLOSIVE_ASSIGN):
       bSkill = pSoldier.value.bExplosive;
       break;
-    case (MEDICAL):
+    case (Enum118.MEDICAL):
       bSkill = pSoldier.value.bMedical;
       break;
-    case (MECHANICAL):
+    case (Enum118.MECHANICAL):
       bSkill = pSoldier.value.bMechanical;
       break;
     // NOTE: Wisdom can't be trained!
@@ -2976,7 +2976,7 @@ function GetSoldierTrainingPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8,
   sTrainingPts = __max(((EffectiveWisdom(pSoldier) * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
 
   // get special bonus if we're training marksmanship and we're in the gun range sector in Alma
-  if ((bTrainStat == MARKSMANSHIP) && fAtGunRange) {
+  if ((bTrainStat == Enum118.MARKSMANSHIP) && fAtGunRange) {
     bTrainingBonus += GUN_RANGE_TRAINING_BONUS;
   }
 
@@ -3006,31 +3006,31 @@ function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, 
 
   // use NATURAL not EFFECTIVE values here
   switch (bTrainStat) {
-    case (STRENGTH):
+    case (Enum118.STRENGTH):
       bSkill = pSoldier.value.bStrength;
       break;
-    case (DEXTERITY):
+    case (Enum118.DEXTERITY):
       bSkill = pSoldier.value.bDexterity;
       break;
-    case (AGILITY):
+    case (Enum118.AGILITY):
       bSkill = pSoldier.value.bAgility;
       break;
-    case (HEALTH):
+    case (Enum118.HEALTH):
       bSkill = pSoldier.value.bLifeMax;
       break;
-    case (LEADERSHIP):
+    case (Enum118.LEADERSHIP):
       bSkill = pSoldier.value.bLeadership;
       break;
-    case (MARKSMANSHIP):
+    case (Enum118.MARKSMANSHIP):
       bSkill = pSoldier.value.bMarksmanship;
       break;
-    case (EXPLOSIVE_ASSIGN):
+    case (Enum118.EXPLOSIVE_ASSIGN):
       bSkill = pSoldier.value.bExplosive;
       break;
-    case (MEDICAL):
+    case (Enum118.MEDICAL):
       bSkill = pSoldier.value.bMedical;
       break;
-    case (MECHANICAL):
+    case (Enum118.MECHANICAL):
       bSkill = pSoldier.value.bMechanical;
       break;
     // NOTE: Wisdom can't be trained!
@@ -3050,7 +3050,7 @@ function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, 
   sTrainingPts = __max(((EffectiveWisdom(pSoldier) * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
 
   // get special bonus if we're training marksmanship and we're in the gun range sector in Alma
-  if ((bTrainStat == MARKSMANSHIP) && fAtGunRange) {
+  if ((bTrainStat == Enum118.MARKSMANSHIP) && fAtGunRange) {
     bTrainingBonus += GUN_RANGE_TRAINING_BONUS;
   }
 
@@ -3070,7 +3070,7 @@ function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, 
     if (pTrainer.value.bActive && (pTrainer.value.sSectorX == pSoldier.value.sSectorX) && (pTrainer.value.sSectorY == pSoldier.value.sSectorY) && (pTrainer.value.bSectorZ == pSoldier.value.bSectorZ)) {
       // if he's training teammates in this stat
       // NB skip the EnoughTime requirement to display what the value should be even if haven't been training long yet...
-      if ((pTrainer.value.bAssignment == TRAIN_TEAMMATE) && (pTrainer.value.bTrainStat == bTrainStat) && (pTrainer.value.fMercAsleep == FALSE)) {
+      if ((pTrainer.value.bAssignment == Enum117.TRAIN_TEAMMATE) && (pTrainer.value.bTrainStat == bTrainStat) && (pTrainer.value.fMercAsleep == FALSE)) {
         sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, pSoldier, bTrainStat, fAtGunRange, addressof(usMaxTrainerPts));
 
         // if he's the best trainer so far for this stat
@@ -3101,31 +3101,31 @@ function TrainSoldierWithPts(pSoldier: Pointer<SOLDIERTYPE>, sTrainPts: INT16): 
 
   // which stat to modify?
   switch (pSoldier.value.bTrainStat) {
-    case (STRENGTH):
+    case (Enum118.STRENGTH):
       ubChangeStat = STRAMT;
       break;
-    case (DEXTERITY):
+    case (Enum118.DEXTERITY):
       ubChangeStat = DEXTAMT;
       break;
-    case (AGILITY):
+    case (Enum118.AGILITY):
       ubChangeStat = AGILAMT;
       break;
-    case (HEALTH):
+    case (Enum118.HEALTH):
       ubChangeStat = HEALTHAMT;
       break;
-    case (LEADERSHIP):
+    case (Enum118.LEADERSHIP):
       ubChangeStat = LDRAMT;
       break;
-    case (MARKSMANSHIP):
+    case (Enum118.MARKSMANSHIP):
       ubChangeStat = MARKAMT;
       break;
-    case (EXPLOSIVE_ASSIGN):
+    case (Enum118.EXPLOSIVE_ASSIGN):
       ubChangeStat = EXPLODEAMT;
       break;
-    case (MEDICAL):
+    case (Enum118.MEDICAL):
       ubChangeStat = MEDICALAMT;
       break;
-    case (MECHANICAL):
+    case (Enum118.MECHANICAL):
       ubChangeStat = MECHANAMT;
       break;
     // NOTE: Wisdom can't be trained!
@@ -3151,7 +3151,7 @@ function TrainTownInSector(pTrainer: Pointer<SOLDIERTYPE>, sMapX: INT16, sMapY: 
   // get town index
   ubTownId = StrategicMap[pTrainer.value.sSectorX + pTrainer.value.sSectorY * MAP_WORLD_X].bNameId;
   if (fSamSiteInSector == FALSE) {
-    Assert(ubTownId != BLANK_SECTOR);
+    Assert(ubTownId != Enum135.BLANK_SECTOR);
   }
 
   // trainer gains leadership - training argument is FALSE, because the trainer is not the one training!
@@ -3199,10 +3199,10 @@ function GetTownTrainPtsForCharacter(pTrainer: Pointer<SOLDIERTYPE>, pusMaxPts: 
   sTotalTrainingPts = (EffectiveWisdom(pTrainer) + EffectiveLeadership(pTrainer) + (10 * EffectiveExpLevel(pTrainer))) * TOWN_TRAINING_RATE;
 
   // check for teaching bonuses
-  if (gMercProfiles[pTrainer.value.ubProfile].bSkillTrait == TEACHING) {
+  if (gMercProfiles[pTrainer.value.ubProfile].bSkillTrait == Enum269.TEACHING) {
     bTrainingBonus += TEACH_BONUS_TO_TRAIN;
   }
-  if (gMercProfiles[pTrainer.value.ubProfile].bSkillTrait2 == TEACHING) {
+  if (gMercProfiles[pTrainer.value.ubProfile].bSkillTrait2 == Enum269.TEACHING) {
     bTrainingBonus += TEACH_BONUS_TO_TRAIN;
   }
 
@@ -3235,23 +3235,23 @@ function MakeSoldiersTacticalAnimationReflectAssignment(pSoldier: Pointer<SOLDIE
   // soldier is in tactical, world loaded, he's OKLIFE
   if ((pSoldier.value.bInSector) && gfWorldLoaded && (pSoldier.value.bLife >= OKLIFE)) {
     // Set animation based on his assignment
-    if (pSoldier.value.bAssignment == DOCTOR) {
+    if (pSoldier.value.bAssignment == Enum117.DOCTOR) {
       SoldierInSectorDoctor(pSoldier, pSoldier.value.usStrategicInsertionData);
-    } else if (pSoldier.value.bAssignment == PATIENT) {
+    } else if (pSoldier.value.bAssignment == Enum117.PATIENT) {
       SoldierInSectorPatient(pSoldier, pSoldier.value.usStrategicInsertionData);
-    } else if (pSoldier.value.bAssignment == REPAIR) {
+    } else if (pSoldier.value.bAssignment == Enum117.REPAIR) {
       SoldierInSectorRepair(pSoldier, pSoldier.value.usStrategicInsertionData);
     } else {
-      if (pSoldier.value.usAnimState != WKAEUP_FROM_SLEEP && !(pSoldier.value.bOldAssignment < ON_DUTY)) {
+      if (pSoldier.value.usAnimState != Enum193.WKAEUP_FROM_SLEEP && !(pSoldier.value.bOldAssignment < Enum117.ON_DUTY)) {
         // default: standing
-        ChangeSoldierState(pSoldier, STANDING, 1, TRUE);
+        ChangeSoldierState(pSoldier, Enum193.STANDING, 1, TRUE);
       }
     }
   }
 }
 
 function AssignmentAborted(pSoldier: Pointer<SOLDIERTYPE>, ubReason: UINT8): void {
-  Assert(ubReason < NUM_ASSIGN_ABORT_REASONS);
+  Assert(ubReason < Enum113.NUM_ASSIGN_ABORT_REASONS);
 
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[ubReason], pSoldier.value.name);
 
@@ -3265,37 +3265,37 @@ function AssignmentAborted(pSoldier: Pointer<SOLDIERTYPE>, ubReason: UINT8): voi
 
 function AssignmentDone(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: BOOLEAN, fMeToo: BOOLEAN): void {
   if ((pSoldier.value.bInSector) && (gfWorldLoaded)) {
-    if (pSoldier.value.bAssignment == DOCTOR) {
-      if (guiCurrentScreen == GAME_SCREEN) {
-        ChangeSoldierState(pSoldier, END_DOCTOR, 1, TRUE);
+    if (pSoldier.value.bAssignment == Enum117.DOCTOR) {
+      if (guiCurrentScreen == Enum26.GAME_SCREEN) {
+        ChangeSoldierState(pSoldier, Enum193.END_DOCTOR, 1, TRUE);
       } else {
-        ChangeSoldierState(pSoldier, STANDING, 1, TRUE);
+        ChangeSoldierState(pSoldier, Enum193.STANDING, 1, TRUE);
       }
-    } else if (pSoldier.value.bAssignment == REPAIR) {
-      if (guiCurrentScreen == GAME_SCREEN) {
-        ChangeSoldierState(pSoldier, END_REPAIRMAN, 1, TRUE);
+    } else if (pSoldier.value.bAssignment == Enum117.REPAIR) {
+      if (guiCurrentScreen == Enum26.GAME_SCREEN) {
+        ChangeSoldierState(pSoldier, Enum193.END_REPAIRMAN, 1, TRUE);
       } else {
-        ChangeSoldierState(pSoldier, STANDING, 1, TRUE);
+        ChangeSoldierState(pSoldier, Enum193.STANDING, 1, TRUE);
       }
-    } else if (pSoldier.value.bAssignment == PATIENT) {
-      if (guiCurrentScreen == GAME_SCREEN) {
+    } else if (pSoldier.value.bAssignment == Enum117.PATIENT) {
+      if (guiCurrentScreen == Enum26.GAME_SCREEN) {
         ChangeSoldierStance(pSoldier, ANIM_CROUCH);
       } else {
-        ChangeSoldierState(pSoldier, STANDING, 1, TRUE);
+        ChangeSoldierState(pSoldier, Enum193.STANDING, 1, TRUE);
       }
     }
   }
 
-  if (pSoldier.value.bAssignment == ASSIGNMENT_HOSPITAL) {
+  if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_HOSPITAL) {
     // hack - reset AbsoluteFinalDestination in case it was left non-nowhere
     pSoldier.value.sAbsoluteFinalDestination = NOWHERE;
   }
 
   if (fSayQuote) {
-    if ((fMeToo == FALSE) && (pSoldier.value.bAssignment == TRAIN_TOWN)) {
-      TacticalCharacterDialogue(pSoldier, QUOTE_ASSIGNMENT_COMPLETE);
+    if ((fMeToo == FALSE) && (pSoldier.value.bAssignment == Enum117.TRAIN_TOWN)) {
+      TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_ASSIGNMENT_COMPLETE);
 
-      if (pSoldier.value.bAssignment == TRAIN_TOWN) {
+      if (pSoldier.value.bAssignment == Enum117.TRAIN_TOWN) {
         AddSectorForSoldierToListOfSectorsThatCompletedMilitiaTraining(pSoldier);
       }
     }
@@ -3306,12 +3306,12 @@ function AssignmentDone(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: BOOLEAN, fMeT
     pSoldier.value.usQuoteSaidExtFlags |= SOLDIER_QUOTE_SAID_DONE_ASSIGNMENT;
 
     if (fSayQuote) {
-      if (pSoldier.value.bAssignment == DOCTOR || pSoldier.value.bAssignment == REPAIR || pSoldier.value.bAssignment == PATIENT || pSoldier.value.bAssignment == ASSIGNMENT_HOSPITAL) {
-        TacticalCharacterDialogue(pSoldier, QUOTE_ASSIGNMENT_COMPLETE);
+      if (pSoldier.value.bAssignment == Enum117.DOCTOR || pSoldier.value.bAssignment == Enum117.REPAIR || pSoldier.value.bAssignment == Enum117.PATIENT || pSoldier.value.bAssignment == Enum117.ASSIGNMENT_HOSPITAL) {
+        TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_ASSIGNMENT_COMPLETE);
       }
     }
 
-    AddReasonToWaitingListQueue(ASSIGNMENT_FINISHED_FOR_UPDATE);
+    AddReasonToWaitingListQueue(Enum154.ASSIGNMENT_FINISHED_FOR_UPDATE);
     AddSoldierToWaitingListQueue(pSoldier);
 
     // trigger a single call AddDisplayBoxToWaitingQueue for assignments done
@@ -3383,13 +3383,13 @@ function HandleHealingByNaturalCauses(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   // not bleeding and injured...
 
-  if (pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+  if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
     // use high activity level to simulate stress, torture, poor conditions for healing
     bActivityLevelDivisor = HIGH_ACTIVITY_LEVEL;
   }
-  if ((pSoldier.value.fMercAsleep == TRUE) || (pSoldier.value.bAssignment == PATIENT) || (pSoldier.value.bAssignment == ASSIGNMENT_HOSPITAL)) {
+  if ((pSoldier.value.fMercAsleep == TRUE) || (pSoldier.value.bAssignment == Enum117.PATIENT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_HOSPITAL)) {
     bActivityLevelDivisor = LOW_ACTIVITY_LEVEL;
-  } else if (pSoldier.value.bAssignment < ON_DUTY) {
+  } else if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
     // if time is being compressed, and the soldier is not moving strategically
     if (IsTimeBeingCompressed() && !PlayerIDGroupInMotion(pSoldier.value.ubGroupID)) {
       // basically resting
@@ -3506,7 +3506,7 @@ function CheckIfSoldierUnassigned(pSoldier: Pointer<SOLDIERTYPE>): void {
     AddCharacterToAnySquad(pSoldier);
 
     if ((gfWorldLoaded) && (pSoldier.value.bInSector)) {
-      ChangeSoldierState(pSoldier, STANDING, 1, TRUE);
+      ChangeSoldierState(pSoldier, Enum193.STANDING, 1, TRUE);
     }
   }
 
@@ -3536,7 +3536,7 @@ function CreateDestroyMouseRegionsForAssignmentMenu(): void {
 
       return;
     }
-    if ((Menptr[gCharactersList[bSelectedAssignChar].usSolID].bLife == 0) || (Menptr[gCharactersList[bSelectedAssignChar].usSolID].bAssignment == ASSIGNMENT_POW)) {
+    if ((Menptr[gCharactersList[bSelectedAssignChar].usSolID].bLife == 0) || (Menptr[gCharactersList[bSelectedAssignChar].usSolID].bAssignment == Enum117.ASSIGNMENT_POW)) {
       // dead guy handle menu stuff
       fShowRemoveMenu = fShowAssignmentMenu | fShowContractMenu;
 
@@ -3549,13 +3549,13 @@ function CreateDestroyMouseRegionsForAssignmentMenu(): void {
   if ((fShowAssignmentMenu == TRUE) && (fCreated == FALSE)) {
     gfIgnoreScrolling = FALSE;
 
-    if ((fShowAssignmentMenu) && (guiCurrentScreen == MAP_SCREEN)) {
+    if ((fShowAssignmentMenu) && (guiCurrentScreen == Enum26.MAP_SCREEN)) {
       SetBoxPosition(ghAssignmentBox, AssignmentPosition);
     }
 
     pSoldier = GetSelectedAssignSoldier(FALSE);
 
-    if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
+    if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
       // grab height of font
       iFontHeight = GetLineSpace(ghEpcBox) + GetFontHeight(GetBoxFont(ghEpcBox));
 
@@ -3689,7 +3689,7 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
 
     // cancel line
     MSYS_DefineRegion(addressof(gVehicleMenuRegion[uiMenuLine]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*uiMenuLine), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (uiMenuLine + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, VehicleMenuMvtCallback, VehicleMenuBtnCallback);
-    MSYS_SetRegionUserData(addressof(gVehicleMenuRegion[uiMenuLine]), 0, VEHICLE_MENU_CANCEL);
+    MSYS_SetRegionUserData(addressof(gVehicleMenuRegion[uiMenuLine]), 0, Enum115.VEHICLE_MENU_CANCEL);
 
     // created
     fCreated = TRUE;
@@ -3766,7 +3766,7 @@ function VehicleMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (iValue == VEHICLE_MENU_CANCEL) {
+    if (iValue == Enum115.VEHICLE_MENU_CANCEL) {
       fShowVehicleMenu = FALSE;
       UnHighLightBox(ghAssignmentBox);
       fTeamPanelDirty = TRUE;
@@ -3796,7 +3796,7 @@ function VehicleMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
 
     giAssignHighLine = -1;
 
-    SetAssignmentForList(VEHICLE, iVehicleID);
+    SetAssignmentForList(Enum117.VEHICLE, iVehicleID);
   }
 }
 
@@ -3807,7 +3807,7 @@ function VehicleMenuMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    if (iValue != VEHICLE_MENU_CANCEL) {
+    if (iValue != Enum115.VEHICLE_MENU_CANCEL) {
       // no shaded(disabled) lines actually appear in vehicle menus
       if (GetBoxShadeFlag(ghVehicleBox, iValue) == FALSE) {
         // highlight vehicle line
@@ -3986,7 +3986,7 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
   if ((fShowRepairMenu == TRUE) && (fCreated == FALSE)) {
     CheckAndUpdateTacticalAssignmentPopUpPositions();
 
-    if ((fShowRepairMenu) && (guiCurrentScreen == MAP_SCREEN)) {
+    if ((fShowRepairMenu) && (guiCurrentScreen == Enum26.MAP_SCREEN)) {
       // SetBoxPosition( ghRepairBox ,RepairPosition);
     }
 
@@ -4051,7 +4051,7 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
       MSYS_DefineRegion(addressof(gRepairMenuRegion[iCount]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
 
       MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 0, iCount);
-      MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 1, REPAIR_MENU_ROBOT);
+      MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 1, Enum114.REPAIR_MENU_ROBOT);
       iCount++;
     }
 
@@ -4059,14 +4059,14 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
     MSYS_DefineRegion(addressof(gRepairMenuRegion[iCount]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
 
     MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 0, iCount);
-    MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 1, REPAIR_MENU_ITEMS);
+    MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 1, Enum114.REPAIR_MENU_ITEMS);
     iCount++;
 
     // cancel
     MSYS_DefineRegion(addressof(gRepairMenuRegion[iCount]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
 
     MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 0, iCount);
-    MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 1, REPAIR_MENU_CANCEL);
+    MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 1, Enum114.REPAIR_MENU_CANCEL);
 
     PauseGame();
 
@@ -4116,16 +4116,16 @@ function RepairMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
   pSoldier = GetSelectedAssignSoldier(FALSE);
 
   if (pSoldier && pSoldier.value.bActive && (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP)) {
-    if ((iRepairWhat >= REPAIR_MENU_VEHICLE1) && (iRepairWhat <= REPAIR_MENU_VEHICLE3)) {
+    if ((iRepairWhat >= Enum114.REPAIR_MENU_VEHICLE1) && (iRepairWhat <= Enum114.REPAIR_MENU_VEHICLE3)) {
       // repair VEHICLE
 
       pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
-      if ((pSoldier.value.bAssignment != REPAIR) || (pSoldier.value.fFixingRobot) || (pSoldier.value.fFixingSAMSite)) {
+      if ((pSoldier.value.bAssignment != Enum117.REPAIR) || (pSoldier.value.fFixingRobot) || (pSoldier.value.fFixingSAMSite)) {
         SetTimeOfAssignmentChangeForMerc(pSoldier);
       }
 
-      if (pSoldier.value.bOldAssignment == VEHICLE) {
+      if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
         TakeSoldierOutOfVehicle(pSoldier);
       }
 
@@ -4133,7 +4133,7 @@ function RepairMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
       RemoveCharacterFromSquads(pSoldier);
       MakeSureToolKitIsInHand(pSoldier);
 
-      ChangeSoldiersAssignment(pSoldier, REPAIR);
+      ChangeSoldiersAssignment(pSoldier, Enum117.REPAIR);
 
       pSoldier.value.bVehicleUnderRepairID = iRepairWhat;
 
@@ -4143,7 +4143,7 @@ function RepairMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
       AssignMercToAMovementGroup(pSoldier);
 
       // set assignment for group
-      SetAssignmentForList(REPAIR, 0);
+      SetAssignmentForList(Enum117.REPAIR, 0);
       fShowAssignmentMenu = FALSE;
     }
     /* No point in allowing SAM site repair any more.  Jan/13/99.  ARM
@@ -4173,39 +4173,39 @@ function RepairMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
                             AssignMercToAMovementGroup( pSoldier );
                     }
     */
-    else if (iRepairWhat == REPAIR_MENU_ROBOT) {
+    else if (iRepairWhat == Enum114.REPAIR_MENU_ROBOT) {
       // repair ROBOT
       pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
       // remove from squad
-      if (pSoldier.value.bOldAssignment == VEHICLE) {
+      if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
         TakeSoldierOutOfVehicle(pSoldier);
       }
 
       RemoveCharacterFromSquads(pSoldier);
       MakeSureToolKitIsInHand(pSoldier);
 
-      if ((pSoldier.value.bAssignment != REPAIR) || (pSoldier.value.fFixingRobot == FALSE)) {
+      if ((pSoldier.value.bAssignment != Enum117.REPAIR) || (pSoldier.value.fFixingRobot == FALSE)) {
         SetTimeOfAssignmentChangeForMerc(pSoldier);
       }
 
-      ChangeSoldiersAssignment(pSoldier, REPAIR);
+      ChangeSoldiersAssignment(pSoldier, Enum117.REPAIR);
       pSoldier.value.fFixingRobot = TRUE;
 
       // the second argument is irrelevant here, function looks at pSoldier itself to know what's being repaired
-      SetAssignmentForList(REPAIR, 0);
+      SetAssignmentForList(Enum117.REPAIR, 0);
       fShowAssignmentMenu = FALSE;
 
       MakeSureToolKitIsInHand(pSoldier);
 
       // assign to a movement group
       AssignMercToAMovementGroup(pSoldier);
-    } else if (iRepairWhat == REPAIR_MENU_ITEMS) {
+    } else if (iRepairWhat == Enum114.REPAIR_MENU_ITEMS) {
       // items
-      SetSoldierAssignment(pSoldier, REPAIR, FALSE, FALSE, -1);
+      SetSoldierAssignment(pSoldier, Enum117.REPAIR, FALSE, FALSE, -1);
 
       // the second argument is irrelevant here, function looks at pSoldier itself to know what's being repaired
-      SetAssignmentForList(REPAIR, 0);
+      SetAssignmentForList(Enum117.REPAIR, 0);
       fShowAssignmentMenu = FALSE;
     } else {
       // CANCEL
@@ -4228,7 +4228,7 @@ function RepairMenuMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    if (iValue < REPAIR_MENU_CANCEL) {
+    if (iValue < Enum114.REPAIR_MENU_CANCEL) {
       if (GetBoxShadeFlag(ghRepairBox, iValue) == FALSE) {
         // highlight choice
         HighLightBoxLine(ghRepairBox, iValue);
@@ -4247,11 +4247,11 @@ function MakeSureToolKitIsInHand(pSoldier: Pointer<SOLDIERTYPE>): void {
   let bPocket: INT8 = 0;
 
   // if there isn't a toolkit in his hand
-  if (pSoldier.value.inv[HANDPOS].usItem != TOOLKIT) {
+  if (pSoldier.value.inv[Enum261.HANDPOS].usItem != Enum225.TOOLKIT) {
     // run through rest of inventory looking for toolkits, swap the first one into hand if found
-    for (bPocket = SECONDHANDPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
-      if (pSoldier.value.inv[bPocket].usItem == TOOLKIT) {
-        SwapObjs(addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[bPocket]));
+    for (bPocket = Enum261.SECONDHANDPOS; bPocket <= Enum261.SMALLPOCK8POS; bPocket++) {
+      if (pSoldier.value.inv[bPocket].usItem == Enum225.TOOLKIT) {
+        SwapObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), addressof(pSoldier.value.inv[bPocket]));
         break;
       }
     }
@@ -4265,37 +4265,37 @@ function MakeSureMedKitIsInHand(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   fTeamPanelDirty = TRUE;
 
   // if there is a MEDICAL BAG in his hand, we're set
-  if (pSoldier.value.inv[HANDPOS].usItem == MEDICKIT) {
+  if (pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.MEDICKIT) {
     return TRUE;
   }
 
   // run through rest of inventory looking 1st for MEDICAL BAGS, swap the first one into hand if found
-  for (bPocket = SECONDHANDPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
-    if (pSoldier.value.inv[bPocket].usItem == MEDICKIT) {
+  for (bPocket = Enum261.SECONDHANDPOS; bPocket <= Enum261.SMALLPOCK8POS; bPocket++) {
+    if (pSoldier.value.inv[bPocket].usItem == Enum225.MEDICKIT) {
       fCharacterInfoPanelDirty = TRUE;
-      SwapObjs(addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[bPocket]));
+      SwapObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), addressof(pSoldier.value.inv[bPocket]));
       return TRUE;
     }
   }
 
   // we didn't find a medical bag, so settle for a FIRST AID KIT
-  if (pSoldier.value.inv[HANDPOS].usItem == FIRSTAIDKIT) {
+  if (pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.FIRSTAIDKIT) {
     return TRUE;
   }
 
   // run through rest of inventory looking 1st for MEDICAL BAGS, swap the first one into hand if found
-  for (bPocket = SECONDHANDPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
-    if (pSoldier.value.inv[bPocket].usItem == FIRSTAIDKIT) {
-      if ((Item[pSoldier.value.inv[HANDPOS].usItem].fFlags & IF_TWOHANDED_GUN) && (bPocket >= SMALLPOCK1POS)) {
+  for (bPocket = Enum261.SECONDHANDPOS; bPocket <= Enum261.SMALLPOCK8POS; bPocket++) {
+    if (pSoldier.value.inv[bPocket].usItem == Enum225.FIRSTAIDKIT) {
+      if ((Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].fFlags & IF_TWOHANDED_GUN) && (bPocket >= Enum261.SMALLPOCK1POS)) {
         // first move from hand to second hand
-        SwapObjs(addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[SECONDHANDPOS]));
+        SwapObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), addressof(pSoldier.value.inv[Enum261.SECONDHANDPOS]));
 
         // dirty mapscreen and squad panels
         fCharacterInfoPanelDirty = TRUE;
         fInterfacePanelDirty = DIRTYLEVEL2;
       }
 
-      SwapObjs(addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[bPocket]));
+      SwapObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), addressof(pSoldier.value.inv[bPocket]));
 
       return TRUE;
     }
@@ -4317,93 +4317,93 @@ function HandleShadingOfLinesForAssignmentMenus(): void {
   pSoldier = GetSelectedAssignSoldier(FALSE);
 
   if (pSoldier && pSoldier.value.bActive) {
-    if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
+    if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
       // patient
       if (CanCharacterPatient(pSoldier)) {
         // unshade patient line
-        UnShadeStringInBox(ghEpcBox, EPC_MENU_PATIENT);
+        UnShadeStringInBox(ghEpcBox, Enum147.EPC_MENU_PATIENT);
       } else {
         // shade patient line
-        ShadeStringInBox(ghEpcBox, EPC_MENU_PATIENT);
+        ShadeStringInBox(ghEpcBox, Enum147.EPC_MENU_PATIENT);
       }
 
       if (CanCharacterOnDuty(pSoldier)) {
         // unshade on duty line
-        UnShadeStringInBox(ghEpcBox, EPC_MENU_ON_DUTY);
+        UnShadeStringInBox(ghEpcBox, Enum147.EPC_MENU_ON_DUTY);
       } else {
         // shade on duty line
-        ShadeStringInBox(ghEpcBox, EPC_MENU_ON_DUTY);
+        ShadeStringInBox(ghEpcBox, Enum147.EPC_MENU_ON_DUTY);
       }
 
       if (CanCharacterVehicle(pSoldier)) {
         // unshade vehicle line
-        UnShadeStringInBox(ghEpcBox, EPC_MENU_VEHICLE);
+        UnShadeStringInBox(ghEpcBox, Enum147.EPC_MENU_VEHICLE);
       } else {
         // shade vehicle line
-        ShadeStringInBox(ghEpcBox, EPC_MENU_VEHICLE);
+        ShadeStringInBox(ghEpcBox, Enum147.EPC_MENU_VEHICLE);
       }
     } else {
       // doctor
       if (CanCharacterDoctor(pSoldier)) {
         // unshade doctor line
-        UnShadeStringInBox(ghAssignmentBox, ASSIGN_MENU_DOCTOR);
-        UnSecondaryShadeStringInBox(ghAssignmentBox, ASSIGN_MENU_DOCTOR);
+        UnShadeStringInBox(ghAssignmentBox, Enum148.ASSIGN_MENU_DOCTOR);
+        UnSecondaryShadeStringInBox(ghAssignmentBox, Enum148.ASSIGN_MENU_DOCTOR);
       } else {
         // only missing a med kit
         if (CanCharacterDoctorButDoesntHaveMedKit(pSoldier)) {
-          SecondaryShadeStringInBox(ghAssignmentBox, ASSIGN_MENU_DOCTOR);
+          SecondaryShadeStringInBox(ghAssignmentBox, Enum148.ASSIGN_MENU_DOCTOR);
         } else {
           // shade doctor line
-          ShadeStringInBox(ghAssignmentBox, ASSIGN_MENU_DOCTOR);
+          ShadeStringInBox(ghAssignmentBox, Enum148.ASSIGN_MENU_DOCTOR);
         }
       }
 
       // repair
       if (CanCharacterRepair(pSoldier)) {
         // unshade repair line
-        UnShadeStringInBox(ghAssignmentBox, ASSIGN_MENU_REPAIR);
-        UnSecondaryShadeStringInBox(ghAssignmentBox, ASSIGN_MENU_REPAIR);
+        UnShadeStringInBox(ghAssignmentBox, Enum148.ASSIGN_MENU_REPAIR);
+        UnSecondaryShadeStringInBox(ghAssignmentBox, Enum148.ASSIGN_MENU_REPAIR);
       } else {
         // only missing a tool kit
         if (CanCharacterRepairButDoesntHaveARepairkit(pSoldier)) {
-          SecondaryShadeStringInBox(ghAssignmentBox, ASSIGN_MENU_REPAIR);
+          SecondaryShadeStringInBox(ghAssignmentBox, Enum148.ASSIGN_MENU_REPAIR);
         } else {
           // shade repair line
-          ShadeStringInBox(ghAssignmentBox, ASSIGN_MENU_REPAIR);
+          ShadeStringInBox(ghAssignmentBox, Enum148.ASSIGN_MENU_REPAIR);
         }
       }
 
       // patient
       if (CanCharacterPatient(pSoldier)) {
         // unshade patient line
-        UnShadeStringInBox(ghAssignmentBox, ASSIGN_MENU_PATIENT);
+        UnShadeStringInBox(ghAssignmentBox, Enum148.ASSIGN_MENU_PATIENT);
       } else {
         // shade patient line
-        ShadeStringInBox(ghAssignmentBox, ASSIGN_MENU_PATIENT);
+        ShadeStringInBox(ghAssignmentBox, Enum148.ASSIGN_MENU_PATIENT);
       }
 
       if (CanCharacterOnDuty(pSoldier)) {
         // unshade on duty line
-        UnShadeStringInBox(ghAssignmentBox, ASSIGN_MENU_ON_DUTY);
+        UnShadeStringInBox(ghAssignmentBox, Enum148.ASSIGN_MENU_ON_DUTY);
       } else {
         // shade on duty line
-        ShadeStringInBox(ghAssignmentBox, ASSIGN_MENU_ON_DUTY);
+        ShadeStringInBox(ghAssignmentBox, Enum148.ASSIGN_MENU_ON_DUTY);
       }
 
       if (CanCharacterPractise(pSoldier)) {
         // unshade train line
-        UnShadeStringInBox(ghAssignmentBox, ASSIGN_MENU_TRAIN);
+        UnShadeStringInBox(ghAssignmentBox, Enum148.ASSIGN_MENU_TRAIN);
       } else {
         // shade train line
-        ShadeStringInBox(ghAssignmentBox, ASSIGN_MENU_TRAIN);
+        ShadeStringInBox(ghAssignmentBox, Enum148.ASSIGN_MENU_TRAIN);
       }
 
       if (CanCharacterVehicle(pSoldier)) {
         // unshade vehicle line
-        UnShadeStringInBox(ghAssignmentBox, ASSIGN_MENU_VEHICLE);
+        UnShadeStringInBox(ghAssignmentBox, Enum148.ASSIGN_MENU_VEHICLE);
       } else {
         // shade vehicle line
-        ShadeStringInBox(ghAssignmentBox, ASSIGN_MENU_VEHICLE);
+        ShadeStringInBox(ghAssignmentBox, Enum148.ASSIGN_MENU_VEHICLE);
       }
     }
   }
@@ -4534,13 +4534,13 @@ function DetermineWhichAssignmentMenusCanBeShown(): void {
   CreateDestroyMouseRegionsForSquadMenu(TRUE);
   CreateDestroyMouseRegionForRepairMenu();
 
-  if (((Menptr[gCharactersList[bSelectedInfoChar].usSolID].bLife == 0) || (Menptr[gCharactersList[bSelectedInfoChar].usSolID].bAssignment == ASSIGNMENT_POW)) && ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN))) {
+  if (((Menptr[gCharactersList[bSelectedInfoChar].usSolID].bLife == 0) || (Menptr[gCharactersList[bSelectedInfoChar].usSolID].bAssignment == Enum117.ASSIGNMENT_POW)) && ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN))) {
     // show basic assignment menu
     ShowBox(ghRemoveMercAssignBox);
   } else {
     pSoldier = GetSelectedAssignSoldier(FALSE);
 
-    if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
+    if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
       ShowBox(ghEpcBox);
     } else {
       // show basic assignment menu
@@ -4893,7 +4893,7 @@ function CreateDestroyMouseRegionsForTrainingMenu(): void {
   // will create/destroy mouse regions for the map screen assignment main menu
 
   if ((fShowTrainingMenu == TRUE) && (fCreated == FALSE)) {
-    if ((fShowTrainingMenu) && (guiCurrentScreen == MAP_SCREEN)) {
+    if ((fShowTrainingMenu) && (guiCurrentScreen == Enum26.MAP_SCREEN)) {
       SetBoxPosition(ghTrainingBox, TrainPosition);
     }
 
@@ -4978,7 +4978,7 @@ function CreateDestroyMouseRegionsForAttributeMenu(): void {
   // will create/destroy mouse regions for the map screen attribute  menu
 
   if ((fShowAttributeMenu == TRUE) && (fCreated == FALSE)) {
-    if ((fShowAssignmentMenu) && (guiCurrentScreen == MAP_SCREEN)) {
+    if ((fShowAssignmentMenu) && (guiCurrentScreen == Enum26.MAP_SCREEN)) {
       SetBoxPosition(ghAssignmentBox, AssignmentPosition);
     }
 
@@ -5190,7 +5190,7 @@ function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: BOOLEAN): void {
     // now create cancel region
     MSYS_DefineRegion(addressof(gSquadMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, SquadMenuMvtCallBack, SquadMenuBtnCallback);
 
-    MSYS_SetRegionUserData(addressof(gSquadMenuRegion[iCounter]), 0, SQUAD_MENU_CANCEL);
+    MSYS_SetRegionUserData(addressof(gSquadMenuRegion[iCounter]), 0, Enum151.SQUAD_MENU_CANCEL);
 
     // created
     fCreated = TRUE;
@@ -5249,7 +5249,7 @@ function AssignmentMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 
   if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     // is the line shaded?..if so, don't highlight
-    if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
+    if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
       if (GetBoxShadeFlag(ghEpcBox, iValue) == FALSE) {
         HighLightBoxLine(ghEpcBox, iValue);
       }
@@ -5259,7 +5259,7 @@ function AssignmentMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
       }
     }
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
+    if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
       // unhighlight all strings in box
       UnHighLightBox(ghEpcBox);
     } else {
@@ -5298,7 +5298,7 @@ function ContractMenuMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     // highlight string
 
-    if (iValue != CONTRACT_MENU_CURRENT_FUNDS) {
+    if (iValue != Enum152.CONTRACT_MENU_CURRENT_FUNDS) {
       if (GetBoxShadeFlag(ghContractBox, iValue) == FALSE) {
         // get the string line handle
         HighLightBoxLine(ghContractBox, iValue);
@@ -5319,7 +5319,7 @@ function SquadMenuMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
   if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     // highlight string
 
-    if (iValue != SQUAD_MENU_CANCEL) {
+    if (iValue != Enum151.SQUAD_MENU_CANCEL) {
       if (GetBoxShadeFlag(ghSquadBox, iValue) == FALSE) {
         // get the string line handle
         HighLightBoxLine(ghSquadBox, iValue);
@@ -5348,7 +5348,7 @@ function RemoveMercMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     switch (iValue) {
-      case (REMOVE_MERC_CANCEL):
+      case (Enum150.REMOVE_MERC_CANCEL):
 
         // stop showing menus
         fShowAssignmentMenu = FALSE;
@@ -5370,7 +5370,7 @@ function RemoveMercMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
         giContractHighLine = -1;
 
         break;
-      case (REMOVE_MERC):
+      case (Enum150.REMOVE_MERC):
         StrategicRemoveMerc(pSoldier);
 
         // dirty region
@@ -5407,37 +5407,37 @@ function RemoveMercMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 
 function BeginRemoveMercFromContract(pSoldier: Pointer<SOLDIERTYPE>): void {
   // This function will setup the quote, then start dialogue beginning the actual leave sequence
-  if ((pSoldier.value.bLife > 0) && (pSoldier.value.bAssignment != ASSIGNMENT_POW)) {
-    if ((pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__MERC) || (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__NPC)) {
-      HandleImportantMercQuote(pSoldier, QUOTE_RESPONSE_TO_MIGUEL_SLASH_QUOTE_MERC_OR_RPC_LETGO);
+  if ((pSoldier.value.bLife > 0) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW)) {
+    if ((pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) || (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__NPC)) {
+      HandleImportantMercQuote(pSoldier, Enum202.QUOTE_RESPONSE_TO_MIGUEL_SLASH_QUOTE_MERC_OR_RPC_LETGO);
 
-      SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 0, MAP_SCREEN, 0, 0, 0);
+      SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 0, Enum26.MAP_SCREEN, 0, 0, 0);
       TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_CONTRACT_ENDING, 1, 0);
     } else
         // quote is different if he's fired in less than 48 hours
         if ((GetWorldTotalMin() - pSoldier.value.uiTimeOfLastContractUpdate) < 60 * 48) {
-      SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 1, MAP_SCREEN, 0, 0, 0);
-      if ((pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC)) {
+      SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 1, Enum26.MAP_SCREEN, 0, 0, 0);
+      if ((pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC)) {
         // Only do this if they want to renew.....
         if (WillMercRenew(pSoldier, FALSE)) {
-          HandleImportantMercQuote(pSoldier, QUOTE_DEPART_COMMET_CONTRACT_NOT_RENEWED_OR_TERMINATED_UNDER_48);
+          HandleImportantMercQuote(pSoldier, Enum202.QUOTE_DEPART_COMMET_CONTRACT_NOT_RENEWED_OR_TERMINATED_UNDER_48);
         }
       }
 
-      SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 0, MAP_SCREEN, 0, 0, 0);
+      SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 0, Enum26.MAP_SCREEN, 0, 0, 0);
       TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_CONTRACT_ENDING, 1, 0);
     } else {
-      SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 1, MAP_SCREEN, 0, 0, 0);
-      if ((pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC)) {
+      SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 1, Enum26.MAP_SCREEN, 0, 0, 0);
+      if ((pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC)) {
         // Only do this if they want to renew.....
         if (WillMercRenew(pSoldier, FALSE)) {
-          HandleImportantMercQuote(pSoldier, QUOTE_DEPARTING_COMMENT_CONTRACT_NOT_RENEWED_OR_48_OR_MORE);
+          HandleImportantMercQuote(pSoldier, Enum202.QUOTE_DEPARTING_COMMENT_CONTRACT_NOT_RENEWED_OR_48_OR_MORE);
         }
-      } else if ((pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__MERC) || (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__NPC)) {
-        HandleImportantMercQuote(pSoldier, QUOTE_RESPONSE_TO_MIGUEL_SLASH_QUOTE_MERC_OR_RPC_LETGO);
+      } else if ((pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) || (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__NPC)) {
+        HandleImportantMercQuote(pSoldier, Enum202.QUOTE_RESPONSE_TO_MIGUEL_SLASH_QUOTE_MERC_OR_RPC_LETGO);
       }
 
-      SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 0, MAP_SCREEN, 0, 0, 0);
+      SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 0, Enum26.MAP_SCREEN, 0, 0, 0);
       TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_CONTRACT_ENDING, 1, 0);
     }
 
@@ -5447,7 +5447,7 @@ function BeginRemoveMercFromContract(pSoldier: Pointer<SOLDIERTYPE>): void {
       gMercProfiles[pSoldier.value.ubProfile].ubDaysOfMoraleHangover = (3 + Random(4));
 
       // if it's an AIM merc, word of this gets back to AIM...  Bad rep.
-      if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
+      if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
         ModifyPlayerReputation(REPUTATION_EARLY_FIRING);
       }
     }
@@ -5457,7 +5457,7 @@ function BeginRemoveMercFromContract(pSoldier: Pointer<SOLDIERTYPE>): void {
 function MercDismissConfirmCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_YES) {
     // Setup history code
-    gpDismissSoldier.value.ubLeaveHistoryCode = HISTORY_MERC_FIRED;
+    gpDismissSoldier.value.ubLeaveHistoryCode = Enum83.HISTORY_MERC_FIRED;
 
     BeginRemoveMercFromContract(gpDismissSoldier);
   }
@@ -5489,7 +5489,7 @@ function ContractMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
       return;
     }
 
-    if (iValue == CONTRACT_MENU_CANCEL) {
+    if (iValue == Enum152.CONTRACT_MENU_CANCEL) {
       // reset contract character and contract highlight line
       giContractHighLine = -1;
       bSelectedContractChar = -1;
@@ -5511,23 +5511,23 @@ function ContractMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
     // else handle based on contract
 
     switch (iValue) {
-      case (CONTRACT_MENU_DAY):
-        MercContractHandling(pSoldier, CONTRACT_EXTEND_1_DAY);
-        PostContractMessage(pSoldier, CONTRACT_EXTEND_1_DAY);
+      case (Enum152.CONTRACT_MENU_DAY):
+        MercContractHandling(pSoldier, Enum161.CONTRACT_EXTEND_1_DAY);
+        PostContractMessage(pSoldier, Enum161.CONTRACT_EXTEND_1_DAY);
         fOkToClose = TRUE;
         break;
-      case (CONTRACT_MENU_WEEK):
-        MercContractHandling(pSoldier, CONTRACT_EXTEND_1_WEEK);
-        PostContractMessage(pSoldier, CONTRACT_EXTEND_1_WEEK);
+      case (Enum152.CONTRACT_MENU_WEEK):
+        MercContractHandling(pSoldier, Enum161.CONTRACT_EXTEND_1_WEEK);
+        PostContractMessage(pSoldier, Enum161.CONTRACT_EXTEND_1_WEEK);
         fOkToClose = TRUE;
         break;
-      case (CONTRACT_MENU_TWO_WEEKS):
-        MercContractHandling(pSoldier, CONTRACT_EXTEND_2_WEEK);
-        PostContractMessage(pSoldier, CONTRACT_EXTEND_2_WEEK);
+      case (Enum152.CONTRACT_MENU_TWO_WEEKS):
+        MercContractHandling(pSoldier, Enum161.CONTRACT_EXTEND_2_WEEK);
+        PostContractMessage(pSoldier, Enum161.CONTRACT_EXTEND_2_WEEK);
         fOkToClose = TRUE;
         break;
 
-      case (CONTRACT_MENU_TERMINATE):
+      case (Enum152.CONTRACT_MENU_TERMINATE):
         gpDismissSoldier = pSoldier;
 
         // If in the renewal sequence.. do right away...
@@ -5535,7 +5535,7 @@ function ContractMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
         if (gfInContractMenuFromRenewSequence) {
           MercDismissConfirmCallBack(MSG_BOX_RETURN_YES);
         } else {
-          DoMapMessageBox(MSG_BOX_BASIC_STYLE, gzLateLocalizedString[48], MAP_SCREEN, MSG_BOX_FLAG_YESNO, MercDismissConfirmCallBack);
+          DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[48], Enum26.MAP_SCREEN, MSG_BOX_FLAG_YESNO, MercDismissConfirmCallBack);
         }
 
         fOkToClose = TRUE;
@@ -5624,7 +5624,7 @@ function SquadMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (iValue == SQUAD_MENU_CANCEL) {
+    if (iValue == Enum151.SQUAD_MENU_CANCEL) {
       // stop displaying, leave
       fShowSquadMenu = FALSE;
 
@@ -5672,13 +5672,13 @@ function SquadMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
         */
         pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
-        if (pSoldier.value.bOldAssignment == VEHICLE) {
+        if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
           TakeSoldierOutOfVehicle(pSoldier);
         }
 
         AddCharacterToSquad(pSoldier, iValue);
 
-        if (pSoldier.value.bOldAssignment == VEHICLE) {
+        if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
           SetSoldierExitVehicleInsertionData(pSoldier, pSoldier.value.iVehicleId);
         }
 
@@ -5759,7 +5759,7 @@ function TrainingMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
 
   if ((iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) || (iReason & MSYS_CALLBACK_REASON_RBUTTON_DWN)) {
     if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) && !fShowMapInventoryPool) {
-      UnMarkButtonDirty(giMapBorderButtons[MAP_BORDER_TOWN_BTN]);
+      UnMarkButtonDirty(giMapBorderButtons[Enum141.MAP_BORDER_TOWN_BTN]);
     }
   }
 
@@ -5774,22 +5774,22 @@ function TrainingMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
     }
 
     switch (iValue) {
-      case (TRAIN_MENU_SELF):
+      case (Enum149.TRAIN_MENU_SELF):
 
         // practise in stat
-        gbTrainingMode = TRAIN_SELF;
+        gbTrainingMode = Enum117.TRAIN_SELF;
 
         // show menu
         fShowAttributeMenu = TRUE;
         DetermineBoxPositions();
 
         break;
-      case (TRAIN_MENU_TOWN):
+      case (Enum149.TRAIN_MENU_TOWN):
         if (BasicCanCharacterTrainMilitia(pSoldier)) {
           bTownId = GetTownIdForSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
 
           // if it's a town sector (the following 2 errors can't happen at non-town SAM sites)
-          if (bTownId != BLANK_SECTOR) {
+          if (bTownId != Enum135.BLANK_SECTOR) {
             // can we keep militia in this town?
             if (MilitiaTrainingAllowedInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) == FALSE) {
               swprintf(sString, pMapErrorString[31], pTownNames[bTownId]);
@@ -5805,7 +5805,7 @@ function TrainingMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
           }
 
           if (IsMilitiaTrainableFromSoldiersSectorMaxed(pSoldier)) {
-            if (bTownId == BLANK_SECTOR) {
+            if (bTownId == Enum135.BLANK_SECTOR) {
               // SAM site
               GetShortSectorString(pSoldier.value.sSectorX, pSoldier.value.sSectorY, sStringA);
               swprintf(sString, zMarksMapScreenText[21], sStringA);
@@ -5828,7 +5828,7 @@ function TrainingMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
 
           pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
-          if ((pSoldier.value.bAssignment != TRAIN_TOWN)) {
+          if ((pSoldier.value.bAssignment != Enum117.TRAIN_TOWN)) {
             SetTimeOfAssignmentChangeForMerc(pSoldier);
           }
 
@@ -5840,12 +5840,12 @@ function TrainingMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
 
           // remove from squad
 
-          if (pSoldier.value.bOldAssignment == VEHICLE) {
+          if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
             TakeSoldierOutOfVehicle(pSoldier);
           }
           RemoveCharacterFromSquads(pSoldier);
 
-          ChangeSoldiersAssignment(pSoldier, TRAIN_TOWN);
+          ChangeSoldiersAssignment(pSoldier, Enum117.TRAIN_TOWN);
 
           // assign to a movement group
           AssignMercToAMovementGroup(pSoldier);
@@ -5853,35 +5853,35 @@ function TrainingMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
             // show a message to confirm player wants to charge cost
             HandleInterfaceMessageForCostOfTrainingMilitia(pSoldier);
           } else {
-            SetAssignmentForList(TRAIN_TOWN, 0);
+            SetAssignmentForList(Enum117.TRAIN_TOWN, 0);
           }
 
           gfRenderPBInterface = TRUE;
         }
         break;
-      case (TRAIN_MENU_TEAMMATES):
+      case (Enum149.TRAIN_MENU_TEAMMATES):
 
         if (CanCharacterTrainTeammates(pSoldier) == TRUE) {
           // train teammates
-          gbTrainingMode = TRAIN_TEAMMATE;
+          gbTrainingMode = Enum117.TRAIN_TEAMMATE;
 
           // show menu
           fShowAttributeMenu = TRUE;
           DetermineBoxPositions();
         }
         break;
-      case (TRAIN_MENU_TRAIN_BY_OTHER):
+      case (Enum149.TRAIN_MENU_TRAIN_BY_OTHER):
 
         if (CanCharacterBeTrainedByOther(pSoldier) == TRUE) {
           // train teammates
-          gbTrainingMode = TRAIN_BY_OTHER;
+          gbTrainingMode = Enum117.TRAIN_BY_OTHER;
 
           // show menu
           fShowAttributeMenu = TRUE;
           DetermineBoxPositions();
         }
         break;
-      case (TRAIN_MENU_CANCEL):
+      case (Enum149.TRAIN_MENU_CANCEL):
         // stop showing menu
         fShowTrainingMenu = FALSE;
 
@@ -5919,7 +5919,7 @@ function AttributesMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (iValue == ATTRIB_MENU_CANCEL) {
+    if (iValue == Enum146.ATTRIB_MENU_CANCEL) {
       // cancel, leave
 
       // stop showing menu
@@ -5927,7 +5927,7 @@ function AttributesMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 
       // unhighlight the training box
       UnHighLightBox(ghTrainingBox);
-    } else if (CanCharacterTrainStat(pSoldier, (iValue), ((gbTrainingMode == TRAIN_SELF) || (gbTrainingMode == TRAIN_BY_OTHER)), (gbTrainingMode == TRAIN_TEAMMATE))) {
+    } else if (CanCharacterTrainStat(pSoldier, (iValue), ((gbTrainingMode == Enum117.TRAIN_SELF) || (gbTrainingMode == Enum117.TRAIN_BY_OTHER)), (gbTrainingMode == Enum117.TRAIN_TEAMMATE))) {
       pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
       if ((pSoldier.value.bAssignment != gbTrainingMode)) {
@@ -5944,7 +5944,7 @@ function AttributesMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
       giAssignHighLine = -1;
 
       // remove from squad/vehicle
-      if (pSoldier.value.bOldAssignment == VEHICLE) {
+      if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
         TakeSoldierOutOfVehicle(pSoldier);
       }
       RemoveCharacterFromSquads(pSoldier);
@@ -5985,9 +5985,9 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 
     UnHighLightBox(ghAssignmentBox);
 
-    if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
+    if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
       switch (iValue) {
-        case (EPC_MENU_ON_DUTY):
+        case (Enum147.EPC_MENU_ON_DUTY):
           if (CanCharacterOnDuty(pSoldier)) {
             // put character on a team
             fShowSquadMenu = TRUE;
@@ -5997,7 +5997,7 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
             fMapScreenBottomDirty = TRUE;
           }
           break;
-        case (EPC_MENU_PATIENT):
+        case (Enum147.EPC_MENU_PATIENT):
           // can character doctor?
           if (CanCharacterPatient(pSoldier)) {
             /* Assignment distance limits removed.  Sep/11/98.  ARM
@@ -6009,7 +6009,7 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
-            if ((pSoldier.value.bAssignment != PATIENT)) {
+            if ((pSoldier.value.bAssignment != Enum117.PATIENT)) {
               SetTimeOfAssignmentChangeForMerc(pSoldier);
             }
 
@@ -6025,19 +6025,19 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 
             // remove from squad
 
-            if (pSoldier.value.bOldAssignment == VEHICLE) {
+            if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
               TakeSoldierOutOfVehicle(pSoldier);
             }
             RemoveCharacterFromSquads(pSoldier);
-            ChangeSoldiersAssignment(pSoldier, PATIENT);
+            ChangeSoldiersAssignment(pSoldier, Enum117.PATIENT);
             AssignMercToAMovementGroup(pSoldier);
 
             // set assignment for group
-            SetAssignmentForList(PATIENT, 0);
+            SetAssignmentForList(Enum117.PATIENT, 0);
           }
           break;
 
-        case (EPC_MENU_VEHICLE):
+        case (Enum147.EPC_MENU_VEHICLE):
           if (CanCharacterVehicle(pSoldier)) {
             if (DisplayVehicleMenu(pSoldier)) {
               fShowVehicleMenu = TRUE;
@@ -6048,13 +6048,13 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
           }
           break;
 
-        case (EPC_MENU_REMOVE):
+        case (Enum147.EPC_MENU_REMOVE):
 
           fShowAssignmentMenu = FALSE;
           UnEscortEPC(pSoldier);
           break;
 
-        case (EPC_MENU_CANCEL):
+        case (Enum147.EPC_MENU_CANCEL):
           fShowAssignmentMenu = FALSE;
           giAssignHighLine = -1;
 
@@ -6068,7 +6068,7 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
       }
     } else {
       switch (iValue) {
-        case (ASSIGN_MENU_ON_DUTY):
+        case (Enum148.ASSIGN_MENU_ON_DUTY):
           if (CanCharacterOnDuty(pSoldier)) {
             // put character on a team
             fShowSquadMenu = TRUE;
@@ -6079,7 +6079,7 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
             fShowRepairMenu = FALSE;
           }
           break;
-        case (ASSIGN_MENU_DOCTOR):
+        case (Enum148.ASSIGN_MENU_DOCTOR):
 
           // can character doctor?
           if (CanCharacterDoctor(pSoldier)) {
@@ -6089,18 +6089,18 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
-            if ((pSoldier.value.bAssignment != DOCTOR)) {
+            if ((pSoldier.value.bAssignment != Enum117.DOCTOR)) {
               SetTimeOfAssignmentChangeForMerc(pSoldier);
             }
 
             // remove from squad
 
-            if (pSoldier.value.bOldAssignment == VEHICLE) {
+            if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
               TakeSoldierOutOfVehicle(pSoldier);
             }
             RemoveCharacterFromSquads(pSoldier);
 
-            ChangeSoldiersAssignment(pSoldier, DOCTOR);
+            ChangeSoldiersAssignment(pSoldier, Enum117.DOCTOR);
 
             MakeSureMedKitIsInHand(pSoldier);
             AssignMercToAMovementGroup(pSoldier);
@@ -6112,7 +6112,7 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
             fMapScreenBottomDirty = TRUE;
 
             // set assignment for group
-            SetAssignmentForList(DOCTOR, 0);
+            SetAssignmentForList(Enum117.DOCTOR, 0);
           } else if (CanCharacterDoctorButDoesntHaveMedKit(pSoldier)) {
             fTeamPanelDirty = TRUE;
             fMapScreenBottomDirty = TRUE;
@@ -6122,7 +6122,7 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
           }
 
           break;
-        case (ASSIGN_MENU_PATIENT):
+        case (Enum148.ASSIGN_MENU_PATIENT):
 
           // can character patient?
           if (CanCharacterPatient(pSoldier)) {
@@ -6135,7 +6135,7 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
-            if ((pSoldier.value.bAssignment != PATIENT)) {
+            if ((pSoldier.value.bAssignment != Enum117.PATIENT)) {
               SetTimeOfAssignmentChangeForMerc(pSoldier);
             }
 
@@ -6151,20 +6151,20 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 
             // remove from squad
 
-            if (pSoldier.value.bOldAssignment == VEHICLE) {
+            if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
               TakeSoldierOutOfVehicle(pSoldier);
             }
             RemoveCharacterFromSquads(pSoldier);
-            ChangeSoldiersAssignment(pSoldier, PATIENT);
+            ChangeSoldiersAssignment(pSoldier, Enum117.PATIENT);
 
             AssignMercToAMovementGroup(pSoldier);
 
             // set assignment for group
-            SetAssignmentForList(PATIENT, 0);
+            SetAssignmentForList(Enum117.PATIENT, 0);
           }
           break;
 
-        case (ASSIGN_MENU_VEHICLE):
+        case (Enum148.ASSIGN_MENU_VEHICLE):
           if (CanCharacterVehicle(pSoldier)) {
             if (DisplayVehicleMenu(pSoldier)) {
               fShowVehicleMenu = TRUE;
@@ -6174,7 +6174,7 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
             }
           }
           break;
-        case (ASSIGN_MENU_REPAIR):
+        case (Enum148.ASSIGN_MENU_REPAIR):
           if (CanCharacterRepair(pSoldier)) {
             fShowSquadMenu = FALSE;
             fShowTrainingMenu = FALSE;
@@ -6199,7 +6199,7 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
             DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, NULL);
           }
           break;
-        case (ASSIGN_MENU_TRAIN):
+        case (Enum148.ASSIGN_MENU_TRAIN):
           if (CanCharacterPractise(pSoldier)) {
             fShowTrainingMenu = TRUE;
             DetermineBoxPositions();
@@ -6211,7 +6211,7 @@ function AssignmentMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
             fMapScreenBottomDirty = TRUE;
           }
           break;
-        case (ASSIGN_MENU_CANCEL):
+        case (Enum148.ASSIGN_MENU_CANCEL):
           fShowAssignmentMenu = FALSE;
           giAssignHighLine = -1;
 
@@ -6299,7 +6299,7 @@ function CreateSquadBox(): void {
   }
 
   // add cancel line
-  AddMonoString(addressof(hStringHandle), pSquadMenuStrings[NUMBER_OF_SQUADS]);
+  AddMonoString(addressof(hStringHandle), pSquadMenuStrings[Enum275.NUMBER_OF_SQUADS]);
 
   // set font type
   SetBoxFont(ghSquadBox, MAP_SCREEN_FONT);
@@ -6362,7 +6362,7 @@ function CreateEPCBox(): void {
   // set current box to this one
   SetCurrentBox(ghEpcBox);
 
-  for (iCount = 0; iCount < MAX_EPC_MENU_STRING_COUNT; iCount++) {
+  for (iCount = 0; iCount < Enum147.MAX_EPC_MENU_STRING_COUNT; iCount++) {
     AddMonoString(addressof(hStringHandle), pEpcMenuStrings[iCount]);
   }
 
@@ -6473,7 +6473,7 @@ function DisplayVehicleMenu(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   }
 
   // cancel string (borrow the one in the squad menu)
-  AddMonoString(addressof(hStringHandle), pSquadMenuStrings[SQUAD_MENU_CANCEL]);
+  AddMonoString(addressof(hStringHandle), pSquadMenuStrings[Enum151.SQUAD_MENU_CANCEL]);
 
   SetBoxFont(ghVehicleBox, MAP_SCREEN_FONT);
   SetBoxHighLight(ghVehicleBox, FONT_WHITE);
@@ -6525,9 +6525,9 @@ function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
 
   // not null character?
   if (pCharacter != NULL) {
-    for (uiCounter = 0; uiCounter < MAX_CONTRACT_MENU_STRING_COUNT; uiCounter++) {
+    for (uiCounter = 0; uiCounter < Enum152.MAX_CONTRACT_MENU_STRING_COUNT; uiCounter++) {
       switch (uiCounter) {
-        case (CONTRACT_MENU_CURRENT_FUNDS):
+        case (Enum152.CONTRACT_MENU_CURRENT_FUNDS):
           /*
                                           // add current balance after title string
                                            swprintf( sDollarString, L"%d", LaptopSaveInfo.iCurrentBalance);
@@ -6538,9 +6538,9 @@ function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
           */
           AddMonoString(addressof(hStringHandle), pContractStrings[uiCounter]);
           break;
-        case (CONTRACT_MENU_DAY):
+        case (Enum152.CONTRACT_MENU_DAY):
 
-          if (pCharacter.value.ubWhatKindOfMercAmI != MERC_TYPE__AIM_MERC) {
+          if (pCharacter.value.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__AIM_MERC) {
             swprintf(sDollarString, "%d", 0);
           } else {
             swprintf(sDollarString, "%d", gMercProfiles[pCharacter.value.ubProfile].sSalary);
@@ -6550,9 +6550,9 @@ function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
           swprintf(sString, "%s ( %s )", pContractStrings[uiCounter], sDollarString);
           AddMonoString(addressof(hStringHandle), sString);
           break;
-        case (CONTRACT_MENU_WEEK):
+        case (Enum152.CONTRACT_MENU_WEEK):
 
-          if (pCharacter.value.ubWhatKindOfMercAmI != MERC_TYPE__AIM_MERC) {
+          if (pCharacter.value.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__AIM_MERC) {
             swprintf(sDollarString, "%d", 0);
           } else {
             swprintf(sDollarString, "%d", gMercProfiles[pCharacter.value.ubProfile].uiWeeklySalary);
@@ -6563,9 +6563,9 @@ function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
           swprintf(sString, "%s ( %s )", pContractStrings[uiCounter], sDollarString);
           AddMonoString(addressof(hStringHandle), sString);
           break;
-        case (CONTRACT_MENU_TWO_WEEKS):
+        case (Enum152.CONTRACT_MENU_TWO_WEEKS):
 
-          if (pCharacter.value.ubWhatKindOfMercAmI != MERC_TYPE__AIM_MERC) {
+          if (pCharacter.value.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__AIM_MERC) {
             swprintf(sDollarString, "%d", 0);
           } else {
             swprintf(sDollarString, "%d", gMercProfiles[pCharacter.value.ubProfile].uiBiWeeklySalary);
@@ -6638,7 +6638,7 @@ function CreateAttributeBox(): void {
   SetCurrentBox(ghAttributeBox);
 
   // add strings for box
-  for (uiCounter = 0; uiCounter < MAX_ATTRIBUTE_STRING_COUNT; uiCounter++) {
+  for (uiCounter = 0; uiCounter < Enum146.MAX_ATTRIBUTE_STRING_COUNT; uiCounter++) {
     AddMonoString(addressof(hStringHandle), pAttributeMenuStrings[uiCounter]);
 
     // make sure it is unhighlighted
@@ -6673,7 +6673,7 @@ function CreateTrainingBox(): void {
   TrainPosition.iX = OrigTrainPosition.iX;
 
   if (giBoxY != 0) {
-    TrainPosition.iY = giBoxY + (ASSIGN_MENU_TRAIN * GetFontHeight(MAP_SCREEN_FONT));
+    TrainPosition.iY = giBoxY + (Enum148.ASSIGN_MENU_TRAIN * GetFontHeight(MAP_SCREEN_FONT));
   }
 
   // create basic box
@@ -6698,7 +6698,7 @@ function CreateTrainingBox(): void {
   SetCurrentBox(ghTrainingBox);
 
   // add strings for box
-  for (uiCounter = 0; uiCounter < MAX_TRAIN_STRING_COUNT; uiCounter++) {
+  for (uiCounter = 0; uiCounter < Enum149.MAX_TRAIN_STRING_COUNT; uiCounter++) {
     AddMonoString(addressof(hStringHandle), pTrainingMenuStrings[uiCounter]);
 
     // make sure it is unhighlighted
@@ -6765,9 +6765,9 @@ function CreateAssignmentsBox(): void {
   SetCurrentBox(ghAssignmentBox);
 
   // add strings for box
-  for (uiCounter = 0; uiCounter < MAX_ASSIGN_STRING_COUNT; uiCounter++) {
+  for (uiCounter = 0; uiCounter < Enum148.MAX_ASSIGN_STRING_COUNT; uiCounter++) {
     // if we have a soldier, and this is the squad line
-    if ((uiCounter == ASSIGN_MENU_ON_DUTY) && (pSoldier != NULL) && (pSoldier.value.bAssignment < ON_DUTY)) {
+    if ((uiCounter == Enum148.ASSIGN_MENU_ON_DUTY) && (pSoldier != NULL) && (pSoldier.value.bAssignment < Enum117.ON_DUTY)) {
       // show his squad # in brackets
       swprintf(sString, "%s(%d)", pAssignMenuStrings[uiCounter], pSoldier.value.bAssignment + 1);
     } else {
@@ -6829,7 +6829,7 @@ function CreateMercRemoveAssignBox(): void {
   SetCurrentBox(ghRemoveMercAssignBox);
 
   // add strings for box
-  for (uiCounter = 0; uiCounter < MAX_REMOVE_MERC_COUNT; uiCounter++) {
+  for (uiCounter = 0; uiCounter < Enum150.MAX_REMOVE_MERC_COUNT; uiCounter++) {
     AddMonoString(addressof(hStringHandle), pRemoveMercStrings[uiCounter]);
 
     // make sure it is unhighlighted
@@ -6936,7 +6936,7 @@ function DetermineBoxPositions(): void {
   pPoint.iX = gsAssignmentBoxesX;
   pPoint.iY = gsAssignmentBoxesY;
 
-  if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
+  if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     SetBoxPosition(ghEpcBox, pPoint);
     GetBoxSize(ghEpcBox, addressof(pDimensions));
   } else {
@@ -6954,13 +6954,13 @@ function DetermineBoxPositions(): void {
 
   if ((fShowRepairMenu == TRUE) && (ghRepairBox != -1)) {
     CreateDestroyMouseRegionForRepairMenu();
-    pNewPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT) + 2) * ASSIGN_MENU_REPAIR);
+    pNewPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_REPAIR);
 
     SetBoxPosition(ghRepairBox, pNewPoint);
   }
 
   if ((fShowTrainingMenu == TRUE) && (ghTrainingBox != -1)) {
-    pNewPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT) + 2) * ASSIGN_MENU_TRAIN);
+    pNewPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_TRAIN);
     SetBoxPosition(ghTrainingBox, pNewPoint);
     TrainPosition.iX = pNewPoint.iX;
     TrainPosition.iY = pNewPoint.iY;
@@ -7058,7 +7058,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
   // get the soldier
   pSoldier = GetSelectedAssignSoldier(FALSE);
 
-  if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
+  if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     GetBoxSize(ghEpcBox, addressof(pDimensions2));
   } else {
     GetBoxSize(ghAssignmentBox, addressof(pDimensions2));
@@ -7073,9 +7073,9 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
     }
 
     if (pDimensions2.iBottom > pDimensions.iBottom) {
-      sLongest = pDimensions2.iBottom + ((GetFontHeight(MAP_SCREEN_FONT) + 2) * ASSIGN_MENU_REPAIR);
+      sLongest = pDimensions2.iBottom + ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_REPAIR);
     } else {
-      sLongest = pDimensions.iBottom + ((GetFontHeight(MAP_SCREEN_FONT) + 2) * ASSIGN_MENU_REPAIR);
+      sLongest = pDimensions.iBottom + ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_REPAIR);
     }
 
     if (gsAssignmentBoxesY + sLongest >= 360) {
@@ -7084,7 +7084,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
     }
 
     pPoint.iX = gsAssignmentBoxesX + pDimensions2.iRight;
-    pPoint.iY = gsAssignmentBoxesY + ((GetFontHeight(MAP_SCREEN_FONT) + 2) * ASSIGN_MENU_REPAIR);
+    pPoint.iY = gsAssignmentBoxesY + ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_REPAIR);
 
     SetBoxPosition(ghRepairBox, pPoint);
   } else if (fShowSquadMenu == TRUE) {
@@ -7119,7 +7119,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
       SetRenderFlags(RENDER_FLAG_FULL);
     }
 
-    if (gsAssignmentBoxesY + pDimensions3.iBottom + (GetFontHeight(MAP_SCREEN_FONT) * ASSIGN_MENU_TRAIN) >= 360) {
+    if (gsAssignmentBoxesY + pDimensions3.iBottom + (GetFontHeight(MAP_SCREEN_FONT) * Enum148.ASSIGN_MENU_TRAIN) >= 360) {
       gsAssignmentBoxesY = (359 - (pDimensions3.iBottom));
       SetRenderFlags(RENDER_FLAG_FULL);
     }
@@ -7127,13 +7127,13 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
     pPoint.iX = gsAssignmentBoxesX + pDimensions2.iRight + pDimensions.iRight;
     pPoint.iY = gsAssignmentBoxesY;
 
-    pPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT) + 2) * ASSIGN_MENU_TRAIN);
+    pPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_TRAIN);
     SetBoxPosition(ghAttributeBox, pPoint);
 
     pPoint.iX = gsAssignmentBoxesX + pDimensions2.iRight;
     pPoint.iY = gsAssignmentBoxesY;
 
-    pPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT) + 2) * ASSIGN_MENU_TRAIN);
+    pPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_TRAIN);
 
     SetBoxPosition(ghTrainingBox, pPoint);
   } else if (fShowTrainingMenu == TRUE) {
@@ -7144,14 +7144,14 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
       SetRenderFlags(RENDER_FLAG_FULL);
     }
 
-    if (gsAssignmentBoxesY + pDimensions2.iBottom + ((GetFontHeight(MAP_SCREEN_FONT) + 2) * ASSIGN_MENU_TRAIN) >= 360) {
-      gsAssignmentBoxesY = (359 - (pDimensions2.iBottom) - ((GetFontHeight(MAP_SCREEN_FONT) + 2) * ASSIGN_MENU_TRAIN));
+    if (gsAssignmentBoxesY + pDimensions2.iBottom + ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_TRAIN) >= 360) {
+      gsAssignmentBoxesY = (359 - (pDimensions2.iBottom) - ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_TRAIN));
       SetRenderFlags(RENDER_FLAG_FULL);
     }
 
     pPoint.iX = gsAssignmentBoxesX + pDimensions2.iRight;
     pPoint.iY = gsAssignmentBoxesY;
-    pPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT) + 2) * ASSIGN_MENU_TRAIN);
+    pPoint.iY += ((GetFontHeight(MAP_SCREEN_FONT) + 2) * Enum148.ASSIGN_MENU_TRAIN);
 
     SetBoxPosition(ghTrainingBox, pPoint);
   } else {
@@ -7169,7 +7169,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
     pPoint.iX = gsAssignmentBoxesX;
     pPoint.iY = gsAssignmentBoxesY;
 
-    if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
+    if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
       SetBoxPosition(ghEpcBox, pPoint);
     } else {
       SetBoxPosition(ghAssignmentBox, pPoint);
@@ -7193,7 +7193,7 @@ function PositionCursorForTacticalAssignmentBox(): void {
 
   iFontHeight = GetLineSpace(ghAssignmentBox) + GetFontHeight(GetBoxFont(ghAssignmentBox));
 
-  if (gGameSettings.fOptions[TOPTION_DONT_MOVE_MOUSE] == FALSE) {
+  if (gGameSettings.fOptions[Enum8.TOPTION_DONT_MOVE_MOUSE] == FALSE) {
     SimulateMouseMovement(pPosition.iX + pDimensions.iRight - 6, pPosition.iY + (iFontHeight / 2) + 2);
   }
 }
@@ -7217,7 +7217,7 @@ function HandleRestFatigueAndSleepStatus(): void {
         continue;
       }
 
-      if ((pSoldier.value.bAssignment == ASSIGNMENT_POW) || (pSoldier.value.bAssignment == IN_TRANSIT)) {
+      if ((pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) || (pSoldier.value.bAssignment == Enum117.IN_TRANSIT)) {
         continue;
       }
 
@@ -7244,10 +7244,10 @@ function HandleRestFatigueAndSleepStatus(): void {
 
           // he goes to sleep, provided it's at all possible (it still won't happen in a hostile sector, etc.)
           if (SetMercAsleep(pSoldier, FALSE)) {
-            if ((pSoldier.value.bAssignment < ON_DUTY) || (pSoldier.value.bAssignment == VEHICLE)) {
+            if ((pSoldier.value.bAssignment < Enum117.ON_DUTY) || (pSoldier.value.bAssignment == Enum117.VEHICLE)) {
               // on a squad/vehicle, complain, then drop
-              TacticalCharacterDialogue(pSoldier, QUOTE_NEED_SLEEP);
-              TacticalCharacterDialogueWithSpecialEvent(pSoldier, QUOTE_NEED_SLEEP, DIALOGUE_SPECIAL_EVENT_SLEEP, 1, 0);
+              TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_NEED_SLEEP);
+              TacticalCharacterDialogueWithSpecialEvent(pSoldier, Enum202.QUOTE_NEED_SLEEP, DIALOGUE_SPECIAL_EVENT_SLEEP, 1, 0);
               fMeToo = TRUE;
             }
 
@@ -7258,14 +7258,14 @@ function HandleRestFatigueAndSleepStatus(): void {
         // if pretty tired, and not forced to stay awake
         else if ((pSoldier.value.bBreathMax < BREATHMAX_PRETTY_TIRED) && (pSoldier.value.fForcedToStayAwake == FALSE)) {
           // if not on squad/ in vehicle
-          if ((pSoldier.value.bAssignment >= ON_DUTY) && (pSoldier.value.bAssignment != VEHICLE)) {
+          if ((pSoldier.value.bAssignment >= Enum117.ON_DUTY) && (pSoldier.value.bAssignment != Enum117.VEHICLE)) {
             // try to go to sleep on your own
             if (SetMercAsleep(pSoldier, FALSE)) {
-              if (gGameSettings.fOptions[TOPTION_SLEEPWAKE_NOTIFICATION]) {
+              if (gGameSettings.fOptions[Enum8.TOPTION_SLEEPWAKE_NOTIFICATION]) {
                 // if the first one
                 if (fReasonAdded == FALSE) {
                   // tell player about it
-                  AddReasonToWaitingListQueue(ASLEEP_GOING_AUTO_FOR_UPDATE);
+                  AddReasonToWaitingListQueue(Enum154.ASLEEP_GOING_AUTO_FOR_UPDATE);
                   TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_SHOW_UPDATE_MENU, 0, 0);
 
                   fReasonAdded = TRUE;
@@ -7284,10 +7284,10 @@ function HandleRestFatigueAndSleepStatus(): void {
             if (!pSoldier.value.fComplainedThatTired) {
               // say quote
               if (fMeToo == FALSE) {
-                TacticalCharacterDialogue(pSoldier, QUOTE_NEED_SLEEP);
+                TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_NEED_SLEEP);
                 fMeToo = TRUE;
               } else {
-                TacticalCharacterDialogue(pSoldier, QUOTE_ME_TOO);
+                TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_ME_TOO);
               }
 
               pSoldier.value.fComplainedThatTired = TRUE;
@@ -7315,7 +7315,7 @@ function HandleRestFatigueAndSleepStatus(): void {
         continue;
       }
 
-      if ((pSoldier.value.bAssignment == ASSIGNMENT_POW) || (pSoldier.value.bAssignment == IN_TRANSIT)) {
+      if ((pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) || (pSoldier.value.bAssignment == Enum117.IN_TRANSIT)) {
         continue;
       }
 
@@ -7335,10 +7335,10 @@ function HandleRestFatigueAndSleepStatus(): void {
           // try to wake merc up
           if (SetMercAwake(pSoldier, FALSE, FALSE)) {
             // if not on squad/ in vehicle, tell player about it
-            if ((pSoldier.value.bAssignment >= ON_DUTY) && (pSoldier.value.bAssignment != VEHICLE)) {
-              if (gGameSettings.fOptions[TOPTION_SLEEPWAKE_NOTIFICATION]) {
+            if ((pSoldier.value.bAssignment >= Enum117.ON_DUTY) && (pSoldier.value.bAssignment != Enum117.VEHICLE)) {
+              if (gGameSettings.fOptions[Enum8.TOPTION_SLEEPWAKE_NOTIFICATION]) {
                 if (fReasonAdded == FALSE) {
-                  AddReasonToWaitingListQueue(ASSIGNMENT_RETURNING_FOR_UPDATE);
+                  AddReasonToWaitingListQueue(Enum154.ASSIGNMENT_RETURNING_FOR_UPDATE);
                   fReasonAdded = TRUE;
                 }
 
@@ -7513,7 +7513,7 @@ function RepairRobot(pRobot: Pointer<SOLDIERTYPE>, ubRepairPts: UINT8, pfNothing
 
 function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8, iParam1: INT32, iParam2: INT32, iParam3: INT32): void {
   switch (bAssignment) {
-    case (ASSIGNMENT_HOSPITAL):
+    case (Enum117.ASSIGNMENT_HOSPITAL):
       if (CanCharacterPatient(pSoldier)) {
         pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
         pSoldier.value.bBleeding = 0;
@@ -7527,22 +7527,22 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         RemoveCharacterFromSquads(pSoldier);
 
         // remove from any vehicle
-        if (pSoldier.value.bOldAssignment == VEHICLE) {
+        if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
           TakeSoldierOutOfVehicle(pSoldier);
         }
 
-        if ((pSoldier.value.bAssignment != ASSIGNMENT_HOSPITAL)) {
+        if ((pSoldier.value.bAssignment != Enum117.ASSIGNMENT_HOSPITAL)) {
           SetTimeOfAssignmentChangeForMerc(pSoldier);
         }
 
         RebuildCurrentSquad();
 
-        ChangeSoldiersAssignment(pSoldier, ASSIGNMENT_HOSPITAL);
+        ChangeSoldiersAssignment(pSoldier, Enum117.ASSIGNMENT_HOSPITAL);
 
         AssignMercToAMovementGroup(pSoldier);
       }
       break;
-    case (PATIENT):
+    case (Enum117.PATIENT):
       if (CanCharacterPatient(pSoldier)) {
         // set as doctor
 
@@ -7563,21 +7563,21 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         RemoveCharacterFromSquads(pSoldier);
 
         // remove from any vehicle
-        if (pSoldier.value.bOldAssignment == VEHICLE) {
+        if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
           TakeSoldierOutOfVehicle(pSoldier);
         }
 
-        if ((pSoldier.value.bAssignment != PATIENT)) {
+        if ((pSoldier.value.bAssignment != Enum117.PATIENT)) {
           SetTimeOfAssignmentChangeForMerc(pSoldier);
         }
 
-        ChangeSoldiersAssignment(pSoldier, PATIENT);
+        ChangeSoldiersAssignment(pSoldier, Enum117.PATIENT);
 
         AssignMercToAMovementGroup(pSoldier);
       }
 
       break;
-    case (DOCTOR):
+    case (Enum117.DOCTOR):
       if (CanCharacterDoctor(pSoldier)) {
         pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
@@ -7590,21 +7590,21 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         RemoveCharacterFromSquads(pSoldier);
 
         // remove from any vehicle
-        if (pSoldier.value.bOldAssignment == VEHICLE) {
+        if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
           TakeSoldierOutOfVehicle(pSoldier);
         }
 
-        if ((pSoldier.value.bAssignment != DOCTOR)) {
+        if ((pSoldier.value.bAssignment != Enum117.DOCTOR)) {
           SetTimeOfAssignmentChangeForMerc(pSoldier);
         }
 
-        ChangeSoldiersAssignment(pSoldier, DOCTOR);
+        ChangeSoldiersAssignment(pSoldier, Enum117.DOCTOR);
 
         MakeSureMedKitIsInHand(pSoldier);
         AssignMercToAMovementGroup(pSoldier);
       }
       break;
-    case (TRAIN_TOWN):
+    case (Enum117.TRAIN_TOWN):
       if (CanCharacterTrainMilitia(pSoldier)) {
         // train militia
         pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
@@ -7617,15 +7617,15 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         RemoveCharacterFromSquads(pSoldier);
 
         // remove from any vehicle
-        if (pSoldier.value.bOldAssignment == VEHICLE) {
+        if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
           TakeSoldierOutOfVehicle(pSoldier);
         }
 
-        if ((pSoldier.value.bAssignment != TRAIN_TOWN)) {
+        if ((pSoldier.value.bAssignment != Enum117.TRAIN_TOWN)) {
           SetTimeOfAssignmentChangeForMerc(pSoldier);
         }
 
-        ChangeSoldiersAssignment(pSoldier, TRAIN_TOWN);
+        ChangeSoldiersAssignment(pSoldier, Enum117.TRAIN_TOWN);
 
         if (pMilitiaTrainerSoldier == NULL) {
           if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == FALSE) {
@@ -7641,7 +7641,7 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         gfRenderPBInterface = TRUE;
       }
       break;
-    case (TRAIN_SELF):
+    case (Enum117.TRAIN_SELF):
       if (CanCharacterTrainStat(pSoldier, iParam1, TRUE, FALSE)) {
         // train stat
         pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
@@ -7650,15 +7650,15 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         RemoveCharacterFromSquads(pSoldier);
 
         // remove from any vehicle
-        if (pSoldier.value.bOldAssignment == VEHICLE) {
+        if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
           TakeSoldierOutOfVehicle(pSoldier);
         }
 
-        if ((pSoldier.value.bAssignment != TRAIN_SELF)) {
+        if ((pSoldier.value.bAssignment != Enum117.TRAIN_SELF)) {
           SetTimeOfAssignmentChangeForMerc(pSoldier);
         }
 
-        ChangeSoldiersAssignment(pSoldier, TRAIN_SELF);
+        ChangeSoldiersAssignment(pSoldier, Enum117.TRAIN_SELF);
 
         AssignMercToAMovementGroup(pSoldier);
 
@@ -7671,22 +7671,22 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         gfRenderPBInterface = TRUE;
       }
       break;
-    case (TRAIN_TEAMMATE):
+    case (Enum117.TRAIN_TEAMMATE):
       if (CanCharacterTrainStat(pSoldier, iParam1, FALSE, TRUE)) {
         pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
         // remove from squad
         RemoveCharacterFromSquads(pSoldier);
 
         // remove from any vehicle
-        if (pSoldier.value.bOldAssignment == VEHICLE) {
+        if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
           TakeSoldierOutOfVehicle(pSoldier);
         }
 
-        if ((pSoldier.value.bAssignment != TRAIN_TEAMMATE)) {
+        if ((pSoldier.value.bAssignment != Enum117.TRAIN_TEAMMATE)) {
           SetTimeOfAssignmentChangeForMerc(pSoldier);
         }
 
-        ChangeSoldiersAssignment(pSoldier, TRAIN_TEAMMATE);
+        ChangeSoldiersAssignment(pSoldier, Enum117.TRAIN_TEAMMATE);
         AssignMercToAMovementGroup(pSoldier);
 
         // set stat to train
@@ -7698,7 +7698,7 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         gfRenderPBInterface = TRUE;
       }
       break;
-    case (TRAIN_BY_OTHER):
+    case (Enum117.TRAIN_BY_OTHER):
       if (CanCharacterTrainStat(pSoldier, iParam1, TRUE, FALSE)) {
         // train stat
         pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
@@ -7707,15 +7707,15 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         RemoveCharacterFromSquads(pSoldier);
 
         // remove from any vehicle
-        if (pSoldier.value.bOldAssignment == VEHICLE) {
+        if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
           TakeSoldierOutOfVehicle(pSoldier);
         }
 
-        if ((pSoldier.value.bAssignment != TRAIN_BY_OTHER)) {
+        if ((pSoldier.value.bAssignment != Enum117.TRAIN_BY_OTHER)) {
           SetTimeOfAssignmentChangeForMerc(pSoldier);
         }
 
-        ChangeSoldiersAssignment(pSoldier, TRAIN_BY_OTHER);
+        ChangeSoldiersAssignment(pSoldier, Enum117.TRAIN_BY_OTHER);
 
         AssignMercToAMovementGroup(pSoldier);
 
@@ -7728,7 +7728,7 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         gfRenderPBInterface = TRUE;
       }
       break;
-    case (REPAIR):
+    case (Enum117.REPAIR):
       if (CanCharacterRepair(pSoldier)) {
         pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
 
@@ -7736,15 +7736,15 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         RemoveCharacterFromSquads(pSoldier);
 
         // remove from any vehicle
-        if (pSoldier.value.bOldAssignment == VEHICLE) {
+        if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
           TakeSoldierOutOfVehicle(pSoldier);
         }
 
-        if ((pSoldier.value.bAssignment != REPAIR) || (pSoldier.value.fFixingSAMSite != iParam1) || (pSoldier.value.fFixingRobot != iParam2) || (pSoldier.value.bVehicleUnderRepairID != iParam3)) {
+        if ((pSoldier.value.bAssignment != Enum117.REPAIR) || (pSoldier.value.fFixingSAMSite != iParam1) || (pSoldier.value.fFixingRobot != iParam2) || (pSoldier.value.bVehicleUnderRepairID != iParam3)) {
           SetTimeOfAssignmentChangeForMerc(pSoldier);
         }
 
-        ChangeSoldiersAssignment(pSoldier, REPAIR);
+        ChangeSoldiersAssignment(pSoldier, Enum117.REPAIR);
         MakeSureToolKitIsInHand(pSoldier);
         AssignMercToAMovementGroup(pSoldier);
         pSoldier.value.fFixingSAMSite = iParam1;
@@ -7752,7 +7752,7 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
         pSoldier.value.bVehicleUnderRepairID = iParam3;
       }
       break;
-    case (VEHICLE):
+    case (Enum117.VEHICLE):
       if (CanCharacterVehicle(pSoldier) && IsThisVehicleAccessibleToSoldier(pSoldier, iParam1)) {
         if (IsEnoughSpaceInVehicle(iParam1)) {
           pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
@@ -7762,7 +7762,7 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
           fMapScreenBottomDirty = TRUE;
           gfRenderPBInterface = TRUE;
 
-          if (pSoldier.value.bOldAssignment == VEHICLE) {
+          if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
             TakeSoldierOutOfVehicle(pSoldier);
           }
 
@@ -7772,12 +7772,12 @@ function SetSoldierAssignment(pSoldier: Pointer<SOLDIERTYPE>, bAssignment: INT8,
           if (PutSoldierInVehicle(pSoldier, (iParam1)) == FALSE) {
             AddCharacterToAnySquad(pSoldier);
           } else {
-            if ((pSoldier.value.bAssignment != VEHICLE) || (pSoldier.value.iVehicleId != iParam1)) {
+            if ((pSoldier.value.bAssignment != Enum117.VEHICLE) || (pSoldier.value.iVehicleId != iParam1)) {
               SetTimeOfAssignmentChangeForMerc(pSoldier);
             }
 
             pSoldier.value.iVehicleId = iParam1;
-            ChangeSoldiersAssignment(pSoldier, VEHICLE);
+            ChangeSoldiersAssignment(pSoldier, Enum117.VEHICLE);
             AssignMercToAMovementGroup(pSoldier);
           }
         } else {
@@ -7904,24 +7904,24 @@ BOOLEAN IsSoldierCloseEnoughToSAMControlPanel( SOLDIERTYPE *pSoldier )
 function HandleAssignmentExpansionAndHighLightForAssignMenu(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (fShowSquadMenu) {
     // squad menu up?..if so, highlight squad line the previous menu
-    if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
-      HighLightBoxLine(ghEpcBox, EPC_MENU_ON_DUTY);
+    if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
+      HighLightBoxLine(ghEpcBox, Enum147.EPC_MENU_ON_DUTY);
     } else {
-      HighLightBoxLine(ghAssignmentBox, ASSIGN_MENU_ON_DUTY);
+      HighLightBoxLine(ghAssignmentBox, Enum148.ASSIGN_MENU_ON_DUTY);
     }
 
     return TRUE;
   } else if (fShowTrainingMenu) {
     // highlight train line the previous menu
-    HighLightBoxLine(ghAssignmentBox, ASSIGN_MENU_TRAIN);
+    HighLightBoxLine(ghAssignmentBox, Enum148.ASSIGN_MENU_TRAIN);
     return TRUE;
   } else if (fShowRepairMenu) {
     // highlight repair line the previous menu
-    HighLightBoxLine(ghAssignmentBox, ASSIGN_MENU_REPAIR);
+    HighLightBoxLine(ghAssignmentBox, Enum148.ASSIGN_MENU_REPAIR);
     return TRUE;
   } else if (fShowVehicleMenu) {
     // highlight vehicle line the previous menu
-    HighLightBoxLine(ghAssignmentBox, ASSIGN_MENU_VEHICLE);
+    HighLightBoxLine(ghAssignmentBox, Enum148.ASSIGN_MENU_VEHICLE);
     return TRUE;
   }
 
@@ -7931,14 +7931,14 @@ function HandleAssignmentExpansionAndHighLightForAssignMenu(pSoldier: Pointer<SO
 function HandleAssignmentExpansionAndHighLightForTrainingMenu(): BOOLEAN {
   if (fShowAttributeMenu) {
     switch (gbTrainingMode) {
-      case TRAIN_SELF:
-        HighLightBoxLine(ghTrainingBox, TRAIN_MENU_SELF);
+      case Enum117.TRAIN_SELF:
+        HighLightBoxLine(ghTrainingBox, Enum149.TRAIN_MENU_SELF);
         return TRUE;
-      case TRAIN_TEAMMATE:
-        HighLightBoxLine(ghTrainingBox, TRAIN_MENU_TEAMMATES);
+      case Enum117.TRAIN_TEAMMATE:
+        HighLightBoxLine(ghTrainingBox, Enum149.TRAIN_MENU_TEAMMATES);
         return TRUE;
-      case TRAIN_BY_OTHER:
-        HighLightBoxLine(ghTrainingBox, TRAIN_MENU_TRAIN_BY_OTHER);
+      case Enum117.TRAIN_BY_OTHER:
+        HighLightBoxLine(ghTrainingBox, Enum149.TRAIN_MENU_TRAIN_BY_OTHER);
         return TRUE;
 
       default:
@@ -8011,9 +8011,9 @@ function HandleShadingOfLinesForTrainingMenu(): void {
 
   // can character practise?
   if (CanCharacterPractise(pSoldier) == FALSE) {
-    ShadeStringInBox(ghTrainingBox, TRAIN_MENU_SELF);
+    ShadeStringInBox(ghTrainingBox, Enum149.TRAIN_MENU_SELF);
   } else {
-    UnShadeStringInBox(ghTrainingBox, TRAIN_MENU_SELF);
+    UnShadeStringInBox(ghTrainingBox, Enum149.TRAIN_MENU_SELF);
   }
 
   // can character EVER train militia?
@@ -8021,28 +8021,28 @@ function HandleShadingOfLinesForTrainingMenu(): void {
     // can he train here, now?
     if (CanCharacterTrainMilitia(pSoldier)) {
       // unshade train militia line
-      UnShadeStringInBox(ghTrainingBox, TRAIN_MENU_TOWN);
-      UnSecondaryShadeStringInBox(ghTrainingBox, TRAIN_MENU_TOWN);
+      UnShadeStringInBox(ghTrainingBox, Enum149.TRAIN_MENU_TOWN);
+      UnSecondaryShadeStringInBox(ghTrainingBox, Enum149.TRAIN_MENU_TOWN);
     } else {
-      SecondaryShadeStringInBox(ghTrainingBox, TRAIN_MENU_TOWN);
+      SecondaryShadeStringInBox(ghTrainingBox, Enum149.TRAIN_MENU_TOWN);
     }
   } else {
     // shade train militia line
-    ShadeStringInBox(ghTrainingBox, TRAIN_MENU_TOWN);
+    ShadeStringInBox(ghTrainingBox, Enum149.TRAIN_MENU_TOWN);
   }
 
   // can character train teammates?
   if (CanCharacterTrainTeammates(pSoldier) == FALSE) {
-    ShadeStringInBox(ghTrainingBox, TRAIN_MENU_TEAMMATES);
+    ShadeStringInBox(ghTrainingBox, Enum149.TRAIN_MENU_TEAMMATES);
   } else {
-    UnShadeStringInBox(ghTrainingBox, TRAIN_MENU_TEAMMATES);
+    UnShadeStringInBox(ghTrainingBox, Enum149.TRAIN_MENU_TEAMMATES);
   }
 
   // can character be trained by others?
   if (CanCharacterBeTrainedByOther(pSoldier) == FALSE) {
-    ShadeStringInBox(ghTrainingBox, TRAIN_MENU_TRAIN_BY_OTHER);
+    ShadeStringInBox(ghTrainingBox, Enum149.TRAIN_MENU_TRAIN_BY_OTHER);
   } else {
-    UnShadeStringInBox(ghTrainingBox, TRAIN_MENU_TRAIN_BY_OTHER);
+    UnShadeStringInBox(ghTrainingBox, Enum149.TRAIN_MENU_TRAIN_BY_OTHER);
   }
 
   return;
@@ -8064,16 +8064,16 @@ function HandleShadingOfLinesForAttributeMenus(): void {
 
   pSoldier = GetSelectedAssignSoldier(FALSE);
 
-  for (bAttrib = 0; bAttrib < ATTRIB_MENU_CANCEL; bAttrib++) {
+  for (bAttrib = 0; bAttrib < Enum146.ATTRIB_MENU_CANCEL; bAttrib++) {
     switch (gbTrainingMode) {
-      case TRAIN_SELF:
+      case Enum117.TRAIN_SELF:
         fStatTrainable = CanCharacterTrainStat(pSoldier, bAttrib, TRUE, FALSE);
         break;
-      case TRAIN_TEAMMATE:
+      case Enum117.TRAIN_TEAMMATE:
         // DO allow trainers to be assigned without any partners (students)
         fStatTrainable = CanCharacterTrainStat(pSoldier, bAttrib, FALSE, TRUE);
         break;
-      case TRAIN_BY_OTHER:
+      case Enum117.TRAIN_BY_OTHER:
         // DO allow students to be assigned without any partners (trainers)
         fStatTrainable = CanCharacterTrainStat(pSoldier, bAttrib, TRUE, FALSE);
         break;
@@ -8108,7 +8108,7 @@ function ResetAssignmentsForAllSoldiersInSectorWhoAreTrainingTown(pSoldier: Poin
     pCurSoldier = addressof(Menptr[iCounter]);
 
     if ((pCurSoldier.value.bActive) && (pCurSoldier.value.bLife >= OKLIFE)) {
-      if (pCurSoldier.value.bAssignment == TRAIN_TOWN) {
+      if (pCurSoldier.value.bAssignment == Enum117.TRAIN_TOWN) {
         if ((pCurSoldier.value.sSectorX == pSoldier.value.sSectorX) && (pCurSoldier.value.sSectorY == pSoldier.value.sSectorY) && (pSoldier.value.bSectorZ == 0)) {
           AddCharacterToAnySquad(pCurSoldier);
         }
@@ -8131,8 +8131,8 @@ function ReportTrainersTraineesWithoutPartners(): void {
   for (iCounter = 0; iCounter < iNumberOnTeam; iCounter++) {
     pTeamSoldier = addressof(Menptr[iCounter]);
 
-    if ((pTeamSoldier.value.bAssignment == TRAIN_TEAMMATE) && (pTeamSoldier.value.bLife > 0)) {
-      if (!ValidTrainingPartnerInSameSectorOnAssignmentFound(pTeamSoldier, TRAIN_BY_OTHER, pTeamSoldier.value.bTrainStat)) {
+    if ((pTeamSoldier.value.bAssignment == Enum117.TRAIN_TEAMMATE) && (pTeamSoldier.value.bLife > 0)) {
+      if (!ValidTrainingPartnerInSameSectorOnAssignmentFound(pTeamSoldier, Enum117.TRAIN_BY_OTHER, pTeamSoldier.value.bTrainStat)) {
         AssignmentDone(pTeamSoldier, TRUE, TRUE);
       }
     }
@@ -8142,8 +8142,8 @@ function ReportTrainersTraineesWithoutPartners(): void {
   for (iCounter = 0; iCounter < iNumberOnTeam; iCounter++) {
     pTeamSoldier = addressof(Menptr[iCounter]);
 
-    if ((pTeamSoldier.value.bAssignment == TRAIN_BY_OTHER) && (pTeamSoldier.value.bLife > 0)) {
-      if (!ValidTrainingPartnerInSameSectorOnAssignmentFound(pTeamSoldier, TRAIN_TEAMMATE, pTeamSoldier.value.bTrainStat)) {
+    if ((pTeamSoldier.value.bAssignment == Enum117.TRAIN_BY_OTHER) && (pTeamSoldier.value.bLife > 0)) {
+      if (!ValidTrainingPartnerInSameSectorOnAssignmentFound(pTeamSoldier, Enum117.TRAIN_TEAMMATE, pTeamSoldier.value.bTrainStat)) {
         AssignmentDone(pTeamSoldier, TRUE, TRUE);
       }
     }
@@ -8168,10 +8168,10 @@ function SetMercAsleep(pSoldier: Pointer<SOLDIERTYPE>, fGiveWarning: BOOLEAN): B
 function PutMercInAsleepState(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (pSoldier.value.fMercAsleep == FALSE) {
     if ((gfWorldLoaded) && (pSoldier.value.bInSector)) {
-      if (guiCurrentScreen == GAME_SCREEN) {
-        ChangeSoldierState(pSoldier, GOTO_SLEEP, 1, TRUE);
+      if (guiCurrentScreen == Enum26.GAME_SCREEN) {
+        ChangeSoldierState(pSoldier, Enum193.GOTO_SLEEP, 1, TRUE);
       } else {
-        ChangeSoldierState(pSoldier, SLEEPING, 1, TRUE);
+        ChangeSoldierState(pSoldier, Enum193.SLEEPING, 1, TRUE);
       }
     }
 
@@ -8201,10 +8201,10 @@ function SetMercAwake(pSoldier: Pointer<SOLDIERTYPE>, fGiveWarning: BOOLEAN, fFo
 function PutMercInAwakeState(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (pSoldier.value.fMercAsleep) {
     if ((gfWorldLoaded) && (pSoldier.value.bInSector)) {
-      if (guiCurrentScreen == GAME_SCREEN) {
-        ChangeSoldierState(pSoldier, WKAEUP_FROM_SLEEP, 1, TRUE);
+      if (guiCurrentScreen == Enum26.GAME_SCREEN) {
+        ChangeSoldierState(pSoldier, Enum193.WKAEUP_FROM_SLEEP, 1, TRUE);
       } else {
-        ChangeSoldierState(pSoldier, STANDING, 1, TRUE);
+        ChangeSoldierState(pSoldier, Enum193.STANDING, 1, TRUE);
       }
     }
 
@@ -8238,7 +8238,7 @@ function IsThereASoldierInThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ:
 function SetTimeOfAssignmentChangeForMerc(pSoldier: Pointer<SOLDIERTYPE>): void {
   // if someone is being taken off of HOSPITAL then track how much
   // of payment wasn't used up
-  if (pSoldier.value.bAssignment == ASSIGNMENT_HOSPITAL) {
+  if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_HOSPITAL) {
     giHospitalRefund += CalcPatientMedicalCost(pSoldier);
     pSoldier.value.bHospitalPriceModifier = 0;
   }
@@ -8284,10 +8284,10 @@ function AnyMercInGroupCantContinueMoving(pGroup: Pointer<GROUP>): BOOLEAN {
 
         // say quote
         if (fMeToo == FALSE) {
-          HandleImportantMercQuote(pSoldier, QUOTE_NEED_SLEEP);
+          HandleImportantMercQuote(pSoldier, Enum202.QUOTE_NEED_SLEEP);
           fMeToo = TRUE;
         } else {
-          HandleImportantMercQuote(pSoldier, QUOTE_ME_TOO);
+          HandleImportantMercQuote(pSoldier, Enum202.QUOTE_ME_TOO);
         }
 
         // put him to bed
@@ -8310,7 +8310,7 @@ function PlayerSoldierTooTiredToTravel(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN 
   // if this guy ever needs sleep at all
   if (CanChangeSleepStatusForSoldier(pSoldier)) {
     // if walking, or only remaining possible driver for a vehicle group
-    if ((pSoldier.value.bAssignment != VEHICLE) || SoldierMustDriveVehicle(pSoldier, pSoldier.value.iVehicleId, TRUE)) {
+    if ((pSoldier.value.bAssignment != Enum117.VEHICLE) || SoldierMustDriveVehicle(pSoldier, pSoldier.value.iVehicleId, TRUE)) {
       // if awake, but so tired they can't move/drive anymore
       if ((!pSoldier.value.fMercAsleep) && (pSoldier.value.bBreathMax < BREATHMAX_GOTTA_STOP_MOVING)) {
         return TRUE;
@@ -8331,17 +8331,17 @@ function AssignMercToAMovementGroup(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let bGroupId: INT8 = 0;
 
   // on a squad?
-  if (pSoldier.value.bAssignment < ON_DUTY) {
+  if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
     return FALSE;
   }
 
   // in a vehicle?
-  if (pSoldier.value.bAssignment == VEHICLE) {
+  if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
     return FALSE;
   }
 
   // in transit
-  if (pSoldier.value.bAssignment == IN_TRANSIT) {
+  if (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) {
     return FALSE;
   }
 
@@ -8366,14 +8366,14 @@ function AssignMercToAMovementGroup(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
 function NotifyPlayerOfAssignmentAttemptFailure(bAssignment: INT8): void {
   // notify player
-  if (guiCurrentScreen != MSG_BOX_SCREEN) {
+  if (guiCurrentScreen != Enum26.MSG_BOX_SCREEN) {
     DoScreenIndependantMessageBox(pMapErrorString[18], MSG_BOX_FLAG_OK, NULL);
   } else {
     // use screen msg instead!
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMapErrorString[18]);
   }
 
-  if (bAssignment == TRAIN_TOWN) {
+  if (bAssignment == Enum117.TRAIN_TOWN) {
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMapErrorString[48]);
   }
 }
@@ -8500,9 +8500,9 @@ function BandageBleedingDyingPatientsBeingTreated(): void {
     // and he is bleeding or dying
     if ((pSoldier.value.bBleeding) || (pSoldier.value.bLife < OKLIFE)) {
       // if soldier is receiving care
-      if ((pSoldier.value.bAssignment == PATIENT) || (pSoldier.value.bAssignment == ASSIGNMENT_HOSPITAL) || (pSoldier.value.bAssignment == DOCTOR)) {
+      if ((pSoldier.value.bAssignment == Enum117.PATIENT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_HOSPITAL) || (pSoldier.value.bAssignment == Enum117.DOCTOR)) {
         // if in the hospital
-        if (pSoldier.value.bAssignment == ASSIGNMENT_HOSPITAL) {
+        if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_HOSPITAL) {
           // this is instantaneous, and doesn't use up any bandages!
 
           // stop bleeding automatically
@@ -8538,10 +8538,10 @@ function BandageBleedingDyingPatientsBeingTreated(): void {
   }
 
   // this event may be posted many times because of multiple assignment changes.  Handle it only once per minute!
-  DeleteAllStrategicEventsOfType(EVENT_BANDAGE_BLEEDING_MERCS);
+  DeleteAllStrategicEventsOfType(Enum132.EVENT_BANDAGE_BLEEDING_MERCS);
 
   if (fSomeoneStillBleedingDying) {
-    AddStrategicEvent(EVENT_BANDAGE_BLEEDING_MERCS, GetWorldTotalMin() + 1, 0);
+    AddStrategicEvent(Enum132.EVENT_BANDAGE_BLEEDING_MERCS, GetWorldTotalMin() + 1, 0);
   }
 }
 
@@ -8555,39 +8555,39 @@ function ReEvaluateEveryonesNothingToDo(): void {
 
     if (pSoldier.value.bActive) {
       switch (pSoldier.value.bAssignment) {
-        case DOCTOR:
+        case Enum117.DOCTOR:
           fNothingToDo = !CanCharacterDoctor(pSoldier) || (GetNumberThatCanBeDoctored(pSoldier, HEALABLE_EVER, FALSE, FALSE) == 0);
           break;
 
-        case PATIENT:
+        case Enum117.PATIENT:
           fNothingToDo = !CanCharacterPatient(pSoldier) || (AnyDoctorWhoCanHealThisPatient(pSoldier, HEALABLE_EVER) == NULL);
           break;
 
-        case ASSIGNMENT_HOSPITAL:
+        case Enum117.ASSIGNMENT_HOSPITAL:
           fNothingToDo = !CanCharacterPatient(pSoldier);
           break;
 
-        case REPAIR:
+        case Enum117.REPAIR:
           fNothingToDo = !CanCharacterRepair(pSoldier) || HasCharacterFinishedRepairing(pSoldier);
           break;
 
-        case TRAIN_TOWN:
+        case Enum117.TRAIN_TOWN:
           fNothingToDo = !CanCharacterTrainMilitia(pSoldier);
           break;
 
-        case TRAIN_SELF:
+        case Enum117.TRAIN_SELF:
           fNothingToDo = !CanCharacterTrainStat(pSoldier, pSoldier.value.bTrainStat, TRUE, FALSE);
           break;
 
-        case TRAIN_TEAMMATE:
-          fNothingToDo = !CanCharacterTrainStat(pSoldier, pSoldier.value.bTrainStat, FALSE, TRUE) || !ValidTrainingPartnerInSameSectorOnAssignmentFound(pSoldier, TRAIN_BY_OTHER, pSoldier.value.bTrainStat);
+        case Enum117.TRAIN_TEAMMATE:
+          fNothingToDo = !CanCharacterTrainStat(pSoldier, pSoldier.value.bTrainStat, FALSE, TRUE) || !ValidTrainingPartnerInSameSectorOnAssignmentFound(pSoldier, Enum117.TRAIN_BY_OTHER, pSoldier.value.bTrainStat);
           break;
 
-        case TRAIN_BY_OTHER:
-          fNothingToDo = !CanCharacterTrainStat(pSoldier, pSoldier.value.bTrainStat, TRUE, FALSE) || !ValidTrainingPartnerInSameSectorOnAssignmentFound(pSoldier, TRAIN_TEAMMATE, pSoldier.value.bTrainStat);
+        case Enum117.TRAIN_BY_OTHER:
+          fNothingToDo = !CanCharacterTrainStat(pSoldier, pSoldier.value.bTrainStat, TRUE, FALSE) || !ValidTrainingPartnerInSameSectorOnAssignmentFound(pSoldier, Enum117.TRAIN_TEAMMATE, pSoldier.value.bTrainStat);
           break;
 
-        case VEHICLE:
+        case Enum117.VEHICLE:
         default: // squads
           fNothingToDo = FALSE;
           break;
@@ -8648,25 +8648,25 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
       fItWorked = FALSE;
 
       switch (bAssignment) {
-        case (DOCTOR):
+        case (Enum117.DOCTOR):
           // can character doctor?
           if (CanCharacterDoctor(pSoldier)) {
             // set as doctor
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
-            SetSoldierAssignment(pSoldier, DOCTOR, 0, 0, 0);
+            SetSoldierAssignment(pSoldier, Enum117.DOCTOR, 0, 0, 0);
             fItWorked = TRUE;
           }
           break;
-        case (PATIENT):
+        case (Enum117.PATIENT):
           // can character patient?
           if (CanCharacterPatient(pSoldier)) {
             // set as patient
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
-            SetSoldierAssignment(pSoldier, PATIENT, 0, 0, 0);
+            SetSoldierAssignment(pSoldier, Enum117.PATIENT, 0, 0, 0);
             fItWorked = TRUE;
           }
           break;
-        case (VEHICLE):
+        case (Enum117.VEHICLE):
           if (CanCharacterVehicle(pSoldier) && IsThisVehicleAccessibleToSoldier(pSoldier, bParam)) {
             //						if ( IsEnoughSpaceInVehicle( bParam ) )
             {
@@ -8677,7 +8677,7 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
             }
           }
           break;
-        case (REPAIR):
+        case (Enum117.REPAIR):
           if (CanCharacterRepair(pSoldier)) {
             let fCanFixSpecificTarget: BOOLEAN = TRUE;
 
@@ -8699,60 +8699,60 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
             if (fCanFixSpecificTarget) {
               // set as repair
               pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
-              SetSoldierAssignment(pSoldier, REPAIR, pSelectedSoldier.value.fFixingSAMSite, pSelectedSoldier.value.fFixingRobot, pSelectedSoldier.value.bVehicleUnderRepairID);
+              SetSoldierAssignment(pSoldier, Enum117.REPAIR, pSelectedSoldier.value.fFixingSAMSite, pSelectedSoldier.value.fFixingRobot, pSelectedSoldier.value.bVehicleUnderRepairID);
               fItWorked = TRUE;
             }
           }
           break;
-        case (TRAIN_SELF):
+        case (Enum117.TRAIN_SELF):
           if (CanCharacterTrainStat(pSoldier, bParam, TRUE, FALSE)) {
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
-            SetSoldierAssignment(pSoldier, TRAIN_SELF, bParam, 0, 0);
+            SetSoldierAssignment(pSoldier, Enum117.TRAIN_SELF, bParam, 0, 0);
             fItWorked = TRUE;
           }
           break;
-        case (TRAIN_TOWN):
+        case (Enum117.TRAIN_TOWN):
           if (CanCharacterTrainMilitia(pSoldier)) {
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
-            SetSoldierAssignment(pSoldier, TRAIN_TOWN, 0, 0, 0);
+            SetSoldierAssignment(pSoldier, Enum117.TRAIN_TOWN, 0, 0, 0);
             fItWorked = TRUE;
           }
           break;
-        case (TRAIN_TEAMMATE):
+        case (Enum117.TRAIN_TEAMMATE):
           if (CanCharacterTrainStat(pSoldier, bParam, FALSE, TRUE)) {
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
-            SetSoldierAssignment(pSoldier, TRAIN_TEAMMATE, bParam, 0, 0);
+            SetSoldierAssignment(pSoldier, Enum117.TRAIN_TEAMMATE, bParam, 0, 0);
             fItWorked = TRUE;
           }
           break;
-        case TRAIN_BY_OTHER:
+        case Enum117.TRAIN_BY_OTHER:
           if (CanCharacterTrainStat(pSoldier, bParam, TRUE, FALSE)) {
             pSoldier.value.bOldAssignment = pSoldier.value.bAssignment;
-            SetSoldierAssignment(pSoldier, TRAIN_BY_OTHER, bParam, 0, 0);
+            SetSoldierAssignment(pSoldier, Enum117.TRAIN_BY_OTHER, bParam, 0, 0);
             fItWorked = TRUE;
           }
           break;
 
-        case (SQUAD_1):
-        case (SQUAD_2):
-        case (SQUAD_3):
-        case (SQUAD_4):
-        case (SQUAD_5):
-        case (SQUAD_6):
-        case (SQUAD_7):
-        case (SQUAD_8):
-        case (SQUAD_9):
-        case (SQUAD_10):
-        case (SQUAD_11):
-        case (SQUAD_12):
-        case (SQUAD_13):
-        case (SQUAD_14):
-        case (SQUAD_15):
-        case (SQUAD_16):
-        case (SQUAD_17):
-        case (SQUAD_18):
-        case (SQUAD_19):
-        case (SQUAD_20):
+        case (Enum117.SQUAD_1):
+        case (Enum117.SQUAD_2):
+        case (Enum117.SQUAD_3):
+        case (Enum117.SQUAD_4):
+        case (Enum117.SQUAD_5):
+        case (Enum117.SQUAD_6):
+        case (Enum117.SQUAD_7):
+        case (Enum117.SQUAD_8):
+        case (Enum117.SQUAD_9):
+        case (Enum117.SQUAD_10):
+        case (Enum117.SQUAD_11):
+        case (Enum117.SQUAD_12):
+        case (Enum117.SQUAD_13):
+        case (Enum117.SQUAD_14):
+        case (Enum117.SQUAD_15):
+        case (Enum117.SQUAD_16):
+        case (Enum117.SQUAD_17):
+        case (Enum117.SQUAD_18):
+        case (Enum117.SQUAD_19):
+        case (Enum117.SQUAD_20):
           bCanJoinSquad = CanCharacterSquad(pSoldier, bAssignment);
 
           // if already in it, don't repor that as an error...
@@ -8764,7 +8764,7 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
               if (Squad[bAssignment][0]) {
                 if (Squad[bAssignment][0].value.fBetweenSectors) {
                   // between sectors, remove from old mvt group
-                  if (pSoldier.value.bOldAssignment >= ON_DUTY) {
+                  if (pSoldier.value.bOldAssignment >= Enum117.ON_DUTY) {
                     // remove from group
                     // the guy wasn't in a sqaud, but moving through a sector?
                     if (pSoldier.value.ubGroupID != 0) {
@@ -8775,7 +8775,7 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
                 }
               }
 
-              if (pSoldier.value.bOldAssignment == VEHICLE) {
+              if (pSoldier.value.bOldAssignment == Enum117.VEHICLE) {
                 TakeSoldierOutOfVehicle(pSoldier);
               }
               // remove from current squad, if any
@@ -8792,7 +8792,7 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
 
         default:
           // remove from current vehicle/squad, if any
-          if (pSoldier.value.bAssignment == VEHICLE) {
+          if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
             TakeSoldierOutOfVehicle(pSoldier);
           }
           RemoveCharacterFromSquads(pSoldier);
@@ -8847,7 +8847,7 @@ function ValidTrainingPartnerInSameSectorOnAssignmentFound(pTargetSoldier: Point
   let usMaxPts: UINT16;
 
   // this function only makes sense for training teammates or by others, not for self training which doesn't require partners
-  Assert((bTargetAssignment == TRAIN_TEAMMATE) || (bTargetAssignment == TRAIN_BY_OTHER));
+  Assert((bTargetAssignment == Enum117.TRAIN_TEAMMATE) || (bTargetAssignment == Enum117.TRAIN_BY_OTHER));
 
   for (iCounter = 0; iCounter <= gTacticalStatus.Team[OUR_TEAM].bLastID; iCounter++) {
     pSoldier = addressof(Menptr[iCounter]);
@@ -8867,7 +8867,7 @@ function ValidTrainingPartnerInSameSectorOnAssignmentFound(pTargetSoldier: Point
           fAtGunRange = TRUE;
         }
 
-        if (pSoldier.value.bAssignment == TRAIN_TEAMMATE) {
+        if (pSoldier.value.bAssignment == Enum117.TRAIN_TEAMMATE) {
           // pSoldier is the instructor, target is the student
           sTrainingPts = GetBonusTrainingPtsDueToInstructor(pSoldier, pTargetSoldier, bTargetStat, fAtGunRange, addressof(usMaxPts));
         } else {
@@ -8908,42 +8908,42 @@ function UnEscortEPC(pSoldier: Pointer<SOLDIERTYPE>): void {
 
     HandleFactForNPCUnescorted(pSoldier.value.ubProfile);
 
-    if (pSoldier.value.ubProfile == JOHN) {
+    if (pSoldier.value.ubProfile == Enum268.JOHN) {
       let pSoldier2: Pointer<SOLDIERTYPE>;
 
       // unrecruit Mary as well
-      pSoldier2 = FindSoldierByProfileID(MARY, TRUE);
+      pSoldier2 = FindSoldierByProfileID(Enum268.MARY, TRUE);
       if (pSoldier2) {
         SetupProfileInsertionDataForSoldier(pSoldier2);
-        fGotInfo = GetInfoForAbandoningEPC(MARY, addressof(usQuoteNum), addressof(usFactToSetToTrue));
+        fGotInfo = GetInfoForAbandoningEPC(Enum268.MARY, addressof(usQuoteNum), addressof(usFactToSetToTrue));
         if (fGotInfo) {
           // say quote usQuoteNum
-          gMercProfiles[MARY].ubMiscFlags |= PROFILE_MISC_FLAG_FORCENPCQUOTE;
+          gMercProfiles[Enum268.MARY].ubMiscFlags |= PROFILE_MISC_FLAG_FORCENPCQUOTE;
           TacticalCharacterDialogue(pSoldier2, usQuoteNum);
           // the flag will be turned off in the remove-epc event
           // gMercProfiles[ MARY ].ubMiscFlags &= ~PROFILE_MISC_FLAG_FORCENPCQUOTE;
           SetFactTrue(usFactToSetToTrue);
         }
 
-        SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_REMOVE_EPC, MARY, 0, 0, 0, 0);
+        SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_REMOVE_EPC, Enum268.MARY, 0, 0, 0, 0);
       }
-    } else if (pSoldier.value.ubProfile == MARY) {
+    } else if (pSoldier.value.ubProfile == Enum268.MARY) {
       let pSoldier2: Pointer<SOLDIERTYPE>;
 
       // unrecruit John as well
-      pSoldier2 = FindSoldierByProfileID(JOHN, TRUE);
+      pSoldier2 = FindSoldierByProfileID(Enum268.JOHN, TRUE);
       if (pSoldier2) {
         SetupProfileInsertionDataForSoldier(pSoldier2);
-        fGotInfo = GetInfoForAbandoningEPC(JOHN, addressof(usQuoteNum), addressof(usFactToSetToTrue));
+        fGotInfo = GetInfoForAbandoningEPC(Enum268.JOHN, addressof(usQuoteNum), addressof(usFactToSetToTrue));
         if (fGotInfo) {
           // say quote usQuoteNum
-          gMercProfiles[JOHN].ubMiscFlags |= PROFILE_MISC_FLAG_FORCENPCQUOTE;
+          gMercProfiles[Enum268.JOHN].ubMiscFlags |= PROFILE_MISC_FLAG_FORCENPCQUOTE;
           TacticalCharacterDialogue(pSoldier2, usQuoteNum);
           // the flag will be turned off in the remove-epc event
           // gMercProfiles[ JOHN ].ubMiscFlags &= ~PROFILE_MISC_FLAG_FORCENPCQUOTE;
           SetFactTrue(usFactToSetToTrue);
         }
-        SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_REMOVE_EPC, JOHN, 0, 0, 0, 0);
+        SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_REMOVE_EPC, Enum268.JOHN, 0, 0, 0, 0);
       }
     }
     // stop showing menu
@@ -8955,7 +8955,7 @@ function UnEscortEPC(pSoldier: Pointer<SOLDIERTYPE>): void {
     fCharacterInfoPanelDirty = TRUE;
   } else {
     // how do we handle this if it's the right sector?
-    TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, APPROACH_EPC_IN_WRONG_SECTOR, TRUE);
+    TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_EPC_IN_WRONG_SECTOR, TRUE);
   }
 }
 
@@ -8969,12 +8969,12 @@ function CharacterIsTakingItEasy(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (CanCharacterSleep(pSoldier, FALSE)) {
     // on duty, but able to catch naps (either not traveling, or not the driver of the vehicle)
     // The actual checks for this are in the "can he sleep" check above
-    if ((pSoldier.value.bAssignment < ON_DUTY) || (pSoldier.value.bAssignment == VEHICLE)) {
+    if ((pSoldier.value.bAssignment < Enum117.ON_DUTY) || (pSoldier.value.bAssignment == Enum117.VEHICLE)) {
       return TRUE;
     }
 
     // and healing up?
-    if ((pSoldier.value.bAssignment == PATIENT) || (pSoldier.value.bAssignment == ASSIGNMENT_HOSPITAL)) {
+    if ((pSoldier.value.bAssignment == Enum117.PATIENT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_HOSPITAL)) {
       return TRUE;
     }
 
@@ -9010,8 +9010,8 @@ function CalcSoldierNeedForSleep(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   }
 
   // reduce for each Night Ops or Martial Arts trait
-  ubNeedForSleep -= NUM_SKILL_TRAITS(pSoldier, NIGHTOPS);
-  ubNeedForSleep -= NUM_SKILL_TRAITS(pSoldier, MARTIALARTS);
+  ubNeedForSleep -= NUM_SKILL_TRAITS(pSoldier, Enum269.NIGHTOPS);
+  ubNeedForSleep -= NUM_SKILL_TRAITS(pSoldier, Enum269.MARTIALARTS);
 
   if (ubNeedForSleep < 4) {
     ubNeedForSleep = 4;
@@ -9029,8 +9029,8 @@ function GetLastSquadListedInSquadMenu(): UINT32 {
 
   uiMaxSquad = GetLastSquadActive() + 1;
 
-  if (uiMaxSquad >= NUMBER_OF_SQUADS) {
-    uiMaxSquad = NUMBER_OF_SQUADS - 1;
+  if (uiMaxSquad >= Enum275.NUMBER_OF_SQUADS) {
+    uiMaxSquad = Enum275.NUMBER_OF_SQUADS - 1;
   }
 
   return uiMaxSquad;
@@ -9054,7 +9054,7 @@ function CanCharacterRepairAnotherSoldiersStuff(pSoldier: Pointer<SOLDIERTYPE>, 
     return FALSE;
   }
 
-  if ((pOtherSoldier.value.bAssignment == IN_TRANSIT) || (pOtherSoldier.value.bAssignment == ASSIGNMENT_POW) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (AM_A_ROBOT(pSoldier)) || (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) || (pOtherSoldier.value.bAssignment == ASSIGNMENT_DEAD)) {
+  if ((pOtherSoldier.value.bAssignment == Enum117.IN_TRANSIT) || (pOtherSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (AM_A_ROBOT(pSoldier)) || (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) || (pOtherSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD)) {
     return FALSE;
   }
 
@@ -9148,7 +9148,7 @@ function RepairItemsOnOthers(pSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: P
   let fSomethingWasRepairedThisPass: BOOLEAN;
 
   // repair everyone's hands and armor slots first, then headgear, and pockets last
-  for (ubPassType = REPAIR_HANDS_AND_ARMOR; ubPassType <= FINAL_REPAIR_PASS; ubPassType++) {
+  for (ubPassType = Enum116.REPAIR_HANDS_AND_ARMOR; ubPassType <= FINAL_REPAIR_PASS; ubPassType++) {
     fSomethingWasRepairedThisPass = FALSE;
 
     // look for jammed guns on other soldiers in sector and unjam them
@@ -9214,7 +9214,7 @@ function UnjamGunsOnSoldier(pOwnerSoldier: Pointer<SOLDIERTYPE>, pRepairSoldier:
   let bPocket: INT8;
 
   // try to unjam everything before beginning any actual repairs.. successful unjamming costs 2 points per weapon
-  for (bPocket = HANDPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
+  for (bPocket = Enum261.HANDPOS; bPocket <= Enum261.SMALLPOCK8POS; bPocket++) {
     // the object a weapon? and jammed?
     if ((Item[pOwnerSoldier.value.inv[bPocket].usItem].usItemClass == IC_GUN) && (pOwnerSoldier.value.inv[bPocket].bGunAmmoStatus < 0)) {
       if (pubRepairPtsLeft.value >= REPAIR_COST_PER_JAM) {

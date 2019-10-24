@@ -48,7 +48,7 @@ function GetSchedule(ubScheduleID: UINT8): Pointer<SCHEDULENODE> {
 function DestroyAllSchedules(): void {
   let curr: Pointer<SCHEDULENODE>;
   // First remove all of the events.
-  DeleteAllStrategicEventsOfType(EVENT_PROCESS_TACTICAL_SCHEDULE);
+  DeleteAllStrategicEventsOfType(Enum132.EVENT_PROCESS_TACTICAL_SCHEDULE);
   // Now, delete all of the schedules.
   while (gpScheduleList) {
     curr = gpScheduleList;
@@ -98,7 +98,7 @@ function DeleteSchedule(ubScheduleID: UINT8): void {
       curr = curr.value.next;
     }
   if (temp) {
-    DeleteStrategicEvent(EVENT_PROCESS_TACTICAL_SCHEDULE, temp.value.ubScheduleID);
+    DeleteStrategicEvent(Enum132.EVENT_PROCESS_TACTICAL_SCHEDULE, temp.value.ubScheduleID);
     MemFree(temp);
   }
 }
@@ -132,7 +132,7 @@ function ProcessTacticalSchedule(ubScheduleID: UINT8): void {
   // Okay, now we have good pointers to the soldier and the schedule.
   // Now, determine which time in this schedule that we are processing.
   fAutoProcess = FALSE;
-  if (guiCurrentScreen != GAME_SCREEN) {
+  if (guiCurrentScreen != Enum26.GAME_SCREEN) {
     fAutoProcess = TRUE;
   } else {
     for (iScheduleIndex = 0; iScheduleIndex < MAX_SCHEDULE_ACTIONS; iScheduleIndex++) {
@@ -225,7 +225,7 @@ function PrepareSchedulesForEditorEntry(): void {
   let temp: Pointer<SCHEDULENODE>;
 
   // Delete all schedule events.  The editor will automatically warp all civilians to their starting locations.
-  DeleteAllStrategicEventsOfType(EVENT_PROCESS_TACTICAL_SCHEDULE);
+  DeleteAllStrategicEventsOfType(Enum132.EVENT_PROCESS_TACTICAL_SCHEDULE);
 
   // Now, delete all of the temporary schedules.
   curr = gpScheduleList;
@@ -507,7 +507,7 @@ function BumpAnyExistingMerc(sGridNo: INT16): BOOLEAN {
   pSoldier = MercPtrs[ubID];
 
   // what if the existing merc is prone?
-  sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, STANDING, 5, addressof(ubDir), 1, pSoldier);
+  sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, Enum193.STANDING, 5, addressof(ubDir), 1, pSoldier);
   // sNewGridNo = FindGridNoFromSweetSpotExcludingSweetSpot( pSoldier, sGridNo, 10, &ubDir );
 
   if (sNewGridNo == NOWHERE) {
@@ -546,10 +546,10 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
   pSoldier.value.fAIFlags &= ~(AI_ASLEEP);
 
   switch (pSchedule.value.ubAction[index]) {
-    case SCHEDULE_ACTION_LOCKDOOR:
-    case SCHEDULE_ACTION_UNLOCKDOOR:
-    case SCHEDULE_ACTION_OPENDOOR:
-    case SCHEDULE_ACTION_CLOSEDOOR:
+    case Enum171.SCHEDULE_ACTION_LOCKDOOR:
+    case Enum171.SCHEDULE_ACTION_UNLOCKDOOR:
+    case Enum171.SCHEDULE_ACTION_OPENDOOR:
+    case Enum171.SCHEDULE_ACTION_CLOSEDOOR:
       PerformActionOnDoorAdjacentToGridNo(pSchedule.value.ubAction[index], pSchedule.value.usData1[index]);
       BumpAnyExistingMerc(pSchedule.value.usData2[index]);
       ConvertGridNoToCellXY(pSchedule.value.usData2[index], addressof(sCellX), addressof(sCellY));
@@ -565,14 +565,14 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
         pSoldier.value.usPatrolGrid[0] = pSchedule.value.usData2[index];
       }
       break;
-    case SCHEDULE_ACTION_GRIDNO:
+    case Enum171.SCHEDULE_ACTION_GRIDNO:
       BumpAnyExistingMerc(pSchedule.value.usData1[index]);
       ConvertGridNoToCellXY(pSchedule.value.usData1[index], addressof(sCellX), addressof(sCellY));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       // let this person patrol from here from now on
       pSoldier.value.usPatrolGrid[0] = pSchedule.value.usData1[index];
       break;
-    case SCHEDULE_ACTION_ENTERSECTOR:
+    case Enum171.SCHEDULE_ACTION_ENTERSECTOR:
       if (pSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags2 & PROFILE_MISC_FLAG2_DONT_ADD_TO_SECTOR) {
         // never process enter if flag is set
         break;
@@ -585,14 +585,14 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
       // let this person patrol from here from now on
       pSoldier.value.usPatrolGrid[0] = pSchedule.value.usData1[index];
       break;
-    case SCHEDULE_ACTION_WAKE:
+    case Enum171.SCHEDULE_ACTION_WAKE:
       BumpAnyExistingMerc(pSoldier.value.sInitialGridNo);
       ConvertGridNoToCellXY(pSoldier.value.sInitialGridNo, addressof(sCellX), addressof(sCellY));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       // let this person patrol from here from now on
       pSoldier.value.usPatrolGrid[0] = pSoldier.value.sInitialGridNo;
       break;
-    case SCHEDULE_ACTION_SLEEP:
+    case Enum171.SCHEDULE_ACTION_SLEEP:
       pSoldier.value.fAIFlags |= AI_ASLEEP;
       // check for someone else in the location
       BumpAnyExistingMerc(pSchedule.value.usData1[index]);
@@ -600,7 +600,7 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       pSoldier.value.usPatrolGrid[0] = pSchedule.value.usData1[index];
       break;
-    case SCHEDULE_ACTION_LEAVESECTOR:
+    case Enum171.SCHEDULE_ACTION_LEAVESECTOR:
       sGridNo = FindNearestEdgePoint(pSoldier.value.sGridNo);
       BumpAnyExistingMerc(sGridNo);
       ConvertGridNoToCellXY(sGridNo, addressof(sCellX), addressof(sCellY));
@@ -628,7 +628,7 @@ function PostSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
   let ubTempAction: UINT8;
   let usTemp: UINT16;
 
-  if ((pSoldier.value.ubCivilianGroup == KINGPIN_CIV_GROUP) && (gTacticalStatus.fCivGroupHostile[KINGPIN_CIV_GROUP] || ((gubQuest[QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) && (CheckFact(FACT_KINGPIN_CAN_SEND_ASSASSINS, KINGPIN)))) && (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_C) && (pSoldier.value.ubProfile == NO_PROFILE)) {
+  if ((pSoldier.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP) && (gTacticalStatus.fCivGroupHostile[Enum246.KINGPIN_CIV_GROUP] || ((gubQuest[Enum169.QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) && (CheckFact(Enum170.FACT_KINGPIN_CAN_SEND_ASSASSINS, Enum268.KINGPIN)))) && (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_C) && (pSoldier.value.ubProfile == NO_PROFILE)) {
     // no schedules for people guarding Tony's!
     return;
   }
@@ -645,7 +645,7 @@ function PostSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
   // if this schedule doesn't have a time associated with it, then generate a time, but only
   // if it is a sleep schedule.
   for (i = 0; i < MAX_SCHEDULE_ACTIONS; i++) {
-    if (pSchedule.value.ubAction[i] == SCHEDULE_ACTION_SLEEP) {
+    if (pSchedule.value.ubAction[i] == Enum171.SCHEDULE_ACTION_SLEEP) {
       // first make sure that this merc has a unique spot to sleep in
       SecureSleepSpot(pSoldier, pSchedule.value.usData1[i]);
 
@@ -661,7 +661,7 @@ function PostSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
 
             // NB the wakeup call must be ordered first! so we have to create the
             // wake action and then swap the two.
-            pSchedule.value.ubAction[bEmpty] = SCHEDULE_ACTION_WAKE;
+            pSchedule.value.ubAction[bEmpty] = Enum171.SCHEDULE_ACTION_WAKE;
             pSchedule.value.usTime[bEmpty] = (pSchedule.value.usTime[i] + (8 * 60)) % NUM_MIN_IN_DAY; // sleep for 8 hours
 
             ubTempAction = pSchedule.value.ubAction[bEmpty];
@@ -737,7 +737,7 @@ function PrepareScheduleForAutoProcessing(pSchedule: Pointer<SCHEDULENODE>, uiSt
         AutoProcessSchedule(pSchedule, i);
       } else {
         // CJC: Note that end time is always passed in here as the current time so GetWorldDayInMinutes will be for the correct day
-        AddStrategicEvent(EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + pSchedule.value.usTime[i], pSchedule.value.ubScheduleID);
+        AddStrategicEvent(Enum132.EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + pSchedule.value.usTime[i], pSchedule.value.ubScheduleID);
         fPostedNextEvent = TRUE;
         break;
       }
@@ -752,7 +752,7 @@ function PrepareScheduleForAutoProcessing(pSchedule: Pointer<SCHEDULENODE>, uiSt
         AutoProcessSchedule(pSchedule, i);
       } else if (pSchedule.value.usTime[i] >= uiEndTime) {
         fPostedNextEvent = TRUE;
-        AddStrategicEvent(EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + pSchedule.value.usTime[i], pSchedule.value.ubScheduleID);
+        AddStrategicEvent(Enum132.EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + pSchedule.value.usTime[i], pSchedule.value.ubScheduleID);
         break;
       }
     }
@@ -763,7 +763,7 @@ function PrepareScheduleForAutoProcessing(pSchedule: Pointer<SCHEDULENODE>, uiSt
     // 0th event will be first.
     // Feb 1:  ONLY IF THERE IS A VALID EVENT TO POST WITH A VALID TIME!
     if (pSchedule.value.usTime[0] != 0xffff) {
-      AddStrategicEvent(EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + NUM_MIN_IN_DAY + pSchedule.value.usTime[0], pSchedule.value.ubScheduleID);
+      AddStrategicEvent(Enum132.EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + NUM_MIN_IN_DAY + pSchedule.value.usTime[0], pSchedule.value.ubScheduleID);
     }
   }
 }
@@ -797,11 +797,11 @@ function PostDefaultSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
     gpScheduleList.value.usData2[i] = 0xffff;
   }
   // Have the default schedule enter between 7AM and 8AM
-  gpScheduleList.value.ubAction[0] = SCHEDULE_ACTION_ENTERSECTOR;
+  gpScheduleList.value.ubAction[0] = Enum171.SCHEDULE_ACTION_ENTERSECTOR;
   gpScheduleList.value.usTime[0] = (420 + Random(61));
   gpScheduleList.value.usData1[0] = pSoldier.value.sInitialGridNo;
   // Have the default schedule leave between 6PM and 8PM
-  gpScheduleList.value.ubAction[1] = SCHEDULE_ACTION_LEAVESECTOR;
+  gpScheduleList.value.ubAction[1] = Enum171.SCHEDULE_ACTION_LEAVESECTOR;
   gpScheduleList.value.usTime[1] = (1080 + Random(121));
   gpScheduleList.value.usFlags |= SCHEDULE_FLAGS_TEMPORARY;
 
@@ -831,7 +831,7 @@ function PostSchedules(): void {
         PostSchedule(curr.value.pSoldier);
       } else if (fDefaultSchedulesPossible) {
         // ATE: There should be a better way here...
-        if (curr.value.pSoldier.value.ubBodyType != COW && curr.value.pSoldier.value.ubBodyType != BLOODCAT && curr.value.pSoldier.value.ubBodyType != HUMVEE && curr.value.pSoldier.value.ubBodyType != ELDORADO && curr.value.pSoldier.value.ubBodyType != ICECREAMTRUCK && curr.value.pSoldier.value.ubBodyType != JEEP) {
+        if (curr.value.pSoldier.value.ubBodyType != Enum194.COW && curr.value.pSoldier.value.ubBodyType != Enum194.BLOODCAT && curr.value.pSoldier.value.ubBodyType != Enum194.HUMVEE && curr.value.pSoldier.value.ubBodyType != Enum194.ELDORADO && curr.value.pSoldier.value.ubBodyType != Enum194.ICECREAMTRUCK && curr.value.pSoldier.value.ubBodyType != Enum194.JEEP) {
           PostDefaultSchedule(curr.value.pSoldier);
         }
       }
@@ -847,7 +847,7 @@ function PerformActionOnDoorAdjacentToGridNo(ubScheduleAction: UINT8, usGridNo: 
   sDoorGridNo = FindDoorAtGridNoOrAdjacent(usGridNo);
   if (sDoorGridNo != NOWHERE) {
     switch (ubScheduleAction) {
-      case SCHEDULE_ACTION_LOCKDOOR:
+      case Enum171.SCHEDULE_ACTION_LOCKDOOR:
         pDoor = FindDoorInfoAtGridNo(sDoorGridNo);
         if (pDoor) {
           pDoor.value.fLocked = TRUE;
@@ -855,16 +855,16 @@ function PerformActionOnDoorAdjacentToGridNo(ubScheduleAction: UINT8, usGridNo: 
         // make sure it's closed as well
         ModifyDoorStatus(sDoorGridNo, FALSE, DONTSETDOORSTATUS);
         break;
-      case SCHEDULE_ACTION_UNLOCKDOOR:
+      case Enum171.SCHEDULE_ACTION_UNLOCKDOOR:
         pDoor = FindDoorInfoAtGridNo(sDoorGridNo);
         if (pDoor) {
           pDoor.value.fLocked = FALSE;
         }
         break;
-      case SCHEDULE_ACTION_OPENDOOR:
+      case Enum171.SCHEDULE_ACTION_OPENDOOR:
         ModifyDoorStatus(sDoorGridNo, TRUE, DONTSETDOORSTATUS);
         break;
-      case SCHEDULE_ACTION_CLOSEDOOR:
+      case Enum171.SCHEDULE_ACTION_CLOSEDOOR:
         ModifyDoorStatus(sDoorGridNo, FALSE, DONTSETDOORSTATUS);
         break;
     }
@@ -904,7 +904,7 @@ function PostNextSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
   Assert(iBestIndex >= 0);
 
-  AddStrategicEvent(EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + pSchedule.value.usTime[iBestIndex], pSchedule.value.ubScheduleID);
+  AddStrategicEvent(Enum132.EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + pSchedule.value.usTime[iBestIndex], pSchedule.value.ubScheduleID);
 }
 
 function ExtractScheduleEntryAndExitInfo(pSoldier: Pointer<SOLDIERTYPE>, puiEntryTime: Pointer<UINT32>, puiExitTime: Pointer<UINT32>): BOOLEAN {
@@ -925,10 +925,10 @@ function ExtractScheduleEntryAndExitInfo(pSoldier: Pointer<SOLDIERTYPE>, puiEntr
   }
 
   for (iLoop = 0; iLoop < MAX_SCHEDULE_ACTIONS; iLoop++) {
-    if (pSchedule.value.ubAction[iLoop] == SCHEDULE_ACTION_ENTERSECTOR) {
+    if (pSchedule.value.ubAction[iLoop] == Enum171.SCHEDULE_ACTION_ENTERSECTOR) {
       fFoundEntryTime = TRUE;
       puiEntryTime.value = pSchedule.value.usTime[iLoop];
-    } else if (pSchedule.value.ubAction[iLoop] == SCHEDULE_ACTION_LEAVESECTOR) {
+    } else if (pSchedule.value.ubAction[iLoop] == Enum171.SCHEDULE_ACTION_LEAVESECTOR) {
       fFoundExitTime = TRUE;
       puiExitTime.value = pSchedule.value.usTime[iLoop];
     }
@@ -960,10 +960,10 @@ function ExtractScheduleDoorLockAndUnlockInfo(pSoldier: Pointer<SOLDIERTYPE>, pu
   }
 
   for (iLoop = 0; iLoop < MAX_SCHEDULE_ACTIONS; iLoop++) {
-    if (pSchedule.value.ubAction[iLoop] == SCHEDULE_ACTION_UNLOCKDOOR) {
+    if (pSchedule.value.ubAction[iLoop] == Enum171.SCHEDULE_ACTION_UNLOCKDOOR) {
       fFoundOpeningTime = TRUE;
       puiOpeningTime.value = pSchedule.value.usTime[iLoop];
-    } else if (pSchedule.value.ubAction[iLoop] == SCHEDULE_ACTION_LOCKDOOR) {
+    } else if (pSchedule.value.ubAction[iLoop] == Enum171.SCHEDULE_ACTION_LOCKDOOR) {
       fFoundClosingTime = TRUE;
       puiClosingTime.value = pSchedule.value.usTime[iLoop];
     }
@@ -999,7 +999,7 @@ function ScheduleHasMorningNonSleepEntries(pSchedule: Pointer<SCHEDULENODE>): BO
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
-    if (pSchedule.value.ubAction[bLoop] != SCHEDULE_ACTION_NONE && pSchedule.value.ubAction[bLoop] != SCHEDULE_ACTION_SLEEP) {
+    if (pSchedule.value.ubAction[bLoop] != Enum171.SCHEDULE_ACTION_NONE && pSchedule.value.ubAction[bLoop] != Enum171.SCHEDULE_ACTION_SLEEP) {
       if (pSchedule.value.usTime[bLoop] < (12 * 60)) {
         return TRUE;
       }
@@ -1012,7 +1012,7 @@ function GetEmptyScheduleEntry(pSchedule: Pointer<SCHEDULENODE>): INT8 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
-    if (pSchedule.value.ubAction[bLoop] == SCHEDULE_ACTION_NONE) {
+    if (pSchedule.value.ubAction[bLoop] == Enum171.SCHEDULE_ACTION_NONE) {
       return bLoop;
     }
   }
@@ -1052,7 +1052,7 @@ function FindSleepSpot(pSchedule: Pointer<SCHEDULENODE>): UINT16 {
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
-    if (pSchedule.value.ubAction[bLoop] == SCHEDULE_ACTION_SLEEP) {
+    if (pSchedule.value.ubAction[bLoop] == Enum171.SCHEDULE_ACTION_SLEEP) {
       return pSchedule.value.usData1[bLoop];
     }
   }
@@ -1063,7 +1063,7 @@ function ReplaceSleepSpot(pSchedule: Pointer<SCHEDULENODE>, usNewSpot: UINT16): 
   let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
-    if (pSchedule.value.ubAction[bLoop] == SCHEDULE_ACTION_SLEEP) {
+    if (pSchedule.value.ubAction[bLoop] == Enum171.SCHEDULE_ACTION_SLEEP) {
       pSchedule.value.usData1[bLoop] = usNewSpot;
       break;
     }

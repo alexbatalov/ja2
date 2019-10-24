@@ -410,17 +410,17 @@ function UpdateAniTiles(): void {
           // CHECK IF WE SHOULD BE DISPLAYING TRANSLUCENTLY!
           if (pNode.value.sCurrentFrame == pNode.value.ubKeyFrame1) {
             switch (pNode.value.uiKeyFrame1Code) {
-              case ANI_KEYFRAME_BEGIN_TRANSLUCENCY:
+              case Enum311.ANI_KEYFRAME_BEGIN_TRANSLUCENCY:
 
                 pNode.value.pLevelNode.value.uiFlags |= LEVELNODE_REVEAL;
                 break;
 
-              case ANI_KEYFRAME_CHAIN_WATER_EXPLOSION:
+              case Enum311.ANI_KEYFRAME_CHAIN_WATER_EXPLOSION:
 
                 IgniteExplosion(pNode.value.ubUserData2, pNode.value.pLevelNode.value.sRelativeX, pNode.value.pLevelNode.value.sRelativeY, 0, pNode.value.sGridNo, (pNode.value.uiUserData), 0);
                 break;
 
-              case ANI_KEYFRAME_DO_SOUND:
+              case Enum311.ANI_KEYFRAME_DO_SOUND:
 
                 PlayJA2Sample(pNode.value.uiUserData, RATE_11025, SoundVolume(MIDVOLUME, pNode.value.uiUserData3), 1, SoundDir(pNode.value.uiUserData3));
                 break;
@@ -432,11 +432,11 @@ function UpdateAniTiles(): void {
             let ubExpType: UINT8;
 
             switch (pNode.value.uiKeyFrame2Code) {
-              case ANI_KEYFRAME_BEGIN_DAMAGE:
+              case Enum311.ANI_KEYFRAME_BEGIN_DAMAGE:
 
                 ubExpType = Explosive[Item[pNode.value.uiUserData].ubClassIndex].ubType;
 
-                if (ubExpType == EXPLOSV_TEARGAS || ubExpType == EXPLOSV_MUSTGAS || ubExpType == EXPLOSV_SMOKE) {
+                if (ubExpType == Enum287.EXPLOSV_TEARGAS || ubExpType == Enum287.EXPLOSV_MUSTGAS || ubExpType == Enum287.EXPLOSV_SMOKE) {
                   // Do sound....
                   // PlayJA2Sample( AIR_ESCAPING_1, RATE_11025, SoundVolume( HIGHVOLUME, pNode->sGridNo ), 1, SoundDir( pNode->sGridNo ) );
                   NewSmokeEffect(pNode.value.sGridNo, pNode.value.uiUserData, gExplosionData[pNode.value.uiUserData3].Params.bLevel, pNode.value.ubUserData2);

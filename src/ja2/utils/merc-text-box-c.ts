@@ -527,22 +527,22 @@ function RemoveMercPopupBoxFromIndex(uiId: UINT32): BOOLEAN {
 // Pass in the background index, and pointers to the font and shadow color
 function GetMercPopupBoxFontColor(ubBackgroundIndex: UINT8, pubFontColor: Pointer<UINT8>, pubFontShadowColor: Pointer<UINT8>): void {
   switch (ubBackgroundIndex) {
-    case BASIC_MERC_POPUP_BACKGROUND:
+    case Enum324.BASIC_MERC_POPUP_BACKGROUND:
       pubFontColor.value = TEXT_POPUP_COLOR;
       pubFontShadowColor.value = DEFAULT_SHADOW;
       break;
 
-    case WHITE_MERC_POPUP_BACKGROUND:
+    case Enum324.WHITE_MERC_POPUP_BACKGROUND:
       pubFontColor.value = 2;
       pubFontShadowColor.value = FONT_MCOLOR_WHITE;
       break;
 
-    case GREY_MERC_POPUP_BACKGROUND:
+    case Enum324.GREY_MERC_POPUP_BACKGROUND:
       pubFontColor.value = 2;
       pubFontShadowColor.value = NO_SHADOW;
       break;
 
-    case LAPTOP_POPUP_BACKGROUND:
+    case Enum324.LAPTOP_POPUP_BACKGROUND:
       pubFontColor.value = TEXT_POPUP_COLOR;
       pubFontShadowColor.value = DEFAULT_SHADOW;
       break;

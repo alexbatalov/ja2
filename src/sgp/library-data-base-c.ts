@@ -23,10 +23,10 @@ function InitializeFileDatabase(): BOOLEAN {
   GetCDLocation();
 
   // if all the libraries exist, set them up
-  gFileDataBase.usNumberOfLibraries = NUMBER_OF_LIBRARIES;
+  gFileDataBase.usNumberOfLibraries = Enum30.NUMBER_OF_LIBRARIES;
 
   // allocate memory for the each of the library headers
-  uiSize = NUMBER_OF_LIBRARIES * sizeof(LibraryHeaderStruct);
+  uiSize = Enum30.NUMBER_OF_LIBRARIES * sizeof(LibraryHeaderStruct);
   if (uiSize) {
     gFileDataBase.pLibraries = MemAlloc(uiSize);
     CHECKF(gFileDataBase.pLibraries);
@@ -35,7 +35,7 @@ function InitializeFileDatabase(): BOOLEAN {
     memset(gFileDataBase.pLibraries, 0, uiSize);
 
     // Load up each library
-    for (i = 0; i < NUMBER_OF_LIBRARIES; i++) {
+    for (i = 0; i < Enum30.NUMBER_OF_LIBRARIES; i++) {
       // if you want to init the library at the begining of the game
       if (gGameLibaries[i].fInitOnStart) {
         // if the library exists
@@ -82,7 +82,7 @@ function ReopenCDLibraries(): BOOLEAN {
   let i: INT16;
 
   // Load up each library
-  for (i = 0; i < NUMBER_OF_LIBRARIES; i++) {
+  for (i = 0; i < Enum30.NUMBER_OF_LIBRARIES; i++) {
     if (gFileDataBase.pLibraries[i].fLibraryOpen && gGameLibaries[i].fOnCDrom)
       CloseLibrary(i);
 

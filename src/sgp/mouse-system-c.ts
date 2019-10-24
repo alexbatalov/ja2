@@ -968,7 +968,7 @@ function SetRegionFastHelpText(region: Pointer<MOUSE_REGION>, szText: Pointer<UI
   // ATE: We could be replacing already existing, active text
   // so let's remove the region so it be rebuilt...
 
-  if (guiCurrentScreen != MAP_SCREEN) {
+  if (guiCurrentScreen != Enum26.MAP_SCREEN) {
     if (region.value.uiFlags & MSYS_GOT_BACKGROUND)
       FreeBackgroundRectPending(region.value.FastHelpRect);
 

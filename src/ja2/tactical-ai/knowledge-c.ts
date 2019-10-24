@@ -69,7 +69,7 @@ function CallAvailableKingpinMenTo(sGridNo: INT16): void {
 
     iLoop2 = gTacticalStatus.Team[CIV_TEAM].bFirstID;
     for (pSoldier = MercPtrs[iLoop2]; iLoop2 <= gTacticalStatus.Team[CIV_TEAM].bLastID; iLoop2++, pSoldier++) {
-      if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife >= OKLIFE && pSoldier.value.ubCivilianGroup == KINGPIN_CIV_GROUP && pSoldier.value.ubProfile == NO_PROFILE) {
+      if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife >= OKLIFE && pSoldier.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP && pSoldier.value.ubProfile == NO_PROFILE) {
         SetNewSituation(pSoldier);
       }
     }
@@ -84,19 +84,19 @@ function CallEldinTo(sGridNo: INT16): void {
   // So long as he hasn't already heard a noise a sec ago...
   if (gTacticalStatus.Team[CIV_TEAM].bTeamActive) {
     // new situation for Eldin
-    pSoldier = FindSoldierByProfileID(ELDIN, FALSE);
-    if (pSoldier && pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife >= OKLIFE && (pSoldier.value.bAlertStatus == STATUS_GREEN || pSoldier.value.ubNoiseVolume < (MAX_MISC_NOISE_DURATION / 2))) {
+    pSoldier = FindSoldierByProfileID(Enum268.ELDIN, FALSE);
+    if (pSoldier && pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife >= OKLIFE && (pSoldier.value.bAlertStatus == Enum243.STATUS_GREEN || pSoldier.value.ubNoiseVolume < (MAX_MISC_NOISE_DURATION / 2))) {
       if (SoldierToLocationLineOfSightTest(pSoldier, sGridNo, MaxDistanceVisible(), TRUE)) {
         // sees the player now!
-        TriggerNPCWithIHateYouQuote(ELDIN);
+        TriggerNPCWithIHateYouQuote(Enum268.ELDIN);
         SetNewSituation(pSoldier);
       } else {
         pSoldier.value.sNoiseGridno = sGridNo;
         pSoldier.value.ubNoiseVolume = MAX_MISC_NOISE_DURATION;
-        pSoldier.value.bAlertStatus = STATUS_RED;
-        if ((pSoldier.value.bAction != AI_ACTION_GET_CLOSER) || CheckFact(FACT_MUSEUM_ALARM_WENT_OFF, 0) == FALSE) {
+        pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
+        if ((pSoldier.value.bAction != Enum289.AI_ACTION_GET_CLOSER) || CheckFact(Enum170.FACT_MUSEUM_ALARM_WENT_OFF, 0) == FALSE) {
           CancelAIAction(pSoldier, TRUE);
-          pSoldier.value.bNextAction = AI_ACTION_GET_CLOSER;
+          pSoldier.value.bNextAction = Enum289.AI_ACTION_GET_CLOSER;
           pSoldier.value.usNextActionData = sGridNo;
           RESETTIMECOUNTER(pSoldier.value.AICounter, 100);
         }
@@ -104,7 +104,7 @@ function CallEldinTo(sGridNo: INT16): void {
         //				SetNewSituation( pSoldier );
         // reduce any delay to minimal
       }
-      SetFactTrue(FACT_MUSEUM_ALARM_WENT_OFF);
+      SetFactTrue(Enum170.FACT_MUSEUM_ALARM_WENT_OFF);
     }
   }
 }
@@ -201,7 +201,7 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
   }
 
   // if any recent PUBLIC "misc. noise" is also known
-  if ((pSoldier.value.bTeam != CIV_TEAM) || (pSoldier.value.ubCivilianGroup == KINGPIN_CIV_GROUP)) {
+  if ((pSoldier.value.bTeam != CIV_TEAM) || (pSoldier.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP)) {
     if (psNoiseGridNo.value != NOWHERE) {
       // if we are NOT there (at the noise gridno)
       if (pbNoiseLevel.value != pSoldier.value.bLevel || PythSpacesAway(pSoldier.value.sGridNo, psNoiseGridNo.value) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, psNoiseGridNo.value, pbNoiseLevel.value, 0, MaxDistanceVisible(), FALSE) == 0) {
@@ -222,7 +222,7 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
     pfReachable.value = TRUE;
 
     // make civs not walk to noises outside their room if on close patrol/onguard
-    if (pSoldier.value.bOrders <= CLOSEPATROL && (pSoldier.value.bTeam == CIV_TEAM || pSoldier.value.ubProfile != NO_PROFILE)) {
+    if (pSoldier.value.bOrders <= Enum241.CLOSEPATROL && (pSoldier.value.bTeam == CIV_TEAM || pSoldier.value.ubProfile != NO_PROFILE)) {
       let ubRoom: UINT8;
       let ubNewRoom: UINT8;
 

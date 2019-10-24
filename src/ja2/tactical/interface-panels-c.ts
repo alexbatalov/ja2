@@ -208,7 +208,7 @@ let giSMStealthImages: INT32 = -1;
 let giSMStealthButton: INT32 = -1;
 
 let gfSwitchPanel: BOOLEAN = FALSE;
-let gbNewPanel: UINT8 = SM_PANEL;
+let gbNewPanel: UINT8 = Enum215.SM_PANEL;
 let gubNewPanelParam: UINT8 = 0;
 
 let gfUIStanceDifferent: BOOLEAN = FALSE;
@@ -448,7 +448,7 @@ function CheckForDisabledForGiveItem(): void {
       if (pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier) && pSoldier.value.bInSector && IsMercOnCurrentSquad(pSoldier)) {
         sDist = PythSpacesAway(gpSMCurrentMerc.value.sGridNo, pSoldier.value.sGridNo);
 
-        sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, gpSMCurrentMerc.value.sGridNo, gpSMCurrentMerc.value.bLevel);
+        sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, gpSMCurrentMerc.value.sGridNo, gpSMCurrentMerc.value.bLevel);
 
         // Check LOS....
         if (SoldierTo3DLocationLineOfSightTest(pSoldier, gpSMCurrentMerc.value.sGridNo, gpSMCurrentMerc.value.bLevel, 3, sDistVisible, TRUE)) {
@@ -476,7 +476,7 @@ function CheckForDisabledForGiveItem(): void {
         sDist = PythSpacesAway(MercPtrs[ubSrcSoldier].value.sGridNo, sDestGridNo);
 
         // is he close enough to see that gridno if he turns his head?
-        sDistVisible = DistanceVisible(MercPtrs[ubSrcSoldier], DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sDestGridNo, bDestLevel);
+        sDistVisible = DistanceVisible(MercPtrs[ubSrcSoldier], Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sDestGridNo, bDestLevel);
 
         // Check LOS....
         if (SoldierTo3DLocationLineOfSightTest(MercPtrs[ubSrcSoldier], sDestGridNo, bDestLevel, 3, sDistVisible, TRUE)) {
@@ -518,7 +518,7 @@ function SetSMPanelCurrentMerc(ubNewID: UINT8): void {
 
   // Turn off compat ammo....
   if (gpItemPointer == NULL) {
-    HandleCompatibleAmmoUI(gpSMCurrentMerc, HANDPOS, FALSE);
+    HandleCompatibleAmmoUI(gpSMCurrentMerc, Enum261.HANDPOS, FALSE);
     gfCheckForMouseOverItem = FALSE;
   } else {
     // Turn it all false first....
@@ -557,7 +557,7 @@ function SetSMPanelCurrentMerc(ubNewID: UINT8): void {
 function UpdateForContOverPortrait(pSoldier: Pointer<SOLDIERTYPE>, fOn: BOOLEAN): void {
   let cnt: INT32;
 
-  if (gsCurInterfacePanel == SM_PANEL) {
+  if (gsCurInterfacePanel == Enum215.SM_PANEL) {
     if (gpSMCurrentMerc != NULL) {
       // Check if mouse is in region and if so, adjust...
       if (IsMouseInRegion(addressof(gSM_SELMERCPanelRegion))) {
@@ -596,29 +596,29 @@ function UpdateSMPanel(): void {
     case ANIM_STAND:
 
       gbSMCurStanceObj = 0;
-      DisableButton(iSMPanelButtons[STANCEUP_BUTTON]);
-      EnableButton(iSMPanelButtons[STANCEDOWN_BUTTON]);
+      DisableButton(iSMPanelButtons[Enum220.STANCEUP_BUTTON]);
+      EnableButton(iSMPanelButtons[Enum220.STANCEDOWN_BUTTON]);
 
       // Disable if we cannot do this!
       if (!IsValidStance(gpSMCurrentMerc, ANIM_CROUCH)) {
-        DisableButton(iSMPanelButtons[STANCEDOWN_BUTTON]);
+        DisableButton(iSMPanelButtons[Enum220.STANCEDOWN_BUTTON]);
       }
       break;
 
     case ANIM_PRONE:
       gbSMCurStanceObj = 2;
-      DisableButton(iSMPanelButtons[STANCEDOWN_BUTTON]);
-      EnableButton(iSMPanelButtons[STANCEUP_BUTTON]);
+      DisableButton(iSMPanelButtons[Enum220.STANCEDOWN_BUTTON]);
+      EnableButton(iSMPanelButtons[Enum220.STANCEUP_BUTTON]);
       break;
 
     case ANIM_CROUCH:
       gbSMCurStanceObj = 1;
-      EnableButton(iSMPanelButtons[STANCEUP_BUTTON]);
-      EnableButton(iSMPanelButtons[STANCEDOWN_BUTTON]);
+      EnableButton(iSMPanelButtons[Enum220.STANCEUP_BUTTON]);
+      EnableButton(iSMPanelButtons[Enum220.STANCEDOWN_BUTTON]);
 
       // Disable if we cannot do this!
       if (!IsValidStance(gpSMCurrentMerc, ANIM_PRONE)) {
-        DisableButton(iSMPanelButtons[STANCEDOWN_BUTTON]);
+        DisableButton(iSMPanelButtons[Enum220.STANCEDOWN_BUTTON]);
       }
       break;
   }
@@ -634,11 +634,11 @@ function UpdateSMPanel(): void {
     }
 
     // Make new
-    giSMStealthImages = UseLoadedButtonImage(iSMPanelImages[STANCE_IMAGES], gbStanceButPos[gpSMCurrentMerc.value.bStealthMode][gbSMCurStanceObj][0], gbStanceButPos[gpSMCurrentMerc.value.bStealthMode][gbSMCurStanceObj][1], -1, gbStanceButPos[gpSMCurrentMerc.value.bStealthMode][gbSMCurStanceObj][2], -1);
+    giSMStealthImages = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCE_IMAGES], gbStanceButPos[gpSMCurrentMerc.value.bStealthMode][gbSMCurStanceObj][0], gbStanceButPos[gpSMCurrentMerc.value.bStealthMode][gbSMCurStanceObj][1], -1, gbStanceButPos[gpSMCurrentMerc.value.bStealthMode][gbSMCurStanceObj][2], -1);
 
     giSMStealthButton = QuickCreateButton(giSMStealthImages, SM_STEALTHMODE_X, SM_STEALTHMODE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnStealthModeCallback);
 
-    SetButtonFastHelpText(giSMStealthButton, TacticalStr[TOGGLE_STEALTH_MODE_POPUPTEXT]);
+    SetButtonFastHelpText(giSMStealthButton, TacticalStr[Enum335.TOGGLE_STEALTH_MODE_POPUPTEXT]);
 
     gfUIStanceDifferent = FALSE;
 
@@ -664,9 +664,9 @@ function UpdateSMPanel(): void {
   }
 
   // Set Disable /Enable UI based on buddy's stats
-  if (ButtonList[iSMPanelButtons[BURSTMODE_BUTTON]].value.ImageNum != iBurstButtonImages[gpSMCurrentMerc.value.bWeaponMode]) {
-    ButtonList[iSMPanelButtons[BURSTMODE_BUTTON]].value.ImageNum = iBurstButtonImages[gpSMCurrentMerc.value.bWeaponMode];
-    ButtonList[iSMPanelButtons[BURSTMODE_BUTTON]].value.uiFlags |= BUTTON_DIRTY;
+  if (ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].value.ImageNum != iBurstButtonImages[gpSMCurrentMerc.value.bWeaponMode]) {
+    ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].value.ImageNum = iBurstButtonImages[gpSMCurrentMerc.value.bWeaponMode];
+    ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].value.uiFlags |= BUTTON_DIRTY;
   }
 
   /*
@@ -688,106 +688,106 @@ function UpdateSMPanel(): void {
 
   // Toggle MUTE button...
   if (gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_MUTE) {
-    if (!ButtonList[iSMPanelButtons[MUTE_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[MUTE_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+    if (!ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
     }
   } else {
-    if (!ButtonList[iSMPanelButtons[MUTE_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[MUTE_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
     }
   }
 
-  DisableButton(iSMPanelButtons[CLIMB_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.CLIMB_BUTTON]);
 
   GetMercClimbDirection(gpSMCurrentMerc.value.ubID, addressof(fNearLowerLevel), addressof(fNearHeigherLevel));
 
   if (fNearLowerLevel || fNearHeigherLevel) {
     if (fNearLowerLevel) {
       if (EnoughPoints(gpSMCurrentMerc, GetAPsToClimbRoof(gpSMCurrentMerc, TRUE), 0, FALSE)) {
-        EnableButton(iSMPanelButtons[CLIMB_BUTTON]);
+        EnableButton(iSMPanelButtons[Enum220.CLIMB_BUTTON]);
       }
     }
 
     if (fNearHeigherLevel) {
       if (EnoughPoints(gpSMCurrentMerc, GetAPsToClimbRoof(gpSMCurrentMerc, FALSE), 0, FALSE)) {
-        EnableButton(iSMPanelButtons[CLIMB_BUTTON]);
+        EnableButton(iSMPanelButtons[Enum220.CLIMB_BUTTON]);
       }
     }
   }
 
   if (FindFenceJumpDirection(gpSMCurrentMerc, gpSMCurrentMerc.value.sGridNo, gpSMCurrentMerc.value.bDirection, addressof(bDirection))) {
-    EnableButton(iSMPanelButtons[CLIMB_BUTTON]);
+    EnableButton(iSMPanelButtons[Enum220.CLIMB_BUTTON]);
   }
 
   if ((gTacticalStatus.ubCurrentTeam != gbPlayerNum) || (gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
-    DisableButton(iSMPanelButtons[SM_DONE_BUTTON]);
+    DisableButton(iSMPanelButtons[Enum220.SM_DONE_BUTTON]);
   } else if (!gfAllDisabled) {
-    EnableButton(iSMPanelButtons[SM_DONE_BUTTON]);
+    EnableButton(iSMPanelButtons[Enum220.SM_DONE_BUTTON]);
   }
 
   //	if ( gpSMCurrentMerc->bUIInterfaceLevel > 0 )
   if (gsInterfaceLevel > 0) {
-    if (!ButtonList[iSMPanelButtons[UPDOWN_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[UPDOWN_BUTTON]].value.uiFlags |= (BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].value.uiFlags |= (BUTTON_CLICKED_ON);
     }
   } else {
-    if (!ButtonList[iSMPanelButtons[UPDOWN_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[UPDOWN_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
     }
   }
 
-  if (gCurrentUIMode == HANDCURSOR_MODE) {
-    if (!ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+  if (gCurrentUIMode == Enum206.HANDCURSOR_MODE) {
+    if (!ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
     }
   } else {
-    if (!ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
     }
   }
 
-  if (gCurrentUIMode == TALKCURSOR_MODE) {
-    if (!ButtonList[iSMPanelButtons[TALK_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[TALK_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+  if (gCurrentUIMode == Enum206.TALKCURSOR_MODE) {
+    if (!ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
     }
   } else {
-    if (!ButtonList[iSMPanelButtons[TALK_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[TALK_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
     }
   }
 
-  if (gCurrentUIMode == LOOKCURSOR_MODE) {
-    if (!ButtonList[iSMPanelButtons[LOOK_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[LOOK_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+  if (gCurrentUIMode == Enum206.LOOKCURSOR_MODE) {
+    if (!ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
     }
   } else {
-    if (!ButtonList[iSMPanelButtons[LOOK_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[LOOK_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].value.ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
     }
   }
 
   // If not selected ( or dead ), disable/gray some buttons
   if (gusSelectedSoldier != gpSMCurrentMerc.value.ubID || (gpSMCurrentMerc.value.bLife < OKLIFE) || (gTacticalStatus.ubCurrentTeam != gbPlayerNum) || gfSMDisableForItems) {
-    DisableButton(iSMPanelButtons[CLIMB_BUTTON]);
-    DisableButton(iSMPanelButtons[BURSTMODE_BUTTON]);
-    DisableButton(iSMPanelButtons[STANCEUP_BUTTON]);
-    DisableButton(iSMPanelButtons[STANCEDOWN_BUTTON]);
-    DisableButton(iSMPanelButtons[LOOK_BUTTON]);
-    DisableButton(iSMPanelButtons[UPDOWN_BUTTON]);
-    DisableButton(iSMPanelButtons[HANDCURSOR_BUTTON]);
+    DisableButton(iSMPanelButtons[Enum220.CLIMB_BUTTON]);
+    DisableButton(iSMPanelButtons[Enum220.BURSTMODE_BUTTON]);
+    DisableButton(iSMPanelButtons[Enum220.STANCEUP_BUTTON]);
+    DisableButton(iSMPanelButtons[Enum220.STANCEDOWN_BUTTON]);
+    DisableButton(iSMPanelButtons[Enum220.LOOK_BUTTON]);
+    DisableButton(iSMPanelButtons[Enum220.UPDOWN_BUTTON]);
+    DisableButton(iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]);
     if (giSMStealthButton != -1) {
       DisableButton(giSMStealthButton);
     }
   } else {
     // Enable some buttons!
-    if (IsGunBurstCapable(gpSMCurrentMerc, HANDPOS, FALSE) || FindAttachment(addressof(gpSMCurrentMerc.value.inv[HANDPOS]), UNDER_GLAUNCHER) != ITEM_NOT_FOUND) {
-      EnableButton(iSMPanelButtons[BURSTMODE_BUTTON]);
+    if (IsGunBurstCapable(gpSMCurrentMerc, Enum261.HANDPOS, FALSE) || FindAttachment(addressof(gpSMCurrentMerc.value.inv[Enum261.HANDPOS]), Enum225.UNDER_GLAUNCHER) != ITEM_NOT_FOUND) {
+      EnableButton(iSMPanelButtons[Enum220.BURSTMODE_BUTTON]);
     } else {
-      DisableButton(iSMPanelButtons[BURSTMODE_BUTTON]);
+      DisableButton(iSMPanelButtons[Enum220.BURSTMODE_BUTTON]);
     }
-    EnableButton(iSMPanelButtons[LOOK_BUTTON]);
-    EnableButton(iSMPanelButtons[UPDOWN_BUTTON]);
-    EnableButton(iSMPanelButtons[HANDCURSOR_BUTTON]);
+    EnableButton(iSMPanelButtons[Enum220.LOOK_BUTTON]);
+    EnableButton(iSMPanelButtons[Enum220.UPDOWN_BUTTON]);
+    EnableButton(iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]);
 
     if (giSMStealthButton != -1) {
       EnableButton(giSMStealthButton);
@@ -796,9 +796,9 @@ function UpdateSMPanel(): void {
 
   // CJC Dec 4 2002: or if item pickup menu is up
   if ((gTacticalStatus.uiFlags & ENGAGED_IN_CONV) || gfInItemPickupMenu) {
-    DisableButton(iSMPanelButtons[SM_MAP_SCREEN_BUTTON]);
+    DisableButton(iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON]);
   } else {
-    EnableButton(iSMPanelButtons[SM_MAP_SCREEN_BUTTON]);
+    EnableButton(iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON]);
   }
 }
 
@@ -808,7 +808,7 @@ function ReevaluateItemHatches(pSoldier: Pointer<SOLDIERTYPE>, fAllValid: BOOLEA
   // if there's an item in the cursor and we're not supposed to just make them all valid
   if ((gpItemPointer != NULL) && !fAllValid) {
     // check all inventory positions and mark the ones where cursor item won't fit as invalid
-    for (cnt = 0; cnt < NUM_INV_SLOTS; cnt++) {
+    for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
       gbInvalidPlacementSlot[cnt] = !CanItemFitInPosition(pSoldier, gpItemPointer, cnt, FALSE);
 
       // !!! ATTACHING/MERGING ITEMS IN MAP SCREEN IS NOT SUPPORTED !!!
@@ -827,7 +827,7 @@ function ReevaluateItemHatches(pSoldier: Pointer<SOLDIERTYPE>, fAllValid: BOOLEA
     }
   } else {
     // mark all inventory positions as valid
-    for (cnt = 0; cnt < NUM_INV_SLOTS; cnt++) {
+    for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
       gbInvalidPlacementSlot[cnt] = FALSE;
     }
   }
@@ -849,7 +849,7 @@ function EnableSMPanelButtons(fEnable: BOOLEAN, fFromItemPickup: BOOLEAN): void 
     fInterfacePanelDirty = DIRTYLEVEL2;
   }
 
-  if (gsCurInterfacePanel == SM_PANEL) {
+  if (gsCurInterfacePanel == Enum215.SM_PANEL) {
     if (fFromItemPickup) {
       // If we have the item pointer up...
       if (gpItemPointer != NULL) {
@@ -880,25 +880,25 @@ function EnableSMPanelButtons(fEnable: BOOLEAN, fFromItemPickup: BOOLEAN): void 
     if (fEnable) {
       // only enable the following if NOT in shopkeeper's interface
       if (!(guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE)) {
-        EnableButton(iSMPanelButtons[CLIMB_BUTTON]);
-        EnableButton(iSMPanelButtons[BURSTMODE_BUTTON]);
-        EnableButton(iSMPanelButtons[STANCEUP_BUTTON]);
-        EnableButton(iSMPanelButtons[STANCEDOWN_BUTTON]);
-        EnableButton(iSMPanelButtons[LOOK_BUTTON]);
-        EnableButton(iSMPanelButtons[UPDOWN_BUTTON]);
-        EnableButton(iSMPanelButtons[HANDCURSOR_BUTTON]);
+        EnableButton(iSMPanelButtons[Enum220.CLIMB_BUTTON]);
+        EnableButton(iSMPanelButtons[Enum220.BURSTMODE_BUTTON]);
+        EnableButton(iSMPanelButtons[Enum220.STANCEUP_BUTTON]);
+        EnableButton(iSMPanelButtons[Enum220.STANCEDOWN_BUTTON]);
+        EnableButton(iSMPanelButtons[Enum220.LOOK_BUTTON]);
+        EnableButton(iSMPanelButtons[Enum220.UPDOWN_BUTTON]);
+        EnableButton(iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]);
         if (giSMStealthButton != -1) {
           EnableButton(giSMStealthButton);
         }
 
         if (gfDisableTacticalPanelButtons) {
-          DisableButton(iSMPanelButtons[OPTIONS_BUTTON]);
-          DisableButton(iSMPanelButtons[SM_DONE_BUTTON]);
-          DisableButton(iSMPanelButtons[SM_MAP_SCREEN_BUTTON]);
+          DisableButton(iSMPanelButtons[Enum220.OPTIONS_BUTTON]);
+          DisableButton(iSMPanelButtons[Enum220.SM_DONE_BUTTON]);
+          DisableButton(iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON]);
         } else {
-          EnableButton(iSMPanelButtons[OPTIONS_BUTTON]);
-          EnableButton(iSMPanelButtons[SM_DONE_BUTTON]);
-          EnableButton(iSMPanelButtons[SM_MAP_SCREEN_BUTTON]);
+          EnableButton(iSMPanelButtons[Enum220.OPTIONS_BUTTON]);
+          EnableButton(iSMPanelButtons[Enum220.SM_DONE_BUTTON]);
+          EnableButton(iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON]);
         }
 
         // enable the radar map region
@@ -910,29 +910,29 @@ function EnableSMPanelButtons(fEnable: BOOLEAN, fFromItemPickup: BOOLEAN): void 
       }
 
       if (!fFromItemPickup) {
-        EnableButton(iSMPanelButtons[NEXTMERC_BUTTON]);
-        EnableButton(iSMPanelButtons[PREVMERC_BUTTON]);
+        EnableButton(iSMPanelButtons[Enum220.NEXTMERC_BUTTON]);
+        EnableButton(iSMPanelButtons[Enum220.PREVMERC_BUTTON]);
       }
     } else {
-      DisableButton(iSMPanelButtons[CLIMB_BUTTON]);
-      DisableButton(iSMPanelButtons[BURSTMODE_BUTTON]);
-      DisableButton(iSMPanelButtons[STANCEUP_BUTTON]);
-      DisableButton(iSMPanelButtons[STANCEDOWN_BUTTON]);
-      DisableButton(iSMPanelButtons[LOOK_BUTTON]);
-      DisableButton(iSMPanelButtons[UPDOWN_BUTTON]);
-      DisableButton(iSMPanelButtons[HANDCURSOR_BUTTON]);
+      DisableButton(iSMPanelButtons[Enum220.CLIMB_BUTTON]);
+      DisableButton(iSMPanelButtons[Enum220.BURSTMODE_BUTTON]);
+      DisableButton(iSMPanelButtons[Enum220.STANCEUP_BUTTON]);
+      DisableButton(iSMPanelButtons[Enum220.STANCEDOWN_BUTTON]);
+      DisableButton(iSMPanelButtons[Enum220.LOOK_BUTTON]);
+      DisableButton(iSMPanelButtons[Enum220.UPDOWN_BUTTON]);
+      DisableButton(iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]);
       if (giSMStealthButton != -1) {
         DisableButton(giSMStealthButton);
       }
 
       if (!fFromItemPickup) {
-        DisableButton(iSMPanelButtons[NEXTMERC_BUTTON]);
-        DisableButton(iSMPanelButtons[PREVMERC_BUTTON]);
+        DisableButton(iSMPanelButtons[Enum220.NEXTMERC_BUTTON]);
+        DisableButton(iSMPanelButtons[Enum220.PREVMERC_BUTTON]);
       }
 
-      DisableButton(iSMPanelButtons[OPTIONS_BUTTON]);
-      DisableButton(iSMPanelButtons[SM_DONE_BUTTON]);
-      DisableButton(iSMPanelButtons[SM_MAP_SCREEN_BUTTON]);
+      DisableButton(iSMPanelButtons[Enum220.OPTIONS_BUTTON]);
+      DisableButton(iSMPanelButtons[Enum220.SM_DONE_BUTTON]);
+      DisableButton(iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON]);
 
       // disable the radar map
       MSYS_DisableRegion(addressof(gRadarRegion));
@@ -985,7 +985,7 @@ function InitializeSMPanel(): BOOLEAN {
 
   // Set viewports
   // Define region for panel
-  MSYS_DefineRegion(addressof(gSMPanelRegion), 0, INV_INTERFACE_START_Y, 640, 480, MSYS_PRIORITY_NORMAL, CURSOR_NORMAL, MSYS_NO_CALLBACK, InvPanelButtonClickCallback);
+  MSYS_DefineRegion(addressof(gSMPanelRegion), 0, INV_INTERFACE_START_Y, 640, 480, MSYS_PRIORITY_NORMAL, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, InvPanelButtonClickCallback);
   // Add region
   MSYS_AddRegion(addressof(gSMPanelRegion));
 
@@ -1004,7 +1004,7 @@ function InitializeSMPanel(): BOOLEAN {
   // Add region
   MSYS_AddRegion(addressof(gSM_SELMERCMoneyRegion));
 
-  SetRegionFastHelpText(addressof(gSM_SELMERCMoneyRegion), TacticalStr[MONEY_BUTTON_HELP_TEXT]);
+  SetRegionFastHelpText(addressof(gSM_SELMERCMoneyRegion), TacticalStr[Enum335.MONEY_BUTTON_HELP_TEXT]);
 
   // Check if mouse is in region and if so, adjust...
   if (IsMouseInRegion(addressof(gSM_SELMERCPanelRegion))) {
@@ -1043,148 +1043,148 @@ function CreateSMPanelButtons(): BOOLEAN {
 
   FilenameForBPP("INTERFACE\\inventory_buttons.sti", ubString);
   // Load button Graphics
-  iSMPanelImages[STANCEUP_IMAGES] = LoadButtonImage(ubString, -1, 0, -1, 10, -1);
+  iSMPanelImages[Enum218.STANCEUP_IMAGES] = LoadButtonImage(ubString, -1, 0, -1, 10, -1);
 
-  iSMPanelImages[UPDOWN_IMAGES] = UseLoadedButtonImage(iSMPanelImages[STANCEUP_IMAGES], -1, 9, -1, 19, -1);
-  iSMPanelImages[CLIMB_IMAGES] = UseLoadedButtonImage(iSMPanelImages[STANCEUP_IMAGES], -1, 3, -1, 13, -1);
-  iSMPanelImages[STANCEDOWN_IMAGES] = UseLoadedButtonImage(iSMPanelImages[STANCEUP_IMAGES], -1, 8, -1, 18, -1);
-  iSMPanelImages[HANDCURSOR_IMAGES] = UseLoadedButtonImage(iSMPanelImages[STANCEUP_IMAGES], -1, 1, -1, 11, -1);
-  iSMPanelImages[PREVMERC_IMAGES] = UseLoadedButtonImage(iSMPanelImages[STANCEUP_IMAGES], -1, 20, -1, 22, -1);
-  iSMPanelImages[NEXTMERC_IMAGES] = UseLoadedButtonImage(iSMPanelImages[STANCEUP_IMAGES], -1, 21, -1, 23, -1);
+  iSMPanelImages[Enum218.UPDOWN_IMAGES] = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCEUP_IMAGES], -1, 9, -1, 19, -1);
+  iSMPanelImages[Enum218.CLIMB_IMAGES] = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCEUP_IMAGES], -1, 3, -1, 13, -1);
+  iSMPanelImages[Enum218.STANCEDOWN_IMAGES] = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCEUP_IMAGES], -1, 8, -1, 18, -1);
+  iSMPanelImages[Enum218.HANDCURSOR_IMAGES] = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCEUP_IMAGES], -1, 1, -1, 11, -1);
+  iSMPanelImages[Enum218.PREVMERC_IMAGES] = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCEUP_IMAGES], -1, 20, -1, 22, -1);
+  iSMPanelImages[Enum218.NEXTMERC_IMAGES] = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCEUP_IMAGES], -1, 21, -1, 23, -1);
   // iSMPanelImages[ BURSTMODE_IMAGES  ]			= UseLoadedButtonImage( iSMPanelImages[ STANCEUP_IMAGES  ] ,-1,7,-1,17,-1 );
-  iSMPanelImages[LOOK_IMAGES] = UseLoadedButtonImage(iSMPanelImages[STANCEUP_IMAGES], -1, 2, -1, 12, -1);
-  iSMPanelImages[TALK_IMAGES] = UseLoadedButtonImage(iSMPanelImages[STANCEUP_IMAGES], -1, 6, -1, 16, -1);
-  iSMPanelImages[MUTE_IMAGES] = UseLoadedButtonImage(iSMPanelImages[STANCEUP_IMAGES], -1, 5, -1, 15, -1);
-  iSMPanelImages[OPTIONS_IMAGES] = UseLoadedButtonImage(iSMPanelImages[STANCEUP_IMAGES], -1, 24, -1, 25, -1);
+  iSMPanelImages[Enum218.LOOK_IMAGES] = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCEUP_IMAGES], -1, 2, -1, 12, -1);
+  iSMPanelImages[Enum218.TALK_IMAGES] = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCEUP_IMAGES], -1, 6, -1, 16, -1);
+  iSMPanelImages[Enum218.MUTE_IMAGES] = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCEUP_IMAGES], -1, 5, -1, 15, -1);
+  iSMPanelImages[Enum218.OPTIONS_IMAGES] = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCEUP_IMAGES], -1, 24, -1, 25, -1);
 
-  iBurstButtonImages[WM_NORMAL] = UseLoadedButtonImage(iSMPanelImages[STANCEUP_IMAGES], -1, 7, -1, -1, -1);
-  iBurstButtonImages[WM_BURST] = UseLoadedButtonImage(iSMPanelImages[STANCEUP_IMAGES], -1, 17, -1, -1, -1);
-  iBurstButtonImages[WM_ATTACHED] = UseLoadedButtonImage(iSMPanelImages[STANCEUP_IMAGES], -1, 26, -1, -1, -1);
+  iBurstButtonImages[Enum265.WM_NORMAL] = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCEUP_IMAGES], -1, 7, -1, -1, -1);
+  iBurstButtonImages[Enum265.WM_BURST] = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCEUP_IMAGES], -1, 17, -1, -1, -1);
+  iBurstButtonImages[Enum265.WM_ATTACHED] = UseLoadedButtonImage(iSMPanelImages[Enum218.STANCEUP_IMAGES], -1, 26, -1, -1, -1);
 
   FilenameForBPP("INTERFACE\\invadd-ons.sti", ubString);
   // Load button Graphics
-  iSMPanelImages[STANCE_IMAGES] = LoadButtonImage(ubString, 0, 0, -1, 2, -1);
+  iSMPanelImages[Enum218.STANCE_IMAGES] = LoadButtonImage(ubString, 0, 0, -1, 2, -1);
 
   FilenameForBPP("INTERFACE\\inventory_buttons_2.sti", ubString);
   // Load button Graphics
-  iSMPanelImages[DONE_IMAGES] = LoadButtonImage(ubString, -1, 1, -1, 3, -1);
-  iSMPanelImages[MAPSCREEN_IMAGES] = UseLoadedButtonImage(iSMPanelImages[DONE_IMAGES], -1, 0, -1, 2, -1);
+  iSMPanelImages[Enum218.DONE_IMAGES] = LoadButtonImage(ubString, -1, 1, -1, 3, -1);
+  iSMPanelImages[Enum218.MAPSCREEN_IMAGES] = UseLoadedButtonImage(iSMPanelImages[Enum218.DONE_IMAGES], -1, 0, -1, 2, -1);
 
   // Create buttons
 
   // SET BUTTONS TO -1
   memset(iSMPanelButtons, -1, sizeof(iSMPanelButtons));
 
-  iSMPanelButtons[SM_MAP_SCREEN_BUTTON] = QuickCreateButton(iSMPanelImages[MAPSCREEN_IMAGES], SM_MAPSCREEN_X, SM_MAPSCREEN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnMapScreenCallback);
-  SetButtonFastHelpText(iSMPanelButtons[SM_MAP_SCREEN_BUTTON], TacticalStr[MAPSCREEN_POPUPTEXT]);
-  SetBtnHelpEndCallback(iSMPanelButtons[SM_MAP_SCREEN_BUTTON], HelpTextDoneCallback);
+  iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.MAPSCREEN_IMAGES], SM_MAPSCREEN_X, SM_MAPSCREEN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnMapScreenCallback);
+  SetButtonFastHelpText(iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON], TacticalStr[Enum335.MAPSCREEN_POPUPTEXT]);
+  SetBtnHelpEndCallback(iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[SM_DONE_BUTTON] = CreateIconAndTextButton(iSMPanelImages[DONE_IMAGES], "", FONT12ARIAL, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SM_DONE_X, SM_DONE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnSMDoneCallback);
-  SetButtonFastHelpText(iSMPanelButtons[SM_DONE_BUTTON], TacticalStr[END_TURN_POPUPTEXT]);
-  SetBtnHelpEndCallback(iSMPanelButtons[SM_DONE_BUTTON], HelpTextDoneCallback);
+  iSMPanelButtons[Enum220.SM_DONE_BUTTON] = CreateIconAndTextButton(iSMPanelImages[Enum218.DONE_IMAGES], "", FONT12ARIAL, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, SM_DONE_X, SM_DONE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnSMDoneCallback);
+  SetButtonFastHelpText(iSMPanelButtons[Enum220.SM_DONE_BUTTON], TacticalStr[Enum335.END_TURN_POPUPTEXT]);
+  SetBtnHelpEndCallback(iSMPanelButtons[Enum220.SM_DONE_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[TALK_BUTTON] = QuickCreateButton(iSMPanelImages[TALK_IMAGES], SM_TALKB_X, SM_TALKB_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CALLBACK, BtnTalkCallback);
-  SetButtonFastHelpText(iSMPanelButtons[TALK_BUTTON], TacticalStr[TALK_CURSOR_POPUPTEXT]);
-  SetBtnHelpEndCallback(iSMPanelButtons[TALK_BUTTON], HelpTextDoneCallback);
+  iSMPanelButtons[Enum220.TALK_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.TALK_IMAGES], SM_TALKB_X, SM_TALKB_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CALLBACK, BtnTalkCallback);
+  SetButtonFastHelpText(iSMPanelButtons[Enum220.TALK_BUTTON], TacticalStr[Enum335.TALK_CURSOR_POPUPTEXT]);
+  SetBtnHelpEndCallback(iSMPanelButtons[Enum220.TALK_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[MUTE_BUTTON] = QuickCreateButton(iSMPanelImages[MUTE_IMAGES], SM_MUTEB_X, SM_MUTEB_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnMuteCallback);
-  SetButtonFastHelpText(iSMPanelButtons[MUTE_BUTTON], TacticalStr[TOGGLE_MUTE_POPUPTEXT]);
-  SetBtnHelpEndCallback(iSMPanelButtons[MUTE_BUTTON], HelpTextDoneCallback);
+  iSMPanelButtons[Enum220.MUTE_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.MUTE_IMAGES], SM_MUTEB_X, SM_MUTEB_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnMuteCallback);
+  SetButtonFastHelpText(iSMPanelButtons[Enum220.MUTE_BUTTON], TacticalStr[Enum335.TOGGLE_MUTE_POPUPTEXT]);
+  SetBtnHelpEndCallback(iSMPanelButtons[Enum220.MUTE_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[STANCEUP_BUTTON] = QuickCreateButton(iSMPanelImages[STANCEUP_IMAGES], SM_STANCEUPB_X, SM_STANCEUPB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnStanceUpCallback);
-  if (iSMPanelButtons[STANCEUP_BUTTON] == -1) {
+  iSMPanelButtons[Enum220.STANCEUP_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.STANCEUP_IMAGES], SM_STANCEUPB_X, SM_STANCEUPB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnStanceUpCallback);
+  if (iSMPanelButtons[Enum220.STANCEUP_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
   }
-  SetButtonFastHelpText(iSMPanelButtons[STANCEUP_BUTTON], TacticalStr[CHANGE_STANCE_UP_POPUPTEXT]);
-  SetBtnHelpEndCallback(iSMPanelButtons[STANCEUP_BUTTON], HelpTextDoneCallback);
+  SetButtonFastHelpText(iSMPanelButtons[Enum220.STANCEUP_BUTTON], TacticalStr[Enum335.CHANGE_STANCE_UP_POPUPTEXT]);
+  SetBtnHelpEndCallback(iSMPanelButtons[Enum220.STANCEUP_BUTTON], HelpTextDoneCallback);
 
   // SetButtonFastHelpText( iSMPanelButtons[ STANCEUP_BUTTON ],L"Change Stance Up");
 
-  iSMPanelButtons[UPDOWN_BUTTON] = QuickCreateButton(iSMPanelImages[UPDOWN_IMAGES], SM_UPDOWNB_X, SM_UPDOWNB_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CALLBACK, BtnUpdownCallback);
-  if (iSMPanelButtons[UPDOWN_BUTTON] == -1) {
+  iSMPanelButtons[Enum220.UPDOWN_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.UPDOWN_IMAGES], SM_UPDOWNB_X, SM_UPDOWNB_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CALLBACK, BtnUpdownCallback);
+  if (iSMPanelButtons[Enum220.UPDOWN_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
   }
   // SetButtonFastHelpText( iSMPanelButtons[ UPDOWN_BUTTON ],L"Whatever");
-  SetButtonFastHelpText(iSMPanelButtons[UPDOWN_BUTTON], TacticalStr[CURSOR_LEVEL_POPUPTEXT]);
-  SetBtnHelpEndCallback(iSMPanelButtons[UPDOWN_BUTTON], HelpTextDoneCallback);
+  SetButtonFastHelpText(iSMPanelButtons[Enum220.UPDOWN_BUTTON], TacticalStr[Enum335.CURSOR_LEVEL_POPUPTEXT]);
+  SetBtnHelpEndCallback(iSMPanelButtons[Enum220.UPDOWN_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[CLIMB_BUTTON] = QuickCreateButton(iSMPanelImages[CLIMB_IMAGES], SM_CLIMBB_X, SM_CLIMBB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnClimbCallback);
-  if (iSMPanelButtons[CLIMB_BUTTON] == -1) {
+  iSMPanelButtons[Enum220.CLIMB_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.CLIMB_IMAGES], SM_CLIMBB_X, SM_CLIMBB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnClimbCallback);
+  if (iSMPanelButtons[Enum220.CLIMB_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
   }
   // SetButtonFastHelpText( iSMPanelButtons[ CLIMB_BUTTON ],L"Climb");
-  SetButtonFastHelpText(iSMPanelButtons[CLIMB_BUTTON], TacticalStr[JUMPCLIMB_POPUPTEXT]);
-  SetBtnHelpEndCallback(iSMPanelButtons[CLIMB_BUTTON], HelpTextDoneCallback);
+  SetButtonFastHelpText(iSMPanelButtons[Enum220.CLIMB_BUTTON], TacticalStr[Enum335.JUMPCLIMB_POPUPTEXT]);
+  SetBtnHelpEndCallback(iSMPanelButtons[Enum220.CLIMB_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[STANCEDOWN_BUTTON] = QuickCreateButton(iSMPanelImages[STANCEDOWN_IMAGES], SM_STANCEDOWNB_X, SM_STANCEDOWNB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnStanceDownCallback);
-  if (iSMPanelButtons[STANCEDOWN_BUTTON] == -1) {
+  iSMPanelButtons[Enum220.STANCEDOWN_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.STANCEDOWN_IMAGES], SM_STANCEDOWNB_X, SM_STANCEDOWNB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnStanceDownCallback);
+  if (iSMPanelButtons[Enum220.STANCEDOWN_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
   }
   // SetButtonFastHelpText( iSMPanelButtons[ STANCEDOWN_BUTTON ],L"Change Stance Down");
-  SetButtonFastHelpText(iSMPanelButtons[STANCEDOWN_BUTTON], TacticalStr[CHANGE_STANCE_DOWN_POPUPTEXT]);
-  SetBtnHelpEndCallback(iSMPanelButtons[STANCEDOWN_BUTTON], HelpTextDoneCallback);
+  SetButtonFastHelpText(iSMPanelButtons[Enum220.STANCEDOWN_BUTTON], TacticalStr[Enum335.CHANGE_STANCE_DOWN_POPUPTEXT]);
+  SetBtnHelpEndCallback(iSMPanelButtons[Enum220.STANCEDOWN_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[HANDCURSOR_BUTTON] = QuickCreateButton(iSMPanelImages[HANDCURSOR_IMAGES], SM_HANDCURSORB_X, SM_HANDCURSORB_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CALLBACK, BtnHandCursorCallback);
-  if (iSMPanelButtons[HANDCURSOR_BUTTON] == -1) {
+  iSMPanelButtons[Enum220.HANDCURSOR_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.HANDCURSOR_IMAGES], SM_HANDCURSORB_X, SM_HANDCURSORB_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CALLBACK, BtnHandCursorCallback);
+  if (iSMPanelButtons[Enum220.HANDCURSOR_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
   }
   // SetButtonFastHelpText( iSMPanelButtons[ HANDCURSOR_BUTTON ],L"Change Stance Down");
-  SetButtonFastHelpText(iSMPanelButtons[HANDCURSOR_BUTTON], TacticalStr[EXAMINE_CURSOR_POPUPTEXT]);
-  SetBtnHelpEndCallback(iSMPanelButtons[HANDCURSOR_BUTTON], HelpTextDoneCallback);
+  SetButtonFastHelpText(iSMPanelButtons[Enum220.HANDCURSOR_BUTTON], TacticalStr[Enum335.EXAMINE_CURSOR_POPUPTEXT]);
+  SetBtnHelpEndCallback(iSMPanelButtons[Enum220.HANDCURSOR_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[PREVMERC_BUTTON] = QuickCreateButton(iSMPanelImages[PREVMERC_IMAGES], SM_PREVMERCB_X, SM_PREVMERCB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnPrevMercCallback);
-  if (iSMPanelButtons[PREVMERC_BUTTON] == -1) {
+  iSMPanelButtons[Enum220.PREVMERC_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.PREVMERC_IMAGES], SM_PREVMERCB_X, SM_PREVMERCB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnPrevMercCallback);
+  if (iSMPanelButtons[Enum220.PREVMERC_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
   }
   // SetButtonFastHelpText( iSMPanelButtons[ PREVMERC_BUTTON ],L"Change Stance Down");
-  SetButtonFastHelpText(iSMPanelButtons[PREVMERC_BUTTON], TacticalStr[PREV_MERC_POPUPTEXT]);
-  SetBtnHelpEndCallback(iSMPanelButtons[PREVMERC_BUTTON], HelpTextDoneCallback);
+  SetButtonFastHelpText(iSMPanelButtons[Enum220.PREVMERC_BUTTON], TacticalStr[Enum335.PREV_MERC_POPUPTEXT]);
+  SetBtnHelpEndCallback(iSMPanelButtons[Enum220.PREVMERC_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[NEXTMERC_BUTTON] = QuickCreateButton(iSMPanelImages[NEXTMERC_IMAGES], SM_NEXTMERCB_X, SM_NEXTMERCB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnNextMercCallback);
-  if (iSMPanelButtons[NEXTMERC_BUTTON] == -1) {
+  iSMPanelButtons[Enum220.NEXTMERC_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.NEXTMERC_IMAGES], SM_NEXTMERCB_X, SM_NEXTMERCB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnNextMercCallback);
+  if (iSMPanelButtons[Enum220.NEXTMERC_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
   }
-  SetButtonFastHelpText(iSMPanelButtons[NEXTMERC_BUTTON], TacticalStr[NEXT_MERC_POPUPTEXT]);
+  SetButtonFastHelpText(iSMPanelButtons[Enum220.NEXTMERC_BUTTON], TacticalStr[Enum335.NEXT_MERC_POPUPTEXT]);
   // SetButtonFastHelpText( iSMPanelButtons[ NEXTMERC_BUTTON ],L"Change Stance Down");
-  SetBtnHelpEndCallback(iSMPanelButtons[NEXTMERC_BUTTON], HelpTextDoneCallback);
+  SetBtnHelpEndCallback(iSMPanelButtons[Enum220.NEXTMERC_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[OPTIONS_BUTTON] = QuickCreateButton(iSMPanelImages[OPTIONS_IMAGES], SM_OPTIONSB_X, SM_OPTIONSB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnOptionsCallback);
-  if (iSMPanelButtons[OPTIONS_BUTTON] == -1) {
+  iSMPanelButtons[Enum220.OPTIONS_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.OPTIONS_IMAGES], SM_OPTIONSB_X, SM_OPTIONSB_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnOptionsCallback);
+  if (iSMPanelButtons[Enum220.OPTIONS_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
   }
   // SetButtonFastHelpText( iSMPanelButtons[ OPTIONS_BUTTON ],L"Change Stance Down");
-  SetButtonFastHelpText(iSMPanelButtons[OPTIONS_BUTTON], TacticalStr[CHANGE_OPTIONS_POPUPTEXT]);
-  SetBtnHelpEndCallback(iSMPanelButtons[OPTIONS_BUTTON], HelpTextDoneCallback);
+  SetButtonFastHelpText(iSMPanelButtons[Enum220.OPTIONS_BUTTON], TacticalStr[Enum335.CHANGE_OPTIONS_POPUPTEXT]);
+  SetBtnHelpEndCallback(iSMPanelButtons[Enum220.OPTIONS_BUTTON], HelpTextDoneCallback);
 
   /*iSMPanelButtons[ BURSTMODE_BUTTON ] = QuickCreateButton( iSMPanelImages[ BURSTMODE_IMAGES ], SM_BURSTMODEB_X, SM_BURSTMODEB_Y,
                                                                           BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGH - 1,
                                                                           MSYS_NO_CALLBACK, (GUI_CALLBACK)BtnBurstModeCallback );*/
-  iSMPanelButtons[BURSTMODE_BUTTON] = QuickCreateButton(iBurstButtonImages[WM_NORMAL], SM_BURSTMODEB_X, SM_BURSTMODEB_Y, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, MSYS_NO_CALLBACK, BtnBurstModeCallback);
+  iSMPanelButtons[Enum220.BURSTMODE_BUTTON] = QuickCreateButton(iBurstButtonImages[Enum265.WM_NORMAL], SM_BURSTMODEB_X, SM_BURSTMODEB_Y, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, MSYS_NO_CALLBACK, BtnBurstModeCallback);
 
-  if (iSMPanelButtons[BURSTMODE_BUTTON] == -1) {
+  if (iSMPanelButtons[Enum220.BURSTMODE_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
   }
-  SetButtonFastHelpText(iSMPanelButtons[BURSTMODE_BUTTON], TacticalStr[TOGGLE_BURSTMODE_POPUPTEXT]);
+  SetButtonFastHelpText(iSMPanelButtons[Enum220.BURSTMODE_BUTTON], TacticalStr[Enum335.TOGGLE_BURSTMODE_POPUPTEXT]);
   // SetButtonFastHelpText( iSMPanelButtons[ BURSTMODE_BUTTON ],L"Change Stance Down");
-  SetBtnHelpEndCallback(iSMPanelButtons[BURSTMODE_BUTTON], HelpTextDoneCallback);
+  SetBtnHelpEndCallback(iSMPanelButtons[Enum220.BURSTMODE_BUTTON], HelpTextDoneCallback);
 
-  iSMPanelButtons[LOOK_BUTTON] = QuickCreateButton(iSMPanelImages[LOOK_IMAGES], SM_LOOKB_X, SM_LOOKB_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CALLBACK, BtnLookCallback);
-  if (iSMPanelButtons[LOOK_BUTTON] == -1) {
+  iSMPanelButtons[Enum220.LOOK_BUTTON] = QuickCreateButton(iSMPanelImages[Enum218.LOOK_IMAGES], SM_LOOKB_X, SM_LOOKB_Y, BUTTON_NEWTOGGLE, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CALLBACK, BtnLookCallback);
+  if (iSMPanelButtons[Enum220.LOOK_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
   }
   // SetButtonFastHelpText( iSMPanelButtons[ LOOK_BUTTON ],L"Change Stance Down");
-  SetButtonFastHelpText(iSMPanelButtons[LOOK_BUTTON], TacticalStr[LOOK_CURSOR_POPUPTEXT]);
-  SetBtnHelpEndCallback(iSMPanelButtons[LOOK_BUTTON], HelpTextDoneCallback);
+  SetButtonFastHelpText(iSMPanelButtons[Enum220.LOOK_BUTTON], TacticalStr[Enum335.LOOK_CURSOR_POPUPTEXT]);
+  SetBtnHelpEndCallback(iSMPanelButtons[Enum220.LOOK_BUTTON], HelpTextDoneCallback);
 
   return TRUE;
 }
@@ -1192,13 +1192,13 @@ function CreateSMPanelButtons(): BOOLEAN {
 function RemoveSMPanelButtons(): void {
   let cnt: UINT32;
 
-  for (cnt = 0; cnt < NUM_SM_BUTTONS; cnt++) {
+  for (cnt = 0; cnt < Enum220.NUM_SM_BUTTONS; cnt++) {
     if (iSMPanelButtons[cnt] != -1) {
       RemoveButton(iSMPanelButtons[cnt]);
     }
   }
 
-  for (cnt = 0; cnt < NUM_SM_BUTTON_IMAGES; cnt++) {
+  for (cnt = 0; cnt < Enum218.NUM_SM_BUTTON_IMAGES; cnt++) {
     UnloadButtonImage(iSMPanelImages[cnt]);
   }
 
@@ -1210,9 +1210,9 @@ function RemoveSMPanelButtons(): void {
     UnloadButtonImage(giSMStealthImages);
   }
 
-  UnloadButtonImage(iBurstButtonImages[WM_NORMAL]);
-  UnloadButtonImage(iBurstButtonImages[WM_BURST]);
-  UnloadButtonImage(iBurstButtonImages[WM_ATTACHED]);
+  UnloadButtonImage(iBurstButtonImages[Enum265.WM_NORMAL]);
+  UnloadButtonImage(iBurstButtonImages[Enum265.WM_BURST]);
+  UnloadButtonImage(iBurstButtonImages[Enum265.WM_ATTACHED]);
 }
 
 function ShutdownSMPanel(): BOOLEAN {
@@ -1477,14 +1477,14 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
     // UPdate stats!
     if (gpSMCurrentMerc.value.bLife != 0) {
       if (gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_VEHICLE) {
-        swprintf(pStr, TacticalStr[VEHICLE_VITAL_STATS_POPUPTEXT], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax, gpSMCurrentMerc.value.bBreath, gpSMCurrentMerc.value.bBreathMax);
+        swprintf(pStr, TacticalStr[Enum335.VEHICLE_VITAL_STATS_POPUPTEXT], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax, gpSMCurrentMerc.value.bBreath, gpSMCurrentMerc.value.bBreathMax);
         SetRegionFastHelpText(addressof(gSM_SELMERCBarsRegion), pStr);
       } else if (gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_ROBOT) {
         swprintf(pStr, gzLateLocalizedString[16], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax);
         SetRegionFastHelpText(addressof(gTEAM_BarsRegions[cnt]), pStr);
       } else {
         GetMoraleString(gpSMCurrentMerc, pMoraleStr);
-        swprintf(pStr, TacticalStr[MERC_VITAL_STATS_POPUPTEXT], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax, gpSMCurrentMerc.value.bBreath, gpSMCurrentMerc.value.bBreathMax, pMoraleStr);
+        swprintf(pStr, TacticalStr[Enum335.MERC_VITAL_STATS_POPUPTEXT], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax, gpSMCurrentMerc.value.bBreath, gpSMCurrentMerc.value.bBreathMax, pMoraleStr);
         SetRegionFastHelpText(addressof(gSM_SELMERCBarsRegion), pStr);
       }
     } else {
@@ -1666,7 +1666,7 @@ function SMInvClickCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
               }
 
               // Say OK acknowledge....
-              DoMercBattleSound(gpSMCurrentMerc, BATTLE_SOUND_COOL1);
+              DoMercBattleSound(gpSMCurrentMerc, Enum259.BATTLE_SOUND_COOL1);
             }
           } else if (ApplyCanteen(gpSMCurrentMerc, gpItemPointer, addressof(fGoodAPs))) {
             // Dirty
@@ -1691,7 +1691,7 @@ function SMInvClickCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
               }
 
               // Say OK acknowledge....
-              DoMercBattleSound(gpSMCurrentMerc, BATTLE_SOUND_COOL1);
+              DoMercBattleSound(gpSMCurrentMerc, Enum259.BATTLE_SOUND_COOL1);
             }
           } else if (ApplyDrugs(gpSMCurrentMerc, gpItemPointer)) {
             // Dirty
@@ -1714,10 +1714,10 @@ function SMInvClickCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
             */
 
             // Say OK acknowledge....
-            DoMercBattleSound(gpSMCurrentMerc, BATTLE_SOUND_COOL1);
+            DoMercBattleSound(gpSMCurrentMerc, Enum259.BATTLE_SOUND_COOL1);
           } else {
             // Send message
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[CANNOT_DO_INV_STUFF_STR]);
+            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.CANNOT_DO_INV_STUFF_STR]);
           }
         }
       }
@@ -1732,13 +1732,13 @@ function HandleNailsVestFetish(pSoldier: Pointer<SOLDIERTYPE>, uiHandPos: UINT32
   // OK are we nails?
   if (pSoldier.value.ubProfile == 34) {
     // if this the VEST POS?
-    if (uiHandPos == VESTPOS) {
+    if (uiHandPos == Enum261.VESTPOS) {
       // Are we trying to pick it up?
       if (usReplaceItem == NOTHING) {
         fRefuse = TRUE;
       } else {
         // Do we have nothing or the leather vest or kevlar leather vest?
-        if (usReplaceItem == LEATHER_JACKET || usReplaceItem == LEATHER_JACKET_W_KEVLAR || usReplaceItem == LEATHER_JACKET_W_KEVLAR_18 || usReplaceItem == LEATHER_JACKET_W_KEVLAR_Y || usReplaceItem == COMPOUND18 || usReplaceItem == JAR_QUEEN_CREATURE_BLOOD) {
+        if (usReplaceItem == Enum225.LEATHER_JACKET || usReplaceItem == Enum225.LEATHER_JACKET_W_KEVLAR || usReplaceItem == Enum225.LEATHER_JACKET_W_KEVLAR_18 || usReplaceItem == Enum225.LEATHER_JACKET_W_KEVLAR_Y || usReplaceItem == Enum225.COMPOUND18 || usReplaceItem == Enum225.JAR_QUEEN_CREATURE_BLOOD) {
           // This is good....
           fRefuse = FALSE;
         } else {
@@ -1789,7 +1789,7 @@ function UIHandleItemPlacement(ubHandPos: UINT8, usOldItemIndex: UINT16, usNewIt
     }
 
     if (gpItemPointerSoldier != gpSMCurrentMerc) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[MSG_ITEM_PASSED_TO_MERC], ShortItemNames[usNewItemIndex], gpSMCurrentMerc.value.name);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[Enum333.MSG_ITEM_PASSED_TO_MERC], ShortItemNames[usNewItemIndex], gpSMCurrentMerc.value.name);
     }
 
     // UPDATE ITEM POINTER.....
@@ -1800,7 +1800,7 @@ function UIHandleItemPlacement(ubHandPos: UINT8, usOldItemIndex: UINT16, usNewIt
     }
 
     // Set cursor back to normal mode...
-    guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+    guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
 
     return TRUE;
   } else {
@@ -1878,7 +1878,7 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
       // if we are in the shopkeeper interface
       if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
         // pick up item from regular inventory slot into cursor OR try to sell it ( unless CTRL is held down )
-        BeginSkiItemPointer(PLAYERS_INVENTORY, uiHandPos, !gfKeyState[CTRL]);
+        BeginSkiItemPointer(Enum252.PLAYERS_INVENTORY, uiHandPos, !gfKeyState[CTRL]);
       }
 
       HandleTacticalEffectsOfEquipmentChange(gpSMCurrentMerc, uiHandPos, usOldItemIndex, NOTHING);
@@ -1932,7 +1932,7 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
         usOldItemIndex = gpSMCurrentMerc.value.inv[uiHandPos].usItem;
         usNewItemIndex = gpItemPointer.value.usItem;
 
-        if (uiHandPos == HANDPOS || uiHandPos == SECONDHANDPOS || uiHandPos == HELMETPOS || uiHandPos == VESTPOS || uiHandPos == LEGPOS) {
+        if (uiHandPos == Enum261.HANDPOS || uiHandPos == Enum261.SECONDHANDPOS || uiHandPos == Enum261.HELMETPOS || uiHandPos == Enum261.VESTPOS || uiHandPos == Enum261.LEGPOS) {
           // if ( ValidAttachmentClass( usNewItemIndex, usOldItemIndex ) )
           if (ValidAttachment(usNewItemIndex, usOldItemIndex)) {
             // it's an attempt to attach; bring up the inventory panel
@@ -1952,9 +1952,9 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
               // locked in a region, free it up.
               FreeMouseCursor();
 
-              DoMessageBox(MSG_BOX_BASIC_STYLE, Message[STR_MERGE_ITEMS], SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO, MergeMessageBoxCallBack, NULL);
+              DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_MERGE_ITEMS], Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO, MergeMessageBoxCallBack, NULL);
             } else
-              DoMessageBox(MSG_BOX_BASIC_STYLE, Message[STR_MERGE_ITEMS], GAME_SCREEN, MSG_BOX_FLAG_YESNO, MergeMessageBoxCallBack, NULL);
+              DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_MERGE_ITEMS], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, MergeMessageBoxCallBack, NULL);
             return;
           }
           // else handle normally
@@ -1978,12 +1978,12 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
             if (gpItemPointer == NULL) {
               // clean up
               memset(addressof(gMoveingItem), 0, sizeof(INVENTORY_IN_SLOT));
-              SetSkiCursor(CURSOR_NORMAL);
+              SetSkiCursor(Enum317.CURSOR_NORMAL);
             } else {
               // if we're holding something else in the pointer now
               if (usItemPrevInItemPointer != gpItemPointer.value.usItem) {
                 // pick up item swapped out of inventory slot into cursor (don't try to sell)
-                BeginSkiItemPointer(PLAYERS_INVENTORY, -1, FALSE);
+                BeginSkiItemPointer(Enum252.PLAYERS_INVENTORY, -1, FALSE);
               } else {
                 // otherwise, leave the cursor as is, means more items were picked up at once than can be placed in this slot
                 // we deal with this by leaving the remainder in the cursor, to be put down elsewhere using subsequent clicks
@@ -2057,7 +2057,7 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
 
     // Some global stuff here - for esc, etc
     // Check for # of slots in item
-    if ((gpSMCurrentMerc.value.inv[uiHandPos].ubNumberOfObjects > 1 && ItemSlotLimit(gpSMCurrentMerc.value.inv[uiHandPos].usItem, uiHandPos) > 0) && (guiCurrentScreen != MAP_SCREEN)) {
+    if ((gpSMCurrentMerc.value.inv[uiHandPos].ubNumberOfObjects > 1 && ItemSlotLimit(gpSMCurrentMerc.value.inv[uiHandPos].usItem, uiHandPos) > 0) && (guiCurrentScreen != Enum26.MAP_SCREEN)) {
       if (!InItemStackPopup()) {
         // InitItemStackPopup( gpSMCurrentMerc, (UINT8)uiHandPos, SM_ITEMDESC_START_X, SM_ITEMDESC_START_Y, SM_ITEMDESC_WIDTH, SM_ITEMDESC_HEIGHT );
         InitItemStackPopup(gpSMCurrentMerc, uiHandPos, 216, INV_INTERFACE_START_Y, 314, (480 - INV_INTERFACE_START_Y));
@@ -2106,7 +2106,7 @@ function HandleMouseOverSoldierFaceForContMove(pSoldier: Pointer<SOLDIERTYPE>, f
       pFace = addressof(gFacesData[pSoldier.value.iFaceIndex]);
 
       pFace.value.fDisplayTextOver = FACE_DRAW_TEXT_OVER;
-      wcscpy(pFace.value.zDisplayText, TacticalStr[CONTINUE_OVER_FACE_STR]);
+      wcscpy(pFace.value.zDisplayText, TacticalStr[Enum335.CONTINUE_OVER_FACE_STR]);
 
       sGridNo = pSoldier.value.sFinalDestination;
 
@@ -2186,7 +2186,7 @@ function SelectedMercButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
         }
 
         gfSwitchPanel = TRUE;
-        gbNewPanel = TEAM_PANEL;
+        gbNewPanel = Enum215.TEAM_PANEL;
       }
     }
   }
@@ -2362,10 +2362,10 @@ function BtnMuteCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_MUTE) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[MUTE_OFF_STR], gpSMCurrentMerc.value.name);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.MUTE_OFF_STR], gpSMCurrentMerc.value.name);
       gpSMCurrentMerc.value.uiStatusFlags &= (~SOLDIER_MUTE);
     } else {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[MUTE_ON_STR], gpSMCurrentMerc.value.name);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.MUTE_ON_STR], gpSMCurrentMerc.value.name);
       gpSMCurrentMerc.value.uiStatusFlags |= (SOLDIER_MUTE);
     }
   }
@@ -2391,7 +2391,7 @@ function BtnPrevMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
         LocateSoldier(sID, DONTSETLOCATOR);
         // refresh background for player slots (in case item values change due to Flo's discount)
-        gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+        gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
       } else
         LocateSoldier(sID, SETLOCATOR);
     }
@@ -2428,7 +2428,7 @@ function BtnNextMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
         LocateSoldier(sID, DONTSETLOCATOR);
         // refresh background for player slots (in case item values change due to Flo's discount)
-        gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+        gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
       } else
         LocateSoldier(sID, SETLOCATOR);
     }
@@ -2454,7 +2454,7 @@ function BtnOptionsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
     guiPreviousOptionScreen = guiCurrentScreen;
-    LeaveTacticalScreen(OPTIONS_SCREEN);
+    LeaveTacticalScreen(Enum26.OPTIONS_SCREEN);
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
   }
@@ -2574,7 +2574,7 @@ function InitializeTEAMPanel(): BOOLEAN {
 
   // Set viewports
   // Define region for panel
-  MSYS_DefineRegion(addressof(gTEAM_PanelRegion), 0, gsVIEWPORT_END_Y, 640, 480, MSYS_PRIORITY_NORMAL, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(gTEAM_PanelRegion), 0, gsVIEWPORT_END_Y, 640, 480, MSYS_PRIORITY_NORMAL, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Add region
   MSYS_AddRegion(addressof(gTEAM_PanelRegion));
 
@@ -2681,9 +2681,9 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
   /* static */ let pMoraleStr: INT16[] /* [20] */;
 
   if (fDirty == DIRTYLEVEL2) {
-    MarkAButtonDirty(iTEAMPanelButtons[TEAM_DONE_BUTTON]);
-    MarkAButtonDirty(iTEAMPanelButtons[TEAM_MAP_SCREEN_BUTTON]);
-    MarkAButtonDirty(iTEAMPanelButtons[CHANGE_SQUAD_BUTTON]);
+    MarkAButtonDirty(iTEAMPanelButtons[Enum221.TEAM_DONE_BUTTON]);
+    MarkAButtonDirty(iTEAMPanelButtons[Enum221.TEAM_MAP_SCREEN_BUTTON]);
+    MarkAButtonDirty(iTEAMPanelButtons[Enum221.CHANGE_SQUAD_BUTTON]);
 
     // Blit video surface
     // if(gbPixelDepth==16)
@@ -2720,12 +2720,12 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
           pVehicle = GetSoldierStructureForVehicle(pSoldier.value.iVehicleId);
 
           // OK, for each item, set dirty text if applicable!
-          swprintf(pStr, TacticalStr[DRIVER_POPUPTEXT], pVehicle.value.bLife, pVehicle.value.bLifeMax, pVehicle.value.bBreath, pVehicle.value.bBreathMax);
+          swprintf(pStr, TacticalStr[Enum335.DRIVER_POPUPTEXT], pVehicle.value.bLife, pVehicle.value.bLifeMax, pVehicle.value.bBreath, pVehicle.value.bBreathMax);
           SetRegionFastHelpText(addressof(gTEAM_FirstHandInv[cnt]), pStr);
         }
         // Add text for first hand popup
         else {
-          GetHelpTextForItem(pStr, addressof(pSoldier.value.inv[HANDPOS]), pSoldier);
+          GetHelpTextForItem(pStr, addressof(pSoldier.value.inv[Enum261.HANDPOS]), pSoldier);
 
           // OK, for each item, set dirty text if applicable!
           SetRegionFastHelpText(addressof(gTEAM_FirstHandInv[cnt]), pStr);
@@ -2734,9 +2734,9 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
         // Add text for seonc hand popup
         if (pSoldier.value.uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
           // OK, for each item, set dirty text if applicable!
-          SetRegionFastHelpText(addressof(gTEAM_SecondHandInv[cnt]), TacticalStr[EXIT_VEHICLE_POPUPTEXT]);
+          SetRegionFastHelpText(addressof(gTEAM_SecondHandInv[cnt]), TacticalStr[Enum335.EXIT_VEHICLE_POPUPTEXT]);
         } else {
-          GetHelpTextForItem(pStr, addressof(pSoldier.value.inv[SECONDHANDPOS]), pSoldier);
+          GetHelpTextForItem(pStr, addressof(pSoldier.value.inv[Enum261.SECONDHANDPOS]), pSoldier);
 
           // OK, for each item, set dirty text if applicable!
           SetRegionFastHelpText(addressof(gTEAM_SecondHandInv[cnt]), pStr);
@@ -2812,14 +2812,14 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
         if (fDirty == DIRTYLEVEL2) {
           if (pSoldier.value.bLife != 0) {
             if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-              swprintf(pStr, TacticalStr[VEHICLE_VITAL_STATS_POPUPTEXT], pSoldier.value.bLife, pSoldier.value.bLifeMax, pSoldier.value.bBreath, pSoldier.value.bBreathMax);
+              swprintf(pStr, TacticalStr[Enum335.VEHICLE_VITAL_STATS_POPUPTEXT], pSoldier.value.bLife, pSoldier.value.bLifeMax, pSoldier.value.bBreath, pSoldier.value.bBreathMax);
               SetRegionFastHelpText(addressof(gTEAM_BarsRegions[cnt]), pStr);
             } else if (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
               swprintf(pStr, gzLateLocalizedString[16], pSoldier.value.bLife, pSoldier.value.bLifeMax);
               SetRegionFastHelpText(addressof(gTEAM_BarsRegions[cnt]), pStr);
             } else {
               GetMoraleString(pSoldier, pMoraleStr);
-              swprintf(pStr, TacticalStr[MERC_VITAL_STATS_POPUPTEXT], pSoldier.value.bLife, pSoldier.value.bLifeMax, pSoldier.value.bBreath, pSoldier.value.bBreathMax, pMoraleStr);
+              swprintf(pStr, TacticalStr[Enum335.MERC_VITAL_STATS_POPUPTEXT], pSoldier.value.bLife, pSoldier.value.bLifeMax, pSoldier.value.bBreath, pSoldier.value.bBreathMax, pMoraleStr);
               SetRegionFastHelpText(addressof(gTEAM_BarsRegions[cnt]), pStr);
             }
           } else {
@@ -2898,31 +2898,31 @@ function CreateTEAMPanelButtons(): BOOLEAN {
   FilenameForBPP("INTERFACE\\bottom_bar_buttons.sti", ubString);
 
   // Load button Graphics
-  iTEAMPanelImages[ENDTURN_IMAGES] = LoadButtonImage(ubString, -1, 0, -1, 3, -1);
-  iTEAMPanelImages[ROSTERMODE_IMAGES] = UseLoadedButtonImage(iTEAMPanelImages[ENDTURN_IMAGES], -1, 1, -1, 4, -1);
-  iTEAMPanelImages[DISK_IMAGES] = UseLoadedButtonImage(iTEAMPanelImages[ENDTURN_IMAGES], -1, 2, -1, 5, -1);
+  iTEAMPanelImages[Enum219.ENDTURN_IMAGES] = LoadButtonImage(ubString, -1, 0, -1, 3, -1);
+  iTEAMPanelImages[Enum219.ROSTERMODE_IMAGES] = UseLoadedButtonImage(iTEAMPanelImages[Enum219.ENDTURN_IMAGES], -1, 1, -1, 4, -1);
+  iTEAMPanelImages[Enum219.DISK_IMAGES] = UseLoadedButtonImage(iTEAMPanelImages[Enum219.ENDTURN_IMAGES], -1, 2, -1, 5, -1);
 
   // Create buttons
-  iTEAMPanelButtons[TEAM_DONE_BUTTON] = QuickCreateButton(iTEAMPanelImages[ENDTURN_IMAGES], TM_ENDTURN_X, TM_ENDTURN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnEndTurnCallback);
-  if (iTEAMPanelButtons[TEAM_DONE_BUTTON] == -1) {
+  iTEAMPanelButtons[Enum221.TEAM_DONE_BUTTON] = QuickCreateButton(iTEAMPanelImages[Enum219.ENDTURN_IMAGES], TM_ENDTURN_X, TM_ENDTURN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnEndTurnCallback);
+  if (iTEAMPanelButtons[Enum221.TEAM_DONE_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
   }
-  SetButtonFastHelpText(iTEAMPanelButtons[TEAM_DONE_BUTTON], TacticalStr[END_TURN_POPUPTEXT]);
+  SetButtonFastHelpText(iTEAMPanelButtons[Enum221.TEAM_DONE_BUTTON], TacticalStr[Enum335.END_TURN_POPUPTEXT]);
 
-  iTEAMPanelButtons[TEAM_MAP_SCREEN_BUTTON] = QuickCreateButton(iTEAMPanelImages[ROSTERMODE_IMAGES], TM_ROSTERMODE_X, TM_ROSTERMODE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnRostermodeCallback);
-  if (iTEAMPanelButtons[TEAM_MAP_SCREEN_BUTTON] == -1) {
+  iTEAMPanelButtons[Enum221.TEAM_MAP_SCREEN_BUTTON] = QuickCreateButton(iTEAMPanelImages[Enum219.ROSTERMODE_IMAGES], TM_ROSTERMODE_X, TM_ROSTERMODE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnRostermodeCallback);
+  if (iTEAMPanelButtons[Enum221.TEAM_MAP_SCREEN_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
   }
-  SetButtonFastHelpText(iTEAMPanelButtons[TEAM_MAP_SCREEN_BUTTON], TacticalStr[MAPSCREEN_POPUPTEXT]);
+  SetButtonFastHelpText(iTEAMPanelButtons[Enum221.TEAM_MAP_SCREEN_BUTTON], TacticalStr[Enum335.MAPSCREEN_POPUPTEXT]);
 
-  iTEAMPanelButtons[CHANGE_SQUAD_BUTTON] = QuickCreateButton(iTEAMPanelImages[DISK_IMAGES], TM_DISK_X, TM_DISK_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnSquadCallback);
-  if (iTEAMPanelButtons[CHANGE_SQUAD_BUTTON] == -1) {
+  iTEAMPanelButtons[Enum221.CHANGE_SQUAD_BUTTON] = QuickCreateButton(iTEAMPanelImages[Enum219.DISK_IMAGES], TM_DISK_X, TM_DISK_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, DEFAULT_MOVE_CALLBACK, BtnSquadCallback);
+  if (iTEAMPanelButtons[Enum221.CHANGE_SQUAD_BUTTON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return FALSE;
   }
-  SetButtonFastHelpText(iTEAMPanelButtons[CHANGE_SQUAD_BUTTON], TacticalStr[CHANGE_SQUAD_POPUPTEXT]);
+  SetButtonFastHelpText(iTEAMPanelButtons[Enum221.CHANGE_SQUAD_BUTTON], TacticalStr[Enum335.CHANGE_SQUAD_POPUPTEXT]);
 
   return TRUE;
 }
@@ -2930,11 +2930,11 @@ function CreateTEAMPanelButtons(): BOOLEAN {
 function RemoveTEAMPanelButtons(): void {
   let cnt: UINT32;
 
-  for (cnt = 0; cnt < NUM_TEAM_BUTTONS; cnt++) {
+  for (cnt = 0; cnt < Enum221.NUM_TEAM_BUTTONS; cnt++) {
     RemoveButton(iTEAMPanelButtons[cnt]);
   }
 
-  for (cnt = 0; cnt < NUM_TEAM_BUTTON_IMAGES; cnt++) {
+  for (cnt = 0; cnt < Enum219.NUM_TEAM_BUTTON_IMAGES; cnt++) {
     UnloadButtonImage(iTEAMPanelImages[cnt]);
   }
 }
@@ -2958,7 +2958,7 @@ function BtnRostermodeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-    if (guiCurrentScreen == GAME_SCREEN) {
+    if (guiCurrentScreen == Enum26.GAME_SCREEN) {
       GoToMapScreenFromTactical();
       //			EnableRadarScreenRender( );
     }
@@ -2992,21 +2992,21 @@ function UpdateTEAMPanel(): void {
   let cnt: INT32;
 
   if ((gTacticalStatus.ubCurrentTeam != gbPlayerNum) || (gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
-    DisableButton(iTEAMPanelButtons[TEAM_DONE_BUTTON]);
+    DisableButton(iTEAMPanelButtons[Enum221.TEAM_DONE_BUTTON]);
   } else {
-    EnableButton(iTEAMPanelButtons[TEAM_DONE_BUTTON]);
+    EnableButton(iTEAMPanelButtons[Enum221.TEAM_DONE_BUTTON]);
   }
 
   if (gTacticalStatus.uiFlags & ENGAGED_IN_CONV) {
-    DisableButton(iTEAMPanelButtons[TEAM_MAP_SCREEN_BUTTON]);
+    DisableButton(iTEAMPanelButtons[Enum221.TEAM_MAP_SCREEN_BUTTON]);
   } else {
-    EnableButton(iTEAMPanelButtons[TEAM_MAP_SCREEN_BUTTON]);
+    EnableButton(iTEAMPanelButtons[Enum221.TEAM_MAP_SCREEN_BUTTON]);
   }
 
   if (gfDisableTacticalPanelButtons) {
-    DisableButton(iTEAMPanelButtons[TEAM_DONE_BUTTON]);
-    DisableButton(iTEAMPanelButtons[TEAM_MAP_SCREEN_BUTTON]);
-    DisableButton(iTEAMPanelButtons[CHANGE_SQUAD_BUTTON]);
+    DisableButton(iTEAMPanelButtons[Enum221.TEAM_DONE_BUTTON]);
+    DisableButton(iTEAMPanelButtons[Enum221.TEAM_MAP_SCREEN_BUTTON]);
+    DisableButton(iTEAMPanelButtons[Enum221.CHANGE_SQUAD_BUTTON]);
 
     // OK, disable item regions.......
     for (cnt = 0; cnt < 6; cnt++) {
@@ -3023,7 +3023,7 @@ function UpdateTEAMPanel(): void {
       MSYS_DisableRegion(addressof(gRadarRegion));
     }
   } else {
-    EnableButton(iTEAMPanelButtons[CHANGE_SQUAD_BUTTON]);
+    EnableButton(iTEAMPanelButtons[Enum221.CHANGE_SQUAD_BUTTON]);
 
     for (cnt = 0; cnt < 6; cnt++) {
       MSYS_EnableRegion(addressof(gTEAM_EnemyIndicator[cnt]));
@@ -3049,7 +3049,7 @@ function HandleMouseOverTeamFaceForContMove(fOn: BOOLEAN): void {
       pFace = addressof(gFacesData[gpSMCurrentMerc.value.iFaceIndex]);
 
       pFace.value.fDisplayTextOver = FACE_DRAW_TEXT_OVER;
-      wcscpy(pFace.value.zDisplayText, TacticalStr[CONTINUE_OVER_FACE_STR]);
+      wcscpy(pFace.value.zDisplayText, TacticalStr[Enum335.CONTINUE_OVER_FACE_STR]);
 
       // While our mouse is here, draw a path!
       PlotPath(gpSMCurrentMerc, gpSMCurrentMerc.value.sFinalDestination, NO_COPYROUTE, PLOT, TEMPORARY, gpSMCurrentMerc.value.usUIMovementMode, NOT_STEALTH, FORWARD, gpSMCurrentMerc.value.bActionPoints);
@@ -3204,7 +3204,7 @@ function MercFacePanelCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
       // Only if guy is not dead!
       if (!(MercPtrs[ubSoldierID].value.uiStatusFlags & SOLDIER_DEAD) && !AM_AN_EPC(MercPtrs[ubSoldierID]) && !(MercPtrs[ubSoldierID].value.uiStatusFlags & (SOLDIER_DRIVER | SOLDIER_PASSENGER))) {
         gfSwitchPanel = TRUE;
-        gbNewPanel = SM_PANEL;
+        gbNewPanel = Enum215.SM_PANEL;
         gubNewPanelParam = ubSoldierID;
       }
     }
@@ -3230,7 +3230,7 @@ function HandleLocateSelectMerc(ubID: UINT8, bFlag: INT8): void {
   }
 
   if (_KeyDown(ALT)) {
-    if (gGameSettings.fOptions[TOPTION_OLD_SELECTION_METHOD]) {
+    if (gGameSettings.fOptions[Enum8.TOPTION_OLD_SELECTION_METHOD]) {
       // Select merc
       InternalSelectSoldier(ubID, TRUE, FALSE, TRUE);
       MercPtrs[ubID].value.fFlashLocator = FALSE;
@@ -3241,7 +3241,7 @@ function HandleLocateSelectMerc(ubID: UINT8, bFlag: INT8): void {
     }
   } else {
     if (MercPtrs[ubID].value.fFlashLocator == FALSE) {
-      if (gGameSettings.fOptions[TOPTION_OLD_SELECTION_METHOD]) {
+      if (gGameSettings.fOptions[Enum8.TOPTION_OLD_SELECTION_METHOD]) {
         // If we are currently selected, slide to location
         if (ubID == gusSelectedSoldier) {
           SlideTo(NOWHERE, gusSelectedSoldier, NOBODY, SETLOCATOR);
@@ -3257,7 +3257,7 @@ function HandleLocateSelectMerc(ubID: UINT8, bFlag: INT8): void {
         }
       }
     } else {
-      if (gGameSettings.fOptions[TOPTION_OLD_SELECTION_METHOD]) {
+      if (gGameSettings.fOptions[Enum8.TOPTION_OLD_SELECTION_METHOD]) {
         // If we are currently selected, slide to location
         if (ubID == gusSelectedSoldier) {
           SlideTo(NOWHERE, gusSelectedSoldier, NOBODY, DONTSETLOCATOR);
@@ -3426,8 +3426,8 @@ function HandlePanelFaceAnimations(pSoldier: Pointer<SOLDIERTYPE>): void {
       if (pSoldier.value.ubDeadPanelFrame == 4) {
         ScreenMsg(FONT_RED, MSG_SKULL_UI_FEEDBACK, pMercDeadString[0], pSoldier.value.name);
 
-        PlayJA2Sample(DOORCR_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
-        PlayJA2Sample(HEADCR_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+        PlayJA2Sample(Enum330.DOORCR_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+        PlayJA2Sample(Enum330.HEADCR_1, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
       }
 
       if (pSoldier.value.ubDeadPanelFrame > 5) {
@@ -3504,7 +3504,7 @@ function RenderSoldierTeamInv(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT
       RestoreExternBackgroundRect(sX, sY, (TM_INV_WIDTH), (TM_INV_HEIGHT));
     } else {
       // Look in primary hand
-      INVRenderItem(guiSAVEBUFFER, pSoldier, addressof(pSoldier.value.inv[HANDPOS]), sX, sY, TM_INV_WIDTH, TM_INV_HEIGHT, fDirty, addressof(gfTEAM_HandInvDispText[ubPanelNum][HANDPOS]), 0, FALSE, 0);
+      INVRenderItem(guiSAVEBUFFER, pSoldier, addressof(pSoldier.value.inv[Enum261.HANDPOS]), sX, sY, TM_INV_WIDTH, TM_INV_HEIGHT, fDirty, addressof(gfTEAM_HandInvDispText[ubPanelNum][Enum261.HANDPOS]), 0, FALSE, 0);
     }
 
     if (pSoldier.value.uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
@@ -3512,7 +3512,7 @@ function RenderSoldierTeamInv(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT
       RestoreExternBackgroundRect(sX, (sY + TM_INV_HAND_SEPY), (TM_INV_WIDTH), (TM_INV_HEIGHT));
     } else {
       // Do secondary hand
-      INVRenderItem(guiSAVEBUFFER, pSoldier, addressof(pSoldier.value.inv[SECONDHANDPOS]), sX, (sY + TM_INV_HAND_SEPY), TM_INV_WIDTH, TM_INV_HEIGHT, fDirty, addressof(gfTEAM_HandInvDispText[ubPanelNum][SECONDHANDPOS]), 0, FALSE, 0);
+      INVRenderItem(guiSAVEBUFFER, pSoldier, addressof(pSoldier.value.inv[Enum261.SECONDHANDPOS]), sX, (sY + TM_INV_HAND_SEPY), TM_INV_WIDTH, TM_INV_HEIGHT, fDirty, addressof(gfTEAM_HandInvDispText[ubPanelNum][Enum261.SECONDHANDPOS]), 0, FALSE, 0);
     }
   }
 }
@@ -3573,15 +3573,15 @@ function TMClickFirstHandInvCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
 
   if (iReason == MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // Change to use cursor mode...
-    guiPendingOverrideEvent = A_ON_TERRAIN;
+    guiPendingOverrideEvent = Enum207.A_ON_TERRAIN;
   }
 
   if (iReason == MSYS_CALLBACK_REASON_RBUTTON_UP) {
     if (!AM_A_ROBOT(MercPtrs[ubSoldierID])) {
-      usOldHandItem = MercPtrs[ubSoldierID].value.inv[HANDPOS].usItem;
+      usOldHandItem = MercPtrs[ubSoldierID].value.inv[Enum261.HANDPOS].usItem;
       // SwapOutHandItem( MercPtrs[ ubSoldierID ] );
       SwapHandItems(MercPtrs[ubSoldierID]);
-      ReLoadSoldierAnimationDueToHandItemChange(MercPtrs[ubSoldierID], usOldHandItem, MercPtrs[ubSoldierID].value.inv[HANDPOS].usItem);
+      ReLoadSoldierAnimationDueToHandItemChange(MercPtrs[ubSoldierID], usOldHandItem, MercPtrs[ubSoldierID].value.inv[Enum261.HANDPOS].usItem);
       fInterfacePanelDirty = DIRTYLEVEL2;
     }
   }
@@ -3613,9 +3613,9 @@ function TMClickSecondHandInvCallback(pRegion: Pointer<MOUSE_REGION>, iReason: I
     if (MercPtrs[ubSoldierID].value.uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
     } else {
       if (!AM_A_ROBOT(MercPtrs[ubSoldierID])) {
-        usOldHandItem = MercPtrs[ubSoldierID].value.inv[HANDPOS].usItem;
+        usOldHandItem = MercPtrs[ubSoldierID].value.inv[Enum261.HANDPOS].usItem;
         SwapHandItems(MercPtrs[ubSoldierID]);
-        ReLoadSoldierAnimationDueToHandItemChange(MercPtrs[ubSoldierID], usOldHandItem, MercPtrs[ubSoldierID].value.inv[HANDPOS].usItem);
+        ReLoadSoldierAnimationDueToHandItemChange(MercPtrs[ubSoldierID], usOldHandItem, MercPtrs[ubSoldierID].value.inv[Enum261.HANDPOS].usItem);
         fInterfacePanelDirty = DIRTYLEVEL2;
       }
     }
@@ -3780,12 +3780,12 @@ function CheckForAndAddMercToTeamPanel(pSoldier: Pointer<SOLDIERTYPE>): void {
       if (pSoldier.value.sSectorX == gWorldSectorX && pSoldier.value.sSectorY == gWorldSectorY && pSoldier.value.bSectorZ == gbWorldSectorZ && !pSoldier.value.fBetweenSectors && pSoldier.value.bInSector) {
         // IF on duty....
         if ((pSoldier.value.bAssignment == CurrentSquad()) || (SoldierIsDeadAndWasOnSquad(pSoldier, (CurrentSquad())))) {
-          if (pSoldier.value.bAssignment == ASSIGNMENT_DEAD) {
+          if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD) {
             pSoldier.value.fUICloseMerc = FALSE;
           }
           // ATE: ALrighty, if we have the insertion code of helicopter..... don't add just yet!
           /// ( will add in heli code )
-          if (pSoldier.value.ubStrategicInsertionCode != INSERTION_CODE_CHOPPER) {
+          if (pSoldier.value.ubStrategicInsertionCode != Enum175.INSERTION_CODE_CHOPPER) {
             AddPlayerToInterfaceTeamSlot(pSoldier.value.ubID);
           }
 
@@ -3829,7 +3829,7 @@ function FindNextMercInTeamPanel(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKL
       }
 
       if (fGoodForLessOKLife) {
-        if (pTeamSoldier.value.bLife > 0 && pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector && pTeamSoldier.value.bTeam == gbPlayerNum && pTeamSoldier.value.bAssignment < ON_DUTY && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier.value.bAssignment == pTeamSoldier.value.bAssignment) {
+        if (pTeamSoldier.value.bLife > 0 && pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector && pTeamSoldier.value.bTeam == gbPlayerNum && pTeamSoldier.value.bAssignment < Enum117.ON_DUTY && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier.value.bAssignment == pTeamSoldier.value.bAssignment) {
           return gTeamPanel[cnt].ubID;
         }
       } else {
@@ -3853,7 +3853,7 @@ function FindNextMercInTeamPanel(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKL
       }
 
       if (fGoodForLessOKLife) {
-        if (pTeamSoldier.value.bLife > 0 && pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector && pTeamSoldier.value.bTeam == gbPlayerNum && pTeamSoldier.value.bAssignment < ON_DUTY && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier.value.bAssignment == pTeamSoldier.value.bAssignment) {
+        if (pTeamSoldier.value.bLife > 0 && pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector && pTeamSoldier.value.bTeam == gbPlayerNum && pTeamSoldier.value.bAssignment < Enum117.ON_DUTY && OK_INTERRUPT_MERC(pTeamSoldier) && pSoldier.value.bAssignment == pTeamSoldier.value.bAssignment) {
           return gTeamPanel[cnt].ubID;
         }
       } else {
@@ -3872,7 +3872,7 @@ function HelpTextDoneCallback(): void {
   gfRerenderInterfaceFromHelpText = TRUE;
 
   // To redraw the Store Keeper Interface
-  gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+  gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 }
 
 function DisableTacticalTeamPanelButtons(fDisable: BOOLEAN): void {
@@ -3885,7 +3885,7 @@ function BeginKeyPanelFromKeyShortcut(): void {
   let sWidth: INT16 = 0;
   let sHeight: INT16 = 0;
 
-  if (gsCurInterfacePanel != SM_PANEL) {
+  if (gsCurInterfacePanel != Enum215.SM_PANEL) {
     return;
   }
 
@@ -3915,7 +3915,7 @@ function KeyRingItemPanelButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason:
   let sWidth: INT16 = 0;
   let sHeight: INT16 = 0;
 
-  if (guiCurrentScreen == MAP_SCREEN) {
+  if (guiCurrentScreen == Enum26.MAP_SCREEN) {
     if (bSelectedInfoChar == -1) {
       return;
     }
@@ -3948,7 +3948,7 @@ function KeyRingItemPanelButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason:
   }
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (guiCurrentScreen == MAP_SCREEN) {
+    if (guiCurrentScreen == Enum26.MAP_SCREEN) {
       // want the inv done button shutdown and the region behind the keyring shaded
       // ForceButtonUnDirty( giMapInvDoneButton );
       // shade the background
@@ -4038,7 +4038,7 @@ function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
       let fOKToGo: BOOLEAN = FALSE;
       let fDeductPoints: BOOLEAN = FALSE;
 
-      if ((gpItemPointer.value.usItem < FIRST_KEY) || (gpItemPointer.value.usItem > KEY_32)) {
+      if ((gpItemPointer.value.usItem < FIRST_KEY) || (gpItemPointer.value.usItem > Enum225.KEY_32)) {
         return;
       }
 
@@ -4163,33 +4163,33 @@ function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
 
 function DisableSMPpanelButtonsWhenInShopKeeperInterface(fDontDrawButtons: BOOLEAN): void {
   // Go through the buttons that will be under the ShopKeepers ATM panel and disable them
-  DisableButton(iSMPanelButtons[STANCEUP_BUTTON]);
-  DisableButton(iSMPanelButtons[UPDOWN_BUTTON]);
-  DisableButton(iSMPanelButtons[CLIMB_BUTTON]);
-  DisableButton(iSMPanelButtons[STANCEDOWN_BUTTON]);
-  DisableButton(iSMPanelButtons[HANDCURSOR_BUTTON]);
-  DisableButton(iSMPanelButtons[BURSTMODE_BUTTON]);
-  DisableButton(iSMPanelButtons[LOOK_BUTTON]);
-  DisableButton(iSMPanelButtons[TALK_BUTTON]);
-  DisableButton(iSMPanelButtons[MUTE_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.STANCEUP_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.UPDOWN_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.CLIMB_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.STANCEDOWN_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.BURSTMODE_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.LOOK_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.TALK_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.MUTE_BUTTON]);
 
   DisableButton(giSMStealthButton);
 
   // Make sure the options button is disabled
-  DisableButton(iSMPanelButtons[OPTIONS_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.OPTIONS_BUTTON]);
 
   // Make sure the mapscreen button is disabled
-  DisableButton(iSMPanelButtons[SM_MAP_SCREEN_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON]);
 
-  DisableButton(iSMPanelButtons[STANCEUP_BUTTON]);
-  DisableButton(iSMPanelButtons[UPDOWN_BUTTON]);
-  DisableButton(iSMPanelButtons[CLIMB_BUTTON]);
-  DisableButton(iSMPanelButtons[STANCEDOWN_BUTTON]);
-  DisableButton(iSMPanelButtons[HANDCURSOR_BUTTON]);
-  DisableButton(iSMPanelButtons[BURSTMODE_BUTTON]);
-  DisableButton(iSMPanelButtons[LOOK_BUTTON]);
-  DisableButton(iSMPanelButtons[TALK_BUTTON]);
-  DisableButton(iSMPanelButtons[MUTE_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.STANCEUP_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.UPDOWN_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.CLIMB_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.STANCEDOWN_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.BURSTMODE_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.LOOK_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.TALK_BUTTON]);
+  DisableButton(iSMPanelButtons[Enum220.MUTE_BUTTON]);
 
   DisableButton(giSMStealthButton);
 
@@ -4197,33 +4197,33 @@ function DisableSMPpanelButtonsWhenInShopKeeperInterface(fDontDrawButtons: BOOLE
     // ATM:
 
     // Go through the buttons that will be under the ShopKeepers ATM panel and disable them
-    ButtonList[iSMPanelButtons[STANCEUP_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[UPDOWN_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[CLIMB_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[STANCEDOWN_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[BURSTMODE_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[LOOK_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[TALK_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[MUTE_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.STANCEUP_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.CLIMB_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.STANCEDOWN_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
 
     ButtonList[giSMStealthButton].value.uiFlags &= ~BUTTON_DIRTY;
 
     // Make sure the options button is disabled
-    ButtonList[iSMPanelButtons[OPTIONS_BUTTON]].value.uiFlags &= ~BUTTON_ENABLED;
+    ButtonList[iSMPanelButtons[Enum220.OPTIONS_BUTTON]].value.uiFlags &= ~BUTTON_ENABLED;
 
     // Make sure the mapscreen button is disabled
-    ButtonList[iSMPanelButtons[SM_MAP_SCREEN_BUTTON]].value.uiFlags &= ~BUTTON_ENABLED;
+    ButtonList[iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON]].value.uiFlags &= ~BUTTON_ENABLED;
 
-    ButtonList[iSMPanelButtons[STANCEUP_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[UPDOWN_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[CLIMB_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[STANCEDOWN_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[HANDCURSOR_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[BURSTMODE_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[LOOK_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[TALK_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[MUTE_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.STANCEUP_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.CLIMB_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.STANCEDOWN_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
 
     ButtonList[giSMStealthButton].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
   }
@@ -4239,15 +4239,15 @@ function IsMouseInRegion(pRegion: Pointer<MOUSE_REGION>): BOOLEAN {
 
 function EnableButtonsForInItemBox(fEnable: BOOLEAN): void {
   if (!fEnable) {
-    DisableButton(iSMPanelButtons[NEXTMERC_BUTTON]);
-    DisableButton(iSMPanelButtons[PREVMERC_BUTTON]);
-    DisableButton(iSMPanelButtons[SM_MAP_SCREEN_BUTTON]);
+    DisableButton(iSMPanelButtons[Enum220.NEXTMERC_BUTTON]);
+    DisableButton(iSMPanelButtons[Enum220.PREVMERC_BUTTON]);
+    DisableButton(iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON]);
   } else {
-    EnableButton(iSMPanelButtons[NEXTMERC_BUTTON]);
-    EnableButton(iSMPanelButtons[PREVMERC_BUTTON]);
+    EnableButton(iSMPanelButtons[Enum220.NEXTMERC_BUTTON]);
+    EnableButton(iSMPanelButtons[Enum220.PREVMERC_BUTTON]);
 
     if (!gfDisableTacticalPanelButtons) {
-      EnableButton(iSMPanelButtons[SM_MAP_SCREEN_BUTTON]);
+      EnableButton(iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON]);
     }
   }
 }
@@ -4268,7 +4268,7 @@ function SMInvMoneyButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
         let zMoney: CHAR16[] /* [64] */;
 
         // Make sure we go back to movement mode...
-        guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+        guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
         HandleTacticalUI();
 
         swprintf(zMoney, "%d", gpItemPointer.value.uiMoneyAmount);
@@ -4277,17 +4277,17 @@ function SMInvMoneyButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
         InsertDollarSignInToString(zMoney);
 
         // ask the user if they are sure they want to deposit the money
-        swprintf(zText, gzMoneyWithdrawMessageText[CONFIRMATION_TO_DEPOSIT_MONEY_TO_ACCOUNT], zMoney);
+        swprintf(zText, gzMoneyWithdrawMessageText[Enum374.CONFIRMATION_TO_DEPOSIT_MONEY_TO_ACCOUNT], zMoney);
 
-        if (guiCurrentScreen == SHOPKEEPER_SCREEN) {
+        if (guiCurrentScreen == Enum26.SHOPKEEPER_SCREEN) {
           // if we are in the shop keeper interface, free the cursor
           if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
             FreeMouseCursor();
           }
 
-          DoMessageBox(MSG_BOX_BASIC_STYLE, zText, SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmationToDepositMoneyToPlayersAccount, NULL);
+          DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmationToDepositMoneyToPlayersAccount, NULL);
         } else
-          DoMessageBox(MSG_BOX_BASIC_STYLE, zText, GAME_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmationToDepositMoneyToPlayersAccount, NULL);
+          DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmationToDepositMoneyToPlayersAccount, NULL);
       }
     }
 
@@ -4310,10 +4310,10 @@ function SMInvMoneyButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
 function ConfirmationToDepositMoneyToPlayersAccount(ubExitValue: UINT8): void {
   if (ubExitValue == MSG_BOX_RETURN_YES) {
     // add the money to the players account
-    AddTransactionToPlayersBook(MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT, gpSMCurrentMerc.value.ubProfile, GetWorldTotalMin(), gpItemPointer.value.uiMoneyAmount);
+    AddTransactionToPlayersBook(Enum80.MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT, gpSMCurrentMerc.value.ubProfile, GetWorldTotalMin(), gpItemPointer.value.uiMoneyAmount);
 
     // dirty shopkeeper
-    gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
+    gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL2;
 
     EndItemPointer();
   }
@@ -4339,16 +4339,16 @@ function CheckForReEvaluateDisabledINVPanelButtons(): void {
 function AbandonBoxingCallback(ubExitValue: UINT8): void {
   if (ubExitValue == MSG_BOX_RETURN_YES) {
     // ok, proceed!
-    SetBoxingState(NOT_BOXING);
+    SetBoxingState(Enum247.NOT_BOXING);
     gfEnteringMapScreen = TRUE;
   }
   // otherwise do nothing
 }
 
 function GoToMapScreenFromTactical(): void {
-  if (gTacticalStatus.bBoxingState != NOT_BOXING) {
+  if (gTacticalStatus.bBoxingState != Enum247.NOT_BOXING) {
     // pop up dialogue asking whether the player wants to abandon the fight
-    DoMessageBox(MSG_BOX_BASIC_STYLE, Message[STR_ABANDON_FIGHT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, AbandonBoxingCallback, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_ABANDON_FIGHT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, AbandonBoxingCallback, NULL);
     return;
   }
   // ok, proceed!
@@ -4357,30 +4357,30 @@ function GoToMapScreenFromTactical(): void {
 
 function HandleTacticalEffectsOfEquipmentChange(pSoldier: Pointer<SOLDIERTYPE>, uiInvPos: UINT32, usOldItem: UINT16, usNewItem: UINT16): void {
   // if in attached weapon mode and don't have weapon with GL attached in hand, reset weapon mode
-  if (pSoldier.value.bWeaponMode == WM_ATTACHED && FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER) == NO_SLOT) {
-    pSoldier.value.bWeaponMode = WM_NORMAL;
+  if (pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED && FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.UNDER_GLAUNCHER) == NO_SLOT) {
+    pSoldier.value.bWeaponMode = Enum265.WM_NORMAL;
     pSoldier.value.bDoBurst = FALSE;
   }
 
   // if he is loaded tactically
   if (pSoldier.value.bInSector) {
     // If this is our main hand
-    if (uiInvPos == HANDPOS || uiInvPos == SECONDHANDPOS) {
+    if (uiInvPos == Enum261.HANDPOS || uiInvPos == Enum261.SECONDHANDPOS) {
       // check if we need to change animation!
       ReLoadSoldierAnimationDueToHandItemChange(pSoldier, usOldItem, usNewItem);
     }
 
     // if this is head gear
-    if (uiInvPos == HEAD1POS || uiInvPos == HEAD2POS) {
+    if (uiInvPos == Enum261.HEAD1POS || uiInvPos == Enum261.HEAD2POS) {
       // Could be because of GOGGLES change...  Re-create light...
       DeleteSoldierLight(pSoldier);
       PositionSoldierLight(pSoldier);
     }
   } else {
     // as a minimum
-    if ((Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass & IC_WEAPON) && Weapon[pSoldier.value.inv[HANDPOS].usItem].ubShotsPerBurst == 0) {
+    if ((Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass & IC_WEAPON) && Weapon[pSoldier.value.inv[Enum261.HANDPOS].usItem].ubShotsPerBurst == 0) {
       pSoldier.value.bDoBurst = FALSE;
-      pSoldier.value.bWeaponMode = WM_NORMAL;
+      pSoldier.value.bWeaponMode = Enum265.WM_NORMAL;
     }
   }
 }

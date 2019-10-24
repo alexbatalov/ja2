@@ -46,9 +46,9 @@ let gsLightRadius: INT16 = 5;
 let gfOldDoVideoScroll: BOOLEAN; // Saved for returning to previous settings
 let gubOldCurScrollSpeedID: UINT8; // Saved for returning to previous settings
 
-let iOldTaskMode: INT32 = TASK_OPTIONS;
+let iOldTaskMode: INT32 = Enum36.TASK_OPTIONS;
 
-let iTaskMode: INT32 = TASK_NONE;
+let iTaskMode: INT32 = Enum36.TASK_NONE;
 
 let iEditorTBarButton: INT32[] /* [NUMBER_EDITOR_BUTTONS] */; // For Toolbars
 
@@ -70,10 +70,10 @@ let gfEditorDirty: BOOLEAN = TRUE;
 
 let fRaiseHeight: BOOLEAN = FALSE;
 
-let iDrawMode: INT32 = DRAW_MODE_NOTHING;
+let iDrawMode: INT32 = Enum38.DRAW_MODE_NOTHING;
 let iCurrentAction: INT32;
 let iActionParam: INT32;
-let iEditAction: INT32 = ACTION_NULL;
+let iEditAction: INT32 = Enum37.ACTION_NULL;
 
 let iEditorButton: INT32[] /* [NUMBER_EDITOR_BUTTONS] */;
 let iEditorToolbarState: INT32;
@@ -95,10 +95,10 @@ let sGridY: INT16;
 let iMapIndex: UINT32;
 let fNewMap: BOOLEAN = FALSE;
 
-let iPrevDrawMode: INT32 = DRAW_MODE_NOTHING;
-let PrevCurrentPaste: UINT16 = FIRSTTEXTURE;
-let gPrevCurrentBackground: INT32 = FIRSTTEXTURE;
-let iPrevJA2ToolbarState: INT32 = TBAR_MODE_NONE;
+let iPrevDrawMode: INT32 = Enum38.DRAW_MODE_NOTHING;
+let PrevCurrentPaste: UINT16 = Enum313.FIRSTTEXTURE;
+let gPrevCurrentBackground: INT32 = Enum313.FIRSTTEXTURE;
+let iPrevJA2ToolbarState: INT32 = Enum35.TBAR_MODE_NONE;
 let PrevTerrainTileDrawMode: INT32 = TERRAIN_TILES_NODRAW;
 
 let gusEditorTaskbarColor: UINT16;
@@ -208,7 +208,7 @@ function EditModeInit(): BOOLEAN {
 
   // Hide all of the buttons here.  DoTaskbar() will handle the
   // showing and hiding of the buttons.
-  for (x = LAST_EDITORTAB_BUTTON + 1; x < NUMBER_EDITOR_BUTTONS; x++)
+  for (x = Enum32.LAST_EDITORTAB_BUTTON + 1; x < Enum32.NUMBER_EDITOR_BUTTONS; x++)
     HideButton(iEditorButton[x]);
 
   iEditorToolbarState = iPrevJA2ToolbarState;
@@ -216,7 +216,7 @@ function EditModeInit(): BOOLEAN {
   CurrentPaste = PrevCurrentPaste;
   gCurrentBackground = gPrevCurrentBackground;
 
-  iCurrentTaskbar = TASK_NONE;
+  iCurrentTaskbar = Enum36.TASK_NONE;
   iTaskMode = iOldTaskMode;
 
   DoTaskbar();
@@ -243,7 +243,7 @@ function EditModeInit(): BOOLEAN {
   if (gfFakeLights) {
     gusSavedLightLevel = gusLightLevel;
     gusLightLevel = EDITOR_LIGHT_FAKE;
-    ClickEditorButton(MAPINFO_TOGGLE_FAKE_LIGHTS);
+    ClickEditorButton(Enum32.MAPINFO_TOGGLE_FAKE_LIGHTS);
   }
 
   gfRenderWorld = TRUE;
@@ -388,7 +388,7 @@ function EditModeShutdown(): BOOLEAN {
     HideEntryPoints();
     KillItemPoolList();
     PrepareSchedulesForEditorExit();
-    RemoveAllObjectsOfTypeRange(gsSelectedMercGridNo, CONFIRMMOVE, CONFIRMMOVE);
+    RemoveAllObjectsOfTypeRange(gsSelectedMercGridNo, Enum313.CONFIRMMOVE, Enum313.CONFIRMMOVE);
     RemoveLockedDoorCursors();
     if (gfShowPits) {
       RemoveAllPits();
@@ -399,7 +399,7 @@ function EditModeShutdown(): BOOLEAN {
 
   if (gfNeedToInitGame) {
     InitStrategicLayer();
-    WarpGameTime(1, WARPTIME_PROCESS_EVENTS_NORMALLY); // to avoid helicopter setup
+    WarpGameTime(1, Enum131.WARPTIME_PROCESS_EVENTS_NORMALLY); // to avoid helicopter setup
     gfNeedToInitGame = FALSE;
   } else {
     if (!gfBasement && !gfCaves)
@@ -430,7 +430,7 @@ function SetBackgroundTexture(): void {
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // Erase old layers
-    RemoveAllLandsOfTypeRange(cnt, FIRSTTEXTURE, DEEPWATERTEXTURE);
+    RemoveAllLandsOfTypeRange(cnt, Enum313.FIRSTTEXTURE, Enum313.DEEPWATERTEXTURE);
 
     // Add level
     usIndex = (rand() % 10);
@@ -439,7 +439,7 @@ function SetBackgroundTexture(): void {
     usIndex += gTileTypeStartIndex[gCurrentBackground];
 
     // Set land index
-    if (TypeRangeExistsInLandLayer(cnt, FIRSTFLOOR, LASTFLOOR, addressof(Dummy)))
+    if (TypeRangeExistsInLandLayer(cnt, Enum313.FIRSTFLOOR, LASTFLOOR, addressof(Dummy)))
       AddLandToTail(cnt, usIndex); // show the land below the floor.
     else
       AddLandToHead(cnt, usIndex); // no floor so no worries.
@@ -456,26 +456,26 @@ function DoWindowSelection(): BOOLEAN {
   RenderButtonsFastHelp();
   if (fAllDone) {
     switch (iDrawMode) {
-      case DRAW_MODE_WALLS:
-      case DRAW_MODE_DOORS:
-      case DRAW_MODE_WINDOWS:
-      case DRAW_MODE_ROOFS:
-      case DRAW_MODE_BROKEN_WALLS:
-      case DRAW_MODE_DECOR:
-      case DRAW_MODE_DECALS:
-      case DRAW_MODE_FLOORS:
-      case DRAW_MODE_TOILET:
-      case DRAW_MODE_ROOM:
-      case DRAW_MODE_NEWROOF:
-      case DRAW_MODE_OSTRUCTS:
-      case DRAW_MODE_OSTRUCTS1:
-      case DRAW_MODE_OSTRUCTS2:
-      case DRAW_MODE_DEBRIS:
-      case DRAW_MODE_BANKS:
-      case DRAW_MODE_ROADS:
+      case Enum38.DRAW_MODE_WALLS:
+      case Enum38.DRAW_MODE_DOORS:
+      case Enum38.DRAW_MODE_WINDOWS:
+      case Enum38.DRAW_MODE_ROOFS:
+      case Enum38.DRAW_MODE_BROKEN_WALLS:
+      case Enum38.DRAW_MODE_DECOR:
+      case Enum38.DRAW_MODE_DECALS:
+      case Enum38.DRAW_MODE_FLOORS:
+      case Enum38.DRAW_MODE_TOILET:
+      case Enum38.DRAW_MODE_ROOM:
+      case Enum38.DRAW_MODE_NEWROOF:
+      case Enum38.DRAW_MODE_OSTRUCTS:
+      case Enum38.DRAW_MODE_OSTRUCTS1:
+      case Enum38.DRAW_MODE_OSTRUCTS2:
+      case Enum38.DRAW_MODE_DEBRIS:
+      case Enum38.DRAW_MODE_BANKS:
+      case Enum38.DRAW_MODE_ROADS:
         break;
       default:
-        iDrawMode = DRAW_MODE_NOTHING;
+        iDrawMode = Enum38.DRAW_MODE_NOTHING;
         break;
     }
     RemoveJA2SelectionWindow();
@@ -502,71 +502,71 @@ function DrawTempMouseCursorObject(): BOOLEAN {
   let usUseObjIndex: UINT16;
 
   switch (iDrawMode) {
-    case DRAW_MODE_ROOM:
+    case Enum38.DRAW_MODE_ROOM:
       pSelList = SelRoom;
       pNumSelList = addressof(iNumRoomsSelected);
       return FALSE; // a special case where we just want to get the info and not display a cursor.
-    case DRAW_MODE_NEWROOF:
+    case Enum38.DRAW_MODE_NEWROOF:
       pSelList = SelSingleNewRoof;
       pNumSelList = addressof(iNumNewRoofsSelected);
       break;
-    case DRAW_MODE_WALLS:
+    case Enum38.DRAW_MODE_WALLS:
       pSelList = SelSingleWall;
       pNumSelList = addressof(iNumWallsSelected);
       break;
-    case DRAW_MODE_DOORS:
+    case Enum38.DRAW_MODE_DOORS:
       pSelList = SelSingleDoor;
       pNumSelList = addressof(iNumDoorsSelected);
       break;
-    case DRAW_MODE_WINDOWS:
+    case Enum38.DRAW_MODE_WINDOWS:
       pSelList = SelSingleWindow;
       pNumSelList = addressof(iNumWindowsSelected);
       break;
-    case DRAW_MODE_ROOFS:
+    case Enum38.DRAW_MODE_ROOFS:
       pSelList = SelSingleRoof;
       pNumSelList = addressof(iNumRoofsSelected);
       break;
-    case DRAW_MODE_BROKEN_WALLS:
+    case Enum38.DRAW_MODE_BROKEN_WALLS:
       pSelList = SelSingleBrokenWall;
       pNumSelList = addressof(iNumBrokenWallsSelected);
       break;
-    case DRAW_MODE_DECOR:
+    case Enum38.DRAW_MODE_DECOR:
       pSelList = SelSingleDecor;
       pNumSelList = addressof(iNumDecorSelected);
       break;
-    case DRAW_MODE_DECALS:
+    case Enum38.DRAW_MODE_DECALS:
       pSelList = SelSingleDecal;
       pNumSelList = addressof(iNumDecalsSelected);
       break;
-    case DRAW_MODE_FLOORS:
+    case Enum38.DRAW_MODE_FLOORS:
       pSelList = SelSingleFloor;
       pNumSelList = addressof(iNumFloorsSelected);
       break;
-    case DRAW_MODE_TOILET:
+    case Enum38.DRAW_MODE_TOILET:
       pSelList = SelSingleToilet;
       pNumSelList = addressof(iNumToiletsSelected);
       break;
-    case DRAW_MODE_BANKS:
+    case Enum38.DRAW_MODE_BANKS:
       pSelList = SelBanks;
       pNumSelList = addressof(iNumBanksSelected);
       break;
-    case DRAW_MODE_ROADS:
+    case Enum38.DRAW_MODE_ROADS:
       pSelList = SelRoads;
       pNumSelList = addressof(iNumRoadsSelected);
       break;
-    case DRAW_MODE_OSTRUCTS:
+    case Enum38.DRAW_MODE_OSTRUCTS:
       pSelList = SelOStructs;
       pNumSelList = addressof(iNumOStructsSelected);
       break;
-    case DRAW_MODE_OSTRUCTS1:
+    case Enum38.DRAW_MODE_OSTRUCTS1:
       pSelList = SelOStructs1;
       pNumSelList = addressof(iNumOStructs1Selected);
       break;
-    case DRAW_MODE_OSTRUCTS2:
+    case Enum38.DRAW_MODE_OSTRUCTS2:
       pSelList = SelOStructs2;
       pNumSelList = addressof(iNumOStructs2Selected);
       break;
-    case DRAW_MODE_DEBRIS:
+    case Enum38.DRAW_MODE_DEBRIS:
       pSelList = SelDebris;
       pNumSelList = addressof(iNumDebrisSelected);
       break;
@@ -575,19 +575,19 @@ function DrawTempMouseCursorObject(): BOOLEAN {
   if (GetMouseXY(addressof(sMouseX_M), addressof(sMouseY_M))) {
     if ((iCurBankMapIndex = MAPROWCOLTOPOS(sMouseY_M, sMouseX_M)) < 0x8000) {
       // Hook into the smart methods to override the selection window methods.
-      if (iDrawMode == DRAW_MODE_SMART_WALLS) {
+      if (iDrawMode == Enum38.DRAW_MODE_SMART_WALLS) {
         if (!CalcWallInfoUsingSmartMethod(iCurBankMapIndex, addressof(usUseObjIndex), addressof(usUseIndex))) {
           return FALSE;
         }
-      } else if (iDrawMode == DRAW_MODE_SMART_DOORS) {
+      } else if (iDrawMode == Enum38.DRAW_MODE_SMART_DOORS) {
         if (!CalcDoorInfoUsingSmartMethod(iCurBankMapIndex, addressof(usUseObjIndex), addressof(usUseIndex))) {
           return FALSE;
         }
-      } else if (iDrawMode == DRAW_MODE_SMART_WINDOWS) {
+      } else if (iDrawMode == Enum38.DRAW_MODE_SMART_WINDOWS) {
         if (!CalcWindowInfoUsingSmartMethod(iCurBankMapIndex, addressof(usUseObjIndex), addressof(usUseIndex))) {
           return FALSE;
         }
-      } else if (iDrawMode == DRAW_MODE_SMART_BROKEN_WALLS) {
+      } else if (iDrawMode == Enum38.DRAW_MODE_SMART_BROKEN_WALLS) {
         if (!CalcBrokenWallInfoUsingSmartMethod(iCurBankMapIndex, addressof(usUseObjIndex), addressof(usUseIndex))) {
           return FALSE;
         }
@@ -641,8 +641,8 @@ function ShowCurrentDrawingMode(): void {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 400, 100, 458, 0);
 
   iShowMode = iDrawMode;
-  if (iDrawMode >= DRAW_MODE_ERASE)
-    iShowMode -= DRAW_MODE_ERASE;
+  if (iDrawMode >= Enum38.DRAW_MODE_ERASE)
+    iShowMode -= Enum38.DRAW_MODE_ERASE;
 
   usUseIndex = usObjIndex = 0xffff;
 
@@ -652,123 +652,123 @@ function ShowCurrentDrawingMode(): void {
 
   // Select object to be displayed depending on the current editing mode.
   switch (iShowMode) {
-    case DRAW_MODE_ROOM:
-    case DRAW_MODE_SLANTED_ROOF:
+    case Enum38.DRAW_MODE_ROOM:
+    case Enum38.DRAW_MODE_SLANTED_ROOF:
       if (iNumWallsSelected > 0) {
         usUseIndex = SelRoom[0].usIndex;
         usObjIndex = SelRoom[0].uiObject;
       }
       break;
 
-    case DRAW_MODE_GROUND:
-    case (DRAW_MODE_GROUND + DRAW_MODE_FILL_AREA):
+    case Enum38.DRAW_MODE_GROUND:
+    case (Enum38.DRAW_MODE_GROUND + Enum38.DRAW_MODE_FILL_AREA):
       usUseIndex = 0;
       usObjIndex = CurrentPaste;
       break;
 
-    case DRAW_MODE_OSTRUCTS:
+    case Enum38.DRAW_MODE_OSTRUCTS:
       if (iNumOStructsSelected > 0) {
         usUseIndex = SelOStructs[iIndexToUse].usIndex;
         usObjIndex = SelOStructs[iIndexToUse].uiObject;
       }
       break;
 
-    case DRAW_MODE_OSTRUCTS1:
+    case Enum38.DRAW_MODE_OSTRUCTS1:
       if (iNumOStructs1Selected > 0) {
         usUseIndex = SelOStructs1[iIndexToUse].usIndex;
         usObjIndex = SelOStructs1[iIndexToUse].uiObject;
       }
       break;
 
-    case DRAW_MODE_OSTRUCTS2:
+    case Enum38.DRAW_MODE_OSTRUCTS2:
       if (iNumOStructs2Selected > 0) {
         usUseIndex = SelOStructs2[iIndexToUse].usIndex;
         usObjIndex = SelOStructs2[iIndexToUse].uiObject;
       }
       break;
 
-    case DRAW_MODE_DEBRIS:
+    case Enum38.DRAW_MODE_DEBRIS:
       if (iNumDebrisSelected > 0) {
         usUseIndex = SelDebris[iIndexToUse].usIndex;
         usObjIndex = SelDebris[iIndexToUse].uiObject;
       }
       break;
 
-    case DRAW_MODE_BANKS:
+    case Enum38.DRAW_MODE_BANKS:
       if (iNumBanksSelected > 0) {
         usUseIndex = SelBanks[iCurBank].usIndex;
         usObjIndex = SelBanks[iCurBank].uiObject;
       }
       break;
 
-    case DRAW_MODE_ROADS:
+    case Enum38.DRAW_MODE_ROADS:
       if (iNumRoadsSelected > 0) {
         usUseIndex = SelRoads[iCurBank].usIndex;
         usObjIndex = SelRoads[iCurBank].uiObject;
       }
       break;
 
-    case DRAW_MODE_WALLS:
+    case Enum38.DRAW_MODE_WALLS:
       if (iNumWallsSelected > 0) {
         usUseIndex = SelSingleWall[iCurBank].usIndex;
         usObjIndex = SelSingleWall[iCurBank].uiObject;
       }
       break;
-    case DRAW_MODE_DOORS:
+    case Enum38.DRAW_MODE_DOORS:
       if (iNumDoorsSelected > 0) {
         usUseIndex = SelSingleDoor[iCurBank].usIndex;
         usObjIndex = SelSingleDoor[iCurBank].uiObject;
       }
       break;
-    case DRAW_MODE_WINDOWS:
+    case Enum38.DRAW_MODE_WINDOWS:
       if (iNumWindowsSelected > 0) {
         usUseIndex = SelSingleWindow[iCurBank].usIndex;
         usObjIndex = SelSingleWindow[iCurBank].uiObject;
       }
       break;
-    case DRAW_MODE_ROOFS:
+    case Enum38.DRAW_MODE_ROOFS:
       if (iNumRoofsSelected > 0) {
         usUseIndex = SelSingleRoof[iCurBank].usIndex;
         usObjIndex = SelSingleRoof[iCurBank].uiObject;
       }
       break;
-    case DRAW_MODE_NEWROOF:
+    case Enum38.DRAW_MODE_NEWROOF:
       if (iNumNewRoofsSelected > 0) {
         usUseIndex = SelSingleNewRoof[iCurBank].usIndex;
         usObjIndex = SelSingleNewRoof[iCurBank].uiObject;
       }
       break;
-    case DRAW_MODE_BROKEN_WALLS:
+    case Enum38.DRAW_MODE_BROKEN_WALLS:
       if (iNumBrokenWallsSelected > 0) {
         usUseIndex = SelSingleBrokenWall[iCurBank].usIndex;
         usObjIndex = SelSingleBrokenWall[iCurBank].uiObject;
       }
       break;
-    case DRAW_MODE_DECOR:
+    case Enum38.DRAW_MODE_DECOR:
       if (iNumDecorSelected > 0) {
         usUseIndex = SelSingleDecor[iCurBank].usIndex;
         usObjIndex = SelSingleDecor[iCurBank].uiObject;
       }
       break;
-    case DRAW_MODE_DECALS:
+    case Enum38.DRAW_MODE_DECALS:
       if (iNumDecalsSelected > 0) {
         usUseIndex = SelSingleDecal[iCurBank].usIndex;
         usObjIndex = SelSingleDecal[iCurBank].uiObject;
       }
       break;
-    case DRAW_MODE_FLOORS:
+    case Enum38.DRAW_MODE_FLOORS:
       if (iNumFloorsSelected > 0) {
         usUseIndex = SelSingleFloor[iCurBank].usIndex;
         usObjIndex = SelSingleFloor[iCurBank].uiObject;
       }
       break;
-    case DRAW_MODE_TOILET:
+    case Enum38.DRAW_MODE_TOILET:
       if (iNumToiletsSelected > 0) {
         usUseIndex = SelSingleToilet[iCurBank].usIndex;
         usObjIndex = SelSingleToilet[iCurBank].uiObject;
       }
       break;
-    case DRAW_MODE_SMART_WALLS:
+    case Enum38.DRAW_MODE_SMART_WALLS:
       if (GetMouseXY(addressof(sGridX), addressof(sGridY))) {
         iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
         if (CalcWallInfoUsingSmartMethod(iMapIndex, addressof(usObjIndex), addressof(usUseIndex)))
@@ -776,7 +776,7 @@ function ShowCurrentDrawingMode(): void {
       }
       CalcSmartWallDefault(addressof(usObjIndex), addressof(usUseIndex));
       break;
-    case DRAW_MODE_SMART_DOORS:
+    case Enum38.DRAW_MODE_SMART_DOORS:
       if (GetMouseXY(addressof(sGridX), addressof(sGridY))) {
         iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
         if (CalcDoorInfoUsingSmartMethod(iMapIndex, addressof(usObjIndex), addressof(usUseIndex)))
@@ -784,7 +784,7 @@ function ShowCurrentDrawingMode(): void {
       }
       CalcSmartDoorDefault(addressof(usObjIndex), addressof(usUseIndex));
       break;
-    case DRAW_MODE_SMART_WINDOWS:
+    case Enum38.DRAW_MODE_SMART_WINDOWS:
       if (GetMouseXY(addressof(sGridX), addressof(sGridY))) {
         iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
         if (CalcWindowInfoUsingSmartMethod(iMapIndex, addressof(usObjIndex), addressof(usUseIndex)))
@@ -792,7 +792,7 @@ function ShowCurrentDrawingMode(): void {
       }
       CalcSmartWindowDefault(addressof(usObjIndex), addressof(usUseIndex));
       break;
-    case DRAW_MODE_SMART_BROKEN_WALLS:
+    case Enum38.DRAW_MODE_SMART_BROKEN_WALLS:
       if (GetMouseXY(addressof(sGridX), addressof(sGridY))) {
         iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
         if (CalcBrokenWallInfoUsingSmartMethod(iMapIndex, addressof(usObjIndex), addressof(usUseIndex)))
@@ -801,7 +801,7 @@ function ShowCurrentDrawingMode(): void {
       CalcSmartBrokenWallDefault(addressof(usObjIndex), addressof(usUseIndex));
       break;
 
-    case DRAW_MODE_PLACE_ITEM:
+    case Enum38.DRAW_MODE_PLACE_ITEM:
       DisplayItemStatistics();
       break;
   }
@@ -858,37 +858,37 @@ function HandleJA2ToolbarSelection(): void {
   gfRenderTaskbar = TRUE;
 
   switch (iEditorToolbarState) {
-    case TBAR_MODE_SET_BGRND:
-      iCurrentAction = ACTION_SET_NEW_BACKGROUND;
+    case Enum35.TBAR_MODE_SET_BGRND:
+      iCurrentAction = Enum37.ACTION_SET_NEW_BACKGROUND;
       break;
 
-    case TBAR_MODE_DENS_DWN:
-      iCurrentAction = ACTION_DENSITY_DOWN;
+    case Enum35.TBAR_MODE_DENS_DWN:
+      iCurrentAction = Enum37.ACTION_DENSITY_DOWN;
       break;
 
-    case TBAR_MODE_DENS_UP:
-      iCurrentAction = ACTION_DENSITY_UP;
+    case Enum35.TBAR_MODE_DENS_UP:
+      iCurrentAction = Enum37.ACTION_DENSITY_UP;
       break;
 
-    case TBAR_MODE_RAISE_LAND:
-      iCurrentAction = ACTION_RAISE_LAND;
+    case Enum35.TBAR_MODE_RAISE_LAND:
+      iCurrentAction = Enum37.ACTION_RAISE_LAND;
       break;
 
-    case TBAR_MODE_LOWER_LAND:
-      iCurrentAction = ACTION_LOWER_LAND;
+    case Enum35.TBAR_MODE_LOWER_LAND:
+      iCurrentAction = Enum37.ACTION_LOWER_LAND;
       break;
 
-    case TBAR_MODE_DEC_DIFF:
+    case Enum35.TBAR_MODE_DEC_DIFF:
       if (sCurBaseDiff > 0)
         sCurBaseDiff--;
       break;
 
-    case TBAR_MODE_INC_DIFF:
+    case Enum35.TBAR_MODE_INC_DIFF:
       if (sCurBaseDiff < 4)
         sCurBaseDiff++;
       break;
 
-    case TBAR_MODE_FAKE_LIGHTING:
+    case Enum35.TBAR_MODE_FAKE_LIGHTING:
       gfFakeLights ^= TRUE;
       if (gfFakeLights) {
         gusSavedLightLevel = gusLightLevel;
@@ -899,213 +899,213 @@ function HandleJA2ToolbarSelection(): void {
       LightSpriteRenderAll();
       break;
 
-    case TBAR_MODE_CHANGE_TILESET:
-      InitPopupMenu(iEditorButton[OPTIONS_CHANGE_TILESET], CHANGETSET_POPUP, DIR_UPRIGHT);
+    case Enum35.TBAR_MODE_CHANGE_TILESET:
+      InitPopupMenu(iEditorButton[Enum32.OPTIONS_CHANGE_TILESET], Enum53.CHANGETSET_POPUP, DIR_UPRIGHT);
       break;
 
-    case TBAR_MODE_CIVILIAN_GROUP:
-      InitPopupMenu(iEditorButton[MERCS_CIVILIAN_GROUP], CHANGECIVGROUP_POPUP, DIR_UPLEFT);
+    case Enum35.TBAR_MODE_CIVILIAN_GROUP:
+      InitPopupMenu(iEditorButton[Enum32.MERCS_CIVILIAN_GROUP], Enum53.CHANGECIVGROUP_POPUP, DIR_UPLEFT);
       break;
 
-    case TBAR_MODE_GET_WALL:
-      iCurrentAction = ACTION_GET_WALL;
-      iDrawMode = DRAW_MODE_WALLS;
+    case Enum35.TBAR_MODE_GET_WALL:
+      iCurrentAction = Enum37.ACTION_GET_WALL;
+      iDrawMode = Enum38.DRAW_MODE_WALLS;
       break;
-    case TBAR_MODE_GET_DOOR:
-      iCurrentAction = ACTION_GET_DOOR;
-      iDrawMode = DRAW_MODE_DOORS;
+    case Enum35.TBAR_MODE_GET_DOOR:
+      iCurrentAction = Enum37.ACTION_GET_DOOR;
+      iDrawMode = Enum38.DRAW_MODE_DOORS;
       break;
-    case TBAR_MODE_GET_WINDOW:
-      iCurrentAction = ACTION_GET_WINDOW;
-      iDrawMode = DRAW_MODE_WINDOWS;
+    case Enum35.TBAR_MODE_GET_WINDOW:
+      iCurrentAction = Enum37.ACTION_GET_WINDOW;
+      iDrawMode = Enum38.DRAW_MODE_WINDOWS;
       break;
-    case TBAR_MODE_GET_ROOF:
-      iCurrentAction = ACTION_GET_ROOF;
-      iDrawMode = DRAW_MODE_ROOFS;
+    case Enum35.TBAR_MODE_GET_ROOF:
+      iCurrentAction = Enum37.ACTION_GET_ROOF;
+      iDrawMode = Enum38.DRAW_MODE_ROOFS;
       break;
-    case TBAR_MODE_GET_BROKEN_WALL:
-      iCurrentAction = ACTION_GET_BROKEN_WALL;
-      iDrawMode = DRAW_MODE_BROKEN_WALLS;
+    case Enum35.TBAR_MODE_GET_BROKEN_WALL:
+      iCurrentAction = Enum37.ACTION_GET_BROKEN_WALL;
+      iDrawMode = Enum38.DRAW_MODE_BROKEN_WALLS;
       break;
-    case TBAR_MODE_GET_DECOR:
-      iCurrentAction = ACTION_GET_DECOR;
-      iDrawMode = DRAW_MODE_DECOR;
+    case Enum35.TBAR_MODE_GET_DECOR:
+      iCurrentAction = Enum37.ACTION_GET_DECOR;
+      iDrawMode = Enum38.DRAW_MODE_DECOR;
       break;
-    case TBAR_MODE_GET_DECAL:
-      iCurrentAction = ACTION_GET_DECAL;
-      iDrawMode = DRAW_MODE_DECALS;
+    case Enum35.TBAR_MODE_GET_DECAL:
+      iCurrentAction = Enum37.ACTION_GET_DECAL;
+      iDrawMode = Enum38.DRAW_MODE_DECALS;
       break;
-    case TBAR_MODE_GET_FLOOR:
-      iCurrentAction = ACTION_GET_FLOOR;
-      iDrawMode = DRAW_MODE_FLOORS;
+    case Enum35.TBAR_MODE_GET_FLOOR:
+      iCurrentAction = Enum37.ACTION_GET_FLOOR;
+      iDrawMode = Enum38.DRAW_MODE_FLOORS;
       break;
-    case TBAR_MODE_GET_TOILET:
-      iCurrentAction = ACTION_GET_TOILET;
-      iDrawMode = DRAW_MODE_TOILET;
+    case Enum35.TBAR_MODE_GET_TOILET:
+      iCurrentAction = Enum37.ACTION_GET_TOILET;
+      iDrawMode = Enum38.DRAW_MODE_TOILET;
       break;
-    case TBAR_MODE_GET_ROOM:
-      iCurrentAction = ACTION_GET_ROOM;
+    case Enum35.TBAR_MODE_GET_ROOM:
+      iCurrentAction = Enum37.ACTION_GET_ROOM;
       break;
-    case TBAR_MODE_GET_NEW_ROOF:
-      iCurrentAction = ACTION_GET_NEW_ROOF;
-      iDrawMode = DRAW_MODE_NEWROOF;
+    case Enum35.TBAR_MODE_GET_NEW_ROOF:
+      iCurrentAction = Enum37.ACTION_GET_NEW_ROOF;
+      iDrawMode = Enum38.DRAW_MODE_NEWROOF;
       break;
 
-    case TBAR_MODE_FILL_AREA:
-      iDrawMode = DRAW_MODE_GROUND + DRAW_MODE_FILL_AREA;
-      ClickEditorButton(TERRAIN_FGROUND_TEXTURES);
+    case Enum35.TBAR_MODE_FILL_AREA:
+      iDrawMode = Enum38.DRAW_MODE_GROUND + Enum38.DRAW_MODE_FILL_AREA;
+      ClickEditorButton(Enum32.TERRAIN_FGROUND_TEXTURES);
       TerrainTileDrawMode = TERRAIN_TILES_FOREGROUND;
       break;
 
-    case TBAR_MODE_FILL_AREA_OFF:
-      iDrawMode = DRAW_MODE_GROUND;
-      ClickEditorButton(TERRAIN_FGROUND_TEXTURES);
+    case Enum35.TBAR_MODE_FILL_AREA_OFF:
+      iDrawMode = Enum38.DRAW_MODE_GROUND;
+      ClickEditorButton(Enum32.TERRAIN_FGROUND_TEXTURES);
       TerrainTileDrawMode = TERRAIN_TILES_FOREGROUND;
       break;
 
-    case TBAR_MODE_GET_BANKS:
-      iCurrentAction = ACTION_NEXT_BANK;
-      iDrawMode = DRAW_MODE_BANKS;
+    case Enum35.TBAR_MODE_GET_BANKS:
+      iCurrentAction = Enum37.ACTION_NEXT_BANK;
+      iDrawMode = Enum38.DRAW_MODE_BANKS;
       break;
 
-    case TBAR_MODE_GET_ROADS:
-      iCurrentAction = ACTION_NEXT_ROAD;
-      iDrawMode = DRAW_MODE_ROADS;
+    case Enum35.TBAR_MODE_GET_ROADS:
+      iCurrentAction = Enum37.ACTION_NEXT_ROAD;
+      iDrawMode = Enum38.DRAW_MODE_ROADS;
       break;
 
-    case TBAR_MODE_DRAW_BANKS:
-      iCurrentAction = ACTION_NULL;
-      iDrawMode = DRAW_MODE_BANKS;
+    case Enum35.TBAR_MODE_DRAW_BANKS:
+      iCurrentAction = Enum37.ACTION_NULL;
+      iDrawMode = Enum38.DRAW_MODE_BANKS;
       break;
 
-    case TBAR_MODE_GET_DEBRIS:
-      iCurrentAction = ACTION_NEXT_DEBRIS;
-      iDrawMode = DRAW_MODE_DEBRIS;
+    case Enum35.TBAR_MODE_GET_DEBRIS:
+      iCurrentAction = Enum37.ACTION_NEXT_DEBRIS;
+      iDrawMode = Enum38.DRAW_MODE_DEBRIS;
       break;
 
-    case TBAR_MODE_DRAW_DEBRIS:
-      iCurrentAction = ACTION_NULL;
-      iDrawMode = DRAW_MODE_DEBRIS;
+    case Enum35.TBAR_MODE_DRAW_DEBRIS:
+      iCurrentAction = Enum37.ACTION_NULL;
+      iDrawMode = Enum38.DRAW_MODE_DEBRIS;
       break;
 
-    case TBAR_MODE_GET_OSTRUCTS:
-      iCurrentAction = ACTION_NEXT_STRUCT;
-      iDrawMode = DRAW_MODE_OSTRUCTS;
+    case Enum35.TBAR_MODE_GET_OSTRUCTS:
+      iCurrentAction = Enum37.ACTION_NEXT_STRUCT;
+      iDrawMode = Enum38.DRAW_MODE_OSTRUCTS;
       break;
 
-    case TBAR_MODE_DRAW_OSTRUCTS:
-      iCurrentAction = ACTION_NULL;
-      iDrawMode = DRAW_MODE_OSTRUCTS;
+    case Enum35.TBAR_MODE_DRAW_OSTRUCTS:
+      iCurrentAction = Enum37.ACTION_NULL;
+      iDrawMode = Enum38.DRAW_MODE_OSTRUCTS;
       break;
 
-    case TBAR_MODE_GET_OSTRUCTS1:
-      iCurrentAction = ACTION_NEXT_STRUCT1;
-      iDrawMode = DRAW_MODE_OSTRUCTS1;
+    case Enum35.TBAR_MODE_GET_OSTRUCTS1:
+      iCurrentAction = Enum37.ACTION_NEXT_STRUCT1;
+      iDrawMode = Enum38.DRAW_MODE_OSTRUCTS1;
       break;
 
-    case TBAR_MODE_DRAW_OSTRUCTS1:
-      iCurrentAction = ACTION_NULL;
-      iDrawMode = DRAW_MODE_OSTRUCTS1;
+    case Enum35.TBAR_MODE_DRAW_OSTRUCTS1:
+      iCurrentAction = Enum37.ACTION_NULL;
+      iDrawMode = Enum38.DRAW_MODE_OSTRUCTS1;
       break;
 
-    case TBAR_MODE_GET_OSTRUCTS2:
-      iCurrentAction = ACTION_NEXT_STRUCT2;
-      iDrawMode = DRAW_MODE_OSTRUCTS2;
+    case Enum35.TBAR_MODE_GET_OSTRUCTS2:
+      iCurrentAction = Enum37.ACTION_NEXT_STRUCT2;
+      iDrawMode = Enum38.DRAW_MODE_OSTRUCTS2;
       break;
 
-    case TBAR_MODE_DRAW_OSTRUCTS2:
-      iCurrentAction = ACTION_NULL;
-      iDrawMode = DRAW_MODE_OSTRUCTS2;
+    case Enum35.TBAR_MODE_DRAW_OSTRUCTS2:
+      iCurrentAction = Enum37.ACTION_NULL;
+      iDrawMode = Enum38.DRAW_MODE_OSTRUCTS2;
       break;
 
-    case TBAR_MODE_EXIT_EDIT:
-      iCurrentAction = ACTION_EXIT_EDITOR;
+    case Enum35.TBAR_MODE_EXIT_EDIT:
+      iCurrentAction = Enum37.ACTION_EXIT_EDITOR;
       break;
 
-    case TBAR_MODE_QUIT_GAME:
-      iCurrentAction = ACTION_QUIT_GAME;
+    case Enum35.TBAR_MODE_QUIT_GAME:
+      iCurrentAction = Enum37.ACTION_QUIT_GAME;
       break;
 
-    case TBAR_MODE_SAVE:
-      iCurrentAction = ACTION_SAVE_MAP;
+    case Enum35.TBAR_MODE_SAVE:
+      iCurrentAction = Enum37.ACTION_SAVE_MAP;
       break;
 
-    case TBAR_MODE_LOAD:
-      iCurrentAction = ACTION_LOAD_MAP;
+    case Enum35.TBAR_MODE_LOAD:
+      iCurrentAction = Enum37.ACTION_LOAD_MAP;
       break;
 
-    case TBAR_MODE_UNDO:
-      iCurrentAction = ACTION_UNDO;
+    case Enum35.TBAR_MODE_UNDO:
+      iCurrentAction = Enum37.ACTION_UNDO;
       break;
 
-    case TBAR_MODE_CHANGE_BRUSH:
-      iCurrentAction = ACTION_NEXT_SELECTIONTYPE;
+    case Enum35.TBAR_MODE_CHANGE_BRUSH:
+      iCurrentAction = Enum37.ACTION_NEXT_SELECTIONTYPE;
       break;
 
-    case TBAR_MODE_ERASE:
+    case Enum35.TBAR_MODE_ERASE:
       switch (iDrawMode) {
-        case DRAW_MODE_EXITGRID:
-        case DRAW_MODE_LIGHT:
-        case DRAW_MODE_GROUND:
-        case DRAW_MODE_OSTRUCTS:
-        case DRAW_MODE_OSTRUCTS1:
-        case DRAW_MODE_OSTRUCTS2:
-        case DRAW_MODE_DEBRIS:
-        case DRAW_MODE_BANKS:
-        case DRAW_MODE_ROADS:
+        case Enum38.DRAW_MODE_EXITGRID:
+        case Enum38.DRAW_MODE_LIGHT:
+        case Enum38.DRAW_MODE_GROUND:
+        case Enum38.DRAW_MODE_OSTRUCTS:
+        case Enum38.DRAW_MODE_OSTRUCTS1:
+        case Enum38.DRAW_MODE_OSTRUCTS2:
+        case Enum38.DRAW_MODE_DEBRIS:
+        case Enum38.DRAW_MODE_BANKS:
+        case Enum38.DRAW_MODE_ROADS:
 
-        case DRAW_MODE_WALLS:
-        case DRAW_MODE_DOORS:
-        case DRAW_MODE_WINDOWS:
-        case DRAW_MODE_ROOFS:
-        case DRAW_MODE_BROKEN_WALLS:
-        case DRAW_MODE_DECALS:
-        case DRAW_MODE_DECOR:
-        case DRAW_MODE_FLOORS:
-        case DRAW_MODE_TOILET:
+        case Enum38.DRAW_MODE_WALLS:
+        case Enum38.DRAW_MODE_DOORS:
+        case Enum38.DRAW_MODE_WINDOWS:
+        case Enum38.DRAW_MODE_ROOFS:
+        case Enum38.DRAW_MODE_BROKEN_WALLS:
+        case Enum38.DRAW_MODE_DECALS:
+        case Enum38.DRAW_MODE_DECOR:
+        case Enum38.DRAW_MODE_FLOORS:
+        case Enum38.DRAW_MODE_TOILET:
 
-        case DRAW_MODE_ROOM:
-        case DRAW_MODE_SLANTED_ROOF:
-        case DRAW_MODE_ROOMNUM:
-          iDrawMode += DRAW_MODE_ERASE;
+        case Enum38.DRAW_MODE_ROOM:
+        case Enum38.DRAW_MODE_SLANTED_ROOF:
+        case Enum38.DRAW_MODE_ROOMNUM:
+          iDrawMode += Enum38.DRAW_MODE_ERASE;
           break;
       }
       break;
 
-    case TBAR_MODE_ERASE_OFF:
-      if (iDrawMode >= DRAW_MODE_ERASE)
-        iDrawMode -= DRAW_MODE_ERASE;
+    case Enum35.TBAR_MODE_ERASE_OFF:
+      if (iDrawMode >= Enum38.DRAW_MODE_ERASE)
+        iDrawMode -= Enum38.DRAW_MODE_ERASE;
       break;
 
-    case TBAR_MODE_NEW_MAP:
-      iCurrentAction = ACTION_NEW_MAP;
+    case Enum35.TBAR_MODE_NEW_MAP:
+      iCurrentAction = Enum37.ACTION_NEW_MAP;
       break;
 
-    case TBAR_MODE_ITEM_WEAPONS:
-    case TBAR_MODE_ITEM_AMMO:
-    case TBAR_MODE_ITEM_ARMOUR:
-    case TBAR_MODE_ITEM_EXPLOSIVES:
-    case TBAR_MODE_ITEM_EQUIPMENT1:
-    case TBAR_MODE_ITEM_EQUIPMENT2:
-    case TBAR_MODE_ITEM_EQUIPMENT3:
-    case TBAR_MODE_ITEM_TRIGGERS:
-    case TBAR_MODE_ITEM_KEYS:
+    case Enum35.TBAR_MODE_ITEM_WEAPONS:
+    case Enum35.TBAR_MODE_ITEM_AMMO:
+    case Enum35.TBAR_MODE_ITEM_ARMOUR:
+    case Enum35.TBAR_MODE_ITEM_EXPLOSIVES:
+    case Enum35.TBAR_MODE_ITEM_EQUIPMENT1:
+    case Enum35.TBAR_MODE_ITEM_EQUIPMENT2:
+    case Enum35.TBAR_MODE_ITEM_EQUIPMENT3:
+    case Enum35.TBAR_MODE_ITEM_TRIGGERS:
+    case Enum35.TBAR_MODE_ITEM_KEYS:
       // Set up the items by type.
       InitEditorItemsInfo(iEditorToolbarState);
-      if (gubCurrMercMode != MERC_GETITEMMODE)
-        iDrawMode = DRAW_MODE_PLACE_ITEM;
+      if (gubCurrMercMode != Enum42.MERC_GETITEMMODE)
+        iDrawMode = Enum38.DRAW_MODE_PLACE_ITEM;
       break;
-    case TBAR_MODE_NONE:
-      iCurrentAction = ACTION_NULL;
+    case Enum35.TBAR_MODE_NONE:
+      iCurrentAction = Enum37.ACTION_NULL;
       gfRenderTaskbar = fPrevState;
       break;
     default:
-      iCurrentAction = ACTION_NULL;
-      iDrawMode = DRAW_MODE_NOTHING;
+      iCurrentAction = Enum37.ACTION_NULL;
+      iDrawMode = Enum38.DRAW_MODE_NOTHING;
       gfRenderTaskbar = fPrevState;
       break;
   }
-  iEditorToolbarState = TBAR_MODE_NONE;
+  iEditorToolbarState = Enum35.TBAR_MODE_NONE;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -1132,7 +1132,7 @@ function HandleKeyboardShortcuts(): void {
             if (EditorInputEvent.usKeyState & ALT_DOWN) {
               SetInputFieldStringWith16BitString(0, "");
               RemoveGotoGridNoUI();
-              iCurrentAction = ACTION_QUIT_GAME;
+              iCurrentAction = Enum37.ACTION_QUIT_GAME;
             }
             break;
         }
@@ -1143,19 +1143,19 @@ function HandleKeyboardShortcuts(): void {
             if (gfFakeLights) {
               gusSavedLightLevel = gusLightLevel;
               gusLightLevel = EDITOR_LIGHT_FAKE;
-              ClickEditorButton(MAPINFO_TOGGLE_FAKE_LIGHTS);
+              ClickEditorButton(Enum32.MAPINFO_TOGGLE_FAKE_LIGHTS);
             } else {
               gusLightLevel = gusSavedLightLevel;
-              UnclickEditorButton(MAPINFO_TOGGLE_FAKE_LIGHTS);
+              UnclickEditorButton(Enum32.MAPINFO_TOGGLE_FAKE_LIGHTS);
             }
             LightSetBaseLevel((EDITOR_LIGHT_MAX - gusLightLevel));
             LightSpriteRenderAll();
             break;
 
           case SPACE:
-            if (iCurrentTaskbar == TASK_MERCS)
-              IndicateSelectedMerc(SELECT_NEXT_MERC);
-            else if (iCurrentTaskbar == TASK_ITEMS)
+            if (iCurrentTaskbar == Enum36.TASK_MERCS)
+              IndicateSelectedMerc(Enum43.SELECT_NEXT_MERC);
+            else if (iCurrentTaskbar == Enum36.TASK_ITEMS)
               SelectNextItemPool();
             else if (gfShowTerrainTileButtons && fUseTerrainWeights)
               ResetTerrainTileWeights();
@@ -1164,66 +1164,66 @@ function HandleKeyboardShortcuts(): void {
             break;
 
           case INSERT:
-            if (iDrawMode == DRAW_MODE_GROUND) {
-              iDrawMode += DRAW_MODE_FILL_AREA;
-              ClickEditorButton(TERRAIN_FILL_AREA);
-              iEditorToolbarState = TBAR_MODE_FILL_AREA;
-            } else if (iDrawMode == (DRAW_MODE_GROUND + DRAW_MODE_FILL_AREA)) {
-              iDrawMode -= DRAW_MODE_FILL_AREA;
-              UnclickEditorButton(TERRAIN_FILL_AREA);
-              iEditorToolbarState = TBAR_MODE_FILL_AREA_OFF;
+            if (iDrawMode == Enum38.DRAW_MODE_GROUND) {
+              iDrawMode += Enum38.DRAW_MODE_FILL_AREA;
+              ClickEditorButton(Enum32.TERRAIN_FILL_AREA);
+              iEditorToolbarState = Enum35.TBAR_MODE_FILL_AREA;
+            } else if (iDrawMode == (Enum38.DRAW_MODE_GROUND + Enum38.DRAW_MODE_FILL_AREA)) {
+              iDrawMode -= Enum38.DRAW_MODE_FILL_AREA;
+              UnclickEditorButton(Enum32.TERRAIN_FILL_AREA);
+              iEditorToolbarState = Enum35.TBAR_MODE_FILL_AREA_OFF;
             }
             break;
           case ENTER:
             if (gfEditingDoor) {
               ExtractAndUpdateDoorInfo();
               KillDoorEditing();
-            } else if (iCurrentTaskbar == TASK_MERCS && gsSelectedMercID != -1)
+            } else if (iCurrentTaskbar == Enum36.TASK_MERCS && gsSelectedMercID != -1)
               ExtractCurrentMercModeInfo(FALSE);
-            else if (iCurrentTaskbar == TASK_MAPINFO)
+            else if (iCurrentTaskbar == Enum36.TASK_MAPINFO)
               ExtractAndUpdateMapInfo();
-            else if (iCurrentTaskbar == TASK_BUILDINGS)
+            else if (iCurrentTaskbar == Enum36.TASK_BUILDINGS)
               ExtractAndUpdateBuildingInfo();
             else if (gfShowItemStatsPanel && EditingText())
-              ExecuteItemStatsCmd(ITEMSTATS_APPLY);
+              ExecuteItemStatsCmd(Enum48.ITEMSTATS_APPLY);
             break;
 
           case BACKSPACE:
-            iCurrentAction = ACTION_UNDO;
+            iCurrentAction = Enum37.ACTION_UNDO;
             break;
 
           case DEL:
-            if (iCurrentTaskbar == TASK_ITEMS)
+            if (iCurrentTaskbar == Enum36.TASK_ITEMS)
               DeleteSelectedItem();
             else if (gsSelectedMercID != -1) {
-              if (gubCurrMercMode == MERC_INVENTORYMODE && gbCurrSelect != -1) {
+              if (gubCurrMercMode == Enum42.MERC_INVENTORYMODE && gbCurrSelect != -1) {
                 DeleteSelectedMercsItem();
                 gbCurrSelect = -1;
                 gfRenderTaskbar = TRUE;
               } else
                 DeleteSelectedMerc();
             } else
-              iCurrentAction = ACTION_QUICK_ERASE;
+              iCurrentAction = Enum37.ACTION_QUICK_ERASE;
             break;
 
           case ESC:
             if (InOverheadMap()) {
               KillOverheadMap();
             }
-            if (iDrawMode == DRAW_MODE_SCHEDULEACTION) {
+            if (iDrawMode == Enum38.DRAW_MODE_SCHEDULEACTION) {
               CancelCurrentScheduleAction();
             } else if (gfMercGetItem) {
               // cancel getting an item for the merc.
               gfMercGetItem = FALSE;
               gusMercsNewItemIndex = 0xffff;
-              SetMercEditingMode(MERC_INVENTORYMODE);
+              SetMercEditingMode(Enum42.MERC_INVENTORYMODE);
               ClearEditorItemsInfo();
             } else if (gfShowItemStatsPanel && EditingText())
-              ExecuteItemStatsCmd(ITEMSTATS_CANCEL);
+              ExecuteItemStatsCmd(Enum48.ITEMSTATS_CANCEL);
             else if (gfEditingDoor)
               KillDoorEditing();
             else
-              iCurrentAction = ACTION_EXIT_EDITOR;
+              iCurrentAction = Enum37.ACTION_EXIT_EDITOR;
             break;
 
           // Select next/prev terrain tile to draw with.
@@ -1235,59 +1235,59 @@ function HandleKeyboardShortcuts(): void {
             break;
 
           case PGUP:
-            if (iCurrentTaskbar == TASK_MERCS && !fBuildingShowRoofs) {
+            if (iCurrentTaskbar == Enum36.TASK_MERCS && !fBuildingShowRoofs) {
               gfRoofPlacement = TRUE;
               fBuildingShowRoofs = TRUE;
               UpdateRoofsView();
               gfRenderWorld = TRUE;
             } else
               switch (iDrawMode) {
-                case DRAW_MODE_SMART_WALLS:
+                case Enum38.DRAW_MODE_SMART_WALLS:
                   DecSmartWallUIValue();
                   break;
-                case DRAW_MODE_SMART_DOORS:
+                case Enum38.DRAW_MODE_SMART_DOORS:
                   DecSmartDoorUIValue();
                   break;
-                case DRAW_MODE_SMART_WINDOWS:
+                case Enum38.DRAW_MODE_SMART_WINDOWS:
                   DecSmartWindowUIValue();
                   break;
-                case DRAW_MODE_SMART_BROKEN_WALLS:
+                case Enum38.DRAW_MODE_SMART_BROKEN_WALLS:
                   DecSmartBrokenWallUIValue();
                   break;
-                case DRAW_MODE_PLACE_ITEM:
+                case Enum38.DRAW_MODE_PLACE_ITEM:
                   SelectPrevItemInPool();
                   break;
                 default:
-                  iCurrentAction = ACTION_SUB_INDEX_UP;
+                  iCurrentAction = Enum37.ACTION_SUB_INDEX_UP;
                   break;
               }
             gfRenderDrawingMode = TRUE;
             break;
           case PGDN:
-            if (iCurrentTaskbar == TASK_MERCS && fBuildingShowRoofs) {
+            if (iCurrentTaskbar == Enum36.TASK_MERCS && fBuildingShowRoofs) {
               gfRoofPlacement = FALSE;
               fBuildingShowRoofs = FALSE;
               UpdateRoofsView();
               gfRenderWorld = TRUE;
             } else
               switch (iDrawMode) {
-                case DRAW_MODE_SMART_WALLS:
+                case Enum38.DRAW_MODE_SMART_WALLS:
                   IncSmartWallUIValue();
                   break;
-                case DRAW_MODE_SMART_DOORS:
+                case Enum38.DRAW_MODE_SMART_DOORS:
                   IncSmartDoorUIValue();
                   break;
-                case DRAW_MODE_SMART_WINDOWS:
+                case Enum38.DRAW_MODE_SMART_WINDOWS:
                   IncSmartWindowUIValue();
                   break;
-                case DRAW_MODE_SMART_BROKEN_WALLS:
+                case Enum38.DRAW_MODE_SMART_BROKEN_WALLS:
                   IncSmartBrokenWallUIValue();
                   break;
-                case DRAW_MODE_PLACE_ITEM:
+                case Enum38.DRAW_MODE_PLACE_ITEM:
                   SelectNextItemInPool();
                   break;
                 default:
-                  iCurrentAction = ACTION_SUB_INDEX_DWN;
+                  iCurrentAction = Enum37.ACTION_SUB_INDEX_DWN;
                   break;
               }
             gfRenderDrawingMode = TRUE;
@@ -1315,7 +1315,7 @@ function HandleKeyboardShortcuts(): void {
             MusicPlay(giMusicID);
             ScreenMsg(FONT_YELLOW, MSG_DEBUG, "%S", szMusicList[giMusicID]);
             giMusicID++;
-            if (giMusicID >= NUM_MUSIC)
+            if (giMusicID >= Enum327.NUM_MUSIC)
               giMusicID = 0;
             break;
 
@@ -1335,15 +1335,15 @@ function HandleKeyboardShortcuts(): void {
               let usTileIndex: UINT16;
               pSelList = SelSingleRoof;
               pNumSelList = addressof(iNumRoofsSelected);
-              usRoofType = GetRandomIndexByRange(FIRSTROOF, LASTROOF);
+              usRoofType = GetRandomIndexByRange(Enum313.FIRSTROOF, LASTROOF);
               if (usRoofType == 0xffff)
-                usRoofType = FIRSTROOF;
+                usRoofType = Enum313.FIRSTROOF;
               for (i = 0; i < WORLD_MAX; i++) {
                 if (gubWorldRoomInfo[i]) {
                   AddToUndoList(i);
-                  RemoveAllRoofsOfTypeRange(i, FIRSTTEXTURE, LASTITEM);
-                  RemoveAllOnRoofsOfTypeRange(i, FIRSTTEXTURE, LASTITEM);
-                  RemoveAllShadowsOfTypeRange(i, FIRSTROOF, LASTSLANTROOF);
+                  RemoveAllRoofsOfTypeRange(i, Enum313.FIRSTTEXTURE, LASTITEM);
+                  RemoveAllOnRoofsOfTypeRange(i, Enum313.FIRSTTEXTURE, LASTITEM);
+                  RemoveAllShadowsOfTypeRange(i, Enum313.FIRSTROOF, LASTSLANTROOF);
                   usRoofIndex = 9 + (rand() % 3);
                   GetTileIndexFromTypeSubIndex(usRoofType, usRoofIndex, addressof(usTileIndex));
                   AddRoofToHead(i, usTileIndex);
@@ -1373,24 +1373,24 @@ function HandleKeyboardShortcuts(): void {
             break;
 
           case '[':
-            iCurrentAction = ACTION_DENSITY_DOWN;
+            iCurrentAction = Enum37.ACTION_DENSITY_DOWN;
             break;
 
           case ']':
-            iCurrentAction = ACTION_DENSITY_UP;
+            iCurrentAction = Enum37.ACTION_DENSITY_UP;
             break;
 
           case '+':
             // if ( iDrawMode == DRAW_MODE_SHOW_TILESET )
             //	iCurrentAction = ACTION_MLIST_DWN;
             // else
-            iCurrentAction = ACTION_SHADE_UP;
+            iCurrentAction = Enum37.ACTION_SHADE_UP;
             break;
 
           case '-':
             // if ( iDrawMode == DRAW_MODE_SHOW_TILESET )
             //	iCurrentAction = ACTION_MLIST_UP;
-            iCurrentAction = ACTION_SHADE_DWN;
+            iCurrentAction = Enum37.ACTION_SHADE_DWN;
             break;
 
           case '0':
@@ -1403,90 +1403,90 @@ function HandleKeyboardShortcuts(): void {
           case '7':
           case '8':
           case '9':
-            if (iCurrentTaskbar == TASK_MERCS) {
-              if (iDrawMode >= DRAW_MODE_ERASE)
-                iCurrentAction = ACTION_ERASE_WAYPOINT;
+            if (iCurrentTaskbar == Enum36.TASK_MERCS) {
+              if (iDrawMode >= Enum38.DRAW_MODE_ERASE)
+                iCurrentAction = Enum37.ACTION_ERASE_WAYPOINT;
               else
-                iCurrentAction = ACTION_SET_WAYPOINT;
+                iCurrentAction = Enum37.ACTION_SET_WAYPOINT;
               iActionParam = EditorInputEvent.usParam - '0';
             } else {
-              iCurrentAction = ACTION_SET_FNAME;
+              iCurrentAction = Enum37.ACTION_SET_FNAME;
               iActionParam = EditorInputEvent.usParam - '0';
             }
             break;
 
           case 'a':
-            iCurrentAction = ACTION_PREV_SELECTIONTYPE;
+            iCurrentAction = Enum37.ACTION_PREV_SELECTIONTYPE;
             break;
           case 'b':
-            if (iCurrentTaskbar != TASK_BUILDINGS) {
-              iTaskMode = TASK_BUILDINGS;
+            if (iCurrentTaskbar != Enum36.TASK_BUILDINGS) {
+              iTaskMode = Enum36.TASK_BUILDINGS;
               DoTaskbar();
             }
 
             if (CheckForSlantRoofs())
-              iDrawMode = DRAW_MODE_SLANTED_ROOF;
+              iDrawMode = Enum38.DRAW_MODE_SLANTED_ROOF;
             else {
               gusSelectionType = gusSavedBuildingSelectionType;
-              iDrawMode = DRAW_MODE_ROOM;
+              iDrawMode = Enum38.DRAW_MODE_ROOM;
             }
             if (gfCaves)
-              SetEditorBuildingTaskbarMode(BUILDING_CAVE_DRAWING);
+              SetEditorBuildingTaskbarMode(Enum32.BUILDING_CAVE_DRAWING);
             else
-              SetEditorBuildingTaskbarMode(BUILDING_NEW_ROOM);
+              SetEditorBuildingTaskbarMode(Enum32.BUILDING_NEW_ROOM);
             TerrainTileDrawMode = TERRAIN_TILES_BRETS_STRANGEMODE;
             break;
           case 'c':
-            if (EditorInputEvent.usKeyState & CTRL_DOWN && iCurrentTaskbar == TASK_MERCS) {
-              iCurrentAction = ACTION_COPY_MERC_PLACEMENT;
+            if (EditorInputEvent.usKeyState & CTRL_DOWN && iCurrentTaskbar == Enum36.TASK_MERCS) {
+              iCurrentAction = Enum37.ACTION_COPY_MERC_PLACEMENT;
             }
             break;
 
           case 'd': // debris
-            if (iCurrentTaskbar != TASK_TERRAIN) {
-              iTaskMode = TASK_TERRAIN;
+            if (iCurrentTaskbar != Enum36.TASK_TERRAIN) {
+              iTaskMode = Enum36.TASK_TERRAIN;
               DoTaskbar();
             }
 
-            iCurrentAction = ACTION_NULL;
-            iDrawMode = DRAW_MODE_DEBRIS;
-            ClickEditorButton(TERRAIN_PLACE_DEBRIS);
-            iEditorToolbarState = TBAR_MODE_DRAW_DEBRIS;
+            iCurrentAction = Enum37.ACTION_NULL;
+            iDrawMode = Enum38.DRAW_MODE_DEBRIS;
+            ClickEditorButton(Enum32.TERRAIN_PLACE_DEBRIS);
+            iEditorToolbarState = Enum35.TBAR_MODE_DRAW_DEBRIS;
             TerrainTileDrawMode = TERRAIN_TILES_NODRAW;
             break;
           case 'e':
-            if (iDrawMode >= DRAW_MODE_ERASE) {
-              iDrawMode -= DRAW_MODE_ERASE;
+            if (iDrawMode >= Enum38.DRAW_MODE_ERASE) {
+              iDrawMode -= Enum38.DRAW_MODE_ERASE;
             } else {
               switch (iDrawMode) {
-                case DRAW_MODE_NORTHPOINT:
-                case DRAW_MODE_WESTPOINT:
-                case DRAW_MODE_EASTPOINT:
-                case DRAW_MODE_SOUTHPOINT:
-                case DRAW_MODE_CENTERPOINT:
-                case DRAW_MODE_ISOLATEDPOINT:
-                case DRAW_MODE_EXITGRID:
-                case DRAW_MODE_LIGHT:
-                case DRAW_MODE_GROUND:
-                case DRAW_MODE_OSTRUCTS:
-                case DRAW_MODE_OSTRUCTS1:
-                case DRAW_MODE_OSTRUCTS2:
-                case DRAW_MODE_DEBRIS:
-                case DRAW_MODE_BANKS:
-                case DRAW_MODE_ROADS:
-                case DRAW_MODE_WALLS:
-                case DRAW_MODE_DOORS:
-                case DRAW_MODE_WINDOWS:
-                case DRAW_MODE_ROOFS:
-                case DRAW_MODE_BROKEN_WALLS:
-                case DRAW_MODE_DECOR:
-                case DRAW_MODE_DECALS:
-                case DRAW_MODE_FLOORS:
-                case DRAW_MODE_TOILET:
-                case DRAW_MODE_ROOM:
-                case DRAW_MODE_SLANTED_ROOF:
-                case DRAW_MODE_ROOMNUM:
-                  iDrawMode += DRAW_MODE_ERASE;
+                case Enum38.DRAW_MODE_NORTHPOINT:
+                case Enum38.DRAW_MODE_WESTPOINT:
+                case Enum38.DRAW_MODE_EASTPOINT:
+                case Enum38.DRAW_MODE_SOUTHPOINT:
+                case Enum38.DRAW_MODE_CENTERPOINT:
+                case Enum38.DRAW_MODE_ISOLATEDPOINT:
+                case Enum38.DRAW_MODE_EXITGRID:
+                case Enum38.DRAW_MODE_LIGHT:
+                case Enum38.DRAW_MODE_GROUND:
+                case Enum38.DRAW_MODE_OSTRUCTS:
+                case Enum38.DRAW_MODE_OSTRUCTS1:
+                case Enum38.DRAW_MODE_OSTRUCTS2:
+                case Enum38.DRAW_MODE_DEBRIS:
+                case Enum38.DRAW_MODE_BANKS:
+                case Enum38.DRAW_MODE_ROADS:
+                case Enum38.DRAW_MODE_WALLS:
+                case Enum38.DRAW_MODE_DOORS:
+                case Enum38.DRAW_MODE_WINDOWS:
+                case Enum38.DRAW_MODE_ROOFS:
+                case Enum38.DRAW_MODE_BROKEN_WALLS:
+                case Enum38.DRAW_MODE_DECOR:
+                case Enum38.DRAW_MODE_DECALS:
+                case Enum38.DRAW_MODE_FLOORS:
+                case Enum38.DRAW_MODE_TOILET:
+                case Enum38.DRAW_MODE_ROOM:
+                case Enum38.DRAW_MODE_SLANTED_ROOF:
+                case Enum38.DRAW_MODE_ROOMNUM:
+                  iDrawMode += Enum38.DRAW_MODE_ERASE;
                   break;
               }
             }
@@ -1499,20 +1499,20 @@ function HandleKeyboardShortcuts(): void {
             if (EditorInputEvent.usKeyState & CTRL_DOWN) {
               CreateGotoGridNoUI();
             } else {
-              if (iCurrentTaskbar != TASK_TERRAIN) {
-                iTaskMode = TASK_TERRAIN;
+              if (iCurrentTaskbar != Enum36.TASK_TERRAIN) {
+                iTaskMode = Enum36.TASK_TERRAIN;
                 DoTaskbar();
               }
-              iCurrentAction = ACTION_NULL;
-              SetEditorTerrainTaskbarMode(TERRAIN_FGROUND_TEXTURES);
+              iCurrentAction = Enum37.ACTION_NULL;
+              SetEditorTerrainTaskbarMode(Enum32.TERRAIN_FGROUND_TEXTURES);
             }
             break;
 
           case 'h':
             if (fBuildingShowRoofs ^= 1)
-              ClickEditorButton(BUILDING_TOGGLE_ROOF_VIEW);
+              ClickEditorButton(Enum32.BUILDING_TOGGLE_ROOF_VIEW);
             else
-              UnclickEditorButton(BUILDING_TOGGLE_ROOF_VIEW);
+              UnclickEditorButton(Enum32.BUILDING_TOGGLE_ROOF_VIEW);
             UpdateRoofsView();
             break;
 
@@ -1526,57 +1526,57 @@ function HandleKeyboardShortcuts(): void {
           case 'l':
             if (EditorInputEvent.usKeyState & CTRL_DOWN) {
               UpdateLastActionBeforeLeaving();
-              iCurrentAction = ACTION_LOAD_MAP;
+              iCurrentAction = Enum37.ACTION_LOAD_MAP;
               break;
             }
-            if (iCurrentTaskbar != TASK_TERRAIN) {
-              iTaskMode = TASK_TERRAIN;
+            if (iCurrentTaskbar != Enum36.TASK_TERRAIN) {
+              iTaskMode = Enum36.TASK_TERRAIN;
               DoTaskbar();
             }
             break;
           case 'n':
             if (fBuildingShowRoomInfo ^= 1) {
               SetRenderFlags(RENDER_FLAG_ROOMIDS);
-              ClickEditorButton(BUILDING_TOGGLE_INFO_VIEW);
+              ClickEditorButton(Enum32.BUILDING_TOGGLE_INFO_VIEW);
             } else {
               ClearRenderFlags(RENDER_FLAG_ROOMIDS);
-              UnclickEditorButton(BUILDING_TOGGLE_INFO_VIEW);
+              UnclickEditorButton(Enum32.BUILDING_TOGGLE_INFO_VIEW);
             }
             break;
           case 'o':
-            if (iCurrentTaskbar != TASK_TERRAIN) {
-              iTaskMode = TASK_TERRAIN;
+            if (iCurrentTaskbar != Enum36.TASK_TERRAIN) {
+              iTaskMode = Enum36.TASK_TERRAIN;
               DoTaskbar();
             }
-            iCurrentAction = ACTION_NULL;
-            iDrawMode = DRAW_MODE_OSTRUCTS2;
-            ClickEditorButton(TERRAIN_PLACE_MISC);
-            iEditorToolbarState = TBAR_MODE_DRAW_OSTRUCTS2;
+            iCurrentAction = Enum37.ACTION_NULL;
+            iDrawMode = Enum38.DRAW_MODE_OSTRUCTS2;
+            ClickEditorButton(Enum32.TERRAIN_PLACE_MISC);
+            iEditorToolbarState = Enum35.TBAR_MODE_DRAW_OSTRUCTS2;
             break;
           case 'r': // rocks
-            if (iCurrentTaskbar != TASK_TERRAIN) {
-              iTaskMode = TASK_TERRAIN;
+            if (iCurrentTaskbar != Enum36.TASK_TERRAIN) {
+              iTaskMode = Enum36.TASK_TERRAIN;
               DoTaskbar();
             }
-            iCurrentAction = ACTION_NULL;
-            iDrawMode = DRAW_MODE_OSTRUCTS1;
-            ClickEditorButton(TERRAIN_PLACE_ROCKS);
-            iEditorToolbarState = TBAR_MODE_DRAW_OSTRUCTS1;
+            iCurrentAction = Enum37.ACTION_NULL;
+            iDrawMode = Enum38.DRAW_MODE_OSTRUCTS1;
+            ClickEditorButton(Enum32.TERRAIN_PLACE_ROCKS);
+            iEditorToolbarState = Enum35.TBAR_MODE_DRAW_OSTRUCTS1;
             break;
           case 's':
             if (EditorInputEvent.usKeyState & CTRL_DOWN) {
-              iCurrentAction = ACTION_SAVE_MAP;
+              iCurrentAction = Enum37.ACTION_SAVE_MAP;
             }
             break;
           case 't': // Trees
-            if (iCurrentTaskbar != TASK_TERRAIN) {
-              iTaskMode = TASK_TERRAIN;
+            if (iCurrentTaskbar != Enum36.TASK_TERRAIN) {
+              iTaskMode = Enum36.TASK_TERRAIN;
               DoTaskbar();
             }
-            iCurrentAction = ACTION_NULL;
-            iDrawMode = DRAW_MODE_OSTRUCTS;
-            ClickEditorButton(TERRAIN_PLACE_TREES);
-            iEditorToolbarState = TBAR_MODE_DRAW_OSTRUCTS;
+            iCurrentAction = Enum37.ACTION_NULL;
+            iDrawMode = Enum38.DRAW_MODE_OSTRUCTS;
+            ClickEditorButton(Enum32.TERRAIN_PLACE_TREES);
+            iEditorToolbarState = Enum35.TBAR_MODE_DRAW_OSTRUCTS;
             break;
           case 'T':
             if (fShowTrees) {
@@ -1594,14 +1594,14 @@ function HandleKeyboardShortcuts(): void {
             break;
           case 'w': // walls (full building)
             if (fBuildingShowWalls ^= 1)
-              ClickEditorButton(BUILDING_TOGGLE_WALL_VIEW);
+              ClickEditorButton(Enum32.BUILDING_TOGGLE_WALL_VIEW);
             else
-              UnclickEditorButton(BUILDING_TOGGLE_WALL_VIEW);
+              UnclickEditorButton(Enum32.BUILDING_TOGGLE_WALL_VIEW);
             UpdateWallsView();
             break;
           case 'v':
-            if (EditorInputEvent.usKeyState & CTRL_DOWN && iCurrentTaskbar == TASK_MERCS) {
-              iCurrentAction = ACTION_PASTE_MERC_PLACEMENT;
+            if (EditorInputEvent.usKeyState & CTRL_DOWN && iCurrentTaskbar == Enum36.TASK_MERCS) {
+              iCurrentAction = Enum37.ACTION_PASTE_MERC_PLACEMENT;
             }
             break;
 
@@ -1611,28 +1611,28 @@ function HandleKeyboardShortcuts(): void {
                 KillOverheadMap();
               if (gfEditingDoor)
                 KillDoorEditing();
-              iCurrentAction = ACTION_QUIT_GAME;
+              iCurrentAction = Enum37.ACTION_QUIT_GAME;
               return;
             }
             break;
           case 'z':
-            iCurrentAction = ACTION_NEXT_SELECTIONTYPE;
+            iCurrentAction = Enum37.ACTION_NEXT_SELECTIONTYPE;
             break;
           case ',':
-            gusSelectionType = LINESELECTION;
+            gusSelectionType = Enum33.LINESELECTION;
             gusPreserveSelectionWidth--;
             if (!gusPreserveSelectionWidth)
               gusPreserveSelectionWidth = 8;
             gfRenderTaskbar = TRUE;
             break;
           case '.':
-            gusSelectionType = LINESELECTION;
+            gusSelectionType = Enum33.LINESELECTION;
             gusPreserveSelectionWidth++;
             if (gusPreserveSelectionWidth > 8)
               gusPreserveSelectionWidth = 1;
             gfRenderTaskbar = TRUE;
           default:
-            iCurrentAction = ACTION_NULL;
+            iCurrentAction = Enum37.ACTION_NULL;
             break;
         }
     }
@@ -1647,36 +1647,36 @@ function HandleKeyboardShortcuts(): void {
 function PerformSelectedAction(): UINT32 {
   let uiRetVal: UINT32;
 
-  uiRetVal = EDIT_SCREEN;
+  uiRetVal = Enum26.EDIT_SCREEN;
 
   switch (iCurrentAction) {
-    case ACTION_DENSITY_DOWN:
+    case Enum37.ACTION_DENSITY_DOWN:
       DecreaseSelectionDensity();
       break;
-    case ACTION_DENSITY_UP:
+    case Enum37.ACTION_DENSITY_UP:
       IncreaseSelectionDensity();
       break;
 
-    case ACTION_ERASE_WAYPOINT:
+    case Enum37.ACTION_ERASE_WAYPOINT:
       EraseMercWaypoint();
       break;
 
-    case ACTION_SET_WAYPOINT:
+    case Enum37.ACTION_SET_WAYPOINT:
       iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
       AddMercWaypoint(iMapIndex);
       break;
 
-    case ACTION_RAISE_LAND:
+    case Enum37.ACTION_RAISE_LAND:
       RaiseWorldLand();
       break;
 
-    case ACTION_HELPSCREEN:
+    case Enum37.ACTION_HELPSCREEN:
       DisableEditorTaskbar();
       fHelpScreen = TRUE;
       fAllDone = FALSE;
       break;
 
-    case ACTION_QUICK_ERASE:
+    case Enum37.ACTION_QUICK_ERASE:
       if ((gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) && GetMouseXY(addressof(sGridX), addressof(sGridY))) {
         iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
 
@@ -1686,69 +1686,69 @@ function PerformSelectedAction(): UINT32 {
       }
       break;
 
-    case ACTION_QUIT_GAME:
+    case Enum37.ACTION_QUIT_GAME:
       gfProgramIsRunning = FALSE;
-    case ACTION_EXIT_EDITOR:
+    case Enum37.ACTION_EXIT_EDITOR:
       if (EditModeShutdown()) {
         iPrevJA2ToolbarState = iEditorToolbarState;
         iPrevDrawMode = iDrawMode;
         PrevCurrentPaste = CurrentPaste;
         gPrevCurrentBackground = gCurrentBackground;
         fFirstTimeInGameScreen = TRUE;
-        return GAME_SCREEN;
+        return Enum26.GAME_SCREEN;
       }
-      return EDIT_SCREEN;
-    case ACTION_GET_WALL:
-    case ACTION_GET_DOOR:
-    case ACTION_GET_WINDOW:
-    case ACTION_GET_ROOF:
-    case ACTION_GET_NEW_ROOF:
-    case ACTION_GET_BROKEN_WALL:
-    case ACTION_GET_DECOR:
-    case ACTION_GET_DECAL:
-    case ACTION_GET_FLOOR:
-    case ACTION_GET_TOILET:
-    case ACTION_GET_ROOM:
+      return Enum26.EDIT_SCREEN;
+    case Enum37.ACTION_GET_WALL:
+    case Enum37.ACTION_GET_DOOR:
+    case Enum37.ACTION_GET_WINDOW:
+    case Enum37.ACTION_GET_ROOF:
+    case Enum37.ACTION_GET_NEW_ROOF:
+    case Enum37.ACTION_GET_BROKEN_WALL:
+    case Enum37.ACTION_GET_DECOR:
+    case Enum37.ACTION_GET_DECAL:
+    case Enum37.ACTION_GET_FLOOR:
+    case Enum37.ACTION_GET_TOILET:
+    case Enum37.ACTION_GET_ROOM:
       switch (iCurrentAction) {
-        case ACTION_GET_WALL:
-          CreateJA2SelectionWindow(SELWIN_SINGLEWALL);
+        case Enum37.ACTION_GET_WALL:
+          CreateJA2SelectionWindow(Enum59.SELWIN_SINGLEWALL);
           break;
-        case ACTION_GET_DOOR:
-          CreateJA2SelectionWindow(SELWIN_SINGLEDOOR);
+        case Enum37.ACTION_GET_DOOR:
+          CreateJA2SelectionWindow(Enum59.SELWIN_SINGLEDOOR);
           break;
-        case ACTION_GET_WINDOW:
-          CreateJA2SelectionWindow(SELWIN_SINGLEWINDOW);
+        case Enum37.ACTION_GET_WINDOW:
+          CreateJA2SelectionWindow(Enum59.SELWIN_SINGLEWINDOW);
           break;
-        case ACTION_GET_ROOF:
-          CreateJA2SelectionWindow(SELWIN_SINGLEROOF);
+        case Enum37.ACTION_GET_ROOF:
+          CreateJA2SelectionWindow(Enum59.SELWIN_SINGLEROOF);
           break;
-        case ACTION_GET_NEW_ROOF:
-          CreateJA2SelectionWindow(SELWIN_SINGLENEWROOF);
+        case Enum37.ACTION_GET_NEW_ROOF:
+          CreateJA2SelectionWindow(Enum59.SELWIN_SINGLENEWROOF);
           break;
-        case ACTION_GET_BROKEN_WALL:
-          CreateJA2SelectionWindow(SELWIN_SINGLEBROKENWALL);
+        case Enum37.ACTION_GET_BROKEN_WALL:
+          CreateJA2SelectionWindow(Enum59.SELWIN_SINGLEBROKENWALL);
           break;
-        case ACTION_GET_DECOR:
-          CreateJA2SelectionWindow(SELWIN_SINGLEDECOR);
+        case Enum37.ACTION_GET_DECOR:
+          CreateJA2SelectionWindow(Enum59.SELWIN_SINGLEDECOR);
           break;
-        case ACTION_GET_DECAL:
-          CreateJA2SelectionWindow(SELWIN_SINGLEDECAL);
+        case Enum37.ACTION_GET_DECAL:
+          CreateJA2SelectionWindow(Enum59.SELWIN_SINGLEDECAL);
           break;
-        case ACTION_GET_FLOOR:
-          CreateJA2SelectionWindow(SELWIN_SINGLEFLOOR);
+        case Enum37.ACTION_GET_FLOOR:
+          CreateJA2SelectionWindow(Enum59.SELWIN_SINGLEFLOOR);
           break;
-        case ACTION_GET_TOILET:
-          CreateJA2SelectionWindow(SELWIN_SINGLETOILET);
+        case Enum37.ACTION_GET_TOILET:
+          CreateJA2SelectionWindow(Enum59.SELWIN_SINGLETOILET);
           break;
-        case ACTION_GET_ROOM:
-          CreateJA2SelectionWindow(SELWIN_ROOM);
+        case Enum37.ACTION_GET_ROOM:
+          CreateJA2SelectionWindow(Enum59.SELWIN_ROOM);
           break;
       }
       fSelectionWindow = TRUE;
       fAllDone = FALSE;
       break;
 
-    case ACTION_NEW_MAP:
+    case Enum37.ACTION_NEW_MAP:
       fNewMap = TRUE;
       if (gfPendingBasement)
         CreateMessageBox("Delete current map and start a new basement level?");
@@ -1758,7 +1758,7 @@ function PerformSelectedAction(): UINT32 {
         CreateMessageBox("Delete current map and start a new outdoor level?");
       break;
 
-    case ACTION_SET_NEW_BACKGROUND:
+    case Enum37.ACTION_SET_NEW_BACKGROUND:
       if (!fBeenWarned)
         CreateMessageBox(" Wipe out ground textures? ");
       else {
@@ -1768,76 +1768,76 @@ function PerformSelectedAction(): UINT32 {
       }
       break;
 
-    case ACTION_SUB_INDEX_UP:
-      gusSelectionType = SMALLSELECTION;
+    case Enum37.ACTION_SUB_INDEX_UP:
+      gusSelectionType = Enum33.SMALLSELECTION;
       switch (iDrawMode) {
-        case DRAW_MODE_BANKS:
+        case Enum38.DRAW_MODE_BANKS:
           if (iNumBanksSelected > 0)
             iCurBank = (iCurBank + 1) % iNumBanksSelected;
           break;
-        case DRAW_MODE_ROADS:
+        case Enum38.DRAW_MODE_ROADS:
           if (iNumRoadsSelected > 0)
             iCurBank = (iCurBank + 1) % iNumRoadsSelected;
           break;
-        case DRAW_MODE_WALLS:
+        case Enum38.DRAW_MODE_WALLS:
           if (iNumWallsSelected > 0)
             iCurBank = (iCurBank + 1) % iNumWallsSelected;
           break;
-        case DRAW_MODE_DOORS:
+        case Enum38.DRAW_MODE_DOORS:
           if (iNumDoorsSelected > 0)
             iCurBank = (iCurBank + 1) % iNumDoorsSelected;
           break;
-        case DRAW_MODE_WINDOWS:
+        case Enum38.DRAW_MODE_WINDOWS:
           if (iNumWindowsSelected > 0)
             iCurBank = (iCurBank + 1) % iNumWindowsSelected;
           break;
-        case DRAW_MODE_ROOFS:
+        case Enum38.DRAW_MODE_ROOFS:
           if (iNumRoofsSelected > 0)
             iCurBank = (iCurBank + 1) % iNumRoofsSelected;
           break;
-        case DRAW_MODE_BROKEN_WALLS:
+        case Enum38.DRAW_MODE_BROKEN_WALLS:
           if (iNumBrokenWallsSelected > 0)
             iCurBank = (iCurBank + 1) % iNumBrokenWallsSelected;
           break;
-        case DRAW_MODE_DECOR:
+        case Enum38.DRAW_MODE_DECOR:
           if (iNumDecorSelected > 0)
             iCurBank = (iCurBank + 1) % iNumDecorSelected;
           break;
-        case DRAW_MODE_DECALS:
+        case Enum38.DRAW_MODE_DECALS:
           if (iNumDecalsSelected > 0)
             iCurBank = (iCurBank + 1) % iNumDecalsSelected;
           break;
-        case DRAW_MODE_FLOORS:
+        case Enum38.DRAW_MODE_FLOORS:
           if (iNumFloorsSelected > 0)
             iCurBank = (iCurBank + 1) % iNumFloorsSelected;
           break;
-        case DRAW_MODE_TOILET:
+        case Enum38.DRAW_MODE_TOILET:
           if (iNumToiletsSelected > 0)
             iCurBank = (iCurBank + 1) % iNumToiletsSelected;
           break;
-        case DRAW_MODE_NEWROOF:
+        case Enum38.DRAW_MODE_NEWROOF:
           if (iNumNewRoofsSelected > 0)
             iCurBank = (iCurBank + 1) % iNumNewRoofsSelected;
           break;
-        case DRAW_MODE_OSTRUCTS:
+        case Enum38.DRAW_MODE_OSTRUCTS:
           fDontUseRandom = TRUE;
           if (iNumOStructsSelected > 0)
             iCurBank = (iCurBank + 1) % iNumOStructsSelected;
           break;
 
-        case DRAW_MODE_OSTRUCTS1:
+        case Enum38.DRAW_MODE_OSTRUCTS1:
           fDontUseRandom = TRUE;
           if (iNumOStructs1Selected > 0)
             iCurBank = (iCurBank + 1) % iNumOStructs1Selected;
           break;
 
-        case DRAW_MODE_OSTRUCTS2:
+        case Enum38.DRAW_MODE_OSTRUCTS2:
           fDontUseRandom = TRUE;
           if (iNumOStructs2Selected > 0)
             iCurBank = (iCurBank + 1) % iNumOStructs2Selected;
           break;
 
-        case DRAW_MODE_DEBRIS:
+        case Enum38.DRAW_MODE_DEBRIS:
           fDontUseRandom = TRUE;
           if (iNumDebrisSelected > 0)
             iCurBank = (iCurBank + 1) % iNumDebrisSelected;
@@ -1845,141 +1845,141 @@ function PerformSelectedAction(): UINT32 {
       }
       break;
 
-    case ACTION_SUB_INDEX_DWN:
-      gusSelectionType = SMALLSELECTION;
+    case Enum37.ACTION_SUB_INDEX_DWN:
+      gusSelectionType = Enum33.SMALLSELECTION;
       switch (iDrawMode) {
-        case DRAW_MODE_BANKS:
+        case Enum38.DRAW_MODE_BANKS:
           if (iNumBanksSelected > 0)
             iCurBank = (iCurBank + (iNumBanksSelected - 1)) % iNumBanksSelected;
           break;
-        case DRAW_MODE_ROADS:
+        case Enum38.DRAW_MODE_ROADS:
           if (iNumRoadsSelected > 0)
             iCurBank = (iCurBank + (iNumRoadsSelected - 1)) % iNumRoadsSelected;
           break;
-        case DRAW_MODE_WALLS:
+        case Enum38.DRAW_MODE_WALLS:
           if (iNumWallsSelected > 0)
             iCurBank = (iCurBank + (iNumWallsSelected - 1)) % iNumWallsSelected;
           break;
-        case DRAW_MODE_DOORS:
+        case Enum38.DRAW_MODE_DOORS:
           if (iNumDoorsSelected > 0)
             iCurBank = (iCurBank + (iNumDoorsSelected - 1)) % iNumDoorsSelected;
           break;
-        case DRAW_MODE_WINDOWS:
+        case Enum38.DRAW_MODE_WINDOWS:
           if (iNumWindowsSelected > 0)
             iCurBank = (iCurBank + (iNumWindowsSelected - 1)) % iNumWindowsSelected;
           break;
-        case DRAW_MODE_ROOFS:
+        case Enum38.DRAW_MODE_ROOFS:
           if (iNumRoofsSelected > 0)
             iCurBank = (iCurBank + (iNumRoofsSelected - 1)) % iNumRoofsSelected;
           break;
-        case DRAW_MODE_BROKEN_WALLS:
+        case Enum38.DRAW_MODE_BROKEN_WALLS:
           if (iNumBrokenWallsSelected > 0)
             iCurBank = (iCurBank + (iNumBrokenWallsSelected - 1)) % iNumBrokenWallsSelected;
           break;
-        case DRAW_MODE_DECOR:
+        case Enum38.DRAW_MODE_DECOR:
           if (iNumDecorSelected > 0)
             iCurBank = (iCurBank + (iNumDecorSelected - 1)) % iNumDecorSelected;
           break;
-        case DRAW_MODE_DECALS:
+        case Enum38.DRAW_MODE_DECALS:
           if (iNumDecalsSelected > 0)
             iCurBank = (iCurBank + (iNumDecalsSelected - 1)) % iNumDecalsSelected;
           break;
-        case DRAW_MODE_FLOORS:
+        case Enum38.DRAW_MODE_FLOORS:
           if (iNumFloorsSelected > 0)
             iCurBank = (iCurBank + (iNumFloorsSelected - 1)) % iNumFloorsSelected;
           break;
-        case DRAW_MODE_TOILET:
+        case Enum38.DRAW_MODE_TOILET:
           if (iNumToiletsSelected > 0)
             iCurBank = (iCurBank + (iNumToiletsSelected - 1)) % iNumToiletsSelected;
           break;
-        case DRAW_MODE_NEWROOF:
+        case Enum38.DRAW_MODE_NEWROOF:
           if (iNumNewRoofsSelected > 0)
             iCurBank = (iCurBank + (iNumNewRoofsSelected - 1)) % iNumNewRoofsSelected;
           break;
-        case DRAW_MODE_OSTRUCTS:
+        case Enum38.DRAW_MODE_OSTRUCTS:
           fDontUseRandom = TRUE;
           if (iNumOStructsSelected > 0)
             iCurBank = (iCurBank + (iNumOStructsSelected - 1)) % iNumOStructsSelected;
           break;
 
-        case DRAW_MODE_OSTRUCTS1:
+        case Enum38.DRAW_MODE_OSTRUCTS1:
           fDontUseRandom = TRUE;
           if (iNumOStructs1Selected > 0)
             iCurBank = (iCurBank + (iNumOStructs1Selected - 1)) % iNumOStructs1Selected;
           break;
 
-        case DRAW_MODE_OSTRUCTS2:
+        case Enum38.DRAW_MODE_OSTRUCTS2:
           fDontUseRandom = TRUE;
           if (iNumOStructs2Selected > 0)
             iCurBank = (iCurBank + (iNumOStructs2Selected - 1)) % iNumOStructs2Selected;
           break;
 
-        case DRAW_MODE_DEBRIS:
+        case Enum38.DRAW_MODE_DEBRIS:
           fDontUseRandom = TRUE;
           if (iNumDebrisSelected > 0)
             iCurBank = (iCurBank + (iNumDebrisSelected - 1)) % iNumDebrisSelected;
           break;
       }
       break;
-    case ACTION_NEXT_FGRND:
+    case Enum37.ACTION_NEXT_FGRND:
       break;
 
-    case ACTION_NEXT_DEBRIS:
-      CreateJA2SelectionWindow(SELWIN_DEBRIS);
+    case Enum37.ACTION_NEXT_DEBRIS:
+      CreateJA2SelectionWindow(Enum59.SELWIN_DEBRIS);
       fSelectionWindow = TRUE;
       fAllDone = FALSE;
       break;
 
-    case ACTION_PREV_SELECTIONTYPE:
+    case Enum37.ACTION_PREV_SELECTIONTYPE:
       gusSelectionType--;
-      if (gusSelectionType > AREASELECTION)
-        gusSelectionType = AREASELECTION;
+      if (gusSelectionType > Enum33.AREASELECTION)
+        gusSelectionType = Enum33.AREASELECTION;
       gfRenderTaskbar = TRUE;
       break;
-    case ACTION_NEXT_SELECTIONTYPE:
+    case Enum37.ACTION_NEXT_SELECTIONTYPE:
       gusSelectionType++;
-      if (gusSelectionType > AREASELECTION)
-        gusSelectionType = SMALLSELECTION;
+      if (gusSelectionType > Enum33.AREASELECTION)
+        gusSelectionType = Enum33.SMALLSELECTION;
       gfRenderTaskbar = TRUE;
       break;
 
-    case ACTION_COPY_MERC_PLACEMENT:
+    case Enum37.ACTION_COPY_MERC_PLACEMENT:
       GetMouseXY(addressof(sGridX), addressof(sGridY));
       iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
       CopyMercPlacement(iMapIndex);
       break;
-    case ACTION_PASTE_MERC_PLACEMENT:
+    case Enum37.ACTION_PASTE_MERC_PLACEMENT:
       GetMouseXY(addressof(sGridX), addressof(sGridY));
       iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
       PasteMercPlacement(iMapIndex);
       break;
 
-    case ACTION_SAVE_MAP:
+    case Enum37.ACTION_SAVE_MAP:
       UpdateLastActionBeforeLeaving();
-      return LOADSAVE_SCREEN;
+      return Enum26.LOADSAVE_SCREEN;
 
-    case ACTION_LOAD_MAP:
+    case Enum37.ACTION_LOAD_MAP:
       UpdateLastActionBeforeLeaving();
-      return LOADSAVE_SCREEN;
+      return Enum26.LOADSAVE_SCREEN;
 
-    case ACTION_UNDO:
+    case Enum37.ACTION_UNDO:
       ExecuteUndoList();
       gfRenderWorld = TRUE;
       break;
 
-    case ACTION_NEXT_BANK:
-      CreateJA2SelectionWindow(SELWIN_BANKS);
+    case Enum37.ACTION_NEXT_BANK:
+      CreateJA2SelectionWindow(Enum59.SELWIN_BANKS);
       fSelectionWindow = TRUE;
       fAllDone = FALSE;
       break;
 
-    case ACTION_NEXT_ROAD:
-      CreateJA2SelectionWindow(SELWIN_ROADS);
+    case Enum37.ACTION_NEXT_ROAD:
+      CreateJA2SelectionWindow(Enum59.SELWIN_ROADS);
       fSelectionWindow = TRUE;
       fAllDone = FALSE;
       break;
 
-    case ACTION_SHADE_UP:
+    case Enum37.ACTION_SHADE_UP:
       if (EditorInputEvent.usKeyState & SHIFT_DOWN) {
         gShadePercent += .05;
       } else {
@@ -1992,7 +1992,7 @@ function PerformSelectedAction(): UINT32 {
       SetShadeTablePercent(gShadePercent);
       break;
 
-    case ACTION_SHADE_DWN:
+    case Enum37.ACTION_SHADE_DWN:
       if (EditorInputEvent.usKeyState & SHIFT_DOWN) {
         gShadePercent -= .05;
       } else {
@@ -2005,34 +2005,34 @@ function PerformSelectedAction(): UINT32 {
       SetShadeTablePercent(gShadePercent);
       break;
 
-    case ACTION_WALL_PASTE1: // Doors		//** Changes needed
+    case Enum37.ACTION_WALL_PASTE1: // Doors		//** Changes needed
       GetMouseXY(addressof(sGridX), addressof(sGridY));
       iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
 
-      AddWallToStructLayer(iMapIndex, FIRSTWALL18, TRUE);
+      AddWallToStructLayer(iMapIndex, Enum312.FIRSTWALL18, TRUE);
       break;
 
-    case ACTION_WALL_PASTE2: // Windows	//** Changes Needed
+    case Enum37.ACTION_WALL_PASTE2: // Windows	//** Changes Needed
       GetMouseXY(addressof(sGridX), addressof(sGridY));
       iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
 
-      AddWallToStructLayer(iMapIndex, FIRSTWALL19, TRUE);
+      AddWallToStructLayer(iMapIndex, Enum312.FIRSTWALL19, TRUE);
       break;
 
-    case ACTION_NEXT_STRUCT:
-      CreateJA2SelectionWindow(SELWIN_OSTRUCTS);
+    case Enum37.ACTION_NEXT_STRUCT:
+      CreateJA2SelectionWindow(Enum59.SELWIN_OSTRUCTS);
       fSelectionWindow = TRUE;
       fAllDone = FALSE;
       break;
 
-    case ACTION_NEXT_STRUCT1:
-      CreateJA2SelectionWindow(SELWIN_OSTRUCTS1);
+    case Enum37.ACTION_NEXT_STRUCT1:
+      CreateJA2SelectionWindow(Enum59.SELWIN_OSTRUCTS1);
       fSelectionWindow = TRUE;
       fAllDone = FALSE;
       break;
 
-    case ACTION_NEXT_STRUCT2:
-      CreateJA2SelectionWindow(SELWIN_OSTRUCTS2);
+    case Enum37.ACTION_NEXT_STRUCT2:
+      CreateJA2SelectionWindow(Enum59.SELWIN_OSTRUCTS2);
       fSelectionWindow = TRUE;
       fAllDone = FALSE;
       break;
@@ -2058,21 +2058,21 @@ function CreateNewMap(): void {
     let usIndex: UINT16;
     for (i = 0; i < WORLD_MAX; i++) {
       // Set land index 9 + 3 variants
-      GetTileIndexFromTypeSubIndex(FIRSTROOF, (9 + Random(3)), addressof(usIndex));
+      GetTileIndexFromTypeSubIndex(Enum313.FIRSTROOF, (9 + Random(3)), addressof(usIndex));
       AddRoofToHead(i, usIndex);
     }
-    SetEditorSmoothingMode(SMOOTHING_BASEMENT);
+    SetEditorSmoothingMode(Enum231.SMOOTHING_BASEMENT);
   } else if (gfPendingCaves) {
     let i: UINT32;
     let usIndex: UINT16;
     for (i = 0; i < WORLD_MAX; i++) {
       // Set up the default cave here.
-      GetTileIndexFromTypeSubIndex(FIRSTWALL, (60 + Random(6)), addressof(usIndex));
+      GetTileIndexFromTypeSubIndex(Enum313.FIRSTWALL, (60 + Random(6)), addressof(usIndex));
       AddCave(i, usIndex);
     }
-    SetEditorSmoothingMode(SMOOTHING_CAVES);
+    SetEditorSmoothingMode(Enum231.SMOOTHING_CAVES);
   } else
-    SetEditorSmoothingMode(SMOOTHING_NORMAL);
+    SetEditorSmoothingMode(Enum231.SMOOTHING_NORMAL);
   fNewMap = FALSE;
   RemoveAllFromUndoList();
   UseEditorAlternateList();
@@ -2093,41 +2093,41 @@ function ProcessEditscreenMessageBoxResponse(): UINT32 {
     gfConfirmExitPending = FALSE;
     if (gfMessageBoxResult) {
       gfConfirmExitFirst = FALSE;
-      iEditorToolbarState = TBAR_MODE_EXIT_EDIT;
+      iEditorToolbarState = Enum35.TBAR_MODE_EXIT_EDIT;
     }
-    return EDIT_SCREEN;
+    return Enum26.EDIT_SCREEN;
   }
   if (!gfMessageBoxResult)
-    return EDIT_SCREEN;
+    return Enum26.EDIT_SCREEN;
   if (gfRemoveLightsPending) {
     let i: INT32;
     LightReset();
     for (i = 0; i < WORLD_MAX; i++) {
-      RemoveAllObjectsOfTypeRange(i, GOODRING, GOODRING);
+      RemoveAllObjectsOfTypeRange(i, Enum313.GOODRING, Enum313.GOODRING);
     }
     MarkWorldDirty();
     LightSetBaseLevel((15 - ubAmbientLightLevel));
     gfRemoveLightsPending = FALSE;
   }
   if (gfScheduleReversalPending) {
-    IndicateSelectedMerc(SELECT_NO_MERC);
+    IndicateSelectedMerc(Enum43.SELECT_NO_MERC);
     ReverseSchedules();
     gfScheduleReversalPending = FALSE;
   } else if (gfScheduleClearPending) {
-    IndicateSelectedMerc(SELECT_NO_MERC);
+    IndicateSelectedMerc(Enum43.SELECT_NO_MERC);
     ClearAllSchedules();
     gfScheduleClearPending = FALSE;
   }
   if (fNewMap) {
     CreateNewMap();
-    return EDIT_SCREEN;
-  } else if (iDrawMode == DRAW_MODE_NEW_GROUND) {
+    return Enum26.EDIT_SCREEN;
+  } else if (iDrawMode == Enum38.DRAW_MODE_NEW_GROUND) {
     gCurrentBackground = TerrainBackgroundTile;
     SetBackgroundTexture();
-    SetEditorTerrainTaskbarMode(TERRAIN_FGROUND_TEXTURES);
-    return EDIT_SCREEN;
+    SetEditorTerrainTaskbarMode(Enum32.TERRAIN_FGROUND_TEXTURES);
+    return Enum26.EDIT_SCREEN;
   }
-  return EDIT_SCREEN;
+  return Enum26.EDIT_SCREEN;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -2236,7 +2236,7 @@ function WaitForHelpScreenResponse(): UINT32 {
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
 
-  return EDIT_SCREEN;
+  return Enum26.EDIT_SCREEN;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -2280,9 +2280,9 @@ function WaitForSelectionWindowResponse(): UINT32 {
 
     iCurBank = 0;
 
-    if (iDrawMode == DRAW_MODE_SLANTED_ROOF || iDrawMode == DRAW_MODE_ROOM) {
+    if (iDrawMode == Enum38.DRAW_MODE_SLANTED_ROOF || iDrawMode == Enum38.DRAW_MODE_ROOM) {
       if (CheckForSlantRoofs())
-        iDrawMode = DRAW_MODE_SLANTED_ROOF;
+        iDrawMode = Enum38.DRAW_MODE_SLANTED_ROOF;
     }
     InvalidateScreen();
     ExecuteBaseDirtyRectQueue();
@@ -2294,7 +2294,7 @@ function WaitForSelectionWindowResponse(): UINT32 {
     EndFrameBufferRender();
   }
 
-  return EDIT_SCREEN;
+  return Enum26.EDIT_SCREEN;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -2475,17 +2475,17 @@ function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): B
   }
 
   switch (gbDefaultLightType) {
-    case PRIMETIME_LIGHT:
+    case Enum39.PRIMETIME_LIGHT:
       LightSprites[iLightHandle].uiFlags |= LIGHT_PRIMETIME;
       break;
-    case NIGHTTIME_LIGHT:
+    case Enum39.NIGHTTIME_LIGHT:
       LightSprites[iLightHandle].uiFlags |= LIGHT_NIGHTTIME;
       break;
   }
 
   iMapIndex = (iMapY * WORLD_COLS) + iMapX;
-  if (!TypeExistsInObjectLayer(iMapIndex, GOODRING, addressof(usTmpIndex))) {
-    AddObjectToHead(iMapIndex, GOODRING1);
+  if (!TypeExistsInObjectLayer(iMapIndex, Enum313.GOODRING, addressof(usTmpIndex))) {
+    AddObjectToHead(iMapIndex, Enum312.GOODRING1);
     gpWorldLevelData[iMapIndex].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
   }
 
@@ -2536,7 +2536,7 @@ function RemoveLight(iMapX: INT16, iMapY: INT16): BOOLEAN {
           LightSpriteDestroy(iCount);
           fRemovedLight = TRUE;
           iMapIndex = (iMapY * WORLD_COLS) + iMapX;
-          RemoveAllObjectsOfTypeRange(iMapIndex, GOODRING, GOODRING);
+          RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.GOODRING, Enum313.GOODRING);
         }
       }
     }
@@ -2581,8 +2581,8 @@ function ShowLightPositionHandles(): void {
 
       if (!fSoldierLight) {
         iMapIndex = (LightSprites[iCount].iY * WORLD_COLS) + LightSprites[iCount].iX;
-        if (!TypeExistsInObjectLayer(iMapIndex, GOODRING, addressof(usTmpIndex))) {
-          AddObjectToHead(iMapIndex, GOODRING1);
+        if (!TypeExistsInObjectLayer(iMapIndex, Enum313.GOODRING, addressof(usTmpIndex))) {
+          AddObjectToHead(iMapIndex, Enum312.GOODRING1);
           gpWorldLevelData[iMapIndex].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
         }
       }
@@ -2616,7 +2616,7 @@ function RemoveLightPositionHandles(): void {
 
       if (!fSoldierLight) {
         iMapIndex = (LightSprites[iCount].iY * WORLD_COLS) + LightSprites[iCount].iX;
-        RemoveAllObjectsOfTypeRange(iMapIndex, GOODRING, GOODRING);
+        RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.GOODRING, Enum313.GOODRING);
       }
     }
   }
@@ -2643,11 +2643,11 @@ function CheckForSlantRoofs(): BOOLEAN {
   pSelList = SelRoom;
   pNumSelList = addressof(iNumRoomsSelected);
 
-  usCheck = GetRandomIndexByRange(FIRSTROOF, LASTROOF);
+  usCheck = GetRandomIndexByRange(Enum313.FIRSTROOF, LASTROOF);
   if (usCheck != 0xffff)
     return FALSE;
 
-  usCheck = GetRandomIndexByRange(FIRSTSLANTROOF, LASTSLANTROOF);
+  usCheck = GetRandomIndexByRange(Enum313.FIRSTSLANTROOF, LASTSLANTROOF);
   return usCheck != 0xffff;
 }
 
@@ -2697,33 +2697,33 @@ function CheckForFences(): BOOLEAN {
 }
 
 function EnsureStatusOfEditorButtons(): void {
-  if (iDrawMode >= DRAW_MODE_ERASE) {
-    ClickEditorButton(TERRAIN_TOGGLE_ERASEMODE);
-    ClickEditorButton(BUILDING_TOGGLE_ERASEMODE);
-    ClickEditorButton(MAPINFO_TOGGLE_ERASEMODE);
+  if (iDrawMode >= Enum38.DRAW_MODE_ERASE) {
+    ClickEditorButton(Enum32.TERRAIN_TOGGLE_ERASEMODE);
+    ClickEditorButton(Enum32.BUILDING_TOGGLE_ERASEMODE);
+    ClickEditorButton(Enum32.MAPINFO_TOGGLE_ERASEMODE);
   } else {
-    UnclickEditorButton(TERRAIN_TOGGLE_ERASEMODE);
-    UnclickEditorButton(BUILDING_TOGGLE_ERASEMODE);
-    UnclickEditorButton(MAPINFO_TOGGLE_ERASEMODE);
+    UnclickEditorButton(Enum32.TERRAIN_TOGGLE_ERASEMODE);
+    UnclickEditorButton(Enum32.BUILDING_TOGGLE_ERASEMODE);
+    UnclickEditorButton(Enum32.MAPINFO_TOGGLE_ERASEMODE);
   }
 
   // disable erase buttons if drawing caves
-  if (iDrawMode == DRAW_MODE_CAVES || iDrawMode == DRAW_MODE_NEWROOF)
-    DisableEditorButton(BUILDING_TOGGLE_ERASEMODE);
+  if (iDrawMode == Enum38.DRAW_MODE_CAVES || iDrawMode == Enum38.DRAW_MODE_NEWROOF)
+    DisableEditorButton(Enum32.BUILDING_TOGGLE_ERASEMODE);
   else
-    EnableEditorButton(BUILDING_TOGGLE_ERASEMODE);
+    EnableEditorButton(Enum32.BUILDING_TOGGLE_ERASEMODE);
 
   // Ensure that the fill button is on or off depending on our current mode
-  if (iDrawMode == (DRAW_MODE_GROUND + DRAW_MODE_FILL_AREA))
-    ClickEditorButton(TERRAIN_FILL_AREA);
+  if (iDrawMode == (Enum38.DRAW_MODE_GROUND + Enum38.DRAW_MODE_FILL_AREA))
+    ClickEditorButton(Enum32.TERRAIN_FILL_AREA);
   else
-    UnclickEditorButton(TERRAIN_FILL_AREA);
+    UnclickEditorButton(Enum32.TERRAIN_FILL_AREA);
 
   // Make sure that the fake-lighting button is down if appropriate
   if (gfFakeLights)
-    ClickEditorButton(MAPINFO_TOGGLE_FAKE_LIGHTS);
+    ClickEditorButton(Enum32.MAPINFO_TOGGLE_FAKE_LIGHTS);
   else
-    UnclickEditorButton(MAPINFO_TOGGLE_FAKE_LIGHTS);
+    UnclickEditorButton(Enum32.MAPINFO_TOGGLE_FAKE_LIGHTS);
 }
 
 function HandleMouseClicksInGameScreen(): void {
@@ -2733,7 +2733,7 @@ function HandleMouseClicksInGameScreen(): void {
   let fPrevState: BOOLEAN;
   if (!GetMouseXY(addressof(sGridX), addressof(sGridY)))
     return;
-  if (iCurrentTaskbar == TASK_OPTIONS || iCurrentTaskbar == TASK_NONE) {
+  if (iCurrentTaskbar == Enum36.TASK_OPTIONS || iCurrentTaskbar == Enum36.TASK_NONE) {
     // if in taskbar modes which don't process clicks in the world.
     return;
   }
@@ -2749,42 +2749,42 @@ function HandleMouseClicksInGameScreen(): void {
   if (_LeftButtonDown) {
     gfRenderWorld = TRUE;
     // Are we trying to erase something?
-    if (iDrawMode >= DRAW_MODE_ERASE) {
+    if (iDrawMode >= Enum38.DRAW_MODE_ERASE) {
       // Erasing can have a brush size larger than 1 tile
       for (sY = gSelectRegion.iTop; sY <= gSelectRegion.iBottom; sY++) {
         for (sX = gSelectRegion.iLeft; sX <= gSelectRegion.iRight; sX++) {
-          if (iDrawMode == (DRAW_MODE_LIGHT + DRAW_MODE_ERASE)) {
+          if (iDrawMode == (Enum38.DRAW_MODE_LIGHT + Enum38.DRAW_MODE_ERASE)) {
             RemoveLight(sX, sY);
           } else
             EraseMapTile(MAPROWCOLTOPOS(sY, sX));
         }
       }
 
-      if (iDrawMode == DRAW_MODE_LIGHT + DRAW_MODE_ERASE)
+      if (iDrawMode == Enum38.DRAW_MODE_LIGHT + Enum38.DRAW_MODE_ERASE)
         LightSpriteRenderAll(); // To adjust building's lighting
       return;
     }
 
     switch (iDrawMode) {
-      case DRAW_MODE_SCHEDULEACTION:
+      case Enum38.DRAW_MODE_SCHEDULEACTION:
         if (IsLocationSittableExcludingPeople(iMapIndex, FALSE)) {
-          iDrawMode = DRAW_MODE_SCHEDULECONFIRM;
+          iDrawMode = Enum38.DRAW_MODE_SCHEDULECONFIRM;
           gfFirstPlacement = FALSE;
         }
         break;
-      case DRAW_MODE_NORTHPOINT:
-      case DRAW_MODE_WESTPOINT:
-      case DRAW_MODE_EASTPOINT:
-      case DRAW_MODE_SOUTHPOINT:
-      case DRAW_MODE_CENTERPOINT:
-      case DRAW_MODE_ISOLATEDPOINT:
+      case Enum38.DRAW_MODE_NORTHPOINT:
+      case Enum38.DRAW_MODE_WESTPOINT:
+      case Enum38.DRAW_MODE_EASTPOINT:
+      case Enum38.DRAW_MODE_SOUTHPOINT:
+      case Enum38.DRAW_MODE_CENTERPOINT:
+      case Enum38.DRAW_MODE_ISOLATEDPOINT:
         SpecifyEntryPoint(iMapIndex);
         break;
 
-      case DRAW_MODE_ENEMY:
-      case DRAW_MODE_CREATURE:
-      case DRAW_MODE_REBEL:
-      case DRAW_MODE_CIVILIAN:
+      case Enum38.DRAW_MODE_ENEMY:
+      case Enum38.DRAW_MODE_CREATURE:
+      case Enum38.DRAW_MODE_REBEL:
+      case Enum38.DRAW_MODE_CIVILIAN:
         // Handle adding mercs to the world
         if (gfFirstPlacement) {
           AddMercToWorld(iMapIndex);
@@ -2792,7 +2792,7 @@ function HandleMouseClicksInGameScreen(): void {
         }
         break;
 
-      case DRAW_MODE_LIGHT:
+      case Enum38.DRAW_MODE_LIGHT:
         // Add a normal light to the world
         if (gfFirstPlacement) {
           PlaceLight(gsLightRadius, sGridX, sGridY, 0);
@@ -2800,90 +2800,90 @@ function HandleMouseClicksInGameScreen(): void {
         }
         break;
 
-      case DRAW_MODE_SAW_ROOM:
-      case DRAW_MODE_ROOM:
-      case DRAW_MODE_CAVES:
-        if (gusSelectionType >= SMALLSELECTION && gusSelectionType <= XLARGESELECTION)
+      case Enum38.DRAW_MODE_SAW_ROOM:
+      case Enum38.DRAW_MODE_ROOM:
+      case Enum38.DRAW_MODE_CAVES:
+        if (gusSelectionType >= Enum33.SMALLSELECTION && gusSelectionType <= Enum33.XLARGESELECTION)
           ProcessAreaSelection(TRUE);
         break;
-      case DRAW_MODE_NEWROOF:
+      case Enum38.DRAW_MODE_NEWROOF:
         ReplaceBuildingWithNewRoof(iMapIndex);
         break;
 
-      case DRAW_MODE_WALLS:
+      case Enum38.DRAW_MODE_WALLS:
         PasteSingleWall(iMapIndex);
         break;
-      case DRAW_MODE_DOORS:
+      case Enum38.DRAW_MODE_DOORS:
         PasteSingleDoor(iMapIndex);
         break;
-      case DRAW_MODE_WINDOWS:
+      case Enum38.DRAW_MODE_WINDOWS:
         PasteSingleWindow(iMapIndex);
         break;
-      case DRAW_MODE_ROOFS:
+      case Enum38.DRAW_MODE_ROOFS:
         PasteSingleRoof(iMapIndex);
         break;
-      case DRAW_MODE_BROKEN_WALLS:
+      case Enum38.DRAW_MODE_BROKEN_WALLS:
         PasteSingleBrokenWall(iMapIndex);
         break;
-      case DRAW_MODE_DECOR:
+      case Enum38.DRAW_MODE_DECOR:
         PasteSingleDecoration(iMapIndex);
         break;
-      case DRAW_MODE_DECALS:
+      case Enum38.DRAW_MODE_DECALS:
         if (ValidDecalPlacement(iMapIndex))
           PasteSingleDecal(iMapIndex);
         break;
-      case DRAW_MODE_TOILET:
+      case Enum38.DRAW_MODE_TOILET:
         PasteSingleToilet(iMapIndex);
         break;
-      case DRAW_MODE_SMART_WALLS:
+      case Enum38.DRAW_MODE_SMART_WALLS:
         PasteSmartWall(iMapIndex);
         break;
-      case DRAW_MODE_SMART_DOORS:
+      case Enum38.DRAW_MODE_SMART_DOORS:
         PasteSmartDoor(iMapIndex);
         break;
-      case DRAW_MODE_SMART_WINDOWS:
+      case Enum38.DRAW_MODE_SMART_WINDOWS:
         PasteSmartWindow(iMapIndex);
         break;
-      case DRAW_MODE_SMART_BROKEN_WALLS:
+      case Enum38.DRAW_MODE_SMART_BROKEN_WALLS:
         PasteSmartBrokenWall(iMapIndex);
         break;
-      case DRAW_MODE_EXITGRID:
-      case DRAW_MODE_FLOORS:
-      case DRAW_MODE_GROUND:
-      case DRAW_MODE_OSTRUCTS:
-      case DRAW_MODE_OSTRUCTS1:
-      case DRAW_MODE_OSTRUCTS2:
-      case DRAW_MODE_DEBRIS:
-        if (gusSelectionType >= SMALLSELECTION && gusSelectionType <= XLARGESELECTION) {
+      case Enum38.DRAW_MODE_EXITGRID:
+      case Enum38.DRAW_MODE_FLOORS:
+      case Enum38.DRAW_MODE_GROUND:
+      case Enum38.DRAW_MODE_OSTRUCTS:
+      case Enum38.DRAW_MODE_OSTRUCTS1:
+      case Enum38.DRAW_MODE_OSTRUCTS2:
+      case Enum38.DRAW_MODE_DEBRIS:
+        if (gusSelectionType >= Enum33.SMALLSELECTION && gusSelectionType <= Enum33.XLARGESELECTION) {
           DrawObjectsBasedOnSelectionRegion();
         } else
           gfRenderWorld = fPrevState;
         break;
-      case DRAW_MODE_DOORKEYS:
+      case Enum38.DRAW_MODE_DOORKEYS:
         InitDoorEditing(iMapIndex);
         break;
-      case DRAW_MODE_KILL_BUILDING:
+      case Enum38.DRAW_MODE_KILL_BUILDING:
         KillBuilding(iMapIndex);
         break;
-      case DRAW_MODE_COPY_BUILDING:
-      case DRAW_MODE_MOVE_BUILDING:
+      case Enum38.DRAW_MODE_COPY_BUILDING:
+      case Enum38.DRAW_MODE_MOVE_BUILDING:
         if (gfFirstPlacement) {
           CopyBuilding(iMapIndex);
           gfFirstPlacement = FALSE;
         }
         gfRenderWorld = fPrevState;
         break;
-      case DRAW_MODE_BANKS:
+      case Enum38.DRAW_MODE_BANKS:
         PasteBanks(iMapIndex, gsBanksSubIndex, TRUE);
         break;
-      case DRAW_MODE_ROADS:
+      case Enum38.DRAW_MODE_ROADS:
         PasteRoads(iMapIndex);
         break;
-      case (DRAW_MODE_GROUND + DRAW_MODE_FILL_AREA):
+      case (Enum38.DRAW_MODE_GROUND + Enum38.DRAW_MODE_FILL_AREA):
         TerrainFill(iMapIndex);
         // BeginFill( iMapIndex );
         break;
-      case DRAW_MODE_PLACE_ITEM:
+      case Enum38.DRAW_MODE_PLACE_ITEM:
         if (gfFirstPlacement) {
           AddSelectedItemToWorld(iMapIndex);
           gfFirstPlacement = FALSE;
@@ -2897,87 +2897,87 @@ function HandleMouseClicksInGameScreen(): void {
     gfRenderWorld = TRUE;
     switch (iDrawMode) {
       // Handle right clicking on a merc (for editing/moving him)
-      case DRAW_MODE_ENEMY:
-      case DRAW_MODE_CREATURE:
-      case DRAW_MODE_REBEL:
-      case DRAW_MODE_CIVILIAN:
+      case Enum38.DRAW_MODE_ENEMY:
+      case Enum38.DRAW_MODE_CREATURE:
+      case Enum38.DRAW_MODE_REBEL:
+      case Enum38.DRAW_MODE_CIVILIAN:
         HandleRightClickOnMerc(iMapIndex);
         break;
-      case DRAW_MODE_PLACE_ITEM:
+      case Enum38.DRAW_MODE_PLACE_ITEM:
         HandleRightClickOnItem(iMapIndex);
         break;
 
       // Handle the right clicks in the main window to bring up the appropriate selection window
-      case DRAW_MODE_WALLS:
-        iEditorToolbarState = TBAR_MODE_GET_WALL;
+      case Enum38.DRAW_MODE_WALLS:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_WALL;
         break;
-      case DRAW_MODE_DOORS:
-        iEditorToolbarState = TBAR_MODE_GET_DOOR;
+      case Enum38.DRAW_MODE_DOORS:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_DOOR;
         break;
-      case DRAW_MODE_WINDOWS:
-        iEditorToolbarState = TBAR_MODE_GET_WINDOW;
+      case Enum38.DRAW_MODE_WINDOWS:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_WINDOW;
         break;
-      case DRAW_MODE_ROOFS:
-        iEditorToolbarState = TBAR_MODE_GET_ROOF;
+      case Enum38.DRAW_MODE_ROOFS:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_ROOF;
         break;
-      case DRAW_MODE_BROKEN_WALLS:
-        iEditorToolbarState = TBAR_MODE_GET_BROKEN_WALL;
+      case Enum38.DRAW_MODE_BROKEN_WALLS:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_BROKEN_WALL;
         break;
-      case DRAW_MODE_DECOR:
-        iEditorToolbarState = TBAR_MODE_GET_DECOR;
+      case Enum38.DRAW_MODE_DECOR:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_DECOR;
         break;
-      case DRAW_MODE_DECALS:
-        iEditorToolbarState = TBAR_MODE_GET_DECAL;
+      case Enum38.DRAW_MODE_DECALS:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_DECAL;
         break;
-      case DRAW_MODE_FLOORS:
-        iEditorToolbarState = TBAR_MODE_GET_FLOOR;
+      case Enum38.DRAW_MODE_FLOORS:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_FLOOR;
         break;
-      case DRAW_MODE_TOILET:
-        iEditorToolbarState = TBAR_MODE_GET_TOILET;
-        break;
-
-      case DRAW_MODE_ROOM:
-        iEditorToolbarState = TBAR_MODE_GET_ROOM;
-        break;
-      case DRAW_MODE_NEWROOF:
-        iEditorToolbarState = TBAR_MODE_GET_NEW_ROOF;
-        break;
-      case DRAW_MODE_SLANTED_ROOF:
-        iEditorToolbarState = TBAR_MODE_GET_ROOM;
-        break;
-      case DRAW_MODE_DEBRIS:
-        iEditorToolbarState = TBAR_MODE_GET_DEBRIS;
-        break;
-      case DRAW_MODE_OSTRUCTS:
-        iEditorToolbarState = TBAR_MODE_GET_OSTRUCTS;
-        break;
-      case DRAW_MODE_OSTRUCTS1:
-        iEditorToolbarState = TBAR_MODE_GET_OSTRUCTS1;
-        break;
-      case DRAW_MODE_OSTRUCTS2:
-        iEditorToolbarState = TBAR_MODE_GET_OSTRUCTS2;
-        break;
-      case DRAW_MODE_BANKS:
-        iEditorToolbarState = TBAR_MODE_GET_BANKS;
-        break;
-      case DRAW_MODE_ROADS:
-        iEditorToolbarState = TBAR_MODE_GET_ROADS;
+      case Enum38.DRAW_MODE_TOILET:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_TOILET;
         break;
 
-      case DRAW_MODE_CAVES:
-        if (gusSelectionType >= SMALLSELECTION && gusSelectionType <= XLARGESELECTION)
+      case Enum38.DRAW_MODE_ROOM:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_ROOM;
+        break;
+      case Enum38.DRAW_MODE_NEWROOF:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_NEW_ROOF;
+        break;
+      case Enum38.DRAW_MODE_SLANTED_ROOF:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_ROOM;
+        break;
+      case Enum38.DRAW_MODE_DEBRIS:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_DEBRIS;
+        break;
+      case Enum38.DRAW_MODE_OSTRUCTS:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_OSTRUCTS;
+        break;
+      case Enum38.DRAW_MODE_OSTRUCTS1:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_OSTRUCTS1;
+        break;
+      case Enum38.DRAW_MODE_OSTRUCTS2:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_OSTRUCTS2;
+        break;
+      case Enum38.DRAW_MODE_BANKS:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_BANKS;
+        break;
+      case Enum38.DRAW_MODE_ROADS:
+        iEditorToolbarState = Enum35.TBAR_MODE_GET_ROADS;
+        break;
+
+      case Enum38.DRAW_MODE_CAVES:
+        if (gusSelectionType >= Enum33.SMALLSELECTION && gusSelectionType <= Enum33.XLARGESELECTION)
           ProcessAreaSelection(FALSE);
         break;
 
-      case DRAW_MODE_SMART_WALLS:
+      case Enum38.DRAW_MODE_SMART_WALLS:
         EraseWalls(iMapIndex);
         break;
-      case DRAW_MODE_SMART_BROKEN_WALLS:
-      case DRAW_MODE_SMART_WINDOWS:
-      case DRAW_MODE_SMART_DOORS:
+      case Enum38.DRAW_MODE_SMART_BROKEN_WALLS:
+      case Enum38.DRAW_MODE_SMART_WINDOWS:
+      case Enum38.DRAW_MODE_SMART_DOORS:
         RestoreWalls(iMapIndex);
         break;
-      case DRAW_MODE_EXITGRID:
+      case Enum38.DRAW_MODE_EXITGRID:
         if (GetExitGrid(iMapIndex, addressof(gExitGrid)))
           ApplyNewExitGridValuesToTextFields();
         break;
@@ -2987,15 +2987,15 @@ function HandleMouseClicksInGameScreen(): void {
     }
   } else if (!_LeftButtonDown && !gfFirstPlacement) {
     switch (iDrawMode) {
-      case DRAW_MODE_SCHEDULECONFIRM:
+      case Enum38.DRAW_MODE_SCHEDULECONFIRM:
         if (IsLocationSittableExcludingPeople(iMapIndex, FALSE)) {
           RegisterCurrentScheduleAction(iMapIndex);
         }
         break;
-      case DRAW_MODE_COPY_BUILDING:
+      case Enum38.DRAW_MODE_COPY_BUILDING:
         PasteBuilding(iMapIndex);
         break;
-      case DRAW_MODE_MOVE_BUILDING:
+      case Enum38.DRAW_MODE_MOVE_BUILDING:
         MoveBuilding(iMapIndex);
         break;
     }
@@ -3014,34 +3014,34 @@ function DoIRenderASpecialMouseCursor(): BOOLEAN {
     }
   }
 
-  if (iCurrentTaskbar != TASK_OPTIONS) {
+  if (iCurrentTaskbar != Enum36.TASK_OPTIONS) {
     switch (iDrawMode) {
-      case DRAW_MODE_OSTRUCTS2:
+      case Enum38.DRAW_MODE_OSTRUCTS2:
         if (CheckForFences())
           fDontUseRandom = TRUE;
-      case DRAW_MODE_DEBRIS: // These only show if you first hit PGUP/PGDOWN keys
-      case DRAW_MODE_OSTRUCTS:
-      case DRAW_MODE_OSTRUCTS1:
+      case Enum38.DRAW_MODE_DEBRIS: // These only show if you first hit PGUP/PGDOWN keys
+      case Enum38.DRAW_MODE_OSTRUCTS:
+      case Enum38.DRAW_MODE_OSTRUCTS1:
         if (!fDontUseRandom)
           break;
-      case DRAW_MODE_BANKS:
-      case DRAW_MODE_ROADS:
-      case DRAW_MODE_WALLS:
-      case DRAW_MODE_DOORS:
-      case DRAW_MODE_WINDOWS:
-      case DRAW_MODE_ROOFS:
-      case DRAW_MODE_BROKEN_WALLS:
-      case DRAW_MODE_DECOR:
-      case DRAW_MODE_DECALS:
-      case DRAW_MODE_FLOORS:
-      case DRAW_MODE_TOILET:
+      case Enum38.DRAW_MODE_BANKS:
+      case Enum38.DRAW_MODE_ROADS:
+      case Enum38.DRAW_MODE_WALLS:
+      case Enum38.DRAW_MODE_DOORS:
+      case Enum38.DRAW_MODE_WINDOWS:
+      case Enum38.DRAW_MODE_ROOFS:
+      case Enum38.DRAW_MODE_BROKEN_WALLS:
+      case Enum38.DRAW_MODE_DECOR:
+      case Enum38.DRAW_MODE_DECALS:
+      case Enum38.DRAW_MODE_FLOORS:
+      case Enum38.DRAW_MODE_TOILET:
 
-      case DRAW_MODE_SMART_WALLS:
-      case DRAW_MODE_SMART_DOORS:
-      case DRAW_MODE_SMART_WINDOWS:
-      case DRAW_MODE_SMART_BROKEN_WALLS:
-      case DRAW_MODE_ROOM:
-      case DRAW_MODE_NEWROOF:
+      case Enum38.DRAW_MODE_SMART_WALLS:
+      case Enum38.DRAW_MODE_SMART_DOORS:
+      case Enum38.DRAW_MODE_SMART_WINDOWS:
+      case Enum38.DRAW_MODE_SMART_BROKEN_WALLS:
+      case Enum38.DRAW_MODE_ROOM:
+      case Enum38.DRAW_MODE_NEWROOF:
         return DrawTempMouseCursorObject();
 
       default:
@@ -3054,60 +3054,60 @@ function DoIRenderASpecialMouseCursor(): BOOLEAN {
 function ShowEntryPoints(): void {
   // make entry points visible
   if (gMapInformation.sNorthGridNo != -1)
-    AddTopmostToTail(gMapInformation.sNorthGridNo, FIRSTPOINTERS2);
+    AddTopmostToTail(gMapInformation.sNorthGridNo, Enum312.FIRSTPOINTERS2);
   if (gMapInformation.sEastGridNo != -1)
-    AddTopmostToTail(gMapInformation.sEastGridNo, FIRSTPOINTERS2);
+    AddTopmostToTail(gMapInformation.sEastGridNo, Enum312.FIRSTPOINTERS2);
   if (gMapInformation.sSouthGridNo != -1)
-    AddTopmostToTail(gMapInformation.sSouthGridNo, FIRSTPOINTERS2);
+    AddTopmostToTail(gMapInformation.sSouthGridNo, Enum312.FIRSTPOINTERS2);
   if (gMapInformation.sWestGridNo != -1)
-    AddTopmostToTail(gMapInformation.sWestGridNo, FIRSTPOINTERS2);
+    AddTopmostToTail(gMapInformation.sWestGridNo, Enum312.FIRSTPOINTERS2);
 }
 
 function HideEntryPoints(): void {
   // remove entry point indicators
   if (gMapInformation.sNorthGridNo != -1)
-    RemoveAllTopmostsOfTypeRange(gMapInformation.sNorthGridNo, FIRSTPOINTERS, FIRSTPOINTERS);
+    RemoveAllTopmostsOfTypeRange(gMapInformation.sNorthGridNo, Enum313.FIRSTPOINTERS, Enum313.FIRSTPOINTERS);
   if (gMapInformation.sEastGridNo != -1)
-    RemoveAllTopmostsOfTypeRange(gMapInformation.sEastGridNo, FIRSTPOINTERS, FIRSTPOINTERS);
+    RemoveAllTopmostsOfTypeRange(gMapInformation.sEastGridNo, Enum313.FIRSTPOINTERS, Enum313.FIRSTPOINTERS);
   if (gMapInformation.sSouthGridNo != -1)
-    RemoveAllTopmostsOfTypeRange(gMapInformation.sSouthGridNo, FIRSTPOINTERS, FIRSTPOINTERS);
+    RemoveAllTopmostsOfTypeRange(gMapInformation.sSouthGridNo, Enum313.FIRSTPOINTERS, Enum313.FIRSTPOINTERS);
   if (gMapInformation.sWestGridNo != -1)
-    RemoveAllTopmostsOfTypeRange(gMapInformation.sWestGridNo, FIRSTPOINTERS, FIRSTPOINTERS);
+    RemoveAllTopmostsOfTypeRange(gMapInformation.sWestGridNo, Enum313.FIRSTPOINTERS, Enum313.FIRSTPOINTERS);
 }
 
 function TaskOptionsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    iTaskMode = TASK_OPTIONS;
+    iTaskMode = Enum36.TASK_OPTIONS;
   }
 }
 
 function TaskTerrainCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    iTaskMode = TASK_TERRAIN;
+    iTaskMode = Enum36.TASK_TERRAIN;
   }
 }
 
 function TaskBuildingCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    iTaskMode = TASK_BUILDINGS;
+    iTaskMode = Enum36.TASK_BUILDINGS;
   }
 }
 
 function TaskItemsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    iTaskMode = TASK_ITEMS;
+    iTaskMode = Enum36.TASK_ITEMS;
   }
 }
 
 function TaskMercsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    iTaskMode = TASK_MERCS;
+    iTaskMode = Enum36.TASK_MERCS;
   }
 }
 
 function TaskMapInfoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    iTaskMode = TASK_MAPINFO;
+    iTaskMode = Enum36.TASK_MAPINFO;
   }
 }
 
@@ -3115,25 +3115,25 @@ function ProcessAreaSelection(fWithLeftButton: BOOLEAN): void {
   let fPrevState: BOOLEAN = gfRenderWorld;
   gfRenderWorld = TRUE;
   switch (iDrawMode) {
-    case DRAW_MODE_ROOM:
-    case DRAW_MODE_SLANTED_ROOF:
+    case Enum38.DRAW_MODE_ROOM:
+    case Enum38.DRAW_MODE_SLANTED_ROOF:
       AddBuildingSectionToWorld(addressof(gSelectRegion));
       break;
-    case DRAW_MODE_SAW_ROOM:
+    case Enum38.DRAW_MODE_SAW_ROOM:
       RemoveBuildingSectionFromWorld(addressof(gSelectRegion));
       break;
-    case DRAW_MODE_CAVES:
+    case Enum38.DRAW_MODE_CAVES:
       if (fWithLeftButton)
         AddCaveSectionToWorld(addressof(gSelectRegion));
       else
         RemoveCaveSectionFromWorld(addressof(gSelectRegion));
       break;
-    case DRAW_MODE_ROOMNUM:
+    case Enum38.DRAW_MODE_ROOMNUM:
       DrawObjectsBasedOnSelectionRegion();
       if (gubCurrRoomNumber > 0) {
         gubCurrRoomNumber++;
         gubMaxRoomNumber++;
-        if (iCurrentTaskbar == TASK_BUILDINGS && TextInputMode()) {
+        if (iCurrentTaskbar == Enum36.TASK_BUILDINGS && TextInputMode()) {
           let str: UINT16[] /* [4] */;
           swprintf(str, "%d", gubCurrRoomNumber);
           SetInputFieldStringWith16BitString(1, str);
@@ -3141,13 +3141,13 @@ function ProcessAreaSelection(fWithLeftButton: BOOLEAN): void {
         }
       }
       break;
-    case DRAW_MODE_EXITGRID:
-    case DRAW_MODE_FLOORS:
-    case DRAW_MODE_GROUND:
-    case DRAW_MODE_OSTRUCTS:
-    case DRAW_MODE_OSTRUCTS1:
-    case DRAW_MODE_OSTRUCTS2:
-    case DRAW_MODE_DEBRIS:
+    case Enum38.DRAW_MODE_EXITGRID:
+    case Enum38.DRAW_MODE_FLOORS:
+    case Enum38.DRAW_MODE_GROUND:
+    case Enum38.DRAW_MODE_OSTRUCTS:
+    case Enum38.DRAW_MODE_OSTRUCTS1:
+    case Enum38.DRAW_MODE_OSTRUCTS2:
+    case Enum38.DRAW_MODE_DEBRIS:
       // These aren't normally supported by area selection, so
       // call the equivalent function that is normally associated with them.
       DrawObjectsBasedOnSelectionRegion();
@@ -3170,7 +3170,7 @@ function DrawObjectsBasedOnSelectionRegion(): void {
   // Certain drawing modes are placed with 100% density.  Those cases are checked here,
   // so the density test can be skipped.
   fSkipTest = FALSE;
-  if (gusSelectionType == SMALLSELECTION || iDrawMode == DRAW_MODE_GROUND || iDrawMode == DRAW_MODE_FLOORS || iDrawMode == DRAW_MODE_ROOMNUM || iDrawMode == DRAW_MODE_EXITGRID)
+  if (gusSelectionType == Enum33.SMALLSELECTION || iDrawMode == Enum38.DRAW_MODE_GROUND || iDrawMode == Enum38.DRAW_MODE_FLOORS || iDrawMode == Enum38.DRAW_MODE_ROOMNUM || iDrawMode == Enum38.DRAW_MODE_EXITGRID)
     fSkipTest = TRUE;
 
   // The reason why I process the region from top to bottom then to the right is
@@ -3184,30 +3184,30 @@ function DrawObjectsBasedOnSelectionRegion(): void {
       if (fSkipTest || PerformDensityTest()) {
         iMapIndex = MAPROWCOLTOPOS(y, x);
         switch (iDrawMode) {
-          case DRAW_MODE_EXITGRID:
+          case Enum38.DRAW_MODE_EXITGRID:
             AddToUndoList(iMapIndex);
             AddExitGridToWorld(iMapIndex, addressof(gExitGrid));
-            AddTopmostToTail(iMapIndex, FIRSTPOINTERS8);
+            AddTopmostToTail(iMapIndex, Enum312.FIRSTPOINTERS8);
             break;
-          case DRAW_MODE_DEBRIS:
+          case Enum38.DRAW_MODE_DEBRIS:
             PasteDebris(iMapIndex);
             break;
-          case DRAW_MODE_FLOORS:
+          case Enum38.DRAW_MODE_FLOORS:
             PasteSingleFloor(iMapIndex);
             break;
-          case DRAW_MODE_GROUND:
+          case Enum38.DRAW_MODE_GROUND:
             PasteTexture(iMapIndex);
             break;
-          case DRAW_MODE_OSTRUCTS:
+          case Enum38.DRAW_MODE_OSTRUCTS:
             PasteStructure(iMapIndex);
             break;
-          case DRAW_MODE_OSTRUCTS1:
+          case Enum38.DRAW_MODE_OSTRUCTS1:
             PasteStructure1(iMapIndex);
             break;
-          case DRAW_MODE_OSTRUCTS2:
+          case Enum38.DRAW_MODE_OSTRUCTS2:
             PasteStructure2(iMapIndex);
             break;
-          case DRAW_MODE_ROOMNUM:
+          case Enum38.DRAW_MODE_ROOMNUM:
             PasteRoomNumber(iMapIndex, gubCurrRoomNumber);
             break;
           default:
@@ -3255,7 +3255,7 @@ function EditScreenHandle(): UINT32 {
 
   fBeenWarned = FALSE;
 
-  uiRetVal = EDIT_SCREEN;
+  uiRetVal = Enum26.EDIT_SCREEN;
 
   // Handle the bottom task bar menu.
   DoTaskbar();
@@ -3265,11 +3265,11 @@ function EditScreenHandle(): UINT32 {
   if (gubMessageBoxStatus) {
     if (MessageBoxHandled())
       return ProcessEditscreenMessageBoxResponse();
-    return EDIT_SCREEN;
+    return Enum26.EDIT_SCREEN;
   }
 
   if (ProcessPopupMenuIfActive())
-    return EDIT_SCREEN;
+    return Enum26.EDIT_SCREEN;
   if (fHelpScreen)
     return WaitForHelpScreenResponse();
   if (fSelectionWindow)
@@ -3281,10 +3281,10 @@ function EditScreenHandle(): UINT32 {
   EnsureStatusOfEditorButtons();
 
   // Handle scrolling of the map if needed
-  if (!gfGotoGridNoUI && iDrawMode != DRAW_MODE_SHOW_TILESET && !gfSummaryWindowActive && !gfEditingDoor && !gfNoScroll && !InOverheadMap())
+  if (!gfGotoGridNoUI && iDrawMode != Enum38.DRAW_MODE_SHOW_TILESET && !gfSummaryWindowActive && !gfEditingDoor && !gfNoScroll && !InOverheadMap())
     ScrollWorld();
 
-  iCurrentAction = ACTION_NULL;
+  iCurrentAction = Enum37.ACTION_NULL;
 
   UpdateCursorAreas();
 
@@ -3335,7 +3335,7 @@ function EditScreenHandle(): UINT32 {
   HandleKeyboardShortcuts();
 
   // Perform action based on current selection
-  if ((uiRetVal = PerformSelectedAction()) != EDIT_SCREEN)
+  if ((uiRetVal = PerformSelectedAction()) != Enum26.EDIT_SCREEN)
     return uiRetVal;
 
   // Display Framerate
@@ -3362,13 +3362,13 @@ function CreateGotoGridNoUI(): void {
   DisableEditorTaskbar();
   // Create the background panel.
   guiGotoGridNoUIButtonID = CreateTextButton("Enter gridno:", FONT10ARIAL, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 290, 155, 60, 50, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, MSYS_NO_CALLBACK);
-  SpecifyDisabledButtonStyle(guiGotoGridNoUIButtonID, DISABLED_STYLE_NONE);
+  SpecifyDisabledButtonStyle(guiGotoGridNoUIButtonID, Enum29.DISABLED_STYLE_NONE);
   SpecifyButtonTextOffsets(guiGotoGridNoUIButtonID, 5, 5, FALSE);
   DisableButton(guiGotoGridNoUIButtonID);
   // Create a blanket region so nobody can use
   MSYS_DefineRegion(addressof(GotoGridNoUIRegion), 0, 0, 640, 480, MSYS_PRIORITY_NORMAL + 1, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Init a text input field.
-  InitTextInputModeWithScheme(DEFAULT_SCHEME);
+  InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
   AddTextInputField(300, 180, 40, 18, MSYS_PRIORITY_HIGH, "", 6, INPUTTYPE_NUMERICSTRICT);
 }
 
@@ -3390,8 +3390,8 @@ function RemoveGotoGridNoUI(): void {
 }
 
 function UpdateLastActionBeforeLeaving(): void {
-  if (iCurrentTaskbar == TASK_MERCS)
-    IndicateSelectedMerc(SELECT_NO_MERC);
+  if (iCurrentTaskbar == Enum36.TASK_MERCS)
+    IndicateSelectedMerc(Enum43.SELECT_NO_MERC);
   SpecifyItemToEdit(NULL, -1);
 }
 

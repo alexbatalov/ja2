@@ -41,41 +41,41 @@ function GetSmokeEffectOnTile(sGridNo: INT16, bLevel: INT8): INT8 {
     return FromWorldFlagsToSmokeType(ubExtFlags);
   }
 
-  return NO_SMOKE_EFFECT;
+  return Enum308.NO_SMOKE_EFFECT;
 }
 
 function FromWorldFlagsToSmokeType(ubWorldFlags: UINT8): INT8 {
   if (ubWorldFlags & MAPELEMENT_EXT_SMOKE) {
-    return NORMAL_SMOKE_EFFECT;
+    return Enum308.NORMAL_SMOKE_EFFECT;
   } else if (ubWorldFlags & MAPELEMENT_EXT_TEARGAS) {
-    return TEARGAS_SMOKE_EFFECT;
+    return Enum308.TEARGAS_SMOKE_EFFECT;
   } else if (ubWorldFlags & MAPELEMENT_EXT_MUSTARDGAS) {
-    return MUSTARDGAS_SMOKE_EFFECT;
+    return Enum308.MUSTARDGAS_SMOKE_EFFECT;
   } else if (ubWorldFlags & MAPELEMENT_EXT_CREATUREGAS) {
-    return CREATURE_SMOKE_EFFECT;
+    return Enum308.CREATURE_SMOKE_EFFECT;
   } else {
-    return NO_SMOKE_EFFECT;
+    return Enum308.NO_SMOKE_EFFECT;
   }
 }
 
 function FromSmokeTypeToWorldFlags(bType: INT8): UINT8 {
   switch (bType) {
-    case NORMAL_SMOKE_EFFECT:
+    case Enum308.NORMAL_SMOKE_EFFECT:
 
       return MAPELEMENT_EXT_SMOKE;
       break;
 
-    case TEARGAS_SMOKE_EFFECT:
+    case Enum308.TEARGAS_SMOKE_EFFECT:
 
       return MAPELEMENT_EXT_TEARGAS;
       break;
 
-    case MUSTARDGAS_SMOKE_EFFECT:
+    case Enum308.MUSTARDGAS_SMOKE_EFFECT:
 
       return MAPELEMENT_EXT_MUSTARDGAS;
       break;
 
-    case CREATURE_SMOKE_EFFECT:
+    case Enum308.CREATURE_SMOKE_EFFECT:
 
       return MAPELEMENT_EXT_CREATUREGAS;
       break;
@@ -106,54 +106,54 @@ function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubOwner: U
   pSmoke.value.uiTimeOfLastUpdate = GetWorldTotalSeconds();
 
   // Are we indoors?
-  if (GetTerrainType(sGridNo) == FLAT_FLOOR) {
+  if (GetTerrainType(sGridNo) == Enum315.FLAT_FLOOR) {
     pSmoke.value.bFlags |= SMOKE_EFFECT_INDOORS;
   }
 
   switch (usItem) {
-    case MUSTARD_GRENADE:
+    case Enum225.MUSTARD_GRENADE:
 
-      bSmokeEffectType = MUSTARDGAS_SMOKE_EFFECT;
+      bSmokeEffectType = Enum308.MUSTARDGAS_SMOKE_EFFECT;
       ubDuration = 5;
       ubStartRadius = 1;
       break;
 
-    case TEARGAS_GRENADE:
-    case GL_TEARGAS_GRENADE:
-      bSmokeEffectType = TEARGAS_SMOKE_EFFECT;
+    case Enum225.TEARGAS_GRENADE:
+    case Enum225.GL_TEARGAS_GRENADE:
+      bSmokeEffectType = Enum308.TEARGAS_SMOKE_EFFECT;
       ubDuration = 5;
       ubStartRadius = 1;
       break;
 
-    case BIG_TEAR_GAS:
-      bSmokeEffectType = TEARGAS_SMOKE_EFFECT;
+    case Enum225.BIG_TEAR_GAS:
+      bSmokeEffectType = Enum308.TEARGAS_SMOKE_EFFECT;
       ubDuration = 5;
       ubStartRadius = 1;
       break;
 
-    case SMOKE_GRENADE:
-    case GL_SMOKE_GRENADE:
+    case Enum225.SMOKE_GRENADE:
+    case Enum225.GL_SMOKE_GRENADE:
 
-      bSmokeEffectType = NORMAL_SMOKE_EFFECT;
+      bSmokeEffectType = Enum308.NORMAL_SMOKE_EFFECT;
       ubDuration = 5;
       ubStartRadius = 1;
       break;
 
-    case SMALL_CREATURE_GAS:
-      bSmokeEffectType = CREATURE_SMOKE_EFFECT;
+    case Enum225.SMALL_CREATURE_GAS:
+      bSmokeEffectType = Enum308.CREATURE_SMOKE_EFFECT;
       ubDuration = 3;
       ubStartRadius = 1;
       break;
 
-    case LARGE_CREATURE_GAS:
-      bSmokeEffectType = CREATURE_SMOKE_EFFECT;
+    case Enum225.LARGE_CREATURE_GAS:
+      bSmokeEffectType = Enum308.CREATURE_SMOKE_EFFECT;
       ubDuration = 3;
-      ubStartRadius = Explosive[Item[LARGE_CREATURE_GAS].ubClassIndex].ubRadius;
+      ubStartRadius = Explosive[Item[Enum225.LARGE_CREATURE_GAS].ubClassIndex].ubRadius;
       break;
 
-    case VERY_SMALL_CREATURE_GAS:
+    case Enum225.VERY_SMALL_CREATURE_GAS:
 
-      bSmokeEffectType = CREATURE_SMOKE_EFFECT;
+      bSmokeEffectType = Enum308.CREATURE_SMOKE_EFFECT;
       ubDuration = 2;
       ubStartRadius = 0;
       break;
@@ -214,7 +214,7 @@ function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16
 
   AniParams.sDelay = (300 + Random(300));
 
-  if (!(gGameSettings.fOptions[TOPTION_ANIMATE_SMOKE])) {
+  if (!(gGameSettings.fOptions[Enum8.TOPTION_ANIMATE_SMOKE])) {
     AniParams.sStartFrame = 0;
   } else {
     AniParams.sStartFrame = Random(5);
@@ -224,7 +224,7 @@ function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16
   //	AniParams.uiFlags							= ANITILE_CACHEDTILE | ANITILE_FORWARD | ANITILE_OPTIMIZEFORSMOKEEFFECT | ANITILE_SMOKE_EFFECT | ANITILE_LOOPING;
   // AniParams.uiFlags							= ANITILE_CACHEDTILE | ANITILE_FORWARD | ANITILE_SMOKE_EFFECT | ANITILE_LOOPING;
 
-  if (!(gGameSettings.fOptions[TOPTION_ANIMATE_SMOKE])) {
+  if (!(gGameSettings.fOptions[Enum8.TOPTION_ANIMATE_SMOKE])) {
     AniParams.uiFlags = ANITILE_PAUSED | ANITILE_CACHEDTILE | ANITILE_FORWARD | ANITILE_SMOKE_EFFECT | ANITILE_LOOPING;
   } else {
     AniParams.uiFlags = ANITILE_CACHEDTILE | ANITILE_FORWARD | ANITILE_SMOKE_EFFECT | ANITILE_LOOPING | ANITILE_ALWAYS_TRANSLUCENT;
@@ -236,9 +236,9 @@ function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16
 
   // Use the right graphic based on type..
   switch (bType) {
-    case NORMAL_SMOKE_EFFECT:
+    case Enum308.NORMAL_SMOKE_EFFECT:
 
-      if (!(gGameSettings.fOptions[TOPTION_ANIMATE_SMOKE])) {
+      if (!(gGameSettings.fOptions[Enum8.TOPTION_ANIMATE_SMOKE])) {
         strcpy(AniParams.zCachedFile, "TILECACHE\\smkechze.STI");
       } else {
         if (fDissipating) {
@@ -249,9 +249,9 @@ function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16
       }
       break;
 
-    case TEARGAS_SMOKE_EFFECT:
+    case Enum308.TEARGAS_SMOKE_EFFECT:
 
-      if (!(gGameSettings.fOptions[TOPTION_ANIMATE_SMOKE])) {
+      if (!(gGameSettings.fOptions[Enum8.TOPTION_ANIMATE_SMOKE])) {
         strcpy(AniParams.zCachedFile, "TILECACHE\\tearchze.STI");
       } else {
         if (fDissipating) {
@@ -262,9 +262,9 @@ function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16
       }
       break;
 
-    case MUSTARDGAS_SMOKE_EFFECT:
+    case Enum308.MUSTARDGAS_SMOKE_EFFECT:
 
-      if (!(gGameSettings.fOptions[TOPTION_ANIMATE_SMOKE])) {
+      if (!(gGameSettings.fOptions[Enum8.TOPTION_ANIMATE_SMOKE])) {
         strcpy(AniParams.zCachedFile, "TILECACHE\\mustchze.STI");
       } else {
         if (fDissipating) {
@@ -275,9 +275,9 @@ function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16
       }
       break;
 
-    case CREATURE_SMOKE_EFFECT:
+    case Enum308.CREATURE_SMOKE_EFFECT:
 
-      if (!(gGameSettings.fOptions[TOPTION_ANIMATE_SMOKE])) {
+      if (!(gGameSettings.fOptions[Enum8.TOPTION_ANIMATE_SMOKE])) {
         strcpy(AniParams.zCachedFile, "TILECACHE\\spit_gas.STI");
       } else {
         if (fDissipating) {

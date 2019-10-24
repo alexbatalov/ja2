@@ -166,33 +166,33 @@ function TerrainBreathPoints(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, bDi
   iPoints = iPoints * BreathPointAdjustmentForCarriedWeight(pSoldier) / 100;
 
   // ATE - MAKE MOVEMENT ALWAYS WALK IF IN WATER
-  if (gpWorldLevelData[sGridno].ubTerrainID == DEEP_WATER || gpWorldLevelData[sGridno].ubTerrainID == MED_WATER || gpWorldLevelData[sGridno].ubTerrainID == LOW_WATER) {
-    usMovementMode = WALKING;
+  if (gpWorldLevelData[sGridno].ubTerrainID == Enum315.DEEP_WATER || gpWorldLevelData[sGridno].ubTerrainID == Enum315.MED_WATER || gpWorldLevelData[sGridno].ubTerrainID == Enum315.LOW_WATER) {
+    usMovementMode = Enum193.WALKING;
   }
 
   // so, then we must modify it for other movement styles and accumulate
   switch (usMovementMode) {
-    case RUNNING:
-    case ADULTMONSTER_WALKING:
-    case BLOODCAT_RUN:
+    case Enum193.RUNNING:
+    case Enum193.ADULTMONSTER_WALKING:
+    case Enum193.BLOODCAT_RUN:
 
       iPoints *= BP_RUN_ENERGYCOSTFACTOR;
       break;
 
-    case SIDE_STEP:
-    case WALK_BACKWARDS:
-    case BLOODCAT_WALK_BACKWARDS:
-    case MONSTER_WALK_BACKWARDS:
-    case WALKING:
+    case Enum193.SIDE_STEP:
+    case Enum193.WALK_BACKWARDS:
+    case Enum193.BLOODCAT_WALK_BACKWARDS:
+    case Enum193.MONSTER_WALK_BACKWARDS:
+    case Enum193.WALKING:
       iPoints *= BP_WALK_ENERGYCOSTFACTOR;
       break;
 
-    case START_SWAT:
-    case SWATTING:
-    case SWAT_BACKWARDS:
+    case Enum193.START_SWAT:
+    case Enum193.SWATTING:
+    case Enum193.SWAT_BACKWARDS:
       iPoints *= BP_SWAT_ENERGYCOSTFACTOR;
       break;
-    case CRAWLING:
+    case Enum193.CRAWLING:
       iPoints *= BP_CRAWL_ENERGYCOSTFACTOR;
       break;
   }
@@ -225,36 +225,36 @@ function ActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bDir: I
   }
 
   // ATE - MAKE MOVEMENT ALWAYS WALK IF IN WATER
-  if (gpWorldLevelData[sGridNo].ubTerrainID == DEEP_WATER || gpWorldLevelData[sGridNo].ubTerrainID == MED_WATER || gpWorldLevelData[sGridNo].ubTerrainID == LOW_WATER) {
-    usMovementMode = WALKING;
+  if (gpWorldLevelData[sGridNo].ubTerrainID == Enum315.DEEP_WATER || gpWorldLevelData[sGridNo].ubTerrainID == Enum315.MED_WATER || gpWorldLevelData[sGridNo].ubTerrainID == Enum315.LOW_WATER) {
+    usMovementMode = Enum193.WALKING;
   }
 
   // so, then we must modify it for other movement styles and accumulate
   if (sTileCost > 0) {
     switch (usMovementMode) {
-      case RUNNING:
-      case ADULTMONSTER_WALKING:
-      case BLOODCAT_RUN:
+      case Enum193.RUNNING:
+      case Enum193.ADULTMONSTER_WALKING:
+      case Enum193.BLOODCAT_RUN:
         sPoints = ((sTileCost / RUNDIVISOR));
         break;
 
-      case CROW_FLY:
-      case SIDE_STEP:
-      case WALK_BACKWARDS:
-      case ROBOT_WALK:
-      case BLOODCAT_WALK_BACKWARDS:
-      case MONSTER_WALK_BACKWARDS:
-      case LARVAE_WALK:
-      case WALKING:
+      case Enum193.CROW_FLY:
+      case Enum193.SIDE_STEP:
+      case Enum193.WALK_BACKWARDS:
+      case Enum193.ROBOT_WALK:
+      case Enum193.BLOODCAT_WALK_BACKWARDS:
+      case Enum193.MONSTER_WALK_BACKWARDS:
+      case Enum193.LARVAE_WALK:
+      case Enum193.WALKING:
         sPoints = (sTileCost + WALKCOST);
         break;
 
-      case START_SWAT:
-      case SWAT_BACKWARDS:
-      case SWATTING:
+      case Enum193.START_SWAT:
+      case Enum193.SWAT_BACKWARDS:
+      case Enum193.SWATTING:
         sPoints = (sTileCost + SWATCOST);
         break;
-      case CRAWLING:
+      case Enum193.CRAWLING:
         sPoints = (sTileCost + CRAWLCOST);
         break;
 
@@ -268,11 +268,11 @@ function ActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bDir: I
 
   if (sSwitchValue == TRAVELCOST_NOT_STANDING) {
     switch (usMovementMode) {
-      case RUNNING:
-      case WALKING:
-      case LARVAE_WALK:
-      case SIDE_STEP:
-      case WALK_BACKWARDS:
+      case Enum193.RUNNING:
+      case Enum193.WALKING:
+      case Enum193.LARVAE_WALK:
+      case Enum193.SIDE_STEP:
+      case Enum193.WALK_BACKWARDS:
         // charge crouch APs for ducking head!
         sPoints += AP_CROUCH;
         break;
@@ -299,29 +299,29 @@ function EstimateActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16,
   // so, then we must modify it for other movement styles and accumulate
   if (sTileCost > 0) {
     switch (usMovementMode) {
-      case RUNNING:
-      case ADULTMONSTER_WALKING:
-      case BLOODCAT_RUN:
+      case Enum193.RUNNING:
+      case Enum193.ADULTMONSTER_WALKING:
+      case Enum193.BLOODCAT_RUN:
         sPoints = ((sTileCost / RUNDIVISOR));
         break;
 
-      case CROW_FLY:
-      case SIDE_STEP:
-      case ROBOT_WALK:
-      case WALK_BACKWARDS:
-      case BLOODCAT_WALK_BACKWARDS:
-      case MONSTER_WALK_BACKWARDS:
-      case LARVAE_WALK:
-      case WALKING:
+      case Enum193.CROW_FLY:
+      case Enum193.SIDE_STEP:
+      case Enum193.ROBOT_WALK:
+      case Enum193.WALK_BACKWARDS:
+      case Enum193.BLOODCAT_WALK_BACKWARDS:
+      case Enum193.MONSTER_WALK_BACKWARDS:
+      case Enum193.LARVAE_WALK:
+      case Enum193.WALKING:
         sPoints = (sTileCost + WALKCOST);
         break;
 
-      case START_SWAT:
-      case SWAT_BACKWARDS:
-      case SWATTING:
+      case Enum193.START_SWAT:
+      case Enum193.SWAT_BACKWARDS:
+      case Enum193.SWATTING:
         sPoints = (sTileCost + SWATCOST);
         break;
-      case CRAWLING:
+      case Enum193.CRAWLING:
         sPoints = (sTileCost + CRAWLCOST);
         break;
 
@@ -341,10 +341,10 @@ function EstimateActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16,
     // If we are changeing stance ( either before or after getting there....
     // We need to reflect that...
     switch (usMovementMode) {
-      case SIDE_STEP:
-      case WALK_BACKWARDS:
-      case RUNNING:
-      case WALKING:
+      case Enum193.SIDE_STEP:
+      case Enum193.WALK_BACKWARDS:
+      case Enum193.RUNNING:
+      case Enum193.WALKING:
 
         // Add here cost to go from crouch to stand AFTER fence hop....
         // Since it's AFTER.. make sure we will be moving after jump...
@@ -353,25 +353,25 @@ function EstimateActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16,
         }
         break;
 
-      case SWATTING:
-      case START_SWAT:
-      case SWAT_BACKWARDS:
+      case Enum193.SWATTING:
+      case Enum193.START_SWAT:
+      case Enum193.SWAT_BACKWARDS:
 
         // Add cost to stand once there BEFORE....
         sPoints += AP_CROUCH;
         break;
 
-      case CRAWLING:
+      case Enum193.CRAWLING:
 
         // Can't do it here.....
         break;
     }
   } else if (sSwitchValue == TRAVELCOST_NOT_STANDING) {
     switch (usMovementMode) {
-      case RUNNING:
-      case WALKING:
-      case SIDE_STEP:
-      case WALK_BACKWARDS:
+      case Enum193.RUNNING:
+      case Enum193.WALKING:
+      case Enum193.SIDE_STEP:
+      case Enum193.WALK_BACKWARDS:
         // charge crouch APs for ducking head!
         sPoints += AP_CROUCH;
         break;
@@ -392,7 +392,7 @@ function EnoughPoints(pSoldier: Pointer<SOLDIERTYPE>, sAPCost: INT16, sBPCost: I
     return TRUE;
   }
 
-  if (pSoldier.value.ubQuoteActionID >= QUOTE_ACTION_ID_TRAVERSE_EAST && pSoldier.value.ubQuoteActionID <= QUOTE_ACTION_ID_TRAVERSE_NORTH) {
+  if (pSoldier.value.ubQuoteActionID >= Enum290.QUOTE_ACTION_ID_TRAVERSE_EAST && pSoldier.value.ubQuoteActionID <= Enum290.QUOTE_ACTION_ID_TRAVERSE_NORTH) {
     // AI guy on special move off map
     return TRUE;
   }
@@ -409,7 +409,7 @@ function EnoughPoints(pSoldier: Pointer<SOLDIERTYPE>, sAPCost: INT16, sBPCost: I
   if (sNewAP < 0) {
     // Display message if it's our own guy
     if (pSoldier.value.bTeam == gbPlayerNum && fDisplayMsg) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[NOT_ENOUGH_APS_STR]);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NOT_ENOUGH_APS_STR]);
     }
     return FALSE;
   }
@@ -534,8 +534,8 @@ function AdjustBreathPts(pSold: Pointer<SOLDIERTYPE>, sBPCost: INT16): INT16 {
   */
 
   // if a non-swimmer type is thrashing around in deep water
-  if ((pSold.value.ubProfile != NO_PROFILE) && (gMercProfiles[pSold.value.ubProfile].bPersonalityTrait == NONSWIMMER)) {
-    if (pSold.value.usAnimState == DEEP_WATER_TRED || pSold.value.usAnimState == DEEP_WATER_SWIM) {
+  if ((pSold.value.ubProfile != NO_PROFILE) && (gMercProfiles[pSold.value.ubProfile].bPersonalityTrait == Enum270.NONSWIMMER)) {
+    if (pSold.value.usAnimState == Enum193.DEEP_WATER_TRED || pSold.value.usAnimState == Enum193.DEEP_WATER_SWIM) {
       sBreathFactor *= 5; // lose breath 5 times faster in deep water!
     }
   }
@@ -666,24 +666,24 @@ function GetBreathPerAP(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): IN
     // OK, check if we are in water and are waling/standing
     if (MercInWater(pSoldier)) {
       switch (usAnimState) {
-        case STANDING:
+        case Enum193.STANDING:
 
           sBreathPerAP = BP_PER_AP_LT_EFFORT;
           break;
 
-        case WALKING:
+        case Enum193.WALKING:
 
           sBreathPerAP = BP_PER_AP_MOD_EFFORT;
           break;
       }
     } else {
       switch (usAnimState) {
-        case STANDING:
+        case Enum193.STANDING:
 
           sBreathPerAP = BP_PER_AP_NO_EFFORT;
           break;
 
-        case WALKING:
+        case Enum193.WALKING:
 
           sBreathPerAP = BP_PER_AP_LT_EFFORT;
           break;
@@ -722,14 +722,14 @@ function GetBreathPerAP(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): IN
 // UINT8 CalcAPsToBurst( INT8 bBaseActionPoints, UINT16 usItem )
 function CalcAPsToBurst(bBaseActionPoints: INT8, pObj: Pointer<OBJECTTYPE>): UINT8 {
   // base APs is what you'd get from CalcActionPoints();
-  if (pObj.value.usItem == G11) {
+  if (pObj.value.usItem == Enum225.G11) {
     return 1;
   } else {
     // NB round UP, so 21-25 APs pay full
 
     let bAttachPos: INT8;
 
-    bAttachPos = FindAttachment(pObj, SPRING_AND_BOLT_UPGRADE);
+    bAttachPos = FindAttachment(pObj, Enum225.SPRING_AND_BOLT_UPGRADE);
     if (bAttachPos != -1) {
       return (__max(3, (AP_BURST * bBaseActionPoints + (AP_MAXIMUM - 1)) / AP_MAXIMUM) * 100) / (100 + pObj.value.bAttachStatus[bAttachPos] / 5);
     } else {
@@ -747,14 +747,14 @@ function CalcTotalAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ub
   let uiItemClass: UINT32;
 
   // LOOK IN BUDDY'S HAND TO DETERMINE WHAT TO DO HERE
-  usItemNum = pSoldier.value.inv[HANDPOS].usItem;
+  usItemNum = pSoldier.value.inv[Enum261.HANDPOS].usItem;
   uiItemClass = Item[usItemNum].usItemClass;
 
   if (uiItemClass == IC_GUN || uiItemClass == IC_LAUNCHER || uiItemClass == IC_TENTACLES || uiItemClass == IC_THROWING_KNIFE) {
     sAPCost = MinAPsToAttack(pSoldier, sGridNo, ubAddTurningCost);
 
     if (pSoldier.value.bDoBurst) {
-      sAPCost += CalcAPsToBurst(CalcActionPoints(pSoldier), addressof(pSoldier.value.inv[HANDPOS]));
+      sAPCost += CalcAPsToBurst(CalcActionPoints(pSoldier), addressof(pSoldier.value.inv[Enum261.HANDPOS]));
     } else {
       sAPCost += bAimTime;
     }
@@ -787,7 +787,7 @@ function CalcTotalAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ub
         if (ubGuyThere != NOBODY) {
           pTarget = MercPtrs[ubGuyThere];
 
-          if (pSoldier.value.ubBodyType == BLOODCAT) {
+          if (pSoldier.value.ubBodyType == Enum194.BLOODCAT) {
             sGotLocation = FindNextToAdjacentGridEx(pSoldier, sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), TRUE, FALSE);
             if (sGotLocation == -1) {
               sGotLocation = NOWHERE;
@@ -797,7 +797,7 @@ function CalcTotalAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ub
           }
         }
 
-        if (sGotLocation == NOWHERE && pSoldier.value.ubBodyType != BLOODCAT) {
+        if (sGotLocation == NOWHERE && pSoldier.value.ubBodyType != Enum194.BLOODCAT) {
           sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), TRUE, FALSE);
 
           if (sActionGridNo == -1) {
@@ -847,21 +847,21 @@ function MinAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, ubAddTur
   let sAPCost: UINT16 = 0;
   let uiItemClass: UINT32;
 
-  if (pSoldier.value.bWeaponMode == WM_ATTACHED) {
+  if (pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED) {
     let bAttachSlot: INT8;
     // look for an attached grenade launcher
 
-    bAttachSlot = FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER);
+    bAttachSlot = FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.UNDER_GLAUNCHER);
     if (bAttachSlot == NO_SLOT) {
       // default to hand
       // LOOK IN BUDDY'S HAND TO DETERMINE WHAT TO DO HERE
-      uiItemClass = Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass;
+      uiItemClass = Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass;
     } else {
-      uiItemClass = Item[UNDER_GLAUNCHER].usItemClass;
+      uiItemClass = Item[Enum225.UNDER_GLAUNCHER].usItemClass;
     }
   } else {
     // LOOK IN BUDDY'S HAND TO DETERMINE WHAT TO DO HERE
-    uiItemClass = Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass;
+    uiItemClass = Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass;
   }
 
   if (uiItemClass == IC_BLADE || uiItemClass == IC_GUN || uiItemClass == IC_LAUNCHER || uiItemClass == IC_TENTACLES || uiItemClass == IC_THROWING_KNIFE) {
@@ -908,7 +908,7 @@ function BaseAPsToShootOrStab(bAPs: INT8, bAimSkill: INT8, pObj: Pointer<OBJECTT
   // NB need to define shots per turn for ALL Weapons then.
   sBottom = ((50 + (bAimSkill / 2)) * Weapon[pObj.value.usItem].ubShotsPer4Turns) / 4;
 
-  bAttachPos = FindAttachment(pObj, SPRING_AND_BOLT_UPGRADE);
+  bAttachPos = FindAttachment(pObj, Enum225.SPRING_AND_BOLT_UPGRADE);
   if (bAttachPos != -1) {
     sBottom = (sBottom * (100 + pObj.value.bAttachStatus[bAttachPos] / 5)) / 100;
   }
@@ -948,7 +948,7 @@ function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: Pointer<SOLDIERTYPE>, s
     }
   }
 
-  if (Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass == IC_THROWING_KNIFE) {
+  if (Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_THROWING_KNIFE) {
   } else {
     // Do we need to ready weapon?
     if (!(gAnimControl[pSoldier.value.usAnimState].uiFlags & (ANIM_FIREREADY | ANIM_FIRE))) {
@@ -970,10 +970,10 @@ function MinAPsToShootOrStab(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubA
   let fAddingRaiseGunCost: BOOLEAN = FALSE;
   let usItem: UINT16;
 
-  if (pSoldier.value.bWeaponMode == WM_ATTACHED) {
-    usItem = UNDER_GLAUNCHER;
+  if (pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED) {
+    usItem = Enum225.UNDER_GLAUNCHER;
   } else {
-    usItem = pSoldier.value.inv[HANDPOS].usItem;
+    usItem = pSoldier.value.inv[Enum261.HANDPOS].usItem;
   }
 
   GetAPChargeForShootOrStabWRTGunRaises(pSoldier, sGridNo, ubAddTurningCost, addressof(fAddingTurningCost), addressof(fAddingRaiseGunCost));
@@ -1021,7 +1021,7 @@ function MinAPsToShootOrStab(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubA
   }
 
   // if attacking a new target (or if the specific target is uncertain)
-  if ((sGridNo != pSoldier.value.sLastTarget) && usItem != ROCKET_LAUNCHER) {
+  if ((sGridNo != pSoldier.value.sLastTarget) && usItem != Enum225.ROCKET_LAUNCHER) {
     bAPCost += AP_CHANGE_TARGET;
   }
 
@@ -1029,27 +1029,27 @@ function MinAPsToShootOrStab(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubA
   // aim skill is the same whether we are using 1 or 2 guns
   bAimSkill = CalcAimSkill(pSoldier, usItem);
 
-  if (pSoldier.value.bWeaponMode == WM_ATTACHED) {
+  if (pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED) {
     let bAttachSlot: INT8;
     let GrenadeLauncher: OBJECTTYPE;
 
     // look for an attached grenade launcher
-    bAttachSlot = FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER);
+    bAttachSlot = FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.UNDER_GLAUNCHER);
 
     // create temporary grenade launcher and use that
     if (bAttachSlot != NO_SLOT) {
-      CreateItem(UNDER_GLAUNCHER, pSoldier.value.inv[HANDPOS].bAttachStatus[bAttachSlot], addressof(GrenadeLauncher));
+      CreateItem(Enum225.UNDER_GLAUNCHER, pSoldier.value.inv[Enum261.HANDPOS].bAttachStatus[bAttachSlot], addressof(GrenadeLauncher));
     } else {
       // fake it, use a 100 status...
-      CreateItem(UNDER_GLAUNCHER, 100, addressof(GrenadeLauncher));
+      CreateItem(Enum225.UNDER_GLAUNCHER, 100, addressof(GrenadeLauncher));
     }
 
     bAPCost += BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(GrenadeLauncher));
   } else if (IsValidSecondHandShot(pSoldier)) {
     // charge the maximum of the two
-    bAPCost += __max(BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(pSoldier.value.inv[HANDPOS])), BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(pSoldier.value.inv[SECONDHANDPOS])));
+    bAPCost += __max(BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(pSoldier.value.inv[Enum261.HANDPOS])), BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(pSoldier.value.inv[Enum261.SECONDHANDPOS])));
   } else {
-    bAPCost += BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(pSoldier.value.inv[HANDPOS]));
+    bAPCost += BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(pSoldier.value.inv[Enum261.HANDPOS]));
   }
 
   // the minimum AP cost of ANY shot can NEVER be more than merc's maximum APs!
@@ -1060,7 +1060,7 @@ function MinAPsToShootOrStab(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubA
   if (bAPCost < 1)
     bAPCost = 1;
 
-  if (pSoldier.value.inv[HANDPOS].usItem == ROCKET_LAUNCHER) {
+  if (pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.ROCKET_LAUNCHER) {
     bAPCost += GetAPsToChangeStance(pSoldier, ANIM_STAND);
   }
 
@@ -1143,14 +1143,14 @@ function PtsToMoveDirection(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8): I
   // ATE: Check if the new place is watter and we were tying to run....
   bOverTerrainType = GetTerrainType(sGridno);
 
-  if (bOverTerrainType == MED_WATER || bOverTerrainType == DEEP_WATER || bOverTerrainType == LOW_WATER) {
-    usMoveModeToUse = WALKING;
+  if (bOverTerrainType == Enum315.MED_WATER || bOverTerrainType == Enum315.DEEP_WATER || bOverTerrainType == Enum315.LOW_WATER) {
+    usMoveModeToUse = Enum193.WALKING;
   }
 
   sCost = ActionPointCost(pSoldier, sGridno, bDirection, usMoveModeToUse);
 
   if (gubWorldMovementCosts[sGridno][bDirection][pSoldier.value.bLevel] != TRAVELCOST_FENCE) {
-    if (usMoveModeToUse == RUNNING && pSoldier.value.usAnimState != RUNNING) {
+    if (usMoveModeToUse == Enum193.RUNNING && pSoldier.value.usAnimState != Enum193.RUNNING) {
       sCost += AP_START_RUN_COST;
     }
   }
@@ -1162,22 +1162,22 @@ function MinAPsToStartMovement(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: U
   let bAPs: INT8 = 0;
 
   switch (usMovementMode) {
-    case RUNNING:
-    case WALKING:
+    case Enum193.RUNNING:
+    case Enum193.WALKING:
       if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight == ANIM_PRONE) {
         bAPs += AP_CROUCH + AP_PRONE;
       } else if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight == ANIM_CROUCH) {
         bAPs += AP_CROUCH;
       }
       break;
-    case SWATTING:
+    case Enum193.SWATTING:
       if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight == ANIM_PRONE) {
         bAPs += AP_PRONE;
       } else if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight == ANIM_STAND) {
         bAPs += AP_CROUCH;
       }
       break;
-    case CRAWLING:
+    case Enum193.CRAWLING:
       if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight == ANIM_STAND) {
         bAPs += AP_CROUCH + AP_PRONE;
       } else if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight == ANIM_CROUCH) {
@@ -1188,7 +1188,7 @@ function MinAPsToStartMovement(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: U
       break;
   }
 
-  if (usMovementMode == RUNNING && pSoldier.value.usAnimState != RUNNING) {
+  if (usMovementMode == Enum193.RUNNING && pSoldier.value.usAnimState != Enum193.RUNNING) {
     bAPs += AP_START_RUN_COST;
   }
   return bAPs;
@@ -1196,15 +1196,15 @@ function MinAPsToStartMovement(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: U
 
 function EnoughAmmo(pSoldier: Pointer<SOLDIERTYPE>, fDisplay: BOOLEAN, bInvPos: INT8): BOOLEAN {
   if (pSoldier.value.inv[bInvPos].usItem != NOTHING) {
-    if (pSoldier.value.bWeaponMode == WM_ATTACHED) {
+    if (pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED) {
       return TRUE;
     } else {
-      if (pSoldier.value.inv[bInvPos].usItem == ROCKET_LAUNCHER) {
+      if (pSoldier.value.inv[bInvPos].usItem == Enum225.ROCKET_LAUNCHER) {
         // hack... they turn empty afterwards anyways
         return TRUE;
       }
 
-      if (Item[pSoldier.value.inv[bInvPos].usItem].usItemClass == IC_LAUNCHER || pSoldier.value.inv[bInvPos].usItem == TANK_CANNON) {
+      if (Item[pSoldier.value.inv[bInvPos].usItem].usItemClass == IC_LAUNCHER || pSoldier.value.inv[bInvPos].usItem == Enum225.TANK_CANNON) {
         if (FindAttachmentByClass(addressof(pSoldier.value.inv[bInvPos]), IC_GRENADE) != ITEM_NOT_FOUND) {
           return TRUE;
         }
@@ -1215,14 +1215,14 @@ function EnoughAmmo(pSoldier: Pointer<SOLDIERTYPE>, fDisplay: BOOLEAN, bInvPos: 
         }
 
         if (fDisplay) {
-          TacticalCharacterDialogue(pSoldier, QUOTE_OUT_OF_AMMO);
+          TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_OUT_OF_AMMO);
         }
 
         return FALSE;
       } else if (Item[pSoldier.value.inv[bInvPos].usItem].usItemClass == IC_GUN) {
         if (pSoldier.value.inv[bInvPos].ubGunShotsLeft == 0) {
           if (fDisplay) {
-            TacticalCharacterDialogue(pSoldier, QUOTE_OUT_OF_AMMO);
+            TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_OUT_OF_AMMO);
           }
           return FALSE;
         }
@@ -1240,14 +1240,14 @@ function DeductAmmo(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8): void {
 
   // tanks never run out of MG ammo!
   // unlimited cannon ammo is handled in AI
-  if (TANK(pSoldier) && pSoldier.value.inv[bInvPos].usItem != TANK_CANNON) {
+  if (TANK(pSoldier) && pSoldier.value.inv[bInvPos].usItem != Enum225.TANK_CANNON) {
     return;
   }
 
   pObj = addressof(pSoldier.value.inv[bInvPos]);
   if (pObj.value.usItem != NOTHING) {
-    if (pObj.value.usItem == TANK_CANNON) {
-    } else if (Item[pObj.value.usItem].usItemClass == IC_GUN && pObj.value.usItem != TANK_CANNON) {
+    if (pObj.value.usItem == Enum225.TANK_CANNON) {
+    } else if (Item[pObj.value.usItem].usItemClass == IC_GUN && pObj.value.usItem != Enum225.TANK_CANNON) {
       if (pSoldier.value.usAttackingWeapon == pObj.value.usItem) {
         // OK, let's see, don't overrun...
         if (pObj.value.ubGunShotsLeft != 0) {
@@ -1256,7 +1256,7 @@ function DeductAmmo(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8): void {
       } else {
         // firing an attachment?
       }
-    } else if (Item[pObj.value.usItem].usItemClass == IC_LAUNCHER || pObj.value.usItem == TANK_CANNON) {
+    } else if (Item[pObj.value.usItem].usItemClass == IC_LAUNCHER || pObj.value.usItem == Enum225.TANK_CANNON) {
       let bAttachPos: INT8;
 
       bAttachPos = FindAttachmentByClass(pObj, IC_GRENADE);
@@ -1338,17 +1338,17 @@ function GetAPsToAutoReload(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   ;
 
   CHECKF(pSoldier);
-  pObj = addressof(pSoldier.value.inv[HANDPOS]);
+  pObj = addressof(pSoldier.value.inv[Enum261.HANDPOS]);
 
   if (Item[pObj.value.usItem].usItemClass == IC_GUN || Item[pObj.value.usItem].usItemClass == IC_LAUNCHER) {
-    bSlot = FindAmmoToReload(pSoldier, HANDPOS, NO_SLOT);
+    bSlot = FindAmmoToReload(pSoldier, Enum261.HANDPOS, NO_SLOT);
     if (bSlot != NO_SLOT) {
       // we would reload using this ammo!
       bAPCost += GetAPsToReloadGunWithAmmo(pObj, addressof(pSoldier.value.inv[bSlot]));
     }
 
     if (IsValidSecondHandShotForReloadingPurposes(pSoldier)) {
-      pObj = addressof(pSoldier.value.inv[SECONDHANDPOS]);
+      pObj = addressof(pSoldier.value.inv[Enum261.SECONDHANDPOS]);
       bExcludeSlot = NO_SLOT;
       bSlot2 = NO_SLOT;
 
@@ -1364,7 +1364,7 @@ function GetAPsToAutoReload(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       }
 
       if (bSlot2 == NO_SLOT) {
-        bSlot2 = FindAmmoToReload(pSoldier, SECONDHANDPOS, bExcludeSlot);
+        bSlot2 = FindAmmoToReload(pSoldier, Enum261.SECONDHANDPOS, bExcludeSlot);
       }
 
       if (bSlot2 != NO_SLOT) {
@@ -1546,7 +1546,7 @@ function GetAPsToReadyWeapon(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16
   }
 
   // OK, now check type of weapon
-  usItem = pSoldier.value.inv[HANDPOS].usItem;
+  usItem = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
   if (usItem == NOTHING) {
     return 0;
@@ -1613,7 +1613,7 @@ function MinAPsToThrow(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurn
   let ubDirection: UINT8;
 
   // make sure the guy's actually got a throwable item in his hand!
-  usInHand = pSoldier.value.inv[HANDPOS].usItem;
+  usInHand = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
   if ((!Item[usInHand].usItemClass & IC_GRENADE)) {
     return 0;

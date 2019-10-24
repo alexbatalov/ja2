@@ -25,15 +25,15 @@ let ubDamageKeyFrame: UINT8[] /* [NUM_EXP_TYPES] */ = [
 ];
 
 let uiExplosionSoundID: UINT32[] /* [NUM_EXP_TYPES] */ = [
-  EXPLOSION_1,
-  EXPLOSION_1,
-  EXPLOSION_BLAST_2, // LARGE
-  EXPLOSION_BLAST_2,
-  EXPLOSION_1,
-  AIR_ESCAPING_1,
-  AIR_ESCAPING_1,
-  AIR_ESCAPING_1,
-  AIR_ESCAPING_1,
+  Enum330.EXPLOSION_1,
+  Enum330.EXPLOSION_1,
+  Enum330.EXPLOSION_BLAST_2, // LARGE
+  Enum330.EXPLOSION_BLAST_2,
+  Enum330.EXPLOSION_1,
+  Enum330.AIR_ESCAPING_1,
+  Enum330.AIR_ESCAPING_1,
+  Enum330.AIR_ESCAPING_1,
+  Enum330.AIR_ESCAPING_1,
 ];
 
 let zBlastFilenames: CHAR8[][] /* [][70] */ = [
@@ -239,9 +239,9 @@ function GenerateExplosionFromExplosionPointer(pExplosion: Pointer<EXPLOSIONTYPE
   AniParams.sStartFrame = pExplosion.value.sCurrentFrame;
   AniParams.uiFlags = ANITILE_CACHEDTILE | ANITILE_FORWARD | ANITILE_EXPLOSION;
 
-  if (ubTerrainType == LOW_WATER || ubTerrainType == MED_WATER || ubTerrainType == DEEP_WATER) {
+  if (ubTerrainType == Enum315.LOW_WATER || ubTerrainType == Enum315.MED_WATER || ubTerrainType == Enum315.DEEP_WATER) {
     // Change type to water explosion...
-    ubTypeID = WATER_BLAST;
+    ubTypeID = Enum304.WATER_BLAST;
     AniParams.uiFlags |= ANITILE_ALWAYS_TRANSLUCENT;
   }
 
@@ -258,11 +258,11 @@ function GenerateExplosionFromExplosionPointer(pExplosion: Pointer<EXPLOSIONTYPE
   }
 
   AniParams.ubKeyFrame1 = ubTransKeyFrame[ubTypeID];
-  AniParams.uiKeyFrame1Code = ANI_KEYFRAME_BEGIN_TRANSLUCENCY;
+  AniParams.uiKeyFrame1Code = Enum311.ANI_KEYFRAME_BEGIN_TRANSLUCENCY;
 
   if (!(uiFlags & EXPLOSION_FLAG_DISPLAYONLY)) {
     AniParams.ubKeyFrame2 = ubDamageKeyFrame[ubTypeID];
-    AniParams.uiKeyFrame2Code = ANI_KEYFRAME_BEGIN_DAMAGE;
+    AniParams.uiKeyFrame2Code = Enum311.ANI_KEYFRAME_BEGIN_DAMAGE;
   }
   AniParams.uiUserData = usItem;
   AniParams.ubUserData2 = ubOwner;
@@ -286,10 +286,10 @@ function GenerateExplosionFromExplosionPointer(pExplosion: Pointer<EXPLOSIONTYPE
 
   uiSoundID = uiExplosionSoundID[ubTypeID];
 
-  if (uiSoundID == EXPLOSION_1) {
+  if (uiSoundID == Enum330.EXPLOSION_1) {
     // Randomize
     if (Random(2) == 0) {
-      uiSoundID = EXPLOSION_ALT_BLAST_1;
+      uiSoundID = Enum330.EXPLOSION_ALT_BLAST_1;
     }
   }
 
@@ -397,7 +397,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
   }
 
   // Is this a corpse?
-  if ((pCurrent.value.fFlags & STRUCTURE_CORPSE) && gGameSettings.fOptions[TOPTION_BLOOD_N_GORE] && sWoundAmt > 10) {
+  if ((pCurrent.value.fFlags & STRUCTURE_CORPSE) && gGameSettings.fOptions[Enum8.TOPTION_BLOOD_N_GORE] && sWoundAmt > 10) {
     // Spray corpse in a fine mist....
     if (uiDist <= 1) {
       // Remove corpse...
@@ -468,9 +468,9 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
           // OK, destrcution index is , as default, the partner, until we go over the first set of explsion
           // debris...
           if (bDestructionPartner > 39) {
-            GetTileIndexFromTypeSubIndex(SECONDEXPLDEBRIS, (bDestructionPartner - 40), addressof(usTileIndex));
+            GetTileIndexFromTypeSubIndex(Enum313.SECONDEXPLDEBRIS, (bDestructionPartner - 40), addressof(usTileIndex));
           } else {
-            GetTileIndexFromTypeSubIndex(FIRSTEXPLDEBRIS, bDestructionPartner, addressof(usTileIndex));
+            GetTileIndexFromTypeSubIndex(Enum313.FIRSTEXPLDEBRIS, bDestructionPartner, addressof(usTileIndex));
           }
 
           // Free all the non-base tiles; the base tile is at pointer 0
@@ -480,7 +480,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
               // there might be two structures in this tile, one on each level, but we just want to
               // delete one on each pass
 
-              if (!TypeRangeExistsInObjectLayer(sStructGridNo, FIRSTEXPLDEBRIS, SECONDEXPLDEBRIS, addressof(usObjectIndex))) {
+              if (!TypeRangeExistsInObjectLayer(sStructGridNo, Enum313.FIRSTEXPLDEBRIS, Enum313.SECONDEXPLDEBRIS, addressof(usObjectIndex))) {
                 // Set a flag indicating that the following changes are to go the the maps, temp file
                 ApplyMapChangesToMapTempFile(TRUE);
 
@@ -494,11 +494,11 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
           // IF we are a wall, add debris for the other side
           if (pCurrent.value.fFlags & STRUCTURE_WALLSTUFF) {
             switch (pCurrent.value.ubWallOrientation) {
-              case OUTSIDE_TOP_LEFT:
-              case INSIDE_TOP_LEFT:
+              case Enum314.OUTSIDE_TOP_LEFT:
+              case Enum314.INSIDE_TOP_LEFT:
 
-                sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(SOUTH));
-                if (!TypeRangeExistsInObjectLayer(sStructGridNo, FIRSTEXPLDEBRIS, SECONDEXPLDEBRIS, addressof(usObjectIndex))) {
+                sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.SOUTH));
+                if (!TypeRangeExistsInObjectLayer(sStructGridNo, Enum313.FIRSTEXPLDEBRIS, Enum313.SECONDEXPLDEBRIS, addressof(usObjectIndex))) {
                   // Set a flag indicating that the following changes are to go the the maps, temp file
                   ApplyMapChangesToMapTempFile(TRUE);
 
@@ -508,11 +508,11 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
                 }
                 break;
 
-              case OUTSIDE_TOP_RIGHT:
-              case INSIDE_TOP_RIGHT:
+              case Enum314.OUTSIDE_TOP_RIGHT:
+              case Enum314.INSIDE_TOP_RIGHT:
 
-                sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(EAST));
-                if (!TypeRangeExistsInObjectLayer(sStructGridNo, FIRSTEXPLDEBRIS, SECONDEXPLDEBRIS, addressof(usObjectIndex))) {
+                sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.EAST));
+                if (!TypeRangeExistsInObjectLayer(sStructGridNo, Enum313.FIRSTEXPLDEBRIS, Enum313.SECONDEXPLDEBRIS, addressof(usObjectIndex))) {
                   // Set a flag indicating that the following changes are to go the the maps, temp file
                   ApplyMapChangesToMapTempFile(TRUE);
 
@@ -528,21 +528,21 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
         else if (pCurrent.value.fFlags & STRUCTURE_FENCE) {
           // walk along based on orientation
           switch (pCurrent.value.ubWallOrientation) {
-            case OUTSIDE_TOP_RIGHT:
-            case INSIDE_TOP_RIGHT:
+            case Enum314.OUTSIDE_TOP_RIGHT:
+            case Enum314.INSIDE_TOP_RIGHT:
 
-              sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(SOUTH));
+              sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.SOUTH));
               HandleFencePartnerCheck(sStructGridNo);
-              sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(NORTH));
+              sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.NORTH));
               HandleFencePartnerCheck(sStructGridNo);
               break;
 
-            case OUTSIDE_TOP_LEFT:
-            case INSIDE_TOP_LEFT:
+            case Enum314.OUTSIDE_TOP_LEFT:
+            case Enum314.INSIDE_TOP_LEFT:
 
-              sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(EAST));
+              sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.EAST));
               HandleFencePartnerCheck(sStructGridNo);
-              sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(WEST));
+              sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.WEST));
               HandleFencePartnerCheck(sStructGridNo);
               break;
           }
@@ -553,8 +553,8 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
           // ATE
           // Remove any decals in tile....
           // Use tile database for this as apposed to stuct data
-          RemoveAllStructsOfTypeRange(pBase.value.sGridNo, FIRSTWALLDECAL, FOURTHWALLDECAL);
-          RemoveAllStructsOfTypeRange(pBase.value.sGridNo, FIFTHWALLDECAL, EIGTHWALLDECAL);
+          RemoveAllStructsOfTypeRange(pBase.value.sGridNo, Enum313.FIRSTWALLDECAL, Enum313.FOURTHWALLDECAL);
+          RemoveAllStructsOfTypeRange(pBase.value.sGridNo, Enum313.FIFTHWALLDECAL, Enum313.EIGTHWALLDECAL);
 
           // Alrighty, now do this
           // Get orientation
@@ -562,17 +562,17 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
           // check for wall in both _ve and -ve directions
           // if found, replace!
           switch (pCurrent.value.ubWallOrientation) {
-            case OUTSIDE_TOP_LEFT:
-            case INSIDE_TOP_LEFT:
+            case Enum314.OUTSIDE_TOP_LEFT:
+            case Enum314.INSIDE_TOP_LEFT:
 
               // Move WEST
-              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(WEST));
+              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.WEST));
 
               pNewNode = GetWallLevelNodeAndStructOfSameOrientationAtGridno(sNewGridNo, pCurrent.value.ubWallOrientation, addressof(pWallStruct));
 
               if (pNewNode != NULL) {
                 if (pWallStruct.value.fFlags & STRUCTURE_WALL) {
-                  if (pCurrent.value.ubWallOrientation == OUTSIDE_TOP_LEFT) {
+                  if (pCurrent.value.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT) {
                     sSubIndex = 48;
                   } else {
                     sSubIndex = 52;
@@ -592,13 +592,13 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
               }
 
               // Move in EAST
-              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(EAST));
+              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.EAST));
 
               pNewNode = GetWallLevelNodeAndStructOfSameOrientationAtGridno(sNewGridNo, pCurrent.value.ubWallOrientation, addressof(pWallStruct));
 
               if (pNewNode != NULL) {
                 if (pWallStruct.value.fFlags & STRUCTURE_WALL) {
-                  if (pCurrent.value.ubWallOrientation == OUTSIDE_TOP_LEFT) {
+                  if (pCurrent.value.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT) {
                     sSubIndex = 49;
                   } else {
                     sSubIndex = 53;
@@ -648,7 +648,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
               }
 
               // Move in SOUTH, looking for attached structures to remove
-              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(SOUTH));
+              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.SOUTH));
               pAttached = FindStructure(sNewGridNo, STRUCTURE_ON_LEFT_WALL);
               while (pAttached) {
                 pAttachedBase = FindBaseStructure(pAttached);
@@ -671,17 +671,17 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
               }
               break;
 
-            case OUTSIDE_TOP_RIGHT:
-            case INSIDE_TOP_RIGHT:
+            case Enum314.OUTSIDE_TOP_RIGHT:
+            case Enum314.INSIDE_TOP_RIGHT:
 
               // Move in NORTH
-              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(NORTH));
+              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.NORTH));
 
               pNewNode = GetWallLevelNodeAndStructOfSameOrientationAtGridno(sNewGridNo, pCurrent.value.ubWallOrientation, addressof(pWallStruct));
 
               if (pNewNode != NULL) {
                 if (pWallStruct.value.fFlags & STRUCTURE_WALL) {
-                  if (pCurrent.value.ubWallOrientation == OUTSIDE_TOP_RIGHT) {
+                  if (pCurrent.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
                     sSubIndex = 51;
                   } else {
                     sSubIndex = 55;
@@ -701,13 +701,13 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
               }
 
               // Move in SOUTH
-              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(SOUTH));
+              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.SOUTH));
 
               pNewNode = GetWallLevelNodeAndStructOfSameOrientationAtGridno(sNewGridNo, pCurrent.value.ubWallOrientation, addressof(pWallStruct));
 
               if (pNewNode != NULL) {
                 if (pWallStruct.value.fFlags & STRUCTURE_WALL) {
-                  if (pCurrent.value.ubWallOrientation == OUTSIDE_TOP_RIGHT) {
+                  if (pCurrent.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
                     sSubIndex = 50;
                   } else {
                     sSubIndex = 54;
@@ -750,7 +750,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
               }
 
               // Move in EAST, looking for attached structures to remove
-              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(EAST));
+              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.EAST));
               pAttached = FindStructure(sNewGridNo, STRUCTURE_ON_RIGHT_WALL);
               while (pAttached) {
                 pAttachedBase = FindBaseStructure(pAttached);
@@ -783,15 +783,15 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
             fInRoom = InARoom(sGridNo, addressof(ubRoom));
             if (!fInRoom) {
               // try to south
-              fInRoom = InARoom((sGridNo + DirectionInc(SOUTH)), addressof(ubRoom));
+              fInRoom = InARoom((sGridNo + DirectionInc(Enum245.SOUTH)), addressof(ubRoom));
               if (!fInRoom) {
                 // try to east
-                fInRoom = InARoom((sGridNo + DirectionInc(EAST)), addressof(ubRoom));
+                fInRoom = InARoom((sGridNo + DirectionInc(Enum245.EAST)), addressof(ubRoom));
               }
             }
 
             if (fInRoom && IN_BROTHEL(ubRoom)) {
-              CivilianGroupChangesSides(KINGPIN_CIV_GROUP);
+              CivilianGroupChangesSides(Enum246.KINGPIN_CIV_GROUP);
             }
           }
         }
@@ -855,7 +855,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
         {
           // Make secondary explosion if eplosive....
           if (fExplosive) {
-            InternalIgniteExplosion(ubOwner, CenterX(sBaseGridNo), CenterY(sBaseGridNo), 0, sBaseGridNo, STRUCTURE_EXPLOSION, FALSE, bLevel);
+            InternalIgniteExplosion(ubOwner, CenterX(sBaseGridNo), CenterY(sBaseGridNo), 0, sBaseGridNo, Enum225.STRUCTURE_EXPLOSION, FALSE, bLevel);
           }
         }
 
@@ -960,7 +960,7 @@ function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32,
           sNewGridNo = sBaseGridNo + ppTile[ubLoop].value.sPosRelToBase;
 
           // look in adjacent tiles
-          for (ubLoop2 = 0; ubLoop2 < NUM_WORLD_DIRECTIONS; ubLoop2++) {
+          for (ubLoop2 = 0; ubLoop2 < Enum245.NUM_WORLD_DIRECTIONS; ubLoop2++) {
             sNewGridNo2 = NewGridNo(sNewGridNo, DirectionInc(ubLoop2));
             if (sNewGridNo2 != sNewGridNo && sNewGridNo2 != sGridNo) {
               pStructure = FindStructure(sNewGridNo2, STRUCTURE_MULTI);
@@ -975,7 +975,7 @@ function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32,
                     ExplosiveDamageGridNo(sNewGridNo2, sWoundAmt, uiDist, pfRecompileMovementCosts, fOnlyWalls, bMultiStructSpecialFlag, 2, ubOwner, bLevel);
                   }
 
-                  { InternalIgniteExplosion(ubOwner, CenterX(sNewGridNo2), CenterY(sNewGridNo2), 0, sNewGridNo2, RDX, FALSE, bLevel); }
+                  { InternalIgniteExplosion(ubOwner, CenterX(sNewGridNo2), CenterY(sNewGridNo2), 0, sNewGridNo2, Enum225.RDX, FALSE, bLevel); }
 
                   fToBreak = TRUE;
                 }
@@ -1041,43 +1041,43 @@ function DishOutGasDamage(pSoldier: Pointer<SOLDIERTYPE>, pExplosive: Pointer<EX
     return fRecompileMovementCosts;
   }
 
-  if (pExplosive.value.ubType == EXPLOSV_CREATUREGAS) {
+  if (pExplosive.value.ubType == Enum287.EXPLOSV_CREATUREGAS) {
     if (pSoldier.value.uiStatusFlags & SOLDIER_MONSTER) {
       // unaffected by own gas effects
       return fRecompileMovementCosts;
     }
-    if (sSubsequent && pSoldier.value.fHitByGasFlags & HIT_BY_CREATUREGAS) {
+    if (sSubsequent && pSoldier.value.fHitByGasFlags & Enum264.HIT_BY_CREATUREGAS) {
       // already affected by creature gas this turn
       return fRecompileMovementCosts;
     }
   } else // no gas mask help from creature attacks
          // ATE/CJC: gas stuff
   {
-    if (pExplosive.value.ubType == EXPLOSV_TEARGAS) {
+    if (pExplosive.value.ubType == Enum287.EXPLOSV_TEARGAS) {
       if (AM_A_ROBOT(pSoldier)) {
         return fRecompileMovementCosts;
       }
 
       // ignore whether subsequent or not if hit this turn
-      if (pSoldier.value.fHitByGasFlags & HIT_BY_TEARGAS) {
+      if (pSoldier.value.fHitByGasFlags & Enum264.HIT_BY_TEARGAS) {
         // already affected by creature gas this turn
         return fRecompileMovementCosts;
       }
-    } else if (pExplosive.value.ubType == EXPLOSV_MUSTGAS) {
+    } else if (pExplosive.value.ubType == Enum287.EXPLOSV_MUSTGAS) {
       if (AM_A_ROBOT(pSoldier)) {
         return fRecompileMovementCosts;
       }
 
-      if (sSubsequent && pSoldier.value.fHitByGasFlags & HIT_BY_MUSTARDGAS) {
+      if (sSubsequent && pSoldier.value.fHitByGasFlags & Enum264.HIT_BY_MUSTARDGAS) {
         // already affected by creature gas this turn
         return fRecompileMovementCosts;
       }
     }
 
-    if (pSoldier.value.inv[HEAD1POS].usItem == GASMASK && pSoldier.value.inv[HEAD1POS].bStatus[0] >= USABLE) {
-      bPosOfMask = HEAD1POS;
-    } else if (pSoldier.value.inv[HEAD2POS].usItem == GASMASK && pSoldier.value.inv[HEAD2POS].bStatus[0] >= USABLE) {
-      bPosOfMask = HEAD2POS;
+    if (pSoldier.value.inv[Enum261.HEAD1POS].usItem == Enum225.GASMASK && pSoldier.value.inv[Enum261.HEAD1POS].bStatus[0] >= USABLE) {
+      bPosOfMask = Enum261.HEAD1POS;
+    } else if (pSoldier.value.inv[Enum261.HEAD2POS].usItem == Enum225.GASMASK && pSoldier.value.inv[Enum261.HEAD2POS].bStatus[0] >= USABLE) {
+      bPosOfMask = Enum261.HEAD2POS;
     }
 
     if (bPosOfMask != NO_SLOT) {
@@ -1116,14 +1116,14 @@ function DishOutGasDamage(pSoldier: Pointer<SOLDIERTYPE>, pExplosive: Pointer<EX
 
   if (sWoundAmt != 0 || sBreathAmt != 0) {
     switch (pExplosive.value.ubType) {
-      case EXPLOSV_CREATUREGAS:
-        pSoldier.value.fHitByGasFlags |= HIT_BY_CREATUREGAS;
+      case Enum287.EXPLOSV_CREATUREGAS:
+        pSoldier.value.fHitByGasFlags |= Enum264.HIT_BY_CREATUREGAS;
         break;
-      case EXPLOSV_TEARGAS:
-        pSoldier.value.fHitByGasFlags |= HIT_BY_TEARGAS;
+      case Enum287.EXPLOSV_TEARGAS:
+        pSoldier.value.fHitByGasFlags |= Enum264.HIT_BY_TEARGAS;
         break;
-      case EXPLOSV_MUSTGAS:
-        pSoldier.value.fHitByGasFlags |= HIT_BY_MUSTARDGAS;
+      case Enum287.EXPLOSV_MUSTGAS:
+        pSoldier.value.fHitByGasFlags |= Enum264.HIT_BY_MUSTARDGAS;
         break;
       default:
         break;
@@ -1131,7 +1131,7 @@ function DishOutGasDamage(pSoldier: Pointer<SOLDIERTYPE>, pExplosive: Pointer<EX
     // a gas effect, take damage directly...
     SoldierTakeDamage(pSoldier, ANIM_STAND, sWoundAmt, sBreathAmt, TAKE_DAMAGE_GAS, NOBODY, NOWHERE, 0, TRUE);
     if (pSoldier.value.bLife >= CONSCIOUSNESS) {
-      DoMercBattleSound(pSoldier, (BATTLE_SOUND_HIT1 + Random(2)));
+      DoMercBattleSound(pSoldier, (Enum259.BATTLE_SOUND_HIT1 + Random(2)));
     }
 
     if (ubOwner != NOBODY && MercPtrs[ubOwner].value.bTeam == gbPlayerNum && pSoldier.value.bTeam != gbPlayerNum) {
@@ -1173,41 +1173,41 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
   } else {
     // Turn off blast effect if some types of items...
     switch (usItem) {
-      case MUSTARD_GRENADE:
+      case Enum225.MUSTARD_GRENADE:
 
         fSmokeEffect = TRUE;
-        bSmokeEffectType = MUSTARDGAS_SMOKE_EFFECT;
+        bSmokeEffectType = Enum308.MUSTARDGAS_SMOKE_EFFECT;
         fBlastEffect = FALSE;
         break;
 
-      case TEARGAS_GRENADE:
-      case GL_TEARGAS_GRENADE:
-      case BIG_TEAR_GAS:
+      case Enum225.TEARGAS_GRENADE:
+      case Enum225.GL_TEARGAS_GRENADE:
+      case Enum225.BIG_TEAR_GAS:
 
         fSmokeEffect = TRUE;
-        bSmokeEffectType = TEARGAS_SMOKE_EFFECT;
+        bSmokeEffectType = Enum308.TEARGAS_SMOKE_EFFECT;
         fBlastEffect = FALSE;
         break;
 
-      case SMOKE_GRENADE:
-      case GL_SMOKE_GRENADE:
+      case Enum225.SMOKE_GRENADE:
+      case Enum225.GL_SMOKE_GRENADE:
 
         fSmokeEffect = TRUE;
-        bSmokeEffectType = NORMAL_SMOKE_EFFECT;
+        bSmokeEffectType = Enum308.NORMAL_SMOKE_EFFECT;
         fBlastEffect = FALSE;
         break;
 
-      case STUN_GRENADE:
-      case GL_STUN_GRENADE:
+      case Enum225.STUN_GRENADE:
+      case Enum225.GL_STUN_GRENADE:
         fStunEffect = TRUE;
         break;
 
-      case SMALL_CREATURE_GAS:
-      case LARGE_CREATURE_GAS:
-      case VERY_SMALL_CREATURE_GAS:
+      case Enum225.SMALL_CREATURE_GAS:
+      case Enum225.LARGE_CREATURE_GAS:
+      case Enum225.VERY_SMALL_CREATURE_GAS:
 
         fSmokeEffect = TRUE;
-        bSmokeEffectType = CREATURE_SMOKE_EFFECT;
+        bSmokeEffectType = Enum308.CREATURE_SMOKE_EFFECT;
         fBlastEffect = FALSE;
         break;
     }
@@ -1264,14 +1264,14 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
       ExplosiveDamageGridNo(sGridNo, sStructDmgAmt, uiDist, addressof(fRecompileMovementCosts), FALSE, -1, 0, ubOwner, bLevel);
 
       // ATE: Look for damage to walls ONLY for next two gridnos
-      sNewGridNo = NewGridNo(sGridNo, DirectionInc(NORTH));
+      sNewGridNo = NewGridNo(sGridNo, DirectionInc(Enum245.NORTH));
 
       if (GridNoOnVisibleWorldTile(sNewGridNo)) {
         ExplosiveDamageGridNo(sNewGridNo, sStructDmgAmt, uiDist, addressof(fRecompileMovementCosts), TRUE, -1, 0, ubOwner, bLevel);
       }
 
       // ATE: Look for damage to walls ONLY for next two gridnos
-      sNewGridNo = NewGridNo(sGridNo, DirectionInc(WEST));
+      sNewGridNo = NewGridNo(sGridNo, DirectionInc(Enum245.WEST));
 
       if (GridNoOnVisibleWorldTile(sNewGridNo)) {
         ExplosiveDamageGridNo(sNewGridNo, sStructDmgAmt, uiDist, addressof(fRecompileMovementCosts), TRUE, -1, 0, ubOwner, bLevel);
@@ -1561,7 +1561,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
       if (fTravelCostObs) {
         // ATE: For windows, check to the west and north for a broken window, as movement costs
         // will override there...
-        sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(WEST));
+        sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(Enum245.WEST));
 
         BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, addressof(bStructHeight), addressof(pBlockingStructure), TRUE);
         if (BlockingTemp == BLOCKING_TOPRIGHT_OPEN_WINDOW || BlockingTemp == BLOCKING_TOPLEFT_OPEN_WINDOW) {
@@ -1576,7 +1576,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
       }
 
       if (fTravelCostObs) {
-        sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(NORTH));
+        sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(Enum245.NORTH));
 
         BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, addressof(bStructHeight), addressof(pBlockingStructure), TRUE);
         if (BlockingTemp == BLOCKING_TOPRIGHT_OPEN_WINDOW || BlockingTemp == BLOCKING_TOPLEFT_OPEN_WINDOW) {
@@ -1595,7 +1595,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
       // ATE: explode windows!!!!
       if (Blocking == BLOCKING_TOPLEFT_WINDOW || Blocking == BLOCKING_TOPRIGHT_WINDOW) {
         // Explode!
-        if (ubDir == SOUTH || ubDir == SOUTHEAST || ubDir == SOUTHWEST) {
+        if (ubDir == Enum245.SOUTH || ubDir == Enum245.SOUTHEAST || ubDir == Enum245.SOUTHWEST) {
           fBlowWindowSouth = TRUE;
         }
 
@@ -1606,7 +1606,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
 
       // ATE: For windows, check to the west and north for a broken window, as movement costs
       // will override there...
-      sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(WEST));
+      sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(Enum245.WEST));
 
       BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, addressof(bStructHeight), addressof(pBlockingStructure), TRUE);
       if (pBlockingStructure && pBlockingStructure.value.pDBStructureRef.value.pDBStructure.value.ubDensity <= 15) {
@@ -1619,7 +1619,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
         }
       }
 
-      sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(NORTH));
+      sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(Enum245.NORTH));
       BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, addressof(bStructHeight), addressof(pBlockingStructure), TRUE);
 
       if (pBlockingStructure && pBlockingStructure.value.pDBStructureRef.value.pDBStructure.value.ubDensity <= 15) {
@@ -1697,15 +1697,15 @@ function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: 
   let fSmokeEffect: BOOLEAN = FALSE;
 
   switch (usItem) {
-    case MUSTARD_GRENADE:
-    case TEARGAS_GRENADE:
-    case GL_TEARGAS_GRENADE:
-    case BIG_TEAR_GAS:
-    case SMOKE_GRENADE:
-    case GL_SMOKE_GRENADE:
-    case SMALL_CREATURE_GAS:
-    case LARGE_CREATURE_GAS:
-    case VERY_SMALL_CREATURE_GAS:
+    case Enum225.MUSTARD_GRENADE:
+    case Enum225.TEARGAS_GRENADE:
+    case Enum225.GL_TEARGAS_GRENADE:
+    case Enum225.BIG_TEAR_GAS:
+    case Enum225.SMOKE_GRENADE:
+    case Enum225.GL_SMOKE_GRENADE:
+    case Enum225.SMALL_CREATURE_GAS:
+    case Enum225.LARGE_CREATURE_GAS:
+    case Enum225.VERY_SMALL_CREATURE_GAS:
 
       fSmokeEffect = TRUE;
       break;
@@ -1725,7 +1725,7 @@ function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: 
     fRecompileMovement = TRUE;
   }
 
-  for (ubDir = NORTH; ubDir <= NORTHWEST; ubDir++) {
+  for (ubDir = Enum245.NORTH; ubDir <= Enum245.NORTHWEST; ubDir++) {
     uiTempSpot = sGridNo;
 
     uiTempRange = sRange;
@@ -1865,7 +1865,7 @@ function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: 
   }
 
   if (fSubsequent != BLOOD_SPREAD_EFFECT) {
-    MakeNoise(NOBODY, sGridNo, bLevel, gpWorldLevelData[sGridNo].ubTerrainID, Explosive[Item[usItem].ubClassIndex].ubVolume, NOISE_EXPLOSION);
+    MakeNoise(NOBODY, sGridNo, bLevel, gpWorldLevelData[sGridNo].ubTerrainID, Explosive[Item[usItem].ubClassIndex].ubVolume, Enum236.NOISE_EXPLOSION);
   }
 }
 
@@ -1877,7 +1877,7 @@ function ToggleActionItemsByFrequency(bFrequency: INT8): void {
   for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
     if (gWorldBombs[uiWorldBombIndex].fExists) {
       pObj = addressof(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
-      if (pObj.value.bDetonatorType == BOMB_REMOTE) {
+      if (pObj.value.bDetonatorType == Enum224.BOMB_REMOTE) {
         // Found a remote bomb, so check to see if it has the same frequency
         if (pObj.value.bFrequency == bFrequency) {
           // toggle its active flag
@@ -1900,7 +1900,7 @@ function TogglePressureActionItemsInGridNo(sGridNo: INT16): void {
   for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
     if (gWorldBombs[uiWorldBombIndex].fExists && gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].sGridNo == sGridNo) {
       pObj = addressof(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
-      if (pObj.value.bDetonatorType == BOMB_PRESSURE) {
+      if (pObj.value.bDetonatorType == Enum224.BOMB_PRESSURE) {
         // Found a pressure item
         // toggle its active flag
         if (pObj.value.fFlags & OBJECT_DISABLED_BOMB) {
@@ -1915,7 +1915,7 @@ function TogglePressureActionItemsInGridNo(sGridNo: INT16): void {
 
 function DelayedBillyTriggerToBlockOnExit(): void {
   if (WhoIsThere2(gsTempActionGridNo, 0) == NOBODY) {
-    TriggerNPCRecord(BILLY, 6);
+    TriggerNPCRecord(Enum268.BILLY, 6);
   } else {
     // delay further!
     SetCustomizableTimerCallbackAndDelay(1000, DelayedBillyTriggerToBlockOnExit, TRUE);
@@ -1923,7 +1923,7 @@ function DelayedBillyTriggerToBlockOnExit(): void {
 }
 
 function BillyBlocksDoorCallback(): void {
-  TriggerNPCRecord(BILLY, 6);
+  TriggerNPCRecord(Enum268.BILLY, 6);
 }
 
 function HookerInRoom(ubRoom: UINT8): BOOLEAN {
@@ -1934,7 +1934,7 @@ function HookerInRoom(ubRoom: UINT8): BOOLEAN {
   for (ubLoop = gTacticalStatus.Team[CIV_TEAM].bFirstID; ubLoop <= gTacticalStatus.Team[CIV_TEAM].bLastID; ubLoop++) {
     pSoldier = MercPtrs[ubLoop];
 
-    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife >= OKLIFE && pSoldier.value.bNeutral && pSoldier.value.ubBodyType == MINICIV) {
+    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife >= OKLIFE && pSoldier.value.bNeutral && pSoldier.value.ubBodyType == Enum194.MINICIV) {
       if (InARoom(pSoldier.value.sGridNo, addressof(ubTempRoom)) && ubTempRoom == ubRoom) {
         return TRUE;
       }
@@ -1948,7 +1948,7 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
   let pStructure: Pointer<STRUCTURE>;
 
   switch (pObj.value.bActionValue) {
-    case ACTION_ITEM_OPEN_DOOR:
+    case Enum191.ACTION_ITEM_OPEN_DOOR:
       pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
       if (pStructure) {
         if (pStructure.value.fFlags & STRUCTURE_OPEN) {
@@ -1966,7 +1966,7 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
 // error message here
       }
       break;
-    case ACTION_ITEM_CLOSE_DOOR:
+    case Enum191.ACTION_ITEM_CLOSE_DOOR:
       pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
       if (pStructure) {
         if (pStructure.value.fFlags & STRUCTURE_OPEN) {
@@ -1984,7 +1984,7 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
 // error message here
       }
       break;
-    case ACTION_ITEM_TOGGLE_DOOR:
+    case Enum191.ACTION_ITEM_TOGGLE_DOOR:
       pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
       if (pStructure) {
         if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
@@ -1997,7 +1997,7 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
 // error message here
       }
       break;
-    case ACTION_ITEM_UNLOCK_DOOR: {
+    case Enum191.ACTION_ITEM_UNLOCK_DOOR: {
       let pDoor: Pointer<DOOR>;
 
       pDoor = FindDoorInfoAtGridNo(sGridNo);
@@ -2005,7 +2005,7 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
         pDoor.value.fLocked = FALSE;
       }
     } break;
-    case ACTION_ITEM_TOGGLE_LOCK: {
+    case Enum191.ACTION_ITEM_TOGGLE_LOCK: {
       let pDoor: Pointer<DOOR>;
 
       pDoor = FindDoorInfoAtGridNo(sGridNo);
@@ -2017,39 +2017,39 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
         }
       }
     } break;
-    case ACTION_ITEM_UNTRAP_DOOR: {
+    case Enum191.ACTION_ITEM_UNTRAP_DOOR: {
       let pDoor: Pointer<DOOR>;
 
       pDoor = FindDoorInfoAtGridNo(sGridNo);
       if (pDoor) {
         pDoor.value.ubTrapLevel = 0;
-        pDoor.value.ubTrapID = NO_TRAP;
+        pDoor.value.ubTrapID = Enum227.NO_TRAP;
       }
     } break;
-    case ACTION_ITEM_SMALL_PIT:
+    case Enum191.ACTION_ITEM_SMALL_PIT:
       Add3X3Pit(sGridNo);
       SearchForOtherMembersWithinPitRadiusAndMakeThemFall(sGridNo, 1);
       break;
-    case ACTION_ITEM_LARGE_PIT:
+    case Enum191.ACTION_ITEM_LARGE_PIT:
       Add5X5Pit(sGridNo);
       SearchForOtherMembersWithinPitRadiusAndMakeThemFall(sGridNo, 2);
       break;
-    case ACTION_ITEM_TOGGLE_ACTION1:
+    case Enum191.ACTION_ITEM_TOGGLE_ACTION1:
       ToggleActionItemsByFrequency(FIRST_MAP_PLACED_FREQUENCY + 1);
       break;
-    case ACTION_ITEM_TOGGLE_ACTION2:
+    case Enum191.ACTION_ITEM_TOGGLE_ACTION2:
       ToggleActionItemsByFrequency(FIRST_MAP_PLACED_FREQUENCY + 2);
       break;
-    case ACTION_ITEM_TOGGLE_ACTION3:
+    case Enum191.ACTION_ITEM_TOGGLE_ACTION3:
       ToggleActionItemsByFrequency(FIRST_MAP_PLACED_FREQUENCY + 3);
       break;
-    case ACTION_ITEM_TOGGLE_ACTION4:
+    case Enum191.ACTION_ITEM_TOGGLE_ACTION4:
       ToggleActionItemsByFrequency(FIRST_MAP_PLACED_FREQUENCY + 4);
       break;
-    case ACTION_ITEM_TOGGLE_PRESSURE_ITEMS:
+    case Enum191.ACTION_ITEM_TOGGLE_PRESSURE_ITEMS:
       TogglePressureActionItemsInGridNo(sGridNo);
       break;
-    case ACTION_ITEM_ENTER_BROTHEL:
+    case Enum191.ACTION_ITEM_ENTER_BROTHEL:
       // JA2Gold: Disable brothel tracking
       /*
       if ( ! (gTacticalStatus.uiFlags & INCOMBAT) )
@@ -2124,7 +2124,7 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
       }
       */
       break;
-    case ACTION_ITEM_EXIT_BROTHEL:
+    case Enum191.ACTION_ITEM_EXIT_BROTHEL:
       // JA2Gold: Disable brothel tracking
       /*
       if ( ! (gTacticalStatus.uiFlags & INCOMBAT) )
@@ -2147,11 +2147,11 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
       }
       */
       break;
-    case ACTION_ITEM_KINGPIN_ALARM:
-      PlayJA2Sample(KLAXON_ALARM, RATE_11025, SoundVolume(MIDVOLUME, sGridNo), 5, SoundDir(sGridNo));
+    case Enum191.ACTION_ITEM_KINGPIN_ALARM:
+      PlayJA2Sample(Enum330.KLAXON_ALARM, RATE_11025, SoundVolume(MIDVOLUME, sGridNo), 5, SoundDir(sGridNo));
       CallAvailableKingpinMenTo(sGridNo);
 
-      gTacticalStatus.fCivGroupHostile[KINGPIN_CIV_GROUP] = CIV_GROUP_HOSTILE;
+      gTacticalStatus.fCivGroupHostile[Enum246.KINGPIN_CIV_GROUP] = CIV_GROUP_HOSTILE;
 
       {
         let ubID: UINT8;
@@ -2159,7 +2159,7 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
         let fEnterCombat: BOOLEAN = FALSE;
 
         for (ubID = gTacticalStatus.Team[CIV_TEAM].bFirstID; ubID <= gTacticalStatus.Team[CIV_TEAM].bLastID; ubID++) {
-          if (MercPtrs[ubID].value.bActive && MercPtrs[ubID].value.bInSector && MercPtrs[ubID].value.ubCivilianGroup == KINGPIN_CIV_GROUP) {
+          if (MercPtrs[ubID].value.bActive && MercPtrs[ubID].value.bInSector && MercPtrs[ubID].value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP) {
             for (ubID2 = gTacticalStatus.Team[gbPlayerNum].bFirstID; ubID2 <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubID2++) {
               if (MercPtrs[ubID].value.bOppList[ubID2] == SEEN_CURRENTLY) {
                 MakeCivHostile(MercPtrs[ubID], 2);
@@ -2177,7 +2177,7 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
       // now zap this object so it won't activate again
       pObj.value.fFlags &= (~OBJECT_DISABLED_BOMB);
       break;
-    case ACTION_ITEM_SEX:
+    case Enum191.ACTION_ITEM_SEX:
       // JA2Gold: Disable brothel sex
       /*
       if ( ! (gTacticalStatus.uiFlags & INCOMBAT) )
@@ -2254,26 +2254,26 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
       }
       */
       break;
-    case ACTION_ITEM_REVEAL_ROOM: {
+    case Enum191.ACTION_ITEM_REVEAL_ROOM: {
       let ubRoom: UINT8;
       if (InAHiddenRoom(sGridNo, addressof(ubRoom))) {
         RemoveRoomRoof(sGridNo, ubRoom, NULL);
       }
     } break;
-    case ACTION_ITEM_LOCAL_ALARM:
-      MakeNoise(NOBODY, sGridNo, 0, gpWorldLevelData[sGridNo].ubTerrainID, 30, NOISE_SILENT_ALARM);
+    case Enum191.ACTION_ITEM_LOCAL_ALARM:
+      MakeNoise(NOBODY, sGridNo, 0, gpWorldLevelData[sGridNo].ubTerrainID, 30, Enum236.NOISE_SILENT_ALARM);
       break;
-    case ACTION_ITEM_GLOBAL_ALARM:
+    case Enum191.ACTION_ITEM_GLOBAL_ALARM:
       CallAvailableEnemiesTo(sGridNo);
       break;
-    case ACTION_ITEM_BLOODCAT_ALARM:
+    case Enum191.ACTION_ITEM_BLOODCAT_ALARM:
       CallAvailableTeamEnemiesTo(sGridNo, CREATURE_TEAM);
       break;
-    case ACTION_ITEM_KLAXON:
-      PlayJA2Sample(KLAXON_ALARM, RATE_11025, SoundVolume(MIDVOLUME, sGridNo), 5, SoundDir(sGridNo));
+    case Enum191.ACTION_ITEM_KLAXON:
+      PlayJA2Sample(Enum330.KLAXON_ALARM, RATE_11025, SoundVolume(MIDVOLUME, sGridNo), 5, SoundDir(sGridNo));
       break;
-    case ACTION_ITEM_MUSEUM_ALARM:
-      PlayJA2Sample(KLAXON_ALARM, RATE_11025, SoundVolume(MIDVOLUME, sGridNo), 5, SoundDir(sGridNo));
+    case Enum191.ACTION_ITEM_MUSEUM_ALARM:
+      PlayJA2Sample(Enum330.KLAXON_ALARM, RATE_11025, SoundVolume(MIDVOLUME, sGridNo), 5, SoundDir(sGridNo));
       CallEldinTo(sGridNo);
       break;
     default:
@@ -2292,7 +2292,7 @@ function AddBombToQueue(uiWorldBombIndex: UINT32, uiTimeStamp: UINT32): void {
   gExplosionQueue[gubElementsOnExplosionQueue].fExists = TRUE;
   if (!gfExplosionQueueActive) {
     // lock UI
-    guiPendingOverrideEvent = LU_BEGINUILOCK;
+    guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
     // disable sight
     gTacticalStatus.uiFlags |= DISALLOW_SIGHT;
   }
@@ -2323,14 +2323,14 @@ function HandleExplosionQueue(): void {
       sGridNo = gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].sGridNo;
       ubLevel = gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].ubLevel;
 
-      if (pObj.value.usItem == ACTION_ITEM && pObj.value.bActionValue != ACTION_ITEM_BLOW_UP) {
+      if (pObj.value.usItem == Enum225.ACTION_ITEM && pObj.value.bActionValue != Enum191.ACTION_ITEM_BLOW_UP) {
         PerformItemAction(sGridNo, pObj);
-      } else if (pObj.value.usBombItem == TRIP_KLAXON) {
-        PlayJA2Sample(KLAXON_ALARM, RATE_11025, SoundVolume(MIDVOLUME, sGridNo), 5, SoundDir(sGridNo));
+      } else if (pObj.value.usBombItem == Enum225.TRIP_KLAXON) {
+        PlayJA2Sample(Enum330.KLAXON_ALARM, RATE_11025, SoundVolume(MIDVOLUME, sGridNo), 5, SoundDir(sGridNo));
         CallAvailableEnemiesTo(sGridNo);
         // RemoveItemFromPool( sGridNo, gWorldBombs[ uiWorldBombIndex ].iItemIndex, 0 );
-      } else if (pObj.value.usBombItem == TRIP_FLARE) {
-        NewLightEffect(sGridNo, LIGHT_FLARE_MARK_1);
+      } else if (pObj.value.usBombItem == Enum225.TRIP_FLARE) {
+        NewLightEffect(sGridNo, Enum305.LIGHT_FLARE_MARK_1);
         RemoveItemFromPool(sGridNo, gWorldBombs[uiWorldBombIndex].iItemIndex, ubLevel);
       } else {
         gfExplosionQueueMayHaveChangedSight = TRUE;
@@ -2401,7 +2401,7 @@ function HandleExplosionQueue(): void {
     // UnSetUIBusy( (UINT8)gusSelectedSoldier );
     if (!(gTacticalStatus.uiFlags & INCOMBAT) || gTacticalStatus.ubCurrentTeam == gbPlayerNum) {
       // don't end UI lock when it's a computer turn
-      guiPendingOverrideEvent = LU_ENDUILOCK;
+      guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
     }
 
     gfExplosionQueueActive = FALSE;
@@ -2419,7 +2419,7 @@ function DecayBombTimers(): void {
   for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
     if (gWorldBombs[uiWorldBombIndex].fExists) {
       pObj = addressof(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
-      if (pObj.value.bDetonatorType == BOMB_TIMED && !(pObj.value.fFlags & OBJECT_DISABLED_BOMB)) {
+      if (pObj.value.bDetonatorType == Enum224.BOMB_TIMED && !(pObj.value.fFlags & OBJECT_DISABLED_BOMB)) {
         // Found a timed bomb, so decay its delay value and see if it goes off
         pObj.value.bDelay--;
         if (pObj.value.bDelay == 0) {
@@ -2432,7 +2432,7 @@ function DecayBombTimers(): void {
             gubPersonToSetOffExplosions = NOBODY;
           }
 
-          if (pObj.value.usItem != ACTION_ITEM || pObj.value.bActionValue == ACTION_ITEM_BLOW_UP) {
+          if (pObj.value.usItem != Enum225.ACTION_ITEM || pObj.value.bActionValue == Enum191.ACTION_ITEM_BLOW_UP) {
             uiTimeStamp += BOMB_QUEUE_DELAY;
           }
         }
@@ -2452,14 +2452,14 @@ function SetOffBombsByFrequency(ubID: UINT8, bFrequency: INT8): void {
   for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
     if (gWorldBombs[uiWorldBombIndex].fExists) {
       pObj = addressof(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
-      if (pObj.value.bDetonatorType == BOMB_REMOTE && !(pObj.value.fFlags & OBJECT_DISABLED_BOMB)) {
+      if (pObj.value.bDetonatorType == Enum224.BOMB_REMOTE && !(pObj.value.fFlags & OBJECT_DISABLED_BOMB)) {
         // Found a remote bomb, so check to see if it has the same frequency
         if (pObj.value.bFrequency == bFrequency) {
           gubPersonToSetOffExplosions = ubID;
 
           // put this bomb on the queue
           AddBombToQueue(uiWorldBombIndex, uiTimeStamp);
-          if (pObj.value.usItem != ACTION_ITEM || pObj.value.bActionValue == ACTION_ITEM_BLOW_UP) {
+          if (pObj.value.usItem != Enum225.ACTION_ITEM || pObj.value.bActionValue == Enum191.ACTION_ITEM_BLOW_UP) {
             uiTimeStamp += BOMB_QUEUE_DELAY;
           }
         }
@@ -2512,11 +2512,11 @@ function SetOffBombsInGridNo(ubID: UINT8, sGridNo: INT16, fAllBombs: BOOLEAN, bL
     if (gWorldBombs[uiWorldBombIndex].fExists && gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].sGridNo == sGridNo && gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].ubLevel == bLevel) {
       pObj = addressof(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
       if (!(pObj.value.fFlags & OBJECT_DISABLED_BOMB)) {
-        if (fAllBombs || pObj.value.bDetonatorType == BOMB_PRESSURE) {
+        if (fAllBombs || pObj.value.bDetonatorType == Enum224.BOMB_PRESSURE) {
           if (!fAllBombs && MercPtrs[ubID].value.bTeam != gbPlayerNum) {
             // ignore this unless it is a mine, etc which would have to have been placed by the
             // player, seeing as how the others are all marked as known to the AI.
-            if (!(pObj.value.usItem == MINE || pObj.value.usItem == TRIP_FLARE || pObj.value.usItem == TRIP_KLAXON)) {
+            if (!(pObj.value.usItem == Enum225.MINE || pObj.value.usItem == Enum225.TRIP_FLARE || pObj.value.usItem == Enum225.TRIP_KLAXON)) {
               continue;
             }
           }
@@ -2526,7 +2526,7 @@ function SetOffBombsInGridNo(ubID: UINT8, sGridNo: INT16, fAllBombs: BOOLEAN, bL
             continue;
           }
 
-          if (pObj.value.usItem == SWITCH) {
+          if (pObj.value.usItem == Enum225.SWITCH) {
             // send out a signal to detonate other bombs, rather than this which
             // isn't a bomb but a trigger
             SetOffBombsByFrequency(ubID, pObj.value.bFrequency);
@@ -2535,7 +2535,7 @@ function SetOffBombsInGridNo(ubID: UINT8, sGridNo: INT16, fAllBombs: BOOLEAN, bL
 
             // put this bomb on the queue
             AddBombToQueue(uiWorldBombIndex, uiTimeStamp);
-            if (pObj.value.usItem != ACTION_ITEM || pObj.value.bActionValue == ACTION_ITEM_BLOW_UP) {
+            if (pObj.value.usItem != Enum225.ACTION_ITEM || pObj.value.bActionValue == Enum191.ACTION_ITEM_BLOW_UP) {
               uiTimeStamp += BOMB_QUEUE_DELAY;
             }
 
@@ -2559,7 +2559,7 @@ function ActivateSwitchInGridNo(ubID: UINT8, sGridNo: INT16): void {
     if (gWorldBombs[uiWorldBombIndex].fExists && gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].sGridNo == sGridNo) {
       pObj = addressof(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
 
-      if (pObj.value.usItem == SWITCH && (!(pObj.value.fFlags & OBJECT_DISABLED_BOMB)) && pObj.value.bDetonatorType == BOMB_SWITCH) {
+      if (pObj.value.usItem == Enum225.SWITCH && (!(pObj.value.fFlags & OBJECT_DISABLED_BOMB)) && pObj.value.bDetonatorType == Enum224.BOMB_SWITCH) {
         // send out a signal to detonate other bombs, rather than this which
         // isn't a bomb but a trigger
 
@@ -2750,7 +2750,7 @@ function UpdateSAMDoneRepair(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16):
     // Are we i nthe same sector...
     if (pSamList[cnt] == sSectorNo) {
       // get graphic.......
-      GetTileIndexFromTypeSubIndex(EIGHTISTRUCT, (gbSAMGraphicList[cnt]), addressof(usGoodGraphic));
+      GetTileIndexFromTypeSubIndex(Enum313.EIGHTISTRUCT, (gbSAMGraphicList[cnt]), addressof(usGoodGraphic));
 
       // Damaged one ( current ) is 2 less...
       usDamagedGraphic = usGoodGraphic - 2;
@@ -2824,7 +2824,7 @@ function FindActiveTimedBomb(): INT32 {
   for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
     if (gWorldBombs[uiWorldBombIndex].fExists) {
       pObj = addressof(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
-      if (pObj.value.bDetonatorType == BOMB_TIMED && !(pObj.value.fFlags & OBJECT_DISABLED_BOMB)) {
+      if (pObj.value.bDetonatorType == Enum224.BOMB_TIMED && !(pObj.value.fFlags & OBJECT_DISABLED_BOMB)) {
         return gWorldBombs[uiWorldBombIndex].iItemIndex;
       }
     }

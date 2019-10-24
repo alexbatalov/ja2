@@ -100,7 +100,7 @@ function MapUtilScreenHandle(): UINT32 {
     vs_desc.ubBitDepth = ubBitDepth;
 
     if (AddVideoSurface(addressof(vs_desc), addressof(giMiniMap)) == FALSE) {
-      return ERROR_SCREEN;
+      return Enum26.ERROR_SCREEN;
     }
 
     // USING BRET's STUFF FOR LOOPING FILES/CREATING LIST, hence AddToFDlgList.....
@@ -127,7 +127,7 @@ function MapUtilScreenHandle(): UINT32 {
     vs_desc.ubBitDepth = 8;
 
     if (AddVideoSurface(addressof(vs_desc), addressof(gi8BitMiniMap)) == FALSE) {
-      return ERROR_SCREEN;
+      return Enum26.ERROR_SCREEN;
     }
     GetVideoSurface(addressof(ghvSurface), gi8BitMiniMap);
   }
@@ -135,14 +135,14 @@ function MapUtilScreenHandle(): UINT32 {
   // OK, we are here, now loop through files
   if (sCurFile == sFiles || FListNode == NULL) {
     gfProgramIsRunning = FALSE;
-    return MAPUTILITY_SCREEN;
+    return Enum26.MAPUTILITY_SCREEN;
   }
 
   sprintf(zFilename, "%s", FListNode.value.FileInfo.zFileName);
 
   // OK, load maps and do overhead shrinkage of them...
   if (!LoadWorld(zFilename)) {
-    return ERROR_SCREEN;
+    return Enum26.ERROR_SCREEN;
   }
 
   // Render small map
@@ -161,10 +161,10 @@ function MapUtilScreenHandle(): UINT32 {
 
   // Adjust if we are using a restricted map...
   if (gMapInformation.ubRestrictedScrollID != 0) {
-    CalculateRestrictedMapCoords(NORTH, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sTop), 640, 320);
-    CalculateRestrictedMapCoords(SOUTH, addressof(sX1), addressof(sBottom), addressof(sX2), addressof(sY2), 640, 320);
-    CalculateRestrictedMapCoords(WEST, addressof(sX1), addressof(sY1), addressof(sLeft), addressof(sY2), 640, 320);
-    CalculateRestrictedMapCoords(EAST, addressof(sRight), addressof(sY1), addressof(sX2), addressof(sY2), 640, 320);
+    CalculateRestrictedMapCoords(Enum245.NORTH, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sTop), 640, 320);
+    CalculateRestrictedMapCoords(Enum245.SOUTH, addressof(sX1), addressof(sBottom), addressof(sX2), addressof(sY2), 640, 320);
+    CalculateRestrictedMapCoords(Enum245.WEST, addressof(sX1), addressof(sY1), addressof(sLeft), addressof(sY2), 640, 320);
+    CalculateRestrictedMapCoords(Enum245.EAST, addressof(sRight), addressof(sY1), addressof(sX2), addressof(sY2), 640, 320);
 
     gdXStep = (sRight - sLeft) / 88;
     gdYStep = (sBottom - sTop) / 44;
@@ -303,7 +303,7 @@ function MapUtilScreenHandle(): UINT32 {
   FListNode = FListNode.value.pNext;
   sCurFile++;
 
-  return MAPUTILITY_SCREEN;
+  return Enum26.MAPUTILITY_SCREEN;
 }
 
 function MapUtilScreenShutdown(): UINT32 {

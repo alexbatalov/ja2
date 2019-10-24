@@ -518,7 +518,7 @@ function SetupStoreInventory(pInventoryArray: Pointer<STORE_INVENTORY>, fUsed: B
   // loop through all items BR can stock to init a starting quantity on hand
   for (i = 0; i < LaptopSaveInfo.usInventoryListLength[fUsed]; i++) {
     usItemIndex = pInventoryArray[i].usItemIndex;
-    Assert(usItemIndex < MAXITEMS);
+    Assert(usItemIndex < Enum225.MAXITEMS);
 
     ubNumBought = DetermineInitialInvItems(-1, usItemIndex, StoreInventory[usItemIndex][fUsed], fUsed);
     if (ubNumBought > 0) {
@@ -550,7 +550,7 @@ function DoesGunOfSameClassExistInInventory(ubItemIndex: UINT8, ubDealerID: UINT
     return FALSE;
 
   // go through all of the guns
-  for (i = 0; i < MAX_WEAPONS; i++) {
+  for (i = 0; i < Enum225.MAX_WEAPONS; i++) {
     // if it's the class we are looking for
     if (Weapon[i].ubWeaponClass == ubItemIndex) {
       // and it's a sufficiently cool gun to be counted as good
@@ -571,12 +571,12 @@ function DoesGunOfSameClassExistInInventory(ubItemIndex: UINT8, ubDealerID: UINT
 ////////////////////////////////////////////////////
 
 function GetPtrToStoreInventory(ubDealerID: UINT8): Pointer<STORE_INVENTORY> {
-  if (ubDealerID >= BOBBY_RAY_LISTS)
+  if (ubDealerID >= Enum112.BOBBY_RAY_LISTS)
     return NULL;
 
-  if (ubDealerID == BOBBY_RAY_NEW)
+  if (ubDealerID == Enum112.BOBBY_RAY_NEW)
     return LaptopSaveInfo.BobbyRayInventory;
-  else if (ubDealerID == BOBBY_RAY_USED)
+  else if (ubDealerID == Enum112.BOBBY_RAY_USED)
     return LaptopSaveInfo.BobbyRayUsedInventory;
   else
     Assert(0);

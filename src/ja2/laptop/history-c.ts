@@ -77,13 +77,13 @@ function SetHistoryFact(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT32, sSec
   ClearHistoryList();
 
   // process the actual data
-  if (ubCode == HISTORY_QUEST_FINISHED) {
+  if (ubCode == Enum83.HISTORY_QUEST_FINISHED) {
     ubColor = 0;
   } else {
     ubColor = 1;
   }
   uiId = ProcessAndEnterAHistoryRecord(ubCode, uiDate, ubSecondCode, sSectorX, sSectorY, 0, ubColor);
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[MSG_HISTORY_UPDATED]);
+  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[Enum333.MSG_HISTORY_UPDATED]);
 
   // history list head
   pHistory = pHistoryListHead;
@@ -114,7 +114,7 @@ function AddHistoryToPlayersLog(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT
 
   // process the actual data
   uiId = ProcessAndEnterAHistoryRecord(ubCode, uiDate, ubSecondCode, sSectorX, sSectorY, 0, 0);
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[MSG_HISTORY_UPDATED]);
+  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[Enum333.MSG_HISTORY_UPDATED]);
 
   // history list head
   pHistory = pHistoryListHead;
@@ -141,7 +141,7 @@ function GameInitHistory(): void {
     FileDelete(HISTORY_DATA_FILE);
   }
 
-  AddHistoryToPlayersLog(HISTORY_ACCEPTED_ASSIGNMENT_FROM_ENRICO, 0, GetWorldTotalMin(), -1, -1);
+  AddHistoryToPlayersLog(Enum83.HISTORY_ACCEPTED_ASSIGNMENT_FROM_ENRICO, 0, GetWorldTotalMin(), -1, -1);
 }
 
 function EnterHistory(): void {
@@ -308,16 +308,16 @@ function DrawHistoryTitleText(): void {
 
 function CreateHistoryButtons(): void {
   // the prev page button
-  giHistoryButtonImage[PREV_PAGE_BUTTON] = LoadButtonImage("LAPTOP\\arrows.sti", -1, 0, -1, 1, -1);
-  giHistoryButton[PREV_PAGE_BUTTON] = QuickCreateButton(giHistoryButtonImage[PREV_PAGE_BUTTON], PREV_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnHistoryDisplayPrevPageCallBack);
+  giHistoryButtonImage[Enum82.PREV_PAGE_BUTTON] = LoadButtonImage("LAPTOP\\arrows.sti", -1, 0, -1, 1, -1);
+  giHistoryButton[Enum82.PREV_PAGE_BUTTON] = QuickCreateButton(giHistoryButtonImage[Enum82.PREV_PAGE_BUTTON], PREV_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnHistoryDisplayPrevPageCallBack);
 
   // the next page button
-  giHistoryButtonImage[NEXT_PAGE_BUTTON] = LoadButtonImage("LAPTOP\\arrows.sti", -1, 6, -1, 7, -1);
-  giHistoryButton[NEXT_PAGE_BUTTON] = QuickCreateButton(giHistoryButtonImage[NEXT_PAGE_BUTTON], NEXT_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnHistoryDisplayNextPageCallBack);
+  giHistoryButtonImage[Enum82.NEXT_PAGE_BUTTON] = LoadButtonImage("LAPTOP\\arrows.sti", -1, 6, -1, 7, -1);
+  giHistoryButton[Enum82.NEXT_PAGE_BUTTON] = QuickCreateButton(giHistoryButtonImage[Enum82.NEXT_PAGE_BUTTON], NEXT_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnHistoryDisplayNextPageCallBack);
 
   // set buttons
-  SetButtonCursor(giHistoryButton[0], CURSOR_LAPTOP_SCREEN);
-  SetButtonCursor(giHistoryButton[1], CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(giHistoryButton[0], Enum317.CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(giHistoryButton[1], Enum317.CURSOR_LAPTOP_SCREEN);
 
   return;
 }
@@ -827,157 +827,157 @@ function ProcessHistoryTransactionString(pString: STR16, pHistory: HistoryUnitPt
   let sString: CHAR16[] /* [128] */;
 
   switch (pHistory.value.ubCode) {
-    case HISTORY_ENTERED_HISTORY_MODE:
-      swprintf(pString, pHistoryStrings[HISTORY_ENTERED_HISTORY_MODE]);
+    case Enum83.HISTORY_ENTERED_HISTORY_MODE:
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_ENTERED_HISTORY_MODE]);
       break;
 
-    case HISTORY_HIRED_MERC_FROM_AIM:
-      swprintf(pString, pHistoryStrings[HISTORY_HIRED_MERC_FROM_AIM], gMercProfiles[pHistory.value.ubSecondCode].zName);
+    case Enum83.HISTORY_HIRED_MERC_FROM_AIM:
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_HIRED_MERC_FROM_AIM], gMercProfiles[pHistory.value.ubSecondCode].zName);
       break;
 
-    case HISTORY_MERC_KILLED:
+    case Enum83.HISTORY_MERC_KILLED:
       if (pHistory.value.ubSecondCode != NO_PROFILE)
-        swprintf(pString, pHistoryStrings[HISTORY_MERC_KILLED], gMercProfiles[pHistory.value.ubSecondCode].zName);
+        swprintf(pString, pHistoryStrings[Enum83.HISTORY_MERC_KILLED], gMercProfiles[pHistory.value.ubSecondCode].zName);
       break;
 
-    case HISTORY_HIRED_MERC_FROM_MERC:
-      swprintf(pString, pHistoryStrings[HISTORY_HIRED_MERC_FROM_MERC], gMercProfiles[pHistory.value.ubSecondCode].zName);
+    case Enum83.HISTORY_HIRED_MERC_FROM_MERC:
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_HIRED_MERC_FROM_MERC], gMercProfiles[pHistory.value.ubSecondCode].zName);
       break;
 
-    case HISTORY_SETTLED_ACCOUNTS_AT_MERC:
-      swprintf(pString, pHistoryStrings[HISTORY_SETTLED_ACCOUNTS_AT_MERC]);
+    case Enum83.HISTORY_SETTLED_ACCOUNTS_AT_MERC:
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_SETTLED_ACCOUNTS_AT_MERC]);
       break;
-    case HISTORY_ACCEPTED_ASSIGNMENT_FROM_ENRICO:
-      swprintf(pString, pHistoryStrings[HISTORY_ACCEPTED_ASSIGNMENT_FROM_ENRICO]);
+    case Enum83.HISTORY_ACCEPTED_ASSIGNMENT_FROM_ENRICO:
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_ACCEPTED_ASSIGNMENT_FROM_ENRICO]);
       break;
-    case (HISTORY_CHARACTER_GENERATED):
-      swprintf(pString, pHistoryStrings[HISTORY_CHARACTER_GENERATED]);
+    case (Enum83.HISTORY_CHARACTER_GENERATED):
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_CHARACTER_GENERATED]);
       break;
-    case (HISTORY_PURCHASED_INSURANCE):
-      swprintf(pString, pHistoryStrings[HISTORY_PURCHASED_INSURANCE], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+    case (Enum83.HISTORY_PURCHASED_INSURANCE):
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_PURCHASED_INSURANCE], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
-    case (HISTORY_CANCELLED_INSURANCE):
-      swprintf(pString, pHistoryStrings[HISTORY_CANCELLED_INSURANCE], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+    case (Enum83.HISTORY_CANCELLED_INSURANCE):
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_CANCELLED_INSURANCE], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
-    case (HISTORY_INSURANCE_CLAIM_PAYOUT):
-      swprintf(pString, pHistoryStrings[HISTORY_INSURANCE_CLAIM_PAYOUT], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
-      break;
-
-    case HISTORY_EXTENDED_CONTRACT_1_DAY:
-      swprintf(pString, pHistoryStrings[HISTORY_EXTENDED_CONTRACT_1_DAY], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+    case (Enum83.HISTORY_INSURANCE_CLAIM_PAYOUT):
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_INSURANCE_CLAIM_PAYOUT], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
-    case HISTORY_EXTENDED_CONTRACT_1_WEEK:
-      swprintf(pString, pHistoryStrings[HISTORY_EXTENDED_CONTRACT_1_WEEK], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+    case Enum83.HISTORY_EXTENDED_CONTRACT_1_DAY:
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_EXTENDED_CONTRACT_1_DAY], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
-    case HISTORY_EXTENDED_CONTRACT_2_WEEK:
-      swprintf(pString, pHistoryStrings[HISTORY_EXTENDED_CONTRACT_2_WEEK], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+    case Enum83.HISTORY_EXTENDED_CONTRACT_1_WEEK:
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_EXTENDED_CONTRACT_1_WEEK], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
-    case (HISTORY_MERC_FIRED):
-      swprintf(pString, pHistoryStrings[HISTORY_MERC_FIRED], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+    case Enum83.HISTORY_EXTENDED_CONTRACT_2_WEEK:
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_EXTENDED_CONTRACT_2_WEEK], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
-    case (HISTORY_MERC_QUIT):
-      swprintf(pString, pHistoryStrings[HISTORY_MERC_QUIT], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+    case (Enum83.HISTORY_MERC_FIRED):
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_MERC_FIRED], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
-    case (HISTORY_QUEST_STARTED):
+    case (Enum83.HISTORY_MERC_QUIT):
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_MERC_QUIT], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      break;
+
+    case (Enum83.HISTORY_QUEST_STARTED):
       GetQuestStartedString(pHistory.value.ubSecondCode, sString);
       swprintf(pString, sString);
 
       break;
-    case (HISTORY_QUEST_FINISHED):
+    case (Enum83.HISTORY_QUEST_FINISHED):
       GetQuestEndedString(pHistory.value.ubSecondCode, sString);
       swprintf(pString, sString);
 
       break;
-    case (HISTORY_TALKED_TO_MINER):
-      swprintf(pString, pHistoryStrings[HISTORY_TALKED_TO_MINER], pTownNames[pHistory.value.ubSecondCode]);
+    case (Enum83.HISTORY_TALKED_TO_MINER):
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_TALKED_TO_MINER], pTownNames[pHistory.value.ubSecondCode]);
       break;
-    case (HISTORY_LIBERATED_TOWN):
-      swprintf(pString, pHistoryStrings[HISTORY_LIBERATED_TOWN], pTownNames[pHistory.value.ubSecondCode]);
+    case (Enum83.HISTORY_LIBERATED_TOWN):
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_LIBERATED_TOWN], pTownNames[pHistory.value.ubSecondCode]);
       break;
-    case (HISTORY_CHEAT_ENABLED):
-      swprintf(pString, pHistoryStrings[HISTORY_CHEAT_ENABLED]);
+    case (Enum83.HISTORY_CHEAT_ENABLED):
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_CHEAT_ENABLED]);
       break;
-    case HISTORY_TALKED_TO_FATHER_WALKER:
-      swprintf(pString, pHistoryStrings[HISTORY_TALKED_TO_FATHER_WALKER]);
+    case Enum83.HISTORY_TALKED_TO_FATHER_WALKER:
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_TALKED_TO_FATHER_WALKER]);
       break;
-    case HISTORY_MERC_MARRIED_OFF:
-      swprintf(pString, pHistoryStrings[HISTORY_MERC_MARRIED_OFF], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+    case Enum83.HISTORY_MERC_MARRIED_OFF:
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_MERC_MARRIED_OFF], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
-    case HISTORY_MERC_CONTRACT_EXPIRED:
-      swprintf(pString, pHistoryStrings[HISTORY_MERC_CONTRACT_EXPIRED], gMercProfiles[pHistory.value.ubSecondCode].zName);
+    case Enum83.HISTORY_MERC_CONTRACT_EXPIRED:
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_MERC_CONTRACT_EXPIRED], gMercProfiles[pHistory.value.ubSecondCode].zName);
       break;
-    case HISTORY_RPC_JOINED_TEAM:
-      swprintf(pString, pHistoryStrings[HISTORY_RPC_JOINED_TEAM], gMercProfiles[pHistory.value.ubSecondCode].zName);
+    case Enum83.HISTORY_RPC_JOINED_TEAM:
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_RPC_JOINED_TEAM], gMercProfiles[pHistory.value.ubSecondCode].zName);
       break;
-    case HISTORY_ENRICO_COMPLAINED:
-      swprintf(pString, pHistoryStrings[HISTORY_ENRICO_COMPLAINED]);
+    case Enum83.HISTORY_ENRICO_COMPLAINED:
+      swprintf(pString, pHistoryStrings[Enum83.HISTORY_ENRICO_COMPLAINED]);
       break;
-    case HISTORY_MINE_RUNNING_OUT:
-    case HISTORY_MINE_RAN_OUT:
-    case HISTORY_MINE_SHUTDOWN:
-    case HISTORY_MINE_REOPENED:
+    case Enum83.HISTORY_MINE_RUNNING_OUT:
+    case Enum83.HISTORY_MINE_RAN_OUT:
+    case Enum83.HISTORY_MINE_SHUTDOWN:
+    case Enum83.HISTORY_MINE_REOPENED:
       // all the same format
       swprintf(pString, pHistoryStrings[pHistory.value.ubCode], pTownNames[pHistory.value.ubSecondCode]);
       break;
-    case HISTORY_LOST_BOXING:
-    case HISTORY_WON_BOXING:
-    case HISTORY_DISQUALIFIED_BOXING:
-    case HISTORY_NPC_KILLED:
-    case HISTORY_MERC_KILLED_CHARACTER:
+    case Enum83.HISTORY_LOST_BOXING:
+    case Enum83.HISTORY_WON_BOXING:
+    case Enum83.HISTORY_DISQUALIFIED_BOXING:
+    case Enum83.HISTORY_NPC_KILLED:
+    case Enum83.HISTORY_MERC_KILLED_CHARACTER:
       swprintf(pString, pHistoryStrings[pHistory.value.ubCode], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
       break;
 
     // ALL SIMPLE HISTORY LOG MSGS, NO PARAMS
-    case HISTORY_FOUND_MONEY:
-    case HISTORY_ASSASSIN:
-    case HISTORY_DISCOVERED_TIXA:
-    case HISTORY_DISCOVERED_ORTA:
-    case HISTORY_GOT_ROCKET_RIFLES:
-    case HISTORY_DEIDRANNA_DEAD_BODIES:
-    case HISTORY_BOXING_MATCHES:
-    case HISTORY_SOMETHING_IN_MINES:
-    case HISTORY_DEVIN:
-    case HISTORY_MIKE:
-    case HISTORY_TONY:
-    case HISTORY_KROTT:
-    case HISTORY_KYLE:
-    case HISTORY_MADLAB:
-    case HISTORY_GABBY:
-    case HISTORY_KEITH_OUT_OF_BUSINESS:
-    case HISTORY_HOWARD_CYANIDE:
-    case HISTORY_KEITH:
-    case HISTORY_HOWARD:
-    case HISTORY_PERKO:
-    case HISTORY_SAM:
-    case HISTORY_FRANZ:
-    case HISTORY_ARNOLD:
-    case HISTORY_FREDO:
-    case HISTORY_RICHGUY_BALIME:
-    case HISTORY_JAKE:
-    case HISTORY_BUM_KEYCARD:
-    case HISTORY_WALTER:
-    case HISTORY_DAVE:
-    case HISTORY_PABLO:
-    case HISTORY_KINGPIN_MONEY:
+    case Enum83.HISTORY_FOUND_MONEY:
+    case Enum83.HISTORY_ASSASSIN:
+    case Enum83.HISTORY_DISCOVERED_TIXA:
+    case Enum83.HISTORY_DISCOVERED_ORTA:
+    case Enum83.HISTORY_GOT_ROCKET_RIFLES:
+    case Enum83.HISTORY_DEIDRANNA_DEAD_BODIES:
+    case Enum83.HISTORY_BOXING_MATCHES:
+    case Enum83.HISTORY_SOMETHING_IN_MINES:
+    case Enum83.HISTORY_DEVIN:
+    case Enum83.HISTORY_MIKE:
+    case Enum83.HISTORY_TONY:
+    case Enum83.HISTORY_KROTT:
+    case Enum83.HISTORY_KYLE:
+    case Enum83.HISTORY_MADLAB:
+    case Enum83.HISTORY_GABBY:
+    case Enum83.HISTORY_KEITH_OUT_OF_BUSINESS:
+    case Enum83.HISTORY_HOWARD_CYANIDE:
+    case Enum83.HISTORY_KEITH:
+    case Enum83.HISTORY_HOWARD:
+    case Enum83.HISTORY_PERKO:
+    case Enum83.HISTORY_SAM:
+    case Enum83.HISTORY_FRANZ:
+    case Enum83.HISTORY_ARNOLD:
+    case Enum83.HISTORY_FREDO:
+    case Enum83.HISTORY_RICHGUY_BALIME:
+    case Enum83.HISTORY_JAKE:
+    case Enum83.HISTORY_BUM_KEYCARD:
+    case Enum83.HISTORY_WALTER:
+    case Enum83.HISTORY_DAVE:
+    case Enum83.HISTORY_PABLO:
+    case Enum83.HISTORY_KINGPIN_MONEY:
     // VARIOUS BATTLE CONDITIONS
-    case HISTORY_LOSTTOWNSECTOR:
-    case HISTORY_DEFENDEDTOWNSECTOR:
-    case HISTORY_LOSTBATTLE:
-    case HISTORY_WONBATTLE:
-    case HISTORY_FATALAMBUSH:
-    case HISTORY_WIPEDOUTENEMYAMBUSH:
-    case HISTORY_UNSUCCESSFULATTACK:
-    case HISTORY_SUCCESSFULATTACK:
-    case HISTORY_CREATURESATTACKED:
-    case HISTORY_KILLEDBYBLOODCATS:
-    case HISTORY_SLAUGHTEREDBLOODCATS:
-    case HISTORY_GAVE_CARMEN_HEAD:
-    case HISTORY_SLAY_MYSTERIOUSLY_LEFT:
+    case Enum83.HISTORY_LOSTTOWNSECTOR:
+    case Enum83.HISTORY_DEFENDEDTOWNSECTOR:
+    case Enum83.HISTORY_LOSTBATTLE:
+    case Enum83.HISTORY_WONBATTLE:
+    case Enum83.HISTORY_FATALAMBUSH:
+    case Enum83.HISTORY_WIPEDOUTENEMYAMBUSH:
+    case Enum83.HISTORY_UNSUCCESSFULATTACK:
+    case Enum83.HISTORY_SUCCESSFULATTACK:
+    case Enum83.HISTORY_CREATURESATTACKED:
+    case Enum83.HISTORY_KILLEDBYBLOODCATS:
+    case Enum83.HISTORY_SLAUGHTEREDBLOODCATS:
+    case Enum83.HISTORY_GAVE_CARMEN_HEAD:
+    case Enum83.HISTORY_SLAY_MYSTERIOUSLY_LEFT:
       swprintf(pString, pHistoryStrings[pHistory.value.ubCode]);
       break;
   }
@@ -994,10 +994,10 @@ function SetHistoryButtonStates(): void {
 
   if (iCurrentHistoryPage == 1) {
     // first page, disable left buttons
-    DisableButton(giHistoryButton[PREV_PAGE_BUTTON]);
+    DisableButton(giHistoryButton[Enum82.PREV_PAGE_BUTTON]);
   } else {
     // enable buttons
-    EnableButton(giHistoryButton[PREV_PAGE_BUTTON]);
+    EnableButton(giHistoryButton[Enum82.PREV_PAGE_BUTTON]);
   }
 
   if (IncrementCurrentPageHistoryDisplay()) {
@@ -1006,9 +1006,9 @@ function SetHistoryButtonStates(): void {
     DrawAPageofHistoryRecords();
 
     // enable buttons
-    EnableButton(giHistoryButton[NEXT_PAGE_BUTTON]);
+    EnableButton(giHistoryButton[Enum82.NEXT_PAGE_BUTTON]);
   } else {
-    DisableButton(giHistoryButton[NEXT_PAGE_BUTTON]);
+    DisableButton(giHistoryButton[Enum82.NEXT_PAGE_BUTTON]);
   }
 }
 
@@ -1331,7 +1331,7 @@ function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16): void
   pList = pHistoryListHead;
 
   while (pList) {
-    if ((pList.value.ubSecondCode == ubCode) && (pList.value.ubCode == HISTORY_QUEST_STARTED)) {
+    if ((pList.value.ubSecondCode == ubCode) && (pList.value.ubCode == Enum83.HISTORY_QUEST_STARTED)) {
       // reset color
       pList.value.ubColor = 0;
       fFound = TRUE;
@@ -1353,7 +1353,7 @@ function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16): void
     LoadNextHistoryPage();
   }
 
-  SetHistoryFact(HISTORY_QUEST_FINISHED, ubCode, GetWorldTotalMin(), sSectorX, sSectorY);
+  SetHistoryFact(Enum83.HISTORY_QUEST_FINISHED, ubCode, GetWorldTotalMin(), sSectorX, sSectorY);
   return;
 }
 
@@ -1374,7 +1374,7 @@ function GetTimeQuestWasStarted(ubCode: UINT8): UINT32 {
   pList = pHistoryListHead;
 
   while (pList) {
-    if ((pList.value.ubSecondCode == ubCode) && (pList.value.ubCode == HISTORY_QUEST_STARTED)) {
+    if ((pList.value.ubSecondCode == ubCode) && (pList.value.ubCode == Enum83.HISTORY_QUEST_STARTED)) {
       uiTime = pList.value.uiDate;
       fFound = TRUE;
 

@@ -131,7 +131,7 @@ function SetRaisedObjectFlag(cFilename: Pointer<char>, pTileSurf: Pointer<TILE_I
 
   // Loop through array of RAISED objecttype imagery and
   // set global value...
-  if ((pTileSurf.value.fType >= DEBRISWOOD && pTileSurf.value.fType <= DEBRISWEEDS) || pTileSurf.value.fType == DEBRIS2MISC || pTileSurf.value.fType == ANOTHERDEBRIS) {
+  if ((pTileSurf.value.fType >= Enum313.DEBRISWOOD && pTileSurf.value.fType <= Enum313.DEBRISWEEDS) || pTileSurf.value.fType == Enum313.DEBRIS2MISC || pTileSurf.value.fType == Enum313.ANOTHERDEBRIS) {
     GetRootName(cRootFile, cFilename);
     while (ubRaisedObjectFiles[cnt][0] != '1') {
       if (stricmp(ubRaisedObjectFiles[cnt], cRootFile) == 0) {

@@ -167,16 +167,16 @@ function HandleIMPBeginScreen(): void {
 
   // render the cursor
   switch (ubTextEnterMode) {
-    case (FULL_NAME_MODE):
+    case (Enum87.FULL_NAME_MODE):
       DisplayFullNameStringCursor();
       break;
-    case (NICK_NAME_MODE):
+    case (Enum87.NICK_NAME_MODE):
       DisplayNickNameStringCursor();
       break;
-    case (MALE_GENDER_SELECT):
+    case (Enum87.MALE_GENDER_SELECT):
       DisplayMaleGlowCursor();
       break;
-    case (FEMALE_GENDER_SELECT):
+    case (Enum87.FEMALE_GENDER_SELECT):
       DisplayFemaleGlowCursor();
       break;
   }
@@ -207,7 +207,7 @@ function CreateIMPBeginScreenButtons(): void {
 
   giIMPBeginScreenButton[0] = CreateIconAndTextButton(giIMPBeginScreenButtonImage[0], pImpButtonText[6], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (134), LAPTOP_SCREEN_WEB_UL_Y + (314), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPBeginScreenDoneCallback);
 
-  SetButtonCursor(giIMPBeginScreenButton[0], CURSOR_WWW);
+  SetButtonCursor(giIMPBeginScreenButton[0], Enum317.CURSOR_WWW);
   return;
 }
 
@@ -237,7 +237,7 @@ function BtnIMPBeginScreenDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 
       if (fFinishedCharGeneration) {
         // simply reviewing name and gender, exit to finish page
-        iCurrentImpPage = IMP_FINISH;
+        iCurrentImpPage = Enum71.IMP_FINISH;
         fButtonPendingFlag = TRUE;
         return;
       } else {
@@ -265,12 +265,12 @@ function BtnIMPBeginScreenDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 
         // no easter egg?...then proceed along
         if (fEggOnYouFace == FALSE) {
-          iCurrentImpPage = IMP_MAIN_PAGE;
+          iCurrentImpPage = Enum71.IMP_MAIN_PAGE;
           fButtonPendingFlag = TRUE;
         }
       } else {
         // invalid name, reset current mode
-        DoLapTopMessageBox(MSG_BOX_IMP_STYLE, pImpPopUpStrings[2], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[2], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
         iCurrentProfileMode = 0;
       }
     }
@@ -309,10 +309,10 @@ switch(InputEvent.usEvent)
       switch (InputEvent.usParam) {
         case ((ENTER)):
           // check to see if gender was highlighted..if so, select it
-          if (FEMALE_GENDER_SELECT == ubTextEnterMode) {
-            bGenderFlag = IMP_FEMALE;
-          } else if (MALE_GENDER_SELECT == ubTextEnterMode) {
-            bGenderFlag = IMP_MALE;
+          if (Enum87.FEMALE_GENDER_SELECT == ubTextEnterMode) {
+            bGenderFlag = Enum86.IMP_FEMALE;
+          } else if (Enum87.MALE_GENDER_SELECT == ubTextEnterMode) {
+            bGenderFlag = Enum86.IMP_MALE;
           }
 
           // increment to next selection box
@@ -321,11 +321,11 @@ switch(InputEvent.usEvent)
           break;
         case (SPACE):
           // handle space bar
-          if (FEMALE_GENDER_SELECT == ubTextEnterMode) {
-            bGenderFlag = IMP_FEMALE;
+          if (Enum87.FEMALE_GENDER_SELECT == ubTextEnterMode) {
+            bGenderFlag = Enum86.IMP_FEMALE;
             DecrementTextEnterMode();
-          } else if (MALE_GENDER_SELECT == ubTextEnterMode) {
-            bGenderFlag = IMP_MALE;
+          } else if (Enum87.MALE_GENDER_SELECT == ubTextEnterMode) {
+            bGenderFlag = Enum86.IMP_MALE;
             IncrementTextEnterMode();
           } else {
             HandleBeginScreenTextEvent(InputEvent.usParam);
@@ -362,7 +362,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
     case (BACKSPACE):
 
       switch (ubTextEnterMode) {
-        case (FULL_NAME_MODE):
+        case (Enum87.FULL_NAME_MODE):
           if (uiFullNameCharacterPosition >= 0) {
             // decrement StringPosition
             if (uiFullNameCharacterPosition > 0) {
@@ -379,7 +379,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
             fNewCharInString = TRUE;
           }
           break;
-        case (NICK_NAME_MODE):
+        case (Enum87.NICK_NAME_MODE):
           if (uiNickNameCharacterPosition >= 0) {
             // decrement StringPosition
             if (uiNickNameCharacterPosition > 0)
@@ -403,7 +403,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
       if (uiKey >= 'A' && uiKey <= 'Z' || uiKey >= 'a' && uiKey <= 'z' || uiKey >= '0' && uiKey <= '9' || uiKey == '_' || uiKey == '.' || uiKey == ' ') {
         // if the current string position is at max or great, do nothing
         switch (ubTextEnterMode) {
-          case (FULL_NAME_MODE):
+          case (Enum87.FULL_NAME_MODE):
             if (uiFullNameCharacterPosition >= MAX_FULL_NAME) {
               break;
             } else {
@@ -431,7 +431,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
               fNewCharInString = TRUE;
             }
             break;
-          case (NICK_NAME_MODE):
+          case (Enum87.NICK_NAME_MODE):
             if (uiNickNameCharacterPosition >= MAX_NICK_NAME) {
               break;
             } else {
@@ -737,8 +737,8 @@ function IncrementTextEnterMode(): void {
   // this function will incrment which text enter mode we are in, FULLname, NICKname, IMP_MALE or IMP_FEMALE
 
   // if at IMP_FEMALE gender selection, reset to full name
-  if (FEMALE_GENDER_SELECT == ubTextEnterMode) {
-    ubTextEnterMode = FULL_NAME_MODE;
+  if (Enum87.FEMALE_GENDER_SELECT == ubTextEnterMode) {
+    ubTextEnterMode = Enum87.FULL_NAME_MODE;
   } else {
     // otherwise, next selection
     ubTextEnterMode++;
@@ -749,8 +749,8 @@ function DecrementTextEnterMode(): void {
   // this function will incrment which text enter mode we are in, FULLname, NICKname, IMP_MALE or IMP_FEMALE
 
   // if at IMP_FEMALE gender selection, reset to full name
-  if (FULL_NAME_MODE == ubTextEnterMode) {
-    ubTextEnterMode = FEMALE_GENDER_SELECT;
+  if (Enum87.FULL_NAME_MODE == ubTextEnterMode) {
+    ubTextEnterMode = Enum87.FEMALE_GENDER_SELECT;
   } else {
     // otherwise, next selection
     ubTextEnterMode--;
@@ -764,7 +764,7 @@ function RenderMaleGenderIcon(): void {
   RenderGenderIndent(192, 252);
 
   // IMP_MALE selected draw box
-  if (bGenderFlag == IMP_MALE) {
+  if (bGenderFlag == Enum86.IMP_MALE) {
   }
 }
 
@@ -775,7 +775,7 @@ function RenderFemaleGenderIcon(): void {
   RenderGenderIndent(302, 252);
 
   // IMP_FEMALE selected draw box
-  if (bGenderFlag == IMP_FEMALE) {
+  if (bGenderFlag == Enum86.IMP_FEMALE) {
   }
 }
 
@@ -789,16 +789,16 @@ function CreateIMPBeginScreenMouseRegions(): void {
     return;
 
   // full name region
-  MSYS_DefineRegion(addressof(gIMPBeginScreenMouseRegions[0]), LAPTOP_SCREEN_UL_X + 196, LAPTOP_SCREEN_WEB_UL_Y + 135, LAPTOP_SCREEN_UL_X + 196 + FULL_NAME_REGION_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + 135 + 24, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectFullNameRegionCallBack);
+  MSYS_DefineRegion(addressof(gIMPBeginScreenMouseRegions[0]), LAPTOP_SCREEN_UL_X + 196, LAPTOP_SCREEN_WEB_UL_Y + 135, LAPTOP_SCREEN_UL_X + 196 + FULL_NAME_REGION_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + 135 + 24, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFullNameRegionCallBack);
 
   // nick name region
-  MSYS_DefineRegion(addressof(gIMPBeginScreenMouseRegions[1]), LAPTOP_SCREEN_UL_X + 196, LAPTOP_SCREEN_WEB_UL_Y + 195, LAPTOP_SCREEN_UL_X + 196 + NICK_NAME_REGION_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + 195 + 24, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectNickNameRegionCallBack);
+  MSYS_DefineRegion(addressof(gIMPBeginScreenMouseRegions[1]), LAPTOP_SCREEN_UL_X + 196, LAPTOP_SCREEN_WEB_UL_Y + 195, LAPTOP_SCREEN_UL_X + 196 + NICK_NAME_REGION_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + 195 + 24, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectNickNameRegionCallBack);
 
   // IMP_MALE gender area
-  MSYS_DefineRegion(addressof(gIMPBeginScreenMouseRegions[2]), MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, MSYS_PRIORITY_HIGH, CURSOR_WWW, MvtOnMaleRegionCallBack, SelectMaleRegionCallBack);
+  MSYS_DefineRegion(addressof(gIMPBeginScreenMouseRegions[2]), MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MvtOnMaleRegionCallBack, SelectMaleRegionCallBack);
 
   // IMP_FEMALE gender region
-  MSYS_DefineRegion(addressof(gIMPBeginScreenMouseRegions[3]), FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, MSYS_PRIORITY_HIGH, CURSOR_WWW, MvtOnFemaleRegionCallBack, SelectFemaleRegionCallBack);
+  MSYS_DefineRegion(addressof(gIMPBeginScreenMouseRegions[3]), FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MvtOnFemaleRegionCallBack, SelectFemaleRegionCallBack);
 
   // add regions
   MSYS_AddRegion(addressof(gIMPBeginScreenMouseRegions[0]));
@@ -829,7 +829,7 @@ function SelectFullNameRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // set current mode to full name type in mode
-    ubTextEnterMode = FULL_NAME_MODE;
+    ubTextEnterMode = Enum87.FULL_NAME_MODE;
     fNewCharInString = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
@@ -839,7 +839,7 @@ function SelectNickNameRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // set mode to nick name type in
-    ubTextEnterMode = NICK_NAME_MODE;
+    ubTextEnterMode = Enum87.NICK_NAME_MODE;
     fNewCharInString = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
@@ -849,7 +849,7 @@ function SelectMaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // set mode to nick name type in
-    bGenderFlag = IMP_MALE;
+    bGenderFlag = Enum86.IMP_MALE;
     fNewCharInString = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
@@ -859,7 +859,7 @@ function SelectFemaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // set mode to nick name type in
-    bGenderFlag = IMP_FEMALE;
+    bGenderFlag = Enum86.IMP_FEMALE;
     fNewCharInString = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
@@ -869,7 +869,7 @@ function MvtOnFemaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     // fNewCharInString = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    ubTextEnterMode = FEMALE_GENDER_SELECT;
+    ubTextEnterMode = Enum87.FEMALE_GENDER_SELECT;
     fNewCharInString = TRUE;
   }
 }
@@ -878,7 +878,7 @@ function MvtOnMaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     // fNewCharInString = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    ubTextEnterMode = MALE_GENDER_SELECT;
+    ubTextEnterMode = Enum87.MALE_GENDER_SELECT;
     fNewCharInString = TRUE;
   }
 }
@@ -894,7 +894,7 @@ function RenderGender(): void {
 
   SetFontBackground(FONT_BLACK);
   SetFontForeground(184);
-  if (bGenderFlag == IMP_MALE) {
+  if (bGenderFlag == Enum86.IMP_MALE) {
     // IMP_MALE, render x in IMP_MALE box
     mprintf(MALE_BOX_X + 9, MALE_BOX_Y + 6, "X");
   } else {
@@ -922,7 +922,7 @@ function CheckCharacterInputForEgg(): BOOLEAN {
   if ((wcscmp(pFullNameString, "Test Female") == 0) && (wcscmp(pNickNameString, "Test") == 0)) {
     wcscpy(pFullNameString, "Test Female");
     wcscpy(pNickNameString, "Test");
-    bGenderFlag = IMP_FEMALE;
+    bGenderFlag = Enum86.IMP_FEMALE;
     iHealth = 55;
     iAgility = 55;
     iStrength = 55;
@@ -938,9 +938,9 @@ function CheckCharacterInputForEgg(): BOOLEAN {
     iSkillA = 0;
     iSkillB = 0;
 
-    iPersonality = NO_PERSONALITYTRAIT;
-    iAttitude = ATT_LONER;
-    iCurrentImpPage = IMP_FINISH;
+    iPersonality = Enum270.NO_PERSONALITYTRAIT;
+    iAttitude = Enum271.ATT_LONER;
+    iCurrentImpPage = Enum71.IMP_FINISH;
     LaptopSaveInfo.iVoiceId = 1;
     iPortraitNumber = 5;
     return TRUE;

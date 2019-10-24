@@ -140,13 +140,13 @@ function AddGameEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR): BOOLEA
   if (usDelay == DEMAND_EVENT_DELAY) {
 // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("AddGameEvent: Sending Local and network #%d", uiEvent));
     return AddGameEventToQueue(uiEvent, 0, pEventData, DEMAND_EVENT_QUEUE);
-  } else if (uiEvent < EVENTS_LOCAL_AND_NETWORK) {
+  } else if (uiEvent < Enum319.EVENTS_LOCAL_AND_NETWORK) {
 // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("AddGameEvent: Sending Local and network #%d", uiEvent));
     return AddGameEventToQueue(uiEvent, usDelay, pEventData, PRIMARY_EVENT_QUEUE);
-  } else if (uiEvent < EVENTS_ONLY_USED_LOCALLY) {
+  } else if (uiEvent < Enum319.EVENTS_ONLY_USED_LOCALLY) {
     // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("AddGameEvent: Sending Local #%d", uiEvent));
     return AddGameEventToQueue(uiEvent, usDelay, pEventData, PRIMARY_EVENT_QUEUE);
-  } else if (uiEvent < EVENTS_ONLY_SENT_OVER_NETWORK) {
+  } else if (uiEvent < Enum319.EVENTS_ONLY_SENT_OVER_NETWORK) {
 // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("AddGameEvent: Sending network #%d", uiEvent));
     return TRUE;
   }
@@ -163,7 +163,7 @@ function AddGameEventToQueue(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, 
   let uiDataSize: UINT32;
 
   // Check range of Event ui
-  if (uiEvent < 0 || uiEvent > NUM_EVENTS) {
+  if (uiEvent < 0 || uiEvent > Enum319.NUM_EVENTS) {
     // Set debug message!
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Unknown event type");
     return FALSE;
@@ -171,92 +171,92 @@ function AddGameEventToQueue(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, 
 
   // Switch on event type and set size accordingly
   switch (uiEvent) {
-    case E_PLAYSOUND:
+    case Enum319.E_PLAYSOUND:
 
       uiDataSize = sizeof(EV_E_PLAYSOUND);
       break;
 
-    case S_CHANGESTATE:
+    case Enum319.S_CHANGESTATE:
 
       uiDataSize = sizeof(EV_S_CHANGESTATE);
       break;
 
-    case S_CHANGEDEST:
+    case Enum319.S_CHANGEDEST:
 
       uiDataSize = sizeof(EV_S_CHANGEDEST);
       break;
 
-    case S_SETPOSITION:
+    case Enum319.S_SETPOSITION:
 
       uiDataSize = sizeof(EV_S_SETPOSITION);
       break;
 
-    case S_GETNEWPATH:
+    case Enum319.S_GETNEWPATH:
 
       uiDataSize = sizeof(EV_S_GETNEWPATH);
       break;
 
-    case S_BEGINTURN:
+    case Enum319.S_BEGINTURN:
 
       uiDataSize = sizeof(EV_S_BEGINTURN);
       break;
 
-    case S_CHANGESTANCE:
+    case Enum319.S_CHANGESTANCE:
 
       uiDataSize = sizeof(EV_S_CHANGESTANCE);
       break;
 
-    case S_SETDIRECTION:
+    case Enum319.S_SETDIRECTION:
 
       uiDataSize = sizeof(EV_S_SETDIRECTION);
       break;
 
-    case S_SETDESIREDDIRECTION:
+    case Enum319.S_SETDESIREDDIRECTION:
 
       uiDataSize = sizeof(EV_S_SETDESIREDDIRECTION);
       break;
 
-    case S_FIREWEAPON:
+    case Enum319.S_FIREWEAPON:
 
       uiDataSize = sizeof(EV_S_FIREWEAPON);
       break;
 
-    case S_BEGINFIREWEAPON:
+    case Enum319.S_BEGINFIREWEAPON:
 
       uiDataSize = sizeof(EV_S_BEGINFIREWEAPON);
       // Delay this event
       break;
 
-    case S_WEAPONHIT:
+    case Enum319.S_WEAPONHIT:
 
       uiDataSize = sizeof(EV_S_WEAPONHIT);
       break;
 
-    case S_STRUCTUREHIT:
+    case Enum319.S_STRUCTUREHIT:
       uiDataSize = sizeof(EV_S_STRUCTUREHIT);
       break;
 
-    case S_WINDOWHIT:
+    case Enum319.S_WINDOWHIT:
       uiDataSize = sizeof(EV_S_STRUCTUREHIT);
       break;
 
-    case S_MISS:
+    case Enum319.S_MISS:
       uiDataSize = sizeof(EV_S_MISS);
       break;
 
-    case S_NOISE:
+    case Enum319.S_NOISE:
       uiDataSize = sizeof(EV_S_NOISE);
       break;
 
-    case S_STOP_MERC:
+    case Enum319.S_STOP_MERC:
       uiDataSize = sizeof(EV_S_STOP_MERC);
       break;
 
-    case S_SENDPATHTONETWORK:
+    case Enum319.S_SENDPATHTONETWORK:
       uiDataSize = sizeof(EV_S_SENDPATHTONETWORK);
       break;
 
-    case S_UPDATENETWORKSOLDIER:
+    case Enum319.S_UPDATENETWORKSOLDIER:
       uiDataSize = sizeof(EV_S_UPDATENETWORKSOLDIER);
       break;
 
@@ -377,7 +377,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
 
   // Switch on event type
   switch (pEvent.value.uiEvent) {
-    case E_PLAYSOUND:
+    case Enum319.E_PLAYSOUND:
 
       memcpy(addressof(EPlaySound), pEvent.value.pData, pEvent.value.uiDataSize);
 
@@ -385,7 +385,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       PlayJA2Sample(EPlaySound.usIndex, EPlaySound.usRate, EPlaySound.ubVolume, EPlaySound.ubLoops, EPlaySound.uiPan);
       break;
 
-    case S_CHANGESTATE:
+    case Enum319.S_CHANGESTATE:
 
       memcpy(addressof(SChangeState), pEvent.value.pData, pEvent.value.uiDataSize);
 
@@ -406,7 +406,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       EVENT_InitNewSoldierAnim(pSoldier, SChangeState.usNewState, SChangeState.usStartingAniCode, SChangeState.fForce);
       break;
 
-    case S_CHANGEDEST:
+    case Enum319.S_CHANGEDEST:
 
       memcpy(addressof(SChangeDest), pEvent.value.pData, pEvent.value.uiDataSize);
 
@@ -427,7 +427,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       EVENT_SetSoldierDestination(pSoldier, SChangeDest.usNewDestination);
       break;
 
-    case S_SETPOSITION:
+    case Enum319.S_SETPOSITION:
 
       memcpy(addressof(SSetPosition), pEvent.value.pData, pEvent.value.uiDataSize);
 
@@ -448,7 +448,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       EVENT_SetSoldierPosition(pSoldier, SSetPosition.dNewXPos, SSetPosition.dNewYPos);
       break;
 
-    case S_GETNEWPATH:
+    case Enum319.S_GETNEWPATH:
 
       memcpy(addressof(SGetNewPath), pEvent.value.pData, pEvent.value.uiDataSize);
 
@@ -468,7 +468,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       EVENT_GetNewSoldierPath(pSoldier, SGetNewPath.sDestGridNo, SGetNewPath.usMovementAnim);
       break;
 
-    case S_BEGINTURN:
+    case Enum319.S_BEGINTURN:
 
       memcpy(addressof(SBeginTurn), pEvent.value.pData, pEvent.value.uiDataSize);
 
@@ -489,7 +489,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       EVENT_BeginMercTurn(pSoldier, FALSE, 0);
       break;
 
-    case S_CHANGESTANCE:
+    case Enum319.S_CHANGESTANCE:
 
       memcpy(addressof(SChangeStance), pEvent.value.pData, pEvent.value.uiDataSize);
 
@@ -509,7 +509,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       ChangeSoldierStance(pSoldier, SChangeStance.ubNewStance);
       break;
 
-    case S_SETDIRECTION:
+    case Enum319.S_SETDIRECTION:
 
       memcpy(addressof(SSetDirection), pEvent.value.pData, pEvent.value.uiDataSize);
 
@@ -530,7 +530,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       EVENT_SetSoldierDirection(pSoldier, SSetDirection.usNewDirection);
       break;
 
-    case S_SETDESIREDDIRECTION:
+    case Enum319.S_SETDESIREDDIRECTION:
 
       memcpy(addressof(SSetDesiredDirection), pEvent.value.pData, pEvent.value.uiDataSize);
 
@@ -551,7 +551,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       EVENT_SetSoldierDesiredDirection(pSoldier, SSetDesiredDirection.usDesiredDirection);
       break;
 
-    case S_BEGINFIREWEAPON:
+    case Enum319.S_BEGINFIREWEAPON:
 
       memcpy(addressof(SBeginFireWeapon), pEvent.value.pData, pEvent.value.uiDataSize);
 
@@ -576,7 +576,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       EVENT_FireSoldierWeapon(pSoldier, SBeginFireWeapon.sTargetGridNo);
       break;
 
-    case S_FIREWEAPON:
+    case Enum319.S_FIREWEAPON:
 
       memcpy(addressof(SFireWeapon), pEvent.value.pData, pEvent.value.uiDataSize);
 
@@ -600,41 +600,41 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
       FireWeapon(pSoldier, SFireWeapon.sTargetGridNo);
       break;
 
-    case S_WEAPONHIT:
+    case Enum319.S_WEAPONHIT:
 
       memcpy(addressof(SWeaponHit), pEvent.value.pData, pEvent.value.uiDataSize);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: WeaponHit %d Damage", SWeaponHit.sDamage));
       WeaponHit(SWeaponHit.usSoldierID, SWeaponHit.usWeaponIndex, SWeaponHit.sDamage, SWeaponHit.sBreathLoss, SWeaponHit.usDirection, SWeaponHit.sXPos, SWeaponHit.sYPos, SWeaponHit.sZPos, SWeaponHit.sRange, SWeaponHit.ubAttackerID, SWeaponHit.fHit, SWeaponHit.ubSpecial, SWeaponHit.ubLocation);
       break;
 
-    case S_STRUCTUREHIT:
+    case Enum319.S_STRUCTUREHIT:
 
       memcpy(addressof(SStructureHit), pEvent.value.pData, pEvent.value.uiDataSize);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: StructureHit"));
       StructureHit(SStructureHit.iBullet, SStructureHit.usWeaponIndex, SStructureHit.bWeaponStatus, SStructureHit.ubAttackerID, SStructureHit.sXPos, SStructureHit.sYPos, SStructureHit.sZPos, SStructureHit.usStructureID, SStructureHit.iImpact, TRUE);
       break;
 
-    case S_WINDOWHIT:
+    case Enum319.S_WINDOWHIT:
 
       memcpy(addressof(SWindowHit), pEvent.value.pData, pEvent.value.uiDataSize);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: WindowHit"));
       WindowHit(SWindowHit.sGridNo, SWindowHit.usStructureID, SWindowHit.fBlowWindowSouth, SWindowHit.fLargeForce);
       break;
 
-    case S_MISS:
+    case Enum319.S_MISS:
 
       memcpy(addressof(SMiss), pEvent.value.pData, pEvent.value.uiDataSize);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: Shot Miss ( obsolete )"));
       // ShotMiss( SMiss.ubAttackerID );
       break;
 
-    case S_NOISE:
+    case Enum319.S_NOISE:
       memcpy(addressof(SNoise), pEvent.value.pData, pEvent.value.uiDataSize);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: Noise from %d at %d/%d, type %d volume %d", SNoise.ubNoiseMaker, SNoise.sGridNo, SNoise.bLevel, SNoise.ubNoiseType, SNoise.ubVolume));
       OurNoise(SNoise.ubNoiseMaker, SNoise.sGridNo, SNoise.bLevel, SNoise.ubTerrType, SNoise.ubVolume, SNoise.ubNoiseType);
       break;
 
-    case S_STOP_MERC:
+    case Enum319.S_STOP_MERC:
 
       memcpy(addressof(SStopMerc), pEvent.value.pData, pEvent.value.uiDataSize);
 

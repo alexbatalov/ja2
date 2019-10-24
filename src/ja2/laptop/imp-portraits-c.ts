@@ -149,9 +149,9 @@ function CreateIMPPortraitButtons(): void {
 */
   giIMPPortraitButton[2] = CreateIconAndTextButton(giIMPPortraitButtonImage[2], pImpButtonText[11], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (187), LAPTOP_SCREEN_WEB_UL_Y + (330), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPortraitDoneCallback);
 
-  SetButtonCursor(giIMPPortraitButton[0], CURSOR_WWW);
-  SetButtonCursor(giIMPPortraitButton[1], CURSOR_WWW);
-  SetButtonCursor(giIMPPortraitButton[2], CURSOR_WWW);
+  SetButtonCursor(giIMPPortraitButton[0], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPPortraitButton[1], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPPortraitButton[2], Enum317.CURSOR_WWW);
 }
 
 function DestroyIMPPortraitButtons(): void {
@@ -222,7 +222,7 @@ function BtnIMPPortraitDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // go to main page
-      iCurrentImpPage = IMP_MAIN_PAGE;
+      iCurrentImpPage = Enum71.IMP_MAIN_PAGE;
 
       // current mode now is voice
       if (iCurrentProfileMode < 4) {
@@ -231,7 +231,7 @@ function BtnIMPPortraitDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
 
       // if we are already done, leave
       if (iCurrentProfileMode == 5) {
-        iCurrentImpPage = IMP_FINISH;
+        iCurrentImpPage = Enum71.IMP_FINISH;
       }
 
       // grab picture number

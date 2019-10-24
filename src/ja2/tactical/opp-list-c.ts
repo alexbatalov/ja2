@@ -431,7 +431,7 @@ function SelectSpeakerFromHostileOrSayQuoteList(): UINT8 {
       // make sure person can say quote!!!!
       gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags2 |= PROFILE_MISC_FLAG2_NEEDS_TO_SAY_HOSTILE_QUOTE;
 
-      if (NPCHasUnusedHostileRecord(pSoldier.value.ubProfile, APPROACH_DECLARATION_OF_HOSTILITY)) {
+      if (NPCHasUnusedHostileRecord(pSoldier.value.ubProfile, Enum296.APPROACH_DECLARATION_OF_HOSTILITY)) {
         ubProfileList[ubNumProfiles] = gubShouldBecomeHostileOrSayQuote[ubLoop];
         ubNumProfiles++;
       } else {
@@ -464,7 +464,7 @@ function CheckHostileOrSayQuoteList(): void {
         if (pSoldier.value.bNeutral) {
           MakeCivHostile(pSoldier, 2);
           // make civ group, if any, hostile
-          if (pSoldier.value.bTeam == CIV_TEAM && pSoldier.value.ubCivilianGroup != NON_CIV_GROUP && gTacticalStatus.fCivGroupHostile[pSoldier.value.ubCivilianGroup] == CIV_GROUP_WILL_BECOME_HOSTILE) {
+          if (pSoldier.value.bTeam == CIV_TEAM && pSoldier.value.ubCivilianGroup != Enum246.NON_CIV_GROUP && gTacticalStatus.fCivGroupHostile[pSoldier.value.ubCivilianGroup] == CIV_GROUP_WILL_BECOME_HOSTILE) {
             gTacticalStatus.fCivGroupHostile[pSoldier.value.ubCivilianGroup] = CIV_GROUP_HOSTILE;
           }
         }
@@ -584,9 +584,9 @@ fprintf(OpplistFile,"OtherTeamsLookForMan (HandleSight/Look) for %d\n",ptr->guyn
         RevealRoofsAndItems(pSoldier, TRUE, TRUE, pSoldier.value.bLevel, FALSE);
     }
     // unless in easy mode allow alerted enemies to radio
-    else if (gGameOptions.ubDifficultyLevel >= DIF_LEVEL_MEDIUM) {
+    else if (gGameOptions.ubDifficultyLevel >= Enum9.DIF_LEVEL_MEDIUM) {
       // don't allow admins to radio
-      if (pSoldier.value.bTeam == ENEMY_TEAM && gTacticalStatus.Team[ENEMY_TEAM].bAwareOfOpposition && pSoldier.value.ubSoldierClass != SOLDIER_CLASS_ADMINISTRATOR) {
+      if (pSoldier.value.bTeam == ENEMY_TEAM && gTacticalStatus.Team[ENEMY_TEAM].bAwareOfOpposition && pSoldier.value.ubSoldierClass != Enum262.SOLDIER_CLASS_ADMINISTRATOR) {
         RadioSightings(pSoldier, EVERYBODY, pSoldier.value.bTeam);
       }
     }
@@ -616,9 +616,9 @@ fprintf(OpplistFile,"OtherTeamsLookForMan (HandleSight/Look) for %d\n",ptr->guyn
             RadioSightings(pThem, pSoldier.value.ubID, pThem.value.bTeam);
         }
         // unless in easy mode allow alerted enemies to radio
-        else if (gGameOptions.ubDifficultyLevel >= DIF_LEVEL_MEDIUM) {
+        else if (gGameOptions.ubDifficultyLevel >= Enum9.DIF_LEVEL_MEDIUM) {
           // don't allow admins to radio
-          if (pThem.value.bTeam == ENEMY_TEAM && gTacticalStatus.Team[ENEMY_TEAM].bAwareOfOpposition && pThem.value.ubSoldierClass != SOLDIER_CLASS_ADMINISTRATOR) {
+          if (pThem.value.bTeam == ENEMY_TEAM && gTacticalStatus.Team[ENEMY_TEAM].bAwareOfOpposition && pThem.value.ubSoldierClass != Enum262.SOLDIER_CLASS_ADMINISTRATOR) {
             RadioSightings(pThem, EVERYBODY, pThem.value.bTeam);
           }
         }
@@ -762,14 +762,14 @@ function DistanceVisible(pSoldier: Pointer<SOLDIERTYPE>, bFacingDir: INT8, bSubj
     return 0;
   }
 
-  if (bFacingDir == DIRECTION_IRRELEVANT && TANK(pSoldier)) {
+  if (bFacingDir == Enum245.DIRECTION_IRRELEVANT && TANK(pSoldier)) {
     // always calculate direction for tanks so we have something to work with
     bFacingDir = pSoldier.value.bDesiredDirection;
     bSubjectDir = GetDirectionToGridNoFromGridNo(pSoldier.value.sGridNo, sSubjectGridNo);
     // bSubjectDir = atan8(pSoldier->sX,pSoldier->sY,pOpponent->sX,pOpponent->sY);
   }
 
-  if (!TANK(pSoldier) && (bFacingDir == DIRECTION_IRRELEVANT || (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) || (pSubject && pSubject.value.fMuzzleFlash))) {
+  if (!TANK(pSoldier) && (bFacingDir == Enum245.DIRECTION_IRRELEVANT || (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) || (pSubject && pSubject.value.fMuzzleFlash))) {
     sDistVisible = MaxDistanceVisible();
   } else {
     if (pSoldier.value.sGridNo == sSubjectGridNo) {
@@ -778,13 +778,13 @@ function DistanceVisible(pSoldier: Pointer<SOLDIERTYPE>, bFacingDir: INT8, bSubj
     } else {
       sDistVisible = gbLookDistance[bFacingDir][bSubjectDir];
 
-      if (sDistVisible == ANGLE && (pSoldier.value.bTeam == OUR_TEAM || pSoldier.value.bAlertStatus >= STATUS_RED)) {
+      if (sDistVisible == ANGLE && (pSoldier.value.bTeam == OUR_TEAM || pSoldier.value.bAlertStatus >= Enum243.STATUS_RED)) {
         sDistVisible = STRAIGHT;
       }
 
       sDistVisible *= 2;
 
-      if (pSoldier.value.usAnimState == RUNNING) {
+      if (pSoldier.value.usAnimState == Enum193.RUNNING) {
         if (gbLookDistance[bFacingDir][bSubjectDir] != STRAIGHT) {
           // reduce sight when we're not looking in that direction...
           // (20%?)
@@ -812,7 +812,7 @@ function DistanceVisible(pSoldier: Pointer<SOLDIERTYPE>, bFacingDir: INT8, bSubj
   // under certain conditions (daytime in the desert, for instance)
   if (bLightLevel < NORMAL_LIGHTLEVEL_DAY) {
     // greater than normal daylight level; check for sun goggles
-    if (pSoldier.value.inv[HEAD1POS].usItem == SUNGOGGLES || pSoldier.value.inv[HEAD2POS].usItem == SUNGOGGLES) {
+    if (pSoldier.value.inv[Enum261.HEAD1POS].usItem == Enum225.SUNGOGGLES || pSoldier.value.inv[Enum261.HEAD2POS].usItem == Enum225.SUNGOGGLES) {
       // increase sighting distance by up to 2 tiles
       sDistVisible++;
       if (bLightLevel < NORMAL_LIGHTLEVEL_DAY - 1) {
@@ -821,8 +821,8 @@ function DistanceVisible(pSoldier: Pointer<SOLDIERTYPE>, bFacingDir: INT8, bSubj
       }
     }
   } else if (bLightLevel > NORMAL_LIGHTLEVEL_DAY + 5) {
-    if ((pSoldier.value.inv[HEAD1POS].usItem == NIGHTGOGGLES || pSoldier.value.inv[HEAD2POS].usItem == NIGHTGOGGLES || pSoldier.value.inv[HEAD1POS].usItem == UVGOGGLES || pSoldier.value.inv[HEAD2POS].usItem == UVGOGGLES) || (pSoldier.value.ubBodyType == BLOODCAT || AM_A_ROBOT(pSoldier))) {
-      if (pSoldier.value.inv[HEAD1POS].usItem == NIGHTGOGGLES || pSoldier.value.inv[HEAD2POS].usItem == NIGHTGOGGLES || AM_A_ROBOT(pSoldier)) {
+    if ((pSoldier.value.inv[Enum261.HEAD1POS].usItem == Enum225.NIGHTGOGGLES || pSoldier.value.inv[Enum261.HEAD2POS].usItem == Enum225.NIGHTGOGGLES || pSoldier.value.inv[Enum261.HEAD1POS].usItem == Enum225.UVGOGGLES || pSoldier.value.inv[Enum261.HEAD2POS].usItem == Enum225.UVGOGGLES) || (pSoldier.value.ubBodyType == Enum194.BLOODCAT || AM_A_ROBOT(pSoldier))) {
+      if (pSoldier.value.inv[Enum261.HEAD1POS].usItem == Enum225.NIGHTGOGGLES || pSoldier.value.inv[Enum261.HEAD2POS].usItem == Enum225.NIGHTGOGGLES || AM_A_ROBOT(pSoldier)) {
         if (bLightLevel > NORMAL_LIGHTLEVEL_NIGHT) {
           // when it gets really dark, light-intensification goggles become less effective
           if (bLightLevel < NORMAL_LIGHTLEVEL_NIGHT + 3) {
@@ -840,8 +840,8 @@ function DistanceVisible(pSoldier: Pointer<SOLDIERTYPE>, bFacingDir: INT8, bSubj
     }
 
     // give one step better vision for people with nightops
-    if (HAS_SKILL_TRAIT(pSoldier, NIGHTOPS)) {
-      sDistVisible += 1 * NUM_SKILL_TRAITS(pSoldier, NIGHTOPS);
+    if (HAS_SKILL_TRAIT(pSoldier, Enum269.NIGHTOPS)) {
+      sDistVisible += 1 * NUM_SKILL_TRAITS(pSoldier, Enum269.NIGHTOPS);
     }
   }
 
@@ -851,7 +851,7 @@ function DistanceVisible(pSoldier: Pointer<SOLDIERTYPE>, bFacingDir: INT8, bSubj
   }
 
   if (gpWorldLevelData[pSoldier.value.sGridNo].ubExtFlags[bLevel] & (MAPELEMENT_EXT_TEARGAS | MAPELEMENT_EXT_MUSTARDGAS)) {
-    if (pSoldier.value.inv[HEAD1POS].usItem != GASMASK && pSoldier.value.inv[HEAD2POS].usItem != GASMASK) {
+    if (pSoldier.value.inv[Enum261.HEAD1POS].usItem != Enum225.GASMASK && pSoldier.value.inv[Enum261.HEAD2POS].usItem != Enum225.GASMASK) {
       // in gas without a gas mask; reduce max distance visible to 2 tiles at most
       sDistVisible = __min(sDistVisible, 2);
     }
@@ -877,7 +877,7 @@ function EndMuzzleFlash(pSoldier: Pointer<SOLDIERTYPE>): void {
     if (pOtherSoldier != NULL) {
       if (pOtherSoldier.value.bOppList[pSoldier.value.ubID] == SEEN_CURRENTLY) {
         if (pOtherSoldier.value.sGridNo != NOWHERE) {
-          if (PythSpacesAway(pOtherSoldier.value.sGridNo, pSoldier.value.sGridNo) > DistanceVisible(pOtherSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, pSoldier.value.sGridNo, pSoldier.value.bLevel)) {
+          if (PythSpacesAway(pOtherSoldier.value.sGridNo, pSoldier.value.sGridNo) > DistanceVisible(pOtherSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, pSoldier.value.sGridNo, pSoldier.value.bLevel)) {
             // if this guy can no longer see us, change to seen this turn
             HandleManNoLongerSeen(pOtherSoldier, pSoldier, addressof(pOtherSoldier.value.bOppList[pSoldier.value.ubID]), addressof(gbPublicOpplist[pOtherSoldier.value.bTeam][pSoldier.value.ubID]));
           }
@@ -937,13 +937,13 @@ function DecideHearing(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     bHearing++;
   }
 
-  if (HAS_SKILL_TRAIT(pSoldier, NIGHTOPS)) {
+  if (HAS_SKILL_TRAIT(pSoldier, Enum269.NIGHTOPS)) {
     // sharper hearing generally
-    bHearing += 1 * NUM_SKILL_TRAITS(pSoldier, NIGHTOPS);
+    bHearing += 1 * NUM_SKILL_TRAITS(pSoldier, Enum269.NIGHTOPS);
   }
 
-  bSlot = FindObj(pSoldier, EXTENDEDEAR);
-  if (bSlot == HEAD1POS || bSlot == HEAD2POS) {
+  bSlot = FindObj(pSoldier, Enum225.EXTENDEDEAR);
+  if (bSlot == Enum261.HEAD1POS || bSlot == Enum261.HEAD2POS) {
     // at 81-100% adds +5, at 61-80% adds +4, at 41-60% adds +3, etc.
     bHearing += pSoldier.value.inv[bSlot].bStatus[0] / 20 + 1;
   }
@@ -963,9 +963,9 @@ function DecideHearing(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     case 14:
     case 15:
       bHearing += 3;
-      if (HAS_SKILL_TRAIT(pSoldier, NIGHTOPS)) {
+      if (HAS_SKILL_TRAIT(pSoldier, Enum269.NIGHTOPS)) {
         // yet another bonus for nighttime
-        bHearing += 1 * NUM_SKILL_TRAITS(pSoldier, NIGHTOPS);
+        bHearing += 1 * NUM_SKILL_TRAITS(pSoldier, Enum269.NIGHTOPS);
       }
       break;
     default:
@@ -1128,7 +1128,7 @@ fprintf(OpplistFile,"ManLooksForMan: changing personalOpplist to %d for guynum %
 
   pPersOL.value = SEEN_THIS_TURN;
 
-  if ((pSoldier.value.ubCivilianGroup == KINGPIN_CIV_GROUP) && (pOpponent.value.bTeam == gbPlayerNum)) {
+  if ((pSoldier.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP) && (pOpponent.value.bTeam == gbPlayerNum)) {
     let ubRoom: UINT8;
 
     if (InARoom(pOpponent.value.sGridNo, addressof(ubRoom)) && IN_BROTHEL(ubRoom) && (IN_BROTHEL_GUARD_ROOM(ubRoom))) {
@@ -1136,7 +1136,7 @@ fprintf(OpplistFile,"ManLooksForMan: changing personalOpplist to %d for guynum %
       // make guard run to block guard room
       CancelAIAction(pSoldier, TRUE);
       RESETTIMECOUNTER(pSoldier.value.AICounter, 0);
-      pSoldier.value.bNextAction = AI_ACTION_RUN;
+      pSoldier.value.bNextAction = Enum289.AI_ACTION_RUN;
       pSoldier.value.usNextActionData = 13250;
     }
   }
@@ -1259,7 +1259,7 @@ function ManLooksForMan(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDI
     return(success);
  */
 
-  if (pSoldier.value.ubBodyType == LARVAE_MONSTER || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE && pSoldier.value.bTeam == OUR_TEAM)) {
+  if (pSoldier.value.ubBodyType == Enum194.LARVAE_MONSTER || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE && pSoldier.value.bTeam == OUR_TEAM)) {
     // don't do sight for these
     return FALSE;
   }
@@ -1305,7 +1305,7 @@ function ManLooksForMan(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDI
     bAware = TRUE;
 
     // then we look for him full viewing distance in EVERY direction
-    sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, 0, pOpponent.value.sGridNo, pOpponent.value.bLevel);
+    sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, 0, pOpponent.value.sGridNo, pOpponent.value.bLevel);
 
     // if (pSoldier->ubID == 0)
     // sprintf(gDebugStr,"ALREADY KNOW: ME %d him %d val %d",pSoldier->ubID,pOpponent->ubID,pSoldier->bOppList[pOpponent->ubID]);
@@ -1437,11 +1437,11 @@ PopMessage(tempstr);
           // make them non-neutral so AddOneOpponent will be called, and the guy will say his
           // "I hate you" quote
           if (pSoldier.value.bNeutral) {
-            if (pSoldier.value.ubCivilianGroup != NON_CIV_GROUP && gTacticalStatus.fCivGroupHostile[pSoldier.value.ubCivilianGroup] >= CIV_GROUP_WILL_BECOME_HOSTILE) {
+            if (pSoldier.value.ubCivilianGroup != Enum246.NON_CIV_GROUP && gTacticalStatus.fCivGroupHostile[pSoldier.value.ubCivilianGroup] >= CIV_GROUP_WILL_BECOME_HOSTILE) {
               AddToShouldBecomeHostileOrSayQuoteList(pSoldier.value.ubID);
               fNotAddedToList = FALSE;
             }
-          } else if (NPCHasUnusedRecordWithGivenApproach(pSoldier.value.ubProfile, APPROACH_DECLARATION_OF_HOSTILITY)) {
+          } else if (NPCHasUnusedRecordWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_DECLARATION_OF_HOSTILITY)) {
             // only add if have something to say
             AddToShouldBecomeHostileOrSayQuoteList(pSoldier.value.ubID);
             fNotAddedToList = FALSE;
@@ -1449,13 +1449,13 @@ PopMessage(tempstr);
 
           if (fNotAddedToList) {
             switch (pSoldier.value.ubProfile) {
-              case CARMEN:
-                if (pOpponent.value.ubProfile == SLAY) // 64
+              case Enum268.CARMEN:
+                if (pOpponent.value.ubProfile == Enum268.SLAY) // 64
                 {
                   // Carmen goes to war (against Slay)
                   if (pSoldier.value.bNeutral) {
                     // SetSoldierNonNeutral( pSoldier );
-                    pSoldier.value.bAttitude = ATTACKSLAYONLY;
+                    pSoldier.value.bAttitude = Enum242.ATTACKSLAYONLY;
                     TriggerNPCRecord(pSoldier.value.ubProfile, 28);
                   }
                   /*
@@ -1466,28 +1466,28 @@ PopMessage(tempstr);
                   */
                 }
                 break;
-              case ELDIN:
+              case Enum268.ELDIN:
                 if (pSoldier.value.bNeutral) {
                   let ubRoom: UINT8 = 0;
                   // if player is in behind the ropes of the museum display
                   // or if alarm has gone off (status red)
                   InARoom(pOpponent.value.sGridNo, addressof(ubRoom));
 
-                  if ((CheckFact(FACT_MUSEUM_OPEN, 0) == FALSE && ubRoom >= 22 && ubRoom <= 41) || CheckFact(FACT_MUSEUM_ALARM_WENT_OFF, 0) || (ubRoom == 39 || ubRoom == 40) || (FindObj(pOpponent, CHALICE) != NO_SLOT)) {
-                    SetFactTrue(FACT_MUSEUM_ALARM_WENT_OFF);
+                  if ((CheckFact(Enum170.FACT_MUSEUM_OPEN, 0) == FALSE && ubRoom >= 22 && ubRoom <= 41) || CheckFact(Enum170.FACT_MUSEUM_ALARM_WENT_OFF, 0) || (ubRoom == 39 || ubRoom == 40) || (FindObj(pOpponent, Enum225.CHALICE) != NO_SLOT)) {
+                    SetFactTrue(Enum170.FACT_MUSEUM_ALARM_WENT_OFF);
                     AddToShouldBecomeHostileOrSayQuoteList(pSoldier.value.ubID);
                   }
                 }
                 break;
-              case JIM:
-              case JACK:
-              case OLAF:
-              case RAY:
-              case OLGA:
-              case TYRONE:
+              case Enum268.JIM:
+              case Enum268.JACK:
+              case Enum268.OLAF:
+              case Enum268.RAY:
+              case Enum268.OLGA:
+              case Enum268.TYRONE:
                 // change orders, reset action!
-                if (pSoldier.value.bOrders != SEEKENEMY) {
-                  pSoldier.value.bOrders = SEEKENEMY;
+                if (pSoldier.value.bOrders != Enum241.SEEKENEMY) {
+                  pSoldier.value.bOrders = Enum241.SEEKENEMY;
                   if (pSoldier.value.bOppCnt == 0) {
                     // didn't see anyone before!
                     CancelAIAction(pSoldier, TRUE);
@@ -1495,24 +1495,24 @@ PopMessage(tempstr);
                   }
                 }
                 break;
-              case ANGEL:
-                if (pOpponent.value.ubProfile == MARIA) {
-                  if (CheckFact(FACT_MARIA_ESCORTED_AT_LEATHER_SHOP, MARIA) == TRUE) {
+              case Enum268.ANGEL:
+                if (pOpponent.value.ubProfile == Enum268.MARIA) {
+                  if (CheckFact(Enum170.FACT_MARIA_ESCORTED_AT_LEATHER_SHOP, Enum268.MARIA) == TRUE) {
                     // she was rescued! yay!
-                    TriggerNPCRecord(ANGEL, 12);
+                    TriggerNPCRecord(Enum268.ANGEL, 12);
                   }
-                } else if ((CheckFact(FACT_ANGEL_LEFT_DEED, ANGEL) == TRUE) && (CheckFact(FACT_ANGEL_MENTIONED_DEED, ANGEL) == FALSE)) {
+                } else if ((CheckFact(Enum170.FACT_ANGEL_LEFT_DEED, Enum268.ANGEL) == TRUE) && (CheckFact(Enum170.FACT_ANGEL_MENTIONED_DEED, Enum268.ANGEL) == FALSE)) {
                   CancelAIAction(pSoldier, TRUE);
                   pSoldier.value.sAbsoluteFinalDestination = NOWHERE;
                   EVENT_StopMerc(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection);
-                  TriggerNPCRecord(ANGEL, 20);
+                  TriggerNPCRecord(Enum268.ANGEL, 20);
                   // trigger Angel to walk off afterwards
                   // TriggerNPCRecord( ANGEL, 24 );
                 }
                 break;
               // case QUEEN:
-              case JOE:
-              case ELLIOT:
+              case Enum268.JOE:
+              case Enum268.ELLIOT:
                 if (!(gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags2 & PROFILE_MISC_FLAG2_SAID_FIRSTSEEN_QUOTE)) {
                   if (!AreInMeanwhile()) {
                     TriggerNPCRecord(pSoldier.value.ubProfile, 4);
@@ -1535,7 +1535,7 @@ PopMessage(tempstr);
                     }
                     break;
                     */
-            case IGGY:
+            case Enum268.IGGY:
               if (!(gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags2 & PROFILE_MISC_FLAG2_SAID_FIRSTSEEN_QUOTE)) {
                 TriggerNPCRecord(pSoldier.value.ubProfile, 9);
                 gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags2 |= PROFILE_MISC_FLAG2_SAID_FIRSTSEEN_QUOTE;
@@ -1546,18 +1546,18 @@ PopMessage(tempstr);
         }
       } else {
         if (pSoldier.value.bTeam == CIV_TEAM) {
-          if (pSoldier.value.ubCivilianGroup != NON_CIV_GROUP && gTacticalStatus.fCivGroupHostile[pSoldier.value.ubCivilianGroup] >= CIV_GROUP_WILL_BECOME_HOSTILE && pSoldier.value.bNeutral) {
+          if (pSoldier.value.ubCivilianGroup != Enum246.NON_CIV_GROUP && gTacticalStatus.fCivGroupHostile[pSoldier.value.ubCivilianGroup] >= CIV_GROUP_WILL_BECOME_HOSTILE && pSoldier.value.bNeutral) {
             AddToShouldBecomeHostileOrSayQuoteList(pSoldier.value.ubID);
-          } else if (pSoldier.value.ubCivilianGroup == KINGPIN_CIV_GROUP) {
+          } else if (pSoldier.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP) {
             // generic kingpin goon...
 
             // check to see if we are looking at Maria or unauthorized personnel in the brothel
-            if (pOpponent.value.ubProfile == MARIA) {
+            if (pOpponent.value.ubProfile == Enum268.MARIA) {
               MakeCivHostile(pSoldier, 2);
               if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
                 EnterCombatMode(pSoldier.value.bTeam);
               }
-              SetFactTrue(FACT_MARIA_ESCAPE_NOTICED);
+              SetFactTrue(Enum170.FACT_MARIA_ESCAPE_NOTICED);
             } else {
               let ubRoom: UINT8;
 
@@ -1571,7 +1571,7 @@ PopMessage(tempstr);
                 }
               }
             }
-          } else if (pSoldier.value.ubCivilianGroup == HICKS_CIV_GROUP && CheckFact(FACT_HICKS_MARRIED_PLAYER_MERC, 0) == FALSE) {
+          } else if (pSoldier.value.ubCivilianGroup == Enum246.HICKS_CIV_GROUP && CheckFact(Enum170.FACT_HICKS_MARRIED_PLAYER_MERC, 0) == FALSE) {
             let uiTime: UINT32;
             let sX: INT16;
             let sY: INT16;
@@ -1587,21 +1587,21 @@ PopMessage(tempstr);
                 LocateSoldier(pSoldier.value.ubID, TRUE);
                 GetSoldierScreenPos(pSoldier, addressof(sX), addressof(sY));
                 // begin quote
-                BeginCivQuote(pSoldier, CIV_QUOTE_HICKS_SEE_US_AT_NIGHT, 0, sX, sY);
+                BeginCivQuote(pSoldier, Enum201.CIV_QUOTE_HICKS_SEE_US_AT_NIGHT, 0, sX, sY);
               }
             }
           }
         }
       }
     } else if (pSoldier.value.bTeam == gbPlayerNum) {
-      if ((pOpponent.value.ubProfile == MIKE) && (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) && !(pSoldier.value.usQuoteSaidExtFlags & SOLDIER_QUOTE_SAID_EXT_MIKE)) {
+      if ((pOpponent.value.ubProfile == Enum268.MIKE) && (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) && !(pSoldier.value.usQuoteSaidExtFlags & SOLDIER_QUOTE_SAID_EXT_MIKE)) {
         if (gfMikeShouldSayHi == FALSE) {
           gfMikeShouldSayHi = TRUE;
         }
-        TacticalCharacterDialogue(pSoldier, QUOTE_AIM_SEEN_MIKE);
+        TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_AIM_SEEN_MIKE);
         pSoldier.value.usQuoteSaidExtFlags |= SOLDIER_QUOTE_SAID_EXT_MIKE;
-      } else if (pOpponent.value.ubProfile == JOEY && gfPlayerTeamSawJoey == FALSE) {
-        TacticalCharacterDialogue(pSoldier, QUOTE_SPOTTED_JOEY);
+      } else if (pOpponent.value.ubProfile == Enum268.JOEY && gfPlayerTeamSawJoey == FALSE) {
+        TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_SPOTTED_JOEY);
         gfPlayerTeamSawJoey = TRUE;
       }
     }
@@ -1609,7 +1609,7 @@ PopMessage(tempstr);
     // as soon as a bloodcat sees someone, it becomes hostile
     // this is safe to do here because we haven't made this new person someone we've seen yet
     // (so we are assured we won't count 'em twice for oppcnt purposes)
-    if (pSoldier.value.ubBodyType == BLOODCAT) {
+    if (pSoldier.value.ubBodyType == Enum194.BLOODCAT) {
       if (pSoldier.value.bNeutral) {
         MakeBloodcatsHostile();
         /*
@@ -1621,15 +1621,15 @@ PopMessage(tempstr);
   }
         */
 
-        PlayJA2Sample(BLOODCAT_ROAR, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+        PlayJA2Sample(Enum330.BLOODCAT_ROAR, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
       } else {
         if (pSoldier.value.bOppCnt == 0) {
           if (Random(2) == 0) {
-            PlayJA2Sample(BLOODCAT_ROAR, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+            PlayJA2Sample(Enum330.BLOODCAT_ROAR, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
           }
         }
       }
-    } else if (pOpponent.value.ubBodyType == BLOODCAT && pOpponent.value.bNeutral) {
+    } else if (pOpponent.value.ubBodyType == Enum194.BLOODCAT && pOpponent.value.bNeutral) {
       MakeBloodcatsHostile();
       /*
       SetSoldierNonNeutral( pOpponent );
@@ -1658,8 +1658,8 @@ PopMessage(tempstr);
         IncrementWatchedLoc(pSoldier.value.ubID, pOpponent.value.sGridNo, pOpponent.value.bLevel);
 
         if (pSoldier.value.bTeam == OUR_TEAM && pOpponent.value.bTeam == ENEMY_TEAM) {
-          if (CheckFact(FACT_FIRST_BATTLE_FOUGHT, 0) == FALSE) {
-            SetFactTrue(FACT_FIRST_BATTLE_BEING_FOUGHT);
+          if (CheckFact(Enum170.FACT_FIRST_BATTLE_FOUGHT, 0) == FALSE) {
+            SetFactTrue(Enum170.FACT_FIRST_BATTLE_BEING_FOUGHT);
           }
         }
       } else {
@@ -1679,12 +1679,12 @@ PopMessage(tempstr);
         // other (combat) movement decisions, we took his position into account
         // when we made it, so don't make us think again & slow things down.
         switch (pSoldier.value.bAction) {
-          case AI_ACTION_RANDOM_PATROL:
-          case AI_ACTION_SEEK_OPPONENT:
-          case AI_ACTION_SEEK_FRIEND:
-          case AI_ACTION_POINT_PATROL:
-          case AI_ACTION_LEAVE_WATER_GAS:
-          case AI_ACTION_SEEK_NOISE:
+          case Enum289.AI_ACTION_RANDOM_PATROL:
+          case Enum289.AI_ACTION_SEEK_OPPONENT:
+          case Enum289.AI_ACTION_SEEK_FRIEND:
+          case Enum289.AI_ACTION_POINT_PATROL:
+          case Enum289.AI_ACTION_LEAVE_WATER_GAS:
+          case Enum289.AI_ACTION_SEEK_NOISE:
             SetNewSituation(pSoldier); // force the looker to re-evaluate
             break;
         }
@@ -1697,7 +1697,7 @@ PopMessage(tempstr);
 
   if (ubCaller2 == MANLOOKSFOROTHERTEAMS || ubCaller2 == OTHERTEAMSLOOKFORMAN || ubCaller2 == CALLER_UNKNOWN) // unknown->hearing
   {
-    if (gubBestToMakeSightingSize != BEST_SIGHTING_ARRAY_SIZE_INCOMBAT && gTacticalStatus.bBoxingState == NOT_BOXING) {
+    if (gubBestToMakeSightingSize != BEST_SIGHTING_ARRAY_SIZE_INCOMBAT && gTacticalStatus.bBoxingState == Enum247.NOT_BOXING) {
       if (fNewOpponent) {
         if (gTacticalStatus.uiFlags & INCOMBAT) {
           // presumably a door opening... we do require standard interrupt conditions
@@ -1847,7 +1847,7 @@ function OtherTeamsLookForMan(pOpponent: Pointer<SOLDIERTYPE>): void {
     pSoldier = MercSlots[uiLoop];
 
     // if this merc is active, in this sector, and well enough to look
-    if (pSoldier != NULL && pSoldier.value.bLife >= OKLIFE && (pSoldier.value.ubBodyType != LARVAE_MONSTER)) {
+    if (pSoldier != NULL && pSoldier.value.bLife >= OKLIFE && (pSoldier.value.ubBodyType != Enum194.LARVAE_MONSTER)) {
       // if this merc is on the same team as the target soldier
       if (pSoldier.value.bTeam == pOpponent.value.bTeam) {
         continue; // he doesn't look (he ALWAYS knows about him)
@@ -1898,16 +1898,16 @@ function AddOneOpponent(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   if (!bOldOppCnt) {
     // if we hadn't known about opponents being here for sure prior to this
-    if (pSoldier.value.ubBodyType == LARVAE_MONSTER) {
+    if (pSoldier.value.ubBodyType == Enum194.LARVAE_MONSTER) {
       // never become aware of you!
       return;
     }
 
-    if (pSoldier.value.bAlertStatus < STATUS_RED) {
+    if (pSoldier.value.bAlertStatus < Enum243.STATUS_RED) {
       CheckForChangingOrders(pSoldier);
     }
 
-    pSoldier.value.bAlertStatus = STATUS_BLACK; // force black AI status right away
+    pSoldier.value.bAlertStatus = Enum243.STATUS_BLACK; // force black AI status right away
 
     if (pSoldier.value.uiStatusFlags & SOLDIER_MONSTER) {
       pSoldier.value.ubCaller = NOBODY;
@@ -1931,7 +1931,7 @@ function RemoveOneOpponent(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   // if no opponents remain in sight, drop status to RED (but NOT newSit.!)
   if (!pSoldier.value.bOppCnt)
-    pSoldier.value.bAlertStatus = STATUS_RED;
+    pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
 }
 
 function RemoveManAsTarget(pSoldier: Pointer<SOLDIERTYPE>): void {
@@ -2292,7 +2292,7 @@ function SaySeenQuote(pSoldier: Pointer<SOLDIERTYPE>, fSeenCreature: BOOLEAN, fV
     // now check!
     if ((pSoldier.value.bOppCnt - ubNumAllies) > 2) {
       // Say quote!
-      TacticalCharacterDialogue(pSoldier, QUOTE_IN_TROUBLE_SLASH_IN_BATTLE);
+      TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_IN_TROUBLE_SLASH_IN_BATTLE);
 
       pSoldier.value.usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_IN_SHIT;
 
@@ -2327,34 +2327,34 @@ function SaySeenQuote(pSoldier: Pointer<SOLDIERTYPE>, fSeenCreature: BOOLEAN, fV
           pSoldier.value.usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_MULTIPLE_CREATURES;
 
           // Say quote
-          TacticalCharacterDialogue(pSoldier, QUOTE_ATTACKED_BY_MULTIPLE_CREATURES);
+          TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_ATTACKED_BY_MULTIPLE_CREATURES);
         } else {
-          TacticalCharacterDialogue(pSoldier, QUOTE_SEE_CREATURE);
+          TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_SEE_CREATURE);
         }
       } else {
-        TacticalCharacterDialogue(pSoldier, QUOTE_SEE_CREATURE);
+        TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_SEE_CREATURE);
       }
     } else {
       // Yes, set flag
       gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags |= PROFILE_MISC_FLAG_HAVESEENCREATURE;
 
-      TacticalCharacterDialogue(pSoldier, QUOTE_FIRSTTIME_GAME_SEE_CREATURE);
+      TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_FIRSTTIME_GAME_SEE_CREATURE);
     }
   }
   // 2 is for bloodcat...
   else if (fSeenCreature == 2) {
-    TacticalCharacterDialogue(pSoldier, QUOTE_SPOTTED_BLOODCAT);
+    TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_SPOTTED_BLOODCAT);
   } else {
     if (fVirginSector) {
       // First time we've seen a guy this sector
-      TacticalCharacterDialogue(pSoldier, QUOTE_SEE_ENEMY_VARIATION);
+      TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_SEE_ENEMY_VARIATION);
     } else {
 // FIXME: Language-specific code
 // #ifdef ENGLISH
       if (Random(100) < 30) {
-        DoMercBattleSound(pSoldier, BATTLE_SOUND_ENEMY);
+        DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_ENEMY);
       } else {
-        TacticalCharacterDialogue(pSoldier, QUOTE_SEE_ENEMY);
+        TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_SEE_ENEMY);
       }
 // #else
 //       TacticalCharacterDialogue(pSoldier, QUOTE_SEE_ENEMY);
@@ -2384,7 +2384,7 @@ function OurTeamSeesSomeone(pSoldier: Pointer<SOLDIERTYPE>, bNumReRevealed: INT8
       // STOP IF WE WERE MOVING....
       /// Speek up!
       if (bNumReRevealed > 0 && bNumNewEnemies == 0) {
-        DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
+        DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
       } else {
         SaySeenQuote(pSoldier, gfPlayerTeamSawCreatures, FALSE, gfPlayerTeamSawJoey);
       }
@@ -2408,8 +2408,8 @@ function OurTeamSeesSomeone(pSoldier: Pointer<SOLDIERTYPE>, bNumReRevealed: INT8
   // If we are in combat....
   if ((gTacticalStatus.uiFlags & INCOMBAT)) {
     // If we are NOT in any music mode...
-    if (gubMusicMode == MUSIC_NONE) {
-      SetMusicMode(MUSIC_TACTICAL_BATTLE);
+    if (gubMusicMode == Enum328.MUSIC_NONE) {
+      SetMusicMode(Enum328.MUSIC_TACTICAL_BATTLE);
     }
   }
 }
@@ -2548,7 +2548,7 @@ function RadioSightings(pSoldier: Pointer<SOLDIERTYPE>, ubAbout: UINT8, ubTeamTo
             }
 
             // ATE: Added for bloodcat...
-            if (pOpponent.value.ubBodyType == BLOODCAT) {
+            if (pOpponent.value.ubBodyType == Enum194.BLOODCAT) {
               // 2 is for bloodcat
               gfPlayerTeamSawCreatures = 2;
             }
@@ -2595,7 +2595,7 @@ function RadioSightings(pSoldier: Pointer<SOLDIERTYPE>, ubAbout: UINT8, ubTeamTo
         OurTeamSeesSomeone(pSoldier, revealedEnemies, unknownEnemies);
       } else if (fSawCreatureForFirstTime) {
         gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags |= PROFILE_MISC_FLAG_HAVESEENCREATURE;
-        TacticalCharacterDialogue(pSoldier, QUOTE_FIRSTTIME_GAME_SEE_CREATURE);
+        TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_FIRSTTIME_GAME_SEE_CREATURE);
       }
     }
   }
@@ -2904,13 +2904,13 @@ function DebugSoldierPage2(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "Main hand:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[HANDPOS].usItem]);
+    gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.HANDPOS].usItem]);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "Second hand:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SECONDHANDPOS].usItem]);
+    gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.SECONDHANDPOS].usItem]);
     ubLine++;
 
     if (GetMouseMapPos(addressof(usMapPos))) {
@@ -3288,16 +3288,16 @@ function DebugSoldierPage3(): void {
 
 function AppendAttachmentCode(usItem: UINT16, str: Pointer<UINT16>): void {
   switch (usItem) {
-    case SILENCER:
+    case Enum225.SILENCER:
       wcscat(str, " Sil");
       break;
-    case SNIPERSCOPE:
+    case Enum225.SNIPERSCOPE:
       wcscat(str, " Scp");
       break;
-    case BIPOD:
+    case Enum225.BIPOD:
       wcscat(str, " Bip");
       break;
-    case LASERSCOPE:
+    case Enum225.LASERSCOPE:
       wcscat(str, " Las");
       break;
   }
@@ -3378,28 +3378,28 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     gprintf(150, LINE_HEIGHT * ubLine, "%d", pSoldier.value.bExpLevel);
     switch (pSoldier.value.ubSoldierClass) {
-      case SOLDIER_CLASS_ADMINISTRATOR:
+      case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
         gprintf(320, LINE_HEIGHT * ubLine, "(Administrator)");
         break;
-      case SOLDIER_CLASS_ELITE:
+      case Enum262.SOLDIER_CLASS_ELITE:
         gprintf(320, LINE_HEIGHT * ubLine, "(Army Elite)");
         break;
-      case SOLDIER_CLASS_ARMY:
+      case Enum262.SOLDIER_CLASS_ARMY:
         gprintf(320, LINE_HEIGHT * ubLine, "(Army Troop)");
         break;
-      case SOLDIER_CLASS_CREATURE:
+      case Enum262.SOLDIER_CLASS_CREATURE:
         gprintf(320, LINE_HEIGHT * ubLine, "(Creature)");
         break;
-      case SOLDIER_CLASS_GREEN_MILITIA:
+      case Enum262.SOLDIER_CLASS_GREEN_MILITIA:
         gprintf(320, LINE_HEIGHT * ubLine, "(Green Militia)");
         break;
-      case SOLDIER_CLASS_REG_MILITIA:
+      case Enum262.SOLDIER_CLASS_REG_MILITIA:
         gprintf(320, LINE_HEIGHT * ubLine, "(Reg Militia)");
         break;
-      case SOLDIER_CLASS_ELITE_MILITIA:
+      case Enum262.SOLDIER_CLASS_ELITE_MILITIA:
         gprintf(320, LINE_HEIGHT * ubLine, "(Elite Militia)");
         break;
-      case SOLDIER_CLASS_MINER:
+      case Enum262.SOLDIER_CLASS_MINER:
         gprintf(320, LINE_HEIGHT * ubLine, "(Miner)");
         break;
       default:
@@ -3410,28 +3410,28 @@ function DebugSoldierPage4(): void {
     if (pSoldier.value.bTeam != OUR_TEAM) {
       let pNode: Pointer<SOLDIERINITNODE>;
       switch (pSoldier.value.bOrders) {
-        case STATIONARY:
+        case Enum241.STATIONARY:
           swprintf(szOrders, "STATIONARY");
           break;
-        case ONGUARD:
+        case Enum241.ONGUARD:
           swprintf(szOrders, "ON GUARD");
           break;
-        case ONCALL:
+        case Enum241.ONCALL:
           swprintf(szOrders, "ON CALL");
           break;
-        case SEEKENEMY:
+        case Enum241.SEEKENEMY:
           swprintf(szOrders, "SEEK ENEMY");
           break;
-        case CLOSEPATROL:
+        case Enum241.CLOSEPATROL:
           swprintf(szOrders, "CLOSE PATROL");
           break;
-        case FARPATROL:
+        case Enum241.FARPATROL:
           swprintf(szOrders, "FAR PATROL");
           break;
-        case POINTPATROL:
+        case Enum241.POINTPATROL:
           swprintf(szOrders, "POINT PATROL");
           break;
-        case RNDPTPATROL:
+        case Enum241.RNDPTPATROL:
           swprintf(szOrders, "RND PT PATROL");
           break;
         default:
@@ -3439,22 +3439,22 @@ function DebugSoldierPage4(): void {
           break;
       }
       switch (pSoldier.value.bAttitude) {
-        case DEFENSIVE:
+        case Enum242.DEFENSIVE:
           swprintf(szAttitude, "DEFENSIVE");
           break;
-        case BRAVESOLO:
+        case Enum242.BRAVESOLO:
           swprintf(szAttitude, "BRAVE SOLO");
           break;
-        case BRAVEAID:
+        case Enum242.BRAVEAID:
           swprintf(szAttitude, "BRAVE AID");
           break;
-        case AGGRESSIVE:
+        case Enum242.AGGRESSIVE:
           swprintf(szAttitude, "AGGRESSIVE");
           break;
-        case CUNNINGSOLO:
+        case Enum242.CUNNINGSOLO:
           swprintf(szAttitude, "CUNNING SOLO");
           break;
-        case CUNNINGAID:
+        case Enum242.CUNNINGAID:
           swprintf(szAttitude, "CUNNING AID");
           break;
         default:
@@ -3485,153 +3485,153 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "HELMETPOS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[HELMETPOS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[HELMETPOS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[HELMETPOS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.HELMETPOS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.HELMETPOS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.HELMETPOS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "VESTPOS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[VESTPOS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[VESTPOS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[VESTPOS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.VESTPOS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.VESTPOS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.VESTPOS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "LEGPOS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[LEGPOS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[LEGPOS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[LEGPOS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.LEGPOS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.LEGPOS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.LEGPOS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "HEAD1POS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[HEAD1POS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[HEAD1POS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[HEAD1POS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.HEAD1POS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.HEAD1POS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.HEAD1POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "HEAD2POS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[HEAD2POS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[HEAD2POS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[HEAD2POS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.HEAD2POS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.HEAD2POS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.HEAD2POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "HANDPOS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[HANDPOS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[HANDPOS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[HANDPOS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.HANDPOS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.HANDPOS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.HANDPOS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "SECONDHANDPOS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[SECONDHANDPOS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SECONDHANDPOS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SECONDHANDPOS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.SECONDHANDPOS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.SECONDHANDPOS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.SECONDHANDPOS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "BIGPOCK1POS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[BIGPOCK1POS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[BIGPOCK1POS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[BIGPOCK1POS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.BIGPOCK1POS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.BIGPOCK1POS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.BIGPOCK1POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "BIGPOCK2POS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[BIGPOCK2POS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[BIGPOCK2POS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[BIGPOCK2POS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.BIGPOCK2POS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.BIGPOCK2POS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.BIGPOCK2POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "BIGPOCK3POS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[BIGPOCK3POS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[BIGPOCK3POS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[BIGPOCK3POS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.BIGPOCK3POS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.BIGPOCK3POS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.BIGPOCK3POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "BIGPOCK4POS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[BIGPOCK4POS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[BIGPOCK4POS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[BIGPOCK4POS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.BIGPOCK4POS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.BIGPOCK4POS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.BIGPOCK4POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "SMALLPOCK1POS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[SMALLPOCK1POS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SMALLPOCK1POS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SMALLPOCK1POS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.SMALLPOCK1POS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.SMALLPOCK1POS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.SMALLPOCK1POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "SMALLPOCK2POS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[SMALLPOCK2POS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SMALLPOCK2POS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SMALLPOCK2POS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.SMALLPOCK2POS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.SMALLPOCK2POS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.SMALLPOCK2POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "SMALLPOCK3POS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[SMALLPOCK3POS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SMALLPOCK3POS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SMALLPOCK3POS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.SMALLPOCK3POS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.SMALLPOCK3POS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.SMALLPOCK3POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "SMALLPOCK4POS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[SMALLPOCK4POS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SMALLPOCK4POS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SMALLPOCK4POS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.SMALLPOCK4POS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.SMALLPOCK4POS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.SMALLPOCK4POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "SMALLPOCK5POS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[SMALLPOCK5POS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SMALLPOCK5POS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SMALLPOCK5POS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.SMALLPOCK5POS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.SMALLPOCK5POS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.SMALLPOCK5POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "SMALLPOCK6POS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[SMALLPOCK6POS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SMALLPOCK6POS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SMALLPOCK6POS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.SMALLPOCK6POS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.SMALLPOCK6POS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.SMALLPOCK6POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "SMALLPOCK7POS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[SMALLPOCK7POS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SMALLPOCK7POS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SMALLPOCK7POS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.SMALLPOCK7POS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.SMALLPOCK7POS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.SMALLPOCK7POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "SMALLPOCK8POS:");
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
-    if (pSoldier.value.inv[SMALLPOCK8POS].usItem)
-      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SMALLPOCK8POS].usItem]);
-    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SMALLPOCK8POS]), LINE_HEIGHT * ubLine);
+    if (pSoldier.value.inv[Enum261.SMALLPOCK8POS].usItem)
+      gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[Enum261.SMALLPOCK8POS].usItem]);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[Enum261.SMALLPOCK8POS]), LINE_HEIGHT * ubLine);
     ubLine++;
   } else {
     SetFont(LARGEFONT1);
@@ -3662,10 +3662,10 @@ function MovementNoise(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   iStealthSkill = 20 + 4 * EffectiveExpLevel(pSoldier) + ((EffectiveDexterity(pSoldier) * 4) / 10); // 24-100
 
   // big bonus for those "extra stealthy" mercs
-  if (pSoldier.value.ubBodyType == BLOODCAT) {
+  if (pSoldier.value.ubBodyType == Enum194.BLOODCAT) {
     iStealthSkill += 50;
-  } else if (HAS_SKILL_TRAIT(pSoldier, STEALTHY)) {
-    iStealthSkill += 25 * NUM_SKILL_TRAITS(pSoldier, STEALTHY);
+  } else if (HAS_SKILL_TRAIT(pSoldier, Enum269.STEALTHY)) {
+    iStealthSkill += 25 * NUM_SKILL_TRAITS(pSoldier, Enum269.STEALTHY);
   }
 
   // NumMessage("Base Stealth = ",stealthSkill);
@@ -3716,13 +3716,13 @@ function MovementNoise(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
       ubMaxVolume++; // in water, can be even louder
     }
     switch (pSoldier.value.usAnimState) {
-      case CRAWLING:
+      case Enum193.CRAWLING:
         ubMaxVolume -= 2;
         break;
-      case SWATTING:
+      case Enum193.SWATTING:
         ubMaxVolume -= 1;
         break;
-      case RUNNING:
+      case Enum193.RUNNING:
         ubMaxVolume += 3;
         break;
     }
@@ -3747,13 +3747,13 @@ function MovementNoise(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
     {
       ubVolume = 1 + ((iRoll - iStealthSkill + 1) / 16); // volume is 1 - 7 ...
       switch (pSoldier.value.usAnimState) {
-        case CRAWLING:
+        case Enum193.CRAWLING:
           ubVolume -= 2;
           break;
-        case SWATTING:
+        case Enum193.SWATTING:
           ubVolume -= 1;
           break;
-        case RUNNING:
+        case Enum193.RUNNING:
           ubVolume += 3;
           break;
       }
@@ -3809,7 +3809,7 @@ function MakeNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrType
 
   if (gTacticalStatus.ubAttackBusyCount) {
     // delay these events until the attack is over!
-    AddGameEvent(S_NOISE, DEMAND_EVENT_DELAY, addressof(SNoise));
+    AddGameEvent(Enum319.S_NOISE, DEMAND_EVENT_DELAY, addressof(SNoise));
   } else {
     // AddGameEvent( S_NOISE, 0, &SNoise );
 
@@ -3970,14 +3970,14 @@ function ProcessNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrT
   // dead noiseMaker is only used here to decide WHICH soldiers HearNoise().
 
   // if noise is made by a person, AND it's not noise from an explosion
-  if ((ubNoiseMaker < NOBODY) && (ubNoiseType != NOISE_EXPLOSION)) {
+  if ((ubNoiseMaker < NOBODY) && (ubNoiseType != Enum236.NOISE_EXPLOSION)) {
     // inactive/not in sector/dead soldiers, shouldn't be making noise!
     if (!Menptr[ubNoiseMaker].bActive || !Menptr[ubNoiseMaker].bInSector || Menptr[ubNoiseMaker].uiStatusFlags & SOLDIER_DEAD) {
       return;
     }
 
     // if he's out of life, and this isn't just his "dying scream" which is OK
-    if (!Menptr[ubNoiseMaker].bLife && (ubNoiseType != NOISE_SCREAM)) {
+    if (!Menptr[ubNoiseMaker].bLife && (ubNoiseType != Enum236.NOISE_SCREAM)) {
       return;
     }
   }
@@ -3998,7 +3998,7 @@ function ProcessNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrT
           */
 
   // if we have now somehow obtained a valid terrain type
-  if ((ubSourceTerrType >= FLAT_GROUND) || (ubSourceTerrType <= DEEP_WATER)) {
+  if ((ubSourceTerrType >= Enum315.FLAT_GROUND) || (ubSourceTerrType <= Enum315.DEEP_WATER)) {
     // NumMessage("Source Terrain Type = ",ubSourceTerrType);
     bCheckTerrain = TRUE;
   }
@@ -4007,12 +4007,12 @@ function ProcessNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrT
   // DETERMINE THE *PERCEIVED* SOURCE OF THE NOISE
   switch (ubNoiseType) {
     // for noise generated by an OBJECT shot/thrown/dropped by the noiseMaker
-    case NOISE_ROCK_IMPACT:
+    case Enum236.NOISE_ROCK_IMPACT:
       gsWhoThrewRock = ubNoiseMaker;
       // fall through here!!!
-    case NOISE_BULLET_IMPACT:
-    case NOISE_GRENADE_IMPACT:
-    case NOISE_EXPLOSION:
+    case Enum236.NOISE_BULLET_IMPACT:
+    case Enum236.NOISE_GRENADE_IMPACT:
+    case Enum236.NOISE_EXPLOSION:
       // the source of the noise is not at all obvious, so hide it from
       // the listener and maintain noiseMaker's cover by making source NOBODY
       ubSource = NOBODY;
@@ -4059,10 +4059,10 @@ function ProcessNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrT
       bTellPlayer = gTacticalStatus.fEnemyInSector && (!(gTacticalStatus.uiFlags & INCOMBAT) || (gTacticalStatus.ubCurrentTeam));
 
       switch (ubNoiseType) {
-        case NOISE_GUNFIRE:
-        case NOISE_BULLET_IMPACT:
-        case NOISE_ROCK_IMPACT:
-        case NOISE_GRENADE_IMPACT:
+        case Enum236.NOISE_GUNFIRE:
+        case Enum236.NOISE_BULLET_IMPACT:
+        case Enum236.NOISE_ROCK_IMPACT:
+        case Enum236.NOISE_GRENADE_IMPACT:
           // It's noise caused by a projectile.  If the projectile was seen by
           // the local player while in flight (PublicBullet), then don't bother
           // giving him a message about the noise it made, he's obviously aware.
@@ -4072,7 +4072,7 @@ function ProcessNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrT
 
           break;
 
-        case NOISE_EXPLOSION:
+        case Enum236.NOISE_EXPLOSION:
           // if center of explosion is in visual range of team, don't report
           // noise, because the player is already watching the thing go BOOM!
           if (TeamMemberNear(bTeam, sGridNo, STRAIGHT)) {
@@ -4080,7 +4080,7 @@ function ProcessNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrT
           }
           break;
 
-        case NOISE_SILENT_ALARM:
+        case Enum236.NOISE_SILENT_ALARM:
           bTellPlayer = FALSE;
           break;
       }
@@ -4118,7 +4118,7 @@ function ProcessNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrT
     // All mercs on this team check if they are eligible to hear this noise
     for (bLoop = gTacticalStatus.Team[bTeam].bFirstID, pSoldier = Menptr + bLoop; bLoop <= gTacticalStatus.Team[bTeam].bLastID; bLoop++, pSoldier++) {
       // if this "listener" is inactive, or in no condition to care
-      if (!pSoldier.value.bActive || !pSoldier.value.bInSector || pSoldier.value.uiStatusFlags & SOLDIER_DEAD || (pSoldier.value.bLife < OKLIFE) || pSoldier.value.ubBodyType == LARVAE_MONSTER) {
+      if (!pSoldier.value.bActive || !pSoldier.value.bInSector || pSoldier.value.uiStatusFlags & SOLDIER_DEAD || (pSoldier.value.bLife < OKLIFE) || pSoldier.value.ubBodyType == Enum194.LARVAE_MONSTER) {
         continue; // skip him!
       }
 
@@ -4126,7 +4126,7 @@ function ProcessNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrT
         continue; // skip
       }
 
-      if (bTeam == gbPlayerNum && pSoldier.value.bAssignment == ASSIGNMENT_POW) {
+      if (bTeam == gbPlayerNum && pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
         // POWs should not be processed for noise
         continue;
       }
@@ -4136,7 +4136,7 @@ function ProcessNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrT
         // if this listener can see this noise maker
         if (pSoldier.value.bOppList[ubNoiseMaker] == SEEN_CURRENTLY) {
           // civilians care about gunshots even if they come from someone they can see
-          if (!(pSoldier.value.bNeutral && ubNoiseType == NOISE_GUNFIRE)) {
+          if (!(pSoldier.value.bNeutral && ubNoiseType == Enum236.NOISE_GUNFIRE)) {
             continue; // then who cares whether he can also hear the guy?
           }
         }
@@ -4151,10 +4151,10 @@ function ProcessNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrT
             break;
           case ENEMY_TEAM:
             switch (pSoldier.value.ubProfile) {
-              case WARDEN:
-              case GENERAL:
-              case SERGEANT:
-              case CONRAD:
+              case Enum268.WARDEN:
+              case Enum268.GENERAL:
+              case Enum268.SERGEANT:
+              case Enum268.CONRAD:
                 // ignore soldier team
                 continue;
               default:
@@ -4185,7 +4185,7 @@ function ProcessNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrT
         }
       }
 
-      if ((pSoldier.value.bTeam == CIV_TEAM) && (ubNoiseType == NOISE_GUNFIRE || ubNoiseType == NOISE_EXPLOSION)) {
+      if ((pSoldier.value.bTeam == CIV_TEAM) && (ubNoiseType == Enum236.NOISE_GUNFIRE || ubNoiseType == Enum236.NOISE_EXPLOSION)) {
         pSoldier.value.ubMiscSoldierFlags |= SOLDIER_MISC_HEARD_GUNSHOT;
       }
 
@@ -4201,7 +4201,7 @@ function ProcessNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrT
         ubNoiseDir = atan8(CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), CenterX(sGridNo), CenterY(sGridNo));
 
         // check the 'noise heard & reported' bit for that soldier & direction
-        if (ubNoiseType != NOISE_MOVEMENT || bTeam != OUR_TEAM || (pSoldier.value.bInterruptDuelPts != NO_INTERRUPT) || !(pSoldier.value.ubMovementNoiseHeard & (1 << ubNoiseDir))) {
+        if (ubNoiseType != Enum236.NOISE_MOVEMENT || bTeam != OUR_TEAM || (pSoldier.value.bInterruptDuelPts != NO_INTERRUPT) || !(pSoldier.value.ubMovementNoiseHeard & (1 << ubNoiseDir))) {
           if (ubEffVolume > ubLoudestEffVolume) {
             ubLoudestEffVolume = ubEffVolume;
             ubHeardLoudestBy = pSoldier.value.ubID;
@@ -4228,7 +4228,7 @@ function ProcessNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrT
           // should add level to this function call
           TellPlayerAboutNoise(MercPtrs[ubHeardLoudestBy], ubNoiseMaker, sGridNo, bLevel, ubLoudestEffVolume, ubNoiseType, ubLoudestNoiseDir);
 
-          if (ubNoiseType == NOISE_MOVEMENT) {
+          if (ubNoiseType == Enum236.NOISE_MOVEMENT) {
             MercPtrs[ubHeardLoudestBy].value.ubMovementNoiseHeard |= (1 << ubNoiseDir);
           }
         }
@@ -4270,7 +4270,7 @@ function CalcEffVolume(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: I
   let iEffVolume: INT32;
   let iDistance: INT32;
 
-  if (pSoldier.value.inv[HEAD1POS].usItem == WALKMAN || pSoldier.value.inv[HEAD2POS].usItem == WALKMAN) {
+  if (pSoldier.value.inv[Enum261.HEAD1POS].usItem == Enum225.WALKMAN || pSoldier.value.inv[Enum261.HEAD2POS].usItem == Enum225.WALKMAN) {
     return 0;
   }
 
@@ -4341,11 +4341,11 @@ function CalcEffVolume(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: I
   }
   */
 
-  if (pSoldier.value.usAnimState == RUNNING) {
+  if (pSoldier.value.usAnimState == Enum193.RUNNING) {
     iEffVolume -= 5;
   }
 
-  if (pSoldier.value.bAssignment == SLEEPING) {
+  if (pSoldier.value.bAssignment == Enum193.SLEEPING) {
     // decrease effective volume since we're asleep!
     iEffVolume -= 5;
   }
@@ -4368,7 +4368,7 @@ function CalcEffVolume(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: I
       // the presence of walls between 2 spots both inside or both outside, but
       // given our current system it's the best that we can do
 
-      if (((ubTerrType1 == FLAT_FLOOR) && (ubTerrType2 != FLAT_FLOOR)) || ((ubTerrType1 != FLAT_FLOOR) && (ubTerrType2 == FLAT_FLOOR))) {
+      if (((ubTerrType1 == Enum315.FLAT_FLOOR) && (ubTerrType2 != Enum315.FLAT_FLOOR)) || ((ubTerrType1 != Enum315.FLAT_FLOOR) && (ubTerrType2 == Enum315.FLAT_FLOOR))) {
         // PopMessage("Sound is muffled by wall(s)");
 
         // sound is muffled, reduce the effective volume of the noise
@@ -4397,7 +4397,7 @@ function HearNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT8, sGridNo:
 
   //	DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String( "%d hears noise from %d (%d/%d) volume %d", pSoldier->ubID, ubNoiseMaker, sGridNo, bLevel, ubVolume ) );
 
-  if (pSoldier.value.ubBodyType == CROW) {
+  if (pSoldier.value.ubBodyType == Enum194.CROW) {
     CrowsFlyAway(pSoldier.value.bTeam);
     return;
   }
@@ -4414,7 +4414,7 @@ function HearNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT8, sGridNo:
   // is he close enough to see that gridno if he turns his head?
 
   // ignore muzzle flashes when turning head to see noise
-  if (ubNoiseType == NOISE_GUNFIRE && ubNoiseMaker != NOBODY && MercPtrs[ubNoiseMaker].value.fMuzzleFlash) {
+  if (ubNoiseType == Enum236.NOISE_GUNFIRE && ubNoiseMaker != NOBODY && MercPtrs[ubNoiseMaker].value.fMuzzleFlash) {
     sNoiseX = CenterX(sGridNo);
     sNoiseY = CenterY(sGridNo);
     bDirection = atan8(pSoldier.value.sX, pSoldier.value.sY, sNoiseX, sNoiseY);
@@ -4425,7 +4425,7 @@ function HearNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT8, sGridNo:
     }
   }
 
-  sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, bLevel);
+  sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sGridNo, bLevel);
 
   if (fMuzzleFlash) {
     // turn flash on again
@@ -4453,7 +4453,7 @@ function HearNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT8, sGridNo:
         bSourceSeen = TRUE;
 
         // if this sounds like a door opening/closing (could also be a crate)
-        if (ubNoiseType == NOISE_CREAKING) {
+        if (ubNoiseType == Enum236.NOISE_CREAKING) {
           // then look around and update ALL doors that have secretly changed
           // LookForDoors(pSoldier,AWARE);
         }
@@ -4483,11 +4483,11 @@ function HearNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT8, sGridNo:
 
       if (pSoldier.value.bNeutral) {
         // could be a civilian watching us shoot at an enemy
-        if (((ubNoiseType == NOISE_GUNFIRE) || (ubNoiseType == NOISE_BULLET_IMPACT)) && (ubVolume >= 3)) {
+        if (((ubNoiseType == Enum236.NOISE_GUNFIRE) || (ubNoiseType == Enum236.NOISE_BULLET_IMPACT)) && (ubVolume >= 3)) {
           // if status is only GREEN or YELLOW
-          if (pSoldier.value.bAlertStatus < STATUS_RED) {
+          if (pSoldier.value.bAlertStatus < Enum243.STATUS_RED) {
             // then this soldier goes to status RED, has proof of enemy presence
-            pSoldier.value.bAlertStatus = STATUS_RED;
+            pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
             CheckForChangingOrders(pSoldier);
           }
         }
@@ -4497,11 +4497,11 @@ function HearNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT8, sGridNo:
       SetNewSituation(pSoldier); // re-evaluate situation
 
       // if noise type was unmistakably that of gunfire
-      if (((ubNoiseType == NOISE_GUNFIRE) || (ubNoiseType == NOISE_BULLET_IMPACT)) && (ubVolume >= 3)) {
+      if (((ubNoiseType == Enum236.NOISE_GUNFIRE) || (ubNoiseType == Enum236.NOISE_BULLET_IMPACT)) && (ubVolume >= 3)) {
         // if status is only GREEN or YELLOW
-        if (pSoldier.value.bAlertStatus < STATUS_RED) {
+        if (pSoldier.value.bAlertStatus < Enum243.STATUS_RED) {
           // then this soldier goes to status RED, has proof of enemy presence
-          pSoldier.value.bAlertStatus = STATUS_RED;
+          pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
           CheckForChangingOrders(pSoldier);
         }
       }
@@ -4531,12 +4531,12 @@ function HearNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT8, sGridNo:
 
     if (pSoldier.value.fAIFlags & AI_ASLEEP) {
       switch (ubNoiseType) {
-        case NOISE_BULLET_IMPACT:
-        case NOISE_GUNFIRE:
-        case NOISE_EXPLOSION:
-        case NOISE_SCREAM:
-        case NOISE_WINDOW_SMASHING:
-        case NOISE_DOOR_SMASHING:
+        case Enum236.NOISE_BULLET_IMPACT:
+        case Enum236.NOISE_GUNFIRE:
+        case Enum236.NOISE_EXPLOSION:
+        case Enum236.NOISE_SCREAM:
+        case Enum236.NOISE_WINDOW_SMASHING:
+        case Enum236.NOISE_DOOR_SMASHING:
           // WAKE UP!
           pSoldier.value.fAIFlags &= (~AI_ASLEEP);
           break;
@@ -4583,14 +4583,14 @@ function HearNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT8, sGridNo:
   {
     // if noise type was unmistakably that of an explosion (seen or not) or alarm
     if (!(pSoldier.value.uiStatusFlags & SOLDIER_PC)) {
-      if ((ubNoiseType == NOISE_EXPLOSION || ubNoiseType == NOISE_SILENT_ALARM) && (ubVolume >= 3)) {
-        if (ubNoiseType == NOISE_SILENT_ALARM) {
+      if ((ubNoiseType == Enum236.NOISE_EXPLOSION || ubNoiseType == Enum236.NOISE_SILENT_ALARM) && (ubVolume >= 3)) {
+        if (ubNoiseType == Enum236.NOISE_SILENT_ALARM) {
           WearGasMaskIfAvailable(pSoldier);
         }
         // if status is only GREEN or YELLOW
-        if (pSoldier.value.bAlertStatus < STATUS_RED) {
+        if (pSoldier.value.bAlertStatus < Enum243.STATUS_RED) {
           // then this soldier goes to status RED, has proof of enemy presence
-          pSoldier.value.bAlertStatus = STATUS_RED;
+          pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
           CheckForChangingOrders(pSoldier);
         }
       }
@@ -4598,7 +4598,7 @@ function HearNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT8, sGridNo:
     // if the source of the noise can't be seen,
     // OR if it's a rock and the listener had to turn so that by the time he
     // looked all his saw was a bunch of rocks lying still
-    if (!bSourceSeen || ((ubNoiseType == NOISE_ROCK_IMPACT) && (bHadToTurn)) || ubNoiseType == NOISE_SILENT_ALARM) {
+    if (!bSourceSeen || ((ubNoiseType == Enum236.NOISE_ROCK_IMPACT) && (bHadToTurn)) || ubNoiseType == Enum236.NOISE_SILENT_ALARM) {
       // check if the effective volume of this new noise is greater than or at
       // least equal to the volume of the currently noticed noise stored
       if (ubVolume >= pSoldier.value.ubNoiseVolume) {
@@ -4622,16 +4622,16 @@ function HearNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT8, sGridNo:
       SetNewSituation(pSoldier); // re-evaluate situation
 
       // if status is only GREEN or YELLOW
-      if (pSoldier.value.bAlertStatus < STATUS_RED) {
+      if (pSoldier.value.bAlertStatus < Enum243.STATUS_RED) {
         // then this soldier goes to status RED, has proof of enemy presence
-        pSoldier.value.bAlertStatus = STATUS_RED;
+        pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
         CheckForChangingOrders(pSoldier);
       }
     }
 
     if (gubBestToMakeSightingSize == BEST_SIGHTING_ARRAY_SIZE_INCOMBAT) {
       // if the noise heard was the fall of a rock
-      if ((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT) && ubNoiseType == NOISE_ROCK_IMPACT) {
+      if ((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT) && ubNoiseType == Enum236.NOISE_ROCK_IMPACT) {
         // give every ELIGIBLE listener an automatic interrupt, since it's
         // reasonable to assume the guy throwing wants to wait for their reaction!
         if (StandardInterruptConditionsMet(pSoldier, NOBODY, FALSE)) {
@@ -4668,7 +4668,7 @@ function TellPlayerAboutNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT
   if (ubNoiseMaker != NOBODY && pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bTeam == Menptr[ubNoiseMaker].bTeam) {
   }
 
-  if (bLevel == pSoldier.value.bLevel || ubNoiseType == NOISE_EXPLOSION || ubNoiseType == NOISE_SCREAM || ubNoiseType == NOISE_ROCK_IMPACT || ubNoiseType == NOISE_GRENADE_IMPACT) {
+  if (bLevel == pSoldier.value.bLevel || ubNoiseType == Enum236.NOISE_EXPLOSION || ubNoiseType == Enum236.NOISE_SCREAM || ubNoiseType == Enum236.NOISE_ROCK_IMPACT || ubNoiseType == Enum236.NOISE_GRENADE_IMPACT) {
     ScreenMsg(MSG_FONT_YELLOW, MSG_INTERFACE, pNewNoiseStr[ubNoiseType], pSoldier.value.name, pNoiseVolStr[ubVolumeIndex], pDirectionStr[ubNoiseDir]);
   } else if (bLevel > pSoldier.value.bLevel) {
     // from above!
@@ -4681,7 +4681,7 @@ function TellPlayerAboutNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT
   // if the quote was faint, say something
   if (ubVolumeIndex == 0) {
     if (!AreInMeanwhile() && !(gTacticalStatus.uiFlags & ENGAGED_IN_CONV) && pSoldier.value.ubTurnsUntilCanSayHeardNoise == 0) {
-      TacticalCharacterDialogue(pSoldier, QUOTE_HEARD_SOMETHING);
+      TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_HEARD_SOMETHING);
       if (gTacticalStatus.uiFlags & INCOMBAT) {
         pSoldier.value.ubTurnsUntilCanSayHeardNoise = 2;
       } else {
@@ -5049,16 +5049,16 @@ function NoticeUnseenAttacker(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointe
     return;
   }
 
-  if (pAttacker.value.usAttackingWeapon == DART_GUN) {
+  if (pAttacker.value.usAttackingWeapon == Enum225.DART_GUN) {
     // rarely noticed
-    if (SkillCheck(pDefender, NOTICE_DART_CHECK, 0) < 0) {
+    if (SkillCheck(pDefender, Enum255.NOTICE_DART_CHECK, 0) < 0) {
       return;
     }
   }
 
   // do we need to do checks for life/breath here?
 
-  if (pDefender.value.ubBodyType == LARVAE_MONSTER || (pDefender.value.uiStatusFlags & SOLDIER_VEHICLE && pDefender.value.bTeam == OUR_TEAM)) {
+  if (pDefender.value.ubBodyType == Enum194.LARVAE_MONSTER || (pDefender.value.uiStatusFlags & SOLDIER_VEHICLE && pDefender.value.bTeam == OUR_TEAM)) {
     return;
   }
 
@@ -5075,7 +5075,7 @@ function NoticeUnseenAttacker(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointe
       }
     }
 
-    ubTileSightLimit = DistanceVisible(pDefender, DIRECTION_IRRELEVANT, 0, pAttacker.value.sGridNo, pAttacker.value.bLevel);
+    ubTileSightLimit = DistanceVisible(pDefender, Enum245.DIRECTION_IRRELEVANT, 0, pAttacker.value.sGridNo, pAttacker.value.bLevel);
     if (SoldierToSoldierLineOfSightTest(pDefender, pAttacker, ubTileSightLimit, TRUE) != 0) {
       fSeesAttacker = TRUE;
     }
@@ -5108,9 +5108,9 @@ function NoticeUnseenAttacker(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointe
     SetNewSituation(pDefender); // re-evaluate situation
 
     // if victim's alert status is only GREEN or YELLOW
-    if (pDefender.value.bAlertStatus < STATUS_RED) {
+    if (pDefender.value.bAlertStatus < Enum243.STATUS_RED) {
       // then this soldier goes to status RED, has proof of enemy presence
-      pDefender.value.bAlertStatus = STATUS_RED;
+      pDefender.value.bAlertStatus = Enum243.STATUS_RED;
       CheckForChangingOrders(pDefender);
     }
 
@@ -5164,7 +5164,7 @@ function CheckForAlertWhenEnemyDies(pDyingSoldier: Pointer<SOLDIERTYPE>): void {
   for (ubID = gTacticalStatus.Team[pDyingSoldier.value.bTeam].bFirstID; ubID <= gTacticalStatus.Team[pDyingSoldier.value.bTeam].bLastID; ubID++) {
     pSoldier = MercPtrs[ubID];
 
-    if (pSoldier.value.bActive && pSoldier.value.bInSector && (pSoldier != pDyingSoldier) && (pSoldier.value.bLife >= OKLIFE) && (pSoldier.value.bAlertStatus < STATUS_RED)) {
+    if (pSoldier.value.bActive && pSoldier.value.bInSector && (pSoldier != pDyingSoldier) && (pSoldier.value.bLife >= OKLIFE) && (pSoldier.value.bAlertStatus < Enum243.STATUS_RED)) {
       // this guy might have seen the man die
 
       // distance we "see" then depends on the direction he is located from us
@@ -5177,7 +5177,7 @@ function CheckForAlertWhenEnemyDies(pDyingSoldier: Pointer<SOLDIERTYPE>): void {
         // and we can trace a line of sight to his x,y coordinates
         // assume enemies are always aware of their buddies...
         if (SoldierTo3DLocationLineOfSightTest(pSoldier, pDyingSoldier.value.sGridNo, pDyingSoldier.value.bLevel, 0, sDistVisible, TRUE)) {
-          pSoldier.value.bAlertStatus = STATUS_RED;
+          pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
           CheckForChangingOrders(pSoldier);
         }
       }
@@ -5194,7 +5194,7 @@ function ArmyKnowsOfPlayersPresence(): BOOLEAN {
     for (ubID = gTacticalStatus.Team[ENEMY_TEAM].bFirstID; ubID <= gTacticalStatus.Team[ENEMY_TEAM].bLastID; ubID++) {
       pSoldier = MercPtrs[ubID];
 
-      if (pSoldier.value.bActive && pSoldier.value.bInSector && (pSoldier.value.bLife >= OKLIFE) && (pSoldier.value.bAlertStatus >= STATUS_RED)) {
+      if (pSoldier.value.bActive && pSoldier.value.bInSector && (pSoldier.value.bLife >= OKLIFE) && (pSoldier.value.bAlertStatus >= Enum243.STATUS_RED)) {
         return TRUE;
       }
     }
@@ -5273,7 +5273,7 @@ function GetHighestVisibleWatchedLoc(ubID: UINT8): INT8 {
 
   for (bLoop = 0; bLoop < NUM_WATCHED_LOCS; bLoop++) {
     if (gsWatchedLoc[ubID][bLoop] != NOWHERE && gubWatchedLocPoints[ubID][bLoop] > bHighestPoints) {
-      sDistVisible = DistanceVisible(MercPtrs[ubID], DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, gsWatchedLoc[ubID][bLoop], gbWatchedLocLevel[ubID][bLoop]);
+      sDistVisible = DistanceVisible(MercPtrs[ubID], Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, gsWatchedLoc[ubID][bLoop], gbWatchedLocLevel[ubID][bLoop]);
       // look at standing height
       if (SoldierTo3DLocationLineOfSightTest(MercPtrs[ubID], gsWatchedLoc[ubID][bLoop], gbWatchedLocLevel[ubID][bLoop], 3, sDistVisible, TRUE)) {
         bHighestLoc = bLoop;
@@ -5433,7 +5433,7 @@ function MakeBloodcatsHostile(): void {
   iLoop = gTacticalStatus.Team[CREATURE_TEAM].bFirstID;
 
   for (pSoldier = MercPtrs[iLoop]; iLoop <= gTacticalStatus.Team[CREATURE_TEAM].bLastID; iLoop++, pSoldier++) {
-    if (pSoldier.value.ubBodyType == BLOODCAT && pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife > 0) {
+    if (pSoldier.value.ubBodyType == Enum194.BLOODCAT && pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife > 0) {
       SetSoldierNonNeutral(pSoldier);
       RecalculateOppCntsDueToNoLongerNeutral(pSoldier);
       if ((gTacticalStatus.uiFlags & INCOMBAT)) {

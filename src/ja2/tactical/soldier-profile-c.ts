@@ -25,25 +25,25 @@ let gbSkillTraitBonus: INT8[] /* [NUM_SKILLTRAITS] */ = [
 ];
 
 let gubBasicInventoryPositions: UINT8[] /* [] */ = [
-  HELMETPOS,
-  VESTPOS,
-  LEGPOS,
-  HANDPOS,
-  BIGPOCK1POS,
-  BIGPOCK2POS,
-  BIGPOCK3POS,
-  BIGPOCK4POS,
+  Enum261.HELMETPOS,
+  Enum261.VESTPOS,
+  Enum261.LEGPOS,
+  Enum261.HANDPOS,
+  Enum261.BIGPOCK1POS,
+  Enum261.BIGPOCK2POS,
+  Enum261.BIGPOCK3POS,
+  Enum261.BIGPOCK4POS,
 ];
 
 const NUM_TERRORISTS = 6;
 
 let gubTerrorists: UINT8[] /* [NUM_TERRORISTS + 1] */ = [
-  DRUGGIST,
-  SLAY,
-  ANNIE,
-  CHRIS,
-  TIFFANY,
-  T_REX,
+  Enum268.DRUGGIST,
+  Enum268.SLAY,
+  Enum268.ANNIE,
+  Enum268.CHRIS,
+  Enum268.TIFFANY,
+  Enum268.T_REX,
   0,
 ];
 
@@ -107,29 +107,29 @@ let gsRobotGridNo: INT16;
 const NUM_ASSASSINS = 6;
 
 let gubAssassins: UINT8[] /* [NUM_ASSASSINS] */ = [
-  JIM,
-  JACK,
-  OLAF,
-  RAY,
-  OLGA,
-  TYRONE,
+  Enum268.JIM,
+  Enum268.JACK,
+  Enum268.OLAF,
+  Enum268.RAY,
+  Enum268.OLGA,
+  Enum268.TYRONE,
 ];
 
 const NUM_ASSASSIN_POSSIBLE_TOWNS = 5;
 
 let gbAssassinTown: INT8[][] /* [NUM_ASSASSINS][NUM_ASSASSIN_POSSIBLE_TOWNS] */ = [
   // Jim
-  [ CAMBRIA, DRASSEN, ALMA, BALIME, GRUMM ],
+  [ Enum135.CAMBRIA, Enum135.DRASSEN, Enum135.ALMA, Enum135.BALIME, Enum135.GRUMM ],
   // Jack
-  [ CHITZENA, ESTONI, ALMA, BALIME, GRUMM ],
+  [ Enum135.CHITZENA, Enum135.ESTONI, Enum135.ALMA, Enum135.BALIME, Enum135.GRUMM ],
   // Olaf
-  [ DRASSEN, ESTONI, ALMA, CAMBRIA, BALIME ],
+  [ Enum135.DRASSEN, Enum135.ESTONI, Enum135.ALMA, Enum135.CAMBRIA, Enum135.BALIME ],
   // Ray
-  [ CAMBRIA, OMERTA, BALIME, GRUMM, DRASSEN ],
+  [ Enum135.CAMBRIA, Enum135.OMERTA, Enum135.BALIME, Enum135.GRUMM, Enum135.DRASSEN ],
   // Olga
-  [ CHITZENA, OMERTA, CAMBRIA, ALMA, GRUMM ],
+  [ Enum135.CHITZENA, Enum135.OMERTA, Enum135.CAMBRIA, Enum135.ALMA, Enum135.GRUMM ],
   // Tyrone
-  [ CAMBRIA, BALIME, ALMA, GRUMM, DRASSEN ],
+  [ Enum135.CAMBRIA, Enum135.BALIME, Enum135.ALMA, Enum135.GRUMM, Enum135.DRASSEN ],
 ];
 
 function LoadMercProfiles(): BOOLEAN {
@@ -177,7 +177,7 @@ function LoadMercProfiles(): BOOLEAN {
 
     if (!gGameOptions.fGunNut) {
       // CJC: replace guns in profile if they aren't available
-      for (uiLoop2 = 0; uiLoop2 < NUM_INV_SLOTS; uiLoop2++) {
+      for (uiLoop2 = 0; uiLoop2 < Enum261.NUM_INV_SLOTS; uiLoop2++) {
         usItem = gMercProfiles[uiLoop].inv[uiLoop2];
 
         if ((Item[usItem].usItemClass & IC_GUN) && ExtendedGunListGun(usItem)) {
@@ -186,7 +186,7 @@ function LoadMercProfiles(): BOOLEAN {
             gMercProfiles[uiLoop].inv[uiLoop2] = usNewGun;
 
             // must search through inventory and replace ammo accordingly
-            for (uiLoop3 = 0; uiLoop3 < NUM_INV_SLOTS; uiLoop3++) {
+            for (uiLoop3 = 0; uiLoop3 < Enum261.NUM_INV_SLOTS; uiLoop3++) {
               usAmmo = gMercProfiles[uiLoop].inv[uiLoop3];
               if ((Item[usAmmo].usItemClass & IC_AMMO)) {
                 usNewAmmo = FindReplacementMagazineIfNecessary(usItem, usAmmo, usNewGun);
@@ -208,7 +208,7 @@ function LoadMercProfiles(): BOOLEAN {
     gMercProfiles[uiLoop].bMainGunAttractiveness = -1;
     gMercProfiles[uiLoop].bArmourAttractiveness = -1;
 
-    for (uiLoop2 = 0; uiLoop2 < NUM_INV_SLOTS; uiLoop2++) {
+    for (uiLoop2 = 0; uiLoop2 < Enum261.NUM_INV_SLOTS; uiLoop2++) {
       usItem = gMercProfiles[uiLoop].inv[uiLoop2];
 
       if (usItem != NOTHING) {
@@ -228,7 +228,7 @@ function LoadMercProfiles(): BOOLEAN {
 
     // add up the items the merc has for the usOptionalGearCost
     gMercProfiles[uiLoop].usOptionalGearCost = 0;
-    for (uiLoop2 = 0; uiLoop2 < NUM_INV_SLOTS; uiLoop2++) {
+    for (uiLoop2 = 0; uiLoop2 < Enum261.NUM_INV_SLOTS; uiLoop2++) {
       if (gMercProfiles[uiLoop].inv[uiLoop2] != NOTHING) {
         // get the item
         usItem = gMercProfiles[uiLoop].inv[uiLoop2];
@@ -299,10 +299,10 @@ function DecideActiveTerrorists(): void {
   // MEDIUM:	3, 25%		4, 50%		5, 25%
   // HARD:		3, 49%		4, 42%		5, 9%
   switch (gGameOptions.ubDifficultyLevel) {
-    case DIF_LEVEL_EASY:
+    case Enum9.DIF_LEVEL_EASY:
       uiChance = 70;
       break;
-    case DIF_LEVEL_HARD:
+    case Enum9.DIF_LEVEL_HARD:
       uiChance = 30;
       break;
     default:
@@ -375,8 +375,8 @@ function MakeRemainingTerroristsTougher(): void {
 
   for (ubLoop = 0; ubLoop < NUM_TERRORISTS; ubLoop++) {
     if (gMercProfiles[gubTerrorists[ubLoop]].bMercStatus != MERC_IS_DEAD && gMercProfiles[gubTerrorists[ubLoop]].sSectorX != 0 && gMercProfiles[gubTerrorists[ubLoop]].sSectorY != 0) {
-      if (gubTerrorists[ubLoop] == SLAY) {
-        if (FindSoldierByProfileID(SLAY, TRUE) != NULL) {
+      if (gubTerrorists[ubLoop] == Enum268.SLAY) {
+        if (FindSoldierByProfileID(Enum268.SLAY, TRUE) != NULL) {
           // Slay on player's team, doesn't count towards remaining terrorists
           continue;
         }
@@ -388,10 +388,10 @@ function MakeRemainingTerroristsTougher(): void {
   ubRemainingDifficulty = (60 / gubNumTerrorists) * (gubNumTerrorists - ubRemainingTerrorists);
 
   switch (gGameOptions.ubDifficultyLevel) {
-    case DIF_LEVEL_MEDIUM:
+    case Enum9.DIF_LEVEL_MEDIUM:
       ubRemainingDifficulty = (ubRemainingDifficulty * 13) / 10;
       break;
-    case DIF_LEVEL_HARD:
+    case Enum9.DIF_LEVEL_HARD:
       ubRemainingDifficulty = (ubRemainingDifficulty * 16) / 10;
       break;
     default:
@@ -404,23 +404,23 @@ function MakeRemainingTerroristsTougher(): void {
   } else if (ubRemainingDifficulty < 28) {
     // mini grenade
     usOldItem = NOTHING;
-    usNewItem = MINI_GRENADE;
+    usNewItem = Enum225.MINI_GRENADE;
   } else if (ubRemainingDifficulty < 42) {
     // hand grenade
-    usOldItem = MINI_GRENADE;
-    usNewItem = HAND_GRENADE;
+    usOldItem = Enum225.MINI_GRENADE;
+    usNewItem = Enum225.HAND_GRENADE;
   } else if (ubRemainingDifficulty < 56) {
     // mustard
-    usOldItem = HAND_GRENADE;
-    usNewItem = MUSTARD_GRENADE;
+    usOldItem = Enum225.HAND_GRENADE;
+    usNewItem = Enum225.MUSTARD_GRENADE;
   } else if (ubRemainingDifficulty < 70) {
     // LAW
-    usOldItem = MUSTARD_GRENADE;
-    usNewItem = ROCKET_LAUNCHER;
+    usOldItem = Enum225.MUSTARD_GRENADE;
+    usNewItem = Enum225.ROCKET_LAUNCHER;
   } else {
     // LAW and hand grenade
     usOldItem = NOTHING;
-    usNewItem = HAND_GRENADE;
+    usNewItem = Enum225.HAND_GRENADE;
   }
 
   DeleteObj(addressof(Object));
@@ -429,8 +429,8 @@ function MakeRemainingTerroristsTougher(): void {
 
   for (ubLoop = 0; ubLoop < NUM_TERRORISTS; ubLoop++) {
     if (gMercProfiles[gubTerrorists[ubLoop]].bMercStatus != MERC_IS_DEAD && gMercProfiles[gubTerrorists[ubLoop]].sSectorX != 0 && gMercProfiles[gubTerrorists[ubLoop]].sSectorY != 0) {
-      if (gubTerrorists[ubLoop] == SLAY) {
-        if (FindSoldierByProfileID(SLAY, TRUE) != NULL) {
+      if (gubTerrorists[ubLoop] == Enum268.SLAY) {
+        if (FindSoldierByProfileID(Enum268.SLAY, TRUE) != NULL) {
           // Slay on player's team, doesn't count towards remaining terrorists
           continue;
         }
@@ -477,7 +477,7 @@ function DecideOnAssassin(): void {
     ubLoop = ubAssassinPossibility[Random(ubAssassinsPossible)];
     gMercProfiles[ubLoop].sSectorX = gWorldSectorX;
     gMercProfiles[ubLoop].sSectorY = gWorldSectorY;
-    AddStrategicEvent(EVENT_REMOVE_ASSASSIN, GetWorldTotalMin() + 60 * (3 + Random(3)), ubLoop);
+    AddStrategicEvent(Enum132.EVENT_REMOVE_ASSASSIN, GetWorldTotalMin() + 60 * (3 + Random(3)), ubLoop);
   }
 }
 
@@ -498,10 +498,10 @@ function MakeRemainingAssassinsTougher(): void {
   ubRemainingDifficulty = (60 / NUM_ASSASSINS) * (NUM_ASSASSINS - ubRemainingAssassins);
 
   switch (gGameOptions.ubDifficultyLevel) {
-    case DIF_LEVEL_MEDIUM:
+    case Enum9.DIF_LEVEL_MEDIUM:
       ubRemainingDifficulty = (ubRemainingDifficulty * 13) / 10;
       break;
-    case DIF_LEVEL_HARD:
+    case Enum9.DIF_LEVEL_HARD:
       ubRemainingDifficulty = (ubRemainingDifficulty * 16) / 10;
       break;
     default:
@@ -514,23 +514,23 @@ function MakeRemainingAssassinsTougher(): void {
   } else if (ubRemainingDifficulty < 28) {
     // mini grenade
     usOldItem = NOTHING;
-    usNewItem = MINI_GRENADE;
+    usNewItem = Enum225.MINI_GRENADE;
   } else if (ubRemainingDifficulty < 42) {
     // hand grenade
-    usOldItem = MINI_GRENADE;
-    usNewItem = HAND_GRENADE;
+    usOldItem = Enum225.MINI_GRENADE;
+    usNewItem = Enum225.HAND_GRENADE;
   } else if (ubRemainingDifficulty < 56) {
     // mustard
-    usOldItem = HAND_GRENADE;
-    usNewItem = MUSTARD_GRENADE;
+    usOldItem = Enum225.HAND_GRENADE;
+    usNewItem = Enum225.MUSTARD_GRENADE;
   } else if (ubRemainingDifficulty < 70) {
     // LAW
-    usOldItem = MUSTARD_GRENADE;
-    usNewItem = ROCKET_LAUNCHER;
+    usOldItem = Enum225.MUSTARD_GRENADE;
+    usNewItem = Enum225.ROCKET_LAUNCHER;
   } else {
     // LAW and hand grenade
     usOldItem = NOTHING;
-    usNewItem = HAND_GRENADE;
+    usNewItem = Enum225.HAND_GRENADE;
   }
 
   DeleteObj(addressof(Object));
@@ -708,7 +708,7 @@ function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Point
     }
 
     // Copy over any items....
-    for (cnt = 0; cnt < NUM_INV_SLOTS; cnt++) {
+    for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
       pNewSoldier.value.inv[cnt] = pSoldier.value.inv[cnt];
     }
 
@@ -752,9 +752,9 @@ function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Point
 
   // AT the low level check if this poor guy is in inv panel, else
   // remove....
-  if (gsCurInterfacePanel == SM_PANEL && gpSMCurrentMerc == pSoldier) {
+  if (gsCurInterfacePanel == Enum215.SM_PANEL && gpSMCurrentMerc == pSoldier) {
     // Switch....
-    SetCurrentInterfacePanel(TEAM_PANEL);
+    SetCurrentInterfacePanel(Enum215.TEAM_PANEL);
   }
 
   return pNewSoldier;
@@ -778,13 +778,13 @@ function RecruitRPC(ubCharNum: UINT8): BOOLEAN {
   pNewSoldier = ChangeSoldierTeam(pSoldier, gbPlayerNum);
 
   // handle set up any RPC's that will leave us in time
-  if (ubCharNum == SLAY) {
+  if (ubCharNum == Enum268.SLAY) {
     // slay will leave in a week
     pNewSoldier.value.iEndofContractTime = GetWorldTotalMin() + (7 * 24 * 60);
 
     KickOutWheelchair(pNewSoldier);
-  } else if (ubCharNum == DYNAMO && gubQuest[QUEST_FREE_DYNAMO] == QUESTINPROGRESS) {
-    EndQuest(QUEST_FREE_DYNAMO, pSoldier.value.sSectorX, pSoldier.value.sSectorY);
+  } else if (ubCharNum == Enum268.DYNAMO && gubQuest[Enum169.QUEST_FREE_DYNAMO] == QUESTINPROGRESS) {
+    EndQuest(Enum169.QUEST_FREE_DYNAMO, pSoldier.value.sSectorX, pSoldier.value.sSectorY);
   }
   // handle town loyalty adjustment
   HandleTownLoyaltyForNPCRecruitment(pNewSoldier);
@@ -798,36 +798,36 @@ function RecruitRPC(ubCharNum: UINT8): BOOLEAN {
 
   DirtyMercPanelInterface(pNewSoldier, DIRTYLEVEL2);
 
-  if (pNewSoldier.value.inv[HANDPOS].usItem == NOTHING) {
+  if (pNewSoldier.value.inv[Enum261.HANDPOS].usItem == NOTHING) {
     // empty handed - swap in first available weapon
     let bSlot: INT8;
 
     bSlot = FindObjClass(pNewSoldier, IC_WEAPON);
     if (bSlot != NO_SLOT) {
       if (Item[pNewSoldier.value.inv[bSlot].usItem].fFlags & ITEM_TWO_HANDED) {
-        if (bSlot != SECONDHANDPOS && pNewSoldier.value.inv[SECONDHANDPOS].usItem != NOTHING) {
+        if (bSlot != Enum261.SECONDHANDPOS && pNewSoldier.value.inv[Enum261.SECONDHANDPOS].usItem != NOTHING) {
           // need to move second hand item out first
-          AutoPlaceObject(pNewSoldier, addressof(pNewSoldier.value.inv[SECONDHANDPOS]), FALSE);
+          AutoPlaceObject(pNewSoldier, addressof(pNewSoldier.value.inv[Enum261.SECONDHANDPOS]), FALSE);
         }
       }
       // swap item to hand
-      SwapObjs(addressof(pNewSoldier.value.inv[bSlot]), addressof(pNewSoldier.value.inv[HANDPOS]));
+      SwapObjs(addressof(pNewSoldier.value.inv[bSlot]), addressof(pNewSoldier.value.inv[Enum261.HANDPOS]));
     }
   }
 
-  if (ubCharNum == IRA) {
+  if (ubCharNum == Enum268.IRA) {
     // trigger 0th PCscript line
-    TriggerNPCRecord(IRA, 0);
+    TriggerNPCRecord(Enum268.IRA, 0);
   }
 
   // Set whatkind of merc am i
-  pNewSoldier.value.ubWhatKindOfMercAmI = MERC_TYPE__NPC;
+  pNewSoldier.value.ubWhatKindOfMercAmI = Enum260.MERC_TYPE__NPC;
 
   //
   // add a history log that tells the user that a npc has joined the team
   //
   // ( pass in pNewSoldier->sSectorX cause if its invalid, -1, n/a will appear as the sector in the history log )
-  AddHistoryToPlayersLog(HISTORY_RPC_JOINED_TEAM, pNewSoldier.value.ubProfile, GetWorldTotalMin(), pNewSoldier.value.sSectorX, pNewSoldier.value.sSectorY);
+  AddHistoryToPlayersLog(Enum83.HISTORY_RPC_JOINED_TEAM, pNewSoldier.value.ubProfile, GetWorldTotalMin(), pNewSoldier.value.sSectorX, pNewSoldier.value.sSectorY);
 
   // remove the merc from the Personnel screens departed list ( if they have never been hired before, its ok to call it )
   RemoveNewlyHiredMercFromPersonnelDepartedList(pSoldier.value.ubProfile);
@@ -853,7 +853,7 @@ function RecruitEPC(ubCharNum: UINT8): BOOLEAN {
 
   // Add this guy to our team!
   pNewSoldier = ChangeSoldierTeam(pSoldier, gbPlayerNum);
-  pNewSoldier.value.ubWhatKindOfMercAmI = MERC_TYPE__EPC;
+  pNewSoldier.value.ubWhatKindOfMercAmI = Enum260.MERC_TYPE__EPC;
 
   // Try putting them into the current squad
   if (AddCharacterToSquad(pNewSoldier, CurrentSquad()) == FALSE) {
@@ -873,7 +873,7 @@ function RecruitEPC(ubCharNum: UINT8): BOOLEAN {
   }
 
   // Set whatkind of merc am i
-  pNewSoldier.value.ubWhatKindOfMercAmI = MERC_TYPE__EPC;
+  pNewSoldier.value.ubWhatKindOfMercAmI = Enum260.MERC_TYPE__EPC;
 
   UpdateTeamPanelAssignments();
 
@@ -891,11 +891,11 @@ function UnRecruitEPC(ubCharNum: UINT8): BOOLEAN {
     return FALSE;
   }
 
-  if (pSoldier.value.ubWhatKindOfMercAmI != MERC_TYPE__EPC) {
+  if (pSoldier.value.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__EPC) {
     return FALSE;
   }
 
-  if (pSoldier.value.bAssignment < ON_DUTY) {
+  if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
     ResetDeadSquadMemberList(pSoldier.value.bAssignment);
   }
 
@@ -913,7 +913,7 @@ function UnRecruitEPC(ubCharNum: UINT8): BOOLEAN {
   // update sector values to current
 
   // check to see if this person should disappear from the map after this
-  if ((ubCharNum == JOHN || ubCharNum == MARY) && pSoldier.value.sSectorX == 13 && pSoldier.value.sSectorY == MAP_ROW_B && pSoldier.value.bSectorZ == 0) {
+  if ((ubCharNum == Enum268.JOHN || ubCharNum == Enum268.MARY) && pSoldier.value.sSectorX == 13 && pSoldier.value.sSectorY == MAP_ROW_B && pSoldier.value.bSectorZ == 0) {
     gMercProfiles[ubCharNum].sSectorX = 0;
     gMercProfiles[ubCharNum].sSectorY = 0;
     gMercProfiles[ubCharNum].bSectorZ = 0;
@@ -1051,7 +1051,7 @@ function DoesMercHaveABuddyOnTheTeam(ubMercID: UINT8): BOOLEAN {
 }
 
 function MercIsHot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  if (pSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait == HEAT_INTOLERANT) {
+  if (pSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait == Enum270.HEAT_INTOLERANT) {
     if (SectorTemperature(GetWorldMinutesInDay(), pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) > 0) {
       return TRUE;
     }
@@ -1065,10 +1065,10 @@ function SwapLarrysProfiles(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE
   let pNewProfile: Pointer<MERCPROFILESTRUCT>;
 
   ubSrcProfile = pSoldier.value.ubProfile;
-  if (ubSrcProfile == LARRY_NORMAL) {
-    ubDestProfile = LARRY_DRUNK;
-  } else if (ubSrcProfile == LARRY_DRUNK) {
-    ubDestProfile = LARRY_NORMAL;
+  if (ubSrcProfile == Enum268.LARRY_NORMAL) {
+    ubDestProfile = Enum268.LARRY_DRUNK;
+  } else if (ubSrcProfile == Enum268.LARRY_DRUNK) {
+    ubDestProfile = Enum268.LARRY_NORMAL;
   } else {
     // I don't think so!
     return pSoldier;
@@ -1159,10 +1159,10 @@ function SwapLarrysProfiles(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE
   pSoldier.value.bMedical = pNewProfile.value.bMedical + pNewProfile.value.bMedicalDelta;
   pSoldier.value.bExplosive = pNewProfile.value.bExplosive + pNewProfile.value.bExplosivesDelta;
 
-  if (pSoldier.value.ubProfile == LARRY_DRUNK) {
-    SetFactTrue(FACT_LARRY_CHANGED);
+  if (pSoldier.value.ubProfile == Enum268.LARRY_DRUNK) {
+    SetFactTrue(Enum170.FACT_LARRY_CHANGED);
   } else {
-    SetFactFalse(FACT_LARRY_CHANGED);
+    SetFactFalse(Enum170.FACT_LARRY_CHANGED);
   }
 
   DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);

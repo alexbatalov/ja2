@@ -145,7 +145,7 @@ function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   if (pSoldier.value.fAIFlags & AI_HANDLE_EVERY_FRAME) // if set to handle every frame, ignore delay!
   {
-    if (pSoldier.value.ubQuoteActionID != QUOTE_ACTION_ID_TURNTOWARDSPLAYER) {
+    if (pSoldier.value.ubQuoteActionID != Enum290.QUOTE_ACTION_ID_TURNTOWARDSPLAYER) {
       // turn off flag!
       pSoldier.value.fAIFlags &= (~AI_HANDLE_EVERY_FRAME);
     }
@@ -156,7 +156,7 @@ function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
     return;
   }
 
-  if (gTacticalStatus.bBoxingState == PRE_BOXING || gTacticalStatus.bBoxingState == BOXING || gTacticalStatus.bBoxingState == WON_ROUND || gTacticalStatus.bBoxingState == LOST_ROUND) {
+  if (gTacticalStatus.bBoxingState == Enum247.PRE_BOXING || gTacticalStatus.bBoxingState == Enum247.BOXING || gTacticalStatus.bBoxingState == Enum247.WON_ROUND || gTacticalStatus.bBoxingState == Enum247.LOST_ROUND) {
     if (!(pSoldier.value.uiStatusFlags & SOLDIER_BOXER)) {
 // do nothing!
       EndAIGuysTurn(pSoldier);
@@ -215,7 +215,7 @@ function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   // in the unlikely situation (Sgt Krott et al) that we have a quote trigger going on
   // during turnbased, don't do any AI
-  if (pSoldier.value.ubProfile != NO_PROFILE && (pSoldier.value.ubProfile == SERGEANT || pSoldier.value.ubProfile == MIKE || pSoldier.value.ubProfile == JOE) && (gTacticalStatus.uiFlags & INCOMBAT) && (gfInTalkPanel || gfWaitingForTriggerTimer || !DialogueQueueIsEmpty())) {
+  if (pSoldier.value.ubProfile != NO_PROFILE && (pSoldier.value.ubProfile == Enum268.SERGEANT || pSoldier.value.ubProfile == Enum268.MIKE || pSoldier.value.ubProfile == Enum268.JOE) && (gTacticalStatus.uiFlags & INCOMBAT) && (gfInTalkPanel || gfWaitingForTriggerTimer || !DialogueQueueIsEmpty())) {
     return;
   }
 
@@ -229,14 +229,14 @@ function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
     if (gTacticalStatus.ubAttackBusyCount > 0) {
       fProcessNewSituation = FALSE;
       // HACK!!
-      if (pSoldier.value.bAction == AI_ACTION_FIRE_GUN) {
+      if (pSoldier.value.bAction == Enum289.AI_ACTION_FIRE_GUN) {
         if (guiNumBullets == 0) {
           // abort attack!
           // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String(">>>>>> Attack busy count lobotomized due to new situation for %d", pSoldier->ubID ) );
           // gTacticalStatus.ubAttackBusyCount = 0;
           fProcessNewSituation = TRUE;
         }
-      } else if (pSoldier.value.bAction == AI_ACTION_TOSS_PROJECTILE) {
+      } else if (pSoldier.value.bAction == Enum289.AI_ACTION_TOSS_PROJECTILE) {
         if (guiNumObjectSlots == 0) {
           // abort attack!
           DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String(">>>>>> Attack busy count lobotomized due to new situation for %d", pSoldier.value.ubID));
@@ -249,21 +249,21 @@ function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
     }
 
     if (fProcessNewSituation) {
-      if ((pSoldier.value.uiStatusFlags & SOLDIER_UNDERAICONTROL) && pSoldier.value.ubQuoteActionID >= QUOTE_ACTION_ID_TRAVERSE_EAST && pSoldier.value.ubQuoteActionID <= QUOTE_ACTION_ID_TRAVERSE_NORTH && !GridNoOnVisibleWorldTile(pSoldier.value.sGridNo)) {
+      if ((pSoldier.value.uiStatusFlags & SOLDIER_UNDERAICONTROL) && pSoldier.value.ubQuoteActionID >= Enum290.QUOTE_ACTION_ID_TRAVERSE_EAST && pSoldier.value.ubQuoteActionID <= Enum290.QUOTE_ACTION_ID_TRAVERSE_NORTH && !GridNoOnVisibleWorldTile(pSoldier.value.sGridNo)) {
         // traversing offmap, ignore new situations
       } else if (pSoldier.value.ubQuoteRecord == 0 && !gTacticalStatus.fAutoBandageMode) {
         // don't force, don't want escorted mercs reacting to new opponents, etc.
         // now we don't have AI controlled escorted mercs though - CJC
         CancelAIAction(pSoldier, FORCE);
         // zap any next action too
-        if (pSoldier.value.bAction != AI_ACTION_END_COWER_AND_MOVE) {
-          pSoldier.value.bNextAction = AI_ACTION_NONE;
+        if (pSoldier.value.bAction != Enum289.AI_ACTION_END_COWER_AND_MOVE) {
+          pSoldier.value.bNextAction = Enum289.AI_ACTION_NONE;
         }
         DecideAlertStatus(pSoldier);
       } else {
         if (pSoldier.value.ubQuoteRecord) {
           // make sure we're not using combat AI
-          pSoldier.value.bAlertStatus = STATUS_GREEN;
+          pSoldier.value.bAlertStatus = Enum243.STATUS_GREEN;
         }
         pSoldier.value.bNewSituation = WAS_NEW_SITUATION;
       }
@@ -290,7 +290,7 @@ function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
     }
   }
 
-  if (pSoldier.value.bAction == AI_ACTION_NONE) {
+  if (pSoldier.value.bAction == Enum289.AI_ACTION_NONE) {
     // being handled so turn off muzzle flash
     if (pSoldier.value.fMuzzleFlash) {
       EndMuzzleFlash(pSoldier);
@@ -326,12 +326,12 @@ function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
           if (pSoldier.value.sAbsoluteFinalDestination == pSoldier.value.sGridNo) {
             pSoldier.value.sAbsoluteFinalDestination = NOWHERE;
 
-            if (!ACTING_ON_SCHEDULE(pSoldier) && pSoldier.value.ubQuoteRecord && pSoldier.value.ubQuoteActionID == QUOTE_ACTION_ID_CHECKFORDEST) {
+            if (!ACTING_ON_SCHEDULE(pSoldier) && pSoldier.value.ubQuoteRecord && pSoldier.value.ubQuoteActionID == Enum290.QUOTE_ACTION_ID_CHECKFORDEST) {
               NPCReachedDestination(pSoldier, FALSE);
               // wait just a little bit so the queue can be processed
-              pSoldier.value.bNextAction = AI_ACTION_WAIT;
+              pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
               pSoldier.value.usNextActionData = 500;
-            } else if (pSoldier.value.ubQuoteActionID >= QUOTE_ACTION_ID_TRAVERSE_EAST && pSoldier.value.ubQuoteActionID <= QUOTE_ACTION_ID_TRAVERSE_NORTH) {
+            } else if (pSoldier.value.ubQuoteActionID >= Enum290.QUOTE_ACTION_ID_TRAVERSE_EAST && pSoldier.value.ubQuoteActionID <= Enum290.QUOTE_ACTION_ID_TRAVERSE_NORTH) {
               HandleAITacticalTraversal(pSoldier);
               return;
             }
@@ -341,7 +341,7 @@ function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
           }
         }
         // for regular guys still have to check for leaving the map
-        else if (pSoldier.value.ubQuoteActionID >= QUOTE_ACTION_ID_TRAVERSE_EAST && pSoldier.value.ubQuoteActionID <= QUOTE_ACTION_ID_TRAVERSE_NORTH) {
+        else if (pSoldier.value.ubQuoteActionID >= Enum290.QUOTE_ACTION_ID_TRAVERSE_EAST && pSoldier.value.ubQuoteActionID <= Enum290.QUOTE_ACTION_ID_TRAVERSE_NORTH) {
           HandleAITacticalTraversal(pSoldier);
           return;
         }
@@ -349,15 +349,15 @@ function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
 // reached destination
 
         if (pSoldier.value.sGridNo == pSoldier.value.sFinalDestination) {
-          if (pSoldier.value.bAction == AI_ACTION_MOVE_TO_CLIMB) {
+          if (pSoldier.value.bAction == Enum289.AI_ACTION_MOVE_TO_CLIMB) {
             // successfully moved to roof!
 
             // fake setting action to climb roof and see if we can afford this
-            pSoldier.value.bAction = AI_ACTION_CLIMB_ROOF;
+            pSoldier.value.bAction = Enum289.AI_ACTION_CLIMB_ROOF;
             if (IsActionAffordable(pSoldier)) {
               // set action to none and next action to climb roof so we do that next
-              pSoldier.value.bAction = AI_ACTION_NONE;
-              pSoldier.value.bNextAction = AI_ACTION_CLIMB_ROOF;
+              pSoldier.value.bAction = Enum289.AI_ACTION_NONE;
+              pSoldier.value.bNextAction = Enum289.AI_ACTION_CLIMB_ROOF;
             }
           }
         }
@@ -410,7 +410,7 @@ function EndAIGuysTurn(pSoldier: Pointer<SOLDIERTYPE>): void {
         if (MercPtrs[ubID].value.fCloseCall) {
           if (!gTacticalStatus.fSomeoneHit && MercPtrs[ubID].value.bNumHitsThisTurn == 0 && !(MercPtrs[ubID].value.usQuoteSaidExtFlags & SOLDIER_QUOTE_SAID_EXT_CLOSE_CALL) && Random(3) == 0) {
             // say close call quote!
-            TacticalCharacterDialogue(MercPtrs[ubID], QUOTE_CLOSE_CALL);
+            TacticalCharacterDialogue(MercPtrs[ubID], Enum202.QUOTE_CLOSE_CALL);
             MercPtrs[ubID].value.usQuoteSaidExtFlags |= SOLDIER_QUOTE_SAID_EXT_CLOSE_CALL;
           }
           MercPtrs[ubID].value.fCloseCall = FALSE;
@@ -420,8 +420,8 @@ function EndAIGuysTurn(pSoldier: Pointer<SOLDIERTYPE>): void {
     gTacticalStatus.fSomeoneHit = FALSE;
 
     // if civ in civ group and hostile, try to change nearby guys to hostile
-    if (pSoldier.value.ubCivilianGroup != NON_CIV_GROUP && !pSoldier.value.bNeutral) {
-      if (!(pSoldier.value.uiStatusFlags & SOLDIER_BOXER) || !(gTacticalStatus.bBoxingState == PRE_BOXING || gTacticalStatus.bBoxingState == BOXING)) {
+    if (pSoldier.value.ubCivilianGroup != Enum246.NON_CIV_GROUP && !pSoldier.value.bNeutral) {
+      if (!(pSoldier.value.uiStatusFlags & SOLDIER_BOXER) || !(gTacticalStatus.bBoxingState == Enum247.PRE_BOXING || gTacticalStatus.bBoxingState == Enum247.BOXING)) {
         let ubFirstProfile: UINT8;
 
         ubFirstProfile = CivilianGroupMembersChangeSidesWithinProximity(pSoldier);
@@ -527,7 +527,7 @@ function StartNPCAI(pSoldier: Pointer<SOLDIERTYPE>): void {
       // ATE: Changed to show locator
 
       // Skip locator for green friendly militia
-      if (!(pSoldier.value.bTeam == MILITIA_TEAM && pSoldier.value.bSide == 0 && pSoldier.value.bAlertStatus == STATUS_GREEN)) {
+      if (!(pSoldier.value.bTeam == MILITIA_TEAM && pSoldier.value.bSide == 0 && pSoldier.value.bAlertStatus == Enum243.STATUS_GREEN)) {
         LocateSoldier(pSoldier.value.ubID, SETLOCATORFAST);
       }
 
@@ -583,7 +583,7 @@ function FindAdjacentSpotBeside(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16):
     sTempGridno = sGridno + mods[cnt];
     if (!OutOfBounds(sGridno, sTempGridno)) {
       if (NewOKDestination(pSoldier, sTempGridno, PEOPLETOO, pSoldier.value.bLevel) && DestNotSpokenFor(pSoldier, sTempGridno)) {
-        sMovementCost = PlotPath(pSoldier, sTempGridno, FALSE, FALSE, FALSE, WALKING, FALSE, FALSE, 0);
+        sMovementCost = PlotPath(pSoldier, sTempGridno, FALSE, FALSE, FALSE, Enum193.WALKING, FALSE, FALSE, 0);
         if (sMovementCost < sCheapestCost) {
           sCheapestCost = sMovementCost;
           sCheapestDest = sTempGridno;
@@ -625,7 +625,7 @@ function GetMostThreateningOpponent(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
       continue;
 
     // Special stuff for Carmen the bounty hunter
-    if (pSoldier.value.bAttitude == ATTACKSLAYONLY && pTargetSoldier.value.ubProfile != 64) {
+    if (pSoldier.value.bAttitude == Enum242.ATTACKSLAYONLY && pTargetSoldier.value.ubProfile != 64) {
       continue; // next opponent
     }
 
@@ -641,17 +641,17 @@ function GetMostThreateningOpponent(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
 
 function FreeUpNPCFromPendingAction(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier) {
-    if (pSoldier.value.bAction == AI_ACTION_PENDING_ACTION || pSoldier.value.bAction == AI_ACTION_OPEN_OR_CLOSE_DOOR || pSoldier.value.bAction == AI_ACTION_CREATURE_CALL || pSoldier.value.bAction == AI_ACTION_YELLOW_ALERT || pSoldier.value.bAction == AI_ACTION_RED_ALERT || pSoldier.value.bAction == AI_ACTION_UNLOCK_DOOR || pSoldier.value.bAction == AI_ACTION_PULL_TRIGGER || pSoldier.value.bAction == AI_ACTION_LOCK_DOOR) {
+    if (pSoldier.value.bAction == Enum289.AI_ACTION_PENDING_ACTION || pSoldier.value.bAction == Enum289.AI_ACTION_OPEN_OR_CLOSE_DOOR || pSoldier.value.bAction == Enum289.AI_ACTION_CREATURE_CALL || pSoldier.value.bAction == Enum289.AI_ACTION_YELLOW_ALERT || pSoldier.value.bAction == Enum289.AI_ACTION_RED_ALERT || pSoldier.value.bAction == Enum289.AI_ACTION_UNLOCK_DOOR || pSoldier.value.bAction == Enum289.AI_ACTION_PULL_TRIGGER || pSoldier.value.bAction == Enum289.AI_ACTION_LOCK_DOOR) {
       if (pSoldier.value.ubProfile != NO_PROFILE) {
-        if (pSoldier.value.ubQuoteRecord == NPC_ACTION_KYLE_GETS_MONEY) {
+        if (pSoldier.value.ubQuoteRecord == Enum213.NPC_ACTION_KYLE_GETS_MONEY) {
           // Kyle after getting money
           pSoldier.value.ubQuoteRecord = 0;
-          TriggerNPCRecord(KYLE, 11);
-        } else if (pSoldier.value.usAnimState == END_OPENSTRUCT) {
-          TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, APPROACH_DONE_OPEN_STRUCTURE, TRUE);
+          TriggerNPCRecord(Enum268.KYLE, 11);
+        } else if (pSoldier.value.usAnimState == Enum193.END_OPENSTRUCT) {
+          TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_DONE_OPEN_STRUCTURE, TRUE);
           // TriggerNPCWithGivenApproach( pSoldier->ubProfile, APPROACH_DONE_OPEN_STRUCTURE, FALSE );
-        } else if (pSoldier.value.usAnimState == PICKUP_ITEM || pSoldier.value.usAnimState == ADJACENT_GET_ITEM) {
-          TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, APPROACH_DONE_GET_ITEM, TRUE);
+        } else if (pSoldier.value.usAnimState == Enum193.PICKUP_ITEM || pSoldier.value.usAnimState == Enum193.ADJACENT_GET_ITEM) {
+          TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_DONE_GET_ITEM, TRUE);
         }
       }
       ActionDone(pSoldier);
@@ -724,14 +724,14 @@ function FreeUpNPCFromAttacking(ubID: UINT8): void {
 }
 
 function FreeUpNPCFromLoweringGun(pSoldier: Pointer<SOLDIERTYPE>): void {
-  if (pSoldier && pSoldier.value.bAction == AI_ACTION_LOWER_GUN) {
+  if (pSoldier && pSoldier.value.bAction == Enum289.AI_ACTION_LOWER_GUN) {
     ActionDone(pSoldier);
   }
 }
 
 function FreeUpNPCFromTurning(pSoldier: Pointer<SOLDIERTYPE>, bLook: INT8): void {
   // if NPC is in the process of changing facing, mark him as being done!
-  if ((pSoldier.value.bAction == AI_ACTION_CHANGE_FACING) && pSoldier.value.bActionInProgress) {
+  if ((pSoldier.value.bAction == Enum289.AI_ACTION_CHANGE_FACING) && pSoldier.value.bActionInProgress) {
     ActionDone(pSoldier);
 
     if (bLook) {
@@ -744,7 +744,7 @@ function FreeUpNPCFromStanceChange(pSoldier: Pointer<SOLDIERTYPE>): void {
   // are we/were we doing something?
   if (pSoldier.value.bActionInProgress) {
     // check and see if we were changing stance
-    if (pSoldier.value.bAction == AI_ACTION_CHANGE_STANCE || pSoldier.value.bAction == AI_ACTION_COWER || pSoldier.value.bAction == AI_ACTION_STOP_COWERING) {
+    if (pSoldier.value.bAction == Enum289.AI_ACTION_CHANGE_STANCE || pSoldier.value.bAction == Enum289.AI_ACTION_COWER || pSoldier.value.bAction == Enum289.AI_ACTION_STOP_COWERING) {
       // yes we were - are we finished?
       if (gAnimControl[pSoldier.value.usAnimState].ubHeight == pSoldier.value.usActionData) {
         // yes! Free us up to do other fun things
@@ -758,7 +758,7 @@ function FreeUpNPCFromRoofClimb(pSoldier: Pointer<SOLDIERTYPE>): void {
   // are we/were we doing something?
   if (pSoldier.value.bActionInProgress) {
     // check and see if we were climbing
-    if (pSoldier.value.bAction == AI_ACTION_CLIMB_ROOF) {
+    if (pSoldier.value.bAction == Enum289.AI_ACTION_CLIMB_ROOF) {
       // yes! Free us up to do other fun things
       ActionDone(pSoldier);
     }
@@ -767,7 +767,7 @@ function FreeUpNPCFromRoofClimb(pSoldier: Pointer<SOLDIERTYPE>): void {
 
 function ActionDone(pSoldier: Pointer<SOLDIERTYPE>): void {
   // if an action is currently selected
-  if (pSoldier.value.bAction != AI_ACTION_NONE) {
+  if (pSoldier.value.bAction != Enum289.AI_ACTION_NONE) {
     if (pSoldier.value.uiStatusFlags & SOLDIER_MONSTER) {
     }
 
@@ -789,7 +789,7 @@ function ActionDone(pSoldier: Pointer<SOLDIERTYPE>): void {
 
     // cancel current action
     pSoldier.value.bLastAction = pSoldier.value.bAction;
-    pSoldier.value.bAction = AI_ACTION_NONE;
+    pSoldier.value.bAction = Enum289.AI_ACTION_NONE;
     pSoldier.value.usActionData = NOWHERE;
     pSoldier.value.bActionInProgress = FALSE;
     pSoldier.value.fDelayedMovement = FALSE;
@@ -853,7 +853,7 @@ let ThreatPercent: int[] /* [10] */ = [
 
 function NPCDoesAct(pSoldier: Pointer<SOLDIERTYPE>): void {
   // if the action is visible and we're in a hidden turnbased mode, go to turnbased
-  if (gTacticalStatus.uiFlags & TURNBASED && !(gTacticalStatus.uiFlags & INCOMBAT) && (pSoldier.value.bAction == AI_ACTION_FIRE_GUN || pSoldier.value.bAction == AI_ACTION_TOSS_PROJECTILE || pSoldier.value.bAction == AI_ACTION_KNIFE_MOVE || pSoldier.value.bAction == AI_ACTION_KNIFE_STAB || pSoldier.value.bAction == AI_ACTION_THROW_KNIFE)) {
+  if (gTacticalStatus.uiFlags & TURNBASED && !(gTacticalStatus.uiFlags & INCOMBAT) && (pSoldier.value.bAction == Enum289.AI_ACTION_FIRE_GUN || pSoldier.value.bAction == Enum289.AI_ACTION_TOSS_PROJECTILE || pSoldier.value.bAction == Enum289.AI_ACTION_KNIFE_MOVE || pSoldier.value.bAction == Enum289.AI_ACTION_KNIFE_STAB || pSoldier.value.bAction == Enum289.AI_ACTION_THROW_KNIFE)) {
     DisplayHiddenTurnbased(pSoldier);
   }
 
@@ -1032,7 +1032,7 @@ function ActionInProgress(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   }
 
   // this here should never happen, but it seems to (turns sometimes hang!)
-  if ((pSoldier.value.bAction == AI_ACTION_CHANGE_FACING) && (pSoldier.value.bDesiredDirection != pSoldier.value.usActionData)) {
+  if ((pSoldier.value.bAction == Enum289.AI_ACTION_CHANGE_FACING) && (pSoldier.value.bDesiredDirection != pSoldier.value.usActionData)) {
     // don't try to pay any more APs for this, it was paid for once already!
     pSoldier.value.bDesiredDirection = pSoldier.value.usActionData; // turn to face direction in actionData
     return TRUE;
@@ -1260,7 +1260,7 @@ function TurnBasedHandleNPCAI(pSoldier: Pointer<SOLDIERTYPE>): void {
    }
  */
 
-  if ((pSoldier.value.bAction != AI_ACTION_NONE) && pSoldier.value.bActionInProgress) {
+  if ((pSoldier.value.bAction != Enum289.AI_ACTION_NONE) && pSoldier.value.bActionInProgress) {
     /*
                             if (pSoldier->bAction == AI_ACTION_RANDOM_PATROL)
                             {
@@ -1301,7 +1301,7 @@ function TurnBasedHandleNPCAI(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 
   // if man has nothing to do
-  if (pSoldier.value.bAction == AI_ACTION_NONE) {
+  if (pSoldier.value.bAction == Enum289.AI_ACTION_NONE) {
     // make sure this flag is turned off (it already should be!)
     pSoldier.value.bActionInProgress = FALSE;
 
@@ -1323,51 +1323,51 @@ function TurnBasedHandleNPCAI(pSoldier: Pointer<SOLDIERTYPE>): void {
     pSoldier.value.bPathStored = FALSE;
 
     // decide on the next action
-    if (pSoldier.value.bNextAction != AI_ACTION_NONE) {
+    if (pSoldier.value.bNextAction != Enum289.AI_ACTION_NONE) {
       // do the next thing we have to do...
-      if (pSoldier.value.bNextAction == AI_ACTION_END_COWER_AND_MOVE) {
+      if (pSoldier.value.bNextAction == Enum289.AI_ACTION_END_COWER_AND_MOVE) {
         if (pSoldier.value.uiStatusFlags & SOLDIER_COWERING) {
-          pSoldier.value.bAction = AI_ACTION_STOP_COWERING;
+          pSoldier.value.bAction = Enum289.AI_ACTION_STOP_COWERING;
           pSoldier.value.usActionData = ANIM_STAND;
         } else if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight < ANIM_STAND) {
           // stand up!
-          pSoldier.value.bAction = AI_ACTION_CHANGE_STANCE;
+          pSoldier.value.bAction = Enum289.AI_ACTION_CHANGE_STANCE;
           pSoldier.value.usActionData = ANIM_STAND;
         } else {
-          pSoldier.value.bAction = AI_ACTION_NONE;
+          pSoldier.value.bAction = Enum289.AI_ACTION_NONE;
         }
         if (pSoldier.value.sGridNo == pSoldier.value.usNextActionData) {
           // no need to walk after this
-          pSoldier.value.bNextAction = AI_ACTION_NONE;
+          pSoldier.value.bNextAction = Enum289.AI_ACTION_NONE;
           pSoldier.value.usNextActionData = NOWHERE;
         } else {
-          pSoldier.value.bNextAction = AI_ACTION_WALK;
+          pSoldier.value.bNextAction = Enum289.AI_ACTION_WALK;
           // leave next-action-data as is since that's where we want to go
         }
       } else {
         pSoldier.value.bAction = pSoldier.value.bNextAction;
         pSoldier.value.usActionData = pSoldier.value.usNextActionData;
         pSoldier.value.bTargetLevel = pSoldier.value.bNextTargetLevel;
-        pSoldier.value.bNextAction = AI_ACTION_NONE;
+        pSoldier.value.bNextAction = Enum289.AI_ACTION_NONE;
         pSoldier.value.usNextActionData = 0;
         pSoldier.value.bNextTargetLevel = 0;
       }
-      if (pSoldier.value.bAction == AI_ACTION_PICKUP_ITEM) {
+      if (pSoldier.value.bAction == Enum289.AI_ACTION_PICKUP_ITEM) {
         // the item pool index was stored in the special data field
         pSoldier.value.uiPendingActionData1 = pSoldier.value.iNextActionSpecialData;
       }
     } else if (pSoldier.value.sAbsoluteFinalDestination != NOWHERE) {
       if (ACTING_ON_SCHEDULE(pSoldier)) {
-        pSoldier.value.bAction = AI_ACTION_SCHEDULE_MOVE;
+        pSoldier.value.bAction = Enum289.AI_ACTION_SCHEDULE_MOVE;
       } else {
-        pSoldier.value.bAction = AI_ACTION_WALK;
+        pSoldier.value.bAction = Enum289.AI_ACTION_WALK;
       }
       pSoldier.value.usActionData = pSoldier.value.sAbsoluteFinalDestination;
     } else {
       if (!(gTacticalStatus.uiFlags & ENGAGED_IN_CONV)) {
         if (CREATURE_OR_BLOODCAT(pSoldier)) {
           pSoldier.value.bAction = CreatureDecideAction(pSoldier);
-        } else if (pSoldier.value.ubBodyType == CROW) {
+        } else if (pSoldier.value.ubBodyType == Enum194.CROW) {
           pSoldier.value.bAction = CrowDecideAction(pSoldier);
         } else {
           pSoldier.value.bAction = DecideAction(pSoldier);
@@ -1375,12 +1375,12 @@ function TurnBasedHandleNPCAI(pSoldier: Pointer<SOLDIERTYPE>): void {
       }
     }
 
-    if (pSoldier.value.bAction == AI_ACTION_ABSOLUTELY_NONE) {
-      pSoldier.value.bAction = AI_ACTION_NONE;
+    if (pSoldier.value.bAction == Enum289.AI_ACTION_ABSOLUTELY_NONE) {
+      pSoldier.value.bAction = Enum289.AI_ACTION_NONE;
     }
 
     // if he chose to continue doing nothing
-    if (pSoldier.value.bAction == AI_ACTION_NONE) {
+    if (pSoldier.value.bAction == Enum289.AI_ACTION_NONE) {
       NPCDoesNothing(pSoldier); // sets pSoldier->moved to TRUE
       return;
     }
@@ -1428,12 +1428,12 @@ function RefreshAI(pSoldier: Pointer<SOLDIERTYPE>): void {
   // get an up-to-date alert status for this guy
   DecideAlertStatus(pSoldier);
 
-  if (pSoldier.value.bAlertStatus == STATUS_YELLOW)
+  if (pSoldier.value.bAlertStatus == Enum243.STATUS_YELLOW)
     SkipCoverCheck = FALSE;
 
   // if he's in battle or knows opponents are here
   if (gfTurnBasedAI) {
-    if ((pSoldier.value.bAlertStatus == STATUS_BLACK) || (pSoldier.value.bAlertStatus == STATUS_RED)) {
+    if ((pSoldier.value.bAlertStatus == Enum243.STATUS_BLACK) || (pSoldier.value.bAlertStatus == Enum243.STATUS_RED)) {
       // always freshly rethink things at start of his turn
       pSoldier.value.bNewSituation = IS_NEW_SITUATION;
     } else {
@@ -1448,18 +1448,18 @@ function RefreshAI(pSoldier: Pointer<SOLDIERTYPE>): void {
 
       // allow stationary GREEN Civilians to turn again at least 1/turn!
     }
-    pSoldier.value.bLastAction = AI_ACTION_NONE;
+    pSoldier.value.bLastAction = Enum289.AI_ACTION_NONE;
   }
 }
 
 function AIDecideRadioAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
-  if (pSoldier.value.ubBodyType != REGMALE && pSoldier.value.ubBodyType != BIGMALE) {
+  if (pSoldier.value.ubBodyType != Enum194.REGMALE && pSoldier.value.ubBodyType != Enum194.BIGMALE) {
     // no animation available
     ActionDone(pSoldier);
     return;
   }
 
-  if (PTR_CIVILIAN && pSoldier.value.ubCivilianGroup != KINGPIN_CIV_GROUP) {
+  if (PTR_CIVILIAN && pSoldier.value.ubCivilianGroup != Enum246.KINGPIN_CIV_GROUP) {
     // don't play anim
     ActionDone(pSoldier);
     return;
@@ -1468,12 +1468,12 @@ function AIDecideRadioAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   switch (gAnimControl[pSoldier.value.usAnimState].ubEndHeight) {
     case ANIM_STAND:
 
-      EVENT_InitNewSoldierAnim(pSoldier, AI_RADIO, 0, FALSE);
+      EVENT_InitNewSoldierAnim(pSoldier, Enum193.AI_RADIO, 0, FALSE);
       break;
 
     case ANIM_CROUCH:
 
-      EVENT_InitNewSoldierAnim(pSoldier, AI_CR_RADIO, 0, FALSE);
+      EVENT_InitNewSoldierAnim(pSoldier, Enum193.AI_CR_RADIO, 0, FALSE);
       break;
 
     case ANIM_PRONE:
@@ -1497,11 +1497,11 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   DebugAI(String("%d does %s (a.d. %d) at time %ld", pSoldier.value.ubID, gzActionStr[pSoldier.value.bAction], pSoldier.value.usActionData, GetJA2Clock()));
 
   switch (pSoldier.value.bAction) {
-    case AI_ACTION_NONE: // maintain current position & facing
+    case Enum289.AI_ACTION_NONE: // maintain current position & facing
       // do nothing
       break;
 
-    case AI_ACTION_WAIT: // hold AI_ACTION_NONE for a specified time
+    case Enum289.AI_ACTION_WAIT: // hold AI_ACTION_NONE for a specified time
       if (gfTurnBasedAI) {
         // probably an action set as a next-action in the realtime prior to combat
         // do nothing
@@ -1514,7 +1514,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       ActionDone(pSoldier);
       break;
 
-    case AI_ACTION_CHANGE_FACING: // turn this way & that to look
+    case Enum289.AI_ACTION_CHANGE_FACING: // turn this way & that to look
       // as long as we don't see anyone new, cover won't have changed
       // if we see someone new, it will cause a new situation & remove this
       SkipCoverCheck = TRUE;
@@ -1548,20 +1548,20 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
                               */
       break;
 
-    case AI_ACTION_PICKUP_ITEM: // grab something!
+    case Enum289.AI_ACTION_PICKUP_ITEM: // grab something!
       SoldierPickupItem(pSoldier, pSoldier.value.uiPendingActionData1, pSoldier.value.usActionData, 0);
       break;
 
-    case AI_ACTION_DROP_ITEM: // drop item in hand
-      SoldierDropItem(pSoldier, addressof(pSoldier.value.inv[HANDPOS]));
-      DeleteObj(addressof(pSoldier.value.inv[HANDPOS]));
-      pSoldier.value.bAction = AI_ACTION_PENDING_ACTION;
+    case Enum289.AI_ACTION_DROP_ITEM: // drop item in hand
+      SoldierDropItem(pSoldier, addressof(pSoldier.value.inv[Enum261.HANDPOS]));
+      DeleteObj(addressof(pSoldier.value.inv[Enum261.HANDPOS]));
+      pSoldier.value.bAction = Enum289.AI_ACTION_PENDING_ACTION;
       break;
 
-    case AI_ACTION_MOVE_TO_CLIMB:
+    case Enum289.AI_ACTION_MOVE_TO_CLIMB:
       if (pSoldier.value.usActionData == pSoldier.value.sGridNo) {
         // change action to climb now and try that.
-        pSoldier.value.bAction = AI_ACTION_CLIMB_ROOF;
+        pSoldier.value.bAction = Enum289.AI_ACTION_CLIMB_ROOF;
         if (IsActionAffordable(pSoldier)) {
           return ExecuteAction(pSoldier);
         } else {
@@ -1570,25 +1570,25 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
         }
       }
       // fall through
-    case AI_ACTION_RANDOM_PATROL: // move towards a particular location
-    case AI_ACTION_SEEK_FRIEND: // move towards friend in trouble
-    case AI_ACTION_SEEK_OPPONENT: // move towards a reported opponent
-    case AI_ACTION_TAKE_COVER: // run for nearest cover from threat
-    case AI_ACTION_GET_CLOSER: // move closer to a strategic location
+    case Enum289.AI_ACTION_RANDOM_PATROL: // move towards a particular location
+    case Enum289.AI_ACTION_SEEK_FRIEND: // move towards friend in trouble
+    case Enum289.AI_ACTION_SEEK_OPPONENT: // move towards a reported opponent
+    case Enum289.AI_ACTION_TAKE_COVER: // run for nearest cover from threat
+    case Enum289.AI_ACTION_GET_CLOSER: // move closer to a strategic location
 
-    case AI_ACTION_POINT_PATROL: // move towards next patrol point
-    case AI_ACTION_LEAVE_WATER_GAS: // seek nearest spot of ungassed land
-    case AI_ACTION_SEEK_NOISE: // seek most important noise heard
-    case AI_ACTION_RUN_AWAY: // run away from nearby opponent(s)
+    case Enum289.AI_ACTION_POINT_PATROL: // move towards next patrol point
+    case Enum289.AI_ACTION_LEAVE_WATER_GAS: // seek nearest spot of ungassed land
+    case Enum289.AI_ACTION_SEEK_NOISE: // seek most important noise heard
+    case Enum289.AI_ACTION_RUN_AWAY: // run away from nearby opponent(s)
 
-    case AI_ACTION_APPROACH_MERC: // walk up to someone to talk
-    case AI_ACTION_TRACK: // track by ground scent
-    case AI_ACTION_EAT: // monster approaching corpse
-    case AI_ACTION_SCHEDULE_MOVE:
-    case AI_ACTION_WALK:
-    case AI_ACTION_RUN:
+    case Enum289.AI_ACTION_APPROACH_MERC: // walk up to someone to talk
+    case Enum289.AI_ACTION_TRACK: // track by ground scent
+    case Enum289.AI_ACTION_EAT: // monster approaching corpse
+    case Enum289.AI_ACTION_SCHEDULE_MOVE:
+    case Enum289.AI_ACTION_WALK:
+    case Enum289.AI_ACTION_RUN:
 
-      if (gfTurnBasedAI && pSoldier.value.bAlertStatus < STATUS_BLACK) {
+      if (gfTurnBasedAI && pSoldier.value.bAlertStatus < Enum243.STATUS_BLACK) {
         if (pSoldier.value.sLastTwoLocations[0] == NOWHERE) {
           pSoldier.value.sLastTwoLocations[0] = pSoldier.value.sGridNo;
         } else if (pSoldier.value.sLastTwoLocations[1] == NOWHERE) {
@@ -1608,10 +1608,10 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       }
 
       // Randomly do growl...
-      if (pSoldier.value.ubBodyType == BLOODCAT) {
+      if (pSoldier.value.ubBodyType == Enum194.BLOODCAT) {
         if ((gTacticalStatus.uiFlags & INCOMBAT)) {
           if (Random(2) == 0) {
-            PlaySoldierJA2Sample(pSoldier.value.ubID, (BLOODCAT_GROWL_1 + Random(4)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+            PlaySoldierJA2Sample(pSoldier.value.ubID, (Enum330.BLOODCAT_GROWL_1 + Random(4)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           }
         }
       }
@@ -1655,7 +1655,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
                 pSoldier.value.bPathStored = TRUE;
               } else {
                 // Have buddy wait a while...
-                pSoldier.value.bNextAction = AI_ACTION_WAIT;
+                pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
                 pSoldier.value.usNextActionData = REALTIME_AI_DELAY;
               }
             }
@@ -1673,21 +1673,21 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
       // add on anything necessary to traverse off map edge
       switch (pSoldier.value.ubQuoteActionID) {
-        case QUOTE_ACTION_ID_TRAVERSE_EAST:
+        case Enum290.QUOTE_ACTION_ID_TRAVERSE_EAST:
           pSoldier.value.sOffWorldGridNo = pSoldier.value.usActionData;
-          AdjustSoldierPathToGoOffEdge(pSoldier, pSoldier.value.usActionData, EAST);
+          AdjustSoldierPathToGoOffEdge(pSoldier, pSoldier.value.usActionData, Enum245.EAST);
           break;
-        case QUOTE_ACTION_ID_TRAVERSE_SOUTH:
+        case Enum290.QUOTE_ACTION_ID_TRAVERSE_SOUTH:
           pSoldier.value.sOffWorldGridNo = pSoldier.value.usActionData;
-          AdjustSoldierPathToGoOffEdge(pSoldier, pSoldier.value.usActionData, SOUTH);
+          AdjustSoldierPathToGoOffEdge(pSoldier, pSoldier.value.usActionData, Enum245.SOUTH);
           break;
-        case QUOTE_ACTION_ID_TRAVERSE_WEST:
+        case Enum290.QUOTE_ACTION_ID_TRAVERSE_WEST:
           pSoldier.value.sOffWorldGridNo = pSoldier.value.usActionData;
-          AdjustSoldierPathToGoOffEdge(pSoldier, pSoldier.value.usActionData, WEST);
+          AdjustSoldierPathToGoOffEdge(pSoldier, pSoldier.value.usActionData, Enum245.WEST);
           break;
-        case QUOTE_ACTION_ID_TRAVERSE_NORTH:
+        case Enum290.QUOTE_ACTION_ID_TRAVERSE_NORTH:
           pSoldier.value.sOffWorldGridNo = pSoldier.value.usActionData;
-          AdjustSoldierPathToGoOffEdge(pSoldier, pSoldier.value.usActionData, NORTH);
+          AdjustSoldierPathToGoOffEdge(pSoldier, pSoldier.value.usActionData, Enum245.NORTH);
           break;
         default:
           break;
@@ -1710,7 +1710,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       pSoldier.value.sBlackList = NOWHERE;
       break;
 
-    case AI_ACTION_ESCORTED_MOVE: // go where told to by escortPlayer
+    case Enum289.AI_ACTION_ESCORTED_MOVE: // go where told to by escortPlayer
       // since this is a delayed move, gotta make sure that it hasn't become
       // illegal since escort orders were issued (->sDestination/route blocked).
       // So treat it like a CONTINUE movement, and handle errors that way
@@ -1723,19 +1723,19 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       pSoldier.value.sBlackList = NOWHERE;
       break;
 
-    case AI_ACTION_TOSS_PROJECTILE: // throw grenade at/near opponent(s)
+    case Enum289.AI_ACTION_TOSS_PROJECTILE: // throw grenade at/near opponent(s)
       LoadWeaponIfNeeded(pSoldier);
       // drop through here...
 
-    case AI_ACTION_KNIFE_MOVE: // preparing to stab opponent
-      if (pSoldier.value.bAction == AI_ACTION_KNIFE_MOVE) // if statement because toss falls through
+    case Enum289.AI_ACTION_KNIFE_MOVE: // preparing to stab opponent
+      if (pSoldier.value.bAction == Enum289.AI_ACTION_KNIFE_MOVE) // if statement because toss falls through
       {
-        pSoldier.value.usUIMovementMode = DetermineMovementMode(pSoldier, AI_ACTION_KNIFE_MOVE);
+        pSoldier.value.usUIMovementMode = DetermineMovementMode(pSoldier, Enum289.AI_ACTION_KNIFE_MOVE);
       }
 
       // fall through
-    case AI_ACTION_FIRE_GUN: // shoot at nearby opponent
-    case AI_ACTION_THROW_KNIFE: // throw knife at nearby opponent
+    case Enum289.AI_ACTION_FIRE_GUN: // shoot at nearby opponent
+    case Enum289.AI_ACTION_THROW_KNIFE: // throw knife at nearby opponent
       // randomly decide whether to say civ quote
       if (pSoldier.value.bVisible != -1 && pSoldier.value.bTeam != MILITIA_TEAM) {
         // ATE: Make sure it's a person :)
@@ -1747,7 +1747,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
         }
       }
 
-      iRetCode = HandleItem(pSoldier, pSoldier.value.usActionData, pSoldier.value.bTargetLevel, pSoldier.value.inv[HANDPOS].usItem, FALSE);
+      iRetCode = HandleItem(pSoldier, pSoldier.value.usActionData, pSoldier.value.bTargetLevel, pSoldier.value.inv[Enum261.HANDPOS].usItem, FALSE);
       if (iRetCode != ITEM_HANDLE_OK) {
         if (iRetCode != ITEM_HANDLE_BROKEN) // if the item broke, this is 'legal' and doesn't need reporting
         {
@@ -1759,16 +1759,16 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       }
       break;
 
-    case AI_ACTION_PULL_TRIGGER: // activate an adjacent panic trigger
+    case Enum289.AI_ACTION_PULL_TRIGGER: // activate an adjacent panic trigger
 
       // turn to face trigger first
-      if (FindStructure((pSoldier.value.sGridNo + DirectionInc(NORTH)), STRUCTURE_SWITCH)) {
-        SendSoldierSetDesiredDirectionEvent(pSoldier, NORTH);
+      if (FindStructure((pSoldier.value.sGridNo + DirectionInc(Enum245.NORTH)), STRUCTURE_SWITCH)) {
+        SendSoldierSetDesiredDirectionEvent(pSoldier, Enum245.NORTH);
       } else {
-        SendSoldierSetDesiredDirectionEvent(pSoldier, WEST);
+        SendSoldierSetDesiredDirectionEvent(pSoldier, Enum245.WEST);
       }
 
-      EVENT_InitNewSoldierAnim(pSoldier, AI_PULL_SWITCH, 0, FALSE);
+      EVENT_InitNewSoldierAnim(pSoldier, Enum193.AI_PULL_SWITCH, 0, FALSE);
 
       DeductPoints(pSoldier, AP_PULL_TRIGGER, 0);
 
@@ -1776,7 +1776,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       gTacticalStatus.ubTheChosenOne = NOBODY;
       break;
 
-    case AI_ACTION_USE_DETONATOR:
+    case Enum289.AI_ACTION_USE_DETONATOR:
       // gTacticalStatus.fPanicFlags					= 0; // turn all flags off
       gTacticalStatus.ubTheChosenOne = NOBODY;
       // gTacticalStatus.sPanicTriggerGridno	= NOWHERE;
@@ -1789,19 +1789,19 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       // action completed immediately, cancel it right away
       pSoldier.value.usActionData = NOWHERE;
       pSoldier.value.bLastAction = pSoldier.value.bAction;
-      pSoldier.value.bAction = AI_ACTION_NONE;
+      pSoldier.value.bAction = Enum289.AI_ACTION_NONE;
       return (FALSE); // no longer in progress
 
       break;
 
-    case AI_ACTION_RED_ALERT: // tell friends opponent(s) seen
+    case Enum289.AI_ACTION_RED_ALERT: // tell friends opponent(s) seen
       // if a computer merc, and up to now they didn't know you're here
       if (!(pSoldier.value.uiStatusFlags & SOLDIER_PC) && (!(gTacticalStatus.Team[pSoldier.value.bTeam].bAwareOfOpposition) || ((gTacticalStatus.fPanicFlags & PANIC_TRIGGERS_HERE) && gTacticalStatus.ubTheChosenOne == NOBODY))) {
         HandleInitialRedAlert(pSoldier.value.bTeam, TRUE);
       }
       // ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Debug: AI radios your position!" );
       // DROP THROUGH HERE!
-    case AI_ACTION_YELLOW_ALERT: // tell friends opponent(s) heard
+    case Enum289.AI_ACTION_YELLOW_ALERT: // tell friends opponent(s) heard
       // ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Debug: AI radios about a noise!" );
       /*
                               NetSend.msgType = NET_RADIO_SIGHTINGS;
@@ -1818,13 +1818,13 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       // return(FALSE);           // no longer in progress
       break;
 
-    case AI_ACTION_CREATURE_CALL: // creature calling to others
+    case Enum289.AI_ACTION_CREATURE_CALL: // creature calling to others
       DeductPoints(pSoldier, AP_RADIO, BP_RADIO); // pay for it!
       CreatureCall(pSoldier);
       // return( FALSE ); // no longer in progress
       break;
 
-    case AI_ACTION_CHANGE_STANCE: // crouch
+    case Enum289.AI_ACTION_CHANGE_STANCE: // crouch
       if (gAnimControl[pSoldier.value.usAnimState].ubHeight == pSoldier.value.usActionData) {
         // abort!
         ActionDone(pSoldier);
@@ -1836,7 +1836,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       SendChangeSoldierStanceEvent(pSoldier, pSoldier.value.usActionData);
       break;
 
-    case AI_ACTION_COWER:
+    case Enum289.AI_ACTION_COWER:
       // make sure action data is set right
       if (pSoldier.value.uiStatusFlags & SOLDIER_COWERING) {
         // nothing to do!
@@ -1848,7 +1848,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       }
       break;
 
-    case AI_ACTION_STOP_COWERING:
+    case Enum289.AI_ACTION_STOP_COWERING:
       // make sure action data is set right
       if (pSoldier.value.uiStatusFlags & SOLDIER_COWERING) {
         pSoldier.value.usActionData = ANIM_STAND;
@@ -1860,24 +1860,24 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       }
       break;
 
-    case AI_ACTION_GIVE_AID: // help injured/dying friend
+    case Enum289.AI_ACTION_GIVE_AID: // help injured/dying friend
       // pSoldier->usUIMovementMode = RUNNING;
-      iRetCode = HandleItem(pSoldier, pSoldier.value.usActionData, 0, pSoldier.value.inv[HANDPOS].usItem, FALSE);
+      iRetCode = HandleItem(pSoldier, pSoldier.value.usActionData, 0, pSoldier.value.inv[Enum261.HANDPOS].usItem, FALSE);
       if (iRetCode != ITEM_HANDLE_OK) {
         CancelAIAction(pSoldier, FORCE);
         EndAIGuysTurn(pSoldier);
       }
       break;
 
-    case AI_ACTION_OPEN_OR_CLOSE_DOOR:
-    case AI_ACTION_UNLOCK_DOOR:
-    case AI_ACTION_LOCK_DOOR: {
+    case Enum289.AI_ACTION_OPEN_OR_CLOSE_DOOR:
+    case Enum289.AI_ACTION_UNLOCK_DOOR:
+    case Enum289.AI_ACTION_LOCK_DOOR: {
       let pStructure: Pointer<STRUCTURE>;
       let bDirection: INT8;
       let sDoorGridNo: INT16;
 
       bDirection = GetDirectionFromGridNo(pSoldier.value.usActionData, pSoldier);
-      if (bDirection == EAST || bDirection == SOUTH) {
+      if (bDirection == Enum245.EAST || bDirection == Enum245.SOUTH) {
         sDoorGridNo = pSoldier.value.sGridNo;
       } else {
         sDoorGridNo = pSoldier.value.sGridNo + DirectionInc(bDirection);
@@ -1893,12 +1893,12 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       InteractWithInteractiveObject(pSoldier, pStructure, bDirection);
     } break;
 
-    case AI_ACTION_LOWER_GUN:
+    case Enum289.AI_ACTION_LOWER_GUN:
       // for now, just do "action done"
       ActionDone(pSoldier);
       break;
 
-    case AI_ACTION_CLIMB_ROOF:
+    case Enum289.AI_ACTION_CLIMB_ROOF:
       if (pSoldier.value.bLevel == 0) {
         BeginSoldierClimbUpRoof(pSoldier);
       } else {
@@ -1906,14 +1906,14 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       }
       break;
 
-    case AI_ACTION_END_TURN:
+    case Enum289.AI_ACTION_END_TURN:
       ActionDone(pSoldier);
       if (gfTurnBasedAI) {
         EndAIGuysTurn(pSoldier);
       }
       return (FALSE); // nothing is in progress
 
-    case AI_ACTION_TRAVERSE_DOWN:
+    case Enum289.AI_ACTION_TRAVERSE_DOWN:
       if (gfTurnBasedAI) {
         EndAIGuysTurn(pSoldier);
       }
@@ -1926,7 +1926,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
       return (FALSE); // nothing is in progress
 
-    case AI_ACTION_OFFER_SURRENDER:
+    case Enum289.AI_ACTION_OFFER_SURRENDER:
       // start the offer of surrender!
       StartCivQuote(pSoldier);
       break;
@@ -1941,38 +1941,38 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
 function CheckForChangingOrders(pSoldier: Pointer<SOLDIERTYPE>): void {
   switch (pSoldier.value.bAlertStatus) {
-    case STATUS_GREEN:
+    case Enum243.STATUS_GREEN:
       if (!CREATURE_OR_BLOODCAT(pSoldier)) {
-        if (pSoldier.value.bTeam == CIV_TEAM && pSoldier.value.ubProfile != NO_PROFILE && pSoldier.value.bNeutral && gMercProfiles[pSoldier.value.ubProfile].sPreCombatGridNo != NOWHERE && pSoldier.value.ubCivilianGroup != QUEENS_CIV_GROUP) {
+        if (pSoldier.value.bTeam == CIV_TEAM && pSoldier.value.ubProfile != NO_PROFILE && pSoldier.value.bNeutral && gMercProfiles[pSoldier.value.ubProfile].sPreCombatGridNo != NOWHERE && pSoldier.value.ubCivilianGroup != Enum246.QUEENS_CIV_GROUP) {
           // must make them uncower first, then return to start location
-          pSoldier.value.bNextAction = AI_ACTION_END_COWER_AND_MOVE;
+          pSoldier.value.bNextAction = Enum289.AI_ACTION_END_COWER_AND_MOVE;
           pSoldier.value.usNextActionData = gMercProfiles[pSoldier.value.ubProfile].sPreCombatGridNo;
           gMercProfiles[pSoldier.value.ubProfile].sPreCombatGridNo = NOWHERE;
         } else if (pSoldier.value.uiStatusFlags & SOLDIER_COWERING) {
-          pSoldier.value.bNextAction = AI_ACTION_STOP_COWERING;
+          pSoldier.value.bNextAction = Enum289.AI_ACTION_STOP_COWERING;
           pSoldier.value.usNextActionData = ANIM_STAND;
         } else {
-          pSoldier.value.bNextAction = AI_ACTION_CHANGE_STANCE;
+          pSoldier.value.bNextAction = Enum289.AI_ACTION_CHANGE_STANCE;
           pSoldier.value.usNextActionData = ANIM_STAND;
         }
       }
       break;
-    case STATUS_YELLOW:
+    case Enum243.STATUS_YELLOW:
       break;
     default:
-      if ((pSoldier.value.bOrders == ONGUARD) || (pSoldier.value.bOrders == CLOSEPATROL)) {
+      if ((pSoldier.value.bOrders == Enum241.ONGUARD) || (pSoldier.value.bOrders == Enum241.CLOSEPATROL)) {
         // crank up ONGUARD to CLOSEPATROL, and CLOSEPATROL to FARPATROL
         pSoldier.value.bOrders++; // increase roaming range by 1 category
       } else if (pSoldier.value.bTeam == MILITIA_TEAM) {
         // go on alert!
-        pSoldier.value.bOrders = SEEKENEMY;
+        pSoldier.value.bOrders = Enum241.SEEKENEMY;
       } else if (CREATURE_OR_BLOODCAT(pSoldier)) {
-        if (pSoldier.value.bOrders != STATIONARY && pSoldier.value.bOrders != ONCALL) {
-          pSoldier.value.bOrders = SEEKENEMY;
+        if (pSoldier.value.bOrders != Enum241.STATIONARY && pSoldier.value.bOrders != Enum241.ONCALL) {
+          pSoldier.value.bOrders = Enum241.SEEKENEMY;
         }
       }
 
-      if (pSoldier.value.ubProfile == WARDEN) {
+      if (pSoldier.value.ubProfile == Enum268.WARDEN) {
         // Tixa
         MakeClosestEnemyChosenOne();
       }
@@ -2012,14 +2012,14 @@ function HandleInitialRedAlert(bTeam: INT8, ubCommunicate: UINT8): void {
     // alert Queen and Joe if they are around
     let pSoldier: Pointer<SOLDIERTYPE>;
 
-    pSoldier = FindSoldierByProfileID(QUEEN, FALSE);
+    pSoldier = FindSoldierByProfileID(Enum268.QUEEN, FALSE);
     if (pSoldier) {
-      pSoldier.value.bAlertStatus = STATUS_RED;
+      pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
     }
 
-    pSoldier = FindSoldierByProfileID(JOE, FALSE);
+    pSoldier = FindSoldierByProfileID(Enum268.JOE, FALSE);
     if (pSoldier) {
-      pSoldier.value.bAlertStatus = STATUS_RED;
+      pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
     }
   }
 
@@ -2054,23 +2054,23 @@ function ManChecksOnFriends(pSoldier: Pointer<SOLDIERTYPE>): void {
     if (pFriend.value.ubID == pSoldier.value.ubID)
       continue; // next merc
 
-    sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, pFriend.value.sGridNo, pFriend.value.bLevel);
+    sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, pFriend.value.sGridNo, pFriend.value.bLevel);
     // if we can see far enough to see this friend
     if (PythSpacesAway(pSoldier.value.sGridNo, pFriend.value.sGridNo) <= sDistVisible) {
       // and can trace a line of sight to his x,y coordinates
       // if (1) //*** SoldierToSoldierLineOfSightTest(pSoldier,pFriend,STRAIGHT,TRUE))
       if (SoldierToSoldierLineOfSightTest(pSoldier, pFriend, sDistVisible, TRUE)) {
         // if my friend is in battle or something is clearly happening there
-        if ((pFriend.value.bAlertStatus >= STATUS_RED) || pFriend.value.bUnderFire || (pFriend.value.bLife < OKLIFE)) {
-          pSoldier.value.bAlertStatus = STATUS_RED;
+        if ((pFriend.value.bAlertStatus >= Enum243.STATUS_RED) || pFriend.value.bUnderFire || (pFriend.value.bLife < OKLIFE)) {
+          pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
           CheckForChangingOrders(pSoldier);
           SetNewSituation(pSoldier);
           break; // don't bother checking on any other friends
         } else {
           // if he seems suspicious or acts like he thought he heard something
           // and I'm still on status GREEN
-          if ((pFriend.value.bAlertStatus == STATUS_YELLOW) && (pSoldier.value.bAlertStatus < STATUS_YELLOW)) {
-            pSoldier.value.bAlertStatus = STATUS_YELLOW; // also get suspicious
+          if ((pFriend.value.bAlertStatus == Enum243.STATUS_YELLOW) && (pSoldier.value.bAlertStatus < Enum243.STATUS_YELLOW)) {
+            pSoldier.value.bAlertStatus = Enum243.STATUS_YELLOW; // also get suspicious
             SetNewSituation(pSoldier);
             pSoldier.value.sNoiseGridno = pFriend.value.sGridNo; // pretend FRIEND made noise
             pSoldier.value.ubNoiseVolume = 3; // remember this for 3 turns
@@ -2103,7 +2103,7 @@ function SetNewSituation(pSoldier: Pointer<SOLDIERTYPE>): void {
 function HandleAITacticalTraversal(pSoldier: Pointer<SOLDIERTYPE>): void {
   HandleNPCChangesForTacticalTraversal(pSoldier);
 
-  if (pSoldier.value.ubProfile != NO_PROFILE && NPCHasUnusedRecordWithGivenApproach(pSoldier.value.ubProfile, APPROACH_DONE_TRAVERSAL)) {
+  if (pSoldier.value.ubProfile != NO_PROFILE && NPCHasUnusedRecordWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_DONE_TRAVERSAL)) {
     gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags3 |= PROFILE_MISC_FLAG3_HANDLE_DONE_TRAVERSAL;
   } else {
     pSoldier.value.ubQuoteActionID = 0;

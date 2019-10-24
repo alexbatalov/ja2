@@ -150,40 +150,40 @@ let giDownArrowRect: UINT32;
 
 let fFirstTimeInGameScreen: BOOLEAN = TRUE;
 let fInterfacePanelDirty: BOOLEAN = DIRTYLEVEL2;
-let gsInterfaceLevel: INT16 = I_GROUND_LEVEL;
+let gsInterfaceLevel: INT16 = Enum214.I_GROUND_LEVEL;
 let gsCurrentSoldierGridNo: INT16 = 0;
-let gsCurInterfacePanel: INT16 = TEAM_PANEL;
+let gsCurInterfacePanel: INT16 = Enum215.TEAM_PANEL;
 
 function InitializeTacticalInterface(): BOOLEAN {
   let vs_desc: VSURFACE_DESC;
   let VObjectDesc: VOBJECT_DESC;
 
   // Load button Interfaces
-  iIconImages[WALK_IMAGES] = LoadButtonImage("INTERFACE\\newicons3.sti", -1, 3, 4, 5, -1);
-  iIconImages[SNEAK_IMAGES] = UseLoadedButtonImage(iIconImages[WALK_IMAGES], -1, 6, 7, 8, -1);
-  iIconImages[RUN_IMAGES] = UseLoadedButtonImage(iIconImages[WALK_IMAGES], -1, 0, 1, 2, -1);
-  iIconImages[CRAWL_IMAGES] = UseLoadedButtonImage(iIconImages[WALK_IMAGES], -1, 9, 10, 11, -1);
-  iIconImages[LOOK_IMAGES] = UseLoadedButtonImage(iIconImages[WALK_IMAGES], -1, 12, 13, 14, -1);
-  iIconImages[TALK_IMAGES] = UseLoadedButtonImage(iIconImages[WALK_IMAGES], -1, 21, 22, 23, -1);
-  iIconImages[HAND_IMAGES] = UseLoadedButtonImage(iIconImages[WALK_IMAGES], -1, 18, 19, 20, -1);
-  iIconImages[CANCEL_IMAGES] = UseLoadedButtonImage(iIconImages[WALK_IMAGES], -1, 15, 16, 17, -1);
+  iIconImages[Enum208.WALK_IMAGES] = LoadButtonImage("INTERFACE\\newicons3.sti", -1, 3, 4, 5, -1);
+  iIconImages[Enum208.SNEAK_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.WALK_IMAGES], -1, 6, 7, 8, -1);
+  iIconImages[Enum208.RUN_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.WALK_IMAGES], -1, 0, 1, 2, -1);
+  iIconImages[Enum208.CRAWL_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.WALK_IMAGES], -1, 9, 10, 11, -1);
+  iIconImages[Enum208.LOOK_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.WALK_IMAGES], -1, 12, 13, 14, -1);
+  iIconImages[Enum208.TALK_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.WALK_IMAGES], -1, 21, 22, 23, -1);
+  iIconImages[Enum208.HAND_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.WALK_IMAGES], -1, 18, 19, 20, -1);
+  iIconImages[Enum208.CANCEL_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.WALK_IMAGES], -1, 15, 16, 17, -1);
 
-  iIconImages[TARGETACTIONC_IMAGES] = UseLoadedButtonImage(iIconImages[WALK_IMAGES], -1, 24, 25, 26, -1);
-  iIconImages[KNIFEACTIONC_IMAGES] = UseLoadedButtonImage(iIconImages[WALK_IMAGES], -1, 27, 28, 29, -1);
-  iIconImages[AIDACTIONC_IMAGES] = UseLoadedButtonImage(iIconImages[WALK_IMAGES], -1, 30, 31, 32, -1);
-  iIconImages[PUNCHACTIONC_IMAGES] = UseLoadedButtonImage(iIconImages[WALK_IMAGES], -1, 33, 34, 35, -1);
-  iIconImages[BOMBACTIONC_IMAGES] = UseLoadedButtonImage(iIconImages[WALK_IMAGES], -1, 36, 37, 38, -1);
-  iIconImages[TOOLKITACTIONC_IMAGES] = UseLoadedButtonImage(iIconImages[WALK_IMAGES], -1, 39, 40, 41, -1);
-  iIconImages[WIRECUTACTIONC_IMAGES] = UseLoadedButtonImage(iIconImages[WALK_IMAGES], -1, 42, 43, 44, -1);
+  iIconImages[Enum208.TARGETACTIONC_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.WALK_IMAGES], -1, 24, 25, 26, -1);
+  iIconImages[Enum208.KNIFEACTIONC_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.WALK_IMAGES], -1, 27, 28, 29, -1);
+  iIconImages[Enum208.AIDACTIONC_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.WALK_IMAGES], -1, 30, 31, 32, -1);
+  iIconImages[Enum208.PUNCHACTIONC_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.WALK_IMAGES], -1, 33, 34, 35, -1);
+  iIconImages[Enum208.BOMBACTIONC_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.WALK_IMAGES], -1, 36, 37, 38, -1);
+  iIconImages[Enum208.TOOLKITACTIONC_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.WALK_IMAGES], -1, 39, 40, 41, -1);
+  iIconImages[Enum208.WIRECUTACTIONC_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.WALK_IMAGES], -1, 42, 43, 44, -1);
 
-  iIconImages[OPEN_DOOR_IMAGES] = LoadButtonImage("INTERFACE\\door_op2.sti", -1, 9, 10, 11, -1);
-  iIconImages[EXAMINE_DOOR_IMAGES] = UseLoadedButtonImage(iIconImages[OPEN_DOOR_IMAGES], -1, 12, 13, 14, -1);
-  iIconImages[LOCKPICK_DOOR_IMAGES] = UseLoadedButtonImage(iIconImages[OPEN_DOOR_IMAGES], -1, 21, 22, 23, -1);
-  iIconImages[BOOT_DOOR_IMAGES] = UseLoadedButtonImage(iIconImages[OPEN_DOOR_IMAGES], -1, 25, 26, 27, -1);
-  iIconImages[CROWBAR_DOOR_IMAGES] = UseLoadedButtonImage(iIconImages[OPEN_DOOR_IMAGES], -1, 0, 1, 2, -1);
-  iIconImages[USE_KEY_IMAGES] = UseLoadedButtonImage(iIconImages[OPEN_DOOR_IMAGES], -1, 3, 4, 5, -1);
-  iIconImages[USE_KEYRING_IMAGES] = UseLoadedButtonImage(iIconImages[OPEN_DOOR_IMAGES], -1, 6, 7, 8, -1);
-  iIconImages[EXPLOSIVE_DOOR_IMAGES] = UseLoadedButtonImage(iIconImages[OPEN_DOOR_IMAGES], -1, 15, 16, 17, -1);
+  iIconImages[Enum208.OPEN_DOOR_IMAGES] = LoadButtonImage("INTERFACE\\door_op2.sti", -1, 9, 10, 11, -1);
+  iIconImages[Enum208.EXAMINE_DOOR_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.OPEN_DOOR_IMAGES], -1, 12, 13, 14, -1);
+  iIconImages[Enum208.LOCKPICK_DOOR_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.OPEN_DOOR_IMAGES], -1, 21, 22, 23, -1);
+  iIconImages[Enum208.BOOT_DOOR_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.OPEN_DOOR_IMAGES], -1, 25, 26, 27, -1);
+  iIconImages[Enum208.CROWBAR_DOOR_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.OPEN_DOOR_IMAGES], -1, 0, 1, 2, -1);
+  iIconImages[Enum208.USE_KEY_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.OPEN_DOOR_IMAGES], -1, 3, 4, 5, -1);
+  iIconImages[Enum208.USE_KEYRING_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.OPEN_DOOR_IMAGES], -1, 6, 7, 8, -1);
+  iIconImages[Enum208.EXPLOSIVE_DOOR_IMAGES] = UseLoadedButtonImage(iIconImages[Enum208.OPEN_DOOR_IMAGES], -1, 15, 16, 17, -1);
 
   // Load interface panels
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
@@ -337,7 +337,7 @@ function InitializeCurrentPanel(): BOOLEAN {
   MoveRadarScreen();
 
   switch (gsCurInterfacePanel) {
-    case SM_PANEL:
+    case Enum215.SM_PANEL:
       // Set new viewport
       gsVIEWPORT_WINDOW_END_Y = 340;
 
@@ -346,7 +346,7 @@ function InitializeCurrentPanel(): BOOLEAN {
       fOK = InitializeSMPanel();
       break;
 
-    case TEAM_PANEL:
+    case Enum215.TEAM_PANEL:
       gsVIEWPORT_WINDOW_END_Y = 360;
       // Render full
       SetRenderFlags(RENDER_FLAG_FULL);
@@ -363,11 +363,11 @@ function InitializeCurrentPanel(): BOOLEAN {
 function ShutdownCurrentPanel(): void {
   if (gfPanelAllocated) {
     switch (gsCurInterfacePanel) {
-      case SM_PANEL:
+      case Enum215.SM_PANEL:
         ShutdownSMPanel();
         break;
 
-      case TEAM_PANEL:
+      case Enum215.TEAM_PANEL:
         ShutdownTEAMPanel();
         break;
     }
@@ -382,22 +382,22 @@ function SetCurrentTacticalPanelCurrentMerc(ubID: UINT8): void {
   // Disable faces
   SetAllAutoFacesInactive();
 
-  if (gsCurInterfacePanel == SM_PANEL) {
+  if (gsCurInterfacePanel == Enum215.SM_PANEL) {
     // If we are not of merc bodytype, or am an epc, and going into inv, goto another....
     pSoldier = MercPtrs[ubID];
 
     if (!IS_MERC_BODY_TYPE(pSoldier) || AM_AN_EPC(pSoldier)) {
-      SetCurrentInterfacePanel(TEAM_PANEL);
+      SetCurrentInterfacePanel(Enum215.TEAM_PANEL);
     }
   }
 
   switch (gsCurInterfacePanel) {
-    case SM_PANEL:
+    case Enum215.SM_PANEL:
       // SetSMPanelCurrentMerc( ubID );
       gubSelectSMPanelToMerc = ubID;
       break;
 
-    case TEAM_PANEL:
+    case Enum215.TEAM_PANEL:
       SetTEAMPanelCurrentMerc(gusSelectedSoldier);
       break;
   }
@@ -405,11 +405,11 @@ function SetCurrentTacticalPanelCurrentMerc(ubID: UINT8): void {
 
 function CreateCurrentTacticalPanelButtons(): void {
   switch (gsCurInterfacePanel) {
-    case SM_PANEL:
+    case Enum215.SM_PANEL:
       CreateSMPanelButtons(fInterfacePanelDirty);
       break;
 
-    case TEAM_PANEL:
+    case Enum215.TEAM_PANEL:
       CreateTEAMPanelButtons(fInterfacePanelDirty);
       break;
   }
@@ -428,31 +428,31 @@ function ToggleTacticalPanels(): void {
   gfSwitchPanel = TRUE;
   gubNewPanelParam = gusSelectedSoldier;
 
-  if (gsCurInterfacePanel == SM_PANEL) {
-    gbNewPanel = TEAM_PANEL;
+  if (gsCurInterfacePanel == Enum215.SM_PANEL) {
+    gbNewPanel = Enum215.TEAM_PANEL;
   } else {
-    gbNewPanel = SM_PANEL;
+    gbNewPanel = Enum215.SM_PANEL;
   }
 }
 
 function RemoveCurrentTacticalPanelButtons(): void {
   switch (gsCurInterfacePanel) {
-    case SM_PANEL:
+    case Enum215.SM_PANEL:
       RemoveSMPanelButtons(fInterfacePanelDirty);
       break;
 
-    case TEAM_PANEL:
+    case Enum215.TEAM_PANEL:
       RemoveTEAMPanelButtons(fInterfacePanelDirty);
       break;
   }
 }
 
 function IsMercPortraitVisible(ubSoldierID: UINT8): BOOLEAN {
-  if (gsCurInterfacePanel == TEAM_PANEL) {
+  if (gsCurInterfacePanel == Enum215.TEAM_PANEL) {
     return TRUE;
   }
 
-  if (gsCurInterfacePanel == SM_PANEL) {
+  if (gsCurInterfacePanel == Enum215.SM_PANEL) {
     if (GetSMPanelCurrentMerc() == ubSoldierID) {
       return TRUE;
     }
@@ -498,7 +498,7 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   }
 
   // Create mouse region over all area to facilitate clicking to end
-  MSYS_DefineRegion(addressof(gMenuOverlayRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, CURSOR_NORMAL, MSYS_NO_CALLBACK, MovementMenuBackregionCallback);
+  MSYS_DefineRegion(addressof(gMenuOverlayRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MovementMenuBackregionCallback);
   // Add region
   MSYS_AddRegion(addressof(gMenuOverlayRegion));
 
@@ -520,137 +520,137 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   iMenuAnchorX = giMenuAnchorX + 9;
   iMenuAnchorY = giMenuAnchorY + 8;
 
-  iActionIcons[RUN_ICON] = QuickCreateButton(iIconImages[RUN_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
-  if (iActionIcons[RUN_ICON] == -1) {
+  iActionIcons[Enum209.RUN_ICON] = QuickCreateButton(iIconImages[Enum208.RUN_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  if (iActionIcons[Enum209.RUN_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
-  SetButtonFastHelpText(iActionIcons[RUN_ICON], pTacticalPopupButtonStrings[RUN_ICON]);
+  SetButtonFastHelpText(iActionIcons[Enum209.RUN_ICON], pTacticalPopupButtonStrings[Enum209.RUN_ICON]);
   // SetButtonSavedRect( iActionIcons[ RUN_ICON ] );
-  ButtonList[iActionIcons[RUN_ICON]].value.UserData[0] = pUIEvent;
+  ButtonList[iActionIcons[Enum209.RUN_ICON]].value.UserData[0] = pUIEvent;
 
   if (MercInWater(pSoldier) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT)) {
-    DisableButton(iActionIcons[RUN_ICON]);
+    DisableButton(iActionIcons[Enum209.RUN_ICON]);
   }
 
-  iActionIcons[WALK_ICON] = QuickCreateButton(iIconImages[WALK_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
-  if (iActionIcons[WALK_ICON] == -1) {
+  iActionIcons[Enum209.WALK_ICON] = QuickCreateButton(iIconImages[Enum208.WALK_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  if (iActionIcons[Enum209.WALK_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
   // SetButtonSavedRect( iActionIcons[ WALK_ICON ] );
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-    SetButtonFastHelpText(iActionIcons[WALK_ICON], TacticalStr[DRIVE_POPUPTEXT]);
+    SetButtonFastHelpText(iActionIcons[Enum209.WALK_ICON], TacticalStr[Enum335.DRIVE_POPUPTEXT]);
   } else {
-    SetButtonFastHelpText(iActionIcons[WALK_ICON], pTacticalPopupButtonStrings[WALK_ICON]);
+    SetButtonFastHelpText(iActionIcons[Enum209.WALK_ICON], pTacticalPopupButtonStrings[Enum209.WALK_ICON]);
   }
 
-  ButtonList[iActionIcons[WALK_ICON]].value.UserData[0] = pUIEvent;
+  ButtonList[iActionIcons[Enum209.WALK_ICON]].value.UserData[0] = pUIEvent;
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
     if (!CanRobotBeControlled(pSoldier)) {
-      DisableButton(iActionIcons[WALK_ICON]);
+      DisableButton(iActionIcons[Enum209.WALK_ICON]);
     }
   }
 
-  iActionIcons[SNEAK_ICON] = QuickCreateButton(iIconImages[SNEAK_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
-  if (iActionIcons[SNEAK_ICON] == -1) {
+  iActionIcons[Enum209.SNEAK_ICON] = QuickCreateButton(iIconImages[Enum208.SNEAK_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  if (iActionIcons[Enum209.SNEAK_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
-  SetButtonFastHelpText(iActionIcons[SNEAK_ICON], pTacticalPopupButtonStrings[SNEAK_ICON]);
+  SetButtonFastHelpText(iActionIcons[Enum209.SNEAK_ICON], pTacticalPopupButtonStrings[Enum209.SNEAK_ICON]);
   // SetButtonSavedRect( iActionIcons[ SNEAK_ICON ] );
-  ButtonList[iActionIcons[SNEAK_ICON]].value.UserData[0] = pUIEvent;
+  ButtonList[iActionIcons[Enum209.SNEAK_ICON]].value.UserData[0] = pUIEvent;
 
   // Check if this is a valid stance, diable if not!
   if (!IsValidStance(pSoldier, ANIM_CROUCH)) {
-    DisableButton(iActionIcons[SNEAK_ICON]);
+    DisableButton(iActionIcons[Enum209.SNEAK_ICON]);
   }
 
-  iActionIcons[CRAWL_ICON] = QuickCreateButton(iIconImages[CRAWL_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
-  if (iActionIcons[CRAWL_ICON] == -1) {
+  iActionIcons[Enum209.CRAWL_ICON] = QuickCreateButton(iIconImages[Enum208.CRAWL_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  if (iActionIcons[Enum209.CRAWL_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
-  SetButtonFastHelpText(iActionIcons[CRAWL_ICON], pTacticalPopupButtonStrings[CRAWL_ICON]);
+  SetButtonFastHelpText(iActionIcons[Enum209.CRAWL_ICON], pTacticalPopupButtonStrings[Enum209.CRAWL_ICON]);
   // SetButtonSavedRect( iActionIcons[ CRAWL_ICON ] );
-  ButtonList[iActionIcons[CRAWL_ICON]].value.UserData[0] = pUIEvent;
+  ButtonList[iActionIcons[Enum209.CRAWL_ICON]].value.UserData[0] = pUIEvent;
 
   // Check if this is a valid stance, diable if not!
   if (!IsValidStance(pSoldier, ANIM_PRONE)) {
-    DisableButton(iActionIcons[CRAWL_ICON]);
+    DisableButton(iActionIcons[Enum209.CRAWL_ICON]);
   }
 
-  iActionIcons[LOOK_ICON] = QuickCreateButton(iIconImages[LOOK_IMAGES], (iMenuAnchorX), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
-  if (iActionIcons[LOOK_ICON] == -1) {
+  iActionIcons[Enum209.LOOK_ICON] = QuickCreateButton(iIconImages[Enum208.LOOK_IMAGES], (iMenuAnchorX), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  if (iActionIcons[Enum209.LOOK_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
-  SetButtonFastHelpText(iActionIcons[LOOK_ICON], TacticalStr[LOOK_CURSOR_POPUPTEXT]);
+  SetButtonFastHelpText(iActionIcons[Enum209.LOOK_ICON], TacticalStr[Enum335.LOOK_CURSOR_POPUPTEXT]);
   // SetButtonSavedRect( iActionIcons[ LOOK_ICON ] );
-  ButtonList[iActionIcons[LOOK_ICON]].value.UserData[0] = pUIEvent;
+  ButtonList[iActionIcons[Enum209.LOOK_ICON]].value.UserData[0] = pUIEvent;
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-    DisableButton(iActionIcons[LOOK_ICON]);
+    DisableButton(iActionIcons[Enum209.LOOK_ICON]);
   }
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
     if (!CanRobotBeControlled(pSoldier)) {
-      DisableButton(iActionIcons[LOOK_ICON]);
+      DisableButton(iActionIcons[Enum209.LOOK_ICON]);
     }
   }
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
     // Until we get mounted weapons...
-    uiActionImages = CANCEL_IMAGES;
-    swprintf(zActionString, TacticalStr[NOT_APPLICABLE_POPUPTEXT]);
+    uiActionImages = Enum208.CANCEL_IMAGES;
+    swprintf(zActionString, TacticalStr[Enum335.NOT_APPLICABLE_POPUPTEXT]);
     fDisableAction = TRUE;
   } else {
-    if (pSoldier.value.inv[HANDPOS].usItem == TOOLKIT) {
-      uiActionImages = TOOLKITACTIONC_IMAGES;
-      swprintf(zActionString, TacticalStr[NOT_APPLICABLE_POPUPTEXT]);
-    } else if (pSoldier.value.inv[HANDPOS].usItem == WIRECUTTERS) {
-      uiActionImages = WIRECUTACTIONC_IMAGES;
-      swprintf(zActionString, TacticalStr[NOT_APPLICABLE_POPUPTEXT]);
+    if (pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.TOOLKIT) {
+      uiActionImages = Enum208.TOOLKITACTIONC_IMAGES;
+      swprintf(zActionString, TacticalStr[Enum335.NOT_APPLICABLE_POPUPTEXT]);
+    } else if (pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.WIRECUTTERS) {
+      uiActionImages = Enum208.WIRECUTACTIONC_IMAGES;
+      swprintf(zActionString, TacticalStr[Enum335.NOT_APPLICABLE_POPUPTEXT]);
     } else {
       // Create button based on what is in our hands at the moment!
-      switch (Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass) {
+      switch (Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass) {
         case IC_PUNCH:
 
-          uiActionImages = PUNCHACTIONC_IMAGES;
-          swprintf(zActionString, TacticalStr[USE_HANDTOHAND_POPUPTEXT]);
+          uiActionImages = Enum208.PUNCHACTIONC_IMAGES;
+          swprintf(zActionString, TacticalStr[Enum335.USE_HANDTOHAND_POPUPTEXT]);
           break;
 
         case IC_GUN:
 
-          uiActionImages = TARGETACTIONC_IMAGES;
-          swprintf(zActionString, TacticalStr[USE_FIREARM_POPUPTEXT]);
+          uiActionImages = Enum208.TARGETACTIONC_IMAGES;
+          swprintf(zActionString, TacticalStr[Enum335.USE_FIREARM_POPUPTEXT]);
           break;
 
         case IC_BLADE:
 
-          uiActionImages = KNIFEACTIONC_IMAGES;
-          swprintf(zActionString, TacticalStr[USE_BLADE_POPUPTEXT]);
+          uiActionImages = Enum208.KNIFEACTIONC_IMAGES;
+          swprintf(zActionString, TacticalStr[Enum335.USE_BLADE_POPUPTEXT]);
           break;
 
         case IC_GRENADE:
         case IC_BOMB:
 
-          uiActionImages = BOMBACTIONC_IMAGES;
-          swprintf(zActionString, TacticalStr[USE_EXPLOSIVE_POPUPTEXT]);
+          uiActionImages = Enum208.BOMBACTIONC_IMAGES;
+          swprintf(zActionString, TacticalStr[Enum335.USE_EXPLOSIVE_POPUPTEXT]);
           break;
 
         case IC_MEDKIT:
 
-          uiActionImages = AIDACTIONC_IMAGES;
-          swprintf(zActionString, TacticalStr[USE_MEDKIT_POPUPTEXT]);
+          uiActionImages = Enum208.AIDACTIONC_IMAGES;
+          swprintf(zActionString, TacticalStr[Enum335.USE_MEDKIT_POPUPTEXT]);
           break;
 
         default:
 
-          uiActionImages = CANCEL_IMAGES;
-          swprintf(zActionString, TacticalStr[NOT_APPLICABLE_POPUPTEXT]);
+          uiActionImages = Enum208.CANCEL_IMAGES;
+          swprintf(zActionString, TacticalStr[Enum335.NOT_APPLICABLE_POPUPTEXT]);
           fDisableAction = TRUE;
           break;
       }
@@ -661,46 +661,46 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
     fDisableAction = TRUE;
   }
 
-  iActionIcons[ACTIONC_ICON] = QuickCreateButton(iIconImages[uiActionImages], (iMenuAnchorX), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
-  if (iActionIcons[ACTIONC_ICON] == -1) {
+  iActionIcons[Enum209.ACTIONC_ICON] = QuickCreateButton(iIconImages[uiActionImages], (iMenuAnchorX), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  if (iActionIcons[Enum209.ACTIONC_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
   // SetButtonSavedRect( iActionIcons[ ACTIONC_ICON ] );
-  SetButtonFastHelpText(iActionIcons[ACTIONC_ICON], zActionString);
-  ButtonList[iActionIcons[ACTIONC_ICON]].value.UserData[0] = pUIEvent;
+  SetButtonFastHelpText(iActionIcons[Enum209.ACTIONC_ICON], zActionString);
+  ButtonList[iActionIcons[Enum209.ACTIONC_ICON]].value.UserData[0] = pUIEvent;
 
   if (fDisableAction) {
-    DisableButton(iActionIcons[ACTIONC_ICON]);
+    DisableButton(iActionIcons[Enum209.ACTIONC_ICON]);
   }
 
-  iActionIcons[TALK_ICON] = QuickCreateButton(iIconImages[TALK_IMAGES], (iMenuAnchorX), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
-  if (iActionIcons[TALK_ICON] == -1) {
+  iActionIcons[Enum209.TALK_ICON] = QuickCreateButton(iIconImages[Enum208.TALK_IMAGES], (iMenuAnchorX), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  if (iActionIcons[Enum209.TALK_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
   // SetButtonSavedRect( iActionIcons[ TALK_ICON ] );
-  SetButtonFastHelpText(iActionIcons[TALK_ICON], pTacticalPopupButtonStrings[TALK_ICON]);
-  ButtonList[iActionIcons[TALK_ICON]].value.UserData[0] = pUIEvent;
+  SetButtonFastHelpText(iActionIcons[Enum209.TALK_ICON], pTacticalPopupButtonStrings[Enum209.TALK_ICON]);
+  ButtonList[iActionIcons[Enum209.TALK_ICON]].value.UserData[0] = pUIEvent;
 
   if (AM_AN_EPC(pSoldier) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
-    DisableButton(iActionIcons[TALK_ICON]);
+    DisableButton(iActionIcons[Enum209.TALK_ICON]);
   }
 
-  iActionIcons[HAND_ICON] = QuickCreateButton(iIconImages[HAND_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
-  if (iActionIcons[HAND_ICON] == -1) {
+  iActionIcons[Enum209.HAND_ICON] = QuickCreateButton(iIconImages[Enum208.HAND_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  if (iActionIcons[Enum209.HAND_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
   // SetButtonSavedRect( iActionIcons[ HAND_ICON ] );
-  SetButtonFastHelpText(iActionIcons[HAND_ICON], pTacticalPopupButtonStrings[HAND_ICON]);
-  ButtonList[iActionIcons[HAND_ICON]].value.UserData[0] = pUIEvent;
+  SetButtonFastHelpText(iActionIcons[Enum209.HAND_ICON], pTacticalPopupButtonStrings[Enum209.HAND_ICON]);
+  ButtonList[iActionIcons[Enum209.HAND_ICON]].value.UserData[0] = pUIEvent;
 
   if (AM_AN_EPC(pSoldier) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
-    DisableButton(iActionIcons[HAND_ICON]);
+    DisableButton(iActionIcons[Enum209.HAND_ICON]);
   }
 
-  iActionIcons[CANCEL_ICON] = QuickCreateButton(iIconImages[CANCEL_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
+  iActionIcons[CANCEL_ICON] = QuickCreateButton(iIconImages[Enum208.CANCEL_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
   if (iActionIcons[CANCEL_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -719,14 +719,14 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
 
 function PopDownMovementMenu(): void {
   if (gfInMovementMenu) {
-    RemoveButton(iActionIcons[WALK_ICON]);
-    RemoveButton(iActionIcons[SNEAK_ICON]);
-    RemoveButton(iActionIcons[RUN_ICON]);
-    RemoveButton(iActionIcons[CRAWL_ICON]);
-    RemoveButton(iActionIcons[LOOK_ICON]);
-    RemoveButton(iActionIcons[ACTIONC_ICON]);
-    RemoveButton(iActionIcons[TALK_ICON]);
-    RemoveButton(iActionIcons[HAND_ICON]);
+    RemoveButton(iActionIcons[Enum209.WALK_ICON]);
+    RemoveButton(iActionIcons[Enum209.SNEAK_ICON]);
+    RemoveButton(iActionIcons[Enum209.RUN_ICON]);
+    RemoveButton(iActionIcons[Enum209.CRAWL_ICON]);
+    RemoveButton(iActionIcons[Enum209.LOOK_ICON]);
+    RemoveButton(iActionIcons[Enum209.ACTIONC_ICON]);
+    RemoveButton(iActionIcons[Enum209.TALK_ICON]);
+    RemoveButton(iActionIcons[Enum209.HAND_ICON]);
     RemoveButton(iActionIcons[CANCEL_ICON]);
 
     // Turn off Ignore scrolling
@@ -749,14 +749,14 @@ function RenderMovementMenu(): void {
     BltVideoObjectFromIndex(FRAME_BUFFER, guiBUTTONBORDER, 0, giMenuAnchorX, giMenuAnchorY, VO_BLT_SRCTRANSPARENCY, NULL);
 
     // Mark buttons dirty!
-    MarkAButtonDirty(iActionIcons[WALK_ICON]);
-    MarkAButtonDirty(iActionIcons[SNEAK_ICON]);
-    MarkAButtonDirty(iActionIcons[RUN_ICON]);
-    MarkAButtonDirty(iActionIcons[CRAWL_ICON]);
-    MarkAButtonDirty(iActionIcons[LOOK_ICON]);
-    MarkAButtonDirty(iActionIcons[ACTIONC_ICON]);
-    MarkAButtonDirty(iActionIcons[TALK_ICON]);
-    MarkAButtonDirty(iActionIcons[HAND_ICON]);
+    MarkAButtonDirty(iActionIcons[Enum209.WALK_ICON]);
+    MarkAButtonDirty(iActionIcons[Enum209.SNEAK_ICON]);
+    MarkAButtonDirty(iActionIcons[Enum209.RUN_ICON]);
+    MarkAButtonDirty(iActionIcons[Enum209.CRAWL_ICON]);
+    MarkAButtonDirty(iActionIcons[Enum209.LOOK_ICON]);
+    MarkAButtonDirty(iActionIcons[Enum209.ACTIONC_ICON]);
+    MarkAButtonDirty(iActionIcons[Enum209.TALK_ICON]);
+    MarkAButtonDirty(iActionIcons[Enum209.HAND_ICON]);
     MarkAButtonDirty(iActionIcons[CANCEL_ICON]);
 
     InvalidateRegion(giMenuAnchorX, giMenuAnchorY, giMenuAnchorX + BUTTON_PANEL_WIDTH, giMenuAnchorY + BUTTON_PANEL_HEIGHT);
@@ -766,7 +766,7 @@ function RenderMovementMenu(): void {
 function CancelMovementMenu(): void {
   // Signal end of event
   PopDownMovementMenu();
-  guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
+  guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
 }
 
 function BtnMovementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -780,25 +780,25 @@ function BtnMovementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     pUIEvent = (btn.value.UserData[0]);
 
-    if (uiBtnID == iActionIcons[WALK_ICON]) {
+    if (uiBtnID == iActionIcons[Enum209.WALK_ICON]) {
       pUIEvent.value.uiParams[0] = MOVEMENT_MENU_WALK;
-    } else if (uiBtnID == iActionIcons[RUN_ICON]) {
+    } else if (uiBtnID == iActionIcons[Enum209.RUN_ICON]) {
       pUIEvent.value.uiParams[0] = MOVEMENT_MENU_RUN;
-    } else if (uiBtnID == iActionIcons[SNEAK_ICON]) {
+    } else if (uiBtnID == iActionIcons[Enum209.SNEAK_ICON]) {
       pUIEvent.value.uiParams[0] = MOVEMENT_MENU_SWAT;
-    } else if (uiBtnID == iActionIcons[CRAWL_ICON]) {
+    } else if (uiBtnID == iActionIcons[Enum209.CRAWL_ICON]) {
       pUIEvent.value.uiParams[0] = MOVEMENT_MENU_PRONE;
-    } else if (uiBtnID == iActionIcons[LOOK_ICON]) {
+    } else if (uiBtnID == iActionIcons[Enum209.LOOK_ICON]) {
       pUIEvent.value.uiParams[2] = MOVEMENT_MENU_LOOK;
-    } else if (uiBtnID == iActionIcons[ACTIONC_ICON]) {
+    } else if (uiBtnID == iActionIcons[Enum209.ACTIONC_ICON]) {
       pUIEvent.value.uiParams[2] = MOVEMENT_MENU_ACTIONC;
-    } else if (uiBtnID == iActionIcons[TALK_ICON]) {
+    } else if (uiBtnID == iActionIcons[Enum209.TALK_ICON]) {
       pUIEvent.value.uiParams[2] = MOVEMENT_MENU_TALK;
-    } else if (uiBtnID == iActionIcons[HAND_ICON]) {
+    } else if (uiBtnID == iActionIcons[Enum209.HAND_ICON]) {
       pUIEvent.value.uiParams[2] = MOVEMENT_MENU_HAND;
     } else if (uiBtnID == iActionIcons[CANCEL_ICON]) {
       // Signal end of event
-      EndMenuEvent(U_MOVEMENT_MENU);
+      EndMenuEvent(Enum207.U_MOVEMENT_MENU);
       pUIEvent.value.uiParams[1] = FALSE;
       return;
     } else {
@@ -806,7 +806,7 @@ function BtnMovementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     }
 
     // Signal end of event
-    EndMenuEvent(U_MOVEMENT_MENU);
+    EndMenuEvent(Enum207.U_MOVEMENT_MENU);
     pUIEvent.value.uiParams[1] = TRUE;
   }
 }
@@ -833,94 +833,94 @@ function RenderArrows(): void {
   }
 
   if (guiShowUPDownArrows & ARROWS_SHOW_UP_BESIDE) {
-    TileElem = gTileDatabase[SECONDPOINTERS3];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS3];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsUpArrowX, gsUpArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   if (guiShowUPDownArrows & ARROWS_SHOW_UP_ABOVE_G) {
-    TileElem = gTileDatabase[SECONDPOINTERS1];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS1];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsUpArrowX, gsUpArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   if (guiShowUPDownArrows & ARROWS_SHOW_UP_ABOVE_Y) {
-    TileElem = gTileDatabase[SECONDPOINTERS3];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS3];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsUpArrowX, gsUpArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   if (guiShowUPDownArrows & ARROWS_SHOW_UP_ABOVE_YG) {
-    TileElem = gTileDatabase[SECONDPOINTERS3];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS3];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsUpArrowX, gsUpArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
-    TileElem = gTileDatabase[SECONDPOINTERS1];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS1];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsUpArrowX, gsUpArrowY + 20, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   if (guiShowUPDownArrows & ARROWS_SHOW_UP_ABOVE_GG) {
-    TileElem = gTileDatabase[SECONDPOINTERS1];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS1];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsUpArrowX, gsUpArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsUpArrowX, gsUpArrowY + 20, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   if (guiShowUPDownArrows & ARROWS_SHOW_UP_ABOVE_YY) {
-    TileElem = gTileDatabase[SECONDPOINTERS3];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS3];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsUpArrowX, gsUpArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsUpArrowX, gsUpArrowY + 20, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   if (guiShowUPDownArrows & ARROWS_SHOW_UP_ABOVE_CLIMB) {
-    TileElem = gTileDatabase[SECONDPOINTERS8];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS8];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsUpArrowX, gsUpArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   if (guiShowUPDownArrows & ARROWS_SHOW_UP_ABOVE_CLIMB2) {
-    TileElem = gTileDatabase[SECONDPOINTERS3];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS3];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsUpArrowX, gsUpArrowY + 20, VO_BLT_SRCTRANSPARENCY, NULL);
-    TileElem = gTileDatabase[SECONDPOINTERS8];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS8];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsUpArrowX, gsUpArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   if (guiShowUPDownArrows & ARROWS_SHOW_UP_ABOVE_CLIMB3) {
-    TileElem = gTileDatabase[SECONDPOINTERS3];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS3];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsUpArrowX, gsUpArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
-    TileElem = gTileDatabase[SECONDPOINTERS8];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS8];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsUpArrowX, gsUpArrowY + 20, VO_BLT_SRCTRANSPARENCY, NULL);
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsUpArrowX, gsUpArrowY + 40, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   if (guiShowUPDownArrows & ARROWS_SHOW_DOWN_BESIDE) {
-    TileElem = gTileDatabase[SECONDPOINTERS4];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS4];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsDownArrowX, gsDownArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   if (guiShowUPDownArrows & ARROWS_SHOW_DOWN_BELOW_G) {
-    TileElem = gTileDatabase[SECONDPOINTERS2];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS2];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsDownArrowX, gsDownArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   if (guiShowUPDownArrows & ARROWS_SHOW_DOWN_BELOW_Y) {
-    TileElem = gTileDatabase[SECONDPOINTERS4];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS4];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsDownArrowX, gsDownArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   if (guiShowUPDownArrows & ARROWS_SHOW_DOWN_CLIMB) {
-    TileElem = gTileDatabase[SECONDPOINTERS7];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS7];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsDownArrowX, gsDownArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   if (guiShowUPDownArrows & ARROWS_SHOW_DOWN_BELOW_YG) {
-    TileElem = gTileDatabase[SECONDPOINTERS2];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS2];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsDownArrowX, gsDownArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
-    TileElem = gTileDatabase[SECONDPOINTERS4];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS4];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsDownArrowX, gsDownArrowY + 20, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   if (guiShowUPDownArrows & ARROWS_SHOW_DOWN_BELOW_GG) {
-    TileElem = gTileDatabase[SECONDPOINTERS2];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS2];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsDownArrowX, gsDownArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsDownArrowX, gsDownArrowY + 20, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   if (guiShowUPDownArrows & ARROWS_SHOW_DOWN_BELOW_YY) {
-    TileElem = gTileDatabase[SECONDPOINTERS4];
+    TileElem = gTileDatabase[Enum312.SECONDPOINTERS4];
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsDownArrowX, gsDownArrowY, VO_BLT_SRCTRANSPARENCY, NULL);
     BltVideoObject(FRAME_BUFFER, TileElem.hTileSurface, TileElem.usRegionIndex, gsDownArrowX, gsDownArrowY + 20, VO_BLT_SRCTRANSPARENCY, NULL);
   }
@@ -1023,7 +1023,7 @@ function GetArrowsBackground(): void {
     }
 
     // Adjust arrows based on level
-    if (gsInterfaceLevel == I_ROOF_LEVEL) {
+    if (gsInterfaceLevel == Enum214.I_ROOF_LEVEL) {
       //	gsDownArrowY -= ROOF_LEVEL_HEIGHT;
       //	gsUpArrowY	 -= ROOF_LEVEL_HEIGHT;
     }
@@ -1077,12 +1077,12 @@ function GetSoldierAboveGuyPositions(pSoldier: Pointer<SOLDIERTYPE>, psX: Pointe
 
   // Adjust based on body type...
   switch (pSoldier.value.ubBodyType) {
-    case CROW:
+    case Enum194.CROW:
 
       sStanceOffset = 30;
       break;
 
-    case ROBOTNOWEAPON:
+    case Enum194.ROBOTNOWEAPON:
 
       sStanceOffset = 30;
       break;
@@ -1133,7 +1133,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
   let TileElem: TILE_ELEMENT;
   let pStr: Pointer<UINT16>;
   let NameStr: UINT16[] /* [50] */;
-  let usGraphicToUse: UINT16 = THIRDPOINTERS1;
+  let usGraphicToUse: UINT16 = Enum312.THIRDPOINTERS1;
   let fRaiseName: BOOLEAN = FALSE;
   let fDoName: BOOLEAN = TRUE;
 
@@ -1217,7 +1217,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
     // RETURN IF MERC IS NOT SELECTED
     if (gfUIHandleSelectionAboveGuy && pSoldier.value.ubID == gsSelectedGuy && pSoldier.value.ubID != gusSelectedSoldier && !gfIgnoreOnSelectedGuy) {
     } else if (pSoldier.value.ubID == gusSelectedSoldier && !gRubberBandActive) {
-      usGraphicToUse = THIRDPOINTERS2;
+      usGraphicToUse = Enum312.THIRDPOINTERS2;
     }
     // show all people's names if !
     // else if ( pSoldier->ubID >= 20 && pSoldier->bVisible != -1 )
@@ -1230,7 +1230,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
     }
   } else {
     if (pSoldier.value.ubID == gusSelectedSoldier && !gRubberBandActive) {
-      usGraphicToUse = THIRDPOINTERS2;
+      usGraphicToUse = Enum312.THIRDPOINTERS2;
     }
   }
 
@@ -1253,31 +1253,31 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
 
   if (pSoldier.value.ubProfile != NO_PROFILE || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
     if (gfUIMouseOnValidCatcher == 1 && pSoldier.value.ubID == gubUIValidCatcherID) {
-      swprintf(NameStr, TacticalStr[CATCH_STR]);
+      swprintf(NameStr, TacticalStr[Enum335.CATCH_STR]);
       FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
     } else if (gfUIMouseOnValidCatcher == 3 && pSoldier.value.ubID == gubUIValidCatcherID) {
-      swprintf(NameStr, TacticalStr[RELOAD_STR]);
+      swprintf(NameStr, TacticalStr[Enum335.RELOAD_STR]);
       FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
     } else if (gfUIMouseOnValidCatcher == 4 && pSoldier.value.ubID == gubUIValidCatcherID) {
-      swprintf(NameStr, pMessageStrings[MSG_PASS]);
+      swprintf(NameStr, pMessageStrings[Enum333.MSG_PASS]);
       FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
-    } else if (pSoldier.value.bAssignment >= ON_DUTY) {
+    } else if (pSoldier.value.bAssignment >= Enum117.ON_DUTY) {
       SetFontForeground(FONT_YELLOW);
       swprintf(NameStr, "(%s)", pAssignmentStrings[pSoldier.value.bAssignment]);
       FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
-    } else if (pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bAssignment < ON_DUTY && pSoldier.value.bAssignment != CurrentSquad() && !(pSoldier.value.uiStatusFlags & SOLDIER_MULTI_SELECTED)) {
+    } else if (pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bAssignment < Enum117.ON_DUTY && pSoldier.value.bAssignment != CurrentSquad() && !(pSoldier.value.uiStatusFlags & SOLDIER_MULTI_SELECTED)) {
       swprintf(NameStr, gzLateLocalizedString[34], (pSoldier.value.bAssignment + 1));
       FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
@@ -1291,7 +1291,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
         SetFontForeground(FONT_GRAY4);
       }
     } else {
-      if (pSoldier.value.bAssignment >= ON_DUTY) {
+      if (pSoldier.value.bAssignment >= Enum117.ON_DUTY) {
         SetFontForeground(FONT_YELLOW);
       }
     }
@@ -1343,7 +1343,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
         SetFontBackground(FONT_MCOLOR_BLACK);
         SetFontForeground(FONT_MCOLOR_WHITE);
 
-        swprintf(NameStr, TacticalStr[GIVE_STR]);
+        swprintf(NameStr, TacticalStr[Enum335.GIVE_STR]);
         FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
@@ -1411,7 +1411,7 @@ function BeginOverlayMessage(uiFont: UINT32, pFontString: Pointer<UINT16>, ...ar
   SetPrepareMercPopupFlags(MERC_POPUP_PREPARE_FLAGS_TRANS_BACK | MERC_POPUP_PREPARE_FLAGS_MARGINS);
 
   // Prepare text box
-  iOverlayMessageBox = PrepareMercPopupBox(iOverlayMessageBox, BASIC_MERC_POPUP_BACKGROUND, RED_MERC_POPUP_BORDER, SlideString, 200, 50, 0, 0, addressof(gusOverlayPopupBoxWidth), addressof(gusOverlayPopupBoxHeight));
+  iOverlayMessageBox = PrepareMercPopupBox(iOverlayMessageBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.RED_MERC_POPUP_BORDER, SlideString, 200, 50, 0, 0, addressof(gusOverlayPopupBoxWidth), addressof(gusOverlayPopupBoxHeight));
 
   // Set it back!
   ResetOverrideMercPopupBox();
@@ -1551,24 +1551,24 @@ function ClearInterface(): void {
   }
 
   // Stop any UI menus!
-  if (gCurrentUIMode == MENU_MODE) {
+  if (gCurrentUIMode == Enum206.MENU_MODE) {
     EndMenuEvent(guiCurrentEvent);
   }
 
   if (gfUIHandleShowMoveGrid) {
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS4);
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS2);
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS13);
-    RemoveTopmost(gsUIHandleShowMoveGridLocation, FIRSTPOINTERS15);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS4);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS2);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS13);
+    RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS15);
   }
 
   // Remove any popup menus
-  if (gCurrentUIMode == GETTINGITEM_MODE) {
+  if (gCurrentUIMode == Enum206.GETTINGITEM_MODE) {
     RemoveItemPickupMenu();
   }
 
   // Remove any popup menus
-  if (gCurrentUIMode == OPENDOOR_MENU_MODE) {
+  if (gCurrentUIMode == Enum206.OPENDOOR_MENU_MODE) {
     PopDownOpenDoorMenu();
   }
 
@@ -1607,8 +1607,8 @@ function RestoreInterface(): void {
   gfUIRefreshArrows = TRUE;
 
   // SHow lock UI cursors...
-  MSYS_ChangeRegionCursor(addressof(gDisableRegion), CURSOR_WAIT);
-  MSYS_ChangeRegionCursor(addressof(gUserTurnRegion), CURSOR_WAIT);
+  MSYS_ChangeRegionCursor(addressof(gDisableRegion), Enum317.CURSOR_WAIT);
+  MSYS_ChangeRegionCursor(addressof(gUserTurnRegion), Enum317.CURSOR_WAIT);
 }
 
 function BlitPopupText(pBlitter: Pointer<VIDEO_OVERLAY>): void {
@@ -1698,7 +1698,7 @@ function InitDoorOpenMenu(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<ST
 
   gOpenDoorMenu.fMenuHandled = FALSE;
 
-  guiPendingOverrideEvent = OP_OPENDOORMENU;
+  guiPendingOverrideEvent = Enum207.OP_OPENDOORMENU;
   HandleTacticalUI();
 
   PopupDoorOpenMenu(fClosingDoor);
@@ -1720,101 +1720,101 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   iMenuAnchorY = gOpenDoorMenu.sY + 8;
 
   // Create mouse region over all area to facilitate clicking to end
-  MSYS_DefineRegion(addressof(gMenuOverlayRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, CURSOR_NORMAL, MSYS_NO_CALLBACK, DoorMenuBackregionCallback);
+  MSYS_DefineRegion(addressof(gMenuOverlayRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, DoorMenuBackregionCallback);
   // Add region
   MSYS_AddRegion(addressof(gMenuOverlayRegion));
 
-  iActionIcons[USE_KEYRING_ICON] = QuickCreateButton(iIconImages[USE_KEYRING_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
-  if (iActionIcons[USE_KEYRING_ICON] == -1) {
+  iActionIcons[Enum209.USE_KEYRING_ICON] = QuickCreateButton(iIconImages[Enum208.USE_KEYRING_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  if (iActionIcons[Enum209.USE_KEYRING_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
 
   if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
-    swprintf(zDisp, pTacticalPopupButtonStrings[USE_KEYRING_ICON]);
+    swprintf(zDisp, pTacticalPopupButtonStrings[Enum209.USE_KEYRING_ICON]);
   } else {
-    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[USE_KEYRING_ICON], AP_UNLOCK_DOOR);
+    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[Enum209.USE_KEYRING_ICON], AP_UNLOCK_DOOR);
   }
-  SetButtonFastHelpText(iActionIcons[USE_KEYRING_ICON], zDisp);
+  SetButtonFastHelpText(iActionIcons[Enum209.USE_KEYRING_ICON], zDisp);
 
   if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_UNLOCK_DOOR, BP_UNLOCK_DOOR, FALSE) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
-    DisableButton(iActionIcons[USE_KEYRING_ICON]);
+    DisableButton(iActionIcons[Enum209.USE_KEYRING_ICON]);
   }
 
   // Greyout if no keys found...
   if (!SoldierHasKey(gOpenDoorMenu.pSoldier, ANYKEY)) {
-    DisableButton(iActionIcons[USE_KEYRING_ICON]);
+    DisableButton(iActionIcons[Enum209.USE_KEYRING_ICON]);
   }
 
-  iActionIcons[USE_CROWBAR_ICON] = QuickCreateButton(iIconImages[CROWBAR_DOOR_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
-  if (iActionIcons[USE_CROWBAR_ICON] == -1) {
+  iActionIcons[Enum209.USE_CROWBAR_ICON] = QuickCreateButton(iIconImages[Enum208.CROWBAR_DOOR_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  if (iActionIcons[Enum209.USE_CROWBAR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
 
   if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
-    swprintf(zDisp, pTacticalPopupButtonStrings[USE_CROWBAR_ICON]);
+    swprintf(zDisp, pTacticalPopupButtonStrings[Enum209.USE_CROWBAR_ICON]);
   } else {
-    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[USE_CROWBAR_ICON], AP_USE_CROWBAR);
+    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[Enum209.USE_CROWBAR_ICON], AP_USE_CROWBAR);
   }
-  SetButtonFastHelpText(iActionIcons[USE_CROWBAR_ICON], zDisp);
+  SetButtonFastHelpText(iActionIcons[Enum209.USE_CROWBAR_ICON], zDisp);
 
   // Greyout if no crowbar found...
-  if (FindUsableObj(gOpenDoorMenu.pSoldier, CROWBAR) == NO_SLOT || fClosingDoor) {
-    DisableButton(iActionIcons[USE_CROWBAR_ICON]);
+  if (FindUsableObj(gOpenDoorMenu.pSoldier, Enum225.CROWBAR) == NO_SLOT || fClosingDoor) {
+    DisableButton(iActionIcons[Enum209.USE_CROWBAR_ICON]);
   }
 
   if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_USE_CROWBAR, BP_USE_CROWBAR, FALSE)) {
-    DisableButton(iActionIcons[USE_CROWBAR_ICON]);
+    DisableButton(iActionIcons[Enum209.USE_CROWBAR_ICON]);
   }
 
-  iActionIcons[LOCKPICK_DOOR_ICON] = QuickCreateButton(iIconImages[LOCKPICK_DOOR_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
-  if (iActionIcons[LOCKPICK_DOOR_ICON] == -1) {
+  iActionIcons[Enum209.LOCKPICK_DOOR_ICON] = QuickCreateButton(iIconImages[Enum208.LOCKPICK_DOOR_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  if (iActionIcons[Enum209.LOCKPICK_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
 
   if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
-    swprintf(zDisp, pTacticalPopupButtonStrings[LOCKPICK_DOOR_ICON]);
+    swprintf(zDisp, pTacticalPopupButtonStrings[Enum209.LOCKPICK_DOOR_ICON]);
   } else {
-    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[LOCKPICK_DOOR_ICON], AP_PICKLOCK);
+    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[Enum209.LOCKPICK_DOOR_ICON], AP_PICKLOCK);
   }
-  SetButtonFastHelpText(iActionIcons[LOCKPICK_DOOR_ICON], zDisp);
+  SetButtonFastHelpText(iActionIcons[Enum209.LOCKPICK_DOOR_ICON], zDisp);
 
   if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_PICKLOCK, BP_PICKLOCK, FALSE) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
-    DisableButton(iActionIcons[LOCKPICK_DOOR_ICON]);
+    DisableButton(iActionIcons[Enum209.LOCKPICK_DOOR_ICON]);
   }
 
   // Grayout if no lockpick found....
-  if (FindObj(gOpenDoorMenu.pSoldier, LOCKSMITHKIT) == NO_SLOT) {
-    DisableButton(iActionIcons[LOCKPICK_DOOR_ICON]);
+  if (FindObj(gOpenDoorMenu.pSoldier, Enum225.LOCKSMITHKIT) == NO_SLOT) {
+    DisableButton(iActionIcons[Enum209.LOCKPICK_DOOR_ICON]);
   }
 
-  iActionIcons[EXPLOSIVE_DOOR_ICON] = QuickCreateButton(iIconImages[EXPLOSIVE_DOOR_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
-  if (iActionIcons[EXPLOSIVE_DOOR_ICON] == -1) {
+  iActionIcons[Enum209.EXPLOSIVE_DOOR_ICON] = QuickCreateButton(iIconImages[Enum208.EXPLOSIVE_DOOR_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  if (iActionIcons[Enum209.EXPLOSIVE_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
 
   if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
-    swprintf(zDisp, pTacticalPopupButtonStrings[EXPLOSIVE_DOOR_ICON]);
+    swprintf(zDisp, pTacticalPopupButtonStrings[Enum209.EXPLOSIVE_DOOR_ICON]);
   } else {
-    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[EXPLOSIVE_DOOR_ICON], AP_EXPLODE_DOOR);
+    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[Enum209.EXPLOSIVE_DOOR_ICON], AP_EXPLODE_DOOR);
   }
-  SetButtonFastHelpText(iActionIcons[EXPLOSIVE_DOOR_ICON], zDisp);
+  SetButtonFastHelpText(iActionIcons[Enum209.EXPLOSIVE_DOOR_ICON], zDisp);
 
   if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_EXPLODE_DOOR, BP_EXPLODE_DOOR, FALSE) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
-    DisableButton(iActionIcons[EXPLOSIVE_DOOR_ICON]);
+    DisableButton(iActionIcons[Enum209.EXPLOSIVE_DOOR_ICON]);
   }
 
   // Grayout if no lock explosive found....
   // For no use bomb1 until we get a special item for this
-  if (FindObj(gOpenDoorMenu.pSoldier, SHAPED_CHARGE) == NO_SLOT) {
-    DisableButton(iActionIcons[EXPLOSIVE_DOOR_ICON]);
+  if (FindObj(gOpenDoorMenu.pSoldier, Enum225.SHAPED_CHARGE) == NO_SLOT) {
+    DisableButton(iActionIcons[Enum209.EXPLOSIVE_DOOR_ICON]);
   }
 
-  iActionIcons[OPEN_DOOR_ICON] = QuickCreateButton(iIconImages[OPEN_DOOR_IMAGES], (iMenuAnchorX), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
-  if (iActionIcons[OPEN_DOOR_ICON] == -1) {
+  iActionIcons[Enum209.OPEN_DOOR_ICON] = QuickCreateButton(iIconImages[Enum208.OPEN_DOOR_IMAGES], (iMenuAnchorX), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  if (iActionIcons[Enum209.OPEN_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
@@ -1827,70 +1827,70 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     }
   } else {
     if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
-      swprintf(zDisp, pTacticalPopupButtonStrings[OPEN_DOOR_ICON]);
+      swprintf(zDisp, pTacticalPopupButtonStrings[Enum209.OPEN_DOOR_ICON]);
     } else {
-      swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[OPEN_DOOR_ICON], AP_OPEN_DOOR);
+      swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[Enum209.OPEN_DOOR_ICON], AP_OPEN_DOOR);
     }
   }
-  SetButtonFastHelpText(iActionIcons[OPEN_DOOR_ICON], zDisp);
+  SetButtonFastHelpText(iActionIcons[Enum209.OPEN_DOOR_ICON], zDisp);
 
   if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_OPEN_DOOR, BP_OPEN_DOOR, FALSE)) {
-    DisableButton(iActionIcons[OPEN_DOOR_ICON]);
+    DisableButton(iActionIcons[Enum209.OPEN_DOOR_ICON]);
   }
 
   // Create button based on what is in our hands at the moment!
-  iActionIcons[EXAMINE_DOOR_ICON] = QuickCreateButton(iIconImages[EXAMINE_DOOR_IMAGES], (iMenuAnchorX), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
-  if (iActionIcons[EXAMINE_DOOR_ICON] == -1) {
+  iActionIcons[Enum209.EXAMINE_DOOR_ICON] = QuickCreateButton(iIconImages[Enum208.EXAMINE_DOOR_IMAGES], (iMenuAnchorX), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  if (iActionIcons[Enum209.EXAMINE_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
 
   if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
-    swprintf(zDisp, pTacticalPopupButtonStrings[EXAMINE_DOOR_ICON]);
+    swprintf(zDisp, pTacticalPopupButtonStrings[Enum209.EXAMINE_DOOR_ICON]);
   } else {
-    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[EXAMINE_DOOR_ICON], AP_EXAMINE_DOOR);
+    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[Enum209.EXAMINE_DOOR_ICON], AP_EXAMINE_DOOR);
   }
-  SetButtonFastHelpText(iActionIcons[EXAMINE_DOOR_ICON], zDisp);
+  SetButtonFastHelpText(iActionIcons[Enum209.EXAMINE_DOOR_ICON], zDisp);
 
   if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_EXAMINE_DOOR, BP_EXAMINE_DOOR, FALSE) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
-    DisableButton(iActionIcons[EXAMINE_DOOR_ICON]);
+    DisableButton(iActionIcons[Enum209.EXAMINE_DOOR_ICON]);
   }
 
-  iActionIcons[BOOT_DOOR_ICON] = QuickCreateButton(iIconImages[BOOT_DOOR_IMAGES], (iMenuAnchorX), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
-  if (iActionIcons[BOOT_DOOR_ICON] == -1) {
+  iActionIcons[Enum209.BOOT_DOOR_ICON] = QuickCreateButton(iIconImages[Enum208.BOOT_DOOR_IMAGES], (iMenuAnchorX), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  if (iActionIcons[Enum209.BOOT_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
 
   if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
-    swprintf(zDisp, pTacticalPopupButtonStrings[BOOT_DOOR_ICON]);
+    swprintf(zDisp, pTacticalPopupButtonStrings[Enum209.BOOT_DOOR_ICON]);
   } else {
-    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[BOOT_DOOR_ICON], AP_BOOT_DOOR);
+    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[Enum209.BOOT_DOOR_ICON], AP_BOOT_DOOR);
   }
-  SetButtonFastHelpText(iActionIcons[BOOT_DOOR_ICON], zDisp);
+  SetButtonFastHelpText(iActionIcons[Enum209.BOOT_DOOR_ICON], zDisp);
 
   if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_BOOT_DOOR, BP_BOOT_DOOR, FALSE) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
-    DisableButton(iActionIcons[BOOT_DOOR_ICON]);
+    DisableButton(iActionIcons[Enum209.BOOT_DOOR_ICON]);
   }
 
-  iActionIcons[UNTRAP_DOOR_ICON] = QuickCreateButton(iIconImages[UNTRAP_DOOR_ICON], (iMenuAnchorX + 20), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
-  if (iActionIcons[UNTRAP_DOOR_ICON] == -1) {
+  iActionIcons[Enum209.UNTRAP_DOOR_ICON] = QuickCreateButton(iIconImages[Enum209.UNTRAP_DOOR_ICON], (iMenuAnchorX + 20), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  if (iActionIcons[Enum209.UNTRAP_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
 
   if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
-    swprintf(zDisp, pTacticalPopupButtonStrings[UNTRAP_DOOR_ICON]);
+    swprintf(zDisp, pTacticalPopupButtonStrings[Enum209.UNTRAP_DOOR_ICON]);
   } else {
-    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[UNTRAP_DOOR_ICON], AP_UNTRAP_DOOR);
+    swprintf(zDisp, "%s ( %d )", pTacticalPopupButtonStrings[Enum209.UNTRAP_DOOR_ICON], AP_UNTRAP_DOOR);
   }
-  SetButtonFastHelpText(iActionIcons[UNTRAP_DOOR_ICON], zDisp);
+  SetButtonFastHelpText(iActionIcons[Enum209.UNTRAP_DOOR_ICON], zDisp);
 
   if (!EnoughPoints(gOpenDoorMenu.pSoldier, AP_UNTRAP_DOOR, BP_UNTRAP_DOOR, FALSE) || fClosingDoor || AM_AN_EPC(gOpenDoorMenu.pSoldier)) {
-    DisableButton(iActionIcons[UNTRAP_DOOR_ICON]);
+    DisableButton(iActionIcons[Enum209.UNTRAP_DOOR_ICON]);
   }
 
-  iActionIcons[CANCEL_ICON] = QuickCreateButton(iIconImages[CANCEL_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
+  iActionIcons[CANCEL_ICON] = QuickCreateButton(iIconImages[Enum208.CANCEL_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
   if (iActionIcons[CANCEL_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1912,14 +1912,14 @@ function PopDownOpenDoorMenu(): void {
     // UnPause timers as well....
     PauseTime(FALSE);
 
-    RemoveButton(iActionIcons[USE_KEYRING_ICON]);
-    RemoveButton(iActionIcons[USE_CROWBAR_ICON]);
-    RemoveButton(iActionIcons[LOCKPICK_DOOR_ICON]);
-    RemoveButton(iActionIcons[EXPLOSIVE_DOOR_ICON]);
-    RemoveButton(iActionIcons[OPEN_DOOR_ICON]);
-    RemoveButton(iActionIcons[EXAMINE_DOOR_ICON]);
-    RemoveButton(iActionIcons[BOOT_DOOR_ICON]);
-    RemoveButton(iActionIcons[UNTRAP_DOOR_ICON]);
+    RemoveButton(iActionIcons[Enum209.USE_KEYRING_ICON]);
+    RemoveButton(iActionIcons[Enum209.USE_CROWBAR_ICON]);
+    RemoveButton(iActionIcons[Enum209.LOCKPICK_DOOR_ICON]);
+    RemoveButton(iActionIcons[Enum209.EXPLOSIVE_DOOR_ICON]);
+    RemoveButton(iActionIcons[Enum209.OPEN_DOOR_ICON]);
+    RemoveButton(iActionIcons[Enum209.EXAMINE_DOOR_ICON]);
+    RemoveButton(iActionIcons[Enum209.BOOT_DOOR_ICON]);
+    RemoveButton(iActionIcons[Enum209.UNTRAP_DOOR_ICON]);
     RemoveButton(iActionIcons[CANCEL_ICON]);
 
     // Turn off Ignore scrolling
@@ -1942,14 +1942,14 @@ function RenderOpenDoorMenu(): void {
     BltVideoObjectFromIndex(FRAME_BUFFER, guiBUTTONBORDER, 0, gOpenDoorMenu.sX, gOpenDoorMenu.sY, VO_BLT_SRCTRANSPARENCY, NULL);
 
     // Mark buttons dirty!
-    MarkAButtonDirty(iActionIcons[USE_KEYRING_ICON]);
-    MarkAButtonDirty(iActionIcons[USE_CROWBAR_ICON]);
-    MarkAButtonDirty(iActionIcons[LOCKPICK_DOOR_ICON]);
-    MarkAButtonDirty(iActionIcons[EXPLOSIVE_DOOR_ICON]);
-    MarkAButtonDirty(iActionIcons[OPEN_DOOR_ICON]);
-    MarkAButtonDirty(iActionIcons[EXAMINE_DOOR_ICON]);
-    MarkAButtonDirty(iActionIcons[BOOT_DOOR_ICON]);
-    MarkAButtonDirty(iActionIcons[UNTRAP_DOOR_ICON]);
+    MarkAButtonDirty(iActionIcons[Enum209.USE_KEYRING_ICON]);
+    MarkAButtonDirty(iActionIcons[Enum209.USE_CROWBAR_ICON]);
+    MarkAButtonDirty(iActionIcons[Enum209.LOCKPICK_DOOR_ICON]);
+    MarkAButtonDirty(iActionIcons[Enum209.EXPLOSIVE_DOOR_ICON]);
+    MarkAButtonDirty(iActionIcons[Enum209.OPEN_DOOR_ICON]);
+    MarkAButtonDirty(iActionIcons[Enum209.EXAMINE_DOOR_ICON]);
+    MarkAButtonDirty(iActionIcons[Enum209.BOOT_DOOR_ICON]);
+    MarkAButtonDirty(iActionIcons[Enum209.UNTRAP_DOOR_ICON]);
     MarkAButtonDirty(iActionIcons[CANCEL_ICON]);
 
     RenderButtons();
@@ -1983,7 +1983,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     }
 
     // Switch on command....
-    if (uiBtnID == iActionIcons[OPEN_DOOR_ICON]) {
+    if (uiBtnID == iActionIcons[Enum209.OPEN_DOOR_ICON]) {
       // Open door normally...
       // Check APs
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_OPEN_DOOR, BP_OPEN_DOOR, FALSE)) {
@@ -1991,7 +1991,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
 
         if (gOpenDoorMenu.fClosingDoor) {
-          ChangeSoldierState(gOpenDoorMenu.pSoldier, GetAnimStateForInteraction(gOpenDoorMenu.pSoldier, TRUE, CLOSE_DOOR), 0, FALSE);
+          ChangeSoldierState(gOpenDoorMenu.pSoldier, GetAnimStateForInteraction(gOpenDoorMenu.pSoldier, TRUE, Enum193.CLOSE_DOOR), 0, FALSE);
         } else {
           InteractWithClosedDoor(gOpenDoorMenu.pSoldier, HANDLE_DOOR_OPEN);
         }
@@ -2001,7 +2001,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
     }
 
-    if (uiBtnID == iActionIcons[BOOT_DOOR_ICON]) {
+    if (uiBtnID == iActionIcons[Enum209.BOOT_DOOR_ICON]) {
       // Boot door
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_BOOT_DOOR, BP_BOOT_DOOR, FALSE)) {
         // Set UI
@@ -2014,7 +2014,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
     }
 
-    if (uiBtnID == iActionIcons[USE_KEYRING_ICON]) {
+    if (uiBtnID == iActionIcons[Enum209.USE_KEYRING_ICON]) {
       // Unlock door
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_UNLOCK_DOOR, BP_UNLOCK_DOOR, FALSE)) {
         // Set UI
@@ -2027,7 +2027,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
     }
 
-    if (uiBtnID == iActionIcons[LOCKPICK_DOOR_ICON]) {
+    if (uiBtnID == iActionIcons[Enum209.LOCKPICK_DOOR_ICON]) {
       // Lockpick
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_PICKLOCK, BP_PICKLOCK, FALSE)) {
         // Set UI
@@ -2040,7 +2040,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
     }
 
-    if (uiBtnID == iActionIcons[EXAMINE_DOOR_ICON]) {
+    if (uiBtnID == iActionIcons[Enum209.EXAMINE_DOOR_ICON]) {
       // Lockpick
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_EXAMINE_DOOR, BP_EXAMINE_DOOR, FALSE)) {
         // Set UI
@@ -2053,7 +2053,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
     }
 
-    if (uiBtnID == iActionIcons[EXPLOSIVE_DOOR_ICON]) {
+    if (uiBtnID == iActionIcons[Enum209.EXPLOSIVE_DOOR_ICON]) {
       // Explode
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_EXPLODE_DOOR, BP_EXPLODE_DOOR, FALSE)) {
         // Set UI
@@ -2066,7 +2066,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
     }
 
-    if (uiBtnID == iActionIcons[UNTRAP_DOOR_ICON]) {
+    if (uiBtnID == iActionIcons[Enum209.UNTRAP_DOOR_ICON]) {
       // Explode
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_UNTRAP_DOOR, BP_UNTRAP_DOOR, FALSE)) {
         // Set UI
@@ -2079,7 +2079,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
     }
 
-    if (uiBtnID == iActionIcons[USE_CROWBAR_ICON]) {
+    if (uiBtnID == iActionIcons[Enum209.USE_CROWBAR_ICON]) {
       // Explode
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_USE_CROWBAR, BP_USE_CROWBAR, FALSE)) {
         // Set UI
@@ -2138,7 +2138,7 @@ function InternalBeginUIMessage(fUseSkullIcon: BOOLEAN, pFontString: Pointer<UIN
   }
 
   // Prepare text box
-  iUIMessageBox = PrepareMercPopupBox(iUIMessageBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, MsgString, 200, 10, 0, 0, addressof(gusUIMessageWidth), addressof(gusUIMessageHeight));
+  iUIMessageBox = PrepareMercPopupBox(iUIMessageBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, MsgString, 200, 10, 0, 0, addressof(gusUIMessageWidth), addressof(gusUIMessageHeight));
 
   // Set it back!
   ResetOverrideMercPopupBox();
@@ -2198,7 +2198,7 @@ function BeginMapUIMessage(ubPosition: UINT8, pFontString: Pointer<UINT16>, ...a
   SetPrepareMercPopupFlags(MERC_POPUP_PREPARE_FLAGS_TRANS_BACK | MERC_POPUP_PREPARE_FLAGS_MARGINS);
 
   // Prepare text box
-  iUIMessageBox = PrepareMercPopupBox(iUIMessageBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, MsgString, 200, 10, 0, 0, addressof(gusUIMessageWidth), addressof(gusUIMessageHeight));
+  iUIMessageBox = PrepareMercPopupBox(iUIMessageBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, MsgString, 200, 10, 0, 0, addressof(gusUIMessageWidth), addressof(gusUIMessageHeight));
 
   // Set it back!
   ResetOverrideMercPopupBox();
@@ -2334,10 +2334,10 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UI
   SetFont(TINYFONT1);
 
   switch (ubType) {
-    case COMPUTER_TURN_MESSAGE:
-    case COMPUTER_INTERRUPT_MESSAGE:
-    case MILITIA_INTERRUPT_MESSAGE:
-    case AIR_RAID_TURN_MESSAGE:
+    case Enum216.COMPUTER_TURN_MESSAGE:
+    case Enum216.COMPUTER_INTERRUPT_MESSAGE:
+    case Enum216.MILITIA_INTERRUPT_MESSAGE:
+    case Enum216.AIR_RAID_TURN_MESSAGE:
 
       // Render rect into surface
       BltVideoObjectFromIndex(uiSurface, uiBAR, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -2347,7 +2347,7 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UI
       fDoLimitBar = TRUE;
       break;
 
-    case PLAYER_INTERRUPT_MESSAGE:
+    case Enum216.PLAYER_INTERRUPT_MESSAGE:
 
       // Render rect into surface
       BltVideoObjectFromIndex(uiSurface, uiINTBAR, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -2357,7 +2357,7 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UI
       uiBarToUseInUpDate = uiINTBAR;
       break;
 
-    case PLAYER_TURN_MESSAGE:
+    case Enum216.PLAYER_TURN_MESSAGE:
 
       // Render rect into surface
       // if ( gGameOptions.fTurnTimeLimit )
@@ -2374,7 +2374,7 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UI
   }
 
   if (gGameOptions.fTurnTimeLimit) {
-    if (ubType == PLAYER_TURN_MESSAGE || ubType == PLAYER_INTERRUPT_MESSAGE) {
+    if (ubType == Enum216.PLAYER_TURN_MESSAGE || ubType == Enum216.PLAYER_INTERRUPT_MESSAGE) {
       fDoLimitBar = TRUE;
     }
   }
@@ -2449,7 +2449,7 @@ function TurnExpiredCallBack(bExitValue: UINT8): void {
 function CheckForAndHandleEndPlayerTimeLimit(): void {
   if (gTacticalStatus.fInTopMessage) {
     if (gGameOptions.fTurnTimeLimit) {
-      if (gTacticalStatus.ubTopMessageType == PLAYER_TURN_MESSAGE || gTacticalStatus.ubTopMessageType == PLAYER_INTERRUPT_MESSAGE) {
+      if (gTacticalStatus.ubTopMessageType == Enum216.PLAYER_TURN_MESSAGE || gTacticalStatus.ubTopMessageType == Enum216.PLAYER_INTERRUPT_MESSAGE) {
         if (gTacticalStatus.usTactialTurnLimitCounter == (gTacticalStatus.usTactialTurnLimitMax - 1)) {
           // ATE: increase this so that we don't go into here again...
           gTacticalStatus.usTactialTurnLimitCounter++;
@@ -2481,7 +2481,7 @@ function HandleTopMessages(): void {
       AddTopMessage(gTacticalStatus.ubTopMessageType, gTacticalStatus.zTopMessageString);
     }
 
-    if (gTacticalStatus.ubTopMessageType == COMPUTER_TURN_MESSAGE || gTacticalStatus.ubTopMessageType == COMPUTER_INTERRUPT_MESSAGE || gTacticalStatus.ubTopMessageType == MILITIA_INTERRUPT_MESSAGE || gTacticalStatus.ubTopMessageType == AIR_RAID_TURN_MESSAGE) {
+    if (gTacticalStatus.ubTopMessageType == Enum216.COMPUTER_TURN_MESSAGE || gTacticalStatus.ubTopMessageType == Enum216.COMPUTER_INTERRUPT_MESSAGE || gTacticalStatus.ubTopMessageType == Enum216.MILITIA_INTERRUPT_MESSAGE || gTacticalStatus.ubTopMessageType == Enum216.AIR_RAID_TURN_MESSAGE) {
       // OK, update timer.....
       if (TIMECOUNTERDONE(giTimerTeamTurnUpdate, PLAYER_TEAM_TIMER_SEC_PER_TICKS)) {
         RESETTIMECOUNTER(giTimerTeamTurnUpdate, PLAYER_TEAM_TIMER_SEC_PER_TICKS);
@@ -2499,7 +2499,7 @@ function HandleTopMessages(): void {
         CreateTopMessage(gTopMessage.uiSurface, gTacticalStatus.ubTopMessageType, gTacticalStatus.zTopMessageString);
       }
     } else if (gGameOptions.fTurnTimeLimit) {
-      if (gTacticalStatus.ubTopMessageType == PLAYER_TURN_MESSAGE || gTacticalStatus.ubTopMessageType == PLAYER_INTERRUPT_MESSAGE) {
+      if (gTacticalStatus.ubTopMessageType == Enum216.PLAYER_TURN_MESSAGE || gTacticalStatus.ubTopMessageType == Enum216.PLAYER_INTERRUPT_MESSAGE) {
         if (!gfUserTurnRegionActive && !AreWeInAUIMenu()) {
           // Check Grace period...
           if ((GetJA2Clock() - gTacticalStatus.uiTactialTurnLimitClock) > PLAYER_TEAM_TIMER_GRACE_PERIOD) {
@@ -2666,9 +2666,9 @@ function UpdateEnemyUIBar(): void {
 
   // Do we have an active enemy bar?
   if (gTacticalStatus.fInTopMessage) {
-    if (gTacticalStatus.ubTopMessageType == COMPUTER_TURN_MESSAGE) {
+    if (gTacticalStatus.ubTopMessageType == Enum216.COMPUTER_TURN_MESSAGE) {
       // Update message!
-      CreateTopMessage(gTopMessage.uiSurface, COMPUTER_TURN_MESSAGE, gTacticalStatus.zTopMessageString);
+      CreateTopMessage(gTopMessage.uiSurface, Enum216.COMPUTER_TURN_MESSAGE, gTacticalStatus.zTopMessageString);
     }
   }
 }
@@ -2681,10 +2681,10 @@ function InitPlayerUIBar(fInterrupt: BOOLEAN): void {
 
   if (!gGameOptions.fTurnTimeLimit) {
     if (fInterrupt == TRUE) {
-      AddTopMessage(PLAYER_INTERRUPT_MESSAGE, Message[STR_INTERRUPT]);
+      AddTopMessage(Enum216.PLAYER_INTERRUPT_MESSAGE, Message[Enum334.STR_INTERRUPT]);
     } else {
       // EndTopMessage();
-      AddTopMessage(PLAYER_TURN_MESSAGE, TeamTurnString[0]);
+      AddTopMessage(Enum216.PLAYER_TURN_MESSAGE, TeamTurnString[0]);
     }
     return;
   }
@@ -2723,9 +2723,9 @@ function InitPlayerUIBar(fInterrupt: BOOLEAN): void {
 
   // OK, set value
   if (fInterrupt != TRUE) {
-    AddTopMessage(PLAYER_TURN_MESSAGE, TeamTurnString[0]);
+    AddTopMessage(Enum216.PLAYER_TURN_MESSAGE, TeamTurnString[0]);
   } else {
-    AddTopMessage(PLAYER_INTERRUPT_MESSAGE, Message[STR_INTERRUPT]);
+    AddTopMessage(Enum216.PLAYER_INTERRUPT_MESSAGE, Message[Enum334.STR_INTERRUPT]);
   }
 }
 
@@ -2801,7 +2801,7 @@ function CalculateAimCubeUIPhysics(): void {
       gCubeUIData.dForce = gCubeUIData.dMaxForce;
     }
 
-    gCubeUIData.dDegrees = CalculateLaunchItemAngle(gCubeUIData.pSoldier, gCubeUIData.sGridNo, ubHeight, gCubeUIData.dForce, addressof(gCubeUIData.pSoldier.value.inv[HANDPOS]), addressof(gCubeUIData.sTargetGridNo));
+    gCubeUIData.dDegrees = CalculateLaunchItemAngle(gCubeUIData.pSoldier, gCubeUIData.sGridNo, ubHeight, gCubeUIData.dForce, addressof(gCubeUIData.pSoldier.value.inv[Enum261.HANDPOS]), addressof(gCubeUIData.sTargetGridNo));
   }
 }
 
@@ -2894,7 +2894,7 @@ function IncrementAimCubeUI(): void {
 
 function SetupAimCubeAI(): void {
   if (gfInAimCubeUI) {
-    AddTopmostToHead(gCubeUIData.sTargetGridNo, FIRSTPOINTERS2);
+    AddTopmostToHead(gCubeUIData.sTargetGridNo, Enum312.FIRSTPOINTERS2);
     gpWorldLevelData[gCubeUIData.sTargetGridNo].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
     gpWorldLevelData[gCubeUIData.sTargetGridNo].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
 
@@ -2906,7 +2906,7 @@ function SetupAimCubeAI(): void {
 
 function ResetAimCubeAI(): void {
   if (gfInAimCubeUI) {
-    RemoveTopmost(gCubeUIData.sTargetGridNo, FIRSTPOINTERS2);
+    RemoveTopmost(gCubeUIData.sTargetGridNo, Enum312.FIRSTPOINTERS2);
     // RemoveTopmost( gCubeUIData.sGridNo, FIRSTPOINTERS2 );
   }
 }
@@ -2987,17 +2987,17 @@ function SetupPhysicsTrajectoryUI(): void {
   if (gfDisplayPhysicsUI && gfUIHandlePhysicsTrajectory) {
     if (gbPhysicsImpactPointLevel == 0) {
       if (gfBadPhysicsCTGT) {
-        AddTopmostToHead(gsPhysicsImpactPointGridNo, FIRSTPOINTERS12);
+        AddTopmostToHead(gsPhysicsImpactPointGridNo, Enum312.FIRSTPOINTERS12);
       } else {
-        AddTopmostToHead(gsPhysicsImpactPointGridNo, FIRSTPOINTERS8);
+        AddTopmostToHead(gsPhysicsImpactPointGridNo, Enum312.FIRSTPOINTERS8);
       }
       gpWorldLevelData[gsPhysicsImpactPointGridNo].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
       gpWorldLevelData[gsPhysicsImpactPointGridNo].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
     } else {
       if (gfBadPhysicsCTGT) {
-        AddOnRoofToHead(gsPhysicsImpactPointGridNo, FIRSTPOINTERS12);
+        AddOnRoofToHead(gsPhysicsImpactPointGridNo, Enum312.FIRSTPOINTERS12);
       } else {
-        AddOnRoofToHead(gsPhysicsImpactPointGridNo, FIRSTPOINTERS8);
+        AddOnRoofToHead(gsPhysicsImpactPointGridNo, Enum312.FIRSTPOINTERS8);
       }
       gpWorldLevelData[gsPhysicsImpactPointGridNo].pOnRoofHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
       gpWorldLevelData[gsPhysicsImpactPointGridNo].pOnRoofHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
@@ -3007,10 +3007,10 @@ function SetupPhysicsTrajectoryUI(): void {
 
 function ResetPhysicsTrajectoryUI(): void {
   if (gfDisplayPhysicsUI) {
-    RemoveTopmost(gsPhysicsImpactPointGridNo, FIRSTPOINTERS8);
-    RemoveTopmost(gsPhysicsImpactPointGridNo, FIRSTPOINTERS12);
-    RemoveOnRoof(gsPhysicsImpactPointGridNo, FIRSTPOINTERS8);
-    RemoveOnRoof(gsPhysicsImpactPointGridNo, FIRSTPOINTERS12);
+    RemoveTopmost(gsPhysicsImpactPointGridNo, Enum312.FIRSTPOINTERS8);
+    RemoveTopmost(gsPhysicsImpactPointGridNo, Enum312.FIRSTPOINTERS12);
+    RemoveOnRoof(gsPhysicsImpactPointGridNo, Enum312.FIRSTPOINTERS8);
+    RemoveOnRoof(gsPhysicsImpactPointGridNo, Enum312.FIRSTPOINTERS12);
   }
 }
 

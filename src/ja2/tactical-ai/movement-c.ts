@@ -53,7 +53,7 @@ function LegalNPCDestination(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, ubP
         return TRUE;
 
       case ENSURE_PATH:
-        if (FindBestPath(pSoldier, sGridno, pSoldier.value.bLevel, WALKING, COPYROUTE, fFlags)) {
+        if (FindBestPath(pSoldier, sGridno, pSoldier.value.bLevel, Enum193.WALKING, COPYROUTE, fFlags)) {
           return (TRUE); // legal destination
         } else // got this far, but found no clear path,
         {
@@ -62,7 +62,7 @@ function LegalNPCDestination(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, ubP
         }
         // *** NOTE: movement mode hardcoded to WALKING !!!!!
       case ENSURE_PATH_COST:
-        return PlotPath(pSoldier, sGridno, FALSE, FALSE, FALSE, WALKING, FALSE, FALSE, 0);
+        return PlotPath(pSoldier, sGridno, FALSE, FALSE, FALSE, Enum193.WALKING, FALSE, FALSE, 0);
 
       default:
         return FALSE;
@@ -173,7 +173,7 @@ function PointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // if we don't have a legal patrol point
   if (sPatrolPoint == NOWHERE) {
     // over-ride orders to something safer
-    pSoldier.value.bOrders = FARPATROL;
+    pSoldier.value.bOrders = Enum241.FARPATROL;
     return FALSE;
   }
 
@@ -186,7 +186,7 @@ function PointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     // temporarily extend roaming range to infinity by changing orders, else
     // this won't work if the next patrol point is > 10 tiles away!
     bOldOrders = pSoldier.value.bOrders;
-    pSoldier.value.bOrders = ONCALL;
+    pSoldier.value.bOrders = Enum241.ONCALL;
 
     pSoldier.value.usActionData = GoAsFarAsPossibleTowards(pSoldier, sPatrolPoint, pSoldier.value.bAction);
 
@@ -240,7 +240,7 @@ function RandomPointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // if we don't have a legal patrol point
   if (sPatrolPoint == NOWHERE) {
     // over-ride orders to something safer
-    pSoldier.value.bOrders = FARPATROL;
+    pSoldier.value.bOrders = Enum241.FARPATROL;
     return FALSE;
   }
 
@@ -253,7 +253,7 @@ function RandomPointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     // temporarily extend roaming range to infinity by changing orders, else
     // this won't work if the next patrol point is > 10 tiles away!
     bOldOrders = pSoldier.value.bOrders;
-    pSoldier.value.bOrders = SEEKENEMY;
+    pSoldier.value.bOrders = Enum241.SEEKENEMY;
 
     pSoldier.value.usActionData = GoAsFarAsPossibleTowards(pSoldier, sPatrolPoint, pSoldier.value.bAction);
 
@@ -299,7 +299,7 @@ function InternalGoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGr
   // obtain maximum roaming distance from soldier's sOrigin
   usMaxDist = RoamingRange(pSoldier, addressof(sOrigin));
 
-  if (pSoldier.value.bOrders <= CLOSEPATROL && (pSoldier.value.bTeam == CIV_TEAM || pSoldier.value.ubProfile != NO_PROFILE)) {
+  if (pSoldier.value.bOrders <= Enum241.CLOSEPATROL && (pSoldier.value.bTeam == CIV_TEAM || pSoldier.value.ubProfile != NO_PROFILE)) {
     if (InARoom(pSoldier.value.usPatrolGrid[0], addressof(ubRoomRequired))) {
       // make sure this doesn't interfere with pathing for scripts
       if (pSoldier.value.sAbsoluteFinalDestination != NOWHERE) {
@@ -309,8 +309,8 @@ function InternalGoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGr
   }
 
   pSoldier.value.usUIMovementMode = DetermineMovementMode(pSoldier, bAction);
-  if (pSoldier.value.usUIMovementMode == RUNNING && fFlags & FLAG_CAUTIOUS) {
-    pSoldier.value.usUIMovementMode = WALKING;
+  if (pSoldier.value.usUIMovementMode == Enum193.RUNNING && fFlags & FLAG_CAUTIOUS) {
+    pSoldier.value.usUIMovementMode = Enum193.WALKING;
   }
 
   // if soldier is ALREADY at the desired destination, quit right away
@@ -473,7 +473,7 @@ function InternalGoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGr
          sAPCost += sAnimCost;
          */
 
-        if (pSoldier.value.usUIMovementMode == RUNNING) {
+        if (pSoldier.value.usUIMovementMode == Enum193.RUNNING) {
           sAPCost += AP_START_RUN_COST;
         }
       }
@@ -610,7 +610,7 @@ function SetCivilianDestination(ubWho: UINT8, sGridno: INT16): void {
     pSoldier.value.usActionData = sGridno;
 
     // and cancel any movement in progress that he was still engaged in
-    pSoldier.value.bAction = AI_ACTION_NONE;
+    pSoldier.value.bAction = Enum289.AI_ACTION_NONE;
     pSoldier.value.bActionInProgress = FALSE;
   }
 
@@ -623,7 +623,7 @@ function SetCivilianDestination(ubWho: UINT8, sGridno: INT16): void {
   pSoldier.value.bUnderEscort = TRUE;
 
   // change orders to maximize roaming range so he can Go As Far As Possible
-  pSoldier.value.bOrders = ONCALL;
+  pSoldier.value.bOrders = Enum241.ONCALL;
   /*
     }
 

@@ -180,7 +180,7 @@ function EnterAimArchives(): BOOLEAN {
   usPosX = AIM_ALUMNI_PAGE1_X;
   for (i = 0; i < 3; i++) {
     guiAlumniPageButton[i] = CreateIconAndTextButton(guiAlumniPageButtonImage, AimAlumniText[i], AIM_ALUMNI_PAGE_FONT, AIM_ALUMNI_PAGE_COLOR_UP, DEFAULT_SHADOW, AIM_ALUMNI_PAGE_COLOR_DOWN, DEFAULT_SHADOW, TEXT_CJUSTIFIED, usPosX, AIM_ALUMNI_PAGE1_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnAlumniPageButtonCallback);
-    SetButtonCursor(guiAlumniPageButton[i], CURSOR_WWW);
+    SetButtonCursor(guiAlumniPageButton[i], Enum317.CURSOR_WWW);
     MSYS_SetBtnUserData(guiAlumniPageButton[i], 0, i);
 
     usPosX += AIM_ALUMNI_PAGE_GAP;
@@ -250,7 +250,7 @@ function RenderAimArchives(): void {
   DisableAimButton();
 
   // Draw Link Title
-  DrawTextToScreen(AimAlumniText[AIM_ALUMNI_ALUMNI], AIM_ALUMNI_TITLE_X, AIM_ALUMNI_TITLE_Y, AIM_ALUMNI_TITLE_WIDTH, AIM_ALUMNI_TITLE_FONT, AIM_ALUMNI_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimAlumniText[Enum361.AIM_ALUMNI_ALUMNI], AIM_ALUMNI_TITLE_X, AIM_ALUMNI_TITLE_Y, AIM_ALUMNI_TITLE_WIDTH, AIM_ALUMNI_TITLE_FONT, AIM_ALUMNI_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Draw the mug shot border and face
   GetVideoObject(addressof(hFrameHandle), guiAlumniFrame);
@@ -449,7 +449,7 @@ function DisplayAlumniOldMercPopUp(): void {
   ShadowVideoSurfaceRect(FRAME_BUFFER, AIM_POPUP_X + AIM_POPUP_SHADOW_GAP, usPosY + AIM_POPUP_SHADOW_GAP, AIM_POPUP_X + AIM_POPUP_WIDTH + AIM_POPUP_SHADOW_GAP, usPosY + AIM_POPUP_SECTION_HEIGHT + AIM_POPUP_SHADOW_GAP - 1);
   BltVideoObject(FRAME_BUFFER, hAlumniPopUpHandle, 2, AIM_POPUP_X, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
   BltVideoObject(FRAME_BUFFER, hDoneHandle, 0, AIM_ALUMNI_DONE_X, usPosY - AIM_ALUMNI_DONE_HEIGHT, VO_BLT_SRCTRANSPARENCY, NULL);
-  DrawTextToScreen(AimAlumniText[AIM_ALUMNI_DONE], (AIM_ALUMNI_DONE_X + 1), (usPosY - AIM_ALUMNI_DONE_HEIGHT + 3), AIM_ALUMNI_DONE_WIDTH, AIM_ALUMNI_POPUP_NAME_FONT, AIM_ALUMNI_POPUP_NAME_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimAlumniText[Enum361.AIM_ALUMNI_DONE], (AIM_ALUMNI_DONE_X + 1), (usPosY - AIM_ALUMNI_DONE_HEIGHT + 3), AIM_ALUMNI_DONE_WIDTH, AIM_ALUMNI_POPUP_NAME_FONT, AIM_ALUMNI_POPUP_NAME_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   CreateDestroyDoneMouseRegion(usPosY);
 
@@ -497,7 +497,7 @@ function InitAlumniFaceRegions(): void {
   i = 0;
   for (y = 0; y < usNumRows; y++) {
     for (x = 0; x < AIM_ALUMNI_NUM_FACE_COLS; x++) {
-      MSYS_DefineRegion(addressof(gMercAlumniFaceMouseRegions[i]), usPosX, usPosY, (usPosX + AIM_ALUMNI_ALUMNI_FACE_WIDTH), (usPosY + AIM_ALUMNI_ALUMNI_FACE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniFaceRegionCallBack);
+      MSYS_DefineRegion(addressof(gMercAlumniFaceMouseRegions[i]), usPosX, usPosY, (usPosX + AIM_ALUMNI_ALUMNI_FACE_WIDTH), (usPosY + AIM_ALUMNI_ALUMNI_FACE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniFaceRegionCallBack);
       // Add region
       MSYS_AddRegion(addressof(gMercAlumniFaceMouseRegions[i]));
       MSYS_SetRegionUserData(addressof(gMercAlumniFaceMouseRegions[i]), 0, i + (20 * gubPageNum));
@@ -511,7 +511,7 @@ function InitAlumniFaceRegions(): void {
 
   // the 3rd page now has an additional row with 1 merc on it, so add a new row
   if (gubPageNum == 2) {
-    MSYS_DefineRegion(addressof(gMercAlumniFaceMouseRegions[i]), usPosX, usPosY, (usPosX + AIM_ALUMNI_ALUMNI_FACE_WIDTH), (usPosY + AIM_ALUMNI_ALUMNI_FACE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniFaceRegionCallBack);
+    MSYS_DefineRegion(addressof(gMercAlumniFaceMouseRegions[i]), usPosX, usPosY, (usPosX + AIM_ALUMNI_ALUMNI_FACE_WIDTH), (usPosY + AIM_ALUMNI_ALUMNI_FACE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniFaceRegionCallBack);
     // Add region
     MSYS_AddRegion(addressof(gMercAlumniFaceMouseRegions[i]));
     MSYS_SetRegionUserData(addressof(gMercAlumniFaceMouseRegions[i]), 0, i + (20 * gubPageNum));
@@ -552,7 +552,7 @@ function CreateDestroyDoneMouseRegion(usPosY: UINT16): void {
 
   if ((!DoneRegionCreated) && (usPosY != 0)) {
     usPosY -= AIM_ALUMNI_DONE_HEIGHT;
-    MSYS_DefineRegion(addressof(gDoneRegion), AIM_ALUMNI_DONE_X - 2, usPosY, (AIM_ALUMNI_DONE_X - 2 + AIM_ALUMNI_DONE_WIDTH), (usPosY + AIM_ALUMNI_DONE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniDoneRegionCallBack);
+    MSYS_DefineRegion(addressof(gDoneRegion), AIM_ALUMNI_DONE_X - 2, usPosY, (AIM_ALUMNI_DONE_X - 2 + AIM_ALUMNI_DONE_WIDTH), (usPosY + AIM_ALUMNI_DONE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniDoneRegionCallBack);
     // Add region
     MSYS_AddRegion(addressof(gDoneRegion));
     DoneRegionCreated = TRUE;

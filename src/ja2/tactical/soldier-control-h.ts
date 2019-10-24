@@ -255,8 +255,8 @@ const enum Enum262 {
   SOLDIER_CLASS_MINER,
 }
 
-const SOLDIER_CLASS_ENEMY = (bSoldierClass) => ((bSoldierClass >= SOLDIER_CLASS_ADMINISTRATOR) && (bSoldierClass <= SOLDIER_CLASS_ARMY));
-const SOLDIER_CLASS_MILITIA = (bSoldierClass) => ((bSoldierClass >= SOLDIER_CLASS_GREEN_MILITIA) && (bSoldierClass <= SOLDIER_CLASS_ELITE_MILITIA));
+const SOLDIER_CLASS_ENEMY = (bSoldierClass) => ((bSoldierClass >= Enum262.SOLDIER_CLASS_ADMINISTRATOR) && (bSoldierClass <= Enum262.SOLDIER_CLASS_ARMY));
+const SOLDIER_CLASS_MILITIA = (bSoldierClass) => ((bSoldierClass >= Enum262.SOLDIER_CLASS_GREEN_MILITIA) && (bSoldierClass <= Enum262.SOLDIER_CLASS_ELITE_MILITIA));
 
 // This macro should be used whenever we want to see if someone is neutral
 // IF WE ARE CONSIDERING ATTACKING THEM.  Creatures & bloodcats will attack neutrals

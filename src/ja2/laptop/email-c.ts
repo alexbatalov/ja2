@@ -222,8 +222,8 @@ const SUBJECTHEAD_X = 368;
 const RECD_X = 550;
 
 // size of prev/next strings
-const PREVIOUS_WIDTH = () => StringPixLength(pTraverseStrings[PREVIOUS_BUTTON], TRAVERSE_EMAIL_FONT());
-const NEXT_WIDTH = () => StringPixLength(pTraverseStrings[NEXT_BUTTON], TRAVERSE_EMAIL_FONT());
+const PREVIOUS_WIDTH = () => StringPixLength(pTraverseStrings[Enum72.PREVIOUS_BUTTON], TRAVERSE_EMAIL_FONT());
+const NEXT_WIDTH = () => StringPixLength(pTraverseStrings[Enum72.NEXT_BUTTON], TRAVERSE_EMAIL_FONT());
 const PREVIOUS_HEIGHT = () => GetFontHeight(TRAVERSE_EMAIL_FONT());
 const NEXT_HEIGHT = () => GetFontHeight(TRAVERSE_EMAIL_FONT());
 
@@ -908,7 +908,7 @@ function SortMessages(iCriteria: INT32): void {
 
   pB = pA.value.Next;
   switch (iCriteria) {
-    case RECEIVED:
+    case Enum74.RECEIVED:
       while (pA) {
         // set B to next in A
         pB = pA.value.Next;
@@ -931,7 +931,7 @@ function SortMessages(iCriteria: INT32): void {
         pA = pA.value.Next;
       }
       break;
-    case SENDER:
+    case Enum74.SENDER:
       while (pA) {
         pB = pA.value.Next;
         while (pB) {
@@ -950,7 +950,7 @@ function SortMessages(iCriteria: INT32): void {
         pA = pA.value.Next;
       }
       break;
-    case SUBJECT:
+    case Enum74.SUBJECT:
       while (pA) {
         pB = pA.value.Next;
         while (pB) {
@@ -974,7 +974,7 @@ function SortMessages(iCriteria: INT32): void {
       }
       break;
 
-    case READ:
+    case Enum74.READ:
       while (pA) {
         pB = pA.value.Next;
         while (pB) {
@@ -1274,7 +1274,7 @@ function LookForUnread(): void {
 
   if (fStatusOfNewEmailFlag != fUnReadMailFlag) {
     // Since there is no new email, get rid of the hepl text
-    CreateFileAndNewEmailIconFastHelpText(LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL, !fUnReadMailFlag);
+    CreateFileAndNewEmailIconFastHelpText(Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL, !fUnReadMailFlag);
   }
 
   return;
@@ -1648,7 +1648,7 @@ function AddDeleteRegionsToMessageRegion(iViewerY: INT32): void {
     // add X button
     giMessageButtonImage[0] = LoadButtonImage("LAPTOP\\X.sti", -1, 0, -1, 1, -1);
     giMessageButton[0] = QuickCreateButton(giMessageButtonImage[0], BUTTON_X + 2, (BUTTON_Y + iViewerY + 1), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnMessageXCallback);
-    SetButtonCursor(giMessageButton[0], CURSOR_LAPTOP_SCREEN);
+    SetButtonCursor(giMessageButton[0], Enum317.CURSOR_LAPTOP_SCREEN);
 
     if (giNumberOfPagesToCurrentEmail > 2) {
       // add next and previous mail page buttons
@@ -1669,10 +1669,10 @@ function AddDeleteRegionsToMessageRegion(iViewerY: INT32): void {
         SpecifyDisabledButtonStyle( giMailMessageButtons[0], DISABLED_STYLE_SHADED );
     */
     // set cursors
-    SetButtonCursor(giMailMessageButtons[0], CURSOR_LAPTOP_SCREEN);
-    SetButtonCursor(giMailMessageButtons[1], CURSOR_LAPTOP_SCREEN);
-    SetButtonCursor(giMailMessageButtons[2], CURSOR_LAPTOP_SCREEN);
-    SetButtonCursor(giMessageButton[0], CURSOR_LAPTOP_SCREEN);
+    SetButtonCursor(giMailMessageButtons[0], Enum317.CURSOR_LAPTOP_SCREEN);
+    SetButtonCursor(giMailMessageButtons[1], Enum317.CURSOR_LAPTOP_SCREEN);
+    SetButtonCursor(giMailMessageButtons[2], Enum317.CURSOR_LAPTOP_SCREEN);
+    SetButtonCursor(giMessageButton[0], Enum317.CURSOR_LAPTOP_SCREEN);
 
     // force update of screen
     fReDrawScreenFlag = TRUE;
@@ -1716,10 +1716,10 @@ function CreateDestroyNewMailButton(): void {
     giNewMailButton[0] = QuickCreateButton(giNewMailButtonImage[0], NEW_BTN_X + 10, NEW_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, BtnGenericMouseMoveButtonCallback, BtnNewOkback);
 
     // set cursor
-    SetButtonCursor(giNewMailButton[0], CURSOR_LAPTOP_SCREEN);
+    SetButtonCursor(giNewMailButton[0], Enum317.CURSOR_LAPTOP_SCREEN);
 
     // set up screen mask region
-    MSYS_DefineRegion(addressof(pScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
+    MSYS_DefineRegion(addressof(pScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
     MSYS_AddRegion(addressof(pScreenMask));
     MarkAButtonDirty(giNewMailButton[0]);
     fReDrawScreenFlag = TRUE;
@@ -2076,11 +2076,11 @@ function CreateDestroyDeleteNoticeMailButton(): void {
     giDeleteMailButton[1] = QuickCreateButton(giDeleteMailButtonImage[1], NEW_BTN_X + 40, NEW_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, BtnGenericMouseMoveButtonCallback, BtnDeleteNoback);
 
     // set up cursors
-    SetButtonCursor(giDeleteMailButton[0], CURSOR_LAPTOP_SCREEN);
-    SetButtonCursor(giDeleteMailButton[1], CURSOR_LAPTOP_SCREEN);
+    SetButtonCursor(giDeleteMailButton[0], Enum317.CURSOR_LAPTOP_SCREEN);
+    SetButtonCursor(giDeleteMailButton[1], Enum317.CURSOR_LAPTOP_SCREEN);
 
     // set up screen mask to prevent other actions while delete mail box is destroyed
-    MSYS_DefineRegion(addressof(pDeleteScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
+    MSYS_DefineRegion(addressof(pDeleteScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
     MSYS_AddRegion(addressof(pDeleteScreenMask));
 
     // force update
@@ -2203,7 +2203,7 @@ function FromCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
     // sort messages based on sender name, then replace into pages of email
     fSortSenderUpwards = !fSortSenderUpwards;
 
-    SortMessages(SENDER);
+    SortMessages(Enum74.SENDER);
 
     // SpecifyButtonIcon( giSortButton[1] , giArrowsForEmail, UINT16 usVideoObjectIndex,  INT8 bXOffset, INT8 bYOffset, TRUE );
 
@@ -2226,7 +2226,7 @@ function SubjectCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
     // sort message on subject and reorder list
     fSortSubjectUpwards = !fSortSubjectUpwards;
 
-    SortMessages(SUBJECT);
+    SortMessages(Enum74.SUBJECT);
     fJustStartedEmail = FALSE;
     PlaceMessagesinPages();
 
@@ -2256,7 +2256,7 @@ function DateCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // sort messages based on date recieved and reorder lsit
     fSortDateUpwards = !fSortDateUpwards;
-    SortMessages(RECEIVED);
+    SortMessages(Enum74.RECEIVED);
     PlaceMessagesinPages();
 
     fJustStartedEmail = FALSE;
@@ -2273,7 +2273,7 @@ function ReadCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
   }
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // sort messages based on date recieved and reorder lsit
-    SortMessages(READ);
+    SortMessages(Enum74.READ);
     PlaceMessagesinPages();
 
     fJustStartedEmail = FALSE;
@@ -2358,25 +2358,25 @@ function CreateMailScreenButtons(): void {
   // read sort
   giSortButtonImage[0] = LoadButtonImage("LAPTOP\\mailbuttons.sti", -1, 0, -1, 4, -1);
   giSortButton[0] = QuickCreateButton(giSortButtonImage[0], ENVELOPE_BOX_X, FROM_BOX_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, ReadCallback);
-  SetButtonCursor(giSortButton[0], CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(giSortButton[0], Enum317.CURSOR_LAPTOP_SCREEN);
 
   // subject sort
   giSortButtonImage[1] = LoadButtonImage("LAPTOP\\mailbuttons.sti", -1, 1, -1, 5, -1);
   giSortButton[1] = QuickCreateButton(giSortButtonImage[1], FROM_BOX_X, FROM_BOX_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, FromCallback);
-  SetButtonCursor(giSortButton[1], CURSOR_LAPTOP_SCREEN);
-  SpecifyFullButtonTextAttributes(giSortButton[1], pEmailHeaders[FROM_HEADER], EMAIL_WARNING_FONT, FONT_BLACK, FONT_BLACK, FONT_BLACK, FONT_BLACK, TEXT_CJUSTIFIED);
+  SetButtonCursor(giSortButton[1], Enum317.CURSOR_LAPTOP_SCREEN);
+  SpecifyFullButtonTextAttributes(giSortButton[1], pEmailHeaders[Enum73.FROM_HEADER], EMAIL_WARNING_FONT, FONT_BLACK, FONT_BLACK, FONT_BLACK, FONT_BLACK, TEXT_CJUSTIFIED);
 
   // sender sort
   giSortButtonImage[2] = LoadButtonImage("LAPTOP\\mailbuttons.sti", -1, 2, -1, 6, -1);
   giSortButton[2] = QuickCreateButton(giSortButtonImage[2], SUBJECT_BOX_X, FROM_BOX_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, SubjectCallback);
-  SetButtonCursor(giSortButton[2], CURSOR_LAPTOP_SCREEN);
-  SpecifyFullButtonTextAttributes(giSortButton[2], pEmailHeaders[SUBJECT_HEADER], EMAIL_WARNING_FONT, FONT_BLACK, FONT_BLACK, FONT_BLACK, FONT_BLACK, TEXT_CJUSTIFIED);
+  SetButtonCursor(giSortButton[2], Enum317.CURSOR_LAPTOP_SCREEN);
+  SpecifyFullButtonTextAttributes(giSortButton[2], pEmailHeaders[Enum73.SUBJECT_HEADER], EMAIL_WARNING_FONT, FONT_BLACK, FONT_BLACK, FONT_BLACK, FONT_BLACK, TEXT_CJUSTIFIED);
 
   // date sort
   giSortButtonImage[3] = LoadButtonImage("LAPTOP\\mailbuttons.sti", -1, 3, -1, 7, -1);
   giSortButton[3] = QuickCreateButton(giSortButtonImage[3], DATE_BOX_X, FROM_BOX_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, DateCallback);
-  SetButtonCursor(giSortButton[3], CURSOR_LAPTOP_SCREEN);
-  SpecifyFullButtonTextAttributes(giSortButton[3], pEmailHeaders[RECD_HEADER], EMAIL_WARNING_FONT, FONT_BLACK, FONT_BLACK, FONT_BLACK, FONT_BLACK, TEXT_CJUSTIFIED);
+  SetButtonCursor(giSortButton[3], Enum317.CURSOR_LAPTOP_SCREEN);
+  SpecifyFullButtonTextAttributes(giSortButton[3], pEmailHeaders[Enum73.RECD_HEADER], EMAIL_WARNING_FONT, FONT_BLACK, FONT_BLACK, FONT_BLACK, FONT_BLACK, TEXT_CJUSTIFIED);
 
   return;
 }
@@ -2530,10 +2530,10 @@ function HandleAnySpecialEmailMessageEvents(iMessageId: INT32): void {
 
   switch (iMessageId) {
     case (IMP_EMAIL_AGAIN):
-      SetBookMark(IMP_BOOKMARK);
+      SetBookMark(Enum98.IMP_BOOKMARK);
       break;
     case (IMP_EMAIL_INTRO):
-      SetBookMark(IMP_BOOKMARK);
+      SetBookMark(Enum98.IMP_BOOKMARK);
       break;
   }
 }
@@ -2568,7 +2568,7 @@ function HandleMailSpecialMessages(usMessageId: UINT16, iResults: Pointer<INT32>
 
       break;
     case (MERC_INTRO):
-      SetBookMark(MERC_BOOKMARK);
+      SetBookMark(Enum98.MERC_BOOKMARK);
       fReDrawScreenFlag = TRUE;
       break;
 
@@ -2585,7 +2585,7 @@ function HandleMailSpecialMessages(usMessageId: UINT16, iResults: Pointer<INT32>
 
     case MERC_NEW_SITE_ADDRESS:
       // Set the book mark so the player can access the site
-      SetBookMark(MERC_BOOKMARK);
+      SetBookMark(Enum98.MERC_BOOKMARK);
       break;
 
     case MERC_DIED_ON_OTHER_ASSIGNMENT:
@@ -2796,28 +2796,28 @@ function HandleIMPCharProfileResultsMessage(): void {
     // personality itself
     switch (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bPersonalityTrait) {
         // normal as can be
-      case (NO_PERSONALITYTRAIT):
+      case (Enum270.NO_PERSONALITYTRAIT):
         iOffSet = IMP_PERSONALITY_NORMAL;
         break;
-      case (HEAT_INTOLERANT):
+      case (Enum270.HEAT_INTOLERANT):
         iOffSet = IMP_PERSONALITY_HEAT;
         break;
-      case (NERVOUS):
+      case (Enum270.NERVOUS):
         iOffSet = IMP_PERSONALITY_NERVOUS;
         break;
-      case (CLAUSTROPHOBIC):
+      case (Enum270.CLAUSTROPHOBIC):
         iOffSet = IMP_PERSONALITY_CLAUSTROPHOBIC;
         break;
-      case (NONSWIMMER):
+      case (Enum270.NONSWIMMER):
         iOffSet = IMP_PERSONALITY_NONSWIMMER;
         break;
-      case (FEAR_OF_INSECTS):
+      case (Enum270.FEAR_OF_INSECTS):
         iOffSet = IMP_PERSONALITY_FEAR_OF_INSECTS;
         break;
-      case (FORGETFUL):
+      case (Enum270.FORGETFUL):
         iOffSet = IMP_PERSONALITY_FORGETFUL;
         break;
-      case (PSYCHO):
+      case (Enum270.PSYCHO):
         iOffSet = IMP_PERSONALITY_PSYCHO;
         break;
     }
@@ -2835,7 +2835,7 @@ function HandleIMPCharProfileResultsMessage(): void {
     AddEmailRecordToList(pString);
 
     // extra paragraph for bugs
-    if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bPersonalityTrait == FEAR_OF_INSECTS) {
+    if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bPersonalityTrait == Enum270.FEAR_OF_INSECTS) {
       // persoanlity paragraph
       LoadEncryptedDataFromFile("BINARYDATA\\Impass.edt", pString, MAIL_STRING_SIZE * (iOffSet + IMP_PERSONALITY_LENGTH + 1), MAIL_STRING_SIZE);
       // add to list
@@ -2862,31 +2862,31 @@ function HandleIMPCharProfileResultsMessage(): void {
     // personality itself
     switch (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bAttitude) {
         // normal as can be
-      case (ATT_NORMAL):
+      case (Enum271.ATT_NORMAL):
         iOffSet = IMP_ATTITUDE_NORMAL;
         break;
-      case (ATT_FRIENDLY):
+      case (Enum271.ATT_FRIENDLY):
         iOffSet = IMP_ATTITUDE_FRIENDLY;
         break;
-      case (ATT_LONER):
+      case (Enum271.ATT_LONER):
         iOffSet = IMP_ATTITUDE_LONER;
         break;
-      case (ATT_OPTIMIST):
+      case (Enum271.ATT_OPTIMIST):
         iOffSet = IMP_ATTITUDE_OPTIMIST;
         break;
-      case (ATT_PESSIMIST):
+      case (Enum271.ATT_PESSIMIST):
         iOffSet = IMP_ATTITUDE_PESSIMIST;
         break;
-      case (ATT_AGGRESSIVE):
+      case (Enum271.ATT_AGGRESSIVE):
         iOffSet = IMP_ATTITUDE_AGGRESSIVE;
         break;
-      case (ATT_ARROGANT):
+      case (Enum271.ATT_ARROGANT):
         iOffSet = IMP_ATTITUDE_ARROGANT;
         break;
-      case (ATT_ASSHOLE):
+      case (Enum271.ATT_ASSHOLE):
         iOffSet = IMP_ATTITUDE_ASSHOLE;
         break;
-      case (ATT_COWARD):
+      case (Enum271.ATT_COWARD):
         iOffSet = IMP_ATTITUDE_COWARD;
         break;
     }
@@ -3171,7 +3171,7 @@ function HandleIMPCharProfileResultsMessage(): void {
       iCounter++;
     }
 
-    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == KNIFING) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == KNIFING)) {
+    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == Enum269.KNIFING) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == Enum269.KNIFING)) {
       // read one record from email file
       LoadEncryptedDataFromFile("BINARYDATA\\Impass.edt", pString, MAIL_STRING_SIZE * (IMP_SKILLS_SPECIAL_KNIFE), MAIL_STRING_SIZE);
 
@@ -3180,7 +3180,7 @@ function HandleIMPCharProfileResultsMessage(): void {
     }
 
     // lockpick
-    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == LOCKPICKING) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == LOCKPICKING)) {
+    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == Enum269.LOCKPICKING) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == Enum269.LOCKPICKING)) {
       // read one record from email file
       LoadEncryptedDataFromFile("BINARYDATA\\Impass.edt", pString, MAIL_STRING_SIZE * (IMP_SKILLS_SPECIAL_LOCK), MAIL_STRING_SIZE);
 
@@ -3189,7 +3189,7 @@ function HandleIMPCharProfileResultsMessage(): void {
     }
 
     // hand to hand
-    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == HANDTOHAND) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == HANDTOHAND)) {
+    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == Enum269.HANDTOHAND) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == Enum269.HANDTOHAND)) {
       // read one record from email file
       LoadEncryptedDataFromFile("BINARYDATA\\Impass.edt", pString, MAIL_STRING_SIZE * (IMP_SKILLS_SPECIAL_HAND), MAIL_STRING_SIZE);
 
@@ -3198,7 +3198,7 @@ function HandleIMPCharProfileResultsMessage(): void {
     }
 
     // electronics
-    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == ELECTRONICS) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == ELECTRONICS)) {
+    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == Enum269.ELECTRONICS) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == Enum269.ELECTRONICS)) {
       // read one record from email file
       LoadEncryptedDataFromFile("BINARYDATA\\Impass.edt", pString, MAIL_STRING_SIZE * (IMP_SKILLS_SPECIAL_ELEC), MAIL_STRING_SIZE);
 
@@ -3206,7 +3206,7 @@ function HandleIMPCharProfileResultsMessage(): void {
       AddEmailRecordToList(pString);
     }
 
-    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == NIGHTOPS) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == NIGHTOPS)) {
+    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == Enum269.NIGHTOPS) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == Enum269.NIGHTOPS)) {
       // read one record from email file
       LoadEncryptedDataFromFile("BINARYDATA\\Impass.edt", pString, MAIL_STRING_SIZE * (IMP_SKILLS_SPECIAL_NIGHT), MAIL_STRING_SIZE);
 
@@ -3214,7 +3214,7 @@ function HandleIMPCharProfileResultsMessage(): void {
       AddEmailRecordToList(pString);
     }
 
-    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == THROWING) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == THROWING)) {
+    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == Enum269.THROWING) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == Enum269.THROWING)) {
       // read one record from email file
       LoadEncryptedDataFromFile("BINARYDATA\\Impass.edt", pString, MAIL_STRING_SIZE * (IMP_SKILLS_SPECIAL_THROW), MAIL_STRING_SIZE);
 
@@ -3222,7 +3222,7 @@ function HandleIMPCharProfileResultsMessage(): void {
       AddEmailRecordToList(pString);
     }
 
-    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == TEACHING) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == TEACHING)) {
+    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == Enum269.TEACHING) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == Enum269.TEACHING)) {
       // read one record from email file
       LoadEncryptedDataFromFile("BINARYDATA\\Impass.edt", pString, MAIL_STRING_SIZE * (IMP_SKILLS_SPECIAL_TEACH), MAIL_STRING_SIZE);
 
@@ -3230,7 +3230,7 @@ function HandleIMPCharProfileResultsMessage(): void {
       AddEmailRecordToList(pString);
     }
 
-    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == HEAVY_WEAPS) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == HEAVY_WEAPS)) {
+    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == Enum269.HEAVY_WEAPS) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == Enum269.HEAVY_WEAPS)) {
       // read one record from email file
       LoadEncryptedDataFromFile("BINARYDATA\\Impass.edt", pString, MAIL_STRING_SIZE * (IMP_SKILLS_SPECIAL_HEAVY), MAIL_STRING_SIZE);
 
@@ -3238,7 +3238,7 @@ function HandleIMPCharProfileResultsMessage(): void {
       AddEmailRecordToList(pString);
     }
 
-    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == AUTO_WEAPS) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == AUTO_WEAPS)) {
+    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == Enum269.AUTO_WEAPS) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == Enum269.AUTO_WEAPS)) {
       // read one record from email file
       LoadEncryptedDataFromFile("BINARYDATA\\Impass.edt", pString, MAIL_STRING_SIZE * (IMP_SKILLS_SPECIAL_AUTO), MAIL_STRING_SIZE);
 
@@ -3246,7 +3246,7 @@ function HandleIMPCharProfileResultsMessage(): void {
       AddEmailRecordToList(pString);
     }
 
-    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == STEALTHY) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == STEALTHY)) {
+    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == Enum269.STEALTHY) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == Enum269.STEALTHY)) {
       // read one record from email file
       LoadEncryptedDataFromFile("BINARYDATA\\Impass.edt", pString, MAIL_STRING_SIZE * (IMP_SKILLS_SPECIAL_STEALTH), MAIL_STRING_SIZE);
 
@@ -3254,7 +3254,7 @@ function HandleIMPCharProfileResultsMessage(): void {
       AddEmailRecordToList(pString);
     }
 
-    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == AMBIDEXT) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == AMBIDEXT)) {
+    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == Enum269.AMBIDEXT) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == Enum269.AMBIDEXT)) {
       // read one record from email file
       LoadEncryptedDataFromFile("BINARYDATA\\Impass.edt", pString, MAIL_STRING_SIZE * (IMP_SKILLS_SPECIAL_AMBI), MAIL_STRING_SIZE);
 
@@ -3262,7 +3262,7 @@ function HandleIMPCharProfileResultsMessage(): void {
       AddEmailRecordToList(pString);
     }
 
-    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == THIEF) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == THIEF)) {
+    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == Enum269.THIEF) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == Enum269.THIEF)) {
       // read one record from email file
       LoadEncryptedDataFromFile("BINARYDATA\\Impass.edt", pString, MAIL_STRING_SIZE * (IMP_SKILLS_SPECIAL_THIEF), MAIL_STRING_SIZE);
 
@@ -3270,7 +3270,7 @@ function HandleIMPCharProfileResultsMessage(): void {
       AddEmailRecordToList(pString);
     }
 
-    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == MARTIALARTS) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == MARTIALARTS)) {
+    if ((gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait == Enum269.MARTIALARTS) || (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 == Enum269.MARTIALARTS)) {
       // read one record from email file
       LoadEncryptedDataFromFile("BINARYDATA\\Impass.edt", pString, MAIL_STRING_SIZE * (IMP_SKILLS_SPECIAL_MARTIAL), MAIL_STRING_SIZE);
 
@@ -3782,12 +3782,12 @@ function CreateNextPreviousEmailPageButtons(): void {
   // next button
   giMailPageButtonsImage[0] = LoadButtonImage("LAPTOP\\NewMailButtons.sti", -1, 1, -1, 4, -1);
   giMailPageButtons[0] = QuickCreateButton(giMailPageButtonsImage[0], NEXT_PAGE_X, NEXT_PAGE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, NextRegionButtonCallback);
-  SetButtonCursor(giMailPageButtons[0], CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(giMailPageButtons[0], Enum317.CURSOR_LAPTOP_SCREEN);
 
   // previous button
   giMailPageButtonsImage[1] = LoadButtonImage("LAPTOP\\NewMailButtons.sti", -1, 0, -1, 3, -1);
   giMailPageButtons[1] = QuickCreateButton(giMailPageButtonsImage[1], PREVIOUS_PAGE_X, NEXT_PAGE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, PreviousRegionButtonCallback);
-  SetButtonCursor(giMailPageButtons[1], CURSOR_LAPTOP_SCREEN);
+  SetButtonCursor(giMailPageButtons[1], Enum317.CURSOR_LAPTOP_SCREEN);
 
   /*
   // set up disable methods

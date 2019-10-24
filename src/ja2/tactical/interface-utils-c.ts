@@ -49,7 +49,7 @@ function LoadCarPortraitValues(): BOOLEAN {
   if (giCarPortraits[0] != -1) {
     return FALSE;
   }
-  for (iCounter = 0; iCounter < NUMBER_CAR_PORTRAITS; iCounter++) {
+  for (iCounter = 0; iCounter < Enum222.NUMBER_CAR_PORTRAITS; iCounter++) {
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     sprintf(VObjectDesc.ImageFile, pbCarPortraitFileNames[iCounter]);
     CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(giCarPortraits[iCounter])));
@@ -65,7 +65,7 @@ function UnLoadCarPortraits(): void {
   if (giCarPortraits[0] == -1) {
     return;
   }
-  for (iCounter = 0; iCounter < NUMBER_CAR_PORTRAITS; iCounter++) {
+  for (iCounter = 0; iCounter < Enum222.NUMBER_CAR_PORTRAITS; iCounter++) {
     DeleteVideoObjectFromIndex(giCarPortraits[iCounter]);
     giCarPortraits[iCounter] = -1;
   }
@@ -179,7 +179,7 @@ function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
   GetVideoObject(addressof(hHandle), guiBrownBackgroundForTeamPanel);
 
   // DO MAX BREATH
-  if (guiCurrentScreen != MAP_SCREEN) {
+  if (guiCurrentScreen != Enum26.MAP_SCREEN) {
     if (gusSelectedSoldier == pSoldier.value.ubID && gTacticalStatus.ubCurrentTeam == OUR_TEAM && OK_INTERRUPT_MERC(pSoldier)) {
       // gold, the second entry in the .sti
       BltVideoObject(uiBuffer, hHandle, 1, sXPos, (sYPos - sHeight), VO_BLT_SRCTRANSPARENCY, NULL);

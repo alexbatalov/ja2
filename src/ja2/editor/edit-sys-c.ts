@@ -37,13 +37,13 @@ function DeleteStuffFromMapTile(iMapIndex: UINT32): void {
   // SmoothTerrainRadius( iMapIndex, uiCheckType, 1, TRUE );
 
   RemoveExitGridFromWorld(iMapIndex);
-  RemoveAllStructsOfTypeRange(iMapIndex, FIRSTTEXTURE, WIREFRAMES);
-  RemoveAllObjectsOfTypeRange(iMapIndex, FIRSTTEXTURE, WIREFRAMES);
-  RemoveAllShadowsOfTypeRange(iMapIndex, FIRSTTEXTURE, WIREFRAMES);
-  RemoveAllLandsOfTypeRange(iMapIndex, FIRSTTEXTURE, WIREFRAMES);
-  RemoveAllRoofsOfTypeRange(iMapIndex, FIRSTTEXTURE, WIREFRAMES);
-  RemoveAllOnRoofsOfTypeRange(iMapIndex, FIRSTTEXTURE, WIREFRAMES);
-  RemoveAllTopmostsOfTypeRange(iMapIndex, FIRSTTEXTURE, WIREFRAMES);
+  RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, Enum313.WIREFRAMES);
+  RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, Enum313.WIREFRAMES);
+  RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, Enum313.WIREFRAMES);
+  RemoveAllLandsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, Enum313.WIREFRAMES);
+  RemoveAllRoofsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, Enum313.WIREFRAMES);
+  RemoveAllOnRoofsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, Enum313.WIREFRAMES);
+  RemoveAllTopmostsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, Enum313.WIREFRAMES);
   PasteRoomNumber(iMapIndex, 0);
 }
 
@@ -59,23 +59,23 @@ function EraseMapTile(iMapIndex: UINT32): void {
     return;
 
   // Figure out what it is we are trying to erase
-  iEraseMode = iDrawMode - DRAW_MODE_ERASE;
+  iEraseMode = iDrawMode - Enum38.DRAW_MODE_ERASE;
 
   switch (iEraseMode) {
-    case DRAW_MODE_NORTHPOINT:
-    case DRAW_MODE_WESTPOINT:
-    case DRAW_MODE_EASTPOINT:
-    case DRAW_MODE_SOUTHPOINT:
-    case DRAW_MODE_CENTERPOINT:
-    case DRAW_MODE_ISOLATEDPOINT:
+    case Enum38.DRAW_MODE_NORTHPOINT:
+    case Enum38.DRAW_MODE_WESTPOINT:
+    case Enum38.DRAW_MODE_EASTPOINT:
+    case Enum38.DRAW_MODE_SOUTHPOINT:
+    case Enum38.DRAW_MODE_CENTERPOINT:
+    case Enum38.DRAW_MODE_ISOLATEDPOINT:
       SpecifyEntryPoint(iMapIndex);
       break;
-    case DRAW_MODE_EXITGRID:
+    case Enum38.DRAW_MODE_EXITGRID:
       AddToUndoList(iMapIndex);
       RemoveExitGridFromWorld(iMapIndex);
-      RemoveTopmost(iMapIndex, FIRSTPOINTERS8);
+      RemoveTopmost(iMapIndex, Enum312.FIRSTPOINTERS8);
       break;
-    case DRAW_MODE_GROUND:
+    case Enum38.DRAW_MODE_GROUND:
       // Is there ground on this tile? if not, get out o here
       if (gpWorldLevelData[iMapIndex].pLandHead == NULL)
         break;
@@ -88,76 +88,76 @@ function EraseMapTile(iMapIndex: UINT32): void {
       RemoveLand(iMapIndex, gpWorldLevelData[iMapIndex].pLandHead.value.usIndex);
       SmoothTerrainRadius(iMapIndex, uiCheckType, 1, TRUE);
       break;
-    case DRAW_MODE_OSTRUCTS:
-    case DRAW_MODE_OSTRUCTS1:
-    case DRAW_MODE_OSTRUCTS2:
+    case Enum38.DRAW_MODE_OSTRUCTS:
+    case Enum38.DRAW_MODE_OSTRUCTS1:
+    case Enum38.DRAW_MODE_OSTRUCTS2:
       AddToUndoList(iMapIndex);
-      RemoveAllStructsOfTypeRange(iMapIndex, FIRSTOSTRUCT, LASTOSTRUCT);
-      RemoveAllStructsOfTypeRange(iMapIndex, FIRSTVEHICLE, SECONDVEHICLE);
-      RemoveAllStructsOfTypeRange(iMapIndex, FIRSTDEBRISSTRUCT, SECONDDEBRISSTRUCT);
-      RemoveAllStructsOfTypeRange(iMapIndex, NINTHOSTRUCT, TENTHOSTRUCT);
-      RemoveAllStructsOfTypeRange(iMapIndex, FIRSTLARGEEXPDEBRIS, SECONDLARGEEXPDEBRIS);
-      RemoveAllObjectsOfTypeRange(iMapIndex, DEBRIS2MISC, DEBRIS2MISC);
-      RemoveAllObjectsOfTypeRange(iMapIndex, ANOTHERDEBRIS, ANOTHERDEBRIS);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTOSTRUCT, LASTOSTRUCT);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTVEHICLE, Enum313.SECONDVEHICLE);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTDEBRISSTRUCT, Enum313.SECONDDEBRISSTRUCT);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.NINTHOSTRUCT, Enum313.TENTHOSTRUCT);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTLARGEEXPDEBRIS, Enum313.SECONDLARGEEXPDEBRIS);
+      RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.DEBRIS2MISC, Enum313.DEBRIS2MISC);
+      RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.ANOTHERDEBRIS, Enum313.ANOTHERDEBRIS);
       break;
-    case DRAW_MODE_DEBRIS:
+    case Enum38.DRAW_MODE_DEBRIS:
       AddToUndoList(iMapIndex);
-      RemoveAllObjectsOfTypeRange(iMapIndex, DEBRISROCKS, LASTDEBRIS);
-      RemoveAllObjectsOfTypeRange(iMapIndex, DEBRIS2MISC, DEBRIS2MISC);
-      RemoveAllObjectsOfTypeRange(iMapIndex, ANOTHERDEBRIS, ANOTHERDEBRIS);
+      RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.DEBRISROCKS, LASTDEBRIS);
+      RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.DEBRIS2MISC, Enum313.DEBRIS2MISC);
+      RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.ANOTHERDEBRIS, Enum313.ANOTHERDEBRIS);
       break;
-    case DRAW_MODE_BANKS:
+    case Enum38.DRAW_MODE_BANKS:
       AddToUndoList(iMapIndex);
-      RemoveAllObjectsOfTypeRange(iMapIndex, FIRSTROAD, LASTROAD);
+      RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.FIRSTROAD, LASTROAD);
       // Note, for this routine, cliffs are considered a subset of banks
-      RemoveAllStructsOfTypeRange(iMapIndex, ANIOSTRUCT, ANIOSTRUCT);
-      RemoveAllStructsOfTypeRange(iMapIndex, FIRSTCLIFF, LASTBANKS);
-      RemoveAllShadowsOfTypeRange(iMapIndex, FIRSTCLIFFSHADOW, LASTCLIFFSHADOW);
-      RemoveAllObjectsOfTypeRange(iMapIndex, FIRSTCLIFFHANG, LASTCLIFFHANG);
-      RemoveAllStructsOfTypeRange(iMapIndex, FENCESTRUCT, FENCESTRUCT);
-      RemoveAllShadowsOfTypeRange(iMapIndex, FENCESHADOW, FENCESHADOW);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.ANIOSTRUCT, Enum313.ANIOSTRUCT);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTCLIFF, LASTBANKS);
+      RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.FIRSTCLIFFSHADOW, LASTCLIFFSHADOW);
+      RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.FIRSTCLIFFHANG, LASTCLIFFHANG);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FENCESTRUCT, Enum313.FENCESTRUCT);
+      RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.FENCESHADOW, Enum313.FENCESHADOW);
       break;
-    case DRAW_MODE_FLOORS:
+    case Enum38.DRAW_MODE_FLOORS:
       AddToUndoList(iMapIndex);
-      RemoveAllLandsOfTypeRange(iMapIndex, FIRSTFLOOR, LASTFLOOR);
+      RemoveAllLandsOfTypeRange(iMapIndex, Enum313.FIRSTFLOOR, LASTFLOOR);
       break;
-    case DRAW_MODE_ROOFS:
-    case DRAW_MODE_NEWROOF:
+    case Enum38.DRAW_MODE_ROOFS:
+    case Enum38.DRAW_MODE_NEWROOF:
       AddToUndoList(iMapIndex);
-      RemoveAllRoofsOfTypeRange(iMapIndex, FIRSTTEXTURE, LASTITEM);
-      RemoveAllOnRoofsOfTypeRange(iMapIndex, FIRSTTEXTURE, LASTITEM);
+      RemoveAllRoofsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, LASTITEM);
+      RemoveAllOnRoofsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, LASTITEM);
       break;
-    case DRAW_MODE_WALLS:
-    case DRAW_MODE_DOORS:
-    case DRAW_MODE_WINDOWS:
-    case DRAW_MODE_BROKEN_WALLS:
+    case Enum38.DRAW_MODE_WALLS:
+    case Enum38.DRAW_MODE_DOORS:
+    case Enum38.DRAW_MODE_WINDOWS:
+    case Enum38.DRAW_MODE_BROKEN_WALLS:
       AddToUndoList(iMapIndex);
-      RemoveAllStructsOfTypeRange(iMapIndex, FIRSTWALL, LASTWALL);
-      RemoveAllShadowsOfTypeRange(iMapIndex, FIRSTWALL, LASTWALL);
-      RemoveAllStructsOfTypeRange(iMapIndex, FIRSTDOOR, LASTDOOR);
-      RemoveAllShadowsOfTypeRange(iMapIndex, FIRSTDOORSHADOW, LASTDOORSHADOW);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTWALL, LASTWALL);
+      RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.FIRSTWALL, LASTWALL);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTDOOR, LASTDOOR);
+      RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.FIRSTDOORSHADOW, LASTDOORSHADOW);
       break;
-    case DRAW_MODE_DECOR:
-    case DRAW_MODE_DECALS:
-    case DRAW_MODE_ROOM:
-    case DRAW_MODE_TOILET:
+    case Enum38.DRAW_MODE_DECOR:
+    case Enum38.DRAW_MODE_DECALS:
+    case Enum38.DRAW_MODE_ROOM:
+    case Enum38.DRAW_MODE_TOILET:
       AddToUndoList(iMapIndex);
-      RemoveAllStructsOfTypeRange(iMapIndex, FIRSTWALLDECAL, LASTWALLDECAL);
-      RemoveAllStructsOfTypeRange(iMapIndex, FIFTHWALLDECAL, EIGTHWALLDECAL);
-      RemoveAllStructsOfTypeRange(iMapIndex, FIRSTDECORATIONS, LASTDECORATIONS);
-      RemoveAllStructsOfTypeRange(iMapIndex, FIRSTISTRUCT, LASTISTRUCT);
-      RemoveAllStructsOfTypeRange(iMapIndex, FIFTHISTRUCT, EIGHTISTRUCT);
-      RemoveAllStructsOfTypeRange(iMapIndex, FIRSTSWITCHES, FIRSTSWITCHES);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTWALLDECAL, LASTWALLDECAL);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIFTHWALLDECAL, Enum313.EIGTHWALLDECAL);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTDECORATIONS, LASTDECORATIONS);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTISTRUCT, LASTISTRUCT);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIFTHISTRUCT, Enum313.EIGHTISTRUCT);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTSWITCHES, Enum313.FIRSTSWITCHES);
       break;
-    case DRAW_MODE_CAVES:
+    case Enum38.DRAW_MODE_CAVES:
       AddToUndoList(iMapIndex);
-      RemoveAllStructsOfTypeRange(iMapIndex, FIRSTWALL, LASTWALL);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTWALL, LASTWALL);
       break;
-    case DRAW_MODE_ROOMNUM:
+    case Enum38.DRAW_MODE_ROOMNUM:
       PasteRoomNumber(iMapIndex, 0);
       break;
-    case DRAW_MODE_ROADS:
-      RemoveAllObjectsOfTypeRange(iMapIndex, ROADPIECES, ROADPIECES);
+    case Enum38.DRAW_MODE_ROADS:
+      RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.ROADPIECES, Enum313.ROADPIECES);
       break;
     default:
       // DeleteStuffFromMapTile( iMapIndex );
@@ -185,7 +185,7 @@ function PasteDebris(iMapIndex: UINT32): void {
 
     // Remove any debris that is currently at this map location
     if (gpWorldLevelData[iMapIndex].pObjectHead != NULL) {
-      RemoveAllObjectsOfTypeRange(iMapIndex, ANOTHERDEBRIS, FIRSTPOINTERS - 1);
+      RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.ANOTHERDEBRIS, Enum313.FIRSTPOINTERS - 1);
     }
 
     // Get a random debris from current selection
@@ -244,7 +244,7 @@ function PasteSingleBrokenWall(iMapIndex: UINT32): void {
   usObjIndex = pSelList[iCurBank].uiObject;
   usTileIndex = GetTileIndexFromTypeSubIndex(usObjIndex, usIndex, addressof(usTileIndex));
   GetWallOrientation(usTileIndex, addressof(usWallOrientation));
-  if (usWallOrientation == INSIDE_TOP_LEFT || usWallOrientation == INSIDE_TOP_RIGHT)
+  if (usWallOrientation == Enum314.INSIDE_TOP_LEFT || usWallOrientation == Enum314.INSIDE_TOP_RIGHT)
     EraseHorizontalWall(iMapIndex);
   else
     EraseVerticalWall(iMapIndex);
@@ -294,7 +294,7 @@ function PasteSingleWallCommon(iMapIndex: UINT32): void {
     usUseObjIndex = pSelList[iCurBank].uiObject;
 
     // TEMP STUFF FOR ONROOF THINGS!
-    if ((usUseObjIndex >= FIRSTONROOF) && (usUseObjIndex <= SECONDONROOF)) {
+    if ((usUseObjIndex >= Enum313.FIRSTONROOF) && (usUseObjIndex <= Enum313.SECONDONROOF)) {
       // Add to onroof section!
       AddOnRoofToTail(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
 
@@ -310,14 +310,14 @@ function PasteSingleWallCommon(iMapIndex: UINT32): void {
       return;
     }
 
-    if ((usUseObjIndex >= FIRSTDOOR) && (usUseObjIndex <= LASTDOOR)) {
+    if ((usUseObjIndex >= Enum313.FIRSTDOOR) && (usUseObjIndex <= LASTDOOR)) {
       // PLace shadow for doors
       if (!gfBasement)
-        AddExclusiveShadow(iMapIndex, (gTileTypeStartIndex[usUseObjIndex - FIRSTDOOR + FIRSTDOORSHADOW] + usUseIndex));
+        AddExclusiveShadow(iMapIndex, (gTileTypeStartIndex[usUseObjIndex - Enum313.FIRSTDOOR + Enum313.FIRSTDOORSHADOW] + usUseIndex));
     }
 
     // Is it a wall?
-    if (((usUseObjIndex >= FIRSTWALL) && (usUseObjIndex <= LASTWALL))) {
+    if (((usUseObjIndex >= Enum313.FIRSTWALL) && (usUseObjIndex <= LASTWALL))) {
       // ATE		If it is a wall shadow, place differenty!
       if (usUseIndex == 29 || usUseIndex == 30) {
         if (!gfBasement)
@@ -328,28 +328,28 @@ function PasteSingleWallCommon(iMapIndex: UINT32): void {
       }
     }
     // Is it a door/window/decoration?
-    else if (((usUseObjIndex >= FIRSTDOOR) && (usUseObjIndex <= LASTDOOR)) || ((usUseObjIndex >= FIRSTDECORATIONS) && (usUseObjIndex <= LASTDECORATIONS))) {
+    else if (((usUseObjIndex >= Enum313.FIRSTDOOR) && (usUseObjIndex <= LASTDOOR)) || ((usUseObjIndex >= Enum313.FIRSTDECORATIONS) && (usUseObjIndex <= LASTDECORATIONS))) {
       // Slap down wall/window/door/decoration (no smoothing)
       AddWallToStructLayer(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex), TRUE);
-    } else if (((usUseObjIndex >= FIRSTROOF) && (usUseObjIndex <= LASTROOF)) || ((usUseObjIndex >= FIRSTSLANTROOF) && (usUseObjIndex <= LASTSLANTROOF))) {
+    } else if (((usUseObjIndex >= Enum313.FIRSTROOF) && (usUseObjIndex <= LASTROOF)) || ((usUseObjIndex >= Enum313.FIRSTSLANTROOF) && (usUseObjIndex <= LASTSLANTROOF))) {
       // Put a roof on this tile (even if nothing else is here)
-      RemoveAllRoofsOfTypeRange(iMapIndex, FIRSTROOF, LASTROOF);
+      RemoveAllRoofsOfTypeRange(iMapIndex, Enum313.FIRSTROOF, LASTROOF);
       AddRoofToTail(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
-    } else if ((usUseObjIndex >= FIRSTFLOOR) && (usUseObjIndex <= LASTFLOOR)) {
+    } else if ((usUseObjIndex >= Enum313.FIRSTFLOOR) && (usUseObjIndex <= LASTFLOOR)) {
       // Drop a floor on this tile
       if (TypeExistsInLandLayer(iMapIndex, usUseObjIndex, addressof(usTempIndex)))
         RemoveLand(iMapIndex, usTempIndex);
 
       AddLandToHead(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
-    } else if (usUseObjIndex >= FIRSTWALLDECAL && usUseObjIndex <= LASTWALLDECAL || usUseObjIndex >= FIFTHWALLDECAL && usUseObjIndex <= EIGTHWALLDECAL) {
+    } else if (usUseObjIndex >= Enum313.FIRSTWALLDECAL && usUseObjIndex <= LASTWALLDECAL || usUseObjIndex >= Enum313.FIFTHWALLDECAL && usUseObjIndex <= Enum313.EIGTHWALLDECAL) {
       // Plop a decal here
-      RemoveAllStructsOfTypeRange(iMapIndex, FIRSTWALLDECAL, LASTWALLDECAL);
-      RemoveAllStructsOfTypeRange(iMapIndex, FIFTHWALLDECAL, EIGTHWALLDECAL);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTWALLDECAL, LASTWALLDECAL);
+      RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIFTHWALLDECAL, Enum313.EIGTHWALLDECAL);
 
       AddStructToTail(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
-    } else if (usUseObjIndex >= FIRSTISTRUCT && usUseObjIndex <= LASTISTRUCT || usUseObjIndex >= FIFTHISTRUCT && usUseObjIndex <= EIGHTISTRUCT) {
+    } else if (usUseObjIndex >= Enum313.FIRSTISTRUCT && usUseObjIndex <= LASTISTRUCT || usUseObjIndex >= Enum313.FIFTHISTRUCT && usUseObjIndex <= Enum313.EIGHTISTRUCT) {
       AddStructToHead(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
-    } else if (usUseObjIndex == FIRSTSWITCHES) {
+    } else if (usUseObjIndex == Enum313.FIRSTSWITCHES) {
       AddStructToTail(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
     }
   }
@@ -481,8 +481,8 @@ function PasteStructureCommon(iMapIndex: UINT32): void {
       }
     }
   } else if (CurrentStruct == ERASE_TILE && iMapIndex < 0x8000) {
-    RemoveAllStructsOfTypeRange(iMapIndex, FIRSTOSTRUCT, LASTOSTRUCT);
-    RemoveAllShadowsOfTypeRange(iMapIndex, FIRSTSHADOW, LASTSHADOW);
+    RemoveAllStructsOfTypeRange(iMapIndex, Enum313.FIRSTOSTRUCT, LASTOSTRUCT);
+    RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.FIRSTSHADOW, LASTSHADOW);
   }
 }
 
@@ -522,14 +522,14 @@ function PasteBanks(iMapIndex: UINT32, usStructIndex: UINT16, fReplace: BOOLEAN)
       AddToUndoList(iMapIndex);
 
       {
-        if (usUseObjIndex == FIRSTROAD) {
+        if (usUseObjIndex == Enum313.FIRSTROAD) {
           AddObjectToHead(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
         } else {
           AddStructToHead(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
           // Add shadows
-          if (!gfBasement && usUseObjIndex == FIRSTCLIFF) {
+          if (!gfBasement && usUseObjIndex == Enum313.FIRSTCLIFF) {
             // AddShadowToHead( iMapIndex, (UINT16)( gTileTypeStartIndex[ usUseObjIndex - FIRSTCLIFF + FIRSTCLIFFSHADOW ] + usUseIndex ) );
-            AddObjectToHead(iMapIndex, (gTileTypeStartIndex[usUseObjIndex - FIRSTCLIFF + FIRSTCLIFFHANG] + usUseIndex));
+            AddObjectToHead(iMapIndex, (gTileTypeStartIndex[usUseObjIndex - Enum313.FIRSTCLIFF + Enum313.FIRSTCLIFFHANG] + usUseIndex));
           }
         }
       }
@@ -575,9 +575,9 @@ function PasteTextureCommon(iMapIndex: UINT32): void {
     // Set undo, then set new
     AddToUndoList(iMapIndex);
 
-    if (CurrentPaste == DEEPWATERTEXTURE) {
+    if (CurrentPaste == Enum313.DEEPWATERTEXTURE) {
       // IF WE ARE PASTING DEEP WATER AND WE ARE NOT OVER WATER, IGNORE!
-      if (TypeExistsInLandLayer(iMapIndex, REGWATERTEXTURE, addressof(usTileIndex))) {
+      if (TypeExistsInLandLayer(iMapIndex, Enum313.REGWATERTEXTURE, addressof(usTileIndex))) {
         if (!gTileDatabase[usTileIndex].ubFullTile) {
           return;
         }
@@ -587,7 +587,7 @@ function PasteTextureCommon(iMapIndex: UINT32): void {
     }
 
     // Don't draw over floors
-    if (TypeRangeExistsInLandLayer(iMapIndex, FIRSTFLOOR, FOURTHFLOOR, addressof(usTileIndex))) {
+    if (TypeRangeExistsInLandLayer(iMapIndex, Enum313.FIRSTFLOOR, Enum313.FOURTHFLOOR, addressof(usTileIndex))) {
       return;
     }
 
@@ -942,11 +942,11 @@ function PasteTextureFromRadiusEx(sGridNo: INT16, usType: UINT16, ubRadius: UINT
 }
 
 // FUNCTION TO GIVE NEAREST GRIDNO OF A CLIFF
-const LAND_DROP_1 = FIRSTCLIFF1;
-const LAND_DROP_2 = FIRSTCLIFF11;
-const LAND_DROP_3 = FIRSTCLIFF12;
-const LAND_DROP_4 = FIRSTCLIFF15;
-const LAND_DROP_5 = FIRSTCLIFF8;
+const LAND_DROP_1 = Enum312.FIRSTCLIFF1;
+const LAND_DROP_2 = Enum312.FIRSTCLIFF11;
+const LAND_DROP_3 = Enum312.FIRSTCLIFF12;
+const LAND_DROP_4 = Enum312.FIRSTCLIFF15;
+const LAND_DROP_5 = Enum312.FIRSTCLIFF8;
 function RaiseWorldLand(): void {
   let cnt: INT32;
   let sTempGridNo: UINT32;
@@ -979,7 +979,7 @@ function RaiseWorldLand(): void {
 
     while (pStruct) {
       pTileElement = addressof(gTileDatabase[pStruct.value.usIndex]);
-      if (pTileElement.value.fType == FIRSTCLIFF) {
+      if (pTileElement.value.fType == Enum313.FIRSTCLIFF) {
         fSomethingRaised = TRUE;
         // DebugMsg(TOPIC_JA2,DBG_LEVEL_3,String("Cliff found at count=%d",cnt));
         if (pTileElement.value.ubNumberOfTiles > 1) {
@@ -1164,11 +1164,11 @@ function EliminateObjectLayerRedundancy(): void {
     numRoads = numAnothers = 0;
     while (pObject) {
       GetTileType(pObject.value.usIndex, addressof(uiType));
-      if (uiType == ROADPIECES) {
+      if (uiType == Enum313.ROADPIECES) {
         // keep track of the last valid road piece, and count the total
         pValidRoad = pObject;
         numRoads++;
-      } else if (uiType == ANOTHERDEBRIS) {
+      } else if (uiType == Enum313.ANOTHERDEBRIS) {
         // keep track of the last valid another debris, and count the total
         pValidAnother = pObject;
         numAnothers++;
@@ -1179,14 +1179,14 @@ function EliminateObjectLayerRedundancy(): void {
       // we have more than two roadpieces on the same gridno, so get rid of them, replacing it
       // with the visible one.
       usIndex = pValidRoad.value.usIndex;
-      RemoveAllObjectsOfTypeRange(i, ROADPIECES, ROADPIECES);
+      RemoveAllObjectsOfTypeRange(i, Enum313.ROADPIECES, Enum313.ROADPIECES);
       AddObjectToHead(i, usIndex);
     }
     if (pValidAnother && numAnothers > 1) {
       // we have more than two anotherdebris on the same gridno, so get rid of them, replacing it
       // with the visible one.
       usIndex = pValidAnother.value.usIndex;
-      RemoveAllObjectsOfTypeRange(i, ANOTHERDEBRIS, ANOTHERDEBRIS);
+      RemoveAllObjectsOfTypeRange(i, Enum313.ANOTHERDEBRIS, Enum313.ANOTHERDEBRIS);
       AddObjectToHead(i, usIndex);
     }
   }

@@ -696,8 +696,8 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
   if (!(uiFlags & LIGHT_ROOF_ONLY) || (uiFlags & LIGHT_EVERYTHING)) {
     pStruct = gpWorldLevelData[uiTile].pStructHead;
     while (pStruct != NULL) {
-      if (pStruct.value.usIndex < NUMBEROFTILES) {
-        if ((gTileDatabase[pStruct.value.usIndex].fType != FIRSTCLIFFHANG) || (uiFlags & LIGHT_EVERYTHING)) {
+      if (pStruct.value.usIndex < Enum312.NUMBEROFTILES) {
+        if ((gTileDatabase[pStruct.value.usIndex].fType != Enum313.FIRSTCLIFFHANG) || (uiFlags & LIGHT_EVERYTHING)) {
           if ((uiFlags & LIGHT_IGNORE_WALLS) || gfCaves)
             LightAddTileNode(pStruct, uiLightType, ubShadeAdd, FALSE);
           else if (LightIlluminateWall(iSrcX, iSrcY, iX, iY, pStruct)) {
@@ -734,7 +734,7 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
 
       pObject = gpWorldLevelData[uiTile].pObjectHead;
       while (pObject != NULL) {
-        if (pObject.value.usIndex < NUMBEROFTILES) {
+        if (pObject.value.usIndex < Enum312.NUMBEROFTILES) {
           LightAddTileNode(pObject, uiLightType, ubShadeAdd, FALSE);
         }
         pObject = pObject.value.pNext;
@@ -754,7 +754,7 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
   if ((uiFlags & LIGHT_ROOF_ONLY) || (uiFlags & LIGHT_EVERYTHING)) {
     pRoof = gpWorldLevelData[uiTile].pRoofHead;
     while (pRoof != NULL) {
-      if (pRoof.value.usIndex < NUMBEROFTILES) {
+      if (pRoof.value.usIndex < Enum312.NUMBEROFTILES) {
         LightAddTileNode(pRoof, uiLightType, ubShadeAdd, fFake);
       }
       pRoof = pRoof.value.pNext;
@@ -812,8 +812,8 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
   if (!(uiFlags & LIGHT_ROOF_ONLY) || (uiFlags & LIGHT_EVERYTHING)) {
     pStruct = gpWorldLevelData[uiTile].pStructHead;
     while (pStruct != NULL) {
-      if (pStruct.value.usIndex < NUMBEROFTILES) {
-        if ((gTileDatabase[pStruct.value.usIndex].fType != FIRSTCLIFFHANG) || (uiFlags & LIGHT_EVERYTHING)) {
+      if (pStruct.value.usIndex < Enum312.NUMBEROFTILES) {
+        if ((gTileDatabase[pStruct.value.usIndex].fType != Enum313.FIRSTCLIFFHANG) || (uiFlags & LIGHT_EVERYTHING)) {
           if ((uiFlags & LIGHT_IGNORE_WALLS) || gfCaves)
             LightSubtractTileNode(pStruct, uiLightType, ubShadeSubtract, FALSE);
           else if (LightIlluminateWall(iSrcX, iSrcY, iX, iY, pStruct)) {
@@ -850,7 +850,7 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
 
       pObject = gpWorldLevelData[uiTile].pObjectHead;
       while (pObject != NULL) {
-        if (pObject.value.usIndex < NUMBEROFTILES) {
+        if (pObject.value.usIndex < Enum312.NUMBEROFTILES) {
           LightSubtractTileNode(pObject, uiLightType, ubShadeSubtract, FALSE);
         }
         pObject = pObject.value.pNext;
@@ -870,7 +870,7 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
   if ((uiFlags & LIGHT_ROOF_ONLY) || (uiFlags & LIGHT_EVERYTHING)) {
     pRoof = gpWorldLevelData[uiTile].pRoofHead;
     while (pRoof != NULL) {
-      if (pRoof.value.usIndex < NUMBEROFTILES) {
+      if (pRoof.value.usIndex < Enum312.NUMBEROFTILES) {
         LightSubtractTileNode(pRoof, uiLightType, ubShadeSubtract, fFake);
       }
       pRoof = pRoof.value.pNext;
@@ -878,7 +878,7 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
 
     pOnRoof = gpWorldLevelData[uiTile].pOnRoofHead;
     while (pOnRoof != NULL) {
-      if (pOnRoof.value.usIndex < NUMBEROFTILES) {
+      if (pOnRoof.value.usIndex < Enum312.NUMBEROFTILES) {
         LightSubtractTileNode(pOnRoof, uiLightType, ubShadeSubtract, FALSE);
       }
       pOnRoof = pOnRoof.value.pNext;
@@ -1969,14 +1969,14 @@ function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOL
   while (pStruct != NULL) {
     TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
     switch (TileElem.value.usWallOrientation) {
-      case INSIDE_TOP_RIGHT:
-      case OUTSIDE_TOP_RIGHT:
+      case Enum314.INSIDE_TOP_RIGHT:
+      case Enum314.OUTSIDE_TOP_RIGHT:
         if (!fDoRightWalls)
           fDoLeftWalls = FALSE;
         break;
 
-      case INSIDE_TOP_LEFT:
-      case OUTSIDE_TOP_LEFT:
+      case Enum314.INSIDE_TOP_LEFT:
+      case Enum314.OUTSIDE_TOP_LEFT:
         if (!fDoLeftWalls)
           fDoRightWalls = FALSE;
         break;
@@ -1988,11 +1988,11 @@ function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOL
   while (pStruct != NULL) {
     TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
     switch (TileElem.value.usWallOrientation) {
-      case NO_ORIENTATION:
+      case Enum314.NO_ORIENTATION:
         break;
 
-      case INSIDE_TOP_RIGHT:
-      case OUTSIDE_TOP_RIGHT:
+      case Enum314.INSIDE_TOP_RIGHT:
+      case Enum314.OUTSIDE_TOP_RIGHT:
         fHitWall = TRUE;
         if ((fDoRightWalls) && (sX >= sSrcX)) {
           pStruct.value.uiFlags |= LEVELNODE_REVEAL;
@@ -2000,8 +2000,8 @@ function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOL
         }
         break;
 
-      case INSIDE_TOP_LEFT:
-      case OUTSIDE_TOP_LEFT:
+      case Enum314.INSIDE_TOP_LEFT:
+      case Enum314.OUTSIDE_TOP_LEFT:
         fHitWall = TRUE;
         if ((fDoLeftWalls) && (sY >= sSrcY)) {
           pStruct.value.uiFlags |= LEVELNODE_REVEAL;
@@ -2041,14 +2041,14 @@ function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEA
   while (pStruct != NULL) {
     TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
     switch (TileElem.value.usWallOrientation) {
-      case INSIDE_TOP_RIGHT:
-      case OUTSIDE_TOP_RIGHT:
+      case Enum314.INSIDE_TOP_RIGHT:
+      case Enum314.OUTSIDE_TOP_RIGHT:
         if (!fDoRightWalls)
           fDoLeftWalls = FALSE;
         break;
 
-      case INSIDE_TOP_LEFT:
-      case OUTSIDE_TOP_LEFT:
+      case Enum314.INSIDE_TOP_LEFT:
+      case Enum314.OUTSIDE_TOP_LEFT:
         if (!fDoLeftWalls)
           fDoRightWalls = FALSE;
         break;
@@ -2060,11 +2060,11 @@ function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEA
   while (pStruct != NULL) {
     TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
     switch (TileElem.value.usWallOrientation) {
-      case NO_ORIENTATION:
+      case Enum314.NO_ORIENTATION:
         break;
 
-      case INSIDE_TOP_RIGHT:
-      case OUTSIDE_TOP_RIGHT:
+      case Enum314.INSIDE_TOP_RIGHT:
+      case Enum314.OUTSIDE_TOP_RIGHT:
         fHitWall = TRUE;
         if ((fDoRightWalls) && (sX >= sSrcX)) {
           pStruct.value.uiFlags &= (~LEVELNODE_REVEAL);
@@ -2072,8 +2072,8 @@ function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEA
         }
         break;
 
-      case INSIDE_TOP_LEFT:
-      case OUTSIDE_TOP_LEFT:
+      case Enum314.INSIDE_TOP_LEFT:
+      case Enum314.OUTSIDE_TOP_LEFT:
         fHitWall = TRUE;
         if ((fDoLeftWalls) && (sY >= sSrcY)) {
           pStruct.value.uiFlags &= (~LEVELNODE_REVEAL);
@@ -2139,11 +2139,11 @@ function LightGreenTile(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
   while (pStruct != NULL) {
     TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
     switch (TileElem.value.usWallOrientation) {
-      case NO_ORIENTATION:
+      case Enum314.NO_ORIENTATION:
         break;
 
-      case INSIDE_TOP_RIGHT:
-      case OUTSIDE_TOP_RIGHT:
+      case Enum314.INSIDE_TOP_RIGHT:
+      case Enum314.OUTSIDE_TOP_RIGHT:
         fHitWall = TRUE;
         if (sX >= sSrcX) {
           pStruct.value.uiFlags |= LEVELNODE_REVEAL;
@@ -2151,8 +2151,8 @@ function LightGreenTile(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
         }
         break;
 
-      case INSIDE_TOP_LEFT:
-      case OUTSIDE_TOP_LEFT:
+      case Enum314.INSIDE_TOP_LEFT:
+      case Enum314.OUTSIDE_TOP_LEFT:
         fHitWall = TRUE;
         if (sY >= sSrcY) {
           pStruct.value.uiFlags |= LEVELNODE_REVEAL;
@@ -2236,11 +2236,11 @@ function LightHideGreen(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
   while (pStruct != NULL) {
     TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
     switch (TileElem.value.usWallOrientation) {
-      case NO_ORIENTATION:
+      case Enum314.NO_ORIENTATION:
         break;
 
-      case INSIDE_TOP_RIGHT:
-      case OUTSIDE_TOP_RIGHT:
+      case Enum314.INSIDE_TOP_RIGHT:
+      case Enum314.OUTSIDE_TOP_RIGHT:
         fHitWall = TRUE;
         if (sX >= sSrcX) {
           pStruct.value.uiFlags &= (~LEVELNODE_REVEAL);
@@ -2248,8 +2248,8 @@ function LightHideGreen(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
         }
         break;
 
-      case INSIDE_TOP_LEFT:
-      case OUTSIDE_TOP_LEFT:
+      case Enum314.INSIDE_TOP_LEFT:
+      case Enum314.OUTSIDE_TOP_LEFT:
         fHitWall = TRUE;
         if (sY >= sSrcY) {
           pStruct.value.uiFlags &= (~LEVELNODE_REVEAL);

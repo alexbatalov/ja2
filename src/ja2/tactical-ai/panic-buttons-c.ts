@@ -37,7 +37,7 @@ function MakeClosestEnemyChosenOne(): void {
     }
 
     if (gWorldSectorX == TIXA_SECTOR_X && gWorldSectorY == TIXA_SECTOR_Y) {
-      if (pSoldier.value.ubProfile != WARDEN) {
+      if (pSoldier.value.ubProfile != Enum268.WARDEN) {
         continue;
       }
     } else {
@@ -95,7 +95,7 @@ function MakeClosestEnemyChosenOne(): void {
     // FindAdjacentGrid set HandGrid for us.  If we aren't at that spot already
     if (pSoldier.value.sGridNo != sPanicTriggerGridNo) {
       // get the AP cost for this enemy to go to target position
-      sPathCost = PlotPath(pSoldier, sPanicTriggerGridNo, FALSE, FALSE, FALSE, WALKING, FALSE, FALSE, 0);
+      sPathCost = PlotPath(pSoldier, sPanicTriggerGridNo, FALSE, FALSE, FALSE, Enum193.WALKING, FALSE, FALSE, 0);
     } else {
       sPathCost = 0;
     }
@@ -119,8 +119,8 @@ function MakeClosestEnemyChosenOne(): void {
     gTacticalStatus.ubTheChosenOne = ubClosestEnemy; // flag him as the chosen one
 
     pSoldier = MercPtrs[gTacticalStatus.ubTheChosenOne];
-    if (pSoldier.value.bAlertStatus < STATUS_RED) {
-      pSoldier.value.bAlertStatus = STATUS_RED;
+    if (pSoldier.value.bAlertStatus < Enum243.STATUS_RED) {
+      pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
       CheckForChangingOrders(pSoldier);
     }
     SetNewSituation(pSoldier); // set new situation for the chosen one
@@ -165,7 +165,7 @@ function PossiblyMakeThisEnemyChosenOne(pSoldier: Pointer<SOLDIERTYPE>): void {
   // if he can't get to a spot where he could get at the panic trigger
   iAPCost = AP_PULL_TRIGGER;
   if (pSoldier.value.sGridNo != sPanicTriggerGridNo) {
-    iPathCost = PlotPath(pSoldier, sPanicTriggerGridNo, FALSE, FALSE, FALSE, RUNNING, FALSE, FALSE, 0);
+    iPathCost = PlotPath(pSoldier, sPanicTriggerGridNo, FALSE, FALSE, FALSE, Enum193.RUNNING, FALSE, FALSE, 0);
     if (iPathCost == 0) {
       // pSoldier->bHasKeys = bOldKeys;
       pSoldier.value.bHasKeys = (pSoldier.value.bHasKeys >> 1);
@@ -194,7 +194,7 @@ function PanicAI(pSoldier: Pointer<SOLDIERTYPE>, ubCanMove: UINT8): INT8 {
   // if there are panic bombs here
   if (gTacticalStatus.fPanicFlags & PANIC_BOMBS_HERE) {
     // if enemy is holding a portable panic bomb detonator, he tries to use it
-    bSlot = FindObj(pSoldier, REMOTEBOMBTRIGGER);
+    bSlot = FindObj(pSoldier, Enum225.REMOTEBOMBTRIGGER);
     if (bSlot != NO_SLOT) {
       //////////////////////////////////////////////////////////////////////
       // ACTIVATE DETONATOR: blow up sector's panic bombs
@@ -203,11 +203,11 @@ function PanicAI(pSoldier: Pointer<SOLDIERTYPE>, ubCanMove: UINT8): INT8 {
       // if we have enough APs to activate it now
       if (pSoldier.value.bActionPoints >= AP_USE_REMOTE) {
         // blow up all the PANIC bombs!
-        return AI_ACTION_USE_DETONATOR;
+        return Enum289.AI_ACTION_USE_DETONATOR;
       } else // otherwise, wait a turn
       {
         pSoldier.value.usActionData = NOWHERE;
-        return AI_ACTION_NONE;
+        return Enum289.AI_ACTION_NONE;
       }
     }
   }
@@ -228,7 +228,7 @@ function PanicAI(pSoldier: Pointer<SOLDIERTYPE>, ubCanMove: UINT8): INT8 {
       // if not standing on the panic trigger
       if (pSoldier.value.sGridNo != sPanicTriggerGridNo) {
         // determine whether we can still get there
-        iPathCost = PlotPath(pSoldier, sPanicTriggerGridNo, FALSE, FALSE, FALSE, RUNNING, FALSE, FALSE, 0);
+        iPathCost = PlotPath(pSoldier, sPanicTriggerGridNo, FALSE, FALSE, FALSE, Enum193.RUNNING, FALSE, FALSE, 0);
         if (iPathCost != 0) {
           fFoundRoute = TRUE;
         }
@@ -264,11 +264,11 @@ function PanicAI(pSoldier: Pointer<SOLDIERTYPE>, ubCanMove: UINT8): INT8 {
             // blow up the all the PANIC bombs (or just the journal)
             pSoldier.value.usActionData = sPanicTriggerGridNo;
 
-            return AI_ACTION_PULL_TRIGGER;
+            return Enum289.AI_ACTION_PULL_TRIGGER;
           } else // otherwise, wait a turn
           {
             pSoldier.value.usActionData = NOWHERE;
-            return AI_ACTION_NONE;
+            return Enum289.AI_ACTION_NONE;
           }
         } else // we are NOT at the HandGrid spot
         {
@@ -280,7 +280,7 @@ function PanicAI(pSoldier: Pointer<SOLDIERTYPE>, ubCanMove: UINT8): INT8 {
               pSoldier.value.usActionData = sPanicTriggerGridNo;
               pSoldier.value.bPathStored = TRUE;
 
-              return AI_ACTION_GET_CLOSER;
+              return Enum289.AI_ACTION_GET_CLOSER;
             } else // Oh oh, the chosen one can't get to the trigger!
             {
               gTacticalStatus.ubTheChosenOne = NOBODY; // strip him of his Chosen One status
@@ -289,7 +289,7 @@ function PanicAI(pSoldier: Pointer<SOLDIERTYPE>, ubCanMove: UINT8): INT8 {
           } else // can't move, wait 1 turn
           {
             pSoldier.value.usActionData = NOWHERE;
-            return AI_ACTION_NONE;
+            return Enum289.AI_ACTION_NONE;
           }
         }
       } else // Oh oh, the chosen one can't get to the trigger!
@@ -329,7 +329,7 @@ function ClosestPanicTrigger(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       // in Tixa
       if (gWorldSectorX == TIXA_SECTOR_X && gWorldSectorY == TIXA_SECTOR_Y) {
         // screen out everyone but the warden
-        if (pSoldier.value.ubProfile != WARDEN) {
+        if (pSoldier.value.ubProfile != Enum268.WARDEN) {
           break;
         }
 
@@ -365,7 +365,7 @@ function NeedToRadioAboutPanicTrigger(): BOOLEAN {
 
   if (gWorldSectorX == TIXA_SECTOR_X && gWorldSectorY == TIXA_SECTOR_Y) {
     let pSoldier: Pointer<SOLDIERTYPE>;
-    pSoldier = FindSoldierByProfileID(WARDEN, FALSE);
+    pSoldier = FindSoldierByProfileID(Enum268.WARDEN, FALSE);
     if (!pSoldier || pSoldier.value.ubID == gTacticalStatus.ubTheChosenOne) {
       return FALSE;
     }
@@ -391,18 +391,18 @@ function HeadForTheStairCase(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
   pBasementInfo = FindUnderGroundSector(3, MAP_ROW_P, 1);
   if (pBasementInfo && pBasementInfo.value.uiTimeCurrentSectorWasLastLoaded != 0 && (pBasementInfo.value.ubNumElites + pBasementInfo.value.ubNumTroops + pBasementInfo.value.ubNumAdmins) < 5) {
-    return AI_ACTION_NONE;
+    return Enum289.AI_ACTION_NONE;
   }
 
   if (PythSpacesAway(pSoldier.value.sGridNo, STAIRCASE_GRIDNO) < 2) {
-    return AI_ACTION_TRAVERSE_DOWN;
+    return Enum289.AI_ACTION_TRAVERSE_DOWN;
   } else {
     if (LegalNPCDestination(pSoldier, STAIRCASE_GRIDNO, ENSURE_PATH, WATEROK, 0)) {
       pSoldier.value.usActionData = STAIRCASE_GRIDNO;
-      return AI_ACTION_GET_CLOSER;
+      return Enum289.AI_ACTION_GET_CLOSER;
     }
   }
-  return AI_ACTION_NONE;
+  return Enum289.AI_ACTION_NONE;
 }
 
 const WARDEN_ALARM_GRIDNO = 9376;

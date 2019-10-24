@@ -36,7 +36,7 @@ function ExitBobbyRMisc(): void {
   DeleteMouseRegionForBigImage();
   DeleteBobbyMenuBar();
 
-  guiLastBobbyRayPage = LAPTOP_MODE_BOBBY_R_MISC;
+  guiLastBobbyRayPage = Enum95.LAPTOP_MODE_BOBBY_R_MISC;
 }
 
 function HandleBobbyRMisc(): void {

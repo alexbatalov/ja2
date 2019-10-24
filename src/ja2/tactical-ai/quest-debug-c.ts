@@ -11,22 +11,22 @@ const enum Enum298 {
 }
 
 // Mode and priority for the Quest Debug Messages
-let gubQuestDebugOutPutLevel: UINT8 = QD_OUTPUT_LEVEL_ALL;
+let gubQuestDebugOutPutLevel: UINT8 = Enum298.QD_OUTPUT_LEVEL_ALL;
 
 // Mode and priority for the NPC interaction Debug Messages
-let gubNPCDebugOutPutLevel: UINT8 = QD_OUTPUT_LEVEL_ALL;
+let gubNPCDebugOutPutLevel: UINT8 = Enum298.QD_OUTPUT_LEVEL_ALL;
 
 // set the current output mode for either the NPC or the quest output
 function ToggleQuestDebugModes(ubType: UINT8): void {
   let sType: wchar_t[] /* [16] */;
   let ubLevel: UINT8;
 
-  if (ubType == QD_NPC_MSG) {
+  if (ubType == Enum299.QD_NPC_MSG) {
     wcscpy(sType, "NPC Debug:");
 
     // check to see if its out of range
-    if (gubNPCDebugOutPutLevel <= QD_OUTPUT_NONE + 1)
-      gubNPCDebugOutPutLevel = QD_OUTPUT_LEVEL_ALL;
+    if (gubNPCDebugOutPutLevel <= Enum298.QD_OUTPUT_NONE + 1)
+      gubNPCDebugOutPutLevel = Enum298.QD_OUTPUT_LEVEL_ALL;
     else {
       // decrement
       gubNPCDebugOutPutLevel--;
@@ -37,8 +37,8 @@ function ToggleQuestDebugModes(ubType: UINT8): void {
     wcscpy(sType, "QUEST Debug:");
 
     // check to see if its out of range
-    if (gubQuestDebugOutPutLevel <= QD_OUTPUT_NONE)
-      gubQuestDebugOutPutLevel = QD_OUTPUT_LEVEL_ALL;
+    if (gubQuestDebugOutPutLevel <= Enum298.QD_OUTPUT_NONE)
+      gubQuestDebugOutPutLevel = Enum298.QD_OUTPUT_LEVEL_ALL;
     else {
       // decrement
       gubQuestDebugOutPutLevel--;
@@ -48,9 +48,9 @@ function ToggleQuestDebugModes(ubType: UINT8): void {
   }
 
   // Display a messasge to the screen
-  if (ubLevel == QD_OUTPUT_NONE)
+  if (ubLevel == Enum298.QD_OUTPUT_NONE)
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "%s No Output", sType);
-  else if (ubLevel == QD_OUTPUT_LEVEL_ALL)
+  else if (ubLevel == Enum298.QD_OUTPUT_LEVEL_ALL)
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "%s All messages", sType);
   else
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "%s Level %d", sType, ubLevel);
@@ -77,7 +77,7 @@ function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: STR,
   //
 
   // if its a quest message
-  if (ubQuoteType == QD_QUEST_MSG) {
+  if (ubQuoteType == Enum299.QD_QUEST_MSG) {
     // if the message is a lower priority then the current output mode, dont display it
     if (ubPriority > gubQuestDebugOutPutLevel)
       return;

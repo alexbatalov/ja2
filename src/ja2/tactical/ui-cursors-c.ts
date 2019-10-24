@@ -23,14 +23,14 @@ function GetMouseRecalcAndShowAPFlags(puiCursorFlags: Pointer<UINT32>, pfShowAPs
     // if ( uiCursorFlags & MOUSE_MOVING_NEW_TILE )
     {
       // Reset counter
-      RESETCOUNTER(PATHFINDCOUNTER);
+      RESETCOUNTER(Enum386.PATHFINDCOUNTER);
       fDoNewTile = TRUE;
     }
   }
 
   if (uiCursorFlags & MOUSE_STATIONARY) {
     // ONLY DIPSLAY APS AFTER A DELAY
-    if (COUNTERDONE(PATHFINDCOUNTER)) {
+    if (COUNTERDONE(Enum386.PATHFINDCOUNTER)) {
       // Don't reset counter: One when we move again do we do this!
       fShowAPs = TRUE;
 
@@ -69,8 +69,8 @@ function GetProperItemCursor(ubSoldierID: UINT8, ubItemIndex: UINT16, usMapPos: 
   // ATE: Update attacking weapon!
   // CC has added this attackingWeapon stuff and I need to update it constantly for
   // CTGH algorithms
-  if (gTacticalStatus.ubAttackBusyCount == 0 && Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass & IC_WEAPON) {
-    pSoldier.value.usAttackingWeapon = pSoldier.value.inv[HANDPOS].usItem;
+  if (gTacticalStatus.ubAttackBusyCount == 0 && Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass & IC_WEAPON) {
+    pSoldier.value.usAttackingWeapon = pSoldier.value.inv[Enum261.HANDPOS].usItem;
   }
 
   // Calculate target gridno!
@@ -111,14 +111,14 @@ function GetProperItemCursor(ubSoldierID: UINT8, ubItemIndex: UINT16, usMapPos: 
       }
 
       // ATE: Only do this if we are in combat!
-      if (gCurrentUIMode == ACTION_MODE && (gTacticalStatus.uiFlags & INCOMBAT)) {
+      if (gCurrentUIMode == Enum206.ACTION_MODE && (gTacticalStatus.uiFlags & INCOMBAT)) {
         // Alrighty, let's change the cursor!
         if (fRecalc && gfUIFullTargetFound) {
           // ATE: Check for ammo
-          if (IsValidTargetMerc(gusUIFullTargetID) && EnoughAmmo(pSoldier, FALSE, HANDPOS)) {
+          if (IsValidTargetMerc(gusUIFullTargetID) && EnoughAmmo(pSoldier, FALSE, Enum261.HANDPOS)) {
             // IF it's an ememy, goto confirm action mode
             if ((guiUIFullTargetFlags & ENEMY_MERC) && (guiUIFullTargetFlags & VISIBLE_MERC) && !(guiUIFullTargetFlags & DEAD_MERC) && !gfCannotGetThrough) {
-              guiPendingOverrideEvent = A_CHANGE_TO_CONFIM_ACTION;
+              guiPendingOverrideEvent = Enum207.A_CHANGE_TO_CONFIM_ACTION;
             }
           }
         }
@@ -177,7 +177,7 @@ function GetProperItemCursor(ubSoldierID: UINT8, ubItemIndex: UINT16, usMapPos: 
 
     case INVALIDCURS:
 
-      ubCursorID = INVALID_ACTION_UICURSOR;
+      ubCursorID = Enum210.INVALID_ACTION_UICURSOR;
       break;
   }
 
@@ -201,14 +201,14 @@ function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: U
   let fMaxPointLimitHit: BOOLEAN = FALSE;
   let usInHand: UINT16;
 
-  usInHand = pSoldier.value.inv[HANDPOS].usItem;
+  usInHand = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
   if (Item[usInHand].usItemClass != IC_THROWING_KNIFE) {
     // If we are in realtime, follow!
     if ((!(gTacticalStatus.uiFlags & INCOMBAT))) {
       if ((gAnimControl[MercPtrs[gusSelectedSoldier].value.usAnimState].uiFlags & ANIM_STATIONARY)) {
         if (gUITargetShotWaiting) {
-          guiPendingOverrideEvent = CA_MERC_SHOOT;
+          guiPendingOverrideEvent = Enum207.CA_MERC_SHOOT;
         }
       }
 
@@ -218,7 +218,7 @@ function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: U
     // Check if we are reloading
     if (((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT))) {
       if (pSoldier.value.fReloading || pSoldier.value.fPauseAim) {
-        return ACTION_TARGET_RELOADING;
+        return Enum210.ACTION_TARGET_RELOADING;
       }
     }
   }
@@ -253,9 +253,9 @@ function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: U
 
   if (((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT))) {
     if (!pSoldier.value.fPauseAim) {
-      if (COUNTERDONE(TARGETREFINE)) {
+      if (COUNTERDONE(Enum386.TARGETREFINE)) {
         // Reset counter
-        RESETCOUNTER(TARGETREFINE);
+        RESETCOUNTER(Enum386.TARGETREFINE);
 
         if (pSoldier.value.bDoBurst) {
           pSoldier.value.bShownAimTime = REFINE_AIM_BURST;
@@ -266,7 +266,7 @@ function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: U
             pSoldier.value.bShownAimTime = REFINE_AIM_5;
           } else {
             if (pSoldier.value.bShownAimTime % 2) {
-              PlayJA2Sample(TARG_REFINE_BEEP, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
+              PlayJA2Sample(Enum330.TARG_REFINE_BEEP, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
             }
           }
         }
@@ -298,17 +298,17 @@ function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: U
   if (fMaxPointLimitHit) {
     // Check if we're in burst mode!
     if (pSoldier.value.bDoBurst) {
-      usCursor = ACTION_TARGETREDBURST_UICURSOR;
+      usCursor = Enum210.ACTION_TARGETREDBURST_UICURSOR;
     } else if (Item[usInHand].usItemClass == IC_THROWING_KNIFE) {
-      usCursor = RED_THROW_UICURSOR;
+      usCursor = Enum210.RED_THROW_UICURSOR;
     } else {
-      usCursor = ACTION_TARGETRED_UICURSOR;
+      usCursor = Enum210.ACTION_TARGETRED_UICURSOR;
     }
   } else if (pSoldier.value.bDoBurst) {
     if (pSoldier.value.fDoSpread) {
-      usCursor = ACTION_TARGETREDBURST_UICURSOR;
+      usCursor = Enum210.ACTION_TARGETREDBURST_UICURSOR;
     } else {
-      usCursor = ACTION_TARGETCONFIRMBURST_UICURSOR;
+      usCursor = Enum210.ACTION_TARGETCONFIRMBURST_UICURSOR;
     }
   } else {
     // IF we are in turnbased, half the shown time values
@@ -323,19 +323,19 @@ function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: U
 
         if (Item[usInHand].usItemClass == IC_THROWING_KNIFE) {
           if (gfDisplayFullCountRing) {
-            usCursor = ACTION_THROWAIMYELLOW1_UICURSOR;
+            usCursor = Enum210.ACTION_THROWAIMYELLOW1_UICURSOR;
           } else if (fEnoughPoints) {
-            usCursor = ACTION_THROWAIM1_UICURSOR;
+            usCursor = Enum210.ACTION_THROWAIM1_UICURSOR;
           } else {
-            usCursor = ACTION_THROWAIMCANT1_UICURSOR;
+            usCursor = Enum210.ACTION_THROWAIMCANT1_UICURSOR;
           }
         } else {
           if (gfDisplayFullCountRing) {
-            usCursor = ACTION_TARGETAIMYELLOW1_UICURSOR;
+            usCursor = Enum210.ACTION_TARGETAIMYELLOW1_UICURSOR;
           } else if (fEnoughPoints) {
-            usCursor = ACTION_TARGETAIM1_UICURSOR;
+            usCursor = Enum210.ACTION_TARGETAIM1_UICURSOR;
           } else {
-            usCursor = ACTION_TARGETAIMCANT1_UICURSOR;
+            usCursor = Enum210.ACTION_TARGETAIMCANT1_UICURSOR;
           }
         }
         break;
@@ -344,19 +344,19 @@ function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: U
 
         if (Item[usInHand].usItemClass == IC_THROWING_KNIFE) {
           if (gfDisplayFullCountRing) {
-            usCursor = ACTION_THROWAIMYELLOW2_UICURSOR;
+            usCursor = Enum210.ACTION_THROWAIMYELLOW2_UICURSOR;
           } else if (fEnoughPoints) {
-            usCursor = ACTION_THROWAIM3_UICURSOR;
+            usCursor = Enum210.ACTION_THROWAIM3_UICURSOR;
           } else {
-            usCursor = ACTION_THROWAIMCANT2_UICURSOR;
+            usCursor = Enum210.ACTION_THROWAIMCANT2_UICURSOR;
           }
         } else {
           if (gfDisplayFullCountRing) {
-            usCursor = ACTION_TARGETAIMYELLOW2_UICURSOR;
+            usCursor = Enum210.ACTION_TARGETAIMYELLOW2_UICURSOR;
           } else if (fEnoughPoints) {
-            usCursor = ACTION_TARGETAIM3_UICURSOR;
+            usCursor = Enum210.ACTION_TARGETAIM3_UICURSOR;
           } else {
-            usCursor = ACTION_TARGETAIMCANT2_UICURSOR;
+            usCursor = Enum210.ACTION_TARGETAIMCANT2_UICURSOR;
           }
         }
         break;
@@ -365,19 +365,19 @@ function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: U
 
         if (Item[usInHand].usItemClass == IC_THROWING_KNIFE) {
           if (gfDisplayFullCountRing) {
-            usCursor = ACTION_THROWAIMYELLOW3_UICURSOR;
+            usCursor = Enum210.ACTION_THROWAIMYELLOW3_UICURSOR;
           } else if (fEnoughPoints) {
-            usCursor = ACTION_THROWAIM5_UICURSOR;
+            usCursor = Enum210.ACTION_THROWAIM5_UICURSOR;
           } else {
-            usCursor = ACTION_THROWAIMCANT3_UICURSOR;
+            usCursor = Enum210.ACTION_THROWAIMCANT3_UICURSOR;
           }
         } else {
           if (gfDisplayFullCountRing) {
-            usCursor = ACTION_TARGETAIMYELLOW3_UICURSOR;
+            usCursor = Enum210.ACTION_TARGETAIMYELLOW3_UICURSOR;
           } else if (fEnoughPoints) {
-            usCursor = ACTION_TARGETAIM5_UICURSOR;
+            usCursor = Enum210.ACTION_TARGETAIM5_UICURSOR;
           } else {
-            usCursor = ACTION_TARGETAIMCANT3_UICURSOR;
+            usCursor = Enum210.ACTION_TARGETAIMCANT3_UICURSOR;
           }
         }
         break;
@@ -386,19 +386,19 @@ function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: U
 
         if (Item[usInHand].usItemClass == IC_THROWING_KNIFE) {
           if (gfDisplayFullCountRing) {
-            usCursor = ACTION_THROWAIMYELLOW4_UICURSOR;
+            usCursor = Enum210.ACTION_THROWAIMYELLOW4_UICURSOR;
           } else if (fEnoughPoints) {
-            usCursor = ACTION_THROWAIM7_UICURSOR;
+            usCursor = Enum210.ACTION_THROWAIM7_UICURSOR;
           } else {
-            usCursor = ACTION_THROWAIMCANT4_UICURSOR;
+            usCursor = Enum210.ACTION_THROWAIMCANT4_UICURSOR;
           }
         } else {
           if (gfDisplayFullCountRing) {
-            usCursor = ACTION_TARGETAIMYELLOW4_UICURSOR;
+            usCursor = Enum210.ACTION_TARGETAIMYELLOW4_UICURSOR;
           } else if (fEnoughPoints) {
-            usCursor = ACTION_TARGETAIM7_UICURSOR;
+            usCursor = Enum210.ACTION_TARGETAIM7_UICURSOR;
           } else {
-            usCursor = ACTION_TARGETAIMCANT4_UICURSOR;
+            usCursor = Enum210.ACTION_TARGETAIMCANT4_UICURSOR;
           }
         }
         break;
@@ -407,40 +407,40 @@ function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: U
 
         if (Item[usInHand].usItemClass == IC_THROWING_KNIFE) {
           if (gfDisplayFullCountRing) {
-            usCursor = ACTION_THROWAIMFULL_UICURSOR;
+            usCursor = Enum210.ACTION_THROWAIMFULL_UICURSOR;
           } else if (fEnoughPoints) {
-            usCursor = ACTION_THROWAIM9_UICURSOR;
+            usCursor = Enum210.ACTION_THROWAIM9_UICURSOR;
           } else {
-            usCursor = ACTION_THROWAIMCANT5_UICURSOR;
+            usCursor = Enum210.ACTION_THROWAIMCANT5_UICURSOR;
           }
         } else {
           if (gfDisplayFullCountRing) {
-            usCursor = ACTION_TARGETAIMFULL_UICURSOR;
+            usCursor = Enum210.ACTION_TARGETAIMFULL_UICURSOR;
           } else if (fEnoughPoints) {
-            usCursor = ACTION_TARGETAIM9_UICURSOR;
+            usCursor = Enum210.ACTION_TARGETAIM9_UICURSOR;
           } else {
-            usCursor = ACTION_TARGETAIMCANT5_UICURSOR;
+            usCursor = Enum210.ACTION_TARGETAIMCANT5_UICURSOR;
           }
         }
         break;
 
       case REFINE_AIM_MID1:
 
-        usCursor = ACTION_TARGETAIM2_UICURSOR;
+        usCursor = Enum210.ACTION_TARGETAIM2_UICURSOR;
         break;
 
       case REFINE_AIM_MID2:
 
-        usCursor = ACTION_TARGETAIM4_UICURSOR;
+        usCursor = Enum210.ACTION_TARGETAIM4_UICURSOR;
         break;
 
       case REFINE_AIM_MID3:
 
-        usCursor = ACTION_TARGETAIM6_UICURSOR;
+        usCursor = Enum210.ACTION_TARGETAIM6_UICURSOR;
         break;
 
       case REFINE_AIM_MID4:
-        usCursor = ACTION_TARGETAIM8_UICURSOR;
+        usCursor = Enum210.ACTION_TARGETAIM8_UICURSOR;
         break;
     }
   }
@@ -468,7 +468,7 @@ function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: U
 function HandleNonActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, fShowAPs: BOOLEAN, fRecalc: BOOLEAN, uiCursorFlags: UINT32): UINT8 {
   let usInHand: UINT16;
 
-  usInHand = pSoldier.value.inv[HANDPOS].usItem;
+  usInHand = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
   if (Item[usInHand].usItemClass != IC_THROWING_KNIFE) {
     if (((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT))) {
@@ -476,16 +476,16 @@ function HandleNonActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos
       DetermineCursorBodyLocation(gusSelectedSoldier, fShowAPs, fRecalc);
 
       if (pSoldier.value.fReloading || pSoldier.value.fPauseAim) {
-        return ACTION_TARGET_RELOADING;
+        return Enum210.ACTION_TARGET_RELOADING;
       }
     }
 
     // Check for enough ammo...
-    if (!EnoughAmmo(pSoldier, FALSE, HANDPOS)) {
+    if (!EnoughAmmo(pSoldier, FALSE, Enum261.HANDPOS)) {
       // Check if ANY ammo exists.....
-      if (FindAmmoToReload(pSoldier, HANDPOS, NO_SLOT) == NO_SLOT) {
+      if (FindAmmoToReload(pSoldier, Enum261.HANDPOS, NO_SLOT) == NO_SLOT) {
         // OK, use BAD reload cursor.....
-        return BAD_RELOAD_UICURSOR;
+        return Enum210.BAD_RELOAD_UICURSOR;
       } else {
         // Check APs to reload...
         gsCurrentActionPoints = GetAPsToAutoReload(pSoldier);
@@ -495,7 +495,7 @@ function HandleNonActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos
         // gUIDisplayActionPointsOffY = 7;
 
         // OK, use GOOD reload cursor.....
-        return GOOD_RELOAD_UICURSOR;
+        return Enum210.GOOD_RELOAD_UICURSOR;
       }
     }
   }
@@ -535,11 +535,11 @@ function HandleNonActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos
 
     if (gfCannotGetThrough) {
       if (pSoldier.value.bDoBurst) {
-        return ACTION_NOCHANCE_BURST_UICURSOR;
+        return Enum210.ACTION_NOCHANCE_BURST_UICURSOR;
       } else if (Item[usInHand].usItemClass == IC_THROWING_KNIFE) {
-        return BAD_THROW_UICURSOR;
+        return Enum210.BAD_THROW_UICURSOR;
       } else {
-        return ACTION_NOCHANCE_SHOOT_UICURSOR;
+        return Enum210.ACTION_NOCHANCE_SHOOT_UICURSOR;
       }
     }
   }
@@ -549,24 +549,24 @@ function HandleNonActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos
     // Flash cursor!
     // Check if we're in burst mode!
     if (Item[usInHand].usItemClass == IC_THROWING_KNIFE) {
-      return FLASH_THROW_UICURSOR;
+      return Enum210.FLASH_THROW_UICURSOR;
     } else if (pSoldier.value.bDoBurst) {
       // return( ACTION_FIRSTAID_RED );
-      return ACTION_FLASH_BURST_UICURSOR;
+      return Enum210.ACTION_FLASH_BURST_UICURSOR;
     } else {
       // return( ACTION_FIRSTAID_RED );
-      return ACTION_FLASH_SHOOT_UICURSOR;
+      return Enum210.ACTION_FLASH_SHOOT_UICURSOR;
     }
   } else {
     // Check if we're in burst mode!
     if (Item[usInHand].usItemClass == IC_THROWING_KNIFE) {
-      return GOOD_THROW_UICURSOR;
+      return Enum210.GOOD_THROW_UICURSOR;
     } else if (pSoldier.value.bDoBurst) {
       // return( ACTION_FIRSTAID_RED );
-      return ACTION_TARGETBURST_UICURSOR;
+      return Enum210.ACTION_TARGETBURST_UICURSOR;
     } else {
       // return( ACTION_FIRSTAID_RED );
-      return ACTION_SHOOT_UICURSOR;
+      return Enum210.ACTION_SHOOT_UICURSOR;
     }
   }
 }
@@ -715,10 +715,10 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: BOOLEAN, fRec
     if (gfUIFullTargetFound) {
       pTargetSoldier = MercPtrs[gusUIFullTargetID];
 
-      if (pTargetSoldier.value.ubBodyType == CROW) {
+      if (pTargetSoldier.value.ubBodyType == Enum194.CROW) {
         pSoldier.value.bAimShotLocation = AIM_SHOT_LEGS;
 
-        wcscpy(gzLocation, TacticalStr[CROW_HIT_LOCATION_STR]);
+        wcscpy(gzLocation, TacticalStr[Enum335.CROW_HIT_LOCATION_STR]);
 
         gfUIBodyHitLocation = TRUE;
         return;
@@ -732,21 +732,21 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: BOOLEAN, fRec
         case AIM_SHOT_HEAD:
 
           // If we have a knife in hand, change string
-          if (Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass == IC_BLADE) {
-            wcscpy(gzLocation, TacticalStr[NECK_HIT_LOCATION_STR]);
+          if (Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_BLADE) {
+            wcscpy(gzLocation, TacticalStr[Enum335.NECK_HIT_LOCATION_STR]);
           } else {
-            wcscpy(gzLocation, TacticalStr[HEAD_HIT_LOCATION_STR]);
+            wcscpy(gzLocation, TacticalStr[Enum335.HEAD_HIT_LOCATION_STR]);
           }
           gfUIBodyHitLocation = TRUE;
           break;
 
         case AIM_SHOT_TORSO:
-          wcscpy(gzLocation, TacticalStr[TORSO_HIT_LOCATION_STR]);
+          wcscpy(gzLocation, TacticalStr[Enum335.TORSO_HIT_LOCATION_STR]);
           gfUIBodyHitLocation = TRUE;
           break;
 
         case AIM_SHOT_LEGS:
-          wcscpy(gzLocation, TacticalStr[LEGS_HIT_LOCATION_STR]);
+          wcscpy(gzLocation, TacticalStr[Enum335.LEGS_HIT_LOCATION_STR]);
           gfUIBodyHitLocation = TRUE;
           break;
       }
@@ -780,7 +780,7 @@ function HandleKnifeCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fAct
         gfUIDisplayActionPointsInvalid = TRUE;
 
         if (pSoldier.value.bShownAimTime == REFINE_KNIFE_1) {
-          return KNIFE_HIT_UICURSOR;
+          return Enum210.KNIFE_HIT_UICURSOR;
         }
       }
 
@@ -796,12 +796,12 @@ function HandleKnifeCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fAct
 
     if (((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT))) {
       if (!pSoldier.value.fPauseAim) {
-        if (COUNTERDONE(NONGUNTARGETREFINE)) {
+        if (COUNTERDONE(Enum386.NONGUNTARGETREFINE)) {
           // Reset counter
-          RESETCOUNTER(NONGUNTARGETREFINE);
+          RESETCOUNTER(Enum386.NONGUNTARGETREFINE);
 
           if (pSoldier.value.bShownAimTime == REFINE_KNIFE_1) {
-            PlayJA2Sample(TARG_REFINE_BEEP, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
+            PlayJA2Sample(Enum330.TARG_REFINE_BEEP, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
           }
 
           pSoldier.value.bShownAimTime = REFINE_KNIFE_2;
@@ -813,22 +813,22 @@ function HandleKnifeCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fAct
       case REFINE_KNIFE_1:
 
         if (gfDisplayFullCountRing) {
-          return KNIFE_YELLOW_AIM1_UICURSOR;
+          return Enum210.KNIFE_YELLOW_AIM1_UICURSOR;
         } else if (fEnoughPoints) {
-          return KNIFE_HIT_AIM1_UICURSOR;
+          return Enum210.KNIFE_HIT_AIM1_UICURSOR;
         } else {
-          return KNIFE_NOGO_AIM1_UICURSOR;
+          return Enum210.KNIFE_NOGO_AIM1_UICURSOR;
         }
         break;
 
       case REFINE_KNIFE_2:
 
         if (gfDisplayFullCountRing) {
-          return KNIFE_YELLOW_AIM2_UICURSOR;
+          return Enum210.KNIFE_YELLOW_AIM2_UICURSOR;
         } else if (fEnoughPoints) {
-          return KNIFE_HIT_AIM2_UICURSOR;
+          return Enum210.KNIFE_HIT_AIM2_UICURSOR;
         } else {
-          return KNIFE_NOGO_AIM2_UICURSOR;
+          return Enum210.KNIFE_NOGO_AIM2_UICURSOR;
         }
         break;
 
@@ -844,9 +844,9 @@ function HandleKnifeCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fAct
     // CHECK IF WE ARE ON A GUY ( THAT'S NOT SELECTED )!
     if (gfUIFullTargetFound && !(guiUIFullTargetFlags & SELECTED_MERC)) {
       DetermineCursorBodyLocation(pSoldier.value.ubID, TRUE, TRUE);
-      return KNIFE_HIT_UICURSOR;
+      return Enum210.KNIFE_HIT_UICURSOR;
     } else {
-      return KNIFE_REG_UICURSOR;
+      return Enum210.KNIFE_REG_UICURSOR;
     }
   }
 }
@@ -877,7 +877,7 @@ function HandlePunchCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fAct
         gfUIDisplayActionPointsInvalid = TRUE;
 
         if (pSoldier.value.bShownAimTime == REFINE_PUNCH_1) {
-          return ACTION_PUNCH_RED;
+          return Enum210.ACTION_PUNCH_RED;
         }
       }
 
@@ -893,12 +893,12 @@ function HandlePunchCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fAct
 
     if (((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT))) {
       if (!pSoldier.value.fPauseAim) {
-        if (COUNTERDONE(NONGUNTARGETREFINE)) {
+        if (COUNTERDONE(Enum386.NONGUNTARGETREFINE)) {
           // Reset counter
-          RESETCOUNTER(NONGUNTARGETREFINE);
+          RESETCOUNTER(Enum386.NONGUNTARGETREFINE);
 
           if (pSoldier.value.bShownAimTime == REFINE_PUNCH_1) {
-            PlayJA2Sample(TARG_REFINE_BEEP, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
+            PlayJA2Sample(Enum330.TARG_REFINE_BEEP, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
           }
 
           pSoldier.value.bShownAimTime = REFINE_PUNCH_2;
@@ -910,22 +910,22 @@ function HandlePunchCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fAct
       case REFINE_PUNCH_1:
 
         if (gfDisplayFullCountRing) {
-          return ACTION_PUNCH_YELLOW_AIM1_UICURSOR;
+          return Enum210.ACTION_PUNCH_YELLOW_AIM1_UICURSOR;
         } else if (fEnoughPoints) {
-          return ACTION_PUNCH_RED_AIM1_UICURSOR;
+          return Enum210.ACTION_PUNCH_RED_AIM1_UICURSOR;
         } else {
-          return ACTION_PUNCH_NOGO_AIM1_UICURSOR;
+          return Enum210.ACTION_PUNCH_NOGO_AIM1_UICURSOR;
         }
         break;
 
       case REFINE_PUNCH_2:
 
         if (gfDisplayFullCountRing) {
-          return ACTION_PUNCH_YELLOW_AIM2_UICURSOR;
+          return Enum210.ACTION_PUNCH_YELLOW_AIM2_UICURSOR;
         } else if (fEnoughPoints) {
-          return ACTION_PUNCH_RED_AIM2_UICURSOR;
+          return Enum210.ACTION_PUNCH_RED_AIM2_UICURSOR;
         } else {
-          return ACTION_PUNCH_NOGO_AIM2_UICURSOR;
+          return Enum210.ACTION_PUNCH_NOGO_AIM2_UICURSOR;
         }
         break;
 
@@ -941,9 +941,9 @@ function HandlePunchCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fAct
     // CHECK IF WE ARE ON A GUY ( THAT'S NOT SELECTED )!
     if (gfUIFullTargetFound && !(guiUIFullTargetFlags & SELECTED_MERC)) {
       DetermineCursorBodyLocation(pSoldier.value.ubID, TRUE, TRUE);
-      return ACTION_PUNCH_RED;
+      return Enum210.ACTION_PUNCH_RED;
     } else {
-      return ACTION_PUNCH_GRAY;
+      return Enum210.ACTION_PUNCH_GRAY;
     }
   }
 }
@@ -953,20 +953,20 @@ function HandleAidCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fActiv
   HandleUIMovementCursor(pSoldier, uiCursorFlags, sGridNo, MOVEUI_TARGET_MERCSFORAID);
 
   if (fActivated) {
-    return ACTION_FIRSTAID_RED;
+    return Enum210.ACTION_FIRSTAID_RED;
   } else {
     // CHECK IF WE ARE ON A GUY ( THAT'S NOT SELECTED )!
     if (gfUIFullTargetFound) // && !( guiUIFullTargetFlags & SELECTED_MERC ) )
     {
-      return ACTION_FIRSTAID_RED;
+      return Enum210.ACTION_FIRSTAID_RED;
     } else {
-      return ACTION_FIRSTAID_GRAY;
+      return Enum210.ACTION_FIRSTAID_GRAY;
     }
   }
 }
 
 function HandleActivatedTossCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubItemCursor: UINT8): UINT8 {
-  return ACTION_TOSS_UICURSOR;
+  return Enum210.ACTION_TOSS_UICURSOR;
 }
 
 function HandleNonActivatedTossCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fRecalc: BOOLEAN, uiCursorFlags: UINT32, ubItemCursor: UINT8): UINT8 {
@@ -983,11 +983,11 @@ function HandleNonActivatedTossCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: U
   if (ubItemCursor == TRAJECTORYCURS) {
     fArmed = TRUE;
 
-    if (!EnoughAmmo(pSoldier, FALSE, HANDPOS)) {
+    if (!EnoughAmmo(pSoldier, FALSE, Enum261.HANDPOS)) {
       // Check if ANY ammo exists.....
-      if (FindAmmoToReload(pSoldier, HANDPOS, NO_SLOT) == NO_SLOT) {
+      if (FindAmmoToReload(pSoldier, Enum261.HANDPOS, NO_SLOT) == NO_SLOT) {
         // OK, use BAD reload cursor.....
-        return BAD_RELOAD_UICURSOR;
+        return Enum210.BAD_RELOAD_UICURSOR;
       } else {
         // Check APs to reload...
         gsCurrentActionPoints = GetAPsToAutoReload(pSoldier);
@@ -997,7 +997,7 @@ function HandleNonActivatedTossCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: U
         // gUIDisplayActionPointsOffY = 7;
 
         // OK, use GOOD reload cursor.....
-        return GOOD_RELOAD_UICURSOR;
+        return Enum210.GOOD_RELOAD_UICURSOR;
       }
     }
   }
@@ -1032,10 +1032,10 @@ function HandleNonActivatedTossCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: U
       fBadCTGH = FALSE;
     } else {
       // ATE: Find the object to use...
-      memcpy(addressof(TempObject), addressof(pSoldier.value.inv[HANDPOS]), sizeof(OBJECTTYPE));
+      memcpy(addressof(TempObject), addressof(pSoldier.value.inv[Enum261.HANDPOS]), sizeof(OBJECTTYPE));
 
       // Do we have a launcable?
-      pObj = addressof(pSoldier.value.inv[HANDPOS]);
+      pObj = addressof(pSoldier.value.inv[Enum261.HANDPOS]);
       for (bAttachPos = 0; bAttachPos < MAX_ATTACHMENTS; bAttachPos++) {
         if (pObj.value.usAttachItem[bAttachPos] != NOTHING) {
           if (Item[pObj.value.usAttachItem[bAttachPos]].usItemClass & IC_EXPLOSV) {
@@ -1047,11 +1047,11 @@ function HandleNonActivatedTossCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: U
         CreateItem(pObj.value.usAttachItem[bAttachPos], pObj.value.bAttachStatus[bAttachPos], addressof(TempObject));
       }
 
-      if (pSoldier.value.bWeaponMode == WM_ATTACHED && FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER) != NO_SLOT) {
-        bSlot = FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER);
+      if (pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED && FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.UNDER_GLAUNCHER) != NO_SLOT) {
+        bSlot = FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.UNDER_GLAUNCHER);
 
         if (bSlot != NO_SLOT) {
-          CreateItem(UNDER_GLAUNCHER, pSoldier.value.inv[HANDPOS].bAttachStatus[bSlot], addressof(TempObject));
+          CreateItem(Enum225.UNDER_GLAUNCHER, pSoldier.value.inv[Enum261.HANDPOS].bAttachStatus[bSlot], addressof(TempObject));
 
           if (!CalculateLaunchItemChanceToGetThrough(pSoldier, addressof(TempObject), sGridNo, gsInterfaceLevel, (gsInterfaceLevel * 256), addressof(sFinalGridNo), fArmed, addressof(bLevel), TRUE)) {
             fBadCTGH = TRUE;
@@ -1072,9 +1072,9 @@ function HandleNonActivatedTossCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: U
   }
 
   if (fBadCTGH) {
-    return BAD_THROW_UICURSOR;
+    return Enum210.BAD_THROW_UICURSOR;
   }
-  return GOOD_THROW_UICURSOR;
+  return Enum210.GOOD_THROW_UICURSOR;
 }
 
 function HandleWirecutterCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, uiCursorFlags: UINT32): UINT8 {
@@ -1083,10 +1083,10 @@ function HandleWirecutterCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16,
 
   // Are we over a cuttable fence?
   if (IsCuttableWireFenceAtGridNo(sGridNo) && pSoldier.value.bLevel == 0) {
-    return GOOD_WIRECUTTER_UICURSOR;
+    return Enum210.GOOD_WIRECUTTER_UICURSOR;
   }
 
-  return BAD_WIRECUTTER_UICURSOR;
+  return Enum210.BAD_WIRECUTTER_UICURSOR;
 }
 
 function HandleRepairCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, uiCursorFlags: UINT32): UINT8 {
@@ -1095,10 +1095,10 @@ function HandleRepairCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, uiC
 
   // Are we over a cuttable fence?
   if (IsRepairableStructAtGridNo(sGridNo, NULL) && pSoldier.value.bLevel == 0) {
-    return GOOD_REPAIR_UICURSOR;
+    return Enum210.GOOD_REPAIR_UICURSOR;
   }
 
-  return BAD_REPAIR_UICURSOR;
+  return Enum210.BAD_REPAIR_UICURSOR;
 }
 
 function HandleRefuelCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, uiCursorFlags: UINT32): UINT8 {
@@ -1107,10 +1107,10 @@ function HandleRefuelCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, uiC
 
   // Are we over a cuttable fence?
   if (IsRefuelableStructAtGridNo(sGridNo, NULL) && pSoldier.value.bLevel == 0) {
-    return REFUEL_RED_UICURSOR;
+    return Enum210.REFUEL_RED_UICURSOR;
   }
 
-  return REFUEL_GREY_UICURSOR;
+  return Enum210.REFUEL_GREY_UICURSOR;
 }
 
 function HandleJarCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, uiCursorFlags: UINT32): UINT8 {
@@ -1119,10 +1119,10 @@ function HandleJarCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, uiCurs
 
   // Are we over a cuttable fence?
   if (IsCorpseAtGridNo(sGridNo, pSoldier.value.bLevel)) {
-    return GOOD_JAR_UICURSOR;
+    return Enum210.GOOD_JAR_UICURSOR;
   }
 
-  return BAD_JAR_UICURSOR;
+  return Enum210.BAD_JAR_UICURSOR;
 }
 
 function HandleTinCanCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, uiCursorFlags: UINT32): UINT8 {
@@ -1139,11 +1139,11 @@ function HandleTinCanCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, uiC
   // We should not have null here if we are given this flag...
   if (pIntTile != NULL) {
     if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
-      return PLACE_TINCAN_GREY_UICURSOR;
+      return Enum210.PLACE_TINCAN_GREY_UICURSOR;
     }
   }
 
-  return PLACE_TINCAN_RED_UICURSOR;
+  return Enum210.PLACE_TINCAN_RED_UICURSOR;
 }
 
 function HandleRemoteCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fActivated: BOOLEAN, uiCursorFlags: UINT32): UINT8 {
@@ -1162,9 +1162,9 @@ function HandleRemoteCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fAc
   }
 
   if (fActivated) {
-    return PLACE_REMOTE_RED_UICURSOR;
+    return Enum210.PLACE_REMOTE_RED_UICURSOR;
   } else {
-    return PLACE_REMOTE_GREY_UICURSOR;
+    return Enum210.PLACE_REMOTE_GREY_UICURSOR;
   }
 }
 
@@ -1187,9 +1187,9 @@ function HandleBombCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fActi
   }
 
   if (fActivated) {
-    return PLACE_BOMB_RED_UICURSOR;
+    return Enum210.PLACE_BOMB_RED_UICURSOR;
   } else {
-    return PLACE_BOMB_GREY_UICURSOR;
+    return Enum210.PLACE_BOMB_GREY_UICURSOR;
   }
 }
 
@@ -1198,7 +1198,7 @@ function HandleEndConfirmCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
   let ubItemCursor: UINT8;
 
   // LOOK IN GUY'S HAND TO CHECK LOCATION
-  usInHand = pSoldier.value.inv[HANDPOS].usItem;
+  usInHand = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
   ubItemCursor = GetActionModeCursor(pSoldier);
 
@@ -1213,7 +1213,7 @@ function HandleLeftClickCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
   let sGridNo: INT16;
 
   // LOOK IN GUY'S HAND TO CHECK LOCATION
-  usInHand = pSoldier.value.inv[HANDPOS].usItem;
+  usInHand = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
   ubItemCursor = GetActionModeCursor(pSoldier);
 
@@ -1222,7 +1222,7 @@ function HandleLeftClickCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
     // GOTO DIRECTLY TO USING ITEM
     // ( only if not burst mode.. )
     if (!pSoldier.value.bDoBurst) {
-      guiPendingOverrideEvent = CA_MERC_SHOOT;
+      guiPendingOverrideEvent = Enum207.CA_MERC_SHOOT;
     }
     return;
   }
@@ -1246,7 +1246,7 @@ function HandleLeftClickCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
         pSoldier.value.fPauseAim = FALSE;
       }
       // Reset counter
-      RESETCOUNTER(TARGETREFINE);
+      RESETCOUNTER(Enum386.TARGETREFINE);
       break;
 
     case PUNCHCURS:
@@ -1259,7 +1259,7 @@ function HandleLeftClickCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
         pSoldier.value.fPauseAim = FALSE;
       }
       // Reset counter
-      RESETCOUNTER(NONGUNTARGETREFINE);
+      RESETCOUNTER(Enum386.NONGUNTARGETREFINE);
       break;
 
     case KNIFECURS:
@@ -1272,7 +1272,7 @@ function HandleLeftClickCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
         pSoldier.value.fPauseAim = FALSE;
       }
       // Reset counter
-      RESETCOUNTER(NONGUNTARGETREFINE);
+      RESETCOUNTER(Enum386.NONGUNTARGETREFINE);
       break;
 
     case TOSSCURS:
@@ -1283,7 +1283,7 @@ function HandleLeftClickCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
     default:
 
       // GOTO DIRECTLY TO USING ITEM
-      guiPendingOverrideEvent = CA_MERC_SHOOT;
+      guiPendingOverrideEvent = Enum207.CA_MERC_SHOOT;
   }
 }
 
@@ -1296,7 +1296,7 @@ function HandleRightClickAdjustCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: 
   let sGridNo: INT16;
   let bTargetLevel: INT8;
 
-  usInHand = pSoldier.value.inv[HANDPOS].usItem;
+  usInHand = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
   ubCursor = GetActionModeCursor(pSoldier);
 
@@ -1468,11 +1468,11 @@ function GetActionModeCursor(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   }
 
   // If we are in attach shoot mode, use toss cursor...
-  if (pSoldier.value.bWeaponMode == WM_ATTACHED) {
+  if (pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED) {
     return TRAJECTORYCURS;
   }
 
-  usInHand = pSoldier.value.inv[HANDPOS].usItem;
+  usInHand = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
   // Start off with what is in our hand
   ubCursor = Item[usInHand].ubCursor;
@@ -1480,15 +1480,15 @@ function GetActionModeCursor(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   // OK, check if what is in our hands has a detonator attachment...
   // Detonators can only be on invalidcurs things...
   if (ubCursor == INVALIDCURS) {
-    if (FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), DETONATOR) != ITEM_NOT_FOUND) {
+    if (FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.DETONATOR) != ITEM_NOT_FOUND) {
       ubCursor = BOMBCURS;
-    } else if (FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), REMDETONATOR) != ITEM_NOT_FOUND) {
+    } else if (FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.REMDETONATOR) != ITEM_NOT_FOUND) {
       ubCursor = BOMBCURS;
     }
   }
 
   // Now check our terrain to see if we cannot do the action now...
-  if (pSoldier.value.bOverTerrainType == DEEP_WATER) {
+  if (pSoldier.value.bOverTerrainType == Enum315.DEEP_WATER) {
     ubCursor = INVALIDCURS;
   }
 
@@ -1512,10 +1512,10 @@ function HandleUICursorRTFeedback(pSoldier: Pointer<SOLDIERTYPE>): void {
       if (pSoldier.value.bDoBurst) {
         // BeginDisplayTimedCursor( ACTION_TARGETREDBURST_UICURSOR, 500 );
       } else {
-        if (Item[pSoldier.value.inv[HANDPOS].usItem].usItemClass == IC_THROWING_KNIFE) {
-          BeginDisplayTimedCursor(RED_THROW_UICURSOR, 500);
+        if (Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_THROWING_KNIFE) {
+          BeginDisplayTimedCursor(Enum210.RED_THROW_UICURSOR, 500);
         } else {
-          BeginDisplayTimedCursor(ACTION_TARGETRED_UICURSOR, 500);
+          BeginDisplayTimedCursor(Enum210.ACTION_TARGETRED_UICURSOR, 500);
         }
       }
       break;

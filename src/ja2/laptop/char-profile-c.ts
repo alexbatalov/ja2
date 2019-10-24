@@ -4,7 +4,7 @@ let fButtonPendingFlag: BOOLEAN = FALSE;
 let fAddCreatedCharToPlayersTeam: BOOLEAN = FALSE;
 let fReEnterIMP: BOOLEAN = FALSE;
 
-let iCurrentImpPage: INT32 = IMP_HOME_PAGE;
+let iCurrentImpPage: INT32 = Enum71.IMP_HOME_PAGE;
 let iPreviousImpPage: INT32 = -1;
 
 // attributes
@@ -99,7 +99,7 @@ function HandleCharProfile(): void {
   if ((iCurrentImpPage != iPreviousImpPage)) {
     if (fDoneLoadPending == FALSE) {
       // make sure we are not hosing memory
-      Assert(iCurrentImpPage <= IMP_NUM_PAGES);
+      Assert(iCurrentImpPage <= Enum71.IMP_NUM_PAGES);
 
       fFastLoadFlag = HasTheCurrentIMPPageBeenVisited();
       fVisitedIMPSubPages[iCurrentImpPage] = TRUE;
@@ -139,46 +139,46 @@ function HandleCharProfile(): void {
 
   // handle
   switch (iCurrentImpPage) {
-    case (IMP_HOME_PAGE):
+    case (Enum71.IMP_HOME_PAGE):
       HandleImpHomePage();
       break;
-    case (IMP_BEGIN):
+    case (Enum71.IMP_BEGIN):
       HandleIMPBeginScreen();
       break;
-    case (IMP_PERSONALITY):
+    case (Enum71.IMP_PERSONALITY):
       HandleIMPPersonalityEntrance();
       break;
-    case (IMP_PERSONALITY_QUIZ):
+    case (Enum71.IMP_PERSONALITY_QUIZ):
       HandleIMPPersonalityQuiz();
       break;
-    case (IMP_PERSONALITY_FINISH):
+    case (Enum71.IMP_PERSONALITY_FINISH):
       HandleIMPPersonalityFinish();
       break;
-    case (IMP_ATTRIBUTE_ENTRANCE):
+    case (Enum71.IMP_ATTRIBUTE_ENTRANCE):
       HandleIMPAttributeEntrance();
       break;
-    case (IMP_ATTRIBUTE_PAGE):
+    case (Enum71.IMP_ATTRIBUTE_PAGE):
       HandleIMPAttributeSelection();
       break;
-    case (IMP_ATTRIBUTE_FINISH):
+    case (Enum71.IMP_ATTRIBUTE_FINISH):
       HandleIMPAttributeFinish();
       break;
-    case (IMP_PORTRAIT):
+    case (Enum71.IMP_PORTRAIT):
       HandleIMPPortraits();
       break;
-    case (IMP_VOICE):
+    case (Enum71.IMP_VOICE):
       HandleIMPVoices();
       break;
-    case (IMP_FINISH):
+    case (Enum71.IMP_FINISH):
       HandleIMPFinish();
       break;
-    case (IMP_ABOUT_US):
+    case (Enum71.IMP_ABOUT_US):
       HandleIMPAboutUs();
       break;
-    case (IMP_MAIN_PAGE):
+    case (Enum71.IMP_MAIN_PAGE):
       HandleIMPMainPage();
       break;
-    case (IMP_CONFIRM):
+    case (Enum71.IMP_CONFIRM):
       HandleIMPConfirm();
       break;
   }
@@ -196,46 +196,46 @@ function RenderCharProfile(): void {
   }
 
   switch (iCurrentImpPage) {
-    case (IMP_HOME_PAGE):
+    case (Enum71.IMP_HOME_PAGE):
       RenderImpHomePage();
       break;
-    case (IMP_BEGIN):
+    case (Enum71.IMP_BEGIN):
       RenderIMPBeginScreen();
       break;
-    case (IMP_PERSONALITY):
+    case (Enum71.IMP_PERSONALITY):
       RenderIMPPersonalityEntrance();
       break;
-    case (IMP_PERSONALITY_QUIZ):
+    case (Enum71.IMP_PERSONALITY_QUIZ):
       RenderIMPPersonalityQuiz();
       break;
-    case (IMP_PERSONALITY_FINISH):
+    case (Enum71.IMP_PERSONALITY_FINISH):
       RenderIMPPersonalityFinish();
       break;
-    case (IMP_ATTRIBUTE_ENTRANCE):
+    case (Enum71.IMP_ATTRIBUTE_ENTRANCE):
       RenderIMPAttributeEntrance();
       break;
-    case (IMP_ATTRIBUTE_PAGE):
+    case (Enum71.IMP_ATTRIBUTE_PAGE):
       RenderIMPAttributeSelection();
       break;
-    case (IMP_ATTRIBUTE_FINISH):
+    case (Enum71.IMP_ATTRIBUTE_FINISH):
       RenderIMPAttributeFinish();
       break;
-    case (IMP_PORTRAIT):
+    case (Enum71.IMP_PORTRAIT):
       RenderIMPPortraits();
       break;
-    case (IMP_VOICE):
+    case (Enum71.IMP_VOICE):
       RenderIMPVoices();
       break;
-    case (IMP_FINISH):
+    case (Enum71.IMP_FINISH):
       RenderIMPFinish();
       break;
-    case (IMP_ABOUT_US):
+    case (Enum71.IMP_ABOUT_US):
       RenderIMPAboutUs();
       break;
-    case (IMP_MAIN_PAGE):
+    case (Enum71.IMP_MAIN_PAGE):
       RenderIMPMainPage();
       break;
-    case (IMP_CONFIRM):
+    case (Enum71.IMP_CONFIRM):
       RenderIMPConfirm();
       break;
   }
@@ -263,56 +263,56 @@ function ExitOldIMPMode(): void {
   }
   // remove old mode
   switch (iPreviousImpPage) {
-    case (IMP_HOME_PAGE):
+    case (Enum71.IMP_HOME_PAGE):
       ExitImpHomePage();
       break;
-    case (IMP_BEGIN):
+    case (Enum71.IMP_BEGIN):
       DestroyIMPButtons();
       ExitIMPBeginScreen();
       break;
-    case (IMP_FINISH):
+    case (Enum71.IMP_FINISH):
       DestroyIMPButtons();
       ExitIMPFinish();
       break;
-    case (IMP_PERSONALITY):
+    case (Enum71.IMP_PERSONALITY):
       DestroyIMPButtons();
       ExitIMPPersonalityEntrance();
       break;
-    case (IMP_PERSONALITY_QUIZ):
+    case (Enum71.IMP_PERSONALITY_QUIZ):
       DestroyIMPButtons();
       ExitIMPPersonalityQuiz();
       break;
-    case (IMP_PERSONALITY_FINISH):
+    case (Enum71.IMP_PERSONALITY_FINISH):
       DestroyIMPButtons();
       ExitIMPPersonalityFinish();
       break;
-    case (IMP_ATTRIBUTE_ENTRANCE):
+    case (Enum71.IMP_ATTRIBUTE_ENTRANCE):
       DestroyIMPButtons();
       ExitIMPAttributeEntrance();
       break;
-    case (IMP_ATTRIBUTE_PAGE):
+    case (Enum71.IMP_ATTRIBUTE_PAGE):
       DestroyIMPButtons();
       ExitIMPAttributeSelection();
       break;
-    case (IMP_ATTRIBUTE_FINISH):
+    case (Enum71.IMP_ATTRIBUTE_FINISH):
       DestroyIMPButtons();
       ExitIMPAttributeFinish();
       break;
-    case (IMP_PORTRAIT):
+    case (Enum71.IMP_PORTRAIT):
       DestroyIMPButtons();
       ExitIMPPortraits();
       break;
-    case (IMP_VOICE):
+    case (Enum71.IMP_VOICE):
       DestroyIMPButtons();
       ExitIMPVoices();
       break;
-    case (IMP_ABOUT_US):
+    case (Enum71.IMP_ABOUT_US):
       ExitIMPAboutUs();
       break;
-    case (IMP_MAIN_PAGE):
+    case (Enum71.IMP_MAIN_PAGE):
       ExitIMPMainPage();
       break;
-    case (IMP_CONFIRM):
+    case (Enum71.IMP_CONFIRM):
       ExitIMPConfirm();
       break;
   }
@@ -324,56 +324,56 @@ function EnterNewIMPMode(): void {
   // enter new mode
 
   switch (iCurrentImpPage) {
-    case (IMP_HOME_PAGE):
+    case (Enum71.IMP_HOME_PAGE):
       EnterImpHomePage();
       break;
-    case (IMP_BEGIN):
+    case (Enum71.IMP_BEGIN):
       CreateIMPButtons();
       EnterIMPBeginScreen();
       break;
-    case (IMP_FINISH):
+    case (Enum71.IMP_FINISH):
       CreateIMPButtons();
       EnterIMPFinish();
       break;
-    case (IMP_PERSONALITY):
+    case (Enum71.IMP_PERSONALITY):
       CreateIMPButtons();
       EnterIMPPersonalityEntrance();
       break;
-    case (IMP_PERSONALITY_QUIZ):
+    case (Enum71.IMP_PERSONALITY_QUIZ):
       CreateIMPButtons();
       EnterIMPPersonalityQuiz();
       break;
-    case (IMP_PERSONALITY_FINISH):
+    case (Enum71.IMP_PERSONALITY_FINISH):
       CreateIMPButtons();
       EnterIMPPersonalityFinish();
       break;
-    case (IMP_ATTRIBUTE_ENTRANCE):
+    case (Enum71.IMP_ATTRIBUTE_ENTRANCE):
       CreateIMPButtons();
       EnterIMPAttributeEntrance();
       break;
-    case (IMP_ATTRIBUTE_PAGE):
+    case (Enum71.IMP_ATTRIBUTE_PAGE):
       CreateIMPButtons();
       EnterIMPAttributeSelection();
       break;
-    case (IMP_ATTRIBUTE_FINISH):
+    case (Enum71.IMP_ATTRIBUTE_FINISH):
       CreateIMPButtons();
       EnterIMPAttributeFinish();
       break;
-    case (IMP_PORTRAIT):
+    case (Enum71.IMP_PORTRAIT):
       CreateIMPButtons();
       EnterIMPPortraits();
       break;
-    case (IMP_VOICE):
+    case (Enum71.IMP_VOICE):
       CreateIMPButtons();
       EnterIMPVoices();
       break;
-    case (IMP_ABOUT_US):
+    case (Enum71.IMP_ABOUT_US):
       EnterIMPAboutUs();
       break;
-    case (IMP_MAIN_PAGE):
+    case (Enum71.IMP_MAIN_PAGE):
       EnterIMPMainPage();
       break;
-    case (IMP_CONFIRM):
+    case (Enum71.IMP_CONFIRM):
       EnterIMPConfirm();
       break;
   }
@@ -517,7 +517,7 @@ function CreateIMPButtons(): void {
   SpecifyButtonTextSubOffsets(giIMPButton[0], 0, -1, FALSE);
 
   // set up generic www cursor
-  SetButtonCursor(giIMPButton[0], CURSOR_WWW);
+  SetButtonCursor(giIMPButton[0], Enum317.CURSOR_WWW);
 
   return;
 }
@@ -544,14 +544,14 @@ function BtnIMPCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // back to the main page, otherwise, back to home page
-      if (iCurrentImpPage == IMP_MAIN_PAGE) {
-        iCurrentImpPage = IMP_HOME_PAGE;
+      if (iCurrentImpPage == Enum71.IMP_MAIN_PAGE) {
+        iCurrentImpPage = Enum71.IMP_HOME_PAGE;
         fButtonPendingFlag = TRUE;
         iCurrentProfileMode = 0;
         fFinishedCharGeneration = FALSE;
         ResetCharacterStats();
-      } else if (iCurrentImpPage == IMP_FINISH) {
-        iCurrentImpPage = IMP_MAIN_PAGE;
+      } else if (iCurrentImpPage == Enum71.IMP_FINISH) {
+        iCurrentImpPage = Enum71.IMP_MAIN_PAGE;
         iCurrentProfileMode = 4;
         fFinishedCharGeneration = FALSE;
         fButtonPendingFlag = TRUE;
@@ -560,19 +560,19 @@ function BtnIMPCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         // ResetCharacterStats( );
       }
 
-      else if (iCurrentImpPage == IMP_PERSONALITY_QUIZ || iCurrentImpPage == IMP_PERSONALITY_FINISH) {
+      else if (iCurrentImpPage == Enum71.IMP_PERSONALITY_QUIZ || iCurrentImpPage == Enum71.IMP_PERSONALITY_FINISH) {
         giMaxPersonalityQuizQuestion = 0;
         fStartOverFlag = TRUE;
         iCurrentAnswer = -1;
-        iCurrentImpPage = IMP_PERSONALITY;
+        iCurrentImpPage = Enum71.IMP_PERSONALITY;
         fButtonPendingFlag = TRUE;
       }
 
       else {
-        if (iCurrentImpPage == IMP_ATTRIBUTE_PAGE) {
+        if (iCurrentImpPage == Enum71.IMP_ATTRIBUTE_PAGE) {
           SetAttributes();
         }
-        iCurrentImpPage = IMP_MAIN_PAGE;
+        iCurrentImpPage = Enum71.IMP_MAIN_PAGE;
         iCurrentAnswer = -1;
       }
     }
@@ -584,7 +584,7 @@ function BtnIMPCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 function InitIMPSubPageList(): void {
   let iCounter: INT32 = 0;
 
-  for (iCounter = 0; iCounter < IMP_CONFIRM; iCounter++) {
+  for (iCounter = 0; iCounter < Enum71.IMP_CONFIRM; iCounter++) {
     fVisitedIMPSubPages[iCounter] = FALSE;
   }
 
@@ -595,7 +595,7 @@ function HasTheCurrentIMPPageBeenVisited(): BOOLEAN {
   // returns if we have vsisted the current IMP PageAlready
 
   // make sure we are not hosing memory
-  Assert(iCurrentImpPage <= IMP_NUM_PAGES);
+  Assert(iCurrentImpPage <= Enum71.IMP_NUM_PAGES);
 
   return fVisitedIMPSubPages[iCurrentImpPage];
 }

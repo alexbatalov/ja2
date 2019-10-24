@@ -73,14 +73,14 @@ function EntryInitEditorItemsInfo(): void {
     // This only gets called one time in game execution.
     memset(addressof(eInfo), 0, sizeof(EditorItemsInfo));
     eInfo.sHilitedItemIndex = -1;
-    eInfo.uiItemType = TBAR_MODE_ITEM_WEAPONS;
+    eInfo.uiItemType = Enum35.TBAR_MODE_ITEM_WEAPONS;
     // Pre-calculate the number of each item type.
     eInfo.sNumTriggers = NUMBER_TRIGGERS;
-    for (i = 0; i < MAXITEMS; i++) {
+    for (i = 0; i < Enum225.MAXITEMS; i++) {
       item = addressof(Item[i]);
       if (Item[i].fFlags & ITEM_NOT_EDITOR)
         continue;
-      if (i == SWITCH || i == ACTION_ITEM) {
+      if (i == Enum225.SWITCH || i == Enum225.ACTION_ITEM) {
       } else
         switch (item.value.usItemClass) {
           case IC_GUN:
@@ -166,53 +166,53 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
     // Clear the menu area, so that the buffer doesn't get corrupted.
     ClearTaskbarRegion(100, 360, 480, 440);
   }
-  EnableEditorRegion(ITEM_REGION_ID);
+  EnableEditorRegion(Enum45.ITEM_REGION_ID);
 
   eInfo.uiItemType = uiItemType;
   eInfo.fActive = TRUE;
   // Begin initialization of data.
   switch (uiItemType) {
-    case TBAR_MODE_ITEM_WEAPONS:
+    case Enum35.TBAR_MODE_ITEM_WEAPONS:
       eInfo.sNumItems = eInfo.sNumWeapons;
       eInfo.sScrollIndex = eInfo.sSaveWeaponsScrollIndex;
       eInfo.sSelItemIndex = eInfo.sSaveSelWeaponsIndex;
       break;
-    case TBAR_MODE_ITEM_AMMO:
+    case Enum35.TBAR_MODE_ITEM_AMMO:
       eInfo.sNumItems = eInfo.sNumAmmo;
       eInfo.sScrollIndex = eInfo.sSaveAmmoScrollIndex;
       eInfo.sSelItemIndex = eInfo.sSaveSelAmmoIndex;
       break;
-    case TBAR_MODE_ITEM_ARMOUR:
+    case Enum35.TBAR_MODE_ITEM_ARMOUR:
       eInfo.sNumItems = eInfo.sNumArmour;
       eInfo.sScrollIndex = eInfo.sSaveArmourScrollIndex;
       eInfo.sSelItemIndex = eInfo.sSaveSelArmourIndex;
       break;
-    case TBAR_MODE_ITEM_EXPLOSIVES:
+    case Enum35.TBAR_MODE_ITEM_EXPLOSIVES:
       eInfo.sNumItems = eInfo.sNumExplosives;
       eInfo.sScrollIndex = eInfo.sSaveExplosivesScrollIndex;
       eInfo.sSelItemIndex = eInfo.sSaveSelExplosivesIndex;
       break;
-    case TBAR_MODE_ITEM_EQUIPMENT1:
+    case Enum35.TBAR_MODE_ITEM_EQUIPMENT1:
       eInfo.sNumItems = eInfo.sNumEquipment1;
       eInfo.sScrollIndex = eInfo.sSaveEquipment1ScrollIndex;
       eInfo.sSelItemIndex = eInfo.sSaveSelEquipment1Index;
       break;
-    case TBAR_MODE_ITEM_EQUIPMENT2:
+    case Enum35.TBAR_MODE_ITEM_EQUIPMENT2:
       eInfo.sNumItems = eInfo.sNumEquipment2;
       eInfo.sScrollIndex = eInfo.sSaveEquipment2ScrollIndex;
       eInfo.sSelItemIndex = eInfo.sSaveSelEquipment2Index;
       break;
-    case TBAR_MODE_ITEM_EQUIPMENT3:
+    case Enum35.TBAR_MODE_ITEM_EQUIPMENT3:
       eInfo.sNumItems = eInfo.sNumEquipment3;
       eInfo.sScrollIndex = eInfo.sSaveEquipment3ScrollIndex;
       eInfo.sSelItemIndex = eInfo.sSaveSelEquipment3Index;
       break;
-    case TBAR_MODE_ITEM_TRIGGERS:
+    case Enum35.TBAR_MODE_ITEM_TRIGGERS:
       eInfo.sNumItems = eInfo.sNumTriggers;
       eInfo.sScrollIndex = eInfo.sSaveTriggersScrollIndex;
       eInfo.sSelItemIndex = eInfo.sSaveSelTriggersIndex;
       break;
-    case TBAR_MODE_ITEM_KEYS:
+    case Enum35.TBAR_MODE_ITEM_KEYS:
       eInfo.sNumItems = eInfo.sNumKeys;
       eInfo.sScrollIndex = eInfo.sSaveKeysScrollIndex;
       eInfo.sSelItemIndex = eInfo.sSaveSelKeysIndex;
@@ -266,7 +266,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
   NewRect.iRight = eInfo.sWidth;
   GetClippingRect(addressof(SaveRect));
   SetClippingRect(addressof(NewRect));
-  if (eInfo.uiItemType == TBAR_MODE_ITEM_KEYS) {
+  if (eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_KEYS) {
     // Keys use a totally different method for determining
     for (i = 0; i < eInfo.sNumItems; i++) {
       item = addressof(Item[KeyTable[0].usItem + LockTable[i].usKeyItem]);
@@ -300,17 +300,17 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
   } else
     for (i = 0; i < eInfo.sNumItems; i++) {
       fTypeMatch = FALSE;
-      while (usCounter < MAXITEMS && !fTypeMatch) {
+      while (usCounter < Enum225.MAXITEMS && !fTypeMatch) {
         item = addressof(Item[usCounter]);
         if (Item[usCounter].fFlags & ITEM_NOT_EDITOR) {
           usCounter++;
           continue;
         }
-        if (eInfo.uiItemType == TBAR_MODE_ITEM_TRIGGERS) {
+        if (eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_TRIGGERS) {
           if (i < PRESSURE_ACTION_ID)
-            usCounter = (i % 2) ? ACTION_ITEM : SWITCH;
+            usCounter = (i % 2) ? Enum225.ACTION_ITEM : Enum225.SWITCH;
           else
-            usCounter = ACTION_ITEM;
+            usCounter = Enum225.ACTION_ITEM;
           fTypeMatch = TRUE;
           item = addressof(Item[usCounter]);
         } else
@@ -320,38 +320,38 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
             case IC_LAUNCHER:
             case IC_THROWN:
             case IC_THROWING_KNIFE:
-              fTypeMatch = eInfo.uiItemType == TBAR_MODE_ITEM_WEAPONS;
+              fTypeMatch = eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_WEAPONS;
               break;
             case IC_PUNCH:
               if (i != NOTHING) {
-                fTypeMatch = eInfo.uiItemType == TBAR_MODE_ITEM_WEAPONS;
+                fTypeMatch = eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_WEAPONS;
               } else {
                 fTypeMatch = FALSE;
               }
               break;
             case IC_AMMO:
-              fTypeMatch = eInfo.uiItemType == TBAR_MODE_ITEM_AMMO;
+              fTypeMatch = eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_AMMO;
               break;
             case IC_ARMOUR:
-              fTypeMatch = eInfo.uiItemType == TBAR_MODE_ITEM_ARMOUR;
+              fTypeMatch = eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_ARMOUR;
               break;
             case IC_GRENADE:
             case IC_BOMB:
-              fTypeMatch = eInfo.uiItemType == TBAR_MODE_ITEM_EXPLOSIVES;
+              fTypeMatch = eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_EXPLOSIVES;
               break;
             case IC_MEDKIT:
             case IC_KIT:
             case IC_FACE:
             case IC_MISC:
             case IC_MONEY:
-              if (usCounter == ACTION_ITEM || usCounter == SWITCH)
+              if (usCounter == Enum225.ACTION_ITEM || usCounter == Enum225.SWITCH)
                 break;
               if (iEquipCount < 30)
-                fTypeMatch = eInfo.uiItemType == TBAR_MODE_ITEM_EQUIPMENT1;
+                fTypeMatch = eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_EQUIPMENT1;
               else if (iEquipCount < 60)
-                fTypeMatch = eInfo.uiItemType == TBAR_MODE_ITEM_EQUIPMENT2;
+                fTypeMatch = eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_EQUIPMENT2;
               else
-                fTypeMatch = eInfo.uiItemType == TBAR_MODE_ITEM_EQUIPMENT3;
+                fTypeMatch = eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_EQUIPMENT3;
               iEquipCount++;
               break;
           }
@@ -366,29 +366,29 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
           SetFontForeground(FONT_MCOLOR_WHITE);
           SetFontDestBuffer(eInfo.uiBuffer, 0, 0, eInfo.sWidth, eInfo.sHeight, FALSE);
 
-          if (eInfo.uiItemType != TBAR_MODE_ITEM_TRIGGERS) {
+          if (eInfo.uiItemType != Enum35.TBAR_MODE_ITEM_TRIGGERS) {
             LoadItemInfo(usCounter, pItemName, NULL);
             swprintf(pStr, "%s", pItemName);
           } else {
             if (i == PRESSURE_ACTION_ID) {
               swprintf(pStr, "Pressure Action");
             } else if (i < 2) {
-              if (usCounter == SWITCH)
+              if (usCounter == Enum225.SWITCH)
                 swprintf(pStr, "Panic Trigger1");
               else
                 swprintf(pStr, "Panic Action1");
             } else if (i < 4) {
-              if (usCounter == SWITCH)
+              if (usCounter == Enum225.SWITCH)
                 swprintf(pStr, "Panic Trigger2");
               else
                 swprintf(pStr, "Panic Action2");
             } else if (i < 6) {
-              if (usCounter == SWITCH)
+              if (usCounter == Enum225.SWITCH)
                 swprintf(pStr, "Panic Trigger3");
               else
                 swprintf(pStr, "Panic Action3");
             } else {
-              if (usCounter == SWITCH)
+              if (usCounter == Enum225.SWITCH)
                 swprintf(pStr, "Trigger%d", (i - 4) / 2);
               else
                 swprintf(pStr, "Action%d", (i - 4) / 2);
@@ -422,16 +422,16 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
 
 function DetermineItemsScrolling(): void {
   if (!eInfo.sScrollIndex)
-    DisableEditorButton(ITEMS_LEFTSCROLL);
+    DisableEditorButton(Enum32.ITEMS_LEFTSCROLL);
   else
-    EnableEditorButton(ITEMS_LEFTSCROLL);
+    EnableEditorButton(Enum32.ITEMS_LEFTSCROLL);
   // Right most scroll position.  Calculated by taking every pair of numItems rounded up,
   // and subtracting 7 (because a scroll index 0 is disabled if there are <=12 items,
   // index 1 for <=14 items, index 2 for <=16 items...
   if (eInfo.sScrollIndex == max(((eInfo.sNumItems + 1) / 2) - 6, 0))
-    DisableEditorButton(ITEMS_RIGHTSCROLL);
+    DisableEditorButton(Enum32.ITEMS_RIGHTSCROLL);
   else
-    EnableEditorButton(ITEMS_RIGHTSCROLL);
+    EnableEditorButton(Enum32.ITEMS_RIGHTSCROLL);
 }
 
 function RenderEditorItemsInfo(): void {
@@ -533,7 +533,7 @@ function ClearEditorItemsInfo(): void {
     MemFree(eInfo.pusItemIndex);
     eInfo.pusItemIndex = NULL;
   }
-  DisableEditorRegion(ITEM_REGION_ID);
+  DisableEditorRegion(Enum45.ITEM_REGION_ID);
   eInfo.fKill = 0;
   eInfo.fActive = 0;
   eInfo.sWidth = 0;
@@ -541,39 +541,39 @@ function ClearEditorItemsInfo(): void {
   eInfo.sNumItems = 0;
   // save the highlighted selections
   switch (eInfo.uiItemType) {
-    case TBAR_MODE_ITEM_WEAPONS:
+    case Enum35.TBAR_MODE_ITEM_WEAPONS:
       eInfo.sSaveSelWeaponsIndex = eInfo.sSelItemIndex;
       eInfo.sSaveWeaponsScrollIndex = eInfo.sScrollIndex;
       break;
-    case TBAR_MODE_ITEM_AMMO:
+    case Enum35.TBAR_MODE_ITEM_AMMO:
       eInfo.sSaveSelAmmoIndex = eInfo.sSelItemIndex;
       eInfo.sSaveAmmoScrollIndex = eInfo.sScrollIndex;
       break;
-    case TBAR_MODE_ITEM_ARMOUR:
+    case Enum35.TBAR_MODE_ITEM_ARMOUR:
       eInfo.sSaveSelArmourIndex = eInfo.sSelItemIndex;
       eInfo.sSaveArmourScrollIndex = eInfo.sScrollIndex;
       break;
-    case TBAR_MODE_ITEM_EXPLOSIVES:
+    case Enum35.TBAR_MODE_ITEM_EXPLOSIVES:
       eInfo.sSaveSelExplosivesIndex = eInfo.sSelItemIndex;
       eInfo.sSaveExplosivesScrollIndex = eInfo.sScrollIndex;
       break;
-    case TBAR_MODE_ITEM_EQUIPMENT1:
+    case Enum35.TBAR_MODE_ITEM_EQUIPMENT1:
       eInfo.sSaveSelEquipment1Index = eInfo.sSelItemIndex;
       eInfo.sSaveEquipment1ScrollIndex = eInfo.sScrollIndex;
       break;
-    case TBAR_MODE_ITEM_EQUIPMENT2:
+    case Enum35.TBAR_MODE_ITEM_EQUIPMENT2:
       eInfo.sSaveSelEquipment2Index = eInfo.sSelItemIndex;
       eInfo.sSaveEquipment2ScrollIndex = eInfo.sScrollIndex;
       break;
-    case TBAR_MODE_ITEM_EQUIPMENT3:
+    case Enum35.TBAR_MODE_ITEM_EQUIPMENT3:
       eInfo.sSaveSelEquipment3Index = eInfo.sSelItemIndex;
       eInfo.sSaveEquipment3ScrollIndex = eInfo.sScrollIndex;
       break;
-    case TBAR_MODE_ITEM_TRIGGERS:
+    case Enum35.TBAR_MODE_ITEM_TRIGGERS:
       eInfo.sSaveSelTriggersIndex = eInfo.sSelItemIndex;
       eInfo.sSaveTriggersScrollIndex = eInfo.sScrollIndex;
       break;
-    case TBAR_MODE_ITEM_KEYS:
+    case Enum35.TBAR_MODE_ITEM_KEYS:
       eInfo.sSaveSelKeysIndex = eInfo.sSelItemIndex;
       eInfo.sSaveKeysScrollIndex = eInfo.sScrollIndex;
       break;
@@ -592,7 +592,7 @@ function HandleItemsPanel(usScreenX: UINT16, usScreenY: UINT16, bEvent: INT8): v
   // Calc:  starting from 110, for every 60 pixels, add 2 to the index
   sIndex += ((usScreenX - 110) / 60) * 2;
   switch (bEvent) {
-    case GUI_MOVE_EVENT:
+    case Enum44.GUI_MOVE_EVENT:
       if (sIndex < eInfo.sNumItems) {
         if (eInfo.sHilitedItemIndex != sIndex)
           gfRenderTaskbar = TRUE;
@@ -600,7 +600,7 @@ function HandleItemsPanel(usScreenX: UINT16, usScreenY: UINT16, bEvent: INT8): v
         eInfo.sHilitedItemIndex = sIndex;
       }
       break;
-    case GUI_LCLICK_EVENT:
+    case Enum44.GUI_LCLICK_EVENT:
       if (sIndex < eInfo.sNumItems) {
         // this index will now highlight in red.
         if (eInfo.sSelItemIndex != sIndex)
@@ -609,16 +609,16 @@ function HandleItemsPanel(usScreenX: UINT16, usScreenY: UINT16, bEvent: INT8): v
         if (gfMercGetItem) {
           gfMercGetItem = FALSE;
           gusMercsNewItemIndex = eInfo.pusItemIndex[eInfo.sSelItemIndex];
-          SetMercEditingMode(MERC_INVENTORYMODE);
+          SetMercEditingMode(Enum42.MERC_INVENTORYMODE);
           ClearEditorItemsInfo();
         }
       }
       break;
-    case GUI_RCLICK_EVENT:
+    case Enum44.GUI_RCLICK_EVENT:
       if (gfMercGetItem) {
         gfMercGetItem = FALSE;
         gusMercsNewItemIndex = 0xffff;
-        SetMercEditingMode(MERC_INVENTORYMODE);
+        SetMercEditingMode(Enum42.MERC_INVENTORYMODE);
         ClearEditorItemsInfo();
       } else if (sIndex < eInfo.sNumItems) {
         eInfo.sSelItemIndex = sIndex;
@@ -635,15 +635,15 @@ function ShowItemCursor(iMapIndex: INT32): void {
   let pNode: Pointer<LEVELNODE>;
   pNode = gpWorldLevelData[iMapIndex].pTopmostHead;
   while (pNode) {
-    if (pNode.value.usIndex == SELRING)
+    if (pNode.value.usIndex == Enum313.SELRING)
       return;
     pNode = pNode.value.pNext;
   }
-  AddTopmostToTail(iMapIndex, SELRING1);
+  AddTopmostToTail(iMapIndex, Enum312.SELRING1);
 }
 
 function HideItemCursor(iMapIndex: INT32): void {
-  RemoveTopmost(iMapIndex, SELRING1);
+  RemoveTopmost(iMapIndex, Enum312.SELRING1);
 }
 
 function TriggerAtGridNo(sGridNo: INT16): BOOLEAN {
@@ -652,7 +652,7 @@ function TriggerAtGridNo(sGridNo: INT16): BOOLEAN {
     return FALSE;
   }
   while (pItemPool) {
-    if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == SWITCH) {
+    if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == Enum225.SWITCH) {
       return TRUE;
     }
     pItemPool = pItemPool.value.pNext;
@@ -676,29 +676,29 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
   SpecifyItemToEdit(NULL, -1);
 
   // memset( &tempObject, 0, sizeof( OBJECTTYPE ) );
-  if (eInfo.uiItemType == TBAR_MODE_ITEM_KEYS) {
+  if (eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_KEYS) {
     CreateKeyObject(addressof(tempObject), 1, eInfo.sSelItemIndex);
   } else {
     CreateItem(eInfo.pusItemIndex[eInfo.sSelItemIndex], 100, addressof(tempObject));
   }
   usFlags = 0;
   switch (tempObject.usItem) {
-    case MINE:
+    case Enum225.MINE:
       if (bVisibility == BURIED) {
         usFlags |= WORLD_ITEM_ARMED_BOMB;
       }
       break;
-    case MONEY:
-    case SILVER:
-    case GOLD:
+    case Enum225.MONEY:
+    case Enum225.SILVER:
+    case Enum225.GOLD:
       tempObject.bStatus[0] = 100;
       tempObject.uiMoneyAmount = 100 + Random(19901);
       break;
-    case OWNERSHIP:
+    case Enum225.OWNERSHIP:
       tempObject.ubOwnerProfile = NO_PROFILE;
       bVisibility = BURIED;
       break;
-    case SWITCH:
+    case Enum225.SWITCH:
       if (TriggerAtGridNo(sGridNo)) {
         // Restricted to one action per gridno.
         return;
@@ -716,13 +716,13 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
         tempObject.bFrequency = (FIRST_MAP_PLACED_FREQUENCY + (eInfo.sSelItemIndex - 4) / 2);
       usFlags |= WORLD_ITEM_ARMED_BOMB;
       break;
-    case ACTION_ITEM:
+    case Enum225.ACTION_ITEM:
       bVisibility = BURIED;
       tempObject.bStatus[0] = 100;
       tempObject.ubBombOwner = 1;
       tempObject.bTrap = gbDefaultBombTrapLevel;
       if (eInfo.sSelItemIndex < PRESSURE_ACTION_ID) {
-        tempObject.bDetonatorType = BOMB_REMOTE;
+        tempObject.bDetonatorType = Enum224.BOMB_REMOTE;
         if (eInfo.sSelItemIndex < 2)
           tempObject.bFrequency = PANIC_FREQUENCY;
         else if (eInfo.sSelItemIndex < 4)
@@ -732,21 +732,21 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
         else
           tempObject.bFrequency = (FIRST_MAP_PLACED_FREQUENCY + (eInfo.sSelItemIndex - 4) / 2);
       } else {
-        tempObject.bDetonatorType = BOMB_PRESSURE;
+        tempObject.bDetonatorType = Enum224.BOMB_PRESSURE;
         tempObject.bDelay = 0;
       }
       ChangeActionItem(addressof(tempObject), gbActionItemIndex);
       tempObject.fFlags |= OBJECT_ARMED_BOMB;
-      if (gbActionItemIndex == ACTIONITEM_SMPIT)
+      if (gbActionItemIndex == Enum49.ACTIONITEM_SMPIT)
         Add3X3Pit(sGridNo);
-      else if (gbActionItemIndex == ACTIONITEM_LGPIT)
+      else if (gbActionItemIndex == Enum49.ACTIONITEM_LGPIT)
         Add5X5Pit(sGridNo);
       usFlags |= WORLD_ITEM_ARMED_BOMB;
       break;
   }
 
   pObject = InternalAddItemToPool(addressof(sGridNo), addressof(tempObject), bVisibility, 0, usFlags, 0, addressof(iItemIndex));
-  if (tempObject.usItem != OWNERSHIP) {
+  if (tempObject.usItem != Enum225.OWNERSHIP) {
     gWorldItems[iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
   } else {
     gWorldItems[iItemIndex].ubNonExistChance = 0;
@@ -763,7 +763,7 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
     pObject.value.bStatus[0] = (70 + Random(26));
   }
   if (pItem.value.usItemClass & IC_GUN) {
-    if (pObject.value.usItem == ROCKET_LAUNCHER) {
+    if (pObject.value.usItem == Enum225.ROCKET_LAUNCHER) {
       pObject.value.ubGunShotsLeft = 1;
     } else {
       pObject.value.ubGunShotsLeft = (Random(Weapon[pObject.value.usItem].ubMagSize));
@@ -853,7 +853,7 @@ function HandleRightClickOnItem(sGridNo: INT16): void {
 function DeleteSelectedItem(): void {
   SpecifyItemToEdit(NULL, -1);
   // First, check to see if there even is a currently selected item.
-  if (iCurrentTaskbar == TASK_MERCS) {
+  if (iCurrentTaskbar == Enum36.TASK_MERCS) {
     DeleteSelectedMercsItem();
     return;
   }
@@ -866,10 +866,10 @@ function DeleteSelectedItem(): void {
     }
     sGridNo = gpItemPool.value.sGridNo;
     // remove the item
-    if (gWorldItems[gpItemPool.value.iItemIndex].o.usItem == ACTION_ITEM) {
-      if (gWorldItems[gpItemPool.value.iItemIndex].o.bActionValue == ACTION_ITEM_SMALL_PIT)
+    if (gWorldItems[gpItemPool.value.iItemIndex].o.usItem == Enum225.ACTION_ITEM) {
+      if (gWorldItems[gpItemPool.value.iItemIndex].o.bActionValue == Enum191.ACTION_ITEM_SMALL_PIT)
         Remove3X3Pit(gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
-      else if (gWorldItems[gpItemPool.value.iItemIndex].o.bActionValue == ACTION_ITEM_LARGE_PIT)
+      else if (gWorldItems[gpItemPool.value.iItemIndex].o.bActionValue == Enum191.ACTION_ITEM_LARGE_PIT)
         Remove5X5Pit(gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
     }
     if (gpEditingItemPool == gpItemPool)
@@ -977,7 +977,7 @@ function SelectPrevItemInPool(): void {
 function FindNextItemOfSelectedType(): void {
   let usItem: UINT16;
   usItem = eInfo.pusItemIndex[eInfo.sSelItemIndex];
-  if (usItem == ACTION_ITEM || usItem == SWITCH) {
+  if (usItem == Enum225.ACTION_ITEM || usItem == Enum225.SWITCH) {
     if (eInfo.sSelItemIndex < PRESSURE_ACTION_ID) {
       let bFrequency: INT8;
       if (eInfo.sSelItemIndex < 2)
@@ -1175,7 +1175,7 @@ function SelectNextPressureAction(): void {
         gpItemPool = gpItemPool.value.pNext;
         while (gpItemPool) {
           pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
-          if (pObject.value.usItem == ACTION_ITEM && pObject.value.bDetonatorType == BOMB_PRESSURE) {
+          if (pObject.value.usItem == Enum225.ACTION_ITEM && pObject.value.bDetonatorType == Enum224.BOMB_PRESSURE) {
             SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
             CenterScreenAtMapIndex(gsItemGridNo);
             return; // success! (another item in same itempool)
@@ -1192,7 +1192,7 @@ function SelectNextPressureAction(): void {
       GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
       while (gpItemPool) {
         pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
-        if (pObject.value.usItem == ACTION_ITEM && pObject.value.bDetonatorType == BOMB_PRESSURE) {
+        if (pObject.value.usItem == Enum225.ACTION_ITEM && pObject.value.bDetonatorType == Enum224.BOMB_PRESSURE) {
           SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
           CenterScreenAtMapIndex(gsItemGridNo);
           return; // success! (found another item before reaching the end of the list)
@@ -1208,7 +1208,7 @@ function SelectNextPressureAction(): void {
     GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
     while (gpItemPool) {
       pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
-      if (pObject.value.usItem == ACTION_ITEM && pObject.value.bDetonatorType == BOMB_PRESSURE) {
+      if (pObject.value.usItem == Enum225.ACTION_ITEM && pObject.value.bDetonatorType == Enum224.BOMB_PRESSURE) {
         SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
         CenterScreenAtMapIndex(gsItemGridNo);
         return; // success! (found first item in the list)
@@ -1265,7 +1265,7 @@ function CountNumberOfPressureActionsInWorld(): UINT16 {
   while (pIPCurr) {
     GetItemPool(pIPCurr.value.sGridNo, addressof(pItemPool), 0);
     while (pItemPool) {
-      if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == ACTION_ITEM && gWorldItems[pItemPool.value.iItemIndex].o.bDetonatorType == BOMB_PRESSURE) {
+      if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == Enum225.ACTION_ITEM && gWorldItems[pItemPool.value.iItemIndex].o.bDetonatorType == Enum224.BOMB_PRESSURE) {
         num++;
       }
       pItemPool = pItemPool.value.pNext;
@@ -1277,7 +1277,7 @@ function CountNumberOfPressureActionsInWorld(): UINT16 {
 
 function CountNumberOfEditorPlacementsInWorld(usEInfoIndex: UINT16, pusQuantity: Pointer<UINT16>): UINT16 {
   let usNumPlacements: UINT16;
-  if (eInfo.uiItemType == TBAR_MODE_ITEM_TRIGGERS) {
+  if (eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_TRIGGERS) {
     // find identical items with same frequency
     let bFrequency: INT8;
     if (usEInfoIndex < PRESSURE_ACTION_ID) {
@@ -1295,7 +1295,7 @@ function CountNumberOfEditorPlacementsInWorld(usEInfoIndex: UINT16, pusQuantity:
       usNumPlacements = CountNumberOfPressureActionsInWorld();
       pusQuantity.value = usNumPlacements;
     }
-  } else if (eInfo.uiItemType == TBAR_MODE_ITEM_KEYS) {
+  } else if (eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_KEYS) {
     usNumPlacements = CountNumberOfKeysOfTypeInWorld(usEInfoIndex);
     pusQuantity.value = usNumPlacements;
   } else {

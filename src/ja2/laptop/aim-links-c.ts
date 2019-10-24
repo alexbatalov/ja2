@@ -32,9 +32,9 @@ let guiBobbyLink: UINT32;
 let guiFuneralLink: UINT32;
 let guiInsuranceLink: UINT32;
 let gubLinkPages: UINT8[] /* [] */ = [
-  BOBBYR_BOOKMARK,
-  FUNERAL_BOOKMARK,
-  INSURANCE_BOOKMARK,
+  Enum98.BOBBYR_BOOKMARK,
+  Enum98.FUNERAL_BOOKMARK,
+  Enum98.INSURANCE_BOOKMARK,
 ];
 
 // Clicking on guys Face
@@ -53,22 +53,22 @@ function EnterAimLinks(): BOOLEAN {
 
   // load the Bobby link graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_BOBBYRAYLINK);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_BOBBYRAYLINK);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyLink)));
 
   // load the Funeral graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_MORTUARYLINK);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_MORTUARYLINK);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFuneralLink)));
 
   // load the Insurance graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  GetMLGFilename(VObjectDesc.ImageFile, MLG_INSURANCELINK);
+  GetMLGFilename(VObjectDesc.ImageFile, Enum326.MLG_INSURANCELINK);
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceLink)));
 
   usPosY = AIM_LINK_BOBBY_LINK_Y;
   for (i = 0; i < AIM_LINK_NUM_LINKS; i++) {
-    MSYS_DefineRegion(addressof(gSelectedLinkRegion[i]), AIM_LINK_BOBBY_LINK_X, usPosY, AIM_LINK_BOBBY_LINK_X + AIM_LINK_LINK_WIDTH, (usPosY + AIM_LINK_LINK_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectLinkRegionCallBack);
+    MSYS_DefineRegion(addressof(gSelectedLinkRegion[i]), AIM_LINK_BOBBY_LINK_X, usPosY, AIM_LINK_BOBBY_LINK_X + AIM_LINK_LINK_WIDTH, (usPosY + AIM_LINK_LINK_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectLinkRegionCallBack);
     MSYS_AddRegion(addressof(gSelectedLinkRegion[i]));
     MSYS_SetRegionUserData(addressof(gSelectedLinkRegion[i]), 0, gubLinkPages[i]);
     usPosY += AIM_LINK_LINK_OFFSET_Y;
@@ -114,7 +114,7 @@ function RenderAimLinks(): void {
   //	DrawTextToScreen(AimLinkText[AIM_LINK_LISTENING], AIM_LINK_BOBBY_LINK_X, AIM_LINK_LINK_TEXT_3_Y, AIM_LINK_LINK_WIDTH, AIM_LINK_FONT, AIM_LINK_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Draw Link Title
-  DrawTextToScreen(AimLinkText[AIM_LINK_TITLE], AIM_LINK_TITLE_X, AIM_LINK_TITLE_Y, AIM_LINK_TITLE_WIDTH, AIM_LINK_TITLE_FONT, AIM_LINK_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(AimLinkText[Enum358.AIM_LINK_TITLE], AIM_LINK_TITLE_X, AIM_LINK_TITLE_Y, AIM_LINK_TITLE_WIDTH, AIM_LINK_TITLE_FONT, AIM_LINK_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   MarkButtonsDirty();
   RenderWWWProgramTitleBar();

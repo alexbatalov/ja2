@@ -38,7 +38,7 @@ function ExitBobbyRArmour(): void {
   DeleteMouseRegionForBigImage();
 
   giCurrentSubPage = gusCurWeaponIndex;
-  guiLastBobbyRayPage = LAPTOP_MODE_BOBBY_R_ARMOR;
+  guiLastBobbyRayPage = Enum95.LAPTOP_MODE_BOBBY_R_ARMOR;
 }
 
 function HandleBobbyRArmour(): void {

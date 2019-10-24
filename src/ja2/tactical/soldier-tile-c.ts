@@ -43,7 +43,7 @@ function SetFinalTile(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fGivenUp: 
   pSoldier.value.sFinalDestination = pSoldier.value.sGridNo;
 
   if (pSoldier.value.bTeam == gbPlayerNum && fGivenUp) {
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[NO_PATH_FOR_MERC], pSoldier.value.name);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.NO_PATH_FOR_MERC], pSoldier.value.name);
   }
 
   EVENT_StopMerc(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection);
@@ -70,7 +70,7 @@ function UnMarkMovementReserved(pSoldier: Pointer<SOLDIERTYPE>): void {
   sNewGridNo = GETWORLDINDEXFROMWORLDCOORDS(pSoldier.value.dYPos, pSoldier.value.dXPos);
 
   // OK, if NOT in fence anim....
-  if (pSoldier.value.usAnimState == HOPFENCE && pSoldier.value.sReservedMovementGridNo != sNewGridNo) {
+  if (pSoldier.value.usAnimState == Enum193.HOPFENCE && pSoldier.value.sReservedMovementGridNo != sNewGridNo) {
     return;
   }
 
@@ -221,7 +221,7 @@ function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridN
   }
 
   // If animation state is crow, iall is clear
-  if (pSoldier.value.usAnimState == CROW_FLY) {
+  if (pSoldier.value.usAnimState == Enum193.CROW_FLY) {
     return TRUE;
   }
 
@@ -279,7 +279,7 @@ function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridN
       bOverTerrainType = GetTerrainType(sGridNo);
 
       // Check if we are going into water!
-      if (bOverTerrainType == LOW_WATER || bOverTerrainType == MED_WATER || bOverTerrainType == DEEP_WATER) {
+      if (bOverTerrainType == Enum315.LOW_WATER || bOverTerrainType == Enum315.MED_WATER || bOverTerrainType == Enum315.DEEP_WATER) {
         // Check if we are of prone or crawl height and change stance accordingly....
         switch (gAnimControl[pSoldier.value.usAnimState].ubHeight) {
           case ANIM_PRONE:
@@ -293,8 +293,8 @@ function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridN
 
         // Check animation
         // Change to walking
-        if (pSoldier.value.usAnimState == RUNNING) {
-          ChangeSoldierState(pSoldier, WALKING, 0, FALSE);
+        if (pSoldier.value.usAnimState == Enum193.RUNNING) {
+          ChangeSoldierState(pSoldier, Enum193.WALKING, 0, FALSE);
         }
       }
     }
@@ -385,7 +385,7 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
         // Try another path to destination
         // ATE: Allow path to exit grid!
-        if (pSoldier.value.ubWaitActionToDo == 1 && gubWaitingForAllMercsToExitCode == WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO) {
+        if (pSoldier.value.ubWaitActionToDo == 1 && gubWaitingForAllMercsToExitCode == Enum238.WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO) {
           gfPlotPathToExitGrid = TRUE;
         }
 
@@ -402,7 +402,7 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           if (bPathBlocked == MOVE_TILE_STATIONARY_BLOCKED) {
             // Try to path around everyone except dest person
 
-            if (pSoldier.value.ubWaitActionToDo == 1 && gubWaitingForAllMercsToExitCode == WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO) {
+            if (pSoldier.value.ubWaitActionToDo == 1 && gubWaitingForAllMercsToExitCode == Enum238.WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO) {
               gfPlotPathToExitGrid = TRUE;
             }
 
@@ -427,7 +427,7 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           // Are we clear?
           if (bPathBlocked == MOVE_TILE_CLEAR) {
             // Go for it path!
-            if (pSoldier.value.ubWaitActionToDo == 1 && gubWaitingForAllMercsToExitCode == WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO) {
+            if (pSoldier.value.ubWaitActionToDo == 1 && gubWaitingForAllMercsToExitCode == Enum238.WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO) {
               gfPlotPathToExitGrid = TRUE;
             }
 
@@ -457,7 +457,7 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           ubPerson = WhoIsThere2(pSoldier.value.sDelayedMovementCauseGridNo, pSoldier.value.bLevel);
 
           // if either on a mission from god, or two AI guys not on stationary...
-          if (ubPerson != NOBODY && (pSoldier.value.ubQuoteRecord != 0 || (pSoldier.value.bTeam != gbPlayerNum && pSoldier.value.bOrders != STATIONARY && MercPtrs[ubPerson].value.bTeam != gbPlayerNum && MercPtrs[ubPerson].value.bOrders != STATIONARY) || (pSoldier.value.bTeam == gbPlayerNum && gTacticalStatus.fAutoBandageMode && !(MercPtrs[ubPerson].value.bTeam == CIV_TEAM && MercPtrs[ubPerson].value.bOrders == STATIONARY)))) {
+          if (ubPerson != NOBODY && (pSoldier.value.ubQuoteRecord != 0 || (pSoldier.value.bTeam != gbPlayerNum && pSoldier.value.bOrders != Enum241.STATIONARY && MercPtrs[ubPerson].value.bTeam != gbPlayerNum && MercPtrs[ubPerson].value.bOrders != Enum241.STATIONARY) || (pSoldier.value.bTeam == gbPlayerNum && gTacticalStatus.fAutoBandageMode && !(MercPtrs[ubPerson].value.bTeam == CIV_TEAM && MercPtrs[ubPerson].value.bOrders == Enum241.STATIONARY)))) {
             // Swap now!
             // MercPtrs[ ubPerson ]->fBlockedByAnotherMerc = FALSE;
 
@@ -477,7 +477,7 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
               // check to see if we're there now!
               if (pSoldier.value.sGridNo == pSoldier.value.sAbsoluteFinalDestination) {
                 NPCReachedDestination(pSoldier, FALSE);
-                pSoldier.value.bNextAction = AI_ACTION_WAIT;
+                pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
                 pSoldier.value.usNextActionData = 500;
                 return TRUE;
               }
@@ -595,13 +595,13 @@ function CanExchangePlaces(pSoldier1: Pointer<SOLDIERTYPE>, pSoldier2: Pointer<S
       }
 
       // must NOT be hostile, must NOT have stationary orders OR militia team, must be >= OKLIFE
-      if (pSoldier2.value.bNeutral && pSoldier2.value.bLife >= OKLIFE && pSoldier2.value.ubCivilianGroup != HICKS_CIV_GROUP && ((pSoldier2.value.bOrders != STATIONARY || pSoldier2.value.bTeam == MILITIA_TEAM) || (pSoldier2.value.sAbsoluteFinalDestination != NOWHERE && pSoldier2.value.sAbsoluteFinalDestination != pSoldier2.value.sGridNo))) {
+      if (pSoldier2.value.bNeutral && pSoldier2.value.bLife >= OKLIFE && pSoldier2.value.ubCivilianGroup != Enum246.HICKS_CIV_GROUP && ((pSoldier2.value.bOrders != Enum241.STATIONARY || pSoldier2.value.bTeam == MILITIA_TEAM) || (pSoldier2.value.sAbsoluteFinalDestination != NOWHERE && pSoldier2.value.sAbsoluteFinalDestination != pSoldier2.value.sGridNo))) {
         return TRUE;
       }
 
       if (fShow) {
         if (pSoldier2.value.ubProfile == NO_PROFILE) {
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[REFUSE_EXCHANGE_PLACES]);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.REFUSE_EXCHANGE_PLACES]);
         } else {
           ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, gzLateLocalizedString[3], pSoldier2.value.name);
         }

@@ -79,12 +79,12 @@ function EnterBobbyRShipments(): BOOLEAN {
   CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyRShipmentGrid)));
 
   guiBobbyRShipmentBackImage = LoadButtonImage("LAPTOP\\CatalogueButton.sti", -1, 0, -1, 1, -1);
-  guiBobbyRShipmetBack = CreateIconAndTextButton(guiBobbyRShipmentBackImage, BobbyROrderFormText[BOBBYR_BACK], BOBBYR_GUNS_BUTTON_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, BOBBYR_GUNS_SHADOW_COLOR, BOBBYR_GUNS_TEXT_COLOR_OFF, BOBBYR_GUNS_SHADOW_COLOR, TEXT_CJUSTIFIED, BOBBYR_SHIPMENT_BACK_BUTTON_X, BOBBYR_SHIPMENT_BACK_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnBobbyRShipmentBackCallback);
-  SetButtonCursor(guiBobbyRShipmetBack, CURSOR_LAPTOP_SCREEN);
+  guiBobbyRShipmetBack = CreateIconAndTextButton(guiBobbyRShipmentBackImage, BobbyROrderFormText[Enum349.BOBBYR_BACK], BOBBYR_GUNS_BUTTON_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, BOBBYR_GUNS_SHADOW_COLOR, BOBBYR_GUNS_TEXT_COLOR_OFF, BOBBYR_GUNS_SHADOW_COLOR, TEXT_CJUSTIFIED, BOBBYR_SHIPMENT_BACK_BUTTON_X, BOBBYR_SHIPMENT_BACK_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnBobbyRShipmentBackCallback);
+  SetButtonCursor(guiBobbyRShipmetBack, Enum317.CURSOR_LAPTOP_SCREEN);
 
   giBobbyRShipmentHomeImage = UseLoadedButtonImage(guiBobbyRShipmentBackImage, -1, 0, -1, 1, -1);
-  guiBobbyRShipmentHome = CreateIconAndTextButton(giBobbyRShipmentHomeImage, BobbyROrderFormText[BOBBYR_HOME], BOBBYR_GUNS_BUTTON_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, BOBBYR_GUNS_SHADOW_COLOR, BOBBYR_GUNS_TEXT_COLOR_OFF, BOBBYR_GUNS_SHADOW_COLOR, TEXT_CJUSTIFIED, BOBBYR_SHIPMENT_HOME_BUTTON_X, BOBBYR_SHIPMENT_HOME_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnBobbyRShipmentHomeCallback);
-  SetButtonCursor(guiBobbyRShipmentHome, CURSOR_LAPTOP_SCREEN);
+  guiBobbyRShipmentHome = CreateIconAndTextButton(giBobbyRShipmentHomeImage, BobbyROrderFormText[Enum349.BOBBYR_HOME], BOBBYR_GUNS_BUTTON_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, BOBBYR_GUNS_SHADOW_COLOR, BOBBYR_GUNS_TEXT_COLOR_OFF, BOBBYR_GUNS_SHADOW_COLOR, TEXT_CJUSTIFIED, BOBBYR_SHIPMENT_HOME_BUTTON_X, BOBBYR_SHIPMENT_HOME_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnBobbyRShipmentHomeCallback);
+  SetButtonCursor(guiBobbyRShipmentHome, Enum317.CURSOR_LAPTOP_SCREEN);
 
   CreateBobbyRayOrderTitle();
 
@@ -136,7 +136,7 @@ function RenderBobbyRShipments(): void {
   DrawBobbyROrderTitle();
 
   // Output the title
-  DrawTextToScreen(gzBobbyRShipmentText[BOBBYR_SHIPMENT__TITLE], BOBBYR_ORDER_FORM_TITLE_X, BOBBYR_ORDER_FORM_TITLE_Y, BOBBYR_ORDER_FORM_TITLE_WIDTH, BOBBYR_SHIPMENT_TITLE_TEXT_FONT, BOBBYR_SHIPMENT_TITLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(gzBobbyRShipmentText[Enum380.BOBBYR_SHIPMENT__TITLE], BOBBYR_ORDER_FORM_TITLE_X, BOBBYR_ORDER_FORM_TITLE_Y, BOBBYR_ORDER_FORM_TITLE_WIDTH, BOBBYR_SHIPMENT_TITLE_TEXT_FONT, BOBBYR_SHIPMENT_TITLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   DisplayShipmentGrid();
 
@@ -164,7 +164,7 @@ function BtnBobbyRShipmentBackCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-    guiCurrentLaptopMode = LAPTOP_MODE_BOBBY_R_MAILORDER;
+    guiCurrentLaptopMode = Enum95.LAPTOP_MODE_BOBBY_R_MAILORDER;
 
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
@@ -182,7 +182,7 @@ function BtnBobbyRShipmentHomeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-    guiCurrentLaptopMode = LAPTOP_MODE_BOBBY_R;
+    guiCurrentLaptopMode = Enum95.LAPTOP_MODE_BOBBY_R;
 
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
@@ -206,10 +206,10 @@ function DisplayShipmentGrid(): void {
 
 function DisplayShipmentTitles(): void {
   // output the order #
-  DrawTextToScreen(gzBobbyRShipmentText[BOBBYR_SHIPMENT__ORDERED_ON], BOBBYR_SHIPMENT_SHIPMENT_ORDER_NUM_X, BOBBYR_SHIPMENT_SHIPMENT_ORDER_NUM_Y, BOBBYR_SHIPMENT_ORDER_NUM_WIDTH, BOBBYR_SHIPMENT_STATIC_TEXT_FONT, BOBBYR_SHIPMENT_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(gzBobbyRShipmentText[Enum380.BOBBYR_SHIPMENT__ORDERED_ON], BOBBYR_SHIPMENT_SHIPMENT_ORDER_NUM_X, BOBBYR_SHIPMENT_SHIPMENT_ORDER_NUM_Y, BOBBYR_SHIPMENT_ORDER_NUM_WIDTH, BOBBYR_SHIPMENT_STATIC_TEXT_FONT, BOBBYR_SHIPMENT_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Output the # of items
-  DrawTextToScreen(gzBobbyRShipmentText[BOBBYR_SHIPMENT__NUM_ITEMS], BOBBYR_SHIPMENT_NUM_ITEMS_X, BOBBYR_SHIPMENT_NUM_ITEMS_Y, BOBBYR_SHIPMENT_NUM_ITEMS_WIDTH, BOBBYR_SHIPMENT_STATIC_TEXT_FONT, BOBBYR_SHIPMENT_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(gzBobbyRShipmentText[Enum380.BOBBYR_SHIPMENT__NUM_ITEMS], BOBBYR_SHIPMENT_NUM_ITEMS_X, BOBBYR_SHIPMENT_NUM_ITEMS_Y, BOBBYR_SHIPMENT_NUM_ITEMS_WIDTH, BOBBYR_SHIPMENT_STATIC_TEXT_FONT, BOBBYR_SHIPMENT_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 }
 
 function DisplayPreviousShipments(): void {
@@ -259,7 +259,7 @@ function CreatePreviousShipmentsMouseRegions(): void {
   let uiNumItems: UINT32 = CountNumberOfBobbyPurchasesThatAreInTransit();
 
   for (uiCnt = 0; uiCnt < uiNumItems; uiCnt++) {
-    MSYS_DefineRegion(addressof(gSelectedPreviousShipmentsRegion[uiCnt]), BOBBYR_SHIPMENT_ORDER_NUM_X, usPosY, (BOBBYR_SHIPMENT_ORDER_NUM_X + usWidth), (usPosY + usHeight), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectPreviousShipmentsRegionCallBack);
+    MSYS_DefineRegion(addressof(gSelectedPreviousShipmentsRegion[uiCnt]), BOBBYR_SHIPMENT_ORDER_NUM_X, usPosY, (BOBBYR_SHIPMENT_ORDER_NUM_X + usWidth), (usPosY + usHeight), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectPreviousShipmentsRegionCallBack);
     MSYS_AddRegion(addressof(gSelectedPreviousShipmentsRegion[uiCnt]));
     MSYS_SetRegionUserData(addressof(gSelectedPreviousShipmentsRegion[uiCnt]), 0, uiCnt);
 

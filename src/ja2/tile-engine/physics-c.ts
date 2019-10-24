@@ -13,7 +13,7 @@ const GET_THROW_HEIGHT = (l) => ((l * 256));
 const GET_SOLDIER_THROW_HEIGHT = (l) => ((l * 256) + STANDING_HEIGHT);
 
 const GET_OBJECT_LEVEL = (z) => (((z + 10) / HEIGHT_UNITS));
-const OBJECT_DETONATE_ON_IMPACT = (o) => ((o.value.Obj.usItem == MORTAR_SHELL)); // && ( o->ubActionCode == THROW_ARM_ITEM || pObject->fTestObject ) )
+const OBJECT_DETONATE_ON_IMPACT = (o) => ((o.value.Obj.usItem == Enum225.MORTAR_SHELL)); // && ( o->ubActionCode == THROW_ARM_ITEM || pObject->fTestObject ) )
 
 const MAX_INTEGRATIONS = 8;
 
@@ -155,8 +155,8 @@ function SimulateWorld(): void {
   let cnt: UINT32;
   let pObject: Pointer<REAL_OBJECT>;
 
-  if (COUNTERDONE(PHYSICSUPDATE)) {
-    RESETCOUNTER(PHYSICSUPDATE);
+  if (COUNTERDONE(Enum386.PHYSICSUPDATE)) {
+    RESETCOUNTER(Enum386.PHYSICSUPDATE);
 
     for (cnt = 0; cnt < guiNumObjectSlots; cnt++) {
       // CHECK FOR ALLOCATED
@@ -214,7 +214,7 @@ function SimulateObject(pObject: Pointer<REAL_OBJECT>, deltaT: real): void {
         break;
       }
 
-      if (iCollisionID != COLLISION_NONE) {
+      if (iCollisionID != Enum229.COLLISION_NONE) {
         break;
       }
 
@@ -285,19 +285,19 @@ function PhysicsUpdateLife(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOL
         SoundStop(pObject.value.iSoundID);
       }
 
-      if (pObject.value.ubActionCode == THROW_ARM_ITEM && !pObject.value.fInWater) {
+      if (pObject.value.ubActionCode == Enum258.THROW_ARM_ITEM && !pObject.value.fInWater) {
         HandleArmedObjectImpact(pObject);
       } else {
         // If we are in water, and we are a sinkable item...
         if (!pObject.value.fInWater || !(Item[pObject.value.Obj.usItem].fFlags & ITEM_SINKS)) {
           if (pObject.value.fDropItem) {
             // ATE: If we have collided with roof last...
-            if (pObject.value.iOldCollisionCode == COLLISION_ROOF) {
+            if (pObject.value.iOldCollisionCode == Enum229.COLLISION_ROOF) {
               bLevel = 1;
             }
 
             // ATE; If an armed object, don't add....
-            if (pObject.value.ubActionCode != THROW_ARM_ITEM) {
+            if (pObject.value.ubActionCode != Enum258.THROW_ARM_ITEM) {
               AddItemToPool(pObject.value.sGridNo, addressof(pObject.value.Obj), 1, bLevel, 0, -1);
             }
           }
@@ -305,14 +305,14 @@ function PhysicsUpdateLife(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOL
       }
 
       // Make impact noise....
-      if (pObject.value.Obj.usItem == ROCK || pObject.value.Obj.usItem == ROCK2) {
-        MakeNoise(pObject.value.ubOwner, pObject.value.sGridNo, 0, gpWorldLevelData[pObject.value.sGridNo].ubTerrainID, (9 + PreRandom(9)), NOISE_ROCK_IMPACT);
+      if (pObject.value.Obj.usItem == Enum225.ROCK || pObject.value.Obj.usItem == Enum225.ROCK2) {
+        MakeNoise(pObject.value.ubOwner, pObject.value.sGridNo, 0, gpWorldLevelData[pObject.value.sGridNo].ubTerrainID, (9 + PreRandom(9)), Enum236.NOISE_ROCK_IMPACT);
       } else if (Item[pObject.value.Obj.usItem].usItemClass & IC_GRENADE) {
-        MakeNoise(pObject.value.ubOwner, pObject.value.sGridNo, 0, gpWorldLevelData[pObject.value.sGridNo].ubTerrainID, (9 + PreRandom(9)), NOISE_GRENADE_IMPACT);
+        MakeNoise(pObject.value.ubOwner, pObject.value.sGridNo, 0, gpWorldLevelData[pObject.value.sGridNo].ubTerrainID, (9 + PreRandom(9)), Enum236.NOISE_GRENADE_IMPACT);
       }
 
-      if (!pObject.value.fTestObject && pObject.value.iOldCollisionCode == COLLISION_GROUND) {
-        PlayJA2Sample(THROW_IMPACT_2, RATE_11025, SoundVolume(MIDVOLUME, pObject.value.sGridNo), 1, SoundDir(pObject.value.sGridNo));
+      if (!pObject.value.fTestObject && pObject.value.iOldCollisionCode == Enum229.COLLISION_GROUND) {
+        PlayJA2Sample(Enum330.THROW_IMPACT_2, RATE_11025, SoundVolume(MIDVOLUME, pObject.value.sGridNo), 1, SoundDir(pObject.value.sGridNo));
       }
 
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Reducing attacker busy count..., PHYSICS OBJECT DONE effect gone off"));
@@ -332,17 +332,17 @@ function PhysicsUpdateLife(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOL
           case ANIM_STAND:
 
             pSoldier.value.usPendingAnimation = NO_PENDING_ANIMATION;
-            EVENT_InitNewSoldierAnim(pSoldier, END_CATCH, 0, FALSE);
+            EVENT_InitNewSoldierAnim(pSoldier, Enum193.END_CATCH, 0, FALSE);
             break;
 
           case ANIM_CROUCH:
 
             pSoldier.value.usPendingAnimation = NO_PENDING_ANIMATION;
-            EVENT_InitNewSoldierAnim(pSoldier, END_CROUCH_CATCH, 0, FALSE);
+            EVENT_InitNewSoldierAnim(pSoldier, Enum193.END_CROUCH_CATCH, 0, FALSE);
             break;
         }
 
-        PlayJA2Sample(CATCH_OBJECT, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+        PlayJA2Sample(Enum330.CATCH_OBJECT, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
       }
     }
 
@@ -378,11 +378,11 @@ function PhysicsIntegrate(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOLE
     PhysicsDebugMsg(String("Object %d: Delta Pos %f %f %f", pObject.value.iID, (pObject.value.OldPosition.x - pObject.value.Position.x), (pObject.value.OldPosition.y - pObject.value.Position.y), (pObject.value.OldPosition.z - pObject.value.Position.z)));
   }
 
-  if (pObject.value.Obj.usItem == MORTAR_SHELL && !pObject.value.fTestObject && pObject.value.ubActionCode == THROW_ARM_ITEM) {
+  if (pObject.value.Obj.usItem == Enum225.MORTAR_SHELL && !pObject.value.fTestObject && pObject.value.ubActionCode == Enum258.THROW_ARM_ITEM) {
     // Start soud if we have reached our max height
     if (pObject.value.OldVelocity.z >= 0 && pObject.value.Velocity.z < 0) {
       if (pObject.value.iSoundID == NO_SAMPLE) {
-        pObject.value.iSoundID = PlayJA2Sample(MORTAR_WHISTLE, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+        pObject.value.iSoundID = PlayJA2Sample(Enum330.MORTAR_WHISTLE, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
       }
     }
   }
@@ -411,14 +411,14 @@ function PhysicsHandleCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID: P
 
       // Check that we are not colliding with structure z
       // if ( *piCollisionID == COLLISION_STRUCTURE_Z || *piCollisionID == COLLISION_ROOF )
-      if (piCollisionID.value == COLLISION_STRUCTURE_Z || piCollisionID.value == COLLISION_ROOF || piCollisionID.value == COLLISION_GROUND) {
+      if (piCollisionID.value == Enum229.COLLISION_STRUCTURE_Z || piCollisionID.value == Enum229.COLLISION_ROOF || piCollisionID.value == Enum229.COLLISION_GROUND) {
         pObject.value.Velocity.z = 0;
 
         // Set us not alive!
         pObject.value.fAlive = FALSE;
       }
 
-      piCollisionID.value = COLLISION_NONE;
+      piCollisionID.value = Enum229.COLLISION_NONE;
     } else {
       // Set position back to before collision
       pObject.value.Position = VSetEqual(addressof(pObject.value.OldPosition));
@@ -489,7 +489,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
   let dX: FLOAT;
   let dY: FLOAT;
   let dZ: FLOAT;
-  let iCollisionCode: INT32 = COLLISION_NONE;
+  let iCollisionCode: INT32 = Enum229.COLLISION_NONE;
   let fDoCollision: BOOLEAN = FALSE;
   let dElasity: FLOAT = 1;
   let usStructureID: UINT16;
@@ -520,7 +520,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
   if (pObject.value.fTestObject != TEST_OBJECT_NO_COLLISIONS) {
     iCollisionCode = CheckForCollision(dX, dY, dZ, dDeltaX, dDeltaY, dDeltaZ, addressof(usStructureID), addressof(dNormalX), addressof(dNormalY), addressof(dNormalZ));
   } else if (pObject.value.fTestObject == TEST_OBJECT_NO_COLLISIONS) {
-    iCollisionCode = COLLISION_NONE;
+    iCollisionCode = Enum229.COLLISION_NONE;
 
     // Are we on a downward slope?
     if (dZ < pObject.value.TestZTarget && dDeltaZ < 0) {
@@ -529,10 +529,10 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
           pObject.value.fTestPositionNotSet = FALSE;
           pObject.value.TestZTarget = 0;
         } else {
-          iCollisionCode = COLLISION_GROUND;
+          iCollisionCode = Enum229.COLLISION_GROUND;
         }
       } else {
-        iCollisionCode = COLLISION_GROUND;
+        iCollisionCode = Enum229.COLLISION_GROUND;
       }
     }
   }
@@ -540,7 +540,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
   // If a test object and we have collided with something ( should only be ground ( or roof? ) )
   // Or destination?
   if (pObject.value.fTestObject == TEST_OBJECT_ANY_COLLISION) {
-    if (iCollisionCode != COLLISION_GROUND && iCollisionCode != COLLISION_ROOF && iCollisionCode != COLLISION_WATER && iCollisionCode != COLLISION_NONE) {
+    if (iCollisionCode != Enum229.COLLISION_GROUND && iCollisionCode != Enum229.COLLISION_ROOF && iCollisionCode != Enum229.COLLISION_WATER && iCollisionCode != Enum229.COLLISION_NONE) {
       pObject.value.fTestEndedWithCollision = TRUE;
       pObject.value.fAlive = FALSE;
       return FALSE;
@@ -549,20 +549,20 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
   if (pObject.value.fTestObject == TEST_OBJECT_NOTWALLROOF_COLLISIONS) {
     // So we don't collide with ourselves.....
-    if (iCollisionCode != COLLISION_WATER && iCollisionCode != COLLISION_GROUND && iCollisionCode != COLLISION_NONE && iCollisionCode != COLLISION_ROOF && iCollisionCode != COLLISION_INTERIOR_ROOF && iCollisionCode != COLLISION_WALL_SOUTHEAST && iCollisionCode != COLLISION_WALL_SOUTHWEST && iCollisionCode != COLLISION_WALL_NORTHEAST && iCollisionCode != COLLISION_WALL_NORTHWEST) {
+    if (iCollisionCode != Enum229.COLLISION_WATER && iCollisionCode != Enum229.COLLISION_GROUND && iCollisionCode != Enum229.COLLISION_NONE && iCollisionCode != Enum229.COLLISION_ROOF && iCollisionCode != Enum229.COLLISION_INTERIOR_ROOF && iCollisionCode != Enum229.COLLISION_WALL_SOUTHEAST && iCollisionCode != Enum229.COLLISION_WALL_SOUTHWEST && iCollisionCode != Enum229.COLLISION_WALL_NORTHEAST && iCollisionCode != Enum229.COLLISION_WALL_NORTHWEST) {
       if (pObject.value.fFirstTimeMoved || pObject.value.sFirstGridNo == pObject.value.sGridNo) {
-        iCollisionCode = COLLISION_NONE;
+        iCollisionCode = Enum229.COLLISION_NONE;
       }
 
       // If we are NOT a wall or window, ignore....
       if (pObject.value.uiNumTilesMoved < 4) {
         switch (iCollisionCode) {
-          case COLLISION_MERC:
-          case COLLISION_STRUCTURE:
-          case COLLISION_STRUCTURE_Z:
+          case Enum229.COLLISION_MERC:
+          case Enum229.COLLISION_STRUCTURE:
+          case Enum229.COLLISION_STRUCTURE_Z:
 
             // Set to no collision ( we shot past )
-            iCollisionCode = COLLISION_NONE;
+            iCollisionCode = Enum229.COLLISION_NONE;
             break;
         }
       }
@@ -570,8 +570,8 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
     switch (iCollisionCode) {
       // End test with any collision NOT a wall, roof...
-      case COLLISION_STRUCTURE:
-      case COLLISION_STRUCTURE_Z:
+      case Enum229.COLLISION_STRUCTURE:
+      case Enum229.COLLISION_STRUCTURE_Z:
 
         // OK, if it's mercs... don't stop
         if (usStructureID >= INVALID_STRUCTURE_ID) {
@@ -581,7 +581,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
             pObject.value.fEndedWithCollisionPositionSet = TRUE;
             pObject.value.EndedWithCollisionPosition = VSetEqual(addressof(pObject.value.Position));
           }
-          iCollisionCode = COLLISION_NONE;
+          iCollisionCode = Enum229.COLLISION_NONE;
         } else {
           if (!pObject.value.fEndedWithCollisionPositionSet) {
             pObject.value.fEndedWithCollisionPositionSet = TRUE;
@@ -590,7 +590,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
         }
         break;
 
-      case COLLISION_ROOF:
+      case Enum229.COLLISION_ROOF:
 
         if (!pObject.value.fEndedWithCollisionPositionSet) {
           pObject.value.fEndedWithCollisionPositionSet = TRUE;
@@ -598,15 +598,15 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
         }
         break;
 
-      case COLLISION_WATER:
-      case COLLISION_GROUND:
-      case COLLISION_MERC:
-      case COLLISION_INTERIOR_ROOF:
-      case COLLISION_NONE:
-      case COLLISION_WINDOW_SOUTHEAST:
-      case COLLISION_WINDOW_SOUTHWEST:
-      case COLLISION_WINDOW_NORTHEAST:
-      case COLLISION_WINDOW_NORTHWEST:
+      case Enum229.COLLISION_WATER:
+      case Enum229.COLLISION_GROUND:
+      case Enum229.COLLISION_MERC:
+      case Enum229.COLLISION_INTERIOR_ROOF:
+      case Enum229.COLLISION_NONE:
+      case Enum229.COLLISION_WINDOW_SOUTHEAST:
+      case Enum229.COLLISION_WINDOW_SOUTHWEST:
+      case Enum229.COLLISION_WINDOW_NORTHEAST:
+      case Enum229.COLLISION_WINDOW_NORTHWEST:
 
         // Here we just keep going..
         break;
@@ -621,21 +621,21 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
   }
 
   if (pObject.value.fTestObject != TEST_OBJECT_NOTWALLROOF_COLLISIONS) {
-    if (iCollisionCode != COLLISION_WATER && iCollisionCode != COLLISION_GROUND && iCollisionCode != COLLISION_NONE && iCollisionCode != COLLISION_ROOF && iCollisionCode != COLLISION_INTERIOR_ROOF && iCollisionCode != COLLISION_WALL_SOUTHEAST && iCollisionCode != COLLISION_WALL_SOUTHWEST && iCollisionCode != COLLISION_WALL_NORTHEAST && iCollisionCode != COLLISION_WALL_NORTHWEST) {
+    if (iCollisionCode != Enum229.COLLISION_WATER && iCollisionCode != Enum229.COLLISION_GROUND && iCollisionCode != Enum229.COLLISION_NONE && iCollisionCode != Enum229.COLLISION_ROOF && iCollisionCode != Enum229.COLLISION_INTERIOR_ROOF && iCollisionCode != Enum229.COLLISION_WALL_SOUTHEAST && iCollisionCode != Enum229.COLLISION_WALL_SOUTHWEST && iCollisionCode != Enum229.COLLISION_WALL_NORTHEAST && iCollisionCode != Enum229.COLLISION_WALL_NORTHWEST) {
       // So we don't collide with ourselves.....
       if (pObject.value.fFirstTimeMoved || pObject.value.sFirstGridNo == pObject.value.sGridNo) {
-        iCollisionCode = COLLISION_NONE;
+        iCollisionCode = Enum229.COLLISION_NONE;
       }
 
       // If we are NOT a wall or window, ignore....
       if (pObject.value.uiNumTilesMoved < 4) {
         switch (iCollisionCode) {
-          case COLLISION_MERC:
-          case COLLISION_STRUCTURE:
-          case COLLISION_STRUCTURE_Z:
+          case Enum229.COLLISION_MERC:
+          case Enum229.COLLISION_STRUCTURE:
+          case Enum229.COLLISION_STRUCTURE_Z:
 
             // Set to no collision ( we shot past )
-            iCollisionCode = COLLISION_NONE;
+            iCollisionCode = Enum229.COLLISION_NONE;
             break;
         }
       }
@@ -645,14 +645,14 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
   piCollisionID.value = iCollisionCode;
 
   // If We hit the ground
-  if (iCollisionCode > COLLISION_NONE) {
+  if (iCollisionCode > Enum229.COLLISION_NONE) {
     if (pObject.value.iOldCollisionCode == iCollisionCode) {
       pObject.value.sConsecutiveCollisions++;
     } else {
       pObject.value.sConsecutiveCollisions = 1;
     }
 
-    if (iCollisionCode == COLLISION_WINDOW_NORTHWEST || iCollisionCode == COLLISION_WINDOW_NORTHEAST || iCollisionCode == COLLISION_WINDOW_SOUTHWEST || iCollisionCode == COLLISION_WINDOW_SOUTHEAST) {
+    if (iCollisionCode == Enum229.COLLISION_WINDOW_NORTHWEST || iCollisionCode == Enum229.COLLISION_WINDOW_NORTHEAST || iCollisionCode == Enum229.COLLISION_WINDOW_SOUTHWEST || iCollisionCode == Enum229.COLLISION_WINDOW_SOUTHEAST) {
       if (!pObject.value.fTestObject) {
         // Break window!
         PhysicsDebugMsg(String("Object %d: Collision Window", pObject.value.iID));
@@ -661,7 +661,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
         ObjectHitWindow(sGridNo, usStructureID, FALSE, TRUE);
       }
-      piCollisionID.value = COLLISION_NONE;
+      piCollisionID.value = Enum229.COLLISION_NONE;
       return FALSE;
     }
 
@@ -671,7 +671,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
       return TRUE;
     }
 
-    if (iCollisionCode == COLLISION_GROUND) {
+    if (iCollisionCode == Enum229.COLLISION_GROUND) {
       vTemp.x = 0;
       vTemp.y = 0;
       vTemp.z = -1;
@@ -686,11 +686,11 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
       fDoCollision = TRUE;
 
       if (!pObject.value.fTestObject && !pObject.value.fHaveHitGround) {
-        PlayJA2Sample(THROW_IMPACT_2, RATE_11025, SoundVolume(MIDVOLUME, pObject.value.sGridNo), 1, SoundDir(pObject.value.sGridNo));
+        PlayJA2Sample(Enum330.THROW_IMPACT_2, RATE_11025, SoundVolume(MIDVOLUME, pObject.value.sGridNo), 1, SoundDir(pObject.value.sGridNo));
       }
 
       pObject.value.fHaveHitGround = TRUE;
-    } else if (iCollisionCode == COLLISION_WATER) {
+    } else if (iCollisionCode == Enum229.COLLISION_WATER) {
       let AniParams: ANITILE_PARAMS;
       let pNode: Pointer<ANITILE>;
 
@@ -720,15 +720,15 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
           memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
           AniParams.sGridNo = sGridNo;
           AniParams.ubLevelID = ANI_STRUCT_LEVEL;
-          AniParams.usTileType = THIRDMISS;
-          AniParams.usTileIndex = THIRDMISS1;
+          AniParams.usTileType = Enum313.THIRDMISS;
+          AniParams.usTileIndex = Enum312.THIRDMISS1;
           AniParams.sDelay = 50;
           AniParams.sStartFrame = 0;
           AniParams.uiFlags = ANITILE_FORWARD;
 
-          if (pObject.value.ubActionCode == THROW_ARM_ITEM) {
+          if (pObject.value.ubActionCode == Enum258.THROW_ARM_ITEM) {
             AniParams.ubKeyFrame1 = 11;
-            AniParams.uiKeyFrame1Code = ANI_KEYFRAME_CHAIN_WATER_EXPLOSION;
+            AniParams.uiKeyFrame1Code = Enum311.ANI_KEYFRAME_CHAIN_WATER_EXPLOSION;
             AniParams.uiUserData = pObject.value.Obj.usItem;
             AniParams.ubUserData2 = pObject.value.ubOwner;
           }
@@ -743,7 +743,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
           pNode.value.pLevelNode.value.sRelativeZ = CONVERT_HEIGHTUNITS_TO_PIXELS(pObject.value.Position.z);
         }
       }
-    } else if (iCollisionCode == COLLISION_ROOF || iCollisionCode == COLLISION_INTERIOR_ROOF) {
+    } else if (iCollisionCode == Enum229.COLLISION_ROOF || iCollisionCode == Enum229.COLLISION_INTERIOR_ROOF) {
       vTemp.x = 0;
       vTemp.y = 0;
       vTemp.z = -1;
@@ -769,7 +769,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
     //	fDoCollision = TRUE;
 
     //}
-    else if (iCollisionCode == COLLISION_STRUCTURE_Z) {
+    else if (iCollisionCode == Enum229.COLLISION_STRUCTURE_Z) {
       if (CheckForCatcher(pObject, usStructureID)) {
         return FALSE;
       }
@@ -786,7 +786,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
       dElasity = 1.2;
 
       fDoCollision = TRUE;
-    } else if (iCollisionCode == COLLISION_WALL_SOUTHEAST || iCollisionCode == COLLISION_WALL_SOUTHWEST || iCollisionCode == COLLISION_WALL_NORTHEAST || iCollisionCode == COLLISION_WALL_NORTHWEST) {
+    } else if (iCollisionCode == Enum229.COLLISION_WALL_SOUTHEAST || iCollisionCode == Enum229.COLLISION_WALL_SOUTHWEST || iCollisionCode == Enum229.COLLISION_WALL_NORTHEAST || iCollisionCode == Enum229.COLLISION_WALL_NORTHWEST) {
       // A wall, do stuff
       vTemp.x = dNormalX;
       vTemp.y = dNormalY;
@@ -897,7 +897,7 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
 
     if (pObject.value.fVisible) {
       // Add smoke trails...
-      if (pObject.value.Obj.usItem == MORTAR_SHELL && pObject.value.uiNumTilesMoved > 2 && pObject.value.ubActionCode == THROW_ARM_ITEM) {
+      if (pObject.value.Obj.usItem == Enum225.MORTAR_SHELL && pObject.value.uiNumTilesMoved > 2 && pObject.value.ubActionCode == Enum258.THROW_ARM_ITEM) {
         if (sNewGridNo != pObject.value.sGridNo) {
           let AniParams: ANITILE_PARAMS;
 
@@ -979,7 +979,7 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
   }
 
   if (pObject.value.fVisible) {
-    if (pObject.value.Obj.usItem != MORTAR_SHELL || pObject.value.ubActionCode != THROW_ARM_ITEM) {
+    if (pObject.value.Obj.usItem != Enum225.MORTAR_SHELL || pObject.value.ubActionCode != Enum258.THROW_ARM_ITEM) {
       if (pObject.value.pNode != NULL) {
         // OK, get offsets
         hVObject = gTileDatabase[pObject.value.pNode.value.usIndex].hTileSurface;
@@ -1291,7 +1291,7 @@ function CalculateObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJECTTYPE>, 
   }
 
   // OK, create a physics object....
-  iID = CreatePhysicalObject(pItem, -1, vPosition.value.x, vPosition.value.y, vPosition.value.z, vForce.value.x, vForce.value.y, vForce.value.z, NOBODY, NO_THROW_ACTION, 0);
+  iID = CreatePhysicalObject(pItem, -1, vPosition.value.x, vPosition.value.y, vPosition.value.z, vForce.value.x, vForce.value.y, vForce.value.z, NOBODY, Enum258.NO_THROW_ACTION, 0);
 
   if (iID == -1) {
     return -1;
@@ -1331,7 +1331,7 @@ function ChanceToGetThroughObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJE
   let pObject: Pointer<REAL_OBJECT>;
 
   // OK, create a physics object....
-  iID = CreatePhysicalObject(pItem, -1, vPosition.value.x, vPosition.value.y, vPosition.value.z, vForce.value.x, vForce.value.y, vForce.value.z, NOBODY, NO_THROW_ACTION, 0);
+  iID = CreatePhysicalObject(pItem, -1, vPosition.value.x, vPosition.value.y, vPosition.value.z, vForce.value.x, vForce.value.y, vForce.value.z, NOBODY, Enum258.NO_THROW_ACTION, 0);
 
   if (iID == -1) {
     return -1;
@@ -1410,7 +1410,7 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
 
   usLauncher = GetLauncherFromLaunchable(pItem.value.usItem);
 
-  if (fArmed && (usLauncher == MORTAR || pItem.value.usItem == MORTAR)) {
+  if (fArmed && (usLauncher == Enum225.MORTAR || pItem.value.usItem == Enum225.MORTAR)) {
     // Start at 0....
     sStartZ = (pSoldier.value.bLevel * 256);
     fMortar = TRUE;
@@ -1418,7 +1418,7 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
     // fLauncher = TRUE;
   }
 
-  if (fArmed && (usLauncher == GLAUNCHER || usLauncher == UNDER_GLAUNCHER || pItem.value.usItem == GLAUNCHER || pItem.value.usItem == UNDER_GLAUNCHER)) {
+  if (fArmed && (usLauncher == Enum225.GLAUNCHER || usLauncher == Enum225.UNDER_GLAUNCHER || pItem.value.usItem == Enum225.GLAUNCHER || pItem.value.usItem == Enum225.UNDER_GLAUNCHER)) {
     // OK, look at target level and decide angle to use...
     if (ubLevel == 1) {
       // dDegrees  = GLAUNCHER_START_ANGLE;
@@ -1597,7 +1597,7 @@ function CalculateForceFromRange(sRange: INT16, dDegrees: FLOAT): FLOAT {
   sDestGridNo = 4408 + (sRange * WORLD_COLS);
 
   // Use a grenade objecttype
-  CreateItem(HAND_GRENADE, 100, addressof(Object));
+  CreateItem(Enum225.HAND_GRENADE, 100, addressof(Object));
 
   FindBestForceForTrajectory(sSrcGridNo, sDestGridNo, GET_SOLDIER_THROW_HEIGHT(0), 0, dDegrees, addressof(Object), addressof(sFinalGridNo), addressof(dMagForce));
 
@@ -1642,7 +1642,7 @@ function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>, sGrid
   // Set target ID if anyone
   pSoldier.value.ubTargetID = WhoIsThere2(sGridNo, ubLevel);
 
-  if (ubActionCode == THROW_ARM_ITEM) {
+  if (ubActionCode == Enum258.THROW_ARM_ITEM) {
     fArmed = TRUE;
   }
 
@@ -1731,7 +1731,7 @@ function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>, sGrid
 
   sStartZ = GET_SOLDIER_THROW_HEIGHT(pSoldier.value.bLevel);
   usLauncher = GetLauncherFromLaunchable(pItem.value.usItem);
-  if (fArmed && usLauncher == MORTAR) {
+  if (fArmed && usLauncher == Enum225.MORTAR) {
     // Start at 0....
     sStartZ = (pSoldier.value.bLevel * 256) + 50;
   }
@@ -1751,7 +1751,7 @@ function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>, sGrid
 function CheckForCatcher(pObject: Pointer<REAL_OBJECT>, usStructureID: UINT16): BOOLEAN {
   // Do we want to catch?
   if (pObject.value.fTestObject == NO_TEST_OBJECT) {
-    if (pObject.value.ubActionCode == THROW_TARGET_MERC_CATCH) {
+    if (pObject.value.ubActionCode == Enum258.THROW_TARGET_MERC_CATCH) {
       // Is it a guy?
       if (usStructureID < INVALID_STRUCTURE_ID) {
         // Is it the same guy?
@@ -1796,7 +1796,7 @@ function CheckForCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
 
   // Do we want to catch?
   if (pObject.value.fTestObject == NO_TEST_OBJECT) {
-    if (pObject.value.ubActionCode == THROW_TARGET_MERC_CATCH) {
+    if (pObject.value.ubActionCode == Enum258.THROW_TARGET_MERC_CATCH) {
       pSoldier = MercPtrs[pObject.value.uiActionData];
 
       // Is it a guy?
@@ -1804,11 +1804,11 @@ function CheckForCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
       uiSpacesAway = PythSpacesAway(pObject.value.sGridNo, pSoldier.value.sGridNo);
 
       if (uiSpacesAway < 4 && !pObject.value.fAttemptedCatch) {
-        if (pSoldier.value.usAnimState != CATCH_STANDING && pSoldier.value.usAnimState != CATCH_CROUCHED && pSoldier.value.usAnimState != LOWER_RIFLE) {
+        if (pSoldier.value.usAnimState != Enum193.CATCH_STANDING && pSoldier.value.usAnimState != Enum193.CATCH_CROUCHED && pSoldier.value.usAnimState != Enum193.LOWER_RIFLE) {
           if (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_STAND) {
-            EVENT_InitNewSoldierAnim(pSoldier, CATCH_STANDING, 0, FALSE);
+            EVENT_InitNewSoldierAnim(pSoldier, Enum193.CATCH_STANDING, 0, FALSE);
           } else if (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_CROUCH) {
-            EVENT_InitNewSoldierAnim(pSoldier, CATCH_CROUCHED, 0, FALSE);
+            EVENT_InitNewSoldierAnim(pSoldier, Enum193.CATCH_CROUCHED, 0, FALSE);
           }
 
           pObject.value.fCatchAnimOn = TRUE;
@@ -1862,17 +1862,17 @@ function DoCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
     case ANIM_STAND:
 
       pSoldier.value.usPendingAnimation = NO_PENDING_ANIMATION;
-      EVENT_InitNewSoldierAnim(pSoldier, END_CATCH, 0, FALSE);
+      EVENT_InitNewSoldierAnim(pSoldier, Enum193.END_CATCH, 0, FALSE);
       break;
 
     case ANIM_CROUCH:
 
       pSoldier.value.usPendingAnimation = NO_PENDING_ANIMATION;
-      EVENT_InitNewSoldierAnim(pSoldier, END_CROUCH_CATCH, 0, FALSE);
+      EVENT_InitNewSoldierAnim(pSoldier, Enum193.END_CROUCH_CATCH, 0, FALSE);
       break;
   }
 
-  PlayJA2Sample(CATCH_OBJECT, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+  PlayJA2Sample(Enum330.CATCH_OBJECT, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
 
   pObject.value.fCatchAnimOn = FALSE;
 
@@ -1890,7 +1890,7 @@ function DoCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
   if (fGoodCatch) {
     pObject.value.fDropItem = FALSE;
 
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[MSG_MERC_CAUGHT_ITEM], pSoldier.value.name, ShortItemNames[usItem]);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[Enum333.MSG_MERC_CAUGHT_ITEM], pSoldier.value.name, ShortItemNames[usItem]);
   }
 
   return TRUE;
@@ -1920,7 +1920,7 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
     fCheckForDuds = TRUE;
   }
 
-  if (pObj.value.usItem == MORTAR_SHELL) {
+  if (pObj.value.usItem == Enum225.MORTAR_SHELL) {
     fCheckForDuds = TRUE;
   }
 
@@ -1944,12 +1944,12 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
         // Start timed bomb...
         usFlags |= WORLD_ITEM_ARMED_BOMB;
 
-        pObj.value.bDetonatorType = BOMB_TIMED;
+        pObj.value.bDetonatorType = Enum224.BOMB_TIMED;
         pObj.value.bDelay = (1 + PreRandom(2));
       }
 
       // ATE: If we have collided with roof last...
-      if (pObject.value.iOldCollisionCode == COLLISION_ROOF) {
+      if (pObject.value.iOldCollisionCode == Enum229.COLLISION_ROOF) {
         bLevel = 1;
       }
 
@@ -1960,7 +1960,7 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
       NotifySoldiersToLookforItems();
 
       if (pObject.value.ubOwner != NOBODY) {
-        DoMercBattleSound(MercPtrs[pObject.value.ubOwner], (BATTLE_SOUND_CURSE1));
+        DoMercBattleSound(MercPtrs[pObject.value.ubOwner], (Enum259.BATTLE_SOUND_CURSE1));
       }
     }
   } else {
@@ -1968,9 +1968,9 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
   }
 
   if (fDoImpact) {
-    if (pObject.value.Obj.usItem == BREAK_LIGHT) {
+    if (pObject.value.Obj.usItem == Enum225.BREAK_LIGHT) {
       // Add a light effect...
-      NewLightEffect(pObject.value.sGridNo, LIGHT_FLARE_MARK_1);
+      NewLightEffect(pObject.value.sGridNo, Enum305.LIGHT_FLARE_MARK_1);
     } else if (Item[pObject.value.Obj.usItem].usItemClass & IC_GRENADE) {
       /* ARM: Removed.  Rewards even missed throws, and pulling a pin doesn't really teach anything about explosives
                               if ( MercPtrs[ pObject->ubOwner ]->bTeam == gbPlayerNum && gTacticalStatus.uiFlags & INCOMBAT )
@@ -1985,7 +1985,7 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
       */
 
       IgniteExplosion(pObject.value.ubOwner, pObject.value.Position.x, pObject.value.Position.y, sZ, pObject.value.sGridNo, pObject.value.Obj.usItem, GET_OBJECT_LEVEL(pObject.value.Position.z - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pObject.value.sGridNo].sHeight)));
-    } else if (pObject.value.Obj.usItem == MORTAR_SHELL) {
+    } else if (pObject.value.Obj.usItem == Enum225.MORTAR_SHELL) {
       sZ = CONVERT_HEIGHTUNITS_TO_PIXELS(pObject.value.Position.z);
 
       IgniteExplosion(pObject.value.ubOwner, pObject.value.Position.x, pObject.value.Position.y, sZ, pObject.value.sGridNo, pObject.value.Obj.usItem, GET_OBJECT_LEVEL(pObject.value.Position.z - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pObject.value.sGridNo].sHeight)));

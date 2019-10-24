@@ -66,9 +66,9 @@ function LoadGameSettings(): BOOLEAN {
     gGameSettings.ubSpeechVolume = MIDVOLUME;
 
   // make sure that at least subtitles or speech is enabled
-  if (!gGameSettings.fOptions[TOPTION_SUBTITLES] && !gGameSettings.fOptions[TOPTION_SPEECH]) {
-    gGameSettings.fOptions[TOPTION_SUBTITLES] = TRUE;
-    gGameSettings.fOptions[TOPTION_SPEECH] = TRUE;
+  if (!gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES] && !gGameSettings.fOptions[Enum8.TOPTION_SPEECH]) {
+    gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES] = TRUE;
+    gGameSettings.fOptions[Enum8.TOPTION_SPEECH] = TRUE;
   }
 
   //
@@ -137,33 +137,33 @@ function InitGameSettings(): void {
   SetSpeechVolume(gGameSettings.ubSpeechVolume);
   MusicSetVolume(gGameSettings.ubMusicVolumeSetting);
 
-  gGameSettings.fOptions[TOPTION_SUBTITLES] = TRUE;
-  gGameSettings.fOptions[TOPTION_SPEECH] = TRUE;
-  gGameSettings.fOptions[TOPTION_KEY_ADVANCE_SPEECH] = FALSE;
-  gGameSettings.fOptions[TOPTION_RTCONFIRM] = FALSE;
-  gGameSettings.fOptions[TOPTION_HIDE_BULLETS] = FALSE;
-  gGameSettings.fOptions[TOPTION_TRACKING_MODE] = TRUE;
-  gGameSettings.fOptions[TOPTION_MUTE_CONFIRMATIONS] = FALSE;
-  gGameSettings.fOptions[TOPTION_ANIMATE_SMOKE] = TRUE;
-  gGameSettings.fOptions[TOPTION_BLOOD_N_GORE] = TRUE;
-  gGameSettings.fOptions[TOPTION_DONT_MOVE_MOUSE] = FALSE;
-  gGameSettings.fOptions[TOPTION_OLD_SELECTION_METHOD] = FALSE;
-  gGameSettings.fOptions[TOPTION_ALWAYS_SHOW_MOVEMENT_PATH] = FALSE;
+  gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES] = TRUE;
+  gGameSettings.fOptions[Enum8.TOPTION_SPEECH] = TRUE;
+  gGameSettings.fOptions[Enum8.TOPTION_KEY_ADVANCE_SPEECH] = FALSE;
+  gGameSettings.fOptions[Enum8.TOPTION_RTCONFIRM] = FALSE;
+  gGameSettings.fOptions[Enum8.TOPTION_HIDE_BULLETS] = FALSE;
+  gGameSettings.fOptions[Enum8.TOPTION_TRACKING_MODE] = TRUE;
+  gGameSettings.fOptions[Enum8.TOPTION_MUTE_CONFIRMATIONS] = FALSE;
+  gGameSettings.fOptions[Enum8.TOPTION_ANIMATE_SMOKE] = TRUE;
+  gGameSettings.fOptions[Enum8.TOPTION_BLOOD_N_GORE] = TRUE;
+  gGameSettings.fOptions[Enum8.TOPTION_DONT_MOVE_MOUSE] = FALSE;
+  gGameSettings.fOptions[Enum8.TOPTION_OLD_SELECTION_METHOD] = FALSE;
+  gGameSettings.fOptions[Enum8.TOPTION_ALWAYS_SHOW_MOVEMENT_PATH] = FALSE;
 
-  gGameSettings.fOptions[TOPTION_SLEEPWAKE_NOTIFICATION] = TRUE;
+  gGameSettings.fOptions[Enum8.TOPTION_SLEEPWAKE_NOTIFICATION] = TRUE;
 
-  gGameSettings.fOptions[TOPTION_USE_METRIC_SYSTEM] = FALSE;
+  gGameSettings.fOptions[Enum8.TOPTION_USE_METRIC_SYSTEM] = FALSE;
 
-  gGameSettings.fOptions[TOPTION_MERC_ALWAYS_LIGHT_UP] = FALSE;
-  gGameSettings.fOptions[TOPTION_SMART_CURSOR] = FALSE;
+  gGameSettings.fOptions[Enum8.TOPTION_MERC_ALWAYS_LIGHT_UP] = FALSE;
+  gGameSettings.fOptions[Enum8.TOPTION_SMART_CURSOR] = FALSE;
 
-  gGameSettings.fOptions[TOPTION_SNAP_CURSOR_TO_DOOR] = TRUE;
-  gGameSettings.fOptions[TOPTION_GLOW_ITEMS] = TRUE;
-  gGameSettings.fOptions[TOPTION_TOGGLE_TREE_TOPS] = TRUE;
-  gGameSettings.fOptions[TOPTION_TOGGLE_WIREFRAME] = TRUE;
-  gGameSettings.fOptions[TOPTION_3D_CURSOR] = FALSE;
+  gGameSettings.fOptions[Enum8.TOPTION_SNAP_CURSOR_TO_DOOR] = TRUE;
+  gGameSettings.fOptions[Enum8.TOPTION_GLOW_ITEMS] = TRUE;
+  gGameSettings.fOptions[Enum8.TOPTION_TOGGLE_TREE_TOPS] = TRUE;
+  gGameSettings.fOptions[Enum8.TOPTION_TOGGLE_WIREFRAME] = TRUE;
+  gGameSettings.fOptions[Enum8.TOPTION_3D_CURSOR] = FALSE;
   // JA2Gold
-  gGameSettings.fOptions[TOPTION_MERC_CASTS_LIGHT] = TRUE;
+  gGameSettings.fOptions[Enum8.TOPTION_MERC_CASTS_LIGHT] = TRUE;
 
   gGameSettings.ubSizeOfDisplayCover = 4;
   gGameSettings.ubSizeOfLOS = 4;
@@ -178,7 +178,7 @@ function InitGameOptions(): void {
   // Init the game options
   gGameOptions.fGunNut = FALSE;
   gGameOptions.fSciFi = TRUE;
-  gGameOptions.ubDifficultyLevel = DIF_LEVEL_EASY;
+  gGameOptions.ubDifficultyLevel = Enum9.DIF_LEVEL_EASY;
   // gGameOptions.fTurnTimeLimit		 = FALSE;
   gGameOptions.fIronManMode = FALSE;
 }
@@ -362,11 +362,11 @@ function CheckIfGameCdromIsInCDromDrive(): BOOLEAN {
 
     // if a game has been started, add the msg about saving the game to a different entry
     if (gTacticalStatus.fHasAGameBeenStarted) {
-      sprintf(sString, "%S  %S", pMessageStrings[MSG_INTEGRITY_WARNING], pMessageStrings[MSG_CDROM_SAVE_GAME]);
+      sprintf(sString, "%S  %S", pMessageStrings[Enum333.MSG_INTEGRITY_WARNING], pMessageStrings[Enum333.MSG_CDROM_SAVE_GAME]);
 
-      SaveGame(SAVE__ERROR_NUM, pMessageStrings[MSG_CDROM_SAVE]);
+      SaveGame(SAVE__ERROR_NUM, pMessageStrings[Enum333.MSG_CDROM_SAVE]);
     } else {
-      sprintf(sString, "%S", pMessageStrings[MSG_INTEGRITY_WARNING]);
+      sprintf(sString, "%S", pMessageStrings[Enum333.MSG_INTEGRITY_WARNING]);
     }
 
     // ATE: These are ness. due to reference counting
@@ -403,11 +403,11 @@ function GetCdromLocationFromIniFile(pRootOfCdromDrive: STR): BOOLEAN {
 
 function CDromEjectionErrorMessageBoxCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_OK) {
-    guiPreviousOptionScreen = GAME_SCREEN;
+    guiPreviousOptionScreen = Enum26.GAME_SCREEN;
 
     // if we are in a game, save the game
     if (gTacticalStatus.fHasAGameBeenStarted) {
-      SaveGame(SAVE__ERROR_NUM, pMessageStrings[MSG_CDROM_SAVE]);
+      SaveGame(SAVE__ERROR_NUM, pMessageStrings[Enum333.MSG_CDROM_SAVE]);
     }
 
     // quit the game
@@ -435,22 +435,22 @@ function IsDriveLetterACDromDrive(pDriveLetter: STR): BOOLEAN {
 
 function DisplayGameSettings(): void {
   // Display the version number
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s (%S)", pMessageStrings[MSG_VERSION], zVersionLabel, czVersionNumber);
+  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s (%S)", pMessageStrings[Enum333.MSG_VERSION], zVersionLabel, czVersionNumber);
 
   // Display the difficulty level
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[GIO_DIF_LEVEL_TEXT], gzGIOScreenText[gGameOptions.ubDifficultyLevel + GIO_EASY_TEXT - 1]);
+  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[Enum375.GIO_DIF_LEVEL_TEXT], gzGIOScreenText[gGameOptions.ubDifficultyLevel + Enum375.GIO_EASY_TEXT - 1]);
 
   // Iron man option
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[GIO_GAME_SAVE_STYLE_TEXT], gzGIOScreenText[GIO_SAVE_ANYWHERE_TEXT + gGameOptions.fIronManMode]);
+  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[Enum375.GIO_GAME_SAVE_STYLE_TEXT], gzGIOScreenText[Enum375.GIO_SAVE_ANYWHERE_TEXT + gGameOptions.fIronManMode]);
 
   // Gun option
   if (gGameOptions.fGunNut)
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[GIO_GUN_OPTIONS_TEXT], gzGIOScreenText[GIO_GUN_NUT_TEXT]);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[Enum375.GIO_GUN_OPTIONS_TEXT], gzGIOScreenText[Enum375.GIO_GUN_NUT_TEXT]);
   else
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[GIO_GUN_OPTIONS_TEXT], gzGIOScreenText[GIO_REDUCED_GUNS_TEXT]);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[Enum375.GIO_GUN_OPTIONS_TEXT], gzGIOScreenText[Enum375.GIO_REDUCED_GUNS_TEXT]);
 
   // Sci fi option
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[GIO_GAME_STYLE_TEXT], gzGIOScreenText[GIO_REALISTIC_TEXT + gGameOptions.fSciFi]);
+  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[Enum375.GIO_GAME_STYLE_TEXT], gzGIOScreenText[Enum375.GIO_REALISTIC_TEXT + gGameOptions.fSciFi]);
 
   // Timed Turns option
   // JA2Gold: no timed turns
@@ -464,7 +464,7 @@ function DisplayGameSettings(): void {
 function MeanwhileSceneSeen(ubMeanwhile: UINT8): BOOLEAN {
   let uiCheckFlag: UINT32;
 
-  if (ubMeanwhile > 32 || ubMeanwhile > NUM_MEANWHILES) {
+  if (ubMeanwhile > 32 || ubMeanwhile > Enum160.NUM_MEANWHILES) {
     return FALSE;
   }
 
@@ -480,7 +480,7 @@ function MeanwhileSceneSeen(ubMeanwhile: UINT8): BOOLEAN {
 function SetMeanwhileSceneSeen(ubMeanwhile: UINT8): BOOLEAN {
   let uiCheckFlag: UINT32;
 
-  if (ubMeanwhile > 32 || ubMeanwhile > NUM_MEANWHILES) {
+  if (ubMeanwhile > 32 || ubMeanwhile > Enum160.NUM_MEANWHILES) {
     // can't set such a flag!
     return FALSE;
   }

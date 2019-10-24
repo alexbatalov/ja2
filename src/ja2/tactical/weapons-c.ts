@@ -37,35 +37,35 @@ let gfReportHitChances: BOOLEAN = FALSE;
 // TODO: Move strings to extern file
 
 const PISTOL = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
-  { HANDGUNCLASS, GUN_PISTOL, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_PISTOL, S_LNL_PISTOL };
+  { Enum282.HANDGUNCLASS, Enum283.GUN_PISTOL, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, Enum330.S_RELOAD_PISTOL, Enum330.S_LNL_PISTOL };
 const M_PISTOL = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
-  { HANDGUNCLASS, GUN_M_PISTOL, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_PISTOL, S_LNL_PISTOL };
+  { Enum282.HANDGUNCLASS, Enum283.GUN_M_PISTOL, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, Enum330.S_RELOAD_PISTOL, Enum330.S_LNL_PISTOL };
 const SMG = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
-  { SMGCLASS, GUN_SMG, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_SMG, S_LNL_SMG };
+  { Enum282.SMGCLASS, Enum283.GUN_SMG, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, Enum330.S_RELOAD_SMG, Enum330.S_LNL_SMG };
 const SN_RIFLE = (ammo, update, impact, rt, rof, burstrof, deadl, acc, clip, range, av, hv, sd, bsd) =>
-  { RIFLECLASS, GUN_SN_RIFLE, ammo, rt, rof, burstrof, 0, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_RIFLE, S_LNL_RIFLE };
+  { Enum282.RIFLECLASS, Enum283.GUN_SN_RIFLE, ammo, rt, rof, burstrof, 0, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, Enum330.S_RELOAD_RIFLE, Enum330.S_LNL_RIFLE };
 const RIFLE = (ammo, update, impact, rt, rof, burstrof, deadl, acc, clip, range, av, hv, sd, bsd) =>
-  { RIFLECLASS, GUN_RIFLE, ammo, rt, rof, burstrof, 0, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_RIFLE, S_LNL_RIFLE };
+  { Enum282.RIFLECLASS, Enum283.GUN_RIFLE, ammo, rt, rof, burstrof, 0, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, Enum330.S_RELOAD_RIFLE, Enum330.S_LNL_RIFLE };
 const ASRIFLE = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
-  { RIFLECLASS, GUN_AS_RIFLE, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_RIFLE, S_LNL_RIFLE };
+  { Enum282.RIFLECLASS, Enum283.GUN_AS_RIFLE, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, Enum330.S_RELOAD_RIFLE, Enum330.S_LNL_RIFLE };
 const SHOTGUN = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
-  { SHOTGUNCLASS, GUN_SHOTGUN, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_SHOTGUN, S_LNL_SHOTGUN };
+  { Enum282.SHOTGUNCLASS, Enum283.GUN_SHOTGUN, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, Enum330.S_RELOAD_SHOTGUN, Enum330.S_LNL_SHOTGUN };
 const LMG = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
-  { MGCLASS, GUN_LMG, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_LMG, S_LNL_LMG };
+  { Enum282.MGCLASS, Enum283.GUN_LMG, ammo, rt, rof, burstrof, burstpenal, update, (impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, Enum330.S_RELOAD_LMG, Enum330.S_LNL_LMG };
 const BLADE = (impact, rof, deadl, range, av, sd) =>
-  { KNIFECLASS, NOT_GUN, 0, AP_READY_KNIFE, rof, 0, 0, 0, (impact), deadl, 0, 0, range, 200, av, 0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
+  { Enum282.KNIFECLASS, Enum283.NOT_GUN, 0, AP_READY_KNIFE, rof, 0, 0, 0, (impact), deadl, 0, 0, range, 200, av, 0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
 const THROWINGBLADE = (impact, rof, deadl, range, av, sd) =>
-  { KNIFECLASS, NOT_GUN, 0, AP_READY_KNIFE, rof, 0, 0, 0, (impact), deadl, 0, 0, range, 200, av, 0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
+  { Enum282.KNIFECLASS, Enum283.NOT_GUN, 0, AP_READY_KNIFE, rof, 0, 0, 0, (impact), deadl, 0, 0, range, 200, av, 0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
 const PUNCHWEAPON = (impact, rof, deadl, av, sd) =>
-  { KNIFECLASS, NOT_GUN, 0, 0, rof, 0, 0, 0, (impact), deadl, 0, 0, 10, 200, av, 0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
+  { Enum282.KNIFECLASS, Enum283.NOT_GUN, 0, 0, rof, 0, 0, 0, (impact), deadl, 0, 0, 10, 200, av, 0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
 const LAUNCHER = (update, rt, rof, deadl, acc, range, av, hv, sd) =>
-  { RIFLECLASS, NOT_GUN, NOAMMO, rt, rof, 0, 0, update, 1, deadl, acc, 0, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
+  { Enum282.RIFLECLASS, Enum283.NOT_GUN, Enum285.NOAMMO, rt, rof, 0, 0, update, 1, deadl, acc, 0, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
 const LAW = (update, rt, rof, deadl, acc, range, av, hv, sd) =>
-  { RIFLECLASS, NOT_GUN, NOAMMO, rt, rof, 0, 0, update, 80, deadl, acc, 1, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
+  { Enum282.RIFLECLASS, Enum283.NOT_GUN, Enum285.NOAMMO, rt, rof, 0, 0, update, 80, deadl, acc, 1, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
 const CANNON = (update, rt, rof, deadl, acc, range, av, hv, sd) =>
-  { RIFLECLASS, NOT_GUN, NOAMMO, rt, rof, 0, 0, update, 80, deadl, acc, 1, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
+  { Enum282.RIFLECLASS, Enum283.NOT_GUN, Enum285.NOAMMO, rt, rof, 0, 0, update, 80, deadl, acc, 1, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
 const MONSTSPIT = (impact, rof, deadl, clip, range, av, hv, sd) =>
-  { MONSTERCLASS, NOT_GUN, AMMOMONST, AP_READY_KNIFE, rof, 0, 0, 250, (impact), deadl, 0, clip, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
+  { Enum282.MONSTERCLASS, Enum283.NOT_GUN, Enum285.AMMOMONST, AP_READY_KNIFE, rof, 0, 0, 250, (impact), deadl, 0, clip, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
 
 // ranges are in world units, calculated by:
 // 100 + real-range-in-metres/10
@@ -79,212 +79,212 @@ let Weapon: WEAPONTYPE[] /* [MAX_WEAPONS] */ = [
   //          Description			  Ammo      Bullet	Ready	 4xSng Burst	Burst	Deadl	Accu	Clip	Range Attack Impact		Fire
   //										   Spd  Imp	Time	 ROF	 ROF		penal	iness	racy	Size					Vol   Vol			Sounds
   [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0 ], // nada!  must have min range of 10
-  PISTOL(/* Glock 17			*/ AMMO9, 24, 21, 0, 14, 0, 0, 8, 0, 15, 120, 60, 5, S_GLOCK17, NO_WEAPON_SOUND), // wt 6  // Austria
-  M_PISTOL(/* Glock 18		*/ AMMO9, 24, 21, 0, 14, 5, 15, 9, 0, 15, 120, 60, 5, S_GLOCK18, S_BURSTTYPE1), // wt 6  // Austria
-  PISTOL(/* Beretta 92F     */ AMMO9, 23, 22, 0, 16, 0, 0, 9, 0, 15, 120, 60, 5, S_BERETTA92, NO_WEAPON_SOUND), // wt 11 // Italy
-  M_PISTOL(/* Beretta 93R   */ AMMO9, 23, 22, 0, 13, 5, 15, 9, 0, 15, 120, 60, 5, S_BERETTA93, S_BURSTTYPE1), // wt 11 // Italy
-  PISTOL(/* .38 S&W Special */ AMMO38, 23, 22, 0, 11, 0, 0, 6, 0, 6, 130, 63, 5, S_SWSPECIAL, NO_WEAPON_SOUND), // wt 11 // Britain
-  PISTOL(/* .357 Barracuda  */ AMMO357, 23, 24, 0, 11, 0, 0, 7, 0, 6, 135, 66, 6, S_BARRACUDA, NO_WEAPON_SOUND), // wt 10 // Belgium
-  PISTOL(/* .357 DesertEagle*/ AMMO357, 24, 24, 0, 11, 0, 0, 7, 0, 9, 135, 66, 6, S_DESERTEAGLE, NO_WEAPON_SOUND), // wt 17 // US
-  PISTOL(/* .45 M1911       */ AMMO45, 24, 23, 0, 13, 0, 0, 9, 0, 7, 125, 69, 6, S_M1911, NO_WEAPON_SOUND), // wt 12 // US
+  PISTOL(/* Glock 17			*/ Enum285.AMMO9, 24, 21, 0, 14, 0, 0, 8, 0, 15, 120, 60, 5, Enum330.S_GLOCK17, NO_WEAPON_SOUND), // wt 6  // Austria
+  M_PISTOL(/* Glock 18		*/ Enum285.AMMO9, 24, 21, 0, 14, 5, 15, 9, 0, 15, 120, 60, 5, Enum330.S_GLOCK18, Enum330.S_BURSTTYPE1), // wt 6  // Austria
+  PISTOL(/* Beretta 92F     */ Enum285.AMMO9, 23, 22, 0, 16, 0, 0, 9, 0, 15, 120, 60, 5, Enum330.S_BERETTA92, NO_WEAPON_SOUND), // wt 11 // Italy
+  M_PISTOL(/* Beretta 93R   */ Enum285.AMMO9, 23, 22, 0, 13, 5, 15, 9, 0, 15, 120, 60, 5, Enum330.S_BERETTA93, Enum330.S_BURSTTYPE1), // wt 11 // Italy
+  PISTOL(/* .38 S&W Special */ Enum285.AMMO38, 23, 22, 0, 11, 0, 0, 6, 0, 6, 130, 63, 5, Enum330.S_SWSPECIAL, NO_WEAPON_SOUND), // wt 11 // Britain
+  PISTOL(/* .357 Barracuda  */ Enum285.AMMO357, 23, 24, 0, 11, 0, 0, 7, 0, 6, 135, 66, 6, Enum330.S_BARRACUDA, NO_WEAPON_SOUND), // wt 10 // Belgium
+  PISTOL(/* .357 DesertEagle*/ Enum285.AMMO357, 24, 24, 0, 11, 0, 0, 7, 0, 9, 135, 66, 6, Enum330.S_DESERTEAGLE, NO_WEAPON_SOUND), // wt 17 // US
+  PISTOL(/* .45 M1911       */ Enum285.AMMO45, 24, 23, 0, 13, 0, 0, 9, 0, 7, 125, 69, 6, Enum330.S_M1911, NO_WEAPON_SOUND), // wt 12 // US
 
-  SMG(/* H&K MP5K      	 */ AMMO9, 23, 23, 1, 15, 5, 8, 17, 0, 30, 200, 75, 7, S_MP5K, S_BURSTTYPE1), // wt 21 // Germany; ROF 900 ?
-  SMG(/* .45 MAC-10	     */ AMMO45, 23, 27, 2, 13, 5, 8, 20, 0, 30, 200, 75, 7, S_MAC10, S_BURSTTYPE1), // wt 28 // US; ROF 1090
-  SMG(/* Thompson M1A1   */ AMMO45, 23, 24, 2, 10, 4, 8, 14, 0, 30, 200, 75, 7, S_THOMPSON, S_BURSTTYPE1), // wt 48 // US; ROF 700
-  SMG(/* Colt Commando   */ AMMO556, 20, 29, 2, 15, 4, 8, 23, 0, 30, 200, 75, 7, S_COMMANDO, S_BURSTTYPE1), // wt 26 // US; ROF
-  SMG(/* H&K MP53		 		 */ AMMO556, 22, 25, 2, 12, 3, 8, 15, 0, 30, 200, 75, 7, S_MP53, S_BURSTTYPE1), // wt 31 // Germany // eff range assumed; ROF 700 ?
-  SMG(/* AKSU-74         */ AMMO545, 21, 26, 2, 17, 4, 8, 21, 0, 30, 200, 75, 7, S_AKSU74, S_BURSTTYPE1), // wt 39 // USSR; ROF 800
-  SMG(/* 5.7mm FN P90    */ AMMO57, 21, 30, 2, 15, 5, 8, 42, 0, 50, 225, 75, 7, S_P90, S_BURSTTYPE1), // wt 28 // Belgium; ROF 800-1000
-  SMG(/* Type-85         */ AMMO762W, 23, 23, 1, 10, 4, 11, 12, 0, 30, 200, 75, 7, S_TYPE85, S_BURSTTYPE1), // wt 19 // China; ROF 780
+  SMG(/* H&K MP5K      	 */ Enum285.AMMO9, 23, 23, 1, 15, 5, 8, 17, 0, 30, 200, 75, 7, Enum330.S_MP5K, Enum330.S_BURSTTYPE1), // wt 21 // Germany; ROF 900 ?
+  SMG(/* .45 MAC-10	     */ Enum285.AMMO45, 23, 27, 2, 13, 5, 8, 20, 0, 30, 200, 75, 7, Enum330.S_MAC10, Enum330.S_BURSTTYPE1), // wt 28 // US; ROF 1090
+  SMG(/* Thompson M1A1   */ Enum285.AMMO45, 23, 24, 2, 10, 4, 8, 14, 0, 30, 200, 75, 7, Enum330.S_THOMPSON, Enum330.S_BURSTTYPE1), // wt 48 // US; ROF 700
+  SMG(/* Colt Commando   */ Enum285.AMMO556, 20, 29, 2, 15, 4, 8, 23, 0, 30, 200, 75, 7, Enum330.S_COMMANDO, Enum330.S_BURSTTYPE1), // wt 26 // US; ROF
+  SMG(/* H&K MP53		 		 */ Enum285.AMMO556, 22, 25, 2, 12, 3, 8, 15, 0, 30, 200, 75, 7, Enum330.S_MP53, Enum330.S_BURSTTYPE1), // wt 31 // Germany // eff range assumed; ROF 700 ?
+  SMG(/* AKSU-74         */ Enum285.AMMO545, 21, 26, 2, 17, 4, 8, 21, 0, 30, 200, 75, 7, Enum330.S_AKSU74, Enum330.S_BURSTTYPE1), // wt 39 // USSR; ROF 800
+  SMG(/* 5.7mm FN P90    */ Enum285.AMMO57, 21, 30, 2, 15, 5, 8, 42, 0, 50, 225, 75, 7, Enum330.S_P90, Enum330.S_BURSTTYPE1), // wt 28 // Belgium; ROF 800-1000
+  SMG(/* Type-85         */ Enum285.AMMO762W, 23, 23, 1, 10, 4, 11, 12, 0, 30, 200, 75, 7, Enum330.S_TYPE85, Enum330.S_BURSTTYPE1), // wt 19 // China; ROF 780
 
-  RIFLE(/* SKS             */ AMMO762W, 22, 31, 2, 13, 0, 24, 0, 10, 300, 80, 8, S_SKS, S_BURSTTYPE1), // wt 39 // USSR
-  SN_RIFLE(/* Dragunov      */ AMMO762W, 21, 36, 5, 11, 0, 32, 0, 10, 750, 80, 8, S_DRAGUNOV, S_BURSTTYPE1), // wt 43 // USSR
-  SN_RIFLE(/* M24           */ AMMO762N, 21, 36, 5, 8, 0, 32, 0, 5, 800, 80, 8, S_M24, S_BURSTTYPE1), // wt 66 // US
+  RIFLE(/* SKS             */ Enum285.AMMO762W, 22, 31, 2, 13, 0, 24, 0, 10, 300, 80, 8, Enum330.S_SKS, Enum330.S_BURSTTYPE1), // wt 39 // USSR
+  SN_RIFLE(/* Dragunov      */ Enum285.AMMO762W, 21, 36, 5, 11, 0, 32, 0, 10, 750, 80, 8, Enum330.S_DRAGUNOV, Enum330.S_BURSTTYPE1), // wt 43 // USSR
+  SN_RIFLE(/* M24           */ Enum285.AMMO762N, 21, 36, 5, 8, 0, 32, 0, 5, 800, 80, 8, Enum330.S_M24, Enum330.S_BURSTTYPE1), // wt 66 // US
 
-  ASRIFLE(/* Steyr AUG       */ AMMO556, 20, 30, 2, 13, 3, 8, 38, 0, 30, 500, 77, 8, S_AUG, S_BURSTTYPE1), // wt 36 // Austria; ROF 650
-  ASRIFLE(/* H&K G41         */ AMMO556, 20, 29, 2, 13, 4, 8, 27, 0, 30, 300, 77, 8, S_G41, S_BURSTTYPE1), // wt 41 // Germany; ROF 850
-  RIFLE(/* Ruger Mini-14	 */ AMMO556, 20, 30, 2, 13, 0, 20, 0, 30, 250, 77, 8, S_RUGERMINI, S_BURSTTYPE1), // wt 29 // US; ROF 750
-  ASRIFLE(/* C-7             */ AMMO556, 20, 30, 2, 15, 5, 8, 41, 0, 30, 400, 77, 8, S_C7, S_BURSTTYPE1), // wt 36 // Canada; ROF 600-940
-  ASRIFLE(/* FA-MAS          */ AMMO556, 20, 30, 2, 17, 5, 8, 32, 0, 30, 250, 77, 8, S_FAMAS, S_BURSTTYPE1), // wt 36 // France; ROF 900-1000
-  ASRIFLE(/* AK-74           */ AMMO545, 20, 28, 2, 17, 3, 8, 30, 0, 30, 350, 77, 8, S_AK74, S_BURSTTYPE1), // wt 36 // USSR; ROF 650
-  ASRIFLE(/* AKM             */ AMMO762W, 22, 29, 2, 17, 3, 11, 25, 0, 30, 250, 77, 8, S_AKM, S_BURSTTYPE1), // wt 43 // USSR; ROF 600
-  ASRIFLE(/* M-14            */ AMMO762N, 20, 33, 2, 13, 4, 11, 33, 0, 20, 330, 80, 8, S_M14, S_BURSTTYPE1), // wt 29 // US; ROF 750
-  ASRIFLE(/* FN-FAL          */ AMMO762N, 20, 32, 2, 17, 3, 11, 41, 0, 20, 425, 80, 8, S_FNFAL, S_BURSTTYPE1), // wt 43 // Belgium; ROF
-  ASRIFLE(/* H&K G3A3        */ AMMO762N, 21, 31, 2, 13, 3, 11, 26, 0, 20, 300, 80, 8, S_G3A3, S_BURSTTYPE1), // wt 44 // Germany; ROF 500-600
-  ASRIFLE(/* H&K G11         */ AMMO47, 20, 27, 2, 13, 3, 0, 40, 0, 50, 300, 80, 8, S_G11, S_BURSTTYPE1), // wt 38 // Germany; ROF 600
+  ASRIFLE(/* Steyr AUG       */ Enum285.AMMO556, 20, 30, 2, 13, 3, 8, 38, 0, 30, 500, 77, 8, Enum330.S_AUG, Enum330.S_BURSTTYPE1), // wt 36 // Austria; ROF 650
+  ASRIFLE(/* H&K G41         */ Enum285.AMMO556, 20, 29, 2, 13, 4, 8, 27, 0, 30, 300, 77, 8, Enum330.S_G41, Enum330.S_BURSTTYPE1), // wt 41 // Germany; ROF 850
+  RIFLE(/* Ruger Mini-14	 */ Enum285.AMMO556, 20, 30, 2, 13, 0, 20, 0, 30, 250, 77, 8, Enum330.S_RUGERMINI, Enum330.S_BURSTTYPE1), // wt 29 // US; ROF 750
+  ASRIFLE(/* C-7             */ Enum285.AMMO556, 20, 30, 2, 15, 5, 8, 41, 0, 30, 400, 77, 8, Enum330.S_C7, Enum330.S_BURSTTYPE1), // wt 36 // Canada; ROF 600-940
+  ASRIFLE(/* FA-MAS          */ Enum285.AMMO556, 20, 30, 2, 17, 5, 8, 32, 0, 30, 250, 77, 8, Enum330.S_FAMAS, Enum330.S_BURSTTYPE1), // wt 36 // France; ROF 900-1000
+  ASRIFLE(/* AK-74           */ Enum285.AMMO545, 20, 28, 2, 17, 3, 8, 30, 0, 30, 350, 77, 8, Enum330.S_AK74, Enum330.S_BURSTTYPE1), // wt 36 // USSR; ROF 650
+  ASRIFLE(/* AKM             */ Enum285.AMMO762W, 22, 29, 2, 17, 3, 11, 25, 0, 30, 250, 77, 8, Enum330.S_AKM, Enum330.S_BURSTTYPE1), // wt 43 // USSR; ROF 600
+  ASRIFLE(/* M-14            */ Enum285.AMMO762N, 20, 33, 2, 13, 4, 11, 33, 0, 20, 330, 80, 8, Enum330.S_M14, Enum330.S_BURSTTYPE1), // wt 29 // US; ROF 750
+  ASRIFLE(/* FN-FAL          */ Enum285.AMMO762N, 20, 32, 2, 17, 3, 11, 41, 0, 20, 425, 80, 8, Enum330.S_FNFAL, Enum330.S_BURSTTYPE1), // wt 43 // Belgium; ROF
+  ASRIFLE(/* H&K G3A3        */ Enum285.AMMO762N, 21, 31, 2, 13, 3, 11, 26, 0, 20, 300, 80, 8, Enum330.S_G3A3, Enum330.S_BURSTTYPE1), // wt 44 // Germany; ROF 500-600
+  ASRIFLE(/* H&K G11         */ Enum285.AMMO47, 20, 27, 2, 13, 3, 0, 40, 0, 50, 300, 80, 8, Enum330.S_G11, Enum330.S_BURSTTYPE1), // wt 38 // Germany; ROF 600
 
-  SHOTGUN(/* Remington M870  */ AMMO12G, 24, 32, 2, 7, 0, 0, 14, 0, 7, 135, 80, 8, S_M870, S_BURSTTYPE1), // wt 36 // US; damage for solid slug
-  SHOTGUN(/* SPAS-15				 */ AMMO12G, 24, 32, 2, 10, 0, 0, 18, 0, 7, 135, 80, 8, S_SPAS, S_BURSTTYPE1), // wt 38 // Italy; semi-auto; damage for solid slug
-  SHOTGUN(/* CAWS            */ AMMOCAWS, 24, 40, 2, 10, 3, 11, 44, 0, 10, 135, 80, 8, S_CAWS, S_BURSTTYPE1), // wt 41 // US; fires 8 flechettes at once in very close fixed pattern
+  SHOTGUN(/* Remington M870  */ Enum285.AMMO12G, 24, 32, 2, 7, 0, 0, 14, 0, 7, 135, 80, 8, Enum330.S_M870, Enum330.S_BURSTTYPE1), // wt 36 // US; damage for solid slug
+  SHOTGUN(/* SPAS-15				 */ Enum285.AMMO12G, 24, 32, 2, 10, 0, 0, 18, 0, 7, 135, 80, 8, Enum330.S_SPAS, Enum330.S_BURSTTYPE1), // wt 38 // Italy; semi-auto; damage for solid slug
+  SHOTGUN(/* CAWS            */ Enum285.AMMOCAWS, 24, 40, 2, 10, 3, 11, 44, 0, 10, 135, 80, 8, Enum330.S_CAWS, Enum330.S_BURSTTYPE1), // wt 41 // US; fires 8 flechettes at once in very close fixed pattern
 
-  LMG(/* FN Minimi       */ AMMO556, 20, 28, 3, 13, 6, 5, 48, 0, 30, 500, 82, 8, S_FNMINI, S_BURSTTYPE1), // wt 68 // Belgium; ROF 750-1000
-  LMG(/* RPK-74          */ AMMO545, 21, 30, 2, 13, 5, 5, 49, 0, 30, 500, 82, 8, S_RPK74, S_BURSTTYPE1), // wt 48 // USSR; ROF 800?
-  LMG(/* H&K 21E         */ AMMO762N, 21, 32, 3, 13, 5, 7, 52, 0, 20, 500, 82, 8, S_21E, S_BURSTTYPE1), // wt 93 // Germany; ROF 800
+  LMG(/* FN Minimi       */ Enum285.AMMO556, 20, 28, 3, 13, 6, 5, 48, 0, 30, 500, 82, 8, Enum330.S_FNMINI, Enum330.S_BURSTTYPE1), // wt 68 // Belgium; ROF 750-1000
+  LMG(/* RPK-74          */ Enum285.AMMO545, 21, 30, 2, 13, 5, 5, 49, 0, 30, 500, 82, 8, Enum330.S_RPK74, Enum330.S_BURSTTYPE1), // wt 48 // USSR; ROF 800?
+  LMG(/* H&K 21E         */ Enum285.AMMO762N, 21, 32, 3, 13, 5, 7, 52, 0, 20, 500, 82, 8, Enum330.S_21E, Enum330.S_BURSTTYPE1), // wt 93 // Germany; ROF 800
 
   // NB blade distances will be = strength + dexterity /2
 
   BLADE(/* Combat knife    */ 18, 12, 5, 40, 2, NO_WEAPON_SOUND),
-  THROWINGBLADE(/* Throwing knife  */ 15, 12, 4, 150, 2, S_THROWKNIFE),
+  THROWINGBLADE(/* Throwing knife  */ 15, 12, 4, 150, 2, Enum330.S_THROWKNIFE),
   [ 0 ], // rock
-  LAUNCHER(/* grenade launcher*/ 30, 3, 5, 80, 0, 500, 20, 10, S_GLAUNCHER),
-  LAUNCHER(/* mortar */ 30, 0, 5, 100, 0, 550, 20, 10, S_MORTAR_SHOT),
+  LAUNCHER(/* grenade launcher*/ 30, 3, 5, 80, 0, 500, 20, 10, Enum330.S_GLAUNCHER),
+  LAUNCHER(/* mortar */ 30, 0, 5, 100, 0, 550, 20, 10, Enum330.S_MORTAR_SHOT),
   [ 0 ], // another rock
   BLADE(/* yng male claws */ 14, 10, 1, 10, 2, NO_WEAPON_SOUND),
   BLADE(/* yng fem claws */ 18, 10, 1, 10, 2, NO_WEAPON_SOUND),
   BLADE(/* old male claws */ 20, 10, 1, 10, 2, NO_WEAPON_SOUND),
   BLADE(/* old fem claws */ 24, 10, 1, 10, 2, NO_WEAPON_SOUND),
   BLADE(/* queen's tentacles */ 20, 10, 1, 70, 2, NO_WEAPON_SOUND),
-  MONSTSPIT(/* queen's spit */ 20, 10, 1, 50, 300, 10, 5, ACR_SPIT),
+  MONSTSPIT(/* queen's spit */ 20, 10, 1, 50, 300, 10, 5, Enum330.ACR_SPIT),
   PUNCHWEAPON(/* brass knuckles */ 12, 15, 1, 0, 0),
-  LAUNCHER(/* underslung GL */ 30, 3, 7, 80, 0, 450, 20, 10, S_UNDER_GLAUNCHER),
-  LAW(/* rocket laucher */ 30, 0, 5, 80, 0, 500, 80, 10, S_ROCKET_LAUNCHER),
+  LAUNCHER(/* underslung GL */ 30, 3, 7, 80, 0, 450, 20, 10, Enum330.S_UNDER_GLAUNCHER),
+  LAW(/* rocket laucher */ 30, 0, 5, 80, 0, 500, 80, 10, Enum330.S_ROCKET_LAUNCHER),
   BLADE(/* bloodcat claws */ 12, 14, 1, 10, 2, NO_WEAPON_SOUND),
   BLADE(/* bloodcat bite */ 24, 10, 1, 10, 2, NO_WEAPON_SOUND),
   BLADE(/* machete */ 24, 9, 6, 40, 2, NO_WEAPON_SOUND),
-  RIFLE(/* rocket rifle */ AMMOROCKET, 20, 38, 2, 10, 0, 62, 0, 5, 600, 80, 10, S_SMALL_ROCKET_LAUNCHER, NO_WEAPON_SOUND),
-  PISTOL(/* automag III     */ AMMO762N, 24, 29, 1, 9, 0, 0, 13, 0, 5, 220, 72, 6, S_AUTOMAG, NO_WEAPON_SOUND),
-  MONSTSPIT(/* infant spit */ 12, 13, 1, 5, 200, 10, 5, ACR_SPIT),
-  MONSTSPIT(/* yng male spit */ 16, 10, 1, 10, 200, 10, 5, ACR_SPIT),
-  MONSTSPIT(/* old male spit */ 20, 10, 1, 20, 200, 10, 5, ACR_SPIT),
-  CANNON(/* tank cannon*/ 30, 0, 8, 80, 0, 800, 90, 10, S_TANK_CANNON),
-  PISTOL(/* DART GUN		    */ AMMODART, 25, 2, 1, 13, 0, 0, 10, 0, 1, 200, 0, 0, NO_WEAPON_SOUND, NO_WEAPON_SOUND),
-  THROWINGBLADE(/* Bloody Thrw KN */ 15, 12, 3, 150, 2, S_THROWKNIFE),
+  RIFLE(/* rocket rifle */ Enum285.AMMOROCKET, 20, 38, 2, 10, 0, 62, 0, 5, 600, 80, 10, Enum330.S_SMALL_ROCKET_LAUNCHER, NO_WEAPON_SOUND),
+  PISTOL(/* automag III     */ Enum285.AMMO762N, 24, 29, 1, 9, 0, 0, 13, 0, 5, 220, 72, 6, Enum330.S_AUTOMAG, NO_WEAPON_SOUND),
+  MONSTSPIT(/* infant spit */ 12, 13, 1, 5, 200, 10, 5, Enum330.ACR_SPIT),
+  MONSTSPIT(/* yng male spit */ 16, 10, 1, 10, 200, 10, 5, Enum330.ACR_SPIT),
+  MONSTSPIT(/* old male spit */ 20, 10, 1, 20, 200, 10, 5, Enum330.ACR_SPIT),
+  CANNON(/* tank cannon*/ 30, 0, 8, 80, 0, 800, 90, 10, Enum330.S_TANK_CANNON),
+  PISTOL(/* DART GUN		    */ Enum285.AMMODART, 25, 2, 1, 13, 0, 0, 10, 0, 1, 200, 0, 0, NO_WEAPON_SOUND, NO_WEAPON_SOUND),
+  THROWINGBLADE(/* Bloody Thrw KN */ 15, 12, 3, 150, 2, Enum330.S_THROWKNIFE),
 
-  SHOTGUN(/* Flamethrower */ AMMOFLAME, 24, 60, 2, 10, 0, 0, 53, 0, 5, 130, 40, 8, S_CAWS, S_BURSTTYPE1),
+  SHOTGUN(/* Flamethrower */ Enum285.AMMOFLAME, 24, 60, 2, 10, 0, 0, 53, 0, 5, 130, 40, 8, Enum330.S_CAWS, Enum330.S_BURSTTYPE1),
   PUNCHWEAPON(/* crowbar */ 25, 10, 4, 0, 0),
-  ASRIFLE(/* auto rckt rifle */ AMMOROCKET, 20, 38, 2, 12, 5, 10, 97, 0, 5, 600, 80, 10, S_SMALL_ROCKET_LAUNCHER, S_BURSTTYPE1),
+  ASRIFLE(/* auto rckt rifle */ Enum285.AMMOROCKET, 20, 38, 2, 12, 5, 10, 97, 0, 5, 600, 80, 10, Enum330.S_SMALL_ROCKET_LAUNCHER, Enum330.S_BURSTTYPE1),
 ];
 
 let Magazine: MAGTYPE[] /* [] */ = [
   // calibre,			 mag size,			ammo type
-  [ AMMO9, 15, AMMO_REGULAR ],
-  [ AMMO9, 30, AMMO_REGULAR ],
-  [ AMMO9, 15, AMMO_AP ],
-  [ AMMO9, 30, AMMO_AP ],
-  [ AMMO9, 15, AMMO_HP ],
-  [ AMMO9, 30, AMMO_HP ],
-  [ AMMO38, 6, AMMO_REGULAR ],
-  [ AMMO38, 6, AMMO_AP ],
-  [ AMMO38, 6, AMMO_HP ],
-  [ AMMO45, 7, AMMO_REGULAR ],
-  [ AMMO45, 30, AMMO_REGULAR ],
-  [ AMMO45, 7, AMMO_AP ],
-  [ AMMO45, 30, AMMO_AP ],
-  [ AMMO45, 7, AMMO_HP ],
-  [ AMMO45, 30, AMMO_HP ],
-  [ AMMO357, 6, AMMO_REGULAR ],
-  [ AMMO357, 9, AMMO_REGULAR ],
-  [ AMMO357, 6, AMMO_AP ],
-  [ AMMO357, 9, AMMO_AP ],
-  [ AMMO357, 6, AMMO_HP ],
-  [ AMMO357, 9, AMMO_HP ],
-  [ AMMO545, 30, AMMO_AP ],
-  [ AMMO545, 30, AMMO_HP ],
-  [ AMMO556, 30, AMMO_AP ],
-  [ AMMO556, 30, AMMO_HP ],
-  [ AMMO762W, 10, AMMO_AP ],
-  [ AMMO762W, 30, AMMO_AP ],
-  [ AMMO762W, 10, AMMO_HP ],
-  [ AMMO762W, 30, AMMO_HP ],
-  [ AMMO762N, 5, AMMO_AP ],
-  [ AMMO762N, 20, AMMO_AP ],
-  [ AMMO762N, 5, AMMO_HP ],
-  [ AMMO762N, 20, AMMO_HP ],
-  [ AMMO47, 50, AMMO_SUPER_AP ],
-  [ AMMO57, 50, AMMO_AP ],
-  [ AMMO57, 50, AMMO_HP ],
-  [ AMMO12G, 7, AMMO_BUCKSHOT ],
-  [ AMMO12G, 7, AMMO_REGULAR ],
-  [ AMMOCAWS, 10, AMMO_BUCKSHOT ],
-  [ AMMOCAWS, 10, AMMO_SUPER_AP ],
-  [ AMMOROCKET, 5, AMMO_SUPER_AP ],
-  [ AMMOROCKET, 5, AMMO_HE ],
-  [ AMMOROCKET, 5, AMMO_HEAT ],
-  [ AMMODART, 1, AMMO_SLEEP_DART ],
-  [ AMMOFLAME, 5, AMMO_BUCKSHOT ],
-  [ NOAMMO, 0, 0 ],
+  [ Enum285.AMMO9, 15, Enum286.AMMO_REGULAR ],
+  [ Enum285.AMMO9, 30, Enum286.AMMO_REGULAR ],
+  [ Enum285.AMMO9, 15, Enum286.AMMO_AP ],
+  [ Enum285.AMMO9, 30, Enum286.AMMO_AP ],
+  [ Enum285.AMMO9, 15, Enum286.AMMO_HP ],
+  [ Enum285.AMMO9, 30, Enum286.AMMO_HP ],
+  [ Enum285.AMMO38, 6, Enum286.AMMO_REGULAR ],
+  [ Enum285.AMMO38, 6, Enum286.AMMO_AP ],
+  [ Enum285.AMMO38, 6, Enum286.AMMO_HP ],
+  [ Enum285.AMMO45, 7, Enum286.AMMO_REGULAR ],
+  [ Enum285.AMMO45, 30, Enum286.AMMO_REGULAR ],
+  [ Enum285.AMMO45, 7, Enum286.AMMO_AP ],
+  [ Enum285.AMMO45, 30, Enum286.AMMO_AP ],
+  [ Enum285.AMMO45, 7, Enum286.AMMO_HP ],
+  [ Enum285.AMMO45, 30, Enum286.AMMO_HP ],
+  [ Enum285.AMMO357, 6, Enum286.AMMO_REGULAR ],
+  [ Enum285.AMMO357, 9, Enum286.AMMO_REGULAR ],
+  [ Enum285.AMMO357, 6, Enum286.AMMO_AP ],
+  [ Enum285.AMMO357, 9, Enum286.AMMO_AP ],
+  [ Enum285.AMMO357, 6, Enum286.AMMO_HP ],
+  [ Enum285.AMMO357, 9, Enum286.AMMO_HP ],
+  [ Enum285.AMMO545, 30, Enum286.AMMO_AP ],
+  [ Enum285.AMMO545, 30, Enum286.AMMO_HP ],
+  [ Enum285.AMMO556, 30, Enum286.AMMO_AP ],
+  [ Enum285.AMMO556, 30, Enum286.AMMO_HP ],
+  [ Enum285.AMMO762W, 10, Enum286.AMMO_AP ],
+  [ Enum285.AMMO762W, 30, Enum286.AMMO_AP ],
+  [ Enum285.AMMO762W, 10, Enum286.AMMO_HP ],
+  [ Enum285.AMMO762W, 30, Enum286.AMMO_HP ],
+  [ Enum285.AMMO762N, 5, Enum286.AMMO_AP ],
+  [ Enum285.AMMO762N, 20, Enum286.AMMO_AP ],
+  [ Enum285.AMMO762N, 5, Enum286.AMMO_HP ],
+  [ Enum285.AMMO762N, 20, Enum286.AMMO_HP ],
+  [ Enum285.AMMO47, 50, Enum286.AMMO_SUPER_AP ],
+  [ Enum285.AMMO57, 50, Enum286.AMMO_AP ],
+  [ Enum285.AMMO57, 50, Enum286.AMMO_HP ],
+  [ Enum285.AMMO12G, 7, Enum286.AMMO_BUCKSHOT ],
+  [ Enum285.AMMO12G, 7, Enum286.AMMO_REGULAR ],
+  [ Enum285.AMMOCAWS, 10, Enum286.AMMO_BUCKSHOT ],
+  [ Enum285.AMMOCAWS, 10, Enum286.AMMO_SUPER_AP ],
+  [ Enum285.AMMOROCKET, 5, Enum286.AMMO_SUPER_AP ],
+  [ Enum285.AMMOROCKET, 5, Enum286.AMMO_HE ],
+  [ Enum285.AMMOROCKET, 5, Enum286.AMMO_HEAT ],
+  [ Enum285.AMMODART, 1, Enum286.AMMO_SLEEP_DART ],
+  [ Enum285.AMMOFLAME, 5, Enum286.AMMO_BUCKSHOT ],
+  [ Enum285.NOAMMO, 0, 0 ],
 ];
 
 let Armour: ARMOURTYPE[] /* [] */ = [
   //	Class					      Protection	Degradation%			Description
   //  -------------       ----------  ------------      ----------------
-  [ ARMOURCLASS_VEST, 10, 25 ], /* Flak jacket     */
-  [ ARMOURCLASS_VEST, 13, 20 ], /* Flak jacket w X */
-  [ ARMOURCLASS_VEST, 16, 15 ], /* Flak jacket w Y */
-  [ ARMOURCLASS_VEST, 15, 20 ], /* Kevlar jacket   */
-  [ ARMOURCLASS_VEST, 19, 15 ], /* Kevlar jack w X */
-  [ ARMOURCLASS_VEST, 24, 10 ], /* Kevlar jack w Y */
-  [ ARMOURCLASS_VEST, 30, 15 ], /* Spectra jacket  */
-  [ ARMOURCLASS_VEST, 36, 10 ], /* Spectra jack w X*/
-  [ ARMOURCLASS_VEST, 42, 5 ], /* Spectra jack w Y*/
-  [ ARMOURCLASS_LEGGINGS, 15, 20 ], /* Kevlar leggings */
-  [ ARMOURCLASS_LEGGINGS, 19, 15 ], /* Kevlar legs w X */
+  [ Enum284.ARMOURCLASS_VEST, 10, 25 ], /* Flak jacket     */
+  [ Enum284.ARMOURCLASS_VEST, 13, 20 ], /* Flak jacket w X */
+  [ Enum284.ARMOURCLASS_VEST, 16, 15 ], /* Flak jacket w Y */
+  [ Enum284.ARMOURCLASS_VEST, 15, 20 ], /* Kevlar jacket   */
+  [ Enum284.ARMOURCLASS_VEST, 19, 15 ], /* Kevlar jack w X */
+  [ Enum284.ARMOURCLASS_VEST, 24, 10 ], /* Kevlar jack w Y */
+  [ Enum284.ARMOURCLASS_VEST, 30, 15 ], /* Spectra jacket  */
+  [ Enum284.ARMOURCLASS_VEST, 36, 10 ], /* Spectra jack w X*/
+  [ Enum284.ARMOURCLASS_VEST, 42, 5 ], /* Spectra jack w Y*/
+  [ Enum284.ARMOURCLASS_LEGGINGS, 15, 20 ], /* Kevlar leggings */
+  [ Enum284.ARMOURCLASS_LEGGINGS, 19, 15 ], /* Kevlar legs w X */
 
-  [ ARMOURCLASS_LEGGINGS, 24, 10 ], /* Kevlar legs w Y */
-  [ ARMOURCLASS_LEGGINGS, 30, 15 ], /* Spectra leggings*/
-  [ ARMOURCLASS_LEGGINGS, 36, 10 ], /* Spectra legs w X*/
-  [ ARMOURCLASS_LEGGINGS, 42, 5 ], /* Spectra legs w Y*/
-  [ ARMOURCLASS_HELMET, 10, 5 ], /* Steel helmet    */
-  [ ARMOURCLASS_HELMET, 15, 20 ], /* Kevlar helmet   */
-  [ ARMOURCLASS_HELMET, 19, 15 ], /* Kevlar helm w X */
-  [ ARMOURCLASS_HELMET, 24, 10 ], /* Kevlar helm w Y */
-  [ ARMOURCLASS_HELMET, 30, 15 ], /* Spectra helmet  */
-  [ ARMOURCLASS_HELMET, 36, 10 ], /* Spectra helm w X*/
+  [ Enum284.ARMOURCLASS_LEGGINGS, 24, 10 ], /* Kevlar legs w Y */
+  [ Enum284.ARMOURCLASS_LEGGINGS, 30, 15 ], /* Spectra leggings*/
+  [ Enum284.ARMOURCLASS_LEGGINGS, 36, 10 ], /* Spectra legs w X*/
+  [ Enum284.ARMOURCLASS_LEGGINGS, 42, 5 ], /* Spectra legs w Y*/
+  [ Enum284.ARMOURCLASS_HELMET, 10, 5 ], /* Steel helmet    */
+  [ Enum284.ARMOURCLASS_HELMET, 15, 20 ], /* Kevlar helmet   */
+  [ Enum284.ARMOURCLASS_HELMET, 19, 15 ], /* Kevlar helm w X */
+  [ Enum284.ARMOURCLASS_HELMET, 24, 10 ], /* Kevlar helm w Y */
+  [ Enum284.ARMOURCLASS_HELMET, 30, 15 ], /* Spectra helmet  */
+  [ Enum284.ARMOURCLASS_HELMET, 36, 10 ], /* Spectra helm w X*/
 
-  [ ARMOURCLASS_HELMET, 42, 5 ], /* Spectra helm w Y*/
-  [ ARMOURCLASS_PLATE, 15, 200 ], /* Ceramic plates  */
-  [ ARMOURCLASS_MONST, 3, 0 ], /* Infant creature hide */
-  [ ARMOURCLASS_MONST, 5, 0 ], /* Young male creature hide  */
-  [ ARMOURCLASS_MONST, 6, 0 ], /* Male creature hide  */
-  [ ARMOURCLASS_MONST, 20, 0 ], /* Queen creature hide  */
-  [ ARMOURCLASS_VEST, 2, 25 ], /* Leather jacket    */
-  [ ARMOURCLASS_VEST, 12, 30 ], /* Leather jacket w kevlar */
-  [ ARMOURCLASS_VEST, 16, 25 ], /* Leather jacket w kevlar & compound 18 */
-  [ ARMOURCLASS_VEST, 19, 20 ], /* Leather jacket w kevlar & queen blood */
+  [ Enum284.ARMOURCLASS_HELMET, 42, 5 ], /* Spectra helm w Y*/
+  [ Enum284.ARMOURCLASS_PLATE, 15, 200 ], /* Ceramic plates  */
+  [ Enum284.ARMOURCLASS_MONST, 3, 0 ], /* Infant creature hide */
+  [ Enum284.ARMOURCLASS_MONST, 5, 0 ], /* Young male creature hide  */
+  [ Enum284.ARMOURCLASS_MONST, 6, 0 ], /* Male creature hide  */
+  [ Enum284.ARMOURCLASS_MONST, 20, 0 ], /* Queen creature hide  */
+  [ Enum284.ARMOURCLASS_VEST, 2, 25 ], /* Leather jacket    */
+  [ Enum284.ARMOURCLASS_VEST, 12, 30 ], /* Leather jacket w kevlar */
+  [ Enum284.ARMOURCLASS_VEST, 16, 25 ], /* Leather jacket w kevlar & compound 18 */
+  [ Enum284.ARMOURCLASS_VEST, 19, 20 ], /* Leather jacket w kevlar & queen blood */
 
-  [ ARMOURCLASS_MONST, 7, 0 ], /* Young female creature hide */
-  [ ARMOURCLASS_MONST, 8, 0 ], /* Old female creature hide  */
-  [ ARMOURCLASS_VEST, 1, 25 ], /* T-shirt */
-  [ ARMOURCLASS_VEST, 22, 20 ], /* Kevlar 2 jacket   */
-  [ ARMOURCLASS_VEST, 27, 15 ], /* Kevlar 2 jack w X */
-  [ ARMOURCLASS_VEST, 32, 10 ], /* Kevlar 2 jack w Y */
+  [ Enum284.ARMOURCLASS_MONST, 7, 0 ], /* Young female creature hide */
+  [ Enum284.ARMOURCLASS_MONST, 8, 0 ], /* Old female creature hide  */
+  [ Enum284.ARMOURCLASS_VEST, 1, 25 ], /* T-shirt */
+  [ Enum284.ARMOURCLASS_VEST, 22, 20 ], /* Kevlar 2 jacket   */
+  [ Enum284.ARMOURCLASS_VEST, 27, 15 ], /* Kevlar 2 jack w X */
+  [ Enum284.ARMOURCLASS_VEST, 32, 10 ], /* Kevlar 2 jack w Y */
 ];
 
 let Explosive: EXPLOSIVETYPE[] /* [] */ = [
   //	Type							Yield		Yield2		Radius		Volume		Volatility	Animation			Description
   //										-----		-------		------		------		----------	--------- 		------------------
-  [ EXPLOSV_STUN, 1, 70, 4, 0, 0, STUN_BLAST /* stun grenade       */ ],
-  [ EXPLOSV_TEARGAS, 0, 20, 4, 0, 0, TARGAS_EXP /* tear gas grenade   */ ],
-  [ EXPLOSV_MUSTGAS, 15, 40, 4, 0, 0, MUSTARD_EXP /* mustard gas grenade*/ ],
-  [ EXPLOSV_NORMAL, 15, 7, 3, 15, 1, BLAST_1 /* mini hand grenade  */ ],
-  [ EXPLOSV_NORMAL, 25, 10, 4, 25, 1, BLAST_1 /* reg hand grenade   */ ],
-  [ EXPLOSV_NORMAL, 40, 12, 5, 20, 10, BLAST_2 /* RDX                */ ],
-  [ EXPLOSV_NORMAL, 50, 15, 5, 50, 2, BLAST_2 /* TNT (="explosives")*/ ],
-  [ EXPLOSV_NORMAL, 60, 15, 6, 60, 2, BLAST_2 /* HMX (=RDX+TNT)     */ ],
-  [ EXPLOSV_NORMAL, 55, 15, 6, 55, 0, BLAST_2 /* C1  (=RDX+min oil) */ ],
-  [ EXPLOSV_NORMAL, 50, 22, 6, 50, 2, BLAST_2 /* mortar shell       */ ],
+  [ Enum287.EXPLOSV_STUN, 1, 70, 4, 0, 0, Enum304.STUN_BLAST /* stun grenade       */ ],
+  [ Enum287.EXPLOSV_TEARGAS, 0, 20, 4, 0, 0, Enum304.TARGAS_EXP /* tear gas grenade   */ ],
+  [ Enum287.EXPLOSV_MUSTGAS, 15, 40, 4, 0, 0, Enum304.MUSTARD_EXP /* mustard gas grenade*/ ],
+  [ Enum287.EXPLOSV_NORMAL, 15, 7, 3, 15, 1, Enum304.BLAST_1 /* mini hand grenade  */ ],
+  [ Enum287.EXPLOSV_NORMAL, 25, 10, 4, 25, 1, Enum304.BLAST_1 /* reg hand grenade   */ ],
+  [ Enum287.EXPLOSV_NORMAL, 40, 12, 5, 20, 10, Enum304.BLAST_2 /* RDX                */ ],
+  [ Enum287.EXPLOSV_NORMAL, 50, 15, 5, 50, 2, Enum304.BLAST_2 /* TNT (="explosives")*/ ],
+  [ Enum287.EXPLOSV_NORMAL, 60, 15, 6, 60, 2, Enum304.BLAST_2 /* HMX (=RDX+TNT)     */ ],
+  [ Enum287.EXPLOSV_NORMAL, 55, 15, 6, 55, 0, Enum304.BLAST_2 /* C1  (=RDX+min oil) */ ],
+  [ Enum287.EXPLOSV_NORMAL, 50, 22, 6, 50, 2, Enum304.BLAST_2 /* mortar shell       */ ],
 
-  [ EXPLOSV_NORMAL, 30, 30, 2, 30, 2, BLAST_1 /* mine               */ ],
-  [ EXPLOSV_NORMAL, 65, 30, 7, 65, 0, BLAST_1 /* C4  ("plastique")  */ ],
-  [ EXPLOSV_FLARE, 0, 0, 10, 0, 0, BLAST_1 /* trip flare				  */ ],
-  [ EXPLOSV_NOISE, 0, 0, 50, 50, 0, BLAST_1 /* trip klaxon        */ ],
-  [ EXPLOSV_NORMAL, 20, 0, 1, 20, 0, BLAST_1 /* shaped charge      */ ],
-  [ EXPLOSV_FLARE, 0, 0, 10, 0, 0, BLAST_1, /* break light        */ ],
-  [ EXPLOSV_NORMAL, 25, 5, 4, 25, 1, BLAST_1, /* GL grenade					*/ ],
-  [ EXPLOSV_TEARGAS, 0, 20, 3, 0, 0, TARGAS_EXP, /* GL tear gas grenade*/ ],
-  [ EXPLOSV_STUN, 1, 50, 4, 0, 0, STUN_BLAST, /* GL stun grenade		*/ ],
-  [ EXPLOSV_SMOKE, 0, 0, 3, 0, 0, SMOKE_EXP, /* GL smoke grenade		*/ ],
+  [ Enum287.EXPLOSV_NORMAL, 30, 30, 2, 30, 2, Enum304.BLAST_1 /* mine               */ ],
+  [ Enum287.EXPLOSV_NORMAL, 65, 30, 7, 65, 0, Enum304.BLAST_1 /* C4  ("plastique")  */ ],
+  [ Enum287.EXPLOSV_FLARE, 0, 0, 10, 0, 0, Enum304.BLAST_1 /* trip flare				  */ ],
+  [ Enum287.EXPLOSV_NOISE, 0, 0, 50, 50, 0, Enum304.BLAST_1 /* trip klaxon        */ ],
+  [ Enum287.EXPLOSV_NORMAL, 20, 0, 1, 20, 0, Enum304.BLAST_1 /* shaped charge      */ ],
+  [ Enum287.EXPLOSV_FLARE, 0, 0, 10, 0, 0, Enum304.BLAST_1, /* break light        */ ],
+  [ Enum287.EXPLOSV_NORMAL, 25, 5, 4, 25, 1, Enum304.BLAST_1, /* GL grenade					*/ ],
+  [ Enum287.EXPLOSV_TEARGAS, 0, 20, 3, 0, 0, Enum304.TARGAS_EXP, /* GL tear gas grenade*/ ],
+  [ Enum287.EXPLOSV_STUN, 1, 50, 4, 0, 0, Enum304.STUN_BLAST, /* GL stun grenade		*/ ],
+  [ Enum287.EXPLOSV_SMOKE, 0, 0, 3, 0, 0, Enum304.SMOKE_EXP, /* GL smoke grenade		*/ ],
 
-  [ EXPLOSV_SMOKE, 0, 0, 4, 0, 0, SMOKE_EXP, /* smoke grenade			*/ ],
-  [ EXPLOSV_NORMAL, 60, 20, 6, 60, 2, BLAST_2, /* Tank Shell         */ ],
-  [ EXPLOSV_NORMAL, 100, 0, 0, 0, 0, BLAST_1, /* Fake structure igniter*/ ],
-  [ EXPLOSV_NORMAL, 100, 0, 1, 0, 0, BLAST_1, /* creature cocktail */ ],
-  [ EXPLOSV_NORMAL, 50, 10, 5, 50, 2, BLAST_2, /* fake struct explosion*/ ],
-  [ EXPLOSV_NORMAL, 50, 10, 5, 50, 2, BLAST_3, /* fake vehicle explosion*/ ],
-  [ EXPLOSV_TEARGAS, 0, 40, 4, 0, 0, TARGAS_EXP /* big tear gas */ ],
-  [ EXPLOSV_CREATUREGAS, 5, 0, 1, 0, 0, NO_BLAST /* small creature gas*/ ],
-  [ EXPLOSV_CREATUREGAS, 8, 0, 3, 0, 0, NO_BLAST /* big creature gas*/ ],
-  [ EXPLOSV_CREATUREGAS, 0, 0, 0, 0, 0, NO_BLAST /* vry sm creature gas*/ ],
+  [ Enum287.EXPLOSV_SMOKE, 0, 0, 4, 0, 0, Enum304.SMOKE_EXP, /* smoke grenade			*/ ],
+  [ Enum287.EXPLOSV_NORMAL, 60, 20, 6, 60, 2, Enum304.BLAST_2, /* Tank Shell         */ ],
+  [ Enum287.EXPLOSV_NORMAL, 100, 0, 0, 0, 0, Enum304.BLAST_1, /* Fake structure igniter*/ ],
+  [ Enum287.EXPLOSV_NORMAL, 100, 0, 1, 0, 0, Enum304.BLAST_1, /* creature cocktail */ ],
+  [ Enum287.EXPLOSV_NORMAL, 50, 10, 5, 50, 2, Enum304.BLAST_2, /* fake struct explosion*/ ],
+  [ Enum287.EXPLOSV_NORMAL, 50, 10, 5, 50, 2, Enum304.BLAST_3, /* fake vehicle explosion*/ ],
+  [ Enum287.EXPLOSV_TEARGAS, 0, 40, 4, 0, 0, Enum304.TARGAS_EXP /* big tear gas */ ],
+  [ Enum287.EXPLOSV_CREATUREGAS, 5, 0, 1, 0, 0, Enum304.NO_BLAST /* small creature gas*/ ],
+  [ Enum287.EXPLOSV_CREATUREGAS, 8, 0, 3, 0, 0, Enum304.NO_BLAST /* big creature gas*/ ],
+  [ Enum287.EXPLOSV_CREATUREGAS, 0, 0, 0, 0, 0, Enum304.NO_BLAST /* vry sm creature gas*/ ],
 ];
 
 let gzBurstSndStrings: INT8[][] /* [][30] */ = [
@@ -320,7 +320,7 @@ function GunRange(pObj: Pointer<OBJECTTYPE>): UINT16 {
   let bAttachPos: INT8;
 
   if (Item[pObj.value.usItem].usItemClass & IC_WEAPON) {
-    bAttachPos = FindAttachment(pObj, GUN_BARREL_EXTENDER);
+    bAttachPos = FindAttachment(pObj, Enum225.GUN_BARREL_EXTENDER);
 
     if (bAttachPos == ITEM_NOT_FOUND) {
       return Weapon[pObj.value.usItem].usRange;
@@ -343,11 +343,11 @@ function EffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
   iValue = Armour[Item[pObj.value.usItem].ubClassIndex].ubProtection;
   iValue = iValue * pObj.value.bStatus[0] / 100;
 
-  bPlate = FindAttachment(pObj, CERAMIC_PLATES);
+  bPlate = FindAttachment(pObj, Enum225.CERAMIC_PLATES);
   if (bPlate != ITEM_NOT_FOUND) {
     let iValue2: INT32;
 
-    iValue2 = Armour[Item[CERAMIC_PLATES].ubClassIndex].ubProtection;
+    iValue2 = Armour[Item[Enum225.CERAMIC_PLATES].ubClassIndex].ubProtection;
     iValue2 = iValue2 * pObj.value.bAttachStatus[bPlate] / 100;
 
     iValue += iValue2;
@@ -360,26 +360,26 @@ function ArmourPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iHelmet: INT32;
   let iLeg: INT32;
 
-  if (pSoldier.value.inv[VESTPOS].usItem) {
-    iVest = EffectiveArmour(addressof(pSoldier.value.inv[VESTPOS]));
+  if (pSoldier.value.inv[Enum261.VESTPOS].usItem) {
+    iVest = EffectiveArmour(addressof(pSoldier.value.inv[Enum261.VESTPOS]));
     // convert to % of best; ignoring bug-treated stuff
-    iVest = 65 * iVest / (Armour[Item[SPECTRA_VEST_18].ubClassIndex].ubProtection + Armour[Item[CERAMIC_PLATES].ubClassIndex].ubProtection);
+    iVest = 65 * iVest / (Armour[Item[Enum225.SPECTRA_VEST_18].ubClassIndex].ubProtection + Armour[Item[Enum225.CERAMIC_PLATES].ubClassIndex].ubProtection);
   } else {
     iVest = 0;
   }
 
-  if (pSoldier.value.inv[HELMETPOS].usItem) {
-    iHelmet = EffectiveArmour(addressof(pSoldier.value.inv[HELMETPOS]));
+  if (pSoldier.value.inv[Enum261.HELMETPOS].usItem) {
+    iHelmet = EffectiveArmour(addressof(pSoldier.value.inv[Enum261.HELMETPOS]));
     // convert to % of best; ignoring bug-treated stuff
-    iHelmet = 15 * iHelmet / Armour[Item[SPECTRA_HELMET_18].ubClassIndex].ubProtection;
+    iHelmet = 15 * iHelmet / Armour[Item[Enum225.SPECTRA_HELMET_18].ubClassIndex].ubProtection;
   } else {
     iHelmet = 0;
   }
 
-  if (pSoldier.value.inv[LEGPOS].usItem) {
-    iLeg = EffectiveArmour(addressof(pSoldier.value.inv[LEGPOS]));
+  if (pSoldier.value.inv[Enum261.LEGPOS].usItem) {
+    iLeg = EffectiveArmour(addressof(pSoldier.value.inv[Enum261.LEGPOS]));
     // convert to % of best; ignoring bug-treated stuff
-    iLeg = 25 * iLeg / Armour[Item[SPECTRA_LEGGINGS_18].ubClassIndex].ubProtection;
+    iLeg = 25 * iLeg / Armour[Item[Enum225.SPECTRA_LEGGINGS_18].ubClassIndex].ubProtection;
   } else {
     iLeg = 0;
   }
@@ -395,16 +395,16 @@ function ExplosiveEffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
   }
   iValue = Armour[Item[pObj.value.usItem].ubClassIndex].ubProtection;
   iValue = iValue * pObj.value.bStatus[0] / 100;
-  if (pObj.value.usItem == FLAK_JACKET || pObj.value.usItem == FLAK_JACKET_18 || pObj.value.usItem == FLAK_JACKET_Y) {
+  if (pObj.value.usItem == Enum225.FLAK_JACKET || pObj.value.usItem == Enum225.FLAK_JACKET_18 || pObj.value.usItem == Enum225.FLAK_JACKET_Y) {
     // increase value for flak jackets!
     iValue *= 3;
   }
 
-  bPlate = FindAttachment(pObj, CERAMIC_PLATES);
+  bPlate = FindAttachment(pObj, Enum225.CERAMIC_PLATES);
   if (bPlate != ITEM_NOT_FOUND) {
     let iValue2: INT32;
 
-    iValue2 = Armour[Item[CERAMIC_PLATES].ubClassIndex].ubProtection;
+    iValue2 = Armour[Item[Enum225.CERAMIC_PLATES].ubClassIndex].ubProtection;
     iValue2 = iValue2 * pObj.value.bAttachStatus[bPlate] / 100;
 
     iValue += iValue2;
@@ -418,26 +418,26 @@ function ArmourVersusExplosivesPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iHelmet: INT32;
   let iLeg: INT32;
 
-  if (pSoldier.value.inv[VESTPOS].usItem) {
-    iVest = ExplosiveEffectiveArmour(addressof(pSoldier.value.inv[VESTPOS]));
+  if (pSoldier.value.inv[Enum261.VESTPOS].usItem) {
+    iVest = ExplosiveEffectiveArmour(addressof(pSoldier.value.inv[Enum261.VESTPOS]));
     // convert to % of best; ignoring bug-treated stuff
-    iVest = __min(65, 65 * iVest / (Armour[Item[SPECTRA_VEST_18].ubClassIndex].ubProtection + Armour[Item[CERAMIC_PLATES].ubClassIndex].ubProtection));
+    iVest = __min(65, 65 * iVest / (Armour[Item[Enum225.SPECTRA_VEST_18].ubClassIndex].ubProtection + Armour[Item[Enum225.CERAMIC_PLATES].ubClassIndex].ubProtection));
   } else {
     iVest = 0;
   }
 
-  if (pSoldier.value.inv[HELMETPOS].usItem) {
-    iHelmet = ExplosiveEffectiveArmour(addressof(pSoldier.value.inv[HELMETPOS]));
+  if (pSoldier.value.inv[Enum261.HELMETPOS].usItem) {
+    iHelmet = ExplosiveEffectiveArmour(addressof(pSoldier.value.inv[Enum261.HELMETPOS]));
     // convert to % of best; ignoring bug-treated stuff
-    iHelmet = __min(15, 15 * iHelmet / Armour[Item[SPECTRA_HELMET_18].ubClassIndex].ubProtection);
+    iHelmet = __min(15, 15 * iHelmet / Armour[Item[Enum225.SPECTRA_HELMET_18].ubClassIndex].ubProtection);
   } else {
     iHelmet = 0;
   }
 
-  if (pSoldier.value.inv[LEGPOS].usItem) {
-    iLeg = ExplosiveEffectiveArmour(addressof(pSoldier.value.inv[LEGPOS]));
+  if (pSoldier.value.inv[Enum261.LEGPOS].usItem) {
+    iLeg = ExplosiveEffectiveArmour(addressof(pSoldier.value.inv[Enum261.LEGPOS]));
     // convert to % of best; ignoring bug-treated stuff
-    iLeg = __min(25, 25 * iLeg / Armour[Item[SPECTRA_LEGGINGS_18].ubClassIndex].ubProtection);
+    iLeg = __min(25, 25 * iLeg / Armour[Item[Enum225.SPECTRA_LEGGINGS_18].ubClassIndex].ubProtection);
   } else {
     iLeg = 0;
   }
@@ -505,12 +505,12 @@ function CheckForGunJam(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           // Deduct AMMO!
           DeductAmmo(pSoldier, pSoldier.value.ubAttackingHand);
 
-          TacticalCharacterDialogue(pSoldier, QUOTE_JAMMED_GUN);
+          TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_JAMMED_GUN);
           return TRUE;
         }
       } else if (pObj.value.bGunAmmoStatus < 0) {
         // try to unjam gun
-        iResult = SkillCheck(pSoldier, UNJAM_GUN_CHECK, (Item[pObj.value.usItem].bReliability * 4));
+        iResult = SkillCheck(pSoldier, Enum255.UNJAM_GUN_CHECK, (Item[pObj.value.usItem].bReliability * 4));
         if (iResult > 0) {
           // yay! unjammed the gun
           pObj.value.bGunAmmoStatus *= -1;
@@ -536,10 +536,10 @@ function OKFireWeapon(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let bGunJamVal: BOOLEAN;
 
   // 1) Are we attacking with our second hand?
-  if (pSoldier.value.ubAttackingHand == SECONDHANDPOS) {
+  if (pSoldier.value.ubAttackingHand == Enum261.SECONDHANDPOS) {
     if (!EnoughAmmo(pSoldier, FALSE, pSoldier.value.ubAttackingHand)) {
       if (pSoldier.value.bTeam == gbPlayerNum) {
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_2ND_CLIP_DEPLETED]);
+        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_2ND_CLIP_DEPLETED]);
         return FALSE;
       }
     }
@@ -662,17 +662,17 @@ function GetTargetWorldPositions(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: 
 
     switch (pSoldier.value.bAimShotLocation) {
       case AIM_SHOT_HEAD:
-        CalculateSoldierZPos(pTargetSoldier, HEAD_TARGET_POS, addressof(dTargetZ));
+        CalculateSoldierZPos(pTargetSoldier, Enum230.HEAD_TARGET_POS, addressof(dTargetZ));
         break;
       case AIM_SHOT_TORSO:
-        CalculateSoldierZPos(pTargetSoldier, TORSO_TARGET_POS, addressof(dTargetZ));
+        CalculateSoldierZPos(pTargetSoldier, Enum230.TORSO_TARGET_POS, addressof(dTargetZ));
         break;
       case AIM_SHOT_LEGS:
-        CalculateSoldierZPos(pTargetSoldier, LEGS_TARGET_POS, addressof(dTargetZ));
+        CalculateSoldierZPos(pTargetSoldier, Enum230.LEGS_TARGET_POS, addressof(dTargetZ));
         break;
       default:
         // %)@#&(%?
-        CalculateSoldierZPos(pTargetSoldier, TARGET_POS, addressof(dTargetZ));
+        CalculateSoldierZPos(pTargetSoldier, Enum230.TARGET_POS, addressof(dTargetZ));
         break;
     }
   } else {
@@ -739,7 +739,7 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
     if (pSoldier.value.bDoBurst == 1) {
       if (Weapon[usItemNum].sBurstSound != NO_WEAPON_SOUND) {
         // IF we are silenced?
-        if (FindAttachment(addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), SILENCER) != NO_SLOT) {
+        if (FindAttachment(addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), Enum225.SILENCER) != NO_SLOT) {
           // Pick sound file baed on how many bullets we are going to fire...
           sprintf(zBurstString, "SOUNDS\\WEAPONS\\SILENCER BURST %d.wav", pSoldier.value.bBulletsLeft);
 
@@ -763,9 +763,9 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
     }
   } else {
     // ONLY DEDUCT FOR THE FIRST HAND when doing two-pistol attacks
-    if (IsValidSecondHandShot(pSoldier) && pSoldier.value.inv[HANDPOS].bGunStatus >= USABLE && pSoldier.value.inv[HANDPOS].bGunAmmoStatus > 0) {
+    if (IsValidSecondHandShot(pSoldier) && pSoldier.value.inv[Enum261.HANDPOS].bGunStatus >= USABLE && pSoldier.value.inv[Enum261.HANDPOS].bGunAmmoStatus > 0) {
       // only deduct APs when the main gun fires
-      if (pSoldier.value.ubAttackingHand == HANDPOS) {
+      if (pSoldier.value.ubAttackingHand == Enum261.HANDPOS) {
         DeductPoints(pSoldier, sAPCost, 0);
       }
     } else {
@@ -776,13 +776,13 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
     // ( For throwing knife.. it's earlier in the animation
     if (Weapon[usItemNum].sSound != NO_WEAPON_SOUND && Item[usItemNum].usItemClass != IC_THROWING_KNIFE) {
       // Switch on silencer...
-      if (FindAttachment(addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), SILENCER) != NO_SLOT) {
+      if (FindAttachment(addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), Enum225.SILENCER) != NO_SLOT) {
         let uiSound: INT32;
 
-        if (Weapon[usItemNum].ubCalibre == AMMO9 || Weapon[usItemNum].ubCalibre == AMMO38 || Weapon[usItemNum].ubCalibre == AMMO57) {
-          uiSound = S_SILENCER_1;
+        if (Weapon[usItemNum].ubCalibre == Enum285.AMMO9 || Weapon[usItemNum].ubCalibre == Enum285.AMMO38 || Weapon[usItemNum].ubCalibre == Enum285.AMMO57) {
+          uiSound = Enum330.S_SILENCER_1;
         } else {
-          uiSound = S_SILENCER_2;
+          uiSound = Enum330.S_SILENCER_2;
         }
 
         PlayJA2Sample(uiSound, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
@@ -841,7 +841,7 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
     DeductAmmo(pSoldier, pSoldier.value.ubAttackingHand);
 
     // ATE: Check if we should say quote...
-    if (pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubGunShotsLeft == 0 && pSoldier.value.usAttackingWeapon != ROCKET_LAUNCHER) {
+    if (pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubGunShotsLeft == 0 && pSoldier.value.usAttackingWeapon != Enum225.ROCKET_LAUNCHER) {
       if (pSoldier.value.bTeam == gbPlayerNum) {
         pSoldier.value.fSayAmmoQuotePending = TRUE;
       }
@@ -867,12 +867,12 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
       // add base pts for taking a shot, whether it hits or misses
       usExpGain += 3;
 
-      if (IsValidSecondHandShot(pSoldier) && pSoldier.value.inv[HANDPOS].bGunStatus >= USABLE && pSoldier.value.inv[HANDPOS].bGunAmmoStatus > 0) {
+      if (IsValidSecondHandShot(pSoldier) && pSoldier.value.inv[Enum261.HANDPOS].bGunStatus >= USABLE && pSoldier.value.inv[Enum261.HANDPOS].bGunAmmoStatus > 0) {
         // reduce exp gain for two pistol shooting since both shots give xp
         usExpGain = (usExpGain * 2) / 3;
       }
 
-      if (MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == COW || MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == CROW) {
+      if (MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == Enum194.COW || MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == Enum194.CROW) {
         usExpGain /= 2;
       } else if (MercPtrs[pSoldier.value.ubTargetID].value.uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(MercPtrs[pSoldier.value.ubTargetID]) || TANK(MercPtrs[pSoldier.value.ubTargetID])) {
         // no exp from shooting a vehicle that you can't damage and can't move!
@@ -888,10 +888,10 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
     if (!CREATURE_OR_BLOODCAT(pSoldier)) {
       pSoldier.value.fMuzzleFlash = TRUE;
       switch (pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubGunAmmoType) {
-        case AMMO_BUCKSHOT:
+        case Enum286.AMMO_BUCKSHOT:
           fBuckshot = TRUE;
           break;
-        case AMMO_SLEEP_DART:
+        case Enum286.AMMO_SLEEP_DART:
           pSoldier.value.fMuzzleFlash = FALSE;
           break;
         default:
@@ -924,7 +924,7 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
       // add base pts for taking a shot, whether it hits or misses
       usExpGain += 10;
 
-      if (MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == COW || MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == CROW) {
+      if (MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == Enum194.COW || MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == Enum194.CROW) {
         usExpGain /= 2;
       } else if (MercPtrs[pSoldier.value.ubTargetID].value.uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(MercPtrs[pSoldier.value.ubTargetID]) || TANK(MercPtrs[pSoldier.value.ubTargetID])) {
         // no exp from shooting a vehicle that you can't damage and can't move!
@@ -937,12 +937,12 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
     }
   }
 
-  if (usItemNum == ROCKET_LAUNCHER) {
-    if (WillExplosiveWeaponFail(pSoldier, addressof(pSoldier.value.inv[HANDPOS]))) {
-      CreateItem(DISCARDED_LAW, pSoldier.value.inv[HANDPOS].bStatus[0], addressof(pSoldier.value.inv[HANDPOS]));
+  if (usItemNum == Enum225.ROCKET_LAUNCHER) {
+    if (WillExplosiveWeaponFail(pSoldier, addressof(pSoldier.value.inv[Enum261.HANDPOS]))) {
+      CreateItem(Enum225.DISCARDED_LAW, pSoldier.value.inv[Enum261.HANDPOS].bStatus[0], addressof(pSoldier.value.inv[Enum261.HANDPOS]));
       DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
 
-      IgniteExplosion(pSoldier.value.ubID, CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), 0, pSoldier.value.sGridNo, C1, pSoldier.value.bLevel);
+      IgniteExplosion(pSoldier.value.ubID, CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), 0, pSoldier.value.sGridNo, Enum225.C1, pSoldier.value.bLevel);
 
       // Reduce again for attack end 'cause it has been incremented for a normal attack
       //
@@ -959,10 +959,10 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
 
   if (Item[usItemNum].usItemClass == IC_THROWING_KNIFE) {
     // Here, remove the knife...	or (for now) rocket launcher
-    RemoveObjs(addressof(pSoldier.value.inv[HANDPOS]), 1);
+    RemoveObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), 1);
     DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
-  } else if (usItemNum == ROCKET_LAUNCHER) {
-    CreateItem(DISCARDED_LAW, pSoldier.value.inv[HANDPOS].bStatus[0], addressof(pSoldier.value.inv[HANDPOS]));
+  } else if (usItemNum == Enum225.ROCKET_LAUNCHER) {
+    CreateItem(Enum225.DISCARDED_LAW, pSoldier.value.inv[Enum261.HANDPOS].bStatus[0], addressof(pSoldier.value.inv[Enum261.HANDPOS]));
     DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
 
     // Direction to center of explosion
@@ -978,19 +978,19 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
         gTacticalStatus.ubAttackBusyCount++;
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Incrementing Attack: Exaust from LAW", gTacticalStatus.ubAttackBusyCount));
 
-        EVENT_SoldierGotHit(MercPtrs[ubMerc], MINI_GRENADE, 10, 200, pSoldier.value.bDirection, 0, pSoldier.value.ubID, 0, ANIM_CROUCH, 0, sNewGridNo);
+        EVENT_SoldierGotHit(MercPtrs[ubMerc], Enum225.MINI_GRENADE, 10, 200, pSoldier.value.bDirection, 0, pSoldier.value.ubID, 0, ANIM_CROUCH, 0, sNewGridNo);
       }
     }
   } else {
     // if the weapon has a silencer attached
-    bSilencerPos = FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), SILENCER);
+    bSilencerPos = FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.SILENCER);
     if (bSilencerPos != -1) {
       // reduce volume by a percentage equal to silencer's work %age (min 1)
-      ubVolume = 1 + ((100 - WEAPON_STATUS_MOD(pSoldier.value.inv[HANDPOS].bAttachStatus[bSilencerPos])) / (100 / (ubVolume - 1)));
+      ubVolume = 1 + ((100 - WEAPON_STATUS_MOD(pSoldier.value.inv[Enum261.HANDPOS].bAttachStatus[bSilencerPos])) / (100 / (ubVolume - 1)));
     }
   }
 
-  MakeNoise(pSoldier.value.ubID, pSoldier.value.sGridNo, pSoldier.value.bLevel, pSoldier.value.bOverTerrainType, ubVolume, NOISE_GUNFIRE);
+  MakeNoise(pSoldier.value.ubID, pSoldier.value.sGridNo, pSoldier.value.bLevel, pSoldier.value.bOverTerrainType, ubVolume, Enum236.NOISE_GUNFIRE);
 
   if (pSoldier.value.bDoBurst) {
     // done, if bursting, increment
@@ -1107,7 +1107,7 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN
       SWeaponHit.ubAttackerID = pSoldier.value.ubID;
       SWeaponHit.fHit = TRUE;
       SWeaponHit.ubSpecial = FIRE_WEAPON_NO_SPECIAL;
-      AddGameEvent(S_WEAPONHIT, 20, addressof(SWeaponHit));
+      AddGameEvent(Enum319.S_WEAPONHIT, 20, addressof(SWeaponHit));
     } else {
       // if it was another team shooting at someone under our control
       if ((pSoldier.value.bTeam != Menptr[pTargetSoldier.value.ubID].bTeam)) {
@@ -1138,7 +1138,7 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN
       // add base pts for taking a shot, whether it hits or misses
       usExpGain += 10;
 
-      if (MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == COW || MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == CROW) {
+      if (MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == Enum194.COW || MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == Enum194.CROW) {
         usExpGain /= 2;
       } else if (MercPtrs[pSoldier.value.ubTargetID].value.uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(MercPtrs[pSoldier.value.ubTargetID]) || TANK(MercPtrs[pSoldier.value.ubTargetID])) {
         // no exp from shooting a vehicle that you can't damage and can't move!
@@ -1220,12 +1220,12 @@ function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fSt
     ConvertGridNoToCenterCellXY(sTargetGridNo, addressof(sXMapPos), addressof(sYMapPos));
 
     if (fStealing) {
-      if (pTargetSoldier.value.inv[HANDPOS].usItem != NOTHING) {
+      if (pTargetSoldier.value.inv[Enum261.HANDPOS].usItem != NOTHING) {
         if (iDiceRoll <= iHitChance) {
           // Was a good steal!
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_STOLE_SOMETHING], pSoldier.value.name, ShortItemNames[pTargetSoldier.value.inv[HANDPOS].usItem]);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_STOLE_SOMETHING], pSoldier.value.name, ShortItemNames[pTargetSoldier.value.inv[Enum261.HANDPOS].usItem]);
 
-          usOldItem = pTargetSoldier.value.inv[HANDPOS].usItem;
+          usOldItem = pTargetSoldier.value.inv[Enum261.HANDPOS].usItem;
 
           if (pSoldier.value.bTeam == gbPlayerNum && pTargetSoldier.value.bTeam != gbPlayerNum && !(pTargetSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pTargetSoldier) && !TANK(pTargetSoldier)) {
             // made a steal; give experience
@@ -1234,37 +1234,37 @@ function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fSt
 
           if (iDiceRoll <= iHitChance * 2 / 3) {
             // Grabbed item
-            if (AutoPlaceObject(pSoldier, addressof(pTargetSoldier.value.inv[HANDPOS]), TRUE)) {
+            if (AutoPlaceObject(pSoldier, addressof(pTargetSoldier.value.inv[Enum261.HANDPOS]), TRUE)) {
               // Item transferred; remove it from the target's inventory
-              DeleteObj(addressof(pTargetSoldier.value.inv[HANDPOS]));
+              DeleteObj(addressof(pTargetSoldier.value.inv[Enum261.HANDPOS]));
             } else {
               // No room to hold it so the item should drop in our tile again
-              AddItemToPool(pSoldier.value.sGridNo, addressof(pTargetSoldier.value.inv[HANDPOS]), 1, pSoldier.value.bLevel, 0, -1);
-              DeleteObj(addressof(pTargetSoldier.value.inv[HANDPOS]));
+              AddItemToPool(pSoldier.value.sGridNo, addressof(pTargetSoldier.value.inv[Enum261.HANDPOS]), 1, pSoldier.value.bLevel, 0, -1);
+              DeleteObj(addressof(pTargetSoldier.value.inv[Enum261.HANDPOS]));
             }
           } else {
             if (pSoldier.value.bTeam == gbPlayerNum) {
-              DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
+              DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
             }
 
             // Item dropped somewhere... roll based on the same chance to determine where!
             iDiceRoll = PreRandom(100);
             if (iDiceRoll < iHitChance) {
               // Drop item in the our tile
-              AddItemToPool(pSoldier.value.sGridNo, addressof(pTargetSoldier.value.inv[HANDPOS]), 1, pSoldier.value.bLevel, 0, -1);
+              AddItemToPool(pSoldier.value.sGridNo, addressof(pTargetSoldier.value.inv[Enum261.HANDPOS]), 1, pSoldier.value.bLevel, 0, -1);
             } else {
               // Drop item in the target's tile
-              AddItemToPool(pTargetSoldier.value.sGridNo, addressof(pTargetSoldier.value.inv[HANDPOS]), 1, pSoldier.value.bLevel, 0, -1);
+              AddItemToPool(pTargetSoldier.value.sGridNo, addressof(pTargetSoldier.value.inv[Enum261.HANDPOS]), 1, pSoldier.value.bLevel, 0, -1);
             }
-            DeleteObj(addressof(pTargetSoldier.value.inv[HANDPOS]));
+            DeleteObj(addressof(pTargetSoldier.value.inv[Enum261.HANDPOS]));
           }
 
           // Reload buddy's animation...
           ReLoadSoldierAnimationDueToHandItemChange(pTargetSoldier, usOldItem, NOTHING);
         } else {
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_FAILED_TO_STEAL_SOMETHING], pSoldier.value.name, ShortItemNames[pTargetSoldier.value.inv[HANDPOS].usItem]);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_FAILED_TO_STEAL_SOMETHING], pSoldier.value.name, ShortItemNames[pTargetSoldier.value.inv[Enum261.HANDPOS].usItem]);
           if (pSoldier.value.bTeam == gbPlayerNum) {
-            DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
+            DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
           }
 
           if (iHitChance > 0 && pSoldier.value.bTeam == gbPlayerNum && pTargetSoldier.value.bTeam != gbPlayerNum && !(pTargetSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pTargetSoldier) && !TANK(pTargetSoldier)) {
@@ -1277,7 +1277,7 @@ function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fSt
       FreeUpAttacker(pSoldier.value.ubID);
     } else {
       // ATE/CC: if doing ninja spin kick (only), automatically make it a hit
-      if (pSoldier.value.usAnimState == NINJA_SPINKICK) {
+      if (pSoldier.value.usAnimState == Enum193.NINJA_SPINKICK) {
         // Let him to succeed by a random amount
         iDiceRoll = PreRandom(iHitChance);
       }
@@ -1289,7 +1289,7 @@ function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fSt
 
           if (pTargetSoldier.value.uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(pTargetSoldier) || TANK(pTargetSoldier)) {
             ubExpGain = 0;
-          } else if (pTargetSoldier.value.ubBodyType == COW || pTargetSoldier.value.ubBodyType == CROW) {
+          } else if (pTargetSoldier.value.ubBodyType == Enum194.COW || pTargetSoldier.value.ubBodyType == Enum194.CROW) {
             ubExpGain /= 2;
           }
 
@@ -1300,7 +1300,7 @@ function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fSt
 
           if (pTargetSoldier.value.uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(pTargetSoldier) || TANK(pTargetSoldier)) {
             ubExpGain = 0;
-          } else if (pTargetSoldier.value.ubBodyType == COW || pTargetSoldier.value.ubBodyType == CROW) {
+          } else if (pTargetSoldier.value.ubBodyType == Enum194.COW || pTargetSoldier.value.ubBodyType == Enum194.CROW) {
             ubExpGain /= 2;
           }
 
@@ -1331,7 +1331,7 @@ function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fSt
         SWeaponHit.ubAttackerID = pSoldier.value.ubID;
         SWeaponHit.fHit = TRUE;
         SWeaponHit.ubSpecial = FIRE_WEAPON_NO_SPECIAL;
-        AddGameEvent(S_WEAPONHIT, 20, addressof(SWeaponHit));
+        AddGameEvent(Enum319.S_WEAPONHIT, 20, addressof(SWeaponHit));
       } else {
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Freeing up attacker - missed in HTH attack"));
         FreeUpAttacker(pSoldier.value.ubID);
@@ -1375,7 +1375,7 @@ function UseThrown(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEA
 
     if (pTargetSoldier == NULL) {
       // search for an opponent near the target gridno
-      for (bLoop = 0; bLoop < NUM_WORLD_DIRECTIONS; bLoop++) {
+      for (bLoop = 0; bLoop < Enum245.NUM_WORLD_DIRECTIONS; bLoop++) {
         ubTargetID = WhoIsThere2(NewGridNo(pSoldier.value.sTargetGridNo, DirectionInc(bLoop)), pSoldier.value.bTargetLevel);
         pTargetSoldier = NULL;
         if (ubTargetID != NOBODY) {
@@ -1400,12 +1400,12 @@ function UseThrown(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEA
     }
   }
 
-  CalculateLaunchItemParamsForThrow(pSoldier, sTargetGridNo, pSoldier.value.bTargetLevel, (pSoldier.value.bTargetLevel * 256), addressof(pSoldier.value.inv[HANDPOS]), (uiDiceRoll - uiHitChance), THROW_ARM_ITEM, 0);
+  CalculateLaunchItemParamsForThrow(pSoldier, sTargetGridNo, pSoldier.value.bTargetLevel, (pSoldier.value.bTargetLevel * 256), addressof(pSoldier.value.inv[Enum261.HANDPOS]), (uiDiceRoll - uiHitChance), Enum258.THROW_ARM_ITEM, 0);
 
   // OK, goto throw animation
   HandleSoldierThrowItem(pSoldier, pSoldier.value.sTargetGridNo);
 
-  RemoveObjs(addressof(pSoldier.value.inv[HANDPOS]), 1);
+  RemoveObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), 1);
 
   return TRUE;
 }
@@ -1427,7 +1427,7 @@ function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOL
     return FALSE;
   }
 
-  pObj = addressof(pSoldier.value.inv[HANDPOS]);
+  pObj = addressof(pSoldier.value.inv[Enum261.HANDPOS]);
   for (bAttachPos = 0; bAttachPos < MAX_ATTACHMENTS; bAttachPos++) {
     if (pObj.value.usAttachItem[bAttachPos] != NOTHING) {
       if (Item[pObj.value.usAttachItem[bAttachPos]].usItemClass & IC_EXPLOSV) {
@@ -1443,7 +1443,7 @@ function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOL
   CreateItem(pObj.value.usAttachItem[bAttachPos], pObj.value.bAttachStatus[bAttachPos], addressof(Launchable));
 
   if (pSoldier.value.usAttackingWeapon == pObj.value.usItem) {
-    DeductAmmo(pSoldier, HANDPOS);
+    DeductAmmo(pSoldier, Enum261.HANDPOS);
   } else {
     // Firing an attached grenade launcher... the attachment we found above
     // is the one to remove!
@@ -1487,7 +1487,7 @@ function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOL
 
   DeductPoints(pSoldier, sAPCost, 0);
 
-  CalculateLaunchItemParamsForThrow(pSoldier, pSoldier.value.sTargetGridNo, pSoldier.value.bTargetLevel, 0, addressof(Launchable), (uiDiceRoll - uiHitChance), THROW_ARM_ITEM, 0);
+  CalculateLaunchItemParamsForThrow(pSoldier, pSoldier.value.sTargetGridNo, pSoldier.value.bTargetLevel, 0, addressof(Launchable), (uiDiceRoll - uiHitChance), Enum258.THROW_ARM_ITEM, 0);
 
   iID = CreatePhysicalObject(pSoldier.value.pTempObject, pSoldier.value.pThrowParams.value.dLifeSpan, pSoldier.value.pThrowParams.value.dX, pSoldier.value.pThrowParams.value.dY, pSoldier.value.pThrowParams.value.dZ, pSoldier.value.pThrowParams.value.dForceX, pSoldier.value.pThrowParams.value.dForceY, pSoldier.value.pThrowParams.value.dForceZ, pSoldier.value.ubID, pSoldier.value.pThrowParams.value.ubActionCode, pSoldier.value.pThrowParams.value.uiActionData);
 
@@ -1513,7 +1513,7 @@ function DoSpecialEffectAmmoMiss(ubAttackerID: UINT8, sGridNo: INT16, sXPos: INT
 
   memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
 
-  if (ubAmmoType == AMMO_HE || ubAmmoType == AMMO_HEAT) {
+  if (ubAmmoType == Enum286.AMMO_HE || ubAmmoType == Enum286.AMMO_HEAT) {
     if (!fSoundOnly) {
       AniParams.sGridNo = sGridNo;
       AniParams.ubLevelID = ANI_TOPMOST_LEVEL;
@@ -1536,33 +1536,33 @@ function DoSpecialEffectAmmoMiss(ubAttackerID: UINT8, sGridNo: INT16, sXPos: INT
     }
 
     if (sGridNo != NOWHERE) {
-      PlayJA2Sample(SMALL_EXPLODE_1, RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
+      PlayJA2Sample(Enum330.SMALL_EXPLODE_1, RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
     } else {
-      PlayJA2Sample(SMALL_EXPLODE_1, RATE_11025, MIDVOLUME, 1, MIDDLE);
+      PlayJA2Sample(Enum330.SMALL_EXPLODE_1, RATE_11025, MIDVOLUME, 1, MIDDLE);
     }
 
     return TRUE;
-  } else if (usItem == CREATURE_OLD_MALE_SPIT || usItem == CREATURE_QUEEN_SPIT || usItem == CREATURE_INFANT_SPIT || usItem == CREATURE_YOUNG_MALE_SPIT) {
+  } else if (usItem == Enum225.CREATURE_OLD_MALE_SPIT || usItem == Enum225.CREATURE_QUEEN_SPIT || usItem == Enum225.CREATURE_INFANT_SPIT || usItem == Enum225.CREATURE_YOUNG_MALE_SPIT) {
     // Increment attack busy...
     // gTacticalStatus.ubAttackBusyCount++;
     // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("Incrementing Attack: Explosion gone off, COunt now %d", gTacticalStatus.ubAttackBusyCount ) );
 
-    PlayJA2Sample(CREATURE_GAS_NOISE, RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
+    PlayJA2Sample(Enum330.CREATURE_GAS_NOISE, RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
 
     // Do Spread effect.......
     switch (usItem) {
-      case CREATURE_YOUNG_MALE_SPIT:
-      case CREATURE_INFANT_SPIT:
+      case Enum225.CREATURE_YOUNG_MALE_SPIT:
+      case Enum225.CREATURE_INFANT_SPIT:
 
-        NewSmokeEffect(sGridNo, VERY_SMALL_CREATURE_GAS, 0, ubAttackerID);
+        NewSmokeEffect(sGridNo, Enum225.VERY_SMALL_CREATURE_GAS, 0, ubAttackerID);
         break;
 
-      case CREATURE_OLD_MALE_SPIT:
-        NewSmokeEffect(sGridNo, SMALL_CREATURE_GAS, 0, ubAttackerID);
+      case Enum225.CREATURE_OLD_MALE_SPIT:
+        NewSmokeEffect(sGridNo, Enum225.SMALL_CREATURE_GAS, 0, ubAttackerID);
         break;
 
-      case CREATURE_QUEEN_SPIT:
-        NewSmokeEffect(sGridNo, LARGE_CREATURE_GAS, 0, ubAttackerID);
+      case Enum225.CREATURE_QUEEN_SPIT:
+        NewSmokeEffect(sGridNo, Enum225.LARGE_CREATURE_GAS, 0, ubAttackerID);
         break;
     }
   }
@@ -1580,15 +1580,15 @@ function WeaponHit(usSoldierID: UINT16, usWeaponIndex: UINT16, sDamage: INT16, s
   // Get Target
   pTargetSoldier = MercPtrs[usSoldierID];
 
-  MakeNoise(ubAttackerID, pTargetSoldier.value.sGridNo, pTargetSoldier.value.bLevel, gpWorldLevelData[pTargetSoldier.value.sGridNo].ubTerrainID, Weapon[usWeaponIndex].ubHitVolume, NOISE_BULLET_IMPACT);
+  MakeNoise(ubAttackerID, pTargetSoldier.value.sGridNo, pTargetSoldier.value.bLevel, gpWorldLevelData[pTargetSoldier.value.sGridNo].ubTerrainID, Weapon[usWeaponIndex].ubHitVolume, Enum236.NOISE_BULLET_IMPACT);
 
   if (EXPLOSIVE_GUN(usWeaponIndex)) {
     // Reduce attacker count!
-    if (usWeaponIndex == ROCKET_LAUNCHER) {
-      IgniteExplosion(ubAttackerID, sXPos, sYPos, 0, (GETWORLDINDEXFROMWORLDCOORDS(sYPos, sXPos)), C1, pTargetSoldier.value.bLevel);
+    if (usWeaponIndex == Enum225.ROCKET_LAUNCHER) {
+      IgniteExplosion(ubAttackerID, sXPos, sYPos, 0, (GETWORLDINDEXFROMWORLDCOORDS(sYPos, sXPos)), Enum225.C1, pTargetSoldier.value.bLevel);
     } else // tank cannon
     {
-      IgniteExplosion(ubAttackerID, sXPos, sYPos, 0, (GETWORLDINDEXFROMWORLDCOORDS(sYPos, sXPos)), TANK_SHELL, pTargetSoldier.value.bLevel);
+      IgniteExplosion(ubAttackerID, sXPos, sYPos, 0, (GETWORLDINDEXFROMWORLDCOORDS(sYPos, sXPos)), Enum225.TANK_SHELL, pTargetSoldier.value.bLevel);
     }
 
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Freeing up attacker - end of LAW fire"));
@@ -1650,34 +1650,34 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
   sGridNo = MAPROWCOLTOPOS((sYPos / CELL_Y_SIZE), (sXPos / CELL_X_SIZE));
   if (!fHitSameStructureAsBefore) {
     if (sZPos > WALL_HEIGHT) {
-      MakeNoise(ubAttackerID, sGridNo, 1, gpWorldLevelData[sGridNo].ubTerrainID, Weapon[usWeaponIndex].ubHitVolume, NOISE_BULLET_IMPACT);
+      MakeNoise(ubAttackerID, sGridNo, 1, gpWorldLevelData[sGridNo].ubTerrainID, Weapon[usWeaponIndex].ubHitVolume, Enum236.NOISE_BULLET_IMPACT);
     } else {
-      MakeNoise(ubAttackerID, sGridNo, 0, gpWorldLevelData[sGridNo].ubTerrainID, Weapon[usWeaponIndex].ubHitVolume, NOISE_BULLET_IMPACT);
+      MakeNoise(ubAttackerID, sGridNo, 0, gpWorldLevelData[sGridNo].ubTerrainID, Weapon[usWeaponIndex].ubHitVolume, Enum236.NOISE_BULLET_IMPACT);
     }
   }
 
   if (fStopped) {
-    if (usWeaponIndex == ROCKET_LAUNCHER) {
+    if (usWeaponIndex == Enum225.ROCKET_LAUNCHER) {
       RemoveBullet(iBullet);
 
       // Reduce attacker count!
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Freeing up attacker - end of LAW fire"));
       FreeUpAttacker(ubAttackerID);
 
-      IgniteExplosion(ubAttackerID, CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, C1, (sZPos >= WALL_HEIGHT));
+      IgniteExplosion(ubAttackerID, CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, Enum225.C1, (sZPos >= WALL_HEIGHT));
       // FreeUpAttacker( (UINT8) ubAttackerID );
 
       return;
     }
 
-    if (usWeaponIndex == TANK_CANNON) {
+    if (usWeaponIndex == Enum225.TANK_CANNON) {
       RemoveBullet(iBullet);
 
       // Reduce attacker count!
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Freeing up attacker - end of TANK fire"));
       FreeUpAttacker(ubAttackerID);
 
-      IgniteExplosion(ubAttackerID, CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, TANK_SHELL, (sZPos >= WALL_HEIGHT));
+      IgniteExplosion(ubAttackerID, CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, Enum225.TANK_SHELL, (sZPos >= WALL_HEIGHT));
       // FreeUpAttacker( (UINT8) ubAttackerID );
 
       return;
@@ -1692,17 +1692,17 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
   }
 
   switch (Weapon[usWeaponIndex].ubWeaponClass) {
-    case HANDGUNCLASS:
-    case RIFLECLASS:
-    case SHOTGUNCLASS:
-    case SMGCLASS:
-    case MGCLASS:
+    case Enum282.HANDGUNCLASS:
+    case Enum282.RIFLECLASS:
+    case Enum282.SHOTGUNCLASS:
+    case Enum282.SMGCLASS:
+    case Enum282.MGCLASS:
 
       // Guy has missed, play random sound
       if (MercPtrs[ubAttackerID].value.bTeam == gbPlayerNum) {
         if (!MercPtrs[ubAttackerID].value.bDoBurst) {
           if (Random(40) == 0) {
-            DoMercBattleSound(MercPtrs[ubAttackerID], BATTLE_SOUND_CURSE1);
+            DoMercBattleSound(MercPtrs[ubAttackerID], Enum259.BATTLE_SOUND_CURSE1);
           }
         }
       }
@@ -1711,7 +1711,7 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
       fDoMissForGun = TRUE;
       break;
 
-    case MONSTERCLASS:
+    case Enum282.MONSTERCLASS:
 
       DoSpecialEffectAmmoMiss(ubAttackerID, sGridNo, sXPos, sYPos, sZPos, FALSE, TRUE, iBullet);
 
@@ -1722,7 +1722,7 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
       // PlayJA2Sample( SPIT_RICOCHET , RATE_11025, uiMissVolume, 1, SoundDir( sGridNo ) );
       break;
 
-    case KNIFECLASS:
+    case Enum282.KNIFECLASS:
 
       // When it hits the ground, leave on map...
       if (Item[usWeaponIndex].usItemClass == IC_THROWING_KNIFE) {
@@ -1731,7 +1731,7 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
         // OK, have we hit ground?
         if (usStructureID == INVALID_STRUCTURE_ID) {
           // Add item
-          CreateItem(THROWING_KNIFE, bWeaponStatus, addressof(Object));
+          CreateItem(Enum225.THROWING_KNIFE, bWeaponStatus, addressof(Object));
 
           AddItemToPool(sGridNo, addressof(Object), -1, 0, 0, -1);
 
@@ -1740,7 +1740,7 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
         }
 
         if (!fHitSameStructureAsBefore) {
-          PlayJA2Sample(MISS_KNIFE, RATE_11025, uiMissVolume, 1, SoundDir(sGridNo));
+          PlayJA2Sample(Enum330.MISS_KNIFE, RATE_11025, uiMissVolume, 1, SoundDir(sGridNo));
         }
 
         RemoveBullet(iBullet);
@@ -1751,7 +1751,7 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
 
   if (fDoMissForGun) {
     // OK, are we a shotgun, if so , make sounds lower...
-    if (Weapon[usWeaponIndex].ubWeaponClass == SHOTGUNCLASS) {
+    if (Weapon[usWeaponIndex].ubWeaponClass == Enum282.SHOTGUNCLASS) {
       uiMissVolume = LOWVOLUME;
     }
 
@@ -1773,26 +1773,26 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
     } else {
       if (!fStopped || !DoSpecialEffectAmmoMiss(ubAttackerID, sGridNo, sXPos, sYPos, sZPos, FALSE, TRUE, iBullet)) {
         if (sZPos == 0) {
-          PlayJA2Sample(MISS_G2, RATE_11025, uiMissVolume, 1, SoundDir(sGridNo));
+          PlayJA2Sample(Enum330.MISS_G2, RATE_11025, uiMissVolume, 1, SoundDir(sGridNo));
         } else {
-          PlayJA2Sample(MISS_1 + Random(8), RATE_11025, uiMissVolume, 1, SoundDir(sGridNo));
+          PlayJA2Sample(Enum330.MISS_1 + Random(8), RATE_11025, uiMissVolume, 1, SoundDir(sGridNo));
         }
 
         // Default hit is the ground
-        usMissTileIndex = FIRSTMISS1;
-        usMissTileType = FIRSTMISS;
+        usMissTileIndex = Enum312.FIRSTMISS1;
+        usMissTileType = Enum313.FIRSTMISS;
 
         // Check if we are in water...
-        if (gpWorldLevelData[sGridNo].ubTerrainID == LOW_WATER || gpWorldLevelData[sGridNo].ubTerrainID == DEEP_WATER) {
-          usMissTileIndex = SECONDMISS1;
-          usMissTileType = SECONDMISS;
+        if (gpWorldLevelData[sGridNo].ubTerrainID == Enum315.LOW_WATER || gpWorldLevelData[sGridNo].ubTerrainID == Enum315.DEEP_WATER) {
+          usMissTileIndex = Enum312.SECONDMISS1;
+          usMissTileType = Enum313.SECONDMISS;
 
           // Add ripple
           memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
           AniParams.sGridNo = sGridNo;
           AniParams.ubLevelID = ANI_STRUCT_LEVEL;
-          AniParams.usTileType = THIRDMISS;
-          AniParams.usTileIndex = THIRDMISS1;
+          AniParams.usTileType = Enum313.THIRDMISS;
+          AniParams.usTileIndex = Enum312.THIRDMISS1;
           AniParams.sDelay = 50;
           AniParams.sStartFrame = 0;
           AniParams.uiFlags = ANITILE_FORWARD;
@@ -1833,7 +1833,7 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
         pNode.value.pLevelNode.value.sRelativeZ = sZPos;
 
         // ATE: Show misses...( if our team )
-        if (gGameSettings.fOptions[TOPTION_SHOW_MISSES]) {
+        if (gGameSettings.fOptions[Enum8.TOPTION_SHOW_MISSES]) {
           if (ubAttackerID != NOBODY) {
             if (MercPtrs[ubAttackerID].value.bTeam == gbPlayerNum) {
               LocateGridNo(sGridNo);
@@ -1894,18 +1894,18 @@ function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: BOOL
 
   SetRenderFlags(RENDER_FLAG_FULL);
 
-  if (pWallAndWindowInDB.value.ubArmour == MATERIAL_THICKER_METAL_WITH_SCREEN_WINDOWS) {
+  if (pWallAndWindowInDB.value.ubArmour == Enum309.MATERIAL_THICKER_METAL_WITH_SCREEN_WINDOWS) {
     // don't play any sort of animation or sound
     return;
   }
 
   if (pWallAndWindowInDB.value.bPartnerDelta != NO_PARTNER_STRUCTURE) {
     // just cracked; don't display the animation
-    MakeNoise(NOBODY, sGridNo, 0, gpWorldLevelData[sGridNo].ubTerrainID, WINDOW_CRACK_VOLUME, NOISE_BULLET_IMPACT);
+    MakeNoise(NOBODY, sGridNo, 0, gpWorldLevelData[sGridNo].ubTerrainID, WINDOW_CRACK_VOLUME, Enum236.NOISE_BULLET_IMPACT);
     return;
   }
-  MakeNoise(NOBODY, sGridNo, 0, gpWorldLevelData[sGridNo].ubTerrainID, WINDOW_SMASH_VOLUME, NOISE_BULLET_IMPACT);
-  if (pWallAndWindowInDB.value.ubWallOrientation == INSIDE_TOP_RIGHT || pWallAndWindowInDB.value.ubWallOrientation == OUTSIDE_TOP_RIGHT) {
+  MakeNoise(NOBODY, sGridNo, 0, gpWorldLevelData[sGridNo].ubTerrainID, WINDOW_SMASH_VOLUME, Enum236.NOISE_BULLET_IMPACT);
+  if (pWallAndWindowInDB.value.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pWallAndWindowInDB.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
     /*
             sShatterGridNo = sGridNo + 1;
             // check for wrapping around edge of map
@@ -1915,10 +1915,10 @@ function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: BOOL
                     return;
             }*/
     if (fBlowWindowSouth) {
-      usTileIndex = WINDOWSHATTER1;
+      usTileIndex = Enum312.WINDOWSHATTER1;
       sShatterGridNo = sGridNo + 1;
     } else {
-      usTileIndex = WINDOWSHATTER11;
+      usTileIndex = Enum312.WINDOWSHATTER11;
       sShatterGridNo = sGridNo;
     }
   } else {
@@ -1931,10 +1931,10 @@ function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: BOOL
                     return;
             }*/
     if (fBlowWindowSouth) {
-      usTileIndex = WINDOWSHATTER6;
+      usTileIndex = Enum312.WINDOWSHATTER6;
       sShatterGridNo = sGridNo + WORLD_COLS;
     } else {
-      usTileIndex = WINDOWSHATTER16;
+      usTileIndex = Enum312.WINDOWSHATTER16;
       sShatterGridNo = sGridNo;
     }
   }
@@ -1942,7 +1942,7 @@ function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: BOOL
   memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
   AniParams.sGridNo = sShatterGridNo;
   AniParams.ubLevelID = ANI_STRUCT_LEVEL;
-  AniParams.usTileType = WINDOWSHATTER;
+  AniParams.usTileType = Enum313.WINDOWSHATTER;
   AniParams.usTileIndex = usTileIndex;
   AniParams.sDelay = 50;
   AniParams.sStartFrame = 0;
@@ -1950,14 +1950,14 @@ function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: BOOL
 
   pNode = CreateAnimationTile(addressof(AniParams));
 
-  PlayJA2Sample(GLASS_SHATTER1 + Random(2), RATE_11025, MIDVOLUME, 1, SoundDir(sGridNo));
+  PlayJA2Sample(Enum330.GLASS_SHATTER1 + Random(2), RATE_11025, MIDVOLUME, 1, SoundDir(sGridNo));
 }
 
 function InRange(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): BOOLEAN {
   let sRange: INT16;
   let usInHand: UINT16;
 
-  usInHand = pSoldier.value.inv[HANDPOS].usItem;
+  usInHand = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
   if (Item[usInHand].usItemClass == IC_GUN || Item[usInHand].usItemClass == IC_THROWING_KNIFE) {
     // Determine range
@@ -1965,12 +1965,12 @@ function InRange(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): BOOLEAN {
 
     if (Item[usInHand].usItemClass == IC_THROWING_KNIFE) {
       // NB CalcMaxTossRange returns range in tiles, not in world units
-      if (sRange <= CalcMaxTossRange(pSoldier, THROWING_KNIFE, TRUE) * CELL_X_SIZE) {
+      if (sRange <= CalcMaxTossRange(pSoldier, Enum225.THROWING_KNIFE, TRUE) * CELL_X_SIZE) {
         return TRUE;
       }
     } else {
       // For given weapon, check range
-      if (sRange <= GunRange(addressof(pSoldier.value.inv[HANDPOS]))) {
+      if (sRange <= GunRange(addressof(pSoldier.value.inv[Enum261.HANDPOS]))) {
         return TRUE;
       }
     }
@@ -2010,12 +2010,12 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
   // DETERMINE BASE CHANCE OF HITTING
   iGunCondition = WEAPON_STATUS_MOD(pInHand.value.bGunStatus);
 
-  if (usInHand == ROCKET_LAUNCHER) {
+  if (usInHand == Enum225.ROCKET_LAUNCHER) {
     // use the same calculation as for mechanical thrown weapons
     iMarksmanship = (EffectiveDexterity(pSoldier) + EffectiveMarksmanship(pSoldier) + EffectiveWisdom(pSoldier) + (10 * EffectiveExpLevel(pSoldier))) / 4;
     // heavy weapons trait helps out
-    if (HAS_SKILL_TRAIT(pSoldier, HEAVY_WEAPS)) {
-      iMarksmanship += gbSkillTraitBonus[HEAVY_WEAPS] * NUM_SKILL_TRAITS(pSoldier, HEAVY_WEAPS);
+    if (HAS_SKILL_TRAIT(pSoldier, Enum269.HEAVY_WEAPS)) {
+      iMarksmanship += gbSkillTraitBonus[Enum269.HEAVY_WEAPS] * NUM_SKILL_TRAITS(pSoldier, Enum269.HEAVY_WEAPS);
     }
   } else {
     iMarksmanship = EffectiveMarksmanship(pSoldier);
@@ -2047,7 +2047,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
   if (sGridNo == pSoldier.value.sLastTarget)
     iChance += AIM_BONUS_SAME_TARGET; // give a bonus to hit
 
-  if (pSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait == PSYCHO) {
+  if (pSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait == Enum270.PSYCHO) {
     iChance += AIM_BONUS_PSYCHO;
   }
 
@@ -2069,7 +2069,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
       if (iBonus > AIM_BONUS_PRONE) {
         iBonus = AIM_BONUS_PRONE;
       }
-      bAttachPos = FindAttachment(pInHand, BIPOD);
+      bAttachPos = FindAttachment(pInHand, Enum225.BIPOD);
       if (bAttachPos != ITEM_NOT_FOUND) {
         // extra bonus to hit for a bipod, up to half the prone bonus itself
         iBonus += (iBonus * WEAPON_STATUS_MOD(pInHand.value.bAttachStatus[bAttachPos]) / 100) / 2;
@@ -2080,7 +2080,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
 
   if (!(Item[usInHand].fFlags & ITEM_TWO_HANDED)) {
     // SMGs are treated as pistols for these purpose except there is a -5 penalty;
-    if (Weapon[usInHand].ubWeaponClass == SMGCLASS) {
+    if (Weapon[usInHand].ubWeaponClass == Enum282.SMGCLASS) {
       iChance -= AIM_PENALTY_SMG;
     }
 
@@ -2091,7 +2091,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
             iChance += AIM_BONUS_TWO_HANDED_PISTOL;
     }
     else */
-    if (!HAS_SKILL_TRAIT(pSoldier, AMBIDEXT)) {
+    if (!HAS_SKILL_TRAIT(pSoldier, Enum269.AMBIDEXT)) {
       if (IsValidSecondHandShot(pSoldier)) {
         // penalty to aim when firing two pistols
         iChance -= AIM_PENALTY_DUAL_PISTOLS;
@@ -2111,13 +2111,13 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
     iPenalty = Weapon[usInHand].ubBurstPenalty * (pSoldier.value.bDoBurst - 1);
 
     // halve the penalty for people with the autofire trait
-    if (HAS_SKILL_TRAIT(pSoldier, AUTO_WEAPS)) {
-      iPenalty /= 2 * NUM_SKILL_TRAITS(pSoldier, AUTO_WEAPS);
+    if (HAS_SKILL_TRAIT(pSoldier, Enum269.AUTO_WEAPS)) {
+      iPenalty /= 2 * NUM_SKILL_TRAITS(pSoldier, Enum269.AUTO_WEAPS);
     }
     iChance -= iPenalty;
   }
 
-  sDistVis = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, 0);
+  sDistVis = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sGridNo, 0);
 
   // give some leeway to allow people to spot for each other...
   // use distance limitation for LOS routine of 2 x maximum distance EVER visible, so that we get accurate
@@ -2154,7 +2154,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
 
   if (!(pSoldier.value.uiStatusFlags & SOLDIER_PC)) // if this is a computer AI controlled enemy
   {
-    if (gGameOptions.ubDifficultyLevel == DIF_LEVEL_EASY) {
+    if (gGameOptions.ubDifficultyLevel == Enum9.DIF_LEVEL_EASY) {
       // On easy, penalize all enemies by 5%
       iChance -= 5;
     } else {
@@ -2179,7 +2179,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
     iChance -= (pSoldier.value.bShock * AIM_PENALTY_PER_SHOCK);
 
   if (Item[usInHand].usItemClass == IC_GUN) {
-    bAttachPos = FindAttachment(pInHand, GUN_BARREL_EXTENDER);
+    bAttachPos = FindAttachment(pInHand, Enum225.GUN_BARREL_EXTENDER);
     if (bAttachPos != ITEM_NOT_FOUND) {
       // reduce status and see if it falls off
       pInHand.value.bAttachStatus[bAttachPos] -= Random(2);
@@ -2190,7 +2190,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
 
         // since barrel extenders are not removable we cannot call RemoveAttachment here
         // and must create the item by hand
-        CreateItem(GUN_BARREL_EXTENDER, pInHand.value.bAttachStatus[bAttachPos], addressof(Temp));
+        CreateItem(Enum225.GUN_BARREL_EXTENDER, pInHand.value.bAttachStatus[bAttachPos], addressof(Temp));
         pInHand.value.usAttachItem[bAttachPos] = NOTHING;
         pInHand.value.bAttachStatus[bAttachPos] = 0;
 
@@ -2202,7 +2202,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
 
         // curse!
         if (pSoldier.value.bTeam == OUR_TEAM) {
-          DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
+          DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
 
           ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[46], pSoldier.value.name);
         }
@@ -2215,12 +2215,12 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
   }
 
   if (iSightRange > 0) {
-    if (pSoldier.value.inv[HEAD1POS].usItem == SUNGOGGLES || pSoldier.value.inv[HEAD2POS].usItem == SUNGOGGLES) {
+    if (pSoldier.value.inv[Enum261.HEAD1POS].usItem == Enum225.SUNGOGGLES || pSoldier.value.inv[Enum261.HEAD2POS].usItem == Enum225.SUNGOGGLES) {
       // decrease effective range by 10% when using sungoggles (w or w/o scope)
       iSightRange -= iRange / 10; // basically, +1% to hit per every 2 squares
     }
 
-    bAttachPos = FindAttachment(pInHand, SNIPERSCOPE);
+    bAttachPos = FindAttachment(pInHand, Enum225.SNIPERSCOPE);
 
     // does gun have scope, long range recommends its use, and shooter's aiming?
     if (bAttachPos != NO_SLOT && (iRange > MIN_SCOPE_RANGE) && (ubAimTime > 0)) {
@@ -2238,12 +2238,12 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
       }
     }
 
-    bAttachPos = FindAttachment(pInHand, LASERSCOPE);
-    if (usInHand == ROCKET_RIFLE || usInHand == AUTO_ROCKET_RIFLE || bAttachPos != NO_SLOT) // rocket rifle has one built in
+    bAttachPos = FindAttachment(pInHand, Enum225.LASERSCOPE);
+    if (usInHand == Enum225.ROCKET_RIFLE || usInHand == Enum225.AUTO_ROCKET_RIFLE || bAttachPos != NO_SLOT) // rocket rifle has one built in
     {
       let bLaserStatus: INT8;
 
-      if (usInHand == ROCKET_RIFLE || usInHand == AUTO_ROCKET_RIFLE) {
+      if (usInHand == Enum225.ROCKET_RIFLE || usInHand == Enum225.AUTO_ROCKET_RIFLE) {
         bLaserStatus = WEAPON_STATUS_MOD(pInHand.value.bGunStatus);
       } else {
         bLaserStatus = WEAPON_STATUS_MOD(pInHand.value.bAttachStatus[bAttachPos]);
@@ -2328,8 +2328,8 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
       iChance += AIM_BONUS_FIRING_DOWN;
     }
     // if have roof trait, give bonus
-    if (HAS_SKILL_TRAIT(pSoldier, ONROOF)) {
-      iChance += gbSkillTraitBonus[ONROOF] * NUM_SKILL_TRAITS(pSoldier, ONROOF);
+    if (HAS_SKILL_TRAIT(pSoldier, Enum269.ONROOF)) {
+      iChance += gbSkillTraitBonus[Enum269.ONROOF] * NUM_SKILL_TRAITS(pSoldier, Enum269.ONROOF);
     }
   }
 
@@ -2392,7 +2392,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
 
     // if target sees us, he may have a chance to dodge before the gun goes off
     // but ability to dodge is reduced if crouched or prone!
-    if (pTarget.value.bOppList[pSoldier.value.ubID] == SEEN_CURRENTLY && !TANK(pTarget) && !(pSoldier.value.ubBodyType != QUEENMONSTER)) {
+    if (pTarget.value.bOppList[pSoldier.value.ubID] == SEEN_CURRENTLY && !TANK(pTarget) && !(pSoldier.value.ubBodyType != Enum194.QUEENMONSTER)) {
       iPenalty = (EffectiveAgility(pTarget) / 5 + EffectiveExpLevel(pTarget) * 2);
       switch (gAnimControl[pTarget.value.usAnimState].ubHeight) {
         case ANIM_CROUCH:
@@ -2405,7 +2405,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
 
       // reduce dodge ability by the attacker's stats
       iBonus = (EffectiveDexterity(pSoldier) / 5 + EffectiveExpLevel(pSoldier) * 2);
-      if (TANK(pTarget) || (pSoldier.value.ubBodyType != QUEENMONSTER)) {
+      if (TANK(pTarget) || (pSoldier.value.ubBodyType != Enum194.QUEENMONSTER)) {
         // reduce ability to track shots
         iBonus = iBonus / 2;
       }
@@ -2478,7 +2478,7 @@ function AICalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, u
 
   // same as CCTHG but fakes the attacker always standing
   usTrueState = pSoldier.value.usAnimState;
-  pSoldier.value.usAnimState = STANDING;
+  pSoldier.value.usAnimState = Enum193.STANDING;
   uiChance = CalcChanceToHitGun(pSoldier, sGridNo, ubAimTime, ubAimPos);
   pSoldier.value.usAnimState = usTrueState;
   return uiChance;
@@ -2489,14 +2489,14 @@ function CalcBodyImpactReduction(ubAmmoType: UINT8, ubHitLocation: UINT8): INT32
   let iReduction: INT32 = BodyImpactReduction[ubHitLocation];
 
   switch (ubAmmoType) {
-    case AMMO_HP:
+    case Enum286.AMMO_HP:
       iReduction = AMMO_ARMOUR_ADJUSTMENT_HP(iReduction);
       break;
-    case AMMO_AP:
-    case AMMO_HEAT:
+    case Enum286.AMMO_AP:
+    case Enum286.AMMO_HEAT:
       iReduction = AMMO_ARMOUR_ADJUSTMENT_AP(iReduction);
       break;
-    case AMMO_SUPER_AP:
+    case Enum286.AMMO_SUPER_AP:
       iReduction = AMMO_ARMOUR_ADJUSTMENT_SAP(iReduction);
       break;
     default:
@@ -2525,14 +2525,14 @@ function ArmourProtection(pTarget: Pointer<SOLDIERTYPE>, ubArmourType: UINT8, pb
 
   // adjust protection of armour due to different ammo types
   switch (ubAmmoType) {
-    case AMMO_HP:
+    case Enum286.AMMO_HP:
       iProtection = AMMO_ARMOUR_ADJUSTMENT_HP(iProtection);
       break;
-    case AMMO_AP:
-    case AMMO_HEAT:
+    case Enum286.AMMO_AP:
+    case Enum286.AMMO_HEAT:
       iProtection = AMMO_ARMOUR_ADJUSTMENT_AP(iProtection);
       break;
-    case AMMO_SUPER_AP:
+    case Enum286.AMMO_SUPER_AP:
       iProtection = AMMO_ARMOUR_ADJUSTMENT_SAP(iProtection);
       break;
     default:
@@ -2550,12 +2550,12 @@ function ArmourProtection(pTarget: Pointer<SOLDIERTYPE>, ubArmourType: UINT8, pb
 
   // reduce armour condition
 
-  if (ubAmmoType == AMMO_KNIFE || ubAmmoType == AMMO_SLEEP_DART) {
+  if (ubAmmoType == Enum286.AMMO_KNIFE || ubAmmoType == Enum286.AMMO_SLEEP_DART) {
     // knives and darts damage armour but are not stopped by kevlar
-    if (Armour[ubArmourType].ubArmourClass == ARMOURCLASS_VEST || Armour[ubArmourType].ubArmourClass == ARMOURCLASS_LEGGINGS) {
+    if (Armour[ubArmourType].ubArmourClass == Enum284.ARMOURCLASS_VEST || Armour[ubArmourType].ubArmourClass == Enum284.ARMOURCLASS_LEGGINGS) {
       iProtection = 0;
     }
-  } else if (ubAmmoType == AMMO_MONSTER) {
+  } else if (ubAmmoType == Enum286.AMMO_MONSTER) {
     // creature spit damages armour a lot! an extra 3x for a total of 4x normal
     pbStatus.value -= 3 * (iAppliedProtection * Armour[ubArmourType].ubDegradePercent) / 100;
 
@@ -2591,22 +2591,22 @@ function TotalArmourProtection(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SO
         // creature hit in the glands!!! no armour there!
         return 0;
       case AIM_SHOT_HEAD:
-        iSlot = HELMETPOS;
+        iSlot = Enum261.HELMETPOS;
         break;
       case AIM_SHOT_LEGS:
-        iSlot = LEGPOS;
+        iSlot = Enum261.LEGPOS;
         break;
       case AIM_SHOT_TORSO:
       default:
-        iSlot = VESTPOS;
+        iSlot = Enum261.VESTPOS;
         break;
     }
 
     pArmour = addressof(pTarget.value.inv[iSlot]);
     if (pArmour.value.usItem != NOTHING) {
       // check plates first
-      if (iSlot == VESTPOS) {
-        bPlatePos = FindAttachment(pArmour, CERAMIC_PLATES);
+      if (iSlot == Enum261.VESTPOS) {
+        bPlatePos = FindAttachment(pArmour, Enum225.CERAMIC_PLATES);
         if (bPlatePos != -1) {
           // bullet got through jacket; apply ceramic plate armour
           iTotalProtection += ArmourProtection(pTarget, Item[pArmour.value.usAttachItem[bPlatePos]].ubClassIndex, addressof(pArmour.value.bAttachStatus[bPlatePos]), iImpact, ubAmmoType);
@@ -2652,13 +2652,13 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
 
   // Set a few things up:
   if (Item[pFirer.value.usAttackingWeapon].usItemClass == IC_THROWING_KNIFE) {
-    ubAmmoType = AMMO_KNIFE;
+    ubAmmoType = Enum286.AMMO_KNIFE;
   } else {
     ubAmmoType = pFirer.value.inv[pFirer.value.ubAttackingHand].ubGunAmmoType;
   }
 
   if (TANK(pTarget)) {
-    if (ubAmmoType != AMMO_HEAT) {
+    if (ubAmmoType != Enum286.AMMO_HEAT) {
       // ping!
       return 0;
     }
@@ -2681,7 +2681,7 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
   }
 
   // adjust for HE rounds
-  if (ubAmmoType == AMMO_HE || ubAmmoType == AMMO_HEAT) {
+  if (ubAmmoType == Enum286.AMMO_HE || ubAmmoType == Enum286.AMMO_HEAT) {
     iOrigImpact = AMMO_DAMAGE_ADJUSTMENT_HE(iOrigImpact);
 
     if (TANK(pTarget)) {
@@ -2697,7 +2697,7 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
   }
 
   // calc minimum damage
-  if (ubAmmoType == AMMO_HP || ubAmmoType == AMMO_SLEEP_DART) {
+  if (ubAmmoType == Enum286.AMMO_HP || ubAmmoType == Enum286.AMMO_SLEEP_DART) {
     if (iImpact < 0) {
       iImpact = 0;
     }
@@ -2706,7 +2706,7 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
       iImpact = (iOrigImpact + 5) / 10;
     }
 
-    if ((ubAmmoType == AMMO_BUCKSHOT) && (pTarget.value.bNumPelletsHitBy > 0)) {
+    if ((ubAmmoType == Enum286.AMMO_BUCKSHOT) && (pTarget.value.bNumPelletsHitBy > 0)) {
       iImpact += (pTarget.value.bNumPelletsHitBy - 1) / 2;
     }
   }
@@ -2718,14 +2718,14 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
   }
 
   if (iImpact > 0 && !TANK(pTarget)) {
-    if (ubAmmoType == AMMO_SLEEP_DART && sHitBy > 20) {
+    if (ubAmmoType == Enum286.AMMO_SLEEP_DART && sHitBy > 20) {
       if (pubSpecial) {
         pubSpecial.value = FIRE_WEAPON_SLEEP_DART_SPECIAL;
       }
       return iImpact;
     }
 
-    if (ubAmmoType == AMMO_HP) {
+    if (ubAmmoType == Enum286.AMMO_HP) {
       // good solid hit with a hollow-point bullet, which got through armour!
       iImpact = AMMO_DAMAGE_ADJUSTMENT_HP(iImpact);
     }
@@ -2757,7 +2757,7 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
         break;
       case AIM_SHOT_LEGS:
         // is the damage enough to make us fall over?
-        if (pubSpecial && IS_MERC_BODY_TYPE(pTarget) && gAnimControl[pTarget.value.usAnimState].ubEndHeight == ANIM_STAND && pTarget.value.bOverTerrainType != LOW_WATER && pTarget.value.bOverTerrainType != MED_WATER && pTarget.value.bOverTerrainType != DEEP_WATER) {
+        if (pubSpecial && IS_MERC_BODY_TYPE(pTarget) && gAnimControl[pTarget.value.usAnimState].ubEndHeight == ANIM_STAND && pTarget.value.bOverTerrainType != Enum315.LOW_WATER && pTarget.value.bOverTerrainType != Enum315.MED_WATER && pTarget.value.bOverTerrainType != Enum315.DEEP_WATER) {
           if (iImpactForCrits > MIN_DAMAGE_FOR_AUTO_FALL_OVER) {
             pubSpecial.value = FIRE_WEAPON_LEG_FALLDOWN_SPECIAL;
           }
@@ -2801,10 +2801,10 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
 
   // don't do critical hits against people who are gonna die!
   if (!IsAutoResolveActive()) {
-    if (ubAmmoType == AMMO_KNIFE && pFirer.value.bOppList[pTarget.value.ubID] == SEEN_CURRENTLY) {
+    if (ubAmmoType == Enum286.AMMO_KNIFE && pFirer.value.bOppList[pTarget.value.ubID] == SEEN_CURRENTLY) {
       // is this a stealth attack?
       if (pTarget.value.bOppList[pFirer.value.ubID] == NOT_HEARD_OR_SEEN && !CREATURE_OR_BLOODCAT(pTarget) && (ubHitLocation == AIM_SHOT_HEAD || ubHitLocation == AIM_SHOT_TORSO)) {
-        if (PreRandom(100) < (sHitBy + 10 * NUM_SKILL_TRAITS(pFirer, THROWING))) {
+        if (PreRandom(100) < (sHitBy + 10 * NUM_SKILL_TRAITS(pFirer, Enum269.THROWING))) {
           // instant death!
           iImpact = pTarget.value.bLife + Random(10);
           iImpactForCrits = iImpact;
@@ -2833,13 +2833,13 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
                 pTarget.value.usValueGoneUp &= ~(WIS_INCREASE);
 
                 if (bStatLoss == 1) {
-                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_LOSES_1_WISDOM], pTarget.value.name);
+                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_1_WISDOM], pTarget.value.name);
                 } else {
-                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_LOSES_WISDOM], pTarget.value.name, bStatLoss);
+                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_WISDOM], pTarget.value.name, bStatLoss);
                 }
               }
             } else if (pTarget.value.bNumPelletsHitBy == 0) {
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_HEAD_HIT], pTarget.value.name);
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_HEAD_HIT], pTarget.value.name);
             }
             break;
           case AIM_SHOT_TORSO:
@@ -2860,9 +2860,9 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
                   pTarget.value.usValueGoneUp &= ~(DEX_INCREASE);
 
                   if (bStatLoss == 1) {
-                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_LOSES_1_DEX], pTarget.value.name);
+                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_1_DEX], pTarget.value.name);
                   } else {
-                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_LOSES_DEX], pTarget.value.name, bStatLoss);
+                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_DEX], pTarget.value.name, bStatLoss);
                   }
                 }
               }
@@ -2883,9 +2883,9 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
                   pTarget.value.usValueGoneUp &= ~(STRENGTH_INCREASE);
 
                   if (bStatLoss == 1) {
-                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_LOSES_1_STRENGTH], pTarget.value.name);
+                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_1_STRENGTH], pTarget.value.name);
                   } else {
-                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_LOSES_STRENGTH], pTarget.value.name, bStatLoss);
+                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_STRENGTH], pTarget.value.name, bStatLoss);
                   }
                 }
               }
@@ -2908,16 +2908,16 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
                 pTarget.value.usValueGoneUp &= ~(AGIL_INCREASE);
 
                 if (bStatLoss == 1) {
-                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_LOSES_1_AGIL], pTarget.value.name);
+                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_1_AGIL], pTarget.value.name);
                 } else {
-                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_LOSES_AGIL], pTarget.value.name, bStatLoss);
+                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_AGIL], pTarget.value.name, bStatLoss);
                 }
               }
             }
             break;
         }
       } else if (ubHitLocation == AIM_SHOT_HEAD && pTarget.value.bNumPelletsHitBy == 0) {
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[STR_HEAD_HIT], pTarget.value.name);
+        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_HEAD_HIT], pTarget.value.name);
       }
     }
   }
@@ -2943,7 +2943,7 @@ function HTHImpact(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>
     iImpact += EffectiveStrength(pSoldier) / 5; // 0 to 20 for strength, adjusted by damage taken
 
     // NB martial artists don't get a bonus for using brass knuckles!
-    if (pSoldier.value.usAttackingWeapon && !(HAS_SKILL_TRAIT(pSoldier, MARTIALARTS))) {
+    if (pSoldier.value.usAttackingWeapon && !(HAS_SKILL_TRAIT(pSoldier, Enum269.MARTIALARTS))) {
       iImpact += Weapon[pSoldier.value.usAttackingWeapon].ubImpact;
 
       if (AM_A_ROBOT(pTarget)) {
@@ -2965,16 +2965,16 @@ function HTHImpact(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>
 
   if (!fBladeAttack) {
     // add bonuses for hand-to-hand and martial arts
-    if (HAS_SKILL_TRAIT(pSoldier, MARTIALARTS)) {
-      iImpact = iImpact * (100 + gbSkillTraitBonus[MARTIALARTS] * NUM_SKILL_TRAITS(pSoldier, MARTIALARTS)) / 100;
-      if (pSoldier.value.usAnimState == NINJA_SPINKICK) {
+    if (HAS_SKILL_TRAIT(pSoldier, Enum269.MARTIALARTS)) {
+      iImpact = iImpact * (100 + gbSkillTraitBonus[Enum269.MARTIALARTS] * NUM_SKILL_TRAITS(pSoldier, Enum269.MARTIALARTS)) / 100;
+      if (pSoldier.value.usAnimState == Enum193.NINJA_SPINKICK) {
         iImpact *= 2;
       }
     }
-    if (HAS_SKILL_TRAIT(pSoldier, HANDTOHAND)) {
+    if (HAS_SKILL_TRAIT(pSoldier, Enum269.HANDTOHAND)) {
       // SPECIAL  - give TRIPLE bonus for damage for hand-to-hand trait
       // because the HTH bonus is half that of martial arts, and gets only 1x for to-hit bonus
-      iImpact = iImpact * (100 + 3 * gbSkillTraitBonus[HANDTOHAND] * NUM_SKILL_TRAITS(pSoldier, HANDTOHAND)) / 100;
+      iImpact = iImpact * (100 + 3 * gbSkillTraitBonus[Enum269.HANDTOHAND] * NUM_SKILL_TRAITS(pSoldier, Enum269.HANDTOHAND)) / 100;
     }
   }
 
@@ -3000,23 +3000,23 @@ function ShotMiss(ubAttackerID: UINT8, iBullet: INT32): void {
   }
 
   switch (Weapon[MercPtrs[ubAttackerID].value.usAttackingWeapon].ubWeaponClass) {
-    case HANDGUNCLASS:
-    case RIFLECLASS:
-    case SHOTGUNCLASS:
-    case SMGCLASS:
-    case MGCLASS:
+    case Enum282.HANDGUNCLASS:
+    case Enum282.RIFLECLASS:
+    case Enum282.SHOTGUNCLASS:
+    case Enum282.SMGCLASS:
+    case Enum282.MGCLASS:
 
       // Guy has missed, play random sound
       if (MercPtrs[ubAttackerID].value.bTeam == gbPlayerNum) {
         if (Random(40) == 0) {
-          DoMercBattleSound(MercPtrs[ubAttackerID], BATTLE_SOUND_CURSE1);
+          DoMercBattleSound(MercPtrs[ubAttackerID], Enum259.BATTLE_SOUND_CURSE1);
         }
       }
       fDoMissForGun = TRUE;
       break;
 
-    case MONSTERCLASS:
-      PlayJA2Sample(SPIT_RICOCHET, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+    case Enum282.MONSTERCLASS:
+      PlayJA2Sample(Enum330.SPIT_RICOCHET, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
       break;
   }
 
@@ -3025,11 +3025,11 @@ function ShotMiss(ubAttackerID: UINT8, iBullet: INT32): void {
     // RANDOMIZE SOUND SYSTEM
 
     if (!DoSpecialEffectAmmoMiss(ubAttackerID, NOWHERE, 0, 0, 0, TRUE, TRUE, 0)) {
-      PlayJA2Sample(MISS_1 + Random(8), RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+      PlayJA2Sample(Enum330.MISS_1 + Random(8), RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
     }
 
     // ATE: Show misses...( if our team )
-    if (gGameSettings.fOptions[TOPTION_SHOW_MISSES]) {
+    if (gGameSettings.fOptions[Enum8.TOPTION_SHOW_MISSES]) {
       pBullet = GetBulletPtr(iBullet);
 
       if (pAttacker.value.bTeam == gbPlayerNum) {
@@ -3051,14 +3051,14 @@ function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDI
 
   usInHand = pAttacker.value.usAttackingWeapon;
 
-  if ((usInHand != CREATURE_QUEEN_TENTACLES) && (pDefender.value.bLife < OKLIFE || pDefender.value.bBreath < OKBREATH)) {
+  if ((usInHand != Enum225.CREATURE_QUEEN_TENTACLES) && (pDefender.value.bLife < OKLIFE || pDefender.value.bBreath < OKBREATH)) {
     // there is NO way to miss
     return 100;
   }
 
   if (ubMode == HTH_MODE_STAB) {
     // safety check
-    if (Weapon[usInHand].ubWeaponClass != KNIFECLASS) {
+    if (Weapon[usInHand].ubWeaponClass != Enum282.KNIFECLASS) {
       return 0;
     }
   } else {
@@ -3084,7 +3084,7 @@ function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDI
   iAttRating /= 6; // convert from 6-600 to 1-100
 
   // psycho bonus
-  if (pAttacker.value.ubProfile != NO_PROFILE && gMercProfiles[pAttacker.value.ubProfile].bPersonalityTrait == PSYCHO) {
+  if (pAttacker.value.ubProfile != NO_PROFILE && gMercProfiles[pAttacker.value.ubProfile].bPersonalityTrait == Enum270.PSYCHO) {
     iAttRating += AIM_BONUS_PSYCHO;
   }
 
@@ -3138,16 +3138,16 @@ function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDI
 
   if (pAttacker.value.ubProfile != NO_PROFILE) {
     if (ubMode == HTH_MODE_STAB) {
-      if (HAS_SKILL_TRAIT(pAttacker, KNIFING)) {
-        iAttRating += gbSkillTraitBonus[KNIFING] * NUM_SKILL_TRAITS(pAttacker, KNIFING);
+      if (HAS_SKILL_TRAIT(pAttacker, Enum269.KNIFING)) {
+        iAttRating += gbSkillTraitBonus[Enum269.KNIFING] * NUM_SKILL_TRAITS(pAttacker, Enum269.KNIFING);
       }
     } else {
       // add bonuses for hand-to-hand and martial arts
-      if (HAS_SKILL_TRAIT(pAttacker, MARTIALARTS)) {
-        iAttRating += gbSkillTraitBonus[MARTIALARTS] * NUM_SKILL_TRAITS(pAttacker, MARTIALARTS);
+      if (HAS_SKILL_TRAIT(pAttacker, Enum269.MARTIALARTS)) {
+        iAttRating += gbSkillTraitBonus[Enum269.MARTIALARTS] * NUM_SKILL_TRAITS(pAttacker, Enum269.MARTIALARTS);
       }
-      if (HAS_SKILL_TRAIT(pAttacker, HANDTOHAND)) {
-        iAttRating += gbSkillTraitBonus[HANDTOHAND] * NUM_SKILL_TRAITS(pAttacker, HANDTOHAND);
+      if (HAS_SKILL_TRAIT(pAttacker, Enum269.HANDTOHAND)) {
+        iAttRating += gbSkillTraitBonus[Enum269.HANDTOHAND] * NUM_SKILL_TRAITS(pAttacker, Enum269.HANDTOHAND);
       }
     }
   }
@@ -3206,13 +3206,13 @@ function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDI
   if ((iDefRating > 0) && (pDefender.value.bBreath < 100))
     iDefRating -= (iDefRating * (100 - pDefender.value.bBreath)) / 200;
 
-  if (usInHand == CREATURE_QUEEN_TENTACLES && pDefender.value.ubBodyType == LARVAE_MONSTER || pDefender.value.ubBodyType == INFANT_MONSTER) {
+  if (usInHand == Enum225.CREATURE_QUEEN_TENTACLES && pDefender.value.ubBodyType == Enum194.LARVAE_MONSTER || pDefender.value.ubBodyType == Enum194.INFANT_MONSTER) {
     // try to prevent queen from killing the kids, ever!
     iDefRating += 10000;
   }
 
   if (gAnimControl[pDefender.value.usAnimState].ubEndHeight < ANIM_STAND) {
-    if (usInHand == CREATURE_QUEEN_TENTACLES) {
+    if (usInHand == Enum225.CREATURE_QUEEN_TENTACLES) {
       if (gAnimControl[pDefender.value.usAnimState].ubEndHeight == ANIM_PRONE) {
         // make it well-nigh impossible to hit someone who is prone!
         iDefRating += 1000;
@@ -3231,38 +3231,38 @@ function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDI
 
   if (pDefender.value.ubProfile != NO_PROFILE) {
     if (ubMode == HTH_MODE_STAB) {
-      if (Item[pDefender.value.inv[HANDPOS].usItem].usItemClass == IC_BLADE) {
-        if (HAS_SKILL_TRAIT(pDefender, KNIFING)) {
+      if (Item[pDefender.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_BLADE) {
+        if (HAS_SKILL_TRAIT(pDefender, Enum269.KNIFING)) {
           // good with knives, got one, so we're good at parrying
-          iDefRating += gbSkillTraitBonus[KNIFING] * NUM_SKILL_TRAITS(pDefender, KNIFING);
+          iDefRating += gbSkillTraitBonus[Enum269.KNIFING] * NUM_SKILL_TRAITS(pDefender, Enum269.KNIFING);
         }
-        if (HAS_SKILL_TRAIT(pDefender, MARTIALARTS)) {
+        if (HAS_SKILL_TRAIT(pDefender, Enum269.MARTIALARTS)) {
           // the knife gets in the way but we're still better than nobody
-          iDefRating += (gbSkillTraitBonus[MARTIALARTS] * NUM_SKILL_TRAITS(pDefender, MARTIALARTS)) / 3;
+          iDefRating += (gbSkillTraitBonus[Enum269.MARTIALARTS] * NUM_SKILL_TRAITS(pDefender, Enum269.MARTIALARTS)) / 3;
         }
       } else {
-        if (HAS_SKILL_TRAIT(pDefender, KNIFING)) {
+        if (HAS_SKILL_TRAIT(pDefender, Enum269.KNIFING)) {
           // good with knives, don't have one, but we know a bit about dodging
-          iDefRating += (gbSkillTraitBonus[KNIFING] * NUM_SKILL_TRAITS(pDefender, KNIFING)) / 3;
+          iDefRating += (gbSkillTraitBonus[Enum269.KNIFING] * NUM_SKILL_TRAITS(pDefender, Enum269.KNIFING)) / 3;
         }
-        if (HAS_SKILL_TRAIT(pDefender, MARTIALARTS)) {
+        if (HAS_SKILL_TRAIT(pDefender, Enum269.MARTIALARTS)) {
           // bonus for dodging knives
-          iDefRating += (gbSkillTraitBonus[MARTIALARTS] * NUM_SKILL_TRAITS(pDefender, MARTIALARTS)) / 2;
+          iDefRating += (gbSkillTraitBonus[Enum269.MARTIALARTS] * NUM_SKILL_TRAITS(pDefender, Enum269.MARTIALARTS)) / 2;
         }
       }
     } else {
       // punch/hand-to-hand/martial arts attack/steal
-      if (Item[pDefender.value.inv[HANDPOS].usItem].usItemClass == IC_BLADE && ubMode != HTH_MODE_STEAL) {
-        if (HAS_SKILL_TRAIT(pDefender, KNIFING)) {
+      if (Item[pDefender.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_BLADE && ubMode != HTH_MODE_STEAL) {
+        if (HAS_SKILL_TRAIT(pDefender, Enum269.KNIFING)) {
           // with our knife, we get some bonus at defending from HTH attacks
-          iDefRating += (gbSkillTraitBonus[KNIFING] * NUM_SKILL_TRAITS(pDefender, KNIFING)) / 2;
+          iDefRating += (gbSkillTraitBonus[Enum269.KNIFING] * NUM_SKILL_TRAITS(pDefender, Enum269.KNIFING)) / 2;
         }
       } else {
-        if (HAS_SKILL_TRAIT(pDefender, MARTIALARTS)) {
-          iDefRating += gbSkillTraitBonus[MARTIALARTS] * NUM_SKILL_TRAITS(pDefender, MARTIALARTS);
+        if (HAS_SKILL_TRAIT(pDefender, Enum269.MARTIALARTS)) {
+          iDefRating += gbSkillTraitBonus[Enum269.MARTIALARTS] * NUM_SKILL_TRAITS(pDefender, Enum269.MARTIALARTS);
         }
-        if (HAS_SKILL_TRAIT(pDefender, HANDTOHAND)) {
-          iDefRating += gbSkillTraitBonus[HANDTOHAND] * NUM_SKILL_TRAITS(pDefender, HANDTOHAND);
+        if (HAS_SKILL_TRAIT(pDefender, Enum269.HANDTOHAND)) {
+          iDefRating += gbSkillTraitBonus[Enum269.HANDTOHAND] * NUM_SKILL_TRAITS(pDefender, Enum269.HANDTOHAND);
         }
       }
     }
@@ -3339,7 +3339,7 @@ function IsGunBurstCapable(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8, fNo
   }
 
   if (fNotify && !fCapable) {
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, Message[STR_NOT_BURST_CAPABLE], pSoldier.value.name);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, Message[Enum334.STR_NOT_BURST_CAPABLE], pSoldier.value.name);
   }
 
   return fCapable;
@@ -3382,9 +3382,9 @@ function CalcMaxTossRange(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, fArmed
     // adjust for thrower's remaining breath (lose up to 1/2 of range)
     iRange -= (iRange * (100 - pSoldier.value.bBreath)) / 200;
 
-    if (HAS_SKILL_TRAIT(pSoldier, THROWING)) {
+    if (HAS_SKILL_TRAIT(pSoldier, Enum269.THROWING)) {
       // better max range due to expertise
-      iRange = iRange * (100 + gbSkillTraitBonus[THROWING] * NUM_SKILL_TRAITS(pSoldier, THROWING)) / 100;
+      iRange = iRange * (100 + gbSkillTraitBonus[Enum269.THROWING] * NUM_SKILL_TRAITS(pSoldier, Enum269.THROWING)) / 100;
     }
   }
 
@@ -3403,10 +3403,10 @@ function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, u
   let bPenalty: INT8;
   let bBandaged: INT8;
 
-  if (pSoldier.value.bWeaponMode == WM_ATTACHED) {
-    usHandItem = UNDER_GLAUNCHER;
+  if (pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED) {
+    usHandItem = Enum225.UNDER_GLAUNCHER;
   } else {
-    usHandItem = pSoldier.value.inv[HANDPOS].usItem;
+    usHandItem = pSoldier.value.inv[Enum261.HANDPOS].usItem;
   }
 
   /*
@@ -3420,21 +3420,21 @@ function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, u
           #endif
   */
 
-  if (Item[usHandItem].usItemClass != IC_LAUNCHER && pSoldier.value.bWeaponMode != WM_ATTACHED) {
+  if (Item[usHandItem].usItemClass != IC_LAUNCHER && pSoldier.value.bWeaponMode != Enum265.WM_ATTACHED) {
     // PHYSICALLY THROWN arced projectile (ie. grenade)
     // for lack of anything better, base throwing accuracy on dex & marskmanship
     iChance = (EffectiveDexterity(pSoldier) + EffectiveMarksmanship(pSoldier)) / 2;
     // throwing trait helps out
-    if (HAS_SKILL_TRAIT(pSoldier, THROWING)) {
-      iChance += gbSkillTraitBonus[THROWING] * NUM_SKILL_TRAITS(pSoldier, THROWING);
+    if (HAS_SKILL_TRAIT(pSoldier, Enum269.THROWING)) {
+      iChance += gbSkillTraitBonus[Enum269.THROWING] * NUM_SKILL_TRAITS(pSoldier, Enum269.THROWING);
     }
   } else {
     // MECHANICALLY FIRED arced projectile (ie. mortar), need brains & know-how
     iChance = (EffectiveDexterity(pSoldier) + EffectiveMarksmanship(pSoldier) + EffectiveWisdom(pSoldier) + pSoldier.value.bExpLevel) / 4;
 
     // heavy weapons trait helps out
-    if (HAS_SKILL_TRAIT(pSoldier, HEAVY_WEAPS)) {
-      iChance += gbSkillTraitBonus[HEAVY_WEAPS] * NUM_SKILL_TRAITS(pSoldier, HEAVY_WEAPS);
+    if (HAS_SKILL_TRAIT(pSoldier, Enum269.HEAVY_WEAPS)) {
+      iChance += gbSkillTraitBonus[Enum269.HEAVY_WEAPS] * NUM_SKILL_TRAITS(pSoldier, Enum269.HEAVY_WEAPS);
     }
   }
 
@@ -3481,7 +3481,7 @@ function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, u
 
   // NumMessage("ACTUAL RANGE = ",range);
 
-  if (pSoldier.value.inv[HEAD1POS].usItem == SUNGOGGLES || pSoldier.value.inv[HEAD2POS].usItem == SUNGOGGLES) {
+  if (pSoldier.value.inv[Enum261.HEAD1POS].usItem == Enum225.SUNGOGGLES || pSoldier.value.inv[Enum261.HEAD2POS].usItem == Enum225.SUNGOGGLES) {
     // decrease effective range by 10% when using sungoggles (w or w/o scope)
     iRange -= iRange / 10; // basically, +1% to hit per every 2 squares
   }
@@ -3490,7 +3490,7 @@ function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, u
 
   // ADJUST FOR RANGE
 
-  if (usHandItem == MORTAR && iRange < MIN_MORTAR_RANGE) {
+  if (usHandItem == Enum225.MORTAR && iRange < MIN_MORTAR_RANGE) {
     return 0;
   } else {
     iMaxRange = CalcMaxTossRange(pSoldier, usHandItem, TRUE) * CELL_X_SIZE;
@@ -3544,7 +3544,7 @@ function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, u
   // if iChance exists, but it's a mechanical item being used
   if ((iChance > 0) && (Item[usHandItem].usItemClass == IC_LAUNCHER))
     // reduce iChance to hit DIRECTLY by the item's working condition
-    iChance = (iChance * WEAPON_STATUS_MOD(pSoldier.value.inv[HANDPOS].bStatus[0])) / 100;
+    iChance = (iChance * WEAPON_STATUS_MOD(pSoldier.value.inv[Enum261.HANDPOS].bStatus[0])) / 100;
 
   // MAKE SURE CHANCE TO HIT IS WITHIN DEFINED LIMITS
   if (iChance < MINCHANCETOHIT)
@@ -3564,13 +3564,13 @@ function ChangeWeaponMode(pSoldier: Pointer<SOLDIERTYPE>): void {
     return;
   }
 
-  if (FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER) == ITEM_NOT_FOUND || FindLaunchableAttachment(addressof(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER) == ITEM_NOT_FOUND) {
+  if (FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.UNDER_GLAUNCHER) == ITEM_NOT_FOUND || FindLaunchableAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.UNDER_GLAUNCHER) == ITEM_NOT_FOUND) {
     // swap between single/burst fire
-    if (IsGunBurstCapable(pSoldier, HANDPOS, TRUE)) {
+    if (IsGunBurstCapable(pSoldier, Enum261.HANDPOS, TRUE)) {
       pSoldier.value.bWeaponMode++;
-      if (pSoldier.value.bWeaponMode > WM_BURST) {
+      if (pSoldier.value.bWeaponMode > Enum265.WM_BURST) {
         // return to normal mode after going past burst
-        pSoldier.value.bWeaponMode = WM_NORMAL;
+        pSoldier.value.bWeaponMode = Enum265.WM_NORMAL;
       }
     } else {
       // do nothing
@@ -3579,20 +3579,20 @@ function ChangeWeaponMode(pSoldier: Pointer<SOLDIERTYPE>): void {
   } else {
     // grenade launcher available, makes things more complicated
     pSoldier.value.bWeaponMode++;
-    if (pSoldier.value.bWeaponMode == NUM_WEAPON_MODES) {
+    if (pSoldier.value.bWeaponMode == Enum265.NUM_WEAPON_MODES) {
       // return to the beginning
-      pSoldier.value.bWeaponMode = WM_NORMAL;
+      pSoldier.value.bWeaponMode = Enum265.WM_NORMAL;
     } else {
       // do NOT give message that gun is burst capable, because if we skip past
       // burst capable then we are going on to the grenade launcher
-      if (pSoldier.value.bWeaponMode == WM_BURST && !(IsGunBurstCapable(pSoldier, HANDPOS, FALSE))) {
+      if (pSoldier.value.bWeaponMode == Enum265.WM_BURST && !(IsGunBurstCapable(pSoldier, Enum261.HANDPOS, FALSE))) {
         // skip past that mode!
         pSoldier.value.bWeaponMode++;
       }
     }
   }
 
-  if (pSoldier.value.bWeaponMode == WM_BURST) {
+  if (pSoldier.value.bWeaponMode == Enum265.WM_BURST) {
     pSoldier.value.bDoBurst = TRUE;
   } else {
     pSoldier.value.bDoBurst = FALSE;
@@ -3603,9 +3603,9 @@ function ChangeWeaponMode(pSoldier: Pointer<SOLDIERTYPE>): void {
 
 function DishoutQueenSwipeDamage(pQueenSoldier: Pointer<SOLDIERTYPE>): void {
   let bValidDishoutDirs: INT8[][] /* [3][3] */ = [
-    [ NORTH, NORTHEAST, -1 ],
-    [ EAST, SOUTHEAST, -1 ],
-    [ SOUTH, -1, -1 ],
+    [ Enum245.NORTH, Enum245.NORTHEAST, -1 ],
+    [ Enum245.EAST, Enum245.SOUTHEAST, -1 ],
+    [ Enum245.SOUTH, -1, -1 ],
   ];
 
   let cnt: UINT32;
@@ -3625,7 +3625,7 @@ function DishoutQueenSwipeDamage(pQueenSoldier: Pointer<SOLDIERTYPE>): void {
         // ATE: Ok, lets check for some basic things here!
         if (pSoldier.value.bLife >= OKLIFE && pSoldier.value.sGridNo != NOWHERE && pSoldier.value.bActive && pSoldier.value.bInSector) {
           // Get Pyth spaces away....
-          if (GetRangeInCellCoordsFromGridNoDiff(pQueenSoldier.value.sGridNo, pSoldier.value.sGridNo) <= Weapon[CREATURE_QUEEN_TENTACLES].usRange) {
+          if (GetRangeInCellCoordsFromGridNoDiff(pQueenSoldier.value.sGridNo, pSoldier.value.sGridNo) <= Weapon[Enum225.CREATURE_QUEEN_TENTACLES].usRange) {
             // get direction
             bDir = GetDirectionFromGridNo(pSoldier.value.sGridNo, pQueenSoldier);
 
@@ -3640,7 +3640,7 @@ function DishoutQueenSwipeDamage(pQueenSoldier: Pointer<SOLDIERTYPE>): void {
                 if (iHitBy > 0) {
                   // Hit!
                   iImpact = HTHImpact(pQueenSoldier, pSoldier, iHitBy, TRUE);
-                  EVENT_SoldierGotHit(pSoldier, CREATURE_QUEEN_TENTACLES, iImpact, iImpact, gOppositeDirection[bDir], 50, pQueenSoldier.value.ubID, 0, ANIM_CROUCH, 0, 0);
+                  EVENT_SoldierGotHit(pSoldier, Enum225.CREATURE_QUEEN_TENTACLES, iImpact, iImpact, gOppositeDirection[bDir], 50, pQueenSoldier.value.ubID, 0, ANIM_CROUCH, 0, 0);
                 }
               }
             }

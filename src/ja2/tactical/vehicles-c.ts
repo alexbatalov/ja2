@@ -30,30 +30,30 @@ let iSeatingCapacities: INT32[] /* [] */ = [
 ];
 
 let iEnterVehicleSndID: INT32[] /* [] */ = [
-  S_VECH1_INTO,
-  S_VECH1_INTO,
-  S_VECH1_INTO,
-  S_VECH1_INTO,
-  S_VECH1_INTO,
-  S_VECH1_INTO,
+  Enum330.S_VECH1_INTO,
+  Enum330.S_VECH1_INTO,
+  Enum330.S_VECH1_INTO,
+  Enum330.S_VECH1_INTO,
+  Enum330.S_VECH1_INTO,
+  Enum330.S_VECH1_INTO,
 ];
 
 let iMoveVehicleSndID: INT32[] /* [] */ = [
-  S_VECH1_MOVE,
-  S_VECH1_MOVE,
-  S_VECH1_MOVE,
-  S_VECH1_MOVE,
-  S_VECH1_MOVE,
-  S_VECH1_MOVE,
+  Enum330.S_VECH1_MOVE,
+  Enum330.S_VECH1_MOVE,
+  Enum330.S_VECH1_MOVE,
+  Enum330.S_VECH1_MOVE,
+  Enum330.S_VECH1_MOVE,
+  Enum330.S_VECH1_MOVE,
 ];
 
 let ubVehicleTypeProfileID: UINT8[] /* [] */ = [
-  PROF_ELDERODO,
-  PROF_HUMMER,
-  PROF_ICECREAM,
-  NPC164,
-  NPC164,
-  PROF_HELICOPTER,
+  Enum268.PROF_ELDERODO,
+  Enum268.PROF_HUMMER,
+  Enum268.PROF_ICECREAM,
+  Enum268.NPC164,
+  Enum268.NPC164,
+  Enum268.PROF_HELICOPTER,
 ];
 
 /*
@@ -79,12 +79,12 @@ INT8 bInternalCritHitsByLocation[ NUMBER_OF_EXTERNAL_HIT_LOCATIONS_ON_VEHICLE ][
 */
 
 let sVehicleArmourType: INT16[] /* [NUMBER_OF_TYPES_OF_VEHICLES] */ = [
-  KEVLAR_VEST, // El Dorado
-  SPECTRA_VEST, // Hummer
-  KEVLAR_VEST, // Ice cream truck
-  KEVLAR_VEST, // Jeep
-  SPECTRA_VEST, // Tank - do we want this?
-  KEVLAR_VEST, // Helicopter
+  Enum225.KEVLAR_VEST, // El Dorado
+  Enum225.SPECTRA_VEST, // Hummer
+  Enum225.KEVLAR_VEST, // Ice cream truck
+  Enum225.KEVLAR_VEST, // Jeep
+  Enum225.SPECTRA_VEST, // Tank - do we want this?
+  Enum225.KEVLAR_VEST, // Helicopter
 ];
 
 /*
@@ -137,7 +137,7 @@ function SetVehicleValuesIntoSoldierType(pVehicle: Pointer<SOLDIERTYPE>): void {
   pVehicle.value.sBreathRed = 10000;
   pVehicle.value.bBreath = 100;
 
-  pVehicle.value.ubWhatKindOfMercAmI = MERC_TYPE__VEHICLE;
+  pVehicle.value.ubWhatKindOfMercAmI = Enum260.MERC_TYPE__VEHICLE;
 }
 
 function AddVehicleToList(sMapX: INT16, sMapY: INT16, sGridNo: INT16, ubType: UINT8): INT32 {
@@ -385,7 +385,7 @@ function AddSoldierToVehicle(pSoldier: Pointer<SOLDIERTYPE>, iId: INT32): BOOLEA
 
   if (pVehicleSoldier) {
     // can't call SelectSoldier in mapscreen, that will initialize interface panels!!!
-    if (guiCurrentScreen == GAME_SCREEN) {
+    if (guiCurrentScreen == Enum26.GAME_SCREEN) {
       SelectSoldier(pVehicleSoldier.value.ubID, FALSE, TRUE);
     }
 
@@ -398,14 +398,14 @@ function AddSoldierToVehicle(pSoldier: Pointer<SOLDIERTYPE>, iId: INT32): BOOLEA
       // add person in
       pVehicleList[iId].pPassengers[iCounter] = pSoldier;
 
-      if (pSoldier.value.bAssignment == VEHICLE) {
+      if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
         TakeSoldierOutOfVehicle(pSoldier);
         // NOTE: This will leave the soldier on a squad.  Must be done PRIOR TO and in AS WELL AS the call
         // to RemoveCharacterFromSquads() that's coming up, to permit direct vehicle->vehicle reassignment!
       }
 
       // if in a squad, remove from squad, if not, check if in vehicle, if so remove, if not, then check if in mvt group..if so, move and destroy group
-      if (pSoldier.value.bAssignment < ON_DUTY) {
+      if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
         RemoveCharacterFromSquads(pSoldier);
       } else if (pSoldier.value.ubGroupID != 0) {
         // destroy group and set to zero
@@ -413,12 +413,12 @@ function AddSoldierToVehicle(pSoldier: Pointer<SOLDIERTYPE>, iId: INT32): BOOLEA
         pSoldier.value.ubGroupID = 0;
       }
 
-      if ((pSoldier.value.bAssignment != VEHICLE) || (pSoldier.value.iVehicleId != iId)) {
+      if ((pSoldier.value.bAssignment != Enum117.VEHICLE) || (pSoldier.value.iVehicleId != iId)) {
         SetTimeOfAssignmentChangeForMerc(pSoldier);
       }
 
       // set thier assignment
-      ChangeSoldiersAssignment(pSoldier, VEHICLE);
+      ChangeSoldiersAssignment(pSoldier, Enum117.VEHICLE);
 
       // set vehicle id
       pSoldier.value.iVehicleId = iId;
@@ -451,7 +451,7 @@ function AddSoldierToVehicle(pSoldier: Pointer<SOLDIERTYPE>, iId: INT32): BOOLEA
         EVENT_StopMerc(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection);
 
         // can't call SetCurrentSquad OR SelectSoldier in mapscreen, that will initialize interface panels!!!
-        if (guiCurrentScreen == GAME_SCREEN) {
+        if (guiCurrentScreen == Enum26.GAME_SCREEN) {
           SetCurrentSquad(pVehicleSoldier.value.bAssignment, TRUE);
         }
       }
@@ -468,10 +468,10 @@ function SetSoldierExitVehicleInsertionData(pSoldier: Pointer<SOLDIERTYPE>, iId:
   if (iId == iHelicopterVehicleId && !pSoldier.value.bInSector) {
     if (pSoldier.value.sSectorX != BOBBYR_SHIPPING_DEST_SECTOR_X || pSoldier.value.sSectorY != BOBBYR_SHIPPING_DEST_SECTOR_Y || pSoldier.value.bSectorZ != BOBBYR_SHIPPING_DEST_SECTOR_Z) {
       // Not anything different here - just use center gridno......
-      pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_CENTER;
+      pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_CENTER;
     } else {
       // This is drassen, make insertion gridno specific...
-      pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+      pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
       pSoldier.value.usStrategicInsertionData = 10125;
     }
   }
@@ -563,7 +563,7 @@ function RemoveSoldierFromVehicle(pSoldier: Pointer<SOLDIERTYPE>, iId: INT32): B
         if (!DoesPlayerExistInPGroup(pVehicleList[iId].ubMovementGroup, pVehicleSoldier)) {
           AddPlayerToGroup(pVehicleList[iId].ubMovementGroup, pVehicleSoldier);
         }
-        ChangeSoldiersAssignment(pVehicleSoldier, ASSIGNMENT_EMPTY);
+        ChangeSoldiersAssignment(pVehicleSoldier, Enum117.ASSIGNMENT_EMPTY);
 
         /* ARM Removed Feb. 17, 99 - causes pVehicleSoldier->ubGroupID to become 0, which will cause assert later on
                                         RemovePlayerFromGroup( pVehicleSoldier->ubGroupID, pVehicleSoldier );
@@ -703,7 +703,7 @@ function MoveCharactersPathToVehicle(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   }
 
   // check if character is in fact in a vehicle
-  if ((pSoldier.value.bAssignment != VEHICLE) && (!(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE))) {
+  if ((pSoldier.value.bAssignment != Enum117.VEHICLE) && (!(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE))) {
     // now clear soldier's path
     pSoldier.value.pMercPath = ClearStrategicPathList(pSoldier.value.pMercPath, 0);
     return FALSE;
@@ -760,7 +760,7 @@ function CopyVehiclePathToSoldier(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   }
 
   // check if character is in fact in a vehicle
-  if ((pSoldier.value.bAssignment != VEHICLE) && (!(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE))) {
+  if ((pSoldier.value.bAssignment != Enum117.VEHICLE) && (!(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE))) {
     return FALSE;
   }
 
@@ -812,7 +812,7 @@ function SetUpMvtGroupForVehicle(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let iCounter: INT32 = 0;
 
   // check if character is in fact in a vehicle
-  if ((pSoldier.value.bAssignment != VEHICLE) && (!(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE))) {
+  if ((pSoldier.value.bAssignment != Enum117.VEHICLE) && (!(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE))) {
     return FALSE;
   }
 
@@ -1137,7 +1137,7 @@ function PutSoldierInVehicle(pSoldier: Pointer<SOLDIERTYPE>, bVehicleId: INT8): 
 
 function TakeSoldierOutOfVehicle(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // if not in vehicle, don't take out, not much point, now is there?
-  if (pSoldier.value.bAssignment != VEHICLE) {
+  if (pSoldier.value.bAssignment != Enum117.VEHICLE) {
     return FALSE;
   }
 
@@ -1167,7 +1167,7 @@ function EnterVehicle(pVehicle: Pointer<SOLDIERTYPE>, pSoldier: Pointer<SOLDIERT
 
       if (!(guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
         // Change to team panel if we are not already...
-        SetCurrentInterfacePanel(TEAM_PANEL);
+        SetCurrentInterfacePanel(Enum215.TEAM_PANEL);
       }
 
       return TRUE;
@@ -1223,7 +1223,7 @@ function ExitVehicle(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
     // Were we the driver, and if so, pick another....
     pSoldier.value.sInsertionGridNo = sGridNo;
-    pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+    pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
     pSoldier.value.usStrategicInsertionData = pSoldier.value.sInsertionGridNo;
     pSoldier.value.iVehicleId = -1;
 
@@ -1240,7 +1240,7 @@ function ExitVehicle(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     AddCharacterToUniqueSquad(pSoldier);
 
     // can't call SetCurrentSquad OR SelectSoldier in mapscreen, that will initialize interface panels!!!
-    if (guiCurrentScreen == GAME_SCREEN) {
+    if (guiCurrentScreen == Enum26.GAME_SCREEN) {
       SetCurrentSquad(pSoldier.value.bAssignment, TRUE);
 
       SelectSoldier(pSoldier.value.ubID, FALSE, TRUE);
@@ -1268,7 +1268,7 @@ function VehicleTakeDamage(ubID: UINT8, ubReason: UINT8, sDamage: INT16, sGridNo
   let sOldDmgValue: INT16 = 0;
 
   if (ubReason != TAKE_DAMAGE_GAS) {
-    PlayJA2Sample((S_METAL_IMPACT3), RATE_11025, SoundVolume(MIDVOLUME, sGridNo), 1, SoundDir(sGridNo));
+    PlayJA2Sample((Enum330.S_METAL_IMPACT3), RATE_11025, SoundVolume(MIDVOLUME, sGridNo), 1, SoundDir(sGridNo));
   }
 
   // check if there was in fact damage done to the vehicle
@@ -1341,7 +1341,7 @@ function HandleCriticalHitForVehicleInLocation(ubID: UINT8, sDmg: INT16, sGridNo
     pVehicleList[ubID].fDestroyed = TRUE;
 
     // Explode vehicle...
-    IgniteExplosion(ubAttackerID, CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, GREAT_BIG_EXPLOSION, 0);
+    IgniteExplosion(ubAttackerID, CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, Enum225.GREAT_BIG_EXPLOSION, 0);
 
     if (pSoldier != NULL) {
       // Tacticlly remove soldier....
@@ -1494,10 +1494,10 @@ function AdjustVehicleAPs(pSoldier: Pointer<SOLDIERTYPE>, pubPoints: Pointer<UIN
   // check for state of critcals
 
   // handle for each engine crit
-  pubDeducations += pVehicleList[pSoldier.value.bVehicleID].sCriticalHits[ENGINE_HIT_LOCATION] * COST_PER_ENGINE_CRIT;
+  pubDeducations += pVehicleList[pSoldier.value.bVehicleID].sCriticalHits[Enum281.ENGINE_HIT_LOCATION] * COST_PER_ENGINE_CRIT;
 
   // handle each tire
-  for (iCounter = RF_TIRE_HIT_LOCATION; iCounter < LR_TIRE_HIT_LOCATION; iCounter++) {
+  for (iCounter = Enum281.RF_TIRE_HIT_LOCATION; iCounter < Enum281.LR_TIRE_HIT_LOCATION; iCounter++) {
     if (pVehicleList[pSoldier.value.bVehicleID].sCriticalHits[iCounter]) {
       pubDeducations += COST_PER_TIRE_HIT;
     }
@@ -1801,11 +1801,11 @@ function NewLoadVehicleMovementInfoFromSavedGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function OKUseVehicle(ubProfile: UINT8): BOOLEAN {
-  if (ubProfile == PROF_HUMMER) {
-    return CheckFact(FACT_OK_USE_HUMMER, NO_PROFILE);
-  } else if (ubProfile == PROF_ICECREAM) {
-    return CheckFact(FACT_OK_USE_ICECREAM, NO_PROFILE);
-  } else if (ubProfile == PROF_HELICOPTER) {
+  if (ubProfile == Enum268.PROF_HUMMER) {
+    return CheckFact(Enum170.FACT_OK_USE_HUMMER, NO_PROFILE);
+  } else if (ubProfile == Enum268.PROF_ICECREAM) {
+    return CheckFact(Enum170.FACT_OK_USE_ICECREAM, NO_PROFILE);
+  } else if (ubProfile == Enum268.PROF_HELICOPTER) {
     // don't allow mercs to get inside vehicle if it's grounded (enemy controlled, Skyrider owed money, etc.)
     return CanHelicopterFly();
   } else {
@@ -1879,7 +1879,7 @@ function AddVehicleFuelToSave(): void {
 function CanSoldierDriveVehicle(pSoldier: Pointer<SOLDIERTYPE>, iVehicleId: INT32, fIgnoreAsleep: BOOLEAN): BOOLEAN {
   Assert(pSoldier);
 
-  if (pSoldier.value.bAssignment != VEHICLE) {
+  if (pSoldier.value.bAssignment != Enum117.VEHICLE) {
     // not in a vehicle!
     return FALSE;
   }
@@ -1975,10 +1975,10 @@ function IsSoldierInThisVehicleSquad(pSoldier: Pointer<SOLDIERTYPE>, bSquadNumbe
   let pVehicleSoldier: Pointer<SOLDIERTYPE>;
 
   Assert(pSoldier);
-  Assert((bSquadNumber >= 0) && (bSquadNumber < NUMBER_OF_SQUADS));
+  Assert((bSquadNumber >= 0) && (bSquadNumber < Enum275.NUMBER_OF_SQUADS));
 
   // not in a vehicle?
-  if (pSoldier.value.bAssignment != VEHICLE) {
+  if (pSoldier.value.bAssignment != Enum117.VEHICLE) {
     return FALSE;
   }
 

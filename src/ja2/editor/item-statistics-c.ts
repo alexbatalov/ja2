@@ -42,83 +42,83 @@ let gszActionItemDesc: UINT16[][] /* [NUM_ACTIONITEMS][30] */ = [
 ];
 
 function GetActionItemName(pItem: Pointer<OBJECTTYPE>): Pointer<UINT16> {
-  if (!pItem || pItem.value.usItem != ACTION_ITEM)
+  if (!pItem || pItem.value.usItem != Enum225.ACTION_ITEM)
     return NULL;
-  if (pItem.value.bActionValue != ACTION_ITEM_BLOW_UP) {
+  if (pItem.value.bActionValue != Enum191.ACTION_ITEM_BLOW_UP) {
     switch (pItem.value.bActionValue) {
-      case ACTION_ITEM_OPEN_DOOR:
-        return gszActionItemDesc[ACTIONITEM_OPEN];
-      case ACTION_ITEM_CLOSE_DOOR:
-        return gszActionItemDesc[ACTIONITEM_CLOSE];
-      case ACTION_ITEM_SMALL_PIT:
-        return gszActionItemDesc[ACTIONITEM_SMPIT];
-      case ACTION_ITEM_LARGE_PIT:
-        return gszActionItemDesc[ACTIONITEM_LGPIT];
-      case ACTION_ITEM_TOGGLE_DOOR:
-        return gszActionItemDesc[ACTIONITEM_TOGGLE_DOOR];
-      case ACTION_ITEM_TOGGLE_ACTION1:
-        return gszActionItemDesc[ACTIONITEM_TOGGLE_ACTION1];
-      case ACTION_ITEM_TOGGLE_ACTION2:
-        return gszActionItemDesc[ACTIONITEM_TOGGLE_ACTION2];
-      case ACTION_ITEM_TOGGLE_ACTION3:
-        return gszActionItemDesc[ACTIONITEM_TOGGLE_ACTION3];
-      case ACTION_ITEM_TOGGLE_ACTION4:
-        return gszActionItemDesc[ACTIONITEM_TOGGLE_ACTION4];
-      case ACTION_ITEM_ENTER_BROTHEL:
-        return gszActionItemDesc[ACTIONITEM_ENTER_BROTHEL];
-      case ACTION_ITEM_EXIT_BROTHEL:
-        return gszActionItemDesc[ACTIONITEM_EXIT_BROTHEL];
-      case ACTION_ITEM_KINGPIN_ALARM:
-        return gszActionItemDesc[ACTIONITEM_KINGPIN_ALARM];
-      case ACTION_ITEM_SEX:
-        return gszActionItemDesc[ACTIONITEM_SEX];
-      case ACTION_ITEM_REVEAL_ROOM:
-        return gszActionItemDesc[ACTIONITEM_REVEAL_ROOM];
-      case ACTION_ITEM_LOCAL_ALARM:
-        return gszActionItemDesc[ACTIONITEM_LOCAL_ALARM];
-      case ACTION_ITEM_GLOBAL_ALARM:
-        return gszActionItemDesc[ACTIONITEM_GLOBAL_ALARM];
-      case ACTION_ITEM_KLAXON:
-        return gszActionItemDesc[ACTIONITEM_KLAXON];
-      case ACTION_ITEM_UNLOCK_DOOR:
-        return gszActionItemDesc[ACTIONITEM_UNLOCK_DOOR];
-      case ACTION_ITEM_TOGGLE_LOCK:
-        return gszActionItemDesc[ACTIONITEM_TOGGLE_LOCK];
-      case ACTION_ITEM_UNTRAP_DOOR:
-        return gszActionItemDesc[ACTIONITEM_UNTRAP_DOOR];
-      case ACTION_ITEM_TOGGLE_PRESSURE_ITEMS:
-        return gszActionItemDesc[ACTIONITEM_TOGGLE_PRESSURE_ITEMS];
-      case ACTION_ITEM_MUSEUM_ALARM:
-        return gszActionItemDesc[ACTIONITEM_MUSEUM_ALARM];
-      case ACTION_ITEM_BLOODCAT_ALARM:
-        return gszActionItemDesc[ACTIONITEM_BLOODCAT_ALARM];
+      case Enum191.ACTION_ITEM_OPEN_DOOR:
+        return gszActionItemDesc[Enum49.ACTIONITEM_OPEN];
+      case Enum191.ACTION_ITEM_CLOSE_DOOR:
+        return gszActionItemDesc[Enum49.ACTIONITEM_CLOSE];
+      case Enum191.ACTION_ITEM_SMALL_PIT:
+        return gszActionItemDesc[Enum49.ACTIONITEM_SMPIT];
+      case Enum191.ACTION_ITEM_LARGE_PIT:
+        return gszActionItemDesc[Enum49.ACTIONITEM_LGPIT];
+      case Enum191.ACTION_ITEM_TOGGLE_DOOR:
+        return gszActionItemDesc[Enum49.ACTIONITEM_TOGGLE_DOOR];
+      case Enum191.ACTION_ITEM_TOGGLE_ACTION1:
+        return gszActionItemDesc[Enum49.ACTIONITEM_TOGGLE_ACTION1];
+      case Enum191.ACTION_ITEM_TOGGLE_ACTION2:
+        return gszActionItemDesc[Enum49.ACTIONITEM_TOGGLE_ACTION2];
+      case Enum191.ACTION_ITEM_TOGGLE_ACTION3:
+        return gszActionItemDesc[Enum49.ACTIONITEM_TOGGLE_ACTION3];
+      case Enum191.ACTION_ITEM_TOGGLE_ACTION4:
+        return gszActionItemDesc[Enum49.ACTIONITEM_TOGGLE_ACTION4];
+      case Enum191.ACTION_ITEM_ENTER_BROTHEL:
+        return gszActionItemDesc[Enum49.ACTIONITEM_ENTER_BROTHEL];
+      case Enum191.ACTION_ITEM_EXIT_BROTHEL:
+        return gszActionItemDesc[Enum49.ACTIONITEM_EXIT_BROTHEL];
+      case Enum191.ACTION_ITEM_KINGPIN_ALARM:
+        return gszActionItemDesc[Enum49.ACTIONITEM_KINGPIN_ALARM];
+      case Enum191.ACTION_ITEM_SEX:
+        return gszActionItemDesc[Enum49.ACTIONITEM_SEX];
+      case Enum191.ACTION_ITEM_REVEAL_ROOM:
+        return gszActionItemDesc[Enum49.ACTIONITEM_REVEAL_ROOM];
+      case Enum191.ACTION_ITEM_LOCAL_ALARM:
+        return gszActionItemDesc[Enum49.ACTIONITEM_LOCAL_ALARM];
+      case Enum191.ACTION_ITEM_GLOBAL_ALARM:
+        return gszActionItemDesc[Enum49.ACTIONITEM_GLOBAL_ALARM];
+      case Enum191.ACTION_ITEM_KLAXON:
+        return gszActionItemDesc[Enum49.ACTIONITEM_KLAXON];
+      case Enum191.ACTION_ITEM_UNLOCK_DOOR:
+        return gszActionItemDesc[Enum49.ACTIONITEM_UNLOCK_DOOR];
+      case Enum191.ACTION_ITEM_TOGGLE_LOCK:
+        return gszActionItemDesc[Enum49.ACTIONITEM_TOGGLE_LOCK];
+      case Enum191.ACTION_ITEM_UNTRAP_DOOR:
+        return gszActionItemDesc[Enum49.ACTIONITEM_UNTRAP_DOOR];
+      case Enum191.ACTION_ITEM_TOGGLE_PRESSURE_ITEMS:
+        return gszActionItemDesc[Enum49.ACTIONITEM_TOGGLE_PRESSURE_ITEMS];
+      case Enum191.ACTION_ITEM_MUSEUM_ALARM:
+        return gszActionItemDesc[Enum49.ACTIONITEM_MUSEUM_ALARM];
+      case Enum191.ACTION_ITEM_BLOODCAT_ALARM:
+        return gszActionItemDesc[Enum49.ACTIONITEM_BLOODCAT_ALARM];
       default:
         return NULL;
     }
   } else
     switch (pItem.value.usBombItem) {
-      case STUN_GRENADE:
-        return gszActionItemDesc[ACTIONITEM_STUN];
-      case SMOKE_GRENADE:
-        return gszActionItemDesc[ACTIONITEM_SMOKE];
-      case TEARGAS_GRENADE:
-        return gszActionItemDesc[ACTIONITEM_TEARGAS];
-      case MUSTARD_GRENADE:
-        return gszActionItemDesc[ACTIONITEM_MUSTARD];
-      case HAND_GRENADE:
-        return gszActionItemDesc[ACTIONITEM_SMALL];
-      case TNT:
-        return gszActionItemDesc[ACTIONITEM_MEDIUM];
-      case C4:
-        return gszActionItemDesc[ACTIONITEM_LARGE];
-      case MINE:
-        return gszActionItemDesc[ACTIONITEM_MINE];
-      case TRIP_FLARE:
-        return gszActionItemDesc[ACTIONITEM_FLARE];
-      case TRIP_KLAXON:
-        return gszActionItemDesc[ACTIONITEM_TRIP_KLAXON];
-      case BIG_TEAR_GAS:
-        return gszActionItemDesc[ACTIONITEM_BIG_TEAR_GAS];
+      case Enum225.STUN_GRENADE:
+        return gszActionItemDesc[Enum49.ACTIONITEM_STUN];
+      case Enum225.SMOKE_GRENADE:
+        return gszActionItemDesc[Enum49.ACTIONITEM_SMOKE];
+      case Enum225.TEARGAS_GRENADE:
+        return gszActionItemDesc[Enum49.ACTIONITEM_TEARGAS];
+      case Enum225.MUSTARD_GRENADE:
+        return gszActionItemDesc[Enum49.ACTIONITEM_MUSTARD];
+      case Enum225.HAND_GRENADE:
+        return gszActionItemDesc[Enum49.ACTIONITEM_SMALL];
+      case Enum225.TNT:
+        return gszActionItemDesc[Enum49.ACTIONITEM_MEDIUM];
+      case Enum225.C4:
+        return gszActionItemDesc[Enum49.ACTIONITEM_LARGE];
+      case Enum225.MINE:
+        return gszActionItemDesc[Enum49.ACTIONITEM_MINE];
+      case Enum225.TRIP_FLARE:
+        return gszActionItemDesc[Enum49.ACTIONITEM_FLARE];
+      case Enum225.TRIP_KLAXON:
+        return gszActionItemDesc[Enum49.ACTIONITEM_TRIP_KLAXON];
+      case Enum225.BIG_TEAR_GAS:
+        return gszActionItemDesc[Enum49.ACTIONITEM_BIG_TEAR_GAS];
       default:
         return NULL;
     }
@@ -143,7 +143,7 @@ let guiDetonatorButton: UINT32;
 let gfDetonator: BOOLEAN;
 
 let guiActionItemButton: UINT32;
-let gbActionItemIndex: INT8 = ACTIONITEM_MEDIUM;
+let gbActionItemIndex: INT8 = Enum49.ACTIONITEM_MEDIUM;
 let gbDefaultBombTrapLevel: INT8 = 9;
 
 const enum Enum47 {
@@ -162,7 +162,7 @@ const enum Enum47 {
   EDITING_OWNERSHIP,
 }
 
-let gbEditingMode: INT8 = EDITING_NOTHING;
+let gbEditingMode: INT8 = Enum47.EDITING_NOTHING;
 
 let gpItem: Pointer<OBJECTTYPE> = NULL;
 let gfShowItemStatsPanel: BOOLEAN;
@@ -171,14 +171,14 @@ let gsItemGridNo: INT16;
 let gpEditingItemPool: Pointer<ITEM_POOL> = NULL;
 
 function ShowItemStatsPanel(): void {
-  ShowEditorButtons(FIRST_ITEMSTATS_BUTTON, LAST_ITEMSTATS_BUTTON);
-  if (iCurrentTaskbar == TASK_MERCS || !gpItem)
-    HideEditorButton(ITEMSTATS_HIDDEN_BTN);
+  ShowEditorButtons(Enum32.FIRST_ITEMSTATS_BUTTON, Enum32.LAST_ITEMSTATS_BUTTON);
+  if (iCurrentTaskbar == Enum36.TASK_MERCS || !gpItem)
+    HideEditorButton(Enum32.ITEMSTATS_HIDDEN_BTN);
   gfShowItemStatsPanel = TRUE;
 }
 
 function HideItemStatsPanel(): void {
-  HideEditorButtons(FIRST_ITEMSTATS_BUTTON, LAST_ITEMSTATS_BUTTON);
+  HideEditorButtons(Enum32.FIRST_ITEMSTATS_BUTTON, Enum32.LAST_ITEMSTATS_BUTTON);
   SpecifyItemToEdit(NULL, -1);
   gfShowItemStatsPanel = FALSE;
 }
@@ -191,53 +191,53 @@ function DisableItemStatsPanel(): void {
 
 function ExecuteItemStatsCmd(ubAction: UINT8): void {
   switch (ubAction) {
-    case ITEMSTATS_APPLY:
-      if (gpItem && gpItem.value.usItem == ACTION_ITEM) {
+    case Enum48.ITEMSTATS_APPLY:
+      if (gpItem && gpItem.value.usItem == Enum225.ACTION_ITEM) {
         ExtractAndUpdateActionItemsGUI();
-      } else if (gpItem && gpItem.value.usItem == SWITCH) {
+      } else if (gpItem && gpItem.value.usItem == Enum225.SWITCH) {
         ExtractAndUpdateTriggersGUI();
-      } else if (gpItem && gpItem.value.usItem == OWNERSHIP) {
+      } else if (gpItem && gpItem.value.usItem == Enum225.OWNERSHIP) {
         ExtractAndUpdateOwnershipGUI();
       } else
         switch (gbEditingMode) {
-          case EDITING_GUNS:
+          case Enum47.EDITING_GUNS:
             ExtractAndUpdateGunGUI();
             break;
-          case EDITING_AMMO:
+          case Enum47.EDITING_AMMO:
             ExtractAndUpdateAmmoGUI();
             break;
-          case EDITING_ARMOUR:
+          case Enum47.EDITING_ARMOUR:
             ExtractAndUpdateArmourGUI();
             break;
-          case EDITING_EQUIPMENT:
+          case Enum47.EDITING_EQUIPMENT:
             ExtractAndUpdateEquipGUI();
             break;
-          case EDITING_EXPLOSIVES:
+          case Enum47.EDITING_EXPLOSIVES:
             ExtractAndUpdateExplosivesGUI();
             break;
-          case EDITING_MONEY:
+          case Enum47.EDITING_MONEY:
             ExtractAndUpdateMoneyGUI();
             break;
-          case EDITING_KEYS:
+          case Enum47.EDITING_KEYS:
             ExtractAndUpdateKeysGUI();
             break;
         }
       SetActiveField(0);
       gfRenderTaskbar = TRUE;
       break;
-    case ITEMSTATS_CANCEL:
+    case Enum48.ITEMSTATS_CANCEL:
       SpecifyItemToEdit(gpItem, gsItemGridNo);
       SetActiveField(0);
       break;
-    case ITEMSTATS_DEFAULT:
+    case Enum48.ITEMSTATS_DEFAULT:
       break;
-    case ITEMSTATS_DELETE:
+    case Enum48.ITEMSTATS_DELETE:
       DeleteSelectedItem();
       break;
-    case ITEMSTATS_SHOW:
+    case Enum48.ITEMSTATS_SHOW:
       ShowSelectedItem();
       break;
-    case ITEMSTATS_HIDE:
+    case Enum48.ITEMSTATS_HIDE:
       HideSelectedItem();
       break;
   }
@@ -248,35 +248,35 @@ function RemoveItemGUI(): void {
     return;
   if (TextInputMode())
     KillTextInputMode();
-  HideEditorButton(ITEMSTATS_HIDDEN_BTN);
+  HideEditorButton(Enum32.ITEMSTATS_HIDDEN_BTN);
   RemoveGameTypeFlags();
-  if (gpItem && gpItem.value.usItem == ACTION_ITEM) {
+  if (gpItem && gpItem.value.usItem == Enum225.ACTION_ITEM) {
     RemoveActionItemsGUI();
-  } else if (gpItem && gpItem.value.usItem == SWITCH) {
+  } else if (gpItem && gpItem.value.usItem == Enum225.SWITCH) {
     RemoveTriggersGUI();
-  } else if (gpItem && gpItem.value.usItem == OWNERSHIP) {
+  } else if (gpItem && gpItem.value.usItem == Enum225.OWNERSHIP) {
     RemoveOwnershipGUI();
   } else
     switch (gbEditingMode) {
-      case EDITING_GUNS:
+      case Enum47.EDITING_GUNS:
         RemoveGunGUI();
         break;
-      case EDITING_AMMO:
+      case Enum47.EDITING_AMMO:
         RemoveAmmoGUI();
         break;
-      case EDITING_ARMOUR:
+      case Enum47.EDITING_ARMOUR:
         RemoveArmourGUI();
         break;
-      case EDITING_EQUIPMENT:
+      case Enum47.EDITING_EQUIPMENT:
         RemoveEquipGUI();
         break;
-      case EDITING_EXPLOSIVES:
+      case Enum47.EDITING_EXPLOSIVES:
         RemoveExplosivesGUI();
         break;
-      case EDITING_MONEY:
+      case Enum47.EDITING_MONEY:
         RemoveMoneyGUI();
         break;
-      case EDITING_KEYS:
+      case Enum47.EDITING_KEYS:
         RemoveKeysGUI();
         break;
     }
@@ -287,7 +287,7 @@ function SpecifyItemToEdit(pItem: Pointer<OBJECTTYPE>, iMapIndex: INT32): void {
   if (gpItem == pItem)
     return;
   if (gpItem != pItem) {
-    ExecuteItemStatsCmd(ITEMSTATS_APPLY);
+    ExecuteItemStatsCmd(Enum48.ITEMSTATS_APPLY);
     RemoveItemGUI();
     gpItem = pItem;
     if (gpItemPool) {
@@ -301,16 +301,16 @@ function SpecifyItemToEdit(pItem: Pointer<OBJECTTYPE>, iMapIndex: INT32): void {
 
   if (!gpItem) {
     // Hide all edit features.
-    gbEditingMode = EDITING_NOTHING;
+    gbEditingMode = Enum47.EDITING_NOTHING;
     gsItemGridNo = -1;
     return;
   }
 
   // Setup the text mode
-  InitTextInputModeWithScheme(DEFAULT_SCHEME);
+  InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
 
-  if (iCurrentTaskbar == TASK_ITEMS)
-    ShowEditorButton(ITEMSTATS_HIDDEN_BTN);
+  if (iCurrentTaskbar == Enum36.TASK_ITEMS)
+    ShowEditorButton(Enum32.ITEMSTATS_HIDDEN_BTN);
 
   // Determine the type of item so that we can determine the dynamic editing mode.
   AddUserInputField(NULL);
@@ -318,32 +318,32 @@ function SpecifyItemToEdit(pItem: Pointer<OBJECTTYPE>, iMapIndex: INT32): void {
   SetupGameTypeFlags();
 
   if (Item[gpItem.value.usItem].usItemClass == IC_MONEY) {
-    gbEditingMode = EDITING_MONEY;
+    gbEditingMode = Enum47.EDITING_MONEY;
     SetupMoneyGUI();
-  } else if (gpItem.value.usItem == ACTION_ITEM) {
-    gbEditingMode = EDITING_ACTIONITEMS;
+  } else if (gpItem.value.usItem == Enum225.ACTION_ITEM) {
+    gbEditingMode = Enum47.EDITING_ACTIONITEMS;
     SetupActionItemsGUI();
-    HideEditorButton(ITEMSTATS_HIDDEN_BTN);
-  } else if (gpItem.value.usItem == SWITCH) {
-    gbEditingMode = EDITING_TRIGGERS;
+    HideEditorButton(Enum32.ITEMSTATS_HIDDEN_BTN);
+  } else if (gpItem.value.usItem == Enum225.SWITCH) {
+    gbEditingMode = Enum47.EDITING_TRIGGERS;
     SetupTriggersGUI();
-    HideEditorButton(ITEMSTATS_HIDDEN_BTN);
-  } else if (gpItem.value.usItem == OWNERSHIP) {
-    gbEditingMode = EDITING_OWNERSHIP;
+    HideEditorButton(Enum32.ITEMSTATS_HIDDEN_BTN);
+  } else if (gpItem.value.usItem == Enum225.OWNERSHIP) {
+    gbEditingMode = Enum47.EDITING_OWNERSHIP;
     SetupOwnershipGUI();
-    HideEditorButton(ITEMSTATS_HIDDEN_BTN);
+    HideEditorButton(Enum32.ITEMSTATS_HIDDEN_BTN);
   } else
     switch (Item[gpItem.value.usItem].usItemClass) {
       case IC_GUN:
-        gbEditingMode = EDITING_GUNS;
+        gbEditingMode = Enum47.EDITING_GUNS;
         SetupGunGUI();
         break;
       case IC_AMMO:
-        gbEditingMode = EDITING_AMMO;
+        gbEditingMode = Enum47.EDITING_AMMO;
         SetupAmmoGUI();
         break;
       case IC_ARMOUR:
-        gbEditingMode = EDITING_ARMOUR;
+        gbEditingMode = Enum47.EDITING_ARMOUR;
         SetupArmourGUI();
         break;
       case IC_MEDKIT:
@@ -354,42 +354,42 @@ function SpecifyItemToEdit(pItem: Pointer<OBJECTTYPE>, iMapIndex: INT32): void {
       case IC_LAUNCHER:
       case IC_THROWING_KNIFE:
       case IC_MONEY:
-        gbEditingMode = EDITING_EQUIPMENT;
+        gbEditingMode = Enum47.EDITING_EQUIPMENT;
         SetupEquipGUI();
         break;
       case IC_THROWN:
       case IC_GRENADE:
       case IC_EXPLOSV:
       case IC_BOMB:
-        gbEditingMode = EDITING_EXPLOSIVES;
+        gbEditingMode = Enum47.EDITING_EXPLOSIVES;
         SetupExplosivesGUI();
         break;
       case IC_KEY:
-        gbEditingMode = EDITING_KEYS;
+        gbEditingMode = Enum47.EDITING_KEYS;
         SetupKeysGUI();
         break;
       case IC_PUNCH:
         if (gpItem.value.usItem != NOTHING) {
-          gbEditingMode = EDITING_EQUIPMENT;
+          gbEditingMode = Enum47.EDITING_EQUIPMENT;
           SetupEquipGUI();
           break;
         }
         // else fall through and act as nothing
       case IC_NONE:
-        gbEditingMode = EDITING_NOTHING;
+        gbEditingMode = Enum47.EDITING_NOTHING;
         if (!(gpItem.value.fFlags & OBJECT_UNDROPPABLE))
-          gbEditingMode = EDITING_DROPPABLE;
+          gbEditingMode = Enum47.EDITING_DROPPABLE;
         break;
       default:
-        gbEditingMode = EDITING_NOT_YET_IMPLEMENTED;
+        gbEditingMode = Enum47.EDITING_NOT_YET_IMPLEMENTED;
         break;
     }
   if (gpItemPool) {
     if (gWorldItems[gpItemPool.value.iItemIndex].bVisible == INVISIBLE) {
-      UnclickEditorButton(ITEMSTATS_HIDDEN_BTN);
+      UnclickEditorButton(Enum32.ITEMSTATS_HIDDEN_BTN);
       ShowSelectedItem();
     } else {
-      ClickEditorButton(ITEMSTATS_HIDDEN_BTN);
+      ClickEditorButton(Enum32.ITEMSTATS_HIDDEN_BTN);
       HideSelectedItem();
     }
   }
@@ -401,61 +401,61 @@ function UpdateItemStatsPanel(): void {
   SetFontForeground(FONT_GRAY2);
   SetFontShadow(FONT_NEARBLACK);
   SetFontBackground(FONT_BLACK);
-  if (gpItem && iCurrentTaskbar == TASK_ITEMS && gbEditingMode != EDITING_TRIGGERS && gbEditingMode != EDITING_ACTIONITEMS) {
+  if (gpItem && iCurrentTaskbar == Enum36.TASK_ITEMS && gbEditingMode != Enum47.EDITING_TRIGGERS && gbEditingMode != Enum47.EDITING_ACTIONITEMS) {
     mprintf(500, 366, "Toggle hide flag");
   }
   SetFontForeground(FONT_YELLOW);
   switch (gbEditingMode) {
-    case EDITING_NOTHING:
-      if (iCurrentTaskbar == TASK_ITEMS)
+    case Enum47.EDITING_NOTHING:
+      if (iCurrentTaskbar == Enum36.TASK_ITEMS)
         mprintf(520, 400, "No item selected.");
       else {
         mprintf(500, 390, "Slot available for");
         mprintf(500, 400, "random generation.");
       }
       return;
-    case EDITING_KEYS:
+    case Enum47.EDITING_KEYS:
       if (!gpEditingItemPool) {
         mprintf(500, 400, "Keys not editable.");
         return;
       }
       break;
-    case EDITING_OWNERSHIP:
+    case Enum47.EDITING_OWNERSHIP:
       mprintf(512, 384, "ProfileID of owner");
       return;
-    case EDITING_NOT_YET_IMPLEMENTED:
+    case Enum47.EDITING_NOT_YET_IMPLEMENTED:
       mprintf(500, 400, "Item class not implemented.");
       return;
-    case EDITING_DROPPABLE:
+    case Enum47.EDITING_DROPPABLE:
       mprintf(500, 400, "Slot locked as empty.");
       return;
-    case EDITING_GUNS:
+    case Enum47.EDITING_GUNS:
       mprintf(512, 384, "Status");
       mprintf(512, 404, "Rounds");
       mprintf(512, 424, "Trap Level");
       break;
-    case EDITING_AMMO:
+    case Enum47.EDITING_AMMO:
       mprintf(512, 384, "Quantity");
       mprintf(512, 404, "Trap Level");
       break;
-    case EDITING_ARMOUR:
-    case EDITING_EQUIPMENT:
+    case Enum47.EDITING_ARMOUR:
+    case Enum47.EDITING_EQUIPMENT:
       mprintf(512, 384, "Status");
       mprintf(512, 404, "Trap Level");
       break;
-    case EDITING_EXPLOSIVES:
+    case Enum47.EDITING_EXPLOSIVES:
       mprintf(512, 380, "Status");
       mprintf(512, 404, "Quantity");
       mprintf(512, 424, "Trap Level");
       break;
-    case EDITING_MONEY:
+    case Enum47.EDITING_MONEY:
       mprintf(532, 384, "Dollars");
       break;
-    case EDITING_ACTIONITEMS:
+    case Enum47.EDITING_ACTIONITEMS:
       mprintf(512, 369, "Status");
       mprintf(512, 389, "Trap Level");
       break;
-    case EDITING_TRIGGERS:
+    case Enum47.EDITING_TRIGGERS:
       mprintf(512, 369, "Trap Level");
       mprintf(512, 389, "Tolerance");
       if (gpEditingItemPool && gpItem.value.bFrequency >= PANIC_FREQUENCY_3 && gpItem.value.bFrequency <= PANIC_FREQUENCY)
@@ -549,7 +549,7 @@ function RemoveGameTypeFlags(): void {
 function SetupGunGUI(): void {
   let str: UINT16[] /* [20] */;
   let yp: INT16;
-  memset(gfAttachment, 0, NUM_ATTACHMENT_BUTTONS);
+  memset(gfAttachment, 0, Enum46.NUM_ATTACHMENT_BUTTONS);
   swprintf(str, "%d", gpItem.value.bGunStatus);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   swprintf(str, "%d", gpItem.value.ubGunShotsLeft);
@@ -563,57 +563,57 @@ function SetupGunGUI(): void {
   // Attachments are a dynamic part of guns.  None, some, or all attachments could be available
   // for a particular weapon.  Show only the ones that we can apply to this gun.
   yp = 383;
-  guiAttachmentButton[SILENCER_ATTACHMENT_BUTTON] = -1;
-  if (ValidAttachment(SILENCER, gpItem.value.usItem)) {
-    guiAttachmentButton[SILENCER_ATTACHMENT_BUTTON] = CreateTextButton("SILENCER", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+  guiAttachmentButton[Enum46.SILENCER_ATTACHMENT_BUTTON] = -1;
+  if (ValidAttachment(Enum225.SILENCER, gpItem.value.usItem)) {
+    guiAttachmentButton[Enum46.SILENCER_ATTACHMENT_BUTTON] = CreateTextButton("SILENCER", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
-    if (FindAttachment(gpItem, SILENCER) != -1) {
-      ButtonList[guiAttachmentButton[SILENCER_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+    if (FindAttachment(gpItem, Enum225.SILENCER) != -1) {
+      ButtonList[guiAttachmentButton[Enum46.SILENCER_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[0] = TRUE;
     }
   }
-  guiAttachmentButton[SNIPERSCOPE_ATTACHMENT_BUTTON] = -1;
-  if (ValidAttachment(SNIPERSCOPE, gpItem.value.usItem)) {
-    guiAttachmentButton[SNIPERSCOPE_ATTACHMENT_BUTTON] = CreateTextButton("SNIPERSCOPE", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+  guiAttachmentButton[Enum46.SNIPERSCOPE_ATTACHMENT_BUTTON] = -1;
+  if (ValidAttachment(Enum225.SNIPERSCOPE, gpItem.value.usItem)) {
+    guiAttachmentButton[Enum46.SNIPERSCOPE_ATTACHMENT_BUTTON] = CreateTextButton("SNIPERSCOPE", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
-    if (FindAttachment(gpItem, SNIPERSCOPE) != -1) {
-      ButtonList[guiAttachmentButton[SNIPERSCOPE_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+    if (FindAttachment(gpItem, Enum225.SNIPERSCOPE) != -1) {
+      ButtonList[guiAttachmentButton[Enum46.SNIPERSCOPE_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[1] = TRUE;
     }
   }
-  guiAttachmentButton[LASERSCOPE_ATTACHMENT_BUTTON] = -1;
-  if (ValidAttachment(LASERSCOPE, gpItem.value.usItem)) {
-    guiAttachmentButton[LASERSCOPE_ATTACHMENT_BUTTON] = CreateTextButton("LASERSCOPE", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+  guiAttachmentButton[Enum46.LASERSCOPE_ATTACHMENT_BUTTON] = -1;
+  if (ValidAttachment(Enum225.LASERSCOPE, gpItem.value.usItem)) {
+    guiAttachmentButton[Enum46.LASERSCOPE_ATTACHMENT_BUTTON] = CreateTextButton("LASERSCOPE", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
-    if (FindAttachment(gpItem, LASERSCOPE) != -1) {
-      ButtonList[guiAttachmentButton[LASERSCOPE_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+    if (FindAttachment(gpItem, Enum225.LASERSCOPE) != -1) {
+      ButtonList[guiAttachmentButton[Enum46.LASERSCOPE_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[2] = TRUE;
     }
   }
-  guiAttachmentButton[BIPOD_ATTACHMENT_BUTTON] = -1;
-  if (ValidAttachment(BIPOD, gpItem.value.usItem)) {
-    guiAttachmentButton[BIPOD_ATTACHMENT_BUTTON] = CreateTextButton("BIPOD", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+  guiAttachmentButton[Enum46.BIPOD_ATTACHMENT_BUTTON] = -1;
+  if (ValidAttachment(Enum225.BIPOD, gpItem.value.usItem)) {
+    guiAttachmentButton[Enum46.BIPOD_ATTACHMENT_BUTTON] = CreateTextButton("BIPOD", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
-    if (FindAttachment(gpItem, BIPOD) != -1) {
-      ButtonList[guiAttachmentButton[BIPOD_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+    if (FindAttachment(gpItem, Enum225.BIPOD) != -1) {
+      ButtonList[guiAttachmentButton[Enum46.BIPOD_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[3] = TRUE;
     }
   }
-  guiAttachmentButton[DUCKBILL_ATTACHMENT_BUTTON] = -1;
-  if (ValidAttachment(DUCKBILL, gpItem.value.usItem)) {
-    guiAttachmentButton[DUCKBILL_ATTACHMENT_BUTTON] = CreateTextButton("DUCKBILL", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+  guiAttachmentButton[Enum46.DUCKBILL_ATTACHMENT_BUTTON] = -1;
+  if (ValidAttachment(Enum225.DUCKBILL, gpItem.value.usItem)) {
+    guiAttachmentButton[Enum46.DUCKBILL_ATTACHMENT_BUTTON] = CreateTextButton("DUCKBILL", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
-    if (FindAttachment(gpItem, DUCKBILL) != -1) {
-      ButtonList[guiAttachmentButton[DUCKBILL_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+    if (FindAttachment(gpItem, Enum225.DUCKBILL) != -1) {
+      ButtonList[guiAttachmentButton[Enum46.DUCKBILL_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[4] = TRUE;
     }
   }
-  guiAttachmentButton[GLAUNCHER_ATTACHMENT_BUTTON] = -1;
-  if (ValidAttachment(UNDER_GLAUNCHER, gpItem.value.usItem)) {
-    guiAttachmentButton[GLAUNCHER_ATTACHMENT_BUTTON] = CreateTextButton("G-LAUNCHER", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
+  guiAttachmentButton[Enum46.GLAUNCHER_ATTACHMENT_BUTTON] = -1;
+  if (ValidAttachment(Enum225.UNDER_GLAUNCHER, gpItem.value.usItem)) {
+    guiAttachmentButton[Enum46.GLAUNCHER_ATTACHMENT_BUTTON] = CreateTextButton("G-LAUNCHER", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleAttachment);
     yp += 14;
-    if (FindAttachment(gpItem, UNDER_GLAUNCHER) != -1) {
-      ButtonList[guiAttachmentButton[GLAUNCHER_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+    if (FindAttachment(gpItem, Enum225.UNDER_GLAUNCHER) != -1) {
+      ButtonList[guiAttachmentButton[Enum46.GLAUNCHER_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[5] = TRUE;
     }
   }
@@ -622,7 +622,7 @@ function SetupGunGUI(): void {
 
 function RemoveGunGUI(): void {
   let i: INT32;
-  for (i = 0; i < NUM_ATTACHMENT_BUTTONS; i++) {
+  for (i = 0; i < Enum46.NUM_ATTACHMENT_BUTTONS; i++) {
     if (guiAttachmentButton[i] != -1) {
       RemoveButton(guiAttachmentButton[i]);
       guiAttachmentButton[i] = -1;
@@ -713,9 +713,9 @@ function SetupArmourGUI(): void {
   }
 
   guiCeramicPlatesButton = -1;
-  if (ValidAttachment(CERAMIC_PLATES, gpItem.value.usItem)) {
+  if (ValidAttachment(Enum225.CERAMIC_PLATES, gpItem.value.usItem)) {
     guiCeramicPlatesButton = CreateTextButton("CERAMIC PLATES", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 558, 375, 72, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleCeramicPlates);
-    if (FindAttachment(gpItem, CERAMIC_PLATES) != -1) {
+    if (FindAttachment(gpItem, Enum225.CERAMIC_PLATES) != -1) {
       ButtonList[guiCeramicPlatesButton].value.uiFlags |= BUTTON_CLICKED_ON;
       gfCeramicPlates = TRUE;
     }
@@ -810,10 +810,10 @@ function SetupExplosivesGUI(): void {
   yp = 375;
   gfDetonator = FALSE;
   guiDetonatorButton = -1;
-  if (ValidAttachment(DETONATOR, gpItem.value.usItem)) {
+  if (ValidAttachment(Enum225.DETONATOR, gpItem.value.usItem)) {
     guiDetonatorButton = CreateTextButton("DETONATOR", SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ToggleDetonator);
     yp += 14;
-    if (FindAttachment(gpItem, DETONATOR) != -1) {
+    if (FindAttachment(gpItem, Enum225.DETONATOR) != -1) {
       ButtonList[guiDetonatorButton].value.uiFlags |= BUTTON_CLICKED_ON;
       gfDetonator = TRUE;
     }
@@ -902,7 +902,7 @@ function SetupOwnershipGUI(): void {
 
 function OwnershipGroupButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    InitPopupMenu(btn.value.IDNum, OWNERSHIPGROUP_POPUP, DIR_UPLEFT);
+    InitPopupMenu(btn.value.IDNum, Enum53.OWNERSHIPGROUP_POPUP, DIR_UPLEFT);
   }
 }
 
@@ -1060,26 +1060,26 @@ function ToggleAttachment(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     let i: INT32;
     let usAttachment: UINT16;
     let temp: OBJECTTYPE;
-    for (i = 0; i < NUM_ATTACHMENT_BUTTONS; i++) {
+    for (i = 0; i < Enum46.NUM_ATTACHMENT_BUTTONS; i++) {
       // Loop through and find the button that was just modified
       switch (i) {
         case 0:
-          usAttachment = SILENCER;
+          usAttachment = Enum225.SILENCER;
           break;
         case 1:
-          usAttachment = SNIPERSCOPE;
+          usAttachment = Enum225.SNIPERSCOPE;
           break;
         case 2:
-          usAttachment = LASERSCOPE;
+          usAttachment = Enum225.LASERSCOPE;
           break;
         case 3:
-          usAttachment = BIPOD;
+          usAttachment = Enum225.BIPOD;
           break;
         case 4:
-          usAttachment = DUCKBILL;
+          usAttachment = Enum225.DUCKBILL;
           break;
         case 5:
-          usAttachment = UNDER_GLAUNCHER;
+          usAttachment = Enum225.UNDER_GLAUNCHER;
           break;
       }
       if (guiAttachmentButton[i] != -1 && btn == ButtonList[guiAttachmentButton[i]]) {
@@ -1110,12 +1110,12 @@ function ToggleCeramicPlates(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     gfCeramicPlates ^= TRUE;
     if (gfCeramicPlates) {
       btn.value.uiFlags |= BUTTON_CLICKED_ON;
-      CreateItem(CERAMIC_PLATES, gpItem.value.bStatus[0], addressof(temp));
+      CreateItem(Enum225.CERAMIC_PLATES, gpItem.value.bStatus[0], addressof(temp));
       AttachObject(NULL, gpItem, addressof(temp));
     } else {
       let slot: INT8;
       btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
-      slot = FindAttachment(gpItem, CERAMIC_PLATES);
+      slot = FindAttachment(gpItem, Enum225.CERAMIC_PLATES);
       if (slot != -1)
         RemoveAttachment(gpItem, slot, addressof(temp));
     }
@@ -1128,14 +1128,14 @@ function ToggleDetonator(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     if (!gfDetonator) {
       gfDetonator = TRUE;
       btn.value.uiFlags |= BUTTON_CLICKED_ON;
-      CreateItem(DETONATOR, gpItem.value.bStatus[0], addressof(temp));
+      CreateItem(Enum225.DETONATOR, gpItem.value.bStatus[0], addressof(temp));
       AttachObject(NULL, gpItem, addressof(temp));
     } else {
       // Button is out, so remove the attachment
       let slot: INT8;
       gfDetonator = FALSE;
       btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
-      slot = FindAttachment(gpItem, DETONATOR);
+      slot = FindAttachment(gpItem, Enum225.DETONATOR);
       if (slot != -1)
         RemoveAttachment(gpItem, slot, addressof(temp));
     }
@@ -1144,138 +1144,138 @@ function ToggleDetonator(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function ActionItemCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    InitPopupMenu(guiActionItemButton, ACTIONITEM_POPUP, DIR_UPLEFT);
+    InitPopupMenu(guiActionItemButton, Enum53.ACTIONITEM_POPUP, DIR_UPLEFT);
   }
 }
 
 function ChangeActionItem(pItem: Pointer<OBJECTTYPE>, bActionItemIndex: INT8): void {
-  pItem.value.usItem = ACTION_ITEM;
-  pItem.value.bActionValue = ACTION_ITEM_BLOW_UP;
+  pItem.value.usItem = Enum225.ACTION_ITEM;
+  pItem.value.bActionValue = Enum191.ACTION_ITEM_BLOW_UP;
   switch (bActionItemIndex) {
-    case ACTIONITEM_TRIP_KLAXON:
-      pItem.value.usBombItem = TRIP_KLAXON;
+    case Enum49.ACTIONITEM_TRIP_KLAXON:
+      pItem.value.usBombItem = Enum225.TRIP_KLAXON;
       break;
-    case ACTIONITEM_FLARE:
-      pItem.value.usBombItem = TRIP_FLARE;
+    case Enum49.ACTIONITEM_FLARE:
+      pItem.value.usBombItem = Enum225.TRIP_FLARE;
       break;
-    case ACTIONITEM_TEARGAS:
-      pItem.value.usBombItem = TEARGAS_GRENADE;
+    case Enum49.ACTIONITEM_TEARGAS:
+      pItem.value.usBombItem = Enum225.TEARGAS_GRENADE;
       break;
-    case ACTIONITEM_STUN:
-      pItem.value.usBombItem = STUN_GRENADE;
+    case Enum49.ACTIONITEM_STUN:
+      pItem.value.usBombItem = Enum225.STUN_GRENADE;
       break;
-    case ACTIONITEM_SMOKE:
-      pItem.value.usBombItem = SMOKE_GRENADE;
+    case Enum49.ACTIONITEM_SMOKE:
+      pItem.value.usBombItem = Enum225.SMOKE_GRENADE;
       break;
-    case ACTIONITEM_MUSTARD:
-      pItem.value.usBombItem = MUSTARD_GRENADE;
+    case Enum49.ACTIONITEM_MUSTARD:
+      pItem.value.usBombItem = Enum225.MUSTARD_GRENADE;
       break;
-    case ACTIONITEM_MINE:
-      pItem.value.usBombItem = MINE;
+    case Enum49.ACTIONITEM_MINE:
+      pItem.value.usBombItem = Enum225.MINE;
       break;
-    case ACTIONITEM_OPEN:
+    case Enum49.ACTIONITEM_OPEN:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_OPEN_DOOR;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_OPEN_DOOR;
       break;
-    case ACTIONITEM_CLOSE:
+    case Enum49.ACTIONITEM_CLOSE:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_CLOSE_DOOR;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_CLOSE_DOOR;
       break;
-    case ACTIONITEM_UNLOCK_DOOR:
+    case Enum49.ACTIONITEM_UNLOCK_DOOR:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_UNLOCK_DOOR;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_UNLOCK_DOOR;
       break;
-    case ACTIONITEM_TOGGLE_LOCK:
+    case Enum49.ACTIONITEM_TOGGLE_LOCK:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_TOGGLE_LOCK;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_TOGGLE_LOCK;
       break;
-    case ACTIONITEM_UNTRAP_DOOR:
+    case Enum49.ACTIONITEM_UNTRAP_DOOR:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_UNTRAP_DOOR;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_UNTRAP_DOOR;
       break;
-    case ACTIONITEM_TOGGLE_PRESSURE_ITEMS:
+    case Enum49.ACTIONITEM_TOGGLE_PRESSURE_ITEMS:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_TOGGLE_PRESSURE_ITEMS;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_TOGGLE_PRESSURE_ITEMS;
       break;
-    case ACTIONITEM_SMPIT:
+    case Enum49.ACTIONITEM_SMPIT:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_SMALL_PIT;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_SMALL_PIT;
       break;
-    case ACTIONITEM_LGPIT:
+    case Enum49.ACTIONITEM_LGPIT:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_LARGE_PIT;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_LARGE_PIT;
       break;
-    case ACTIONITEM_TOGGLE_DOOR:
+    case Enum49.ACTIONITEM_TOGGLE_DOOR:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_TOGGLE_DOOR;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_TOGGLE_DOOR;
       break;
-    case ACTIONITEM_TOGGLE_ACTION1:
+    case Enum49.ACTIONITEM_TOGGLE_ACTION1:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_TOGGLE_ACTION1;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_TOGGLE_ACTION1;
       break;
-    case ACTIONITEM_TOGGLE_ACTION2:
+    case Enum49.ACTIONITEM_TOGGLE_ACTION2:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_TOGGLE_ACTION2;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_TOGGLE_ACTION2;
       break;
-    case ACTIONITEM_TOGGLE_ACTION3:
+    case Enum49.ACTIONITEM_TOGGLE_ACTION3:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_TOGGLE_ACTION3;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_TOGGLE_ACTION3;
       break;
-    case ACTIONITEM_TOGGLE_ACTION4:
+    case Enum49.ACTIONITEM_TOGGLE_ACTION4:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_TOGGLE_ACTION4;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_TOGGLE_ACTION4;
       break;
-    case ACTIONITEM_ENTER_BROTHEL:
+    case Enum49.ACTIONITEM_ENTER_BROTHEL:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_ENTER_BROTHEL;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_ENTER_BROTHEL;
       break;
-    case ACTIONITEM_EXIT_BROTHEL:
+    case Enum49.ACTIONITEM_EXIT_BROTHEL:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_EXIT_BROTHEL;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_EXIT_BROTHEL;
       break;
-    case ACTIONITEM_KINGPIN_ALARM:
+    case Enum49.ACTIONITEM_KINGPIN_ALARM:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_KINGPIN_ALARM;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_KINGPIN_ALARM;
       break;
-    case ACTIONITEM_SEX:
+    case Enum49.ACTIONITEM_SEX:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_SEX;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_SEX;
       break;
-    case ACTIONITEM_REVEAL_ROOM:
+    case Enum49.ACTIONITEM_REVEAL_ROOM:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_REVEAL_ROOM;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_REVEAL_ROOM;
       break;
-    case ACTIONITEM_LOCAL_ALARM:
+    case Enum49.ACTIONITEM_LOCAL_ALARM:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_LOCAL_ALARM;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_LOCAL_ALARM;
       break;
-    case ACTIONITEM_GLOBAL_ALARM:
+    case Enum49.ACTIONITEM_GLOBAL_ALARM:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_GLOBAL_ALARM;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_GLOBAL_ALARM;
       break;
-    case ACTIONITEM_KLAXON:
+    case Enum49.ACTIONITEM_KLAXON:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_KLAXON;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_KLAXON;
       break;
-    case ACTIONITEM_SMALL:
-      pItem.value.usBombItem = HAND_GRENADE;
+    case Enum49.ACTIONITEM_SMALL:
+      pItem.value.usBombItem = Enum225.HAND_GRENADE;
       break;
-    case ACTIONITEM_MEDIUM:
-      pItem.value.usBombItem = TNT;
+    case Enum49.ACTIONITEM_MEDIUM:
+      pItem.value.usBombItem = Enum225.TNT;
       break;
-    case ACTIONITEM_LARGE:
-      pItem.value.usBombItem = C4;
+    case Enum49.ACTIONITEM_LARGE:
+      pItem.value.usBombItem = Enum225.C4;
       break;
-    case ACTIONITEM_MUSEUM_ALARM:
+    case Enum49.ACTIONITEM_MUSEUM_ALARM:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_MUSEUM_ALARM;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_MUSEUM_ALARM;
       break;
-    case ACTIONITEM_BLOODCAT_ALARM:
+    case Enum49.ACTIONITEM_BLOODCAT_ALARM:
       pItem.value.usBombItem = NOTHING;
-      pItem.value.bActionValue = ACTION_ITEM_BLOODCAT_ALARM;
+      pItem.value.bActionValue = Enum191.ACTION_ITEM_BLOODCAT_ALARM;
       break;
-    case ACTIONITEM_BIG_TEAR_GAS:
-      pItem.value.usBombItem = BIG_TEAR_GAS;
+    case Enum49.ACTIONITEM_BIG_TEAR_GAS:
+      pItem.value.usBombItem = Enum225.BIG_TEAR_GAS;
       break;
   }
 }
@@ -1287,10 +1287,10 @@ function UpdateActionItem(bActionItemIndex: INT8): void {
     return;
 
   // If the previous item was a pit, remove it before changing it
-  if (gpItem.value.usItem == ACTION_ITEM) {
-    if (gpItem.value.bActionValue == ACTION_ITEM_SMALL_PIT)
+  if (gpItem.value.usItem == Enum225.ACTION_ITEM) {
+    if (gpItem.value.bActionValue == Enum191.ACTION_ITEM_SMALL_PIT)
       Remove3X3Pit(gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
-    else if (gpItem.value.bActionValue == ACTION_ITEM_LARGE_PIT)
+    else if (gpItem.value.bActionValue == Enum191.ACTION_ITEM_LARGE_PIT)
       Remove5X5Pit(gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
   }
 
@@ -1298,10 +1298,10 @@ function UpdateActionItem(bActionItemIndex: INT8): void {
   SpecifyButtonText(guiActionItemButton, GetActionItemName(gpItem));
 
   // If the new item is a pit, add it so we can see how it looks.
-  if (gpItem.value.usItem == ACTION_ITEM) {
-    if (gpItem.value.bActionValue == ACTION_ITEM_SMALL_PIT)
+  if (gpItem.value.usItem == Enum225.ACTION_ITEM) {
+    if (gpItem.value.bActionValue == Enum191.ACTION_ITEM_SMALL_PIT)
       Add3X3Pit(gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
-    else if (gpItem.value.bActionValue == ACTION_ITEM_LARGE_PIT)
+    else if (gpItem.value.bActionValue == Enum191.ACTION_ITEM_LARGE_PIT)
       Add5X5Pit(gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
   }
 }
@@ -1309,27 +1309,27 @@ function UpdateActionItem(bActionItemIndex: INT8): void {
 function ReEvaluateAttachmentStatii(): void {
   let i: INT32;
   let usAttachment: UINT16;
-  for (i = 0; i < NUM_ATTACHMENT_BUTTONS; i++) {
+  for (i = 0; i < Enum46.NUM_ATTACHMENT_BUTTONS; i++) {
     if (guiAttachmentButton[i] != -1 && !(ButtonList[guiAttachmentButton[i]].value.uiFlags & BUTTON_CLICKED_ON)) {
       // if button exists and button isn't clicked
       switch (i) {
         case 0:
-          usAttachment = SILENCER;
+          usAttachment = Enum225.SILENCER;
           break;
         case 1:
-          usAttachment = SNIPERSCOPE;
+          usAttachment = Enum225.SNIPERSCOPE;
           break;
         case 2:
-          usAttachment = LASERSCOPE;
+          usAttachment = Enum225.LASERSCOPE;
           break;
         case 3:
-          usAttachment = BIPOD;
+          usAttachment = Enum225.BIPOD;
           break;
         case 4:
-          usAttachment = DUCKBILL;
+          usAttachment = Enum225.DUCKBILL;
           break;
         case 5:
-          usAttachment = UNDER_GLAUNCHER;
+          usAttachment = Enum225.UNDER_GLAUNCHER;
           break;
       }
       if (ValidItemAttachment(gpItem, usAttachment, TRUE))

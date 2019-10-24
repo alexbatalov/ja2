@@ -69,7 +69,7 @@ function TimeProc(uID: UINT, uMsg: UINT, dwUser: DWORD, dw1: DWORD, dw2: DWORD):
     if (!gfPauseClock) {
       guiBaseJA2Clock += BASETIMESLICE;
 
-      for (gCNT = 0; gCNT < NUMTIMERS; gCNT++) {
+      for (gCNT = 0; gCNT < Enum386.NUMTIMERS; gCNT++) {
         UPDATECOUNTER(gCNT);
       }
 
@@ -123,7 +123,7 @@ function InitializeJA2Clock(): BOOLEAN {
   let cnt: INT32;
 
   // Init timer delays
-  for (cnt = 0; cnt < NUMTIMERS; cnt++) {
+  for (cnt = 0; cnt < Enum386.NUMTIMERS; cnt++) {
     giTimerCounters[cnt] = giTimerIntervals[cnt];
   }
 
@@ -178,7 +178,7 @@ function RemoveJA2TimerCallback(uiTimer: UINT32): void {
 
 function InitializeJA2TimerID(uiDelay: UINT32, uiCallbackID: UINT32, uiUser: UINT32): UINT32 {
   switch (uiCallbackID) {
-    case ITEM_LOCATOR_CALLBACK:
+    case Enum385.ITEM_LOCATOR_CALLBACK:
 
       return InitializeJA2TimerCallback(uiDelay, FlashItem, uiUser);
       break;

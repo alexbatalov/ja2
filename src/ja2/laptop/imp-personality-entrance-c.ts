@@ -43,7 +43,7 @@ function CreateIMPPersonalityEntranceButtons(): void {
 */
   giIMPPersonalityEntranceButton[0] = CreateIconAndTextButton(giIMPPersonalityEntranceButtonImage[0], pImpButtonText[1], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (136), LAPTOP_SCREEN_WEB_UL_Y + (314), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPersonalityEntranceDoneCallback);
 
-  SetButtonCursor(giIMPPersonalityEntranceButton[0], CURSOR_WWW);
+  SetButtonCursor(giIMPPersonalityEntranceButton[0], Enum317.CURSOR_WWW);
 
   return;
 }
@@ -69,7 +69,7 @@ function BtnIMPPersonalityEntranceDoneCallback(btn: Pointer<GUI_BUTTON>, reason:
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       // done with begin screen, next screen
-      iCurrentImpPage = IMP_PERSONALITY_QUIZ;
+      iCurrentImpPage = Enum71.IMP_PERSONALITY_QUIZ;
       fButtonPendingFlag = TRUE;
     }
   }

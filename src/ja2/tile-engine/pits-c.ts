@@ -7,15 +7,15 @@ function Add3X3Pit(iMapIndex: INT32): void {
   let ExitGrid: EXITGRID;
   if (!gfEditMode)
     ApplyMapChangesToMapTempFile(TRUE);
-  AddObjectToTail(iMapIndex + 159, REGWATERTEXTURE1);
-  AddObjectToTail(iMapIndex - 1, REGWATERTEXTURE2);
-  AddObjectToTail(iMapIndex - 161, REGWATERTEXTURE3);
-  AddObjectToTail(iMapIndex + 160, REGWATERTEXTURE4);
-  AddObjectToTail(iMapIndex, REGWATERTEXTURE5);
-  AddObjectToTail(iMapIndex - 160, REGWATERTEXTURE6);
-  AddObjectToTail(iMapIndex + 161, REGWATERTEXTURE7);
-  AddObjectToTail(iMapIndex + 1, REGWATERTEXTURE8);
-  AddObjectToTail(iMapIndex - 159, REGWATERTEXTURE9);
+  AddObjectToTail(iMapIndex + 159, Enum312.REGWATERTEXTURE1);
+  AddObjectToTail(iMapIndex - 1, Enum312.REGWATERTEXTURE2);
+  AddObjectToTail(iMapIndex - 161, Enum312.REGWATERTEXTURE3);
+  AddObjectToTail(iMapIndex + 160, Enum312.REGWATERTEXTURE4);
+  AddObjectToTail(iMapIndex, Enum312.REGWATERTEXTURE5);
+  AddObjectToTail(iMapIndex - 160, Enum312.REGWATERTEXTURE6);
+  AddObjectToTail(iMapIndex + 161, Enum312.REGWATERTEXTURE7);
+  AddObjectToTail(iMapIndex + 1, Enum312.REGWATERTEXTURE8);
+  AddObjectToTail(iMapIndex - 159, Enum312.REGWATERTEXTURE9);
   if (!gfEditMode) {
     // Add the exitgrids associated with the pit.
     ExitGrid.ubGotoSectorX = gWorldSectorX;
@@ -43,31 +43,31 @@ function Add5X5Pit(iMapIndex: INT32): void {
   let ExitGrid: EXITGRID;
   if (!gfEditMode)
     ApplyMapChangesToMapTempFile(TRUE);
-  AddObjectToTail(iMapIndex + 318, REGWATERTEXTURE10);
-  AddObjectToTail(iMapIndex + 158, REGWATERTEXTURE11);
-  AddObjectToTail(iMapIndex - 2, REGWATERTEXTURE12);
-  AddObjectToTail(iMapIndex - 162, REGWATERTEXTURE13);
-  AddObjectToTail(iMapIndex - 322, REGWATERTEXTURE14);
-  AddObjectToTail(iMapIndex + 319, REGWATERTEXTURE15);
-  AddObjectToTail(iMapIndex + 159, REGWATERTEXTURE16);
-  AddObjectToTail(iMapIndex - 1, REGWATERTEXTURE17);
-  AddObjectToTail(iMapIndex - 161, REGWATERTEXTURE18);
-  AddObjectToTail(iMapIndex - 321, REGWATERTEXTURE19);
-  AddObjectToTail(iMapIndex + 320, REGWATERTEXTURE20);
-  AddObjectToTail(iMapIndex + 160, REGWATERTEXTURE21);
-  AddObjectToTail(iMapIndex, REGWATERTEXTURE22);
-  AddObjectToTail(iMapIndex - 160, REGWATERTEXTURE23);
-  AddObjectToTail(iMapIndex - 320, REGWATERTEXTURE24);
-  AddObjectToTail(iMapIndex + 321, REGWATERTEXTURE25);
-  AddObjectToTail(iMapIndex + 161, REGWATERTEXTURE26);
-  AddObjectToTail(iMapIndex + 1, REGWATERTEXTURE27);
-  AddObjectToTail(iMapIndex - 159, REGWATERTEXTURE28);
-  AddObjectToTail(iMapIndex - 319, REGWATERTEXTURE29);
-  AddObjectToTail(iMapIndex + 322, REGWATERTEXTURE30);
-  AddObjectToTail(iMapIndex + 162, REGWATERTEXTURE31);
-  AddObjectToTail(iMapIndex + 2, REGWATERTEXTURE32);
-  AddObjectToTail(iMapIndex - 158, REGWATERTEXTURE33);
-  AddObjectToTail(iMapIndex - 318, REGWATERTEXTURE34);
+  AddObjectToTail(iMapIndex + 318, Enum312.REGWATERTEXTURE10);
+  AddObjectToTail(iMapIndex + 158, Enum312.REGWATERTEXTURE11);
+  AddObjectToTail(iMapIndex - 2, Enum312.REGWATERTEXTURE12);
+  AddObjectToTail(iMapIndex - 162, Enum312.REGWATERTEXTURE13);
+  AddObjectToTail(iMapIndex - 322, Enum312.REGWATERTEXTURE14);
+  AddObjectToTail(iMapIndex + 319, Enum312.REGWATERTEXTURE15);
+  AddObjectToTail(iMapIndex + 159, Enum312.REGWATERTEXTURE16);
+  AddObjectToTail(iMapIndex - 1, Enum312.REGWATERTEXTURE17);
+  AddObjectToTail(iMapIndex - 161, Enum312.REGWATERTEXTURE18);
+  AddObjectToTail(iMapIndex - 321, Enum312.REGWATERTEXTURE19);
+  AddObjectToTail(iMapIndex + 320, Enum312.REGWATERTEXTURE20);
+  AddObjectToTail(iMapIndex + 160, Enum312.REGWATERTEXTURE21);
+  AddObjectToTail(iMapIndex, Enum312.REGWATERTEXTURE22);
+  AddObjectToTail(iMapIndex - 160, Enum312.REGWATERTEXTURE23);
+  AddObjectToTail(iMapIndex - 320, Enum312.REGWATERTEXTURE24);
+  AddObjectToTail(iMapIndex + 321, Enum312.REGWATERTEXTURE25);
+  AddObjectToTail(iMapIndex + 161, Enum312.REGWATERTEXTURE26);
+  AddObjectToTail(iMapIndex + 1, Enum312.REGWATERTEXTURE27);
+  AddObjectToTail(iMapIndex - 159, Enum312.REGWATERTEXTURE28);
+  AddObjectToTail(iMapIndex - 319, Enum312.REGWATERTEXTURE29);
+  AddObjectToTail(iMapIndex + 322, Enum312.REGWATERTEXTURE30);
+  AddObjectToTail(iMapIndex + 162, Enum312.REGWATERTEXTURE31);
+  AddObjectToTail(iMapIndex + 2, Enum312.REGWATERTEXTURE32);
+  AddObjectToTail(iMapIndex - 158, Enum312.REGWATERTEXTURE33);
+  AddObjectToTail(iMapIndex - 318, Enum312.REGWATERTEXTURE34);
   if (!gfEditMode) {
     // Add the exitgrids associated with the pit.
     ExitGrid.ubGotoSectorX = gWorldSectorX;
@@ -107,54 +107,54 @@ function Add5X5Pit(iMapIndex: INT32): void {
 }
 
 function Remove3X3Pit(iMapIndex: INT32): void {
-  RemoveAllObjectsOfTypeRange(iMapIndex + 159, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex - 1, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex - 161, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex + 160, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex - 160, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex + 161, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex + 1, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex - 159, REGWATERTEXTURE, REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex + 159, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex - 1, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex - 161, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex + 160, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex - 160, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex + 161, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex + 1, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex - 159, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
   MarkWorldDirty();
 }
 
 function Remove5X5Pit(iMapIndex: INT32): void {
-  RemoveAllObjectsOfTypeRange(iMapIndex + 318, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex + 158, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex - 2, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex - 162, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex - 322, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex + 319, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex + 159, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex - 1, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex - 161, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex - 321, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex + 320, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex + 160, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex - 160, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex - 320, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex + 321, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex + 161, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex + 1, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex - 159, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex - 319, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex + 322, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex + 162, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex + 2, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex - 158, REGWATERTEXTURE, REGWATERTEXTURE);
-  RemoveAllObjectsOfTypeRange(iMapIndex - 318, REGWATERTEXTURE, REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex + 318, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex + 158, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex - 2, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex - 162, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex - 322, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex + 319, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex + 159, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex - 1, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex - 161, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex - 321, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex + 320, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex + 160, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex - 160, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex - 320, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex + 321, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex + 161, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex + 1, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex - 159, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex - 319, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex + 322, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex + 162, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex + 2, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex - 158, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
+  RemoveAllObjectsOfTypeRange(iMapIndex - 318, Enum313.REGWATERTEXTURE, Enum313.REGWATERTEXTURE);
   MarkWorldDirty();
 }
 
 function AddAllPits(): void {
   let i: UINT32;
   for (i = 0; i < guiNumWorldItems; i++) {
-    if (gWorldItems[i].o.usItem == ACTION_ITEM) {
-      if (gWorldItems[i].o.bActionValue == ACTION_ITEM_SMALL_PIT)
+    if (gWorldItems[i].o.usItem == Enum225.ACTION_ITEM) {
+      if (gWorldItems[i].o.bActionValue == Enum191.ACTION_ITEM_SMALL_PIT)
         Add3X3Pit(gWorldItems[i].sGridNo);
-      else if (gWorldItems[i].o.bActionValue == ACTION_ITEM_LARGE_PIT)
+      else if (gWorldItems[i].o.bActionValue == Enum191.ACTION_ITEM_LARGE_PIT)
         Add5X5Pit(gWorldItems[i].sGridNo);
     }
   }
@@ -163,10 +163,10 @@ function AddAllPits(): void {
 function RemoveAllPits(): void {
   let i: UINT32;
   for (i = 0; i < guiNumWorldItems; i++) {
-    if (gWorldItems[i].o.usItem == ACTION_ITEM) {
-      if (gWorldItems[i].o.bActionValue == ACTION_ITEM_SMALL_PIT)
+    if (gWorldItems[i].o.usItem == Enum225.ACTION_ITEM) {
+      if (gWorldItems[i].o.bActionValue == Enum191.ACTION_ITEM_SMALL_PIT)
         Remove3X3Pit(gWorldItems[i].sGridNo);
-      else if (gWorldItems[i].o.bActionValue == ACTION_ITEM_LARGE_PIT)
+      else if (gWorldItems[i].o.bActionValue == Enum191.ACTION_ITEM_LARGE_PIT)
         Remove5X5Pit(gWorldItems[i].sGridNo);
     }
   }
@@ -179,7 +179,7 @@ function SearchForOtherMembersWithinPitRadiusAndMakeThemFall(sGridNo: INT16, sRa
   let ubID: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
-  PlayJA2Sample(CAVE_COLLAPSE, RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
+  PlayJA2Sample(Enum330.CAVE_COLLAPSE, RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
   for (y = -sRadius; y <= sRadius; y++)
     for (x = -sRadius; x <= sRadius; x++) {
       sNewGridNo = sGridNo + y * WORLD_COLS + x;
@@ -196,7 +196,7 @@ function SearchForOtherMembersWithinPitRadiusAndMakeThemFall(sGridNo: INT16, sRa
 
           pSoldier.value.uiPendingActionData4 = sNewGridNo;
 
-          EVENT_InitNewSoldierAnim(pSoldier, FALL_INTO_PIT, 0, FALSE);
+          EVENT_InitNewSoldierAnim(pSoldier, Enum193.FALL_INTO_PIT, 0, FALSE);
         }
       }
     }
@@ -213,7 +213,7 @@ function HandleFallIntoPitFromAnimation(ubID: UINT8): void {
   GetExitGrid(sPitGridNo, addressof(ExitGrid));
 
   // Given exit grid, make buddy move to next sector....
-  pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+  pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
   pSoldier.value.usStrategicInsertionData = ExitGrid.usGridNo;
 
   pSoldier.value.sSectorX = ExitGrid.ubGotoSectorX;

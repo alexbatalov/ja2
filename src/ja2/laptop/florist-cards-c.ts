@@ -52,7 +52,7 @@ function EnterFloristCards(): BOOLEAN {
   for (j = 0; j < 3; j++) {
     usPosX = FLORIST_CARD_FIRST_POS_X;
     for (i = 0; i < 3; i++) {
-      MSYS_DefineRegion(addressof(gSelectedFloristCardsRegion[ubCount]), usPosX, usPosY, (usPosX + FLORIST_CARD_CARD_WIDTH), (usPosY + FLORIST_CARD_CARD_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristCardsRegionCallBack);
+      MSYS_DefineRegion(addressof(gSelectedFloristCardsRegion[ubCount]), usPosX, usPosY, (usPosX + FLORIST_CARD_CARD_WIDTH), (usPosY + FLORIST_CARD_CARD_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristCardsRegionCallBack);
       MSYS_AddRegion(addressof(gSelectedFloristCardsRegion[ubCount]));
       MSYS_SetRegionUserData(addressof(gSelectedFloristCardsRegion[ubCount]), 0, ubCount);
       ubCount++;
@@ -63,8 +63,8 @@ function EnterFloristCards(): BOOLEAN {
 
   guiFlowerCardsButtonImage = LoadButtonImage("LAPTOP\\FloristButtons.sti", -1, 0, -1, 1, -1);
 
-  guiFlowerCardsBackButton = CreateIconAndTextButton(guiFlowerCardsButtonImage, sFloristCards[FLORIST_CARDS_BACK], FLORIST_BUTTON_TEXT_FONT, FLORIST_BUTTON_TEXT_UP_COLOR, FLORIST_BUTTON_TEXT_SHADOW_COLOR, FLORIST_BUTTON_TEXT_DOWN_COLOR, FLORIST_BUTTON_TEXT_SHADOW_COLOR, TEXT_CJUSTIFIED, FLORIST_CARD_BACK_BUTTON_X, FLORIST_CARD_BACK_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnFlowerCardsBackButtonCallback);
-  SetButtonCursor(guiFlowerCardsBackButton, CURSOR_WWW);
+  guiFlowerCardsBackButton = CreateIconAndTextButton(guiFlowerCardsButtonImage, sFloristCards[Enum348.FLORIST_CARDS_BACK], FLORIST_BUTTON_TEXT_FONT, FLORIST_BUTTON_TEXT_UP_COLOR, FLORIST_BUTTON_TEXT_SHADOW_COLOR, FLORIST_BUTTON_TEXT_DOWN_COLOR, FLORIST_BUTTON_TEXT_SHADOW_COLOR, TEXT_CJUSTIFIED, FLORIST_CARD_BACK_BUTTON_X, FLORIST_CARD_BACK_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnFlowerCardsBackButtonCallback);
+  SetButtonCursor(guiFlowerCardsBackButton, Enum317.CURSOR_WWW);
 
   // passing the currently selected card to -1, so it is not used
   gbCurrentlySelectedCard = -1;
@@ -103,7 +103,7 @@ function RenderFloristCards(): void {
 
   DisplayFloristDefaults();
 
-  DrawTextToScreen(sFloristCards[FLORIST_CARDS_CLICK_SELECTION], FLORIST_CARD_TITLE_SENTENCE_X, FLORIST_CARD_TITLE_SENTENCE_Y, FLORIST_CARD_TITLE_SENTENCE_WIDTH, FONT10ARIAL, FLORIST_CARDS_SENTENCE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(sFloristCards[Enum348.FLORIST_CARDS_CLICK_SELECTION], FLORIST_CARD_TITLE_SENTENCE_X, FLORIST_CARD_TITLE_SENTENCE_Y, FLORIST_CARD_TITLE_SENTENCE_WIDTH, FONT10ARIAL, FLORIST_CARDS_SENTENCE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   GetVideoObject(addressof(hPixHandle), guiCardBackground);
   usPosY = FLORIST_CARD_FIRST_POS_Y;
@@ -141,7 +141,7 @@ function SelectFloristCardsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReaso
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gbCurrentlySelectedCard = MSYS_GetRegionUserData(pRegion, 0);
 
-    guiCurrentLaptopMode = LAPTOP_MODE_FLORIST_ORDERFORM;
+    guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FLORIST_ORDERFORM;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
@@ -155,7 +155,7 @@ function BtnFlowerCardsBackButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT3
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-      guiCurrentLaptopMode = LAPTOP_MODE_FLORIST_ORDERFORM;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_FLORIST_ORDERFORM;
 
       InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
     }

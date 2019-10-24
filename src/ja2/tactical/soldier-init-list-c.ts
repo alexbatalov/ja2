@@ -217,7 +217,7 @@ function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
         pNode.value.pBasicPlacement.value.ubCivilianGroup = gMercProfiles[tempDetailedPlacement.ubProfile].ubCivilianGroup;
       }
     }
-    if (tempBasicPlacement.bBodyType == COW) {
+    if (tempBasicPlacement.bBodyType == Enum194.COW) {
       fCowInSector = TRUE;
     }
   }
@@ -254,7 +254,7 @@ function SortSoldierInitList(): void {
 
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == FREDO) {
+    if (curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == Enum268.FREDO) {
       fFredoAtStart = TRUE;
       break;
     }
@@ -397,7 +397,7 @@ function SortSoldierInitList(): void {
 
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == FREDO) {
+    if (curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == Enum268.FREDO) {
       fFredoAtEnd = TRUE;
       break;
     }
@@ -427,15 +427,15 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
     // Special case code when adding icecream truck.
     if (!gfEditMode) {
       // CJC, August 18, 1999: don't do this code unless the ice cream truck is on our team
-      if (FindSoldierByProfileID(ICECREAMTRUCK, TRUE) != NULL) {
-        if (curr.value.pDetailedPlacement.value.bBodyType == ICECREAMTRUCK) {
+      if (FindSoldierByProfileID(Enum194.ICECREAMTRUCK, TRUE) != NULL) {
+        if (curr.value.pDetailedPlacement.value.bBodyType == Enum194.ICECREAMTRUCK) {
           // Check to see if Hamous is here and not recruited.  If so, add truck
-          if (gMercProfiles[HAMOUS].sSectorX != gWorldSectorX || gMercProfiles[HAMOUS].sSectorY != gWorldSectorY || gMercProfiles[HAMOUS].bSectorZ) {
+          if (gMercProfiles[Enum268.HAMOUS].sSectorX != gWorldSectorX || gMercProfiles[Enum268.HAMOUS].sSectorY != gWorldSectorY || gMercProfiles[Enum268.HAMOUS].bSectorZ) {
             // not here, so don't add
             return TRUE;
           }
           // Hamous is here.  Check to make sure he isn't recruited.
-          if (gMercProfiles[HAMOUS].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) {
+          if (gMercProfiles[Enum268.HAMOUS].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) {
             return TRUE;
           }
         }
@@ -453,27 +453,27 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
         let ubRoom: UINT8;
 
         // Kinpin guys might be guarding Tony
-        if (tempDetailedPlacement.ubCivilianGroup == KINGPIN_CIV_GROUP && (gTacticalStatus.fCivGroupHostile[KINGPIN_CIV_GROUP] == CIV_GROUP_WILL_BECOME_HOSTILE || ((gubQuest[QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) && (CheckFact(FACT_KINGPIN_CAN_SEND_ASSASSINS, KINGPIN))))) {
+        if (tempDetailedPlacement.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP && (gTacticalStatus.fCivGroupHostile[Enum246.KINGPIN_CIV_GROUP] == CIV_GROUP_WILL_BECOME_HOSTILE || ((gubQuest[Enum169.QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) && (CheckFact(Enum170.FACT_KINGPIN_CAN_SEND_ASSASSINS, Enum268.KINGPIN))))) {
           if (tempDetailedPlacement.ubProfile == NO_PROFILE) {
             // these guys should be guarding Tony!
             tempDetailedPlacement.sInsertionGridNo = 13531 + (PreRandom(8) * (PreRandom(1) ? -1 : 1) + PreRandom(8) * (PreRandom(1) ? -1 : 1) * WORLD_ROWS);
 
             switch (PreRandom(3)) {
               case 0:
-                tempDetailedPlacement.bOrders = ONGUARD;
+                tempDetailedPlacement.bOrders = Enum241.ONGUARD;
                 break;
               case 1:
-                tempDetailedPlacement.bOrders = CLOSEPATROL;
+                tempDetailedPlacement.bOrders = Enum241.CLOSEPATROL;
                 break;
               case 2:
-                tempDetailedPlacement.bOrders = ONCALL;
+                tempDetailedPlacement.bOrders = Enum241.ONCALL;
                 break;
             }
-          } else if (tempDetailedPlacement.ubProfile == BILLY) {
+          } else if (tempDetailedPlacement.ubProfile == Enum268.BILLY) {
             // billy should now be able to roam around
             tempDetailedPlacement.sInsertionGridNo = 13531 + (PreRandom(30) * (PreRandom(1) ? -1 : 1) + PreRandom(30) * (PreRandom(1) ? -1 : 1) * WORLD_ROWS);
-            tempDetailedPlacement.bOrders = SEEKENEMY;
-          } else if (tempDetailedPlacement.ubProfile == MADAME) {
+            tempDetailedPlacement.bOrders = Enum241.SEEKENEMY;
+          } else if (tempDetailedPlacement.ubProfile == Enum268.MADAME) {
             // she shouldn't be here!
             return TRUE;
           } else if (tempDetailedPlacement.ubProfile == NO_PROFILE && InARoom(tempDetailedPlacement.sInsertionGridNo, addressof(ubRoom)) && IN_BROTHEL(ubRoom)) {
@@ -483,16 +483,16 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
         }
       } else if (!gfInMeanwhile && gWorldSectorX == 3 && gWorldSectorY == 16 && !gbWorldSectorZ) {
         // Special civilian setup for queen's palace.
-        if (gubFact[FACT_QUEEN_DEAD]) {
-          if (tempDetailedPlacement.ubCivilianGroup == QUEENS_CIV_GROUP) {
+        if (gubFact[Enum170.FACT_QUEEN_DEAD]) {
+          if (tempDetailedPlacement.ubCivilianGroup == Enum246.QUEENS_CIV_GROUP) {
             // The queen's civs aren't added if queen is dead
             return TRUE;
           }
         } else {
-          if (gfUseAlternateQueenPosition && tempDetailedPlacement.ubProfile == QUEEN) {
+          if (gfUseAlternateQueenPosition && tempDetailedPlacement.ubProfile == Enum268.QUEEN) {
             tempDetailedPlacement.sInsertionGridNo = 11448;
           }
-          if (tempDetailedPlacement.ubCivilianGroup != QUEENS_CIV_GROUP) {
+          if (tempDetailedPlacement.ubCivilianGroup != Enum246.QUEENS_CIV_GROUP) {
             // The free civilians aren't added if queen is alive
             return TRUE;
           }
@@ -500,13 +500,13 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
       } else if (gWorldSectorX == TIXA_SECTOR_X && gWorldSectorY == TIXA_SECTOR_Y && gbWorldSectorZ == 0) {
         // Tixa prison, once liberated, should not have any civs without profiles unless
         // they are kids
-        if (!StrategicMap[TIXA_SECTOR_X + TIXA_SECTOR_Y * MAP_WORLD_X].fEnemyControlled && tempDetailedPlacement.ubProfile == NO_PROFILE && tempDetailedPlacement.bBodyType != HATKIDCIV && tempDetailedPlacement.bBodyType != KIDCIV) {
+        if (!StrategicMap[TIXA_SECTOR_X + TIXA_SECTOR_Y * MAP_WORLD_X].fEnemyControlled && tempDetailedPlacement.ubProfile == NO_PROFILE && tempDetailedPlacement.bBodyType != Enum194.HATKIDCIV && tempDetailedPlacement.bBodyType != Enum194.KIDCIV) {
           // not there
           return TRUE;
         }
       } else if (gWorldSectorX == 13 && gWorldSectorY == MAP_ROW_C && gbWorldSectorZ == 0) {
-        if (CheckFact(FACT_KIDS_ARE_FREE, 0)) {
-          if (tempDetailedPlacement.bBodyType == HATKIDCIV || tempDetailedPlacement.bBodyType == KIDCIV) {
+        if (CheckFact(Enum170.FACT_KIDS_ARE_FREE, 0)) {
+          if (tempDetailedPlacement.bBodyType == Enum194.HATKIDCIV || tempDetailedPlacement.bBodyType == Enum194.KIDCIV) {
             // not there any more!  kids have been freeeeed!
             return TRUE;
           }
@@ -518,7 +518,7 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
     // adding Mike and Iggy.  We will only add one NPC in any given combat and the conditions for setting
     // the associated facts are done elsewhere.  There is also another place where NPCs can get added, which
     // is in TacticalCreateElite() used for inserting offensive enemies.
-    if (tempDetailedPlacement.bTeam == ENEMY_TEAM && tempDetailedPlacement.ubSoldierClass == SOLDIER_CLASS_ELITE) {
+    if (tempDetailedPlacement.bTeam == ENEMY_TEAM && tempDetailedPlacement.ubSoldierClass == Enum262.SOLDIER_CLASS_ELITE) {
       OkayToUpgradeEliteToSpecialProfiledEnemy(addressof(tempDetailedPlacement));
     }
   }
@@ -528,7 +528,7 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
     curr.value.ubSoldierID = ubID;
     AddSoldierToSectorNoCalculateDirection(ubID);
 
-    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bTeam == ENEMY_TEAM && !pSoldier.value.inv[HANDPOS].usItem) {
+    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bTeam == ENEMY_TEAM && !pSoldier.value.inv[Enum261.HANDPOS].usItem) {
       pSoldier = pSoldier;
     }
 
@@ -572,7 +572,7 @@ function AddSoldierInitListTeamToWorld(bTeam: INT8, ubMaxNum: UINT8): UINT8 {
     curr = gSoldierInitHead;
     while (curr) {
       if (curr.value.pBasicPlacement.value.bTeam == CIV_TEAM && !curr.value.pDetailedPlacement) {
-        curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_MINER;
+        curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_MINER;
         curr.value.pBasicPlacement.value.bBodyType = -1;
       }
       curr = curr.value.next;
@@ -694,7 +694,7 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
   while (curr && !curr.value.pSoldier) {
     if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
       switch (curr.value.pBasicPlacement.value.ubSoldierClass) {
-        case SOLDIER_CLASS_ELITE:
+        case Enum262.SOLDIER_CLASS_ELITE:
           if (curr.value.pBasicPlacement.value.fPriorityExistance && curr.value.pDetailedPlacement)
             ubElitePDSlots++;
           else if (curr.value.pBasicPlacement.value.fPriorityExistance)
@@ -704,7 +704,7 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
           else
             ubEliteBSlots++;
           break;
-        case SOLDIER_CLASS_ADMINISTRATOR:
+        case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
           if (curr.value.pBasicPlacement.value.fPriorityExistance && curr.value.pDetailedPlacement)
             ubAdminPDSlots++;
           else if (curr.value.pBasicPlacement.value.fPriorityExistance)
@@ -714,7 +714,7 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
           else
             ubAdminBSlots++;
           break;
-        case SOLDIER_CLASS_ARMY:
+        case Enum262.SOLDIER_CLASS_ARMY:
           if (curr.value.pBasicPlacement.value.fPriorityExistance && curr.value.pDetailedPlacement)
             ubTroopPDSlots++;
           else if (curr.value.pBasicPlacement.value.fPriorityExistance)
@@ -732,18 +732,18 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
   // ADD PLACEMENTS WITH PRIORITY EXISTANCE WITH DETAILED PLACEMENT INFORMATION FIRST
   // we now have the numbers of available slots for each soldier class, so loop through three times
   // and randomly choose some (or all) of the matching slots to fill.  This is done randomly.
-  for (ubCurrClass = SOLDIER_CLASS_ADMINISTRATOR; ubCurrClass <= SOLDIER_CLASS_ARMY; ubCurrClass++) {
+  for (ubCurrClass = Enum262.SOLDIER_CLASS_ADMINISTRATOR; ubCurrClass <= Enum262.SOLDIER_CLASS_ARMY; ubCurrClass++) {
     // First, prepare the counters.
     switch (ubCurrClass) {
-      case SOLDIER_CLASS_ADMINISTRATOR:
+      case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
         pCurrSlots = addressof(ubAdminPDSlots);
         pCurrTotal = addressof(ubTotalAdmin);
         break;
-      case SOLDIER_CLASS_ELITE:
+      case Enum262.SOLDIER_CLASS_ELITE:
         pCurrSlots = addressof(ubElitePDSlots);
         pCurrTotal = addressof(ubTotalElite);
         break;
-      case SOLDIER_CLASS_ARMY:
+      case Enum262.SOLDIER_CLASS_ARMY:
         pCurrSlots = addressof(ubTroopPDSlots);
         pCurrTotal = addressof(ubTotalTroops);
         break;
@@ -779,18 +779,18 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
   // ADD PLACEMENTS WITH PRIORITY EXISTANCE AND NO DETAILED PLACEMENT INFORMATION SECOND
   // we now have the numbers of available slots for each soldier class, so loop through three times
   // and randomly choose some (or all) of the matching slots to fill.  This is done randomly.
-  for (ubCurrClass = SOLDIER_CLASS_ADMINISTRATOR; ubCurrClass <= SOLDIER_CLASS_ARMY; ubCurrClass++) {
+  for (ubCurrClass = Enum262.SOLDIER_CLASS_ADMINISTRATOR; ubCurrClass <= Enum262.SOLDIER_CLASS_ARMY; ubCurrClass++) {
     // First, prepare the counters.
     switch (ubCurrClass) {
-      case SOLDIER_CLASS_ADMINISTRATOR:
+      case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
         pCurrSlots = addressof(ubAdminPSlots);
         pCurrTotal = addressof(ubTotalAdmin);
         break;
-      case SOLDIER_CLASS_ELITE:
+      case Enum262.SOLDIER_CLASS_ELITE:
         pCurrSlots = addressof(ubElitePSlots);
         pCurrTotal = addressof(ubTotalElite);
         break;
-      case SOLDIER_CLASS_ARMY:
+      case Enum262.SOLDIER_CLASS_ARMY:
         pCurrSlots = addressof(ubTroopPSlots);
         pCurrTotal = addressof(ubTotalTroops);
         break;
@@ -826,18 +826,18 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
   // ADD PLACEMENTS WITH NO DETAILED PLACEMENT AND PRIORITY EXISTANCE INFORMATION SECOND
   // we now have the numbers of available slots for each soldier class, so loop through three times
   // and randomly choose some (or all) of the matching slots to fill.  This is done randomly.
-  for (ubCurrClass = SOLDIER_CLASS_ADMINISTRATOR; ubCurrClass <= SOLDIER_CLASS_ARMY; ubCurrClass++) {
+  for (ubCurrClass = Enum262.SOLDIER_CLASS_ADMINISTRATOR; ubCurrClass <= Enum262.SOLDIER_CLASS_ARMY; ubCurrClass++) {
     // First, prepare the counters.
     switch (ubCurrClass) {
-      case SOLDIER_CLASS_ADMINISTRATOR:
+      case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
         pCurrSlots = addressof(ubAdminDSlots);
         pCurrTotal = addressof(ubTotalAdmin);
         break;
-      case SOLDIER_CLASS_ELITE:
+      case Enum262.SOLDIER_CLASS_ELITE:
         pCurrSlots = addressof(ubEliteDSlots);
         pCurrTotal = addressof(ubTotalElite);
         break;
-      case SOLDIER_CLASS_ARMY:
+      case Enum262.SOLDIER_CLASS_ARMY:
         pCurrSlots = addressof(ubTroopDSlots);
         pCurrTotal = addressof(ubTotalTroops);
         break;
@@ -882,13 +882,13 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
       // Choose which team to use.
       iRandom = Random(ubMaxNum);
       if (iRandom < ubTotalElite) {
-        curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE;
+        curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ELITE;
         ubTotalElite--;
       } else if (iRandom < ubTotalElite + ubTotalTroops) {
-        curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ARMY;
+        curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ARMY;
         ubTotalTroops--;
       } else if (iRandom < ubTotalElite + ubTotalTroops + ubTotalAdmin) {
-        curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
+        curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ADMINISTRATOR;
         ubTotalAdmin--;
       } else
         Assert(0);
@@ -905,18 +905,18 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
   // ADD REMAINING PLACEMENTS WITH BASIC PLACEMENT INFORMATION
   // we now have the numbers of available slots for each soldier class, so loop through three times
   // and randomly choose some (or all) of the matching slots to fill.  This is done randomly.
-  for (ubCurrClass = SOLDIER_CLASS_ADMINISTRATOR; ubCurrClass <= SOLDIER_CLASS_ARMY; ubCurrClass++) {
+  for (ubCurrClass = Enum262.SOLDIER_CLASS_ADMINISTRATOR; ubCurrClass <= Enum262.SOLDIER_CLASS_ARMY; ubCurrClass++) {
     // First, prepare the counters.
     switch (ubCurrClass) {
-      case SOLDIER_CLASS_ADMINISTRATOR:
+      case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
         pCurrSlots = addressof(ubAdminBSlots);
         pCurrTotal = addressof(ubTotalAdmin);
         break;
-      case SOLDIER_CLASS_ELITE:
+      case Enum262.SOLDIER_CLASS_ELITE:
         pCurrSlots = addressof(ubEliteBSlots);
         pCurrTotal = addressof(ubTotalElite);
         break;
-      case SOLDIER_CLASS_ARMY:
+      case Enum262.SOLDIER_CLASS_ARMY:
         pCurrSlots = addressof(ubTroopBSlots);
         pCurrTotal = addressof(ubTotalTroops);
         break;
@@ -971,13 +971,13 @@ function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroo
         // Choose which team to use.
         iRandom = Random(ubMaxNum);
         if (iRandom < ubTotalElite) {
-          curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE;
+          curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ELITE;
           ubTotalElite--;
         } else if (iRandom < ubTotalElite + ubTotalTroops) {
-          curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ARMY;
+          curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ARMY;
           ubTotalTroops--;
         } else if (iRandom < ubTotalElite + ubTotalTroops + ubTotalAdmin) {
-          curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
+          curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ADMINISTRATOR;
           ubTotalAdmin--;
         } else
           Assert(0);
@@ -1038,22 +1038,22 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
 
     if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM || curr.value.pBasicPlacement.value.bTeam == MILITIA_TEAM) {
       // Matching team (kindof), now check the soldier class...
-      if (ubNumElites && curr.value.pBasicPlacement.value.ubSoldierClass == SOLDIER_CLASS_ELITE) {
-        curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE_MILITIA;
+      if (ubNumElites && curr.value.pBasicPlacement.value.ubSoldierClass == Enum262.SOLDIER_CLASS_ELITE) {
+        curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ELITE_MILITIA;
         ubNumElites--;
-      } else if (ubNumRegs && curr.value.pBasicPlacement.value.ubSoldierClass == SOLDIER_CLASS_ARMY) {
-        curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_REG_MILITIA;
+      } else if (ubNumRegs && curr.value.pBasicPlacement.value.ubSoldierClass == Enum262.SOLDIER_CLASS_ARMY) {
+        curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_REG_MILITIA;
         ubNumRegs--;
-      } else if (ubNumGreen && curr.value.pBasicPlacement.value.ubSoldierClass == SOLDIER_CLASS_ADMINISTRATOR) {
-        curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_GREEN_MILITIA;
+      } else if (ubNumGreen && curr.value.pBasicPlacement.value.ubSoldierClass == Enum262.SOLDIER_CLASS_ADMINISTRATOR) {
+        curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_GREEN_MILITIA;
         ubNumGreen--;
       } else
         fDoPlacement = FALSE;
 
       if (fDoPlacement) {
         curr.value.pBasicPlacement.value.bTeam = MILITIA_TEAM;
-        curr.value.pBasicPlacement.value.bOrders = STATIONARY;
-        curr.value.pBasicPlacement.value.bAttitude = Random(MAXATTITUDES);
+        curr.value.pBasicPlacement.value.bOrders = Enum241.STATIONARY;
+        curr.value.pBasicPlacement.value.bAttitude = Random(Enum242.MAXATTITUDES);
         if (curr.value.pDetailedPlacement) {
           // delete the detailed placement information.
           MemFree(curr.value.pDetailedPlacement);
@@ -1079,13 +1079,13 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
   while (curr && !curr.value.pSoldier) {
     if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM || curr.value.pBasicPlacement.value.bTeam == MILITIA_TEAM) {
       switch (curr.value.pBasicPlacement.value.ubSoldierClass) {
-        case SOLDIER_CLASS_ELITE:
+        case Enum262.SOLDIER_CLASS_ELITE:
           ubEliteSlots++;
           break;
-        case SOLDIER_CLASS_ADMINISTRATOR:
+        case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
           ubGreenSlots++;
           break;
-        case SOLDIER_CLASS_ARMY:
+        case Enum262.SOLDIER_CLASS_ARMY:
           ubRegSlots++;
           break;
       }
@@ -1095,18 +1095,18 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
 
   // we now have the numbers of available slots for each soldier class, so loop through three times
   // and randomly choose some (or all) of the matching slots to fill.  This is done randomly.
-  for (ubCurrClass = SOLDIER_CLASS_ADMINISTRATOR; ubCurrClass <= SOLDIER_CLASS_ARMY; ubCurrClass++) {
+  for (ubCurrClass = Enum262.SOLDIER_CLASS_ADMINISTRATOR; ubCurrClass <= Enum262.SOLDIER_CLASS_ARMY; ubCurrClass++) {
     // First, prepare the counters.
     switch (ubCurrClass) {
-      case SOLDIER_CLASS_ADMINISTRATOR:
+      case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
         pCurrSlots = addressof(ubGreenSlots);
         pCurrTotal = addressof(ubNumGreen);
         break;
-      case SOLDIER_CLASS_ELITE:
+      case Enum262.SOLDIER_CLASS_ELITE:
         pCurrSlots = addressof(ubEliteSlots);
         pCurrTotal = addressof(ubNumElites);
         break;
-      case SOLDIER_CLASS_ARMY:
+      case Enum262.SOLDIER_CLASS_ARMY:
         pCurrSlots = addressof(ubRegSlots);
         pCurrTotal = addressof(ubNumRegs);
         break;
@@ -1118,16 +1118,16 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
         if (curr.value.pBasicPlacement.value.ubSoldierClass == ubCurrClass) {
           if (pCurrSlots.value <= pCurrTotal.value || Random(pCurrSlots.value) < pCurrTotal.value) {
             curr.value.pBasicPlacement.value.bTeam = MILITIA_TEAM;
-            curr.value.pBasicPlacement.value.bOrders = STATIONARY;
+            curr.value.pBasicPlacement.value.bOrders = Enum241.STATIONARY;
             switch (ubCurrClass) {
-              case SOLDIER_CLASS_ADMINISTRATOR:
-                curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_GREEN_MILITIA;
+              case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
+                curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_GREEN_MILITIA;
                 break;
-              case SOLDIER_CLASS_ARMY:
-                curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_REG_MILITIA;
+              case Enum262.SOLDIER_CLASS_ARMY:
+                curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_REG_MILITIA;
                 break;
-              case SOLDIER_CLASS_ELITE:
-                curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE_MILITIA;
+              case Enum262.SOLDIER_CLASS_ELITE:
+                curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ELITE_MILITIA;
                 break;
             }
             // found matching team, so add this soldier to the game.
@@ -1173,19 +1173,19 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
         // Choose which team to use.
         iRandom = Random(ubMaxNum);
         if (iRandom < ubNumElites) {
-          curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_ELITE_MILITIA;
+          curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_ELITE_MILITIA;
           ubNumElites--;
         } else if (iRandom < ubNumElites + ubNumRegs) {
-          curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_REG_MILITIA;
+          curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_REG_MILITIA;
           ubNumRegs--;
         } else if (iRandom < ubNumElites + ubNumRegs + ubNumGreen) {
-          curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_GREEN_MILITIA;
+          curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_GREEN_MILITIA;
           ubNumGreen--;
         } else
           Assert(0);
         curr.value.pBasicPlacement.value.bTeam = MILITIA_TEAM;
-        curr.value.pBasicPlacement.value.bOrders = STATIONARY;
-        curr.value.pBasicPlacement.value.bAttitude = Random(MAXATTITUDES);
+        curr.value.pBasicPlacement.value.bOrders = Enum241.STATIONARY;
+        curr.value.pBasicPlacement.value.bAttitude = Random(Enum242.MAXATTITUDES);
         if (curr.value.pDetailedPlacement) {
           // delete the detailed placement information.
           MemFree(curr.value.pDetailedPlacement);
@@ -1222,7 +1222,7 @@ function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumI
   if (fQueen) {
     curr = gSoldierInitHead;
     while (curr) {
-      if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == CREATURE_TEAM && curr.value.pBasicPlacement.value.bBodyType == QUEENMONSTER) {
+      if (!curr.value.pSoldier && curr.value.pBasicPlacement.value.bTeam == CREATURE_TEAM && curr.value.pBasicPlacement.value.bBodyType == Enum194.QUEENMONSTER) {
         if (!AddPlacementToWorld(curr)) {
           fQueen = FALSE;
           break;
@@ -1241,17 +1241,17 @@ function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumI
 
     if (curr.value.pBasicPlacement.value.bTeam == CREATURE_TEAM) {
       // Matching team, now check the soldier class...
-      if (ubNumLarvae && curr.value.pBasicPlacement.value.bBodyType == LARVAE_MONSTER)
+      if (ubNumLarvae && curr.value.pBasicPlacement.value.bBodyType == Enum194.LARVAE_MONSTER)
         ubNumLarvae--;
-      else if (ubNumInfants && curr.value.pBasicPlacement.value.bBodyType == INFANT_MONSTER)
+      else if (ubNumInfants && curr.value.pBasicPlacement.value.bBodyType == Enum194.INFANT_MONSTER)
         ubNumInfants--;
-      else if (ubNumYoungMales && curr.value.pBasicPlacement.value.bBodyType == YAM_MONSTER)
+      else if (ubNumYoungMales && curr.value.pBasicPlacement.value.bBodyType == Enum194.YAM_MONSTER)
         ubNumYoungMales--;
-      else if (ubNumYoungFemales && curr.value.pBasicPlacement.value.bBodyType == YAF_MONSTER)
+      else if (ubNumYoungFemales && curr.value.pBasicPlacement.value.bBodyType == Enum194.YAF_MONSTER)
         ubNumYoungFemales--;
-      else if (ubNumAdultMales && curr.value.pBasicPlacement.value.bBodyType == AM_MONSTER)
+      else if (ubNumAdultMales && curr.value.pBasicPlacement.value.bBodyType == Enum194.AM_MONSTER)
         ubNumAdultMales--;
-      else if (ubNumAdultFemales && curr.value.pBasicPlacement.value.bBodyType == ADULTFEMALEMONSTER)
+      else if (ubNumAdultFemales && curr.value.pBasicPlacement.value.bBodyType == Enum194.ADULTFEMALEMONSTER)
         ubNumAdultFemales--;
       else
         fDoPlacement = FALSE;
@@ -1288,22 +1288,22 @@ function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumI
 
         if (ubNumLarvae && iRandom < ubNumLarvae) {
           ubNumLarvae--;
-          curr.value.pBasicPlacement.value.bBodyType = LARVAE_MONSTER;
+          curr.value.pBasicPlacement.value.bBodyType = Enum194.LARVAE_MONSTER;
         } else if (ubNumInfants && iRandom < ubNumLarvae + ubNumInfants) {
           ubNumInfants--;
-          curr.value.pBasicPlacement.value.bBodyType = INFANT_MONSTER;
+          curr.value.pBasicPlacement.value.bBodyType = Enum194.INFANT_MONSTER;
         } else if (ubNumYoungMales && iRandom < ubNumLarvae + ubNumInfants + ubNumYoungMales) {
           ubNumYoungMales--;
-          curr.value.pBasicPlacement.value.bBodyType = YAM_MONSTER;
+          curr.value.pBasicPlacement.value.bBodyType = Enum194.YAM_MONSTER;
         } else if (ubNumYoungFemales && iRandom < ubNumLarvae + ubNumInfants + ubNumYoungMales + ubNumYoungFemales) {
           ubNumYoungFemales--;
-          curr.value.pBasicPlacement.value.bBodyType = YAF_MONSTER;
+          curr.value.pBasicPlacement.value.bBodyType = Enum194.YAF_MONSTER;
         } else if (ubNumAdultMales && iRandom < ubNumLarvae + ubNumInfants + ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales) {
           ubNumAdultMales--;
-          curr.value.pBasicPlacement.value.bBodyType = AM_MONSTER;
+          curr.value.pBasicPlacement.value.bBodyType = Enum194.AM_MONSTER;
         } else if (ubNumAdultFemales && iRandom < ubNumLarvae + ubNumInfants + ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales) {
           ubNumAdultFemales--;
-          curr.value.pBasicPlacement.value.bBodyType = ADULTFEMALEMONSTER;
+          curr.value.pBasicPlacement.value.bBodyType = Enum194.ADULTFEMALEMONSTER;
         } else
           Assert(0);
         if (curr.value.pDetailedPlacement) {
@@ -1518,12 +1518,12 @@ function AddSoldierInitListBloodcats(): void {
     let bBloodCatPlacements: INT8 = 0;
     curr = gSoldierInitHead;
     while (curr) {
-      if (curr.value.pBasicPlacement.value.bBodyType == BLOODCAT) {
+      if (curr.value.pBasicPlacement.value.bBodyType == Enum194.BLOODCAT) {
         bBloodCatPlacements++;
       }
       curr = curr.value.next;
     }
-    if (bBloodCatPlacements != pSector.value.bBloodCatPlacements && ubSectorID != SEC_I16 && ubSectorID != SEC_N5) {
+    if (bBloodCatPlacements != pSector.value.bBloodCatPlacements && ubSectorID != Enum123.SEC_I16 && ubSectorID != Enum123.SEC_N5) {
       pSector.value.bBloodCatPlacements = bBloodCatPlacements;
       pSector.value.bBloodCats = -1;
       if (!bBloodCatPlacements) {
@@ -1549,7 +1549,7 @@ function AddSoldierInitListBloodcats(): void {
     // Count the current number of soldiers of the specified team
     curr = gSoldierInitHead;
     while (curr) {
-      if (curr.value.pBasicPlacement.value.bBodyType == BLOODCAT && curr.value.pSoldier)
+      if (curr.value.pBasicPlacement.value.bBodyType == Enum194.BLOODCAT && curr.value.pSoldier)
         ubNumAdded++; // already one here!
       curr = curr.value.next;
     }
@@ -1558,7 +1558,7 @@ function AddSoldierInitListBloodcats(): void {
 
     // First fill up all of the priority existance slots...
     while (curr && curr.value.pBasicPlacement.value.fPriorityExistance && ubNumAdded < ubMaxNum) {
-      if (curr.value.pBasicPlacement.value.bBodyType == BLOODCAT) {
+      if (curr.value.pBasicPlacement.value.bBodyType == Enum194.BLOODCAT) {
         // Matching team, so add this placement.
         if (AddPlacementToWorld(curr)) {
           ubNumAdded++;
@@ -1576,7 +1576,7 @@ function AddSoldierInitListBloodcats(): void {
     ubSlotsAvailable = 0;
     ubSlotsToFill = ubMaxNum - ubNumAdded;
     while (curr && !curr.value.pSoldier && ubNumAdded < ubMaxNum) {
-      if (curr.value.pBasicPlacement.value.bBodyType == BLOODCAT)
+      if (curr.value.pBasicPlacement.value.bBodyType == Enum194.BLOODCAT)
         ubSlotsAvailable++;
       curr = curr.value.next;
     }
@@ -1591,7 +1591,7 @@ function AddSoldierInitListBloodcats(): void {
     // while we have a list, with no active soldiers, the num added is less than the max num requested, and
     // we have slots available, process the list to add new soldiers.
     while (curr && !curr.value.pSoldier && ubNumAdded < ubMaxNum && ubSlotsAvailable) {
-      if (curr.value.pBasicPlacement.value.bBodyType == BLOODCAT) {
+      if (curr.value.pBasicPlacement.value.bBodyType == Enum194.BLOODCAT) {
         if (ubSlotsAvailable <= ubSlotsToFill || Random(ubSlotsAvailable) < ubSlotsToFill) {
           // found matching team, so add this soldier to the game.
           if (AddPlacementToWorld(curr)) {
@@ -1636,7 +1636,7 @@ function AddProfilesUsingProfileInsertionData(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let curr: Pointer<SOLDIERINITNODE>;
 
-  for (i = FIRST_RPC; i < (PROF_HUMMER); i++) {
+  for (i = FIRST_RPC; i < (Enum268.PROF_HUMMER); i++) {
     // Perform various checks to make sure the soldier is actually in the same sector, alive, and so on.
     // More importantly, the flag to use profile insertion data must be set.
     if (gMercProfiles[i].sSectorX != gWorldSectorX || gMercProfiles[i].sSectorY != gWorldSectorY || gMercProfiles[i].bSectorZ != gbWorldSectorZ || gMercProfiles[i].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED || gMercProfiles[i].ubMiscFlags & PROFILE_MISC_FLAG_EPCACTIVE ||
@@ -1674,7 +1674,7 @@ function AddProfilesUsingProfileInsertionData(): void {
       if (gMercProfiles[i].ubQuoteRecord) {
         pSoldier.value.ubQuoteRecord = gMercProfiles[i].ubQuoteRecord;
         pSoldier.value.ubQuoteActionID = gMercProfiles[i].ubQuoteActionID;
-        if (pSoldier.value.ubQuoteActionID == QUOTE_ACTION_ID_CHECKFORDEST) {
+        if (pSoldier.value.ubQuoteActionID == Enum290.QUOTE_ACTION_ID_CHECKFORDEST) {
           // gridno will have been changed to destination... so we're there...
           NPCReachedDestination(pSoldier, FALSE);
         }

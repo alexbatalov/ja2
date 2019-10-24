@@ -111,7 +111,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
       } else if (pSoldier.value.bLife == 0) {
         // Death takes precedence...
         pSoldier.value.bBreathCollapsed = FALSE;
-      } else if (pSoldier.value.usPendingAnimation == FALLFORWARD_ROOF || pSoldier.value.usPendingAnimation == FALLOFF || pSoldier.value.usAnimState == FALLFORWARD_ROOF || pSoldier.value.usAnimState == FALLOFF) {
+      } else if (pSoldier.value.usPendingAnimation == Enum193.FALLFORWARD_ROOF || pSoldier.value.usPendingAnimation == Enum193.FALLOFF || pSoldier.value.usAnimState == Enum193.FALLFORWARD_ROOF || pSoldier.value.usAnimState == Enum193.FALLOFF) {
         pSoldier.value.bBreathCollapsed = FALSE;
       } else {
         // Wait here until we are free....
@@ -167,7 +167,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 406:
 
           // Move merc up
-          if (pSoldier.value.bDirection == NORTH) {
+          if (pSoldier.value.bDirection == Enum245.NORTH) {
             SetSoldierHeight(pSoldier, (pSoldier.value.sHeightAdjustment + 2));
           } else {
             SetSoldierHeight(pSoldier, (pSoldier.value.sHeightAdjustment + 3));
@@ -269,7 +269,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           SFireWeapon.sTargetGridNo = pSoldier.value.sTargetGridNo;
           SFireWeapon.bTargetLevel = pSoldier.value.bTargetLevel;
           SFireWeapon.bTargetCubeLevel = pSoldier.value.bTargetCubeLevel;
-          AddGameEvent(S_FIREWEAPON, 0, addressof(SFireWeapon));
+          AddGameEvent(Enum319.S_FIREWEAPON, 0, addressof(SFireWeapon));
           break;
 
         case 431:
@@ -300,7 +300,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // JUMP TO ANOTHER ANIMATION ( BLOOD ) IF WE WANT BLOOD
           uiJumpAddress = pSoldier.value.usAnimState;
-          ChangeSoldierState(pSoldier, FLYBACK_HIT_BLOOD_STAND, 0, FALSE);
+          ChangeSoldierState(pSoldier, Enum193.FLYBACK_HIT_BLOOD_STAND, 0, FALSE);
           return TRUE;
           break;
 
@@ -351,7 +351,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           EVENT_SetSoldierDirection(pSoldier, gOppositeDirection[pSoldier.value.bDirection]);
           EVENT_SetSoldierDesiredDirection(pSoldier, pSoldier.value.bDirection);
 
-          ChangeSoldierState(pSoldier, GETUP_FROM_ROLLOVER, 0, FALSE);
+          ChangeSoldierState(pSoldier, Enum193.GETUP_FROM_ROLLOVER, 0, FALSE);
           return TRUE;
 
         case 438:
@@ -372,7 +372,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             let fMadeCorpse: BOOLEAN;
 
             // ATE: Piggyback here on stopping the burn sound...
-            if (pSoldier.value.usAnimState == CHARIOTS_OF_FIRE || pSoldier.value.usAnimState == BODYEXPLODING) {
+            if (pSoldier.value.usAnimState == Enum193.CHARIOTS_OF_FIRE || pSoldier.value.usAnimState == Enum193.BODYEXPLODING) {
               SoundStop(pSoldier.value.uiPendingActionData1);
             }
 
@@ -424,7 +424,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // ATE: if it's the begin cower animation, unset ui, cause it could
           // be from player changin stance
-          if (pSoldier.value.usAnimState == START_COWER) {
+          if (pSoldier.value.usAnimState == Enum193.START_COWER) {
             UnSetUIBusy(pSoldier.value.ubID);
           }
           break;
@@ -433,14 +433,14 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // MOVE GUY FORWARD FOR FENCE HOP ANIMATION
           switch (pSoldier.value.bDirection) {
-            case SOUTH:
-            case EAST:
+            case Enum245.SOUTH:
+            case Enum245.EAST:
 
               MoveMercFacingDirection(pSoldier, FALSE, gHopFenceForwardSEDist[pSoldier.value.ubBodyType]);
               break;
 
-            case NORTH:
-            case WEST:
+            case Enum245.NORTH:
+            case Enum245.WEST:
               MoveMercFacingDirection(pSoldier, FALSE, gHopFenceForwardNWDist[pSoldier.value.ubBodyType]);
               break;
           }
@@ -458,7 +458,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           pSoldier.value.sZLevelOverride = -1;
           EVENT_SetSoldierDesiredDirection(pSoldier, pSoldier.value.bDirection);
 
-          if (gTacticalStatus.bBoxingState == BOXING_WAITING_FOR_PLAYER || gTacticalStatus.bBoxingState == PRE_BOXING || gTacticalStatus.bBoxingState == BOXING) {
+          if (gTacticalStatus.bBoxingState == Enum247.BOXING_WAITING_FOR_PLAYER || gTacticalStatus.bBoxingState == Enum247.PRE_BOXING || gTacticalStatus.bBoxingState == Enum247.BOXING) {
             BoxingMovementCheck(pSoldier);
           }
 
@@ -491,14 +491,14 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // CODE: MOVE GUY FORWARD ONE TILE, BASED ON WHERE WE ARE FACING
           switch (pSoldier.value.bDirection) {
-            case SOUTH:
-            case EAST:
+            case Enum245.SOUTH:
+            case Enum245.EAST:
 
               MoveMercFacingDirection(pSoldier, FALSE, gHopFenceForwardFullSEDist[pSoldier.value.ubBodyType]);
               break;
 
-            case NORTH:
-            case WEST:
+            case Enum245.NORTH:
+            case Enum245.WEST:
 
               MoveMercFacingDirection(pSoldier, FALSE, gHopFenceForwardFullNWDist[pSoldier.value.ubBodyType]);
               break;
@@ -521,7 +521,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             // FIRST GRIDNO
             sNewGridNo = NewGridNo(pSoldier.value.sGridNo, (DirectionInc(pSoldier.value.bDirection)));
 
-            if (OKFallDirection(pSoldier, sNewGridNo, pSoldier.value.bLevel, pSoldier.value.bDirection, FALLFORWARD_HITDEATH_STOP)) {
+            if (OKFallDirection(pSoldier, sNewGridNo, pSoldier.value.bLevel, pSoldier.value.bDirection, Enum193.FALLFORWARD_HITDEATH_STOP)) {
               // SECOND GRIDNO
               // sNewGridNo = NewGridNo( (UINT16)sNewGridNo, (UINT16)( DirectionInc( pSoldier->bDirection ) ) );
 
@@ -571,7 +571,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             fStop = TRUE;
             fFreeUpAttacker = TRUE;
             if (pSoldier.value.bTeam == gbPlayerNum) {
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[BURST_FIRE_DEPLETED_CLIP_STR]);
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.BURST_FIRE_DEPLETED_CLIP_STR]);
             }
           } else if (pSoldier.value.bDoBurst == 1) {
             // CHECK FOR GUN JAM
@@ -588,7 +588,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
               }
 
               if (pSoldier.value.bTeam == gbPlayerNum) {
-                PlayJA2Sample(S_DRYFIRE1, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+                PlayJA2Sample(Enum330.S_DRYFIRE1, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
                 // ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Gun jammed!" );
               }
 
@@ -622,19 +622,19 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             // END: GOTO AIM STANCE BASED ON HEIGHT
             // If we are a robot - we need to do stuff different here
             if (AM_A_ROBOT(pSoldier)) {
-              ChangeSoldierState(pSoldier, STANDING, 0, FALSE);
+              ChangeSoldierState(pSoldier, Enum193.STANDING, 0, FALSE);
             } else {
               switch (gAnimControl[pSoldier.value.usAnimState].ubEndHeight) {
                 case ANIM_STAND:
-                  ChangeSoldierState(pSoldier, AIM_RIFLE_STAND, 0, FALSE);
+                  ChangeSoldierState(pSoldier, Enum193.AIM_RIFLE_STAND, 0, FALSE);
                   break;
 
                 case ANIM_PRONE:
-                  ChangeSoldierState(pSoldier, AIM_RIFLE_PRONE, 0, FALSE);
+                  ChangeSoldierState(pSoldier, Enum193.AIM_RIFLE_PRONE, 0, FALSE);
                   break;
 
                 case ANIM_CROUCH:
-                  ChangeSoldierState(pSoldier, AIM_RIFLE_CROUCH, 0, FALSE);
+                  ChangeSoldierState(pSoldier, Enum193.AIM_RIFLE_CROUCH, 0, FALSE);
                   break;
               }
             }
@@ -671,8 +671,8 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // CODE: MANAGE START z-buffer override
           switch (pSoldier.value.bDirection) {
-            case NORTH:
-            case WEST:
+            case Enum245.NORTH:
+            case Enum245.WEST:
 
               pSoldier.value.sZLevelOverride = TOPMOST_Z_LEVEL;
               break;
@@ -683,14 +683,14 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // CODE: MANAGE END z-buffer override
           switch (pSoldier.value.bDirection) {
-            case SOUTH:
-            case EAST:
+            case Enum245.SOUTH:
+            case Enum245.EAST:
 
               pSoldier.value.sZLevelOverride = TOPMOST_Z_LEVEL;
               break;
 
-            case NORTH:
-            case WEST:
+            case Enum245.NORTH:
+            case Enum245.WEST:
 
               pSoldier.value.sZLevelOverride = -1;
               break;
@@ -708,7 +708,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // CODE: HANDLE CLIMBING ROOF,
           // Move merc up
-          if (pSoldier.value.bDirection == NORTH) {
+          if (pSoldier.value.bDirection == Enum245.NORTH) {
             SetSoldierHeight(pSoldier, (pSoldier.value.dHeightAdjustment + gClimbUpRoofDist[pSoldier.value.ubBodyType]));
           } else {
             SetSoldierHeight(pSoldier, (pSoldier.value.dHeightAdjustment + gClimbUpRoofDist[pSoldier.value.ubBodyType]));
@@ -729,7 +729,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // CODE: HANDLE CLIMBING ROOF,
           // Move merc DOWN
-          if (pSoldier.value.bDirection == NORTH) {
+          if (pSoldier.value.bDirection == Enum245.NORTH) {
             SetSoldierHeight(pSoldier, (pSoldier.value.dHeightAdjustment - gClimbUpRoofDist[pSoldier.value.ubBodyType]));
           } else {
             SetSoldierHeight(pSoldier, (pSoldier.value.dHeightAdjustment - gClimbUpRoofDist[pSoldier.value.ubBodyType]));
@@ -745,7 +745,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 459:
 
           // CODE: CHANGE ATTACKING TO FIRST HAND
-          pSoldier.value.ubAttackingHand = HANDPOS;
+          pSoldier.value.ubAttackingHand = Enum261.HANDPOS;
           pSoldier.value.usAttackingWeapon = pSoldier.value.inv[pSoldier.value.ubAttackingHand].usItem;
           // Adjust fReloading to FALSE
           pSoldier.value.fReloading = FALSE;
@@ -754,7 +754,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 458:
 
           // CODE: CHANGE ATTACKING TO SECOND HAND
-          pSoldier.value.ubAttackingHand = SECONDHANDPOS;
+          pSoldier.value.ubAttackingHand = Enum261.SECONDHANDPOS;
           pSoldier.value.usAttackingWeapon = pSoldier.value.inv[pSoldier.value.ubAttackingHand].usItem;
           // Adjust fReloading to FALSE
           pSoldier.value.fReloading = FALSE;
@@ -767,7 +767,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           // Launch ITem!
           if (pSoldier.value.pTempObject != NULL && pSoldier.value.pThrowParams != NULL) {
             // ATE: If we are armmed...
-            if (pSoldier.value.pThrowParams.value.ubActionCode == THROW_ARM_ITEM) {
+            if (pSoldier.value.pThrowParams.value.ubActionCode == Enum258.THROW_ARM_ITEM) {
               // ATE: Deduct points!
               DeductPoints(pSoldier, MinAPsToThrow(pSoldier, pSoldier.value.sTargetGridNo, FALSE), 0);
             } else {
@@ -865,7 +865,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           } else {
             // Goto eating animation
             if (pSoldier.value.sDesiredHeight == 0) {
-              ChangeSoldierState(pSoldier, CROW_EAT, 0, FALSE);
+              ChangeSoldierState(pSoldier, Enum193.CROW_EAT, 0, FALSE);
             } else {
               // We should leave now!
               TacticalRemoveSoldier(pSoldier.value.ubID);
@@ -878,7 +878,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 467:
 
           /// CODE: FOR HELIDROP, SET DIRECTION
-          EVENT_SetSoldierDirection(pSoldier, EAST);
+          EVENT_SetSoldierDirection(pSoldier, Enum245.EAST);
           EVENT_SetSoldierDesiredDirection(pSoldier, pSoldier.value.bDirection);
 
           gfIngagedInDrop = FALSE;
@@ -887,13 +887,13 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           //	sNewGridNo =  FindGridNoFromSweetSpotExcludingSweetSpot( pSoldier, pSoldier->sGridNo, 5, &ubNewDirection );
           // sNewGridNo =  FindRandomGridNoFromSweetSpotExcludingSweetSpot( pSoldier, pSoldier->sGridNo, 3, &ubNewDirection );
 
-          sNewGridNo = FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier, pSoldier.value.sGridNo, 3, addressof(ubNewDirection), SOUTHEAST);
+          sNewGridNo = FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier, pSoldier.value.sGridNo, 3, addressof(ubNewDirection), Enum245.SOUTHEAST);
 
           // Check for merc arrives quotes...
           HandleMercArrivesQuotes(pSoldier);
 
           // Find a path to it!
-          EVENT_GetNewSoldierPath(pSoldier, sNewGridNo, WALKING);
+          EVENT_GetNewSoldierPath(pSoldier, sNewGridNo, Enum193.WALKING);
 
           return TRUE;
           break;
@@ -920,7 +920,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
               let fMartialArtist: BOOLEAN = FALSE;
 
               if (pSoldier.value.ubProfile != NO_PROFILE) {
-                if (gMercProfiles[pSoldier.value.ubProfile].bSkillTrait == MARTIALARTS || gMercProfiles[pSoldier.value.ubProfile].bSkillTrait2 == MARTIALARTS) {
+                if (gMercProfiles[pSoldier.value.ubProfile].bSkillTrait == Enum269.MARTIALARTS || gMercProfiles[pSoldier.value.ubProfile].bSkillTrait2 == Enum269.MARTIALARTS) {
                   fMartialArtist = TRUE;
                 }
               }
@@ -930,15 +930,15 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
                   ChangeSoldierStance(pSoldier, ANIM_STAND);
                   return TRUE;
                 } else {
-                  ChangeSoldierState(pSoldier, CROUCHING, 0, FALSE);
+                  ChangeSoldierState(pSoldier, Enum193.CROUCHING, 0, FALSE);
                   return TRUE;
                 }
               } else {
                 if (fMartialArtist && !AreInMeanwhile()) {
-                  ChangeSoldierState(pSoldier, NINJA_BREATH, 0, FALSE);
+                  ChangeSoldierState(pSoldier, Enum193.NINJA_BREATH, 0, FALSE);
                   return TRUE;
                 } else {
-                  ChangeSoldierState(pSoldier, PUNCH_BREATH, 0, FALSE);
+                  ChangeSoldierState(pSoldier, Enum193.PUNCH_BREATH, 0, FALSE);
                   return TRUE;
                 }
               }
@@ -968,7 +968,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             // Reduce by a bullet...
             pSoldier.value.bBulletsLeft--;
 
-            PlayJA2Sample(S_DRYFIRE1, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+            PlayJA2Sample(Enum330.S_DRYFIRE1, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
 
             // Free-up!
             DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Freeing up attacker - gun failed to fire"));
@@ -1052,7 +1052,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           } else {
             FreeUpNPCFromRoofClimb(pSoldier);
           }
-          pSoldier.value.usUIMovementMode = WALKING;
+          pSoldier.value.usUIMovementMode = Enum193.WALKING;
 
           // ATE: Handle sight...
           HandleSight(pSoldier, SIGHT_LOOK | SIGHT_RADIO | SIGHT_INTERRUPT);
@@ -1087,7 +1087,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
             // ONLY DO THIS IF CERTAIN CONDITIONS ARISE!
             // For one, only do for mercs!
-            if (pSoldier.value.ubBodyType <= REGFEMALE) {
+            if (pSoldier.value.ubBodyType <= Enum194.REGFEMALE) {
               // Secondly, don't if we are going to collapse
               if (pSoldier.value.bLife >= OKLIFE && pSoldier.value.bBreath > 0 && pSoldier.value.bLevel == 0) {
                 // Save old direction
@@ -1142,7 +1142,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 479:
 
           // CODE: Return to old direction......
-          if (pSoldier.value.ubBodyType <= REGFEMALE) {
+          if (pSoldier.value.ubBodyType <= Enum194.REGFEMALE) {
             // Secondly, don't if we are going to collapse
             // if ( pSoldier->bLife >= OKLIFE && pSoldier->bBreath > 0 )
             //{
@@ -1202,7 +1202,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           // CODE: GIVE ITEM
           SoldierGiveItemFromAnimation(pSoldier);
           if (pSoldier.value.ubProfile != NO_PROFILE && pSoldier.value.ubProfile >= FIRST_NPC) {
-            TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, APPROACH_DONE_GIVING_ITEM, FALSE);
+            TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_DONE_GIVING_ITEM, FALSE);
           }
           break;
 
@@ -1262,7 +1262,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
                 ubDiceRoll = Random(100);
 
                 // Determine what is in our hand;
-                usItem = pSoldier.value.inv[HANDPOS].usItem;
+                usItem = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
                 // Default to nothing in hand ( nothing in quotes, we do have something but not just visible )
                 ubRandomHandIndex = RANDOM_ANIM_NOTHINGINHAND;
@@ -1333,7 +1333,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
                       if (ubDiceRoll >= pAnimDef.value.ubStartRoll && ubDiceRoll <= pAnimDef.value.ubEndRoll) {
                         // Are we playing a sound
                         if (pAnimDef.value.sAnimID == RANDOM_ANIM_SOUND) {
-                          if (pSoldier.value.ubBodyType == COW) {
+                          if (pSoldier.value.ubBodyType == Enum194.COW) {
                             if (Random(2) == 1) {
                               if ((gTacticalStatus.uiFlags & INCOMBAT) && pSoldier.value.bVisible == -1) {
                                 // DO this every 10th time or so...
@@ -1391,7 +1391,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
                     EVENT_SetSoldierDesiredDirection(pTSoldier, GetDirectionFromGridNo(pSoldier.value.sGridNo, pTSoldier));
 
                     // PLAY SOLDIER'S DODGE ANIMATION
-                    ChangeSoldierState(pTSoldier, DODGE_ONE, 0, FALSE);
+                    ChangeSoldierState(pTSoldier, Enum193.DODGE_ONE, 0, FALSE);
                   }
                 }
               }
@@ -1437,7 +1437,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
         case 495:
 
-          if (pSoldier.value.bAction == AI_ACTION_UNLOCK_DOOR || (pSoldier.value.bAction == AI_ACTION_LOCK_DOOR && !(pSoldier.value.fAIFlags & AI_LOCK_DOOR_INCLUDES_CLOSE))) {
+          if (pSoldier.value.bAction == Enum289.AI_ACTION_UNLOCK_DOOR || (pSoldier.value.bAction == Enum289.AI_ACTION_LOCK_DOOR && !(pSoldier.value.fAIFlags & AI_LOCK_DOOR_INCLUDES_CLOSE))) {
             // EVENT HAS BEEN HANDLED
             pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
 
@@ -1453,7 +1453,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
               InitOpplistForDoorOpening();
 
-              MakeNoise(pSoldier.value.ubID, pSoldier.value.sGridNo, pSoldier.value.bLevel, gpWorldLevelData[pSoldier.value.sGridNo].ubTerrainID, pSoldier.value.ubDoorOpeningNoise, NOISE_CREAKING);
+              MakeNoise(pSoldier.value.ubID, pSoldier.value.sGridNo, pSoldier.value.bLevel, gpWorldLevelData[pSoldier.value.sGridNo].ubTerrainID, pSoldier.value.ubDoorOpeningNoise, Enum236.NOISE_CREAKING);
               //	gfDelayResolvingBestSighting = FALSE;
 
               gubInterruptProvoker = pSoldier.value.ubID;
@@ -1483,71 +1483,71 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
             // If guy is now dead, and we have not played death sound before, play
             if (pSoldier.value.bLife == 0 && !pSoldier.value.fDeadSoundPlayed) {
-              if (pSoldier.value.usAnimState != JFK_HITDEATH) {
-                DoMercBattleSound(pSoldier, BATTLE_SOUND_DIE1);
+              if (pSoldier.value.usAnimState != Enum193.JFK_HITDEATH) {
+                DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_DIE1);
                 pSoldier.value.fDeadSoundPlayed = TRUE;
               }
             }
 
-            if (gGameSettings.fOptions[TOPTION_BLOOD_N_GORE]) {
+            if (gGameSettings.fOptions[Enum8.TOPTION_BLOOD_N_GORE]) {
               // If we are dead, play some death animations!!
               switch (pSoldier.value.usAnimState) {
-                case FLYBACK_HIT:
-                  ChangeSoldierState(pSoldier, FLYBACK_HIT_DEATH, 0, FALSE);
+                case Enum193.FLYBACK_HIT:
+                  ChangeSoldierState(pSoldier, Enum193.FLYBACK_HIT_DEATH, 0, FALSE);
                   break;
 
-                case GENERIC_HIT_DEATHTWITCHNB:
-                case FALLFORWARD_FROMHIT_STAND:
-                case ENDFALLFORWARD_FROMHIT_CROUCH:
+                case Enum193.GENERIC_HIT_DEATHTWITCHNB:
+                case Enum193.FALLFORWARD_FROMHIT_STAND:
+                case Enum193.ENDFALLFORWARD_FROMHIT_CROUCH:
 
-                  ChangeSoldierState(pSoldier, GENERIC_HIT_DEATH, 0, FALSE);
+                  ChangeSoldierState(pSoldier, Enum193.GENERIC_HIT_DEATH, 0, FALSE);
                   break;
 
-                case FALLBACK_HIT_DEATHTWITCHNB:
-                case FALLBACK_HIT_STAND:
-                  ChangeSoldierState(pSoldier, FALLBACK_HIT_DEATH, 0, FALSE);
+                case Enum193.FALLBACK_HIT_DEATHTWITCHNB:
+                case Enum193.FALLBACK_HIT_STAND:
+                  ChangeSoldierState(pSoldier, Enum193.FALLBACK_HIT_DEATH, 0, FALSE);
                   break;
 
-                case PRONE_HIT_DEATHTWITCHNB:
-                case PRONE_LAY_FROMHIT:
+                case Enum193.PRONE_HIT_DEATHTWITCHNB:
+                case Enum193.PRONE_LAY_FROMHIT:
 
-                  ChangeSoldierState(pSoldier, PRONE_HIT_DEATH, 0, FALSE);
+                  ChangeSoldierState(pSoldier, Enum193.PRONE_HIT_DEATH, 0, FALSE);
                   break;
 
-                case FALLOFF:
-                  ChangeSoldierState(pSoldier, FALLOFF_DEATH, 0, FALSE);
+                case Enum193.FALLOFF:
+                  ChangeSoldierState(pSoldier, Enum193.FALLOFF_DEATH, 0, FALSE);
                   break;
 
-                case FALLFORWARD_ROOF:
-                  ChangeSoldierState(pSoldier, FALLOFF_FORWARD_DEATH, 0, FALSE);
+                case Enum193.FALLFORWARD_ROOF:
+                  ChangeSoldierState(pSoldier, Enum193.FALLOFF_FORWARD_DEATH, 0, FALSE);
                   break;
 
-                case ADULTMONSTER_DYING:
-                  ChangeSoldierState(pSoldier, ADULTMONSTER_DYING_STOP, 0, FALSE);
+                case Enum193.ADULTMONSTER_DYING:
+                  ChangeSoldierState(pSoldier, Enum193.ADULTMONSTER_DYING_STOP, 0, FALSE);
                   break;
 
-                case LARVAE_DIE:
-                  ChangeSoldierState(pSoldier, LARVAE_DIE_STOP, 0, FALSE);
+                case Enum193.LARVAE_DIE:
+                  ChangeSoldierState(pSoldier, Enum193.LARVAE_DIE_STOP, 0, FALSE);
                   break;
 
-                case QUEEN_DIE:
-                  ChangeSoldierState(pSoldier, QUEEN_DIE_STOP, 0, FALSE);
+                case Enum193.QUEEN_DIE:
+                  ChangeSoldierState(pSoldier, Enum193.QUEEN_DIE_STOP, 0, FALSE);
                   break;
 
-                case INFANT_DIE:
-                  ChangeSoldierState(pSoldier, INFANT_DIE_STOP, 0, FALSE);
+                case Enum193.INFANT_DIE:
+                  ChangeSoldierState(pSoldier, Enum193.INFANT_DIE_STOP, 0, FALSE);
                   break;
 
-                case CRIPPLE_DIE:
-                  ChangeSoldierState(pSoldier, CRIPPLE_DIE_STOP, 0, FALSE);
+                case Enum193.CRIPPLE_DIE:
+                  ChangeSoldierState(pSoldier, Enum193.CRIPPLE_DIE_STOP, 0, FALSE);
                   break;
 
-                case ROBOTNW_DIE:
-                  ChangeSoldierState(pSoldier, ROBOTNW_DIE_STOP, 0, FALSE);
+                case Enum193.ROBOTNW_DIE:
+                  ChangeSoldierState(pSoldier, Enum193.ROBOTNW_DIE_STOP, 0, FALSE);
                   break;
 
-                case CRIPPLE_DIE_FLYBACK:
-                  ChangeSoldierState(pSoldier, CRIPPLE_DIE_FLYBACK_STOP, 0, FALSE);
+                case Enum193.CRIPPLE_DIE_FLYBACK:
+                  ChangeSoldierState(pSoldier, Enum193.CRIPPLE_DIE_FLYBACK_STOP, 0, FALSE);
                   break;
 
                 default:
@@ -1606,12 +1606,12 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 499:
 
           if (!(pSoldier.value.uiStatusFlags & SOLDIER_PC)) {
-            if (pSoldier.value.bAction == AI_ACTION_PULL_TRIGGER) {
-              if (pSoldier.value.usAnimState == AI_PULL_SWITCH && gTacticalStatus.ubAttackBusyCount == 0 && gubElementsOnExplosionQueue == 0) {
+            if (pSoldier.value.bAction == Enum289.AI_ACTION_PULL_TRIGGER) {
+              if (pSoldier.value.usAnimState == Enum193.AI_PULL_SWITCH && gTacticalStatus.ubAttackBusyCount == 0 && gubElementsOnExplosionQueue == 0) {
                 FreeUpNPCFromPendingAction(pSoldier);
               }
-            } else if (pSoldier.value.bAction == AI_ACTION_PENDING_ACTION || pSoldier.value.bAction == AI_ACTION_OPEN_OR_CLOSE_DOOR || pSoldier.value.bAction == AI_ACTION_YELLOW_ALERT || pSoldier.value.bAction == AI_ACTION_RED_ALERT || pSoldier.value.bAction == AI_ACTION_PULL_TRIGGER || pSoldier.value.bAction == AI_ACTION_CREATURE_CALL || pSoldier.value.bAction == AI_ACTION_UNLOCK_DOOR || pSoldier.value.bAction == AI_ACTION_LOCK_DOOR) {
-              if (pSoldier.value.usAnimState == PICKUP_ITEM || pSoldier.value.usAnimState == ADJACENT_GET_ITEM || pSoldier.value.usAnimState == DROP_ITEM || pSoldier.value.usAnimState == END_OPEN_DOOR || pSoldier.value.usAnimState == END_OPEN_DOOR_CROUCHED || pSoldier.value.usAnimState == CLOSE_DOOR || pSoldier.value.usAnimState == MONSTER_UP || pSoldier.value.usAnimState == AI_RADIO || pSoldier.value.usAnimState == AI_CR_RADIO || pSoldier.value.usAnimState == END_OPENSTRUCT || pSoldier.value.usAnimState == END_OPENSTRUCT_CROUCHED || pSoldier.value.usAnimState == QUEEN_CALL) {
+            } else if (pSoldier.value.bAction == Enum289.AI_ACTION_PENDING_ACTION || pSoldier.value.bAction == Enum289.AI_ACTION_OPEN_OR_CLOSE_DOOR || pSoldier.value.bAction == Enum289.AI_ACTION_YELLOW_ALERT || pSoldier.value.bAction == Enum289.AI_ACTION_RED_ALERT || pSoldier.value.bAction == Enum289.AI_ACTION_PULL_TRIGGER || pSoldier.value.bAction == Enum289.AI_ACTION_CREATURE_CALL || pSoldier.value.bAction == Enum289.AI_ACTION_UNLOCK_DOOR || pSoldier.value.bAction == Enum289.AI_ACTION_LOCK_DOOR) {
+              if (pSoldier.value.usAnimState == Enum193.PICKUP_ITEM || pSoldier.value.usAnimState == Enum193.ADJACENT_GET_ITEM || pSoldier.value.usAnimState == Enum193.DROP_ITEM || pSoldier.value.usAnimState == Enum193.END_OPEN_DOOR || pSoldier.value.usAnimState == Enum193.END_OPEN_DOOR_CROUCHED || pSoldier.value.usAnimState == Enum193.CLOSE_DOOR || pSoldier.value.usAnimState == Enum193.MONSTER_UP || pSoldier.value.usAnimState == Enum193.AI_RADIO || pSoldier.value.usAnimState == Enum193.AI_CR_RADIO || pSoldier.value.usAnimState == Enum193.END_OPENSTRUCT || pSoldier.value.usAnimState == Enum193.END_OPENSTRUCT_CROUCHED || pSoldier.value.usAnimState == Enum193.QUEEN_CALL) {
                 FreeUpNPCFromPendingAction(pSoldier);
               }
             }
@@ -1626,7 +1626,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
               usUIMovementMode = GetMoveStateBasedOnStance(pSoldier, gAnimControl[pSoldier.value.usAnimState].ubEndHeight);
 
               // ATE: if we are currently running but have been told to walk, don't!
-              if (pSoldier.value.usUIMovementMode == RUNNING && usUIMovementMode == WALKING) {
+              if (pSoldier.value.usUIMovementMode == Enum193.RUNNING && usUIMovementMode == Enum193.WALKING) {
                 // No!
               } else {
                 pSoldier.value.usUIMovementMode = usUIMovementMode;
@@ -1662,7 +1662,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
               // interrupt and in such a case we'd really like the UI
               // still locked
               if (gfHiddenInterrupt) {
-                guiPendingOverrideEvent = LA_BEGINUIOURTURNLOCK;
+                guiPendingOverrideEvent = Enum207.LA_BEGINUIOURTURNLOCK;
                 HandleTacticalUI();
               }
 
@@ -1671,7 +1671,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             }
 
             // Have we finished opening doors?
-            if (pSoldier.value.usAnimState == END_OPEN_DOOR || pSoldier.value.usAnimState == END_OPEN_DOOR_CROUCHED || pSoldier.value.usAnimState == CRIPPLE_CLOSE_DOOR || pSoldier.value.usAnimState == CRIPPLE_END_OPEN_DOOR) {
+            if (pSoldier.value.usAnimState == Enum193.END_OPEN_DOOR || pSoldier.value.usAnimState == Enum193.END_OPEN_DOOR_CROUCHED || pSoldier.value.usAnimState == Enum193.CRIPPLE_CLOSE_DOOR || pSoldier.value.usAnimState == Enum193.CRIPPLE_END_OPEN_DOOR) {
               // Are we told to continue movement...?
               if (pSoldier.value.bEndDoorOpenCode == 1) {
                 // OK, set this value to 2 such that once we are into a new gridno,
@@ -1736,20 +1736,20 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             // We need to go more, continue
             if (ubDesiredHeight == ANIM_STAND && ubCurrentHeight == ANIM_CROUCH) {
               // Return here because if now, we will skipp a few frames
-              ChangeSoldierState(pSoldier, KNEEL_UP, 0, FALSE);
+              ChangeSoldierState(pSoldier, Enum193.KNEEL_UP, 0, FALSE);
               return TRUE;
             }
             if (ubDesiredHeight == ANIM_CROUCH && ubCurrentHeight == ANIM_STAND) {
               // Return here because if now, we will skipp a few frames
-              ChangeSoldierState(pSoldier, KNEEL_DOWN, 0, FALSE);
+              ChangeSoldierState(pSoldier, Enum193.KNEEL_DOWN, 0, FALSE);
               return TRUE;
             } else if (ubDesiredHeight == ANIM_PRONE && ubCurrentHeight == ANIM_CROUCH) {
               // Return here because if now, we will skipp a few frames
-              ChangeSoldierState(pSoldier, PRONE_DOWN, 0, FALSE);
+              ChangeSoldierState(pSoldier, Enum193.PRONE_DOWN, 0, FALSE);
               return TRUE;
             } else if (ubDesiredHeight == ANIM_CROUCH && ubCurrentHeight == ANIM_PRONE) {
               // Return here because if now, we will skipp a few frames
-              ChangeSoldierState(pSoldier, PRONE_UP, 0, FALSE);
+              ChangeSoldierState(pSoldier, Enum193.PRONE_UP, 0, FALSE);
               return TRUE;
             }
           }
@@ -1781,7 +1781,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
       switch (sNewAniFrame) {
         case 702:
           // Play fall to knees sound
-          PlaySoldierJA2Sample(pSoldier.value.ubID, (FALL_1 + Random(2)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), FALSE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, (Enum330.FALL_1 + Random(2)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), FALSE);
           break;
 
         case 703:
@@ -1793,17 +1793,17 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
         case 705:
           // PLay body splat sound
-          PlaySoldierJA2Sample(pSoldier.value.ubID, BODY_SPLAT_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.BODY_SPLAT_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 706:
           // PLay head splat
-          PlaySoldierJA2Sample(pSoldier.value.ubID, HEADSPLAT_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.HEADSPLAT_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 707:
           // PLay creature battle cry
-          PlayJA2StreamingSample(CREATURE_BATTLECRY_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+          PlayJA2StreamingSample(Enum330.CREATURE_BATTLECRY_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
           break;
 
         case 708:
@@ -1814,7 +1814,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             let usItem: UINT16;
             let usSoundID: UINT16;
 
-            usItem = pSoldier.value.inv[HANDPOS].usItem;
+            usItem = pSoldier.value.inv[Enum261.HANDPOS].usItem;
 
             if (usItem != NOTHING) {
               usSoundID = Weapon[usItem].sLocknLoadSound;
@@ -1829,14 +1829,14 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 709:
 
           // Knife throw sound...
-          PlayJA2Sample(Weapon[THROWING_KNIFE].sSound, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+          PlayJA2Sample(Weapon[Enum225.THROWING_KNIFE].sSound, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
           break;
 
         case 710:
 
           // Monster footstep in
           if (SoldierOnScreen(pSoldier.value.ubID)) {
-            PlaySoldierJA2Sample(pSoldier.value.ubID, ACR_STEP_1, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+            PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.ACR_STEP_1, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           }
           break;
 
@@ -1844,7 +1844,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // Monster footstep in
           if (SoldierOnScreen(pSoldier.value.ubID)) {
-            PlaySoldierJA2Sample(pSoldier.value.ubID, ACR_STEP_2, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+            PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.ACR_STEP_2, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           }
           break;
 
@@ -1852,16 +1852,16 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // Monster footstep in
           if (SoldierOnScreen(pSoldier.value.ubID)) {
-            PlaySoldierJA2Sample(pSoldier.value.ubID, LCR_MOVEMENT, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+            PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.LCR_MOVEMENT, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           }
           break;
 
         case 713:
 
           // Monster footstep in
-          if (pSoldier.value.ubBodyType == INFANT_MONSTER) {
+          if (pSoldier.value.ubBodyType == Enum194.INFANT_MONSTER) {
             if (SoldierOnScreen(pSoldier.value.ubID)) {
-              PlaySoldierJA2Sample(pSoldier.value.ubID, BCR_DRAGGING, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+              PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.BCR_DRAGGING, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
             }
           }
           break;
@@ -1869,19 +1869,19 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 714:
 
           // Lunges....
-          PlaySoldierJA2Sample(pSoldier.value.ubID, ACR_LUNGE, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.ACR_LUNGE, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 715:
 
           // Swipe
-          PlaySoldierJA2Sample(pSoldier.value.ubID, ACR_SWIPE, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.ACR_SWIPE, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 716:
 
           // Eat flesh
-          PlaySoldierJA2Sample(pSoldier.value.ubID, ACR_EATFLESH, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.ACR_EATFLESH, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 717:
@@ -1894,42 +1894,42 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             // if ( SoldierOnScreen( pSoldier->ubID ) )
             {
               switch (pSoldier.value.usActionData) {
-                case CALL_1_PREY:
+                case Enum288.CALL_1_PREY:
 
-                  if (pSoldier.value.ubBodyType == QUEENMONSTER) {
-                    iSoundID = LQ_SMELLS_THREAT;
+                  if (pSoldier.value.ubBodyType == Enum194.QUEENMONSTER) {
+                    iSoundID = Enum330.LQ_SMELLS_THREAT;
                   } else {
-                    iSoundID = ACR_SMEEL_PREY;
+                    iSoundID = Enum330.ACR_SMEEL_PREY;
                   }
                   fDoCry = TRUE;
                   break;
 
-                case CALL_MULTIPLE_PREY:
+                case Enum288.CALL_MULTIPLE_PREY:
 
-                  if (pSoldier.value.ubBodyType == QUEENMONSTER) {
-                    iSoundID = LQ_SMELLS_THREAT;
+                  if (pSoldier.value.ubBodyType == Enum194.QUEENMONSTER) {
+                    iSoundID = Enum330.LQ_SMELLS_THREAT;
                   } else {
-                    iSoundID = ACR_SMELL_THREAT;
+                    iSoundID = Enum330.ACR_SMELL_THREAT;
                   }
                   fDoCry = TRUE;
                   break;
 
-                case CALL_ATTACKED:
+                case Enum288.CALL_ATTACKED:
 
-                  if (pSoldier.value.ubBodyType == QUEENMONSTER) {
-                    iSoundID = LQ_ENRAGED_ATTACK;
+                  if (pSoldier.value.ubBodyType == Enum194.QUEENMONSTER) {
+                    iSoundID = Enum330.LQ_ENRAGED_ATTACK;
                   } else {
-                    iSoundID = ACR_SMELL_THREAT;
+                    iSoundID = Enum330.ACR_SMELL_THREAT;
                   }
                   fDoCry = TRUE;
                   break;
 
-                case CALL_CRIPPLED:
+                case Enum288.CALL_CRIPPLED:
 
-                  if (pSoldier.value.ubBodyType == QUEENMONSTER) {
-                    iSoundID = LQ_CRIPPLED;
+                  if (pSoldier.value.ubBodyType == Enum194.QUEENMONSTER) {
+                    iSoundID = Enum330.LQ_CRIPPLED;
                   } else {
-                    iSoundID = ACR_CRIPPLED;
+                    iSoundID = Enum330.ACR_CRIPPLED;
                   }
                   fDoCry = TRUE;
                   break;
@@ -1944,33 +1944,33 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
         case 718:
 
-          PlaySoldierJA2Sample(pSoldier.value.ubID, LQ_RUPTURING, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.LQ_RUPTURING, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 719:
 
           // Spit attack start sound...
-          PlaySoldierJA2Sample(pSoldier.value.ubID, LQ_ENRAGED_ATTACK, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.LQ_ENRAGED_ATTACK, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 720:
 
           // Spit attack start sound...
-          PlaySoldierJA2Sample(pSoldier.value.ubID, LQ_WHIP_ATTACK, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.LQ_WHIP_ATTACK, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 721:
           // Play fall from knees to ground...
-          PlaySoldierJA2Sample(pSoldier.value.ubID, (FALL_TO_GROUND_1 + Random(3)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), FALSE);
-          if (pSoldier.value.usAnimState == FALLFORWARD_FROMHIT_STAND) {
+          PlaySoldierJA2Sample(pSoldier.value.ubID, (Enum330.FALL_TO_GROUND_1 + Random(3)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), FALSE);
+          if (pSoldier.value.usAnimState == Enum193.FALLFORWARD_FROMHIT_STAND) {
             CheckEquipmentForFragileItemDamage(pSoldier, 20);
           }
           break;
 
         case 722:
           // Play fall heavy
-          PlaySoldierJA2Sample(pSoldier.value.ubID, (HEAVY_FALL_1), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), FALSE);
-          if (pSoldier.value.usAnimState == FALLFORWARD_FROMHIT_CROUCH) {
+          PlaySoldierJA2Sample(pSoldier.value.ubID, (Enum330.HEAVY_FALL_1), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), FALSE);
+          if (pSoldier.value.usAnimState == Enum193.FALLFORWARD_FROMHIT_CROUCH) {
             CheckEquipmentForFragileItemDamage(pSoldier, 15);
           }
           break;
@@ -1978,7 +1978,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 723:
 
           // Play armpit noise...
-          PlaySoldierJA2Sample(pSoldier.value.ubID, (IDLE_ARMPIT), RATE_11025, SoundVolume(LOWVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, (Enum330.IDLE_ARMPIT), RATE_11025, SoundVolume(LOWVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 724:
@@ -1990,49 +1990,49 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 725:
 
           // Play back crack
-          PlaySoldierJA2Sample(pSoldier.value.ubID, (IDLE_BACKCRACK), RATE_11025, SoundVolume(LOWVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, (Enum330.IDLE_BACKCRACK), RATE_11025, SoundVolume(LOWVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 726:
 
           // Kickin door
-          PlaySoldierJA2Sample(pSoldier.value.ubID, (KICKIN_DOOR), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, (Enum330.KICKIN_DOOR), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 727:
 
           // Swoosh
-          PlaySoldierJA2Sample(pSoldier.value.ubID, (SWOOSH_1 + Random(6)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, (Enum330.SWOOSH_1 + Random(6)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 728:
 
           // Creature fall
-          PlaySoldierJA2Sample(pSoldier.value.ubID, (ACR_FALL_1), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, (Enum330.ACR_FALL_1), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 729:
 
           // grab roof....
-          PlaySoldierJA2Sample(pSoldier.value.ubID, (GRAB_ROOF), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, (Enum330.GRAB_ROOF), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 730:
 
           // end climb roof....
-          PlaySoldierJA2Sample(pSoldier.value.ubID, (LAND_ON_ROOF), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, (Enum330.LAND_ON_ROOF), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 731:
 
           // Stop climb roof..
-          PlaySoldierJA2Sample(pSoldier.value.ubID, (FALL_TO_GROUND_1 + Random(3)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, (Enum330.FALL_TO_GROUND_1 + Random(3)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 732:
 
           // Play die sound
-          DoMercBattleSound(pSoldier, BATTLE_SOUND_DIE1);
+          DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_DIE1);
           pSoldier.value.fDeadSoundPlayed = TRUE;
           break;
 
@@ -2065,7 +2065,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           ReduceAttackBusyCount(pSoldier.value.ubID, FALSE);
 
           // ATE: Here, reduce again if creaturequeen tentical attack...
-          if (pSoldier.value.usAnimState == QUEEN_SWIPE) {
+          if (pSoldier.value.usAnimState == Enum193.QUEEN_SWIPE) {
             DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Reducing attacker busy count for end of queen swipe"));
             ReduceAttackBusyCount(pSoldier.value.ubID, FALSE);
           }
@@ -2094,7 +2094,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             if (ubPerson != NOBODY && MercPtrs[ubPerson].value.uiStatusFlags & SOLDIER_ROBOT) {
               pRobot = MercPtrs[ubPerson];
 
-              ReloadGun(pRobot, addressof(pRobot.value.inv[HANDPOS]), pSoldier.value.pTempObject);
+              ReloadGun(pRobot, addressof(pRobot.value.inv[Enum261.HANDPOS]), pSoldier.value.pTempObject);
 
               // OK, check what was returned and place in inventory if it's non-zero
               if (pSoldier.value.pTempObject.value.usItem != NOTHING) {
@@ -2118,7 +2118,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 758:
 
           // Trigger after slap...
-          TriggerNPCWithGivenApproach(QUEEN, APPROACH_DONE_SLAPPED, TRUE);
+          TriggerNPCWithGivenApproach(Enum268.QUEEN, Enum296.APPROACH_DONE_SLAPPED, TRUE);
           break;
 
         case 759:
@@ -2127,10 +2127,10 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           {
             let pTarget: Pointer<SOLDIERTYPE>;
 
-            pTarget = FindSoldierByProfileID(ELLIOT, FALSE);
+            pTarget = FindSoldierByProfileID(Enum268.ELLIOT, FALSE);
 
             if (pTarget) {
-              EVENT_InitNewSoldierAnim(pTarget, SLAP_HIT, 0, FALSE);
+              EVENT_InitNewSoldierAnim(pTarget, Enum193.SLAP_HIT, 0, FALSE);
 
               // Play noise....
               // PlaySoldierJA2Sample( pTarget->ubID, ( S_SLAP_IMPACT ), RATE_11025, SoundVolume( HIGHVOLUME, pTarget->sGridNo ), 1, SoundDir( pTarget->sGridNo ), TRUE );
@@ -2172,7 +2172,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           // CODE: Drop item at gridno
           if (pSoldier.value.pTempObject != NULL) {
             if (pSoldier.value.bVisible != -1) {
-              PlayJA2Sample(THROW_IMPACT_2, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+              PlayJA2Sample(Enum330.THROW_IMPACT_2, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
             }
 
             AddItemToPool(pSoldier.value.sPendingActionData2, pSoldier.value.pTempObject, 1, pSoldier.value.bLevel, 0, -1);
@@ -2185,7 +2185,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
         case 764:
 
-          PlaySoldierJA2Sample(pSoldier.value.ubID, PICKING_LOCK, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.PICKING_LOCK, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 765:
@@ -2207,13 +2207,13 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 766:
 
           // Say COOL quote
-          DoMercBattleSound(pSoldier, BATTLE_SOUND_COOL1);
+          DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_COOL1);
           break;
 
         case 767:
 
           // Slap sound effect
-          PlaySoldierJA2Sample(pSoldier.value.ubID, SLAP_2, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), FALSE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.SLAP_2, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), FALSE);
           break;
 
         case 768:
@@ -2248,12 +2248,12 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
         case 770:
 
-          PlayJA2Sample(USE_WIRE_CUTTERS, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+          PlayJA2Sample(Enum330.USE_WIRE_CUTTERS, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
           break;
 
         case 771:
 
-          PlayJA2Sample(BLOODCAT_ATTACK, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+          PlayJA2Sample(Enum330.BLOODCAT_ATTACK, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
           break;
 
         case 772:
@@ -2266,7 +2266,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // Kneel up...
           if (!pSoldier.value.bStealthMode) {
-            PlaySoldierJA2Sample(pSoldier.value.ubID, KNEEL_UP_SOUND, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+            PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.KNEEL_UP_SOUND, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           }
           break;
 
@@ -2274,7 +2274,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // Kneel down..
           if (!pSoldier.value.bStealthMode) {
-            PlaySoldierJA2Sample(pSoldier.value.ubID, KNEEL_DOWN_SOUND, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+            PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.KNEEL_DOWN_SOUND, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           }
           break;
 
@@ -2282,7 +2282,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // prone up..
           if (!pSoldier.value.bStealthMode) {
-            PlaySoldierJA2Sample(pSoldier.value.ubID, PRONE_UP_SOUND, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+            PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.PRONE_UP_SOUND, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           }
           break;
 
@@ -2290,7 +2290,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // prone down..
           if (!pSoldier.value.bStealthMode) {
-            PlaySoldierJA2Sample(pSoldier.value.ubID, PRONE_DOWN_SOUND, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+            PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.PRONE_DOWN_SOUND, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           }
           break;
 
@@ -2298,76 +2298,76 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // picking something up
           if (!pSoldier.value.bStealthMode) {
-            PlaySoldierJA2Sample(pSoldier.value.ubID, PICKING_SOMETHING_UP, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+            PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.PICKING_SOMETHING_UP, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           }
           break;
 
         case 778:
           if (!pSoldier.value.bStealthMode) {
-            PlaySoldierJA2Sample(pSoldier.value.ubID, ENTER_DEEP_WATER_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+            PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.ENTER_DEEP_WATER_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           }
           break;
 
         case 779:
 
-          PlaySoldierJA2Sample(pSoldier.value.ubID, COW_FALL, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.COW_FALL, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 780:
 
-          PlaySoldierJA2Sample(pSoldier.value.ubID, COW_HIT_SND, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.COW_HIT_SND, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 781:
 
-          PlaySoldierJA2Sample(pSoldier.value.ubID, ACR_DIE_PART2, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), FALSE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.ACR_DIE_PART2, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), FALSE);
           break;
 
         case 782:
 
-          PlaySoldierJA2Sample(pSoldier.value.ubID, CREATURE_DISSOLVE_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), FALSE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.CREATURE_DISSOLVE_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), FALSE);
           break;
 
         case 784:
 
-          PlaySoldierJA2Sample(pSoldier.value.ubID, CREATURE_FALL, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), FALSE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.CREATURE_FALL, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), FALSE);
           break;
 
         case 785:
 
           if (Random(5) == 0) {
-            PlaySoldierJA2Sample(pSoldier.value.ubID, CROW_PECKING_AT_FLESH, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+            PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.CROW_PECKING_AT_FLESH, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           }
           break;
 
         case 786:
 
-          PlaySoldierJA2Sample(pSoldier.value.ubID, CROW_FLYING_AWAY, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.CROW_FLYING_AWAY, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 787:
 
-          PlaySoldierJA2Sample(pSoldier.value.ubID, SLAP_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), FALSE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.SLAP_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), FALSE);
           break;
 
         case 788:
 
-          PlaySoldierJA2Sample(pSoldier.value.ubID, MORTAR_START, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.MORTAR_START, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 789:
 
-          PlaySoldierJA2Sample(pSoldier.value.ubID, MORTAR_LOAD, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.MORTAR_LOAD, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 790:
 
-          PlaySoldierJA2Sample(pSoldier.value.ubID, COW_FALL_2, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.COW_FALL_2, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
 
         case 791:
 
-          PlaySoldierJA2Sample(pSoldier.value.ubID, FENCE_OPEN, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier.value.ubID, Enum330.FENCE_OPEN, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo), TRUE);
           break;
       }
       // Adjust frame control pos, and try again
@@ -2389,7 +2389,7 @@ const MIN_DEADLINESS_FOR_LIKE_GUN_QUOTE = 20;
 function ShouldMercSayHappyWithGunQuote(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // How do we do this....
 
-  if (QuoteExp_GotGunOrUsedGun[pSoldier.value.ubProfile] == QUOTE_SATISFACTION_WITH_GUN_AFTER_KILL) {
+  if (QuoteExp_GotGunOrUsedGun[pSoldier.value.ubProfile] == Enum202.QUOTE_SATISFACTION_WITH_GUN_AFTER_KILL) {
     // For one, only once a day...
     if (pSoldier.value.usQuoteSaidFlags & SOLDIER_QUOTE_SAID_LIKESGUN) {
       return FALSE;
@@ -2456,13 +2456,13 @@ function SayBuddyWitnessedQuoteFromKill(pKillerSoldier: Pointer<SOLDIERTYPE>, sG
 
         // TO LOS check to killed
         // Can we see location of killer?
-        sDistVisible = DistanceVisible(pTeamSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, pKillerSoldier.value.sGridNo, pKillerSoldier.value.bLevel);
+        sDistVisible = DistanceVisible(pTeamSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, pKillerSoldier.value.sGridNo, pKillerSoldier.value.bLevel);
         if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, pKillerSoldier.value.sGridNo, pKillerSoldier.value.bLevel, 3, sDistVisible, TRUE) == 0) {
           continue;
         }
 
         // Can we see location of killed?
-        sDistVisible = DistanceVisible(pTeamSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, bLevel);
+        sDistVisible = DistanceVisible(pTeamSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sGridNo, bLevel);
         if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, bLevel, 3, sDistVisible, TRUE) == 0) {
           continue;
         }
@@ -2483,17 +2483,17 @@ function SayBuddyWitnessedQuoteFromKill(pKillerSoldier: Pointer<SOLDIERTYPE>, sG
 
       switch (bBuddyIndex[ubChosenMerc]) {
         case 0:
-          usQuoteNum = QUOTE_BUDDY_1_GOOD;
+          usQuoteNum = Enum202.QUOTE_BUDDY_1_GOOD;
           MercPtrs[ubMercsInSector[ubChosenMerc]].value.usQuoteSaidExtFlags |= SOLDIER_QUOTE_SAID_BUDDY_1_WITNESSED;
           break;
 
         case 1:
-          usQuoteNum = QUOTE_BUDDY_2_GOOD;
+          usQuoteNum = Enum202.QUOTE_BUDDY_2_GOOD;
           MercPtrs[ubMercsInSector[ubChosenMerc]].value.usQuoteSaidExtFlags |= SOLDIER_QUOTE_SAID_BUDDY_2_WITNESSED;
           break;
 
         case 2:
-          usQuoteNum = QUOTE_LEARNED_TO_LIKE_WITNESSED;
+          usQuoteNum = Enum202.QUOTE_LEARNED_TO_LIKE_WITNESSED;
           MercPtrs[ubMercsInSector[ubChosenMerc]].value.usQuoteSaidExtFlags |= SOLDIER_QUOTE_SAID_BUDDY_3_WITNESSED;
           break;
       }
@@ -2515,22 +2515,22 @@ function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier:
   gfLastMercTalkedAboutKillingID = pKilledSoldier.value.ubID;
 
   // Can we see location?
-  sDistVisible = DistanceVisible(pKillerSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, bLevel);
+  sDistVisible = DistanceVisible(pKillerSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sGridNo, bLevel);
 
   fCanWeSeeLocation = (SoldierTo3DLocationLineOfSightTest(pKillerSoldier, sGridNo, bLevel, 3, sDistVisible, TRUE) != 0);
 
   // Are we killing mike?
-  if (pKilledSoldier.value.ubProfile == 149 && pKillerSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
+  if (pKilledSoldier.value.ubProfile == 149 && pKillerSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
     // Can we see?
     if (fCanWeSeeLocation) {
-      TacticalCharacterDialogue(pKillerSoldier, QUOTE_AIM_KILLED_MIKE);
+      TacticalCharacterDialogue(pKillerSoldier, Enum202.QUOTE_AIM_KILLED_MIKE);
     }
   }
   // Are we killing factory mamager?
   else if (pKilledSoldier.value.ubProfile == 139) {
     // Can we see?
     // f ( fCanWeSeeLocation )
-    { TacticalCharacterDialogue(pKillerSoldier, QUOTE_KILLED_FACTORY_MANAGER); }
+    { TacticalCharacterDialogue(pKillerSoldier, Enum202.QUOTE_KILLED_FACTORY_MANAGER); }
   } else {
     // Steps here...
 
@@ -2545,10 +2545,10 @@ function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier:
     // If somebody did, play his quote plus attackers killed quote.
 
     // Checkf for headhot!
-    if (pKilledSoldier.value.usAnimState == JFK_HITDEATH) {
+    if (pKilledSoldier.value.usAnimState == Enum193.JFK_HITDEATH) {
       // Randomliy say it!
       if (Random(100) < 40) {
-        TacticalCharacterDialogue(pKillerSoldier, QUOTE_HEADSHOT);
+        TacticalCharacterDialogue(pKillerSoldier, Enum202.QUOTE_HEADSHOT);
       } else {
         fDoSomeoneElse = TRUE;
       }
@@ -2562,7 +2562,7 @@ function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier:
           if (cnt != pKillerSoldier.value.ubID) {
             if (OK_INSECTOR_MERC(pTeamSoldier) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_GASSED) && !AM_AN_EPC(pTeamSoldier)) {
               // Can we see location?
-              sDistVisible = DistanceVisible(pTeamSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, bLevel);
+              sDistVisible = DistanceVisible(pTeamSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sGridNo, bLevel);
 
               if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, bLevel, 3, sDistVisible, TRUE)) {
                 ubMercsInSector[ubNumMercs] = cnt;
@@ -2581,18 +2581,18 @@ function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier:
             // Say this guys quote but the killer's quote as well....
             // if killed was not a plain old civ, say quote
             if (pKilledSoldier.value.bTeam != CIV_TEAM || pKilledSoldier.value.ubCivilianGroup != 0) {
-              TacticalCharacterDialogue(pKillerSoldier, QUOTE_KILLED_AN_ENEMY);
+              TacticalCharacterDialogue(pKillerSoldier, Enum202.QUOTE_KILLED_AN_ENEMY);
             }
           }
 
-          TacticalCharacterDialogue(MercPtrs[ubMercsInSector[ubChosenMerc]], QUOTE_HEADSHOT);
+          TacticalCharacterDialogue(MercPtrs[ubMercsInSector[ubChosenMerc]], Enum202.QUOTE_HEADSHOT);
         } else {
           // Can we see?
           if (fCanWeSeeLocation) {
             // Say this guys quote but the killer's quote as well....
             // if killed was not a plain old civ, say quote
             if (pKilledSoldier.value.bTeam != CIV_TEAM || pKilledSoldier.value.ubCivilianGroup != 0) {
-              TacticalCharacterDialogue(pKillerSoldier, QUOTE_KILLED_AN_ENEMY);
+              TacticalCharacterDialogue(pKillerSoldier, Enum202.QUOTE_KILLED_AN_ENEMY);
             }
           }
         }
@@ -2604,23 +2604,23 @@ function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier:
         if (pKilledSoldier.value.bTeam != CIV_TEAM || pKilledSoldier.value.ubCivilianGroup != 0) {
           // Are we happy with our gun?
           if (ShouldMercSayHappyWithGunQuote(pKillerSoldier)) {
-            TacticalCharacterDialogue(pKillerSoldier, QUOTE_SATISFACTION_WITH_GUN_AFTER_KILL);
+            TacticalCharacterDialogue(pKillerSoldier, Enum202.QUOTE_SATISFACTION_WITH_GUN_AFTER_KILL);
             pKillerSoldier.value.usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_LIKESGUN;
           } else
           // Randomize between laugh, quote...
           {
-            if (Random(100) < 33 && pKilledSoldier.value.ubBodyType != BLOODCAT) {
+            if (Random(100) < 33 && pKilledSoldier.value.ubBodyType != Enum194.BLOODCAT) {
               // If it's a creature......
               if (pKilledSoldier.value.uiStatusFlags & SOLDIER_MONSTER) {
-                TacticalCharacterDialogue(pKillerSoldier, QUOTE_KILLED_A_CREATURE);
+                TacticalCharacterDialogue(pKillerSoldier, Enum202.QUOTE_KILLED_A_CREATURE);
               } else {
-                TacticalCharacterDialogue(pKillerSoldier, QUOTE_KILLED_AN_ENEMY);
+                TacticalCharacterDialogue(pKillerSoldier, Enum202.QUOTE_KILLED_AN_ENEMY);
               }
             } else {
               if (Random(50) == 25) {
-                DoMercBattleSound(pKillerSoldier, (BATTLE_SOUND_LAUGH1));
+                DoMercBattleSound(pKillerSoldier, (Enum259.BATTLE_SOUND_LAUGH1));
               } else {
-                DoMercBattleSound(pKillerSoldier, (BATTLE_SOUND_COOL1));
+                DoMercBattleSound(pKillerSoldier, (Enum259.BATTLE_SOUND_COOL1));
               }
             }
           }
@@ -2682,13 +2682,13 @@ function HandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCorpse: Pointe
           gTacticalStatus.ubEnemyKilledOnAttackKiller = pSoldier.value.ubAttackerID;
 
           // also check if we are in mapscreen, if so update soldier's list
-          if (guiCurrentScreen == MAP_SCREEN) {
+          if (guiCurrentScreen == Enum26.MAP_SCREEN) {
             ReBuildCharactersList();
           }
         } else if (pSoldier.value.bVisible == TRUE) {
           // We were a visible enemy, say laugh!
           if (Random(3) == 0 && !CREATURE_OR_BLOODCAT(MercPtrs[pSoldier.value.ubAttackerID])) {
-            DoMercBattleSound(MercPtrs[pSoldier.value.ubAttackerID], BATTLE_SOUND_LAUGH1);
+            DoMercBattleSound(MercPtrs[pSoldier.value.ubAttackerID], Enum259.BATTLE_SOUND_LAUGH1);
           }
         }
       }
@@ -2792,48 +2792,48 @@ function CheckForAndHandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCor
   if (HandleSoldierDeath(pSoldier, pfMadeCorpse)) {
     // Select approriate death
     switch (pSoldier.value.usAnimState) {
-      case FLYBACK_HIT_DEATH:
-        ChangeSoldierState(pSoldier, FLYBACK_HITDEATH_STOP, 0, FALSE);
+      case Enum193.FLYBACK_HIT_DEATH:
+        ChangeSoldierState(pSoldier, Enum193.FLYBACK_HITDEATH_STOP, 0, FALSE);
         break;
 
-      case GENERIC_HIT_DEATH:
-        ChangeSoldierState(pSoldier, FALLFORWARD_HITDEATH_STOP, 0, FALSE);
+      case Enum193.GENERIC_HIT_DEATH:
+        ChangeSoldierState(pSoldier, Enum193.FALLFORWARD_HITDEATH_STOP, 0, FALSE);
         break;
 
-      case FALLBACK_HIT_DEATH:
-        ChangeSoldierState(pSoldier, FALLBACK_HITDEATH_STOP, 0, FALSE);
+      case Enum193.FALLBACK_HIT_DEATH:
+        ChangeSoldierState(pSoldier, Enum193.FALLBACK_HITDEATH_STOP, 0, FALSE);
         break;
 
-      case PRONE_HIT_DEATH:
-        ChangeSoldierState(pSoldier, PRONE_HITDEATH_STOP, 0, FALSE);
+      case Enum193.PRONE_HIT_DEATH:
+        ChangeSoldierState(pSoldier, Enum193.PRONE_HITDEATH_STOP, 0, FALSE);
         break;
 
-      case JFK_HITDEATH:
-        ChangeSoldierState(pSoldier, JFK_HITDEATH_STOP, 0, FALSE);
+      case Enum193.JFK_HITDEATH:
+        ChangeSoldierState(pSoldier, Enum193.JFK_HITDEATH_STOP, 0, FALSE);
         break;
 
-      case FALLOFF_DEATH:
-        ChangeSoldierState(pSoldier, FALLOFF_DEATH_STOP, 0, FALSE);
+      case Enum193.FALLOFF_DEATH:
+        ChangeSoldierState(pSoldier, Enum193.FALLOFF_DEATH_STOP, 0, FALSE);
         break;
 
-      case FALLOFF_FORWARD_DEATH:
-        ChangeSoldierState(pSoldier, FALLOFF_FORWARD_DEATH_STOP, 0, FALSE);
+      case Enum193.FALLOFF_FORWARD_DEATH:
+        ChangeSoldierState(pSoldier, Enum193.FALLOFF_FORWARD_DEATH_STOP, 0, FALSE);
         break;
 
-      case WATER_DIE:
-        ChangeSoldierState(pSoldier, WATER_DIE_STOP, 0, FALSE);
+      case Enum193.WATER_DIE:
+        ChangeSoldierState(pSoldier, Enum193.WATER_DIE_STOP, 0, FALSE);
         break;
 
-      case DEEP_WATER_DIE:
-        ChangeSoldierState(pSoldier, DEEP_WATER_DIE_STOPPING, 0, FALSE);
+      case Enum193.DEEP_WATER_DIE:
+        ChangeSoldierState(pSoldier, Enum193.DEEP_WATER_DIE_STOPPING, 0, FALSE);
         break;
 
-      case COW_DYING:
-        ChangeSoldierState(pSoldier, COW_DYING_STOP, 0, FALSE);
+      case Enum193.COW_DYING:
+        ChangeSoldierState(pSoldier, Enum193.COW_DYING_STOP, 0, FALSE);
         break;
 
-      case BLOODCAT_DYING:
-        ChangeSoldierState(pSoldier, BLOODCAT_DYING_STOP, 0, FALSE);
+      case Enum193.BLOODCAT_DYING:
+        ChangeSoldierState(pSoldier, Enum193.BLOODCAT_DYING_STOP, 0, FALSE);
         break;
 
       default:
@@ -2861,17 +2861,17 @@ function CheckForAndHandleSoldierIncompacitated(pSoldier: Pointer<SOLDIERTYPE>):
 
     // If we are a monster, set life to zero ( no unconscious )
     switch (pSoldier.value.ubBodyType) {
-      case ADULTFEMALEMONSTER:
-      case AM_MONSTER:
-      case YAF_MONSTER:
-      case YAM_MONSTER:
-      case LARVAE_MONSTER:
-      case INFANT_MONSTER:
-      case CRIPPLECIV:
-      case ROBOTNOWEAPON:
-      case QUEENMONSTER:
-      case TANK_NW:
-      case TANK_NE:
+      case Enum194.ADULTFEMALEMONSTER:
+      case Enum194.AM_MONSTER:
+      case Enum194.YAF_MONSTER:
+      case Enum194.YAM_MONSTER:
+      case Enum194.LARVAE_MONSTER:
+      case Enum194.INFANT_MONSTER:
+      case Enum194.CRIPPLECIV:
+      case Enum194.ROBOTNOWEAPON:
+      case Enum194.QUEENMONSTER:
+      case Enum194.TANK_NW:
+      case Enum194.TANK_NE:
 
         pSoldier.value.bLife = 0;
         break;
@@ -2881,10 +2881,10 @@ function CheckForAndHandleSoldierIncompacitated(pSoldier: Pointer<SOLDIERTYPE>):
     if (AreInMeanwhile()) {
       let pQueen: Pointer<SOLDIERTYPE>;
 
-      pQueen = FindSoldierByProfileID(QUEEN, FALSE);
+      pQueen = FindSoldierByProfileID(Enum268.QUEEN, FALSE);
 
       if (pQueen) {
-        TriggerNPCWithGivenApproach(QUEEN, APPROACH_DONE_SLAPPED, FALSE);
+        TriggerNPCWithGivenApproach(Enum268.QUEEN, Enum296.APPROACH_DONE_SLAPPED, FALSE);
       }
     }
 
@@ -2896,13 +2896,13 @@ function CheckForAndHandleSoldierIncompacitated(pSoldier: Pointer<SOLDIERTYPE>):
     // If guy is now dead, play sound!
     if (pSoldier.value.bLife == 0) {
       if (!AreInMeanwhile()) {
-        DoMercBattleSound(pSoldier, BATTLE_SOUND_DIE1);
+        DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_DIE1);
         pSoldier.value.fDeadSoundPlayed = TRUE;
       }
     }
 
     // Randomly fall back or forward, if we are in the standing hit animation
-    if (pSoldier.value.usAnimState == GENERIC_HIT_STAND || pSoldier.value.usAnimState == STANDING_BURST_HIT || pSoldier.value.usAnimState == RIFLE_STAND_HIT) {
+    if (pSoldier.value.usAnimState == Enum193.GENERIC_HIT_STAND || pSoldier.value.usAnimState == Enum193.STANDING_BURST_HIT || pSoldier.value.usAnimState == Enum193.RIFLE_STAND_HIT) {
       let bTestDirection: INT8 = pSoldier.value.bDirection;
       let fForceDirection: BOOLEAN = FALSE;
       let fDoFallback: BOOLEAN = FALSE;
@@ -2919,11 +2919,11 @@ function CheckForAndHandleSoldierIncompacitated(pSoldier: Pointer<SOLDIERTYPE>):
 
         sNewGridNo = pSoldier.value.sGridNo;
 
-        if (OKFallDirection(pSoldier, sNewGridNo, pSoldier.value.bLevel, bTestDirection, FALLBACK_HIT_STAND)) {
+        if (OKFallDirection(pSoldier, sNewGridNo, pSoldier.value.bLevel, bTestDirection, Enum193.FALLBACK_HIT_STAND)) {
           // SECOND GRIDNO
           sNewGridNo = NewGridNo(sNewGridNo, DirectionInc(gOppositeDirection[bTestDirection]));
 
-          if (OKFallDirection(pSoldier, sNewGridNo, pSoldier.value.bLevel, bTestDirection, FALLBACK_HIT_STAND)) {
+          if (OKFallDirection(pSoldier, sNewGridNo, pSoldier.value.bLevel, bTestDirection, Enum193.FALLBACK_HIT_STAND)) {
             // ALL'S OK HERE..... IF WE FORCED DIRECTION, SET!
             if (fForceDirection) {
               EVENT_SetSoldierDesiredDirection(pSoldier, bTestDirection);
@@ -2945,45 +2945,45 @@ function CheckForAndHandleSoldierIncompacitated(pSoldier: Pointer<SOLDIERTYPE>):
         // 1 )REC DIRECTION
         // 2 ) SET FLAG FOR STARTING TO FALL
         BeginTyingToFall(pSoldier);
-        ChangeSoldierState(pSoldier, FALLFORWARD_FROMHIT_STAND, 0, FALSE);
+        ChangeSoldierState(pSoldier, Enum193.FALLFORWARD_FROMHIT_STAND, 0, FALSE);
         return;
       }
-    } else if (pSoldier.value.usAnimState == GENERIC_HIT_CROUCH) {
-      ChangeSoldierState(pSoldier, FALLFORWARD_FROMHIT_CROUCH, 0, FALSE);
+    } else if (pSoldier.value.usAnimState == Enum193.GENERIC_HIT_CROUCH) {
+      ChangeSoldierState(pSoldier, Enum193.FALLFORWARD_FROMHIT_CROUCH, 0, FALSE);
       BeginTyingToFall(pSoldier);
       return;
-    } else if (pSoldier.value.usAnimState == GENERIC_HIT_PRONE) {
-      ChangeSoldierState(pSoldier, PRONE_LAY_FROMHIT, 0, FALSE);
+    } else if (pSoldier.value.usAnimState == Enum193.GENERIC_HIT_PRONE) {
+      ChangeSoldierState(pSoldier, Enum193.PRONE_LAY_FROMHIT, 0, FALSE);
       return;
-    } else if (pSoldier.value.usAnimState == ADULTMONSTER_HIT) {
-      ChangeSoldierState(pSoldier, ADULTMONSTER_DYING, 0, FALSE);
+    } else if (pSoldier.value.usAnimState == Enum193.ADULTMONSTER_HIT) {
+      ChangeSoldierState(pSoldier, Enum193.ADULTMONSTER_DYING, 0, FALSE);
       return;
-    } else if (pSoldier.value.usAnimState == LARVAE_HIT) {
-      ChangeSoldierState(pSoldier, LARVAE_DIE, 0, FALSE);
+    } else if (pSoldier.value.usAnimState == Enum193.LARVAE_HIT) {
+      ChangeSoldierState(pSoldier, Enum193.LARVAE_DIE, 0, FALSE);
       return;
-    } else if (pSoldier.value.usAnimState == QUEEN_HIT) {
-      ChangeSoldierState(pSoldier, QUEEN_DIE, 0, FALSE);
+    } else if (pSoldier.value.usAnimState == Enum193.QUEEN_HIT) {
+      ChangeSoldierState(pSoldier, Enum193.QUEEN_DIE, 0, FALSE);
       return;
-    } else if (pSoldier.value.usAnimState == CRIPPLE_HIT) {
-      ChangeSoldierState(pSoldier, CRIPPLE_DIE, 0, FALSE);
+    } else if (pSoldier.value.usAnimState == Enum193.CRIPPLE_HIT) {
+      ChangeSoldierState(pSoldier, Enum193.CRIPPLE_DIE, 0, FALSE);
       return;
-    } else if (pSoldier.value.usAnimState == ROBOTNW_HIT) {
-      ChangeSoldierState(pSoldier, ROBOTNW_DIE, 0, FALSE);
+    } else if (pSoldier.value.usAnimState == Enum193.ROBOTNW_HIT) {
+      ChangeSoldierState(pSoldier, Enum193.ROBOTNW_DIE, 0, FALSE);
       return;
-    } else if (pSoldier.value.usAnimState == INFANT_HIT) {
-      ChangeSoldierState(pSoldier, INFANT_DIE, 0, FALSE);
+    } else if (pSoldier.value.usAnimState == Enum193.INFANT_HIT) {
+      ChangeSoldierState(pSoldier, Enum193.INFANT_DIE, 0, FALSE);
       return;
-    } else if (pSoldier.value.usAnimState == COW_HIT) {
-      ChangeSoldierState(pSoldier, COW_DYING, 0, FALSE);
+    } else if (pSoldier.value.usAnimState == Enum193.COW_HIT) {
+      ChangeSoldierState(pSoldier, Enum193.COW_DYING, 0, FALSE);
       return;
-    } else if (pSoldier.value.usAnimState == BLOODCAT_HIT) {
-      ChangeSoldierState(pSoldier, BLOODCAT_DYING, 0, FALSE);
+    } else if (pSoldier.value.usAnimState == Enum193.BLOODCAT_HIT) {
+      ChangeSoldierState(pSoldier, Enum193.BLOODCAT_DYING, 0, FALSE);
       return;
-    } else if (pSoldier.value.usAnimState == WATER_HIT) {
-      ChangeSoldierState(pSoldier, WATER_DIE, 0, FALSE);
+    } else if (pSoldier.value.usAnimState == Enum193.WATER_HIT) {
+      ChangeSoldierState(pSoldier, Enum193.WATER_DIE, 0, FALSE);
       return;
-    } else if (pSoldier.value.usAnimState == DEEP_WATER_HIT) {
-      ChangeSoldierState(pSoldier, DEEP_WATER_DIE, 0, FALSE);
+    } else if (pSoldier.value.usAnimState == Enum193.DEEP_WATER_HIT) {
+      ChangeSoldierState(pSoldier, Enum193.DEEP_WATER_DIE, 0, FALSE);
       return;
     } else {
       // We have missed something here - send debug msg
@@ -2994,72 +2994,72 @@ function CheckForAndHandleSoldierIncompacitated(pSoldier: Pointer<SOLDIERTYPE>):
 
 function CheckForAndHandleSoldierDyingNotFromHit(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (pSoldier.value.bLife == 0) {
-    DoMercBattleSound(pSoldier, BATTLE_SOUND_DIE1);
+    DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_DIE1);
     pSoldier.value.fDeadSoundPlayed = TRUE;
 
     // Increment  being attacked count
     pSoldier.value.bBeingAttackedCount++;
 
-    if (gGameSettings.fOptions[TOPTION_BLOOD_N_GORE]) {
+    if (gGameSettings.fOptions[Enum8.TOPTION_BLOOD_N_GORE]) {
       switch (pSoldier.value.usAnimState) {
-        case FLYBACKHIT_STOP:
-          ChangeSoldierState(pSoldier, FLYBACK_HIT_DEATH, 0, FALSE);
+        case Enum193.FLYBACKHIT_STOP:
+          ChangeSoldierState(pSoldier, Enum193.FLYBACK_HIT_DEATH, 0, FALSE);
           break;
 
-        case FALLFORWARD_FROMHIT_STAND:
-        case FALLFORWARD_FROMHIT_CROUCH:
-        case STAND_FALLFORWARD_STOP:
-          ChangeSoldierState(pSoldier, GENERIC_HIT_DEATH, 0, FALSE);
+        case Enum193.FALLFORWARD_FROMHIT_STAND:
+        case Enum193.FALLFORWARD_FROMHIT_CROUCH:
+        case Enum193.STAND_FALLFORWARD_STOP:
+          ChangeSoldierState(pSoldier, Enum193.GENERIC_HIT_DEATH, 0, FALSE);
           break;
 
-        case FALLBACKHIT_STOP:
-          ChangeSoldierState(pSoldier, FALLBACK_HIT_DEATH, 0, FALSE);
+        case Enum193.FALLBACKHIT_STOP:
+          ChangeSoldierState(pSoldier, Enum193.FALLBACK_HIT_DEATH, 0, FALSE);
           break;
 
-        case PRONE_LAYFROMHIT_STOP:
-        case PRONE_LAY_FROMHIT:
+        case Enum193.PRONE_LAYFROMHIT_STOP:
+        case Enum193.PRONE_LAY_FROMHIT:
 
-          ChangeSoldierState(pSoldier, PRONE_HIT_DEATH, 0, FALSE);
+          ChangeSoldierState(pSoldier, Enum193.PRONE_HIT_DEATH, 0, FALSE);
           break;
 
-        case FALLOFF_STOP:
-          ChangeSoldierState(pSoldier, FALLOFF_DEATH, 0, FALSE);
+        case Enum193.FALLOFF_STOP:
+          ChangeSoldierState(pSoldier, Enum193.FALLOFF_DEATH, 0, FALSE);
           break;
 
-        case FALLOFF_FORWARD_STOP:
-          ChangeSoldierState(pSoldier, FALLOFF_FORWARD_DEATH, 0, FALSE);
+        case Enum193.FALLOFF_FORWARD_STOP:
+          ChangeSoldierState(pSoldier, Enum193.FALLOFF_FORWARD_DEATH, 0, FALSE);
           break;
 
-        case ADULTMONSTER_HIT:
-          ChangeSoldierState(pSoldier, ADULTMONSTER_DYING, 0, FALSE);
+        case Enum193.ADULTMONSTER_HIT:
+          ChangeSoldierState(pSoldier, Enum193.ADULTMONSTER_DYING, 0, FALSE);
           break;
 
-        case LARVAE_HIT:
-          ChangeSoldierState(pSoldier, LARVAE_DIE, 0, FALSE);
+        case Enum193.LARVAE_HIT:
+          ChangeSoldierState(pSoldier, Enum193.LARVAE_DIE, 0, FALSE);
           break;
 
-        case QUEEN_HIT:
-          ChangeSoldierState(pSoldier, QUEEN_DIE, 0, FALSE);
+        case Enum193.QUEEN_HIT:
+          ChangeSoldierState(pSoldier, Enum193.QUEEN_DIE, 0, FALSE);
           break;
 
-        case CRIPPLE_HIT:
-          ChangeSoldierState(pSoldier, CRIPPLE_DIE, 0, FALSE);
+        case Enum193.CRIPPLE_HIT:
+          ChangeSoldierState(pSoldier, Enum193.CRIPPLE_DIE, 0, FALSE);
           break;
 
-        case ROBOTNW_HIT:
-          ChangeSoldierState(pSoldier, ROBOTNW_DIE, 0, FALSE);
+        case Enum193.ROBOTNW_HIT:
+          ChangeSoldierState(pSoldier, Enum193.ROBOTNW_DIE, 0, FALSE);
           break;
 
-        case INFANT_HIT:
-          ChangeSoldierState(pSoldier, INFANT_DIE, 0, FALSE);
+        case Enum193.INFANT_HIT:
+          ChangeSoldierState(pSoldier, Enum193.INFANT_DIE, 0, FALSE);
           break;
 
-        case COW_HIT:
-          ChangeSoldierState(pSoldier, COW_DYING, 0, FALSE);
+        case Enum193.COW_HIT:
+          ChangeSoldierState(pSoldier, Enum193.COW_DYING, 0, FALSE);
           break;
 
-        case BLOODCAT_HIT:
-          ChangeSoldierState(pSoldier, BLOODCAT_DYING, 0, FALSE);
+        case Enum193.BLOODCAT_HIT:
+          ChangeSoldierState(pSoldier, Enum193.BLOODCAT_DYING, 0, FALSE);
           break;
 
         default:
@@ -3087,9 +3087,9 @@ function CheckForImproperFireGunEnd(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   }
 
   // Check single hand for jammed status, ( or ammo is out.. )
-  if (pSoldier.value.inv[HANDPOS].bGunAmmoStatus < 0 || pSoldier.value.inv[HANDPOS].ubGunShotsLeft == 0) {
+  if (pSoldier.value.inv[Enum261.HANDPOS].bGunAmmoStatus < 0 || pSoldier.value.inv[Enum261.HANDPOS].ubGunShotsLeft == 0) {
     // If we have 2 pistols, donot go back!
-    if (Item[pSoldier.value.inv[SECONDHANDPOS].usItem].usItemClass != IC_GUN) {
+    if (Item[pSoldier.value.inv[Enum261.SECONDHANDPOS].usItem].usItemClass != IC_GUN) {
       // OK, put gun down....
       InternalSoldierReadyWeapon(pSoldier, pSoldier.value.bDirection, TRUE);
       return TRUE;
@@ -3119,50 +3119,50 @@ function HandleUnjamAnimation(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   pSoldier.value.sPendingActionData2 = pSoldier.value.usAnimState;
   // Check what animatnion we should do.....
   switch (pSoldier.value.usAnimState) {
-    case SHOOT_RIFLE_STAND:
-    case STANDING_BURST:
-    case FIRE_STAND_BURST_SPREAD:
+    case Enum193.SHOOT_RIFLE_STAND:
+    case Enum193.STANDING_BURST:
+    case Enum193.FIRE_STAND_BURST_SPREAD:
       // Normal shoot rifle.... play
-      ChangeSoldierState(pSoldier, STANDING_SHOOT_UNJAM, 0, FALSE);
+      ChangeSoldierState(pSoldier, Enum193.STANDING_SHOOT_UNJAM, 0, FALSE);
       return TRUE;
 
-    case PRONE_BURST:
-    case SHOOT_RIFLE_PRONE:
+    case Enum193.PRONE_BURST:
+    case Enum193.SHOOT_RIFLE_PRONE:
 
       // Normal shoot rifle.... play
-      ChangeSoldierState(pSoldier, PRONE_SHOOT_UNJAM, 0, FALSE);
+      ChangeSoldierState(pSoldier, Enum193.PRONE_SHOOT_UNJAM, 0, FALSE);
       return TRUE;
 
-    case CROUCHED_BURST:
-    case SHOOT_RIFLE_CROUCH:
+    case Enum193.CROUCHED_BURST:
+    case Enum193.SHOOT_RIFLE_CROUCH:
 
       // Normal shoot rifle.... play
-      ChangeSoldierState(pSoldier, CROUCH_SHOOT_UNJAM, 0, FALSE);
+      ChangeSoldierState(pSoldier, Enum193.CROUCH_SHOOT_UNJAM, 0, FALSE);
       return TRUE;
 
-    case SHOOT_DUAL_STAND:
+    case Enum193.SHOOT_DUAL_STAND:
 
       // Normal shoot rifle.... play
-      ChangeSoldierState(pSoldier, STANDING_SHOOT_DWEL_UNJAM, 0, FALSE);
+      ChangeSoldierState(pSoldier, Enum193.STANDING_SHOOT_DWEL_UNJAM, 0, FALSE);
       return TRUE;
 
-    case SHOOT_DUAL_PRONE:
+    case Enum193.SHOOT_DUAL_PRONE:
 
       // Normal shoot rifle.... play
-      ChangeSoldierState(pSoldier, PRONE_SHOOT_DWEL_UNJAM, 0, FALSE);
+      ChangeSoldierState(pSoldier, Enum193.PRONE_SHOOT_DWEL_UNJAM, 0, FALSE);
       return TRUE;
 
-    case SHOOT_DUAL_CROUCH:
+    case Enum193.SHOOT_DUAL_CROUCH:
 
       // Normal shoot rifle.... play
-      ChangeSoldierState(pSoldier, CROUCH_SHOOT_DWEL_UNJAM, 0, FALSE);
+      ChangeSoldierState(pSoldier, Enum193.CROUCH_SHOOT_DWEL_UNJAM, 0, FALSE);
       return TRUE;
 
-    case FIRE_LOW_STAND:
-    case FIRE_BURST_LOW_STAND:
+    case Enum193.FIRE_LOW_STAND:
+    case Enum193.FIRE_BURST_LOW_STAND:
 
       // Normal shoot rifle.... play
-      ChangeSoldierState(pSoldier, STANDING_SHOOT_LOW_UNJAM, 0, FALSE);
+      ChangeSoldierState(pSoldier, Enum193.STANDING_SHOOT_LOW_UNJAM, 0, FALSE);
       return TRUE;
   }
 
@@ -3179,7 +3179,7 @@ function OKFallDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel:
   }
 
   // NOT ok if in water....
-  if (GetTerrainType(sGridNo) == MED_WATER || GetTerrainType(sGridNo) == DEEP_WATER || GetTerrainType(sGridNo) == LOW_WATER) {
+  if (GetTerrainType(sGridNo) == Enum315.MED_WATER || GetTerrainType(sGridNo) == Enum315.DEEP_WATER || GetTerrainType(sGridNo) == Enum315.LOW_WATER) {
     return FALSE;
   }
 
@@ -3247,34 +3247,34 @@ function HandleCheckForDeathCommonCode(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN 
   }
 
   switch (pSoldier.value.usAnimState) {
-    case FLYBACK_HIT:
-      ChangeSoldierState(pSoldier, FLYBACKHIT_STOP, 0, FALSE);
+    case Enum193.FLYBACK_HIT:
+      ChangeSoldierState(pSoldier, Enum193.FLYBACKHIT_STOP, 0, FALSE);
       break;
 
-    case GENERIC_HIT_DEATHTWITCHNB:
-    case FALLFORWARD_FROMHIT_STAND:
-    case ENDFALLFORWARD_FROMHIT_CROUCH:
+    case Enum193.GENERIC_HIT_DEATHTWITCHNB:
+    case Enum193.FALLFORWARD_FROMHIT_STAND:
+    case Enum193.ENDFALLFORWARD_FROMHIT_CROUCH:
 
-      ChangeSoldierState(pSoldier, STAND_FALLFORWARD_STOP, 0, FALSE);
+      ChangeSoldierState(pSoldier, Enum193.STAND_FALLFORWARD_STOP, 0, FALSE);
       break;
 
-    case FALLBACK_HIT_DEATHTWITCHNB:
-    case FALLBACK_HIT_STAND:
-      ChangeSoldierState(pSoldier, FALLBACKHIT_STOP, 0, FALSE);
+    case Enum193.FALLBACK_HIT_DEATHTWITCHNB:
+    case Enum193.FALLBACK_HIT_STAND:
+      ChangeSoldierState(pSoldier, Enum193.FALLBACKHIT_STOP, 0, FALSE);
       break;
 
-    case PRONE_HIT_DEATHTWITCHNB:
-    case PRONE_LAY_FROMHIT:
+    case Enum193.PRONE_HIT_DEATHTWITCHNB:
+    case Enum193.PRONE_LAY_FROMHIT:
 
-      ChangeSoldierState(pSoldier, PRONE_LAYFROMHIT_STOP, 0, FALSE);
+      ChangeSoldierState(pSoldier, Enum193.PRONE_LAYFROMHIT_STOP, 0, FALSE);
       break;
 
-    case FALLOFF:
-      ChangeSoldierState(pSoldier, FALLOFF_STOP, 0, FALSE);
+    case Enum193.FALLOFF:
+      ChangeSoldierState(pSoldier, Enum193.FALLOFF_STOP, 0, FALSE);
       break;
 
-    case FALLFORWARD_ROOF:
-      ChangeSoldierState(pSoldier, FALLOFF_FORWARD_STOP, 0, FALSE);
+    case Enum193.FALLFORWARD_ROOF:
+      ChangeSoldierState(pSoldier, Enum193.FALLOFF_FORWARD_STOP, 0, FALSE);
       break;
 
     default:
@@ -3296,34 +3296,34 @@ function HandleCheckForDeathCommonCode(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN 
   }
 
   switch (pSoldier.value.usAnimState) {
-    case FLYBACK_HIT:
-      ChangeSoldierState(pSoldier, FLYBACKHIT_STOP, 0, FALSE);
+    case Enum193.FLYBACK_HIT:
+      ChangeSoldierState(pSoldier, Enum193.FLYBACKHIT_STOP, 0, FALSE);
       break;
 
-    case GENERIC_HIT_DEATHTWITCHNB:
-    case FALLFORWARD_FROMHIT_STAND:
-    case ENDFALLFORWARD_FROMHIT_CROUCH:
+    case Enum193.GENERIC_HIT_DEATHTWITCHNB:
+    case Enum193.FALLFORWARD_FROMHIT_STAND:
+    case Enum193.ENDFALLFORWARD_FROMHIT_CROUCH:
 
-      ChangeSoldierState(pSoldier, STAND_FALLFORWARD_STOP, 0, FALSE);
+      ChangeSoldierState(pSoldier, Enum193.STAND_FALLFORWARD_STOP, 0, FALSE);
       break;
 
-    case FALLBACK_HIT_DEATHTWITCHNB:
-    case FALLBACK_HIT_STAND:
-      ChangeSoldierState(pSoldier, FALLBACKHIT_STOP, 0, FALSE);
+    case Enum193.FALLBACK_HIT_DEATHTWITCHNB:
+    case Enum193.FALLBACK_HIT_STAND:
+      ChangeSoldierState(pSoldier, Enum193.FALLBACKHIT_STOP, 0, FALSE);
       break;
 
-    case PRONE_HIT_DEATHTWITCHNB:
-    case PRONE_LAY_FROMHIT:
+    case Enum193.PRONE_HIT_DEATHTWITCHNB:
+    case Enum193.PRONE_LAY_FROMHIT:
 
-      ChangeSoldierState(pSoldier, PRONE_LAYFROMHIT_STOP, 0, FALSE);
+      ChangeSoldierState(pSoldier, Enum193.PRONE_LAYFROMHIT_STOP, 0, FALSE);
       break;
 
-    case FALLOFF:
-      ChangeSoldierState(pSoldier, FALLOFF_STOP, 0, FALSE);
+    case Enum193.FALLOFF:
+      ChangeSoldierState(pSoldier, Enum193.FALLOFF_STOP, 0, FALSE);
       break;
 
-    case FALLFORWARD_ROOF:
-      ChangeSoldierState(pSoldier, FALLOFF_FORWARD_STOP, 0, FALSE);
+    case Enum193.FALLFORWARD_ROOF:
+      ChangeSoldierState(pSoldier, Enum193.FALLOFF_FORWARD_STOP, 0, FALSE);
       break;
 
     default:
@@ -3347,15 +3347,15 @@ function KickOutWheelchair(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 
   EVENT_StopMerc(pSoldier, sNewGridNo, pSoldier.value.bDirection);
-  pSoldier.value.ubBodyType = REGMALE;
-  if (pSoldier.value.ubProfile == SLAY && pSoldier.value.bTeam == CIV_TEAM && !pSoldier.value.bNeutral) {
-    HandleNPCDoAction(pSoldier.value.ubProfile, NPC_ACTION_THREATENINGLY_RAISE_GUN, 0);
+  pSoldier.value.ubBodyType = Enum194.REGMALE;
+  if (pSoldier.value.ubProfile == Enum268.SLAY && pSoldier.value.bTeam == CIV_TEAM && !pSoldier.value.bNeutral) {
+    HandleNPCDoAction(pSoldier.value.ubProfile, Enum213.NPC_ACTION_THREATENINGLY_RAISE_GUN, 0);
   } else {
-    EVENT_InitNewSoldierAnim(pSoldier, STANDING, 0, TRUE);
+    EVENT_InitNewSoldierAnim(pSoldier, Enum193.STANDING, 0, TRUE);
   }
 
   // If this person has a profile ID, set body type to regmale
   if (pSoldier.value.ubProfile != NO_PROFILE) {
-    gMercProfiles[pSoldier.value.ubProfile].ubBodyType = REGMALE;
+    gMercProfiles[pSoldier.value.ubProfile].ubBodyType = Enum194.REGMALE;
   }
 }

@@ -39,7 +39,7 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
     // Calculate cost to move here
     sAPCost = PlotPath(gpUIPlannedSoldier, sGridNo, COPYROUTE, NO_PLOT, TEMPORARY, gpUIPlannedSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, gpUIPlannedSoldier.value.bActionPoints);
     // Adjust for running if we are not already running
-    if (gpUIPlannedSoldier.value.usUIMovementMode == RUNNING) {
+    if (gpUIPlannedSoldier.value.usUIMovementMode == Enum193.RUNNING) {
       sAPCost += AP_START_RUN_COST;
     }
 
@@ -225,18 +225,18 @@ function SelectPausedFireAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
     case ANIM_STAND:
 
       if (pSoldier.value.bDoBurst > 0) {
-        ChangeSoldierState(pSoldier, STANDING_BURST, 2, FALSE);
+        ChangeSoldierState(pSoldier, Enum193.STANDING_BURST, 2, FALSE);
       } else {
-        ChangeSoldierState(pSoldier, SHOOT_RIFLE_STAND, 2, FALSE);
+        ChangeSoldierState(pSoldier, Enum193.SHOOT_RIFLE_STAND, 2, FALSE);
       }
       break;
 
     case ANIM_PRONE:
-      ChangeSoldierState(pSoldier, SHOOT_RIFLE_PRONE, 2, FALSE);
+      ChangeSoldierState(pSoldier, Enum193.SHOOT_RIFLE_PRONE, 2, FALSE);
       break;
 
     case ANIM_CROUCH:
-      ChangeSoldierState(pSoldier, SHOOT_RIFLE_CROUCH, 2, FALSE);
+      ChangeSoldierState(pSoldier, Enum193.SHOOT_RIFLE_CROUCH, 2, FALSE);
       break;
   }
 }

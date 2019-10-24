@@ -57,7 +57,7 @@ function CreateDestroyTownInfoBox(): void {
         bTownId = GetTownIdForSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
 
         // do we add text for the town box?
-        if (bTownId != BLANK_SECTOR) {
+        if (bTownId != Enum135.BLANK_SECTOR) {
           // add text for town box
           AddTextToTownBox();
         } else {
@@ -187,36 +187,36 @@ function AddTextToTownBox(): void {
 
   // remember town id
   ubTownId = GetTownIdForSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
-  Assert((ubTownId >= FIRST_TOWN) && (ubTownId < NUM_TOWNS));
+  Assert((ubTownId >= FIRST_TOWN) && (ubTownId < Enum135.NUM_TOWNS));
 
   usTownSectorIndex = SECTOR(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
 
   switch (usTownSectorIndex) {
-    case SEC_B13:
-      AddMonoString(addressof(hStringHandle), pLandTypeStrings[DRASSEN_AIRPORT_SITE]);
+    case Enum123.SEC_B13:
+      AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.DRASSEN_AIRPORT_SITE]);
       break;
-    case SEC_F8:
-      AddMonoString(addressof(hStringHandle), pLandTypeStrings[CAMBRIA_HOSPITAL_SITE]);
+    case Enum123.SEC_F8:
+      AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.CAMBRIA_HOSPITAL_SITE]);
       break;
-    case SEC_J9: // Tixa
+    case Enum123.SEC_J9: // Tixa
       if (!fFoundTixa)
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[SAND]);
+        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.SAND]);
       else
-        AddMonoString(addressof(hStringHandle), pTownNames[TIXA]);
+        AddMonoString(addressof(hStringHandle), pTownNames[Enum135.TIXA]);
       break;
-    case SEC_K4: // Orta
+    case Enum123.SEC_K4: // Orta
       if (!fFoundOrta)
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[SWAMP]);
+        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.SWAMP]);
       else
-        AddMonoString(addressof(hStringHandle), pTownNames[ORTA]);
+        AddMonoString(addressof(hStringHandle), pTownNames[Enum135.ORTA]);
       break;
-    case SEC_N3:
-      AddMonoString(addressof(hStringHandle), pLandTypeStrings[MEDUNA_AIRPORT_SITE]);
+    case Enum123.SEC_N3:
+      AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.MEDUNA_AIRPORT_SITE]);
       break;
     default:
-      if (usTownSectorIndex == SEC_N4 && fSamSiteFound[SAM_SITE_FOUR]) {
+      if (usTownSectorIndex == Enum123.SEC_N4 && fSamSiteFound[Enum138.SAM_SITE_FOUR]) {
         // Meduna's SAM site
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[MEDUNA_SAM_SITE]);
+        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.MEDUNA_SAM_SITE]);
       } else {
         // town name
         swprintf(wString, "%s", pTownNames[ubTownId]);
@@ -366,7 +366,7 @@ function AddTextToMineBox(): void {
     // ore type (silver/gold
     swprintf(wString, "%s:", pwMineStrings[11]);
     AddMonoString(addressof(hStringHandle), wString);
-    AddSecondColumnMonoString(addressof(hStringHandle), (gMineStatus[ubMineIndex].ubMineType == SILVER_MINE) ? pwMineStrings[1] : pwMineStrings[2]);
+    AddSecondColumnMonoString(addressof(hStringHandle), (gMineStatus[ubMineIndex].ubMineType == Enum181.SILVER_MINE) ? pwMineStrings[1] : pwMineStrings[2]);
   }
 }
 
@@ -378,23 +378,23 @@ function AddTextToBlankSectorBox(): void {
   usSectorValue = SECTOR(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
 
   switch (usSectorValue) {
-    case SEC_D2: // Chitzena SAM
-      if (!fSamSiteFound[SAM_SITE_ONE])
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[TROPICS]);
+    case Enum123.SEC_D2: // Chitzena SAM
+      if (!fSamSiteFound[Enum138.SAM_SITE_ONE])
+        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.TROPICS]);
       else
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[TROPICS_SAM_SITE]);
+        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.TROPICS_SAM_SITE]);
       break;
-    case SEC_D15: // Drassen SAM
-      if (!fSamSiteFound[SAM_SITE_TWO])
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[SPARSE]);
+    case Enum123.SEC_D15: // Drassen SAM
+      if (!fSamSiteFound[Enum138.SAM_SITE_TWO])
+        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.SPARSE]);
       else
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[SPARSE_SAM_SITE]);
+        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.SPARSE_SAM_SITE]);
       break;
-    case SEC_I8: // Cambria SAM
-      if (!fSamSiteFound[SAM_SITE_THREE])
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[SAND]);
+    case Enum123.SEC_I8: // Cambria SAM
+      if (!fSamSiteFound[Enum138.SAM_SITE_THREE])
+        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.SAND]);
       else
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[SAND_SAM_SITE]);
+        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.SAND_SAM_SITE]);
       break;
       // SAM Site 4 in Meduna is within town limits, so it's handled in AddTextToTownBox()
 
@@ -436,16 +436,16 @@ function AddCommonInfoToBox(): void {
   let ubNumEnemies: UINT8;
 
   switch (SECTOR(bCurrentTownMineSectorX, bCurrentTownMineSectorY)) {
-    case SEC_D2: // Chitzena SAM
-      if (!fSamSiteFound[SAM_SITE_ONE])
+    case Enum123.SEC_D2: // Chitzena SAM
+      if (!fSamSiteFound[Enum138.SAM_SITE_ONE])
         fUnknownSAMSite = TRUE;
       break;
-    case SEC_D15: // Drassen SAM
-      if (!fSamSiteFound[SAM_SITE_TWO])
+    case Enum123.SEC_D15: // Drassen SAM
+      if (!fSamSiteFound[Enum138.SAM_SITE_TWO])
         fUnknownSAMSite = TRUE;
       break;
-    case SEC_I8: // Cambria SAM
-      if (!fSamSiteFound[SAM_SITE_THREE])
+    case Enum123.SEC_I8: // Cambria SAM
+      if (!fSamSiteFound[Enum138.SAM_SITE_THREE])
         fUnknownSAMSite = TRUE;
       break;
     // SAM Site 4 in Meduna is within town limits, so it's always controllable
@@ -471,7 +471,7 @@ function AddCommonInfoToBox(): void {
     ubMilitiaTotal = CountAllMilitiaInSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
     if (ubMilitiaTotal > 0) {
       // some militia, show total & their breakdown by level
-      swprintf(wString, "%d  (%d/%d/%d)", ubMilitiaTotal, MilitiaInSectorOfRank(bCurrentTownMineSectorX, bCurrentTownMineSectorY, GREEN_MILITIA), MilitiaInSectorOfRank(bCurrentTownMineSectorX, bCurrentTownMineSectorY, REGULAR_MILITIA), MilitiaInSectorOfRank(bCurrentTownMineSectorX, bCurrentTownMineSectorY, ELITE_MILITIA));
+      swprintf(wString, "%d  (%d/%d/%d)", ubMilitiaTotal, MilitiaInSectorOfRank(bCurrentTownMineSectorX, bCurrentTownMineSectorY, Enum126.GREEN_MILITIA), MilitiaInSectorOfRank(bCurrentTownMineSectorX, bCurrentTownMineSectorY, Enum126.REGULAR_MILITIA), MilitiaInSectorOfRank(bCurrentTownMineSectorX, bCurrentTownMineSectorY, Enum126.ELITE_MILITIA));
       AddSecondColumnMonoString(addressof(hStringHandle), wString);
     } else {
       // no militia: don't bother displaying level breakdown
@@ -494,12 +494,12 @@ function AddCommonInfoToBox(): void {
   ubNumEnemies = NumEnemiesInSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
 
   switch (WhatPlayerKnowsAboutEnemiesInSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY)) {
-    case KNOWS_NOTHING:
+    case Enum159.KNOWS_NOTHING:
       // show "Unknown"
       wcscpy(wString, pwMiscSectorStrings[3]);
       break;
 
-    case KNOWS_THEYRE_THERE:
+    case Enum159.KNOWS_THEYRE_THERE:
       // if there are any there
       if (ubNumEnemies > 0) {
         // show "?", but not exactly how many
@@ -510,7 +510,7 @@ function AddCommonInfoToBox(): void {
       }
       break;
 
-    case KNOWS_HOW_MANY:
+    case Enum159.KNOWS_HOW_MANY:
       // show exactly how many
       swprintf(wString, "%d", ubNumEnemies);
       break;
@@ -671,9 +671,9 @@ function MapTownMineInventoryButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: IN
       fShowTownInfo = FALSE;
 
       // since we are bring up the sector inventory, check to see if the help screen should come up
-      if (ShouldTheHelpScreenComeUp(HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY, FALSE)) {
+      if (ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY, FALSE)) {
         // normally this is handled in the screen handler, we have to set up a little different this time around
-        ShouldTheHelpScreenComeUp(HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY, TRUE);
+        ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY, TRUE);
       }
     }
   }

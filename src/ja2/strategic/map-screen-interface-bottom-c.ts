@@ -209,17 +209,17 @@ function RenderMapScreenInterfaceBottom(): void {
 
 function CreateButtonsForMapScreenInterfaceBottom(): BOOLEAN {
   // laptop
-  guiMapBottomExitButtonsImage[MAP_EXIT_TO_LAPTOP] = LoadButtonImage("INTERFACE\\map_border_buttons.sti", -1, 6, -1, 15, -1);
-  guiMapBottomExitButtons[MAP_EXIT_TO_LAPTOP] = QuickCreateButton(guiMapBottomExitButtonsImage[MAP_EXIT_TO_LAPTOP], 456, 410, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnLaptopCallback);
+  guiMapBottomExitButtonsImage[Enum144.MAP_EXIT_TO_LAPTOP] = LoadButtonImage("INTERFACE\\map_border_buttons.sti", -1, 6, -1, 15, -1);
+  guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_LAPTOP] = QuickCreateButton(guiMapBottomExitButtonsImage[Enum144.MAP_EXIT_TO_LAPTOP], 456, 410, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnLaptopCallback);
 
   // tactical
-  guiMapBottomExitButtonsImage[MAP_EXIT_TO_TACTICAL] = LoadButtonImage("INTERFACE\\map_border_buttons.sti", -1, 7, -1, 16, -1);
+  guiMapBottomExitButtonsImage[Enum144.MAP_EXIT_TO_TACTICAL] = LoadButtonImage("INTERFACE\\map_border_buttons.sti", -1, 7, -1, 16, -1);
 
-  guiMapBottomExitButtons[MAP_EXIT_TO_TACTICAL] = QuickCreateButton(guiMapBottomExitButtonsImage[MAP_EXIT_TO_TACTICAL], 496, 410, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnTacticalCallback);
+  guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_TACTICAL] = QuickCreateButton(guiMapBottomExitButtonsImage[Enum144.MAP_EXIT_TO_TACTICAL], 496, 410, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnTacticalCallback);
 
   // options
-  guiMapBottomExitButtonsImage[MAP_EXIT_TO_OPTIONS] = LoadButtonImage("INTERFACE\\map_border_buttons.sti", -1, 18, -1, 19, -1);
-  guiMapBottomExitButtons[MAP_EXIT_TO_OPTIONS] = QuickCreateButton(guiMapBottomExitButtonsImage[MAP_EXIT_TO_OPTIONS], 458, 372, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnOptionsFromMapScreenCallback);
+  guiMapBottomExitButtonsImage[Enum144.MAP_EXIT_TO_OPTIONS] = LoadButtonImage("INTERFACE\\map_border_buttons.sti", -1, 18, -1, 19, -1);
+  guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_OPTIONS] = QuickCreateButton(guiMapBottomExitButtonsImage[Enum144.MAP_EXIT_TO_OPTIONS], 458, 372, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnOptionsFromMapScreenCallback);
 
   SetButtonFastHelpText(guiMapBottomExitButtons[0], pMapScreenBottomFastHelp[0]);
   SetButtonFastHelpText(guiMapBottomExitButtons[1], pMapScreenBottomFastHelp[1]);
@@ -230,11 +230,11 @@ function CreateButtonsForMapScreenInterfaceBottom(): BOOLEAN {
   SetButtonCursor(guiMapBottomExitButtons[2], MSYS_NO_CURSOR);
 
   // time compression buttons
-  guiMapBottomTimeButtonsImage[MAP_TIME_COMPRESS_MORE] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 10, 1, -1, 3, -1);
-  guiMapBottomTimeButtons[MAP_TIME_COMPRESS_MORE] = QuickCreateButton(guiMapBottomTimeButtonsImage[MAP_TIME_COMPRESS_MORE], 528, 456, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, BtnGenericMouseMoveButtonCallback, BtnTimeCompressMoreMapScreenCallback);
+  guiMapBottomTimeButtonsImage[Enum143.MAP_TIME_COMPRESS_MORE] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 10, 1, -1, 3, -1);
+  guiMapBottomTimeButtons[Enum143.MAP_TIME_COMPRESS_MORE] = QuickCreateButton(guiMapBottomTimeButtonsImage[Enum143.MAP_TIME_COMPRESS_MORE], 528, 456, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, BtnGenericMouseMoveButtonCallback, BtnTimeCompressMoreMapScreenCallback);
 
-  guiMapBottomTimeButtonsImage[MAP_TIME_COMPRESS_LESS] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 9, 0, -1, 2, -1);
-  guiMapBottomTimeButtons[MAP_TIME_COMPRESS_LESS] = QuickCreateButton(guiMapBottomTimeButtonsImage[MAP_TIME_COMPRESS_LESS], 466, 456, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, BtnGenericMouseMoveButtonCallback, BtnTimeCompressLessMapScreenCallback);
+  guiMapBottomTimeButtonsImage[Enum143.MAP_TIME_COMPRESS_LESS] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 9, 0, -1, 2, -1);
+  guiMapBottomTimeButtons[Enum143.MAP_TIME_COMPRESS_LESS] = QuickCreateButton(guiMapBottomTimeButtonsImage[Enum143.MAP_TIME_COMPRESS_LESS], 466, 456, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, BtnGenericMouseMoveButtonCallback, BtnTimeCompressLessMapScreenCallback);
 
   SetButtonFastHelpText(guiMapBottomTimeButtons[0], pMapScreenBottomFastHelp[3]);
   SetButtonFastHelpText(guiMapBottomTimeButtons[1], pMapScreenBottomFastHelp[4]);
@@ -244,11 +244,11 @@ function CreateButtonsForMapScreenInterfaceBottom(): BOOLEAN {
 
   // scroll buttons
 
-  guiMapMessageScrollButtonsImage[MAP_SCROLL_MESSAGE_UP] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 11, 4, -1, 6, -1);
-  guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_UP] = QuickCreateButton(guiMapMessageScrollButtonsImage[MAP_SCROLL_MESSAGE_UP], 331, 371, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnMessageUpMapScreenCallback);
+  guiMapMessageScrollButtonsImage[Enum142.MAP_SCROLL_MESSAGE_UP] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 11, 4, -1, 6, -1);
+  guiMapMessageScrollButtons[Enum142.MAP_SCROLL_MESSAGE_UP] = QuickCreateButton(guiMapMessageScrollButtonsImage[Enum142.MAP_SCROLL_MESSAGE_UP], 331, 371, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnMessageUpMapScreenCallback);
 
-  guiMapMessageScrollButtonsImage[MAP_SCROLL_MESSAGE_DOWN] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 12, 5, -1, 7, -1);
-  guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_DOWN] = QuickCreateButton(guiMapMessageScrollButtonsImage[MAP_SCROLL_MESSAGE_DOWN], 331, 452, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnMessageDownMapScreenCallback);
+  guiMapMessageScrollButtonsImage[Enum142.MAP_SCROLL_MESSAGE_DOWN] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 12, 5, -1, 7, -1);
+  guiMapMessageScrollButtons[Enum142.MAP_SCROLL_MESSAGE_DOWN] = QuickCreateButton(guiMapMessageScrollButtonsImage[Enum142.MAP_SCROLL_MESSAGE_DOWN], 331, 452, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnMessageDownMapScreenCallback);
 
   SetButtonFastHelpText(guiMapMessageScrollButtons[0], pMapScreenBottomFastHelp[5]);
   SetButtonFastHelpText(guiMapMessageScrollButtons[1], pMapScreenBottomFastHelp[6]);
@@ -306,7 +306,7 @@ function BtnLaptopCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON | BUTTON_DIRTY);
       DrawButton(btn.value.IDNum);
 
-      RequestTriggerExitFromMapscreen(MAP_EXIT_TO_LAPTOP);
+      RequestTriggerExitFromMapscreen(Enum144.MAP_EXIT_TO_LAPTOP);
     }
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
     if (IsMapScreenHelpTextUp()) {
@@ -334,7 +334,7 @@ function BtnTacticalCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
 
-      RequestTriggerExitFromMapscreen(MAP_EXIT_TO_TACTICAL);
+      RequestTriggerExitFromMapscreen(Enum144.MAP_EXIT_TO_TACTICAL);
     }
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
     if (IsMapScreenHelpTextUp()) {
@@ -364,7 +364,7 @@ function BtnOptionsFromMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
       fMapScreenBottomDirty = TRUE;
 
-      RequestTriggerExitFromMapscreen(MAP_EXIT_TO_OPTIONS);
+      RequestTriggerExitFromMapscreen(Enum144.MAP_EXIT_TO_OPTIONS);
     }
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
     if (IsMapScreenHelpTextUp()) {
@@ -607,18 +607,18 @@ function EnableDisableMessageScrollButtonsAndRegions(): void {
 
   // if no scrolling required, or already showing the topmost message
   if ((ubNumMessages <= MAX_MESSAGES_ON_MAP_BOTTOM) || (gubFirstMapscreenMessageIndex == 0)) {
-    DisableButton(guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_UP]);
-    ButtonList[guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_UP]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    DisableButton(guiMapMessageScrollButtons[Enum142.MAP_SCROLL_MESSAGE_UP]);
+    ButtonList[guiMapMessageScrollButtons[Enum142.MAP_SCROLL_MESSAGE_UP]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
   } else {
-    EnableButton(guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_UP]);
+    EnableButton(guiMapMessageScrollButtons[Enum142.MAP_SCROLL_MESSAGE_UP]);
   }
 
   // if no scrolling required, or already showing the last message
   if ((ubNumMessages <= MAX_MESSAGES_ON_MAP_BOTTOM) || ((gubFirstMapscreenMessageIndex + MAX_MESSAGES_ON_MAP_BOTTOM) >= ubNumMessages)) {
-    DisableButton(guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_DOWN]);
-    ButtonList[guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_DOWN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    DisableButton(guiMapMessageScrollButtons[Enum142.MAP_SCROLL_MESSAGE_DOWN]);
+    ButtonList[guiMapMessageScrollButtons[Enum142.MAP_SCROLL_MESSAGE_DOWN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
   } else {
-    EnableButton(guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_DOWN]);
+    EnableButton(guiMapMessageScrollButtons[Enum142.MAP_SCROLL_MESSAGE_DOWN]);
   }
 
   if (ubNumMessages <= MAX_MESSAGES_ON_MAP_BOTTOM) {
@@ -635,7 +635,7 @@ function DisplayCompressMode(): void {
   /* static */ let usColor: UINT8 = FONT_LTGREEN;
 
   // get compress speed
-  if (giTimeCompressMode != NOT_USING_TIME_COMPRESSION) {
+  if (giTimeCompressMode != Enum130.NOT_USING_TIME_COMPRESSION) {
     if (IsTimeBeingCompressed()) {
       swprintf(sString, "%s", sTimeStrings[giTimeCompressMode]);
     } else {
@@ -870,31 +870,31 @@ function EnableDisableBottomButtonsAndRegions(): void {
 
 function EnableDisableTimeCompressButtons(): void {
   if (AllowedToTimeCompress() == FALSE) {
-    DisableButton(guiMapBottomTimeButtons[MAP_TIME_COMPRESS_MORE]);
-    DisableButton(guiMapBottomTimeButtons[MAP_TIME_COMPRESS_LESS]);
+    DisableButton(guiMapBottomTimeButtons[Enum143.MAP_TIME_COMPRESS_MORE]);
+    DisableButton(guiMapBottomTimeButtons[Enum143.MAP_TIME_COMPRESS_LESS]);
   } else {
     // disable LESS if time compression is at minimum or OFF
-    if (!IsTimeCompressionOn() || giTimeCompressMode == TIME_COMPRESS_X0) {
-      DisableButton(guiMapBottomTimeButtons[MAP_TIME_COMPRESS_LESS]);
+    if (!IsTimeCompressionOn() || giTimeCompressMode == Enum130.TIME_COMPRESS_X0) {
+      DisableButton(guiMapBottomTimeButtons[Enum143.MAP_TIME_COMPRESS_LESS]);
     } else {
-      EnableButton(guiMapBottomTimeButtons[MAP_TIME_COMPRESS_LESS]);
+      EnableButton(guiMapBottomTimeButtons[Enum143.MAP_TIME_COMPRESS_LESS]);
     }
 
     // disable MORE if we're not paused and time compression is at maximum
     // only disable MORE if we're not paused and time compression is at maximum
-    if (IsTimeCompressionOn() && (giTimeCompressMode == TIME_COMPRESS_60MINS)) {
-      DisableButton(guiMapBottomTimeButtons[MAP_TIME_COMPRESS_MORE]);
+    if (IsTimeCompressionOn() && (giTimeCompressMode == Enum130.TIME_COMPRESS_60MINS)) {
+      DisableButton(guiMapBottomTimeButtons[Enum143.MAP_TIME_COMPRESS_MORE]);
     } else {
-      EnableButton(guiMapBottomTimeButtons[MAP_TIME_COMPRESS_MORE]);
+      EnableButton(guiMapBottomTimeButtons[Enum143.MAP_TIME_COMPRESS_MORE]);
     }
   }
 }
 
 function EnableDisAbleMapScreenOptionsButton(fEnable: BOOLEAN): void {
   if (fEnable) {
-    EnableButton(guiMapBottomExitButtons[MAP_EXIT_TO_OPTIONS]);
+    EnableButton(guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_OPTIONS]);
   } else {
-    DisableButton(guiMapBottomExitButtons[MAP_EXIT_TO_OPTIONS]);
+    DisableButton(guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_OPTIONS]);
   }
 }
 
@@ -1167,7 +1167,7 @@ function AnyUsableRealMercenariesOnTeam(): BOOLEAN {
   for (iCounter = 0; iCounter < iNumberOnTeam; iCounter++) {
     pSoldier = addressof(Menptr[iCounter]);
 
-    if ((pSoldier.value.bActive) && (pSoldier.value.bLife > 0) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier) && (pSoldier.value.bAssignment != ASSIGNMENT_POW) && (pSoldier.value.bAssignment != ASSIGNMENT_DEAD) && (pSoldier.value.ubWhatKindOfMercAmI != MERC_TYPE__EPC)) {
+    if ((pSoldier.value.bActive) && (pSoldier.value.bLife > 0) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_DEAD) && (pSoldier.value.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__EPC)) {
       return TRUE;
     }
   }
@@ -1176,16 +1176,16 @@ function AnyUsableRealMercenariesOnTeam(): BOOLEAN {
 }
 
 function RequestTriggerExitFromMapscreen(bExitToWhere: INT8): void {
-  Assert((bExitToWhere >= MAP_EXIT_TO_LAPTOP) && (bExitToWhere <= MAP_EXIT_TO_SAVE));
+  Assert((bExitToWhere >= Enum144.MAP_EXIT_TO_LAPTOP) && (bExitToWhere <= Enum144.MAP_EXIT_TO_SAVE));
 
   // if allowed to do so
   if (AllowedToExitFromMapscreenTo(bExitToWhere)) {
     // if the screen to exit to is the SAVE screen
-    if (bExitToWhere == MAP_EXIT_TO_SAVE) {
+    if (bExitToWhere == Enum144.MAP_EXIT_TO_SAVE) {
       // if the game CAN NOT be saved
       if (!CanGameBeSaved()) {
         // Display a message saying the player cant save now
-        DoMapMessageBox(MSG_BOX_BASIC_STYLE, zNewTacticalMessages[TCTL_MSG__IRON_MAN_CANT_SAVE_NOW], MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+        DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zNewTacticalMessages[Enum320.TCTL_MSG__IRON_MAN_CANT_SAVE_NOW], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
         return;
       }
     }
@@ -1199,7 +1199,7 @@ function RequestTriggerExitFromMapscreen(bExitToWhere: INT8): void {
 }
 
 function AllowedToExitFromMapscreenTo(bExitToWhere: INT8): BOOLEAN {
-  Assert((bExitToWhere >= MAP_EXIT_TO_LAPTOP) && (bExitToWhere <= MAP_EXIT_TO_SAVE));
+  Assert((bExitToWhere >= Enum144.MAP_EXIT_TO_LAPTOP) && (bExitToWhere <= Enum144.MAP_EXIT_TO_SAVE));
 
   // if already leaving, disallow any other attempts to exit
   if (fLeavingMapScreen) {
@@ -1255,7 +1255,7 @@ function AllowedToExitFromMapscreenTo(bExitToWhere: INT8): BOOLEAN {
   */
 
   // the following tests apply to going tactical screen only
-  if (bExitToWhere == MAP_EXIT_TO_TACTICAL) {
+  if (bExitToWhere == Enum144.MAP_EXIT_TO_TACTICAL) {
     // if in battle or air raid, the ONLY sector we can go tactical in is the one that's loaded
     if (((gTacticalStatus.uiFlags & INCOMBAT) || (gTacticalStatus.fEnemyInSector) /*|| InAirRaid( )*/) && ((sSelMapX != gWorldSectorX) || (sSelMapY != gWorldSectorY) || (iCurrentMapSectorZ) != gbWorldSectorZ)) {
       return FALSE;
@@ -1290,9 +1290,9 @@ function HandleExitsFromMapScreen(): void {
     if (AllowedToExitFromMapscreenTo(gbExitingMapScreenToWhere)) {
       // see where we're trying to go
       switch (gbExitingMapScreenToWhere) {
-        case MAP_EXIT_TO_LAPTOP:
+        case Enum144.MAP_EXIT_TO_LAPTOP:
           fLapTop = TRUE;
-          SetPendingNewScreen(LAPTOP_SCREEN);
+          SetPendingNewScreen(Enum26.LAPTOP_SCREEN);
 
           if (gfExtraBuffer) {
             // Then initiate the transition animation from the mapscreen to laptop...
@@ -1301,21 +1301,21 @@ function HandleExitsFromMapScreen(): void {
           }
           break;
 
-        case MAP_EXIT_TO_TACTICAL:
+        case Enum144.MAP_EXIT_TO_TACTICAL:
           SetCurrentWorldSector(sSelMapX, sSelMapY, iCurrentMapSectorZ);
 
           break;
 
-        case MAP_EXIT_TO_OPTIONS:
+        case Enum144.MAP_EXIT_TO_OPTIONS:
           guiPreviousOptionScreen = guiCurrentScreen;
-          SetPendingNewScreen(OPTIONS_SCREEN);
+          SetPendingNewScreen(Enum26.OPTIONS_SCREEN);
           break;
 
-        case MAP_EXIT_TO_SAVE:
-        case MAP_EXIT_TO_LOAD:
+        case Enum144.MAP_EXIT_TO_SAVE:
+        case Enum144.MAP_EXIT_TO_LOAD:
           gfCameDirectlyFromGame = TRUE;
           guiPreviousOptionScreen = guiCurrentScreen;
-          SetPendingNewScreen(SAVE_LOAD_SCREEN);
+          SetPendingNewScreen(Enum26.SAVE_LOAD_SCREEN);
           break;
 
         default:

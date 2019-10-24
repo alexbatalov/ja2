@@ -68,7 +68,7 @@ function CreateNewPlayerGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: UI
   pNew.value.ubSectorY = pNew.value.ubNextY = ubSectorY;
   pNew.value.ubOriginalSector = SECTOR(ubSectorX, ubSectorY);
   pNew.value.fPlayer = TRUE;
-  pNew.value.ubMoveType = ONE_WAY;
+  pNew.value.ubMoveType = Enum185.ONE_WAY;
   pNew.value.ubNextWaypointID = 0;
   pNew.value.ubFatigueLevel = 100;
   pNew.value.ubRestAtFatigueLevel = 0;
@@ -91,7 +91,7 @@ function CreateNewVehicleGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: U
   pNew.value.ubSectorX = pNew.value.ubNextX = ubSectorX;
   pNew.value.ubSectorY = pNew.value.ubNextY = ubSectorY;
   pNew.value.ubOriginalSector = SECTOR(ubSectorX, ubSectorY);
-  pNew.value.ubMoveType = ONE_WAY;
+  pNew.value.ubMoveType = Enum185.ONE_WAY;
   pNew.value.ubNextWaypointID = 0;
   pNew.value.ubFatigueLevel = 100;
   pNew.value.ubRestAtFatigueLevel = 0;
@@ -286,7 +286,7 @@ function GroupReversingDirectionsBetweenSectors(pGroup: Pointer<GROUP>, ubSector
   // The new direction is reversed, so we have to go back to the sector we just left.
 
   // Search for the arrival event, and kill it!
-  DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
+  DeleteStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
 
   // Adjust the information in the group to reflect the new movement.
   pGroup.value.ubPrevX = pGroup.value.ubNextX;
@@ -312,12 +312,12 @@ function GroupReversingDirectionsBetweenSectors(pGroup: Pointer<GROUP>, ubSector
   // if they're not already there
   if (pGroup.value.uiArrivalTime > GetWorldTotalMin()) {
     // Post the replacement event to move back to the previous sector!
-    AddStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID);
+    AddStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID);
 
     if (pGroup.value.fPlayer) {
       if ((pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY) > GetWorldTotalMin()) {
         // Post the about to arrive event
-        AddStrategicEvent(EVENT_GROUP_ABOUT_TO_ARRIVE, pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY, pGroup.value.ubGroupID);
+        AddStrategicEvent(Enum132.EVENT_GROUP_ABOUT_TO_ARRIVE, pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY, pGroup.value.ubGroupID);
       }
     }
   } else {
@@ -537,7 +537,7 @@ function CreateNewEnemyGroupDepartingFromSector(uiSector: UINT32, ubNumAdmins: U
   pNew.value.ubSectorY = SECTORY(uiSector);
   pNew.value.ubOriginalSector = uiSector;
   pNew.value.fPlayer = FALSE;
-  pNew.value.ubMoveType = CIRCULAR;
+  pNew.value.ubMoveType = Enum185.CIRCULAR;
   pNew.value.ubNextWaypointID = 0;
   pNew.value.ubFatigueLevel = 100;
   pNew.value.ubRestAtFatigueLevel = 0;
@@ -670,11 +670,11 @@ function GetGroup(ubGroupID: UINT8): Pointer<GROUP> {
 function HandleImportantPBIQuote(pSoldier: Pointer<SOLDIERTYPE>, pInitiatingBattleGroup: Pointer<GROUP>): void {
   // wake merc up for THIS quote
   if (pSoldier.value.fMercAsleep) {
-    TacticalCharacterDialogueWithSpecialEvent(pSoldier, QUOTE_ENEMY_PRESENCE, DIALOGUE_SPECIAL_EVENT_SLEEP, 0, 0);
-    TacticalCharacterDialogueWithSpecialEvent(pSoldier, QUOTE_ENEMY_PRESENCE, DIALOGUE_SPECIAL_EVENT_BEGINPREBATTLEINTERFACE, pInitiatingBattleGroup, 0);
-    TacticalCharacterDialogueWithSpecialEvent(pSoldier, QUOTE_ENEMY_PRESENCE, DIALOGUE_SPECIAL_EVENT_SLEEP, 1, 0);
+    TacticalCharacterDialogueWithSpecialEvent(pSoldier, Enum202.QUOTE_ENEMY_PRESENCE, DIALOGUE_SPECIAL_EVENT_SLEEP, 0, 0);
+    TacticalCharacterDialogueWithSpecialEvent(pSoldier, Enum202.QUOTE_ENEMY_PRESENCE, DIALOGUE_SPECIAL_EVENT_BEGINPREBATTLEINTERFACE, pInitiatingBattleGroup, 0);
+    TacticalCharacterDialogueWithSpecialEvent(pSoldier, Enum202.QUOTE_ENEMY_PRESENCE, DIALOGUE_SPECIAL_EVENT_SLEEP, 1, 0);
   } else {
-    TacticalCharacterDialogueWithSpecialEvent(pSoldier, QUOTE_ENEMY_PRESENCE, DIALOGUE_SPECIAL_EVENT_BEGINPREBATTLEINTERFACE, pInitiatingBattleGroup, 0);
+    TacticalCharacterDialogueWithSpecialEvent(pSoldier, Enum202.QUOTE_ENEMY_PRESENCE, DIALOGUE_SPECIAL_EVENT_BEGINPREBATTLEINTERFACE, pInitiatingBattleGroup, 0);
   }
 }
 
@@ -714,7 +714,7 @@ function PrepareForPreBattleInterface(pPlayerDialogGroup: Pointer<GROUP>, pIniti
   }
 
   // Set music
-  SetMusicMode(MUSIC_TACTICAL_ENEMYPRESENT);
+  SetMusicMode(Enum328.MUSIC_TACTICAL_ENEMYPRESENT);
 
   if (gfTacticalTraversal && pInitiatingBattleGroup == gpTacticalTraversalGroup || pInitiatingBattleGroup && !pInitiatingBattleGroup.value.fPlayer && pInitiatingBattleGroup.value.ubSectorX == gWorldSectorX && pInitiatingBattleGroup.value.ubSectorY == gWorldSectorY && !gbWorldSectorZ) {
     // At least say quote....
@@ -791,7 +791,7 @@ function CheckConditionsForBattle(pGroup: Pointer<GROUP>): BOOLEAN {
   }
 
   if (!DidGameJustStart()) {
-    gubEnemyEncounterCode = NO_ENCOUNTER_CODE;
+    gubEnemyEncounterCode = Enum164.NO_ENCOUNTER_CODE;
   }
 
   HandleOtherGroupsArrivingSimultaneously(pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubSectorZ);
@@ -850,7 +850,7 @@ function CheckConditionsForBattle(pGroup: Pointer<GROUP>): BOOLEAN {
       fBattlePending = TRUE;
     }
 
-    if (fBattlePending && (!fBloodCatAmbush || gubEnemyEncounterCode == ENTERING_BLOODCAT_LAIR_CODE)) {
+    if (fBattlePending && (!fBloodCatAmbush || gubEnemyEncounterCode == Enum164.ENTERING_BLOODCAT_LAIR_CODE)) {
       if (PossibleToCoordinateSimultaneousGroupArrivals(pGroup)) {
         return FALSE;
       }
@@ -892,7 +892,7 @@ function CheckConditionsForBattle(pGroup: Pointer<GROUP>): BOOLEAN {
 
     gpInitPrebattleGroup = pGroup;
 
-    if (gubEnemyEncounterCode == BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == ENTERING_BLOODCAT_LAIR_CODE) {
+    if (gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE || gubEnemyEncounterCode == Enum164.ENTERING_BLOODCAT_LAIR_CODE) {
       NotifyPlayerOfBloodcatBattle(pGroup.value.ubSectorX, pGroup.value.ubSectorY);
       return TRUE;
     }
@@ -907,7 +907,7 @@ function CheckConditionsForBattle(pGroup: Pointer<GROUP>): BOOLEAN {
         let str: UINT16[] /* [256] */;
         let pSectorStr: UINT16[] /* [128] */;
         GetSectorIDString(pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubSectorZ, pSectorStr, TRUE);
-        swprintf(str, gpStrategicString[STR_DIALOG_ENEMIES_ATTACK_UNCONCIOUSMERCS], pSectorStr);
+        swprintf(str, gpStrategicString[Enum365.STR_DIALOG_ENEMIES_ATTACK_UNCONCIOUSMERCS], pSectorStr);
         DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, TriggerPrebattleInterface);
       }
     }
@@ -977,7 +977,7 @@ function CalculateNextMoveIntention(pGroup: Pointer<GROUP>): void {
   if (pGroup.value.ubSectorX == wp.value.x && pGroup.value.ubSectorY == wp.value.y) {
     // We have reached the next waypoint, so now determine what the next waypoint is.
     switch (pGroup.value.ubMoveType) {
-      case ONE_WAY:
+      case Enum185.ONE_WAY:
         if (!wp.value.next) {
           // No more waypoints, so we've reached the destination.
           DeployGroupToSector(pGroup);
@@ -986,7 +986,7 @@ function CalculateNextMoveIntention(pGroup: Pointer<GROUP>): void {
         // Advance destination to next waypoint ID
         pGroup.value.ubNextWaypointID++;
         break;
-      case CIRCULAR:
+      case Enum185.CIRCULAR:
         wp = wp.value.next;
         if (!wp) {
           // reached the end of the patrol route.  Set to the first waypoint in list, indefinately.
@@ -996,19 +996,19 @@ function CalculateNextMoveIntention(pGroup: Pointer<GROUP>): void {
         } else
           pGroup.value.ubNextWaypointID++;
         break;
-      case ENDTOEND_FORWARDS:
+      case Enum185.ENDTOEND_FORWARDS:
         wp = wp.value.next;
         if (!wp) {
           AssertMsg(pGroup.value.ubNextWaypointID, "EndToEnd patrol group needs more than one waypoint!");
           pGroup.value.ubNextWaypointID--;
-          pGroup.value.ubMoveType = ENDTOEND_BACKWARDS;
+          pGroup.value.ubMoveType = Enum185.ENDTOEND_BACKWARDS;
         } else
           pGroup.value.ubNextWaypointID++;
         break;
-      case ENDTOEND_BACKWARDS:
+      case Enum185.ENDTOEND_BACKWARDS:
         if (!pGroup.value.ubNextWaypointID) {
           pGroup.value.ubNextWaypointID++;
-          pGroup.value.ubMoveType = ENDTOEND_FORWARDS;
+          pGroup.value.ubMoveType = Enum185.ENDTOEND_FORWARDS;
         } else
           pGroup.value.ubNextWaypointID--;
         break;
@@ -1071,7 +1071,7 @@ function AddCorpsesToBloodcatLair(sSectorX: INT16, sSectorY: INT16): void {
   memset(addressof(Corpse), 0, sizeof(ROTTING_CORPSE_DEFINITION));
 
   // Setup some values!
-  Corpse.ubBodyType = REGMALE;
+  Corpse.ubBodyType = Enum194.REGMALE;
   Corpse.sHeightAdjustment = 0;
   Corpse.bVisible = TRUE;
 
@@ -1086,7 +1086,7 @@ function AddCorpsesToBloodcatLair(sSectorX: INT16, sSectorY: INT16): void {
   // Make sure they will be rotting!
   Corpse.uiTimeOfDeath = GetWorldTotalMin() - (2 * NUM_SEC_IN_DAY / 60);
   // Set type
-  Corpse.ubType = SMERC_JFK;
+  Corpse.ubType = Enum249.SMERC_JFK;
   Corpse.usFlags = ROTTING_CORPSE_FIND_SWEETSPOT_FROM_GRIDNO;
 
   // 1st gridno
@@ -1148,7 +1148,7 @@ function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: BOOLEAN, fNever
     // Set the fact we have visited the  sector
     curr = pGroup.value.pPlayerList;
     if (curr) {
-      if (curr.value.pSoldier.value.bAssignment < ON_DUTY) {
+      if (curr.value.pSoldier.value.bAssignment < Enum117.ON_DUTY) {
         ResetDeadSquadMemberList(curr.value.pSoldier.value.bAssignment);
       }
     }
@@ -1177,7 +1177,7 @@ function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: BOOLEAN, fNever
     }
   }
   // Check for exception cases which
-  if (gTacticalStatus.bBoxingState != NOT_BOXING) {
+  if (gTacticalStatus.bBoxingState != Enum247.NOT_BOXING) {
     if (!pGroup.value.fPlayer && pGroup.value.ubNextX == 5 && pGroup.value.ubNextY == 4 && pGroup.value.ubSectorZ == 0) {
       fExceptionQueue = TRUE;
     }
@@ -1198,12 +1198,12 @@ function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: BOOLEAN, fNever
       pGroup.value.uiArrivalTime += Random(3) + 3;
     }
 
-    if (!AddStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID))
+    if (!AddStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID))
       AssertMsg(0, "Failed to add movement event.");
 
     if (pGroup.value.fPlayer) {
       if (pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY > GetWorldTotalMin()) {
-        AddStrategicEvent(EVENT_GROUP_ABOUT_TO_ARRIVE, pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY, pGroup.value.ubGroupID);
+        AddStrategicEvent(Enum132.EVENT_GROUP_ABOUT_TO_ARRIVE, pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY, pGroup.value.ubGroupID);
       }
     }
 
@@ -1266,26 +1266,26 @@ function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: BOOLEAN, fNever
       // check for discovering secret locations
       let bTownId: INT8 = GetTownIdForSector(pGroup.value.ubSectorX, pGroup.value.ubSectorY);
 
-      if (bTownId == TIXA)
+      if (bTownId == Enum135.TIXA)
         SetTixaAsFound();
-      else if (bTownId == ORTA)
+      else if (bTownId == Enum135.ORTA)
         SetOrtaAsFound();
       else if (IsThisSectorASAMSector(pGroup.value.ubSectorX, pGroup.value.ubSectorY, 0))
         SetSAMSiteAsFound(GetSAMIdFromSector(pGroup.value.ubSectorX, pGroup.value.ubSectorY, 0));
     }
 
     if (pGroup.value.ubSectorX < pGroup.value.ubPrevX) {
-      ubInsertionDirection = SOUTHWEST;
-      ubStrategicInsertionCode = INSERTION_CODE_EAST;
+      ubInsertionDirection = Enum245.SOUTHWEST;
+      ubStrategicInsertionCode = Enum175.INSERTION_CODE_EAST;
     } else if (pGroup.value.ubSectorX > pGroup.value.ubPrevX) {
-      ubInsertionDirection = NORTHEAST;
-      ubStrategicInsertionCode = INSERTION_CODE_WEST;
+      ubInsertionDirection = Enum245.NORTHEAST;
+      ubStrategicInsertionCode = Enum175.INSERTION_CODE_WEST;
     } else if (pGroup.value.ubSectorY < pGroup.value.ubPrevY) {
-      ubInsertionDirection = NORTHWEST;
-      ubStrategicInsertionCode = INSERTION_CODE_SOUTH;
+      ubInsertionDirection = Enum245.NORTHWEST;
+      ubStrategicInsertionCode = Enum175.INSERTION_CODE_SOUTH;
     } else if (pGroup.value.ubSectorY > pGroup.value.ubPrevY) {
-      ubInsertionDirection = SOUTHEAST;
-      ubStrategicInsertionCode = INSERTION_CODE_NORTH;
+      ubInsertionDirection = Enum245.SOUTHEAST;
+      ubStrategicInsertionCode = Enum175.INSERTION_CODE_NORTH;
     } else {
       Assert(0);
       return;
@@ -1304,7 +1304,7 @@ function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: BOOLEAN, fNever
         curr.value.pSoldier.value.ubInsertionDirection = ubInsertionDirection;
 
         // don't override if a tactical traversal
-        if (curr.value.pSoldier.value.ubStrategicInsertionCode != INSERTION_CODE_PRIMARY_EDGEINDEX && curr.value.pSoldier.value.ubStrategicInsertionCode != INSERTION_CODE_SECONDARY_EDGEINDEX) {
+        if (curr.value.pSoldier.value.ubStrategicInsertionCode != Enum175.INSERTION_CODE_PRIMARY_EDGEINDEX && curr.value.pSoldier.value.ubStrategicInsertionCode != Enum175.INSERTION_CODE_SECONDARY_EDGEINDEX) {
           curr.value.pSoldier.value.ubStrategicInsertionCode = ubStrategicInsertionCode;
         }
 
@@ -1326,12 +1326,12 @@ function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: BOOLEAN, fNever
         // don't print any messages when arriving underground (there's no delay involved) or if we never left (cancel)
         if (GroupAtFinalDestination(pGroup) && (pGroup.value.ubSectorZ == 0) && !fNeverLeft) {
           // if assigned to a squad
-          if (pGroup.value.pPlayerList.value.pSoldier.value.bAssignment < ON_DUTY) {
+          if (pGroup.value.pPlayerList.value.pSoldier.value.bAssignment < Enum117.ON_DUTY) {
             // squad
-            ScreenMsg(FONT_MCOLOR_DKRED, MSG_INTERFACE, pMessageStrings[MSG_ARRIVE], pAssignmentStrings[pGroup.value.pPlayerList.value.pSoldier.value.bAssignment], pMapVertIndex[pGroup.value.pPlayerList.value.pSoldier.value.sSectorY], pMapHortIndex[pGroup.value.pPlayerList.value.pSoldier.value.sSectorX]);
+            ScreenMsg(FONT_MCOLOR_DKRED, MSG_INTERFACE, pMessageStrings[Enum333.MSG_ARRIVE], pAssignmentStrings[pGroup.value.pPlayerList.value.pSoldier.value.bAssignment], pMapVertIndex[pGroup.value.pPlayerList.value.pSoldier.value.sSectorY], pMapHortIndex[pGroup.value.pPlayerList.value.pSoldier.value.sSectorX]);
           } else {
             // a loner
-            ScreenMsg(FONT_MCOLOR_DKRED, MSG_INTERFACE, pMessageStrings[MSG_ARRIVE], pGroup.value.pPlayerList.value.pSoldier.value.name, pMapVertIndex[pGroup.value.pPlayerList.value.pSoldier.value.sSectorY], pMapHortIndex[pGroup.value.pPlayerList.value.pSoldier.value.sSectorX]);
+            ScreenMsg(FONT_MCOLOR_DKRED, MSG_INTERFACE, pMessageStrings[Enum333.MSG_ARRIVE], pGroup.value.pPlayerList.value.pSoldier.value.name, pMapVertIndex[pGroup.value.pPlayerList.value.pSoldier.value.sSectorY], pMapHortIndex[pGroup.value.pPlayerList.value.pSoldier.value.sSectorX]);
           }
         }
       }
@@ -1405,7 +1405,7 @@ function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: BOOLEAN, fNever
       if (!fGroupDestroyed) {
         // don't print any messages when arriving underground, there's no delay involved
         if (GroupAtFinalDestination(pGroup) && (pGroup.value.ubSectorZ == 0) && !fNeverLeft) {
-          ScreenMsg(FONT_MCOLOR_DKRED, MSG_INTERFACE, pMessageStrings[MSG_ARRIVE], pVehicleStrings[pVehicleList[iVehId].ubVehicleType], pMapVertIndex[pGroup.value.ubSectorY], pMapHortIndex[pGroup.value.ubSectorX]);
+          ScreenMsg(FONT_MCOLOR_DKRED, MSG_INTERFACE, pMessageStrings[Enum333.MSG_ARRIVE], pVehicleStrings[pVehicleList[iVehId].ubVehicleType], pMapVertIndex[pGroup.value.ubSectorY], pMapHortIndex[pGroup.value.ubSectorX]);
         }
       }
     }
@@ -1417,7 +1417,7 @@ function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: BOOLEAN, fNever
       // on foot, or in a vehicle other than the chopper
       if (!pGroup.value.fVehicle || !IsGroupTheHelicopterGroup(pGroup)) {
         // ATE: Add a few corpse to the bloodcat lair...
-        if (SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY) == SEC_I16 && fFirstTimeInSector) {
+        if (SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY) == Enum123.SEC_I16 && fFirstTimeInSector) {
           AddCorpsesToBloodcatLair(pGroup.value.ubSectorX, pGroup.value.ubSectorY);
         }
 
@@ -1495,7 +1495,7 @@ function HandleNonCombatGroupArrival(pGroup: Pointer<GROUP>, fMainGroup: BOOLEAN
 
         // if traversing tactically, or we never left (just canceling), don't do this
         if (!gfTacticalTraversal && !fNeverLeft) {
-          RandomMercInGroupSaysQuote(pGroup, QUOTE_MERC_REACHED_DESTINATION);
+          RandomMercInGroupSaysQuote(pGroup, Enum202.QUOTE_MERC_REACHED_DESTINATION);
         }
       }
     }
@@ -1525,7 +1525,7 @@ function HandleOtherGroupsArrivingSimultaneously(ubSectorX: UINT8, ubSectorY: UI
   pEvent = gpEventList;
   gubNumGroupsArrivedSimultaneously = 0;
   while (pEvent && pEvent.value.uiTimeStamp <= uiCurrTimeStamp) {
-    if (pEvent.value.ubCallbackID == EVENT_GROUP_ARRIVAL && !(pEvent.value.ubFlags & SEF_DELETION_PENDING)) {
+    if (pEvent.value.ubCallbackID == Enum132.EVENT_GROUP_ARRIVAL && !(pEvent.value.ubFlags & SEF_DELETION_PENDING)) {
       pGroup = GetGroup(pEvent.value.uiParam);
       Assert(pGroup);
       if (pGroup.value.ubNextX == ubSectorX && pGroup.value.ubNextY == ubSectorY && pGroup.value.ubSectorZ == ubSectorZ) {
@@ -1533,7 +1533,7 @@ function HandleOtherGroupsArrivingSimultaneously(ubSectorX: UINT8, ubSectorY: UI
           GroupArrivedAtSector(pEvent.value.uiParam, FALSE, FALSE);
           pGroup.value.uiFlags |= GROUPFLAG_GROUP_ARRIVED_SIMULTANEOUSLY;
           gubNumGroupsArrivedSimultaneously++;
-          DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
+          DeleteStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
           pEvent = gpEventList;
           continue;
         }
@@ -1564,16 +1564,16 @@ function PrepareGroupsForSimultaneousArrival(): void {
   pGroup = gpGroupList;
   while (pGroup) {
     if (pGroup.value.uiFlags & GROUPFLAG_MARKER) {
-      DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
+      DeleteStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
 
       // NOTE: This can cause the arrival time to be > GetWorldTotalMin() + TraverseTime, so keep that in mind
       // if you have any code that uses these 3 values to figure out how far along its route a group is!
       SetGroupArrivalTime(pGroup, uiLatestArrivalTime);
-      AddStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID);
+      AddStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID);
 
       if (pGroup.value.fPlayer) {
         if (pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY > GetWorldTotalMin()) {
-          AddStrategicEvent(EVENT_GROUP_ABOUT_TO_ARRIVE, pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY, pGroup.value.ubGroupID);
+          AddStrategicEvent(Enum132.EVENT_GROUP_ABOUT_TO_ARRIVE, pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY, pGroup.value.ubGroupID);
         }
       }
 
@@ -1606,11 +1606,11 @@ function PrepareGroupsForSimultaneousArrival(): void {
     }
   }
 
-  AddStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID);
+  AddStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID);
 
   if (pGroup.value.fPlayer) {
     if (pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY > GetWorldTotalMin()) {
-      AddStrategicEvent(EVENT_GROUP_ABOUT_TO_ARRIVE, pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY, pGroup.value.ubGroupID);
+      AddStrategicEvent(Enum132.EVENT_GROUP_ABOUT_TO_ARRIVE, pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY, pGroup.value.ubGroupID);
     }
   }
   DelayEnemyGroupsIfPathsCross(pGroup);
@@ -1655,14 +1655,14 @@ function PossibleToCoordinateSimultaneousGroupArrivals(pFirstGroup: Pointer<GROU
     gpPendingSimultaneousGroup = pFirstGroup;
     // Build the string
     if (ubNumNearbyGroups == 1) {
-      pStr = gpStrategicString[STR_DETECTED_SINGULAR];
+      pStr = gpStrategicString[Enum365.STR_DETECTED_SINGULAR];
     } else {
-      pStr = gpStrategicString[STR_DETECTED_PLURAL];
+      pStr = gpStrategicString[Enum365.STR_DETECTED_PLURAL];
     }
-    if (gubEnemyEncounterCode == ENTERING_BLOODCAT_LAIR_CODE) {
-      pEnemyType = gpStrategicString[STR_PB_BLOODCATS];
+    if (gubEnemyEncounterCode == Enum164.ENTERING_BLOODCAT_LAIR_CODE) {
+      pEnemyType = gpStrategicString[Enum365.STR_PB_BLOODCATS];
     } else {
-      pEnemyType = gpStrategicString[STR_PB_ENEMIES];
+      pEnemyType = gpStrategicString[Enum365.STR_PB_ENEMIES];
     }
     // header, sector, singular/plural str, confirmation string.
     // Ex:  Enemies have been detected in sector J9 and another squad is
@@ -1671,13 +1671,13 @@ function PossibleToCoordinateSimultaneousGroupArrivals(pFirstGroup: Pointer<GROU
              pEnemyType, // Enemy type (Enemies or bloodcats)
              'A' + gpPendingSimultaneousGroup.value.ubSectorY - 1, gpPendingSimultaneousGroup.value.ubSectorX); // Sector location
     wcscat(str, "  ");
-    wcscat(str, gpStrategicString[STR_COORDINATE]);
+    wcscat(str, gpStrategicString[Enum365.STR_COORDINATE]);
     // Setup the dialog
 
     // Kris August 03, 1999 Bug fix:  Changed 1st line to 2nd line to fix game breaking if this dialog came up while in tactical.
     //                               It would kick you to mapscreen, where things would break...
     // DoMapMessageBox( MSG_BOX_BASIC_STYLE, str, MAP_SCREEN, MSG_BOX_FLAG_YESNO, PlanSimultaneousGroupArrivalCallback );
-    DoMapMessageBox(MSG_BOX_BASIC_STYLE, str, guiCurrentScreen, MSG_BOX_FLAG_YESNO, PlanSimultaneousGroupArrivalCallback);
+    DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, str, guiCurrentScreen, MSG_BOX_FLAG_YESNO, PlanSimultaneousGroupArrivalCallback);
 
     gfWaitingForInput = TRUE;
     return TRUE;
@@ -1706,12 +1706,12 @@ function DelayEnemyGroupsIfPathsCross(pPlayerGroup: Pointer<GROUP>): void {
         if (pGroup.value.ubNextX == pPlayerGroup.value.ubSectorX && pGroup.value.ubNextY == pPlayerGroup.value.ubSectorY && pGroup.value.ubSectorX == pPlayerGroup.value.ubNextX && pGroup.value.ubSectorY == pPlayerGroup.value.ubNextY) {
           // Okay, the enemy group will cross paths with the player, so find and delete the arrival event
           // and repost it in the future (like a minute or so after the player arrives)
-          DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
+          DeleteStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
 
           // NOTE: This can cause the arrival time to be > GetWorldTotalMin() + TraverseTime, so keep that in mind
           // if you have any code that uses these 3 values to figure out how far along its route a group is!
           SetGroupArrivalTime(pGroup, pPlayerGroup.value.uiArrivalTime + 1 + Random(10));
-          if (!AddStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID))
+          if (!AddStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID))
             AssertMsg(0, "Failed to add movement event.");
         }
       }
@@ -1752,16 +1752,16 @@ function InitiateGroupMovementToNextSector(pGroup: Pointer<GROUP>): void {
     AssertMsg(0, String("Attempting to move to waypoint %d, %d that you are already at!", wp.value.x, wp.value.y));
   // Clip dx/dy value so that the move is for only one sector.
   if (dx >= 1) {
-    ubDirection = EAST_STRATEGIC_MOVE;
+    ubDirection = Enum186.EAST_STRATEGIC_MOVE;
     dx = 1;
   } else if (dy >= 1) {
-    ubDirection = SOUTH_STRATEGIC_MOVE;
+    ubDirection = Enum186.SOUTH_STRATEGIC_MOVE;
     dy = 1;
   } else if (dx <= -1) {
-    ubDirection = WEST_STRATEGIC_MOVE;
+    ubDirection = Enum186.WEST_STRATEGIC_MOVE;
     dx = -1;
   } else if (dy <= -1) {
-    ubDirection = NORTH_STRATEGIC_MOVE;
+    ubDirection = Enum186.NORTH_STRATEGIC_MOVE;
     dy = -1;
   } else {
     Assert(0);
@@ -1844,7 +1844,7 @@ function InitiateGroupMovementToNextSector(pGroup: Pointer<GROUP>): void {
   }
 
   // Post the event!
-  if (!AddStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID))
+  if (!AddStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID))
     AssertMsg(0, "Failed to add movement event.");
 
   // For the case of player groups, we need to update the information of the soldiers.
@@ -1852,7 +1852,7 @@ function InitiateGroupMovementToNextSector(pGroup: Pointer<GROUP>): void {
     let curr: Pointer<PLAYERGROUP>;
 
     if (pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY > GetWorldTotalMin()) {
-      AddStrategicEvent(EVENT_GROUP_ABOUT_TO_ARRIVE, pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY, pGroup.value.ubGroupID);
+      AddStrategicEvent(Enum132.EVENT_GROUP_ABOUT_TO_ARRIVE, pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY, pGroup.value.ubGroupID);
     }
 
     curr = pGroup.value.pPlayerList;
@@ -1965,7 +1965,7 @@ function RemovePGroup(pGroup: Pointer<GROUP>): void {
   RemovePGroupWaypoints(pGroup);
 
   // Remove the arrival event if applicable.
-  DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
+  DeleteStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
 
   // Determine what type of group we have (because it requires different methods)
   if (pGroup.value.fPlayer) {
@@ -2025,7 +2025,7 @@ function SetGroupSectorValue(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, 
 
   // set next sectors same as current
   pGroup.value.ubOriginalSector = SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY);
-  DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
+  DeleteStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
 
   // set all of the mercs in the group so that they are in the new sector too.
   pPlayer = pGroup.value.pPlayerList;
@@ -2044,7 +2044,7 @@ function SetGroupSectorValue(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, 
 function SetEnemyGroupSector(pGroup: Pointer<GROUP>, ubSectorID: UINT8): void {
   // make sure it is valid
   Assert(pGroup);
-  DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
+  DeleteStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
 
   // Remove waypoints
   if (!gfRandomizingPatrolGroup) {
@@ -2183,18 +2183,18 @@ function FindTravelTimeBetweenWaypoints(pSource: Pointer<WAYPOINT>, pDest: Point
   if (iDelta > 0) {
     if (iDelta % (SOUTH_MOVE - 2) == 0) {
       iDelta = (SOUTH_MOVE - 2);
-      ubDirection = SOUTH_STRATEGIC_MOVE;
+      ubDirection = Enum186.SOUTH_STRATEGIC_MOVE;
     } else {
       iDelta = EAST_MOVE;
-      ubDirection = EAST_STRATEGIC_MOVE;
+      ubDirection = Enum186.EAST_STRATEGIC_MOVE;
     }
   } else {
     if (iDelta % (NORTH_MOVE + 2) == 0) {
       iDelta = (NORTH_MOVE + 2);
-      ubDirection = NORTH_STRATEGIC_MOVE;
+      ubDirection = Enum186.NORTH_STRATEGIC_MOVE;
     } else {
       iDelta = WEST_MOVE;
-      ubDirection = WEST_STRATEGIC_MOVE;
+      ubDirection = Enum186.WEST_STRATEGIC_MOVE;
     }
   }
 
@@ -2247,49 +2247,49 @@ function GetSectorMvtTimeForGroup(ubSector: UINT8, ubDirection: UINT8, pGroup: P
 
   ubTraverseType = SectorInfo[ubSector].ubTraversability[ubDirection];
 
-  if (ubTraverseType == EDGEOFWORLD)
+  if (ubTraverseType == Enum127.EDGEOFWORLD)
     return 0xffffffff; // can't travel here!
 
   // ARM: Made air-only travel take its normal time per sector even through towns.  Because Skyrider charges by the sector,
   // not by flying time, it's annoying when his default route detours through a town to save time, but costs extra money.
   // This isn't exactly unrealistic, since the chopper shouldn't be faster flying over a town anyway...  Not that other
   // kinds of travel should be either - but the towns represents a kind of warping of our space-time scale as it is...
-  if ((ubTraverseType == TOWN) && (pGroup.value.ubTransportationMask != AIR))
+  if ((ubTraverseType == Enum127.TOWN) && (pGroup.value.ubTransportationMask != AIR))
     return 5; // very fast, and vehicle types don't matter.
 
   if (fFoot) {
     switch (ubTraverseType) {
-      case ROAD:
+      case Enum127.ROAD:
         ubTraverseMod = 100;
         break;
-      case PLAINS:
+      case Enum127.PLAINS:
         ubTraverseMod = 85;
         break;
-      case SAND:
+      case Enum127.SAND:
         ubTraverseMod = 50;
         break;
-      case SPARSE:
+      case Enum127.SPARSE:
         ubTraverseMod = 70;
         break;
-      case DENSE:
+      case Enum127.DENSE:
         ubTraverseMod = 60;
         break;
-      case SWAMP:
+      case Enum127.SWAMP:
         ubTraverseMod = 35;
         break;
-      case WATER:
+      case Enum127.WATER:
         ubTraverseMod = 25;
         break;
-      case HILLS:
+      case Enum127.HILLS:
         ubTraverseMod = 50;
         break;
-      case GROUNDBARRIER:
+      case Enum127.GROUNDBARRIER:
         ubTraverseMod = 0;
         break;
-      case NS_RIVER:
+      case Enum127.NS_RIVER:
         ubTraverseMod = 25;
         break;
-      case EW_RIVER:
+      case Enum127.EW_RIVER:
         ubTraverseMod = 25;
         break;
       default:
@@ -2306,7 +2306,7 @@ function GetSectorMvtTimeForGroup(ubSector: UINT8, ubDirection: UINT8, pGroup: P
       curr = pGroup.value.pPlayerList;
       while (curr) {
         pSoldier = curr.value.pSoldier;
-        if (pSoldier.value.bAssignment != VEHICLE) {
+        if (pSoldier.value.bAssignment != Enum117.VEHICLE) {
           // Soldier is on foot and travelling.  Factor encumbrance into movement rate.
           iEncumbrance = CalculateCarriedWeight(pSoldier);
           if (iEncumbrance > iHighestEncumbrance) {
@@ -2322,7 +2322,7 @@ function GetSectorMvtTimeForGroup(ubSector: UINT8, ubDirection: UINT8, pGroup: P
   }
   if (fCar) {
     switch (ubTraverseType) {
-      case ROAD:
+      case Enum127.ROAD:
         ubTraverseMod = 100;
         break;
       default:
@@ -2337,16 +2337,16 @@ function GetSectorMvtTimeForGroup(ubSector: UINT8, ubDirection: UINT8, pGroup: P
   }
   if (fTruck) {
     switch (ubTraverseType) {
-      case ROAD:
+      case Enum127.ROAD:
         ubTraverseMod = 100;
         break;
-      case PLAINS:
+      case Enum127.PLAINS:
         ubTraverseMod = 75;
         break;
-      case SPARSE:
+      case Enum127.SPARSE:
         ubTraverseMod = 60;
         break;
-      case HILLS:
+      case Enum127.HILLS:
         ubTraverseMod = 50;
         break;
       default:
@@ -2361,28 +2361,28 @@ function GetSectorMvtTimeForGroup(ubSector: UINT8, ubDirection: UINT8, pGroup: P
   }
   if (fTracked) {
     switch (ubTraverseType) {
-      case ROAD:
+      case Enum127.ROAD:
         ubTraverseMod = 100;
         break;
-      case PLAINS:
+      case Enum127.PLAINS:
         ubTraverseMod = 100;
         break;
-      case SAND:
+      case Enum127.SAND:
         ubTraverseMod = 70;
         break;
-      case SPARSE:
+      case Enum127.SPARSE:
         ubTraverseMod = 60;
         break;
-      case HILLS:
+      case Enum127.HILLS:
         ubTraverseMod = 60;
         break;
-      case NS_RIVER:
+      case Enum127.NS_RIVER:
         ubTraverseMod = 20;
         break;
-      case EW_RIVER:
+      case Enum127.EW_RIVER:
         ubTraverseMod = 20;
         break;
-      case WATER:
+      case Enum127.WATER:
         ubTraverseMod = 10;
         break;
       default:
@@ -2513,13 +2513,13 @@ function HandleArrivalOfReinforcements(pGroup: Pointer<GROUP>): void {
     let ubStrategicInsertionCode: UINT8;
     // First, determine which entrypoint to use, based on the travel direction of the group.
     if (pGroup.value.ubSectorX < pGroup.value.ubPrevX)
-      ubStrategicInsertionCode = INSERTION_CODE_EAST;
+      ubStrategicInsertionCode = Enum175.INSERTION_CODE_EAST;
     else if (pGroup.value.ubSectorX > pGroup.value.ubPrevX)
-      ubStrategicInsertionCode = INSERTION_CODE_WEST;
+      ubStrategicInsertionCode = Enum175.INSERTION_CODE_WEST;
     else if (pGroup.value.ubSectorY < pGroup.value.ubPrevY)
-      ubStrategicInsertionCode = INSERTION_CODE_SOUTH;
+      ubStrategicInsertionCode = Enum175.INSERTION_CODE_SOUTH;
     else if (pGroup.value.ubSectorY > pGroup.value.ubPrevY)
-      ubStrategicInsertionCode = INSERTION_CODE_NORTH;
+      ubStrategicInsertionCode = Enum175.INSERTION_CODE_NORTH;
     else {
       Assert(0);
       return;
@@ -2537,11 +2537,11 @@ function HandleArrivalOfReinforcements(pGroup: Pointer<GROUP>): void {
 
       // DO arrives quote....
       if (cnt == 0) {
-        TacticalCharacterDialogue(pSoldier, QUOTE_MERC_REACHED_DESTINATION);
+        TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_MERC_REACHED_DESTINATION);
       }
       cnt++;
     }
-    ScreenMsg(FONT_YELLOW, MSG_INTERFACE, Message[STR_PLAYER_REINFORCEMENTS]);
+    ScreenMsg(FONT_YELLOW, MSG_INTERFACE, Message[Enum334.STR_PLAYER_REINFORCEMENTS]);
   } else {
     gfPendingEnemies = TRUE;
     ResetMortarsOnTeamCount();
@@ -3095,7 +3095,7 @@ function CheckMembersOfMvtGroupAndComplainAboutBleeding(pSoldier: Pointer<SOLDIE
 
     if (pCurrentSoldier.value.bBleeding > 0) {
       // complain about bleeding
-      TacticalCharacterDialogue(pCurrentSoldier, QUOTE_STARTING_TO_BLEED);
+      TacticalCharacterDialogue(pCurrentSoldier, Enum202.QUOTE_STARTING_TO_BLEED);
     }
     pPlayer = pPlayer.value.next;
   }
@@ -3196,16 +3196,16 @@ function CalculateGroupRetreatSector(pGroup: Pointer<GROUP>): void {
   uiSectorID = SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY);
   pSector = addressof(SectorInfo[uiSectorID]);
 
-  if (pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] != GROUNDBARRIER && pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] != EDGEOFWORLD) {
+  if (pSector.value.ubTraversability[Enum186.NORTH_STRATEGIC_MOVE] != Enum127.GROUNDBARRIER && pSector.value.ubTraversability[Enum186.NORTH_STRATEGIC_MOVE] != Enum127.EDGEOFWORLD) {
     pGroup.value.ubPrevX = pGroup.value.ubSectorX;
     pGroup.value.ubPrevY = pGroup.value.ubSectorY - 1;
-  } else if (pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] != GROUNDBARRIER && pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] != EDGEOFWORLD) {
+  } else if (pSector.value.ubTraversability[Enum186.EAST_STRATEGIC_MOVE] != Enum127.GROUNDBARRIER && pSector.value.ubTraversability[Enum186.EAST_STRATEGIC_MOVE] != Enum127.EDGEOFWORLD) {
     pGroup.value.ubPrevX = pGroup.value.ubSectorX + 1;
     pGroup.value.ubPrevY = pGroup.value.ubSectorY;
-  } else if (pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] != GROUNDBARRIER && pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] != EDGEOFWORLD) {
+  } else if (pSector.value.ubTraversability[Enum186.WEST_STRATEGIC_MOVE] != Enum127.GROUNDBARRIER && pSector.value.ubTraversability[Enum186.WEST_STRATEGIC_MOVE] != Enum127.EDGEOFWORLD) {
     pGroup.value.ubPrevX = pGroup.value.ubSectorX - 1;
     pGroup.value.ubPrevY = pGroup.value.ubSectorY;
-  } else if (pSector.value.ubTraversability[SOUTH_STRATEGIC_MOVE] != GROUNDBARRIER && pSector.value.ubTraversability[SOUTH_STRATEGIC_MOVE] != EDGEOFWORLD) {
+  } else if (pSector.value.ubTraversability[Enum186.SOUTH_STRATEGIC_MOVE] != Enum127.GROUNDBARRIER && pSector.value.ubTraversability[Enum186.SOUTH_STRATEGIC_MOVE] != Enum127.EDGEOFWORLD) {
     pGroup.value.ubPrevX = pGroup.value.ubSectorX;
     pGroup.value.ubPrevY = pGroup.value.ubSectorY + 1;
   } else {
@@ -3243,13 +3243,13 @@ function RetreatGroupToPreviousSector(pGroup: Pointer<GROUP>): void {
     dx = pGroup.value.ubNextX - pGroup.value.ubSectorX;
     dy = pGroup.value.ubNextY - pGroup.value.ubSectorY;
     if (dy == -1 && !dx)
-      ubDirection = NORTH_STRATEGIC_MOVE;
+      ubDirection = Enum186.NORTH_STRATEGIC_MOVE;
     else if (dx == 1 && !dy)
-      ubDirection = EAST_STRATEGIC_MOVE;
+      ubDirection = Enum186.EAST_STRATEGIC_MOVE;
     else if (dy == 1 && !dx)
-      ubDirection = SOUTH_STRATEGIC_MOVE;
+      ubDirection = Enum186.SOUTH_STRATEGIC_MOVE;
     else if (dx == -1 && !dy)
-      ubDirection = WEST_STRATEGIC_MOVE;
+      ubDirection = Enum186.WEST_STRATEGIC_MOVE;
     else {
       AssertMsg(0, String("Player group attempting illegal retreat from %c%d to %c%d.", pGroup.value.ubSectorY + 'A' - 1, pGroup.value.ubSectorX, pGroup.value.ubNextY + 'A' - 1, pGroup.value.ubNextX));
     }
@@ -3283,7 +3283,7 @@ function RetreatGroupToPreviousSector(pGroup: Pointer<GROUP>): void {
   }
 
   // Post the event!
-  if (!AddStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID))
+  if (!AddStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID))
     AssertMsg(0, "Failed to add movement event.");
 
   // For the case of player groups, we need to update the information of the soldiers.
@@ -3292,7 +3292,7 @@ function RetreatGroupToPreviousSector(pGroup: Pointer<GROUP>): void {
     curr = pGroup.value.pPlayerList;
 
     if (pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY > GetWorldTotalMin()) {
-      AddStrategicEvent(EVENT_GROUP_ABOUT_TO_ARRIVE, pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY, pGroup.value.ubGroupID);
+      AddStrategicEvent(Enum132.EVENT_GROUP_ABOUT_TO_ARRIVE, pGroup.value.uiArrivalTime - ABOUT_TO_ARRIVE_DELAY, pGroup.value.ubGroupID);
     }
 
     while (curr) {
@@ -3326,7 +3326,7 @@ function FindMovementGroupInSector(ubSectorX: UINT8, ubSectorY: UINT8, fPlayer: 
 function GroupAtFinalDestination(pGroup: Pointer<GROUP>): BOOLEAN {
   let wp: Pointer<WAYPOINT>;
 
-  if (pGroup.value.ubMoveType != ONE_WAY)
+  if (pGroup.value.ubMoveType != Enum185.ONE_WAY)
     return FALSE; // Group will continue to patrol, hence never stops.
 
   // Determine if we are at the final waypoint.
@@ -3353,7 +3353,7 @@ function GetFinalWaypoint(pGroup: Pointer<GROUP>): Pointer<WAYPOINT> {
   Assert(pGroup);
 
   // Make sure they're on a one way route, otherwise this request is illegal
-  Assert(pGroup.value.ubMoveType == ONE_WAY);
+  Assert(pGroup.value.ubMoveType == Enum185.ONE_WAY);
 
   wp = pGroup.value.pWaypoints;
   if (wp) {
@@ -3404,7 +3404,7 @@ function ResetMovementForEnemyGroup(pGroup: Pointer<GROUP>): void {
   }
 
   // Cancel the event that is posted.
-  DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
+  DeleteStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
 
   // Calculate the new arrival time (all data pertaining to movement should be valid)
   if (pGroup.value.uiTraverseTime > 400) {
@@ -3415,7 +3415,7 @@ function ResetMovementForEnemyGroup(pGroup: Pointer<GROUP>): void {
   SetGroupArrivalTime(pGroup, GetWorldTotalMin() + pGroup.value.uiTraverseTime);
 
   // Add a new event
-  AddStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID);
+  AddStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.uiArrivalTime, pGroup.value.ubGroupID);
 }
 
 function UpdatePersistantGroupsFromOldSave(uiSavedGameVersion: UINT32): void {
@@ -3437,7 +3437,7 @@ function UpdatePersistantGroupsFromOldSave(uiSavedGameVersion: UINT32): void {
 
     fDoChange = TRUE;
   } else if (uiSavedGameVersion < 63) {
-    for (cnt = 0; cnt < NUMBER_OF_SQUADS; cnt++) {
+    for (cnt = 0; cnt < Enum275.NUMBER_OF_SQUADS; cnt++) {
       // create mvt groups
       pGroup = GetGroup(SquadMovementGroups[cnt]);
 
@@ -3488,7 +3488,7 @@ function GroupWillMoveThroughSector(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ub
   let ubOrigY: UINT8;
 
   Assert(pGroup);
-  AssertMsg(pGroup.value.ubMoveType == ONE_WAY, String("GroupWillMoveThroughSector() -- Attempting to test group with an invalid move type.  ubGroupID: %d, ubMoveType: %d, sector: %c%d -- KM:0", pGroup.value.ubGroupID, pGroup.value.ubMoveType, pGroup.value.ubSectorY + 'A' - 1, pGroup.value.ubSectorX));
+  AssertMsg(pGroup.value.ubMoveType == Enum185.ONE_WAY, String("GroupWillMoveThroughSector() -- Attempting to test group with an invalid move type.  ubGroupID: %d, ubMoveType: %d, sector: %c%d -- KM:0", pGroup.value.ubGroupID, pGroup.value.ubMoveType, pGroup.value.ubSectorY + 'A' - 1, pGroup.value.ubSectorX));
 
   // Preserve the original sector values, as we will be temporarily modifying the group's ubSectorX/Y values
   // as we traverse the waypoints.
@@ -3592,8 +3592,8 @@ function AddFuelToVehicle(pSoldier: Pointer<SOLDIERTYPE>, pVehicle: Pointer<SOLD
   let sFuelNeeded: INT16;
   let sFuelAvailable: INT16;
   let sFuelAdded: INT16;
-  pItem = addressof(pSoldier.value.inv[HANDPOS]);
-  if (pItem.value.usItem != GAS_CAN) {
+  pItem = addressof(pSoldier.value.inv[Enum261.HANDPOS]);
+  if (pItem.value.usItem != Enum225.GAS_CAN) {
     return;
   }
   // Soldier has gas can, so now add gas to vehicle while removing gas from the gas can.
@@ -3681,11 +3681,11 @@ function RandomizePatrolGroupLocation(pGroup: Pointer<GROUP>): void {
   // return; //disabled for now
 
   Assert(!pGroup.value.fPlayer);
-  Assert(pGroup.value.ubMoveType == ENDTOEND_FORWARDS);
-  Assert(pGroup.value.pEnemyGroup.value.ubIntention == PATROL);
+  Assert(pGroup.value.ubMoveType == Enum185.ENDTOEND_FORWARDS);
+  Assert(pGroup.value.pEnemyGroup.value.ubIntention == Enum184.PATROL);
 
   // Search for the event, and kill it (if it exists)!
-  DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
+  DeleteStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
 
   // count the group's waypoints
   wp = pGroup.value.pWaypoints;
@@ -3705,11 +3705,11 @@ function RandomizePatrolGroupLocation(pGroup: Pointer<GROUP>): void {
   if (ubChosen >= ubMaxWaypointID) {
     // They chose a waypoint going in the reverse direction, so translate it
     // to an actual waypointID and switch directions.
-    pGroup.value.ubMoveType = ENDTOEND_BACKWARDS;
+    pGroup.value.ubMoveType = Enum185.ENDTOEND_BACKWARDS;
     pGroup.value.ubNextWaypointID = ubChosen - ubMaxWaypointID;
     ubChosen = pGroup.value.ubNextWaypointID + 1;
   } else {
-    pGroup.value.ubMoveType = ENDTOEND_FORWARDS;
+    pGroup.value.ubMoveType = Enum185.ENDTOEND_FORWARDS;
     pGroup.value.ubNextWaypointID = ubChosen + 1;
   }
 
@@ -3761,7 +3761,7 @@ function TestForBloodcatAmbush(pGroup: Pointer<GROUP>): BOOLEAN {
   ubChance = 5 * gGameOptions.ubDifficultyLevel;
 
   iHoursElapsed = (GetWorldTotalMin() - pSector.value.uiTimeCurrentSectorWasLastLoaded) / 60;
-  if (ubSectorID == SEC_N5 || ubSectorID == SEC_I16) {
+  if (ubSectorID == Enum123.SEC_N5 || ubSectorID == Enum123.SEC_I16) {
     // These are special maps -- we use all placements.
     if (pSector.value.bBloodCats == -1) {
       pSector.value.bBloodCats = pSector.value.bBloodCatPlacements;
@@ -3788,7 +3788,7 @@ function TestForBloodcatAmbush(pGroup: Pointer<GROUP>): BOOLEAN {
       // choose the lowest number of cats calculated by difficulty and progress.
       pSector.value.bBloodCats = min(bDifficultyMaxCats, bProgressMaxCats);
 
-      if (gGameOptions.ubDifficultyLevel != DIF_LEVEL_HARD) {
+      if (gGameOptions.ubDifficultyLevel != Enum9.DIF_LEVEL_HARD) {
         // if not hard difficulty, ensure cats never outnumber mercs by a factor of 2 (min 3 bloodcats)
         pSector.value.bBloodCats = min(pSector.value.bBloodCats, bNumMercMaxCats);
         pSector.value.bBloodCats = max(pSector.value.bBloodCats, 3);
@@ -3797,22 +3797,22 @@ function TestForBloodcatAmbush(pGroup: Pointer<GROUP>): BOOLEAN {
       // ensure that there aren't more bloodcats than placements
       pSector.value.bBloodCats = min(pSector.value.bBloodCats, pSector.value.bBloodCatPlacements);
     }
-  } else if (ubSectorID != SEC_I16) {
+  } else if (ubSectorID != Enum123.SEC_I16) {
     if (!gfAutoAmbush && PreChance(95)) {
       // already ambushed here.  But 5% chance of getting ambushed again!
       fAlreadyAmbushed = TRUE;
     }
   }
 
-  if (!fAlreadyAmbushed && ubSectorID != SEC_N5 && pSector.value.bBloodCats > 0 && !pGroup.value.fVehicle && !NumEnemiesInSector(pGroup.value.ubSectorX, pGroup.value.ubSectorY)) {
-    if (ubSectorID != SEC_I16 || !gubFact[FACT_PLAYER_KNOWS_ABOUT_BLOODCAT_LAIR]) {
-      gubEnemyEncounterCode = BLOODCAT_AMBUSH_CODE;
+  if (!fAlreadyAmbushed && ubSectorID != Enum123.SEC_N5 && pSector.value.bBloodCats > 0 && !pGroup.value.fVehicle && !NumEnemiesInSector(pGroup.value.ubSectorX, pGroup.value.ubSectorY)) {
+    if (ubSectorID != Enum123.SEC_I16 || !gubFact[Enum170.FACT_PLAYER_KNOWS_ABOUT_BLOODCAT_LAIR]) {
+      gubEnemyEncounterCode = Enum164.BLOODCAT_AMBUSH_CODE;
     } else {
-      gubEnemyEncounterCode = ENTERING_BLOODCAT_LAIR_CODE;
+      gubEnemyEncounterCode = Enum164.ENTERING_BLOODCAT_LAIR_CODE;
     }
     return TRUE;
   } else {
-    gubEnemyEncounterCode = NO_ENCOUNTER_CODE;
+    gubEnemyEncounterCode = Enum164.NO_ENCOUNTER_CODE;
     return FALSE;
   }
 }
@@ -3820,14 +3820,14 @@ function TestForBloodcatAmbush(pGroup: Pointer<GROUP>): BOOLEAN {
 function NotifyPlayerOfBloodcatBattle(ubSectorX: UINT8, ubSectorY: UINT8): void {
   let str: UINT16[] /* [256] */;
   let zTempString: UINT16[] /* [128] */;
-  if (gubEnemyEncounterCode == BLOODCAT_AMBUSH_CODE) {
+  if (gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE) {
     GetSectorIDString(ubSectorX, ubSectorY, 0, zTempString, TRUE);
     swprintf(str, pMapErrorString[12], zTempString);
-  } else if (gubEnemyEncounterCode == ENTERING_BLOODCAT_LAIR_CODE) {
+  } else if (gubEnemyEncounterCode == Enum164.ENTERING_BLOODCAT_LAIR_CODE) {
     wcscpy(str, pMapErrorString[13]);
   }
 
-  if (guiCurrentScreen == MAP_SCREEN) {
+  if (guiCurrentScreen == Enum26.MAP_SCREEN) {
     // Force render mapscreen (need to update the position of the group before the dialog appears.
     fMapPanelDirty = TRUE;
     MapScreenHandle();
@@ -3888,7 +3888,7 @@ function CancelEmptyPersistentGroupMovement(pGroup: Pointer<GROUP>): void {
   }
 
   // prevent it from arriving empty
-  DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
+  DeleteStrategicEvent(Enum132.EVENT_GROUP_ARRIVAL, pGroup.value.ubGroupID);
 
   // release memory for its waypoints
   RemoveGroupWaypoints(pGroup.value.ubGroupID);
@@ -3982,7 +3982,7 @@ function HandlePlayerGroupEnteringSectorToCheckForNPCsOfNote(pGroup: Pointer<GRO
   sStrategicSector = sSectorX + MAP_WORLD_X * sSectorY;
 
   // skip towns/pseudo-towns (anything that shows up on the map as being special)
-  if (StrategicMap[sStrategicSector].bNameId != BLANK_SECTOR) {
+  if (StrategicMap[sStrategicSector].bNameId != Enum135.BLANK_SECTOR) {
     return FALSE;
   }
 
@@ -4029,7 +4029,7 @@ function WildernessSectorWithAllProfiledNPCsNotSpokenWith(sSectorX: INT16, sSect
     }
 
     // skip vehicles
-    if (ubProfile >= PROF_HUMMER && ubProfile <= PROF_HELICOPTER) {
+    if (ubProfile >= Enum268.PROF_HUMMER && ubProfile <= Enum268.PROF_HELICOPTER) {
       continue;
     }
 
@@ -4111,7 +4111,7 @@ function GroupHasInTransitDeadOrPOWMercs(pGroup: Pointer<GROUP>): BOOLEAN {
   pPlayer = pGroup.value.pPlayerList;
   while (pPlayer) {
     if (pPlayer.value.pSoldier) {
-      if ((pPlayer.value.pSoldier.value.bAssignment == IN_TRANSIT) || (pPlayer.value.pSoldier.value.bAssignment == ASSIGNMENT_POW) || (pPlayer.value.pSoldier.value.bAssignment == ASSIGNMENT_DEAD)) {
+      if ((pPlayer.value.pSoldier.value.bAssignment == Enum117.IN_TRANSIT) || (pPlayer.value.pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) || (pPlayer.value.pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD)) {
         // yup!
         return TRUE;
       }

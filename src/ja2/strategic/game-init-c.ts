@@ -4,7 +4,7 @@ function InitNPCs(): void {
   let pProfile: Pointer<MERCPROFILESTRUCT>;
 
   // add the pilot at a random location!
-  pProfile = addressof(gMercProfiles[SKYRIDER]);
+  pProfile = addressof(gMercProfiles[Enum268.SKYRIDER]);
   switch (Random(4)) {
     case 0:
       pProfile.value.sSectorX = 15;
@@ -51,7 +51,7 @@ function InitNPCs(): void {
 
   // add Micky in random location
 
-  pProfile = addressof(gMercProfiles[MICKY]);
+  pProfile = addressof(gMercProfiles[Enum268.MICKY]);
   switch (Random(5)) {
     case 0:
       pProfile.value.sSectorX = 9;
@@ -87,13 +87,13 @@ function InitNPCs(): void {
 
   if (gGameOptions.fSciFi) {
     // add Bob
-    pProfile = addressof(gMercProfiles[BOB]);
+    pProfile = addressof(gMercProfiles[Enum268.BOB]);
     pProfile.value.sSectorX = 8;
     pProfile.value.sSectorY = MAP_ROW_F;
     pProfile.value.bSectorZ = 0;
 
     // add Gabby in random location
-    pProfile = addressof(gMercProfiles[GABBY]);
+    pProfile = addressof(gMercProfiles[Enum268.GABBY]);
     switch (Random(2)) {
       case 0:
         pProfile.value.sSectorX = 11;
@@ -124,7 +124,7 @@ function InitNPCs(): void {
   gbHospitalPriceModifier = 0;
 
   // set up Devin so he will be placed ASAP
-  gMercProfiles[DEVIN].bNPCData = 3;
+  gMercProfiles[Enum268.DEVIN].bNPCData = 3;
 }
 
 function InitBloodCatSectors(): void {
@@ -136,52 +136,52 @@ function InitBloodCatSectors(): void {
   for (i = 0; i < 255; i++) {
     SectorInfo[i].bBloodCats = -1;
   }
-  SectorInfo[SEC_A15].bBloodCatPlacements = 9;
-  SectorInfo[SEC_B4].bBloodCatPlacements = 9;
-  SectorInfo[SEC_B16].bBloodCatPlacements = 8;
-  SectorInfo[SEC_C3].bBloodCatPlacements = 12;
-  SectorInfo[SEC_C8].bBloodCatPlacements = 13;
-  SectorInfo[SEC_C11].bBloodCatPlacements = 7;
-  SectorInfo[SEC_D4].bBloodCatPlacements = 8;
-  SectorInfo[SEC_D9].bBloodCatPlacements = 12;
-  SectorInfo[SEC_E11].bBloodCatPlacements = 10;
-  SectorInfo[SEC_E13].bBloodCatPlacements = 14;
-  SectorInfo[SEC_F3].bBloodCatPlacements = 13;
-  SectorInfo[SEC_F5].bBloodCatPlacements = 7;
-  SectorInfo[SEC_F7].bBloodCatPlacements = 12;
-  SectorInfo[SEC_F12].bBloodCatPlacements = 9;
-  SectorInfo[SEC_F14].bBloodCatPlacements = 14;
-  SectorInfo[SEC_F15].bBloodCatPlacements = 8;
-  SectorInfo[SEC_G6].bBloodCatPlacements = 7;
-  SectorInfo[SEC_G10].bBloodCatPlacements = 12;
-  SectorInfo[SEC_G12].bBloodCatPlacements = 11;
-  SectorInfo[SEC_H5].bBloodCatPlacements = 9;
-  SectorInfo[SEC_I4].bBloodCatPlacements = 8;
-  SectorInfo[SEC_I15].bBloodCatPlacements = 8;
-  SectorInfo[SEC_J6].bBloodCatPlacements = 11;
-  SectorInfo[SEC_K3].bBloodCatPlacements = 12;
-  SectorInfo[SEC_K6].bBloodCatPlacements = 14;
-  SectorInfo[SEC_K10].bBloodCatPlacements = 12;
-  SectorInfo[SEC_K14].bBloodCatPlacements = 14;
+  SectorInfo[Enum123.SEC_A15].bBloodCatPlacements = 9;
+  SectorInfo[Enum123.SEC_B4].bBloodCatPlacements = 9;
+  SectorInfo[Enum123.SEC_B16].bBloodCatPlacements = 8;
+  SectorInfo[Enum123.SEC_C3].bBloodCatPlacements = 12;
+  SectorInfo[Enum123.SEC_C8].bBloodCatPlacements = 13;
+  SectorInfo[Enum123.SEC_C11].bBloodCatPlacements = 7;
+  SectorInfo[Enum123.SEC_D4].bBloodCatPlacements = 8;
+  SectorInfo[Enum123.SEC_D9].bBloodCatPlacements = 12;
+  SectorInfo[Enum123.SEC_E11].bBloodCatPlacements = 10;
+  SectorInfo[Enum123.SEC_E13].bBloodCatPlacements = 14;
+  SectorInfo[Enum123.SEC_F3].bBloodCatPlacements = 13;
+  SectorInfo[Enum123.SEC_F5].bBloodCatPlacements = 7;
+  SectorInfo[Enum123.SEC_F7].bBloodCatPlacements = 12;
+  SectorInfo[Enum123.SEC_F12].bBloodCatPlacements = 9;
+  SectorInfo[Enum123.SEC_F14].bBloodCatPlacements = 14;
+  SectorInfo[Enum123.SEC_F15].bBloodCatPlacements = 8;
+  SectorInfo[Enum123.SEC_G6].bBloodCatPlacements = 7;
+  SectorInfo[Enum123.SEC_G10].bBloodCatPlacements = 12;
+  SectorInfo[Enum123.SEC_G12].bBloodCatPlacements = 11;
+  SectorInfo[Enum123.SEC_H5].bBloodCatPlacements = 9;
+  SectorInfo[Enum123.SEC_I4].bBloodCatPlacements = 8;
+  SectorInfo[Enum123.SEC_I15].bBloodCatPlacements = 8;
+  SectorInfo[Enum123.SEC_J6].bBloodCatPlacements = 11;
+  SectorInfo[Enum123.SEC_K3].bBloodCatPlacements = 12;
+  SectorInfo[Enum123.SEC_K6].bBloodCatPlacements = 14;
+  SectorInfo[Enum123.SEC_K10].bBloodCatPlacements = 12;
+  SectorInfo[Enum123.SEC_K14].bBloodCatPlacements = 14;
 
   switch (gGameOptions.ubDifficultyLevel) {
-    case DIF_LEVEL_EASY: // 50%
-      SectorInfo[SEC_I16].bBloodCatPlacements = 14;
-      SectorInfo[SEC_I16].bBloodCats = 14;
-      SectorInfo[SEC_N5].bBloodCatPlacements = 8;
-      SectorInfo[SEC_N5].bBloodCats = 8;
+    case Enum9.DIF_LEVEL_EASY: // 50%
+      SectorInfo[Enum123.SEC_I16].bBloodCatPlacements = 14;
+      SectorInfo[Enum123.SEC_I16].bBloodCats = 14;
+      SectorInfo[Enum123.SEC_N5].bBloodCatPlacements = 8;
+      SectorInfo[Enum123.SEC_N5].bBloodCats = 8;
       break;
-    case DIF_LEVEL_MEDIUM: // 75%
-      SectorInfo[SEC_I16].bBloodCatPlacements = 19;
-      SectorInfo[SEC_I16].bBloodCats = 19;
-      SectorInfo[SEC_N5].bBloodCatPlacements = 10;
-      SectorInfo[SEC_N5].bBloodCats = 10;
+    case Enum9.DIF_LEVEL_MEDIUM: // 75%
+      SectorInfo[Enum123.SEC_I16].bBloodCatPlacements = 19;
+      SectorInfo[Enum123.SEC_I16].bBloodCats = 19;
+      SectorInfo[Enum123.SEC_N5].bBloodCatPlacements = 10;
+      SectorInfo[Enum123.SEC_N5].bBloodCats = 10;
       break;
-    case DIF_LEVEL_HARD: // 100%
-      SectorInfo[SEC_I16].bBloodCatPlacements = 26;
-      SectorInfo[SEC_I16].bBloodCats = 26;
-      SectorInfo[SEC_N5].bBloodCatPlacements = 12;
-      SectorInfo[SEC_N5].bBloodCats = 12;
+    case Enum9.DIF_LEVEL_HARD: // 100%
+      SectorInfo[Enum123.SEC_I16].bBloodCatPlacements = 26;
+      SectorInfo[Enum123.SEC_I16].bBloodCats = 26;
+      SectorInfo[Enum123.SEC_N5].bBloodCatPlacements = 12;
+      SectorInfo[Enum123.SEC_N5].bBloodCats = 12;
       break;
   }
 }
@@ -223,7 +223,7 @@ function InitStrategicLayer(): void {
   InitLeaveList();
 
   // reset time compression mode to X0 (this will also pause it)
-  SetGameTimeCompressionLevel(TIME_COMPRESS_X0);
+  SetGameTimeCompressionLevel(Enum130.TIME_COMPRESS_X0);
 
   // select A9 Omerta as the initial selected sector
   ChangeSelectedMapSector(9, 1, 0);
@@ -289,26 +289,26 @@ function InitNewGame(fReset: BOOLEAN): BOOLEAN {
     ResetHeliSeats();
 
     // Setup two new messages!
-    AddPreReadEmail(OLD_ENRICO_1, OLD_ENRICO_1_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
-    AddPreReadEmail(OLD_ENRICO_2, OLD_ENRICO_2_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
-    AddPreReadEmail(RIS_REPORT, RIS_REPORT_LENGTH, RIS_EMAIL, GetWorldTotalMin());
-    AddPreReadEmail(OLD_ENRICO_3, OLD_ENRICO_3_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
-    AddEmail(IMP_EMAIL_INTRO, IMP_EMAIL_INTRO_LENGTH, CHAR_PROFILE_SITE, GetWorldTotalMin());
+    AddPreReadEmail(OLD_ENRICO_1, OLD_ENRICO_1_LENGTH, Enum75.MAIL_ENRICO, GetWorldTotalMin());
+    AddPreReadEmail(OLD_ENRICO_2, OLD_ENRICO_2_LENGTH, Enum75.MAIL_ENRICO, GetWorldTotalMin());
+    AddPreReadEmail(RIS_REPORT, RIS_REPORT_LENGTH, Enum75.RIS_EMAIL, GetWorldTotalMin());
+    AddPreReadEmail(OLD_ENRICO_3, OLD_ENRICO_3_LENGTH, Enum75.MAIL_ENRICO, GetWorldTotalMin());
+    AddEmail(IMP_EMAIL_INTRO, IMP_EMAIL_INTRO_LENGTH, Enum75.CHAR_PROFILE_SITE, GetWorldTotalMin());
     // AddEmail(ENRICO_CONGRATS,ENRICO_CONGRATS_LENGTH,MAIL_ENRICO, GetWorldTotalMin() );
 
     // ATE: Set starting cash....
     switch (gGameOptions.ubDifficultyLevel) {
-      case DIF_LEVEL_EASY:
+      case Enum9.DIF_LEVEL_EASY:
 
         iStartingCash = 45000;
         break;
 
-      case DIF_LEVEL_MEDIUM:
+      case Enum9.DIF_LEVEL_MEDIUM:
 
         iStartingCash = 35000;
         break;
 
-      case DIF_LEVEL_HARD:
+      case Enum9.DIF_LEVEL_HARD:
 
         iStartingCash = 30000;
         break;
@@ -319,17 +319,17 @@ function InitNewGame(fReset: BOOLEAN): BOOLEAN {
     }
 
     // Setup initial money
-    AddTransactionToPlayersBook(ANONYMOUS_DEPOSIT, 0, GetWorldTotalMin(), iStartingCash);
+    AddTransactionToPlayersBook(Enum80.ANONYMOUS_DEPOSIT, 0, GetWorldTotalMin(), iStartingCash);
 
     {
       let uiDaysTimeMercSiteAvailable: UINT32 = Random(2) + 1;
 
       // schedule email for message from spec at 7am 3 days in the future
-      AddFutureDayStrategicEvent(EVENT_DAY3_ADD_EMAIL_FROM_SPECK, 60 * 7, 0, uiDaysTimeMercSiteAvailable);
+      AddFutureDayStrategicEvent(Enum132.EVENT_DAY3_ADD_EMAIL_FROM_SPECK, 60 * 7, 0, uiDaysTimeMercSiteAvailable);
     }
 
-    SetLaptopExitScreen(INIT_SCREEN);
-    SetPendingNewScreen(LAPTOP_SCREEN);
+    SetLaptopExitScreen(Enum26.INIT_SCREEN);
+    SetPendingNewScreen(Enum26.LAPTOP_SCREEN);
     gubScreenCount = 1;
 
     // Set the fact the game is in progress
@@ -446,91 +446,91 @@ function QuickSetupOfMercProfileItems(uiCount: UINT32, ubProfileIndex: UINT8): v
     // gMercProfiles[ ubProfileIndex ].inv[ HANDPOS ] = HAND_GRENADE;
     // gMercProfiles[ ubProfileIndex ].bInvStatus[ HANDPOS ] = 100;
     // gMercProfiles[ ubProfileIndex ].bInvNumber[ HANDPOS ] = 3;
-    gMercProfiles[ubProfileIndex].inv[HANDPOS] = C7;
-    gMercProfiles[ubProfileIndex].bInvStatus[HANDPOS] = 100;
-    gMercProfiles[ubProfileIndex].bInvNumber[HANDPOS] = 1;
+    gMercProfiles[ubProfileIndex].inv[Enum261.HANDPOS] = Enum225.C7;
+    gMercProfiles[ubProfileIndex].bInvStatus[Enum261.HANDPOS] = 100;
+    gMercProfiles[ubProfileIndex].bInvNumber[Enum261.HANDPOS] = 1;
 
-    gMercProfiles[ubProfileIndex].inv[BIGPOCK1POS] = CAWS;
-    gMercProfiles[ubProfileIndex].bInvStatus[BIGPOCK1POS] = 100;
-    gMercProfiles[ubProfileIndex].bInvNumber[BIGPOCK1POS] = 1;
+    gMercProfiles[ubProfileIndex].inv[Enum261.BIGPOCK1POS] = Enum225.CAWS;
+    gMercProfiles[ubProfileIndex].bInvStatus[Enum261.BIGPOCK1POS] = 100;
+    gMercProfiles[ubProfileIndex].bInvNumber[Enum261.BIGPOCK1POS] = 1;
 
-    gMercProfiles[ubProfileIndex].bSkillTrait = MARTIALARTS;
+    gMercProfiles[ubProfileIndex].bSkillTrait = Enum269.MARTIALARTS;
 
-    gMercProfiles[ubProfileIndex].inv[SMALLPOCK3POS] = KEY_2;
-    gMercProfiles[ubProfileIndex].bInvStatus[SMALLPOCK3POS] = 100;
-    gMercProfiles[ubProfileIndex].bInvNumber[SMALLPOCK3POS] = 1;
+    gMercProfiles[ubProfileIndex].inv[Enum261.SMALLPOCK3POS] = Enum225.KEY_2;
+    gMercProfiles[ubProfileIndex].bInvStatus[Enum261.SMALLPOCK3POS] = 100;
+    gMercProfiles[ubProfileIndex].bInvNumber[Enum261.SMALLPOCK3POS] = 1;
 
-    gMercProfiles[ubProfileIndex].inv[SMALLPOCK5POS] = LOCKSMITHKIT;
-    gMercProfiles[ubProfileIndex].bInvStatus[SMALLPOCK5POS] = 100;
-    gMercProfiles[ubProfileIndex].bInvNumber[SMALLPOCK5POS] = 1;
+    gMercProfiles[ubProfileIndex].inv[Enum261.SMALLPOCK5POS] = Enum225.LOCKSMITHKIT;
+    gMercProfiles[ubProfileIndex].bInvStatus[Enum261.SMALLPOCK5POS] = 100;
+    gMercProfiles[ubProfileIndex].bInvNumber[Enum261.SMALLPOCK5POS] = 1;
 
-    gMercProfiles[ubProfileIndex].inv[BIGPOCK3POS] = MEDICKIT;
-    gMercProfiles[ubProfileIndex].bInvStatus[BIGPOCK3POS] = 100;
-    gMercProfiles[ubProfileIndex].bInvNumber[BIGPOCK3POS] = 1;
+    gMercProfiles[ubProfileIndex].inv[Enum261.BIGPOCK3POS] = Enum225.MEDICKIT;
+    gMercProfiles[ubProfileIndex].bInvStatus[Enum261.BIGPOCK3POS] = 100;
+    gMercProfiles[ubProfileIndex].bInvNumber[Enum261.BIGPOCK3POS] = 1;
 
-    gMercProfiles[ubProfileIndex].inv[BIGPOCK4POS] = SHAPED_CHARGE;
-    gMercProfiles[ubProfileIndex].bInvStatus[BIGPOCK4POS] = 100;
-    gMercProfiles[ubProfileIndex].bInvNumber[BIGPOCK4POS] = 1;
+    gMercProfiles[ubProfileIndex].inv[Enum261.BIGPOCK4POS] = Enum225.SHAPED_CHARGE;
+    gMercProfiles[ubProfileIndex].bInvStatus[Enum261.BIGPOCK4POS] = 100;
+    gMercProfiles[ubProfileIndex].bInvNumber[Enum261.BIGPOCK4POS] = 1;
 
     // TEMP!
     // make carman's opinion of us high!
     gMercProfiles[78].bMercOpinion[ubProfileIndex] = 25;
   } else if (uiCount == 1) {
-    gMercProfiles[ubProfileIndex].inv[HANDPOS] = CAWS;
-    gMercProfiles[ubProfileIndex].bInvStatus[HANDPOS] = 100;
-    gMercProfiles[ubProfileIndex].bInvNumber[HANDPOS] = 1;
+    gMercProfiles[ubProfileIndex].inv[Enum261.HANDPOS] = Enum225.CAWS;
+    gMercProfiles[ubProfileIndex].bInvStatus[Enum261.HANDPOS] = 100;
+    gMercProfiles[ubProfileIndex].bInvNumber[Enum261.HANDPOS] = 1;
 
-    gMercProfiles[ubProfileIndex].inv[SMALLPOCK3POS] = KEY_1;
-    gMercProfiles[ubProfileIndex].bInvStatus[SMALLPOCK3POS] = 100;
-    gMercProfiles[ubProfileIndex].bInvNumber[SMALLPOCK3POS] = 1;
+    gMercProfiles[ubProfileIndex].inv[Enum261.SMALLPOCK3POS] = Enum225.KEY_1;
+    gMercProfiles[ubProfileIndex].bInvStatus[Enum261.SMALLPOCK3POS] = 100;
+    gMercProfiles[ubProfileIndex].bInvNumber[Enum261.SMALLPOCK3POS] = 1;
   } else if (uiCount == 2) {
-    gMercProfiles[ubProfileIndex].inv[HANDPOS] = GLOCK_17;
-    gMercProfiles[ubProfileIndex].bInvStatus[HANDPOS] = 100;
-    gMercProfiles[ubProfileIndex].bInvNumber[HANDPOS] = 1;
+    gMercProfiles[ubProfileIndex].inv[Enum261.HANDPOS] = Enum225.GLOCK_17;
+    gMercProfiles[ubProfileIndex].bInvStatus[Enum261.HANDPOS] = 100;
+    gMercProfiles[ubProfileIndex].bInvNumber[Enum261.HANDPOS] = 1;
 
-    gMercProfiles[ubProfileIndex].inv[SECONDHANDPOS] = 5;
-    gMercProfiles[ubProfileIndex].bInvStatus[SECONDHANDPOS] = 100;
-    gMercProfiles[ubProfileIndex].bInvNumber[SECONDHANDPOS] = 1;
+    gMercProfiles[ubProfileIndex].inv[Enum261.SECONDHANDPOS] = 5;
+    gMercProfiles[ubProfileIndex].bInvStatus[Enum261.SECONDHANDPOS] = 100;
+    gMercProfiles[ubProfileIndex].bInvNumber[Enum261.SECONDHANDPOS] = 1;
 
-    gMercProfiles[ubProfileIndex].inv[SMALLPOCK1POS] = SILENCER;
-    gMercProfiles[ubProfileIndex].bInvStatus[SMALLPOCK1POS] = 100;
-    gMercProfiles[ubProfileIndex].bInvNumber[SMALLPOCK1POS] = 1;
+    gMercProfiles[ubProfileIndex].inv[Enum261.SMALLPOCK1POS] = Enum225.SILENCER;
+    gMercProfiles[ubProfileIndex].bInvStatus[Enum261.SMALLPOCK1POS] = 100;
+    gMercProfiles[ubProfileIndex].bInvNumber[Enum261.SMALLPOCK1POS] = 1;
 
-    gMercProfiles[ubProfileIndex].inv[SMALLPOCK2POS] = SNIPERSCOPE;
-    gMercProfiles[ubProfileIndex].bInvStatus[SMALLPOCK2POS] = 100;
-    gMercProfiles[ubProfileIndex].bInvNumber[SMALLPOCK2POS] = 1;
+    gMercProfiles[ubProfileIndex].inv[Enum261.SMALLPOCK2POS] = Enum225.SNIPERSCOPE;
+    gMercProfiles[ubProfileIndex].bInvStatus[Enum261.SMALLPOCK2POS] = 100;
+    gMercProfiles[ubProfileIndex].bInvNumber[Enum261.SMALLPOCK2POS] = 1;
 
-    gMercProfiles[ubProfileIndex].inv[SMALLPOCK3POS] = LASERSCOPE;
-    gMercProfiles[ubProfileIndex].bInvStatus[SMALLPOCK3POS] = 100;
-    gMercProfiles[ubProfileIndex].bInvNumber[SMALLPOCK3POS] = 1;
+    gMercProfiles[ubProfileIndex].inv[Enum261.SMALLPOCK3POS] = Enum225.LASERSCOPE;
+    gMercProfiles[ubProfileIndex].bInvStatus[Enum261.SMALLPOCK3POS] = 100;
+    gMercProfiles[ubProfileIndex].bInvNumber[Enum261.SMALLPOCK3POS] = 1;
 
-    gMercProfiles[ubProfileIndex].inv[SMALLPOCK5POS] = BIPOD;
-    gMercProfiles[ubProfileIndex].bInvStatus[SMALLPOCK5POS] = 100;
-    gMercProfiles[ubProfileIndex].bInvNumber[SMALLPOCK5POS] = 1;
+    gMercProfiles[ubProfileIndex].inv[Enum261.SMALLPOCK5POS] = Enum225.BIPOD;
+    gMercProfiles[ubProfileIndex].bInvStatus[Enum261.SMALLPOCK5POS] = 100;
+    gMercProfiles[ubProfileIndex].bInvNumber[Enum261.SMALLPOCK5POS] = 1;
 
-    gMercProfiles[ubProfileIndex].inv[SMALLPOCK6POS] = LOCKSMITHKIT;
-    gMercProfiles[ubProfileIndex].bInvStatus[SMALLPOCK6POS] = 100;
-    gMercProfiles[ubProfileIndex].bInvNumber[SMALLPOCK6POS] = 1;
+    gMercProfiles[ubProfileIndex].inv[Enum261.SMALLPOCK6POS] = Enum225.LOCKSMITHKIT;
+    gMercProfiles[ubProfileIndex].bInvStatus[Enum261.SMALLPOCK6POS] = 100;
+    gMercProfiles[ubProfileIndex].bInvNumber[Enum261.SMALLPOCK6POS] = 1;
   } else {
-    gMercProfiles[ubProfileIndex].inv[HANDPOS] = Random(30);
-    gMercProfiles[ubProfileIndex].bInvNumber[HANDPOS] = 1;
+    gMercProfiles[ubProfileIndex].inv[Enum261.HANDPOS] = Random(30);
+    gMercProfiles[ubProfileIndex].bInvNumber[Enum261.HANDPOS] = 1;
   }
 
-  gMercProfiles[ubProfileIndex].inv[HELMETPOS] = KEVLAR_HELMET;
-  gMercProfiles[ubProfileIndex].bInvStatus[HELMETPOS] = 100;
-  gMercProfiles[ubProfileIndex].bInvNumber[HELMETPOS] = 1;
+  gMercProfiles[ubProfileIndex].inv[Enum261.HELMETPOS] = Enum225.KEVLAR_HELMET;
+  gMercProfiles[ubProfileIndex].bInvStatus[Enum261.HELMETPOS] = 100;
+  gMercProfiles[ubProfileIndex].bInvNumber[Enum261.HELMETPOS] = 1;
 
-  gMercProfiles[ubProfileIndex].inv[VESTPOS] = KEVLAR_VEST;
-  gMercProfiles[ubProfileIndex].bInvStatus[VESTPOS] = 100;
-  gMercProfiles[ubProfileIndex].bInvNumber[VESTPOS] = 1;
+  gMercProfiles[ubProfileIndex].inv[Enum261.VESTPOS] = Enum225.KEVLAR_VEST;
+  gMercProfiles[ubProfileIndex].bInvStatus[Enum261.VESTPOS] = 100;
+  gMercProfiles[ubProfileIndex].bInvNumber[Enum261.VESTPOS] = 1;
 
-  gMercProfiles[ubProfileIndex].inv[BIGPOCK2POS] = RDX;
-  gMercProfiles[ubProfileIndex].bInvStatus[BIGPOCK2POS] = 10;
-  gMercProfiles[ubProfileIndex].bInvNumber[BIGPOCK2POS] = 1;
+  gMercProfiles[ubProfileIndex].inv[Enum261.BIGPOCK2POS] = Enum225.RDX;
+  gMercProfiles[ubProfileIndex].bInvStatus[Enum261.BIGPOCK2POS] = 10;
+  gMercProfiles[ubProfileIndex].bInvNumber[Enum261.BIGPOCK2POS] = 1;
 
-  gMercProfiles[ubProfileIndex].inv[SMALLPOCK4POS] = HAND_GRENADE;
-  gMercProfiles[ubProfileIndex].bInvStatus[SMALLPOCK4POS] = 100;
-  gMercProfiles[ubProfileIndex].bInvNumber[SMALLPOCK4POS] = 4;
+  gMercProfiles[ubProfileIndex].inv[Enum261.SMALLPOCK4POS] = Enum225.HAND_GRENADE;
+  gMercProfiles[ubProfileIndex].bInvStatus[Enum261.SMALLPOCK4POS] = 100;
+  gMercProfiles[ubProfileIndex].bInvNumber[Enum261.SMALLPOCK4POS] = 4;
 
   // Give special items to some NPCs
   // gMercProfiles[ 78 ].inv[ SMALLPOCK4POS ] = TERRORIST_INFO;
@@ -550,7 +550,7 @@ function QuickGameMemberHireMerc(ubCurrentSoldier: UINT8): BOOLEAN {
   HireMercStruct.fUseLandingZoneForArrival = TRUE;
 
   HireMercStruct.fCopyProfileItemsOver = TRUE;
-  HireMercStruct.ubInsertionCode = INSERTION_CODE_CHOPPER;
+  HireMercStruct.ubInsertionCode = Enum175.INSERTION_CODE_CHOPPER;
 
   HireMercStruct.iTotalContractLength = 7;
 
@@ -563,15 +563,15 @@ function QuickGameMemberHireMerc(ubCurrentSoldier: UINT8): BOOLEAN {
   }
 
   // add an entry in the finacial page for the hiring of the merc
-  AddTransactionToPlayersBook(HIRED_MERC, ubCurrentSoldier, GetWorldTotalMin(), -gMercProfiles[ubCurrentSoldier].uiWeeklySalary);
+  AddTransactionToPlayersBook(Enum80.HIRED_MERC, ubCurrentSoldier, GetWorldTotalMin(), -gMercProfiles[ubCurrentSoldier].uiWeeklySalary);
 
   if (gMercProfiles[ubCurrentSoldier].bMedicalDeposit) {
     // add an entry in the finacial page for the medical deposit
-    AddTransactionToPlayersBook(MEDICAL_DEPOSIT, ubCurrentSoldier, GetWorldTotalMin(), -(gMercProfiles[ubCurrentSoldier].sMedicalDepositAmount));
+    AddTransactionToPlayersBook(Enum80.MEDICAL_DEPOSIT, ubCurrentSoldier, GetWorldTotalMin(), -(gMercProfiles[ubCurrentSoldier].sMedicalDepositAmount));
   }
 
   // add an entry in the history page for the hiring of the merc
-  AddHistoryToPlayersLog(HISTORY_HIRED_MERC_FROM_AIM, ubCurrentSoldier, GetWorldTotalMin(), -1, -1);
+  AddHistoryToPlayersLog(Enum83.HISTORY_HIRED_MERC_FROM_AIM, ubCurrentSoldier, GetWorldTotalMin(), -1, -1);
 
   return TRUE;
 }
@@ -632,7 +632,7 @@ function ReStartingGame(): void {
   }
 
   // Make sure the game starts in the TEAM panel ( it wasnt being reset )
-  gsCurInterfacePanel = TEAM_PANEL;
+  gsCurInterfacePanel = Enum215.TEAM_PANEL;
 
   // Delete all the strategic events
   DeleteAllStrategicEvents();

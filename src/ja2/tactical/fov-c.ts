@@ -67,61 +67,61 @@ let ViewPath2: UINT8[][] /* [MAXVIEWPATHS][VIEWPATHLENGTH] */ = [
 
 function BuildSightDir(dir: UINT32, One: Pointer<UINT32>, Two: Pointer<UINT32>, Three: Pointer<UINT32>, Four: Pointer<UINT32>, Five: Pointer<UINT32>): void {
   switch (dir) {
-    case NORTH:
-      One.value = NORTHWEST;
-      Two.value = NORTHEAST;
-      Three.value = NORTH;
-      Four.value = WEST;
-      Five.value = EAST;
+    case Enum245.NORTH:
+      One.value = Enum245.NORTHWEST;
+      Two.value = Enum245.NORTHEAST;
+      Three.value = Enum245.NORTH;
+      Four.value = Enum245.WEST;
+      Five.value = Enum245.EAST;
       break;
-    case NORTHEAST:
-      One.value = NORTH;
-      Two.value = EAST;
-      Three.value = NORTHEAST;
-      Four.value = NORTHWEST;
-      Five.value = SOUTHEAST;
+    case Enum245.NORTHEAST:
+      One.value = Enum245.NORTH;
+      Two.value = Enum245.EAST;
+      Three.value = Enum245.NORTHEAST;
+      Four.value = Enum245.NORTHWEST;
+      Five.value = Enum245.SOUTHEAST;
       break;
-    case EAST:
-      One.value = NORTHEAST;
-      Two.value = SOUTHEAST;
-      Three.value = EAST;
-      Four.value = NORTH;
-      Five.value = SOUTH;
+    case Enum245.EAST:
+      One.value = Enum245.NORTHEAST;
+      Two.value = Enum245.SOUTHEAST;
+      Three.value = Enum245.EAST;
+      Four.value = Enum245.NORTH;
+      Five.value = Enum245.SOUTH;
       break;
-    case SOUTHEAST:
-      One.value = EAST;
-      Two.value = SOUTH;
-      Three.value = SOUTHEAST;
-      Four.value = NORTHEAST;
-      Five.value = SOUTHWEST;
+    case Enum245.SOUTHEAST:
+      One.value = Enum245.EAST;
+      Two.value = Enum245.SOUTH;
+      Three.value = Enum245.SOUTHEAST;
+      Four.value = Enum245.NORTHEAST;
+      Five.value = Enum245.SOUTHWEST;
       break;
-    case SOUTH:
-      One.value = SOUTHEAST;
-      Two.value = SOUTHWEST;
-      Three.value = SOUTH;
-      Four.value = EAST;
-      Five.value = WEST;
+    case Enum245.SOUTH:
+      One.value = Enum245.SOUTHEAST;
+      Two.value = Enum245.SOUTHWEST;
+      Three.value = Enum245.SOUTH;
+      Four.value = Enum245.EAST;
+      Five.value = Enum245.WEST;
       break;
-    case SOUTHWEST:
-      One.value = SOUTH;
-      Two.value = WEST;
-      Three.value = SOUTHWEST;
-      Four.value = SOUTHEAST;
-      Five.value = NORTHWEST;
+    case Enum245.SOUTHWEST:
+      One.value = Enum245.SOUTH;
+      Two.value = Enum245.WEST;
+      Three.value = Enum245.SOUTHWEST;
+      Four.value = Enum245.SOUTHEAST;
+      Five.value = Enum245.NORTHWEST;
       break;
-    case WEST:
-      One.value = SOUTHWEST;
-      Two.value = NORTHWEST;
-      Three.value = WEST;
-      Four.value = SOUTH;
-      Five.value = NORTH;
+    case Enum245.WEST:
+      One.value = Enum245.SOUTHWEST;
+      Two.value = Enum245.NORTHWEST;
+      Three.value = Enum245.WEST;
+      Four.value = Enum245.SOUTH;
+      Five.value = Enum245.NORTH;
       break;
-    case NORTHWEST:
-      One.value = WEST;
-      Two.value = NORTH;
-      Three.value = NORTHWEST;
-      Four.value = SOUTHWEST;
-      Five.value = NORTHEAST;
+    case Enum245.NORTHWEST:
+      One.value = Enum245.WEST;
+      Two.value = Enum245.NORTH;
+      Three.value = Enum245.NORTHWEST;
+      Four.value = Enum245.SOUTHWEST;
+      Five.value = Enum245.NORTHEAST;
       break;
   }
 }
@@ -485,7 +485,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
           // CHECK FOR ROOMS
           if (Blocking == BLOCKING_TOPLEFT_WINDOW || Blocking == BLOCKING_TOPLEFT_OPEN_WINDOW) {
             // CHECK FACING DIRECTION!
-            if (Dir[markerDir] == NORTH || Dir[markerDir] == SOUTH) {
+            if (Dir[markerDir] == Enum245.NORTH || Dir[markerDir] == Enum245.SOUTH) {
               if (markercnt <= 1) // Are we right beside it?
               {
                 fThroughWindow = TRUE;
@@ -495,7 +495,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
           }
           if (Blocking == BLOCKING_TOPRIGHT_WINDOW || Blocking == BLOCKING_TOPRIGHT_OPEN_WINDOW) {
             // CHECK FACING DIRECTION!
-            if (Dir[markerDir] == EAST || Dir[markerDir] == WEST) {
+            if (Dir[markerDir] == Enum245.EAST || Dir[markerDir] == Enum245.WEST) {
               if (markercnt <= 1) // Are we right beside it?
               {
                 fThroughWindow = TRUE;
@@ -560,7 +560,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
                       } else {
                         // Display quote!
                         if (!AM_AN_EPC(pSoldier)) {
-                          TacticalCharacterDialogueWithSpecialEvent(pSoldier, (QUOTE_SPOTTED_SOMETHING_ONE + Random(2)), DIALOGUE_SPECIAL_EVENT_SIGNAL_ITEM_LOCATOR_START, (marker), 0);
+                          TacticalCharacterDialogueWithSpecialEvent(pSoldier, (Enum202.QUOTE_SPOTTED_SOMETHING_ONE + Random(2)), DIALOGUE_SPECIAL_EVENT_SIGNAL_ITEM_LOCATOR_START, (marker), 0);
                         } else {
                           // Turn off item lock for locators...
                           gTacticalStatus.fLockItemLocators = FALSE;
@@ -632,7 +632,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
               // OK, if we are underground, we don't want to reveal stuff if
               // 1 ) there is a roof over us and
               // 2 ) we are not in a room
-              if (gubWorldRoomInfo[marker] == NO_ROOM && TypeRangeExistsInRoofLayer(marker, FIRSTROOF, FOURTHROOF, addressof(usIndex))) {
+              if (gubWorldRoomInfo[marker] == NO_ROOM && TypeRangeExistsInRoofLayer(marker, Enum313.FIRSTROOF, Enum313.FOURTHROOF, addressof(usIndex))) {
                 let i: int = 0;
               } else {
                 gpWorldLevelData[marker].uiFlags |= MAPELEMENT_REVEALED;

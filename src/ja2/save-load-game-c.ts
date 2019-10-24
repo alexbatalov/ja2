@@ -261,7 +261,7 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   let usActualHeight: UINT16;
   let fWePausedIt: BOOLEAN = FALSE;
 
-  sprintf(saveDir, "%S", pMessageStrings[MSG_SAVEDIRECTORY]);
+  sprintf(saveDir, "%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY]);
 
   if (ubSaveGameID >= NUM_SAVE_GAMES && ubSaveGameID != SAVE__ERROR_NUM && ubSaveGameID != SAVE__END_TURN_NUM)
     return (FALSE); // ddd
@@ -275,7 +275,7 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   }
 
   // Place a message on the screen telling the user that we are saving the game
-  iSaveLoadGameMessageBoxID = PrepareMercPopupBox(iSaveLoadGameMessageBoxID, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, zSaveLoadText[SLG_SAVING_GAME_MESSAGE], 300, 0, 0, 0, addressof(usActualWidth), addressof(usActualHeight));
+  iSaveLoadGameMessageBoxID = PrepareMercPopupBox(iSaveLoadGameMessageBoxID, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, zSaveLoadText[Enum371.SLG_SAVING_GAME_MESSAGE], 300, 0, 0, 0, addressof(usActualWidth), addressof(usActualHeight));
   usPosX = (640 - usActualWidth) / 2;
 
   RenderMercPopUpBoxFromIndex(iSaveLoadGameMessageBoxID, usPosX, 160, FRAME_BUFFER);
@@ -295,17 +295,17 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   //
 
   // if we are in the game screen
-  if (guiCurrentScreen == GAME_SCREEN) {
+  if (guiCurrentScreen == Enum26.GAME_SCREEN) {
     SetRenderFlags(RENDER_FLAG_FULL);
   }
 
-  else if (guiCurrentScreen == MAP_SCREEN) {
+  else if (guiCurrentScreen == Enum26.MAP_SCREEN) {
     fMapPanelDirty = TRUE;
     fTeamPanelDirty = TRUE;
     fCharacterInfoPanelDirty = TRUE;
   }
 
-  else if (guiCurrentScreen == SAVE_LOAD_SCREEN) {
+  else if (guiCurrentScreen == Enum26.SAVE_LOAD_SCREEN) {
     gfRedrawSaveLoadScreen = TRUE;
   }
 
@@ -322,12 +322,12 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
 
   // if we are saving the quick save,
   if (ubSaveGameID == 0) {
-      swprintf(pGameDesc, pMessageStrings[MSG_QUICKSAVE_NAME]);
+      swprintf(pGameDesc, pMessageStrings[Enum333.MSG_QUICKSAVE_NAME]);
   }
 
   // If there was no string, add one
   if (pGameDesc[0] == '\0')
-    wcscpy(pGameDesc, pMessageStrings[MSG_NODESC]);
+    wcscpy(pGameDesc, pMessageStrings[Enum333.MSG_NODESC]);
 
   // Check to see if the save directory exists
   if (FileGetAttributes(saveDir) == 0xFFFFFFFF) {
@@ -695,7 +695,7 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
 
   // if its the quick save slot
   if (ubSaveGameID == 0) {
-    ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, pMessageStrings[MSG_SAVESUCCESS]);
+    ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, pMessageStrings[Enum333.MSG_SAVESUCCESS]);
   }
   //#ifdef JA2BETAVERSION
   else if (ubSaveGameID == SAVE__END_TURN_NUM) {
@@ -703,7 +703,7 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   }
   //#endif
   else {
-    ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, pMessageStrings[MSG_SAVESLOTSUCCESS]);
+    ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, pMessageStrings[Enum333.MSG_SAVESLOTSUCCESS]);
   }
 
   // restore the music mode
@@ -732,7 +732,7 @@ FAILED_TO_SAVE:
   DeleteSaveGameNumber(ubSaveGameID);
 
   // Put out an error message
-  ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, zSaveLoadText[SLG_SAVE_GAME_ERROR]);
+  ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, zSaveLoadText[Enum371.SLG_SAVE_GAME_ERROR]);
 
   // Check for enough free hard drive space
   NextLoopCheckForEnoughFreeHardDriveSpace();
@@ -890,7 +890,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
 
     // Since there is no
     if (SaveGameHeader.sSectorX == -1 || SaveGameHeader.sSectorY == -1 || SaveGameHeader.bSectorZ == -1)
-      gubLastLoadingScreenID = LOADINGSCREEN_HELI;
+      gubLastLoadingScreenID = Enum22.LOADINGSCREEN_HELI;
     else
       gubLastLoadingScreenID = GetLoadScreenID(SaveGameHeader.sSectorX, SaveGameHeader.sSectorY, SaveGameHeader.bSectorZ);
 
@@ -1571,7 +1571,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   giRTAILastUpdateTime = 0;
 
   // if we are in tactical
-  if (guiScreenToGotoAfterLoadingSavedGame == GAME_SCREEN) {
+  if (guiScreenToGotoAfterLoadingSavedGame == Enum26.GAME_SCREEN) {
     // Initialize the current panel
     InitializeCurrentPanel();
 
@@ -1612,14 +1612,14 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
 
     if (!fSkyRiderSetUp) {
       // see if we can find him and remove him if so....
-      pSoldier = FindSoldierByProfileID(SKYRIDER, FALSE);
+      pSoldier = FindSoldierByProfileID(Enum268.SKYRIDER, FALSE);
 
       if (pSoldier != NULL) {
         TacticalRemoveSoldier(pSoldier.value.ubID);
       }
 
       // add the pilot at a random location!
-      pProfile = addressof(gMercProfiles[SKYRIDER]);
+      pProfile = addressof(gMercProfiles[Enum268.SKYRIDER]);
       switch (Random(4)) {
         case 0:
           pProfile.value.sSectorX = 15;
@@ -1953,7 +1953,7 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
       }
 
       // if the soldier is an IMP character
-      if (Menptr[cnt].ubWhatKindOfMercAmI == MERC_TYPE__PLAYER_CHARACTER && Menptr[cnt].bTeam == gbPlayerNum) {
+      if (Menptr[cnt].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__PLAYER_CHARACTER && Menptr[cnt].bTeam == gbPlayerNum) {
         ResetIMPCharactersEyesAndMouthOffsets(Menptr[cnt].ubProfile);
       }
 
@@ -1961,7 +1961,7 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
       if (guiSaveGameVersion < 83) {
         // if the soldier is someone
         if (Menptr[cnt].ubProfile != NO_PROFILE) {
-          if (Menptr[cnt].ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
+          if (Menptr[cnt].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
             gMercProfiles[Menptr[cnt].ubProfile].uiTotalCostToDate = gMercProfiles[Menptr[cnt].ubProfile].sSalary * gMercProfiles[Menptr[cnt].ubProfile].iMercMercContractLength;
           } else {
             gMercProfiles[Menptr[cnt].ubProfile].uiTotalCostToDate = gMercProfiles[Menptr[cnt].ubProfile].sSalary * Menptr[cnt].iTotalContractLength;
@@ -1990,17 +1990,17 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
   if (guiSaveGameVersion <= 87) {
     let pSoldier: Pointer<SOLDIERTYPE>;
 
-    if (gMercProfiles[ROBOT].inv[VESTPOS] == SPECTRA_VEST) {
+    if (gMercProfiles[Enum268.ROBOT].inv[Enum261.VESTPOS] == Enum225.SPECTRA_VEST) {
       // update this
-      gMercProfiles[ROBOT].inv[VESTPOS] = SPECTRA_VEST_18;
-      gMercProfiles[ROBOT].inv[HELMETPOS] = SPECTRA_HELMET_18;
-      gMercProfiles[ROBOT].inv[LEGPOS] = SPECTRA_LEGGINGS_18;
-      gMercProfiles[ROBOT].bAgility = 50;
-      pSoldier = FindSoldierByProfileID(ROBOT, FALSE);
+      gMercProfiles[Enum268.ROBOT].inv[Enum261.VESTPOS] = Enum225.SPECTRA_VEST_18;
+      gMercProfiles[Enum268.ROBOT].inv[Enum261.HELMETPOS] = Enum225.SPECTRA_HELMET_18;
+      gMercProfiles[Enum268.ROBOT].inv[Enum261.LEGPOS] = Enum225.SPECTRA_LEGGINGS_18;
+      gMercProfiles[Enum268.ROBOT].bAgility = 50;
+      pSoldier = FindSoldierByProfileID(Enum268.ROBOT, FALSE);
       if (pSoldier) {
-        pSoldier.value.inv[VESTPOS].usItem = SPECTRA_VEST_18;
-        pSoldier.value.inv[HELMETPOS].usItem = SPECTRA_HELMET_18;
-        pSoldier.value.inv[LEGPOS].usItem = SPECTRA_LEGGINGS_18;
+        pSoldier.value.inv[Enum261.VESTPOS].usItem = Enum225.SPECTRA_VEST_18;
+        pSoldier.value.inv[Enum261.HELMETPOS].usItem = Enum225.SPECTRA_HELMET_18;
+        pSoldier.value.inv[Enum261.LEGPOS].usItem = Enum225.SPECTRA_LEGGINGS_18;
         pSoldier.value.bAgility = 50;
       }
     }
@@ -2487,7 +2487,7 @@ function SetMercsInsertionGridNo(): BOOLEAN {
     if (Menptr[cnt].bActive) {
       if (Menptr[cnt].sGridNo != NOWHERE) {
         // set the insertion type to gridno
-        Menptr[cnt].ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+        Menptr[cnt].ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
 
         // set the insertion gridno
         Menptr[cnt].usStrategicInsertionData = Menptr[cnt].sGridNo;
@@ -2696,12 +2696,12 @@ function LoadWatchedLocsFromSavedGame(hFile: HWFILE): BOOLEAN {
 function CreateSavedGameFileNameFromNumber(ubSaveGameID: UINT8, pzNewFileName: STR): void {
   // if we are creating the QuickSave file
   if (ubSaveGameID == 0) {
-      sprintf(pzNewFileName, "%S\\%S.%S", pMessageStrings[MSG_SAVEDIRECTORY], pMessageStrings[MSG_QUICKSAVE_NAME], pMessageStrings[MSG_SAVEEXTENSION]);
+      sprintf(pzNewFileName, "%S\\%S.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], pMessageStrings[Enum333.MSG_QUICKSAVE_NAME], pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
   }
   //#ifdef JA2BETAVERSION
   else if (ubSaveGameID == SAVE__END_TURN_NUM) {
     // The name of the file
-    sprintf(pzNewFileName, "%S\\Auto%02d.%S", pMessageStrings[MSG_SAVEDIRECTORY], guiLastSaveGameNum, pMessageStrings[MSG_SAVEEXTENSION]);
+    sprintf(pzNewFileName, "%S\\Auto%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], guiLastSaveGameNum, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
 
     // increment end turn number
     guiLastSaveGameNum++;
@@ -2714,7 +2714,7 @@ function CreateSavedGameFileNameFromNumber(ubSaveGameID: UINT8, pzNewFileName: S
   //#endif
 
   else
-    sprintf(pzNewFileName, "%S\\%S%02d.%S", pMessageStrings[MSG_SAVEDIRECTORY], pMessageStrings[MSG_SAVE_NAME], ubSaveGameID, pMessageStrings[MSG_SAVEEXTENSION]);
+    sprintf(pzNewFileName, "%S\\%S%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], pMessageStrings[Enum333.MSG_SAVE_NAME], ubSaveGameID, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
 }
 
 function SaveMercPathFromSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
@@ -2932,7 +2932,7 @@ function SaveGeneralInfo(hFile: HWFILE): BOOLEAN {
   sGeneralInfo.uiTimeOfLastSkyriderMonologue = guiTimeOfLastSkyriderMonologue;
   sGeneralInfo.fSkyRiderSetUp = fSkyRiderSetUp;
 
-  memcpy(addressof(sGeneralInfo.fRefuelingSiteAvailable), addressof(fRefuelingSiteAvailable), NUMBER_OF_REFUEL_SITES * sizeof(BOOLEAN));
+  memcpy(addressof(sGeneralInfo.fRefuelingSiteAvailable), addressof(fRefuelingSiteAvailable), Enum137.NUMBER_OF_REFUEL_SITES * sizeof(BOOLEAN));
 
   // Meanwhile stuff
   memcpy(addressof(sGeneralInfo.gCurrentMeanwhileDef), addressof(gCurrentMeanwhileDef), sizeof(MEANWHILE_DEFINITION));
@@ -2941,7 +2941,7 @@ function SaveGeneralInfo(hFile: HWFILE): BOOLEAN {
   sGeneralInfo.gfInMeanwhile = gfInMeanwhile;
 
   // list of dead guys for squads...in id values -> -1 means no one home
-  memcpy(addressof(sGeneralInfo.sDeadMercs), addressof(sDeadMercs), sizeof(INT16) * NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD);
+  memcpy(addressof(sGeneralInfo.sDeadMercs), addressof(sDeadMercs), sizeof(INT16) * Enum275.NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD);
 
   // level of public noises
   memcpy(addressof(sGeneralInfo.gbPublicNoiseLevel), addressof(gbPublicNoiseLevel), sizeof(INT8) * MAXTEAMS);
@@ -3171,7 +3171,7 @@ function LoadGeneralInfo(hFile: HWFILE): BOOLEAN {
   guiTimeOfLastSkyriderMonologue = sGeneralInfo.uiTimeOfLastSkyriderMonologue;
   fSkyRiderSetUp = sGeneralInfo.fSkyRiderSetUp;
 
-  memcpy(addressof(fRefuelingSiteAvailable), addressof(sGeneralInfo.fRefuelingSiteAvailable), NUMBER_OF_REFUEL_SITES * sizeof(BOOLEAN));
+  memcpy(addressof(fRefuelingSiteAvailable), addressof(sGeneralInfo.fRefuelingSiteAvailable), Enum137.NUMBER_OF_REFUEL_SITES * sizeof(BOOLEAN));
 
   // Meanwhile stuff
   memcpy(addressof(gCurrentMeanwhileDef), addressof(sGeneralInfo.gCurrentMeanwhileDef), sizeof(MEANWHILE_DEFINITION));
@@ -3180,7 +3180,7 @@ function LoadGeneralInfo(hFile: HWFILE): BOOLEAN {
   gfInMeanwhile = sGeneralInfo.gfInMeanwhile;
 
   // list of dead guys for squads...in id values -> -1 means no one home
-  memcpy(addressof(sDeadMercs), addressof(sGeneralInfo.sDeadMercs), sizeof(INT16) * NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD);
+  memcpy(addressof(sDeadMercs), addressof(sGeneralInfo.sDeadMercs), sizeof(INT16) * Enum275.NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD);
 
   // level of public noises
   memcpy(addressof(gbPublicNoiseLevel), addressof(sGeneralInfo.gbPublicNoiseLevel), sizeof(INT8) * MAXTEAMS);
@@ -3305,16 +3305,16 @@ function LoadMeanwhileDefsFromSaveGameFile(hFile: HWFILE): BOOLEAN {
 
   if (guiSaveGameVersion < 72) {
     // Load the array of meanwhile defs
-    FileRead(hFile, gMeanwhileDef, sizeof(MEANWHILE_DEFINITION) * (NUM_MEANWHILES - 1), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(MEANWHILE_DEFINITION) * (NUM_MEANWHILES - 1)) {
+    FileRead(hFile, gMeanwhileDef, sizeof(MEANWHILE_DEFINITION) * (Enum160.NUM_MEANWHILES - 1), addressof(uiNumBytesRead));
+    if (uiNumBytesRead != sizeof(MEANWHILE_DEFINITION) * (Enum160.NUM_MEANWHILES - 1)) {
       return FALSE;
     }
     // and set the last one
-    memset(addressof(gMeanwhileDef[NUM_MEANWHILES - 1]), 0, sizeof(MEANWHILE_DEFINITION));
+    memset(addressof(gMeanwhileDef[Enum160.NUM_MEANWHILES - 1]), 0, sizeof(MEANWHILE_DEFINITION));
   } else {
     // Load the array of meanwhile defs
-    FileRead(hFile, gMeanwhileDef, sizeof(MEANWHILE_DEFINITION) * NUM_MEANWHILES, addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(MEANWHILE_DEFINITION) * NUM_MEANWHILES) {
+    FileRead(hFile, gMeanwhileDef, sizeof(MEANWHILE_DEFINITION) * Enum160.NUM_MEANWHILES, addressof(uiNumBytesRead));
+    if (uiNumBytesRead != sizeof(MEANWHILE_DEFINITION) * Enum160.NUM_MEANWHILES) {
       return FALSE;
     }
   }
@@ -3326,8 +3326,8 @@ function SaveMeanwhileDefsFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesWritten: UINT32;
 
   // Save the array of meanwhile defs
-  FileWrite(hFile, addressof(gMeanwhileDef), sizeof(MEANWHILE_DEFINITION) * NUM_MEANWHILES, addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(MEANWHILE_DEFINITION) * NUM_MEANWHILES) {
+  FileWrite(hFile, addressof(gMeanwhileDef), sizeof(MEANWHILE_DEFINITION) * Enum160.NUM_MEANWHILES, addressof(uiNumBytesWritten));
+  if (uiNumBytesWritten != sizeof(MEANWHILE_DEFINITION) * Enum160.NUM_MEANWHILES) {
     return FALSE;
   }
 
@@ -3354,7 +3354,7 @@ function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Po
     psSectorY.value = gWorldSectorY;
     pbSectorZ.value = gbWorldSectorZ;
   } else if (iCurrentTacticalSquad != NO_CURRENT_SQUAD && Squad[iCurrentTacticalSquad][0]) {
-    if (Squad[iCurrentTacticalSquad][0].value.bAssignment != IN_TRANSIT) {
+    if (Squad[iCurrentTacticalSquad][0].value.bAssignment != Enum117.IN_TRANSIT) {
       psSectorX.value = Squad[iCurrentTacticalSquad][0].value.sSectorX;
       psSectorY.value = Squad[iCurrentTacticalSquad][0].value.sSectorY;
       pbSectorZ.value = Squad[iCurrentTacticalSquad][0].value.bSectorZ;
@@ -3373,7 +3373,7 @@ function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Po
     // loop through all the mercs on the players team to find the one that is not moving
     for (pSoldier = MercPtrs[sSoldierCnt]; sSoldierCnt <= bLastTeamID; sSoldierCnt++, pSoldier++) {
       if (pSoldier.value.bActive) {
-        if (pSoldier.value.bAssignment != IN_TRANSIT && !pSoldier.value.fBetweenSectors) {
+        if (pSoldier.value.bAssignment != Enum117.IN_TRANSIT && !pSoldier.value.fBetweenSectors) {
           // we found an alive, merc that is not moving
           psSectorX.value = pSoldier.value.sSectorX;
           psSectorY.value = pSoldier.value.sSectorY;
@@ -3414,7 +3414,7 @@ function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Po
 
 function PauseBeforeSaveGame(): void {
   // if we are not in the save load screen
-  if (guiCurrentScreen != SAVE_LOAD_SCREEN) {
+  if (guiCurrentScreen != Enum26.SAVE_LOAD_SCREEN) {
     // Pause the game
     PauseGame();
   }
@@ -3422,7 +3422,7 @@ function PauseBeforeSaveGame(): void {
 
 function UnPauseAfterSaveGame(): void {
   // if we are not in the save load screen
-  if (guiCurrentScreen != SAVE_LOAD_SCREEN) {
+  if (guiCurrentScreen != Enum26.SAVE_LOAD_SCREEN) {
     // UnPause time compression
     UnPauseGame();
   }
@@ -3432,7 +3432,7 @@ function TruncateStrategicGroupSizes(): void {
   let pGroup: Pointer<GROUP>;
   let pSector: Pointer<SECTORINFO>;
   let i: INT32;
-  for (i = SEC_A1; i < SEC_P16; i++) {
+  for (i = Enum123.SEC_A1; i < Enum123.SEC_P16; i++) {
     pSector = addressof(SectorInfo[i]);
     if (pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites > MAX_STRATEGIC_TEAM_SIZE) {
       if (pSector.value.ubNumAdmins > pSector.value.ubNumTroops) {
@@ -3549,7 +3549,7 @@ function UpdateMercMercContractInfo(): void {
   let ubCnt: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
-  for (ubCnt = BIFF; ubCnt <= BUBBA; ubCnt++) {
+  for (ubCnt = Enum268.BIFF; ubCnt <= Enum268.BUBBA; ubCnt++) {
     pSoldier = FindSoldierByProfileID(ubCnt, TRUE);
 
     // if the merc is on the team
@@ -3579,8 +3579,8 @@ function GetNumberForAutoSave(fLatestAutoSave: BOOLEAN): INT8 {
   fFile2Exist = FALSE;
 
   // The name of the file
-  sprintf(zFileName1, "%S\\Auto%02d.%S", pMessageStrings[MSG_SAVEDIRECTORY], 0, pMessageStrings[MSG_SAVEEXTENSION]);
-  sprintf(zFileName2, "%S\\Auto%02d.%S", pMessageStrings[MSG_SAVEDIRECTORY], 1, pMessageStrings[MSG_SAVEEXTENSION]);
+  sprintf(zFileName1, "%S\\Auto%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], 0, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
+  sprintf(zFileName2, "%S\\Auto%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], 1, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
 
   if (FileExists(zFileName1)) {
     hFile = FileOpen(zFileName1, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
@@ -3644,7 +3644,7 @@ function HandleOldBobbyRMailOrders(): void {
         memcpy(gpNewBobbyrShipments[iNewListCnt].BobbyRayPurchase, LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray[iCnt].BobbyRayPurchase, sizeof(BobbyRayPurchaseStruct) * MAX_PURCHASE_AMOUNT);
 
         gpNewBobbyrShipments[iNewListCnt].fActive = TRUE;
-        gpNewBobbyrShipments[iNewListCnt].ubDeliveryLoc = BR_DRASSEN;
+        gpNewBobbyrShipments[iNewListCnt].ubDeliveryLoc = Enum70.BR_DRASSEN;
         gpNewBobbyrShipments[iNewListCnt].ubDeliveryMethod = 0;
         gpNewBobbyrShipments[iNewListCnt].ubNumberPurchases = LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray[iCnt].ubNumberPurchases;
         gpNewBobbyrShipments[iNewListCnt].uiPackageWeight = 1;
@@ -3711,13 +3711,13 @@ function CalcJA2EncryptionSet(pSaveGameHeader: Pointer<SAVED_GAME_HEADER>): UINT
   }
 
   switch (pSaveGameHeader.value.sInitialGameOptions.ubDifficultyLevel) {
-    case DIF_LEVEL_EASY:
+    case Enum9.DIF_LEVEL_EASY:
       uiEncryptionSet += 0;
       break;
-    case DIF_LEVEL_MEDIUM:
+    case Enum9.DIF_LEVEL_MEDIUM:
       uiEncryptionSet += BASE_NUMBER_OF_ROTATION_ARRAYS;
       break;
-    case DIF_LEVEL_HARD:
+    case Enum9.DIF_LEVEL_HARD:
       uiEncryptionSet += BASE_NUMBER_OF_ROTATION_ARRAYS * 2;
       break;
   }

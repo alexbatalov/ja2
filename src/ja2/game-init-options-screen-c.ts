@@ -113,9 +113,9 @@ let gfGIOScreenExit: BOOLEAN = FALSE;
 let gfReRenderGIOScreen: BOOLEAN = TRUE;
 let gfGIOButtonsAllocated: BOOLEAN = FALSE;
 
-let gubGameOptionScreenHandler: UINT8 = GIO_NOTHING;
+let gubGameOptionScreenHandler: UINT8 = Enum7.GIO_NOTHING;
 
-let gubGIOExitScreen: UINT32 = GAME_INIT_OPTIONS_SCREEN;
+let gubGIOExitScreen: UINT32 = Enum26.GAME_INIT_OPTIONS_SCREEN;
 
 let guiGIOMainBackGroundImage: UINT32;
 
@@ -228,7 +228,7 @@ function EnterGIOScreen(): BOOLEAN {
   if (gfGIOButtonsAllocated)
     return TRUE;
 
-  SetCurrentCursorFromDatabase(CURSOR_NORMAL);
+  SetCurrentCursorFromDatabase(Enum317.CURSOR_NORMAL);
 
   // load the Main trade screen backgroiund image
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -237,74 +237,74 @@ function EnterGIOScreen(): BOOLEAN {
 
   // Ok button
   giGIODoneBtnImage = LoadButtonImage("INTERFACE\\PreferencesButtons.sti", -1, 0, -1, 2, -1);
-  guiGIODoneButton = CreateIconAndTextButton(giGIODoneBtnImage, gzGIOScreenText[GIO_OK_TEXT], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, GIO_BTN_OK_X, GIO_BTN_OK_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnGIODoneCallback);
+  guiGIODoneButton = CreateIconAndTextButton(giGIODoneBtnImage, gzGIOScreenText[Enum375.GIO_OK_TEXT], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, GIO_BTN_OK_X, GIO_BTN_OK_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnGIODoneCallback);
 
-  SpecifyButtonSoundScheme(guiGIODoneButton, BUTTON_SOUND_SCHEME_BIGSWITCH3);
-  SpecifyDisabledButtonStyle(guiGIODoneButton, DISABLED_STYLE_NONE);
+  SpecifyButtonSoundScheme(guiGIODoneButton, Enum27.BUTTON_SOUND_SCHEME_BIGSWITCH3);
+  SpecifyDisabledButtonStyle(guiGIODoneButton, Enum29.DISABLED_STYLE_NONE);
 
   // Cancel button
   giGIOCancelBtnImage = UseLoadedButtonImage(giGIODoneBtnImage, -1, 1, -1, 3, -1);
-  guiGIOCancelButton = CreateIconAndTextButton(giGIOCancelBtnImage, gzGIOScreenText[GIO_CANCEL_TEXT], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, GIO_CANCEL_X, GIO_BTN_OK_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnGIOCancelCallback);
-  SpecifyButtonSoundScheme(guiGIOCancelButton, BUTTON_SOUND_SCHEME_BIGSWITCH3);
+  guiGIOCancelButton = CreateIconAndTextButton(giGIOCancelBtnImage, gzGIOScreenText[Enum375.GIO_CANCEL_TEXT], OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR, DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, TEXT_CJUSTIFIED, GIO_CANCEL_X, GIO_BTN_OK_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnGIOCancelCallback);
+  SpecifyButtonSoundScheme(guiGIOCancelButton, Enum27.BUTTON_SOUND_SCHEME_BIGSWITCH3);
 
   //
   // Check box to toggle Difficulty settings
   //
   usPosY = GIO_DIF_SETTINGS_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
 
-  for (cnt = 0; cnt < NUM_DIFF_SETTINGS; cnt++) {
+  for (cnt = 0; cnt < Enum3.NUM_DIFF_SETTINGS; cnt++) {
     guiDifficultySettingsToggles[cnt] = CreateCheckBoxButton(GIO_DIF_SETTINGS_X + GIO_OFFSET_TO_TOGGLE_BOX, usPosY, "INTERFACE\\OptionsCheck.sti", MSYS_PRIORITY_HIGH + 10, BtnDifficultyTogglesCallback);
     MSYS_SetBtnUserData(guiDifficultySettingsToggles[cnt], 0, cnt);
 
     usPosY += GIO_GAP_BN_SETTINGS;
   }
-  if (gGameOptions.ubDifficultyLevel == DIF_LEVEL_EASY)
-    ButtonList[guiDifficultySettingsToggles[GIO_DIFF_EASY]].value.uiFlags |= BUTTON_CLICKED_ON;
+  if (gGameOptions.ubDifficultyLevel == Enum9.DIF_LEVEL_EASY)
+    ButtonList[guiDifficultySettingsToggles[Enum3.GIO_DIFF_EASY]].value.uiFlags |= BUTTON_CLICKED_ON;
 
-  else if (gGameOptions.ubDifficultyLevel == DIF_LEVEL_MEDIUM)
-    ButtonList[guiDifficultySettingsToggles[GIO_DIFF_MED]].value.uiFlags |= BUTTON_CLICKED_ON;
+  else if (gGameOptions.ubDifficultyLevel == Enum9.DIF_LEVEL_MEDIUM)
+    ButtonList[guiDifficultySettingsToggles[Enum3.GIO_DIFF_MED]].value.uiFlags |= BUTTON_CLICKED_ON;
 
-  else if (gGameOptions.ubDifficultyLevel == DIF_LEVEL_HARD)
-    ButtonList[guiDifficultySettingsToggles[GIO_DIFF_HARD]].value.uiFlags |= BUTTON_CLICKED_ON;
+  else if (gGameOptions.ubDifficultyLevel == Enum9.DIF_LEVEL_HARD)
+    ButtonList[guiDifficultySettingsToggles[Enum3.GIO_DIFF_HARD]].value.uiFlags |= BUTTON_CLICKED_ON;
 
   else
-    ButtonList[guiDifficultySettingsToggles[GIO_DIFF_MED]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiDifficultySettingsToggles[Enum3.GIO_DIFF_MED]].value.uiFlags |= BUTTON_CLICKED_ON;
 
   //
   // Check box to toggle Game settings ( realistic, sci fi )
   //
 
   usPosY = GIO_GAME_SETTINGS_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
-  for (cnt = 0; cnt < NUM_GAME_STYLES; cnt++) {
+  for (cnt = 0; cnt < Enum4.NUM_GAME_STYLES; cnt++) {
     guiGameStyleToggles[cnt] = CreateCheckBoxButton(GIO_GAME_SETTINGS_X + GIO_OFFSET_TO_TOGGLE_BOX, usPosY, "INTERFACE\\OptionsCheck.sti", MSYS_PRIORITY_HIGH + 10, BtnGameStyleTogglesCallback);
     MSYS_SetBtnUserData(guiGameStyleToggles[cnt], 0, cnt);
 
     usPosY += GIO_GAP_BN_SETTINGS;
   }
   if (gGameOptions.fSciFi)
-    ButtonList[guiGameStyleToggles[GIO_SCI_FI]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiGameStyleToggles[Enum4.GIO_SCI_FI]].value.uiFlags |= BUTTON_CLICKED_ON;
   else
-    ButtonList[guiGameStyleToggles[GIO_REALISTIC]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiGameStyleToggles[Enum4.GIO_REALISTIC]].value.uiFlags |= BUTTON_CLICKED_ON;
 
   // JA2Gold: iron man buttons
   usPosY = GIO_IRON_MAN_SETTING_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
-  for (cnt = 0; cnt < NUM_SAVE_OPTIONS; cnt++) {
+  for (cnt = 0; cnt < Enum6.NUM_SAVE_OPTIONS; cnt++) {
     guiGameSaveToggles[cnt] = CreateCheckBoxButton(GIO_IRON_MAN_SETTING_X + GIO_OFFSET_TO_TOGGLE_BOX, usPosY, "INTERFACE\\OptionsCheck.sti", MSYS_PRIORITY_HIGH + 10, BtnGameSaveTogglesCallback);
     MSYS_SetBtnUserData(guiGameSaveToggles[cnt], 0, cnt);
 
     usPosY += GIO_GAP_BN_SETTINGS;
   }
   if (gGameOptions.fIronManMode)
-    ButtonList[guiGameSaveToggles[GIO_IRON_MAN]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiGameSaveToggles[Enum6.GIO_IRON_MAN]].value.uiFlags |= BUTTON_CLICKED_ON;
   else
-    ButtonList[guiGameSaveToggles[GIO_CAN_SAVE]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiGameSaveToggles[Enum6.GIO_CAN_SAVE]].value.uiFlags |= BUTTON_CLICKED_ON;
 
   //
   // Check box to toggle Gun options
   //
 
   usPosY = GIO_GUN_SETTINGS_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
-  for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
+  for (cnt = 0; cnt < Enum5.NUM_GUN_OPTIONS; cnt++) {
     guiGunOptionToggles[cnt] = CreateCheckBoxButton(GIO_GUN_SETTINGS_X + GIO_OFFSET_TO_TOGGLE_BOX, usPosY, "INTERFACE\\OptionsCheck.sti", MSYS_PRIORITY_HIGH + 10, BtnGunOptionsTogglesCallback);
     MSYS_SetBtnUserData(guiGunOptionToggles[cnt], 0, cnt);
 
@@ -312,9 +312,9 @@ function EnterGIOScreen(): BOOLEAN {
   }
 
   if (gGameOptions.fGunNut)
-    ButtonList[guiGunOptionToggles[GIO_GUN_NUT]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiGunOptionToggles[Enum5.GIO_GUN_NUT]].value.uiFlags |= BUTTON_CLICKED_ON;
   else
-    ButtonList[guiGunOptionToggles[GIO_REDUCED_GUNS]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiGunOptionToggles[Enum5.GIO_REDUCED_GUNS]].value.uiFlags |= BUTTON_CLICKED_ON;
 
   // JA2 Gold: no more timed turns
   //
@@ -338,7 +338,7 @@ function EnterGIOScreen(): BOOLEAN {
   */
 
   // Reset the exit screen
-  gubGIOExitScreen = GAME_INIT_OPTIONS_SCREEN;
+  gubGIOExitScreen = Enum26.GAME_INIT_OPTIONS_SCREEN;
 
   // REnder the screen once so we can blt ot to ths save buffer
   RenderGIOScreen();
@@ -366,15 +366,15 @@ function ExitGIOScreen(): BOOLEAN {
   UnloadButtonImage(giGIODoneBtnImage);
 
   // Check box to toggle Difficulty settings
-  for (cnt = 0; cnt < NUM_DIFF_SETTINGS; cnt++)
+  for (cnt = 0; cnt < Enum3.NUM_DIFF_SETTINGS; cnt++)
     RemoveButton(guiDifficultySettingsToggles[cnt]);
 
   // Check box to toggle Game settings ( realistic, sci fi )
-  for (cnt = 0; cnt < NUM_GAME_STYLES; cnt++)
+  for (cnt = 0; cnt < Enum4.NUM_GAME_STYLES; cnt++)
     RemoveButton(guiGameStyleToggles[cnt]);
 
   // Check box to toggle Gun options
-  for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++)
+  for (cnt = 0; cnt < Enum5.NUM_GUN_OPTIONS; cnt++)
     RemoveButton(guiGunOptionToggles[cnt]);
 
   // JA2Gold: no more timed turns setting
@@ -384,14 +384,14 @@ function ExitGIOScreen(): BOOLEAN {
           RemoveButton( guiTimedTurnToggles[ cnt ] );
   */
   // JA2Gold: remove iron man buttons
-  for (cnt = 0; cnt < NUM_SAVE_OPTIONS; cnt++)
+  for (cnt = 0; cnt < Enum6.NUM_SAVE_OPTIONS; cnt++)
     RemoveButton(guiGameSaveToggles[cnt]);
 
   gfGIOButtonsAllocated = FALSE;
 
   // If we are starting the game stop playing the music
-  if (gubGameOptionScreenHandler == GIO_EXIT)
-    SetMusicMode(MUSIC_NONE);
+  if (gubGameOptionScreenHandler == Enum7.GIO_EXIT)
+    SetMusicMode(Enum328.MUSIC_NONE);
 
   gfGIOScreenExit = FALSE;
   gfGIOScreenEntry = TRUE;
@@ -400,14 +400,14 @@ function ExitGIOScreen(): BOOLEAN {
 }
 
 function HandleGIOScreen(): void {
-  if (gubGameOptionScreenHandler != GIO_NOTHING) {
+  if (gubGameOptionScreenHandler != Enum7.GIO_NOTHING) {
     switch (gubGameOptionScreenHandler) {
-      case GIO_CANCEL:
-        gubGIOExitScreen = MAINMENU_SCREEN;
+      case Enum7.GIO_CANCEL:
+        gubGIOExitScreen = Enum26.MAINMENU_SCREEN;
         gfGIOScreenExit = TRUE;
         break;
 
-      case GIO_EXIT: {
+      case Enum7.GIO_EXIT: {
         // if we are already fading out, get out of here
         if (gFadeOutDoneCallback != DoneFadeOutForExitGameInitOptionScreen) {
           // Disable the ok button
@@ -420,12 +420,12 @@ function HandleGIOScreen(): void {
         break;
       }
 
-      case GIO_IRON_MAN_MODE:
+      case Enum7.GIO_IRON_MAN_MODE:
         DisplayMessageToUserAboutGameDifficulty();
         break;
     }
 
-    gubGameOptionScreenHandler = GIO_NOTHING;
+    gubGameOptionScreenHandler = Enum7.GIO_NOTHING;
   }
 
   if (gfReRenderGIOScreen) {
@@ -448,47 +448,47 @@ function RenderGIOScreen(): BOOLEAN {
   ShadowVideoSurfaceRect(FRAME_BUFFER, 48, 55, 592, 378); // 358
 
   // Display the title
-  DrawTextToScreen(gzGIOScreenText[GIO_INITIAL_GAME_SETTINGS], GIO_MAIN_TITLE_X, GIO_MAIN_TITLE_Y, GIO_MAIN_TITLE_WIDTH, GIO_TITLE_FONT, GIO_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+  DrawTextToScreen(gzGIOScreenText[Enum375.GIO_INITIAL_GAME_SETTINGS], GIO_MAIN_TITLE_X, GIO_MAIN_TITLE_Y, GIO_MAIN_TITLE_WIDTH, GIO_TITLE_FONT, GIO_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Display the Dif Settings Title Text
   // DrawTextToScreen( gzGIOScreenText[ GIO_DIF_LEVEL_TEXT ], GIO_DIF_SETTINGS_X, (UINT16)(GIO_DIF_SETTINGS_Y-GIO_GAP_BN_SETTINGS), GIO_DIF_SETTINGS_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString(GIO_DIF_SETTINGS_X, (GIO_DIF_SETTINGS_Y - GIO_GAP_BN_SETTINGS), GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[GIO_DIF_LEVEL_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(GIO_DIF_SETTINGS_X, (GIO_DIF_SETTINGS_Y - GIO_GAP_BN_SETTINGS), GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_DIF_LEVEL_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   usPosY = GIO_DIF_SETTINGS_Y + 2;
   // DrawTextToScreen( gzGIOScreenText[ GIO_EASY_TEXT ], (UINT16)(GIO_DIF_SETTINGS_X+GIO_OFFSET_TO_TEXT), usPosY, GIO_MAIN_TITLE_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString((GIO_DIF_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[GIO_EASY_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_DIF_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_EASY_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   usPosY += GIO_GAP_BN_SETTINGS;
   // DrawTextToScreen( gzGIOScreenText[ GIO_MEDIUM_TEXT ], (UINT16)(GIO_DIF_SETTINGS_X+GIO_OFFSET_TO_TEXT), usPosY, GIO_MAIN_TITLE_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString((GIO_DIF_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[GIO_MEDIUM_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_DIF_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_MEDIUM_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   usPosY += GIO_GAP_BN_SETTINGS;
   // DrawTextToScreen( gzGIOScreenText[ GIO_HARD_TEXT ], (UINT16)(GIO_DIF_SETTINGS_X+GIO_OFFSET_TO_TEXT), usPosY, GIO_MAIN_TITLE_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString((GIO_DIF_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[GIO_HARD_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_DIF_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_HARD_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Display the Game Settings Title Text
   //	DrawTextToScreen( gzGIOScreenText[ GIO_GAME_STYLE_TEXT ], GIO_GAME_SETTINGS_X, (UINT16)(GIO_GAME_SETTINGS_Y-GIO_GAP_BN_SETTINGS), GIO_GAME_SETTINGS_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString(GIO_GAME_SETTINGS_X, (GIO_GAME_SETTINGS_Y - GIO_GAP_BN_SETTINGS), GIO_GAME_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[GIO_GAME_STYLE_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(GIO_GAME_SETTINGS_X, (GIO_GAME_SETTINGS_Y - GIO_GAP_BN_SETTINGS), GIO_GAME_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_GAME_STYLE_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   usPosY = GIO_GAME_SETTINGS_Y + 2;
   // DrawTextToScreen( gzGIOScreenText[ GIO_REALISTIC_TEXT ], (UINT16)(GIO_GAME_SETTINGS_X+GIO_OFFSET_TO_TEXT), usPosY, GIO_MAIN_TITLE_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString((GIO_GAME_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_GAME_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[GIO_REALISTIC_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_GAME_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_GAME_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_REALISTIC_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   usPosY += GIO_GAP_BN_SETTINGS;
   // DrawTextToScreen( gzGIOScreenText[ GIO_SCI_FI_TEXT ], (UINT16)(GIO_GAME_SETTINGS_X+GIO_OFFSET_TO_TEXT), usPosY, GIO_MAIN_TITLE_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString((GIO_GAME_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_GAME_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[GIO_SCI_FI_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_GAME_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_GAME_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_SCI_FI_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Display the Gun Settings Title Text
   //	DrawTextToScreen( gzGIOScreenText[ GIO_GUN_OPTIONS_TEXT ], GIO_GUN_SETTINGS_X, (UINT16)(GIO_GUN_SETTINGS_Y-GIO_GAP_BN_SETTINGS), GIO_GUN_SETTINGS_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString(GIO_GUN_SETTINGS_X, (GIO_GUN_SETTINGS_Y - GIO_GAP_BN_SETTINGS), GIO_GUN_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[GIO_GUN_OPTIONS_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(GIO_GUN_SETTINGS_X, (GIO_GUN_SETTINGS_Y - GIO_GAP_BN_SETTINGS), GIO_GUN_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_GUN_OPTIONS_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   usPosY = GIO_GUN_SETTINGS_Y + 2;
   // DrawTextToScreen( gzGIOScreenText[ GIO_REDUCED_GUNS_TEXT ], (UINT16)(GIO_GUN_SETTINGS_X+GIO_OFFSET_TO_TEXT), usPosY, GIO_MAIN_TITLE_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString((GIO_GUN_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_GUN_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[GIO_REDUCED_GUNS_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_GUN_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_GUN_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_REDUCED_GUNS_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   usPosY += GIO_GAP_BN_SETTINGS;
   // DrawTextToScreen( gzGIOScreenText[ GIO_GUN_NUT_TEXT ], (UINT16)(GIO_GUN_SETTINGS_X+GIO_OFFSET_TO_TEXT), usPosY, GIO_MAIN_TITLE_WIDTH, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED );
-  DisplayWrappedString((GIO_GUN_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_GUN_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[GIO_GUN_NUT_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_GUN_SETTINGS_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_GUN_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_GUN_NUT_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // JA2Gold: no more timed turns setting
   /*
@@ -503,16 +503,16 @@ function RenderGIOScreen(): BOOLEAN {
   */
 
   // JA2Gold: Display the iron man Settings Title Text
-  DisplayWrappedString(GIO_IRON_MAN_SETTING_X, (GIO_IRON_MAN_SETTING_Y - GIO_GAP_BN_SETTINGS), GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[GIO_GAME_SAVE_STYLE_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(GIO_IRON_MAN_SETTING_X, (GIO_IRON_MAN_SETTING_Y - GIO_GAP_BN_SETTINGS), GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_GAME_SAVE_STYLE_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   usPosY = GIO_IRON_MAN_SETTING_Y + 2;
 
-  DisplayWrappedString((GIO_IRON_MAN_SETTING_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[GIO_SAVE_ANYWHERE_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_IRON_MAN_SETTING_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_SAVE_ANYWHERE_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   usPosY += GIO_GAP_BN_SETTINGS;
 
-  DisplayWrappedString((GIO_IRON_MAN_SETTING_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[GIO_IRON_MAN_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_IRON_MAN_SETTING_X + GIO_OFFSET_TO_TEXT), usPosY, GIO_DIF_SETTINGS_WIDTH, 2, GIO_TOGGLE_TEXT_FONT, GIO_TOGGLE_TEXT_COLOR, gzGIOScreenText[Enum375.GIO_IRON_MAN_TEXT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   usPosY += 20;
-  DisplayWrappedString((GIO_IRON_MAN_SETTING_X + GIO_OFFSET_TO_TEXT), usPosY, 220, 2, FONT12ARIAL, GIO_TOGGLE_TEXT_COLOR, zNewTacticalMessages[TCTL_MSG__CANNOT_SAVE_DURING_COMBAT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString((GIO_IRON_MAN_SETTING_X + GIO_OFFSET_TO_TEXT), usPosY, 220, 2, FONT12ARIAL, GIO_TOGGLE_TEXT_COLOR, zNewTacticalMessages[Enum320.TCTL_MSG__CANNOT_SAVE_DURING_COMBAT], FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   return TRUE;
 }
@@ -528,11 +528,11 @@ function GetGIOScreenUserInput(): void {
       switch (Event.usParam) {
         case ESC:
           // Exit out of the screen
-          gubGameOptionScreenHandler = GIO_CANCEL;
+          gubGameOptionScreenHandler = Enum7.GIO_CANCEL;
           break;
 
         case ENTER:
-          gubGameOptionScreenHandler = GIO_EXIT;
+          gubGameOptionScreenHandler = Enum7.GIO_EXIT;
           break;
       }
     }
@@ -546,7 +546,7 @@ function BtnDifficultyTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       let cnt: UINT8;
 
-      for (cnt = 0; cnt < NUM_DIFF_SETTINGS; cnt++) {
+      for (cnt = 0; cnt < Enum3.NUM_DIFF_SETTINGS; cnt++) {
         ButtonList[guiDifficultySettingsToggles[cnt]].value.uiFlags &= ~BUTTON_CLICKED_ON;
       }
 
@@ -557,7 +557,7 @@ function BtnDifficultyTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
       let fAnyChecked: BOOLEAN = FALSE;
 
       // if none of the other boxes are checked, do not uncheck this box
-      for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
+      for (cnt = 0; cnt < Enum5.NUM_GUN_OPTIONS; cnt++) {
         if (ButtonList[guiDifficultySettingsToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
           fAnyChecked = TRUE;
         }
@@ -576,7 +576,7 @@ function BtnGameStyleTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       let cnt: UINT8;
 
-      for (cnt = 0; cnt < NUM_GAME_STYLES; cnt++) {
+      for (cnt = 0; cnt < Enum4.NUM_GAME_STYLES; cnt++) {
         ButtonList[guiGameStyleToggles[cnt]].value.uiFlags &= ~BUTTON_CLICKED_ON;
       }
 
@@ -587,7 +587,7 @@ function BtnGameStyleTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
       let fAnyChecked: BOOLEAN = FALSE;
 
       // if none of the other boxes are checked, do not uncheck this box
-      for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
+      for (cnt = 0; cnt < Enum5.NUM_GUN_OPTIONS; cnt++) {
         if (ButtonList[guiGameStyleToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
           fAnyChecked = TRUE;
         }
@@ -606,7 +606,7 @@ function BtnGameSaveTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       let cnt: UINT8;
 
-      for (cnt = 0; cnt < NUM_SAVE_OPTIONS; cnt++) {
+      for (cnt = 0; cnt < Enum6.NUM_SAVE_OPTIONS; cnt++) {
         ButtonList[guiGameSaveToggles[cnt]].value.uiFlags &= ~BUTTON_CLICKED_ON;
       }
 
@@ -617,7 +617,7 @@ function BtnGameSaveTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
       let fAnyChecked: BOOLEAN = FALSE;
 
       // if none of the other boxes are checked, do not uncheck this box
-      for (cnt = 0; cnt < NUM_SAVE_OPTIONS; cnt++) {
+      for (cnt = 0; cnt < Enum6.NUM_SAVE_OPTIONS; cnt++) {
         if (ButtonList[guiGameSaveToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
           fAnyChecked = TRUE;
         }
@@ -636,7 +636,7 @@ function BtnGunOptionsTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       let cnt: UINT8;
 
-      for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
+      for (cnt = 0; cnt < Enum5.NUM_GUN_OPTIONS; cnt++) {
         ButtonList[guiGunOptionToggles[cnt]].value.uiFlags &= ~BUTTON_CLICKED_ON;
       }
 
@@ -647,7 +647,7 @@ function BtnGunOptionsTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
       let fAnyChecked: BOOLEAN = FALSE;
 
       // if none of the other boxes are checked, do not uncheck this box
-      for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
+      for (cnt = 0; cnt < Enum5.NUM_GUN_OPTIONS; cnt++) {
         if (ButtonList[guiGunOptionToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
           fAnyChecked = TRUE;
         }
@@ -726,7 +726,7 @@ function BtnGIOCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-    gubGameOptionScreenHandler = GIO_CANCEL;
+    gubGameOptionScreenHandler = Enum7.GIO_CANCEL;
 
     InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
   }
@@ -735,7 +735,7 @@ function BtnGIOCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 function GetCurrentDifficultyButtonSetting(): UINT8 {
   let cnt: UINT8;
 
-  for (cnt = 0; cnt < NUM_DIFF_SETTINGS; cnt++) {
+  for (cnt = 0; cnt < Enum3.NUM_DIFF_SETTINGS; cnt++) {
     if (ButtonList[guiDifficultySettingsToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
       return cnt;
     }
@@ -747,7 +747,7 @@ function GetCurrentDifficultyButtonSetting(): UINT8 {
 function GetCurrentGameStyleButtonSetting(): UINT8 {
   let cnt: UINT8;
 
-  for (cnt = 0; cnt < NUM_GAME_STYLES; cnt++) {
+  for (cnt = 0; cnt < Enum4.NUM_GAME_STYLES; cnt++) {
     if (ButtonList[guiGameStyleToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
       return cnt;
     }
@@ -758,7 +758,7 @@ function GetCurrentGameStyleButtonSetting(): UINT8 {
 function GetCurrentGunButtonSetting(): UINT8 {
   let cnt: UINT8;
 
-  for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
+  for (cnt = 0; cnt < Enum5.NUM_GUN_OPTIONS; cnt++) {
     if (ButtonList[guiGunOptionToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
       return cnt;
     }
@@ -786,7 +786,7 @@ UINT8	GetCurrentTimedTurnsButtonSetting()
 function GetCurrentGameSaveButtonSetting(): UINT8 {
   let cnt: UINT8;
 
-  for (cnt = 0; cnt < NUM_SAVE_OPTIONS; cnt++) {
+  for (cnt = 0; cnt < Enum6.NUM_SAVE_OPTIONS; cnt++) {
     if (ButtonList[guiGameSaveToggles[cnt]].value.uiFlags & BUTTON_CLICKED_ON) {
       return cnt;
     }
@@ -800,14 +800,14 @@ function RestoreGIOButtonBackGrounds(): void {
 
   usPosY = GIO_DIF_SETTINGS_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
   // Check box to toggle Difficulty settings
-  for (cnt = 0; cnt < NUM_DIFF_SETTINGS; cnt++) {
+  for (cnt = 0; cnt < Enum3.NUM_DIFF_SETTINGS; cnt++) {
     RestoreExternBackgroundRect(GIO_DIF_SETTINGS_X + GIO_OFFSET_TO_TOGGLE_BOX, usPosY, 34, 29);
     usPosY += GIO_GAP_BN_SETTINGS;
   }
 
   usPosY = GIO_GAME_SETTINGS_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
   // Check box to toggle Game settings ( realistic, sci fi )
-  for (cnt = 0; cnt < NUM_GAME_STYLES; cnt++) {
+  for (cnt = 0; cnt < Enum4.NUM_GAME_STYLES; cnt++) {
     RestoreExternBackgroundRect(GIO_GAME_SETTINGS_X + GIO_OFFSET_TO_TOGGLE_BOX, usPosY, 34, 29);
 
     usPosY += GIO_GAP_BN_SETTINGS;
@@ -816,7 +816,7 @@ function RestoreGIOButtonBackGrounds(): void {
   usPosY = GIO_GUN_SETTINGS_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
 
   // Check box to toggle Gun options
-  for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
+  for (cnt = 0; cnt < Enum5.NUM_GUN_OPTIONS; cnt++) {
     RestoreExternBackgroundRect(GIO_GUN_SETTINGS_X + GIO_OFFSET_TO_TOGGLE_BOX, usPosY, 34, 29);
     usPosY += GIO_GAP_BN_SETTINGS;
   }
@@ -833,7 +833,7 @@ function RestoreGIOButtonBackGrounds(): void {
   */
   // Check box to toggle iron man options
   usPosY = GIO_IRON_MAN_SETTING_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
-  for (cnt = 0; cnt < NUM_SAVE_OPTIONS; cnt++) {
+  for (cnt = 0; cnt < Enum6.NUM_SAVE_OPTIONS; cnt++) {
     RestoreExternBackgroundRect(GIO_IRON_MAN_SETTING_X + GIO_OFFSET_TO_TOGGLE_BOX, usPosY, 34, 29);
     usPosY += GIO_GAP_BN_SETTINGS;
   }
@@ -850,11 +850,11 @@ function DoneFadeOutForExitGameInitOptionScreen(): void {
   gGameOptions.fIronManMode = GetCurrentGameSaveButtonSetting();
 
   //	gubGIOExitScreen = INIT_SCREEN;
-  gubGIOExitScreen = INTRO_SCREEN;
+  gubGIOExitScreen = Enum26.INTRO_SCREEN;
 
   // set the fact that we should do the intro videos
 //	gbIntroScreenMode = INTRO_BEGINING;
-    SetIntroType(INTRO_BEGINING);
+    SetIntroType(Enum21.INTRO_BEGINING);
 
   ExitGIOScreen();
 
@@ -885,20 +885,20 @@ function DisplayMessageToUserAboutGameDifficulty(): void {
 
   switch (ubDiffLevel) {
     case 0:
-      DoGioMessageBox(MSG_BOX_BASIC_STYLE, zGioDifConfirmText[GIO_CFS_NOVICE], GAME_INIT_OPTIONS_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmGioDifSettingMessageBoxCallBack);
+      DoGioMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zGioDifConfirmText[Enum381.GIO_CFS_NOVICE], Enum26.GAME_INIT_OPTIONS_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmGioDifSettingMessageBoxCallBack);
       break;
     case 1:
-      DoGioMessageBox(MSG_BOX_BASIC_STYLE, zGioDifConfirmText[GIO_CFS_EXPERIENCED], GAME_INIT_OPTIONS_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmGioDifSettingMessageBoxCallBack);
+      DoGioMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zGioDifConfirmText[Enum381.GIO_CFS_EXPERIENCED], Enum26.GAME_INIT_OPTIONS_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmGioDifSettingMessageBoxCallBack);
       break;
     case 2:
-      DoGioMessageBox(MSG_BOX_BASIC_STYLE, zGioDifConfirmText[GIO_CFS_EXPERT], GAME_INIT_OPTIONS_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmGioDifSettingMessageBoxCallBack);
+      DoGioMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zGioDifConfirmText[Enum381.GIO_CFS_EXPERT], Enum26.GAME_INIT_OPTIONS_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmGioDifSettingMessageBoxCallBack);
       break;
   }
 }
 
 function ConfirmGioDifSettingMessageBoxCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_YES) {
-    gubGameOptionScreenHandler = GIO_EXIT;
+    gubGameOptionScreenHandler = Enum7.GIO_EXIT;
   }
 }
 
@@ -907,7 +907,7 @@ function DisplayMessageToUserAboutIronManMode(): BOOLEAN {
 
   // if the user has selected IRON MAN mode
   if (ubIronManMode) {
-    DoGioMessageBox(MSG_BOX_BASIC_STYLE, gzIronManModeWarningText[IMM__IRON_MAN_MODE_WARNING_TEXT], GAME_INIT_OPTIONS_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmGioIronManMessageBoxCallBack);
+    DoGioMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzIronManModeWarningText[Enum321.IMM__IRON_MAN_MODE_WARNING_TEXT], Enum26.GAME_INIT_OPTIONS_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmGioIronManMessageBoxCallBack);
 
     return TRUE;
   }
@@ -917,9 +917,9 @@ function DisplayMessageToUserAboutIronManMode(): BOOLEAN {
 
 function ConfirmGioIronManMessageBoxCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_YES) {
-    gubGameOptionScreenHandler = GIO_IRON_MAN_MODE;
+    gubGameOptionScreenHandler = Enum7.GIO_IRON_MAN_MODE;
   } else {
-    ButtonList[guiGameSaveToggles[GIO_IRON_MAN]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[guiGameSaveToggles[GIO_CAN_SAVE]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[guiGameSaveToggles[Enum6.GIO_IRON_MAN]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[guiGameSaveToggles[Enum6.GIO_CAN_SAVE]].value.uiFlags |= BUTTON_CLICKED_ON;
   }
 }

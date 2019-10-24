@@ -125,8 +125,8 @@ function UpdateOldVersionMap(): void {
     let i: UINT32;
     gMapInformation.ubMapVersion = 18;
     for (i = 0; i < guiNumWorldItems; i++) {
-      if (gWorldItems[i].o.usItem == JAR_ELIXIR) {
-        gWorldItems[i].o.usItem = CROWBAR;
+      if (gWorldItems[i].o.usItem == Enum225.JAR_ELIXIR) {
+        gWorldItems[i].o.usItem = Enum225.CROWBAR;
       }
     }
   }
@@ -154,7 +154,7 @@ function UpdateOldVersionMap(): void {
     while (curr) {
       if (curr.value.pDetailedPlacement) {
         let i: INT32;
-        for (i = 0; i < NUM_INV_SLOTS; i++) {
+        for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
           if (!curr.value.pDetailedPlacement.value.Inv[i].usItem) {
             if (curr.value.pDetailedPlacement.value.Inv[i].fFlags & OBJECT_UNDROPPABLE) {
               if (curr.value.pDetailedPlacement.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE) {
@@ -181,7 +181,7 @@ function UpdateOldVersionMap(): void {
       curr = gSoldierInitHead;
       while (curr) {
         if (curr.value.pBasicPlacement.value.bTeam == CIV_TEAM && !curr.value.pDetailedPlacement) {
-          curr.value.pBasicPlacement.value.ubSoldierClass = SOLDIER_CLASS_MINER;
+          curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_MINER;
           curr.value.pBasicPlacement.value.bBodyType = -1;
         }
         curr = curr.value.next;
@@ -207,9 +207,9 @@ function AutoCalculateItemNoOverwriteStatus(): void {
   curr = gSoldierInitHead;
   while (curr) {
     if (curr.value.pDetailedPlacement) {
-      for (i = 0; i < NUM_INV_SLOTS; i++) {
+      for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
         pItem = addressof(curr.value.pDetailedPlacement.value.Inv[i]);
-        if (pItem.value.usItem != NONE) {
+        if (pItem.value.usItem != Enum225.NONE) {
           // case 1 (see above)
           pItem.value.fFlags |= OBJECT_NO_OVERWRITE;
         } else if (!(pItem.value.fFlags & OBJECT_UNDROPPABLE)) {

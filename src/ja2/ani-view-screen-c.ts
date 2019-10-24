@@ -12,7 +12,7 @@ function CycleAnimations(): void {
   let cnt: INT32;
 
   // FInd the next animation with start height the same...
-  for (cnt = usStartAnim + 1; cnt < NUMANIMATIONSTATES; cnt++) {
+  for (cnt = usStartAnim + 1; cnt < Enum193.NUMANIMATIONSTATES; cnt++) {
     if (gAnimControl[cnt].ubHeight == ubStartHeight) {
       usStartAnim = cnt;
       EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, TRUE);
@@ -129,7 +129,7 @@ function AniEditScreenHandle(): UINT32 {
 
       fOKFiles = FALSE;
 
-      return GAME_SCREEN;
+      return Enum26.GAME_SCREEN;
     }
 
     if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == SPACE)) {
@@ -146,17 +146,17 @@ function AniEditScreenHandle(): UINT32 {
         switch (ubStartHeight) {
           case ANIM_STAND:
 
-            usAnim = STANDING;
+            usAnim = Enum193.STANDING;
             break;
 
           case ANIM_CROUCH:
 
-            usAnim = CROUCHING;
+            usAnim = Enum193.CROUCHING;
             break;
 
           case ANIM_PRONE:
 
-            usAnim = PRONE;
+            usAnim = Enum193.PRONE;
             break;
         }
 
@@ -221,14 +221,14 @@ function AniEditScreenHandle(): UINT32 {
     }
   }
 
-  return ANIEDIT_SCREEN;
+  return Enum26.ANIEDIT_SCREEN;
 }
 
 function GetAnimStateFromName(zName: Pointer<INT8>): UINT16 {
   let cnt: INT32;
 
   // FInd the next animation with start height the same...
-  for (cnt = 0; cnt < NUMANIMATIONSTATES; cnt++) {
+  for (cnt = 0; cnt < Enum193.NUMANIMATIONSTATES; cnt++) {
     if (stricmp(gAnimControl[cnt].zAnimStr, zName) == 0) {
       return cnt;
     }
@@ -280,7 +280,7 @@ function BuildListFile(): void {
       pusStates[cnt] = usState;
     } else {
       swprintf(zError, "Animation str %S is not known: ", currFilename);
-      DoMessageBox(MSG_BOX_BASIC_STYLE, zError, ANIEDIT_SCREEN, MSG_BOX_FLAG_YESNO, NULL, NULL);
+      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zError, Enum26.ANIEDIT_SCREEN, MSG_BOX_FLAG_YESNO, NULL, NULL);
       fclose(infoFile);
       return;
     }

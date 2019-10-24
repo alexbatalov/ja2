@@ -253,7 +253,7 @@ function HandleIMPAttributeSelection(): void {
     fHasAnySlidingBarMoved = FALSE;
   }
   if (fSkillAtZeroWarning == TRUE) {
-    DoLapTopMessageBox(MSG_BOX_IMP_STYLE, pSkillAtZeroWarning[0], LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, StatAtZeroBoxCallBack);
+    DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pSkillAtZeroWarning[0], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, StatAtZeroBoxCallBack);
     fSkillAtZeroWarning = FALSE;
   }
   return;
@@ -346,75 +346,75 @@ function IncrementStat(iStatToIncrement: INT32): UINT8 {
 
   // review mode, do not allow changes
   if (fReviewStats) {
-    return SLIDER_ERROR;
+    return Enum85.SLIDER_ERROR;
   }
 
   // make sure we have enough bonus points
   if (iCurrentBonusPoints < 1) {
     // nope...GO GET SOME BONUS POINTS, IDIOT!
-    return SLIDER_ERROR;
+    return Enum85.SLIDER_ERROR;
   }
 
   // check to make sure stat isn't maxed out already
   switch (iStatToIncrement) {
-    case (STRENGTH_ATTRIBUTE):
+    case (Enum84.STRENGTH_ATTRIBUTE):
       if (iCurrentStrength > 84) {
         // too high, leave
-        return SLIDER_OUT_OF_RANGE;
+        return Enum85.SLIDER_OUT_OF_RANGE;
       } else {
         iCurrentStrength++;
         iCurrentBonusPoints--;
       }
       break;
-    case (DEXTERITY_ATTRIBUTE):
+    case (Enum84.DEXTERITY_ATTRIBUTE):
       if (iCurrentDexterity > 84) {
         // too high, leave
-        return SLIDER_OUT_OF_RANGE;
+        return Enum85.SLIDER_OUT_OF_RANGE;
       } else {
         iCurrentDexterity++;
         iCurrentBonusPoints--;
       }
       break;
-    case (AGILITY_ATTRIBUTE):
+    case (Enum84.AGILITY_ATTRIBUTE):
       if (iCurrentAgility > 84) {
         // too high, leave
-        return SLIDER_OUT_OF_RANGE;
+        return Enum85.SLIDER_OUT_OF_RANGE;
       } else {
         iCurrentAgility++;
         iCurrentBonusPoints--;
       }
       break;
-    case (LEADERSHIP_ATTRIBUTE):
+    case (Enum84.LEADERSHIP_ATTRIBUTE):
       if (iCurrentLeaderShip > 84) {
         // too high, leave
-        return SLIDER_OUT_OF_RANGE;
+        return Enum85.SLIDER_OUT_OF_RANGE;
       } else {
         iCurrentLeaderShip++;
         iCurrentBonusPoints--;
       }
       break;
-    case (WISDOM_ATTRIBUTE):
+    case (Enum84.WISDOM_ATTRIBUTE):
       if (iCurrentWisdom > 84) {
         // too high, leave
-        return SLIDER_OUT_OF_RANGE;
+        return Enum85.SLIDER_OUT_OF_RANGE;
       } else {
         iCurrentWisdom++;
         iCurrentBonusPoints--;
       }
       break;
-    case (HEALTH_ATTRIBUTE):
+    case (Enum84.HEALTH_ATTRIBUTE):
       if (iCurrentHealth > 84) {
         // too high, leave
-        return SLIDER_OUT_OF_RANGE;
+        return Enum85.SLIDER_OUT_OF_RANGE;
       } else {
         iCurrentHealth++;
         iCurrentBonusPoints--;
       }
       break;
-    case (MARKSMANSHIP_SKILL):
+    case (Enum84.MARKSMANSHIP_SKILL):
       if (iCurrentMarkmanship > 84) {
         // too high, leave
-        return SLIDER_OUT_OF_RANGE;
+        return Enum85.SLIDER_OUT_OF_RANGE;
       } else {
         if (iCurrentMarkmanship == 0) {
           if (DoWeHaveThisManyBonusPoints(15) == TRUE) {
@@ -422,7 +422,7 @@ function IncrementStat(iStatToIncrement: INT32): UINT8 {
             iCurrentBonusPoints -= 15;
             fSkillAtZeroWarning = FALSE;
           } else {
-            return SLIDER_OK;
+            return Enum85.SLIDER_OK;
           }
         } else {
           iCurrentMarkmanship++;
@@ -430,10 +430,10 @@ function IncrementStat(iStatToIncrement: INT32): UINT8 {
         }
       }
       break;
-    case (MECHANICAL_SKILL):
+    case (Enum84.MECHANICAL_SKILL):
       if (iCurrentMechanical > 84) {
         // too high, leave
-        return SLIDER_OUT_OF_RANGE;
+        return Enum85.SLIDER_OUT_OF_RANGE;
       } else {
         if (iCurrentMechanical == 0) {
           if (DoWeHaveThisManyBonusPoints(15) == TRUE) {
@@ -441,7 +441,7 @@ function IncrementStat(iStatToIncrement: INT32): UINT8 {
             iCurrentBonusPoints -= 15;
             fSkillAtZeroWarning = FALSE;
           } else {
-            return SLIDER_OK;
+            return Enum85.SLIDER_OK;
           }
         } else {
           iCurrentMechanical++;
@@ -449,10 +449,10 @@ function IncrementStat(iStatToIncrement: INT32): UINT8 {
         }
       }
       break;
-    case (MEDICAL_SKILL):
+    case (Enum84.MEDICAL_SKILL):
       if (iCurrentMedical > 84) {
         // too high, leave
-        return SLIDER_OUT_OF_RANGE;
+        return Enum85.SLIDER_OUT_OF_RANGE;
       } else {
         if (iCurrentMedical == 0) {
           if (DoWeHaveThisManyBonusPoints(15) == TRUE) {
@@ -460,7 +460,7 @@ function IncrementStat(iStatToIncrement: INT32): UINT8 {
             iCurrentBonusPoints -= 15;
             fSkillAtZeroWarning = FALSE;
           } else {
-            return SLIDER_OK;
+            return Enum85.SLIDER_OK;
           }
         } else {
           iCurrentMedical++;
@@ -468,10 +468,10 @@ function IncrementStat(iStatToIncrement: INT32): UINT8 {
         }
       }
       break;
-    case (EXPLOSIVE_SKILL):
+    case (Enum84.EXPLOSIVE_SKILL):
       if (iCurrentExplosives > 84) {
         // too high, leave
-        return SLIDER_OUT_OF_RANGE;
+        return Enum85.SLIDER_OUT_OF_RANGE;
       } else {
         if (iCurrentExplosives == 0) {
           if (DoWeHaveThisManyBonusPoints(15) == TRUE) {
@@ -479,7 +479,7 @@ function IncrementStat(iStatToIncrement: INT32): UINT8 {
             iCurrentBonusPoints -= 15;
             fSkillAtZeroWarning = FALSE;
           } else {
-            return SLIDER_OK;
+            return Enum85.SLIDER_OK;
           }
         } else {
           iCurrentExplosives++;
@@ -489,73 +489,73 @@ function IncrementStat(iStatToIncrement: INT32): UINT8 {
       break;
   }
 
-  return SLIDER_OK;
+  return Enum85.SLIDER_OK;
 }
 
 function DecrementStat(iStatToDecrement: INT32): UINT8 {
   // review mode, do not allow changes
   if (fReviewStats) {
-    return SLIDER_ERROR;
+    return Enum85.SLIDER_ERROR;
   }
 
   // decrement a stat
   // check to make sure stat isn't maxed out already
   switch (iStatToDecrement) {
-    case (STRENGTH_ATTRIBUTE):
+    case (Enum84.STRENGTH_ATTRIBUTE):
       if (iCurrentStrength > 35) {
         // ok to decrement
         iCurrentStrength--;
         iCurrentBonusPoints++;
       } else {
-        return SLIDER_OUT_OF_RANGE;
+        return Enum85.SLIDER_OUT_OF_RANGE;
       }
       break;
-    case (DEXTERITY_ATTRIBUTE):
+    case (Enum84.DEXTERITY_ATTRIBUTE):
       if (iCurrentDexterity > 35) {
         // ok to decrement
         iCurrentDexterity--;
         iCurrentBonusPoints++;
       } else {
-        return SLIDER_OUT_OF_RANGE;
+        return Enum85.SLIDER_OUT_OF_RANGE;
       }
       break;
-    case (AGILITY_ATTRIBUTE):
+    case (Enum84.AGILITY_ATTRIBUTE):
       if (iCurrentAgility > 35) {
         // ok to decrement
         iCurrentAgility--;
         iCurrentBonusPoints++;
       } else {
-        return SLIDER_OUT_OF_RANGE;
+        return Enum85.SLIDER_OUT_OF_RANGE;
       }
       break;
-    case (WISDOM_ATTRIBUTE):
+    case (Enum84.WISDOM_ATTRIBUTE):
       if (iCurrentWisdom > 35) {
         // ok to decrement
         iCurrentWisdom--;
         iCurrentBonusPoints++;
       } else {
-        return SLIDER_OUT_OF_RANGE;
+        return Enum85.SLIDER_OUT_OF_RANGE;
       }
       break;
-    case (LEADERSHIP_ATTRIBUTE):
+    case (Enum84.LEADERSHIP_ATTRIBUTE):
       if (iCurrentLeaderShip > 35) {
         // ok to decrement
         iCurrentLeaderShip--;
         iCurrentBonusPoints++;
       } else {
-        return SLIDER_OUT_OF_RANGE;
+        return Enum85.SLIDER_OUT_OF_RANGE;
       }
       break;
-    case (HEALTH_ATTRIBUTE):
+    case (Enum84.HEALTH_ATTRIBUTE):
       if (iCurrentHealth > 35) {
         // ok to decrement
         iCurrentHealth--;
         iCurrentBonusPoints++;
       } else {
-        return SLIDER_OUT_OF_RANGE;
+        return Enum85.SLIDER_OUT_OF_RANGE;
       }
       break;
-    case (MARKSMANSHIP_SKILL):
+    case (Enum84.MARKSMANSHIP_SKILL):
       if (iCurrentMarkmanship > 35) {
         // ok to decrement
         iCurrentMarkmanship--;
@@ -567,7 +567,7 @@ function DecrementStat(iStatToDecrement: INT32): UINT8 {
         fSkillAtZeroWarning = TRUE;
       }
       break;
-    case (MEDICAL_SKILL):
+    case (Enum84.MEDICAL_SKILL):
       if (iCurrentMedical > 35) {
         // ok to decrement
         iCurrentMedical--;
@@ -579,7 +579,7 @@ function DecrementStat(iStatToDecrement: INT32): UINT8 {
         fSkillAtZeroWarning = TRUE;
       }
       break;
-    case (MECHANICAL_SKILL):
+    case (Enum84.MECHANICAL_SKILL):
       if (iCurrentMechanical > 35) {
         // ok to decrement
         iCurrentMechanical--;
@@ -591,7 +591,7 @@ function DecrementStat(iStatToDecrement: INT32): UINT8 {
         fSkillAtZeroWarning = TRUE;
       }
       break;
-    case (EXPLOSIVE_SKILL):
+    case (Enum84.EXPLOSIVE_SKILL):
       if (iCurrentExplosives > 35) {
         // ok to decrement
         iCurrentExplosives--;
@@ -610,7 +610,7 @@ function DecrementStat(iStatToDecrement: INT32): UINT8 {
     iCurrentStatAtZero = iStatToDecrement;
   }
 
-  return SLIDER_OK;
+  return Enum85.SLIDER_OK;
 }
 
 function DoWeHaveThisManyBonusPoints(iBonusPoints: INT32): BOOLEAN {
@@ -633,7 +633,7 @@ function CreateIMPAttributeSelectionButtons(): void {
     */
   giIMPAttributeSelectionButton[0] = CreateIconAndTextButton(giIMPAttributeSelectionButtonImage[0], pImpButtonText[11], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (136), LAPTOP_SCREEN_WEB_UL_Y + (314), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPAttributeFinishCallback);
 
-  SetButtonCursor(giIMPAttributeSelectionButton[0], CURSOR_WWW);
+  SetButtonCursor(giIMPAttributeSelectionButton[0], Enum317.CURSOR_WWW);
   return;
 }
 
@@ -660,9 +660,9 @@ function BtnIMPAttributeFinishCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 
       // are we done diting, or just reviewing the stats?
       if (fReviewStats == TRUE) {
-        iCurrentImpPage = IMP_FINISH;
+        iCurrentImpPage = Enum71.IMP_FINISH;
       } else {
-        iCurrentImpPage = IMP_ATTRIBUTE_FINISH;
+        iCurrentImpPage = Enum71.IMP_ATTRIBUTE_FINISH;
       }
       fButtonPendingFlag = TRUE;
     }
@@ -671,7 +671,7 @@ function BtnIMPAttributeFinishCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 
 function RenderAttributeBoxes(): void {
   // this function will render the boxes in the sliding attribute bar, based on position
-  let iCnt: INT32 = STRENGTH_ATTRIBUTE;
+  let iCnt: INT32 = Enum84.STRENGTH_ATTRIBUTE;
   let sX: INT16 = 0;
   let sY: INT16 = 0;
   let sTempY: INT16 = 0;
@@ -688,7 +688,7 @@ function RenderAttributeBoxes(): void {
   SetFontBackground(FONT_BLACK);
 
   // run through and render each slider bar
-  for (iCnt = HEALTH_ATTRIBUTE; iCnt <= MECHANICAL_SKILL; iCnt++) {
+  for (iCnt = Enum84.HEALTH_ATTRIBUTE; iCnt <= Enum84.MECHANICAL_SKILL; iCnt++) {
     // position is  ( width *  ( stat - 35 ) ) /50]
     // unless 0, then it is 0 - for skills
 
@@ -696,7 +696,7 @@ function RenderAttributeBoxes(): void {
     sY = SKILL_SLIDE_START_Y + SKILL_SLIDE_HEIGHT * (iCnt);
 
     switch (iCnt) {
-      case (STRENGTH_ATTRIBUTE):
+      case (Enum84.STRENGTH_ATTRIBUTE):
         // blt in strength slider
         sX = ((iCurrentStrength - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
         sX += SKILL_SLIDE_START_X;
@@ -711,7 +711,7 @@ function RenderAttributeBoxes(): void {
         sY += LAPTOP_SCREEN_WEB_UL_Y;
         mprintf(sX + 13, sY + 3, sString);
         break;
-      case (DEXTERITY_ATTRIBUTE):
+      case (Enum84.DEXTERITY_ATTRIBUTE):
         // blt in strength slider
         sX = ((iCurrentDexterity - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
         sX += SKILL_SLIDE_START_X;
@@ -727,7 +727,7 @@ function RenderAttributeBoxes(): void {
         mprintf(sX + 13, sY + 3, sString);
 
         break;
-      case (AGILITY_ATTRIBUTE):
+      case (Enum84.AGILITY_ATTRIBUTE):
         // blt in strength slider
         sX = ((iCurrentAgility - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
         sX += SKILL_SLIDE_START_X;
@@ -743,7 +743,7 @@ function RenderAttributeBoxes(): void {
         mprintf(sX + 13, sY + 3, sString);
 
         break;
-      case (WISDOM_ATTRIBUTE):
+      case (Enum84.WISDOM_ATTRIBUTE):
         // blt in strength slider
         sX = ((iCurrentWisdom - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
         sX += SKILL_SLIDE_START_X;
@@ -758,7 +758,7 @@ function RenderAttributeBoxes(): void {
         sY += LAPTOP_SCREEN_WEB_UL_Y;
         mprintf(sX + 13, sY + 3, sString);
         break;
-      case (LEADERSHIP_ATTRIBUTE):
+      case (Enum84.LEADERSHIP_ATTRIBUTE):
         // blt in strength slider
         sX = ((iCurrentLeaderShip - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
         sX += SKILL_SLIDE_START_X;
@@ -772,7 +772,7 @@ function RenderAttributeBoxes(): void {
         sY += LAPTOP_SCREEN_WEB_UL_Y;
         mprintf(sX + 13, sY + 3, sString);
         break;
-      case (HEALTH_ATTRIBUTE):
+      case (Enum84.HEALTH_ATTRIBUTE):
         // blt in health slider
         sX = ((iCurrentHealth - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
         sX += SKILL_SLIDE_START_X;
@@ -787,7 +787,7 @@ function RenderAttributeBoxes(): void {
         sX += LAPTOP_SCREEN_UL_X;
         mprintf(sX + 13, sY + 3, sString);
         break;
-      case (MARKSMANSHIP_SKILL):
+      case (Enum84.MARKSMANSHIP_SKILL):
         // blt in marksmanship slider
 
         sX = ((iCurrentMarkmanship - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
@@ -807,7 +807,7 @@ function RenderAttributeBoxes(): void {
         sX += LAPTOP_SCREEN_UL_X;
         mprintf(sX + 13, sY + 3, sString);
         break;
-      case (MEDICAL_SKILL):
+      case (Enum84.MEDICAL_SKILL):
         // blt in medical slider
 
         sX = ((iCurrentMedical - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
@@ -828,7 +828,7 @@ function RenderAttributeBoxes(): void {
         sX += LAPTOP_SCREEN_UL_X;
         mprintf(sX + 13, sY + 3, sString);
         break;
-      case (MECHANICAL_SKILL):
+      case (Enum84.MECHANICAL_SKILL):
         // blt in mech slider
 
         sX = ((iCurrentMechanical - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
@@ -849,7 +849,7 @@ function RenderAttributeBoxes(): void {
         sX += LAPTOP_SCREEN_UL_X;
         mprintf(sX + 13, sY + 3, sString);
         break;
-      case (EXPLOSIVE_SKILL):
+      case (Enum84.EXPLOSIVE_SKILL):
         // blt in explosive slider
 
         sX = ((iCurrentExplosives - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
@@ -894,8 +894,8 @@ function CreateAttributeSliderButtons(): void {
     // right button - increment stat
     giIMPAttributeSelectionSliderButton[iCounter + 1] = QuickCreateButton(giIMPAttributeSelectionSliderButtonImage[1], LAPTOP_SCREEN_UL_X + (419), (LAPTOP_SCREEN_WEB_UL_Y + (99 + iCounter / 2 * 20)), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnIMPAttributeSliderRightCallback);
 
-    SetButtonCursor(giIMPAttributeSelectionSliderButton[iCounter], CURSOR_WWW);
-    SetButtonCursor(giIMPAttributeSelectionSliderButton[iCounter + 1], CURSOR_WWW);
+    SetButtonCursor(giIMPAttributeSelectionSliderButton[iCounter], Enum317.CURSOR_WWW);
+    SetButtonCursor(giIMPAttributeSelectionSliderButton[iCounter + 1], Enum317.CURSOR_WWW);
     // set user data
     MSYS_SetBtnUserData(giIMPAttributeSelectionSliderButton[iCounter], 0, iCounter / 2);
     MSYS_SetBtnUserData(giIMPAttributeSelectionSliderButton[iCounter + 1], 0, iCounter / 2);
@@ -982,7 +982,7 @@ function CreateSlideRegionMouseRegions(): void {
 
   for (iCounter = 0; iCounter < 10; iCounter++) {
     // define the region
-    MSYS_DefineRegion(addressof(pSliderRegions[iCounter]), (SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT), (LAPTOP_SCREEN_UL_X + SKILL_SLIDE_START_X + BAR_WIDTH), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT + 15), MSYS_PRIORITY_HIGH + 2, CURSOR_WWW, MSYS_NO_CALLBACK, SliderRegionButtonCallback);
+    MSYS_DefineRegion(addressof(pSliderRegions[iCounter]), (SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT), (LAPTOP_SCREEN_UL_X + SKILL_SLIDE_START_X + BAR_WIDTH), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT + 15), MSYS_PRIORITY_HIGH + 2, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SliderRegionButtonCallback);
 
     // define user data
     MSYS_SetRegionUserData(addressof(pSliderRegions[iCounter]), 0, iCounter);
@@ -1003,7 +1003,7 @@ function CreateSliderBarMouseRegions(): void {
 
   for (iCounter = 0; iCounter < 10; iCounter++) {
     // define the region
-    MSYS_DefineRegion(addressof(pSliderBarRegions[iCounter]), (sX), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT), (sX + SLIDER_BAR_WIDTH), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT + 15), MSYS_PRIORITY_HIGH + 2, CURSOR_WWW, MSYS_NO_CALLBACK, SliderBarRegionButtonCallback);
+    MSYS_DefineRegion(addressof(pSliderBarRegions[iCounter]), (sX), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT), (sX + SLIDER_BAR_WIDTH), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT + 15), MSYS_PRIORITY_HIGH + 2, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SliderBarRegionButtonCallback);
 
     // define user data
     MSYS_SetRegionUserData(addressof(pSliderBarRegions[iCounter]), 0, iCounter);
@@ -1216,34 +1216,34 @@ function GetCurrentAttributeValue(iAttribute: INT32): INT32 {
   let iValue: INT32 = 0;
 
   switch (iAttribute) {
-    case (STRENGTH_ATTRIBUTE):
+    case (Enum84.STRENGTH_ATTRIBUTE):
       iValue = iCurrentStrength;
       break;
-    case (DEXTERITY_ATTRIBUTE):
+    case (Enum84.DEXTERITY_ATTRIBUTE):
       iValue = iCurrentDexterity;
       break;
-    case (AGILITY_ATTRIBUTE):
+    case (Enum84.AGILITY_ATTRIBUTE):
       iValue = iCurrentAgility;
       break;
-    case (HEALTH_ATTRIBUTE):
+    case (Enum84.HEALTH_ATTRIBUTE):
       iValue = iCurrentHealth;
       break;
-    case (WISDOM_ATTRIBUTE):
+    case (Enum84.WISDOM_ATTRIBUTE):
       iValue = iCurrentWisdom;
       break;
-    case (LEADERSHIP_ATTRIBUTE):
+    case (Enum84.LEADERSHIP_ATTRIBUTE):
       iValue = iCurrentLeaderShip;
       break;
-    case (MARKSMANSHIP_SKILL):
+    case (Enum84.MARKSMANSHIP_SKILL):
       iValue = iCurrentMarkmanship;
       break;
-    case (MEDICAL_SKILL):
+    case (Enum84.MEDICAL_SKILL):
       iValue = iCurrentMedical;
       break;
-    case (MECHANICAL_SKILL):
+    case (Enum84.MECHANICAL_SKILL):
       iValue = iCurrentMechanical;
       break;
-    case (EXPLOSIVE_SKILL):
+    case (Enum84.EXPLOSIVE_SKILL):
       iValue = iCurrentExplosives;
       break;
   }

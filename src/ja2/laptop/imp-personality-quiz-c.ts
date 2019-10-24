@@ -142,10 +142,10 @@ function CreateIMPPersonalityQuizButtons(): void {
   DisableButton(giPreviousQuestionButton);
   DisableButton(giNextQuestionButton);
 
-  SetButtonCursor(giIMPPersonalityQuizButton[0], CURSOR_WWW);
-  SetButtonCursor(giIMPPersonalityQuizButton[1], CURSOR_WWW);
-  SetButtonCursor(giPreviousQuestionButton, CURSOR_WWW);
-  SetButtonCursor(giNextQuestionButton, CURSOR_WWW);
+  SetButtonCursor(giIMPPersonalityQuizButton[0], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPPersonalityQuizButton[1], Enum317.CURSOR_WWW);
+  SetButtonCursor(giPreviousQuestionButton, Enum317.CURSOR_WWW);
+  SetButtonCursor(giNextQuestionButton, Enum317.CURSOR_WWW);
 
   return;
 }
@@ -175,7 +175,7 @@ function DestroyIMPersonalityQuizButtons(): void {
 function CreateIMPPersonalityQuizAnswerButtons(): void {
   // this function will create the buttons for the personality quiz answer selections
 
-  if (IMP_PERSONALITY_QUIZ != iCurrentImpPage) {
+  if (Enum71.IMP_PERSONALITY_QUIZ != iCurrentImpPage) {
     // not valid pagre, get out
     return;
   }
@@ -339,7 +339,7 @@ function AddIMPPersonalityQuizAnswerButtons(iNumberOfButtons: INT32): void {
     SpecifyButtonTextOffsets(giIMPPersonalityQuizAnswerButton[iCounter], +23, +12, TRUE);
     SpecifyButtonFont(giIMPPersonalityQuizAnswerButton[iCounter], FONT12ARIAL);
     SpecifyButtonText(giIMPPersonalityQuizAnswerButton[iCounter], sString);
-    SetButtonCursor(giIMPPersonalityQuizAnswerButton[iCounter], CURSOR_WWW);
+    SetButtonCursor(giIMPPersonalityQuizAnswerButton[iCounter], Enum317.CURSOR_WWW);
   }
 
   // previous is current
@@ -695,7 +695,7 @@ function BtnIMPPersonalityQuizAnswerConfirmCallback(btn: Pointer<GUI_BUTTON>, re
 
         // OPPS!, done..time to finish up
         if (giCurrentPersonalityQuizQuestion > 15) {
-          iCurrentImpPage = IMP_PERSONALITY_FINISH;
+          iCurrentImpPage = Enum71.IMP_PERSONALITY_FINISH;
           // process
           CompileQuestionsInStatsAndWhatNot();
         }
@@ -718,7 +718,7 @@ function BtnIMPPersonalityQuizStartOverCallback(btn: Pointer<GUI_BUTTON>, reason
       giMaxPersonalityQuizQuestion = 0;
       fStartOverFlag = TRUE;
 
-      iCurrentImpPage = IMP_PERSONALITY;
+      iCurrentImpPage = Enum71.IMP_PERSONALITY;
       fButtonPendingFlag = TRUE;
       iCurrentAnswer = -1;
     }
@@ -781,30 +781,30 @@ function CompileQuestionsInStatsAndWhatNot(): void {
           case (0):
             if (fCharacterIsMale) {
               // Martial arts
-              AddSkillToSkillList(MARTIALARTS);
+              AddSkillToSkillList(Enum269.MARTIALARTS);
             } else {
               // for women, ambidexterious
-              AddSkillToSkillList(AMBIDEXT);
+              AddSkillToSkillList(Enum269.AMBIDEXT);
             }
             break;
           case (1):
-            AddAnAttitudeToAttitudeList(ATT_LONER);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_LONER);
             break;
           case (2):
             // hand to hand
-            AddSkillToSkillList(HANDTOHAND);
+            AddSkillToSkillList(Enum269.HANDTOHAND);
             break;
           case (3):
             // lock picking
-            AddSkillToSkillList(LOCKPICKING);
+            AddSkillToSkillList(Enum269.LOCKPICKING);
             break;
           case (4):
             // throwing
-            AddSkillToSkillList(THROWING);
+            AddSkillToSkillList(Enum269.THROWING);
             break;
           case (5):
             // optimist
-            AddAnAttitudeToAttitudeList(ATT_OPTIMIST);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_OPTIMIST);
             break;
         }
         break;
@@ -812,17 +812,17 @@ function CompileQuestionsInStatsAndWhatNot(): void {
         switch (iQuizAnswerList[iCurrentQuestion]) {
           case (0):
             // teaching
-            AddSkillToSkillList(TEACHING);
+            AddSkillToSkillList(Enum269.TEACHING);
             break;
           case (1):
-            AddSkillToSkillList(STEALTHY);
+            AddSkillToSkillList(Enum269.STEALTHY);
             break;
           case (2):
             // psycho
-            AddAPersonalityToPersonalityList(PSYCHO);
+            AddAPersonalityToPersonalityList(Enum270.PSYCHO);
             break;
           case (3):
-            AddAnAttitudeToAttitudeList(ATT_FRIENDLY);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_FRIENDLY);
             break;
         }
         break;
@@ -830,18 +830,18 @@ function CompileQuestionsInStatsAndWhatNot(): void {
         switch (iQuizAnswerList[iCurrentQuestion]) {
           case (0):
             // lock picking
-            AddSkillToSkillList(LOCKPICKING);
+            AddSkillToSkillList(Enum269.LOCKPICKING);
             break;
           case (1):
             // arrogant
-            AddAnAttitudeToAttitudeList(ATT_ARROGANT);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_ARROGANT);
             break;
           case (2):
-            AddSkillToSkillList(STEALTHY);
+            AddSkillToSkillList(Enum269.STEALTHY);
             break;
           case (3):
             // normal
-            AddAnAttitudeToAttitudeList(ATT_NORMAL);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_NORMAL);
             break;
         }
         break;
@@ -849,23 +849,23 @@ function CompileQuestionsInStatsAndWhatNot(): void {
         switch (iQuizAnswerList[iCurrentQuestion]) {
           case (0):
             // automatic weapons
-            AddSkillToSkillList(AUTO_WEAPS);
+            AddSkillToSkillList(Enum269.AUTO_WEAPS);
             break;
           case (1):
             // friendly
-            AddAnAttitudeToAttitudeList(ATT_FRIENDLY);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_FRIENDLY);
 
             break;
           case (2):
             // normal
-            AddAnAttitudeToAttitudeList(ATT_NORMAL);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_NORMAL);
             break;
           case (3):
             // asshole
-            AddAnAttitudeToAttitudeList(ATT_ASSHOLE);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_ASSHOLE);
             break;
           case (4):
-            AddAnAttitudeToAttitudeList(ATT_LONER);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_LONER);
             break;
         }
         break;
@@ -873,14 +873,14 @@ function CompileQuestionsInStatsAndWhatNot(): void {
         switch (iQuizAnswerList[iCurrentQuestion]) {
           case (0):
             // coward
-            AddAnAttitudeToAttitudeList(ATT_COWARD);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_COWARD);
             break;
           case (1):
             // none
             break;
           case (2):
             // aggressive
-            AddAnAttitudeToAttitudeList(ATT_AGGRESSIVE);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_AGGRESSIVE);
             break;
           case (3):
             // none
@@ -891,14 +891,14 @@ function CompileQuestionsInStatsAndWhatNot(): void {
         switch (iQuizAnswerList[iCurrentQuestion]) {
           case (0):
             // coward
-            AddAnAttitudeToAttitudeList(ATT_COWARD);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_COWARD);
             break;
           case (1):
-            AddSkillToSkillList(NIGHTOPS);
+            AddSkillToSkillList(Enum269.NIGHTOPS);
             break;
           case (2):
             // dont like boxes much
-            AddAPersonalityToPersonalityList(CLAUSTROPHOBIC);
+            AddAPersonalityToPersonalityList(Enum270.CLAUSTROPHOBIC);
             break;
           case (3):
             // none
@@ -912,14 +912,14 @@ function CompileQuestionsInStatsAndWhatNot(): void {
         switch (iQuizAnswerList[iCurrentQuestion]) {
           case (0):
             // electronics
-            AddSkillToSkillList(ELECTRONICS);
+            AddSkillToSkillList(Enum269.ELECTRONICS);
             break;
           case (1):
             // knifing
-            AddSkillToSkillList(KNIFING);
+            AddSkillToSkillList(Enum269.KNIFING);
             break;
           case (2):
-            AddSkillToSkillList(NIGHTOPS);
+            AddSkillToSkillList(Enum269.NIGHTOPS);
             break;
           case (3):
             // none
@@ -930,18 +930,18 @@ function CompileQuestionsInStatsAndWhatNot(): void {
         switch (iQuizAnswerList[iCurrentQuestion]) {
           case (0):
             // ambidexterous
-            AddSkillToSkillList(AMBIDEXT);
+            AddSkillToSkillList(Enum269.AMBIDEXT);
             break;
           case (1):
             // none
             break;
           case (2):
             // optimist
-            AddAnAttitudeToAttitudeList(ATT_OPTIMIST);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_OPTIMIST);
             break;
           case (3):
             // psycho
-            AddAPersonalityToPersonalityList(PSYCHO);
+            AddAPersonalityToPersonalityList(Enum270.PSYCHO);
             break;
         }
         break;
@@ -949,17 +949,17 @@ function CompileQuestionsInStatsAndWhatNot(): void {
         switch (iQuizAnswerList[iCurrentQuestion]) {
           case (0):
             // forgetful
-            AddAPersonalityToPersonalityList(FORGETFUL);
+            AddAPersonalityToPersonalityList(Enum270.FORGETFUL);
             break;
           case (1):
             // none
           case (2):
             // pessimist
-            AddAnAttitudeToAttitudeList(ATT_PESSIMIST);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_PESSIMIST);
             break;
           case (3):
             // nervous
-            AddAPersonalityToPersonalityList(NERVOUS);
+            AddAPersonalityToPersonalityList(Enum270.NERVOUS);
             break;
         }
         break;
@@ -971,15 +971,15 @@ function CompileQuestionsInStatsAndWhatNot(): void {
             break;
           case (1):
             // pessimist
-            AddAnAttitudeToAttitudeList(ATT_PESSIMIST);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_PESSIMIST);
             break;
           case (2):
             // asshole
-            AddAnAttitudeToAttitudeList(ATT_ASSHOLE);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_ASSHOLE);
             break;
           case (3):
             // nervous
-            AddAPersonalityToPersonalityList(NERVOUS);
+            AddAPersonalityToPersonalityList(Enum270.NERVOUS);
             break;
         }
         break;
@@ -990,15 +990,15 @@ function CompileQuestionsInStatsAndWhatNot(): void {
             break;
           case (1):
             // teaching
-            AddSkillToSkillList(TEACHING);
+            AddSkillToSkillList(Enum269.TEACHING);
             break;
           case (2):
             // aggressive
-            AddAnAttitudeToAttitudeList(ATT_AGGRESSIVE);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_AGGRESSIVE);
             break;
           case (3):
             // normal
-            AddAnAttitudeToAttitudeList(ATT_NORMAL);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_NORMAL);
             break;
           case (4):
             // none
@@ -1010,30 +1010,30 @@ function CompileQuestionsInStatsAndWhatNot(): void {
           case (0):
             if (fCharacterIsMale) {
               // Martial arts
-              AddSkillToSkillList(MARTIALARTS);
+              AddSkillToSkillList(Enum269.MARTIALARTS);
             } else {
               // for women, ambidexterious
-              AddSkillToSkillList(AMBIDEXT);
+              AddSkillToSkillList(Enum269.AMBIDEXT);
             }
             break;
           case (1):
             // knifing
-            AddSkillToSkillList(KNIFING);
+            AddSkillToSkillList(Enum269.KNIFING);
             break;
           case (2):
             // none
             break;
           case (3):
             // automatic weapons
-            AddSkillToSkillList(AUTO_WEAPS);
+            AddSkillToSkillList(Enum269.AUTO_WEAPS);
             break;
           case (4):
             // hand to hand
-            AddSkillToSkillList(HANDTOHAND);
+            AddSkillToSkillList(Enum269.HANDTOHAND);
             break;
           case (5):
             // electronics
-            AddSkillToSkillList(ELECTRONICS);
+            AddSkillToSkillList(Enum269.ELECTRONICS);
             break;
           case (6):
             // ashole
@@ -1047,19 +1047,19 @@ function CompileQuestionsInStatsAndWhatNot(): void {
         switch (iQuizAnswerList[iCurrentQuestion]) {
           case (0):
             // forgetful
-            AddAPersonalityToPersonalityList(FORGETFUL);
+            AddAPersonalityToPersonalityList(Enum270.FORGETFUL);
             break;
           case (1):
             // normal
-            AddAnAttitudeToAttitudeList(ATT_NORMAL);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_NORMAL);
             break;
           case (2):
             // normal
-            AddAnAttitudeToAttitudeList(ATT_NORMAL);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_NORMAL);
             break;
           case (3):
             // heat problems
-            AddAPersonalityToPersonalityList(HEAT_INTOLERANT);
+            AddAPersonalityToPersonalityList(Enum270.HEAT_INTOLERANT);
             break;
         }
         break;
@@ -1067,15 +1067,15 @@ function CompileQuestionsInStatsAndWhatNot(): void {
         switch (iQuizAnswerList[iCurrentQuestion]) {
           case (0):
             // dont like boxes much
-            AddAPersonalityToPersonalityList(CLAUSTROPHOBIC);
+            AddAPersonalityToPersonalityList(Enum270.CLAUSTROPHOBIC);
             break;
           case (1):
             // normal
-            AddAnAttitudeToAttitudeList(ATT_NORMAL);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_NORMAL);
             break;
           case (2):
             // heat problems
-            AddAPersonalityToPersonalityList(HEAT_INTOLERANT);
+            AddAPersonalityToPersonalityList(Enum270.HEAT_INTOLERANT);
             break;
           case (3):
             // none
@@ -1086,17 +1086,17 @@ function CompileQuestionsInStatsAndWhatNot(): void {
         switch (iQuizAnswerList[iCurrentQuestion]) {
           case (0):
             // throwing
-            AddSkillToSkillList(THROWING);
+            AddSkillToSkillList(Enum269.THROWING);
             break;
           case (1):
             // ambidexterous
-            AddSkillToSkillList(AMBIDEXT);
+            AddSkillToSkillList(Enum269.AMBIDEXT);
             break;
           case (3):
             // none
             break;
           case (2):
-            AddAnAttitudeToAttitudeList(ATT_ARROGANT);
+            AddAnAttitudeToAttitudeList(Enum271.ATT_ARROGANT);
             break;
         }
         break;

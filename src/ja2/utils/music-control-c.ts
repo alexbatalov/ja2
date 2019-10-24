@@ -213,9 +213,9 @@ function MusicPoll(fForce: BOOLEAN): BOOLEAN {
   SoundServiceRandom();
 
   // Handle Sound every sound overhead time....
-  if (COUNTERDONE(MUSICOVERHEAD)) {
+  if (COUNTERDONE(Enum386.MUSICOVERHEAD)) {
     // Reset counter
-    RESETCOUNTER(MUSICOVERHEAD);
+    RESETCOUNTER(Enum386.MUSICOVERHEAD);
 
     if (fMusicFadingIn) {
       if (uiMusicHandle != NO_SAMPLE) {
@@ -251,12 +251,12 @@ function MusicPoll(fForce: BOOLEAN): BOOLEAN {
 
       // If we were in victory mode, change!
       if (gbVictorySongCount == 1 || gbDeathSongCount == 1) {
-        if (gbDeathSongCount == 1 && guiCurrentScreen == GAME_SCREEN) {
+        if (gbDeathSongCount == 1 && guiCurrentScreen == Enum26.GAME_SCREEN) {
           CheckAndHandleUnloadingOfCurrentWorld();
         }
 
         if (gbVictorySongCount == 1) {
-          SetMusicMode(MUSIC_TACTICAL_NOTHING);
+          SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
         }
       } else {
         if (!gfDontRestartSong) {
@@ -276,9 +276,9 @@ function SetMusicMode(ubMusicMode: UINT8): BOOLEAN {
   /* static */ let bPreviousMode: INT8 = 0;
 
   // OK, check if we want to restore
-  if (ubMusicMode == MUSIC_RESTORE) {
-    if (bPreviousMode == MUSIC_TACTICAL_VICTORY || bPreviousMode == MUSIC_TACTICAL_DEATH) {
-      bPreviousMode = MUSIC_TACTICAL_NOTHING;
+  if (ubMusicMode == Enum328.MUSIC_RESTORE) {
+    if (bPreviousMode == Enum328.MUSIC_TACTICAL_VICTORY || bPreviousMode == Enum328.MUSIC_TACTICAL_DEATH) {
+      bPreviousMode = Enum328.MUSIC_TACTICAL_NOTHING;
     }
 
     ubMusicMode = bPreviousMode;
@@ -316,66 +316,66 @@ function StartMusicBasedOnMode(): BOOLEAN {
   if (fFirstTime) {
     fFirstTime = FALSE;
 
-    bNothingModeSong = NOTHING_A_MUSIC + Random(4);
+    bNothingModeSong = Enum327.NOTHING_A_MUSIC + Random(4);
 
-    bEnemyModeSong = TENSOR_A_MUSIC + Random(3);
+    bEnemyModeSong = Enum327.TENSOR_A_MUSIC + Random(3);
 
-    bBattleModeSong = BATTLE_A_MUSIC + Random(2);
+    bBattleModeSong = Enum327.BATTLE_A_MUSIC + Random(2);
   }
 
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("StartMusicBasedOnMode() %d %d", uiMusicHandle, gubMusicMode));
 
   // Setup a song based on mode we're in!
   switch (gubMusicMode) {
-    case MUSIC_MAIN_MENU:
+    case Enum328.MUSIC_MAIN_MENU:
       // ATE: Don't fade in
       gbFadeSpeed = uiMusicVolume;
-      MusicPlay(MENUMIX_MUSIC);
+      MusicPlay(Enum327.MENUMIX_MUSIC);
       break;
 
-    case MUSIC_LAPTOP:
+    case Enum328.MUSIC_LAPTOP:
       gbFadeSpeed = uiMusicVolume;
-      MusicPlay(MARIMBAD2_MUSIC);
+      MusicPlay(Enum327.MARIMBAD2_MUSIC);
       break;
 
-    case MUSIC_TACTICAL_NOTHING:
+    case Enum328.MUSIC_TACTICAL_NOTHING:
       // ATE: Don't fade in
       gbFadeSpeed = uiMusicVolume;
       if (gfUseCreatureMusic) {
-        MusicPlay(CREEPY_MUSIC);
+        MusicPlay(Enum327.CREEPY_MUSIC);
       } else {
         MusicPlay(bNothingModeSong);
-        bNothingModeSong = NOTHING_A_MUSIC + Random(4);
+        bNothingModeSong = Enum327.NOTHING_A_MUSIC + Random(4);
       }
       break;
 
-    case MUSIC_TACTICAL_ENEMYPRESENT:
+    case Enum328.MUSIC_TACTICAL_ENEMYPRESENT:
       // ATE: Don't fade in EnemyPresent...
       gbFadeSpeed = uiMusicVolume;
       if (gfUseCreatureMusic) {
-        MusicPlay(CREEPY_MUSIC);
+        MusicPlay(Enum327.CREEPY_MUSIC);
       } else {
         MusicPlay(bEnemyModeSong);
-        bEnemyModeSong = TENSOR_A_MUSIC + Random(3);
+        bEnemyModeSong = Enum327.TENSOR_A_MUSIC + Random(3);
       }
       break;
 
-    case MUSIC_TACTICAL_BATTLE:
+    case Enum328.MUSIC_TACTICAL_BATTLE:
       // ATE: Don't fade in
       gbFadeSpeed = uiMusicVolume;
       if (gfUseCreatureMusic) {
-        MusicPlay(CREATURE_BATTLE_MUSIC);
+        MusicPlay(Enum327.CREATURE_BATTLE_MUSIC);
       } else {
         MusicPlay(bBattleModeSong);
       }
-      bBattleModeSong = BATTLE_A_MUSIC + Random(2);
+      bBattleModeSong = Enum327.BATTLE_A_MUSIC + Random(2);
       break;
 
-    case MUSIC_TACTICAL_VICTORY:
+    case Enum328.MUSIC_TACTICAL_VICTORY:
 
       // ATE: Don't fade in EnemyPresent...
       gbFadeSpeed = uiMusicVolume;
-      MusicPlay(TRIUMPH_MUSIC);
+      MusicPlay(Enum327.TRIUMPH_MUSIC);
       gbVictorySongCount++;
 
       if (gfUseCreatureMusic && !gbWorldSectorZ) {
@@ -384,11 +384,11 @@ function StartMusicBasedOnMode(): BOOLEAN {
       }
       break;
 
-    case MUSIC_TACTICAL_DEATH:
+    case Enum328.MUSIC_TACTICAL_DEATH:
 
       // ATE: Don't fade in EnemyPresent...
       gbFadeSpeed = uiMusicVolume;
-      MusicPlay(DEATH_MUSIC);
+      MusicPlay(Enum327.DEATH_MUSIC);
       gbDeathSongCount++;
       break;
 
@@ -427,6 +427,6 @@ function FadeMusicForXSeconds(uiDelay: UINT32): void {
 
 function DoneFadeOutDueToEndMusic(): void {
   // Quit game....
-  InternalLeaveTacticalScreen(MAINMENU_SCREEN);
+  InternalLeaveTacticalScreen(Enum26.MAINMENU_SCREEN);
   // SetPendingNewScreen( MAINMENU_SCREEN );
 }

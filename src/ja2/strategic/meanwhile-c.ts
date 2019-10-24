@@ -94,55 +94,55 @@ const BALIME_LIBERATED_FLAG = 0x00010000;
 // set flag for this event
 function SetMeanWhileFlag(ubMeanwhileID: UINT8): void {
   switch (ubMeanwhileID) {
-    case END_OF_PLAYERS_FIRST_BATTLE:
+    case Enum160.END_OF_PLAYERS_FIRST_BATTLE:
       uiMeanWhileFlags |= END_OF_PLAYERS_FIRST_BATTLE_FLAG;
       break;
-    case DRASSEN_LIBERATED:
+    case Enum160.DRASSEN_LIBERATED:
       uiMeanWhileFlags |= DRASSEN_LIBERATED_FLAG;
       break;
-    case CAMBRIA_LIBERATED:
+    case Enum160.CAMBRIA_LIBERATED:
       uiMeanWhileFlags |= CAMBRIA_LIBERATED_FLAG;
       break;
-    case ALMA_LIBERATED:
+    case Enum160.ALMA_LIBERATED:
       uiMeanWhileFlags |= ALMA_LIBERATED_FLAG;
       break;
-    case GRUMM_LIBERATED:
+    case Enum160.GRUMM_LIBERATED:
       uiMeanWhileFlags |= GRUMM_LIBERATED_FLAG;
       break;
-    case CHITZENA_LIBERATED:
+    case Enum160.CHITZENA_LIBERATED:
       uiMeanWhileFlags |= CHITZENA_LIBERATED_FLAG;
       break;
-    case BALIME_LIBERATED:
+    case Enum160.BALIME_LIBERATED:
       uiMeanWhileFlags |= BALIME_LIBERATED_FLAG;
       break;
-    case NW_SAM:
+    case Enum160.NW_SAM:
       uiMeanWhileFlags |= NW_SAM_FLAG;
       break;
-    case NE_SAM:
+    case Enum160.NE_SAM:
       uiMeanWhileFlags |= NE_SAM_FLAG;
       break;
-    case CENTRAL_SAM:
+    case Enum160.CENTRAL_SAM:
       uiMeanWhileFlags |= CENTRAL_SAM_FLAG;
       break;
-    case FLOWERS:
+    case Enum160.FLOWERS:
       uiMeanWhileFlags |= FLOWERS_FLAG;
       break;
-    case LOST_TOWN:
+    case Enum160.LOST_TOWN:
       uiMeanWhileFlags |= LOST_TOWN_FLAG;
       break;
-    case CREATURES:
+    case Enum160.CREATURES:
       uiMeanWhileFlags |= CREATURES_FLAG;
       break;
-    case KILL_CHOPPER:
+    case Enum160.KILL_CHOPPER:
       uiMeanWhileFlags |= KILL_CHOPPER_FLAG;
       break;
-    case AWOL_SCIENTIST:
+    case Enum160.AWOL_SCIENTIST:
       uiMeanWhileFlags |= AWOL_SCIENTIST_FLAG;
       break;
-    case OUTSKIRTS_MEDUNA:
+    case Enum160.OUTSKIRTS_MEDUNA:
       uiMeanWhileFlags |= OUTSKIRTS_MEDUNA_FLAG;
       break;
-    case INTERROGATION:
+    case Enum160.INTERROGATION:
       uiMeanWhileFlags |= INTERROGATION_FLAG;
       break;
   }
@@ -152,55 +152,55 @@ function SetMeanWhileFlag(ubMeanwhileID: UINT8): void {
 function GetMeanWhileFlag(ubMeanwhileID: UINT8): BOOLEAN {
   let uiTrue: UINT32 = FALSE;
   switch (ubMeanwhileID) {
-    case END_OF_PLAYERS_FIRST_BATTLE:
+    case Enum160.END_OF_PLAYERS_FIRST_BATTLE:
       uiTrue = (uiMeanWhileFlags & END_OF_PLAYERS_FIRST_BATTLE_FLAG);
       break;
-    case DRASSEN_LIBERATED:
+    case Enum160.DRASSEN_LIBERATED:
       uiTrue = (uiMeanWhileFlags & DRASSEN_LIBERATED_FLAG);
       break;
-    case CAMBRIA_LIBERATED:
+    case Enum160.CAMBRIA_LIBERATED:
       uiTrue = (uiMeanWhileFlags & CAMBRIA_LIBERATED_FLAG);
       break;
-    case ALMA_LIBERATED:
+    case Enum160.ALMA_LIBERATED:
       uiTrue = (uiMeanWhileFlags & ALMA_LIBERATED_FLAG);
       break;
-    case GRUMM_LIBERATED:
+    case Enum160.GRUMM_LIBERATED:
       uiTrue = (uiMeanWhileFlags & GRUMM_LIBERATED_FLAG);
       break;
-    case CHITZENA_LIBERATED:
+    case Enum160.CHITZENA_LIBERATED:
       uiTrue = (uiMeanWhileFlags & CHITZENA_LIBERATED_FLAG);
       break;
-    case BALIME_LIBERATED:
+    case Enum160.BALIME_LIBERATED:
       uiTrue = (uiMeanWhileFlags & BALIME_LIBERATED_FLAG);
       break;
-    case NW_SAM:
+    case Enum160.NW_SAM:
       uiTrue = (uiMeanWhileFlags & NW_SAM_FLAG);
       break;
-    case NE_SAM:
+    case Enum160.NE_SAM:
       uiTrue = (uiMeanWhileFlags & NE_SAM_FLAG);
       break;
-    case CENTRAL_SAM:
+    case Enum160.CENTRAL_SAM:
       uiTrue = (uiMeanWhileFlags & CENTRAL_SAM_FLAG);
       break;
-    case FLOWERS:
+    case Enum160.FLOWERS:
       uiTrue = (uiMeanWhileFlags & FLOWERS_FLAG);
       break;
-    case LOST_TOWN:
+    case Enum160.LOST_TOWN:
       uiTrue = (uiMeanWhileFlags & LOST_TOWN_FLAG);
       break;
-    case CREATURES:
+    case Enum160.CREATURES:
       uiTrue = (uiMeanWhileFlags & CREATURES_FLAG);
       break;
-    case KILL_CHOPPER:
+    case Enum160.KILL_CHOPPER:
       uiTrue = (uiMeanWhileFlags & KILL_CHOPPER_FLAG);
       break;
-    case AWOL_SCIENTIST:
+    case Enum160.AWOL_SCIENTIST:
       uiTrue = (uiMeanWhileFlags & AWOL_SCIENTIST_FLAG);
       break;
-    case OUTSKIRTS_MEDUNA:
+    case Enum160.OUTSKIRTS_MEDUNA:
       uiTrue = (uiMeanWhileFlags & OUTSKIRTS_MEDUNA_FLAG);
       break;
-    case INTERROGATION:
+    case Enum160.INTERROGATION:
       uiTrue = (uiMeanWhileFlags & INTERROGATION_FLAG);
       break;
   }
@@ -256,11 +256,11 @@ function ScheduleMeanwhileEvent(pMeanwhileDef: Pointer<MEANWHILE_DEFINITION>, ui
   // increment his slapped count...
 
   // We need to do it here 'cause they may skip it...
-  if (gMercProfiles[ELLIOT].bNPCData != 17) {
-    gMercProfiles[ELLIOT].bNPCData++;
+  if (gMercProfiles[Enum268.ELLIOT].bNPCData != 17) {
+    gMercProfiles[Enum268.ELLIOT].bNPCData++;
   }
 
-  AddStrategicEvent(EVENT_MEANWHILE, uiTime, pMeanwhileDef.value.ubMeanwhileID);
+  AddStrategicEvent(Enum132.EVENT_MEANWHILE, uiTime, pMeanwhileDef.value.ubMeanwhileID);
 }
 
 function BeginMeanwhile(ubMeanwhileID: UINT8): BOOLEAN {
@@ -285,13 +285,13 @@ function BeginMeanwhile(ubMeanwhileID: UINT8): BOOLEAN {
 function BringupMeanwhileBox(): void {
   let zStr: INT16[] /* [256] */;
 
-  swprintf(zStr, "%s.....", pMessageStrings[MSG_MEANWHILE]);
+  swprintf(zStr, "%s.....", pMessageStrings[Enum333.MSG_MEANWHILE]);
 
-  if (gCurrentMeanwhileDef.ubMeanwhileID != INTERROGATION && MeanwhileSceneSeen(gCurrentMeanwhileDef.ubMeanwhileID))
+  if (gCurrentMeanwhileDef.ubMeanwhileID != Enum160.INTERROGATION && MeanwhileSceneSeen(gCurrentMeanwhileDef.ubMeanwhileID))
   {
-    DoMessageBox(MSG_BOX_BASIC_STYLE, zStr, guiCurrentScreen, MSG_BOX_FLAG_OKSKIP, BeginMeanwhileCallBack, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zStr, guiCurrentScreen, MSG_BOX_FLAG_OKSKIP, BeginMeanwhileCallBack, NULL);
   } else {
-    DoMessageBox(MSG_BOX_BASIC_STYLE, zStr, guiCurrentScreen, MSG_BOX_FLAG_OK, BeginMeanwhileCallBack, NULL);
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zStr, guiCurrentScreen, MSG_BOX_FLAG_OK, BeginMeanwhileCallBack, NULL);
   }
 }
 
@@ -314,8 +314,8 @@ function CheckForMeanwhileOKStart(): void {
 
     guiOldScreen = guiCurrentScreen;
 
-    if (guiCurrentScreen == GAME_SCREEN) {
-      LeaveTacticalScreen(GAME_SCREEN);
+    if (guiCurrentScreen == Enum26.GAME_SCREEN) {
+      LeaveTacticalScreen(Enum26.GAME_SCREEN);
     }
 
     // We need to make sure we have no item - at least in tactical
@@ -344,126 +344,126 @@ function StartMeanwhile(): void {
   gfInMeanwhile = TRUE;
 
   // ATE: Change music before load
-  SetMusicMode(MUSIC_MAIN_MENU);
+  SetMusicMode(Enum328.MUSIC_MAIN_MENU);
 
   gfWorldWasLoaded = gfWorldLoaded;
 
   // OK, we have been told to start.....
-  SetCurrentInterfacePanel(TEAM_PANEL);
+  SetCurrentInterfacePanel(Enum215.TEAM_PANEL);
 
   // Setup NPC locations, depending on meanwhile type...
   switch (gCurrentMeanwhileDef.ubMeanwhileID) {
-    case END_OF_PLAYERS_FIRST_BATTLE:
-    case DRASSEN_LIBERATED:
-    case CAMBRIA_LIBERATED:
-    case ALMA_LIBERATED:
-    case GRUMM_LIBERATED:
-    case CHITZENA_LIBERATED:
-    case BALIME_LIBERATED:
-    case NW_SAM:
-    case NE_SAM:
-    case CENTRAL_SAM:
-    case FLOWERS:
-    case LOST_TOWN:
-    case CREATURES:
-    case KILL_CHOPPER:
-    case AWOL_SCIENTIST:
-    case OUTSKIRTS_MEDUNA:
+    case Enum160.END_OF_PLAYERS_FIRST_BATTLE:
+    case Enum160.DRASSEN_LIBERATED:
+    case Enum160.CAMBRIA_LIBERATED:
+    case Enum160.ALMA_LIBERATED:
+    case Enum160.GRUMM_LIBERATED:
+    case Enum160.CHITZENA_LIBERATED:
+    case Enum160.BALIME_LIBERATED:
+    case Enum160.NW_SAM:
+    case Enum160.NE_SAM:
+    case Enum160.CENTRAL_SAM:
+    case Enum160.FLOWERS:
+    case Enum160.LOST_TOWN:
+    case Enum160.CREATURES:
+    case Enum160.KILL_CHOPPER:
+    case Enum160.AWOL_SCIENTIST:
+    case Enum160.OUTSKIRTS_MEDUNA:
 
       // SAVE QUEEN!
       iIndex = GetFreeNPCSave();
       if (iIndex != -1) {
-        gNPCSaveData[iIndex].ubProfile = QUEEN;
-        gNPCSaveData[iIndex].sX = gMercProfiles[QUEEN].sSectorX;
-        gNPCSaveData[iIndex].sY = gMercProfiles[QUEEN].sSectorY;
-        gNPCSaveData[iIndex].sZ = gMercProfiles[QUEEN].bSectorZ;
-        gNPCSaveData[iIndex].sGridNo = gMercProfiles[QUEEN].sGridNo;
+        gNPCSaveData[iIndex].ubProfile = Enum268.QUEEN;
+        gNPCSaveData[iIndex].sX = gMercProfiles[Enum268.QUEEN].sSectorX;
+        gNPCSaveData[iIndex].sY = gMercProfiles[Enum268.QUEEN].sSectorY;
+        gNPCSaveData[iIndex].sZ = gMercProfiles[Enum268.QUEEN].bSectorZ;
+        gNPCSaveData[iIndex].sGridNo = gMercProfiles[Enum268.QUEEN].sGridNo;
 
         // Force reload of NPC files...
-        ReloadQuoteFile(QUEEN);
+        ReloadQuoteFile(Enum268.QUEEN);
 
-        ChangeNpcToDifferentSector(QUEEN, 3, 16, 0);
+        ChangeNpcToDifferentSector(Enum268.QUEEN, 3, 16, 0);
       }
 
       // SAVE MESSANGER!
       iIndex = GetFreeNPCSave();
       if (iIndex != -1) {
-        gNPCSaveData[iIndex].ubProfile = ELLIOT;
-        gNPCSaveData[iIndex].sX = gMercProfiles[ELLIOT].sSectorX;
-        gNPCSaveData[iIndex].sY = gMercProfiles[ELLIOT].sSectorY;
-        gNPCSaveData[iIndex].sZ = gMercProfiles[ELLIOT].bSectorZ;
-        gNPCSaveData[iIndex].sGridNo = gMercProfiles[ELLIOT].sGridNo;
+        gNPCSaveData[iIndex].ubProfile = Enum268.ELLIOT;
+        gNPCSaveData[iIndex].sX = gMercProfiles[Enum268.ELLIOT].sSectorX;
+        gNPCSaveData[iIndex].sY = gMercProfiles[Enum268.ELLIOT].sSectorY;
+        gNPCSaveData[iIndex].sZ = gMercProfiles[Enum268.ELLIOT].bSectorZ;
+        gNPCSaveData[iIndex].sGridNo = gMercProfiles[Enum268.ELLIOT].sGridNo;
 
         // Force reload of NPC files...
-        ReloadQuoteFile(ELLIOT);
+        ReloadQuoteFile(Enum268.ELLIOT);
 
-        ChangeNpcToDifferentSector(ELLIOT, 3, 16, 0);
+        ChangeNpcToDifferentSector(Enum268.ELLIOT, 3, 16, 0);
       }
 
-      if (gCurrentMeanwhileDef.ubMeanwhileID == OUTSKIRTS_MEDUNA) {
+      if (gCurrentMeanwhileDef.ubMeanwhileID == Enum160.OUTSKIRTS_MEDUNA) {
         // SAVE JOE!
         iIndex = GetFreeNPCSave();
         if (iIndex != -1) {
-          gNPCSaveData[iIndex].ubProfile = JOE;
-          gNPCSaveData[iIndex].sX = gMercProfiles[JOE].sSectorX;
-          gNPCSaveData[iIndex].sY = gMercProfiles[JOE].sSectorY;
-          gNPCSaveData[iIndex].sZ = gMercProfiles[JOE].bSectorZ;
-          gNPCSaveData[iIndex].sGridNo = gMercProfiles[JOE].sGridNo;
+          gNPCSaveData[iIndex].ubProfile = Enum268.JOE;
+          gNPCSaveData[iIndex].sX = gMercProfiles[Enum268.JOE].sSectorX;
+          gNPCSaveData[iIndex].sY = gMercProfiles[Enum268.JOE].sSectorY;
+          gNPCSaveData[iIndex].sZ = gMercProfiles[Enum268.JOE].bSectorZ;
+          gNPCSaveData[iIndex].sGridNo = gMercProfiles[Enum268.JOE].sGridNo;
 
           // Force reload of NPC files...
-          ReloadQuoteFile(JOE);
+          ReloadQuoteFile(Enum268.JOE);
 
-          ChangeNpcToDifferentSector(JOE, 3, 16, 0);
+          ChangeNpcToDifferentSector(Enum268.JOE, 3, 16, 0);
         }
       }
 
       break;
 
-    case INTERROGATION:
+    case Enum160.INTERROGATION:
 
       // SAVE QUEEN!
       iIndex = GetFreeNPCSave();
       if (iIndex != -1) {
-        gNPCSaveData[iIndex].ubProfile = QUEEN;
-        gNPCSaveData[iIndex].sX = gMercProfiles[QUEEN].sSectorX;
-        gNPCSaveData[iIndex].sY = gMercProfiles[QUEEN].sSectorY;
-        gNPCSaveData[iIndex].sZ = gMercProfiles[QUEEN].bSectorZ;
-        gNPCSaveData[iIndex].sGridNo = gMercProfiles[QUEEN].sGridNo;
+        gNPCSaveData[iIndex].ubProfile = Enum268.QUEEN;
+        gNPCSaveData[iIndex].sX = gMercProfiles[Enum268.QUEEN].sSectorX;
+        gNPCSaveData[iIndex].sY = gMercProfiles[Enum268.QUEEN].sSectorY;
+        gNPCSaveData[iIndex].sZ = gMercProfiles[Enum268.QUEEN].bSectorZ;
+        gNPCSaveData[iIndex].sGridNo = gMercProfiles[Enum268.QUEEN].sGridNo;
 
         // Force reload of NPC files...
-        ReloadQuoteFile(QUEEN);
+        ReloadQuoteFile(Enum268.QUEEN);
 
-        ChangeNpcToDifferentSector(QUEEN, 7, 14, 0);
+        ChangeNpcToDifferentSector(Enum268.QUEEN, 7, 14, 0);
       }
 
       // SAVE MESSANGER!
       iIndex = GetFreeNPCSave();
       if (iIndex != -1) {
-        gNPCSaveData[iIndex].ubProfile = ELLIOT;
-        gNPCSaveData[iIndex].sX = gMercProfiles[ELLIOT].sSectorX;
-        gNPCSaveData[iIndex].sY = gMercProfiles[ELLIOT].sSectorY;
-        gNPCSaveData[iIndex].sZ = gMercProfiles[ELLIOT].bSectorZ;
-        gNPCSaveData[iIndex].sGridNo = gMercProfiles[ELLIOT].sGridNo;
+        gNPCSaveData[iIndex].ubProfile = Enum268.ELLIOT;
+        gNPCSaveData[iIndex].sX = gMercProfiles[Enum268.ELLIOT].sSectorX;
+        gNPCSaveData[iIndex].sY = gMercProfiles[Enum268.ELLIOT].sSectorY;
+        gNPCSaveData[iIndex].sZ = gMercProfiles[Enum268.ELLIOT].bSectorZ;
+        gNPCSaveData[iIndex].sGridNo = gMercProfiles[Enum268.ELLIOT].sGridNo;
 
         // Force reload of NPC files...
-        ReloadQuoteFile(ELLIOT);
+        ReloadQuoteFile(Enum268.ELLIOT);
 
-        ChangeNpcToDifferentSector(ELLIOT, 7, 14, 0);
+        ChangeNpcToDifferentSector(Enum268.ELLIOT, 7, 14, 0);
       }
 
       // SAVE JOE!
       iIndex = GetFreeNPCSave();
       if (iIndex != -1) {
-        gNPCSaveData[iIndex].ubProfile = JOE;
-        gNPCSaveData[iIndex].sX = gMercProfiles[JOE].sSectorX;
-        gNPCSaveData[iIndex].sY = gMercProfiles[JOE].sSectorY;
-        gNPCSaveData[iIndex].sZ = gMercProfiles[JOE].bSectorZ;
-        gNPCSaveData[iIndex].sGridNo = gMercProfiles[JOE].sGridNo;
+        gNPCSaveData[iIndex].ubProfile = Enum268.JOE;
+        gNPCSaveData[iIndex].sX = gMercProfiles[Enum268.JOE].sSectorX;
+        gNPCSaveData[iIndex].sY = gMercProfiles[Enum268.JOE].sSectorY;
+        gNPCSaveData[iIndex].sZ = gMercProfiles[Enum268.JOE].bSectorZ;
+        gNPCSaveData[iIndex].sGridNo = gMercProfiles[Enum268.JOE].sGridNo;
 
         // Force reload of NPC files...
-        ReloadQuoteFile(JOE);
+        ReloadQuoteFile(Enum268.JOE);
 
-        ChangeNpcToDifferentSector(JOE, 7, 14, 0);
+        ChangeNpcToDifferentSector(Enum268.JOE, 7, 14, 0);
       }
 
       break;
@@ -495,7 +495,7 @@ function DoneFadeInMeanwhile(): void {
   if (gfInMeanwhile) {
     giNPCReferenceCount = 1;
 
-    if (gCurrentMeanwhileDef.ubMeanwhileID != INTERROGATION) {
+    if (gCurrentMeanwhileDef.ubMeanwhileID != Enum160.INTERROGATION) {
       gTacticalStatus.uiFlags |= SHOW_ALL_MERCS;
     }
 
@@ -536,7 +536,7 @@ function AreInMeanwhile(): BOOLEAN {
   curr = gpEventList;
   while (curr) {
     if (curr.value.uiTimeStamp == GetWorldTotalSeconds()) {
-      if (curr.value.ubCallbackID == EVENT_MEANWHILE) {
+      if (curr.value.ubCallbackID == Enum132.EVENT_MEANWHILE) {
         return TRUE;
       }
     } else {
@@ -550,33 +550,33 @@ function AreInMeanwhile(): BOOLEAN {
 
 function ProcessImplicationsOfMeanwhile(): void {
   switch (gCurrentMeanwhileDef.ubMeanwhileID) {
-    case END_OF_PLAYERS_FIRST_BATTLE:
-      if (gGameOptions.ubDifficultyLevel == DIF_LEVEL_HARD) {
+    case Enum160.END_OF_PLAYERS_FIRST_BATTLE:
+      if (gGameOptions.ubDifficultyLevel == Enum9.DIF_LEVEL_HARD) {
         // Wake up the queen earlier to punish the good players!
-        ExecuteStrategicAIAction(STRATEGIC_AI_ACTION_WAKE_QUEEN, 0, 0);
+        ExecuteStrategicAIAction(Enum173.STRATEGIC_AI_ACTION_WAKE_QUEEN, 0, 0);
       }
-      HandleNPCDoAction(QUEEN, NPC_ACTION_SEND_SOLDIERS_TO_BATTLE_LOCATION, 0);
+      HandleNPCDoAction(Enum268.QUEEN, Enum213.NPC_ACTION_SEND_SOLDIERS_TO_BATTLE_LOCATION, 0);
       break;
-    case CAMBRIA_LIBERATED:
-    case ALMA_LIBERATED:
-    case GRUMM_LIBERATED:
-    case CHITZENA_LIBERATED:
-    case BALIME_LIBERATED:
-      ExecuteStrategicAIAction(STRATEGIC_AI_ACTION_WAKE_QUEEN, 0, 0);
+    case Enum160.CAMBRIA_LIBERATED:
+    case Enum160.ALMA_LIBERATED:
+    case Enum160.GRUMM_LIBERATED:
+    case Enum160.CHITZENA_LIBERATED:
+    case Enum160.BALIME_LIBERATED:
+      ExecuteStrategicAIAction(Enum173.STRATEGIC_AI_ACTION_WAKE_QUEEN, 0, 0);
       break;
-    case DRASSEN_LIBERATED:
-      ExecuteStrategicAIAction(STRATEGIC_AI_ACTION_WAKE_QUEEN, 0, 0);
-      HandleNPCDoAction(QUEEN, NPC_ACTION_SEND_SOLDIERS_TO_DRASSEN, 0);
+    case Enum160.DRASSEN_LIBERATED:
+      ExecuteStrategicAIAction(Enum173.STRATEGIC_AI_ACTION_WAKE_QUEEN, 0, 0);
+      HandleNPCDoAction(Enum268.QUEEN, Enum213.NPC_ACTION_SEND_SOLDIERS_TO_DRASSEN, 0);
       break;
-    case CREATURES:
+    case Enum160.CREATURES:
       // add Rat
-      HandleNPCDoAction(QUEEN, NPC_ACTION_ADD_RAT, 0);
+      HandleNPCDoAction(Enum268.QUEEN, Enum213.NPC_ACTION_ADD_RAT, 0);
       break;
-    case AWOL_SCIENTIST: {
+    case Enum160.AWOL_SCIENTIST: {
       let sSectorX: INT16;
       let sSectorY: INT16;
 
-      StartQuest(QUEST_FIND_SCIENTIST, -1, -1);
+      StartQuest(Enum169.QUEST_FIND_SCIENTIST, -1, -1);
       // place Madlab and robot!
       if (SectorInfo[SECTOR(7, MAP_ROW_H)].uiFlags & SF_USE_ALTERNATE_MAP) {
         sSectorX = 7;
@@ -593,22 +593,22 @@ function ProcessImplicationsOfMeanwhile(): void {
       } else {
         Assert(0);
       }
-      gMercProfiles[MADLAB].sSectorX = sSectorX;
-      gMercProfiles[MADLAB].sSectorY = sSectorY;
-      gMercProfiles[MADLAB].bSectorZ = 0;
+      gMercProfiles[Enum268.MADLAB].sSectorX = sSectorX;
+      gMercProfiles[Enum268.MADLAB].sSectorY = sSectorY;
+      gMercProfiles[Enum268.MADLAB].bSectorZ = 0;
 
-      gMercProfiles[ROBOT].sSectorX = sSectorX;
-      gMercProfiles[ROBOT].sSectorY = sSectorY;
-      gMercProfiles[ROBOT].bSectorZ = 0;
+      gMercProfiles[Enum268.ROBOT].sSectorX = sSectorX;
+      gMercProfiles[Enum268.ROBOT].sSectorY = sSectorY;
+      gMercProfiles[Enum268.ROBOT].bSectorZ = 0;
     } break;
-    case NW_SAM:
-      ExecuteStrategicAIAction(NPC_ACTION_SEND_TROOPS_TO_SAM, SAM_1_X, SAM_1_Y);
+    case Enum160.NW_SAM:
+      ExecuteStrategicAIAction(Enum213.NPC_ACTION_SEND_TROOPS_TO_SAM, SAM_1_X, SAM_1_Y);
       break;
-    case NE_SAM:
-      ExecuteStrategicAIAction(NPC_ACTION_SEND_TROOPS_TO_SAM, SAM_2_X, SAM_2_Y);
+    case Enum160.NE_SAM:
+      ExecuteStrategicAIAction(Enum213.NPC_ACTION_SEND_TROOPS_TO_SAM, SAM_2_X, SAM_2_Y);
       break;
-    case CENTRAL_SAM:
-      ExecuteStrategicAIAction(NPC_ACTION_SEND_TROOPS_TO_SAM, SAM_3_X, SAM_3_X);
+    case Enum160.CENTRAL_SAM:
+      ExecuteStrategicAIAction(Enum213.NPC_ACTION_SEND_TROOPS_TO_SAM, SAM_3_X, SAM_3_X);
       break;
 
     default:
@@ -635,7 +635,7 @@ function EndMeanwhile(): void {
   // ATE: Make sure!
   TurnOffSectorLocator();
 
-  if (gCurrentMeanwhileDef.ubMeanwhileID != INTERROGATION) {
+  if (gCurrentMeanwhileDef.ubMeanwhileID != Enum160.INTERROGATION) {
     gTacticalStatus.uiFlags &= (~SHOW_ALL_MERCS);
 
     // OK, load old sector again.....
@@ -646,7 +646,7 @@ function EndMeanwhile(): void {
   } else {
     // We leave this sector open for our POWs to escape!
     // Set music mode to enemy present!
-    SetMusicMode(MUSIC_TACTICAL_ENEMYPRESENT);
+    SetMusicMode(Enum328.MUSIC_TACTICAL_ENEMYPRESENT);
 
     // ATE: Restore people to saved positions...
     // OK, restore NPC save info...
@@ -708,14 +708,14 @@ function DoneFadeOutMeanwhileOnceDone(): void {
 
   // OK, based on screen we were in....
   switch (guiOldScreen) {
-    case MAP_SCREEN:
-      InternalLeaveTacticalScreen(MAP_SCREEN);
+    case Enum26.MAP_SCREEN:
+      InternalLeaveTacticalScreen(Enum26.MAP_SCREEN);
       // gfEnteringMapScreen = TRUE;
       break;
 
-    case GAME_SCREEN:
+    case Enum26.GAME_SCREEN:
       // restore old interface panel flag
-      SetCurrentInterfacePanel(TEAM_PANEL);
+      SetCurrentInterfacePanel(Enum215.TEAM_PANEL);
       break;
   }
 
@@ -762,12 +762,12 @@ function HandleCreatureRelease(): void {
 
   MeanwhileDef.sSectorX = 3;
   MeanwhileDef.sSectorY = 16;
-  MeanwhileDef.ubNPCNumber = QUEEN;
+  MeanwhileDef.ubNPCNumber = Enum268.QUEEN;
   MeanwhileDef.usTriggerEvent = 0;
 
   uiTime = GetWorldTotalMin() + 5;
 
-  MeanwhileDef.ubMeanwhileID = CREATURES;
+  MeanwhileDef.ubMeanwhileID = Enum160.CREATURES;
 
   // schedule the event
   ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
@@ -782,35 +782,35 @@ function HandleMeanWhileEventPostingForTownLiberation(bTownId: UINT8): void {
 
   MeanwhileDef.sSectorX = 3;
   MeanwhileDef.sSectorY = 16;
-  MeanwhileDef.ubNPCNumber = QUEEN;
+  MeanwhileDef.ubNPCNumber = Enum268.QUEEN;
   MeanwhileDef.usTriggerEvent = 0;
 
   uiTime = GetWorldTotalMin() + 5;
 
   // which town iberated?
   switch (bTownId) {
-    case DRASSEN:
-      ubId = DRASSEN_LIBERATED;
+    case Enum135.DRASSEN:
+      ubId = Enum160.DRASSEN_LIBERATED;
       fHandled = TRUE;
       break;
-    case CAMBRIA:
-      ubId = CAMBRIA_LIBERATED;
+    case Enum135.CAMBRIA:
+      ubId = Enum160.CAMBRIA_LIBERATED;
       fHandled = TRUE;
       break;
-    case ALMA:
-      ubId = ALMA_LIBERATED;
+    case Enum135.ALMA:
+      ubId = Enum160.ALMA_LIBERATED;
       fHandled = TRUE;
       break;
-    case GRUMM:
-      ubId = GRUMM_LIBERATED;
+    case Enum135.GRUMM:
+      ubId = Enum160.GRUMM_LIBERATED;
       fHandled = TRUE;
       break;
-    case CHITZENA:
-      ubId = CHITZENA_LIBERATED;
+    case Enum135.CHITZENA:
+      ubId = Enum160.CHITZENA_LIBERATED;
       fHandled = TRUE;
       break;
-    case BALIME:
-      ubId = BALIME_LIBERATED;
+    case Enum135.BALIME:
+      ubId = Enum160.BALIME_LIBERATED;
       fHandled = TRUE;
       break;
   }
@@ -828,18 +828,18 @@ function HandleMeanWhileEventPostingForTownLoss(bTownId: UINT8): void {
   let MeanwhileDef: MEANWHILE_DEFINITION;
 
   // make sure scene hasn't been used before
-  if (GetMeanWhileFlag(LOST_TOWN)) {
+  if (GetMeanWhileFlag(Enum160.LOST_TOWN)) {
     return;
   }
 
   MeanwhileDef.sSectorX = 3;
   MeanwhileDef.sSectorY = 16;
-  MeanwhileDef.ubNPCNumber = QUEEN;
+  MeanwhileDef.ubNPCNumber = Enum268.QUEEN;
   MeanwhileDef.usTriggerEvent = 0;
 
   uiTime = GetWorldTotalMin() + 5;
 
-  MeanwhileDef.ubMeanwhileID = LOST_TOWN;
+  MeanwhileDef.ubMeanwhileID = Enum160.LOST_TOWN;
 
   // schedule the event
   ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
@@ -861,7 +861,7 @@ function HandleMeanWhileEventPostingForSAMLiberation(bSamId: INT8): void {
 
   MeanwhileDef.sSectorX = 3;
   MeanwhileDef.sSectorY = 16;
-  MeanwhileDef.ubNPCNumber = QUEEN;
+  MeanwhileDef.ubNPCNumber = Enum268.QUEEN;
   MeanwhileDef.usTriggerEvent = 0;
 
   uiTime = GetWorldTotalMin() + 5;
@@ -869,15 +869,15 @@ function HandleMeanWhileEventPostingForSAMLiberation(bSamId: INT8): void {
   // which SAM iberated?
   switch (bSamId) {
     case 0:
-      ubId = NW_SAM;
+      ubId = Enum160.NW_SAM;
       fHandled = TRUE;
       break;
     case 1:
-      ubId = NE_SAM;
+      ubId = Enum160.NE_SAM;
       fHandled = TRUE;
       break;
     case 2:
-      ubId = CENTRAL_SAM;
+      ubId = Enum160.CENTRAL_SAM;
       fHandled = TRUE;
       break;
     default:
@@ -899,13 +899,13 @@ function HandleFlowersMeanwhileScene(bTimeCode: INT8): void {
   let ubId: UINT8 = 0;
 
   // make sure scene hasn't been used before
-  if (GetMeanWhileFlag(FLOWERS)) {
+  if (GetMeanWhileFlag(Enum160.FLOWERS)) {
     return;
   }
 
   MeanwhileDef.sSectorX = 3;
   MeanwhileDef.sSectorY = 16;
-  MeanwhileDef.ubNPCNumber = QUEEN;
+  MeanwhileDef.ubNPCNumber = Enum268.QUEEN;
   MeanwhileDef.usTriggerEvent = 0;
 
   // time delay should be based on time code, 0 next day, 1 seeral days (random)
@@ -917,7 +917,7 @@ function HandleFlowersMeanwhileScene(bTimeCode: INT8): void {
     uiTime = GetWorldTotalMin() + 60 * (24 + Random(48));
   }
 
-  MeanwhileDef.ubMeanwhileID = FLOWERS;
+  MeanwhileDef.ubMeanwhileID = Enum160.FLOWERS;
 
   // schedule the event
   ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
@@ -929,18 +929,18 @@ function HandleOutskirtsOfMedunaMeanwhileScene(): void {
   let ubId: UINT8 = 0;
 
   // make sure scene hasn't been used before
-  if (GetMeanWhileFlag(OUTSKIRTS_MEDUNA)) {
+  if (GetMeanWhileFlag(Enum160.OUTSKIRTS_MEDUNA)) {
     return;
   }
 
   MeanwhileDef.sSectorX = 3;
   MeanwhileDef.sSectorY = 16;
-  MeanwhileDef.ubNPCNumber = QUEEN;
+  MeanwhileDef.ubNPCNumber = Enum268.QUEEN;
   MeanwhileDef.usTriggerEvent = 0;
 
   uiTime = GetWorldTotalMin() + 5;
 
-  MeanwhileDef.ubMeanwhileID = OUTSKIRTS_MEDUNA;
+  MeanwhileDef.ubMeanwhileID = Enum160.OUTSKIRTS_MEDUNA;
 
   // schedule the event
   ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
@@ -952,18 +952,18 @@ function HandleKillChopperMeanwhileScene(): void {
   let ubId: UINT8 = 0;
 
   // make sure scene hasn't been used before
-  if (GetMeanWhileFlag(KILL_CHOPPER)) {
+  if (GetMeanWhileFlag(Enum160.KILL_CHOPPER)) {
     return;
   }
 
   MeanwhileDef.sSectorX = 3;
   MeanwhileDef.sSectorY = 16;
-  MeanwhileDef.ubNPCNumber = QUEEN;
+  MeanwhileDef.ubNPCNumber = Enum268.QUEEN;
   MeanwhileDef.usTriggerEvent = 0;
 
   uiTime = GetWorldTotalMin() + 55 + Random(10);
 
-  MeanwhileDef.ubMeanwhileID = KILL_CHOPPER;
+  MeanwhileDef.ubMeanwhileID = Enum160.KILL_CHOPPER;
 
   // schedule the event
   ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
@@ -975,18 +975,18 @@ function HandleScientistAWOLMeanwhileScene(): void {
   let ubId: UINT8 = 0;
 
   // make sure scene hasn't been used before
-  if (GetMeanWhileFlag(AWOL_SCIENTIST)) {
+  if (GetMeanWhileFlag(Enum160.AWOL_SCIENTIST)) {
     return;
   }
 
   MeanwhileDef.sSectorX = 3;
   MeanwhileDef.sSectorY = 16;
-  MeanwhileDef.ubNPCNumber = QUEEN;
+  MeanwhileDef.ubNPCNumber = Enum268.QUEEN;
   MeanwhileDef.usTriggerEvent = 0;
 
   uiTime = GetWorldTotalMin() + 5;
 
-  MeanwhileDef.ubMeanwhileID = AWOL_SCIENTIST;
+  MeanwhileDef.ubMeanwhileID = Enum160.AWOL_SCIENTIST;
 
   // schedule the event
   ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
@@ -998,18 +998,18 @@ function HandleInterrogationMeanwhileScene(): void {
   let ubId: UINT8 = 0;
 
   // make sure scene hasn't been used before
-  if (GetMeanWhileFlag(INTERROGATION)) {
+  if (GetMeanWhileFlag(Enum160.INTERROGATION)) {
     return;
   }
 
   MeanwhileDef.sSectorX = 7; // what sector?
   MeanwhileDef.sSectorY = MAP_ROW_N;
-  MeanwhileDef.ubNPCNumber = QUEEN;
+  MeanwhileDef.ubNPCNumber = Enum268.QUEEN;
   MeanwhileDef.usTriggerEvent = 0;
 
   uiTime = GetWorldTotalMin() + 60;
 
-  MeanwhileDef.ubMeanwhileID = INTERROGATION;
+  MeanwhileDef.ubMeanwhileID = Enum160.INTERROGATION;
 
   // schedule the event
   ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
@@ -1020,18 +1020,18 @@ function HandleFirstBattleVictory(): void {
   let MeanwhileDef: MEANWHILE_DEFINITION;
   let ubId: UINT8 = 0;
 
-  if (GetMeanWhileFlag(END_OF_PLAYERS_FIRST_BATTLE)) {
+  if (GetMeanWhileFlag(Enum160.END_OF_PLAYERS_FIRST_BATTLE)) {
     return;
   }
 
   MeanwhileDef.sSectorX = 3;
   MeanwhileDef.sSectorY = 16;
-  MeanwhileDef.ubNPCNumber = QUEEN;
+  MeanwhileDef.ubNPCNumber = Enum268.QUEEN;
   MeanwhileDef.usTriggerEvent = 0;
 
   uiTime = GetWorldTotalMin() + 5;
 
-  ubId = END_OF_PLAYERS_FIRST_BATTLE;
+  ubId = Enum160.END_OF_PLAYERS_FIRST_BATTLE;
 
   MeanwhileDef.ubMeanwhileID = ubId;
 
@@ -1044,13 +1044,13 @@ function HandleDelayedFirstBattleVictory(): void {
   let MeanwhileDef: MEANWHILE_DEFINITION;
   let ubId: UINT8 = 0;
 
-  if (GetMeanWhileFlag(END_OF_PLAYERS_FIRST_BATTLE)) {
+  if (GetMeanWhileFlag(Enum160.END_OF_PLAYERS_FIRST_BATTLE)) {
     return;
   }
 
   MeanwhileDef.sSectorX = 3;
   MeanwhileDef.sSectorY = 16;
-  MeanwhileDef.ubNPCNumber = QUEEN;
+  MeanwhileDef.ubNPCNumber = Enum268.QUEEN;
   MeanwhileDef.usTriggerEvent = 0;
 
   /*
@@ -1060,7 +1060,7 @@ function HandleDelayedFirstBattleVictory(): void {
   */
   uiTime = GetWorldTotalMin() + 5;
 
-  ubId = END_OF_PLAYERS_FIRST_BATTLE;
+  ubId = Enum160.END_OF_PLAYERS_FIRST_BATTLE;
 
   MeanwhileDef.ubMeanwhileID = ubId;
 
@@ -1072,7 +1072,7 @@ function HandleFirstBattleEndingWhileInTown(sSectorX: INT16, sSectorY: INT16, bS
   let bTownId: INT8 = 0;
   let sSector: INT16 = 0;
 
-  if (GetMeanWhileFlag(END_OF_PLAYERS_FIRST_BATTLE)) {
+  if (GetMeanWhileFlag(Enum160.END_OF_PLAYERS_FIRST_BATTLE)) {
     return;
   }
 
@@ -1086,7 +1086,7 @@ function HandleFirstBattleEndingWhileInTown(sSectorX: INT16, sSectorY: INT16, bS
   // get town name id
   bTownId = StrategicMap[sSector].bNameId;
 
-  if (bTownId == BLANK_SECTOR) {
+  if (bTownId == Enum135.BLANK_SECTOR) {
     // invalid town
     HandleDelayedFirstBattleVictory();
     gfFirstBattleMeanwhileScenePending = FALSE;

@@ -85,7 +85,7 @@ function SmoothTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, f
   let pSmoothStruct: Pointer<INT16>;
   // Check to see if the orginal texture was water, is so, smooth square/hex with
   // SmoothWaterTerrain rather than the proceeding method
-  if (origType == REGWATERTEXTURE) {
+  if (origType == Enum313.REGWATERTEXTURE) {
     SmoothWaterTerrain(gridno, origType, piNewTile, TRUE);
     return;
   }
@@ -235,8 +235,8 @@ function SmoothExitGrid(gridno: int, piNewTile: Pointer<UINT16>, fForceSmooth: B
   pSmoothStruct = gbSmoothStruct;
 
   // Get Object index value for given level and adjust according to type
-  if (TypeExistsInShadowLayer(gridno, EXITTEXTURE, addressof(usTileIndex))) {
-    GetTypeSubIndexFromTileIndex(EXITTEXTURE, usTileIndex, addressof(usOldIndex));
+  if (TypeExistsInShadowLayer(gridno, Enum313.EXITTEXTURE, addressof(usTileIndex))) {
+    GetTypeSubIndexFromTileIndex(Enum313.EXITTEXTURE, usTileIndex, addressof(usOldIndex));
   } else {
     piNewTile.value = NO_TILE;
     return;
@@ -254,7 +254,7 @@ function SmoothExitGrid(gridno: int, piNewTile: Pointer<UINT16>, fForceSmooth: B
 
   // is Object height one tile above not the same type?
   if ((gridno - WORLD_COLS) >= 0) {
-    if (!TypeExistsInShadowLayer(gridno - WORLD_COLS, EXITTEXTURE, addressof(usTempIndex))) {
+    if (!TypeExistsInShadowLayer(gridno - WORLD_COLS, Enum313.EXITTEXTURE, addressof(usTempIndex))) {
       // no it's not
       temp += 3;
     }
@@ -262,7 +262,7 @@ function SmoothExitGrid(gridno: int, piNewTile: Pointer<UINT16>, fForceSmooth: B
   // is Object height one tile to the right not the same type?
   // (make sure there IS a tile to the right, i.e. check for border)
   if ((gridno + 1) % WORLD_COLS != 0) {
-    if (!TypeExistsInShadowLayer(gridno + 1, EXITTEXTURE, addressof(usTempIndex))) {
+    if (!TypeExistsInShadowLayer(gridno + 1, Enum313.EXITTEXTURE, addressof(usTempIndex))) {
       // no it's not
       temp += 5;
     }
@@ -270,7 +270,7 @@ function SmoothExitGrid(gridno: int, piNewTile: Pointer<UINT16>, fForceSmooth: B
 
   // is Object height one tile down not the same type?
   if ((gridno + WORLD_COLS) < (WORLD_COLS * WORLD_ROWS)) {
-    if (!TypeExistsInShadowLayer(gridno + WORLD_COLS, EXITTEXTURE, addressof(usTempIndex))) {
+    if (!TypeExistsInShadowLayer(gridno + WORLD_COLS, Enum313.EXITTEXTURE, addressof(usTempIndex))) {
       // no it's not
       temp += 7;
     }
@@ -278,7 +278,7 @@ function SmoothExitGrid(gridno: int, piNewTile: Pointer<UINT16>, fForceSmooth: B
 
   // is Object height one tile to left not the same type?
   if (gridno % WORLD_COLS != 0) {
-    if (!TypeExistsInShadowLayer(gridno - 1, EXITTEXTURE, addressof(usTempIndex))) {
+    if (!TypeExistsInShadowLayer(gridno - 1, Enum313.EXITTEXTURE, addressof(usTempIndex))) {
       // no it's not
       temp += 11;
     }
@@ -328,7 +328,7 @@ function SmoothExitGrid(gridno: int, piNewTile: Pointer<UINT16>, fForceSmooth: B
     usExitGridIndex = (rand() % 10) + 1;
     FullTile = TRUE;
   }
-  GetTileIndexFromTypeSubIndex(EXITTEXTURE, usExitGridIndex, addressof(usTileIndex));
+  GetTileIndexFromTypeSubIndex(Enum313.EXITTEXTURE, usExitGridIndex, addressof(usTileIndex));
   piNewTile.value = usTileIndex;
 }
 
@@ -356,7 +356,7 @@ function SmoothAllTerrainWorld(): void {
   let uiCheckType: UINT32;
   // Smooth out entire world surrounding tiles
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
-    for (uiCheckType = FIRSTTEXTURE; uiCheckType <= SEVENTHTEXTURE; uiCheckType++) {
+    for (uiCheckType = Enum313.FIRSTTEXTURE; uiCheckType <= Enum313.SEVENTHTEXTURE; uiCheckType++) {
       if (TypeExistsInLandLayer(cnt, uiCheckType, addressof(usIndex))) {
         SmoothTerrain(cnt, uiCheckType, addressof(NewTile), TRUE);
 
@@ -381,7 +381,7 @@ function SmoothTerrainRadius(iMapIndex: UINT32, uiCheckType: UINT32, ubRadius: U
   let usIndex: UINT16;
   let leftmost: INT32;
   // Don't bother to smooth floors, they don't need them
-  if (uiCheckType >= FIRSTFLOOR && uiCheckType <= LASTFLOOR)
+  if (uiCheckType >= Enum313.FIRSTFLOOR && uiCheckType <= LASTFLOOR)
     return;
   // Determine start end end indicies and num rows
   sTop = ubRadius;
@@ -424,7 +424,7 @@ function SmoothAllTerrainTypeRadius(iMapIndex: UINT32, ubRadius: UINT8, fForceSm
   sBottom = -ubRadius;
   sLeft = -ubRadius;
   sRight = ubRadius;
-  for (cnt3 = FIRSTTEXTURE; cnt3 <= SEVENTHTEXTURE; cnt3++) {
+  for (cnt3 = Enum313.FIRSTTEXTURE; cnt3 <= Enum313.SEVENTHTEXTURE; cnt3++) {
     for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
       leftmost = ((iMapIndex + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
       for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {

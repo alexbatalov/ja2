@@ -23,33 +23,33 @@ let gpStructureFileRefs: Pointer<STRUCTURE_FILE_REF>;
 
 let guiMaterialHitSound: INT32[] /* [NUM_MATERIAL_TYPES] */ = [
   -1,
-  S_WOOD_IMPACT1,
-  S_WOOD_IMPACT2,
-  S_WOOD_IMPACT3,
-  S_VEG_IMPACT1,
+  Enum330.S_WOOD_IMPACT1,
+  Enum330.S_WOOD_IMPACT2,
+  Enum330.S_WOOD_IMPACT3,
+  Enum330.S_VEG_IMPACT1,
   -1,
-  S_PORCELAIN_IMPACT1,
-  -1,
-  -1,
-  -1,
-
-  -1,
-  S_STONE_IMPACT1,
-  S_STONE_IMPACT1,
-  S_STONE_IMPACT1,
-  S_STONE_IMPACT1,
-  S_RUBBER_IMPACT1,
-  -1,
+  Enum330.S_PORCELAIN_IMPACT1,
   -1,
   -1,
   -1,
 
   -1,
-  S_METAL_IMPACT1,
-  S_METAL_IMPACT2,
-  S_METAL_IMPACT3,
-  S_STONE_IMPACT1,
-  S_METAL_IMPACT3,
+  Enum330.S_STONE_IMPACT1,
+  Enum330.S_STONE_IMPACT1,
+  Enum330.S_STONE_IMPACT1,
+  Enum330.S_STONE_IMPACT1,
+  Enum330.S_RUBBER_IMPACT1,
+  -1,
+  -1,
+  -1,
+  -1,
+
+  -1,
+  Enum330.S_METAL_IMPACT1,
+  Enum330.S_METAL_IMPACT2,
+  Enum330.S_METAL_IMPACT3,
+  Enum330.S_STONE_IMPACT1,
+  Enum330.S_METAL_IMPACT3,
 ];
 
 /*
@@ -407,7 +407,7 @@ function CreateStructureFromDB(pDBStructureRef: Pointer<DB_STRUCTURE_REF>, ubTil
     pStructure.value.fFlags |= STRUCTURE_BASE_TILE;
     pStructure.value.ubHitPoints = pDBStructure.value.ubHitPoints;
   }
-  if (pDBStructure.value.ubWallOrientation != NO_ORIENTATION) {
+  if (pDBStructure.value.ubWallOrientation != Enum314.NO_ORIENTATION) {
     if (pStructure.value.fFlags & STRUCTURE_WALL) {
       // for multi-tile walls, which are only the special corner pieces,
       // the non-base tile gets no orientation value because this copy
@@ -504,17 +504,17 @@ function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStr
             // allow this if the structure is going to be on both sides of the wall
             for (bLoop = 1; bLoop < 4; bLoop++) {
               switch (pExistingStructure.value.ubWallOrientation) {
-                case OUTSIDE_TOP_LEFT:
-                case INSIDE_TOP_LEFT:
+                case Enum314.OUTSIDE_TOP_LEFT:
+                case Enum314.INSIDE_TOP_LEFT:
                   sOtherGridNo = NewGridNo(sGridNo, DirectionInc((bLoop + 2)));
                   break;
-                case OUTSIDE_TOP_RIGHT:
-                case INSIDE_TOP_RIGHT:
+                case Enum314.OUTSIDE_TOP_RIGHT:
+                case Enum314.INSIDE_TOP_RIGHT:
                   sOtherGridNo = NewGridNo(sGridNo, DirectionInc(bLoop));
                   break;
                 default:
                   // @%?@#%?@%
-                  sOtherGridNo = NewGridNo(sGridNo, DirectionInc(SOUTHEAST));
+                  sOtherGridNo = NewGridNo(sGridNo, DirectionInc(Enum245.SOUTHEAST));
               }
               for (bLoop2 = 0; bLoop2 < pDBStructure.value.ubNumberOfTiles; bLoop2++) {
                 if (sBaseGridNo + ppTile[bLoop2].value.sPosRelToBase == sOtherGridNo) {
@@ -533,17 +533,17 @@ function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStr
           // it's possible we're trying to insert this wall on top of a multitile obstacle
           for (bLoop = 1; bLoop < 4; bLoop++) {
             switch (pDBStructure.value.ubWallOrientation) {
-              case OUTSIDE_TOP_LEFT:
-              case INSIDE_TOP_LEFT:
+              case Enum314.OUTSIDE_TOP_LEFT:
+              case Enum314.INSIDE_TOP_LEFT:
                 sOtherGridNo = NewGridNo(sGridNo, DirectionInc((bLoop + 2)));
                 break;
-              case OUTSIDE_TOP_RIGHT:
-              case INSIDE_TOP_RIGHT:
+              case Enum314.OUTSIDE_TOP_RIGHT:
+              case Enum314.INSIDE_TOP_RIGHT:
                 sOtherGridNo = NewGridNo(sGridNo, DirectionInc(bLoop));
                 break;
               default:
                 // @%?@#%?@%
-                sOtherGridNo = NewGridNo(sGridNo, DirectionInc(SOUTHEAST));
+                sOtherGridNo = NewGridNo(sGridNo, DirectionInc(Enum245.SOUTHEAST));
                 break;
             }
             for (ubTileIndex = 0; ubTileIndex < pDBStructure.value.ubNumberOfTiles; ubTileIndex++) {
@@ -902,7 +902,7 @@ function DeleteStructureFromWorld(pStructure: Pointer<STRUCTURE>): BOOLEAN {
         AddTileToRecompileArea(sGridNo);
         if (fRecompileExtraRadius) {
           // add adjacent tiles too
-          for (ubLoop2 = 0; ubLoop2 < NUM_WORLD_DIRECTIONS; ubLoop2++) {
+          for (ubLoop2 = 0; ubLoop2 < Enum245.NUM_WORLD_DIRECTIONS; ubLoop2++) {
             sCheckGridNo = NewGridNo(sGridNo, DirectionInc(ubLoop2));
             if (sCheckGridNo != sGridNo) {
               AddTileToRecompileArea(sCheckGridNo);
@@ -1270,7 +1270,7 @@ function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8, ubReas
     return FALSE;
   }
 
-  if ((pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == MATERIAL_INDESTRUCTABLE_METAL) || (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == MATERIAL_INDESTRUCTABLE_STONE)) {
+  if ((pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == Enum309.MATERIAL_INDESTRUCTABLE_METAL) || (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == Enum309.MATERIAL_INDESTRUCTABLE_STONE)) {
     return FALSE;
   }
 
@@ -1314,7 +1314,7 @@ function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8, ubReas
       // ApplyMapChangesToMapTempFile( FALSE );
 
       // Generate an explosion here!
-      IgniteExplosion(ubOwner, sX, sY, 0, sGridNo, STRUCTURE_IGNITE, 0);
+      IgniteExplosion(ubOwner, sX, sY, 0, sGridNo, Enum225.STRUCTURE_IGNITE, 0);
 
       // ATE: Return false here, as we are dealing with deleting the graphic here...
       return FALSE;
@@ -1322,7 +1322,7 @@ function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8, ubReas
 
     // Make hit sound....
     if (pStructure.value.fFlags & STRUCTURE_CAVEWALL) {
-      PlayJA2Sample(S_VEG_IMPACT1, RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
+      PlayJA2Sample(Enum330.S_VEG_IMPACT1, RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
     } else {
       if (guiMaterialHitSound[pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour] != -1) {
         PlayJA2Sample(guiMaterialHitSound[pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour], RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
@@ -1381,7 +1381,7 @@ function DebugStructurePage1(): void {
     // gprintf( 0, LINE_HEIGHT * 1, L"No structure selected" );
   }
 
-  if (gsInterfaceLevel == I_GROUND_LEVEL) {
+  if (gsInterfaceLevel == Enum214.I_GROUND_LEVEL) {
     sDesiredLevel = STRUCTURE_ON_GROUND;
   } else {
     sDesiredLevel = STRUCTURE_ON_ROOF;
@@ -1443,8 +1443,8 @@ function DebugStructurePage1(): void {
     }
     gprintf(0, LINE_HEIGHT * 12, "Number of structures = %d", bStructures);
   }
-  gprintf(0, LINE_HEIGHT * 13, "N %d NE %d E %d SE %d", gubWorldMovementCosts[sGridNo][NORTH][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][NORTHEAST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][EAST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][SOUTHEAST][gsInterfaceLevel]);
-  gprintf(0, LINE_HEIGHT * 14, "S %d SW %d W %d NW %d", gubWorldMovementCosts[sGridNo][SOUTH][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][SOUTHWEST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][WEST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][NORTHWEST][gsInterfaceLevel]);
+  gprintf(0, LINE_HEIGHT * 13, "N %d NE %d E %d SE %d", gubWorldMovementCosts[sGridNo][Enum245.NORTH][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][Enum245.NORTHEAST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][Enum245.EAST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][Enum245.SOUTHEAST][gsInterfaceLevel]);
+  gprintf(0, LINE_HEIGHT * 14, "S %d SW %d W %d NW %d", gubWorldMovementCosts[sGridNo][Enum245.SOUTH][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][Enum245.SOUTHWEST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][Enum245.WEST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][Enum245.NORTHWEST][gsInterfaceLevel]);
   gprintf(0, LINE_HEIGHT * 15, "Ground smell %d strength %d", SMELL_TYPE(gpWorldLevelData[sGridNo].ubSmellInfo), SMELL_STRENGTH(gpWorldLevelData[sGridNo].ubSmellInfo));
 
   gprintf(0, LINE_HEIGHT * 16, "Adj soldiers %d", gpWorldLevelData[sGridNo].ubAdjacentSoldierCnt);
@@ -1759,8 +1759,8 @@ function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bL
       // CHECK FOR WINDOW
       if (pCurrent.value.fFlags & STRUCTURE_WALLNWINDOW) {
         switch (pCurrent.value.ubWallOrientation) {
-          case OUTSIDE_TOP_LEFT:
-          case INSIDE_TOP_LEFT:
+          case Enum314.OUTSIDE_TOP_LEFT:
+          case Enum314.INSIDE_TOP_LEFT:
 
             (pStructHeight.value) = StructureHeight(pCurrent);
             (ppTallestStructure.value) = pCurrent;
@@ -1772,8 +1772,8 @@ function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bL
             }
             break;
 
-          case OUTSIDE_TOP_RIGHT:
-          case INSIDE_TOP_RIGHT:
+          case Enum314.OUTSIDE_TOP_RIGHT:
+          case Enum314.INSIDE_TOP_RIGHT:
 
             (pStructHeight.value) = StructureHeight(pCurrent);
             (ppTallestStructure.value) = pCurrent;
@@ -1797,16 +1797,16 @@ function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bL
           break;
         } else {
           switch (pCurrent.value.ubWallOrientation) {
-            case OUTSIDE_TOP_LEFT:
-            case INSIDE_TOP_LEFT:
+            case Enum314.OUTSIDE_TOP_LEFT:
+            case Enum314.INSIDE_TOP_LEFT:
 
               (pStructHeight.value) = StructureHeight(pCurrent);
               (ppTallestStructure.value) = pCurrent;
               return BLOCKING_TOPLEFT_DOOR;
               break;
 
-            case OUTSIDE_TOP_RIGHT:
-            case INSIDE_TOP_RIGHT:
+            case Enum314.OUTSIDE_TOP_RIGHT:
+            case Enum314.INSIDE_TOP_RIGHT:
 
               (pStructHeight.value) = StructureHeight(pCurrent);
               (ppTallestStructure.value) = pCurrent;
@@ -1877,21 +1877,21 @@ function GetStructureOpenSound(pStructure: Pointer<STRUCTURE>, fClose: BOOLEAN):
   let uiSoundID: UINT32;
 
   switch (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour) {
-    case MATERIAL_LIGHT_METAL:
-    case MATERIAL_THICKER_METAL:
+    case Enum309.MATERIAL_LIGHT_METAL:
+    case Enum309.MATERIAL_THICKER_METAL:
 
-      uiSoundID = OPEN_LOCKER;
+      uiSoundID = Enum330.OPEN_LOCKER;
       break;
 
-    case MATERIAL_WOOD_WALL:
-    case MATERIAL_PLYWOOD_WALL:
-    case MATERIAL_FURNITURE:
+    case Enum309.MATERIAL_WOOD_WALL:
+    case Enum309.MATERIAL_PLYWOOD_WALL:
+    case Enum309.MATERIAL_FURNITURE:
 
-      uiSoundID = OPEN_WOODEN_BOX;
+      uiSoundID = Enum330.OPEN_WOODEN_BOX;
       break;
 
     default:
-      uiSoundID = OPEN_DEFAULT_OPENABLE;
+      uiSoundID = Enum330.OPEN_DEFAULT_OPENABLE;
   }
 
   if (fClose) {

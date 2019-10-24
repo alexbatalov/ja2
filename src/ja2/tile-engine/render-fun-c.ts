@@ -73,7 +73,7 @@ function SetGridNoRevealedFlag(sGridNo: UINT16): void {
   let pBase: Pointer<STRUCTURE>;
 
   // Set hidden flag, for any roofs
-  SetRoofIndexFlagsFromTypeRange(sGridNo, FIRSTROOF, FOURTHROOF, LEVELNODE_HIDDEN);
+  SetRoofIndexFlagsFromTypeRange(sGridNo, Enum313.FIRSTROOF, Enum313.FOURTHROOF, LEVELNODE_HIDDEN);
 
   // ATE: Do this only if we are in a room...
   if (gubWorldRoomInfo[sGridNo] != NO_ROOM) {
@@ -158,9 +158,9 @@ function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
       // IF NOT REVEALED AND HIDDEN....
       if (!(gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) && pNode.value.uiFlags & LEVELNODE_HIDDEN) {
         // Add graphic if one does not already exist....
-        if (!TypeExistsInRoofLayer(sGridNo, SLANTROOFCEILING, addressof(usIndex))) {
+        if (!TypeExistsInRoofLayer(sGridNo, Enum313.SLANTROOFCEILING, addressof(usIndex))) {
           // Add
-          AddRoofToHead(sGridNo, SLANTROOFCEILING1);
+          AddRoofToHead(sGridNo, Enum312.SLANTROOFCEILING1);
           fChanged = TRUE;
         }
       }
@@ -168,7 +168,7 @@ function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
       // Revealed?
       if (gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) {
         /// Remove any slant roof items if they exist
-        if (TypeExistsInRoofLayer(sGridNo, SLANTROOFCEILING, addressof(usIndex))) {
+        if (TypeExistsInRoofLayer(sGridNo, Enum313.SLANTROOFCEILING, addressof(usIndex))) {
           RemoveRoof(sGridNo, usIndex);
           fChanged = TRUE;
         }
@@ -198,7 +198,7 @@ function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLD
     if (gubWorldRoomInfo[cnt] == bRoomNum) {
       SetGridNoRevealedFlag(cnt);
 
-      RemoveRoofIndexFlagsFromTypeRange(cnt, FIRSTROOF, SECONDSLANTROOF, LEVELNODE_REVEAL);
+      RemoveRoofIndexFlagsFromTypeRange(cnt, Enum313.FIRSTROOF, Enum313.SECONDSLANTROOF, LEVELNODE_REVEAL);
 
       // Reveal any items if here!
       if (GetItemPool(cnt, addressof(pItemPool), 0)) {
@@ -208,7 +208,7 @@ function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLD
             fSaidItemSeenQuote = TRUE;
 
             if (pSoldier != NULL) {
-              TacticalCharacterDialogue(pSoldier, (QUOTE_SPOTTED_SOMETHING_ONE + Random(2)));
+              TacticalCharacterDialogue(pSoldier, (Enum202.QUOTE_SPOTTED_SOMETHING_ONE + Random(2)));
             }
           }
         }
@@ -242,7 +242,7 @@ function AddSpecialTileRange(pSelectRegion: Pointer<SGPRect>): BOOLEAN {
 
   for (cnt1 = pSelectRegion.value.iTop; cnt1 <= pSelectRegion.value.iBottom; cnt1++) {
     for (cnt2 = pSelectRegion.value.iLeft; cnt2 <= pSelectRegion.value.iRight; cnt2++) {
-      AddObjectToHead(MAPROWCOLTOPOS(cnt1, cnt2), SPECIALTILE_MAPEXIT);
+      AddObjectToHead(MAPROWCOLTOPOS(cnt1, cnt2), Enum312.SPECIALTILE_MAPEXIT);
     }
   }
 
@@ -255,7 +255,7 @@ function RemoveSpecialTileRange(pSelectRegion: Pointer<SGPRect>): BOOLEAN {
 
   for (cnt1 = pSelectRegion.value.iTop; cnt1 <= pSelectRegion.value.iBottom; cnt1++) {
     for (cnt2 = pSelectRegion.value.iLeft; cnt2 <= pSelectRegion.value.iRight; cnt2++) {
-      RemoveObject(MAPROWCOLTOPOS(cnt1, cnt2), SPECIALTILE_MAPEXIT);
+      RemoveObject(MAPROWCOLTOPOS(cnt1, cnt2), Enum312.SPECIALTILE_MAPEXIT);
     }
   }
 

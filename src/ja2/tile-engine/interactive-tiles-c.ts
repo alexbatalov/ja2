@@ -46,7 +46,7 @@ function StartInteractiveObject(sGridNo: INT16, usStructureID: UINT16, pSoldier:
   let pStructure: Pointer<STRUCTURE>;
 
   // ATE: Patch fix: Don't allow if alreay in animation
-  if (pSoldier.value.usAnimState == OPEN_STRUCT || pSoldier.value.usAnimState == OPEN_STRUCT_CROUCHED || pSoldier.value.usAnimState == BEGIN_OPENSTRUCT || pSoldier.value.usAnimState == BEGIN_OPENSTRUCT_CROUCHED) {
+  if (pSoldier.value.usAnimState == Enum193.OPEN_STRUCT || pSoldier.value.usAnimState == Enum193.OPEN_STRUCT_CROUCHED || pSoldier.value.usAnimState == Enum193.BEGIN_OPENSTRUCT || pSoldier.value.usAnimState == Enum193.BEGIN_OPENSTRUCT_CROUCHED) {
     return FALSE;
   }
 
@@ -56,14 +56,14 @@ function StartInteractiveObject(sGridNo: INT16, usStructureID: UINT16, pSoldier:
   }
   if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
     // Add soldier event for opening door....
-    pSoldier.value.ubPendingAction = MERC_OPENDOOR;
+    pSoldier.value.ubPendingAction = Enum257.MERC_OPENDOOR;
     pSoldier.value.uiPendingActionData1 = usStructureID;
     pSoldier.value.sPendingActionData2 = sGridNo;
     pSoldier.value.bPendingActionData3 = ubDirection;
     pSoldier.value.ubPendingActionAnimCount = 0;
   } else {
     // Add soldier event for opening door....
-    pSoldier.value.ubPendingAction = MERC_OPENSTRUCT;
+    pSoldier.value.ubPendingAction = Enum257.MERC_OPENSTRUCT;
     pSoldier.value.uiPendingActionData1 = usStructureID;
     pSoldier.value.sPendingActionData2 = sGridNo;
     pSoldier.value.bPendingActionData3 = ubDirection;
@@ -158,13 +158,13 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   // ATE: Don't handle switches!
   if (!(pStructure.value.fFlags & STRUCTURE_SWITCH)) {
     if (pSoldier.value.bTeam == gbPlayerNum) {
-      if (sGridNo == BOBBYR_SHIPPING_DEST_GRIDNO && gWorldSectorX == BOBBYR_SHIPPING_DEST_SECTOR_X && gWorldSectorY == BOBBYR_SHIPPING_DEST_SECTOR_Y && gbWorldSectorZ == BOBBYR_SHIPPING_DEST_SECTOR_Z && CheckFact(FACT_PABLOS_STOLE_FROM_LATEST_SHIPMENT, 0) && !(CheckFact(FACT_PLAYER_FOUND_ITEMS_MISSING, 0))) {
-        SayQuoteFromNearbyMercInSector(BOBBYR_SHIPPING_DEST_GRIDNO, 3, QUOTE_STUFF_MISSING_DRASSEN);
+      if (sGridNo == BOBBYR_SHIPPING_DEST_GRIDNO && gWorldSectorX == BOBBYR_SHIPPING_DEST_SECTOR_X && gWorldSectorY == BOBBYR_SHIPPING_DEST_SECTOR_Y && gbWorldSectorZ == BOBBYR_SHIPPING_DEST_SECTOR_Z && CheckFact(Enum170.FACT_PABLOS_STOLE_FROM_LATEST_SHIPMENT, 0) && !(CheckFact(Enum170.FACT_PLAYER_FOUND_ITEMS_MISSING, 0))) {
+        SayQuoteFromNearbyMercInSector(BOBBYR_SHIPPING_DEST_GRIDNO, 3, Enum202.QUOTE_STUFF_MISSING_DRASSEN);
         fDidMissingQuote = TRUE;
       }
     } else if (pSoldier.value.bTeam == CIV_TEAM) {
       if (pSoldier.value.ubProfile != NO_PROFILE) {
-        TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, APPROACH_DONE_OPEN_STRUCTURE, FALSE);
+        TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_DONE_OPEN_STRUCTURE, FALSE);
       }
     }
 
@@ -181,9 +181,9 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
         }
 
         // Look for ownership here....
-        if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == OWNERSHIP) {
+        if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == Enum225.OWNERSHIP) {
           fDoHumm = FALSE;
-          TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND, BATTLE_SOUND_NOTHING, 500);
+          TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND, Enum259.BATTLE_SOUND_NOTHING, 500);
         }
 
         // If now open, set visible...
@@ -198,12 +198,12 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
             if (pItemPool.value.pNext.value.pNext != NULL) {
               fDoHumm = FALSE;
 
-              TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND, BATTLE_SOUND_COOL1, 500);
+              TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND, Enum259.BATTLE_SOUND_COOL1, 500);
             }
           }
 
           if (fDoHumm) {
-            TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND, BATTLE_SOUND_HUMM, 500);
+            TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND, Enum259.BATTLE_SOUND_HUMM, 500);
           }
         }
       } else {
@@ -211,7 +211,7 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
       }
     } else {
       if (!(pStructure.value.fFlags & STRUCTURE_OPEN)) {
-        TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND, BATTLE_SOUND_NOTHING, 500);
+        TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND, Enum259.BATTLE_SOUND_NOTHING, 500);
       }
     }
   }
@@ -244,9 +244,9 @@ function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: BOOLEAN): UINT3
       SetDoorString(sGridNo);
 
       if (fConfirm) {
-        return OKHANDCURSOR_UICURSOR;
+        return Enum210.OKHANDCURSOR_UICURSOR;
       } else {
-        return NORMALHANDCURSOR_UICURSOR;
+        return Enum210.NORMALHANDCURSOR_UICURSOR;
       }
     } else {
       if (pStructure.value.fFlags & STRUCTURE_SWITCH) {
@@ -255,9 +255,9 @@ function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: BOOLEAN): UINT3
       }
 
       if (fConfirm) {
-        return OKHANDCURSOR_UICURSOR;
+        return Enum210.OKHANDCURSOR_UICURSOR;
       } else {
-        return NORMALHANDCURSOR_UICURSOR;
+        return Enum210.NORMALHANDCURSOR_UICURSOR;
       }
     }
   }
@@ -587,7 +587,7 @@ function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN
       return FALSE;
     }
 
-    if (gusSelectedSoldier != NOBODY && MercPtrs[gusSelectedSoldier].value.ubBodyType == ROBOTNOWEAPON) {
+    if (gusSelectedSoldier != NOBODY && MercPtrs[gusSelectedSoldier].value.ubBodyType == Enum194.ROBOTNOWEAPON) {
       return FALSE;
     }
 
@@ -600,14 +600,14 @@ function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN
       // OK, For a OPENED door, addition requirements are: need to be in 'HAND CURSOR' mode...
       if (pStructure.value.fFlags & STRUCTURE_OPEN) {
         // Are we in hand cursor mode?
-        if (gCurrentUIMode != HANDCURSOR_MODE && gCurrentUIMode != ACTION_MODE) {
+        if (gCurrentUIMode != Enum206.HANDCURSOR_MODE && gCurrentUIMode != Enum206.ACTION_MODE) {
           return FALSE;
         }
       }
 
       // If this option is on...
-      if (!gGameSettings.fOptions[TOPTION_SNAP_CURSOR_TO_DOOR]) {
-        if (gCurrentUIMode != HANDCURSOR_MODE) {
+      if (!gGameSettings.fOptions[Enum8.TOPTION_SNAP_CURSOR_TO_DOOR]) {
+        if (gCurrentUIMode != Enum206.HANDCURSOR_MODE) {
           return FALSE;
         }
       }
@@ -618,18 +618,18 @@ function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN
         let sNewGridNo: INT16 = NOWHERE;
 
         switch (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubWallOrientation) {
-          case OUTSIDE_TOP_LEFT:
-          case INSIDE_TOP_LEFT:
+          case Enum314.OUTSIDE_TOP_LEFT:
+          case Enum314.INSIDE_TOP_LEFT:
 
             // Move south...
-            sNewGridNo = NewGridNo(sGridNo, DirectionInc(SOUTH));
+            sNewGridNo = NewGridNo(sGridNo, DirectionInc(Enum245.SOUTH));
             break;
 
-          case OUTSIDE_TOP_RIGHT:
-          case INSIDE_TOP_RIGHT:
+          case Enum314.OUTSIDE_TOP_RIGHT:
+          case Enum314.INSIDE_TOP_RIGHT:
 
             // Move east...
-            sNewGridNo = NewGridNo(sGridNo, DirectionInc(EAST));
+            sNewGridNo = NewGridNo(sGridNo, DirectionInc(Enum245.EAST));
             break;
         }
 

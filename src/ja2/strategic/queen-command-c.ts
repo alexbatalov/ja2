@@ -115,7 +115,7 @@ function NumStationaryEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
   }
 
   // don't count roadblocks as stationary garrison, we want to see how many enemies are in them, not question marks
-  if (gGarrisonGroup[pSector.value.ubGarrisonID].ubComposition == ROADBLOCK) {
+  if (gGarrisonGroup[pSector.value.ubGarrisonID].ubComposition == Enum174.ROADBLOCK) {
     // pretend they're not stationary
     return 0;
   }
@@ -140,7 +140,7 @@ function NumMobileEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
   }
 
   pSector = addressof(SectorInfo[SECTOR(sSectorX, sSectorY)]);
-  if (pSector.value.ubGarrisonID == ROADBLOCK) {
+  if (pSector.value.ubGarrisonID == Enum174.ROADBLOCK) {
     // consider these troops as mobile troops even though they are in a garrison
     ubNumTroops += (pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites);
   }
@@ -167,7 +167,7 @@ function GetNumberOfMobileEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubN
   }
 
   pSector = addressof(SectorInfo[SECTOR(sSectorX, sSectorY)]);
-  if (pSector.value.ubGarrisonID == ROADBLOCK) {
+  if (pSector.value.ubGarrisonID == Enum174.ROADBLOCK) {
     // consider these troops as mobile troops even though they are in a garrison
     pubNumAdmins.value += pSector.value.ubNumAdmins;
     pubNumTroops.value += pSector.value.ubNumTroops;
@@ -249,7 +249,7 @@ function EndTacticalBattleForEnemy(): void {
       for (i = gTacticalStatus.Team[ENEMY_TEAM].bFirstID; i <= gTacticalStatus.Team[CREATURE_TEAM].bLastID; i++) {
         if (MercPtrs[i].value.bActive && MercPtrs[i].value.bInSector && MercPtrs[i].value.bLife >= OKLIFE) {
           // confirmed at least one enemy here, so do the loyalty penalty.
-          HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_ABANDON_MILITIA, gWorldSectorX, gWorldSectorY, 0);
+          HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_ABANDON_MILITIA, gWorldSectorX, gWorldSectorY, 0);
           break;
         }
       }
@@ -325,13 +325,13 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
     while (curr) {
       if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM) {
         switch (curr.value.pBasicPlacement.value.ubSoldierClass) {
-          case SOLDIER_CLASS_ADMINISTRATOR:
+          case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
             ubTotalAdmins++;
             break;
-          case SOLDIER_CLASS_ARMY:
+          case Enum262.SOLDIER_CLASS_ARMY:
             ubTotalTroops++;
             break;
-          case SOLDIER_CLASS_ELITE:
+          case Enum262.SOLDIER_CLASS_ELITE:
             ubTotalElites++;
             break;
         }
@@ -462,7 +462,7 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
           }
         }
         switch (pSoldier.value.ubSoldierClass) {
-          case SOLDIER_CLASS_ADMINISTRATOR:
+          case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
             if (ubNumAdmins) {
               num--;
               sNumSlots--;
@@ -470,7 +470,7 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
               pSoldier.value.ubGroupID = pGroup.value.ubGroupID;
             }
             break;
-          case SOLDIER_CLASS_ARMY:
+          case Enum262.SOLDIER_CLASS_ARMY:
             if (ubNumTroops) {
               num--;
               sNumSlots--;
@@ -478,7 +478,7 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
               pSoldier.value.ubGroupID = pGroup.value.ubGroupID;
             }
             break;
-          case SOLDIER_CLASS_ELITE:
+          case Enum262.SOLDIER_CLASS_ELITE:
             if (ubNumElites) {
               num--;
               sNumSlots--;
@@ -535,9 +535,9 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
   EvaluateDeathEffectsToSoldierInitList(pSoldier);
 
   switch (pSoldier.value.ubProfile) {
-    case MIKE:
-    case IGGY:
-      if (pSoldier.value.ubProfile == IGGY && !gubFact[FACT_IGGY_AVAILABLE_TO_ARMY]) {
+    case Enum268.MIKE:
+    case Enum268.IGGY:
+      if (pSoldier.value.ubProfile == Enum268.IGGY && !gubFact[Enum170.FACT_IGGY_AVAILABLE_TO_ARMY]) {
         // Iggy is on our team!
         break;
       }
@@ -577,7 +577,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
       return;
     }
     switch (pSoldier.value.ubSoldierClass) {
-      case SOLDIER_CLASS_ELITE:
+      case Enum262.SOLDIER_CLASS_ELITE:
         if (pGroup.value.pEnemyGroup.value.ubNumElites) {
           pGroup.value.pEnemyGroup.value.ubNumElites--;
         }
@@ -585,7 +585,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
           pGroup.value.pEnemyGroup.value.ubElitesInBattle--;
         }
         break;
-      case SOLDIER_CLASS_ARMY:
+      case Enum262.SOLDIER_CLASS_ARMY:
         if (pGroup.value.pEnemyGroup.value.ubNumTroops) {
           pGroup.value.pEnemyGroup.value.ubNumTroops--;
         }
@@ -593,7 +593,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
           pGroup.value.pEnemyGroup.value.ubTroopsInBattle--;
         }
         break;
-      case SOLDIER_CLASS_ADMINISTRATOR:
+      case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
         if (pGroup.value.pEnemyGroup.value.ubNumAdmins) {
           pGroup.value.pEnemyGroup.value.ubNumAdmins--;
         }
@@ -621,7 +621,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
       }
 
       switch (pSoldier.value.ubSoldierClass) {
-        case SOLDIER_CLASS_ADMINISTRATOR:
+        case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
           if (pSector.value.ubNumAdmins) {
             pSector.value.ubNumAdmins--;
           }
@@ -629,7 +629,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
             pSector.value.ubAdminsInBattle--;
           }
           break;
-        case SOLDIER_CLASS_ARMY:
+        case Enum262.SOLDIER_CLASS_ARMY:
           if (pSector.value.ubNumTroops) {
             pSector.value.ubNumTroops--;
           }
@@ -637,7 +637,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
             pSector.value.ubTroopsInBattle--;
           }
           break;
-        case SOLDIER_CLASS_ELITE:
+        case Enum262.SOLDIER_CLASS_ELITE:
           if (pSector.value.ubNumElites) {
             pSector.value.ubNumElites--;
           }
@@ -645,8 +645,8 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
             pSector.value.ubElitesInBattle--;
           }
           break;
-        case SOLDIER_CLASS_CREATURE:
-          if (pSoldier.value.ubBodyType != BLOODCAT) {
+        case Enum262.SOLDIER_CLASS_CREATURE:
+          if (pSoldier.value.ubBodyType != Enum194.BLOODCAT) {
             if (pSector.value.ubNumCreatures) {
               pSector.value.ubNumCreatures--;
             }
@@ -667,7 +667,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
       let pSector: Pointer<UNDERGROUND_SECTORINFO> = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
       if (pSector) {
         switch (pSoldier.value.ubSoldierClass) {
-          case SOLDIER_CLASS_ADMINISTRATOR:
+          case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
             if (pSector.value.ubNumAdmins) {
               pSector.value.ubNumAdmins--;
             }
@@ -675,7 +675,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
               pSector.value.ubAdminsInBattle--;
             }
             break;
-          case SOLDIER_CLASS_ARMY:
+          case Enum262.SOLDIER_CLASS_ARMY:
             if (pSector.value.ubNumTroops) {
               pSector.value.ubNumTroops--;
             }
@@ -683,7 +683,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
               pSector.value.ubTroopsInBattle--;
             }
             break;
-          case SOLDIER_CLASS_ELITE:
+          case Enum262.SOLDIER_CLASS_ELITE:
             if (pSector.value.ubNumElites) {
               pSector.value.ubNumElites--;
             }
@@ -691,7 +691,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
               pSector.value.ubElitesInBattle--;
             }
             break;
-          case SOLDIER_CLASS_CREATURE:
+          case Enum262.SOLDIER_CLASS_CREATURE:
             if (pSector.value.ubNumCreatures) {
               pSector.value.ubNumCreatures--;
             }
@@ -702,19 +702,19 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
             if (!pSector.value.ubNumCreatures && gWorldSectorX != 9 && gWorldSectorY != 10) {
               // If the player has successfully killed all creatures in ANY underground sector except J9
               // then cancel any pending creature town attack.
-              DeleteAllStrategicEventsOfType(EVENT_CREATURE_ATTACK);
+              DeleteAllStrategicEventsOfType(Enum132.EVENT_CREATURE_ATTACK);
             }
 
             // a monster has died.  Post an event to immediately check whether a mine has been cleared.
-            AddStrategicEventUsingSeconds(EVENT_CHECK_IF_MINE_CLEARED, GetWorldTotalSeconds() + 15, 0);
+            AddStrategicEventUsingSeconds(Enum132.EVENT_CHECK_IF_MINE_CLEARED, GetWorldTotalSeconds() + 15, 0);
 
-            if (pSoldier.value.ubBodyType == QUEENMONSTER) {
+            if (pSoldier.value.ubBodyType == Enum194.QUEENMONSTER) {
               // Need to call this, as the queen is really big, and killing her leaves a bunch
               // of bad tiles in behind her.  Calling this function cleans it up.
               InvalidateWorldRedundency();
               // Now that the queen is dead, turn off the creature quest.
               EndCreatureQuest();
-              EndQuest(QUEST_CREATURES, gWorldSectorX, gWorldSectorY);
+              EndQuest(Enum169.QUEST_CREATURES, gWorldSectorX, gWorldSectorY);
             }
             break;
         }
@@ -793,22 +793,22 @@ function AddPossiblePendingEnemiesToBattle(): void {
         // First, determine which entrypoint to use, based on the travel direction of the group.
         if (pGroup.value.ubPrevX && pGroup.value.ubPrevY) {
           if (pGroup.value.ubSectorX < pGroup.value.ubPrevX)
-            ubStrategicInsertionCode = INSERTION_CODE_EAST;
+            ubStrategicInsertionCode = Enum175.INSERTION_CODE_EAST;
           else if (pGroup.value.ubSectorX > pGroup.value.ubPrevX)
-            ubStrategicInsertionCode = INSERTION_CODE_WEST;
+            ubStrategicInsertionCode = Enum175.INSERTION_CODE_WEST;
           else if (pGroup.value.ubSectorY < pGroup.value.ubPrevY)
-            ubStrategicInsertionCode = INSERTION_CODE_SOUTH;
+            ubStrategicInsertionCode = Enum175.INSERTION_CODE_SOUTH;
           else if (pGroup.value.ubSectorY > pGroup.value.ubPrevY)
-            ubStrategicInsertionCode = INSERTION_CODE_NORTH;
+            ubStrategicInsertionCode = Enum175.INSERTION_CODE_NORTH;
         } else if (pGroup.value.ubNextX && pGroup.value.ubNextY) {
           if (pGroup.value.ubSectorX < pGroup.value.ubNextX)
-            ubStrategicInsertionCode = INSERTION_CODE_EAST;
+            ubStrategicInsertionCode = Enum175.INSERTION_CODE_EAST;
           else if (pGroup.value.ubSectorX > pGroup.value.ubNextX)
-            ubStrategicInsertionCode = INSERTION_CODE_WEST;
+            ubStrategicInsertionCode = Enum175.INSERTION_CODE_WEST;
           else if (pGroup.value.ubSectorY < pGroup.value.ubNextY)
-            ubStrategicInsertionCode = INSERTION_CODE_SOUTH;
+            ubStrategicInsertionCode = Enum175.INSERTION_CODE_SOUTH;
           else if (pGroup.value.ubSectorY > pGroup.value.ubNextY)
-            ubStrategicInsertionCode = INSERTION_CODE_NORTH;
+            ubStrategicInsertionCode = Enum175.INSERTION_CODE_NORTH;
         }
         // Add the number of each type of troop and place them in the appropriate positions
         AddEnemiesToBattle(pGroup, ubStrategicInsertionCode, ubNumAdmins, ubNumTroops, ubNumElites, FALSE);
@@ -859,7 +859,7 @@ function NotifyPlayersOfNewEnemies(): void {
         if (!iChosenSoldier) {
           // ATE: This is to allow special handling of initial heli drop
           if (!DidGameJustStart()) {
-            TacticalCharacterDialogueWithSpecialEvent(pSoldier, QUOTE_ENEMY_PRESENCE, 0, 0, 0);
+            TacticalCharacterDialogueWithSpecialEvent(pSoldier, Enum202.QUOTE_ENEMY_PRESENCE, 0, 0, 0);
           }
           return;
         }
@@ -878,17 +878,17 @@ function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UI
   let ubTotalSoldiers: UINT8;
   let bDesiredDirection: UINT8 = 0;
   switch (ubStrategicInsertionCode) {
-    case INSERTION_CODE_NORTH:
-      bDesiredDirection = SOUTHEAST;
+    case Enum175.INSERTION_CODE_NORTH:
+      bDesiredDirection = Enum245.SOUTHEAST;
       break;
-    case INSERTION_CODE_EAST:
-      bDesiredDirection = SOUTHWEST;
+    case Enum175.INSERTION_CODE_EAST:
+      bDesiredDirection = Enum245.SOUTHWEST;
       break;
-    case INSERTION_CODE_SOUTH:
-      bDesiredDirection = NORTHWEST;
+    case Enum175.INSERTION_CODE_SOUTH:
+      bDesiredDirection = Enum245.NORTHWEST;
       break;
-    case INSERTION_CODE_WEST:
-      bDesiredDirection = NORTHEAST;
+    case Enum175.INSERTION_CODE_WEST:
+      bDesiredDirection = Enum245.NORTHEAST;
       break;
     default:
       AssertMsg(0, "Illegal direction passed to AddEnemiesToBattle()");
@@ -937,7 +937,7 @@ function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UI
       // Setup the position
       if (ubCurrSlot < MapEdgepointInfo.ubNumPoints) {
         // using an edgepoint
-        pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+        pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
         pSoldier.value.usStrategicInsertionData = MapEdgepointInfo.sGridNo[ubCurrSlot++];
       } else {
         // no edgepoints left, so put him at the entrypoint.
@@ -956,7 +956,7 @@ function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UI
       // Setup the position
       if (ubCurrSlot < MapEdgepointInfo.ubNumPoints) {
         // using an edgepoint
-        pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+        pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
         pSoldier.value.usStrategicInsertionData = MapEdgepointInfo.sGridNo[ubCurrSlot++];
       } else {
         // no edgepoints left, so put him at the entrypoint.
@@ -975,7 +975,7 @@ function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UI
       // Setup the position
       if (ubCurrSlot < MapEdgepointInfo.ubNumPoints) {
         // using an edgepoint
-        pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+        pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
         pSoldier.value.usStrategicInsertionData = MapEdgepointInfo.sGridNo[ubCurrSlot++];
       } else {
         // no edgepoints left, so put him at the entrypoint.
@@ -1093,15 +1093,15 @@ function EndCaptureSequence(): void {
     // CJC Dec 1 2002: fixing multiple captures:
     // gStrategicStatus.uiFlags |= STRATEGIC_PLAYER_CAPTURED_FOR_RESCUE;
 
-    if (gubQuest[QUEST_HELD_IN_ALMA] == QUESTNOTSTARTED) {
+    if (gubQuest[Enum169.QUEST_HELD_IN_ALMA] == QUESTNOTSTARTED) {
       // CJC Dec 1 2002: fixing multiple captures:
       gStrategicStatus.uiFlags |= STRATEGIC_PLAYER_CAPTURED_FOR_RESCUE;
-      StartQuest(QUEST_HELD_IN_ALMA, gWorldSectorX, gWorldSectorY);
+      StartQuest(Enum169.QUEST_HELD_IN_ALMA, gWorldSectorX, gWorldSectorY);
     }
     // CJC Dec 1 2002: fixing multiple captures:
     // else if ( gubQuest[ QUEST_HELD_IN_ALMA ] == QUESTDONE )
-    else if (gubQuest[QUEST_HELD_IN_ALMA] == QUESTDONE && gubQuest[QUEST_INTERROGATION] == QUESTNOTSTARTED) {
-      StartQuest(QUEST_INTERROGATION, gWorldSectorX, gWorldSectorY);
+    else if (gubQuest[Enum169.QUEST_HELD_IN_ALMA] == QUESTDONE && gubQuest[Enum169.QUEST_INTERROGATION] == QUESTNOTSTARTED) {
+      StartQuest(Enum169.QUEST_INTERROGATION, gWorldSectorX, gWorldSectorY);
       // CJC Dec 1 2002: fixing multiple captures:
       gStrategicStatus.uiFlags |= STRATEGIC_PLAYER_CAPTURED_FOR_ESCAPE;
 
@@ -1111,9 +1111,9 @@ function EndCaptureSequence(): void {
 
         MeanwhileDef.sSectorX = 7;
         MeanwhileDef.sSectorY = 14;
-        MeanwhileDef.ubNPCNumber = QUEEN;
+        MeanwhileDef.ubNPCNumber = Enum268.QUEEN;
         MeanwhileDef.usTriggerEvent = 0;
-        MeanwhileDef.ubMeanwhileID = INTERROGATION;
+        MeanwhileDef.ubMeanwhileID = Enum160.INTERROGATION;
 
         ScheduleMeanwhileEvent(addressof(MeanwhileDef), 10);
       }
@@ -1179,29 +1179,29 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   iNumEnemiesInSector = NumEnemiesInSector(13, 9);
 
   // IF there are no enemies, and we need to do alma, skip!
-  if (gubQuest[QUEST_HELD_IN_ALMA] == QUESTNOTSTARTED && iNumEnemiesInSector == 0) {
-    InternalStartQuest(QUEST_HELD_IN_ALMA, gWorldSectorX, gWorldSectorY, FALSE);
-    InternalEndQuest(QUEST_HELD_IN_ALMA, gWorldSectorX, gWorldSectorY, FALSE);
+  if (gubQuest[Enum169.QUEST_HELD_IN_ALMA] == QUESTNOTSTARTED && iNumEnemiesInSector == 0) {
+    InternalStartQuest(Enum169.QUEST_HELD_IN_ALMA, gWorldSectorX, gWorldSectorY, FALSE);
+    InternalEndQuest(Enum169.QUEST_HELD_IN_ALMA, gWorldSectorX, gWorldSectorY, FALSE);
   }
 
-  HandleMoraleEvent(pSoldier, MORALE_MERC_CAPTURED, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
+  HandleMoraleEvent(pSoldier, Enum234.MORALE_MERC_CAPTURED, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
 
   // Change to POW....
   //-add him to a POW assignment/group
-  if ((pSoldier.value.bAssignment != ASSIGNMENT_POW)) {
+  if ((pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW)) {
     SetTimeOfAssignmentChangeForMerc(pSoldier);
   }
 
-  ChangeSoldiersAssignment(pSoldier, ASSIGNMENT_POW);
+  ChangeSoldiersAssignment(pSoldier, Enum117.ASSIGNMENT_POW);
   // ATE: Make them neutral!
-  if (gubQuest[QUEST_HELD_IN_ALMA] == QUESTNOTSTARTED) {
+  if (gubQuest[Enum169.QUEST_HELD_IN_ALMA] == QUESTNOTSTARTED) {
     pSoldier.value.bNeutral = TRUE;
   }
 
   RemoveCharacterFromSquads(pSoldier);
 
   // Is this the first one..?
-  if (gubQuest[QUEST_HELD_IN_ALMA] == QUESTNOTSTARTED) {
+  if (gubQuest[Enum169.QUEST_HELD_IN_ALMA] == QUESTNOTSTARTED) {
     //-teleport him to NE Alma sector (not Tixa as originally planned)
     pSoldier.value.sSectorX = 13;
     pSoldier.value.sSectorY = 9;
@@ -1211,7 +1211,7 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
     pSoldier.value.bLevel = 0;
 
     // OK, drop all items!
-    for (i = 0; i < NUM_INV_SLOTS; i++) {
+    for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
       if (pSoldier.value.inv[i].usItem != 0) {
         WorldItem.fExists = TRUE;
         WorldItem.sGridNo = sAlmaCaptureItemsGridNo[gStrategicStatus.ubNumCapturedForRescue];
@@ -1227,11 +1227,11 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
       }
     }
 
-    pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+    pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
     pSoldier.value.usStrategicInsertionData = sAlmaCaptureGridNos[gStrategicStatus.ubNumCapturedForRescue];
 
     gStrategicStatus.ubNumCapturedForRescue++;
-  } else if (gubQuest[QUEST_HELD_IN_ALMA] == QUESTDONE) {
+  } else if (gubQuest[Enum169.QUEST_HELD_IN_ALMA] == QUESTDONE) {
     //-teleport him to N7
     pSoldier.value.sSectorX = 7;
     pSoldier.value.sSectorY = 14;
@@ -1241,7 +1241,7 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
     pSoldier.value.bLevel = 0;
 
     // OK, drop all items!
-    for (i = 0; i < NUM_INV_SLOTS; i++) {
+    for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
       if (pSoldier.value.inv[i].usItem != 0) {
         WorldItem.fExists = TRUE;
         WorldItem.sGridNo = sInterrogationItemGridNo[gStrategicStatus.ubNumCapturedForRescue];
@@ -1257,7 +1257,7 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
       }
     }
 
-    pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
+    pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
     pSoldier.value.usStrategicInsertionData = gsInterrogationGridNo[gStrategicStatus.ubNumCapturedForRescue];
 
     gStrategicStatus.ubNumCapturedForRescue++;
@@ -1360,7 +1360,7 @@ function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
 function PlayerSectorDefended(ubSectorID: UINT8): BOOLEAN {
   let pSector: Pointer<SECTORINFO>;
   pSector = addressof(SectorInfo[ubSectorID]);
-  if (pSector.value.ubNumberOfCivsAtLevel[GREEN_MILITIA] + pSector.value.ubNumberOfCivsAtLevel[REGULAR_MILITIA] + pSector.value.ubNumberOfCivsAtLevel[ELITE_MILITIA]) {
+  if (pSector.value.ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] + pSector.value.ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] + pSector.value.ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA]) {
     // militia in sector
     return TRUE;
   }

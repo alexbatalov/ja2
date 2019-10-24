@@ -14,156 +14,156 @@ let DirIncrementer: INT16[] /* [8] */ = [
 
 // Opposite directions
 let gOppositeDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
-  SOUTH,
-  SOUTHWEST,
-  WEST,
-  NORTHWEST,
-  NORTH,
-  NORTHEAST,
-  EAST,
-  SOUTHEAST,
+  Enum245.SOUTH,
+  Enum245.SOUTHWEST,
+  Enum245.WEST,
+  Enum245.NORTHWEST,
+  Enum245.NORTH,
+  Enum245.NORTHEAST,
+  Enum245.EAST,
+  Enum245.SOUTHEAST,
 ];
 
 let gTwoCCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
-  WEST,
-  NORTHWEST,
-  NORTH,
-  NORTHEAST,
-  EAST,
-  SOUTHEAST,
-  SOUTH,
-  SOUTHWEST,
+  Enum245.WEST,
+  Enum245.NORTHWEST,
+  Enum245.NORTH,
+  Enum245.NORTHEAST,
+  Enum245.EAST,
+  Enum245.SOUTHEAST,
+  Enum245.SOUTH,
+  Enum245.SOUTHWEST,
 ];
 
 let gTwoCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
-  EAST,
-  SOUTHEAST,
-  SOUTH,
-  SOUTHWEST,
-  WEST,
-  NORTHWEST,
-  NORTH,
-  NORTHEAST,
+  Enum245.EAST,
+  Enum245.SOUTHEAST,
+  Enum245.SOUTH,
+  Enum245.SOUTHWEST,
+  Enum245.WEST,
+  Enum245.NORTHWEST,
+  Enum245.NORTH,
+  Enum245.NORTHEAST,
 ];
 
 let gOneCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
-  NORTHEAST,
-  EAST,
-  SOUTHEAST,
-  SOUTH,
-  SOUTHWEST,
-  WEST,
-  NORTHWEST,
-  NORTH,
+  Enum245.NORTHEAST,
+  Enum245.EAST,
+  Enum245.SOUTHEAST,
+  Enum245.SOUTH,
+  Enum245.SOUTHWEST,
+  Enum245.WEST,
+  Enum245.NORTHWEST,
+  Enum245.NORTH,
 ];
 
 let gOneCCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = [
-  NORTHWEST,
-  NORTH,
-  NORTHEAST,
-  EAST,
-  SOUTHEAST,
-  SOUTH,
-  SOUTHWEST,
-  WEST,
+  Enum245.NORTHWEST,
+  Enum245.NORTH,
+  Enum245.NORTHEAST,
+  Enum245.EAST,
+  Enum245.SOUTHEAST,
+  Enum245.SOUTH,
+  Enum245.SOUTHWEST,
+  Enum245.WEST,
 ];
 
 //														DIRECTION FACING			 DIRECTION WE WANT TO GOTO
 let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORLD_DIRECTIONS] */ = [
   // NORTH
   [
-    WEST, // EITHER
-    NORTHWEST,
-    NORTH,
-    NORTHEAST,
-    EAST, // EITHER
-    NORTHWEST,
-    NORTH,
-    NORTHEAST,
+    Enum245.WEST, // EITHER
+    Enum245.NORTHWEST,
+    Enum245.NORTH,
+    Enum245.NORTHEAST,
+    Enum245.EAST, // EITHER
+    Enum245.NORTHWEST,
+    Enum245.NORTH,
+    Enum245.NORTHEAST,
   ],
 
   // NORTH EAST
   [
-    NORTHWEST,
-    NORTHWEST, // EITHER
-    SOUTH,
-    NORTHEAST,
-    EAST,
-    SOUTHEAST, // EITHER
-    NORTH,
-    NORTHEAST,
+    Enum245.NORTHWEST,
+    Enum245.NORTHWEST, // EITHER
+    Enum245.SOUTH,
+    Enum245.NORTHEAST,
+    Enum245.EAST,
+    Enum245.SOUTHEAST, // EITHER
+    Enum245.NORTH,
+    Enum245.NORTHEAST,
   ],
 
   // EAST
   [
-    EAST,
-    SOUTHEAST,
-    NORTH, // EITHER
-    NORTHEAST,
-    EAST,
-    SOUTHEAST,
-    NORTH, // EITHER
-    NORTHEAST,
+    Enum245.EAST,
+    Enum245.SOUTHEAST,
+    Enum245.NORTH, // EITHER
+    Enum245.NORTHEAST,
+    Enum245.EAST,
+    Enum245.SOUTHEAST,
+    Enum245.NORTH, // EITHER
+    Enum245.NORTHEAST,
   ],
 
   // SOUTHEAST
   [
-    EAST,
-    SOUTHEAST,
-    SOUTH,
-    SOUTHWEST, // EITHER
-    SOUTHWEST,
-    SOUTHEAST,
-    SOUTH,
-    SOUTHWEST, // EITHER
+    Enum245.EAST,
+    Enum245.SOUTHEAST,
+    Enum245.SOUTH,
+    Enum245.SOUTHWEST, // EITHER
+    Enum245.SOUTHWEST,
+    Enum245.SOUTHEAST,
+    Enum245.SOUTH,
+    Enum245.SOUTHWEST, // EITHER
   ],
 
   // SOUTH
   [
-    WEST, // EITHER
-    SOUTHEAST,
-    SOUTH,
-    SOUTHWEST,
-    EAST, // EITHER
-    SOUTHEAST,
-    SOUTH,
-    SOUTHWEST,
+    Enum245.WEST, // EITHER
+    Enum245.SOUTHEAST,
+    Enum245.SOUTH,
+    Enum245.SOUTHWEST,
+    Enum245.EAST, // EITHER
+    Enum245.SOUTHEAST,
+    Enum245.SOUTH,
+    Enum245.SOUTHWEST,
   ],
 
   // SOUTHWEST
   [
-    WEST,
-    NORTHWEST, // EITHER
-    SOUTH,
-    SOUTHWEST,
-    WEST,
-    SOUTHEAST, // EITHER
-    SOUTH,
-    SOUTHWEST,
+    Enum245.WEST,
+    Enum245.NORTHWEST, // EITHER
+    Enum245.SOUTH,
+    Enum245.SOUTHWEST,
+    Enum245.WEST,
+    Enum245.SOUTHEAST, // EITHER
+    Enum245.SOUTH,
+    Enum245.SOUTHWEST,
   ],
 
   // WEST
   [
-    WEST,
-    NORTHWEST,
-    NORTH, // EITHER
-    SOUTHWEST,
-    WEST,
-    NORTHWEST,
-    SOUTH, // EITHER
-    SOUTHWEST,
+    Enum245.WEST,
+    Enum245.NORTHWEST,
+    Enum245.NORTH, // EITHER
+    Enum245.SOUTHWEST,
+    Enum245.WEST,
+    Enum245.NORTHWEST,
+    Enum245.SOUTH, // EITHER
+    Enum245.SOUTHWEST,
   ],
 
   // NORTHWEST
   [
-    WEST,
-    NORTHWEST,
-    NORTH,
-    SOUTHWEST, // EITHER
-    SOUTHWEST,
-    NORTHWEST,
-    NORTH,
-    NORTHEAST, // EITHER
+    Enum245.WEST,
+    Enum245.NORTHWEST,
+    Enum245.NORTH,
+    Enum245.SOUTHWEST, // EITHER
+    Enum245.SOUTHWEST,
+    Enum245.NORTHWEST,
+    Enum245.NORTH,
+    Enum245.NORTHEAST, // EITHER
   ],
 ];
 
@@ -877,7 +877,7 @@ function GridNoOnEdgeOfMap(sGridNo: INT16, pbDirection: Pointer<INT8>): BOOLEAN 
 
   // check NE, SE, SW, NW because of tilt of isometric display
 
-  for (bDir = NORTHEAST; bDir < NUM_WORLD_DIRECTIONS; bDir += 2) {
+  for (bDir = Enum245.NORTHEAST; bDir < Enum245.NUM_WORLD_DIRECTIONS; bDir += 2) {
     if (gubWorldMovementCosts[(sGridNo + DirectionInc(bDir))][bDir][0] == TRAVELCOST_OFF_MAP)
     // if ( !GridNoOnVisibleWorldTile( (INT16) (sGridNo + DirectionInc( bDir ) ) ) )
     {

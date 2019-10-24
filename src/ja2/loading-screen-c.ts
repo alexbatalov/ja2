@@ -1,4 +1,4 @@
-let gubLastLoadingScreenID: UINT8 = LOADINGSCREEN_NOTHING;
+let gubLastLoadingScreenID: UINT8 = Enum22.LOADINGSCREEN_NOTHING;
 
 // returns the UINT8 ID for the specified sector.
 function GetLoadScreenID(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): UINT8 {
@@ -14,157 +14,157 @@ function GetLoadScreenID(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): UINT
   switch (bSectorZ) {
     case 0:
       switch (ubSectorID) {
-        case SEC_A2:
-        case SEC_B2:
+        case Enum123.SEC_A2:
+        case Enum123.SEC_B2:
           if (fNight)
-            return LOADINGSCREEN_NIGHTCHITZENA;
-          return LOADINGSCREEN_DAYCHITZENA;
-        case SEC_A9:
+            return Enum22.LOADINGSCREEN_NIGHTCHITZENA;
+          return Enum22.LOADINGSCREEN_DAYCHITZENA;
+        case Enum123.SEC_A9:
           if (!DidGameJustStart()) {
             if (fNight)
-              return LOADINGSCREEN_NIGHTOMERTA;
-            return LOADINGSCREEN_DAYOMERTA;
+              return Enum22.LOADINGSCREEN_NIGHTOMERTA;
+            return Enum22.LOADINGSCREEN_DAYOMERTA;
           }
-          return LOADINGSCREEN_HELI;
-        case SEC_A10:
+          return Enum22.LOADINGSCREEN_HELI;
+        case Enum123.SEC_A10:
           if (fNight)
-            return LOADINGSCREEN_NIGHTOMERTA;
-          return LOADINGSCREEN_DAYOMERTA;
-        case SEC_P3:
+            return Enum22.LOADINGSCREEN_NIGHTOMERTA;
+          return Enum22.LOADINGSCREEN_DAYOMERTA;
+        case Enum123.SEC_P3:
           if (fNight)
-            return LOADINGSCREEN_NIGHTPALACE;
-          return LOADINGSCREEN_DAYPALACE;
-        case SEC_H13:
-        case SEC_H14: // military installations
-        case SEC_I13:
-        case SEC_N7:
+            return Enum22.LOADINGSCREEN_NIGHTPALACE;
+          return Enum22.LOADINGSCREEN_DAYPALACE;
+        case Enum123.SEC_H13:
+        case Enum123.SEC_H14: // military installations
+        case Enum123.SEC_I13:
+        case Enum123.SEC_N7:
           if (fNight)
-            return LOADINGSCREEN_NIGHTMILITARY;
-          return LOADINGSCREEN_DAYMILITARY;
-        case SEC_K4:
+            return Enum22.LOADINGSCREEN_NIGHTMILITARY;
+          return Enum22.LOADINGSCREEN_DAYMILITARY;
+        case Enum123.SEC_K4:
           if (fNight)
-            return LOADINGSCREEN_NIGHTLAB;
-          return LOADINGSCREEN_DAYLAB;
-        case SEC_J9:
+            return Enum22.LOADINGSCREEN_NIGHTLAB;
+          return Enum22.LOADINGSCREEN_DAYLAB;
+        case Enum123.SEC_J9:
           if (fNight)
-            return LOADINGSCREEN_NIGHTPRISON;
-          return LOADINGSCREEN_DAYPRISON;
-        case SEC_D2:
-        case SEC_D15:
-        case SEC_I8:
-        case SEC_N4:
+            return Enum22.LOADINGSCREEN_NIGHTPRISON;
+          return Enum22.LOADINGSCREEN_DAYPRISON;
+        case Enum123.SEC_D2:
+        case Enum123.SEC_D15:
+        case Enum123.SEC_I8:
+        case Enum123.SEC_N4:
           if (fNight)
-            return LOADINGSCREEN_NIGHTSAM;
-          return LOADINGSCREEN_DAYSAM;
-        case SEC_F8:
+            return Enum22.LOADINGSCREEN_NIGHTSAM;
+          return Enum22.LOADINGSCREEN_DAYSAM;
+        case Enum123.SEC_F8:
           if (fNight)
-            return LOADINGSCREEN_NIGHTHOSPITAL;
-          return LOADINGSCREEN_DAYHOSPITAL;
-        case SEC_B13:
-        case SEC_N3:
+            return Enum22.LOADINGSCREEN_NIGHTHOSPITAL;
+          return Enum22.LOADINGSCREEN_DAYHOSPITAL;
+        case Enum123.SEC_B13:
+        case Enum123.SEC_N3:
           if (fNight)
-            return LOADINGSCREEN_NIGHTAIRPORT;
-          return LOADINGSCREEN_DAYAIRPORT;
-        case SEC_L11:
-        case SEC_L12:
+            return Enum22.LOADINGSCREEN_NIGHTAIRPORT;
+          return Enum22.LOADINGSCREEN_DAYAIRPORT;
+        case Enum123.SEC_L11:
+        case Enum123.SEC_L12:
           if (fNight)
-            return LOADINGSCREEN_NIGHTBALIME;
-          return LOADINGSCREEN_DAYBALIME;
-        case SEC_H3:
-        case SEC_H8:
-        case SEC_D4:
+            return Enum22.LOADINGSCREEN_NIGHTBALIME;
+          return Enum22.LOADINGSCREEN_DAYBALIME;
+        case Enum123.SEC_H3:
+        case Enum123.SEC_H8:
+        case Enum123.SEC_D4:
           if (fNight)
-            return LOADINGSCREEN_NIGHTMINE;
-          return LOADINGSCREEN_DAYMINE;
+            return Enum22.LOADINGSCREEN_NIGHTMINE;
+          return Enum22.LOADINGSCREEN_DAYMINE;
       }
       pSector = addressof(SectorInfo[ubSectorID]);
       switch (pSector.value.ubTraversability[4]) {
-        case TOWN:
+        case Enum127.TOWN:
           if (fNight) {
             if (Random(2)) {
-              return LOADINGSCREEN_NIGHTTOWN2;
+              return Enum22.LOADINGSCREEN_NIGHTTOWN2;
             }
-            return LOADINGSCREEN_NIGHTTOWN1;
+            return Enum22.LOADINGSCREEN_NIGHTTOWN1;
           }
           if (Random(2)) {
-            return LOADINGSCREEN_DAYTOWN2;
+            return Enum22.LOADINGSCREEN_DAYTOWN2;
           }
-          return LOADINGSCREEN_DAYTOWN1;
-        case SAND:
-        case SAND_ROAD:
+          return Enum22.LOADINGSCREEN_DAYTOWN1;
+        case Enum127.SAND:
+        case Enum127.SAND_ROAD:
           if (fNight) {
-            return LOADINGSCREEN_NIGHTDESERT;
+            return Enum22.LOADINGSCREEN_NIGHTDESERT;
           }
-          return LOADINGSCREEN_DAYDESERT;
-        case FARMLAND:
-        case FARMLAND_ROAD:
-        case ROAD:
+          return Enum22.LOADINGSCREEN_DAYDESERT;
+        case Enum127.FARMLAND:
+        case Enum127.FARMLAND_ROAD:
+        case Enum127.ROAD:
           if (fNight) {
-            return LOADINGSCREEN_NIGHTGENERIC;
+            return Enum22.LOADINGSCREEN_NIGHTGENERIC;
           }
-          return LOADINGSCREEN_DAYGENERIC;
-        case PLAINS:
-        case SPARSE:
-        case HILLS:
-        case PLAINS_ROAD:
-        case SPARSE_ROAD:
-        case HILLS_ROAD:
+          return Enum22.LOADINGSCREEN_DAYGENERIC;
+        case Enum127.PLAINS:
+        case Enum127.SPARSE:
+        case Enum127.HILLS:
+        case Enum127.PLAINS_ROAD:
+        case Enum127.SPARSE_ROAD:
+        case Enum127.HILLS_ROAD:
           if (fNight) {
-            return LOADINGSCREEN_NIGHTWILD;
+            return Enum22.LOADINGSCREEN_NIGHTWILD;
           }
-          return LOADINGSCREEN_DAYWILD;
-        case DENSE:
-        case SWAMP:
-        case SWAMP_ROAD:
-        case DENSE_ROAD:
+          return Enum22.LOADINGSCREEN_DAYWILD;
+        case Enum127.DENSE:
+        case Enum127.SWAMP:
+        case Enum127.SWAMP_ROAD:
+        case Enum127.DENSE_ROAD:
           if (fNight) {
-            return LOADINGSCREEN_NIGHTFOREST;
+            return Enum22.LOADINGSCREEN_NIGHTFOREST;
           }
-          return LOADINGSCREEN_DAYFOREST;
-        case TROPICS:
-        case TROPICS_ROAD:
-        case WATER:
-        case NS_RIVER:
-        case EW_RIVER:
-        case COASTAL:
-        case COASTAL_ROAD:
+          return Enum22.LOADINGSCREEN_DAYFOREST;
+        case Enum127.TROPICS:
+        case Enum127.TROPICS_ROAD:
+        case Enum127.WATER:
+        case Enum127.NS_RIVER:
+        case Enum127.EW_RIVER:
+        case Enum127.COASTAL:
+        case Enum127.COASTAL_ROAD:
           if (fNight) {
-            return LOADINGSCREEN_NIGHTTROPICAL;
+            return Enum22.LOADINGSCREEN_NIGHTTROPICAL;
           }
-          return LOADINGSCREEN_DAYTROPICAL;
+          return Enum22.LOADINGSCREEN_DAYTROPICAL;
         default:
           Assert(0);
           if (fNight) {
-            return LOADINGSCREEN_NIGHTGENERIC;
+            return Enum22.LOADINGSCREEN_NIGHTGENERIC;
           }
-          return LOADINGSCREEN_DAYGENERIC;
+          return Enum22.LOADINGSCREEN_DAYGENERIC;
       }
       break;
     case 1:
       switch (ubSectorID) {
-        case SEC_A10: // Miguel's basement
-        case SEC_I13: // Alma prison dungeon
-        case SEC_J9: // Tixa prison dungeon
-        case SEC_K4: // Orta weapons plant
-        case SEC_O3: // Meduna
-        case SEC_P3: // Meduna
-          return LOADINGSCREEN_BASEMENT;
+        case Enum123.SEC_A10: // Miguel's basement
+        case Enum123.SEC_I13: // Alma prison dungeon
+        case Enum123.SEC_J9: // Tixa prison dungeon
+        case Enum123.SEC_K4: // Orta weapons plant
+        case Enum123.SEC_O3: // Meduna
+        case Enum123.SEC_P3: // Meduna
+          return Enum22.LOADINGSCREEN_BASEMENT;
         default: // rest are mines
-          return LOADINGSCREEN_MINE;
+          return Enum22.LOADINGSCREEN_MINE;
       }
       break;
     case 2:
     case 3:
       // all level 2 and 3 maps are caves!
-      return LOADINGSCREEN_CAVE;
+      return Enum22.LOADINGSCREEN_CAVE;
     default:
       // shouldn't ever happen
       Assert(FALSE);
 
       if (fNight) {
-        return LOADINGSCREEN_NIGHTGENERIC;
+        return Enum22.LOADINGSCREEN_NIGHTGENERIC;
       }
-      return LOADINGSCREEN_DAYGENERIC;
+      return Enum22.LOADINGSCREEN_DAYGENERIC;
   }
 }
 
@@ -178,133 +178,133 @@ function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
 
   switch (ubLoadScreenID) {
-    case LOADINGSCREEN_NOTHING:
+    case Enum22.LOADINGSCREEN_NOTHING:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_Heli.sti");
       break;
-    case LOADINGSCREEN_DAYGENERIC:
+    case Enum22.LOADINGSCREEN_DAYGENERIC:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayGeneric.sti");
       break;
-    case LOADINGSCREEN_DAYTOWN1:
+    case Enum22.LOADINGSCREEN_DAYTOWN1:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayTown1.sti");
       break;
-    case LOADINGSCREEN_DAYTOWN2:
+    case Enum22.LOADINGSCREEN_DAYTOWN2:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayTown2.sti");
       break;
-    case LOADINGSCREEN_DAYWILD:
+    case Enum22.LOADINGSCREEN_DAYWILD:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayWild.sti");
       break;
-    case LOADINGSCREEN_DAYTROPICAL:
+    case Enum22.LOADINGSCREEN_DAYTROPICAL:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayTropical.sti");
       break;
-    case LOADINGSCREEN_DAYFOREST:
+    case Enum22.LOADINGSCREEN_DAYFOREST:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayForest.sti");
       break;
-    case LOADINGSCREEN_DAYDESERT:
+    case Enum22.LOADINGSCREEN_DAYDESERT:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayDesert.sti");
       break;
-    case LOADINGSCREEN_DAYPALACE:
+    case Enum22.LOADINGSCREEN_DAYPALACE:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayPalace.sti");
       break;
-    case LOADINGSCREEN_NIGHTGENERIC:
+    case Enum22.LOADINGSCREEN_NIGHTGENERIC:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightGeneric.sti");
       break;
-    case LOADINGSCREEN_NIGHTWILD:
+    case Enum22.LOADINGSCREEN_NIGHTWILD:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightWild.sti");
       break;
-    case LOADINGSCREEN_NIGHTTOWN1:
+    case Enum22.LOADINGSCREEN_NIGHTTOWN1:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightTown1.sti");
       break;
-    case LOADINGSCREEN_NIGHTTOWN2:
+    case Enum22.LOADINGSCREEN_NIGHTTOWN2:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightTown2.sti");
       break;
-    case LOADINGSCREEN_NIGHTFOREST:
+    case Enum22.LOADINGSCREEN_NIGHTFOREST:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightForest.sti");
       break;
-    case LOADINGSCREEN_NIGHTTROPICAL:
+    case Enum22.LOADINGSCREEN_NIGHTTROPICAL:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightTropical.sti");
       break;
-    case LOADINGSCREEN_NIGHTDESERT:
+    case Enum22.LOADINGSCREEN_NIGHTDESERT:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightDesert.sti");
       break;
-    case LOADINGSCREEN_NIGHTPALACE:
+    case Enum22.LOADINGSCREEN_NIGHTPALACE:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightPalace.sti");
       break;
-    case LOADINGSCREEN_HELI:
+    case Enum22.LOADINGSCREEN_HELI:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_Heli.sti");
       break;
-    case LOADINGSCREEN_BASEMENT:
+    case Enum22.LOADINGSCREEN_BASEMENT:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_Basement.sti");
       break;
-    case LOADINGSCREEN_MINE:
+    case Enum22.LOADINGSCREEN_MINE:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_Mine.sti");
       break;
-    case LOADINGSCREEN_CAVE:
+    case Enum22.LOADINGSCREEN_CAVE:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_Cave.sti");
       break;
-    case LOADINGSCREEN_DAYPINE:
+    case Enum22.LOADINGSCREEN_DAYPINE:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayPine.sti");
       break;
-    case LOADINGSCREEN_NIGHTPINE:
+    case Enum22.LOADINGSCREEN_NIGHTPINE:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightPine.sti");
       break;
-    case LOADINGSCREEN_DAYMILITARY:
+    case Enum22.LOADINGSCREEN_DAYMILITARY:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayMilitary.sti");
       break;
-    case LOADINGSCREEN_NIGHTMILITARY:
+    case Enum22.LOADINGSCREEN_NIGHTMILITARY:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightMilitary.sti");
       break;
-    case LOADINGSCREEN_DAYSAM:
+    case Enum22.LOADINGSCREEN_DAYSAM:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DaySAM.sti");
       break;
-    case LOADINGSCREEN_NIGHTSAM:
+    case Enum22.LOADINGSCREEN_NIGHTSAM:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightSAM.sti");
       break;
-    case LOADINGSCREEN_DAYPRISON:
+    case Enum22.LOADINGSCREEN_DAYPRISON:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayPrison.sti");
       break;
-    case LOADINGSCREEN_NIGHTPRISON:
+    case Enum22.LOADINGSCREEN_NIGHTPRISON:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightPrison.sti");
       break;
-    case LOADINGSCREEN_DAYHOSPITAL:
+    case Enum22.LOADINGSCREEN_DAYHOSPITAL:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayHospital.sti");
       break;
-    case LOADINGSCREEN_NIGHTHOSPITAL:
+    case Enum22.LOADINGSCREEN_NIGHTHOSPITAL:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightHospital.sti");
       break;
-    case LOADINGSCREEN_DAYAIRPORT:
+    case Enum22.LOADINGSCREEN_DAYAIRPORT:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayAirport.sti");
       break;
-    case LOADINGSCREEN_NIGHTAIRPORT:
+    case Enum22.LOADINGSCREEN_NIGHTAIRPORT:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightAirport.sti");
       break;
-    case LOADINGSCREEN_DAYLAB:
+    case Enum22.LOADINGSCREEN_DAYLAB:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayLab.sti");
       break;
-    case LOADINGSCREEN_NIGHTLAB:
+    case Enum22.LOADINGSCREEN_NIGHTLAB:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightLab.sti");
       break;
-    case LOADINGSCREEN_DAYOMERTA:
+    case Enum22.LOADINGSCREEN_DAYOMERTA:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayOmerta.sti");
       break;
-    case LOADINGSCREEN_NIGHTOMERTA:
+    case Enum22.LOADINGSCREEN_NIGHTOMERTA:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightOmerta.sti");
       break;
-    case LOADINGSCREEN_DAYCHITZENA:
+    case Enum22.LOADINGSCREEN_DAYCHITZENA:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayChitzena.sti");
       break;
-    case LOADINGSCREEN_NIGHTCHITZENA:
+    case Enum22.LOADINGSCREEN_NIGHTCHITZENA:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightChitzena.sti");
       break;
-    case LOADINGSCREEN_DAYMINE:
+    case Enum22.LOADINGSCREEN_DAYMINE:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayMine.sti");
       break;
-    case LOADINGSCREEN_NIGHTMINE:
+    case Enum22.LOADINGSCREEN_NIGHTMINE:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightMine.sti");
       break;
-    case LOADINGSCREEN_DAYBALIME:
+    case Enum22.LOADINGSCREEN_DAYBALIME:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_DayBalime.sti");
       break;
-    case LOADINGSCREEN_NIGHTBALIME:
+    case Enum22.LOADINGSCREEN_NIGHTBALIME:
       strcpy(vs_desc.ImageFile, "LOADSCREENS\\LS_NightBalime.sti");
       break;
     default:

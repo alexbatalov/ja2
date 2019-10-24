@@ -70,7 +70,7 @@ function HandleIMPMainPage(): void {
   // handles the IMP about main page
 
   if (CheckIfFinishedCharacterGeneration()) {
-    iCurrentImpPage = IMP_FINISH;
+    iCurrentImpPage = Enum71.IMP_FINISH;
   }
   // shade out buttons that should be shaded/unselectable
   // ShadeUnSelectableButtons( );
@@ -148,12 +148,12 @@ function CreateIMPMainPageButtons(): void {
   }
   giIMPMainPageButton[5] = CreateIconAndTextButton(giIMPMainPageButtonImage[5], sString, FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + 373, LAPTOP_SCREEN_WEB_UL_Y + (245), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPMainPageVoiceCallback);
 
-  SetButtonCursor(giIMPMainPageButton[0], CURSOR_WWW);
-  SetButtonCursor(giIMPMainPageButton[1], CURSOR_WWW);
-  SetButtonCursor(giIMPMainPageButton[2], CURSOR_WWW);
-  SetButtonCursor(giIMPMainPageButton[3], CURSOR_WWW);
-  SetButtonCursor(giIMPMainPageButton[4], CURSOR_WWW);
-  SetButtonCursor(giIMPMainPageButton[5], CURSOR_WWW);
+  SetButtonCursor(giIMPMainPageButton[0], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPMainPageButton[1], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPMainPageButton[2], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPMainPageButton[3], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPMainPageButton[4], Enum317.CURSOR_WWW);
+  SetButtonCursor(giIMPMainPageButton[5], Enum317.CURSOR_WWW);
 
   SpecifyButtonTextOffsets(giIMPMainPageButton[2], 10, 40, TRUE);
   SpecifyButtonTextOffsets(giIMPMainPageButton[3], 10, 40, TRUE);
@@ -207,7 +207,7 @@ function BtnIMPMainPageBackCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      iCurrentImpPage = IMP_HOME_PAGE;
+      iCurrentImpPage = Enum71.IMP_HOME_PAGE;
       fButtonPendingFlag = TRUE;
       iCurrentProfileMode = 0;
       fFinishedCharGeneration = FALSE;
@@ -233,15 +233,15 @@ function BtnIMPMainPageBeginCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
       // are we going to change name, or do we have to start over from scratch
       if (iCurrentProfileMode > 2) {
         // too far along, restart
-        DoLapTopMessageBox(MSG_BOX_IMP_STYLE, pImpPopUpStrings[1], LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, BeginMessageBoxCallBack);
+        DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[1], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, BeginMessageBoxCallBack);
       } else {
         if (LaptopSaveInfo.iCurrentBalance < COST_OF_PROFILE) {
-          DoLapTopMessageBox(MSG_BOX_IMP_STYLE, pImpPopUpStrings[3], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, BeginMessageBoxCallBack);
+          DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[3], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, BeginMessageBoxCallBack);
         } else if (NumberOfMercsOnPlayerTeam() >= 18) {
-          DoLapTopMessageBox(MSG_BOX_IMP_STYLE, pImpPopUpStrings[5], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, BeginMessageBoxCallBack);
+          DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[5], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, BeginMessageBoxCallBack);
         } else {
           // change name
-          iCurrentImpPage = IMP_BEGIN;
+          iCurrentImpPage = Enum71.IMP_BEGIN;
           fButtonPendingFlag = TRUE;
         }
       }
@@ -266,7 +266,7 @@ function BtnIMPMainPagePersonalityCallback(btn: Pointer<GUI_BUTTON>, reason: INT
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      iCurrentImpPage = IMP_PERSONALITY;
+      iCurrentImpPage = Enum71.IMP_PERSONALITY;
       fButtonPendingFlag = TRUE;
     }
   }
@@ -288,7 +288,7 @@ function BtnIMPMainPageAttributesCallback(btn: Pointer<GUI_BUTTON>, reason: INT3
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      iCurrentImpPage = IMP_ATTRIBUTE_ENTRANCE;
+      iCurrentImpPage = Enum71.IMP_ATTRIBUTE_ENTRANCE;
       fButtonPendingFlag = TRUE;
     }
   }
@@ -310,7 +310,7 @@ function BtnIMPMainPagePortraitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      iCurrentImpPage = IMP_PORTRAIT;
+      iCurrentImpPage = Enum71.IMP_PORTRAIT;
       fButtonPendingFlag = TRUE;
     }
   }
@@ -332,7 +332,7 @@ function BtnIMPMainPageVoiceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
       btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
-      iCurrentImpPage = IMP_VOICE;
+      iCurrentImpPage = Enum71.IMP_VOICE;
       fButtonPendingFlag = TRUE;
     }
   }
@@ -430,7 +430,7 @@ function UpDateIMPMainPageButtons(): void {
 function BeginMessageBoxCallBack(bExitValue: UINT8): void {
   // yes, so start over, else stay here and do nothing for now
   if (bExitValue == MSG_BOX_RETURN_YES) {
-    iCurrentImpPage = IMP_BEGIN;
+    iCurrentImpPage = Enum71.IMP_BEGIN;
     iCurrentProfileMode = 0;
   }
 
@@ -444,16 +444,16 @@ function CreateMouseRegionsForIMPMainPageBasedOnCharGenStatus(): void {
   // this procedure will create masks for the char generation main page
 
   // mask for personality page button
-  MSYS_DefineRegion(addressof(pIMPMainPageMouseRegions[0]), LAPTOP_SCREEN_UL_X + 13, LAPTOP_SCREEN_WEB_UL_Y + (245), LAPTOP_SCREEN_UL_X + 13 + 115, LAPTOP_SCREEN_WEB_UL_Y + (245) + 93, MSYS_PRIORITY_HIGH + 5, CURSOR_WWW, MSYS_NO_CALLBACK, IMPMainPageNotSelectableBtnCallback);
+  MSYS_DefineRegion(addressof(pIMPMainPageMouseRegions[0]), LAPTOP_SCREEN_UL_X + 13, LAPTOP_SCREEN_WEB_UL_Y + (245), LAPTOP_SCREEN_UL_X + 13 + 115, LAPTOP_SCREEN_WEB_UL_Y + (245) + 93, MSYS_PRIORITY_HIGH + 5, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, IMPMainPageNotSelectableBtnCallback);
 
   // mask for attrib page button
-  MSYS_DefineRegion(addressof(pIMPMainPageMouseRegions[1]), LAPTOP_SCREEN_UL_X + 133, LAPTOP_SCREEN_WEB_UL_Y + (245), LAPTOP_SCREEN_UL_X + 133 + 115, LAPTOP_SCREEN_WEB_UL_Y + (245) + 93, MSYS_PRIORITY_HIGH + 5, CURSOR_WWW, MSYS_NO_CALLBACK, IMPMainPageNotSelectableBtnCallback);
+  MSYS_DefineRegion(addressof(pIMPMainPageMouseRegions[1]), LAPTOP_SCREEN_UL_X + 133, LAPTOP_SCREEN_WEB_UL_Y + (245), LAPTOP_SCREEN_UL_X + 133 + 115, LAPTOP_SCREEN_WEB_UL_Y + (245) + 93, MSYS_PRIORITY_HIGH + 5, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, IMPMainPageNotSelectableBtnCallback);
 
   // mask for portrait page button
-  MSYS_DefineRegion(addressof(pIMPMainPageMouseRegions[2]), LAPTOP_SCREEN_UL_X + 253, LAPTOP_SCREEN_WEB_UL_Y + (245), LAPTOP_SCREEN_UL_X + 253 + 115, LAPTOP_SCREEN_WEB_UL_Y + (245) + 93, MSYS_PRIORITY_HIGH + 5, CURSOR_WWW, MSYS_NO_CALLBACK, IMPMainPageNotSelectableBtnCallback);
+  MSYS_DefineRegion(addressof(pIMPMainPageMouseRegions[2]), LAPTOP_SCREEN_UL_X + 253, LAPTOP_SCREEN_WEB_UL_Y + (245), LAPTOP_SCREEN_UL_X + 253 + 115, LAPTOP_SCREEN_WEB_UL_Y + (245) + 93, MSYS_PRIORITY_HIGH + 5, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, IMPMainPageNotSelectableBtnCallback);
 
   // mask for voice page button
-  MSYS_DefineRegion(addressof(pIMPMainPageMouseRegions[3]), LAPTOP_SCREEN_UL_X + 373, LAPTOP_SCREEN_WEB_UL_Y + (245), LAPTOP_SCREEN_UL_X + 373 + 115, LAPTOP_SCREEN_WEB_UL_Y + (245) + 93, MSYS_PRIORITY_HIGH + 5, CURSOR_WWW, MSYS_NO_CALLBACK, IMPMainPageNotSelectableBtnCallback);
+  MSYS_DefineRegion(addressof(pIMPMainPageMouseRegions[3]), LAPTOP_SCREEN_UL_X + 373, LAPTOP_SCREEN_WEB_UL_Y + (245), LAPTOP_SCREEN_UL_X + 373 + 115, LAPTOP_SCREEN_WEB_UL_Y + (245) + 93, MSYS_PRIORITY_HIGH + 5, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, IMPMainPageNotSelectableBtnCallback);
 
   return;
 }
@@ -478,7 +478,7 @@ function IMPMainPageNotSelectableBtnCallback(pRegion: Pointer<MOUSE_REGION>, iRe
   }
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    DoLapTopMessageBox(MSG_BOX_IMP_STYLE, pImpPopUpStrings[4], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, BeginMessageBoxCallBack);
+    DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[4], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, BeginMessageBoxCallBack);
   }
 
   return;

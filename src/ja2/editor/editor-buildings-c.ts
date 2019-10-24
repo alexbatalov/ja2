@@ -11,7 +11,7 @@ function GameInitEditorBuildingInfo(): void {
   fBuildingShowRoofs = TRUE;
   fBuildingShowWalls = TRUE;
   fBuildingShowRoomInfo = FALSE;
-  usCurrentMode = BUILDING_PLACE_WALLS;
+  usCurrentMode = Enum32.BUILDING_PLACE_WALLS;
   gubCurrRoomNumber = gubMaxRoomNumber = 1;
 }
 
@@ -20,7 +20,7 @@ function UpdateRoofsView(): void {
   let x: INT32;
   let usType: UINT16;
   for (x = 0; x < WORLD_MAX; x++) {
-    for (usType = FIRSTROOF; usType <= LASTSLANTROOF; usType++) {
+    for (usType = Enum313.FIRSTROOF; usType <= LASTSLANTROOF; usType++) {
       HideStructOfGivenType(x, usType, (!fBuildingShowRoofs));
     }
   }
@@ -67,8 +67,8 @@ function KillBuilding(iMapIndex: UINT32): void {
   let fFound: BOOLEAN = FALSE;
 
   if (!gfBasement)
-    fFound |= RemoveAllRoofsOfTypeRange(iMapIndex, FIRSTTEXTURE, LASTITEM);
-  fFound |= RemoveAllLandsOfTypeRange(iMapIndex, FIRSTFLOOR, LASTFLOOR);
+    fFound |= RemoveAllRoofsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, LASTITEM);
+  fFound |= RemoveAllLandsOfTypeRange(iMapIndex, Enum313.FIRSTFLOOR, LASTFLOOR);
 
   EraseBuilding(iMapIndex);
   gubWorldRoomInfo[iMapIndex] = 0;
@@ -285,11 +285,11 @@ function PasteMapElementToNewMapElement(iSrcGridNo: INT32, iDstGridNo: INT32): v
   }
   pNode = pSrcMapElement.value.pTopmostHead;
   while (pNode) {
-    if (pNode.value.usIndex != FIRSTPOINTERS1)
+    if (pNode.value.usIndex != Enum312.FIRSTPOINTERS1)
       AddTopmostToTail(iDstGridNo, pNode.value.usIndex);
     pNode = pNode.value.pNext;
   }
-  for (usType = FIRSTROOF; usType <= LASTSLANTROOF; usType++) {
+  for (usType = Enum313.FIRSTROOF; usType <= LASTSLANTROOF; usType++) {
     HideStructOfGivenType(iDstGridNo, usType, (!fBuildingShowRoofs));
   }
 }
@@ -433,27 +433,27 @@ function InitDoorEditing(iMapIndex: INT32): void {
   iDoorMapIndex = iMapIndex;
   DisableEditorTaskbar();
   MSYS_DefineRegion(addressof(DoorRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH - 2, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
-  iDoorButton[DOOR_BACKGROUND] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 200, 130, 240, 100, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
-  DisableButton(iDoorButton[DOOR_BACKGROUND]);
-  SpecifyDisabledButtonStyle(iDoorButton[DOOR_BACKGROUND], DISABLED_STYLE_NONE);
-  iDoorButton[DOOR_OKAY] = CreateTextButton("Okay", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 330, 195, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoorOkayCallback);
-  iDoorButton[DOOR_CANCEL] = CreateTextButton("Cancel", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 385, 195, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoorCancelCallback);
-  InitTextInputModeWithScheme(DEFAULT_SCHEME);
+  iDoorButton[Enum34.DOOR_BACKGROUND] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 200, 130, 240, 100, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
+  DisableButton(iDoorButton[Enum34.DOOR_BACKGROUND]);
+  SpecifyDisabledButtonStyle(iDoorButton[Enum34.DOOR_BACKGROUND], Enum29.DISABLED_STYLE_NONE);
+  iDoorButton[Enum34.DOOR_OKAY] = CreateTextButton("Okay", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 330, 195, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoorOkayCallback);
+  iDoorButton[Enum34.DOOR_CANCEL] = CreateTextButton("Cancel", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 385, 195, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DoorCancelCallback);
+  InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
   AddTextInputField(210, 155, 25, 16, MSYS_PRIORITY_HIGH, "0", 3, INPUTTYPE_NUMERICSTRICT);
   AddTextInputField(210, 175, 25, 16, MSYS_PRIORITY_HIGH, "0", 2, INPUTTYPE_NUMERICSTRICT);
   AddTextInputField(210, 195, 25, 16, MSYS_PRIORITY_HIGH, "0", 2, INPUTTYPE_NUMERICSTRICT);
-  iDoorButton[DOOR_LOCKED] = CreateCheckBoxButton(210, 215, "EDITOR//SmCheckbox.sti", MSYS_PRIORITY_HIGH, DoorToggleLockedCallback);
+  iDoorButton[Enum34.DOOR_LOCKED] = CreateCheckBoxButton(210, 215, "EDITOR//SmCheckbox.sti", MSYS_PRIORITY_HIGH, DoorToggleLockedCallback);
 
   pDoor = FindDoorInfoAtGridNo(iDoorMapIndex);
   if (pDoor) {
     if (pDoor.value.fLocked) {
-      ButtonList[iDoorButton[DOOR_LOCKED]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[iDoorButton[Enum34.DOOR_LOCKED]].value.uiFlags |= BUTTON_CLICKED_ON;
     }
     SetInputFieldStringWithNumericStrictValue(0, pDoor.value.ubLockID);
     SetInputFieldStringWithNumericStrictValue(1, pDoor.value.ubTrapID);
     SetInputFieldStringWithNumericStrictValue(2, pDoor.value.ubTrapLevel);
   } else {
-    ButtonList[iDoorButton[DOOR_LOCKED]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iDoorButton[Enum34.DOOR_LOCKED]].value.uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
@@ -488,7 +488,7 @@ function ExtractAndUpdateDoorInfo(): void {
   if (num)
     fCursor = TRUE;
 
-  if (ButtonList[iDoorButton[DOOR_LOCKED]].value.uiFlags & BUTTON_CLICKED_ON) {
+  if (ButtonList[iDoorButton[Enum34.DOOR_LOCKED]].value.uiFlags & BUTTON_CLICKED_ON) {
     door.fLocked = TRUE;
   } else {
     door.fLocked = FALSE;
@@ -497,7 +497,7 @@ function ExtractAndUpdateDoorInfo(): void {
   // Find out if we have a rotating key cursor (we will either add one or remove one)
   pNode = gpWorldLevelData[iDoorMapIndex].pTopmostHead;
   while (pNode) {
-    if (pNode.value.usIndex == ROTATINGKEY1) {
+    if (pNode.value.usIndex == Enum312.ROTATINGKEY1) {
       fCursorExists = TRUE;
       break;
     }
@@ -506,13 +506,13 @@ function ExtractAndUpdateDoorInfo(): void {
   if (fCursor) {
     // we have a valid door, so add it (or replace existing)
     if (!fCursorExists)
-      AddTopmostToHead(iDoorMapIndex, ROTATINGKEY1);
+      AddTopmostToHead(iDoorMapIndex, Enum312.ROTATINGKEY1);
     // If the door already exists, the new information will replace it.
     AddDoorInfoToTable(addressof(door));
   } else {
     // if a door exists here, remove it.
     if (fCursorExists)
-      RemoveAllTopmostsOfTypeRange(iDoorMapIndex, ROTATINGKEY, ROTATINGKEY);
+      RemoveAllTopmostsOfTypeRange(iDoorMapIndex, Enum313.ROTATINGKEY, Enum313.ROTATINGKEY);
     RemoveDoorInfoFromTable(iDoorMapIndex);
   }
 }
@@ -557,7 +557,7 @@ function KillDoorEditing(): void {
   let i: INT32;
   EnableEditorTaskbar();
   MSYS_RemoveRegion(addressof(DoorRegion));
-  for (i = 0; i < NUM_DOOR_BUTTONS; i++)
+  for (i = 0; i < Enum34.NUM_DOOR_BUTTONS; i++)
     RemoveButton(iDoorButton[i]);
   gfEditingDoor = FALSE;
   KillTextInputMode();
@@ -585,7 +585,7 @@ function AddLockedDoorCursors(): void {
   let i: INT;
   for (i = 0; i < gubNumDoors; i++) {
     pDoor = addressof(DoorTable[i]);
-    AddTopmostToHead(pDoor.value.sGridNo, ROTATINGKEY1);
+    AddTopmostToHead(pDoor.value.sGridNo, Enum312.ROTATINGKEY1);
   }
 }
 
@@ -598,7 +598,7 @@ function RemoveLockedDoorCursors(): void {
     pDoor = addressof(DoorTable[i]);
     pNode = gpWorldLevelData[pDoor.value.sGridNo].pTopmostHead;
     while (pNode) {
-      if (pNode.value.usIndex == ROTATINGKEY1) {
+      if (pNode.value.usIndex == Enum312.ROTATINGKEY1) {
         pTemp = pNode;
         pNode = pNode.value.pNext;
         RemoveTopmost(pDoor.value.sGridNo, pTemp.value.usIndex);
@@ -610,7 +610,7 @@ function RemoveLockedDoorCursors(): void {
 
 function SetupTextInputForBuildings(): void {
   let str: UINT16[] /* [4] */;
-  InitTextInputModeWithScheme(DEFAULT_SCHEME);
+  InitTextInputModeWithScheme(Enum384.DEFAULT_SCHEME);
   AddUserInputField(NULL); // just so we can use short cut keys while not typing.
   swprintf(str, "%d", gubMaxRoomNumber);
   AddTextInputField(410, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);

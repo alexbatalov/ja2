@@ -28,6 +28,6 @@ const enum Enum275 {
 
 // ATE: Added so we can have no current squad
 // happens in we move off sector via tactical, but nobody is left!
-const NO_CURRENT_SQUAD = NUMBER_OF_SQUADS;
+const NO_CURRENT_SQUAD = Enum275.NUMBER_OF_SQUADS;
 
 // ptrs to soldier types of squads and their members

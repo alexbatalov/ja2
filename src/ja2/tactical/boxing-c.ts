@@ -52,7 +52,7 @@ function ExitBoxing(): void {
             RecalculateOppCntsDueToBecomingNeutral(pSoldier);
           }
           CancelAIAction(pSoldier, TRUE);
-          pSoldier.value.bAlertStatus = STATUS_GREEN;
+          pSoldier.value.bAlertStatus = Enum243.STATUS_GREEN;
           pSoldier.value.bUnderFire = 0;
 
           // if necessary, revive boxer so he can leave ring
@@ -75,10 +75,10 @@ function ExitBoxing(): void {
 
   if (CheckForEndOfCombatMode(FALSE)) {
     EndTopMessage();
-    SetMusicMode(MUSIC_TACTICAL_NOTHING);
+    SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
 
     // Lock UI until we get out of the ring
-    guiPendingOverrideEvent = LU_BEGINUILOCK;
+    guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
   }
 }
 
@@ -86,46 +86,46 @@ function ExitBoxing(): void {
 // out of the ring!
 function EndBoxingMatch(pLoser: Pointer<SOLDIERTYPE>): void {
   if (pLoser.value.bTeam == gbPlayerNum) {
-    SetBoxingState(LOST_ROUND);
+    SetBoxingState(Enum247.LOST_ROUND);
   } else {
-    SetBoxingState(WON_ROUND);
+    SetBoxingState(Enum247.WON_ROUND);
     gfLastBoxingMatchWonByPlayer = TRUE;
     gubBoxingMatchesWon++;
   }
-  TriggerNPCRecord(DARREN, 22);
+  TriggerNPCRecord(Enum268.DARREN, 22);
 }
 
 function BoxingPlayerDisqualified(pOffender: Pointer<SOLDIERTYPE>, bReason: INT8): void {
-  if (bReason == BOXER_OUT_OF_RING || bReason == NON_BOXER_IN_RING) {
+  if (bReason == Enum199.BOXER_OUT_OF_RING || bReason == Enum199.NON_BOXER_IN_RING) {
     EVENT_StopMerc(pOffender, pOffender.value.sGridNo, pOffender.value.bDirection);
   }
-  SetBoxingState(DISQUALIFIED);
-  TriggerNPCRecord(DARREN, 21);
+  SetBoxingState(Enum247.DISQUALIFIED);
+  TriggerNPCRecord(Enum268.DARREN, 21);
   // ExitBoxing();
 }
 
 function TriggerEndOfBoxingRecord(pSoldier: Pointer<SOLDIERTYPE>): void {
   // unlock UI
-  guiPendingOverrideEvent = LU_ENDUILOCK;
+  guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
 
   if (pSoldier) {
     switch (gTacticalStatus.bBoxingState) {
-      case WON_ROUND:
-        AddHistoryToPlayersLog(HISTORY_WON_BOXING, pSoldier.value.ubProfile, GetWorldTotalMin(), gWorldSectorX, gWorldSectorY);
-        TriggerNPCRecord(DARREN, 23);
+      case Enum247.WON_ROUND:
+        AddHistoryToPlayersLog(Enum83.HISTORY_WON_BOXING, pSoldier.value.ubProfile, GetWorldTotalMin(), gWorldSectorX, gWorldSectorY);
+        TriggerNPCRecord(Enum268.DARREN, 23);
         break;
-      case LOST_ROUND:
+      case Enum247.LOST_ROUND:
         // log as lost
-        AddHistoryToPlayersLog(HISTORY_LOST_BOXING, pSoldier.value.ubProfile, GetWorldTotalMin(), gWorldSectorX, gWorldSectorY);
-        TriggerNPCRecord(DARREN, 24);
+        AddHistoryToPlayersLog(Enum83.HISTORY_LOST_BOXING, pSoldier.value.ubProfile, GetWorldTotalMin(), gWorldSectorX, gWorldSectorY);
+        TriggerNPCRecord(Enum268.DARREN, 24);
         break;
-      case DISQUALIFIED:
-        AddHistoryToPlayersLog(HISTORY_DISQUALIFIED_BOXING, pSoldier.value.ubProfile, GetWorldTotalMin(), gWorldSectorX, gWorldSectorY);
+      case Enum247.DISQUALIFIED:
+        AddHistoryToPlayersLog(Enum83.HISTORY_DISQUALIFIED_BOXING, pSoldier.value.ubProfile, GetWorldTotalMin(), gWorldSectorX, gWorldSectorY);
         break;
     }
   }
 
-  SetBoxingState(NOT_BOXING);
+  SetBoxingState(Enum247.NOT_BOXING);
 }
 
 function CountPeopleInBoxingRing(): UINT8 {
@@ -182,26 +182,26 @@ function CountPeopleInBoxingRingAndDoActions(): void {
 
   if (ubPlayersInRing > 1) {
     // boxing match just became invalid!
-    if (gTacticalStatus.bBoxingState <= PRE_BOXING) {
-      BoxingPlayerDisqualified(pNonBoxingPlayer, NON_BOXER_IN_RING);
+    if (gTacticalStatus.bBoxingState <= Enum247.PRE_BOXING) {
+      BoxingPlayerDisqualified(pNonBoxingPlayer, Enum199.NON_BOXER_IN_RING);
       // set to not in boxing or it won't be handled otherwise
-      SetBoxingState(NOT_BOXING);
+      SetBoxingState(Enum247.NOT_BOXING);
     } else {
-      BoxingPlayerDisqualified(pNonBoxingPlayer, NON_BOXER_IN_RING);
+      BoxingPlayerDisqualified(pNonBoxingPlayer, Enum199.NON_BOXER_IN_RING);
     }
 
     return;
   }
 
-  if (gTacticalStatus.bBoxingState == BOXING_WAITING_FOR_PLAYER) {
+  if (gTacticalStatus.bBoxingState == Enum247.BOXING_WAITING_FOR_PLAYER) {
     if (ubTotalInRing == 1 && ubPlayersInRing == 1) {
       // time to go to pre-boxing
-      SetBoxingState(PRE_BOXING);
+      SetBoxingState(Enum247.PRE_BOXING);
       PickABoxer();
     }
   } else
       // if pre-boxing, check for two people (from different teams!) in the ring
-      if (gTacticalStatus.bBoxingState == PRE_BOXING) {
+      if (gTacticalStatus.bBoxingState == Enum247.PRE_BOXING) {
     if (ubTotalInRing == 2 && ubPlayersInRing == 1) {
       // ladieees and gennleman, we have a fight!
       for (uiLoop = 0; uiLoop < 2; uiLoop++) {
@@ -211,7 +211,7 @@ function CountPeopleInBoxingRingAndDoActions(): void {
         }
       }
       // start match!
-      SetBoxingState(BOXING);
+      SetBoxingState(Enum247.BOXING);
       gfLastBoxingMatchWonByPlayer = FALSE;
 
       // give the first turn to a randomly chosen boxer
@@ -291,8 +291,8 @@ function PickABoxer(): BOOLEAN {
           pBoxer.value.bAgility = __min(100, pBoxer.value.bAgility + gubBoxersRests * 5);
           pBoxer.value.bLifeMax = __min(100, pBoxer.value.bLifeMax + gubBoxersRests * 5);
           // give the 3rd boxer martial arts
-          if ((uiLoop == NUM_BOXERS - 1) && pBoxer.value.ubBodyType == REGMALE) {
-            pBoxer.value.ubSkillTrait1 = MARTIALARTS;
+          if ((uiLoop == NUM_BOXERS - 1) && pBoxer.value.ubBodyType == Enum194.REGMALE) {
+            pBoxer.value.ubSkillTrait1 = Enum269.MARTIALARTS;
           }
           return TRUE;
         }
@@ -368,11 +368,11 @@ function BoxingMovementCheck(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && ubRoom == BOXING_RING) {
     // someone moving in/into the ring
     CountPeopleInBoxingRingAndDoActions();
-  } else if ((gTacticalStatus.bBoxingState == BOXING) && (pSoldier.value.uiStatusFlags & SOLDIER_BOXER)) {
+  } else if ((gTacticalStatus.bBoxingState == Enum247.BOXING) && (pSoldier.value.uiStatusFlags & SOLDIER_BOXER)) {
     // boxer stepped out of the ring!
-    BoxingPlayerDisqualified(pSoldier, BOXER_OUT_OF_RING);
+    BoxingPlayerDisqualified(pSoldier, Enum199.BOXER_OUT_OF_RING);
     // add the history record here.
-    AddHistoryToPlayersLog(HISTORY_DISQUALIFIED_BOXING, pSoldier.value.ubProfile, GetWorldTotalMin(), gWorldSectorX, gWorldSectorY);
+    AddHistoryToPlayersLog(Enum83.HISTORY_DISQUALIFIED_BOXING, pSoldier.value.ubProfile, GetWorldTotalMin(), gWorldSectorX, gWorldSectorY);
     // make not a boxer any more
     pSoldier.value.uiStatusFlags &= ~(SOLDIER_BOXER);
     pSoldier.value.uiStatusFlags &= (~SOLDIER_PCUNDERAICONTROL);
@@ -380,13 +380,13 @@ function BoxingMovementCheck(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function SetBoxingState(bNewState: INT8): void {
-  if (gTacticalStatus.bBoxingState == NOT_BOXING) {
-    if (bNewState != NOT_BOXING) {
+  if (gTacticalStatus.bBoxingState == Enum247.NOT_BOXING) {
+    if (bNewState != Enum247.NOT_BOXING) {
       // pause time
       PauseGame();
     }
   } else {
-    if (bNewState == NOT_BOXING) {
+    if (bNewState == Enum247.NOT_BOXING) {
       // unpause time
       UnPauseGame();
 

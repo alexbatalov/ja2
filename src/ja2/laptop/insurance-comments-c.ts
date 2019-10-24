@@ -38,7 +38,7 @@ function EnterInsuranceComments(): BOOLEAN {
 
   usPosX = INS_CMNT_FIRST_BULLET_X - 6;
   for (i = 0; i < 3; i++) {
-    MSYS_DefineRegion(addressof(gSelectedInsuranceCommentLinkRegion[i]), usPosX, INS_CMNT_LINK_Y - 1, (usPosX + INS_CMNT_LINK_WIDTH), INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT + 1, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceCommentLinkRegionCallBack);
+    MSYS_DefineRegion(addressof(gSelectedInsuranceCommentLinkRegion[i]), usPosX, INS_CMNT_LINK_Y - 1, (usPosX + INS_CMNT_LINK_WIDTH), INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT + 1, MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceCommentLinkRegionCallBack);
     MSYS_AddRegion(addressof(gSelectedInsuranceCommentLinkRegion[i]));
     MSYS_SetRegionUserData(addressof(gSelectedInsuranceCommentLinkRegion[i]), 0, i);
 
@@ -73,48 +73,48 @@ function RenderInsuranceComments(): void {
   DisplayInsuranceDefaults();
 
   // Display the title slogan
-  GetInsuranceText(INS_SNGL_COMMENTSFROM_CLIENTS, sText);
+  GetInsuranceText(Enum90.INS_SNGL_COMMENTSFROM_CLIENTS, sText);
   DrawTextToScreen(sText, LAPTOP_SCREEN_UL_X, INS_CMNT_TITLE_Y, LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X, INS_FONT_BIG, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   usPosY = INS_CMNT_FIRST_BULLET_Y;
 
   // Display the commnet from Gus
-  DisplayComment(INS_SNGL_GUS_TARBALLS, INS_MLTI_GUS_SPEECH, usPosY);
+  DisplayComment(Enum90.INS_SNGL_GUS_TARBALLS, Enum90.INS_MLTI_GUS_SPEECH, usPosY);
 
   usPosY += INS_CMNT_NEXT_COMMENT_OFFSET_Y;
 
   // Display the commnet from ali hussean
-  DisplayComment(INS_SNGL_ALI_HUSSEAN, INS_MLTI_ALI_HUSSEAN_SPEECH, usPosY);
+  DisplayComment(Enum90.INS_SNGL_ALI_HUSSEAN, Enum90.INS_MLTI_ALI_HUSSEAN_SPEECH, usPosY);
 
   usPosY += INS_CMNT_NEXT_COMMENT_OFFSET_Y;
 
   // Display the commnet from Lance allot
-  DisplayComment(INS_SNGL_LANCE_ALLOT, INS_MLTI_LANCE_ALLOT_SPEECH, usPosY);
+  DisplayComment(Enum90.INS_SNGL_LANCE_ALLOT, Enum90.INS_MLTI_LANCE_ALLOT_SPEECH, usPosY);
 
   usPosY += INS_CMNT_NEXT_COMMENT_OFFSET_Y;
 
   // Display the commnet from Fred Cousteau
-  DisplayComment(INS_SNGL_FRED_COUSTEAU, INS_MLTI_FRED_COUSTEAU_SPEECH, usPosY);
+  DisplayComment(Enum90.INS_SNGL_FRED_COUSTEAU, Enum90.INS_MLTI_FRED_COUSTEAU_SPEECH, usPosY);
 
   // Display the link text
   usPosX = INS_CMNT_FIRST_BULLET_X - 6;
 
   // Display the first link text
-  swprintf(sText, "%s", pMessageStrings[MSG_HOMEPAGE]);
+  swprintf(sText, "%s", pMessageStrings[Enum333.MSG_HOMEPAGE]);
   DisplayWrappedString(usPosX, INS_CMNT_LINK_Y + 13, INS_CMNT_LINK_WIDTH, 2, INS_FONT_MED, INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   // Display the red bar under the link at the bottom
   DisplaySmallRedLineWithShadow(usPosX, INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT, (usPosX + INS_CMNT_LINK_WIDTH), INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT);
   usPosX += INS_CMNT_LINK_OFFSET_X;
 
   // Display the third link text
-  GetInsuranceText(INS_SNGL_HOW_DOES_INS_WORK, sText);
+  GetInsuranceText(Enum90.INS_SNGL_HOW_DOES_INS_WORK, sText);
   DisplayWrappedString(usPosX, INS_CMNT_LINK_Y + 6, INS_CMNT_LINK_WIDTH, 2, INS_FONT_MED, INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   // Display the red bar under the link at the bottom
   DisplaySmallRedLineWithShadow(usPosX, INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT, (usPosX + INS_CMNT_LINK_WIDTH), INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT);
   usPosX += INS_CMNT_LINK_OFFSET_X;
 
   // Display the fourth link text
-  GetInsuranceText(INS_SNGL_TO_ENTER_REVIEW, sText);
+  GetInsuranceText(Enum90.INS_SNGL_TO_ENTER_REVIEW, sText);
   DisplayWrappedString(usPosX, INS_CMNT_LINK_Y - 1, INS_CMNT_LINK_WIDTH, 2, INS_FONT_MED, INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   // Display the red bar under the link at the bottom
   DisplaySmallRedLineWithShadow(usPosX, INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT, (usPosX + INS_CMNT_LINK_WIDTH), INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT);
@@ -131,11 +131,11 @@ function SelectInsuranceCommentLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>
     let uiInsuranceLink: UINT32 = MSYS_GetRegionUserData(pRegion, 0);
 
     if (uiInsuranceLink == 0)
-      guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_INSURANCE;
     else if (uiInsuranceLink == 1)
-      guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE_INFO;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_INSURANCE_INFO;
     else if (uiInsuranceLink == 2)
-      guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE_CONTRACT;
+      guiCurrentLaptopMode = Enum95.LAPTOP_MODE_INSURANCE_CONTRACT;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
